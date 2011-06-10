@@ -21,6 +21,7 @@ from inspect import stack, getmodule
 from datetime import *
 import operator
 import urllib
+import string
 import csv
 import ast
 import os
@@ -911,13 +912,13 @@ def contact_import(request):
 
             rdr = csv.reader(request.FILES['csv_file'],
                              delimiter=',', quotechar='"')
-            contact_record_count = 0
+            contact_record_count = 0            
             # Read each Row
             for row in rdr:
-                if (row and str(row[0]) > 0):
+                if (row and str(row[0].strip("\t")) > 0):
                     try:
                         # check field type
-                        int(row[5])
+                        int(row[5].strip("\t"))
 
                         phonebook = \
                         Phonebook.objects.get(pk=request.POST['phonebook'])
@@ -926,20 +927,20 @@ def contact_import(request):
                             # exist with retail plan or not
                             contact = Contact.objects.get(
                                  phonebook_id=phonebook.id,
-                                 contact=row[0])
+                                 contact=row[0].strip("\t"))
                             error_msg = _('Subscriber is already exist !!')
                             error_import_list.append(row)
                         except:
                             # if not, insert record
                             Contact.objects.create(
                                   phonebook=phonebook,
-                                  contact=row[0],
-                                  last_name=row[1],
-                                  first_name=row[2],
-                                  email=row[3],
-                                  description=row[4],
-                                  status=int(row[5]),
-                                  additional_vars=row[6])
+                                  contact=row[0].strip("\t"),
+                                  last_name=row[1].strip("\t"),
+                                  first_name=row[2].strip("\t"),
+                                  email=row[3].strip("\t"),
+                                  description=row[4].strip("\t"),
+                                  status=int(row[5].strip("\t")),
+                                  additional_vars=row[6].strip("\t"))
                             contact_record_count = \
                                 contact_record_count + 1
                             msg = \
@@ -951,6 +952,7 @@ def contact_import(request):
                         error_msg = _("Invalid value for import! \
                                Please look at the import samples.")
                         type_error_import_list.append(row)
+            
 
     data = RequestContext(request, {
     'form': form,

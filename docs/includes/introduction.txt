@@ -1,0 +1,121 @@
+:Version: 0.1.0
+:Web: http://www.newfies-dialer.org/
+:Download: http://www.newfies-dialer.org/download/
+:Source: https://github.com/Star2Billing/newfies/
+:Keywords: dialer, voip, freeswitch, django, asynchronous, rabbitmq,
+  redis, python, distributed
+
+--
+
+.. _newfies-synopsis:
+
+Newfies is an open source VoIP Dialer based on distributed message passing.
+It has been built to support cloud but can also work on standalone servers.
+It uses `Freeswitch`_ (VoIP Server) to outbound calls, but support for other
+VoIP Servers such as `Asterisk`_ could be easily added in the future.
+The platform is focused on real-time operations and task call distributions
+to clustered brokers and workers.
+
+Newfies has been created to provide a solution for `FreedomeFone`_
+to process millions of calls a day.
+-more about FreedomeFone-
+
+Newfies is written in Python, using the `Django`_ Framework. It also operates
+with message brokers such as `RabbitMQ`_, `Redis`_ but support for Beanstalk,
+MongoDB, CouchDB and DBMS is also available.
+
+Newfies provides a long set of APIs to easily integrate the platform dialer
+with third-party applications.
+
+Using very simple steps, Newfies will help you create campaigns, add
+phonebooks, contacts, build audio messages and set more complex VoIP
+applications. Once your campaigns are ready to start, your messages
+will be dispatched and delivered.
+
+.. _`Freeswitch`: http://www.freeswitch.org/
+.. _`Asterisk`: http://www.asterisk.org/
+.. _`FreedomeFone`: http://www.freedomefone.org/
+.. _`Django`: http://djangoproject.com/
+.. _`RabbitMQ`: http://www.rabbitmq.com/
+.. _`Redis`: http://code.google.com/p/redis/
+
+
+.. contents::
+    :local:
+    :depth: 1
+
+.. _newfies-overview:
+
+Overview
+========
+
+This is a high level overview of the architecture.
+
+.. image:: http://cloud.github.com/downloads/ask/celery/Celery-Overview-v4.jpg
+
+The broker delivers tasks to the worker nodes.
+A worker node is a networked machine running `celeryd`.  This can be one or
+more machines depending on the workload.
+
+The result of the task can be stored for later retrieval (called its
+"tombstone").
+
+
+.. _celery-features:
+
+Features
+========
+
+    +-----------------+----------------------------------------------------+
+    | Messaging       | Supported brokers include `RabbitMQ`_, `Redis`_,   |
+    |                 | and popular SQL databases.                         |
+    +-----------------+----------------------------------------------------+
+    | Fault-tolerant  | Excellent configurable error recovery when using   |
+    |                 | `RabbitMQ`, ensures your tasks are never lost.     |
+    |                 | scenarios, and your tasks will never be lost.      |
+    +-----------------+----------------------------------------------------+
+    | Distributed     | Runs on one or more machines. Supports             |
+    |                 | broker `clustering`_ and `HA`_ when used in        |
+    |                 | combination with `RabbitMQ`_.  You can set up new  |
+    |                 | workers without central configuration (e.g. use    |
+    |                 | your grandma's laptop to help if the queue is      |
+    |                 | temporarily congested).                            |
+    +-----------------+----------------------------------------------------+
+    | Concurrency     | Concurrency is achieved by using multiprocessing,  |
+    +-----------------+----------------------------------------------------+
+    | Scheduling      | Supports recurring tasks like cron, or specifying  |
+    |                 | an exact date or countdown for when after the task |
+    |                 | should be executed.                                |
+    +-----------------+----------------------------------------------------+
+    | Made for Web    | You can query status and results via URLs,         |
+    |                 | enabling the ability to poll task status using     |
+    |                 | Ajax.                                              |
+    +-----------------+----------------------------------------------------+
+    | Error Emails    | Can be configured to send emails to the            |
+    |                 | administrators when tasks fails.                   |
+    +-----------------+----------------------------------------------------+
+
+
+.. _`clustering`: http://www.rabbitmq.com/clustering.html
+.. _`HA`: http://www.rabbitmq.com/pacemaker.html
+.. _`AMQP`: http://www.amqp.org/
+.. _`Stomp`: http://stomp.codehaus.org/
+.. _`Tokyo Tyrant`: http://tokyocabinet.sourceforge.net/
+
+
+.. _newfies-architecture:
+
+Architecture
+============
+
+.. _newfies-documentation:
+
+Documentation
+=============
+
+The `latest documentation`_ with user guides, tutorials and API reference
+is hosted at Github.
+
+.. _`latest documentation`: https://github.com/Star2Billing/newfies/
+
+

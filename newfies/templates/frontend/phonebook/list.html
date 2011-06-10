@@ -1,0 +1,107 @@
+{% extends "frontend/master.html" %}
+{% load dialer_cdr_extras i18n icons %}
+{% load pagination_tags %}
+
+{% block title %}
+{{ block.super }}
+{% trans "Phonebook" %}
+{% endblock %}
+
+{% block extra_files %}
+<script type="text/javascript" src="{{STATIC_URL}}newfies/js/custom.jquery.select.all.js"></script>
+
+<!--flexigrid css & js-->
+<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid.css" type="text/css" />
+<script type="text/javascript" src="{{STATIC_URL}}newfies/js/flexigrid.js"></script>
+<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid_custom.css" type="text/css" />
+
+<script type="text/javascript" language="javascript">
+function get_alert_msg(id)
+{    
+    $.ajax({
+        url: "http://127.0.0.1:8000/phonebook/contact_count/",
+        type: "GET",
+        async: false,
+        cache: false,
+        timeout: 30000,
+        data: "pb_ids=" + id,
+        success: function(data) {
+            contact_count = data;
+        },
+        error: function() {
+            alert("Request failed");
+        }
+    });
+    confirm_string = 'you are going to delete phonebook with ' + contact_count + ' contact(s)'
+    var answer = confirm(confirm_string);
+    return answer // answer is a boolean
+}
+</script>
+{% endblock %}
+
+
+{% block content %}
+{% if msg %}
+<div class="success" id="rounded-corner-upper-table">        
+        <strong>{% trans "Alert" %} : </strong>  {{ msg }}
+</div>
+{% endif %}
+
+<br/>
+<form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">
+{% csrf_token %}
+<table id="flex1" align="left" style="display:none;"></table>
+</form>
+<script type="text/javascript">
+
+
+$("#flex1").flexigrid({
+    url: "/phonebook_grid/", 
+    method: 'GET',
+    dataType: 'json',
+	colModel : [
+        {display: '<input type="checkbox" onclick="toggleChecked(this.checked)">', name: '', width: 40, align: 'center'},
+		{display: 'Id', name: 'id', width: 40, sortable: true, align: 'center'},
+        {display: 'Name', name: 'name', width: 100, sortable: true, align: 'center'},
+        {display: 'Description', name: 'description', width: 160, sortable: true, align: 'center'},
+        {display: 'Date', name: 'updated_date', width: 100, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
+        {display: 'Contacts', name: '', width: 40, sortable: true, align: 'center'},
+        {display: 'Action', name: '', width : 50, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
+		],
+    buttons : [
+		{name: 'Add', bclass: 'add', onpress : add_button},
+        {separator: true},        
+        {name: 'Delete Selected', bclass: 'delete', onpress : delete_button},
+		],
+    sortname: "id",
+	sortorder: "asc",
+	usepager: true,
+	title: 'Phonebooks',
+	useRp: true,
+	rp: 10,
+	showTableToggleBtn: true,
+	width: 616,
+	height: 265,
+    //preProcess: formatContactResults,
+    onSuccess: function(data){
+        //alert(data);
+        //alert("Request not failed");
+    },
+    onError: function(){
+        alert("Request failed");
+    },
+});
+
+
+function add_button()
+{
+    window.location = 'add/';
+}
+function delete_button()
+{
+    $('#ListForm').submit();
+}
+
+</script>
+
+{% endblock %}

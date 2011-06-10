@@ -1,0 +1,23 @@
+[
+   {
+      "pk":1,
+      "model":"dialer_gateway.gateway",
+      "fields":{
+         "updated_date":"2011-04-08 07:51:02",
+         "status":1,
+         "protocol":"SIP",
+         "name":"Default_Gateway",
+         "failover":null,
+         "hostname":"localhost",
+         "maximum_call":null,
+         "count_in_use":null,
+         "removeprefix":"",
+         "addparameter":"",
+         "secondused":null,
+         "created_date":"2011-04-08 07:51:02",
+         "addprefix":"",
+         "count_call":null,
+         "description":"This is default gateway"
+      }
+   }
+]

@@ -1,0 +1,137 @@
+{% load i18n admin_tools_dashboard_tags %}
+{% load memcache_status_tags %}
+
+<script type="text/javascript" src="{{ media_url }}/admin_tools/js/utils.js"></script>
+
+<script type="text/javascript" charset="utf-8">
+    // Load js files syncronously and conditionally
+
+    var js_files = [
+        {
+            src : '{{ media_url }}/admin_tools/js/jquery/jquery.min.js',
+            test: function() { return typeof(jQuery) == 'undefined'; }
+        },
+        {
+            src : '{{ media_url }}/admin_tools/js/jquery/jquery-ui.min.js',
+            test: function() { return typeof(jQuery.ui) == 'undefined'; }
+        },
+        {
+            src : '{{ media_url }}/admin_tools/js/json.min.js',
+            test: function() { return typeof(JSON.stringify) == 'undefined'; }
+        },
+        {
+            src : '{{ media_url }}/admin_tools/js/jquery/jquery.cookie.min.js',
+            test: function() { return typeof(jQuery.cookie) == 'undefined'; }
+        },
+        {
+            src : '{{ media_url }}/admin_tools/js/jquery/jquery.dashboard.js',
+            test: function() { return true; }
+        },
+        {
+            src : '{{ media_url }}/admin_tools/js/dashboard.js',
+            test: function() { return true; }
+        }{% for js in dashboard.Media.js %},
+        {
+            src : '{{ media_url }}/{{ js }}',
+            test: function() { return true; }
+        }{% endfor %}
+    ];
+
+    loadScripts(js_files, function(){
+        jQuery(function($) {
+            init_dashboard(
+                '{{ dashboard.get_id }}',
+                {{ dashboard.columns }},
+                {% autoescape off %}{{ dashboard_preferences }}{% endautoescape %},
+                '{% url admin-tools-dashboard-set-preferences dashboard.get_id %}'
+            );
+        });
+    });
+</script>
+
+{% if dashboard.title %}
+<h1 class="dashboard-title">{{ dashboard.title }}</h1>
+{% endif %}
+
+<div id="dashboard-panel">
+    <h3><a href="#">{% trans "Modules" %}</a></h3>
+    {% if has_disabled_modules %}
+    <ul>
+        {% spaceless %}
+        {% for module in dashboard.children %}
+        {% if not module.enabled %}
+        <li><a href="#" rel="module_{{ module.id }}" class="addlink add-dashboard-module">{{ module.title }}</a></li>
+        {% endif %}
+        {% endfor %}
+        {% endspaceless %}
+    </ul>
+    {% endif %}
+</div>
+<div id="{{ dashboard.get_id }}" class="dashboard-container">
+    {% for module in dashboard.children %}
+{% admin_tools_render_dashboard_module module %}{% endfor %}
+
+
+
+
+{% ifequal request.path "/admin/" %}
+
+{% get_cache_stats %}
+{% if cache_stats and user.is_superuser %}
+<div class="cache_stats">
+{% for server in cache_stats %}
+<div class="dashboard-module draggable collapsible deletable">
+    <table>
+    <caption>
+        <h2><a href="#"  onclick="
+            var elem = document.getElementById('cache{{ forloop.counter }}');
+            if(elem.style.display == 'none'){
+                elem.style.display = 'table-row-group';
+            }else{
+                elem.style.display = 'none';
+            }
+            return false;
+        ">memcached: {{ server.0 }} - {% widthratio server.1.bytes server.1.limit_maxbytes 100 %}% load</a> 
+       </h2>
+    </caption>
+    <thead>
+    <tr><td colspan="2">
+        <div class="cache_graph">
+            <div class="cache_graph_value" style="width: {% widthratio server.1.bytes server.1.limit_maxbytes 100 %}%"></div>
+        </div>
+    </td></tr>
+    </thead>
+    <tbody id="cache{{ forloop.counter }}">
+    <tr>
+        <th>{% trans "Miss Ratio" %}</th>
+        <td>
+            {% widthratio server.1.get_misses server.1.cmd_get 100 %}%
+            <div class="cache_graph inline">
+                <div class="cache_graph_value" style="width: {% widthratio server.1.get_misses server.1.cmd_get 100 %}%"></div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <th>{% trans "Avg GET by item" %}</th>
+        <td>{% widthratio server.1.cmd_get server.1.total_items 1 %}</td>
+    </tr>
+    <tr>
+        <th>{% trans "Avg GET by seconds/minutes" %}</th>
+        <td>{% widthratio server.1.cmd_get server.1.uptime 1 %}/{% widthratio server.1.cmd_get server.1.uptime 60 %}</td>
+    </tr>
+    {# ----- Detailed Statistics ----- #}
+    <tr><th class="cache_title" colspan="2">{% trans "Detailed Statistics:" %}</th></tr>
+    {% for k,v in server.1.items %}
+    <tr><th>{{ k|prettyname }}</th><td>{{ v|prettyvalue:k }}</td></tr>
+    {% endfor %}
+    </tbody>
+    </table>
+</div>
+{% endfor %}
+</div>
+{% endif %}
+
+{% endifequal %}
+
+
+</div>

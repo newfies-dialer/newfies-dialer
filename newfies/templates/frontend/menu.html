@@ -1,0 +1,17 @@
+{% load i18n %}
+
+<div class="span-19 prepend-5 last">
+    <div id="main-menu-container">        
+        <a href="/dashboard/" class="fg-button ui-state-default ui-corner-all {% ifequal module 'customer_dashboard' %}ui-state-highlight{% endifequal %}">{% trans "Dashboard" %}</a>
+        <a href="/campaign/" class="fg-button ui-state-default ui-corner-all {% if 'campaign' in module  %}ui-state-highlight{% endif %}">{% trans "Campaign"  %}</a>
+        <a href="/phonebook/" class="fg-button ui-state-default ui-corner-all {% if 'phonebook' in module %}ui-state-highlight{% endif %}">{% trans "Phonebook"  %}</a>
+        <a href="/contact/" class="fg-button ui-state-default ui-corner-all {% if 'contact' in module %}ui-state-highlight{% endif %}">{% trans "Contact"  %}</a>        
+        <a href="/voipcall_report/" class="fg-button ui-state-default ui-corner-all {% ifequal module 'voipcall_report' %}ui-state-highlight{% endifequal %}">{% trans "Call Report"  %}</a>
+        <a href="/user_detail_change/" class="fg-button ui-state-default ui-corner-all {% if 'detail_change' in module  %}ui-state-highlight{% endif %}">{% trans "Settings"  %}</a>
+        <a href="/" class="fg-button ui-state-default ui-corner-all {% ifequal module 'index' %}ui-state-highlight{% endifequal %}">{% trans "Info"  %}</a>        
+    </div>
+</div>
+
+
+
+

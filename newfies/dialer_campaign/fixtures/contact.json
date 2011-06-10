@@ -1,0 +1,20 @@
+[
+   {
+      "pk":1,
+      "model":"dialer_campaign.contact",
+      "fields":{
+         "status":1,
+         "updated_date":"2011-04-11 00:00:29",
+         "last_name":"",
+         "first_name":"",
+         "email":"",
+         "country":"",
+         "city":"",
+         "additional_vars":"",
+         "phonebook":1,
+         "contact":"1234",
+         "created_date":"2011-04-08 07:57:54",
+         "description":""
+      }
+   }
+]

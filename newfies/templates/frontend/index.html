@@ -1,0 +1,115 @@
+{% extends "frontend/master.html" %}
+{% load i18n %}
+
+{% block title %}
+{{ block.super }}
+Info
+{% endblock %}
+
+{% block extra_files %}
+  <script>
+  $(document).ready(function() {
+    $("#accordion").accordion({ autoHeight: false,  clearStyle: true  });
+  });
+  </script>
+{% endblock %}
+
+{% block content %}
+
+<div id="accordeon-container" align=left>
+<div id="accordion">    
+	<h3><a href="#">{% trans "Info"  %}</a></h3>
+	<div>
+		<p>
+		<br/>
+		
+		<a href="http://www.newfies-dialer.org/" target="_blank" >Newfies</a> 
+		{% trans "is a Bulk Dialer & Voice Broadcasting application dedicated to provide information via phone technology." %}<br/><br/>
+		
+		{% trans "Newfies has been built using a messaging system so that it can support distributed processing on cloud servers. The platform is focused on real-time operations and task call distributions to clustered brokers and workers meaning that many millions of calls can be processed daily." %}<br/><br/>
+		
+        {% trans "Support, alternative licensing and consultancy is available from " %} 
+        <a target="_blank" href="http://www.star2billing.com">http://www.star2billing.com</a>
+        <br/>
+        <br/>
+        
+        <a href="http://www.newfies-dialer.org/" target="_blank" ><img src='{{STATIC_URL}}newfies/icons/help-about-2.png' title="Info" alt="Info" width="110" class="info-icon"/></a>
+        
+        <br/><br/>
+
+		</p>
+	</div>
+	<h3><a href="#">{% trans "Download" %}</a></h3>
+	<div>
+		<p>
+        {% trans "Please visit" %} <a target="_blank" href="http://www.newfies-dialer.org/">http://www.newfies-dialer.org/</a> <br/>
+        {% trans "and download the last stable release." %}
+        <br/><br/><br/>
+        
+        <a href="http://www.newfies-dialer.org/" target="_blank" ><img src='{{STATIC_URL}}newfies/icons/system-log-out-4.png' title="Download" alt="Download" width="110" class="info-icon"/></a>
+        
+        <br/><br/>
+
+        
+		</p>
+	</div>
+	<h3><a href="#">{% trans "Support" %}</a></h3>
+	<div>
+		<p>
+        {% trans "Star2Billing S.L. offers consultancy including installation, training and customisation on all of its products, and Newfies is no exception." %}
+        <br/><br/>
+        {% trans "Purchasing consultancy is a good way to help support the development of Newfies, and from the customer's point of view can speed the time of deployment, leaving them free to concentrate on more profitable and productive tasks." %}
+        <br/><br/>
+        {% trans "Contact us at" %} <a href="mailto:sales@star2billing.com">sales@star2billing.com</a> {% trans "for more information" %}<br/><br/>
+		
+		<a href="mailto:sales@star2billing.com"><img src='{{STATIC_URL}}newfies/icons/system-help-3.png' title="Support" alt="Support" width="110" class="info-icon"/></a>
+		
+		
+	</div>
+	<h3><a href="#">{% trans "News" %}</a></h3>
+	<div>
+		{% if news %}
+            {% for rc in news %}
+            {{rc.0}}  <a href="{{rc.1}}">{{rc.1}}</a> {{rc.2}}
+            <hr>
+            {% endfor %}
+        {% endif %}
+
+        <br/><br/>
+        
+        <img src='{{STATIC_URL}}newfies/icons/knewsticker-2.png' title='News' alt="News" width="110" class="info-icon"/>
+        
+	</div>
+	
+	<h3><a href="#">{% trans "Licensing" %}</a></h3>
+	<div>
+		<p>
+        {% trans "Newfies is licensed under" %} <a href="http://www.fsf.org/licensing/licenses/agpl-3.0.html" target="_blank">AGPL 3</a>,
+        {% trans "however an alternative license can be purchased if the AGPL license is not suitable for your requirements. See " %} 
+        <a target="_blank" href="http://www.newfies-dialer.org/">http://www.newfies-dialer.org/</a>
+        <br/>
+		<br><a href="http://www.fsf.org/licensing/licenses/agpl-3.0.html" target="_blank"><img src="{{STATIC_URL}}newfies/icons/agplv3-155x51.png" class="info-icon"></a>
+        
+        <br/><br/>
+	</div>
+	
+	<h3><a href="#">{% trans "Contact Us" %}</a></h3>
+	<div>
+		<p>
+		{% trans "Star2Billing S.L. provide commercial support, installation and training to telecommunications companies that wished to deploy Newfies." %}
+        <br/><br/>
+        {% trans "Star2Billing offer a variety of solutions for Telecoms companies. Please see" %} <a target="_blank" href="http://www.star2billing.com">http://www.star2billing.com</a> {% trans "for more details." %}
+        
+        <br/><br/>
+
+        <a href="mailto:sales@star2billing.com"><img src='{{STATIC_URL}}newfies/icons/kontact-4.png' title="Contact" alt="Contact" width="110" class="info-icon"/></a>
+        
+		</p>
+	</div>
+</div>
+</div>
+	
+
+
+{% endblock %}
+

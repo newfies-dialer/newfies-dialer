@@ -1,0 +1,38 @@
+{% extends "frontend/master.html" %}
+{% load i18n %}
+{% load pagination_tags %}
+
+{% block extra_files %}
+{% endblock %}
+
+{% block content %}
+
+<center>{% if action == 'update' %}
+            {% trans "Update" %}
+        {% else %}
+            {% trans "Add" %}
+        {% endif %} {% trans "Campaign" %}</center>
+
+<form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+    <table align=center border=1>
+        {{ form.as_table }}
+        <tr>
+            <td >&nbsp;</td>
+            <td align=left>
+              {% if action == 'update' %}
+                <input id="update" type="submit" value="{% trans "Update" %}" />
+              {% else %}
+                <input id="add" type="submit" value="{% trans "Submit" %}" />
+              {% endif %}
+               &nbsp;&nbsp;
+              <input type="reset" name="reset" value="{% trans "Clear" %}">&nbsp;&nbsp;
+              {% if action == 'update' %}
+                 <input id="delete" name="delete" type="submit" value="{% trans "Delete" %}" />
+              {% endif %}
+           </td>
+        </tr>
+    </table>
+</form>
+
+ 
+{% endblock %}

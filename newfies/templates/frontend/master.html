@@ -1,0 +1,194 @@
+{% load i18n %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<head xmlns="http://www.w3.org/1999/xhtml" lang="{{ LANGUAGE_CODE }}" xml:lang="{{ LANGUAGE_CODE }}">
+
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>{% block title %}Newfies{% endblock %} | 
+           {% trans "Customer Interface" noop %}</title>
+    <link rel="icon" type="image/png" href="{{STATIC_URL}}newfies/images/favicon.png">
+
+    <!-- bluetrip css -->
+    <link rel="stylesheet" href="{{STATIC_URL}}newfies/css/blueprint/screen.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="{{STATIC_URL}}newfies/css/blueprint/print.css" type="text/css" media="print" />
+    <!--[if IE]>
+    <link rel="stylesheet" href="{{STATIC_URL}}newfies/css/blueprint/ie.css" type="text/css" media="screen, projection" />
+    <![endif]-->
+    <link rel="stylesheet" href="{{STATIC_URL}}newfies/css/blueprint/plugins/buttons/screen.css" type="text/css" media="screen, projection" />
+    
+    <!-- Newfies custom css -->
+    <link type="text/css" media="screen" href="{{STATIC_URL}}newfies/css/newfile_custom.css" rel="stylesheet"/>
+
+    <!-- jquery UI css -->
+    <link type="text/css" href="{{STATIC_URL}}newfies/css/smoothness/jquery-ui-1.8.11.custom.css" rel="stylesheet">  
+
+    <!-- Javascript -->
+    <script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-1.5.2.min.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}newfies/js/custom.validation.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-ui-1.8.11.custom.min.js"></script>
+
+ 
+    <!-- flot js -->
+    <script src="{{STATIC_URL}}newfies/js/jquery.flot.js" type="text/javascript"></script>
+    <script src="{{STATIC_URL}}newfies/js/flot/flot.js" type="text/javascript"></script>
+    <script src="{{STATIC_URL}}newfies/js/flot/canvastext.js" type="text/javascript"></script>
+    <!--[if IE]>
+    <script type="text/javascript" src="{{STATIC_URL}}newfies/js/flot/excanvas.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}newfies/js/flot/base64.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="{{STATIC_URL}}newfies/js/flot/canvas2image.js"></script>
+
+    
+    <script>
+      $(document).ready(function() {
+        $(".fg-button").hover(
+	        function(){
+		        $(this).addClass("ui-state-hover");
+	        },
+	        function(){
+		        $(this).removeClass("ui-state-hover");
+	        }
+        );
+        $('#buttonlogin').click(function(){
+          $("#requestlogin").animate({ height: 'show', opacity: 'show' }, 'slow');
+        });
+        $('#buttonlogout').click(function(){
+          $('#logout').submit();
+        });
+        $('#buttonadmin').click(function(){
+            var url = String(window.location);
+            var patt = "(https?|ftp|gopher|telnet|file|notes|ms-help)://[^/]+/";
+            window.location = url.match(patt)[0] + 'admin';
+        });
+        $("#language-container").change(function() {
+            this.form.submit();
+        });
+      });
+    </script>
+
+    <style>
+    table {
+        margin-bottom:1.4em;
+        width:auto;
+    }
+
+    .login{
+        background: white;
+        border: 1px solid #ccc;
+        width: 28em;
+        height: 18em;
+        min-width: 320px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: auto;
+    }
+
+    .icon {
+        padding-left: 5px;
+        padding-top: 2px;
+        padding-right: 13px;
+        padding-bottom: 2px;
+        background-repeat:
+        no-repeat;
+    }
+
+    </style>
+
+	{% block extra_header %}
+    {{ extra_header }}
+    {% endblock %}
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="span-15">
+		<a href="#" target="_blank"><img src="{{STATIC_URL}}newfies/images/newfies.png" style="vertical-align:center;" height="80"/></a>
+	</div>   
+    
+    <div class="span-3" align="right">
+    <form action="/i18n/setlang/" method="post">
+        {% csrf_token %}
+        <select name="language" id="language-container">
+        {% for lang in LANGUAGES %}
+        <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected{% endifequal %}>{{ lang.1 }}</option>
+        {% endfor %}
+        </select>
+    </form>
+    </div>
+
+    <div class="prepend-2">
+    {% if user.is_authenticated %}
+        {% if user.is_superuser %}
+            <button id="buttonadmin" class="button-text-icon-gear">{% trans "Admin" %}</button>
+        {% endif %}
+    {% endif %}
+    </div>
+
+	<div class="prepend-2 last">
+	    {% include "frontend/login_option.html" %}
+    </div>
+
+
+	<div class="span-2 last">
+		{% include "frontend/login.html" %}
+	</div>
+    
+    {% if user.is_authenticated %}
+        <div class="span-22 last" align="right">
+            <div id="welcome-container">
+            {% trans "Welcome" %}, {{ user.username }} 
+            {% if notice_count %} <a href="/user_detail_change/?selected=2">({% trans "You have" %} {{ notice_count }} {% trans "new notification" %})</a>   {% endif %}
+            </div>
+        </div>        
+    {% endif %}
+
+    <hr class="space">
+
+    <div class="span-24 last">
+	    {% if errorlogin %}
+            <div class="error">
+                <span class="ui-icon ui-icon-alert" style="float: left; margin-right: 0.3em;"></span>
+                <strong>Alert : </strong>  {{ errorlogin }}
+            </div>
+        {% else %}
+            {% if notlogged %}
+            <div class="error">
+                <span class="ui-icon ui-icon-alert" style="float: left; margin-right: 0.3em;"></span>
+                <strong>{% trans "Alert"  %} : </strong>  {% trans "Please login by clicking on login button"  %}
+            </div>
+            {% endif %}
+        {% endif %}
+		<br>
+	</div>
+
+    {% include "frontend/menu.html" %}
+
+    <p>&nbsp;</p>
+
+    {% block extra_files %}
+    {% endblock %}
+
+    <div class="span-4 last">&nbsp;</div>
+
+    <div class="span-24 last" align=center>
+    {% block content %}
+    {% endblock %}
+    </div>
+
+    
+{% if user.is_authenticated %}
+    <div class="span-24 last" align=center>
+        <div id="footer">
+            Newfies 1.1, {% trans "Newfies is software licensed under the "  %}
+            <a href="http://www.fsf.org/licensing/licenses/agpl-3.0.html" target="_blank">AGPL 3</a>. <br/>
+            Copyright (C) 2010 - Star2billing S.L. <a href="http://www.star2billing.com/" target="_blank">http://www.star2billing.com/</a>
+        </div>
+    </div>
+{% endif %}
+
+</div>
+
+</body>
+</html>

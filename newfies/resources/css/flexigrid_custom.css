@@ -1,0 +1,14 @@
+
+th, td, caption {
+padding:0px 0px 0px 0px;
+}
+
+thead th{
+background:#FAFAFA url(images/fhbg.gif) repeat-x scroll center bottom;
+}
+
+input[type="checkbox"], input[type="radio"], input.checkbox, input.radio {
+position:relative;
+top:0em;
+}
+

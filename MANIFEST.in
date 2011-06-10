@@ -1,0 +1,21 @@
+global-exclude *.pyc
+
+include newfies/CREDITS
+include newfies/INSTALL
+include newfies/django.wsgi
+include newfies/requirements.txt
+
+recursive-include newfies/sms *
+recursive-include newfies/provider *
+recursive-include newfies/sms_billing *
+recursive-include newfies/sms_report *
+recursive-include newfies/user_profile *
+recursive-include newfies/templates *
+recursive-include newfies/resources *
+recursive-include newfies/static *
+recursive-include newfies/docs *
+recursive-include newfies/addons *
+    
+exclude newfies/__init__.py
+exclude newfies/settings.py
+exclude newfies/manage.py

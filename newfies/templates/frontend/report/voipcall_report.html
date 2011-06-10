@@ -1,0 +1,150 @@
+{% extends "frontend/master.html" %}
+{% load i18n dialer_cdr_extras %}
+{% load pagination_tags %}
+
+{% block title %}
+{{ block.super }}
+{% trans "VoIP Call Report" %}
+{% endblock %}
+
+{% block extra_files %}
+<script type="text/javascript">
+$(function() {
+    var dates = $('#id_from_date, #id_to_date').datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        dateFormat: 'yy-mm-dd',
+        onSelect: function(selectedDate) {
+            var option = this.id == "id_from_date" ? "minDate" : "maxDate";
+            var instance = $(this).data("datepicker");
+            var date = $.datepicker.parseDate(instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
+            dates.not(this).datepicker("option", option, date);
+        }
+    });
+});
+</script>
+<!--flexigrid css & js-->
+<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid.css" type="text/css" />
+<script type="text/javascript" src="{{STATIC_URL}}newfies/js/flexigrid.js"></script>
+<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid_custom.css" type="text/css" />
+{% endblock %}
+
+{% block content %}
+<br/>
+    {% block custom-search %}
+    <form method="POST" action="." enctype="multipart/form-data">
+    {% csrf_token %}
+    <table align="center" border=0 style="width:35%;align:center;">
+        {{ form.as_table }}  
+        <tr>            
+            <td colspan=2 align=right>
+            <input type="submit" value="{% trans "Search" %}" class="l-1" />&nbsp;
+			<input type="reset" class="j-2" name="reset" value="{% trans "Reset" %}">
+            </td>
+        </tr>
+    </table>
+    </form>
+    {% endblock %}
+<br/><br/>
+
+{% block record_list %}
+<form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">
+{% csrf_token %}
+<table id="flex1" align="left" style="display:none;"></table>
+</form>
+<script type="text/javascript">
+var from_date = ('{{ from_date }}'.replace(/\&#39;/g, "'"));
+var to_date = ('{{ to_date }}'.replace(/\&#39;/g, "'"));
+var disposition = ('{{ disposition }}'.replace(/\&#39;/g, "'"));
+//alert(encodeURIComponent("from_date="+from_date+"&to_date="+to_date+"&disposition="+disposition));
+
+$("#flex1").flexigrid({
+    url: "/voipcall_report_grid/?" + encodeURIComponent("from_date="+from_date+"&to_date="+to_date+"&disposition="+disposition),
+    method: 'GET',
+    dataType: 'json',
+	colModel : [        
+		{display: 'User', name: 'user', width: 40, sortable: true, align: 'center'},
+        {display: 'Used gateway', name: 'used_gateway', width: 100, sortable: true, align: 'center'},
+        {display: 'Callid', name: 'callid', width: 80, sortable: true, align: 'center'},
+        {display: 'Uniqueid', name: 'uniqueid', width: 80, sortable: true, align: 'center'},
+        {display: 'Callerid', name: 'callerid', width: 80, sortable: true, align: 'center'},
+        {display: 'Dnid', name: 'dnid', width: 60, sortable: true, align: 'center'},
+        {display: 'Recipient No', name: 'recipient_number', width: 100, sortable: true, align: 'center'},
+        {display: 'Starting date', name: 'starting_date', width: 100, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
+        {display: 'Sessiontime', name: 'sessiontime', width: 60, sortable: true, align: 'center'},
+        {display: 'Disposition', name: 'disposition', width: 60, sortable: true, align: 'center'},
+        {display: 'Recipient dialcode', name: 'recipient_dialcode', width: 100, sortable: true, align: 'center'},
+		],    
+    sortname: "id",
+	sortorder: "asc",
+	usepager: true,
+	title: 'VoIP Call Records',
+	useRp: true,
+	rp: 10,
+	showTableToggleBtn: true,
+	width: 995,
+	height: 265,
+    //preProcess: formatContactResults,
+    onSuccess: function(data){
+        //alert(data);
+        //alert("Request not failed");
+    },
+    onError: function(){
+        alert("Request failed");
+    },
+});
+
+
+
+
+</script>
+    {% endblock %}
+  <br/><br/>
+    {% block extra_data %}
+    
+        <table align="center" id="rounded-corner">
+        <caption><center>{% trans "Call Detail Report"  %}</center></caption>
+        <thead>
+            <tr>
+                <th class="rounded-company">{% trans "Date"  %}</th>
+                <th class="rounded-q1">{% trans "Duration"  %}</th>
+                <th class="rounded-q2">{% trans "Graphic"  %}</th>
+                <th class="rounded-q3">{% trans "Calls"  %}</th>
+                <th class="rounded-q4"><acronym title="{% trans "Average Connection Time"  %}">{% trans "ACT"  %}</acronym></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for td in total_data %}
+            <tr class="{% cycle 'row1' 'row2' %}">
+                <td>{{td.starting_date}}</td>
+                <td>{{td.sessiontime_real__sum|conv_min}}</td>
+                <td>{% if max_duration > 0 %}
+                    <img src="{{STATIC_URL}}newfies/images/spacer.png" width="{{td.sessiontime_real__sum|cal_width:max_duration}}" style="vertical-align:center;" height="10"/>
+                    {% endif %}
+                </td>
+                <td>{{ td.starting_date__count }}</td>
+                
+                <td>{{ td.sessiontime_real__avg|conv_min }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>{% trans "Total"  %}</td>
+                <td>{{total_duration|conv_min}}</td>
+                <td></td>
+                <td>{{total_calls}}</td>                
+                <td>{{total_avg_duration|conv_min}}</td>
+            </tr>
+        </tfoot>
+    </table>
+ 
+    <br/>
+    
+    <div align=center>
+        {% trans "Export CSV file"  %} <br/>
+        <a href="/export_voipcall_report/"><img src='{{STATIC_URL}}newfies/icons/x-office-spreadsheet.png' width="75"/></a>
+    </div>
+    {% endblock %}
+
+{% endblock %}

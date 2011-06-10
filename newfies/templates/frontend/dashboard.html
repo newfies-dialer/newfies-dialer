@@ -1,0 +1,89 @@
+{% extends "frontend/master.html" %}
+{% load dialer_cdr_extras icons %}
+{% load i18n %}
+
+{% block title %}
+{% trans 'Dashboard' %}
+{% endblock %}
+
+
+{% block content %}
+
+<table align="center" id="rounded-corner">
+        <thead>
+        <tr>
+            <th class="rounded-company">Running Campaign</th>
+            <th class="rounded-q1">Total Phonebook Contacts</th>
+            <th class="rounded-q2">Total Campaign Contacts</th>
+            <th class="rounded-q4">Today Reached Contact</th>
+        </tr>
+        </thead>
+        <tr>
+            <td class="rounded-foot-left">{{ running_campaign_count }}</td>
+            <td>{{ total_of_phonebook_contacts }}</td>
+            <td>{{ campaign_phonebbok_active_contact_count }}</td>
+            <td class="rounded-foot-right">{{ reached_contact }}</td>
+        </tr>
+
+</table>
+<br/><br/>
+<script id="source" language="javascript" type="text/javascript">
+$(function () {
+    var data = [{
+                    data: [
+                            {% for c in total_record %}
+                                [ {{ c.0 }}, {{ c.1 }} ],
+                            {% endfor %}
+                    ],
+                    label: 'Subscribers/Campaign'
+    }];
+
+    var options = {
+                    legend: {
+                                position: "se",
+                                margin: [-135, 230],
+                                labelFormatter: function(label){
+                                    return '<div class="graph_legend">'+label+'</div>';
+                                },
+                          },
+                    series: {
+                                bars: { show: true },
+                          },
+                    yaxis: {
+                                min: 0,
+                                tickDecimals: false
+                          },
+                    xaxis: {
+                                min: 0,
+                                max: 24,
+                                tickSize: 1,
+                                tickDecimals: false,
+                                tickFormatter:
+                                    function (x) {
+                                        if(x < 24)
+                                            return "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + x;
+                                        else
+                                            return "";
+                                    }
+                          },
+                    grid: {
+                                hoverable: true,
+                                xaxis: false
+                          },
+                    tooltip: {
+                                formatter: function(obj){
+                                    return '<div class="graph_tooltip_header">' + obj.label + '</div><div class="graph_tooltip_info">{% trans "Campaign" %}: ' + obj.x + '<br>{% trans "Reached Subscribers" %}: ' + obj.y + '</div>';
+                                }
+                          }
+                  };
+    var plot = $.plot($("#placeholder"), data, options);
+
+});
+</script>
+
+<center>
+    <div class="graph_header">{% trans "Campaign" %}</div>
+    <div id="placeholder" style="width:700px;height:300px"></div>
+</center>
+<br/><br/>
+{% endblock %}

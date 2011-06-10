@@ -1,0 +1,123 @@
+{% extends "frontend/master.html" %}
+{% load i18n %}
+{% load dialer_cdr_extras%}
+
+
+{% block extra_files %}
+{% endblock %}
+
+{% block content %}
+{% if msg %}
+<div class="success" id="rounded-corner-upper-table">        
+        <strong>{% trans "Alert" %} : </strong>  {{ msg }}
+</div>
+{% endif %}
+{% if error_msg %}
+<div class="error" id="rounded-corner-upper-table">
+        <span class="ui-icon ui-icon-alert" style="float: left; margin-right: 0.3em;"></span>
+        <strong>{% trans "Alert" %} : </strong>  {{ error_msg }}
+</div>
+{% endif %}
+<br/>
+<table id="rounded-corner">
+<caption><center>{% trans "Sample File" %}</center></caption>
+<thead>
+<tr>
+    <th class="rounded-company">{% trans "contact" %}</th>
+    <th class="rounded-q1">{% trans "last name" %}</th>
+    <th class="rounded-q2">{% trans "first name" %}</th>
+    <th class="rounded-q3">{% trans "email-id" %}</th>
+    <th class="rounded-q3">{% trans "description" %}</th>
+    <th class="rounded-q3">{% trans "status" %}</th>
+    <th class="rounded-q4">{% trans "additional_vars" %}</th>
+</tr>
+</thead>
+<tr>
+    <td>1234</td>
+    <td>Belaid</td>
+    <td>Arezqui</td>
+    <td>areski@gmail.com</td>
+    <td>test subscriber</td>
+    <td>1</td>
+    <td>test</td>
+</tr>
+<tr>
+    <td>5678</td>
+    <td>Fourth</td>
+    <td>John</td>
+    <td>john@gmail.com</td>
+    <td>test subscriber</td>
+    <td>0</td>
+    <td>test</td>
+</tr>
+</table>
+<br/>
+<center>SUBSCRIBER STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')</center>
+<br/>
+<br/>
+<form method="post" action="" enctype="multipart/form-data" >
+{% csrf_token %}
+<table border=1 align=center>
+{{ form.as_table }}
+<tr>
+    <td colspan=2 align=right>
+    <input type="submit" class="l-1" name="submit" value="{% trans "Submit" %}" />&nbsp;
+    <input type="reset" name="reset" class="j-2" value="{% trans "Reset" %}" />
+    </td>
+</tr>
+</table>
+</form>
+
+
+
+{% if success_import_list %}
+<table border=1 align=center>
+    <tr>
+        <th>{% trans "Subscriber(s) Successfully Imported" %} :</th>
+    </tr>
+{% for row in success_import_list %}
+    <tr class="{% cycle 'row1' 'row2' %}">
+        <td>
+            {{ row }}
+        </td>
+    </tr>
+{% endfor %}
+</table>
+{% endif %}
+
+
+{% if error_import_list %}
+<br>
+<table border=1 align=center>
+    <tr>
+        <th>{% trans "Subscriber(s) not Imported" %} :</th>
+    </tr>
+{% for row in error_import_list %}
+    <tr class="{% cycle 'row1' 'row2' %}">
+        <td>
+            {{ row }}
+        </td>
+    </tr>
+{% endfor %}
+</table>
+{% endif %}
+
+{% if type_error_import_list %}
+<br>
+<table border=1 align=center>
+    <tr>
+        <th>{% trans "Type Miss-match" %} :</th>
+    </tr>
+{% for row in type_error_import_list %}
+    <tr class="{% cycle 'row1' 'row2' %}">
+        <td>
+            {{ row }}
+        </td>
+    </tr>
+{% endfor %}
+</table>
+{% endif %}
+
+
+
+{% endblock %}

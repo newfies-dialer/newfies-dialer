@@ -1,0 +1,35 @@
+{% extends "frontend/master.html" %}
+{% load dialer_cdr_extras i18n icons %}
+
+{% block title %}
+{% trans 'Notice' %}
+{% endblock %}
+
+
+{% block content %}
+
+        <table id="rounded-corner" style="width:500px;">
+        <thead>
+        <tr>            
+            <th class="rounded-company">Message</th>
+            <th class="rounded-q1">Notice Type</th>
+            <th class="rounded-q3">Sender</th>
+            <th class="rounded-q4">Date of the Notice</th>
+        </tr>
+        </thead>
+		{% if notice %}
+           
+            <tr>               
+                <td>{{ notice.message }}</td>
+                <td>{{ notice.notice_type }}</td>
+                <td>{{ notice.sender }}</td>
+                <td>{{ notice.added|timesince }}</td>
+            </tr>
+            
+        {% else %}
+            <tr><td colspan=4 align=center>No Record(s) found.</td></tr>
+        {% endif %}
+       </table>
+
+
+{% endblock %}

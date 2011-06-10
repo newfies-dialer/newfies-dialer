@@ -1,0 +1,85 @@
+{% extends "frontend/master.html" %}
+{% load dialer_cdr_extras icons %}
+{% load i18n %}
+{% load pagination_tags %}
+
+{% block title %}
+{{ block.super }}
+{% trans "Campaign" %}
+{% endblock %}
+
+{% block extra_files %}
+<script type="text/javascript" src="{{STATIC_URL}}newfies/js/custom.jquery.select.all.js"></script>
+
+<!--flexigrid css & js-->
+<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid.css" type="text/css" />
+<script type="text/javascript" src="{{STATIC_URL}}newfies/js/flexigrid.js"></script>
+<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid_custom.css" type="text/css" />
+{% endblock %}
+
+{% block content %}
+{% if msg %}
+<div class="success" id="rounded-corner-upper-table">        
+        <strong>{% trans "Alert" %} : </strong>  {{ msg }}
+</div>
+{% endif %}
+
+<br/>
+<form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">
+{% csrf_token %}
+<table id="flex1" align="left" style="display:none;"></table>
+</form>
+<script type="text/javascript">
+
+
+$("#flex1").flexigrid({
+    url: "/campaign_grid/",
+    method: 'GET',
+    dataType: 'json',
+	colModel : [
+        {display: '<input type="checkbox" onclick="toggleChecked(this.checked)">', name: '', width: 40, align: 'center'},
+		{display: 'Id', name: 'id', width: 40, sortable: true, align: 'center'},
+        {display: 'Name', name: 'name', width: 120, sortable: true, align: 'center'},
+        {display: 'Start date', name: 'startingdate', width: 100, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
+        {display: 'End date', name: 'expirationdate', width: 100, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
+        {display: 'Aleg-gateway', name: 'aleg_gateway', width: 100, sortable: true, align: 'center'},
+        {display: 'Answer url', name: 'answer_url', width: 100, sortable: true, align: 'center'},
+        {display: 'Contacts', name: '', width: 40, sortable: true, align: 'center'},
+        {display: 'Action', name: '', width : 100, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
+		],
+    buttons : [
+		{name: 'Add', bclass: 'add', onpress : add_button},
+        {separator: true},
+        {name: 'Delete Selected', bclass: 'delete', onpress : delete_button},
+		],
+    sortname: "id",
+	sortorder: "asc",
+	usepager: true,
+	title: 'Campaigns',
+	useRp: true,
+	rp: 10,
+	showTableToggleBtn: true,
+	width: 850,
+	height: 265,
+    //preProcess: formatContactResults,
+    onSuccess: function(data){
+        //alert(data);
+        //alert("Request not failed");
+    },
+    onError: function(){
+        alert("Request failed");
+    },
+});
+
+
+function add_button()
+{
+    window.location = 'add/';
+}
+function delete_button()
+{
+    $('#ListForm').submit();
+}
+
+</script>
+{% endblock %}

@@ -1,0 +1,30 @@
+[
+   {
+      "pk":1,
+      "model":"dialer_cdr.callrequest",
+      "fields":{
+         "calltype":1,
+         "campaign":null,
+         "exten":"1231321",
+         "result":"",
+         "parent_callrequest":null,
+         "voipapp_data":"",
+         "subscriber":null,
+         "application":"",
+         "callback_time":"2011-05-01 11:22:33",
+         "updated_date":"2011-04-11 02:41:56",
+         "timeout":"30000",
+         "num_attempt":0,
+         "created_date":"2011-04-08 07:26:54",
+         "aleg_gateway":null,
+         "uniqueid":"2342jtdsf-00123",
+         "variable":"",
+         "voipapp":null,
+         "account":"",
+         "callerid":"650784355",
+         "status":2,
+         "context":"mycontext",
+         "last_attempt_time":null
+      }
+   }
+]

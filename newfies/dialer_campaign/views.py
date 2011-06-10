@@ -675,7 +675,8 @@ def contact_grid(request):
                       '<a href="' + str(row['id']) + '/" class="icon" ' \
                       + update_style + ' title="Update contact">&nbsp;</a>' +
                       '<a href="del/' + str(row['id']) + '/" class="icon" ' \
-                      + delete_style + ' title="Delete contact">&nbsp;</a>'
+                      + delete_style + ' onClick="return get_alert_msg(' +
+                      str(row['id']) + ');" title="Delete contact">&nbsp;</a>'
              ]}for row in contact_list]
 
 
@@ -1083,9 +1084,10 @@ def campaign_grid(request):
                       row['answer_url'],
                       count_contact_of_campaign(row['id']),
                       str('<a href="' + str(row['id']) + '/" class="icon" ' \
-                      + update_style + ' title="Update phonebook">&nbsp;</a>' +
+                      + update_style + ' title="Update campaign">&nbsp;</a>' +
                       '<a href="del/' + str(row['id']) + '/" class="icon" ' \
-                      + delete_style + ' title="Delete phonebook">&nbsp;</a>'+
+                      + delete_style + ' onClick="return get_alert_msg(' +
+                      str(row['id']) + ');" title="Delete campaign">&nbsp;</a>'+
                       get_url_campaign_status(row['id'], row['status'])),
              ]}for row in campaign_list]
 

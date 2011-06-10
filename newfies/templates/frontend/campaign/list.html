@@ -15,6 +15,14 @@
 <link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid.css" type="text/css" />
 <script type="text/javascript" src="{{STATIC_URL}}newfies/js/flexigrid.js"></script>
 <link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid_custom.css" type="text/css" />
+<script type="text/javascript" language="javascript">
+function get_alert_msg(id)
+{
+    confirm_string = 'you are going to delete campaign';
+    var answer = confirm(confirm_string);
+    return answer // answer is a boolean
+}
+</script>
 {% endblock %}
 
 {% block content %}

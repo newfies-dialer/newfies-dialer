@@ -286,6 +286,9 @@ def common_send_notification(request, status, recipient=None):
 
     **Logic Description**:
 
+        * This function is used by update_campaign_status_admin() &
+          update_campaign_status_cust()
+
     """
     if not recipient:
         recipient = request.user
@@ -315,6 +318,9 @@ def common_campaign_status(pk, status):
 
         * Selected Campaign's status need to be changed.
           Changed status can be start or stop or pause.
+
+        * This function is used by update_campaign_status_admin() &
+          update_campaign_status_cust()
     """
     campaign = Campaign.objects.get(pk=pk)
     previous_status = campaign.status

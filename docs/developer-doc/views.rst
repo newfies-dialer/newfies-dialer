@@ -19,13 +19,44 @@ Newfies Views
 
   .. autofunction:: login_view
 
+.. _cust_password_reset:
 
-.. _update_campaign_status:
+:class:`views.cust_password_reset`
+----------------------------------
 
-:class:`views.update_campaign_status`
+  .. autofunction:: cust_password_reset
+
+
+.. _cust_password_reset_done:
+
+:class:`views.cust_password_reset_done`
+---------------------------------------
+
+  .. autofunction:: cust_password_reset_done
+
+
+.. _cust_password_reset_confirm:
+
+:class:`views.cust_password_reset_confirm`
+------------------------------------------
+
+  .. autofunction:: cust_password_reset_confirm
+
+
+.. _common_send_notification:
+
+:class:`views.common_send_notification`
+---------------------------------------
+
+  .. autofunction:: common_send_notification
+
+
+.. _common_campaign_status:
+
+:class:`views.common_campaign_status`
 -------------------------------------
 
-  .. autofunction:: update_campaign_status
+  .. autofunction:: common_campaign_status
 
 
 .. _phonebook_list:
@@ -34,6 +65,15 @@ Newfies Views
 -----------------------------
 
   .. autofunction:: phonebook_list
+
+
+.. _phonebook_grid:
+
+:class:`views.phonebook_grid`
+-----------------------------
+
+  .. autofunction:: phonebook_grid
+
 
 .. _phonebook_add:
 
@@ -57,6 +97,15 @@ Newfies Views
 ---------------------------
 
   .. autofunction:: contact_list
+
+
+.. _contact_grid:
+
+:class:`views.contact_grid`
+---------------------------
+
+  .. autofunction:: contact_grid
+
 
 .. _contact_add:
 
@@ -88,6 +137,14 @@ Newfies Views
 ----------------------------
 
   .. autofunction:: campaign_list
+
+
+.. _campaign_grid:
+
+:class:`views.campaign_grid`
+----------------------------
+
+  .. autofunction:: campaign_grid
 
 
 .. _campaign_add:

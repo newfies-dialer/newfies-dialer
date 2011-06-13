@@ -142,7 +142,9 @@ def initcall_subscriber(subscriber_id, campaign_id):
 
     #Send Call to API
     #http://ask.github.com/celery/userguide/remote-tasks.html
-    res = HttpDispatchTask.delay(url="http://127.0.0.1:8000/api/dialer_cdr/dummyinitcall/", method="POST", x=10, y=10)
+    res = HttpDispatchTask.delay(
+          url="http://127.0.0.1:8000/api/dialer_cdr/dummyinitcall/",
+          method="POST", x=10, y=10)
     res.get()
 
     #lock to limit running process, do so per campaign
@@ -193,8 +195,6 @@ def excecute_campaign_outboundcall(campaign_id):
         """Loop on Subscriber and start the initcall task"""
         dialout_subscriber.delay(elem_subscriber.id, campaign_id)
         sleep(time_to_wait)
-
-
 
 
 class campaign_running(PeriodicTask):

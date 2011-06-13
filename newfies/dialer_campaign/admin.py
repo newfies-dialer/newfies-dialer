@@ -59,8 +59,8 @@ class CampaignAdmin(admin.ModelAdmin):
               linked with it & if it is matched, user will be redirected to
               campaign list
         """
-        # Check dialer setting limit        
-        # check Max Number of running campaign        
+        # Check dialer setting limit
+        # check Max Number of running campaign
         if check_dialer_setting(request, check_for="campaign"):
             msg = _("you have too many campaign. Max allowed\
             %s" % dialer_setting_limit(request, limit_for="campaign"))

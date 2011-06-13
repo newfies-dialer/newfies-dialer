@@ -10,6 +10,7 @@ from common_functions import *
 import time
 #TODO make sure we get int for ID settings
 
+
 def get_attribute(attrs, attr_name):
     """this is a helper to retrieve an attribute if it exists"""
     if attr_name in attrs:
@@ -18,16 +19,19 @@ def get_attribute(attrs, attr_name):
         attr_value = None
     return attr_value
 
+
 def save_if_set(record, fproperty, value):
     """function to save a property if it has been set"""
     if value:
         record.__dict__[fproperty] = value
+
 
 def get_value_if_none(x, value):
     """return value if x is None"""
     if x is None:
         return value
     return x
+
 
 class campaignHandler(BaseHandler):
     """This API server as Campaign management, it provides basic function
@@ -413,7 +417,7 @@ class campaignHandler(BaseHandler):
                 "voipapp": {
                     "gateway_id": 1,
                     "updated_date": "2011-05-06 05:06:53",
-                    "description": "",                    
+                    "description": "",
                     "created_date": "2011-04-08 08:00:09",
                     "type": 1,
                     "id": 1,
@@ -441,7 +445,7 @@ class campaignHandler(BaseHandler):
                     "description": "This is default gateway",
                     "failover_id": null,
                     "count_call": null,
-                    "hostname": "localhost",                    
+                    "hostname": "localhost",
                     "maximum_call": null,
                     "count_in_use": null,
                     "removeprefix": "",
@@ -460,7 +464,7 @@ class campaignHandler(BaseHandler):
             * Campaign not found.
         """
         attrs = self.flatten_dict(request.POST)
-        
+
         #Retrieve Post settings
         status = get_attribute(attrs, 'status')
         startingdate = get_attribute(attrs, 'startingdate')
@@ -501,7 +505,7 @@ class campaignHandler(BaseHandler):
         friday = get_value_if_none(friday, 1)
         saturday = get_value_if_none(saturday, 1)
         sunday = get_value_if_none(sunday, 1)
-        
+
         try:
             campaign = Campaign.objects.get(id=campaign_id)
             save_if_set(campaign, 'status', status)
@@ -808,7 +812,7 @@ class contactHandler(BaseHandler):
             * ``campaign_id`` - Campaign ID
             * ``contact`` - contact number of the subscriber
 
-        **CURL Usage**::            
+        **CURL Usage**::
 
             curl -u username:password -i -H "Accept: application/json" -X GET http://127.0.0.1:8000/api/dialer_campaign/contact/%campaign_id%/
 
@@ -1031,7 +1035,7 @@ class bulkcontactHandler(BaseHandler):
 class campaignDeleteCascadeHandler(BaseHandler):
     """This API server as Campaign Delete, it provides basic function
     to delete campaigns."""
-    allowed_methods = ('DELETE')    
+    allowed_methods = ('DELETE')
 
     @classmethod
     def content_length(cls, campaign):
@@ -1074,7 +1078,7 @@ class campaignDeleteCascadeHandler(BaseHandler):
                 del_campaign.delete()
                 resp = rc.DELETED
                 resp.write(" Campaign is deleted !")
-            else: # phonebook_count > 0                
+            else: # phonebook_count > 0
                 other_campaing_count = \
                 Campaign.objects.filter(user=request.user,
                          phonebook__in=del_campaign.phonebook.all())\

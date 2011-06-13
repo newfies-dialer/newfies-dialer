@@ -9,11 +9,11 @@ from datetime import *
 
 
 class SearchForm(forms.Form):
-    """General Search Form with From & To date para."""    
+    """General Search Form with From & To date para."""
     from_date = CharField(label=_('From'), required=False, max_length=10,
     help_text=_("Please use the following format") + ": <em>YYYY-MM-DD</em>.")
     to_date = CharField(label=_('To'), required=False, max_length=10,
-    help_text=_("Please use the following format")+": <em>YYYY-MM-DD</em>.")
+    help_text=_("Please use the following format") + ": <em>YYYY-MM-DD</em>.")
 
 
 class FileImport(forms.Form):
@@ -102,7 +102,7 @@ class CampaignForm(ModelForm):
         }
 
 
-NAME_TYPE = (    
+NAME_TYPE = (
     (1, _('Last Name')),
     (2, _('First Name')),
 )

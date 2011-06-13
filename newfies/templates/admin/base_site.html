@@ -2,7 +2,25 @@
 {% load i18n admin_tools_menu_tags %}
 
 {% block title %}{% trans 'Newfies Admin' %}{% endblock %}
-{% block extrahead %}<link rel="icon" type="image/png" href="{{STATIC_URL}}newfies/images/favicon.png">{% endblock %}
+{% block extrahead %}
+<link rel="icon" type="image/png" href="{{STATIC_URL}}newfies/images/favicon.png">
+<style>
+
+#header #bookmark-button {
+right:280px;!important;
+}
+#header  {
+color:#555555;
+}
+#header a:link, #header a:visited {
+color:#555555;
+}
+a:link, a:visited {
+color:#5B80B2;
+text-decoration:none;
+}
+</style>
+{% endblock %}
 
 {% block extrastyle %}
 {{ block.super }}

@@ -10,7 +10,7 @@ class DialerSetting(models.Model):
 
         * ``name`` - Setting name.
         * ``max_frequency`` - Max frequency, speed of the campaign.
-                              This is the number of calls per minute.
+        This is the number of calls per minute.
         * ``callmaxduration`` - Max retry allowed
         * ``maxretry`` - Max retry allowed per user
         * ``max_calltimeout`` - Maximum amount of second to timeout on calls

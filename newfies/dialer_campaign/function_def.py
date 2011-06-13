@@ -16,7 +16,7 @@ def nl2br(s):
 def get_news():
 
     news_final = []
-    try :
+    try:
         news_handler = urllib.urlopen('http://www.newfies-dialer.org/news.php')
         news = news_handler.read()
         news = nl2br(news)
@@ -26,15 +26,15 @@ def get_news():
         value = {}
         for newsweb in news:
             value = string.split(newsweb, '|')
-            if len(value[0]) > 1 :
-                news_array[value[0]]=value[1]
+            if len(value[0]) > 1:
+                news_array[value[0]] = value[1]
 
         info = {}
         for k in news_array:
             link = k[int(k.find("http://")-1):len(k)]
             info = k[0:int(k.find("http://")-1)]
             info = string.split(k, ' - ')
-            news_final.append((info[0],info[1],news_array[k]))
+            news_final.append((info[0], info[1], news_array[k]))
 
         news_handler.close()
     except IndexError:
@@ -214,7 +214,7 @@ def contact_search_common_fun(request):
     if status != '2':
         kwargs['status'] = status
 
-    contact_no =type_field_chk(contact_no, contact_no_type, 'contact')
+    contact_no = type_field_chk(contact_no, contact_no_type, 'contact')
     for i in contact_no:
         kwargs[i] = contact_no[i]
 

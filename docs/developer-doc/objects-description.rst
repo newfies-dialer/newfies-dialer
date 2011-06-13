@@ -97,17 +97,6 @@ Objects Description
     :members:
 
 
-.. automodule:: voip_app.models
-
-.. _VoipApp-model:
-
-:class:`VoipApp`
-----------------
-
-.. autoclass:: VoipApp
-    :members:
-
-
 .. automodule:: voip_server.models
 
 .. _VoipServerGroup-model:

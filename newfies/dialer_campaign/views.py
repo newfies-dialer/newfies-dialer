@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.views import password_reset, password_reset_done,\
 password_reset_confirm, password_reset_complete
-from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.db.models import *
 from django.core.urlresolvers import reverse
@@ -19,13 +19,10 @@ from dialer_campaign.forms import *
 from dialer_campaign.function_def import *
 from inspect import stack, getmodule
 from datetime import *
-import operator
+from dialer_campaign.tasks import collect_subscriber
 import urllib
-import string
 import csv
 import ast
-import os
-from dialer_campaign.tasks import collect_subscriber
 
 
 def current_view(request):
@@ -83,7 +80,7 @@ def customer_dashboard(request, on_index=None):
                 updated_date__range=(start_date, end_date)).count()
 
         total_record.append((i.id, int(campaign_subscriber)))
-        reached_contact += campaign_subscriber    
+        reached_contact += campaign_subscriber
 
 
     template = 'frontend/dashboard.html'
@@ -94,7 +91,7 @@ def customer_dashboard(request, on_index=None):
         'campaign_phonebbok_active_contact_count': \
         campaign_phonebbok_active_contact_count,
         'reached_contact': reached_contact,
-        'total_record':sorted(total_record, key=lambda total: total[0]),
+        'total_record': sorted(total_record, key=lambda total: total[0]),
         'notice_count': notice_count(request),
     }
     if on_index == 'yes':
@@ -135,8 +132,8 @@ def login_view(request):
                 user = authenticate(username=cd['user'],
                                     password=cd['password'])
                 if user is not None:
-                    if user.is_active:                        
-                        login(request, user)                        
+                    if user.is_active:
+                        login(request, user)
                         # Redirect to a success page (dashboard).
                         return \
                         HttpResponseRedirect('/dashboard/')
@@ -157,7 +154,7 @@ def login_view(request):
         'loginform': loginform,
         'errorlogin': errorlogin,
         'is_authenticated': request.user.is_authenticated(),
-        'news' : get_news(),
+        'news': get_news(),
     }
 
     return render_to_response(template, data,
@@ -165,12 +162,13 @@ def login_view(request):
 
 
 def notice_count(request):
+    """Get count of logged in user's notifications"""
     try:
         notice_count = \
         notification.Notice.objects.filter(recipient=request.user,
                                            unseen=1).count()
     except:
-        notice_count = ''    
+        notice_count = ''
     return notice_count
 
 
@@ -184,13 +182,13 @@ def index(request):
     """
     template = 'frontend/index.html'
     errorlogin = ''
-    loginform = LoginForm()    
+    loginform = LoginForm()
     data = {'module': current_view(request),
             'user': request.user,
             'notice_count': notice_count(request),
             'loginform': loginform,
             'errorlogin': errorlogin,
-            'news' : get_news(),
+            'news': get_news(),
     }
 
     return render_to_response(template, data,
@@ -202,12 +200,12 @@ def pleaselog(request):
     loginform = LoginForm()
 
     data = {
-        'loginform' : loginform,
-        'notlogged' : True,
-        'news' : get_news(),
+        'loginform': loginform,
+        'notlogged': True,
+        'news': get_news(),
     }
     return render_to_response(template, data,
-           context_instance = RequestContext(request))
+           context_instance=RequestContext(request))
 
 
 def logout_view(request):
@@ -226,8 +224,7 @@ def cust_password_reset(request):
     if not request.user.is_authenticated():
         return password_reset(request,
         template_name='frontend/registration/password_reset_form.html',
-        email_template_name=\
-        'frontend/registration/password_reset_email.html',
+        email_template_name='frontend/registration/password_reset_email.html',
         post_reset_redirect='/password_reset/done/',
         from_email='newfies_admin@localhost.com')
     else:
@@ -252,14 +249,13 @@ def cust_password_reset_done(request):
 def cust_password_reset_confirm(request, uidb36=None, token=None):
     """Used django.contrib.auth.views.password_reset_confirm view method for
     forgotten password on Customer UI
-    
+
     This will allow user to reset his/her password for the system
     """
 
     if not request.user.is_authenticated():
         return password_reset_confirm(request, uidb36=uidb36, token=token,
-        template_name=\
-        'frontend/registration/password_reset_confirm.html',
+        template_name='frontend/registration/password_reset_confirm.html',
         post_reset_redirect='/reset/done/')
     else:
         return HttpResponseRedirect("/")
@@ -272,11 +268,9 @@ def cust_password_reset_complete(request):
     This will show acknowledge message to user after successfully resetting
     his/her password for the system.
     """
-
     if not request.user.is_authenticated():
         return password_reset_complete(request,
-        template_name=\
-        'frontend/registration/password_reset_complete.html')
+        template_name='frontend/registration/password_reset_complete.html')
     else:
         return HttpResponseRedirect("/")
 
@@ -292,7 +286,10 @@ def common_send_notification(request, status, recipient=None):
 
     **Logic Description**:
 
-    """    
+        * This function is used by update_campaign_status_admin() &
+          update_campaign_status_cust()
+
+    """
     if not recipient:
         recipient = request.user
         sender = User.objects.get(is_superuser=1)
@@ -300,7 +297,7 @@ def common_send_notification(request, status, recipient=None):
         sender = request.user
 
     if notification:
-        note_label = notification.NoticeType.objects.get(default=status)        
+        note_label = notification.NoticeType.objects.get(default=status)
         notification.send([recipient],
                           note_label.label,
                           {"from_user": request.user},
@@ -321,6 +318,9 @@ def common_campaign_status(pk, status):
 
         * Selected Campaign's status need to be changed.
           Changed status can be start or stop or pause.
+
+        * This function is used by update_campaign_status_admin() &
+          update_campaign_status_cust()
     """
     campaign = Campaign.objects.get(pk=pk)
     previous_status = campaign.status
@@ -394,7 +394,7 @@ def phonebook_grid(request):
                     settings.STATIC_URL + 'newfies/icons/delete.png);"'
 
     rows = [{'id': row['id'],
-             'cell':  ['<input type="checkbox" name="select" class="checkbox"\
+             'cell': ['<input type="checkbox" name="select" class="checkbox"\
                       value="' + str(row['id']) + '" />',
                       row['id'],
                       row['name'],
@@ -405,8 +405,9 @@ def phonebook_grid(request):
                       + update_style + ' title="Update phonebook">&nbsp;</a>' +
                       '<a href="del/' + str(row['id']) + '/" class="icon" ' \
                       + delete_style + ' onClick="return get_alert_msg(' +
-                      str(row['id']) + ');"  title="Delete phonebook">&nbsp;</a>'
-             ]}for row in phonebook_list]
+                      str(row['id']) +
+                      ');"  title="Delete phonebook">&nbsp;</a>']}\
+                      for row in phonebook_list]
 
     data = {'rows': rows,
             'page': page,
@@ -508,18 +509,18 @@ def phonebook_del(request, object_id):
         phonebook = Phonebook.objects.get(pk=object_id)
         if object_id:
             # 1) delete all contacts which are belong to phonebook
-            contact_list = Contact.objects.filter(phonebook=object_id)            
+            contact_list = Contact.objects.filter(phonebook=object_id)
             contact_list.delete()
 
             # 2) delete phonebook
             request.session["msg"] = _('"%s" is deleted successfully.' \
                                         % phonebook.name)
-            phonebook.delete()            
+            phonebook.delete()
             return HttpResponseRedirect('/phonebook/')
     except:
         # When object_id is 0 (Multiple recrod delete)
         values = request.POST.getlist('select')
-        values  = ", ".join(["%s" % el for el in values])
+        values = ", ".join(["%s" % el for el in values])
 
         # 1) delete all contacts which are belong to phonebook
         contact_list = Contact.objects.extra(where=['phonebook_id IN (%s)'\
@@ -657,7 +658,7 @@ def contact_grid(request):
                  Q(first_name__icontains=name))
             if q:
                 contact_list = contact_list.filter(q)
-    
+
     count = contact_list.count()
     contact_list = \
         contact_list.order_by(sortorder_sign + sortname)[start_page:end_page]
@@ -668,7 +669,7 @@ def contact_grid(request):
                     settings.STATIC_URL + 'newfies/icons/delete.png);"'
 
     rows = [{'id': row['id'],
-             'cell':  ['<input type="checkbox" name="select" class="checkbox"\
+             'cell': ['<input type="checkbox" name="select" class="checkbox"\
                       value="' + str(row['id']) + '" />',
                       row['id'], row['phonebook__name'], row['contact'],
                       row['last_name'], row['first_name'], row['status'],
@@ -677,8 +678,9 @@ def contact_grid(request):
                       + update_style + ' title="Update contact">&nbsp;</a>' +
                       '<a href="del/' + str(row['id']) + '/" class="icon" ' \
                       + delete_style + ' onClick="return get_alert_msg(' +
-                      str(row['id']) + ');" title="Delete contact">&nbsp;</a>'
-             ]}for row in contact_list]
+                      str(row['id']) +
+                      ');" title="Delete contact">&nbsp;</a>']}\
+                      for row in contact_list]
 
 
     data = {'rows': rows,
@@ -687,7 +689,7 @@ def contact_grid(request):
     #print data
     return HttpResponse(simplejson.dumps(data), mimetype='application/json',
                         content_type="application/json")
-    
+
 
 # Subscriber
 @login_required
@@ -703,7 +705,7 @@ def contact_list(request):
         * List all contacts from phonebooks which are belong to logged in user
     """
     form = ContactSearchForm(request.user)
-    kwargs = {}    
+    kwargs = {}
     name = ''
     if request.method == 'POST':
         form = ContactSearchForm(request.user, request.POST)
@@ -801,7 +803,7 @@ def contact_del(request, object_id):
     except:
         # When object_id is 0 (Multiple recrod delete)
         values = request.POST.getlist('select')
-        values  = ", ".join(["%s" % el for el in values])
+        values = ", ".join(["%s" % el for el in values])
         contact_list = Contact.objects.extra(where=['id IN (%s)' % values])
         request.session["msg"] =\
         _('%d contact(s) are deleted successfully.' % contact_list.count())
@@ -912,11 +914,11 @@ def contact_import(request):
 
             rdr = csv.reader(request.FILES['csv_file'],
                              delimiter=',', quotechar='"')
-            contact_record_count = 0            
+            contact_record_count = 0
             # Read each Row
             for row in rdr:
                 row = striplist(row)
-                
+
                 if (row and str(row[0]) > 0):
                     try:
                         # check field type
@@ -953,7 +955,7 @@ def contact_import(request):
                     except:
                         error_msg = _("Invalid value for import! \
                                Please look at the import samples.")
-                        type_error_import_list.append(row)                
+                        type_error_import_list.append(row)
 
     data = RequestContext(request, {
     'form': form,
@@ -1002,7 +1004,7 @@ def get_url_campaign_status(id, status):
     control_stop_blue_style = \
     'style="text-decoration:none;background-image:url(' + settings.STATIC_URL \
     + 'newfies/icons/control_stop_blue.png);"'
-    
+
     if status == 1:
         url_str = str("<a href='#' class='icon' title='campaign is running' " +
                   control_play_style + ">&nbsp;</a>\
@@ -1019,7 +1021,7 @@ def get_url_campaign_status(id, status):
                       ">&nbsp;</a><a href='#' class='icon' \
                       title='campaign is paused' " + control_pause_style +
                       ">&nbsp;</a>" +
-                      "<a href='update_campaign_status_cust/"+ str(id) +
+                      "<a href='update_campaign_status_cust/" + str(id) +
                       "/4/' class='icon' title='Stop' " +
                       control_stop_blue_style +
                       ">&nbsp;</a>")
@@ -1056,7 +1058,7 @@ def campaign_grid(request):
     else:
         start_page = int(0)
         end_page = int(rp)
-    
+
 
     #campaign_list = []
     sortorder_sign = ''
@@ -1077,7 +1079,7 @@ def campaign_grid(request):
                     settings.STATIC_URL + 'newfies/icons/delete.png);"'
 
     rows = [{'id': row['id'],
-             'cell':  ['<input type="checkbox" name="select" class="checkbox"\
+             'cell': ['<input type="checkbox" name="select" class="checkbox"\
                       value="' + str(row['id']) + '" />',
                       row['id'],
                       row['name'],
@@ -1090,9 +1092,10 @@ def campaign_grid(request):
                       + update_style + ' title="Update campaign">&nbsp;</a>' +
                       '<a href="del/' + str(row['id']) + '/" class="icon" ' \
                       + delete_style + ' onClick="return get_alert_msg(' +
-                      str(row['id']) + ');" title="Delete campaign">&nbsp;</a>'+
+                      str(row['id'])
+                      + ');" title="Delete campaign">&nbsp;</a>' +
                       get_url_campaign_status(row['id'], row['status'])),
-             ]}for row in campaign_list]
+             ]}for row in campaign_list ]
 
     data = {'rows': rows,
             'page': page,
@@ -1114,11 +1117,11 @@ def campaign_list(request):
 
         * List all campaign which are belong to logged in user
     """
-    campaign_list = Campaign.objects.filter(user=request.user)
+    #campaign_list = Campaign.objects.filter(user=request.user)
     template = 'frontend/campaign/list.html'
     data = {
         'module': current_view(request),
-        'campaign_list': campaign_list,
+        #'campaign_list': campaign_list,
         'msg': request.session.get('msg'),
         'notice_count': notice_count(request),
     }
@@ -1203,13 +1206,13 @@ def campaign_del(request, object_id):
     except:
         # When object_id is 0 (Multiple recrod delete)
         values = request.POST.getlist('select')
-        values  = ", ".join(["%s" % el for el in values])
+        values = ", ".join(["%s" % el for el in values])
         campaign_list = Campaign.objects.extra(where=['id IN (%s)' % values])
         request.session["msg"] = _('%d campaign(s) are deleted successfully.'\
         % campaign_list.count())
         campaign_list.delete()
         return HttpResponseRedirect('/campaign/')
-    
+
 
 @login_required
 def campaign_change(request, object_id):

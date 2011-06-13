@@ -9,7 +9,7 @@ urlpatterns = patterns('',
     (r'^login/$', 'dialer_campaign.views.login_view'),
     (r'^logout/$', 'dialer_campaign.views.logout_view'),
     (r'^index/$', 'dialer_campaign.views.index'),
-    (r'^pleaselog/$',   'dialer_campaign.views.pleaselog'),
+    (r'^pleaselog/$', 'dialer_campaign.views.pleaselog'),
     (r'^dashboard/$', 'dialer_campaign.views.customer_dashboard'),
 
     # Password reset for Customer UI
@@ -49,5 +49,5 @@ urlpatterns = patterns('',
 
     # Campaign Actions (start/stop/pause) for Admin UI
     (r'^update_campaign_status_admin/(\d*)/(\d*)/$',
-                    'dialer_campaign.views.update_campaign_status_admin'),   
+                    'dialer_campaign.views.update_campaign_status_admin'),
 )

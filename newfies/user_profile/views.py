@@ -65,7 +65,7 @@ def customer_detail_change(request):
                 msg_pass = _('Your password has been changed successfully.')
             else:
                 error_pass = _('Please correct the errors below.')
-    
+
     template = 'frontend/registration/user_detail_change.html'
     data = {
         'module': current_view(request),
@@ -78,7 +78,7 @@ def customer_detail_change(request):
         'error_detail': error_detail,
         'error_pass': error_pass,
         'notice_count': notice_count(request),
-    }    
+    }
     return render_to_response(template, data,
            context_instance=RequestContext(request))
 
@@ -87,8 +87,8 @@ def customer_detail_change(request):
 def view_notification(request, id):
     """Notice view in detail on Customer UI
 
-    **Attributes**:
-       
+    **Attributes**
+
         * ``template`` - 'frontend/registration/user_notice.html'
 
     **Logic Description**:

@@ -82,17 +82,6 @@ Newfies Admin Views
     :members:
 
 
-.. automodule:: voip_app.admin
-
-.. _VoipAppAdmin:
-
-:class:`VoipAppAdmin`
----------------------
-
-.. autoclass:: VoipAppAdmin
-    :members:
-
-
 .. automodule:: voip_server.admin
 
 .. _VoipServerGroupAdmin:

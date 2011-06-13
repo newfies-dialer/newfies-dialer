@@ -915,10 +915,12 @@ def contact_import(request):
             contact_record_count = 0            
             # Read each Row
             for row in rdr:
-                if (row and str(row[0].strip("\t")) > 0):
+                row = striplist(row)
+                
+                if (row and str(row[0]) > 0):
                     try:
                         # check field type
-                        int(row[5].strip("\t"))
+                        int(row[5])
 
                         phonebook = \
                         Phonebook.objects.get(pk=request.POST['phonebook'])
@@ -927,20 +929,20 @@ def contact_import(request):
                             # exist with retail plan or not
                             contact = Contact.objects.get(
                                  phonebook_id=phonebook.id,
-                                 contact=row[0].strip("\t"))
+                                 contact=row[0])
                             error_msg = _('Subscriber is already exist !!')
                             error_import_list.append(row)
                         except:
                             # if not, insert record
                             Contact.objects.create(
                                   phonebook=phonebook,
-                                  contact=row[0].strip("\t"),
-                                  last_name=row[1].strip("\t"),
-                                  first_name=row[2].strip("\t"),
-                                  email=row[3].strip("\t"),
-                                  description=row[4].strip("\t"),
-                                  status=int(row[5].strip("\t")),
-                                  additional_vars=row[6].strip("\t"))
+                                  contact=row[0],
+                                  last_name=row[1],
+                                  first_name=row[2],
+                                  email=row[3],
+                                  description=row[4],
+                                  status=int(row[5]),
+                                  additional_vars=row[6])
                             contact_record_count = \
                                 contact_record_count + 1
                             msg = \
@@ -951,8 +953,7 @@ def contact_import(request):
                     except:
                         error_msg = _("Invalid value for import! \
                                Please look at the import samples.")
-                        type_error_import_list.append(row)
-            
+                        type_error_import_list.append(row)                
 
     data = RequestContext(request, {
     'form': form,

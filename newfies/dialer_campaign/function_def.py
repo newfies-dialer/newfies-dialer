@@ -219,3 +219,10 @@ def contact_search_common_fun(request):
         kwargs[i] = contact_no[i]
 
     return kwargs
+
+
+def striplist(l):
+    """Take a list of string objects and return the same list
+    stripped of extra whitespace.
+    """
+    return([x.strip() for x in l])

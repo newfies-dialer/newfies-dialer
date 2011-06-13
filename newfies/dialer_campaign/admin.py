@@ -197,6 +197,7 @@ class ContactAdmin(admin.ModelAdmin):
                 # Read each Row
                 for row in rdr:
                     if (row and str(row[0]) > 0):
+                        row = striplist(row)
                         try:
                             # check field type
                             int(row[5])

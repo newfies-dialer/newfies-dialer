@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.views import password_reset, password_reset_done,\
 password_reset_confirm, password_reset_complete
-from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.db.models import *
 from django.core.urlresolvers import reverse
@@ -19,13 +19,10 @@ from dialer_campaign.forms import *
 from dialer_campaign.function_def import *
 from inspect import stack, getmodule
 from datetime import *
-import operator
+from dialer_campaign.tasks import collect_subscriber
 import urllib
-import string
 import csv
 import ast
-import os
-from dialer_campaign.tasks import collect_subscriber
 
 
 def current_view(request):
@@ -165,6 +162,7 @@ def login_view(request):
 
 
 def notice_count(request):
+    """Get count of logged in user's notifications"""
     try:
         notice_count = \
         notification.Notice.objects.filter(recipient=request.user,
@@ -1113,11 +1111,11 @@ def campaign_list(request):
 
         * List all campaign which are belong to logged in user
     """
-    campaign_list = Campaign.objects.filter(user=request.user)
+    #campaign_list = Campaign.objects.filter(user=request.user)
     template = 'frontend/campaign/list.html'
     data = {
         'module': current_view(request),
-        'campaign_list': campaign_list,
+        #'campaign_list': campaign_list,
         'msg': request.session.get('msg'),
         'notice_count': notice_count(request),
     }

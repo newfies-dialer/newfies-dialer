@@ -24,15 +24,17 @@ def get_value_if_none(x, value):
         return value
     return x
 
+
 def pass_gen(char_length=2, digit_length=6):
     """
     function to generate password with a letter suffix
     """
-    chars="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    digit="1234567890"
+    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    digit = "1234567890"
     pass_str_char = ''.join([choice(chars) for i in range(char_length)])
     pass_str_digit = ''.join([choice(digit) for i in range(digit_length)])
-    return pass_str_char+pass_str_digit
+    return pass_str_char + pass_str_digit
+
 
 class callrequestHandler(BaseHandler):
     """This API server as Callrequest management, it provides basic function
@@ -269,13 +271,14 @@ class dummyinitcallHandler(BaseHandler):
             resp.write("Wrong parameters!")
             return resp
 
-        call_uuid = pass_gen(0,8) + '-' + pass_gen(2,6) + '-' + pass_gen(2,6)
-        if (randint(1,2) == 1):
+        call_uuid = \
+        pass_gen(0, 8) + '-' + pass_gen(2, 6) + '-' + pass_gen(2, 6)
+        if (randint(1, 2) == 1):
             message = 'successfully originated'
         else:
             message = 'Call originated Error'
-        
-        return { 'call_uuid': call_uuid, 'message': message }
+
+        return {'call_uuid': call_uuid, 'message': message}
 
 
 class dummyanswercallHandler(BaseHandler):
@@ -303,12 +306,12 @@ class dummyanswercallHandler(BaseHandler):
 
         opt_call_uuid = get_attribute(attrs, 'call_uuid')
 
-        if not opt_call-uuid:
+        if not opt_call_uuid:
             resp = rc.BAD_REQUEST
             resp.write("Wrong parameters!")
             return resp
 
-        return { 'result': 'OK',}
+        return {'result': 'OK'}
 
 
 class dummyhangupcallHandler(BaseHandler):
@@ -336,9 +339,9 @@ class dummyhangupcallHandler(BaseHandler):
 
         opt_call_uuid = get_attribute(attrs, 'call_uuid')
 
-        if not opt_call-uuid:
+        if not opt_call_uuid:
             resp = rc.BAD_REQUEST
             resp.write("Wrong parameters!")
             return resp
 
-        return { 'result': 'OK',}
+        return {'result': 'OK'}

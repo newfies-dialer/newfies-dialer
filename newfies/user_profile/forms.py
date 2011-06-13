@@ -22,13 +22,13 @@ class UserChangeDetailForm(ModelForm):
         """Saves the detail."""
         self.user.last_name = self.cleaned_data["last_name"]
         self.user.first_name = self.cleaned_data["first_name"]
-        self.user.email = self.cleaned_data["email"]        
+        self.user.email = self.cleaned_data["email"]
         if commit:
             self.user.save()
         return self.user
 
 
 class UserProfileForm(ModelForm):
-    """"""
+
     class Meta:
         model = UserProfile

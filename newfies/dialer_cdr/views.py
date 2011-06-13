@@ -38,7 +38,7 @@ def voipcall_report_grid(request):
     else:
         start_page = int(0)
         end_page = int(rp)
-    
+
     sortorder_sign = ''
     if sortorder == 'desc':
         sortorder_sign = '-'
@@ -68,7 +68,7 @@ def voipcall_report_grid(request):
         # decode query string
         decoded_string = urllib.unquote(q_para.decode("utf8"))
 
-        temp_list = list(decoded_string.split('&'))        
+        temp_list = list(decoded_string.split('&'))
         for i in range(0, len(temp_list)):
             if temp_list[i].find('='):
                 kwargs_list = list(temp_list[i].split('='))
@@ -90,7 +90,7 @@ def voipcall_report_grid(request):
                 if kwargs_list[0] == 'disposition':
                     if kwargs_list[1]:
                         disposition = kwargs_list[1]
-        
+
         if start_date and end_date:
             kwargs['starting_date__range'] = (start_date, end_date)
         if start_date and end_date == '':
@@ -122,7 +122,7 @@ def voipcall_report_grid(request):
                     settings.STATIC_URL + 'newfies/icons/delete.png);"'
 
     rows = [{'id': row['id'],
-             'cell':  [row['user__username'],
+             'cell': [row['user__username'],
                        row['used_gateway__name'],
                        row['callid'],
                        row['uniqueid'],
@@ -132,8 +132,7 @@ def voipcall_report_grid(request):
                        row['starting_date'].strftime('%Y-%m-%d %H:%M:%S'),
                        str(timedelta(seconds=row['sessiontime'])),
                        get_disposition_name(row['disposition']),
-                       row['recipient_dialcode'],
-             ]}for row in voipcall_list]
+                       row['recipient_dialcode'], ]} for row in voipcall_list]
 
     data = {'rows': rows,
             'page': page,
@@ -216,7 +215,7 @@ def voipcall_report(request):
 
     template = 'frontend/report/voipcall_report.html'
     data = {
-        'form': form,        
+        'form': form,
         'from_date': from_date,
         'to_date': to_date,
         'disposition': disposition,

@@ -2,7 +2,8 @@ from django.conf.urls.defaults import *
 from piston.resource import Resource
 from piston.authentication import HttpBasicAuthentication
 from piston.doc import documentation_view
-from handlers import callrequestHandler, dummyinitcallHandler, dummyanswercallHandler, dummyhangupcallHandler
+from handlers import callrequestHandler, dummyinitcallHandler, \
+dummyanswercallHandler, dummyhangupcallHandler
 #from django.views.decorators.cache import cache_page
 
 

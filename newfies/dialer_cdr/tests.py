@@ -42,7 +42,7 @@ class NewfiesApiTestCase(BaseAuthenticatedClient):
          "startingdate": "1301392136.0", "expirationdate": "1301332136.0",
          "frequency": "20", "callmaxduration": "50", "maxretry": "3",
          "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1",
-         "voipapp": "1", "voipapp_data": "2000"}, **self.extra)
+         "answer_url": "", "extra_data": ""}, **self.extra)
         self.assertEqual(response.status_code, 200)
 
     def test_read_campaign(self):
@@ -129,7 +129,7 @@ class NewfiesApiCallRequestUpdateTestCase(BaseAuthenticatedClient):
     def test_update_callrequest(self):
         """Test Function to update callrequest"""
         response = self.client.put('/api/dialer_cdr/callrequest/1/',
-                   {"status": "2"}, **self.extra)
+                   {"status": "5"}, **self.extra)
         self.assertEqual(response.status_code, 200)
 
 
@@ -167,11 +167,6 @@ class NewfiesAdminInterfaceTestCase(TestCase):
         self.failUnlessEqual(response.status_code, 200)
 
         response = self.client.get('/admin/dialer_settings/')
-        self.failUnlessEqual(response.status_code, 200)
-
-        response = self.client.get('/admin/voip_app/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/voip_app/voipapp/')
         self.failUnlessEqual(response.status_code, 200)
 
         response = self.client.get('/admin/voip_server/')

@@ -33,8 +33,7 @@ def customer_detail_change(request):
     user_notification = \
     notification.Notice.objects.filter(recipient=request.user)
     # Search on sender name
-    q = (Q(sender=request.user) |
-         Q(sender=User.objects.get(is_superuser=1)))
+    q = (Q(sender=request.user))
     if q:
         user_notification = user_notification.filter(q)
 

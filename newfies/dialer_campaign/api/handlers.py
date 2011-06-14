@@ -176,8 +176,8 @@ class campaignHandler(BaseHandler):
             intervalretry = get_attribute(attrs, 'intervalretry')
             calltimeout = get_attribute(attrs, 'calltimeout')
             aleg_gateway = get_attribute(attrs, 'aleg_gateway')
-            voipapp = get_attribute(attrs, 'voipapp')
-            voipapp_data = get_attribute(attrs, 'voipapp_data')
+            answer_url = get_attribute(attrs, 'answer_url')
+            extra_data = get_attribute(attrs, 'extra_data')
             daily_start_time = get_attribute(attrs, 'daily_start_time')
             daily_stop_time = get_attribute(attrs, 'daily_stop_time')
             monday = get_attribute(attrs, 'monday')
@@ -190,7 +190,7 @@ class campaignHandler(BaseHandler):
 
             #print (name, description, status, startingdate, expirationdate,\
             #       frequency, callmaxduration, maxretry, intervalretry, \
-            #       calltimeout, aleg_gateway, voipapp, voipapp_data, \
+            #       calltimeout, aleg_gateway, answer_url, extra_data\
             #       daily_start_time, daily_stop_time, monday, tuesday,\
             #       wednesday, thursday, friday, saturday, sunday)
 
@@ -224,12 +224,6 @@ class campaignHandler(BaseHandler):
                 resp.write("The Gateway ID doesn't exist!")
                 return resp
 
-            try:
-                obj_voipapp = VoipApp.objects.get(id=voipapp)
-            except VoipApp.DoesNotExist:
-                resp = rc.BAD_REQUEST
-                resp.write("The VoipApp doesn't exist!")
-                return resp
 
             """
             #TODO: Get settings
@@ -253,8 +247,8 @@ class campaignHandler(BaseHandler):
                                         intervalretry=intervalretry,
                                         calltimeout=calltimeout,
                                         aleg_gateway=obj_aleg_gateway,
-                                        voipapp=obj_voipapp,
-                                        voipapp_data=voipapp_data,
+                                        answer_url=answer_url,
+                                        extra_data=extra_data,
                                         daily_start_time=daily_start_time,
                                         daily_stop_time=daily_stop_time,
                                         monday=monday,

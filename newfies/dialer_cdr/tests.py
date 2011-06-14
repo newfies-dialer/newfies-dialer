@@ -25,24 +25,22 @@ class BaseAuthenticatedClient(TestCase):
         }
         login = self.client.login(username='admin', password='admin')
         self.assertTrue(login)
-        #plan = Plan.objects.get(id=1)
-        #up = UserProfile.objects.create(user=self.user, plan=plan)
-        #up.save()
 
 
 class NewfiesApiTestCase(BaseAuthenticatedClient):
     """Test cases for Newfies API."""
-    fixtures = ['voipapp.json', 'gateway', 'phonebook', 'contact',
+    fixtures = ['gateway', 'phonebook', 'contact',
                 'campaign', 'campaign_subscriber']
 
     def test_create_campaign(self):
         """Test Function to crete campaign"""
         response = self.client.post('/api/dialer_campaign/campaign/',
-        {"name": "mylittlecampaign", "description": "xyz",
+        {"name": "mycampaign", "description": "xyz",
          "startingdate": "1301392136.0", "expirationdate": "1301332136.0",
          "frequency": "20", "callmaxduration": "50", "maxretry": "3",
          "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1",
-         "answer_url": "", "extra_data": ""}, **self.extra)
+         "answer_url": "http://localdomain/answer_url/",
+         "extra_data": "2000"}, **self.extra)
         self.assertEqual(response.status_code, 200)
 
     def test_read_campaign(self):
@@ -63,8 +61,7 @@ class NewfiesApiTestCase(BaseAuthenticatedClient):
     def test_create_phonebook(self):
         """Test Function to crete phonebook"""
         response = self.client.post('/api/dialer_campaign/phonebook/',
-        {"name": "mylittlephonebook", "description": "Test",
-         "campaign_id": "1"}, **self.extra)
+        {"name": "mylittlephonebook", "description": "Test"}, **self.extra)
         self.assertEqual(response.status_code, 200)
 
     def test_read_phonebook(self):

@@ -12,14 +12,13 @@ class GatewayGroupAdmin(admin.ModelAdmin):
 admin.site.register(GatewayGroup, GatewayGroupAdmin)
 """
 
-
 class GatewayAdmin(admin.ModelAdmin):
     """Allows the administrator to view and modify certain attributes
     of a Gateway."""
 
     fieldsets = (
         ('Standard options', {
-         'fields': ('name', 'description', 'protocol', 'hostname', 'status'),
+         'fields': ('name', 'description', 'gateways', 'gateway_codecs', 'gateway_timeouts', 'gateway_retries', 'originate_dial_string', 'status'),
         }),
         ('Advanced options', {
             'classes': ('collapse',),
@@ -27,9 +26,9 @@ class GatewayAdmin(admin.ModelAdmin):
                        'maximum_call', )
         }),
     )
-    list_display = ('id', 'name', 'protocol', 'hostname', 'addprefix',
+    list_display = ('id', 'name', 'gateways', 'addprefix',
                     'removeprefix', 'secondused', 'count_call', )
     list_display_links = ('name', )
-    list_filter = ['protocol', 'hostname']
+    list_filter = ['gateways',]
     ordering = ('id', )
 admin.site.register(Gateway, GatewayAdmin)

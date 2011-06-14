@@ -178,14 +178,7 @@ class NewfiesAdminInterfaceTestCase(TestCase):
 
         response = self.client.get('/admin/dialer_settings/')
         self.failUnlessEqual(response.status_code, 200)
-
-        response = self.client.get('/admin/voip_server/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/voip_server/voipservergroup/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/voip_server/voipserver/')
-        self.failUnlessEqual(response.status_code, 200)
-
+        
         response = self.client.get('/admin/dialer_campaign/')
         self.failUnlessEqual(response.status_code, 200)
         response = self.client.get('/admin/dialer_campaign/contact/')

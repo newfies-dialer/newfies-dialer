@@ -169,7 +169,6 @@ INSTALLED_APPS = (
     #'dialer_cdr.api',
     'dialer_settings',
     'user_profile',
-    'voip_server',
     'common',
     'djcelery',
     'django_extensions',

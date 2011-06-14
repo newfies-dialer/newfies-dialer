@@ -74,7 +74,7 @@ class CustomIndexDashboard(Dashboard):
         # append an app list module for "Dialer"
         self.children.append(modules.AppList(
             _('Voip Server'),
-            models=('voip_server.*', 'voip_app.*', ),
+            models=('voip_app.*', ),
         ))
 
         # append an app list module for "Country_prefix"

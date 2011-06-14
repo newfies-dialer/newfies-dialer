@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from dialer_gateway.models import Gateway
-from voip_server.models import VoipServerGroup
 from dialer_settings.models import DialerSetting
 
 
@@ -29,8 +28,6 @@ class UserProfile(models.Model):
     #                            help_text=_("Select VoIP Gateway"))
     userprofile_gateway = models.ManyToManyField(Gateway,
                                             verbose_name='Gateway')
-    userprofile_voipservergroup = models.ManyToManyField(VoipServerGroup,
-                                            verbose_name='Server Group')
     dialersetting = models.OneToOneField(DialerSetting,
                       verbose_name='Dialer Setting', null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True)

@@ -3,8 +3,9 @@ from piston.emitters import *
 from piston.utils import rc, require_mime, require_extended, throttle
 from dialer_cdr.models import Callrequest
 from datetime import *
-from random import choice, randint
+from random import choice
 from random import seed
+import uuid
 
 seed()
 
@@ -220,7 +221,7 @@ class callrequestHandler(BaseHandler):
             return rc.NOT_HERE
 
 
-class dummyinitcallHandler(BaseHandler):
+class testcallHandler(BaseHandler):
     """This API server as Test suit to initiate call and retrieve their status
 
     It aims to be used as a test function that will simulate the behavior
@@ -246,13 +247,12 @@ class dummyinitcallHandler(BaseHandler):
 
         **CURL Usage**::
 
-            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/dummyinitcall/ -d "From=650784355&To=1000&Gateways=user/&AnswerUrl=http://localhost/answer_url/"
+            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/testcall/ -d "From=650784355&To=1000&Gateways=user/&AnswerUrl=http://localhost/answer_url/"
 
         **Example Response**::
 
             {
-                "call_uuid": '48092924-856d-11e0-a586-0147ddac9d3e',
-                "message": "successfully originated",
+                "RequestUUID": '48092924-856d-11e0-a586-0147ddac9d3e'
             }
 
         **Error**:
@@ -265,23 +265,17 @@ class dummyinitcallHandler(BaseHandler):
 
         opt_from = get_attribute(attrs, 'From')
         opt_to = get_attribute(attrs, 'To')
-
+        
         if not opt_from or not opt_to:
             resp = rc.BAD_REQUEST
             resp.write("Wrong parameters!")
             return resp
 
-        call_uuid = \
-        pass_gen(0, 8) + '-' + pass_gen(2, 6) + '-' + pass_gen(2, 6)
-        if (randint(1, 2) == 1):
-            message = 'successfully originated'
-        else:
-            message = 'Call originated Error'
-
-        return {'call_uuid': call_uuid, 'message': message}
+        request_uuid = str(uuid.uuid1())
+        return {'RequestUUID': request_uuid}
 
 
-class dummyanswercallHandler(BaseHandler):
+class answercallHandler(BaseHandler):
     """This API server as Test suit to answer call"""
     allowed_methods = ('POST',)
 
@@ -290,11 +284,11 @@ class dummyanswercallHandler(BaseHandler):
 
         **Attributes**:
 
-            * ``call-uuid`` - Call UUID
+            * ``RequestUUID`` - A unique identifier for the API request.
 
         **CURL Usage**::
 
-            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/dummyanswercall/ -d "call_uuid=48092924-856d-11e0-a586-0147ddac9d3e"
+            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/answercall/ -d "RequestUUID=48092924-856d-11e0-a586-0147ddac9d3e"
 
         **Example Response**::
 
@@ -304,17 +298,46 @@ class dummyanswercallHandler(BaseHandler):
         """
         attrs = self.flatten_dict(request.POST)
 
-        opt_call_uuid = get_attribute(attrs, 'call_uuid')
+        opt_RequestUUID = get_attribute(attrs, 'RequestUUID')
 
-        if not opt_call_uuid:
+        if not opt_RequestUUID:
             resp = rc.BAD_REQUEST
             resp.write("Wrong parameters!")
             return resp
 
-        return {'result': 'OK'}
+        # Update the Callrequest to Status Ok : A-Leg at least is fine
+        try:
+            obj_callrequest = \
+                Callrequest.objects.get(uniqueid=opt_RequestUUID)
+            #TODO : use constant
+            Callrequest.status = 4 # SUCCESS
+            obj_callrequest.save()
+        except:
+            return rc.NOT_FOUND
+
+        if not obj_callrequest.voipapp:
+            #TODO : change the rc.BAD_REQUEST to a server error
+            resp = rc.BAD_REQUEST
+            resp.write('This Call Request is not attached to a VoIP App')
+            return resp
+        
+        # get the VoIP application
+        if obj_callrequest.voipapp.type == 1:
+            #Redirect
+            RESTXML = '<xml redirect>'
+        elif obj_callrequest.voipapp.type == 2:
+            #PlayAudio
+            RESTXML = '<xml playaudio>'
+        elif obj_callrequest.voipapp.type == 3:
+            #Conference
+            RESTXML = '<xml conference>'
+        
+        #TODO : return RESTXML
+
+        return {'result': RESTXML}
 
 
-class dummyhangupcallHandler(BaseHandler):
+class hangupcallHandler(BaseHandler):
     """This API server as Test suit to hangup call"""
     allowed_methods = ('POST',)
 

@@ -35,6 +35,41 @@ class OutboundcallSimulator(Task):
 """
 
 
+@task(default_retry_delay=30 * 60)  # retry in 30 minutes.
+def test_answerurl(RequestUUID):
+    """This task trigger a call to local answer
+    This is used for test purpose to simulate the behavior of Plivo
+
+    **Attributes**:
+
+        * ``RequestUUID`` - A unique identifier for API request."""
+
+    print("Executing task id %r, args: %r kwargs: %r" % (
+        test_answerurl.request.id, test_answerurl.request.args, test_answerurl.request.kwargs))
+    print("Waiting 5 seconds...")
+    sleep(5)
+
+    res = HttpDispatchTask.delay(
+          url="http://127.0.0.1:8000/api/dialer_cdr/answercall/",
+          method="POST", x=10, y=10, RequestUUID=RequestUUID)
+    #Todo this will be replaced by the Plivo RestAPIs
+    res.get()
+
+    #lock to limit running process, do so per campaign
+    #http://ask.github.com/celery/cookbook/tasks.html
+
+    return True
+    
+
+
+"""
+class OutboundcallSimulator(Task):
+    name = "outboundcall_simulator"
+
+    def run(self, callrequest_id, **kwargs):
+        logger = self.get_logger(**kwargs)
+"""
+
 @task()
 def initcall_subscriber(subscriber_id, campaign_id):
     """This tasks will outbound the call to the subscriber
@@ -99,18 +134,6 @@ def initcall_subscriber(subscriber_id, campaign_id):
 
     #Retrieve the Gateway for the A-Leg
 
-    #Retrieve the application
-    if obj_campaign.voipapp.type == 1:
-        #Redirect
-        #obj_campaign.voipapp_data
-        return True
-    elif obj_campaign.voipapp.type == 2:
-        #PlayAudio
-        return True
-    elif obj_campaign.voipapp.type == 3:
-        #Conference
-        return True
-
     #Create a Callrequest Instance to track the call task
     """**Attributes**:
 
@@ -135,7 +158,7 @@ def initcall_subscriber(subscriber_id, campaign_id):
                             account='')
 
     new_callrequest.save()
-
+    #Attach the new_callrequest.id to the call
 
     #Send this to the simulator
     #This will interact with Plivo/Freeswitch later on
@@ -143,9 +166,13 @@ def initcall_subscriber(subscriber_id, campaign_id):
     #Send Call to API
     #http://ask.github.com/celery/userguide/remote-tasks.html
     res = HttpDispatchTask.delay(
-          url="http://127.0.0.1:8000/api/dialer_cdr/dummyinitcall/",
+          url="http://127.0.0.1:8000/api/dialer_cdr/testcall/",
           method="POST", x=10, y=10)
-    res.get()
+    #Todo this will be replaced by the Plivo RestAPIs
+    result = res.get()
+
+    new_callrequest.uniqueid = result['RequestUUID']
+    new_callrequest.save()
 
     #lock to limit running process, do so per campaign
     #http://ask.github.com/celery/cookbook/tasks.html

@@ -23,40 +23,35 @@ class DialerSetting(models.Model):
     **Name of DB table**: dialer_setting
     """
     name = models.CharField(max_length=50, blank=False, null=True,
-                    help_text=_("Define a name for this set of settings"))
+                    help_text=_("Settings name"))
 
     #Campaign Settings
     max_frequency = models.IntegerField(default='100', blank=True, null=True,
-                               help_text=_("Define the Max frequency, speed \
-                               of the campaign. This is the number of \
-                               calls per minute."))
+                               help_text=_("Maximum calls per minute"))
     callmaxduration = models.IntegerField(default='1800', blank=True,
-                      null=True, verbose_name='Call Max Duration',
-                      help_text=_("Define the call's duration \
-                      maximum. (Value in seconds 1800 = 30 minutes)"))
+                      null=True, verbose_name=_('Call Max Duration'),
+                      help_text=_("Maximum call duration in \
+                      seconds (1800 = 30 Minutes)"))
     maxretry = models.IntegerField(default='3', blank=True, null=True,
-                               verbose_name='Max Retries', help_text=_("Define\
-                               the max retry allowed per user."))
+                               verbose_name=_('Max Retries'),
+                               help_text=_("Maximum retries per user."))
     max_calltimeout = models.IntegerField(default='45', blank=True, null=True,
-                      verbose_name='Timeout on Call', help_text=_("Define the\
-                      maximum amount of second to timeout on calls"))
+                      verbose_name=_('Timeout on Call'),
+                      help_text=_("Maximum call timeout in seconds"))
 
     max_number_campaign = models.IntegerField(default=10,
-                               help_text=_("Max Number of campaign"))
+                               help_text=_("Maximum number of campaigns"))
     max_number_subscriber_campaign = models.IntegerField(default=10000,
-                               help_text=_("Max Number of \
-                               subscriber per campaign"))
+                               help_text=_("Maximum subscribers per campaign"))
 
     blacklist = models.TextField(blank=False, null=True, default='*',
-                    help_text=_("Define Regular Expression of phonenumber \
-                    you want to forbid. This is used to blacklist \
-                    phonenumbers to be called.\
-                    Example '^[2-4][1]+' will forbid all the phonenumber\
-                    starting by 2,3 or 4 and followed by 1 "))
+                    help_text=_("Use regular expressions to blacklist phone\
+                    numbers. For example, '^[2-4][1]+' will prevent all phone\
+                    numbers starting with 2,3 or 4 and followed by\
+                    1 being called."))
     whitelist = models.TextField(blank=False, null=True, default='12345*',
-                    help_text=_("Define Regular Expression of phonenumber \
-                    you want to forbid. This is used to whitelist \
-                    phonenumbers to be called"))
+                    help_text=_("Use regular expressions to whitelist\
+                    phone numbers"))
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)

@@ -69,12 +69,13 @@ class Callrequest(Model):
 
     **Name of DB table**: dialer_callrequest
     """
-    uniqueid = models.CharField(unique=True, max_length=120)
+    uniqueid = models.CharField(verbose_name=_("Unique ID"),
+                                unique=True, max_length=120)
     callback_time = models.DateTimeField()
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')
     updated_date = models.DateTimeField(auto_now=True)
     calltype = models.IntegerField(choices=CALLREQUEST_TYPE, default='1',
-                verbose_name="Call Request Type", blank=True, null=True)
+                verbose_name=_("Call Request Type"), blank=True, null=True)
     status = models.IntegerField(choices=CALLREQUEST_STATUS, default='1',
                 blank=True, null=True)
     subscriber = models.IntegerField(null=True, blank=True,
@@ -86,10 +87,10 @@ class Callrequest(Model):
                 verbose_name="A-Leg Gateway",
                 help_text=_("Select Gateway to use to reach the subscriber"))
     answer_url = models.CharField(max_length=250, blank=True,
-                verbose_name="Answer URL", help_text=_("Define the \
+                verbose_name=_("Answer URL"), help_text=_("Define the \
                 Answer URL that will power the VoIP application"))
     extra_data = models.CharField(max_length=120, blank=True,
-                verbose_name="Extra Data", help_text=_("Define the \
+                verbose_name=_("Extra Data"), help_text=_("Define the \
                 additional data to pass to the application"))
     num_attempt = models.IntegerField(default=0)
     last_attempt_time = models.DateTimeField(null=True, blank=True)

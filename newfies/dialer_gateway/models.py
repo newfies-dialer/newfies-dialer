@@ -60,11 +60,13 @@ class Gateway(Model):
     **Name of DB table**: dialer_gateway
     """
     name = models.CharField(unique=True, max_length=255, verbose_name='Name',
-                            help_text=_("Enter Gateway Name"))
+                            help_text=_("Gateway name"))
     description = models.TextField(verbose_name='Description', blank=True,
-                               help_text=_("Short description about Provider"))
-    addprefix = models.CharField(max_length=60, blank=True)
-    removeprefix = models.CharField(max_length=60, blank=True)
+                               help_text=_("Gateway provider notes"))
+    addprefix = models.CharField(verbose_name=_('Add prefix'),
+                max_length=60, blank=True)
+    removeprefix = models.CharField(verbose_name=_('Remove prefix'),
+                   max_length=60, blank=True)
     protocol = models.CharField(max_length=60, choices=GATEWAY_PROTOCOL,
                                 default='SIP')
     hostname = models.CharField(max_length=240)
@@ -75,10 +77,12 @@ class Gateway(Model):
 
     failover = models.ForeignKey('self', null=True, blank=True,
                 related_name="Failover Gateway", help_text=_("Select Gateway"))
-    addparameter = models.CharField(max_length=360, blank=True)
+    addparameter = models.CharField(verbose_name=_('Add parameter'),
+                   max_length=360, blank=True)
     count_call = models.IntegerField(null=True, blank=True)
     count_in_use = models.IntegerField(null=True, blank=True)
-    maximum_call = models.IntegerField(null=True, blank=True)
+    maximum_call = models.IntegerField(verbose_name=_('Max concurrent calls'),
+                   null=True, blank=True)
     status = models.IntegerField(choices=GATEWAY_STATUS, default='1',
                 verbose_name="Gateway Status", blank=True, null=True)
     #gatewaygroup = models.ManyToManyField(GatewayGroup)

@@ -240,9 +240,9 @@ class Campaign(Model):
                 related_name="A-Leg Gateway",
                 help_text=_("Select gateway to use for this campaign"))
     answer_url = models.CharField(max_length=250, blank=True,
-                verbose_name=_("Answer URL"), help_text=_("Campaign \
-                IVR/Application Destination"))
-    # Define the Answer URL that will power the VoIP application
+                verbose_name=_("Answer URL"), help_text=_("Define the Answer\
+                URL that will power the VoIP application"))
+    #Campaign IVR/Application Destination
     extra_data = models.CharField(max_length=120, blank=True,
                 verbose_name=_("Extra Parameters"), help_text=_("Additional \
                 application parameters."))
@@ -477,10 +477,13 @@ class CampaignSubscriber(Model):
                                 help_text=_("Select Contact"))
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
                                 help_text=_("Select Campaign"))
-    callrequest = models.ForeignKey(Callrequest, null=True, blank=True,
-                                help_text=_("Select Callrequest"))
+    callrequest = models.ForeignKey(Callrequest,
+                                    verbose_name=_("Call request"),
+                                    null=True, blank=True,
+                                    help_text=_("Select call request"))
     last_attempt = models.DateTimeField(null=True, blank=True)
-    count_attempt = models.IntegerField(null=True, blank=True, default='0')
+    count_attempt = models.IntegerField(null=True, blank=True, 
+                    verbose_name=_("Count attempts"), default='0')
 
     #We duplicate contact to create a unique constraint
     duplicate_contact = models.CharField(max_length=90,

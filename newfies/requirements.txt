@@ -13,8 +13,8 @@ django-threaded-multihost==1.4-0
 django-urlauth==0.1.1
 django-uuidfield==0.2
 django-reusableapps==0.1.1
-docutils==0.7
-importlib==1.0.2
+docutils
+importlib
 kombu==1.0.2
 pyparsing==1.5.5
 python-dateutil==1.5

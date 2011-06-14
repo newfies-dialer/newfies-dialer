@@ -59,6 +59,7 @@ case $DISTRO in
             apt-get -y install mysql-server libmysqlclient-dev
             apt-get -y install git-core
             apt-get -y install mercurial
+            apt-get -y install python-importlib
         ;;
         'CENTOS')
             yum -y install python-setuptools python-tools python-devel mod_python

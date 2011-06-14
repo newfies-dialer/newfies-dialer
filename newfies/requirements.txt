@@ -9,12 +9,9 @@ django-extensions==0.6
 django-jsonfield==0.6
 django-pagination==1.0.7
 django-picklefield==0.1.9
-django-threaded-multihost==1.4-0
 django-urlauth==0.1.1
-django-uuidfield==0.2
-django-reusableapps==0.1.1
+django-uuidfield
 docutils
-importlib
 kombu==1.0.2
 pyparsing==1.5.5
 python-dateutil==1.5

@@ -1,6 +1,5 @@
 import os
 import djcelery
-import reusableapps
 djcelery.setup_loader()
 
 # Django settings for project.
@@ -143,9 +142,6 @@ TEMPLATE_DIRS = (
 )
 INTERNAL_IPS = ('127.0.0.1',)
 
-REUSABLE_APPS_DIRS = (
-'/usr/local/lib/python2.6/dist-packages/django-reusableapps/reusableapps',
-)
 INSTALLED_APPS = (
     #admin tool apps
     'admin_tools',
@@ -185,7 +181,6 @@ INSTALLED_APPS = (
 AUTH_PROFILE_MODULE = "user_profile.UserProfile"
 LOGIN_URL = '/pleaselog/'
 
-INSTALLED_APPS = reusableapps.search(REUSABLE_APPS_DIRS, INSTALLED_APPS)
 
 #DILLA SETTINGS
 #==============

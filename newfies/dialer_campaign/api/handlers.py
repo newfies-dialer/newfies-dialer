@@ -292,21 +292,9 @@ class campaignHandler(BaseHandler):
 
             [
                 {
-                    "status": 1,
-                    "voipapp": {
-                        "gateway_id": 1,
-                        "updated_date": "2011-05-06 05:06:53",
-                        "description": "",
-                        "_state": "<django.db.models.base.ModelState object at\
-                        0xa0889cc>",
-                        "created_date": "2011-04-08 08:00:09",
-                        "type": 1,
-                        "id": 1,
-                        "name": "Default_VoIP_App"
-                    },
+                    "status": 1,                    
                     "startingdate": "2011-03-29 09:48:56",
-                    "name": "mylittlecampaign",
-                    "voipapp_data": "2000",
+                    "name": "mylittlecampaign",                    
                     "callmaxduration": 50,
                     "intervalretry": 3000,
                     "id": 2,
@@ -393,33 +381,24 @@ class campaignHandler(BaseHandler):
             * ``calltimeout`` - Define the amount of second to timeout on calls
             * ``aleg_gateway`` - Define the Gateway to use to reach the\
                                  subscriber
-            * ``voipapp`` - Define Application to provide when the calls is\
-                            established on the A-Leg
-            * ``voipapp_data`` - Define the additional data to pass to the\
+            * ``answer_url`` - Answer URL that will power the VoIP application
+            * ``extra_data`` - Define the additional data to pass to the\
                                  application
+           
 
         **CURL Usage**::
 
             curl -u username:password -i -H "Accept: application/json" -X PUT http://127.0.0.1:8000/api/dialer_campaign/campaign/%campaign_id%/ -d "status=2"
 
-            curl -u username:password -i -H "Accept: application/json" -X PUT http://127.0.0.1:8000/api/dialer_campaign/campaign/%campaign_id%/ -d "status=2&startingdate=1301392136.0&expirationdate=1301332136.0&frequency=20&callmaxduration=50&maxretry=3&intervalretry=3000&calltimeout=60&aleg_gateway=1&voipapp=1&voipapp_data=2000"
+            curl -u username:password -i -H "Accept: application/json" -X PUT http://127.0.0.1:8000/api/dialer_campaign/campaign/%campaign_id%/ -d "status=2&startingdate=1301392136.0&expirationdate=1301332136.0&frequency=20&callmaxduration=50&maxretry=3&intervalretry=3000&calltimeout=60&aleg_gateway=1&answer_url='http://localdomain/answer_url/'&extra_data=2000"
 
         **Example Response**::
 
             {
-                "status": "2",
-                "voipapp": {
-                    "gateway_id": 1,
-                    "updated_date": "2011-05-06 05:06:53",
-                    "description": "",
-                    "created_date": "2011-04-08 08:00:09",
-                    "type": 1,
-                    "id": 1,
-                    "name": "Default_VoIP_App"
-                },
+                "status": "2",                
                 "startingdate": "2011-03-29 09:48:56",
                 "name": "mylittlecampaign",
-                "voipapp_data": "2000",
+                "extra_data": "2000",
                 "callmaxduration": 50,
                 "intervalretry": 3000,
                 "id": 2,
@@ -478,8 +457,8 @@ class campaignHandler(BaseHandler):
         intervalretry = get_attribute(attrs, 'intervalretry')
         calltimeout = get_attribute(attrs, 'calltimeout')
         aleg_gateway = get_attribute(attrs, 'aleg_gateway')
-        voipapp = get_attribute(attrs, 'voipapp')
-        voipapp_data = get_attribute(attrs, 'voipapp_data')
+        answer_url = get_attribute(attrs, 'answer_url')
+        extra_data = get_attribute(attrs, 'extra_data')
         startingdate = get_value_if_none(startingdate, time.time())
         # expire in 7 days
         expirationdate = \
@@ -511,8 +490,8 @@ class campaignHandler(BaseHandler):
             save_if_set(campaign, 'intervalretry', intervalretry)
             save_if_set(campaign, 'calltimeout', calltimeout)
             save_if_set(campaign, 'aleg_gateway_id', aleg_gateway)
-            save_if_set(campaign, 'voipapp_id', voipapp)
-            save_if_set(campaign, 'voipapp_data', voipapp_data)
+            save_if_set(campaign, 'answer_url', answer_url)
+            save_if_set(campaign, 'extra_data', extra_data)
             save_if_set(campaign, 'daily_start_time', daily_start_time)
             save_if_set(campaign, 'daily_stop_time', daily_stop_time)
             save_if_set(campaign, 'monday', monday)

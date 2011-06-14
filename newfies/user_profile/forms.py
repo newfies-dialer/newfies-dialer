@@ -9,13 +9,13 @@ from user_profile.models import *
 
 class UserChangeDetailForm(ModelForm):
     """A form used to change the detail of a user in the Customer UI."""
-
+    email = forms.CharField(label=_('Email address'), required=True)
     class Meta:
         model = User
         fields = ["last_name", "first_name", "email"]
 
     def __init__(self, user, *args, **kwargs):
-        self.user = user
+        self.user = user        
         super(UserChangeDetailForm, self).__init__(*args, **kwargs)
 
     def save(self, commit=True):

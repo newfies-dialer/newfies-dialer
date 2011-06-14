@@ -50,9 +50,9 @@ $("#flex1").flexigrid({
         {display: 'Name', name: 'name', width: 120, sortable: true, align: 'center'},
         {display: 'Start date', name: 'startingdate', width: 100, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
         {display: 'End date', name: 'expirationdate', width: 100, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
-        {display: 'Aleg-gateway', name: 'aleg_gateway', width: 100, sortable: true, align: 'center'},
-        {display: 'Answer url', name: 'answer_url', width: 100, sortable: true, align: 'center'},
-        {display: 'Contacts', name: '', width: 40, sortable: true, align: 'center'},
+        {display: 'A-Leg gateway', name: 'aleg_gateway', width: 100, sortable: true, align: 'center'},
+        {display: 'Answer URL', name: 'answer_url', width: 100, sortable: true, align: 'center'},
+        {display: 'Contacts', name: '', width: 65, sortable: true, align: 'center'},
         {display: 'Action', name: '', width : 100, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
 		],
     buttons : [
@@ -67,7 +67,7 @@ $("#flex1").flexigrid({
 	useRp: true,
 	rp: 10,
 	showTableToggleBtn: true,
-	width: 850,
+	width: 875,
 	height: 265,
     //preProcess: formatContactResults,
     onSuccess: function(data){

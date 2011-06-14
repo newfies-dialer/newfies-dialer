@@ -138,7 +138,7 @@
     {% if user.is_authenticated %}
         <div class="span-22 last" align="right">
             <div id="welcome-container">
-            {% trans "Welcome" %}, {{ user.username }} 
+            {% trans "Welcome" %} {{ user.username|capfirst }}
             {% if notice_count %} <a href="/user_detail_change/?selected=2">({% trans "You have" %} {{ notice_count }} {% trans "new notification" %})</a>   {% endif %}
             </div>
         </div>        
@@ -183,7 +183,7 @@
         <div id="footer">
             Newfies 1.1, {% trans "Newfies is software licensed under the "  %}
             <a href="http://www.fsf.org/licensing/licenses/agpl-3.0.html" target="_blank">AGPL 3</a>. <br/>
-            Copyright (C) 2010 - Star2billing S.L. <a href="http://www.star2billing.com/" target="_blank">http://www.star2billing.com/</a>
+            Copyright (C) 2010-2011 - Star2billing S.L. <a href="http://www.star2billing.com/" target="_blank">http://www.star2billing.com/</a>
         </div>
     </div>
 {% endif %}

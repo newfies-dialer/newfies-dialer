@@ -11,9 +11,9 @@ from datetime import *
 class SearchForm(forms.Form):
     """General Search Form with From & To date para."""
     from_date = CharField(label=_('From'), required=False, max_length=10,
-    help_text=_("Please use the following format") + ": <em>YYYY-MM-DD</em>.")
+    help_text=_("Date Format") + ": <em>YYYY-MM-DD</em>.")
     to_date = CharField(label=_('To'), required=False, max_length=10,
-    help_text=_("Please use the following format") + ": <em>YYYY-MM-DD</em>.")
+    help_text=_("Date Format") + ": <em>YYYY-MM-DD</em>.")
 
 
 class FileImport(forms.Form):
@@ -108,9 +108,9 @@ NAME_TYPE = (
 )
 
 CHOICE_TYPE = (
-    (1, _('Equals')),
-    (2, _('Begins with')),
-    (3, _('Contains')),
+    (1, _('Contains')),
+    (2, _('Equals')),
+    (3, _('Begins with')),
     (4, _('Ends with')),
 )
 

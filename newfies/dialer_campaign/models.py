@@ -56,7 +56,7 @@ class Phonebook(Model):
     """
     name = models.CharField(unique=True, max_length=90)
     description = models.TextField(null=True, blank=True,
-                  help_text=_("Short description about the Phonebook"))
+                  help_text=_("Phonebook Notes"))
     user = models.ForeignKey('auth.User', related_name='Phonebook owner')
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')
     updated_date = models.DateTimeField(auto_now=True)
@@ -108,11 +108,13 @@ class Contact(Model):
     country = models.ForeignKey(Country, blank=True, null=True)
     city = models.CharField(max_length=120, blank=True, null=True)
     description = models.TextField(null=True, blank=True,
-                  help_text=_("Additional information about the contact"))
+                  help_text=_("Contact Notes"))
     status = models.IntegerField(choices=CONTACT_STATUS, default='1',
                 verbose_name="Status", blank=True, null=True)
-    additional_vars = models.CharField(max_length=100, blank=True)
-    created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')
+    additional_vars = models.CharField(max_length=100, blank=True,
+                      verbose_name=_('Additional parameters'))
+    created_date = models.DateTimeField(auto_now_add=True,
+                   verbose_name=_('Date'))
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -197,10 +199,12 @@ class Campaign(Model):
                 verbose_name="Status", blank=True, null=True)
     #General Starting & Stopping date
     startingdate = models.DateTimeField(default=datetime.now(),
-                   verbose_name='Starting')
+                   verbose_name=_('Start'),
+    help_text=_("Date Format: YYYY-mm-DD HH:MM:SS"))
     expirationdate = \
             models.DateTimeField(default=datetime.now() + timedelta(days=7),
-            verbose_name='Expiring')
+            verbose_name=_('Finish'),
+    help_text=_("Date Format: YYYY-mm-DD HH:MM:SS"))
     #Per Day Starting & Stopping Time
     daily_start_time = models.TimeField(default='00:00:00')
     daily_stop_time = models.TimeField(default='23:59:59')
@@ -222,24 +226,26 @@ class Campaign(Model):
                       call's duration maximum. (Value in seconds 1800 = \
                       30 minutes)"))
     maxretry = models.IntegerField(default='3', blank=True, null=True,
-               verbose_name='Max Retries', help_text=_("Define the max retry \
-               allowed per user."))
+               verbose_name=_('Max Retries'),
+               help_text=_("Define the max retry allowed per user."))
     intervalretry = models.IntegerField(default='3', blank=True, null=True,
-                    verbose_name='Time between Retries', help_text=_("Define \
+                    verbose_name=_('Time between Retries'),
+                    help_text=_("Define \
                     the time to wait between retries in seconds"))
     calltimeout = models.IntegerField(default='45', blank=True, null=True,
-                  verbose_name='Timeout on Call', help_text=_("Define the \
+                  verbose_name=_('Timeout on Call'), help_text=_("Define the \
                   amount of second to timeout on calls"))
     #Gateways
-    aleg_gateway = models.ForeignKey(Gateway, verbose_name="A-Leg Gateway",
+    aleg_gateway = models.ForeignKey(Gateway, verbose_name=_("A-Leg Gateway"),
                 related_name="A-Leg Gateway",
-                help_text=_("Select Gateway to use to reach the contact"))
+                help_text=_("Select gateway to use for this campaign"))
     answer_url = models.CharField(max_length=250, blank=True,
-                verbose_name="Answer URL", help_text=_("Define the \
-                Answer URL that will power the VoIP application"))
+                verbose_name=_("Answer URL"), help_text=_("Campaign \
+                IVR/Application Destination"))
+    # Define the Answer URL that will power the VoIP application
     extra_data = models.CharField(max_length=120, blank=True,
-                verbose_name="Extra Data", help_text=_("Define the \
-                additional data to pass to the application"))
+                verbose_name=_("Extra Parameters"), help_text=_("Additional \
+                application parameters."))
 
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')
     updated_date = models.DateTimeField(auto_now=True)

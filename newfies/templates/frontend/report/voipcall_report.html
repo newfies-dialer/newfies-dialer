@@ -63,26 +63,26 @@ $("#flex1").flexigrid({
     method: 'GET',
     dataType: 'json',
 	colModel : [        
-		{display: 'User', name: 'user', width: 40, sortable: true, align: 'center'},
-        {display: 'Used gateway', name: 'used_gateway', width: 100, sortable: true, align: 'center'},
-        {display: 'Callid', name: 'callid', width: 80, sortable: true, align: 'center'},
-        {display: 'Uniqueid', name: 'uniqueid', width: 80, sortable: true, align: 'center'},
-        {display: 'Callerid', name: 'callerid', width: 80, sortable: true, align: 'center'},
-        {display: 'Dnid', name: 'dnid', width: 60, sortable: true, align: 'center'},
-        {display: 'Recipient No', name: 'recipient_number', width: 100, sortable: true, align: 'center'},
-        {display: 'Starting date', name: 'starting_date', width: 100, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
-        {display: 'Sessiontime', name: 'sessiontime', width: 60, sortable: true, align: 'center'},
+		{display: 'User', name: 'user', width: 60, sortable: true, align: 'center'},
+        {display: 'Gateway used', name: 'used_gateway', width: 100, sortable: true, align: 'center'},
+        {display: 'Call ID', name: 'callid', width: 80, sortable: true, align: 'center'},
+        {display: 'Unique ID', name: 'uniqueid', width: 80, sortable: true, align: 'center'},
+        {display: 'Caller ID', name: 'callerid', width: 80, sortable: true, align: 'center'},
+        {display: 'DNID', name: 'dnid', width: 60, sortable: true, align: 'center'},
+        {display: 'Recipient No.', name: 'recipient_number', width: 100, sortable: true, align: 'center'},
+        {display: 'Start date', name: 'starting_date', width: 100, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
+        {display: 'Session time', name: 'sessiontime', width: 60, sortable: true, align: 'center'},
         {display: 'Disposition', name: 'disposition', width: 60, sortable: true, align: 'center'},
-        {display: 'Recipient dialcode', name: 'recipient_dialcode', width: 100, sortable: true, align: 'center'},
+        {display: 'Dial Code', name: 'recipient_dialcode', width: 100, sortable: true, align: 'center'},
 		],    
     sortname: "id",
 	sortorder: "asc",
 	usepager: true,
-	title: 'VoIP Call Records',
+	title: 'Call Records',
 	useRp: true,
 	rp: 10,
 	showTableToggleBtn: true,
-	width: 995,
+	width: 1015,
 	height: 265,
     //preProcess: formatContactResults,
     onSuccess: function(data){
@@ -103,7 +103,7 @@ $("#flex1").flexigrid({
     {% block extra_data %}
     
         <table align="center" id="rounded-corner">
-        <caption><center>{% trans "Call Detail Report"  %}</center></caption>
+        <caption><center>{% trans "Call Detail Report Summary"  %}</center></caption>
         <thead>
             <tr>
                 <th class="rounded-company">{% trans "Date"  %}</th>

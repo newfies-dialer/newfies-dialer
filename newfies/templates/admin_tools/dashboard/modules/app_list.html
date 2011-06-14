@@ -18,7 +18,11 @@
                             {% if child.title == "Dialer_Settings" %}
                                 {% trans "Dialer Settings" %}
                             {% else %}
-                                {{ child.title }}
+                                {% if child.title == "Voip_App" %}
+                                    {% trans "VoIP Application" %}
+                                {% else %}
+                                    {{ child.title }}
+                                {% endif %}
                             {% endif %}
                         {% endif %}
                     {% endif %}

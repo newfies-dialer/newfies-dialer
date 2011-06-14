@@ -94,7 +94,7 @@ class CampaignForm(ModelForm):
     class Meta:
         model = Campaign
         fields = ['name', 'description', 'status', 'startingdate',
-                  'expirationdate', 'aleg_gateway', 'answer_url', 'extra_data',
+                  'expirationdate', 'aleg_gateway', 'voipapp', 'extra_data',
                   'phonebook']
         exclude = ('user', )
         widgets = {

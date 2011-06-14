@@ -6,6 +6,7 @@ from django.db.models.signals import post_save
 from countries.models import Country
 from dialer_cdr.models import Callrequest
 from dialer_gateway.models import Gateway
+from voip_app.models import VoipApp
 from user_profile.models import UserProfile
 from datetime import datetime, timedelta
 from common.intermediate_model_base_class import Model
@@ -179,10 +180,12 @@ class Campaign(Model):
         * ``intervalretry`` - Time to wait between retries in seconds
         * ``calltimeout`` - Amount of second to timeout on calls
         * ``aleg_gateway`` - Gateway to use to reach the contact
-        * ``answer_url`` - Url that will provide the application in RestXML
         * ``extra_data`` - Additional data to pass to the application
 
     Relationships:
+
+        * ``voipapp`` - Foreign key relationship to the VoipApp model.
+                        VoIP Application to use with this campaign
 
         * ``phonebook`` - ManyToMany relationship to the Phonebook model.
 
@@ -239,10 +242,10 @@ class Campaign(Model):
     aleg_gateway = models.ForeignKey(Gateway, verbose_name=_("A-Leg Gateway"),
                 related_name="A-Leg Gateway",
                 help_text=_("Select gateway to use for this campaign"))
-    answer_url = models.CharField(max_length=250, blank=True,
-                verbose_name=_("Answer URL"), help_text=_("Define the Answer\
-                URL that will power the VoIP application"))
     #Campaign IVR/Application Destination
+    voipapp = models.ForeignKey(VoipApp, verbose_name="VoIP Application",
+              related_name="VoIP Application", help_text=_("Select VoIP \
+              Application to use with this campaign"))
     extra_data = models.CharField(max_length=120, blank=True,
                 verbose_name=_("Extra Parameters"), help_text=_("Additional \
                 application parameters."))

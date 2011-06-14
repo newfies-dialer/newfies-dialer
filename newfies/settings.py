@@ -172,6 +172,7 @@ INSTALLED_APPS = (
     'pagination',
     'memcache_status',
     'notification',
+    'voip_app',
     #'debug_toolbar',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',

@@ -1068,7 +1068,7 @@ def campaign_grid(request):
     campaign_list = Campaign.objects\
                     .values('id', 'name', 'startingdate', 'expirationdate',
                             'aleg_gateway', 'aleg_gateway__name',
-                            'answer_url', 'status').filter(user=request.user)
+                            'voip_app__name', 'status').filter(user=request.user)
     count = campaign_list.count()
     campaign_list = \
         campaign_list.order_by(sortorder_sign + sortname)[start_page:end_page]
@@ -1086,7 +1086,7 @@ def campaign_grid(request):
                       row['startingdate'].strftime('%Y-%m-%d %H:%M:%S'),
                       row['expirationdate'].strftime('%Y-%m-%d %H:%M:%S'),
                       row['aleg_gateway__name'],
-                      row['answer_url'],
+                      row['voip_app__name'],
                       count_contact_of_campaign(row['id']),
                       str('<a href="' + str(row['id']) + '/" class="icon" ' \
                       + update_style + ' title="Update campaign">&nbsp;</a>' +

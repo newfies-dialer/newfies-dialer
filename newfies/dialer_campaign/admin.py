@@ -19,7 +19,7 @@ class CampaignAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Standard options', {
             'fields': ('name', 'description', 'user', 'status', 'startingdate',
-                       'expirationdate', 'aleg_gateway', 'answer_url',
+                       'expirationdate', 'aleg_gateway', 'voipapp',
                        'extra_data', 'phonebook'),
         }),
         ('Advanced options', {
@@ -33,7 +33,7 @@ class CampaignAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'user', 'startingdate',
                     'expirationdate', 'frequency', 'callmaxduration',
                     'maxretry', 'aleg_gateway',#'intervalretry', 'calltimeout',
-                    'answer_url', 'extra_data', 'status',
+                    'voipapp', 'extra_data', 'status',
                     'update_campaign_status', 'count_contact_of_phonebook',
                     'campaignsubscriber_detail', 'progress_bar')
 

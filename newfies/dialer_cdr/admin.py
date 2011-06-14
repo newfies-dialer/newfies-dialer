@@ -19,7 +19,7 @@ class CallrequestAdmin(admin.ModelAdmin):
         }),
         ('Advanced options', {
             'classes': ('collapse',),
-            'fields': ('calltype', 'aleg_gateway', 'answer_url', 'extra_data',
+            'fields': ('calltype', 'aleg_gateway', 'voipapp', 'extra_data',
                        'subscriber', 'variable', 'account', )
         }),
     )

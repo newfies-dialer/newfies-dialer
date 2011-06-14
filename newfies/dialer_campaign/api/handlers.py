@@ -4,6 +4,7 @@ from piston.utils import rc, require_mime, require_extended, throttle
 from dialer_campaign.models import *
 from dialer_campaign.function_def import *
 from dialer_gateway.models import Gateway
+from voip_app.models import VoipApp
 from django.db import IntegrityError
 from django.db.models import Q
 from common_functions import *
@@ -42,7 +43,7 @@ class campaignHandler(BaseHandler):
     #fields = ('id', 'name', 'status', 'description', )
     fields = ('id', 'name', 'status', 'startingdate', 'expirationdate',
               'frequency', 'callmaxduration', 'maxretry', 'intervalretry',
-              'calltimeout', 'aleg_gateway', 'bleg_gateway', 'answer_url',
+              'calltimeout', 'aleg_gateway', 'bleg_gateway', 'voipapp',
               'extra_data', ('phonebook', ('id', 'name', ), ), )
     documentation = "test"
 
@@ -94,13 +95,14 @@ class campaignHandler(BaseHandler):
 
             * ``aleg_gateway`` - Define the Gateway to use to reach the\
                                  subscriber
-            * ``answer_url`` - Answer URL that will power the VoIP application
+            * ``voipapp`` - Define Application to provide when the calls is\
+                            established on the A-Leg
             * ``extra_data`` - Define the additional data to pass to the\
                                  application
 
         **CURL Usage**::
 
-            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_campaign/campaign/ -d "name=mylittlecampaign&description=&startingdate=1301392136.0&expirationdate=1301332136.0&frequency=20&callmaxduration=50&maxretry=3&intervalretry=3000&calltimeout=60&aleg_gateway=1&answer_url=http://localdomain/answer_url&extra_data=2000"
+            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_campaign/campaign/ -d "name=mylittlecampaign&description=&startingdate=1301392136.0&expirationdate=1301332136.0&frequency=20&callmaxduration=50&maxretry=3&intervalretry=3000&calltimeout=60&aleg_gateway=1&voipapp=1&extra_data=2000"
 
         **Example Response**::
 
@@ -112,7 +114,17 @@ class campaignHandler(BaseHandler):
 
             {
                 "status": 1,
-                "answer_url": "http://localdomain/answer_url",
+                "voipapp": {
+                    "gateway_id": 1,
+                    "updated_date": "2011-05-06 05:06:53",
+                    "description": "",
+                    "_state": "<django.db.models.base.ModelState object at\
+                    0x9899f4c>",
+                    "created_date": "2011-04-08 08:00:09",
+                    "type": 1,
+                    "id": 1,
+                    "name": "Default_VoIP_App"
+                },
                 "startingdate": "2011-03-29 09:48:56",
                 "name": "mylittlecampaign",
                 "extra_data": "2000",
@@ -155,6 +167,7 @@ class campaignHandler(BaseHandler):
 
             * You have too many campaign. Max allowed 5
             * The Gateway ID doesn't exist!
+            * The VoipApp doesn't exist!
             * The Campaign name duplicated!
         """
         if check_dialer_setting(request, check_for="campaign"):
@@ -176,7 +189,7 @@ class campaignHandler(BaseHandler):
             intervalretry = get_attribute(attrs, 'intervalretry')
             calltimeout = get_attribute(attrs, 'calltimeout')
             aleg_gateway = get_attribute(attrs, 'aleg_gateway')
-            answer_url = get_attribute(attrs, 'answer_url')
+            voip_app = get_attribute(attrs, 'voip_app')
             extra_data = get_attribute(attrs, 'extra_data')
             daily_start_time = get_attribute(attrs, 'daily_start_time')
             daily_stop_time = get_attribute(attrs, 'daily_stop_time')
@@ -190,7 +203,7 @@ class campaignHandler(BaseHandler):
 
             #print (name, description, status, startingdate, expirationdate,\
             #       frequency, callmaxduration, maxretry, intervalretry, \
-            #       calltimeout, aleg_gateway, answer_url, extra_data\
+            #       calltimeout, aleg_gateway, voip_app, extra_data\
             #       daily_start_time, daily_stop_time, monday, tuesday,\
             #       wednesday, thursday, friday, saturday, sunday)
 
@@ -223,6 +236,14 @@ class campaignHandler(BaseHandler):
                 resp = rc.BAD_REQUEST
                 resp.write("The Gateway ID doesn't exist!")
                 return resp
+                
+            
+            try:
+                obj_voip_app = VoipApp.objects.get(id=voip_app)
+            except VoipApp.DoesNotExist:
+                resp = rc.BAD_REQUEST
+                resp.write("The VoipApp doesn't exist!")
+                return resp
 
 
             """
@@ -247,7 +268,7 @@ class campaignHandler(BaseHandler):
                                         intervalretry=intervalretry,
                                         calltimeout=calltimeout,
                                         aleg_gateway=obj_aleg_gateway,
-                                        answer_url=answer_url,
+                                        voip_app=obj_voip_app,
                                         extra_data=extra_data,
                                         daily_start_time=daily_start_time,
                                         daily_stop_time=daily_stop_time,
@@ -381,7 +402,7 @@ class campaignHandler(BaseHandler):
             * ``calltimeout`` - Define the amount of second to timeout on calls
             * ``aleg_gateway`` - Define the Gateway to use to reach the\
                                  subscriber
-            * ``answer_url`` - Answer URL that will power the VoIP application
+            * ``voip_app`` - Define the VoIP application
             * ``extra_data`` - Define the additional data to pass to the\
                                  application
            
@@ -390,7 +411,7 @@ class campaignHandler(BaseHandler):
 
             curl -u username:password -i -H "Accept: application/json" -X PUT http://127.0.0.1:8000/api/dialer_campaign/campaign/%campaign_id%/ -d "status=2"
 
-            curl -u username:password -i -H "Accept: application/json" -X PUT http://127.0.0.1:8000/api/dialer_campaign/campaign/%campaign_id%/ -d "status=2&startingdate=1301392136.0&expirationdate=1301332136.0&frequency=20&callmaxduration=50&maxretry=3&intervalretry=3000&calltimeout=60&aleg_gateway=1&answer_url='http://localdomain/answer_url/'&extra_data=2000"
+            curl -u username:password -i -H "Accept: application/json" -X PUT http://127.0.0.1:8000/api/dialer_campaign/campaign/%campaign_id%/ -d "status=2&startingdate=1301392136.0&expirationdate=1301332136.0&frequency=20&callmaxduration=50&maxretry=3&intervalretry=3000&calltimeout=60&aleg_gateway=1&voip_app=1&extra_data=2000"
 
         **Example Response**::
 
@@ -457,7 +478,7 @@ class campaignHandler(BaseHandler):
         intervalretry = get_attribute(attrs, 'intervalretry')
         calltimeout = get_attribute(attrs, 'calltimeout')
         aleg_gateway = get_attribute(attrs, 'aleg_gateway')
-        answer_url = get_attribute(attrs, 'answer_url')
+        voip_app = get_attribute(attrs, 'voip_app')
         extra_data = get_attribute(attrs, 'extra_data')
         startingdate = get_value_if_none(startingdate, time.time())
         # expire in 7 days
@@ -490,7 +511,7 @@ class campaignHandler(BaseHandler):
             save_if_set(campaign, 'intervalretry', intervalretry)
             save_if_set(campaign, 'calltimeout', calltimeout)
             save_if_set(campaign, 'aleg_gateway_id', aleg_gateway)
-            save_if_set(campaign, 'answer_url', answer_url)
+            save_if_set(campaign, 'voip_app', voip_app)
             save_if_set(campaign, 'extra_data', extra_data)
             save_if_set(campaign, 'daily_start_time', daily_start_time)
             save_if_set(campaign, 'daily_stop_time', daily_stop_time)

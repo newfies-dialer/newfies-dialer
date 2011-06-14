@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext as _
 from datetime import *
 from dialer_gateway.models import Gateway
+from voip_app.models import VoipApp
 from common.intermediate_model_base_class import Model
 from prefix_country.models import Prefix
 
@@ -48,7 +49,6 @@ class Callrequest(Model):
         * ``status`` -
         * ``subscriber`` -
         * ``campaign`` -
-        * ``answer_url`` -
         * ``extra_data`` -
         * ``last_attempt_time`` -
         * ``result`` -
@@ -63,6 +63,9 @@ class Callrequest(Model):
 
 
     Relationships:
+
+        * ``voipapp`` - Foreign key relationship to the VoipApp model.
+                        VoIP Application to use with this campaign
 
         * ``aleg_gateway`` - Foreign key relationship to the Gateway model.
                              Gateway to use to reach the subscriber
@@ -86,9 +89,9 @@ class Callrequest(Model):
     aleg_gateway = models.ForeignKey(Gateway, null=True, blank=True,
                 verbose_name="A-Leg Gateway",
                 help_text=_("Select Gateway to use to reach the subscriber"))
-    answer_url = models.CharField(max_length=250, blank=True,
-                verbose_name=_("Answer URL"), help_text=_("Define the \
-                Answer URL that will power the VoIP application"))
+    voipapp = models.ForeignKey(VoipApp, null=True, blank=True,
+                verbose_name="VoIP Application", help_text=_("Select VoIP \
+                Application to use with this campaign"))
     extra_data = models.CharField(max_length=120, blank=True,
                 verbose_name=_("Extra Data"), help_text=_("Define the \
                 additional data to pass to the application"))

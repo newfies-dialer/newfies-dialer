@@ -58,6 +58,19 @@ class NewfiesApiTestCase(BaseAuthenticatedClient):
                    {"status": "2"}, **self.extra)
         self.assertEqual(response.status_code, 200)
 
+    def test_delete_campaign(self):
+        """Test Function to delete campaign"""
+        response = self.client.delete('/api/dialer_campaign/campaign/1/',
+        **self.extra)
+        self.assertEqual(response.status_code, 204)
+
+    def test_delete_cascade_campaign(self):
+        """Test Function to delete campaign"""
+        response = \
+        self.client.delete('/api/dialer_campaign/campaign/delete_cascade/1/',
+        **self.extra)
+        self.assertEqual(response.status_code, 204)
+
     def test_create_phonebook(self):
         """Test Function to crete phonebook"""
         response = self.client.post('/api/dialer_campaign/phonebook/',

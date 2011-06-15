@@ -43,7 +43,7 @@ class Callrequest(Model):
 
     **Attributes**:
 
-        * ``uniqueid`` -
+        * ``requestuuid`` -
         * ``callback_time`` -
         * ``calltype`` -
         * ``status`` -
@@ -52,14 +52,13 @@ class Callrequest(Model):
         * ``extra_data`` -
         * ``last_attempt_time`` -
         * ``result`` -
-        * ``exten`` -
         * ``context`` -
-        * ``application`` -
         * ``timeout`` -
         * ``callerid`` -
         * ``variable`` -
         * ``account`` -
         * ``parent_callrequest`` -
+        * ``hangup_cause`` -
 
 
     Relationships:
@@ -72,8 +71,8 @@ class Callrequest(Model):
 
     **Name of DB table**: dialer_callrequest
     """
-    uniqueid = models.CharField(verbose_name=_("Unique ID"),
-                                unique=True, max_length=120)
+    requestuuid = models.CharField(verbose_name=_("RequestUUID"),
+                        db_index=True, max_length=120, null=True, blank=True)
     callback_time = models.DateTimeField()
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')
     updated_date = models.DateTimeField(auto_now=True)
@@ -98,14 +97,13 @@ class Callrequest(Model):
     num_attempt = models.IntegerField(default=0)
     last_attempt_time = models.DateTimeField(null=True, blank=True)
     result = models.CharField(max_length=180, blank=True)
-
-    exten = models.CharField(max_length=180, blank=True)
     context = models.CharField(max_length=180, blank=True)
-    application = models.CharField(max_length=180, blank=True)
     timeout = models.CharField(max_length=180, blank=True)
     callerid = models.CharField(max_length=180, blank=True)
     variable = models.CharField(max_length=900, blank=True)
     account = models.CharField(max_length=180, blank=True)
+
+    hangup_cause = models.CharField(max_length=80, blank=True)
 
     # if the call fail, create a new pending instance and link them
     parent_callrequest = models.ForeignKey('self', null=True, blank=True)
@@ -116,7 +114,7 @@ class Callrequest(Model):
         verbose_name_plural = _("Call Requests")
 
     def __unicode__(self):
-            return u"%s" % self.uniqueid
+            return u"%s [%s]" % (self.id, self.requestuuid)
 
 
 class VoIPCall(models.Model):

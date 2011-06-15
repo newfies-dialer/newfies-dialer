@@ -13,7 +13,7 @@ class VoipAppForm(ModelForm):
     class Meta:
         model = VoipApp
         fields = ['name', 'description', 'type', 'gateway']
-        #exclude = ('user',)
+        exclude = ('user',)
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
         }

@@ -43,6 +43,7 @@ class VoipApp(Model):
            blank=True, null=True)
     gateway = models.ForeignKey(Gateway, null=True, blank=True,
                     help_text=_("Gateway used if we redirect the call"))
+    user = models.ForeignKey('auth.User', related_name='VoIP App owner')
     #extension = models.CharField(max_length=40,
     #               help_text=_("Extension to call when redirection the call"))
 

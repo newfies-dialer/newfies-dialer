@@ -43,8 +43,8 @@ def voipapp_grid(request):
         sortorder_sign = '-'
 
     voipapp_list = VoipApp.objects\
-                     .values('id', 'name', 'description', 'gateway__name',
-                     'type', 'updated_date')#.filter(user=request.user)
+                     .values('id', 'name', 'user', 'description', 'type',
+                     'gateway__name', 'updated_date').filter(user=request.user)
 
     count = voipapp_list.count()
     voipapp_list = \
@@ -93,7 +93,7 @@ def voipapp_list(request):
         * List all voip app which are belong to logged in user
     """
     voipapp_id_list = ''
-    voipapp_list = VoipApp.objects.all()#filter(user=request.user)
+    voipapp_list = VoipApp.objects.filter(user=request.user)
     for i in voipapp_list:
         voipapp_id_list += str(i.id) + ","
     voipapp_id_list = voipapp_id_list[:-1]
@@ -127,9 +127,9 @@ def voipapp_add(request):
     if request.method == 'POST':
         form = VoipAppForm(request.POST)
         if form.is_valid():
-            obj = form.save() # commit=False
-            #obj.user = User.objects.get(username=request.user)
-            #obj.save()
+            obj = form.save(commit=False)
+            obj.user = User.objects.get(username=request.user)
+            obj.save()
             request.session["msg"] = _('"%s" is added successfully.' %\
             request.POST['name'])
             return HttpResponseRedirect('/voipapp/')

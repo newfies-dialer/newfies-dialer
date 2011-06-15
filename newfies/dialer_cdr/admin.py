@@ -13,22 +13,22 @@ class CallrequestAdmin(admin.ModelAdmin):
     of a Callrequest."""
     fieldsets = (
         ('Standard options', {
-            'fields': ('requestuuid', 'campaign', 'callback_time',
+            'fields': ('request_uuid', 'campaign', 'call_time',
                    'status', 'context', 'timeout', 'hangup_cause',
-                   'callerid', 'calltype', 'aleg_gateway', 'voipapp', ),
+                   'callerid', 'call_type', 'aleg_gateway', 'voipapp', ),
         }),
         ('Advanced options', {
             'classes': ('collapse',),
             'fields': ('extra_data', 'subscriber', 'variable', 'account', )
         }),
     )
-    list_display = ('id', 'campaign', 'requestuuid',
-                'callback_time', 'status', 'context', 'callerid', 'calltype',
+    list_display = ('id', 'campaign', 'request_uuid',
+                'call_time', 'status', 'context', 'callerid', 'call_type',
                 'num_attempt', 'last_attempt_time',)
-    list_display_links = ('id', 'requestuuid', )
-    list_filter = ['callerid', 'callback_time', 'status', 'calltype']
+    list_display_links = ('id', 'request_uuid', )
+    list_filter = ['callerid', 'call_time', 'status', 'call_type']
     ordering = ('id', )
-    search_fields  = ('requestuuid', )
+    search_fields  = ('request_uuid', )
 admin.site.register(Callrequest, CallrequestAdmin)
 
 

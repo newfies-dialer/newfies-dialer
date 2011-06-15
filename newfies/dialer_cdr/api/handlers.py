@@ -43,7 +43,7 @@ class callrequestHandler(BaseHandler):
     model = Callrequest
     allowed_methods = ('GET', 'POST', 'PUT', )
     #anonymous = 'AnonymousLanguageHandler'
-    fields = ('uniqueid', 'callback_time', 'status', 'num_attempt',
+    fields = ('uniqueid', 'call_time', 'status', 'num_attempt',
               'last_attempt_time', 'result', 'exten', 'context', 'application',
               'timeout', 'callerid', 'variable', 'account', )
 
@@ -81,7 +81,7 @@ class callrequestHandler(BaseHandler):
                     "num_attempt": 0,
                     "timeout": "30000",
                     "application": "",
-                    "callback_time": "2011-05-01 11:22:33",
+                    "call_time": "2011-05-01 11:22:33",
                     "variable": "",
                     "result": "",
                     "uniqueid": "2342jtdsf-00123",
@@ -114,7 +114,7 @@ class callrequestHandler(BaseHandler):
         **Attributes**:
 
             * ``uniqueid`` -
-            * ``callback_time`` -
+            * ``call_time`` -
             * ``exten`` -
             * ``context`` -
             * ``application`` -
@@ -125,7 +125,7 @@ class callrequestHandler(BaseHandler):
 
         **CURL Usage**::
 
-            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/callrequest/ -d "uniqueid=2342jtdsf-00123&callback_time=YYYY-MM-DD HH:MM:SS&exten=1231321&context=mycontext&application=&timeout=30000&callerid=650784355&variable=&account"
+            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/callrequest/ -d "uniqueid=2342jtdsf-00123&call_time=YYYY-MM-DD HH:MM:SS&exten=1231321&context=mycontext&application=&timeout=30000&callerid=650784355&variable=&account"
 
         **Example Response**::
 
@@ -137,7 +137,7 @@ class callrequestHandler(BaseHandler):
                 "num_attempt": 0,
                 "timeout": "30000",
                 "application": "",
-                "callback_time": "2011-05-07 13:03:11",
+                "call_time": "2011-05-07 13:03:11",
                 "variable": "",
                 "result": "",
                 "uniqueid": "2342jtdsf-00123",
@@ -162,10 +162,10 @@ class callrequestHandler(BaseHandler):
             variable = get_attribute(attrs, 'variable')
             account = get_attribute(attrs, 'account')
             callback_time = datetime.strptime(get_attribute(attrs,
-                            'callback_time'), '%Y-%m-%d %H:%M:%S')
+                            'call_time'), '%Y-%m-%d %H:%M:%S')
 
             new_callrequest = Callrequest(uniqueid=attrs['uniqueid'],
-                            callback_time=attrs['callback_time'],
+                            callback_time=attrs['call_time'],
                             exten=attrs['exten'],
                             context=attrs['context'],
                             application=attrs['application'],
@@ -200,7 +200,7 @@ class callrequestHandler(BaseHandler):
                 "num_attempt": 0,
                 "timeout": "30000",
                 "application": "",
-                "callback_time": "2011-05-01 11:22:33",
+                "call_time": "2011-05-01 11:22:33",
                 "variable": "",
                 "result": "",
                 "uniqueid": "2342jtdsf-00123",

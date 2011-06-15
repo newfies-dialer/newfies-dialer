@@ -37,15 +37,36 @@ VOIPCALL_DISPOSITION = (
 )
 
 
+class CallRequestManager(models.Manager):
+    """CallRequest Manager"""
+
+    def get_pending_callrequest(self):
+        """Return all the pending callrequest based on call time and status"""
+        kwargs = {}
+        kwargs['status'] = 1
+        tday = datetime.now()
+        kwargs['startingdate__lte'] = datetime(tday.year, tday.month,
+            tday.day, tday.hour, tday.minute, tday.second, tday.microsecond)
+        kwargs['expirationdate__gte'] = datetime(tday.year, tday.month,
+            tday.day, tday.hour, tday.minute, tday.second, tday.microsecond)
+
+        s_time = str(tday.hour) + ":" + str(tday.minute) + ":"\
+                 + str(tday.second)
+        kwargs['daily_start_time__lte'] = datetime.strptime(s_time, '%H:%M:%S')
+        kwargs['daily_stop_time__gte'] = datetime.strptime(s_time, '%H:%M:%S')
+
+        #return Campaign.objects.filter(**kwargs)
+        return Callrequest.objects.all()
+
 class Callrequest(Model):
     """This defines the call request, the dialer will read those new request
     and attempt to deliver the call
 
     **Attributes**:
 
-        * ``requestuuid`` -
-        * ``callback_time`` -
-        * ``calltype`` -
+        * ``request_uuid`` -
+        * ``call_time`` -
+        * ``call_type`` -
         * ``status`` -
         * ``subscriber`` -
         * ``campaign`` -
@@ -71,12 +92,12 @@ class Callrequest(Model):
 
     **Name of DB table**: dialer_callrequest
     """
-    requestuuid = models.CharField(verbose_name=_("RequestUUID"),
+    request_uuid = models.CharField(verbose_name=_("RequestUUID"),
                         db_index=True, max_length=120, null=True, blank=True)
-    callback_time = models.DateTimeField()
+    call_time = models.DateTimeField()
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')
     updated_date = models.DateTimeField(auto_now=True)
-    calltype = models.IntegerField(choices=CALLREQUEST_TYPE, default='1',
+    call_type = models.IntegerField(choices=CALLREQUEST_TYPE, default='1',
                 verbose_name=_("Call Request Type"), blank=True, null=True)
     status = models.IntegerField(choices=CALLREQUEST_STATUS, default='1',
                 blank=True, null=True)
@@ -108,13 +129,15 @@ class Callrequest(Model):
     # if the call fail, create a new pending instance and link them
     parent_callrequest = models.ForeignKey('self', null=True, blank=True)
 
+    objects = CallRequestManager()
+
     class Meta:
         db_table = u'dialer_callrequest'
         verbose_name = _("Call Request")
         verbose_name_plural = _("Call Requests")
 
     def __unicode__(self):
-            return u"%s [%s]" % (self.id, self.requestuuid)
+            return u"%s [%s]" % (self.id, self.request_uuid)
 
 
 class VoIPCall(models.Model):

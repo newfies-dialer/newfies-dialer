@@ -118,9 +118,8 @@ class NewfiesApiTestCase(BaseAuthenticatedClient):
     def test_create_callrequest(self):
         """Test Function to crete callrequest"""
         response = self.client.post('/api/dialer_cdr/callrequest/',
-        {"uniqueid": "2342jtdsf-00123",
-         "callback_time": "2011-05-01 11:22:33", "exten": "1231321",
-         "context": "mycontext", "application": "",
+        {"request_uuid": "2342jtdsf-00123",
+         "call_time": "2011-05-01 11:22:33",
          "timeout": "30000", "callerid": "650784355", "variable": "",
          "account": ""}, **self.extra)
         self.assertEqual(response.status_code, 200)

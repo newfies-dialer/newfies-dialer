@@ -88,12 +88,12 @@ def initcall_subscriber(subscriber_id, campaign_id):
         obj_campaignsubscriber = CampaignSubscriber.objects\
                                  .get(id=subscriber_id)
     except:
-        logger.error('Can\'t find this subscriber')
+        logger.error('Can\'t find this CampaignSubscriber')
 
     try:
         obj_campaign = Campaign.objects.get(id=campaign_id)
     except:
-        logger.error('Can\'t find this subscriber')
+        logger.error('Can\'t find this Campaign')
 
 
     if obj_subscriber.status == 1:
@@ -138,7 +138,7 @@ def initcall_subscriber(subscriber_id, campaign_id):
     """**Attributes**:
 
             * ``uniqueid`` -
-            * ``callback_time`` -
+            * ``call_time`` -
             * ``exten`` -
             * ``context`` -
             * ``application`` -

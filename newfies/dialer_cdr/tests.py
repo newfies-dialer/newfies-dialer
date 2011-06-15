@@ -216,7 +216,7 @@ class NewfiesAdminInterfaceTestCase(TestCase):
 
 class NewfiesCustomerInterfaceTestCase(BaseAuthenticatedClient):
     """Test cases for Newfies Customer Interface."""
-    fixtures = ['voipapp.json', 'gateway', 'phonebook', 'contact',
+    fixtures = ['gateway.json', 'voipapp', 'phonebook', 'contact',
                 'campaign', 'campaign_subscriber']
 
     def test_index(self):
@@ -303,6 +303,24 @@ class NewfiesCustomerInterfaceTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
         'frontend/registration/user_detail_change.html')
+
+    def test_voipapp_view(self):
+        """Test Function to check voipapp"""
+        response = self.client.get('/voipapp/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+                                'frontend/voipapp/list.html')
+        response = self.client.get('/voipapp/add/')
+        self.assertEqual(response.status_code, 200)
+        response = self.client.post('/voipapp/add/',
+                   data={'name': 'My voip app', 'description': 'xyz',
+                         'type': '1', 'gateway': '1', 'user': '1'})
+        response = self.client.get('/voipapp/1/')
+        response = self.client.post('/voipapp/1/',
+                   data={'name': 'My app', 'description': 'xyz'})
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+                                'frontend/voipapp/change.html')
 
 
 class NewfiesCustomerInterfaceForgotPassTestCase(TestCase):

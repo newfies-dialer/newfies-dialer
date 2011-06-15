@@ -2,31 +2,33 @@
    {
       "pk":1,
       "model":"dialer_campaign.campaign",
-      "fields":{         
-         "updated_date":"2011-04-08 08:01:29",
+      "fields":{
+         "voipapp":1,
+         "updated_date":"2011-06-15 00:49:16",
          "tuesday":1,
          "daily_stop_time":"23:59:59",
          "daily_start_time":"00:00:00",
          "frequency":10,
-         "saturday":1,         
-         "callmaxduration":3,
+         "saturday":1,
+         "callmaxduration":1800,
          "thursday":1,
          "sunday":1,
+         "extra_data":"",
          "status":1,
          "description":"",
          "monday":1,
          "friday":1,
          "aleg_gateway":1,
          "user":1,
-         "startingdate":"2011-04-08 18:31:11",
+         "startingdate":"2011-06-15 00:01:15",
          "name":"Default_Campaign",
          "calltimeout":45,
          "wednesday":1,
          "phonebook":[
             1
          ],
-         "expirationdate":"2011-04-08 18:31:12",
-         "created_date":"2011-04-08 08:01:29",
+         "expirationdate":"2011-06-22 00:01:15",
+         "created_date":"2011-06-15 00:49:16",
          "maxretry":3,
          "intervalretry":3
       }

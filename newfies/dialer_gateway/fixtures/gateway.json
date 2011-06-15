@@ -3,21 +3,24 @@
       "pk":1,
       "model":"dialer_gateway.gateway",
       "fields":{
-         "updated_date":"2011-04-08 07:51:02",
+         "updated_date":"2011-06-15 00:28:52",
          "status":1,
-         "protocol":"SIP",
+         "addparameter":"",
+         "addprefix":"",
          "name":"Default_Gateway",
+         "gateway_codecs":"PCMA,PCMU",
          "failover":null,
-         "hostname":"localhost",
+         "created_date":"2011-06-15 00:28:52",
          "maximum_call":null,
+         "gateway_timeouts":"10,10",
          "count_in_use":null,
          "removeprefix":"",
-         "addparameter":"",
+         "gateway_retries":"2,1",
+         "gateways":"user/,user",
          "secondused":null,
-         "created_date":"2011-04-08 07:51:02",
-         "addprefix":"",
+         "originate_dial_string":"",
          "count_call":null,
-         "description":"This is default gateway"
+         "description":""
       }
    }
 ]

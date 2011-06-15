@@ -359,6 +359,17 @@ class answercallHandler(BaseHandler):
         return {'Speak': 'Hello World', 'Dial': {'Number': '1231231234'}, }
 
 
+
+class testHandler(BaseHandler):
+    allowed_methods = ('GET',)
+
+    def read(self, request):
+        """
+        curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/test/
+        """
+        return {'element': 'I want to be first', 'test': 'No way', }
+
+
 class hangupcallHandler(BaseHandler):
     """This API server as Test suit to hangup call"""
     allowed_methods = ('POST',)

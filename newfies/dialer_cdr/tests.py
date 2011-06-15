@@ -312,12 +312,9 @@ class NewfiesCustomerInterfaceTestCase(BaseAuthenticatedClient):
                                 'frontend/voipapp/list.html')
         response = self.client.get('/voipapp/add/')
         self.assertEqual(response.status_code, 200)
-        response = self.client.post('/voipapp/add/',
-                   data={'name': 'My voip app', 'description': 'xyz',
-                         'type': '1', 'gateway': '1', 'user': '1'})
-        response = self.client.get('/voipapp/1/')
-        response = self.client.post('/voipapp/1/',
-                   data={'name': 'My app', 'description': 'xyz'})
+        self.assertTemplateUsed(response,
+                                'frontend/voipapp/change.html')
+        response = self.client.get('/voipapp/1/')        
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
                                 'frontend/voipapp/change.html')

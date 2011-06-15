@@ -277,7 +277,7 @@ class testcallHandler(BaseHandler):
 
 class answercallHandler(BaseHandler):
     """This API server as Test suit to answer call"""
-    allowed_methods = ('POST',)
+    allowed_methods = ('POST', 'GET',)
 
     def create(self, request):
         """API to answer the call
@@ -295,6 +295,8 @@ class answercallHandler(BaseHandler):
             {
                 "result": "OK",
             }
+        """
+
         """
         attrs = self.flatten_dict(request.POST)
 
@@ -331,10 +333,30 @@ class answercallHandler(BaseHandler):
         elif obj_callrequest.voipapp.type == 3:
             #Conference
             RESTXML = '<xml conference>'
+        """
         
-        #TODO : return RESTXML
+        return {'Dial': {'Number': '1231231234'}, 'Speak': 'Hello World', }
 
-        return {'result': RESTXML}
+    def read(self, request):
+        """API to answer the call
+
+        **Attributes**:
+
+            * ``RequestUUID`` - A unique identifier for the API request.
+
+        **CURL Usage**::
+
+            curl -u username:password -i -H "Accept: application/json" -X GET http://127.0.0.1:8000/api/dialer_cdr/answercall/ -d "RequestUUID=48092924-856d-11e0-a586-0147ddac9d3e"
+
+        **Example Response**::
+
+            {
+                "result": "OK",
+            }
+        """
+
+        # return <Speak>Hello World</Speak><Dial><Number>1231231234</Number></Dial>
+        return {'Speak': 'Hello World', 'Dial': {'Number': '1231231234'}, }
 
 
 class hangupcallHandler(BaseHandler):

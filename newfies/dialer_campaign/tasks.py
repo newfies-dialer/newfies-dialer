@@ -79,8 +79,8 @@ def initcall_subscriber(subscriber_id, campaign_id):
         * ``subscriber_id`` -
         * ``callrequest_id`` -
     """
-    logger = dialout_subscriber.get_logger()
-    logger.info("Dialout Subscriber")
+    logger = initcall_subscriber.get_logger()
+    logger.info('Dialout Subscriber')
     obj_subscriber = CampaignSubscriber.objects.get(id=subscriber_id)
     logger.info("subscriber status = %s" % str(obj_subscriber.status))
 
@@ -88,12 +88,12 @@ def initcall_subscriber(subscriber_id, campaign_id):
         obj_campaignsubscriber = CampaignSubscriber.objects\
                                  .get(id=subscriber_id)
     except:
-        logger.error("Can't find this subscriber")
+        logger.error('Can\'t find this subscriber')
 
     try:
         obj_campaign = Campaign.objects.get(id=campaign_id)
     except:
-        logger.error("Can't find this subscriber")
+        logger.error('Can\'t find this subscriber')
 
 
     if obj_subscriber.status == 1:
@@ -189,7 +189,7 @@ def excecute_campaign_outboundcall(campaign_id):
 
         * ``campaign_id`` -
     """
-    logger = collect_subscriber.get_logger()
+    logger = excecute_campaign_outboundcall.get_logger()
     logger.info("Execute the calls for the campaign = %s" % str(campaign_id))
 
     obj_campaign = Campaign.objects.get(id=campaign_id)

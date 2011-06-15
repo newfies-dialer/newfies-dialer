@@ -20,7 +20,7 @@ urlpatterns = patterns('',
     url(r'^callrequest/(?P<callrequest_id>[^/]+)', callrequest_handler),
 
     url(r'^testcall[/]$', testcall_handler),
-    url(r'^answercall[/]$', answercall_handler),
+    url(r'^answercall[/]$', answercall_handler, { 'emitter_format': 'xml' }),
     url(r'^hangupcall[/]$', hangupcall_handler),
 
     # automated documentation

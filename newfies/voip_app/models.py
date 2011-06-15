@@ -33,8 +33,10 @@ class VoipApp(Model):
     Relationships:
 
         * ``gateway`` - Foreign key relationship to the Gateway model.
+        * ``user`` - Foreign key relationship to the User model.
+                     Each voip app assigned to User
 
-    **Name of DB table**: dialer_phonebook
+    **Name of DB table**: voip_app
     """
     name = models.CharField(max_length=90)
     description = models.TextField(null=True, blank=True,
@@ -62,6 +64,7 @@ class VoipApp(Model):
 
     def __unicode__(self):
             return u"%s" % self.name
+
 
 def get_voipapp_type_name(id):
     """To get name from voip APP_TYPE"""

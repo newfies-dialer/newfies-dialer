@@ -1,11 +1,9 @@
 # Create your views here.
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.db.models import *
-from django.core.urlresolvers import reverse
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
@@ -13,10 +11,7 @@ from voip_app.models import VoipApp, get_voipapp_type_name
 from voip_app.forms import VoipAppForm
 from dialer_campaign.views import current_view, notice_count
 from dialer_campaign.function_def import *
-from inspect import stack, getmodule
 from datetime import *
-import urllib
-import ast
 
 
 # voip_app
@@ -63,7 +58,7 @@ def voipapp_grid(request):
                       row['description'],
                       get_voipapp_type_name(row['type']),
                       row['gateway__name'],
-                      row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),                      
+                      row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
                       '<a href="' + str(row['id']) + '/" class="icon" ' \
                       + update_style + ' title="Update VoIP App">&nbsp;</a>' +
                       '<a href="del/' + str(row['id']) + '/" class="icon" ' \

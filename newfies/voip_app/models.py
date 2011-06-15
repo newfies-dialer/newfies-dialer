@@ -61,3 +61,9 @@ class VoipApp(Model):
 
     def __unicode__(self):
             return u"%s" % self.name
+
+def get_voipapp_type_name(id):
+    """To get name from voip APP_TYPE"""
+    for i in APP_TYPE:
+        if i[0] == id:
+            return i[1]

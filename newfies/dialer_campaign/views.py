@@ -543,7 +543,7 @@ def phonebook_change(request, object_id):
 
         * ``object_id`` - Selected phonebook object
         * ``form`` - PhonebookForm
-        * ``template`` - dialer_campaign/phonebook/change.html
+        * ``template`` - frontend/phonebook/change.html
 
     **Logic Description**:
 

@@ -16,6 +16,10 @@ $(document).ready(function() {
         {            
              var confirm_string;
              var contact_count;
+             if(document.location.href.search("/voipapp/") != -1)
+             {
+                 confirm_string = 'you are going to delete '+$fields.length+' voipapp'
+             }
              if(document.location.href.search("/contact/") != -1)
              {
                  confirm_string = 'you are going to delete '+$fields.length+' contact(s) from your phonebook'

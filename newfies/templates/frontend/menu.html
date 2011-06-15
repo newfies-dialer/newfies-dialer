@@ -3,6 +3,7 @@
 <div class="span-19 prepend-5 last">
     <div id="main-menu-container">        
         <a href="/dashboard/" class="fg-button ui-state-default ui-corner-all {% ifequal module 'customer_dashboard' %}ui-state-highlight{% endifequal %}">{% trans "Dashboard" %}</a>
+        <a href="/voipapp/" class="fg-button ui-state-default ui-corner-all {% ifequal module 'voipapp' %}ui-state-highlight{% endifequal %}">{% trans "VoIP App" %}</a>
         <a href="/campaign/" class="fg-button ui-state-default ui-corner-all {% if 'campaign' in module  %}ui-state-highlight{% endif %}">{% trans "Campaign"  %}</a>
         <a href="/phonebook/" class="fg-button ui-state-default ui-corner-all {% if 'phonebook' in module %}ui-state-highlight{% endif %}">{% trans "Phonebook"  %}</a>
         <a href="/contact/" class="fg-button ui-state-default ui-corner-all {% if 'contact' in module %}ui-state-highlight{% endif %}">{% trans "Contact"  %}</a>        

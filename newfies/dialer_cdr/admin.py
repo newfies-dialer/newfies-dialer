@@ -36,7 +36,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
     """Allows the administrator to view and modify certain attributes
     of a VoIPCall."""
     can_add = False
-    detail_title = _("VoIP Call Report")
+    detail_title = _("Call Report")
     list_display = ('user', 'used_gateway', 'callid', 'uniqueid',
                     'callerid', 'dnid', 'recipient_number', 'starting_date',
                     'sessiontime', 'disposition', 'recipient_dialcode')
@@ -151,7 +151,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             'opts': opts,
             'model_name': opts.object_name.lower(),
             'app_label': _('VoIP Report'),
-            'title': _('VoIP Call Report'),
+            'title': _('Call Report'),
         }
         return super(VoIPCallAdmin, self)\
                .changelist_view(request, extra_context=ctx)

@@ -34,7 +34,17 @@
             {% for model in child.models %}
             {% spaceless %}
             <li>
-                {% if model.change_url %}<a href="{{ model.change_url }}">{{ model.title }}</a>{% else %}{{ model.title }}{% endif %}
+                {% if model.change_url %}
+                    <a href="{{ model.change_url }}">
+                        {% if model.title == "VoIP Call" %}
+                            {% trans "Call Report" %}
+                        {% else %}
+                            {{ model.title }}
+                        {% endif %}
+                    </a>
+                {% else %}
+                    {{ model.title }}
+                {% endif %}
                 {% if model.add_url or model.change_url %}
                 <ul>
                     {% if model.add_url %}<li><a class="addlink" href="{{ model.add_url }}"><span class="icon">{% trans "Add" %}</span></a></li>{% endif %}

@@ -45,18 +45,11 @@ class CallRequestManager(models.Manager):
         kwargs = {}
         kwargs['status'] = 1
         tday = datetime.now()
-        kwargs['startingdate__lte'] = datetime(tday.year, tday.month,
+        kwargs['call_time__lte'] = datetime(tday.year, tday.month,
             tday.day, tday.hour, tday.minute, tday.second, tday.microsecond)
-        kwargs['expirationdate__gte'] = datetime(tday.year, tday.month,
-            tday.day, tday.hour, tday.minute, tday.second, tday.microsecond)
-
-        s_time = str(tday.hour) + ":" + str(tday.minute) + ":"\
-                 + str(tday.second)
-        kwargs['daily_start_time__lte'] = datetime.strptime(s_time, '%H:%M:%S')
-        kwargs['daily_stop_time__gte'] = datetime.strptime(s_time, '%H:%M:%S')
-
-        #return Campaign.objects.filter(**kwargs)
-        return Callrequest.objects.all()
+        
+        #return Callrequest.objects.all()
+        return Callrequest.objects.filter(**kwargs)
 
     
 class Callrequest(Model):

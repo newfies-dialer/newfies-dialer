@@ -7,7 +7,7 @@ from celery.decorators import task
 from common_functions import isint
 from django.db import IntegrityError
 from time import sleep
-
+import telefonyhelper
 
 class callrequest_pending(PeriodicTask):
     """A periodic task that check for pending calls
@@ -16,24 +16,31 @@ class callrequest_pending(PeriodicTask):
 
         callrequest_pending.delay()
     """
-    run_every = timedelta(microseconds=1000)
-
+    # 1000000 ms = 1 sec
+    run_every = timedelta(microseconds=5000000)
+    
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
-        logger.info("Determine if new pending calls")
+        logger.debug("Determine if new pending calls")
 
-        for callrequest in Callrequest.objects.get_pending_callrequest():
-            logger.info("=> CallRequest (id:%s)" % (callrequest.id))
+        list_callrequest = Callrequest.objects.get_pending_callrequest()[:20]
+        if not list_callrequest:
+            logger.info("No Pending Calls")
+        
+        for callrequest in list_callrequest:
+            logger.info("\n\n\n\n=> CallRequest (id:%s, phone_number:%s)" %
+                        (callrequest.id, callrequest.phone_number))
             
             #TODO : update the callrequest to PROCESS 
+            #callrequest.status = 7 # Update to Process
+            #callrequest.save()
+            init_callrequest.delay(callrequest.id, callrequest.campaign)
 
-            #init_callrequest.delay(callrequest.id)
 
-        logger.info("Finish Spawn the campaign")
         
 
 @task()
-def init_callrequest(callrequest_id):
+def init_callrequest(callrequest_id, campaign_id):
     """This tasks will outbound the call
 
     **Attributes**:
@@ -41,18 +48,10 @@ def init_callrequest(callrequest_id):
         * ``callrequest_id`` -
     """
     logger = init_callrequest.get_logger()
-    logger.info('Dialout init_callrequest')
+    logger.info('>> Dialout init_callrequest')
     obj_callrequest = Callrequest.objects.get(id=callrequest_id)
     logger.info("callrequest status = %s" % str(obj_callrequest.status))
-
-    if obj_callrequest.status == 1:
-        #Here we continue
-        obj_callrequest.status = 7 # Update to Process
-        obj_callrequest.save()
-    else:
-        logger.error("Only Pending status are processed ")
-        return True
-
+    
     try:
         obj_campaign = Campaign.objects.get(id=campaign_id)
     except:
@@ -68,15 +67,21 @@ def init_callrequest(callrequest_id):
     """
     
     #Construct the dialing out path
-    
+
     #Send Call to API
     #http://ask.github.com/celery/userguide/remote-tasks.html
+    """
     res = HttpDispatchTask.delay(
           url="http://127.0.0.1:8000/api/dialer_cdr/testcall/",
           method="POST", x=10, y=10)
     #Todo this will be replaced by the Plivo RestAPIs
     result = res.get()
 
+    """
+    result= telefonyhelper.call_plivo()
+    print result
+    logger.info(result['RequestUUID'])
+    
     obj_callrequest.request_uuid = result['RequestUUID']
     obj_callrequest.save()
 

@@ -89,8 +89,7 @@ class ContactForm(ModelForm):
 
 
 class CampaignForm(ModelForm):
-    """Campaign ModelForm"""
-
+    """Campaign ModelForm"""    
     class Meta:
         model = Campaign
         fields = ['name', 'description', 'status', 'startingdate',
@@ -100,6 +99,10 @@ class CampaignForm(ModelForm):
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
         }
+    def __init__(self,  *args, **kwargs):
+        super(CampaignForm, self).__init__(*args, **kwargs)
+        self.fields['startingdate'].initial = datetime.now()
+        self.fields['expirationdate'].initial = datetime.now()
 
 
 NAME_TYPE = (

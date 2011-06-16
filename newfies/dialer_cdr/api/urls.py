@@ -5,7 +5,8 @@ from piston.doc import documentation_view
 from handlers import callrequestHandler, testcallHandler, \
 answercallHandler, hangupcallHandler, testHandler
 #from django.views.decorators.cache import cache_page
-from custom_xml_emitter import CustomXmlEmitter
+import custom_xml_emitter
+#from common.custom_xml_emitter import CustomXmlEmitter
 
 
 auth = HttpBasicAuthentication(realm='Newfies Application')

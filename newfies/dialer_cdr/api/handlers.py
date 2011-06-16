@@ -367,7 +367,9 @@ class testHandler(BaseHandler):
         """
         curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/test/
         """
-        return {'element': 'I want to be first', 'test': 'No way', }
+        d = {'element': 'I want to be first', 'test': 'No way', }
+        #d = {'Speak': 'Hello World', 'Dial': {'Number': '1231231234'}, }                       
+        return d
 
 
 class hangupcallHandler(BaseHandler):

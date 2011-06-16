@@ -7,6 +7,51 @@ answercallHandler, hangupcallHandler, testHandler
 #from django.views.decorators.cache import cache_page
 
 
+try:
+    import cStringIO as StringIO
+except ImportError:
+    import StringIO
+from django.utils.encoding import smart_unicode
+from django.utils.xmlutils import SimplerXMLGenerator
+from piston.emitters import Emitter
+from piston.utils import Mimer
+
+class CustomXmlEmitter(Emitter):
+    def _to_xml(self, xml, data):
+        if isinstance(data, (list, tuple)):            
+            for item in data:
+                xml.startElement("resource", {})
+                self._to_xml(xml, item)
+                xml.endElement("resource")
+        elif isinstance(data, dict):
+            
+            from _ordereddict import sorteddict, ordereddict
+            data = ordereddict(data, relax=True)
+            data = sorteddict(data)
+            #data.reverse()
+            for key, value in data.iteritems():
+                xml.startElement(key, {})
+                self._to_xml(xml, value)
+                xml.endElement(key)
+        else:
+            xml.characters(smart_unicode(data))
+
+    def render(self, request):
+        stream = StringIO.StringIO()
+
+        xml = SimplerXMLGenerator(stream, "utf-8")
+        xml.startDocument()
+        xml.startElement("response", {})
+
+        self._to_xml(xml, self.construct())
+
+        xml.endElement("response")
+        xml.endDocument()
+
+        return stream.getvalue()        
+Emitter.register('custom_xml', CustomXmlEmitter, 'text/xml; charset=utf-8')
+Mimer.register(lambda *a: None, ('text/xml',))
+
 auth = HttpBasicAuthentication(realm='Newfies Application')
 
 callrequest_handler = Resource(callrequestHandler, authentication=auth)
@@ -24,7 +69,7 @@ urlpatterns = patterns('',
     url(r'^answercall[/]$', answercall_handler, { 'emitter_format': 'xml' }),
     url(r'^hangupcall[/]$', hangupcall_handler),
 
-    url(r'^test[/]$', test_handler, { 'emitter_format': 'xml' }),
+    url(r'^test[/]$', test_handler, { 'emitter_format': 'custom_xml' }),
 
     # automated documentation
     url(r'^doc[/]$', documentation_view),

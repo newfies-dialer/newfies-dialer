@@ -20,15 +20,8 @@ class CustomXmlEmitter(Emitter):
     def _to_xml(self, xml, data):
         if isinstance(data, (list, tuple)):            
             for item in data:
-                xml.startElement("resource", {})
                 self._to_xml(xml, item)
-                xml.endElement("resource")
         elif isinstance(data, dict):
-            
-            from _ordereddict import sorteddict, ordereddict
-            data = ordereddict(data, relax=True)
-            data = sorteddict(data)
-            #data.reverse()
             for key, value in data.iteritems():
                 xml.startElement(key, {})
                 self._to_xml(xml, value)
@@ -38,17 +31,13 @@ class CustomXmlEmitter(Emitter):
 
     def render(self, request):
         stream = StringIO.StringIO()
-
         xml = SimplerXMLGenerator(stream, "utf-8")
         xml.startDocument()
         xml.startElement("response", {})
-
         self._to_xml(xml, self.construct())
-
         xml.endElement("response")
         xml.endDocument()
-
-        return stream.getvalue()        
+        return stream.getvalue()
 Emitter.register('custom_xml', CustomXmlEmitter, 'text/xml; charset=utf-8')
 Mimer.register(lambda *a: None, ('text/xml',))
 
@@ -66,7 +55,7 @@ urlpatterns = patterns('',
     url(r'^callrequest/(?P<callrequest_id>[^/]+)', callrequest_handler),
 
     url(r'^testcall[/]$', testcall_handler),
-    url(r'^answercall[/]$', answercall_handler, { 'emitter_format': 'xml' }),
+    url(r'^answercall[/]$', answercall_handler, { 'emitter_format': 'custom_xml' }),
     url(r'^hangupcall[/]$', hangupcall_handler),
 
     url(r'^test[/]$', test_handler, { 'emitter_format': 'custom_xml' }),

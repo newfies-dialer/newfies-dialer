@@ -335,7 +335,7 @@ class answercallHandler(BaseHandler):
             RESTXML = '<xml conference>'
         """
         
-        return {'Dial': {'Number': '1231231234'}, 'Speak': 'Hello World', }
+        return [ {'Speak': 'Hello World'}, {'Dial': {'Number': '1231231234'}, },]
 
     def read(self, request):
         """API to answer the call
@@ -356,7 +356,7 @@ class answercallHandler(BaseHandler):
         """
 
         # return <Speak>Hello World</Speak><Dial><Number>1231231234</Number></Dial>
-        return {'Speak': 'Hello World', 'Dial': {'Number': '1231231234'}, }
+        return [ {'Speak': 'Hello World'}, {'Dial': {'Number': '1231231234'}, },]
 
 
 
@@ -367,8 +367,8 @@ class testHandler(BaseHandler):
         """
         curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/test/
         """
-        d = {'element': 'I want to be first', 'test': 'No way', }
-        #d = {'Speak': 'Hello World', 'Dial': {'Number': '1231231234'}, }                       
+        d = [ {'element': 'I want to be first'}, {'abc': 'not'}, {'Dial': {'Number': '1231231234'}},]
+        #d = {'Speak': 'Hello World', 'Dial': {'Number': '1231231234'}, }
         return d
 
 

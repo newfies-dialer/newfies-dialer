@@ -1000,7 +1000,7 @@ class bulkcontactHandler(BaseHandler):
             phonebook_id = get_attribute(attrs, 'phonebook_id')
 
             # print (contact, name, description, status, phonebook_id)
-
+            
             # TODO: Check it owns by user
             try:
                 obj_phonebook = Phonebook.objects.get(id=phonebook_id)

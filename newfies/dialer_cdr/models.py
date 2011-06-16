@@ -58,6 +58,7 @@ class CallRequestManager(models.Manager):
         #return Campaign.objects.filter(**kwargs)
         return Callrequest.objects.all()
 
+    
 class Callrequest(Model):
     """This defines the call request, the dialer will read those new request
     and attempt to deliver the call
@@ -92,15 +93,25 @@ class Callrequest(Model):
 
     **Name of DB table**: dialer_callrequest
     """
+    from uuid import uuid1
+
     request_uuid = models.CharField(verbose_name=_("RequestUUID"),
-                        db_index=True, max_length=120, null=True, blank=True)
-    call_time = models.DateTimeField()
+                        default=uuid1(), db_index=True,
+                        max_length=120, null=True, blank=True)
+    call_time = models.DateTimeField(default=(lambda:datetime.now()))
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')
     updated_date = models.DateTimeField(auto_now=True)
     call_type = models.IntegerField(choices=CALLREQUEST_TYPE, default='1',
                 verbose_name=_("Call Request Type"), blank=True, null=True)
     status = models.IntegerField(choices=CALLREQUEST_STATUS, default='1',
                 blank=True, null=True)
+
+    callerid = models.CharField(max_length=80, blank=True)
+    phone_number = models.CharField(max_length=80, blank=True)
+    timeout = models.IntegerField(blank=True, default=30)
+    timelimit = models.IntegerField(blank=True, default=3600)
+    extra_dial_string = models.CharField(max_length=500, blank=True)
+
     subscriber = models.IntegerField(null=True, blank=True,
                  verbose_name="Campaign Subscriber", help_text=_("Campaign \
                  Subscriber related to this callrequest"))
@@ -115,15 +126,10 @@ class Callrequest(Model):
     extra_data = models.CharField(max_length=120, blank=True,
                 verbose_name=_("Extra Data"), help_text=_("Define the \
                 additional data to pass to the application"))
+
     num_attempt = models.IntegerField(default=0)
     last_attempt_time = models.DateTimeField(null=True, blank=True)
     result = models.CharField(max_length=180, blank=True)
-    context = models.CharField(max_length=180, blank=True)
-    timeout = models.CharField(max_length=180, blank=True)
-    callerid = models.CharField(max_length=180, blank=True)
-    variable = models.CharField(max_length=900, blank=True)
-    account = models.CharField(max_length=180, blank=True)
-
     hangup_cause = models.CharField(max_length=80, blank=True)
 
     # if the call fail, create a new pending instance and link them

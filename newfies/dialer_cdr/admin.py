@@ -38,9 +38,9 @@ class VoIPCallAdmin(admin.ModelAdmin):
     of a VoIPCall."""
     can_add = False
     detail_title = _("Call Report")
-    list_display = ('user', 'used_gateway', 'callid', 'uniqueid',
-                    'callerid', 'dnid', 'recipient_number', 'starting_date',
-                    'sessiontime', 'disposition', 'recipient_dialcode')
+    list_display = ('user', 'used_gateway', 'callid',
+                    'callerid', 'phone_number', 'starting_date',
+                    'sessiontime', 'disposition', 'dialcode')
 
     def has_add_permission(self, request):
         """Removed add permission on VoIP Call Report model
@@ -122,19 +122,19 @@ class VoIPCallAdmin(admin.ModelAdmin):
         total_data = VoIPCall.objects.extra(select=select_data)\
                      .values('starting_date')\
                      .filter(**kwargs).annotate(Count('starting_date'))\
-                     .annotate(Sum('sessiontime_real'))\
-                     .annotate(Avg('sessiontime_real'))\
+                     .annotate(Sum('sessiontime'))\
+                     .annotate(Avg('sessiontime'))\
                      .order_by('-starting_date')
 
         # Following code will count total voip calls, duration
         if total_data.count() != 0:
             max_duration = \
-            max([x['sessiontime_real__sum'] for x in total_data])
+            max([x['sessiontime__sum'] for x in total_data])
             total_duration = \
-            sum([x['sessiontime_real__sum'] for x in total_data])
+            sum([x['sessiontime__sum'] for x in total_data])
             total_calls = sum([x['starting_date__count'] for x in total_data])
             total_avg_duration = \
-            (sum([x['sessiontime_real__avg']\
+            (sum([x['sessiontime__avg']\
             for x in total_data])) / total_data.count()
         else:
             max_duration = 0
@@ -174,21 +174,17 @@ class VoIPCallAdmin(admin.ModelAdmin):
         # super(VoIPCall_ReportAdmin, self).queryset(request)
         qs = request.session['voipcall_record_qs']
 
-        writer.writerow(['user', 'callid', 'callerid', 'dnid',
-                         'recipient_number', 'starting_date', 'sessiontime',
-                         'sessiontime_real', 'disposition',
-                         'voipplan', 'gateway'])
+        writer.writerow(['user', 'callid', 'callerid',
+                         'phone_number', 'starting_date', 'sessiontime',
+                         'disposition', 'gateway'])
         for i in qs:
             writer.writerow([i.user,
                              i.callid,
                              i.callerid,
-                             i.dnid,
-                             i.recipient_number,
+                             i.phone_number,
                              i.starting_date,
                              i.sessiontime,
-                             i.sessiontime_real,
                              get_disposition_name(i.disposition),
-                             i.voipplan,
                              i.gateway,
                              ])
         return response

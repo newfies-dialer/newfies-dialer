@@ -8,6 +8,7 @@ from common_functions import isint
 from django.db import IntegrityError
 from time import sleep
 import telefonyhelper
+from uuid import uuid1
 
 class callrequest_pending(PeriodicTask):
     """A periodic task that check for pending calls
@@ -35,9 +36,6 @@ class callrequest_pending(PeriodicTask):
             #callrequest.status = 7 # Update to Process
             #callrequest.save()
             init_callrequest.delay(callrequest.id, callrequest.campaign)
-
-
-        
 
 @task()
 def init_callrequest(callrequest_id, campaign_id):
@@ -84,6 +82,61 @@ def init_callrequest(callrequest_id, campaign_id):
     
     obj_callrequest.request_uuid = result['RequestUUID']
     obj_callrequest.save()
+
+    #lock to limit running process, do so per campaign
+    #http://ask.github.com/celery/cookbook/tasks.html
+
+    return True
+
+
+
+@task()
+def dummy_testcall(callerid, phone_number, gateway):
+    """
+    This is used for test purpose to simulate the behavior of Plivo
+
+    **Attributes**:
+
+        * ``callerid`` - CallerID
+        * ``phone_number`` - Phone Number to call
+        * ``gateway`` - Gateway to use for the call
+
+    **Return**:
+
+        * ``RequestUUID`` - A unique identifier for API request."""
+
+    print("Executing task id %r, args: %r kwargs: %r" % (
+        dummy_testcall.request.id, dummy_testcall.request.args, dummy_testcall.request.kwargs))
+    print("Waiting 1 seconds...")
+    sleep(1)
+
+    request_uuid = uuid1()
+
+    #Trigger AnswerURL
+    dummy_test_answerurl.delay(request_uuid)
+    #Trigger HangupURL
+    dummy_test_hangupurl.delay(request_uuid)
+
+    return {'RequestUUID' : request_uuid}
+
+
+@task(default_retry_delay=30 * 60)  # retry in 30 minutes.
+def dummy_test_answerurl(request_uuid):
+    """This task trigger a call to local answer
+    This is used for test purpose to simulate the behavior of Plivo
+
+    **Attributes**:
+
+        * ``RequestUUID`` - A unique identifier for API request."""
+
+    print("Executing task id %r, args: %r kwargs: %r" % (
+        dummy_test_answerurl.request.id, dummy_test_answerurl.request.args, dummy_test_answerurl.request.kwargs))
+    print("Waiting 1 seconds...")
+    sleep(1)
+
+    #find Callrequest
+
+    #Update Status to Success
 
     #lock to limit running process, do so per campaign
     #http://ask.github.com/celery/cookbook/tasks.html

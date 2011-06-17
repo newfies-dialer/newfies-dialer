@@ -145,17 +145,13 @@ class VoIPCall(models.Model):
 
     **Attributes**:
 
-        * ``callid`` - callid.
-        * ``uniqueid`` -
-        * ``callerid`` -
-        * ``dnid`` -
-        * ``recipient_number`` -
-        * ``recipient_dialcode`` -
-        * ``nasipaddress`` -
-        * ``starting_date`` -
-        * ``sessiontime`` -
-        * ``sessiontime_real`` -
-        * ``disposition`` -
+        * ``callid`` - callid of the phonecall
+        * ``callerid`` - CallerID used to call out
+        * ``phone_number`` - Phone number contacted
+        * ``dialcode`` - Dialcode of the phonenumber
+        * ``starting_date`` - Starting date of the call
+        * ``sessiontime`` - Duration of the call
+        * ``disposition`` - Disposition of the call
 
     Relationships:
 
@@ -169,35 +165,29 @@ class VoIPCall(models.Model):
     used_gateway = models.ForeignKey(Gateway, null=True, blank=True)
     callrequest = models.ForeignKey(Callrequest, null=True, blank=True)
     callid = models.CharField(max_length=120, help_text=_("VoIP Call-ID"))
-    uniqueid = models.CharField(max_length=90,
-                               help_text=_("UniqueID from VoIP server"))
     callerid = models.CharField(max_length=120, verbose_name='CallerID')
-    dnid = models.CharField(max_length=120, verbose_name='DNID')
-    recipient_number = models.CharField(max_length=32,
+    phone_number = models.CharField(max_length=32,
                     help_text=_(u'The international number of the \
                     recipient, without the leading +'), null=True, blank=True)
-    recipient_dialcode = models.ForeignKey(Prefix, db_column="prefix",
+    dialcode = models.ForeignKey(Prefix, db_column="prefix",
                                verbose_name="Destination", null=True,
                                blank=True, help_text=_("Select Prefix"))
-    nasipaddress = models.CharField(max_length=90)
     starting_date = models.DateTimeField(auto_now_add=True)
     sessiontime = models.IntegerField(null=True, blank=True)
-    sessiontime_real = models.IntegerField(null=True, blank=True)
-
     disposition = models.IntegerField(null=True, blank=True,
                         choices=VOIPCALL_DISPOSITION)
 
     def destination_name(self):
         """Return Recipient dialcode"""
-        if self.recipient_dialcode is None:
+        if self.dialcode is None:
             return "0"
         else:
-            return self.recipient_dialcode.name
+            return self.dialcode.name
 
     def duration(self):
         """Return duration in min & sec"""
-        min = int(self.sessiontime_real / 60)
-        sec = int(self.sessiontime_real % 60)
+        min = int(self.sessiontime / 60)
+        sec = int(self.sessiontime % 60)
         return "%02d" % min + ":" + "%02d" % sec
 
     class Meta:

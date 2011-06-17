@@ -26,49 +26,8 @@ def add(x, y):
         self.retry(exc=exc, countdown=60)  # override the default and
                                            # retry in 1 minute
 
-"""
-class OutboundcallSimulator(Task):
-    name = "outboundcall_simulator"
-
-    def run(self, callrequest_id, **kwargs):
-        logger = self.get_logger(**kwargs)
-"""
 
 
-@task(default_retry_delay=30 * 60)  # retry in 30 minutes.
-def test_answerurl(RequestUUID):
-    """This task trigger a call to local answer
-    This is used for test purpose to simulate the behavior of Plivo
-
-    **Attributes**:
-
-        * ``RequestUUID`` - A unique identifier for API request."""
-
-    print("Executing task id %r, args: %r kwargs: %r" % (
-        test_answerurl.request.id, test_answerurl.request.args, test_answerurl.request.kwargs))
-    print("Waiting 5 seconds...")
-    sleep(5)
-
-    res = HttpDispatchTask.delay(
-          url="http://127.0.0.1:8000/api/dialer_cdr/answercall/",
-          method="POST", x=10, y=10, RequestUUID=RequestUUID)
-    #Todo this will be replaced by the Plivo RestAPIs
-    res.get()
-
-    #lock to limit running process, do so per campaign
-    #http://ask.github.com/celery/cookbook/tasks.html
-
-    return True
-    
-
-
-"""
-class OutboundcallSimulator(Task):
-    name = "outboundcall_simulator"
-
-    def run(self, callrequest_id, **kwargs):
-        logger = self.get_logger(**kwargs)
-"""
 
 @task()
 def initcall_subscriber(subscriber_id, campaign_id):

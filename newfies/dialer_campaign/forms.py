@@ -105,6 +105,23 @@ class CampaignForm(ModelForm):
         self.fields['expirationdate'].initial = datetime.now()
 
 
+class CampaignAdminForm(ModelForm):
+    """Admin Campaign ModelForm"""
+    class Meta:
+        model = Campaign
+        fields = ['name', 'description', 'user', 'status', 'startingdate',
+                  'expirationdate', 'aleg_gateway', 'voipapp',
+                  'extra_data', 'phonebook', 'frequency', 'callmaxduration', 'maxretry',
+                  'intervalretry', 'calltimeout', 'daily_start_time',
+                  'daily_stop_time', 'monday', 'tuesday', 'wednesday',
+                  'thursday', 'friday', 'saturday', 'sunday']
+
+    def __init__(self,  *args, **kwargs):
+        super(CampaignAdminForm, self).__init__(*args, **kwargs)
+        self.fields['startingdate'].initial = datetime.now()
+        self.fields['expirationdate'].initial = datetime.now()
+
+
 NAME_TYPE = (
     (1, _('Last Name')),
     (2, _('First Name')),

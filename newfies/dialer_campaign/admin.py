@@ -16,6 +16,7 @@ import csv
 class CampaignAdmin(admin.ModelAdmin):
     """Allows the administrator to view and modify certain attributes
     of a Campaign."""
+    form = CampaignAdminForm
     fieldsets = (
         ('Standard options', {
             'fields': ('name', 'description', 'user', 'status', 'startingdate',

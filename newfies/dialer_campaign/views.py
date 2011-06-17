@@ -23,6 +23,7 @@ from dialer_campaign.tasks import collect_subscriber
 import urllib
 import csv
 import ast
+from newfies.dialer_campaign.models import Phonebook
 
 
 def current_view(request):

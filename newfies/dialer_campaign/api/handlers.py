@@ -249,7 +249,7 @@ class campaignHandler(BaseHandler):
             """
             #TODO: Get settings
             try:
-                user_setting = UserProfile.objects.get(user=request.user)
+                user_setting = UserProfile.objects.get(user=request.user)IpAuthentication
             except:
                 resp = rc.FORBIDDEN
                 resp.write("\nUser is not assigned to a Setting!")

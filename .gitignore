@@ -3,6 +3,7 @@
 *.db
 *nbproject*
 *devserver*
+*.idea*
 test.db
 settings_local.py
 docs/_build/*

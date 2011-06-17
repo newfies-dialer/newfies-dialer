@@ -9,6 +9,7 @@ import uuid
 
 seed()
 
+ALLOWED_IP_LIST = ['127.0.0.1' , 'localhost']
 
 def get_attribute(attrs, attr_name):
     """this is a helper to retrieve an attribute if it exists"""
@@ -356,7 +357,11 @@ class answercallHandler(BaseHandler):
         """
 
         # return <Speak>Hello World</Speak><Dial><Number>1231231234</Number></Dial>
-        return [ {'Speak': 'Hello World'}, {'Dial': {'Number': '1231231234'}, },]
+        try:
+            ALLOWED_IP_LIST.index(request.META['REMOTE_ADDR'])
+            return [ {'Speak': 'Hello World'}, {'Dial': {'Number': '1231231234'}, },]
+        except:
+            return "HTTP - Error"
 
 
 

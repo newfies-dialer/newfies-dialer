@@ -266,7 +266,7 @@ class testcallHandler(BaseHandler):
 
         opt_from = get_attribute(attrs, 'From')
         opt_to = get_attribute(attrs, 'To')
-        
+
         if not opt_from or not opt_to:
             resp = rc.BAD_REQUEST
             resp.write("Wrong parameters!")
@@ -359,7 +359,8 @@ class answercallHandler(BaseHandler):
         # return <Speak>Hello World</Speak><Dial><Number>1231231234</Number></Dial>
         try:
             ALLOWED_IP_LIST.index(request.META['REMOTE_ADDR'])
-            return [ {'Speak': 'Hello World'}, {'Dial': {'Number': '1231231234'}, },]
+            return [ {'Speak': 'Hello World'},
+                     {'Dial': {'Number': '1231231234'}, },]
         except:
             return "HTTP - Error"
 

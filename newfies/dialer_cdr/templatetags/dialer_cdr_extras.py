@@ -76,12 +76,15 @@ def time_in_min(value, arg):
 @register.filter()
 def conv_min(value):
     """Convert sec into min"""
-    if int(value) != 0:
-        min = int(value / 60)
-        sec = int(value % 60)
-        return "%02d" % min + ":" + "%02d" % sec
-    else:
-        return "00:00"
+    try:
+        if int(value) != 0:
+            min = int(value / 60)
+            sec = int(value % 60)
+            return "%02d" % min + ":" + "%02d" % sec
+        else:
+            return "00:00"
+    except ValueError:
+        return "None"
 
 
 @register.filter()
@@ -104,6 +107,8 @@ def month_name(value, arg):
 @register.filter()
 def cal_width(value, max):
     """Get width"""
+    if not value or not max:
+        return "None"
     width = (value / float(max)) * 200
     return width
 

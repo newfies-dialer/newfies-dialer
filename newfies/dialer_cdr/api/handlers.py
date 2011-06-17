@@ -226,7 +226,7 @@ class testcallHandler(BaseHandler):
     It aims to be used as a test function that will simulate the behavior
     of sending the call via an API
     """
-    allowed_methods = ('POST',)
+    allowed_methods = ('POST', )
 
     def create(self, request):
         """API to initiate a new call

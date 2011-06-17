@@ -1,6 +1,6 @@
 from datetime import date, timedelta
 from celery.task import Task, PeriodicTask
-from celery.task.http import HttpDispatchTask
+from celery.task.http import HttpDispatchTask, HttpDispatch
 from dialer_campaign.models import *
 from dialer_cdr.models import *
 from celery.decorators import task
@@ -9,6 +9,7 @@ from django.db import IntegrityError
 from time import sleep
 import telefonyhelper
 from uuid import uuid1
+
 
 class callrequest_pending(PeriodicTask):
     """A periodic task that check for pending calls
@@ -68,18 +69,30 @@ def init_callrequest(callrequest_id, campaign_id):
 
     #Send Call to API
     #http://ask.github.com/celery/userguide/remote-tasks.html
-    """
-    res = HttpDispatchTask.delay(
-          url="http://127.0.0.1:8000/api/dialer_cdr/testcall/",
-          method="POST", x=10, y=10)
-    #Todo this will be replaced by the Plivo RestAPIs
-    result = res.get()
 
+    #Todo this will be replaced by the Plivo RestAPIs
+    """
+    import httplib, urllib
+    params = urllib.urlencode({'From': '900900000', 'To': '1000',})
+    headers = {"Content-type": "application/x-www-form-urlencoded",
+           "Accept": "text/plain"}
+    conn = httplib.HTTPConnection("127.0.0.1:8000")
+    conn.request("POST", "/api/dialer_cdr/testcall/", params, headers)
+    response = conn.getresponse()
+    print response.status, response.reason
+    data = response.read()
+    conn.close()
+    """
+    #Plivo
     """
     result= telefonyhelper.call_plivo()
-    print result
-    logger.info(result['RequestUUID'])
-    
+    """
+    res = dummy_testcall.delay(callerid='901901901', phone_number='1000', gateway='user/')
+    result = res.get()
+
+    logger.info('Received RequestUUID :> ' + str(result['RequestUUID']))
+
+        
     obj_callrequest.request_uuid = result['RequestUUID']
     obj_callrequest.save()
 
@@ -89,6 +102,14 @@ def init_callrequest(callrequest_id, campaign_id):
     return True
 
 
+
+"""
+The following tasks have been created for testing purpose.
+Tasks :
+    - dummy_testcall
+    - dummy_test_answerurl
+    - dummy_test_hangupurl
+"""
 
 @task()
 def dummy_testcall(callerid, phone_number, gateway):
@@ -105,9 +126,10 @@ def dummy_testcall(callerid, phone_number, gateway):
 
         * ``RequestUUID`` - A unique identifier for API request."""
 
-    print("Executing task id %r, args: %r kwargs: %r" % (
+    logger = dummy_testcall.get_logger()
+    logger.info("Executing task id %r, args: %r kwargs: %r" % (
         dummy_testcall.request.id, dummy_testcall.request.args, dummy_testcall.request.kwargs))
-    print("Waiting 1 seconds...")
+    logger.info("Waiting 1 seconds...")
     sleep(1)
 
     request_uuid = uuid1()
@@ -120,7 +142,7 @@ def dummy_testcall(callerid, phone_number, gateway):
     return {'RequestUUID' : request_uuid}
 
 
-@task(default_retry_delay=30 * 60)  # retry in 30 minutes.
+@task(default_retry_delay=2)  # retry in 2 seconds.
 def dummy_test_answerurl(request_uuid):
     """This task trigger a call to local answer
     This is used for test purpose to simulate the behavior of Plivo
@@ -128,17 +150,68 @@ def dummy_test_answerurl(request_uuid):
     **Attributes**:
 
         * ``RequestUUID`` - A unique identifier for API request."""
-
-    print("Executing task id %r, args: %r kwargs: %r" % (
+    logger = dummy_test_answerurl.get_logger()
+    logger.info("Executing task id %r, args: %r kwargs: %r" % (
         dummy_test_answerurl.request.id, dummy_test_answerurl.request.args, dummy_test_answerurl.request.kwargs))
-    print("Waiting 1 seconds...")
+    logger.info("Waiting 1 seconds...")
     sleep(1)
 
     #find Callrequest
+    try:
+        obj_callrequest = Callrequest.objects.get(request_uuid=request_uuid)
+    except :
+        sleep(1)
+        obj_callrequest = Callrequest.objects.get(request_uuid=request_uuid)
 
-    #Update Status to Success
+    #Update CallRequest
+    obj_callrequest.status = 4 # SUCCESS
+    obj_callrequest.save()
+    
+    #Create CDR
+    new_voipcall = VoIPCall(user=obj_callrequest.user,
+                            request_uuid=obj_callrequest.request_uuid,
+                            callrequest=obj_callrequest,
+                            callid='',
+                            callerid=obj_callrequest.callerid,
+                            phone_number=obj_callrequest.phone_number,
+                            sessiontime=0,
+                            disposition=1)
+    new_voipcall.save()
 
     #lock to limit running process, do so per campaign
     #http://ask.github.com/celery/cookbook/tasks.html
 
+    return True
+
+
+@task(default_retry_delay=2)  # retry in 2 seconds.
+def dummy_test_hangupurl(request_uuid):
+    """This task trigger a call to local answer
+    This is used for test purpose to simulate the behavior of Plivo
+
+    **Attributes**:
+
+        * ``RequestUUID`` - A unique identifier for API request."""
+    logger = dummy_test_hangupurl.get_logger()
+    logger.info("Executing task id %r, args: %r kwargs: %r" % (
+        dummy_test_hangupurl.request.id, dummy_test_hangupurl.request.args, dummy_test_hangupurl.request.kwargs))
+    logger.info("Waiting 10 seconds...")
+    sleep(10)
+
+    #find VoIPCall
+    try:
+        obj_voipcall = VoIPCall.objects.get(request_uuid=request_uuid)
+    except :
+        sleep(1)
+        obj_voipcall = VoIPCall.objects.get(request_uuid=request_uuid)
+
+    #Update VoIPCall
+    obj_voipcall.status = 1 # ANSWER
+    obj_voipcall.sessiontime = 55
+    obj_voipcall.save()
+
+    obj_callrequest = Callrequest.objects.get(request_uuid=request_uuid)
+    obj_callrequest.hangup_cause = 'NORMAL_CLEARING'
+    obj_callrequest.save()
+    
     return True

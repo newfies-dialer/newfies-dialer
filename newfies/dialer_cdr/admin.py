@@ -13,7 +13,7 @@ class CallrequestAdmin(admin.ModelAdmin):
     of a Callrequest."""
     fieldsets = (
         ('Standard options', {
-            'fields': ('request_uuid', 'campaign', 'call_time',
+            'fields': ('user', 'request_uuid', 'campaign', 'call_time',
                    'status','hangup_cause', 'callerid', 'phone_number',
                     'timeout', 'timelimit', 'call_type', 'aleg_gateway',
                     'voipapp', ),
@@ -23,7 +23,7 @@ class CallrequestAdmin(admin.ModelAdmin):
             'fields': ('extra_data', 'subscriber', 'extra_dial_string', )
         }),
     )
-    list_display = ('id', 'campaign', 'request_uuid', 'call_time',
+    list_display = ('id', 'user', 'campaign', 'request_uuid', 'call_time',
             'status', 'callerid', 'phone_number', 'call_type',
             'num_attempt', 'last_attempt_time',)
     list_display_links = ('id', 'request_uuid', )

@@ -5,6 +5,7 @@ from dialer_gateway.models import Gateway
 from voip_app.models import VoipApp
 from common.intermediate_model_base_class import Model
 from prefix_country.models import Prefix
+from uuid import uuid1
 
 
 CALLREQUEST_STATUS = (
@@ -86,8 +87,7 @@ class Callrequest(Model):
 
     **Name of DB table**: dialer_callrequest
     """
-    from uuid import uuid1
-
+    user = models.ForeignKey('auth.User')
     request_uuid = models.CharField(verbose_name=_("RequestUUID"),
                         default=uuid1(), db_index=True,
                         max_length=120, null=True, blank=True)
@@ -162,6 +162,9 @@ class VoIPCall(models.Model):
     **Name of DB table**: dialer_cdr
     """
     user = models.ForeignKey('auth.User', related_name='Call Sender')
+    request_uuid = models.CharField(verbose_name=_("RequestUUID"),
+                        default=uuid1(), db_index=True,
+                        max_length=120, null=True, blank=True)
     used_gateway = models.ForeignKey(Gateway, null=True, blank=True)
     callrequest = models.ForeignKey(Callrequest, null=True, blank=True)
     callid = models.CharField(max_length=120, help_text=_("VoIP Call-ID"))

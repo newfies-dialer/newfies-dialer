@@ -30,7 +30,7 @@ def add(x, y):
 
 
 @task()
-def initcall_subscriber(subscriber_id, campaign_id):
+def initiate_call_subscriber(subscriber_id, campaign_id):
     """This tasks will outbound the call to the subscriber
 
     **Attributes**:
@@ -38,10 +38,9 @@ def initcall_subscriber(subscriber_id, campaign_id):
         * ``subscriber_id`` -
         * ``callrequest_id`` -
     """
-    logger = initcall_subscriber.get_logger()
-    logger.info('Dialout Subscriber')
+    logger = initiate_call_subscriber.get_logger()
     obj_subscriber = CampaignSubscriber.objects.get(id=subscriber_id)
-    logger.info("subscriber status = %s" % str(obj_subscriber.status))
+    logger.info("Dialout Subscriber :: status = %s" % str(obj_subscriber.status))
 
     try:
         obj_campaignsubscriber = CampaignSubscriber.objects\
@@ -73,7 +72,7 @@ def initcall_subscriber(subscriber_id, campaign_id):
     #TODO: Spool calls to dialout
 
     #Construct the dialing out path
-    obj_campaign.aleg_gateway
+    #obj_campaign.aleg_gateway
 
     """
     * ``name`` - Gateway name.
@@ -106,49 +105,32 @@ def initcall_subscriber(subscriber_id, campaign_id):
             * ``variable`` -
             * ``account`` -
     """
-    new_callrequest = Callrequest(uniqueid='',
-                            callback_time=datetime.now(),
-                            exten='',
-                            context='',
-                            application='',
-                            timeout='',
-                            callerid='',
-                            variable='',
-                            account='')
-
+    #TODO: WHAT CALLERID TO USE
+    new_callrequest = Callrequest(status=1, #PENDING
+                            call_time=datetime.now(),
+                            timeout=30,
+                            callerid='90000000',
+                            phone_number=obj_campaignsubscriber.contact__contact,
+                            campaign=obj_campaignsubscriber.campaign_id,
+                            aleg_gateway=None,
+                            voipapp=None)
+    #TODO: Fix the creation of CallRequest : add all needed field
     new_callrequest.save()
     #Attach the new_callrequest.id to the call
-
-    #Send this to the simulator
-    #This will interact with Plivo/Freeswitch later on
-
-    #Send Call to API
-    #http://ask.github.com/celery/userguide/remote-tasks.html
-    res = HttpDispatchTask.delay(
-          url="http://127.0.0.1:8000/api/dialer_cdr/testcall/",
-          method="POST", x=10, y=10)
-    #Todo this will be replaced by the Plivo RestAPIs
-    result = res.get()
-
-    new_callrequest.uniqueid = result['RequestUUID']
-    new_callrequest.save()
-
-    #lock to limit running process, do so per campaign
-    #http://ask.github.com/celery/cookbook/tasks.html
 
     return True
 
 
 #TODO: Put a priority on this task
 @task()
-def excecute_campaign_outboundcall(campaign_id):
+def check_campaign_pendingcall(campaign_id):
     """This tasks will execute the outbound call of the campaign
 
     **Attributes**:
 
         * ``campaign_id`` -
     """
-    logger = excecute_campaign_outboundcall.get_logger()
+    logger = check_campaign_pendingcall.get_logger()
     logger.info("Execute the calls for the campaign = %s" % str(campaign_id))
 
     obj_campaign = Campaign.objects.get(id=campaign_id)
@@ -179,7 +161,7 @@ def excecute_campaign_outboundcall(campaign_id):
 
     for elem_subscriber in list_subscriber:
         """Loop on Subscriber and start the initcall task"""
-        dialout_subscriber.delay(elem_subscriber.id, campaign_id)
+        initiate_call_subscriber.delay(elem_subscriber.id, campaign_id)
         sleep(time_to_wait)
 
 
@@ -201,7 +183,7 @@ class campaign_running(PeriodicTask):
             logger.info("=> Campaign name %s (id:%s)" % (campaign.name,
                                                          campaign.id))
 
-            excecute_campaign_outboundcall.delay(campaign.id)
+            check_campaign_pendingcall.delay(campaign.id)
 
         logger.info("Finish Spawn the campaign")
 

@@ -93,9 +93,9 @@ class CampaignForm(ModelForm):
     class Meta:
         model = Campaign
         fields = ['name', 'description', 'status', 'startingdate',
-                  'expirationdate', 'aleg_gateway', 'voipapp', 'extra_data',
-                  'phonebook', 'frequency', 'callmaxduration',
-                  'maxretry', 'intervalretry', 'calltimeout',]
+                  'expirationdate', 'aleg_gateway', 'voipapp', 'frequency',
+                  'callmaxduration', 'maxretry', 'intervalretry',
+                  'calltimeout', 'extra_data', 'phonebook',]
         exclude = ('user', )
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),

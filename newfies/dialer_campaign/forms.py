@@ -93,8 +93,9 @@ class CampaignForm(ModelForm):
     class Meta:
         model = Campaign
         fields = ['name', 'description', 'status', 'startingdate',
-                  'expirationdate', 'aleg_gateway', 'voipapp', 'extra_data',
-                  'phonebook']
+                  'expirationdate', 'aleg_gateway', 'voipapp', 'frequency',
+                  'callmaxduration', 'maxretry', 'intervalretry',
+                  'calltimeout', 'extra_data', 'phonebook',]
         exclude = ('user', )
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
@@ -111,10 +112,11 @@ class CampaignAdminForm(ModelForm):
         model = Campaign
         fields = ['name', 'description', 'user', 'status', 'startingdate',
                   'expirationdate', 'aleg_gateway', 'voipapp',
-                  'extra_data', 'phonebook', 'frequency', 'callmaxduration', 'maxretry',
-                  'intervalretry', 'calltimeout', 'daily_start_time',
-                  'daily_stop_time', 'monday', 'tuesday', 'wednesday',
-                  'thursday', 'friday', 'saturday', 'sunday']
+                  'extra_data', 'phonebook', 'frequency', 'callmaxduration',
+                  'maxretry', 'intervalretry', 'calltimeout',
+                  'daily_start_time', 'daily_stop_time', 'monday',
+                  'tuesday', 'wednesday', 'thursday', 'friday',
+                  'saturday', 'sunday']
 
     def __init__(self,  *args, **kwargs):
         super(CampaignAdminForm, self).__init__(*args, **kwargs)

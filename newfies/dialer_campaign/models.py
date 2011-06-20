@@ -168,6 +168,7 @@ class Campaign(Model):
         * ``name`` - Campaign name.
         * ``description`` - Description about Campaign.
         * ``status`` - Campaign status.
+        * ``callerid`` - Caller ID
         * ``startingdate`` - Starting date of Campaign
         * ``expirationdate`` - Expiration date of Campaign
         * ``daily_start_time`` - Start time of day
@@ -194,20 +195,27 @@ class Campaign(Model):
 
     **Name of DB table**: dialer_campaign
     """
-    name = models.CharField(unique=True, max_length=150)
+    campaign_code = models.CharField(unique=True, max_length=20, blank=True,
+                        verbose_name="Campaign Code",
+                        help_text='this code is autogenerate by the platform,\
+                        this is used to identify the campaign')
+    name = models.CharField(max_length=100)
     description = models.TextField(verbose_name='Description', blank=True,
                   null=True, help_text=_("Short description of the Campaign"))
     user = models.ForeignKey('auth.User', related_name='Campaign owner')
     status = models.IntegerField(choices=CAMPAIGN_STATUS, default='1',
                 verbose_name="Status", blank=True, null=True)
+    callerid = models.CharField(max_length=80, blank=True,
+                verbose_name=_("CallerID"), help_text=_("CallerID used \
+                to call the A-Leg"))
     #General Starting & Stopping date
     startingdate = models.DateTimeField(default=datetime.now(),
-                   verbose_name=_('Start'),
-    help_text=_("Date Format: YYYY-mm-DD HH:MM:SS"))
-    expirationdate = \
-            models.DateTimeField(default=datetime.now() + timedelta(days=7),
-            verbose_name=_('Finish'),
-    help_text=_("Date Format: YYYY-mm-DD HH:MM:SS"))
+                        verbose_name=_('Start'),
+                        help_text =_("Date Format: YYYY-mm-DD HH:MM:SS"))
+    expirationdate = models.DateTimeField(
+                        default=datetime.now() + timedelta(days=7),
+                        verbose_name=_('Finish'),
+                        help_text=_("Date Format: YYYY-mm-DD HH:MM:SS"))
     #Per Day Starting & Stopping Time
     daily_start_time = models.TimeField(default='00:00:00')
     daily_stop_time = models.TimeField(default='23:59:59')
@@ -221,8 +229,8 @@ class Campaign(Model):
 
     #Campaign Settings
     frequency = models.IntegerField(default='10', blank=True, null=True,
-                help_text=_("Define the frequency, speed of the campaign. \
-                This is the number of calls per minute."))
+                    help_text=_("Define the frequency, speed of the campaign.\
+                    This is the number of calls per minute."))
     callmaxduration = models.IntegerField(default='1800', blank=True,
                       null=True, verbose_name='Call Max Duration',
                       help_text=_("Define the \

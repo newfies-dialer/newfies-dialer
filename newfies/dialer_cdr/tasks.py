@@ -56,16 +56,25 @@ def init_callrequest(callrequest_id, campaign_id):
     except:
         logger.error('Can\'t find this campaign')
 
+    #Construct the dialing out path
+
     """
-    #Check if the contact is authorized
-    if not obj_campaign.is_authorized_contact(obj_campaignsubscriber.contact):
-        logger.error("Contact not authorized")
-        obj_campaignsubscriber.status = 7 # Update to Not Authorized
-        obj_campaignsubscriber.save()
-        return True
+        * ``name`` - Gateway name.
+        * ``description`` - Description about Gateway.
+        * ``addprefix`` - Add prefix.
+        * ``removeprefix`` - Remove prefix.
+        * ``protocol`` - VoIP protocol
+        * ``hostname`` - Hostname
+        * ``secondused`` -
+        * ``failover`` -
+        * ``addparameter`` -
+        * ``count_call`` -
+        * ``count_in_use`` -
+        * ``maximum_call`` -
+        * ``status`` - Gateway status
     """
     
-    #Construct the dialing out path
+    #Retrieve the Gateway for the A-Leg
 
     #Send Call to API
     #http://ask.github.com/celery/userguide/remote-tasks.html

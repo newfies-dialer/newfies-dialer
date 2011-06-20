@@ -69,29 +69,6 @@ def initiate_call_subscriber(subscriber_id, campaign_id):
         obj_campaignsubscriber.save()
         return True
 
-    #TODO: Spool calls to dialout
-
-    #Construct the dialing out path
-    #obj_campaign.aleg_gateway
-
-    """
-    * ``name`` - Gateway name.
-        * ``description`` - Description about Gateway.
-        * ``addprefix`` - Add prefix.
-        * ``removeprefix`` - Remove prefix.
-        * ``protocol`` - VoIP protocol
-        * ``hostname`` - Hostname
-        * ``secondused`` -
-        * ``failover`` -
-        * ``addparameter`` -
-        * ``count_call`` -
-        * ``count_in_use`` -
-        * ``maximum_call`` -
-        * ``status`` - Gateway status
-    """
-
-    #Retrieve the Gateway for the A-Leg
-
     #Create a Callrequest Instance to track the call task
     """**Attributes**:
 
@@ -145,7 +122,7 @@ def check_campaign_pendingcall(campaign_id):
     #Get the subscriber of this campaign
     # get_pending_subscriber get Max 1000 records
     list_subscriber = obj_campaign.get_pending_subscriber(frequency)
-    print (list_subscriber)
+    #print (list_subscriber)
 
     try:
         no_subscriber = list_subscriber.count()
@@ -217,7 +194,7 @@ def collect_subscriber(campaign_id):
                                     duplicate_contact=elem_contact.contact,
                                     campaign=obj_campaign)
             except IntegrityError, e:
-                #We dont stop if it fails to add a suscriber to one campaign
+                #We don't stop if it fails to add a subscriber to one campaign
                 logger.error("IntegrityError to create CampaignSubscriber "\
                     "contact_id=%s - Error:%s" % (elem_contact.id, e))
 

@@ -336,7 +336,7 @@ class Campaign(Model):
             if result:
                 return False
 
-        #TODO Tool to test this function from the UI
+        #TODO: Tool to test this function from the UI
         return True
 
     def get_active_max_frequency(self):

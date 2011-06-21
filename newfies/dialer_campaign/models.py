@@ -394,7 +394,8 @@ class Campaign(Model):
         # The list of active contacts that doesn't
         # exist in CampaignSubscriber
         query = \
-        'SELECT dc.id, dc.phonebook_id, dc.contact, dc.name, dc.description, \
+        'SELECT dc.id, dc.phonebook_id, dc.contact, dc.last_name, \
+        dc.first_name, dc.email, dc.city, dc.description, \
         dc.status, dc.additional_vars, dc.created_date, dc.updated_date \
         FROM dialer_contact as dc \
         INNER JOIN dialer_phonebook ON \
@@ -409,8 +410,8 @@ class Campaign(Model):
         WHERE dialer_campaign_subscriber.campaign_id = %s)' % \
         (str(self.id), str(self.id),)
 
-        rawcontact_list = Contact.objects.raw(query)
-        return rawcontact_list
+        raw_contact_list = Contact.objects.raw(query)
+        return raw_contact_list
 
     def progress_bar(self):
         """Progress bar generated based on no of contacts"""

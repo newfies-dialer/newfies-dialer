@@ -40,10 +40,12 @@ def initiate_call_subscriber(subscriber_id, campaign_id):
     """
     logger = initiate_call_subscriber.get_logger()
     obj_subscriber = CampaignSubscriber.objects.get(id=subscriber_id)
-    logger.info("Dialout Subscriber :: status = %s" % str(obj_subscriber.status))
+    logger.info("Dialout Subscriber :: status = %s" %
+                str(obj_subscriber.status))
+    print "\nTASK :: initiate_call_subscriber"
 
     try:
-        obj_campaignsubscriber = CampaignSubscriber.objects\
+        obj_camp_subs = CampaignSubscriber.objects\
                                  .get(id=subscriber_id)
     except:
         logger.error('Can\'t find this CampaignSubscriber')
@@ -53,20 +55,15 @@ def initiate_call_subscriber(subscriber_id, campaign_id):
     except:
         logger.error('Can\'t find this Campaign')
 
-
-    if obj_subscriber.status == 1:
-        #Here we continue
-        obj_campaignsubscriber.status = 6 # Update to In Process
-        obj_campaignsubscriber.save()
-    else:
+    if obj_subscriber.status != 1:
         logger.error("Only Pending status are processed ")
         return True
 
     #Check if the contact is authorized
-    if not obj_campaign.is_authorized_contact(obj_campaignsubscriber.contact):
+    if not obj_campaign.is_authorized_contact(obj_camp_subs.contact):
         logger.error("Contact not authorized")
-        obj_campaignsubscriber.status = 7 # Update to Not Authorized
-        obj_campaignsubscriber.save()
+        obj_camp_subs.status = 7 # Update to Not Authorized
+        obj_camp_subs.save()
         return True
 
     #Create a Callrequest Instance to track the call task
@@ -85,16 +82,21 @@ def initiate_call_subscriber(subscriber_id, campaign_id):
     #TODO: WHAT CALLERID TO USE
     new_callrequest = Callrequest(status=1, #PENDING
                             call_time=datetime.now(),
-                            timeout=30,
-                            callerid='90000000',
-                            phone_number=obj_campaignsubscriber.contact__contact,
-                            campaign=obj_campaignsubscriber.campaign_id,
+                            timeout=obj_campaign.calltimeout,
+                            callerid=obj_campaign.callerid,
+                            phone_number=obj_camp_subs.contact__contact,
+                            campaign=obj_camp_subs.campaign_id,
                             aleg_gateway=None,
                             voipapp=None)
     #TODO: Fix the creation of CallRequest : add all needed field
     new_callrequest.save()
-    #Attach the new_callrequest.id to the call
 
+    #Upda the campaign status
+    obj_camp_subs.status = 6 # Update to In Process
+    #Attach the new_callrequest.id to the call
+    obj_camp_subs.callrequest = new_callrequest
+    obj_camp_subs.save()
+    
     return True
 
 
@@ -109,7 +111,8 @@ def check_campaign_pendingcall(campaign_id):
     """
     logger = check_campaign_pendingcall.get_logger()
     logger.info("Execute the calls for the campaign = %s" % str(campaign_id))
-
+    print "\nTASK :: check_campaign_pendingcall"
+    
     obj_campaign = Campaign.objects.get(id=campaign_id)
 
     #TODO: Control the Speed
@@ -149,12 +152,16 @@ class campaign_running(PeriodicTask):
 
         campaign_running.delay()
     """
-    run_every = timedelta(seconds=60)
-    #run_every = timedelta(microseconds=50)
+
+    run_every = timedelta(seconds=5)
+    #The campaign have to run every minutes in order to control the amount
+    # of call per minutes. Cons : new calls might delay 60seconds
+    #run_every = timedelta(seconds=60)
 
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
         logger.info("Determine the Campaign to proceed")
+        print "\nTASK :: campaign_running"
 
         for campaign in Campaign.objects.get_running_campaign():
             logger.info("=> Campaign name %s (id:%s)" % (campaign.name,
@@ -182,7 +189,7 @@ def collect_subscriber(campaign_id):
 
     if not list_contact:
         logger.info("No new contact or phonebook to import into \
-        this campaign.")
+            this campaign.")
         return True
     else:
         #Create CampaignSubscribers for each new active contact

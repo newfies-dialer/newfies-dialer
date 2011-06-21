@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.conf.urls.defaults import *
+from django.http import HttpResponseRedirect, HttpResponse,\
+    HttpResponseRedirect
 from django.utils.translation import ugettext as _
 from django.db.models import *
 from dialer_cdr.models import *

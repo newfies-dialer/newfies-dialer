@@ -251,20 +251,18 @@ def export_voipcall_report(request):
     qs = request.session['voipcall_record_qs']
 
     writer.writerow(['user', 'callid', 'callerid', 'dnid',
-                     'recipient_number', 'starting_date', 'sessiontime',
-                     'sessiontime_real', 'disposition',
-                     'recipient_dialcode', 'used_gateway'])
+                     'phone_number', 'starting_date', 'sessiontime',
+                     'disposition', 'recipient_dialcode', 'used_gateway'])
     for i in qs:
         writer.writerow([i.user,
                          i.callid,
                          i.callerid,
                          i.dnid,
-                         i.recipient_number,
+                         i.phone_number,
                          i.starting_date,
                          i.sessiontime,
-                         i.sessiontime_real,
                          get_disposition_name(i.disposition),
-                         i.recipient_dialcode,
+                         i.dialcode,
                          i.used_gateway,
                          ])
     return response

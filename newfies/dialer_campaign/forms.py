@@ -7,6 +7,24 @@ from dialer_campaign.models import *
 from dialer_campaign.function_def import *
 from datetime import *
 
+import django.forms.widgets
+from django.utils.encoding import StrAndUnicode, force_unicode
+class MyRadioInput(django.forms.widgets.RadioInput):
+	"""
+	An object used by RadioFieldRenderer that represents a single
+	<input type='radio'>.
+	"""
+	def __unicode__(self):
+		return mark_safe(u'%s' % (self.tag(),))
+class MyRadioRenderer(django.forms.widgets.RadioFieldRenderer):
+	def render(self):
+		"""Outputs a <td> for this set of radio fields."""
+		return mark_safe(u'\n'.join([u'%s'
+				% force_unicode(w) for w in self]))
+	def __iter__(self):
+		for i, choice in enumerate(self.choices):
+			yield MyRadioInput(self.name, self.value, self.attrs.copy(), choice, i)
+
 
 class SearchForm(forms.Form):
     """General Search Form with From & To date para."""
@@ -91,6 +109,10 @@ class ContactForm(ModelForm):
 class CampaignForm(ModelForm):
     """Campaign ModelForm"""
     campaign_code = forms.CharField(widget=forms.HiddenInput)
+    monday  = forms.ChoiceField(choices=DAY_STATUS,
+              widget=forms.RadioSelect(renderer=MyRadioRenderer))
+    week_day_star = forms.ChoiceField(choices=DAYS, label=_('Week day to start'))
+    week_day_end = forms.ChoiceField(choices=DAYS, label=_('Week day to finish'))
     class Meta:
         model = Campaign
         fields = ['campaign_code', 'name', 'description', 'status',
@@ -98,8 +120,9 @@ class CampaignForm(ModelForm):
                   'aleg_gateway', 'voipapp', 'frequency', 'callmaxduration',
                   'maxretry', 'intervalretry', 'calltimeout', 'extra_data',
                   'phonebook', 'daily_start_time', 'daily_stop_time',
-                  'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
-                  'saturday', 'sunday']
+                  #'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
+                  #'saturday', 'sunday'
+                  ]
         exclude = ('user', )
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),

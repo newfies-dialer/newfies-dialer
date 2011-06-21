@@ -15,7 +15,35 @@
 
 <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
     <table align=center border=1>
-        {{ form.as_table }}
+        <!--{{ form.as_table }}-->
+        {% for field in form %}
+            {% if field.is_hidden %}
+                {{ field }}
+            {% else %}
+                <!--
+                {% if field.label == 'Monday' %}
+                    <tr><th>&nbsp;</th>
+                        <td> <table>
+                                    <tr>
+                                        <td>Yes</td>
+                                        <td>No</td>
+                                    </tr>
+                             </table>
+                        </td>
+                    </tr>
+                {% else %}{% endif %}-->
+            <tr>
+                <th>{{ field.label }}:</th>
+                <td>{% if field.errors %}
+                        {{ field.errors }}
+                    {% endif %}
+                    {{ field }}<br/>
+                    <span class="helptext">{{ field.help_text }}</span></td>
+            </tr>
+
+            {% endif %}
+        {% endfor %}
+
         <tr>
             <td >&nbsp;</td>
             <td align=left>

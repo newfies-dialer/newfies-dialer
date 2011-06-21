@@ -27,7 +27,7 @@ class GatewayAdmin(admin.ModelAdmin):
         }),
     )
     list_display = ('id', 'name', 'gateways', 'addprefix',
-                    'removeprefix', 'secondused', 'count_call', )
+                    'removeprefix', 'secondused', 'count_call', 'status',)
     list_display_links = ('name', )
     list_filter = ['gateways',]
     ordering = ('id', )

@@ -266,6 +266,12 @@ PISTON_EMAIL_ERRORS = "areski@gmail.com"
 # Use only in Debug mode. Not in production
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+#PLIVO
+#=====
+PLIVO_DEFAULT_ANSWER_URL='http://127.0.0.1:8000/api/dialer_cdr/answercall/'
+PLIVO_DEFAULT_HANGUP_URL='http://127.0.0.1:8000/api/dialer_cdr/dummyhangupcall/'
+
+
 #IMPORT LOCAL SETTINGS
 #=====================
 try:

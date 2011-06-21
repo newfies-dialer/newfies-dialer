@@ -1,14 +1,12 @@
-from datetime import date, timedelta
 from celery.task import Task, PeriodicTask
-from celery.task.http import HttpDispatchTask, HttpDispatch
 from dialer_campaign.models import *
 from dialer_cdr.models import *
 from celery.decorators import task
-from common_functions import isint
-from django.db import IntegrityError
 from time import sleep
 import telefonyhelper
 from uuid import uuid1
+from django.conf import settings
+from dialer_gateway.utils import phonenumber_change_prefix
 
 
 class callrequest_pending(PeriodicTask):
@@ -57,15 +55,24 @@ def init_callrequest(callrequest_id, campaign_id):
     except:
         logger.error('Can\'t find this campaign')
 
+    phone_number = obj_callrequest.phone_number
+    dialout_phone_number = phonenumber_change_prefix(phone_number, obj_callrequest.aleg_gateway.id)
+    print "dialout_phone_number : %s" % dialout_phone_number
+
     #Construct the dialing out path
 
     """
+    **Gateway Attributes**:
+
         * ``name`` - Gateway name.
         * ``description`` - Description about Gateway.
         * ``addprefix`` - Add prefix.
         * ``removeprefix`` - Remove prefix.
-        * ``protocol`` - VoIP protocol
-        * ``hostname`` - Hostname
+        * ``gateways`` - "user/,user", # Gateway string to try dialing separated by comma. First in list will be tried first
+        * ``gateway_codecs`` - "'PCMA,PCMU','PCMA,PCMU'", # Codec string as needed by FS for each gateway separated by comma
+        * ``gateway_timeouts`` - "10,10", # Seconds to timeout in string for each gateway separated by comma
+        * ``gateway_retries`` - "2,1", # Retry String for Gateways separated by comma, on how many times each gateway should be retried
+        * ``originate_dial_string`` - originate_dial_string
         * ``secondused`` -
         * ``failover`` -
         * ``addparameter`` -
@@ -76,6 +83,14 @@ def init_callrequest(callrequest_id, campaign_id):
     """
     
     #Retrieve the Gateway for the A-Leg
+    gateways = obj_callrequest.aleg_gateway.gateways
+    gateway_codecs = obj_callrequest.aleg_gateway.gateway_codecs
+    gateway_timeouts = obj_callrequest.aleg_gateway.gateway_timeouts
+    gateway_retries = obj_callrequest.aleg_gateway.gateway_retries
+    originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
+
+
+    originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
 
     #Send Call to API
     #http://ask.github.com/celery/userguide/remote-tasks.html
@@ -93,11 +108,21 @@ def init_callrequest(callrequest_id, campaign_id):
     data = response.read()
     conn.close()
     """
-    #Plivo
-    """
+    #Request Call via Plivo
+    call_plivo(callerid=obj_callrequest.callerid,
+                phone_number=obj_callrequest.phone_number,
+                Gateways=gateways,
+                GatewayCodecs=gateway_codecs,
+                GatewayTimeouts=gateway_timeouts,
+                GatewayRetries=gateway_retries,
+                ExtraDialString=originate_dial_string,
+                AnswerUrl=settings.PLIVO_DEFAULT_ANSWER_URL,
+                HangupUrl=settings.PLIVO_DEFAULT_HANGUP_URL,
+                TimeLimit=callmaxduration)
+
     result= telefonyhelper.call_plivo()
-    """
-    res = dummy_testcall.delay(callerid='901901901', phone_number='1000', gateway='user/')
+
+    res = dummy_testcall.delay(callerid=obj_callrequest.callerid, phone_number=obj_callrequest.phone_number, gateway=gateways)
     result = res.get()
 
     logger.info('Received RequestUUID :> ' + str(result['RequestUUID']))

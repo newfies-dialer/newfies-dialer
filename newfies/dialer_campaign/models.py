@@ -499,7 +499,6 @@ class CampaignSubscriber(Model):
 
         * ``contact`` - Foreign key relationship to the Contact model.
         * ``campaign`` - Foreign key relationship to the Campaign model.
-        * ``callrequest`` - Foreign key relationship to the Callrequest model.
 
     **Name of DB table**: dialer_campaign_subscriber
     """
@@ -507,10 +506,6 @@ class CampaignSubscriber(Model):
                                 help_text=_("Select Contact"))
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
                                 help_text=_("Select Campaign"))
-    callrequest = models.ForeignKey(Callrequest,
-                                    verbose_name=_("Call request"),
-                                    null=True, blank=True,
-                                    help_text=_("Select call request"))
     last_attempt = models.DateTimeField(null=True, blank=True)
     count_attempt = models.IntegerField(null=True, blank=True, 
                     verbose_name=_("Count attempts"), default='0')

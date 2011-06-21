@@ -63,12 +63,11 @@ class Callrequest(Model):
         * ``call_time`` -
         * ``call_type`` -
         * ``status`` -
-        * ``subscriber`` -
+        * ``campaign_subscriber`` -
         * ``campaign`` -
         * ``extra_data`` -
         * ``last_attempt_time`` -
-        * ``result`` -
-        * ``context`` -
+        * ``result`` --
         * ``timeout`` -
         * ``callerid`` -
         * ``variable`` -
@@ -84,6 +83,11 @@ class Callrequest(Model):
 
         * ``aleg_gateway`` - Foreign key relationship to the Gateway model.
                              Gateway to use to reach the subscriber
+
+        * ``campaign_subscriber`` - Foreign key relationship to
+                            CampaignSubscriber Model.
+
+        * ``campaign`` - Foreign key relationship to the Campaign model.
 
     **Name of DB table**: dialer_callrequest
     """
@@ -106,11 +110,11 @@ class Callrequest(Model):
     timelimit = models.IntegerField(blank=True, default=3600)
     extra_dial_string = models.CharField(max_length=500, blank=True)
 
-    subscriber = models.IntegerField(null=True, blank=True,
-                 verbose_name="Campaign Subscriber", help_text=_("Campaign \
-                 Subscriber related to this callrequest"))
-    campaign = models.IntegerField(null=True, blank=True,
-                                help_text=_("Select Campaign"))
+    campaign_subscriber = models.ForeignKey(CampaignSubscriber,
+                null=True, blank=True,
+                help_text=_("Campaign Subscriber related to this callrequest"))
+    campaign = models.ForeignKey(Campaign, null=True, blank=True,
+                help_text=_("Select Campaign"))
     aleg_gateway = models.ForeignKey(Gateway, null=True, blank=True,
                 verbose_name="A-Leg Gateway",
                 help_text=_("Select Gateway to use to reach the subscriber"))

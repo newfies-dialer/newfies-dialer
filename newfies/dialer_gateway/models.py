@@ -64,6 +64,8 @@ class Gateway(Model):
     """
     name = models.CharField(unique=True, max_length=255, verbose_name='Name',
                             help_text=_("Gateway name"))
+    status = models.IntegerField(choices=GATEWAY_STATUS, default='1',
+                verbose_name="Gateway Status", blank=True, null=True)
     description = models.TextField(verbose_name='Description', blank=True,
                                help_text=_("Gateway provider notes"))
     addprefix = models.CharField(verbose_name=_('Add prefix'),
@@ -93,8 +95,6 @@ class Gateway(Model):
     count_in_use = models.IntegerField(null=True, blank=True)
     maximum_call = models.IntegerField(verbose_name=_('Max concurrent calls'),
                    null=True, blank=True)
-    status = models.IntegerField(choices=GATEWAY_STATUS, default='1',
-                verbose_name="Gateway Status", blank=True, null=True)
     #gatewaygroup = models.ManyToManyField(GatewayGroup)
 
     class Meta:

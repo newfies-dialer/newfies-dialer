@@ -105,7 +105,7 @@ class campaignHandler(BaseHandler):
 
         **CURL Usage**::
 
-            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_campaign/campaign/ -d "campaign_code=EDjKS&name=mylittlecampaign&description=&callerid=1239876&startingdate=1301392136.0&expirationdate=1301332136.0&frequency=20&callmaxduration=50&maxretry=3&intervalretry=3000&calltimeout=60&aleg_gateway=1&voipapp=1&extra_data=2000"
+            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_campaign/campaign/ -d "name=mylittlecampaign&description=&callerid=1239876&startingdate=1301392136.0&expirationdate=1301332136.0&frequency=20&callmaxduration=50&maxretry=3&intervalretry=3000&calltimeout=60&aleg_gateway=1&voipapp=1&extra_data=2000"
 
         **Example Response**::
 
@@ -183,7 +183,6 @@ class campaignHandler(BaseHandler):
         else:
             attrs = self.flatten_dict(request.POST)
 
-            campaign_code = get_attribute(attrs, 'campaign_code')
             name = get_attribute(attrs, 'name')
             description = get_attribute(attrs, 'description')
             status = 1 # per default
@@ -264,7 +263,7 @@ class campaignHandler(BaseHandler):
             """
             try:
                 new_campaign = Campaign.objects.create(user=request.user,
-                                        campaign_code=campaign_code,
+                                        campaign_code=get_unique_code(length=5),
                                         name=name,
                                         description=description,
                                         status=status,

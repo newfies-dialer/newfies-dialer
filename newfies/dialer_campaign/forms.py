@@ -89,7 +89,8 @@ class ContactForm(ModelForm):
 
 
 class CampaignForm(ModelForm):
-    """Campaign ModelForm"""    
+    """Campaign ModelForm"""
+    campaign_code = forms.CharField(widget=forms.HiddenInput)
     class Meta:
         model = Campaign
         fields = ['campaign_code', 'name', 'description', 'status',
@@ -105,7 +106,7 @@ class CampaignForm(ModelForm):
         }
     def __init__(self,  *args, **kwargs):
         super(CampaignForm, self).__init__(*args, **kwargs)
-        self.fields['campaign_code'].widget.attrs['readonly'] = True
+        self.fields['campaign_code'].initial = get_unique_code(length=5)
         self.fields['startingdate'].initial = datetime.now()
         self.fields['expirationdate'].initial = datetime.now()
 
@@ -125,6 +126,7 @@ class CampaignAdminForm(ModelForm):
     def __init__(self,  *args, **kwargs):
         super(CampaignAdminForm, self).__init__(*args, **kwargs)
         self.fields['campaign_code'].widget.attrs['readonly'] = True
+        self.fields['campaign_code'].initial = get_unique_code(length=5)
         self.fields['startingdate'].initial = datetime.now()
         self.fields['expirationdate'].initial = datetime.now()
 

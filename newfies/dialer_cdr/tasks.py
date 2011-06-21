@@ -24,18 +24,18 @@ class callrequest_pending(PeriodicTask):
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
         logger.debug("Determine if new pending calls")
+        print "\nTASK :: callrequest_pending"
 
         list_callrequest = Callrequest.objects.get_pending_callrequest()[:20]
         if not list_callrequest:
             logger.info("No Pending Calls")
         
         for callrequest in list_callrequest:
-            logger.info("\n\n\n\n=> CallRequest (id:%s, phone_number:%s)" %
+            logger.info("\n=> CallRequest (id:%s, phone_number:%s)" %
                         (callrequest.id, callrequest.phone_number))
             
-            #TODO : update the callrequest to PROCESS 
-            #callrequest.status = 7 # Update to Process
-            #callrequest.save()
+            callrequest.status = 7 # Update to Process
+            callrequest.save()
             init_callrequest.delay(callrequest.id, callrequest.campaign)
 
 @task()
@@ -46,8 +46,9 @@ def init_callrequest(callrequest_id, campaign_id):
 
         * ``callrequest_id`` -
     """
+    print "\nTASK :: init_callrequest"
     logger = init_callrequest.get_logger()
-    logger.info('>> Dialout init_callrequest')
+    logger.info('>> TasK :: init_callrequest')
     obj_callrequest = Callrequest.objects.get(id=callrequest_id)
     logger.info("callrequest status = %s" % str(obj_callrequest.status))
     
@@ -134,9 +135,9 @@ def dummy_testcall(callerid, phone_number, gateway):
     **Return**:
 
         * ``RequestUUID`` - A unique identifier for API request."""
-
+    print "\nTASK :: dummy_testcall"
     logger = dummy_testcall.get_logger()
-    logger.info("Executing task id %r, args: %r kwargs: %r" % (
+    logger.debug("Executing task id %r, args: %r kwargs: %r" % (
         dummy_testcall.request.id, dummy_testcall.request.args, dummy_testcall.request.kwargs))
     logger.info("Waiting 1 seconds...")
     sleep(1)
@@ -159,8 +160,9 @@ def dummy_test_answerurl(request_uuid):
     **Attributes**:
 
         * ``RequestUUID`` - A unique identifier for API request."""
+    print "\nTASK :: dummy_testcall"
     logger = dummy_test_answerurl.get_logger()
-    logger.info("Executing task id %r, args: %r kwargs: %r" % (
+    logger.debug("Executing task id %r, args: %r kwargs: %r" % (
         dummy_test_answerurl.request.id, dummy_test_answerurl.request.args, dummy_test_answerurl.request.kwargs))
     logger.info("Waiting 1 seconds...")
     sleep(1)
@@ -201,8 +203,9 @@ def dummy_test_hangupurl(request_uuid):
     **Attributes**:
 
         * ``RequestUUID`` - A unique identifier for API request."""
+    print "\nTASK :: dummy_test_hangupurl"
     logger = dummy_test_hangupurl.get_logger()
-    logger.info("Executing task id %r, args: %r kwargs: %r" % (
+    logger.debug("Executing task id %r, args: %r kwargs: %r" % (
         dummy_test_hangupurl.request.id, dummy_test_hangupurl.request.args, dummy_test_hangupurl.request.kwargs))
     logger.info("Waiting 10 seconds...")
     sleep(10)

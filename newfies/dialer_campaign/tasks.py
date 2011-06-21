@@ -67,33 +67,22 @@ def initiate_call_subscriber(subscriber_id, campaign_id):
         return True
 
     #Create a Callrequest Instance to track the call task
-    """**Attributes**:
-
-            * ``uniqueid`` -
-            * ``call_time`` -
-            * ``exten`` -
-            * ``context`` -
-            * ``application`` -
-            * ``timeout`` -
-            * ``callerid`` -
-            * ``variable`` -
-            * ``account`` -
-    """
-    #TODO: WHAT CALLERID TO USE
     new_callrequest = Callrequest(status=1, #PENDING
                             call_time=datetime.now(),
                             timeout=obj_campaign.calltimeout,
                             callerid=obj_campaign.callerid,
-                            phone_number=obj_camp_subs.contact__contact,
+                            phone_number=obj_camp_subs.contact.contact,
                             campaign=obj_camp_subs.campaign_id,
-                            aleg_gateway=None,
-                            voipapp=None)
-    #TODO: Fix the creation of CallRequest : add all needed field
+                            aleg_gateway=obj_campaign.aleg_gateway,
+                            voipapp=obj_campaign.voipapp,
+                            user=obj_campaign.user,
+                            extra_data=obj_campaign.extra_data,
+                            timelimit=obj_campaign.callmaxduration,
+                            subscriber=subscriber_id)
     new_callrequest.save()
 
-    #Upda the campaign status
+    #Update the campaign status
     obj_camp_subs.status = 6 # Update to In Process
-    #Attach the new_callrequest.id to the call
     obj_camp_subs.callrequest = new_callrequest
     obj_camp_subs.save()
     
@@ -153,7 +142,7 @@ class campaign_running(PeriodicTask):
         campaign_running.delay()
     """
 
-    run_every = timedelta(seconds=5)
+    run_every = timedelta(seconds=15)
     #The campaign have to run every minutes in order to control the amount
     # of call per minutes. Cons : new calls might delay 60seconds
     #run_every = timedelta(seconds=60)
@@ -168,9 +157,6 @@ class campaign_running(PeriodicTask):
                                                          campaign.id))
 
             check_campaign_pendingcall.delay(campaign.id)
-
-        logger.info("Finish Spawn the campaign")
-
 
 @task()
 def collect_subscriber(campaign_id):

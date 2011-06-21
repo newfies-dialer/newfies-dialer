@@ -108,9 +108,9 @@ def voipcall_report_grid(request):
                                                     tday.day, 0, 0, 0, 0)
 
     voipcall_list = VoIPCall.objects.values('id', 'user__username',
-                    'used_gateway__name', 'callid', 'uniqueid', 'callerid',
-                    'dnid', 'recipient_number', 'starting_date', 'sessiontime',
-                    'disposition', 'recipient_dialcode').filter(**kwargs)
+                    'used_gateway__name', 'callid', 'request_uuid', 'callerid',
+                    'dnid', 'phone_number', 'starting_date', 'sessiontime',
+                    'disposition', 'dialcode').filter(**kwargs)
 
     count = voipcall_list.count()
     voipcall_list = \
@@ -125,14 +125,14 @@ def voipcall_report_grid(request):
              'cell': [row['user__username'],
                        row['used_gateway__name'],
                        row['callid'],
-                       row['uniqueid'],
+                       row['request_uuid'],
                        row['callerid'],
                        row['dnid'],
-                       row['recipient_number'],
+                       row['phone_number'],
                        row['starting_date'].strftime('%Y-%m-%d %H:%M:%S'),
                        str(timedelta(seconds=row['sessiontime'])),
                        get_disposition_name(row['disposition']),
-                       row['recipient_dialcode'], ]} for row in voipcall_list]
+                       row['dialcode'], ]} for row in voipcall_list]
 
     data = {'rows': rows,
             'page': page,
@@ -193,19 +193,19 @@ def voipcall_report(request):
     total_data = VoIPCall.objects.extra(select=select_data)\
                  .values('starting_date')\
                  .filter(**kwargs).annotate(Count('starting_date'))\
-                 .annotate(Sum('sessiontime_real'))\
-                 .annotate(Avg('sessiontime_real'))\
+                 .annotate(Sum('sessiontime'))\
+                 .annotate(Avg('sessiontime'))\
                  .order_by('-starting_date')
 
     # Following code will count total voip calls, duration
     if total_data.count() != 0:
         max_duration = \
-        max([x['sessiontime_real__sum'] for x in total_data])
+        max([x['sessiontime__sum'] for x in total_data])
         total_duration = \
-        sum([x['sessiontime_real__sum'] for x in total_data])
+        sum([x['sessiontime__sum'] for x in total_data])
         total_calls = sum([x['starting_date__count'] for x in total_data])
         total_avg_duration = \
-        (sum([x['sessiontime_real__avg']\
+        (sum([x['sessiontime__avg']\
         for x in total_data])) / total_data.count()
     else:
         max_duration = 0

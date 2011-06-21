@@ -130,6 +130,7 @@ class campaignHandler(BaseHandler):
                 },
                 "startingdate": "2011-03-29 09:48:56",
                 "name": "mylittlecampaign",
+                "callerid": "123987",
                 "extra_data": "2000",
                 "callmaxduration": "50",
                 "intervalretry": "3000",
@@ -143,6 +144,7 @@ class campaignHandler(BaseHandler):
                 "frequency": "20",
                 "maxretry": "3",
                 "expirationdate": "2011-03-28 17:08:56",
+                "campaign_code": "xOAlY",
                 "aleg_gateway": {
                     "updated_date": "2011-04-08 07:51:02",
                     "status": 1,
@@ -322,7 +324,8 @@ class campaignHandler(BaseHandler):
                 {
                     "status": 1,                    
                     "startingdate": "2011-03-29 09:48:56",
-                    "name": "mylittlecampaign",                    
+                    "name": "mylittlecampaign",
+                    "callerid": "123987",
                     "callmaxduration": 50,
                     "intervalretry": 3000,
                     "id": 2,
@@ -335,6 +338,7 @@ class campaignHandler(BaseHandler):
                     "frequency": 20,
                     "maxretry": 3,
                     "expirationdate": "2011-03-28 17:08:56",
+                    "campaign_code": "xOAlY",
                     "aleg_gateway": {
                         "updated_date": "2011-04-08 07:51:02",
                         "status": 1,
@@ -426,6 +430,7 @@ class campaignHandler(BaseHandler):
                 "status": "2",                
                 "startingdate": "2011-03-29 09:48:56",
                 "name": "mylittlecampaign",
+                "callerid": "123987",
                 "extra_data": "2000",
                 "callmaxduration": 50,
                 "intervalretry": 3000,
@@ -439,6 +444,7 @@ class campaignHandler(BaseHandler):
                 "frequency": 20,
                 "maxretry": 3,
                 "expirationdate": "2011-03-28 17:08:56",
+                "campaign_code": "xOAlY",
                 "aleg_gateway": {
                     "updated_date": "2011-04-08 07:51:02",
                     "status": 1,

@@ -92,16 +92,20 @@ class CampaignForm(ModelForm):
     """Campaign ModelForm"""    
     class Meta:
         model = Campaign
-        fields = ['name', 'description', 'status', 'startingdate',
-                  'expirationdate', 'aleg_gateway', 'voipapp', 'frequency',
-                  'callmaxduration', 'maxretry', 'intervalretry',
-                  'calltimeout', 'extra_data', 'phonebook',]
+        fields = ['campaign_code', 'name', 'description', 'status',
+                  'callerid', 'startingdate', 'expirationdate',
+                  'aleg_gateway', 'voipapp', 'frequency', 'callmaxduration',
+                  'maxretry', 'intervalretry', 'calltimeout', 'extra_data',
+                  'phonebook', 'daily_start_time', 'daily_stop_time',
+                  'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
+                  'saturday', 'sunday']
         exclude = ('user', )
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
         }
     def __init__(self,  *args, **kwargs):
         super(CampaignForm, self).__init__(*args, **kwargs)
+        self.fields['campaign_code'].widget.attrs['readonly'] = True
         self.fields['startingdate'].initial = datetime.now()
         self.fields['expirationdate'].initial = datetime.now()
 
@@ -110,16 +114,17 @@ class CampaignAdminForm(ModelForm):
     """Admin Campaign ModelForm"""
     class Meta:
         model = Campaign
-        fields = ['name', 'description', 'user', 'status', 'startingdate',
-                  'expirationdate', 'aleg_gateway', 'voipapp',
-                  'extra_data', 'phonebook', 'frequency', 'callmaxduration',
-                  'maxretry', 'intervalretry', 'calltimeout',
-                  'daily_start_time', 'daily_stop_time', 'monday',
-                  'tuesday', 'wednesday', 'thursday', 'friday',
+        fields = ['campaign_code', 'name', 'description', 'user', 'status',
+                  'callerid', 'startingdate', 'expirationdate',
+                  'aleg_gateway', 'voipapp', 'extra_data', 'phonebook',
+                  'frequency', 'callmaxduration', 'maxretry', 'intervalretry',
+                  'calltimeout', 'daily_start_time', 'daily_stop_time',
+                  'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
                   'saturday', 'sunday']
 
     def __init__(self,  *args, **kwargs):
         super(CampaignAdminForm, self).__init__(*args, **kwargs)
+        self.fields['campaign_code'].widget.attrs['readonly'] = True
         self.fields['startingdate'].initial = datetime.now()
         self.fields['expirationdate'].initial = datetime.now()
 

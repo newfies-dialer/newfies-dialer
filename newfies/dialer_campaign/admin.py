@@ -19,9 +19,9 @@ class CampaignAdmin(admin.ModelAdmin):
     form = CampaignAdminForm
     fieldsets = (
         ('Standard options', {
-            'fields': ('name', 'description', 'user', 'status', 'startingdate',
-                       'expirationdate', 'aleg_gateway', 'voipapp',
-                       'extra_data', 'phonebook'),
+            'fields': ('campaign_code', 'name', 'description', 'callerid',
+                       'user', 'status', 'startingdate', 'expirationdate',
+                       'aleg_gateway', 'voipapp', 'extra_data', 'phonebook'),
         }),
         ('Advanced options', {
             'classes': ('collapse',),

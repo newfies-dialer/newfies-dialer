@@ -10,6 +10,7 @@ from voip_app.models import VoipApp
 from user_profile.models import UserProfile
 from datetime import datetime, timedelta
 from common.intermediate_model_base_class import Model
+from random import *
 
 
 CONTACT_STATUS = (
@@ -38,6 +39,11 @@ DAY_STATUS = (
     (1, u'YES'),
     (0, u'NO'),
 )
+
+def get_unique_code(length):
+    """Get unique code"""
+    chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    return ''.join([choice(chars) for i in range(length)])
 
 
 class Phonebook(Model):
@@ -165,6 +171,7 @@ class Campaign(Model):
 
     **Attributes**:
 
+        * ``campaign_code`` - Autogenerate campaign code to identify campaign
         * ``name`` - Campaign name.
         * ``description`` - Description about Campaign.
         * ``status`` - Campaign status.
@@ -197,8 +204,9 @@ class Campaign(Model):
     """
     campaign_code = models.CharField(unique=True, max_length=20, blank=True,
                         verbose_name="Campaign Code",
-                        help_text='this code is autogenerate by the platform,\
-                        this is used to identify the campaign')
+                        help_text=_('This code is autogenerate by the \
+                        platform, this is used to identify the campaign'),
+                        default=get_unique_code(length=5))
     name = models.CharField(max_length=100)
     description = models.TextField(verbose_name='Description', blank=True,
                   null=True, help_text=_("Short description of the Campaign"))

@@ -41,8 +41,9 @@ class campaignHandler(BaseHandler):
     allowed_methods = ('POST', 'GET', 'PUT', 'DELETE')
     #anonymous = 'AnonymousLanguageHandler'
     #fields = ('id', 'name', 'status', 'description', )
-    fields = ('id', 'name', 'status', 'startingdate', 'expirationdate',
-              'frequency', 'callmaxduration', 'maxretry', 'intervalretry',
+    fields = ('id', 'campaign_code', 'name', 'status', 'callerid',
+              'startingdate', 'expirationdate', 'frequency',
+              'callmaxduration', 'maxretry', 'intervalretry',
               'calltimeout', 'aleg_gateway', 'bleg_gateway', 'voipapp',
               'extra_data', ('phonebook', ('id', 'name', ), ), )
     documentation = "test"
@@ -60,8 +61,10 @@ class campaignHandler(BaseHandler):
 
         **Attributes**:
 
+            * ``campaign_code`` - Autogenerate campaign code
             * ``name`` - Name of the Campaign
             * ``description`` - Short description of the Campaign
+            * ``callerid`` - Caller ID
             * ``startingdate`` - Starting date. Epoch Time, ie 1301414368
             * ``expirationdate`` - Expiring date. Epoch Time, ie 1301414368
             * ``daily_start_time`` - Per Day Starting Time, default '00:00:00'
@@ -102,7 +105,7 @@ class campaignHandler(BaseHandler):
 
         **CURL Usage**::
 
-            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_campaign/campaign/ -d "name=mylittlecampaign&description=&startingdate=1301392136.0&expirationdate=1301332136.0&frequency=20&callmaxduration=50&maxretry=3&intervalretry=3000&calltimeout=60&aleg_gateway=1&voipapp=1&extra_data=2000"
+            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_campaign/campaign/ -d "campaign_code=EDjKS&name=mylittlecampaign&description=&callerid=1239876&startingdate=1301392136.0&expirationdate=1301332136.0&frequency=20&callmaxduration=50&maxretry=3&intervalretry=3000&calltimeout=60&aleg_gateway=1&voipapp=1&extra_data=2000"
 
         **Example Response**::
 
@@ -178,9 +181,11 @@ class campaignHandler(BaseHandler):
         else:
             attrs = self.flatten_dict(request.POST)
 
+            campaign_code = get_attribute(attrs, 'campaign_code')
             name = get_attribute(attrs, 'name')
             description = get_attribute(attrs, 'description')
             status = 1 # per default
+            callerid = get_attribute(attrs, 'callerid')
             startingdate = get_attribute(attrs, 'startingdate')
             expirationdate = get_attribute(attrs, 'expirationdate')
             frequency = get_attribute(attrs, 'frequency')
@@ -257,9 +262,11 @@ class campaignHandler(BaseHandler):
             """
             try:
                 new_campaign = Campaign.objects.create(user=request.user,
+                                        campaign_code=campaign_code,
                                         name=name,
                                         description=description,
                                         status=status,
+                                        callerid=callerid,
                                         startingdate=startingdate,
                                         expirationdate=expirationdate,
                                         frequency=frequency,
@@ -411,7 +418,7 @@ class campaignHandler(BaseHandler):
 
             curl -u username:password -i -H "Accept: application/json" -X PUT http://127.0.0.1:8000/api/dialer_campaign/campaign/%campaign_id%/ -d "status=2"
 
-            curl -u username:password -i -H "Accept: application/json" -X PUT http://127.0.0.1:8000/api/dialer_campaign/campaign/%campaign_id%/ -d "status=2&startingdate=1301392136.0&expirationdate=1301332136.0&frequency=20&callmaxduration=50&maxretry=3&intervalretry=3000&calltimeout=60&aleg_gateway=1&voip_app=1&extra_data=2000"
+            curl -u username:password -i -H "Accept: application/json" -X PUT http://127.0.0.1:8000/api/dialer_campaign/campaign/%campaign_id%/ -d "callerid=123987&status=2&startingdate=1301392136.0&expirationdate=1301332136.0&frequency=20&callmaxduration=50&maxretry=3&intervalretry=3000&calltimeout=60&aleg_gateway=1&voip_app=1&extra_data=2000"
 
         **Example Response**::
 
@@ -461,6 +468,7 @@ class campaignHandler(BaseHandler):
 
         #Retrieve Post settings
         status = get_attribute(attrs, 'status')
+        callerid = get_attribute(attrs, 'callerid')
         startingdate = get_attribute(attrs, 'startingdate')
         expirationdate = get_attribute(attrs, 'expirationdate')
         daily_start_time = get_attribute(attrs, 'daily_start_time')
@@ -502,6 +510,7 @@ class campaignHandler(BaseHandler):
 
         try:
             campaign = Campaign.objects.get(id=campaign_id)
+            save_if_set(campaign, 'callerid', callerid)
             save_if_set(campaign, 'status', status)
             save_if_set(campaign, 'startingdate', startingdate)
             save_if_set(campaign, 'expirationdate', expirationdate)

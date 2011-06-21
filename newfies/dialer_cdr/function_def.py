@@ -5,13 +5,6 @@ from dialer_campaign.function_def import validate_days
 from dialer_cdr.models import VOIPCALL_DISPOSITION
 
 
-def get_unique_id():
-    """Get unique id"""
-    length = 8
-    chars = "abcdefghijklmnopqrstuvwxyz1234567890"
-    return ''.join([choice(chars) for i in range(length)])
-
-
 def pass_gen():
     """Unique password generator"""
     char_length = 2

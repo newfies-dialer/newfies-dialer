@@ -101,8 +101,11 @@ def check_campaign_pendingcall(campaign_id):
     logger = check_campaign_pendingcall.get_logger()
     logger.info("Execute the calls for the campaign = %s" % str(campaign_id))
     print "\nTASK :: check_campaign_pendingcall"
-    
-    obj_campaign = Campaign.objects.get(id=campaign_id)
+
+    try:
+        obj_campaign = Campaign.objects.get(id=campaign_id)
+    except:
+        logger.error('Can\'t find this campaign')
 
     #TODO: Control the Speed
     #if there is many task pending we should slow down

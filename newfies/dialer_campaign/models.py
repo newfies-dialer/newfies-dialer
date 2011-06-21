@@ -131,7 +131,7 @@ class Contact(Model):
         unique_together = ['contact', 'phonebook']
 
     def __unicode__(self):
-            return u"%s (%s)" % (self.contact, self.last_name)
+        return u"%s (%s)" % (self.contact, self.last_name)
 
     def contact_name(self):
         """Return Contact Name"""

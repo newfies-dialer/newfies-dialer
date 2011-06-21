@@ -46,7 +46,7 @@ $("#flex1").flexigrid({
     dataType: 'json',
 	colModel : [
         {display: '<input type="checkbox" onclick="toggleChecked(this.checked)">', name: '', width: 40, align: 'center'},
-		{display: 'Id', name: 'id', width: 40, sortable: true, align: 'center'},
+		{display: 'Campaign code', name: 'campaign_code', width: 95, sortable: true, align: 'center'},
         {display: 'Name', name: 'name', width: 120, sortable: true, align: 'center'},
         {display: 'Start date', name: 'startingdate', width: 100, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
         {display: 'End date', name: 'expirationdate', width: 100, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
@@ -67,7 +67,7 @@ $("#flex1").flexigrid({
 	useRp: true,
 	rp: 10,
 	showTableToggleBtn: true,
-	width: 875,
+	width: 930,
 	height: 265,
     //preProcess: formatContactResults,
     onSuccess: function(data){

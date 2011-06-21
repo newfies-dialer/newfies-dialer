@@ -1067,8 +1067,9 @@ def campaign_grid(request):
         sortorder_sign = '-'
 
     campaign_list = Campaign.objects\
-                    .values('id', 'name', 'startingdate', 'expirationdate',
-                            'aleg_gateway', 'aleg_gateway__name', 'status',
+                    .values('id', 'campaign_code','name', 'startingdate',
+                            'expirationdate', 'aleg_gateway',
+                            'aleg_gateway__name', 'status',
                             'voipapp__name').filter(user=request.user)
     count = campaign_list.count()
     campaign_list = \
@@ -1082,7 +1083,7 @@ def campaign_grid(request):
     rows = [{'id': row['id'],
              'cell': ['<input type="checkbox" name="select" class="checkbox"\
                       value="' + str(row['id']) + '" />',
-                      row['id'],
+                      row['campaign_code'],
                       row['name'],
                       row['startingdate'].strftime('%Y-%m-%d %H:%M:%S'),
                       row['expirationdate'].strftime('%Y-%m-%d %H:%M:%S'),

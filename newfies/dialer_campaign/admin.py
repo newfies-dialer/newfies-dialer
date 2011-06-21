@@ -31,7 +31,7 @@ class CampaignAdmin(admin.ModelAdmin):
                        'thursday', 'friday', 'saturday', 'sunday')
         }),
     )
-    list_display = ('id', 'name', 'user', 'startingdate',
+    list_display = ('id', 'campaign_code', 'name', 'user', 'startingdate',
                     'expirationdate', 'frequency', 'callmaxduration',
                     'maxretry', 'aleg_gateway',#'intervalretry', 'calltimeout',
                     'voipapp', 'extra_data', 'status',

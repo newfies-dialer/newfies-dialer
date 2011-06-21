@@ -40,6 +40,16 @@ DAY_STATUS = (
     (0, u'NO'),
 )
 
+DAYS = (
+    ('monday', u'monday'),
+    ('tuesday', u'tuesday'),
+    ('wednesday', u'wednesday'),
+    ('thursday', u'thursday'),
+    ('friday', u'friday'),
+    ('saturday', u'saturday'),
+    ('sunday', u'sunday'),
+)
+
 def get_unique_code(length):
     """Get unique code"""
     chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"

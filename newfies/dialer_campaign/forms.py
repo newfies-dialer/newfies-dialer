@@ -7,24 +7,6 @@ from dialer_campaign.models import *
 from dialer_campaign.function_def import *
 from datetime import *
 
-import django.forms.widgets
-from django.utils.encoding import StrAndUnicode, force_unicode
-class MyRadioInput(django.forms.widgets.RadioInput):
-	"""
-	An object used by RadioFieldRenderer that represents a single
-	<input type='radio'>.
-	"""
-	def __unicode__(self):
-		return mark_safe(u'%s' % (self.tag(),))
-class MyRadioRenderer(django.forms.widgets.RadioFieldRenderer):
-	def render(self):
-		"""Outputs a <td> for this set of radio fields."""
-		return mark_safe(u'\n'.join([u'%s'
-				% force_unicode(w) for w in self]))
-	def __iter__(self):
-		for i, choice in enumerate(self.choices):
-			yield MyRadioInput(self.name, self.value, self.attrs.copy(), choice, i)
-
 
 class SearchForm(forms.Form):
     """General Search Form with From & To date para."""

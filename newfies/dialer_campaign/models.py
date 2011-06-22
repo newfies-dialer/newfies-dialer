@@ -51,7 +51,7 @@ DAYS = (
 
 def get_unique_code(length):
     """Get unique code"""
-    chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     return ''.join([choice(chars) for i in range(length)])
 
 

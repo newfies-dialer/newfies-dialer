@@ -95,8 +95,8 @@ def init_callrequest(callrequest_id, campaign_id):
     #Send Call to API
     #http://ask.github.com/celery/userguide/remote-tasks.html
 
-    #Todo this will be replaced by the Plivo RestAPIs
     """
+    #this could be needed if we want to call a different API / Twilio
     import httplib, urllib
     params = urllib.urlencode({'From': '900900000', 'To': '1000',})
     headers = {"Content-type": "application/x-www-form-urlencoded",
@@ -121,12 +121,12 @@ def init_callrequest(callrequest_id, campaign_id):
                 TimeLimit=callmaxduration)
 
     result= telefonyhelper.call_plivo()
-
-    res = dummy_testcall.delay(callerid=obj_callrequest.callerid, phone_number=obj_callrequest.phone_number, gateway=gateways)
-    result = res.get()
-
+    print result
     logger.info('Received RequestUUID :> ' + str(result['RequestUUID']))
 
+    #Use Dummy TestCall
+    #res = dummy_testcall.delay(callerid=obj_callrequest.callerid, phone_number=obj_callrequest.phone_number, gateway=gateways)
+    #result = res.get()
         
     obj_callrequest.request_uuid = result['RequestUUID']
     obj_callrequest.save()

@@ -109,19 +109,17 @@ class ContactForm(ModelForm):
 class CampaignForm(ModelForm):
     """Campaign ModelForm"""
     campaign_code = forms.CharField(widget=forms.HiddenInput)
-    monday  = forms.ChoiceField(choices=DAY_STATUS,
-              widget=forms.RadioSelect(renderer=MyRadioRenderer))
-    week_day_star = forms.ChoiceField(choices=DAYS, label=_('Week day to start'))
-    week_day_end = forms.ChoiceField(choices=DAYS, label=_('Week day to finish'))
     class Meta:
         model = Campaign
-        fields = ['campaign_code', 'name', 'description', 'status',
-                  'callerid', 'startingdate', 'expirationdate',
-                  'aleg_gateway', 'voipapp', 'frequency', 'callmaxduration',
-                  'maxretry', 'intervalretry', 'calltimeout', 'extra_data',
-                  'phonebook', 'daily_start_time', 'daily_stop_time',
-                  #'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
-                  #'saturday', 'sunday'
+        fields = ['campaign_code', 'name', 'description',
+                  'callerid', 'status', 'aleg_gateway', 'voipapp',
+                  'extra_data', 'phonebook',
+                  'frequency', 'callmaxduration', 'maxretry',
+                  'intervalretry', 'calltimeout',
+                  'startingdate', 'expirationdate',
+                  'daily_start_time', 'daily_stop_time',
+                  'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
+                  'saturday', 'sunday'
                   ]
         exclude = ('user', )
         widgets = {
@@ -132,6 +130,13 @@ class CampaignForm(ModelForm):
         self.fields['campaign_code'].initial = get_unique_code(length=5)
         self.fields['startingdate'].initial = datetime.now()
         self.fields['expirationdate'].initial = datetime.now()
+        self.fields['monday'].initial  = True
+        self.fields['tuesday'].initial  = True
+        self.fields['wednesday'].initial  = True
+        self.fields['thursday'].initial  = True
+        self.fields['friday'].initial  = True
+        self.fields['saturday'].initial  = True
+        self.fields['sunday'].initial  = True
 
 
 class CampaignAdminForm(ModelForm):

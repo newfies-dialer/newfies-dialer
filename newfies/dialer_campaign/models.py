@@ -236,6 +236,7 @@ class Campaign(Model):
     #Per Day Starting & Stopping Time
     daily_start_time = models.TimeField(default='00:00:00')
     daily_stop_time = models.TimeField(default='23:59:59')
+    """
     monday = models.IntegerField(choices=DAY_STATUS, default='1')
     tuesday = models.IntegerField(choices=DAY_STATUS, default='1')
     wednesday = models.IntegerField(choices=DAY_STATUS, default='1')
@@ -243,7 +244,14 @@ class Campaign(Model):
     friday = models.IntegerField(choices=DAY_STATUS, default='1')
     saturday = models.IntegerField(choices=DAY_STATUS, default='1')
     sunday = models.IntegerField(choices=DAY_STATUS, default='1')
-
+    """
+    monday = models.BooleanField()
+    tuesday = models.BooleanField()
+    wednesday = models.BooleanField()
+    thursday = models.BooleanField()
+    friday = models.BooleanField()
+    saturday = models.BooleanField()
+    sunday = models.BooleanField()
     #Campaign Settings
     frequency = models.IntegerField(default='10', blank=True, null=True,
                     help_text=_("Define the frequency, speed of the campaign.\

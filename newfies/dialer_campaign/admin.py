@@ -260,7 +260,7 @@ admin.site.register(Contact, ContactAdmin)
 class CampaignSubscriberAdmin(admin.ModelAdmin):
     """Allows the administrator to view and modify certain attributes
     of a CampaignSubscriber."""
-    list_display = ('id', 'contact', 'campaign', 'callrequest',
+    list_display = ('id', 'contact', 'campaign',
                     'last_attempt', 'count_attempt', 'duplicate_contact',
                     'contact_name', 'status', 'created_date')
     list_filter = ['campaign', 'created_date', 'last_attempt']

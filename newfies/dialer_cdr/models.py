@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext as _
 from datetime import *
 from dialer_gateway.models import Gateway
+from dialer_campaign.models import Campaign, CampaignSubscriber
 from voip_app.models import VoipApp
 from common.intermediate_model_base_class import Model
 from prefix_country.models import Prefix

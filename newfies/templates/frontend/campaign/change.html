@@ -6,17 +6,17 @@
 {% endblock %}
 
 {% block content %}
-
 <center>{% if action == 'update' %}
             {% trans "Update" %}
         {% else %}
             {% trans "Add" %}
         {% endif %} {% trans "Campaign" %}</center>
 
+<div class="span-24 last" align=left>
 <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
         <fieldset>
             <legend>Campaign</legend>
-            <table align=left border=1>
+            <table align=left style="width:950px;">
                 {% get_fieldset campaign_code,name,description,status,callerid,aleg_gateway,voipapp,extra_data,phonebook as campaign_fields from form %}
                 {{ campaign_fields.as_table }}
             </table>
@@ -24,7 +24,7 @@
 
         <fieldset>
             <legend>Campaign settings</legend>
-            <table align=left border=1>
+            <table align=left style="width:950px;">
                 {% get_fieldset frequency,callmaxduration,maxretry,intervalretry,calltimeout as campaign_settings_fields from form %}
                 {{ campaign_settings_fields.as_table }}
             </table>
@@ -32,30 +32,12 @@
 
         <fieldset>
             <legend>Campaign schedule</legend>
-            <table align=left border=1>
+            <table align=left style="width:950px;">
                 {% get_fieldset startingdate,expirationdate,daily_start_time,daily_stop_time,monday,tuesday,wednesday,thursday,friday,saturday,sunday as campaign_settings_fields from form %}
                 {{ campaign_settings_fields.as_table }}
-                <!--{% for field in campaign_settings_fields %}
-                    {% if 'checkbox' in field.as_widget %}
-                        <tr>
-                            <th>{{ field.label }}:</th>
-                            <td>{{ field }}</td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <th>{{ field.label }}:</th>
-                            <td>{% if field.errors %}
-                                    {{ field.errors }}
-                                {% endif %}
-                                {{ field }}<br/>
-                                <span class="helptext">{{ field.help_text }}</span></td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}-->
-
             </table>
         </fieldset>
-        <table align=center border=1>
+        <table align=center border=1  style="width:950px;">
         <tr>
             <td >&nbsp;</td>
             <td align=left>
@@ -74,5 +56,6 @@
     </table>
 </form>
 
+</div>
  
 {% endblock %}

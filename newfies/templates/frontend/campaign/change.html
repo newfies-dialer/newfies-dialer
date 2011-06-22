@@ -6,6 +6,19 @@
 {% endblock %}
 
 {% block content %}
+    <style>
+    table {
+        margin-bottom:1.4em;
+        width:auto;
+    }
+    td{
+        width: 780px;
+    }
+    textarea {
+        margin:0.5em 0;
+        width: 250px;
+    }
+    </style>
 <center>{% if action == 'update' %}
             {% trans "Update" %}
         {% else %}
@@ -16,7 +29,7 @@
 <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
         <fieldset>
             <legend>Campaign</legend>
-            <table align=left style="width:950px;">
+            <table align=left>
                 {% get_fieldset campaign_code,name,description,status,callerid,aleg_gateway,voipapp,extra_data,phonebook as campaign_fields from form %}
                 {{ campaign_fields.as_table }}
             </table>
@@ -24,7 +37,7 @@
 
         <fieldset>
             <legend>Campaign settings</legend>
-            <table align=left style="width:950px;">
+            <table align=left>
                 {% get_fieldset frequency,callmaxduration,maxretry,intervalretry,calltimeout as campaign_settings_fields from form %}
                 {{ campaign_settings_fields.as_table }}
             </table>
@@ -32,7 +45,7 @@
 
         <fieldset>
             <legend>Campaign schedule</legend>
-            <table align=left style="width:950px;">
+            <table align=left>
                 {% get_fieldset startingdate,expirationdate,daily_start_time,daily_stop_time,monday,tuesday,wednesday,thursday,friday,saturday,sunday as campaign_settings_fields from form %}
                 {{ campaign_settings_fields.as_table }}
             </table>

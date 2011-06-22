@@ -12,7 +12,7 @@
         {% else %}
             {% trans "Add" %}
         {% endif %}{% trans "VoIP App" %}</center>
-
+<div class="span-24 last" align=left>
 <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
     <fieldset>
     <legend>VoIP App</legend>
@@ -21,7 +21,7 @@
             {{ voip_app_fields.as_table }}
         </table>
     </fieldset>
-        <table align=center border=1>
+        <table border=1 style="width: 500px;">
             <tr>
                 <td >&nbsp;</td>
                 <td align=left>
@@ -40,7 +40,7 @@
         </table>
 
 </form>
-
+</div>
 
  
 {% endblock %}

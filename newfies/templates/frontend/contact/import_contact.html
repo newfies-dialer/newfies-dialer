@@ -55,6 +55,7 @@
 <center>SUBSCRIBER STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')</center>
 <br/>
 <br/>
+<div class="span-24 last" align=left>
 <form method="post" action="" enctype="multipart/form-data" >
 {% csrf_token %}
 <fieldset>
@@ -73,7 +74,7 @@
     </tr>
     </table>
 </form>
-
+</div>
 
 
 {% if success_import_list %}

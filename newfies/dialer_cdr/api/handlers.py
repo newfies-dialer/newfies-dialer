@@ -42,9 +42,6 @@ class callrequestHandler(BaseHandler):
     model = Callrequest
     allowed_methods = ('GET', 'POST', 'PUT', )
     #anonymous = 'AnonymousLanguageHandler'
-    fields = ('uniqueid', 'call_time', 'status', 'num_attempt',
-              'last_attempt_time', 'result', 'exten', 'context', 'application',
-              'timeout', 'callerid', 'variable', 'account', )
 
     @classmethod
     def content_length(cls, callrequest):
@@ -112,19 +109,23 @@ class callrequestHandler(BaseHandler):
 
         **Attributes**:
 
-            * ``uniqueid`` -
+            * ``request_uuid`` -
             * ``call_time`` -
-            * ``exten`` -
-            * ``context`` -
-            * ``application`` -
             * ``timeout`` -
             * ``callerid`` -
-            * ``variable`` -
-            * ``account`` -
+            * ``phone_number`` -
+            * ``timeout`` -
+            * ``extra_dial_string`` -
+            * ``voipapp`` -
+            * ``extra_data`` -
+            * ``num_attempt`` -
+            * ``last_attempt_time`` -
+            * ``result`` -
+            * ``hangup_cause`` - 
 
         **CURL Usage**::
 
-            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/callrequest/ -d "uniqueid=2342jtdsf-00123&call_time=YYYY-MM-DD HH:MM:SS&exten=1231321&context=mycontext&application=&timeout=30000&callerid=650784355&variable=&account"
+            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/callrequest/ -d "request_uuid=2342jtdsf-00123&call_time=YYYY-MM-DD HH:MM:SS&exten=1231321&context=mycontext&application=&timeout=30000&callerid=650784355&variable=&account"
 
         **Example Response**::
 

@@ -57,15 +57,21 @@
 <br/>
 <form method="post" action="" enctype="multipart/form-data" >
 {% csrf_token %}
-<table border=1 align=center>
-{{ form.as_table }}
-<tr>
-    <td colspan=2 align=right>
-    <input type="submit" class="l-1" name="submit" value="{% trans "Submit" %}" />&nbsp;
-    <input type="reset" name="reset" class="j-2" value="{% trans "Reset" %}" />
-    </td>
-</tr>
-</table>
+<fieldset>
+    <legend>Import Contact</legend>
+        <table border=1 align=center>
+        {% get_fieldset phonebook,csv_file as contact_import_fields from form %}
+        {{ contact_import_fields.as_table }}
+        </table>
+    </fieldset>
+    <table align=center border=1>
+    <tr>
+        <td colspan=2 align=right>
+        <input type="submit" class="l-1" name="submit" value="{% trans "Submit" %}" />&nbsp;
+        <input type="reset" name="reset" class="j-2" value="{% trans "Reset" %}" />
+        </td>
+    </tr>
+    </table>
 </form>
 
 

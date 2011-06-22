@@ -14,8 +14,14 @@
         {% endif %}{% trans "Phonebook" %}</center>
         
 <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
-    <table align=center border=1>
-        {{ form.as_table }}
+    <fieldset>
+        <legend>Phonebook</legend>
+            <table align=center border=1>
+                {% get_fieldset name,description as phonebook_fields from form %}
+                {{ phonebook_fields.as_table }}
+            </table>
+        </fieldset>
+        <table align=center border=1>
         <tr>
             <td >&nbsp;</td>
             <td align=left>

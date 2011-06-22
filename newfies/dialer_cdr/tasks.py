@@ -6,7 +6,7 @@ from time import sleep
 import telefonyhelper
 from uuid import uuid1
 from django.conf import settings
-#from dialer_gateway.utils import phonenumber_change_prefix
+from dialer_gateway.utils import phonenumber_change_prefix
 
 
 class callrequest_pending(PeriodicTask):
@@ -56,7 +56,7 @@ def init_callrequest(callrequest_id, campaign_id):
         logger.error('Can\'t find this campaign')
 
     phone_number = obj_callrequest.phone_number
-    dialout_phone_number = 'xxx'#phonenumber_change_prefix(phone_number, obj_callrequest.aleg_gateway.id)
+    dialout_phone_number = phonenumber_change_prefix(phone_number, obj_callrequest.aleg_gateway.id)
     print "dialout_phone_number : %s" % dialout_phone_number
 
     #Construct the dialing out path

@@ -66,18 +66,22 @@ class Callrequest(Model):
         * ``status`` -
         * ``campaign_subscriber`` -
         * ``campaign`` -
-        * ``extra_data`` -
+        * ``callerid`` -
         * ``last_attempt_time`` -
         * ``result`` --
         * ``timeout`` -
-        * ``callerid`` -
-        * ``variable`` -
-        * ``account`` -
+        * ``timelimit`` -
+        * ``extra_dial_string`` -
+        * ``phone_number`` -
         * ``parent_callrequest`` -
+        * ``extra_data`` -
         * ``hangup_cause`` -
 
 
     Relationships:
+
+        * ``user`` - Foreign key relationship to the User model.
+                     Each campaign assigned to User
 
         * ``voipapp`` - Foreign key relationship to the VoipApp model.
                         VoIP Application to use with this campaign

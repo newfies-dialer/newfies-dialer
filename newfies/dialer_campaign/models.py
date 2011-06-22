@@ -234,8 +234,10 @@ class Campaign(Model):
                         verbose_name=_('Finish'),
                         help_text=_("Date Format: YYYY-mm-DD HH:MM:SS"))
     #Per Day Starting & Stopping Time
-    daily_start_time = models.TimeField(default='00:00:00')
-    daily_stop_time = models.TimeField(default='23:59:59')
+    daily_start_time = models.TimeField(default='00:00:00',
+                       help_text=_("Time Format: HH:MM:SS"))
+    daily_stop_time = models.TimeField(default='23:59:59',
+                      help_text=_("Time Format: HH:MM:SS"))
     """
     monday = models.IntegerField(choices=DAY_STATUS, default='1')
     tuesday = models.IntegerField(choices=DAY_STATUS, default='1')

@@ -112,16 +112,22 @@ class callrequestHandler(BaseHandler):
             * ``request_uuid`` -
             * ``call_time`` -
             * ``timeout`` -
+            * ``call_type`` -
+            * ``status`` -
+            * ``campaign_subscriber`` -
+            * ``campaign`` -
             * ``callerid`` -
             * ``phone_number`` -
-            * ``timeout`` -
             * ``extra_dial_string`` -
             * ``voipapp`` -
             * ``extra_data`` -
             * ``num_attempt`` -
             * ``last_attempt_time`` -
             * ``result`` -
-            * ``hangup_cause`` - 
+            * ``hangup_cause`` -
+            * ``last_attempt_time`` -
+            * ``timelimit`` -
+
 
         **CURL Usage**::
 

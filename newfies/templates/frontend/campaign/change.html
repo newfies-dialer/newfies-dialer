@@ -45,9 +45,25 @@
 
         <fieldset style="width: 950px;">
             <legend>Campaign schedule</legend>
-            <table align=left>
-                {% get_fieldset startingdate,expirationdate,daily_start_time,daily_stop_time,monday,tuesday,wednesday,thursday,friday,saturday,sunday as campaign_settings_fields from form %}
-                {{ campaign_settings_fields.as_table }}
+            <table align=left style="width:950px;">
+            <tr>
+                <th>{{ form.startingdate.label }}:</th><td>{{ form.startingdate }}<br/>{{ form.startingdate.help_text }}</td>
+                <th style="width: 170px;">{{ form.daily_start_time.label }}:</th><td>{{ form.daily_start_time }}<br/>{{ form.daily_start_time.help_text }}</td>
+            </tr>
+            <tr>
+                <th>{{ form.expirationdate.label }}:</th><td>{{ form.expirationdate }}<br/>{{ form.expirationdate.help_text }}</td>
+                <th style="width: 170px;">{{ form.daily_stop_time.label }}:</th><td>{{ form.daily_stop_time }}<br/>{{ form.daily_stop_time.help_text }}</td>
+            </tr>
+            <tr><th colspan="4">
+                {{ form.monday }}&nbsp;{{ form.monday.label }}
+                {{ form.tuesday }}&nbsp;{{ form.tuesday.label }}
+                {{ form.wednesday }}&nbsp;{{ form.wednesday.label }}
+                {{ form.thursday }}&nbsp;{{ form.thursday.label }}
+                {{ form.friday }}&nbsp;{{ form.friday.label }}
+                {{ form.saturday }}&nbsp;{{ form.saturday.label }}
+                {{ form.sunday }}&nbsp;{{ form.sunday.label }}
+                </th>
+            </tr>
             </table>
         </fieldset>
         <table align=center border=1  style="width:950px;">

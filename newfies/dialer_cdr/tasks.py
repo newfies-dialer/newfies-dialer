@@ -3,7 +3,6 @@ from dialer_campaign.models import *
 from dialer_cdr.models import *
 from celery.decorators import task
 from time import sleep
-import telefonyhelper
 from uuid import uuid1
 from django.conf import settings
 from dialer_gateway.utils import phonenumber_change_prefix
@@ -119,6 +118,7 @@ def init_callrequest(callrequest_id, campaign_id):
         print result
         logger.info('Received RequestUUID :> ' + str(result['RequestUUID']))
     else:
+        import telefonyhelper
         #Request Call via Plivo
         call_plivo(callerid=obj_callrequest.callerid,
                     phone_number=obj_callrequest.phone_number,

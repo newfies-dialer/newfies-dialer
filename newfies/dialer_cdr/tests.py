@@ -134,7 +134,8 @@ class NewfiesApiTestCase(BaseAuthenticatedClient):
 
 class NewfiesApiCallRequestUpdateTestCase(BaseAuthenticatedClient):
     """Test cases for updating Call Request API."""
-    fixtures = ['callrequest.json']
+    fixtures = ['gateway', 'voipapp', 'phonebook', 'contact',
+                'campaign', 'callrequest']
 
     def test_update_callrequest(self):
         """Test Function to update callrequest"""

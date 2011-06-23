@@ -163,16 +163,17 @@ class callrequestHandler(BaseHandler):
             callerid = get_attribute(attrs, 'callerid')
             voipapp = get_attribute(attrs, 'voipapp')
             phone_number = get_attribute(attrs, 'phone_number')
-            callback_time = datetime.strptime(get_attribute(attrs,
+            call_time = datetime.strptime(get_attribute(attrs,
                             'call_time'), '%Y-%m-%d %H:%M:%S')
 
             new_callrequest = Callrequest(request_uuid=request_uuid,
-                            callback_time=callback_time,
+                            call_time=call_time,
                             phone_number=phone_number,
-                            voipapp=voipapp,
+                            voipapp_id=voipapp,
                             timeout=timeout,
                             callerid=callerid,
-                            call_type=call_type)
+                            call_type=call_type,
+                            user=request.user)
 
             new_callrequest.save()
             return new_callrequest

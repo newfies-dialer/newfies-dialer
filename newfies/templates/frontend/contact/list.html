@@ -30,6 +30,11 @@ function get_alert_msg(id)
     return answer // answer is a boolean
 }
 </script>
+<style type="text/css">
+td {
+    width: auto;
+}
+</style>
 {% endblock %}
 
 {% block content %}
@@ -42,29 +47,29 @@ function get_alert_msg(id)
        
 
        <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
-           <table align="center" border=0 style="width:68%;" >
-                <tr>
-                    <td>{{ form.contact_no.label }}</td>
-                    <td style="width: 450px;">{{ form.contact_no }}&nbsp;{{ form.contact_no_type|removetags:"ul li"|safe }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.name.label }}</td>
-                    <td>{{ form.name }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.phonebook.label }}</td>
-                    <td>{{ form.phonebook }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.status.label }}</td>
-                    <td>{{ form.status|removetags:"ul li"|safe }}</td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td><input type=submit name=submit value=Submit />&nbsp;
-                        <input type=reset name=reset value=Retset /></td>
-                </tr>
-           </table>
+               <table align="center" border=0 style="width:68%;" >
+                    <tr>
+                        <td>{{ form.contact_no.label }}</td>
+                        <td style="width: 450px;">{{ form.contact_no }}&nbsp;{{ form.contact_no_type|removetags:"ul li"|safe }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.name.label }}</td>
+                        <td>{{ form.name }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.phonebook.label }}</td>
+                        <td>{{ form.phonebook }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.status.label }}</td>
+                        <td>{{ form.status|removetags:"ul li"|safe }}</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td><input type=submit name=submit value=Submit />&nbsp;
+                            <input type=reset name=reset value=Retset /></td>
+                    </tr>
+               </table>
        </form>
 
        <br/>

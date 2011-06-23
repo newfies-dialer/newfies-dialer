@@ -11,8 +11,9 @@
         margin-bottom:1.4em;
         width:auto;
     }
-    td{
-        width: 780px;
+    
+    th, caption {
+        width: 150px;
     }
     textarea {
         margin:0.5em 0;
@@ -58,7 +59,7 @@
                 <th>{{ form.expirationdate.label }}:</th><td>{{ form.expirationdate }}<br/>{{ form.expirationdate.help_text }}</td>
                 <th style="width: 200px;">{{ form.daily_stop_time.label }}:</th><td>{{ form.daily_stop_time }}<br/>{{ form.daily_stop_time.help_text }}</td>
             </tr>
-            <tr><th>Week Days:</th><td colspan="3">
+            <tr><th>{% trans "Week Days" %}:</th><td colspan="3">
                 {{ form.monday }}&nbsp;{{ form.monday.label }}
                 {{ form.tuesday }}&nbsp;{{ form.tuesday.label }}
                 {{ form.wednesday }}&nbsp;{{ form.wednesday.label }}

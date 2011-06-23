@@ -6,6 +6,8 @@ from django.utils.translation import ugettext_lazy as _
 from dialer_campaign.models import *
 from dialer_campaign.function_def import *
 from datetime import *
+from dateutil.relativedelta import *
+import calendar
 
 
 class SearchForm(forms.Form):
@@ -91,6 +93,7 @@ class ContactForm(ModelForm):
 class CampaignForm(ModelForm):
     """Campaign ModelForm"""
     campaign_code = forms.CharField(widget=forms.HiddenInput)
+
     class Meta:
         model = Campaign
         fields = ['campaign_code', 'name', 'description',
@@ -111,7 +114,8 @@ class CampaignForm(ModelForm):
         super(CampaignForm, self).__init__(*args, **kwargs)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
         self.fields['startingdate'].initial = datetime.now()
-        self.fields['expirationdate'].initial = datetime.now()
+        self.fields['expirationdate'].initial = \
+        datetime.now()+relativedelta(months=+1)
         self.fields['monday'].initial  = True
         self.fields['tuesday'].initial  = True
         self.fields['wednesday'].initial  = True
@@ -138,7 +142,8 @@ class CampaignAdminForm(ModelForm):
         self.fields['campaign_code'].widget.attrs['readonly'] = True
         self.fields['campaign_code'].initial = get_unique_code(length=5)
         self.fields['startingdate'].initial = datetime.now()
-        self.fields['expirationdate'].initial = datetime.now()
+        self.fields['expirationdate'].initial = \
+        datetime.now()+relativedelta(months=+1)
 
 
 NAME_TYPE = (

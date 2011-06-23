@@ -131,7 +131,7 @@ class callrequestHandler(BaseHandler):
 
         **CURL Usage**::
 
-            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/callrequest/ -d "request_uuid=2342jtdsf-00123&call_time=YYYY-MM-DD HH:MM:SS&phone_number=8792749823&voipapp=&timeout=30000&callerid=650784355&call_time=&call_type"
+            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/callrequest/ -d "request_uuid=2342jtdsf-00123&call_time=YYYY-MM-DD HH:MM:SS&phone_number=8792749823&voipapp=&timeout=30000&callerid=650784355&call_type=1"
 
         **Example Response**::
 

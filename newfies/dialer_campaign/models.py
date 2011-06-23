@@ -238,15 +238,6 @@ class Campaign(Model):
                        help_text=_("Time Format: HH:MM:SS"))
     daily_stop_time = models.TimeField(default='23:59:59',
                       help_text=_("Time Format: HH:MM:SS"))
-    """
-    monday = models.IntegerField(choices=DAY_STATUS, default='1')
-    tuesday = models.IntegerField(choices=DAY_STATUS, default='1')
-    wednesday = models.IntegerField(choices=DAY_STATUS, default='1')
-    thursday = models.IntegerField(choices=DAY_STATUS, default='1')
-    friday = models.IntegerField(choices=DAY_STATUS, default='1')
-    saturday = models.IntegerField(choices=DAY_STATUS, default='1')
-    sunday = models.IntegerField(choices=DAY_STATUS, default='1')
-    """
     monday = models.BooleanField()
     tuesday = models.BooleanField()
     wednesday = models.BooleanField()

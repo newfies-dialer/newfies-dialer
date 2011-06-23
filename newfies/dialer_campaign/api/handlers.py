@@ -195,7 +195,7 @@ class campaignHandler(BaseHandler):
             intervalretry = get_attribute(attrs, 'intervalretry')
             calltimeout = get_attribute(attrs, 'calltimeout')
             aleg_gateway = get_attribute(attrs, 'aleg_gateway')
-            voip_app = get_attribute(attrs, 'voip_app')
+            voipapp = get_attribute(attrs, 'voipapp')
             extra_data = get_attribute(attrs, 'extra_data')
             daily_start_time = get_attribute(attrs, 'daily_start_time')
             daily_stop_time = get_attribute(attrs, 'daily_stop_time')
@@ -245,7 +245,7 @@ class campaignHandler(BaseHandler):
                 
             
             try:
-                obj_voip_app = VoipApp.objects.get(id=voip_app)
+                obj_voip_app = VoipApp.objects.get(id=voipapp)
             except VoipApp.DoesNotExist:
                 resp = rc.BAD_REQUEST
                 resp.write("The VoipApp doesn't exist!")
@@ -276,7 +276,7 @@ class campaignHandler(BaseHandler):
                                         intervalretry=intervalretry,
                                         calltimeout=calltimeout,
                                         aleg_gateway=obj_aleg_gateway,
-                                        voip_app=obj_voip_app,
+                                        voipapp=obj_voip_app,
                                         extra_data=extra_data,
                                         daily_start_time=daily_start_time,
                                         daily_stop_time=daily_stop_time,

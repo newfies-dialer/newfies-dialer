@@ -29,7 +29,7 @@ class BaseAuthenticatedClient(TestCase):
 
 class NewfiesApiTestCase(BaseAuthenticatedClient):
     """Test cases for Newfies API."""
-    fixtures = ['gateway', 'phonebook', 'contact',
+    fixtures = ['gateway', 'voipapp', 'phonebook', 'contact',
                 'campaign', 'campaign_subscriber']
 
     def test_create_campaign(self):
@@ -39,8 +39,7 @@ class NewfiesApiTestCase(BaseAuthenticatedClient):
          "startingdate": "1301392136.0", "expirationdate": "1301332136.0",
          "frequency": "20", "callmaxduration": "50", "maxretry": "3",
          "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1",
-         "callerid": "123987",
-         "answer_url": "http://localdomain/answer_url/",
+         "callerid": "123987", "voipapp": "1",
          "extra_data": "2000"}, **self.extra)
         self.assertEqual(response.status_code, 200)
 
@@ -75,7 +74,8 @@ class NewfiesApiTestCase(BaseAuthenticatedClient):
     def test_create_phonebook(self):
         """Test Function to crete phonebook"""
         response = self.client.post('/api/dialer_campaign/phonebook/',
-        {"name": "mylittlephonebook", "description": "Test"}, **self.extra)
+        {"name": "mylittlephonebook", "description": "Test",
+         "campaign_id": "1"}, **self.extra)
         self.assertEqual(response.status_code, 200)
 
     def test_read_phonebook(self):
@@ -119,10 +119,10 @@ class NewfiesApiTestCase(BaseAuthenticatedClient):
     def test_create_callrequest(self):
         """Test Function to crete callrequest"""
         response = self.client.post('/api/dialer_cdr/callrequest/',
-        {"request_uuid": "2342jtdsf-00123",
-         "call_time": "2011-05-01 11:22:33",
-         "timeout": "30000", "callerid": "650784355", "variable": "",
-         "account": ""}, **self.extra)
+        {"request_uuid": "2342jtdsf-00153",
+         "call_time": "2011-05-01 11:22:33", "phone_number": "8792749823",
+         "voipapp": "1", "timeout": "30000", "callerid": "650784355",
+         "call_type": "1"}, **self.extra)
         self.assertEqual(response.status_code, 200)
 
     def test_read_callrequest(self):

@@ -412,7 +412,7 @@ class campaignHandler(BaseHandler):
             * ``calltimeout`` - Define the amount of second to timeout on calls
             * ``aleg_gateway`` - Define the Gateway to use to reach the\
                                  subscriber
-            * ``voip_app`` - Define the VoIP application
+            * ``voipapp`` - Define the VoIP application
             * ``extra_data`` - Define the additional data to pass to the\
                                  application
            
@@ -421,7 +421,7 @@ class campaignHandler(BaseHandler):
 
             curl -u username:password -i -H "Accept: application/json" -X PUT http://127.0.0.1:8000/api/dialer_campaign/campaign/%campaign_id%/ -d "status=2"
 
-            curl -u username:password -i -H "Accept: application/json" -X PUT http://127.0.0.1:8000/api/dialer_campaign/campaign/%campaign_id%/ -d "callerid=123987&status=2&startingdate=1301392136.0&expirationdate=1301332136.0&frequency=20&callmaxduration=50&maxretry=3&intervalretry=3000&calltimeout=60&aleg_gateway=1&voip_app=1&extra_data=2000"
+            curl -u username:password -i -H "Accept: application/json" -X PUT http://127.0.0.1:8000/api/dialer_campaign/campaign/%campaign_id%/ -d "callerid=123987&status=2&startingdate=1301392136.0&expirationdate=1301332136.0&frequency=20&callmaxduration=50&maxretry=3&intervalretry=3000&calltimeout=60&aleg_gateway=1&voipapp=1&extra_data=2000"
 
         **Example Response**::
 
@@ -491,7 +491,7 @@ class campaignHandler(BaseHandler):
         intervalretry = get_attribute(attrs, 'intervalretry')
         calltimeout = get_attribute(attrs, 'calltimeout')
         aleg_gateway = get_attribute(attrs, 'aleg_gateway')
-        voip_app = get_attribute(attrs, 'voip_app')
+        voipapp = get_attribute(attrs, 'voipapp')
         extra_data = get_attribute(attrs, 'extra_data')
         startingdate = get_value_if_none(startingdate, time.time())
         # expire in 7 days
@@ -525,7 +525,7 @@ class campaignHandler(BaseHandler):
             save_if_set(campaign, 'intervalretry', intervalretry)
             save_if_set(campaign, 'calltimeout', calltimeout)
             save_if_set(campaign, 'aleg_gateway_id', aleg_gateway)
-            save_if_set(campaign, 'voip_app', voip_app)
+            save_if_set(campaign, 'voipapp_id', voipapp)
             save_if_set(campaign, 'extra_data', extra_data)
             save_if_set(campaign, 'daily_start_time', daily_start_time)
             save_if_set(campaign, 'daily_stop_time', daily_stop_time)

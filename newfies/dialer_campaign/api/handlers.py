@@ -873,10 +873,11 @@ class contactHandler(BaseHandler):
                             'dialer_campaign_subscriber.status '\
                             'FROM dialer_campaign_subscriber '\
                             'LEFT JOIN dialer_callrequest ON '\
-                            'callrequest_id=dialer_callrequest.id '\
+                            'campaign_subscriber_id=dialer_campaign_subscriber.id '\
                             'LEFT JOIN dialer_campaign ON '\
-                            'dialer_callrequest.campaign=dialer_campaign.id '\
-                            'WHERE campaign_id = %s AND duplicate_contact = "%s" '\
+                            'dialer_callrequest.campaign_id=dialer_campaign.id '\
+                            'WHERE dialer_campaign_subscriber.campaign_id = %s '\
+                            'AND dialer_campaign_subscriber.duplicate_contact = "%s" '\
                             % (str(campaign_id), str(contact))
 
         else:
@@ -884,10 +885,12 @@ class contactHandler(BaseHandler):
                             'dialer_campaign_subscriber.status '\
                             'FROM dialer_campaign_subscriber '\
                             'LEFT JOIN dialer_callrequest ON '\
-                            'callrequest_id=dialer_callrequest.id '\
+                            'campaign_subscriber_id=' \
+                            'dialer_campaign_subscriber.id '\
                             'LEFT JOIN dialer_campaign ON '\
-                            'dialer_callrequest.campaign=dialer_campaign.id '\
-                            'WHERE campaign_id = %s' % (str(campaign_id))
+                            'dialer_callrequest.campaign_id=dialer_campaign.id '\
+                            'WHERE dialer_campaign_subscriber.campaign_id' \
+                            '= %s' % (str(campaign_id))
 
         #print sql_statement
         cursor.execute(sql_statement)

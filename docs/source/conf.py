@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Newfies documentation build configuration file, created by
-# sphinx-quickstart on Mon Apr 25 23:21:38 2011.
+# sphinx-quickstart on Thu Jun 23 17:52:54 2011.
 #
 # This file is execfile()d with the current directory set to its containing dir.
 #
@@ -18,7 +18,7 @@ import sys, os
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
 
-APP_DIR = os.path.normpath(os.path.join(os.getcwd(), '..')) + '/newfies/'
+APP_DIR = os.path.normpath(os.path.join(os.getcwd(), '../..')) + '/newfies/'
 sys.path.append(APP_DIR)
 import settings
 from django.core.management import setup_environ
@@ -31,7 +31,7 @@ setup_environ(settings)
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.coverage']
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.coverage', 'sphinx.ext.viewcode']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

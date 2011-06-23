@@ -9,6 +9,8 @@ from django.conf import settings
 from dialer_gateway.utils import phonenumber_change_prefix
 
 
+USE_DUMMY_DIALER = True
+
 class callrequest_pending(PeriodicTask):
     """A periodic task that check for pending calls
 
@@ -108,26 +110,32 @@ def init_callrequest(callrequest_id, campaign_id):
     data = response.read()
     conn.close()
     """
-    #Request Call via Plivo
-    call_plivo(callerid=obj_callrequest.callerid,
-                phone_number=obj_callrequest.phone_number,
-                Gateways=gateways,
-                GatewayCodecs=gateway_codecs,
-                GatewayTimeouts=gateway_timeouts,
-                GatewayRetries=gateway_retries,
-                ExtraDialString=originate_dial_string,
-                AnswerUrl=settings.PLIVO_DEFAULT_ANSWER_URL,
-                HangupUrl=settings.PLIVO_DEFAULT_HANGUP_URL,
-                TimeLimit=callmaxduration)
 
-    result= telefonyhelper.call_plivo()
-    print result
-    logger.info('Received RequestUUID :> ' + str(result['RequestUUID']))
+    if USE_DUMMY_DIALER:
+        #Use Dummy TestCall
+        print "Use Dummy TestCall"
+        res = dummy_testcall.delay(callerid=obj_callrequest.callerid, phone_number=obj_callrequest.phone_number, gateway=gateways)
+        result = res.get()
+        print result
+        logger.info('Received RequestUUID :> ' + str(result['RequestUUID']))
+    else:
+        #Request Call via Plivo
+        call_plivo(callerid=obj_callrequest.callerid,
+                    phone_number=obj_callrequest.phone_number,
+                    Gateways=gateways,
+                    GatewayCodecs=gateway_codecs,
+                    GatewayTimeouts=gateway_timeouts,
+                    GatewayRetries=gateway_retries,
+                    ExtraDialString=originate_dial_string,
+                    AnswerUrl=settings.PLIVO_DEFAULT_ANSWER_URL,
+                    HangupUrl=settings.PLIVO_DEFAULT_HANGUP_URL,
+                    TimeLimit=callmaxduration)
 
-    #Use Dummy TestCall
-    #res = dummy_testcall.delay(callerid=obj_callrequest.callerid, phone_number=obj_callrequest.phone_number, gateway=gateways)
-    #result = res.get()
-        
+        result= telefonyhelper.call_plivo()
+        print result
+        logger.info('Received RequestUUID :> ' + str(result['RequestUUID']))
+
+    #Update CallRequest Object
     obj_callrequest.request_uuid = result['RequestUUID']
     obj_callrequest.save()
 

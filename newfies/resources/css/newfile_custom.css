@@ -725,6 +725,6 @@ textarea {
     -webkit-margin-after: 0em;
 }
 
-th, td, caption {
-    width: 150px;
+td {
+    width: 800px;
 }

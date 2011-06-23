@@ -109,8 +109,8 @@ def voipcall_report_grid(request):
 
     voipcall_list = VoIPCall.objects.values('id', 'user__username',
                     'used_gateway__name', 'callid', 'request_uuid', 'callerid',
-                    'dnid', 'phone_number', 'starting_date', 'sessiontime',
-                    'disposition', 'dialcode').filter(**kwargs)
+                    'phone_number', 'starting_date', 'sessiontime',
+                    'disposition').filter(**kwargs)
 
     count = voipcall_list.count()
     voipcall_list = \
@@ -127,12 +127,11 @@ def voipcall_report_grid(request):
                        row['callid'],
                        row['request_uuid'],
                        row['callerid'],
-                       row['dnid'],
                        row['phone_number'],
                        row['starting_date'].strftime('%Y-%m-%d %H:%M:%S'),
                        str(timedelta(seconds=row['sessiontime'])),
                        get_disposition_name(row['disposition']),
-                       row['dialcode'], ]} for row in voipcall_list]
+                       ]} for row in voipcall_list]
 
     data = {'rows': rows,
             'page': page,
@@ -250,19 +249,17 @@ def export_voipcall_report(request):
     # super(VoIPCall_ReportAdmin, self).queryset(request)
     qs = request.session['voipcall_record_qs']
 
-    writer.writerow(['user', 'callid', 'callerid', 'dnid',
-                     'phone_number', 'starting_date', 'sessiontime',
-                     'disposition', 'recipient_dialcode', 'used_gateway'])
+    writer.writerow(['user', 'callid', 'callerid', 'phone_number',
+                     'starting_date', 'sessiontime',
+                     'disposition', 'used_gateway'])
     for i in qs:
         writer.writerow([i.user,
                          i.callid,
                          i.callerid,
-                         i.dnid,
                          i.phone_number,
                          i.starting_date,
                          i.sessiontime,
                          get_disposition_name(i.disposition),
-                         i.dialcode,
                          i.used_gateway,
                          ])
     return response

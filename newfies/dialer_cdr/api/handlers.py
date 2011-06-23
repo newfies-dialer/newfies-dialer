@@ -9,6 +9,7 @@ import uuid
 
 seed()
 
+
 def get_attribute(attrs, attr_name):
     """this is a helper to retrieve an attribute if it exists"""
     if attr_name in attrs:
@@ -71,18 +72,16 @@ class callrequestHandler(BaseHandler):
             [
                 {
                     "status": 4,
-                    "account": "",
-                    "context": "mycontext",
                     "callerid": "650784355",
                     "num_attempt": 0,
                     "timeout": "30000",
-                    "application": "",
-                    "call_time": "2011-05-01 11:22:33",
-                    "variable": "",
+                    "voipapp": "",
+                    "call_time": "2011-05-07 13:03:11",
+                    "call_type": "",
                     "result": "",
-                    "uniqueid": "2342jtdsf-00123",
+                    "request_uuid": "2342jtdsf-00123",
                     "last_attempt_time": null,
-                    "exten": "1231321"
+                    "phone_number": "1231321"
                 }
             ]
 
@@ -111,44 +110,43 @@ class callrequestHandler(BaseHandler):
 
             * ``request_uuid`` -
             * ``call_time`` -
-            * ``timeout`` -
             * ``call_type`` -
+            * ``timeout`` -
+            * ``timelimit`` -
             * ``status`` -
             * ``campaign_subscriber`` -
             * ``campaign`` -
+            * ``voipapp`` -
             * ``callerid`` -
             * ``phone_number`` -
             * ``extra_dial_string`` -
-            * ``voipapp`` -
             * ``extra_data`` -
             * ``num_attempt`` -
             * ``last_attempt_time`` -
             * ``result`` -
             * ``hangup_cause`` -
             * ``last_attempt_time`` -
-            * ``timelimit`` -
+
 
 
         **CURL Usage**::
 
-            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/callrequest/ -d "request_uuid=2342jtdsf-00123&call_time=YYYY-MM-DD HH:MM:SS&exten=1231321&context=mycontext&application=&timeout=30000&callerid=650784355&variable=&account"
+            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/callrequest/ -d "request_uuid=2342jtdsf-00123&call_time=YYYY-MM-DD HH:MM:SS&phone_number=8792749823&voipapp=&timeout=30000&callerid=650784355&call_time=&call_type"
 
         **Example Response**::
 
             {
                 "status": "1",
-                "account": "",
-                "context": "mycontext",
                 "callerid": "650784355",
                 "num_attempt": 0,
                 "timeout": "30000",
-                "application": "",
+                "voipapp": "",
                 "call_time": "2011-05-07 13:03:11",
-                "variable": "",
+                "call_type": "",
                 "result": "",
-                "uniqueid": "2342jtdsf-00123",
+                "request_uuid": "2342jtdsf-00123",
                 "last_attempt_time": null,
-                "exten": "1231321"
+                "phone_number": "1231321"
             }
 
         **Error**:
@@ -159,26 +157,22 @@ class callrequestHandler(BaseHandler):
         if self.exists(**attrs):
             return rc.DUPLICATE_ENTRY
         else:
-            uniqueid = get_attribute(attrs, 'uniqueid')
-            exten = get_attribute(attrs, 'exten')
-            context = get_attribute(attrs, 'context')
-            application = get_attribute(attrs, 'application')
+            request_uuid = get_attribute(attrs, 'request_uuid')
+            call_type = get_attribute(attrs, 'call_type')
             timeout = get_attribute(attrs, 'timeout')
             callerid = get_attribute(attrs, 'callerid')
-            variable = get_attribute(attrs, 'variable')
-            account = get_attribute(attrs, 'account')
+            voipapp = get_attribute(attrs, 'voipapp')
+            phone_number = get_attribute(attrs, 'phone_number')
             callback_time = datetime.strptime(get_attribute(attrs,
                             'call_time'), '%Y-%m-%d %H:%M:%S')
 
-            new_callrequest = Callrequest(uniqueid=attrs['uniqueid'],
-                            callback_time=attrs['call_time'],
-                            exten=attrs['exten'],
-                            context=attrs['context'],
-                            application=attrs['application'],
-                            timeout=attrs['timeout'],
-                            callerid=attrs['callerid'],
-                            variable=attrs['variable'],
-                            account=attrs['account'])
+            new_callrequest = Callrequest(request_uuid=request_uuid,
+                            callback_time=callback_time,
+                            phone_number=phone_number,
+                            voipapp=voipapp,
+                            timeout=timeout,
+                            callerid=callerid,
+                            call_type=call_type)
 
             new_callrequest.save()
             return new_callrequest
@@ -200,18 +194,16 @@ class callrequestHandler(BaseHandler):
 
             {
                 "status": "5",
-                "account": "",
-                "context": "mycontext",
                 "callerid": "650784355",
                 "num_attempt": 0,
                 "timeout": "30000",
-                "application": "",
-                "call_time": "2011-05-01 11:22:33",
-                "variable": "",
+                "voipapp": "",
+                "call_time": "2011-05-07 13:03:11",
+                "call_type": "",
                 "result": "",
-                "uniqueid": "2342jtdsf-00123",
+                "request_uuid": "2342jtdsf-00123",
                 "last_attempt_time": null,
-                "exten": "1231321"
+                "phone_number": "1231321"
             }
 
         **Error**:

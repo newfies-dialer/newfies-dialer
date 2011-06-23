@@ -271,6 +271,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 PLIVO_DEFAULT_ANSWER_URL='http://127.0.0.1:8000/api/dialer_cdr/answercall/'
 PLIVO_DEFAULT_HANGUP_URL='http://127.0.0.1:8000/api/dialer_cdr/dummyhangupcall/'
 
+# ADD 'dummy','plivo','twilio'
+NEWFIES_DIALER_ENGINE = 'dummy'
 
 #IMPORT LOCAL SETTINGS
 #=====================

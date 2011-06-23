@@ -8,7 +8,6 @@ from django.conf import settings
 from dialer_gateway.utils import phonenumber_change_prefix
 
 
-USE_DUMMY_DIALER = True
 
 class callrequest_pending(PeriodicTask):
     """A periodic task that check for pending calls
@@ -110,16 +109,16 @@ def init_callrequest(callrequest_id, campaign_id):
     conn.close()
     """
 
-    if USE_DUMMY_DIALER:
+    if settings.NEWFIES_DIALER_ENGINE.lower()=='dummy':
         #Use Dummy TestCall
-        print "Use Dummy TestCall"
         res = dummy_testcall.delay(callerid=obj_callrequest.callerid, phone_number=obj_callrequest.phone_number, gateway=gateways)
         result = res.get()
         print result
         logger.info('Received RequestUUID :> ' + str(result['RequestUUID']))
-    else:
-        import telefonyhelper
+
+    elif settings.NEWFIES_DIALER_ENGINE.lower()=='plivo':
         #Request Call via Plivo
+        import telefonyhelper
         call_plivo(callerid=obj_callrequest.callerid,
                     phone_number=obj_callrequest.phone_number,
                     Gateways=gateways,
@@ -134,6 +133,11 @@ def init_callrequest(callrequest_id, campaign_id):
         result= telefonyhelper.call_plivo()
         print result
         logger.info('Received RequestUUID :> ' + str(result['RequestUUID']))
+        
+    else:
+        logger.error('Not other method supported, use one of this options :'\
+                        'dummy ; plivo')
+        return False
 
     #Update CallRequest Object
     obj_callrequest.request_uuid = result['RequestUUID']

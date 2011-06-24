@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Newfies documentation build configuration file, created by
-# sphinx-quickstart on Thu Jun 23 17:52:54 2011.
+# sphinx-quickstart on Fri Jun 24 19:43:02 2011.
 #
 # This file is execfile()d with the current directory set to its containing dir.
 #
@@ -31,7 +31,7 @@ setup_environ(settings)
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'rst2pdf.pdfbuilder', 'sphinx.ext.coverage']
+extensions = []
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -43,7 +43,7 @@ source_suffix = '.rst'
 #source_encoding = 'utf-8-sig'
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = 'index.rst'
 
 # General information about the project.
 project = u'Newfies'
@@ -184,7 +184,7 @@ htmlhelp_basename = 'Newfiesdoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'Newfies.tex', u'Newfies Documentation',
+  ('index.rst', 'Newfies.tex', u'Newfies Documentation',
    u'Arezqui Belaid', 'manual'),
 ]
 
@@ -217,6 +217,6 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'newfies', u'Newfies Documentation',
+    ('index.rst', 'newfies', u'Newfies Documentation',
      [u'Arezqui Belaid'], 1)
 ]

@@ -34,7 +34,7 @@ class callrequest_pending(PeriodicTask):
             
             callrequest.status = 7 # Update to Process
             callrequest.save()
-            init_callrequest.delay(callrequest.id, callrequest.campaign)
+            init_callrequest.delay(callrequest.id, callrequest.campaign.id)
 
 @task()
 def init_callrequest(callrequest_id, campaign_id):
@@ -53,10 +53,12 @@ def init_callrequest(callrequest_id, campaign_id):
     try:
         obj_campaign = Campaign.objects.get(id=campaign_id)
     except:
-        logger.error('Can\'t find this campaign')
+        logger.error("Can\'t find the campaign : %s" % campaign_id)
+        return False
 
     phone_number = obj_callrequest.phone_number
-    dialout_phone_number = phonenumber_change_prefix(phone_number, obj_callrequest.aleg_gateway.id)
+    dialout_phone_number = phonenumber_change_prefix(phone_number,
+                                         obj_callrequest.aleg_gateway.id)
     print "dialout_phone_number : %s" % dialout_phone_number
 
     #Construct the dialing out path
@@ -88,7 +90,7 @@ def init_callrequest(callrequest_id, campaign_id):
     gateway_timeouts = obj_callrequest.aleg_gateway.gateway_timeouts
     gateway_retries = obj_callrequest.aleg_gateway.gateway_retries
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
-
+    callmaxduration = obj_campaign.callmaxduration
 
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
 
@@ -118,8 +120,8 @@ def init_callrequest(callrequest_id, campaign_id):
 
     elif settings.NEWFIES_DIALER_ENGINE.lower()=='plivo':
         #Request Call via Plivo
-        import telefonyhelper
-        call_plivo(callerid=obj_callrequest.callerid,
+        from telefonyhelper import call_plivo
+        result= call_plivo(callerid=obj_callrequest.callerid,
                     phone_number=obj_callrequest.phone_number,
                     Gateways=gateways,
                     GatewayCodecs=gateway_codecs,
@@ -127,10 +129,9 @@ def init_callrequest(callrequest_id, campaign_id):
                     GatewayRetries=gateway_retries,
                     ExtraDialString=originate_dial_string,
                     AnswerUrl=settings.PLIVO_DEFAULT_ANSWER_URL,
+                    #AnswerUrl='http://localhost/~areski/django/MyProjects/plivohelper-php/examples/test.php?answer=1',
                     HangupUrl=settings.PLIVO_DEFAULT_HANGUP_URL,
-                    TimeLimit=callmaxduration)
-
-        result= telefonyhelper.call_plivo()
+                    TimeLimit=str(callmaxduration))
         print result
         logger.info('Received RequestUUID :> ' + str(result['RequestUUID']))
         

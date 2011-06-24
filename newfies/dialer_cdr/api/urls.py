@@ -48,7 +48,8 @@ urlpatterns = patterns('',
 
     url(r'^answercall[/]$', answercall_handler,
                                     {'emitter_format': 'custom_xml'}),
-    url(r'^hangupcall[/]$', hangupcall_handler),
+    url(r'^hangupcall[/]$', hangupcall_handler,
+                                    {'emitter_format': 'custom_xml'}),
     
     url(r'^testcall[/]$', testcall_handler),
 

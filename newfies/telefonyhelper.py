@@ -19,6 +19,25 @@ def call_plivo(callerid=None, phone_number=None, Gateways=None, GatewayCodecs="'
 
     #TODO : See if we want to merge ExtraDialString
 
+    if not phone_number:
+        print "Error : Phone Number needs to be defined!"
+        return False
+
+    if not callerid:
+        callerid = '8888888888'
+
+    if not GatewayCodecs:
+        GatewayCodecs = "'PCMA,PCMU'"
+
+    if not GatewayTimeouts:
+        GatewayTimeouts = "1800"
+
+    if not GatewayRetries:
+        GatewayRetries = "1"
+
+    if not TimeLimit:
+        TimeLimit="3600"
+
     # Create a REST object
     plivo = plivohelper.REST(REST_API_URL, SID, AUTH_TOKEN, API_VERSION)
 
@@ -33,8 +52,11 @@ def call_plivo(callerid=None, phone_number=None, Gateways=None, GatewayCodecs="'
         'ExtraDialString' : extra_dial_string,
         'AnswerUrl' : AnswerUrl,
         'HangupUrl' : HangupUrl,
-        'TimeLimit' : TimeLimit,
+        #TODO : Fix TimeLimit on Plivo
+        #'TimeLimit' : TimeLimit,
     }
+
+    print call_params
 
     #Perform the Call on the Rest API
     try:

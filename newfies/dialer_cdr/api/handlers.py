@@ -220,62 +220,8 @@ class callrequestHandler(BaseHandler):
             return rc.NOT_HERE
 
 
-class testcallHandler(BaseHandler):
-    """This API server as Test suit to initiate call and retrieve their status
-
-    It aims to be used as a test function that will simulate the behavior
-    of sending the call via an API
-    """
-    allowed_methods = ('POST', )
-
-    def create(self, request):
-        """API to initiate a new call
-
-        **Attributes**:
-
-            * ``From`` - Caller Id
-            * ``To`` - User Number to Call
-            * ``Gateways`` - "user/,user", # Gateway string to try dialing separated by comma. First in list will be tried first
-            * ``GatewayCodecs`` - "'PCMA,PCMU','PCMA,PCMU'", # Codec string as needed by FS for each gateway separated by comma
-            * ``GatewayTimeouts`` - "10,10", # Seconds to timeout in string for each gateway separated by comma
-            * ``GatewayRetries`` - "2,1", # Retry String for Gateways separated by comma, on how many times each gateway should be retried
-            * ``OriginateDialString`` - originate_dial_string
-            * ``AnswerUrl`` - "http://localhost/answer_url/",
-            * ``HangUpUrl`` - "http://localhost/hangup_url/",
-            * ``RingUrl`` - "http://localhost/ring_url/",
-
-        **CURL Usage**::
-
-            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/testcall/ -d "From=650784355&To=1000&Gateways=user/&AnswerUrl=http://localhost/answer_url/"
-
-        **Example Response**::
-
-            {
-                "RequestUUID": '48092924-856d-11e0-a586-0147ddac9d3e'
-            }
-
-        **Error**:
-
-            * Gateway error
-            * User unreachable
-            * Timeout
-        """
-        attrs = self.flatten_dict(request.POST)
-
-        opt_from = get_attribute(attrs, 'From')
-        opt_to = get_attribute(attrs, 'To')
-
-        if not opt_from or not opt_to:
-            resp = rc.BAD_REQUEST
-            resp.write("Wrong parameters!")
-            return resp
-
-        request_uuid = str(uuid.uuid1())
-        return {'RequestUUID': request_uuid}
-
-
 class answercallHandler(BaseHandler):
-    """This API server as Test suit to answer call"""
+    """This API server to answer call"""
     allowed_methods = ('POST', 'GET',)
 
     def create(self, request):
@@ -362,7 +308,10 @@ class answercallHandler(BaseHandler):
 
 
 class hangupcallHandler(BaseHandler):
-    """This API server as Test suit to hangup call"""
+    """This API server to hangup call
+
+    This will update the call with the final status
+    """
     allowed_methods = ('POST',)
 
     def create(self, request):
@@ -374,7 +323,7 @@ class hangupcallHandler(BaseHandler):
 
         **CURL Usage**::
 
-            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/dummyhangupcall/ -d "call_uuid=48092924-856d-11e0-a586-0147ddac9d3e"
+            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/hangupcall/ -d "RequestUUID=48092924-856d-11e0-a586-0147ddac9d3e"
 
         **Example Response**::
 
@@ -384,11 +333,86 @@ class hangupcallHandler(BaseHandler):
         """
         attrs = self.flatten_dict(request.POST)
 
-        opt_call_uuid = get_attribute(attrs, 'call_uuid')
+        opt_request_uuid = get_attribute(attrs, 'RequestUUID')
+        opt_hangup_cause = get_attribute(attrs, 'HangupCause')
+        
+        if not opt_request_uuid:
+            resp = rc.BAD_REQUEST
+            resp.write("Wrong parameters - missing RequestUUID!")
+            return resp
 
-        if not opt_call_uuid:
+        if not opt_hangup_cause:
+            resp = rc.BAD_REQUEST
+            resp.write("Wrong parameters - missing HangupCause!")
+            return resp
+
+        try:
+            callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid)
+            # 2 / FAILURE ; 3 / RETRY ; 4 / SUCCESS
+            if opt_hangup_cause=='NORMAL_CLEARING':
+                callrequest.status = 4 # Success
+            else:
+                callrequest.status = 2 # Failure
+            callrequest.hangup_cause = opt_hangup_cause
+            callrequest.save()
+        except:
+            return rc.NOT_HERE
+
+        #TODO : Create CDR
+
+        return {'result': 'OK'}
+
+
+
+class testcallHandler(BaseHandler):
+    """This API server as Test suit to initiate call and retrieve their status
+
+    It aims to be used as a test function that will simulate the behavior
+    of sending the call via an API
+    """
+    allowed_methods = ('POST', )
+
+    def create(self, request):
+        """API to initiate a new call
+
+        **Attributes**:
+
+            * ``From`` - Caller Id
+            * ``To`` - User Number to Call
+            * ``Gateways`` - "user/,user", # Gateway string to try dialing separated by comma. First in list will be tried first
+            * ``GatewayCodecs`` - "'PCMA,PCMU','PCMA,PCMU'", # Codec string as needed by FS for each gateway separated by comma
+            * ``GatewayTimeouts`` - "10,10", # Seconds to timeout in string for each gateway separated by comma
+            * ``GatewayRetries`` - "2,1", # Retry String for Gateways separated by comma, on how many times each gateway should be retried
+            * ``OriginateDialString`` - originate_dial_string
+            * ``AnswerUrl`` - "http://localhost/answer_url/",
+            * ``HangUpUrl`` - "http://localhost/hangup_url/",
+            * ``RingUrl`` - "http://localhost/ring_url/",
+
+        **CURL Usage**::
+
+            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/testcall/ -d "From=650784355&To=1000&Gateways=user/&AnswerUrl=http://localhost/answer_url/"
+
+        **Example Response**::
+
+            {
+                "RequestUUID": '48092924-856d-11e0-a586-0147ddac9d3e'
+            }
+
+        **Error**:
+
+            * Gateway error
+            * User unreachable
+            * Timeout
+        """
+        attrs = self.flatten_dict(request.POST)
+
+        opt_from = get_attribute(attrs, 'From')
+        opt_to = get_attribute(attrs, 'To')
+
+        if not opt_from or not opt_to:
             resp = rc.BAD_REQUEST
             resp.write("Wrong parameters!")
             return resp
 
-        return {'result': 'OK'}
+        request_uuid = str(uuid.uuid1())
+        return {'RequestUUID': request_uuid}

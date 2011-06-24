@@ -110,7 +110,7 @@ class Callrequest(Model):
     callerid = models.CharField(max_length=80, blank=True,
                 verbose_name=_("CallerID"), help_text=_("CallerID used \
                 to call the A-Leg"))
-    phone_number = models.CharField(max_length=80, blank=True)
+    phone_number = models.CharField(max_length=80)
     timeout = models.IntegerField(blank=True, default=30)
     timelimit = models.IntegerField(blank=True, default=3600)
     extra_dial_string = models.CharField(max_length=500, blank=True)

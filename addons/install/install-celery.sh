@@ -21,10 +21,10 @@
 
 #Variables
 #comment out the appropriate line below to install the desired version
-VERSION=master
+#VERSION=master
 #VERSION=v0.1.0
-DATETIME=$(date +"%Y%m%d%H%M%S")
-KERNELARCH=$(uname -p)
+#DATETIME=$(date +"%Y%m%d%H%M%S")
+#KERNELARCH=$(uname -p)
 DISTRO='UBUNTU'
 
 
@@ -60,56 +60,66 @@ esac
 #get redis
 echo "Configure redis..."
 
-#ln -s /usr/src/newfies/newfies /usr/share/django_app/newfies
-
-CARROT_BACKEND = "ghettoq.taproot.Redis" # "redis"
-REDIS_HOST = '127.0.0.1'
-REDIS_PORT = 6379
-REDIS_VHOST = "0"
-CELERY_RESULT_BACKEND = "redis"
+CARROT_BACKEND="ghettoq.taproot.Redis" # "redis"
+REDIS_HOST='127.0.0.1'
+REDIS_PORT=6379
+REDIS_VHOST="0"
+CELERY_RESULT_BACKEND="redis"
 
 # Redis Settings
-sed -i "s/CARROT_BACKEND = 'ghettoq.taproot.Redis'/CARROT_BACKEND = \'$CARROT_BACKEND\'/g"  /usr/share/django_app/newfies/settings.py
-sed -i "s/BROKER_HOST = 'localhost'/BROKER_HOST = \'$REDIS_HOST\'/g"  /usr/share/django_app/newfies/settings.py
-sed -i "s/BROKER_PORT = 6379/BROKER_PORT = \'$REDIS_PORT\'/g"  /usr/share/django_app/newfies/settings.py
-sed -i "s/BROKER_VHOST = 0/BROKER_VHOST = \'$REDIS_VHOST\'/g"  /usr/share/django_app/newfies/settings.py
-sed -i "s/CELERY_RESULT_BACKEND = 'redis'/CELERY_RESULT_BACKEND = \'$CELERY_RESULT_BACKEND\'/g"  /usr/share/django_app/newfies/settings.py
+sed -i "s/CARROT_BACKEND = 'ghettoq.taproot.Redis'/CARROT_BACKEND = \'$CARROT_BACKEND\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings.py
+sed -i "s/BROKER_HOST = 'localhost'/BROKER_HOST = \'$REDIS_HOST\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings.py
+sed -i "s/BROKER_PORT = 6379/BROKER_PORT = \'$REDIS_PORT\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings.py
+sed -i "s/BROKER_VHOST = 0/BROKER_VHOST = \'$REDIS_VHOST\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings.py
+sed -i "s/CELERY_RESULT_BACKEND = 'redis'/CELERY_RESULT_BACKEND = \'$CELERY_RESULT_BACKEND\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings.py
 
-sed -i "s/REDIS_HOST = 'localhost'/REDIS_HOST = \'$REDIS_HOST\'/g"  /usr/share/django_app/newfies/settings.py
-sed -i "s/REDIS_PORT = 6379/REDIS_PORT = \'$REDIS_PORT\'/g"  /usr/share/django_app/newfies/settings.py
-sed -i "s/REDIS_VHOST = 0/REDIS_VHOST = \'$REDIS_VHOST\'/g"  /usr/share/django_app/newfies/settings.py
-
-
-
-cp /usr/share/django_app/newfies/addons/install/etc/default/celeryd /etc/default/
-cp /usr/share/django_app/newfies/addons/install/etc/init.d/celeryd /etc/init.d/
-cp /usr/share/django_app/newfies/addons/install/etc/init.d/celerybeat /etc/init.d/
+sed -i "s/REDIS_HOST = 'localhost'/REDIS_HOST = \'$REDIS_HOST\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings.py
+sed -i "s/REDIS_PORT = 6379/REDIS_PORT = \'$REDIS_PORT\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings.py
+sed -i "s/REDIS_VHOST = 0/REDIS_VHOST = \'$REDIS_VHOST\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings.py
 
 
+cp /usr/share/django_app/newfies-dialer/newfies/addons/install/etc/default/celeryd /etc/default/
+cp /usr/share/django_app/newfies-dialer/newfies/addons/install/etc/init.d/celeryd /etc/init.d/
+cp /usr/share/django_app/newfies-dialer/addons/install/etc/init.d/celerybeat /etc/init.d/
 
-CELERYD_CHDIR="/usr/share/django_app/newfies/"
-CELERYD="/usr/share/django_app/newfies/manage.py celeryd"
+
+CELERYD_CHDIR="/usr/share/django_app/newfies-dialer/newfies/"
+CELERYD="/usr/share/django_app/newfies-dialer/newfies/manage.py celeryd"
 CELERYD_OPTS="--time-limit=300"
 CELERY_CONFIG_MODULE="celeryconfig"
 CELERYD_USER="celery"
 CELERYD_GROUP="celery"
 
-sed -i "s/CELERYD_CHDIR = '/usr/share/django_app/newfies/'/CELERYD_CHDIR = \'$CELERYD_CHDIR\'/g"  /etc/default/celeryd
-sed -i "s/CELERYD = '/usr/share/django_app/newfies/manage.py celeryd'/CELERYD = \'$CELERYD\'/g"  /etc/default/celeryd
-sed -i "s/CELERYD_OPTS = '--time-limit=300'/CELERYD_OPTS = \'$CELERYD_OPTS\'/g"  /etc/default/celeryd
-sed -i "s/CELERY_CONFIG_MODULE = 'celeryconfig'/CELERY_CONFIG_MODULE = \'$CELERY_CONFIG_MODULE\'/g"  /etc/default/celeryd
-sed -i "s/CELERYD_USER = 'celery'/CELERYD_USER = \'$CELERYD_USER\'/g"  /etc/default/celeryd
-sed -i "s/CELERYD_GROUP = 'celery'/CELERYD_GROUP = \'$CELERYD_GROUP\'/g"  /etc/default/celeryd
+sed -i "s/CELERYD_CHDIR = '/usr/share/django_app/newfies-dialer/newfies/'/CELERYD_CHDIR = \'$CELERYD_CHDIR\'/g"  /etc/default/celeryd > test.txt
+sed -i "s/CELERYD = '/usr/share/django_app/newfies-dialer/newfies/manage.py celeryd'/CELERYD = \'$CELERYD\'/g"  /etc/default/celeryd > test.txt
+sed -i "s/CELERYD_OPTS = '--time-limit=300'/CELERYD_OPTS = \'$CELERYD_OPTS\'/g"  /etc/default/celeryd > test.txt
+sed -i "s/CELERY_CONFIG_MODULE = 'celeryconfig'/CELERY_CONFIG_MODULE = \'$CELERY_CONFIG_MODULE\'/g"  /etc/default/celeryd > test.txt
+sed -i "s/CELERYD_USER = 'celery'/CELERYD_USER = \'$CELERYD_USER\'/g"  /etc/default/celeryd > test.txt
+sed -i "s/CELERYD_GROUP = 'celery'/CELERYD_GROUP = \'$CELERYD_GROUP\'/g"  /etc/default/celeryd > test.txt
 
 
 # Path to celerybeat
-CELERYBEAT="/path/to/newfies/manage.py celerybeat"
+CELERYBEAT="/usr/share/django_app/newfies-dialer/newfies/manage.py celerybeat"
 CELERYBEAT_OPTS="--schedule=/var/run/celerybeat-schedule"
 
-sed -i "s/CELERYBEAT = '/usr/share/django_app/newfies/'/CELERYBEAT = \'$CELERYBEAT\'/g"  /etc/default/celeryd
-sed -i "s/CELERYBEAT_OPTS = '--schedule=/var/run/celerybeat-schedule'/CELERYBEAT_OPTS = \'$CELERYBEAT_OPTS\'/g"  /etc/default/celeryd
+sed -i "s/CELERYBEAT = '/usr/share/django_app/newfies-dialer/newfies/'/CELERYBEAT = \'$CELERYBEAT\'/g"  /etc/default/celeryd > test.txt
+sed -i "s/CELERYBEAT_OPTS = '--schedule=/var/run/celerybeat-schedule'/CELERYBEAT_OPTS = \'$CELERYBEAT_OPTS\'/g"  /etc/default/celeryd > test.txt
 
 chmod 777 /etc/default/celeryd
 chmod 777 /etc/init.d/celeryd
 chmod 777 /etc/init.d/celerybeat
 
+python manage.py celeryd -E -B -l debug
+
+/etc/init.d/celeryd start
+
+/etc/init.d/celerybeat start
+
+clear
+echo "Installation Complete"
+echo ""
+echo ""
+echo "Thank you for installing Newfies"
+echo "Yours"
+echo "The Star2Billing Team"
+echo "http://www.star2billing.com and http://www.newfies.org/"

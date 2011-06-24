@@ -109,3 +109,7 @@ CELERYBEAT_OPTS="--schedule=/var/run/celerybeat-schedule"
 sed -i "s/CELERYBEAT = '/usr/share/django_app/newfies/'/CELERYBEAT = \'$CELERYBEAT\'/g"  /etc/default/celeryd
 sed -i "s/CELERYBEAT_OPTS = '--schedule=/var/run/celerybeat-schedule'/CELERYBEAT_OPTS = \'$CELERYBEAT_OPTS\'/g"  /etc/default/celeryd
 
+chmod 777 /etc/default/celeryd
+chmod 777 /etc/init.d/celeryd
+chmod 777 /etc/init.d/celerybeat
+

@@ -119,25 +119,24 @@ $(function() {
         <tbody>
             {% for td in total_data %}
             <tr class="{% cycle 'row1' 'row2' %}">
-                <td>{{td.starting_date}}</td>
-                <td>{{td.sessiontime_real__sum|conv_min}}</td>
+                <td>{{ td.starting_date }}</td>
+                <td>{{ td.sessiontime__sum|conv_min }}</td>
                 <td>{% if max_duration > 0 %}
-                    <img src="{{STATIC_URL}}newfies/images/spacer.png" width="{{td.sessiontime_real__sum|cal_width:max_duration}}" style="vertical-align:center;" height="10"/>
+                    <img src="{{STATIC_URL}}newfies/images/spacer.png" width="{{ td.sessiontime__sum|cal_width:max_duration }}" style="vertical-align:center;" height="10"/>
                     {% endif %}
                 </td>
                 <td>{{ td.starting_date__count }}</td>
-                
-                <td>{{td.sessiontime_real__avg|conv_min}}</td>
+                <td>{{ td.sessiontime__avg|conv_min }}</td>
             </tr>
             {% endfor %}
         </tbody>
         <tfoot>
             <tr>
                 <td>{% trans "Total"  %}</td>
-                <td>{{total_duration|conv_min}}</td>
+                <td>{{ total_duration|conv_min }}</td>
                 <td></td>
-                <td>{{total_calls}}</td>                
-                <td>{{total_avg_duration|conv_min}}</td>
+                <td>{{ total_calls }}</td>
+                <td>{{ total_avg_duration|conv_min }}</td>
             </tr>
         </tfoot>
     </table>

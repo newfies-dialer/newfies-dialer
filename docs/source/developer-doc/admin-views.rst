@@ -80,22 +80,3 @@ Newfies Admin Views
 
 .. autoclass:: DialerSettingAdmin
     :members:
-
-
-.. automodule:: voip_server.admin
-
-.. _VoipServerGroupAdmin:
-
-:class:`VoipServerGroupAdmin`
------------------------------
-
-.. autoclass:: VoipServerGroupAdmin
-    :members:
-
-.. _VoipServerAdmin:
-
-:class:`VoipServerAdmin`
-------------------------
-
-.. autoclass:: VoipServerAdmin
-    :members:

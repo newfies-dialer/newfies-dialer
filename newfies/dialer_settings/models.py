@@ -10,14 +10,13 @@ class DialerSetting(models.Model):
 
         * ``name`` - Setting name.
         * ``max_frequency`` - Max frequency, speed of the campaign.
-        This is the number of calls per minute.
+                              This is the number of calls per minute.
         * ``callmaxduration`` - Max retry allowed
         * ``maxretry`` - Max retry allowed per user
         * ``max_calltimeout`` - Maximum amount of second to timeout on calls
         * ``max_number_campaign`` - Max Number of campaign
-        * ``max_number_subscriber_campaign`` - Max Number of subscriber per
-        campaign
-        * ``blacklist`` - Used to blacklist phonenumbers to be called.
+        * ``max_number_subscriber_campaign`` - Max Number of subscriber
+        * ``blacklist`` - Used to blacklist phonenumbers to be called
         * ``whitelist`` - Used to whitelist phonenumbers to be called
 
     **Name of DB table**: dialer_setting

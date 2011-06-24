@@ -97,26 +97,6 @@ Objects Description
     :members:
 
 
-.. automodule:: voip_server.models
-
-.. _VoipServerGroup-model:
-
-:class:`VoipServerGroup`
-------------------------
-
-.. autoclass:: VoipServerGroup
-    :members:
-
-
-.. _VoipServer-model:
-
-:class:`VoipServer`
--------------------
-
-.. autoclass:: VoipServer
-    :members:
-
-
 .. _database-design:
 
 Database Design

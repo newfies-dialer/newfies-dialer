@@ -18,6 +18,9 @@ import sys, os
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
 
+#Add the path of your virtualenv
+#sys.path.append('/home/areski/.virtualenvs/newfies-dialer/lib/python2.7/site-packages/')
+
 APP_DIR = os.path.normpath(os.path.join(os.getcwd(), '../..')) + '/newfies/'
 sys.path.append(APP_DIR)
 import settings
@@ -31,7 +34,8 @@ setup_environ(settings)
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = []
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.coverage']
+#extensions = ['sphinx.ext.autodoc', 'rst2pdf.pdfbuilder', 'sphinx.ext.coverage']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -43,7 +47,7 @@ source_suffix = '.rst'
 #source_encoding = 'utf-8-sig'
 
 # The master toctree document.
-master_doc = 'index.rst'
+master_doc = 'index'
 
 # General information about the project.
 project = u'Newfies'
@@ -184,7 +188,7 @@ htmlhelp_basename = 'Newfiesdoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index.rst', 'Newfies.tex', u'Newfies Documentation',
+  ('index', 'Newfies.tex', u'Newfies Documentation',
    u'Arezqui Belaid', 'manual'),
 ]
 
@@ -217,6 +221,6 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index.rst', 'newfies', u'Newfies Documentation',
+    ('index', 'newfies', u'Newfies Documentation',
      [u'Arezqui Belaid'], 1)
 ]

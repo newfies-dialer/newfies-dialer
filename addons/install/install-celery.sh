@@ -81,8 +81,31 @@ sed -i "s/REDIS_VHOST = 0/REDIS_VHOST = \'$REDIS_VHOST\'/g"  /usr/share/django_a
 
 
 
+cp /usr/share/django_app/newfies/addons/install/etc/default/celeryd /etc/default/
+cp /usr/share/django_app/newfies/addons/install/etc/init.d/celeryd /etc/init.d/
+cp /usr/share/django_app/newfies/addons/install/etc/init.d/celerybeat /etc/init.d/
 
 
 
+CELERYD_CHDIR="/usr/share/django_app/newfies/"
+CELERYD="/usr/share/django_app/newfies/manage.py celeryd"
+CELERYD_OPTS="--time-limit=300"
+CELERY_CONFIG_MODULE="celeryconfig"
+CELERYD_USER="celery"
+CELERYD_GROUP="celery"
 
+sed -i "s/CELERYD_CHDIR = '/usr/share/django_app/newfies/'/CELERYD_CHDIR = \'$CELERYD_CHDIR\'/g"  /etc/default/celeryd
+sed -i "s/CELERYD = '/usr/share/django_app/newfies/manage.py celeryd'/CELERYD = \'$CELERYD\'/g"  /etc/default/celeryd
+sed -i "s/CELERYD_OPTS = '--time-limit=300'/CELERYD_OPTS = \'$CELERYD_OPTS\'/g"  /etc/default/celeryd
+sed -i "s/CELERY_CONFIG_MODULE = 'celeryconfig'/CELERY_CONFIG_MODULE = \'$CELERY_CONFIG_MODULE\'/g"  /etc/default/celeryd
+sed -i "s/CELERYD_USER = 'celery'/CELERYD_USER = \'$CELERYD_USER\'/g"  /etc/default/celeryd
+sed -i "s/CELERYD_GROUP = 'celery'/CELERYD_GROUP = \'$CELERYD_GROUP\'/g"  /etc/default/celeryd
+
+
+# Path to celerybeat
+CELERYBEAT="/path/to/newfies/manage.py celerybeat"
+CELERYBEAT_OPTS="--schedule=/var/run/celerybeat-schedule"
+
+sed -i "s/CELERYBEAT = '/usr/share/django_app/newfies/'/CELERYBEAT = \'$CELERYBEAT\'/g"  /etc/default/celeryd
+sed -i "s/CELERYBEAT_OPTS = '--schedule=/var/run/celerybeat-schedule'/CELERYBEAT_OPTS = \'$CELERYBEAT_OPTS\'/g"  /etc/default/celeryd
 

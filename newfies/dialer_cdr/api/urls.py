@@ -6,8 +6,8 @@ from handlers import callrequestHandler, testcallHandler, \
 answercallHandler, hangupcallHandler
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate
-import custom_xml_emitter
-#from common.custom_xml_emitter import CustomXmlEmitter
+#import custom_xml_emitter
+from common.custom_xml_emitter import CustomXmlEmitter
 
 #TODO: move this to settings
 ALLOWED_IP_LIST = ['127.0.0.1' , 'localhost']

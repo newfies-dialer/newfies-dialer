@@ -17,7 +17,7 @@ class callrequest_pending(PeriodicTask):
         callrequest_pending.delay()
     """
     # 1000000 ms = 1 sec
-    run_every = timedelta(microseconds=5000000)
+    run_every = timedelta(microseconds=10000000)
     
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)

@@ -356,7 +356,8 @@ class hangupcallHandler(BaseHandler):
             callrequest.hangup_cause = opt_hangup_cause
             callrequest.save()
         except:
-            return rc.NOT_HERE
+            raise
+            return rc.BAD_REQUEST
 
         #TODO : Create CDR
 

@@ -121,17 +121,23 @@ def init_callrequest(callrequest_id, campaign_id):
     elif settings.NEWFIES_DIALER_ENGINE.lower()=='plivo':
         #Request Call via Plivo
         from telefonyhelper import call_plivo
-        result= call_plivo(callerid=obj_callrequest.callerid,
-                    phone_number=obj_callrequest.phone_number,
-                    Gateways=gateways,
-                    GatewayCodecs=gateway_codecs,
-                    GatewayTimeouts=gateway_timeouts,
-                    GatewayRetries=gateway_retries,
-                    ExtraDialString=originate_dial_string,
-                    AnswerUrl=settings.PLIVO_DEFAULT_ANSWER_URL,
-                    #AnswerUrl='http://localhost/~areski/django/MyProjects/plivohelper-php/examples/test.php?answer=1',
-                    HangupUrl=settings.PLIVO_DEFAULT_HANGUP_URL,
-                    TimeLimit=str(callmaxduration))
+        try :
+            result= call_plivo(callerid=obj_callrequest.callerid,
+                        phone_number=obj_callrequest.phone_number,
+                        Gateways=gateways,
+                        GatewayCodecs=gateway_codecs,
+                        GatewayTimeouts=gateway_timeouts,
+                        GatewayRetries=gateway_retries,
+                        ExtraDialString=originate_dial_string,
+                        AnswerUrl=settings.PLIVO_DEFAULT_ANSWER_URL,
+                        #AnswerUrl='http://localhost/~areski/django/MyProjects/plivohelper-php/examples/test.php?answer=1',
+                        HangupUrl=settings.PLIVO_DEFAULT_HANGUP_URL,
+                        TimeLimit=str(callmaxduration))
+        except :
+            logger.error('error : call_plivo')
+            obj_callrequest.status = 2 # Update to Failure
+            obj_callrequest.save()
+            return False
         print result
         logger.info('Received RequestUUID :> ' + str(result['RequestUUID']))
         

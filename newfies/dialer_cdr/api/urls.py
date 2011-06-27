@@ -4,8 +4,6 @@ from piston.authentication import HttpBasicAuthentication
 from piston.doc import documentation_view
 from handlers import callrequestHandler, testcallHandler, \
 answercallHandler, hangupcallHandler
-from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth import authenticate
 from common.custom_xml_emitter import *
 
 

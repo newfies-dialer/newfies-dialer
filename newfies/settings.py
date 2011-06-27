@@ -274,7 +274,7 @@ PLIVO_DEFAULT_HANGUP_URL='http://127.0.0.1:8000/api/dialer_cdr/hangupcall/'
 # ADD 'dummy','plivo','twilio'
 NEWFIES_DIALER_ENGINE = 'plivo'
 
-ALLOWED_IP_LIST = ['127.0.0.1' , 'localhost']
+API_ALLOWED_IP = ['127.0.0.1' , 'localhost']
 
 #IMPORT LOCAL SETTINGS
 #=====================

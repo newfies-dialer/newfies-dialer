@@ -7,13 +7,12 @@ answercallHandler, hangupcallHandler
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate
 #import custom_xml_emitter
-from common.custom_xml_emitter import *
-from settings import ALLOWED_IP_LIST
+from common.custom_xml_emitter import CustomXmlEmitter
+from settings import API_ALLOWED_IP
 
 
 class IpAuthentication(object):
-    """
-    IP Authentication handler
+    """IP Authentication handler
     """
     def __init__(self, auth_func=authenticate, realm='API'):
         self.auth_func = auth_func
@@ -21,7 +20,7 @@ class IpAuthentication(object):
 
     def is_authenticated(self, request):
         try:
-            ALLOWED_IP_LIST.index(request.META['REMOTE_ADDR'])
+            API_ALLOWED_IP.index(request.META['REMOTE_ADDR'])
             return True
         except:
             return False

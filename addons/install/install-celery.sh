@@ -43,8 +43,8 @@ IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
 echo "Install Celery & redis-server..."
 case $DISTRO in
         'UBUNTU')
-            #apt-get -y install redis-server
-            #pip install Celery
+            apt-get -y install redis-server
+            pip install Celery
         ;;
         'CENTOS')
             yum -y install redis-server

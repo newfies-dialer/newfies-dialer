@@ -86,20 +86,20 @@ CELERY_CONFIG_MODULE="celeryconfig"
 CELERYD_USER="celery"
 CELERYD_GROUP="celery"
 
-sed -i "s/CELERYD_CHDIR='/path/to/newfies/'/CELERYD_CHDIR = \'$CELERYD_CHDIR\'/g"  /etc/default/celeryd
-sed -i "s/CELERYD='/path/to/newfies/manage.py celeryd'/CELERYD = \'$CELERYD\'/g"  /etc/default/celeryd
-sed -i "s/CELERYD_OPTS='--time-limit=300'/CELERYD_OPTS = \'$CELERYD_OPTS\'/g"  /etc/default/celeryd
-sed -i "s/CELERY_CONFIG_MODULE='celeryconfig'/CELERY_CONFIG_MODULE = \'$CELERY_CONFIG_MODULE\'/g"  /etc/default/celeryd
-sed -i "s/CELERYD_USER='celery'/CELERYD_USER = \'$CELERYD_USER\'/g"  /etc/default/celeryd
-sed -i "s/CELERYD_GROUP='celery'/CELERYD_GROUP = \'$CELERYD_GROUP\'/g"  /etc/default/celeryd
+sed -i "s/CELERYD_CHDIR='/path/to/newfies/'/CELERYD_CHDIR=\'$CELERYD_CHDIR\'/g"  /etc/default/celeryd
+sed -i "s/CELERYD='/path/to/newfies/manage.py celeryd'/CELERYD=\'$CELERYD\'/g"  /etc/default/celeryd
+sed -i "s/CELERYD_OPTS='--time-limit=300'/CELERYD_OPTS=\'$CELERYD_OPTS\'/g"  /etc/default/celeryd
+sed -i "s/CELERY_CONFIG_MODULE='celeryconfig'/CELERY_CONFIG_MODULE=\'$CELERY_CONFIG_MODULE\'/g"  /etc/default/celeryd
+sed -i "s/CELERYD_USER='celery'/CELERYD_USER=\'$CELERYD_USER\'/g"  /etc/default/celeryd
+sed -i "s/CELERYD_GROUP='celery'/CELERYD_GROUP=\'$CELERYD_GROUP\'/g"  /etc/default/celeryd
 
 
 # Path to celerybeat
 CELERYBEAT="/usr/share/django_app/newfies-dialer/newfies/manage.py celerybeat"
 CELERYBEAT_OPTS="--schedule=/var/run/celerybeat-schedule"
 
-sed -i "s/CELERYBEAT='/path/to/newfies/manage.py celerybeat'/CELERYBEAT = \'$CELERYBEAT\'/g"  /etc/default/celeryd
-sed -i "s/CELERYBEAT_OPTS='--schedule=/var/run/celerybeat-schedule'/CELERYBEAT_OPTS = \'$CELERYBEAT_OPTS\'/g"  /etc/default/celeryd
+sed -i "s/CELERYBEAT='/path/to/newfies/manage.py celerybeat'/CELERYBEAT=\'$CELERYBEAT\'/g"  /etc/default/celeryd
+sed -i "s/CELERYBEAT_OPTS='--schedule=/var/run/celerybeat-schedule'/CELERYBEAT_OPTS=\'$CELERYBEAT_OPTS\'/g"  /etc/default/celeryd
 
 chmod 777 /etc/default/celeryd
 chmod 777 /etc/init.d/celeryd
@@ -110,6 +110,7 @@ python manage.py celeryd -E -B -l debug
 /etc/init.d/celeryd start
 
 /etc/init.d/celerybeat start
+
 clear
 echo "Installation Complete"
 echo ""

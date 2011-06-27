@@ -851,14 +851,6 @@ class contactHandler(BaseHandler):
         from django.db import connection, transaction
         cursor = connection.cursor()
 
-        """SELECT duplicate_contact, last_attempt, count_attempt,
-        dialer_callrequest.status
-        FROM dialer_campaign_subscriber
-        LEFT JOIN dialer_callrequest ON callrequest_id=dialer_callrequest.id
-        LEFT JOIN dialer_campaign ON
-        dialer_callrequest.campaign=dialer_campaign.id
-        WHERE campaign_id = 1;
-        """
         if not campaign_id:
             resp = rc.BAD_REQUEST
             resp.write("No value for Campaign ID !")
@@ -870,28 +862,28 @@ class contactHandler(BaseHandler):
                 resp.write("Wrong value for contact !")
                 return resp
 
-            sql_statement = 'SELECT contact_id, last_attempt, count_attempt,' \
-                            'dialer_campaign_subscriber.status '\
-                            'FROM dialer_campaign_subscriber '\
-                            'LEFT JOIN dialer_callrequest ON '\
-                            'campaign_subscriber_id=dialer_campaign_subscriber.id '\
-                            'LEFT JOIN dialer_campaign ON '\
-                            'dialer_callrequest.campaign_id=dialer_campaign.id '\
-                            'WHERE dialer_campaign_subscriber.campaign_id = %s '\
-                            'AND dialer_campaign_subscriber.duplicate_contact = "%s" '\
-                            % (str(campaign_id), str(contact))
+            sql_statement = 'SELECT contact_id, last_attempt, count_attempt,'\
+                    'dialer_campaign_subscriber.status '\
+                    'FROM dialer_campaign_subscriber '\
+                    'LEFT JOIN dialer_callrequest ON '\
+                    'campaign_subscriber_id=dialer_campaign_subscriber.id '\
+                    'LEFT JOIN dialer_campaign ON '\
+                    'dialer_callrequest.campaign_id=dialer_campaign.id '\
+                    'WHERE dialer_campaign_subscriber.campaign_id = %s '\
+                    'AND dialer_campaign_subscriber.duplicate_contact = "%s"'\
+                    % (str(campaign_id), str(contact))
 
         else:
             sql_statement = 'SELECT contact_id, last_attempt, count_attempt,'\
-                            'dialer_campaign_subscriber.status '\
-                            'FROM dialer_campaign_subscriber '\
-                            'LEFT JOIN dialer_callrequest ON '\
-                            'campaign_subscriber_id=' \
-                            'dialer_campaign_subscriber.id '\
-                            'LEFT JOIN dialer_campaign ON '\
-                            'dialer_callrequest.campaign_id=dialer_campaign.id '\
-                            'WHERE dialer_campaign_subscriber.campaign_id' \
-                            '= %s' % (str(campaign_id))
+                        'dialer_campaign_subscriber.status '\
+                        'FROM dialer_campaign_subscriber '\
+                        'LEFT JOIN dialer_callrequest ON '\
+                        'campaign_subscriber_id=' \
+                        'dialer_campaign_subscriber.id '\
+                        'LEFT JOIN dialer_campaign ON '\
+                        'dialer_callrequest.campaign_id=dialer_campaign.id '\
+                        'WHERE dialer_campaign_subscriber.campaign_id' \
+                        '= %s' % (str(campaign_id))
 
         #print sql_statement
         cursor.execute(sql_statement)

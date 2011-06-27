@@ -22,7 +22,8 @@ class CallrequestAdmin(admin.ModelAdmin):
         }),
         ('Advanced options', {
             'classes': ('collapse',),
-            'fields': ('extra_data',  'extra_dial_string', 'campaign_subscriber'),
+            'fields': ('extra_data',  'extra_dial_string',
+                       'campaign_subscriber'),
         }),
     )
     list_display = ('id', 'user',  'request_uuid', 'call_time', 'campaign',

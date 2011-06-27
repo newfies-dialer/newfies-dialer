@@ -8,7 +8,7 @@
 .. autoclass:: campaignDeleteCascadeHandler
 
 
-.. _delete-campaign:
+.. _delete-cascade-campaign:
 
 :class:`delete`
 ~~~~~~~~~~~~~~~

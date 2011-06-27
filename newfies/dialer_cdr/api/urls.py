@@ -6,29 +6,8 @@ from handlers import callrequestHandler, testcallHandler, \
 answercallHandler, hangupcallHandler
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate
-#import custom_xml_emitter
-from common.custom_xml_emitter import CustomXmlEmitter
-from settings import API_ALLOWED_IP
+from common.custom_xml_emitter import *
 
-
-class IpAuthentication(object):
-    """IP Authentication handler
-    """
-    def __init__(self, auth_func=authenticate, realm='API'):
-        self.auth_func = auth_func
-        self.realm = realm
-
-    def is_authenticated(self, request):
-        try:
-            API_ALLOWED_IP.index(request.META['REMOTE_ADDR'])
-            return True
-        except:
-            return False
-
-    def challenge(self):
-        resp = HttpResponse("Not Authorized")
-        resp.status_code = 401
-        return resp
 
 auth = HttpBasicAuthentication(realm='Newfies Application')
 auth_ip = IpAuthentication()

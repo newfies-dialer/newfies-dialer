@@ -14,7 +14,7 @@ import time
 
 
 def get_attribute(attrs, attr_name):
-    """this is a helper to retrieve an attribute if it exists"""
+    """This is a helper to retrieve an attribute if it exists"""
     if attr_name in attrs:
         attr_value = attrs[attr_name]
     else:
@@ -39,15 +39,12 @@ class campaignHandler(BaseHandler):
     """This API server as Campaign management, it provides basic function
     to create and update campaigns."""
     model = Campaign
-    allowed_methods = ('POST', 'GET', 'PUT', 'DELETE')
-    #anonymous = 'AnonymousLanguageHandler'
-    #fields = ('id', 'name', 'status', 'description', )
+    allowed_methods = ('POST', 'GET', 'PUT', 'DELETE')    
     fields = ('id', 'campaign_code', 'name', 'status', 'callerid',
               'startingdate', 'expirationdate', 'frequency',
               'callmaxduration', 'maxretry', 'intervalretry',
               'calltimeout', 'aleg_gateway', 'bleg_gateway', 'voipapp',
               'extra_data', ('phonebook', ('id', 'name', ), ), )
-    documentation = "test"
 
     @classmethod
     def content_length(cls, campaign):
@@ -111,62 +108,62 @@ class campaignHandler(BaseHandler):
         **Example Response**::
 
             HTTP/1.0 200 OK
-            Date: Mon, 09 May 2011 06:14:18 GMT
+            Date: Tue, 28 Jun 2011 06:37:25 GMT
             Server: WSGIServer/0.1 Python/2.6.2
             Vary: Authorization
             Content-Type: application/json; charset=utf-8
 
             {
-                "status": 1,
+                "status": 2,
                 "voipapp": {
                     "gateway_id": 1,
-                    "updated_date": "2011-05-06 05:06:53",
-                    "description": "",
-                    "_state": "<django.db.models.base.ModelState object at\
-                    0x9899f4c>",
+                    "updated_date": "2011-06-22 09:58:22",
+                    "user_id": 1,
+                    "description": "",                    
                     "created_date": "2011-04-08 08:00:09",
                     "type": 1,
                     "id": 1,
                     "name": "Default_VoIP_App"
                 },
                 "startingdate": "2011-03-29 09:48:56",
-                "name": "mylittlecampaign",
+                "name": "Default_Campaign",
                 "callerid": "123987",
-                "extra_data": "2000",
-                "callmaxduration": "50",
-                "intervalretry": "3000",
-                "id": 2,
+                "callmaxduration": 50,
+                "intervalretry": 3000,
+                "id": 1,
                 "phonebook": [
                     {
-                        "name": "mylittlecampaign",
-                        "id": 2
+                        "name": "Default_Phonebook",
+                        "id": 1
                     }
                 ],
-                "frequency": "20",
-                "maxretry": "3",
+                "frequency": 20,
+                "maxretry": 3,
                 "expirationdate": "2011-03-28 17:08:56",
-                "campaign_code": "xOAlY",
+                "campaign_code": "XIUER",
                 "aleg_gateway": {
-                    "updated_date": "2011-04-08 07:51:02",
                     "status": 1,
-                    "protocol": "SIP",
-                    "description": "This is default gateway",
+                    "updated_date": "2011-06-15 00:28:52",
+                    "addparameter": "",
+                    "addprefix": "",
+                    "description": "",
+                    "gateway_codecs": "PCMA,PCMU",
                     "failover_id": null,
                     "count_call": null,
-                    "hostname": "localhost",
-                    "_state": "<django.db.models.base.ModelState object at\
-                    0x9899fcc>",
+                    "created_date": "2011-06-15 00:28:52",
                     "maximum_call": null,
+                    "gateway_timeouts": "10,10",
                     "count_in_use": null,
                     "removeprefix": "",
-                    "addparameter": "",
+                    "gateway_retries": "2,1",
+                    "gateways": "user/,user",
                     "secondused": null,
-                    "created_date": "2011-04-08 07:51:02",
-                    "addprefix": "",
+                    "originate_dial_string": "",                    
                     "id": 1,
                     "name": "Default_Gateway"
                 },
-                "calltimeout": "60"
+                "extra_data": "2000",
+                "calltimeout": 60
             }
 
         **Error**:
@@ -252,42 +249,32 @@ class campaignHandler(BaseHandler):
                 resp.write("The VoipApp doesn't exist!")
                 return resp
 
-
-            """
-            #TODO: Get settings
-            try:
-                user_setting = UserProfile.objects.get(user=request.user)IpAuthentication
-            except:
-                resp = rc.FORBIDDEN
-                resp.write("\nUser is not assigned to a Setting!")
-                return resp
-            """
             try:
                 new_campaign = Campaign.objects.create(user=request.user,
-                                        campaign_code=get_unique_code(length=5),
-                                        name=name,
-                                        description=description,
-                                        status=status,
-                                        callerid=callerid,
-                                        startingdate=startingdate,
-                                        expirationdate=expirationdate,
-                                        frequency=frequency,
-                                        callmaxduration=callmaxduration,
-                                        maxretry=maxretry,
-                                        intervalretry=intervalretry,
-                                        calltimeout=calltimeout,
-                                        aleg_gateway=obj_aleg_gateway,
-                                        voipapp=obj_voip_app,
-                                        extra_data=extra_data,
-                                        daily_start_time=daily_start_time,
-                                        daily_stop_time=daily_stop_time,
-                                        monday=monday,
-                                        tuesday=tuesday,
-                                        wednesday=wednesday,
-                                        thursday=thursday,
-                                        friday=friday,
-                                        saturday=saturday,
-                                        sunday=sunday,)
+                                    campaign_code=get_unique_code(length=5),
+                                    name=name,
+                                    description=description,
+                                    status=status,
+                                    callerid=callerid,
+                                    startingdate=startingdate,
+                                    expirationdate=expirationdate,
+                                    frequency=frequency,
+                                    callmaxduration=callmaxduration,
+                                    maxretry=maxretry,
+                                    intervalretry=intervalretry,
+                                    calltimeout=calltimeout,
+                                    aleg_gateway=obj_aleg_gateway,
+                                    voipapp=obj_voip_app,
+                                    extra_data=extra_data,
+                                    daily_start_time=daily_start_time,
+                                    daily_stop_time=daily_stop_time,
+                                    monday=monday,
+                                    tuesday=tuesday,
+                                    wednesday=wednesday,
+                                    thursday=thursday,
+                                    friday=friday,
+                                    saturday=saturday,
+                                    sunday=sunday,)
             except IntegrityError:
                 #raise
                 resp = rc.DUPLICATE_ENTRY
@@ -322,43 +309,55 @@ class campaignHandler(BaseHandler):
 
             [
                 {
-                    "status": 1,                    
+                    "status": 2,
+                    "voipapp": {
+                        "gateway_id": 1,
+                        "updated_date": "2011-06-22 09:58:22",
+                        "user_id": 1,
+                        "description": "",                        
+                        "created_date": "2011-04-08 08:00:09",
+                        "type": 1,
+                        "id": 1,
+                        "name": "Default_VoIP_App"
+                    },
                     "startingdate": "2011-03-29 09:48:56",
-                    "name": "mylittlecampaign",
+                    "name": "Default_Campaign",
                     "callerid": "123987",
                     "callmaxduration": 50,
                     "intervalretry": 3000,
-                    "id": 2,
+                    "id": 1,
                     "phonebook": [
                         {
-                            "name": "mylittlecampaign",
-                            "id": 2
+                            "name": "Default_Phonebook",
+                            "id": 1
                         }
                     ],
                     "frequency": 20,
                     "maxretry": 3,
                     "expirationdate": "2011-03-28 17:08:56",
-                    "campaign_code": "xOAlY",
+                    "campaign_code": "XIUER",
                     "aleg_gateway": {
-                        "updated_date": "2011-04-08 07:51:02",
                         "status": 1,
-                        "protocol": "SIP",
-                        "description": "This is default gateway",
+                        "updated_date": "2011-06-15 00:28:52",
+                        "addparameter": "",
+                        "addprefix": "",
+                        "description": "",
+                        "gateway_codecs": "PCMA,PCMU",
                         "failover_id": null,
                         "count_call": null,
-                        "hostname": "localhost",
-                        "_state": "<django.db.models.base.ModelState object at\
-                        0xa088a8c>",
+                        "created_date": "2011-06-15 00:28:52",
                         "maximum_call": null,
+                        "gateway_timeouts": "10,10",
                         "count_in_use": null,
                         "removeprefix": "",
-                        "addparameter": "",
+                        "gateway_retries": "2,1",
+                        "gateways": "user/,user",
                         "secondused": null,
-                        "created_date": "2011-04-08 07:51:02",
-                        "addprefix": "",
+                        "originate_dial_string": "",                        
                         "id": 1,
                         "name": "Default_Gateway"
                     },
+                    "extra_data": "2000",
                     "calltimeout": 60
                 }
             ]
@@ -427,42 +426,55 @@ class campaignHandler(BaseHandler):
         **Example Response**::
 
             {
-                "status": "2",                
-                "startingdate": "2011-03-29 09:48:56",
-                "name": "mylittlecampaign",
+                "status": "2",
+                "voipapp": {
+                    "gateway_id": 1,
+                    "updated_date": "2011-06-22 09:58:22",
+                    "user_id": 1,
+                    "description": "",
+                    "created_date": "2011-04-08 08:00:09",
+                    "type": 1,
+                    "id": 1,
+                    "name": "Default_VoIP_App"
+                },
+                "startingdate": "2011-06-28 06:46:08",
+                "name": "Default_Campaign",
                 "callerid": "123987",
-                "extra_data": "2000",
                 "callmaxduration": 50,
                 "intervalretry": 3000,
-                "id": 2,
+                "id": 1,
                 "phonebook": [
                     {
-                        "name": "mylittlecampaign",
-                        "id": 2
+                        "name": "Default_Phonebook",
+                        "id": 1
                     }
                 ],
                 "frequency": 20,
                 "maxretry": 3,
-                "expirationdate": "2011-03-28 17:08:56",
-                "campaign_code": "xOAlY",
+                "expirationdate": "2011-07-05 06:46:08",
+                "campaign_code": "XIUER",
                 "aleg_gateway": {
-                    "updated_date": "2011-04-08 07:51:02",
                     "status": 1,
-                    "protocol": "SIP",
-                    "description": "This is default gateway",
+                    "updated_date": "2011-06-15 00:28:52",
+                    "addparameter": "",
+                    "addprefix": "",
+                    "description": "",
+                    "gateway_codecs": "PCMA,PCMU",
                     "failover_id": null,
                     "count_call": null,
-                    "hostname": "localhost",
+                    "created_date": "2011-06-15 00:28:52",
                     "maximum_call": null,
+                    "gateway_timeouts": "10,10",
                     "count_in_use": null,
                     "removeprefix": "",
-                    "addparameter": "",
+                    "gateway_retries": "2,1",
+                    "gateways": "user/,user",
                     "secondused": null,
-                    "created_date": "2011-04-08 07:51:02",
-                    "addprefix": "",
+                    "originate_dial_string": "", 
                     "id": 1,
                     "name": "Default_Gateway"
                 },
+                "extra_data": "2000",
                 "calltimeout": 60
             }
 
@@ -584,7 +596,6 @@ class phonebookHandler(BaseHandler):
     to create and read phonebooks."""
     model = Phonebook
     allowed_methods = ('POST', 'GET',)
-    #anonymous = 'AnonymousLanguageHandler'
     fields = ('id', 'name', 'description', ('campaign', ('id', 'name',)))
 
     @classmethod
@@ -701,7 +712,6 @@ class contactHandler(BaseHandler):
     to create, read and update contacts."""
     model = CampaignSubscriber
     allowed_methods = ('POST', 'GET', 'PUT',)
-    #anonymous = 'AnonymousLanguageHandler'
     fields = ('id', 'contact', 'last_name', 'first_name', 'description',
               'status', 'additional_vars', ('phonebook', ('id', 'last_name', )))
 
@@ -711,7 +721,7 @@ class contactHandler(BaseHandler):
 
     @staticmethod
     def resource_uri(self):
-        return ('subscriber', ['subscriber_id', ])
+        return ('subscriber', ['subscriber_id'])
 
     def create(self, request):
         """API to create new contact

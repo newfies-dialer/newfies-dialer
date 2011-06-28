@@ -1,7 +1,7 @@
 :Version: 0.1.0
 :Web: http://www.newfies-dialer.org/
 :Download: http://www.newfies-dialer.org/download/
-:Source: https://github.com/Star2Billing/newfies/
+:Source: https://github.com/Star2Billing/newfies-dialer/
 :Keywords: dialer, voip, freeswitch, django, asynchronous, rabbitmq,
   redis, python, distributed
 
@@ -116,6 +116,6 @@ Documentation
 The `latest documentation`_ with user guides, tutorials and API reference
 is hosted at Github.
 
-.. _`latest documentation`: https://github.com/Star2Billing/newfies/
+.. _`latest documentation`: https://github.com/Star2Billing/newfies-dialer/
 
 

@@ -23,7 +23,7 @@ Screenshot with Features
 Index
 ~~~~~
 
-Index page for customer interface after successful login with user credential 
+Index page for customer interface after successful login with user credentials 
 
 .. image:: ../_static/images/customer_screenshot.png
 
@@ -35,7 +35,7 @@ Phonebook
 
 Phonebook list will be displayed from following URL. You can add new phonebook
 by clicking ``Add phonebook`` and add name of phonebook and its description.
-Also from phonebook list, click on phonebook which you want to update.
+Also from phonebook list, click on the phonebook that you want to update.
 
 **URL**:
 
@@ -60,7 +60,7 @@ Contact
 Contact list will be displayed from following URL and you can add new contact
 by clicking ``Add contact`` & add contact details (like phone number, name,
 description about contact, contact status) under logged in user's phonebook from phonebook list.
-From contact list, click on contact which you want to update.
+From the contact list, click on contact that you want to update.
 
 
 **URL**:
@@ -79,7 +79,7 @@ To Add/Update contact for phonebook
 .. image:: ../_static/images/customer/update_contact.png
 
 To import bulk contacts into phonebook, click on ``Import``.
-From where you can upload contacts via CSV file under logged in user's phonebook.
+From where you can upload contacts via a CSV file under logged in user's phonebook.
 
 **URL**:
 
@@ -94,11 +94,11 @@ Campaign
 ~~~~~~~~
 
 Campaign list will be displayed from following URL. You can add new campaign for
-logged in user by clicking ``Add campaign``. While adding campaign, importantly
-add campaign's stating and ending dates with timing & week-day exception.
-Also select gateway through which call will be routed & phonebook(s) which is
+the logged in user by clicking ``Add campaign``. While adding campaign, importantly
+add the campaign's start and end dates with time & week-day exceptions.
+Also select the gateway through which calls will be routed & phonebook(s) that are
 linked with contacts.
-From campaign list, click on campaign which you want to update.
+From campaign list, click on campaign that you want to update.
 
 **URL**:
 

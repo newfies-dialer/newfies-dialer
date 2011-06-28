@@ -41,7 +41,7 @@ http://www.rabbitmq.com/server.html
 Debian APT repository
 ----------------------
 
-To make use of our APT repository,
+To make use of the RabbitMQ APT repository,
 
 1. Add the following line to your /etc/apt/sources.list
 ::
@@ -50,11 +50,11 @@ To make use of our APT repository,
 
 .. note::
 
-    The word **testing** in above line refers to the state of our release of RabbitMQ,
-    not any particular  Debian distribution. You can use it with Debian stable, testing or unstable,
-    as well as with Ubuntu. In the future we will have a stable release too.
+    The word **testing** in above line refers to the state of the release of RabbitMQ,
+    not any particular Debian distribution. You can use it with Debian stable, testing or unstable,
+    as well as with Ubuntu. In the future they will have a stable release too.
 
-2. (optional) To avoid warnings about unsigned packages, add our public key to
+2. (optional) To avoid warnings about unsigned packages, add RabbitMQ's public key to
    your trusted key list using apt-key(8)
    
 ::

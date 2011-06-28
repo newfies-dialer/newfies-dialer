@@ -10,7 +10,7 @@
 .. _newfies-synopsis:
 
 Newfies is an open source VoIP Dialer based on distributed message passing.
-It has been built to support cloud but can also work on standalone servers.
+It has been built to support cloud based servers and can also work on standalone servers.
 It uses `Freeswitch`_ (VoIP Server) to outbound calls, but support for other
 VoIP Servers such as `Asterisk`_ could be easily added in the future.
 The platform is focused on real-time operations and task call distributions
@@ -24,11 +24,11 @@ Newfies is written in Python, using the `Django`_ Framework. It also operates
 with message brokers such as `RabbitMQ`_, `Redis`_ but support for Beanstalk,
 MongoDB, CouchDB and DBMS is also available.
 
-Newfies provides a long set of APIs to easily integrate the platform dialer
+Newfies provides a comprehensive set of APIs to easily integrate the platform dialer
 with third-party applications.
 
 Using very simple steps, Newfies will help you create campaigns, add
-phonebooks, contacts, build audio messages and set more complex VoIP
+phonebooks, contacts, build audio messages and create complex telephony
 applications. Once your campaigns are ready to start, your messages
 will be dispatched and delivered.
 
@@ -72,7 +72,6 @@ Features
     +-----------------+----------------------------------------------------+
     | Fault-tolerant  | Excellent configurable error recovery when using   |
     |                 | `RabbitMQ`, ensures your tasks are never lost.     |
-    |                 | scenarios, and your tasks will never be lost.      |
     +-----------------+----------------------------------------------------+
     | Distributed     | Runs on one or more machines. Supports             |
     |                 | broker `clustering`_ and `HA`_ when used in        |

@@ -1,7 +1,7 @@
 .. _configuration-and-default:
 
 ==========================
-Configuration and defaults
+Configuration and Defaults
 ==========================
 
 Contents:

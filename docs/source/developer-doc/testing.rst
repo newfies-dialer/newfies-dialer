@@ -1,7 +1,7 @@
 .. _testing:
 
-Testcases Description
-=====================
+Test Case Descriptions
+======================
 
 -----------
 Requirement
@@ -62,7 +62,7 @@ API-CallRequest Test Case
 
 
 ------------------------
-Admin Interface TestCase
+Admin Interface Test Case
 ------------------------
 
 .. _NewfiesAdminInterfaceTestCase-model:
@@ -72,7 +72,7 @@ Admin Interface TestCase
 
 
 ----------------------------
-Customer Interface TestCases
+Customer Interface Test Cases
 ----------------------------
 
 .. _NewfiesCustomerInterfaceTestCase-model:
@@ -81,7 +81,7 @@ Customer Interface TestCases
     :members:
 
 -----------------------------------
-Customer Interface Forgot TestCases
+Customer Interface Forgot Test Cases
 -----------------------------------
 
 .. _NewfiesCustomerInterfaceForgotPassTestCase-model:

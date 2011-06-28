@@ -27,9 +27,7 @@ def get_value_if_none(x, value):
 
 
 def pass_gen(char_length=2, digit_length=6):
-    """
-    function to generate password with a letter suffix
-    """
+    """function to generate password with a letter suffix"""
     chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     digit = "1234567890"
     pass_str_char = ''.join([choice(chars) for i in range(char_length)])
@@ -42,7 +40,6 @@ class callrequestHandler(BaseHandler):
     to create, read and update callrequest."""
     model = Callrequest
     allowed_methods = ('GET', 'POST', 'PUT', )
-    #anonymous = 'AnonymousLanguageHandler'
 
     @classmethod
     def content_length(cls, callrequest):
@@ -126,7 +123,6 @@ class callrequestHandler(BaseHandler):
             * ``result`` -
             * ``hangup_cause`` -
             * ``last_attempt_time`` -
-
 
 
         **CURL Usage**::
@@ -267,7 +263,7 @@ class answercallHandler(BaseHandler):
             resp = rc.BAD_REQUEST
             resp.write('This Call Request is not attached to a VoIP App')
             return resp
-        
+
         # get the VoIP application
         if obj_callrequest.voipapp.type == 1:
             #Redirect
@@ -279,7 +275,7 @@ class answercallHandler(BaseHandler):
             #Conference
             RESTXML = '<xml conference>'
         """
-        
+
         return [ {'Speak': 'Hello World'}, {'Dial': {'Number': '1000'}, },]
 
     def read(self, request):
@@ -301,10 +297,9 @@ class answercallHandler(BaseHandler):
         """
 
         # return <Speak>Hello World</Speak><Dial><Number>1000</Number></Dial>
-        
+
         return [ {'Speak': 'Hello World'},
                  {'Dial': {'Number': '1000'}, },]
-
 
 
 class hangupcallHandler(BaseHandler):
@@ -335,7 +330,7 @@ class hangupcallHandler(BaseHandler):
 
         opt_request_uuid = get_attribute(attrs, 'RequestUUID')
         opt_hangup_cause = get_attribute(attrs, 'HangupCause')
-        
+
         if not opt_request_uuid:
             resp = rc.BAD_REQUEST
             resp.write("Wrong parameters - missing RequestUUID!")
@@ -347,7 +342,8 @@ class hangupcallHandler(BaseHandler):
             return resp
 
         try:
-            callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid)
+            callrequest = \
+            Callrequest.objects.get(request_uuid=opt_request_uuid)
             # 2 / FAILURE ; 3 / RETRY ; 4 / SUCCESS
             if opt_hangup_cause=='NORMAL_CLEARING':
                 callrequest.status = 4 # Success
@@ -362,7 +358,6 @@ class hangupcallHandler(BaseHandler):
         #TODO : Create CDR
 
         return {'result': 'OK'}
-
 
 
 class testcallHandler(BaseHandler):
@@ -380,10 +375,14 @@ class testcallHandler(BaseHandler):
 
             * ``From`` - Caller Id
             * ``To`` - User Number to Call
-            * ``Gateways`` - "user/,user", # Gateway string to try dialing separated by comma. First in list will be tried first
-            * ``GatewayCodecs`` - "'PCMA,PCMU','PCMA,PCMU'", # Codec string as needed by FS for each gateway separated by comma
-            * ``GatewayTimeouts`` - "10,10", # Seconds to timeout in string for each gateway separated by comma
-            * ``GatewayRetries`` - "2,1", # Retry String for Gateways separated by comma, on how many times each gateway should be retried
+            * ``Gateways`` - "user/,user", # Gateway string to \
+            try dialing separated by comma. First in list will be tried first
+            * ``GatewayCodecs`` - "'PCMA,PCMU','PCMA,PCMU'", \
+            # Codec string as needed by FS for each gateway separated by comma
+            * ``GatewayTimeouts`` - "10,10", # Seconds to timeout in string\
+            for each gateway separated by comma
+            * ``GatewayRetries`` - "2,1",# Retry String for Gateways separated\
+            by comma, on how many times each gateway should be retried
             * ``OriginateDialString`` - originate_dial_string
             * ``AnswerUrl`` - "http://localhost/answer_url/",
             * ``HangUpUrl`` - "http://localhost/hangup_url/",

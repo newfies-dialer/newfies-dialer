@@ -4,8 +4,7 @@ from django.conf.urls.defaults import *
 from django.utils.translation import ugettext as _
 from django.db.models import *
 from django.template import RequestContext
-from django.http import HttpResponseRedirect, HttpResponse, \
-    HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from dialer_campaign.models import *
 from dialer_campaign.forms import *

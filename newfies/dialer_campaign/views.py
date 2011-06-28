@@ -2,7 +2,6 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.views import password_reset, password_reset_done,\
 password_reset_confirm, password_reset_complete
 from django.http import HttpResponseRedirect, HttpResponse
@@ -17,13 +16,12 @@ from notification import models as notification
 from dialer_campaign.models import *
 from dialer_campaign.forms import *
 from dialer_campaign.function_def import *
+from dialer_campaign.tasks import collect_subscriber
 from inspect import stack, getmodule
 from datetime import *
-from dialer_campaign.tasks import collect_subscriber
 import urllib
 import csv
 import ast
-from newfies.dialer_campaign.models import Phonebook
 
 
 def current_view(request):
@@ -33,7 +31,7 @@ def current_view(request):
 
 @login_required
 def customer_dashboard(request, on_index=None):
-    """ Customer dashboard which gives the information like how many campaign
+    """Customer dashboard which gives the information like how many campaign
     are running, total of contacts, amount of contact reached today etc.
 
     **Attributes**:

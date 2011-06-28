@@ -196,7 +196,7 @@ select user to update & apply settings from dialer settings list.
 Dialer Gateway
 ~~~~~~~~~~~~~~
 
-Te Dialer Gateway list will be displayed from following URL. You can add new gateway
+The Dialer Gateway list will be displayed from following URL. You can add new gateway
 by clicking ``Add Dialer Gateway`` and add detail for it (like gateway name, hostname, 
 protocol etc.). Also from gateway list, click on the gateway that you want to update.
 

@@ -33,7 +33,7 @@ Phonebook
 
 Phonebook list will be displayed from following URL. You can add new phonebook
 by clicking ``Add phonebook`` and add name of phonebook and its description.
-Also from phonebook list, click on phonebook which you want to update.
+Also from phonebook list, click on phonebook that you want to update.
 
 **URL**:
 
@@ -64,7 +64,7 @@ description about contact, contact status) under one phonebook from phonebook li
 If the contact is active and linked phonebook is also attached with running campaign,
 then the contact will be added into campaign subscribers.
 
-From contact list, click on contact which you want to update.
+From contact list, click on contact that you want to update.
 
 **URL**:
 
@@ -101,9 +101,9 @@ Campaign
 The campaign list will be displayed from following URL. You can add a new campaign 
 by clicking ``Add campaign``. While adding campaign, importantly; add campaign's
 start and end dates with time & week-day exception. Also select gateway
-through which call will be routed & phonebook(s) which is linked with contacts.
+through which calls will be routed & phonebook(s) that are linked with contacts.
 
-From campaign list, click on campaign which you want to update.
+From campaign list, click on campaign that you want to update.
 
 **URL**:
 
@@ -130,7 +130,7 @@ Campaign Subscriber
 
 Campaign Subscriber list will be displayed from following URL. You can add
 new campaign subscriber by clicking ``Add campaignsubscriber``. Also from campaign
-subscriber list, click on the subscriber which you want to update.
+subscriber list, click on the subscriber that you want to update.
 
 While creating Contact, if it is active and its linked phonebook is also attached
 with running campaign, then the contact will be added into campaign subscriber.
@@ -171,7 +171,7 @@ the setting that you want to update.
 .. image:: ../_static/images/admin/dialersetting_list.png
     :width: 1000
 
-To Add/Update dialer settings which is going to link with newfies user
+To Add/Update dialer settings that are going to link with newfies user
 
 **URL**:
 

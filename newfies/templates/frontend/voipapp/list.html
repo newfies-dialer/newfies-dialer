@@ -1,6 +1,5 @@
 {% extends "frontend/master.html" %}
 {% load dialer_cdr_extras i18n icons %}
-{% load pagination_tags %}
 
 {% block title %}
 {{ block.super }}
@@ -18,6 +17,7 @@
 
 
 {% block content %}
+
 {% if msg %}
 <div class="success" id="rounded-corner-upper-table">        
         <strong>{% trans "Alert" %} : </strong>  {{ msg }}
@@ -25,12 +25,13 @@
 {% endif %}
 
 <br/>
+
 <form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">
 {% csrf_token %}
 <table id="flex1" align="left" style="display:none;"></table>
 </form>
-<script type="text/javascript">
 
+<script type="text/javascript">
 
 $("#flex1").flexigrid({
     url: "/voipapp_grid/",

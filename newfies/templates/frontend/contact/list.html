@@ -1,7 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load dialer_cdr_extras icons %}
-{% load i18n %}
-{% load pagination_tags %}
+{% load i18n dialer_cdr_extras icons %}
 
 {% block title %}
 {{ block.super }}
@@ -38,6 +36,7 @@ td {
 {% endblock %}
 
 {% block content %}
+
 {% if msg %}
 <div class="success" id="rounded-corner-upper-table">        
         <strong>{% trans "Alert"  %} : </strong>  {{ msg }}

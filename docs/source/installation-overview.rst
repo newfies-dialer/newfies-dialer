@@ -94,7 +94,7 @@ Django documentation.
 
 ``runserver`` runs an embedded webserver to test your site with.
 By default it will run on http://localhost:8000. This is configurable and more
-information can be found on runserver in Django documentation.
+information can be found on ``runserver`` in Django documentation.
 
 
 .. _caching-system:

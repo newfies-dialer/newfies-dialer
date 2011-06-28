@@ -1,6 +1,5 @@
 {% extends "frontend/master.html" %}
 {% load i18n dialer_cdr_extras %}
-{% load pagination_tags %}
 
 {% block title %}
 {{ block.super }}
@@ -40,23 +39,26 @@ td {
     <form method="POST" action="." enctype="multipart/form-data">
     {% csrf_token %}
     <table align="center" border=0 style="width:35%;align:center;">
-        {{ form.as_table }}  
-        <tr>            
+        {{ form.as_table }}
+        <tr>
             <td colspan=2 align=right>
             <input type="submit" value="{% trans "Search" %}" class="l-1" />&nbsp;
-			<input type="reset" class="j-2" name="reset" value="{% trans "Reset" %}">
+            <input type="reset" class="j-2" name="reset" value="{% trans "Reset" %}">
             </td>
         </tr>
     </table>
     </form>
     {% endblock %}
+
 <br/><br/>
 
 {% block record_list %}
+
 <form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">
 {% csrf_token %}
 <table id="flex1" align="left" style="display:none;"></table>
 </form>
+
 <script type="text/javascript">
 var from_date = ('{{ from_date }}'.replace(/\&#39;/g, "'"));
 var to_date = ('{{ to_date }}'.replace(/\&#39;/g, "'"));
@@ -96,15 +98,12 @@ $("#flex1").flexigrid({
         //alert("Request failed");
     },
 });
-
-
-
-
 </script>
-    {% endblock %}
+{% endblock %}
+
   <br/><br/>
-    {% block extra_data %}
-    
+ {% block extra_data %}
+
         <table align="center" id="rounded-corner">
         <caption><center>{% trans "Call Detail Report Summary"  %}</center></caption>
         <thead>

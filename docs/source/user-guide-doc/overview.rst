@@ -14,7 +14,7 @@ brokers and workers.
 Newfies-Dialer is a computerized system that automatically dials group
 of telephone numbers for connection to assigned campaigns.
 
-**Feature**
+**Features**
     
     * Restful-API based to easily integrate the platform dialer with third-party applications
     * Web-based administrative/customer interfaces

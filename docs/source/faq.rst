@@ -15,7 +15,7 @@ General
 
 .. _faq-when-to-use:
 
-Why should I use Newfies?
+Why should I use Newfies-Dialer?
 -------------------------
 
 **Answer:** .
@@ -28,7 +28,7 @@ Misconceptions
 
 .. _faq-serializion-is-a-choice:
 
-Is Newfies dependent on celery?
+Is Newfies-Dialer dependent on celery?
 -------------------------------
 
 **Answer:** Yes.

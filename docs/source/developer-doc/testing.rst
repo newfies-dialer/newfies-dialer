@@ -42,9 +42,9 @@ How to run test
 
 .. automodule:: dialer_cdr.tests
 
---------------
-API Test Cases
---------------
+-------------
+API Test Case
+-------------
 .. _NewfiesApiTestCase-model:
 
 .. autoclass:: NewfiesApiTestCase
@@ -61,9 +61,9 @@ API-CallRequest Test Case
     :members:
 
 
-------------------------
+-------------------------
 Admin Interface Test Case
-------------------------
+-------------------------
 
 .. _NewfiesAdminInterfaceTestCase-model:
 
@@ -72,7 +72,7 @@ Admin Interface Test Case
 
 
 ----------------------------
-Customer Interface Test Cases
+Customer Interface Test Case
 ----------------------------
 
 .. _NewfiesCustomerInterfaceTestCase-model:
@@ -81,7 +81,7 @@ Customer Interface Test Cases
     :members:
 
 -----------------------------------
-Customer Interface Forgot Test Cases
+Customer Interface Forgot Test Case
 -----------------------------------
 
 .. _NewfiesCustomerInterfaceForgotPassTestCase-model:

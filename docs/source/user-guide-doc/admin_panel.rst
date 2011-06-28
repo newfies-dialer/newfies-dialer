@@ -6,8 +6,8 @@ Admin Panel
 
 http://localhost:8000/admin/
 
-This interface provides user (ACL) management, a full control of all
-Campaigns, Phonebooks, Subscribers, Gateway, configuration of the
+This interface provides user (ACL) management, full control of all
+Campaigns, Phonebooks, Subscribers, Gateways and configuration of the
 Audio Application.
 
 .. contents::
@@ -22,7 +22,7 @@ Screenshot with Features
 Dashboard
 ~~~~~~~~~
 
-Dashboard page for admin interface after successful login with superuser credential
+Dashboard page for admin interface after successful login with superuser credentials
 
 .. image:: ../_static/images/admin_screenshot.png
 
@@ -57,12 +57,12 @@ To Add/Update phonebook for user
 Contact
 ~~~~~~~
 
-Contact list will be displayed from following URL and you can add new contact
+Contact list will be displayed from the following URL and you can add a new contact
 by clicking ``Add contact`` & add contact details (like phone number, name,
 description about contact, contact status) under one phonebook from phonebook list.
 
-If Contact is active and linked phonebook is also attached with running campaign,
-then Contact will be added into campaign subscriber.
+If the contact is active and linked phonebook is also attached with running campaign,
+then the contact will be added into campaign subscribers.
 
 From contact list, click on contact which you want to update.
 
@@ -83,8 +83,8 @@ To Add/Update contact
 .. image:: ../_static/images/admin/update_contact.png
     :width: 1000
 
-To import bulk contacts into phonebook, click on ``Import contacts``.
-From where you can upload contacts via CSV file under one phonebook.
+To import bulk contacts into phonebook, click on ``Import contacts``. 
+where you can upload contacts via CSV file under one phonebook.
 
 **URL**:
 
@@ -98,9 +98,9 @@ From where you can upload contacts via CSV file under one phonebook.
 Campaign
 ~~~~~~~~
 
-Campaign list will be displayed from following URL. You can add new campaign by
-clicking ``Add campaign``. While adding campaign, importantly add campaign's
-stating and ending dates with timing & week-day exception. Also select gateway
+The campaign list will be displayed from following URL. You can add a new campaign 
+by clicking ``Add campaign``. While adding campaign, importantly; add campaign's
+start and end dates with time & week-day exception. Also select gateway
 through which call will be routed & phonebook(s) which is linked with contacts.
 
 From campaign list, click on campaign which you want to update.
@@ -130,10 +130,10 @@ Campaign Subscriber
 
 Campaign Subscriber list will be displayed from following URL. You can add
 new campaign subscriber by clicking ``Add campaignsubscriber``. Also from campaign
-subscriber list, click on subscriber which you want to update.
+subscriber list, click on the subscriber which you want to update.
 
 While creating Contact, if it is active and its linked phonebook is also attached
-with running campaign, then Contact will be added into campaign subscriber.
+with running campaign, then the contact will be added into campaign subscriber.
 
 **URL**:
 
@@ -162,7 +162,7 @@ Dialer Settings
 Dialer settings list will be displayed from following URL. Dialer settings list
 is applied to system User. You can add new setting by clicking ``Add Dialer Settings``
 and add numeric values for limit. Also from dialer settings list, click on
-one setting which you want to update.
+the setting that you want to update.
 
 **URL**:
 
@@ -196,9 +196,9 @@ select user to update & apply settings from dialer settings list.
 Dialer Gateway
 ~~~~~~~~~~~~~~
 
-Dialer Gateway list will be displayed from following URL. You can add new gateway
+Te Dialer Gateway list will be displayed from following URL. You can add new gateway
 by clicking ``Add Dialer Gateway`` and add detail for it (like gateway name, hostname, 
-protocol etc.). Also from gateway list, click on one gateway which you want to update.
+protocol etc.). Also from gateway list, click on the gateway that you want to update.
 
 **URL**:
 
@@ -223,9 +223,9 @@ To Add/Update dialer gateway
 VoIP Application
 ~~~~~~~~~~~~~~~~
 
-VoIP application list will be displayed from following URL. You can add new application
-by clicking ``Add VoIP Application``. Also from application list, click on
-one application which you want to update.
+VoIP application list will be displayed from following URL. You can add a new
+application by clicking ``Add VoIP Application``. Also from application list,
+click on the application that you want to update.
 
 **URL**:
 
@@ -250,9 +250,9 @@ To Add/Update VoIP application
 VoIP Server Group
 ~~~~~~~~~~~~~~~~~
 
-VoIP server group list will be displayed from following URL. You can add new group
-by clicking ``Add VoIP Server Group``. Also from group list, click on one group
-which you want to update.
+VoIP server group list will be displayed from following URL. You can add a new group
+by clicking ``Add VoIP Server Group``. Also from group list, click on the group
+that you want to update.
 
 **URL**:
 
@@ -279,8 +279,8 @@ VoIP Server
 
 VoIP server list will be displayed from following URL. You can add new server
 by clicking ``Add VoIP Server`` and add details like server name, IP address,
-server username, password, port no etc.. Also from server list, click on one server
-which you want to update.
+server username, password, port no etc.. Also from server list, click on the server
+that you want to update.
 
 **URL**:
 
@@ -306,8 +306,8 @@ Call Request
 ~~~~~~~~~~~~
 
 Call Request list will be displayed from following URL. You can add new call request
-by clicking ``Add Call Request``. Also from call request list, click on one
-request which you want to update.
+by clicking ``Add Call Request``. Also from call request list, click on the
+request that you want to update.
 
 **URL**:
 

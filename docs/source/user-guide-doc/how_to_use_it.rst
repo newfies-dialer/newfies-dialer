@@ -21,7 +21,7 @@ Create campaign
 ---------------
 
 To create a campaign, click on ``Add campaign``, add details for the campaign.
-Importantly add campaign's stating and ending dates with timing & week-day
+Importantly; add campaign's starting and ending dates with timing & week-day
 exception. Also select gateway through which call will be routed & phonebook(s)
 which is linked with contacts.
 

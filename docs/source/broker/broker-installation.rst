@@ -6,10 +6,35 @@ Broker Installation
 
 This document describes the configuration of the Brokers.
 
-RabbitMQ is a big, sophisticated product.  If you don't need that
-level of robustness, then you might want to take a look at Redis - it
-installs easily, runs relatively lean, and can be monitored and
-maintained without a lot of fuss.
+.. _broker-redis:
+
+-----
+Redis
+-----
+
+Download Source
+---------------
+
+Download : `redis-server_2.0.0~rc2-1_amd64.deb`_.
+
+.. _redis-server_2.0.0~rc2-1_amd64.deb : https://launchpad.net/ubuntu/maverick/amd64/redis-server/2:2.0.0~rc2-1
+
+To install Redis-Server
+-----------------------
+::
+
+    $ sudo dpkg -i redis-server_2.0.0~rc2-1_amd64.deb
+
+or you can use apt-get
+::
+
+    $ apt-get install redis-server
+
+Running Server
+--------------
+::
+
+    $ redis-server
 
 
 .. _broker-rabbitmq:
@@ -17,6 +42,11 @@ maintained without a lot of fuss.
 --------
 Rabbitmq
 --------
+
+RabbitMQ is a big, sophisticated product.  If you don't need that
+level of robustness, then you might want to take a look at Redis - it
+installs easily, runs relatively lean, and can be monitored and
+maintained without a lot of fuss.
 
 See `Installing RabbitMQ`_ over at RabbitMQ's website. For Mac OS X
 see `Installing RabbitMQ on OS X`_.
@@ -191,34 +221,3 @@ Never use :program:`kill` to stop the RabbitMQ server, but rather use the
     $ sudo rabbitmqctl stop
 
 When the server is running, you can continue reading `Setting up RabbitMQ`_.
-
-
-.. _broker-redis:
-
------
-Redis
------
-
-Download Source
----------------
-
-Download : `redis-server_2.0.0~rc2-1_amd64.deb`_.
-
-.. _redis-server_2.0.0~rc2-1_amd64.deb : https://launchpad.net/ubuntu/maverick/amd64/redis-server/2:2.0.0~rc2-1
-
-To install Redis-Server
------------------------
-::
-
-    $ sudo dpkg -i redis-server_2.0.0~rc2-1_amd64.deb
-
-or you can use apt-get
-::
-
-    $ apt-get install redis-server
-
-Running Server
---------------
-::
-
-    $ redis-server

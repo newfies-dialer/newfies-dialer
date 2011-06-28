@@ -245,61 +245,6 @@ To Add/Update VoIP application
     :width: 1000
 
 
-.. _admin-voip-server-group-access:
-
-VoIP Server Group
-~~~~~~~~~~~~~~~~~
-
-VoIP server group list will be displayed from following URL. You can add a new group
-by clicking ``Add VoIP Server Group``. Also from group list, click on the group
-that you want to update.
-
-**URL**:
-
-    * http://localhost:8000/admin/voip_server/voipservergroup/
-
-.. image:: ../_static/images/admin/voipservergroup_list.png
-    :width: 1000
-
-To Add/Update VoIP Server Group
-
-**URL**:
-
-    * http://localhost:8000/admin/voip_server/voipservergroup/add/
-    * http://localhost:8000/admin/voip_server/voipservergroup/1/
-
-.. image:: ../_static/images/admin/update_voipservergroup.png
-    :width: 1000
-
-
-.. _admin-voip-server-access:
-
-VoIP Server
-~~~~~~~~~~~
-
-VoIP server list will be displayed from following URL. You can add new server
-by clicking ``Add VoIP Server`` and add details like server name, IP address,
-server username, password, port no etc.. Also from server list, click on the server
-that you want to update.
-
-**URL**:
-
-    * http://localhost:8000/admin/voip_server/voipserver/
-
-.. image:: ../_static/images/admin/voipserver_list.png
-    :width: 1000
-
-To Add/Update VoIP Server
-
-**URL**:
-
-    * http://localhost:8000/admin/voip_server/voipserver/add/
-    * http://localhost:8000/admin/voip_server/voipserver/1/
-
-.. image:: ../_static/images/admin/update_voipserver.png
-    :width: 1000
-
-
 .. _admin-call-request-access:
 
 Call Request
@@ -335,4 +280,5 @@ VoIP Call list will be displayed from following URL. You **can not** add new cal
 
     * http://localhost:8000/admin/dialer_cdr/voipcall/
 
-image coming soon ...
+.. image:: ../_static/images/admin/voipcall_list.png
+    :width: 1000

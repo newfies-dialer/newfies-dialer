@@ -4,12 +4,12 @@
 Installation overview
 =====================
 
-.. _install-requirement:
+.. _install-requirements:
 
-Install requirement
+Install requirements
 ===================
 
-Requirement file gives you a way to create an environment where you can put
+A Requirements file gives you a way to create an environment where you can put
 all optional dependencies which are needed for your Project/Application.
 
 - python >= 2.4 (programming language)
@@ -72,12 +72,12 @@ To install Newfies using the script,::
 Caching System
 ==============
 
-User requests a page, the Web server makes all sorts of calculations
-for business logic and to create the page that your site’s visitor sees.
-It creates processing-overhead perspective, than your standard
+When a User requests a page, the Web server makes calculations
+for business logic and to create the page that your visitor sees.
+It creates a processing overhead higher than a standard
 read-a-file-off-the-filesystem server arrangement.
 
-That’s where caching comes in.
+This is where caching comes in.
 
 To cache something is to save the result of an expensive calculation so that
 you don’t have to perform the calculation next time.

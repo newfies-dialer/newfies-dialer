@@ -1,9 +1,9 @@
 .. _conf-example:
 
-Example configuration file
-==========================
+Sample Configuration
+====================
 
-This is an example configuration file to get you started.
+This is an sample configuration to get you started.
 It should contain all you need to run a basic set-up.
  
 ------------------------

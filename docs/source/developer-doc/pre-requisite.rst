@@ -1,9 +1,9 @@
-.. _pre-requisite:
+.. _prerequisites:
 
-Pre-requisite
+Prerequisites
 =============
 
-To understand fully this project, developpers will need to have a advanced knowlegdes :
+To fully understand this project, developers will need to have a advanced knowledge of:
     - Django : http://www.djangoproject.com/
     - Celery : http://celeryproject.org/
     - Python : http://www.python.org/

@@ -7,10 +7,12 @@ Installation overview
 .. _install-requirements:
 
 Install requirements
-===================
+====================
 
 A Requirements file gives you a way to create an environment where you can put
 all optional dependencies which are needed for your Project/Application.
+
+To get started with Newfies-dialer you must have the following installed:
 
 - python >= 2.4 (programming language)
 - Apache / http server with WSGI modules
@@ -65,6 +67,34 @@ To install Newfies using the script,::
     $ chmod +x script/install-newfies.sh
 
     $ ./script/install-newfies.sh
+
+    $ chmod +x script/install-celery.sh
+
+    $ ./script/install-celery.sh
+
+
+.. _running-newfies-dialer:
+
+Running a Newfies-dialer
+========================
+
+Inside Newfies-dialer directory you should run::
+
+    $ mkdir database
+
+    $ python manage.py syncdb
+
+    $ python manage.py runserver
+
+``syncdb`` will create a database named test.db in database folder of your
+current directory. We have configured newfies to do this, but you can change
+this simply by modifying settings.py where DATABASES dictionary is constructed.
+You can find more information about this at the get your database running
+Django documentation.
+
+``runserver`` runs an embedded webserver to test your site with.
+By default it will run on http://localhost:8000. This is configurable and more
+information can be found on runserver in Django documentation.
 
 
 .. _caching-system:

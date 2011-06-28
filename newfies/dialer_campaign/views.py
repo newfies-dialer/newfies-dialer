@@ -213,11 +213,11 @@ def logout_view(request):
 
 
 def cust_password_reset(request):
-    """Used django.contrib.auth.views.password_reset view method for
+    """Used ``django.contrib.auth.views.password_reset`` view method for
     forgotten password on Customer UI
 
     This method will send an e-mail to user's email-id which is entered in
-    password_reset_form
+    ``password_reset_form``
     """
 
     if not request.user.is_authenticated():
@@ -231,7 +231,7 @@ def cust_password_reset(request):
 
 
 def cust_password_reset_done(request):
-    """Used django.contrib.auth.views.password_reset_done view method for
+    """Used ``django.contrib.auth.views.password_reset_done`` view method for
     forgotten password on Customer UI
 
     This will show acknowledge message to user who is seeking to reset his/her
@@ -246,7 +246,7 @@ def cust_password_reset_done(request):
 
 
 def cust_password_reset_confirm(request, uidb36=None, token=None):
-    """Used django.contrib.auth.views.password_reset_confirm view method for
+    """Used ``django.contrib.auth.views.password_reset_confirm`` view method for
     forgotten password on Customer UI
 
     This will allow user to reset his/her password for the system
@@ -261,8 +261,8 @@ def cust_password_reset_confirm(request, uidb36=None, token=None):
 
 
 def cust_password_reset_complete(request):
-    """Used django.contrib.auth.views.password_reset_complete view method for
-    forgotten password on Customer UI
+    """Used ``django.contrib.auth.views.password_reset_complete`` view method
+    for forgotten password on Customer UI
 
     This will show acknowledge message to user after successfully resetting
     his/her password for the system.
@@ -285,8 +285,8 @@ def common_send_notification(request, status, recipient=None):
 
     **Logic Description**:
 
-        * This function is used by update_campaign_status_admin() &
-          update_campaign_status_cust()
+        * This function is used by ``update_campaign_status_admin()`` &
+          ``update_campaign_status_cust()``
 
     """
     if not recipient:
@@ -318,8 +318,8 @@ def common_campaign_status(pk, status):
         * Selected Campaign's status need to be changed.
           Changed status can be start or stop or pause.
 
-        * This function is used by update_campaign_status_admin() &
-          update_campaign_status_cust()
+        * This function is used by ``update_campaign_status_admin()`` &
+          ``update_campaign_status_cust()``
     """
     campaign = Campaign.objects.get(pk=pk)
     previous_status = campaign.status

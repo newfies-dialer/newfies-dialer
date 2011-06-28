@@ -107,12 +107,6 @@ class campaignHandler(BaseHandler):
 
         **Example Response**::
 
-            HTTP/1.0 200 OK
-            Date: Tue, 28 Jun 2011 06:37:25 GMT
-            Server: WSGIServer/0.1 Python/2.6.2
-            Vary: Authorization
-            Content-Type: application/json; charset=utf-8
-
             {
                 "status": 2,
                 "voipapp": {

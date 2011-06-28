@@ -1,5 +1,5 @@
-.. _configurate-fs-with-newfies:
+.. _configure-fs-with-newfies:
 
-Configurate Freeswitch with Newfies
-===================================
+Configure Freeswitch with Newfies-Dialer
+========================================
 

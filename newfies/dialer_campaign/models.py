@@ -3,6 +3,7 @@ from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.core.cache import cache
 from django.db.models.signals import post_save
+from dateutil.relativedelta import *
 from countries.models import Country
 from dialer_gateway.models import Gateway
 from voip_app.models import VoipApp
@@ -226,13 +227,13 @@ class Campaign(Model):
                 verbose_name=_("CallerID"), help_text=_("CallerID used \
                 to call the A-Leg"))
     #General Starting & Stopping date
-    startingdate = models.DateTimeField(default=datetime.now(),
+    startingdate = models.DateTimeField(default=(lambda:datetime.now()),
                         verbose_name=_('Start'),
                         help_text =_("Date Format: YYYY-mm-DD HH:MM:SS"))
-    expirationdate = models.DateTimeField(
-                        default=datetime.now() + timedelta(days=7),
-                        verbose_name=_('Finish'),
-                        help_text=_("Date Format: YYYY-mm-DD HH:MM:SS"))
+    expirationdate = models.DateTimeField(                        
+                    default=(lambda:datetime.now()+relativedelta(months=+1)),
+                    verbose_name=_('Finish'),
+                    help_text=_("Date Format: YYYY-mm-DD HH:MM:SS"))
     #Per Day Starting & Stopping Time
     daily_start_time = models.TimeField(default='00:00:00',
                        help_text=_("Time Format: HH:MM:SS"))

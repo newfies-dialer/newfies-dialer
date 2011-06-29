@@ -60,11 +60,11 @@ class Callrequest(Model):
 
     **Attributes**:
 
-        * ``request_uuid`` -
-        * ``call_time`` -
-        * ``call_type`` -
-        * ``status`` -
-        * ``callerid`` -
+        * ``request_uuid`` - Unique id
+        * ``call_time`` - Total call time
+        * ``call_type`` - Call type
+        * ``status`` - Call request status
+        * ``callerid`` - Caller ID
         * ``last_attempt_time`` -
         * ``result`` --
         * ``timeout`` -

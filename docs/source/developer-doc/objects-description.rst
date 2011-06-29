@@ -22,6 +22,14 @@ Objects Description
 .. autoclass:: Contact
     :members:
 
+.. _Campaign-manager-model:
+
+:class:`CampaignManager`
+------------------------
+
+.. autoclass:: CampaignManager
+    :members:
+
 
 .. _Campaign-model:
 

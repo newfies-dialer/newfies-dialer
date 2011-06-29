@@ -17,7 +17,13 @@ from datetime import *
 # voip_app
 @login_required
 def voipapp_grid(request):
-    """VoIP App list in json format for flexigrid"""
+    """VoIP App list in json format for flexigrid
+
+    **Model**: VoipApp
+
+    **Fields**: [id, name, user, description, type, gateway__name,
+                 updated_date]
+    """
     page = variable_value(request, 'page')
     rp = variable_value(request, 'rp')
     sortname = variable_value(request, 'sortname')
@@ -87,15 +93,9 @@ def voipapp_list(request):
 
         * List all voip app which are belong to logged in user
     """
-    voipapp_id_list = ''
-    voipapp_list = VoipApp.objects.filter(user=request.user)
-    for i in voipapp_list:
-        voipapp_id_list += str(i.id) + ","
-    voipapp_id_list = voipapp_id_list[:-1]
     template = 'frontend/voipapp/list.html'
     data = {
-        'module': current_view(request),
-        'voipapp_id_list': voipapp_id_list,
+        'module': current_view(request),        
         'msg': request.session.get('msg'),
         'notice_count': notice_count(request),
     }

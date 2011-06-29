@@ -20,6 +20,12 @@ import ast
 def voipcall_report_grid(request):
     """VoIP Call list in json format for flexigrid
 
+    **Model**: VoIPCall
+
+    **Fields**: [id, user__username, used_gateway__name, callid, request_uuid,
+                 callerid, phone_number, starting_date, sessiontime,
+                 disposition]
+
     **Logic Description**:
 
         * Get VoIP call list according to search parameters

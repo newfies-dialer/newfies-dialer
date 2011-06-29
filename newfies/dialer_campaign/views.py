@@ -356,7 +356,12 @@ def update_campaign_status_cust(request, pk, status):
 # Phonebook
 @login_required
 def phonebook_grid(request):
-    """Phonebook list in json format for flexigrid"""
+    """Phonebook list in json format for flexigrid
+    
+    **Model**: Phonebook
+    
+    **Fields**: [id, name, description, updated_date]
+    """
     page = variable_value(request, 'page')
     rp = variable_value(request, 'rp')
     sortname = variable_value(request, 'sortname')
@@ -428,15 +433,9 @@ def phonebook_list(request):
 
         * List all phonebooks which are belong to logged in user
     """
-    phonebook_id_list = ''
-    phonebook_list = Phonebook.objects.filter(user=request.user)
-    for i in phonebook_list:
-        phonebook_id_list += str(i.id) + ","
-    phonebook_id_list = phonebook_id_list[:-1]
     template = 'frontend/phonebook/list.html'
     data = {
-        'module': current_view(request),
-        'phonebook_id_list': phonebook_id_list,
+        'module': current_view(request),        
         'msg': request.session.get('msg'),
         'notice_count': notice_count(request),
     }
@@ -576,7 +575,13 @@ def phonebook_change(request, object_id):
 
 @login_required
 def contact_grid(request):
-    """Contact list in json format for flexigrid"""
+    """Contact list in json format for flexigrid
+
+    **Model**: Contact
+
+    **Fields**: [id, phonebook__name, contact, last_name, first_name,
+                 description, status, additional_vars, updated_date]
+    """
     page = variable_value(request, 'page')
     rp = variable_value(request, 'rp')
     sortname = variable_value(request, 'sortname')
@@ -714,8 +719,7 @@ def contact_list(request):
 
     template = 'frontend/contact/list.html'
     data = {
-        'module': current_view(request),
-        #'contact_list': contact_list,
+        'module': current_view(request),        
         'msg': request.session.get('msg'),
         'form': form,
         'user': request.user,
@@ -1042,7 +1046,13 @@ def get_url_campaign_status(id, status):
 # Campaign
 @login_required
 def campaign_grid(request):
-    """Campaign list in json format for flexigrid"""
+    """Campaign list in json format for flexigrid
+
+    **Model**: Campaign
+
+    **Fields**: [id, campaign_code, name, startingdate, expirationdate,
+    aleg_gateway, aleg_gateway__name, status, voipapp__name]
+    """
     page = variable_value(request, 'page')
     rp = variable_value(request, 'rp')
     sortname = variable_value(request, 'sortname')
@@ -1065,7 +1075,7 @@ def campaign_grid(request):
         sortorder_sign = '-'
 
     campaign_list = Campaign.objects\
-                    .values('id', 'campaign_code','name', 'startingdate',
+                    .values('id', 'campaign_code', 'name', 'startingdate',
                             'expirationdate', 'aleg_gateway',
                             'aleg_gateway__name', 'status',
                             'voipapp__name').filter(user=request.user)
@@ -1117,11 +1127,9 @@ def campaign_list(request):
 
         * List all campaign which are belong to logged in user
     """
-    #campaign_list = Campaign.objects.filter(user=request.user)
     template = 'frontend/campaign/list.html'
     data = {
-        'module': current_view(request),
-        #'campaign_list': campaign_list,
+        'module': current_view(request),        
         'msg': request.session.get('msg'),
         'notice_count': notice_count(request),
     }

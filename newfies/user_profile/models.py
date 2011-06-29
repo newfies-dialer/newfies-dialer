@@ -12,7 +12,7 @@ class UserProfile(models.Model):
 
         * ``accountcode`` - Account name.
 
-    Relationships:
+    **Relationships**:
 
         * ``user`` - Foreign key relationship to the User model.
         * ``userprofile_gateway`` - ManyToMany

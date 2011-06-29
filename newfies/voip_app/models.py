@@ -30,11 +30,11 @@ class VoipApp(Model):
         * ``description`` - description about VoIP application.
         * ``type`` - Application type
 
-    Relationships:
+    **Relationships**:
 
         * ``gateway`` - Foreign key relationship to the Gateway model.
-        * ``user`` - Foreign key relationship to the User model.
-                     Each voip app assigned to User
+        * ``user`` - Foreign key relationship to the User model.\
+        Each voip app assigned to User
 
     **Name of DB table**: voip_app
     """

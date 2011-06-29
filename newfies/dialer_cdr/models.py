@@ -64,8 +64,6 @@ class Callrequest(Model):
         * ``call_time`` -
         * ``call_type`` -
         * ``status`` -
-        * ``campaign_subscriber`` -
-        * ``campaign`` -
         * ``callerid`` -
         * ``last_attempt_time`` -
         * ``result`` --
@@ -78,20 +76,16 @@ class Callrequest(Model):
         * ``hangup_cause`` -
 
 
-    Relationships:
+    **Relationships**:
 
-        * ``user`` - Foreign key relationship to the User model.
-                     Each campaign assigned to User
-
-        * ``voipapp`` - Foreign key relationship to the VoipApp model.
-                        VoIP Application to use with this campaign
-
-        * ``aleg_gateway`` - Foreign key relationship to the Gateway model.
-                             Gateway to use to reach the subscriber
-
-        * ``campaign_subscriber`` - Foreign key relationship to
-                            CampaignSubscriber Model.
-
+        * ``user`` - Foreign key relationship to the User model.\
+        Each campaign assigned to User
+        * ``voipapp`` - Foreign key relationship to the VoipApp model.\
+        VoIP Application to use with this campaign
+        * ``aleg_gateway`` - Foreign key relationship to the Gateway model.\
+        Gateway to use to reach the subscriber
+        * ``campaign_subscriber`` - Foreign key relationship to\
+        CampaignSubscriber Model.
         * ``campaign`` - Foreign key relationship to the Campaign model.
 
     **Name of DB table**: dialer_callrequest
@@ -163,7 +157,7 @@ class VoIPCall(models.Model):
         * ``sessiontime`` - Duration of the call
         * ``disposition`` - Disposition of the call
 
-    Relationships:
+    **Relationships**:
 
         * ``user`` - Foreign key relationship to the User model.
         * ``used_gateway`` - Foreign key relationship to the Gateway model.

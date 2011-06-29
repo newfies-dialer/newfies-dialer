@@ -63,10 +63,10 @@ class Phonebook(Model):
         * ``name`` - phonebook name.
         * ``description`` - description about phonebook.
 
-    Relationships:
+    **Relationships**:
 
-        * ``user`` - Foreign key relationship to the User model.
-                     Each phonebook assigned to User
+        * ``user`` - Foreign key relationship to the User model.\
+        Each phonebook assigned to User
 
     **Name of DB table**: dialer_phonebook
     """
@@ -106,12 +106,12 @@ class Contact(Model):
         * ``status`` - contact status
         * ``additional_vars`` - Additional variables
 
-    Relationships:
+    **Relationships**:
 
-        * ``phonebook`` - Foreign key relationship to the Phonebook model.
-                          Each contact mapped with phonebook
-        * ``country`` - Foreign key relationship to the Country model.
-                        Each contact mapped with country
+        * ``phonebook`` - Foreign key relationship to the Phonebook model.\
+        Each contact mapped with phonebook
+        * ``country`` - Foreign key relationship to the Country model.\
+        Each contact mapped with country
 
     **Name of DB table**: dialer_contact
     """
@@ -181,16 +181,16 @@ class Campaign(Model):
     **Attributes**:
 
         * ``campaign_code`` - Autogenerate campaign code to identify campaign
-        * ``name`` - Campaign name.
-        * ``description`` - Description about Campaign.
-        * ``status`` - Campaign status.
+        * ``name`` - Campaign name
+        * ``description`` - Description about Campaign
+        * ``status`` - Campaign status
         * ``callerid`` - Caller ID
         * ``startingdate`` - Starting date of Campaign
         * ``expirationdate`` - Expiration date of Campaign
         * ``daily_start_time`` - Start time of day
         * ``daily_stop_time`` - End time of day
-        * ``week_day_setting`` (monday, tuesday, wednesday, thursday, friday,
-                                saturday, sunday)
+        * ``week_day_setting`` (monday, tuesday, wednesday, thursday, friday, \
+        saturday, sunday)
         * ``frequency`` - Frequency, speed of the campaign. number of calls/min
         * ``callmaxduration`` - Max retry allowed per user
         * ``maxretry`` - Max retry allowed per user
@@ -199,15 +199,15 @@ class Campaign(Model):
         * ``aleg_gateway`` - Gateway to use to reach the contact
         * ``extra_data`` - Additional data to pass to the application
 
-    Relationships:
+    **Relationships**:
 
-        * ``voipapp`` - Foreign key relationship to the VoipApp model.
-                        VoIP Application to use with this campaign
+        * ``voipapp`` - Foreign key relationship to the VoipApp model. \
+        VoIP Application to use with this campaign
 
         * ``phonebook`` - ManyToMany relationship to the Phonebook model.
 
-        * ``user`` - Foreign key relationship to the User model.
-                     Each campaign assigned to User
+        * ``user`` - Foreign key relationship to the User model. \
+        Each campaign assigned to User
 
     **Name of DB table**: dialer_campaign
     """
@@ -495,7 +495,7 @@ class CampaignSubscriber(Model):
         * ``duplicate_contact`` -
         * ``status`` -
 
-    Relationships:
+    **Relationships**:
 
         * ``contact`` - Foreign key relationship to the Contact model.
         * ``campaign`` - Foreign key relationship to the Campaign model.

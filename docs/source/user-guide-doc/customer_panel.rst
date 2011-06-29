@@ -77,6 +77,7 @@ To Add/Update contact for phonebook
     * http://localhost:8000/dialer_campaign/contact/1/
 
 .. image:: ../_static/images/customer/update_contact.png
+    :width: 1000
 
 To import bulk contacts into phonebook, click on ``Import``.
 From where you can upload contacts via a CSV file under logged in user's phonebook.
@@ -86,6 +87,7 @@ From where you can upload contacts via a CSV file under logged in user's phonebo
     * http://localhost:8000/dialer_campaign/contact/import/
 
 .. image:: ../_static/images/customer/import_contact.png
+    :width: 1000
 
 
 .. _customer-campaign-access:
@@ -114,3 +116,4 @@ To Add/Update Campaign for logged in user
     * http://localhost:8000/dialer_campaign/campaign/1/
 
 .. image:: ../_static/images/customer/update_campaign.png
+    :width: 1000

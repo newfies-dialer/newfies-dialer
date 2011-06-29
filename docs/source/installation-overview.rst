@@ -84,13 +84,19 @@ Inside Newfies-dialer directory you should run::
 
     $ python manage.py syncdb
 
+    $ python manage.py collectstatic
+
     $ python manage.py runserver
 
-``syncdb`` will create a database named test.db in database folder of your
-current directory. We have configured newfies to do this, but you can change
-this simply by modifying settings.py where DATABASES dictionary is constructed.
-You can find more information about this at the get your database running
-Django documentation.
+
+``syncdb`` will create a database named test.db in ``database`` folder of
+newfies-dialer directory. We have configured newfies to do this, but you can
+change this simply by modifying settings.py where DATABASES dictionary is
+constructed. You can find more information about this at the get your database
+running Django documentation.
+
+``collectstatic`` would fetch all necessary media files and put them into
+``staic`` folder defined at settings module.
 
 ``runserver`` runs an embedded webserver to test your site with.
 By default it will run on http://localhost:8000. This is configurable and more

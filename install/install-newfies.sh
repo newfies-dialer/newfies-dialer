@@ -59,7 +59,7 @@ case $DISTRO in
         apt-get -y install mysql-server libmysqlclient-dev
         apt-get -y install git-core
         apt-get -y install mercurial
-        apt-get -y install python-importlib
+        #apt-get -y install python-importlib - does not exist in repository
     ;;
     'CENTOS')
         yum -y install python-setuptools python-tools python-devel mod_python
@@ -77,7 +77,7 @@ esac
 echo "Install Newfies..."
 mkdir /usr/share/django_app/
 cd /usr/src/
-wget --no-check-certificate https://github.com/Star2Billing/newfies/tarball/$VERSION
+wget --no-check-certificate https://github.com/Star2Billing/newfies-dialer/tarball/$VERSION
 mv master Star2Billing-newfies-$VERSION.tar.gz
 tar xvzf Star2Billing-newfies-*.tar.gz
 rm -rf Star2Billing-newfies-*.tar.gz
@@ -103,7 +103,7 @@ sed -i "s/TEMPLATE_DEBUG = DEBUG/TEMPLATE_DEBUG = False/g"  /usr/share/django_ap
 
 
 # Setup settings.py
-sed -i "s/'sqlite3'/'mysql'/"  /usr/share/django_app/newfies/settings.py
+sed -i "s/'django.db.backends.sqlite3'/'django.db.backends.mysql'/"  /usr/share/django_app/newfies/settings.py
 sed -i "s/.*'NAME'/       'NAME': 'newfies',#/"  /usr/share/django_app/newfies/settings.py
 sed -i "/'USER'/s/''/'$MYSQLUSER'/" /usr/share/django_app/newfies/settings.py
 sed -i "/'PASSWORD'/s/''/'$MYSQLPASSWORD'/" /usr/share/django_app/newfies/settings.py
@@ -118,6 +118,7 @@ mkdir database
 chmod -R 777 database
 python manage.py syncdb
 #python manage.py migrate
+python manage.py createsuperuser
 
 
 #Collect static files from apps and other locations in a single location.
@@ -173,11 +174,11 @@ echo "Installation Complete"
 echo ""
 echo ""
 echo "Please log on to Newfies at "
-echo "http://$IPADDR:9000"
+echo "http://$IPADDR:9080"
 echo "the username and password are the ones you entered during this installation."
 echo ""
 echo "Thank you for installing Newfies"
 echo "Yours"
 echo "The Star2Billing Team"
-echo "http://www.star2billing.com and http://www.newfies.org/"
+echo "http://www.star2billing.com and http://www.newfies-dialer.org/"
 

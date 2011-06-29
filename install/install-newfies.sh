@@ -48,28 +48,28 @@ IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
 #python setup tools
 echo "Install Dependencies and python modules..."
 case $DISTRO in
-        'UBUNTU')
-            apt-get -y install python-setuptools python-dev build-essential 
-            apt-get -y install libapache2-mod-python libapache2-mod-wsgi
-            easy_install pip
-            easy_install virtualenv
-            #ln -s /usr/local/bin/pip /usr/bin/pip
-            
-            #Install Extra dependencies on New OS
-            apt-get -y install mysql-server libmysqlclient-dev
-            apt-get -y install git-core
-            apt-get -y install mercurial
-            apt-get -y install python-importlib
-        ;;
-        'CENTOS')
-            yum -y install python-setuptools python-tools python-devel mod_python
-            #Install PIP
-            rpm -ivh http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-4.noarch.rpm 
-            # disable epel repository since by default it is enabled. It is not recommended to keep 
-            # non standard repositories activated. Use it just in case you need.
-            sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo 
-            yum --enablerepo=epel install python-pip
-        ;;
+    'UBUNTU')
+        apt-get -y install python-setuptools python-dev build-essential 
+        apt-get -y install libapache2-mod-python libapache2-mod-wsgi
+        easy_install pip
+        easy_install virtualenv
+        #ln -s /usr/local/bin/pip /usr/bin/pip
+        
+        #Install Extra dependencies on New OS
+        apt-get -y install mysql-server libmysqlclient-dev
+        apt-get -y install git-core
+        apt-get -y install mercurial
+        apt-get -y install python-importlib
+    ;;
+    'CENTOS')
+        yum -y install python-setuptools python-tools python-devel mod_python
+        #Install PIP
+        rpm -ivh http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-4.noarch.rpm 
+        # disable epel repository since by default it is enabled. It is not recommended to keep 
+        # non standard repositories activated. Use it just in case you need.
+        sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo 
+        yum --enablerepo=epel install python-pip
+    ;;
 esac
 
 

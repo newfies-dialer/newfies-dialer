@@ -244,6 +244,9 @@ def export_voipcall_report(request):
     **Important variable**:
 
         * ``request.session['voipcall_record_qs']`` - stores voipcall query set
+
+    **Exported fields**: [user, callid, callerid, phone_number, starting_date,
+                          sessiontime, disposition, used_gateway]
     """
     # get the response object, this can be used as a stream.
     response = HttpResponse(mimetype='text/csv')

@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.conf.urls.defaults import *
-from django.http import HttpResponseRedirect, HttpResponse,\
-    HttpResponseRedirect
+from django.http import HttpResponse
 from django.utils.translation import ugettext as _
 from django.db.models import *
 from dialer_cdr.models import *
@@ -166,6 +165,10 @@ class VoIPCallAdmin(admin.ModelAdmin):
         **Important variable**:
 
             * request.session['voipcall_record_qs'] - stores voipcall query set
+
+        **Exported fields**: [user, callid, callerid, phone_number,
+                              starting_date, sessiontime, disposition,
+                              used_gateway]
         """
         # get the response object, this can be used as a stream.
         response = HttpResponse(mimetype='text/csv')

@@ -703,6 +703,7 @@ def contact_list(request):
     **Attributes**:
 
         * ``template`` - frontend/contact/list.html
+        * ``form`` - ContactSearchForm
 
     **Logic Description**:
 

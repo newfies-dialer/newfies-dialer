@@ -49,65 +49,87 @@ will be dispatched and delivered.
 Overview
 ========
 
-This is a high level overview of the architecture.
+Newfies-Dialer can be installed and used by anyone who has a need for mass
+outbound calling, voice broadcasting or providing outbound IVR. Some of the
+potential uses for Newfies-Dialer are listed below.
 
-.. image:: http://cloud.github.com/downloads/ask/celery/Celery-Overview-v4.jpg
+The system may be installed and used by either companies who wish to make calls
+on their own behalf, or by SaaS (Software as a Service) companies that want to
+provide bulk dialling facilities to their own customers.
 
-The broker delivers tasks to the worker nodes.
-A worker node is a networked machine running `celeryd`.  This can be one or
-more machines depending on the workload.
+.. _newfies-dialer-utility:
 
-The result of the task can be stored for later retrieval (called its
-"tombstone").
+Utility
+=======
+The system is loaded up with a list of telephone numbers that can be dialled
+sequentially at very high rates of calling, several per second, depending on the
+capacity of the carrier and the hardware.
+
+When the called party answers the call, Newfies-Dialer passes the call to a telephony
+application that is custom designed to provide the desired behaviour.
+
+Below are some examples of some of the uses that Newfies-Dialer can be put to,
+Please click on the headings for more details.
 
 
-.. _celery-features:
+    * ``Telecasting``: Play marketing or informational messages to customers and clients.
+
+    * ``Telemarketing``: Play a marketing message to potential customers, and give
+      them the option to be put through to a call-centre via an IVR (Interactive Voice Response) Menu.
+
+    * ``Phone Polling, Surveys and Voting``: Ring large numbers of people and present
+      IVR options for either polling their opinions, interactive surveys, or taking
+      their vote and record the results.
+
+    * ``Debt Control``: Customers can be automatically reminded at intervals that
+      they owe money, and an IVR menu presented to talk to the finance department
+      or passed to a credit card capture IVR to pay over the phone.
+
+    * ``Appointment reminders``: Doctors, Dentists, and other organisations that make
+      appointments for their clients can integrate Newfies-Dialer into their
+      appointment systems to pass a message reminding them of an upcoming appointment.
+
+    * ``Dissemination of information via phone``: Newfies-Dialer was originally
+      designed to call large numbers of people and disseminate medical and health advice
+      via the ubiquitous cellphone in 3rd world countries where often, literacy
+      levels are low. On a local scale, it can be used to disseminate information
+      about forthcoming community events.
+
+    * ``Mass Emergency broadcast``: Where there is a necessity to warn large numbers
+      of people in a short space of time, such as weather warnings.
+
+    * ``Voice Conferencing``: Attendees for a voice conference or podcast can be
+      dialled up from a central location, and be connected in an audio conference room.
+
+    * ``Subscription Reminders and Renewals``: Where a company sells an annual
+      subscription for a product or service, Newfies-Dialer can be configured to
+      dial the customer, remind them that the subscription is due, and optionally
+      pass the call into a call centre or into a credit card payment IVR.
+
+
+.. _newfies-dialer-features:
 
 Features
 ========
 
-    +-----------------+----------------------------------------------------+
-    | Messaging       | Supported brokers include `RabbitMQ`_, `Redis`_,   |
-    |                 | and popular SQL databases.                         |
-    +-----------------+----------------------------------------------------+
-    | Fault-tolerant  | Excellent configurable error recovery when using   |
-    |                 | `RabbitMQ`, ensures your tasks are never lost.     |
-    +-----------------+----------------------------------------------------+
-    | Distributed     | Runs on one or more machines. Supports             |
-    |                 | broker `clustering`_ and `HA`_ when used in        |
-    |                 | combination with `RabbitMQ`_.  You can set up new  |
-    |                 | workers without central configuration (e.g. use    |
-    |                 | your grandma's laptop to help if the queue is      |
-    |                 | temporarily congested).                            |
-    +-----------------+----------------------------------------------------+
-    | Concurrency     | Concurrency is achieved by using multiprocessing,  |
-    +-----------------+----------------------------------------------------+
-    | Scheduling      | Supports recurring tasks like cron, or specifying  |
-    |                 | an exact date or countdown for when after the task |
-    |                 | should be executed.                                |
-    +-----------------+----------------------------------------------------+
-    | Made for Web    | You can query status and results via URLs,         |
-    |                 | enabling the ability to poll task status using     |
-    |                 | Ajax.                                              |
-    +-----------------+----------------------------------------------------+
-    | Error Emails    | Can be configured to send emails to the            |
-    |                 | administrators when tasks fails.                   |
-    +-----------------+----------------------------------------------------+
+    * Based on leading open source FreeSwitch PBX    
+    * Detects Answering Machine replies
+    * Throttle Concurrent Calls
+    * Can re-try to the non connected numbers at later time
+    * Option to connect the user to some other IVR/phone number on pressing the key
+    * Various web-based reports for call details and current calls in realtime
+    * Accommodates multiple IVR scripts
+    * Can be managed via a Web interface
+    * Compatible with Asterisk
+    * Allows to import contact details from .csv file
 
 
-.. _`clustering`: http://www.rabbitmq.com/clustering.html
-.. _`HA`: http://www.rabbitmq.com/pacemaker.html
-.. _`AMQP`: http://www.amqp.org/
-.. _`Stomp`: http://stomp.codehaus.org/
-.. _`Tokyo Tyrant`: http://tokyocabinet.sourceforge.net/
-
-
-.. _newfies-architecture:
+.. _newfies-dialer-architecture:
 
 Architecture
 ============
 
-.. _newfies-documentation:
+.. _newfies-dialer-documentation:
 
 Documentation
 =============

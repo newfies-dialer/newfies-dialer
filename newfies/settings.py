@@ -260,7 +260,7 @@ ADMIN_TOOLS_APP_INDEX_DASHBOARD =\
 #PISTON
 #======
 PISTON_DISPLAY_ERRORS = True
-PISTON_EMAIL_ERRORS = "areski@gmail.com"
+PISTON_EMAIL_ERRORS = "root@localhost.localdomain"
 #PISTON_IGNORE_DUPE_MODELS = True
 
 # Use only in Debug mode. Not in production

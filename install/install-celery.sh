@@ -52,31 +52,33 @@ case $DISTRO in
     ;;
 esac
 
+# copy settings_local.py into newfies dir
+cp /usr/share/django_app/newfies-dialer/install/conf/settings_local.py /usr/share/django_app/newfies-dialer/newfies/
 
 #get redis
 echo "Configure redis..."
 
-CARROT_BACKEND='ghettoq.taproot.Redis' # "redis"
+CARROT_BACKEND='ghettoq.taproot.Redis'
 REDIS_HOST='localhost'
-REDIS_PORT=6371
-REDIS_VHOST="0"
+REDIS_PORT=6379
+REDIS_VHOST=0
 CELERY_RESULT_BACKEND="redis"
 
 # Redis Settings
-sed -i "s/CARROT_BACKEND = 'ghettoq.taproot.Redis'/CARROT_BACKEND = \'$CARROT_BACKEND\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings.py
-sed -i "s/BROKER_HOST = 'localhost'/BROKER_HOST = \'$REDIS_HOST\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings.py
-sed -i "s/BROKER_PORT = 6378/BROKER_PORT = \$REDIS_PORT\/g" /usr/share/django_app/newfies-dialer/newfies/settings.py
-sed -i "s/BROKER_VHOST = 0/BROKER_VHOST = \$REDIS_VHOST\/g"  /usr/share/django_app/newfies-dialer/newfies/settings.py
-sed -i "s/CELERY_RESULT_BACKEND = 'redis'/CELERY_RESULT_BACKEND = \'$CELERY_RESULT_BACKEND\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings.py
+sed -i "s/CARROT_BACKEND = 'redis'/CARROT_BACKEND = \'$CARROT_BACKEND\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings_local.py
+sed -i "s/BROKER_HOST = 'localhost'/BROKER_HOST = \'$REDIS_HOST\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings_local.py
+sed -i "s/BROKER_PORT = 6379/BROKER_PORT = \$REDIS_PORT\/g" /usr/share/django_app/newfies-dialer/newfies/settings_local.py
+sed -i "s/BROKER_VHOST = 0/BROKER_VHOST = \$REDIS_VHOST\/g"  /usr/share/django_app/newfies-dialer/newfies/settings_local.py
+sed -i "s/CELERY_RESULT_BACKEND = 'redis'/CELERY_RESULT_BACKEND = \'$CELERY_RESULT_BACKEND\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings_local.py
 
-sed -i "s/REDIS_HOST = 'localhost'/REDIS_HOST = \'$REDIS_HOST\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings.py
-sed -i "s/REDIS_PORT = 6379/REDIS_PORT = \$REDIS_PORT\/g"  /usr/share/django_app/newfies-dialer/newfies/settings.py
-sed -i "s/REDIS_VHOST = 0/REDIS_VHOST = \'$REDIS_VHOST\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings.py
+sed -i "s/REDIS_HOST = 'localhost'/REDIS_HOST = \'$REDIS_HOST\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings_local.py
+sed -i "s/REDIS_PORT = 6379/REDIS_PORT = \$REDIS_PORT\/g"  /usr/share/django_app/newfies-dialer/newfies/settings_local.py
+sed -i "s/REDIS_VHOST = 0/REDIS_VHOST = \'$REDIS_VHOST\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings_local.py
 
 
-cp /usr/share/django_app/newfies-dialer/addons/install/etc/default/celeryd /etc/default/
-cp /usr/share/django_app/newfies-dialer/addons/install/etc/init.d/celeryd /etc/init.d/
-cp /usr/share/django_app/newfies-dialer/addons/install/etc/init.d/celerybeat /etc/init.d/
+cp /usr/share/django_app/newfies-dialer/install/celery-init/etc/default/celeryd /etc/default/
+cp /usr/share/django_app/newfies-dialer/install/celery-init/etc/init.d/celeryd /etc/init.d/
+cp /usr/share/django_app/newfies-dialer/install/celery-init/etc/init.d/celerybeat /etc/init.d/
 
 
 CELERYD_CHDIR="/usr/share/django_app/newfies-dialer/newfies/"

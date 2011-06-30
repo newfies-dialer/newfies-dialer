@@ -107,7 +107,7 @@ chmod 777 /etc/default/celeryd
 chmod 777 /etc/init.d/celeryd
 chmod 777 /etc/init.d/celerybeat
 
-python manage.py celeryd -E -B -l debug
+python /usr/share/django_app/newfies-dialer/newfies/manage.py celeryd -E -B -l debug
 
 /etc/init.d/celeryd start
 
@@ -120,4 +120,4 @@ echo ""
 echo "Thank you for installing Newfies"
 echo "Yours"
 echo "The Star2Billing Team"
-echo "http://www.star2billing.com and http://www.newfies.org/"
+echo "http://www.star2billing.com and http://www.newfies-dialer.org/"

@@ -42,7 +42,7 @@ def init_callrequest(callrequest_id, campaign_id):
 
     **Attributes**:
 
-        * ``callrequest_id`` -
+        * ``callrequest_id`` - Callrequest ID
     """
     print "\nTASK :: init_callrequest"
     logger = init_callrequest.get_logger()

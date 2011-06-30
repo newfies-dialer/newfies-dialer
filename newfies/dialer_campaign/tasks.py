@@ -35,8 +35,8 @@ def initiate_call_subscriber(subscriber_id, campaign_id):
 
     **Attributes**:
 
-        * ``subscriber_id`` -
-        * ``callrequest_id`` -
+        * ``subscriber_id`` - Campaign Subscriber`s ID
+        * ``callrequest_id`` - Callrequest ID
     """
     logger = initiate_call_subscriber.get_logger()
     obj_subscriber = CampaignSubscriber.objects.get(id=subscriber_id)
@@ -96,7 +96,7 @@ def check_campaign_pendingcall(campaign_id):
 
     **Attributes**:
 
-        * ``campaign_id`` -
+        * ``campaign_id`` - Campaign ID
     """
     logger = check_campaign_pendingcall.get_logger()
     logger.info("Execute the calls for the campaign = %s" % str(campaign_id))
@@ -167,7 +167,7 @@ def collect_subscriber(campaign_id):
 
     **Attributes**:
 
-        * ``campaign_id`` -
+        * ``campaign_id`` - Campaign ID
     """
     logger = collect_subscriber.get_logger()
     logger.info("Collect subscribers for the campaign = %s" % str(campaign_id))

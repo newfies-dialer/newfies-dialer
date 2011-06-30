@@ -64,13 +64,13 @@ You can install Newfies manually or using the shell script provided.
 
 To install Newfies using the script,::
 
-    $ chmod +x script/install-newfies.sh
+    $ chmod +x install/install-newfies.sh
 
-    $ ./script/install-newfies.sh
+    $ ./install/install-newfies.sh
 
-    $ chmod +x script/install-celery.sh
+    $ chmod +x install/install-celery.sh
 
-    $ ./script/install-celery.sh
+    $ ./install/install-celery.sh
 
 
 .. _running-newfies-dialer:

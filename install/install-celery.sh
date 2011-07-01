@@ -28,12 +28,6 @@ DISTRO='UBUNTU'
 INSTALL_DIR='/usr/share/django_app/newfies'
 
 #Variables Celery
-CARROT_BACKEND='ghettoq.taproot.Redis'
-REDIS_HOST='localhost'
-REDIS_PORT=6379
-REDIS_VHOST=0
-CELERY_RESULT_BACKEND="redis"
-
 CELERYD_CHDIR="$INSTALL_DIR/"
 CELERYD="$INSTALL_DIR/manage.py celeryd"
 CELERYD_OPTS="--time-limit=300"
@@ -73,18 +67,7 @@ esac
 
 
 echo ""
-echo "Configure redis..."
-
-# Redis Settings
-sed -i "s/CARROT_BACKEND = 'redis'/CARROT_BACKEND = \'$CARROT_BACKEND\'/g"  $INSTALL_DIR/settings_local.py
-sed -i "s/BROKER_HOST = 'localhost'/BROKER_HOST = \'$REDIS_HOST\'/g"  $INSTALL_DIR/settings_local.py
-sed -i "s/BROKER_PORT = 6379/BROKER_PORT = \$REDIS_PORT\/g" $INSTALL_DIR/settings_local.py
-sed -i "s/BROKER_VHOST = 0/BROKER_VHOST = \$REDIS_VHOST\/g"  $INSTALL_DIR/settings_local.py
-sed -i "s/CELERY_RESULT_BACKEND = 'redis'/CELERY_RESULT_BACKEND = \'$CELERY_RESULT_BACKEND\'/g"  $INSTALL_DIR/settings_local.py
-
-sed -i "s/REDIS_HOST = 'localhost'/REDIS_HOST = \'$REDIS_HOST\'/g"  $INSTALL_DIR/settings_local.py
-sed -i "s/REDIS_PORT = 6379/REDIS_PORT = \$REDIS_PORT\/g"  $INSTALL_DIR/settings_local.py
-sed -i "s/REDIS_VHOST = 0/REDIS_VHOST = \'$REDIS_VHOST\'/g"  $INSTALL_DIR/settings_local.py
+echo "Configure Celery..."
 
 # Add init-scripts
 cp /usr/src/newfies-dialer/install/celery-init/etc/default/celeryd /etc/default/
@@ -92,7 +75,9 @@ cp /usr/src/newfies-dialer/install/celery-init/etc/init.d/celeryd /etc/init.d/
 cp /usr/src/newfies-dialer/install/celery-init/etc/init.d/celerybeat /etc/init.d/
 
 # Configure init-scripts
-sed -i "s/CELERYD_CHDIR='/path/to/newfies/'/CELERYD_CHDIR=\'$CELERYD_CHDIR\'/g"  /etc/default/celeryd
+sed -i "s/'django.db.backends.sqlite3'/'django.db.backends.mysql'/"  $INSTALL_DIR/settings_local.py
+
+sed -i "s/CELERYD_CHDIR='\/path\/to\/newfies\/'/CELERYD_CHDIR='$CELERYD_CHDIR'/g"  /etc/default/celeryd
 sed -i "s/CELERYD='/path/to/newfies/manage.py celeryd'/CELERYD=\'$CELERYD\'/g"  /etc/default/celeryd
 sed -i "s/CELERYD_OPTS='--time-limit=300'/CELERYD_OPTS=\'$CELERYD_OPTS\'/g"  /etc/default/celeryd
 sed -i "s/CELERY_CONFIG_MODULE='celeryconfig'/CELERY_CONFIG_MODULE=\'$CELERY_CONFIG_MODULE\'/g"  /etc/default/celeryd

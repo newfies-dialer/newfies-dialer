@@ -560,4 +560,26 @@ def post_save_add_contact(sender, **kwargs):
             except:
                 pass
 
+
+def post_save_check_campaign_max_retries(sender, **kwargs):
+    """A ``post_save`` signal is sent by Campaign model instance whenever
+    it is going to save.
+
+    **Logic Description**:
+
+        * When new campaign is added into ``Campaign`` model, check max_retries
+          field of campaign with dialer_settings limit if user is mapped with
+          it
+        * if condition matched, automatically update max_retries field
+          & give notification to that user
+    """
+    obj = kwargs['instance']
+    try:
+        # check campaign's max retries entry with dialer settings limit
+        pass
+    except:
+        pass
+
+
 post_save.connect(post_save_add_contact, sender=Contact)
+post_save.connect(post_save_check_campaign_max_retries, sender=Campaign)

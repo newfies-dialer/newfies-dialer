@@ -534,7 +534,7 @@ class CampaignSubscriber(Model):
 
 
 def post_save_add_contact(sender, **kwargs):
-    """This post_save method will be called by Contact model instance whenever
+    """A ``post_save`` signal is sent by Contact model instance whenever
     it is going to save.
 
     **Logic Description**:

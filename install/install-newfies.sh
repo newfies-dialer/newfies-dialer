@@ -307,6 +307,9 @@ mkdir -p /var/lib/redis
 mkdir -p /var/log/redis
 chown redis.redis /var/lib/redis
 chown redis.redis /var/log/redis
+
+#Start redis-server
+/etc/init.d/redis-server start
 }
 
 

@@ -70,7 +70,7 @@ To configure celeryd you probably need to at least tell it where to change direc
 to when it starts (to find your celeryconfig).
 ::
 
-$ cd addons/Install/etc/default/
+$ cd install/celery-init/etc/default/
 
 1) Open celeryd in text editor & change following variables
 
@@ -78,7 +78,7 @@ $ cd addons/Install/etc/default/
 
    Init script: `celeryd`_.
 
-   .. _celeryd: https://github.com/Star2Billing/newfies/raw/master/scripts/etc/init.d/celeryd
+   .. _celeryd: https://github.com/Star2Billing/newfies-dialer/raw/master/install/celery-init/etc/init.d/celeryd
 
    Usage : /etc/init.d/celeryd {start|stop|force-reload|restart|try-restart|status}::
 
@@ -114,7 +114,7 @@ $ cd addons/Install/etc/default/
 
    Init script: `celerybeat`_
 
-   .. _celerybeat: https://github.com/Star2Billing/newfies/raw/master/scripts/etc/init.d/celerybeat
+   .. _celerybeat: https://github.com/Star2Billing/newfies-dialer/raw/master/install/celery-init/etc/init.d/celerybeat
 
    Usage:	/etc/init.d/celerybeat {start|stop|force-reload|restart|try-restart|status}::
 

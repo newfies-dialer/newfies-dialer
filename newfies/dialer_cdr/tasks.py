@@ -57,8 +57,12 @@ def init_callrequest(callrequest_id, campaign_id):
         return False
 
     phone_number = obj_callrequest.phone_number
-    dialout_phone_number = phonenumber_change_prefix(phone_number,
-                                         obj_callrequest.aleg_gateway.id)
+    if obj_callrequest.aleg_gateway:
+        id_aleg_gateway = obj_callrequest.aleg_gateway.id
+        dialout_phone_number = phonenumber_change_prefix(phone_number,
+                                         id_aleg_gateway)
+    else:
+        dialout_phone_number = phone_number
     print "dialout_phone_number : %s" % dialout_phone_number
 
     #Construct the dialing out path

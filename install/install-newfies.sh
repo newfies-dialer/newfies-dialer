@@ -22,7 +22,8 @@
 # - Support Virtualenv
 # - Memcache installation
 # - Input mysql username / password when running script
-# - option to install with SQLite
+# - Option to install with SQLite
+# - Copy files, do not link to source
 
 
 #Variables

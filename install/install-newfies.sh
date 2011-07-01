@@ -79,19 +79,19 @@ echo "Install Newfies..."
 mkdir /usr/share/django_app/
 cd /usr/src/
 wget --no-check-certificate https://github.com/Star2Billing/newfies-dialer/tarball/$VERSION
-mv master Star2Billing-newfies-$VERSION.tar.gz
-tar xvzf Star2Billing-newfies-*.tar.gz
+mv master Star2Billing-newfies-dialer-$VERSION.tar.gz
+tar xvzf Star2Billing-newfies-dialer-*.tar.gz
 rm -rf Star2Billing-newfies-*.tar.gz
-mv newfies newfies_$DATETIME
-mv Star2Billing-newfies-* newfies
-ln -s /usr/src/newfies/newfies $INSTALL_DIR
+mv newfies-dialer newfies-dialer_$DATETIME
+mv Star2Billing-newfies-* newfies-dialer
+ln -s /usr/src/newfies-dialer/newfies $INSTALL_DIR
 
 
 #Install Newfies depencencies
-pip install -r /usr/src/newfies/install/conf/requirements.txt
+pip install -r /usr/src/newfies-dialer/newfies/install/conf/requirements.txt
 
 # copy settings_local.py into newfies dir
-cp /usr/src/newfies/install/conf/settings_local.py $INSTALL_DIR
+cp /usr/src/newfies-dialer/newfies/install/conf/settings_local.py $INSTALL_DIR
 
 # Update Secret Key
 echo "Update Secret Key..."

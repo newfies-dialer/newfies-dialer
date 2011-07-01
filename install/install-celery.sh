@@ -26,6 +26,7 @@
 #DATETIME=$(date +"%Y%m%d%H%M%S")
 #KERNELARCH=$(uname -p)
 DISTRO='UBUNTU'
+INSTALL_DIR='/usr/share/django_app/newfies'
 
 
 clear
@@ -63,15 +64,15 @@ REDIS_VHOST=0
 CELERY_RESULT_BACKEND="redis"
 
 # Redis Settings
-sed -i "s/CARROT_BACKEND = 'redis'/CARROT_BACKEND = \'$CARROT_BACKEND\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings_local.py
-sed -i "s/BROKER_HOST = 'localhost'/BROKER_HOST = \'$REDIS_HOST\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings_local.py
-sed -i "s/BROKER_PORT = 6379/BROKER_PORT = \$REDIS_PORT\/g" /usr/share/django_app/newfies-dialer/newfies/settings_local.py
-sed -i "s/BROKER_VHOST = 0/BROKER_VHOST = \$REDIS_VHOST\/g"  /usr/share/django_app/newfies-dialer/newfies/settings_local.py
-sed -i "s/CELERY_RESULT_BACKEND = 'redis'/CELERY_RESULT_BACKEND = \'$CELERY_RESULT_BACKEND\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings_local.py
+sed -i "s/CARROT_BACKEND = 'redis'/CARROT_BACKEND = \'$CARROT_BACKEND\'/g"  $INSTALL_DIR/settings_local.py
+sed -i "s/BROKER_HOST = 'localhost'/BROKER_HOST = \'$REDIS_HOST\'/g"  $INSTALL_DIR/settings_local.py
+sed -i "s/BROKER_PORT = 6379/BROKER_PORT = \$REDIS_PORT\/g" $INSTALL_DIR/settings_local.py
+sed -i "s/BROKER_VHOST = 0/BROKER_VHOST = \$REDIS_VHOST\/g"  $INSTALL_DIR/settings_local.py
+sed -i "s/CELERY_RESULT_BACKEND = 'redis'/CELERY_RESULT_BACKEND = \'$CELERY_RESULT_BACKEND\'/g"  $INSTALL_DIR/settings_local.py
 
-sed -i "s/REDIS_HOST = 'localhost'/REDIS_HOST = \'$REDIS_HOST\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings_local.py
-sed -i "s/REDIS_PORT = 6379/REDIS_PORT = \$REDIS_PORT\/g"  /usr/share/django_app/newfies-dialer/newfies/settings_local.py
-sed -i "s/REDIS_VHOST = 0/REDIS_VHOST = \'$REDIS_VHOST\'/g"  /usr/share/django_app/newfies-dialer/newfies/settings_local.py
+sed -i "s/REDIS_HOST = 'localhost'/REDIS_HOST = \'$REDIS_HOST\'/g"  $INSTALL_DIR/settings_local.py
+sed -i "s/REDIS_PORT = 6379/REDIS_PORT = \$REDIS_PORT\/g"  $INSTALL_DIR/settings_local.py
+sed -i "s/REDIS_VHOST = 0/REDIS_VHOST = \'$REDIS_VHOST\'/g"  $INSTALL_DIR/settings_local.py
 
 
 cp /usr/share/django_app/newfies-dialer/install/celery-init/etc/default/celeryd /etc/default/
@@ -79,8 +80,8 @@ cp /usr/share/django_app/newfies-dialer/install/celery-init/etc/init.d/celeryd /
 cp /usr/share/django_app/newfies-dialer/install/celery-init/etc/init.d/celerybeat /etc/init.d/
 
 
-CELERYD_CHDIR="/usr/share/django_app/newfies-dialer/newfies/"
-CELERYD="/usr/share/django_app/newfies-dialer/newfies/manage.py celeryd"
+CELERYD_CHDIR="$INSTALL_DIR/"
+CELERYD="$INSTALL_DIR/manage.py celeryd"
 CELERYD_OPTS="--time-limit=300"
 CELERY_CONFIG_MODULE="celeryconfig"
 CELERYD_USER="celery"
@@ -95,7 +96,7 @@ sed -i "s/CELERYD_GROUP='celery'/CELERYD_GROUP=\'$CELERYD_GROUP\'/g"  /etc/defau
 
 
 # Path to celerybeat
-CELERYBEAT="/usr/share/django_app/newfies-dialer/newfies/manage.py celerybeat"
+CELERYBEAT="$INSTALL_DIR/manage.py celerybeat"
 CELERYBEAT_OPTS="--schedule=/var/run/celerybeat-schedule"
 
 sed -i "s/CELERYBEAT='/path/to/newfies/manage.py celerybeat'/CELERYBEAT=\'$CELERYBEAT\'/g"  /etc/default/celeryd
@@ -105,7 +106,7 @@ chmod 777 /etc/default/celeryd
 chmod 777 /etc/init.d/celeryd
 chmod 777 /etc/init.d/celerybeat
 
-python /usr/share/django_app/newfies-dialer/newfies/manage.py celeryd -E -B -l debug
+python $INSTALL_DIR/manage.py celeryd -E -B -l debug
 
 /etc/init.d/celeryd start
 

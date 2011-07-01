@@ -52,8 +52,6 @@ case $DISTRO in
     ;;
 esac
 
-# copy settings_local.py into newfies dir
-cp /usr/share/django_app/newfies-dialer/install/conf/settings_local.py /usr/share/django_app/newfies-dialer/newfies/
 
 #get redis
 echo "Configure redis..."

@@ -4,8 +4,8 @@ djcelery.setup_loader()
 
 # Django settings for project.
 APPLICATION_DIR = os.path.dirname(globals()['__file__'])
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+DEBUG = False
+TEMPLATE_DEBUG = False
 
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),

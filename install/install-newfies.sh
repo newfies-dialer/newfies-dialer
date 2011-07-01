@@ -26,6 +26,7 @@ VERSION=master
 DATETIME=$(date +"%Y%m%d%H%M%S")
 KERNELARCH=$(uname -p)
 DISTRO='UBUNTU'
+INSTALL_DIR='/usr/share/django_app/newfies'
 
 MYSQLUSER=root
 MYSQLPASSWORD=passw0rd
@@ -83,37 +84,39 @@ tar xvzf Star2Billing-newfies-*.tar.gz
 rm -rf Star2Billing-newfies-*.tar.gz
 mv newfies newfies_$DATETIME
 mv Star2Billing-newfies-* newfies
-ln -s /usr/src/newfies/newfies /usr/share/django_app/newfies
+ln -s /usr/src/newfies/newfies $INSTALL_DIR
 
 
 #Install Newfies depencencies
 pip install -r /usr/src/newfies/install/conf/requirements.txt
 
+# copy settings_local.py into newfies dir
+cp /usr/src/newfies/install/conf/settings_local.py $INSTALL_DIR
 
 # Update Secret Key
 echo "Update Secret Key..."
 RANDPASSW=`</dev/urandom tr -dc A-Za-z0-9| (head -c $1 > /dev/null 2>&1 || head -c 50)`
-sed -i "s/^SECRET_KEY.*/SECRET_KEY = \'$RANDPASSW\'/g"  /usr/share/django_app/newfies/settings.py
+sed -i "s/^SECRET_KEY.*/SECRET_KEY = \'$RANDPASSW\'/g"  $INSTALL_DIR/settings.py
 echo ""
 
 
 # Disable Debug
-sed -i "s/DEBUG = True/DEBUG = False/g"  /usr/share/django_app/newfies/settings.py
-sed -i "s/TEMPLATE_DEBUG = DEBUG/TEMPLATE_DEBUG = False/g"  /usr/share/django_app/newfies/settings.py
+sed -i "s/DEBUG = True/DEBUG = False/g"  $INSTALL_DIR/settings_local.py
+sed -i "s/TEMPLATE_DEBUG = DEBUG/TEMPLATE_DEBUG = False/g"  $INSTALL_DIR/settings_local.py
 
 
 # Setup settings.py
-sed -i "s/'django.db.backends.sqlite3'/'django.db.backends.mysql'/"  /usr/share/django_app/newfies/settings.py
-sed -i "s/.*'NAME'/       'NAME': 'newfies',#/"  /usr/share/django_app/newfies/settings.py
-sed -i "/'USER'/s/''/'$MYSQLUSER'/" /usr/share/django_app/newfies/settings.py
-sed -i "/'PASSWORD'/s/''/'$MYSQLPASSWORD'/" /usr/share/django_app/newfies/settings.py
-sed -i "/'HOST'/s/''/'localhost'/" /usr/share/django_app/newfies/settings.py
-sed -i "/'PORT'/s/''/'3306'/" /usr/share/django_app/newfies/settings.py
+sed -i "s/'django.db.backends.sqlite3'/'django.db.backends.mysql'/"  $INSTALL_DIR/settings_local.py
+sed -i "s/.*'NAME'/       'NAME': 'newfies',#/"  $INSTALL_DIR/settings_local.py
+sed -i "/'USER'/s/''/'$MYSQLUSER'/" $INSTALL_DIR/settings_local.py
+sed -i "/'PASSWORD'/s/''/'$MYSQLPASSWORD'/" $INSTALL_DIR/settings_local.py
+sed -i "/'HOST'/s/''/'localhost'/" $INSTALL_DIR/settings_local.py
+sed -i "/'PORT'/s/''/'3306'/" $INSTALL_DIR/settings_local.py
 
 
 # Create the Database
 echo "Database Creation..."
-cd /usr/share/django_app/newfies/
+cd $INSTALL_DIR/
 mkdir database
 chmod -R 777 database
 python manage.py syncdb
@@ -125,23 +128,22 @@ python manage.py createsuperuser
 python manage.py collectstatic -l
 
 
-
 # prepare Apache
 echo "Prepare Apache configuration..."
 echo '
 Listen *:9080
 
 <VirtualHost *:9080>
-    DocumentRoot /usr/share/django_app/newfies/
-    ErrorLog /var/log/err-newfies.log
+    DocumentRoot '$INSTALL_DIR'/
+    ErrorLog /var/log/err-apache-newfies.log
     LogLevel warn
 
     WSGIPassAuthorization On
     WSGIDaemonProcess newfies user=www-data user=www-data threads=25
     WSGIProcessGroup newfies
-    WSGIScriptAlias / /usr/share/django_app/newfies/django.wsgi
+    WSGIScriptAlias / '$INSTALL_DIR'/django.wsgi
 
-    <Directory /usr/share/django_app/newfies>
+    <Directory '$INSTALL_DIR'>
         Order deny,allow
         Allow from all
     </Directory>
@@ -155,12 +157,12 @@ sed -i "s/@/'/g"  $APACHE_CONF_DIR/newfies.conf
 
 
 #Fix permission on python-egg
-mkdir /usr/share/django_app/newfies/.python-eggs
-chmod 777 /usr/share/django_app/newfies/.python-eggs
+mkdir $INSTALL_DIR/.python-eggs
+chmod 777 $INSTALL_DIR/.python-eggs
 
 case $DISTRO in
     'UBUNTU')
-        chown -R www-data.www-data /usr/share/django_app/newfies/database/
+        chown -R www-data.www-data $INSTALL_DIR/database/
         service apache2 restart
     ;;
     'CENTOS')

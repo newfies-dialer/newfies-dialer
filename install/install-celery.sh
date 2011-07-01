@@ -16,17 +16,35 @@
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 # To download this script direct to your server type
-#wget --no-check-certificate https://github.com/Star2Billing/newfies-dialer/raw/master/scripts/install-celery.sh
-
+#wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-celery.sh
+#
+#TODO:
+# - 
 
 #Variables
-#comment out the appropriate line below to install the desired version
-#VERSION=master
-#VERSION=v0.1.0
-#DATETIME=$(date +"%Y%m%d%H%M%S")
-#KERNELARCH=$(uname -p)
+DATETIME=$(date +"%Y%m%d%H%M%S")
+KERNELARCH=$(uname -p)
 DISTRO='UBUNTU'
 INSTALL_DIR='/usr/share/django_app/newfies'
+
+#Variables Celery
+CARROT_BACKEND='ghettoq.taproot.Redis'
+REDIS_HOST='localhost'
+REDIS_PORT=6379
+REDIS_VHOST=0
+CELERY_RESULT_BACKEND="redis"
+
+CELERYD_CHDIR="$INSTALL_DIR/"
+CELERYD="$INSTALL_DIR/manage.py celeryd"
+CELERYD_OPTS="--time-limit=300"
+CELERY_CONFIG_MODULE="celeryconfig"
+CELERYD_USER="celery"
+CELERYD_GROUP="celery"
+
+# Path to celerybeat
+CELERYBEAT="$INSTALL_DIR/manage.py celerybeat"
+CELERYBEAT_OPTS="--schedule=/var/run/celerybeat-schedule"
+#------------------------------------------------------------------------------------
 
 
 clear
@@ -40,7 +58,7 @@ IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
 IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
 
 
-#python setup tools
+#Install Celery & redis-server
 echo "Install Celery & redis-server..."
 case $DISTRO in
     'UBUNTU')
@@ -54,14 +72,8 @@ case $DISTRO in
 esac
 
 
-#get redis
+echo ""
 echo "Configure redis..."
-
-CARROT_BACKEND='ghettoq.taproot.Redis'
-REDIS_HOST='localhost'
-REDIS_PORT=6379
-REDIS_VHOST=0
-CELERY_RESULT_BACKEND="redis"
 
 # Redis Settings
 sed -i "s/CARROT_BACKEND = 'redis'/CARROT_BACKEND = \'$CARROT_BACKEND\'/g"  $INSTALL_DIR/settings_local.py
@@ -74,30 +86,18 @@ sed -i "s/REDIS_HOST = 'localhost'/REDIS_HOST = \'$REDIS_HOST\'/g"  $INSTALL_DIR
 sed -i "s/REDIS_PORT = 6379/REDIS_PORT = \$REDIS_PORT\/g"  $INSTALL_DIR/settings_local.py
 sed -i "s/REDIS_VHOST = 0/REDIS_VHOST = \'$REDIS_VHOST\'/g"  $INSTALL_DIR/settings_local.py
 
-
+# Add init-scripts
 cp /usr/src/newfies-dialer/install/celery-init/etc/default/celeryd /etc/default/
 cp /usr/src/newfies-dialer/install/celery-init/etc/init.d/celeryd /etc/init.d/
 cp /usr/src/newfies-dialer/install/celery-init/etc/init.d/celerybeat /etc/init.d/
 
-
-CELERYD_CHDIR="$INSTALL_DIR/"
-CELERYD="$INSTALL_DIR/manage.py celeryd"
-CELERYD_OPTS="--time-limit=300"
-CELERY_CONFIG_MODULE="celeryconfig"
-CELERYD_USER="celery"
-CELERYD_GROUP="celery"
-
+# Configure init-scripts
 sed -i "s/CELERYD_CHDIR='/path/to/newfies/'/CELERYD_CHDIR=\'$CELERYD_CHDIR\'/g"  /etc/default/celeryd
 sed -i "s/CELERYD='/path/to/newfies/manage.py celeryd'/CELERYD=\'$CELERYD\'/g"  /etc/default/celeryd
 sed -i "s/CELERYD_OPTS='--time-limit=300'/CELERYD_OPTS=\'$CELERYD_OPTS\'/g"  /etc/default/celeryd
 sed -i "s/CELERY_CONFIG_MODULE='celeryconfig'/CELERY_CONFIG_MODULE=\'$CELERY_CONFIG_MODULE\'/g"  /etc/default/celeryd
 sed -i "s/CELERYD_USER='celery'/CELERYD_USER=\'$CELERYD_USER\'/g"  /etc/default/celeryd
 sed -i "s/CELERYD_GROUP='celery'/CELERYD_GROUP=\'$CELERYD_GROUP\'/g"  /etc/default/celeryd
-
-
-# Path to celerybeat
-CELERYBEAT="$INSTALL_DIR/manage.py celerybeat"
-CELERYBEAT_OPTS="--schedule=/var/run/celerybeat-schedule"
 
 sed -i "s/CELERYBEAT='/path/to/newfies/manage.py celerybeat'/CELERYBEAT=\'$CELERYBEAT\'/g"  /etc/default/celeryd
 sed -i "s/CELERYBEAT_OPTS='--schedule=/var/run/celerybeat-schedule'/CELERYBEAT_OPTS=\'$CELERYBEAT_OPTS\'/g"  /etc/default/celeryd
@@ -108,9 +108,9 @@ chmod 777 /etc/init.d/celerybeat
 
 python $INSTALL_DIR/manage.py celeryd -E -B -l debug
 
-/etc/init.d/celeryd start
+#/etc/init.d/celeryd start
 
-/etc/init.d/celerybeat start
+#/etc/init.d/celerybeat start
 
 clear
 echo "Installation Complete"

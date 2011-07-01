@@ -33,8 +33,8 @@ INSTALL_DIR='/usr/share/django_app/newfies'
 DATABASENAME=newfies
 MYSQLUSER=root
 MYSQLPASSWORD=passw0rd
-
 #------------------------------------------------------------------------------------
+
 
 clear
 echo ""

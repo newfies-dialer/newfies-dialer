@@ -28,6 +28,8 @@
 
 #Variables
 VERSION=master
+#Install mode can me either CLONE or DOWNLOAD
+INSTALL_MODE='CLONE'
 DATETIME=$(date +"%Y%m%d%H%M%S")
 KERNELARCH=$(uname -p)
 DISTRO='UBUNTU'
@@ -115,12 +117,21 @@ fi
 echo "Install Newfies..."
 mkdir /usr/share/django_app/
 cd /usr/src/
-wget --no-check-certificate https://github.com/Star2Billing/newfies-dialer/tarball/$VERSION
-mv master Star2Billing-newfies-dialer-$VERSION.tar.gz
-tar xvzf Star2Billing-newfies-dialer-*.tar.gz
-rm -rf Star2Billing-newfies-*.tar.gz
-mv newfies-dialer newfies-dialer_$DATETIME
-mv Star2Billing-newfies-* newfies-dialer
+
+case $INSTALL_MODE in
+    'CLONE')
+        git clone git://github.com/Star2Billing/newfies-dialer.git
+    ;;
+    'DOWNLOAD')
+        wget --no-check-certificate https://github.com/Star2Billing/newfies-dialer/tarball/$VERSION
+        mv master Star2Billing-newfies-dialer-$VERSION.tar.gz
+        tar xvzf Star2Billing-newfies-dialer-*.tar.gz
+        rm -rf Star2Billing-newfies-*.tar.gz
+        mv newfies-dialer newfies-dialer_$DATETIME
+        mv Star2Billing-newfies-* newfies-dialer        
+    ;;
+esac
+
 ln -s /usr/src/newfies-dialer/newfies $INSTALL_DIR
 
 

@@ -27,7 +27,7 @@ DATETIME=$(date +"%Y%m%d%H%M%S")
 KERNELARCH=$(uname -p)
 DISTRO='UBUNTU'
 INSTALL_DIR='/usr/share/django_app/newfies'
-
+DATABASENAME=newfies
 MYSQLUSER=root
 MYSQLPASSWORD=passw0rd
 
@@ -76,6 +76,8 @@ esac
 
 if [ -d "$INSTALL_DIR" ]; then
     # Newfies is already installed
+    echo ""
+    echo ""
     echo "We detect an existing Newfies Installation"
     echo "if you continue the existing installation will be removed!"
     echo ""
@@ -85,7 +87,10 @@ if [ -d "$INSTALL_DIR" ]; then
     mkdir /tmp/old-newfies-dialer_$DATETIME
     mv $INSTALL_DIR /tmp/old-newfies-dialer_$DATETIME
     
+    mysqldump -u $MYSQLUSER --password=$MYSQLPASSWORD $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql
+    
     echo "Files from $INSTALL_DIR has been moved to /tmp/old-newfies-dialer_$DATETIME"
+    echo "Mysql Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql"
     echo "press any key to continue"
     read TEMP
 fi
@@ -124,7 +129,7 @@ sed -i "s/TEMPLATE_DEBUG = DEBUG/TEMPLATE_DEBUG = False/g"  $INSTALL_DIR/setting
 
 # Setup settings.py
 sed -i "s/'django.db.backends.sqlite3'/'django.db.backends.mysql'/"  $INSTALL_DIR/settings_local.py
-sed -i "s/.*'NAME'/       'NAME': 'newfies',#/"  $INSTALL_DIR/settings_local.py
+sed -i "s/.*'NAME'/       'NAME': '$DATABASENAME',#/"  $INSTALL_DIR/settings_local.py
 sed -i "/'USER'/s/''/'$MYSQLUSER'/" $INSTALL_DIR/settings_local.py
 sed -i "/'PASSWORD'/s/''/'$MYSQLPASSWORD'/" $INSTALL_DIR/settings_local.py
 sed -i "/'HOST'/s/''/'localhost'/" $INSTALL_DIR/settings_local.py
@@ -132,10 +137,18 @@ sed -i "/'PORT'/s/''/'3306'/" $INSTALL_DIR/settings_local.py
 
 
 # Create the Database
-echo "Database Creation..."
+echo "Remove Existing Database if exists..."
+echo "mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e 'DROP DATABASE $DATABASENAME;'"
+mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e "DROP DATABASE $DATABASENAME;"
+
+echo "Create Database..."
+echo "mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e 'CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;'"
+mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e "CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;"
+
 cd $INSTALL_DIR/
-mkdir database
-chmod -R 777 database
+#following 2 lines are for SQLite
+#mkdir database
+#chmod -R 777 database
 python manage.py syncdb
 #python manage.py migrate
 python manage.py createsuperuser

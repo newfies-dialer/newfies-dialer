@@ -75,9 +75,9 @@ sed -i "s/REDIS_PORT = 6379/REDIS_PORT = \$REDIS_PORT\/g"  $INSTALL_DIR/settings
 sed -i "s/REDIS_VHOST = 0/REDIS_VHOST = \'$REDIS_VHOST\'/g"  $INSTALL_DIR/settings_local.py
 
 
-cp /usr/share/django_app/newfies-dialer/install/celery-init/etc/default/celeryd /etc/default/
-cp /usr/share/django_app/newfies-dialer/install/celery-init/etc/init.d/celeryd /etc/init.d/
-cp /usr/share/django_app/newfies-dialer/install/celery-init/etc/init.d/celerybeat /etc/init.d/
+cp /usr/src/newfies-dialer/install/celery-init/etc/default/celeryd /etc/default/
+cp /usr/src/newfies-dialer/install/celery-init/etc/init.d/celeryd /etc/init.d/
+cp /usr/src/newfies-dialer/install/celery-init/etc/init.d/celerybeat /etc/init.d/
 
 
 CELERYD_CHDIR="$INSTALL_DIR/"

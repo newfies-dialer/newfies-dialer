@@ -16,7 +16,7 @@
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 # To download this script direct to your server type
-#wget --no-check-certificate https://github.com/Star2Billing/newfies/raw/master/scripts/install-newfies.sh
+#wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-newfies.sh
 
 
 #Variables
@@ -72,6 +72,23 @@ case $DISTRO in
         yum --enablerepo=epel install python-pip
     ;;
 esac
+
+
+if [ -d "$INSTALL_DIR" ]; then
+    # Newfies is already installed
+    echo "We detect an existing Newfies Installation"
+    echo "if you continue the existing installation will be removed!"
+    echo ""
+    echo "press any key to continue or CTRL-C to exit"
+    read TEMP
+
+    mkdir /tmp/old-newfies-dialer_$DATETIME
+    mv $INSTALL_DIR /tmp/old-newfies-dialer_$DATETIME
+    
+    echo "Files from $INSTALL_DIR has been moved to /tmp/old-newfies-dialer_$DATETIME"
+    echo "press any key to continue"
+    read TEMP
+fi
 
 
 #get Newfies

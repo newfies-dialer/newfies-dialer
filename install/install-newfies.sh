@@ -17,12 +17,15 @@
 
 # To download this script direct to your server type
 #wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-newfies.sh
+#
+#TODO: 
+# - Memcache installation
+# - Input mysql username / password when running script
+# - option to install with SQLite
 
 
 #Variables
-#comment out the appropriate line below to install the desired version
 VERSION=master
-#VERSION=v0.1.0
 DATETIME=$(date +"%Y%m%d%H%M%S")
 KERNELARCH=$(uname -p)
 DISTRO='UBUNTU'
@@ -31,6 +34,8 @@ DATABASENAME=newfies
 MYSQLUSER=root
 MYSQLPASSWORD=passw0rd
 
+#------------------------------------------------------------------------------------
+
 clear
 echo ""
 echo ""
@@ -38,9 +43,6 @@ echo "This will install Newfies on your server"
 echo "press any key to continue or CTRL-C to exit"
 read TEMP
 
-# APACHE CONF
-APACHE_CONF_DIR="/etc/apache2/sites-enabled/"
-#APACHE_CONF_DIR="/etc/httpd/conf.d/"
 
 IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
 IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
@@ -50,6 +52,9 @@ IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
 echo "Install Dependencies and python modules..."
 case $DISTRO in
     'UBUNTU')
+        # SET APACHE CONF
+        APACHE_CONF_DIR="/etc/apache2/sites-enabled/"
+
         apt-get -y install python-setuptools python-dev build-essential 
         apt-get -y install libapache2-mod-python libapache2-mod-wsgi
         easy_install pip
@@ -63,6 +68,9 @@ case $DISTRO in
         #apt-get -y install python-importlib - does not exist in repository
     ;;
     'CENTOS')
+        # SET APACHE CONF
+        APACHE_CONF_DIR="/etc/httpd/conf.d/"
+        
         yum -y install python-setuptools python-tools python-devel mod_python
         #Install PIP
         rpm -ivh http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-4.noarch.rpm 
@@ -150,6 +158,9 @@ cd $INSTALL_DIR/
 mkdir database
 python manage.py syncdb --noinput
 #python manage.py migrate
+echo ""
+echo ""
+echo "Create a super admin user..."
 python manage.py createsuperuser
 
 
@@ -212,4 +223,3 @@ echo "Thank you for installing Newfies"
 echo "Yours"
 echo "The Star2Billing Team"
 echo "http://www.star2billing.com and http://www.newfies-dialer.org/"
-

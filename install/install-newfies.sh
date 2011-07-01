@@ -87,7 +87,7 @@ ln -s /usr/src/newfies/newfies /usr/share/django_app/newfies
 
 
 #Install Newfies depencencies
-pip install -r /usr/share/django_app/newfies/requirements.txt
+pip install -r /usr/src/newfies/install/conf/requirements.txt
 
 
 # Update Secret Key

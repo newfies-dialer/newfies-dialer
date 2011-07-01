@@ -570,7 +570,7 @@ def post_save_check_campaign_max_retries(sender, **kwargs):
         * When new campaign is added into ``Campaign`` model, check max_retries
           field of campaign with dialer_settings limit if user is mapped with
           it
-        * if condition matched, automatically updated max__retries fields
+        * if condition matched, automatically update max_retries field
           & give notification to that user
     """
     obj = kwargs['instance']

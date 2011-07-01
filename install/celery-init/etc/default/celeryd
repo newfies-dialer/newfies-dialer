@@ -1,15 +1,15 @@
 
 # Where the Django project is.
-CELERYD_CHDIR='/path/to/newfies/'
+CELERYD_CHDIR='/usr/share/django_app/newfies/'
 
 # Path to celeryd
-CELERYD='/path/to/newfies/manage.py celeryd'
+CELERYD='/usr/share/django_app/newfies/manage.py celeryd'
 
 # celeryd options
 CELERYD_OPTS=' -l info'
 
 # Path to celerybeat
-CELERYBEAT='/path/to/newfies/manage.py celerybeat'
+CELERYBEAT='/usr/share/django_app/newfies/manage.py celerybeat'
 
 # Extra arguments to celerybeat
 CELERYBEAT_OPTS='--schedule=/var/run/celerybeat-schedule'

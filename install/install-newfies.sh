@@ -35,17 +35,8 @@ DATABASENAME=newfies
 MYSQLUSER=root
 MYSQLPASSWORD=passw0rd
 
-#Variables Celery
-CELERYD_CHDIR="$INSTALL_DIR/"
-CELERYD="$INSTALL_DIR/manage.py celeryd"
-CELERYD_OPTS="--time-limit=300"
-CELERY_CONFIG_MODULE="celeryconfig"
 CELERYD_USER="celery"
 CELERYD_GROUP="celery"
-
-# Path to celerybeat
-CELERYBEAT="$INSTALL_DIR/manage.py celerybeat"
-CELERYBEAT_OPTS="--schedule=/var/run/celerybeat-schedule"
 #------------------------------------------------------------------------------------
 
 
@@ -278,21 +269,12 @@ cp /usr/src/newfies-dialer/install/celery-init/etc/init.d/celeryd /etc/init.d/
 cp /usr/src/newfies-dialer/install/celery-init/etc/init.d/celerybeat /etc/init.d/
 
 # Configure init-scripts
-sed -i "s/'django.db.backends.sqlite3'/'django.db.backends.mysql'/"  $INSTALL_DIR/settings_local.py
+sed -i "s/CELERYD_USER='celery'/CELERYD_USER='$CELERYD_USER'/g"  /etc/default/celeryd
+sed -i "s/CELERYD_GROUP='celery'/CELERYD_GROUP='$CELERYD_GROUP'/g"  /etc/default/celeryd
 
-sed -i "s/CELERYD_CHDIR='\/path\/to\/newfies\/'/CELERYD_CHDIR='$CELERYD_CHDIR'/g"  /etc/default/celeryd
-sed -i "s/CELERYD='/path/to/newfies/manage.py celeryd'/CELERYD=\'$CELERYD\'/g"  /etc/default/celeryd
-sed -i "s/CELERYD_OPTS='--time-limit=300'/CELERYD_OPTS=\'$CELERYD_OPTS\'/g"  /etc/default/celeryd
-sed -i "s/CELERY_CONFIG_MODULE='celeryconfig'/CELERY_CONFIG_MODULE=\'$CELERY_CONFIG_MODULE\'/g"  /etc/default/celeryd
-sed -i "s/CELERYD_USER='celery'/CELERYD_USER=\'$CELERYD_USER\'/g"  /etc/default/celeryd
-sed -i "s/CELERYD_GROUP='celery'/CELERYD_GROUP=\'$CELERYD_GROUP\'/g"  /etc/default/celeryd
-
-sed -i "s/CELERYBEAT='/path/to/newfies/manage.py celerybeat'/CELERYBEAT=\'$CELERYBEAT\'/g"  /etc/default/celeryd
-sed -i "s/CELERYBEAT_OPTS='--schedule=/var/run/celerybeat-schedule'/CELERYBEAT_OPTS=\'$CELERYBEAT_OPTS\'/g"  /etc/default/celeryd
-
-chmod 777 /etc/default/celeryd
-chmod 777 /etc/init.d/celeryd
-chmod 777 /etc/init.d/celerybeat
+chmod +x /etc/default/celeryd
+chmod +x /etc/init.d/celeryd
+chmod +x /etc/init.d/celerybeat
 
 #Debug
 #python #INSTALL_DIR/manage.py celeryd -E -B -l debug
@@ -356,5 +338,3 @@ while [ $ExitFinish -eq 0 ]; do
 	esac	
 	
 done
-
-

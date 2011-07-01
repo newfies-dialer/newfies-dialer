@@ -33,13 +33,27 @@ INSTALL_DIR='/usr/share/django_app/newfies'
 DATABASENAME=newfies
 MYSQLUSER=root
 MYSQLPASSWORD=passw0rd
+
+#Variables Celery
+CELERYD_CHDIR="$INSTALL_DIR/"
+CELERYD="$INSTALL_DIR/manage.py celeryd"
+CELERYD_OPTS="--time-limit=300"
+CELERY_CONFIG_MODULE="celeryconfig"
+CELERYD_USER="celery"
+CELERYD_GROUP="celery"
+
+# Path to celerybeat
+CELERYBEAT="$INSTALL_DIR/manage.py celerybeat"
+CELERYBEAT_OPTS="--schedule=/var/run/celerybeat-schedule"
 #------------------------------------------------------------------------------------
 
 
-clear
+#Function to install Frontend
+func_install_frontend(){
+
 echo ""
 echo ""
-echo "This will install Newfies on your server"
+echo "This will install Web Newfies on your server"
 echo "press any key to continue or CTRL-C to exit"
 read TEMP
 
@@ -211,8 +225,9 @@ case $DISTRO in
 esac
 
 
-clear
-echo "Installation Complete"
+echo ""
+echo ""
+echo "Installation Web Newfies Completed"
 echo ""
 echo ""
 echo "Please log on to Newfies at "
@@ -223,3 +238,121 @@ echo "Thank you for installing Newfies"
 echo "Yours"
 echo "The Star2Billing Team"
 echo "http://www.star2billing.com and http://www.newfies-dialer.org/"
+}
+
+
+#Function to install backend
+func_install_backend() {
+
+echo ""
+echo ""
+echo "This will install Newfies Backend, Celery & Redis on your server"
+echo "press any key to continue or CTRL-C to exit"
+read TEMP
+
+IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
+IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
+
+
+#Install Celery & redis-server
+echo "Install Celery & redis-server..."
+case $DISTRO in
+    'UBUNTU')
+        apt-get -y install redis-server
+        pip install Celery
+    ;;
+    'CENTOS')
+        yum -y install redis-server
+        pip install Celery
+    ;;
+esac
+
+
+echo ""
+echo "Configure Celery..."
+
+# Add init-scripts
+cp /usr/src/newfies-dialer/install/celery-init/etc/default/celeryd /etc/default/
+cp /usr/src/newfies-dialer/install/celery-init/etc/init.d/celeryd /etc/init.d/
+cp /usr/src/newfies-dialer/install/celery-init/etc/init.d/celerybeat /etc/init.d/
+
+# Configure init-scripts
+sed -i "s/'django.db.backends.sqlite3'/'django.db.backends.mysql'/"  $INSTALL_DIR/settings_local.py
+
+sed -i "s/CELERYD_CHDIR='\/path\/to\/newfies\/'/CELERYD_CHDIR='$CELERYD_CHDIR'/g"  /etc/default/celeryd
+sed -i "s/CELERYD='/path/to/newfies/manage.py celeryd'/CELERYD=\'$CELERYD\'/g"  /etc/default/celeryd
+sed -i "s/CELERYD_OPTS='--time-limit=300'/CELERYD_OPTS=\'$CELERYD_OPTS\'/g"  /etc/default/celeryd
+sed -i "s/CELERY_CONFIG_MODULE='celeryconfig'/CELERY_CONFIG_MODULE=\'$CELERY_CONFIG_MODULE\'/g"  /etc/default/celeryd
+sed -i "s/CELERYD_USER='celery'/CELERYD_USER=\'$CELERYD_USER\'/g"  /etc/default/celeryd
+sed -i "s/CELERYD_GROUP='celery'/CELERYD_GROUP=\'$CELERYD_GROUP\'/g"  /etc/default/celeryd
+
+sed -i "s/CELERYBEAT='/path/to/newfies/manage.py celerybeat'/CELERYBEAT=\'$CELERYBEAT\'/g"  /etc/default/celeryd
+sed -i "s/CELERYBEAT_OPTS='--schedule=/var/run/celerybeat-schedule'/CELERYBEAT_OPTS=\'$CELERYBEAT_OPTS\'/g"  /etc/default/celeryd
+
+chmod 777 /etc/default/celeryd
+chmod 777 /etc/init.d/celeryd
+chmod 777 /etc/init.d/celerybeat
+
+python /usr/share/django_app/newfies/manage.py celeryd -E -B -l debug
+
+#/etc/init.d/celeryd start
+
+#/etc/init.d/celerybeat start
+
+echo ""
+echo ""
+echo "Installation Newfies Backend Complete"
+echo ""
+echo ""
+echo "Thank you for installing Newfies"
+echo "Yours"
+echo "The Star2Billing Team"
+echo "http://www.star2billing.com and http://www.newfies-dialer.org/"
+}
+
+
+
+#Menu Section for Script
+show_menu_newfies() {
+	clear
+	echo " > Newfies Installation Menu (Ubuntu)"
+	echo "====================================="
+	echo "	1)  All"
+	echo "	2)  Newfies Web Frontend"
+	echo "	3)  Newfies Backend / Celery"
+	echo "	0)  Quit"
+	echo -n "(0-3) : "
+	read OPTION < /dev/tty
+	echo $OPTION
+}
+
+
+ExitFinish=0
+
+while [ $ExitFinish -eq 0 ]; do
+
+	# Show menu with Installation items
+	show_menu_newfies
+
+	case $OPTION in
+		1) 
+			func_install_frontend
+			func_install_backend
+			echo done
+#			exit
+		;;
+		2) 
+			func_install_web
+		;;
+		3) 
+			func_install_backend
+		;;
+		0)
+		ExitFinish=1
+		;;
+		*)
+	esac	
+	
+done
+
+

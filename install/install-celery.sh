@@ -41,10 +41,9 @@ CELERYBEAT_OPTS="--schedule=/var/run/celerybeat-schedule"
 #------------------------------------------------------------------------------------
 
 
-clear
 echo ""
 echo ""
-echo "This will install Celery & Redis on your server"
+echo "This will install Newfies Backend, Celery & Redis on your server"
 echo "press any key to continue or CTRL-C to exit"
 read TEMP
 
@@ -91,13 +90,14 @@ chmod 777 /etc/default/celeryd
 chmod 777 /etc/init.d/celeryd
 chmod 777 /etc/init.d/celerybeat
 
-python $INSTALL_DIR/manage.py celeryd -E -B -l debug
+python /usr/share/django_app/newfies/manage.py celeryd -E -B -l debug
 
 #/etc/init.d/celeryd start
 
 #/etc/init.d/celerybeat start
 
-clear
+echo ""
+echo ""
 echo "Installation Complete"
 echo ""
 echo ""

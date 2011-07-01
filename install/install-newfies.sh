@@ -247,17 +247,11 @@ IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
 
 
 #Install Celery & redis-server
-echo "Install Celery & redis-server..."
-case $DISTRO in
-    'UBUNTU')
-        apt-get -y install redis-server
-        pip install Celery
-    ;;
-    'CENTOS')
-        yum -y install redis-server
-        pip install Celery
-    ;;
-esac
+echo "Install Redis-server ..."
+func_install_redis_server
+
+#Install Celery
+pip install Celery
 
 
 echo ""
@@ -277,7 +271,7 @@ chmod +x /etc/init.d/celeryd
 chmod +x /etc/init.d/celerybeat
 
 #Debug
-#python #INSTALL_DIR/manage.py celeryd -E -B -l debug
+#python $INSTALL_DIR/manage.py celeryd -E -B -l debug
 
 /etc/init.d/celeryd start
 
@@ -294,6 +288,26 @@ echo "The Star2Billing Team"
 echo "http://www.star2billing.com and http://www.newfies-dialer.org/"
 }
 
+
+#Install recent version of redis-server
+func_install_redis_server() {
+cd /usr/src
+wget http://redis.googlecode.com/files/redis-2.2.11.tar.gz
+tar -zxf redis-2.2.11.tar.gz
+cd redis-2.2.11
+make
+make install
+
+cp /usr/src/newfies-dialer/install/redis/etc/redis.conf /etc/redis.conf
+cp /usr/src/newfies-dialer/install/redis/etc/init.d/redis-server /etc/init.d/redis-server
+chmod +x /etc/init.d/redis-server
+
+useradd redis
+mkdir -p /var/lib/redis
+mkdir -p /var/log/redis
+chown redis.redis /var/lib/redis
+chown redis.redis /var/log/redis
+}
 
 
 #Menu Section for Script

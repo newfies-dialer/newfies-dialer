@@ -88,10 +88,10 @@ ln -s /usr/src/newfies-dialer/newfies $INSTALL_DIR
 
 
 #Install Newfies depencencies
-pip install -r /usr/src/newfies-dialer/newfies/install/conf/requirements.txt
+pip install -r /usr/src/newfies-dialer/install/conf/requirements.txt
 
 # copy settings_local.py into newfies dir
-cp /usr/src/newfies-dialer/newfies/install/conf/settings_local.py $INSTALL_DIR
+cp /usr/src/newfies-dialer/install/conf/settings_local.py $INSTALL_DIR
 
 # Update Secret Key
 echo "Update Secret Key..."

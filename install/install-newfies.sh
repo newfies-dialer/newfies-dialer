@@ -146,16 +146,15 @@ echo "mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e 'CREATE DATABASE $DAT
 mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e "CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;"
 
 cd $INSTALL_DIR/
-#following 2 lines are for SQLite
-#mkdir database
-#chmod -R 777 database
-python manage.py syncdb
+#following line is for SQLite
+mkdir database
+python manage.py syncdb --noinput
 #python manage.py migrate
 python manage.py createsuperuser
 
 
 #Collect static files from apps and other locations in a single location.
-python manage.py collectstatic -l
+python manage.py collectstatic -l --noinput
 
 
 # prepare Apache

@@ -19,6 +19,7 @@
 #wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-newfies.sh
 #
 #TODO: 
+# - Support Virtualenv
 # - Memcache installation
 # - Input mysql username / password when running script
 # - option to install with SQLite
@@ -293,11 +294,12 @@ chmod 777 /etc/default/celeryd
 chmod 777 /etc/init.d/celeryd
 chmod 777 /etc/init.d/celerybeat
 
-python /usr/share/django_app/newfies/manage.py celeryd -E -B -l debug
+#Debug
+#python #INSTALL_DIR/manage.py celeryd -E -B -l debug
 
-#/etc/init.d/celeryd start
+/etc/init.d/celeryd start
 
-#/etc/init.d/celerybeat start
+/etc/init.d/celerybeat start
 
 echo ""
 echo ""

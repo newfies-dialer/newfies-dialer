@@ -534,8 +534,16 @@ class CampaignSubscriber(Model):
 
 
 def post_save_add_contact(sender, **kwargs):
-    """This post_save method will be called by Contact instance whenever it is
-    going to save."""
+    """This post_save method will be called by Contact model instance whenever
+    it is going to save.
+
+    **Logic Description**:
+
+        * When new contact is added into ``Contact`` model, active campaign
+          list will be checked with contact status.
+        * If active campaign list count is more than one & contact is active
+          then that contact will be added into ``CampaignSubscriber`` model.
+    """
     obj = kwargs['instance']
     active_campaign_list = \
     Campaign.objects.filter(phonebook__contact__id=obj.id, status=1)

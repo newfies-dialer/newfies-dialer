@@ -15,4 +15,6 @@ Contents:
     ./developer-doc/views
     ./developer-doc/admin-views
     ./developer-doc/tasks
+    ./developer-doc/signals
     ./developer-doc/testing
+

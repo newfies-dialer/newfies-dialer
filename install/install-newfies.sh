@@ -53,9 +53,6 @@ echo "press any key to continue or CTRL-C to exit"
 read TEMP
 
 
-IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
-IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
-
 
 #python setup tools
 echo "Install Dependencies and python modules..."
@@ -74,6 +71,7 @@ case $DISTRO in
         apt-get -y install mysql-server libmysqlclient-dev
         apt-get -y install git-core
         apt-get -y install mercurial
+        apt-get -y install gawk
         #apt-get -y install python-importlib - does not exist in repository
     ;;
     'CENTOS')
@@ -228,6 +226,9 @@ case $DISTRO in
     ;;
 esac
 
+
+IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
+IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
 
 echo ""
 echo ""

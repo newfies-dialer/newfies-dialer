@@ -355,7 +355,7 @@ while [ $ExitFinish -eq 0 ]; do
 #			exit
 		;;
 		2) 
-			func_install_web
+			func_install_frontend
 		;;
 		3) 
 			func_install_backend

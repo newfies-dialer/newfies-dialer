@@ -55,9 +55,9 @@ echo "press any key to continue or CTRL-C to exit"
 read TEMP
 
 
-#ans=MySQL
-#echo "Do you want to install Newfies with SQLite or MySQL? [SQLite/MySQL]"
-#read ans
+ans=MySQL
+echo "Do you want to install Newfies with SQLite or MySQL? [SQLite/MySQL]"
+read ans
 
 #Function mysql db setting
 func_mysql_database_setting() {
@@ -67,8 +67,6 @@ func_mysql_database_setting() {
  echo "Enter Mysql Password"
  read MYSQLPASSWORD
 
- $mysql -u $MYSQLUSER -p $MYSQLPASSWORD -e "CREATE USER $username IDENTIFIED BY '$password';"
- echo "The username $username with the password $password has been created."
  db_engine_mysql_backend='django.db.backends.mysql'
 
 }
@@ -92,12 +90,12 @@ case $DISTRO in
         apt-get -y install gawk
         #apt-get -y install python-importlib - does not exist in repository
                 
-        #if [ans -eq 'SQLite' || ans -eq 'sqlite' || ans -eq 'SQLITE']; then
-             #apt-get install sqlite3 libsqlite3-dev
-        #else
-             #apt-get -y install mysql-server libmysqlclient-dev
-             #func_mysql_database_setting
-        #fi
+        if [ans -eq 'SQLite' || ans -eq 'sqlite' || ans -eq 'SQLITE']; then
+             apt-get install sqlite3 libsqlite3-dev
+        else
+             apt-get -y install mysql-server libmysqlclient-dev
+             func_mysql_database_setting
+        fi
     ;;
     'CENTOS')
         # SET APACHE CONF
@@ -111,12 +109,12 @@ case $DISTRO in
         sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo 
         yum --enablerepo=epel install python-pip
 
-        #if [ans -eq 'SQLite' || ans -eq 'sqlite' || ans -eq 'SQLITE']; then
-             #yum -y install sqlite
-        #else
-             #yum -y install mysql-server
-             #func_mysql_database_setting
-        #fi
+        if [ans -eq 'SQLite' || ans -eq 'sqlite' || ans -eq 'SQLITE']; then
+             yum -y install sqlite
+        else
+             yum -y install mysql-server
+             func_mysql_database_setting
+        fi
     ;;
 esac
 

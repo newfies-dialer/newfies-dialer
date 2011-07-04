@@ -34,11 +34,13 @@ DATETIME=$(date +"%Y%m%d%H%M%S")
 KERNELARCH=$(uname -p)
 DISTRO='UBUNTU'
 INSTALL_DIR='/usr/share/django_app/newfies'
-DATABASENAME=newfies
+DATABASENAME=INSTALL_DIR + '/database/newfies.db'
 #MYSQLUSER=root
 #MYSQLPASSWORD=passw0rd
 MYSQLUSER=
 MYSQLPASSWORD=
+MYHOST=
+MYHOSTPORT=
 
 CELERYD_USER="celery"
 CELERYD_GROUP="celery"
@@ -67,7 +69,10 @@ func_mysql_database_setting() {
  echo "Enter Mysql Password"
  read MYSQLPASSWORD
 
- db_engine_mysql_backend='django.db.backends.mysql'
+ DATABASENAME=newfies
+ MYSQL_BACKEND='django.db.backends.mysql'
+ MYHOST='localhost'
+ MYHOSTPORT=3306
 
 }
 
@@ -184,12 +189,12 @@ sed -i "s/TEMPLATE_DEBUG = DEBUG/TEMPLATE_DEBUG = False/g"  $INSTALL_DIR/setting
 
 
 # Setup settings.py
-sed -i "s/'django.db.backends.sqlite3'/$db_engine_mysql_backend/"  $INSTALL_DIR/settings_local.py
+sed -i "s/'django.db.backends.sqlite3'/$MYSQL_BACKEND/"  $INSTALL_DIR/settings_local.py
 sed -i "s/.*'NAME'/       'NAME': '$DATABASENAME',#/"  $INSTALL_DIR/settings_local.py
 sed -i "/'USER'/s/''/'$MYSQLUSER'/" $INSTALL_DIR/settings_local.py
 sed -i "/'PASSWORD'/s/''/'$MYSQLPASSWORD'/" $INSTALL_DIR/settings_local.py
-sed -i "/'HOST'/s/''/'localhost'/" $INSTALL_DIR/settings_local.py
-sed -i "/'PORT'/s/''/'3306'/" $INSTALL_DIR/settings_local.py
+sed -i "/'HOST'/s/''/'$MYHOST'/" $INSTALL_DIR/settings_local.py
+sed -i "/'PORT'/s/''/'$MYHOSTPORT'/" $INSTALL_DIR/settings_local.py
 
 
 # Create the Database

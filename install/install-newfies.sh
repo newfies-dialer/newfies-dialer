@@ -53,6 +53,9 @@ echo "press any key to continue or CTRL-C to exit"
 read TEMP
 
 
+#ans=N
+#echo "Do you want to install sqlite? [Y/N]"
+#read ans
 
 #python setup tools
 echo "Install Dependencies and python modules..."
@@ -73,6 +76,10 @@ case $DISTRO in
         apt-get -y install mercurial
         apt-get -y install gawk
         #apt-get -y install python-importlib - does not exist in repository
+                
+        #if [ans -eq 'Y' || ans -eq 'y' || ans -eq 'YES' || ans -eq 'yes']; then
+        #    apt-get install sqlite3 libsqlite3-dev
+        #fi
     ;;
     'CENTOS')
         # SET APACHE CONF
@@ -85,6 +92,10 @@ case $DISTRO in
         # non standard repositories activated. Use it just in case you need.
         sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo 
         yum --enablerepo=epel install python-pip
+
+        #if [ans -eq 'Y' || ans -eq 'y' || ans -eq 'YES' || ans -eq 'yes']; then
+        #    yum install sqlite
+        #fi
     ;;
 esac
 

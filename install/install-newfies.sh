@@ -197,14 +197,17 @@ sed -i "/'HOST'/s/''/'$MYHOST'/" $INSTALL_DIR/settings_local.py
 sed -i "/'PORT'/s/''/'$MYHOSTPORT'/" $INSTALL_DIR/settings_local.py
 
 
-# Create the Database
-echo "Remove Existing Database if exists..."
-echo "mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e 'DROP DATABASE $DATABASENAME;'"
-mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e "DROP DATABASE $DATABASENAME;"
+if [ans -eq 'MySQL' || ans -eq 'mysql' || ans -eq 'Mysql' || ans -eq 'MYSQL']; then
+    # Create the Database
+    echo "Remove Existing Database if exists..."
+    echo "mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e 'DROP DATABASE $DATABASENAME;'"
+    mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e "DROP DATABASE $DATABASENAME;"
 
-echo "Create Database..."
-echo "mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e 'CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;'"
-mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e "CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;"
+    echo "Create Database..."
+    echo "mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e 'CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;'"
+    mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e "CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;"
+fi
+
 
 cd $INSTALL_DIR/
 #following line is for SQLite

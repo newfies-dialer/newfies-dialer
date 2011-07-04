@@ -35,8 +35,10 @@ KERNELARCH=$(uname -p)
 DISTRO='UBUNTU'
 INSTALL_DIR='/usr/share/django_app/newfies'
 DATABASENAME=newfies
-MYSQLUSER=root
-MYSQLPASSWORD=passw0rd
+#MYSQLUSER=root
+#MYSQLPASSWORD=passw0rd
+MYSQLUSER=
+MYSQLPASSWORD=
 
 CELERYD_USER="celery"
 CELERYD_GROUP="celery"
@@ -107,13 +109,13 @@ esac
 #Function mysql db setting
 func_mysql_database_setting() {
 
- #echo "Enter Mysql Username"
- #read MYSQLUSER
- #echo "Enter Mysql Password"
- #read MYSQLPASSWORD
- #$mysql -u $MYSQLUSER -p $MYSQLPASSWORD -e "CREATE USER $username IDENTIFIED BY '$password';"
- #echo "The username $username with the password $password has been created."
- #db_engine='django.db.backends.mysql'
+ echo "Enter Mysql Username"
+ read MYSQLUSER
+ echo "Enter Mysql Password"
+ read MYSQLPASSWORD
+ $mysql -u $MYSQLUSER -p $MYSQLPASSWORD -e "CREATE USER $username IDENTIFIED BY '$password';"
+ echo "The username $username with the password $password has been created."
+ db_engine_mysql_backend='django.db.backends.mysql'
 
 }
 
@@ -158,8 +160,10 @@ case $INSTALL_MODE in
     ;;
 esac
 
-ln -s /usr/src/newfies-dialer/newfies $INSTALL_DIR
+#ln -s /usr/src/newfies-dialer/newfies $INSTALL_DIR
 
+# Copy files, do not link to source
+cp -r /usr/src/newfies-dialer/newfies $INSTALL_DIR
 
 #Install Newfies depencencies
 pip install -r /usr/src/newfies-dialer/install/conf/requirements.txt
@@ -180,7 +184,7 @@ sed -i "s/TEMPLATE_DEBUG = DEBUG/TEMPLATE_DEBUG = False/g"  $INSTALL_DIR/setting
 
 
 # Setup settings.py
-sed -i "s/'django.db.backends.sqlite3'/'django.db.backends.mysql'/"  $INSTALL_DIR/settings_local.py
+sed -i "s/'django.db.backends.sqlite3'/$db_engine_mysql_backend/"  $INSTALL_DIR/settings_local.py
 sed -i "s/.*'NAME'/       'NAME': '$DATABASENAME',#/"  $INSTALL_DIR/settings_local.py
 sed -i "/'USER'/s/''/'$MYSQLUSER'/" $INSTALL_DIR/settings_local.py
 sed -i "/'PASSWORD'/s/''/'$MYSQLPASSWORD'/" $INSTALL_DIR/settings_local.py

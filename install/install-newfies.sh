@@ -59,6 +59,20 @@ read TEMP
 #echo "Do you want to install Newfies with SQLite or MySQL? [SQLite/MySQL]"
 #read ans
 
+#Function mysql db setting
+func_mysql_database_setting() {
+
+ echo "Enter Mysql Username"
+ read MYSQLUSER
+ echo "Enter Mysql Password"
+ read MYSQLPASSWORD
+
+ $mysql -u $MYSQLUSER -p $MYSQLPASSWORD -e "CREATE USER $username IDENTIFIED BY '$password';"
+ echo "The username $username with the password $password has been created."
+ db_engine_mysql_backend='django.db.backends.mysql'
+
+}
+
 #python setup tools
 echo "Install Dependencies and python modules..."
 case $DISTRO in
@@ -106,18 +120,6 @@ case $DISTRO in
     ;;
 esac
 
-#Function mysql db setting
-func_mysql_database_setting() {
-
- echo "Enter Mysql Username"
- read MYSQLUSER
- echo "Enter Mysql Password"
- read MYSQLPASSWORD
- $mysql -u $MYSQLUSER -p $MYSQLPASSWORD -e "CREATE USER $username IDENTIFIED BY '$password';"
- echo "The username $username with the password $password has been created."
- db_engine_mysql_backend='django.db.backends.mysql'
-
-}
 
 if [ -d "$INSTALL_DIR" ]; then
     # Newfies is already installed

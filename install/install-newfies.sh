@@ -80,12 +80,7 @@ case $DISTRO in
              #apt-get install sqlite3 libsqlite3-dev
         #else
              #apt-get -y install mysql-server libmysqlclient-dev
-             #echo "Enter Mysql Username"
-             #read MYSQLUSER
-             #echo "Enter Mysql Password"
-             #read MYSQLPASSWORD
-             #$mysql -u $MYSQLUSER -p $MYSQLPASSWORD -e "CREATE USER $username IDENTIFIED BY '$password';"
-             #echo "The username $username with the password $password has been created."
+             #func_mysql_database_setting
         #fi
     ;;
     'CENTOS')
@@ -104,17 +99,23 @@ case $DISTRO in
              #yum -y install sqlite
         #else
              #yum -y install mysql-server
-             #echo "Enter Mysql Username"
-             #read MYSQLUSER
-             #echo "Enter Mysql Password"
-             #read MYSQLPASSWORD
-             #$mysql -u $MYSQLUSER -p $MYSQLPASSWORD -e "CREATE USER $username IDENTIFIED BY '$password';"
-             #echo "The username $username with the password $password has been created."
+             #func_mysql_database_setting
         #fi
     ;;
 esac
 
+#Function mysql db setting
+func_mysql_database_setting() {
 
+ #echo "Enter Mysql Username"
+ #read MYSQLUSER
+ #echo "Enter Mysql Password"
+ #read MYSQLPASSWORD
+ #$mysql -u $MYSQLUSER -p $MYSQLPASSWORD -e "CREATE USER $username IDENTIFIED BY '$password';"
+ #echo "The username $username with the password $password has been created."
+ #db_engine='django.db.backends.mysql'
+
+}
 
 if [ -d "$INSTALL_DIR" ]; then
     # Newfies is already installed
@@ -370,6 +371,7 @@ show_menu_newfies() {
 	read OPTION < /dev/tty
 	echo $OPTION
 }
+
 
 
 ExitFinish=0

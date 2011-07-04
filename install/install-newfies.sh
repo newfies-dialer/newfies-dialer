@@ -88,6 +88,12 @@ case $DISTRO in
     ;;
 esac
 
+#echo "Enter Mysql Username"
+#read MYSQLUSER
+#echo "Enter Mysql Password"
+#read MYSQLPASSWORD
+#$mysql -u $MYSQLUSER -p $MYSQLPASSWORD -e "CREATE USER $username IDENTIFIED BY '$password';"
+#echo "The username $username with the password $password has been created."
 
 if [ -d "$INSTALL_DIR" ]; then
     # Newfies is already installed
@@ -101,7 +107,7 @@ if [ -d "$INSTALL_DIR" ]; then
 
     mkdir /tmp/old-newfies-dialer_$DATETIME
     mv $INSTALL_DIR /tmp/old-newfies-dialer_$DATETIME
-    
+
     mysqldump -u $MYSQLUSER --password=$MYSQLPASSWORD $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql
     
     echo "Files from $INSTALL_DIR has been moved to /tmp/old-newfies-dialer_$DATETIME"
@@ -266,6 +272,9 @@ func_install_redis_server
 #Install Celery
 pip install Celery
 
+#Memcache installation
+#pip install python-memcached
+
 
 echo ""
 echo "Configure Celery..."
@@ -289,6 +298,7 @@ chmod +x /etc/init.d/celerybeat
 /etc/init.d/celeryd start
 
 /etc/init.d/celerybeat start
+
 
 echo ""
 echo ""

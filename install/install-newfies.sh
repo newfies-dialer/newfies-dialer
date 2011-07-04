@@ -53,8 +53,8 @@ echo "press any key to continue or CTRL-C to exit"
 read TEMP
 
 
-#ans=N
-#echo "Do you want to install sqlite? [Y/N]"
+#ans=MySQL
+#echo "Do you want to install Newfies with SQLite or MySQL? [SQLite/MySQL]"
 #read ans
 
 #python setup tools
@@ -70,15 +70,22 @@ case $DISTRO in
         easy_install virtualenv
         #ln -s /usr/local/bin/pip /usr/bin/pip
         
-        #Install Extra dependencies on New OS
-        apt-get -y install mysql-server libmysqlclient-dev
+        #Install Extra dependencies on New OS        
         apt-get -y install git-core
         apt-get -y install mercurial
         apt-get -y install gawk
         #apt-get -y install python-importlib - does not exist in repository
                 
-        #if [ans -eq 'Y' || ans -eq 'y' || ans -eq 'YES' || ans -eq 'yes']; then
-        #    apt-get install sqlite3 libsqlite3-dev
+        #if [ans -eq 'SQLite' || ans -eq 'sqlite' || ans -eq 'SQLITE']; then
+             #apt-get install sqlite3 libsqlite3-dev
+        #else
+             #apt-get -y install mysql-server libmysqlclient-dev
+             #echo "Enter Mysql Username"
+             #read MYSQLUSER
+             #echo "Enter Mysql Password"
+             #read MYSQLPASSWORD
+             #$mysql -u $MYSQLUSER -p $MYSQLPASSWORD -e "CREATE USER $username IDENTIFIED BY '$password';"
+             #echo "The username $username with the password $password has been created."
         #fi
     ;;
     'CENTOS')
@@ -93,18 +100,21 @@ case $DISTRO in
         sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo 
         yum --enablerepo=epel install python-pip
 
-        #if [ans -eq 'Y' || ans -eq 'y' || ans -eq 'YES' || ans -eq 'yes']; then
-        #    yum install sqlite
+        #if [ans -eq 'SQLite' || ans -eq 'sqlite' || ans -eq 'SQLITE']; then
+             #yum -y install sqlite
+        #else
+             #yum -y install mysql-server
+             #echo "Enter Mysql Username"
+             #read MYSQLUSER
+             #echo "Enter Mysql Password"
+             #read MYSQLPASSWORD
+             #$mysql -u $MYSQLUSER -p $MYSQLPASSWORD -e "CREATE USER $username IDENTIFIED BY '$password';"
+             #echo "The username $username with the password $password has been created."
         #fi
     ;;
 esac
 
-#echo "Enter Mysql Username"
-#read MYSQLUSER
-#echo "Enter Mysql Password"
-#read MYSQLPASSWORD
-#$mysql -u $MYSQLUSER -p $MYSQLPASSWORD -e "CREATE USER $username IDENTIFIED BY '$password';"
-#echo "The username $username with the password $password has been created."
+
 
 if [ -d "$INSTALL_DIR" ]; then
     # Newfies is already installed

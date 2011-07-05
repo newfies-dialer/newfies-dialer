@@ -1,7 +1,8 @@
 from celery.task import Task, PeriodicTask
-from dialer_campaign.models import *
-from dialer_cdr.models import *
+from dialer_campaign.models import Campaign
+from dialer_cdr.models import Callrequest, VoIPCall
 from celery.decorators import task
+from datetime import datetime, timedelta
 from time import sleep
 from uuid import uuid1
 from django.conf import settings
@@ -44,6 +45,7 @@ def init_callrequest(callrequest_id, campaign_id):
 
         * ``callrequest_id`` - Callrequest ID
     """
+    logger = init_callrequest.get_logger()
     logger.info("\nTASK :: init_callrequest")
     logger = init_callrequest.get_logger()
     logger.info('>> TasK :: init_callrequest')
@@ -187,6 +189,7 @@ def dummy_testcall(callerid, phone_number, gateway):
     **Return**:
 
         * ``RequestUUID`` - A unique identifier for API request."""
+    logger = dummy_testcall.get_logger()
     logger.info("\nTASK :: dummy_testcall")
     logger = dummy_testcall.get_logger()
     logger.debug("Executing task id %r, args: %r kwargs: %r" % \
@@ -214,6 +217,7 @@ def dummy_test_answerurl(request_uuid):
     **Attributes**:
 
         * ``RequestUUID`` - A unique identifier for API request."""
+    logger = dummy_test_answerurl.get_logger()
     logger.info("\nTASK :: dummy_testcall")
     logger = dummy_test_answerurl.get_logger()
     logger.debug("Executing task id %r, args: %r kwargs: %r" % \
@@ -259,6 +263,7 @@ def dummy_test_hangupurl(request_uuid):
     **Attributes**:
 
         * ``RequestUUID`` - A unique identifier for API request."""
+    logger = dummy_test_hangupurl.get_logger()
     logger.info("\nTASK :: dummy_test_hangupurl")
     logger = dummy_test_hangupurl.get_logger()
     logger.debug("Executing task id %r, args: %r kwargs: %r" % \

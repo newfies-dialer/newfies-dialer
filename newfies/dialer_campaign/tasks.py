@@ -1,11 +1,12 @@
-from datetime import date, timedelta
 from celery.task import Task, PeriodicTask
-from celery.task.http import HttpDispatchTask
-from dialer_campaign.models import *
+from dialer_campaign.models import Campaign, CampaignSubscriber
+from dialer_cdr.models import Callrequest, VoIPCall
 from celery.decorators import task
-from common_functions import isint
 from django.db import IntegrityError
+from datetime import datetime, timedelta
 from time import sleep
+#from celery.task.http import HttpDispatchTask
+#from common_functions import isint
 
 
 @task(default_retry_delay=30 * 60)  # retry in 30 minutes.
@@ -72,13 +73,13 @@ def initiate_call_subscriber(subscriber_id, campaign_id):
                             timeout=obj_campaign.calltimeout,
                             callerid=obj_campaign.callerid,
                             phone_number=obj_camp_subs.contact.contact,
-                            campaign=obj_camp_subs.campaign_id,
+                            campaign=obj_campaign,
                             aleg_gateway=obj_campaign.aleg_gateway,
                             voipapp=obj_campaign.voipapp,
                             user=obj_campaign.user,
                             extra_data=obj_campaign.extra_data,
                             timelimit=obj_campaign.callmaxduration,
-                            subscriber=subscriber_id)
+                            campaign_subscriber=obj_camp_subs)
     new_callrequest.save()
 
     #Update the campaign status

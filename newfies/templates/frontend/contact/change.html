@@ -2,6 +2,11 @@
 {% load i18n %}
 
 {% block extra_files %}
+<style>
+.add {
+background:transparent url({{STATIC_URL}}newfies/icons/add.png) no-repeat scroll left center;
+}
+</style>
 {% endblock %}
 
 {% block content %}
@@ -16,7 +21,14 @@
     <fieldset>
         <legend>Contact</legend>
             <table align=center border=1>
-                {% get_fieldset phonebook,last_name,first_name,email,country,city,description,status,additional_vars as contact_fields from form %}
+                <tr>
+                    <th>{{ form.phonebook.label }}:</th>
+                    <td>{{ form.phonebook.errors }}{{ form.phonebook }}&nbsp;
+                    {% if phonebook_count == 0 %}
+                    <a href="/phonebook/add/" class="add" style="padding-left: 20px;"></a>
+                    {% endif %}<br/>{{ form.phonebook.help_text }}</td>
+                </tr>
+                {% get_fieldset contact,last_name,first_name,email,country,city,description,status,additional_vars as contact_fields from form %}
                 {{ contact_fields.as_table }}
             </table>
     </fieldset>

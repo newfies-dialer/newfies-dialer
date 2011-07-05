@@ -771,11 +771,14 @@ def contact_add(request):
             request.session["msg"] = _('"%s" is added successfully.' %\
             request.POST['last_name'])
             return HttpResponseRedirect('/contact/')
+
+    phonebook_count = Phonebook.objects.filter(user=request.user).count()    
     template = 'frontend/contact/change.html'
     data = {
        'module': current_view(request),
        'form': form,
        'action': 'add',
+       'phonebook_count': phonebook_count,
        'notice_count': notice_count(request),
     }
     return render_to_response(template, data,

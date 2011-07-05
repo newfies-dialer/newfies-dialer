@@ -318,7 +318,7 @@ class hangupcallHandler(BaseHandler):
 
         **CURL Usage**::
 
-            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/hangupcall/ -d "RequestUUID=48092924-856d-11e0-a586-0147ddac9d3e"
+            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/hangupcall/ -d "RequestUUID=48092924-856d-11e0-a586-0147ddac9d3e&HangupCause=SUBSCRIBER_ABSENT"
 
         **Example Response**::
 
@@ -352,8 +352,9 @@ class hangupcallHandler(BaseHandler):
             callrequest.hangup_cause = opt_hangup_cause
             callrequest.save()
         except:
-            raise
-            return rc.BAD_REQUEST
+            resp = rc.BAD_REQUEST
+            resp.write("CallRequest not found!")
+            return resp
 
         #TODO : Create CDR
 

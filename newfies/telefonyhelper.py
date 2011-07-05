@@ -36,7 +36,7 @@ def call_plivo(callerid=None, phone_number=None, Gateways=None, GatewayCodecs="'
         GatewayRetries = "1"
 
     if not TimeLimit:
-        TimeLimit="3600"
+        TimeLimit = "3600"
 
     # Create a REST object
     plivo = plivohelper.REST(REST_API_URL, SID, AUTH_TOKEN, API_VERSION)

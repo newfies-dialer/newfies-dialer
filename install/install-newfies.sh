@@ -20,6 +20,7 @@
 #
 #TODO: 
 # - Support Virtualenv
+# - Memcached
 
 
 #Variables

@@ -20,10 +20,6 @@
 #
 #TODO: 
 # - Support Virtualenv
-# - Memcache installation
-# - Input mysql username / password when running script
-# - Option to install with SQLite
-# - Copy files, do not link to source
 
 
 #Variables
@@ -34,9 +30,7 @@ DATETIME=$(date +"%Y%m%d%H%M%S")
 KERNELARCH=$(uname -p)
 DISTRO='UBUNTU'
 INSTALL_DIR='/usr/share/django_app/newfies'
-DATABASENAME=INSTALL_DIR + '/database/newfies.db'
-#MYSQLUSER=root
-#MYSQLPASSWORD=passw0rd
+DATABASENAME=$INSTALL_DIR'/database/newfies.db'
 MYSQLUSER=
 MYSQLPASSWORD=
 MYHOST=
@@ -56,24 +50,38 @@ echo "This will install Web Newfies on your server"
 echo "press any key to continue or CTRL-C to exit"
 read TEMP
 
+db_backend=MySQL
+echo "Do you want to install Newfies with SQLite or MySQL? [SQLite/MySQL] (default:MySQL)"
+read db_backend
 
-ans=MySQL
-echo "Do you want to install Newfies with SQLite or MySQL? [SQLite/MySQL]"
-read ans
 
 #Function mysql db setting
 func_mysql_database_setting() {
-
- echo "Enter Mysql Username"
- read MYSQLUSER
- echo "Enter Mysql Password"
- read MYSQLPASSWORD
-
- DATABASENAME=newfies
- MYSQL_BACKEND='django.db.backends.mysql'
- MYHOST='localhost'
- MYHOSTPORT=3306
-
+    echo "Enter Mysql hostname (default:localhost)"
+    read MYHOST
+    if [ -z "$MYHOST" ]; then
+        MYHOST="localhost"
+    fi
+    echo "Enter Mysql port (default:3306)"
+    read MYHOSTPORT
+    if [ -z "$MYHOSTPORT" ]; then
+        MYHOSTPORT="3306"
+    fi
+    echo "Enter Mysql Username (default:root)"
+    read MYSQLUSER
+    if [ -z "$MYSQLUSER" ]; then
+        MYSQLUSER="root"
+    fi
+    echo "Enter Mysql Password (default:password)"
+    read MYSQLPASSWORD
+    if [ -z "$MYSQLPASSWORD" ]; then
+        MYSQLPASSWORD="password"
+    fi
+    echo "Enter Database name (default:newfies)"
+    read DATABASENAME
+    if [ -z "$DATABASENAME" ]; then
+        DATABASENAME="newfies"
+    fi
 }
 
 #python setup tools
@@ -95,7 +103,7 @@ case $DISTRO in
         apt-get -y install gawk
         #apt-get -y install python-importlib - does not exist in repository
                 
-        if [ans -eq 'SQLite' || ans -eq 'sqlite' || ans -eq 'SQLITE']; then
+        if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
              apt-get install sqlite3 libsqlite3-dev
         else
              apt-get -y install mysql-server libmysqlclient-dev
@@ -114,7 +122,7 @@ case $DISTRO in
         sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo 
         yum --enablerepo=epel install python-pip
 
-        if [ans -eq 'SQLite' || ans -eq 'sqlite' || ans -eq 'SQLITE']; then
+        if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
              yum -y install sqlite
         else
              yum -y install mysql-server
@@ -197,7 +205,7 @@ sed -i "/'HOST'/s/''/'$MYHOST'/" $INSTALL_DIR/settings_local.py
 sed -i "/'PORT'/s/''/'$MYHOSTPORT'/" $INSTALL_DIR/settings_local.py
 
 
-if [ans -eq 'MySQL' || ans -eq 'mysql' || ans -eq 'Mysql' || ans -eq 'MYSQL']; then
+if echo $db_backend | grep -i "^MYSQL" > /dev/null ; then
     # Create the Database
     echo "Remove Existing Database if exists..."
     echo "mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e 'DROP DATABASE $DATABASENAME;'"
@@ -235,6 +243,7 @@ Listen *:9080
     LogLevel warn
 
     WSGIPassAuthorization On
+    WSGIRestrictStdin Off
     WSGIDaemonProcess newfies user=www-data user=www-data threads=25
     WSGIProcessGroup newfies
     WSGIScriptAlias / '$INSTALL_DIR'/django.wsgi

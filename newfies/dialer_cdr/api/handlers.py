@@ -363,6 +363,46 @@ class hangupcallHandler(BaseHandler):
         return {'result': 'OK'}
 
 
+class cdrHandler(BaseHandler):
+    """This API server to store CDR and relevant informantion attached to it
+    """
+    allowed_methods = ('POST', )
+
+    def create(self, request, uuid=None):
+        """API to store CDR
+
+        **Attributes**:
+
+            * ``params`` -
+
+        **CURL Usage**::
+
+            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/store_cdr/?uuid=48092924-856d-11e0-a586-0147ddac9d3e -d "cdr=thisismyxmlcdr"
+
+        **Example Response**::
+
+            {
+                "status": 'OK'
+            }
+
+        **Error**:
+
+            * Timeout
+        """
+        attrs = self.flatten_dict(request.POST)
+
+        opt_cdr = get_attribute(attrs, 'cdr')
+
+        print opt_cdr
+
+        if not opt_cdr:
+            resp = rc.BAD_REQUEST
+            resp.write("Wrong parameters : missing cdr!")
+            return resp
+
+        return {'status': 'OK'}
+
+
 class testcallHandler(BaseHandler):
     """This API server as Test suit to initiate call and retrieve their status
 

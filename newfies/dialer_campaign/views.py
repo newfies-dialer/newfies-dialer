@@ -764,7 +764,7 @@ def contact_add(request):
         if form.is_valid():
             form.save()
             request.session["msg"] = _('"%s" is added successfully.' %\
-            request.POST['last_name'])
+            request.POST['contact'])
             return HttpResponseRedirect('/contact/')
 
     phonebook_count = Phonebook.objects.filter(user=request.user).count()    
@@ -841,7 +841,7 @@ def contact_change(request, object_id):
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('"%s" is updated successfully.' \
-                % request.POST['last_name'])
+                % request.POST['contact'])
                 return HttpResponseRedirect('/contact/')
 
     template = 'frontend/contact/change.html'

@@ -1,0 +1,24 @@
+[
+   {
+      "pk":1,
+      "model":"auth.user",
+      "fields":{
+         "username":"areski",
+         "first_name":"",
+         "last_name":"",
+         "is_active":true,
+         "is_superuser":true,
+         "is_staff":true,
+         "last_login":"2011-06-22 05:57:48",
+         "groups":[
+
+         ],
+         "user_permissions":[
+
+         ],
+         "password":"sha1$398cc$c6829bb9f4e3ad549847cf026b78a7732a4e5c56",
+         "email":"areski@gmail.com",
+         "date_joined":"2011-03-16 12:30:13"
+      }
+   }
+]

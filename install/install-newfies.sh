@@ -240,8 +240,7 @@ func_install_frontend(){
     echo "Prepare Apache configuration..."
     echo '
     Listen *:9080
-    WSGIRestrictStdin Off
-
+    
     <VirtualHost *:9080>
         DocumentRoot '$INSTALL_DIR'/
         ErrorLog /var/log/err-apache-newfies.log

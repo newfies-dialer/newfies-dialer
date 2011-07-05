@@ -199,12 +199,6 @@ class campaignHandler(BaseHandler):
             saturday = get_attribute(attrs, 'saturday')
             sunday = get_attribute(attrs, 'sunday')
 
-            #print (name, description, status, startingdate, expirationdate,\
-            #       frequency, callmaxduration, maxretry, intervalretry, \
-            #       calltimeout, aleg_gateway, voip_app, extra_data\
-            #       daily_start_time, daily_stop_time, monday, tuesday,\
-            #       wednesday, thursday, friday, saturday, sunday)
-
             startingdate = get_value_if_none(startingdate, time.time())
             # expire in 7 days
             expirationdate = \
@@ -631,9 +625,7 @@ class phonebookHandler(BaseHandler):
         campaign_id = get_attribute(attrs, 'campaign_id')
         name = get_attribute(attrs, 'name')
         description = get_attribute(attrs, 'description')
-
-        #print (name, description)
-
+        
         try:
             obj_campaign = Campaign.objects.get(id=campaign_id)
         except Campaign.DoesNotExist:
@@ -781,9 +773,7 @@ class contactHandler(BaseHandler):
             description = get_attribute(attrs, 'description')
             status = 1 # per default
             phonebook_id = get_attribute(attrs, 'phonebook_id')
-
-            #print (contact, last_name, description, status, phonebook_id)
-
+            
             #TODO: Check it owns by user
             try:
                 obj_phonebook = Phonebook.objects.get(id=phonebook_id)
@@ -889,11 +879,9 @@ class contactHandler(BaseHandler):
                         'WHERE dialer_campaign_subscriber.campaign_id' \
                         '= %s' % (str(campaign_id))
 
-        #print sql_statement
         cursor.execute(sql_statement)
         row = cursor.fetchall()
 
-        #print contact
         result = []
         for record in row:
             modrecord = {}
@@ -1013,8 +1001,6 @@ class bulkcontactHandler(BaseHandler):
 
             phonebook_id = get_attribute(attrs, 'phonebook_id')
 
-            # print (contact, name, description, status, phonebook_id)
-            
             # TODO: Check it owns by user
             try:
                 obj_phonebook = Phonebook.objects.get(id=phonebook_id)

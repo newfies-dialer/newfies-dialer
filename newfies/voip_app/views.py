@@ -76,7 +76,6 @@ def voipapp_grid(request):
     data = {'rows': rows,
             'page': page,
             'total': count}
-    #print data
     return HttpResponse(simplejson.dumps(data), mimetype='application/json',
                         content_type="application/json")
 

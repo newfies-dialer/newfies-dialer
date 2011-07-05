@@ -139,9 +139,6 @@ class ManyToManySearchInput(forms.MultipleHiddenInput):
             res = data.getlist(name)
         else:
             res = data.get(name, None)
-        print name, res
-        for id in res:
-            print self.rel.to.objects.get(pk=id)
         return res
 
     def render(self, name, value, attrs=None):
@@ -259,9 +256,6 @@ class AutocompleteModelAdmin(admin.ModelAdmin):
         model_name = request.GET.get('model_name', None)
         search_fields = request.GET.get('search_fields', None)
 
-        #print '-----------------------'
-        #print search_fields, app_label, model_name, query
-
         if search_fields and app_label and model_name and query:
 
             def construct_search(field_name):
@@ -281,7 +275,6 @@ class AutocompleteModelAdmin(admin.ModelAdmin):
                 if field_name == "prefix":
                     field_name = '^' + field_name
                 name = construct_search(field_name)
-                #print name+ '='+ query
                 if q:
                     q = q | models.Q(**{str(name): query})
                 else:
@@ -292,8 +285,6 @@ class AutocompleteModelAdmin(admin.ModelAdmin):
 
             data = ''.join([u'%s|%s\n' % \
             (getattr(f, rel_name), f.pk) for f in qs])
-            #print data
-    #			data = ''.join([u'%s|%s\n' % (f.__unicode__(), f.pk) for f in qs])
             return HttpResponse(data)
         return HttpResponseNotFound()
 

@@ -328,7 +328,6 @@ def common_campaign_status(pk, status):
 
     #Start tasks to import subscriber
     if status == "1" and previous_status != "1":
-        print "Launch Task : collect_subscriber(%s)" % str(pk)
         collect_subscriber.delay(pk)
 
     return campaign.user
@@ -416,7 +415,6 @@ def phonebook_grid(request):
     data = {'rows': rows,
             'page': page,
             'total': count}
-    #print data
     return HttpResponse(simplejson.dumps(data), mimetype='application/json',
                         content_type="application/json")
 
@@ -614,7 +612,6 @@ def contact_grid(request):
     if "kwargs" in q_para:
         # decode query string
         decoded_string = urllib.unquote(q_para.decode("utf8"))
-        #print decoded_string
         temp_list = list(decoded_string.split('&'))
         for i in range(0, len(temp_list)):
             if temp_list[i].find('='):
@@ -650,7 +647,6 @@ def contact_grid(request):
             #grid_search_kwargs = {}
             #grid_search_kwargs[qtype] = query
             #contact_list = contact_list.filter(**grid_search_kwargs)
-            #print contact_list
 
         if kwargs:
             kwargs = ast.literal_eval(kwargs)
@@ -690,7 +686,6 @@ def contact_grid(request):
     data = {'rows': rows,
             'page': page,
             'total': count}
-    #print data
     return HttpResponse(simplejson.dumps(data), mimetype='application/json',
                         content_type="application/json")
 
@@ -1114,7 +1109,6 @@ def campaign_grid(request):
     data = {'rows': rows,
             'page': page,
             'total': count}
-    #print data
     return HttpResponse(simplejson.dumps(data), mimetype='application/json',
                         content_type="application/json")
 

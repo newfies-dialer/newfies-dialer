@@ -25,17 +25,17 @@ CALLREQUEST_TYPE = (
 )
 
 VOIPCALL_DISPOSITION = (
-    (1, _('ANSWER')),
-    (2, _('BUSY')),
-    (3, _('NOANSWER')),
-    (4, _('CANCEL')),
-    (5, _('CONGESTION')),
-    (6, _('CHANUNAVAIL')),
-    (7, _('DONTCALL')),
-    (8, _('TORTURE')),
-    (9, _('INVALIDARGS')),
-    (20, _('NOROUTE')),
-    (30, _('FORBIDDEN')),
+    ('ANSWER', _('ANSWER')),
+    ('BUSY', _('BUSY')),
+    ('NOANSWER', _('NOANSWER')),
+    ('CANCEL', _('CANCEL')),
+    ('CONGESTION', _('CONGESTION')),
+    ('CHANUNAVAIL', _('CHANUNAVAIL')),
+    ('DONTCALL', _('DONTCALL')),
+    ('TORTURE', _('TORTURE')),
+    ('INVALIDARGS', _('INVALIDARGS')),
+    ('NOROUTE', _('NOROUTE')),
+    ('FORBIDDEN', _('FORBIDDEN')),
 )
 
 
@@ -154,8 +154,14 @@ class VoIPCall(models.Model):
         * ``phone_number`` - Phone number contacted
         * ``dialcode`` - Dialcode of the phonenumber
         * ``starting_date`` - Starting date of the call
-        * ``sessiontime`` - Duration of the call
+        * ``duration`` - Duration of the call
+        * ``billsec`` -
+        * ``progresssec`` -
+        * ``answersec`` -
+        * ``waitsec`` -
         * ``disposition`` - Disposition of the call
+        * ``hangup_cause`` -
+        * ``hangup_cause_q850`` - 
 
     **Relationships**:
 
@@ -180,9 +186,15 @@ class VoIPCall(models.Model):
                                verbose_name="Destination", null=True,
                                blank=True, help_text=_("Select Prefix"))
     starting_date = models.DateTimeField(auto_now_add=True)
-    sessiontime = models.IntegerField(null=True, blank=True)
-    disposition = models.IntegerField(null=True, blank=True,
-                        choices=VOIPCALL_DISPOSITION)
+    duration = models.IntegerField(null=True, blank=True)
+    billsec = models.IntegerField(null=True, blank=True)
+    progresssec = models.IntegerField(null=True, blank=True)
+    answersec = models.IntegerField(null=True, blank=True)
+    waitsec = models.IntegerField(null=True, blank=True)
+    disposition = models.CharField(choices=VOIPCALL_DISPOSITION, max_length=40, null=True, blank=True)
+    hangup_cause = models.CharField(max_length=40, null=True, blank=True)
+    hangup_cause_q850 = models.CharField(max_length=10, null=True, blank=True)
+
 
     def destination_name(self):
         """Return Recipient dialcode"""
@@ -191,10 +203,10 @@ class VoIPCall(models.Model):
         else:
             return self.dialcode.name
 
-    def duration(self):
+    def min_duration(self):
         """Return duration in min & sec"""
-        min = int(self.sessiontime / 60)
-        sec = int(self.sessiontime % 60)
+        min = int(self.duration / 60)
+        sec = int(self.duration % 60)
         return "%02d" % min + ":" + "%02d" % sec
 
     class Meta:

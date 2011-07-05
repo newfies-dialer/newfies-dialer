@@ -40,9 +40,10 @@ class VoIPCallAdmin(admin.ModelAdmin):
     of a VoIPCall."""
     can_add = False
     detail_title = _("Call Report")
-    list_display = ('user', 'used_gateway', 'callid',
-                    'callerid', 'phone_number', 'starting_date',
-                    'sessiontime', 'disposition', 'dialcode')
+    list_display = ('user', 'used_gateway', 'callid', 'callerid',
+                    'phone_number', 'starting_date', 'min_duration',
+                    'billsec', 'disposition', 'hangup_cause',
+                    'hangup_cause_q850')
 
     def has_add_permission(self, request):
         """Removed add permission on VoIP Call Report model
@@ -124,19 +125,19 @@ class VoIPCallAdmin(admin.ModelAdmin):
         total_data = VoIPCall.objects.extra(select=select_data)\
                      .values('starting_date')\
                      .filter(**kwargs).annotate(Count('starting_date'))\
-                     .annotate(Sum('sessiontime'))\
-                     .annotate(Avg('sessiontime'))\
+                     .annotate(Sum('duration'))\
+                     .annotate(Avg('duration'))\
                      .order_by('-starting_date')
 
         # Following code will count total voip calls, duration
         if total_data.count() != 0:
             max_duration = \
-            max([x['sessiontime__sum'] for x in total_data])
+            max([x['duration__sum'] for x in total_data])
             total_duration = \
-            sum([x['sessiontime__sum'] for x in total_data])
+            sum([x['duration__sum'] for x in total_data])
             total_calls = sum([x['starting_date__count'] for x in total_data])
             total_avg_duration = \
-            (sum([x['sessiontime__avg']\
+            (sum([x['duration__avg']\
             for x in total_data])) / total_data.count()
         else:
             max_duration = 0
@@ -167,7 +168,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             * request.session['voipcall_record_qs'] - stores voipcall query set
 
         **Exported fields**: [user, callid, callerid, phone_number,
-                              starting_date, sessiontime, disposition,
+                              starting_date, duration, disposition,
                               used_gateway]
         """
         # get the response object, this can be used as a stream.
@@ -181,7 +182,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
         qs = request.session['voipcall_record_qs']
 
         writer.writerow(['user', 'callid', 'callerid',
-                         'phone_number', 'starting_date', 'sessiontime',
+                         'phone_number', 'starting_date', 'duration',
                          'disposition', 'gateway'])
         for i in qs:
             writer.writerow([i.user,
@@ -189,7 +190,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
                              i.callerid,
                              i.phone_number,
                              i.starting_date,
-                             i.sessiontime,
+                             i.duration,
                              get_disposition_name(i.disposition),
                              i.gateway,
                              ])

@@ -392,7 +392,6 @@ show_menu_newfies() {
 	echo "	0)  Quit"
 	echo -n "(0-3) : "
 	read OPTION < /dev/tty
-	echo $OPTION
 }
 
 

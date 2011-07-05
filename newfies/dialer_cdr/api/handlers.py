@@ -329,7 +329,9 @@ class hangupcallHandler(BaseHandler):
         attrs = self.flatten_dict(request.POST)
 
         opt_request_uuid = get_attribute(attrs, 'RequestUUID')
+        print opt_request_uuid
         opt_hangup_cause = get_attribute(attrs, 'HangupCause')
+        print opt_hangup_cause
 
         if not opt_request_uuid:
             resp = rc.BAD_REQUEST

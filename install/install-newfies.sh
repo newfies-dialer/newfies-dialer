@@ -239,6 +239,7 @@ func_install_frontend(){
     echo "Prepare Apache configuration..."
     echo '
     Listen *:9080
+    WSGIRestrictStdin Off
 
     <VirtualHost *:9080>
         DocumentRoot '$INSTALL_DIR'/
@@ -246,7 +247,6 @@ func_install_frontend(){
         LogLevel warn
 
         WSGIPassAuthorization On
-        WSGIRestrictStdin Off
         WSGIDaemonProcess newfies user=www-data user=www-data threads=25
         WSGIProcessGroup newfies
         WSGIScriptAlias / '$INSTALL_DIR'/django.wsgi

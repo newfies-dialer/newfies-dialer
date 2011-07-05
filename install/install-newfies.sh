@@ -43,6 +43,10 @@ CELERYD_GROUP="celery"
 
 #Function mysql db setting
 func_mysql_database_setting() {
+    echo ""
+    
+    echo "Configure Mysql Settings..."
+    echo ""
     echo "Enter Mysql hostname (default:localhost)"
     read MYHOST
     if [ -z "$MYHOST" ]; then

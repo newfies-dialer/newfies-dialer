@@ -29,8 +29,8 @@ class BaseAuthenticatedClient(TestCase):
 
 class NewfiesApiTestCase(BaseAuthenticatedClient):
     """Test cases for Newfies API."""
-    fixtures = ['gateway', 'voipapp', 'phonebook', 'contact',
-                'campaign', 'campaign_subscriber']
+    #fixtures = ['gateway', 'phonebook', 'contact',
+    #           'campaign', 'campaign_subscriber']
 
     def test_create_campaign(self):
         """Test Function to crete campaign"""

@@ -21,7 +21,7 @@ class callrequest_pending(PeriodicTask):
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
         logger.debug("Determine if new pending calls")
-        print "\nTASK :: callrequest_pending"
+        logger.info("\nTASK :: callrequest_pending")
 
         list_callrequest = Callrequest.objects.get_pending_callrequest()[:20]
         if not list_callrequest:
@@ -44,7 +44,7 @@ def init_callrequest(callrequest_id, campaign_id):
 
         * ``callrequest_id`` - Callrequest ID
     """
-    print "\nTASK :: init_callrequest"
+    logger.info("\nTASK :: init_callrequest")
     logger = init_callrequest.get_logger()
     logger.info('>> TasK :: init_callrequest')
     obj_callrequest = Callrequest.objects.get(id=callrequest_id)
@@ -63,7 +63,7 @@ def init_callrequest(callrequest_id, campaign_id):
                                          id_aleg_gateway)
     else:
         dialout_phone_number = phone_number
-    print "dialout_phone_number : %s" % dialout_phone_number
+    logger.info("dialout_phone_number : %s" % dialout_phone_number)
 
     #Construct the dialing out path
     """
@@ -124,7 +124,7 @@ def init_callrequest(callrequest_id, campaign_id):
                                    phone_number=obj_callrequest.phone_number,
                                    gateway=gateways)
         result = res.get()
-        print result
+        logger.info(result)
         logger.info('Received RequestUUID :> ' + str(result['RequestUUID']))
 
     elif settings.NEWFIES_DIALER_ENGINE.lower() == 'plivo':
@@ -147,7 +147,7 @@ def init_callrequest(callrequest_id, campaign_id):
             obj_callrequest.status = 2 # Update to Failure
             obj_callrequest.save()
             return False
-        print result
+        logger.info(result)
         logger.info('Received RequestUUID :> ' + str(result['RequestUUID']))
 
     else:
@@ -187,7 +187,7 @@ def dummy_testcall(callerid, phone_number, gateway):
     **Return**:
 
         * ``RequestUUID`` - A unique identifier for API request."""
-    print "\nTASK :: dummy_testcall"
+    logger.info("\nTASK :: dummy_testcall")
     logger = dummy_testcall.get_logger()
     logger.debug("Executing task id %r, args: %r kwargs: %r" % \
                 (dummy_testcall.request.id,
@@ -214,7 +214,7 @@ def dummy_test_answerurl(request_uuid):
     **Attributes**:
 
         * ``RequestUUID`` - A unique identifier for API request."""
-    print "\nTASK :: dummy_testcall"
+    logger.info("\nTASK :: dummy_testcall")
     logger = dummy_test_answerurl.get_logger()
     logger.debug("Executing task id %r, args: %r kwargs: %r" % \
                 (dummy_test_answerurl.request.id,
@@ -259,7 +259,7 @@ def dummy_test_hangupurl(request_uuid):
     **Attributes**:
 
         * ``RequestUUID`` - A unique identifier for API request."""
-    print "\nTASK :: dummy_test_hangupurl"
+    logger.info("\nTASK :: dummy_test_hangupurl")
     logger = dummy_test_hangupurl.get_logger()
     logger.debug("Executing task id %r, args: %r kwargs: %r" % \
                 (dummy_test_hangupurl.request.id,

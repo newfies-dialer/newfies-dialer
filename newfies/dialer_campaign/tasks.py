@@ -42,7 +42,7 @@ def initiate_call_subscriber(subscriber_id, campaign_id):
     obj_subscriber = CampaignSubscriber.objects.get(id=subscriber_id)
     logger.info("Dialout Subscriber :: status = %s" %
                 str(obj_subscriber.status))
-    print "\nTASK :: initiate_call_subscriber"
+    logger.info("\nTASK :: initiate_call_subscriber")
 
     try:
         obj_camp_subs = CampaignSubscriber.objects\
@@ -100,7 +100,7 @@ def check_campaign_pendingcall(campaign_id):
     """
     logger = check_campaign_pendingcall.get_logger()
     logger.info("Execute the calls for the campaign = %s" % str(campaign_id))
-    print "\nTASK :: check_campaign_pendingcall"
+    logger.info("\nTASK :: check_campaign_pendingcall")
 
     try:
         obj_campaign = Campaign.objects.get(id=campaign_id)
@@ -133,6 +133,7 @@ def check_campaign_pendingcall(campaign_id):
 
     for elem_subscriber in list_subscriber:
         """Loop on Subscriber and start the initcall task"""
+        logger.info("start initiate_call_subscriber")
         initiate_call_subscriber.delay(elem_subscriber.id, campaign_id)
         sleep(time_to_wait)
 
@@ -153,7 +154,7 @@ class campaign_running(PeriodicTask):
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
         logger.info("Determine the Campaign to proceed")
-        print "\nTASK :: campaign_running"
+        logger.info( "\nTASK :: campaign_running")
 
         for campaign in Campaign.objects.get_running_campaign():
             logger.info("=> Campaign name %s (id:%s)" % (campaign.name,

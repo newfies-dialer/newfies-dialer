@@ -140,7 +140,8 @@ def get_fieldset(parser, token):
     try:
         name, fields, as_, variable_name, from_, form = token.split_contents()
     except ValueError:
-        raise template.TemplateSyntaxError('bad arguments for %r'  % token.split_contents()[0])
+        raise template.TemplateSyntaxError('bad arguments for %r'  %\
+        token.split_contents()[0])
 
     return FieldSetNode(fields.split(','), variable_name, form)
 

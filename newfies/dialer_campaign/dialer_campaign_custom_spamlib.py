@@ -10,6 +10,8 @@ import datetime
 log = logging.getLogger('dilla')
 
 
-@spam.global_handler('TextField')
-def spam_campaign_char_field2(field):
+
+
+@spam.strict_handler('dialer_campaign.Campaign.campaign_code')
+def get_campaign_code(field):
     return random.choice(string.ascii_letters)

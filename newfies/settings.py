@@ -182,7 +182,7 @@ INSTALLED_APPS = (
     #'debug_toolbar',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    # 'dilla',
+    'dilla',
     #'test_extensions',
 )
 AUTH_PROFILE_MODULE = "user_profile.UserProfile"
@@ -194,12 +194,15 @@ LOGIN_URL = '/pleaselog/'
 DICTIONARY = "/usr/share/dict/words"
 DILLA_USE_LOREM_IPSUM = False  # set to True ignores dictionary
 DILLA_APPS = [
-                #'voip_gateway',
-                #'voip_report',
+                #'auth',
+                'dialer_gateway',
+                'voip_app',
+                'dialer_campaign',
+                'dialer_cdr',
              ]
 DILLA_SPAMLIBS = [
-                #'voip_gateway.voip_gateway_custom_spamlib',
-                #'voip_report.voip_report_custom_spamlib',
+                #'dialer_campaign.dialer_campaign_custom_spamlib',
+                #'dialer_cdr.dialer_cdr_custom_spamlib',
                 ]
 # To use Dilla
 # > python manage.py run_dilla --cycles=100

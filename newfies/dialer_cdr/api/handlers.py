@@ -396,17 +396,17 @@ class cdrHandler(BaseHandler):
         opt_cdr = str(get_attribute(attrs, 'cdr'))
 
         data = []
-        from xml.etree import ElementTree as ET
-        element = ET.XML(opt_cdr)
-        for i in element:
-            for j in i[:]:
-                if j.tag=='duration':
-                    duration=j.text
-                if j.tag=='plivo_request_uuid':
-                    plivo_request_uuid=j.text
-                data.append((j.tag, j.text))
-        
-	print plivo_request_uuid, duration
+        import xml.etree.ElementTree as ET
+        tree = ET.fromstring(opt_cdr)
+        lst = tree.find("variables")
+        print lst
+
+        for j in lst:
+            if j.tag=='duration':
+                duration=j.text
+            if j.tag=='plivo_request_uuid':
+                plivo_request_uuid=j.text
+            data.append((j.tag, j.text))
 
         if not opt_cdr:
             resp = rc.BAD_REQUEST

@@ -2,7 +2,7 @@ from piston.handler import BaseHandler
 from piston.emitters import *
 from piston.utils import rc, require_mime, require_extended, throttle
 from dialer_cdr.models import Callrequest, VoIPCall
-from datetime import *
+from datetime import datetime
 from random import choice
 from random import seed
 import uuid
@@ -406,10 +406,7 @@ class cdrHandler(BaseHandler):
         attrs = self.flatten_dict(request.POST)
 
         opt_cdr = str(get_attribute(attrs, 'cdr'))
-
-
-        print opt_cdr
-        print "-------------"
+        #print opt_cdr
 
         if not opt_cdr:
             resp = rc.BAD_REQUEST
@@ -418,11 +415,10 @@ class cdrHandler(BaseHandler):
 
         data = {}
         import xml.etree.ElementTree as ET
-        #tree = ET.fromstring(opt_cdr)
+        tree = ET.fromstring(opt_cdr)
         #parse file
-        tree = ET.parse("/tmp/cdr.xml")
+        #tree = ET.parse("/tmp/cdr.xml")
         lst = tree.find("variables")
-        print lst
 
         list_variables = ['plivo_request_uuid', 'plivo_answer_url', 'plivo_app', 'direction', 'endpoint_disposition',
                           'hangup_cause', 'hangup_cause_q850', 'duration', 'billsec', 'progresssec', 'answersec',
@@ -433,7 +429,6 @@ class cdrHandler(BaseHandler):
         for j in lst:
             if j.tag in list_variables:
                 data[j.tag] = j.text
-        print data
 
         for element in list_variables:
             print element
@@ -444,19 +439,14 @@ class cdrHandler(BaseHandler):
             #CDR not related to plivo
             #TODO : Add tag for newfies in outbound call
             return {'status': 'OK'}
-        print data
 
-        #data['plivo_request_uuid'] = '7a641180-a742-11e0-b6b3-00231470a30c'
         #TODO : delay if not find callrequest
         try:
             obj_callrequest = Callrequest.objects.get(request_uuid=data['plivo_request_uuid'])
         except:
             print "error get Callrequest %s " % data['plivo_request_uuid']
+            raise
 
-        print "here"
-        print obj_callrequest
-
-        print data['answer_epoch']
         if data.has_key('answer_epoch') and len(data['answer_epoch']) > 0:
             try:
                 cur_answer_epoch = int(data['answer_epoch'])
@@ -465,7 +455,6 @@ class cdrHandler(BaseHandler):
             starting_date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(cur_answer_epoch))
         else:
             starting_date = None
-        print starting_date
 
         new_voipcall = VoIPCall(user = obj_callrequest.user,
                                 request_uuid=data['plivo_request_uuid'],

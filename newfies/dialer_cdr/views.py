@@ -147,7 +147,7 @@ def voipcall_report_grid(request):
     data = {'rows': rows,
             'page': page,
             'total': count}
-    print rows
+
     return HttpResponse(simplejson.dumps(data), mimetype='application/json',
                         content_type="application/json")
 

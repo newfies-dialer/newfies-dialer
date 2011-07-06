@@ -395,18 +395,24 @@ class cdrHandler(BaseHandler):
 
         opt_cdr = str(get_attribute(attrs, 'cdr'))
 
-        data = []
+        data = {}
         import xml.etree.ElementTree as ET
         tree = ET.fromstring(opt_cdr)
         lst = tree.find("variables")
-        print lst
+
+        list_variables = ['plivo_request_uuid', 'plivo_answer_url', 'plivo_app', 'direction', 'endpoint_disposition',
+                          'hangup_cause', 'hangup_cause_q850', 'duration', 'billsec', 'progresssec', 'answersec',
+                          'waitsec', 'mduration', 'billmsec', 'progressmsec', 'answermsec', 'waitmsec',
+                          'progress_mediamsec']
 
         for j in lst:
-            if j.tag=='duration':
-                duration=j.text
-            if j.tag=='plivo_request_uuid':
-                plivo_request_uuid=j.text
-            data.append((j.tag, j.text))
+            if j.tag in list_variables:
+                data[j.tag] = j.text
+
+        if not 'plivo_request_uuid' in data:
+            #CDR not related to plivo
+            #TODO : Add tag for newfies in outbound call
+            return {'status': 'OK'}
 
         if not opt_cdr:
             resp = rc.BAD_REQUEST

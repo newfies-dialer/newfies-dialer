@@ -402,10 +402,10 @@ class cdrHandler(BaseHandler):
         print lst
 
         for j in lst:
-            if j.tag=='duration':
-                duration=j.text
-            if j.tag=='plivo_request_uuid':
-                plivo_request_uuid=j.text
+            if j.tag == 'duration':
+                duration = j.text
+            if j.tag == 'plivo_request_uuid':
+                plivo_request_uuid = j.text
             data.append((j.tag, j.text))
 
         if not opt_cdr:

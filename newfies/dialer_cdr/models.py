@@ -179,11 +179,10 @@ class VoIPCall(models.Model):
     callrequest = models.ForeignKey(Callrequest, null=True, blank=True)
     callid = models.CharField(max_length=120, help_text=_("VoIP Call-ID"))
     callerid = models.CharField(max_length=120, verbose_name='CallerID')
-    phone_number = models.CharField(max_length=32,
+    phone_number = models.CharField(max_length=120,
                     help_text=_(u'The international number of the \
                     recipient, without the leading +'), null=True, blank=True)
-    dialcode = models.ForeignKey(Prefix, db_column="prefix",
-                               verbose_name="Destination", null=True,
+    dialcode = models.ForeignKey(Prefix, verbose_name="Destination", null=True,
                                blank=True, help_text=_("Select Prefix"))
     starting_date = models.DateTimeField(auto_now_add=True)
     duration = models.IntegerField(null=True, blank=True)

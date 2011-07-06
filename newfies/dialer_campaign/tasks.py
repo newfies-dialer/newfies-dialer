@@ -41,9 +41,8 @@ def initiate_call_subscriber(subscriber_id, campaign_id):
     """
     logger = initiate_call_subscriber.get_logger()
     obj_subscriber = CampaignSubscriber.objects.get(id=subscriber_id)
-    logger.info("Dialout Subscriber :: status = %s" %
+    logger.info("\nTASK :: initiate_call_subscriber - status = %s" %
                 str(obj_subscriber.status))
-    logger.info("\nTASK :: initiate_call_subscriber")
 
     try:
         obj_camp_subs = CampaignSubscriber.objects\
@@ -100,8 +99,7 @@ def check_campaign_pendingcall(campaign_id):
         * ``campaign_id`` - Campaign ID
     """
     logger = check_campaign_pendingcall.get_logger()
-    logger.info("Execute the calls for the campaign = %s" % str(campaign_id))
-    logger.info("\nTASK :: check_campaign_pendingcall")
+    logger.info("TASK :: check_campaign_pendingcall = %s" % str(campaign_id))
 
     try:
         obj_campaign = Campaign.objects.get(id=campaign_id)
@@ -126,7 +124,7 @@ def check_campaign_pendingcall(campaign_id):
         no_subscriber = 0
 
     if no_subscriber == 0:
-        logger.info("No Subscriber to proceed on this campaign")
+        logger.debug("No Subscriber to proceed on this campaign")
         return False
 
     #find how to dispatch them in the current minutes
@@ -134,7 +132,6 @@ def check_campaign_pendingcall(campaign_id):
 
     for elem_subscriber in list_subscriber:
         """Loop on Subscriber and start the initcall task"""
-        logger.info("start initiate_call_subscriber")
         initiate_call_subscriber.delay(elem_subscriber.id, campaign_id)
         sleep(time_to_wait)
 
@@ -154,11 +151,10 @@ class campaign_running(PeriodicTask):
 
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
-        logger.info("Determine the Campaign to proceed")
-        logger.info( "\nTASK :: campaign_running")
+        logger.info( "TASK :: campaign_running")
 
         for campaign in Campaign.objects.get_running_campaign():
-            logger.info("=> Campaign name %s (id:%s)" % (campaign.name,
+            logger.debug("=> Campaign name %s (id:%s)" % (campaign.name,
                                                          campaign.id))
 
             check_campaign_pendingcall.delay(campaign.id)
@@ -172,14 +168,14 @@ def collect_subscriber(campaign_id):
         * ``campaign_id`` - Campaign ID
     """
     logger = collect_subscriber.get_logger()
-    logger.info("Collect subscribers for the campaign = %s" % str(campaign_id))
+    logger.debug("Collect subscribers for the campaign = %s" % str(campaign_id))
 
     #Retrieve the list of active contact
     obj_campaign = Campaign.objects.get(id=campaign_id)
     list_contact = obj_campaign.get_active_contact_no_subscriber()
 
     if not list_contact:
-        logger.info("No new contact or phonebook to import into \
+        logger.debug("No new contact or phonebook to import into \
             this campaign.")
         return True
     else:

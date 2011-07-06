@@ -21,15 +21,14 @@ class callrequest_pending(PeriodicTask):
 
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
-        logger.debug("Determine if new pending calls")
-        logger.info("\nTASK :: callrequest_pending")
+        logger.info("TASK :: callrequest_pending")
 
         list_callrequest = Callrequest.objects.get_pending_callrequest()[:20]
         if not list_callrequest:
-            logger.info("No Pending Calls")
+            logger.debug("No Pending Calls")
 
         for callrequest in list_callrequest:
-            logger.info("\n=> CallRequest (id:%s, phone_number:%s)" %
+            logger.error("=> CallRequest (id:%s, phone_number:%s)" %
                         (callrequest.id, callrequest.phone_number))
 
             callrequest.status = 7 # Update to Process
@@ -46,16 +45,14 @@ def init_callrequest(callrequest_id, campaign_id):
         * ``callrequest_id`` - Callrequest ID
     """
     logger = init_callrequest.get_logger()
-    logger.info("\nTASK :: init_callrequest")
-    logger = init_callrequest.get_logger()
-    logger.info('>> TasK :: init_callrequest')
     obj_callrequest = Callrequest.objects.get(id=callrequest_id)
-    logger.info("callrequest status = %s" % str(obj_callrequest.status))
+    logger.info("TASK :: init_callrequest - status = %s" %
+                                        str(obj_callrequest.status))
 
     try:
         obj_campaign = Campaign.objects.get(id=campaign_id)
     except:
-        logger.error("Can\'t find the campaign : %s" % campaign_id)
+        logger.error("Can't find the campaign : %s" % campaign_id)
         return False
 
     phone_number = obj_callrequest.phone_number
@@ -127,7 +124,7 @@ def init_callrequest(callrequest_id, campaign_id):
                                    gateway=gateways)
         result = res.get()
         logger.info(result)
-        logger.info('Received RequestUUID :> ' + str(result['RequestUUID']))
+        logger.error('Received RequestUUID :> ' + str(result['RequestUUID']))
 
     elif settings.NEWFIES_DIALER_ENGINE.lower() == 'plivo':
         #Request Call via Plivo
@@ -150,7 +147,7 @@ def init_callrequest(callrequest_id, campaign_id):
             obj_callrequest.save()
             return False
         logger.info(result)
-        logger.info('Received RequestUUID :> ' + str(result['RequestUUID']))
+        logger.error('Received RequestUUID :> ' + str(result['RequestUUID']))
 
     else:
         logger.error('Not other method supported, use one of this options :'\
@@ -190,7 +187,7 @@ def dummy_testcall(callerid, phone_number, gateway):
 
         * ``RequestUUID`` - A unique identifier for API request."""
     logger = dummy_testcall.get_logger()
-    logger.info("\nTASK :: dummy_testcall")
+    logger.info("TASK :: dummy_testcall")
     logger = dummy_testcall.get_logger()
     logger.debug("Executing task id %r, args: %r kwargs: %r" % \
                 (dummy_testcall.request.id,
@@ -218,7 +215,7 @@ def dummy_test_answerurl(request_uuid):
 
         * ``RequestUUID`` - A unique identifier for API request."""
     logger = dummy_test_answerurl.get_logger()
-    logger.info("\nTASK :: dummy_testcall")
+    logger.info("TASK :: dummy_testcall")
     logger = dummy_test_answerurl.get_logger()
     logger.debug("Executing task id %r, args: %r kwargs: %r" % \
                 (dummy_test_answerurl.request.id,
@@ -264,7 +261,7 @@ def dummy_test_hangupurl(request_uuid):
 
         * ``RequestUUID`` - A unique identifier for API request."""
     logger = dummy_test_hangupurl.get_logger()
-    logger.info("\nTASK :: dummy_test_hangupurl")
+    logger.info("TASK :: dummy_test_hangupurl")
     logger = dummy_test_hangupurl.get_logger()
     logger.debug("Executing task id %r, args: %r kwargs: %r" % \
                 (dummy_test_hangupurl.request.id,

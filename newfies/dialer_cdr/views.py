@@ -116,7 +116,8 @@ def voipcall_report_grid(request):
     voipcall_list = VoIPCall.objects.values('id', 'user__username',
                     'used_gateway__name', 'callid', 'request_uuid', 'callerid',
                     'phone_number', 'starting_date', 'duration',
-                    'disposition').filter(**kwargs)
+                    'billsec', 'disposition', 'hangup_cause',
+                    'hangup_cause_q850').filter(**kwargs)
 
     count = voipcall_list.count()
     voipcall_list = \
@@ -136,7 +137,10 @@ def voipcall_report_grid(request):
                        row['phone_number'],
                        row['starting_date'].strftime('%Y-%m-%d %H:%M:%S'),
                        str(timedelta(seconds=row['duration'])),
+                       #row['billsec'],
                        get_disposition_name(row['disposition']),
+                       #row['hangup_cause'],
+                       #row['hangup_cause_q850'],
                        ]} for row in voipcall_list]
 
     data = {'rows': rows,
@@ -259,8 +263,9 @@ def export_voipcall_report(request):
     qs = request.session['voipcall_record_qs']
 
     writer.writerow(['user', 'callid', 'callerid', 'phone_number',
-                     'starting_date', 'duration',
-                     'disposition', 'used_gateway'])
+                     'starting_date', 'duration', 'billsec',
+                     'disposition', 'hangup_cause', 'hangup_cause_q850',
+                     'used_gateway'])
     for i in qs:
         writer.writerow([i.user,
                          i.callid,
@@ -268,7 +273,10 @@ def export_voipcall_report(request):
                          i.phone_number,
                          i.starting_date,
                          i.duration,
+                         i.billsec,
                          get_disposition_name(i.disposition),
+                         i.hangup_cause,
+                         i.hangup_cause_q850,
                          i.used_gateway,
                          ])
     return response

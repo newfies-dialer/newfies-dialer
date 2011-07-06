@@ -405,8 +405,8 @@ class cdrHandler(BaseHandler):
                 if j.tag=='plivo_request_uuid':
                     plivo_request_uuid=j.text
                 data.append((j.tag, j.text))
-
-        print plivo_request_uuid, duration
+        
+	print plivo_request_uuid, duration
 
         if not opt_cdr:
             resp = rc.BAD_REQUEST

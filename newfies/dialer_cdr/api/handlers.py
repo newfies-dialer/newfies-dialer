@@ -6,6 +6,7 @@ from datetime import *
 from random import choice
 from random import seed
 import uuid
+import time
 
 seed()
 
@@ -394,32 +395,60 @@ class cdrHandler(BaseHandler):
         attrs = self.flatten_dict(request.POST)
 
         opt_cdr = str(get_attribute(attrs, 'cdr'))
-
-        data = {}
-        import xml.etree.ElementTree as ET
-        tree = ET.fromstring(opt_cdr)
-        lst = tree.find("variables")
-
-        list_variables = ['plivo_request_uuid', 'plivo_answer_url', 'plivo_app', 'direction', 'endpoint_disposition',
-                          'hangup_cause', 'hangup_cause_q850', 'duration', 'billsec', 'progresssec', 'answersec',
-                          'waitsec', 'mduration', 'billmsec', 'progressmsec', 'answermsec', 'waitmsec',
-                          'progress_mediamsec']
-
-        for j in lst:
-            if j.tag in list_variables:
-                data[j.tag] = j.text
-
-        if not 'plivo_request_uuid' in data:
-            #CDR not related to plivo
-            #TODO : Add tag for newfies in outbound call
-            return {'status': 'OK'}
+        print opt_cdr
+        print "-------------"
 
         if not opt_cdr:
             resp = rc.BAD_REQUEST
             resp.write("Wrong parameters : missing cdr!")
             return resp
 
-        return data#{'status': 'OK'}
+        data = {}
+        import xml.etree.ElementTree as ET
+        tree = ET.fromstring(opt_cdr)
+        lst = tree.find("variables")
+        print lst
+
+        list_variables = ['plivo_request_uuid', 'plivo_answer_url', 'plivo_app', 'direction', 'endpoint_disposition',
+                          'hangup_cause', 'hangup_cause_q850', 'duration', 'billsec', 'progresssec', 'answersec',
+                          'waitsec', 'mduration', 'billmsec', 'progressmsec', 'answermsec', 'waitmsec',
+                          'progress_mediamsec', 'call_uuid', 'origination_caller_id_number', 'caller_id',
+                          'answer_epoch', 'answer_uepoch']
+
+        for j in lst:
+            if j.tag in list_variables:
+                data[j.tag] = j.text
+        print data
+
+        if not 'plivo_request_uuid' in data:
+            #CDR not related to plivo
+            #TODO : Add tag for newfies in outbound call
+            return {'status': 'OK'}
+        print data
+        
+        data['plivo_request_uuid'] = '7a641180-a742-11e0-b6b3-00231470a30c'
+        obj_callrequest = Callrequest.objects.get(request_uuiddata['plivo_request_uuid'])
+
+        new_voipcall = VoIPCall(user = obj_callrequest.user,
+                                request_uuid=data['plivo_request_uuid'],
+                                used_gateway='', #TODO
+                                callrequest=obj_callrequest,
+                                callid=data['call_uuid'],
+                                callerid=data['origination_caller_id_number'],
+                                phone_number=data['caller_id'],
+                                dialcode=None, #TODO
+                                starting_date=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(data['answer_epoch'])),
+                                duration=data['duration'],
+                                billsec=data['billsec'],
+                                progresssec=data['progresssec'],
+                                answersec=data['answersec'],
+                                disposition=data['endpoint_disposition'],
+                                hangup_cause=data['hangup_cause'],
+                                hangup_cause_q850=data['hangup_cause_q850'],)
+
+        new_voipcall.save()
+
+        return data
 
 
 class testcallHandler(BaseHandler):

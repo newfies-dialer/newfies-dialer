@@ -1,3 +1,4 @@
-<h1>500 Error</h1>
-<h3>Oops!  Sorry something went wrong.  Please try again later...</h3>
-
+<p>You've encountered an error, oh noes!</p>
+{% if request.sentry.id %}
+    <p>If you need assistance, you may reference this error as <strong>{{ request.sentry.id }}</strong>.</p>
+{% endif %}

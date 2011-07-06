@@ -30,5 +30,6 @@ hg+https://bitbucket.org/izi/django-admin-tools
 python-memcached>=1.47
 django-memcache-status>=1.0.1
 git+git://github.com/jtauber/django-notification.git
+git+git://github.com/aerosol/identicon.git
 git+git://github.com/aerosol/django-dilla.git
 django-sentry==1.8.6.2

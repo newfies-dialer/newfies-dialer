@@ -115,7 +115,7 @@ def voipcall_report_grid(request):
 
     voipcall_list = VoIPCall.objects.values('id', 'user__username',
                     'used_gateway__name', 'callid', 'request_uuid', 'callerid',
-                    'phone_number', 'starting_date', 'sessiontime',
+                    'phone_number', 'starting_date', 'duration',
                     'disposition').filter(**kwargs)
 
     count = voipcall_list.count()
@@ -135,7 +135,7 @@ def voipcall_report_grid(request):
                        row['callerid'],
                        row['phone_number'],
                        row['starting_date'].strftime('%Y-%m-%d %H:%M:%S'),
-                       str(timedelta(seconds=row['sessiontime'])),
+                       str(timedelta(seconds=row['duration'])),
                        get_disposition_name(row['disposition']),
                        ]} for row in voipcall_list]
 
@@ -198,19 +198,19 @@ def voipcall_report(request):
     total_data = VoIPCall.objects.extra(select=select_data)\
                  .values('starting_date')\
                  .filter(**kwargs).annotate(Count('starting_date'))\
-                 .annotate(Sum('sessiontime'))\
-                 .annotate(Avg('sessiontime'))\
+                 .annotate(Sum('duration'))\
+                 .annotate(Avg('duration'))\
                  .order_by('-starting_date')
 
     # Following code will count total voip calls, duration
     if total_data.count() != 0:
         max_duration = \
-        max([x['sessiontime__sum'] for x in total_data])
+        max([x['duration__sum'] for x in total_data])
         total_duration = \
-        sum([x['sessiontime__sum'] for x in total_data])
+        sum([x['duration__sum'] for x in total_data])
         total_calls = sum([x['starting_date__count'] for x in total_data])
         total_avg_duration = \
-        (sum([x['sessiontime__avg']\
+        (sum([x['duration__avg']\
         for x in total_data])) / total_data.count()
     else:
         max_duration = 0
@@ -246,7 +246,7 @@ def export_voipcall_report(request):
         * ``request.session['voipcall_record_qs']`` - stores voipcall query set
 
     **Exported fields**: [user, callid, callerid, phone_number, starting_date,
-                          sessiontime, disposition, used_gateway]
+                          duration, disposition, used_gateway]
     """
     # get the response object, this can be used as a stream.
     response = HttpResponse(mimetype='text/csv')
@@ -259,7 +259,7 @@ def export_voipcall_report(request):
     qs = request.session['voipcall_record_qs']
 
     writer.writerow(['user', 'callid', 'callerid', 'phone_number',
-                     'starting_date', 'sessiontime',
+                     'starting_date', 'duration',
                      'disposition', 'used_gateway'])
     for i in qs:
         writer.writerow([i.user,
@@ -267,7 +267,7 @@ def export_voipcall_report(request):
                          i.callerid,
                          i.phone_number,
                          i.starting_date,
-                         i.sessiontime,
+                         i.duration,
                          get_disposition_name(i.disposition),
                          i.used_gateway,
                          ])

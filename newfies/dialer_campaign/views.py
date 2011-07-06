@@ -1102,13 +1102,15 @@ def campaign_grid(request):
                       '<a href="del/' + str(row['id']) + '/" class="icon" ' \
                       + delete_style + ' onClick="return get_alert_msg(' +
                       str(row['id'])
-                      + ');" title="Delete campaign">&nbsp;</a>' +
-                      get_url_campaign_status(row['id'], row['status'])),
+                      + ');" title="Delete campaign">&nbsp;</a>'
+                      #+ get_url_campaign_status(row['id'], row['status']) # dilla test
+                      ),
              ]}for row in campaign_list ]
 
     data = {'rows': rows,
             'page': page,
             'total': count}
+
     return HttpResponse(simplejson.dumps(data), mimetype='application/json',
                         content_type="application/json")
 

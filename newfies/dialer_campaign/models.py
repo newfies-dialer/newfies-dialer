@@ -216,7 +216,7 @@ class Campaign(Model):
                         verbose_name="Campaign Code",
                         help_text=_('This code is autogenerate by the \
                         platform, this is used to identify the campaign'),
-                        default=get_unique_code(length=5))
+                        default=(lambda:get_unique_code(length=5)))
     name = models.CharField(max_length=100)
     description = models.TextField(verbose_name='Description', blank=True,
                   null=True, help_text=_("Short description of the Campaign"))

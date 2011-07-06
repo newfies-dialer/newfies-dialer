@@ -379,7 +379,7 @@ class cdrHandler(BaseHandler):
 
             curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/store_cdr/?uuid=48092924-856d-11e0-a586-0147ddac9d3e -d "cdr=thisismyxmlcdr"
 
-            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/store_cdr/ -d 'cdr=<?xml version="1.0"?><cdr><variables><plivo_request_uuid>7a641180-a742-11e0-b6b3-00231470a30c</plivo_request_uuid><duration>3</duration></variables></cdr>'
+            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/store_cdr/ -d 'cdr=<?xml version="1.0"?><cdr><other></other><variables><plivo_request_uuid>7a641180-a742-11e0-b6b3-00231470a30c</plivo_request_uuid><duration>3</duration></variables><notvariables><plivo_request_uuid>TESTc</plivo_request_uuid><duration>5</duration></notvariables></cdr>'
 
         **Example Response**::
 
@@ -400,7 +400,13 @@ class cdrHandler(BaseHandler):
         element = ET.XML(opt_cdr)
         for i in element:
             for j in i[:]:
+                if j.tag=='duration':
+                    duration=j.text
+                if j.tag=='plivo_request_uuid':
+                    plivo_request_uuid=j.text
                 data.append((j.tag, j.text))
+
+        print plivo_request_uuid, duration
 
         if not opt_cdr:
             resp = rc.BAD_REQUEST

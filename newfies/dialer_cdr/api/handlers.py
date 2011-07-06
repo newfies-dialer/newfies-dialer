@@ -399,8 +399,9 @@ class cdrHandler(BaseHandler):
         from xml.etree import ElementTree as ET
         element = ET.XML(opt_cdr)
         for i in element:
-            for j in i[:]:
-                data.append((j.tag, j.text))
+            if i.tag == 'variables':
+                for j in i[:]:
+                    data.append((j.tag, j.text))
 
         if not opt_cdr:
             resp = rc.BAD_REQUEST

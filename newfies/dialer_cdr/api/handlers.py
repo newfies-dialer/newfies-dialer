@@ -183,7 +183,7 @@ class callrequestHandler(BaseHandler):
         **Attributes**:
 
             * ``status`` - Status Values (1:Pending, 2:Failure, 3:Retry, \
-                           4:Success, 5:Abort, 6:Pause, 7:Process)
+                        4:Success, 5:Abort, 6:Pause, 7:Process, 8: In-Progress)
 
         **CURL Usage**::
 

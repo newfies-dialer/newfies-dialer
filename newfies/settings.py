@@ -194,8 +194,8 @@ LOGIN_URL = '/pleaselog/'
 DICTIONARY = "/usr/share/dict/words"
 DILLA_USE_LOREM_IPSUM = False  # set to True ignores dictionary
 DILLA_APPS = [
-                #'auth',
-                'dialer_gateway',
+                'auth',
+                #'dialer_gateway',
                 'voip_app',
                 'dialer_campaign',
                 'dialer_cdr',

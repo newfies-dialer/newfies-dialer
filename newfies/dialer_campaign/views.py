@@ -91,14 +91,16 @@ def customer_dashboard(request, on_index=None):
 
         call_count = VoIPCall.objects\
         .filter(callrequest__campaign=i.id,
-                user=request.user).count() #.annotate(Sum('duration'))
-
+                user=request.user)#.count() #.annotate(Sum('duration'))
+        print call_count
         total_camp_callreq.append((i.id, int(callrequest_count), call_count))
 
 
     template = 'frontend/dashboard.html'
+    form = DashboardForm(request.user)
     data = {
         'module': current_view(request),
+        'form': form,
         'running_campaign_count': running_campaign_count,
         'total_of_phonebook_contacts': total_of_phonebook_contacts,
         'campaign_phonebbok_active_contact_count': \

@@ -150,6 +150,16 @@ CHOICE_TYPE = (
     (4, _('Ends with')),
 )
 
+SEARCH_TYPE = (
+    (1, _('Last 30 days')),
+    (2, _('Last 7 days')),
+    (3, _('Yesterday')),
+    (4, _('Last 24 hours')),
+    (5, _('Last 12 hours')),
+    (6, _('Last 6 hours')),
+    (7, _('Last hour')),
+)
+
 
 class ContactSearchForm(forms.Form):
     """Search Form on Contact List"""
@@ -176,3 +186,23 @@ class ContactSearchForm(forms.Form):
             for i in pb_list:
                 list.append((i[0], i[1]))
             self.fields['phonebook'].choices = list
+
+
+class DashboardForm(forms.Form):
+    """Dashboard Form"""
+    campaign = forms.ChoiceField(label=_('Running Campaign'), required=False)
+    search_type = forms.ChoiceField(label=_('Type'), required=False, initial=2,
+                      choices=SEARCH_TYPE)
+
+
+    def __init__(self, user, *args, **kwargs):
+        super(DashboardForm, self).__init__(*args, **kwargs)
+        self.fields.keyOrder = ['campaign', 'search_type']
+         # To get user's running campaign list
+        if user:
+            list = []
+            list.append((0, '---'))
+            pb_list = field_list("campaign", user)
+            for i in pb_list:
+                list.append((i[0], i[1]))
+            self.fields['campaign'].choices = list

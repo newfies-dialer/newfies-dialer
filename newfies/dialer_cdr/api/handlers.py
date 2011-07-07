@@ -220,7 +220,7 @@ class callrequestHandler(BaseHandler):
 
 class answercallHandler(BaseHandler):
     """This API server to answer call"""
-    allowed_methods = ('POST', 'GET',)
+    allowed_methods = ('POST',)
 
     def create(self, request):
         """API to answer the call
@@ -283,29 +283,6 @@ class answercallHandler(BaseHandler):
 
         #return [ {'Speak': 'Hello World'}, {'Dial': {'Number': '1000'}, },]
         return [ {'Speak': 'System error'},]
-
-    def read(self, request):
-        """API to answer the call
-
-        **Attributes**:
-
-            * ``RequestUUID`` - A unique identifier for the API request.
-
-        **CURL Usage**::
-
-            curl -u username:password -i -H "Accept: application/json" -X GET http://127.0.0.1:8000/api/dialer_cdr/answercall/ -d "RequestUUID=48092924-856d-11e0-a586-0147ddac9d3e"
-
-        **Example Response**::
-
-            {
-                "result": "OK",
-            }
-        """
-
-        # return <Speak>Hello World</Speak><Dial><Number>1000</Number></Dial>
-
-        return [ {'Speak': 'Hello World'},
-                 {'Dial': {'Number': '1000'}, },]
 
 
 class hangupcallHandler(BaseHandler):

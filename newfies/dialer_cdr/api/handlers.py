@@ -242,9 +242,9 @@ class answercallHandler(BaseHandler):
 
         attrs = self.flatten_dict(request.POST)
 
-        opt_RequestUUID = get_attribute(attrs, 'RequestUUID')
+        opt_ALegRequestUUID = get_attribute(attrs, 'ALegRequestUUID')
 
-        if not opt_RequestUUID:
+        if not opt_ALegRequestUUID:
             resp = rc.BAD_REQUEST
             resp.write("Wrong parameters!")
             return resp
@@ -253,9 +253,9 @@ class answercallHandler(BaseHandler):
         try:
             #TODO: If we update the Call to success here we should not do it in hangup url
             obj_callrequest = \
-                Callrequest.objects.get(request_uuid=opt_RequestUUID)
+                Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
             #TODO : use constant
-            Callrequest.status = 4 # SUCCESS
+            Callrequest.status = 8 # IN-PROGRESS
             obj_callrequest.save()
         except:
             resp = rc.NOT_FOUND

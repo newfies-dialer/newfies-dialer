@@ -17,6 +17,7 @@ CALLREQUEST_STATUS = (
     (5, u'ABORT'),
     (6, u'PAUSE'),
     (7, u'PROCESS'),
+    (8, u'IN-PROGRESS'),
 )
 
 CALLREQUEST_TYPE = (

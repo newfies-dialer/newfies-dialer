@@ -78,7 +78,7 @@ class Gateway(Model):
     removeprefix = models.CharField(verbose_name=_('Remove prefix'),
                    max_length=60, blank=True)
     gateways = models.CharField(max_length=500,
-                   help_text=_('"user/,user", # Gateway string to try dialing\
+                   help_text=_('"user,user", # Gateway string to try dialing\
                    separated by comma. First in list will be tried first'))
     gateway_codecs = models.CharField(max_length=500, blank=True,
                    help_text=_('"\'PCMA,PCMU\',\'PCMA,PCMU\'", # Codec string\

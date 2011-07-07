@@ -231,7 +231,7 @@ class answercallHandler(BaseHandler):
 
         **CURL Usage**::
 
-            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/answercall/ -d "RequestUUID=48092924-856d-11e0-a586-0147ddac9d3e"
+            curl -u username:password -i -H "Accept: application/json" -X POST http://127.0.0.1:8000/api/dialer_cdr/answercall/ -d "ALegRequestUUID=48092924-856d-11e0-a586-0147ddac9d3e"
 
         **Example Response**::
 
@@ -239,7 +239,6 @@ class answercallHandler(BaseHandler):
                 "result": "OK",
             }
         """
-        return [ {'Speak': 'System error'},]
         
         attrs = self.flatten_dict(request.POST)
 
@@ -271,7 +270,15 @@ class answercallHandler(BaseHandler):
         # get the VoIP application
         if obj_callrequest.voipapp.type == 1:
             #Dial
-            return [ {'Dial': {'Number': obj_callrequest.voipapp.data}, },]
+            timelimit = obj_callrequest.timelimit
+            callerid = obj_callrequest.callerid
+            gatewaytimeouts = obj_callrequest.timeout
+            gateways = obj_callrequest.voipapp.gateway.gateways
+            dial_command = 'Dial timeLimit="%s" callerId="%s"' % \
+                                (timelimit, callerid)
+            number_command = 'Number gateways="%s" gatewayTimeouts="%s"' % \
+                                (gateways, gatewaytimeouts)
+            return [ {dial_command: {number_command: obj_callrequest.voipapp.data}, },]
         elif obj_callrequest.voipapp.type == 2:
             #PlayAudio
             return [ {'Play': obj_callrequest.voipapp.data},]
@@ -283,7 +290,11 @@ class answercallHandler(BaseHandler):
             return [ {'Speak': obj_callrequest.voipapp.data},]
 
         #return [ {'Speak': 'Hello World'}, {'Dial': {'Number': '1000'}, },]
-        return [ {'Speak': 'System error'},]
+        #return [ {'Speak': 'System error'},]
+
+        resp = rc.NOT_IMPLEMENTED
+        resp.write('Error with VoIP App type!')
+        return resp
 
 
 class hangupcallHandler(BaseHandler):

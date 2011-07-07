@@ -17,7 +17,7 @@ from dialer_campaign.models import *
 from dialer_campaign.forms import *
 from dialer_campaign.function_def import *
 from dialer_campaign.tasks import collect_subscriber
-from dialer_cdr.models import Callrequest
+from dialer_cdr.models import *
 from inspect import stack, getmodule
 from datetime import *
 import urllib
@@ -83,11 +83,17 @@ def customer_dashboard(request, on_index=None):
         total_record.append((i.id, int(campaign_subscriber)))
         reached_contact += campaign_subscriber
 
+        # Review Logic 
         callrequest_count = Callrequest.objects\
         .filter(campaign=i.id,
+                user=request.user,
                 updated_date__range=(start_date, end_date)).count()
-        
-        total_camp_callreq.append((i.id, int(callrequest_count), i.campaign_code))
+
+        call_count = VoIPCall.objects\
+        .filter(callrequest__campaign=i.id,
+                user=request.user).count() #.annotate(Sum('duration'))
+
+        total_camp_callreq.append((i.id, int(callrequest_count), call_count))
 
 
     template = 'frontend/dashboard.html'
@@ -1004,7 +1010,7 @@ def get_url_campaign_status(id, status):
     + 'newfies/icons/control_pause.png);"'
     control_abort_style = \
     'style="text-decoration:none;background-image:url(' + settings.STATIC_URL\
-    + 'newfies/icons/control_abort.png);"'
+    + 'newfies/icons/abort.png);"'
     control_stop_style = \
     'style="text-decoration:none;background-image:url(' + settings.STATIC_URL\
     + 'newfies/icons/control_stop.png);"'
@@ -1018,7 +1024,7 @@ def get_url_campaign_status(id, status):
     + 'newfies/icons/control_pause_blue.png);"'
     control_abort_blue_style = \
     'style="text-decoration:none;background-image:url(' + settings.STATIC_URL \
-    + 'newfies/icons/control_abort_blue.png);"'
+    + 'newfies/icons/abort.png);"' # control_abort_blue
     control_stop_blue_style = \
     'style="text-decoration:none;background-image:url(' + settings.STATIC_URL \
     + 'newfies/icons/control_stop_blue.png);"'

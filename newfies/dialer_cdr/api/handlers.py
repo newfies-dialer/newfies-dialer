@@ -2,6 +2,7 @@ from piston.handler import BaseHandler
 from piston.emitters import *
 from piston.utils import rc, require_mime, require_extended, throttle
 from dialer_cdr.models import Callrequest, VoIPCall
+from voip_app.models import VoipApp
 from datetime import datetime
 from random import choice
 from random import seed
@@ -239,7 +240,6 @@ class answercallHandler(BaseHandler):
             }
         """
 
-        """
         attrs = self.flatten_dict(request.POST)
 
         opt_RequestUUID = get_attribute(attrs, 'RequestUUID')
@@ -251,33 +251,38 @@ class answercallHandler(BaseHandler):
 
         # Update the Callrequest to Status Ok : A-Leg at least is fine
         try:
+            #TODO: If we update the Call to success here we should not do it in hangup url
             obj_callrequest = \
-                Callrequest.objects.get(uniqueid=opt_RequestUUID)
+                Callrequest.objects.get(request_uuid=opt_RequestUUID)
             #TODO : use constant
             Callrequest.status = 4 # SUCCESS
             obj_callrequest.save()
         except:
-            return rc.NOT_FOUND
+            resp = rc.NOT_FOUND
+            resp.write('Call Request cannot be found!')
+            return resp
 
         if not obj_callrequest.voipapp:
-            #TODO : change the rc.BAD_REQUEST to a server error
-            resp = rc.BAD_REQUEST
+            resp = rc.NOT_IMPLEMENTED
             resp.write('This Call Request is not attached to a VoIP App')
             return resp
 
         # get the VoIP application
         if obj_callrequest.voipapp.type == 1:
-            #Redirect
-            RESTXML = '<xml redirect>'
+            #Dial
+            return [ {'Dial': {'Number': obj_callrequest.voipapp.data}, },]
         elif obj_callrequest.voipapp.type == 2:
             #PlayAudio
-            RESTXML = '<xml playaudio>'
+            return [ {'Play': obj_callrequest.voipapp.data},]
         elif obj_callrequest.voipapp.type == 3:
             #Conference
-            RESTXML = '<xml conference>'
-        """
+            return [ {'Conference': obj_callrequest.voipapp.data},]
+        elif obj_callrequest.voipapp.type == 4:
+            #Speak
+            return [ {'Speak': obj_callrequest.voipapp.data},]
 
-        return [ {'Speak': 'Hello World'}, {'Dial': {'Number': '1000'}, },]
+        #return [ {'Speak': 'Hello World'}, {'Dial': {'Number': '1000'}, },]
+        return [ {'Speak': 'System error'},]
 
     def read(self, request):
         """API to answer the call

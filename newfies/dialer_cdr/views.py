@@ -129,19 +129,17 @@ def voipcall_report_grid(request):
                     settings.STATIC_URL + 'newfies/icons/delete.png);"'
 
     rows = [{'id': row['id'],
-             'cell': [ row['user__username'],
-                       row['used_gateway__name'],
+             'cell': [ row['used_gateway__name'],
                        row['callid'],
-                       row['request_uuid'],
                        row['callerid'],
                        row['phone_number'],
                        row['starting_date'].strftime('%Y-%m-%d %H:%M:%S'),
                        #str(timedelta(seconds=row['duration'])), # original
                        row['duration'], # dilla test
-                       #row['billsec'],
+                       row['billsec'],
                        get_disposition_name(row['disposition']),
-                       #row['hangup_cause'],
-                       #row['hangup_cause_q850'],
+                       row['hangup_cause'],
+                       row['hangup_cause_q850'],
                        ]} for row in voipcall_list]
 
     data = {'rows': rows,

@@ -46,7 +46,7 @@ class VoipApp(Model):
            blank=True, null=True)
     gateway = models.ForeignKey(Gateway, null=True, blank=True,
                     help_text=_("Gateway used if we redirect the call"))
-    data = models.CharField(max_length=200, null=True, blank=True,
+    data = models.CharField(max_length=500, null=True, blank=True,
                     help_text=_("Data will be using Accordingly according to \
                     the type of App. For instance, if type is DIAL, we will \
                     dial the phonenumber stored in 'data', if type is \

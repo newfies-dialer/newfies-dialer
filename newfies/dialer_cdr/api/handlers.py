@@ -239,7 +239,8 @@ class answercallHandler(BaseHandler):
                 "result": "OK",
             }
         """
-
+        return [ {'Speak': 'System error'},]
+        
         attrs = self.flatten_dict(request.POST)
 
         opt_ALegRequestUUID = get_attribute(attrs, 'ALegRequestUUID')

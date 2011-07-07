@@ -19,7 +19,7 @@ project_name = os.path.split(g[0])[0]
 
 
 #TODO Replace the environement
-site_package_dirs  = glob.glob('/home/areski/.virtualenvs/newfies/lib/python2.6/site-packages')
+site_package_dirs  = glob.glob('/home/areski/.virtualenvs/newfies-dialer/lib/python2.7/site-packages')
 #site_package_dirs  = glob.glob(here + '/_env/lib/python*/site-packages')
 src_dirs = glob.glob(here + '/_env/src/*')
 

@@ -205,7 +205,6 @@ class VoIPCall(models.Model):
 
     def min_duration(self):
         """Return duration in min & sec"""
-        self.duration = 120 # dilla test
         min = int(self.duration / 60)
         sec = int(self.duration % 60)
         return "%02d" % min + ":" + "%02d" % sec

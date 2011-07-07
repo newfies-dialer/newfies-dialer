@@ -129,11 +129,11 @@ def voipcall_report_grid(request):
                     settings.STATIC_URL + 'newfies/icons/delete.png);"'
 
     rows = [{'id': row['id'],
-             'cell': [ row['used_gateway__name'],
+             'cell': [ row['starting_date'].strftime('%Y-%m-%d %H:%M:%S'),
                        row['callid'],
                        row['callerid'],
                        row['phone_number'],
-                       row['starting_date'].strftime('%Y-%m-%d %H:%M:%S'),
+                       row['used_gateway__name'],
                        #str(timedelta(seconds=row['duration'])), # original
                        row['duration'], # dilla test
                        row['billsec'],

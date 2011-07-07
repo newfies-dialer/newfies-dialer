@@ -70,11 +70,11 @@ $("#flex1").flexigrid({
     method: 'GET',
     dataType: 'json',
 	colModel : [
-        {display: 'Gateway used', name: 'used_gateway', width: 100, sortable: true, align: 'center'},
+        {display: 'Start date', name: 'starting_date', width: 100, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
         {display: 'Call ID', name: 'callid', width: 100, sortable: true, align: 'center'},
         {display: 'Caller ID', name: 'callerid', width: 80, sortable: true, align: 'center'},
         {display: 'Phone No.', name: 'phone_number', width: 100, sortable: true, align: 'center'},
-        {display: 'Start date', name: 'starting_date', width: 100, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
+        {display: 'Gateway used', name: 'used_gateway', width: 100, sortable: true, align: 'center'},
         {display: 'Duration', name: 'duration', width: 60, sortable: true, align: 'center'},
         {display: 'Bill Sec', name: 'billsec', width: 60, sortable: true, align: 'center'},
         {display: 'Disposition', name: 'disposition', width: 60, sortable: true, align: 'center'},

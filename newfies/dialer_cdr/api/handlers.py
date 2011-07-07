@@ -346,7 +346,7 @@ class hangupcallHandler(BaseHandler):
 
         try:
             callrequest = \
-            Callrequest.objects.get(request_uuid=opt_request_uuid)
+                Callrequest.objects.get(request_uuid=opt_request_uuid)
             # 2 / FAILURE ; 3 / RETRY ; 4 / SUCCESS
             if opt_hangup_cause=='NORMAL_CLEARING':
                 callrequest.status = 4 # Success
@@ -420,17 +420,20 @@ class cdrHandler(BaseHandler):
         #tree = ET.parse("/tmp/cdr.xml")
         lst = tree.find("variables")
 
-        list_variables = ['plivo_request_uuid', 'plivo_answer_url', 'plivo_app', 'direction', 'endpoint_disposition',
-                          'hangup_cause', 'hangup_cause_q850', 'duration', 'billsec', 'progresssec', 'answersec',
-                          'waitsec', 'mduration', 'billmsec', 'progressmsec', 'answermsec', 'waitmsec',
-                          'progress_mediamsec', 'call_uuid', 'origination_caller_id_number', 'caller_id',
-                          'answer_epoch', 'answer_uepoch']
+        cdr_vars = ['plivo_request_uuid', 'plivo_answer_url', 'plivo_app',
+                    'direction', 'endpoint_disposition', 'hangup_cause',
+                    'hangup_cause_q850', 'duration', 'billsec', 'progresssec',
+                    'answersec', 'waitsec', 'mduration', 'billmsec',
+                    'progressmsec', 'answermsec', 'waitmsec',
+                    'progress_mediamsec', 'call_uuid',
+                    'origination_caller_id_number', 'caller_id',
+                    'answer_epoch', 'answer_uepoch']
 
         for j in lst:
-            if j.tag in list_variables:
+            if j.tag in cdr_vars:
                 data[j.tag] = j.text
 
-        for element in list_variables:
+        for element in cdr_vars:
             print element
             if not data.has_key(element):
                 data[element] = None

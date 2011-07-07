@@ -1103,7 +1103,8 @@ def campaign_grid(request):
                       + delete_style + ' onClick="return get_alert_msg(' +
                       str(row['id'])
                       + ');" title="Delete campaign">&nbsp;</a>'
-                      #+ get_url_campaign_status(row['id'], row['status']) # dilla test
+                      + get_url_campaign_status(row['id'],
+                        4 if row['status'] == 3 else row['status']) # dilla test
                       ),
              ]}for row in campaign_list ]
 

@@ -12,15 +12,10 @@
 <input type="submit" name="submit" value="Submit">
 </p>
 <P>
-    {% for i in total_callrequest %}
-        {{ i.updated_date  }}<br/>
-    {% endfor %}
----------------------------------------<br/>
     {% for j in total_call %}
-        {{ j.callrequest  }}<br/>
+        {{ j  }}<br/>
     {% endfor %}
-----------------------------------------<br/>
-   total callrequest : {{ total_callrequest_count }} | duration : {{ total_call_duration }}</P>
+</P>
 </form>
 <table align="center" id="rounded-corner">
         <thead>

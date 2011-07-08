@@ -86,21 +86,18 @@ def customer_dashboard(request, on_index=None):
 
         end_date = datetime.today()
         start_date = calculate_date(search_type)
-
-        total_callrequest = Callrequest.objects\
-        .filter(campaign=selected_campaign)
-        total_callrequest_count = total_callrequest.count()
-        #updated_date__range=(start_date, end_date)
-
-        #print total_callrequest
+        #print start_date
+        #print end_date
+        select_data = \
+            {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
         total_call = VoIPCall.objects\
-        .filter(callrequest__campaign=selected_campaign,
-                duration__isnull=False)\
-        .values('duration', 'callrequest', 'callrequest__campaign')\
-        .annotate(Sum('duration'))#.count()#
-        #updated_date__range=(start_date, end_date)
-        total_call_duration = sum([x['duration__sum'] for x in total_call])
-        #print total_call_duration
+                     .filter(callrequest__campaign=selected_campaign,
+                            duration__isnull=False,
+                            starting_date__range=(start_date, end_date))\
+                     .extra(select=select_data)\
+                     .values('starting_date').annotate(Sum('duration'))\
+                     .annotate(Count('starting_date'))\
+                     .order_by('starting_date')
 
 
     # Contacts which are successfully called for running campaign
@@ -113,9 +110,6 @@ def customer_dashboard(request, on_index=None):
         total_record.append((i.id, int(campaign_subscriber)))
         reached_contact += campaign_subscriber
 
-        #total_camp_callreq.append((i.id, int(callrequest_count), call_count))
-
-
     template = 'frontend/dashboard.html'
     data = {
         'module': current_view(request),
@@ -127,12 +121,7 @@ def customer_dashboard(request, on_index=None):
         'reached_contact': reached_contact,
         'total_record': sorted(total_record, key=lambda total: total[0]),
         'notice_count': notice_count(request),
-        #'total_camp_callreq': sorted(total_camp_callreq,
-        #                             key=lambda total: total[0]),
-        'total_callrequest': total_callrequest,
-        'total_callrequest_count': total_callrequest_count,
         'total_call': total_call,
-        'total_call_duration': total_call_duration,
     }
     if on_index == 'yes':
         return data

@@ -137,6 +137,16 @@ wget --no-check-certificate $FS_CONF_PATH/default.xml -O default.xml
 [ -f public.xml ] && mv public.xml public.xml.bak
 wget --no-check-certificate $FS_CONF_PATH/public.xml -O public.xml
 
+
+#Configure XML CDR
+cd $FS_INSTALLED_PATH/conf/autoload_configs/
+
+# Place Newfies XML CDR conf in FreeSWITCH
+[ -f xml_cdr.conf.xml ] && mv xml_cdr.conf.xml xml_cdr.conf.xml.bak
+wget --no-check-certificate $FS_CONF_PATH/xml_cdr.conf.xml -O xml_cdr.conf.xml
+
+
+
 cd $CURRENT_PATH
 
 # Install Complete

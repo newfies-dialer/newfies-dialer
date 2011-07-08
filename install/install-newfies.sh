@@ -263,7 +263,6 @@ func_install_frontend(){
     #correct the above file
     sed -i "s/@/'/g"  $APACHE_CONF_DIR/newfies.conf
 
-
     #Fix permission on python-egg
     mkdir $INSTALL_DIR/.python-eggs
     chmod 777 $INSTALL_DIR/.python-eggs
@@ -278,14 +277,15 @@ func_install_frontend(){
         ;;
     esac
 
-
     IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
     IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
 
     echo ""
     echo ""
-    echo "Installation Web Newfies Completed"
     echo ""
+    echo "**************************************************************"
+    echo "Congratulations, Newfies Web Application is now installed!"
+    echo "**************************************************************"
     echo ""
     echo "Please log on to Newfies at "
     echo "http://$IPADDR:9080"
@@ -295,6 +295,10 @@ func_install_frontend(){
     echo "Yours"
     echo "The Star2Billing Team"
     echo "http://www.star2billing.com and http://www.newfies-dialer.org/"
+    echo
+    echo "**************************************************************"
+    echo ""
+    echo ""
 }
 
 
@@ -341,19 +345,24 @@ func_install_backend() {
     #python $INSTALL_DIR/manage.py celeryd -E -B -l debug
 
     /etc/init.d/celeryd start
-
     /etc/init.d/celerybeat start
 
-
     echo ""
     echo ""
-    echo "Installation Newfies Backend Complete"
+    echo ""
+    echo "**************************************************************"
+    echo "Congratulations, Newfies Backend is now installed!"
+    echo "**************************************************************"
     echo ""
     echo ""
     echo "Thank you for installing Newfies"
     echo "Yours"
     echo "The Star2Billing Team"
     echo "http://www.star2billing.com and http://www.newfies-dialer.org/"
+    echo
+    echo "**************************************************************"
+    echo ""
+    echo ""
 }
 
 

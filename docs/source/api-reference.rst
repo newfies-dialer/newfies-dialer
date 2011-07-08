@@ -20,5 +20,5 @@ Contents:
     ./api-doc/contact_handler
     ./api-doc/bulkcontact_handler
     ./api-doc/callrequest_handler
-    
+    ./api-doc/cdr_handler
 

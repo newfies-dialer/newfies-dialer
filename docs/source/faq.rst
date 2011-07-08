@@ -33,8 +33,6 @@ Why should I consider using Newfies-Dialer?
 
 Newfies-dialer is targeted at the following use cases:
 
-* ....
-
 
 What's the history behind Newfies-dialer?
 -----------------------------------------

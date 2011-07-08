@@ -51,8 +51,7 @@ level of robustness, then you might want to take a look at Redis - it
 installs easily, runs relatively lean, and can be monitored and
 maintained without a lot of fuss.
 
-See `Installing RabbitMQ`_ over at RabbitMQ's website. For Mac OS X
-see `Installing RabbitMQ on OS X`_.
+See `Installing RabbitMQ`_ over at RabbitMQ's website.
 
 .. _`Installing RabbitMQ`: http://www.rabbitmq.com/install.html
 

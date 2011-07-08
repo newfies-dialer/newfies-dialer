@@ -377,7 +377,7 @@ class cdrHandler(BaseHandler):
 
         **Attributes**:
 
-            * ``params`` -
+            * ``cdr`` - XML string assign from Telephony engine
 
         **CURL Usage**::
 
@@ -388,12 +388,31 @@ class cdrHandler(BaseHandler):
         **Example Response**::
 
             {
-                "status": 'OK'
+              "phone_number":"123456789",
+              "answersec":20,
+              "callerid":"8430954385",
+              "progresssec":24,
+              "callid":"areski",
+              "request_uuid":"d13c7314-a89e-11e0-964f-000c296bd875",
+              "used_gateway":1,
+              "waitsec":26,
+              "hangup_cause_q850":"thwarting ",
+              "callrequest":47,
+              "user":1,
+              "disposition":"ANSWER",
+              "duration":60,
+              "billsec":55,
+              "starting_date":"2011-07-07 08:58:52",
+              "hangup_cause":"",
+              "dialcode":34
+
             }
 
         **Error**:
 
             * Timeout
+            * error get Callrequest xxx
+            * ValueError exception
         """
         attrs = self.flatten_dict(request.POST)
 

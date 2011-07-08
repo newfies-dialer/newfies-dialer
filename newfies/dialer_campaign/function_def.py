@@ -2,6 +2,7 @@ from dialer_campaign.models import Phonebook, Campaign
 from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting
 from datetime import *
+from dateutil.relativedelta import *
 import calendar
 import string
 import urllib
@@ -228,3 +229,32 @@ def striplist(l):
     stripped of extra whitespace.
     """
     return([x.strip() for x in l])
+
+
+def calculate_date(search_type):
+    """calculate date"""
+    end_date = datetime.today()
+    search_type = int(search_type)
+    # Last 30 days
+    if search_type == 1:
+        start_date = end_date+relativedelta(days=-int(30))
+    # Last 7 days
+    if search_type == 2:
+        start_date = end_date+relativedelta(days=-int(7))
+    # Yesterday
+    if search_type == 3:
+        start_date = end_date+relativedelta(days=-int(1))
+    # Last 24 hours
+    if search_type == 4:
+        start_date = end_date+relativedelta(hours=-int(24))
+    # Last 12 hours
+    if search_type == 5:
+        start_date = end_date+relativedelta(hours=-int(12))
+    # Last 6 hours
+    if search_type == 6:
+        start_date = end_date+relativedelta(hours=-int(6))
+    # Last hour
+    if search_type == 7:
+        start_date = end_date+relativedelta(hours=-int(1))
+
+    return start_date

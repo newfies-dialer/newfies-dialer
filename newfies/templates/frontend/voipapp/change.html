@@ -17,7 +17,7 @@
     <fieldset>
     <legend>VoIP App</legend>
         <table align=center border=1>
-            {% get_fieldset name,description,status,type,gateway as voip_app_fields from form %}
+            {% get_fieldset name,description,status,type,gateway,data as voip_app_fields from form %}
             {{ voip_app_fields.as_table }}
         </table>
     </fieldset>

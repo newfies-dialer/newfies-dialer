@@ -42,9 +42,10 @@ $("#flex1").flexigrid({
 		{display: 'Id', name: 'id', width: 40, sortable: true, align: 'center'},
         {display: 'Name', name: 'name', width: 100, sortable: true, align: 'center'},
         {display: 'Description', name: 'description', width: 160, sortable: true, align: 'center'},
-        {display: 'Type', name: 'type', width: 160, sortable: true, align: 'center'},
-        {display: 'Gateway', name: 'gateway__name', width: 160, sortable: true, align: 'center'},
-        {display: 'Date', name: 'updated_date', width: 100, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},       
+        {display: 'Type', name: 'type', width: 50, sortable: true, align: 'center'},
+        {display: 'Gateway', name: 'gateway__name', width: 100, sortable: true, align: 'center'},
+        {display: 'Data', name: 'data', width: 100, sortable: true, align: 'center'},
+        {display: 'Date', name: 'updated_date', width: 100, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
         {display: 'Action', name: '', width : 50, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
 		],
     buttons : [
@@ -59,7 +60,7 @@ $("#flex1").flexigrid({
 	useRp: true,
 	rp: 10,
 	showTableToggleBtn: true,
-	width: 910,
+	width: 850,
 	height: 265,
     //preProcess: formatContactResults,
     onSuccess: function(data){

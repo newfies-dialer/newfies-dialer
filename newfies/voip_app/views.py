@@ -44,8 +44,9 @@ def voipapp_grid(request):
         sortorder_sign = '-'
 
     voipapp_list = VoipApp.objects\
-                     .values('id', 'name', 'user', 'description', 'type',
-                     'gateway__name', 'updated_date').filter(user=request.user)
+                   .values('id', 'name', 'user', 'description', 'type',
+                           'data', 'gateway__name',
+                           'updated_date').filter(user=request.user)
 
     count = voipapp_list.count()
     voipapp_list = \
@@ -64,6 +65,7 @@ def voipapp_grid(request):
                       row['description'],
                       get_voipapp_type_name(row['type']),
                       row['gateway__name'],
+                      row['data'],
                       row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
                       '<a href="' + str(row['id']) + '/" class="icon" ' \
                       + update_style + ' title="Update VoIP App">&nbsp;</a>' +

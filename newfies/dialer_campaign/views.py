@@ -73,6 +73,36 @@ def customer_dashboard(request, on_index=None):
     start_date = datetime(today.year, today.month, today.day, 0, 0, 0, 0)
     end_date = datetime(today.year, today.month, today.day, 23, 59, 59, 999999)
 
+    # TODO : Review logic
+    form = DashboardForm(request.user)
+    total_callrequest = {}
+    total_callrequest_count = 0
+    total_call = {}
+    total_call_duration = 0
+    if request.method == 'POST':
+        form = DashboardForm(request.user, request.POST)
+        selected_campaign = request.POST['campaign']
+        search_type = request.POST['search_type']
+
+        end_date = datetime.today()
+        start_date = calculate_date(search_type)
+
+        total_callrequest = Callrequest.objects\
+        .filter(campaign=selected_campaign)
+        total_callrequest_count = total_callrequest.count()
+        #updated_date__range=(start_date, end_date)
+
+        #print total_callrequest
+        total_call = VoIPCall.objects\
+        .filter(callrequest__campaign=selected_campaign,
+                duration__isnull=False)\
+        .values('duration', 'callrequest', 'callrequest__campaign')\
+        .annotate(Sum('duration'))#.count()#
+        #updated_date__range=(start_date, end_date)
+        total_call_duration = sum([x['duration__sum'] for x in total_call])
+        #print total_call_duration
+
+
     # Contacts which are successfully called for running campaign
     reached_contact = 0
     for i in running_campaign:
@@ -83,21 +113,10 @@ def customer_dashboard(request, on_index=None):
         total_record.append((i.id, int(campaign_subscriber)))
         reached_contact += campaign_subscriber
 
-        # Review Logic 
-        callrequest_count = Callrequest.objects\
-        .filter(campaign=i.id,
-                user=request.user,
-                updated_date__range=(start_date, end_date)).count()
-
-        call_count = VoIPCall.objects\
-        .filter(callrequest__campaign=i.id,
-                user=request.user)#.count() #.annotate(Sum('duration'))
-        print call_count
-        total_camp_callreq.append((i.id, int(callrequest_count), call_count))
+        #total_camp_callreq.append((i.id, int(callrequest_count), call_count))
 
 
     template = 'frontend/dashboard.html'
-    form = DashboardForm(request.user)
     data = {
         'module': current_view(request),
         'form': form,
@@ -107,9 +126,13 @@ def customer_dashboard(request, on_index=None):
         campaign_phonebbok_active_contact_count,
         'reached_contact': reached_contact,
         'total_record': sorted(total_record, key=lambda total: total[0]),
-        'total_camp_callreq': sorted(total_camp_callreq,
-                                     key=lambda total: total[0]),
         'notice_count': notice_count(request),
+        #'total_camp_callreq': sorted(total_camp_callreq,
+        #                             key=lambda total: total[0]),
+        'total_callrequest': total_callrequest,
+        'total_callrequest_count': total_callrequest_count,
+        'total_call': total_call,
+        'total_call_duration': total_call_duration,
     }
     if on_index == 'yes':
         return data

@@ -7,9 +7,21 @@
 
 
 {% block content %}
-
-<p>{{ form.campaign.label }} {{ form.campaign }} {{ form.search_type }}</p>
-
+<form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+<p>{{ form.campaign.label }} {{ form.campaign }} {{ form.search_type }}
+<input type="submit" name="submit" value="Submit">
+</p>
+<P>
+    {% for i in total_callrequest %}
+        {{ i.updated_date  }}<br/>
+    {% endfor %}
+---------------------------------------<br/>
+    {% for j in total_call %}
+        {{ j.callrequest  }}<br/>
+    {% endfor %}
+----------------------------------------<br/>
+   total callrequest : {{ total_callrequest_count }} | duration : {{ total_call_duration }}</P>
+</form>
 <table align="center" id="rounded-corner">
         <thead>
         <tr>

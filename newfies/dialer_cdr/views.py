@@ -28,7 +28,7 @@ def voipcall_report_grid(request):
 
     **Logic Description**:
 
-        * Get VoIP call list according to search parameters
+        * Get VoIP call list according to search parameters for loggedin user
     """
     page = variable_value(request, 'page')
     rp = variable_value(request, 'rp')
@@ -52,6 +52,7 @@ def voipcall_report_grid(request):
 
     # Search vars
     kwargs = {}
+    kwargs['user'] = request.user
     from_date = ''
     start_date = ''
     to_date = ''
@@ -161,13 +162,14 @@ def voipcall_report(request):
 
     **Logic Description**:
 
-        * Get VoIP call list according to search parameters
+        * Get VoIP call list according to search parameters for loggedin user
 
     **Important variable**:
 
         * ``request.session['voipcall_record_qs']`` - stores voipcall query set
     """
     kwargs = {}
+    kwargs['user'] = request.user
     from_date = ''
     to_date = ''
     disposition = variable_value(request, 'status')

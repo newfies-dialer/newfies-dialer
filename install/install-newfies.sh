@@ -186,6 +186,7 @@ func_install_frontend(){
     cp -r /usr/src/newfies-dialer/newfies $INSTALL_DIR
 
     #Install Newfies depencencies
+    easy_install -U distribute
     pip install -r /usr/src/newfies-dialer/install/conf/requirements.txt
 
     # copy settings_local.py into newfies dir
@@ -273,6 +274,9 @@ func_install_frontend(){
     case $DISTRO in
         'UBUNTU')
             chown -R www-data.www-data $INSTALL_DIR/database/
+            chown www-data:www-data /var/log/newfies-django.log
+            touch /var/log/err-apache-newfies.log
+            chown www-data:www-data /var/log/err-apache-newfies.log
             service apache2 restart
         ;;
         'CENTOS')

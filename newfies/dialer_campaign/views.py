@@ -75,10 +75,7 @@ def customer_dashboard(request, on_index=None):
 
     # TODO : Review logic
     form = DashboardForm(request.user)
-    total_callrequest = {}
-    total_callrequest_count = 0
-    total_call = {}
-    total_call_duration = 0
+    total_data = []
     if request.method == 'POST':
         form = DashboardForm(request.user, request.POST)
         selected_campaign = request.POST['campaign']
@@ -100,7 +97,6 @@ def customer_dashboard(request, on_index=None):
                      .annotate(Count('starting_date'))\
                      .order_by('starting_date')
 
-        total_data = []
         if calls:
             #maxtime = start_date
             #mintime = end_date
@@ -150,7 +146,7 @@ def customer_dashboard(request, on_index=None):
                                        'date':name_date , 'calldate__count':0,
                                        'duration__sum':0, 'duration__avg':0})
                 i += 1
-            print total_data
+            #print total_data
     # Contacts which are successfully called for running campaign
     reached_contact = 0
     for i in running_campaign:

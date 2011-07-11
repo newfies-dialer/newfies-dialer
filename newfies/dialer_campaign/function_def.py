@@ -258,3 +258,9 @@ def calculate_date(search_type):
         start_date = end_date+relativedelta(hours=-int(1))
 
     return start_date
+
+
+def date_range(start, end):
+    """Date  Range"""
+    r = (end + timedelta(days=1) - start).days
+    return [start + timedelta(days=i) for i in range(r)]

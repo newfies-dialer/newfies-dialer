@@ -90,16 +90,67 @@ def customer_dashboard(request, on_index=None):
         #print end_date
         select_data = \
             {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
-        total_call = VoIPCall.objects\
+        calls = VoIPCall.objects\
                      .filter(callrequest__campaign=selected_campaign,
                             duration__isnull=False,
                             starting_date__range=(start_date, end_date))\
                      .extra(select=select_data)\
                      .values('starting_date').annotate(Sum('duration'))\
+                     .annotate(Avg('duration'))\
                      .annotate(Count('starting_date'))\
                      .order_by('starting_date')
 
+        total_data = []
+        if calls:
+            #maxtime = start_date
+            #mintime = end_date
+            maxtime = datetime(int(calls[0]['starting_date'][0:4]),
+                               int(calls[0]['starting_date'][5:7]),
+                               int(calls[0]['starting_date'][8:10]), 0, 0, 0, 0)
+            mintime = datetime(int(calls[0]['starting_date'][0:4]),
+                               int(calls[0]['starting_date'][5:7]),
+                               int(calls[0]['starting_date'][8:10]), 0, 0, 0, 0)
 
+            calls_dict = {}
+
+            for data in calls:
+                time = datetime(int(data['starting_date'][0:4]),
+                                int(data['starting_date'][5:7]),
+                                int(data['starting_date'][8:10]), 0, 0, 0, 0)
+                if time > maxtime:
+                    maxtime = time
+                elif time < mintime:
+                    mintime = time
+                calls_dict[int(time.strftime("%Y%m%d"))] = \
+                    {'starting_date__count':data['starting_date__count'],
+                     'duration__sum':data['duration__sum'],
+                     'duration__avg':data['duration__avg']}
+            dateList = date_range(mintime, maxtime)
+
+
+            i = 0
+            #print calls_dict.keys()
+            for date in dateList:
+                inttime = int(date.strftime("%Y%m%d"))
+                name_date = _(date.strftime("%B")) + " " + str(date.day) + \
+                            ", " + str(date.year)
+
+                if inttime in calls_dict.keys():
+                    print inttime
+                    total_data.append({'count': i, 'day': date.day,
+                                       'month': date.month, 'year': date.year,
+                                       'date': name_date,
+                    'starting_date__count': \
+                        calls_dict[inttime]['starting_date__count'],
+                    'duration__sum': calls_dict[inttime]['duration__sum'],
+                    'duration__avg': calls_dict[inttime]['duration__avg']})
+                else:
+                    total_data.append({'count':i, 'day':date.day,
+                                       'month':date.month, 'year':date.year,
+                                       'date':name_date , 'calldate__count':0,
+                                       'duration__sum':0, 'duration__avg':0})
+                i += 1
+            print total_data
     # Contacts which are successfully called for running campaign
     reached_contact = 0
     for i in running_campaign:
@@ -107,7 +158,7 @@ def customer_dashboard(request, on_index=None):
         .filter(campaign=i.id, status=5,
                 updated_date__range=(start_date, end_date)).count()
 
-        total_record.append((i.id, int(campaign_subscriber)))
+        #total_record.append((i.id, int(campaign_subscriber)))
         reached_contact += campaign_subscriber
 
     template = 'frontend/dashboard.html'
@@ -121,7 +172,9 @@ def customer_dashboard(request, on_index=None):
         'reached_contact': reached_contact,
         'total_record': sorted(total_record, key=lambda total: total[0]),
         'notice_count': notice_count(request),
-        'total_call': total_call,
+        'total_data': total_data,
+        'start_date': start_date,
+        'end_date': end_date,
     }
     if on_index == 'yes':
         return data

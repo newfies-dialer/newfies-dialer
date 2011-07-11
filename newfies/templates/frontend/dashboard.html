@@ -5,18 +5,23 @@
 {% trans 'Dashboard' %}
 {% endblock %}
 
+{% block extra_files %}
+{% include "frontend/visualize_header.html" %}
+{% endblock %}
 
 {% block content %}
+
 <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
 <p>{{ form.campaign.label }} {{ form.campaign }} {{ form.search_type }}
 <input type="submit" name="submit" value="Submit">
 </p>
 <P>
-    {% for j in total_call %}
-        {{ j  }}<br/>
+    {% for j in total_data %}
+        {{ j }}<br/>
     {% endfor %}
 </P>
 </form>
+    
 <table align="center" id="rounded-corner">
         <thead>
         <tr>
@@ -36,68 +41,81 @@
 </table>
 
 <br/><br/>
-<script id="source" language="javascript" type="text/javascript">
-$(function () {
-    var data = [{
-                    data: [
-                            {% for c in total_record %}
-                                [ {{ c.0 }}, {{ c.1 }} ],
-                            {% endfor %}
-                    ],
-                    label: 'Subscribers/Campaign'
-    }];
+{{ start_date|date:"Y/m/d" }}
+{{ end_date|date:"Y/m/d" }}
+<script type="text/javascript">
 
-    var options = {
-                    legend: {
-                                position: "se",
-                                margin: [-135, 230],
-                                labelFormatter: function(label){
-                                    return '<div class="graph_legend">'+label+'</div>';
-                                },
-                          },
-                    series: {
-                                bars: { show: true },
-                          },
-                    yaxis: {
-                                min: 0,
-                                tickDecimals: false
-                          },
-                    xaxis: {
-                                min: 0,
-                                max: 24,
-                                tickSize: 1,
-                                tickDecimals: false,
-                                tickFormatter:
-                                    function (x) {
-                                        if(x < 24)
-                                            return "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + x;
-                                        else
-                                            return "";
-                                    }
-                          },
-                    grid: {
-                                hoverable: true,
-                                xaxis: false
-                          },
-                    tooltip: {
-                                formatter: function(obj){
-                                    return '<div class="graph_tooltip_header">' + obj.label + '</div><div class="graph_tooltip_info">{% trans "Campaign" %}: ' + obj.x + '<br>{% trans "Reached Subscribers" %}: ' + obj.y + '</div>';
-                                }
-                          }
-                  };
-    var plot = $.plot($("#placeholder"), data, options);
+var jsonData = [
+{% for td in total_data %}
+    {date:'{{ td.date }}', year:{{td.year}},day:{{td.day}}, month:{{td.month}},calls:{{td.starting_date__count}}, duration:'{{td.duration__sum|conv_min}}', act:'{{td.duration__avg|conv_min}}'},
+{% endfor %}
+];
 
+var callData = [
+{% for td in total_data %}
+    [{{td.count}} , {{td.starting_date__count}}],
+{% endfor %}
+];
+var durationData = [
+{% for td in total_data %}
+    [{{td.count}} , {{td.duration__sum}}],
+{% endfor %}
+];
+var summaryData = [
+{% for td in total_data %}
+    [{{td.count}} , {{td.starting_date__count}}],
+{% endfor %}
+];
+</script>
+
+<script type="text/javascript">
+Event.observe(document, 'dom:loaded', function() {
+
+    prettyPrint();
+
+    HumbleFinance.trackFormatter = function (obj) {
+        var x = Math.floor(obj.x);
+        var data = jsonData[x];
+        var text = data.date + " {% trans "Calls :"  %} " + data.calls + " {% trans "Duration :"  %} " + data.duration + " {% trans "ACT :"  %} " + data.act;
+
+        return text;
+    };
+
+    HumbleFinance.yTickFormatter = function (n) {
+
+        if (n == this.axes.y.max) {
+            return false;
+        }
+
+        return n;
+    };
+
+    HumbleFinance.xTickFormatter = function (n) {
+        if (n == 0) {
+            return false;
+        }
+        x = Math.floor(n)
+        var data = jsonData[x].year;
+
+        return data;
+    };
+
+    HumbleFinance.init('finance', callData, durationData, summaryData);
 });
 </script>
 
+<div id="finance">
+	<div id="labels">
+	    <div id="financeTitle">{% trans "Global Report"  %}</div>
+	    <div id="time">
+	        <a onclick="HumbleFinance.zoom(7);">1 {% trans "week"  %}</a>
+	        <a onclick="HumbleFinance.zoom(30);">1 {% trans "month"  %}</a>
+	        <a onclick="HumbleFinance.zoom(90);">3 {% trans "months"  %}</a>
+	        <a onclick="HumbleFinance.zoom(180);">6 {% trans "months"  %}</a>
+	        <a onclick="HumbleFinance.zoom(365);">1 {% trans "year"  %}</a>
+	    </div>
 
-<center>
-    <div class="graph_header">{% trans "Campaign" %}</div>
-    <div id="placeholder" style="width:700px;height:300px"></div>
-</center>
-<br/><br/>
-<center>
-    <div class="graph_header_2">{% trans "Callrequest/Campaign" %}</div>
-    <div id="placeholder_2" style="width:700px;height:300px"></div>
-</center>
+	    <div id="dateRange"></div>
+	</div>
+</div>
 {% endblock %}

@@ -84,7 +84,6 @@ Event.observe(document, 'dom:loaded', function() {
         if (n == this.axes.y.max) {
             return false;
         }
-
         return n;
     };
 
@@ -93,11 +92,11 @@ Event.observe(document, 'dom:loaded', function() {
             return false;
         }
         x = Math.floor(n)
-        var data = jsonData[x].year;
+        var data = jsonData[x].day;
         return data;
     };
 
-    HumbleFinance.init('finance', callData, durationData);
+    HumbleFinance.init('finance', callData, durationData, summaryData);
 });
 </script>
 
@@ -115,4 +114,27 @@ Event.observe(document, 'dom:loaded', function() {
 	    <div id="dateRange"></div>
 	</div>
 </div>
+
+<script type="text/javascript">
+$(function () {
+    var data = [
+            { label: "Series1",  data: [[1,10]]},
+            { label: "Series2",  data: [[1,30]]},
+            { label: "Series3",  data: [[1,90]]},
+            { label: "Series4",  data: [[1,70]]},
+            { label: "Series5",  data: [[1,80]]},
+            { label: "Series6",  data: [[1,0]]}
+        ];
+    var options = {
+            series: {
+                pie: {
+                    show: true,
+                }
+            }
+    };
+
+    var plot = $.plot($("#camp_pie"), data, options);
+});
+</script>
+    <br/> <div id="camp_pie" style="width:300px;height:300px"></div>
 {% endblock %}

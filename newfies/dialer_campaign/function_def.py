@@ -54,8 +54,8 @@ def field_list(name, user=None):
         list = Phonebook.objects.filter(user=user)
     if name == "campaign" and user is not None:
         list = Campaign.objects.filter(user=user, status=1)
-    else:
-        list = []
+    #else:
+    #    list = []
     return ((l.id, l.name) for l in list)
 
 

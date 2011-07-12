@@ -117,20 +117,28 @@ Event.observe(document, 'dom:loaded', function() {
 
 <script type="text/javascript">
 $(function () {
+
     var data = [
-            { label: "Series1",  data: [[1,10]]},
-            { label: "Series2",  data: [[1,30]]},
-            { label: "Series3",  data: [[1,90]]},
-            { label: "Series4",  data: [[1,70]]},
-            { label: "Series5",  data: [[1,80]]},
-            { label: "Series6",  data: [[1,0]]}
-        ];
+    {% for td in total_data %}
+        { label: '{{ td.date }}' , data: [[1, {{td.starting_date__count}}]]},
+    {% endfor %}
+    ];
     var options = {
             series: {
                 pie: {
                     show: true,
+                    radius: 1,
+                    label: {
+                        show: true,
+                        radius: 3/4,
+                        formatter: function(label, series){
+                            return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+                            }
+                        },
+                    background: { opacity: 0.5 },
                 }
-            }
+            },
+            legend: {show: false}
     };
 
     var plot = $.plot($("#camp_pie"), data, options);

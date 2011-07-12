@@ -95,11 +95,12 @@ def customer_dashboard(request, on_index=None):
         min_limit = time.mktime(start_date.timetuple())
         max_limit = time.mktime(end_date.timetuple())
         select_data = \
-            {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,20)"}
+            {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
         calls = VoIPCall.objects\
                      .filter(callrequest__campaign=selected_campaign,
-                            duration__isnull=False,
-                            starting_date__range=(start_date, end_date))\
+                             duration__isnull=False,
+                             user=request.user,
+                             starting_date__range=(start_date, end_date))\
                      .extra(select=select_data)\
                      .values('starting_date').annotate(Sum('duration'))\
                      .annotate(Avg('duration'))\
@@ -116,7 +117,6 @@ def customer_dashboard(request, on_index=None):
                                 'starting_date__count': i['starting_date__count'],
                                 'duration__sum': i['duration__sum'],
                                 'duration__avg': i['duration__avg']})
-        print final_calls
         if calls:
             #maxtime = start_date
             #mintime = end_date
@@ -169,7 +169,7 @@ def customer_dashboard(request, on_index=None):
                                        'starting_date__count':0,
                                        'duration__sum':0, 'duration__avg':0})
                 i += 1
-            print total_data
+            #print total_data
     # Contacts which are successfully called for running campaign
     reached_contact = 0
     for i in running_campaign:

@@ -167,15 +167,15 @@ $(function () {
 
     var data = [
         {% for td in final_calls %}
-            [(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}],
+            [(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}, {{ td.duration__sum }}],
         {% endfor %},
     ];
-
+    /*
     var data_temp = [
         {% for td in total_data %}
             [(new Date({{ td.year }}, {{ td.month }}, {{ td.day }})).getTime(), {{ td.starting_date__count }}],
         {% endfor %}
-    ];
+    ];*/
 
     //alert(data);
 
@@ -215,8 +215,22 @@ $(function () {
                 $("#tooltip").remove();
                 var x = item.datapoint[0].toFixed(2),
                     y = item.datapoint[1].toFixed(2);
+                //alert(item);
+                function makeArray() {
+                for (i = 0; i<makeArray.arguments.length; i++)
+                this[i + 1] = makeArray.arguments[i];
+                }
+
+                var months = new makeArray('January','February','March','April','May',
+                'June','July','August','September','October','November','December');
                 var d = new Date(Number(x));
-                var call_date = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear()
+                var day = d.getDate();
+                var month = d.getMonth() + 1;
+                var yy = d.getYear();
+                var year = (yy < 1000) ? yy + 1900 : yy;
+
+
+                var call_date = months[month]+ " " +day + " " + year
                 showTooltip(item.pageX, item.pageY,
                             call_date +  " : No of calls - " + Number(y));
             }

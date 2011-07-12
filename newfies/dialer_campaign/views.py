@@ -20,6 +20,7 @@ from dialer_campaign.tasks import collect_subscriber
 from dialer_cdr.models import *
 from inspect import stack, getmodule
 from datetime import *
+from dateutil import parser
 import urllib
 import csv
 import ast
@@ -76,6 +77,8 @@ def customer_dashboard(request, on_index=None):
     # TODO : Review logic
     form = DashboardForm(request.user)
     total_data = []
+    min_limit = ''
+    max_limit = ''
     if request.method == 'POST':
         form = DashboardForm(request.user, request.POST)
         selected_campaign = request.POST['campaign']
@@ -85,8 +88,11 @@ def customer_dashboard(request, on_index=None):
         start_date = calculate_date(search_type)
         #print start_date
         #print end_date
+        import time
+        min_limit = time.mktime(start_date.timetuple())
+        max_limit = time.mktime(end_date.timetuple())
         select_data = \
-            {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
+            {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,20)"}
         calls = VoIPCall.objects\
                      .filter(callrequest__campaign=selected_campaign,
                             duration__isnull=False,
@@ -97,6 +103,17 @@ def customer_dashboard(request, on_index=None):
                      .annotate(Count('starting_date'))\
                      .order_by('starting_date')
 
+        final_calls = []
+        for i in calls:
+            # convert unicode date string into date
+            starting_datetime = parser.parse(str(i['starting_date']))
+            final_calls.append({'starting_date': i['starting_date'],
+                                'starting_datetime': \
+                                    time.mktime(starting_datetime.timetuple()),
+                                'starting_date__count': i['starting_date__count'],
+                                'duration__sum': i['duration__sum'],
+                                'duration__avg': i['duration__avg']})
+        print final_calls
         if calls:
             #maxtime = start_date
             #mintime = end_date
@@ -132,7 +149,6 @@ def customer_dashboard(request, on_index=None):
                             ", " + str(date.year)
 
                 if inttime in calls_dict.keys():
-                    print inttime
                     total_data.append({'count': i, 'day': date.day,
                                        'month': date.month, 'year': date.year,
                                        'date': name_date,
@@ -143,7 +159,8 @@ def customer_dashboard(request, on_index=None):
                 else:
                     total_data.append({'count':i, 'day':date.day,
                                        'month':date.month, 'year':date.year,
-                                       'date':name_date , 'calldate__count':0,
+                                       'date':name_date ,
+                                       'starting_date__count':0,
                                        'duration__sum':0, 'duration__avg':0})
                 i += 1
             #print total_data
@@ -169,8 +186,11 @@ def customer_dashboard(request, on_index=None):
         'total_record': sorted(total_record, key=lambda total: total[0]),
         'notice_count': notice_count(request),
         'total_data': total_data,
+        'final_calls': final_calls,
         'start_date': start_date,
         'end_date': end_date,
+        'min_limit': min_limit,
+        'max_limit': max_limit,
     }
     if on_index == 'yes':
         return data

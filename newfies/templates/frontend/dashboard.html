@@ -144,5 +144,84 @@ $(function () {
     var plot = $.plot($("#camp_pie"), data, options);
 });
 </script>
+    <!--
+    {% for td in final_calls %}
+            [(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}]<br/>
+        {% endfor %}-->
     <br/> <div id="camp_pie" style="width:300px;height:300px"></div>
+<script id="source">
+$(function () {
+
+    function showTooltip(x, y, contents) {
+        $('<div id="tooltip">' + contents + '</div>').css( {
+            position: 'absolute',
+            display: 'none',
+            top: y + 5,
+            left: x + 5,
+            border: '1px solid #fdd',
+            padding: '2px',
+            'background-color': '#fee',
+            opacity: 0.80
+        }).appendTo("body").fadeIn(200);
+    }
+
+    var data = [
+        {% for td in final_calls %}
+            [(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}],
+        {% endfor %},
+    ];
+    //alert(data);
+
+    $.plot($("#placeholder"), [data], {
+        xaxis: {
+            mode: "time",
+            minTickSize: [1, "hour"],
+            max: (new Date({{ max_limit }} * 1000)), // Converting date from Python to Javascript (You have to multiply by 1,000.)
+            min: (new Date({{ min_limit }} * 1000)) //Converting date from Python to Javascript
+        },
+        yaxis: {
+            tickSize: 1,
+            tickDecimals: 0
+        },
+        series: {
+            lines: { show: true },
+            points: { show: true }
+        },
+        legend: {
+            show: true,
+            margin: 10,
+            backgroundOpacity: 0.5
+        },
+        grid: { hoverable: true, clickable: true },
+        tooltip: true,
+    });
+
+    var previousPoint = null;
+    $("#placeholder").bind("plothover", function (event, pos, item) {
+        $("#x").text(pos.x.toFixed(2));
+        $("#y").text(pos.y.toFixed(2));
+        if (item) {
+
+            if (previousPoint != item.dataIndex) {
+                previousPoint = item.dataIndex;
+
+                $("#tooltip").remove();
+                var x = item.datapoint[0].toFixed(2),
+                    y = item.datapoint[1].toFixed(2);
+                var d = new Date(Number(x));
+                var call_date = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear()
+                showTooltip(item.pageX, item.pageY,
+                            call_date +  " : No of calls - " + Number(y));
+            }
+        }
+        else {
+                $("#tooltip").remove();
+                previousPoint = null;
+        }
+    });
+    
+});
+</script>
+    <br/>
+    <div id="placeholder" style="width:600px;height:300px;"></div>      
 {% endblock %}

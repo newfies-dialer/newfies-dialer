@@ -144,10 +144,10 @@ $(function () {
     var plot = $.plot($("#camp_pie"), data, options);
 });
 </script>
-    <!--
+    
     {% for td in final_calls %}
-            [(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}]<br/>
-        {% endfor %}-->
+            [{{ td.starting_date }},(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}]<br/>
+        {% endfor %}
     <br/> <div id="camp_pie" style="width:300px;height:300px"></div>
 <script id="source">
 $(function () {
@@ -170,6 +170,13 @@ $(function () {
             [(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}],
         {% endfor %},
     ];
+
+    var data_temp = [
+        {% for td in total_data %}
+            [(new Date({{ td.year }}, {{ td.month }}, {{ td.day }})).getTime(), {{ td.starting_date__count }}],
+        {% endfor %}
+    ];
+
     //alert(data);
 
     $.plot($("#placeholder"), [data], {

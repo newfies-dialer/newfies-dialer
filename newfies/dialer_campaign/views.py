@@ -77,8 +77,11 @@ def customer_dashboard(request, on_index=None):
     # TODO : Review logic
     form = DashboardForm(request.user)
     total_data = []
+    final_calls = []
     min_limit = ''
     max_limit = ''
+    min_time = ''
+    max_time = ''
     if request.method == 'POST':
         form = DashboardForm(request.user, request.POST)
         selected_campaign = request.POST['campaign']
@@ -123,7 +126,10 @@ def customer_dashboard(request, on_index=None):
             mintime = datetime(int(calls[0]['starting_date'][0:4]),
                                int(calls[0]['starting_date'][5:7]),
                                int(calls[0]['starting_date'][8:10]), 0, 0, 0, 0)
-
+            min_datetime = parser.parse(str(mintime))
+            max_datetime = parser.parse(str(maxtime))
+            min_time = time.mktime(min_datetime.timetuple())
+            max_time = time.mktime(max_datetime.timetuple())
             calls_dict = {}
 
             for data in calls:
@@ -163,7 +169,7 @@ def customer_dashboard(request, on_index=None):
                                        'starting_date__count':0,
                                        'duration__sum':0, 'duration__avg':0})
                 i += 1
-            #print total_data
+            print total_data
     # Contacts which are successfully called for running campaign
     reached_contact = 0
     for i in running_campaign:
@@ -191,6 +197,8 @@ def customer_dashboard(request, on_index=None):
         'end_date': end_date,
         'min_limit': min_limit,
         'max_limit': max_limit,
+        'max_time': max_time,
+        'min_time': min_time,
     }
     if on_index == 'yes':
         return data

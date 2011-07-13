@@ -380,6 +380,7 @@ func_install_backend() {
 
 #Install recent version of redis-server
 func_install_redis_server() {
+    #TODO : Verify this work on CentOS
     cd /usr/src
     wget http://redis.googlecode.com/files/redis-2.2.11.tar.gz
     tar -zxf redis-2.2.11.tar.gz
@@ -396,6 +397,17 @@ func_install_redis_server() {
     mkdir -p /var/log/redis
     chown redis.redis /var/lib/redis
     chown redis.redis /var/log/redis
+    
+    case $DISTRO in
+        'UBUNTU')
+            cd /etc/init.d/
+            update-rc.d -f redis-server defaults
+        ;;
+        'CENTOS')    
+            chkconfig --add redis-server
+	        chkconfig --level 2345 redis-server on
+        ;;
+    esac
 
     #Start redis-server
     /etc/init.d/redis-server start

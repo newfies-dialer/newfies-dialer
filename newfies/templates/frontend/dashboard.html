@@ -6,9 +6,9 @@
 {% endblock %}
 
 {% block extra_files %}
-{% include "frontend/visualize_header.html" %}
-{% endblock %}
 
+{% endblock %}
+{% include "frontend/visualize_header.html" %}
 {% block content %}
 
 <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
@@ -165,21 +165,30 @@ $(function () {
         }).appendTo("body").fadeIn(200);
     }
 
-    var data = [
+    var data_count = [
         {% for td in final_calls %}
-            [(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}, {{ td.duration__sum }}],
+            [(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}],
         {% endfor %},
     ];
-    /*
-    var data_temp = [
-        {% for td in total_data %}
-            [(new Date({{ td.year }}, {{ td.month }}, {{ td.day }})).getTime(), {{ td.starting_date__count }}],
-        {% endfor %}
-    ];*/
+    var data_duration = [
+        {% for td in final_calls %}
+            [(new Date({{ td.starting_datetime }} * 1000)), {{ td.duration__sum }}],
+        {% endfor %},
+    ];
 
     //alert(data);
 
-    $.plot($("#placeholder"), [data], {
+    $.plot($("#placeholder"), [
+        { label: "Campaign/Calls",  data: data_count},
+        { label: "Campaign/Avg duration",  data: data_duration},
+        ], {
+        legend: {
+            position: "ne",
+            margin: [-150,0],
+            labelFormatter: function(label){
+                return '<div class="graph_legend">'+label+'</div>';
+            },
+        },
         xaxis: {
             mode: "time",
             minTickSize: [1, "hour"],
@@ -194,12 +203,11 @@ $(function () {
             lines: { show: true },
             points: { show: true }
         },
-        legend: {
-            show: true,
-            margin: 10,
-            backgroundOpacity: 0.5
+        grid: {
+            hoverable: true,
+            clickable: true,
+            backgroundColor: { colors: ["#fff", "#eee"] }
         },
-        grid: { hoverable: true, clickable: true },
         tooltip: true,
     });
 
@@ -232,7 +240,7 @@ $(function () {
 
                 var call_date = months[month]+ " " +day + " " + year
                 showTooltip(item.pageX, item.pageY,
-                            call_date +  " : No of calls - " + Number(y));
+                            call_date +  " :  " + Number(y));
             }
         }
         else {

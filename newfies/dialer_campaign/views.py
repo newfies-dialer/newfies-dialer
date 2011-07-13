@@ -82,6 +82,8 @@ def customer_dashboard(request, on_index=None):
     max_limit = ''
     min_time = ''
     max_time = ''
+    total_duration_sum = 0
+    total_call_count = 0
     if request.method == 'POST':
         form = DashboardForm(request.user, request.POST)
         selected_campaign = request.POST['campaign']
@@ -162,6 +164,12 @@ def customer_dashboard(request, on_index=None):
                         calls_dict[inttime]['starting_date__count'],
                     'duration__sum': calls_dict[inttime]['duration__sum'],
                     'duration__avg': calls_dict[inttime]['duration__avg']})
+
+                    # To count total no of calls & their duration
+                    total_duration_sum = \
+                    total_duration_sum + calls_dict[inttime]['duration__sum']
+                    total_call_count = total_call_count + \
+                                  calls_dict[inttime]['starting_date__count']
                 else:
                     total_data.append({'count':i, 'day':date.day,
                                        'month':date.month, 'year':date.year,
@@ -169,7 +177,6 @@ def customer_dashboard(request, on_index=None):
                                        'starting_date__count':0,
                                        'duration__sum':0, 'duration__avg':0})
                 i += 1
-            #print total_data
     # Contacts which are successfully called for running campaign
     reached_contact = 0
     for i in running_campaign:
@@ -199,6 +206,8 @@ def customer_dashboard(request, on_index=None):
         'max_limit': max_limit,
         'max_time': max_time,
         'min_time': min_time,
+        'total_duration_sum': total_duration_sum,
+        'total_call_count': total_call_count,
     }
     if on_index == 'yes':
         return data

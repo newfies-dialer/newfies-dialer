@@ -118,10 +118,15 @@ Event.observe(document, 'dom:loaded', function() {
 <script type="text/javascript">
 $(function () {
 
-    var data = [
+    /*var data = [
     {% for td in total_data %}
-        { label: '{{ td.date }}' , data: [[1, {{td.starting_date__count}}]]},
+        { label: 'Calls' , data: [[1, {{td.starting_date__count}}]]},
+       // { label: 'Duration' , data: [[1, {{td.duration__sum}}]]},
     {% endfor %}
+    ];*/
+    var data = [
+        { label: 'Calls' , data: [[1, {{ total_call_count }}]]},
+        { label: 'Duration' , data: [[1, {{ total_duration_sum }}]]},
     ];
     var options = {
             series: {
@@ -144,10 +149,10 @@ $(function () {
     var plot = $.plot($("#camp_pie"), data, options);
 });
 </script>
-    
+    <!--
     {% for td in final_calls %}
             [{{ td.starting_date }},(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}]<br/>
-        {% endfor %}
+    {% endfor %}-->
     <br/> <div id="camp_pie" style="width:300px;height:300px"></div>
 <script id="source">
 $(function () {
@@ -180,7 +185,7 @@ $(function () {
 
     $.plot($("#placeholder"), [
         { label: "Campaign/Calls",  data: data_count},
-        { label: "Campaign/Avg duration",  data: data_duration},
+        { label: "Campaign/Call duration",  data: data_duration},
         ], {
         legend: {
             position: "ne",

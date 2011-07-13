@@ -96,6 +96,10 @@ def customer_dashboard(request, on_index=None):
         if int(search_type) >= 3:
             date_length = 20
         else:
+            #start_date = start_date.strftime("%Y-%m-%d")
+            #start_date = parser.parse(str(start_date))
+            #end_date = end_date.strftime("%Y-%m-%d")
+            #end_date = parser.parse(str(end_date))
             date_length = 10
 
         if int(search_type) <= 3:
@@ -125,8 +129,9 @@ def customer_dashboard(request, on_index=None):
                                     time.mktime(starting_datetime.timetuple()),
                                 'starting_date__count': i['starting_date__count'],
                                 'duration__sum': i['duration__sum'],
-                                'duration__avg': i['duration__avg']})
-
+                                'duration__avg': i['duration__avg'],
+                                }) # 'disposition': i['disposition']
+        #print calls
         # following part got from cdr-stats 'global report' used by visualize
         if calls:
             #maxtime = start_date
@@ -154,7 +159,9 @@ def customer_dashboard(request, on_index=None):
                 calls_dict[int(time.strftime("%Y%m%d"))] = \
                     {'starting_date__count':data['starting_date__count'],
                      'duration__sum':data['duration__sum'],
-                     'duration__avg':data['duration__avg']}
+                     'duration__avg':data['duration__avg'],
+                     #'disposition': data['disposition']
+                    }
             dateList = date_range(mintime, maxtime)
 
 
@@ -172,7 +179,9 @@ def customer_dashboard(request, on_index=None):
                     'starting_date__count': \
                         calls_dict[inttime]['starting_date__count'],
                     'duration__sum': calls_dict[inttime]['duration__sum'],
-                    'duration__avg': calls_dict[inttime]['duration__avg']})
+                    'duration__avg': calls_dict[inttime]['duration__avg'],
+                    #'disposition': calls_dict[inttime]['disposition'],
+                    })
 
                     # Extra part: To count total no of calls & their duration
                     total_duration_sum = \
@@ -184,7 +193,9 @@ def customer_dashboard(request, on_index=None):
                                        'month':date.month, 'year':date.year,
                                        'date':name_date ,
                                        'starting_date__count':0,
-                                       'duration__sum':0, 'duration__avg':0})
+                                       'duration__sum':0, 'duration__avg':0,
+                                       #'disposition': '',
+                                       })
                 i += 1
 
     # Contacts which are successfully called for running campaign

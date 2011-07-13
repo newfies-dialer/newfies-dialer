@@ -6,9 +6,10 @@
 {% endblock %}
 
 {% block extra_files %}
+    {% include "frontend/visualize_header.html" %}
 {% endblock %}
 
-{% include "frontend/visualize_header.html" %}
+
 
 {% block content %}
 
@@ -18,11 +19,14 @@
 </p>
 <P>
     {% for j in total_data %}
-        {{ j }}<br/>
+       {{ j }}<br/>
+    {% endfor %}
+    {% for i in final_calls %}
+        <!--{{ i }}<br/>-->
     {% endfor %}
 </P>
 </form>
-    
+    <!--
 <table align="center" id="rounded-corner">
         <thead>
         <tr>
@@ -39,8 +43,7 @@
             <td class="rounded-foot-right">{{ reached_contact }}</td>
         </tr>
 
-</table>
-
+</table>-->
 <br/>
 
 <script type="text/javascript">
@@ -64,6 +67,7 @@ var summaryData = [
     [{{td.count}} , {{td.starting_date__count}}],
 {% endfor %}
 ];
+
 </script>
 
 <script type="text/javascript">
@@ -104,9 +108,9 @@ Event.observe(document, 'dom:loaded', function() {
 	<div id="labels">
 	    <div id="financeTitle">{% trans "Campaign v/s Call Report"  %}</div>
 	    <div id="time">
-	        <a onclick="HumbleFinance.zoom(7);">1 {% trans "week"  %}</a>
+            <a onclick="HumbleFinance.zoom(7);">1 {% trans "week"  %}</a>
 	        <a onclick="HumbleFinance.zoom(30);">1 {% trans "month"  %}</a>
-	        <a onclick="HumbleFinance.zoom(90);">3 {% trans "months"  %}</a>
+            <a onclick="HumbleFinance.zoom(90);">3 {% trans "months"  %}</a>
 	        <a onclick="HumbleFinance.zoom(180);">6 {% trans "months"  %}</a>
 	        <a onclick="HumbleFinance.zoom(365);">1 {% trans "year"  %}</a>
 	    </div>
@@ -156,7 +160,7 @@ $(function () {
     {% endfor %}-->
 
     {% if final_calls %}
-    <br/> <div id="camp_pie" style="width:300px;height:300px"></div>
+   <br/> <div id="camp_pie" style="width:300px;height:300px"></div>
     {% endif %}
 
 <script id="source">
@@ -263,6 +267,6 @@ $(function () {
 </script>
     {% if final_calls %}
     <br/>
-    <div id="placeholder" style="width:600px;height:300px;"></div>
+   <div id="placeholder" style="width:600px;height:300px;"></div>
     {% endif %}
 {% endblock %}

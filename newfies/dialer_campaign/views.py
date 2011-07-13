@@ -84,6 +84,7 @@ def customer_dashboard(request, on_index=None):
     max_time = ''
     total_duration_sum = 0
     total_call_count = 0
+    select_graph_by = 'day'
     if request.method == 'POST':
         form = DashboardForm(request.user, request.POST)
         selected_campaign = request.POST['campaign']
@@ -96,8 +97,18 @@ def customer_dashboard(request, on_index=None):
         import time
         min_limit = time.mktime(start_date.timetuple())
         max_limit = time.mktime(end_date.timetuple())
+        if int(search_type) >= 3:
+            date_length = 20
+        else:
+            date_length = 10
+
+        if int(search_type) <= 3:
+            select_graph_by = 'day'
+        else:
+            select_graph_by = 'hour'
         select_data = \
-            {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
+            {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1," + \
+                              str(date_length) + ")"}
         calls = VoIPCall.objects\
                      .filter(callrequest__campaign=selected_campaign,
                              duration__isnull=False,
@@ -119,6 +130,8 @@ def customer_dashboard(request, on_index=None):
                                 'starting_date__count': i['starting_date__count'],
                                 'duration__sum': i['duration__sum'],
                                 'duration__avg': i['duration__avg']})
+
+        # following part got from cdr-stats 'global report' used by visualize
         if calls:
             #maxtime = start_date
             #mintime = end_date
@@ -128,10 +141,10 @@ def customer_dashboard(request, on_index=None):
             mintime = datetime(int(calls[0]['starting_date'][0:4]),
                                int(calls[0]['starting_date'][5:7]),
                                int(calls[0]['starting_date'][8:10]), 0, 0, 0, 0)
-            min_datetime = parser.parse(str(mintime))
-            max_datetime = parser.parse(str(maxtime))
-            min_time = time.mktime(min_datetime.timetuple())
-            max_time = time.mktime(max_datetime.timetuple())
+            #min_datetime = parser.parse(str(mintime))
+            #max_datetime = parser.parse(str(maxtime))
+            #min_time = time.mktime(min_datetime.timetuple())
+            #max_time = time.mktime(max_datetime.timetuple())
             calls_dict = {}
 
             for data in calls:
@@ -165,7 +178,7 @@ def customer_dashboard(request, on_index=None):
                     'duration__sum': calls_dict[inttime]['duration__sum'],
                     'duration__avg': calls_dict[inttime]['duration__avg']})
 
-                    # To count total no of calls & their duration
+                    # Extra part: To count total no of calls & their duration
                     total_duration_sum = \
                     total_duration_sum + calls_dict[inttime]['duration__sum']
                     total_call_count = total_call_count + \
@@ -204,8 +217,9 @@ def customer_dashboard(request, on_index=None):
         'end_date': end_date,
         'min_limit': min_limit,
         'max_limit': max_limit,
-        'max_time': max_time,
-        'min_time': min_time,
+        #'max_time': max_time,
+        #'min_time': min_time,
+        'select_graph_by': select_graph_by,
         'total_duration_sum': total_duration_sum,
         'total_call_count': total_call_count,
     }

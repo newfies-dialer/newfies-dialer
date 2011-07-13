@@ -6,9 +6,10 @@
 {% endblock %}
 
 {% block extra_files %}
-
 {% endblock %}
+
 {% include "frontend/visualize_header.html" %}
+
 {% block content %}
 
 <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
@@ -196,7 +197,7 @@ $(function () {
         },
         xaxis: {
             mode: "time",
-            minTickSize: [1, "hour"],
+            minTickSize: [1, "{{ select_graph_by }}"],
             max: (new Date({{ max_limit }} * 1000)), // Converting date from Python to Javascript (You have to multiply by 1,000.)
             min: (new Date({{ min_limit }} * 1000)) //Converting date from Python to Javascript
         },

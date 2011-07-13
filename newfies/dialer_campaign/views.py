@@ -66,10 +66,6 @@ def customer_dashboard(request, on_index=None):
         Contact.objects\
         .extra(where=['phonebook_id IN (%s) ' % phonebook_id_list]).count()
 
-    # Total records for graph
-    total_record = []
-    total_camp_callreq = []
-
     today = datetime.today()
     start_date = datetime(today.year, today.month, today.day, 0, 0, 0, 0)
     end_date = datetime(today.year, today.month, today.day, 23, 59, 59, 999999)
@@ -190,14 +186,13 @@ def customer_dashboard(request, on_index=None):
                                        'starting_date__count':0,
                                        'duration__sum':0, 'duration__avg':0})
                 i += 1
+
     # Contacts which are successfully called for running campaign
     reached_contact = 0
     for i in running_campaign:
         campaign_subscriber = CampaignSubscriber.objects\
         .filter(campaign=i.id, status=5,
                 updated_date__range=(start_date, end_date)).count()
-
-        #total_record.append((i.id, int(campaign_subscriber)))
         reached_contact += campaign_subscriber
 
     template = 'frontend/dashboard.html'
@@ -209,16 +204,11 @@ def customer_dashboard(request, on_index=None):
         'campaign_phonebbok_active_contact_count': \
         campaign_phonebbok_active_contact_count,
         'reached_contact': reached_contact,
-        'total_record': sorted(total_record, key=lambda total: total[0]),
         'notice_count': notice_count(request),
-        'total_data': total_data,
-        'final_calls': final_calls,
-        'start_date': start_date,
-        'end_date': end_date,
+        'total_data': total_data, # for visualize graph
+        'final_calls': final_calls, # for flot graph
         'min_limit': min_limit,
         'max_limit': max_limit,
-        #'max_time': max_time,
-        #'min_time': min_time,
         'select_graph_by': select_graph_by,
         'total_duration_sum': total_duration_sum,
         'total_call_count': total_call_count,

@@ -41,9 +41,7 @@
 
 </table>
 
-<br/><br/>
-{{ start_date|date:"Y/m/d" }}
-{{ end_date|date:"Y/m/d" }}
+<br/>
 
 <script type="text/javascript">
 var jsonData = [
@@ -100,7 +98,8 @@ Event.observe(document, 'dom:loaded', function() {
     HumbleFinance.init('finance', callData, durationData, summaryData);
 });
 </script>
-
+    
+{% if total_data %}
 <div id="finance">
 	<div id="labels">
 	    <div id="financeTitle">{% trans "Campaign v/s Call Report"  %}</div>
@@ -115,6 +114,7 @@ Event.observe(document, 'dom:loaded', function() {
 	    <div id="dateRange"></div>
 	</div>
 </div>
+{% endif %}
 
 <script type="text/javascript">
 $(function () {
@@ -154,7 +154,11 @@ $(function () {
     {% for td in final_calls %}
             [{{ td.starting_date }},(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}]<br/>
     {% endfor %}-->
+
+    {% if final_calls %}
     <br/> <div id="camp_pie" style="width:300px;height:300px"></div>
+    {% endif %}
+
 <script id="source">
 $(function () {
 
@@ -257,6 +261,8 @@ $(function () {
     
 });
 </script>
+    {% if final_calls %}
     <br/>
-    <div id="placeholder" style="width:600px;height:300px;"></div>      
+    <div id="placeholder" style="width:600px;height:300px;"></div>
+    {% endif %}
 {% endblock %}

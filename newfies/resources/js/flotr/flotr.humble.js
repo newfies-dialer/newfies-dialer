@@ -1,4 +1,4 @@
-/* $$$Id: flotr.js 147 2009-08-21 10:23:33Z fabien.menager $$$ */
+/* $Id: flotr.js 147 2009-08-21 10:23:33Z fabien.menager $ */
 
 /** 
  * @projectDescription Flotr is a javascript plotting library based on the Prototype Javascript Framework.
@@ -284,7 +284,7 @@ Flotr.Graph = Class.create({
  	 * @param {Object} options - an object containing options
 	 */
 	initialize: function(el, data, options){
-		this.el = $$$(el);
+		this.el = $(el);
     
 		if (!this.el) throw 'The target container doesn\'t exist';
 		if (!this.el.clientWidth) throw 'The target container must be visible';
@@ -510,7 +510,7 @@ Flotr.Graph = Class.create({
     
 		// Insert main canvas.
 		if (!this.canvas) {
-			c = this.canvas = $$$(document.createElement('canvas')); // Do NOT use new Element()
+			c = this.canvas = $(document.createElement('canvas')); // Do NOT use new Element()
 			c.className = 'flotr-canvas';
 			c.style.cssText = 'position:absolute;left:0px;top:0px;';
 		}
@@ -520,7 +520,7 @@ Flotr.Graph = Class.create({
     
 		// Insert overlay canvas for interactive features.
 		if (!this.overlay) {
-			oc = this.overlay = $$$(document.createElement('canvas')); // Do NOT use new Element()
+			oc = this.overlay = $(document.createElement('canvas')); // Do NOT use new Element()
 			oc.className = 'flotr-overlay';
 			oc.style.cssText = 'position:absolute;left:0px;top:0px;';
 		}
@@ -901,10 +901,14 @@ Flotr.Graph = Class.create({
 		            (y2.options.title ? (y2.titleSize.width + margin) : 0) + maxOutset;
     
 		p.top = Math.floor(p.top); // In order the outline not to be blured
-		p.bottom = 0;
-		p.top = 0;
-		p.left = 0;
-		p.right = 0;
+        
+        if (margin == 0) {
+            p.bottom = 0;
+            p.top = 0;
+            p.left = 0;
+            p.right = 0;
+        }
+        
 		this.plotWidth  = this.canvasWidth - p.left - p.right;
 		this.plotHeight = this.canvasHeight - p.bottom - p.top;
 		
@@ -1471,7 +1475,7 @@ Flotr.Graph = Class.create({
 		var noLegendItems = series.findAll(function(s) {return (s.label && !s.hide)}).length;
 
 		if (noLegendItems) {
-		    if (!options.HtmlText && this.textEnabled && !$$$(legend.container)) {
+		    if (!options.HtmlText && this.textEnabled && !$(legend.container)) {
 				var style = {
 					size: options.fontSize*1.1,
 					color: options.grid.color
@@ -1564,7 +1568,7 @@ Flotr.Graph = Class.create({
 		  		if(fragments.length > 0){
 		  			var table = '<table style="font-size:smaller;color:' + options.grid.color + '">' + fragments.join('') + '</table>';
 		  			if(options.legend.container != null){
-		  				$$$(options.legend.container).innerHTML = table;
+		  				$(options.legend.container).innerHTML = table;
 		  			}
 				    else {
 		  				var pos = '', p = options.legend.position, m = options.legend.margin;
@@ -1661,9 +1665,9 @@ Flotr.Graph = Class.create({
 			
 			function cancelContextMenu () {
 				overlay.show();
-				$$$(document).stopObserving('mousemove', cancelContextMenu);
+				$(document).stopObserving('mousemove', cancelContextMenu);
 			}
-			$$$(document).observe('mousemove', cancelContextMenu);
+			$(document).observe('mousemove', cancelContextMenu);
 			return;
 		}
     
@@ -1677,7 +1681,7 @@ Flotr.Graph = Class.create({
 		this.selectionInterval = setInterval(this.updateSelection.bindAsEventListener(this), 1000/this.options.selection.fps);
 		
 		this.mouseUpHandler = this.mouseUpHandler.bindAsEventListener(this);
-		$$$(document).observe('mouseup', this.mouseUpHandler);
+		$(document).observe('mouseup', this.mouseUpHandler);
 	},
 	/**
 	 * Fires the 'flotr:select' event when the user made a selection.
@@ -1704,7 +1708,7 @@ Flotr.Graph = Class.create({
 	 * @param {Event} event - 'mouseup' Event object.
 	 */
 	mouseUpHandler: function(event){
-		$$$(document).stopObserving('mouseup', this.mouseUpHandler);
+		$(document).stopObserving('mouseup', this.mouseUpHandler);
 		event.stop();
     
 		if(this.selectionInterval != null){
@@ -1728,7 +1732,7 @@ Flotr.Graph = Class.create({
 	 */
 	setSelectionPos: function(pos, event) {
 		var options = this.options,
-		    offset = $$$(this.overlay).cumulativeOffset();
+		    offset = $(this.overlay).cumulativeOffset();
 		
 		if(options.selection.mode.indexOf('x') == -1){
 			pos.x = (pos == this.selection.first) ? 0 : this.plotWidth;			   
@@ -1932,7 +1936,7 @@ Flotr.Graph = Class.create({
 			
 			var x1 = xa.d2p(prevHit.x - bw/2) + plotOffset.left - lw;
             var y1 = ya.d2p(prevHit.y >= 0 ? prevHit.y : 0) + plotOffset.top - lw;
-            var x2 = x2pre - x1 + lw * 2;
+            var x2 = x2pre - x1 + plotOffset.left + lw * 2;
             var y2 = ya.d2p(prevHit.y < 0 ? prevHit.y : 0) + lw * 2;
             
 			this.octx.clearRect(x1, y1, x2, y2);
@@ -2261,7 +2265,7 @@ Object.extend(Flotr.Color, {
 			color = element.getStyle('background-color').toLowerCase();
 			if(!(color == '' || color == 'transparent')) break;
 			element = element.up();
-		} while(!element.nodeName.match(/^body$$$/i));
+		} while(!element.nodeName.match(/^body$/i));
 
 		// Catch Safari's way of signaling transparent.
 		return new Flotr.Color(color == 'rgba(0, 0, 0, 0)' ? 'transparent' : color);
@@ -2785,7 +2789,7 @@ Flotr.addType('bars', {
 			// Stacked bars
 			var stackOffset = 0;
 			if(series.bars.stacked) {
-				$$$H(xa.values).each(function(pair) {
+				$H(xa.values).each(function(pair) {
 					if (pair.key == x) {
 						stackOffset = pair.value.stack || 0;
 						pair.value.stack = stackOffset + y;
@@ -2868,7 +2872,7 @@ Flotr.addType('bars', {
 			// Stacked bars
 			var stackOffset = 0;
 			if(series.bars.stacked) {
-				$$$H(xa.values).each(function(pair) {
+				$H(xa.values).each(function(pair) {
 					if (pair.key == x) {
 						stackOffset = pair.value.stackShadow || 0;
 						pair.value.stackShadow = stackOffset + y;

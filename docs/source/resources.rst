@@ -8,4 +8,4 @@
     :local:
     :depth: 2
 
-.. include:: ./includes/resources.txt
+.. include:: ./includes/resources.rst

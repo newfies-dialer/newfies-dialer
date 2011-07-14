@@ -152,7 +152,22 @@ Features
 Architecture
 ============
 
-.. _newfies-dialer-documentation:
+    * User select contacts, phonebooks and campaign, and choses a voice application to use. The campaign is then launched
+
+    * ``Newfies-Dialer`` spools the outbound calls to ``FreeSWITCH`` via ``Plivo``.
+
+    * ``Plivo`` sends the dial request to ``FreeSWITCH`` using the event socket.
+
+    * ``FreeSWITCH`` dials the contact via the configured telephony gateways.
+
+    * Contact picks up call, and the answer event is received in ``FreeSWITCH`` and is passed back to ``Pilov``.
+
+    * ``Newfies-Dialer`` is notified that the call is answered, the renders & relays ``RestXML`` to ``Plivo``.
+
+    * ``Plivo`` interprets ``RestXML`` and send the application call-flow commands to ``FreeSWITCH``.
+
+    * The voice application is delivered to the contact by ``FreeSWITCH``.
+
 
 Documentation
 =============

@@ -21,3 +21,6 @@ of telephone numbers for connection to assigned campaigns.
     * Lower operating costs
     * Calls are made through Internet VoIP. No need for telephony hardware
     * Call reports and Statistics
+
+
+.. image:: ../_static/images/newfies_architecture.png

@@ -23,6 +23,7 @@
 
 
 FS_CONF_PATH=https://raw.github.com/Star2Billing/newfies-dialer/master/install/freeswitch-conf
+FS_INIT_PATH=https://raw.github.com/Star2Billing/newfies-dialer/master/install/freeswitch-init
 FS_GIT_REPO=git://git.freeswitch.org/freeswitch.git
 FS_INSTALLED_PATH=/usr/local/freeswitch
 
@@ -146,6 +147,13 @@ wget --no-check-certificate $FS_CONF_PATH/xml_cdr.conf.xml -O xml_cdr.conf.xml
 
 #Return to current path
 cd $CURRENT_PATH
+
+
+#Install init.d script
+wget --no-check-certificate $FS_INIT_PATH/freeswitch -O /etc/init.d/freeswitch
+chmod 0755 /etc/init.d/freeswitch
+cd /etc/init.d; update-rc.d freeswitch defaults 90
+
 
 
 # Install Complete

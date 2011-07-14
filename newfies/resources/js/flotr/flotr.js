@@ -1,4 +1,4 @@
-/* $Id: flotr.js 192 2011-05-30 17:03:39Z macku30 $ */
+/* $Id: flotr.js 184 2011-04-13 17:07:49Z carl@humblesoftware.com $ */
 
 /** 
  * @projectDescription Flotr is a javascript plotting library based on the Prototype Javascript Framework.
@@ -9,7 +9,7 @@
 
 var Flotr = {
   version: "0.2.0-alpha",
-  revision: ('$Revision: 192 $'.match(/(\d+)/) || [null,null])[1],
+  revision: ('$Revision: 184 $'.match(/(\d+)/) || [null,null])[1],
   author: ['Bas Wenneker', 'Fabien Ménager'],
   website: 'http://www.solutoire.com',
   isIphone: /iphone/i.test(navigator.userAgent),
@@ -299,7 +299,6 @@ Flotr.defaultOptions = {
     tickDecimals: null,    // => no. of decimals, null means auto
     min: null,             // => min. value to show, null means set automatically
     max: null,             // => max. value to show, null means set automatically
-    autoscale: false,      // => Turns autoscaling on with true
     autoscaleMargin: 0,    // => margin in % to add if auto-setting min/max
     color: null,           // => color of the ticks
     mode: 'normal',        // => can be 'time' or 'normal'
@@ -324,7 +323,6 @@ Flotr.defaultOptions = {
     tickDecimals: null,    // => no. of decimals, null means auto
     min: null,             // => min. value to show, null means set automatically
     max: null,             // => max. value to show, null means set automatically
-    autoscale: false,      // => Turns autoscaling on with true
     autoscaleMargin: 0,    // => margin in % to add if auto-setting min/max
     color: null,           // => The color of the ticks
     scaling: 'linear',     // => Scaling, can be 'linear' or 'logarithmic'
@@ -891,17 +889,6 @@ Flotr.Graph = Class.create({
     for (var t in Flotr.graphTypes) {
       if(this.options[t] && this.options[t].show){
         if (this[t][f])  this[t][f](axis);
-      } else {
-        var extend = false;
-        for (i =0 ; i<this.series.length; i++){
-          var serie = this.series[i];
-          if(serie[t] && serie[t].show){
-            extend = true;
-            break;
-            }
-          }
-        if(extend)
-          if (this[t][f]) this[t][f](axis);
       }
     }
   },
@@ -954,26 +941,26 @@ Flotr.Graph = Class.create({
       axis.tickSize = Flotr.getTickSize(o.noTicks, min, max, o.tickDecimals);
     }
 
-    axis.min = min;
-    axis.max = max; //extendRange may use axis.min or axis.max, so it should be set before it is caled
-    
-    this.extendRange(axis, type);//extendRange probably changed axis.min and axis.max
-    
     // Autoscaling. @todo This probably fails with log scale. Find a testcase and fix it
-    if(o.min == null && o.autoscale){
-      axis.min -= axis.tickSize * margin;
+    if(o.min == null && margin != 0){
+      min -= axis.tickSize * margin;
       // Make sure we don't go below zero if all values are positive.
-      if(axis.min < 0 && axis.datamin >= 0) axis.min = 0;
-      axis.min = axis.tickSize * Math.floor(axis.min / axis.tickSize);
+      if(min < 0 && axis.datamin >= 0) min = 0;
+      min = axis.tickSize * Math.floor(min / axis.tickSize);
     }
     
-    if(o.max == null && o.autoscale){
-      axis.max += axis.tickSize * margin;
-      if(axis.max > 0 && axis.datamax <= 0 && axis.datamax != axis.datamin) axis.max = 0;        
-      axis.max = axis.tickSize * Math.ceil(axis.max / axis.tickSize);
+    if(o.max == null && margin != 0){
+      max += axis.tickSize * margin;
+      if(max > 0 && axis.datamax <= 0 && axis.datamax != axis.datamin) max = 0;        
+      max = axis.tickSize * Math.ceil(max / axis.tickSize);
     }
 
-    if (axis.min == axis.max) axis.max = axis.min + 1;
+    if (min == max) max = min + 1;
+
+    axis.min = min;
+    axis.max = max;
+    
+    this.extendRange(axis, type);
   },
   /** 
    * Find every values of the x axes or when horizontal stacked bar chart is used also y axes
@@ -2387,49 +2374,35 @@ Flotr.Graph = Class.create({
         offset*2
       );
     }
+
     else if (s.bars.show){
       var bw = s.bars.barWidth;
-      if(!s.bars.horizontal){ // vertical bars (default)
-        var lastY = ya.d2p(prevHit.y >= 0 ? prevHit.y : 0);
-	      if(s.bars.centered) {
-	        this.octx.clearRect(
-	            xa.d2p(prevHit.x - bw/2) + plotOffset.left - lw, 
-	            lastY + plotOffset.top - lw, 
-	            xa.d2p(bw + xa.min) + lw * 2, 
-	            ya.d2p(prevHit.y < 0 ? prevHit.y : 0) - lastY + lw * 2
-	        );
-	      } else {
-	        this.octx.clearRect(
-	            xa.d2p(prevHit.x) + plotOffset.left - lw, 
-	            lastY + plotOffset.top - lw, 
-	            xa.d2p(bw + xa.min) + lw * 2, 
-	            ya.d2p(prevHit.y < 0 ? prevHit.y : 0) - lastY + lw * 2
-	        ); 
-	      }
-      } else { // horizontal bars
-        var lastX = xa.d2p(prevHit.x >= 0 ? prevHit.x : 0);
-    	  if(s.bars.centered) {
-    	    this.octx.clearRect(
-    	        lastX + plotOffset.left + lw, 
-    	        ya.d2p(prevHit.y + bw/2) + plotOffset.top - lw, 
-    	        xa.d2p(prevHit.x < 0 ? prevHit.x : 0) - lastX - lw*2,
-    	        ya.d2p(bw + ya.min) + lw * 2
-    	    );
-  	    } else {
-  	      this.octx.clearRect(
-  	          lastX + plotOffset.left + lw, 
-  	          ya.d2p(prevHit.y + bw) + plotOffset.top - lw, 
-  	          xa.d2p(prevHit.x < 0 ? prevHit.x : 0) - lastX - lw*2,
-  	          ya.d2p(bw + ya.min) + lw * 2
-  	      );
-  	    }
-      }
+      this.octx.clearRect(
+        xa.d2p(prevHit.x - bw/2) + plotOffset.left - lw, 
+        ya.d2p(prevHit.y >= 0 ? prevHit.y : 0) + plotOffset.top - lw, 
+        xa.d2p(bw + xa.min) + lw * 2, 
+        ya.d2p(prevHit.y < 0 ? prevHit.y : 0) + lw * 2
+      );
     }
+
     else if (s.bubbles.show){
       this.bubbles.clearHit();
     }
-    else if (s.pie.show){
-    	this.pie.clearHit();
+
+    else {
+      var center = {
+        x: plotOffset.left + (this.plotWidth)/2,
+        y: plotOffset.top + (this.plotHeight)/2
+      },
+      radius = (Math.min(this.canvasWidth, this.canvasHeight) * s.pie.sizeRatio) / 2,
+      margin = (prevHit.series.pie.explode + lwPie) * 4
+      
+      this.octx.clearRect(
+        center.x - radius - margin, 
+        center.y - radius - margin, 
+        2*(radius + margin), 
+        2*(radius + margin)
+      );
     }
   },
   /**
@@ -2455,72 +2428,66 @@ Flotr.Graph = Class.create({
           octx.stroke();
         octx.closePath();
       }
-      else if (s.bars.show){ 
+      else if (s.bars.show){
+          octx.save();
+          octx.translate(this.plotOffset.left, this.plotOffset.top);
+          octx.beginPath();
+        
+          if (s.mouse.trackAll) {
+            octx.moveTo(xa.d2p(n.x), ya.d2p(0));
+            octx.lineTo(xa.d2p(n.x), ya.d2p(n.yaxis.max));
+        }
+        else {
+            var bw = s.bars.barWidth;
+            
+            octx.moveTo(xa.d2p(n.x-(bw/2)), ya.d2p(this.axes.y.min));
+            octx.lineTo(xa.d2p(n.x-(bw/2)), ya.d2p(n.y));
+            octx.lineTo(xa.d2p(n.x+(bw/2)), ya.d2p(n.y));
+            octx.lineTo(xa.d2p(n.x+(bw/2)), ya.d2p(this.axes.y.min));
+  
+            if(s.mouse.fillColor) octx.fill();
+        }
+
+          octx.stroke();
+          octx.closePath();
+          octx.restore();
+      }
+      else if (s.bubbles.show){
+        this.bubbles.drawHit(n);
+      }
+      else {
         octx.save();
         octx.translate(this.plotOffset.left, this.plotOffset.top);
         octx.beginPath();
-        
+      
         if (s.mouse.trackAll) {
           octx.moveTo(xa.d2p(n.x), ya.d2p(0));
           octx.lineTo(xa.d2p(n.x), ya.d2p(n.yaxis.max));
         }
         else {
-          var bw = s.bars.barWidth,
-            y = ya.d2p(n.y), 
-            x = xa.d2p(n.x);
-            
-          if(!s.bars.horizontal){ //vertical bars (default)
-            var ly = ya.d2p(ya.min<0? 0 : ya.min); //lower vertex y value (in points)
-            
-            if(s.bars.centered){
-              var lx = xa.d2p(n.x-(bw/2)),
-                rx = xa.d2p(n.x+(bw/2));
-            
-              octx.moveTo(lx, ly);
-            	octx.lineTo(lx, y);
-            	octx.lineTo(rx, y);
-            	octx.lineTo(rx, ly);
-            } else {
-              var rx = xa.d2p(n.x+bw); //right vertex x value (in points)
-              
-              octx.moveTo(x, ly);
-              octx.lineTo(x, y);
-              octx.lineTo(rx, y);
-              octx.lineTo(rx, ly);
-            }
-          } else { //horizontal bars
-            var lx = xa.d2p(xa.min<0? 0 : xa.min); //left vertex y value (in points)
-              
-            if(s.bars.centered){
-              var ly = ya.d2p(n.y-(bw/2)),
-                uy = ya.d2p(n.y+(bw/2));
-                           
-              octx.moveTo(lx, ly);
-              octx.lineTo(x, ly);
-              octx.lineTo(x, uy);
-              octx.lineTo(lx, uy);
-            } else {
-              var uy = ya.d2p(n.y+bw); //upper vertex y value (in points)
-            
-              octx.moveTo(lx, y);
-              octx.lineTo(x, y);
-              octx.lineTo(x, uy);
-              octx.lineTo(lx, uy);
-            }
-          }
-  
-          if(s.mouse.fillColor) octx.fill();
+          var center = {
+            x: (this.plotWidth)/2,
+            y: (this.plotHeight)/2
+          },
+          radius = (Math.min(this.canvasWidth, this.canvasHeight) * s.pie.sizeRatio) / 2;
+
+          var bisection = n.sAngle<n.eAngle ? (n.sAngle + n.eAngle) / 2 : (n.sAngle + n.eAngle + 2* Math.PI) / 2,
+              xOffset = center.x + Math.cos(bisection) * n.series.pie.explode,
+              yOffset = center.y + Math.sin(bisection) * n.series.pie.explode;
+          
+          octx.beginPath();
+          octx.moveTo(xOffset, yOffset);
+          if (n.fraction != 1)
+            octx.arc(xOffset, yOffset, radius, n.sAngle, n.eAngle, false);
+          else
+            octx.arc(xOffset, yOffset, radius, n.sAngle, n.eAngle-0.00001, false);
+          octx.lineTo(xOffset, yOffset);
+          octx.closePath();
         }
 
         octx.stroke();
         octx.closePath();
         octx.restore();
-      }
-      else if (s.bubbles.show){
-        this.bubbles.drawHit(n);
-      }
-      else if (s.pie.show){
-      	this.pie.drawHit(n);
       }
       octx.restore();
     }
@@ -2657,28 +2624,16 @@ Flotr.Graph = Class.create({
                 xa.min > x || xa.max < x || 
                 ya.min > y || ya.max < y) continue;
             
-            if(s.bars.show && s.bars.centered){
-              var xdiff = Math.abs(x - mx),
+            var xdiff = Math.abs(x - mx),
                 ydiff = Math.abs(y - my);
-            } else {
-              if (s.bars.horizontal){
-                var xdiff = Math.abs(x - mx),
-                  ydiff = Math.abs(y + s.bars.barWidth/2 - my);
-              } else {
-                var xdiff = Math.abs(x + s.bars.barWidth/2 - mx),
-                  ydiff = Math.abs(y - my);
-              }
-            }
             
             // we use a different set of criteria to determin if there has been a hit
             // depending on what type of graph we have
             if(((!s.bars.show) && xdiff < xsens && (!s.mouse.trackY || ydiff < ysens)) ||
                 // Bars check
-                (s.bars.show && (!s.bars.horizontal && xdiff < s.bars.barWidth/2 + 1/xa.scale // Check x bar boundary, with adjustment for scale (when bars ~1px)
-                && (!s.mouse.trackY || (y > 0 && my > 0 && my < y) || (y < 0 && my < 0 && my > y))) 
-                || (s.bars.horizontal && ydiff < s.bars.barWidth/2 + 1/ya.scale // Check x bar boundary, with adjustment for scale (when bars ~1px)
-                && ((x > 0 && mx > 0 && mx < x) || (x < 0 && mx < 0 && mx > x))))){ // for horizontal bars there is need to use y-axis tracking, so s.mouse.trackY is ignored
-              
+                (s.bars.show && xdiff < s.bars.barWidth/2 + 1/xa.scale // Check x bar boundary, with adjustment for scale (when bars ~1px)
+                    && (!s.mouse.trackY || ((y > 0 && my > 0 && my < y) || (y < 0 && my < 0 && my > y))))){
+
               var distance = Math.sqrt(xdiff*xdiff + ydiff*ydiff);
               if(distance < n.dist){
                 n.dist = distance;
@@ -3273,10 +3228,16 @@ Flotr.addType('lines', {
         y2 = ya.d2p(data[i+1][1] + stack2);
         
         if(incStack){
-          xa.values[data[i][0]].stack = data[i][1]+stack1;
+          if(xa.values[data[i][0]].stack)
+            xa.values[data[i][0]].stack += data[i][1]+stack1;
+          else
+            xa.values[data[i][0]].stack = data[i][1]+stack1;
             
           if(i == length-1){
-            xa.values[data[i+1][0]].stack = data[i+1][1]+stack2;
+            if(xa.values[data[i+1][0]].stack)
+              xa.values[data[i+1][0]].stack += data[i+1][1]+stack2;
+            else
+              xa.values[data[i+1][0]].stack = data[i+1][1]+stack2;
           }
         }
       }
@@ -3564,12 +3525,14 @@ Flotr.addType('lines', {
           // For stacked lines
           if(l.stacked){
             for (j = 0; j < s.data.length; j++) {
-              x = s.data[j][0]+'';
-              if(s.data[j][1]>0)
-                stackedSumsPos[x] = (stackedSumsPos[x] || 0) + s.data[j][1];
-              else
-                stackedSumsNeg[x] = (stackedSumsNeg[x] || 0) + s.data[j][1];
-              lastSerie = s;
+              if (s.lines.show && s.lines.stacked) {
+                x = s.data[j][0]+'';
+                if(s.data[j][1]>0)
+                  stackedSumsPos[x] = (stackedSumsPos[x] || 0) + s.data[j][1];
+                else
+                  stackedSumsNeg[x] = (stackedSumsNeg[x] || 0) + s.data[j][1];
+                lastSerie = s;
+              }
             }
             
             for (j in stackedSumsPos) {
@@ -3653,36 +3616,40 @@ Flotr.addType('bars', {
       
       if(series.bars.stacked) {
         if(series.bars.horizontal) {
-          stackOffsetPos = ya.values[y].stackPos || 0;
-          stackOffsetNeg = ya.values[y].stackNeg || 0;
-          if(x > 0) {
-            ya.values[y].stackPos = stackOffsetPos + x;
-          } else {
-            ya.values[y].stackNeg = stackOffsetNeg + x;
-          }
+          $H(ya.values).each(function(pair) {
+            if (pair.key == y) {
+              stackOffsetPos = pair.value.stackPos || 0;
+              stackOffsetNeg = pair.value.stackNeg || 0;
+              if(x > 0)
+                pair.value.stackPos = stackOffsetPos + x;
+              else
+                pair.value.stackNeg = stackOffsetNeg + x;
+            }
+          });
         } 
         else {
-          stackOffsetPos = xa.values[x].stackPos || 0;
-          stackOffsetNeg = xa.values[x].stackNeg || 0;
-          if(y > 0) {
-            xa.values[x].stackPos = stackOffsetPos + y;
-          } else {
-            xa.values[x].stackNeg = stackOffsetNeg + y;
-          }
+          $H(xa.values).each(function(pair) {
+            if (pair.key == x) {
+              stackOffsetPos = pair.value.stackPos || 0;
+              stackOffsetNeg = pair.value.stackNeg || 0;
+              if(y > 0)
+                pair.value.stackPos = stackOffsetPos + y;
+              else
+                pair.value.stackNeg = stackOffsetNeg + y;
+            }  
+          });
         }
       }
       
       // @todo: fix horizontal bars support
       // Horizontal bars
-      var barOffset = series.bars.centered ? barWidth/2 : 0;
-      
       if(series.bars.horizontal){ 
         if (x > 0)
           var left = stackOffsetPos, right = x + stackOffsetPos;
         else
           var right = stackOffsetNeg, left = x + stackOffsetNeg;
           
-        var bottom = y - barOffset, top = y + barWidth - barOffset;
+        var bottom = y, top = y + barWidth;
       }
       else {
         if (y > 0)
@@ -3690,7 +3657,7 @@ Flotr.addType('bars', {
         else
           var top = stackOffsetNeg, bottom = y + stackOffsetNeg;
           
-        var left = x - barOffset, right = x + barWidth - barOffset;
+        var left = x - (series.bars.centered ? barWidth/2 : 0), right = x + barWidth - (series.bars.centered ? barWidth/2 : 0);
       }
       
       if(right < xa.min || left > xa.max || top < ya.min || bottom > ya.max)
@@ -3768,38 +3735,43 @@ Flotr.addType('bars', {
       var stackOffsetPos = 0;
       var stackOffsetNeg = 0;
       
-      // TODO reconcile this with the same logic in Plot, maybe precalc
       if(series.bars.stacked) {
         if(series.bars.horizontal) {
-          stackOffsetPos = ya.values[y].stackShadowPos || 0;
-          stackOffsetNeg = ya.values[y].stackShadowNeg || 0;
-          if(x > 0) {
-            ya.values[y].stackShadowPos = stackOffsetPos + x;
-          } else {
-            ya.values[y].stackShadowNeg = stackOffsetNeg + x;
-          }
+          $H(ya.values).each(function(pair) {
+            if (pair.key == y) {
+              stackOffsetPos = pair.value.stackShadowPos || 0;
+              stackOffsetNeg = pair.value.stackShadowNeg || 0;
+              
+              if(x>0)
+                pair.value.stackShadowPos = stackOffsetPos + x;
+              else
+                pair.value.stackShadowNeg = stackOffsetNeg + x;
+            }
+          });
         }
         else {
-          stackOffsetPos = xa.values[x].stackShadowPos || 0;
-          stackOffsetNeg = xa.values[x].stackShadowNeg || 0;
-          if(y > 0) {
-            xa.values[x].stackShadowPos = stackOffsetPos + y;
-          } else {
-            xa.values[x].stackShadowNeg = stackOffsetNeg + y;
-          }
+          $H(xa.values).each(function(pair) {
+            if (pair.key == x) {
+              stackOffsetPos = pair.value.stackShadowPos || 0;
+              stackOffsetNeg = pair.value.stackShadowNeg || 0;
+              
+              if(y > 0)
+                pair.value.stackShadowPos = stackOffsetPos + y;
+              else
+                pair.value.stackShadowNeg = stackOffsetNeg + y;
+            }
+          });
         }
       }
       
       // Horizontal bars
-      var barOffset = series.bars.centered ? barWidth/2 : 0;
-      
       if(series.bars.horizontal){
         if (x > 0)
           var left = stackOffsetPos, right = x + stackOffsetPos;
         else
           var right = stackOffsetNeg, left = x + stackOffsetNeg;
           
-        var bottom = y- barOffset, top = y + barWidth - barOffset;
+        var bottom = y, top = y + barWidth;
       }
       else {
         if (y > 0)
@@ -3807,7 +3779,7 @@ Flotr.addType('bars', {
         else
           var top = stackOffsetNeg, bottom = y + stackOffsetNeg;
           
-        var left = x - barOffset, right = x + barWidth - barOffset;
+        var left = x - (series.bars.centered ? barWidth/2 : 0), right = x + barWidth - (series.bars.centered ? barWidth/2 : 0);
       }
       
       if(right < xa.min || left > xa.max || top < ya.min || bottom > ya.max)
@@ -4220,61 +4192,6 @@ Flotr.addType('pie', {
     ctx.arc   (x, y, radius, startAngle, endAngle, fill);
     ctx.lineTo(x, y);
     ctx.closePath();
-  },
-  drawHit: function(n){
-    var octx = this.octx,
-      s = n.series,
-      xa = n.xaxis,
-      ya = n.yaxis;
-  	
-    octx.save();
-    octx.translate(this.plotOffset.left, this.plotOffset.top);
-    octx.beginPath();
-  
-    if (s.mouse.trackAll) {
-      octx.moveTo(xa.d2p(n.x), ya.d2p(0));
-      octx.lineTo(xa.d2p(n.x), ya.d2p(n.yaxis.max));
-    }
-    else {
-      var center = {
-        x: (this.plotWidth)/2,
-        y: (this.plotHeight)/2
-      },
-      radius = (Math.min(this.canvasWidth, this.canvasHeight) * s.pie.sizeRatio) / 2,
-
-      bisection = n.sAngle<n.eAngle ? (n.sAngle + n.eAngle) / 2 : (n.sAngle + n.eAngle + 2* Math.PI) / 2,
-      xOffset = center.x + Math.cos(bisection) * n.series.pie.explode,
-      yOffset = center.y + Math.sin(bisection) * n.series.pie.explode;
-      
-      octx.beginPath();
-      octx.moveTo(xOffset, yOffset);
-      if (n.fraction != 1)
-        octx.arc(xOffset, yOffset, radius, n.sAngle, n.eAngle, false);
-      else
-        octx.arc(xOffset, yOffset, radius, n.sAngle, n.eAngle-0.00001, false);
-      octx.lineTo(xOffset, yOffset);
-      octx.closePath();
-    }
-
-    octx.stroke();
-    octx.closePath();
-    octx.restore();
-  },
-  clearHit: function(){
-    var center = {
-      x: this.plotOffset.left + (this.plotWidth)/2,
-      y: this.plotOffset.top + (this.plotHeight)/2
-    },
-    pie = this.prevHit.series.pie,
-    radius = (Math.min(this.canvasWidth, this.canvasHeight) * pie.sizeRatio) / 2,
-    margin = (pie.explode + pie.lineWidth) * 4;
-      
-    this.octx.clearRect(
-      center.x - radius - margin, 
-      center.y - radius - margin, 
-      2*(radius + margin), 
-      2*(radius + margin)
-    );
   }
 });
 
@@ -4463,10 +4380,7 @@ Flotr.addType('markers', {
     stroke: false,         // => draw the rectangle around the markers
     position: 'ct',        // => the markers position (vertical align: b, m, t, horizontal align: l, c, r)
     labelFormatter: Flotr.defaultMarkerFormatter,
-    fontSize: Flotr.defaultOptions.fontSize,
-    stacked: false,        // => true if markers should be stacked
-    stackingType: 'b',     // => define staching behavior, (b- bars like, a - area like) (see Issue 125 for details)
-    horizontal: false      // => true if markers should be horizontal (For now only in a case on horizontal stacked bars, stacks should be calculated horizontaly)
+    fontSize: Flotr.defaultOptions.fontSize
   },
   /**
    * Draws lines series in the canvas element.
@@ -4488,50 +4402,10 @@ Flotr.addType('markers', {
     ctx.fillStyle = this.processColor(options.fillColor, {opacity: options.fillOpacity});
 
     for(var i = 0; i < data.length; ++i){
-    
-      var x = data[i][0],
-        y = data[i][1],
-        label;
-        
-      if(series.markers.stacked) {
-        if(series.markers.stackingType == 'b'){
-          // Stacked bars
-          var stackOffsetPos = 0,
-            stackOffsetNeg = 0;
-            
-          if(series.markers.horizontal) {
-            stackOffsetPos = ya.values[y].stackMarkPos || 0;
-            stackOffsetNeg = ya.values[y].stackMarkNeg || 0;
-            if(x > 0) {
-              ya.values[y].stackMarkPos = stackOffsetPos + x;
-              x = stackOffsetPos + x;
-            } else {
-              ya.values[y].stackMarkNeg = stackOffsetNeg + x;
-              x = stackOffsetNeg + x;
-            }
-          }
-          else {
-            stackOffsetPos = xa.values[x].stackMarkPos || 0;
-            stackOffsetNeg = xa.values[x].stackMarkNeg || 0;
-            if(y > 0) {
-              xa.values[x].stackMarkPos = stackOffsetPos + y;
-              y = stackOffsetPos + y;
-            } else {
-              xa.values[x].stackMarkNeg = stackOffsetNeg + y;
-              y = stackOffsetNeg + y;
-            }
-          }
-        } else if(series.markers.stackingType == 'a') {
-          var stackOffset = xa.values[x].stackMark || 0;
-            
-          xa.values[x].stackMark = stackOffset + y;
-          y = stackOffset + y;
-        }
-      }
-      var xPos = xa.d2p(x),
-        yPos = ya.d2p(y);
-        label = options.labelFormatter({x: x, y: y, index: i, data : data});
-
+      var x = data[i][0], xPos = xa.d2p(x),
+          y = data[i][1], yPos = ya.d2p(y),
+          label = options.labelFormatter({x: x, y: y, index: i, data : data});
+          
       this.markers.plot(xPos, yPos, label, options);
     }
     

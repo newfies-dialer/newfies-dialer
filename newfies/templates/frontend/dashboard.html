@@ -26,7 +26,7 @@
     {% endfor %}
 </P>
 </form>
-    
+    <!--
 <table align="center" id="rounded-corner">
         <thead>
         <tr>
@@ -44,7 +44,7 @@
         </tr>
 
 </table>
-<br/>
+<br/>-->
 
 <script type="text/javascript">
 var jsonData = [
@@ -104,7 +104,7 @@ Event.observe(document, 'dom:loaded', function() {
 </script>
     
 {% if total_data %}
-<div id="finance">
+<div id="finance" style="position: relative; margin: 40px 0px; width: 800px; border: 1px solid #99CCFF;">
 	<div id="labels">
 	    <div id="financeTitle">{% trans "Campaign v/s Call Report"  %}</div>
 	    <div id="time">

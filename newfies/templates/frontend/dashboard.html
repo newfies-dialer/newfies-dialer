@@ -6,10 +6,10 @@
 {% endblock %}
 
 {% block extra_files %}
-    {% include "frontend/visualize_header.html" %}
+
 {% endblock %}
 
-
+{% include "frontend/visualize_header.html" %}
 
 {% block content %}
 
@@ -49,7 +49,7 @@
 <script type="text/javascript">
 var jsonData = [
 {% for td in total_data %}
-    {date:'{{ td.date }}', year:{{ td.year }},day:{{ td.day }}, month:{{ td.month }}, calls:{{ td.count }}, duration:'{{td.duration__sum|conv_min}}', act:'{{td.duration__avg|conv_min}}'},
+   {date:'{{ td.date }}', year:{{ td.year }},day:{{ td.day }}, month:{{ td.month }}, calls:{{ td.count }}, duration:'{{ td.duration__sum|conv_min }}', act:'{{ td.duration__avg|conv_min }}'},
 {% endfor %}
 ];
 var callData = [

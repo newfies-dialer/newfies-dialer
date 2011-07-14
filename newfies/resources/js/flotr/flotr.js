@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: flotr.js 192 2011-05-30 17:03:39Z macku30 $ */
 
 /** 
  * @projectDescription Flotr is a javascript plotting library based on the Prototype Javascript Framework.
@@ -9,8 +9,8 @@
 
 var Flotr = {
   version: "0.2.0-alpha",
-  revision: ('$Revision$'.match(/(\d+)/) || [null,null])[1],
-  author: ['Bas Wenneker', 'Fabien MÃ©nager'],
+  revision: ('$Revision: 192 $'.match(/(\d+)/) || [null,null])[1],
+  author: ['Bas Wenneker', 'Fabien Ménager'],
   website: 'http://www.solutoire.com',
   isIphone: /iphone/i.test(navigator.userAgent),
   isIE9: document.documentMode == 9,
@@ -154,7 +154,7 @@ var Flotr = {
    */
   engineeringNotation: function(value, precision, base){
     var sizes =         ['Y','Z','E','P','T','G','M','k',''],
-        fractionSizes = ['y','z','a','f','p','n','Âµ','m',''],
+        fractionSizes = ['y','z','a','f','p','n','µ','m',''],
         total = sizes.length;
 
     base = base || 1000;

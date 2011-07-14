@@ -164,6 +164,17 @@ $(function () {
     {% endif %}
 
 <script id="source">
+var data_count = [
+        {% for td in final_calls %}
+            [(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}],
+        {% endfor %},
+    ];
+var data_duration = [
+    {% for td in final_calls %}
+        [(new Date({{ td.starting_datetime }} * 1000)), {{ td.duration__sum }}],
+    {% endfor %},
+    ];
+
 $(function () {
 
     function showTooltip(x, y, contents) {
@@ -179,25 +190,15 @@ $(function () {
         }).appendTo("body").fadeIn(200);
     }
 
-    var data_count = [
-        {% for td in final_calls %}
-            [(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}],
-        {% endfor %},
-    ];
-    var data_duration = [
-        {% for td in final_calls %}
-            [(new Date({{ td.starting_datetime }} * 1000)), {{ td.duration__sum }}],
-        {% endfor %},
-    ];
 
     //alert(data);
 
     $.plot($("#placeholder"), [
-        { label: "Campaign/Calls",  data: data_count},
-        { label: "Campaign/Call duration",  data: data_duration},
+        { label: "Calls",  data: data_count},
+        { label: "Duration",  data: data_duration, yaxis: 2},
         ], {
         legend: {
-            position: "ne",
+            position: "sw",
             margin: [-150,0],
             labelFormatter: function(label){
                 return '<div class="graph_legend">'+label+'</div>';

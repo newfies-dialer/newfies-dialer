@@ -188,6 +188,7 @@ func_install_frontend(){
     #Install Newfies depencencies
     easy_install -U distribute
     pip install -r /usr/src/newfies-dialer/install/conf/requirements.txt
+    pip install plivohelper
 
     # copy settings_local.py into newfies dir
     cp /usr/src/newfies-dialer/install/conf/settings_local.py $INSTALL_DIR
@@ -204,16 +205,16 @@ func_install_frontend(){
     sed -i "s/TEMPLATE_DEBUG = DEBUG/TEMPLATE_DEBUG = False/g"  $INSTALL_DIR/settings_local.py
 
 
-    # Setup settings.py
-    sed -i "s/'django.db.backends.sqlite3'/$MYSQL_BACKEND/"  $INSTALL_DIR/settings_local.py
-    sed -i "s/.*'NAME'/       'NAME': '$DATABASENAME',#/"  $INSTALL_DIR/settings_local.py
-    sed -i "/'USER'/s/''/'$MYSQLUSER'/" $INSTALL_DIR/settings_local.py
-    sed -i "/'PASSWORD'/s/''/'$MYSQLPASSWORD'/" $INSTALL_DIR/settings_local.py
-    sed -i "/'HOST'/s/''/'$MYHOST'/" $INSTALL_DIR/settings_local.py
-    sed -i "/'PORT'/s/''/'$MYHOSTPORT'/" $INSTALL_DIR/settings_local.py
-
-
     if echo $db_backend | grep -i "^MYSQL" > /dev/null ; then
+    
+        # Setup settings_local.py
+        sed -i "s/'django.db.backends.sqlite3'/$MYSQL_BACKEND/"  $INSTALL_DIR/settings_local.py
+        sed -i "s/.*'NAME'/       'NAME': '$DATABASENAME',#/"  $INSTALL_DIR/settings_local.py
+        sed -i "/'USER'/s/''/'$MYSQLUSER'/" $INSTALL_DIR/settings_local.py
+        sed -i "/'PASSWORD'/s/''/'$MYSQLPASSWORD'/" $INSTALL_DIR/settings_local.py
+        sed -i "/'HOST'/s/''/'$MYHOST'/" $INSTALL_DIR/settings_local.py
+        sed -i "/'PORT'/s/''/'$MYHOSTPORT'/" $INSTALL_DIR/settings_local.py
+    
         # Create the Database
         echo "Remove Existing Database if exists..."
         echo "mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e 'DROP DATABASE $DATABASENAME;'"
@@ -291,6 +292,11 @@ func_install_frontend(){
     CDR_API_URL="http:\/\/$IPADDR:9080\/$NEWFIES_CDR_API"
     cd "$FS_INSTALLED_PATH/conf/autoload_configs/"
     sed -i "s/NEWFIES_API_STORE_CDR/$CDR_API_URL/g" xml_cdr.conf.xml
+    
+    #Update Plivo URL
+    sed -i "s/SERVER_IP_PORT/$IPADDR:9080/g" $INSTALL_DIR/settings_local.py
+    sed -i "s/dummy/plivo/g" $INSTALL_DIR/settings_local.py
+    
 
     echo ""
     echo ""

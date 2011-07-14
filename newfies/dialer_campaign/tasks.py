@@ -60,7 +60,7 @@ def initiate_call_subscriber(subscriber_id, campaign_id):
         return True
 
     #Check if the contact is authorized
-    if not obj_campaign.is_authorized_contact(obj_camp_subs.contact):
+    if not obj_campaign.is_authorized_contact(obj_camp_subs.contact.contact):
         logger.error("Contact not authorized")
         obj_camp_subs.status = 7 # Update to Not Authorized
         obj_camp_subs.save()

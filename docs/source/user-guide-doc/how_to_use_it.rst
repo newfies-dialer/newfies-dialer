@@ -1,8 +1,8 @@
 .. _how-to-use-it:
 
-=============
-How to use it
-=============
+=========================
+How to use Newfies-Dialer
+=========================
 
 .. _call-list:
 
@@ -21,9 +21,9 @@ Create campaign
 ---------------
 
 To create a campaign, click on ``Add campaign``, add details for the campaign.
-Importantly; add campaign's starting and ending dates with timing & week-day
-exception. Also select gateway through which call will be routed & phonebook(s)
-which is linked with contacts.
+Important: Add the campaign's start and end dates with times & week-day
+exceptions. Select the gateway through which calls will be routed & the phonebook(s)
+linked with the contacts.
 
 
 .. _apply-dialer-settings:
@@ -31,11 +31,11 @@ which is linked with contacts.
 Dialer Settings
 ---------------
 
-To create restrictions (like Max. no of campaign, Max no of contacts etc.) for
-System User, Click on ``Add dialer settings``. Add numeric values for limit.
+To create restrictions (like the Max. no of campaign, Max no of contacts etc.) for
+System User, Click on ``Add dialer settings``. Add numeric values for the limit.
 
-To apply dialer settings limit on User, click on ``Customers`` or ``Admins``,
-select user to update & apply settings from dialer settings list.
+To apply the dialer settings limit on a User, click on ``Customers`` or ``Admins``,
+select the user to update, & apply the settings from the dialer settings list.
 
 
 .. _reach-to-contact:
@@ -43,15 +43,15 @@ select user to update & apply settings from dialer settings list.
 Reach to contacts/subscribers
 -----------------------------
 
-A callrequest will spool a call directly from the platform using a dialer gateway
-and update callrequest status after receiving response from gateway.
+A call-request will spool a call directly from the platform using a dialer gateway
+and update the call-request status after receiving a response from the gateway.
 
 .. _call-report:
 
 VoIP Call Report
 ----------------
 
-As per the status of call request, it will be stored in VoIP call records.
-This gives information of all the calls & call statistics made with callrequest
-and also you can search records on the basis of date range. You can export VoIP
-call report into csv file.
+As per the status of a call-request, it will be stored in the VoIP call records.
+This gives information of all the calls & call statistics made with the call-request
+and also you can search for records on the basis of date range. You can export the VoIP
+call report into a csv file.

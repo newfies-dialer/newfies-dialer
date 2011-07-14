@@ -1,4 +1,4 @@
-.. _contributing:
+﻿.. _contributing:
 
 ============
 Contributing
@@ -42,12 +42,12 @@ others work.
 Be respectful.
 --------------
 
-The Newfies-Dialer community and its members treat one another with respect.  Everyone
+The Newfies-Dialer community and its members treat one another with respect. Everyone
 can make a valuable contribution to Newfies-Dialer.  We may not always agree, but
-disagreement is no excuse for poor behavior and bad manners.  We might all
+disagreement is no excuse for poor behaviour and bad manners.  We might all
 experience some frustration now and then, but we cannot allow that frustration
-to turn into a personal attack.  It's important to remember that a community
-where people feel uncomfortable or threatened is not a productive one.  We
+to turn into a personal attack. It's important to remember that a community
+where people feel uncomfortable or threatened is not a productive one. We
 expect members of the Newfies-Dialer community to be respectful when dealing with
 other contributors as well as with people outside the Newfies-Dialer project and with
 users of Newfies-Dialer.
@@ -56,11 +56,11 @@ Be collaborative.
 -----------------
 
 Collaboration is central to Newfies-Dialer and to the larger free software community.
-We should always be open to collaboration.  Your work should be done
+We should always be open to collaboration. Your work should be done
 transparently and patches from Newfies-Dialer should be given back to the community
-when they are made, not just when the distribution releases.  If you wish
+when they are made, not just when the distribution is released. If you wish
 to work on new code for existing upstream projects, at least keep those
-projects informed of your ideas and progress.  It many not be possible to
+projects informed of your ideas and progress. It many not be possible to
 get consensus from upstream, or even from your colleagues about the correct
 implementation for an idea, so don't feel obliged to have that agreement
 before you begin, but at least keep the outside world informed of your work,
@@ -71,17 +71,17 @@ When you disagree, consult others.
 ----------------------------------
 
 Disagreements, both political and technical, happen all the time and
-the Newfies-Dialer community is no exception.  It is important that we resolve
+the Newfies-Dialer community is no exception. It is important that we resolve
 disagreements and differing views constructively and with the help of the
-community and community process.  If you really want to go a different
+community and community process. If you really want to go a different
 way, then we encourage you to make a derivative distribution or alternate
-set of packages that still build on the work we've done to utilize as common
-of a core as possible.
+set of packages that still build on the work we've done to utilise as common 
+a core as possible.
 
 When you are unsure, ask for help.
 ----------------------------------
 
-Nobody knows everything, and nobody is expected to be perfect.  Asking
+Nobody knows everything, and nobody is expected to be perfect. Asking
 questions avoids many problems down the road, and so questions are
 encouraged.  Those who are asked questions should be responsive and helpful.
 However, when asking a question, care must be taken to do so in an appropriate
@@ -90,9 +90,9 @@ forum.
 Step down considerately.
 ------------------------
 
-Developers on every project come and go and Newfies-Dialer is no different.  When you
+Developers on every project come and go and Newfies-Dialer is no different. When you
 leave or disengage from the project, in whole or in part, we ask that you do
-so in a way that minimizes disruption to the project.  This means you should
+so in a way that minimises disruption to the project. This means you should
 tell people you are leaving and take the proper steps to ensure that others
 can pick up where you leave off.
 
@@ -114,33 +114,33 @@ and participate in the discussion.
 
 2) Determine if your bug is really a bug.
 
-You should not file a bug if you are requesting support.  For that you can use
+You should not file a bug if you are requesting support. For that you can use
 the :ref:`mailing-list`.
 
 3) Make sure your bug hasn't already been reported.
 
-Search through the appropriate Issue tracker.  If a bug like yours was found,
+Search through the appropriate Issue tracker. If a bug like yours was found,
 check if you have new information that could be reported to help
 the developers fix the bug.
 
 4) Collect information about the bug.
 
 To have the best chance of having a bug fixed, we need to be able to easily
-reproduce the conditions that caused it.  Most of the time this information
+reproduce the conditions that caused it. Most of the time this information
 will be from a Python traceback message, though some bugs might be in design,
 spelling or other errors on the website/docs/code.
 
 If the error is from a Python traceback, include it in the bug report.
 
 We also need to know what platform you're running (Windows, OSX, Linux, etc),
-the version of your Python interpreter, and the version of Newfies-Dialer, and related
+the version of your Python interpreter, the version of Newfies-Dialer and related
 packages that you were running when the bug occurred.
 
 5) Submit the bug.
 
 By default `GitHub`_ will email you to let you know when new comments have
 been made on your bug. In the event you've turned this feature off, you
-should check back on occasion to ensure you don't miss any questions a
+should check back on occasions to ensure you don't miss any questions a
 developer trying to fix the bug might ask.
 
 .. _`GitHub`: http://github.com
@@ -153,7 +153,7 @@ Issue Trackers
 Bugs for a package in the Newfies-Dialer ecosystem should be reported to the relevant
 issue tracker.
 
-* Newfies: github.com/Star2Billing/newfies-dialer/issues/
+* Newfies-Dialer: github.com/Star2Billing/newfies-dialer/issues/
 
 If you are unsure of the origin of the bug you can ask the
 :ref:`mailing-list`, or just use the Newfies-Dialer issue tracker.
@@ -169,7 +169,7 @@ following conventions.
 
 * All Python code must follow the `PEP-8`_ guidelines.
 
-`pep8.py`_ is an utility you can use to verify that your code
+`pep8.py`_ is a utility you can use to verify that your code
 is following the conventions.
 
 .. _`PEP-8`: http://www.python.org/dev/peps/pep-0008/

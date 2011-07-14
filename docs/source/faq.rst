@@ -16,7 +16,7 @@ General
 .. _faq-when-to-use:
 
 
-What is Newfies-dialer?
+What is Newfies-Dialer?
 -----------------------
 
 **Answer:** .
@@ -31,10 +31,10 @@ Why should I consider using Newfies-Dialer?
 
 **Answer:** .
 
-Newfies-dialer is targeted at the following use cases:
+Newfies-Dialer is targeted at the following use cases:
 
 
-What's the history behind Newfies-dialer?
+What's the history behind Newfies-Dialer?
 -----------------------------------------
 
 **Answer:** .
@@ -48,7 +48,7 @@ Misconceptions
 
 .. _faq-serializion-is-a-choice:
 
-Is Newfies-Dialer dependent on celery?
+Is Newfies-Dialer dependent on Celery?
 --------------------------------------
 
 **Answer:** Yes.

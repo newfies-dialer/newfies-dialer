@@ -8,10 +8,10 @@ Getting Help
 Mailing list
 ------------
 
-For discussions about the usage, development, and future of Newfies,
-please join the `newfies-dialer`_ mailing list. 
+For discussions about the usage, development, and future of Newfies-Dialer,
+please join the `Newfies-Dialer`_ mailing list. 
 
-.. _`newfies-dialer`: http://groups.google.com/group/newfies-dialer
+.. _`Newfies-Dialer`: http://groups.google.com/group/newfies-dialer
 
 .. _bug-tracker:
 
@@ -33,16 +33,16 @@ https://github.com/Star2Billing/newfies-dialer/wiki/
 Contributing
 ============
 
-Development of `newfies` happens at Github: https://github.com/Star2Billing/newfies-dialer
+Development of `Newfies-Dialer` happens at Github: https://github.com/Star2Billing/newfies-dialer
 
 You are highly encouraged to participate in the development
-of `newfies`. If you don't like Github (for some reason) you're welcome
+of `Newfies-Dialer`. If you don't like Github (for some reason) you're welcome
 to send regular patches.
 
-Be sure to also read the `Contributing to Newfies`_ section in the
+Be sure to also read the `Contributing to Newfies-Dialer`_ section in the
 documentation.
 
-.. _`Contributing to Newfies`: http://ask.github.com/newfies-dialer/contributing.html
+.. _`Contributing to Newfies-Dialer`: http://ask.github.com/newfies-dialer/contributing.html
 
 .. _license:
 

@@ -1,7 +1,7 @@
 .. _admin-views:
 
-Newfies Admin Views
-===================
+Newfies-Dialer Admin Views
+==========================
 
 .. automodule:: dialer_campaign.admin
 

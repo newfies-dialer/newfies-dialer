@@ -3,8 +3,8 @@
 Sample Configuration
 ====================
 
-This is an sample configuration to get you started.
-It should contain all you need to run a basic set-up.
+This is a sample configuration to get you started.
+It should contain all you need to create a basic set-up.
  
 ------------------------
 The Configuration Module

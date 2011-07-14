@@ -16,18 +16,14 @@ VoIP Servers such as `Asterisk`_ could be easily added in the future.
 The platform is focused on real-time operations and task call distributions
 to clustered brokers and workers.
 
-Newfies has been created to provide a solution for `FreedomeFone`_
-to process millions of calls a day.
--more about FreedomeFone-
-
-Newfies is written in Python, using the `Django`_ Framework. It also operates
+Newfies-Dialer is written in Python, using the `Django`_ Framework. It also operates
 with message brokers such as `RabbitMQ`_, `Redis`_ but support for Beanstalk,
 MongoDB, CouchDB and DBMS is also available.
 
-Newfies provides a comprehensive set of APIs to easily integrate the platform dialer
-with third-party applications.
+Newfies-Dialer provides a extensive set of APIs to easily integrate with 
+third-party applications.
 
-Using very simple steps, Newfies will help you create campaigns, add
+Using very simple steps, Newfies-Dialer will help you create campaigns, add
 phonebooks, contacts, build audio messages and create complex telephony
 applications. Once your campaigns are ready to start, your messages
 will be dispatched and delivered.
@@ -61,9 +57,9 @@ provide bulk dialling facilities to their own customers.
 
 Utility
 =======
-The system is loaded up with a list of telephone numbers that can be dialled
-sequentially at very high rates of calling, several per second, depending on the
-capacity of the carrier and the hardware.
+Newfies-Dialer is loaded up with a list of telephone numbers that can be dialled
+sequentially at very high rates of calling depending on carrier capacity and 
+hardware, potentially delivering many millions of calls per day.
 
 When the called party answers the call, Newfies-Dialer passes the call to a telephony
 application that is custom designed to provide the desired behaviour.
@@ -72,9 +68,9 @@ Below are some examples of some of the uses that Newfies-Dialer can be put to,
 Please click on the headings for more details.
 
 
-    * ``Telecasting``: Play marketing or informational messages to customers and clients.
+    * ``Telecasting``: Broadcast marketing or informational messages to customers and clients.
 
-    * ``Telemarketing``: Play a marketing message to potential customers, and give
+    * ``Telemarketing``: Braodcast a marketing message to potential customers, and give
       them the option to be put through to a call-centre via an IVR (Interactive Voice Response) Menu.
 
     * ``Phone Polling, Surveys and Voting``: Ring large numbers of people and present
@@ -116,7 +112,7 @@ Features
     | Telephony PBX   | Based on leading open source Freeswitch, Asterisk  |
     +-----------------+----------------------------------------------------+
     | Distributed     | Runs on one or more machines. Supports             |
-    |                 | broker `clustering` and `HA`_ when used in        |
+    |                 | broker `clustering` and `HA`_ when used in         |
     |                 | combination with `RabbitMQ`_.  You can set up new  |
     |                 | workers without central configuration (e.g. use    |
     |                 | your grandma's laptop to help if the queue is      |

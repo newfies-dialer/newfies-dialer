@@ -48,7 +48,7 @@ This is a configuration example for Rabbitmq.
 Launch celery/celerybeat in debug mode
 --------------------------------------
 
-If you dont want to run celeryd and celerybeat as a daemon then
+If you don't want to run celeryd and celerybeat as a daemon then
 
 To run celeryd ::
 
@@ -66,13 +66,13 @@ To run both ::
 Running celeryd/celerybeat as a daemon (Debian/Ubuntu)
 ------------------------------------------------------
 
-To configure celeryd you probably need to at least tell it where to change directory
-to when it starts (to find your celeryconfig).
+To configure celeryd you will need to tell it where to change directory
+to, when it starts in order to find your celeryconfig.
 ::
 
 $ cd install/celery-init/etc/default/
 
-1) Open celeryd in text editor & change following variables
+1) Open celeryd in text editor & change the following variables
 
    Configuration file:  /etc/default/celeryd
 
@@ -108,7 +108,7 @@ $ cd install/celery-init/etc/default/
     CELERYD_GROUP="celery"
 
 
-2) Open celeryd (for periodic task) in text editor & add following variables
+2) Open celeryd (for periodic task) in text editor & add the following variables
 
    Configuration file:  /etc/default/celerybeat or /etc/default/celeryd
 
@@ -125,7 +125,7 @@ $ cd install/celery-init/etc/default/
     CELERYBEAT_OPTS="--schedule=/var/run/celerybeat-schedule"
 
 
-3) Copy configuration file & init scripts to /etc dir::
+3) Copy the configuration file & init scripts to /etc dir::
 
     $ cp etc/default/celeryd /etc/default/
 
@@ -134,7 +134,7 @@ $ cd install/celery-init/etc/default/
     $ cp etc/init.d/celerybeat /etc/init.d/
 
 
-4) Run/Start or Stop celery as daemon::
+4) Run/Start or Stop celery as a daemon::
 
     $ /etc/init.d/celeryd start or stop
 

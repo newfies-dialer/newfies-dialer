@@ -22,7 +22,7 @@ Screenshot with Features
 Dashboard
 ~~~~~~~~~
 
-Dashboard page for admin interface after successful login with superuser credentials
+Dashboard page for the admin interface after successful login with superuser credentials
 
 .. image:: ../_static/images/admin_screenshot.png
 
@@ -31,9 +31,10 @@ Dashboard page for admin interface after successful login with superuser credent
 Phonebook
 ~~~~~~~~~
 
-Phonebook list will be displayed from following URL. You can add new phonebook
-by clicking ``Add phonebook`` and add name of phonebook and its description.
-Also from phonebook list, click on phonebook that you want to update.
+The phonebook list will be displayed from the following URL. You can add a new 
+phonebook by clicking ``Add phonebook`` and adding name of the phonebook and its
+description, Also from the phonebook list, click on the phonebook that you want 
+to update.
 
 **URL**:
 
@@ -57,14 +58,14 @@ To Add/Update phonebook for user
 Contact
 ~~~~~~~
 
-Contact list will be displayed from the following URL and you can add a new contact
-by clicking ``Add contact`` & add contact details (like phone number, name,
-description about contact, contact status) under one phonebook from phonebook list.
+The contact list will be displayed from the following URL and you can add a new contact
+by clicking ``Add contact`` & adding the contact details (i.e. phone number, name,
+description about contact, contact status) to one phonebook from the phonebook list.
 
-If the contact is active and linked phonebook is also attached with running campaign,
+If the contact is active and the linked phonebook is also attached to a running campaign,
 then the contact will be added into campaign subscribers.
 
-From contact list, click on contact that you want to update.
+From the contact list, click on the contact that you want to update.
 
 **URL**:
 
@@ -83,8 +84,8 @@ To Add/Update contact
 .. image:: ../_static/images/admin/update_contact.png
     :width: 1000
 
-To import bulk contacts into phonebook, click on ``Import contacts``. 
-where you can upload contacts via CSV file under one phonebook.
+To import bulk contacts into a phonebook, click on ``Import contacts``. 
+where you can upload the contacts via a CSV file in to one phonebook.
 
 **URL**:
 
@@ -98,12 +99,12 @@ where you can upload contacts via CSV file under one phonebook.
 Campaign
 ~~~~~~~~
 
-The campaign list will be displayed from following URL. You can add a new campaign 
-by clicking ``Add campaign``. While adding campaign, importantly; add campaign's
-start and end dates with time & week-day exception. Also select gateway
-through which calls will be routed & phonebook(s) that are linked with contacts.
+The campaign list will be displayed from the following URL. You can add a new campaign 
+by clicking ``Add campaign``. While adding a campaign, it is important to add campaign's
+start and end dates with time & week-day exceptions. Also select the gateway
+through which calls will be routed & the phonebook(s) linked with contacts.
 
-From campaign list, click on campaign that you want to update.
+From the campaign list, click on the campaign that you want to update.
 
 **URL**:
 
@@ -128,12 +129,12 @@ To Add/Update Campaign for user
 Campaign Subscriber
 ~~~~~~~~~~~~~~~~~~~
 
-Campaign Subscriber list will be displayed from following URL. You can add
-new campaign subscriber by clicking ``Add campaignsubscriber``. Also from campaign
-subscriber list, click on the subscriber that you want to update.
+The Campaign Subscriber list will be displayed from the following URL. You can add
+a new campaign subscriber by clicking ``Add Campaign Subscriber``. Also from the campaign
+subscriber list, click on the subscriber to update.
 
-While creating Contact, if it is active and its linked phonebook is also attached
-with running campaign, then the contact will be added into campaign subscriber.
+While creating a contact, if its linked phonebook is also attached
+to a running campaign, then the contact will be added into the campaign subscriber.
 
 **URL**:
 
@@ -159,10 +160,10 @@ To Add/Update Campaign Subscriber
 Dialer Settings
 ~~~~~~~~~~~~~~~
 
-Dialer settings list will be displayed from following URL. Dialer settings list
-is applied to system User. You can add new setting by clicking ``Add Dialer Settings``
-and add numeric values for limit. Also from dialer settings list, click on
-the setting that you want to update.
+The dialer settings list will be displayed from the following URL. The Dialer settings
+list is applied to a system User. You can add a new setting by clicking ``Add Dialer Settings``
+and add numeric values for the limit. Also from the dialer settings list, click on
+the setting to update.
 
 **URL**:
 
@@ -171,7 +172,7 @@ the setting that you want to update.
 .. image:: ../_static/images/admin/dialersetting_list.png
     :width: 1000
 
-To Add/Update dialer settings that are going to link with newfies user
+To Add/Update dialer settings for a Newfies-Dialer user
 
 **URL**:
 
@@ -181,8 +182,8 @@ To Add/Update dialer settings that are going to link with newfies user
 .. image:: ../_static/images/admin/update_dialersetting.png
     :width: 1000
 
-To apply dialer settings limit on User, click on ``Customers`` or ``Admins``,
-select user to update & apply settings from dialer settings list.
+To apply dialer settings limit to a User, click on ``Customers`` or ``Admins``,
+select the user to be updated & apply settings from the dialer settings list.
 
 **URL**:
 
@@ -196,9 +197,9 @@ select user to update & apply settings from dialer settings list.
 Dialer Gateway
 ~~~~~~~~~~~~~~
 
-The Dialer Gateway list will be displayed from following URL. You can add new gateway
-by clicking ``Add Dialer Gateway`` and add detail for it (like gateway name, hostname, 
-protocol etc.). Also from gateway list, click on the gateway that you want to update.
+The Dialer Gateway list will be displayed from the following URL. You can add a new gateway
+by clicking ``Add Dialer Gateway`` and adding the details (e.g. gateway name, hostname, 
+protocol etc.). Also from the gateway list, click on the gateway that you want to update.
 
 **URL**:
 
@@ -207,7 +208,7 @@ protocol etc.). Also from gateway list, click on the gateway that you want to up
 .. image:: ../_static/images/admin/gateway_list.png
     :width: 1000
 
-To Add/Update dialer gateway
+To Add/Update a dialer gateway
 
 **URL**:
 
@@ -223,9 +224,9 @@ To Add/Update dialer gateway
 VoIP Application
 ~~~~~~~~~~~~~~~~
 
-VoIP application list will be displayed from following URL. You can add a new
-application by clicking ``Add VoIP Application``. Also from application list,
-click on the application that you want to update.
+The VoIP application list will be displayed from the following URL. You can add a new
+application by clicking ``Add VoIP Application``. Also from the application list,
+click on the application to update.
 
 **URL**:
 
@@ -234,7 +235,7 @@ click on the application that you want to update.
 .. image:: ../_static/images/admin/voipapp_list.png
     :width: 1000
 
-To Add/Update VoIP application
+To Add/Update a VoIP application
 
 **URL**:
 
@@ -250,9 +251,9 @@ To Add/Update VoIP application
 Call Request
 ~~~~~~~~~~~~
 
-Call Request list will be displayed from following URL. You can add new call request
-by clicking ``Add Call Request``. Also from call request list, click on the
-request that you want to update.
+The call request list will be displayed from the following URL. You can add a 
+new call request by clicking ``Add Call Request``. Also from the call request list, 
+click on the request to update.
 
 **URL**:
 
@@ -261,7 +262,7 @@ request that you want to update.
 .. image:: ../_static/images/admin/callrequest_list.png
     :width: 1000
 
-To Add/Update Call Request
+To Add/Update a Call Request
 
 **URL**:
 
@@ -274,7 +275,7 @@ To Add/Update Call Request
 VoIP Call Report
 ~~~~~~~~~~~~~~~~
 
-VoIP Call list will be displayed from following URL. You **can not** add new call report.
+A VoIP Call list will be displayed from following URL. You **can not** add new call reports.
 
 **URL**:
 

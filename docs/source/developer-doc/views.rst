@@ -1,7 +1,7 @@
 .. _views:
 
-Newfies Views
-=============
+Newfies-Dialer Views
+====================
 .. automodule:: dialer_campaign.views
 
 

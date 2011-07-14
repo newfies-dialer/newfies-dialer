@@ -7,7 +7,7 @@ Customer Panel
 User Interface :
 
 http://localhost:8000/
-This application provides a User interface for restricted management of
+This application provides a user interface for restricted management of
 the User's Campaign, Phonebook, Subscriber. It also provides detailed
 Reporting of calls and message delivery.
 
@@ -23,7 +23,7 @@ Screenshot with Features
 Index
 ~~~~~
 
-Index page for customer interface after successful login with user credentials 
+Index page for the customer interface after successful login with user credentials 
 
 .. image:: ../_static/images/customer_screenshot.png
 
@@ -33,9 +33,9 @@ Index page for customer interface after successful login with user credentials
 Phonebook
 ~~~~~~~~~
 
-Phonebook list will be displayed from following URL. You can add new phonebook
-by clicking ``Add phonebook`` and add name of phonebook and its description.
-Also from phonebook list, click on the phonebook that you want to update.
+The phonebook list will be displayed from the following URL. You can add new a
+phonebook by clicking ``Add phonebook`` and add the name of a phonebook and its
+description. Also from the phonebook list, click on the phonebook to update.
 
 **URL**:
 
@@ -43,7 +43,7 @@ Also from phonebook list, click on the phonebook that you want to update.
 
 .. image:: ../_static/images/customer/phonebook_list.png
 
-To Add/Update phonebook for logged in user
+To Add/Update a Phonebook for a logged in user
 
 **URL**:
 
@@ -57,10 +57,10 @@ To Add/Update phonebook for logged in user
 Contact
 ~~~~~~~
 
-Contact list will be displayed from following URL and you can add new contact
-by clicking ``Add contact`` & add contact details (like phone number, name,
-description about contact, contact status) under logged in user's phonebook from phonebook list.
-From the contact list, click on contact that you want to update.
+The contact list will be displayed from following the URL. You can add a new contact
+by clicking ``Add contact`` & adding the contact details (i.e. phone number, name,
+description about contact, contact status) under logged in user's phonebook from
+the phonebook list. On the contact list, click on the contact to update.
 
 
 **URL**:
@@ -69,7 +69,7 @@ From the contact list, click on contact that you want to update.
 
 .. image:: ../_static/images/customer/contact_list.png
 
-To Add/Update contact for phonebook
+To Add/Update a contact in a phonebook
 
 **URL**:
 
@@ -79,8 +79,9 @@ To Add/Update contact for phonebook
 .. image:: ../_static/images/customer/update_contact.png
     :width: 1000
 
-To import bulk contacts into phonebook, click on ``Import``.
-From where you can upload contacts via a CSV file under logged in user's phonebook.
+To import bulk contacts into a phonebook, click on ``Import``.
+where you can upload contacts via a CSV file under a logged in 
+user's phonebook.
 
 **URL**:
 
@@ -95,12 +96,11 @@ From where you can upload contacts via a CSV file under logged in user's phonebo
 Campaign
 ~~~~~~~~
 
-Campaign list will be displayed from following URL. You can add new campaign for
-the logged in user by clicking ``Add campaign``. While adding campaign, importantly
-add the campaign's start and end dates with time & week-day exceptions.
-Also select the gateway through which calls will be routed & phonebook(s) that are
-linked with contacts.
-From campaign list, click on campaign that you want to update.
+The campaign list will be displayed from the following URL. You can add a new campaign for
+the logged in user by clicking ``Add campaign``. When adding a campaign, it is important
+to add the campaign's start and end dates with time & week-day exceptions. select 
+the gateway through which calls will be routed & phonebook(s) that are
+linked with contacts From the campaign list, click on campaign to update.
 
 **URL**:
 
@@ -108,7 +108,7 @@ From campaign list, click on campaign that you want to update.
 
 .. image:: ../_static/images/customer/campaign_list.png
 
-To Add/Update Campaign for logged in user
+To Add/Update a Campaign for a logged in user
 
 **URL**:
 

@@ -5,7 +5,7 @@ Broker Installation
 ===================
 
 This document describes the installation of two different Brokers. One is ``Redis``
-and second is ``Rabbitmq``. You can install any one of them with newfiews-dialer.
+and second is ``Rabbitmq``. You can install either to work with Newfies-Dialer.
 
 .. _broker-redis:
 
@@ -46,7 +46,7 @@ Running Server
 Rabbitmq
 --------
 
-RabbitMQ is a big, sophisticated product.  If you don't need that
+RabbitMQ is a complex and sophisticated product.  If you don't need this
 level of robustness, then you might want to take a look at Redis - it
 installs easily, runs relatively lean, and can be monitored and
 maintained without a lot of fuss.
@@ -82,9 +82,10 @@ To make use of the RabbitMQ APT repository,
 
 .. note::
 
-    The word **testing** in above line refers to the state of the release of RabbitMQ,
+    The word **testing** in the above line refers to the state of the release of RabbitMQ,
     not any particular Debian distribution. You can use it with Debian stable, testing or unstable,
-    as well as with Ubuntu. In the future they will have a stable release too.
+    as well as with Ubuntu. In the future there will be a stable release of RabbitMQ in the
+    repository.
 
 2. (optional) To avoid warnings about unsigned packages, add RabbitMQ's public key to
    your trusted key list using apt-key(8)

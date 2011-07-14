@@ -15,4 +15,4 @@ CELERYBEAT='/usr/share/django_app/newfies/manage.py celerybeat'
 CELERYBEAT_OPTS='--schedule=/var/run/celerybeat-schedule'
 
 # Name of the projects settings module.
-export DJANGO_SETTINGS_MODULE='settings'
+export DJANGO_SETTINGS_MODULE='settings_local'

@@ -38,32 +38,4 @@
     background: transparent;
     text-align: left;
 }
-#finance {
-	position: relative;
-    margin: 40px 0px;
-    border: 1px solid #99CCFF;
-}
-#financeTitle {
-    position: absolute;
-    top: -30px;
-    font-size: 20px;
-}
-#labels {
-	position: absolute;
-	width: 800px;
-    z-index: 10;
-}
-#time {
-    position: absolute;
-    left: 4px;
-    top: 4px;
-    font-size: 10px; 
-    z-index: 10;
-}
-#time a {
-    background: #ffffff;
-    cursor: pointer;
-    border-right: 2px solid transparent;
-    color: #4499FF;
-    text-decoration: underline;
-}
+

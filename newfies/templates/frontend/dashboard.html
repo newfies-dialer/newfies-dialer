@@ -9,10 +9,9 @@
 
 {% endblock %}
 
-    {% include "frontend/flotr_humble_header.html" %}
+{% include "frontend/flotr_humble_header.html" %}
 
 {% block content %}
-
 <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
 <p>{{ form.campaign.label }} {{ form.campaign }} {{ form.search_type }}
 <input type="submit" name="submit" value="Submit">
@@ -45,7 +44,6 @@
 
 </table>
 <br/>-->
-
 <script type="text/javascript">
 var jsonData = [
 {% for td in total_data %}
@@ -72,7 +70,7 @@ var summaryData = [
 
 <script type="text/javascript">
 Event.observe(document, 'dom:loaded', function() {
-   
+
     prettyPrint();
 
     HumbleFinance.trackFormatter = function (obj) {
@@ -102,7 +100,7 @@ Event.observe(document, 'dom:loaded', function() {
     HumbleFinance.init('finance', callData, durationData, summaryData);
 });
 </script>
-    
+
 {% if total_data %}
 <div id="finance" style="position: relative; margin: 40px 0px; width: 800px; border: 1px solid #99CCFF;">
 	<div id="labels">

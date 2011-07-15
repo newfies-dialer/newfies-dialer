@@ -305,7 +305,15 @@
                 { label: 'ANSWER' , data: [[1, {{ total_answered }}]]},
                 { label: 'BUSY' , data: [[1, {{ total_busy }}]]},
                 { label: 'NOANSWER' , data: [[1, {{ total_not_answered }}]]},
-                { label: 'OHTERS' , data: [[1, {{ total_others }}]]},
+                //{ label: 'OHTERS' , data: [[1, {{ total_others }}]]},
+                { label: 'CANCEL' , data: [[1, {{ total_cancel }}]]},
+                { label: 'CONGESTION' , data: [[1, {{ total_congestion }}]]},
+                { label: 'CHANUNAVAIL' , data: [[1, {{ total_chanunavail }}]]},
+                { label: 'DONTCALL' , data: [[1, {{ total_dontcall }}]]},
+                { label: 'TORTURE' , data: [[1, {{ total_torture }}]]},
+                { label: 'INVALIDARGS' , data: [[1, {{ total_invalidargs }}]]},
+                { label: 'NOROUTE' , data: [[1, {{ total_noroute }}]]},
+                { label: 'FORBIDDEN' , data: [[1, {{ total_forbiden }}]]},
             ];
             var options = {
                     series: {
@@ -322,7 +330,9 @@
                             background: { opacity: 0.5 },
                         }
                     },
-                    legend: {show: false}
+                    legend: {
+                        show: false,
+                    }
             };
 
             var plot = $.plot($("#camp_pie"), data, options);
@@ -335,7 +345,37 @@
     {% endfor %}-->
 
     <br/>
-    <div id="camp_pie" style="width:250px;height:250px;float:left;"></div>
+    <div id="camp_pie" style="width:300px;height:300px;float:left;"></div>
+    <table style="width: 300px;">
+    <tr>
+        <td>{{ total_call_count }} {% trans "TOTAL CALLS"  %}</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>{{ total_answered }} {% trans "ANSWER"  %}</td>
+        <td>{{ total_dontcall }} {% trans "DONTCALL"  %}</td>
+    </tr>
+    <tr>
+        <td>{{ total_busy }} {% trans "BUSY"  %}</td>
+        <td>{{ total_torture }} {% trans "TORTURE"  %}</td>
+    </tr>
+    <tr>
+        <td>{{ total_not_answered }} {% trans "NOANSWER"  %}</td>
+        <td>{{ total_invalidargs }} {% trans "INVALIDARGS"  %}</td>
+    </tr>
+    <tr>
+        <td>{{ total_cancel }} {% trans "CANCEL"  %}</td>
+        <td>{{ total_noroute }} {% trans "NOROUTE"  %}</td>
+    </tr>
+    <tr>
+        <td>{{ total_congestion }} {% trans "CONGESTION"  %}</td>
+        <td>{{ total_forbiden }} {% trans "FORBIDDEN"  %}</td>
+    </tr>
+     <tr>
+        <td>{{ total_chanunavail }} {% trans "CHANUNAVAIL"  %}</td>
+        <td></td>
+    </tr>
+    </table>
 
 {% endif %}
 

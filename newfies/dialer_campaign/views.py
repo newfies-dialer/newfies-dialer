@@ -84,7 +84,14 @@ def customer_dashboard(request, on_index=None):
     total_answered = 0
     total_not_answered = 0
     total_busy = 0
-    total_others = 0
+    total_cancel = 0
+    total_congestion = 0
+    total_chanunavail = 0
+    total_dontcall = 0
+    total_torture = 0
+    total_invalidargs = 0
+    total_noroute = 0
+    total_forbiden = 0
     select_graph_by = 'day'
     if request.method == 'POST':
         form = DashboardForm(request.user, request.POST)
@@ -145,8 +152,22 @@ def customer_dashboard(request, on_index=None):
                 total_busy = total_busy + 1
             elif i['disposition'] == 'NOANSWER':
                 total_not_answered = total_not_answered + 1
+            elif i['disposition'] == 'CANCEL':
+                total_cancel = total_cancel + 1
+            elif i['disposition'] == 'CONGESTION':
+                total_congestion = total_congestion + 1
+            elif i['disposition'] == 'CHANUNAVAIL':
+                total_chanunavail = total_chanunavail + 1
+            elif i['disposition'] == 'DONTCALL':
+                total_dontcall = total_dontcall + 1
+            elif i['disposition'] == 'TORTURE':
+                total_torture = total_torture + 1
+            elif i['disposition'] == 'INVALIDARGS':
+                total_invalidargs = total_invalidargs + 1
+            elif i['disposition'] == 'NOROUTE':
+                total_noroute = total_noroute + 1
             else:
-                total_others = total_others + 1
+                total_forbiden = total_forbiden + 1 # FORBIDDEN
         #print calls
         # following part got from cdr-stats 'global report' used by visualize
         if calls:
@@ -224,7 +245,7 @@ def customer_dashboard(request, on_index=None):
         campaign_phonebbok_active_contact_count,
         'reached_contact': reached_contact,
         'notice_count': notice_count(request),
-        'total_data': total_data, # for visualize graph
+        'total_data': total_data, # for humblefinanace graph
         'final_calls': final_calls, # for flot graph
         'min_limit': min_limit,
         'max_limit': max_limit,
@@ -234,7 +255,15 @@ def customer_dashboard(request, on_index=None):
         'total_answered':  total_answered,
         'total_not_answered': total_not_answered,
         'total_busy': total_busy,
-        'total_others': total_others,
+        #'total_others': total_others,
+        'total_cancel': total_cancel,
+        'total_congestion': total_congestion,
+        'total_chanunavail': total_chanunavail,
+        'total_dontcall': total_dontcall,
+        'total_torture': total_torture,
+        'total_invalidargs': total_invalidargs,
+        'total_noroute': total_noroute,
+        'total_forbiden': total_forbiden,
     }
     if on_index == 'yes':
         return data

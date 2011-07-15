@@ -6,7 +6,7 @@ from dialer_settings.models import DialerSetting
 
 
 class UserProfile(models.Model):
-    """This defines extra feature on the user
+    """This defines extra features for the user
 
     **Attributes**:
 

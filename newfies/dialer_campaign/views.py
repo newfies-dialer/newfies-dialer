@@ -282,9 +282,9 @@ def login_view(request):
     **Logic Description**:
 
         * Submitted user credentials need to be checked. If it is not valid
-          then system will redirect to login page again.
-        * Submitted user credentials are valid then system will redirect to
-          dashboard page of system.
+          then the system will redirect to the login page.
+        * If submitted user credentials are valid then system will redirect to
+          the dashboard.
     """
     template = 'frontend/index.html'
     errorlogin = ''
@@ -344,7 +344,7 @@ def notice_count(request):
 
 
 def index(request):
-    """Index view of Customer Interface
+    """Index view of the Customer Interface
 
     **Attributes**:
 
@@ -385,10 +385,10 @@ def logout_view(request):
 
 
 def cust_password_reset(request):
-    """Used ``django.contrib.auth.views.password_reset`` view method for
-    forgotten password on Customer UI
+    """Use ``django.contrib.auth.views.password_reset`` view method for
+    forgotten password on the Customer UI
 
-    This method will send an e-mail to user's email-id which is entered in
+    This method sends an e-mail to the user's email-id which is entered in
     ``password_reset_form``
     """
 
@@ -403,10 +403,10 @@ def cust_password_reset(request):
 
 
 def cust_password_reset_done(request):
-    """Used ``django.contrib.auth.views.password_reset_done`` view method for
-    forgotten password on Customer UI
+    """Use ``django.contrib.auth.views.password_reset_done`` view method for
+    forgotten password on the Customer UI
 
-    This will show acknowledge message to user who is seeking to reset his/her
+    This will show a message to the user who is seeking to reset their
     password.
     """
 
@@ -418,10 +418,10 @@ def cust_password_reset_done(request):
 
 
 def cust_password_reset_confirm(request, uidb36=None, token=None):
-    """Used ``django.contrib.auth.views.password_reset_confirm`` view method for
-    forgotten password on Customer UI
+    """Use ``django.contrib.auth.views.password_reset_confirm`` view method for
+    forgotten password on the Customer UI
 
-    This will allow user to reset his/her password for the system
+    This will allow a user to reset their password.
     """
 
     if not request.user.is_authenticated():
@@ -433,11 +433,11 @@ def cust_password_reset_confirm(request, uidb36=None, token=None):
 
 
 def cust_password_reset_complete(request):
-    """Used ``django.contrib.auth.views.password_reset_complete`` view method
-    for forgotten password on Customer UI
+    """Use ``django.contrib.auth.views.password_reset_complete`` view method
+    for forgotten password on theCustomer UI
 
-    This will show acknowledge message to user after successfully resetting
-    his/her password for the system.
+    This shows an acknowledgement to the user after successfully resetting
+    their password for the system.
     """
     if not request.user.is_authenticated():
         return password_reset_complete(request,
@@ -447,13 +447,13 @@ def cust_password_reset_complete(request):
 
 
 def common_send_notification(request, status, recipient=None):
-    """User Notification (e.g. start|stop|pause) need to be saved.
-    It is a common function for admin and customer UI
+    """User Notification (e.g. start | stop | pause) needs to be saved.
+    It is a common function for the admin and customer UI's
 
     **Attributes**:
 
-        * ``pk`` - primary key of campaign record
-        * ``status`` - get label for notification
+        * ``pk`` - primary key of the campaign record
+        * ``status`` - get label for notifications
 
     **Logic Description**:
 
@@ -477,18 +477,18 @@ def common_send_notification(request, status, recipient=None):
 
 
 def common_campaign_status(pk, status):
-    """Campaign Status (e.g. start|stop|pause) need to be change.
-    It is a common function for admin and customer UI
+    """Campaign Status (e.g. start | stop | pause) needs to be changed.
+    It is a common function for the admin and customer UI's
 
     **Attributes**:
 
-        * ``pk`` - primary key of campaign record
-        * ``status`` - selected status for campaign record
+        * ``pk`` - primary key of the campaign record
+        * ``status`` - selected status for the campaign record
 
     **Logic Description**:
 
-        * Selected Campaign's status need to be changed.
-          Changed status can be start or stop or pause.
+        * Selected Campaign's status needs to be changed.
+          Changed status can be start, stop or pause.
 
         * This function is used by ``update_campaign_status_admin()`` &
           ``update_campaign_status_cust()``
@@ -527,7 +527,7 @@ def update_campaign_status_cust(request, pk, status):
 # Phonebook
 @login_required
 def phonebook_grid(request):
-    """Phonebook list in json format for flexigrid
+    """Phonebook list in json format for flexigrid.
     
     **Model**: Phonebook
     
@@ -593,7 +593,7 @@ def phonebook_grid(request):
 
 @login_required
 def phonebook_list(request):
-    """Phonebook list for logged in user
+    """Phonebook list for the logged in user
 
     **Attributes**:
 
@@ -601,7 +601,7 @@ def phonebook_list(request):
 
     **Logic Description**:
 
-        * List all phonebooks which are belong to logged in user
+        * List all phonebooks which belong to the logged in user.
     """
     template = 'frontend/phonebook/list.html'
     data = {
@@ -616,7 +616,7 @@ def phonebook_list(request):
 
 @login_required
 def phonebook_add(request):
-    """Add new Phonebook for logged in user
+    """Add new Phonebook for the logged in user
 
     **Attributes**:
 
@@ -625,8 +625,8 @@ def phonebook_add(request):
 
     **Logic Description**:
 
-        * Add new phonebook which will belong to logged in user
-          via PhonebookForm form & get redirect to phonebook list
+        * Add a new phonebook which will belong to the logged in user
+          via the phonebookForm & get redirected to the phonebook list
     """
     form = PhonebookForm()
     if request.method == 'POST':
@@ -651,7 +651,7 @@ def phonebook_add(request):
 
 @login_required
 def get_contact_count(request):
-    """To get total no of contacts which are belong to phonebook list"""
+    """To get total no of contacts belonging to a phonebook list"""
     contact_list = Contact.objects.extra(where=['phonebook_id IN (%s)'\
                        % request.GET['pb_ids']])
     data = contact_list.count()
@@ -660,7 +660,7 @@ def get_contact_count(request):
 
 @login_required
 def phonebook_del(request, object_id):
-    """Delete phonebook for logged in user
+    """Delete a phonebook for a logged in user
 
     **Attributes**:
 
@@ -669,14 +669,14 @@ def phonebook_del(request, object_id):
 
     **Logic Description**:
 
-        * Delete contacts from contact list which are belong to phonebook list
-        * Delete selected phonebook from phonebook list
+        * Delete contacts from a contact list belonging to a phonebook list.
+        * Delete selected the phonebook from the phonebook list
     """
     try:
         # When object_id is not 0
         phonebook = Phonebook.objects.get(pk=object_id)
         if object_id:
-            # 1) delete all contacts which are belong to phonebook
+            # 1) delete all contacts belonging to a phonebook
             contact_list = Contact.objects.filter(phonebook=object_id)
             contact_list.delete()
 
@@ -690,7 +690,7 @@ def phonebook_del(request, object_id):
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
 
-        # 1) delete all contacts which are belong to phonebook
+        # 1) delete all contacts belonging to a phonebook
         contact_list = Contact.objects.extra(where=['phonebook_id IN (%s)'\
                        % values])
         contact_list.delete()
@@ -705,7 +705,7 @@ def phonebook_del(request, object_id):
 
 @login_required
 def phonebook_change(request, object_id):
-    """Update/Delete Phonebook for logged in user
+    """Update/Delete Phonebook for the logged in user
 
     **Attributes**:
 
@@ -715,8 +715,8 @@ def phonebook_change(request, object_id):
 
     **Logic Description**:
 
-        * Update/delete selected phonebook from phonebook list
-          via PhonebookForm form & get redirect to phonebook list
+        * Update/delete selected phonebook from the phonebook list
+          via PhonebookForm & get redirected to phonebook list
     """
     phonebook = Phonebook.objects.get(pk=object_id)
     form = PhonebookForm(instance=phonebook)
@@ -865,7 +865,7 @@ def contact_grid(request):
 # Subscriber
 @login_required
 def contact_list(request):
-    """Contact list for logged in user
+    """Contact list for the logged in user
 
     **Attributes**:
 
@@ -874,7 +874,7 @@ def contact_list(request):
 
     **Logic Description**:
 
-        * List all contacts from phonebooks which are belong to logged in user
+        * List all contacts from phonebooks belonging to the logged in user
     """
     form = ContactSearchForm(request.user)
     kwargs = {}
@@ -902,7 +902,7 @@ def contact_list(request):
 
 @login_required
 def contact_add(request):
-    """Add new contact in selected phonbook for logged in user
+    """Add a new contact into the selected phonebook for the logged in user
 
     **Attributes**:
 
@@ -911,10 +911,10 @@ def contact_add(request):
 
     **Logic Description**:
 
-        * Before adding contact, checked dialer setting limit if user is
-          linked with it
-        * Add new contact which will belong to logged in user
-          via ContactForm form & get redirect to contact list
+        * Before adding a contact, check dialer setting limit if applicable
+          to the user.
+        * Add new contact belonging to the logged in user
+          via ContactForm & get redirected to the contact list
     """
     # Check dialer setting limit
     if request.user and request.method == 'POST':
@@ -954,7 +954,7 @@ def contact_add(request):
 
 @login_required
 def contact_del(request, object_id):
-    """Delete contact for logged in user
+    """Delete contact for the logged in user
 
     **Attributes**:
 
@@ -963,7 +963,7 @@ def contact_del(request, object_id):
 
     **Logic Description**:
 
-        * Delete selected contact from contact list
+        * Delete selected contact from the contact list
     """
     try:
         # When object_id is not 0
@@ -987,7 +987,7 @@ def contact_del(request, object_id):
 
 @login_required
 def contact_change(request, object_id):
-    """Update/Delete contact for logged in user
+    """Update/Delete contact for the logged in user
 
     **Attributes**:
 
@@ -997,8 +997,8 @@ def contact_change(request, object_id):
 
     **Logic Description**:
 
-        * Update/delete selected contact from contact list
-          via ContactForm form & get redirect to contact list
+        * Update/delete selected contact from the contact list
+          via ContactForm & get redirected to the contact list
     """
     contact = Contact.objects.get(pk=object_id)
     form = ContactForm(request.user, instance=contact)
@@ -1029,7 +1029,7 @@ def contact_change(request, object_id):
 
 @login_required
 def contact_import(request):
-    """Import CSV file of Contact for logged in user
+    """Import CSV file of Contacts for the logged in user
 
     **Attributes**:
 
@@ -1038,20 +1038,20 @@ def contact_import(request):
 
     **Logic Description**:
 
-        * Before adding contact, checked dialer setting limit if user is
-          linked with it
-        * Add new contact which will belong to logged in user
-          via csv file & get the result (how many recrods are uploaded
-          successfully & which are not)
+        * Before adding contacts, check dialer setting limit if applicable
+          to the user.
+        * Add new contacts which will belong to the logged in user
+          via csv file & get the result (upload success and failure 
+          statistics)
 
     **Important variable**:
 
-        * total_rows - Total no. of records of CSV file
-        * retail_record_count - No. of records which are imported from CSV file
+        * total_rows - Total no. of records in the CSV file
+        * retail_record_count - No. of records imported from the CSV file
     """
     # Check dialer setting limit
     if request.user and request.method == 'POST':
-        # check  Max Number of subscriber per campaign
+        # check  Max Number of subscribers per campaign
         if check_dialer_setting(request, check_for="contact"):
             request.session['msg'] = \
             _("You have too many contacts per campaign.\
@@ -1148,7 +1148,7 @@ def contact_import(request):
 
 
 def count_contact_of_campaign(campaign_id):
-    """Count no of Contacts from phonebook belong to campaign"""
+    """Count no of Contacts from phonebook belonging to the campaign"""
     count_contact = \
     Contact.objects.filter(phonebook__campaign=campaign_id).count()
     if not count_contact:
@@ -1318,7 +1318,7 @@ def campaign_grid(request):
 
 @login_required
 def campaign_list(request):
-    """List all the campaigns for logged in user
+    """List all campaigns for the logged in user
 
     **Attributes**:
 
@@ -1326,7 +1326,7 @@ def campaign_list(request):
 
     **Logic Description**:
 
-        * List all campaign which are belong to logged in user
+        * List all campaigns belonging to the logged in user
     """
     template = 'frontend/campaign/list.html'
     data = {
@@ -1341,7 +1341,7 @@ def campaign_list(request):
 
 @login_required
 def campaign_add(request):
-    """Add new campaign for logged in user
+    """Add a new campaign for the logged in user
 
     **Attributes**:
 
@@ -1350,10 +1350,10 @@ def campaign_add(request):
 
     **Logic Description**:
 
-        * Before adding campaign, checked dialer setting limit if user is
-          linked with it
-        * Add new campaign which will belong to logged in user
-          via CampaignForm form & get redirect to campaign list
+        * Before adding a campaign, check dialer setting limit if
+          applicable to the user.
+        * Add the new campaign which will belong to the logged in user
+          via CampaignForm & get redirected to campaign list
     """
     # Check dialer setting limit
     if request.user and request.method != 'POST':
@@ -1392,7 +1392,7 @@ def campaign_add(request):
 
 @login_required
 def campaign_del(request, object_id):
-    """Delete campaign for logged in user
+    """Delete campaign for the logged in user
 
     **Attributes**:
 
@@ -1401,7 +1401,7 @@ def campaign_del(request, object_id):
 
     **Logic Description**:
 
-        * Delete selected campaignt from campaign list
+        * Delete the selected campaign from the campaign list
     """
     try:
         # When object_id is not 0
@@ -1425,7 +1425,7 @@ def campaign_del(request, object_id):
 
 @login_required
 def campaign_change(request, object_id):
-    """Update/Delete campaign for logged in user
+    """Update/Delete campaign for the logged in user
 
     **Attributes**:
 
@@ -1435,8 +1435,8 @@ def campaign_change(request, object_id):
 
     **Logic Description**:
 
-        * Update/delete selected campaignt from campaign list
-          via CampaignForm form & get redirect to campaign list
+        * Update/delete selected campaign from the campaign list
+          via CampaignForm & get redirected to the campaign list
     """
     campaign = Campaign.objects.get(pk=object_id)
     form = CampaignForm(instance=campaign)

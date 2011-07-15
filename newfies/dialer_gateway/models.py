@@ -38,17 +38,17 @@ class GatewayGroup(Model):
 
 class Gateway(Model):
     """This defines the trunk to deliver the Voip Calls.
-    Each Gateway are route that support different protocol and different
-    set of rules to alter the dialed number
+    Each of the Gateways are routes that support different protocols and
+    sets of rules to alter the dialed number.
 
     **Attributes**:
 
         * ``name`` - Gateway name.
-        * ``description`` - Description about Gateway.
+        * ``description`` - Description about the Gateway.
         * ``addprefix`` - Add prefix.
         * ``removeprefix`` - Remove prefix.
         * ``gateways`` - "user/,user", # Gateway string to try dialing \
-        separated by comma. First in list will be tried first
+        separated by comma. First in the list will be tried first
         * ``gateway_codecs`` - "'PCMA,PCMU','PCMA,PCMU'", \
         # Codec string as needed by FS for each gateway separated by comma
         * ``gateway_timeouts`` - "10,10", \

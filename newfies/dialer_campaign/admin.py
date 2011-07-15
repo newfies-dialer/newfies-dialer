@@ -52,18 +52,18 @@ class CampaignAdmin(admin.ModelAdmin):
         return my_urls + urls
 
     def add_view(self, request, extra_context=None):
-        """Override django add_view method for checking dialer setting limit
+        """Override django add_view method for checking the dialer setting limit
 
         **Logic Description**:
 
-            * Before adding campaign, checked dialer setting limit if user is
-              linked with it & if it is matched, user will be redirected to
-              campaign list
+            * Before adding campaign, checked dialer setting limit if applicable
+              to the user, if matched, the user will be redirected to 
+              the campaign list
         """
         # Check dialer setting limit
-        # check Max Number of running campaign
+        # check Max Number of running campaigns
         if check_dialer_setting(request, check_for="campaign"):
-            msg = _("you have too many campaign. Max allowed\
+            msg = _("you have too many campaigns. Max allowed\
             %s" % dialer_setting_limit(request, limit_for="campaign"))
             messages.error(request, msg)
 
@@ -104,18 +104,18 @@ class ContactAdmin(admin.ModelAdmin):
         return my_urls + urls
 
     def add_view(self, request, extra_context=None):
-        """Override django admin add_view method for checking dialer setting
-        limit
+        """Override django admin add_view method for checking the dialer
+        setting limit
 
         **Logic Description**:
 
-            * Before adding contact, checked dialer setting limit if user is
-              linked with it & if it is matched, user will be redirected to
-              contact list
+            * Before adding a contact, check the dialer setting limit if
+              applicable to the user. If matched, the user will be 
+              redirected to the contact list
         """
         # Check dialer setting limit
         if request.user and request.method == 'POST':
-            # check Max Number of subscriber per campaign
+            # check Max Number of subscribers per campaign
             if check_dialer_setting(request, check_for="contact"):
                 msg = _("You have too many contacts per campaign.\
                 You are allowed a maximum of %s" \
@@ -131,8 +131,8 @@ class ContactAdmin(admin.ModelAdmin):
         return super(ContactAdmin, self).add_view(request, extra_context=ctx)
 
     def import_contact(self, request):
-        """Added custom method in django admin view to import CSV file of
-        Contact
+        """Add custom method in django admin view to import CSV file of
+        Contacts
 
         **Attributes**:
 
@@ -141,21 +141,21 @@ class ContactAdmin(admin.ModelAdmin):
 
         **Logic Description**:
 
-            * Before adding contact, checked dialer setting limit if user is
-              linked with it
-            * Add new contact which will belong to logged in user
-              via csv file & get the result (how many recrods are uploaded
-              successfully & which are not)
+            * Before adding contact, check the dialer setting limit if
+              applicable to the user.
+            * Add a new contact which will belong to the logged in user
+              via csv file & get the result (Upload success & failure
+              statistics)
 
         **Important variable**:
 
-            * total_rows - Total no. of records of CSV file
+            * total_rows - Total no. of records in the CSV file
             * retail_record_count - No. of records which are imported from
-              CSV file
+              The CSV file
         """
         # Check dialer setting limit
         if request.user and request.method == 'POST':
-            # check Max Number of subscriber per campaign
+            # check Max Number of subscribers per campaign
             if check_dialer_setting(request, check_for="contact"):
                 msg = _("You have too many contacts per campaign.\
                 You are allowed a maximum of %s" \
@@ -206,12 +206,12 @@ class ContactAdmin(admin.ModelAdmin):
                             phonebook = \
                             Phonebook.objects.get(pk=request.POST['phonebook'])
                             try:
-                                # check if prefix is alredy
-                                # exist with retail plan or not
+                                # check if prefix is already
+                                # existing in the retail plan or not
                                 contact = Contact.objects.get(
                                      phonebook_id=phonebook.id,
                                      contact=row[0])
-                                msg = _('Contact is already exist !!')
+                                msg = _('Contact already exists !!')
                                 error_import_list.append(row)
                             except:
                                 # if not, insert record

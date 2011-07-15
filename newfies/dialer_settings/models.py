@@ -4,20 +4,20 @@ from datetime import *
 
 
 class DialerSetting(models.Model):
-    """This defines sets of settings to apply on user
+    """This defines the settings to apply to a user
 
     **Attributes**:
 
-        * ``name`` - Setting name.
+        * ``name`` - Settings name.
         * ``max_frequency`` - Max frequency, speed of the campaign.\
         This is the number of calls per minute.
-        * ``callmaxduration`` - Max retry allowed
-        * ``maxretry`` - Max retry allowed per user
-        * ``max_calltimeout`` - Maximum amount of second to timeout on calls
-        * ``max_number_campaign`` - Max Number of campaign
-        * ``max_number_subscriber_campaign`` - Max Number of subscriber
-        * ``blacklist`` - Used to blacklist phonenumbers to be called
-        * ``whitelist`` - Used to whitelist phonenumbers to be called
+        * ``callmaxduration`` - Max retries allowed
+        * ``maxretry`` - Max retries allowed per user
+        * ``max_calltimeout`` - Maximum number of seconds to timeout on calls
+        * ``max_number_campaign`` - Max Number of campaigns
+        * ``max_number_subscriber_campaign`` - Max Number of subscribera
+        * ``blacklist`` - Used to blacklist phone numbers to be called
+        * ``whitelist`` - Used to whitelist phone numbers to be called
 
     **Name of DB table**: dialer_setting
     """

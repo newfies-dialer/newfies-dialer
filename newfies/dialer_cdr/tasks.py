@@ -10,7 +10,7 @@ from dialer_gateway.utils import phonenumber_change_prefix
 
 
 class callrequest_pending(PeriodicTask):
-    """A periodic task that check for pending calls
+    """A periodic task that checks for pending calls
 
     **Usage**:
 
@@ -38,7 +38,7 @@ class callrequest_pending(PeriodicTask):
 
 @task()
 def init_callrequest(callrequest_id, campaign_id):
-    """This tasks will outbound the call
+    """This task outbounds the call
 
     **Attributes**:
 
@@ -79,7 +79,7 @@ def init_callrequest(callrequest_id, campaign_id):
         * ``gateway_timeouts`` - "10,10", # Seconds to timeout in string for\
         each gateway separated by comma
         * ``gateway_retries`` - "2,1", # Retry String for Gateways separated\
-        by comma, on how many times each gateway should be retried
+        by a comma, on how many times each gateway should be retried
         * ``originate_dial_string`` - originate_dial_string
         * ``secondused`` -
         * ``failover`` -
@@ -150,7 +150,7 @@ def init_callrequest(callrequest_id, campaign_id):
         logger.error('Received RequestUUID :> ' + str(result['RequestUUID']))
 
     else:
-        logger.error('Not other method supported, use one of this options :'\
+        logger.error('No other method supported, use one of these options :'\
                      'dummy ; plivo')
         return False
 
@@ -175,7 +175,7 @@ Tasks :
 
 @task()
 def dummy_testcall(callerid, phone_number, gateway):
-    """This is used for test purpose to simulate the behavior of Plivo
+    """This is used for test purposes to simulate the behavior of Plivo
 
     **Attributes**:
 
@@ -208,8 +208,8 @@ def dummy_testcall(callerid, phone_number, gateway):
 
 @task(default_retry_delay=2)  # retry in 2 seconds.
 def dummy_test_answerurl(request_uuid):
-    """This task trigger a call to local answer
-    This is used for test purpose to simulate the behavior of Plivo
+    """This task triggers a call to local answer
+    This is used for test purposes to simulate the behavior of Plivo
 
     **Attributes**:
 
@@ -254,8 +254,8 @@ def dummy_test_answerurl(request_uuid):
 
 @task(default_retry_delay=2)  # retry in 2 seconds.
 def dummy_test_hangupurl(request_uuid):
-    """This task trigger a call to local answer
-    This is used for test purpose to simulate the behavior of Plivo
+    """This task triggers a call to local answer
+    This is used for test purposes to simulate the behavior of Plivo
 
     **Attributes**:
 

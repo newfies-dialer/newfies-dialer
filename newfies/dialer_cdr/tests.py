@@ -28,12 +28,12 @@ class BaseAuthenticatedClient(TestCase):
 
 
 class NewfiesApiTestCase(BaseAuthenticatedClient):
-    """Test cases for Newfies API."""
+    """Test cases for Newfies-Dialer API."""
     fixtures = ['gateway.json', 'auth_user', 'voipapp','phonebook', 'contact',
                 'campaign', 'campaign_subscriber']
 
     def test_create_campaign(self):
-        """Test Function to crete campaign"""
+        """Test Function to create a campaign"""
         response = self.client.post('/api/dialer_campaign/campaign/',
         {"name": "mycampaign", "description": "xyz",
          "startingdate": "1301392136.0", "expirationdate": "1301332136.0",
@@ -44,7 +44,7 @@ class NewfiesApiTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
     def test_read_campaign(self):
-        """Test Function to get all campaign"""
+        """Test Function to get all campaigns"""
         response = self.client.get('/api/dialer_campaign/campaign/',
                    **self.extra)
         self.assertEqual(response.status_code, 200)
@@ -53,33 +53,33 @@ class NewfiesApiTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
     def test_update_campaign(self):
-        """Test Function to update campaign"""
+        """Test Function to update a campaign"""
         response = self.client.put('/api/dialer_campaign/campaign/1/',
                    {"status": "2"}, **self.extra)
         self.assertEqual(response.status_code, 200)
 
     def test_delete_campaign(self):
-        """Test Function to delete campaign"""
+        """Test Function to delete a campaign"""
         response = self.client.delete('/api/dialer_campaign/campaign/1/',
         **self.extra)
         self.assertEqual(response.status_code, 204)
 
     def test_delete_cascade_campaign(self):
-        """Test Function to delete campaign"""
+        """Test Function to cascade delete a campaign"""
         response = \
         self.client.delete('/api/dialer_campaign/campaign/delete_cascade/1/',
         **self.extra)
         self.assertEqual(response.status_code, 204)
 
     def test_create_phonebook(self):
-        """Test Function to crete phonebook"""
+        """Test Function to create a phonebook"""
         response = self.client.post('/api/dialer_campaign/phonebook/',
         {"name": "mylittlephonebook", "description": "Test",
          "campaign_id": "1"}, **self.extra)
         self.assertEqual(response.status_code, 200)
 
     def test_read_phonebook(self):
-        """Test Function to get all phonebook"""
+        """Test Function to get all phonebooks"""
         response = self.client.get('/api/dialer_campaign/phonebook/',
         **self.extra)
         self.assertEqual(response.status_code, 200)
@@ -88,14 +88,14 @@ class NewfiesApiTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
     def test_create_contact(self):
-        """Test Function to crete contact"""
+        """Test Function to create a contact"""
         response = self.client.post('/api/dialer_campaign/contact/',
         {"contact": "650784355", "name": "areski", "phonebook_id": "1"},
         **self.extra)
         self.assertEqual(response.status_code, 200)
 
     def test_read_contact(self):
-        """Test Function to get all pending contact"""
+        """Test Function to get all pending contacts"""
         response = self.client.get('/api/dialer_campaign/contact/1/',
         **self.extra)
         self.assertEqual(response.status_code, 200)
@@ -104,20 +104,20 @@ class NewfiesApiTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
     def test_update_contact(self):
-        """Test Function to update contact"""
+        """Test Function to update a contact"""
         response = self.client.put('/api/dialer_campaign/contact/1/1234/',
                    {"status": "2"}, **self.extra)
         self.assertEqual(response.status_code, 200)
 
     def test_create_bulk_contact(self):
-        """Test Function to crete bulk contact"""
+        """Test Function to bulk create contacts"""
         response = self.client.post('/api/dialer_campaign/bulkcontact/',
         {"phoneno_list": "12345,54344", "phonebook_id": "1"},
         **self.extra)
         self.assertEqual(response.status_code, 200)
 
     def test_create_callrequest(self):
-        """Test Function to crete callrequest"""
+        """Test Function to create a callrequest"""
         response = self.client.post('/api/dialer_cdr/callrequest/',
         {"request_uuid": "2342jtdsf-00153",
          "call_time": "2011-05-01 11:22:33", "phone_number": "8792749823",
@@ -126,19 +126,19 @@ class NewfiesApiTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
     def test_read_callrequest(self):
-        """Test Function to get all callrequest"""
+        """Test Function to get all callrequests"""
         response = self.client.get('/api/dialer_cdr/callrequest/',
         **self.extra)
         self.assertEqual(response.status_code, 200)
 
 
 class NewfiesApiCallRequestUpdateTestCase(BaseAuthenticatedClient):
-    """Test cases for updating Call Request API."""
+    """Test cases for updating a Call Request API."""
     fixtures = ['gateway', 'auth_user', 'voipapp', 'phonebook', 'contact',
                 'campaign', 'callrequest']
 
     def test_update_callrequest(self):
-        """Test Function to update callrequest"""
+        """Test Function to update a callrequest"""
         response = self.client.put('/api/dialer_cdr/callrequest/1/',
                    {"status": "5"}, **self.extra)
         self.assertEqual(response.status_code, 200)
@@ -173,7 +173,7 @@ class NewfiesAdminInterfaceTestCase(TestCase):
         self.assertEqual(response, True)
 
     def test_admin_newfies(self):
-        """Test Function to check newfies Admin pages"""
+        """Test Function to check Newfies Admin pages"""
         response = self.client.get('/admin/auth/')
         self.failUnlessEqual(response.status_code, 200)
 

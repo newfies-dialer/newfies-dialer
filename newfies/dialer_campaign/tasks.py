@@ -11,7 +11,7 @@ from time import sleep
 
 @task(default_retry_delay=30 * 60)  # retry in 30 minutes.
 def add(x, y):
-    """This task produce the addition of 2 numbers.
+    """This task adds 2 numbers.
     For instance (1, 2) will return '3'
 
     **Attributes**:
@@ -32,7 +32,7 @@ def add(x, y):
 
 @task()
 def initiate_call_subscriber(subscriber_id, campaign_id):
-    """This tasks will outbound the call to the subscriber
+    """This task will outbound the call to the subscriber
 
     **Attributes**:
 
@@ -92,7 +92,7 @@ def initiate_call_subscriber(subscriber_id, campaign_id):
 #TODO: Put a priority on this task
 @task()
 def check_campaign_pendingcall(campaign_id):
-    """This tasks will execute the outbound call of the campaign
+    """This will execute the outbound calls in the campaign
 
     **Attributes**:
 
@@ -137,7 +137,7 @@ def check_campaign_pendingcall(campaign_id):
 
 
 class campaign_running(PeriodicTask):
-    """A periodic task that check the campaign and create a tasks the calls
+    """A periodic task that checks the campaign, create and tasks the calls
 
     **Usage**:
 
@@ -145,8 +145,8 @@ class campaign_running(PeriodicTask):
     """
 
     run_every = timedelta(seconds=15)
-    #The campaign have to run every minutes in order to control the amount
-    # of call per minutes. Cons : new calls might delay 60seconds
+    #The campaign have to run every minutes in order to control the number
+    # of calls per minute. Cons : new calls might delay 60seconds
     #run_every = timedelta(seconds=60)
 
     def run(self, **kwargs):
@@ -161,7 +161,7 @@ class campaign_running(PeriodicTask):
 
 @task()
 def collect_subscriber(campaign_id):
-    """This tasks will collect all the subscriber
+    """This task will collect all the subscribers
 
     **Attributes**:
 

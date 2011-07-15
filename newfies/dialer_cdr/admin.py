@@ -46,7 +46,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
                     'hangup_cause_q850')
 
     def has_add_permission(self, request):
-        """Removed add permission on VoIP Call Report model
+        """Remove add permission on VoIP Call Report model
 
         **Logic Description**:
 
@@ -67,7 +67,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
         return my_urls + urls
 
     def queryset(self, request):
-        """Override queryset method of django-admin for search parameter
+        """Override queryset method of django-admin for search parameters
 
         **Logic Description**:
 
@@ -87,7 +87,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
         return qs.filter(**kwargs).order_by('-starting_date')
 
     def changelist_view(self, request, extra_context=None):
-        """Override changelist_view method of django-admin for search parameter
+        """Override changelist_view method of django-admin for search parameters
 
         **Attributes**:
 
@@ -96,8 +96,8 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
         **Logic Description**:
 
-            * VoIP Report Record Listing with Search Option & Daily Call Report
-              Search Parameters: By date, By status, By billed
+            * VoIP report Record Listing with search option & Daily Call Report
+              search Parameters: by date, by status and by billed.
         """
         opts = VoIPCall._meta
         app_label = opts.app_label
@@ -161,7 +161,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
                .changelist_view(request, extra_context=ctx)
 
     def export_voip_report(self, request):
-        """Export CSV file of VoIP call record
+        """Export a CSV file of VoIP call records
 
         **Important variable**:
 

@@ -56,8 +56,8 @@ class CallRequestManager(models.Manager):
 
     
 class Callrequest(Model):
-    """This defines the call request, the dialer will read those new request
-    and attempt to deliver the call
+    """This defines the call request, the dialer will read any new request
+    and attempt to deliver the call.
 
     **Attributes**:
 
@@ -80,13 +80,13 @@ class Callrequest(Model):
     **Relationships**:
 
         * ``user`` - Foreign key relationship to the User model.\
-        Each campaign assigned to User
+        Each campaign assigned to a User
         * ``voipapp`` - Foreign key relationship to the VoipApp model.\
         VoIP Application to use with this campaign
         * ``aleg_gateway`` - Foreign key relationship to the Gateway model.\
         Gateway to use to reach the subscriber
         * ``campaign_subscriber`` - Foreign key relationship to\
-        CampaignSubscriber Model.
+        the CampaignSubscriber Model.
         * ``campaign`` - Foreign key relationship to the Campaign model.
 
     **Name of DB table**: dialer_callrequest
@@ -130,7 +130,7 @@ class Callrequest(Model):
     result = models.CharField(max_length=180, blank=True)
     hangup_cause = models.CharField(max_length=80, blank=True)
 
-    # if the call fail, create a new pending instance and link them
+    # if the call fails, create a new pending instance and link them
     parent_callrequest = models.ForeignKey('self', null=True, blank=True)
 
     objects = CallRequestManager()

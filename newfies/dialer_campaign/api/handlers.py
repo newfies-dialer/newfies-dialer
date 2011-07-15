@@ -36,7 +36,7 @@ def get_value_if_none(x, value):
 
 
 class campaignHandler(BaseHandler):
-    """This API server as Campaign management, it provides basic function
+    """This API server provides Campaign management giving basic functions
     to create and update campaigns."""
     model = Campaign
     allowed_methods = ('POST', 'GET', 'PUT', 'DELETE')    
@@ -55,7 +55,7 @@ class campaignHandler(BaseHandler):
         return ('campaign', ['campaign_id', ])
 
     def create(self, request):
-        """API to create new campaign
+        """API to create a new campaign
 
         **Attributes**:
 
@@ -63,10 +63,10 @@ class campaignHandler(BaseHandler):
             * ``name`` - Name of the Campaign
             * ``description`` - Short description of the Campaign
             * ``callerid`` - Caller ID
-            * ``startingdate`` - Starting date. Epoch Time, ie 1301414368
-            * ``expirationdate`` - Expiring date. Epoch Time, ie 1301414368
-            * ``daily_start_time`` - Per Day Starting Time, default '00:00:00'
-            * ``daily_stop_time`` - Per Day Stopping Time, default '23:59:59'
+            * ``startingdate`` - Start date. Epoch Time, ie 1301414368
+            * ``expirationdate`` - Expiry date. Epoch Time, ie 1301414368
+            * ``daily_start_time`` - Daily start time, default '00:00:00'
+            * ``daily_stop_time`` - Daily stop time, default '23:59:59'
             * ``monday`` - Set to 1 if you want to run this day of the week,\
             default '1'
             * ``tuesday`` - Set to 1 if you want to run this day of the week,\
@@ -84,21 +84,21 @@ class campaignHandler(BaseHandler):
 
         **Campaign Settings**:
 
-            * ``frequency`` - Define the frequency, speed of the campaign.\
+            * ``frequency`` - Defines the frequency, speed of the campaign.\
                               This is the number of calls per minute.
-            * ``callmaxduration`` - Define the max retry allowed per user.
-            * ``maxretry`` - Define the max retry allowed per user.
-            * ``intervalretry`` - Define the time to wait between retries\
+            * ``callmaxduration`` - Maximum call duration.
+            * ``maxretry`` - Defines the max retries allowed per user.
+            * ``intervalretry`` - Defines the time to wait between retries\
                                   in seconds
-            * ``calltimeout`` - Define the amount of second to timeout on calls
+            * ``calltimeout`` - Defines the number of seconds to timeout on calls
 
         **Gateways**:
 
-            * ``aleg_gateway`` - Define the Gateway to use to reach the\
+            * ``aleg_gateway`` - Defines the Gateway to use to call the\
                                  subscriber
-            * ``voipapp`` - Define Application to provide when the calls is\
-                            established on the A-Leg
-            * ``extra_data`` - Define the additional data to pass to the\
+            * ``voipapp`` - Defines the  application to use when the \
+                            call is established on the A-Leg
+            * ``extra_data`` - Defines the additional data to pass to the\
                                  application
 
         **CURL Usage**::
@@ -162,14 +162,14 @@ class campaignHandler(BaseHandler):
 
         **Error**:
 
-            * You have too many campaign. Max allowed 5
+            * You have too many campaigns. Max allowed 5
             * The Gateway ID doesn't exist!
             * The VoipApp doesn't exist!
-            * The Campaign name duplicated!
+            * The Campaign name is duplicated!
         """
         if check_dialer_setting(request, check_for="campaign"):
             resp = rc.BAD_REQUEST
-            resp.write("You have too many campaign. Max allowed %s" \
+            resp.write("You have too many campaigns. Max allowed %s" \
             % dialer_setting_limit(request, limit_for="campaign"))
             return resp
         else:
@@ -200,7 +200,7 @@ class campaignHandler(BaseHandler):
             sunday = get_attribute(attrs, 'sunday')
 
             startingdate = get_value_if_none(startingdate, time.time())
-            # expire in 7 days
+            # expires in 7 days
             expirationdate = \
             get_value_if_none(expirationdate, time.time() + 86400 * 7)
 
@@ -280,8 +280,8 @@ class campaignHandler(BaseHandler):
 
     @throttle(1000, 1 * 60) #  Throttle if more that 1000 times within 1 minute
     def read(self, request, campaign_id=None):
-        """API to read all pending campaign, or a specific campaign if
-        campaign_id is supplied
+        """API to read all pending campaigns, or a specific campaign if
+        a campaign_id is supplied
 
         **Attributes**:
 
@@ -371,12 +371,12 @@ class campaignHandler(BaseHandler):
         **Attributes**:
 
             * ``campaign_id`` - Campaign ID
-            * ``status`` - new campaign status values (1:START, 2:PAUSE,\
+            * ``status`` - New campaign status values (1:START, 2:PAUSE,\
             3:ABORT, 4:END)
-            * ``startingdate`` - Starting date. Epoch Time, ie 1301414368
-            * ``expirationdate`` - Expiring date. Epoch Time, ie 1301414368
-            * ``daily_start_time`` - Per Day Starting Time, default '00:00:00'
-            * ``daily_stop_time`` - Per Day Stopping Time, default '23:59:59'
+            * ``startingdate`` - Start date. Epoch Time, ie 1301414368
+            * ``expirationdate`` - Expiry date. Epoch Time, ie 1301414368
+            * ``daily_start_time`` - Daily Start Time, default '00:00:00'
+            * ``daily_stop_time`` - Daily Stop Time, default '23:59:59'
             * ``monday`` - Set to 1 if you want to run this day of the week,\
             default '1'
             * ``tuesday`` - Set to 1 if you want to run this day of the week,\
@@ -391,17 +391,17 @@ class campaignHandler(BaseHandler):
             default '1'
             * ``sunday`` - Set to 1 if you want to run this day of the week,\
             default '1'
-            * ``frequency`` - Define the frequency, speed of the campaign.\
+            * ``frequency`` - Defines the frequency and speed of the campaign.\
                               This is the number of calls per minute.
-            * ``callmaxduration`` - Define the max retry allowed per user.
-            * ``maxretry`` - Define the max retry allowed per user.
-            * ``intervalretry`` - Define the time to wait between retries\
+            * ``callmaxduration`` - Defines the maximum call duration.
+            * ``maxretry`` - Defines the max retries allowed per user.
+            * ``intervalretry`` - Defines the time to wait between retries\
                                   in seconds
-            * ``calltimeout`` - Define the amount of second to timeout on calls
-            * ``aleg_gateway`` - Define the Gateway to use to reach the\
+            * ``calltimeout`` - Defines the number of second to timeout on calls
+            * ``aleg_gateway`` - Defines the Gateway to use to call the\
                                  subscriber
-            * ``voipapp`` - Define the VoIP application
-            * ``extra_data`` - Define the additional data to pass to the\
+            * ``voipapp`` - Defines the VoIP application
+            * ``extra_data`` - Defines the additional data to pass to the\
                                  application
            
 
@@ -580,7 +580,7 @@ class campaignHandler(BaseHandler):
 
 
 class phonebookHandler(BaseHandler):
-    """This API server as Phonebook management, it provides basic function
+    """This API provides Phonebook management giving basic functions
     to create and read phonebooks."""
     model = Phonebook
     allowed_methods = ('POST', 'GET',)
@@ -595,7 +595,7 @@ class phonebookHandler(BaseHandler):
         return ('phonebook', ['phonebook_id', ])
 
     def create(self, request):
-        """API to create new phonebook
+        """API to create a new phonebook
 
         **Attributes**:
 
@@ -650,8 +650,8 @@ class phonebookHandler(BaseHandler):
 
     @throttle(1000, 1 * 60) #  Throttle if more that 1000 times within 1 minute
     def read(self, request, phonebook_id=None):
-        """API to read all created phonebook, or a specific phonebook\
-        if phonebook_id is supplied
+        """API to read all created phonebooks, or a specific phonebook\
+        if a phonebook_id is supplied
 
         **Attributes**:
 
@@ -694,7 +694,7 @@ class phonebookHandler(BaseHandler):
 
 
 class contactHandler(BaseHandler):
-    """This API server as Contact management, it provides basic function
+    """This API provides as Contact management, giving basic function
     to create, read and update contacts."""
     model = CampaignSubscriber
     allowed_methods = ('POST', 'GET', 'PUT',)
@@ -710,7 +710,7 @@ class contactHandler(BaseHandler):
         return ('subscriber', ['subscriber_id'])
 
     def create(self, request):
-        """API to create new contact
+        """API to create a new contact
 
         **Attributes Details**:
 
@@ -719,7 +719,7 @@ class contactHandler(BaseHandler):
             * ``first_name`` - first name of the Subscriber
             * ``email`` - email id of the Subscriber
             * ``description`` - Short description of the Subscriber
-            * ``additional_vars`` - Additional setting of the Subscriber
+            * ``additional_vars`` - Additional settings for the Subscriber
             * ``phonebook_id`` - the phonebook Id to which we want to add\
             the Subscriber
 
@@ -807,8 +807,8 @@ class contactHandler(BaseHandler):
 
     @throttle(1000, 1 * 60) #  Throttle if more that 1000 times within 1 minute
     def read(self, request, campaign_id=None, contact=None):
-        """API to read all pending contact, or a specific contact if \
-        contact_id is supplied
+        """API to read all pending contacts, or a specific contact if \
+        a contact_id is supplied
 
         **Attributes**:
 
@@ -895,7 +895,7 @@ class contactHandler(BaseHandler):
 
     @throttle(1000, 1 * 60) #  allow 1000 times in 1 minutes
     def update(self, request, campaign_id=None, contact=None):
-        """API to update contact
+        """API to update a contact
 
         **Attributes**:
 
@@ -945,7 +945,7 @@ class contactHandler(BaseHandler):
 
 
 class bulkcontactHandler(BaseHandler):
-    """This API  provides basic function to create contacts in bulk."""
+    """This API  provides basic functionality to bulk create contacts."""
     model = Contact
     allowed_methods = ('POST',)
 
@@ -958,7 +958,7 @@ class bulkcontactHandler(BaseHandler):
         return ('contact', [' contact_id', ])
 
     def create(self, request):
-        """API to create bulk contact
+        """API to bulk create contacts
 
         **Attributes**
 
@@ -1027,7 +1027,7 @@ class bulkcontactHandler(BaseHandler):
 
 
 class campaignDeleteCascadeHandler(BaseHandler):
-    """This API server as Campaign Delete, it provides basic function
+    """This API provides provides basic functionality
     to delete campaigns."""
     allowed_methods = ('DELETE')
 

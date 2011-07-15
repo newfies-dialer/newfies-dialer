@@ -38,8 +38,8 @@ def pass_gen(char_length=2, digit_length=6):
 
 
 class callrequestHandler(BaseHandler):
-    """This API server as Callrequest management, it provides basic function
-    to create, read and update callrequest."""
+    """This API provides basic functionality to create, read and update
+     callrequests."""
     model = Callrequest
     allowed_methods = ('GET', 'POST', 'PUT', )
 
@@ -53,8 +53,8 @@ class callrequestHandler(BaseHandler):
 
     @throttle(1000, 1 * 60) # Throttle if more that 1000 times within 1 minute
     def read(self, request, callrequest_id=None):
-        """API to read all pending callrequest, or a specific callrequest
-        if callrequest_id is supplied
+        """API to read all pending callrequests, or a specific callrequest
+        if a callrequest_id is supplied
 
         **Attributes**:
 
@@ -99,11 +99,11 @@ class callrequestHandler(BaseHandler):
             return base.all()
 
     def create(self, request):
-        """Create new callrequest,
+        """Create a new callrequest,
         Create a callrequest will spool a call directly from the platform using
-        a gateway and an application
-        This can be used if you are not willing to create campaign or
-        subscriber to proceed calls.
+        a gateway and an application.
+        This can be used without creating a campaign or
+        subscriber to send calls.
 
         **Attributes**:
 
@@ -178,7 +178,7 @@ class callrequestHandler(BaseHandler):
 
     #@throttle(5, 10 * 60) # allow 5 times in 10 minutes
     def update(self, request, callrequest_id):
-        """API to update callrequest
+        """API to update a callrequest
 
         **Attributes**:
 
@@ -298,7 +298,7 @@ class answercallHandler(BaseHandler):
 
 
 class hangupcallHandler(BaseHandler):
-    """This API server to hangup call
+    """This API hangs up a call
 
     This will update the call with the final status
     """
@@ -357,7 +357,7 @@ class hangupcallHandler(BaseHandler):
 
 
 class cdrHandler(BaseHandler):
-    """This API server to store CDR and relevant information attached to it
+    """This API stores CDR and relevant information attached to it
     """
     model = VoIPCall
     allowed_methods = ('POST', )
@@ -377,7 +377,7 @@ class cdrHandler(BaseHandler):
 
         **Attributes**:
 
-            * ``cdr`` - XML string assign from Telephony engine
+            * ``cdr`` - XML string assigned from the Telephony engine
 
         **CURL Usage**::
 
@@ -492,9 +492,9 @@ class cdrHandler(BaseHandler):
 
 
 class testcallHandler(BaseHandler):
-    """This API server as Test suit to initiate call and retrieve their status
+    """This API is a test suit to initiate calls and retrieve their status
 
-    It aims to be used as a test function that will simulate the behavior
+    It is used as a test function that will simulate the behavior
     of sending the call via an API
     """
     allowed_methods = ('POST', )

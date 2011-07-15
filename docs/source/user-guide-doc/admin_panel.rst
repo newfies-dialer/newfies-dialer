@@ -32,7 +32,7 @@ Phonebook
 ~~~~~~~~~
 
 The phonebook list will be displayed from the following URL. You can add a new 
-phonebook by clicking ``Add phonebook`` and adding name of the phonebook and its
+phonebook by clicking ``Add phonebook`` and adding the name of the phonebook and its
 description, Also from the phonebook list, click on the phonebook that you want 
 to update.
 
@@ -43,7 +43,7 @@ to update.
 .. image:: ../_static/images/admin/phonebook_list.png
     :width: 1000
 
-To Add/Update phonebook for user
+To Add/Update phonebook for a user
 
 **URL**:
 
@@ -74,7 +74,7 @@ From the contact list, click on the contact that you want to update.
 .. image:: ../_static/images/admin/contact_list.png
     :width: 1000
 
-To Add/Update contact
+To Add/Update a contact
 
 **URL**:
 

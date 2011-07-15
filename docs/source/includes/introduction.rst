@@ -70,7 +70,7 @@ Please click on the headings for more details.
 
     * ``Telecasting``: Broadcast marketing or informational messages to customers and clients.
 
-    * ``Telemarketing``: Braodcast a marketing message to potential customers, and give
+    * ``Telemarketing``: Broadcast a marketing message to potential customers, and give
       them the option to be put through to a call-centre via an IVR (Interactive Voice Response) Menu.
 
     * ``Phone Polling, Surveys and Voting``: Ring large numbers of people and present

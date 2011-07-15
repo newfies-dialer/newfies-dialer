@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #   Installation script for Newfies
 #   Copyright (C) <2011>  <Star2Billing S.L> 
 #This program is free software; you can redistribute it and/or

@@ -12,7 +12,7 @@ Install requirements
 A Requirements file gives you a way to create an environment where you can put
 all optional dependencies which are needed for your Project/Application.
 
-To get started with Newfies-dialer you must have the following installed:
+To get started with Newfies-Dialer you must have the following installed:
 
 - python >= 2.4 (programming language)
 - Apache / http server with WSGI modules
@@ -64,9 +64,9 @@ Use PIP to install all the requirements,::
 Installation Script
 ===================
 
-You can install Newfies manually or using the shell script provided.
+You can install Newfies-Dialer manually or using the shell script provided.
 
-To install Newfies using the script,::
+To install Newfies-Dialer using the script,::
 
     $ chmod +x install/install-newfies.sh
 
@@ -79,10 +79,10 @@ To install Newfies using the script,::
 
 .. _running-newfies-dialer:
 
-Running a Newfies-dialer
+Running a Newfies-Dialer
 ========================
 
-Inside Newfies-dialer directory you should run::
+Inside Newfies-Dialer directory you should run::
 
     $ mkdir database
 
@@ -93,16 +93,16 @@ Inside Newfies-dialer directory you should run::
     $ python manage.py runserver
 
 
-``syncdb`` will create a database named test.db in ``database`` folder of
-newfies-dialer directory. We have configured newfies to do this, but you can
-change this simply by modifying settings.py where DATABASES dictionary is
-constructed. You can find more information about this at the get your database
-running Django documentation.
+``syncdb`` will create a database named test.db in ``database`` folder of the
+Newfies-Dialer directory. We have configured Newfies-Dialer to do this, but you
+can change this simply by modifying settings.py where DATABASES dictionary is
+constructed. You can find more information about this in the 
+Django documentation.
 
-``collectstatic`` would fetch all necessary media files and put them into
-``staic`` folder defined at settings module.
+``collectstatic`` will fetch all necessary media files and put them into
+``static`` folder defined in the settings module.
 
-``runserver`` runs an embedded webserver to test your site with.
+``runserver`` runs an embedded webserver to test your site.
 By default it will run on http://localhost:8000. This is configurable and more
 information can be found on ``runserver`` in Django documentation.
 

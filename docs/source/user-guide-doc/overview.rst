@@ -11,7 +11,7 @@ Servers such as Asterisk could be easily added in the future. The platform is
 focused on real-time operations and task call distributions to clustered
 brokers and workers.
 
-Newfies-Dialer is a computerized system that automatically dials group
+Newfies-Dialer is a computerised system that automatically dials a group
 of telephone numbers for connection to assigned campaigns.
 
 **Features**

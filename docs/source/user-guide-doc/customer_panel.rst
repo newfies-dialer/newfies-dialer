@@ -8,8 +8,8 @@ User Interface :
 
 http://localhost:8000/
 This application provides a user interface for restricted management of
-the User's Campaign, Phonebook, Subscriber. It also provides detailed
-Reporting of calls and message delivery.
+the User's Campaigns, Phonebooks and Subscribers. It also provides detailed
+reporting of calls and message delivery.
 
 .. contents::
     :local:
@@ -33,7 +33,7 @@ Index page for the customer interface after successful login with user credentia
 Phonebook
 ~~~~~~~~~
 
-The phonebook list will be displayed from the following URL. You can add new a
+The phonebook list will be displayed from the following URL. You can add a new
 phonebook by clicking ``Add phonebook`` and add the name of a phonebook and its
 description. Also from the phonebook list, click on the phonebook to update.
 
@@ -59,7 +59,7 @@ Contact
 
 The contact list will be displayed from following the URL. You can add a new contact
 by clicking ``Add contact`` & adding the contact details (i.e. phone number, name,
-description about contact, contact status) under logged in user's phonebook from
+description about contact, contact status) under the logged in user's phonebook from
 the phonebook list. On the contact list, click on the contact to update.
 
 
@@ -98,9 +98,9 @@ Campaign
 
 The campaign list will be displayed from the following URL. You can add a new campaign for
 the logged in user by clicking ``Add campaign``. When adding a campaign, it is important
-to add the campaign's start and end dates with time & week-day exceptions. select 
+to add the campaign's start and end dates with time & week-day exceptions. Select 
 the gateway through which calls will be routed & phonebook(s) that are
-linked with contacts From the campaign list, click on campaign to update.
+linked with contacts from the campaign list, click on campaign to update.
 
 **URL**:
 

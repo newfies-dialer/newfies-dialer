@@ -1,6 +1,6 @@
-You can install Newfies manually or using the shell script provided.
+You can install Newfies-Dialer manually or using the shell script provided.
 
-To install using newfies,::
+To install using the Newfies-Dialer install script,::
 
     $ chmod +x script/install-newfies.sh
 

@@ -48,6 +48,10 @@ To get started with Newfies-dialer you must have the following installed:
 - django-admin-tools (Collection of tools for the django administration)
 - python-memcached >= 1.47 (Python based API for communicating with the memcached distributed memory object cache daemon)
 - django-memcache-status >= 1.0.1 (Displays statistics about memcached instances)
+- django-notification >= 0.1.3 (User notification management for the Django web framework)
+- identicon (identicon python implementation)
+- django-sentry >= 1.8.6.2 (Real-time logging / error tracing for Django)
+- django-qsstats >= 0.3.1 (A django microframework that eases the generation of aggregate data for querysets)
 
 
 Use PIP to install all the requirements,::

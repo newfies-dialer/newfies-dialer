@@ -22,6 +22,7 @@ from inspect import stack, getmodule
 from datetime import *
 from dateutil import parser
 import urllib
+import qsstats
 import csv
 import ast
 
@@ -119,7 +120,14 @@ def customer_dashboard(request, on_index=None):
                      .annotate(Avg('duration'))\
                      .annotate(Count('starting_date'))\
                      .order_by('starting_date')
-
+        calls_temp = VoIPCall.objects\
+                    .filter(callrequest__campaign=selected_campaign,
+                            duration__isnull=False,
+                            user=request.user,
+                            starting_date__range=(start_date, end_date))\
+                    .order_by('starting_date')
+        qss = qsstats.QuerySetStats(calls_temp, 'starting_date')
+        print qss.until_now()
         final_calls = []
         for i in calls:
             # convert unicode date string into date

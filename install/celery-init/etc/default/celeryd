@@ -3,13 +3,13 @@
 CELERYD_CHDIR='/usr/share/django_app/newfies/'
 
 # Path to celeryd
-CELERYD='/usr/share/virtualenvs/newfies-dialer/bin/python /usr/share/django_app/newfies/manage.py celeryd'
+CELERYD='/usr/share/virtualenvs/newfies-dialer/bin/python /usr/share/newfies/manage.py celeryd'
 
 # celeryd options
 CELERYD_OPTS=' -l info'
 
 # Path to celerybeat
-CELERYBEAT='/usr/share/virtualenvs/newfies-dialer/bin/python /usr/share/django_app/newfies/manage.py celerybeat'
+CELERYBEAT='/usr/share/virtualenvs/newfies-dialer/bin/python /usr/share/newfies/manage.py celerybeat'
 
 # Extra arguments to celerybeat
 CELERYBEAT_OPTS='--schedule=/var/run/celerybeat-schedule'

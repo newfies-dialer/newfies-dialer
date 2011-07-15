@@ -47,14 +47,14 @@
 </p>
 <P>
     {% for j in total_data %}
-       {{ j }}<br/>
+       <!--{{ j }}<br/>-->
     {% endfor %}
     {% for i in final_calls %}
         <!--{{ i }}<br/>-->
     {% endfor %}
 </P>
 </form>
-    <!--
+<!--
 <table align="center" id="rounded-corner">
         <thead>
         <tr>
@@ -74,27 +74,30 @@
 </table>
 <br/>-->
 <script type="text/javascript">
-var jsonData = [
-{% for td in total_data %}
-   {date:'{{ td.date }}', year:{{ td.year }},day:{{ td.day }}, month:{{ td.month }}, calls:{{ td.count }}, duration:'{{ td.duration__sum|conv_min }}', act:'{{ td.duration__avg|conv_min }}'},
-{% endfor %}
-];
-var callData = [
-{% for td in total_data %}
-    [{{td.count}} , {{td.starting_date__count}}],
-{% endfor %}
-];
-var durationData = [
-{% for td in total_data %}
-    [{{td.count}} , {{td.duration__sum}}],
-{% endfor %}
-];
-var summaryData = [
-{% for td in total_data %}
-    [{{td.count}} , {{td.starting_date__count}}],
-{% endfor %}
-];
 
+    var jsonData = [
+    {% for td in total_data %}
+       {date:'{{ td.date }}', year:{{ td.year }},day:{{ td.day }}, month:{{ td.month }}, calls:{{ td.count }}, duration:'{{ td.duration__sum|conv_min }}', act:'{{ td.duration__avg|conv_min }}'},
+    {% endfor %}
+    ];
+
+    var callData = [
+    {% for td in total_data %}
+        [{{td.count}} , {{td.starting_date__count}}],
+    {% endfor %}
+    ];
+
+    var durationData = [
+    {% for td in total_data %}
+        [{{td.count}} , {{td.duration__sum}}],
+    {% endfor %}
+    ];
+
+    var summaryData = [
+    {% for td in total_data %}
+        [{{td.count}} , {{td.starting_date__count}}],
+    {% endfor %}
+    ];
 </script>
 
 <script type="text/javascript">
@@ -151,158 +154,189 @@ var summaryData = [
 </div>
 {% endif %}
 
-<script type="text/javascript">
-(function($){
-    $(function () {
 
-        /*var data = [
-        {% for td in total_data %}
-            { label: 'Calls' , data: [[1, {{td.starting_date__count}}]]},
-           // { label: 'Duration' , data: [[1, {{td.duration__sum}}]]},
-        {% endfor %}
-        ];*/
-        var data = [
-            { label: 'Calls' , data: [[1, {{ total_call_count }}]]},
-            { label: 'Duration' , data: [[1, {{ total_duration_sum }}]]},
+{% if final_calls %}
+    <script id="source">
+    var data_answered = [
+            {% for td in final_calls %}
+                {% if td.disposition == 'ANSWER' %}
+                    [(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}],
+                {% endif %}
+            {% endfor %},
         ];
-        var options = {
-                series: {
-                    pie: {
-                        show: true,
-                        radius: 1,
-                        label: {
-                            show: true,
-                            radius: 3/4,
-                            formatter: function(label, series){
-                                return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
-                                }
-                            },
-                        background: { opacity: 0.5 },
-                    }
-                },
-                legend: {show: false}
-        };
+    var data_busy = [
+        {% for td in final_calls %}
+            {% if td.disposition == 'BUSY' %}
+                [(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}],
+            {% endif %}
+        {% endfor %},
+        ];
 
-        var plot = $.plot($("#camp_pie"), data, options);
-    });
-})(jQuery);
-</script>
+    var data_not_answered = [
+        {% for td in final_calls %}
+            {% if td.disposition == 'NOANSWER' %}
+                [(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}],
+            {% endif %}
+        {% endfor %},
+        ];
+
+    var data_others = [
+        {% for td in final_calls %}
+            {% if td.disposition != 'ANSWER' %}
+                {% if td.disposition != 'BUSY' %}
+                    {% if td.disposition != 'NOANSWER' %}
+                        [(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}],
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        {% endfor %},
+        ];
+
+    (function($){
+        $(function () {
+
+            function showTooltip(x, y, contents) {
+                $('<div id="tooltip">' + contents + '</div>').css( {
+                    position: 'absolute',
+                    display: 'none',
+                    top: y + 5,
+                    left: x + 5,
+                    border: '1px solid #fdd',
+                    padding: '2px',
+                    'background-color': '#fee',
+                    opacity: 0.80
+                }).appendTo("body").fadeIn(200);
+            }
+
+
+            //alert(data);
+
+            $.plot($("#placeholder"), [
+                { label: "Answered",  data: data_answered},
+                { label: "Busy",  data: data_busy}, //yaxis: 2
+                { label: "Not Answered",  data: data_not_answered},
+                { label: "Others",  data: data_others},
+                ], {
+                legend: {
+                    position: "se",
+                    margin: [-150,0],
+                    labelFormatter: function(label){
+                        return '<div class="graph_legend">'+label+'</div>';
+                    },
+                    //container: ''
+                },
+                xaxis: {
+                    mode: "time",
+                    minTickSize: [1, "{{ select_graph_by }}"],
+                    max: (new Date({{ max_limit }} * 1000)), // Converting date from Python to Javascript (You have to multiply by 1,000.)
+                    min: (new Date({{ min_limit }} * 1000)) //Converting date from Python to Javascript
+                },
+                yaxis: {
+                    tickSize: 1,
+                    tickDecimals: 0
+                },
+                series: {
+                    lines: { show: true },
+                    points: { show: true }
+                },
+                grid: {
+                    hoverable: true,
+                    clickable: true,
+                    backgroundColor: { colors: ["#fff", "#eee"] }
+                },
+                tooltip: true,
+            });
+
+            var previousPoint = null;
+            $("#placeholder").bind("plothover", function (event, pos, item) {
+                $("#x").text(pos.x.toFixed(2));
+                $("#y").text(pos.y.toFixed(2));
+                if (item) {
+
+                    if (previousPoint != item.dataIndex) {
+                        previousPoint = item.dataIndex;
+
+                        $("#tooltip").remove();
+                        var x = item.datapoint[0].toFixed(2),
+                            y = item.datapoint[1].toFixed(2);
+                        //alert(item);
+                        function makeArray() {
+                        for (i = 0; i<makeArray.arguments.length; i++)
+                        this[i + 1] = makeArray.arguments[i];
+                        }
+
+                        var months = new makeArray('January','February','March','April','May',
+                        'June','July','August','September','October','November','December');
+                        var d = new Date(Number(x));
+                        var day = d.getDate();
+                        var month = d.getMonth() + 1;
+                        var yy = d.getYear();
+                        var year = (yy < 1000) ? yy + 1900 : yy;
+
+
+                        var call_date = months[month]+ " " +day + " " + year
+                        showTooltip(item.pageX, item.pageY,
+                                    call_date +  " :  " + Number(y));
+                    }
+                }
+                else {
+                        $("#tooltip").remove();
+                        previousPoint = null;
+                }
+            });
+
+        });
+    })(jQuery);
+    </script>
+
+    <div id="placeholder" style="width:850px;height:200px;"></div>
+    
+    <script type="text/javascript">
+    (function($){
+        $(function () {
+
+            /*var data = [
+            {% for td in total_data %}
+                { label: 'Calls' , data: [[1, {{td.starting_date__count}}]]},
+               // { label: 'Duration' , data: [[1, {{td.duration__sum}}]]},
+            {% endfor %}
+            ];*/
+            var data = [
+                { label: 'ANSWER' , data: [[1, {{ total_answered }}]]},
+                { label: 'BUSY' , data: [[1, {{ total_busy }}]]},
+                { label: 'NOANSWER' , data: [[1, {{ total_not_answered }}]]},
+                { label: 'OHTERS' , data: [[1, {{ total_others }}]]},
+            ];
+            var options = {
+                    series: {
+                        pie: {
+                            show: true,
+                            radius: 1,
+                            label: {
+                                show: true,
+                                radius: 3/4,
+                                formatter: function(label, series){
+                                    return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+                                    }
+                                },
+                            background: { opacity: 0.5 },
+                        }
+                    },
+                    legend: {show: false}
+            };
+
+            var plot = $.plot($("#camp_pie"), data, options);
+        });
+    })(jQuery);
+    </script>
     <!--
     {% for td in final_calls %}
             [{{ td.starting_date }},(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}]<br/>
     {% endfor %}-->
 
-    {% if final_calls %}
-   <br/> <div id="camp_pie" style="width:300px;height:300px"></div>
-    {% endif %}
-
-<script id="source">
-var data_count = [
-        {% for td in final_calls %}
-            [(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}],
-        {% endfor %},
-    ];
-var data_duration = [
-    {% for td in final_calls %}
-        [(new Date({{ td.starting_datetime }} * 1000)), {{ td.duration__sum }}],
-    {% endfor %},
-    ];
-
-(function($){
-    $(function () {
-
-        function showTooltip(x, y, contents) {
-            $('<div id="tooltip">' + contents + '</div>').css( {
-                position: 'absolute',
-                display: 'none',
-                top: y + 5,
-                left: x + 5,
-                border: '1px solid #fdd',
-                padding: '2px',
-                'background-color': '#fee',
-                opacity: 0.80
-            }).appendTo("body").fadeIn(200);
-        }
-
-
-        //alert(data);
-
-        $.plot($("#placeholder"), [
-            { label: "Calls",  data: data_count},
-            { label: "Duration",  data: data_duration, yaxis: 2},
-            ], {
-            legend: {
-                position: "sw",
-                margin: [-150,0],
-                labelFormatter: function(label){
-                    return '<div class="graph_legend">'+label+'</div>';
-                },
-            },
-            xaxis: {
-                mode: "time",
-                minTickSize: [1, "{{ select_graph_by }}"],
-                max: (new Date({{ max_limit }} * 1000)), // Converting date from Python to Javascript (You have to multiply by 1,000.)
-                min: (new Date({{ min_limit }} * 1000)) //Converting date from Python to Javascript
-            },
-            yaxis: {
-                tickSize: 1,
-                tickDecimals: 0
-            },
-            series: {
-                lines: { show: true },
-                points: { show: true }
-            },
-            grid: {
-                hoverable: true,
-                clickable: true,
-                backgroundColor: { colors: ["#fff", "#eee"] }
-            },
-            tooltip: true,
-        });
-
-        var previousPoint = null;
-        $("#placeholder").bind("plothover", function (event, pos, item) {
-            $("#x").text(pos.x.toFixed(2));
-            $("#y").text(pos.y.toFixed(2));
-            if (item) {
-
-                if (previousPoint != item.dataIndex) {
-                    previousPoint = item.dataIndex;
-
-                    $("#tooltip").remove();
-                    var x = item.datapoint[0].toFixed(2),
-                        y = item.datapoint[1].toFixed(2);
-                    //alert(item);
-                    function makeArray() {
-                    for (i = 0; i<makeArray.arguments.length; i++)
-                    this[i + 1] = makeArray.arguments[i];
-                    }
-
-                    var months = new makeArray('January','February','March','April','May',
-                    'June','July','August','September','October','November','December');
-                    var d = new Date(Number(x));
-                    var day = d.getDate();
-                    var month = d.getMonth() + 1;
-                    var yy = d.getYear();
-                    var year = (yy < 1000) ? yy + 1900 : yy;
-
-
-                    var call_date = months[month]+ " " +day + " " + year
-                    showTooltip(item.pageX, item.pageY,
-                                call_date +  " :  " + Number(y));
-                }
-            }
-            else {
-                    $("#tooltip").remove();
-                    previousPoint = null;
-            }
-        });
-
-    });
-})(jQuery);
-</script>
-    {% if final_calls %}
     <br/>
-   <div id="placeholder" style="width:600px;height:300px;"></div>
-    {% endif %}
+    <div id="camp_pie" style="width:250px;height:250px;float:left;"></div>
+
+{% endif %}
+
 {% endblock %}

@@ -81,6 +81,10 @@ def customer_dashboard(request, on_index=None):
     max_time = ''
     total_duration_sum = 0
     total_call_count = 0
+    total_answered = 0
+    total_not_answered = 0
+    total_busy = 0
+    total_others = 0
     select_graph_by = 'day'
     if request.method == 'POST':
         form = DashboardForm(request.user, request.POST)
@@ -116,17 +120,12 @@ def customer_dashboard(request, on_index=None):
                              user=request.user,
                              starting_date__range=(start_date, end_date))\
                      .extra(select=select_data)\
-                     .values('starting_date').annotate(Sum('duration'))\
+                     .values('starting_date', 'disposition').annotate(Sum('duration'))\
                      .annotate(Avg('duration'))\
                      .annotate(Count('starting_date'))\
                      .order_by('starting_date')
-        calls_temp = VoIPCall.objects\
-                    .filter(callrequest__campaign=selected_campaign,
-                            duration__isnull=False,
-                            user=request.user,
-                            starting_date__range=(start_date, end_date))\
-                    .order_by('starting_date')
-        qss = qsstats.QuerySetStats(calls_temp, 'starting_date')
+
+        #qss = qsstats.QuerySetStats(calls, 'starting_date')
         #print qss.until_now()
         final_calls = []
         for i in calls:
@@ -138,22 +137,25 @@ def customer_dashboard(request, on_index=None):
                                 'starting_date__count': i['starting_date__count'],
                                 'duration__sum': i['duration__sum'],
                                 'duration__avg': i['duration__avg'],
-                                }) # 'disposition': i['disposition']
+                                'disposition': i['disposition']
+                                })
+            if i['disposition'] == 'ANSWER':
+                total_answered = total_answered + 1
+            elif i['disposition'] == 'BUSY':
+                total_busy = total_busy + 1
+            elif i['disposition'] == 'NOANSWER':
+                total_not_answered = total_not_answered + 1
+            else:
+                total_others = total_others + 1
         #print calls
         # following part got from cdr-stats 'global report' used by visualize
         if calls:
-            #maxtime = start_date
-            #mintime = end_date
             maxtime = datetime(int(calls[0]['starting_date'][0:4]),
                                int(calls[0]['starting_date'][5:7]),
                                int(calls[0]['starting_date'][8:10]), 0, 0, 0, 0)
             mintime = datetime(int(calls[0]['starting_date'][0:4]),
                                int(calls[0]['starting_date'][5:7]),
                                int(calls[0]['starting_date'][8:10]), 0, 0, 0, 0)
-            #min_datetime = parser.parse(str(mintime))
-            #max_datetime = parser.parse(str(maxtime))
-            #min_time = time.mktime(min_datetime.timetuple())
-            #max_time = time.mktime(max_datetime.timetuple())
             calls_dict = {}
 
             for data in calls:
@@ -172,9 +174,7 @@ def customer_dashboard(request, on_index=None):
                     }
             dateList = date_range(mintime, maxtime)
 
-
             i = 0
-            #print calls_dict.keys()
             for date in dateList:
                 inttime = int(date.strftime("%Y%m%d"))
                 name_date = _(date.strftime("%B")) + " " + str(date.day) + \
@@ -231,6 +231,10 @@ def customer_dashboard(request, on_index=None):
         'select_graph_by': select_graph_by,
         'total_duration_sum': total_duration_sum,
         'total_call_count': total_call_count,
+        'total_answered':  total_answered,
+        'total_not_answered': total_not_answered,
+        'total_busy': total_busy,
+        'total_others': total_others,
     }
     if on_index == 'yes':
         return data

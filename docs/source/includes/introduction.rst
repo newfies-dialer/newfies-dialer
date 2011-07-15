@@ -20,7 +20,7 @@ Newfies-Dialer is written in Python, using the `Django`_ Framework. It also oper
 with message brokers such as `RabbitMQ`_, `Redis`_ but support for Beanstalk,
 MongoDB, CouchDB and DBMS is also available.
 
-Newfies-Dialer provides a extensive set of APIs to easily integrate with 
+Newfies-Dialer provides an extensive set of APIs to easily integrate with 
 third-party applications.
 
 Using very simple steps, Newfies-Dialer will help you create campaigns, add
@@ -64,8 +64,7 @@ hardware, potentially delivering many millions of calls per day.
 When the called party answers the call, Newfies-Dialer passes the call to a telephony
 application that is custom designed to provide the desired behaviour.
 
-Below are some examples of some of the uses that Newfies-Dialer can be put to,
-Please click on the headings for more details.
+Below are examples of some of the uses for Newfies-Dialer
 
 
     * ``Telecasting``: Broadcast marketing or informational messages to customers and clients.
@@ -121,24 +120,24 @@ Features
     | Concurrency     | Throttle Concurrent Calls                          |
     +-----------------+----------------------------------------------------+
     | Scheduling      | Supports recurring tasks like cron, or specifying  |
-    |                 | an exact date or countdown for when after the task |
+    |                 | an exact date or countdown for when the task       |
     |                 | should be executed. Can re-try to the non connected|
-    |                 | numbers at later time                              |
+    |                 | numbers at a later time                            |
     +-----------------+----------------------------------------------------+
-    | IVR support     | Accommodates multiple IVR scripts, Option to       |
+    | IVR support     | Accommodates multiple IVR scripts with options to  |
     |                 | connect the user to some other IVR/phone number on |
-    |                 | pressing the key                                   |
+    |                 | pressing a key                                     |
     +-----------------+----------------------------------------------------+
     | Web Interface   | Newfies can be managed via a Web interface.        |
-    |                 | Various web-based reports for call details and     |
-    |                 | current calls in realtime.                         |
+    |                 | Realtime web-based reports for call details and    |
+    |                 | current calls.                                     |
     |                 | You can query status and results via URLs, enabling|
     |                 | the ability  to poll task status using Ajax.       |
     +-----------------+----------------------------------------------------+
     | Error Emails    | Can be configured to send emails to the            |
-    |                 | administrators when tasks fails.                   |
+    |                 | administrator if a tasks fails.                    |
     +-----------------+----------------------------------------------------+
-    | Import Contact  | Allows to import contact details from .csv file    |
+    | Import Contact  | Import contact details from a .csv file            |
     +-----------------+----------------------------------------------------+
 
 
@@ -148,7 +147,7 @@ Features
 Architecture
 ============
 
-    * User select contacts, phonebooks and campaign, and choses a voice application to use. The campaign is then launched
+    * User selects contacts, phonebooks and campaigns, then chooses a voice application to use. The campaign is then launched
 
     * ``Newfies-Dialer`` spools the outbound calls to ``FreeSWITCH`` via ``Plivo``.
 
@@ -156,11 +155,11 @@ Architecture
 
     * ``FreeSWITCH`` dials the contact via the configured telephony gateways.
 
-    * Contact picks up call, and the answer event is received in ``FreeSWITCH`` and is passed back to ``Pilov``.
+    * Contact picks up the call, and the answer event is received in ``FreeSWITCH`` and passed back to ``Plivo``.
 
-    * ``Newfies-Dialer`` is notified that the call is answered, the renders & relays ``RestXML`` to ``Plivo``.
+    * ``Newfies-Dialer`` is notified that the call is answered, then renders & relays ``RestXML`` to ``Plivo``.
 
-    * ``Plivo`` interprets ``RestXML`` and send the application call-flow commands to ``FreeSWITCH``.
+    * ``Plivo`` interprets ``RestXML`` and sends the application call-flow commands to ``FreeSWITCH``.
 
     * The voice application is delivered to the contact by ``FreeSWITCH``.
 
@@ -173,6 +172,5 @@ Documentation
 The `latest documentation`_ with user guides, tutorials and API reference
 is hosted at Github.
 
-.. _`latest documentation`: https://github.com/Star2Billing/newfies-dialer/
 
 

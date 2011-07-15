@@ -17,9 +17,8 @@
 
     <!-- Newfies custom css -->
     <link type="text/css" media="screen" href="{{STATIC_URL}}newfies/css/newfile_custom.css" rel="stylesheet"/>
-
     <!-- jquery UI css -->
-    <link type="text/css" href="{{STATIC_URL}}newfies/css/smoothness/jquery-ui-1.8.11.custom.css" rel="stylesheet">  
+    <link type="text/css" href="{{STATIC_URL}}newfies/css/smoothness/jquery-ui-1.8.11.custom.css" rel="stylesheet">
 
     <!-- Javascript -->
     <script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-1.5.2.min.js"></script>
@@ -34,15 +33,15 @@
         {{ extra_header }}
     {% endblock %}
 
-    <script>
+    <script type="text/javascript">
       $(document).ready(function() {
         $(".fg-button").hover(
-	        function(){
-		        $(this).addClass("ui-state-hover");
-	        },
-	        function(){
-		        $(this).removeClass("ui-state-hover");
-	        }
+            function(){
+                $(this).addClass("ui-state-hover");
+            },
+            function(){
+                $(this).removeClass("ui-state-hover");
+            }
         );
         $('#buttonlogin').click(function(){
           $("#requestlogin").animate({ height: 'show', opacity: 'show' }, 'slow');

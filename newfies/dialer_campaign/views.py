@@ -127,7 +127,7 @@ def customer_dashboard(request, on_index=None):
                             starting_date__range=(start_date, end_date))\
                     .order_by('starting_date')
         qss = qsstats.QuerySetStats(calls_temp, 'starting_date')
-        print qss.until_now()
+        #print qss.until_now()
         final_calls = []
         for i in calls:
             # convert unicode date string into date

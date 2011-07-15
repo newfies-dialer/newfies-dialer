@@ -16,23 +16,25 @@
     </div>
     
     <script type="text/javascript">
-	$(function() {
-		$(".button-text-icon-locked").button({
-            icons: {
-                primary: 'ui-icon-locked'
-            }
+    (function($){
+        $(function() {
+            $(".button-text-icon-locked").button({
+                icons: {
+                    primary: 'ui-icon-locked'
+                }
+            });
+            $(".button-text-icon-unlocked").button({
+                icons: {
+                    primary: 'ui-icon-unlocked'
+                }
+            });
+            $(".button-text-icon-gear").button({
+                icons: {
+                    primary: 'ui-icon-gear'
+                }
+            });
         });
-        $(".button-text-icon-unlocked").button({
-            icons: {
-                primary: 'ui-icon-unlocked'
-            }
-        });
-        $(".button-text-icon-gear").button({
-            icons: {
-                primary: 'ui-icon-gear'
-            }
-        });
-	});
+    })(jQuery);
 	</script>
     
 

@@ -1,15 +1,17 @@
 
 <script type="text/javascript">
-      $(function(){
-        
-        $('#buttonlogin').click(function(){
-          $("#requestlogin").animate({ height: 'show', opacity: 'show' }, 'slow');
-          $("#buttonlogin").animate({ height: 'hide', opacity: 'hide' }, 'fast');
-        });
-        $('#buttonlogout').click(function(){
-          $('#logout').submit();
-        });
-      });
+      (function($){
+          $(function(){
+
+            $('#buttonlogin').click(function(){
+              $("#requestlogin").animate({ height: 'show', opacity: 'show' }, 'slow');
+              $("#buttonlogin").animate({ height: 'hide', opacity: 'hide' }, 'fast');
+            });
+            $('#buttonlogout').click(function(){
+              $('#logout').submit();
+            });
+          });
+      })(jQuery);
 </script>
     
     

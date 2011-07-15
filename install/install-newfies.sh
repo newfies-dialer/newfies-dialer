@@ -196,6 +196,7 @@ func_install_frontend(){
     echo "Install Newfies..."
     mkdir /usr/share/
     cd /usr/src/
+    rm -rf newfies-dialer
 
     case $INSTALL_MODE in
         'CLONE')
@@ -211,9 +212,8 @@ func_install_frontend(){
         ;;
     esac
 
-    #ln -s /usr/src/newfies-dialer/newfies $INSTALL_DIR
 
-    # Copy files, do not link to source
+    # Copy files
     cp -r /usr/src/newfies-dialer/newfies $INSTALL_DIR
 
     #Install Newfies depencencies

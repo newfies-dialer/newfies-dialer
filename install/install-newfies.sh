@@ -43,7 +43,7 @@ NEWFIES_CDR_API='api\/dialer_cdr\/store_cdr\/'
 CELERYD_USER="celery"
 CELERYD_GROUP="celery"
 
-$NEWFIES_ENV="newfies-dialer"
+NEWFIES_ENV="newfies-dialer"
 #------------------------------------------------------------------------------------
 
 

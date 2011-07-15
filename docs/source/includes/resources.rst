@@ -35,14 +35,12 @@ Contributing
 
 Development of `Newfies-Dialer` happens at Github: https://github.com/Star2Billing/newfies-dialer
 
-You are highly encouraged to participate in the development
-of `Newfies-Dialer`. If you don't like Github (for some reason) you're welcome
-to send regular patches.
+You are highly encouraged to participate in the development of `Newfies-Dialer`. 
+If you would prefer not to use Github, you are welcome to send us regular patches
 
 Be sure to also read the `Contributing to Newfies-Dialer`_ section in the
 documentation.
 
-.. _`Contributing to Newfies-Dialer`: http://ask.github.com/newfies-dialer/contributing.html
 
 .. _license:
 

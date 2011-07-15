@@ -82,7 +82,12 @@ func_mysql_database_setting() {
 
 #Fuction to create the virtual env
 func_setup_virtualenv() {
-            
+
+    echo ""
+    echo ""
+    echo "This will install virtualenv & virtualenvwrapper"
+    echo "and create a new virtualenv : $NEWFIES_ENV"
+    
     easy_install virtualenv
     easy_install virtualenvwrapper
     
@@ -100,6 +105,8 @@ func_setup_virtualenv() {
 
     mkvirtualenv --no-site-packages $NEWFIES_ENV
     workon $NEWFIES_ENV
+    
+    echo "Virtualenv $NEWFIES_ENV created and activated"
 }
 
 #Function to install Frontend

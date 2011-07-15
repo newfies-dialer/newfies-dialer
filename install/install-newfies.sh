@@ -30,7 +30,7 @@ INSTALL_MODE='CLONE'
 DATETIME=$(date +"%Y%m%d%H%M%S")
 KERNELARCH=$(uname -p)
 DISTRO='UBUNTU'
-INSTALL_DIR='/usr/share/django_app/newfies'
+INSTALL_DIR='/usr/share/newfies'
 DATABASENAME=$INSTALL_DIR'/database/newfies.db'
 MYSQLUSER=
 MYSQLPASSWORD=
@@ -42,6 +42,8 @@ NEWFIES_CDR_API='api\/dialer_cdr\/store_cdr\/'
 
 CELERYD_USER="celery"
 CELERYD_GROUP="celery"
+
+$NEWFIES_ENV="newfies-dialer"
 #------------------------------------------------------------------------------------
 
 
@@ -78,6 +80,28 @@ func_mysql_database_setting() {
     fi
 }
 
+#Fuction to create the virtual env
+func_setup_virtualenv() {
+            
+    easy_install virtualenv
+    easy_install virtualenvwrapper
+    
+    # Enable virtualenvwrapper
+    chk=`grep "virtualenvwrapper" ~/.bashrc|wc -l`
+    if [ $chk -lt 1 ] ; then
+        echo "Set Virtualenvwrapper into bash"
+        echo "export WORKON_HOME=\/usr\/share\/virtualenvs" >> ~/.bashrc
+        echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
+    fi
+    
+    # Setup virtualenv
+    export WORKON_HOME=/usr/share/virtualenvs
+    source /usr/local/bin/virtualenvwrapper.sh
+
+    mkvirtualenv --no-site-packages $NEWFIES_ENV
+    workon $NEWFIES_ENV
+}
+
 #Function to install Frontend
 func_install_frontend(){
 
@@ -101,7 +125,6 @@ func_install_frontend(){
             apt-get -y install python-setuptools python-dev build-essential 
             apt-get -y install libapache2-mod-python libapache2-mod-wsgi
             easy_install pip
-            easy_install virtualenv
             #ln -s /usr/local/bin/pip /usr/bin/pip
             
             #Install Extra dependencies on New OS        
@@ -138,7 +161,6 @@ func_install_frontend(){
         ;;
     esac
 
-
     if [ -d "$INSTALL_DIR" ]; then
         # Newfies is already installed
         echo ""
@@ -160,10 +182,12 @@ func_install_frontend(){
         read TEMP
     fi
 
-
+    #Create and enable virtualenv
+    func_setup_virtualenv
+    
     #get Newfies
     echo "Install Newfies..."
-    mkdir /usr/share/django_app/
+    mkdir /usr/share/
     cd /usr/src/
 
     case $INSTALL_MODE in
@@ -251,12 +275,19 @@ func_install_frontend(){
         ErrorLog /var/log/err-apache-newfies.log
         LogLevel warn
 
+        Alias /static/ "'$INSTALL_DIR'/static/"
+
+        <Location "/static/">
+            SetHandler None
+        </Location>
+
         WSGIPassAuthorization On
         WSGIDaemonProcess newfies user=www-data user=www-data threads=25
         WSGIProcessGroup newfies
         WSGIScriptAlias / '$INSTALL_DIR'/django.wsgi
 
         <Directory '$INSTALL_DIR'>
+            AllowOverride all
             Order deny,allow
             Allow from all
         </Directory>

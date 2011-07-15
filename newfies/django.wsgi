@@ -1,4 +1,3 @@
-#!_env/bin/python
 
 """
 WSGI script for usage in Virtalenvs with Apache - Embedded mod_wsgi
@@ -19,9 +18,8 @@ project_name = os.path.split(g[0])[0]
 
 
 #TODO Replace the environement
-site_package_dirs  = glob.glob('/home/areski/.virtualenvs/newfies-dialer/lib/python2.7/site-packages')
-#site_package_dirs  = glob.glob(here + '/_env/lib/python*/site-packages')
-src_dirs = glob.glob(here + '/_env/src/*')
+site_package_dirs  = glob.glob('/usr/share/virtualenvs/newfies-dialer/lib/python2.6/site-packages')
+src_dirs = glob.glob(here)
 
 new_sys_path = [here, os.path.join(here, project_name,),]
 
@@ -41,8 +39,9 @@ command.validate()
 
 import django.conf
 import django.utils
-
 django.utils.translation.activate(django.conf.settings.LANGUAGE_CODE)
+
+#os.environ['DJANGO_SETTINGS_MODULE'] = 'newfies.settings'
 
 import django.core.handlers.wsgi
 

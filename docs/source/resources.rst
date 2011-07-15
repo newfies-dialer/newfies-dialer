@@ -1,8 +1,8 @@
 .. _resources:
 
-===========
+==========
  Resources
-===========
+==========
 
 .. contents::
     :local:

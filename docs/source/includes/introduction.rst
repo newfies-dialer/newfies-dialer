@@ -40,7 +40,7 @@ will be dispatched and delivered.
     :local:
     :depth: 1
 
-.. _newfies-overview:
+.. _overview:
 
 Overview
 ========
@@ -53,7 +53,7 @@ The system may be installed and used by either companies who wish to make calls
 on their own behalf, or by SaaS (Software as a Service) companies that want to
 provide bulk dialling facilities to their own customers.
 
-.. _newfies-dialer-utility:
+.. _utility:
 
 Utility
 =======
@@ -103,7 +103,7 @@ Please click on the headings for more details.
       pass the call into a call centre or into a credit card payment IVR.
 
 
-.. _newfies-dialer-features:
+.. _features:
 
 Features
 ========
@@ -112,8 +112,8 @@ Features
     | Telephony PBX   | Based on leading open source Freeswitch, Asterisk  |
     +-----------------+----------------------------------------------------+
     | Distributed     | Runs on one or more machines. Supports             |
-    |                 | broker `clustering` and `HA`_ when used in         |
-    |                 | combination with `RabbitMQ`_.  You can set up new  |
+    |                 | broker `clustering` and `HA` when used in          |
+    |                 | combination with `RabbitMQ`.  You can set up new   |
     |                 | workers without central configuration (e.g. use    |
     |                 | your grandma's laptop to help if the queue is      |
     |                 | temporarily congested).                            |
@@ -143,7 +143,7 @@ Features
 
 
 
-.. _newfies-dialer-architecture:
+.. _architecture:
 
 Architecture
 ============
@@ -164,6 +164,8 @@ Architecture
 
     * The voice application is delivered to the contact by ``FreeSWITCH``.
 
+
+.. _documentation:
 
 Documentation
 =============

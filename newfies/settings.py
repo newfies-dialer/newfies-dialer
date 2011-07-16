@@ -253,7 +253,7 @@ gettext = lambda s: s
 LANGUAGES = (
     ('en', gettext('English')),
     #('fr', gettext('French')),
-    ('es', gettext('Spanish')),
+    #('es', gettext('Spanish')),
     #('br', gettext('Brazilian')),
 )
 

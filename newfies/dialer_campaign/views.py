@@ -180,18 +180,24 @@ def customer_dashboard(request, on_index=None):
             calls_dict = {}
 
             for data in calls:
-                time = datetime(int(data['starting_date'][0:4]),
-                                int(data['starting_date'][5:7]),
-                                int(data['starting_date'][8:10]), 0, 0, 0, 0)
-                if time > maxtime:
-                    maxtime = time
-                elif time < mintime:
-                    mintime = time
-                calls_dict[int(time.strftime("%Y%m%d"))] = \
+                #print data['starting_date'] + "--"
+
+
+                ctime = datetime(int(data['starting_date'][0:4]),
+                                 int(data['starting_date'][5:7]),
+                                 int(data['starting_date'][8:10]), 0, 0, 0, 0)
+
+                if ctime > maxtime:
+                    maxtime = ctime
+                elif ctime < mintime:
+                    mintime = ctime
+
+                calls_dict[int(ctime.strftime("%Y%m%d"))] = \
                     {'starting_date__count':data['starting_date__count'],
                      'duration__sum':data['duration__sum'],
                      'duration__avg':data['duration__avg'],
-                     #'disposition': data['disposition']
+                     #'disposition': data['disposition'],
+                     'starting_datetime': time.mktime(ctime.timetuple()),
                     }
             dateList = date_range(mintime, maxtime)
 
@@ -210,6 +216,7 @@ def customer_dashboard(request, on_index=None):
                     'duration__sum': calls_dict[inttime]['duration__sum'],
                     'duration__avg': calls_dict[inttime]['duration__avg'],
                     #'disposition': calls_dict[inttime]['disposition'],
+                    'starting_date': calls_dict[inttime]['starting_datetime'],
                     })
 
                     # Extra part: To count total no of calls & their duration
@@ -218,12 +225,14 @@ def customer_dashboard(request, on_index=None):
                     total_call_count = total_call_count + \
                                   calls_dict[inttime]['starting_date__count']
                 else:
+                    date = parser.parse(str(date))
                     total_data.append({'count':i, 'day':date.day,
                                        'month':date.month, 'year':date.year,
                                        'date':name_date ,
                                        'starting_date__count':0,
                                        'duration__sum':0, 'duration__avg':0,
-                                       #'disposition': '',
+                                       'disposition': '',
+                                       'starting_date': inttime,
                                        })
                 i += 1
 

@@ -252,9 +252,9 @@ CELERYBEAT_SCHEDULE = {
 gettext = lambda s: s
 LANGUAGES = (
     ('en', gettext('English')),
-    ('fr', gettext('French')),
+    #('fr', gettext('French')),
     ('es', gettext('Spanish')),
-    ('br', gettext('Brazilian')),
+    #('br', gettext('Brazilian')),
 )
 
 #DJANGO-ADMIN-TOOL

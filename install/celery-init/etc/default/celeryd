@@ -1,6 +1,5 @@
-
 # Where the Django project is.
-CELERYD_CHDIR='/usr/share/django_app/newfies/'
+CELERYD_CHDIR='/usr/share/newfies/'
 
 # Path to celeryd
 CELERYD='/usr/share/virtualenvs/newfies-dialer/bin/python /usr/share/newfies/manage.py celeryd'

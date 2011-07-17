@@ -18,9 +18,9 @@
 # To download this script direct to your server type
 #wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-newfies.sh
 #
-#TODO: 
-# - Support Virtualenv
+#TODO:
 # - Memcached
+# - /etc/init.d/celerybeat & /etc/init.d/celeryd rename to newfies-celerybeat & newfies-celeryd
 
 
 #Variables
@@ -334,8 +334,9 @@ func_install_frontend(){
     cd "$FS_INSTALLED_PATH/conf/autoload_configs/"
     sed -i "s/NEWFIES_API_STORE_CDR/$CDR_API_URL/g" xml_cdr.conf.xml
     
-    #Update Plivo URL
+    #Update for Plivo URL & Authorize local IP
     sed -i "s/SERVER_IP_PORT/$IPADDR:9080/g" $INSTALL_DIR/settings_local.py
+    sed -i "s/#'SERVER_IP',/'$IPADDR',/g" $INSTALL_DIR/settings_local.py
     sed -i "s/dummy/plivo/g" $INSTALL_DIR/settings_local.py
     
 

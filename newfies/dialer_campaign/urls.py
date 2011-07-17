@@ -4,7 +4,6 @@ from dialer_campaign.views import *
 
 
 urlpatterns = patterns('',
-    (r'^api/', include('dialer_campaign.api.urls')),
     (r'^$', 'dialer_campaign.views.index'),
     (r'^login/$', 'dialer_campaign.views.login_view'),
     (r'^logout/$', 'dialer_campaign.views.logout_view'),

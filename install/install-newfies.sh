@@ -157,6 +157,7 @@ func_install_frontend(){
             # disable epel repository since by default it is enabled. It is not recommended to keep 
             # non standard repositories activated. Use it just in case you need.
             sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo 
+            
             yum --enablerepo=epel install python-pip
 
             if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
@@ -220,6 +221,10 @@ func_install_frontend(){
     easy_install -U distribute
     pip install -r /usr/src/newfies-dialer/install/conf/requirements.txt
     pip install plivohelper
+    
+    #Nasty hack to make piston compatible with django-admin-tools
+    #https://bitbucket.org/jespern/django-piston/issue/117/register-models-with-admin-in-an-adminpy    
+    sed -i "s/admin.site.register/#admin.site.register/" /usr/share/virtualenvs/newfies-dialer/lib/python2.6/site-packages/piston/models.py
 
     # copy settings_local.py into newfies dir
     cp /usr/src/newfies-dialer/install/conf/settings_local.py $INSTALL_DIR

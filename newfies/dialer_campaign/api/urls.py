@@ -6,15 +6,21 @@ from handlers import *
 #from django.views.decorators.cache import cache_page
 
 
+class CsrfExemptResource(Resource):
+    """A Custom Resource that is csrf exempt"""
+    def __init__(self, handler, authentication=None):
+        super(CsrfExemptResource, self).__init__(handler, authentication)
+        self.csrf_exempt = getattr(self.handler, 'csrf_exempt', True)
+
 auth = HttpBasicAuthentication(realm='Newfies Application')
 
-campaign_handler = Resource(campaignHandler, authentication=auth)
-phonebook_handler = Resource(phonebookHandler, authentication=auth)
-contact_handler = Resource(contactHandler, authentication=auth)
-bulkcontact_handler = Resource(bulkcontactHandler, authentication=auth)
-#campaignsubscriber_handler = Resource(campaignsubscriberHandler,
+campaign_handler = CsrfExemptResource(campaignHandler, authentication=auth)
+phonebook_handler = CsrfExemptResource(phonebookHandler, authentication=auth)
+contact_handler = CsrfExemptResource(contactHandler, authentication=auth)
+bulkcontact_handler = CsrfExemptResource(bulkcontactHandler, authentication=auth)
+#campaignsubscriber_handler = CsrfExemptResource(campaignsubscriberHandler,
 #                                       authentication=auth)
-campaign_delete_cascade_handler = Resource(campaignDeleteCascadeHandler,
+campaign_delete_cascade_handler = CsrfExemptResource(campaignDeleteCascadeHandler,
                                            authentication=auth)
 
 urlpatterns = patterns('',

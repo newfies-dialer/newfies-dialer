@@ -1,3 +1,4 @@
+import os
 
 #DEBUG
 #=====
@@ -8,6 +9,11 @@ ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
 )
 
+#TODO : Installation script should ask the timezone
+TIME_ZONE = 'Europe/Madrid'
+
+APPLICATION_DIR = os.path.dirname(globals()['__file__'])
+
 #DATABASE SETTINGS
 #=================
 DATABASES = {
@@ -15,7 +21,7 @@ DATABASES = {
         # Add 'postgresql_psycopg2','postgresql','mysql','sqlite3','oracle'
         'ENGINE': 'django.db.backends.sqlite3',
         # Or path to database file if using sqlite3.
-        'NAME': APP_DIR + '/database/test.db',
+        'NAME': APPLICATION_DIR + '/database/test.db',
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost.
@@ -58,4 +64,8 @@ PLIVO_DEFAULT_HANGUP_URL='http://SERVER_IP_PORT/api/dialer_cdr/hangupcall/'
 # ADD 'dummy','plivo','twilio'
 NEWFIES_DIALER_ENGINE = 'dummy'
 
-API_ALLOWED_IP = ['127.0.0.1' , 'localhost']
+API_ALLOWED_IP = [
+            '127.0.0.1', 
+            'localhost', 
+            #'SERVER_IP',
+                ]

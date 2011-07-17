@@ -242,7 +242,6 @@ func_install_frontend(){
 
 
     if echo $db_backend | grep -i "^MYSQL" > /dev/null ; then
-    
         # Setup settings_local.py
         sed -i "s/'django.db.backends.sqlite3'/$MYSQL_BACKEND/"  $INSTALL_DIR/settings_local.py
         sed -i "s/.*'NAME'/       'NAME': '$DATABASENAME',#/"  $INSTALL_DIR/settings_local.py
@@ -305,8 +304,7 @@ func_install_frontend(){
         </Directory>
 
     </VirtualHost>
-
-
+    
     ' > $APACHE_CONF_DIR/newfies.conf
     #correct the above file
     sed -i "s/@/'/g"  $APACHE_CONF_DIR/newfies.conf

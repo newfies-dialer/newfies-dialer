@@ -1,0 +1,70 @@
+#!/bin/bash
+#   Installation script for Newfies
+#   Copyright (C) <2011>  <Star2Billing S.L> 
+#This program is free software; you can redistribute it and/or
+#modify it under the terms of the GNU General Public License
+#as published by the Free Software Foundation; either version 2
+#of the License, or (at your option) any later version.
+
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+
+#You should have received a copy of the GNU General Public License
+#along with this program; if not, write to the Free Software
+#Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+# To download this script direct to your server type
+#wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-all.sh
+#
+#
+#------------------------------------------------------------------------------------
+
+
+# Identify Linux Distribution type
+if [ -f /etc/debian_version ] ; then
+    DIST='DEBIAN'
+elif [ -f /etc/redhat-release ] ; then
+    DIST='CENTOS'
+else
+    echo ""
+    echo "This Installer should be run on a CentOS or a Debian based system"
+    echo ""
+    exit 1
+fi
+
+
+echo ""
+echo ""
+echo "This will install Freeswitch, Plivo & Newfies on your server"
+echo "press any key to continue or CTRL-C to exit"
+read TEMP
+
+
+apt-get update
+
+cd /usr/src/
+
+#Download Scripts
+wget https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-freeswitch.sh
+wget https://raw.github.com/plivo/plivo/master/scripts/plivo_install_beta.sh
+wget https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-newfies.sh
+
+#Run the Install Scripts
+bash install-freeswitch.sh
+bash plivo_install_beta.sh /usr/share/plivo
+bash install-newfies.sh
+
+
+case $DIST in
+    'DEBIAN')
+        #Start Plivo after reboot
+        ln -s /usr/share/plivo/bin/plivo /etc/rc2.d/S99plivo
+    ;;
+    'CENTOS')
+        #Start Plivo after reboot
+        #TODO : Verify start for CentOS
+        ln -s /usr/share/plivo/bin/plivo /etc/rc3.d/S99plivo
+    ;;
+esac

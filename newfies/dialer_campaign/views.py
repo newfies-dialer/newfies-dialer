@@ -177,18 +177,23 @@ def customer_dashboard(request, on_index=None):
         #print calls
         # following part got from cdr-stats 'global report' used by visualize
         if calls:
-            maxtime = datetime(int(calls[0]['starting_date'][0:4]),
-                               int(calls[0]['starting_date'][5:7]),
-                               int(calls[0]['starting_date'][8:10]), 0, 0, 0, 0)
-            mintime = datetime(int(calls[0]['starting_date'][0:4]),
-                               int(calls[0]['starting_date'][5:7]),
-                               int(calls[0]['starting_date'][8:10]), 0, 0, 0, 0)
+            #maxtime = datetime(int(calls[0]['starting_date'][0:4]),
+            #                   int(calls[0]['starting_date'][5:7]),
+            #                   int(calls[0]['starting_date'][8:10]), 0, 0, 0, 0)
+            #mintime = datetime(int(calls[0]['starting_date'][0:4]),
+            #                   int(calls[0]['starting_date'][5:7]),
+            #                   int(calls[0]['starting_date'][8:10]), 0, 0, 0, 0)
+            start_date_mintime = str(start_date)
+            end_date_maxtime = str(end_date)
+            maxtime = datetime(int(end_date_maxtime[0:4]),
+                               int(end_date_maxtime[5:7]),
+                               int(end_date_maxtime[8:10]), 0, 0, 0, 0)
+            mintime = datetime(int(start_date_mintime[0:4]),
+                               int(start_date_mintime[5:7]),
+                               int(start_date_mintime[8:10]), 0, 0, 0, 0)
             calls_dict = {}
 
             for data in calls:
-                #print data['starting_date'] + "--"
-
-
                 ctime = datetime(int(data['starting_date'][0:4]),
                                  int(data['starting_date'][5:7]),
                                  int(data['starting_date'][8:10]), 0, 0, 0, 0)

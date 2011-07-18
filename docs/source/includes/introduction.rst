@@ -164,13 +164,13 @@ Architecture
     * The voice application is delivered to the contact by ``FreeSWITCH``.
 
 
-.. _documentation:
+.. _latest_documentation:
 
-Documentation
-=============
+Latest documentation
+====================
 
 The `latest documentation`_ with user guides, tutorials and API reference
-is hosted at Github.
+is hosted at "Readthedocs".
 
-
+.. _`latest documentation`: http://readthedocs.org/
 

@@ -153,7 +153,10 @@ Issue Trackers
 Bugs for a package in the Newfies-Dialer ecosystem should be reported to the relevant
 issue tracker.
 
-* Newfies-Dialer: github.com/Star2Billing/newfies-dialer/issues/
+* Newfies-Dialer: http://github.com/Star2Billing/newfies-dialer/issues/
+* Celery: https://github.com/ask/celery/issues/
+* Freeswitch: http://jira.freeswitch.org/secure/Dashboard.jspa
+* Plivo: https://github.com/plivo/plivo/issues/
 
 If you are unsure of the origin of the bug you can ask the
 :ref:`mailing-list`, or just use the Newfies-Dialer issue tracker.

@@ -111,7 +111,7 @@ def customer_dashboard(request, on_index=None):
         import time
         min_limit = time.mktime(start_date.timetuple())
         max_limit = time.mktime(end_date.timetuple())
-        if int(search_type) >= 3:
+        if int(search_type) >= 2:
             date_length = 20
         else:
             #start_date = start_date.strftime("%Y-%m-%d")
@@ -183,21 +183,28 @@ def customer_dashboard(request, on_index=None):
             #mintime = datetime(int(calls[0]['starting_date'][0:4]),
             #                   int(calls[0]['starting_date'][5:7]),
             #                   int(calls[0]['starting_date'][8:10]), 0, 0, 0, 0)
-            start_date_mintime = str(start_date)
-            end_date_maxtime = str(end_date)
-            maxtime = datetime(int(end_date_maxtime[0:4]),
-                               int(end_date_maxtime[5:7]),
-                               int(end_date_maxtime[8:10]), 0, 0, 0, 0)
-            mintime = datetime(int(start_date_mintime[0:4]),
-                               int(start_date_mintime[5:7]),
-                               int(start_date_mintime[8:10]), 0, 0, 0, 0)
+            
+            mintime = start_date
+            maxtime = end_date
             calls_dict = {}
 
             for data in calls:
-                ctime = datetime(int(data['starting_date'][0:4]),
-                                 int(data['starting_date'][5:7]),
-                                 int(data['starting_date'][8:10]), 0, 0, 0, 0)
-
+                if int(search_type) >= 2:
+                    ctime = datetime(int(data['starting_date'][0:4]),
+                                     int(data['starting_date'][5:7]),
+                                     int(data['starting_date'][8:10]),
+                                     int(data['starting_date'][11:13]),
+                                     int(data['starting_date'][14:16]),
+                                     int(data['starting_date'][17:19]),
+                                     0)
+                else:
+                    ctime = datetime(int(data['starting_date'][0:4]),
+                                     int(data['starting_date'][5:7]),
+                                     int(data['starting_date'][8:10]),
+                                     0,
+                                     0,
+                                     0,
+                                     0)
                 if ctime > maxtime:
                     maxtime = ctime
                 elif ctime < mintime:
@@ -210,8 +217,9 @@ def customer_dashboard(request, on_index=None):
                      #'disposition': data['disposition'],
                      'starting_datetime': time.mktime(ctime.timetuple()),
                     }
-            dateList = date_range(mintime, maxtime)
 
+            dateList = date_range(mintime, maxtime, q=search_type)
+            #print dateList
             i = 0
             for date in dateList:
                 inttime = int(date.strftime("%Y%m%d"))

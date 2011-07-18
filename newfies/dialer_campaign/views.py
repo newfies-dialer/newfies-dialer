@@ -93,10 +93,16 @@ def customer_dashboard(request, on_index=None):
     total_noroute = 0
     total_forbiden = 0
     select_graph_by = 'day'
+    select_graph_for = 'Call Count'  # default
     if request.method == 'POST':
         form = DashboardForm(request.user, request.POST)
         selected_campaign = request.POST['campaign']
         search_type = request.POST['search_type']
+ 
+        if request.POST.get('call_count_button'):
+            select_graph_for = request.POST['call_count_button']
+        if request.POST.get('duration_button'):
+            select_graph_for = request.POST['duration_button']
 
         end_date = datetime.today()
         start_date = calculate_date(search_type)
@@ -259,6 +265,7 @@ def customer_dashboard(request, on_index=None):
         'min_limit': min_limit,
         'max_limit': max_limit,
         'select_graph_by': select_graph_by,
+        'select_graph_for': select_graph_for,
         'total_duration_sum': total_duration_sum,
         'total_call_count': total_call_count,
         'total_answered':  total_answered,

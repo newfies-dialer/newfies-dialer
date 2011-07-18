@@ -1,8 +1,10 @@
 from dialer_campaign.models import Phonebook, Campaign
 from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting
-from datetime import *
 from dateutil.relativedelta import *
+from dateutil.rrule import *
+from dateutil.parser import *
+from datetime import *
 import calendar
 import string
 import urllib
@@ -260,7 +262,33 @@ def calculate_date(search_type):
     return start_date
 
 
-def date_range(start, end):
+def date_range(start, end, q):
     """Date  Range"""
     r = (end + timedelta(days=1) - start).days
-    return [start + timedelta(days=i) for i in range(r)]
+    if int(q) == 1:
+        #return [start + timedelta(days=i) for i in range(r)]
+        return list(rrule(DAILY,
+               dtstart=parse(str(start)),
+               until=parse(str(end))))
+    if int(q) == 2:
+        return list(rrule(HOURLY, interval=6,
+               dtstart=parse(str(start)),
+               until=parse(str(end))))
+    if int(q) == 3 or int(q) == 4:
+        return list(rrule(HOURLY, interval=1,
+               dtstart=parse(str(start)),
+               until=parse(str(end))))
+    if int(q) == 5:
+        return list(rrule(MINUTELY, interval=30,
+               dtstart=parse(str(start)),
+               until=parse(str(end))))
+    if int(q) == 6:
+        return list(rrule(MINUTELY, interval=15,
+               dtstart=parse(str(start)),
+               until=parse(str(end))))
+    if int(q) == 7:
+        return list(rrule(MINUTELY, interval=5,
+               dtstart=parse(str(start)),
+               until=parse(str(end))))
+    else:
+        return [start + timedelta(days=i) for i in range(r)]

@@ -45,7 +45,13 @@ echo ""
 read TEMP
 
 
-apt-get update
+case $DIST in
+    'DEBIAN')
+        #Update repositories
+        apt-get update
+    ;;
+esac
+
 
 cd /usr/src/
 

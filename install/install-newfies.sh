@@ -21,7 +21,7 @@
 #TODO:
 # - Memcached
 # - /etc/init.d/celerybeat & /etc/init.d/celeryd rename to newfies-celerybeat & newfies-celeryd
-# - Init Script for Plivo (Ubuntu / CentOS)
+# - Init Script for Plivo (DEBIAN / CentOS)
 
 #Variables
 VERSION=master
@@ -29,7 +29,6 @@ VERSION=master
 INSTALL_MODE='CLONE'
 DATETIME=$(date +"%Y%m%d%H%M%S")
 KERNELARCH=$(uname -p)
-DISTRO='UBUNTU'
 INSTALL_DIR='/usr/share/newfies'
 DATABASENAME=$INSTALL_DIR'/database/newfies.db'
 MYSQLUSER=
@@ -46,6 +45,18 @@ CELERYD_GROUP="celery"
 NEWFIES_ENV="newfies-dialer"
 #------------------------------------------------------------------------------------
 
+
+# Identify Linux Distribution type
+if [ -f /etc/debian_version ] ; then
+    DIST='DEBIAN'
+elif [ -f /etc/redhat-release ] ; then
+    DIST='CENTOS'
+else
+    echo ""
+    echo "This Installer should be run on a CentOS or a Debian based system"
+    echo ""
+    exit 1
+fi
 
 #Function mysql db setting
 func_mysql_database_setting() {
@@ -124,8 +135,8 @@ func_install_frontend(){
 
     #python setup tools
     echo "Install Dependencies and python modules..."
-    case $DISTRO in
-        'UBUNTU')
+    case $DIST in
+        'DEBIAN')
             # SET APACHE CONF
             APACHE_CONF_DIR="/etc/apache2/sites-enabled/"
 
@@ -313,8 +324,8 @@ func_install_frontend(){
     mkdir $INSTALL_DIR/.python-eggs
     chmod 777 $INSTALL_DIR/.python-eggs
 
-    case $DISTRO in
-        'UBUNTU')
+    case $DIST in
+        'DEBIAN')
             chown -R www-data.www-data $INSTALL_DIR/database/
             chown www-data:www-data /var/log/newfies-django.log
             touch /var/log/err-apache-newfies.log
@@ -446,8 +457,8 @@ func_install_redis_server() {
     chown redis.redis /var/lib/redis
     chown redis.redis /var/log/redis
     
-    case $DISTRO in
-        'UBUNTU')
+    case $DIST in
+        'DEBIAN')
             cd /etc/init.d/
             update-rc.d -f redis-server defaults
         ;;
@@ -465,7 +476,7 @@ func_install_redis_server() {
 #Menu Section for Script
 show_menu_newfies() {
 	clear
-	echo " > Newfies Installation Menu (Ubuntu)"
+	echo " > Newfies Installation Menu (DEBIAN)"
 	echo "====================================="
 	echo "	1)  All"
 	echo "	2)  Newfies Web Frontend"

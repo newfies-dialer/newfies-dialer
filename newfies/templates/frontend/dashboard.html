@@ -168,7 +168,151 @@
 
 
 {% if final_calls %}
+    <script id="source">
+    var data_answered = [
+            {% for td in final_calls %}
+                {% if td.disposition == 'ANSWER' %}
+                    [(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}],
+                {% endif %}
+            {% endfor %},
+        ];
+    var data_busy = [
+        {% for td in final_calls %}
+            {% if td.disposition == 'BUSY' %}
+                [(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}],
+            {% endif %}
+        {% endfor %},
+        ];
 
+    var data_not_answered = [
+        {% for td in final_calls %}
+            {% if td.disposition == 'NOANSWER' %}
+                [(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}],
+            {% endif %}
+        {% endfor %},
+        ];
+
+    var data_others = [
+        {% for td in final_calls %}
+            {% if td.disposition != 'ANSWER' %}
+                {% if td.disposition != 'BUSY' %}
+                    {% if td.disposition != 'NOANSWER' %}
+                        [(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}],
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        {% endfor %},
+        ];
+
+    var data_duration = [
+        {% for td in total_data %}
+                [(new Date({{ td.starting_date }} * 1000)), {{ td.duration__sum }}],
+        {% endfor %},
+        ];
+
+    (function($){
+        $(function () {
+
+            function showTooltip(x, y, contents) {
+                $('<div id="tooltip">' + contents + '</div>').css( {
+                    position: 'absolute',
+                    display: 'none',
+                    top: y + 5,
+                    left: x + 5,
+                    border: '1px solid #fdd',
+                    padding: '2px',
+                    'background-color': '#fee',
+                    opacity: 0.80
+                }).appendTo("body").fadeIn(200);
+            }
+
+
+            //alert(data);
+
+            $.plot($("#placeholder"), [
+                {% if select_graph_for == 'Call Count' %}
+                    { label: "Answered",  data: data_answered},
+                    { label: "Busy",  data: data_busy}, //yaxis: 2
+                    { label: "Not Answered",  data: data_not_answered},
+                    { label: "Others",  data: data_others},
+                {% else %}
+                    { label: "Duration",  data: data_duration},
+                {% endif %}
+                ], {
+                legend: {
+                    position: "se",
+                    margin: [-150,0],
+                    labelFormatter: function(label){
+                        return '<div class="graph_legend">'+label+'</div>';
+                    },
+                    //container: ''
+                },
+                xaxis: {
+                    mode: "time",
+                    minTickSize: [1, "{{ select_graph_by }}"],
+                    max: (new Date({{ max_limit }} * 1000)), // Converting date from Python to Javascript (You have to multiply by 1,000.)
+                    min: (new Date({{ min_limit }} * 1000)) //Converting date from Python to Javascript
+                },
+                yaxis: {
+                    tickSize: 1,
+                    tickDecimals: 0
+                },
+                series: {
+                    lines: { show: true },
+                    points: { show: true }
+                },
+                grid: {
+                    hoverable: true,
+                    clickable: true,
+                    backgroundColor: { colors: ["#fff", "#eee"] }
+                },
+                tooltip: true,
+            });
+
+            var previousPoint = null;
+            $("#placeholder").bind("plothover", function (event, pos, item) {
+                $("#x").text(pos.x.toFixed(2));
+                $("#y").text(pos.y.toFixed(2));
+                if (item) {
+
+                    if (previousPoint != item.dataIndex) {
+                        previousPoint = item.dataIndex;
+
+                        $("#tooltip").remove();
+                        var x = item.datapoint[0].toFixed(2),
+                            y = item.datapoint[1].toFixed(2);
+                        //alert(item);
+                        function makeArray() {
+                        for (i = 0; i<makeArray.arguments.length; i++)
+                        this[i + 1] = makeArray.arguments[i];
+                        }
+
+                        var months = new makeArray('January','February','March','April','May',
+                        'June','July','August','September','October','November','December');
+                        var d = new Date(Number(x));
+                        var day = d.getDate();
+                        var month = d.getMonth() + 1;
+                        var yy = d.getYear();
+                        var year = (yy < 1000) ? yy + 1900 : yy;
+
+
+                        var call_date = months[month]+ " " +day + " " + year
+                        showTooltip(item.pageX, item.pageY,
+                                    call_date +  " :  " + Number(y));
+                    }
+                }
+                else {
+                        $("#tooltip").remove();
+                        previousPoint = null;
+                }
+            });
+
+        });
+    })(jQuery);
+    </script>
+
+    <div id="placeholder" style="width:850px;height:200px;"></div>
+    <br/>
     <script type="text/javascript">
     (function($){
         $(function () {

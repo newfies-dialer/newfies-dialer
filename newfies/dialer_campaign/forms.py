@@ -191,7 +191,7 @@ class ContactSearchForm(forms.Form):
 class DashboardForm(forms.Form):
     """Dashboard Form"""
     campaign = forms.ChoiceField(label=_('Running Campaign'), required=False)
-    search_type = forms.ChoiceField(label=_('Type'), required=False, initial=2,
+    search_type = forms.ChoiceField(label=_('Type'), required=False, initial=4,
                       choices=SEARCH_TYPE)
 
 
@@ -201,7 +201,7 @@ class DashboardForm(forms.Form):
          # To get user's running campaign list
         if user:
             list = []
-            list.append((0, '---'))
+            #list.append((0, '---'))
             pb_list = field_list("campaign", user)
             for i in pb_list:
                 list.append((i[0], i[1]))

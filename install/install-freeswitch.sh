@@ -148,6 +148,9 @@ wget --no-check-certificate $FS_CONF_PATH/xml_cdr.conf.xml -O xml_cdr.conf.xml
 #Return to current path
 cd $CURRENT_PATH
 
+#Add alias fs_cli
+echo "alias fs_cli='/usr/local/freeswitch/bin/fs_cli'" >> ~/.bashrc
+    
 
 #Install init.d script
 wget --no-check-certificate $FS_INIT_PATH/freeswitch -O /etc/init.d/freeswitch

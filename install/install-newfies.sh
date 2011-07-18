@@ -21,7 +21,7 @@
 #TODO:
 # - Memcached
 # - /etc/init.d/celerybeat & /etc/init.d/celeryd rename to newfies-celerybeat & newfies-celeryd
-
+# - Init Script for Plivo (Ubuntu / CentOS)
 
 #Variables
 VERSION=master

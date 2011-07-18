@@ -61,7 +61,7 @@
 <table align="center" id="rounded-corner">
         <thead>
         <tr>
-            <th class="rounded-company">Running Campaign</th>
+            <th class="rounded-company">Campaign</th>
             <th class="rounded-q1">Total Phonebook Contacts</th>
             <th class="rounded-q2">Total Campaign Contacts</th>
             <th class="rounded-q4">Contacted Today</th>
@@ -147,14 +147,6 @@
 <div id="finance" style="position: relative; margin: 40px 0px; width: 900px; border: 1px solid #99CCFF;">
 	<div id="labels">
 	    <div id="financeTitle"></div>
-	    <div id="time">
-            <a onclick="HumbleFinance.zoom(7);">1 {% trans "week"  %}</a>
-	        <a onclick="HumbleFinance.zoom(30);">1 {% trans "month"  %}</a>
-            <a onclick="HumbleFinance.zoom(90);">3 {% trans "months"  %}</a>
-	        <a onclick="HumbleFinance.zoom(180);">6 {% trans "months"  %}</a>
-	        <a onclick="HumbleFinance.zoom(365);">1 {% trans "year"  %}</a>
-	    </div>
-
 	    <div id="dateRange"></div>
 	</div>
 </div>
@@ -314,6 +306,23 @@
     <div id="placeholder" style="width:850px;height:200px;"></div>
     <br/>
     <script type="text/javascript">
+    function pieHover(event, pos, obj)
+    {
+        if (!obj)
+                    return;
+        percent = parseFloat(obj.series.percent).toFixed(2);
+        (function($){
+            $("#hover").html('<span style="font-weight: bold; color: '+obj.series.color+'">'+obj.series.label+' ('+percent+'%)</span>');
+        })(jQuery);
+    }
+
+    function pieClick(event, pos, obj)
+    {
+        if (!obj)
+                    return;
+        percent = parseFloat(obj.series.percent).toFixed(2);
+        alert(''+obj.series.label+': '+percent+'%');
+    }
     (function($){
         $(function () {
 
@@ -354,12 +363,19 @@
                     },
                     legend: {
                         show: false,
+                    },
+                    grid: {
+                        hoverable: true,
+                        clickable: true
                     }
             };
-
+            $("#camp_pie").bind("plothover", pieHover);
+            $("#camp_pie").bind("plotclick", pieClick);
             var plot = $.plot($("#camp_pie"), data, options);
         });
+
     })(jQuery);
+
     </script>
     <!--
     {% for td in final_calls %}
@@ -367,6 +383,7 @@
     {% endfor %}-->
     <br/>
     <div id="camp_pie" style="width:300px;height:300px;float:left;"></div>
+
     <table style="width: 300px;margin: 40px 0px;">
     <tr>
         <td>{{ total_call_count }} {% trans "TOTAL CALLS"  %}</td>
@@ -397,5 +414,6 @@
         <td></td>
     </tr>
     </table>
+    <div id="hover" style="margin: 0px 0px;"><span style="font-weight: bold; color: rgb(148, 64, 237);"></span></div>
 {% endif %}
 {% endblock %}

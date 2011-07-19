@@ -205,8 +205,13 @@ class VoIPCall(models.Model):
 
     def min_duration(self):
         """Return duration in min & sec"""
-        min = int(self.duration / 60)
-        sec = int(self.duration % 60)
+        if self.duration:
+            min = int(self.duration / 60)
+            sec = int(self.duration % 60)
+        else:
+            min = 0
+            sec = 0
+        
         return "%02d" % min + ":" + "%02d" % sec
 
     class Meta:

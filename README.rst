@@ -158,6 +158,8 @@ Applications
 Screenshot
 ----------
 
+Screen example
+
 .. image:: https://github.com/Star2Billing/newfies-dialer/raw/master/newfies/resources/images/admin_screenshot.png
 
 

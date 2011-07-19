@@ -171,7 +171,7 @@ Screenshot
 ----------
 
 
-.. image:: https://github.com/Star2Billing/newfies-dialer/raw/master/newfies/resources/images/admin_screenshot.png
+.. image:: https://github.com/Star2Billing/newfies-dialer/raw/master/docs/source/_static/images/admin_screenshot.png
 
 
 

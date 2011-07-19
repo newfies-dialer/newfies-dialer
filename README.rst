@@ -158,7 +158,7 @@ Applications
 Screenshot
 ----------
 
-.. image:: https://github.com/Star2Billing/newfies/raw/master/docs/_static/images/admin_screenshot.png
+.. image:: https://github.com/Star2Billing/newfies-dialer/blob/master/docs/source/_static/images/admin_screenshot.png
 
 
 Coding Conventions

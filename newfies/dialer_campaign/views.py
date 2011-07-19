@@ -93,7 +93,6 @@ def customer_dashboard(request, on_index=None):
     total_invalidargs = 0
     total_noroute = 0
     total_forbiden = 0
-    select_graph_by = 'day'
     select_graph_for = 'Call Count'  # default
     search_type = 4  # default Last 24 hours
     selected_campaign = campaign_id_list[0] # default campaign id
@@ -114,15 +113,11 @@ def customer_dashboard(request, on_index=None):
     import time
     min_limit = time.mktime(start_date.timetuple())
     max_limit = time.mktime(end_date.timetuple())
-    if int(search_type) >= 2:
+    if int(search_type) >= 2: # all options except 30 days
         date_length = 20
     else:
-        date_length = 10
+        date_length = 10 # Last 30 days option
 
-    if int(search_type) <= 3:
-        select_graph_by = 'day'
-    else:
-        select_graph_by = 'hour'
     select_data = \
         {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1," + \
                           str(date_length) + ")"}
@@ -266,7 +261,6 @@ def customer_dashboard(request, on_index=None):
         'final_calls': final_calls, # for flot graph
         'min_limit': min_limit,
         'max_limit': max_limit,
-        'select_graph_by': select_graph_by,
         'select_graph_for': select_graph_for,
         'total_duration_sum': total_duration_sum,
         'total_call_count': total_call_count,

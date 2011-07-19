@@ -147,6 +147,8 @@ Features
 Architecture
 ============
 
+.. image:: ../_static/images/newfies_architecture.png
+
     * User selects contacts, phonebooks and campaigns, then chooses a voice application to use. The campaign is then launched
 
     * ``Newfies-Dialer`` spools the outbound calls to ``FreeSWITCH`` via ``Plivo``.

@@ -23,4 +23,3 @@ of telephone numbers for connection to assigned campaigns.
     * Call reports and Statistics
 
 
-.. image:: ../_static/images/newfies_architecture.png

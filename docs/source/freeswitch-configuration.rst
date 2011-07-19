@@ -1,8 +1,8 @@
-.. _freeswitch-configuration:
+.. _freeswitch-installation-configuration:
 
-========================
-FreeSwitch Configuration
-========================
+==========================================
+FreeSwitch Installation and Configuration
+==========================================
 
 
 Contents:
@@ -10,6 +10,6 @@ Contents:
 .. toctree::
     :maxdepth: 2
 
-    ./freeswitch-conf/config-fs-with-newfies
-    ./freeswitch-conf/dialplan
-    ./freeswitch-conf/backend-dialer
+    ./freeswitch/install-configure-freeswitch
+    ./freeswitch/install-plivo
+    ./freeswitch/trunk-configuration

@@ -9,7 +9,7 @@
     {% include "frontend/flotr_humble_header.html" %}
     <script type="text/javascript">
       //jQuery.noConflict(); // To resolve conflict with jquery & prototype
-      //(function($){ // jquey function call in (function($){})(jQuery);
+      (function($){ // jquey function call in (function($){})(jQuery);
           $(document).ready(function() {
             $(".fg-button").hover(
                 function(){
@@ -34,7 +34,7 @@
                 this.form.submit();
             });
           });
-      //})(jQuery);
+      })(jQuery);
     </script>
 
 {% endblock %}
@@ -80,7 +80,7 @@
 
     var jsonData = [
     {% for td in total_data %}
-       {date:'{{ td.date }}', year:{{ td.year }},day:{{ td.day }}, month:{{ td.month }}, calls:{{ td.count }}, duration:'{{ td.duration__sum|conv_min }}', act:'{{ td.duration__avg|conv_min }}'},
+       {date:'{{ td.date }}', year:{{ td.year }},day:{{ td.day }}, month:{{ td.month }}, calls:{{ td.starting_date__count }}, duration:'{{ td.duration__sum|conv_min }}', act:'{{ td.duration__avg|conv_min }}'},
     {% endfor %}
     ];
 
@@ -129,6 +129,7 @@
             if (n == 0) {
                 return false;
             }
+
             x = Math.floor(n)
             var data = jsonData[x].day;
             return data;
@@ -271,6 +272,6 @@
         <td></td>
     </tr>
     </table>
-    <div id="hover" style="margin: 0px 0px;"><span style="font-weight: bold; color: rgb(148, 64, 237);"></span></div>
+    <div id="hover" style="float: left;"><span style="font-weight: bold; color: rgb(148, 64, 237);"></span></div>
 {% endif %}
 {% endblock %}

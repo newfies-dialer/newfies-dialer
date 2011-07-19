@@ -1,11 +1,11 @@
 .. _resources:
 
-==========
+===========
  Resources
-==========
+===========
 
 .. contents::
     :local:
     :depth: 2
 
-.. include:: ./includes/resources.rst
+.. include:: ./includes/resources.txt

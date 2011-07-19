@@ -38,8 +38,7 @@ Development of `Newfies-Dialer` happens at Github: https://github.com/Star2Billi
 You are highly encouraged to participate in the development of `Newfies-Dialer`. 
 If you would prefer not to use Github, you are welcome to send us regular patches
 
-Be sure to also read the `Contributing to Newfies-Dialer`_ section in the
-documentation.
+Be sure to also read the :ref:`contributing` section in the documentation.
 
 
 .. _license:

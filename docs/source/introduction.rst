@@ -4,4 +4,4 @@
 Introduction
 ============
 
-.. include:: ./includes/introduction.rst
+.. include:: ./includes/introduction.txt

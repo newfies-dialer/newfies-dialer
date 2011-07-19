@@ -1,4 +1,4 @@
-.. image:: https://github.com/Star2Billing/newfies/raw/master/newfies/resources/images/newfies.png
+.. image:: https://github.com/Star2Billing/newfies-dialer/raw/master/newfies/resources/images/newfies.png
 
 
 Newfies-Dialer is a bulk dialer application which was commissioned by a charity named

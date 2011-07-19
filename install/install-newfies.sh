@@ -417,6 +417,9 @@ func_install_backend() {
 
     /etc/init.d/celeryd start
     /etc/init.d/celerybeat start
+    
+    cd /etc/init.d; update-rc.d celeryd defaults 99
+    cd /etc/init.d; update-rc.d celerybeat defaults 99
 
     echo ""
     echo ""

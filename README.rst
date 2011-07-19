@@ -12,7 +12,7 @@ brokers and workers meaning that many millions of calls can be processed daily.
 
 Newfies-Dialer can be installed on a standalone server for smaller deployments. 
 It currently utilises the Freeswitch Telephony engine 
-(http://www.freeswitch.org) to process the the outbound calls however support
+(http://www.freeswitch.org) to process the the outbound calls. However support
 for other telephony engines, such as Asterisk may be added in the future.
 
 Newfies-Dialer is written in Python using the Django Framework, and operates with
@@ -142,13 +142,13 @@ Installation scripts are provided to install Newfies-Dialer
 Documentation
 -------------
 
-General documentation :
+Complete documentation :
 
-    - https://github.com/Star2Billing/newfies-dialer/blob/master/docs/
+    - http://newfies-dialer.readthedocs.org/
 
-RestFul API :
+Beginner's Guide :
 
-    - https://github.com/Star2Billing/newfies/raw/master/docs/api_doc.pdf
+    - http://www.newfies-dialer.org/documentation/beginners-guide/
 
 
 Applications

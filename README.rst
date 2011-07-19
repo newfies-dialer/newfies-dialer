@@ -161,6 +161,7 @@ Screenshot
 .. image:: https://github.com/Star2Billing/newfies/raw/master/docs/_static/images/admin_screenshot.png
 
 
+
 Coding Conventions
 ------------------
 

@@ -1,7 +1,7 @@
 .. image:: https://github.com/Star2Billing/newfies-dialer/raw/master/newfies/resources/images/newfies.png
 
 
-Newfies-Dialer is a bulk dialer application which was commissioned by a charity named
+Newfies-Dialer is a bulk dialer application commissioned by a charity named
 Kubatana (http://www.kubatana.net) based in Zimbabwe, which sponsors the 
 Freedomfone project (http://www.freedomfone.org/) dedicated to providing 
 information via phone technology.

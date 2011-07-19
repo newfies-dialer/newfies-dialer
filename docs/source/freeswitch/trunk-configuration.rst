@@ -44,7 +44,7 @@ Trunks or gateways, as they are known in Freeswitch, are configured using XML sy
     </include>
 
 
-The lines in bold are almost certainly required by your carrier and Freeswitch, the remaining parameters can be uncommented and used, if required, by your carrier. The XML syntax for comments are denoted by lines that begin “ <!-- “ and end in “--> “.
+The uncommented lines are almost certainly required by your carrier and Freeswitch, the remaining parameters can be uncommented and used, if required by your carrier. The XML syntax for comments are denoted by lines that begin “ <!-- “ and end in “--> “.
 
 Finally we need to load the new configuration, and check the trunk is registered.
 Enter the Freeswitch CLI (Command Line Interface) from the console::

@@ -3,9 +3,9 @@
 Freeswitch Installation and configuration
 =========================================
 
-Freeswitch is the telephony engine used by Newfies-Dialer to make calls, as well as play voice applications
+Freeswitch is the telephony engine used by Newfies-Dialer to make calls, as well as broadcast voice applications
 
-Newfies-Dialer communicate with Freeswitch though Event-Socket, the communication is made via the Communications Framework `Plivo`_.
+Newfies-Dialer communicates with Freeswitch though the Event-Socket. Communication is made via the Communications Framework `Plivo`_.
 Our Freeswitch dependencies are the same as Plivo, therefore the following modules will need to be installed :: 
 
     mod_curl, asr_tts, mod_flite, asr_tts, mod_shout, mod_dingaling, mod_shell_stream, mod_xml_cdr
@@ -14,7 +14,7 @@ In order to retrieve CDR Status from the outbound calls, you will have to config
 http://hostname_newfies/api/dialer_cdr/store_cdr/
 
 
-A script for Freeswitch Installation which will install Freeswitch with the needed module and configure it for you.
+A script for Freeswitch Installation which will install Freeswitch with the required modules and configure it for you is available.
 
 Download and run the Freeswitch installation script.
 

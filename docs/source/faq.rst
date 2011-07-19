@@ -29,7 +29,7 @@ Why should I use Newfies-Dialer?
 
 **Answer:** .
 
-Below are some examples of some of the uses that Newfies-Dialer can be put to, follow the link to see more details.
+Below are some examples of some of the uses that Newfies-Dialer can be put to. There are more details and examples at http://www.newfies-dialer.org/solutions/
 
     * Telecasting::
     

@@ -1,22 +1,14 @@
 .. image:: https://github.com/Star2Billing/newfies-dialer/raw/master/newfies/resources/images/newfies.png
 
 
-Newfies-Dialer is a bulk dialer application commissioned by a charity named
-Kubatana (http://www.kubatana.net) based in Zimbabwe, which sponsors the 
-Freedomfone project (http://www.freedomfone.org/) dedicated to providing 
-information via phone technology.
+Newfies-Dialer is a free and open source voice broadcast application, which
+can fulfil a variety of roles for a range of industries and organisations who
+wish to contact large numbers of people by phone in a short space of time.
 
-In less economically developed countries, Internet is often limited, but there
-is usually comprehensive mobile phone coverage. Freedomfone will use Newfies-Dialer 
-to dial up people’s phones and offer health information on Cholera, Malaria 
-and so many other avoidable health issues in the third world, which may be 
-alleviated by education. Newfies-Dialer was so named after the Newfoundland Dog 
-nicknamed Newfies and used by sea rescue services around the world.
-
-Newfies-Dialer has been built using a messaging system so that it can support 
-distributed processing on cloud servers. The platform is focused on real-time
-operations and task call distributions to clustered brokers and workers 
-meaning that many millions of calls can be processed daily.
+The Newfies-Dialer aplication has been built using a messaging system so that
+it can support distributed processing on cloud servers. The platform is
+focused on real-time operations and task call distributions to clustered 
+brokers and workers meaning that many millions of calls can be processed daily.
 
 Newfies-Dialer can be installed on a standalone server for smaller deployments. 
 It currently utilises the Freeswitch Telephony engine 
@@ -28,13 +20,35 @@ message brokers such as RabbitMQ and Redis using the emerging open standard
 for messaging middleware, AMPQ (Advance Messaging Queuing Processing). 
 Beanstalk, MongoDB, CouchDB and DBMS can also be supported.
 
-In order to communicate with external systems, Newfies-Dialer has been released with 
-a substantial set of API's to easily integrate the platform with third-party 
-applications. Furthermore, Newfies-Dialer is supplied with a comprehensive 
-administrative and user interface which allow you and your customers to create
-outbound call campaigns, add phonebooks, subscribers, as well as record audio 
-messages and design more complex IVR (Interactive Voice Response) applications.
+In order to communicate with external systems, Newfies-Dialer has been 
+released with a substantial set of API's to easily integrate the platform 
+with third-party applications.
+
+Newfies-Dialer is supplied with a comprehensive administrative and user 
+interface which allows you and your customers to create outbound call 
+campaigns, add phonebooks, subscribers, as well as record audio messages
+and design more complex IVR (Interactive Voice Response) applications.
 When ready and tested, the campaign can be launched from the interface.
+
+History
+-------
+Newfies-Dialer was commissioned by a charity named Kubatana 
+(http://www.kubatana.net) based in Zimbabwe, which sponsors the Freedomfone 
+project (http://www.freedomfone.org/) dedicated to providing information via 
+phone technology.
+
+In less economically developed countries, Internet is often limited and 
+illiteracy rates may be high, but there is usually comprehensive mobile 
+phone coverage. Freedomfone will use Newfies-Dialer to dial up people’s 
+phones and offer health information on Cholera, Malaria and so many 
+other avoidable health issues in the third world, which may be 
+alleviated simply by education. 
+
+Newfies-Dialer was so named after the Newfoundland Dog nicknamed Newfies and
+used by sea rescue services around the world.
+
+The Newfies-Dialer project is supported by Star2billing S.L. For more 
+information, see www.star2billing.com.
 
 
 Who is it for ?
@@ -42,15 +56,13 @@ Who is it for ?
 
 NGOs :
 
-    - Newfies was commissioned by the Kubatana NGO Alliance (kubatana.net).
-      They needed a platform on which to deliver large numbers of messages to
-      different communities. The platform can be used to offer complex data 
-      collection, voting applications, notification for availability of 
-      supplies and dissemination of health information.
+    - The platform can be used to offer complex data collection, voting 
+      applications, notification for availability of supplies and 
+      dissemination of health information.
 
 Marketing :
 
-    - Newfies is a telephony based marketing tool to deliver 
+    - Newfies-dialer is a telephony based marketing tool to deliver 
       advertising to company contacts.
 
 Emergency :

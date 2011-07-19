@@ -41,16 +41,15 @@ def customer_dashboard(request, on_index=None):
 
         * ``template`` - frontend/dashboard.html
     """
-    # Active campaign for logged in User
-    running_campaign_count = \
-    Campaign.objects.filter(user=request.user, status=1).count()
-    running_campaign = Campaign.objects.filter(user=request.user, status=1)
+    # All campaign for logged in User
+    campaign = Campaign.objects.filter(user=request.user)
+    campaign_count = campaign.count()
 
     # Contacts count which are active and belong to those phonebook(s) which is
-    # associated with running campaign
+    # associated with all campaign
     campaign_id_list = ''
     campaign_phonebbok_active_contact_count = 0
-    for i in running_campaign:
+    for i in campaign:
         campaign_phonebbok_active_contact_count +=\
         Contact.objects.filter(phonebook__campaign=i.id, status=1).count()
         campaign_id_list += str(i.id) + ","
@@ -69,10 +68,6 @@ def customer_dashboard(request, on_index=None):
         total_of_phonebook_contacts = \
         Contact.objects\
         .extra(where=['phonebook_id IN (%s) ' % phonebook_id_list]).count()
-
-    today = datetime.today()
-    start_date = datetime(today.year, today.month, today.day, 0, 0, 0, 0)
-    end_date = datetime(today.year, today.month, today.day, 23, 59, 59, 999999)
 
     # TODO : Review logic
     form = DashboardForm(request.user)
@@ -93,7 +88,7 @@ def customer_dashboard(request, on_index=None):
     total_invalidargs = 0
     total_noroute = 0
     total_forbiden = 0
-    select_graph_for = 'Call Count'  # default
+    select_graph_for = 'Call Count'  # default (or Duration)
     search_type = 4  # default Last 24 hours
     selected_campaign = campaign_id_list[0] # default campaign id
     if request.method == 'POST':
@@ -113,14 +108,18 @@ def customer_dashboard(request, on_index=None):
     import time
     min_limit = time.mktime(start_date.timetuple())
     max_limit = time.mktime(end_date.timetuple())
+
+    # date_length is used to do group by starting_date
     if int(search_type) >= 2: # all options except 30 days
-        date_length = 20
+        date_length = 13
     else:
         date_length = 10 # Last 30 days option
 
     select_data = \
         {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1," + \
                           str(date_length) + ")"}
+
+    # This calls list is used by pie chart
     calls = VoIPCall.objects\
                  .filter(callrequest__campaign=selected_campaign,
                          duration__isnull=False,
@@ -167,7 +166,19 @@ def customer_dashboard(request, on_index=None):
         else:
             total_forbiden = total_forbiden + 1 # FORBIDDEN
 
-    # following part got from cdr-stats 'global report' used by visualize
+    # following part got from cdr-stats 'global report' used by humblefinance
+    # following calls list is without dispostion & group by call date
+    calls = VoIPCall.objects\
+                 .filter(callrequest__campaign=selected_campaign,
+                         duration__isnull=False,
+                         user=request.user,
+                         starting_date__range=(start_date, end_date))\
+                 .extra(select=select_data)\
+                 .values('starting_date').annotate(Sum('duration'))\
+                 .annotate(Avg('duration'))\
+                 .annotate(Count('starting_date'))\
+                 .order_by('starting_date')
+
     mintime = start_date
     maxtime = end_date
     calls_dict = {}
@@ -178,8 +189,8 @@ def customer_dashboard(request, on_index=None):
                              int(data['starting_date'][5:7]),
                              int(data['starting_date'][8:10]),
                              int(data['starting_date'][11:13]),
-                             int(data['starting_date'][14:16]),
-                             int(data['starting_date'][17:19]),
+                             0, # int(data['starting_date'][14:16])
+                             0, # int(data['starting_date'][17:19])
                              0)
         else:
             ctime = datetime(int(data['starting_date'][0:4]),
@@ -194,22 +205,38 @@ def customer_dashboard(request, on_index=None):
         elif ctime < mintime:
             mintime = ctime
 
-        calls_dict[int(ctime.strftime("%Y%m%d"))] = \
+        # all options except 30 days
+        if int(search_type) >= 2:
+            calls_dict[int(ctime.strftime("%Y%m%d%H"))] = \
             {'starting_date__count':data['starting_date__count'],
              'duration__sum':data['duration__sum'],
              'duration__avg':data['duration__avg'],
              #'disposition': data['disposition'],
              'starting_datetime': time.mktime(ctime.timetuple()),
             }
-
+        else:
+            # Last 30 days option
+            calls_dict[int(ctime.strftime("%Y%m%d"))] = \
+            {'starting_date__count':data['starting_date__count'],
+             'duration__sum':data['duration__sum'],
+             'duration__avg':data['duration__avg'],
+             #'disposition': data['disposition'],
+             'starting_datetime': time.mktime(ctime.timetuple()),
+            }
+        #print calls_dict
     dateList = date_range(mintime, maxtime, q=search_type)
-    #print dateList
+
     i = 0
     for date in dateList:
-        inttime = int(date.strftime("%Y%m%d"))
+        # all options except 30 days
+        if int(search_type) >= 2:
+            inttime = int(date.strftime("%Y%m%d%H"))
+        else:
+            inttime = int(date.strftime("%Y%m%d"))
+
         name_date = _(date.strftime("%B")) + " " + str(date.day) + \
                     ", " + str(date.year)
-
+        
         if inttime in calls_dict.keys():
             total_data.append({'count': i, 'day': date.day,
                                'month': date.month, 'year': date.year,
@@ -241,7 +268,7 @@ def customer_dashboard(request, on_index=None):
 
     # Contacts which are successfully called for running campaign
     reached_contact = 0
-    for i in running_campaign:
+    for i in campaign:
         campaign_subscriber = CampaignSubscriber.objects\
         .filter(campaign=i.id, status=5,
                 updated_date__range=(start_date, end_date)).count()
@@ -251,7 +278,7 @@ def customer_dashboard(request, on_index=None):
     data = {
         'module': current_view(request),
         'form': form,
-        'running_campaign_count': running_campaign_count,
+        'campaign_count': campaign_count,
         'total_of_phonebook_contacts': total_of_phonebook_contacts,
         'campaign_phonebbok_active_contact_count': \
         campaign_phonebbok_active_contact_count,

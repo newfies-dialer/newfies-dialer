@@ -117,10 +117,6 @@ def customer_dashboard(request, on_index=None):
     if int(search_type) >= 2:
         date_length = 20
     else:
-        #start_date = start_date.strftime("%Y-%m-%d")
-        #start_date = parser.parse(str(start_date))
-        #end_date = end_date.strftime("%Y-%m-%d")
-        #end_date = parser.parse(str(end_date))
         date_length = 10
 
     if int(search_type) <= 3:
@@ -141,8 +137,6 @@ def customer_dashboard(request, on_index=None):
                  .annotate(Count('starting_date'))\
                  .order_by('starting_date')
 
-    #qss = qsstats.QuerySetStats(calls, 'starting_date')
-    #print qss.until_now()
     final_calls = []
     for i in calls:
         # convert unicode date string into date
@@ -177,86 +171,78 @@ def customer_dashboard(request, on_index=None):
             total_noroute = total_noroute + 1
         else:
             total_forbiden = total_forbiden + 1 # FORBIDDEN
-    #print calls
+
     # following part got from cdr-stats 'global report' used by visualize
-    if calls:
-        #maxtime = datetime(int(calls[0]['starting_date'][0:4]),
-        #                   int(calls[0]['starting_date'][5:7]),
-        #                   int(calls[0]['starting_date'][8:10]), 0, 0, 0, 0)
-        #mintime = datetime(int(calls[0]['starting_date'][0:4]),
-        #                   int(calls[0]['starting_date'][5:7]),
-        #                   int(calls[0]['starting_date'][8:10]), 0, 0, 0, 0)
+    mintime = start_date
+    maxtime = end_date
+    calls_dict = {}
 
-        mintime = start_date
-        maxtime = end_date
-        calls_dict = {}
+    for data in calls:
+        if int(search_type) >= 2:
+            ctime = datetime(int(data['starting_date'][0:4]),
+                             int(data['starting_date'][5:7]),
+                             int(data['starting_date'][8:10]),
+                             int(data['starting_date'][11:13]),
+                             int(data['starting_date'][14:16]),
+                             int(data['starting_date'][17:19]),
+                             0)
+        else:
+            ctime = datetime(int(data['starting_date'][0:4]),
+                             int(data['starting_date'][5:7]),
+                             int(data['starting_date'][8:10]),
+                             0,
+                             0,
+                             0,
+                             0)
+        if ctime > maxtime:
+            maxtime = ctime
+        elif ctime < mintime:
+            mintime = ctime
 
-        for data in calls:
-            if int(search_type) >= 2:
-                ctime = datetime(int(data['starting_date'][0:4]),
-                                 int(data['starting_date'][5:7]),
-                                 int(data['starting_date'][8:10]),
-                                 int(data['starting_date'][11:13]),
-                                 int(data['starting_date'][14:16]),
-                                 int(data['starting_date'][17:19]),
-                                 0)
-            else:
-                ctime = datetime(int(data['starting_date'][0:4]),
-                                 int(data['starting_date'][5:7]),
-                                 int(data['starting_date'][8:10]),
-                                 0,
-                                 0,
-                                 0,
-                                 0)
-            if ctime > maxtime:
-                maxtime = ctime
-            elif ctime < mintime:
-                mintime = ctime
+        calls_dict[int(ctime.strftime("%Y%m%d"))] = \
+            {'starting_date__count':data['starting_date__count'],
+             'duration__sum':data['duration__sum'],
+             'duration__avg':data['duration__avg'],
+             #'disposition': data['disposition'],
+             'starting_datetime': time.mktime(ctime.timetuple()),
+            }
 
-            calls_dict[int(ctime.strftime("%Y%m%d"))] = \
-                {'starting_date__count':data['starting_date__count'],
-                 'duration__sum':data['duration__sum'],
-                 'duration__avg':data['duration__avg'],
-                 #'disposition': data['disposition'],
-                 'starting_datetime': time.mktime(ctime.timetuple()),
-                }
+    dateList = date_range(mintime, maxtime, q=search_type)
+    #print dateList
+    i = 0
+    for date in dateList:
+        inttime = int(date.strftime("%Y%m%d"))
+        name_date = _(date.strftime("%B")) + " " + str(date.day) + \
+                    ", " + str(date.year)
 
-        dateList = date_range(mintime, maxtime, q=search_type)
-        #print dateList
-        i = 0
-        for date in dateList:
-            inttime = int(date.strftime("%Y%m%d"))
-            name_date = _(date.strftime("%B")) + " " + str(date.day) + \
-                        ", " + str(date.year)
+        if inttime in calls_dict.keys():
+            total_data.append({'count': i, 'day': date.day,
+                               'month': date.month, 'year': date.year,
+                               'date': name_date,
+            'starting_date__count': \
+                calls_dict[inttime]['starting_date__count'],
+            'duration__sum': calls_dict[inttime]['duration__sum'],
+            'duration__avg': calls_dict[inttime]['duration__avg'],
+            #'disposition': calls_dict[inttime]['disposition'],
+            'starting_date': calls_dict[inttime]['starting_datetime'],
+            })
 
-            if inttime in calls_dict.keys():
-                total_data.append({'count': i, 'day': date.day,
-                                   'month': date.month, 'year': date.year,
-                                   'date': name_date,
-                'starting_date__count': \
-                    calls_dict[inttime]['starting_date__count'],
-                'duration__sum': calls_dict[inttime]['duration__sum'],
-                'duration__avg': calls_dict[inttime]['duration__avg'],
-                #'disposition': calls_dict[inttime]['disposition'],
-                'starting_date': calls_dict[inttime]['starting_datetime'],
-                })
-
-                # Extra part: To count total no of calls & their duration
-                total_duration_sum = \
-                total_duration_sum + calls_dict[inttime]['duration__sum']
-                total_call_count = total_call_count + \
-                              calls_dict[inttime]['starting_date__count']
-            else:
-                date = parser.parse(str(date))
-                total_data.append({'count':i, 'day':date.day,
-                                   'month':date.month, 'year':date.year,
-                                   'date':name_date ,
-                                   'starting_date__count':0,
-                                   'duration__sum':0, 'duration__avg':0,
-                                   'disposition': '',
-                                   'starting_date': inttime,
-                                   })
-            i += 1
+            # Extra part: To count total no of calls & their duration
+            total_duration_sum = \
+            total_duration_sum + calls_dict[inttime]['duration__sum']
+            total_call_count = total_call_count + \
+                          calls_dict[inttime]['starting_date__count']
+        else:
+            date = parser.parse(str(date))
+            total_data.append({'count':i, 'day':date.day,
+                               'month':date.month, 'year':date.year,
+                               'date':name_date ,
+                               'starting_date__count':0,
+                               'duration__sum':0, 'duration__avg':0,
+                               'disposition': '',
+                               'starting_date': inttime,
+                               })
+        i += 1
 
     # Contacts which are successfully called for running campaign
     reached_contact = 0

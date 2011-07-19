@@ -69,10 +69,6 @@ def customer_dashboard(request, on_index=None):
         Contact.objects\
         .extra(where=['phonebook_id IN (%s) ' % phonebook_id_list]).count()
 
-    today = datetime.today()
-    start_date = datetime(today.year, today.month, today.day, 0, 0, 0, 0)
-    end_date = datetime(today.year, today.month, today.day, 23, 59, 59, 999999)
-
     # TODO : Review logic
     form = DashboardForm(request.user)
     total_data = []
@@ -92,7 +88,7 @@ def customer_dashboard(request, on_index=None):
     total_invalidargs = 0
     total_noroute = 0
     total_forbiden = 0
-    select_graph_for = 'Call Count'  # default
+    select_graph_for = 'Call Count'  # default (or Duration)
     search_type = 4  # default Last 24 hours
     selected_campaign = campaign_id_list[0] # default campaign id
     if request.method == 'POST':

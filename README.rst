@@ -47,8 +47,8 @@ alleviated simply by education.
 Newfies-Dialer was so named after the Newfoundland Dog nicknamed Newfies and
 used by sea rescue services around the world.
 
-The Newfies-Dialer project is supported by Star2billing S.L. For more 
-information, see www.star2billing.com.
+The Newfies-Dialer project is supported by Star2billing S.L. 
+For more information, see http://www.star2billing.com
 
 
 Who is it for ?
@@ -62,7 +62,7 @@ NGOs :
 
 Marketing :
 
-    - Newfies-dialer is a telephony based marketing tool to deliver 
+    - Newfies-Dialer is a telephony based marketing tool to deliver 
       advertising to company contacts.
 
 Emergency :

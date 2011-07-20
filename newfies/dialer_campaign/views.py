@@ -26,6 +26,19 @@ import qsstats
 import csv
 import ast
 
+# Define disposition color
+ANSWER_COLOR = '#6CED10'
+BUSY_COLOR = '#F40C27'
+NOANSWER_COLOR = '#F40CD5'
+CANCEL_COLOR = '#797278'
+CONGESTION_COLOR = '#797278'
+CHANUNAVAIL_COLOR = '#797278'
+DONTCALL_COLOR = '#797278'
+TORTURE_COLOR = '#797278'
+INVALIDARGS_COLOR = '#797278'
+NOROUTE_COLOR = '#797278'
+FORBIDDEN_COLOR = '#797278'
+
 
 def current_view(request):
     name = getmodule(stack()[1][0]).__name__
@@ -313,6 +326,17 @@ def customer_dashboard(request, on_index=None):
         'total_invalidargs': total_invalidargs,
         'total_noroute': total_noroute,
         'total_forbiden': total_forbiden,
+        'answered_color': ANSWER_COLOR,
+        'busy_color': BUSY_COLOR,
+        'not_answered_color': NOANSWER_COLOR ,
+        'cancel_color': CANCEL_COLOR,
+        'congestion_color': CONGESTION_COLOR,
+        'chanunavail_color': CHANUNAVAIL_COLOR,
+        'dontcall_color': DONTCALL_COLOR,
+        'torture_color': TORTURE_COLOR,
+        'invalidargs_color': INVALIDARGS_COLOR,
+        'noroute_color': NOROUTE_COLOR,
+        'forbiden_color': FORBIDDEN_COLOR,
     }
     if on_index == 'yes':
         return data

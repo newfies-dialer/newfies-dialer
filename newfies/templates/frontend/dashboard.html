@@ -194,18 +194,18 @@
             {% endfor %}
             ];*/
             var data = [
-                { label: 'ANSWER' , data: [[1, {{ total_answered }}]], color: '#6CED10'},
-                { label: 'BUSY' , data: [[1, {{ total_busy }}]], color: '#F40CD5'},
-                { label: 'NOANSWER' , data: [[1, {{ total_not_answered }}]], color: '#F40C27'},
+                { label: 'ANSWER' , data: [[1, {{ total_answered }}]], color: '{{ answered_color }}' },
+                { label: 'BUSY' , data: [[1, {{ total_busy }}]], color: '{{ busy_color }}' },
+                { label: 'NOANSWER' , data: [[1, {{ total_not_answered }}]], color: '{{ not_answered_color }}' },
                 //{ label: 'OHTERS' , data: [[1, {{ total_others }}]]},
-                { label: 'CANCEL' , data: [[1, {{ total_cancel }}]], color: '#797278'},
-                { label: 'CONGESTION' , data: [[1, {{ total_congestion }}]], color: '#797278'},
-                { label: 'CHANUNAVAIL' , data: [[1, {{ total_chanunavail }}]], color: '#797278'},
-                { label: 'DONTCALL' , data: [[1, {{ total_dontcall }}]], color: '#797278'},
-                { label: 'TORTURE' , data: [[1, {{ total_torture }}]], color: '#797278'},
-                { label: 'INVALIDARGS' , data: [[1, {{ total_invalidargs }}]], color: '#797278'},
-                { label: 'NOROUTE' , data: [[1, {{ total_noroute }}]], color: '#797278'},
-                { label: 'FORBIDDEN' , data: [[1, {{ total_forbiden }}]], color: '#797278'},
+                { label: 'CANCEL' , data: [[1, {{ total_cancel }}]], color: '{{ cancel_color }}' },
+                { label: 'CONGESTION' , data: [[1, {{ total_congestion }}]], color: '{{ congestion_color }}' },
+                { label: 'CHANUNAVAIL' , data: [[1, {{ total_chanunavail }}]], color: '{{ chanunavail_color }}' },
+                { label: 'DONTCALL' , data: [[1, {{ total_dontcall }}]], color: '{{ dontcall_color }}' },
+                { label: 'TORTURE' , data: [[1, {{ total_torture }}]], color: '{{ torture_color }}' },
+                { label: 'INVALIDARGS' , data: [[1, {{ total_invalidargs }}]], color: '{{ invalidargs_color }}' },
+                { label: 'NOROUTE' , data: [[1, {{ total_noroute }}]], color: '{{ noroute_color }}' },
+                { label: 'FORBIDDEN' , data: [[1, {{ total_forbiden }}]], color: '{{ forbiden_color }}' },
             ];
             var options = {
                     series: {
@@ -247,28 +247,28 @@
 
     <table style="width: 300px;margin: 20px 20px 0px 0px;" >
     <tr>
-        <th style="color: #111111; width: 150px;">{% trans "TOTAL CALLS"  %}</th><td style="color: #111111">{{ total_call_count }}</td>
-        <th style="color: #797278">{% trans "CHANUNAVAIL"  %}</th><td style="color: #797278">{{ total_chanunavail }}</td>
+        <th style="color: #111111; width: 150px;">{{ total_call_count }}  {% trans "TOTAL CALLS"  %}</th>
+        <th style="color: {{ chanunavail_color }}">{{ total_chanunavail }}  {% trans "CHANUNAVAIL"  %}</th>
     </tr>
     <tr>
-        <th style="color: #6CED10"> {% trans "ANSWERED"  %}</th><td style="color: #6CED10">{{ total_answered }} </td>
-        <th style="color: #797278"> {% trans "DONTCALL"  %}</th><td style="color: #797278">{{ total_dontcall }} </td>
+        <th style="color: {{ answered_color }}">{{ total_answered }}  {% trans "ANSWERED"  %}</th>
+        <th style="color: {{ dontcall_color }}">{{ total_dontcall }}  {% trans "DONTCALL"  %}</th>
     </tr>
     <tr>
-        <th style="color: #F40CD5"> {% trans "BUSY"  %}</th><td style="color: #F40CD5">{{ total_busy }} </td>
-        <th style="color: #797278"> {% trans "TORTURE"  %}</th><td style="color: #797278">{{ total_torture }} </td>
+        <th style="color: {{ busy_color }}">{{ total_busy }}  {% trans "BUSY"  %}</th>
+        <th style="color: {{ torture_color }}">{{ total_torture }}  {% trans "TORTURE"  %}</th>
     </tr>
     <tr>
-        <th style="color: #F40C27"> {% trans "NOANSWER"  %}</th><td style="color: #F40C27">{{ total_not_answered }} </td>
-        <th style="color: #797278"> {% trans "INVALIDARGS"  %}</th><td style="color: #797278">{{ total_invalidargs }} </td>
+        <th style="color: {{ not_answered_color }}">{{ total_not_answered }}  {% trans "NOANSWER"  %}</th>
+        <th style="color: {{ invalidargs_color }}">{{ total_invalidargs }}  {% trans "INVALIDARGS"  %}</th>
     </tr>
     <tr>
-        <th style="color: #797278"> {% trans "CANCEL"  %}</th><td style="color: #797278">{{ total_cancel }} </td>
-        <th style="color: #797278"> {% trans "NOROUTE"  %}</th><td style="color: #797278">{{ total_noroute }} </td>
+        <th style="color: {{ cancel_color }}">{{ total_cancel }}  {% trans "CANCEL"  %}</th>
+        <th style="color: {{ noroute_color }}">{{ total_noroute }}  {% trans "NOROUTE"  %}</th>
     </tr>
     <tr>
-        <th style="color: #797278"> {% trans "CONGESTION"  %}</th><td style="color: #797278">{{ total_congestion }} </td>
-        <th style="color: #797278"> {% trans "FORBIDDEN"  %}</th><td style="color: #797278">{{ total_forbiden }} </td>
+        <th style="color: {{ congestion_color }}">{{ total_congestion }}  {% trans "CONGESTION"  %}</th>
+        <th style="color: {{ forbiden_color }}">{{ total_forbiden }}  {% trans "FORBIDDEN"  %}</th>
     </tr>
      
     </table>

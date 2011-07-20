@@ -132,7 +132,6 @@
 
             x = Math.floor(n)
             var data = jsonData[x].day;
-
             return data;
         };
         {% if select_graph_for == 'Call Count' %}
@@ -195,18 +194,18 @@
             {% endfor %}
             ];*/
             var data = [
-                { label: 'ANSWER' , data: [[1, {{ total_answered }}]]},
-                { label: 'BUSY' , data: [[1, {{ total_busy }}]]},
-                { label: 'NOANSWER' , data: [[1, {{ total_not_answered }}]]},
+                { label: 'ANSWER' , data: [[1, {{ total_answered }}]], color: '#6CED10'},
+                { label: 'BUSY' , data: [[1, {{ total_busy }}]], color: '#F40CD5'},
+                { label: 'NOANSWER' , data: [[1, {{ total_not_answered }}]], color: '#F40C27'},
                 //{ label: 'OHTERS' , data: [[1, {{ total_others }}]]},
-                { label: 'CANCEL' , data: [[1, {{ total_cancel }}]]},
-                { label: 'CONGESTION' , data: [[1, {{ total_congestion }}]]},
-                { label: 'CHANUNAVAIL' , data: [[1, {{ total_chanunavail }}]]},
-                { label: 'DONTCALL' , data: [[1, {{ total_dontcall }}]]},
-                { label: 'TORTURE' , data: [[1, {{ total_torture }}]]},
-                { label: 'INVALIDARGS' , data: [[1, {{ total_invalidargs }}]]},
-                { label: 'NOROUTE' , data: [[1, {{ total_noroute }}]]},
-                { label: 'FORBIDDEN' , data: [[1, {{ total_forbiden }}]]},
+                { label: 'CANCEL' , data: [[1, {{ total_cancel }}]], color: '#797278'},
+                { label: 'CONGESTION' , data: [[1, {{ total_congestion }}]], color: '#797278'},
+                { label: 'CHANUNAVAIL' , data: [[1, {{ total_chanunavail }}]], color: '#797278'},
+                { label: 'DONTCALL' , data: [[1, {{ total_dontcall }}]], color: '#797278'},
+                { label: 'TORTURE' , data: [[1, {{ total_torture }}]], color: '#797278'},
+                { label: 'INVALIDARGS' , data: [[1, {{ total_invalidargs }}]], color: '#797278'},
+                { label: 'NOROUTE' , data: [[1, {{ total_noroute }}]], color: '#797278'},
+                { label: 'FORBIDDEN' , data: [[1, {{ total_forbiden }}]], color: '#797278'},
             ];
             var options = {
                     series: {
@@ -229,7 +228,7 @@
                     grid: {
                         hoverable: true,
                         clickable: true
-                    }
+                    },
             };
             $("#camp_pie").bind("plothover", pieHover);
             $("#camp_pie").bind("plotclick", pieClick);
@@ -246,30 +245,30 @@
     <br/>
     <div id="camp_pie" style="width:300px;height:300px;float:left;margin: 0px 0px 0px 25px;"></div>
 
-    <table style="width: 300px;margin: 20px 20px 0px 0px;" id="rounded-corner">
+    <table style="width: 300px;margin: 20px 20px 0px 0px;" >
     <tr>
-        <th>{% trans "TOTAL CALLS"  %}</th><td>{{ total_call_count }}</td>
-        <th>{% trans "CHANUNAVAIL"  %}</th><td>{{ total_chanunavail }}</td>
+        <th style="color: #111111; width: 150px;">{% trans "TOTAL CALLS"  %}</th><td style="color: #111111">{{ total_call_count }}</td>
+        <th style="color: #797278">{% trans "CHANUNAVAIL"  %}</th><td style="color: #797278">{{ total_chanunavail }}</td>
     </tr>
     <tr>
-        <th> {% trans "ANSWERED"  %}</th><td>{{ total_answered }} </td>
-        <th> {% trans "DONTCALL"  %}</th><td>{{ total_dontcall }} </td>
+        <th style="color: #6CED10"> {% trans "ANSWERED"  %}</th><td style="color: #6CED10">{{ total_answered }} </td>
+        <th style="color: #797278"> {% trans "DONTCALL"  %}</th><td style="color: #797278">{{ total_dontcall }} </td>
     </tr>
     <tr>
-        <th> {% trans "BUSY"  %}</th><td>{{ total_busy }} </td>
-        <th> {% trans "TORTURE"  %}</th><td>{{ total_torture }} </td>
+        <th style="color: #F40CD5"> {% trans "BUSY"  %}</th><td style="color: #F40CD5">{{ total_busy }} </td>
+        <th style="color: #797278"> {% trans "TORTURE"  %}</th><td style="color: #797278">{{ total_torture }} </td>
     </tr>
     <tr>
-        <th> {% trans "NOANSWER"  %}</th><td>{{ total_not_answered }} </td>
-        <th> {% trans "INVALIDARGS"  %}</th><td>{{ total_invalidargs }} </td>
+        <th style="color: #F40C27"> {% trans "NOANSWER"  %}</th><td style="color: #F40C27">{{ total_not_answered }} </td>
+        <th style="color: #797278"> {% trans "INVALIDARGS"  %}</th><td style="color: #797278">{{ total_invalidargs }} </td>
     </tr>
     <tr>
-        <th> {% trans "CANCEL"  %}</th><td>{{ total_cancel }} </td>
-        <th> {% trans "NOROUTE"  %}</th><td>{{ total_noroute }} </td>
+        <th style="color: #797278"> {% trans "CANCEL"  %}</th><td style="color: #797278">{{ total_cancel }} </td>
+        <th style="color: #797278"> {% trans "NOROUTE"  %}</th><td style="color: #797278">{{ total_noroute }} </td>
     </tr>
     <tr>
-        <th> {% trans "CONGESTION"  %}</th><td>{{ total_congestion }} </td>
-        <th> {% trans "FORBIDDEN"  %}</th><td>{{ total_forbiden }} </td>
+        <th style="color: #797278"> {% trans "CONGESTION"  %}</th><td style="color: #797278">{{ total_congestion }} </td>
+        <th style="color: #797278"> {% trans "FORBIDDEN"  %}</th><td style="color: #797278">{{ total_forbiden }} </td>
     </tr>
      
     </table>

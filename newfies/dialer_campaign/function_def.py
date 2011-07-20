@@ -298,4 +298,12 @@ def get_campaign_status_name(id):
     """To get status name from CAMPAIGN_STATUS"""
     for i in CAMPAIGN_STATUS:
         if i[0] == id:
-            return i[1]
+            #return i[1]
+            if i[1] == 'START':
+                return 'STARTED'
+            if i[1] == 'PAUSE':
+                return 'PAUSED'
+            if i[1] == 'ABORT':
+                return 'ABORTED'
+            if i[1] == 'END':
+                return 'STOPPED'

@@ -144,8 +144,13 @@
 })(jQuery);
 
 </script>
+<br/>
+<input type="submit" value="Call Count" name="call_count_button"/> /
+<input type="submit" value="Duration" name="duration_button"/>
+</form>
 
 {% if total_data %}
+
 <div id="finance" style="position: relative; margin: 40px 0px; width: 900px; border: 1px solid #99CCFF;">
 	<div id="labels">
 	    <div id="financeTitle"></div>
@@ -154,10 +159,8 @@
 </div>
     
 
-<input type="submit" value="Call Count" name="call_count_button"/> /
-<input type="submit" value="Duration" name="duration_button"/>
 
-</form>
+
 {% endif %}
 
 
@@ -240,9 +243,9 @@
             [{{ td.starting_date }},(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}]<br/>
     {% endfor %}-->
     <br/>
-    <div id="camp_pie" style="width:300px;height:300px;float:left;"></div>
+    <div id="camp_pie" style="width:300px;height:300px;float:left;margin: 0px 0px 0px 25px;"></div>
 
-    <table style="width: 300px;margin: 40px 0px;" id="rounded-corner">
+    <table style="width: 300px;margin: 20px 20px 0px 0px;float:right;" id="rounded-corner">
     <tr>
         <th>{% trans "TOTAL CALLS"  %}</th><td>{{ total_call_count }}</td>
         <th>{% trans "CHANUNAVAIL"  %}</th><td>{{ total_chanunavail }}</td>

@@ -34,12 +34,19 @@ def current_view(request):
 
 @login_required
 def customer_dashboard(request, on_index=None):
-    """Customer dashboard which gives the information like how many campaign
-    are running, total of contacts, amount of contact reached today etc.
+    """Customer dashboard gives the following information
+
+        * No of Campaigns for logged in user
+        * Total phonebook contacts
+        * Total Campaigns contacts
+        * Amount of contact reached today
+        * Disposition of calls via pie chart
+        * Call records & Duration of calls are shown on graph by days/hours basis.
 
     **Attributes**:
 
         * ``template`` - frontend/dashboard.html
+        * ``form`` - DashboardForm
     """
     # All campaign for logged in User
     campaign = Campaign.objects.filter(user=request.user)
@@ -69,10 +76,9 @@ def customer_dashboard(request, on_index=None):
         Contact.objects\
         .extra(where=['phonebook_id IN (%s) ' % phonebook_id_list]).count()
 
-    # TODO : Review logic
     form = DashboardForm(request.user)
-    total_data = []
-    final_calls = []
+    total_data = [] # for humblefinance chart
+    final_calls = [] # for pie chart
     min_limit = ''
     max_limit = ''
     total_duration_sum = 0
@@ -91,8 +97,10 @@ def customer_dashboard(request, on_index=None):
     select_graph_for = 'Call Count'  # default (or Duration)
     search_type = 4  # default Last 24 hours
     selected_campaign = ''
+
     if campaign_id_list:
         selected_campaign = campaign_id_list[0] # default campaign id
+
     # selected_campaign should not be empty
     if selected_campaign:
         if request.method == 'POST':
@@ -107,8 +115,7 @@ def customer_dashboard(request, on_index=None):
 
         end_date = datetime.today()
         start_date = calculate_date(search_type)
-        #print start_date
-        #print end_date
+
         import time
         min_limit = time.mktime(start_date.timetuple())
         max_limit = time.mktime(end_date.timetuple())

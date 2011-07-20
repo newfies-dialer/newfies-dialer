@@ -1,4 +1,4 @@
-from dialer_campaign.models import Phonebook, Campaign
+from dialer_campaign.models import Phonebook, Campaign, CAMPAIGN_STATUS
 from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting
 from dateutil.relativedelta import *
@@ -292,3 +292,10 @@ def date_range(start, end, q):
                until=parse(str(end))))
     else:
         return [start + timedelta(days=i) for i in range(r)]
+
+
+def get_campaign_status_name(id):
+    """To get status name from CAMPAIGN_STATUS"""
+    for i in CAMPAIGN_STATUS:
+        if i[0] == id:
+            return i[1]

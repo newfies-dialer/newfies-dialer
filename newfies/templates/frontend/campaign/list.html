@@ -52,6 +52,7 @@ $("#flex1").flexigrid({
         {display: 'A-Leg gateway', name: 'aleg_gateway', width: 100, sortable: true, align: 'center'},
         {display: 'VoIP App', name: 'voipapp__name', width: 100, sortable: true, align: 'center'},
         {display: 'Contacts', name: '', width: 65, sortable: true, align: 'center'},
+        {display: 'Status', name: 'status', width: 60, sortable: true, align: 'center'},
         {display: 'Action', name: '', width : 120, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
 		],
     buttons : [
@@ -66,7 +67,7 @@ $("#flex1").flexigrid({
 	useRp: true,
 	rp: 10,
 	showTableToggleBtn: true,
-	width: 950,
+	width: 1010,
 	height: 265,
     //preProcess: formatContactResults,
     onSuccess: function(data){

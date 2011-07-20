@@ -247,7 +247,6 @@ def customer_dashboard(request, on_index=None):
 
             name_date = _(date.strftime("%B")) + " " + str(date.day) + \
                         ", " + str(date.year)
-
             if inttime in calls_dict.keys():
                 total_data.append({'count': i, 'day': date.day,
                                    'month': date.month, 'year': date.year,
@@ -1348,6 +1347,7 @@ def campaign_grid(request):
                       row['aleg_gateway__name'],
                       row['voipapp__name'],
                       count_contact_of_campaign(row['id']),
+                      get_campaign_status_name(row['status']),
                       str('<a href="' + str(row['id']) + '/" class="icon" ' \
                       + update_style + ' title="Update campaign">&nbsp;</a>' +
                       '<a href="del/' + str(row['id']) + '/" class="icon" ' \

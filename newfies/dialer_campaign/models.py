@@ -221,7 +221,7 @@ class Campaign(Model):
     description = models.TextField(verbose_name='Description', blank=True,
                   null=True, help_text=_("Short description of the Campaign"))
     user = models.ForeignKey('auth.User', related_name='Campaign owner')
-    status = models.IntegerField(choices=CAMPAIGN_STATUS, default='1',
+    status = models.IntegerField(choices=CAMPAIGN_STATUS, default='2',
                 verbose_name="Status", blank=True, null=True)
     callerid = models.CharField(max_length=80, blank=True,
                 verbose_name=_("CallerID"), help_text=_("CallerID used \

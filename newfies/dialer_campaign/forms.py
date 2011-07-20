@@ -190,7 +190,7 @@ class ContactSearchForm(forms.Form):
 
 class DashboardForm(forms.Form):
     """Dashboard Form"""
-    campaign = forms.ChoiceField(label=_('Running Campaign'), required=False)
+    campaign = forms.ChoiceField(label=_('Campaign'), required=False)
     search_type = forms.ChoiceField(label=_('Type'), required=False, initial=4,
                       choices=SEARCH_TYPE)
 

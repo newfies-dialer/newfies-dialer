@@ -90,181 +90,185 @@ def customer_dashboard(request, on_index=None):
     total_forbiden = 0
     select_graph_for = 'Call Count'  # default (or Duration)
     search_type = 4  # default Last 24 hours
-    selected_campaign = campaign_id_list[0] # default campaign id
-    if request.method == 'POST':
-        form = DashboardForm(request.user, request.POST)
-        selected_campaign = request.POST['campaign']
-        search_type = request.POST['search_type']
- 
-        if request.POST.get('call_count_button'):
-            select_graph_for = request.POST['call_count_button']
-        if request.POST.get('duration_button'):
-            select_graph_for = request.POST['duration_button']
+    selected_campaign = ''
+    if campaign_id_list:
+        selected_campaign = campaign_id_list[0] # default campaign id
+    # selected_campaign should not be empty
+    if selected_campaign:
+        if request.method == 'POST':
+            form = DashboardForm(request.user, request.POST)
+            selected_campaign = request.POST['campaign']
+            search_type = request.POST['search_type']
 
-    end_date = datetime.today()
-    start_date = calculate_date(search_type)
-    #print start_date
-    #print end_date
-    import time
-    min_limit = time.mktime(start_date.timetuple())
-    max_limit = time.mktime(end_date.timetuple())
+            if request.POST.get('call_count_button'):
+                select_graph_for = request.POST['call_count_button']
+            if request.POST.get('duration_button'):
+                select_graph_for = request.POST['duration_button']
 
-    # date_length is used to do group by starting_date
-    if int(search_type) >= 2: # all options except 30 days
-        date_length = 13
-    else:
-        date_length = 10 # Last 30 days option
+        end_date = datetime.today()
+        start_date = calculate_date(search_type)
+        #print start_date
+        #print end_date
+        import time
+        min_limit = time.mktime(start_date.timetuple())
+        max_limit = time.mktime(end_date.timetuple())
 
-    select_data = \
-        {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1," + \
-                          str(date_length) + ")"}
-
-    # This calls list is used by pie chart
-    calls = VoIPCall.objects\
-                 .filter(callrequest__campaign=selected_campaign,
-                         duration__isnull=False,
-                         user=request.user,
-                         starting_date__range=(start_date, end_date))\
-                 .extra(select=select_data)\
-                 .values('starting_date', 'disposition').annotate(Sum('duration'))\
-                 .annotate(Avg('duration'))\
-                 .annotate(Count('starting_date'))\
-                 .order_by('starting_date')
-
-    final_calls = []
-    for i in calls:
-        # convert unicode date string into date
-        starting_datetime = parser.parse(str(i['starting_date']))
-        final_calls.append({'starting_date': i['starting_date'],
-                            'starting_datetime': \
-                                time.mktime(starting_datetime.timetuple()),
-                            'starting_date__count': i['starting_date__count'],
-                            'duration__sum': i['duration__sum'],
-                            'duration__avg': i['duration__avg'],
-                            'disposition': i['disposition']
-                            })
-        if i['disposition'] == 'ANSWER':
-            total_answered = total_answered + 1
-        elif i['disposition'] == 'BUSY':
-            total_busy = total_busy + 1
-        elif i['disposition'] == 'NOANSWER':
-            total_not_answered = total_not_answered + 1
-        elif i['disposition'] == 'CANCEL':
-            total_cancel = total_cancel + 1
-        elif i['disposition'] == 'CONGESTION':
-            total_congestion = total_congestion + 1
-        elif i['disposition'] == 'CHANUNAVAIL':
-            total_chanunavail = total_chanunavail + 1
-        elif i['disposition'] == 'DONTCALL':
-            total_dontcall = total_dontcall + 1
-        elif i['disposition'] == 'TORTURE':
-            total_torture = total_torture + 1
-        elif i['disposition'] == 'INVALIDARGS':
-            total_invalidargs = total_invalidargs + 1
-        elif i['disposition'] == 'NOROUTE':
-            total_noroute = total_noroute + 1
+        # date_length is used to do group by starting_date
+        if int(search_type) >= 2: # all options except 30 days
+            date_length = 13
         else:
-            total_forbiden = total_forbiden + 1 # FORBIDDEN
+            date_length = 10 # Last 30 days option
 
-    # following part got from cdr-stats 'global report' used by humblefinance
-    # following calls list is without dispostion & group by call date
-    calls = VoIPCall.objects\
-                 .filter(callrequest__campaign=selected_campaign,
-                         duration__isnull=False,
-                         user=request.user,
-                         starting_date__range=(start_date, end_date))\
-                 .extra(select=select_data)\
-                 .values('starting_date').annotate(Sum('duration'))\
-                 .annotate(Avg('duration'))\
-                 .annotate(Count('starting_date'))\
-                 .order_by('starting_date')
+        select_data = \
+            {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1," + \
+                              str(date_length) + ")"}
 
-    mintime = start_date
-    maxtime = end_date
-    calls_dict = {}
+        # This calls list is used by pie chart
+        calls = VoIPCall.objects\
+                     .filter(callrequest__campaign=selected_campaign,
+                             duration__isnull=False,
+                             user=request.user,
+                             starting_date__range=(start_date, end_date))\
+                     .extra(select=select_data)\
+                     .values('starting_date', 'disposition').annotate(Sum('duration'))\
+                     .annotate(Avg('duration'))\
+                     .annotate(Count('starting_date'))\
+                     .order_by('starting_date')
 
-    for data in calls:
-        if int(search_type) >= 2:
-            ctime = datetime(int(data['starting_date'][0:4]),
-                             int(data['starting_date'][5:7]),
-                             int(data['starting_date'][8:10]),
-                             int(data['starting_date'][11:13]),
-                             0, # int(data['starting_date'][14:16])
-                             0, # int(data['starting_date'][17:19])
-                             0)
-        else:
-            ctime = datetime(int(data['starting_date'][0:4]),
-                             int(data['starting_date'][5:7]),
-                             int(data['starting_date'][8:10]),
-                             0,
-                             0,
-                             0,
-                             0)
-        if ctime > maxtime:
-            maxtime = ctime
-        elif ctime < mintime:
-            mintime = ctime
+        final_calls = []
+        for i in calls:
+            # convert unicode date string into date
+            starting_datetime = parser.parse(str(i['starting_date']))
+            final_calls.append({'starting_date': i['starting_date'],
+                                'starting_datetime': \
+                                    time.mktime(starting_datetime.timetuple()),
+                                'starting_date__count': i['starting_date__count'],
+                                'duration__sum': i['duration__sum'],
+                                'duration__avg': i['duration__avg'],
+                                'disposition': i['disposition']
+                                })
+            if i['disposition'] == 'ANSWER':
+                total_answered = total_answered + 1
+            elif i['disposition'] == 'BUSY':
+                total_busy = total_busy + 1
+            elif i['disposition'] == 'NOANSWER':
+                total_not_answered = total_not_answered + 1
+            elif i['disposition'] == 'CANCEL':
+                total_cancel = total_cancel + 1
+            elif i['disposition'] == 'CONGESTION':
+                total_congestion = total_congestion + 1
+            elif i['disposition'] == 'CHANUNAVAIL':
+                total_chanunavail = total_chanunavail + 1
+            elif i['disposition'] == 'DONTCALL':
+                total_dontcall = total_dontcall + 1
+            elif i['disposition'] == 'TORTURE':
+                total_torture = total_torture + 1
+            elif i['disposition'] == 'INVALIDARGS':
+                total_invalidargs = total_invalidargs + 1
+            elif i['disposition'] == 'NOROUTE':
+                total_noroute = total_noroute + 1
+            else:
+                total_forbiden = total_forbiden + 1 # FORBIDDEN
 
-        # all options except 30 days
-        if int(search_type) >= 2:
-            calls_dict[int(ctime.strftime("%Y%m%d%H"))] = \
-            {'starting_date__count':data['starting_date__count'],
-             'duration__sum':data['duration__sum'],
-             'duration__avg':data['duration__avg'],
-             #'disposition': data['disposition'],
-             'starting_datetime': time.mktime(ctime.timetuple()),
-            }
-        else:
-            # Last 30 days option
-            calls_dict[int(ctime.strftime("%Y%m%d"))] = \
-            {'starting_date__count':data['starting_date__count'],
-             'duration__sum':data['duration__sum'],
-             'duration__avg':data['duration__avg'],
-             #'disposition': data['disposition'],
-             'starting_datetime': time.mktime(ctime.timetuple()),
-            }
-        #print calls_dict
-    dateList = date_range(mintime, maxtime, q=search_type)
+        # following part got from cdr-stats 'global report' used by humblefinance
+        # following calls list is without dispostion & group by call date
+        calls = VoIPCall.objects\
+                     .filter(callrequest__campaign=selected_campaign,
+                             duration__isnull=False,
+                             user=request.user,
+                             starting_date__range=(start_date, end_date))\
+                     .extra(select=select_data)\
+                     .values('starting_date').annotate(Sum('duration'))\
+                     .annotate(Avg('duration'))\
+                     .annotate(Count('starting_date'))\
+                     .order_by('starting_date')
 
-    i = 0
-    for date in dateList:
-        # all options except 30 days
-        if int(search_type) >= 2:
-            inttime = int(date.strftime("%Y%m%d%H"))
-        else:
-            inttime = int(date.strftime("%Y%m%d"))
+        mintime = start_date
+        maxtime = end_date
+        calls_dict = {}
 
-        name_date = _(date.strftime("%B")) + " " + str(date.day) + \
-                    ", " + str(date.year)
-        
-        if inttime in calls_dict.keys():
-            total_data.append({'count': i, 'day': date.day,
-                               'month': date.month, 'year': date.year,
-                               'date': name_date,
-            'starting_date__count': \
-                calls_dict[inttime]['starting_date__count'],
-            'duration__sum': calls_dict[inttime]['duration__sum'],
-            'duration__avg': calls_dict[inttime]['duration__avg'],
-            #'disposition': calls_dict[inttime]['disposition'],
-            'starting_date': calls_dict[inttime]['starting_datetime'],
-            })
+        for data in calls:
+            if int(search_type) >= 2:
+                ctime = datetime(int(data['starting_date'][0:4]),
+                                 int(data['starting_date'][5:7]),
+                                 int(data['starting_date'][8:10]),
+                                 int(data['starting_date'][11:13]),
+                                 0, # int(data['starting_date'][14:16])
+                                 0, # int(data['starting_date'][17:19])
+                                 0)
+            else:
+                ctime = datetime(int(data['starting_date'][0:4]),
+                                 int(data['starting_date'][5:7]),
+                                 int(data['starting_date'][8:10]),
+                                 0,
+                                 0,
+                                 0,
+                                 0)
+            if ctime > maxtime:
+                maxtime = ctime
+            elif ctime < mintime:
+                mintime = ctime
 
-            # Extra part: To count total no of calls & their duration
-            total_duration_sum = \
-            total_duration_sum + calls_dict[inttime]['duration__sum']
-            total_call_count = total_call_count + \
-                          calls_dict[inttime]['starting_date__count']
-        else:
-            date = parser.parse(str(date))
-            total_data.append({'count':i, 'day':date.day,
-                               'month':date.month, 'year':date.year,
-                               'date':name_date ,
-                               'starting_date__count':0,
-                               'duration__sum':0, 'duration__avg':0,
-                               'disposition': '',
-                               'starting_date': inttime,
-                               })
-        i += 1
+            # all options except 30 days
+            if int(search_type) >= 2:
+                calls_dict[int(ctime.strftime("%Y%m%d%H"))] = \
+                {'starting_date__count':data['starting_date__count'],
+                 'duration__sum':data['duration__sum'],
+                 'duration__avg':data['duration__avg'],
+                 #'disposition': data['disposition'],
+                 'starting_datetime': time.mktime(ctime.timetuple()),
+                }
+            else:
+                # Last 30 days option
+                calls_dict[int(ctime.strftime("%Y%m%d"))] = \
+                {'starting_date__count':data['starting_date__count'],
+                 'duration__sum':data['duration__sum'],
+                 'duration__avg':data['duration__avg'],
+                 #'disposition': data['disposition'],
+                 'starting_datetime': time.mktime(ctime.timetuple()),
+                }
+            #print calls_dict
+        dateList = date_range(mintime, maxtime, q=search_type)
+
+        i = 0
+        for date in dateList:
+            # all options except 30 days
+            if int(search_type) >= 2:
+                inttime = int(date.strftime("%Y%m%d%H"))
+            else:
+                inttime = int(date.strftime("%Y%m%d"))
+
+            name_date = _(date.strftime("%B")) + " " + str(date.day) + \
+                        ", " + str(date.year)
+
+            if inttime in calls_dict.keys():
+                total_data.append({'count': i, 'day': date.day,
+                                   'month': date.month, 'year': date.year,
+                                   'date': name_date,
+                'starting_date__count': \
+                    calls_dict[inttime]['starting_date__count'],
+                'duration__sum': calls_dict[inttime]['duration__sum'],
+                'duration__avg': calls_dict[inttime]['duration__avg'],
+                #'disposition': calls_dict[inttime]['disposition'],
+                'starting_date': calls_dict[inttime]['starting_datetime'],
+                })
+
+                # Extra part: To count total no of calls & their duration
+                total_duration_sum = \
+                total_duration_sum + calls_dict[inttime]['duration__sum']
+                total_call_count = total_call_count + \
+                              calls_dict[inttime]['starting_date__count']
+            else:
+                date = parser.parse(str(date))
+                total_data.append({'count':i, 'day':date.day,
+                                   'month':date.month, 'year':date.year,
+                                   'date':name_date ,
+                                   'starting_date__count':0,
+                                   'duration__sum':0, 'duration__avg':0,
+                                   'disposition': '',
+                                   'starting_date': inttime,
+                                   })
+            i += 1
 
     # Contacts which are successfully called for running campaign
     reached_contact = 0

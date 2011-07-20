@@ -48,20 +48,20 @@ def initiate_call_subscriber(subscriber_id, campaign_id):
         obj_camp_subs = CampaignSubscriber.objects\
                                  .get(id=subscriber_id)
     except:
-        logger.error('Can\'t find this CampaignSubscriber')
+        logger.error('Error : Can\'t find this CampaignSubscriber')
 
     try:
         obj_campaign = Campaign.objects.get(id=campaign_id)
     except:
-        logger.error('Can\'t find this Campaign')
+        logger.error('Error : Can\'t find this Campaign')
 
     if obj_subscriber.status != 1:
-        logger.error("Only Pending status are processed ")
+        logger.error("Error : Only Pending status are processed ")
         return True
 
     #Check if the contact is authorized
     if not obj_campaign.is_authorized_contact(obj_camp_subs.contact.contact):
-        logger.error("Contact not authorized")
+        logger.error("Error : Contact not authorized")
         obj_camp_subs.status = 7 # Update to Not Authorized
         obj_camp_subs.save()
         return True

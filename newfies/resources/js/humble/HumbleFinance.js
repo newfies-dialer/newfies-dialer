@@ -176,13 +176,21 @@ var HumbleFinance = {
         this.handles.scroll.onselectstart = function () { return false; };
 
         // Insert into container
-        container.insert(this.containers.price);
-        container.insert(this.containers.volume);
+        //container.insert(this.containers.price);
+        //container.insert(this.containers.volume);
+        //container.insert(this.containers.summary);
+        //container.insert(this.containers.flags);
+        //container.insert(this.handles.left);
+        //container.insert(this.handles.right);
+        //container.insert(this.handles.scroll);
+        
         container.insert(this.containers.summary);
-        container.insert(this.containers.flags);
-        container.insert(this.handles.left);
-        container.insert(this.handles.right);
-        container.insert(this.handles.scroll);
+        container.insert(this.containers.price);
+        //container.insert(this.containers.volume);
+        //container.insert(this.containers.flags);
+        //container.insert(this.handles.left);
+        //container.insert(this.handles.right);
+        //container.insert(this.handles.scroll);
     },
 
     /**

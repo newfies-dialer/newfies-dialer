@@ -147,23 +147,23 @@ Features
 Architecture
 ============
 
-.. image:: ../_static/images/newfies_architecture.png
+.. image:: ./_static/images/newfies_architecture.png
 
-    * User selects contacts, phonebooks and campaigns, then chooses a voice application to use. The campaign is then launched
+* User selects contacts, phonebooks and campaigns, then chooses a voice application to use. The campaign is then launched
 
-    * ``Newfies-Dialer`` spools the outbound calls to ``FreeSWITCH`` via ``Plivo``.
+* ``Newfies-Dialer`` spools the outbound calls to ``FreeSWITCH`` via ``Plivo``.
 
-    * ``Plivo`` sends the dial request to ``FreeSWITCH`` using the event socket.
+* ``Plivo`` sends the dial request to ``FreeSWITCH`` using the event socket.
 
-    * ``FreeSWITCH`` dials the contact via the configured telephony gateways.
+* ``FreeSWITCH`` dials the contact via the configured telephony gateways.
 
-    * Contact picks up the call, and the answer event is received in ``FreeSWITCH`` and passed back to ``Plivo``.
+* Contact picks up the call, and the answer event is received in ``FreeSWITCH`` and passed back to ``Plivo``.
 
-    * ``Newfies-Dialer`` is notified that the call is answered, then renders & relays ``RestXML`` to ``Plivo``.
+* ``Newfies-Dialer`` is notified that the call is answered, then renders & relays ``RestXML`` to ``Plivo``.
 
-    * ``Plivo`` interprets ``RestXML`` and sends the application call-flow commands to ``FreeSWITCH``.
+* ``Plivo`` interprets ``RestXML`` and sends the application call-flow commands to ``FreeSWITCH``.
 
-    * The voice application is delivered to the contact by ``FreeSWITCH``.
+* The voice application is delivered to the contact by ``FreeSWITCH``.
 
 
 .. _latest_documentation:

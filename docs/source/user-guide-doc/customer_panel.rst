@@ -117,3 +117,13 @@ To Add/Update a Campaign for a logged in user
 
 .. image:: ../_static/images/customer/update_campaign.png
     :width: 1000
+
+
+.. _customer-dashboard-access:
+
+Dashboard
+~~~~~~~~~
+
+Dashboard gives the information anbout campaign & its related call records
+
+.. image:: ../_static/images/customer/customer_dashboard.png

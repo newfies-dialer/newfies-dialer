@@ -276,13 +276,13 @@ PISTON_EMAIL_ERRORS = "root@localhost.localdomain"
 
 #PLIVO
 #=====
-PLIVO_DEFAULT_ANSWER_URL='http://127.0.0.1:8000/api/dialer_cdr/answercall/'
-PLIVO_DEFAULT_HANGUP_URL='http://127.0.0.1:8000/api/dialer_cdr/hangupcall/'
+PLIVO_DEFAULT_ANSWER_URL = 'http://127.0.0.1:8000/api/dialer_cdr/answercall/'
+PLIVO_DEFAULT_HANGUP_URL = 'http://127.0.0.1:8000/api/dialer_cdr/hangupcall/'
 
 # ADD 'dummy','plivo','twilio'
 NEWFIES_DIALER_ENGINE = 'plivo'
 
-API_ALLOWED_IP = ['127.0.0.1' , 'localhost']
+API_ALLOWED_IP = ['127.0.0.1', 'localhost']
 
 LOGGING = {
     'version': 1,
@@ -318,7 +318,7 @@ LOGGING = {
         # Your own app - this assumes all your logger names start with "myapp."
         'myapp': {
             'handlers': ['logfile'],
-            'level': 'WARNING', # Or maybe INFO or DEBUG
+            'level': 'WARNING',  # Or maybe INFO or DEBUG
             'propogate': False
         },
     },
@@ -331,4 +331,3 @@ try:
     from settings_local import *
 except:
     pass
-

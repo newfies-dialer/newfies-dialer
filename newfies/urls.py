@@ -1,8 +1,7 @@
-from django.conf.urls.defaults import handler404, handler500, include, patterns, url
+from django.conf.urls.defaults import handler404, handler500, include,\
+     patterns, url
 from django.conf import settings
 from django.conf.urls.i18n import *
-
-
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
@@ -50,9 +49,10 @@ urlpatterns += urlpatterns_voip_app
 
 handler404 = 'urls.custom_404_view'
 handler500 = 'urls.custom_500_view'
+
+
 def custom_404_view(request, template_name='404.html'):
-    """
-    404 error handler which includes ``request`` in the context.
+    """404 error handler which includes ``request`` in the context.
 
     Templates: `404.html`
     Context: None
@@ -60,15 +60,14 @@ def custom_404_view(request, template_name='404.html'):
     from django.template import Context, loader
     from django.http import HttpResponseServerError
 
-    t = loader.get_template('404.html') # You need to create a 404.html template.
+    t = loader.get_template('404.html')  # Need to create a 404.html template.
     return HttpResponseServerError(t.render(Context({
         'request': request,
     })))
 
 
 def custom_500_view(request, template_name='500.html'):
-    """
-    500 error handler which includes ``request`` in the context.
+    """500 error handler which includes ``request`` in the context.
 
     Templates: `500.html`
     Context: None
@@ -76,7 +75,7 @@ def custom_500_view(request, template_name='500.html'):
     from django.template import Context, loader
     from django.http import HttpResponseServerError
 
-    t = loader.get_template('500.html') # You need to create a 500.html template.
+    t = loader.get_template('500.html')  # Need to create a 500.html template.
     return HttpResponseServerError(t.render(Context({
         'request': request,
     })))

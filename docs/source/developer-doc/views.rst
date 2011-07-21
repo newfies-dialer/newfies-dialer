@@ -12,6 +12,13 @@ Newfies-Dialer Views
 
   .. autofunction:: index
 
+.. _dashboard-view:
+
+:class:`customer_dashboard`
+---------------------------
+
+  .. autofunction:: customer_dashboard
+
 .. _login-view:
 
 :class:`login_view`

@@ -247,7 +247,7 @@ def customer_dashboard(request, on_index=None):
                  #'disposition': data['disposition'],
                  'starting_datetime': time.mktime(ctime.timetuple()),
                 }
-            #print calls_dict
+
         dateList = date_range(mintime, maxtime, q=search_type)
 
         i = 0
@@ -464,7 +464,6 @@ def cust_password_reset(request):
     This method sends an e-mail to the user's email-id which is entered in
     ``password_reset_form``
     """
-
     if not request.user.is_authenticated():
         return password_reset(request,
         template_name='frontend/registration/password_reset_form.html',
@@ -482,7 +481,6 @@ def cust_password_reset_done(request):
     This will show a message to the user who is seeking to reset their
     password.
     """
-
     if not request.user.is_authenticated():
         return password_reset_done(request,
         template_name='frontend/registration/password_reset_done.html')
@@ -496,7 +494,6 @@ def cust_password_reset_confirm(request, uidb36=None, token=None):
 
     This will allow a user to reset their password.
     """
-
     if not request.user.is_authenticated():
         return password_reset_confirm(request, uidb36=uidb36, token=token,
         template_name='frontend/registration/password_reset_confirm.html',

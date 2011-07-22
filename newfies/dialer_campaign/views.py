@@ -110,7 +110,10 @@ def customer_dashboard(request, on_index=None):
     select_graph_for = 'Call Count'  # default (or Duration)
     search_type = 4  # default Last 24 hours
     selected_campaign = ''
-
+    seven_days_option_list = []
+    temp_result_set = []
+    temp_date_result_set = []
+    only_data_date_list = []
     if campaign_id_list:
         selected_campaign = campaign_id_list[0] # default campaign id
 
@@ -235,16 +238,25 @@ def customer_dashboard(request, on_index=None):
                 {'starting_date__count':data['starting_date__count'],
                  'duration__sum':data['duration__sum'],
                  'duration__avg':data['duration__avg'],
-                 #'disposition': data['disposition'],
+                 #'date_in_int': int(ctime.strftime("%Y%m%d%H")),
                  'starting_datetime': time.mktime(ctime.timetuple()),
                 }
+                seven_days_option_list.append({
+                 'starting_date__count':data['starting_date__count'],
+                 'starting_date':data['starting_date'],
+                 'duration__sum':data['duration__sum'],
+                 'duration__avg':data['duration__avg'],
+                 'date_in_int': int(ctime.strftime("%Y%m%d%H")),
+                 'starting_datetime': time.mktime(ctime.timetuple()),
+                })
+                only_data_date_list.append(ctime.strftime("%Y%m%d"))
             else:
                 # Last 30 days option
                 calls_dict[int(ctime.strftime("%Y%m%d"))] = \
                 {'starting_date__count':data['starting_date__count'],
                  'duration__sum':data['duration__sum'],
                  'duration__avg':data['duration__avg'],
-                 #'disposition': data['disposition'],
+                 #'date_in_int': int(ctime.strftime("%Y%m%d")),
                  'starting_datetime': time.mktime(ctime.timetuple()),
                 }
 
@@ -255,11 +267,13 @@ def customer_dashboard(request, on_index=None):
             # all options except 30 days
             if int(search_type) >= 2:
                 inttime = int(date.strftime("%Y%m%d%H"))
+                inttime_seven_days = int(date.strftime("%Y%m%d"))
             else:
                 inttime = int(date.strftime("%Y%m%d"))
 
             name_date = _(date.strftime("%B")) + " " + str(date.day) + \
                         ", " + str(date.year)
+
             if inttime in calls_dict.keys():
                 total_data.append({'count': i, 'day': date.day,
                                    'month': date.month, 'year': date.year,
@@ -289,6 +303,277 @@ def customer_dashboard(request, on_index=None):
                                    })
             i += 1
 
+    #  following sample code for Last 7 days option
+    j = 0
+        
+    for date in dateList:
+        inttime = str(date.strftime("%Y%m%d"))
+        try:
+            only_data_date_list.index(inttime)
+            for calls_itme in seven_days_option_list:
+                # check dateList date into seven_days_option_list date
+                if str(calls_itme['date_in_int'])[0:8] == inttime:
+                    temp_date = str(calls_itme['date_in_int'])[0:8]
+                    name_date = \
+                    datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 00'),
+                                      '%Y-%m-%d %H')
+                    name_date = _(date.strftime("%B")) + " " + str(date.day) + \
+                                 ", " + str(date.year)
+                    temp_result_set.append({'count':j, 'day': temp_date[6:8],
+                                            'month':temp_date[4:6], 'year': temp_date[0:4],
+                                            'date':name_date ,
+                                            'starting_date__count':0,
+                                            'duration__sum':0, 'duration__avg':0,
+                                            'starting_date': inttime,
+                                           })
+                    j = j + 1
+                    name_date = \
+                    datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 06'),
+                                      '%Y-%m-%d %H')
+                    name_date = _(date.strftime("%B")) + " " + str(date.day) + \
+                                 ", " + str(date.year)
+                    temp_result_set.append({'count': j, 'day': temp_date[6:8],
+                                            'month':temp_date[4:6], 'year': temp_date[0:4],
+                                            'date':name_date ,
+                                            'starting_date__count':0,
+                                            'duration__sum':0, 'duration__avg':0,
+                                            'starting_date': inttime,
+                                           })
+                    j = j + 1
+                    name_date = \
+                    datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 12'),
+                                      '%Y-%m-%d %H')
+                    name_date = _(date.strftime("%B")) + " " + str(date.day) + \
+                                 ", " + str(date.year)
+                    temp_result_set.append({'count':j, 'day': temp_date[6:8],
+                                            'month':temp_date[4:6], 'year': temp_date[0:4],
+                                            'date':name_date ,
+                                            'starting_date__count':0,
+                                            'duration__sum':0, 'duration__avg':0,
+                                            'starting_date': inttime,
+                                           })
+                    j = j + 1
+                    name_date = \
+                    datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 18'),
+                                      '%Y-%m-%d %H')
+                    name_date = _(date.strftime("%B")) + " " + str(date.day) + \
+                                 ", " + str(date.year)
+                    temp_result_set.append({'count':j, 'day': temp_date[6:8],
+                                            'month':temp_date[4:6], 'year': temp_date[0:4],
+                                            'date':name_date ,
+                                            'starting_date__count':0,
+                                            'duration__sum':0,
+                                            'duration__avg':0,
+                                            'starting_date': inttime,
+                                           })
+                    j = j + 1
+                    name_date = \
+                    datetime.strptime(str(calls_itme['starting_date']), '%Y-%m-%d %H')
+
+                    name_date = _(name_date.strftime("%B")) + " " + str(name_date.day) + \
+                                 ", " + str(date.year)
+                    temp_result_00 = cmp(int(calls_itme['date_in_int']),
+                                      int(str(calls_itme['date_in_int'])[0:8] + '00'))
+                    if temp_result_00 == 1:
+                        # greater than
+                        temp_result_06 = cmp(int(calls_itme['date_in_int']),
+                                          int(str(calls_itme['date_in_int'])[0:8] + '06'))
+                        if temp_result_06 == 1:
+                            # greater than
+                            temp_result_12 = cmp(int(calls_itme['date_in_int']),
+                                              int(str(calls_itme['date_in_int'])[0:8] + '12'))
+                            if temp_result_12 == 1:
+                                # greater than
+                                temp_result_18 = cmp(int(calls_itme['date_in_int']),
+                                                  int(str(calls_itme['date_in_int'])[0:8] + '18'))
+                                if temp_result_18 == 1:
+                                    # greater than
+                                    temp_result_24 = cmp(int(calls_itme['date_in_int']),
+                                                      int(str(calls_itme['date_in_int'])[0:8] + '24'))
+                                    if temp_result_24 == 0:
+                                        temp_result_set.append({
+                                                                'count':j,
+                                                                'day': temp_date[6:8],
+                                                                'month':temp_date[4:6],
+                                                                'year': temp_date[0:4],
+                                                                'date':name_date ,
+                                                                'starting_date__count': calls_itme['starting_date__count'],
+                                                                'duration__sum': calls_itme['duration__sum'],
+                                                                'duration__avg': calls_itme['duration__avg'],
+                                                               })
+                                        j = j + 1
+                                    if temp_result_24 == -1:
+                                        temp_result_set.append({
+                                                                'count':j,
+                                                                'day': temp_date[6:8],
+                                                                'month':temp_date[4:6],
+                                                                'year': temp_date[0:4],
+                                                                'date':name_date ,
+                                                                'starting_date__count': calls_itme['starting_date__count'],
+                                                                'duration__sum': calls_itme['duration__sum'],
+                                                                'duration__avg': calls_itme['duration__avg'],
+                                                               })
+                                        j = j + 1
+                                if temp_result_18 == 0:
+                                    temp_result_set.append({
+                                                            'count':j,
+                                                            'day': temp_date[6:8],
+                                                            'month':temp_date[4:6],
+                                                            'year': temp_date[0:4],
+                                                            'date':name_date ,
+                                                            'starting_date__count': calls_itme['starting_date__count'],
+                                                            'duration__sum': calls_itme['duration__sum'],
+                                                            'duration__avg': calls_itme['duration__avg'],
+                                                           })
+                                    j = j + 1
+                                if temp_result_18 == -1:
+                                    temp_result_set.append({
+                                                            'count':j,
+                                                            'day': temp_date[6:8],
+                                                            'month':temp_date[4:6],
+                                                            'year': temp_date[0:4],
+                                                            'date':name_date ,
+                                                            'starting_date__count': calls_itme['starting_date__count'],
+                                                            'duration__sum': calls_itme['duration__sum'],
+                                                            'duration__avg': calls_itme['duration__avg'],
+                                                           })
+                                    j = j + 1
+                            if temp_result_12 == 0:
+                                temp_result_set.append({
+                                                        'count':j,
+                                                        'day': temp_date[6:8],
+                                                        'month':temp_date[4:6],
+                                                        'year': temp_date[0:4],
+                                                        'date':name_date ,
+                                                        'starting_date__count': calls_itme['starting_date__count'],
+                                                        'duration__sum': calls_itme['duration__sum'],
+                                                        'duration__avg': calls_itme['duration__avg'],
+                                                       })
+                                j = j + 1
+                            if temp_result_12 == -1:
+                                temp_result_set.append({
+                                                        'count':j,
+                                                        'day': temp_date[6:8],
+                                                        'month':temp_date[4:6],
+                                                        'year': temp_date[0:4],
+                                                        'date':name_date ,
+                                                        'starting_date__count': calls_itme['starting_date__count'],
+                                                        'duration__sum': calls_itme['duration__sum'],
+                                                        'duration__avg': calls_itme['duration__avg'],
+                                                       })
+                                j = j + 1
+                        if temp_result_06 == 0:
+                            temp_result_set.append({
+                                                    'count':j,
+                                                    'day': temp_date[6:8],
+                                                    'month':temp_date[4:6],
+                                                    'year': temp_date[0:4],
+                                                    'date':name_date ,
+                                                    'starting_date__count': calls_itme['starting_date__count'],
+                                                    'duration__sum': calls_itme['duration__sum'],
+                                                    'duration__avg': calls_itme['duration__avg'],
+                                                   })
+                            j = j + 1
+                        if temp_result_06 == -1:
+                            temp_result_set.append({
+                                                    'count':j,
+                                                    'day': temp_date[6:8],
+                                                    'month':temp_date[4:6],
+                                                    'year': temp_date[0:4],
+                                                    'date':name_date ,
+                                                    'starting_date__count': calls_itme['starting_date__count'],
+                                                    'duration__sum': calls_itme['duration__sum'],
+                                                    'duration__avg': calls_itme['duration__avg'],
+                                                   })
+                            j = j + 1
+                    if temp_result_00 == 0:
+                        temp_result_set.append({
+                                                'count':j,
+                                                'day': temp_date[6:8],
+                                                'month':temp_date[4:6],
+                                                'year': temp_date[0:4],
+                                                'date':name_date ,
+                                                'starting_date__count': calls_itme['starting_date__count'],
+                                                'duration__sum': calls_itme['duration__sum'],
+                                                'duration__avg': calls_itme['duration__avg'],
+                                               })
+                        j = j + 1
+                    if temp_result_00 == -1:
+                        temp_result_set.append({
+                                                'count':j,
+                                                'day': temp_date[6:8],
+                                                'month':temp_date[4:6],
+                                                'year': temp_date[0:4],
+                                                'date':name_date ,
+                                                'starting_date__count': calls_itme['starting_date__count'],
+                                                'duration__sum': calls_itme['duration__sum'],
+                                                'duration__avg': calls_itme['duration__avg'],
+                                               })
+                        j = j + 1
+        except:
+            print inttime
+            inttime = datetime.strptime(str(inttime), '%Y%m%d')
+            temp_date = str(inttime)[0:4] + str(inttime)[5:7] + str(inttime)[8:10]
+            name_date = \
+            datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 00'),
+                              '%Y-%m-%d %H')
+            name_date = _(date.strftime("%B")) + " " + str(date.day) + \
+                         ", " + str(date.year)
+            temp_result_set.append({'count':j, 'day': temp_date[6:8],
+                                    'month':temp_date[4:6], 'year': temp_date[0:4],
+                                    'date':name_date ,
+                                    'starting_date__count':0,
+                                    'duration__sum':0, 'duration__avg':0,
+                                    'starting_date': inttime,
+                                   })
+            j = j + 1
+            name_date = \
+            datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 06'),
+                              '%Y-%m-%d %H')
+            name_date = _(date.strftime("%B")) + " " + str(date.day) + \
+                         ", " + str(date.year)
+            temp_result_set.append({'count': j, 'day': temp_date[6:8],
+                                    'month':temp_date[4:6], 'year': temp_date[0:4],
+                                    'date':name_date ,
+                                    'starting_date__count':0,
+                                    'duration__sum':0, 'duration__avg':0,
+                                    'starting_date': inttime,
+                                   })
+            j = j + 1
+            name_date = \
+            datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 12'),
+                              '%Y-%m-%d %H')
+            name_date = _(date.strftime("%B")) + " " + str(date.day) + \
+                         ", " + str(date.year)
+            temp_result_set.append({'count':j, 'day': temp_date[6:8],
+                                    'month':temp_date[4:6], 'year': temp_date[0:4],
+                                    'date':name_date ,
+                                    'starting_date__count':0,
+                                    'duration__sum':0, 'duration__avg':0,
+                                    'starting_date': inttime,
+                                   })
+            j = j + 1
+            name_date = \
+            datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 18'),
+                              '%Y-%m-%d %H')
+            name_date = _(date.strftime("%B")) + " " + str(date.day) + \
+                         ", " + str(date.year)
+            temp_result_set.append({'count':j, 'day': temp_date[6:8],
+                                    'month':temp_date[4:6], 'year': temp_date[0:4],
+                                    'date':name_date ,
+                                    'starting_date__count':0,
+                                    'duration__sum':0,
+                                    'duration__avg':0,
+                                    'starting_date': inttime,
+                                   })
+            j = j + 1
+
+    #for i in temp_result_set:
+    #    print i
+    # total_data = temp_result_set (for last 7 days option)
+    if int(search_type) == 2:
+        total_data = temp_result_set
+
     # Contacts which are successfully called for running campaign
     reached_contact = 0
     for i in campaign:
@@ -298,6 +583,7 @@ def customer_dashboard(request, on_index=None):
         reached_contact += campaign_subscriber
 
     template = 'frontend/dashboard.html'
+
     data = {
         'module': current_view(request),
         'form': form,

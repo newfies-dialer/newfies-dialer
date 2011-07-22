@@ -305,26 +305,30 @@ def customer_dashboard(request, on_index=None):
 
     #  following sample code for Last 7 days option
     j = 0
-    #for calls_itme in seven_days_option_list:
-    #    print calls_itme['date_in_int']
-
     for date in dateList:
         inttime = str(date.strftime("%Y%m%d"))
         try:
+            # Search inttime time only_data_date_list
             only_data_date_list.index(inttime)
+            # current/previous date & count check to avoid duplicate records
+            # in final record set
             current_data_date = inttime
             previuos_data_date = ''
             current_previous_count = 0
+
             for calls_itme in seven_days_option_list:
                 if previuos_data_date == '':
                     previuos_data_date = current_data_date
+
                 # check dateList date into seven_days_option_list date
                 if str(calls_itme['date_in_int'])[0:8] == inttime:
-
+                    # compare prvious & current date & count
                     if previuos_data_date == str(calls_itme['date_in_int'])[0:8] \
                        and current_previous_count == 0:
-                        #print "do " + previuos_data_date
+
+                        # count increment
                         current_previous_count = current_previous_count + 1
+
                         temp_date = str(calls_itme['date_in_int'])[0:8]
                         name_date = \
                         datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 00'),
@@ -382,10 +386,9 @@ def customer_dashboard(request, on_index=None):
                     else:
                         previuos_data_date = str(calls_itme['date_in_int'])[0:8]
                         current_previous_count = current_previous_count + 1
-                        
 
-
-
+                    # only add seven_days_option_list record
+                    # cmp(val1, val2) return (gt = 1, eq = 0, lt = -1)
                     name_date = \
                     datetime.strptime(str(calls_itme['starting_date']), '%Y-%m-%d %H')
 
@@ -531,7 +534,7 @@ def customer_dashboard(request, on_index=None):
                                                })
                         j = j + 1
         except:
-            #print inttime
+            # add data for dates which are not in seven_days_option_list
             inttime = datetime.strptime(str(inttime), '%Y%m%d')
             temp_date = str(inttime)[0:4] + str(inttime)[5:7] + str(inttime)[8:10]
             name_date = \
@@ -588,8 +591,6 @@ def customer_dashboard(request, on_index=None):
                                    })
             j = j + 1
 
-    #for i in temp_result_set:
-    #    print i
     # total_data = temp_result_set (for last 7 days option)
     if int(search_type) == 2:
         total_data = temp_result_set

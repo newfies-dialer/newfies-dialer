@@ -111,8 +111,7 @@ def customer_dashboard(request, on_index=None):
     search_type = 4  # default Last 24 hours
     selected_campaign = ''
     seven_days_option_list = []
-    temp_result_set = []
-    temp_date_result_set = []
+    seven_days_result_set = []
     only_data_date_list = []
     if campaign_id_list:
         selected_campaign = campaign_id_list[0] # default campaign id
@@ -261,6 +260,8 @@ def customer_dashboard(request, on_index=None):
                 }
 
         dateList = date_range(mintime, maxtime, q=search_type)
+        #for i in seven_days_option_list:
+        #    print i
 
         i = 0
         for date in dateList:
@@ -328,61 +329,46 @@ def customer_dashboard(request, on_index=None):
 
                         # count increment
                         current_previous_count = current_previous_count + 1
-
-                        temp_date = str(calls_itme['date_in_int'])[0:8]
-                        name_date = \
-                        datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 00'),
-                                          '%Y-%m-%d %H')
-                        name_date = _(date.strftime("%B")) + " " + str(date.day) + \
-                                     ", " + str(date.year)
-                        temp_result_set.append({'count':j, 'day': temp_date[6:8],
-                                                'month':temp_date[4:6], 'year': temp_date[0:4],
-                                                'date':name_date ,
-                                                'starting_date__count':0,
-                                                'duration__sum':0, 'duration__avg':0,
-                                                'starting_date': inttime,
-                                               })
-                        j = j + 1
-                        name_date = \
-                        datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 06'),
-                                          '%Y-%m-%d %H')
-                        name_date = _(date.strftime("%B")) + " " + str(date.day) + \
-                                     ", " + str(date.year)
-                        temp_result_set.append({'count': j, 'day': temp_date[6:8],
-                                                'month':temp_date[4:6], 'year': temp_date[0:4],
-                                                'date':name_date ,
-                                                'starting_date__count':0,
-                                                'duration__sum':0, 'duration__avg':0,
-                                                'starting_date': inttime,
-                                               })
-                        j = j + 1
-                        name_date = \
-                        datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 12'),
-                                          '%Y-%m-%d %H')
-                        name_date = _(date.strftime("%B")) + " " + str(date.day) + \
-                                     ", " + str(date.year)
-                        temp_result_set.append({'count':j, 'day': temp_date[6:8],
-                                                'month':temp_date[4:6], 'year': temp_date[0:4],
-                                                'date':name_date ,
-                                                'starting_date__count':0,
-                                                'duration__sum':0, 'duration__avg':0,
-                                                'starting_date': inttime,
-                                               })
-                        j = j + 1
-                        name_date = \
-                        datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 18'),
-                                          '%Y-%m-%d %H')
-                        name_date = _(date.strftime("%B")) + " " + str(date.day) + \
-                                     ", " + str(date.year)
-                        temp_result_set.append({'count':j, 'day': temp_date[6:8],
-                                                'month':temp_date[4:6], 'year': temp_date[0:4],
+                        # per day option
+                        for option in [0, 6, 12, 18]:
+                            temp_date = str(calls_itme['date_in_int'])[0:8]
+                            if option == 0:
+                                name_date = \
+                                datetime.strptime(str(temp_date[0:4] + '-' +
+                                                      temp_date[4:6] + '-' +
+                                                      temp_date[6:8] + ' 00'),
+                                                      '%Y-%m-%d %H')
+                            if option == 6:
+                                name_date = \
+                                datetime.strptime(str(temp_date[0:4] + '-' +
+                                                      temp_date[4:6] + '-' +
+                                                      temp_date[6:8] + ' 06'),
+                                                      '%Y-%m-%d %H')
+                            if option == 12:
+                                name_date = \
+                                datetime.strptime(str(temp_date[0:4] + '-' +
+                                                      temp_date[4:6] + '-' +
+                                                      temp_date[6:8] + ' 12'),
+                                                      '%Y-%m-%d %H')
+                            if option == 18:
+                                name_date = \
+                                datetime.strptime(str(temp_date[0:4] + '-' +
+                                                      temp_date[4:6] + '-' +
+                                                      temp_date[6:8] + ' 18'),
+                                                      '%Y-%m-%d %H')
+                            name_date = _(date.strftime("%B")) + " " + str(date.day) + \
+                                         ", " + str(date.year)
+                            seven_days_result_set.append({'count':j,
+                                                'day': temp_date[6:8],
+                                                'month':temp_date[4:6],
+                                                'year': temp_date[0:4],
                                                 'date':name_date ,
                                                 'starting_date__count':0,
                                                 'duration__sum':0,
                                                 'duration__avg':0,
                                                 'starting_date': inttime,
                                                })
-                        j = j + 1
+                            j = j + 1
                     else:
                         previuos_data_date = str(calls_itme['date_in_int'])[0:8]
                         current_previous_count = current_previous_count + 1
@@ -393,78 +379,60 @@ def customer_dashboard(request, on_index=None):
 
                     name_date = _(name_date.strftime("%B")) + " " + str(name_date.day) + \
                                  ", " + str(date.year)
-                    temp_result_set.append({
-                                            'count':j,
-                                            'day': temp_date[6:8],
-                                            'month':temp_date[4:6],
-                                            'year': temp_date[0:4],
-                                            'date':name_date ,
-                                            'starting_date__count': calls_itme['starting_date__count'],
-                                            'duration__sum': calls_itme['duration__sum'],
-                                            'duration__avg': calls_itme['duration__avg'],
-                                           })
+                    seven_days_result_set.append({'count': j,
+                            'day': temp_date[6:8], 'month':temp_date[4:6],
+                            'year': temp_date[0:4], 'date':name_date ,
+                            'starting_date__count': \
+                                calls_itme['starting_date__count'],
+                            'duration__sum': calls_itme['duration__sum'],
+                            'duration__avg': calls_itme['duration__avg'],
+                           })
                     j = j + 1
         except:
             # add data for dates which are not in seven_days_option_list
             inttime = datetime.strptime(str(inttime), '%Y%m%d')
-            temp_date = str(inttime)[0:4] + str(inttime)[5:7] + str(inttime)[8:10]
-            name_date = \
-            datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 00'),
-                              '%Y-%m-%d %H')
-            name_date = _(date.strftime("%B")) + " " + str(date.day) + \
-                         ", " + str(date.year)
-            temp_result_set.append({'count':j, 'day': temp_date[6:8],
-                                    'month':temp_date[4:6], 'year': temp_date[0:4],
-                                    'date':name_date ,
-                                    'starting_date__count':0,
-                                    'duration__sum':0, 'duration__avg':0,
-                                    'starting_date': inttime,
-                                   })
-            j = j + 1
-            name_date = \
-            datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 06'),
-                              '%Y-%m-%d %H')
-            name_date = _(date.strftime("%B")) + " " + str(date.day) + \
-                         ", " + str(date.year)
-            temp_result_set.append({'count': j, 'day': temp_date[6:8],
-                                    'month':temp_date[4:6], 'year': temp_date[0:4],
-                                    'date':name_date ,
-                                    'starting_date__count':0,
-                                    'duration__sum':0, 'duration__avg':0,
-                                    'starting_date': inttime,
-                                   })
-            j = j + 1
-            name_date = \
-            datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 12'),
-                              '%Y-%m-%d %H')
-            name_date = _(date.strftime("%B")) + " " + str(date.day) + \
-                         ", " + str(date.year)
-            temp_result_set.append({'count':j, 'day': temp_date[6:8],
-                                    'month':temp_date[4:6], 'year': temp_date[0:4],
-                                    'date':name_date ,
-                                    'starting_date__count':0,
-                                    'duration__sum':0, 'duration__avg':0,
-                                    'starting_date': inttime,
-                                   })
-            j = j + 1
-            name_date = \
-            datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 18'),
-                              '%Y-%m-%d %H')
-            name_date = _(date.strftime("%B")) + " " + str(date.day) + \
-                         ", " + str(date.year)
-            temp_result_set.append({'count':j, 'day': temp_date[6:8],
-                                    'month':temp_date[4:6], 'year': temp_date[0:4],
-                                    'date':name_date ,
-                                    'starting_date__count':0,
-                                    'duration__sum':0,
-                                    'duration__avg':0,
-                                    'starting_date': inttime,
-                                   })
-            j = j + 1
+            # per day option 
+            for option in [0, 6, 12, 18]:
+                temp_date = str(inttime)[0:4] + str(inttime)[5:7] + str(inttime)[8:10]
+                if option == 0:
+                    name_date = \
+                    datetime.strptime(str(temp_date[0:4] + '-' +
+                                          temp_date[4:6] + '-' +
+                                          temp_date[6:8] + ' 00'),
+                                          '%Y-%m-%d %H')
+                if option == 6:
+                    name_date = \
+                    datetime.strptime(str(temp_date[0:4] + '-' +
+                                          temp_date[4:6] + '-' +
+                                          temp_date[6:8] + ' 06'),
+                                          '%Y-%m-%d %H')
+                if option == 12:
+                    name_date = \
+                    datetime.strptime(str(temp_date[0:4] + '-' +
+                                          temp_date[4:6] + '-' +
+                                          temp_date[6:8] + ' 12'),
+                                          '%Y-%m-%d %H')
+                if option == 18:
+                    name_date = \
+                    datetime.strptime(str(temp_date[0:4] + '-' +
+                                          temp_date[4:6] + '-' +
+                                          temp_date[6:8] + ' 18'),
+                                          '%Y-%m-%d %H')
+                name_date = _(date.strftime("%B")) + " " + str(date.day) + \
+                             ", " + str(date.year)
+                seven_days_result_set.append({'count':j, 'day': temp_date[6:8],
+                                        'month':temp_date[4:6], 'year': temp_date[0:4],
+                                        'date':name_date ,
+                                        'starting_date__count':0,
+                                        'duration__sum':0, 'duration__avg':0,
+                                        'starting_date': inttime,
+                                       })
+                j = j + 1
 
-    # total_data = temp_result_set (for last 7 days option)
+
+    # total_data = seven_days_result_set (for last 7 days option)
     if int(search_type) == 2:
-        total_data = temp_result_set
+        total_data = seven_days_result_set
 
     # Contacts which are successfully called for running campaign
     reached_contact = 0

@@ -40,7 +40,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
     of a VoIPCall."""
     can_add = False
     detail_title = _("Call Report")
-    list_display = ('user', 'used_gateway', 'callid', 'callerid',
+    list_display = ('id', 'user', 'used_gateway', 'callid', 'callerid',
                     'phone_number', 'starting_date', 'min_duration',
                     'billsec', 'disposition', 'hangup_cause',
                     'hangup_cause_q850')

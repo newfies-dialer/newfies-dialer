@@ -434,6 +434,9 @@ def customer_dashboard(request, on_index=None):
     if int(search_type) == 2:
         total_data = seven_days_result_set
 
+    # Last 12 hours option
+    for date in dateList:
+        print date
     # Contacts which are successfully called for running campaign
     reached_contact = 0
     for i in campaign:

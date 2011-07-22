@@ -40,10 +40,29 @@ class VoIPCallAdmin(admin.ModelAdmin):
     of a VoIPCall."""
     can_add = False
     detail_title = _("Call Report")
-    list_display = ('id', 'user', 'used_gateway', 'callid', 'callerid',
+    list_display = ('id', 'user_link', 'used_gateway_link', 'callid', 'callerid',
                     'phone_number', 'starting_date', 'min_duration',
                     'billsec', 'disposition', 'hangup_cause',
                     'hangup_cause_q850')
+
+    def user_link(self, obj):
+        """User link to user profile"""
+        if obj.user.is_staff:
+            url = reverse('admin:auth_staff_change', args=(obj.user_id,))
+        else:
+            url = reverse('admin:auth_customer_change', args=(obj.user_id,))
+        return '<a href="%s"><b>%s</b></a>' %  (url, obj.user)
+    user_link.allow_tags = True
+    user_link.short_description = _('User')
+
+    def used_gateway_link(self, obj):
+        """Used gateway link to edit gateway detail"""
+        if obj.used_gateway:
+            url = reverse('admin:dialer_gateway_gateway_change',
+                          args=(obj.used_gateway.id,))
+            return '<a href="%s">%s</a>' %  (url, obj.used_gateway)
+    used_gateway_link.allow_tags = True
+    used_gateway_link.short_description = _('Used gateway')
 
     def has_add_permission(self, request):
         """Remove add permission on VoIP Call Report model

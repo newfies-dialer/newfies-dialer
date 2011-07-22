@@ -388,151 +388,22 @@ def customer_dashboard(request, on_index=None):
                         current_previous_count = current_previous_count + 1
 
                     # only add seven_days_option_list record
-                    # cmp(val1, val2) return (gt = 1, eq = 0, lt = -1)
                     name_date = \
                     datetime.strptime(str(calls_itme['starting_date']), '%Y-%m-%d %H')
 
                     name_date = _(name_date.strftime("%B")) + " " + str(name_date.day) + \
                                  ", " + str(date.year)
-                    temp_result_00 = cmp(int(calls_itme['date_in_int']),
-                                      int(str(calls_itme['date_in_int'])[0:8] + '00'))
-
-                    if temp_result_00 == 1:
-                        # greater than
-                        temp_result_06 = cmp(int(calls_itme['date_in_int']),
-                                          int(str(calls_itme['date_in_int'])[0:8] + '06'))
-                        if temp_result_06 == 1:
-                            # greater than
-                            temp_result_12 = cmp(int(calls_itme['date_in_int']),
-                                              int(str(calls_itme['date_in_int'])[0:8] + '12'))
-                            if temp_result_12 == 1:
-                                # greater than
-                                temp_result_18 = cmp(int(calls_itme['date_in_int']),
-                                                  int(str(calls_itme['date_in_int'])[0:8] + '18'))
-                                if temp_result_18 == 1:
-                                    # greater than
-                                    temp_result_24 = cmp(int(calls_itme['date_in_int']),
-                                                      int(str(calls_itme['date_in_int'])[0:8] + '24'))
-                                    if temp_result_24 == 0:
-                                        temp_result_set.append({
-                                                                'count':j,
-                                                                'day': temp_date[6:8],
-                                                                'month':temp_date[4:6],
-                                                                'year': temp_date[0:4],
-                                                                'date':name_date ,
-                                                                'starting_date__count': calls_itme['starting_date__count'],
-                                                                'duration__sum': calls_itme['duration__sum'],
-                                                                'duration__avg': calls_itme['duration__avg'],
-                                                               })
-                                        j = j + 1
-                                    if temp_result_24 == -1:
-                                        temp_result_set.append({
-                                                                'count':j,
-                                                                'day': temp_date[6:8],
-                                                                'month':temp_date[4:6],
-                                                                'year': temp_date[0:4],
-                                                                'date':name_date ,
-                                                                'starting_date__count': calls_itme['starting_date__count'],
-                                                                'duration__sum': calls_itme['duration__sum'],
-                                                                'duration__avg': calls_itme['duration__avg'],
-                                                               })
-                                        j = j + 1
-                                if temp_result_18 == 0:
-                                    temp_result_set.append({
-                                                            'count':j,
-                                                            'day': temp_date[6:8],
-                                                            'month':temp_date[4:6],
-                                                            'year': temp_date[0:4],
-                                                            'date':name_date ,
-                                                            'starting_date__count': calls_itme['starting_date__count'],
-                                                            'duration__sum': calls_itme['duration__sum'],
-                                                            'duration__avg': calls_itme['duration__avg'],
-                                                           })
-                                    j = j + 1
-                                if temp_result_18 == -1:
-                                    temp_result_set.append({
-                                                            'count':j,
-                                                            'day': temp_date[6:8],
-                                                            'month':temp_date[4:6],
-                                                            'year': temp_date[0:4],
-                                                            'date':name_date ,
-                                                            'starting_date__count': calls_itme['starting_date__count'],
-                                                            'duration__sum': calls_itme['duration__sum'],
-                                                            'duration__avg': calls_itme['duration__avg'],
-                                                           })
-                                    j = j + 1
-                            if temp_result_12 == 0:
-                                temp_result_set.append({
-                                                        'count':j,
-                                                        'day': temp_date[6:8],
-                                                        'month':temp_date[4:6],
-                                                        'year': temp_date[0:4],
-                                                        'date':name_date ,
-                                                        'starting_date__count': calls_itme['starting_date__count'],
-                                                        'duration__sum': calls_itme['duration__sum'],
-                                                        'duration__avg': calls_itme['duration__avg'],
-                                                       })
-                                j = j + 1
-                            if temp_result_12 == -1:
-                                temp_result_set.append({
-                                                        'count':j,
-                                                        'day': temp_date[6:8],
-                                                        'month':temp_date[4:6],
-                                                        'year': temp_date[0:4],
-                                                        'date':name_date ,
-                                                        'starting_date__count': calls_itme['starting_date__count'],
-                                                        'duration__sum': calls_itme['duration__sum'],
-                                                        'duration__avg': calls_itme['duration__avg'],
-                                                       })
-                                j = j + 1
-                        if temp_result_06 == 0:
-                            temp_result_set.append({
-                                                    'count':j,
-                                                    'day': temp_date[6:8],
-                                                    'month':temp_date[4:6],
-                                                    'year': temp_date[0:4],
-                                                    'date':name_date ,
-                                                    'starting_date__count': calls_itme['starting_date__count'],
-                                                    'duration__sum': calls_itme['duration__sum'],
-                                                    'duration__avg': calls_itme['duration__avg'],
-                                                   })
-                            j = j + 1
-                        if temp_result_06 == -1:
-                            temp_result_set.append({
-                                                    'count':j,
-                                                    'day': temp_date[6:8],
-                                                    'month':temp_date[4:6],
-                                                    'year': temp_date[0:4],
-                                                    'date':name_date ,
-                                                    'starting_date__count': calls_itme['starting_date__count'],
-                                                    'duration__sum': calls_itme['duration__sum'],
-                                                    'duration__avg': calls_itme['duration__avg'],
-                                                   })
-                            j = j + 1
-                    if temp_result_00 == 0:
-                        temp_result_set.append({
-                                                'count':j,
-                                                'day': temp_date[6:8],
-                                                'month':temp_date[4:6],
-                                                'year': temp_date[0:4],
-                                                'date':name_date ,
-                                                'starting_date__count': calls_itme['starting_date__count'],
-                                                'duration__sum': calls_itme['duration__sum'],
-                                                'duration__avg': calls_itme['duration__avg'],
-                                               })
-                        j = j + 1
-                    if temp_result_00 == -1:
-                        temp_result_set.append({
-                                                'count':j,
-                                                'day': temp_date[6:8],
-                                                'month':temp_date[4:6],
-                                                'year': temp_date[0:4],
-                                                'date':name_date ,
-                                                'starting_date__count': calls_itme['starting_date__count'],
-                                                'duration__sum': calls_itme['duration__sum'],
-                                                'duration__avg': calls_itme['duration__avg'],
-                                               })
-                        j = j + 1
+                    temp_result_set.append({
+                                            'count':j,
+                                            'day': temp_date[6:8],
+                                            'month':temp_date[4:6],
+                                            'year': temp_date[0:4],
+                                            'date':name_date ,
+                                            'starting_date__count': calls_itme['starting_date__count'],
+                                            'duration__sum': calls_itme['duration__sum'],
+                                            'duration__avg': calls_itme['duration__avg'],
+                                           })
+                    j = j + 1
         except:
             # add data for dates which are not in seven_days_option_list
             inttime = datetime.strptime(str(inttime), '%Y%m%d')

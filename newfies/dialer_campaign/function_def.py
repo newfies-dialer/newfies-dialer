@@ -271,7 +271,7 @@ def date_range(start, end, q):
                dtstart=parse(str(start)),
                until=parse(str(end))))
     if int(q) == 2:
-        return list(rrule(DAILY, #interval=6,
+        return list(rrule(DAILY,
                dtstart=parse(str(start)),
                until=parse(str(end))))
     if int(q) == 3 or int(q) == 4:
@@ -279,7 +279,7 @@ def date_range(start, end, q):
                dtstart=parse(str(start)),
                until=parse(str(end))))
     if int(q) == 5:
-        return list(rrule(MINUTELY, interval=30,
+        return list(rrule(HOURLY, interval=1,
                dtstart=parse(str(start)),
                until=parse(str(end))))
     if int(q) == 6:

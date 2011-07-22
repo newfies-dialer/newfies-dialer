@@ -112,6 +112,8 @@ def customer_dashboard(request, on_index=None):
     selected_campaign = ''
     seven_days_option_list = []
     seven_days_result_set = []
+    twelve_hour_list = []
+    twelve_hour_result_set = []
     only_data_date_list = []
     if campaign_id_list:
         selected_campaign = campaign_id_list[0] # default campaign id
@@ -138,6 +140,8 @@ def customer_dashboard(request, on_index=None):
         # date_length is used to do group by starting_date
         if int(search_type) >= 2: # all options except 30 days
             date_length = 13
+            if int(search_type) >= 5:
+                date_length = 16
         else:
             date_length = 10 # Last 30 days option
 
@@ -218,6 +222,14 @@ def customer_dashboard(request, on_index=None):
                                  0, # int(data['starting_date'][14:16])
                                  0, # int(data['starting_date'][17:19])
                                  0)
+                if int(search_type) >= 5:
+                    ctime = datetime(int(data['starting_date'][0:4]),
+                                 int(data['starting_date'][5:7]),
+                                 int(data['starting_date'][8:10]),
+                                 int(data['starting_date'][11:13]),
+                                 int(data['starting_date'][14:16]),
+                                 0, # int(data['starting_date'][17:19])
+                                 0)
             else:
                 ctime = datetime(int(data['starting_date'][0:4]),
                                  int(data['starting_date'][5:7]),
@@ -249,6 +261,16 @@ def customer_dashboard(request, on_index=None):
                  'starting_datetime': time.mktime(ctime.timetuple()),
                 })
                 only_data_date_list.append(ctime.strftime("%Y%m%d"))
+                if int(search_type) >= 5:
+                    twelve_hour_list.append({
+                     'starting_date__count':data['starting_date__count'],
+                     'starting_date':data['starting_date'],
+                     'duration__sum':data['duration__sum'],
+                     'duration__avg':data['duration__avg'],
+                     'date_in_int': int(ctime.strftime("%Y%m%d%H%M")),
+                     'starting_datetime': time.mktime(ctime.timetuple()),
+                    })
+                    only_data_date_list.append(ctime.strftime("%Y%m%d%H"))
             else:
                 # Last 30 days option
                 calls_dict[int(ctime.strftime("%Y%m%d"))] = \
@@ -260,15 +282,12 @@ def customer_dashboard(request, on_index=None):
                 }
 
         dateList = date_range(mintime, maxtime, q=search_type)
-        #for i in seven_days_option_list:
-        #    print i
 
         i = 0
         for date in dateList:
             # all options except 30 days
-            if int(search_type) >= 2:
+            if int(search_type) >= 2 and int(search_type) <= 4:
                 inttime = int(date.strftime("%Y%m%d%H"))
-                inttime_seven_days = int(date.strftime("%Y%m%d"))
             else:
                 inttime = int(date.strftime("%Y%m%d"))
 
@@ -304,139 +323,250 @@ def customer_dashboard(request, on_index=None):
                                    })
             i += 1
 
-    #  following sample code for Last 7 days option
-    j = 0
-    for date in dateList:
-        inttime = str(date.strftime("%Y%m%d"))
-        try:
-            # Search inttime time only_data_date_list
-            only_data_date_list.index(inttime)
-            # current/previous date & count check to avoid duplicate records
-            # in final record set
-            current_data_date = inttime
-            previuos_data_date = ''
-            current_previous_count = 0
+        #  following sample code for Last 7 days option
+        j = 0
+        for date in dateList:
+            inttime = str(date.strftime("%Y%m%d"))
+            try:
+                # Search inttime time only_data_date_list
+                only_data_date_list.index(inttime)
+                # current/previous date & count check to avoid duplicate records
+                # in final record set
+                current_data_date = inttime
+                previuos_data_date = ''
+                current_previous_count = 0
 
-            for calls_itme in seven_days_option_list:
-                if previuos_data_date == '':
-                    previuos_data_date = current_data_date
+                for calls_itme in seven_days_option_list:
+                    if previuos_data_date == '':
+                        previuos_data_date = current_data_date
 
-                # check dateList date into seven_days_option_list date
-                if str(calls_itme['date_in_int'])[0:8] == inttime:
-                    # compare prvious & current date & count
-                    if previuos_data_date == str(calls_itme['date_in_int'])[0:8] \
-                       and current_previous_count == 0:
+                    # check dateList date into seven_days_option_list date
+                    if str(calls_itme['date_in_int'])[0:8] == inttime:
+                        # compare prvious & current date & count
+                        if previuos_data_date == str(calls_itme['date_in_int'])[0:8] \
+                           and current_previous_count == 0:
 
-                        # count increment
-                        current_previous_count = current_previous_count + 1
-                        # per day option
-                        for option in [0, 6, 12, 18]:
-                            temp_date = str(calls_itme['date_in_int'])[0:8]
-                            if option == 0:
-                                name_date = \
-                                datetime.strptime(str(temp_date[0:4] + '-' +
-                                                      temp_date[4:6] + '-' +
-                                                      temp_date[6:8] + ' 00'),
-                                                      '%Y-%m-%d %H')
-                            if option == 6:
-                                name_date = \
-                                datetime.strptime(str(temp_date[0:4] + '-' +
-                                                      temp_date[4:6] + '-' +
-                                                      temp_date[6:8] + ' 06'),
-                                                      '%Y-%m-%d %H')
-                            if option == 12:
-                                name_date = \
-                                datetime.strptime(str(temp_date[0:4] + '-' +
-                                                      temp_date[4:6] + '-' +
-                                                      temp_date[6:8] + ' 12'),
-                                                      '%Y-%m-%d %H')
-                            if option == 18:
-                                name_date = \
-                                datetime.strptime(str(temp_date[0:4] + '-' +
-                                                      temp_date[4:6] + '-' +
-                                                      temp_date[6:8] + ' 18'),
-                                                      '%Y-%m-%d %H')
-                            name_date = _(date.strftime("%B")) + " " + str(date.day) + \
-                                         ", " + str(date.year)
-                            seven_days_result_set.append({'count':j,
-                                                'day': temp_date[6:8],
-                                                'month':temp_date[4:6],
-                                                'year': temp_date[0:4],
-                                                'date':name_date ,
-                                                'starting_date__count':0,
-                                                'duration__sum':0,
-                                                'duration__avg':0,
-                                                'starting_date': inttime,
-                                               })
-                            j = j + 1
-                    else:
-                        previuos_data_date = str(calls_itme['date_in_int'])[0:8]
-                        current_previous_count = current_previous_count + 1
+                            # count increment
+                            current_previous_count = current_previous_count + 1
+                            # per day option
+                            for option in [0, 6, 12, 18]:
+                                temp_date = str(calls_itme['date_in_int'])[0:8]
+                                if option == 0:
+                                    name_date = \
+                                    datetime.strptime(str(temp_date[0:4] + '-' +
+                                                          temp_date[4:6] + '-' +
+                                                          temp_date[6:8] + ' 00'),
+                                                          '%Y-%m-%d %H')
+                                if option == 6:
+                                    name_date = \
+                                    datetime.strptime(str(temp_date[0:4] + '-' +
+                                                          temp_date[4:6] + '-' +
+                                                          temp_date[6:8] + ' 06'),
+                                                          '%Y-%m-%d %H')
+                                if option == 12:
+                                    name_date = \
+                                    datetime.strptime(str(temp_date[0:4] + '-' +
+                                                          temp_date[4:6] + '-' +
+                                                          temp_date[6:8] + ' 12'),
+                                                          '%Y-%m-%d %H')
+                                if option == 18:
+                                    name_date = \
+                                    datetime.strptime(str(temp_date[0:4] + '-' +
+                                                          temp_date[4:6] + '-' +
+                                                          temp_date[6:8] + ' 18'),
+                                                          '%Y-%m-%d %H')
+                                name_date = _(date.strftime("%B")) + " " + str(date.day) + \
+                                             ", " + str(date.year)
+                                seven_days_result_set.append({'count':j,
+                                                    'day': temp_date[6:8],
+                                                    'month':temp_date[4:6],
+                                                    'year': temp_date[0:4],
+                                                    'date':name_date ,
+                                                    'starting_date__count':0,
+                                                    'duration__sum':0,
+                                                    'duration__avg':0,
+                                                    'starting_date': inttime,
+                                                   })
+                                j = j + 1
+                        else:
+                            previuos_data_date = str(calls_itme['date_in_int'])[0:8]
+                            current_previous_count = current_previous_count + 1
 
-                    # only add seven_days_option_list record
-                    name_date = \
-                    datetime.strptime(str(calls_itme['starting_date']), '%Y-%m-%d %H')
+                        # only add seven_days_option_list record
+                        name_date = \
+                        datetime.strptime(str(calls_itme['starting_date']), '%Y-%m-%d %H')
 
-                    name_date = _(name_date.strftime("%B")) + " " + str(name_date.day) + \
+                        name_date = _(name_date.strftime("%B")) + " " + str(name_date.day) + \
+                                     ", " + str(date.year)
+                        seven_days_result_set.append({'count': j,
+                                'day': temp_date[6:8], 'month':temp_date[4:6],
+                                'year': temp_date[0:4], 'date':name_date ,
+                                'starting_date__count': \
+                                    calls_itme['starting_date__count'],
+                                'duration__sum': calls_itme['duration__sum'],
+                                'duration__avg': calls_itme['duration__avg'],
+                               })
+                        j = j + 1
+            except:
+                # add data for dates which are not in seven_days_option_list
+                inttime = datetime.strptime(str(inttime), '%Y%m%d')
+                # per day option
+                for option in [0, 6, 12, 18]:
+                    temp_date = str(inttime)[0:4] + str(inttime)[5:7] + str(inttime)[8:10]
+                    if option == 0:
+                        name_date = \
+                        datetime.strptime(str(temp_date[0:4] + '-' +
+                                              temp_date[4:6] + '-' +
+                                              temp_date[6:8] + ' 00'),
+                                              '%Y-%m-%d %H')
+                    if option == 6:
+                        name_date = \
+                        datetime.strptime(str(temp_date[0:4] + '-' +
+                                              temp_date[4:6] + '-' +
+                                              temp_date[6:8] + ' 06'),
+                                              '%Y-%m-%d %H')
+                    if option == 12:
+                        name_date = \
+                        datetime.strptime(str(temp_date[0:4] + '-' +
+                                              temp_date[4:6] + '-' +
+                                              temp_date[6:8] + ' 12'),
+                                              '%Y-%m-%d %H')
+                    if option == 18:
+                        name_date = \
+                        datetime.strptime(str(temp_date[0:4] + '-' +
+                                              temp_date[4:6] + '-' +
+                                              temp_date[6:8] + ' 18'),
+                                              '%Y-%m-%d %H')
+                    name_date = _(date.strftime("%B")) + " " + str(date.day) + \
                                  ", " + str(date.year)
-                    seven_days_result_set.append({'count': j,
-                            'day': temp_date[6:8], 'month':temp_date[4:6],
-                            'year': temp_date[0:4], 'date':name_date ,
-                            'starting_date__count': \
-                                calls_itme['starting_date__count'],
-                            'duration__sum': calls_itme['duration__sum'],
-                            'duration__avg': calls_itme['duration__avg'],
-                           })
+                    seven_days_result_set.append({'count':j, 'day': temp_date[6:8],
+                                            'month':temp_date[4:6], 'year': temp_date[0:4],
+                                            'date':name_date ,
+                                            'starting_date__count':0,
+                                            'duration__sum':0, 'duration__avg':0,
+                                            'starting_date': inttime,
+                                           })
                     j = j + 1
-        except:
-            # add data for dates which are not in seven_days_option_list
-            inttime = datetime.strptime(str(inttime), '%Y%m%d')
-            # per day option 
-            for option in [0, 6, 12, 18]:
-                temp_date = str(inttime)[0:4] + str(inttime)[5:7] + str(inttime)[8:10]
-                if option == 0:
-                    name_date = \
-                    datetime.strptime(str(temp_date[0:4] + '-' +
-                                          temp_date[4:6] + '-' +
-                                          temp_date[6:8] + ' 00'),
-                                          '%Y-%m-%d %H')
-                if option == 6:
-                    name_date = \
-                    datetime.strptime(str(temp_date[0:4] + '-' +
-                                          temp_date[4:6] + '-' +
-                                          temp_date[6:8] + ' 06'),
-                                          '%Y-%m-%d %H')
-                if option == 12:
-                    name_date = \
-                    datetime.strptime(str(temp_date[0:4] + '-' +
-                                          temp_date[4:6] + '-' +
-                                          temp_date[6:8] + ' 12'),
-                                          '%Y-%m-%d %H')
-                if option == 18:
-                    name_date = \
-                    datetime.strptime(str(temp_date[0:4] + '-' +
-                                          temp_date[4:6] + '-' +
-                                          temp_date[6:8] + ' 18'),
-                                          '%Y-%m-%d %H')
-                name_date = _(date.strftime("%B")) + " " + str(date.day) + \
-                             ", " + str(date.year)
-                seven_days_result_set.append({'count':j, 'day': temp_date[6:8],
-                                        'month':temp_date[4:6], 'year': temp_date[0:4],
-                                        'date':name_date ,
-                                        'starting_date__count':0,
-                                        'duration__sum':0, 'duration__avg':0,
-                                        'starting_date': inttime,
-                                       })
-                j = j + 1
 
+        # total_data = seven_days_result_set (for last 7 days option)
+        if int(search_type) == 2:
+            total_data = seven_days_result_set
 
-    # total_data = seven_days_result_set (for last 7 days option)
-    if int(search_type) == 2:
-        total_data = seven_days_result_set
+        #for i in twelve_hour_list:
+        #    print i
+        k = 0
+        # following code for Last 12 hours option
+        for date in dateList:
+            inttime = str(date.strftime("%Y%m%d%H"))
+            try:
+                # Search inttime time twelve_hour_list
+                only_data_date_list.index(inttime)
+                # current/previous date & count check to avoid duplicate records
+                # in final record set
+                current_data_date = inttime
+                previuos_data_date = ''
+                current_previous_count = 0
 
-    # Last 12 hours option
-    for date in dateList:
-        print date
+                for calls_itme in twelve_hour_list:
+                    if previuos_data_date == '':
+                        previuos_data_date = current_data_date
+
+                    # check dateList date into seven_days_option_list date
+                    if str(calls_itme['date_in_int'])[0:10] == inttime:
+                        # compare prvious & current date & count
+                        if previuos_data_date == str(calls_itme['date_in_int'])[0:10] \
+                           and current_previous_count == 0:
+
+                            # count increment
+                            current_previous_count = current_previous_count + 1
+                            # per day option
+
+                            for option in [0, 30]:
+                                temp_date = str(calls_itme['date_in_int'])[0:10]
+                                if option == 0:
+                                    name_date = \
+                                    datetime.strptime(str(temp_date[0:4] + '-' +
+                                                          temp_date[4:6] + '-' +
+                                                          temp_date[6:8] + ' ' +
+                                                          temp_date[8:10]+ ':00' ),
+                                                          '%Y-%m-%d %H:%M')
+                                if option == 30:
+                                    name_date = \
+                                    datetime.strptime(str(temp_date[0:4] + '-' +
+                                                          temp_date[4:6] + '-' +
+                                                          temp_date[6:8] + ' ' +
+                                                          temp_date[8:10]+ ':30' ),
+                                                          '%Y-%m-%d %H:%M')
+                                name_date = _(date.strftime("%B")) + " " + str(date.day) + \
+                                             ", " + str(date.year)
+                                twelve_hour_result_set.append({'count':k,
+                                                    'day': temp_date[6:8],
+                                                    'month':temp_date[4:6],
+                                                    'year': temp_date[0:4],
+                                                    'date':name_date ,
+                                                    'starting_date__count':0,
+                                                    'duration__sum':0,
+                                                    'duration__avg':0,
+                                                    'starting_date': inttime,
+                                                   })
+                                k = k + 1
+                        else:
+                            previuos_data_date = str(calls_itme['date_in_int'])[0:10]
+                            current_previous_count = current_previous_count + 1
+
+                        # only add seven_days_option_list record
+                        name_date = \
+                        datetime.strptime(str(calls_itme['starting_date']), '%Y-%m-%d %H:%M')
+
+                        name_date = _(name_date.strftime("%B")) + " " + str(name_date.day) + \
+                                     ", " + str(date.year)
+                        twelve_hour_result_set.append({'count': k,
+                                'day': temp_date[6:8], 'month':temp_date[4:6],
+                                'year': temp_date[0:4], 'date':name_date ,
+                                'starting_date__count': \
+                                    calls_itme['starting_date__count'],
+                                'duration__sum': calls_itme['duration__sum'],
+                                'duration__avg': calls_itme['duration__avg'],
+                               })
+                        k = k + 1
+            except:
+                # add data for dates which are not in seven_days_option_list
+                inttime = datetime.strptime(str(inttime), '%Y%m%d%H')
+                for option in [0, 30]:
+                    temp_date = \
+                    str(inttime)[0:4] + str(inttime)[5:7] + str(inttime)[8:10] + \
+                    str(inttime)[11:13]
+                    if option == 0:
+                        name_date = \
+                        datetime.strptime(str(temp_date[0:4] + '-' +
+                                              temp_date[4:6] + '-' +
+                                              temp_date[6:8] + ' ' +
+                                              temp_date[9:11] + ':00' ),
+                                              '%Y-%m-%d %H:%M')
+                    if option == 30:
+                        name_date = \
+                        datetime.strptime(str(temp_date[0:4] + '-' +
+                                              temp_date[4:6] + '-' +
+                                              temp_date[6:8] + ' ' +
+                                              temp_date[9:11] + ':30' ),
+                                              '%Y-%m-%d %H:%M')
+
+                    name_date = _(date.strftime("%B")) + " " + str(date.day) + \
+                                 ", " + str(date.year)
+                    twelve_hour_result_set.append({'count':k, 'day': temp_date[6:8],
+                                            'month':temp_date[4:6], 'year': temp_date[0:4],
+                                            'date':name_date ,
+                                            'starting_date__count':0,
+                                            'duration__sum':0, 'duration__avg':0,
+                                            'starting_date': inttime,
+                                           })
+                    k = k + 1
+
+        #for i in twelve_hour_result_set:
+        #    print i
+        # total_data = seven_days_result_set (for last 7 days option)
+        if int(search_type) == 5:
+            total_data = twelve_hour_result_set
     # Contacts which are successfully called for running campaign
     reached_contact = 0
     for i in campaign:

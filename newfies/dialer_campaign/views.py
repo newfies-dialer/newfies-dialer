@@ -305,68 +305,87 @@ def customer_dashboard(request, on_index=None):
 
     #  following sample code for Last 7 days option
     j = 0
-        
+    #for calls_itme in seven_days_option_list:
+    #    print calls_itme['date_in_int']
+
     for date in dateList:
         inttime = str(date.strftime("%Y%m%d"))
         try:
             only_data_date_list.index(inttime)
+            current_data_date = inttime
+            previuos_data_date = ''
+            current_previous_count = 0
             for calls_itme in seven_days_option_list:
+                if previuos_data_date == '':
+                    previuos_data_date = current_data_date
                 # check dateList date into seven_days_option_list date
                 if str(calls_itme['date_in_int'])[0:8] == inttime:
-                    temp_date = str(calls_itme['date_in_int'])[0:8]
-                    name_date = \
-                    datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 00'),
-                                      '%Y-%m-%d %H')
-                    name_date = _(date.strftime("%B")) + " " + str(date.day) + \
-                                 ", " + str(date.year)
-                    temp_result_set.append({'count':j, 'day': temp_date[6:8],
-                                            'month':temp_date[4:6], 'year': temp_date[0:4],
-                                            'date':name_date ,
-                                            'starting_date__count':0,
-                                            'duration__sum':0, 'duration__avg':0,
-                                            'starting_date': inttime,
-                                           })
-                    j = j + 1
-                    name_date = \
-                    datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 06'),
-                                      '%Y-%m-%d %H')
-                    name_date = _(date.strftime("%B")) + " " + str(date.day) + \
-                                 ", " + str(date.year)
-                    temp_result_set.append({'count': j, 'day': temp_date[6:8],
-                                            'month':temp_date[4:6], 'year': temp_date[0:4],
-                                            'date':name_date ,
-                                            'starting_date__count':0,
-                                            'duration__sum':0, 'duration__avg':0,
-                                            'starting_date': inttime,
-                                           })
-                    j = j + 1
-                    name_date = \
-                    datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 12'),
-                                      '%Y-%m-%d %H')
-                    name_date = _(date.strftime("%B")) + " " + str(date.day) + \
-                                 ", " + str(date.year)
-                    temp_result_set.append({'count':j, 'day': temp_date[6:8],
-                                            'month':temp_date[4:6], 'year': temp_date[0:4],
-                                            'date':name_date ,
-                                            'starting_date__count':0,
-                                            'duration__sum':0, 'duration__avg':0,
-                                            'starting_date': inttime,
-                                           })
-                    j = j + 1
-                    name_date = \
-                    datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 18'),
-                                      '%Y-%m-%d %H')
-                    name_date = _(date.strftime("%B")) + " " + str(date.day) + \
-                                 ", " + str(date.year)
-                    temp_result_set.append({'count':j, 'day': temp_date[6:8],
-                                            'month':temp_date[4:6], 'year': temp_date[0:4],
-                                            'date':name_date ,
-                                            'starting_date__count':0,
-                                            'duration__sum':0,
-                                            'duration__avg':0,
-                                            'starting_date': inttime,
-                                           })
-                    j = j + 1
+
+                    if previuos_data_date == str(calls_itme['date_in_int'])[0:8] \
+                       and current_previous_count == 0:
+                        #print "do " + previuos_data_date
+                        current_previous_count = current_previous_count + 1
+                        temp_date = str(calls_itme['date_in_int'])[0:8]
+                        name_date = \
+                        datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 00'),
+                                          '%Y-%m-%d %H')
+                        name_date = _(date.strftime("%B")) + " " + str(date.day) + \
+                                     ", " + str(date.year)
+                        temp_result_set.append({'count':j, 'day': temp_date[6:8],
+                                                'month':temp_date[4:6], 'year': temp_date[0:4],
+                                                'date':name_date ,
+                                                'starting_date__count':0,
+                                                'duration__sum':0, 'duration__avg':0,
+                                                'starting_date': inttime,
+                                               })
+                        j = j + 1
+                        name_date = \
+                        datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 06'),
+                                          '%Y-%m-%d %H')
+                        name_date = _(date.strftime("%B")) + " " + str(date.day) + \
+                                     ", " + str(date.year)
+                        temp_result_set.append({'count': j, 'day': temp_date[6:8],
+                                                'month':temp_date[4:6], 'year': temp_date[0:4],
+                                                'date':name_date ,
+                                                'starting_date__count':0,
+                                                'duration__sum':0, 'duration__avg':0,
+                                                'starting_date': inttime,
+                                               })
+                        j = j + 1
+                        name_date = \
+                        datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 12'),
+                                          '%Y-%m-%d %H')
+                        name_date = _(date.strftime("%B")) + " " + str(date.day) + \
+                                     ", " + str(date.year)
+                        temp_result_set.append({'count':j, 'day': temp_date[6:8],
+                                                'month':temp_date[4:6], 'year': temp_date[0:4],
+                                                'date':name_date ,
+                                                'starting_date__count':0,
+                                                'duration__sum':0, 'duration__avg':0,
+                                                'starting_date': inttime,
+                                               })
+                        j = j + 1
+                        name_date = \
+                        datetime.strptime(str(temp_date[0:4]+'-'+temp_date[4:6]+'-'+temp_date[6:8]+' 18'),
+                                          '%Y-%m-%d %H')
+                        name_date = _(date.strftime("%B")) + " " + str(date.day) + \
+                                     ", " + str(date.year)
+                        temp_result_set.append({'count':j, 'day': temp_date[6:8],
+                                                'month':temp_date[4:6], 'year': temp_date[0:4],
+                                                'date':name_date ,
+                                                'starting_date__count':0,
+                                                'duration__sum':0,
+                                                'duration__avg':0,
+                                                'starting_date': inttime,
+                                               })
+                        j = j + 1
+                    else:
+                        previuos_data_date = str(calls_itme['date_in_int'])[0:8]
+                        current_previous_count = current_previous_count + 1
+                        
+
+
+
                     name_date = \
                     datetime.strptime(str(calls_itme['starting_date']), '%Y-%m-%d %H')
 
@@ -374,6 +393,7 @@ def customer_dashboard(request, on_index=None):
                                  ", " + str(date.year)
                     temp_result_00 = cmp(int(calls_itme['date_in_int']),
                                       int(str(calls_itme['date_in_int'])[0:8] + '00'))
+
                     if temp_result_00 == 1:
                         # greater than
                         temp_result_06 = cmp(int(calls_itme['date_in_int']),
@@ -511,7 +531,7 @@ def customer_dashboard(request, on_index=None):
                                                })
                         j = j + 1
         except:
-            print inttime
+            #print inttime
             inttime = datetime.strptime(str(inttime), '%Y%m%d')
             temp_date = str(inttime)[0:4] + str(inttime)[5:7] + str(inttime)[8:10]
             name_date = \

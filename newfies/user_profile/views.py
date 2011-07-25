@@ -8,6 +8,8 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from notification import models as notification
 from dialer_campaign.views import current_view, notice_count
+from dialer_settings.models import DialerSetting
+from user_profile.models import UserProfile
 from user_profile.forms import *
 
 
@@ -29,6 +31,11 @@ def customer_detail_change(request):
                                             instance=user_detail)
     user_password_form = PasswordChangeForm(user=request.user)
 
+    try:
+        user_ds = UserProfile.objects.get(user=request.user)
+        dialer_set = DialerSetting.objects.get(id=user_ds.dialersetting.id)
+    except:
+        dialer_set = ''
 
     user_notification = \
     notification.Notice.objects.filter(recipient=request.user)
@@ -78,6 +85,7 @@ def customer_detail_change(request):
         'error_detail': error_detail,
         'error_pass': error_pass,
         'notice_count': notice_count(request),
+        'dialer_set': dialer_set,
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))

@@ -140,6 +140,16 @@ def customer_dashboard(request, on_index=None):
         # date_length is used to do group by starting_date
         if int(search_type) >= 2: # all options except 30 days
             date_length = 13
+            if int(search_type) == 3: # yesterday 
+                now = datetime.now()
+                start_date = datetime(now.year,
+                                      now.month,
+                                      now.day,
+                                      0, 0, 0, 0) - relativedelta(days=1)
+                end_date = datetime(now.year,
+                                    now.month,
+                                    now.day,
+                                    23, 59, 59, 999999) - relativedelta(days=1)
             if int(search_type) >= 5:
                 date_length = 16
         else:
@@ -285,10 +295,10 @@ def customer_dashboard(request, on_index=None):
 
         i = 0
         for date in dateList:
-            # Last 30 days & 24 hrs
+            # Yesterday & 24 hrs
             if int(search_type) >= 2:
                 inttime = int(date.strftime("%Y%m%d%H"))
-            else:
+            else: # Last 30 days
                 inttime = int(date.strftime("%Y%m%d"))
 
             name_date = _(date.strftime("%B")) + " " + str(date.day) + \

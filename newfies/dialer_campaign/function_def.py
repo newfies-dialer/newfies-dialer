@@ -245,7 +245,10 @@ def calculate_date(search_type):
         start_date = end_date+relativedelta(days=-int(7))
     # Yesterday
     if search_type == 3:
-        start_date = end_date+relativedelta(days=-int(1))
+        start_date = end_date+relativedelta(days=-int(1),
+                                            hour=0,
+                                            minute=0,
+                                            second=0)
     # Last 24 hours
     if search_type == 4:
         start_date = end_date+relativedelta(hours=-int(24))

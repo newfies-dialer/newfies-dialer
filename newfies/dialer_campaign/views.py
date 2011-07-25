@@ -286,7 +286,7 @@ def customer_dashboard(request, on_index=None):
         i = 0
         for date in dateList:
             # Last 30 days & 24 hrs
-            if int(search_type) >= 2 and int(search_type) <= 4:
+            if int(search_type) >= 2:
                 inttime = int(date.strftime("%Y%m%d%H"))
             else:
                 inttime = int(date.strftime("%Y%m%d"))
@@ -369,7 +369,7 @@ def customer_dashboard(request, on_index=None):
                                                     'duration__avg':0,
                                                     'starting_date': inttime,
                                                    })
-                                j = j + 1
+                                j += 1
                         else:
                             previuos_data_date = str(calls_itme['date_in_int'])[0:8]
                             current_previous_count = current_previous_count + 1
@@ -388,7 +388,7 @@ def customer_dashboard(request, on_index=None):
                                 'duration__sum': calls_itme['duration__sum'],
                                 'duration__avg': calls_itme['duration__avg'],
                                })
-                        j = j + 1
+                        j += 1
             except:
                 # add data for dates which are not in seven_days_option_list
                 inttime = datetime.strptime(str(inttime), '%Y%m%d')
@@ -410,7 +410,7 @@ def customer_dashboard(request, on_index=None):
                                             'duration__sum':0, 'duration__avg':0,
                                             'starting_date': inttime,
                                            })
-                    j = j + 1
+                    j += 1
 
         m = 0
         min_list = []
@@ -457,8 +457,9 @@ def customer_dashboard(request, on_index=None):
                                                       temp_date[9:11] + ':'+
                                                       str(option).zfill(2)),
                                                       '%Y-%m-%d %H:%M')
-                                name_date = _(date.strftime("%B")) + " " + str(date.day) + \
-                                             ", " + str(date.year)
+                                name_date = \
+                                _(date.strftime("%B")) + " " +\
+                                str(date.day) + ", " + str(date.year)
                                 common_hour_result_set.append({'count':m,
                                                     'day': temp_date[6:8],
                                                     'month':temp_date[4:6],
@@ -469,26 +470,28 @@ def customer_dashboard(request, on_index=None):
                                                     'duration__avg':0,
                                                     'starting_date': inttime,
                                                    })
-                                m = m + 1
+                                m += 1
                         else:
                             previuos_data_date = str(calls_itme['date_in_int'])[0:10]
                             current_previous_count = current_previous_count + 1
 
-                        # only add six_days_option_list record
+                        # only add data records
                         name_date = \
                         datetime.strptime(str(calls_itme['starting_date']), '%Y-%m-%d %H:%M')
 
                         name_date = _(name_date.strftime("%B")) + " " + str(name_date.day) + \
                                      ", " + str(date.year)
                         common_hour_result_set.append({'count': m,
-                                'day': temp_date[6:8], 'month':temp_date[4:6],
-                                'year': temp_date[0:4], 'date':name_date ,
+                                'day': temp_date[6:8],
+                                'month':temp_date[4:6],
+                                'year': temp_date[0:4],
+                                'date':name_date ,
                                 'starting_date__count': \
                                     calls_itme['starting_date__count'],
                                 'duration__sum': calls_itme['duration__sum'],
                                 'duration__avg': calls_itme['duration__avg'],
                                })
-                        m = m + 1
+                        m += 1
             except:
                 # add data for dates which are not in seven_days_option_list
                 inttime = datetime.strptime(str(inttime), '%Y%m%d%H')
@@ -514,14 +517,17 @@ def customer_dashboard(request, on_index=None):
                                           '%Y-%m-%d %H:%M')
                     name_date = _(date.strftime("%B")) + " " + str(date.day) + \
                                  ", " + str(date.year)
-                    common_hour_result_set.append({'count':m, 'day': temp_date[6:8],
-                                            'month':temp_date[4:6], 'year': temp_date[0:4],
-                                            'date':name_date ,
-                                            'starting_date__count':0,
-                                            'duration__sum':0, 'duration__avg':0,
-                                            'starting_date': inttime,
-                                           })
-                    m = m + 1
+                    common_hour_result_set.append({'count':m,
+                                                   'day': temp_date[6:8],
+                                                   'month': temp_date[4:6],
+                                                   'year': temp_date[0:4],
+                                                   'date': name_date,
+                                                   'starting_date__count': 0,
+                                                   'duration__sum': 0,
+                                                   'duration__avg': 0,
+                                                   'starting_date': inttime,
+                                                   })
+                    m += 1
 
         # total_data = seven_days_result_set (for last 7 days option)
         if int(search_type) == 2:

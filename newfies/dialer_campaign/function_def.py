@@ -265,29 +265,12 @@ def calculate_date(search_type):
 def date_range(start, end, q):
     """Date  Range"""
     r = (end + timedelta(days=1) - start).days
-    if int(q) == 1:
-        #return [start + timedelta(days=i) for i in range(r)]
+    if int(q) <= 2:
         return list(rrule(DAILY,
                dtstart=parse(str(start)),
                until=parse(str(end))))
-    if int(q) == 2:
-        return list(rrule(DAILY,
-               dtstart=parse(str(start)),
-               until=parse(str(end))))
-    if int(q) == 3 or int(q) == 4:
+    if int(q) >= 3:
         return list(rrule(HOURLY, interval=1,
-               dtstart=parse(str(start)),
-               until=parse(str(end))))
-    if int(q) == 5:
-        return list(rrule(HOURLY, interval=1,
-               dtstart=parse(str(start)),
-               until=parse(str(end))))
-    if int(q) == 6:
-        return list(rrule(HOURLY, interval=1,
-               dtstart=parse(str(start)),
-               until=parse(str(end))))
-    if int(q) == 7:
-        return list(rrule(MINUTELY, interval=5,
                dtstart=parse(str(start)),
                until=parse(str(end))))
     else:

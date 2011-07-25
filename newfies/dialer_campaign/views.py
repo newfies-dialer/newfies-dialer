@@ -353,30 +353,12 @@ def customer_dashboard(request, on_index=None):
                             # per day option
                             for option in [0, 6, 12, 18]:
                                 temp_date = str(calls_itme['date_in_int'])[0:8]
-                                if option == 0:
-                                    name_date = \
-                                    datetime.strptime(str(temp_date[0:4] + '-' +
-                                                          temp_date[4:6] + '-' +
-                                                          temp_date[6:8] + ' 00'),
-                                                          '%Y-%m-%d %H')
-                                if option == 6:
-                                    name_date = \
-                                    datetime.strptime(str(temp_date[0:4] + '-' +
-                                                          temp_date[4:6] + '-' +
-                                                          temp_date[6:8] + ' 06'),
-                                                          '%Y-%m-%d %H')
-                                if option == 12:
-                                    name_date = \
-                                    datetime.strptime(str(temp_date[0:4] + '-' +
-                                                          temp_date[4:6] + '-' +
-                                                          temp_date[6:8] + ' 12'),
-                                                          '%Y-%m-%d %H')
-                                if option == 18:
-                                    name_date = \
-                                    datetime.strptime(str(temp_date[0:4] + '-' +
-                                                          temp_date[4:6] + '-' +
-                                                          temp_date[6:8] + ' 18'),
-                                                          '%Y-%m-%d %H')
+                                name_date = \
+                                datetime.strptime(str(temp_date[0:4] + '-' +
+                                                      temp_date[4:6] + '-' +
+                                                      temp_date[6:8] + ' ' +
+                                                      str(option).zfill(2)),
+                                                      '%Y-%m-%d %H')
                                 name_date = _(date.strftime("%B")) + " " + str(date.day) + \
                                              ", " + str(date.year)
                                 seven_days_result_set.append({'count':j,
@@ -415,30 +397,12 @@ def customer_dashboard(request, on_index=None):
                 # per day option
                 for option in [0, 6, 12, 18]:
                     temp_date = str(inttime)[0:4] + str(inttime)[5:7] + str(inttime)[8:10]
-                    if option == 0:
-                        name_date = \
-                        datetime.strptime(str(temp_date[0:4] + '-' +
-                                              temp_date[4:6] + '-' +
-                                              temp_date[6:8] + ' 00'),
-                                              '%Y-%m-%d %H')
-                    if option == 6:
-                        name_date = \
-                        datetime.strptime(str(temp_date[0:4] + '-' +
-                                              temp_date[4:6] + '-' +
-                                              temp_date[6:8] + ' 06'),
-                                              '%Y-%m-%d %H')
-                    if option == 12:
-                        name_date = \
-                        datetime.strptime(str(temp_date[0:4] + '-' +
-                                              temp_date[4:6] + '-' +
-                                              temp_date[6:8] + ' 12'),
-                                              '%Y-%m-%d %H')
-                    if option == 18:
-                        name_date = \
-                        datetime.strptime(str(temp_date[0:4] + '-' +
-                                              temp_date[4:6] + '-' +
-                                              temp_date[6:8] + ' 18'),
-                                              '%Y-%m-%d %H')
+                    name_date = \
+                    datetime.strptime(str(temp_date[0:4] + '-' +
+                                          temp_date[4:6] + '-' +
+                                          temp_date[6:8] + ' ' +
+                                          str(option).zfill(2)),
+                                          '%Y-%m-%d %H')
                     name_date = _(date.strftime("%B")) + " " + str(date.day) + \
                                  ", " + str(date.year)
                     seven_days_result_set.append({'count':j, 'day': temp_date[6:8],
@@ -485,20 +449,13 @@ def customer_dashboard(request, on_index=None):
 
                             for option in [0, 30]:
                                 temp_date = str(calls_itme['date_in_int'])[0:10]
-                                if option == 0:
-                                    name_date = \
-                                    datetime.strptime(str(temp_date[0:4] + '-' +
-                                                          temp_date[4:6] + '-' +
-                                                          temp_date[6:8] + ' ' +
-                                                          temp_date[8:10]+ ':00' ),
-                                                          '%Y-%m-%d %H:%M')
-                                if option == 30:
-                                    name_date = \
-                                    datetime.strptime(str(temp_date[0:4] + '-' +
-                                                          temp_date[4:6] + '-' +
-                                                          temp_date[6:8] + ' ' +
-                                                          temp_date[8:10]+ ':30' ),
-                                                          '%Y-%m-%d %H:%M')
+                                name_date = \
+                                datetime.strptime(str(temp_date[0:4] + '-' +
+                                                      temp_date[4:6] + '-' +
+                                                      temp_date[6:8] + ' ' +
+                                                      temp_date[8:10]+ ':' +
+                                                      str(option).zfill(2)),
+                                                      '%Y-%m-%d %H:%M')
                                 name_date = _(date.strftime("%B")) + " " + str(date.day) + \
                                              ", " + str(date.year)
                                 twelve_hour_result_set.append({'count':k,
@@ -538,21 +495,14 @@ def customer_dashboard(request, on_index=None):
                     temp_date = \
                     str(inttime)[0:4] + str(inttime)[5:7] + str(inttime)[8:10] + \
                     str(inttime)[11:13]
-                    if option == 0:
-                        name_date = \
-                        datetime.strptime(str(temp_date[0:4] + '-' +
-                                              temp_date[4:6] + '-' +
-                                              temp_date[6:8] + ' ' +
-                                              temp_date[9:11] + ':00' ),
-                                              '%Y-%m-%d %H:%M')
-                    if option == 30:
-                        name_date = \
-                        datetime.strptime(str(temp_date[0:4] + '-' +
-                                              temp_date[4:6] + '-' +
-                                              temp_date[6:8] + ' ' +
-                                              temp_date[9:11] + ':30' ),
-                                              '%Y-%m-%d %H:%M')
 
+                    name_date = \
+                    datetime.strptime(str(temp_date[0:4] + '-' +
+                                          temp_date[4:6] + '-' +
+                                          temp_date[6:8] + ' ' +
+                                          temp_date[9:11] + ':'+
+                                          str(option).zfill(2)),
+                                          '%Y-%m-%d %H:%M')
                     name_date = _(date.strftime("%B")) + " " + str(date.day) + \
                                  ", " + str(date.year)
                     twelve_hour_result_set.append({'count':k, 'day': temp_date[6:8],
@@ -597,35 +547,13 @@ def customer_dashboard(request, on_index=None):
 
                             for option in [0, 15, 30, 45]:
                                 temp_date = str(calls_itme['date_in_int'])[0:10]
-                                if option == 0:
-                                    name_date = \
-                                    datetime.strptime(str(temp_date[0:4] + '-' +
-                                                          temp_date[4:6] + '-' +
-                                                          temp_date[6:8] + ' ' +
-                                                          temp_date[9:11] + ':00'),
-                                                          '%Y-%m-%d %H:%M')
-                                if option == 15:
-                                    name_date = \
-                                    datetime.strptime(str(temp_date[0:4] + '-' +
-                                                          temp_date[4:6] + '-' +
-                                                          temp_date[6:8] + ' ' +
-                                                          temp_date[9:11] + ':15'),
-                                                          '%Y-%m-%d %H:%M')
-                                if option == 30:
-                                    name_date = \
-                                    datetime.strptime(str(temp_date[0:4] + '-' +
-                                                          temp_date[4:6] + '-' +
-                                                          temp_date[6:8] + ' ' +
-                                                          temp_date[9:11] + ':30'),
-                                                          '%Y-%m-%d %H:%M')
-                                if option == 45:
-                                    name_date = \
-                                    datetime.strptime(str(temp_date[0:4] + '-' +
-                                                          temp_date[4:6] + '-' +
-                                                          temp_date[6:8] + ' ' +
-                                                          temp_date[9:11] + ':45'),
-                                                          '%Y-%m-%d %H:%M')
-
+                                name_date = \
+                                datetime.strptime(str(temp_date[0:4] + '-' +
+                                                      temp_date[4:6] + '-' +
+                                                      temp_date[6:8] + ' ' +
+                                                      temp_date[9:11] + ':'+
+                                                      str(option).zfill(2)),
+                                                      '%Y-%m-%d %H:%M')
                                 name_date = _(date.strftime("%B")) + " " + str(date.day) + \
                                              ", " + str(date.year)
                                 six_hour_result_set.append({'count':l,
@@ -665,35 +593,14 @@ def customer_dashboard(request, on_index=None):
                     temp_date = \
                     str(inttime)[0:4] + str(inttime)[5:7] + str(inttime)[8:10] + \
                     str(inttime)[11:13]
-                    if option == 0:
-                        name_date = \
-                        datetime.strptime(str(temp_date[0:4] + '-' +
-                                              temp_date[4:6] + '-' +
-                                              temp_date[6:8] + ' ' +
-                                              temp_date[9:11] + ':00' ),
-                                              '%Y-%m-%d %H:%M')
-                    if option == 15:
-                        name_date = \
-                        datetime.strptime(str(temp_date[0:4] + '-' +
-                                              temp_date[4:6] + '-' +
-                                              temp_date[6:8] + ' ' +
-                                              temp_date[9:11] + ':15' ),
-                                              '%Y-%m-%d %H:%M')
-                    if option == 30:
-                        name_date = \
-                        datetime.strptime(str(temp_date[0:4] + '-' +
-                                              temp_date[4:6] + '-' +
-                                              temp_date[6:8] + ' ' +
-                                              temp_date[9:11] + ':30' ),
-                                              '%Y-%m-%d %H:%M')
-                    if option == 45:
-                        name_date = \
-                        datetime.strptime(str(temp_date[0:4] + '-' +
-                                              temp_date[4:6] + '-' +
-                                              temp_date[6:8] + ' ' +
-                                              temp_date[9:11] + ':45' ),
-                                              '%Y-%m-%d %H:%M')
-
+                    #if option == 0:
+                    name_date = \
+                    datetime.strptime(str(temp_date[0:4] + '-' +
+                                          temp_date[4:6] + '-' +
+                                          temp_date[6:8] + ' ' +
+                                          temp_date[9:11] + ':'+
+                                          str(option).zfill(2)),
+                                          '%Y-%m-%d %H:%M')
                     name_date = _(date.strftime("%B")) + " " + str(date.day) + \
                                  ", " + str(date.year)
                     six_hour_result_set.append({'count':l, 'day': temp_date[6:8],

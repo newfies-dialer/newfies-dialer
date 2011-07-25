@@ -413,6 +413,7 @@ def customer_dashboard(request, on_index=None):
                     j = j + 1
 
         m = 0
+        min_list = []
         # following code for Last 12 hrs / Last 6 hrs / Last hour option
         for date in dateList:
             inttime = str(date.strftime("%Y%m%d%H"))

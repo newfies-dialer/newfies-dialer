@@ -201,7 +201,7 @@ DILLA_APPS = [
 DILLA_SPAMLIBS = [
                 #'voip_app.voip_app_custom_spamlib',
                 #'dialer_campaign.dialer_campaign_custom_spamlib',
-                #'dialer_cdr.dialer_cdr_custom_spamlib',
+                 'dialer_cdr.dialer_cdr_custom_spamlib',
                 ]
 # To use Dilla
 # > python manage.py run_dilla --cycles=100

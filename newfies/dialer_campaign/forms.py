@@ -156,7 +156,7 @@ SEARCH_TYPE = (
     #(3, _('Yesterday')),
     (4, _('Last 24 hours')),
     (5, _('Last 12 hours')),
-    #(6, _('Last 6 hours')),
+    (6, _('Last 6 hours')),
     #(7, _('Last hour')),
 )
 

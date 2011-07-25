@@ -283,7 +283,7 @@ def date_range(start, end, q):
                dtstart=parse(str(start)),
                until=parse(str(end))))
     if int(q) == 6:
-        return list(rrule(MINUTELY, interval=15,
+        return list(rrule(HOURLY, interval=1,
                dtstart=parse(str(start)),
                until=parse(str(end))))
     if int(q) == 7:

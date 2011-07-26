@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext as _
 from dialer_campaign.models import Phonebook, Campaign, CAMPAIGN_STATUS
 from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting
@@ -304,3 +305,11 @@ def user_dialer_setting(user):
     except:
         dialer_set = []
     return dialer_set
+
+
+def user_dialer_setting_msg(user):
+    msg = ''
+    if not user_dialer_setting(user):
+        msg = _('Your settings aren`t configured properly, \
+             Please contact the administrator')
+    return msg

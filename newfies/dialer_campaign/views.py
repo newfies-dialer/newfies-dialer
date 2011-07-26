@@ -560,6 +560,7 @@ def customer_dashboard(request, on_index=None):
     data = {
         'module': current_view(request),
         'form': form,
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'campaign_count': campaign_count,
         'total_of_phonebook_contacts': total_of_phonebook_contacts,
         'campaign_phonebbok_active_contact_count': \
@@ -657,6 +658,7 @@ def login_view(request):
         'loginform': loginform,
         'errorlogin': errorlogin,
         'is_authenticated': request.user.is_authenticated(),
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'news': get_news(),
     }
 
@@ -692,6 +694,7 @@ def index(request):
             'loginform': loginform,
             'errorlogin': errorlogin,
             'news': get_news(),
+            'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
 
     return render_to_response(template, data,
@@ -937,6 +940,7 @@ def phonebook_list(request):
         'module': current_view(request),        
         'msg': request.session.get('msg'),
         'notice_count': notice_count(request),
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
     return render_to_response(template, data,
@@ -973,6 +977,7 @@ def phonebook_add(request):
        'form': form,
        'action': 'add',
        'notice_count': notice_count(request),
+       'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))
@@ -1067,6 +1072,7 @@ def phonebook_change(request, object_id):
        'form': form,
        'action': 'update',
        'notice_count': notice_count(request),
+       'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))
@@ -1223,6 +1229,7 @@ def contact_list(request):
         'kwargs': kwargs,
         'name': name,
         'notice_count': notice_count(request),
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
     return render_to_response(template, data,
@@ -1276,6 +1283,7 @@ def contact_add(request):
        'action': 'add',
        'phonebook_count': phonebook_count,
        'notice_count': notice_count(request),
+       'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))
@@ -1351,6 +1359,7 @@ def contact_change(request, object_id):
        'form': form,
        'action': 'update',
        'notice_count': notice_count(request),
+       'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))
@@ -1470,6 +1479,7 @@ def contact_import(request):
     'type_error_import_list': type_error_import_list,
     'module': current_view(request),
     'notice_count': notice_count(request),
+    'dialer_setting_msg': user_dialer_setting_msg(request.user),
     })
     template = 'frontend/contact/import_contact.html'
     return render_to_response(template, data,
@@ -1663,6 +1673,7 @@ def campaign_list(request):
         'module': current_view(request),        
         'msg': request.session.get('msg'),
         'notice_count': notice_count(request),
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
     return render_to_response(template, data,
@@ -1715,6 +1726,7 @@ def campaign_add(request):
        'form': form,
        'action': 'add',
        'notice_count': notice_count(request),
+       'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))
@@ -1789,6 +1801,7 @@ def campaign_change(request, object_id):
        'form': form,
        'action': 'update',
        'notice_count': notice_count(request),
+       'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))

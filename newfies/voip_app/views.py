@@ -10,6 +10,7 @@ from django.utils import simplejson
 from voip_app.models import VoipApp, get_voipapp_type_name
 from voip_app.forms import VoipAppForm
 from dialer_campaign.views import current_view, notice_count
+from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_campaign.function_def import *
 from datetime import *
 
@@ -99,6 +100,7 @@ def voipapp_list(request):
         'module': current_view(request),        
         'msg': request.session.get('msg'),
         'notice_count': notice_count(request),
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
     return render_to_response(template, data,
@@ -135,6 +137,7 @@ def voipapp_add(request):
        'form': form,
        'action': 'add',
        'notice_count': notice_count(request),
+       'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))
@@ -210,6 +213,7 @@ def voipapp_change(request, object_id):
        'form': form,
        'action': 'update',
        'notice_count': notice_count(request),
+       'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))

@@ -166,10 +166,16 @@
     <div class="span-4 last">&nbsp;</div>
 
     <div class="span-24 last" align=center>
-    {% if dialer_setting_msg %}
-    <div class="error" id="rounded-corner-upper-table">
-            <strong>{% trans "Alert" %} : </strong>  {{ dialer_setting_msg }}
-    </div>
+    {% if user.is_authenticated %}
+        {% if dialer_setting_msg %}
+        <div class="error" id="rounded-corner-upper-table">
+                <strong>{% trans "Alert" %} : </strong>  {{ dialer_setting_msg }}
+                {% if not request.session.has_notified %}
+                    <br/>
+                    {% trans "To send notification to administrator" %} <a href="/notify/admin/">{% trans "Click here" %}</a>
+                {% endif %}
+        </div>
+        {% endif %}
     {% endif %}
     {% block content %}
     {% endblock %}

@@ -638,6 +638,7 @@ def login_view(request):
                 if user is not None:
                     if user.is_active:
                         login(request, user)
+                        request.session['has_notified'] = False
                         # Redirect to a success page (dashboard).
                         return \
                         HttpResponseRedirect('/dashboard/')
@@ -715,6 +716,10 @@ def pleaselog(request):
 
 
 def logout_view(request):
+    try:
+        del request.session['has_notified']
+    except KeyError:
+        pass
     logout(request)
     return HttpResponseRedirect('/')
 
@@ -809,7 +814,7 @@ def common_send_notification(request, status, recipient=None):
 
 
 def common_campaign_status(pk, status):
-    """Campaign Status (e.g. start | stop | pause) needs to be changed.
+    """Campaign Status (e.g. start | stop | abort | pause) needs to be changed.
     It is a common function for the admin and customer UI's
 
     **Attributes**:
@@ -855,6 +860,20 @@ def update_campaign_status_cust(request, pk, status):
     common_send_notification(request, status, recipient)
     return HttpResponseRedirect('/campaign/')
 
+
+@login_required
+def notify_admin(request):
+    """Notify administrator regarding dialer setting configuration for
+       system user
+    """
+    # TODO: get superuser
+    # example : recipient = areski
+    recipient = request.user
+    if request.session['has_notified'] == False:
+        common_send_notification(request, 7, recipient)
+        request.session['has_notified'] = True
+
+    return HttpResponseRedirect('/dashboard/')
 
 # Phonebook
 @login_required

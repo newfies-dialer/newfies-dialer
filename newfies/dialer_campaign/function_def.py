@@ -311,5 +311,5 @@ def user_dialer_setting_msg(user):
     msg = ''
     if not user_dialer_setting(user):
         msg = _('Your settings aren`t configured properly, \
-             Please contact the administrator')
+                 Please contact the administrator.')
     return msg

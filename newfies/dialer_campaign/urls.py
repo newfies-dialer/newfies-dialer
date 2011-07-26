@@ -49,4 +49,6 @@ urlpatterns = patterns('',
     # Campaign Actions (start/stop/pause) for Admin UI
     (r'^update_campaign_status_admin/(\d*)/(\d*)/$',
                     'dialer_campaign.views.update_campaign_status_admin'),
+    # Send notification to admin regarding dialer setting
+    (r'^notify/admin/$', 'dialer_campaign.views.notify_admin'),
 )

@@ -31,6 +31,11 @@ if "notification" in settings.INSTALLED_APPS:
                                         _("Contact Limit Reached"),
                                         _("you have reached the no of contact limit"),
                                         6)
+        notification.create_notice_type("dialer_setting_configuration",
+                                        _("Dialer setting configuration"),
+                                        _("User need to be mapped with \
+                                           dialer setting by administrator"),
+                                        7)
     signals.post_syncdb.connect(create_notice_types, sender=notification)
 else:
     print "Skipping creation of NoticeTypes as notification app not found"

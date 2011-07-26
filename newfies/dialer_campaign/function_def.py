@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from dialer_campaign.models import Phonebook, Campaign, CAMPAIGN_STATUS
 from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting
@@ -293,3 +294,13 @@ def get_campaign_status_name(id):
                 return 'ABORTED'
             if i[1] == 'END':
                 return 'STOPPED'
+
+
+def user_dialer_setting(user):
+    """Get Dialer setting for user"""
+    try:
+        user_ds = UserProfile.objects.get(user=User.objects.get(username=user))
+        dialer_set = DialerSetting.objects.get(id=user_ds.dialersetting.id)
+    except:
+        dialer_set = []
+    return dialer_set

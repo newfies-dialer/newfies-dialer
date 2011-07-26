@@ -792,7 +792,7 @@ def common_send_notification(request, status, recipient=None):
     """
     if not recipient:
         recipient = request.user
-        sender = User.objects.get(is_superuser=1)
+        sender = User.objects.get(is_superuser=1, username=recipient)
     else:
         sender = request.user
 
@@ -1697,10 +1697,10 @@ def campaign_add(request):
             common_send_notification(request, '3')
             return HttpResponseRedirect("/campaign/")
 
-    form = CampaignForm()
+    form = CampaignForm(request.user)
     # Add campaign
     if request.method == 'POST':
-        form = CampaignForm(request.POST)
+        form = CampaignForm(request.user, request.POST)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.user = User.objects.get(username=request.user)

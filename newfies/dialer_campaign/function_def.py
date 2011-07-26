@@ -103,7 +103,7 @@ def month_year_range():
     return m_list
 
 
-def check_dialer_setting(request, check_for):
+def check_dialer_setting(request, check_for, field_value):
     """Check Dialer Setting Limitation
 
     **Attribute**
@@ -148,6 +148,38 @@ def check_dialer_setting(request, check_for):
                         return True
                 # Limit not matched
                 return False
+            # check for frequency limit
+            if check_for == "frequency":
+                if field_value > dialer_set_obj.max_frequency:
+                    # Limit matched or exceeded
+                    return True
+                # Limit not exceeded
+                return False
+
+            # check for call duration limit
+            if check_for == "duration":
+                if field_value > dialer_set_obj.callmaxduration:
+                    # Limit matched or exceeded
+                    return True
+                # Limit not exceeded
+                return False
+
+            # check for call retry limit
+            if check_for == "retry":
+                if field_value > dialer_set_obj.maxretry:
+                    # Limit matched or exceeded
+                    return True
+                # Limit not exceeded
+                return False
+
+            # check for call timeout limit
+            if check_for == "timeout":
+                if field_value > dialer_set_obj.max_calltimeout:
+                    # Limit matched or exceeded
+                    return True
+                # Limit not exceeded
+                return False
+
     except:
         # DialerSettings not link to the User
         return False
@@ -158,6 +190,10 @@ def dialer_setting_limit(request, limit_for):
 
     e.g. max_number_subscriber_campaign
          max_number_campaign
+         max_frequency
+         callmaxduration
+         maxretry
+         max_calltimeout
     """
     user_obj = UserProfile.objects.get(user=request.user,
                                        dialersetting__isnull=False)
@@ -169,6 +205,14 @@ def dialer_setting_limit(request, limit_for):
             return str(dialer_set_obj.max_number_subscriber_campaign)
         if limit_for == "campaign":
             return str(dialer_set_obj.max_number_campaign)
+        if limit_for == "frequency":
+            return str(dialer_set_obj.max_frequency)
+        if limit_for == "duration":
+            return str(dialer_set_obj.callmaxduration)
+        if limit_for == "retry":
+            return str(dialer_set_obj.maxretry)
+        if limit_for == "timeout":
+            return str(dialer_set_obj.max_calltimeout)
 
 
 def variable_value(request, field_name):

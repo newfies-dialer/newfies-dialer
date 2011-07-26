@@ -1261,8 +1261,8 @@ def contact_add(request):
             You are allowed a maximum of %s" % \
             dialer_setting_limit(request, limit_for="contact"))
 
-            # campaign limit reached
-            common_send_notification(request, '3')
+            # contact limit reached
+            common_send_notification(request, '6')
             return HttpResponseRedirect("/contact/")
 
     form = ContactForm(request.user)
@@ -1396,8 +1396,8 @@ def contact_import(request):
             You are allowed a maximum of %s" % \
             dialer_setting_limit(request, limit_for="contact"))
 
-            # campaign limit reached
-            common_send_notification(request, '3')
+            # contact limit reached
+            common_send_notification(request, '6')
             return HttpResponseRedirect("/contact/")
 
     form = Contact_fileImport(request.user)
@@ -1705,7 +1705,7 @@ def campaign_add(request):
             % dialer_setting_limit(request, limit_for="campaign"))
 
             # campaign limit reached
-            common_send_notification(request, '3')
+            common_send_notification(request, '5')
             return HttpResponseRedirect("/campaign/")
 
     form = CampaignForm(request.user)

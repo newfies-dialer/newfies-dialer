@@ -1724,6 +1724,10 @@ def campaign_add(request):
         * Add the new campaign which will belong to the logged in user
           via CampaignForm & get redirected to campaign list
     """
+    # If dialer setting is not attached with user, redirect to campaign list
+    if user_attached_with_dilaer_settings(request):
+        return HttpResponseRedirect("/campaign/")
+
     # Check dialer setting limit
     if request.user and request.method != 'POST':
         # check Max Number of running campaign
@@ -1808,15 +1812,19 @@ def campaign_change(request, object_id):
         * Update/delete selected campaign from the campaign list
           via CampaignForm & get redirected to the campaign list
     """
+    # If dialer setting is not attached with user, redirect to campaign list
+    if user_attached_with_dilaer_settings(request):
+        return HttpResponseRedirect("/campaign/")
+
     campaign = Campaign.objects.get(pk=object_id)
-    form = CampaignForm(instance=campaign)
+    form = CampaignForm(request.user, instance=campaign)
     if request.method == 'POST':
         # Delete campaign
         if request.POST.get('delete'):
             campaign_del(request, object_id)
             return HttpResponseRedirect('/campaign/')
         else: # Update campaign
-            form = CampaignForm(request.POST, instance=campaign)
+            form = CampaignForm(request.user, request.POST, instance=campaign)
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('"%s" is updated successfully.' \

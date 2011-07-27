@@ -866,9 +866,10 @@ def update_campaign_status_cust(request, pk, status):
 @login_required
 def notify_admin(request):
     """Notify administrator regarding dialer setting configuration for
-       system user via email
+       system user via mail
     """
-    recipient = 'Newfies Administrator'
+    # TODO : get recipient = admin user
+    recipient = request.user
     if request.session['has_notified'] == False:
         common_send_notification(request, 7, recipient)
         # Send mail to ADMINS

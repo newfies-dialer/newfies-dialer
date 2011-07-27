@@ -103,7 +103,7 @@ def month_year_range():
     return m_list
 
 
-def check_dialer_setting(request, check_for, field_value):
+def check_dialer_setting(request, check_for, field_value=''):
     """Check Dialer Setting Limitation
 
     **Attribute**
@@ -148,6 +148,7 @@ def check_dialer_setting(request, check_for, field_value):
                         return True
                 # Limit not matched
                 return False
+
             # check for frequency limit
             if check_for == "frequency":
                 if field_value > dialer_set_obj.max_frequency:

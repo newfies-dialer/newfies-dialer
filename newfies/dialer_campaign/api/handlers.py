@@ -182,9 +182,8 @@ class campaignHandler(BaseHandler):
             startingdate = get_attribute(attrs, 'startingdate')
             expirationdate = get_attribute(attrs, 'expirationdate')
             frequency = get_attribute(attrs, 'frequency')
-            if check_dialer_setting(request,
-                                    check_for="frequency",
-                                    field_value=frequency):
+            if check_dialer_setting(request, check_for="frequency",
+                                    field_value=int(frequency)):
                 resp = rc.BAD_REQUEST
                 resp.write("You have reached the frequency limit. Max allowed %s" \
                 % dialer_setting_limit(request, limit_for="frequency"))
@@ -193,17 +192,17 @@ class campaignHandler(BaseHandler):
             callmaxduration = get_attribute(attrs, 'callmaxduration')
             if check_dialer_setting(request,
                                     check_for="duration",
-                                    field_value=callmaxduration):
+                                    field_value=int(callmaxduration)):
                 resp = rc.BAD_REQUEST
                 resp.write("You have reached the max call duration limit. \
                 Max allowed %s" % dialer_setting_limit(request,
-                                                       limit_for="frequency"))
+                                                       limit_for="duration"))
                 return resp
 
             maxretry = get_attribute(attrs, 'maxretry')
             if check_dialer_setting(request,
                                     check_for="retry",
-                                    field_value=maxretry):
+                                    field_value=int(maxretry)):
                 resp = rc.BAD_REQUEST
                 resp.write("You have reached the max retry limit. \
                 Max allowed %s" % dialer_setting_limit(request,
@@ -213,7 +212,7 @@ class campaignHandler(BaseHandler):
             calltimeout = get_attribute(attrs, 'calltimeout')
             if check_dialer_setting(request,
                                     check_for="timeout",
-                                    field_value=calltimeout):
+                                    field_value=int(calltimeout)):
                 resp = rc.BAD_REQUEST
                 resp.write("You have reached the call timeout limit.\
                 Max allowed %s" % dialer_setting_limit(request,
@@ -523,7 +522,7 @@ class campaignHandler(BaseHandler):
         frequency = get_attribute(attrs, 'frequency')
         if check_dialer_setting(request,
                                 check_for="frequency",
-                                field_value=frequency):
+                                field_value=int(frequency)):
             resp = rc.BAD_REQUEST
             resp.write("You have reached the frequency limit. Max allowed %s" \
             % dialer_setting_limit(request, limit_for="frequency"))
@@ -532,7 +531,7 @@ class campaignHandler(BaseHandler):
         callmaxduration = get_attribute(attrs, 'callmaxduration')
         if check_dialer_setting(request,
                                 check_for="duration",
-                                field_value=callmaxduration):
+                                field_value=int(callmaxduration)):
             resp = rc.BAD_REQUEST
             resp.write("You have reached the max call duration limit. \
             Max allowed %s" % dialer_setting_limit(request,
@@ -542,7 +541,7 @@ class campaignHandler(BaseHandler):
         maxretry = get_attribute(attrs, 'maxretry')
         if check_dialer_setting(request,
                                 check_for="retry",
-                                field_value=maxretry):
+                                field_value=int(maxretry)):
             resp = rc.BAD_REQUEST
             resp.write("You have reached the max retry limit. \
             Max allowed %s" % dialer_setting_limit(request,
@@ -552,7 +551,7 @@ class campaignHandler(BaseHandler):
         calltimeout = get_attribute(attrs, 'calltimeout')
         if check_dialer_setting(request,
                                 check_for="timeout",
-                                field_value=calltimeout):
+                                field_value=int(calltimeout)):
             resp = rc.BAD_REQUEST
             resp.write("You have reached the call timeout limit.\
             Max allowed %s" % dialer_setting_limit(request,

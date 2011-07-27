@@ -173,6 +173,8 @@
                 {% if not request.session.has_notified %}
                     <br/>
                     {% trans "To send notification to administrator" %} <a href="/notify/admin/">{% trans "Click here" %}</a>
+                {% else %}
+                    {% trans "(Notification sent)" %}
                 {% endif %}
         </div>
         {% endif %}

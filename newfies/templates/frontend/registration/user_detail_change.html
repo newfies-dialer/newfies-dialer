@@ -110,35 +110,33 @@ $(function() {
         {% endif %}
        </table>
 	</div>
-    <div id="tabs-4">
+    <div id="tabs-4" align="left">
         {% if dialer_set %}
-            <table style="width:550px;">
-            <thead>
+            <table style="width:350px;" >
             <tr>
-                <th>{% trans "Maximum calls per minute" %}</th>
-                <th>{{ dialer_set.max_frequency }}</th>
+                <td>{% trans "Maximum calls per minute" %}</td>
+                <td>{{ dialer_set.max_frequency }}</td>
             </tr>
             <tr>
-                <th>{% trans "Maximum call duration" %}</th>
-                <th>{{ dialer_set.callmaxduration }}</th>
+                <td>{% trans "Maximum call duration" %}</td>
+                <td>{{ dialer_set.callmaxduration }}</td>
             </tr>
             <tr>
-                <th>{% trans "Maximum retries" %}</th>
-                <th>{{ dialer_set.maxretry }}</th>
+                <td>{% trans "Maximum retries" %}</td>
+                <td>{{ dialer_set.maxretry }}</td>
             </tr>
             <tr>
-                <th>{% trans "Timeout" %}</th>
-                <th>{{ dialer_set.max_calltimeout }}</th>
+                <td>{% trans "Timeout" %}</td>
+                <td>{{ dialer_set.max_calltimeout }}</td>
             </tr>
             <tr>
-                <th>{% trans "Maximum campaign" %}</th>
-                <th>{{ dialer_set.max_number_campaign }}</th>
+                <td>{% trans "Maximum campaign" %}</td>
+                <td>{{ dialer_set.max_number_campaign }}</td>
             </tr>
             <tr>
-                <th>{% trans "Maximum subscriber per campaign" %}</th>
-                <th>{{ dialer_set.max_number_subscriber_campaign }}</th>
+                <td>{% trans "Maximum subscriber per campaign" %}</td>
+                <td>{{ dialer_set.max_number_subscriber_campaign }}</td>
             </tr>
-            </thead>
             </table>
         {% endif %}
 	</div>

@@ -31,6 +31,12 @@ function get_alert_msg(id)
 </div>
 {% endif %}
 
+{% if error_msg %}
+<div class="error" id="rounded-corner-upper-table">
+    <strong>{% trans "Alert" %} : </strong>  {{ error_msg }}
+</div>
+{% endif %}
+
 <br/>
 <form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">
 {% csrf_token %}

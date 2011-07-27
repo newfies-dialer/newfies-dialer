@@ -126,26 +126,26 @@ class CampaignForm(ModelForm):
         dialer_set = user_dialer_setting(ds_user)
         if dialer_set:
             if frequency > dialer_set.max_frequency:
-                msg = _('You have crossed the frequency limit. \
-                        Please enter upto %d' % dialer_set.max_frequency)
+                msg = _('Maximum Frequency limit of %d exceeded.'\
+                % dialer_set.max_frequency)
                 self._errors['frequency'] = ErrorList([msg])
                 del self.cleaned_data['frequency']
 
             if callmaxduration > dialer_set.callmaxduration:
-                msg = _('You have crossed the duration limit. \
-                        Please enter upto %d' % dialer_set.callmaxduration)
+                msg = _('Maximum Duration limit of %d exceeded.'\
+                         % dialer_set.callmaxduration)
                 self._errors['callmaxduration'] = ErrorList([msg])
                 del self.cleaned_data['callmaxduration']
 
             if maxretry > dialer_set.maxretry:
-                msg = _('You have crossed the max retries limit.\
-                         Please enter upto %d' % dialer_set.maxretry)
+                msg = _('Maximum Retries limit of %d exceeded.' \
+                % dialer_set.maxretry)
                 self._errors['maxretry'] = ErrorList([msg])
                 del self.cleaned_data['maxretry']
 
             if calltimeout > dialer_set.max_calltimeout:
-                msg = _('You have crossed the time out limit.\
-                         Please enter upto %d' % dialer_set.max_calltimeout)
+                msg = _('Maximum Timeout limit of %d exceeded.'\
+                % dialer_set.max_calltimeout)
                 self._errors['calltimeout'] = ErrorList([msg])
                 del self.cleaned_data['calltimeout']
 

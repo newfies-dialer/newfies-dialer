@@ -1700,10 +1700,12 @@ def campaign_list(request):
     data = {
         'module': current_view(request),        
         'msg': request.session.get('msg'),
+        'error_msg': request.session.get('error_msg'),
         'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
+    request.session['error_msg'] = ''
     return render_to_response(template, data,
            context_instance=RequestContext(request))
 
@@ -1726,6 +1728,9 @@ def campaign_add(request):
     """
     # If dialer setting is not attached with user, redirect to campaign list
     if user_attached_with_dilaer_settings(request):
+        request.session['error_msg'] = _("In order to add a campaign, \
+        you need to have your settings configured properly, \
+        please contact the admin.")
         return HttpResponseRedirect("/campaign/")
 
     # Check dialer setting limit

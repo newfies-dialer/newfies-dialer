@@ -869,7 +869,7 @@ def notify_admin(request):
        system user via mail
     """
     # TODO : get recipient = admin user
-    recipient = request.user
+    recipient = User.objects.get(pk=1) # request.user
     if request.session['has_notified'] == False:
         common_send_notification(request, 7, recipient)
         # Send mail to ADMINS

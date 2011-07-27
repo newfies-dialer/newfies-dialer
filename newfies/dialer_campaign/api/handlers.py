@@ -167,6 +167,12 @@ class campaignHandler(BaseHandler):
             * The VoipApp doesn't exist!
             * The Campaign name is duplicated!
         """
+        if user_attached_with_dilaer_settings(request):
+            resp = rc.BAD_REQUEST
+            resp.write("Your settings aren`t configured properly, \
+                 Please contact the administrator.")
+            return resp
+
         if check_dialer_setting(request, check_for="campaign"):
             resp = rc.BAD_REQUEST
             resp.write("You have too many campaigns. Max allowed %s" \
@@ -503,6 +509,11 @@ class campaignHandler(BaseHandler):
 
             * Campaign not found.
         """
+        if user_attached_with_dilaer_settings(request):
+            resp = rc.BAD_REQUEST
+            resp.write("Your settings aren`t configured properly, \
+                 Please contact the administrator.")
+            return resp
         attrs = self.flatten_dict(request.POST)
 
         #Retrieve Post settings

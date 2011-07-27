@@ -103,6 +103,27 @@ def month_year_range():
     return m_list
 
 
+def user_attached_with_dilaer_settings(request):
+    """Check user is attacehd with dialer setting or not"""
+    try:
+        user_obj = UserProfile.objects.get(user=request.user,
+                                           dialersetting__isnull=False)
+        # DialerSettings link to the User
+        if user_obj:
+            dialer_set_obj = \
+            DialerSetting.objects.get(pk=user_obj.dialersetting_id)
+            # DialerSettings is exists
+            if dialer_set_obj:
+                # attached with dialer setting
+                return False
+            else:
+                # not attached
+                return True
+    except:
+        # not attached
+        return True
+
+
 def check_dialer_setting(request, check_for, field_value=''):
     """Check Dialer Setting Limitation
 
@@ -117,70 +138,69 @@ def check_dialer_setting(request, check_for, field_value=''):
         if user_obj:
             dialer_set_obj = \
             DialerSetting.objects.get(pk=user_obj.dialersetting_id)
+            if dialer_set_obj:
+                # check running campaign for User
+                if check_for == "campaign":
+                    campaign_count = Campaign.objects\
+                                     .filter(user=request.user).count()
+                    # Total active campaign matched with
+                    # max_number_campaigns
+                    if campaign_count >= dialer_set_obj.max_number_campaign:
+                        # Limit matched or exceeded
+                        return True
+                    else:
+                        # Limit not matched
+                        return False
 
-            # check running campaign for User
-            if check_for == "campaign":
-                campaign_count = Campaign.objects\
-                                 .filter(user=request.user).count()
-                # Total active campaign matched with
-                # max_number_campaigns
-                if campaign_count >= dialer_set_obj.max_number_campaign:
-                    # Limit matched or exceeded
-                    return True
-                else:
+                # check for subscriber per campaign
+                if check_for == "contact":
+                    # Campaign list for User
+                    campaign_list = Campaign.objects.filter(user=request.user)
+                    for i in campaign_list:
+                        # Total contacts per campaign
+                        contact_count = \
+                        Contact.objects.filter(phonebook__campaign=i.id).count()
+
+                        # Total active contacts matched with
+                        # max_number_subscriber_campaign
+                        if contact_count >= \
+                        dialer_set_obj.max_number_subscriber_campaign:
+                            # Limit matched or exceeded
+                            return True
                     # Limit not matched
                     return False
 
-            # check for subscriber per campaign
-            if check_for == "contact":
-                # Campaign list for User
-                campaign_list = Campaign.objects.filter(user=request.user)
-                for i in campaign_list:
-                    # Total contacts per campaign
-                    contact_count = \
-                    Contact.objects.filter(phonebook__campaign=i.id).count()
-
-                    # Total active contacts matched with
-                    # max_number_subscriber_campaign
-                    if contact_count >= \
-                    dialer_set_obj.max_number_subscriber_campaign:
+                # check for frequency limit
+                if check_for == "frequency":
+                    if field_value > dialer_set_obj.max_frequency:
                         # Limit matched or exceeded
                         return True
-                # Limit not matched
-                return False
+                    # Limit not exceeded
+                    return False
 
-            # check for frequency limit
-            if check_for == "frequency":
-                if field_value > dialer_set_obj.max_frequency:
-                    # Limit matched or exceeded
-                    return True
-                # Limit not exceeded
-                return False
+                # check for call duration limit
+                if check_for == "duration":
+                    if field_value > dialer_set_obj.callmaxduration:
+                        # Limit matched or exceeded
+                        return True
+                    # Limit not exceeded
+                    return False
 
-            # check for call duration limit
-            if check_for == "duration":
-                if field_value > dialer_set_obj.callmaxduration:
-                    # Limit matched or exceeded
-                    return True
-                # Limit not exceeded
-                return False
+                # check for call retry limit
+                if check_for == "retry":
+                    if field_value > dialer_set_obj.maxretry:
+                        # Limit matched or exceeded
+                        return True
+                    # Limit not exceeded
+                    return False
 
-            # check for call retry limit
-            if check_for == "retry":
-                if field_value > dialer_set_obj.maxretry:
-                    # Limit matched or exceeded
-                    return True
-                # Limit not exceeded
-                return False
-
-            # check for call timeout limit
-            if check_for == "timeout":
-                if field_value > dialer_set_obj.max_calltimeout:
-                    # Limit matched or exceeded
-                    return True
-                # Limit not exceeded
-                return False
-
+                # check for call timeout limit
+                if check_for == "timeout":
+                    if field_value > dialer_set_obj.max_calltimeout:
+                        # Limit matched or exceeded
+                        return True
+                    # Limit not exceeded
+                    return False
     except:
         # DialerSettings not link to the User
         return False

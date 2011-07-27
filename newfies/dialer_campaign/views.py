@@ -8,6 +8,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.db.models import *
 from django.core.urlresolvers import reverse
+from django.core.mail import send_mail, mail_admins
+from django.conf import settings
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
@@ -864,16 +866,23 @@ def update_campaign_status_cust(request, pk, status):
 @login_required
 def notify_admin(request):
     """Notify administrator regarding dialer setting configuration for
-       system user
+       system user via mail
     """
-    # TODO: get superuser
     # example : recipient = areski
     recipient = request.user
     if request.session['has_notified'] == False:
-        common_send_notification(request, 7, recipient)
+        #common_send_notification(request, 7, recipient)
+        # Send mail to ADMINS
+        subject = _('Dialer setting configuration')
+        message = _('User "%s" need to be mapped with dialer setting' \
+        % request.user)
+        # mail_admins() is a shortcut for sending an email to the site admins,
+        # as defined in the ADMINS setting
+        mail_admins(subject, message)
         request.session['has_notified'] = True
 
     return HttpResponseRedirect('/dashboard/')
+
 
 # Phonebook
 @login_required

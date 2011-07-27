@@ -7,9 +7,11 @@ DEBUG = False
 TEMPLATE_DEBUG = False
 
 ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
+     ('Your Name', 'your_email@domain.com'),
 )
 MANAGERS = ADMINS
+
+SERVER_EMAIL = 'newfies@localhost.com'
 
 APPLICATION_DIR = os.path.dirname(globals()['__file__'])
 
@@ -272,7 +274,7 @@ PISTON_EMAIL_ERRORS = "root@localhost.localdomain"
 #PISTON_IGNORE_DUPE_MODELS = True
 
 # Use only in Debug mode. Not in production
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 #PLIVO
 #=====

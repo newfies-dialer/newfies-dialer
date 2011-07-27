@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
-from dialer_campaign.models import Phonebook, Campaign, CAMPAIGN_STATUS
+from dialer_campaign.models import Phonebook, Campaign, Contact, CAMPAIGN_STATUS
 from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting
 from dateutil.relativedelta import *
@@ -145,7 +145,7 @@ def check_dialer_setting(request, check_for, field_value=''):
                                      .filter(user=request.user).count()
                     # Total active campaign matched with
                     # max_number_campaigns
-                    if campaign_count >= dialer_set_obj.max_number_campaign:
+                    if campaign_count > dialer_set_obj.max_number_campaign:
                         # Limit matched or exceeded
                         return True
                     else:
@@ -160,10 +160,9 @@ def check_dialer_setting(request, check_for, field_value=''):
                         # Total contacts per campaign
                         contact_count = \
                         Contact.objects.filter(phonebook__campaign=i.id).count()
-
                         # Total active contacts matched with
                         # max_number_subscriber_campaign
-                        if contact_count >= \
+                        if contact_count > \
                         dialer_set_obj.max_number_subscriber_campaign:
                             # Limit matched or exceeded
                             return True

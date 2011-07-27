@@ -866,12 +866,11 @@ def update_campaign_status_cust(request, pk, status):
 @login_required
 def notify_admin(request):
     """Notify administrator regarding dialer setting configuration for
-       system user via mail
+       system user via email
     """
-    # example : recipient = areski
-    recipient = request.user
+    recipient = 'Newfies Administrator'
     if request.session['has_notified'] == False:
-        #common_send_notification(request, 7, recipient)
+        common_send_notification(request, 7, recipient)
         # Send mail to ADMINS
         subject = _('Dialer setting configuration')
         message = _('User "%s" need to be mapped with dialer setting' \

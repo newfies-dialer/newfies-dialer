@@ -20,3 +20,6 @@ def get_user(record, field):
     return User.objects.get(pk=1)
 
 
+@spam.strict_handler('dialer_cdr.VoIPCall.callrequest')
+def get_callrequest(record, field):
+    return Callrequest.objects.filter(user=User.objects.get(pk=1))[0]

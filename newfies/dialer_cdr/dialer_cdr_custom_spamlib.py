@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from dialer_cdr.models import *
 from dilla import spam
+from random import choice
 import string
 import random
 import decimal
@@ -22,4 +23,4 @@ def get_user(record, field):
 
 @spam.strict_handler('dialer_cdr.VoIPCall.callrequest')
 def get_callrequest(record, field):
-    return Callrequest.objects.filter(user=User.objects.get(pk=1))[0]
+    return choice(Callrequest.objects.filter(user=User.objects.get(pk=1)))

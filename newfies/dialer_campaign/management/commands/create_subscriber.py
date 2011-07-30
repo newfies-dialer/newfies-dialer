@@ -44,3 +44,4 @@ class Command(BaseCommand):
 
             print "Launch Task : collect_subscriber(%s)" % str(obj_campaign.id)
             collect_subscriber.delay(obj_campaign.id)
+ 

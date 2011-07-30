@@ -1753,6 +1753,7 @@ def campaign_add(request):
             obj = form.save(commit=False)
             obj.user = User.objects.get(username=request.user)
             obj.save()
+            form.save_m2m()
             request.session["msg"] = _('"%s" is added successfully.' %\
             request.POST['name'])
             return HttpResponseRedirect('/campaign/')

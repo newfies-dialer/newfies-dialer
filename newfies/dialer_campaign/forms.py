@@ -109,6 +109,7 @@ class CampaignForm(ModelForm):
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
         }
+
     def __init__(self, user, *args, **kwargs):
         super(CampaignForm, self).__init__(*args, **kwargs)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
@@ -116,7 +117,6 @@ class CampaignForm(ModelForm):
 
     def clean(self):
         cleaned_data = self.cleaned_data
-
         ds_user = cleaned_data.get("ds_user")
         frequency = cleaned_data.get('frequency')
         callmaxduration = cleaned_data.get('callmaxduration')

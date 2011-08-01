@@ -13,10 +13,10 @@ VOIPCALL_DISPOSITION = ['ANSWER','BUSY', 'NOANSWER', 'CANCEL', 'CONGESTION',
 
 class Command(BaseCommand):
     # Use : create_callrequest_cdr '13843453|1' '324242|1'
-    # "phone_number|campaign_id"
-    args = 'phonenumber|campaign_id' 'phonenumber|campaign_id'
-    help = "Creates a new call request and CDR for a given phonenumber \
-            and campaign_id \n---------------------------------\n"
+    #                              'phone_number|campaign_id'
+    args = '"phonenumber|campaign_id"'  '"phonenumber|campaign_id"'
+    help = "Creates a new call request and CDR for a given phonenumber and campaign_id \
+            \n--------------------------------------------------------------------------\n"
 
     def handle(self, *args, **options):
         """Note that subscriber created this way are only for devel purposes"""

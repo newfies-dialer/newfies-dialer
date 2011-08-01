@@ -1644,13 +1644,6 @@ def campaign_grid(request):
     if sortorder == 'desc':
         sortorder_sign = '-'
 
-    # List of campaign which are expired but status is running
-    all_camp = Campaign.objects.filter(expirationdate__lte=datetime.now(),
-                                       user=request.user)
-    # stop campaign which are expired
-    for i in all_camp:
-        common_campaign_status(i.id, 4)
-
     campaign_list = Campaign.objects\
                     .values('id', 'campaign_code', 'name', 'startingdate',
                             'expirationdate', 'aleg_gateway',

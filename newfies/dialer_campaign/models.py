@@ -175,6 +175,13 @@ class CampaignManager(models.Manager):
 
         return Campaign.objects.filter(**kwargs)
 
+    def get_expired_campaign(self):
+        """Return all the campaigns which are expired or going to expire
+         based on the expiry date but status is not 'END'"""
+        kwargs = {}
+        kwargs['expirationdate__lte'] = datetime.now()
+        return Campaign.objects.filter(**kwargs).exclude(status=4)
+
 
 class Campaign(Model):
     """This defines the Campaign

@@ -52,16 +52,6 @@ class CampaignAdmin(admin.ModelAdmin):
         )
         return my_urls + urls
 
-    def changelist_view(self, request,  extra_context=None):
-        # List of campaign which are expired but status is running
-        all_camp = Campaign.objects.filter(expirationdate__lte=datetime.now())
-        # stop campaign which are expired
-        for i in all_camp:
-            common_campaign_status(i.id, 4)
-        ctx = {}
-        return super(CampaignAdmin, self).changelist_view(request,
-                                                          extra_context=ctx)
-
     def add_view(self, request, extra_context=None):
         """Override django add_view method for checking the dialer setting limit
 

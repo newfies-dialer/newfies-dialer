@@ -26,34 +26,35 @@ class Command(BaseCommand):
             res = newinst.split('|')
             phonenumber = res[0]
             campaign_id = res[1]
-
             try:
-                obj_campaign = Campaign.objects.get(id=campaign_id)
+                admin_user = User.objects.get(pk=1)
+                try:
+                    obj_campaign = Campaign.objects.get(id=campaign_id)
+                except:
+                    print 'Can\'t find this Campaign : %s' % campaign_id
+                    return False
+
+                try:
+                    new_callrequest = Callrequest.objects.create(
+                                        user=admin_user,
+                                        phone_number=phonenumber,
+                                        campaign=obj_campaign)
+                    print "Callrequest created id:%s" % new_callrequest.id
+                except IntegrityError:
+                    print ("The callrequest is not created!")
+                    return False
+
+                try:
+                    new_cdr = VoIPCall.objects.create(
+                                        user=admin_user,
+                                        callrequest=new_callrequest,
+                                        phone_number=phonenumber,
+                                        duration=random.randint(1, 100),
+                                        disposition=choice(VOIPCALL_DISPOSITION))
+                    print "CDR created id:%s" % new_cdr.id
+                except IntegrityError:
+                    print ("The cdr is not created!")
+                    return False
             except:
-                print 'Can\'t find this Campaign : %s' % campaign_id
-                return False
-
-            try:
-                new_callrequest = Callrequest.objects.create(
-                                    user=User.objects.get(pk=1),
-                                    phone_number=phonenumber,
-                                    campaign=obj_campaign,
-                                    voipapp_id=1,
-                                    aleg_gateway_id=1)
-                print "Callrequest created id:%s" % new_callrequest.id
-            except IntegrityError:
-                print ("The callrequest is not created!")
-                return False
-
-            try:
-                new_cdr = VoIPCall.objects.create(
-                                    user=User.objects.get(pk=1),
-                                    callrequest=new_callrequest,
-                                    phone_number=phonenumber,
-                                    used_gateway_id=1,
-                                    duration=random.randint(1, 100),
-                                    disposition=choice(VOIPCALL_DISPOSITION))
-                print "CDR created id:%s" % new_cdr.id
-            except IntegrityError:
-                print ("The cdr is not created!")
+                print "No admin user"
                 return False

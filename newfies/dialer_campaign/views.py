@@ -553,7 +553,7 @@ def customer_dashboard(request, on_index=None):
     reached_contact = 0
     for i in campaign:
         campaign_subscriber = CampaignSubscriber.objects\
-        .filter(campaign=i.id, status=5,
+        .filter(campaign=i.id, # status=5,
                 updated_date__range=(start_date, end_date)).count()
         reached_contact += campaign_subscriber
 

@@ -126,7 +126,7 @@ func_install_frontend(){
     echo ""
     echo ""
     echo "This will install Web Newfies on your server"
-    echo "press any key to continue or CTRL-C to exit"
+    echo "Press Enter to continue or CTRL-C to exit"
     read TEMP
 
     db_backend=MySQL
@@ -187,7 +187,7 @@ func_install_frontend(){
         echo "We detect an existing Newfies Installation"
         echo "if you continue the existing installation will be removed!"
         echo ""
-        echo "press any key to continue or CTRL-C to exit"
+        echo "Press Enter to continue or CTRL-C to exit"
         read TEMP
 
         mkdir /tmp/old-newfies-dialer_$DATETIME
@@ -197,7 +197,7 @@ func_install_frontend(){
         
         echo "Files from $INSTALL_DIR has been moved to /tmp/old-newfies-dialer_$DATETIME"
         echo "Mysql Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql"
-        echo "press any key to continue"
+        echo "Press Enter to continue"
         read TEMP
     fi
 
@@ -223,7 +223,6 @@ func_install_frontend(){
             mv Star2Billing-newfies-* newfies-dialer        
         ;;
     esac
-
 
     # Copy files
     cp -r /usr/src/newfies-dialer/newfies $INSTALL_DIR
@@ -378,7 +377,7 @@ func_install_backend() {
     echo ""
     echo ""
     echo "This will install Newfies Backend, Celery & Redis on your server"
-    echo "press any key to continue or CTRL-C to exit"
+    echo "Press Enter to continue or CTRL-C to exit"
     read TEMP
 
     IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`

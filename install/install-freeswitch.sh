@@ -49,7 +49,7 @@ fi
 clear
 echo ""
 echo "FreeSWITCH will be installed in $FS_INSTALLED_PATH"
-echo "Press any key to continue or CTRL-C to exit"
+echo "Press Enter to continue or CTRL-C to exit"
 echo ""
 read INPUT
 

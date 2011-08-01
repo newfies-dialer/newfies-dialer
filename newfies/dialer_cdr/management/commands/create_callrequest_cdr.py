@@ -14,9 +14,9 @@ VOIPCALL_DISPOSITION = ['ANSWER','BUSY', 'NOANSWER', 'CANCEL', 'CONGESTION',
 class Command(BaseCommand):
     # Use : create_callrequest_cdr '13843453|1' '324242|1'
     #                              'phone_no|campaign_id'
-    args = '"phonenumber|campaign_id" "phonenumber|campaign_id"'
-    help = "Creates a new call request and CDR for a given phonenumber and campaign_id \
-            \n--------------------------------------------------------------------------\n"
+    args = '"campaign_id|no_of_record" "campaign_id|no_of_record"'
+    help = "Creates no of new call requests and CDRs for a given campaign_id & no of records \
+            \n--------------------------------------------------------------------------------\n"
 
     def handle(self, *args, **options):
         """Note that subscriber created this way are only for devel purposes"""
@@ -24,8 +24,9 @@ class Command(BaseCommand):
         for newinst in args:
             print newinst
             res = newinst.split('|')
-            phonenumber = res[0]
-            campaign_id = res[1]
+            campaign_id = res[0]
+            no_of_record = res[1]
+
             try:
                 admin_user = User.objects.get(pk=1)
                 try:
@@ -35,25 +36,23 @@ class Command(BaseCommand):
                     return False
 
                 try:
-                    new_callrequest = Callrequest.objects.create(
-                                        user=admin_user,
-                                        phone_number=phonenumber,
-                                        campaign=obj_campaign)
-                    print "Callrequest created id:%s" % new_callrequest.id
+                    length=5
+                    chars="1234567890"
+                    for i in range(1, int(no_of_record) + 1):
+                        phonenumber = '' . join([choice(chars) for i in range(length)])
+                        new_callrequest = Callrequest.objects.create(
+                                            user=admin_user,
+                                            phone_number=phonenumber,
+                                            campaign=obj_campaign)
+                        new_cdr = VoIPCall.objects.create(
+                                            user=admin_user,
+                                            callrequest=new_callrequest,
+                                            phone_number=phonenumber,
+                                            duration=random.randint(1, 100),
+                                            disposition=choice(VOIPCALL_DISPOSITION))
+                    print "No of Callrequest & CDR created :%d" % int(no_of_record)
                 except IntegrityError:
-                    print ("The callrequest is not created!")
-                    return False
-
-                try:
-                    new_cdr = VoIPCall.objects.create(
-                                        user=admin_user,
-                                        callrequest=new_callrequest,
-                                        phone_number=phonenumber,
-                                        duration=random.randint(1, 100),
-                                        disposition=choice(VOIPCALL_DISPOSITION))
-                    print "CDR created id:%s" % new_cdr.id
-                except IntegrityError:
-                    print ("The cdr is not created!")
+                    print ("Callrequest & CDR are not created!")
                     return False
             except:
                 print "No admin user"

@@ -1,6 +1,5 @@
 from celery.task import Task, PeriodicTask
 from dialer_campaign.models import Campaign, CampaignSubscriber
-from dialer_campaign.views import common_campaign_status
 from dialer_cdr.models import Callrequest, VoIPCall
 from celery.decorators import task
 from django.db import IntegrityError
@@ -211,7 +210,7 @@ class campaign_expire_check(PeriodicTask):
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
         logger.info( "TASK :: campaign_expire_check")
-
+        from dialer_campaign.views import common_campaign_status
         for campaign in Campaign.objects.get_expired_campaign():
             logger.debug("=> Campaign name %s (id:%s)" % (campaign.name,
                                                          campaign.id))

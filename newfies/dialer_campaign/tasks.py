@@ -203,7 +203,7 @@ class campaign_expire_check(PeriodicTask):
 
         campaign_expire_check.delay()
     """
-    run_every = timedelta(seconds=15)
+    run_every = timedelta(seconds=300)
     #The campaign have to run every minutes in order to control the number
     # of calls per minute. Cons : new calls might delay 60seconds
     #run_every = timedelta(seconds=60)

@@ -5,9 +5,9 @@ from django.db import IntegrityError
 
 
 class Command(BaseCommand):
-    # Use : create_contact '13843453|1' '324242|1'
-    args = '"phonenumber|phonebook_id" "phonenumber|phonebook_id"'
-    help = "Creates a new contact for a given phonenumber and phonebook \
+    # Use : create_contact '1|100' '2|50'
+    args = '"phonebook_id|no_of_record" "phonebook_id|no_of_record"'
+    help = "Creates new contacts for a given phonebook and no of records \
             \n-----------------------------------------------------------\n"
 
     def handle(self, *args, **options):
@@ -16,8 +16,8 @@ class Command(BaseCommand):
         for newinst in args:
             print newinst
             res = newinst.split('|')
-            myphonenumber = res[0]
-            myphonebook_id = res[1]
+            myphonebook_id = res[0]
+            no_of_record = res[1]
 
             try:
                 obj_phonebook = Phonebook.objects.get(id=myphonebook_id)
@@ -26,10 +26,14 @@ class Command(BaseCommand):
                 return False
 
             try:
-                new_contact = Contact.objects.create(
-                                    contact=myphonenumber,
-                                    phonebook=obj_phonebook)
-                print "Contact created id:%s" % new_contact.id
+                length=5
+                chars="1234567890"
+                for i in range(1, int(no_of_record) + 1):
+                    phone_no = '' . join([choice(chars) for i in range(length)])
+                    new_contact = Contact.objects.create(
+                                        contact=phone_no,
+                                        phonebook=obj_phonebook)
+                print "No of Contact created : %d" % int(no_of_record)
             except IntegrityError:
                 print ("The contact is duplicated!")
                 return False

@@ -552,6 +552,9 @@ def customer_dashboard(request, on_index=None):
     # Contacts which are successfully called for running campaign
     reached_contact = 0
     for i in campaign:
+        now = datetime.now()
+        start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
+        end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999)
         campaign_subscriber = CampaignSubscriber.objects\
         .filter(campaign=i.id, # status=5,
                 updated_date__range=(start_date, end_date)).count()

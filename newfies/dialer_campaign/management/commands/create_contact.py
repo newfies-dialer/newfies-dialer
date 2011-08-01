@@ -6,7 +6,7 @@ from django.db import IntegrityError
 
 class Command(BaseCommand):
     # Use : create_contact '13843453|1' '324242|1'
-    args = '"phonenumber|phonebook_id"' '"phonenumber|phonebook_id"'
+    args = '"phonenumber|phonebook_id" "phonenumber|phonebook_id"'
     help = "Creates a new contact for a given phonenumber and phonebook \
             \n-----------------------------------------------------------\n"
 
@@ -29,8 +29,7 @@ class Command(BaseCommand):
                 new_contact = Contact.objects.create(
                                     contact=myphonenumber,
                                     phonebook=obj_phonebook)
+                print "Contact created id:%s" % new_contact.id
             except IntegrityError:
                 print ("The contact is duplicated!")
                 return False
-
-            print "Contact created id:%s" % new_contact.id

@@ -13,8 +13,8 @@ VOIPCALL_DISPOSITION = ['ANSWER','BUSY', 'NOANSWER', 'CANCEL', 'CONGESTION',
 
 class Command(BaseCommand):
     # Use : create_callrequest_cdr '13843453|1' '324242|1'
-    #                              'phone_number|campaign_id'
-    args = '"phonenumber|campaign_id"'  '"phonenumber|campaign_id"'
+    #                              'phone_no|campaign_id'
+    args = '"phonenumber|campaign_id" "phonenumber|campaign_id"'
     help = "Creates a new call request and CDR for a given phonenumber and campaign_id \
             \n--------------------------------------------------------------------------\n"
 
@@ -39,12 +39,11 @@ class Command(BaseCommand):
                                     phone_number=phonenumber,
                                     campaign=obj_campaign,
                                     voipapp_id=1,
-                                    aleg_gateway_id=1,)
+                                    aleg_gateway_id=1)
+                print "Callrequest created id:%s" % new_callrequest.id
             except IntegrityError:
-                print ("The callrequest is duplicated!")
+                print ("The callrequest is not created!")
                 return False
-
-            print "Callrequest created id:%s" % new_callrequest.id
 
             try:
                 new_cdr = VoIPCall.objects.create(
@@ -54,8 +53,7 @@ class Command(BaseCommand):
                                     used_gateway_id=1,
                                     duration=random.randint(1, 100),
                                     disposition=choice(VOIPCALL_DISPOSITION))
+                print "CDR created id:%s" % new_cdr.id
             except IntegrityError:
-                print ("The cdr is duplicated!")
+                print ("The cdr is not created!")
                 return False
-
-            print "CDR created id:%s" % new_cdr.id

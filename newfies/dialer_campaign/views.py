@@ -2,6 +2,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.views import password_reset, password_reset_done,\
 password_reset_confirm, password_reset_complete
 from django.http import HttpResponseRedirect, HttpResponse
@@ -1850,3 +1851,24 @@ def campaign_change(request, object_id):
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))
+
+
+@staff_member_required
+def test(request):
+    #print request
+    campaign = Campaign.objects.filter(user=request.user)    
+    rows = []
+    for i in campaign:
+      rows.append({
+                   #'updated_date': i.updated_date,
+                   'date': i.updated_date.strftime('%Y-%m-%d %H:%M:%S'),
+                   'id': i.id,
+                 })
+    #print rows
+    data = {
+        'campaign': rows,
+    }
+    #print data
+    return HttpResponse(simplejson.dumps(data), mimetype='application/json',
+                        content_type="application/json")
+

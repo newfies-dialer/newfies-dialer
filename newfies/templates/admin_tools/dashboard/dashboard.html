@@ -69,10 +69,8 @@
 </div>
 <div id="{{ dashboard.get_id }}" class="dashboard-container">
     {% for module in dashboard.children %}
-{% admin_tools_render_dashboard_module module %}{% endfor %}
-
-
-
+        {% admin_tools_render_dashboard_module module %}
+    {% endfor %}
 
 {% ifequal request.path "/admin/" %}
 
@@ -130,8 +128,100 @@
 {% endfor %}
 </div>
 {% endif %}
+    <div class="dashboard-module">
+        <h2>{% trans "Graph" %}</h2>
+        <script type="text/javascript" language="javascript">
+            var temp_json;
+            var output = '';
+            $.ajax({
+                url: 'http://127.0.0.1:8000/test/',
+                type: "GET",
+                dataType: "json",
+                data: "",
+                async: false,
+                cache: false,
+                timeout: 30000,
+                success: function(data) {
+                    temp_json = data;
+                    //alert(data);
+                },
+                error: function() {
+                    alert("Request failed");
+                }
+            });
 
+            //alert(JSON.stringify(temp_json.campaign));
+
+            //alert(output);
+            output = '[{';
+            $.each(temp_json.campaign, function(i,campaign){
+                      //output +=campaign.date +":"+ campaign.id;
+                    output +="label: " + "'"+campaign.date+"'," +
+                             "data: " + "[["+campaign.id+","+campaign.id+" ]],";
+                });
+            output += "}]";
+            //alert(output);
+            var data = output;
+            //var data = eval(output);
+            //alert(data);
+
+            var data = [
+                {
+                    label: '2011-08-02',
+                    data: [[1,2],],
+                },
+                {
+                    label: '2011-08-03',
+                    data: [[2,3],],
+                },
+            ];
+
+            $(function () {
+
+                var options = {
+                                legend: {
+                                            position: "ne",
+                                            margin: [-510,0],
+                                            labelFormatter: function(label){
+                                                return '<div class="graph_legend">'+label+'</div>';
+                                            },
+                                      },
+                                series: {
+                                            lines: { show: true },
+                                            points: { show: true }
+                                      },
+                                yaxis: {
+                                            min: 0,
+                                            tickDecimals: false
+                                      },
+                                xaxis: {
+                                            min: 0,
+                                            max: 23,
+                                            tickSize: 1,
+                                            tickDecimals: false,
+                                      },
+                                grid: {
+                                            hoverable: true,
+                                            xaxis: false
+                                      },
+                                tooltip: {
+                                            formatter: function(obj){
+                                                var time = obj.x;
+                                                var date = obj.label;
+                                                output = 'hi';
+                                                return output;
+                                            },
+                                      }
+                              };
+                var plot = $.plot($("#placeholder"), data, options);
+
+            });
+        </script>
+
+<center>
+    <div class="graph_header">{% trans "Call Statistics" %}</div>
+    <div id="placeholder" style="width:300px;height:300px"></div>
+</center>
+    </div>
 {% endifequal %}
 
-
-</div>

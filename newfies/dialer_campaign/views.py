@@ -1854,7 +1854,92 @@ def campaign_change(request, object_id):
 
 
 @staff_member_required
-def test(request):
+def admin_call_report(request):
+    """Call report on admin dashboard"""
+    total_duration_sum = 0
+    total_call_count = 0
+    total_answered = 0
+    total_not_answered = 0
+    total_busy = 0
+    total_cancel = 0
+    total_congestion = 0
+    total_chanunavail = 0
+    total_dontcall = 0
+    total_torture = 0
+    total_invalidargs = 0
+    total_noroute = 0
+    total_forbiden = 0
+    select_data = \
+        {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,20)"}
+    now = datetime.now()
+    start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
+    end_date = datetime.now()
+    # This calls list is used by pie chart
+    calls = VoIPCall.objects\
+            .filter(duration__isnull=False,
+                    starting_date__range=(start_date, end_date))\
+            .extra(select=select_data)\
+            .values('starting_date', 'disposition').annotate(Sum('duration'))\
+            .annotate(Avg('duration'))\
+            .annotate(Count('starting_date'))\
+            .order_by('starting_date')
+
+    total_call_count = calls.count()
+    for i in calls:
+        if i['disposition'] == 'ANSWER':
+            total_answered = total_answered + 1
+        elif i['disposition'] == 'BUSY':
+            total_busy = total_busy + 1
+        elif i['disposition'] == 'NOANSWER':
+            total_not_answered = total_not_answered + 1
+        elif i['disposition'] == 'CANCEL':
+            total_cancel = total_cancel + 1
+        elif i['disposition'] == 'CONGESTION':
+            total_congestion = total_congestion + 1
+        elif i['disposition'] == 'CHANUNAVAIL':
+            total_chanunavail = total_chanunavail + 1
+        elif i['disposition'] == 'DONTCALL':
+            total_dontcall = total_dontcall + 1
+        elif i['disposition'] == 'TORTURE':
+            total_torture = total_torture + 1
+        elif i['disposition'] == 'INVALIDARGS':
+            total_invalidargs = total_invalidargs + 1
+        elif i['disposition'] == 'NOROUTE':
+            total_noroute = total_noroute + 1
+        else:
+            total_forbiden = total_forbiden + 1 # FORBIDDEN
+
+    data = '<table align="center">'
+    data += '<tr><th>Total Calls: ' + str(total_call_count) + '</th>\
+                 <th></th><th></th></tr>'
+    data += '<tr><th>Answered: ' + str(total_answered) + '</th>\
+                 <th>Do not call: ' + str(total_dontcall) + '</th>\
+                 <th>Busy: ' + str(total_busy) + '</th>\
+             </tr>'
+
+    data += '<tr><th>Chanunavail: ' + str(total_chanunavail) + '</th>\
+                 <th>Torture: ' + str(total_torture) + '</th>\
+                 <th>Not Answered: ' + str(total_not_answered) + '</th>\
+             </tr>'
+
+    data += '<tr><th>Invalid Args: ' + str(total_invalidargs) + '</th>\
+                 <th>Canceled: ' + str(total_cancel) + '</th>\
+                 <th>No Route: ' + str(total_noroute) + '</th>\
+             </tr>'
+
+    data += '<tr><th>Congestion: ' + str(total_congestion) + '</th>\
+                 <th>Forbiden: ' + str(total_forbiden) + '</th>\
+                 <th></th></tr>'
+
+    data += '</table>'
+    #print data
+    return HttpResponse(data, mimetype='application/html',
+                        content_type="application/html")
+
+
+@staff_member_required
+def admin_call_report_graph(request):
+    """Call report graph on admin dashboard"""
     #print request
     campaign = Campaign.objects.filter(user=request.user)    
     rows = []

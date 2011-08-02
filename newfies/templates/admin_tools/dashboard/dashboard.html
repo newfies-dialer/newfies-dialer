@@ -128,13 +128,32 @@
 {% endfor %}
 </div>
 {% endif %}
-    <div class="dashboard-module">
-        <h2>{% trans "Graph" %}</h2>
+    <div class="dashboard-module draggable collapsible deletable">
+        <h2>{% trans "Call Info Today" %}</h2>
+        <script type="text/javascript" language="javascript">
+            $.ajax({
+                url: 'http://127.0.0.1:8000/admin_call_report/',
+                type: "GET",
+                dataType: "html",
+                data: "",
+                async: false,
+                cache: false,
+                timeout: 30000,
+                success: function(data) {
+                    //alert(data);
+                    $('#call_report').html(data);
+                },
+                error: function() {
+                    alert("Request failed");
+                }
+            });
+        </script>
+        <div id="call_report"></div>
         <script type="text/javascript" language="javascript">
             var temp_json;
             var output = '';
             $.ajax({
-                url: 'http://127.0.0.1:8000/test/',
+                url: 'http://127.0.0.1:8000/admin_call_report_graph/',
                 type: "GET",
                 dataType: "json",
                 data: "",
@@ -219,7 +238,7 @@
         </script>
 
 <center>
-    <div class="graph_header">{% trans "Call Statistics" %}</div>
+    <div class="graph_header">{% trans "Call Info" %}</div>
     <div id="placeholder" style="width:300px;height:300px"></div>
 </center>
     </div>

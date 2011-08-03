@@ -129,7 +129,7 @@
 </div>
 {% endif %}
     <div class="dashboard-module draggable collapsible deletable">
-        <h2>{% trans "Call Info Today" %}</h2>
+        <h2>{% trans "Call Info" %}</h2>
         <script type="text/javascript" language="javascript">
             $.ajax({
                 url: '/admin_call_report/',
@@ -175,13 +175,27 @@
                 return true;
             }
         </script>
+        <h3>Graph Type</h3>
         <form action="/admin_call_report_graph/" name="admin_call_graph_form" method="POST" enctype="multipart/form-data">{% csrf_token %}
-        <ul>Call Type
+        <ul>
             <li>
-            <input type="radio" name="call_type" value="all" onclick="call_me('all');"> Calls
-            <!--<input type="radio" name="call_type" value="answered" onclick="call_me('answered');"> Answered
-            <input type="radio" name="call_type" value="unanswered" onclick="call_me('unanswered');"> Unanswered-->
-            <input type="radio" name="call_type" value="unanswered" onclick="call_me('duration');"> Duration
+            <input type="radio" name="call_type" checked="checked" onclick="call_me('ALL');"> {% trans "All Calls" %}
+            <input type="radio" name="call_type" onclick="call_me('ANSWER');"> {% trans "Answered" %}
+            <input type="radio" name="call_type" onclick="call_me('NOANSWER');"> {% trans "No Answer" %}
+            <input type="radio" name="call_type" onclick="call_me('BUSY');"> {% trans "Busy" %}
+            <input type="radio" name="call_type" onclick="call_me('CANCEL');"> {% trans "Cancel" %}
+            </li>
+            <li>
+            <input type="radio" name="call_type" onclick="call_me('CONGESTION');"> {% trans "Congestion" %}
+            <input type="radio" name="call_type" onclick="call_me('CHANUNAVAIL');"> {% trans "Chanunavail" %}
+            <input type="radio" name="call_type" onclick="call_me('DONTCALL');"> {% trans "Don't call" %}
+            <input type="radio" name="call_type" onclick="call_me('TORTURE');"> {% trans "Torture" %}
+            </li>
+            <li>
+            <input type="radio" name="call_type" onclick="call_me('INVALIDARGS');"> {% trans "Invalid Args" %}
+            <input type="radio" name="call_type" onclick="call_me('NOROUTE');"> {% trans "No Route" %}
+            <input type="radio" name="call_type" onclick="call_me('FORBIDDEN');"> {% trans "Forbidden" %}
+            <input type="radio" name="call_type" onclick="call_me('DURATION');"> {% trans "Duration" %}
             </li>
         </ul>
         </form>
@@ -249,13 +263,14 @@
                 });
             }
 
-
         </script>
 
-<center>
-    <div class="graph_header">{% trans "Call Info" %}</div>
-    <div id="placeholder" style="width:350px;height:300px"></div>
-</center>
+        <div class="dashboard-module-content">
+        <center>
+            <div class="graph_header">{% trans "Report" %}</div>
+            <div id="placeholder" style="width:350px;height:300px"></div>
+        </center>
+         </div>
     </div>
 {% endifequal %}
 

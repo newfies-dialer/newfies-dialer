@@ -1940,18 +1940,67 @@ def admin_call_report(request):
 @staff_member_required
 def admin_call_report_graph(request):
     """Call report graph on admin dashboard"""
-    #print request
-    campaign = Campaign.objects.filter(user=request.user)    
+    # search_type = 2 Last 7 days option
+    start_date = calculate_date(search_type=2)
+    end_date = datetime.now()
+    select_data = \
+        {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,13)"}
+    now = datetime.now()
+
+    # This calls list is used by pie chart
+    calls = VoIPCall.objects\
+            .filter(duration__isnull=False,
+                    starting_date__range=(start_date, end_date))\
+            .extra(select=select_data)\
+            .values('starting_date')\
+            .annotate(Sum('duration'))\
+            .annotate(Count('starting_date'))\
+            .order_by('starting_date') # 'disposition'
+    total_call_count = calls.count()
     rows = []
-    for i in campaign:
-      rows.append({
-                   #'updated_date': i.updated_date,
-                   'date': i.updated_date.strftime('%Y-%m-%d %H:%M:%S'),
-                   'id': i.id,
+
+    if calls:
+        maxtime = end_date
+        mintime = start_date
+        calls_dict = {}
+
+        for data in calls:
+            time = datetime(int(data['starting_date'][0:4]),
+                            int(data['starting_date'][5:7]),
+                            int(data['starting_date'][8:10]), 0, 0, 0, 0)
+
+            if time > maxtime:
+                maxtime = time
+            elif time < mintime:
+                mintime = time
+
+            calls_dict[int(time.strftime("%Y%m%d"))] = \
+                {'starting_date__count':data['starting_date__count'],
+                 'duration__sum':data['duration__sum']}
+
+        dateList = date_range(mintime, maxtime, q=2)
+
+        i = 0
+        for date in dateList:
+            inttime = int(date.strftime("%Y%m%d"))
+            if inttime in calls_dict.keys():
+                rows.append({
+                   'date': date.strftime("%Y-%m-%d"),
+                   'count': calls_dict[inttime]['starting_date__count'],
                  })
+            else:
+                rows.append({
+                   'date': date.strftime("%Y-%m-%d"),
+                   'count': 0,
+                 })
+            i += 1
+
     #print rows
+
     data = {
         'campaign': rows,
+        'start_date': start_date.strftime('%Y-%m-%d'),
+        'end_date': end_date.strftime('%Y-%m-%d'),
     }
     #print data
     return HttpResponse(simplejson.dumps(data), mimetype='application/json',

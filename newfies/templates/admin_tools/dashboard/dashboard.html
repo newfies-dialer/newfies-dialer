@@ -170,71 +170,57 @@
             });
 
             //alert(JSON.stringify(temp_json.campaign));
+            var start_date = JSON.stringify(temp_json.start_date).replace(/['"]/g,'');
+            var end_date = JSON.stringify(temp_json.end_date).replace(/['"]/g,'');
+            //alert(start_date.replace(/['"]/g,''));
+            //alert(end_date);
 
-            //alert(output);
-            output = '[{';
+            var d1 = [];
             $.each(temp_json.campaign, function(i,campaign){
-                      //output +=campaign.date +":"+ campaign.id;
-                    output +="label: " + "'"+campaign.date+"'," +
-                             "data: " + "[["+campaign.id+","+campaign.id+" ]],";
-                });
-            output += "}]";
-            //alert(output);
-            var data = output;
-            //var data = eval(output);
-            //alert(data);
-
-            var data = [
-                {
-                    label: '2011-08-02',
-                    data: [[1,2],],
-                },
-                {
-                    label: '2011-08-03',
-                    data: [[2,3],],
-                },
-            ];
+                //output +=campaign.date +":"+ campaign.id;
+                d1.push([(new Date(campaign.date)).getTime(), campaign.count]);
+            });
+            //alert(d1);
 
             $(function () {
+                //var d1 = [];
+                //for (var i = 0; i <= 10; i += 1)
+                //    d1.push([i, parseInt(Math.random() * 30)]);
 
-                var options = {
-                                legend: {
-                                            position: "ne",
-                                            margin: [-510,0],
-                                            labelFormatter: function(label){
-                                                return '<div class="graph_legend">'+label+'</div>';
-                                            },
-                                      },
-                                series: {
-                                            lines: { show: true },
-                                            points: { show: true }
-                                      },
-                                yaxis: {
-                                            min: 0,
-                                            tickDecimals: false
-                                      },
-                                xaxis: {
-                                            min: 0,
-                                            max: 23,
-                                            tickSize: 1,
-                                            tickDecimals: false,
-                                      },
-                                grid: {
-                                            hoverable: true,
-                                            xaxis: false
-                                      },
-                                tooltip: {
-                                            formatter: function(obj){
-                                                var time = obj.x;
-                                                var date = obj.label;
-                                                output = 'hi';
-                                                return output;
-                                            },
-                                      }
-                              };
-                var plot = $.plot($("#placeholder"), data, options);
+                var stack = 0, bars = true, lines = false, steps = false;
 
+                function plotWithOptions() {
+                    $.plot($("#placeholder"), [ d1 ], {
+                        series: {
+                            //stack: stack,
+                            //lines: { show: lines, fill: true, steps: steps },
+                                bars: { show: bars, barWidth: 0.6 }
+                        },
+                        xaxis: {
+                            mode: "time",
+                            //minTickSize: [1, "days"],
+                            min: (new Date(start_date)).getTime(),
+                            max: (new Date(end_date)).getTime()
+                        }
+                    });
+                }
+
+                plotWithOptions();
+                /*
+                $(".stackControls input").click(function (e) {
+                    e.preventDefault();
+                    stack = $(this).val() == "With stacking" ? true : null;
+                    plotWithOptions();
+                });
+                $(".graphControls input").click(function (e) {
+                    e.preventDefault();
+                    bars = $(this).val().indexOf("Bars") != -1;
+                    lines = $(this).val().indexOf("Lines") != -1;
+                    steps = $(this).val().indexOf("steps") != -1;
+                    plotWithOptions();
+                });*/
             });
+
         </script>
 
 <center>

@@ -1934,7 +1934,7 @@ def admin_call_report_graph(request):
     """Call report graph on admin dashboard"""
     call_type = ''
     call_type = variable_value(request, 'call_type')
-
+    #print call_type
     # search_type = 2 Last 7 days option
     start_date = calculate_date(search_type=2)
     end_date = datetime.now()
@@ -1942,15 +1942,25 @@ def admin_call_report_graph(request):
         {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
     now = datetime.now()
 
-    # This calls list is used by pie chart
-    calls = VoIPCall.objects\
-            .filter(duration__isnull=False,
-                    starting_date__range=(start_date, end_date))\
-            .extra(select=select_data)\
-            .values('starting_date')\
-            .annotate(Sum('duration'))\
-            .annotate(Count('starting_date'))\
-            .order_by('starting_date') # 'disposition'
+    if call_type == 'DURATION' or call_type == 'ALL' or call_type == '':
+        calls = VoIPCall.objects\
+                .filter(duration__isnull=False,
+                        starting_date__range=(start_date, end_date))\
+                .extra(select=select_data)\
+                .values('starting_date')\
+                .annotate(Sum('duration'))\
+                .annotate(Count('starting_date'))\
+                .order_by('starting_date') # 'disposition'
+    else:
+        calls = VoIPCall.objects\
+                .filter(duration__isnull=False,
+                        starting_date__range=(start_date, end_date),
+                        disposition=call_type)\
+                .extra(select=select_data)\
+                .values('starting_date')\
+                .annotate(Sum('duration'))\
+                .annotate(Count('starting_date'))\
+                .order_by('starting_date') # 'disposition'
     total_call_count = calls.count()
 
     rows = []
@@ -1980,7 +1990,7 @@ def admin_call_report_graph(request):
         for date in dateList:
             inttime = int(date.strftime("%Y%m%d"))
             if inttime in calls_dict.keys():
-                if call_type == 'duration':
+                if call_type == 'DURATION':
                     rows.append({
                        'date': date.strftime("%Y-%m-%d"),
                        'count': calls_dict[inttime]['duration__sum'],

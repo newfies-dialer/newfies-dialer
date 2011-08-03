@@ -176,9 +176,12 @@
             //alert(end_date);
 
             var d1 = [];
+            var i = 0;
             $.each(temp_json.campaign, function(i,campaign){
                 //output +=campaign.date +":"+ campaign.id;
+                //(new Date(campaign.date)).getTime()
                 d1.push([(new Date(campaign.date)).getTime(), campaign.count]);
+                i = i + 1;
             });
             //alert(d1);
 
@@ -194,7 +197,7 @@
                         series: {
                             //stack: stack,
                             //lines: { show: lines, fill: true, steps: steps },
-                                bars: { show: bars, barWidth: 0.6 }
+                                bars: { show: bars, barWidth: 60*60*1000*24 }
                         },
                         xaxis: {
                             mode: "time",
@@ -206,26 +209,14 @@
                 }
 
                 plotWithOptions();
-                /*
-                $(".stackControls input").click(function (e) {
-                    e.preventDefault();
-                    stack = $(this).val() == "With stacking" ? true : null;
-                    plotWithOptions();
-                });
-                $(".graphControls input").click(function (e) {
-                    e.preventDefault();
-                    bars = $(this).val().indexOf("Bars") != -1;
-                    lines = $(this).val().indexOf("Lines") != -1;
-                    steps = $(this).val().indexOf("steps") != -1;
-                    plotWithOptions();
-                });*/
+
             });
 
         </script>
 
 <center>
     <div class="graph_header">{% trans "Call Info" %}</div>
-    <div id="placeholder" style="width:300px;height:300px"></div>
+    <div id="placeholder" style="width:350px;height:300px"></div>
 </center>
     </div>
 {% endifequal %}

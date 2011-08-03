@@ -1908,30 +1908,20 @@ def admin_call_report(request):
             total_noroute = total_noroute + 1
         else:
             total_forbiden = total_forbiden + 1 # FORBIDDEN
-
-    data = '<table align="center">'
-    data += '<tr><th>Total Calls: ' + str(total_call_count) + '</th>\
-                 <th></th><th></th></tr>'
-    data += '<tr><th>Answered: ' + str(total_answered) + '</th>\
-                 <th>Do not call: ' + str(total_dontcall) + '</th>\
-                 <th>Busy: ' + str(total_busy) + '</th>\
-             </tr>'
-
-    data += '<tr><th>Chanunavail: ' + str(total_chanunavail) + '</th>\
-                 <th>Torture: ' + str(total_torture) + '</th>\
-                 <th>Not Answered: ' + str(total_not_answered) + '</th>\
-             </tr>'
-
-    data += '<tr><th>Invalid Args: ' + str(total_invalidargs) + '</th>\
-                 <th>Canceled: ' + str(total_cancel) + '</th>\
-                 <th>No Route: ' + str(total_noroute) + '</th>\
-             </tr>'
-
-    data += '<tr><th>Congestion: ' + str(total_congestion) + '</th>\
-                 <th>Forbiden: ' + str(total_forbiden) + '</th>\
-                 <th></th></tr>'
-
-    data += '</table>'
+    
+    data = '<ul>'
+    data += '<li class="odd">Total Calls: ' + str(total_call_count) + '</li>'
+    data += '<li class="even">Answered: ' + str(total_answered) + ' | \
+            Do not call: ' + str(total_dontcall) + ' | \
+            Busy: ' + str(total_busy) + ' | Not Answered: ' + str(total_not_answered) + '<li>'
+    data += '<li class="odd">Canceled: ' + str(total_cancel) + ' | Chanunavail: ' \
+            + str(total_chanunavail) + ' | \
+            Torture: ' + str(total_torture) + ' | Invalid Args: ' + str(total_invalidargs) + '\
+            <li>'
+    data += '<li class="even">No Route: ' + str(total_noroute) + ' | \
+            Congestion: ' + str(total_congestion) + ' | \
+            Forbiden: ' + str(total_forbiden) + '<li>'
+    data += '</ul>'
     #print data
     return HttpResponse(data, mimetype='application/html',
                         content_type="application/html")
@@ -1944,7 +1934,7 @@ def admin_call_report_graph(request):
     start_date = calculate_date(search_type=2)
     end_date = datetime.now()
     select_data = \
-        {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,13)"}
+        {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
     now = datetime.now()
 
     # This calls list is used by pie chart
@@ -1957,8 +1947,8 @@ def admin_call_report_graph(request):
             .annotate(Count('starting_date'))\
             .order_by('starting_date') # 'disposition'
     total_call_count = calls.count()
-    rows = []
 
+    rows = []
     if calls:
         maxtime = end_date
         mintime = start_date
@@ -1967,7 +1957,8 @@ def admin_call_report_graph(request):
         for data in calls:
             time = datetime(int(data['starting_date'][0:4]),
                             int(data['starting_date'][5:7]),
-                            int(data['starting_date'][8:10]), 0, 0, 0, 0)
+                            int(data['starting_date'][8:10]),
+                            0, 0, 0, 0)
 
             if time > maxtime:
                 maxtime = time
@@ -1994,15 +1985,11 @@ def admin_call_report_graph(request):
                    'count': 0,
                  })
             i += 1
-
     #print rows
-
     data = {
         'campaign': rows,
         'start_date': start_date.strftime('%Y-%m-%d'),
         'end_date': end_date.strftime('%Y-%m-%d'),
     }
-    #print data
     return HttpResponse(simplejson.dumps(data), mimetype='application/json',
                         content_type="application/json")
-

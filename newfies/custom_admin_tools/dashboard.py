@@ -87,9 +87,9 @@ class CustomIndexDashboard(Dashboard):
         self.children.append(modules.LinkList(
             _('Quick links'),
             layout='inline',
-            draggable=False,
-            deletable=False,
-            collapsible=False,
+            draggable=True,
+            deletable=True,
+            collapsible=True,
             children=[
                 [_('Go to Newfies'), 'http://www.newfies-dialer.org/'],
                 [_('Go to FreedomFone'), 'http://www.freedomfone.org/'],

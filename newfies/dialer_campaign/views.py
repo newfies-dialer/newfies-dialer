@@ -1932,6 +1932,9 @@ def admin_call_report(request):
 @staff_member_required
 def admin_call_report_graph(request):
     """Call report graph on admin dashboard"""
+    call_type = ''
+    call_type = variable_value(request, 'call_type')
+
     # search_type = 2 Last 7 days option
     start_date = calculate_date(search_type=2)
     end_date = datetime.now()
@@ -1977,10 +1980,16 @@ def admin_call_report_graph(request):
         for date in dateList:
             inttime = int(date.strftime("%Y%m%d"))
             if inttime in calls_dict.keys():
-                rows.append({
-                   'date': date.strftime("%Y-%m-%d"),
-                   'count': calls_dict[inttime]['starting_date__count'],
-                 })
+                if call_type == 'duration':
+                    rows.append({
+                       'date': date.strftime("%Y-%m-%d"),
+                       'count': calls_dict[inttime]['duration__sum'],
+                    })
+                else:
+                    rows.append({
+                       'date': date.strftime("%Y-%m-%d"),
+                       'count': calls_dict[inttime]['starting_date__count'],
+                    })
             else:
                 rows.append({
                    'date': date.strftime("%Y-%m-%d"),

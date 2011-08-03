@@ -132,7 +132,7 @@
         <h2>{% trans "Call Info Today" %}</h2>
         <script type="text/javascript" language="javascript">
             $.ajax({
-                url: 'http://127.0.0.1:8000/admin_call_report/',
+                url: '/admin_call_report/',
                 type: "GET",
                 dataType: "html",
                 data: "",
@@ -149,11 +149,48 @@
             });
         </script>
         <div id="call_report"></div>
+        <script language="JavaScript" type="text/javascript">
+            var call_type = 'all';
+            function call_me(value)
+            {
+                $.ajax({
+                    url: '/admin_call_report_graph/',
+                    type: "GET",
+                    dataType: "json",
+                    data: "call_type=" + value,
+                    async: false,
+                    cache: false,
+                    timeout: 30000,
+                    success: function(data) {
+                        //alert(value);
+                        temp_json = data;
+                        plot_call_graph(temp_json);
+                        //alert(data);
+                    },
+                    error: function() {
+                        alert("Request failed");
+                    }
+                });
+
+                return true;
+            }
+        </script>
+        <form action="/admin_call_report_graph/" name="admin_call_graph_form" method="POST" enctype="multipart/form-data">{% csrf_token %}
+        <ul>Call Type
+            <li>
+            <input type="radio" name="call_type" value="all" onclick="call_me('all');"> Calls
+            <!--<input type="radio" name="call_type" value="answered" onclick="call_me('answered');"> Answered
+            <input type="radio" name="call_type" value="unanswered" onclick="call_me('unanswered');"> Unanswered-->
+            <input type="radio" name="call_type" value="unanswered" onclick="call_me('duration');"> Duration
+            </li>
+        </ul>
+        </form>
         <script type="text/javascript" language="javascript">
             var temp_json;
             var output = '';
+
             $.ajax({
-                url: 'http://127.0.0.1:8000/admin_call_report_graph/',
+                url: '/admin_call_report_graph/',
                 type: "GET",
                 dataType: "json",
                 data: "",
@@ -162,55 +199,56 @@
                 timeout: 30000,
                 success: function(data) {
                     temp_json = data;
-                    //alert(data);
+                    plot_call_graph(temp_json);
                 },
                 error: function() {
                     alert("Request failed");
                 }
             });
 
-            //alert(JSON.stringify(temp_json.campaign));
-            var start_date = JSON.stringify(temp_json.start_date).replace(/['"]/g,'');
-            var end_date = JSON.stringify(temp_json.end_date).replace(/['"]/g,'');
-            //alert(start_date.replace(/['"]/g,''));
-            //alert(end_date);
+            function plot_call_graph(temp_json)
+            {
+                //alert(JSON.stringify(temp_json.campaign));
+                var start_date = JSON.stringify(temp_json.start_date).replace(/['"]/g,'');
+                var end_date = JSON.stringify(temp_json.end_date).replace(/['"]/g,'');
+                //alert(start_date.replace(/['"]/g,''));
 
-            var d1 = [];
-            var i = 0;
-            $.each(temp_json.campaign, function(i,campaign){
-                //output +=campaign.date +":"+ campaign.id;
-                //(new Date(campaign.date)).getTime()
-                d1.push([(new Date(campaign.date)).getTime(), campaign.count]);
-                i = i + 1;
-            });
-            //alert(d1);
+                var d1 = [];
+                $.each(temp_json.campaign, function(i,campaign){
+                    //output +=campaign.date +":"+ campaign.id;
+                    //(new Date(campaign.date)).getTime()
+                    d1.push([(new Date(campaign.date)).getTime(), campaign.count]);
+                });
+                //alert(d1);
 
-            $(function () {
-                //var d1 = [];
-                //for (var i = 0; i <= 10; i += 1)
-                //    d1.push([i, parseInt(Math.random() * 30)]);
+                $(function () {
+                    //var d1 = [];
+                    //for (var i = 0; i <= 10; i += 1)
+                    //    d1.push([i, parseInt(Math.random() * 30)]);
 
-                var stack = 0, bars = true, lines = false, steps = false;
+                    var stack = 0, bars = true, lines = false, steps = false;
 
-                function plotWithOptions() {
-                    $.plot($("#placeholder"), [ d1 ], {
-                        series: {
-                            //stack: stack,
-                            //lines: { show: lines, fill: true, steps: steps },
-                                bars: { show: bars, barWidth: 60*60*1000*24 }
-                        },
-                        xaxis: {
-                            mode: "time",
-                            //minTickSize: [1, "days"],
-                            min: (new Date(start_date)).getTime(),
-                            max: (new Date(end_date)).getTime()
-                        }
-                    });
-                }
+                    function plotWithOptions() {
+                        $.plot($("#placeholder"), [ d1 ], {
+                            series: {
+                                //stack: stack,
+                                //lines: { show: lines, fill: true, steps: steps },
+                                    bars: { show: bars, barWidth: 60*60*1000*24 }
+                            },
+                            xaxis: {
+                                mode: "time",
+                                //minTickSize: [1, "days"],
+                                min: (new Date(start_date)).getTime(),
+                                max: (new Date(end_date)).getTime()
+                            }
+                        });
+                    }
 
-                plotWithOptions();
+                    plotWithOptions();
 
-            });
+                });
+            }
+
 
         </script>
 

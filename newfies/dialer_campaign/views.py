@@ -1870,7 +1870,7 @@ def admin_call_report(request):
     total_noroute = 0
     total_forbiden = 0
     select_data = \
-        {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,20)"}
+        {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
     now = datetime.now()
     start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
     end_date = datetime.now()
@@ -1886,6 +1886,7 @@ def admin_call_report(request):
 
     total_call_count = calls.count()
     for i in calls:
+        total_duration_sum = total_duration_sum + int(i['duration__sum'])
         if i['disposition'] == 'ANSWER':
             total_answered = total_answered + 1
         elif i['disposition'] == 'BUSY':
@@ -1908,9 +1909,10 @@ def admin_call_report(request):
             total_noroute = total_noroute + 1
         else:
             total_forbiden = total_forbiden + 1 # FORBIDDEN
-    
+
     data = '<ul>'
-    data += '<li class="odd">Total Calls: ' + str(total_call_count) + '</li>'
+    data += '<li class="odd">Total Calls: ' + str(total_call_count) + ' | \
+            Total Duration: ' + str(total_duration_sum) + '</li>'
     data += '<li class="even">Answered: ' + str(total_answered) + ' | \
             Do not call: ' + str(total_dontcall) + ' | \
             Busy: ' + str(total_busy) + ' | Not Answered: ' + str(total_not_answered) + '<li>'

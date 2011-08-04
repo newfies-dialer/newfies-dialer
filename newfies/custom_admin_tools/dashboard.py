@@ -100,7 +100,7 @@ class CustomIndexDashboard(Dashboard):
         ))
 
         # append a recent actions module
-        self.children.append(modules.RecentActions(_('Recent Actions'), 5))
+        #self.children.append(modules.RecentActions(_('Recent Actions'), 5))
 
 
         # append a feed module

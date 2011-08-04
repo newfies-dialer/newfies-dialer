@@ -161,10 +161,8 @@
     <div id="call_report"></div>
 
     <script language="JavaScript" type="text/javascript">
-
         function call_me(call_type)
         {
-
             if (document.getElementById('id_report_today').checked)
             {
                 report_type = 'today';
@@ -174,28 +172,24 @@
                 report_type = 'last_seven_days';
             }
             //alert(report_type);
+
             // Update report & graph
             call_report(report_type);
-
             call_report_graph(call_type, report_type);
-
             return true;
         }
-
     </script>
-
+    <div class="dashboard-module-content">
     <h3>Graph Type</h3>
 
-    <form action="/admin_call_report_graph/" name="admin_call_graph_form" method="POST" enctype="multipart/form-data">{% csrf_token %}
-
     <ul>
-        <li><b>Note</b> : To view graph 1) Select <b>Report Type</b> 2) Select <b>Call Type</b></li>
-        <li class="odd">Report Type :</li>
+        <li><b>{% trans "Note" %} :</b> {% trans "To view graph 1) Select ``Report Type`` 2) Select ``Call Type``" %}</li>
+        <li class="odd">{% trans "Report Type" %} :</li>
         <li>
         <input type="radio" name="report_type" id="id_report_today" value="today" > {% trans "Today" %}
         <input type="radio" name="report_type" id="id_report_seven" checked="checked" value="seven_days" > {% trans "Last 7 days" %}
         </li>
-        <li class="odd">Call Type :</li>
+        <li class="odd">{% trans "Call Type" %} :</li>
     </ul>
     <ul>
         <li>
@@ -218,7 +212,6 @@
         <input type="radio" name="call_type" onclick="call_me('DURATION');"> {% trans "Duration" %}
         </li>
     </ul>
-    </form>
 
     <script type="text/javascript" language="javascript">
         var temp_json;
@@ -378,12 +371,61 @@
         }
     </script>
 
-    <div class="dashboard-module-content">
+
     <center>
         <div class="graph_header">{% trans "Report" %}</div>
         <div id="placeholder" style="width:350px;height:300px"></div>
     </center>
-     </div>
+    </div>
 </div>
+
+<!--Campaign info div-->
+<div class="dashboard-module draggable collapsible deletable">
+    <h2>Campaign Info</h2>
+    <script type="text/javascript" language="javascript">
+        function campaign_report(report_type)
+        {
+            // Campaign_report report without graph
+            $.ajax({
+                url: '/admin_campaign_report/',
+                type: "GET",
+                dataType: "html",
+                data: "report_type="+report_type,
+                async: false,
+                cache: false,
+                timeout: 30000,
+                success: function(data) {
+                    //alert(data);
+                    $('#campaign_report').html(data);
+                },
+                error: function() {
+                    alert("Request failed");
+                }
+            });
+        }
+        // default when dashboard loaded 1st time
+        var report_type = 'last_seven_days'
+        campaign_report(report_type);
+
+        function camp_click_me(report_type)
+        {
+            campaign_report(report_type);
+            return true;
+        }
+    </script>
+    <div class="dashboard-module-content">
+    <ul>
+        <li class="odd">{% trans "Report Type" %} :</li>
+        <li>
+            <input type="radio" onclick="camp_click_me('today');" name="camp_report_type" id="id_camp_report_today" value="today" > {% trans "Today" %}
+            <input type="radio" onclick="camp_click_me('last_seven_days');" name="camp_report_type" id="id_camp_report_seven" checked="checked" value="seven_days" > {% trans "Last 7 days" %}
+        </li>
+    </ul>
+    <div id="campaign_report"></div>
+    <div class="dashboard-module-content">
+    </div>
+    </div>
+</div>
+
 {% endifequal %}
 

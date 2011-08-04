@@ -2091,3 +2091,39 @@ def admin_call_report_graph(request):
     }
     return HttpResponse(simplejson.dumps(data), mimetype='application/json',
                         content_type="application/json")
+
+
+@staff_member_required
+def admin_campaign_report(request):
+    """Campaign report on admin dashboard"""
+    report_type = 'last_seven_days'
+    report_type = variable_value(request, 'report_type')
+
+    if report_type == 'last_seven_days' or report_type == '':
+        # search_type = 2 for Last 7 days option
+        start_date = calculate_date(search_type=2)
+        end_date = datetime.now()
+
+    if report_type == 'today':
+        now = datetime.now()
+        start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
+        end_date = datetime.now()
+
+    campaigns = Campaign.objects.filter(created_date__range=(start_date, end_date))
+
+    total_campaigns_count = campaigns.count()
+    total_active_campaigns_count = campaigns.filter(status=1).count()
+    total_pause_campaigns_count = campaigns.filter(status=2).count()
+    total_abort_campaigns_count = campaigns.filter(status=3).count()
+    total_stop_campaigns_count = campaigns.filter(status=4).count()
+
+    data = '<ul>'
+    data += '<li>Total Campaigns: ' + str(total_campaigns_count) + '</li>'
+    data += '<li>Active: ' + str(total_active_campaigns_count) + ' |\
+                 Paused: ' + str(total_pause_campaigns_count) + ' | \
+                 Aborted: ' + str(total_abort_campaigns_count) + ' | \
+                 Stoped: ' + str(total_stop_campaigns_count) + '</li>'
+    data += '</ul>'
+    #print data
+    return HttpResponse(data, mimetype='application/html',
+                        content_type="application/html")

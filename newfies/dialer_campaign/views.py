@@ -1858,7 +1858,6 @@ def admin_call_report(request):
     """Call report on admin dashboard"""
     report_type = 'last_seven_days'
     report_type = variable_value(request, 'report_type')
-    print report_type
 
     if report_type == 'last_seven_days' or report_type == '':
         # search_type = 2 for Last 7 days option
@@ -1925,14 +1924,14 @@ def admin_call_report(request):
     data = '<ul>'
     data += '<li class="odd">Total Calls: ' + str(total_call_count) + ' | \
             Total Duration: ' + str(total_duration_sum) + '</li>'
-    data += '<li class="even">Answered: ' + str(total_answered) + ' | \
+    data += '<li>Answered: ' + str(total_answered) + ' | \
             Do not call: ' + str(total_dontcall) + ' | \
             Busy: ' + str(total_busy) + ' | Not Answered: ' + str(total_not_answered) + '<li>'
-    data += '<li class="odd">Canceled: ' + str(total_cancel) + ' | Chanunavail: ' \
+    data += '<li>Canceled: ' + str(total_cancel) + ' | Chanunavail: ' \
             + str(total_chanunavail) + ' | \
             Torture: ' + str(total_torture) + ' | Invalid Args: ' + str(total_invalidargs) + '\
             <li>'
-    data += '<li class="even">No Route: ' + str(total_noroute) + ' | \
+    data += '<li>No Route: ' + str(total_noroute) + ' | \
             Congestion: ' + str(total_congestion) + ' | \
             Forbiden: ' + str(total_forbiden) + '<li>'
     data += '</ul>'

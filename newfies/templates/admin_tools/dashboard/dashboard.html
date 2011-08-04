@@ -258,7 +258,7 @@
 
         function plot_call_graph(temp_json)
         {
-            //alert(JSON.stringify(temp_json.campaign));
+            //alert(JSON.stringify(temp_json.calls));
             var graph_start_date = JSON.stringify(temp_json.graph_start_date).replace(/['"]/g,'');
             var graph_end_date = JSON.stringify(temp_json.graph_end_date).replace(/['"]/g,'');
             var graph_type = JSON.stringify(temp_json.graph_type).replace(/['"]/g,'');
@@ -275,9 +275,9 @@
             if (graph_type == 'day')
             {
                 var d1 = [];
-                $.each(temp_json.campaign, function(i,campaign){
+                $.each(temp_json.calls, function(i,call){
                     //(new Date(campaign.date)).getTime()
-                    d1.push([(new Date(campaign.date).getTime()), campaign.count]); //.getTime()
+                    d1.push([(new Date(call.date).getTime()), call.count]); //.getTime()
                 });
                 //alert(d1);
 
@@ -312,9 +312,9 @@
             if (graph_type == 'hour')
             {
                 var d1 = [];
-                $.each(temp_json.campaign, function(i,campaign){
+                $.each(temp_json.calls, function(i,call){
                     //(new Date(campaign.date)).getTime()
-                    d1.push([(new Date(campaign.date * 1000)), campaign.count]); //.getTime()
+                    d1.push([(new Date(call.date * 1000)), call.count]); //.getTime()
                 });
                 //alert(d1);
 
@@ -423,6 +423,32 @@
     </ul>
     <div id="campaign_report"></div>
     <div class="dashboard-module-content">
+        <script type="text/javascript" language="javascript">
+        var temp_json;
+        var report_type = '';
+
+        function campaign_report_graph(call_type, report_type)
+        {
+            // Campaign report via graph
+            $.ajax({
+                url: '/admin_campaign_report_graph/',
+                type: "GET",
+                dataType: "json",
+                data: "report_type="+report_type ,
+                async: false,
+                cache: false,
+                timeout: 30000,
+                success: function(data) {
+                   // alert(data);
+                    temp_json = data;
+                    //plot_campaign_graph(temp_json);
+                },
+                error: function() {
+                    alert("Request failed");
+                }
+            });
+        }
+    </script>
     </div>
     </div>
 </div>

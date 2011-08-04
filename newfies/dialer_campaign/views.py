@@ -2084,7 +2084,7 @@ def admin_call_report_graph(request):
 
     #print rows
     data = {
-        'campaign': rows,
+        'calls': rows,
         'graph_start_date': graph_start_date,
         'graph_end_date': graph_end_date,
         'graph_type': graph_type,
@@ -2127,3 +2127,136 @@ def admin_campaign_report(request):
     #print data
     return HttpResponse(data, mimetype='application/html',
                         content_type="application/html")
+
+
+@staff_member_required
+def admin_campaign_report_graph(request):
+    """Campaign report graph on admin dashboard"""
+    report_type = 'last_seven_days'
+    report_type = variable_value(request, 'report_type')
+
+    if report_type == 'last_seven_days' or report_type == '':
+        # search_type = 2 For Last 7 days option
+        start_date = calculate_date(search_type=2)
+        end_date = datetime.now()
+
+    if report_type == 'today':
+        now = datetime.now()
+        start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
+        end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999)
+
+    campaigns = Campaign.objects.filter(created_date__range=(start_date, end_date))
+
+    total_campaigns_count = campaigns.count()
+
+    rows = []
+    """
+    if report_type == 'today':
+        if calls:
+            maxtime = end_date
+            mintime = start_date
+            calls_dict = {}
+            for data in calls:
+                time = datetime(int(data['starting_date'][0:4]),
+                                int(data['starting_date'][5:7]),
+                                int(data['starting_date'][8:10]),
+                                int(data['starting_date'][11:13]),
+                                0, 0, 0)
+
+                if time > maxtime:
+                    maxtime = time
+                elif time < mintime:
+                    mintime = time
+
+                calls_dict[int(time.strftime("%Y%m%d%H"))] = \
+                    {'starting_date__count':data['starting_date__count'],
+                     'duration__sum':data['duration__sum']}
+
+            dateList = date_range(mintime, maxtime, q=3)
+
+            i = 0
+            for date in dateList:
+                inttime = int(date.strftime("%Y%m%d%H"))
+                import time
+                if inttime in calls_dict.keys():
+
+                    if call_type == 'DURATION':
+                        rows.append({
+                           'date': int(time.mktime(date.timetuple())),
+                           'count': calls_dict[inttime]['duration__sum'],
+                        })
+                    else:
+                        rows.append({
+                           'date': int(time.mktime(date.timetuple())),
+                           'count': calls_dict[inttime]['starting_date__count'],
+                        })
+                else:
+                    rows.append({
+                       'date': int(time.mktime(date.timetuple())),
+                       'count': 0,
+                     })
+                i += 1
+        # converted start & end date into time format
+        graph_start_date = int(time.mktime(start_date.timetuple()))
+        graph_end_date = int(time.mktime(end_date.timetuple()))
+        graph_type = 'hour'
+
+
+    if report_type == 'last_seven_days' or report_type == '':
+        if calls:
+            maxtime = end_date
+            mintime = start_date
+            calls_dict = {}
+
+            for data in calls:
+                time = datetime(int(data['starting_date'][0:4]),
+                                int(data['starting_date'][5:7]),
+                                int(data['starting_date'][8:10]),
+                                0, 0, 0, 0)
+
+                if time > maxtime:
+                    maxtime = time
+                elif time < mintime:
+                    mintime = time
+
+                calls_dict[int(time.strftime("%Y%m%d"))] = \
+                    {'starting_date__count':data['starting_date__count'],
+                     'duration__sum':data['duration__sum']}
+
+            dateList = date_range(mintime, maxtime, q=2)
+            i = 0
+            for date in dateList:
+                inttime = int(date.strftime("%Y%m%d"))
+                if inttime in calls_dict.keys():
+                    if call_type == 'DURATION':
+                        rows.append({
+                           'date':   date.strftime("%Y-%m-%d"),
+                           'count': calls_dict[inttime]['duration__sum'],
+                        })
+                    else:
+                        rows.append({
+                           'date':  date.strftime("%Y-%m-%d"),
+                           'count': calls_dict[inttime]['starting_date__count'],
+                        })
+                else:
+                    rows.append({
+                       'date':  date.strftime("%Y-%m-%d"),
+                       'count': 0,
+                     })
+                i += 1
+        graph_start_date = start_date.strftime('%Y-%m-%d')
+        graph_end_date = end_date.strftime('%Y-%m-%d')
+        graph_type = 'day'
+    """
+    graph_start_date = start_date.strftime('%Y-%m-%d')
+    graph_end_date = end_date.strftime('%Y-%m-%d')
+    graph_type = 'day'
+    #print rows
+    data = {
+        'campaign': rows,
+        'graph_start_date': graph_start_date,
+        'graph_end_date': graph_end_date,
+        'graph_type': graph_type,
+    }
+    return HttpResponse(simplejson.dumps(data), mimetype='application/json',
+                        content_type="application/json")

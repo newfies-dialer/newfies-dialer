@@ -148,16 +148,48 @@
                 }
             });
         </script>
+
         <div id="call_report"></div>
+
         <script language="JavaScript" type="text/javascript">
             var call_type = 'all';
-            function call_me(value)
+            function call_me(call_type)
             {
+                var report_type = 'last_seven_days';
+                if (document.getElementById('id_report_today').checked)
+                {
+                    report_type = 'today';
+                }
+                if (document.getElementById('id_report_seven').checked)
+                {
+                    report_type = 'last_seven_days';
+                }
+                //alert(report_type);
+
+                // Call report without graph
+                $.ajax({
+                    url: '/admin_call_report/',
+                    type: "GET",
+                    dataType: "html",
+                    data: "report_type="+report_type,
+                    async: false,
+                    cache: false,
+                    timeout: 30000,
+                    success: function(data) {
+                        //alert(data);
+                        $('#call_report').html(data);
+                    },
+                    error: function() {
+                        alert("Request failed");
+                    }
+                });
+
+                // Call report via graph
                 $.ajax({
                     url: '/admin_call_report_graph/',
                     type: "GET",
                     dataType: "json",
-                    data: "call_type=" + value,
+                    data: "call_type="+call_type+"&report_type="+report_type ,
                     async: false,
                     cache: false,
                     timeout: 30000,
@@ -175,8 +207,20 @@
                 return true;
             }
         </script>
+
         <h3>Graph Type</h3>
+
         <form action="/admin_call_report_graph/" name="admin_call_graph_form" method="POST" enctype="multipart/form-data">{% csrf_token %}
+
+        <ul>
+            <li><b>Note</b> : To view graph 1) Select <b>Report Type</b> 2) Select <b>Call Type</b></li>
+            <li class="odd">Report Type :</li>
+            <li>
+            <input type="radio" name="report_type" id="id_report_today" value="today" > {% trans "Today" %}
+            <input type="radio" name="report_type" id="id_report_seven" checked="checked" value="seven_days" > {% trans "Last 7 days" %}
+            </li>
+            <li class="odd">Call Type :</li>
+        </ul>
         <ul>
             <li>
             <input type="radio" name="call_type" checked="checked" onclick="call_me('ALL');"> {% trans "All Calls" %}
@@ -185,7 +229,7 @@
             <input type="radio" name="call_type" onclick="call_me('BUSY');"> {% trans "Busy" %}
             <input type="radio" name="call_type" onclick="call_me('CANCEL');"> {% trans "Cancel" %}
             </li>
-            <li>
+            <li class="even">
             <input type="radio" name="call_type" onclick="call_me('CONGESTION');"> {% trans "Congestion" %}
             <input type="radio" name="call_type" onclick="call_me('CHANUNAVAIL');"> {% trans "Chanunavail" %}
             <input type="radio" name="call_type" onclick="call_me('DONTCALL');"> {% trans "Don't call" %}
@@ -199,6 +243,7 @@
             </li>
         </ul>
         </form>
+
         <script type="text/javascript" language="javascript">
             var temp_json;
             var output = '';
@@ -217,50 +262,87 @@
                 },
                 error: function() {
                     alert("Request failed");
+                    //alert("No Record Found !!");
                 }
             });
 
             function plot_call_graph(temp_json)
             {
                 //alert(JSON.stringify(temp_json.campaign));
-                var start_date = JSON.stringify(temp_json.start_date).replace(/['"]/g,'');
-                var end_date = JSON.stringify(temp_json.end_date).replace(/['"]/g,'');
-                //alert(start_date.replace(/['"]/g,''));
+                var graph_start_date = JSON.stringify(temp_json.graph_start_date).replace(/['"]/g,'');
+                var graph_end_date = JSON.stringify(temp_json.graph_end_date).replace(/['"]/g,'');
+                var graph_type = JSON.stringify(temp_json.graph_type).replace(/['"]/g,'');
+                //alert(graph_start_date);
+                //alert(graph_end_date);
+                if (graph_type == '')
+                {
+                    graph_type = 'day';
+                }
+                //alert(graph_type);
 
-                var d1 = [];
-                $.each(temp_json.campaign, function(i,campaign){
-                    //output +=campaign.date +":"+ campaign.id;
-                    //(new Date(campaign.date)).getTime()
-                    d1.push([(new Date(campaign.date)).getTime(), campaign.count]);
-                });
-                //alert(d1);
+                /* Plot graph -- LAST 7 Days */
+                if (graph_type == 'day')
+                {
+                    var d1 = [];
+                    $.each(temp_json.campaign, function(i,campaign){
+                        //(new Date(campaign.date)).getTime()
+                        d1.push([(new Date(campaign.date).getTime()), campaign.count]); //.getTime()
+                    });
+                    //alert(d1);
 
-                $(function () {
-                    //var d1 = [];
-                    //for (var i = 0; i <= 10; i += 1)
-                    //    d1.push([i, parseInt(Math.random() * 30)]);
+                    $(function () {
+                        var stack = 0, bars = true, lines = false, steps = false;
 
-                    var stack = 0, bars = true, lines = false, steps = false;
-
-                    function plotWithOptions() {
-                        $.plot($("#placeholder"), [ d1 ], {
-                            series: {
-                                //stack: stack,
-                                //lines: { show: lines, fill: true, steps: steps },
+                        function plotWithOptions() {
+                            $.plot($("#placeholder"), [ d1 ], {
+                                series: {
                                     bars: { show: bars, barWidth: 60*60*1000*24 }
-                            },
-                            xaxis: {
-                                mode: "time",
-                                //minTickSize: [1, "days"],
-                                min: (new Date(start_date)).getTime(),
-                                max: (new Date(end_date)).getTime()
-                            }
-                        });
-                    }
+                                    //bars: { show: bars, barWidth: 0.6 }
+                                },
+                                xaxis: {
+                                    mode: "time",
+                                    minTickSize: [1, String(graph_type)],
+                                    min: (new Date(graph_start_date)).getTime(),
+                                    max: (new Date(graph_end_date)).getTime()                                                                    }
+                            });
+                        }
 
-                    plotWithOptions();
+                        plotWithOptions();
 
-                });
+                    });
+                }
+
+                /* Plot graph -- Today */
+                if (graph_type == 'hour')
+                {
+                    var d1 = [];
+                    $.each(temp_json.campaign, function(i,campaign){
+                        //(new Date(campaign.date)).getTime()
+                        d1.push([(new Date(campaign.date * 1000)), campaign.count]); //.getTime()
+                    });
+                    //alert(d1);
+
+                    $(function () {
+                        var stack = 0, bars = true, lines = false, steps = false;
+
+                        function plotWithOptions() {
+                            $.plot($("#placeholder"), [ d1 ], {
+                                series: {
+                                    //bars: { show: bars, barWidth: 60*60*1000*24 }
+                                    bars: { show: bars, barWidth: 60*60*1000 }
+                                },
+                                xaxis: {
+                                    mode: "time",
+                                    minTickSize: [1, String(graph_type)],
+                                    min: (new Date(graph_start_date * 1000)), //Converting date from Python to Javascript
+                                    max: (new Date(graph_end_date * 1000)) // Converting date from Python to Javascript (You have to multiply by 1,000.)
+                                }
+                            });
+                        }
+                        plotWithOptions();
+                    });
+                }
+
             }
 
         </script>

@@ -2246,3 +2246,39 @@ def admin_campaign_report_graph(request):
     }
     return HttpResponse(simplejson.dumps(data), mimetype='application/json',
                         content_type="application/json")
+
+
+@staff_member_required
+def admin_user_report(request):
+    """User report on admin dashboard"""
+    report_type = 'last_seven_days'
+    report_type = variable_value(request, 'report_type')
+
+    if report_type == 'last_seven_days' or report_type == '':
+        # search_type = 2 for Last 7 days option
+        start_date = calculate_date(search_type=2)
+        end_date = datetime.now()
+
+    if report_type == 'today':
+        now = datetime.now()
+        start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
+        end_date = datetime.now()
+
+    users_list = User.objects.filter(date_joined__range=(start_date, end_date))
+    total_user_count = users_list.count()
+    total_active_user_count = users_list.filter(is_active=1).count()
+    total_not_active_user_count = users_list.filter(is_active=0).count()
+    total_admin_count = users_list.filter(is_staff=1).count()
+    total_customer_count = users_list.filter(is_staff=0).count()
+
+
+    data = '<ul>'
+    data += '<li>Total User: ' + str(total_user_count) + ' | \
+                 Active User: ' + str(total_active_user_count) + ' | \
+                 None Active User: ' + str(total_not_active_user_count) + '</li>'
+    data += '<li>Admin: ' + str(total_admin_count) + ' | \
+                 Customer: ' + str(total_customer_count) + '</li>'
+    data += '</ul>'
+    #print data
+    return HttpResponse(data, mimetype='application/html',
+                        content_type="application/html")

@@ -2141,14 +2141,20 @@ def admin_campaign_report_graph(request):
         # search_type = 2 For Last 7 days option
         start_date = calculate_date(search_type=2)
         end_date = datetime.now()
+        select_data = \
+        {"created_date": "SUBSTR(CAST(created_date as CHAR(30)),1,10)"}
 
     if report_type == 'today':
         now = datetime.now()
         start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
         end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999)
+        select_data = \
+        {"created_date": "SUBSTR(CAST(created_date as CHAR(30)),1,13)"}
 
     campaigns = Campaign.objects.values('created_date')\
                 .filter(created_date__range=(start_date, end_date))\
+                .extra(select=select_data)\
+                .values('created_date')\
                 .annotate(Count('created_date'))
 
     total_campaigns_count = campaigns.count()
@@ -2282,3 +2288,121 @@ def admin_user_report(request):
     #print data
     return HttpResponse(data, mimetype='application/html',
                         content_type="application/html")
+
+
+@staff_member_required
+def admin_user_report_graph(request):
+    """User report graph on admin dashboard"""
+    report_type = variable_value(request, 'report_type')
+
+    if report_type == 'last_seven_days' or report_type == '':
+        # search_type = 2 For Last 7 days option
+        start_date = calculate_date(search_type=2)
+        end_date = datetime.now()
+        select_data = \
+        {"date_joined": "SUBSTR(CAST(date_joined as CHAR(30)),1,10)"}
+
+    if report_type == 'today':
+        now = datetime.now()
+        start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
+        end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999)
+        select_data = \
+        {"date_joined": "SUBSTR(CAST(date_joined as CHAR(30)),1,13)"}
+
+    
+    users_list = User.objects.filter(date_joined__range=(start_date, end_date))\
+                .extra(select=select_data)\
+                .values('date_joined')\
+                .annotate(Count('date_joined'))\
+                .order_by('date_joined')
+
+    rows = []
+    if report_type == 'today':
+        if users_list:
+            maxtime = end_date
+            mintime = start_date
+            users_dict = {}
+            for data in users_list:
+                temp_time = datetime(int(str(data['date_joined'])[0:4]),
+                                     int(str(data['date_joined'])[5:7]),
+                                     int(str(data['date_joined'])[8:10]),
+                                     int(str(data['date_joined'])[11:13]),
+                                     0, 0, 0)
+
+                if temp_time > maxtime:
+                    maxtime = temp_time
+                elif temp_time < mintime:
+                    mintime = temp_time
+
+                users_dict[int(temp_time.strftime("%Y%m%d%H"))] = \
+                    {'date_joined__count': int(data['date_joined__count'])}
+
+            dateList = date_range(mintime, maxtime, q=3)
+            i = 0
+            for date in dateList:
+                inttime = int(date.strftime("%Y%m%d%H"))
+
+                if inttime in users_dict.keys():
+                    rows.append({
+                       'date': int(time.mktime(date.timetuple())),
+                       'count': users_dict[inttime]['date_joined__count'],
+                    })
+                else:
+                    rows.append({
+                       'date': int(time.mktime(date.timetuple())),
+                       'count': 0,
+                     })
+                i += 1
+        # converted start & end date into time format
+        graph_start_date = int(time.mktime(start_date.timetuple()))
+        graph_end_date = int(time.mktime(end_date.timetuple()))
+        graph_type = 'hour'
+
+    if report_type == 'last_seven_days' or report_type == '':
+        if users_list:
+            maxtime = end_date
+            mintime = start_date
+            users_dict = {}
+
+            for data in users_list:
+                temp_time = datetime(int(str(data['date_joined'])[0:4]),
+                                     int(str(data['date_joined'])[5:7]),
+                                     int(str(data['date_joined'])[8:10]),
+                                     0, 0, 0, 0)
+
+                if temp_time > maxtime:
+                    maxtime = temp_time
+                elif temp_time < mintime:
+                    mintime = temp_time
+
+                users_dict[int(temp_time.strftime("%Y%m%d"))] = \
+                    {'date_joined__count': int(data['date_joined__count'])}
+
+            dateList = date_range(mintime, maxtime, q=2)
+            i = 0
+            for date in dateList:
+                inttime = int(date.strftime("%Y%m%d"))
+                if inttime in users_dict.keys():
+                    rows.append({
+                       'date':  date.strftime("%Y-%m-%d"),
+                       'count': users_dict[inttime]['date_joined__count'],
+                    })
+                else:
+                    rows.append({
+                       'date':  date.strftime("%Y-%m-%d"),
+                       'count': 0,
+                     })
+                i += 1
+        graph_start_date = start_date.strftime('%Y-%m-%d')
+        graph_end_date = end_date.strftime('%Y-%m-%d')
+        graph_type = 'day'
+
+    #print rows
+    data = {
+        'user': rows,
+        'graph_start_date': graph_start_date,
+        'graph_end_date': graph_end_date,
+        'graph_type': graph_type,
+    }
+    return HttpResponse(simplejson.dumps(data), mimetype='application/json',
+                        content_type="application/json")

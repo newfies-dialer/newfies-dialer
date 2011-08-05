@@ -32,8 +32,9 @@ urlpatterns = patterns('',
      'dialer_campaign.views.admin_campaign_report_graph'),
     (r'^admin_user_report/$',
      'dialer_campaign.views.admin_user_report'),
-    #(r'^admin_user_report_graph/$',
-    # 'dialer_campaign.views.admin_user_report_graph'),
+    (r'^admin_user_report_graph/$',
+     'dialer_campaign.views.admin_user_report_graph'),
+
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
 

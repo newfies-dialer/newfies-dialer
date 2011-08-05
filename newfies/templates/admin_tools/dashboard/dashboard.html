@@ -234,7 +234,7 @@
                     plot_call_graph(temp_json);
                 },
                 error: function() {
-                    alert("Request failed");
+                    alert("No Data found !!");
                 }
             });
         }
@@ -410,6 +410,7 @@
         function camp_click_me(report_type)
         {
             campaign_report(report_type);
+            campaign_report_graph(report_type);
             return true;
         }
     </script>
@@ -425,9 +426,9 @@
     <div class="dashboard-module-content">
         <script type="text/javascript" language="javascript">
         var temp_json;
-        var report_type = '';
+        var report_type = 'last_seven_days';
 
-        function campaign_report_graph(call_type, report_type)
+        function campaign_report_graph(report_type)
         {
             // Campaign report via graph
             $.ajax({
@@ -441,14 +442,136 @@
                 success: function(data) {
                    // alert(data);
                     temp_json = data;
-                    //plot_campaign_graph(temp_json);
+                    plot_campaign_graph(temp_json);
                 },
                 error: function() {
                     alert("Request failed");
                 }
             });
         }
+
+        // default when dashboard loaded 1st time
+        campaign_report_graph(report_type);
+
+        function plot_campaign_graph(temp_json)
+        {
+            //alert(JSON.stringify(temp_json.campaign));
+            var graph_start_date = JSON.stringify(temp_json.graph_start_date).replace(/['"]/g,'');
+            var graph_end_date = JSON.stringify(temp_json.graph_end_date).replace(/['"]/g,'');
+            var graph_type = JSON.stringify(temp_json.graph_type).replace(/['"]/g,'');
+            //alert(graph_start_date);
+            //alert(graph_end_date);
+
+            if (graph_type == '')
+            {
+                graph_type = 'day';
+            }
+            //alert(graph_type);
+
+            /* Plot graph -- LAST 7 Days */
+            if (graph_type == 'day')
+            {
+                var d1 = [];
+                $.each(temp_json.campaign, function(i,camp){
+                    //(new Date(campaign.date)).getTime()
+                    d1.push([(new Date(camp.date).getTime()), camp.count]); //.getTime()
+                });
+                //alert(d1);
+
+                $(function () {
+                    var stack = 0, bars = true, lines = false, steps = false;
+
+                    function plotWithOptions() {
+                        $.plot($("#placeholder2"), [ d1 ], {
+                            series: {
+                                bars: { show: bars, barWidth: 60*60*1000*24 }
+                                //bars: { show: bars, barWidth: 0.6 }
+                            },
+                            xaxis: {
+                                mode: "time",
+                                minTickSize: [1, String(graph_type)],
+                                min: (new Date(graph_start_date)).getTime(),
+                                max: (new Date(graph_end_date)).getTime()
+                            },
+                            grid: {
+                                hoverable: true,
+                                clickable: true,
+                                backgroundColor: { colors: ["#fff", "#eee"] }
+                            },
+                            tooltip: true,
+                        });
+                    }
+                    plotWithOptions();
+                });
+            }
+
+            /* Plot graph -- Today */
+            if (graph_type == 'hour')
+            {
+                var d1 = [];
+                $.each(temp_json.campaign, function(i,camp){
+                    //(new Date(campaign.date)).getTime()
+                    d1.push([(new Date(camp.date * 1000)), camp.count]); //.getTime()
+                });
+                //alert(d1);
+
+                $(function () {
+                    var stack = 0, bars = true, lines = false, steps = false;
+
+                    function plotWithOptions() {
+                        $.plot($("#placeholder2"), [ d1 ], {
+                            series: {
+                                //bars: { show: bars, barWidth: 60*60*1000*24 }
+                                bars: { show: bars, barWidth: 60*60*1000 }
+                            },
+                            xaxis: {
+                                mode: "time",
+                                minTickSize: [1, String(graph_type)],
+                                min: (new Date(graph_start_date * 1000)), //Converting date from Python to Javascript
+                                max: (new Date(graph_end_date * 1000)) // Converting date from Python to Javascript (You have to multiply by 1,000.)
+                            },
+                            grid: {
+                                hoverable: true,
+                                clickable: true,
+                                backgroundColor: { colors: ["#fff", "#eee"] }
+                            },
+                            tooltip: true,
+                        });
+                    }
+                    plotWithOptions();
+                });
+            }
+
+            // Bind tooltip with placeholder div
+            var previousPoint = null;
+            $("#placeholder2").bind("plothover", function (event, pos, item) {
+                $("#x").text(pos.x.toFixed(2));
+                $("#y").text(pos.y.toFixed(2));
+                if (item) {
+
+                    if (previousPoint != item.dataIndex) {
+                        previousPoint = item.dataIndex;
+
+                        $("#tooltip").remove();
+                        var x = item.datapoint[0].toFixed(2),
+                            y = item.datapoint[1].toFixed(2);
+                        //alert(item);
+                        showTooltip(item.pageX, item.pageY,
+                                    Number(y));
+                    }
+                }
+                else {
+                        $("#tooltip").remove();
+                        previousPoint = null;
+                }
+            });
+        }
+
     </script>
+        <center>
+            <div class="graph_header">{% trans "Report" %}</div>
+            <div id="placeholder2" style="width:350px;height:300px"></div>
+    </center>
     </div>
     </div>
 </div>

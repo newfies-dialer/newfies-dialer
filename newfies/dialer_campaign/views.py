@@ -137,7 +137,6 @@ def customer_dashboard(request, on_index=None):
         end_date = datetime.today()
         start_date = calculate_date(search_type)
 
-        import time
         min_limit = time.mktime(start_date.timetuple())
         max_limit = time.mktime(end_date.timetuple())
 
@@ -2161,7 +2160,6 @@ def admin_campaign_report_graph(request):
 
     rows = []
     if report_type == 'today':
-        import time
         if campaigns:
             maxtime = end_date
             mintime = start_date

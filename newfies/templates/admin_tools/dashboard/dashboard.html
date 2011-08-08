@@ -171,11 +171,21 @@
             {
                 report_type = 'last_seven_days';
             }
+
+            if(call_type == 'today' || call_type == 'seven_days')
+            {
+                var call_type_value = document.getElementById('id_call_type_select').value;
+
+            }
+            else{
+                var call_type_value = call_type.options[call_type.selectedIndex].value;
+            }
+            //alert(call_type_value);
             //alert(report_type);
 
             // Update report & graph
             call_report(report_type);
-            call_report_graph(call_type, report_type);
+            call_report_graph(call_type_value, report_type);
             return true;
         }
     </script>
@@ -183,36 +193,29 @@
     <h3>Graph Type</h3>
 
     <ul>
-        <li><b>{% trans "Note" %} :</b> {% trans "To view graph 1) Select ``Report Type`` 2) Select ``Call Type``" %}</li>
         <li class="odd">{% trans "Report Type" %} :</li>
         <li>
-        <input type="radio" name="report_type" id="id_report_today" value="today" > {% trans "Today" %}
-        <input type="radio" name="report_type" id="id_report_seven" checked="checked" value="seven_days" > {% trans "Last 7 days" %}
+        <input type="radio" name="report_type" id="id_report_today" value="today" onclick="call_me('today');"> {% trans "Today" %}
+        <input type="radio" name="report_type" id="id_report_seven" checked="checked" onclick="call_me('seven_days');" value="seven_days" > {% trans "Last 7 days" %}
         </li>
-        <li class="odd">{% trans "Call Type" %} :</li>
+        <li>{% trans "Call Type" %} :
+            <select name="call_type_select" id="id_call_type_select" onchange="call_me(this);">
+                <option value="ALL">{% trans "ALL CALLS" %}</option>
+                <option value="ANSWER">{% trans "ANSWER" %}</option>
+                <option value="NOANSWER">{% trans "NOANSWER" %}</option>
+                <option value="BUSY">{% trans "BUSY" %}</option>
+                <option value="CANCEL">{% trans "CANCEL" %}</option>
+                <option value="CONGESTION">{% trans "CONGESTION" %}</option>
+                <option value="CHANUNAVAIL">{% trans "CHANUNAVAIL" %}</option>
+                <option value="DONTCALL">{% trans "DONTCALL" %}</option>
+                <option value="TORTURE">{% trans "TORTURE" %}</option>
+                <option value="INVALIDARGS">{% trans "INVALIDARGS" %}</option>
+                <option value="NOROUTE">{% trans "NOROUTE" %}</option>
+                <option value="FORBIDDEN">{% trans "FORBIDDEN" %}</option>
+                <option value="DURATION">{% trans "DURATION" %}</option>
+            </select></li>
     </ul>
-    <ul>
-        <li>
-        <input type="radio" name="call_type" checked="checked" onclick="call_me('ALL');"> {% trans "All Calls" %}
-        <input type="radio" name="call_type" onclick="call_me('ANSWER');"> {% trans "Answered" %}
-        <input type="radio" name="call_type" onclick="call_me('NOANSWER');"> {% trans "No Answer" %}
-        <input type="radio" name="call_type" onclick="call_me('BUSY');"> {% trans "Busy" %}
-        <input type="radio" name="call_type" onclick="call_me('CANCEL');"> {% trans "Cancel" %}
-        </li>
-        <li class="even">
-        <input type="radio" name="call_type" onclick="call_me('CONGESTION');"> {% trans "Congestion" %}
-        <input type="radio" name="call_type" onclick="call_me('CHANUNAVAIL');"> {% trans "Chanunavail" %}
-        <input type="radio" name="call_type" onclick="call_me('DONTCALL');"> {% trans "Don't call" %}
-        <input type="radio" name="call_type" onclick="call_me('TORTURE');"> {% trans "Torture" %}
-        </li>
-        <li>
-        <input type="radio" name="call_type" onclick="call_me('INVALIDARGS');"> {% trans "Invalid Args" %}
-        <input type="radio" name="call_type" onclick="call_me('NOROUTE');"> {% trans "No Route" %}
-        <input type="radio" name="call_type" onclick="call_me('FORBIDDEN');"> {% trans "Forbidden" %}
-        <input type="radio" name="call_type" onclick="call_me('DURATION');"> {% trans "Duration" %}
-        </li>
-    </ul>
-
+    
     <script type="text/javascript" language="javascript">
         var temp_json;
         var report_type = '';

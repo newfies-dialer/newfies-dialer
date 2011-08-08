@@ -457,7 +457,7 @@ class cdrHandler(BaseHandler):
         try:
             obj_callrequest = Callrequest.objects.get(request_uuid=data['plivo_request_uuid'])
         except:
-            print "error get Callrequest %s " % data['plivo_request_uuid']
+            #print "error get Callrequest %s " % data['plivo_request_uuid']
             raise
 
         if data.has_key('answer_epoch') and len(data['answer_epoch']) > 0:
@@ -487,8 +487,10 @@ class cdrHandler(BaseHandler):
                                 hangup_cause_q850=data['hangup_cause_q850'] or '',)
 
         new_voipcall.save()
-
-        return new_voipcall
+        
+        resp = rc.OK
+        resp.write("CDR Recorded!")
+        return resp
 
 
 class testcallHandler(BaseHandler):

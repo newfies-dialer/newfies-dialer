@@ -20,8 +20,6 @@
 #
 #TODO:
 # - Memcached
-# - /etc/init.d/celerybeat & /etc/init.d/celeryd rename to newfies-celerybeat & newfies-celeryd
-# - Init Script for Plivo (DEBIAN / CentOS)
 
 #Variables
 VERSION=master
@@ -399,26 +397,26 @@ func_install_backend() {
     echo "Configure Celery..."
 
     # Add init-scripts
-    cp /usr/src/newfies-dialer/install/celery-init/etc/default/celeryd /etc/default/
-    cp /usr/src/newfies-dialer/install/celery-init/etc/init.d/celeryd /etc/init.d/
-    cp /usr/src/newfies-dialer/install/celery-init/etc/init.d/celerybeat /etc/init.d/
+    cp /usr/src/newfies-dialer/install/celery-init/etc/default/newfies-celeryd /etc/default/
+    cp /usr/src/newfies-dialer/install/celery-init/etc/init.d/newfies-celeryd /etc/init.d/
+    cp /usr/src/newfies-dialer/install/celery-init/etc/init.d/newfies-celerybeat /etc/init.d/
 
     # Configure init-scripts
-    sed -i "s/CELERYD_USER='celery'/CELERYD_USER='$CELERYD_USER'/g"  /etc/default/celeryd
-    sed -i "s/CELERYD_GROUP='celery'/CELERYD_GROUP='$CELERYD_GROUP'/g"  /etc/default/celeryd
+    sed -i "s/CELERYD_USER='celery'/CELERYD_USER='$CELERYD_USER'/g"  /etc/default/newfies-celeryd
+    sed -i "s/CELERYD_GROUP='celery'/CELERYD_GROUP='$CELERYD_GROUP'/g"  /etc/default/newfies-celeryd
 
-    chmod +x /etc/default/celeryd
-    chmod +x /etc/init.d/celeryd
-    chmod +x /etc/init.d/celerybeat
+    chmod +x /etc/default/newfies-celeryd
+    chmod +x /etc/init.d/newfies-celeryd
+    chmod +x /etc/init.d/newfies-celerybeat
 
     #Debug
     #python $INSTALL_DIR/manage.py celeryd -E -B -l debug
 
-    /etc/init.d/celeryd start
-    /etc/init.d/celerybeat start
+    /etc/init.d/newfies-celeryd restart
+    /etc/init.d/newfies-celerybeat restart
     
-    cd /etc/init.d; update-rc.d celeryd defaults 99
-    cd /etc/init.d; update-rc.d celerybeat defaults 99
+    cd /etc/init.d; update-rc.d newfies-celeryd defaults 99
+    cd /etc/init.d; update-rc.d newfies-celerybeat defaults 99
 
     echo ""
     echo ""
@@ -482,7 +480,7 @@ show_menu_newfies() {
 	echo "====================================="
 	echo "	1)  All"
 	echo "	2)  Newfies Web Frontend"
-	echo "	3)  Newfies Backend / Celery"
+	echo "	3)  Newfies Backend / Newfies-Celery"
 	echo "	0)  Quit"
 	echo -n "(0-3) : "
 	read OPTION < /dev/tty

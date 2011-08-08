@@ -11,6 +11,7 @@ CELERYD_OPTS=' -l info'
 CELERYBEAT='/usr/share/virtualenvs/newfies-dialer/bin/python /usr/share/newfies/manage.py celerybeat'
 
 # Extra arguments to celerybeat
+# TODO: check this argument
 CELERYBEAT_OPTS='--schedule=/var/run/celerybeat-schedule'
 
 # Name of the projects settings module.

@@ -1,11 +1,13 @@
 #!/bin/bash -e
-# =========================================================
-#  celerybeat - Starts the Celery periodic task scheduler.
-# =========================================================
+# ============================================
+#  celeryd - Starts the Celery worker daemon.
+# ============================================
 #
-# :Usage: /etc/init.d/celerybeat {start|stop|force-reload|restart|try-restart|status}
+# :Usage: /etc/init.d/celeryd {start|stop|force-reload|restart|try-restart|status}
 #
-# :Configuration file: /etc/default/celerybeat or /etc/default/celeryd
+# :Configuration file: /etc/default/celeryd
+#
+# To configure celeryd you probably need to tell it where to chdir.
 #
 # EXAMPLE CONFIGURATION
 # =====================
@@ -20,9 +22,6 @@
 #   # Extra arguments to celeryd
 #   CELERYD_OPTS="--time-limit 300"
 #
-#   # Extra arguments to celerybeat
-#   CELERYBEAT_OPTS="--schedule=/var/run/celerybeat-schedule"
-#
 #   # Name of the celery config module.#
 #   CELERY_CONFIG_MODULE="celeryconfig"
 #
@@ -36,96 +35,92 @@
 #   DJANGO_SETTINGS_MODULE="settings"
 #
 #   # Path to celeryd
-#   CELERYD="/opt/Project/manage.py celeryd"
+#   CELERYD="/opt/Project/manage.py"
 #
-#   # Path to celerybeat
-#   CELERYBEAT="/opt/Project/manage.py"
-#
-#   # Extra arguments to celerybeat
-#   CELERYBEAT_OPTS="celerybeat --schedule=/var/run/celerybeat-schedule"
+#   # Extra arguments to manage.py
+#   CELERYD_OPTS="celeryd"
 #
 # AVAILABLE OPTIONS
 # =================
 #
-#   * CELERYBEAT_OPTS
-#       Additional arguments to celerybeat, see `celerybeat --help` for a
-#       list.
+#   * CELERYD_OPTS
+#       Additional arguments to celeryd, see `celeryd --help` for a list.
 #
-#   * CELERYBEAT_PID_FILE
+#   * CELERYD_CHDIR
+#       Path to chdir at start. Default is to stay in the current directory.
+#
+#   * CELERYD_PID_FILE
 #       Full path to the pidfile. Default is /var/run/celeryd.pid.
 #
-#   * CELERYBEAT_LOG_FILE
+#   * CELERYD_LOG_FILE
 #       Full path to the celeryd logfile. Default is /var/log/celeryd.log
 #
-#   * CELERYBEAT_LOG_LEVEL
+#   * CELERYD_LOG_LEVEL
 #       Log level to use for celeryd. Default is INFO.
 #
-#   * CELERYBEAT
+#   * CELERYD
 #       Path to the celeryd program. Default is `celeryd`.
 #       You can point this to an virtualenv, or even use manage.py for django.
 #
-#   * CELERYBEAT_USER
+#   * CELERYD_USER
 #       User to run celeryd as. Default is current user.
 #
-#   * CELERYBEAT_GROUP
+#   * CELERYD_GROUP
 #       Group to run celeryd as. Default is current user.
 #
 #   * VIRTUALENV
 #       Full path to the virtualenv environment to activate. Default is none.
 
 ### BEGIN INIT INFO
-# Provides:          celerybeat
+# Provides:          celeryd
 # Required-Start:    $network $local_fs $remote_fs
 # Required-Stop:     $network $local_fs $remote_fs
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: celery periodic task scheduler
+# Short-Description: celery task worker daemon
 ### END INIT INFO
 
 set -e
 
-DEFAULT_PID_FILE="/var/run/newfies-celerybeat.pid"
-DEFAULT_LOG_FILE="/var/log/newfies-celerybeat.log"
-DEFAULT_LOG_LEVEL="INFO"
-DEFAULT_CELERYBEAT="newfies-celerybeat"
+DEFAULT_CELERYD="/usr/bin/celeryd"
 
 # /etc/init.d/ssh: start and stop the celery task worker daemon.
 
-if test -f /etc/default/celeryd; then
-    . /etc/default/celeryd
+if test -f /etc/default/newfies-celeryd; then
+    . /etc/default/newfies-celeryd
 fi
 
-CELERYBEAT=${CELERYBEAT:-$DEFAULT_CELERYBEAT}
-CELERYBEAT_PID_FILE=${CELERYBEAT_PID_FILE:-${CELERYBEAT_PIDFILE:-$DEFAULT_PID_FILE}}
-CELERYBEAT_LOG_FILE=${CELERYBEAT_LOG_FILE:-${CELERYBEAT_LOGFILE:-$DEFAULT_LOG_FILE}}
-CELERYBEAT_LOG_LEVEL=${CELERYBEAT_LOG_LEVEL:-${CELERYBEAT_LOGLEVEL:-$DEFAULT_LOG_LEVEL}}
+CELERYD_LOG_FILE=${CELERYD_LOG_FILE:-${CELERYD_LOGFILE:-"/var/log/newfies/newfies-celeryd.log"}}
+CELERYD_PID_FILE=${CELERYD_PID_FILE:-${CELERYD_PIDFILE:-"/var/run/newfies-celeryd.pid"}}
+CELERYD_LOG_LEVEL=${CELERYD_LOG_LEVEL:-${CELERYD_LOGLEVEL:-"INFO"}}
+
+CELERYD=${CELERYD:-$DEFAULT_CELERYD}
 
 export CELERY_LOADER
 
 . /lib/lsb/init-functions
 
-CELERYBEAT_OPTS="$CELERYBEAT_OPTS -f $CELERYBEAT_LOG_FILE -l $CELERYBEAT_LOG_LEVEL"
+CELERYD_OPTS="$CELERYD_OPTS -f $CELERYD_LOG_FILE -l $CELERYD_LOG_LEVEL"
 
 if [ -n "$2" ]; then
-    CELERYBEAT_OPTS="$CELERYBEAT_OPTS $2"
+    CELERYD_OPTS="$CELERYD_OPTS $2"
 fi
 
 # Append the Django settings module to use, if specified
 if [ -n "$DJANGO_SETTINGS_MODULE" ]; then
-    CELERYBEAT_OPTS="$CELERYBEAT_OPTS --settings=$DJANGO_SETTINGS_MODULE"
+    CELERYD_OPTS="$CELERYD_OPTS --settings=$DJANGO_SETTINGS_MODULE"
 fi
 
 # Extra start-stop-daemon options, like user/group.
-if [ -n "$CELERYBEAT_USER" ]; then
-    DAEMON_OPTS="$DAEMON_OPTS --chuid $CELERYBEAT_USER"
+if [ -n "$CELERYD_USER" ]; then
+    DAEMON_OPTS="$DAEMON_OPTS --chuid $CELERYD_USER"
 fi
-if [ -n "$CELERYBEAT_GROUP" ]; then
-    DAEMON_OPTS="$DAEMON_OPTS --group $CELERYBEAT_GROUP"
+if [ -n "$CELERYD_GROUP" ]; then
+    DAEMON_OPTS="$DAEMON_OPTS --group $CELERYD_GROUP"
 fi
 
-CELERYBEAT_CHDIR=${CELERYBEAT_CHDIR:-$CELERYD_CHDIR}
-if [ -n "$CELERYBEAT_CHDIR" ]; then
-    DAEMON_OPTS="$DAEMON_OPTS --chdir $CELERYBEAT_CHDIR"
+if [ -n "$CELERYD_CHDIR" ]; then
+    DAEMON_OPTS="$DAEMON_OPTS --chdir $CELERYD_CHDIR"
 fi
 
 
@@ -155,7 +150,7 @@ stop_worker () {
     cmd="start-stop-daemon --stop \
                            --quiet \
                            $* \
-                           --pidfile $CELERYBEAT_PID_FILE"
+                           --pidfile $CELERYD_PID_FILE"
     if $cmd; then
         log_end_msg 0
     else
@@ -170,8 +165,8 @@ start_worker () {
                            --background \
                            --make-pidfile \
                            $* \
-                           --pidfile $CELERYBEAT_PID_FILE
-                           --exec $CELERYBEAT -- $CELERYBEAT_OPTS"
+                           --pidfile $CELERYD_PID_FILE
+                           --exec $CELERYD -- $CELERYD_OPTS"
     if [ -n "$VIRTUALENV" ]; then
         source $VIRTUALENV/bin/activate
     fi
@@ -187,11 +182,11 @@ start_worker () {
 case "$1" in
   start)
     check_dev_null
-    log_daemon_msg "Starting celery periodic task scheduler" "celerybeat"
+    log_daemon_msg "Starting celery task worker server" "newfies-celeryd"
     start_worker
     ;;
   stop)
-    log_daemon_msg "Stopping celery periodic task scheduler" "celerybeat"
+    log_daemon_msg "Stopping celery task worker server" "newfies-celeryd"
     stop_worker --oknodo
     ;;
 
@@ -200,14 +195,14 @@ case "$1" in
     ;;
 
   restart)
-    log_daemon_msg "Restarting celery periodic task scheduler" "celerybeat"
+    log_daemon_msg "Restarting celery task worker server" "newfies-celeryd"
     stop_worker --oknodo --retry 30
     check_dev_null log_end_msg
     start_worker
     ;;
 
   try-restart)
-    log_daemon_msg "Restarting celery periodic task scheduler" "celerybeat"
+    log_daemon_msg "Restarting celery task worker server" "newfies-celeryd"
     set +e
     stop_worker --retry 30
     RET="$?"
@@ -232,12 +227,13 @@ case "$1" in
     ;;
 
   status)
-    status_of_proc -p $CELERYBEAT_PID_FILE $CELERYBEAT celerybeat && exit 0 || exit $?
+    status_of_proc -p $CELERYD_PID_FILE $CELERYD celeryd && exit 0 || exit $?
     ;;
 
   *)
-    log_action_msg "Usage: /etc/init.d/celerybeat {start|stop|force-reload|restart|try-restart|status}"
+    log_action_msg "Usage: /etc/init.d/newfies-celeryd {start|stop|force-reload|restart|try-restart|status}"
     exit 1
 esac
 
 exit 0
+

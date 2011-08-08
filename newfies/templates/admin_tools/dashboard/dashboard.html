@@ -147,10 +147,9 @@
     <h3>Graph Type</h3>
 
     <ul>
-        <li class="odd">{% trans "Report Type" %} :</li>
         <li>
-        <input type="radio" name="report_type" id="id_report_today" value="today" onclick="call_me('today');"> {% trans "Today" %}
-        <input type="radio" name="report_type" id="id_report_seven" checked="checked" onclick="call_me('seven_days');" value="seven_days" > {% trans "Last 7 days" %}
+        {% trans "Today" %} <input type="radio" name="report_type" id="id_report_today" value="today" onclick="call_me('today');">
+        {% trans "Last 7 days" %} <input type="radio" name="report_type" id="id_report_seven" checked="checked" onclick="call_me('seven_days');" value="seven_days" >
         </li>
         <li>{% trans "Call Type" %} :
             <select name="call_type_select" id="id_call_type_select" onchange="call_me(this);">
@@ -172,7 +171,7 @@
 
     <center>
         <div class="graph_header">{% trans "Report" %}</div>
-        <div id="placeholder1" style="width:350px;height:300px"></div>
+        <div id="placeholder1" style="width:350px;height:200px"></div>
     </center>
     </div>
 </div>
@@ -188,17 +187,16 @@
     </script>
     <div class="dashboard-module-content">
     <ul>
-        <li class="odd">{% trans "Report Type" %} :</li>
         <li>
-            <input type="radio" onclick="camp_click_me('today');" name="camp_report_type" id="id_camp_report_today" value="today" > {% trans "Today" %}
-            <input type="radio" onclick="camp_click_me('last_seven_days');" name="camp_report_type" id="id_camp_report_seven" checked="checked" value="seven_days" > {% trans "Last 7 days" %}
+            {% trans "Today" %} <input type="radio" onclick="camp_click_me('today');" name="camp_report_type" id="id_camp_report_today" value="today" >
+            {% trans "Last 7 days" %} <input type="radio" onclick="camp_click_me('last_seven_days');" name="camp_report_type" id="id_camp_report_seven" checked="checked" value="seven_days" >
         </li>
     </ul>
     <div id="campaign_report"></div>
     <div class="dashboard-module-content">
         <center>
             <div class="graph_header">{% trans "Report" %}</div>
-            <div id="placeholder2" style="width:350px;height:300px"></div>
+            <div id="placeholder2" style="width:350px;height:200px"></div>
         </center>
     </div>
 
@@ -209,10 +207,9 @@
 
     <div class="dashboard-module-content">
         <ul>
-            <li class="odd">{% trans "Report Type" %} :</li>
             <li>
-                <input type="radio" onclick="user_click_me('today');" name="user_report_type" id="id_user_report_today" value="today" > {% trans "Today" %}
-                <input type="radio" onclick="user_click_me('last_seven_days');" name="user_report_type" id="id_user_report_seven" checked="checked" value="seven_days" > {% trans "Last 7 days" %}
+                {% trans "Today" %} <input type="radio" onclick="user_click_me('today');" name="user_report_type" id="id_user_report_today" value="today" >
+                {% trans "Last 7 days" %} <input type="radio" onclick="user_click_me('last_seven_days');" name="user_report_type" id="id_user_report_seven" checked="checked" value="seven_days" >
             </li>
         </ul>
         <script type="text/javascript" language="javascript">              
@@ -225,7 +222,7 @@
 
         <center>
             <div class="graph_header">{% trans "Report" %}</div>
-            <div id="placeholder3" style="width:350px;height:300px"></div>
+            <div id="placeholder3" style="width:350px;height:200px"></div>
         </center>
     </div>
     </div>

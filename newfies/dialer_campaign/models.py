@@ -175,6 +175,13 @@ class CampaignManager(models.Manager):
 
         return Campaign.objects.filter(**kwargs)
 
+    def get_expired_campaign(self):
+        """Return all the campaigns which are expired or going to expire
+         based on the expiry date but status is not 'END'"""
+        kwargs = {}
+        kwargs['expirationdate__lte'] = datetime.now()
+        return Campaign.objects.filter(**kwargs).exclude(status=4)
+
 
 class Campaign(Model):
     """This defines the Campaign
@@ -310,7 +317,7 @@ class Campaign(Model):
              args=[self.pk, 4]))
 
         if self.status == 2:
-            return "<a href='%s'>Active</a> | <a href='%s'>Abort</a> |\
+            return "<a href='%s'>Start</a> | <a href='%s'>Abort</a> |\
              <a href='%s'>Stop</a>" % \
             (reverse('dialer_campaign.views.update_campaign_status_admin',
              args=[self.pk, 1]),
@@ -320,7 +327,7 @@ class Campaign(Model):
              args=[self.pk, 4]))
 
         if self.status == 3:
-            return "<a href='%s'>Active</a> | <a href='%s'>Pause</a> |\
+            return "<a href='%s'>Start</a> | <a href='%s'>Pause</a> |\
              <a href='%s'>Stop</a>" % \
             (reverse('dialer_campaign.views.update_campaign_status_admin',
              args=[self.pk, 1]),
@@ -330,7 +337,7 @@ class Campaign(Model):
              args=[self.pk, 4]))
 
         if self.status == 4:
-            return "<a href='%s'>Active</a> | <a href='%s'>Pause</a> \
+            return "<a href='%s'>Start</a> | <a href='%s'>Pause</a> \
             | <a href='%s'>Abort</a>" % \
             (reverse('dialer_campaign.views.update_campaign_status_admin',
              args=[self.pk, 1]),
@@ -580,26 +587,4 @@ def post_save_add_contact(sender, **kwargs):
             except:
                 pass
 
-
-def post_save_check_campaign_max_retries(sender, **kwargs):
-    """A ``post_save`` signal is sent by the Campaign model instance 
-    whenever it is going to save.
-
-    **Logic Description**:
-
-        * When a new campaign is added into ``Campaign`` model, check the 
-          max_retries field of the campaign with dialer_settings limit if 
-          the user is mapped with it
-        * if condition matched, automatically update max_retries field
-          & give notification to that user
-    """
-    obj = kwargs['instance']
-    try:
-        # check campaign's max retries entry with dialer settings limit
-        pass
-    except:
-        pass
-
-
 post_save.connect(post_save_add_contact, sender=Contact)
-post_save.connect(post_save_check_campaign_max_retries, sender=Campaign)

@@ -1,4 +1,6 @@
+from django.contrib.auth.models import User
 from django import forms
+from django.forms.util import ErrorList
 from django.forms import *
 from django.contrib import *
 from django.contrib.admin.widgets import *
@@ -91,7 +93,7 @@ class ContactForm(ModelForm):
 class CampaignForm(ModelForm):
     """Campaign ModelForm"""
     campaign_code = forms.CharField(widget=forms.HiddenInput)
-
+    ds_user = forms.CharField(widget=forms.HiddenInput)
     class Meta:
         model = Campaign
         fields = ['campaign_code', 'name', 'description',
@@ -102,22 +104,52 @@ class CampaignForm(ModelForm):
                   'startingdate', 'expirationdate',
                   'daily_start_time', 'daily_stop_time',
                   'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
-                  'saturday', 'sunday'
+                  'saturday', 'sunday', 'ds_user',
                   ]
-        exclude = ('user', )
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
         }
-    def __init__(self,  *args, **kwargs):
+
+    def __init__(self, user, *args, **kwargs):
         super(CampaignForm, self).__init__(*args, **kwargs)
-        self.fields['campaign_code'].initial = get_unique_code(length=5)        
-        self.fields['monday'].initial  = True
-        self.fields['tuesday'].initial  = True
-        self.fields['wednesday'].initial  = True
-        self.fields['thursday'].initial  = True
-        self.fields['friday'].initial  = True
-        self.fields['saturday'].initial  = True
-        self.fields['sunday'].initial  = True
+        self.fields['campaign_code'].initial = get_unique_code(length=5)
+        self.fields['ds_user'].initial = user
+
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        ds_user = cleaned_data.get("ds_user")
+        frequency = cleaned_data.get('frequency')
+        callmaxduration = cleaned_data.get('callmaxduration')
+        maxretry = cleaned_data.get('maxretry')
+        calltimeout = cleaned_data.get('calltimeout')
+
+        dialer_set = user_dialer_setting(ds_user)
+        if dialer_set:
+            if frequency > dialer_set.max_frequency:
+                msg = _('Maximum Frequency limit of %d exceeded.'\
+                % dialer_set.max_frequency)
+                self._errors['frequency'] = ErrorList([msg])
+                del self.cleaned_data['frequency']
+
+            if callmaxduration > dialer_set.callmaxduration:
+                msg = _('Maximum Duration limit of %d exceeded.'\
+                         % dialer_set.callmaxduration)
+                self._errors['callmaxduration'] = ErrorList([msg])
+                del self.cleaned_data['callmaxduration']
+
+            if maxretry > dialer_set.maxretry:
+                msg = _('Maximum Retries limit of %d exceeded.' \
+                % dialer_set.maxretry)
+                self._errors['maxretry'] = ErrorList([msg])
+                del self.cleaned_data['maxretry']
+
+            if calltimeout > dialer_set.max_calltimeout:
+                msg = _('Maximum Timeout limit of %d exceeded.'\
+                % dialer_set.max_calltimeout)
+                self._errors['calltimeout'] = ErrorList([msg])
+                del self.cleaned_data['calltimeout']
+
+        return cleaned_data
 
 
 class CampaignAdminForm(ModelForm):
@@ -152,12 +184,12 @@ CHOICE_TYPE = (
 
 SEARCH_TYPE = (
     (1, _('Last 30 days')),
-    #(2, _('Last 7 days')),
-    #(3, _('Yesterday')),
+    (2, _('Last 7 days')),
+    (3, _('Yesterday')),
     (4, _('Last 24 hours')),
-    #(5, _('Last 12 hours')),
-    #(6, _('Last 6 hours')),
-    #(7, _('Last hour')),
+    (5, _('Last 12 hours')),
+    (6, _('Last 6 hours')),
+    (7, _('Last hour')),
 )
 
 

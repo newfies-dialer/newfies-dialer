@@ -30,7 +30,7 @@
         <fieldset>
             <legend>Campaign</legend>
             <table align=left>
-                {% get_fieldset campaign_code,name,description,status,callerid,aleg_gateway,voipapp,extra_data,phonebook as campaign_fields from form %}
+                {% get_fieldset campaign_code,ds_user,name,description,status,callerid,aleg_gateway,voipapp,extra_data,phonebook as campaign_fields from form %}
                 {{ campaign_fields.as_table }}
             </table>
         </fieldset>
@@ -42,7 +42,11 @@
                 {{ campaign_settings_fields.as_table }}
             <tr>
                 <th>{{ form.intervalretry.label }}:</th><td>{{ form.intervalretry }}<br/>{{ form.intervalretry.help_text }}</td>
-                <th style="width: 200px;">{{ form.calltimeout.label }}:</th><td>{{ form.calltimeout }}<br/>{{ form.calltimeout.help_text }}</td>
+                <th style="width: 200px;">{{ form.calltimeout.label }}:</th>
+                <td>{% if form.calltimeout.errors %}
+                        {{ form.calltimeout.errors }}
+                    {% endif %}
+                    {{ form.calltimeout }}<br/>{{ form.calltimeout.help_text }}</td>
             </tr>
             </table>
         </fieldset>

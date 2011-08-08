@@ -40,7 +40,7 @@ echo ""
 echo "> > > This is only to be installed on a fresh new installation of CentOS, Debian or Ubuntu! < < <"
 echo ""
 echo "It will install Freeswitch, Plivo & Newfies on your server"
-echo "press any key to continue or CTRL-C to exit"
+echo "Press Enter to continue or CTRL-C to exit"
 echo ""
 read TEMP
 

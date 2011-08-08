@@ -193,3 +193,25 @@ def collect_subscriber(campaign_id):
                     "contact_id=%s - Error:%s" % (elem_contact.id, e))
 
     return True
+
+
+class campaign_expire_check(PeriodicTask):
+    """A periodic task that checks the campaign expiration
+
+    **Usage**:
+
+        campaign_expire_check.delay()
+    """
+    run_every = timedelta(seconds=300)
+    #The campaign have to run every minutes in order to control the number
+    # of calls per minute. Cons : new calls might delay 60seconds
+    #run_every = timedelta(seconds=60)
+
+    def run(self, **kwargs):
+        logger = self.get_logger(**kwargs)
+        logger.info( "TASK :: campaign_expire_check")
+        from dialer_campaign.views import common_campaign_status
+        for campaign in Campaign.objects.get_expired_campaign():
+            logger.debug("=> Campaign name %s (id:%s)" % (campaign.name,
+                                                         campaign.id))
+            common_campaign_status(campaign.id, 4)

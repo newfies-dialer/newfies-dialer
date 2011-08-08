@@ -7,6 +7,7 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from dialer_campaign.views import current_view, notice_count
+from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_cdr.models import *
 from dialer_cdr.forms import VoipSearchForm
 from dialer_cdr.function_def import *
@@ -236,6 +237,7 @@ def voipcall_report(request):
         'max_duration': max_duration,
         'module': current_view(request),
         'notice_count': notice_count(request),
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
 
     return render_to_response(template, data,

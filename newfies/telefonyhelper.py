@@ -1,6 +1,5 @@
 import plivohelper
 
-
 REST_API_URL = 'http://127.0.0.1:8088'
 API_VERSION = 'v0.1'
 
@@ -9,12 +8,14 @@ SID = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 AUTH_TOKEN = 'YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY'
 
 
-def call_plivo(callerid=None, phone_number=None, Gateways=None, GatewayCodecs="'PCMA,PCMU'",
-                    GatewayTimeouts="60", GatewayRetries='1', ExtraDialString=None,
-                    AnswerUrl=None, HangupUrl=None, TimeLimit="3600"):
+def call_plivo(callerid=None, phone_number=None, Gateways=None,
+               GatewayCodecs="'PCMA,PCMU'", GatewayTimeouts="60",
+               GatewayRetries='1', ExtraDialString=None,
+               AnswerUrl=None, HangupUrl=None, TimeLimit="3600"):
     # URL of the Plivo REST service
     
-    # Define Channel Variable - http://wiki.freeswitch.org/wiki/Channel_Variables
+    # Define Channel Variable -
+    # http://wiki.freeswitch.org/wiki/Channel_Variables
     extra_dial_string = "bridge_early_media=true,hangup_after_bridge=true"
 
     #TODO : See if we want to merge ExtraDialString

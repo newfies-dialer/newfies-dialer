@@ -191,7 +191,8 @@ class VoIPCall(models.Model):
     progresssec = models.IntegerField(null=True, blank=True)
     answersec = models.IntegerField(null=True, blank=True)
     waitsec = models.IntegerField(null=True, blank=True)
-    disposition = models.CharField(choices=VOIPCALL_DISPOSITION, max_length=40, null=True, blank=True)
+    disposition = models.CharField(choices=VOIPCALL_DISPOSITION,
+                                   max_length=40, null=True, blank=True)
     hangup_cause = models.CharField(max_length=40, null=True, blank=True)
     hangup_cause_q850 = models.CharField(max_length=10, null=True, blank=True)
 

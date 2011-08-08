@@ -87,9 +87,9 @@ class CustomIndexDashboard(Dashboard):
         self.children.append(modules.LinkList(
             _('Quick links'),
             layout='inline',
-            draggable=False,
-            deletable=False,
-            collapsible=False,
+            draggable=True,
+            deletable=True,
+            collapsible=True,
             children=[
                 [_('Go to Newfies'), 'http://www.newfies-dialer.org/'],
                 [_('Go to FreedomFone'), 'http://www.freedomfone.org/'],
@@ -100,7 +100,7 @@ class CustomIndexDashboard(Dashboard):
         ))
 
         # append a recent actions module
-        self.children.append(modules.RecentActions(_('Recent Actions'), 5))
+        #self.children.append(modules.RecentActions(_('Recent Actions'), 5))
 
 
         # append a feed module

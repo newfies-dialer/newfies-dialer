@@ -167,6 +167,12 @@ class campaignHandler(BaseHandler):
             * The VoipApp doesn't exist!
             * The Campaign name is duplicated!
         """
+        if user_attached_with_dilaer_settings(request):
+            resp = rc.BAD_REQUEST
+            resp.write("Your settings aren`t configured properly, \
+                 Please contact the administrator.")
+            return resp
+
         if check_dialer_setting(request, check_for="campaign"):
             resp = rc.BAD_REQUEST
             resp.write("You have too many campaigns. Max allowed %s" \
@@ -182,10 +188,40 @@ class campaignHandler(BaseHandler):
             startingdate = get_attribute(attrs, 'startingdate')
             expirationdate = get_attribute(attrs, 'expirationdate')
             frequency = get_attribute(attrs, 'frequency')
+            if check_dialer_setting(request, check_for="frequency",
+                                    field_value=int(frequency)):
+                resp = rc.BAD_REQUEST
+                resp.write("Maximum Frequency limit of %s exceeded." \
+                % dialer_setting_limit(request, limit_for="frequency"))
+                return resp
+
             callmaxduration = get_attribute(attrs, 'callmaxduration')
+            if check_dialer_setting(request,
+                                    check_for="duration",
+                                    field_value=int(callmaxduration)):
+                resp = rc.BAD_REQUEST
+                resp.write("Maximum Duration limit of %s exceeded." \
+                % dialer_setting_limit(request, limit_for="duration"))
+                return resp
+
             maxretry = get_attribute(attrs, 'maxretry')
+            if check_dialer_setting(request,
+                                    check_for="retry",
+                                    field_value=int(maxretry)):
+                resp = rc.BAD_REQUEST
+                resp.write("Maximum Retries limit of %s exceeded." \
+                % dialer_setting_limit(request, limit_for="retry"))
+                return resp
             intervalretry = get_attribute(attrs, 'intervalretry')
             calltimeout = get_attribute(attrs, 'calltimeout')
+            if check_dialer_setting(request,
+                                    check_for="timeout",
+                                    field_value=int(calltimeout)):
+                resp = rc.BAD_REQUEST
+                resp.write("Maximum Timeout limit of %s exceeded." \
+                % dialer_setting_limit(request, limit_for="timeout"))
+                return resp
+
             aleg_gateway = get_attribute(attrs, 'aleg_gateway')
             voipapp = get_attribute(attrs, 'voipapp')
             extra_data = get_attribute(attrs, 'extra_data')
@@ -470,6 +506,11 @@ class campaignHandler(BaseHandler):
 
             * Campaign not found.
         """
+        if user_attached_with_dilaer_settings(request):
+            resp = rc.BAD_REQUEST
+            resp.write("Your settings aren`t configured properly, \
+                 Please contact the administrator.")
+            return resp
         attrs = self.flatten_dict(request.POST)
 
         #Retrieve Post settings
@@ -487,10 +528,41 @@ class campaignHandler(BaseHandler):
         saturday = get_attribute(attrs, 'saturday')
         sunday = get_attribute(attrs, 'sunday')
         frequency = get_attribute(attrs, 'frequency')
+        if check_dialer_setting(request,
+                                check_for="frequency",
+                                field_value=int(frequency)):
+            resp = rc.BAD_REQUEST
+            resp.write("Maximum Frequency limit of %s exceeded." \
+            % dialer_setting_limit(request, limit_for="frequency"))
+            return resp
+
         callmaxduration = get_attribute(attrs, 'callmaxduration')
+        if check_dialer_setting(request,
+                                check_for="duration",
+                                field_value=int(callmaxduration)):
+            resp = rc.BAD_REQUEST
+            resp.write("Maximum Duration limit of %s exceeded." \
+            % dialer_setting_limit(request, limit_for="duration"))
+            return resp
+
         maxretry = get_attribute(attrs, 'maxretry')
+        if check_dialer_setting(request,
+                                check_for="retry",
+                                field_value=int(maxretry)):
+            resp = rc.BAD_REQUEST
+            resp.write("Maximum Retries limit of %s exceeded." \
+            % dialer_setting_limit(request, limit_for="retry"))
+            return resp
         intervalretry = get_attribute(attrs, 'intervalretry')
         calltimeout = get_attribute(attrs, 'calltimeout')
+        if check_dialer_setting(request,
+                                check_for="timeout",
+                                field_value=int(calltimeout)):
+            resp = rc.BAD_REQUEST
+            resp.write("Maximum Timeout limit of %s exceeded." \
+            % dialer_setting_limit(request, limit_for="timeout"))
+            return resp
+
         aleg_gateway = get_attribute(attrs, 'aleg_gateway')
         voipapp = get_attribute(attrs, 'voipapp')
         extra_data = get_attribute(attrs, 'extra_data')

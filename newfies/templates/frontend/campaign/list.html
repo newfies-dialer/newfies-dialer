@@ -16,7 +16,7 @@
 <script type="text/javascript" language="javascript">
 function get_alert_msg(id)
 {
-    confirm_string = 'you are going to delete campaign';
+    confirm_string = 'you are going to delete a campaign';
     var answer = confirm(confirm_string);
     return answer // answer is a boolean
 }
@@ -28,6 +28,12 @@ function get_alert_msg(id)
 {% if msg %}
 <div class="success" id="rounded-corner-upper-table">        
         <strong>{% trans "Alert" %} : </strong>  {{ msg }}
+</div>
+{% endif %}
+
+{% if error_msg %}
+<div class="error" id="rounded-corner-upper-table">
+    <strong>{% trans "Alert" %} : </strong>  {{ error_msg }}
 </div>
 {% endif %}
 

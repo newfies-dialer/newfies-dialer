@@ -18,12 +18,12 @@
     <!-- Newfies custom css -->
     <link type="text/css" media="screen" href="{{STATIC_URL}}newfies/css/newfile_custom.css" rel="stylesheet"/>
     <!-- jquery UI css -->
-    <link type="text/css" href="{{STATIC_URL}}newfies/css/smoothness/jquery-ui-1.8.11.custom.css" rel="stylesheet">
+    <link type="text/css" href="{{STATIC_URL}}newfies/css/smoothness/jquery-ui-1.8.14.custom.css" rel="stylesheet">
 
     <!-- Javascript -->
     <script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-1.5.2.min.js"></script>
     <script type="text/javascript" src="{{STATIC_URL}}newfies/js/custom.validation.js"></script>
-    <script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-ui-1.8.11.custom.min.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-ui-1.8.14.custom.min.js"></script>
 
     <!--flot-->
     <script src="{{STATIC_URL}}newfies/js/jquery.flot.js" type="text/javascript"></script>
@@ -166,6 +166,19 @@
     <div class="span-4 last">&nbsp;</div>
 
     <div class="span-24 last" align=center>
+    {% if user.is_authenticated %}
+        {% if dialer_setting_msg %}
+        <div class="error" id="rounded-corner-upper-table">
+                <strong>{% trans "Alert" %} : </strong>  {{ dialer_setting_msg }}
+                {% if not request.session.has_notified %}
+                    <br/>
+                    {% trans "To send notification to administrator" %} <a href="/notify/admin/">{% trans "Click here" %}</a>
+                {% else %}
+                    {% trans "(Notification sent)" %}
+                {% endif %}
+        </div>
+        {% endif %}
+    {% endif %}
     {% block content %}
     {% endblock %}
     </div>

@@ -42,6 +42,7 @@
 
 
 {% block content %}
+
 <form method="POST" action="." id="id_searchform" name="searchform" enctype="multipart/form-data">{% csrf_token %}
     <p>
         {{ form.campaign.label }} {{ form.campaign }} {{ form.search_type }}

@@ -1,4 +1,6 @@
-from dialer_campaign.models import Phonebook, Campaign, CAMPAIGN_STATUS
+from django.contrib.auth.models import User
+from django.utils.translation import ugettext as _
+from dialer_campaign.models import Phonebook, Campaign, Contact, CAMPAIGN_STATUS
 from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting
 from dateutil.relativedelta import *
@@ -8,6 +10,7 @@ from datetime import *
 import calendar
 import string
 import urllib
+import time
 
 
 #related to string operation
@@ -101,7 +104,28 @@ def month_year_range():
     return m_list
 
 
-def check_dialer_setting(request, check_for):
+def user_attached_with_dilaer_settings(request):
+    """Check user is attacehd with dialer setting or not"""
+    try:
+        user_obj = UserProfile.objects.get(user=request.user,
+                                           dialersetting__isnull=False)
+        # DialerSettings link to the User
+        if user_obj:
+            dialer_set_obj = \
+            DialerSetting.objects.get(pk=user_obj.dialersetting_id)
+            # DialerSettings is exists
+            if dialer_set_obj:
+                # attached with dialer setting
+                return False
+            else:
+                # not attached
+                return True
+    except:
+        # not attached
+        return True
+
+
+def check_dialer_setting(request, check_for, field_value=''):
     """Check Dialer Setting Limitation
 
     **Attribute**
@@ -115,37 +139,68 @@ def check_dialer_setting(request, check_for):
         if user_obj:
             dialer_set_obj = \
             DialerSetting.objects.get(pk=user_obj.dialersetting_id)
+            if dialer_set_obj:
+                # check running campaign for User
+                if check_for == "campaign":
+                    campaign_count = Campaign.objects\
+                                     .filter(user=request.user).count()
+                    # Total active campaign matched with
+                    # max_number_campaigns
+                    if campaign_count >= dialer_set_obj.max_number_campaign:
+                        # Limit matched or exceeded
+                        return True
+                    else:
+                        # Limit not matched
+                        return False
 
-            # check running campaign for User
-            if check_for == "campaign":
-                campaign_count = Campaign.objects\
-                                 .filter(user=request.user).count()
-                # Total active campaign matched with
-                # max_number_campaigns
-                if campaign_count >= dialer_set_obj.max_number_campaign:
-                    # Limit matched or exceeded
-                    return True
-                else:
+                # check for subscriber per campaign
+                if check_for == "contact":
+                    # Campaign list for User
+                    campaign_list = Campaign.objects.filter(user=request.user)
+                    for i in campaign_list:
+                        # Total contacts per campaign
+                        contact_count = \
+                        Contact.objects.filter(phonebook__campaign=i.id).count()
+                        # Total active contacts matched with
+                        # max_number_subscriber_campaign
+                        if contact_count >= \
+                        dialer_set_obj.max_number_subscriber_campaign:
+                            # Limit matched or exceeded
+                            return True
                     # Limit not matched
                     return False
 
-            # check for subscriber per campaign
-            if check_for == "contact":
-                # Campaign list for User
-                campaign_list = Campaign.objects.filter(user=request.user)
-                for i in campaign_list:
-                    # Total contacts per campaign
-                    contact_count = \
-                    Contact.objects.filter(phonebook__campaign=i.id).count()
-
-                    # Total active contacts matched with
-                    # max_number_subscriber_campaign
-                    if contact_count >= \
-                    dialer_set_obj.max_number_subscriber_campaign:
+                # check for frequency limit
+                if check_for == "frequency":
+                    if field_value > dialer_set_obj.max_frequency:
                         # Limit matched or exceeded
                         return True
-                # Limit not matched
-                return False
+                    # Limit not exceeded
+                    return False
+
+                # check for call duration limit
+                if check_for == "duration":
+                    if field_value > dialer_set_obj.callmaxduration:
+                        # Limit matched or exceeded
+                        return True
+                    # Limit not exceeded
+                    return False
+
+                # check for call retry limit
+                if check_for == "retry":
+                    if field_value > dialer_set_obj.maxretry:
+                        # Limit matched or exceeded
+                        return True
+                    # Limit not exceeded
+                    return False
+
+                # check for call timeout limit
+                if check_for == "timeout":
+                    if field_value > dialer_set_obj.max_calltimeout:
+                        # Limit matched or exceeded
+                        return True
+                    # Limit not exceeded
+                    return False
     except:
         # DialerSettings not link to the User
         return False
@@ -156,6 +211,10 @@ def dialer_setting_limit(request, limit_for):
 
     e.g. max_number_subscriber_campaign
          max_number_campaign
+         max_frequency
+         callmaxduration
+         maxretry
+         max_calltimeout
     """
     user_obj = UserProfile.objects.get(user=request.user,
                                        dialersetting__isnull=False)
@@ -167,6 +226,14 @@ def dialer_setting_limit(request, limit_for):
             return str(dialer_set_obj.max_number_subscriber_campaign)
         if limit_for == "campaign":
             return str(dialer_set_obj.max_number_campaign)
+        if limit_for == "frequency":
+            return str(dialer_set_obj.max_frequency)
+        if limit_for == "duration":
+            return str(dialer_set_obj.callmaxduration)
+        if limit_for == "retry":
+            return str(dialer_set_obj.maxretry)
+        if limit_for == "timeout":
+            return str(dialer_set_obj.max_calltimeout)
 
 
 def variable_value(request, field_name):
@@ -245,7 +312,10 @@ def calculate_date(search_type):
         start_date = end_date+relativedelta(days=-int(7))
     # Yesterday
     if search_type == 3:
-        start_date = end_date+relativedelta(days=-int(1))
+        start_date = end_date+relativedelta(days=-int(1),
+                                            hour=0,
+                                            minute=0,
+                                            second=0)
     # Last 24 hours
     if search_type == 4:
         start_date = end_date+relativedelta(hours=-int(24))
@@ -265,29 +335,12 @@ def calculate_date(search_type):
 def date_range(start, end, q):
     """Date  Range"""
     r = (end + timedelta(days=1) - start).days
-    if int(q) == 1:
-        #return [start + timedelta(days=i) for i in range(r)]
+    if int(q) <= 2:
         return list(rrule(DAILY,
                dtstart=parse(str(start)),
                until=parse(str(end))))
-    if int(q) == 2:
-        return list(rrule(HOURLY, interval=6,
-               dtstart=parse(str(start)),
-               until=parse(str(end))))
-    if int(q) == 3 or int(q) == 4:
+    if int(q) >= 3:
         return list(rrule(HOURLY, interval=1,
-               dtstart=parse(str(start)),
-               until=parse(str(end))))
-    if int(q) == 5:
-        return list(rrule(MINUTELY, interval=30,
-               dtstart=parse(str(start)),
-               until=parse(str(end))))
-    if int(q) == 6:
-        return list(rrule(MINUTELY, interval=15,
-               dtstart=parse(str(start)),
-               until=parse(str(end))))
-    if int(q) == 7:
-        return list(rrule(MINUTELY, interval=5,
                dtstart=parse(str(start)),
                until=parse(str(end))))
     else:
@@ -307,3 +360,135 @@ def get_campaign_status_name(id):
                 return 'ABORTED'
             if i[1] == 'END':
                 return 'STOPPED'
+
+
+def user_dialer_setting(user):
+    """Get Dialer setting for user"""
+    try:
+        user_ds = UserProfile.objects.get(user=User.objects.get(username=user))
+        dialer_set = DialerSetting.objects.get(id=user_ds.dialersetting.id)
+    except:
+        dialer_set = []
+    return dialer_set
+
+
+def user_dialer_setting_msg(user):
+    msg = ''
+    if not user_dialer_setting(user):
+        msg = _('Your settings aren`t configured properly, \
+                 Please contact the administrator.')
+    return msg
+
+
+def common_graph_function(common_list, field_name, report_type,
+                          start_date, end_date, call_type=''):
+    """Common graph function for admin dashboard graphs which returns
+    data of calls, campaign & user"""
+    rows = []
+    maxtime = end_date
+    mintime = start_date
+    common_dict = {}
+    if report_type == 'today':
+        if common_list:
+            for data in common_list:
+                temp_time = datetime(int(str(data[field_name])[0:4]),
+                                     int(str(data[field_name])[5:7]),
+                                     int(str(data[field_name])[8:10]),
+                                     int(str(data[field_name])[11:13]),
+                                     0, 0, 0)
+
+                if temp_time > maxtime:
+                    maxtime = temp_time
+                elif temp_time < mintime:
+                    mintime = temp_time
+
+                if call_type == 'DURATION':
+                    common_dict[int(temp_time.strftime("%Y%m%d%H"))] = \
+                    {field_name + '__count': int(data[field_name + '__count']),
+                     'duration__sum':data['duration__sum']}
+                else:
+                    common_dict[int(temp_time.strftime("%Y%m%d%H"))] = \
+                    {field_name + '__count': int(data[field_name + '__count'])}
+
+
+            dateList = date_range(mintime, maxtime, q=3)
+            i = 0
+            for date in dateList:
+                inttime = int(date.strftime("%Y%m%d%H"))
+
+                if inttime in common_dict.keys():
+
+                    if call_type == 'DURATION':
+                        rows.append({
+                           'date': int(time.mktime(date.timetuple())),
+                           'count': common_dict[inttime]['duration__sum'],
+                        })
+                    else:
+                        rows.append({
+                           'date': int(time.mktime(date.timetuple())),
+                           'count': common_dict[inttime][field_name + '__count'],
+                        })
+                else:
+                    rows.append({
+                       'date': int(time.mktime(date.timetuple())),
+                       'count': 0,
+                     })
+                i += 1
+        # converted start & end date into time format
+        graph_start_date = int(time.mktime(start_date.timetuple()))
+        graph_end_date = int(time.mktime(end_date.timetuple()))
+        graph_type = 'hour'
+
+    if report_type == 'last_seven_days' or report_type == '':
+        if common_list:
+            for data in common_list:
+                temp_time = datetime(int(str(data[field_name])[0:4]),
+                                     int(str(data[field_name])[5:7]),
+                                     int(str(data[field_name])[8:10]),
+                                     0, 0, 0, 0)
+
+                if temp_time > maxtime:
+                    maxtime = temp_time
+                elif temp_time < mintime:
+                    mintime = temp_time
+
+                if call_type == 'DURATION':
+                    common_dict[int(temp_time.strftime("%Y%m%d"))] = \
+                    {field_name + '__count': int(data[field_name + '__count']),
+                     'duration__sum':data['duration__sum']}
+                else:
+                    common_dict[int(temp_time.strftime("%Y%m%d"))] = \
+                    {field_name + '__count': int(data[field_name + '__count'])}
+
+            dateList = date_range(mintime, maxtime, q=2)
+            i = 0
+            for date in dateList:
+                inttime = int(date.strftime("%Y%m%d"))
+                if inttime in common_dict.keys():
+                    if call_type == 'DURATION':
+                        rows.append({
+                           'date':  date.strftime("%Y-%m-%d"),
+                           'count': common_dict[inttime]['duration__sum'],
+                        })
+                    else:
+                        rows.append({
+                           'date':  date.strftime("%Y-%m-%d"),
+                           'count': common_dict[inttime][field_name + '__count'],
+                        })
+                else:
+                    rows.append({
+                       'date':  date.strftime("%Y-%m-%d"),
+                       'count': 0,
+                     })
+                i += 1
+        graph_start_date = start_date.strftime('%Y-%m-%d')
+        graph_end_date = end_date.strftime('%Y-%m-%d')
+        graph_type = 'day'
+
+    data = {
+        'common': rows,
+        'graph_start_date': graph_start_date,
+        'graph_end_date': graph_end_date,
+        'graph_type': graph_type,
+    }
+    return data

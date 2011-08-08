@@ -275,7 +275,7 @@
             if (graph_type == 'day')
             {
                 var d1 = [];
-                $.each(temp_json.calls, function(i,call){
+                $.each(temp_json.common, function(i,call){
                     //(new Date(campaign.date)).getTime()
                     d1.push([(new Date(call.date).getTime()), call.count]); //.getTime()
                 });
@@ -312,7 +312,7 @@
             if (graph_type == 'hour')
             {
                 var d1 = [];
-                $.each(temp_json.calls, function(i,call){
+                $.each(temp_json.common, function(i,call){
                     //(new Date(campaign.date)).getTime()
                     d1.push([(new Date(call.date * 1000)), call.count]); //.getTime()
                 });
@@ -455,7 +455,7 @@
 
         function plot_campaign_graph(temp_json)
         {
-            //alert(JSON.stringify(temp_json.campaign));
+            //alert(JSON.stringify(temp_json.common));
             var graph_start_date = JSON.stringify(temp_json.graph_start_date).replace(/['"]/g,'');
             var graph_end_date = JSON.stringify(temp_json.graph_end_date).replace(/['"]/g,'');
             var graph_type = JSON.stringify(temp_json.graph_type).replace(/['"]/g,'');
@@ -472,9 +472,9 @@
             if (graph_type == 'day')
             {
                 var d1 = [];
-                $.each(temp_json.campaign, function(i,camp){
+                $.each(temp_json.common, function(i,campaign){
                     //(new Date(campaign.date)).getTime()
-                    d1.push([(new Date(camp.date).getTime()), camp.count]); //.getTime()
+                    d1.push([(new Date(campaign.date).getTime()), campaign.count]); //.getTime()
                 });
                 //alert(d1);
 
@@ -509,9 +509,9 @@
             if (graph_type == 'hour')
             {
                 var d1 = [];
-                $.each(temp_json.campaign, function(i,camp){
+                $.each(temp_json.common, function(i,campaign){
                     //(new Date(campaign.date)).getTime()
-                    d1.push([(new Date(camp.date * 1000)), camp.count]); //.getTime()
+                    d1.push([(new Date(campaign.date * 1000)), campaign.count]); //.getTime()
                 });
                 //alert(d1);
 
@@ -668,7 +668,7 @@
                 if (graph_type == 'day')
                 {
                     var d1 = [];
-                    $.each(temp_json.user, function(i,user){
+                    $.each(temp_json.common, function(i,user){
                         //(new Date(campaign.date)).getTime()
                         d1.push([(new Date(user.date).getTime()), user.count]); //.getTime()
                     });
@@ -689,6 +689,7 @@
                                     min: (new Date(graph_start_date)).getTime(),
                                     max: (new Date(graph_end_date)).getTime()
                                 },
+
                                 grid: {
                                     hoverable: true,
                                     clickable: true,
@@ -705,7 +706,7 @@
                 if (graph_type == 'hour')
                 {
                     var d1 = [];
-                    $.each(temp_json.user, function(i,user){
+                    $.each(temp_json.common, function(i,user){
                         //(new Date(campaign.date)).getTime()
                         d1.push([(new Date(user.date * 1000)), user.count]); //.getTime()
                     });

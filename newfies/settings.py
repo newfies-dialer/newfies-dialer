@@ -274,7 +274,8 @@ PISTON_EMAIL_ERRORS = "root@localhost.localdomain"
 #PISTON_IGNORE_DUPE_MODELS = True
 
 # Use only in Debug mode. Not in production
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
 #PLIVO
 #=====

@@ -325,6 +325,7 @@ func_install_frontend(){
     case $DIST in
         'DEBIAN')
             chown -R www-data.www-data $INSTALL_DIR/database/
+            touch /var/log/newfies/newfies-django.log
             chown www-data:www-data /var/log/newfies/newfies-django.log
             touch /var/log/newfies/err-apache-newfies.log
             chown www-data:www-data /var/log/newfies/err-apache-newfies.log

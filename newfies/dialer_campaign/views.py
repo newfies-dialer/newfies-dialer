@@ -1921,20 +1921,23 @@ def admin_call_report(request):
         else:
             total_forbiden = total_forbiden + 1 # FORBIDDEN
 
-    data = '<ul>'
-    data += '<li class="odd">Total Calls: ' + str(total_call_count) + ' | \
-            Total Duration: ' + str(total_duration_sum) + '</li>'
-    data += '<li>Answered: ' + str(total_answered) + ' | \
-            Do not call: ' + str(total_dontcall) + ' | \
-            Busy: ' + str(total_busy) + ' | Not Answered: ' + str(total_not_answered) + '<li>'
-    data += '<li>Canceled: ' + str(total_cancel) + ' | Chanunavail: ' \
-            + str(total_chanunavail) + ' | \
-            Torture: ' + str(total_torture) + ' | Invalid Args: ' + str(total_invalidargs) + '\
-            <li>'
-    data += '<li>No Route: ' + str(total_noroute) + ' | \
-            Congestion: ' + str(total_congestion) + ' | \
-            Forbiden: ' + str(total_forbiden) + '<li>'
-    data += '</ul>'
+
+    data = '<ul><li class="odd">'
+    data += '<b>Total Calls: ' + str(total_call_count) + ' | \
+            Total Duration: ' + str(total_duration_sum) + '</b><br/>'
+            
+    data += '<abbr title="Answered">Ans</abbr>: ' + str(total_answered) + ' | \
+            <abbr title="Do not call">DNC</abbr>: ' + str(total_dontcall) + ' | \
+            <abbr title="Busy">Busy</abbr>: ' + str(total_busy) + ' | \
+            <abbr title="Not Answered">NA</abbr>: ' + str(total_not_answered) + '| \
+            <abbr title="Canceled">Canc</abbr>: ' + str(total_cancel) + ' | \
+            <abbr title="ChanUnavail">CU</abbr>: ' + str(total_chanunavail) + ' | \
+            <abbr title="Torture">Tort</abbr>: ' + str(total_torture) + ' | \
+            <abbr title="Invalid Args">Inv</abbr>: ' + str(total_invalidargs) + ' | \
+            <abbr title="No Route">NoRo</abbr>: ' + str(total_noroute) + ' | \
+            <abbr title="Congestion">Cong</abbr>: ' + str(total_congestion) + ' | \
+            <abbr title="Forbiden">Forb</abbr>: ' + str(total_forbiden)
+    data += '</li></ul>'
     #print data
     return HttpResponse(data, mimetype='application/html',
                         content_type="application/html")

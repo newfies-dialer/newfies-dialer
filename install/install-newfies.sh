@@ -207,6 +207,7 @@ func_install_frontend(){
     mkdir /usr/share/
     cd /usr/src/
     rm -rf newfies-dialer
+    mkdir /var/log/newfies
 
     case $INSTALL_MODE in
         'CLONE')
@@ -291,7 +292,7 @@ func_install_frontend(){
     
     <VirtualHost *:9080>
         DocumentRoot '$INSTALL_DIR'/
-        ErrorLog /var/log/err-apache-newfies.log
+        ErrorLog /var/log/newfies/err-apache-newfies.log
         LogLevel warn
 
         Alias /static/ "'$INSTALL_DIR'/static/"
@@ -324,9 +325,9 @@ func_install_frontend(){
     case $DIST in
         'DEBIAN')
             chown -R www-data.www-data $INSTALL_DIR/database/
-            chown www-data:www-data /var/log/newfies-django.log
-            touch /var/log/err-apache-newfies.log
-            chown www-data:www-data /var/log/err-apache-newfies.log
+            chown www-data:www-data /var/log/newfies/newfies-django.log
+            touch /var/log/newfies/err-apache-newfies.log
+            chown www-data:www-data /var/log/newfies/err-apache-newfies.log
             service apache2 restart
         ;;
         'CENTOS')

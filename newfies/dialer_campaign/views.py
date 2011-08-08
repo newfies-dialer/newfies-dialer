@@ -2030,16 +2030,17 @@ def admin_campaign_report(request):
 def admin_campaign_report_graph(request):
     """Campaign report graph on admin dashboard"""
     report_type = variable_value(request, 'report_type')
-
+    now = datetime.now()
     if report_type == 'last_seven_days' or report_type == '':
         # search_type = 2 For Last 7 days option
         start_date = calculate_date(search_type=2)
-        end_date = datetime.now()
+        end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999) \
+                   + relativedelta(days=int(1))
+        #end_date = datetime.now() + relativedelta(days=-int(1))
         select_data = \
         {"created_date": "SUBSTR(CAST(created_date as CHAR(30)),1,10)"}
 
     if report_type == 'today':
-        now = datetime.now()
         start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
         end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999)
         select_data = \
@@ -2097,16 +2098,20 @@ def admin_user_report(request):
 def admin_user_report_graph(request):
     """User report graph on admin dashboard"""
     report_type = variable_value(request, 'report_type')
-
+    now = datetime.now()
     if report_type == 'last_seven_days' or report_type == '':
         # search_type = 2 For Last 7 days option
         start_date = calculate_date(search_type=2)
-        end_date = datetime.now()
+        end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999) \
+                   + relativedelta(days=int(1))
+        #end_date = datetime.now() + relativedelta(days=-int(1))
+        # search_type = 2 For Last 7 days option
+        #start_date = calculate_date(search_type=2)
+        #end_date = datetime.now()
         select_data = \
         {"date_joined": "SUBSTR(CAST(date_joined as CHAR(30)),1,10)"}
 
     if report_type == 'today':
-        now = datetime.now()
         start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
         end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999)
         select_data = \

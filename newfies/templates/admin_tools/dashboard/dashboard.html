@@ -132,6 +132,7 @@
 <!--Call info div-->
 <div class="dashboard-module draggable collapsible deletable">
     <h2>{% trans "Call Info" %}</h2>
+    <div class="dashboard-module-content">
     <script type="text/javascript" language="javascript">
         // default when dashboard loaded 1st time
         var report_type = 'last_seven_days';
@@ -142,10 +143,6 @@
     </script>
 
     <div id="call_report"></div>
-
-    <div class="dashboard-module-content">
-    <h3>Graph Type</h3>
-
     <ul>
         <li>
         {% trans "Today" %} <input type="radio" name="report_type" id="id_report_today" value="today" onclick="call_me('today');">
@@ -171,7 +168,7 @@
 
     <center>
         <div class="graph_header">{% trans "Report" %}</div>
-        <div id="placeholder1" style="width:250px;height:200px"></div>
+        <div id="placeholder1" style="width:250px;height:150px"></div>
     </center>
     </div>
 </div>
@@ -196,7 +193,7 @@
     <div class="dashboard-module-content">
         <center>
             <div class="graph_header">{% trans "Report" %}</div>
-            <div id="placeholder2" style="width:250px;height:200px"></div>
+            <div id="placeholder2" style="width:250px;height:150px"></div>
         </center>
     </div>
     </div>
@@ -222,7 +219,7 @@
 
         <center>
             <div class="graph_header">{% trans "Report" %}</div>
-            <div id="placeholder3" style="width:250px;height:200px"></div>
+            <div id="placeholder3" style="width:250px;height:150px"></div>
         </center>
     </div>
 </div>

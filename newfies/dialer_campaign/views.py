@@ -1922,7 +1922,7 @@ def admin_call_report(request):
             total_forbiden = total_forbiden + 1 # FORBIDDEN
 
 
-    data = '<ul><li class="odd">'
+    data = '<ul><li>'
     data += '<b>Total Calls: ' + str(total_call_count) + ' | \
             Total Duration: ' + str(total_duration_sum) + '</b><br/>'
             

@@ -141,8 +141,6 @@
         call_report(report_type);                
         call_report_graph(call_type, report_type);
     </script>
-
-    <div id="call_report"></div>
     <ul>
         <li>
         {% trans "Today" %} <input type="radio" name="report_type" id="id_report_today" value="today" onclick="call_me('today');">
@@ -165,6 +163,8 @@
                 <option value="DURATION">{% trans "DURATION" %}</option>
             </select></li>
     </ul>
+    <div id="call_report"></div>
+
 
     <center>
         <div class="graph_header">{% trans "Report" %}</div>

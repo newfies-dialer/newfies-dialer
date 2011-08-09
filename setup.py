@@ -70,16 +70,11 @@ if sys.argv[1] == "install":
     install_flag = True
 
 
-long_desc = '''
-%s
-''' % (open('README.rst').read(),)
-
-
 setup(
     name='newfies-dialer',
     version=VERSION.replace(' ', '-'),
     description='Newfies is a Bulk Dialer and Voice Broadcasting application dedicated to provide information via phone technology.',
-    long_description=long_desc,
+    long_description=open('README.rst').read(),
     author='Belaid Arezqui',
     author_email='areski@gmail.com',
     url='http://www.newfies-dialer.org/',

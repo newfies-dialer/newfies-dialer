@@ -461,10 +461,12 @@ class cdrHandler(BaseHandler):
             # Send notification to admin
             from dialer_campaign.views import common_send_notification
             from django.contrib.auth.models import User
-            # TODO : get recipient = admin user
-            recipient = User.objects.get(pk=1)
-            # callrequest_not_found - notification id 8
-            common_send_notification(request, 8, recipient)
+            recipient_list = User.objects.filter(is_superuser=1, is_active=1)
+            # send to all admin user
+            for i in recipient_list:
+                # callrequest_not_found - notification id 8
+                # recipient = i.username
+                common_send_notification(request, 8, i.username)
             raise
 
         if data.has_key('answer_epoch') and len(data['answer_epoch']) > 0:

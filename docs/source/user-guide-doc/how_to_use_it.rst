@@ -37,7 +37,7 @@ If dialer setting is not mapped with system users, notification & mail has been 
 To create restrictions (like the Max. no of campaign, Max no of contacts etc.) for
 system User, Click on ``Add dialer settings``. Add numeric values for the limit.
 
-To apply the dialer settings limit on a system user, click on ``Customers`` or ``Admins`` on admin UI,
+To apply the dialer settings limit on a system user, click on ``Customers`` or ``Admins`` in admin UI,
 select the user to update, & apply the settings from the dialer settings list.
 
 

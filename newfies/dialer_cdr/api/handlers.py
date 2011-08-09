@@ -462,7 +462,7 @@ class cdrHandler(BaseHandler):
             from dialer_campaign.views import common_send_notification
             from django.contrib.auth.models import User
             # TODO : get recipient = admin user
-            recipient = User.objects.get(pk=request.user.pk)
+            recipient = User.objects.get(pk=1)
             # callrequest_not_found - notification id 8
             common_send_notification(request, 8, recipient)
             raise

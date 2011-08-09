@@ -40,7 +40,7 @@ class CustomIndexDashboard(Dashboard):
         request = context['request']
 
         # we want a 3 columns layout
-        self.columns = 3
+        self.columns = 4
 
         site_name = get_admin_site_name(context)
 

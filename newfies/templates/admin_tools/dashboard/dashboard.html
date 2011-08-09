@@ -171,7 +171,7 @@
 
     <center>
         <div class="graph_header">{% trans "Report" %}</div>
-        <div id="placeholder1" style="width:350px;height:200px"></div>
+        <div id="placeholder1" style="width:250px;height:200px"></div>
     </center>
     </div>
 </div>
@@ -196,15 +196,15 @@
     <div class="dashboard-module-content">
         <center>
             <div class="graph_header">{% trans "Report" %}</div>
-            <div id="placeholder2" style="width:350px;height:200px"></div>
+            <div id="placeholder2" style="width:250px;height:200px"></div>
         </center>
     </div>
+    </div>
+</div>
 
-    <br/>
-    
-    <!--User info -->
+<!--User info Div -->
+<div class="dashboard-module draggable collapsible deletable">
     <h2>User Info</h2>
-
     <div class="dashboard-module-content">
         <ul>
             <li>
@@ -212,7 +212,7 @@
                 {% trans "Last 7 days" %} <input type="radio" onclick="user_click_me('last_seven_days');" name="user_report_type" id="id_user_report_seven" checked="checked" value="seven_days" >
             </li>
         </ul>
-        <script type="text/javascript" language="javascript">              
+        <script type="text/javascript" language="javascript">
             // default when dashboard loaded 1st time
             var report_type = 'last_seven_days'
             user_report(report_type);
@@ -222,11 +222,9 @@
 
         <center>
             <div class="graph_header">{% trans "Report" %}</div>
-            <div id="placeholder3" style="width:350px;height:200px"></div>
+            <div id="placeholder3" style="width:250px;height:200px"></div>
         </center>
     </div>
-    </div>
 </div>
-
 {% endifequal %}
 

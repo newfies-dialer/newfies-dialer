@@ -132,6 +132,7 @@
 <!--Call info div-->
 <div class="dashboard-module draggable collapsible deletable">
     <h2>{% trans "Call Info" %}</h2>
+    <div class="dashboard-module-content">
     <script type="text/javascript" language="javascript">
         // default when dashboard loaded 1st time
         var report_type = 'last_seven_days';
@@ -140,12 +141,6 @@
         call_report(report_type);                
         call_report_graph(call_type, report_type);
     </script>
-
-    <div id="call_report"></div>
-
-    <div class="dashboard-module-content">
-    <h3>Graph Type</h3>
-
     <ul>
         <li>
         {% trans "Today" %} <input type="radio" name="report_type" id="id_report_today" value="today" onclick="call_me('today');">
@@ -168,10 +163,12 @@
                 <option value="DURATION">{% trans "DURATION" %}</option>
             </select></li>
     </ul>
+    <div id="call_report"></div>
+
 
     <center>
         <div class="graph_header">{% trans "Report" %}</div>
-        <div id="placeholder1" style="width:350px;height:200px"></div>
+        <div id="placeholder1" style="width:250px;height:150px"></div>
     </center>
     </div>
 </div>
@@ -193,18 +190,16 @@
         </li>
     </ul>
     <div id="campaign_report"></div>
-    <div class="dashboard-module-content">
-        <center>
-            <div class="graph_header">{% trans "Report" %}</div>
-            <div id="placeholder2" style="width:350px;height:200px"></div>
-        </center>
+    <center>
+        <div class="graph_header">{% trans "Report" %}</div>
+        <div id="placeholder2" style="width:250px;height:150px"></div>
+    </center>
     </div>
+</div>
 
-    <br/>
-    
-    <!--User info -->
+<!--User info Div -->
+<div class="dashboard-module draggable collapsible deletable">
     <h2>User Info</h2>
-
     <div class="dashboard-module-content">
         <ul>
             <li>
@@ -212,7 +207,7 @@
                 {% trans "Last 7 days" %} <input type="radio" onclick="user_click_me('last_seven_days');" name="user_report_type" id="id_user_report_seven" checked="checked" value="seven_days" >
             </li>
         </ul>
-        <script type="text/javascript" language="javascript">              
+        <script type="text/javascript" language="javascript">
             // default when dashboard loaded 1st time
             var report_type = 'last_seven_days'
             user_report(report_type);
@@ -222,11 +217,9 @@
 
         <center>
             <div class="graph_header">{% trans "Report" %}</div>
-            <div id="placeholder3" style="width:350px;height:200px"></div>
+            <div id="placeholder3" style="width:250px;height:150px"></div>
         </center>
     </div>
-    </div>
 </div>
-
 {% endifequal %}
 

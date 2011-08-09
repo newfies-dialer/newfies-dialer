@@ -2,7 +2,7 @@ from setuptools import setup
 import os
 import sys
 import re
-
+from newfies import VERSION
 
 # Compile the list of packages available, because distutils doesn't have
 # an easy way to do this.
@@ -49,16 +49,38 @@ install_flag=False
 if sys.argv[1] == "install":
     install_flag = True
 
+
+long_desc = '''
+%s
+''' % (open('README.rst').read(),)
+
+
 setup(
-    name='newfies',
-    version='0.1',
-    description='',
+    name='newfies-dialer',
+    version=VERSION.replace(' ', '-'),
+    description='Newfies is a Bulk Dialer and Voice Broadcasting application dedicated to provide information via phone technology.',
+    long_description=long_desc,
     author='Belaid Arezqui',
     author_email='areski@gmail.com',
+    url='http://www.newfies-dialer.org/',
+    download_url='https://github.com/Star2Billing/newfies-dialer/tarball/master',
     packages=['newfies'],
     include_package_data=True,
+    license='AGPL License',
+    classifiers=[
+        'Development Status :: 1 - Beta',
+        'Environment :: Web Environment',
+        'Framework :: Django',
+        'Intended Audience :: Developers, Users',
+        'License :: OSI Approved :: AGPL License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python, Javascript, HTML',
+        'Topic :: Voice Broadcast Software'
+    ],
     zip_safe = False,
-    install_requires = parse_requirements('newfies/requirements.txt'),
-    dependency_links = parse_dependency_links('newfies/requirements.txt',
+    install_requires = parse_requirements('install/conf/requirements.txt'),
+    dependency_links = parse_dependency_links('install/conf/requirements.txt',
                                               install_flag),
 )
+
+

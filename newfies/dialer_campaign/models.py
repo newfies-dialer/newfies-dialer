@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.core.cache import cache
 from django.db.models.signals import post_save
 from dateutil.relativedelta import *
-from countries.models import Country
+from prefix_country.models import Country
 from dialer_gateway.models import Gateway
 from voip_app.models import VoipApp
 from user_profile.models import UserProfile

@@ -20,8 +20,22 @@ except pkg_resources.DistributionNotFound:
         pass
 
 Distribution({
-    "setup_requires": add_django_dependency and  ['Django >=1.2.0'] or []
+    "setup_requires": add_django_dependency and  ['Django >=1.3.0'] or []
 })
+
+
+
+COMMANDS = {}
+try:
+    from sphinx.setup_command import BuildDoc
+    COMMANDS['build_sphinx'] = BuildDoc
+except ImportError:
+    pass
+try:
+    from sphinx_pypi_upload import UploadDoc
+    COMMANDS['upload_sphinx'] = UploadDoc
+except ImportError:
+    pass
 
 
 # Compile the list of packages available, because distutils doesn't have
@@ -79,7 +93,7 @@ setup(
     author_email='areski@gmail.com',
     url='http://www.newfies-dialer.org/',
     download_url='https://github.com/Star2Billing/newfies-dialer/tarball/master',
-    packages=['newfies'],
+    packages=find_packages(),
     include_package_data=True,
     license='AGPL License',
     classifiers=[
@@ -96,6 +110,12 @@ setup(
     install_requires = parse_requirements('install/conf/requirements.txt'),
     dependency_links = parse_dependency_links('install/conf/requirements.txt',
                                               install_flag),
+    extras_require = {
+        'async': ['celery'],
+    },
+
+    # devel
+    cmdclass = COMMANDS,
 )
 
 

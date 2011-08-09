@@ -12,7 +12,7 @@ django-picklefield==0.1.9
 django-urlauth==0.1.1
 django-uuidfield
 docutils
-kombu==1.0.2
+kombu==1.1.0
 pyparsing==1.5.5
 python-dateutil==1.5
 redis==2.4.5

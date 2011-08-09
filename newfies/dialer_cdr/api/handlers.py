@@ -458,6 +458,13 @@ class cdrHandler(BaseHandler):
             obj_callrequest = Callrequest.objects.get(request_uuid=data['plivo_request_uuid'])
         except:
             #print "error get Callrequest %s " % data['plivo_request_uuid']
+            # Send notification to admin
+            from dialer_campaign.views import common_send_notification
+            from django.contrib.auth.models import User
+            # TODO : get recipient = admin user
+            recipient = User.objects.get(pk=request.user.pk)
+            # callrequest_not_found - notification id 8
+            common_send_notification(request, 8, recipient)
             raise
 
         if data.has_key('answer_epoch') and len(data['answer_epoch']) > 0:

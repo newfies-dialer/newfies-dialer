@@ -790,7 +790,8 @@ def cust_password_reset_complete(request):
 
 
 def common_send_notification(request, status, recipient=None):
-    """User Notification (e.g. start | stop | pause) needs to be saved.
+    """User Notification (e.g. start | stop | pause | abort |
+    contact/camapign limit) needs to be saved.
     It is a common function for the admin and customer UI's
 
     **Attributes**:

@@ -35,6 +35,10 @@ if "notification" in settings.INSTALLED_APPS:
                                         _("Dialer setting configuration"),
                                         _("User need to be mapped with dialer setting by administrator"),
                                         7)
+        notification.create_notice_type("callrequest_not_found",
+                                        _("Callrequest not found"),
+                                        _("Callrequest is not found"),
+                                        8)
     signals.post_syncdb.connect(create_notice_types, sender=notification)
 else:
     print "Skipping creation of NoticeTypes as notification app not found"

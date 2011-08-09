@@ -33,8 +33,7 @@ if "notification" in settings.INSTALLED_APPS:
                                         6)
         notification.create_notice_type("dialer_setting_configuration",
                                         _("Dialer setting configuration"),
-                                        _("User need to be mapped with \
-                                           dialer setting by administrator"),
+                                        _("User need to be mapped with dialer setting by administrator"),
                                         7)
     signals.post_syncdb.connect(create_notice_types, sender=notification)
 else:

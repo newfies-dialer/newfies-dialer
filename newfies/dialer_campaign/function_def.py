@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
+from prefix_country.models import Country
 from dialer_campaign.models import Phonebook, Campaign, Contact, CAMPAIGN_STATUS
 from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting
@@ -52,13 +53,16 @@ def get_news():
 
 
 def field_list(name, user=None):
-    """Return List of phonebook"""
+    """Return List of phonebook, campaign, country"""
     if name == "phonebook" and user is None:
         list = Phonebook.objects.all()
     if name == "phonebook" and user is not None:
         list = Phonebook.objects.filter(user=user)
     if name == "campaign" and user is not None:
         list = Campaign.objects.filter(user=user)
+    if name == "country" and user is not None:
+        list = Country.objects.all()
+        return ((l.id, l.countryname) for l in list)
     #else:
     #    list = []
     return ((l.id, l.name) for l in list)

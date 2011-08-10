@@ -22,8 +22,8 @@ import sys, os
 #sys.path.append('/home/areski/.virtualenvs/newfies-dialer/lib/python2.7/site-packages/')
 
 #APP_DIR = os.path.normpath(os.path.join(os.getcwd(), '../..')) + '/newfies/'
-APP_DIR = os.path.normpath(os.path.join(os.path.abspath('../..'))) + '/newfies/'
-
+#APP_DIR = os.path.normpath(os.path.join(os.path.abspath('../..'))) + '/newfies/'
+APP_DIR = os.path.abspath('../..') + '/newfies/'
 sys.path.append(APP_DIR)
 import settings
 from django.core.management import setup_environ

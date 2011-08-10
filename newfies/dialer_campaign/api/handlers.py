@@ -1,4 +1,3 @@
-#!python
 from piston.handler import BaseHandler
 from piston.emitters import *
 from piston.utils import rc, require_mime, require_extended, throttle

@@ -107,24 +107,21 @@ setup(
         'Topic :: Voice Broadcast Software'
     ],
     zip_safe = False,
-    #install_requires = parse_requirements('install/conf/requirements.txt'),
-    #dependency_links = parse_dependency_links('install/conf/requirements.txt',
-    #                                          install_flag),
-    install_requires = [
-        "Django >= 1.3.0",
-        "django-notification >= 0.1.2",
-        "django-pagination >= 1.0.5",
-        "django-piston",
-        "South >= 0.7.2",
-    ],
+    install_requires = parse_requirements('install/conf/requirements.txt'),
+    dependency_links = parse_dependency_links('install/conf/requirements.txt',
+                                              install_flag),
+    #install_requires = [
+    #    "Django >= 1.3.0",
+    #    "django-notification >= 0.1.2",
+    #    "django-pagination >= 1.0.5",
+    #    "django-piston",
+    #    "South >= 0.7.2",
+    #],
     setup_requires = [
         "Django >= 1.3.0",
         "Sphinx >= 0.4.2",
     ],
-    extras_require = {
-        'async': ['celery'],
-    },
-
+    
     # devel
     cmdclass = COMMANDS,
 )

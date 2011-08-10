@@ -83,25 +83,23 @@ Objects Description
     :members:
 
 
-.. automodule:: dialer_settings.models
+
 
 .. _DialerSetting-model:
 
 :class:`DialerSetting`
 ----------------------
 
-.. autoclass:: DialerSetting
+.. automodule:: dialer_settings.models
     :members:
 
-
-.. automodule:: user_profile.models
 
 .. _UserProfile-model:
 
 :class:`UserProfile`
 --------------------
 
-.. autoclass:: UserProfile
+.. automodule:: user_profile.models
     :members:
 
 

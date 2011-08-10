@@ -22,8 +22,6 @@ import sys, os
 #sys.path.append('/home/areski/.virtualenvs/newfies-dialer/lib/python2.7/site-packages/')
 
 APP_DIR = os.path.normpath(os.path.join(os.getcwd(), '../..')) + '/newfies/'
-#APP_DIR = os.path.normpath(os.path.join(os.path.abspath('../..'))) + '/newfies/'
-#APP_DIR = os.path.abspath('../..') + '/newfies/'
 sys.path.append(APP_DIR)
 import settings
 from django.core.management import setup_environ
@@ -36,7 +34,7 @@ setup_environ(settings)
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx', 'sphinx.ext.coverage']
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.coverage']
 #extensions = ['sphinx.ext.autodoc', 'rst2pdf.pdfbuilder', 'sphinx.ext.coverage']
 
 # Add any paths that contain templates here, relative to this directory.

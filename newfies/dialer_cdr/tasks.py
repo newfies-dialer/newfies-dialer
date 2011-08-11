@@ -1,5 +1,6 @@
 from celery.task import Task, PeriodicTask
 from dialer_campaign.models import Campaign
+from dialer_campaign.function_def import user_dialer_setting
 from dialer_cdr.models import Callrequest, VoIPCall
 from celery.decorators import task
 from datetime import datetime, timedelta
@@ -54,7 +55,7 @@ def init_callrequest(callrequest_id, campaign_id):
     except:
         logger.error("Can't find the campaign : %s" % campaign_id)
         return False
-
+    
     phone_number = obj_callrequest.phone_number
     if obj_callrequest.aleg_gateway:
         id_aleg_gateway = obj_callrequest.aleg_gateway.id
@@ -116,7 +117,6 @@ def init_callrequest(callrequest_id, campaign_id):
     data = response.read()
     conn.close()
     """
-
     if settings.NEWFIES_DIALER_ENGINE.lower() == 'dummy':
         #Use Dummy TestCall
         res = dummy_testcall.delay(callerid=obj_callrequest.callerid,
@@ -242,7 +242,8 @@ def dummy_test_answerurl(request_uuid):
                             callid='',
                             callerid=obj_callrequest.callerid,
                             phone_number=obj_callrequest.phone_number,
-                            sessiontime=0,
+                            duration=0,
+                            billsec=0,
                             disposition=1)
     new_voipcall.save()
 
@@ -278,8 +279,9 @@ def dummy_test_hangupurl(request_uuid):
         obj_voipcall = VoIPCall.objects.get(request_uuid=request_uuid)
 
     #Update VoIPCall
-    obj_voipcall.status = 1 # ANSWER
-    obj_voipcall.sessiontime = 55
+    obj_voipcall.status = 'ANSWER' # 1
+    obj_voipcall.duration = 55
+    obj_voipcall.billsec = 55
     obj_voipcall.save()
 
     obj_callrequest = Callrequest.objects.get(request_uuid=request_uuid)
@@ -287,3 +289,20 @@ def dummy_test_hangupurl(request_uuid):
     obj_callrequest.save()
     
     return True
+
+
+"""
+# TODO : Review logic
+    try:
+        dialer_set = user_dialer_setting(obj_campaign.user)
+        if dialer_set:
+            if obj_callrequest.num_attempt >= dialer_set.maxretry:
+                logger.error("Not allowed retry")
+                return False
+    except:
+        logger.error("Can't find dialer setting for user of the campaign : %s" % campaign_id)
+        return False
+    # TODO : num_attempt should incremented by 1
+    # count of retries
+    obj_callrequest.num_attempt += 1
+"""

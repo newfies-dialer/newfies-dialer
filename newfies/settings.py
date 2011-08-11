@@ -330,7 +330,5 @@ LOGGING = {
 
 #IMPORT LOCAL SETTINGS
 #=====================
-try:
-    from settings_local import *
-except:
-    pass
+from settings_local import *
+

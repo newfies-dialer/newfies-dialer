@@ -252,7 +252,7 @@ func_install_frontend(){
 
     if echo $db_backend | grep -i "^MYSQL" > /dev/null ; then
         # Setup settings_local.py
-        sed -i "s/'django.db.backends.sqlite3'/$MYSQL_BACKEND/"  $INSTALL_DIR/settings_local.py
+        sed -i "s/'django.db.backends.sqlite3'/'django.db.backends.mysql'/"  $INSTALL_DIR/settings_local.py
         sed -i "s/.*'NAME'/       'NAME': '$DATABASENAME',#/"  $INSTALL_DIR/settings_local.py
         sed -i "/'USER'/s/''/'$MYSQLUSER'/" $INSTALL_DIR/settings_local.py
         sed -i "/'PASSWORD'/s/''/'$MYSQLPASSWORD'/" $INSTALL_DIR/settings_local.py

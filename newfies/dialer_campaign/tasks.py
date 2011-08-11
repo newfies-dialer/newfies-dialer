@@ -30,65 +30,6 @@ def add(x, y):
 
 
 
-@task()
-def initiate_call_subscriber(subscriber_id, campaign_id):
-    """This task will outbound the call to the subscriber
-
-    **Attributes**:
-
-        * ``subscriber_id`` - Campaign Subscriber`s ID
-        * ``callrequest_id`` - Callrequest ID
-    """
-    logger = initiate_call_subscriber.get_logger()
-    obj_subscriber = CampaignSubscriber.objects.get(id=subscriber_id)
-    logger.info("\nTASK :: initiate_call_subscriber - status = %s" %
-                str(obj_subscriber.status))
-
-    try:
-        obj_camp_subs = CampaignSubscriber.objects\
-                                 .get(id=subscriber_id)
-    except:
-        logger.error('Error : Can\'t find this CampaignSubscriber')
-
-    try:
-        obj_campaign = Campaign.objects.get(id=campaign_id)
-    except:
-        logger.error('Error : Can\'t find this Campaign')
-
-    if obj_subscriber.status != 1:
-        logger.error("Error : Only Pending status are processed ")
-        return True
-
-    #Check if the contact is authorized
-    if not obj_campaign.is_authorized_contact(obj_camp_subs.contact.contact):
-        logger.error("Error : Contact not authorized")
-        obj_camp_subs.status = 7 # Update to Not Authorized
-        obj_camp_subs.save()
-        return True
-
-    #Create a Callrequest Instance to track the call task
-    new_callrequest = Callrequest(status=1, #PENDING
-                            call_time=datetime.now(),
-                            timeout=obj_campaign.calltimeout,
-                            callerid=obj_campaign.callerid,
-                            phone_number=obj_camp_subs.contact.contact,
-                            campaign=obj_campaign,
-                            aleg_gateway=obj_campaign.aleg_gateway,
-                            voipapp=obj_campaign.voipapp,
-                            user=obj_campaign.user,
-                            extra_data=obj_campaign.extra_data,
-                            timelimit=obj_campaign.callmaxduration,
-                            campaign_subscriber=obj_camp_subs)
-    new_callrequest.save()
-
-    #Update the campaign status
-    obj_camp_subs.status = 6 # Update to In Process
-    obj_camp_subs.callrequest = new_callrequest
-    obj_camp_subs.save()
-    
-    return True
-
-
 #TODO: Put a priority on this task
 @task()
 def check_campaign_pendingcall(campaign_id):
@@ -124,16 +65,47 @@ def check_campaign_pendingcall(campaign_id):
         no_subscriber = 0
 
     if no_subscriber == 0:
-        logger.debug("No Subscriber to proceed on this campaign")
+        logger.info("No Subscriber to proceed on this campaign")
         return False
 
     #find how to dispatch them in the current minutes
     time_to_wait = 60.0 / no_subscriber
 
-    for elem_subscriber in list_subscriber:
+    for elem_camp_subscriber in list_subscriber:
         """Loop on Subscriber and start the initcall task"""
-        initiate_call_subscriber.delay(elem_subscriber.id, campaign_id)
-        sleep(time_to_wait)
+        logger.info("Add CallRequest for Subscriber (%s) & wait (%s) " % 
+                        (str(elem_camp_subscriber.id), str(time_to_wait)))
+        
+        #Check if the contact is authorized
+        if not obj_campaign.is_authorized_contact(elem_camp_subscriber.contact.contact):
+            logger.error("Error : Contact not authorized")
+            elem_camp_subscriber.status = 7 # Update to Not Authorized
+            elem_camp_subscriber.save()
+            return True
+
+        #Create a Callrequest Instance to track the call task
+        new_callrequest = Callrequest(status=1, #PENDING
+                                call_time=datetime.now(),
+                                timeout=obj_campaign.calltimeout,
+                                callerid=obj_campaign.callerid,
+                                phone_number=elem_camp_subscriber.contact.contact,
+                                campaign=obj_campaign,
+                                aleg_gateway=obj_campaign.aleg_gateway,
+                                voipapp=obj_campaign.voipapp,
+                                user=obj_campaign.user,
+                                extra_data=obj_campaign.extra_data,
+                                timelimit=obj_campaign.callmaxduration,
+                                campaign_subscriber=elem_camp_subscriber)
+        new_callrequest.save()
+
+        #Update the campaign status
+        elem_camp_subscriber.status = 6 # Update to In Process
+        elem_camp_subscriber.callrequest = new_callrequest
+        elem_camp_subscriber.save()
+        
+        #Todo Check if it's a good practice / implement a PID algorithm
+        if no_subscriber > 1:
+            sleep(time_to_wait)
 
 
 class campaign_running(PeriodicTask):

@@ -1,5 +1,6 @@
 from celery.task import Task, PeriodicTask
 from dialer_campaign.models import Campaign
+from dialer_campaign.function_def import user_dialer_setting
 from dialer_cdr.models import Callrequest, VoIPCall
 from celery.decorators import task
 from datetime import datetime, timedelta
@@ -53,6 +54,17 @@ def init_callrequest(callrequest_id, campaign_id):
         obj_campaign = Campaign.objects.get(id=campaign_id)
     except:
         logger.error("Can't find the campaign : %s" % campaign_id)
+        return False
+
+    # TODO : Review logic
+    try:
+        dialer_set = user_dialer_setting(obj_campaign.user)
+        if dialer_set:
+            if not obj_callrequest.num_attempt <= dialer_set.maxretry:
+                logger.error("Not allowed retry")
+                return False
+    except:
+        logger.error("Can't find dialer setting for user of the campaign : %s" % campaign_id)
         return False
 
     phone_number = obj_callrequest.phone_number
@@ -116,7 +128,6 @@ def init_callrequest(callrequest_id, campaign_id):
     data = response.read()
     conn.close()
     """
-
     if settings.NEWFIES_DIALER_ENGINE.lower() == 'dummy':
         #Use Dummy TestCall
         res = dummy_testcall.delay(callerid=obj_callrequest.callerid,
@@ -157,7 +168,7 @@ def init_callrequest(callrequest_id, campaign_id):
     #Update CallRequest Object
     obj_callrequest.request_uuid = result['RequestUUID']
     # count of retries
-    obj_callrequest.num_attempt = 1
+    obj_callrequest.num_attempt += 1
     obj_callrequest.save()
 
     #lock to limit running process, do so per campaign
@@ -287,7 +298,6 @@ def dummy_test_hangupurl(request_uuid):
     obj_voipcall.save()
 
     obj_callrequest = Callrequest.objects.get(request_uuid=request_uuid)
-    obj_callrequest.num_attempt = int(obj_callrequest.num_attempt) + 1 # count of retries
     obj_callrequest.hangup_cause = 'NORMAL_CLEARING'
     obj_callrequest.save()
     

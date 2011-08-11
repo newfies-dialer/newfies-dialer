@@ -43,7 +43,8 @@ class Command(BaseCommand):
                         new_callrequest = Callrequest.objects.create(
                                             user=admin_user,
                                             phone_number=phonenumber,
-                                            campaign=obj_campaign)
+                                            campaign=obj_campaign,
+                                            aleg_gateway_id=1)
                         new_cdr = VoIPCall.objects.create(
                                             user=admin_user,
                                             callrequest=new_callrequest,

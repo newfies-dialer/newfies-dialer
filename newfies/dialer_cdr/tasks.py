@@ -156,6 +156,8 @@ def init_callrequest(callrequest_id, campaign_id):
 
     #Update CallRequest Object
     obj_callrequest.request_uuid = result['RequestUUID']
+    # count of retries
+    obj_callrequest.num_attempt = 1
     obj_callrequest.save()
 
     #lock to limit running process, do so per campaign
@@ -279,12 +281,13 @@ def dummy_test_hangupurl(request_uuid):
         obj_voipcall = VoIPCall.objects.get(request_uuid=request_uuid)
 
     #Update VoIPCall
-    obj_voipcall.status = 1 # ANSWER
+    obj_voipcall.status = 'ANSWER' # 1
     obj_voipcall.duration = 55
     obj_voipcall.billsec = 55
     obj_voipcall.save()
 
     obj_callrequest = Callrequest.objects.get(request_uuid=request_uuid)
+    obj_callrequest.num_attempt = int(obj_callrequest.num_attempt) + 1 # count of retries
     obj_callrequest.hangup_cause = 'NORMAL_CLEARING'
     obj_callrequest.save()
     

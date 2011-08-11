@@ -23,9 +23,9 @@ import sys, os
 
 APP_DIR = os.path.normpath(os.path.join(os.getcwd(), '../..')) + '/newfies/'
 sys.path.append(APP_DIR)
-import settings.sqlite
+import settings
 from django.core.management import setup_environ
-setup_environ(settings.sqlite)
+setup_environ(settings)
 
 # -- General configuration -----------------------------------------------------
 

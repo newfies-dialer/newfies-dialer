@@ -55,17 +55,6 @@ def init_callrequest(callrequest_id, campaign_id):
     except:
         logger.error("Can't find the campaign : %s" % campaign_id)
         return False
-
-    # TODO : Review logic
-    try:
-        dialer_set = user_dialer_setting(obj_campaign.user)
-        if dialer_set:
-            if obj_callrequest.num_attempt >= dialer_set.maxretry:
-                logger.error("Not allowed retry")
-                return False
-    except:
-        logger.error("Can't find dialer setting for user of the campaign : %s" % campaign_id)
-        return False
     
     phone_number = obj_callrequest.phone_number
     if obj_callrequest.aleg_gateway:
@@ -111,10 +100,6 @@ def init_callrequest(callrequest_id, campaign_id):
     callmaxduration = obj_campaign.callmaxduration
 
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
-
-    # TODO : num_attempt should incremented by 1
-    # count of retries
-    obj_callrequest.num_attempt += 1
 
     #Send Call to API
     #http://ask.github.com/celery/userguide/remote-tasks.html
@@ -301,8 +286,23 @@ def dummy_test_hangupurl(request_uuid):
 
     obj_callrequest = Callrequest.objects.get(request_uuid=request_uuid)
     obj_callrequest.hangup_cause = 'NORMAL_CLEARING'
-    obj_callrequest.num_attempt += 1
-    logger.info("num_attempt : " + str(obj_callrequest.num_attempt))
     obj_callrequest.save()
     
     return True
+
+
+"""
+# TODO : Review logic
+    try:
+        dialer_set = user_dialer_setting(obj_campaign.user)
+        if dialer_set:
+            if obj_callrequest.num_attempt >= dialer_set.maxretry:
+                logger.error("Not allowed retry")
+                return False
+    except:
+        logger.error("Can't find dialer setting for user of the campaign : %s" % campaign_id)
+        return False
+    # TODO : num_attempt should incremented by 1
+    # count of retries
+    obj_callrequest.num_attempt += 1
+"""

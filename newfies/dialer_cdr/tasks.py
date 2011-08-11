@@ -242,7 +242,8 @@ def dummy_test_answerurl(request_uuid):
                             callid='',
                             callerid=obj_callrequest.callerid,
                             phone_number=obj_callrequest.phone_number,
-                            sessiontime=0,
+                            duration=0,
+                            billsec=0,
                             disposition=1)
     new_voipcall.save()
 
@@ -279,7 +280,8 @@ def dummy_test_hangupurl(request_uuid):
 
     #Update VoIPCall
     obj_voipcall.status = 1 # ANSWER
-    obj_voipcall.sessiontime = 55
+    obj_voipcall.duration = 55
+    obj_voipcall.billsec = 55
     obj_voipcall.save()
 
     obj_callrequest = Callrequest.objects.get(request_uuid=request_uuid)

@@ -5,6 +5,7 @@ from dialer_campaign.models import *
 from dialer_cdr.models import *
 from django.db import IntegrityError
 from random import choice
+from uuid import uuid1
 import random
 
 VOIPCALL_DISPOSITION = ['ANSWER','BUSY', 'NOANSWER', 'CANCEL', 'CONGESTION',
@@ -41,11 +42,14 @@ class Command(BaseCommand):
                     for i in range(1, int(no_of_record) + 1):
                         phonenumber = '' . join([choice(chars) for i in range(length)])
                         new_callrequest = Callrequest.objects.create(
+                                            request_uuid=uuid1(),
                                             user=admin_user,
                                             phone_number=phonenumber,
                                             campaign=obj_campaign,
-                                            aleg_gateway_id=1)
+                                            aleg_gateway_id=1,
+                                            status=choice("12345678"))
                         new_cdr = VoIPCall.objects.create(
+                                            request_uuid=uuid1(),
                                             user=admin_user,
                                             callrequest=new_callrequest,
                                             phone_number=phonenumber,

@@ -327,7 +327,8 @@ def init_call_retry():
             # TODO : Review Logic
             # Crete new callrequest, Assign parent_callrequest, Change callrequest_type
             # & num_attempt
-            obj = Callrequest(parent_callrequest_id=callreq.id,
+            obj = Callrequest(request_uuid=uuid1(),
+                              parent_callrequest_id=callreq.id,
                               call_type=2,
                               num_attempt=callreq.num_attempt+1,
                               user=callreq.user,

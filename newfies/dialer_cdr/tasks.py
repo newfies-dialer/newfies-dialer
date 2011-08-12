@@ -303,16 +303,22 @@ class init_call_retry(PeriodicTask):
         logger = init_call_retry.get_logger()
         logger.info("TASK :: init_call_retry")
         try:
-            # get callreqest which are failed
-            callreq_retry_list = Callrequest.objects.filter(status=2)
+            # get callrequest which are failed
+            callreq_retry_list = Callrequest.objects.filter(status=2, call_type=1)
             for callreq in callreq_retry_list:
                 try:
+                    # Call type => Retry Done = 3
+                    callreq.call_type = 3
+                    callreq.save()
                     dialer_set = user_dialer_setting(callreq.user)
                     if dialer_set:
                         if callreq.num_attempt >= dialer_set.maxretry:
                             logger.error("Not allowed retry")
                             break
                 except:
+                    # Call type =>  Can Not Retry = 2
+                    callreq.call_type = 2
+                    callreq.save()
                     logger.error("Can't find dialer setting for user of the campaign : %s" \
                                  % callreq.campaign_id)
                     break
@@ -322,7 +328,7 @@ class init_call_retry(PeriodicTask):
                 # & num_attempt
                 obj = Callrequest(request_uuid=uuid1(),
                                   parent_callrequest_id=callreq.id,
-                                  call_type=2,
+                                  call_type=1,
                                   num_attempt=callreq.num_attempt+1,
                                   user=callreq.user,
                                   campaign_id=callreq.campaign_id,

@@ -47,7 +47,8 @@ class Command(BaseCommand):
                                             phone_number=phonenumber,
                                             campaign=obj_campaign,
                                             aleg_gateway_id=1,
-                                            status=choice("12345678"))
+                                            status=choice("12345678"),
+                                            call_type=1)
                         new_cdr = VoIPCall.objects.create(
                                             request_uuid=uuid1(),
                                             user=admin_user,

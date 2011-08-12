@@ -1,5 +1,6 @@
 from celery.task import Task, PeriodicTask
 from dialer_campaign.models import Campaign, CampaignSubscriber
+from dialer_campaign.function_def import user_dialer_setting
 from dialer_cdr.models import Callrequest, VoIPCall
 from celery.decorators import task
 from django.db import IntegrityError
@@ -83,9 +84,20 @@ def check_campaign_pendingcall(campaign_id):
             elem_camp_subscriber.save()
             return True
 
+        # default call_type
+        call_type = 1
+        # Check campaign's maxretry
+        if obj_campaign.maxretry == 0:
+            call_type = 2
+        # Check user's dialer setting maxretry
+        dialer_set = user_dialer_setting(obj_campaign.user)
+        if dialer_set:
+            if dialer_set.maxretry == 0:
+                call_type = 2
+
         #Create a Callrequest Instance to track the call task
         new_callrequest = Callrequest(status=1, #PENDING
-                                call_type=1,
+                                call_type=call_type,
                                 call_time=datetime.now(),
                                 timeout=obj_campaign.calltimeout,
                                 callerid=obj_campaign.callerid,

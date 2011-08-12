@@ -74,6 +74,7 @@ class Callrequest(Model):
         * ``phone_number`` -
         * ``parent_callrequest`` -
         * ``extra_data`` -
+        * ``num_attempt`` -
         * ``hangup_cause`` -
 
 

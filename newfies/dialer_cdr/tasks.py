@@ -291,18 +291,51 @@ def dummy_test_hangupurl(request_uuid):
     return True
 
 
-"""
-# TODO : Review logic
+# PeriodicTask
+# class campaign_expire_check(PeriodicTask):
+#run_every = timedelta(seconds=300)
+#def run(self, **kwargs):
+@task()
+def init_call_retry():
+    """A periodic task that checks the failed callrequest & perform retry
+
+    **Usage**:
+
+        init_call_retry.delay()
+    """
+    #run_every = timedelta(seconds=300)
+    #def run(self, **kwargs):
+    logger = init_call_retry.get_logger()
+    logger.info("TASK :: init_call_retry")
     try:
-        dialer_set = user_dialer_setting(obj_campaign.user)
-        if dialer_set:
-            if obj_callrequest.num_attempt >= dialer_set.maxretry:
-                logger.error("Not allowed retry")
+        callreq_retry_list = Callrequest.objects.filter(status=2) #.exclude(status=4)
+        for callreq in callreq_retry_list:
+            try:
+                dialer_set = user_dialer_setting(callreq.user)
+                if dialer_set:
+                    if callreq.num_attempt >= dialer_set.maxretry:
+                        logger.error("Not allowed retry")
+                        return False
+            except:
+                logger.error("Can't find dialer setting for user of the campaign : %s" \
+                             % callreq.campaign_id)
                 return False
+            # TODO : Review Logic
+            # Crete new callrequest, Assign parent_callrequest, Change callrequest_type
+            # & num_attempt
+            obj = Callrequest(parent_callrequest_id=callreq.id,
+                              call_type=2,
+                              num_attempt=callreq.num_attempt+1,
+                              user=callreq.user,
+                              campaign_id=callreq.campaign_id,
+                              aleg_gateway_id=callreq.aleg_gateway_id,
+                              voipapp_id=callreq.voipapp_id,
+                              phone_number=callreq.phone_number)
+
+            obj.save()
+            # TODO : perform retry
+            #init_callrequest.delay(obj.id, obj.campaign_id)
     except:
-        logger.error("Can't find dialer setting for user of the campaign : %s" % campaign_id)
+        logger.error("Can't find failed callrequest")
         return False
-    # TODO : num_attempt should incremented by 1
-    # count of retries
-    obj_callrequest.num_attempt += 1
-"""
+    return True

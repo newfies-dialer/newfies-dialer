@@ -85,6 +85,7 @@ def check_campaign_pendingcall(campaign_id):
 
         #Create a Callrequest Instance to track the call task
         new_callrequest = Callrequest(status=1, #PENDING
+                                call_type=1,
                                 call_time=datetime.now(),
                                 timeout=obj_campaign.calltimeout,
                                 callerid=obj_campaign.callerid,

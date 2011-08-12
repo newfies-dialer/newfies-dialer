@@ -308,18 +308,22 @@ def init_call_retry():
     logger = init_call_retry.get_logger()
     logger.info("TASK :: init_call_retry")
     try:
-        callreq_retry_list = Callrequest.objects.filter(status=2) #.exclude(status=4)
+        # get callreq which are failed
+        callreq_retry_list = Callrequest.objects.filter(status=2)
+        # For test 
+        # callreq_retry_list = Callrequest.objects.filter(status=2, id=callrequest_id)
         for callreq in callreq_retry_list:
             try:
                 dialer_set = user_dialer_setting(callreq.user)
                 if dialer_set:
                     if callreq.num_attempt >= dialer_set.maxretry:
                         logger.error("Not allowed retry")
-                        return False
+                        break
             except:
                 logger.error("Can't find dialer setting for user of the campaign : %s" \
                              % callreq.campaign_id)
-                return False
+                break
+
             # TODO : Review Logic
             # Crete new callrequest, Assign parent_callrequest, Change callrequest_type
             # & num_attempt

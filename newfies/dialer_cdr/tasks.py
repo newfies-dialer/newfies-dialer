@@ -310,6 +310,13 @@ class init_call_retry(PeriodicTask):
                     # Call type => Retry Done = 3
                     callreq.call_type = 3
                     callreq.save()
+
+                    campaign_obj = Campaign.objects.get(id=callreq.campaign_id)
+                    if campaign_obj:
+                        if callreq.num_attempt >= campaign_obj.maxretry:
+                            logger.error("Not allowed retry")
+                            break
+
                     dialer_set = user_dialer_setting(callreq.user)
                     if dialer_set:
                         if callreq.num_attempt >= dialer_set.maxretry:

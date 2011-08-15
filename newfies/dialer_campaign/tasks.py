@@ -52,6 +52,23 @@ def check_campaign_pendingcall(campaign_id):
     #if there is many task pending we should slow down
     frequency = obj_campaign.frequency # default 10 calls per minutes
 
+    dialer_set = user_dialer_setting(obj_campaign.user)
+
+    # default call_type
+    call_type = 1
+    # Check campaign's maxretry
+    if obj_campaign.maxretry == 0:
+        call_type = 2
+
+    # Check user's dialer setting maxretry
+    if dialer_set:
+        if dialer_set.maxretry == 0:
+            call_type = 2
+
+        # check frequency to control the Speed
+        #if dialer_set.frequency:
+        #    frequency = 20
+
     #Speed
     #check if the other tasks send for this campaign finished to be ran
 
@@ -84,19 +101,8 @@ def check_campaign_pendingcall(campaign_id):
             elem_camp_subscriber.save()
             return True
 
-        # default call_type
-        call_type = 1
-        # Check campaign's maxretry
-        if obj_campaign.maxretry == 0:
-            call_type = 2
-        # Check user's dialer setting maxretry
-        dialer_set = user_dialer_setting(obj_campaign.user)
-        if dialer_set:
-            if dialer_set.maxretry == 0:
-                call_type = 2
-
         #Create a Callrequest Instance to track the call task
-        new_callrequest = Callrequest(status=1, #PENDING
+        new_callrequest = Callrequest(status=1, # PENDING
                                 call_type=call_type,
                                 call_time=datetime.now(),
                                 timeout=obj_campaign.calltimeout,

@@ -4,6 +4,7 @@ from prefix_country.models import Country
 from dialer_campaign.models import Phonebook, Campaign, Contact, CAMPAIGN_STATUS
 from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting
+from voip_app.models import VoipApp
 from dateutil.relativedelta import *
 from dateutil.rrule import *
 from dateutil.parser import *
@@ -56,10 +57,16 @@ def field_list(name, user=None):
     """Return List of phonebook, campaign, country"""
     if name == "phonebook" and user is None:
         list = Phonebook.objects.all()
+
     if name == "phonebook" and user is not None:
         list = Phonebook.objects.filter(user=user)
+
     if name == "campaign" and user is not None:
         list = Campaign.objects.filter(user=user)
+
+    if name == "voipapp" and user is not None:
+        list = VoipApp.objects.filter(user=user)
+
     if name == "country" and user is not None:
         list = Country.objects.all()
         return ((l.id, l.countryname) for l in list)

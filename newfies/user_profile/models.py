@@ -30,6 +30,8 @@ class UserProfile(models.Model):
                                             verbose_name=_('Gateway'))
     dialersetting = models.OneToOneField(DialerSetting,
                       verbose_name=_('Dialer settings'), null=True, blank=True)
+    #dialersetting = models.ForeignKey(DialerSetting,
+    #                  verbose_name=_('Dialer settings'), null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 

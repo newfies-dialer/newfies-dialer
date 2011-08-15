@@ -115,7 +115,23 @@ class CampaignForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(CampaignForm, self).__init__(*args, **kwargs)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
-        self.fields['ds_user'].initial = user
+        if user:
+            self.fields['ds_user'].initial = user
+            list_pb = []
+            list_voipapp = []
+
+            list_pb.append((0, '---'))
+            pb_list = field_list("phonebook", user)
+            for i in pb_list:
+                list_pb.append((i[0], i[1]))
+            self.fields['phonebook'].choices = list_pb
+
+            list_voipapp.append((0, '---'))
+            vp_list = field_list("voipapp", user)
+            for i in vp_list:
+                list_voipapp.append((i[0], i[1]))
+            self.fields['voipapp'].choices = list_voipapp
+
 
     def clean(self):
         cleaned_data = self.cleaned_data

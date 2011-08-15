@@ -196,6 +196,11 @@ def common_contact_authorization(user, str_contact):
     whitelist = obj_userprofile.dialersetting.whitelist
     blacklist = obj_userprofile.dialersetting.blacklist
 
+    if whitelist == '*':
+        whitelist = ''
+    if blacklist == '*':
+        blacklist = ''
+
     import re
 
     if whitelist and len(whitelist) > 0:

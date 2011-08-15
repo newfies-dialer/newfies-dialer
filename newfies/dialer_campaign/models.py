@@ -195,8 +195,9 @@ def common_contact_authorization(user, str_contact):
 
     whitelist = obj_userprofile.dialersetting.whitelist
     blacklist = obj_userprofile.dialersetting.blacklist
-    import re
 
+    import re
+    str_contact = "'%s'" % str_contact
     if whitelist and len(whitelist) > 0:
         whitelist = "'%s'" % whitelist
         try:

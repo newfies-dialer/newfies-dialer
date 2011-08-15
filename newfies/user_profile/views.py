@@ -72,7 +72,7 @@ def customer_detail_change(request):
             selected = 4
             check_phone_no_form = CheckPhoneNumberForm(data=request.POST)
             if not common_contact_authorization(request.user,
-                                               request.POST['phone_number']):
+                                                request.POST['phone_number']):
                 error_number = _('This phone number is not authorized.')
             else:
                 msg_number = _('This phone number is authorized.')

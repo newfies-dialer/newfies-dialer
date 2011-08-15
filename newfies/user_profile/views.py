@@ -7,6 +7,7 @@ from django.db.models import *
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from notification import models as notification
+from dialer_campaign.models import common_contact_authorization
 from dialer_campaign.views import current_view, notice_count
 from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_settings.models import DialerSetting
@@ -31,6 +32,7 @@ def customer_detail_change(request):
     user_detail_form = UserChangeDetailForm(user=request.user,
                                             instance=user_detail)
     user_password_form = PasswordChangeForm(user=request.user)
+    check_phone_no_form = CheckPhoneNumberForm()
 
     try:
         user_ds = UserProfile.objects.get(user=request.user)
@@ -47,8 +49,10 @@ def customer_detail_change(request):
 
     msg_detail = ''
     msg_pass = ''
+    msg_number = ''
     error_detail = ''
     error_pass = ''
+    error_number = ''
     selected = 0
 
     if 'selected' in request.GET:
@@ -64,6 +68,14 @@ def customer_detail_change(request):
                 msg_detail = _('Your detail has been changed successfully.')
             else:
                 error_detail = _('Please correct the errors below.')
+        elif request.POST['form-type'] == "check-number": # check phone no
+            selected = 4
+            check_phone_no_form = CheckPhoneNumberForm(data=request.POST)
+            if not common_contact_authorization(request.user,
+                                               request.POST['phone_number']):
+                error_number = _('Your phone number is not authorized.')
+            else:
+                msg_number = _('Your phone number is authorized.')
         else: # "change-password"
             user_password_form = PasswordChangeForm(user=request.user,
                                                     data=request.POST)
@@ -79,12 +91,15 @@ def customer_detail_change(request):
         'module': current_view(request),
         'user_detail_form': user_detail_form,
         'user_password_form': user_password_form,
+        'check_phone_no_form': check_phone_no_form,
         'user_notification': user_notification,
         'msg_detail': msg_detail,
         'msg_pass': msg_pass,
+        'msg_number': msg_number,
         'selected': selected,
         'error_detail': error_detail,
         'error_pass': error_pass,
+        'error_number': error_number,
         'notice_count': notice_count(request),
         'dialer_set': dialer_set,
         'dialer_setting_msg': user_dialer_setting_msg(request.user),

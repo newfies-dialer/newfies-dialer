@@ -183,6 +183,41 @@ class CampaignManager(models.Manager):
         return Campaign.objects.filter(**kwargs).exclude(status=4)
 
 
+def common_contact_authorization(user, str_contact):
+    """Common Function to check contact no is authorized or not.
+    For this we will check the dialer settings : whitelist and blacklist
+    """
+    try:
+        obj_userprofile = UserProfile.objects.get(user=user)
+    except UserProfile.DoesNotExist:
+        #"UserProfile.DoesNotExist"
+        return True
+
+    whitelist = obj_userprofile.dialersetting.whitelist
+    blacklist = obj_userprofile.dialersetting.blacklist
+    import re
+
+    if whitelist and len(whitelist) > 0:
+        whitelist = "'%s'" % whitelist
+        try:
+            result = re.search(whitelist, str_contact)
+            if result:
+                return True
+        except ValueError:
+            print "result string is None"
+
+    if blacklist and len(blacklist) > 0:
+        blacklist = "'%s'" % blacklist
+        try:
+            result = re.search(blacklist, str_contact)
+            if result:
+                return False
+        except ValueError:
+            print "result string is None"
+
+    return True
+
+
 class Campaign(Model):
     """This defines the Campaign
 
@@ -366,39 +401,9 @@ class Campaign(Model):
 
     def is_authorized_contact(self, str_contact):
         """Check if a contact is authorized
-        For this we will check the dialer settings : whitelist and blacklist
         """
-        try:
-            obj_userprofile = UserProfile.objects.get(user=self.user_id)
-        except UserProfile.DoesNotExist:
-            #"UserProfile.DoesNotExist"
-            return True
+        return common_contact_authorization(self.user, str_contact)
 
-        whitelist = obj_userprofile.dialersetting.whitelist
-        blacklist = obj_userprofile.dialersetting.blacklist
-
-        import re
-
-        if whitelist and len(whitelist) > 0:
-            whitelist = "'%s'" % whitelist
-            try:
-                result = re.search(whitelist, str_contact)
-                if result:
-                    return True
-            except ValueError:
-                print "result string is None"
-
-        if blacklist and len(blacklist) > 0:
-            blacklist = "'%s'" % blacklist
-            try:
-                result = re.search(blacklist, str_contact)
-                if result:
-                    return False
-            except ValueError:
-                print "result string is None"
-
-        #TODO: Tool to test this function from the UI
-        return True
 
     def get_active_max_frequency(self):
         """Get the active max frequency"""

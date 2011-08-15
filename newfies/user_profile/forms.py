@@ -28,6 +28,11 @@ class UserChangeDetailForm(ModelForm):
         return self.user
 
 
+class CheckPhoneNumberForm(forms.Form):
+    """A form used to check the phone number in the Customer UI."""
+    phone_number = forms.CharField(label=_('Phone Number'), required=True)
+
+
 class UserProfileForm(ModelForm):
 
     class Meta:

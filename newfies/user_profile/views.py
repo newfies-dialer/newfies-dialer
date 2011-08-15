@@ -21,7 +21,7 @@ def customer_detail_change(request):
 
     **Attributes**:
 
-        * ``form`` - UserChangeDetailForm
+        * ``form`` - UserChangeDetailForm, PasswordChangeForm, CheckPhoneNumberForm
         * ``template`` - 'frontend/registration/user_detail_change.html'
 
     **Logic Description**:
@@ -73,9 +73,9 @@ def customer_detail_change(request):
             check_phone_no_form = CheckPhoneNumberForm(data=request.POST)
             if not common_contact_authorization(request.user,
                                                request.POST['phone_number']):
-                error_number = _('Your phone number is not authorized.')
+                error_number = _('This phone number is not authorized.')
             else:
-                msg_number = _('Your phone number is authorized.')
+                msg_number = _('This phone number is authorized.')
         else: # "change-password"
             user_password_form = PasswordChangeForm(user=request.user,
                                                     data=request.POST)

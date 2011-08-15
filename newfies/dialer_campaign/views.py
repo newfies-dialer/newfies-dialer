@@ -879,8 +879,9 @@ def notify_admin(request):
         common_send_notification(request, 7, recipient)
         # Send mail to ADMINS
         subject = _('Dialer setting configuration')
-        message = _('User "%s" need to be mapped with dialer setting' \
-        % request.user)
+        message = _('Newfies Notification - User Dialer Setting The user "%s" - "%s" \
+        is not configured properly to use your system, please configure his dialer \
+        settings.' % (request.user, request.user.id))
         # mail_admins() is a shortcut for sending an email to the site admins,
         # as defined in the ADMINS setting
         mail_admins(subject, message)

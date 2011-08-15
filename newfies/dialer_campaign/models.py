@@ -380,11 +380,13 @@ class Campaign(Model):
         import re
 
         if whitelist and len(whitelist) > 0:
+            whitelist = "%s" % whitelist
             result = re.search(whitelist, str_contact)
             if result:
                 return True
 
         if blacklist and len(blacklist) > 0:
+            blacklist = "%s" % blacklist
             result = re.search(blacklist, str_contact)
             if result:
                 return False

@@ -28,10 +28,8 @@ class UserProfile(models.Model):
     #                            help_text=_("Select VoIP Gateway"))
     userprofile_gateway = models.ManyToManyField(Gateway,
                                             verbose_name=_('Gateway'))
-    dialersetting = models.OneToOneField(DialerSetting,
+    dialersetting = models.ForeignKey(DialerSetting,
                       verbose_name=_('Dialer settings'), null=True, blank=True)
-    #dialersetting = models.ForeignKey(DialerSetting,
-    #                  verbose_name=_('Dialer settings'), null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 

@@ -197,9 +197,8 @@ def common_contact_authorization(user, str_contact):
     blacklist = obj_userprofile.dialersetting.blacklist
 
     import re
-    str_contact = "'%s'" % str_contact
+
     if whitelist and len(whitelist) > 0:
-        whitelist = "'%s'" % whitelist
         try:
             result = re.search(whitelist, str_contact)
             if result:
@@ -208,7 +207,6 @@ def common_contact_authorization(user, str_contact):
             print "result string is None"
 
     if blacklist and len(blacklist) > 0:
-        blacklist = "'%s'" % blacklist
         try:
             result = re.search(blacklist, str_contact)
             if result:

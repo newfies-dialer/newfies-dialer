@@ -383,13 +383,15 @@ class Campaign(Model):
             whitelist = "'%s'" % whitelist
             result = re.search(whitelist, str_contact)
             if result:
-                return True
+                #return True
+                return False
 
         if blacklist and len(blacklist) > 0:
             blacklist = "'%s'" % blacklist
             result = re.search(blacklist, str_contact)
             if result:
-                return False
+                #return False
+                return True
 
         #TODO: Tool to test this function from the UI
         return True

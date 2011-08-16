@@ -28,7 +28,7 @@
 <div class="span-24 last" align=left>
 <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
         <fieldset>
-            <legend>Campaign</legend>
+            <legend>{% trans "Campaign" %}</legend>
             <table align=left>
                 {% get_fieldset campaign_code,ds_user,name,description,status,callerid,aleg_gateway,voipapp,extra_data,phonebook as campaign_fields from form %}
                 {{ campaign_fields.as_table }}
@@ -36,7 +36,7 @@
         </fieldset>
 
         <fieldset>
-            <legend>Campaign settings</legend>
+            <legend>{% trans "Campaign settings" %}</legend>
             <table align=left>
                 {% get_fieldset frequency,callmaxduration,maxretry as campaign_settings_fields from form %}
                 {{ campaign_settings_fields.as_table }}
@@ -52,7 +52,7 @@
         </fieldset>
 
         <fieldset>
-            <legend>Campaign schedule</legend>
+            <legend>{% trans "Campaign schedule" %}</legend>
             <table align=left style="width:950px;">
             <tr>
                 <th>{{ form.startingdate.label }}:</th><td>{{ form.startingdate }}<br/>{{ form.startingdate.help_text }}</td>

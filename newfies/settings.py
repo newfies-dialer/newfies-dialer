@@ -113,8 +113,9 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
     'sentry.client.middleware.SentryResponseErrorIdMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -254,7 +255,7 @@ gettext = lambda s: s
 LANGUAGES = (
     ('en', gettext('English')),
     #('fr', gettext('French')),
-    #('es', gettext('Spanish')),
+    ('es', gettext('Spanish')),
     #('br', gettext('Brazilian')),
 )
 

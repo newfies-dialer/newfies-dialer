@@ -29,8 +29,8 @@ class DialerSetting(models.Model):
                                help_text=_("Maximum calls per minute"))
     callmaxduration = models.IntegerField(default='1800', blank=True,
                       null=True, verbose_name=_('Call Max Duration'),
-                      help_text=_("Maximum call duration in \
-                      seconds (1800 = 30 Minutes)"))
+    help_text=_("Maximum call duration in seconds (1800 = 30 Minutes)"))
+
     maxretry = models.IntegerField(default='3', blank=True, null=True,
                                verbose_name=_('Max Retries'),
                                help_text=_("Maximum retries per user."))
@@ -44,13 +44,10 @@ class DialerSetting(models.Model):
                                help_text=_("Maximum subscribers per campaign"))
 
     blacklist = models.TextField(blank=True, null=True, default='',
-                    help_text=_("Use regular expressions to blacklist phone\
-                    numbers. For example, '^[2-4][1]+' will prevent all phone\
-                    numbers starting with 2,3 or 4 and followed by\
-                    1 being called."))
+    help_text=_("Use regular expressions to blacklist phone numbers. For example, '^[2-4][1]+' will prevent all phone numbers starting with 2,3 or 4 and followed by 1 being called."))
+
     whitelist = models.TextField(blank=True, null=True, default='',
-                    help_text=_("Use regular expressions to whitelist\
-                    phone numbers"))
+    help_text=_("Use regular expressions to whitelist phone numbers"))
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)

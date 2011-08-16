@@ -5,15 +5,15 @@ from common.intermediate_model_base_class import Model
 
 
 APP_STATUS = (
-    (1, u'ACTIVE'),
-    (0, u'INACTIVE'),
+    (1, _('ACTIVE')),
+    (0, _('INACTIVE')),
 )
 
 APP_TYPE = (
-    (1, u'DIAL'),
-    (2, u'PLAYAUDIO'),
-    (3, u'CONFERENCE'),
-    (4, u'SPEAK'),
+    (1, _('DIAL')),
+    (2, _('PLAYAUDIO')),
+    (3, _('CONFERENCE')),
+    (4, _('SPEAK')),
 )
 
 
@@ -47,12 +47,8 @@ class VoipApp(Model):
     gateway = models.ForeignKey(Gateway, null=True, blank=True,
                     help_text=_("Gateway used if we redirect the call"))
     data = models.CharField(max_length=500, blank=True,
-                    help_text=_("Data will be using Accordingly according to \
-                    the type of App. For instance, if type is DIAL, we will \
-                    dial the phonenumber stored in 'data', if type is \
-                    CONFERENCE we will redirect in a conference room named by \
-                    'data', if we type is PLAYAUDIO file, we will play the \
-                    audio url from 'data'"))
+    help_text=_("Data will be using Accordingly according to the type of App. For instance, if type is DIAL, we will dial the phonenumber stored in 'data', if type is CONFERENCE we will redirect in a conference room named by 'data', if we type is PLAYAUDIO file, we will play the audio url from 'data'"))
+
     user = models.ForeignKey('auth.User', related_name='VoIP App owner')
     #extension = models.CharField(max_length=40,
     #               help_text=_("Extension to call when redirection the call"))

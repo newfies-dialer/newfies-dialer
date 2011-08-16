@@ -1,0 +1,1782 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-08-16 07:10-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: settings.py:256
+msgid "English"
+msgstr ""
+
+#: settings.py:258
+msgid "Spanish"
+msgstr ""
+
+#: custom_admin_tools/dashboard.py:53 custom_admin_tools/menu.py:24
+msgid "Administration"
+msgstr ""
+
+#: custom_admin_tools/dashboard.py:58 templates/frontend/menu.html:11
+msgid "Settings"
+msgstr ""
+
+#: custom_admin_tools/dashboard.py:64
+msgid "Task Manager"
+msgstr ""
+
+#: custom_admin_tools/dashboard.py:70
+msgid "Voip Dialer"
+msgstr ""
+
+#: custom_admin_tools/dashboard.py:76
+msgid "Voip Server"
+msgstr ""
+
+#: custom_admin_tools/dashboard.py:82
+msgid "DialCode"
+msgstr ""
+
+#: custom_admin_tools/dashboard.py:88
+msgid "Quick links"
+msgstr ""
+
+#: custom_admin_tools/dashboard.py:94
+msgid "Go to Newfies"
+msgstr ""
+
+#: custom_admin_tools/dashboard.py:95
+msgid "Go to FreedomFone"
+msgstr ""
+
+#: custom_admin_tools/dashboard.py:96
+#: templates/frontend/registration/user_detail_change.html:74
+msgid "Change password"
+msgstr ""
+
+#: custom_admin_tools/dashboard.py:98
+msgid "Log out"
+msgstr ""
+
+#: custom_admin_tools/dashboard.py:127
+msgid "Recent Actions"
+msgstr ""
+
+#: custom_admin_tools/menu.py:17
+msgid "Newfies Dashboard"
+msgstr ""
+
+#: custom_admin_tools/menu.py:20
+msgid "Applications"
+msgstr ""
+
+#: custom_admin_tools/menu.py:27
+msgid "Customer Panel"
+msgstr ""
+
+#: dialer_campaign/admin.py:67
+#, python-format
+msgid "you have too many campaigns. Max allowed %s"
+msgstr ""
+
+#: dialer_campaign/admin.py:121 dialer_campaign/admin.py:160
+#: dialer_campaign/views.py:1294 dialer_campaign/views.py:1428
+#, python-format
+msgid ""
+"You have too many contacts per campaign. You are allowed a maximum of %s"
+msgstr ""
+
+#: dialer_campaign/admin.py:213
+msgid "Contact already exists !!"
+msgstr ""
+
+#: dialer_campaign/admin.py:229
+#, python-format
+msgid ""
+"%(contact_record_count)s Contact(s) are uploaded successfully out of "
+"%(total_rows)s row(s) !!"
+msgstr ""
+
+#: dialer_campaign/admin.py:235
+msgid "Error : invalid value for import! Please look at the import samples."
+msgstr ""
+
+#: dialer_campaign/admin.py:241
+#: templates/frontend/contact/import_contact.html:60
+msgid "Import Contact"
+msgstr ""
+
+#: dialer_campaign/admin.py:245
+msgid "Dialer_campaign"
+msgstr ""
+
+#: dialer_campaign/forms.py:15
+msgid "From"
+msgstr ""
+
+#: dialer_campaign/forms.py:16 dialer_campaign/forms.py:18
+msgid "Date Format"
+msgstr ""
+
+#: dialer_campaign/forms.py:17
+msgid "To"
+msgstr ""
+
+#: dialer_campaign/forms.py:23
+msgid "Upload CSV File "
+msgstr ""
+
+#: dialer_campaign/forms.py:25
+msgid "Browse CSV file"
+msgstr ""
+
+#: dialer_campaign/forms.py:32
+#, python-format
+msgid "Document types accepted: %s"
+msgstr ""
+
+#: dialer_campaign/forms.py:40 dialer_campaign/models.py:75
+#: templates/frontend/menu.html:7 templates/frontend/phonebook/change.html:13
+#: templates/frontend/phonebook/change.html:18
+#: templates/frontend/phonebook/list.html:6
+msgid "Phonebook"
+msgstr ""
+
+#: dialer_campaign/forms.py:43 dialer_campaign/models.py:112
+msgid "Select Phonebook"
+msgstr ""
+
+#: dialer_campaign/forms.py:56
+msgid "Username:"
+msgstr ""
+
+#: dialer_campaign/forms.py:57
+msgid "Password:"
+msgstr ""
+
+#: dialer_campaign/forms.py:153
+#, python-format
+msgid "Maximum Frequency limit of %d exceeded."
+msgstr ""
+
+#: dialer_campaign/forms.py:159
+#, python-format
+msgid "Maximum Duration limit of %d exceeded."
+msgstr ""
+
+#: dialer_campaign/forms.py:165
+#, python-format
+msgid "Maximum Retries limit of %d exceeded."
+msgstr ""
+
+#: dialer_campaign/forms.py:171
+#, python-format
+msgid "Maximum Timeout limit of %d exceeded."
+msgstr ""
+
+#: dialer_campaign/forms.py:198
+msgid "Last Name"
+msgstr ""
+
+#: dialer_campaign/forms.py:199
+msgid "First Name"
+msgstr ""
+
+#: dialer_campaign/forms.py:203
+msgid "Contains"
+msgstr ""
+
+#: dialer_campaign/forms.py:204
+msgid "Equals"
+msgstr ""
+
+#: dialer_campaign/forms.py:205
+msgid "Begins with"
+msgstr ""
+
+#: dialer_campaign/forms.py:206
+msgid "Ends with"
+msgstr ""
+
+#: dialer_campaign/forms.py:210
+msgid "Last 30 days"
+msgstr ""
+
+#: dialer_campaign/forms.py:211
+#: templates/admin_tools/dashboard/dashboard.html:147
+#: templates/admin_tools/dashboard/dashboard.html:189
+#: templates/admin_tools/dashboard/dashboard.html:207
+msgid "Last 7 days"
+msgstr ""
+
+#: dialer_campaign/forms.py:212
+msgid "Yesterday"
+msgstr ""
+
+#: dialer_campaign/forms.py:213
+msgid "Last 24 hours"
+msgstr ""
+
+#: dialer_campaign/forms.py:214
+msgid "Last 12 hours"
+msgstr ""
+
+#: dialer_campaign/forms.py:215
+msgid "Last 6 hours"
+msgstr ""
+
+#: dialer_campaign/forms.py:216
+msgid "Last hour"
+msgstr ""
+
+#: dialer_campaign/forms.py:223
+msgid "Contact Number:"
+msgstr ""
+
+#: dialer_campaign/forms.py:227
+msgid "Contact Name:"
+msgstr ""
+
+#: dialer_campaign/forms.py:229
+msgid "Phonebook:"
+msgstr ""
+
+#: dialer_campaign/forms.py:230
+msgid "Status:"
+msgstr ""
+
+#: dialer_campaign/forms.py:231
+msgid "Inactive"
+msgstr ""
+
+#: dialer_campaign/forms.py:231
+msgid "Active "
+msgstr ""
+
+#: dialer_campaign/forms.py:232
+msgid "All"
+msgstr ""
+
+#: dialer_campaign/forms.py:249 dialer_campaign/models.py:331
+#: templates/frontend/dashboard.html:65 templates/frontend/menu.html:6
+#: templates/frontend/campaign/change.html:26
+#: templates/frontend/campaign/change.html:31
+#: templates/frontend/campaign/list.html:6
+msgid "Campaign"
+msgstr ""
+
+#: dialer_campaign/forms.py:250
+msgid "Type"
+msgstr ""
+
+#: dialer_campaign/function_def.py:394
+msgid ""
+"Your settings aren`t configured properly, Please contact the administrator."
+msgstr ""
+
+#: dialer_campaign/models.py:17 dialer_gateway/models.py:7
+#: voip_app/models.py:8
+msgid "ACTIVE"
+msgstr ""
+
+#: dialer_campaign/models.py:18 dialer_gateway/models.py:8
+#: voip_app/models.py:9
+msgid "INACTIVE"
+msgstr ""
+
+#: dialer_campaign/models.py:39
+msgid "YES"
+msgstr ""
+
+#: dialer_campaign/models.py:40
+msgid "NO"
+msgstr ""
+
+#: dialer_campaign/models.py:67
+msgid "Phonebook Notes"
+msgstr ""
+
+#: dialer_campaign/models.py:76
+msgid "Phonebooks"
+msgstr ""
+
+#: dialer_campaign/models.py:85 dialer_campaign/models.py:132
+msgid "Contacts"
+msgstr ""
+
+#: dialer_campaign/models.py:120
+msgid "Contact Notes"
+msgstr ""
+
+#: dialer_campaign/models.py:124
+msgid "Additional parameters"
+msgstr ""
+
+#: dialer_campaign/models.py:126
+#: templates/admin/dialer_cdr/voipcall/change_list.html:112
+#: templates/frontend/report/voipcall_report.html:112
+msgid "Date"
+msgstr ""
+
+#: dialer_campaign/models.py:131 dialer_campaign/models.py:397
+#: dialer_campaign/models.py:552 templates/frontend/menu.html:8
+#: templates/frontend/contact/change.html:19
+#: templates/frontend/contact/change.html:23
+#: templates/frontend/contact/list.html:6
+msgid "Contact"
+msgstr ""
+
+#: dialer_campaign/models.py:142
+msgid "Name"
+msgstr ""
+
+#: dialer_campaign/models.py:203 dialer_campaign/models.py:211
+msgid "result string is None"
+msgstr ""
+
+#: dialer_campaign/models.py:254
+msgid ""
+"This code is autogenerated by the platform, this is used to identify the "
+"campaign"
+msgstr ""
+
+#: dialer_campaign/models.py:259
+msgid "Short description of the Campaign"
+msgstr ""
+
+#: dialer_campaign/models.py:264 dialer_cdr/models.py:108
+msgid "CallerID"
+msgstr ""
+
+#: dialer_campaign/models.py:265 dialer_cdr/models.py:109
+msgid "CallerID used to call the A-Leg"
+msgstr ""
+
+#: dialer_campaign/models.py:268
+msgid "Start"
+msgstr ""
+
+#: dialer_campaign/models.py:269 dialer_campaign/models.py:274
+msgid "Date Format: YYYY-mm-DD HH:MM:SS"
+msgstr ""
+
+#: dialer_campaign/models.py:273
+msgid "Finish"
+msgstr ""
+
+#: dialer_campaign/models.py:277 dialer_campaign/models.py:279
+msgid "Time Format: HH:MM:SS"
+msgstr ""
+
+#: dialer_campaign/models.py:289
+msgid ""
+"Define the frequency, speed of the campaign. This is the number of calls per "
+"minute."
+msgstr ""
+
+#: dialer_campaign/models.py:293
+msgid ""
+"Define the call's duration maximum. (Value in seconds 1800 = 30 minutes)"
+msgstr ""
+
+#: dialer_campaign/models.py:296 dialer_settings/models.py:35
+msgid "Max Retries"
+msgstr ""
+
+#: dialer_campaign/models.py:297
+msgid "Define the max retries allowed per user."
+msgstr ""
+
+#: dialer_campaign/models.py:299
+msgid "Time between Retries"
+msgstr ""
+
+#: dialer_campaign/models.py:300
+msgid "Define the time to wait between retries in seconds"
+msgstr ""
+
+#: dialer_campaign/models.py:303 dialer_settings/models.py:38
+msgid "Timeout on Call"
+msgstr ""
+
+#: dialer_campaign/models.py:304
+msgid "Define the number of seconds to timeout on calls"
+msgstr ""
+
+#: dialer_campaign/models.py:307
+msgid "A-Leg Gateway"
+msgstr ""
+
+#: dialer_campaign/models.py:309
+msgid "Select gateway to use for this campaign"
+msgstr ""
+
+#: dialer_campaign/models.py:313 dialer_cdr/models.py:127
+msgid "Select VoIP Application to use with this campaign"
+msgstr ""
+
+#: dialer_campaign/models.py:316
+msgid "Extra Parameters"
+msgstr ""
+
+#: dialer_campaign/models.py:317
+msgid "Additional application parameters."
+msgstr ""
+
+#: dialer_campaign/models.py:332
+msgid "Campaigns"
+msgstr ""
+
+#: dialer_campaign/models.py:381
+msgid "Action"
+msgstr ""
+
+#: dialer_campaign/models.py:393
+msgid "Phonebook Empty"
+msgstr ""
+
+#: dialer_campaign/models.py:501
+msgid "Progress"
+msgstr ""
+
+#: dialer_campaign/models.py:510
+msgid "Details"
+msgstr ""
+
+#: dialer_campaign/models.py:513 dialer_campaign/models.py:561
+msgid "Campaign Subscriber"
+msgstr ""
+
+#: dialer_campaign/models.py:543
+msgid "Select Contact"
+msgstr ""
+
+#: dialer_campaign/models.py:545 dialer_cdr/models.py:120
+msgid "Select Campaign"
+msgstr ""
+
+#: dialer_campaign/models.py:548
+msgid "Count attempts"
+msgstr ""
+
+#: dialer_campaign/models.py:554
+#: templates/frontend/registration/user_detail_change.html:89
+msgid "Status"
+msgstr ""
+
+#: dialer_campaign/models.py:562
+msgid "Campaign Subscribers"
+msgstr ""
+
+#: dialer_campaign/views.py:653
+msgid "Disabled Account"
+msgstr ""
+
+#: dialer_campaign/views.py:656
+msgid "Invalid Login."
+msgstr ""
+
+#: dialer_campaign/views.py:659
+msgid "Enter Valid User Credentials."
+msgstr ""
+
+#: dialer_campaign/views.py:881 user_profile/management.py:35
+msgid "Dialer setting configuration"
+msgstr ""
+
+#: dialer_campaign/views.py:883
+msgid ""
+"Newfies Notification - User Dialer Setting The user \"%(user)\" - "
+"\"%(user_id)\" is not configured properly to use your system, please "
+"configure his dialer settings."
+msgstr ""
+
+#: dialer_campaign/views.py:1005 dialer_campaign/views.py:1307
+#: dialer_campaign/views.py:1759 voip_app/views.py:131
+#, python-format
+msgid "\"%s\" is added successfully."
+msgstr ""
+
+#: dialer_campaign/views.py:1052 dialer_campaign/views.py:1343
+#: dialer_campaign/views.py:1793 voip_app/views.py:164
+#, python-format
+msgid "\"%s\" is deleted successfully."
+msgstr ""
+
+#: dialer_campaign/views.py:1069
+#, python-format
+msgid "%d phonebook(s) are deleted successfully."
+msgstr ""
+
+#: dialer_campaign/views.py:1099 dialer_campaign/views.py:1385
+#: dialer_campaign/views.py:1838 voip_app/views.py:206
+#, python-format
+msgid "\"%s\" is updated successfully."
+msgstr ""
+
+#: dialer_campaign/views.py:1353
+#, python-format
+msgid "%d contact(s) are deleted successfully."
+msgstr ""
+
+#: dialer_campaign/views.py:1479
+msgid "Subscriber is already exist !!"
+msgstr ""
+
+#: dialer_campaign/views.py:1494
+msgid ""
+"%(contact_record_count) Contact(s) are uploaded successfully out of "
+"%(total_rows) row(s) !!"
+msgstr ""
+
+#: dialer_campaign/views.py:1501
+msgid "Invalid value for import! Please look at the import samples."
+msgstr ""
+
+#: dialer_campaign/views.py:1736
+msgid ""
+"In order to add a campaign, you need to have your settings configured "
+"properly, please contact the admin."
+msgstr ""
+
+#: dialer_campaign/views.py:1743
+#, python-format
+msgid "you have too many campaign. Max allowed %s"
+msgstr ""
+
+#: dialer_campaign/views.py:1802
+#, python-format
+msgid "%d campaign(s) are deleted successfully."
+msgstr ""
+
+#: dialer_campaign/management/commands/create_contact.py:10
+msgid "\"phonebook_id|no_of_record\" \"phonebook_id|no_of_record\""
+msgstr ""
+
+#: dialer_campaign/management/commands/create_contact.py:11
+msgid "Creates new contacts for a given phonebook and no of records"
+msgstr ""
+
+#: dialer_campaign/management/commands/create_contact.py:25
+#: dialer_campaign/management/commands/create_subscriber.py:25
+#, python-format
+msgid "Can't find this Phonebook : %s"
+msgstr ""
+
+#: dialer_campaign/management/commands/create_contact.py:36
+#, python-format
+msgid "No of Contact created : %d"
+msgstr ""
+
+#: dialer_campaign/management/commands/create_contact.py:38
+#: dialer_campaign/management/commands/create_subscriber.py:33
+msgid "The contact is duplicated!"
+msgstr ""
+
+#: dialer_campaign/management/commands/create_subscriber.py:10
+msgid "<phonenumber|phonebook_id, phonenumber|phonebook_id,...>"
+msgstr ""
+
+#: dialer_campaign/management/commands/create_subscriber.py:11
+msgid "Creates a new contact for a given phonenumber and phonebook"
+msgstr ""
+
+#: dialer_campaign/management/commands/create_subscriber.py:36
+#, python-format
+msgid "Contact created id:%s"
+msgstr ""
+
+#: dialer_campaign/management/commands/create_subscriber.py:41
+msgid "Can't find a Campaign with this phonebook"
+msgstr ""
+
+#: dialer_campaign/management/commands/create_subscriber.py:44
+#, python-format
+msgid "Launch Task : collect_subscriber(%s)"
+msgstr ""
+
+#: dialer_cdr/_admin.py:42 dialer_cdr/_admin.py:185 dialer_cdr/admin.py:42
+#: dialer_cdr/admin.py:177
+#: templates/admin/dialer_cdr/voipcall/change_list.html:14
+#: templates/admin_tools/dashboard/modules/app_list.html:40
+#: templates/frontend/menu.html:10
+msgid "Call Report"
+msgstr ""
+
+#: dialer_cdr/_admin.py:184 dialer_cdr/admin.py:176
+msgid "VoIP Report"
+msgstr ""
+
+#: dialer_cdr/admin.py:56
+msgid "User"
+msgstr ""
+
+#: dialer_cdr/admin.py:65
+msgid "Used gateway"
+msgstr ""
+
+#: dialer_cdr/forms.py:18
+msgid "Disposition :"
+msgstr ""
+
+#: dialer_cdr/models.py:24
+msgid "ALLOW RETRY"
+msgstr ""
+
+#: dialer_cdr/models.py:25
+msgid "CANNOT RETRY"
+msgstr ""
+
+#: dialer_cdr/models.py:26
+msgid "RETRY DONE"
+msgstr ""
+
+#: dialer_cdr/models.py:30 templates/admin_tools/dashboard/dashboard.html:152
+msgid "ANSWER"
+msgstr ""
+
+#: dialer_cdr/models.py:31 templates/admin_tools/dashboard/dashboard.html:154
+#: templates/frontend/dashboard.html:263
+msgid "BUSY"
+msgstr ""
+
+#: dialer_cdr/models.py:32 templates/admin_tools/dashboard/dashboard.html:153
+#: templates/frontend/dashboard.html:268
+msgid "NOANSWER"
+msgstr ""
+
+#: dialer_cdr/models.py:33 templates/admin_tools/dashboard/dashboard.html:155
+#: templates/frontend/dashboard.html:272
+msgid "CANCEL"
+msgstr ""
+
+#: dialer_cdr/models.py:34 templates/admin_tools/dashboard/dashboard.html:156
+#: templates/frontend/dashboard.html:276
+msgid "CONGESTION"
+msgstr ""
+
+#: dialer_cdr/models.py:35 templates/admin_tools/dashboard/dashboard.html:157
+#: templates/frontend/dashboard.html:266
+msgid "CHANUNAVAIL"
+msgstr ""
+
+#: dialer_cdr/models.py:36 templates/admin_tools/dashboard/dashboard.html:158
+#: templates/frontend/dashboard.html:262
+msgid "DONTCALL"
+msgstr ""
+
+#: dialer_cdr/models.py:37 templates/admin_tools/dashboard/dashboard.html:159
+#: templates/frontend/dashboard.html:267
+msgid "TORTURE"
+msgstr ""
+
+#: dialer_cdr/models.py:38 templates/admin_tools/dashboard/dashboard.html:160
+#: templates/frontend/dashboard.html:271
+msgid "INVALIDARGS"
+msgstr ""
+
+#: dialer_cdr/models.py:39 templates/admin_tools/dashboard/dashboard.html:161
+#: templates/frontend/dashboard.html:273
+msgid "NOROUTE"
+msgstr ""
+
+#: dialer_cdr/models.py:40 templates/admin_tools/dashboard/dashboard.html:162
+#: templates/frontend/dashboard.html:277
+msgid "FORBIDDEN"
+msgstr ""
+
+#: dialer_cdr/models.py:97 dialer_cdr/models.py:181
+msgid "RequestUUID"
+msgstr ""
+
+#: dialer_cdr/models.py:104
+msgid "Call Request Type"
+msgstr ""
+
+#: dialer_cdr/models.py:117
+msgid "Campaign Subscriber related to this callrequest"
+msgstr ""
+
+#: dialer_cdr/models.py:123
+msgid "Select Gateway to use to reach the subscriber"
+msgstr ""
+
+#: dialer_cdr/models.py:130
+msgid "Extra Data"
+msgstr ""
+
+#: dialer_cdr/models.py:131
+msgid "Define the additional data to pass to the application"
+msgstr ""
+
+#: dialer_cdr/models.py:145
+msgid "Call Request"
+msgstr ""
+
+#: dialer_cdr/models.py:146
+msgid "Call Requests"
+msgstr ""
+
+#: dialer_cdr/models.py:186
+msgid "VoIP Call-ID"
+msgstr ""
+
+#: dialer_cdr/models.py:189
+msgid "The international number of the recipient, without the leading +"
+msgstr ""
+
+#: dialer_cdr/models.py:192
+msgid "Select Prefix"
+msgstr ""
+
+#: dialer_cdr/models.py:225 dialer_cdr/models.py:226
+msgid "VoIP Call"
+msgstr ""
+
+#: dialer_cdr/widgets.py:347
+#, python-format
+msgid "The %(name)s \"%(obj)s\" was added successfully."
+msgstr ""
+
+#: dialer_cdr/widgets.py:353
+msgid "You may edit it again below."
+msgstr ""
+
+#: dialer_cdr/widgets.py:366
+#, python-format
+msgid "You may add another %s below."
+msgstr ""
+
+#: dialer_cdr/widgets.py:397
+msgid "Add Another"
+msgstr ""
+
+#: dialer_cdr/management/commands/create_callrequest_cdr.py:19
+msgid "\"campaign_id|no_of_record\" \"campaign_id|no_of_record\""
+msgstr ""
+
+#: dialer_cdr/management/commands/create_callrequest_cdr.py:20
+msgid ""
+"Creates no of new call requests and CDRs for a given campaign_id & no of "
+"records"
+msgstr ""
+
+#: dialer_cdr/management/commands/create_callrequest_cdr.py:35
+#, python-format
+msgid "Can't find this Campaign : %s"
+msgstr ""
+
+#: dialer_cdr/management/commands/create_callrequest_cdr.py:58
+#, python-format
+msgid "No of Callrequest & CDR created :%d"
+msgstr ""
+
+#: dialer_cdr/management/commands/create_callrequest_cdr.py:60
+msgid "Callrequest & CDR are not created!"
+msgstr ""
+
+#: dialer_cdr/management/commands/create_callrequest_cdr.py:63
+msgid "No admin user"
+msgstr ""
+
+#: dialer_gateway/models.py:12
+msgid "SIP"
+msgstr ""
+
+#: dialer_gateway/models.py:13
+msgid "LOCAL"
+msgstr ""
+
+#: dialer_gateway/models.py:14
+msgid "GSM"
+msgstr ""
+
+#: dialer_gateway/models.py:15
+msgid "SKINNY"
+msgstr ""
+
+#: dialer_gateway/models.py:16
+msgid "JINGLE"
+msgstr ""
+
+#: dialer_gateway/models.py:71
+msgid "Gateway name"
+msgstr ""
+
+#: dialer_gateway/models.py:75
+msgid "Gateway provider notes"
+msgstr ""
+
+#: dialer_gateway/models.py:76
+msgid "Add prefix"
+msgstr ""
+
+#: dialer_gateway/models.py:78
+msgid "Remove prefix"
+msgstr ""
+
+#: dialer_gateway/models.py:81
+msgid ""
+"Example : \"sofia/gateway/myprovider/\" or 2 for failover \"sofia/gateway/"
+"myprovider/, user/\", # Gateway string to try dialing separated by comma. "
+"First in list will be tried first"
+msgstr ""
+
+#: dialer_gateway/models.py:84
+msgid ""
+"\"'PCMA,PCMU','PCMA,PCMU'\", # Codec string as needed by FS for each gateway "
+"separated by comma"
+msgstr ""
+
+#: dialer_gateway/models.py:87
+msgid ""
+"\"10,10\", # Seconds to timeout in string for each gateway separated by comma"
+msgstr ""
+
+#: dialer_gateway/models.py:90
+msgid ""
+"\"2,1\", # Retry String for Gateways separated by comma, on how many times "
+"each gateway should be retried"
+msgstr ""
+
+#: dialer_gateway/models.py:93
+msgid ""
+"Add Channels Variables : http://wiki.freeswitch.org/wiki/Channel_Variables, "
+"ie: bridge_early_media=true,hangup_after_bridge=true"
+msgstr ""
+
+#: dialer_gateway/models.py:101
+msgid "Select Gateway"
+msgstr ""
+
+#: dialer_gateway/models.py:102
+msgid "Add parameter"
+msgstr ""
+
+#: dialer_gateway/models.py:106
+msgid "Max concurrent calls"
+msgstr ""
+
+#: dialer_gateway/models.py:112
+#: templates/admin_tools/dashboard/modules/app_list.html:13
+msgid "Dialer Gateway"
+msgstr ""
+
+#: dialer_gateway/models.py:113
+msgid "Dialer Gateways"
+msgstr ""
+
+#: dialer_settings/admin.py:45
+msgid "Add dialer settings"
+msgstr ""
+
+#: dialer_settings/admin.py:56
+msgid "Change dialer settings"
+msgstr ""
+
+#: dialer_settings/models.py:25
+msgid "Settings name"
+msgstr ""
+
+#: dialer_settings/models.py:29
+#: templates/frontend/registration/user_detail_change.html:118
+msgid "Maximum calls per minute"
+msgstr ""
+
+#: dialer_settings/models.py:31
+msgid "Call Max Duration"
+msgstr ""
+
+#: dialer_settings/models.py:32
+msgid "Maximum call duration in seconds (1800 = 30 Minutes)"
+msgstr ""
+
+#: dialer_settings/models.py:36
+msgid "Maximum retries per user."
+msgstr ""
+
+#: dialer_settings/models.py:39
+msgid "Maximum call timeout in seconds"
+msgstr ""
+
+#: dialer_settings/models.py:42
+msgid "Maximum number of campaigns"
+msgstr ""
+
+#: dialer_settings/models.py:44
+msgid "Maximum subscribers per campaign"
+msgstr ""
+
+#: dialer_settings/models.py:47
+msgid ""
+"Use regular expressions to blacklist phone numbers. For example, '^[2-4]"
+"[1]+' will prevent all phone numbers starting with 2,3 or 4 and followed by "
+"1 being called."
+msgstr ""
+
+#: dialer_settings/models.py:50
+msgid "Use regular expressions to whitelist phone numbers"
+msgstr ""
+
+#: dialer_settings/models.py:59 dialer_settings/models.py:60
+msgid "Dialer Setting"
+msgstr ""
+
+#: templates/documentation.html:8
+msgid "Newfies Dialer Documentation"
+msgstr ""
+
+#: templates/documentation.html:19
+msgid "Newfies Dialer : API Documentation"
+msgstr ""
+
+#: templates/documentation.html:34
+msgid "Accepted methods"
+msgstr ""
+
+#: templates/admin/base_site.html:4
+msgid "Newfies Admin"
+msgstr ""
+
+#: templates/admin/filter.html:2
+#, python-format
+msgid " By %(filter_title)s "
+msgstr ""
+
+#: templates/admin/dialer_campaign/contact/change_list.html:8
+#: templates/admin/dialer_campaign/contact/import_contact.html:6
+#: templates/admin/dialer_cdr/voipcall/change_list.html:8
+#: templates/registration/logged_out.html:4
+msgid "Home"
+msgstr ""
+
+#: templates/admin/dialer_campaign/contact/change_list.html:30
+#: templates/admin/dialer_cdr/voipcall/change_list.html:71
+#, python-format
+msgid "Add %(name)s"
+msgstr ""
+
+#: templates/admin/dialer_campaign/contact/change_list.html:33
+msgid "Import Contacts"
+msgstr ""
+
+#: templates/admin/dialer_campaign/contact/change_list.html:40
+#: templates/admin/dialer_cdr/voipcall/change_list.html:47
+msgid "Please correct the error below."
+msgid_plural "Please correct the errors below."
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/admin/dialer_campaign/contact/change_list.html:51
+#: templates/admin/dialer_cdr/voipcall/change_list.html:85
+msgid "Filter"
+msgstr ""
+
+#: templates/admin/dialer_campaign/contact/import_contact.html:18
+#: templates/frontend/contact/import_contact.html:21
+msgid "Sample File"
+msgstr ""
+
+#: templates/admin/dialer_campaign/contact/import_contact.html:20
+#: templates/frontend/contact/import_contact.html:24
+msgid "contact"
+msgstr ""
+
+#: templates/admin/dialer_campaign/contact/import_contact.html:21
+#: templates/frontend/contact/import_contact.html:25
+msgid "last name"
+msgstr ""
+
+#: templates/admin/dialer_campaign/contact/import_contact.html:22
+#: templates/frontend/contact/import_contact.html:26
+msgid "first name"
+msgstr ""
+
+#: templates/admin/dialer_campaign/contact/import_contact.html:23
+#: templates/frontend/contact/import_contact.html:27
+msgid "email-id"
+msgstr ""
+
+#: templates/admin/dialer_campaign/contact/import_contact.html:24
+#: templates/frontend/contact/import_contact.html:28
+msgid "description"
+msgstr ""
+
+#: templates/admin/dialer_campaign/contact/import_contact.html:25
+#: templates/frontend/contact/import_contact.html:29
+msgid "status"
+msgstr ""
+
+#: templates/admin/dialer_campaign/contact/import_contact.html:26
+#: templates/frontend/contact/import_contact.html:30
+msgid "additional_vars"
+msgstr ""
+
+#: templates/admin/dialer_campaign/contact/import_contact.html:48
+msgid "CONTACT STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')"
+msgstr ""
+
+#: templates/admin/dialer_campaign/contact/import_contact.html:59
+#: templates/frontend/campaign/change.html:84
+#: templates/frontend/contact/change.html:43
+#: templates/frontend/contact/import_contact.html:69
+#: templates/frontend/phonebook/change.html:31
+#: templates/frontend/voipapp/change.html:31
+msgid "Submit"
+msgstr ""
+
+#: templates/admin/dialer_campaign/contact/import_contact.html:60
+#: templates/admin/dialer_cdr/voipcall/change_list.html:60
+#: templates/frontend/contact/import_contact.html:70
+#: templates/frontend/report/voipcall_report.html:46
+msgid "Reset"
+msgstr ""
+
+#: templates/admin/dialer_campaign/contact/import_contact.html:82
+msgid "Contact(s) Successfully Imported"
+msgstr ""
+
+#: templates/admin/dialer_campaign/contact/import_contact.html:99
+msgid "Contact(s) not Imported"
+msgstr ""
+
+#: templates/admin/dialer_campaign/contact/import_contact.html:115
+#: templates/frontend/contact/import_contact.html:114
+msgid "Type Miss-match"
+msgstr ""
+
+#: templates/admin/dialer_cdr/voipcall/change_list.html:55
+msgid "Search Option"
+msgstr ""
+
+#: templates/admin/dialer_cdr/voipcall/change_list.html:59
+#: templates/frontend/report/voipcall_report.html:45
+msgid "Search"
+msgstr ""
+
+#: templates/admin/dialer_cdr/voipcall/change_list.html:109
+#: templates/frontend/report/voipcall_report.html:109
+msgid "Call Detail Report Summary"
+msgstr ""
+
+#: templates/admin/dialer_cdr/voipcall/change_list.html:113
+#: templates/frontend/report/voipcall_report.html:113
+msgid "Duration"
+msgstr ""
+
+#: templates/admin/dialer_cdr/voipcall/change_list.html:114
+#: templates/frontend/report/voipcall_report.html:114
+msgid "Graphic"
+msgstr ""
+
+#: templates/admin/dialer_cdr/voipcall/change_list.html:115
+#: templates/frontend/report/voipcall_report.html:115
+msgid "Calls"
+msgstr ""
+
+#: templates/admin/dialer_cdr/voipcall/change_list.html:116
+#: templates/frontend/report/voipcall_report.html:116
+msgid "Average Connection Time"
+msgstr ""
+
+#: templates/admin/dialer_cdr/voipcall/change_list.html:116
+#: templates/frontend/report/voipcall_report.html:116
+msgid "ACT"
+msgstr ""
+
+#: templates/admin/dialer_cdr/voipcall/change_list.html:135
+#: templates/frontend/report/voipcall_report.html:136
+msgid "Total"
+msgstr ""
+
+#: templates/admin/dialer_cdr/voipcall/change_list.html:148
+#: templates/frontend/report/voipcall_report.html:148
+msgid "Export CSV file"
+msgstr ""
+
+#: templates/admin_tools/dashboard/dashboard.html:57
+msgid "Modules"
+msgstr ""
+
+#: templates/admin_tools/dashboard/dashboard.html:104
+msgid "Miss Ratio"
+msgstr ""
+
+#: templates/admin_tools/dashboard/dashboard.html:113
+msgid "Avg GET by item"
+msgstr ""
+
+#: templates/admin_tools/dashboard/dashboard.html:117
+msgid "Avg GET by seconds/minutes"
+msgstr ""
+
+#: templates/admin_tools/dashboard/dashboard.html:121
+msgid "Detailed Statistics:"
+msgstr ""
+
+#: templates/admin_tools/dashboard/dashboard.html:134
+msgid "Call Info"
+msgstr ""
+
+#: templates/admin_tools/dashboard/dashboard.html:146
+#: templates/admin_tools/dashboard/dashboard.html:188
+#: templates/admin_tools/dashboard/dashboard.html:206
+msgid "Today"
+msgstr ""
+
+#: templates/admin_tools/dashboard/dashboard.html:149
+msgid "Call Type"
+msgstr ""
+
+#: templates/admin_tools/dashboard/dashboard.html:151
+msgid "ALL CALLS"
+msgstr ""
+
+#: templates/admin_tools/dashboard/dashboard.html:163
+msgid "DURATION"
+msgstr ""
+
+#: templates/admin_tools/dashboard/dashboard.html:170
+#: templates/admin_tools/dashboard/dashboard.html:194
+#: templates/admin_tools/dashboard/dashboard.html:219
+msgid "Report"
+msgstr ""
+
+#: templates/admin_tools/dashboard/modules/app_list.html:7
+msgid "Dialer Campaign"
+msgstr ""
+
+#: templates/admin_tools/dashboard/modules/app_list.html:10
+msgid "Dialer CDR"
+msgstr ""
+
+#: templates/admin_tools/dashboard/modules/app_list.html:16
+msgid "Prefix Country"
+msgstr ""
+
+#: templates/admin_tools/dashboard/modules/app_list.html:19
+msgid "Dialer Settings"
+msgstr ""
+
+#: templates/admin_tools/dashboard/modules/app_list.html:22
+#: voip_app/models.py:66
+msgid "VoIP Application"
+msgstr ""
+
+#: templates/admin_tools/dashboard/modules/app_list.html:50
+#: templates/frontend/campaign/change.html:25
+#: templates/frontend/contact/change.html:18
+#: templates/frontend/phonebook/change.html:12
+#: templates/frontend/voipapp/change.html:12
+msgid "Add"
+msgstr ""
+
+#: templates/admin_tools/dashboard/modules/app_list.html:51
+msgid "Change"
+msgstr ""
+
+#: templates/frontend/dashboard.html:5 templates/frontend/menu.html:5
+msgid "Dashboard"
+msgstr ""
+
+#: templates/frontend/dashboard.html:66
+msgid "Total Phonebook Contacts"
+msgstr ""
+
+#: templates/frontend/dashboard.html:67
+msgid "Total Campaign Contacts"
+msgstr ""
+
+#: templates/frontend/dashboard.html:68
+msgid "Contacted Today"
+msgstr ""
+
+#: templates/frontend/dashboard.html:117
+msgid "Calls :"
+msgstr ""
+
+#: templates/frontend/dashboard.html:117
+msgid "Duration :"
+msgstr ""
+
+#: templates/frontend/dashboard.html:117
+msgid "ACT :"
+msgstr ""
+
+#: templates/frontend/dashboard.html:251
+msgid "TOTAL CALLS"
+msgstr ""
+
+#: templates/frontend/dashboard.html:261
+msgid "ANSWERED"
+msgstr ""
+
+#: templates/frontend/extra_code.html:3
+msgid "week"
+msgstr ""
+
+#: templates/frontend/extra_code.html:4
+msgid "month"
+msgstr ""
+
+#: templates/frontend/extra_code.html:5 templates/frontend/extra_code.html:6
+msgid "months"
+msgstr ""
+
+#: templates/frontend/extra_code.html:7
+msgid "year"
+msgstr ""
+
+#: templates/frontend/index.html:6 templates/frontend/index.html.py:21
+#: templates/frontend/menu.html:12
+msgid "Info"
+msgstr ""
+
+#: templates/frontend/index.html:27
+msgid ""
+"is a Bulk Dialer & Voice Broadcasting application dedicated to provide "
+"information via phone technology."
+msgstr ""
+
+#: templates/frontend/index.html:29
+msgid ""
+"Newfies has been built using a messaging system so that it can support "
+"distributed processing on cloud servers. The platform is focused on real-"
+"time operations and task call distributions to clustered brokers and workers "
+"meaning that many millions of calls can be processed daily."
+msgstr ""
+
+#: templates/frontend/index.html:31
+msgid "Support, alternative licensing and consultancy is available from "
+msgstr ""
+
+#: templates/frontend/index.html:42
+msgid "Download"
+msgstr ""
+
+#: templates/frontend/index.html:45
+msgid "Please visit"
+msgstr ""
+
+#: templates/frontend/index.html:46
+msgid "to download the latest release."
+msgstr ""
+
+#: templates/frontend/index.html:56
+msgid "Support"
+msgstr ""
+
+#: templates/frontend/index.html:59
+msgid ""
+"Star2Billing S.L. offers consultancy including installation, training and "
+"customisation on Newfies"
+msgstr ""
+
+#: templates/frontend/index.html:62
+msgid ""
+"Purchasing consultancy is a good way to help support the development of "
+"Newfies, and can speed the time of deployment, leaving time free to "
+"concentrate on more profitable and productive tasks."
+msgstr ""
+
+#: templates/frontend/index.html:64
+msgid "Contact us at"
+msgstr ""
+
+#: templates/frontend/index.html:64
+msgid "for more information"
+msgstr ""
+
+#: templates/frontend/index.html:70
+msgid "News"
+msgstr ""
+
+#: templates/frontend/index.html:85
+msgid "Licensing"
+msgstr ""
+
+#: templates/frontend/index.html:88
+msgid "Newfies is licensed under"
+msgstr ""
+
+#: templates/frontend/index.html:89
+msgid ""
+"however an alternative license can be purchased if the AGPL license is not "
+"suitable for your requirements. See "
+msgstr ""
+
+#: templates/frontend/login_option.html:6
+msgid "Logout"
+msgstr ""
+
+#: templates/frontend/login_option.html:13
+msgid "Login"
+msgstr ""
+
+#: templates/frontend/master.html:7
+msgid "Customer Interface"
+msgstr ""
+
+#: templates/frontend/master.html:117 user_profile/models.py:57
+msgid "Admin"
+msgstr ""
+
+#: templates/frontend/master.html:134
+msgid "Welcome"
+msgstr ""
+
+#: templates/frontend/master.html:135
+msgid "You have"
+msgstr ""
+
+#: templates/frontend/master.html:135
+msgid "new notification"
+msgstr ""
+
+#: templates/frontend/master.html:152 templates/frontend/master.html.py:172
+#: templates/frontend/campaign/list.html:30
+#: templates/frontend/campaign/list.html:36
+#: templates/frontend/contact/import_contact.html:10
+#: templates/frontend/contact/import_contact.html:16
+#: templates/frontend/contact/list.html:42
+#: templates/frontend/phonebook/list.html:45
+#: templates/frontend/registration/user_detail_change.html:33
+#: templates/frontend/registration/user_detail_change.html:39
+#: templates/frontend/registration/user_detail_change.html:58
+#: templates/frontend/registration/user_detail_change.html:64
+#: templates/frontend/registration/user_detail_change.html:155
+#: templates/frontend/registration/user_detail_change.html:161
+#: templates/frontend/voipapp/list.html:23
+msgid "Alert"
+msgstr ""
+
+#: templates/frontend/master.html:152
+msgid "Please login by clicking on login button"
+msgstr ""
+
+#: templates/frontend/master.html:175
+msgid "To send notification to administrator"
+msgstr ""
+
+#: templates/frontend/master.html:175
+msgid "Click here"
+msgstr ""
+
+#: templates/frontend/master.html:177
+msgid "(Notification sent)"
+msgstr ""
+
+#: templates/frontend/master.html:190
+msgid "Newfies is software licensed under the "
+msgstr ""
+
+#: templates/frontend/menu.html:9 templates/frontend/voipapp/change.html:13
+#: templates/frontend/voipapp/change.html:18
+#: templates/frontend/voipapp/list.html:6
+msgid "VoIP App"
+msgstr ""
+
+#: templates/frontend/campaign/change.html:23
+#: templates/frontend/campaign/change.html:82
+#: templates/frontend/contact/change.html:16
+#: templates/frontend/contact/change.html:41
+#: templates/frontend/phonebook/change.html:10
+#: templates/frontend/phonebook/change.html:29
+#: templates/frontend/voipapp/change.html:10
+#: templates/frontend/voipapp/change.html:29
+msgid "Update"
+msgstr ""
+
+#: templates/frontend/campaign/change.html:39
+msgid "Campaign settings"
+msgstr ""
+
+#: templates/frontend/campaign/change.html:55
+msgid "Campaign schedule"
+msgstr ""
+
+#: templates/frontend/campaign/change.html:65
+msgid "Week Days"
+msgstr ""
+
+#: templates/frontend/campaign/change.html:87
+#: templates/frontend/contact/change.html:46
+#: templates/frontend/phonebook/change.html:34
+#: templates/frontend/voipapp/change.html:34
+msgid "Clear"
+msgstr ""
+
+#: templates/frontend/campaign/change.html:89
+#: templates/frontend/contact/change.html:48
+#: templates/frontend/phonebook/change.html:36
+#: templates/frontend/voipapp/change.html:36
+msgid "Delete"
+msgstr ""
+
+#: templates/frontend/contact/import_contact.html:53
+msgid "SUBSCRIBER STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')"
+msgstr ""
+
+#: templates/frontend/contact/import_contact.html:81
+msgid "Subscriber(s) Successfully Imported"
+msgstr ""
+
+#: templates/frontend/contact/import_contact.html:98
+msgid "Subscriber(s) not Imported"
+msgstr ""
+
+#: templates/frontend/registration/password_reset_complete.html:4
+#: templates/frontend/registration/password_reset_complete.html:8
+msgid "Password reset complete"
+msgstr ""
+
+#: templates/frontend/registration/password_reset_complete.html:10
+msgid "Your password has been set.  You may go ahead and log in now."
+msgstr ""
+
+#: templates/frontend/registration/password_reset_complete.html:12
+msgid "Log in"
+msgstr ""
+
+#: templates/frontend/registration/password_reset_confirm.html:4
+#: templates/frontend/registration/password_reset_form.html:4
+msgid "Password reset"
+msgstr ""
+
+#: templates/frontend/registration/password_reset_confirm.html:11
+msgid "Enter new password"
+msgstr ""
+
+#: templates/frontend/registration/password_reset_confirm.html:12
+msgid ""
+"Please enter your new password twice so we can verify you typed it in "
+"correctly."
+msgstr ""
+
+#: templates/frontend/registration/password_reset_confirm.html:19
+msgid "Change my password"
+msgstr ""
+
+#: templates/frontend/registration/password_reset_confirm.html:24
+msgid "Password reset unsuccessful"
+msgstr ""
+
+#: templates/frontend/registration/password_reset_confirm.html:27
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a new password reset."
+msgstr ""
+
+#: templates/frontend/registration/password_reset_done.html:4
+#: templates/frontend/registration/password_reset_done.html:8
+msgid "Password reset successful"
+msgstr ""
+
+#: templates/frontend/registration/password_reset_done.html:10
+msgid ""
+"We've e-mailed you instructions for setting your password to the e-mail "
+"address you submitted. You should be receiving it shortly."
+msgstr ""
+
+#: templates/frontend/registration/password_reset_email.html:5
+#, python-format
+msgid ""
+"You're receiving this e-mail because you requested a password reset for your "
+"user account at %(site_name)s."
+msgstr ""
+
+#: templates/frontend/registration/password_reset_email.html:7
+msgid "Please go to the following page and choose a new password:"
+msgstr ""
+
+#: templates/frontend/registration/password_reset_email.html:11
+msgid "Your username, in case you've forgotten:"
+msgstr ""
+
+#: templates/frontend/registration/password_reset_email.html:13
+msgid "Thanks for using our site!"
+msgstr ""
+
+#: templates/frontend/registration/password_reset_email.html:15
+#, python-format
+msgid "The %(site_name)s team"
+msgstr ""
+
+#: templates/frontend/registration/password_reset_form.html:10
+msgid ""
+"Forgotten your password? Enter your e-mail address below, and we'll e-mail "
+"instructions for setting a new one."
+msgstr ""
+
+#: templates/frontend/registration/password_reset_form.html:16
+msgid "Reset my password"
+msgstr ""
+
+#: templates/frontend/registration/user_detail_change.html:5
+msgid "User Detail Change"
+msgstr ""
+
+#: templates/frontend/registration/user_detail_change.html:24
+msgid "Account"
+msgstr ""
+
+#: templates/frontend/registration/user_detail_change.html:25
+msgid "Password"
+msgstr ""
+
+#: templates/frontend/registration/user_detail_change.html:26
+msgid "Notifications"
+msgstr ""
+
+#: templates/frontend/registration/user_detail_change.html:27
+msgid "Limitation"
+msgstr ""
+
+#: templates/frontend/registration/user_detail_change.html:28
+msgid "Authorized"
+msgstr ""
+
+#: templates/frontend/registration/user_detail_change.html:49
+msgid "Change detail"
+msgstr ""
+
+#: templates/frontend/registration/user_detail_change.html:84
+msgid "ID"
+msgstr ""
+
+#: templates/frontend/registration/user_detail_change.html:85
+msgid "Message"
+msgstr ""
+
+#: templates/frontend/registration/user_detail_change.html:86
+msgid "Notification type"
+msgstr ""
+
+#: templates/frontend/registration/user_detail_change.html:87
+msgid "Sender"
+msgstr ""
+
+#: templates/frontend/registration/user_detail_change.html:88
+msgid "Notification date"
+msgstr ""
+
+#: templates/frontend/registration/user_detail_change.html:110
+msgid "No Record(s) found."
+msgstr ""
+
+#: templates/frontend/registration/user_detail_change.html:122
+msgid "Maximum call duration"
+msgstr ""
+
+#: templates/frontend/registration/user_detail_change.html:126
+msgid "Maximum retries"
+msgstr ""
+
+#: templates/frontend/registration/user_detail_change.html:130
+msgid "Timeout"
+msgstr ""
+
+#: templates/frontend/registration/user_detail_change.html:134
+msgid "Maximum campaign"
+msgstr ""
+
+#: templates/frontend/registration/user_detail_change.html:138
+msgid "Maximum subscriber per campaign"
+msgstr ""
+
+#: templates/frontend/registration/user_detail_change.html:142
+msgid "Whitelist"
+msgstr ""
+
+#: templates/frontend/registration/user_detail_change.html:146
+msgid "Blacklist"
+msgstr ""
+
+#: templates/frontend/registration/user_detail_change.html:171
+msgid "Check"
+msgstr ""
+
+#: templates/frontend/registration/user_notice.html:5
+msgid "Notice"
+msgstr ""
+
+#: templates/frontend/report/voipcall_report.html:6
+msgid "VoIP Call Report"
+msgstr ""
+
+#: templates/registration/logged_out.html:8
+msgid "Thank you for using Newfies."
+msgstr ""
+
+#: templates/registration/logged_out.html:10
+msgid "Log in again"
+msgstr ""
+
+#: user_profile/forms.py:12
+msgid "Email address"
+msgstr ""
+
+#: user_profile/forms.py:33
+msgid "Phone Number"
+msgstr ""
+
+#: user_profile/management.py:11
+msgid "Campaign Started"
+msgstr ""
+
+#: user_profile/management.py:12
+msgid "you have started campaign"
+msgstr ""
+
+#: user_profile/management.py:15
+msgid "Campaign Paused"
+msgstr ""
+
+#: user_profile/management.py:16
+msgid "you have paused campaign"
+msgstr ""
+
+#: user_profile/management.py:19
+msgid "Campaign Aborted"
+msgstr ""
+
+#: user_profile/management.py:20
+msgid "you have aborted campaign"
+msgstr ""
+
+#: user_profile/management.py:23
+msgid "Campaign Stopped"
+msgstr ""
+
+#: user_profile/management.py:24
+msgid "you have stopped campaign"
+msgstr ""
+
+#: user_profile/management.py:27
+msgid "Campaign Limit Reached"
+msgstr ""
+
+#: user_profile/management.py:28
+msgid "you have reached the no of campaign limit"
+msgstr ""
+
+#: user_profile/management.py:31
+msgid "Contact Limit Reached"
+msgstr ""
+
+#: user_profile/management.py:32
+msgid "you have reached the no of contact limit"
+msgstr ""
+
+#: user_profile/management.py:36
+msgid "User need to be mapped with dialer setting by administrator"
+msgstr ""
+
+#: user_profile/management.py:39
+msgid "Callrequest not found"
+msgstr ""
+
+#: user_profile/management.py:40
+msgid "Callrequest is not found"
+msgstr ""
+
+#: user_profile/models.py:30
+msgid "Gateway"
+msgstr ""
+
+#: user_profile/models.py:32
+msgid "Dialer settings"
+msgstr ""
+
+#: user_profile/models.py:38
+msgid "user_profile"
+msgstr ""
+
+#: user_profile/models.py:39 user_profile/models.py:40
+msgid "User Profile"
+msgstr ""
+
+#: user_profile/models.py:48
+msgid "Customer"
+msgstr ""
+
+#: user_profile/models.py:49
+msgid "Customers"
+msgstr ""
+
+#: user_profile/models.py:58
+msgid "Admins"
+msgstr ""
+
+#: user_profile/views.py:68
+msgid "Your detail has been changed successfully."
+msgstr ""
+
+#: user_profile/views.py:70 user_profile/views.py:87
+msgid "Please correct the errors below."
+msgstr ""
+
+#: user_profile/views.py:76
+msgid "This phone number is not authorized."
+msgstr ""
+
+#: user_profile/views.py:78
+msgid "This phone number is authorized."
+msgstr ""
+
+#: user_profile/views.py:85
+msgid "Your password has been changed successfully."
+msgstr ""
+
+#: voip_app/models.py:13
+msgid "DIAL"
+msgstr ""
+
+#: voip_app/models.py:14
+msgid "PLAYAUDIO"
+msgstr ""
+
+#: voip_app/models.py:15
+msgid "CONFERENCE"
+msgstr ""
+
+#: voip_app/models.py:16
+msgid "SPEAK"
+msgstr ""
+
+#: voip_app/models.py:44
+msgid "Description about the Voip Application"
+msgstr ""
+
+#: voip_app/models.py:48
+msgid "Gateway used if we redirect the call"
+msgstr ""
+
+#: voip_app/models.py:50
+msgid ""
+"Data will be using Accordingly according to the type of App. For instance, "
+"if type is DIAL, we will dial the phonenumber stored in 'data', if type is "
+"CONFERENCE we will redirect in a conference room named by 'data', if we type "
+"is PLAYAUDIO file, we will play the audio url from 'data'"
+msgstr ""
+
+#: voip_app/models.py:67
+msgid "VoIP Applications"
+msgstr ""
+
+#: voip_app/views.py:176
+#, python-format
+msgid "%d voipapp(s) are deleted successfully."
+msgstr ""

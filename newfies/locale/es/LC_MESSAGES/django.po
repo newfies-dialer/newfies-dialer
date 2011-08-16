@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-16 05:21-0500\n"
+"POT-Creation-Date: 2011-08-16 12:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -622,16 +622,11 @@ msgstr ""
 msgid "Launch Task : collect_subscriber(%s)"
 msgstr ""
 
-#: dialer_cdr/_admin.py:42 dialer_cdr/_admin.py:185 dialer_cdr/admin.py:42
-#: dialer_cdr/admin.py:177
+#: dialer_cdr/admin.py:42 dialer_cdr/admin.py:177
 #: templates/admin/dialer_cdr/voipcall/change_list.html:14
 #: templates/admin_tools/dashboard/modules/app_list.html:40
 #: templates/frontend/menu.html:10
 msgid "Call Report"
-msgstr ""
-
-#: dialer_cdr/_admin.py:184 dialer_cdr/admin.py:176
-msgid "VoIP Report"
 msgstr ""
 
 #: dialer_cdr/admin.py:56
@@ -640,6 +635,10 @@ msgstr ""
 
 #: dialer_cdr/admin.py:65
 msgid "Used gateway"
+msgstr ""
+
+#: dialer_cdr/admin.py:176
+msgid "VoIP Report"
 msgstr ""
 
 #: dialer_cdr/forms.py:18
@@ -1247,22 +1246,6 @@ msgstr ""
 msgid "ANSWERED"
 msgstr ""
 
-#: templates/frontend/extra_code.html:3
-msgid "week"
-msgstr ""
-
-#: templates/frontend/extra_code.html:4
-msgid "month"
-msgstr ""
-
-#: templates/frontend/extra_code.html:5 templates/frontend/extra_code.html:6
-msgid "months"
-msgstr ""
-
-#: templates/frontend/extra_code.html:7
-msgid "year"
-msgstr ""
-
 #: templates/frontend/index.html:6 templates/frontend/index.html.py:21
 #: templates/frontend/menu.html:12
 msgid "Info"
@@ -1789,13 +1772,7 @@ msgid "Gateway used if we redirect the call"
 msgstr ""
 
 #: voip_app/models.py:50
-msgid ""
-"Data will be using Accordingly according to                     the type of "
-"App. For instance, if type is DIAL, we will                     dial the "
-"phonenumber stored in 'data', if type is                     CONFERENCE we "
-"will redirect in a conference room named by                     'data', if "
-"we type is PLAYAUDIO file, we will play the                     audio url "
-"from 'data'"
+msgid "Data will be using Accordingly according "
 msgstr ""
 
 #: voip_app/models.py:71

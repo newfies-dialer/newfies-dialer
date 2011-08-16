@@ -879,9 +879,9 @@ def notify_admin(request):
         common_send_notification(request, 7, recipient)
         # Send mail to ADMINS
         subject = _('Dialer setting configuration')
-        message = _('Newfies Notification - User Dialer Setting The user "%s" - "%s" \
+        message = 'Newfies Notification - User Dialer Setting The user "%s" - "%s" \
         is not configured properly to use your system, please configure his dialer \
-        settings.' % (request.user, request.user.id))
+        settings.' % (request.user, request.user.id)
         # mail_admins() is a shortcut for sending an email to the site admins,
         # as defined in the ADMINS setting
         mail_admins(subject, message) # html_message='text/html'
@@ -1494,9 +1494,11 @@ def contact_import(request):
                             contact_record_count = \
                                 contact_record_count + 1
                             msg = \
-                            _('%d Contact(s) are uploaded  \
-                             successfully out of %d row(s) !!'\
-                             % (contact_record_count, total_rows))
+                            _('%(contact_record_count) Contact(s) are uploaded  \
+                             successfully out of %(total_rows) row(s) !!'\
+                             % {'contact_record_count': contact_record_count,
+                                'total_rows': total_rows}) # (contact_record_count, total_rows)
+
                             success_import_list.append(row)
                     except:
                         error_msg = _("Invalid value for import! \

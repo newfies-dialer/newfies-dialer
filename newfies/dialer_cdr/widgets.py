@@ -358,8 +358,7 @@ class AutocompleteModelAdmin(admin.ModelAdmin):
         if "_popup" in request.POST:
             #htturn response to Autocomplete PopUp
             if "_popup" in request.POST:
-                return HttpResponse('<script type="text/javascript">\
-            opener.dismissAutocompletePopup(window, "%s", "%s");</script>' % \
+                return HttpResponse('<script type="text/javascript">opener.dismissAutocompletePopup(window, "%s", "%s");</script>' % \
             (escape(pk_value), escape(obj)))
 
         elif "_addanother" in request.POST:
@@ -392,10 +391,8 @@ class AutocompleteWidgetWrapper(RelatedFieldWidgetWrapper):
             # TODO: "id_" is hard-coded here.
             # This should instead use the correct
             # API to determine the ID dynamically.
-            output.append(u'<a href="%sadd/" class="add-another" \
-            id="add_id_%s" onclick="return showAutocompletePopup(this);"> ' % \
+            output.append(u'<a href="%sadd/" class="add-another" id="add_id_%s" onclick="return showAutocompletePopup(this);"> ' % \
                 (related_url, name))
-            output.append(u'<img src="%simg/admin/icon_addlink.gif"\
-            width="10" height="10" alt="%s"/></a>' % \
+            output.append(u'<img src="%simg/admin/icon_addlink.gif" width="10" height="10" alt="%s"/></a>' % \
             (settings.ADMIN_MEDIA_PREFIX, _('Add Another')))
         return mark_safe(u''.join(output))

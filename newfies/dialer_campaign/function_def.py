@@ -68,9 +68,9 @@ def field_list(name, user=None):
     if name == "voipapp" and user is not None:
         list = VoipApp.objects.filter(user=user)
 
-    #if name == "gateway" and user is not None:
-    #    list = UserProfile.objects.filter(user=user)
-    #    return ((l.id, l.countryname) for l in list)
+    if name == "gateway" and user is not None:
+        list = UserProfile.objects.get(user=user)
+        list = list.userprofile_gateway.all()
 
     if name == "country" and user is not None:
         list = Country.objects.all()

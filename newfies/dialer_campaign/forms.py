@@ -132,13 +132,12 @@ class CampaignForm(ModelForm):
             for i in vp_list:
                 list_voipapp.append((i[0], i[1]))
             self.fields['voipapp'].choices = list_voipapp
-            """
+
             list_gw.append((0, '---'))
             gw_list = field_list("gateway", user)
-            #for i in gw_list:
-            #    list_gw.append((i[0], i[1]))
+            for i in gw_list:
+                list_gw.append((i[0], i[1]))
             self.fields['aleg_gateway'].choices = list_gw
-            """
 
     def clean(self):
         cleaned_data = self.cleaned_data

@@ -64,8 +64,8 @@ class CampaignAdmin(admin.ModelAdmin):
         # Check dialer setting limit
         # check Max Number of running campaigns
         if check_dialer_setting(request, check_for="campaign"):
-            msg = _("you have too many campaigns. Max allowed\
-            %s" % dialer_setting_limit(request, limit_for="campaign"))
+            msg = _("you have too many campaigns. Max allowed %s" \
+            % dialer_setting_limit(request, limit_for="campaign"))
             messages.error(request, msg)
 
             # campaign limit reached
@@ -118,8 +118,7 @@ class ContactAdmin(admin.ModelAdmin):
         if request.user and request.method == 'POST':
             # check Max Number of subscribers per campaign
             if check_dialer_setting(request, check_for="contact"):
-                msg = _("You have too many contacts per campaign.\
-                You are allowed a maximum of %s" \
+                msg = _("You have too many contacts per campaign. You are allowed a maximum of %s" \
                 % dialer_setting_limit(request, limit_for="contact"))
                 messages.error(request, msg)
 
@@ -158,8 +157,7 @@ class ContactAdmin(admin.ModelAdmin):
         if request.user and request.method == 'POST':
             # check Max Number of subscribers per campaign
             if check_dialer_setting(request, check_for="contact"):
-                msg = _("You have too many contacts per campaign.\
-                You are allowed a maximum of %s" \
+                msg = _("You have too many contacts per campaign. You are allowed a maximum of %s" \
                 % dialer_setting_limit(request, limit_for="contact"))
                 messages.error(request, msg)
 
@@ -228,15 +226,13 @@ class ContactAdmin(admin.ModelAdmin):
                                 contact_record_count = \
                                     contact_record_count + 1
                                 msg = \
-                                _('%(contact_record_count)s Contact(s) are uploaded  \
-                                 successfully out of %(total_rows)s row(s) !!'\
+                                _('%(contact_record_count)s Contact(s) are uploaded successfully out of %(total_rows)s row(s) !!'\
                                  % {'contact_record_count': contact_record_count,
                                     'total_rows': total_rows})
                                     # (contact_record_count, total_rows)
                                 success_import_list.append(row)
                         except:
-                            msg = _("Error : invalid value for import! \
-                                   Please look at the import samples.")
+                            msg = _("Error : invalid value for import! Please look at the import samples.")
                             type_error_import_list.append(row)
         else:
             form = Contact_fileImport(request.user)

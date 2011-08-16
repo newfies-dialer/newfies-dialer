@@ -78,19 +78,20 @@ class Gateway(Model):
     removeprefix = models.CharField(verbose_name=_('Remove prefix'),
                    max_length=60, blank=True)
     gateways = models.CharField(max_length=500,
-                   help_text=_('Example : "sofia/gateway/myprovider/" or 2 for failover "sofia/gateway/myprovider/, user/", # Gateway string to try dialing\
-                   separated by comma. First in list will be tried first'))
+    help_text=_('Example : "sofia/gateway/myprovider/" or 2 for failover "sofia/gateway/myprovider/, user/", # Gateway string to try dialing separated by comma. First in list will be tried first'))
+
     gateway_codecs = models.CharField(max_length=500, blank=True,
-                   help_text=_('"\'PCMA,PCMU\',\'PCMA,PCMU\'", # Codec string\
-                   as needed by FS for each gateway separated by comma'))
+    help_text=_('"\'PCMA,PCMU\',\'PCMA,PCMU\'", # Codec string as needed by FS for each gateway separated by comma'))
+
     gateway_timeouts = models.CharField(max_length=500, blank=True,
-                   help_text=_('"10,10", # Seconds to timeout in string for\
-                   each gateway separated by comma'))
+    help_text=_('"10,10", # Seconds to timeout in string for each gateway separated by comma'))
+
     gateway_retries = models.CharField(max_length=500, blank=True,
-                   help_text=_('"2,1", # Retry String for Gateways separated\
-                  by comma, on how many times each gateway should be retried'))
+    help_text=_('"2,1", # Retry String for Gateways separated by comma, on how many times each gateway should be retried'))
+
     originate_dial_string = models.CharField(max_length=500, blank=True,
-                   help_text=_('Add Channels Variables : http://wiki.freeswitch.org/wiki/Channel_Variables, ie: bridge_early_media=true,hangup_after_bridge=true'))
+    help_text=_('Add Channels Variables : http://wiki.freeswitch.org/wiki/Channel_Variables, ie: bridge_early_media=true,hangup_after_bridge=true'))
+
     secondused = models.IntegerField(null=True, blank=True)
 
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')

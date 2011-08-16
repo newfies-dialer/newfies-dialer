@@ -8,8 +8,7 @@ from django.db import IntegrityError
 class Command(BaseCommand):
     # Use : create_contact '1|100' '2|50'
     args = _('"phonebook_id|no_of_record" "phonebook_id|no_of_record"')
-    help = _("Creates new contacts for a given phonebook and no of records \
-            \n-----------------------------------------------------------\n")
+    help = _("Creates new contacts for a given phonebook and no of records")
 
     def handle(self, *args, **options):
         """Note that subscriber created this way are only for devel purposes"""

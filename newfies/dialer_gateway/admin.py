@@ -18,7 +18,9 @@ class GatewayAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Standard options', {
-         'fields': ('name', 'description', 'gateways', 'gateway_codecs', 'gateway_timeouts', 'gateway_retries', 'originate_dial_string', 'status'),
+         'fields': ('name', 'description', 'gateways', 'gateway_codecs',
+                    'gateway_timeouts', 'gateway_retries',
+                    'originate_dial_string', 'status'),
         }),
         ('Advanced options', {
             'classes': ('collapse',),

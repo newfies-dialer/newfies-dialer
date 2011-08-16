@@ -47,12 +47,12 @@ class VoipApp(Model):
     gateway = models.ForeignKey(Gateway, null=True, blank=True,
                     help_text=_("Gateway used if we redirect the call"))
     data = models.CharField(max_length=500, blank=True,
-                    help_text=_("Data will be using Accordingly according to \
-                    the type of App. For instance, if type is DIAL, we will \
-                    dial the phonenumber stored in 'data', if type is \
-                    CONFERENCE we will redirect in a conference room named by \
-                    'data', if we type is PLAYAUDIO file, we will play the \
-                    audio url from 'data'"))
+                    help_text=_("Data will be using Accordingly according " + \
+                    "to the type of App. For instance, if type is DIAL, " + \
+                    "we will dial the phonenumber stored in 'data', if " + \
+                    "type is CONFERENCE we will redirect in a conference " + \
+                    "room named by 'data', if we type is PLAYAUDIO file, " + \
+                    "we will play the audio url from 'data'"))
     user = models.ForeignKey('auth.User', related_name='VoIP App owner')
     #extension = models.CharField(max_length=40,
     #               help_text=_("Extension to call when redirection the call"))

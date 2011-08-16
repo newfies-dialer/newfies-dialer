@@ -608,7 +608,7 @@ msgstr "Ejecución de la tarea: collect_subscriber(%s)"
 #: templates/admin_tools/dashboard/modules/app_list.html:40
 #: templates/frontend/menu.html:10
 msgid "Call Report"
-msgstr "Llame al Informe"
+msgstr "Llamadas Informe"
 
 #: dialer_cdr/admin.py:56
 msgid "User"
@@ -1180,7 +1180,7 @@ msgstr "Cambio"
 
 #: templates/frontend/dashboard.html:5 templates/frontend/menu.html:5
 msgid "Dashboard"
-msgstr "Tablero de instrumentos"
+msgstr "Escritorio"
 
 #: templates/frontend/dashboard.html:66
 msgid "Total Phonebook Contacts"
@@ -1361,7 +1361,7 @@ msgstr "Newfies es un software bajo licencia"
 #: templates/frontend/voipapp/change.html:18
 #: templates/frontend/voipapp/list.html:6
 msgid "VoIP App"
-msgstr "VoIP de la aplicación"
+msgstr "VoIP App"
 
 #: templates/frontend/campaign/change.html:23
 #: templates/frontend/campaign/change.html:82

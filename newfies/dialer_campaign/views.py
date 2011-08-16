@@ -1494,9 +1494,9 @@ def contact_import(request):
                             contact_record_count = \
                                 contact_record_count + 1
                             msg = \
-                            '%d Contact(s) are uploaded  \
+                            _('%d Contact(s) are uploaded  \
                              successfully out of %d row(s) !!'\
-                             % (contact_record_count, total_rows)
+                             % (contact_record_count, total_rows))
                             success_import_list.append(row)
                     except:
                         error_msg = _("Invalid value for import! \
@@ -2126,5 +2126,3 @@ def admin_user_report_graph(request):
                                  report_type, start_date, end_date)
     return HttpResponse(simplejson.dumps(data), mimetype='application/json',
                         content_type="application/json")
-
-

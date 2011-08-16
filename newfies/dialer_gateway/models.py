@@ -4,16 +4,16 @@ from datetime import *
 from common.intermediate_model_base_class import Model
 
 GATEWAY_STATUS = (
-    (1, u'ACTIVE'),
-    (0, u'INACTIVE'),
+    (1, _('ACTIVE')),
+    (0, _('INACTIVE')),
 )
 
 GATEWAY_PROTOCOL = (
-    ('SIP', u'SIP'),
-    ('LOCAL', u'LOCAL'),
-    ('GSM', u'GSM'),
-    ('SKINNY', u'SKINNY'),
-    ('JINGLE', u'JINGLE'),
+    ('SIP', _('SIP')),
+    ('LOCAL', _('LOCAL')),
+    ('GSM', _('GSM')),
+    ('SKINNY', _('SKINNY')),
+    ('JINGLE', _('JINGLE')),
 )
 
 """

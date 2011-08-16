@@ -5,15 +5,15 @@ from common.intermediate_model_base_class import Model
 
 
 APP_STATUS = (
-    (1, u'ACTIVE'),
-    (0, u'INACTIVE'),
+    (1, _('ACTIVE')),
+    (0, _('INACTIVE')),
 )
 
 APP_TYPE = (
-    (1, u'DIAL'),
-    (2, u'PLAYAUDIO'),
-    (3, u'CONFERENCE'),
-    (4, u'SPEAK'),
+    (1, _('DIAL')),
+    (2, _('PLAYAUDIO')),
+    (3, _('CONFERENCE')),
+    (4, _('SPEAK')),
 )
 
 

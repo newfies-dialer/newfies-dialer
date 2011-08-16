@@ -248,7 +248,7 @@ class DashboardForm(forms.Form):
     """Dashboard Form"""
     campaign = forms.ChoiceField(label=_('Campaign'), required=False)
     search_type = forms.ChoiceField(label=_('Type'), required=False, initial=4,
-                      choices=SEARCH_TYPE)
+                                    choices=SEARCH_TYPE)
 
 
     def __init__(self, user, *args, **kwargs):

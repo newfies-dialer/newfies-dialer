@@ -21,9 +21,9 @@ CALLREQUEST_STATUS = (
 )
 
 CALLREQUEST_TYPE = (
-    (1, u'ALLOW RETRY'),
-    (2, u'CANNOT RETRY'),
-    (3, u'RETRY DONE'),
+    (1, _('ALLOW RETRY')),
+    (2, _('CANNOT RETRY')),
+    (3, _('RETRY DONE')),
 )
 
 VOIPCALL_DISPOSITION = (

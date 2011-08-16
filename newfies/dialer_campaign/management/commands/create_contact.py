@@ -1,14 +1,15 @@
 from optparse import make_option
 from django.core.management.base import BaseCommand, CommandError
+from django.utils.translation import ugettext as _
 from dialer_campaign.models import *
 from django.db import IntegrityError
 
 
 class Command(BaseCommand):
     # Use : create_contact '1|100' '2|50'
-    args = '"phonebook_id|no_of_record" "phonebook_id|no_of_record"'
-    help = "Creates new contacts for a given phonebook and no of records \
-            \n-----------------------------------------------------------\n"
+    args = _('"phonebook_id|no_of_record" "phonebook_id|no_of_record"')
+    help = _("Creates new contacts for a given phonebook and no of records \
+            \n-----------------------------------------------------------\n")
 
     def handle(self, *args, **options):
         """Note that subscriber created this way are only for devel purposes"""
@@ -22,7 +23,7 @@ class Command(BaseCommand):
             try:
                 obj_phonebook = Phonebook.objects.get(id=myphonebook_id)
             except:
-                print 'Can\'t find this Phonebook : %s' % myphonebook_id
+                print _('Can\'t find this Phonebook : %s' % myphonebook_id)
                 return False
 
             try:
@@ -33,7 +34,7 @@ class Command(BaseCommand):
                     new_contact = Contact.objects.create(
                                         contact=phone_no,
                                         phonebook=obj_phonebook)
-                print "No of Contact created : %d" % int(no_of_record)
+                print _("No of Contact created : %d" % int(no_of_record))
             except IntegrityError:
-                print ("The contact is duplicated!")
+                print _("The contact is duplicated!")
                 return False

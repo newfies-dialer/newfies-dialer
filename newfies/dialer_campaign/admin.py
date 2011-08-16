@@ -228,9 +228,9 @@ class ContactAdmin(admin.ModelAdmin):
                                 contact_record_count = \
                                     contact_record_count + 1
                                 msg = \
-                                '%d Contact(s) are uploaded  \
+                                _('%d Contact(s) are uploaded  \
                                  successfully out of %d row(s) !!'\
-                                 % (contact_record_count, total_rows)
+                                 % (contact_record_count, total_rows))
                                 success_import_list.append(row)
                         except:
                             msg = _("Error : invalid value for import! \

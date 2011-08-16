@@ -14,8 +14,8 @@ from random import *
 
 
 CONTACT_STATUS = (
-    (1, u'ACTIVE'),
-    (0, u'INACTIVE'),
+    (1, _('ACTIVE')),
+    (0, _('INACTIVE')),
 )
 
 CAMPAIGN_SUBSCRIBER_STATUS = (
@@ -36,19 +36,10 @@ CAMPAIGN_STATUS = (
 )
 
 DAY_STATUS = (
-    (1, u'YES'),
-    (0, u'NO'),
+    (1, _('YES')),
+    (0, _('NO')),
 )
 
-DAYS = (
-    ('monday', u'monday'),
-    ('tuesday', u'tuesday'),
-    ('wednesday', u'wednesday'),
-    ('thursday', u'thursday'),
-    ('friday', u'friday'),
-    ('saturday', u'saturday'),
-    ('sunday', u'sunday'),
-)
 
 def get_unique_code(length):
     """Get unique code"""
@@ -209,7 +200,7 @@ def common_contact_authorization(user, str_contact):
             if result:
                 return True
         except ValueError:
-            print "result string is None"
+            print _("result string is None")
 
     if blacklist and len(blacklist) > 0:
         try:
@@ -217,7 +208,7 @@ def common_contact_authorization(user, str_contact):
             if result:
                 return False
         except ValueError:
-            print "result string is None"
+            print _("result string is None")
 
     return True
 
@@ -397,7 +388,7 @@ class Campaign(Model):
             count_contact = \
             Contact.objects.filter(phonebook__campaign=self.id).count()
         if not count_contact:
-            return "Phonebook Empty"
+            return _("Phonebook Empty")
 
         return count_contact
     count_contact_of_phonebook.allow_tags = True

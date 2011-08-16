@@ -17,8 +17,7 @@ class Command(BaseCommand):
     # Use : create_callrequest_cdr '13843453|1' '324242|1'
     #                              'phone_no|campaign_id'
     args = _('"campaign_id|no_of_record" "campaign_id|no_of_record"')
-    help = _("Creates no of new call requests and CDRs for a given campaign_id & no of records \
-            \n--------------------------------------------------------------------------------\n")
+    help = _("Creates no of new call requests and CDRs for a given campaign_id & no of records")
 
     def handle(self, *args, **options):
         """Note that subscriber created this way are only for devel purposes"""

@@ -879,9 +879,9 @@ def notify_admin(request):
         common_send_notification(request, 7, recipient)
         # Send mail to ADMINS
         subject = _('Dialer setting configuration')
-        message = 'Newfies Notification - User Dialer Setting The user "%s" - "%s" \
-        is not configured properly to use your system, please configure his dialer \
-        settings.' % (request.user, request.user.id)
+        message = \
+        _('Newfies Notification - User Dialer Setting The user "%(user)" - "%(user_id)" is not configured properly to use your system, please configure his dialer settings.' %\
+          {'user': request.user, 'user_id': request.user.id})
         # mail_admins() is a shortcut for sending an email to the site admins,
         # as defined in the ADMINS setting
         mail_admins(subject, message) # html_message='text/html'
@@ -1291,8 +1291,7 @@ def contact_add(request):
         # check  Max Number of subscriber per campaign
         if check_dialer_setting(request, check_for="contact"):
             request.session['msg'] = \
-            _("You have too many contacts per campaign.\
-            You are allowed a maximum of %s" % \
+            _("You have too many contacts per campaign. You are allowed a maximum of %s" % \
             dialer_setting_limit(request, limit_for="contact"))
 
             # contact limit reached
@@ -1426,8 +1425,7 @@ def contact_import(request):
         # check  Max Number of subscribers per campaign
         if check_dialer_setting(request, check_for="contact"):
             request.session['msg'] = \
-            _("You have too many contacts per campaign.\
-            You are allowed a maximum of %s" % \
+            _("You have too many contacts per campaign. You are allowed a maximum of %s" % \
             dialer_setting_limit(request, limit_for="contact"))
 
             # contact limit reached
@@ -1493,16 +1491,14 @@ def contact_import(request):
                                   additional_vars=row[6])
                             contact_record_count = \
                                 contact_record_count + 1
-                            msg = \
-                            _('%(contact_record_count) Contact(s) are uploaded  \
-                             successfully out of %(total_rows) row(s) !!'\
-                             % {'contact_record_count': contact_record_count,
-                                'total_rows': total_rows}) # (contact_record_count, total_rows)
+                            msg = _('%(contact_record_count) Contact(s) are uploaded successfully out of %(total_rows) row(s) !!' \
+                            % {'contact_record_count': contact_record_count,
+                               'total_rows': total_rows}) # (contact_record_count, total_rows)
 
                             success_import_list.append(row)
                     except:
-                        error_msg = _("Invalid value for import! \
-                               Please look at the import samples.")
+                        error_msg = \
+                        _("Invalid value for import! Please look at the import samples.")
                         type_error_import_list.append(row)
 
     data = RequestContext(request, {
@@ -1736,17 +1732,15 @@ def campaign_add(request):
     """
     # If dialer setting is not attached with user, redirect to campaign list
     if user_attached_with_dilaer_settings(request):
-        request.session['error_msg'] = _("In order to add a campaign, \
-        you need to have your settings configured properly, \
-        please contact the admin.")
+        request.session['error_msg'] = \
+        _("In order to add a campaign, you need to have your settings configured properly, please contact the admin.")
         return HttpResponseRedirect("/campaign/")
 
     # Check dialer setting limit
     if request.user and request.method != 'POST':
         # check Max Number of running campaign
         if check_dialer_setting(request, check_for="campaign"):
-            request.session['msg'] = msg = _("you have too many campaign.\
-            Max allowed %s" \
+            request.session['msg'] = msg = _("you have too many campaign. Max allowed %s" \
             % dialer_setting_limit(request, limit_for="campaign"))
 
             # campaign limit reached

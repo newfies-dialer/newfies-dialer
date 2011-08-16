@@ -15,7 +15,7 @@
 <div class="span-24 last" align=left>
 <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
     <fieldset>
-    <legend>VoIP App</legend>
+    <legend>{% trans "VoIP App" %}</legend>
         <table align=center border=1>
             {% get_fieldset name,description,status,type,gateway,data as voip_app_fields from form %}
             {{ voip_app_fields.as_table }}

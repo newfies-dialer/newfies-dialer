@@ -884,7 +884,7 @@ def notify_admin(request):
         settings.' % (request.user, request.user.id))
         # mail_admins() is a shortcut for sending an email to the site admins,
         # as defined in the ADMINS setting
-        mail_admins(subject, message)
+        mail_admins(subject, message) # html_message='text/html'
         request.session['has_notified'] = True
 
     return HttpResponseRedirect('/dashboard/')

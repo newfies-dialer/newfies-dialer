@@ -880,7 +880,7 @@ def notify_admin(request):
         # Send mail to ADMINS
         subject = _('Dialer setting configuration')
         message = \
-        _('Newfies Notification - User Dialer Setting The user "%(user)s" - "%(user_id)s" is not configured properly to use your system, please configure his dialer settings.' %\
+        _('Newfies Notification - User Dialer Setting The user "%(user)" - "%(user_id)" is not configured properly to use your system, please configure his dialer settings.' %\
           {'user': request.user, 'user_id': request.user.id})
         # mail_admins() is a shortcut for sending an email to the site admins,
         # as defined in the ADMINS setting

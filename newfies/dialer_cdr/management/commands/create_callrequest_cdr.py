@@ -32,7 +32,7 @@ class Command(BaseCommand):
                 try:
                     obj_campaign = Campaign.objects.get(id=campaign_id)
                 except:
-                    print _('Can\'t find this Campaign : %s' % campaign_id)
+                    print _('Can\'t find this Campaign : %(id)s' % {'id': campaign_id})
                     return False
 
                 try:
@@ -55,7 +55,7 @@ class Command(BaseCommand):
                                             phone_number=phonenumber,
                                             duration=random.randint(1, 100),
                                             disposition=choice(VOIPCALL_DISPOSITION))
-                    print _("No of Callrequest & CDR created :%d" % int(no_of_record))
+                    print _("No of Callrequest & CDR created :%(count)s" % {'count': no_of_record})
                 except IntegrityError:
                     print _("Callrequest & CDR are not created!")
                     return False

@@ -173,7 +173,8 @@ def voipapp_del(request, object_id):
         # 2) delete phonebook
         voipapp_list = VoipApp.objects.extra(where=['id IN (%s)' % values])
         request.session["msg"] =\
-        _('%d voipapp(s) are deleted successfully.' % voipapp_list.count())
+        _('%(count)s voipapp(s) are deleted successfully.' \
+        % {'count': voipapp_list.count()})
         voipapp_list.delete()
         return HttpResponseRedirect('/voipapp/')
 
@@ -203,8 +204,8 @@ def voipapp_change(request, object_id):
             form = VoipAppForm(request.POST, instance=voipapp)
             if form.is_valid():
                 form.save()
-                request.session["msg"] = _('"%s" is updated successfully.' \
-                % request.POST['name'])
+                request.session["msg"] = _('"%(name)s" is updated successfully.' \
+                % {'name': request.POST['name']})
                 return HttpResponseRedirect('/voipapp/')
 
     template = 'frontend/voipapp/change.html'

@@ -1116,6 +1116,14 @@ msgstr "Estadísticas detalladas:"
 msgid "Call Info"
 msgstr "Llame Info"
 
+#: templates/admin_tools/dashboard/dashboard.html:178
+msgid "Campaign Info"
+msgstr "Campaña Info"
+
+#: templates/admin_tools/dashboard/dashboard.html:202
+msgid "User Info"
+msgstr ""
+
 #: templates/admin_tools/dashboard/dashboard.html:146
 #: templates/admin_tools/dashboard/dashboard.html:188
 #: templates/admin_tools/dashboard/dashboard.html:206

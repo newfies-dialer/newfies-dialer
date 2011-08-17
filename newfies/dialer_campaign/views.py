@@ -880,7 +880,7 @@ def notify_admin(request):
         # Send mail to ADMINS
         subject = _('Dialer setting configuration')
         message = \
-        _('Newfies Notification - User Dialer Setting The user "%(user)" - "%(user_id)" is not configured properly to use your system, please configure his dialer settings.' %\
+        _('Newfies Notification - User Dialer Setting The user "%(user)s" - "%(user_id)s" is not configured properly to use your system, please configure his dialer settings.' %\
           {'user': request.user, 'user_id': request.user.id})
         # mail_admins() is a shortcut for sending an email to the site admins,
         # as defined in the ADMINS setting
@@ -1002,8 +1002,8 @@ def phonebook_add(request):
             obj = form.save(commit=False)
             obj.user = User.objects.get(username=request.user)
             obj.save()
-            request.session["msg"] = _('"%s" is added successfully.' %\
-            request.POST['name'])
+            request.session["msg"] = _('"%(name)s" is added successfully.' %\
+            {'name': request.POST['name']})
             return HttpResponseRedirect('/phonebook/')
     template = 'frontend/phonebook/change.html'
     data = {
@@ -1049,8 +1049,8 @@ def phonebook_del(request, object_id):
             contact_list.delete()
 
             # 2) delete phonebook
-            request.session["msg"] = _('"%s" is deleted successfully.' \
-                                        % phonebook.name)
+            request.session["msg"] = _('"%(name)s" is deleted successfully.' \
+                                        % {'name': phonebook.name})
             phonebook.delete()
             return HttpResponseRedirect('/phonebook/')
     except:
@@ -1066,7 +1066,8 @@ def phonebook_del(request, object_id):
         # 2) delete phonebook
         phonebook_list = Phonebook.objects.extra(where=['id IN (%s)' % values])
         request.session["msg"] =\
-        _('%d phonebook(s) are deleted successfully.' % phonebook_list.count())
+        _('%(count)s phonebook(s) are deleted successfully.' \
+        % {'count': phonebook_list.count()})
         phonebook_list.delete()
         return HttpResponseRedirect('/phonebook/')
 
@@ -1096,8 +1097,8 @@ def phonebook_change(request, object_id):
             form = PhonebookForm(request.POST, instance=phonebook)
             if form.is_valid():
                 form.save()
-                request.session["msg"] = _('"%s" is updated successfully.' \
-                % request.POST['name'])
+                request.session["msg"] = _('"%(name)s" is updated successfully.' \
+                % {'name': request.POST['name']})
                 return HttpResponseRedirect('/phonebook/')
 
     template = 'frontend/phonebook/change.html'
@@ -1291,8 +1292,8 @@ def contact_add(request):
         # check  Max Number of subscriber per campaign
         if check_dialer_setting(request, check_for="contact"):
             request.session['msg'] = \
-            _("You have too many contacts per campaign. You are allowed a maximum of %s" % \
-            dialer_setting_limit(request, limit_for="contact"))
+            _("You have too many contacts per campaign. You are allowed a maximum of %(limit)s" % \
+            {'limit': dialer_setting_limit(request, limit_for="contact")})
 
             # contact limit reached
             common_send_notification(request, '6')
@@ -1304,8 +1305,8 @@ def contact_add(request):
         form = ContactForm(request.user, request.POST)
         if form.is_valid():
             form.save()
-            request.session["msg"] = _('"%s" is added successfully.' %\
-            request.POST['contact'])
+            request.session["msg"] = _('"%(name)s" is added successfully.' %\
+            {'name': request.POST['contact']})
             return HttpResponseRedirect('/contact/')
 
     phonebook_count = Phonebook.objects.filter(user=request.user).count()    
@@ -1340,8 +1341,8 @@ def contact_del(request, object_id):
         contact = Contact.objects.get(pk=object_id)
         # Delete phonebook
         if object_id:
-            request.session["msg"] = _('"%s" is deleted successfully.' \
-            % contact.first_name)
+            request.session["msg"] = _('"%(name)s" is deleted successfully.' \
+            % {'name': contact.first_name})
             contact.delete()
             return HttpResponseRedirect('/contact/')
     except:
@@ -1350,7 +1351,8 @@ def contact_del(request, object_id):
         values = ", ".join(["%s" % el for el in values])
         contact_list = Contact.objects.extra(where=['id IN (%s)' % values])
         request.session["msg"] =\
-        _('%d contact(s) are deleted successfully.' % contact_list.count())
+        _('%(count)s contact(s) are deleted successfully.' \
+        % {'count': contact_list.count()})
         contact_list.delete()
         return HttpResponseRedirect('/contact/')
 
@@ -1382,8 +1384,8 @@ def contact_change(request, object_id):
                                   instance=contact)
             if form.is_valid():
                 form.save()
-                request.session["msg"] = _('"%s" is updated successfully.' \
-                % request.POST['contact'])
+                request.session["msg"] = _('"%(name)s" is updated successfully.' \
+                % {'name': request.POST['contact']})
                 return HttpResponseRedirect('/contact/')
 
     template = 'frontend/contact/change.html'
@@ -1425,8 +1427,8 @@ def contact_import(request):
         # check  Max Number of subscribers per campaign
         if check_dialer_setting(request, check_for="contact"):
             request.session['msg'] = \
-            _("You have too many contacts per campaign. You are allowed a maximum of %s" % \
-            dialer_setting_limit(request, limit_for="contact"))
+            _("You have too many contacts per campaign. You are allowed a maximum of %(limit)s" % \
+            {'limit': dialer_setting_limit(request, limit_for="contact")})
 
             # contact limit reached
             common_send_notification(request, '6')
@@ -1740,8 +1742,8 @@ def campaign_add(request):
     if request.user and request.method != 'POST':
         # check Max Number of running campaign
         if check_dialer_setting(request, check_for="campaign"):
-            request.session['msg'] = msg = _("you have too many campaign. Max allowed %s" \
-            % dialer_setting_limit(request, limit_for="campaign"))
+            request.session['msg'] = msg = _("you have too many campaign. Max allowed %(limit)s" \
+            % {'limit': dialer_setting_limit(request, limit_for="campaign")})
 
             # campaign limit reached
             common_send_notification(request, '5')
@@ -1756,8 +1758,8 @@ def campaign_add(request):
             obj.user = User.objects.get(username=request.user)
             obj.save()
             form.save_m2m()
-            request.session["msg"] = _('"%s" is added successfully.' %\
-            request.POST['name'])
+            request.session["msg"] = _('"%(name)s" is added successfully.' %\
+            {'name': request.POST['name']})
             return HttpResponseRedirect('/campaign/')
 
     template = 'frontend/campaign/change.html'
@@ -1790,8 +1792,8 @@ def campaign_del(request, object_id):
         campaign = Campaign.objects.get(pk=object_id)
         # Delete campaign
         if object_id:
-            request.session["msg"] = _('"%s" is deleted successfully.' \
-            % campaign.name)
+            request.session["msg"] = _('"%(name)s" is deleted successfully.' \
+            % {'name': campaign.name})
             campaign.delete()
             return HttpResponseRedirect('/campaign/')
     except:
@@ -1799,8 +1801,8 @@ def campaign_del(request, object_id):
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
         campaign_list = Campaign.objects.extra(where=['id IN (%s)' % values])
-        request.session["msg"] = _('%d campaign(s) are deleted successfully.'\
-        % campaign_list.count())
+        request.session["msg"] = _('%(count)s campaign(s) are deleted successfully.'\
+        % {'count': campaign_list.count()})
         campaign_list.delete()
         return HttpResponseRedirect('/campaign/')
 
@@ -1835,8 +1837,8 @@ def campaign_change(request, object_id):
             form = CampaignForm(request.user, request.POST, instance=campaign)
             if form.is_valid():
                 form.save()
-                request.session["msg"] = _('"%s" is updated successfully.' \
-                % request.POST['name'])
+                request.session["msg"] = _('"%(name)s" is updated successfully.' \
+                % {'name': request.POST['name']})
                 return HttpResponseRedirect('/campaign/')
 
     template = 'frontend/campaign/change.html'

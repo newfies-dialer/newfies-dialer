@@ -22,7 +22,7 @@ class Command(BaseCommand):
             try:
                 obj_phonebook = Phonebook.objects.get(id=myphonebook_id)
             except:
-                print _('Can\'t find this Phonebook : %s' % myphonebook_id)
+                print _('Can\'t find this Phonebook : %(id)s' % {'id': myphonebook_id})
                 return False
 
             try:
@@ -33,7 +33,7 @@ class Command(BaseCommand):
                     new_contact = Contact.objects.create(
                                         contact=phone_no,
                                         phonebook=obj_phonebook)
-                print _("No of Contact created : %d" % int(no_of_record))
+                print _("No of Contact created : %(count)s" % {'count': no_of_record})
             except IntegrityError:
                 print _("The contact is duplicated!")
                 return False

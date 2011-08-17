@@ -22,7 +22,7 @@ class Command(BaseCommand):
             try:
                 obj_phonebook = Phonebook.objects.get(id=myphonebook_id)
             except:
-                print _('Can\'t find this Phonebook : %s' % myphonebook_id)
+                print _('Can\'t find this Phonebook : %(id)s' % {'id': myphonebook_id})
                 return False
 
             try:
@@ -33,7 +33,7 @@ class Command(BaseCommand):
                 print _("The contact is duplicated!")
                 return False
 
-            print _("Contact created id:%s" % new_contact.id)
+            print _("Contact created id:%(id)s" % {'id': new_contact.id})
 
             try:
                 obj_campaign = Campaign.objects.get(phonebook=obj_phonebook)
@@ -41,6 +41,6 @@ class Command(BaseCommand):
                 print _('Can\'t find a Campaign with this phonebook')
                 return False
 
-            print _("Launch Task : collect_subscriber(%s)" % str(obj_campaign.id))
+            print _("Launch Task : collect_subscriber(%(id)s)" % {'id': str(obj_campaign.id)})
             collect_subscriber.delay(obj_campaign.id)
  

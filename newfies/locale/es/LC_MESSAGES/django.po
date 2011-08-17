@@ -89,15 +89,15 @@ msgstr "Panel del cliente"
 
 #: dialer_campaign/admin.py:67
 #, python-format
-msgid "you have too many campaigns. Max allowed %s"
-msgstr "usted tiene demasiadas campañas. Máximo permitido de %s"
+msgid "you have too many campaigns. Max allowed %(limit)s"
+msgstr "usted tiene demasiadas campañas. Máximo permitido de %(limit)s"
 
 #: dialer_campaign/admin.py:121 dialer_campaign/admin.py:160
 #: dialer_campaign/views.py:1294 dialer_campaign/views.py:1428
 #, python-format
 msgid ""
-"You have too many contacts per campaign. You are allowed a maximum of %s"
-msgstr "Usted tiene demasiados contactos por campaña. Se permite un máximo de %s"
+"You have too many contacts per campaign. You are allowed a maximum of %(limit)s"
+msgstr "Usted tiene demasiados contactos por campaña. Se permite un máximo de %(limit)s"
 
 #: dialer_campaign/admin.py:213
 msgid "Contact already exists !!"
@@ -503,30 +503,30 @@ msgstr "Notificación Newfies - Marcador de configuración de usuario, el usuari
 #: dialer_campaign/views.py:1005 dialer_campaign/views.py:1307
 #: dialer_campaign/views.py:1759 voip_app/views.py:131
 #, python-format
-msgid "\"%s\" is added successfully."
-msgstr "\"%s\", se agregó correctamente."
+msgid "\"%(name)s\" is added successfully."
+msgstr "\"%(name)s\", se agregó correctamente."
 
 #: dialer_campaign/views.py:1052 dialer_campaign/views.py:1343
 #: dialer_campaign/views.py:1793 voip_app/views.py:164
 #, python-format
-msgid "\"%s\" is deleted successfully."
-msgstr "\"%s\" es eliminado con éxito."
+msgid "\"%(name)s\" is deleted successfully."
+msgstr "\"%(name)s\" es eliminado con éxito."
 
 #: dialer_campaign/views.py:1069
 #, python-format
-msgid "%d phonebook(s) are deleted successfully."
-msgstr "%d Agenda(s) se ha eliminado correctamente."
+msgid "%(count)s phonebook(s) are deleted successfully."
+msgstr "%(count)s Agenda(s) se ha eliminado correctamente."
 
 #: dialer_campaign/views.py:1099 dialer_campaign/views.py:1385
 #: dialer_campaign/views.py:1838 voip_app/views.py:206
 #, python-format
-msgid "\"%s\" is updated successfully."
-msgstr "\"%s\" se ha actualizado correctamente."
+msgid "\"%(name)s\" is updated successfully."
+msgstr "\"%(name)s\" se ha actualizado correctamente."
 
 #: dialer_campaign/views.py:1353
 #, python-format
-msgid "%d contact(s) are deleted successfully."
-msgstr "%d contacto(s) se ha eliminado correctamente."
+msgid "%(count)s contact(s) are deleted successfully."
+msgstr "%(count)s contacto(s) se ha eliminado correctamente."
 
 #: dialer_campaign/views.py:1479
 msgid "Subscriber is already exist !!"
@@ -544,13 +544,13 @@ msgstr "Con el fin de añadir una campaña, es necesario tener la configuración
 
 #: dialer_campaign/views.py:1743
 #, python-format
-msgid "you have too many campaign. Max allowed %s"
-msgstr "usted tiene la campaña de más. Máximo permitido de %s"
+msgid "you have too many campaign. Max allowed %(limit)s"
+msgstr "usted tiene la campaña de más. Máximo permitido de %(limit)s"
 
 #: dialer_campaign/views.py:1802
 #, python-format
-msgid "%d campaign(s) are deleted successfully."
-msgstr "%d la campaña(s) se ha eliminado correctamente."
+msgid "%(count)s campaign(s) are deleted successfully."
+msgstr "%(count)s la campaña(s) se ha eliminado correctamente."
 
 #: dialer_campaign/management/commands/create_contact.py:10
 msgid "\"phonebook_id|no_of_record\" \"phonebook_id|no_of_record\""
@@ -563,13 +563,13 @@ msgstr "Crea nuevos contactos para una agenda determinada y no de los registros"
 #: dialer_campaign/management/commands/create_contact.py:25
 #: dialer_campaign/management/commands/create_subscriber.py:25
 #, python-format
-msgid "Can't find this Phonebook : %s"
-msgstr "No se puede encontrar esta agenda : %s"
+msgid "Can't find this Phonebook : %(id)s"
+msgstr "No se puede encontrar esta agenda : %(id)s"
 
 #: dialer_campaign/management/commands/create_contact.py:36
 #, python-format
-msgid "No of Contact created : %d"
-msgstr "No de Contacto creado : %d"
+msgid "No of Contact created : %(count)s"
+msgstr "No de Contacto creado : %(count)s"
 
 #: dialer_campaign/management/commands/create_contact.py:38
 #: dialer_campaign/management/commands/create_subscriber.py:33
@@ -586,8 +586,8 @@ msgstr "Crea un nuevo contacto para un número del telefóno dada y la agenda"
 
 #: dialer_campaign/management/commands/create_subscriber.py:36
 #, python-format
-msgid "Contact created id:%s"
-msgstr "Contacto Identificación de creación:%s"
+msgid "Contact created id:%(id)s"
+msgstr "Contacto Identificación de creación:%(id)s"
 
 #: dialer_campaign/management/commands/create_subscriber.py:41
 msgid "Can't find a Campaign with this phonebook"
@@ -595,8 +595,8 @@ msgstr "No se puede encontrar una campaña con esta agenda"
 
 #: dialer_campaign/management/commands/create_subscriber.py:44
 #, python-format
-msgid "Launch Task : collect_subscriber(%s)"
-msgstr "Ejecución de la tarea: collect_subscriber(%s)"
+msgid "Launch Task : collect_subscriber(%(id)s)"
+msgstr "Ejecución de la tarea: collect_subscriber(%(id)s)"
 
 #: dialer_cdr/admin.py:42 dialer_cdr/admin.py:177
 #: templates/admin/dialer_cdr/voipcall/change_list.html:14

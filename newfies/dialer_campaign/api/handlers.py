@@ -508,7 +508,7 @@ class campaignHandler(BaseHandler):
         """
         if user_attached_with_dilaer_settings(request):
             resp = rc.BAD_REQUEST
-            resp.write("Your settings aren`t configured properly, \
+            resp.write("Your settings are not configured properly, \
                  Please contact the administrator.")
             return resp
         attrs = self.flatten_dict(request.POST)

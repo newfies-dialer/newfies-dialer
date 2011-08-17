@@ -532,8 +532,12 @@ msgid "Subscriber is already exist !!"
 msgstr "El suscriptor es que ya existen!"
 
 #: dialer_campaign/views.py:1494
+<<<<<<< HEAD
 msgid ""
 "%(contact_record_count)s Contact(s) are uploaded successfully out of "
+=======
+msgid "%(contact_record_count)s Contact(s) are uploaded successfully out of "
+>>>>>>> afefe43acf4f33eb07b1c1c21aab1d1d36e1c826
 "%(total_rows)s row(s) !!"
 msgstr "%(contact_record_count)s Contacto(s) se cargan con éxito de %(total_rows)s fila(s)!"
 
@@ -1756,3 +1760,7 @@ msgstr "Aplicaciones VoIP"
 msgid "%d voipapp(s) are deleted successfully."
 msgstr "%d voipapp(s) se ha eliminado correctamente."
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> afefe43acf4f33eb07b1c1c21aab1d1d36e1c826

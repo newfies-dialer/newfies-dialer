@@ -880,7 +880,7 @@ def notify_admin(request):
         # Send mail to ADMINS
         subject = _('Dialer setting configuration')
         message = \
-        _('Newfies Notification - User Dialer Setting The user "%(user)" - "%(user_id)" is not configured properly to use your system, please configure his dialer settings.' %\
+        _('Newfies Notification - User Dialer Setting The user "%(user)s" - "%(user_id)s" is not configured properly to use your system, please configure his dialer settings.' %\
           {'user': request.user, 'user_id': request.user.id})
         # mail_admins() is a shortcut for sending an email to the site admins,
         # as defined in the ADMINS setting
@@ -1491,7 +1491,7 @@ def contact_import(request):
                                   additional_vars=row[6])
                             contact_record_count = \
                                 contact_record_count + 1
-                            msg = _('%(contact_record_count) Contact(s) are uploaded successfully out of %(total_rows) row(s) !!' \
+                            msg = _('%(contact_record_count)s Contact(s) are uploaded successfully out of %(total_rows)s row(s) !!' \
                             % {'contact_record_count': contact_record_count,
                                'total_rows': total_rows}) # (contact_record_count, total_rows)
 

@@ -108,7 +108,7 @@ msgstr "Contacto ya existe!"
 msgid ""
 "%(contact_record_count)s Contact(s) are uploaded successfully out of "
 "%(total_rows)s row(s) !!"
-msgstr "%(contact_record_count)s Contact (s) son uploaded éxito de %(total_rows)s fila(s)!"
+msgstr "%(contact_record_count)s Contact(s) son uploaded éxito de %(total_rows)s fila(s)!"
 
 #: dialer_campaign/admin.py:235
 msgid "Error : invalid value for import! Please look at the import samples."
@@ -494,10 +494,10 @@ msgstr "Marcador de los valores de configuración"
 
 #: dialer_campaign/views.py:883
 msgid ""
-"Newfies Notification - User Dialer Setting The user \"%(user)\" - "
-"\"%(user_id)\" is not configured properly to use your system, please "
+"Newfies Notification - User Dialer Setting The user \"%(user)s\" - "
+"\"%(user_id)s\" is not configured properly to use your system, please "
 "configure his dialer settings."
-msgstr "Notificación Newfies - Marcador de configuración de usuario, el usuario \"% (usuario)\" - \"% (user_id)\" no está correctamente configurado para usar su sistema, configurar sus ajustes marcador."
+msgstr "Notificación Newfies - Marcador de configuración de usuario, el usuario \"%(user)s\" - \"%(user_id)s\" no está correctamente configurado para usar su sistema, configurar sus ajustes marcador."
 
 #: dialer_campaign/views.py:1005 dialer_campaign/views.py:1307
 #: dialer_campaign/views.py:1759 voip_app/views.py:131
@@ -533,9 +533,9 @@ msgstr "El suscriptor es que ya existen!"
 
 #: dialer_campaign/views.py:1494
 msgid ""
-"%(contact_record_count) Contact(s) are uploaded successfully out of "
-"%(total_rows) row(s) !!"
-msgstr "%(contact_record_count) Contacto(s) se cargan con éxito de %(total_rows) fila(s)!"
+"%(contact_record_count)s Contact(s) are uploaded successfully out of "
+"%(total_rows)s row(s) !!"
+msgstr "%(contact_record_count)s Contacto(s) se cargan con éxito de %(total_rows)s fila(s)!"
 
 #: dialer_campaign/views.py:1501
 msgid "Invalid value for import! Please look at the import samples."
@@ -1754,5 +1754,5 @@ msgstr "Aplicaciones VoIP"
 #: voip_app/views.py:176
 #, python-format
 msgid "%d voipapp(s) are deleted successfully."
-msgstr "%d voipapp (s) se ha eliminado correctamente."
+msgstr "%d voipapp(s) se ha eliminado correctamente."
 

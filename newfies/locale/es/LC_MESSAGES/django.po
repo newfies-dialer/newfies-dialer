@@ -1300,6 +1300,10 @@ msgid "Do not call"
 msgstr ""
 
 #: dialer_campaign/views.py:1929
+msgid "DNC"
+msgstr ""
+
+#: dialer_campaign/views.py:1929
 msgid "Busy"
 msgstr "Ocupado"
 
@@ -1367,9 +1371,37 @@ msgstr ""
 msgid "Forb"
 msgstr ""
 
-#: dialer_campaign/views.py:1929
-msgid "DNC"
-msgstr ""
+#: dialer_campaign/views.py:2021
+msgid "Total Campaigns:"
+msgstr "Total campañas:"
+
+#: dialer_campaign/views.py:2022
+msgid "Active:"
+msgstr "Activo:"
+
+#: dialer_campaign/views.py:2022
+msgid "Paused:"
+msgstr "Pausa:"
+
+#: dialer_campaign/views.py:2022
+msgid "Aborted:"
+msgstr "Abortado:"
+
+#: dialer_campaign/views.py:2022
+msgid "Stoped:"
+msgstr "Stoped:"
+
+#: dialer_campaign/views.py:2088
+msgid "Total User:"
+msgstr "Total usuario:"
+
+#: dialer_campaign/views.py:2088
+msgid "Active User:"
+msgstr "Activo usuario:"
+
+#: dialer_campaign/views.py:2088
+msgid "None Active User:"
+msgstr "None Activo usuario:"
 
 #: templates/frontend/dashboard.html:261
 msgid "ANSWERED"

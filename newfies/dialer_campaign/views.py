@@ -2018,11 +2018,11 @@ def admin_campaign_report(request):
     total_stop_campaigns_count = campaigns.filter(status=4).count()
 
     data = '<ul>'
-    data += '<li><b>Total Campaigns: ' + str(total_campaigns_count) + '</b> | '
-    data += 'Active: ' + str(total_active_campaigns_count) + ' |\
-             Paused: ' + str(total_pause_campaigns_count) + ' | \
-             Aborted: ' + str(total_abort_campaigns_count) + ' | \
-             Stoped: ' + str(total_stop_campaigns_count) + '</li>'
+    data += '<li><b>'+_('Total Campaigns:') + str(total_campaigns_count) + '</b> | '
+    data += _('Active:') + str(total_active_campaigns_count) + ' |\
+             '+_('Paused:') + str(total_pause_campaigns_count) + ' | \
+             '+_('Aborted:') + str(total_abort_campaigns_count) + ' | \
+             '+_('Stoped:') + str(total_stop_campaigns_count) + '</li>'
     data += '</ul>'
     #print data
     return HttpResponse(data, mimetype='application/html',
@@ -2085,9 +2085,9 @@ def admin_user_report(request):
 
 
     data = '<ul>'
-    data += '<li><b>Total User: ' + str(total_user_count) + '</b> | \
-                 Active User: ' + str(total_active_user_count) + ' | \
-                 None Active User: ' + str(total_not_active_user_count) + '</li>'
+    data += '<li><b>'+ _('Total User:') + str(total_user_count) + '</b> | \
+                 '+_('Active User:') + str(total_active_user_count) + ' | \
+                 '+_('None Active User:') + str(total_not_active_user_count) + '</li>'
     data += '</ul>'
     #print data
     return HttpResponse(data, mimetype='application/html',

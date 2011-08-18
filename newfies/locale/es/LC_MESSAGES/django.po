@@ -279,6 +279,19 @@ msgstr "Todos"
 msgid "Campaign"
 msgstr "Campaña"
 
+#: templates/frontend/campaign/list.html:54
+msgid "Campaign code"
+msgstr "Campaña code"
+
+#: templates/frontend/campaign/list.html:56
+msgid "Start date"
+msgstr ""
+
+#: templates/frontend/campaign/list.html:57
+msgid "End date"
+msgstr ""
+
+
 #: dialer_campaign/forms.py:250
 msgid "Type"
 msgstr "Tipo"
@@ -310,6 +323,7 @@ msgid "Phonebooks"
 msgstr "Telefónicos"
 
 #: dialer_campaign/models.py:85 dialer_campaign/models.py:132
+#: templates/frontend/campaign/list.html:60
 msgid "Contacts"
 msgstr "Contactos"
 
@@ -335,7 +349,7 @@ msgstr "Fecha"
 msgid "Contact"
 msgstr "Contacto"
 
-#: dialer_campaign/models.py:142
+#: dialer_campaign/models.py:142 templates/frontend/campaign/list.html:55
 msgid "Name"
 msgstr "Nombre"
 
@@ -412,7 +426,7 @@ msgstr "Tiempo de espera de llamadas"
 msgid "Define the number of seconds to timeout on calls"
 msgstr "Definir el número de segundos de tiempo de espera en las llamadas"
 
-#: dialer_campaign/models.py:307
+#: dialer_campaign/models.py:307 templates/frontend/campaign/list.html:58
 msgid "A-Leg Gateway"
 msgstr "A-Leg Gateway"
 
@@ -433,10 +447,12 @@ msgid "Additional application parameters."
 msgstr "Parámetros adicionales de la aplicación."
 
 #: dialer_campaign/models.py:332
+#: templates/frontend/campaign/list.html:72
 msgid "Campaigns"
 msgstr "Campañas"
 
 #: dialer_campaign/models.py:381
+#: templates/frontend/campaign/list.html:62
 msgid "Action"
 msgstr "Acción"
 
@@ -470,6 +486,7 @@ msgstr "Contar con los intentos de"
 
 #: dialer_campaign/models.py:554
 #: templates/frontend/registration/user_detail_change.html:89
+#: templates/frontend/campaign/list.html:61
 msgid "Status"
 msgstr "Estado"
 
@@ -1020,6 +1037,7 @@ msgstr "CONTACTO DE ESTADO = ('1'-'ACTIVE') ('0'-'INACTIVE')"
 #: templates/frontend/contact/import_contact.html:69
 #: templates/frontend/phonebook/change.html:31
 #: templates/frontend/voipapp/change.html:31
+#: templates/frontend/dashboard.html:49
 msgid "Submit"
 msgstr "Presentar"
 
@@ -1059,6 +1077,7 @@ msgstr "Detalle de llamadas Informe de Síntesis"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:113
 #: templates/frontend/report/voipcall_report.html:113
+#: templates/frontend/dashboard.html:150
 msgid "Duration"
 msgstr "Duración"
 
@@ -1171,11 +1190,20 @@ msgstr "Aplicación VoIP"
 
 #: templates/admin_tools/dashboard/modules/app_list.html:50
 #: templates/frontend/campaign/change.html:25
+#: templates/frontend/campaign/list.html:65
 #: templates/frontend/contact/change.html:18
 #: templates/frontend/phonebook/change.html:12
 #: templates/frontend/voipapp/change.html:12
 msgid "Add"
 msgstr "Añadir"
+
+#: templates/frontend/campaign/list.html:67
+msgid "Delete Selected"
+msgstr "Borrar"
+
+#: templates/frontend/campaign/list.html:19
+msgid "you are going to delete a campaign"
+msgstr "you are going to borrar a campaign"
 
 #: templates/admin_tools/dashboard/modules/app_list.html:51
 msgid "Change"
@@ -1208,6 +1236,10 @@ msgstr "Duración:"
 #: templates/frontend/dashboard.html:117
 msgid "ACT :"
 msgstr "ACT:"
+
+#: templates/frontend/dashboard.html:149
+msgid "Call Count"
+msgstr "llamada contar con"
 
 #: templates/frontend/dashboard.html:251
 msgid "TOTAL CALLS"
@@ -1363,6 +1395,7 @@ msgstr "Newfies es un software bajo licencia"
 #: templates/frontend/menu.html:9 templates/frontend/voipapp/change.html:13
 #: templates/frontend/voipapp/change.html:18
 #: templates/frontend/voipapp/list.html:6
+#: templates/frontend/campaign/list.html:59
 msgid "VoIP App"
 msgstr "VoIP App"
 

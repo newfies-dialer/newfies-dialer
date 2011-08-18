@@ -43,6 +43,7 @@ urlpatterns = patterns('',
     (r'^api/dialer_campaign/', include('dialer_campaign.api.urls')),
 
     (r'^i18n/', include('django.conf.urls.i18n')),
+    (r'^jsi18n/(?P<packages>\S+?)/$', 'django.views.i18n.javascript_catalog'),
 
     (r'^admin_tools/', include('admin_tools.urls')),
 

@@ -46,7 +46,7 @@
 <form method="POST" action="." id="id_searchform" name="searchform" enctype="multipart/form-data">{% csrf_token %}
     <p>
         {{ form.campaign.label }} {{ form.campaign }} {{ form.search_type }}
-        <input type="submit" name="submit" value="Submit">
+        <input type="submit" name="submit" value="{% trans "Submit" %}">
     </p>
 
 <P>
@@ -146,8 +146,8 @@
 
 </script>
 <br/>
-<input type="submit" value="Call Count" name="call_count_button"/> /
-<input type="submit" value="Duration" name="duration_button"/>
+<input type="submit" value="{% trans "Call Count" %}" name="call_count_button"/> /
+<input type="submit" value="{% trans "Duration" %}" name="duration_button"/>
 </form>
 
 {% if total_data %}

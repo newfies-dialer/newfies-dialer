@@ -75,6 +75,11 @@ $("#flex1").flexigrid({
 	showTableToggleBtn: true,
 	width: 1010,
 	height: 265,
+    pagetext: '{% trans "Page" %}',
+    outof: '{% trans "of" %}',
+    nomsg: '{% trans "No items" %}',
+    procmsg: '{% trans "Processing, please wait ..." %}',
+    pagestat: '{% trans "Displaying" %} {from} {% trans "to" %} {to} {% trans "of" %} {total} {% trans "items" %}',
     //preProcess: formatContactResults,
     onSuccess: function(data){
         //alert(data);        

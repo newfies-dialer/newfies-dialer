@@ -271,6 +271,53 @@ msgstr "Activo"
 msgid "All"
 msgstr "Todos"
 
+#: templates/frontend/campaign/list.html:78
+#: templates/frontend/contact/list.html:120
+#: templates/frontend/phonebook/list.html:84
+#: templates/frontend/report/voipcall_report.html:93
+msgid "Page"
+msgstr "página"
+
+#: templates/frontend/campaign/list.html:79
+#: templates/frontend/contact/list.html:121
+#: templates/frontend/phonebook/list.html:85
+#: templates/frontend/report/voipcall_report.html:94
+#: templates/frontend/campaign/list.html:82
+#: templates/frontend/contact/list.html:124
+#: templates/frontend/phonebook/list.html:88
+#: templates/frontend/report/voipcall_report.html:97
+msgid "of"
+msgstr "of"
+
+#: templates/frontend/campaign/list.html:80
+#: templates/frontend/contact/list.html:122
+#: templates/frontend/phonebook/list.html:86
+#: templates/frontend/report/voipcall_report.html:95
+msgid "No items"
+msgstr "página"
+
+#: templates/frontend/campaign/list.html:81
+#: templates/frontend/contact/list.html:123
+#: templates/frontend/phonebook/list.html:87
+#: templates/frontend/report/voipcall_report.html:96
+msgid "Processing, please wait ..."
+msgstr ""
+
+#: templates/frontend/campaign/list.html:82
+#: templates/frontend/contact/list.html:124
+#: templates/frontend/phonebook/list.html:88
+#: templates/frontend/report/voipcall_report.html:97
+msgid "Displaying"
+msgstr ""
+
+msgid "to"
+msgstr ""
+
+msgid "items"
+msgstr ""
+
+
+
 #: dialer_campaign/forms.py:249 dialer_campaign/models.py:332
 #: templates/frontend/dashboard.html:65 templates/frontend/menu.html:6
 #: templates/frontend/campaign/change.html:26

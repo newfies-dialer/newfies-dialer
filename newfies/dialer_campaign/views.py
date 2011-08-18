@@ -12,7 +12,7 @@ from django.core.urlresolvers import reverse
 from django.core.mail import send_mail, mail_admins
 from django.conf import settings
 from django.template.context import RequestContext
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.db.models import Q
 from notification import models as notification

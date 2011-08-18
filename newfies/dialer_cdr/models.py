@@ -27,17 +27,17 @@ CALLREQUEST_TYPE = (
 )
 
 VOIPCALL_DISPOSITION = (
-    ('ANSWER', _('ANSWER')),
-    ('BUSY', _('BUSY')),
-    ('NOANSWER', _('NOANSWER')),
-    ('CANCEL', _('CANCEL')),
-    ('CONGESTION', _('CONGESTION')),
-    ('CHANUNAVAIL', _('CHANUNAVAIL')),
-    ('DONTCALL', _('DONTCALL')),
-    ('TORTURE', _('TORTURE')),
-    ('INVALIDARGS', _('INVALIDARGS')),
-    ('NOROUTE', _('NOROUTE')),
-    ('FORBIDDEN', _('FORBIDDEN')),
+    ('ANSWER', u'ANSWER'),
+    ('BUSY', u'BUSY'),
+    ('NOANSWER', u'NOANSWER'),
+    ('CANCEL', u'CANCEL'),
+    ('CONGESTION', u'CONGESTION'),
+    ('CHANUNAVAIL', u'CHANUNAVAIL'),
+    ('DONTCALL', u'DONTCALL'),
+    ('TORTURE', u'TORTURE'),
+    ('INVALIDARGS', u'INVALIDARGS'),
+    ('NOROUTE', u'NOROUTE'),
+    ('FORBIDDEN', u'FORBIDDEN'),
 )
 
 

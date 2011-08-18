@@ -10,6 +10,8 @@ from dialer_cdr.urls import urlpatterns as urlpatterns_dialer_cdr
 from user_profile.urls import urlpatterns as urlpatterns_user_profile
 from voip_app.urls import urlpatterns as urlpatterns_voip_app
 
+#js_info_dict = { 'domain': 'djangojs', 'packages': ('newfies',), }
+#, js_info_dict
 
 urlpatterns = patterns('',
     # redirect

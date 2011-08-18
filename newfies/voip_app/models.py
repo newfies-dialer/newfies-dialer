@@ -10,10 +10,10 @@ APP_STATUS = (
 )
 
 APP_TYPE = (
-    (1, _('DIAL')),
-    (2, _('PLAYAUDIO')),
-    (3, _('CONFERENCE')),
-    (4, _('SPEAK')),
+    (1, u'DIAL'),
+    (2, u'PLAYAUDIO'),
+    (3, u'CONFERENCE'),
+    (4, u'SPEAK'),
 )
 
 
@@ -43,7 +43,7 @@ class VoipApp(Model):
     description = models.TextField(null=True, blank=True,
                          help_text=_("Description about the Voip Application"))
     type = models.IntegerField(max_length=20, choices=APP_TYPE, default='1',
-           blank=True, null=True)
+           blank=True, null=True, verbose_name=_('Type'))
     gateway = models.ForeignKey(Gateway, null=True, blank=True,
                     help_text=_("Gateway used if we redirect the call"))
     data = models.CharField(max_length=500, blank=True,

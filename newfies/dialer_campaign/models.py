@@ -509,7 +509,7 @@ class Campaign(Model):
         app_label = self._meta.app_label
         link = '/admin/%s/%s/' % (app_label, model_name)
         link += '?campaign__id=%d' % self.id # &status__exact=5
-        display_link = "<a href='%s'>" % (link) + "Details</a>"
+        display_link = "<a href='%s'>" % link + "Details</a>"
         return display_link
     campaignsubscriber_detail.allow_tags = True
     campaignsubscriber_detail.short_description = _('Campaign Subscriber')

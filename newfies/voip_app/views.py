@@ -73,8 +73,8 @@ def voipapp_grid(request):
                       '<a href="del/' + str(row['id']) + '/" class="icon" ' \
                       + delete_style + ' onClick="return get_alert_msg(' +
                       str(row['id']) +
-                      ');"  title="Delete VoIP App">&nbsp;</a>']}\
-                      for row in voipapp_list]
+                      ');"  title="Delete VoIP App">&nbsp;</a>'
+                      ]} for row in voipapp_list]
 
     data = {'rows': rows,
             'page': page,

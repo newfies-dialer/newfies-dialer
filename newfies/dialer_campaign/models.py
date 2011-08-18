@@ -279,13 +279,13 @@ class Campaign(Model):
                        help_text=_("Time Format: HH:MM:SS"))
     daily_stop_time = models.TimeField(default='23:59:59',
                       help_text=_("Time Format: HH:MM:SS"))
-    monday = models.BooleanField(default=True)
-    tuesday = models.BooleanField(default=True)
-    wednesday = models.BooleanField(default=True)
-    thursday = models.BooleanField(default=True)
-    friday = models.BooleanField(default=True)
-    saturday = models.BooleanField(default=True)
-    sunday = models.BooleanField(default=True)
+    monday = models.BooleanField(default=True, verbose_name=_('Monday'))
+    tuesday = models.BooleanField(default=True, verbose_name=_('Tuesday'))
+    wednesday = models.BooleanField(default=True, verbose_name=_('Wednesday'))
+    thursday = models.BooleanField(default=True, verbose_name=_('Thursday'))
+    friday = models.BooleanField(default=True, verbose_name=_('Friday'))
+    saturday = models.BooleanField(default=True, verbose_name=_('Saturday'))
+    sunday = models.BooleanField(default=True, verbose_name=_('Sunday'))
     #Campaign Settings
     frequency = models.IntegerField(default='10', blank=True, null=True, verbose_name=_('Frequency'),
     help_text=_("Define the frequency, speed of the campaign. This is the number of calls per minute."))

@@ -1925,7 +1925,6 @@ def admin_call_report(request):
     data = '<ul><li>'
     data += '<b>' + _('Total Calls:')  + str(total_call_count) + ' | \
             '+ _('Total Duration:') + str(total_duration_sum) + '</b><br/>'
-            
     data += '<abbr title="'+_('Answered')+'">' + _('Ans') + '</abbr>: ' + str(total_answered) + ' | \
             <abbr title="'+_('Do not call')+'">' + _('DNC') + '</abbr>: ' + str(total_dontcall) + ' | \
             <abbr title="'+_('Busy')+'">'+ _('Busy') + '</abbr>: ' + str(total_busy) + ' | \

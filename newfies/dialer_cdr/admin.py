@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.conf.urls.defaults import *
 from django.http import HttpResponse
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.db.models import *
 from dialer_cdr.models import *
 from dialer_cdr.forms import *

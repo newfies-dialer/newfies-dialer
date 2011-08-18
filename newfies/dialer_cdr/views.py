@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.db.models import *
 from django.template.context import RequestContext
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.utils import simplejson
 from dialer_campaign.views import current_view, notice_count
 from dialer_campaign.function_def import user_dialer_setting_msg

@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from prefix_country.models import Country
 from dialer_campaign.models import Phonebook, Campaign, Contact, CAMPAIGN_STATUS
 from user_profile.models import UserProfile

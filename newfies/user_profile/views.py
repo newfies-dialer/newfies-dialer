@@ -5,7 +5,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.db.models import *
 from django.template.context import RequestContext
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from notification import models as notification
 from dialer_campaign.models import common_contact_authorization
 from dialer_campaign.views import current_view, notice_count

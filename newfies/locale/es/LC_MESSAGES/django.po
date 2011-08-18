@@ -1279,9 +1279,102 @@ msgstr "llamada contar con"
 msgid "TOTAL CALLS"
 msgstr "Total de llamadas"
 
+#: dialer_campaign/views.py:1926
+msgid "Total Calls:"
+msgstr "Total de llamadas:"
+
+#: dialer_campaign/views.py:1926
+msgid "Total Duration:"
+msgstr "Total de Duración:"
+
+#: dialer_campaign/views.py:1929
+msgid "Answered"
+msgstr "Respuesta"
+
+#: dialer_campaign/views.py:1929
+msgid "Ans"
+msgstr "Res"
+
+#: dialer_campaign/views.py:1929
+msgid "Do not call"
+msgstr ""
+
+#: dialer_campaign/views.py:1929
+msgid "Busy"
+msgstr "Ocupado"
+
+#: dialer_campaign/views.py:1929
+msgid "Not Answered"
+msgstr ""
+
+#: dialer_campaign/views.py:1929
+msgid "NA"
+msgstr ""
+
+#: dialer_campaign/views.py:1929
+msgid "Canceled"
+msgstr ""
+
+#: dialer_campaign/views.py:1929
+msgid "Canc"
+msgstr ""
+
+#: dialer_campaign/views.py:1929
+msgid "ChanUnavail"
+msgstr ""
+
+#: dialer_campaign/views.py:1929
+msgid "CU"
+msgstr ""
+
+#: dialer_campaign/views.py:1929
+msgid "Torture"
+msgstr ""
+
+#: dialer_campaign/views.py:1929
+msgid "Tort"
+msgstr ""
+
+#: dialer_campaign/views.py:1929
+msgid "Invalid Args"
+msgstr ""
+
+#: dialer_campaign/views.py:1929
+msgid "Inv"
+msgstr ""
+
+#: dialer_campaign/views.py:1929
+msgid "No Route"
+msgstr ""
+
+#: dialer_campaign/views.py:1929
+msgid "NoRo"
+msgstr ""
+
+#: dialer_campaign/views.py:1929
+msgid "Congestion"
+msgstr ""
+
+#: dialer_campaign/views.py:1929
+msgid "Cong"
+msgstr ""
+
+#: dialer_campaign/views.py:1929
+msgid "Forbiden"
+msgstr ""
+
+#: dialer_campaign/views.py:1929
+msgid "Forb"
+msgstr ""
+
+#: dialer_campaign/views.py:1929
+msgid "DNC"
+msgstr ""
+
 #: templates/frontend/dashboard.html:261
 msgid "ANSWERED"
 msgstr "RESPUESTA"
+
 
 #: templates/frontend/index.html:6 templates/frontend/index.html.py:21
 #: templates/frontend/menu.html:12

@@ -1923,20 +1923,20 @@ def admin_call_report(request):
 
 
     data = '<ul><li>'
-    data += '<b>Total Calls: ' + str(total_call_count) + ' | \
-            Total Duration: ' + str(total_duration_sum) + '</b><br/>'
+    data += '<b>' + _('Total Calls:')  + str(total_call_count) + ' | \
+            '+ _('Total Duration:') + str(total_duration_sum) + '</b><br/>'
             
-    data += '<abbr title="Answered">Ans</abbr>: ' + str(total_answered) + ' | \
-            <abbr title="Do not call">DNC</abbr>: ' + str(total_dontcall) + ' | \
-            <abbr title="Busy">Busy</abbr>: ' + str(total_busy) + ' | \
-            <abbr title="Not Answered">NA</abbr>: ' + str(total_not_answered) + '| \
-            <abbr title="Canceled">Canc</abbr>: ' + str(total_cancel) + ' | \
-            <abbr title="ChanUnavail">CU</abbr>: ' + str(total_chanunavail) + ' | \
-            <abbr title="Torture">Tort</abbr>: ' + str(total_torture) + ' | \
-            <abbr title="Invalid Args">Inv</abbr>: ' + str(total_invalidargs) + ' | \
-            <abbr title="No Route">NoRo</abbr>: ' + str(total_noroute) + ' | \
-            <abbr title="Congestion">Cong</abbr>: ' + str(total_congestion) + ' | \
-            <abbr title="Forbiden">Forb</abbr>: ' + str(total_forbiden)
+    data += '<abbr title="'+_('Answered')+'">' + _('Ans') + '</abbr>: ' + str(total_answered) + ' | \
+            <abbr title="'+_('Do not call')+'">' + _('DNC') + '</abbr>: ' + str(total_dontcall) + ' | \
+            <abbr title="'+_('Busy')+'">'+ _('Busy') + '</abbr>: ' + str(total_busy) + ' | \
+            <abbr title="'+_('Not Answered')+'">' + _('NA') + '</abbr>: ' + str(total_not_answered) + '| \
+            <abbr title="'+_('Canceled')+'">' + _('Canc') + '</abbr>: ' + str(total_cancel) + ' | \
+            <abbr title="'+_('ChanUnavail')+'">' + _('CU') + '</abbr>: ' + str(total_chanunavail) + ' | \
+            <abbr title="'+_('Torture')+'">' + _('Tort') + '</abbr>: ' + str(total_torture) + ' | \
+            <abbr title="'+_('Invalid Args')+'">' + _('Inv') + '</abbr>: ' + str(total_invalidargs) + ' | \
+            <abbr title="'+_('No Route')+'">' + _('NoRo') + '</abbr>: ' + str(total_noroute) + ' | \
+            <abbr title="'+_('Congestion')+'">' + _('Cong') + '</abbr>: ' + str(total_congestion) + ' | \
+            <abbr title="'+_('Forbiden')+'">' + _('Forb') + '</abbr>: ' + str(total_forbiden)
     data += '</li></ul>'
     #print data
     return HttpResponse(data, mimetype='application/html',

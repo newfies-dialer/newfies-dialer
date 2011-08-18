@@ -271,7 +271,7 @@ msgstr "Activo"
 msgid "All"
 msgstr "Todos"
 
-#: dialer_campaign/forms.py:249 dialer_campaign/models.py:331
+#: dialer_campaign/forms.py:249 dialer_campaign/models.py:332
 #: templates/frontend/dashboard.html:65 templates/frontend/menu.html:6
 #: templates/frontend/campaign/change.html:26
 #: templates/frontend/campaign/change.html:31
@@ -323,27 +323,27 @@ msgstr "Notas de la agenda"
 msgid "Phonebooks"
 msgstr "Telefónicos"
 
-#: dialer_campaign/models.py:85 dialer_campaign/models.py:132
+#: dialer_campaign/models.py:85 dialer_campaign/models.py:134
 #: templates/frontend/campaign/list.html:60
 msgid "Contacts"
 msgstr "Contactos"
 
-#: dialer_campaign/models.py:120
+#: dialer_campaign/models.py:122
 msgid "Contact Notes"
 msgstr "Notas de contacto"
 
-#: dialer_campaign/models.py:124
+#: dialer_campaign/models.py:126
 msgid "Additional parameters"
 msgstr "Parámetros adicionales"
 
-#: dialer_campaign/models.py:126
+#: dialer_campaign/models.py:128
 #: templates/admin/dialer_cdr/voipcall/change_list.html:112
 #: templates/frontend/report/voipcall_report.html:112
 msgid "Date"
 msgstr "Fecha"
 
-#: dialer_campaign/models.py:131 dialer_campaign/models.py:397
-#: dialer_campaign/models.py:552 templates/frontend/menu.html:8
+#: dialer_campaign/models.py:133 dialer_campaign/models.py:399
+#: dialer_campaign/models.py:555 templates/frontend/menu.html:8
 #: templates/frontend/contact/change.html:19
 #: templates/frontend/contact/change.html:23
 #: templates/frontend/contact/list.html:6
@@ -368,7 +368,7 @@ msgstr "Este código se genera automáticamente por la plataforma, esta se utili
 msgid "Short description of the Campaign"
 msgstr "Breve descripción de la Campaña"
 
-#: dialer_campaign/models.py:264 dialer_cdr/models.py:108
+#: dialer_campaign/models.py:266 dialer_cdr/models.py:108
 msgid "CallerID"
 msgstr "CallerID"
 
@@ -376,70 +376,70 @@ msgstr "CallerID"
 msgid "CallerID used to call the A-Leg"
 msgstr "CallerID utiliza para llamar a la A-Leg"
 
-#: dialer_campaign/models.py:268
+#: dialer_campaign/models.py:270
 msgid "Start"
 msgstr "Comienzo"
 
-#: dialer_campaign/models.py:269 dialer_campaign/models.py:274
+#: dialer_campaign/models.py:271 dialer_campaign/models.py:276
 msgid "Date Format: YYYY-mm-DD HH:MM:SS"
 msgstr "Formato de fecha: YYYY-mm-DD HH:MM:SS"
 
-#: dialer_campaign/models.py:273
+#: dialer_campaign/models.py:275
 msgid "Finish"
 msgstr "Terminar"
 
-#: dialer_campaign/models.py:277 dialer_campaign/models.py:279
+#: dialer_campaign/models.py:279 dialer_campaign/models.py:281
 msgid "Time Format: HH:MM:SS"
 msgstr "Formato de hora: HH:MM:SS"
 
-#: dialer_campaign/models.py:289
+#: dialer_campaign/models.py:291
 msgid ""
 "Define the frequency, speed of the campaign. This is the number of calls per "
 "minute."
 msgstr "Definir la frecuencia, la velocidad de la campaña. Este es el número de llamadas por minuto."
 
-#: dialer_campaign/models.py:293
+#: dialer_campaign/models.py:295
 msgid ""
 "Define the call's duration maximum. (Value in seconds 1800 = 30 minutes)"
 msgstr "Definir el máximo de la llamada duración. (Valor en segundos 1800 = 30 minutos)"
 
-#: dialer_campaign/models.py:296 dialer_settings/models.py:35
+#: dialer_campaign/models.py:298 dialer_settings/models.py:35
 msgid "Max Retries"
 msgstr "Max reintentos"
 
-#: dialer_campaign/models.py:297
+#: dialer_campaign/models.py:299
 msgid "Define the max retries allowed per user."
 msgstr "Definir los intentos máximo permitido por usuario."
 
-#: dialer_campaign/models.py:299
+#: dialer_campaign/models.py:301
 msgid "Time between Retries"
 msgstr "Tiempo entre reintentos"
 
-#: dialer_campaign/models.py:300
+#: dialer_campaign/models.py:302
 msgid "Define the time to wait between retries in seconds"
 msgstr "Definir el tiempo de espera entre reintentos en cuestión de segundos"
 
-#: dialer_campaign/models.py:303 dialer_settings/models.py:38
+#: dialer_campaign/models.py:305 dialer_settings/models.py:38
 msgid "Timeout on Call"
 msgstr "Tiempo de espera de llamadas"
 
-#: dialer_campaign/models.py:304
+#: dialer_campaign/models.py:306
 msgid "Define the number of seconds to timeout on calls"
 msgstr "Definir el número de segundos de tiempo de espera en las llamadas"
 
-#: dialer_campaign/models.py:307 templates/frontend/campaign/list.html:58
+#: dialer_campaign/models.py:309 templates/frontend/campaign/list.html:58
 msgid "A-Leg Gateway"
 msgstr "A-Leg Gateway"
 
-#: dialer_campaign/models.py:309
+#: dialer_campaign/models.py:311
 msgid "Select gateway to use for this campaign"
 msgstr "Seleccione puerta de entrada a utilizar para esta campaña"
 
-#: dialer_campaign/models.py:313 dialer_cdr/models.py:127
+#: dialer_campaign/models.py:315 dialer_cdr/models.py:127
 msgid "Select VoIP Application to use with this campaign"
 msgstr "Seleccione la aplicación VoIP para usar con esta campaña"
 
-#: dialer_campaign/models.py:316
+#: dialer_campaign/models.py:318
 msgid "Extra Parameters"
 msgstr "Los parámetros adicionales"
 
@@ -447,29 +447,29 @@ msgstr "Los parámetros adicionales"
 msgid "Additional application parameters."
 msgstr "Parámetros adicionales de la aplicación."
 
-#: dialer_campaign/models.py:332
+#: dialer_campaign/models.py:334
 #: templates/frontend/campaign/list.html:72
 msgid "Campaigns"
 msgstr "Campañas"
 
-#: dialer_campaign/models.py:381
+#: dialer_campaign/models.py:383
 #: templates/frontend/campaign/list.html:62
 msgid "Action"
 msgstr "Acción"
 
-#: dialer_campaign/models.py:393
+#: dialer_campaign/models.py:395
 msgid "Phonebook Empty"
 msgstr "Agenda vacía"
 
-#: dialer_campaign/models.py:501
+#: dialer_campaign/models.py:503
 msgid "Progress"
 msgstr "Progreso"
 
-#: dialer_campaign/models.py:510
+#: dialer_campaign/models.py:512
 msgid "Details"
 msgstr "Detalles"
 
-#: dialer_campaign/models.py:513 dialer_campaign/models.py:561
+#: dialer_campaign/models.py:515 dialer_campaign/models.py:564
 msgid "Campaign Subscriber"
 msgstr "Campaña de abonado"
 
@@ -481,17 +481,17 @@ msgstr "Seleccione un contacto"
 msgid "Select Campaign"
 msgstr "Seleccione la campaña"
 
-#: dialer_campaign/models.py:548
+#: dialer_campaign/models.py:551
 msgid "Count attempts"
 msgstr "Contar con los intentos de"
 
-#: dialer_campaign/models.py:554
+#: dialer_campaign/models.py:557
 #: templates/frontend/registration/user_detail_change.html:89
 #: templates/frontend/campaign/list.html:61
 msgid "Status"
 msgstr "Estado"
 
-#: dialer_campaign/models.py:562
+#: dialer_campaign/models.py:565
 msgid "Campaign Subscribers"
 msgstr "Suscriptores de campaña"
 

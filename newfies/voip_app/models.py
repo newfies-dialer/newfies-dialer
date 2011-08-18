@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from dialer_gateway.models import Gateway
 from common.intermediate_model_base_class import Model
 

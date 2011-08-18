@@ -62,12 +62,12 @@ class Phonebook(Model):
 
     **Name of DB table**: dialer_phonebook
     """
-    name = models.CharField(unique=True, max_length=90)
+    name = models.CharField(unique=True, max_length=90, verbose_name=_('Name'))
     description = models.TextField(null=True, blank=True,
                   help_text=_("Phonebook Notes"))
     user = models.ForeignKey('auth.User', related_name='Phonebook owner')
     created_date = models.DateTimeField(auto_now_add=True,
-                                        verbose_name='Date')
+                                        verbose_name=_('Date'))
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:

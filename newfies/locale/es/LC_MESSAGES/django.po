@@ -99,6 +99,18 @@ msgstr ""
 msgid "Advanced options"
 msgstr ""
 
+#: user_profile/admin.py:29
+msgid "Personal info"
+msgstr ""
+
+#: user_profile/admin.py:33
+msgid "Permission"
+msgstr ""
+
+#: user_profile/admin.py:36
+msgid "Important dates"
+msgstr ""
+
 #: dialer_campaign/admin.py:67
 #, python-format
 msgid "you have too many campaigns. Max allowed %(limit)s"

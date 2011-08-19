@@ -21,15 +21,23 @@ class StaffAdmin(UserAdmin):
 
 
 class CustomerAdmin(StaffAdmin):
+
     fieldsets = (
         ('', {
             'fields': ('username', 'password', ),
         }),
         (_('Personal info'), {
             #'classes': ('collapse',),
-            'fields': ('first_name', 'last_name', 'email' )
+            'fields': ('first_name', 'last_name', 'email', )
+        }),
+        (_('Permission'), {
+            'fields': ('is_active', )
+        }),
+        (_('Important dates'), {
+            'fields': ('last_login', 'date_joined', )
         }),
     )
+
     inlines = [
         UserProfileInline,
     ]

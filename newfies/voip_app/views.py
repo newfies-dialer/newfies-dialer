@@ -128,8 +128,8 @@ def voipapp_add(request):
             obj = form.save(commit=False)
             obj.user = User.objects.get(username=request.user)
             obj.save()
-            request.session["msg"] = _('"%s" is added successfully.' %\
-            request.POST['name'])
+            request.session["msg"] = _('"%(name)s" is added successfully.') %\
+            request.POST['name']
             return HttpResponseRedirect('/voipapp/')
     template = 'frontend/voipapp/change.html'
     data = {
@@ -161,8 +161,8 @@ def voipapp_del(request, object_id):
         voipapp_list = VoipApp.objects.get(pk=object_id)
         if object_id:
             # 2) delete voipapp
-            request.session["msg"] = _('"%s" is deleted successfully.' \
-                                        % voipapp_list.name)
+            request.session["msg"] = _('"%(name)s" is deleted successfully.') \
+                                        % voipapp_list.name
             voipapp_list.delete()
             return HttpResponseRedirect('/voipapp/')
     except:

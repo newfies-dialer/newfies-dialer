@@ -64,12 +64,12 @@ class CampaignAdmin(admin.ModelAdmin):
         # Check dialer setting limit
         # check Max Number of running campaigns
         if check_dialer_setting(request, check_for="campaign"):
-            msg = _("you have too many campaigns. Max allowed %(limit)s" \
-            % {'limit': dialer_setting_limit(request, limit_for="campaign")})
+            msg = _("you have too many campaigns. Max allowed %(limit)s") \
+            % {'limit': dialer_setting_limit(request, limit_for="campaign")}
             messages.error(request, msg)
-
+            print msg
             # campaign limit reached
-            common_send_notification(request, '3')
+            #common_send_notification(request, '3')
             return HttpResponseRedirect(reverse(
                         "admin:dialer_campaign_campaign_changelist"))
         ctx = {}
@@ -118,8 +118,8 @@ class ContactAdmin(admin.ModelAdmin):
         if request.user and request.method == 'POST':
             # check Max Number of subscribers per campaign
             if check_dialer_setting(request, check_for="contact"):
-                msg = _("You have too many contacts per campaign. You are allowed a maximum of %(limit)s" \
-                % {'limit': dialer_setting_limit(request, limit_for="contact")})
+                msg = _("You have too many contacts per campaign. You are allowed a maximum of %(limit)s") \
+                % {'limit': dialer_setting_limit(request, limit_for="contact")}
                 messages.error(request, msg)
 
                 # campaign limit reached
@@ -157,8 +157,8 @@ class ContactAdmin(admin.ModelAdmin):
         if request.user and request.method == 'POST':
             # check Max Number of subscribers per campaign
             if check_dialer_setting(request, check_for="contact"):
-                msg = _("You have too many contacts per campaign. You are allowed a maximum of %(limit)s" \
-                % {'limit': dialer_setting_limit(request, limit_for="contact")})
+                msg = _("You have too many contacts per campaign. You are allowed a maximum of %(limit)s") \
+                % {'limit': dialer_setting_limit(request, limit_for="contact")}
                 messages.error(request, msg)
 
                 # campaign limit reached
@@ -226,9 +226,9 @@ class ContactAdmin(admin.ModelAdmin):
                                 contact_record_count = \
                                     contact_record_count + 1
                                 msg = \
-                                _('%(contact_record_count)s Contact(s) are uploaded successfully out of %(total_rows)s row(s) !!'\
+                                _('%(contact_record_count)s Contact(s) are uploaded successfully out of %(total_rows)s row(s) !!')\
                                  % {'contact_record_count': contact_record_count,
-                                    'total_rows': total_rows})
+                                    'total_rows': total_rows}
                                     # (contact_record_count, total_rows)
                                 success_import_list.append(row)
                         except:

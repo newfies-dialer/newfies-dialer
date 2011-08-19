@@ -69,11 +69,11 @@ def voipapp_grid(request):
                       row['data'],
                       row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
                       '<a href="' + str(row['id']) + '/" class="icon" ' \
-                      + update_style + ' title="Update VoIP App">&nbsp;</a>' +
+                      + update_style + ' title="' + _('Update VoIP App') + '">&nbsp;</a>' +
                       '<a href="del/' + str(row['id']) + '/" class="icon" ' \
                       + delete_style + ' onClick="return get_alert_msg(' +
                       str(row['id']) +
-                      ');"  title="Delete VoIP App">&nbsp;</a>'
+                      ');"  title="' + _('Delete VoIP App') + '">&nbsp;</a>'
                       ]} for row in voipapp_list]
 
     data = {'rows': rows,

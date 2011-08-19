@@ -428,6 +428,8 @@ msgid "CallerID used to call the A-Leg"
 msgstr "CallerID utiliza para llamar a la A-Leg"
 
 #: dialer_campaign/models.py:270
+#: dialer_campaign/views.py:1573
+#: dialer_campaign/views.py:1587
 #: dialer_campaign/views.py:1600
 msgid "Start"
 msgstr "Comienzo"
@@ -597,6 +599,22 @@ msgstr "\"%(name)s\" se ha actualizado correctamente."
 #, python-format
 msgid "%(count)s contact(s) are deleted successfully."
 msgstr "%(count)s contacto(s) se ha eliminado correctamente."
+
+#: dialer_campaign/views.py:945
+msgid "Update phonebook"
+msgstr ""
+
+#: dialer_campaign/views.py:945
+msgid "Delete phonebook"
+msgstr ""
+
+#: dialer_campaign/views.py:1219
+msgid "Update contact"
+msgstr ""
+
+#: dialer_campaign/views.py:1219
+msgid "Delete contact"
+msgstr ""
 
 #: dialer_campaign/views.py:1479
 msgid "Subscriber is already exist !!"
@@ -2046,3 +2064,10 @@ msgstr "Aplicaciones VoIP"
 msgid "%(count)s voipapp(s) are deleted successfully."
 msgstr "%(count)s voipapp(s) se ha eliminado correctamente."
 
+#: voip_app/views.py:71
+msgid "Update VoIP App"
+msgstr ""
+
+#: voip_app/views.py:71
+msgid "Delete VoIP App"
+msgstr ""

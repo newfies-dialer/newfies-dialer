@@ -943,11 +943,11 @@ def phonebook_grid(request):
                       row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
                       row['contact_count'],
                       '<a href="' + str(row['id']) + '/" class="icon" ' \
-                      + update_style + ' title="Update phonebook">&nbsp;</a>' +
+                      + update_style + ' title="' + _('Update phonebook') + '">&nbsp;</a>' +
                       '<a href="del/' + str(row['id']) + '/" class="icon" ' \
                       + delete_style + ' onClick="return get_alert_msg(' +
                       str(row['id']) +
-                      ');"  title="Delete phonebook">&nbsp;</a>']}\
+                      ');"  title="' + _('Delete phonebook') + '">&nbsp;</a>']}\
                       for row in phonebook_list]
 
     data = {'rows': rows,
@@ -1217,11 +1217,11 @@ def contact_grid(request):
                       row['last_name'], row['first_name'], row['status'],
                       row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
                       '<a href="' + str(row['id']) + '/" class="icon" ' \
-                      + update_style + ' title="Update contact">&nbsp;</a>' +
+                      + update_style + ' title="' + _('Update contact') + '">&nbsp;</a>' +
                       '<a href="del/' + str(row['id']) + '/" class="icon" ' \
                       + delete_style + ' onClick="return get_alert_msg(' +
                       str(row['id']) +
-                      ');" title="Delete contact">&nbsp;</a>']}\
+                      ');" title="' + _('Delete contact') + '">&nbsp;</a>']}\
                       for row in contact_list]
 
     data = {'rows': rows,

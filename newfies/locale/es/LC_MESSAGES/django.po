@@ -428,6 +428,7 @@ msgid "CallerID used to call the A-Leg"
 msgstr "CallerID utiliza para llamar a la A-Leg"
 
 #: dialer_campaign/models.py:270
+#: dialer_campaign/views.py:1600
 msgid "Start"
 msgstr "Comienzo"
 
@@ -605,6 +606,48 @@ msgstr "El suscriptor es que ya existen!"
 msgid "Invalid value for import! Please look at the import samples."
 msgstr "Valor no válido para la importación! Por favor, mire las muestras de importación."
 
+#: dialer_campaign/views.py:1561
+#: dialer_campaign/views.py:1573
+#: dialer_campaign/views.py:1600
+msgid "Pause"
+msgstr ""
+
+#: dialer_campaign/views.py:1561
+#: dialer_campaign/views.py:1573
+#: dialer_campaign/views.py:1600
+msgid "Abort"
+msgstr ""
+
+#: dialer_campaign/views.py:1561
+#: dialer_campaign/views.py:1573
+#: dialer_campaign/views.py:1587
+msgid "Stop"
+msgstr ""
+
+#: dialer_campaign/views.py:1573
+msgid "campaign is running"
+msgstr ""
+
+#: dialer_campaign/views.py:1573
+msgid "campaign is paused"
+msgstr ""
+
+#: dialer_campaign/views.py:1587
+msgid "campaign is aborted"
+msgstr ""
+
+#: dialer_campaign/views.py:1600
+msgid "campaign is stopped"
+msgstr ""
+
+#: dialer_campaign/views.py:1674
+msgid "Update campaign"
+msgstr ""
+
+#: dialer_campaign/views.py:1674
+msgid "Delete campaign"
+msgstr ""
+
 #: dialer_campaign/views.py:1736
 msgid ""
 "In order to add a campaign, you need to have your settings configured "
@@ -620,6 +663,7 @@ msgstr "usted tiene la campaña de más. Máximo permitido de %(limit)s"
 #, python-format
 msgid "%(count)s campaign(s) are deleted successfully."
 msgstr "%(count)s la campaña(s) se ha eliminado correctamente."
+
 
 #: dialer_campaign/management/commands/create_contact.py:10
 msgid "\"phonebook_id|no_of_record\" \"phonebook_id|no_of_record\""

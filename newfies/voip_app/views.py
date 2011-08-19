@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.db.models import *
 from django.template.context import RequestContext
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from voip_app.models import VoipApp, get_voipapp_type_name
 from voip_app.forms import VoipAppForm

@@ -271,6 +271,10 @@ msgstr "Activo"
 msgid "All"
 msgstr "Todos"
 
+#: templates/frontend/contact/list.html:107
+msgid "Import"
+msgstr "importación"
+
 #: templates/frontend/campaign/list.html:78
 #: templates/frontend/contact/list.html:120
 #: templates/frontend/phonebook/list.html:84

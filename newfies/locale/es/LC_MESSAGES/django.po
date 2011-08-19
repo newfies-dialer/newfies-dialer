@@ -87,6 +87,18 @@ msgstr "Aplicaciones"
 msgid "Customer Panel"
 msgstr "Panel del cliente"
 
+#: dialer_campaign/admin.py:22
+#: dialer_cdr/admin.py:16
+#: dialer_gateway/admin.py:20
+msgid "Standard options"
+msgstr ""
+
+#: dialer_campaign/admin.py:27
+#: dialer_cdr/admin.py:22
+#: dialer_gateway/admin.py:25
+msgid "Advanced options"
+msgstr ""
+
 #: dialer_campaign/admin.py:67
 #, python-format
 msgid "you have too many campaigns. Max allowed %(limit)s"

@@ -19,12 +19,12 @@ class CampaignAdmin(admin.ModelAdmin):
     of a Campaign."""
     form = CampaignAdminForm
     fieldsets = (
-        ('Standard options', {
+        (_('Standard options'), {
             'fields': ('campaign_code', 'name', 'description', 'callerid',
                        'user', 'status', 'startingdate', 'expirationdate',
                        'aleg_gateway', 'voipapp', 'extra_data', 'phonebook'),
         }),
-        ('Advanced options', {
+        (_('Advanced options'), {
             'classes': ('collapse',),
             'fields': ('frequency', 'callmaxduration', 'maxretry',
                        'intervalretry', 'calltimeout', 'daily_start_time',

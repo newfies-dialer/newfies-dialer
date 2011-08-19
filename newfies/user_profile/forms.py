@@ -37,3 +37,4 @@ class UserProfileForm(ModelForm):
 
     class Meta:
         model = UserProfile
+

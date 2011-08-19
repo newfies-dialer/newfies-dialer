@@ -1,5 +1,5 @@
 from django.contrib import admin
-#from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _
 from dialer_gateway.models import Gateway
 
 
@@ -17,12 +17,12 @@ class GatewayAdmin(admin.ModelAdmin):
     of a Gateway."""
 
     fieldsets = (
-        ('Standard options', {
+        (_('Standard options'), {
          'fields': ('name', 'description', 'gateways', 'gateway_codecs',
                     'gateway_timeouts', 'gateway_retries',
                     'originate_dial_string', 'status'),
         }),
-        ('Advanced options', {
+        (_('Advanced options'), {
             'classes': ('collapse',),
             'fields': ('addprefix', 'removeprefix', 'failover', 'addparameter',
                        'maximum_call', )

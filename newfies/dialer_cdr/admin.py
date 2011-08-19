@@ -13,13 +13,13 @@ class CallrequestAdmin(admin.ModelAdmin):
     """Allows the administrator to view and modify certain attributes
     of a Callrequest."""
     fieldsets = (
-        ('Standard options', {
+        (_('Standard options'), {
             'fields': ('user', 'request_uuid',  'call_time', 'campaign',
                        'status','hangup_cause', 'callerid', 'phone_number',
                        'timeout', 'timelimit', 'call_type', 'aleg_gateway',
                        'voipapp', ),
         }),
-        ('Advanced options', {
+        (_('Advanced options'), {
             'classes': ('collapse',),
             'fields': ('extra_data',  'extra_dial_string',
                        'campaign_subscriber'),

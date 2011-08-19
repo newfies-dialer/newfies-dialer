@@ -1,9 +1,9 @@
-from user_profile.models import *
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from django.db.models import Q
-
+from django.utils.translation import ugettext_lazy as _
+from user_profile.models import *
 
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
@@ -21,6 +21,15 @@ class StaffAdmin(UserAdmin):
 
 
 class CustomerAdmin(StaffAdmin):
+    fieldsets = (
+        ('', {
+            'fields': ('username', 'password', ),
+        }),
+        (_('Personal info'), {
+            #'classes': ('collapse',),
+            'fields': ('first_name', 'last_name', 'email' )
+        }),
+    )
     inlines = [
         UserProfileInline,
     ]

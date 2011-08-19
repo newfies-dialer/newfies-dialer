@@ -108,6 +108,12 @@ subscriber.
 another gateway, forwarded to a Call-Centre, in fact, any to any 
 application that can be built on Freeswitch.
 
+**Dialer Settings :** Each customer needs to have Dialer Settings and 
+trunks associated with their account. These set the limit to which each 
+customer can utilise Newfies-Dialer in terms of trunks, calls per minute, 
+call duration, subscribers and campaigns, as well as blacklisting or 
+whitelisting phone numbers.
+
 
 Installation
 ------------

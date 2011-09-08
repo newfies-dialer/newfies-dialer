@@ -185,6 +185,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'dilla',
     #'test_extensions',
+    'django_admin_tools_stats',
+    'chart_tools',
 )
 AUTH_PROFILE_MODULE = "user_profile.UserProfile"
 LOGIN_URL = '/pleaselog/'

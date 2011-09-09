@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from admin_tools.dashboard import modules, Dashboard, AppIndexDashboard
 from admin_tools.utils import get_admin_site_name
-from django_admin_tools_stats.admin_tools_stats.modules import DashboardCharts, get_active_graph
+from admin_tools_stats.modules import DashboardCharts, get_active_graph
 
 
 class HistoryDashboardModule(modules.LinkList):
@@ -105,7 +105,7 @@ class CustomIndexDashboard(Dashboard):
             _('Dashboard Stats Settings'),
             models=('admin_dashboard_stats.*', ),
         ))
-        
+
         # Copy following code into your custom dashboard
         graph_list = get_active_graph()
         for i in graph_list:

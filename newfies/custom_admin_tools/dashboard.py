@@ -112,8 +112,8 @@ class CustomIndexDashboard(Dashboard):
             kwargs = {}
             kwargs['chart_size'] = "260x100"
             kwargs['graph_key'] = i.graph_key
-            if request.POST.get('dynamic_select_box'):
-                kwargs['dynamic_select_box'] = request.POST['dynamic_select_box']
+            if request.POST.get('select_box_'+i.graph_key):
+                kwargs['select_box_'+i.graph_key] = request.POST['select_box_'+i.graph_key]
 
             self.children.append(DashboardCharts(**kwargs))
 

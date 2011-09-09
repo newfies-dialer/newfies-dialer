@@ -78,10 +78,10 @@ class CustomIndexDashboard(Dashboard):
         ))
 
         # append an app list module for "Country_prefix"
-        self.children.append(modules.AppList(
-            _('DialCode'),
-            models=('prefix_country.*', ),
-        ))
+        #self.children.append(modules.AppList(
+        #    _('DialCode'),
+        #    models=('prefix_country.*', ),
+        #))
 
         # append a link list module for "quick links"
         self.children.append(modules.LinkList(
@@ -101,7 +101,6 @@ class CustomIndexDashboard(Dashboard):
 
         # append a recent actions module
         #self.children.append(modules.RecentActions(_('Recent Actions'), 5))
-
 
         # append a feed module
         #self.children.append(modules.Feed(

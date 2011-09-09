@@ -110,6 +110,7 @@ class CustomIndexDashboard(Dashboard):
         graph_list = get_active_graph()
         for i in graph_list:
             kwargs = {}
+            kwargs['chart_size'] = "260x100"
             kwargs['graph_key'] = i.graph_key
             if request.POST.get('dynamic_select_box'):
                 kwargs['dynamic_select_box'] = request.POST['dynamic_select_box']

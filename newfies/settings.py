@@ -120,7 +120,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'pagination.middleware.PaginationMiddleware',
-    #'debug_toolbar.middleware.DebugToolbarMiddleware',
     'common.filter_persist_middleware.FilterPersistMiddleware',
     #'sentry.client.middleware.Sentry404CatchMiddleware',
 )
@@ -180,12 +179,40 @@ INSTALLED_APPS = (
     'voip_app',
     'sentry',
     'sentry.client',
-    #'debug_toolbar',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
-    'dilla',
-    #'test_extensions',
+    #'django_admin_tools_stats',
+    #'chart_tools',
 )
+
+# Debug Toolbar
+try:
+    import debug_toolbar
+except ImportError:
+    pass
+else:
+    INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar',)
+    MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + \
+        ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+    DEBUG_TOOLBAR_CONFIG = {
+        'INTERCEPT_REDIRECTS': False,
+    }
+
+# Django extensions
+try:
+    import django_extensions
+except ImportError:
+    pass
+else:
+    INSTALLED_APPS = INSTALLED_APPS + ('django_extensions',)
+
+# Dilla
+try:
+    import django_dilla
+except ImportError:
+    pass
+else:
+    INSTALLED_APPS = INSTALLED_APPS + ('dilla',)
+
+
 AUTH_PROFILE_MODULE = "user_profile.UserProfile"
 LOGIN_URL = '/pleaselog/'
 

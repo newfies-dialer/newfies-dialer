@@ -11,6 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from admin_tools.dashboard import modules, Dashboard, AppIndexDashboard
 from admin_tools.utils import get_admin_site_name
+from admin_dashboard_stats.modules import DashboardCharts, get_active_graph
 
 
 class HistoryDashboardModule(modules.LinkList):
@@ -98,6 +99,22 @@ class CustomIndexDashboard(Dashboard):
                 [_('Log out'), reverse('%s:logout' % site_name)],
             ],
         ))
+        
+        # append an app list module for "Country_prefix"
+        self.children.append(modules.AppList(
+            _('Dashboard Stats Settings'),
+            models=('admin_dashboard_stats.*', ),
+        ))
+        
+        # Copy following code into your custom dashboard
+        graph_list = get_active_graph()
+        for i in graph_list:
+            kwargs = {}
+            kwargs['graph_key'] = i.graph_key
+            if request.POST.get('dynamic_select_box'):
+                kwargs['dynamic_select_box'] = request.POST['dynamic_select_box']
+
+            self.children.append(DashboardCharts(**kwargs))
 
         # append a recent actions module
         #self.children.append(modules.RecentActions(_('Recent Actions'), 5))

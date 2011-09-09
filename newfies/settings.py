@@ -179,8 +179,8 @@ INSTALLED_APPS = (
     'voip_app',
     'sentry',
     'sentry.client',
-    #'django_admin_tools_stats',
-    #'chart_tools',
+    'django_admin_tools_stats.admin_tools_stats',
+    'chart_tools',
 )
 
 # Debug Toolbar

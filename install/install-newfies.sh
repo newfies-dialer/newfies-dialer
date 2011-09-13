@@ -251,8 +251,8 @@ func_install_frontend(){
 
     if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
         # Setup settings_local.py for SQLite
-        # Nothing to do 
-        
+        # Nothing to do
+        echo ""
     else
         # Setup settings_local.py for MySQL
         sed -i "s/'django.db.backends.sqlite3'/'django.db.backends.mysql'/"  $INSTALL_DIR/settings_local.py

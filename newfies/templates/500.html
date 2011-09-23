@@ -1,4 +1,7 @@
-<p>You've encountered an error, oh noes!</p>
+<h1>Server Error</h1>
+
+<p>{% trans "You've encountered an error, oh noes!" %}</p>
+
 {% if request.sentry.id %}
-    <p>If you need assistance, you may reference this error as <strong>{{ request.sentry.id }}</strong>.</p>
+    <p>{% trans "If you need assistance, you may reference this error as" %} <strong>{{ request.sentry.id }}</strong>.</p>
 {% endif %}

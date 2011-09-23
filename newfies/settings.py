@@ -132,6 +132,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.media",
     "django.core.context_processors.static",
     "django.contrib.messages.context_processors.messages",
+    #needed by Sentry
     "django.core.context_processors.request",
 )
 

@@ -35,7 +35,6 @@ class UserProfile(models.Model):
 
     class Meta:
         db_table = 'user_profile'
-        app_label = _('user_profile')
         verbose_name = _("User Profile")
         verbose_name_plural = _("User Profile")
 

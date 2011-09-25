@@ -129,7 +129,7 @@ def voipapp_add(request):
             obj.user = User.objects.get(username=request.user)
             obj.save()
             request.session["msg"] = _('"%(name)s" is added successfully.') %\
-            request.POST['name']
+            request.POST
             return HttpResponseRedirect('/voipapp/')
     template = 'frontend/voipapp/change.html'
     data = {

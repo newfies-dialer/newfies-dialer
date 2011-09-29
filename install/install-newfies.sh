@@ -234,6 +234,8 @@ func_install_frontend(){
     #Nasty hack to make piston compatible with django-admin-tools
     #https://bitbucket.org/jespern/django-piston/issue/117/register-models-with-admin-in-an-adminpy    
     sed -i "s/admin.site.register/#admin.site.register/" /usr/share/virtualenvs/newfies-dialer/lib/python2.6/site-packages/piston/models.py
+    #check on CentOS if virtualenv works
+    #sed -i "s/admin.site.register/#admin.site.register/" /usr/lib/python2.6/site-packages/django_piston-0.2.2-py2.6.egg/piston/models.py
 
     # copy settings_local.py into newfies dir
     cp /usr/src/newfies-dialer/install/conf/settings_local.py $INSTALL_DIR

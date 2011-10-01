@@ -319,6 +319,14 @@ API_ALLOWED_IP = ['127.0.0.1', 'localhost']
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(asctime)s %(levelname)s || %(message)s'
+        },
+    },
     'handlers': {
         # Include the default Django email handler for errors
         # This is what you'd get without configuring logging at all.
@@ -332,6 +340,12 @@ LOGGING = {
         'logfile': {
             'class': 'logging.handlers.WatchedFileHandler',
             'filename': '/var/log/newfies/newfies-django.log'
+        },
+        # Log to a text file that can be rotated by logrotate
+        'mylogfile': {
+            'class': 'logging.handlers.WatchedFileHandler',
+            'filename': '/var/log/newfies/mylogfile.log',
+            'formatter': 'simple'
         },
     },
     'loggers': {
@@ -353,9 +367,13 @@ LOGGING = {
             'level': 'WARNING',  # Or maybe INFO or DEBUG
             'propogate': False
         },
+        'myfilelog': {
+            'handlers': ['mylogfile',],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
     },
 }
-
 
 #IMPORT LOCAL SETTINGS
 #=====================

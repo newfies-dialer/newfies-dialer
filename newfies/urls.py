@@ -13,6 +13,7 @@ from voip_app.urls import urlpatterns as urlpatterns_voip_app
 #js_info_dict = { 'domain': 'djangojs', 'packages': ('newfies',), }
 #, js_info_dict
 
+
 urlpatterns = patterns('',
     # redirect
     #('^$', 'django.views.generic.simple.redirect_to',

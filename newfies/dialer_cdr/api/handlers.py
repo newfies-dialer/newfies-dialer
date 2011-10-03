@@ -11,6 +11,10 @@ import time
 
 seed()
 
+from django.views.debug import ExceptionReporter
+import logging
+logger = logging.getLogger(__name__)
+
 
 def get_attribute(attrs, attr_name):
     """this is a helper to retrieve an attribute if it exists"""
@@ -360,7 +364,7 @@ class cdrHandler(BaseHandler):
     """This API stores CDR and relevant information attached to it
     """
     model = VoIPCall
-    allowed_methods = ('POST', )
+    allowed_methods = ('POST', 'GET', )
 
 
     @classmethod
@@ -371,6 +375,19 @@ class cdrHandler(BaseHandler):
     def resource_uri(cls, voipcall):
         return ('voipcall', ['json'])
 
+
+    @throttle(1000, 1 * 60) # Throttle if more that 1000 times within 1 minute
+    def read(self, request):
+        
+        logger.debug('Log on storecdr...')
+        """
+        try:
+            test = 1 / 0
+        except Exception, e:
+            logger.error('My Error divide by .. %s' % str(e), extra={'stack': True})
+            pass
+        """ 
+        
 
     def create(self, request):
         """API to store CDR
@@ -496,8 +513,11 @@ class cdrHandler(BaseHandler):
                                 hangup_cause_q850=data['hangup_cause_q850'] or '',)
 
         new_voipcall.save()
-        
-        resp = rc.OK
+
+        #follow bug on FS : http://jira.freeswitch.org/browse/FS-3593   
+        resp = rc.ALL_OK # return 200 - expected by Freeswitch
+        #resp = rc.CREATED
+
         resp.write("CDR Recorded!")
         return resp
 

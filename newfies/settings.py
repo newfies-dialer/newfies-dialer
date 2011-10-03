@@ -121,7 +121,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'pagination.middleware.PaginationMiddleware',
     'common.filter_persist_middleware.FilterPersistMiddleware',
-    #'sentry.client.middleware.Sentry404CatchMiddleware',
+    'sentry.client.middleware.Sentry404CatchMiddleware',
 )
 
 
@@ -182,6 +182,7 @@ INSTALLED_APPS = (
     'sentry.client',
     'admin_tools_stats',
     'chart_tools',
+    'south',
 )
 
 # Debug Toolbar
@@ -316,7 +317,7 @@ NEWFIES_DIALER_ENGINE = 'plivo'
 
 API_ALLOWED_IP = ['127.0.0.1', 'localhost']
 
-LOGGING = {
+LOGGING2 = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
@@ -374,6 +375,103 @@ LOGGING = {
         },
     },
 }
+
+
+LOGGING2 = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+        },
+    },
+    'handlers': {
+        'default': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': '/var/log/newfies/newfies-django.log',
+            'maxBytes': 1024*1024*5, # 5 MB
+            'backupCount': 20,
+            'formatter':'standard',
+        },  
+        'default-db': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': '/var/log/newfies/newfies-django-db.log',
+            'maxBytes': 1024*1024*5, # 5 MB
+            'backupCount': 20,
+            'formatter':'standard',
+        },  
+        'request_handler': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': '/var/log/newfies/newfies-django-request.log',
+            'maxBytes': 1024*1024*5, # 5 MB
+            'backupCount': 20,
+            'formatter':'standard',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['default-db'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'django': {
+            'handlers':['default'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+        'django.request': { # Stop SQL debug from logging to main logger
+            'handlers': ['request_handler'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+    }
+}
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'root': {
+        'level': 'WARNING',
+        'handlers': ['sentry'],
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+    },
+    'handlers': {
+        'default': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': '/var/log/newfies/newfies-django.log',
+            'maxBytes': 1024*1024*5, # 5 MB
+            'backupCount': 20,
+            'formatter':'verbose',
+        },
+        'sentry': {
+            'level': 'DEBUG',
+            'class': 'sentry.client.handlers.SentryHandler',
+            'formatter': 'verbose'
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        'sentry.errors': {
+            'level': 'DEBUG',
+            'handlers': ['sentry'],
+            'propagate': False,
+        },
+    },
+}
+
 
 #IMPORT LOCAL SETTINGS
 #=====================

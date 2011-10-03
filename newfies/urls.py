@@ -56,6 +56,8 @@ urlpatterns = patterns('',
 
     (r'^static/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.STATIC_ROOT}),
+        
+    (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': 'static/newfies/images/favicon.png'}),
     
     (r'^sentry/', include('sentry.web.urls')),
 )

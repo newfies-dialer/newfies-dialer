@@ -317,9 +317,14 @@ NEWFIES_DIALER_ENGINE = 'plivo'
 
 API_ALLOWED_IP = ['127.0.0.1', 'localhost']
 
-LOGGING2 = {
+
+LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
+    'root': {
+        'level': 'DEBUG',
+        'handlers': ['sentry'],
+    },
     'formatters': {
         'verbose': {
             'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
@@ -337,10 +342,31 @@ LOGGING2 = {
              # But the emails are plain text by default - HTML is nicer
             'include_html': True,
         },
-        # Log to a text file that can be rotated by logrotate
-        'logfile': {
-            'class': 'logging.handlers.WatchedFileHandler',
-            'filename': '/var/log/newfies/newfies-django.log'
+        'default': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': '/var/log/newfies/newfies-django.log',
+            'maxBytes': 1024*1024*5, # 5 MB
+            'backupCount': 20,
+            'formatter':'verbose',
+        },  
+        'default-db': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': '/var/log/newfies/newfies-django-db.log',
+            'maxBytes': 1024*1024*5, # 5 MB
+            'backupCount': 20,
+            'formatter':'verbose',
+        },  
+        'sentry': {
+            'level': 'DEBUG',
+            'class': 'sentry.client.handlers.SentryHandler',
+            'formatter': 'verbose'
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
         },
         # Log to a text file that can be rotated by logrotate
         'mylogfile': {
@@ -356,114 +382,16 @@ LOGGING2 = {
             'level': 'ERROR',
             'propagate': True,
         },
-        # Might as well log any errors anywhere else in Django
-        'django': {
-            'handlers': ['logfile'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-        # Your own app - this assumes all your logger names start with "myapp."
-        'myapp': {
-            'handlers': ['logfile'],
-            'level': 'WARNING',  # Or maybe INFO or DEBUG
-            'propogate': False
-        },
-        'myfilelog': {
-            'handlers': ['mylogfile',],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-    },
-}
-
-
-LOGGING2 = {
-    'version': 1,
-    'disable_existing_loggers': True,
-    'formatters': {
-        'standard': {
-            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
-        },
-    },
-    'handlers': {
-        'default': {
-            'level':'DEBUG',
-            'class':'logging.handlers.RotatingFileHandler',
-            'filename': '/var/log/newfies/newfies-django.log',
-            'maxBytes': 1024*1024*5, # 5 MB
-            'backupCount': 20,
-            'formatter':'standard',
-        },  
-        'default-db': {
-            'level':'DEBUG',
-            'class':'logging.handlers.RotatingFileHandler',
-            'filename': '/var/log/newfies/newfies-django-db.log',
-            'maxBytes': 1024*1024*5, # 5 MB
-            'backupCount': 20,
-            'formatter':'standard',
-        },  
-        'request_handler': {
-            'level':'DEBUG',
-            'class':'logging.handlers.RotatingFileHandler',
-            'filename': '/var/log/newfies/newfies-django-request.log',
-            'maxBytes': 1024*1024*5, # 5 MB
-            'backupCount': 20,
-            'formatter':'standard',
-        },
-    },
-    'loggers': {
-        'django.db.backends': {
-            'handlers': ['default-db'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
+        #'django.db.backends': {
+        #    'handlers': ['default-db'],
+        #    'level': 'DEBUG',
+        #    'propagate': False,
+        #},
         'django': {
             'handlers':['default'],
             'propagate': True,
             'level':'DEBUG',
         },
-        'django.request': { # Stop SQL debug from logging to main logger
-            'handlers': ['request_handler'],
-            'level': 'DEBUG',
-            'propagate': False
-        },
-    }
-}
-
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': True,
-    'root': {
-        'level': 'WARNING',
-        'handlers': ['sentry'],
-    },
-    'formatters': {
-        'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
-        },
-    },
-    'handlers': {
-        'default': {
-            'level':'DEBUG',
-            'class':'logging.handlers.RotatingFileHandler',
-            'filename': '/var/log/newfies/newfies-django.log',
-            'maxBytes': 1024*1024*5, # 5 MB
-            'backupCount': 20,
-            'formatter':'verbose',
-        },
-        'sentry': {
-            'level': 'DEBUG',
-            'class': 'sentry.client.handlers.SentryHandler',
-            'formatter': 'verbose'
-        },
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose'
-        }
-    },
-    'loggers': {
         'sentry.errors': {
             'level': 'DEBUG',
             'handlers': ['sentry'],

@@ -379,14 +379,14 @@ class cdrHandler(BaseHandler):
     @throttle(1000, 1 * 60) # Throttle if more that 1000 times within 1 minute
     def read(self, request):
         
-        logger.debug('Log on storecdr...')
-        """
+        logger.debug('Logging message API : storecdr', extra={'stack': True})
+        
         try:
             test = 1 / 0
         except Exception, e:
             logger.error('My Error divide by .. %s' % str(e), extra={'stack': True})
             pass
-        """ 
+         
         
 
     def create(self, request):

@@ -280,7 +280,7 @@ func_install_frontend(){
     #following line is for SQLite
     mkdir database
     python manage.py syncdb --noinput
-    #python manage.py migrate
+    python manage.py migrate
     echo ""
     echo ""
     echo "Create a super admin user..."

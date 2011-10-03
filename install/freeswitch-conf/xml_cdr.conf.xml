@@ -32,7 +32,7 @@
     
     <!-- optional: full path to the error log dir for failed web posts if not specified its the same as log-dir -->
     <!-- either an absolute path, a relative path assuming ${prefix}/logs or a blank or omitted value will default to ${prefix}/logs/xml_cdr -->
-    <!-- <param name="err-log-dir" value="/tmp"/> -->
+    <param name="err-log-dir" value="err_xml_cdr"/>
 
     <!-- which auhtentification scheme to use. Supported values are: basic, digest, NTLM, GSS-NEGOTIATE or "any" for automatic detection -->
     <!--<param name="auth-scheme" value="basic"/>--> 

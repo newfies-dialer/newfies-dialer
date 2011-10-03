@@ -146,6 +146,8 @@ cd $FS_INSTALLED_PATH/conf/autoload_configs/
 # Place Newfies XML CDR conf in FreeSWITCH
 [ -f xml_cdr.conf.xml ] && mv xml_cdr.conf.xml xml_cdr.conf.xml.bak
 wget --no-check-certificate $FS_CONF_PATH/xml_cdr.conf.xml -O xml_cdr.conf.xml
+#create dir to store send error of CDR
+mkdir /usr/local/freeswitch/log/err_xml_cdr/
 
 #Return to current path
 cd $CURRENT_PATH

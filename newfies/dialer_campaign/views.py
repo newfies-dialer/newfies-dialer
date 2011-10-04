@@ -809,7 +809,10 @@ def common_send_notification(request, status, recipient=None):
         recipient = request.user
         sender = User.objects.get(is_superuser=1, username=recipient)
     else:
-        sender = request.user
+        if request.user.is_anonymous():
+            sender = User.objects.get(is_superuser=1, username=recipient)
+        else:
+            sender = request.user
 
     if notification:
         note_label = notification.NoticeType.objects.get(default=status)

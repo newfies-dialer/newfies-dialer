@@ -343,11 +343,8 @@ LOGGING = {
             'include_html': True,
         },
         'default': {
-            'level':'DEBUG',
-            'class':'logging.handlers.RotatingFileHandler',
+            'class':'logging.handlers.WatchedFileHandler',
             'filename': '/var/log/newfies/newfies-django.log',
-            'maxBytes': 1024*1024*5, # 5 MB
-            'backupCount': 20,
             'formatter':'verbose',
         },  
         'default-db': {
@@ -377,24 +374,29 @@ LOGGING = {
     },
     'loggers': {
         # Again, default Django configuration to email unhandled exceptions
+        'django': {
+            'handlers':['default'],
+            'propagate': False,
+            'level':'DEBUG',
+        },
         'django.request': {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
             'propagate': True,
         },
-        #'django.db.backends': {
-        #    'handlers': ['default-db'],
-        #    'level': 'DEBUG',
-        #    'propagate': False,
-        #},
-        'django': {
-            'handlers':['default'],
-            'propagate': True,
-            'level':'DEBUG',
-        },
         'sentry.errors': {
             'level': 'DEBUG',
             'handlers': ['sentry'],
+            'propagate': False,
+        },
+        'newfies.filelog': {
+            'handlers': ['default',],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['default-db'],
+            'level': 'DEBUG',
             'propagate': False,
         },
     },

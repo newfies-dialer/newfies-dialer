@@ -11,10 +11,8 @@ import time
 
 seed()
 
-from django.views.debug import ExceptionReporter
 import logging
-logger = logging.getLogger(__name__)
-
+logger = logging.getLogger('newfies.filelog')
 
 def get_attribute(attrs, attr_name):
     """this is a helper to retrieve an attribute if it exists"""
@@ -378,7 +376,13 @@ class cdrHandler(BaseHandler):
 
     @throttle(1000, 1 * 60) # Throttle if more that 1000 times within 1 minute
     def read(self, request):
-        
+        """API to test the store CDR with Get Method
+
+        **CURL Usage**::
+
+            curl -u username:password -i -H "Accept: application/json" -X GET http://127.0.0.1:8000/api/dialer_cdr/store_cdr/
+
+        """
         logger.debug('Logging message API : storecdr', extra={'stack': True})
         
         try:
@@ -431,95 +435,106 @@ class cdrHandler(BaseHandler):
             * error get Callrequest xxx
             * ValueError exception
         """
-        attrs = self.flatten_dict(request.POST)
+        try:
+            attrs = self.flatten_dict(request.POST)
 
-        opt_cdr = str(get_attribute(attrs, 'cdr'))
-        #print opt_cdr
+            opt_cdr = str(get_attribute(attrs, 'cdr'))
+            #print opt_cdr
 
-        if not opt_cdr:
-            resp = rc.BAD_REQUEST
-            resp.write("Wrong parameters : missing cdr!")
+            if not opt_cdr:
+                resp = rc.BAD_REQUEST
+                logger.debug('Wrong parameters : missing cdr!')
+                resp.write("Wrong parameters : missing cdr!")
+                return resp
+
+            data = {}
+            import xml.etree.ElementTree as ET
+            tree = ET.fromstring(opt_cdr)
+            #parse file
+            #tree = ET.parse("/tmp/cdr.xml")
+            lst = tree.find("variables")
+
+            cdr_vars = ['plivo_request_uuid', 'plivo_answer_url', 'plivo_app',
+                        'direction', 'endpoint_disposition', 'hangup_cause',
+                        'hangup_cause_q850', 'duration', 'billsec', 'progresssec',
+                        'answersec', 'waitsec', 'mduration', 'billmsec',
+                        'progressmsec', 'answermsec', 'waitmsec',
+                        'progress_mediamsec', 'call_uuid',
+                        'origination_caller_id_number', 'caller_id',
+                        'answer_epoch', 'answer_uepoch']
+
+            for j in lst:
+                if j.tag in cdr_vars:
+                    data[j.tag] = j.text
+
+            for element in cdr_vars:
+                if not data.has_key(element):
+                    data[element] = None
+            
+            if not 'plivo_request_uuid' in data or data['plivo_request_uuid']==None:
+                #CDR not related to plivo
+                #TODO: Add tag for newfies in outbound call
+                resp = rc.ALL_OK
+                logger.debug('CDR not related to Newfies/Plivo!')
+                resp.write("CDR not related to Newfies/Plivo!")
+                return resp
+            
+            #TODO : delay if not find callrequest
+            try:
+                obj_callrequest = Callrequest.objects.get(request_uuid=data['plivo_request_uuid'])
+            except:
+                # Send notification to admin
+                from dialer_campaign.views import common_send_notification
+                from django.contrib.auth.models import User
+                recipient_list = User.objects.filter(is_superuser=1, is_active=1)
+                # send to all admin user
+                for recipient in recipient_list:
+                    # callrequest_not_found - notification id 8
+                    common_send_notification(request, 8, recipient)
+                
+                logger.error("error not Callrequest for this uuid %s " % data['plivo_request_uuid'], extra={'stack': True})
+                resp = rc.ALL_OK
+                resp.write("No Callrequest for this uuid!")
+                return resp
+            
+            if data.has_key('answer_epoch') and len(data['answer_epoch']) > 0:
+                try:
+                    cur_answer_epoch = int(data['answer_epoch'])
+                except ValueError:
+                    raise
+                starting_date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(cur_answer_epoch))
+            else:
+                starting_date = None
+
+            new_voipcall = VoIPCall(user = obj_callrequest.user,
+                                    request_uuid=data['plivo_request_uuid'],
+                                    used_gateway=None, #TODO
+                                    callrequest=obj_callrequest,
+                                    callid=data['call_uuid'] or '',
+                                    callerid=data['origination_caller_id_number'] or '',
+                                    phone_number=data['caller_id'] or '',
+                                    dialcode=None, #TODO
+                                    starting_date=starting_date,
+                                    duration=data['duration'] or 0,
+                                    billsec=data['billsec'] or 0,
+                                    progresssec=data['progresssec'] or 0,
+                                    answersec=data['answersec'] or 0,
+                                    disposition=data['endpoint_disposition'] or '',
+                                    hangup_cause=data['hangup_cause'] or '',
+                                    hangup_cause_q850=data['hangup_cause_q850'] or '',)
+
+            new_voipcall.save()
+
+            #follow bug on FS : http://jira.freeswitch.org/browse/FS-3593   
+            resp = rc.ALL_OK # return 200 - expected by Freeswitch
+            #resp = rc.CREATED
+
+            resp.write("CDR Recorded!")
             return resp
 
-        data = {}
-        import xml.etree.ElementTree as ET
-        tree = ET.fromstring(opt_cdr)
-        #parse file
-        #tree = ET.parse("/tmp/cdr.xml")
-        lst = tree.find("variables")
-
-        cdr_vars = ['plivo_request_uuid', 'plivo_answer_url', 'plivo_app',
-                    'direction', 'endpoint_disposition', 'hangup_cause',
-                    'hangup_cause_q850', 'duration', 'billsec', 'progresssec',
-                    'answersec', 'waitsec', 'mduration', 'billmsec',
-                    'progressmsec', 'answermsec', 'waitmsec',
-                    'progress_mediamsec', 'call_uuid',
-                    'origination_caller_id_number', 'caller_id',
-                    'answer_epoch', 'answer_uepoch']
-
-        for j in lst:
-            if j.tag in cdr_vars:
-                data[j.tag] = j.text
-
-        for element in cdr_vars:
-            if not data.has_key(element):
-                data[element] = None
-
-        if not 'plivo_request_uuid' in data:
-            #CDR not related to plivo
-            #TODO : Add tag for newfies in outbound call
-            return {'status': 'OK'}
-
-        #TODO : delay if not find callrequest
-        try:
-            obj_callrequest = Callrequest.objects.get(request_uuid=data['plivo_request_uuid'])
-        except:
-            #print "error get Callrequest %s " % data['plivo_request_uuid']
-            # Send notification to admin
-            from dialer_campaign.views import common_send_notification
-            from django.contrib.auth.models import User
-            recipient_list = User.objects.filter(is_superuser=1, is_active=1)
-            # send to all admin user
-            for i in recipient_list:
-                # callrequest_not_found - notification id 8
-                # recipient = i.username
-                common_send_notification(request, 8, i.username)
-            raise
-
-        if data.has_key('answer_epoch') and len(data['answer_epoch']) > 0:
-            try:
-                cur_answer_epoch = int(data['answer_epoch'])
-            except ValueError:
-                raise
-            starting_date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(cur_answer_epoch))
-        else:
-            starting_date = None
-
-        new_voipcall = VoIPCall(user = obj_callrequest.user,
-                                request_uuid=data['plivo_request_uuid'],
-                                used_gateway=None, #TODO
-                                callrequest=obj_callrequest,
-                                callid=data['call_uuid'] or '',
-                                callerid=data['origination_caller_id_number'] or '',
-                                phone_number=data['caller_id'] or '',
-                                dialcode=None, #TODO
-                                starting_date=starting_date,
-                                duration=data['duration'] or 0,
-                                billsec=data['billsec'] or 0,
-                                progresssec=data['progresssec'] or 0,
-                                answersec=data['answersec'] or 0,
-                                disposition=data['endpoint_disposition'] or '',
-                                hangup_cause=data['hangup_cause'] or '',
-                                hangup_cause_q850=data['hangup_cause_q850'] or '',)
-
-        new_voipcall.save()
-
-        #follow bug on FS : http://jira.freeswitch.org/browse/FS-3593   
-        resp = rc.ALL_OK # return 200 - expected by Freeswitch
-        #resp = rc.CREATED
-
-        resp.write("CDR Recorded!")
-        return resp
+        except Exception, e:
+            logger.error('Error Store CDR ... %s' % str(e), extra={'stack': True})
+            pass
 
 
 class testcallHandler(BaseHandler):

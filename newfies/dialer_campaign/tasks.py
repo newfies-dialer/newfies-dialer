@@ -18,7 +18,15 @@ def add(x, y):
     **Attributes**:
 
         * ``x`` -
-        * ``y`` -"""
+        * ``y`` -
+
+    **Troubleshoot**:
+
+        * python manage.py shell_plus
+        * from  dialer_campaign import tasks
+        * mytask = tasks.add.delay(1,5)
+        * mytask.result
+    """
 
     print("Executing task id %r, args: %r kwargs: %r" % (
         add.request.id, add.request.args, add.request.kwargs))

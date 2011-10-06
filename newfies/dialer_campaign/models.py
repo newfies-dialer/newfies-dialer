@@ -294,10 +294,10 @@ class Campaign(Model):
                       null=True, verbose_name=_('Call Max Duration'),
     help_text=_("Define the call's duration maximum. (Value in seconds 1800 = 30 minutes)"))
 
-    maxretry = models.IntegerField(default='3', blank=True, null=True,
+    maxretry = models.IntegerField(default='0', blank=True, null=True,
                verbose_name=_('Max Retries'),
                help_text=_("Define the max retries allowed per user."))
-    intervalretry = models.IntegerField(default='3', blank=True, null=True,
+    intervalretry = models.IntegerField(default='300', blank=True, null=True,
                     verbose_name=_('Time between Retries'),
     help_text=_("Define the time to wait between retries in seconds"))
 

@@ -24,7 +24,6 @@ pyparsing
 python-dateutil
 uuid==1.30
 wsgiref==0.1.2
-django-piston==0.2.2
 BeautifulSoup==3.2.0
 Pygments
 python-memcached
@@ -40,3 +39,4 @@ git+git://github.com/Star2Billing/switch2bill-common.git
 git+git://github.com/Star2Billing/simu-prefix-country.git
 git+git://github.com/areski/django-countries.git
 -e hg+http://bitbucket.org/andrewgodwin/south/#egg=south
+-e hg+https://bitbucket.org/jespern/django-piston/#egg=django-piston

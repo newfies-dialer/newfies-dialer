@@ -197,11 +197,7 @@ func_install_frontend(){
 
         mkdir /tmp/old-newfies-dialer_$DATETIME
         mv $INSTALL_DIR /tmp/old-newfies-dialer_$DATETIME
-
-        mysqldump -u $MYSQLUSER --password=$MYSQLPASSWORD $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql
-        
         echo "Files from $INSTALL_DIR has been moved to /tmp/old-newfies-dialer_$DATETIME"
-        echo "Mysql Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql"
         echo "Press Enter to continue"
         read TEMP
     fi
@@ -271,6 +267,14 @@ func_install_frontend(){
         # Nothing to do
         echo ""
     else
+        #Backup Mysql Database
+        if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
+            echo "Run backup with mysqldump..."
+            mysqldump -u $MYSQLUSER --password=$MYSQLPASSWORD $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql
+            echo "Mysql Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql"
+            echo "Press Enter to continue"
+            read TEMP
+        fi
         # Setup settings_local.py for MySQL
         sed -i "s/'django.db.backends.sqlite3'/'django.db.backends.mysql'/"  $INSTALL_DIR/settings_local.py
         sed -i "s/.*'NAME'/       'NAME': '$DATABASENAME',#/"  $INSTALL_DIR/settings_local.py

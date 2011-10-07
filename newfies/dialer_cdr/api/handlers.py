@@ -43,14 +43,6 @@ class callrequestHandler(BaseHandler):
     model = Callrequest
     allowed_methods = ('GET', 'POST', 'PUT', )
 
-    @classmethod
-    def content_length(cls, callrequest):
-        return len(callrequest.content)
-
-    @classmethod
-    def resource_uri(cls, callrequest):
-        return ('callrequest', ['json'])
-
     @throttle(1000, 1 * 60) # Throttle if more that 1000 times within 1 minute
     def read(self, request, callrequest_id=None):
         """API to read all pending callrequests, or a specific callrequest
@@ -361,16 +353,6 @@ class cdrHandler(BaseHandler):
     """
     model = VoIPCall
     allowed_methods = ('POST', )
-
-
-    @classmethod
-    def content_length(cls, voipcall):
-        return len(voipcall.content)
-
-    @classmethod
-    def resource_uri(cls, voipcall):
-        return ('voipcall', ['json'])
-
 
     def create(self, request):
         """API to store CDR

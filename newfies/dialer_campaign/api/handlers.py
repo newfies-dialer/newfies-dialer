@@ -535,7 +535,7 @@ class campaignHandler(BaseHandler):
         saturday = get_attribute(attrs, 'saturday')
         sunday = get_attribute(attrs, 'sunday')
         frequency = get_attribute(attrs, 'frequency')
-        if check_dialer_setting(request,
+        if frequency and check_dialer_setting(request,
                                 check_for="frequency",
                                 field_value=int(frequency)):
             resp = rc.BAD_REQUEST
@@ -544,7 +544,7 @@ class campaignHandler(BaseHandler):
             return resp
 
         callmaxduration = get_attribute(attrs, 'callmaxduration')
-        if check_dialer_setting(request,
+        if callmaxduration and check_dialer_setting(request,
                                 check_for="duration",
                                 field_value=int(callmaxduration)):
             resp = rc.BAD_REQUEST
@@ -553,7 +553,7 @@ class campaignHandler(BaseHandler):
             return resp
 
         maxretry = get_attribute(attrs, 'maxretry')
-        if check_dialer_setting(request,
+        if maxretry and check_dialer_setting(request,
                                 check_for="retry",
                                 field_value=int(maxretry)):
             resp = rc.BAD_REQUEST
@@ -562,7 +562,7 @@ class campaignHandler(BaseHandler):
             return resp
         intervalretry = get_attribute(attrs, 'intervalretry')
         calltimeout = get_attribute(attrs, 'calltimeout')
-        if check_dialer_setting(request,
+        if calltimeout and check_dialer_setting(request,
                                 check_for="timeout",
                                 field_value=int(calltimeout)):
             resp = rc.BAD_REQUEST
@@ -592,11 +592,10 @@ class campaignHandler(BaseHandler):
         friday = get_value_if_none(friday, 1)
         saturday = get_value_if_none(saturday, 1)
         sunday = get_value_if_none(sunday, 1)
-
         try:
             campaign = Campaign.objects.get(id=campaign_id)
             save_if_set(campaign, 'callerid', callerid)
-            save_if_set(campaign, 'status', status)
+            save_if_set(campaign, 'status', int(status))
             save_if_set(campaign, 'startingdate', startingdate)
             save_if_set(campaign, 'expirationdate', expirationdate)
             save_if_set(campaign, 'frequency', frequency)

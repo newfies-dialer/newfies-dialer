@@ -148,6 +148,9 @@ func_install_frontend(){
             apt-get -y install python-setuptools python-dev build-essential 
             apt-get -y install libapache2-mod-python libapache2-mod-wsgi
             easy_install pip
+            #|FIXME: Strangely South need to be installed outside the Virtualenv
+            pip install -e hg+http://bitbucket.org/andrewgodwin/south/@ecaafda23e600e510e252734d67bf8f9f2362dc9#egg=South-dev
+
             #ln -s /usr/local/bin/pip /usr/bin/pip
             
             #Install Extra dependencies on New OS        

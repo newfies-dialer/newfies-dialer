@@ -15,8 +15,13 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-# To download this script direct to your server type
-#wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-newfies.sh
+# To download this script directly to your server :
+# wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-newfies.sh
+# For Development : wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/develop/install/install-newfies.sh
+# then type,
+# chmod +x install-newfies.sh
+# ./install-newfies.sh
+#
 #
 #TODO:
 # - Memcached
@@ -130,6 +135,10 @@ func_install_frontend(){
     db_backend=MySQL
     echo "Do you want to install Newfies with SQLite or MySQL? [SQLite/MySQL] (default:MySQL)"
     read db_backend
+    
+    branch=STABLE
+    echo "Do you want to install Newfies DEVEL or STABLE? [DEVEL/STABLE] (default:STABLE)"
+    read branch
 
     #python setup tools
     echo "Install Dependencies and python modules..."
@@ -212,15 +221,21 @@ func_install_frontend(){
     case $INSTALL_MODE in
         'CLONE')
             git clone git://github.com/Star2Billing/newfies-dialer.git
+            
+            #Install Develop / Master
+            if echo $branch | grep -i "^DEVEL" > /dev/null ; then
+                cd newfies-dialer
+                git checkout -b develop --track origin/develop
+            fi
         ;;
-        'DOWNLOAD')
-            wget --no-check-certificate https://github.com/Star2Billing/newfies-dialer/tarball/$VERSION
-            mv master Star2Billing-newfies-dialer-$VERSION.tar.gz
-            tar xvzf Star2Billing-newfies-dialer-*.tar.gz
-            rm -rf Star2Billing-newfies-*.tar.gz
-            mv newfies-dialer newfies-dialer_$DATETIME
-            mv Star2Billing-newfies-* newfies-dialer        
-        ;;
+        # 'DOWNLOAD')
+        #    wget --no-check-certificate https://github.com/Star2Billing/newfies-dialer/tarball/$VERSION
+        #    mv master Star2Billing-newfies-dialer-$VERSION.tar.gz
+        #    tar xvzf Star2Billing-newfies-dialer-*.tar.gz
+        #    rm -rf Star2Billing-newfies-*.tar.gz
+        #    mv newfies-dialer newfies-dialer_$DATETIME
+        #    mv Star2Billing-newfies-* newfies-dialer        
+        #;;
     esac
 
     # Copy files

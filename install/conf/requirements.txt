@@ -20,6 +20,7 @@ django-picklefield==0.1.9
 django-urlauth==0.1.1
 django-uuidfield
 django-test-extensions
+django-chart-tools
 pyparsing
 python-dateutil
 uuid==1.30

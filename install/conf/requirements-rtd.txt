@@ -10,6 +10,7 @@ django-pagination==1.0.7
 django-picklefield==0.1.9
 django-urlauth==0.1.1
 django-uuidfield
+django-chart-tools
 docutils
 kombu==1.1.0
 pyparsing==1.5.5

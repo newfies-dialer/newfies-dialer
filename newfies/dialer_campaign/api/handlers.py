@@ -46,14 +46,6 @@ class campaignHandler(BaseHandler):
               'calltimeout', 'aleg_gateway', 'bleg_gateway', 'voipapp',
               'extra_data', ('phonebook', ('id', 'name', ), ), )
 
-    @classmethod
-    def content_length(cls, campaign):
-        return len(campaign.content)
-
-    @staticmethod
-    def resource_uri(self):
-        return ('campaign', ['campaign_id', ])
-
     def create(self, request):
         """API to create a new campaign
 
@@ -658,14 +650,6 @@ class phonebookHandler(BaseHandler):
     allowed_methods = ('POST', 'GET',)
     fields = ('id', 'name', 'description', ('campaign', ('id', 'name',)))
 
-    @classmethod
-    def content_length(cls, phonebook):
-        return len(phonebook.content)
-
-    @staticmethod
-    def resource_uri(self):
-        return ('phonebook', ['phonebook_id', ])
-
     def create(self, request):
         """API to create a new phonebook
 
@@ -772,14 +756,6 @@ class contactHandler(BaseHandler):
     allowed_methods = ('POST', 'GET', 'PUT',)
     fields = ('id', 'contact', 'last_name', 'first_name', 'description',
               'status', 'additional_vars', ('phonebook', ('id', 'last_name', )))
-
-    @classmethod
-    def content_length(cls, subscriber):
-        return len(subscriber.content)
-
-    @staticmethod
-    def resource_uri(self):
-        return ('subscriber', ['subscriber_id'])
 
     def create(self, request):
         """API to create a new contact
@@ -1021,14 +997,6 @@ class bulkcontactHandler(BaseHandler):
     model = Contact
     allowed_methods = ('POST',)
 
-    @classmethod
-    def content_length(cls, contact):
-        return len(contact.content)
-
-    @staticmethod
-    def resource_uri(self):
-        return ('contact', [' contact_id', ])
-
     def create(self, request):
         """API to bulk create contacts
 
@@ -1102,14 +1070,6 @@ class campaignDeleteCascadeHandler(BaseHandler):
     """This API provides provides basic functionality
     to delete campaigns."""
     allowed_methods = ('DELETE')
-
-    @classmethod
-    def content_length(cls, campaign):
-        return len(campaign.content)
-
-    @staticmethod
-    def resource_uri(self):
-        return ('campaign', ['campaign_id', ])
 
     @throttle(100, 1 * 60) # allow 100 times in 1 minutes
     def delete(self, request, campaign_id):

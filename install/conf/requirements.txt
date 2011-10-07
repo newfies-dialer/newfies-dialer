@@ -41,3 +41,4 @@ git+git://github.com/Star2Billing/simu-prefix-country.git
 git+git://github.com/areski/django-countries.git
 -e hg+http://bitbucket.org/andrewgodwin/south/#egg=south
 -e hg+https://bitbucket.org/jespern/django-piston/#egg=django-piston
+git+git://github.com/Star2Billing/django-admin-tools-stats.git

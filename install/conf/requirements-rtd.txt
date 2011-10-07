@@ -34,3 +34,4 @@ git+git://github.com/aerosol/django-dilla.git
 django-sentry==1.8.6.2
 git+git://github.com/mcroydon/django-qsstats.git
 -e hg+https://bitbucket.org/jespern/django-piston/#egg=django-piston
+git+git://github.com/Star2Billing/django-admin-tools-stats.git

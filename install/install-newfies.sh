@@ -26,8 +26,6 @@
 #TODO:
 # - Memcached
 
-#Variables
-VERSION=master
 #Install mode can me either CLONE or DOWNLOAD
 INSTALL_MODE='CLONE'
 DATETIME=$(date +"%Y%m%d%H%M%S")
@@ -229,6 +227,7 @@ func_install_frontend(){
             fi
         ;;
         # 'DOWNLOAD')
+        #    VERSION=master
         #    wget --no-check-certificate https://github.com/Star2Billing/newfies-dialer/tarball/$VERSION
         #    mv master Star2Billing-newfies-dialer-$VERSION.tar.gz
         #    tar xvzf Star2Billing-newfies-dialer-*.tar.gz

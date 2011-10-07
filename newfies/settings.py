@@ -365,12 +365,6 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'verbose'
         },
-        # Log to a text file that can be rotated by logrotate
-        'mylogfile': {
-            'class': 'logging.handlers.WatchedFileHandler',
-            'filename': '/var/log/newfies/mylogfile.log',
-            'formatter': 'simple'
-        },
     },
     'loggers': {
         # Again, default Django configuration to email unhandled exceptions

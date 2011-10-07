@@ -52,7 +52,7 @@ class campaignHandler(BaseHandler):
 
     @staticmethod
     def resource_uri(self):
-        return ('campaign_id', ['json'])
+        return ('api_campaign_handler', ['id'])
 
     def create(self, request):
         """API to create a new campaign
@@ -167,7 +167,7 @@ class campaignHandler(BaseHandler):
             * The VoipApp doesn't exist!
             * The Campaign name is duplicated!
         """
-        if user_attached_with_dilaer_settings(request):
+        if user_attached_with_dialer_settings(request):
             resp = rc.BAD_REQUEST
             resp.write("Your settings aren`t configured properly, \
                  Please contact the administrator.")
@@ -513,7 +513,7 @@ class campaignHandler(BaseHandler):
 
             * Campaign not found.
         """
-        if user_attached_with_dilaer_settings(request):
+        if user_attached_with_dialer_settings(request):
             resp = rc.BAD_REQUEST
             resp.write("Your settings are not configured properly, \
                  Please contact the administrator.")
@@ -671,7 +671,7 @@ class phonebookHandler(BaseHandler):
 
     @staticmethod
     def resource_uri(self):
-        return ('phonebook', ['json'])
+        return ('api_phonebook_handler', ['campaign_id'])
 
     def create(self, request):
         """API to create a new phonebook

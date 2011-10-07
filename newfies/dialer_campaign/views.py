@@ -1735,7 +1735,7 @@ def campaign_add(request):
           via CampaignForm & get redirected to campaign list
     """
     # If dialer setting is not attached with user, redirect to campaign list
-    if user_attached_with_dilaer_settings(request):
+    if user_attached_with_dialer_settings(request):
         request.session['error_msg'] = \
         _("In order to add a campaign, you need to have your settings configured properly, please contact the admin.")
         return HttpResponseRedirect("/campaign/")
@@ -1825,7 +1825,7 @@ def campaign_change(request, object_id):
           via CampaignForm & get redirected to the campaign list
     """
     # If dialer setting is not attached with user, redirect to campaign list
-    if user_attached_with_dilaer_settings(request):
+    if user_attached_with_dialer_settings(request):
         return HttpResponseRedirect("/campaign/")
 
     campaign = Campaign.objects.get(pk=object_id)

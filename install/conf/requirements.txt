@@ -16,7 +16,7 @@ amqplib==0.6.1
 anyjson==0.3
 django-jsonfield==0.6
 django-pagination==1.0.7
-django-picklefield==0.1.9
+django-picklefield
 django-urlauth==0.1.1
 django-uuidfield
 django-test-extensions

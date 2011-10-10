@@ -22,7 +22,7 @@ django-uuidfield
 django-test-extensions
 django-chart-tools
 pyparsing
-python-dateutil
+python-dateutil==1.5
 uuid==1.30
 wsgiref==0.1.2
 BeautifulSoup==3.2.0

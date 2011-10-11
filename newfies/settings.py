@@ -183,6 +183,7 @@ INSTALLED_APPS = (
     'admin_tools_stats',
     'chart_tools',
     'south',
+    'tastypie',
 )
 
 # Debug Toolbar

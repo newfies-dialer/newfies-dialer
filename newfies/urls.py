@@ -10,8 +10,12 @@ from dialer_cdr.urls import urlpatterns as urlpatterns_dialer_cdr
 from user_profile.urls import urlpatterns as urlpatterns_user_profile
 from voip_app.urls import urlpatterns as urlpatterns_voip_app
 
-#js_info_dict = { 'domain': 'djangojs', 'packages': ('newfies',), }
-#, js_info_dict
+from tastypie.api import Api
+from dialer_campaign.api.resources import *
+
+# tastypie api
+tastypie_api = Api(api_name='app')
+tastypie_api.register(CampaignResource())
 
 
 urlpatterns = patterns('',
@@ -45,6 +49,8 @@ urlpatterns = patterns('',
 
     (r'^api/dialer_campaign/', include('dialer_campaign.api.urls')),
 
+    (r'^api/', include(tastypie_api.urls)),
+    
     (r'^i18n/', include('django.conf.urls.i18n')),
     (r'^jsi18n/(?P<packages>\S+?)/$', 'django.views.i18n.javascript_catalog'),
 

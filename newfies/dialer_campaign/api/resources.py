@@ -196,16 +196,15 @@ class CampaignResource(ModelResource):
             'name': ALL,
             'status': ALL,
         }
-        
 
-    def hydrate(self, bundle):
+
+    def hydrate(self, bundle, request):
         startingdate = bundle.data.get('startingdate')
         expirationdate = bundle.data.get('expirationdate')
-        
+
         bundle.data['startingdate'] = \
         time.strftime('%Y-%m-%d %H:%M:%S',
                   time.gmtime(float(startingdate)))
-
 
         bundle.data['expirationdate'] = \
         time.strftime('%Y-%m-%d %H:%M:%S',
@@ -213,6 +212,7 @@ class CampaignResource(ModelResource):
 
         setattr(bundle.obj, 'aleg_gateway_id', bundle.data['aleg_gateway'])
         setattr(bundle.obj, 'voipapp_id', bundle.data['voipapp'])
+        setattr(bundle.obj, 'user_id', User.objects.get(username=request.user).id)
         return bundle
 
     def obj_create(self, bundle, request=None, **kwargs):
@@ -224,12 +224,51 @@ class CampaignResource(ModelResource):
         for key, value in kwargs.items():
             setattr(bundle.obj, key, value)
 
-        setattr(bundle.obj, 'user_id', User.objects.get(username=request.user).id)
-
-        bundle = self.full_hydrate(bundle)
+        #bundle = self.full_hydrate(bundle)
+        bundle = self.hydrate(bundle, request)
         bundle.obj.save()
 
         # Now pick up the M2M bits.
         m2m_bundle = self.hydrate_m2m(bundle)
         self.save_m2m(m2m_bundle)
         return bundle
+
+
+    def obj_update(self, bundle, request=None, **kwargs):
+        """
+        A ORM-specific implementation of ``obj_update``.
+        """
+
+        if not bundle.obj or not bundle.obj.pk:
+            # Attempt to hydrate data from kwargs before doing a lookup for the object.
+            # This step is needed so certain values (like datetime) will pass model validation.
+            try:
+                bundle.obj = self.get_object_list(request).model()
+                bundle.data.update(kwargs)
+                #bundle = self.full_hydrate(bundle)
+                bundle = self.hydrate(bundle, request)
+                lookup_kwargs = kwargs.copy()
+                lookup_kwargs.update(dict(
+                    (k, getattr(bundle.obj, k))
+                    for k in kwargs.keys()
+                    if getattr(bundle.obj, k) is not None))
+            except:
+                # if there is trouble hydrating the data, fall back to just
+                # using kwargs by itself (usually it only contains a "pk" key
+                # and this will work fine.
+                lookup_kwargs = kwargs
+
+            try:
+                bundle.obj = self.obj_get(request, **lookup_kwargs)
+            except ObjectDoesNotExist:
+                raise NotFound("A model instance matching the provided arguments could not be found.")
+        #setattr(bundle.obj, 'user_id', User.objects.get(username=request.user).id)
+        #bundle = self.full_hydrate(bundle)
+        #bundle = self.hydrate(bundle, request)
+        bundle.obj.save()
+
+        # Now pick up the M2M bits.
+        m2m_bundle = self.hydrate_m2m(bundle)
+        self.save_m2m(m2m_bundle)
+        return bundle
+

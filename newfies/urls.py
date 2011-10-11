@@ -14,7 +14,7 @@ from tastypie.api import Api
 from dialer_campaign.api.resources import *
 
 # tastypie api
-tastypie_api = Api(api_name='app')
+tastypie_api = Api(api_name='v1')
 tastypie_api.register(CampaignResource())
 
 

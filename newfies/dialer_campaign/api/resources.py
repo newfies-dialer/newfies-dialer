@@ -5,6 +5,13 @@ from tastypie.authorization import DjangoAuthorization
 from tastypie.authorization import Authorization
 from tastypie.serializers import Serializer
 from dialer_campaign.models import *
+import time
+
+def get_value_if_none(x, value):
+    """return value if x is None"""
+    if x is None:
+        return value
+    return x
 
 
 class CampaignResource(ModelResource):
@@ -57,7 +64,7 @@ class CampaignResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X POST --data '{"name": "mylittlecampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0","frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000" }' http://localhost:8000/api/app/campaign/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X POST --data '{"name": "mylittlecampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000" }' http://localhost:8000/api/app/campaign/
 
         Response::
 
@@ -84,15 +91,37 @@ class CampaignResource(ModelResource):
                   "next":null,
                   "offset":0,
                   "previous":null,
-                  "total_count":4
+                  "total_count":1
                },
                "objects":[
                   {
-                     "active":true,
-                     "country":"IN",
+                     "callerid":"123987",
+                     "callmaxduration":1800,
+                     "calltimeout":45,
+                     "campaign_code":"XIUER",
+                     "created_date":"2011-06-15T00:49:16",
+                     "daily_start_time":"00:00:00",
+                     "daily_stop_time":"23:59:59",
+                     "description":"",
+                     "expirationdate":"2011-06-22T00:01:15",
+                     "extra_data":"",
+                     "frequency":10,
+                     "friday":true,
                      "id":"1",
-                     "resource_uri":"/api/app/country/1/"
-                  },
+                     "intervalretry":3,
+                     "maxretry":3,
+                     "monday":true,
+                     "name":"Default_Campaign",
+                     "resource_uri":"/api/app/campaign/1/",
+                     "saturday":true,
+                     "startingdate":"2011-06-15T00:01:15",
+                     "status":1,
+                     "sunday":true,
+                     "thursday":true,
+                     "tuesday":true,
+                     "updated_date":"2011-06-15T00:49:16",
+                     "wednesday":true
+                  }
                ]
             }
 
@@ -101,7 +130,7 @@ class CampaignResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"country": "IN", "active": 1}' http://localhost:8000/api/app/campaign/1/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"name": "mylittlecampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0","frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000" }' http://localhost:8000/api/app/campaign/1/
 
         Response::
 
@@ -163,3 +192,24 @@ class CampaignResource(ModelResource):
         resource_name = 'campaign'
         authorization = Authorization()
         authentication = BasicAuthentication()
+        filtering = {
+            'name': ALL,
+            'status': ALL,
+        }
+
+    def hydrate(self, bundle):
+        startingdate = bundle.data.get('startingdate')
+        expirationdate = bundle.data.get('expirationdate')
+        
+        bundle.data['startingdate'] = \
+        time.strftime('%Y-%m-%d %H:%M:%S',
+                  time.gmtime(float(startingdate)))
+
+
+        bundle.data['expirationdate'] = \
+        time.strftime('%Y-%m-%d %H:%M:%S',
+                  time.gmtime(float(expirationdate)))
+                
+        return bundle
+
+    

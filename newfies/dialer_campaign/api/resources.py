@@ -64,7 +64,7 @@ class CampaignResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X POST --data '{"name": "mylittlecampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000" }' http://localhost:8000/api/app/campaign/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X POST --data '{"name": "mylittlecampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000" }' http://localhost:8000/api/v1/campaign/
 
         Response::
 
@@ -81,7 +81,7 @@ class CampaignResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/app/campaign/?format=json
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaign/?format=json
 
         Response::
 
@@ -130,7 +130,7 @@ class CampaignResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"name": "mylittlecampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0","frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000" }' http://localhost:8000/api/app/campaign/1/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"name": "mylittlecampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0","frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000" }' http://localhost:8000/api/v1/campaign/1/
 
         Response::
 
@@ -147,9 +147,9 @@ class CampaignResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/app/campaign/1/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/campaign/1/
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/app/campaign/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/campaign/
 
         Response::
 
@@ -165,7 +165,7 @@ class CampaignResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/app/campaign/?country=IN
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaign/?country=IN
 
         Response::
 
@@ -196,6 +196,7 @@ class CampaignResource(ModelResource):
             'name': ALL,
             'status': ALL,
         }
+        
 
     def hydrate(self, bundle):
         startingdate = bundle.data.get('startingdate')
@@ -209,7 +210,26 @@ class CampaignResource(ModelResource):
         bundle.data['expirationdate'] = \
         time.strftime('%Y-%m-%d %H:%M:%S',
                   time.gmtime(float(expirationdate)))
-                
+
+        setattr(bundle.obj, 'aleg_gateway_id', bundle.data['aleg_gateway'])
+        setattr(bundle.obj, 'voipapp_id', bundle.data['voipapp'])
         return bundle
 
-    
+    def obj_create(self, bundle, request=None, **kwargs):
+        """
+        A ORM-specific implementation of ``obj_create``.
+        """
+        bundle.obj = self._meta.object_class()
+
+        for key, value in kwargs.items():
+            setattr(bundle.obj, key, value)
+
+        setattr(bundle.obj, 'user_id', User.objects.get(username=request.user).id)
+
+        bundle = self.full_hydrate(bundle)
+        bundle.obj.save()
+
+        # Now pick up the M2M bits.
+        m2m_bundle = self.hydrate_m2m(bundle)
+        self.save_m2m(m2m_bundle)
+        return bundle

@@ -12,6 +12,7 @@ from tastypie.serializers import Serializer
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.utils import dict_strip_unicode_keys, trailing_slash
+from tastypie.http import HttpCreated
 from dialer_campaign.models import Campaign
 from tastypie import fields
 from dialer_campaign.function_def import user_attached_with_dialer_settings, check_dialer_setting
@@ -37,7 +38,7 @@ class VoipAppResource(ModelResource):
 
 class GatewayResource(ModelResource):
     class Meta:
-        queryset = VoipApp.objects.all()
+        queryset = Gateway.objects.all()
         resource_name = 'gateway'
 
 
@@ -294,6 +295,7 @@ class CampaignResource(ModelResource):
             'name': ALL,
             'status': ALL,
         }
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
     def post_list(self, request, **kwargs):
         """
@@ -311,15 +313,13 @@ class CampaignResource(ModelResource):
 
         #curl -u areski:areski --dump-header - -H "Content-Type: application/json" -X POST --data '{"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "/api/v1/gateway/1/", "voipapp": "/api/v1/voipapp/1/", "extra_data": "2000", "user": "api/v1/user/1/" }' http://localhost:8000/api/v1/campaign/
         #error : The 'voipapp' field has was given data that was not a URI, not a dictionary-alike and does not have a 'pk' attribute: ['/api/v1/voipapp/1/']
-        deserialized["user"] = ["/api/v1/user/%s/" % request.user.id,]
-        deserialized["voipapp"] = ["%s" % temp.get('voipapp'),]
-        deserialized["aleg_gateway"] = ["%s" % temp.get('aleg_gateway'),]
-
+        
         bundle = self.build_bundle(data=dict_strip_unicode_keys(deserialized))
 
         self.is_valid(bundle, request)
         updated_bundle = self.obj_create(bundle, request=request)
         return HttpCreated(location=self.get_resource_uri(updated_bundle))
+
     """
     def hydrate(self, bundle):
         startingdate = bundle.data.get('startingdate')

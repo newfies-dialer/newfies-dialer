@@ -5,8 +5,8 @@ from tastypie.authorization import DjangoAuthorization
 from tastypie.authorization import Authorization
 from tastypie.serializers import Serializer
 from tastypie.validation import Validation
-from dialer_campaign.models import *
-from dialer_campaign.function_def import *
+from dialer_campaign.models import Campaign
+from dialer_campaign.function_def import user_attached_with_dialer_settings, check_dialer_setting
 import time
 
 
@@ -55,6 +55,19 @@ class CampaignValidation(Validation):
                                 field_value=int(calltimeout)):
             errors['chk_timeout'] = ["Maximum Timeout limit of %s exceeded." \
             % dialer_setting_limit(request, limit_for="timeout")]
+
+        try:
+            aleg_gateway_id = Gateway.objects.get(id=bundle.data['aleg_gateway']).id
+            setattr(bundle.obj, 'aleg_gateway_id', aleg_gateway_id)
+        except:
+            errors['chk_gateway'] = ["The Gateway ID doesn't exist!"]
+
+        try:
+            voip_app_id = VoipApp.objects.get(id=bundle.data['voipapp']).id
+            setattr(bundle.obj, 'voipapp_id', voip_app_id)
+        except:
+            errors['chk_voipapp'] = ["The VoipApp doesn't exist!"]
+
                     
         return errors
 
@@ -256,9 +269,9 @@ class CampaignResource(ModelResource):
         time.strftime('%Y-%m-%d %H:%M:%S',
                   time.gmtime(float(expirationdate)))
 
-        setattr(bundle.obj, 'aleg_gateway_id', bundle.data['aleg_gateway'])
-        setattr(bundle.obj, 'voipapp_id', bundle.data['voipapp'])
-        #setattr(bundle.obj, 'user_id', User.objects.get(username=request.user).id)
+        #setattr(bundle.obj, 'aleg_gateway_id', bundle.data['aleg_gateway'])
+        #setattr(bundle.obj, 'voipapp_id', bundle.data['voipapp'])
+
         return bundle
 
     def obj_create(self, bundle, request=None, **kwargs):

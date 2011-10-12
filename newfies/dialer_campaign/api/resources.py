@@ -10,6 +10,7 @@ from tastypie.authorization import DjangoAuthorization
 from tastypie.authorization import Authorization
 from tastypie.serializers import Serializer
 from tastypie.validation import Validation
+from tastypie.throttle import BaseThrottle
 from dialer_campaign.models import Campaign
 from tastypie import fields
 from dialer_campaign.function_def import user_attached_with_dialer_settings, check_dialer_setting
@@ -350,6 +351,7 @@ class UserResource(ModelResource):
         filtering = {
             'username': 'exact',
         }
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
     def override_urls(self):
         return [
@@ -367,6 +369,7 @@ class MyCampaignResource(ModelResource):
         resource_name = 'mycampaign'
         authorization = Authorization()
         authentication = BasicAuthentication()
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
     def dehydrate_rating(self, bundle):
         total_score = 5.0

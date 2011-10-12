@@ -13,6 +13,8 @@ from tastypie.validation import Validation
 from dialer_campaign.models import Campaign
 from tastypie import fields
 from dialer_campaign.function_def import user_attached_with_dialer_settings, check_dialer_setting
+from dialer_gateway.models import Gateway
+from voip_app.models import VoipApp
 import time
 
 

@@ -379,8 +379,12 @@ class UserResource(ModelResource):
             'username': 'exact',
         }
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
-
-
+"""
+    def override_urls(self):
+        return [
+            url(r"^(?P<resource_name>%s)/(?P<username>[a-z-]+)/$" % self._meta.resource_name, self.wrap_view('dispatch_detail'), name="api_dispatch_detail"),
+    ]
+"""
 
 class MyCampaignResource(ModelResource):
 

@@ -27,6 +27,29 @@ def get_value_if_none(x, value):
         return value
     return x
 
+class VoipAppResource(ModelResource):
+    class Meta:
+        queryset = VoipApp.objects.all()
+        resource_name = 'voipapp'
+
+
+class GatewayResource(ModelResource):
+    class Meta:
+        queryset = VoipApp.objects.all()
+        resource_name = 'gateway'
+
+
+class UserResource(ModelResource):
+    class Meta:
+        allowed_methods = ['get'] # Don't display or update User
+        queryset = User.objects.all()
+        resource_name = 'user'
+        fields = ['username', 'first_name', 'last_name', 'last_login', 'id']
+        #excludes = ['email', 'password', 'is_active', 'is_staff', 'is_superuser']
+        filtering = {
+            'username': 'exact',
+        }
+
 
 class CampaignValidation(Validation):
     def is_valid(self, bundle, request=None):
@@ -256,6 +279,9 @@ class CampaignResource(ModelResource):
                ]
             }
     """
+    user = fields.ForeignKey(UserResource, 'user', full=True)
+    aleg_gateway = fields.ForeignKey(GatewayResource, 'aleg_gateway', full=True)
+    voipapp = fields.ForeignKey(VoipAppResource, 'voipapp', full=True)
     class Meta:
         queryset = Campaign.objects.all()
         resource_name = 'campaign'
@@ -267,7 +293,7 @@ class CampaignResource(ModelResource):
             'status': ALL,
         }
 
-
+    """
     def hydrate(self, bundle):
         startingdate = bundle.data.get('startingdate')
         expirationdate = bundle.data.get('expirationdate')
@@ -302,7 +328,7 @@ class CampaignResource(ModelResource):
         m2m_bundle = self.hydrate_m2m(bundle)
         self.save_m2m(m2m_bundle)
         return bundle
-    
+    """
     """
     def obj_update(self, bundle, request=None, **kwargs):
 
@@ -340,21 +366,7 @@ class CampaignResource(ModelResource):
         return bundle
     """
 
-class UserResource(ModelResource):
-    class Meta:
-        allowed_methods = ['get'] # Don't display or update User
-        queryset = User.objects.all()
-        resource_name = 'user'
-        fields = ['username', 'first_name', 'last_name', 'last_login', 'id']
-        #excludes = ['email', 'password', 'is_active', 'is_staff', 'is_superuser']
-        filtering = {
-            'username': 'exact',
-        }
 
-    def override_urls(self):
-        return [
-            url(r"^(?P<resource_name>%s)/(?P<username>[a-z-]+)/$" % self._meta.resource_name, self.wrap_view('dispatch_detail'), name="api_dispatch_detail"),
-        ]
 
 
 class MyCampaignResource(ModelResource):

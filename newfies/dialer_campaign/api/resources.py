@@ -261,13 +261,11 @@ class CampaignResource(ModelResource):
         startingdate = bundle.data.get('startingdate')
         expirationdate = bundle.data.get('expirationdate')
 
-        bundle.data['startingdate'] = \
-        time.strftime('%Y-%m-%d %H:%M:%S',
-                  time.gmtime(float(startingdate)))
+        bundle.data['startingdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
+                                        time.gmtime(float(startingdate)))
 
-        bundle.data['expirationdate'] = \
-        time.strftime('%Y-%m-%d %H:%M:%S',
-                  time.gmtime(float(expirationdate)))
+        bundle.data['expirationdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
+                                        time.gmtime(float(expirationdate)))
 
         #setattr(bundle.obj, 'aleg_gateway_id', bundle.data['aleg_gateway'])
         #setattr(bundle.obj, 'voipapp_id', bundle.data['voipapp'])

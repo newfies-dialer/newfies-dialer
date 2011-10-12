@@ -16,6 +16,9 @@ from dialer_campaign.api.resources import *
 # tastypie api
 tastypie_api = Api(api_name='v1')
 tastypie_api.register(CampaignResource())
+tastypie_api.register(UserResource())
+tastypie_api.register(MyCampaignResource())
+
 
 
 urlpatterns = patterns('',

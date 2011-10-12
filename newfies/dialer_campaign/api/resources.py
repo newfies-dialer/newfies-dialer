@@ -1,3 +1,8 @@
+import logging
+
+from django.contrib.auth.models import User
+from django.conf.urls.defaults import url
+
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from django.contrib.auth.models import User
 from tastypie.authentication import BasicAuthentication
@@ -6,8 +11,12 @@ from tastypie.authorization import Authorization
 from tastypie.serializers import Serializer
 from tastypie.validation import Validation
 from dialer_campaign.models import Campaign
+from tastypie import fields
 from dialer_campaign.function_def import user_attached_with_dialer_settings, check_dialer_setting
 import time
+
+
+log = logging.getLogger(__name__)
 
 
 def get_value_if_none(x, value):
@@ -328,3 +337,64 @@ class CampaignResource(ModelResource):
         self.save_m2m(m2m_bundle)
         return bundle
     """
+
+class UserResource(ModelResource):
+    class Meta:
+        allowed_methods = ['get'] # Don't display or update User
+        queryset = User.objects.all()
+        resource_name = 'user'
+        fields = ['username', 'first_name', 'last_name', 'last_login', 'id']
+        #excludes = ['email', 'password', 'is_active', 'is_staff', 'is_superuser']
+        filtering = {
+            'username': 'exact',
+        }
+
+    def override_urls(self):
+        return [
+            url(r"^(?P<resource_name>%s)/(?P<username>[a-z-]+)/$" % self._meta.resource_name, self.wrap_view('dispatch_detail'), name="api_dispatch_detail"),
+        ]
+
+
+class MyCampaignResource(ModelResource):
+
+    user = fields.ForeignKey(UserResource, 'user')    
+    rating = fields.FloatField(readonly=True)
+
+    class Meta:
+        queryset = Campaign.objects.all()
+        resource_name = 'mycampaign'
+        authorization = Authorization()
+        authentication = BasicAuthentication()
+
+    def dehydrate_rating(self, bundle):
+        total_score = 5.0
+        
+        return total_score
+
+    def dehydrate(self, bundle):
+        # Include the request IP in the bundle.
+        bundle.data['request_ip'] = bundle.request.META.get('REMOTE_ADDR')
+        return bundle
+        
+        
+    
+class MyResource(ModelResource):
+    # As is, this is just an empty field. Without the ``dehydrate_rating``
+    # method, no data would be populated for it.
+    rating = fields.FloatField(readonly=True)
+
+    class Meta:
+        queryset = Campaign.objects.all()
+        resource_name = 'rating'
+        authorization = Authorization()
+        authentication = BasicAuthentication()
+
+    def dehydrate_rating(self, bundle):
+        total_score = 5.0
+        
+        return total_score
+
+    def dehydrate(self, bundle):
+        # Include the request IP in the bundle.
+        bundle.data['request_ip'] = bundle.request.META.get('REMOTE_ADDR')
+        return bundle

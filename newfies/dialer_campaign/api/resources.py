@@ -4,8 +4,11 @@ from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import DjangoAuthorization
 from tastypie.authorization import Authorization
 from tastypie.serializers import Serializer
+from tastypie.validation import Validation
 from dialer_campaign.models import *
+from dialer_campaign.function_def import *
 import time
+
 
 def get_value_if_none(x, value):
     """return value if x is None"""
@@ -14,6 +17,48 @@ def get_value_if_none(x, value):
     return x
 
 
+class CampaignValidation(Validation):
+    def is_valid(self, bundle, request=None):
+        errors = {}
+
+        if user_attached_with_dialer_settings(request):
+            errors['user_dialer_setting'] = ['Your settings are not \
+                        configured properly, Please contact the administrator.']
+
+        if check_dialer_setting(request, check_for="campaign"):
+            errors['chk_campaign'] = ["You have too many campaigns. Max allowed %s" \
+            % dialer_setting_limit(request, limit_for="campaign")]
+
+        frequency = bundle.data['frequency']
+        if check_dialer_setting(request, check_for="frequency",
+                                    field_value=int(frequency)):
+            errors['chk_frequency'] = ["Maximum Frequency limit of %s exceeded." \
+            % dialer_setting_limit(request, limit_for="frequency")]
+
+        callmaxduration = bundle.data['callmaxduration']
+        if check_dialer_setting(request,
+                                check_for="duration",
+                                field_value=int(callmaxduration)):
+            errors['chk_duration'] = ["Maximum Duration limit of %s exceeded." \
+            % dialer_setting_limit(request, limit_for="duration")]
+
+        maxretry = bundle.data['maxretry']
+        if check_dialer_setting(request,
+                                check_for="retry",
+                                field_value=int(maxretry)):
+            errors['chk_duration'] = ["Maximum Retries limit of %s exceeded." \
+            % dialer_setting_limit(request, limit_for="retry")]
+
+        calltimeout = bundle.data['calltimeout']
+        if check_dialer_setting(request,
+                                check_for="timeout",
+                                field_value=int(calltimeout)):
+            errors['chk_timeout'] = ["Maximum Timeout limit of %s exceeded." \
+            % dialer_setting_limit(request, limit_for="timeout")]
+                    
+        return errors
+
+    
 class CampaignResource(ModelResource):
     """
     **Attributes**:
@@ -192,13 +237,14 @@ class CampaignResource(ModelResource):
         resource_name = 'campaign'
         authorization = Authorization()
         authentication = BasicAuthentication()
+        validation = CampaignValidation()
         filtering = {
             'name': ALL,
             'status': ALL,
         }
 
 
-    def hydrate(self, bundle, request):
+    def hydrate(self, bundle):
         startingdate = bundle.data.get('startingdate')
         expirationdate = bundle.data.get('expirationdate')
 
@@ -212,32 +258,31 @@ class CampaignResource(ModelResource):
 
         setattr(bundle.obj, 'aleg_gateway_id', bundle.data['aleg_gateway'])
         setattr(bundle.obj, 'voipapp_id', bundle.data['voipapp'])
-        setattr(bundle.obj, 'user_id', User.objects.get(username=request.user).id)
+        #setattr(bundle.obj, 'user_id', User.objects.get(username=request.user).id)
         return bundle
 
     def obj_create(self, bundle, request=None, **kwargs):
-        """
-        A ORM-specific implementation of ``obj_create``.
-        """
+
         bundle.obj = self._meta.object_class()
 
         for key, value in kwargs.items():
             setattr(bundle.obj, key, value)
+        setattr(bundle.obj, 'user_id', User.objects.get(username=request.user).id)
+        bundle = self.full_hydrate(bundle)
 
-        #bundle = self.full_hydrate(bundle)
-        bundle = self.hydrate(bundle, request)
+        # Save FKs just in case.
+        self.save_related(bundle)
+
+        # Save the main object.
         bundle.obj.save()
 
         # Now pick up the M2M bits.
         m2m_bundle = self.hydrate_m2m(bundle)
         self.save_m2m(m2m_bundle)
         return bundle
-
-
+    
+    """
     def obj_update(self, bundle, request=None, **kwargs):
-        """
-        A ORM-specific implementation of ``obj_update``.
-        """
 
         if not bundle.obj or not bundle.obj.pk:
             # Attempt to hydrate data from kwargs before doing a lookup for the object.
@@ -271,4 +316,4 @@ class CampaignResource(ModelResource):
         m2m_bundle = self.hydrate_m2m(bundle)
         self.save_m2m(m2m_bundle)
         return bundle
-
+    """

@@ -112,6 +112,14 @@ class CampaignValidation(Validation):
         except:
             errors['chk_user'] = ["The User doesn't exist!"]
 
+
+        name_count = Campaign.objects.filter(name=bundle.data['name'],
+                                             user=request.user).count()
+        
+        if (name_count!=0 and request.method=='POST'):
+            errors['chk_campaign_name'] = ["The Campaign name duplicated!"]
+
+
         return errors
 
     
@@ -241,23 +249,7 @@ class CampaignResource(ModelResource):
         }
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
-    def post_list(self, request, **kwargs):
-        """
-        Creates a new resource/object with the provided data.
-
-        Calls ``obj_create`` with the provided data and returns a response
-        with the new resource's location.
-
-        If a new resource is created, return ``HttpCreated`` (201 Created).
-        """
-        deserialized = self.deserialize(request, request.raw_post_data, format=request.META.get('CONTENT_TYPE', 'application/json'))
-
-        # Force this in an ugly way, at least should do "reverse"
-        bundle = self.build_bundle(data=dict_strip_unicode_keys(deserialized))
-
-        self.is_valid(bundle, request)
-        updated_bundle = self.obj_create(bundle, request=request)
-        return HttpCreated(location=self.get_resource_uri(updated_bundle))
+    
 
     """
     def hydrate(self, bundle):

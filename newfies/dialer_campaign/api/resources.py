@@ -387,12 +387,13 @@ class PhonebookValidation(Validation):
     """
     def is_valid(self, bundle, request=None):
         errors = {}
-        campaign_id = bundle.data.get('campaign_id')
-        if campaign_id:
-            try:
-                campaign = Campaign.objects.get(id=campaign_id)
-            except:
-                errors['chk_campaign'] = ['The Campaign ID does not exist!']
+        if request.method == 'POST':
+            campaign_id = bundle.data.get('campaign_id')
+            if campaign_id:
+                try:
+                    campaign = Campaign.objects.get(id=campaign_id)
+                except:
+                    errors['chk_campaign'] = ['The Campaign ID does not exist!']
 
         try:
             user_id = User.objects.get(username=request.user).id
@@ -424,7 +425,7 @@ class PhonebookResource(ModelResource):
             Server: WSGIServer/0.1 Python/2.7.1+
             Vary: Accept-Language, Cookie
             Content-Type: text/html; charset=utf-8
-            Location: http://localhost:8000/api/app/campaign/1/
+            Location: http://localhost:8000/api/app/phonebook/1/
             Content-Language: en-us
 
 
@@ -469,7 +470,7 @@ class PhonebookResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"name": "mylittlecampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0","frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000" }' http://localhost:8000/api/v1/campaign/1/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"name": "myphonebook", "description": ""}' http://localhost:8000/api/v1/phonebook/1/
 
         Response::
 
@@ -486,9 +487,9 @@ class PhonebookResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/campaign/1/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/phonebook/1/
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/campaign/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/phonebook/
 
         Response::
 
@@ -504,11 +505,7 @@ class PhonebookResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaign/?name=mycampaign2
-
-        Response::
-
-
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/phonebook/?name=myphonebook
     """
     user = fields.ForeignKey(UserResource, 'user', full=True)
     class Meta:

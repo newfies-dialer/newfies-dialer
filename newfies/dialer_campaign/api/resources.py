@@ -52,8 +52,9 @@ class UserResource(ModelResource):
         filtering = {
             'username': 'exact',
         }
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
-
+        
 class CampaignValidation(Validation):
     def is_valid(self, bundle, request=None):
         errors = {}
@@ -95,17 +96,22 @@ class CampaignValidation(Validation):
 
         try:
             aleg_gateway_id = Gateway.objects.get(id=bundle.data['aleg_gateway']).id
-            setattr(bundle.obj, 'aleg_gateway_id', aleg_gateway_id)
+            bundle.data['aleg_gateway'] = '/api/v1/gateway/%s/' % aleg_gateway_id
         except:
             errors['chk_gateway'] = ["The Gateway ID doesn't exist!"]
 
         try:
             voip_app_id = VoipApp.objects.get(id=bundle.data['voipapp']).id
-            setattr(bundle.obj, 'voipapp_id', voip_app_id)
+            bundle.data['voipapp'] = '/api/v1/voipapp/%s/' % voip_app_id
         except:
             errors['chk_voipapp'] = ["The VoipApp doesn't exist!"]
 
-                    
+        try:
+            user_id = User.objects.get(username=request.user).id
+            bundle.data['user'] = '/api/v1/user/%s/' % user_id
+        except:
+            errors['chk_user'] = ["The User doesn't exist!"]
+
         return errors
 
     
@@ -159,7 +165,7 @@ class CampaignResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X POST --data '{"name": "mylittlecampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000" }' http://localhost:8000/api/v1/campaign/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycampaign", "description": "", "callerid": "1239876", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000"}' http://localhost:8000/api/v1/campaign/
 
         Response::
 
@@ -168,7 +174,7 @@ class CampaignResource(ModelResource):
             Server: WSGIServer/0.1 Python/2.7.1+
             Vary: Accept-Language, Cookie
             Content-Type: text/html; charset=utf-8
-            Location: http://localhost:8000/api/app/country/1/
+            Location: http://localhost:8000/api/app/campaign/1/
             Content-Language: en-us
 
 
@@ -219,68 +225,6 @@ class CampaignResource(ModelResource):
                   }
                ]
             }
-
-
-    **Update**:
-
-        CURL Usage::
-
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"name": "mylittlecampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0","frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000" }' http://localhost:8000/api/v1/campaign/1/
-
-        Response::
-
-            HTTP/1.0 204 NO CONTENT
-            Date: Fri, 23 Sep 2011 06:46:12 GMT
-            Server: WSGIServer/0.1 Python/2.7.1+
-            Vary: Accept-Language, Cookie
-            Content-Length: 0
-            Content-Type: text/html; charset=utf-8
-            Content-Language: en-us
-
-
-    **Delete**:
-
-        CURL Usage::
-
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/campaign/1/
-
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/campaign/
-
-        Response::
-
-            HTTP/1.0 204 NO CONTENT
-            Date: Fri, 23 Sep 2011 06:48:03 GMT
-            Server: WSGIServer/0.1 Python/2.7.1+
-            Vary: Accept-Language, Cookie
-            Content-Length: 0
-            Content-Type: text/html; charset=utf-8
-            Content-Language: en-us
-
-    **Search**:
-
-        CURL Usage::
-
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaign/?country=IN
-
-        Response::
-
-            {
-               "meta":{
-                  "limit":20,
-                  "next":null,
-                  "offset":0,
-                  "previous":null,
-                  "total_count":1
-               },
-               "objects":[
-                  {
-                     "active":true,
-                     "country":"IN",
-                     "id":"2",
-                     "resource_uri":"/api/app/country/2/"
-                  }
-               ]
-            }
     """
     user = fields.ForeignKey(UserResource, 'user', full=True)
     aleg_gateway = fields.ForeignKey(GatewayResource, 'aleg_gateway', full=True)
@@ -290,7 +234,7 @@ class CampaignResource(ModelResource):
         resource_name = 'campaign'
         authorization = Authorization()
         authentication = BasicAuthentication()
-        #validation = CampaignValidation()
+        validation = CampaignValidation()
         filtering = {
             'name': ALL,
             'status': ALL,
@@ -309,11 +253,6 @@ class CampaignResource(ModelResource):
         deserialized = self.deserialize(request, request.raw_post_data, format=request.META.get('CONTENT_TYPE', 'application/json'))
 
         # Force this in an ugly way, at least should do "reverse"
-        temp = eval(request.raw_post_data)
-
-        #curl -u areski:areski --dump-header - -H "Content-Type: application/json" -X POST --data '{"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "/api/v1/gateway/1/", "voipapp": "/api/v1/voipapp/1/", "extra_data": "2000", "user": "api/v1/user/1/" }' http://localhost:8000/api/v1/campaign/
-        #error : The 'voipapp' field has was given data that was not a URI, not a dictionary-alike and does not have a 'pk' attribute: ['/api/v1/voipapp/1/']
-        
         bundle = self.build_bundle(data=dict_strip_unicode_keys(deserialized))
 
         self.is_valid(bundle, request)
@@ -336,81 +275,10 @@ class CampaignResource(ModelResource):
 
         return bundle
 
-    def obj_create(self, bundle, request=None, **kwargs):
-
-        bundle.obj = self._meta.object_class()
-
-        for key, value in kwargs.items():
-            setattr(bundle.obj, key, value)
-        setattr(bundle.obj, 'user_id', User.objects.get(username=request.user).id)
-        bundle = self.full_hydrate(bundle)
-
-        # Save FKs just in case.
-        self.save_related(bundle)
-
-        # Save the main object.
-        bundle.obj.save()
-
-        # Now pick up the M2M bits.
-        m2m_bundle = self.hydrate_m2m(bundle)
-        self.save_m2m(m2m_bundle)
-        return bundle
-    """
-    """
-    def obj_update(self, bundle, request=None, **kwargs):
-
-        if not bundle.obj or not bundle.obj.pk:
-            # Attempt to hydrate data from kwargs before doing a lookup for the object.
-            # This step is needed so certain values (like datetime) will pass model validation.
-            try:
-                bundle.obj = self.get_object_list(request).model()
-                bundle.data.update(kwargs)
-                #bundle = self.full_hydrate(bundle)
-                bundle = self.hydrate(bundle, request)
-                lookup_kwargs = kwargs.copy()
-                lookup_kwargs.update(dict(
-                    (k, getattr(bundle.obj, k))
-                    for k in kwargs.keys()
-                    if getattr(bundle.obj, k) is not None))
-            except:
-                # if there is trouble hydrating the data, fall back to just
-                # using kwargs by itself (usually it only contains a "pk" key
-                # and this will work fine.
-                lookup_kwargs = kwargs
-
-            try:
-                bundle.obj = self.obj_get(request, **lookup_kwargs)
-            except ObjectDoesNotExist:
-                raise NotFound("A model instance matching the provided arguments could not be found.")
-        #setattr(bundle.obj, 'user_id', User.objects.get(username=request.user).id)
-        #bundle = self.full_hydrate(bundle)
-        #bundle = self.hydrate(bundle, request)
-        bundle.obj.save()
-
-        # Now pick up the M2M bits.
-        m2m_bundle = self.hydrate_m2m(bundle)
-        self.save_m2m(m2m_bundle)
-        return bundle
     """
 
 
-class UserResource(ModelResource):
-    class Meta:
-        allowed_methods = ['get'] # Don't display or update User
-        queryset = User.objects.all()
-        resource_name = 'user'
-        fields = ['username', 'first_name', 'last_name', 'last_login', 'id']
-        #excludes = ['email', 'password', 'is_active', 'is_staff', 'is_superuser']
-        filtering = {
-            'username': 'exact',
-        }
-        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
-"""
-    def override_urls(self):
-        return [
-            url(r"^(?P<resource_name>%s)/(?P<username>[a-z-]+)/$" % self._meta.resource_name, self.wrap_view('dispatch_detail'), name="api_dispatch_detail"),
-    ]
-"""
+
 
 class MyCampaignResource(ModelResource):
 

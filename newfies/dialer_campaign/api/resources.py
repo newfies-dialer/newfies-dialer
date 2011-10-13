@@ -13,9 +13,10 @@ from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.utils import dict_strip_unicode_keys, trailing_slash
 from tastypie.http import HttpCreated
-from dialer_campaign.models import Campaign
+from dialer_campaign.models import Campaign, Phonebook
 from tastypie import fields
-from dialer_campaign.function_def import user_attached_with_dialer_settings, check_dialer_setting, dialer_setting_limit
+from dialer_campaign.function_def import user_attached_with_dialer_settings, \
+    check_dialer_setting, dialer_setting_limit
 from dialer_gateway.models import Gateway
 from voip_app.models import VoipApp
 import time
@@ -48,7 +49,6 @@ class UserResource(ModelResource):
         queryset = User.objects.all()
         resource_name = 'user'
         fields = ['username', 'first_name', 'last_name', 'last_login', 'id']
-        #excludes = ['email', 'password', 'is_active', 'is_staff', 'is_superuser']
         filtering = {
             'username': 'exact',
         }
@@ -56,6 +56,9 @@ class UserResource(ModelResource):
 
         
 class CampaignValidation(Validation):
+    """
+    Campaign Validation Class
+    """
     def is_valid(self, bundle, request=None):
         errors = {}
 
@@ -377,7 +380,148 @@ class CampaignResource(ModelResource):
         }
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
-    
+
+class PhonebookValidation(Validation):
+    """
+    Phonebook Validation Class
+    """
+    def is_valid(self, bundle, request=None):
+        errors = {}
+        campaign_id = bundle.data.get('campaign_id')
+        if campaign_id:
+            try:
+                campaign = Campaign.objects.get(id=campaign_id)
+            except:
+                errors['chk_campaign'] = ['The Campaign ID does not exist!']
+
+        try:
+            user_id = User.objects.get(username=request.user).id
+            bundle.data['user'] = '/api/v1/user/%s/' % user_id
+        except:
+            errors['chk_user'] = ["The User doesn't exist!"]
+
+        return errors
+
+
+class PhonebookResource(ModelResource):
+    """
+    **Attributes**:
+
+        * ``name`` - Name of the Phonebook
+        * ``description`` - Short description of the Campaign
+        * ``campaign_id`` - Campaign ID
+
+    **Create**:
+
+        CURL Usage::
+
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mylittlephonebook", "description": "", "campaign_id": "1"}' http://localhost:8000/api/v1/phonebook/
+
+        Response::
+
+            HTTP/1.0 201 CREATED
+            Date: Fri, 23 Sep 2011 06:08:34 GMT
+            Server: WSGIServer/0.1 Python/2.7.1+
+            Vary: Accept-Language, Cookie
+            Content-Type: text/html; charset=utf-8
+            Location: http://localhost:8000/api/app/campaign/1/
+            Content-Language: en-us
+
+
+    **Read**:
+
+        CURL Usage::
+
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/phonebook/?format=json
+
+        Response::
+
+            {
+               "meta":{
+                  "limit":20,
+                  "next":null,
+                  "offset":0,
+                  "previous":null,
+                  "total_count":1
+               },
+               "objects":[
+                  {
+                     "created_date":"2011-04-08T07:55:05",
+                     "description":"This is default phone book",
+                     "id":"1",
+                     "name":"Default_Phonebook",
+                     "resource_uri":"/api/v1/phonebook/1/",
+                     "updated_date":"2011-04-08T07:55:05",
+                     "user":{                                                                      
+                        "first_name":"",
+                        "id":"1",
+                        "last_login":"2011-10-11T01:03:42",
+                        "last_name":"",
+                        "resource_uri":"/api/v1/user/1/",
+                        "username":"areski"
+                     }
+                  }
+               ]
+            }
+
+
+    **Update**:
+
+        CURL Usage::
+
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"name": "mylittlecampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0","frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000" }' http://localhost:8000/api/v1/campaign/1/
+
+        Response::
+
+            HTTP/1.0 204 NO CONTENT
+            Date: Fri, 23 Sep 2011 06:46:12 GMT
+            Server: WSGIServer/0.1 Python/2.7.1+
+            Vary: Accept-Language, Cookie
+            Content-Length: 0
+            Content-Type: text/html; charset=utf-8
+            Content-Language: en-us
+
+
+    **Delete**:
+
+        CURL Usage::
+
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/campaign/1/
+
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/campaign/
+
+        Response::
+
+            HTTP/1.0 204 NO CONTENT
+            Date: Fri, 23 Sep 2011 06:48:03 GMT
+            Server: WSGIServer/0.1 Python/2.7.1+
+            Vary: Accept-Language, Cookie
+            Content-Length: 0
+            Content-Type: text/html; charset=utf-8
+            Content-Language: en-us
+
+    **Search**:
+
+        CURL Usage::
+
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaign/?name=mycampaign2
+
+        Response::
+
+
+    """
+    user = fields.ForeignKey(UserResource, 'user', full=True)
+    class Meta:
+        queryset = Phonebook.objects.all()
+        resource_name = 'phonebook'
+        authorization = Authorization()
+        authentication = BasicAuthentication()
+        validation = PhonebookValidation()
+        filtering = {
+            'name': ALL,
+        }
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+
 
 class MyCampaignResource(ModelResource):
 

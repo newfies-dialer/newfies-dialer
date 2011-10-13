@@ -13,7 +13,7 @@ from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.utils import dict_strip_unicode_keys, trailing_slash
 from tastypie.http import HttpCreated
-from dialer_campaign.models import Campaign, Phonebook
+from dialer_campaign.models import Campaign, Phonebook, Contact
 from tastypie import fields
 from dialer_campaign.function_def import user_attached_with_dialer_settings, \
     check_dialer_setting, dialer_setting_limit
@@ -30,6 +30,7 @@ def get_value_if_none(x, value):
     if x is None:
         return value
     return x
+
 
 class VoipAppResource(ModelResource):
     class Meta:
@@ -414,10 +415,9 @@ class CampaignResource(ModelResource):
         self.save_m2m(m2m_bundle)
         return bundle
 
+
 class PhonebookValidation(Validation):
-    """
-    Phonebook Validation Class
-    """
+    """Phonebook Validation Class"""
     def is_valid(self, bundle, request=None):
         errors = {}
         if request.method == 'POST':
@@ -553,47 +553,81 @@ class PhonebookResource(ModelResource):
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
 
-class MyCampaignResource(ModelResource):
+class BulkContactValidation(Validation):
+    """BulkContact Validation Class"""
+    def is_valid(self, bundle, request=None):
+        errors = {}
+        if check_dialer_setting(request, check_for="contact"):
+            errors['contact_dialer_setting'] = ["You have too many contacts per campaign. \
+                You are allowed a maximum of %s" % dialer_setting_limit(request, limit_for="contact")]
 
-    user = fields.ForeignKey(UserResource, 'user')    
-    rating = fields.FloatField(readonly=True)
+        phonebook_id = bundle.data.get('phonebook_id')
+        if phonebook_id:
+            try:
+                obj_phonebook = Phonebook.objects.get(id=phonebook_id)
+            except Phonebook.DoesNotExist:
+                errors['phonebook_error'] = ["Phonebook is not selected!"]
+        else:
+            errors['phonebook_error'] = ["Phonebook is not selected!"]
 
+        return errors
+
+    
+class BulkContactResource(ModelResource):
+    """API to bulk create contacts
+
+    **Attributes**
+
+        * ``contact`` - contact number of the Subscriber
+        * ``phonebook_id`` - the phonebook Id to which we want to add\
+        the contact
+
+    **CURL Usage**::
+
+        curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"phonebook_id": "1", "phoneno_list" : "12345,54344"}' http://localhost:8000/api/v1/bulkcontact/
+
+    **Response**::
+
+        HTTP/1.0 201 CREATED
+        Date: Thu, 13 Oct 2011 11:42:44 GMT
+        Server: WSGIServer/0.1 Python/2.7.1+
+        Vary: Accept-Language, Cookie
+        Content-Type: text/html; charset=utf-8
+        Location: http://localhost:8000/api/v1/bulkcontact/None/
+        Content-Language: en-us
+    """
     class Meta:
-        queryset = Campaign.objects.all()
-        resource_name = 'mycampaign'
+        queryset = Contact.objects.all()
+        resource_name = 'bulkcontact'
         authorization = Authorization()
         authentication = BasicAuthentication()
+        allowed_methods = ['post']
+        validation = BulkContactValidation()
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
-    def dehydrate_rating(self, bundle):
-        total_score = 5.0
+    def obj_create(self, bundle, request=None, **kwargs):
+        """
+        A ORM-specific implementation of ``obj_create``.
+        """
+        bundle.obj = self._meta.object_class()
+        bundle = self.full_hydrate(bundle)
         
-        return total_score
+        phoneno_list = bundle.data.get('phoneno_list')
+        phonebook_id = bundle.data.get('phonebook_id')
+        phonenolist = list(phoneno_list.split(","))
+        total_no = len(list(phonenolist))
+        errors = {}
+        try:
+            obj_phonebook = Phonebook.objects.get(id=phonebook_id)
+            new_contact_count = 0
+            for phoneno in phonenolist:
+                new_contact = Contact.objects.create(
+                                        phonebook=obj_phonebook,
+                                        contact=phoneno,)
+                new_contact_count = new_contact_count + 1
+                new_contact.save()
+        except:
+            errors['duplicate_nos'] = ["The contact duplicated (%s)!\n" % phoneno]
+            pass
 
-    def dehydrate(self, bundle):
-        # Include the request IP in the bundle.
-        bundle.data['request_ip'] = bundle.request.META.get('REMOTE_ADDR')
-        return bundle
-        
-        
-    
-class MyResource(ModelResource):
-    # As is, this is just an empty field. Without the ``dehydrate_rating``
-    # method, no data would be populated for it.
-    rating = fields.FloatField(readonly=True)
-
-    class Meta:
-        queryset = Campaign.objects.all()
-        resource_name = 'rating'
-        authorization = Authorization()
-        authentication = BasicAuthentication()
-
-    def dehydrate_rating(self, bundle):
-        total_score = 5.0
-        
-        return total_score
-
-    def dehydrate(self, bundle):
-        # Include the request IP in the bundle.
-        bundle.data['request_ip'] = bundle.request.META.get('REMOTE_ADDR')
         return bundle

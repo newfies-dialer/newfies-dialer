@@ -15,13 +15,14 @@ from dialer_campaign.api.resources import *
 
 # tastypie api
 tastypie_api = Api(api_name='v1')
-tastypie_api.register(CampaignResource())
-tastypie_api.register(PhonebookResource())
+
 tastypie_api.register(UserResource())
 tastypie_api.register(GatewayResource())
 tastypie_api.register(VoipAppResource())
-tastypie_api.register(MyCampaignResource())
 
+tastypie_api.register(CampaignResource())
+tastypie_api.register(PhonebookResource())
+tastypie_api.register(BulkContactResource())
 
 
 urlpatterns = patterns('',

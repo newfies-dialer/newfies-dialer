@@ -13,6 +13,7 @@ from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.utils import dict_strip_unicode_keys, trailing_slash
 from tastypie.http import HttpCreated
+from tastypie.exceptions import NotFound
 from dialer_campaign.models import Campaign, Phonebook, Contact
 from tastypie import fields
 from dialer_campaign.function_def import user_attached_with_dialer_settings, \
@@ -269,7 +270,7 @@ class CampaignResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"name": "mylittlecampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0","frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000" }' http://localhost:8000/api/v1/campaign/1/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"name": "mylittlecampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0","frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000" }' http://localhost:8000/api/v1/campaign/%campaign_id%/
 
         Response::
 
@@ -281,12 +282,12 @@ class CampaignResource(ModelResource):
             Content-Type: text/html; charset=utf-8
             Content-Language: en-us
 
-            
+
     **Delete**:
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/campaign/1/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/campaign/%campaign_id%/
 
             curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/campaign/
 
@@ -503,7 +504,7 @@ class PhonebookResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"name": "myphonebook", "description": ""}' http://localhost:8000/api/v1/phonebook/1/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"name": "myphonebook", "description": ""}' http://localhost:8000/api/v1/phonebook/%phonebook_id%/
 
         Response::
 
@@ -520,7 +521,7 @@ class PhonebookResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/phonebook/1/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/phonebook/%phonebook_id%/
 
             curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/phonebook/
 
@@ -631,3 +632,84 @@ class BulkContactResource(ModelResource):
             pass
 
         return bundle
+
+
+
+class CampaignDeleteCascadeResource(ModelResource):
+    """
+
+    **Attributes**:
+
+        * ``campaign_id`` - Campaign ID
+
+    **CURL Usage**::
+
+        curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/campaign_delete_cascade/%campaign_id%/
+
+    **Example Response**::
+
+        HTTP/1.0 204 NO CONTENT
+        Date: Wed, 18 May 2011 13:23:14 GMT
+        Server: WSGIServer/0.1 Python/2.6.2
+        Vary: Authorization
+        Content-Length: 0
+        Content-Type: text/plain
+    """
+    class Meta:
+        queryset = Campaign.objects.all()
+        resource_name = 'campaign_delete_cascade'
+        authorization = Authorization()
+        authentication = BasicAuthentication()
+        list_allowed_methods = ['delete']
+        detail_allowed_methods = ['delete']
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+
+    def obj_delete(self, request=None, **kwargs):
+        """
+        A ORM-specific implementation of ``obj_delete``.
+
+        Takes optional ``kwargs``, which are used to narrow the query to find
+        the instance.
+        """
+        obj = kwargs.pop('_obj', None)
+        if not hasattr(obj, 'delete'):
+            try:
+                obj = self.obj_get(request, **kwargs)
+            except:
+                raise NotFound("A model instance matching the provided arguments could not be found.")
+
+        #obj.delete()
+        campaign_id = obj.id
+        try:
+            del_campaign = Campaign.objects.get(id=campaign_id)
+            phonebook_count = del_campaign.phonebook.all().count()
+
+            if phonebook_count == 0:
+                del_campaign.delete()
+            else: # phonebook_count > 0
+                other_campaing_count = \
+                Campaign.objects.filter(user=request.user,
+                         phonebook__in=del_campaign.phonebook.all())\
+                .exclude(id=campaign_id).count()
+
+                if other_campaing_count == 0:
+                    # delete phonebooks as well as contacts belong to it
+
+                    # 1) delete all contacts which are belong to phonebook
+                    contact_list = Contact.objects\
+                    .filter(phonebook__in=del_campaign.phonebook.all())
+                    total_contact = contact_list.count()
+                    contact_list.delete()
+
+                    # 2) delete phonebook
+                    phonebook_list = Phonebook.objects\
+                    .filter(id__in=del_campaign.phonebook.all())
+                    total_phonebook = phonebook_list.count()
+                    phonebook_list.delete()
+
+                    # 3) delete campaign
+                    del_campaign.delete()
+                else:
+                    del_campaign.delete()
+        except:
+            raise NotFound("A model instance matching the provided arguments could not be found.")

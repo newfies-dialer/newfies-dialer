@@ -23,6 +23,7 @@ tastypie_api.register(VoipAppResource())
 tastypie_api.register(CampaignResource())
 tastypie_api.register(PhonebookResource())
 tastypie_api.register(BulkContactResource())
+tastypie_api.register(CampaignDeleteCascadeResource())
 
 
 urlpatterns = patterns('',

@@ -14,7 +14,7 @@ from tastypie.throttle import BaseThrottle
 from tastypie.utils import dict_strip_unicode_keys, trailing_slash
 from tastypie.http import HttpCreated
 from tastypie.exceptions import NotFound
-from dialer_campaign.models import Campaign, Phonebook, Contact
+from dialer_campaign.models import Campaign, Phonebook, Contact, CampaignSubscriber
 from tastypie import fields
 from dialer_campaign.function_def import user_attached_with_dialer_settings, \
     check_dialer_setting, dialer_setting_limit
@@ -713,3 +713,87 @@ class CampaignDeleteCascadeResource(ModelResource):
                     del_campaign.delete()
         except:
             raise NotFound("A model instance matching the provided arguments could not be found.")
+
+
+class CampaignSubscriberValidation(Validation):
+    """CampaignSubscriber Validation Class"""
+    def is_valid(self, bundle, request=None):
+        errors = {}
+        if check_dialer_setting(request, check_for="contact"):
+            errors['contact_dialer_setting'] = ["You have too many contacts per campaign. \
+                You are allowed a maximum of %s" % dialer_setting_limit(request, limit_for="contact")]
+
+        phonebook_id = bundle.data.get('phonebook_id')
+        if phonebook_id:
+            try:
+                obj_phonebook = Phonebook.objects.get(id=phonebook_id)
+            except Phonebook.DoesNotExist:
+                errors['phonebook_error'] = ["Phonebook is not selected!"]
+        else:
+            errors['phonebook_error'] = ["Phonebook is not selected!"]
+
+        return errors
+
+    
+class CampaignSubscriberResource(ModelResource):
+    """
+    **Attributes Details**:
+
+        * ``contact`` - contact number of the Subscriber
+        * ``last_name`` - last name of the Subscriber
+        * ``first_name`` - first name of the Subscriber
+        * ``email`` - email id of the Subscriber
+        * ``description`` - Short description of the Subscriber
+        * ``additional_vars`` - Additional settings for the Subscriber
+        * ``phonebook_id`` - the phonebook Id to which we want to add\
+        the Subscriber
+
+    **CURL Usage**::
+
+        curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"contact": "650784355", "last_name": "belaid", "first_name": "areski", "email": "areski@gmail.com", "phonebook_id" : "1"}' http://localhost:8000/api/v1/campaignsubscriber/
+
+    **Example Response**::
+
+        HTTP/1.0 204 NO CONTENT
+        Date: Wed, 18 May 2011 13:23:14 GMT
+        Server: WSGIServer/0.1 Python/2.6.2
+        Vary: Authorization
+        Content-Length: 0
+        Content-Type: text/plain
+    """
+    class Meta:
+        queryset = CampaignSubscriber.objects.all()
+        resource_name = 'campaignsubscriber'
+        authorization = Authorization()
+        authentication = BasicAuthentication()
+        list_allowed_methods = ['post']
+        detail_allowed_methods = ['post']
+        Validation = CampaignSubscriberValidation()
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+
+    def obj_create(self, bundle, request=None, **kwargs):
+        """
+        A ORM-specific implementation of ``obj_create``.
+        """
+        bundle.obj = self._meta.object_class()
+        bundle = self.full_hydrate(bundle)
+
+        phonebook_id = bundle.data.get('phonebook_id')
+        obj_phonebook = Phonebook.objects.get(id=phonebook_id)
+        errors = {}
+        try:
+            #this method will also create a record into CampaignSubscriber
+            #this is defined in signal post_save_add_contact
+            new_contact = Contact.objects.create(
+                                    contact=bundle.data.get('contact'),
+                                    last_name=bundle.data.get('last_name'),
+                                    first_name=bundle.data.get('first_name'),
+                                    email=bundle.data.get('email'),
+                                    description=bundle.data.get('description'),
+                                    status=bundle.data.get('status'),
+                                    phonebook=obj_phonebook)
+        except:
+            errors['duplicate_contact'] = ["The contact duplicated (%s)!\n" % bundle.data.get('contact')]
+            return errors
+
+        return bundle

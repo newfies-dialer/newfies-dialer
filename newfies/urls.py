@@ -24,6 +24,7 @@ tastypie_api.register(CampaignResource())
 tastypie_api.register(PhonebookResource())
 tastypie_api.register(BulkContactResource())
 tastypie_api.register(CampaignDeleteCascadeResource())
+tastypie_api.register(CampaignSubscriberResource())
 
 
 urlpatterns = patterns('',

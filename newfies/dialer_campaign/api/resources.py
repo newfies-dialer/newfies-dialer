@@ -15,7 +15,7 @@ from tastypie.utils import dict_strip_unicode_keys, trailing_slash
 from tastypie.http import HttpCreated
 from dialer_campaign.models import Campaign
 from tastypie import fields
-from dialer_campaign.function_def import user_attached_with_dialer_settings, check_dialer_setting
+from dialer_campaign.function_def import user_attached_with_dialer_settings, check_dialer_setting, dialer_setting_limit
 from dialer_gateway.models import Gateway
 from voip_app.models import VoipApp
 import time
@@ -59,6 +59,26 @@ class CampaignValidation(Validation):
     def is_valid(self, bundle, request=None):
         errors = {}
 
+        startingdate = bundle.data.get('startingdate')
+        expirationdate = bundle.data.get('expirationdate')
+        if request.method == 'POST':
+            startingdate = get_value_if_none(startingdate, time.time())
+            # expires in 7 days
+            expirationdate = get_value_if_none(expirationdate, time.time() + 86400 * 7)
+
+            bundle.data['startingdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
+                                          time.gmtime(float(startingdate)))
+            bundle.data['expirationdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
+                                            time.gmtime(float(expirationdate)))
+
+        if request.method == 'PUT':
+            if startingdate:
+                bundle.data['startingdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
+                                              time.gmtime(float(startingdate)))
+            if expirationdate:
+                bundle.data['expirationdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
+                                                time.gmtime(float(expirationdate)))
+        
         if user_attached_with_dialer_settings(request):
             errors['user_dialer_setting'] = ['Your settings are not \
                         configured properly, Please contact the administrator.']
@@ -67,44 +87,53 @@ class CampaignValidation(Validation):
             errors['chk_campaign'] = ["You have too many campaigns. Max allowed %s" \
             % dialer_setting_limit(request, limit_for="campaign")]
 
-        frequency = bundle.data['frequency']
-        if check_dialer_setting(request, check_for="frequency",
-                                    field_value=int(frequency)):
-            errors['chk_frequency'] = ["Maximum Frequency limit of %s exceeded." \
-            % dialer_setting_limit(request, limit_for="frequency")]
 
-        callmaxduration = bundle.data['callmaxduration']
-        if check_dialer_setting(request,
-                                check_for="duration",
-                                field_value=int(callmaxduration)):
-            errors['chk_duration'] = ["Maximum Duration limit of %s exceeded." \
-            % dialer_setting_limit(request, limit_for="duration")]
+        frequency = bundle.data.get('frequency')
+        if frequency:
+            if check_dialer_setting(request, check_for="frequency",
+                                        field_value=int(frequency)):
+                errors['chk_frequency'] = ["Maximum Frequency limit of %s exceeded." \
+                % dialer_setting_limit(request, limit_for="frequency")]
 
-        maxretry = bundle.data['maxretry']
-        if check_dialer_setting(request,
-                                check_for="retry",
-                                field_value=int(maxretry)):
-            errors['chk_duration'] = ["Maximum Retries limit of %s exceeded." \
-            % dialer_setting_limit(request, limit_for="retry")]
+        callmaxduration = bundle.data.get('callmaxduration')
+        if callmaxduration:
+            if check_dialer_setting(request,
+                                    check_for="duration",
+                                    field_value=int(callmaxduration)):
+                errors['chk_duration'] = ["Maximum Duration limit of %s exceeded." \
+                % dialer_setting_limit(request, limit_for="duration")]
 
-        calltimeout = bundle.data['calltimeout']
-        if check_dialer_setting(request,
-                                check_for="timeout",
-                                field_value=int(calltimeout)):
-            errors['chk_timeout'] = ["Maximum Timeout limit of %s exceeded." \
-            % dialer_setting_limit(request, limit_for="timeout")]
+        maxretry = bundle.data.get('maxretry')
+        if maxretry:
+            if check_dialer_setting(request,
+                                    check_for="retry",
+                                    field_value=int(maxretry)):
+                errors['chk_duration'] = ["Maximum Retries limit of %s exceeded." \
+                % dialer_setting_limit(request, limit_for="retry")]
 
-        try:
-            aleg_gateway_id = Gateway.objects.get(id=bundle.data['aleg_gateway']).id
-            bundle.data['aleg_gateway'] = '/api/v1/gateway/%s/' % aleg_gateway_id
-        except:
-            errors['chk_gateway'] = ["The Gateway ID doesn't exist!"]
+        calltimeout = bundle.data.get('calltimeout')
+        if calltimeout:
+            if check_dialer_setting(request,
+                                    check_for="timeout",
+                                    field_value=int(calltimeout)):
+                errors['chk_timeout'] = ["Maximum Timeout limit of %s exceeded." \
+                % dialer_setting_limit(request, limit_for="timeout")]
 
-        try:
-            voip_app_id = VoipApp.objects.get(id=bundle.data['voipapp']).id
-            bundle.data['voipapp'] = '/api/v1/voipapp/%s/' % voip_app_id
-        except:
-            errors['chk_voipapp'] = ["The VoipApp doesn't exist!"]
+        aleg_gateway_id = bundle.data.get('aleg_gateway')
+        if aleg_gateway_id:
+            try:
+                aleg_gateway_id = Gateway.objects.get(id=aleg_gateway_id).id
+                bundle.data['aleg_gateway'] = '/api/v1/gateway/%s/' % aleg_gateway_id
+            except:
+                errors['chk_gateway'] = ["The Gateway ID doesn't exist!"]
+
+        voipapp_id = bundle.data.get('voipapp')
+        if voipapp_id:
+            try:
+                voip_app_id = VoipApp.objects.get(id=voipapp_id).id
+                bundle.data['voipapp'] = '/api/v1/voipapp/%s/' % voip_app_id
+            except:
+                errors['chk_voipapp'] = ["The VoipApp doesn't exist!"]
 
         try:
             user_id = User.objects.get(username=request.user).id
@@ -113,11 +142,11 @@ class CampaignValidation(Validation):
             errors['chk_user'] = ["The User doesn't exist!"]
 
 
-        name_count = Campaign.objects.filter(name=bundle.data['name'],
-                                             user=request.user).count()
-        
-        if (name_count!=0 and request.method=='POST'):
-            errors['chk_campaign_name'] = ["The Campaign name duplicated!"]
+        if request.method=='POST':
+            name_count = Campaign.objects.filter(name=bundle.data.get('name'),
+                                                 user=request.user).count()
+            if (name_count!=0):
+                errors['chk_campaign_name'] = ["The Campaign name duplicated!"]
 
 
         return errors
@@ -173,7 +202,7 @@ class CampaignResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycampaign", "description": "", "callerid": "1239876", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000"}' http://localhost:8000/api/v1/campaign/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000"}' http://localhost:8000/api/v1/campaign/
 
         Response::
 
@@ -233,6 +262,105 @@ class CampaignResource(ModelResource):
                   }
                ]
             }
+
+    **Update**:
+
+        CURL Usage::
+
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"name": "mylittlecampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0","frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000" }' http://localhost:8000/api/v1/campaign/1/
+
+        Response::
+
+            HTTP/1.0 204 NO CONTENT
+            Date: Fri, 23 Sep 2011 06:46:12 GMT
+            Server: WSGIServer/0.1 Python/2.7.1+
+            Vary: Accept-Language, Cookie
+            Content-Length: 0
+            Content-Type: text/html; charset=utf-8
+            Content-Language: en-us
+
+            
+    **Delete**:
+
+        CURL Usage::
+
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/campaign/1/
+
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/campaign/
+
+        Response::
+
+            HTTP/1.0 204 NO CONTENT
+            Date: Fri, 23 Sep 2011 06:48:03 GMT
+            Server: WSGIServer/0.1 Python/2.7.1+
+            Vary: Accept-Language, Cookie
+            Content-Length: 0
+            Content-Type: text/html; charset=utf-8
+            Content-Language: en-us
+
+    **Search**:
+
+        CURL Usage::
+
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaign/?name=mycampaign2
+
+        Response::
+
+            {
+               "meta":{
+                  "limit":20,
+                  "next":null,
+                  "offset":0,
+                  "previous":null,
+                  "total_count":1
+               },
+               "objects":[
+                  {
+                     "aleg_gateway":{
+
+                        "created_date":"2011-06-15T00:28:52",
+                        "description":"",
+                        "id":"1",
+                        "maximum_call":null,
+                        "name":"Default_Gateway",
+                     },
+                     "callerid":"1239876",
+                     "callmaxduration":50,
+                     "calltimeout":45,
+                     "campaign_code":"DJZVK",
+                     "created_date":"2011-10-13T02:06:22",
+                     "daily_start_time":"00:00:00",
+                     "daily_stop_time":"23:59:59",
+                     "description":"",
+                     "expirationdate":"2011-03-28T17:08:56",
+                     "extra_data":"2000",
+                     "frequency":20,
+                     "friday":true,
+                     "id":"16",
+                     "intervalretry":3000,
+                     "maxretry":3,
+                     "monday":true,
+                     "name":"mycampaign2",
+                     "resource_uri":"/api/v1/campaign/16/",
+                     "saturday":true,
+                     "startingdate":"2011-03-29T09:48:56",
+                     "status":2,
+                     "sunday":true,
+                     "thursday":true,
+                     "tuesday":true,
+                     "updated_date":"2011-10-13T02:06:22",
+                     "user":{
+                        "id":"1",
+                        "username":"areski"
+                     },
+                     "voipapp":{
+                        "id":"1",
+                        "name":"Default_VoIP_App",
+                     },
+                     "wednesday":true
+                  }
+               ]
+            }
     """
     user = fields.ForeignKey(UserResource, 'user', full=True)
     aleg_gateway = fields.ForeignKey(GatewayResource, 'aleg_gateway', full=True)
@@ -250,27 +378,6 @@ class CampaignResource(ModelResource):
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
     
-
-    """
-    def hydrate(self, bundle):
-        startingdate = bundle.data.get('startingdate')
-        expirationdate = bundle.data.get('expirationdate')
-
-        bundle.data['startingdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
-                                        time.gmtime(float(startingdate)))
-
-        bundle.data['expirationdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
-                                        time.gmtime(float(expirationdate)))
-
-        #setattr(bundle.obj, 'aleg_gateway_id', bundle.data['aleg_gateway'])
-        #setattr(bundle.obj, 'voipapp_id', bundle.data['voipapp'])
-
-        return bundle
-
-    """
-
-
-
 
 class MyCampaignResource(ModelResource):
 

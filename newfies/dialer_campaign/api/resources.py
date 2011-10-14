@@ -841,14 +841,18 @@ class CampaignSubscriberResource(ModelResource):
                 raise NotFound("A model instance matching the provided arguments could not be found.")
 
         bundle = self.full_hydrate(bundle)
+
+        campaign_id = int(bundle.data.get('pk'))
+        camaign_obj = Campaign.objects.get(id=campaign_id)
         try:
             campaignsubscriber = \
             CampaignSubscriber.objects.get(duplicate_contact=bundle.data.get('contact'),
-                                           campaign=bundle.obj.pk)
+                                           campaign=camaign_obj)
             campaignsubscriber.status = bundle.data.get('status')
             campaignsubscriber.save()
-
         except:
             raise NotFound("A model instance matching the provided arguments could not be found.")
 
         return bundle
+
+

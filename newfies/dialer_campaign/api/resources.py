@@ -6,7 +6,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.query import QuerySet
 
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
-from django.contrib.auth.models import User
 from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import DjangoAuthorization
 from tastypie.authorization import Authorization

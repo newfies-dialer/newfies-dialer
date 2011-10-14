@@ -12,6 +12,7 @@ from voip_app.urls import urlpatterns as urlpatterns_voip_app
 
 from tastypie.api import Api
 from dialer_campaign.api.resources import *
+from dialer_cdr.api.resources import *
 
 # tastypie api
 tastypie_api = Api(api_name='v1')
@@ -26,6 +27,7 @@ tastypie_api.register(BulkContactResource())
 tastypie_api.register(CampaignDeleteCascadeResource())
 tastypie_api.register(CampaignSubscriberResource())
 
+tastypie_api.register(CallrequestResource())
 
 urlpatterns = patterns('',
     # redirect

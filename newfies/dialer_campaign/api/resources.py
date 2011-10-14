@@ -2,6 +2,7 @@ import logging
 
 from django.contrib.auth.models import User
 from django.conf.urls.defaults import url
+from django.core.exceptions import ObjectDoesNotExist
 
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from django.contrib.auth.models import User
@@ -723,15 +724,20 @@ class CampaignSubscriberValidation(Validation):
             errors['contact_dialer_setting'] = ["You have too many contacts per campaign. \
                 You are allowed a maximum of %s" % dialer_setting_limit(request, limit_for="contact")]
 
-        phonebook_id = bundle.data.get('phonebook_id')
-        if phonebook_id:
-            try:
-                obj_phonebook = Phonebook.objects.get(id=phonebook_id)
-            except Phonebook.DoesNotExist:
+        if request.method=='POST':
+            phonebook_id = bundle.data.get('phonebook_id')
+            if phonebook_id:
+                try:
+                    obj_phonebook = Phonebook.objects.get(id=phonebook_id)
+                except Phonebook.DoesNotExist:
+                    errors['phonebook_error'] = ["Phonebook is not selected!"]
+            else:
                 errors['phonebook_error'] = ["Phonebook is not selected!"]
-        else:
-            errors['phonebook_error'] = ["Phonebook is not selected!"]
 
+            contact_count = Contact.objects.filter(contact=bundle.data.get('contact')).count()
+            if (contact_count!=0):
+                errors['chk_contact_no'] = ["The Contact no is duplicated!"]
+        
         return errors
 
     
@@ -748,52 +754,101 @@ class CampaignSubscriberResource(ModelResource):
         * ``phonebook_id`` - the phonebook Id to which we want to add\
         the Subscriber
 
-    **CURL Usage**::
+    **Create**:
 
-        curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"contact": "650784355", "last_name": "belaid", "first_name": "areski", "email": "areski@gmail.com", "phonebook_id" : "1"}' http://localhost:8000/api/v1/campaignsubscriber/
+        CURL Usage::
 
-    **Example Response**::
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"contact": "650784355", "last_name": "belaid", "first_name": "areski", "email": "areski@gmail.com", "phonebook_id" : "1"}' http://localhost:8000/api/v1/campaignsubscriber/
 
-        HTTP/1.0 204 NO CONTENT
-        Date: Wed, 18 May 2011 13:23:14 GMT
-        Server: WSGIServer/0.1 Python/2.6.2
-        Vary: Authorization
-        Content-Length: 0
-        Content-Type: text/plain
+        Response::
+
+            HTTP/1.0 204 NO CONTENT
+            Date: Wed, 18 May 2011 13:23:14 GMT
+            Server: WSGIServer/0.1 Python/2.6.2
+            Vary: Authorization
+            Content-Length: 0
+            Content-Type: text/plain
+
+    **Update**:
+
+        CURL Usage::
+
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"status": "2", "contact": "123546"}' http://localhost:8000/api/v1/campaignsubscriber/%campaign_id%/
+
+        Response::
+
+            HTTP/1.0 204 NO CONTENT
+            Date: Fri, 23 Sep 2011 06:46:12 GMT
+            Server: WSGIServer/0.1 Python/2.7.1+
+            Vary: Accept-Language, Cookie
+            Content-Length: 0
+            Content-Type: text/html; charset=utf-8
+            Content-Language: en-us
     """
+    #phonebook = fields.ForeignKey(PhonebookResource, 'phonebook', full=True)
     class Meta:
         queryset = CampaignSubscriber.objects.all()
         resource_name = 'campaignsubscriber'
         authorization = Authorization()
         authentication = BasicAuthentication()
-        list_allowed_methods = ['post']
-        detail_allowed_methods = ['post']
-        Validation = CampaignSubscriberValidation()
+        list_allowed_methods = ['get', 'post', 'put']
+        detail_allowed_methods = ['get', 'post', 'put']
+        validation = CampaignSubscriberValidation()
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
-
+    
     def obj_create(self, bundle, request=None, **kwargs):
-        """
-        A ORM-specific implementation of ``obj_create``.
-        """
-        bundle.obj = self._meta.object_class()
-        bundle = self.full_hydrate(bundle)
 
         phonebook_id = bundle.data.get('phonebook_id')
         obj_phonebook = Phonebook.objects.get(id=phonebook_id)
-        errors = {}
+        
+        #this method will also create a record into CampaignSubscriber
+        #this is defined in signal post_save_add_contact
+        new_contact = Contact.objects.create(
+                                contact=bundle.data.get('contact'),
+                                last_name=bundle.data.get('last_name'),
+                                first_name=bundle.data.get('first_name'),
+                                email=bundle.data.get('email'),
+                                description=bundle.data.get('description'),
+                                status=1, # default active
+                                phonebook=obj_phonebook)
+
+        return bundle
+
+    def obj_update(self, bundle, request=None, **kwargs):
+        """
+        A ORM-specific implementation of ``obj_update``.
+        """
+        if not bundle.obj or not bundle.obj.pk:
+            # Attempt to hydrate data from kwargs before doing a lookup for the object.
+            # This step is needed so certain values (like datetime) will pass model validation.
+            try:
+                bundle.obj = self.get_object_list(request).model()
+                bundle.data.update(kwargs)
+                bundle = self.full_hydrate(bundle)
+                lookup_kwargs = kwargs.copy()
+                lookup_kwargs.update(dict(
+                    (k, getattr(bundle.obj, k))
+                    for k in kwargs.keys()
+                    if getattr(bundle.obj, k) is not None))
+            except:
+                # if there is trouble hydrating the data, fall back to just
+                # using kwargs by itself (usually it only contains a "pk" key
+                # and this will work fine.
+                lookup_kwargs = kwargs
+            try:
+                bundle.obj = self.obj_get(request, **lookup_kwargs)
+            except ObjectDoesNotExist:
+                raise NotFound("A model instance matching the provided arguments could not be found.")
+
+        bundle = self.full_hydrate(bundle)
         try:
-            #this method will also create a record into CampaignSubscriber
-            #this is defined in signal post_save_add_contact
-            new_contact = Contact.objects.create(
-                                    contact=bundle.data.get('contact'),
-                                    last_name=bundle.data.get('last_name'),
-                                    first_name=bundle.data.get('first_name'),
-                                    email=bundle.data.get('email'),
-                                    description=bundle.data.get('description'),
-                                    status=bundle.data.get('status'),
-                                    phonebook=obj_phonebook)
+            campaignsubscriber = \
+            CampaignSubscriber.objects.get(duplicate_contact=bundle.data.get('contact'),
+                                           campaign=bundle.obj.pk)
+            campaignsubscriber.status = bundle.data.get('status')
+            campaignsubscriber.save()
+
         except:
-            errors['duplicate_contact'] = ["The contact duplicated (%s)!\n" % bundle.data.get('contact')]
-            return errors
+            raise NotFound("A model instance matching the provided arguments could not be found.")
 
         return bundle

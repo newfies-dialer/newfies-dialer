@@ -135,27 +135,61 @@ class CallrequestResource(ModelResource):
 
         Response::
 
-            [
-                {
-                    "status": 4,
-                    "callerid": "650784355",
-                    "num_attempt": 0,
-                    "timeout": "30000",
-                    "voipapp": "",
-                    "call_time": "2011-05-07 13:03:11",
-                    "call_type": "",
-                    "result": "",
-                    "request_uuid": "2342jtdsf-00123",
-                    "last_attempt_time": null,
-                    "phone_number": "1231321"
-                }
-            ]
+            {
+               "meta":{
+                  "limit":20,
+                  "next":null,
+                  "offset":0,
+                  "previous":null,
+                  "total_count":1
+               },
+               "objects":[
+                  {
+                     "call_time":"2011-10-20T12:21:22",
+                     "call_type":1,
+                     "callerid":"650784355",
+                     "created_date":"2011-10-14T07:33:41",
+                     "extra_data":"",
+                     "extra_dial_string":"",
+                     "hangup_cause":"",
+                     "id":"1",
+                     "last_attempt_time":null,
+                     "num_attempt":0,
+                     "phone_number":"8792749823",
+                     "request_uuid":"2342jtdsf-00123",
+                     "resource_uri":"/api/v1/callrequest/1/",
+                     "result":"",
+                     "status":1,
+                     "timelimit":3600,
+                     "timeout":30000,
+                     "updated_date":"2011-10-14T07:33:41",
+                     "user":{
+                        "first_name":"",
+                        "id":"1",
+                        "last_login":"2011-10-11T01:03:42",
+                        "last_name":"",
+                        "resource_uri":"/api/v1/user/1/",
+                        "username":"areski"
+                     },
+                     "voipapp":{
+                        "created_date":"2011-04-08T08:00:09",
+                        "data":"",
+                        "description":"",
+                        "id":"1",
+                        "name":"Default_VoIP_App",
+                        "resource_uri":"/api/v1/voipapp/1/",
+                        "type":1,
+                        "updated_date":"2011-10-14T07:33:41"
+                     }
+                  }
+               ]
+            }
 
     **Update**:
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"name": "mylittlecampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0","frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000" }' http://localhost:8000/api/v1/campaign/%campaign_id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"status": "5"}' http://localhost:8000/api/v1/callrequest/%callrequest_id%/
 
         Response::
 

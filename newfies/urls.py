@@ -28,6 +28,7 @@ tastypie_api.register(CampaignDeleteCascadeResource())
 tastypie_api.register(CampaignSubscriberResource())
 
 tastypie_api.register(CallrequestResource())
+tastypie_api.register(AnswercallResource())
 tastypie_api.register(HangupcallResource())
 
 

@@ -214,6 +214,109 @@ class CallrequestResource(ModelResource):
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
 
+class AnswercallValidation(Validation):
+    """
+    Answercall Validation Class
+    """
+    def is_valid(self, bundle, request=None):
+        errors = {}
+
+        opt_ALegRequestUUID = bundle.data.get('ALegRequestUUID')
+        if not opt_ALegRequestUUID:
+            errors['ALegRequestUUID'] = ["Wrong parameters - missing ALegRequestUUID!"]
+
+        try:
+            obj_callrequest = Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
+            if not obj_callrequest.voipapp:
+                errors['VoIP App'] = ['This Call Request is not attached to a VoIP App!']
+        except:
+            errors['ALegRequestUUID'] = ['Call Request cannot be found!']
+                
+        return errors
+
+
+class AnswercallResource(ModelResource):
+    """
+    **Attributes**:
+
+        * ``RequestUUID`` - A unique identifier for the API request.
+
+    **Create**:
+
+        CURL Usage::
+
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"ALegRequestUUID": "48092924-856d-11e0-a586-0147ddac9d3e"}' http://localhost:8000/api/v1/answercall/
+
+        Response::
+
+            HTTP/1.0 201 CREATED
+            Date: Fri, 23 Sep 2011 06:08:34 GMT
+            Server: WSGIServer/0.1 Python/2.7.1+
+            Vary: Accept-Language, Cookie
+            Content-Type: text/html; charset=utf-8
+            Location: http://localhost:8000/api/app/answercall/None/
+            Content-Language: en-us
+    """
+    class Meta:
+        queryset = Callrequest.objects.all()
+        resource_name = 'answercall'
+        authorization = Authorization()
+        authentication = BasicAuthentication()
+        validation = AnswercallValidation()
+        list_allowed_methods = ['post']
+        detail_allowed_methods = ['post']
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+
+    def obj_create(self, bundle, request=None, **kwargs):
+        """
+        A ORM-specific implementation of ``obj_create``.
+        """
+        opt_ALegRequestUUID = bundle.data.get('ALegRequestUUID')
+        
+        #TODO: If we update the Call to success here we should not do it in hangup url
+
+        obj_callrequest = Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
+
+        #TODO : use constant
+        Callrequest.status = 8 # IN-PROGRESS
+        obj_callrequest.save()
+
+        # get the VoIP application
+        if obj_callrequest.voipapp.type == 1:
+            #Dial
+            timelimit = obj_callrequest.timelimit
+            callerid = obj_callrequest.callerid
+            gatewaytimeouts = obj_callrequest.timeout
+            gateways = obj_callrequest.voipapp.gateway.gateways
+            dial_command = 'Dial timeLimit="%s" callerId="%s"' % \
+                                (timelimit, callerid)
+            number_command = 'Number gateways="%s" gatewayTimeouts="%s"' % \
+                                (gateways, gatewaytimeouts)
+            #return [ {dial_command: {number_command: obj_callrequest.voipapp.data}, },]
+            return bundle
+        elif obj_callrequest.voipapp.type == 2:
+            #PlayAudio
+            #return [ {'Play': obj_callrequest.voipapp.data},]
+            return bundle
+        elif obj_callrequest.voipapp.type == 3:
+            #Conference
+            #return [ {'Conference': obj_callrequest.voipapp.data},]
+            return bundle
+        elif obj_callrequest.voipapp.type == 4:
+            #Speak
+            #return [ {'Speak': obj_callrequest.voipapp.data},]
+            return bundle
+
+        #return [ {'Speak': 'Hello World'}, {'Dial': {'Number': '1000'}, },]
+        #return [ {'Speak': 'System error'},]
+
+        #resp = rc.NOT_IMPLEMENTED
+        #resp.write('Error with VoIP App type!')
+        #return resp
+
+        return bundle
+
+
 class HangupcallValidation(Validation):
     """
     Hangupcall Validation Class
@@ -241,7 +344,8 @@ class HangupcallResource(ModelResource):
     """
     **Attributes**:
 
-       * ``call-uuid`` - Call UUID
+       * ``RequestUUID`` - RequestUUID
+       * ``HangupCause`` - Hangup Cause
 
     **Create**:
 

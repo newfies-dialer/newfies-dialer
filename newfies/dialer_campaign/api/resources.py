@@ -3,6 +3,7 @@ import logging
 from django.contrib.auth.models import User
 from django.conf.urls.defaults import url
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models.query import QuerySet
 
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from django.contrib.auth.models import User
@@ -740,7 +741,7 @@ class CampaignSubscriberValidation(Validation):
         
         return errors
 
-    
+
 class CampaignSubscriberResource(ModelResource):
     """
     **Attributes Details**:
@@ -769,6 +770,15 @@ class CampaignSubscriberResource(ModelResource):
             Content-Length: 0
             Content-Type: text/plain
 
+    **Read**:
+
+        CURL Usage::
+
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber/?format=json
+
+        Response::
+
+
     **Update**:
 
         CURL Usage::
@@ -785,7 +795,6 @@ class CampaignSubscriberResource(ModelResource):
             Content-Type: text/html; charset=utf-8
             Content-Language: en-us
     """
-    #phonebook = fields.ForeignKey(PhonebookResource, 'phonebook', full=True)
     class Meta:
         queryset = CampaignSubscriber.objects.all()
         resource_name = 'campaignsubscriber'
@@ -795,6 +804,70 @@ class CampaignSubscriberResource(ModelResource):
         detail_allowed_methods = ['get', 'post', 'put']
         validation = CampaignSubscriberValidation()
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+
+    def get_object_list(self, request):
+        """
+        An ORM-specific implementation of ``get_object_list``.
+
+        Returns a queryset that may have been limited by other overrides.
+        """
+        #print request.get('')
+        #print request.META['PATH_INFO']
+        from django.db import connection, transaction
+        cursor = connection.cursor()
+        campaign_id = 3
+        contact = ''
+
+        if not campaign_id:
+            resp = rc.BAD_REQUEST
+            resp.write("No value for Campaign ID !")
+            return resp
+
+        if contact:
+            if not isint(contact):
+                resp = rc.BAD_REQUEST
+                resp.write("Wrong value for contact !")
+                return resp
+
+            sql_statement = 'SELECT contact_id, last_attempt, count_attempt,'\
+                    'dialer_campaign_subscriber.status '\
+                    'FROM dialer_campaign_subscriber '\
+                    'LEFT JOIN dialer_callrequest ON '\
+                    'campaign_subscriber_id=dialer_campaign_subscriber.id '\
+                    'LEFT JOIN dialer_campaign ON '\
+                    'dialer_callrequest.campaign_id=dialer_campaign.id '\
+                    'WHERE dialer_campaign_subscriber.campaign_id = %s '\
+                    'AND dialer_campaign_subscriber.duplicate_contact = "%s"'\
+                    % (str(campaign_id), str(contact))
+
+        else:
+            sql_statement = 'SELECT contact_id, last_attempt, count_attempt,'\
+                        'dialer_campaign_subscriber.status '\
+                        'FROM dialer_campaign_subscriber '\
+                        'LEFT JOIN dialer_callrequest ON '\
+                        'campaign_subscriber_id=' \
+                        'dialer_campaign_subscriber.id '\
+                        'LEFT JOIN dialer_campaign ON '\
+                        'dialer_callrequest.campaign_id=dialer_campaign.id '\
+                        'WHERE dialer_campaign_subscriber.campaign_id' \
+                        '= %s' % (str(campaign_id))
+
+        cursor.execute(sql_statement)
+        row = cursor.fetchall()
+
+        result = []
+        for record in row:
+            modrecord = {}
+            modrecord['contact_id'] = record[0]
+            modrecord['last_attempt'] = record[1]
+            modrecord['count_attempt'] = record[2]
+            modrecord['status'] = record[3]
+            result.append(modrecord)
+
+        #return result
+        #print result
+        
+        return self._meta.queryset._clone()
     
     def obj_create(self, bundle, request=None, **kwargs):
 

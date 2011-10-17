@@ -865,7 +865,7 @@ class CampaignSubscriberResource(ModelResource):
 
         #return result
         #print result
-        
+        print type(self._meta.queryset._clone())
         return self._meta.queryset._clone()
     
     def obj_create(self, bundle, request=None, **kwargs):

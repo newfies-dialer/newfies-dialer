@@ -393,3 +393,143 @@ class HangupcallResource(ModelResource):
 
         return bundle
 
+
+class CdrValidation(Validation):
+    """
+    CDR Validation Class
+    """
+    def is_valid(self, bundle, request=None):
+        errors = {}
+
+        opt_cdr = bundle.data.get('cdr')
+        if not opt_cdr:
+            errors['CDR'] = ["Wrong parameters : missing cdr!"]
+
+
+        return errors
+
+
+class CdrResource(ModelResource):
+    """
+    **Attributes**:
+
+        * ``cdr`` - XML string assigned from the Telephony engine
+
+    **Create**:
+
+        CURL Usage::
+
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"cdr": "<?xml version="1.0"?><cdr><other></other><variables><plivo_request_uuid>7a641180-a742-11e0-b6b3-00231470a30c</plivo_request_uuid><duration>3</duration></variables><notvariables><plivo_request_uuid>TESTc</plivo_request_uuid><duration>5</duration></notvariables></cdr>"}' http://localhost:8000/api/v1/hangupcall/
+                     
+        Response::
+
+            HTTP/1.0 201 CREATED
+            Date: Fri, 23 Sep 2011 06:08:34 GMT
+            Server: WSGIServer/0.1 Python/2.7.1+
+            Vary: Accept-Language, Cookie
+            Content-Type: text/html; charset=utf-8
+            Location: http://localhost:8000/api/app/store_cdr/None/
+            Content-Language: en-us
+    """
+    class Meta:
+        queryset = VoIPCall.objects.all()
+        resource_name = 'store_cdr'
+        authorization = Authorization()
+        authentication = BasicAuthentication()
+        validation = CdrValidation()
+        list_allowed_methods = ['post']
+        detail_allowed_methods = ['post']
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+
+    def obj_create(self, bundle, request=None, **kwargs):
+        """
+        A ORM-specific implementation of ``obj_create``.
+        """
+        opt_cdr = bundle.data.get('cdr')
+        data = {}
+        import xml.etree.ElementTree as ET
+        tree = ET.fromstring(opt_cdr)
+        #parse file
+        #tree = ET.parse("/tmp/cdr.xml")
+        lst = tree.find("variables")
+
+        cdr_vars = ['plivo_request_uuid', 'plivo_answer_url', 'plivo_app',
+                    'direction', 'endpoint_disposition', 'hangup_cause',
+                    'hangup_cause_q850', 'duration', 'billsec', 'progresssec',
+                    'answersec', 'waitsec', 'mduration', 'billmsec',
+                    'progressmsec', 'answermsec', 'waitmsec',
+                    'progress_mediamsec', 'call_uuid',
+                    'origination_caller_id_number', 'caller_id',
+                    'answer_epoch', 'answer_uepoch']
+
+        for j in lst:
+            if j.tag in cdr_vars:
+                data[j.tag] = j.text
+
+        for element in cdr_vars:
+            if not data.has_key(element):
+                data[element] = None
+
+        if not 'plivo_request_uuid' in data or data['plivo_request_uuid']==None:
+            #CDR not related to plivo
+            #TODO: Add tag for newfies in outbound call
+            #resp = rc.ALL_OK
+            logger.debug('CDR not related to Newfies/Plivo!')
+            #resp.write("CDR not related to Newfies/Plivo!")
+            #return resp
+
+        #TODO : delay if not find callrequest
+        try:
+            obj_callrequest = Callrequest.objects.get(request_uuid=data['plivo_request_uuid'])
+        except:
+            # Send notification to admin
+            from dialer_campaign.views import common_send_notification
+            from django.contrib.auth.models import User
+            recipient_list = User.objects.filter(is_superuser=1, is_active=1)
+            # send to all admin user
+            for recipient in recipient_list:
+                # callrequest_not_found - notification id 8
+                common_send_notification(request, 8, recipient)
+
+            logger.error("error not Callrequest for this uuid %s " % data['plivo_request_uuid'], extra={'stack': True})
+            #resp = rc.ALL_OK
+            #resp.write("No Callrequest for this uuid!")
+            #return resp
+
+        if data.has_key('answer_epoch') and len(data['answer_epoch']) > 0:
+            try:
+                cur_answer_epoch = int(data['answer_epoch'])
+            except ValueError:
+                raise
+            starting_date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(cur_answer_epoch))
+        else:
+            starting_date = None
+
+        new_voipcall = VoIPCall(user = obj_callrequest.user,
+                                request_uuid=data['plivo_request_uuid'],
+                                used_gateway=None, #TODO
+                                callrequest=obj_callrequest,
+                                callid=data['call_uuid'] or '',
+                                callerid=data['origination_caller_id_number'] or '',
+                                phone_number=data['caller_id'] or '',
+                                dialcode=None, #TODO
+                                starting_date=starting_date,
+                                duration=data['duration'] or 0,
+                                billsec=data['billsec'] or 0,
+                                progresssec=data['progresssec'] or 0,
+                                answersec=data['answersec'] or 0,
+                                disposition=data['endpoint_disposition'] or '',
+                                hangup_cause=data['hangup_cause'] or '',
+                                hangup_cause_q850=data['hangup_cause_q850'] or '',)
+
+        new_voipcall.save()
+
+        #follow bug on FS : http://jira.freeswitch.org/browse/FS-3593
+        resp = rc.ALL_OK # return 200 - expected by Freeswitch
+        #resp = rc.CREATED
+
+        #resp.write("CDR Recorded!")
+        #return resp
+
+        return bundle
+

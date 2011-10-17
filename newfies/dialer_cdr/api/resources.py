@@ -13,8 +13,8 @@ from tastypie.serializers import Serializer
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.utils import dict_strip_unicode_keys, trailing_slash
-from tastypie.http import HttpCreated
-from tastypie.exceptions import NotFound
+from tastypie.http import HttpCreated, HttpNoContent, HttpNotFound, HttpBadRequest
+from tastypie.exceptions import BadRequest, NotFound, ImmediateHttpResponse
 from tastypie import fields
 
 from dialer_cdr.models import Callrequest, VoIPCall
@@ -29,7 +29,9 @@ import uuid
 import simplejson
 
 
-log = logging.getLogger(__name__)
+seed()
+logger = logging.getLogger('newfies.filelog')
+
 
 def get_attribute(attrs, attr_name):
     """this is a helper to retrieve an attribute if it exists"""
@@ -434,11 +436,9 @@ class CustomJSONSerializer(Serializer):
     """
     def from_json(self, content):
         print content
-        data = simplejson.loads(content)
-
-        if 'requested_time' in data:
-            # Log the request here...
-            pass
+        #data = simplejson.loads(content)
+        data = {}
+        data['cdr'] = content[4:]
 
         return data
 
@@ -457,7 +457,7 @@ class CdrResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"cdr": "<?xml version="1.0"?><cdr><other></other><variables><plivo_request_uuid>7a641180-a742-11e0-b6b3-00231470a30c</plivo_request_uuid><duration>3</duration></variables><notvariables><plivo_request_uuid>TESTc</plivo_request_uuid><duration>5</duration></notvariables></cdr>"}' http://localhost:8000/api/v1/store_cdr/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data 'cdr=<?xml version="1.0"?><cdr><other></other><variables><plivo_request_uuid>af41ac8a-ede4-11e0-9cca-00231470a30c</plivo_request_uuid><duration>3</duration></variables><notvariables><plivo_request_uuid>TESTc</plivo_request_uuid><duration>5</duration></notvariables></cdr>' http://localhost:8000/api/v1/store_cdr/
                      
         Response::
 
@@ -509,13 +509,14 @@ class CdrResource(ModelResource):
             if not data.has_key(element):
                 data[element] = None
 
-        if not 'plivo_request_uuid' in data or data['plivo_request_uuid']==None:
+        if not 'plivo_request_uuid' in data or not data['plivo_request_uuid']:
             #CDR not related to plivo
             #TODO: Add tag for newfies in outbound call
-            #resp = rc.ALL_OK
-            logger.debug('CDR not related to Newfies/Plivo!')
+            error_msg = 'CDR not related to Newfies/Plivo!'
+            logger.debug(error_msg)
             #resp.write("CDR not related to Newfies/Plivo!")
             #return resp
+            raise BadRequest(error_msg)
 
         #TODO : delay if not find callrequest
         try:
@@ -530,12 +531,12 @@ class CdrResource(ModelResource):
                 # callrequest_not_found - notification id 8
                 common_send_notification(request, 8, recipient)
 
-            logger.error("error not Callrequest for this uuid %s " % data['plivo_request_uuid'], extra={'stack': True})
-            #resp = rc.ALL_OK
-            #resp.write("No Callrequest for this uuid!")
-            #return resp
+            error_msg = "Error, there is no callrequest for this uuid %s " % data['plivo_request_uuid']
+            logger.error(error_msg, extra={'stack': True})
 
-        if data.has_key('answer_epoch') and len(data['answer_epoch']) > 0:
+            raise BadRequest(error_msg)
+
+        if data.has_key('answer_epoch') and data['answer_epoch']:
             try:
                 cur_answer_epoch = int(data['answer_epoch'])
             except ValueError:
@@ -563,12 +564,7 @@ class CdrResource(ModelResource):
 
         new_voipcall.save()
 
-        #follow bug on FS : http://jira.freeswitch.org/browse/FS-3593
-        resp = rc.ALL_OK # return 200 - expected by Freeswitch
-        #resp = rc.CREATED
-
-        #resp.write("CDR Recorded!")
-        #return resp
-
+        # List of HttpResponse : 
+        # https://github.com/toastdriven/django-tastypie/blob/master/tastypie/http.py
         return bundle
 

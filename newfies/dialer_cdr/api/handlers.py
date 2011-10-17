@@ -492,7 +492,7 @@ class cdrHandler(BaseHandler):
                     # callrequest_not_found - notification id 8
                     common_send_notification(request, 8, recipient)
                 
-                logger.error("error not Callrequest for this uuid %s " % data['plivo_request_uuid'], extra={'stack': True})
+                logger.error("error The is no Callrequest for this uuid %s " % data['plivo_request_uuid'], extra={'stack': True})
                 resp = rc.ALL_OK
                 resp.write("No Callrequest for this uuid!")
                 return resp

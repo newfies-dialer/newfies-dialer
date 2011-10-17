@@ -108,6 +108,10 @@ class CallrequestResource(ModelResource):
         * ``hangup_cause`` -
         * ``last_attempt_time`` -
 
+    **Validation**:
+
+        * CallrequestValidation()
+
     **Create**:
 
         CURL Usage::
@@ -347,6 +351,10 @@ class HangupcallResource(ModelResource):
        * ``RequestUUID`` - RequestUUID
        * ``HangupCause`` - Hangup Cause
 
+    **Validation**:
+
+        * HangupcallValidation()
+
     **Create**:
 
         CURL Usage::
@@ -414,6 +422,10 @@ class CdrResource(ModelResource):
     **Attributes**:
 
         * ``cdr`` - XML string assigned from the Telephony engine
+
+    **Validation**:
+
+        * CdrValidation()
 
     **Create**:
 

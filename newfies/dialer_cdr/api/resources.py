@@ -26,6 +26,7 @@ from random import choice, seed
 
 import time
 import uuid
+import simplejson
 
 
 log = logging.getLogger(__name__)
@@ -207,7 +208,7 @@ class CallrequestResource(ModelResource):
     """
     user = fields.ForeignKey(UserResource, 'user', full=True)
     voipapp = fields.ForeignKey(VoipAppResource, 'voipapp', full=True)
-    
+
     class Meta:
         queryset = Callrequest.objects.all()
         resource_name = 'callrequest'
@@ -418,6 +419,30 @@ class CdrValidation(Validation):
         return errors
 
 
+
+class CustomJSONSerializer(Serializer):
+    """
+    def to_json(self, data, options=None):
+        options = options or {}
+
+        data = self.to_simple(data, options)
+
+        # Add in the current time.
+        data['requested_time'] = time.time()
+
+        return simplejson.dumps(data, cls=json.DjangoJSONEncoder, sort_keys=True)
+    """
+    def from_json(self, content):
+        print content
+        data = simplejson.loads(content)
+
+        if 'requested_time' in data:
+            # Log the request here...
+            pass
+
+        return data
+
+
 class CdrResource(ModelResource):
     """
     **Attributes**:
@@ -450,6 +475,7 @@ class CdrResource(ModelResource):
         authorization = Authorization()
         authentication = BasicAuthentication()
         validation = CdrValidation()
+        serializer = CustomJSONSerializer()
         list_allowed_methods = ['post']
         detail_allowed_methods = ['post']
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour

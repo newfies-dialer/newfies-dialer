@@ -207,6 +207,7 @@ class CallrequestResource(ModelResource):
     """
     user = fields.ForeignKey(UserResource, 'user', full=True)
     voipapp = fields.ForeignKey(VoipAppResource, 'voipapp', full=True)
+    
     class Meta:
         queryset = Callrequest.objects.all()
         resource_name = 'callrequest'
@@ -431,7 +432,7 @@ class CdrResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"cdr": "<?xml version="1.0"?><cdr><other></other><variables><plivo_request_uuid>7a641180-a742-11e0-b6b3-00231470a30c</plivo_request_uuid><duration>3</duration></variables><notvariables><plivo_request_uuid>TESTc</plivo_request_uuid><duration>5</duration></notvariables></cdr>"}' http://localhost:8000/api/v1/hangupcall/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"cdr": "<?xml version="1.0"?><cdr><other></other><variables><plivo_request_uuid>7a641180-a742-11e0-b6b3-00231470a30c</plivo_request_uuid><duration>3</duration></variables><notvariables><plivo_request_uuid>TESTc</plivo_request_uuid><duration>5</duration></notvariables></cdr>"}' http://localhost:8000/api/v1/store_cdr/
                      
         Response::
 

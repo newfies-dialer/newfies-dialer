@@ -22,3 +22,9 @@ Contents:
     ./api-doc/callrequest_handler
     ./api-doc/cdr_handler
 
+    ./api-doc/campaign_resource
+    ./api-doc/phonebook_resource
+    ./api-doc/bulk_contact_resource
+    ./api-doc/campaign_delete_cascade_resource
+    ./api-doc/campaign_subscriber_resource
+

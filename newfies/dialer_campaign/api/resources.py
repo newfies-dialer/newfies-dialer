@@ -202,6 +202,10 @@ class CampaignResource(ModelResource):
             * ``extra_data`` - Defines the additional data to pass to the\
                                  application
 
+    **Validation**:
+
+        * CampaignValidation()
+    
     **Create**:
 
         CURL Usage::
@@ -447,6 +451,10 @@ class PhonebookResource(ModelResource):
         * ``description`` - Short description of the Campaign
         * ``campaign_id`` - Campaign ID
 
+    **Validation**:
+
+        * PhonebookValidation()
+
     **Create**:
 
         CURL Usage::
@@ -583,6 +591,10 @@ class BulkContactResource(ModelResource):
         * ``contact`` - contact number of the Subscriber
         * ``phonebook_id`` - the phonebook Id to which we want to add\
         the contact
+
+    **Validation**:
+
+        * BulkContactValidation()
 
     **CURL Usage**::
 
@@ -754,6 +766,10 @@ class CampaignSubscriberResource(ModelResource):
         * ``phonebook_id`` - the phonebook Id to which we want to add\
         the Subscriber
 
+    **Validation**:
+
+        * CampaignSubscriberValidation()
+
     **Create**:
 
         CURL Usage::
@@ -775,7 +791,7 @@ class CampaignSubscriberResource(ModelResource):
 
             curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber/?format=json
 
-        Response::
+        Response:
 
 
     **Update**:

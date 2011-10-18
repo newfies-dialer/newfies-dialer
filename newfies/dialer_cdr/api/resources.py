@@ -300,19 +300,35 @@ class AnswercallResource(ModelResource):
                                 (timelimit, callerid)
             number_command = 'Number gateways="%s" gatewayTimeouts="%s"' % \
                                 (gateways, gatewaytimeouts)
+
             #return [ {dial_command: {number_command: obj_callrequest.voipapp.data}, },]
+            msg = {dial_command: {number_command: obj_callrequest.voipapp.data}, }
+            logger.debug(msg)
+            bundle.data['dial_command'] = {number_command: obj_callrequest.voipapp.data}
             return bundle
+
         elif obj_callrequest.voipapp.type == 2:
             #PlayAudio
             #return [ {'Play': obj_callrequest.voipapp.data},]
+            msg = {'Play': obj_callrequest.voipapp.data}
+            logger.debug(msg)
+            bundle.data['Play'] = obj_callrequest.voipapp.data
             return bundle
+
         elif obj_callrequest.voipapp.type == 3:
             #Conference
             #return [ {'Conference': obj_callrequest.voipapp.data},]
+            msg = {'Conference': obj_callrequest.voipapp.data}
+            logger.debug(msg)
+            bundle.data['Conference'] = obj_callrequest.voipapp.data
             return bundle
+
         elif obj_callrequest.voipapp.type == 4:
             #Speak
             #return [ {'Speak': obj_callrequest.voipapp.data},]
+            msg = {'Speak': obj_callrequest.voipapp.data}
+            logger.debug(msg)
+            bundle.data['Speak'] = obj_callrequest.voipapp.data
             return bundle
 
         #return [ {'Speak': 'Hello World'}, {'Dial': {'Number': '1000'}, },]

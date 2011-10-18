@@ -35,9 +35,7 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
     def test_create_campaign(self):
         """Test Function to create a campaign"""
         response = self.client.post('/api/v1/campaign/',
-        {"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0",
-          "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3",
-          "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000"},
+        {"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000"},
         **self.extra)
         self.assertEqual(response.status_code, 200)
 
@@ -61,6 +59,87 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
         response = self.client.delete('/api/v1/campaign/1/',
         **self.extra)
         self.assertEqual(response.status_code, 204)
+
+    def test_delete_cascade_campaign(self):
+        """Test Function to cascade delete a campaign"""
+        response = \
+        self.client.delete('/api/v1/campaign/delete_cascade/1/',
+        **self.extra)
+        self.assertEqual(response.status_code, 204)
+
+    def test_create_phonebook(self):
+        """Test Function to create a phonebook"""
+        response = self.client.post('/api/v1/phonebook/',
+        {"name": "mylittlephonebook", "description": "Test",
+         "campaign_id": "1"}, **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+    def test_read_phonebook(self):
+        """Test Function to get all phonebooks"""
+        response = self.client.get('/api/v1/phonebook/',
+        **self.extra)
+        self.assertEqual(response.status_code, 200)
+        response = self.client.get('/api/v1/phonebook/1/',
+        **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+    def test_create_bulk_contact(self):
+        """Test Function to bulk create contacts"""
+        response = self.client.post('/api/v1/bulkcontact/',
+        {"phoneno_list": "12345,54344", "phonebook_id": "1"},
+        **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+    def test_create_campaign_subscriber(self):
+        """Test Function to create a campaign subscriber"""
+        response = self.client.post('/api/v1/campaignsubscriber/',
+        {"contact": "650784355", "last_name": "belaid", "first_name": "areski", "email": "areski@gmail.com", "phonebook_id" : "1"},
+        **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+    def test_read_campaign_subscriber(self):
+        """Test Function to get all campaign subscriber"""
+        response = self.client.get('/api/v1/campaignsubscriber/?format=json',
+                   **self.extra)
+        self.assertEqual(response.status_code, 200)
+        response = self.client.get('/api/v1/campaignsubscriber/1/?format=json',
+                   **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_campaign_subscriber(self):
+        """Test Function to update a campaign subscriber"""
+        response = self.client.put('/api/v1/campaignsubscriber/1/',
+                   {"status": "2", "contact": "123546"}, **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+    def test_create_callrequest(self):
+        """Test Function to create a callrequest"""
+        response = self.client.post('/api/v1/callrequest/',
+        {"request_uuid": "2342jtdsf-00153",
+         "call_time": "2011-05-01 11:22:33", "phone_number": "8792749823",
+         "voipapp": "1", "timeout": "30000", "callerid": "650784355",
+         "call_type": "1"}, **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+    def test_read_callrequest(self):
+        """Test Function to get all callrequests"""
+        response = self.client.get('/api/v1/callrequest/?format=json',
+        **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+    def test_create_answercall(self):
+        """Test Function to create a answercall"""
+        response = self.client.post('/api/v1/answercall/',
+        {"ALegRequestUUID": "48092924-856d-11e0-a586-0147ddac9d3e"}, **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+    def test_create_hangupcall(self):
+        """Test Function to create a answercall"""
+        response = self.client.post('/api/v1/hangupcall/',
+        {"ALegRequestUUID": "48092924-856d-11e0-a586-0147ddac9d3e",
+         "HangupCause": "SUBSCRIBER_ABSENT"}, **self.extra)
+        self.assertEqual(response.status_code, 200)
+
 
         
 class NewfiesApiTestCase(BaseAuthenticatedClient):

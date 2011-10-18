@@ -791,6 +791,10 @@ class CampaignSubscriberResource(ModelResource):
 
             curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber/?format=json
 
+                or
+
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber/%campaign_id%/?format=json
+
         Response:
 
 
@@ -826,11 +830,15 @@ class CampaignSubscriberResource(ModelResource):
 
         Returns a queryset that may have been limited by other overrides.
         """
-        #print request.get('')
-        #print request.META['PATH_INFO']
+        temp_url = request.META['PATH_INFO']
+        temp_id = temp_url.split('/api/v1/campaignsubscriber/')[1]
+        camp_id = temp_id.split('/')[0]
+        #contact = temp_id.split('/')[1]
+
         from django.db import connection, transaction
         cursor = connection.cursor()
-        campaign_id = 3
+
+        campaign_id = int(camp_id)
         contact = ''
 
         if not campaign_id:
@@ -871,6 +879,9 @@ class CampaignSubscriberResource(ModelResource):
         row = cursor.fetchall()
 
         result = []
+        result_string = ''
+        limit = list(row).__len__()
+        i = 0
         for record in row:
             modrecord = {}
             modrecord['contact_id'] = record[0]
@@ -878,11 +889,17 @@ class CampaignSubscriberResource(ModelResource):
             modrecord['count_attempt'] = record[2]
             modrecord['status'] = record[3]
             result.append(modrecord)
+            if i == (limit - 1):
+                result_string = str(result_string) + str(record[0])
+            else:
+                result_string = str(result_string) + str(record[0]) + ', '
 
-        #return result
-        #print result
-        print type(self._meta.queryset._clone())
-        return self._meta.queryset._clone()
+        result_string = result_string
+        #print self._meta.queryset.filter(contact__in=[result_string])
+        try:
+            return self._meta.queryset.filter(contact__in=[result_string])._clone()
+        except:
+            return self._meta.queryset._clone()
     
     def obj_create(self, bundle, request=None, **kwargs):
 

@@ -423,19 +423,8 @@ class CdrValidation(Validation):
 
 
 class CustomJSONSerializer(Serializer):
-    """
-    def to_json(self, data, options=None):
-        options = options or {}
-
-        data = self.to_simple(data, options)
-
-        # Add in the current time.
-        data['requested_time'] = time.time()
-
-        return simplejson.dumps(data, cls=json.DjangoJSONEncoder, sort_keys=True)
-    """
+    
     def from_json(self, content):
-        print content
         #data = simplejson.loads(content)
         data = {}
         data['cdr'] = content[4:]
@@ -485,6 +474,7 @@ class CdrResource(ModelResource):
         A ORM-specific implementation of ``obj_create``.
         """
         opt_cdr = bundle.data.get('cdr')
+       
         data = {}
         import xml.etree.ElementTree as ET
         tree = ET.fromstring(opt_cdr)

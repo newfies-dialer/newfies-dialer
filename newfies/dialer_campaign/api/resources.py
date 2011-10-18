@@ -822,6 +822,9 @@ class CampaignSubscriberResource(ModelResource):
         list_allowed_methods = ['get', 'post', 'put']
         detail_allowed_methods = ['get', 'post', 'put']
         validation = CampaignSubscriberValidation()
+        filtering = {
+            'contact': 'exact',
+        }
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
     def get_object_list(self, request):

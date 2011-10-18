@@ -27,6 +27,42 @@ class BaseAuthenticatedClient(TestCase):
         self.assertTrue(login)
 
 
+class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
+    """Test cases for Newfies-Dialer API."""
+    fixtures = ['gateway.json', 'auth_user', 'voipapp','phonebook', #'contact',
+                'campaign', 'campaign_subscriber']
+
+    def test_create_campaign(self):
+        """Test Function to create a campaign"""
+        response = self.client.post('/api/v1/campaign/',
+        {"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0",
+          "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3",
+          "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000"},
+        **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+    def test_read_campaign(self):
+        """Test Function to get all campaigns"""
+        response = self.client.get('/api/v1/campaign/?format=json',
+                   **self.extra)
+        self.assertEqual(response.status_code, 200)
+        response = self.client.get('/api/v1/campaign/1/?format=json',
+                   **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_campaign(self):
+        """Test Function to update a campaign"""
+        response = self.client.put('/api/v1/campaign/1/',
+                   {"status": "2"}, **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_campaign(self):
+        """Test Function to delete a campaign"""
+        response = self.client.delete('/api/v1/campaign/1/',
+        **self.extra)
+        self.assertEqual(response.status_code, 204)
+
+        
 class NewfiesApiTestCase(BaseAuthenticatedClient):
     """Test cases for Newfies-Dialer API."""
     fixtures = ['gateway.json', 'auth_user', 'voipapp','phonebook', 'contact',
@@ -343,6 +379,7 @@ class NewfiesCustomerInterfaceForgotPassTestCase(TestCase):
 
 test_cases = [
     NewfiesApiTestCase,
+    NewfiesTastypieApiTestCase,
     NewfiesApiCallRequestUpdateTestCase,
     NewfiesAdminInterfaceTestCase,
     NewfiesCustomerInterfaceTestCase,

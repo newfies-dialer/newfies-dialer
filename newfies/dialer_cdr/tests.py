@@ -32,22 +32,22 @@ class BaseAuthenticatedClient(TestCase):
 
 class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
     """Test cases for Newfies-Dialer API."""
-    fixtures = ['gateway.json', 'auth_user', 'voipapp','phonebook', #'contact',
-                'campaign', 'campaign_subscriber']
+    fixtures = ['gateway.json', 'auth_user', 'voipapp','phonebook',
+                'dialer_setting', 'campaign', 'campaign_subscriber']
 
     def test_create_campaign(self):
         """Test Function to create a campaign"""
-        #data = simplejson.dumps({"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000"})
-        #response = self.client.post('/api/v1/campaign/?format=json',
-        #data, content_type='application/json', **self.extra)
-        #self.assertEqual(response.status_code, 200)
-        #resource = api.canonical_resource_for('campaign')                        
-        request = HttpRequest()
-        post_data = '{"name": "mycampaign1112313", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000"}'
-        request._raw_post_data = post_data        
-        resp = self.client.post('/api/v1/campaign/', data=post_data, content_type='application/json', **self.extra)
-        print resp
-        self.assertEqual(resp.status_code, 201)
+        data = simplejson.dumps({"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000"})
+        response = self.client.post('/api/v1/campaign/',
+        data, content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 201)
+
+        #request = HttpRequest()
+        #post_data = '{"name": "mycampaign1112313", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000"}'
+        #request._raw_post_data = post_data
+        #resp = self.client.post('/api/v1/campaign/', data=post_data, content_type='application/json', **self.extra)
+        #print resp
+        #self.assertEqual(resp.status_code, 201)
 
     def test_read_campaign(self):
         """Test Function to get all campaigns"""
@@ -61,8 +61,9 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
     def test_update_campaign(self):
         """Test Function to update a campaign"""
         response = self.client.put('/api/v1/campaign/1/',
-                   {"status": "2"}, **self.extra)
-        self.assertEqual(response.status_code, 200)
+                   simplejson.dumps({"status": "2"}),
+                   content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 204)
 
     def test_delete_campaign(self):
         """Test Function to delete a campaign"""
@@ -79,10 +80,10 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
 
     def test_create_phonebook(self):
         """Test Function to create a phonebook"""
-        response = self.client.post('/api/v1/phonebook/',
-        {"name": "mylittlephonebook", "description": "Test",
-         "campaign_id": "1"}, **self.extra)
-        self.assertEqual(response.status_code, 200)
+        data = simplejson.dumps({"name": "mylittlephonebook", "description": "Test", "campaign_id": "1"})
+        response = self.client.post('/api/v1/phonebook/', data,
+                   content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 201)
 
     def test_read_phonebook(self):
         """Test Function to get all phonebooks"""
@@ -95,17 +96,17 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
 
     def test_create_bulk_contact(self):
         """Test Function to bulk create contacts"""
+        data = simplejson.dumps({"phoneno_list": "12345,54344", "phonebook_id": "1"})
         response = self.client.post('/api/v1/bulkcontact/',
-        {"phoneno_list": "12345,54344", "phonebook_id": "1"},
-        **self.extra)
-        self.assertEqual(response.status_code, 200)
+        data, content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 201)
 
     def test_create_campaign_subscriber(self):
         """Test Function to create a campaign subscriber"""
+        data = simplejson.dumps({"contact": "650784355", "last_name": "belaid", "first_name": "areski", "email": "areski@gmail.com", "phonebook_id" : "1"})
         response = self.client.post('/api/v1/campaignsubscriber/',
-        {"contact": "650784355", "last_name": "belaid", "first_name": "areski", "email": "areski@gmail.com", "phonebook_id" : "1"},
-        **self.extra)
-        self.assertEqual(response.status_code, 200)
+        data, content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 201)
 
     def test_read_campaign_subscriber(self):
         """Test Function to get all campaign subscriber"""
@@ -118,18 +119,20 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
 
     def test_update_campaign_subscriber(self):
         """Test Function to update a campaign subscriber"""
+        data = simplejson.dumps({"status": "2", "contact": "123546"})
         response = self.client.put('/api/v1/campaignsubscriber/1/',
-                   {"status": "2", "contact": "123546"}, **self.extra)
-        self.assertEqual(response.status_code, 200)
+                   data, content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 201)
 
     def test_create_callrequest(self):
         """Test Function to create a callrequest"""
-        response = self.client.post('/api/v1/callrequest/',
-        {"request_uuid": "2342jtdsf-00153",
+        data = simplejson.dumps({"request_uuid": "2342jtdsf-00153",
          "call_time": "2011-05-01 11:22:33", "phone_number": "8792749823",
          "voipapp": "1", "timeout": "30000", "callerid": "650784355",
-         "call_type": "1"}, **self.extra)
-        self.assertEqual(response.status_code, 200)
+         "call_type": "1"})
+        response = self.client.post('/api/v1/callrequest/',
+        data, content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 201)
 
     def test_read_callrequest(self):
         """Test Function to get all callrequests"""
@@ -139,16 +142,18 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
 
     def test_create_answercall(self):
         """Test Function to create a answercall"""
+        data = simplejson.dumps({"ALegRequestUUID": "48092924-856d-11e0-a586-0147ddac9d3e"})
         response = self.client.post('/api/v1/answercall/',
-        {"ALegRequestUUID": "48092924-856d-11e0-a586-0147ddac9d3e"}, **self.extra)
-        self.assertEqual(response.status_code, 200)
+        data, content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 201)
 
     def test_create_hangupcall(self):
         """Test Function to create a answercall"""
+        data = simplejson.dumps({"ALegRequestUUID": "48092924-856d-11e0-a586-0147ddac9d3e",
+         "HangupCause": "SUBSCRIBER_ABSENT"})
         response = self.client.post('/api/v1/hangupcall/',
-        {"ALegRequestUUID": "48092924-856d-11e0-a586-0147ddac9d3e",
-         "HangupCause": "SUBSCRIBER_ABSENT"}, **self.extra)
-        self.assertEqual(response.status_code, 200)
+        data, content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 201)
 
 
         

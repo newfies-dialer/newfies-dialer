@@ -39,8 +39,20 @@ How to run test
 
     $ python manage.py test dialer_cdr.NewfiesCustomerInterfaceTestCase --verbosity=2
 
+**5. Run NewfiesTastypieApiTestCase**::
+
+    $ python manage.py test dialer_cdr.NewfiesTastypieApiTestCase --verbosity=2
+
 
 .. automodule:: dialer_cdr.tests
+
+----------------------
+Tastypie API Test Case
+----------------------
+.. _NewfiesTastypieApiTestCase-model:
+
+.. autoclass:: NewfiesTastypieApiTestCase
+    :members:
 
 -------------
 API Test Case

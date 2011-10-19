@@ -64,6 +64,8 @@ class CampaignValidation(Validation):
     """
     def is_valid(self, bundle, request=None):
         errors = {}
+        if not bundle.data:
+            errors['Data'] = ['Data set is empty']
 
         startingdate = bundle.data.get('startingdate')
         expirationdate = bundle.data.get('expirationdate')
@@ -426,6 +428,10 @@ class PhonebookValidation(Validation):
     """Phonebook Validation Class"""
     def is_valid(self, bundle, request=None):
         errors = {}
+
+        if not bundle.data:
+            errors['Data'] = ['Data set is empty']
+            
         if request.method == 'POST':
             campaign_id = bundle.data.get('campaign_id')
             if campaign_id:
@@ -567,6 +573,10 @@ class BulkContactValidation(Validation):
     """BulkContact Validation Class"""
     def is_valid(self, bundle, request=None):
         errors = {}
+
+        if not bundle.data:
+            errors['Data'] = ['Data set is empty']
+            
         if check_dialer_setting(request, check_for="contact"):
             errors['contact_dialer_setting'] = ["You have too many contacts per campaign. \
                 You are allowed a maximum of %s" % dialer_setting_limit(request, limit_for="contact")]
@@ -732,6 +742,10 @@ class CampaignSubscriberValidation(Validation):
     """CampaignSubscriber Validation Class"""
     def is_valid(self, bundle, request=None):
         errors = {}
+
+        if not bundle.data:
+            errors['Data'] = ['Data set is empty']
+            
         if check_dialer_setting(request, check_for="contact"):
             errors['contact_dialer_setting'] = ["You have too many contacts per campaign. \
                 You are allowed a maximum of %s" % dialer_setting_limit(request, limit_for="contact")]

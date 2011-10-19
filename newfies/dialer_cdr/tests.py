@@ -3,6 +3,7 @@ from django.test import TestCase, Client
 from dialer_cdr.test_utils import build_test_suite_from
 #from user_profile.models import UserProfile
 import base64
+import json
 
 
 class BaseAuthenticatedClient(TestCase):
@@ -34,9 +35,9 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
 
     def test_create_campaign(self):
         """Test Function to create a campaign"""
-        response = self.client.post('/api/v1/campaign/',
-        {"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000"},
-        **self.extra)
+        data = {"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000"}
+        response = self.client.post('http://localhost:8000/api/v1/campaign/',
+        data,  'application/json', **self.extra)
         self.assertEqual(response.status_code, 200)
 
     def test_read_campaign(self):

@@ -65,6 +65,9 @@ class CallrequestValidation(Validation):
     def is_valid(self, bundle, request=None):
         errors = {}
 
+        if not bundle.data:
+            errors['Data'] = ['Data set is empty']
+
         voipapp_id = bundle.data.get('voipapp')
         if voipapp_id:
             try:
@@ -229,6 +232,9 @@ class AnswercallValidation(Validation):
     def is_valid(self, bundle, request=None):
         errors = {}
 
+        if not bundle.data:
+            errors['Data'] = ['Data set is empty']
+
         opt_ALegRequestUUID = bundle.data.get('ALegRequestUUID')
         if not opt_ALegRequestUUID:
             errors['ALegRequestUUID'] = ["Wrong parameters - missing ALegRequestUUID!"]
@@ -347,7 +353,10 @@ class HangupcallValidation(Validation):
     """
     def is_valid(self, bundle, request=None):
         errors = {}
-        
+
+        if not bundle.data:
+            errors['Data'] = ['Data set is empty']
+            
         opt_request_uuid = bundle.data.get('RequestUUID')
         if not opt_request_uuid:
             errors['RequestUUID'] = ["Wrong parameters - missing RequestUUID!"]
@@ -429,6 +438,9 @@ class CdrValidation(Validation):
     def is_valid(self, bundle, request=None):
         errors = {}
 
+        if not bundle.data:
+            errors['Data'] = ['Data set is empty']
+            
         opt_cdr = bundle.data.get('cdr')
         if not opt_cdr:
             errors['CDR'] = ["Wrong parameters : missing cdr!"]

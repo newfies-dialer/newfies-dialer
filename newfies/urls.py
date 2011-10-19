@@ -11,8 +11,7 @@ from user_profile.urls import urlpatterns as urlpatterns_user_profile
 from voip_app.urls import urlpatterns as urlpatterns_voip_app
 
 from tastypie.api import Api
-from dialer_campaign.api.resources import *
-from dialer_cdr.api.resources import *
+from api.resources import *
 
 # tastypie api
 tastypie_api = Api(api_name='v1')

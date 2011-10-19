@@ -43,9 +43,10 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
         #self.assertEqual(response.status_code, 200)
         #resource = api.canonical_resource_for('campaign')                        
         request = HttpRequest()
-        post_data = '{"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000"}'
+        post_data = '{"name": "mycampaign1112313", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000"}'
         request._raw_post_data = post_data        
         resp = self.client.post('/api/v1/campaign/', data=post_data, content_type='application/json', **self.extra)
+        print resp
         self.assertEqual(resp.status_code, 201)
 
     def test_read_campaign(self):

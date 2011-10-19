@@ -3,13 +3,27 @@
       "pk":1,
       "model":"dialer_campaign.campaignsubscriber",
       "fields":{
-         "status":1,         
-         "updated_date":"2011-04-11 00:00:08",
+         "status":2,
+         "updated_date":"2011-10-14 02:29:11",
          "campaign":1,
-         "contact":1,
-         "duplicate_contact":"1234",
-         "last_attempt":"2011-04-11 10:29:26",
-         "created_date":"2011-04-10 23:59:36",
+         "duplicate_contact":"650784339",
+         "contact":26,
+         "last_attempt":null,
+         "created_date":"2011-10-14 01:56:23",
+         "count_attempt":0
+      }
+   },
+   {
+      "pk":2,
+      "model":"dialer_campaign.campaignsubscriber",
+      "fields":{
+         "status":2,
+         "updated_date":"2011-10-13 09:19:35",
+         "campaign":1,
+         "duplicate_contact":"",
+         "contact":null,
+         "last_attempt":null,
+         "created_date":"2011-10-13 09:19:35",
          "count_attempt":0
       }
    }

@@ -14,5 +14,8 @@ cd newfies
 #Run NewfiesCustomerInterfaceTestCase
 #./manage.py test dialer_cdr.NewfiesCustomerInterfaceTestCase --verbosity=2
 
+#Run NewfiesTastypieApiTestCase
+#python manage.py test dialer_cdr.NewfiesTastypieApiTestCase.test_create_campaign --verbosity=2
+
 cd -
 

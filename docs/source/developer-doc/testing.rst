@@ -27,9 +27,9 @@ How to run test
 
     $ python manage.py test --verbosity=2
 
-**2. Run NewfiesApiTestCase**::
+**2. Run NewfiesTastypieApiTestCase**::
 
-    $ python manage.py test dialer_cdr.NewfiesApiTestCase --verbosity=2
+    $ python manage.py test dialer_cdr.NewfiesTastypieApiTestCase --verbosity=2
 
 **3. Run NewfiesAdminInterfaceTestCase**::
 
@@ -38,10 +38,6 @@ How to run test
 **4. Run NewfiesCustomerInterfaceTestCase**::
 
     $ python manage.py test dialer_cdr.NewfiesCustomerInterfaceTestCase --verbosity=2
-
-**5. Run NewfiesTastypieApiTestCase**::
-
-    $ python manage.py test dialer_cdr.NewfiesTastypieApiTestCase --verbosity=2
 
 
 .. automodule:: dialer_cdr.tests
@@ -52,24 +48,6 @@ Tastypie API Test Case
 .. _NewfiesTastypieApiTestCase-model:
 
 .. autoclass:: NewfiesTastypieApiTestCase
-    :members:
-
--------------
-API Test Case
--------------
-.. _NewfiesApiTestCase-model:
-
-.. autoclass:: NewfiesApiTestCase
-    :members:
-
-
--------------------------
-API-CallRequest Test Case
--------------------------
-
-.. _NewfiesApiCallRequestUpdateTestCase-model:
-
-.. autoclass:: NewfiesApiTestCase
     :members:
 
 

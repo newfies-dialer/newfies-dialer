@@ -351,9 +351,8 @@ class NewfiesCustomerInterfaceForgotPassTestCase(TestCase):
 
 
 test_cases = [
-    NewfiesApiTestCase,
+
     NewfiesTastypieApiTestCase,
-    NewfiesApiCallRequestUpdateTestCase,
     NewfiesAdminInterfaceTestCase,
     NewfiesCustomerInterfaceTestCase,
     NewfiesCustomerInterfaceForgotPassTestCase,

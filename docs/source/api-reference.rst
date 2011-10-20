@@ -14,14 +14,6 @@ Contents:
     :maxdepth: 1
 
 
-    ./api-doc/campaign_handler    
-    ./api-doc/campaign_delete_cascade_handler
-    ./api-doc/phonebook_handler
-    ./api-doc/contact_handler
-    ./api-doc/bulkcontact_handler
-    ./api-doc/callrequest_handler
-    ./api-doc/cdr_handler
-
     ./api-doc/campaign_resource
     ./api-doc/campaign_delete_cascade_resource
     ./api-doc/phonebook_resource

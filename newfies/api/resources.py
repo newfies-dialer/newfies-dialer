@@ -892,11 +892,13 @@ class CampaignSubscriberResource(ModelResource):
 
         if not campaign_id:
             error_msg = "No value for Campaign ID !"
+            logger.error(error_msg)
             raise BadRequest(error_msg)
 
         if contact:
             if not isint(contact):
                 error_msg = "Wrong value for contact !"
+                logger.error(error_msg)
                 raise BadRequest(error_msg)
 
             sql_statement = 'SELECT contact_id, last_attempt, count_attempt,'\

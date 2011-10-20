@@ -1239,7 +1239,7 @@ class AnswercallResource(ModelResource):
         #TODO: If we update the Call to success here we should not do it in hangup url
 
         obj_callrequest = Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
-
+        print obj_callrequest
         #TODO : use constant
         Callrequest.status = 8 # IN-PROGRESS
         obj_callrequest.save()
@@ -1386,7 +1386,6 @@ class CdrValidation(Validation):
     """
     def is_valid(self, bundle, request=None):
         errors = {}
-
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
             
@@ -1405,7 +1404,6 @@ class CustomJSONSerializer(Serializer):
         #data = simplejson.loads(content)
         data = {}
         data['cdr'] = content[4:]
-
         return data
 
 
@@ -1432,7 +1430,7 @@ class CdrResource(ModelResource):
             Server: WSGIServer/0.1 Python/2.7.1+
             Vary: Accept-Language, Cookie
             Content-Type: text/html; charset=utf-8
-            Location: http://localhost:8000/api/app/store_cdr/None/
+            Location: http://localhost:8000/api/v1/store_cdr/None/
             Content-Language: en-us
     """
     class Meta:
@@ -1450,11 +1448,13 @@ class CdrResource(ModelResource):
         """
         A ORM-specific implementation of ``obj_create``.
         """
+
         opt_cdr = bundle.data.get('cdr')
-       
+        
         data = {}
         import xml.etree.ElementTree as ET
         tree = ET.fromstring(opt_cdr)
+
         #parse file
         #tree = ET.parse("/tmp/cdr.xml")
         lst = tree.find("variables")

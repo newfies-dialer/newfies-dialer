@@ -32,8 +32,7 @@ import simplejson
 
 seed()
 
-log = logging.getLogger(__name__)
-
+logger = logging.getLogger('newfies.filelog')
 
 
 def get_attribute(attrs, attr_name):
@@ -1005,8 +1004,6 @@ class CampaignSubscriberResource(ModelResource):
         return bundle
 
 
-
-
 class CallrequestValidation(Validation):
     """
     Callrequest Validation Class
@@ -1234,6 +1231,9 @@ class AnswercallResource(ModelResource):
         """
         A ORM-specific implementation of ``obj_create``.
         """
+        msg = 'Answercall API get called!'
+        logger.debug(msg)
+        
         opt_ALegRequestUUID = bundle.data.get('ALegRequestUUID')
         
         #TODO: If we update the Call to success here we should not do it in hangup url
@@ -1256,24 +1256,28 @@ class AnswercallResource(ModelResource):
                                 (gateways, gatewaytimeouts)
             
             #return [ {dial_command: {number_command: obj_callrequest.voipapp.data}, },]
+            logger.debug('Diale command')
             bundle.data['dial_command'] = [{number_command: obj_callrequest.voipapp.data}]
             return bundle
 
         elif obj_callrequest.voipapp.type == 2:
             #PlayAudio
             #return [ {'Play': obj_callrequest.voipapp.data},]
+            logger.debug('PlayAudio...')
             bundle.data['Play'] = obj_callrequest.voipapp.data
             return bundle
 
         elif obj_callrequest.voipapp.type == 3:
             #Conference
             #return [ {'Conference': obj_callrequest.voipapp.data},]
+            logger.debug('Conference')
             bundle.data['Conference'] = obj_callrequest.voipapp.data
             return bundle
 
         elif obj_callrequest.voipapp.type == 4:
             #Speak
             #return [ {'Speak': obj_callrequest.voipapp.data},]
+            logger.debug(Speak)
             bundle.data['Speak'] = obj_callrequest.voipapp.data
             return bundle
 
@@ -1281,8 +1285,8 @@ class AnswercallResource(ModelResource):
         #return [ {'Speak': 'System error'},]
 
         #resp = rc.NOT_IMPLEMENTED
-        #resp.write('Error with VoIP App type!')
-        #return resp
+        error_msg = 'Error with VoIP App type!'
+        logger.error(error_msg)
         return bundle
 
 
@@ -1352,7 +1356,10 @@ class HangupcallResource(ModelResource):
     def obj_create(self, bundle, request=None, **kwargs):
         """
         A ORM-specific implementation of ``obj_create``.
-        """        
+        """
+        msg = 'Hangupcall API get called!'
+        logger.debug(msg)
+        
         opt_request_uuid = bundle.data.get('RequestUUID')
         opt_hangup_cause = bundle.data.get('HangupCause')
 
@@ -1367,6 +1374,9 @@ class HangupcallResource(ModelResource):
 
         #TODO : Create CDR
 
+        msg = 'Hangupcall API : Result 200!'
+        logger.debug(msg)
+
         return bundle
 
 
@@ -1376,13 +1386,13 @@ class CdrValidation(Validation):
     """
     def is_valid(self, bundle, request=None):
         errors = {}
+
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
             
         opt_cdr = bundle.data.get('cdr')
         if not opt_cdr:
             errors['CDR'] = ["Wrong parameters : missing cdr!"]
-
 
         return errors
 
@@ -1438,7 +1448,9 @@ class CdrResource(ModelResource):
         """
         A ORM-specific implementation of ``obj_create``.
         """
-
+        msg = 'CDR API get called'
+        logger.debug(msg)
+        
         opt_cdr = bundle.data.get('cdr')
         
         data = {}
@@ -1470,9 +1482,7 @@ class CdrResource(ModelResource):
             #CDR not related to plivo
             #TODO: Add tag for newfies in outbound call
             error_msg = 'CDR not related to Newfies/Plivo!'
-            logger.debug(error_msg)
-            #resp.write("CDR not related to Newfies/Plivo!")
-            #return resp
+            logger.error(error_msg)
             raise BadRequest(error_msg)
 
         #TODO : delay if not find callrequest
@@ -1523,5 +1533,7 @@ class CdrResource(ModelResource):
 
         # List of HttpResponse : 
         # https://github.com/toastdriven/django-tastypie/blob/master/tastypie/http.py
+        msg = 'CDR API : Result 200'
+        logger.debug(msg)
         return bundle
 

@@ -136,7 +136,6 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
         data = simplejson.dumps({"ALegRequestUUID": "20294e18-9d8f-11e0-aaa8-000c29bed6ad"})
         response = self.client.post('/api/v1/answercall/',
         data, content_type='application/json', **self.extra)
-        print response
         self.assertEqual(response.status_code, 201)
 
     def test_create_hangupcall(self):

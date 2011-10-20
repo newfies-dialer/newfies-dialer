@@ -1237,9 +1237,8 @@ class AnswercallResource(ModelResource):
         opt_ALegRequestUUID = bundle.data.get('ALegRequestUUID')
         
         #TODO: If we update the Call to success here we should not do it in hangup url
-
         obj_callrequest = Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
-        print obj_callrequest
+
         #TODO : use constant
         Callrequest.status = 8 # IN-PROGRESS
         obj_callrequest.save()
@@ -1255,34 +1254,26 @@ class AnswercallResource(ModelResource):
                                 (timelimit, callerid)
             number_command = 'Number gateways="%s" gatewayTimeouts="%s"' % \
                                 (gateways, gatewaytimeouts)
-
+            
             #return [ {dial_command: {number_command: obj_callrequest.voipapp.data}, },]
-            msg = {dial_command: {number_command: obj_callrequest.voipapp.data}, }
-            logger.debug(msg)
-            bundle.data['dial_command'] = {number_command: obj_callrequest.voipapp.data}
+            bundle.data['dial_command'] = [{number_command: obj_callrequest.voipapp.data}]
             return bundle
 
         elif obj_callrequest.voipapp.type == 2:
             #PlayAudio
             #return [ {'Play': obj_callrequest.voipapp.data},]
-            msg = {'Play': obj_callrequest.voipapp.data}
-            logger.debug(msg)
             bundle.data['Play'] = obj_callrequest.voipapp.data
             return bundle
 
         elif obj_callrequest.voipapp.type == 3:
             #Conference
             #return [ {'Conference': obj_callrequest.voipapp.data},]
-            msg = {'Conference': obj_callrequest.voipapp.data}
-            logger.debug(msg)
             bundle.data['Conference'] = obj_callrequest.voipapp.data
             return bundle
 
         elif obj_callrequest.voipapp.type == 4:
             #Speak
             #return [ {'Speak': obj_callrequest.voipapp.data},]
-            msg = {'Speak': obj_callrequest.voipapp.data}
-            logger.debug(msg)
             bundle.data['Speak'] = obj_callrequest.voipapp.data
             return bundle
 
@@ -1292,7 +1283,6 @@ class AnswercallResource(ModelResource):
         #resp = rc.NOT_IMPLEMENTED
         #resp.write('Error with VoIP App type!')
         #return resp
-
         return bundle
 
 

@@ -165,7 +165,6 @@ INSTALLED_APPS = (
     'dialer_gateway',
     'dialer_campaign',
     'dialer_cdr',
-    #'dialer_cdr.api',
     'dialer_settings',
     'user_profile',
     'common',

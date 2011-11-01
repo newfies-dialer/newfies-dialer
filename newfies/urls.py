@@ -57,11 +57,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
-
-    (r'^api/dialer_cdr/', include('dialer_cdr.api.urls'), ),
-
-    (r'^api/dialer_campaign/', include('dialer_campaign.api.urls')),
-
+    
     (r'^api/', include(tastypie_api.urls)),
     
     (r'^i18n/', include('django.conf.urls.i18n')),

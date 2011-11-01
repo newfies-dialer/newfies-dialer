@@ -38,7 +38,7 @@ MYHOST=
 MYHOSTPORT=
 #Freeswitch update vars
 FS_INSTALLED_PATH=/usr/local/freeswitch
-NEWFIES_CDR_API='api\/dialer_cdr\/store_cdr\/'
+NEWFIES_CDR_API='api\/v1\/store_cdr\/'
 
 CELERYD_USER="celery"
 CELERYD_GROUP="celery"

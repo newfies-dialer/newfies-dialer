@@ -46,12 +46,8 @@ REDIS_DB = 0
 #REDIS_CONNECT_RETRY = True
 
 
-#PISTON
-#======
-PISTON_DISPLAY_ERRORS = True
-PISTON_EMAIL_ERRORS = "root@localhost.localdomain"
-#PISTON_IGNORE_DUPE_MODELS = True
-
+#EMAIL BACKEND
+#=============
 # Use only in Debug mode. Not in production
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

@@ -295,12 +295,9 @@ ADMIN_TOOLS_INDEX_DASHBOARD =\
 ADMIN_TOOLS_APP_INDEX_DASHBOARD =\
 'custom_admin_tools.dashboard.CustomAppIndexDashboard'
 
-#PISTON
-#======
-PISTON_DISPLAY_ERRORS = True
-PISTON_EMAIL_ERRORS = "root@localhost.localdomain"
-#PISTON_IGNORE_DUPE_MODELS = True
 
+#EMAIL BACKEND
+#=============
 # Use only in Debug mode. Not in production
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'

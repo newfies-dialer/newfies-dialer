@@ -114,7 +114,6 @@ setup(
     #    "Django >= 1.3.0",
     #    "django-notification >= 0.1.2",
     #    "django-pagination >= 1.0.5",
-    #    "django-piston",
     #    "South >= 0.7.2",
     #],
     setup_requires = [

@@ -4,10 +4,6 @@
 API Reference
 =============
 
-To Download the latest API Reference PDF `click here`_.
-
-.. _click here: https://github.com/Star2Billing/newfies-dialer/raw/master/docs/source/pdf/api_doc.pdf
-
 Contents:
 
 .. toctree::

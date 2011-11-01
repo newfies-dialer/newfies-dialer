@@ -1369,17 +1369,14 @@ class HangupcallValidation(Validation):
     """
     Hangupcall Validation Class
     """
-    def is_valid(self, bundle, request=None):
+    def is_valid(self, request=None):
         errors = {}
 
-        if not bundle.data:
-            errors['Data'] = ['Data set is empty']
-            
-        opt_request_uuid = bundle.data.get('RequestUUID')
+        opt_request_uuid = request.POST.get('RequestUUID')
         if not opt_request_uuid:
             errors['RequestUUID'] = ["Wrong parameters - missing RequestUUID!"]
 
-        opt_hangup_cause = bundle.data.get('HangupCause')
+        opt_hangup_cause = request.POST.get('HangupCause')
         if not opt_hangup_cause:
             errors['HangupCause'] = ["Wrong parameters - missing HangupCause!"]
 
@@ -1406,20 +1403,22 @@ class HangupcallResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"RequestUUID": "48092924-856d-11e0-a586-0147ddac9d3e", "HangupCause": "SUBSCRIBER_ABSENT"}' http://localhost:8000/api/v1/hangupcall/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data "RequestUUID=48092924-856d-11e0-a586-0147ddac9d3e&HangupCause=SUBSCRIBER_ABSENT" http://localhost:8000/api/v1/hangupcall/
 
         Response::
 
-            HTTP/1.0 201 CREATED
-            Date: Fri, 23 Sep 2011 06:08:34 GMT
+            HTTP/1.0 200 OK
+            Date: Tue, 01 Nov 2011 12:04:35 GMT
             Server: WSGIServer/0.1 Python/2.7.1+
             Vary: Accept-Language, Cookie
-            Content-Type: text/html; charset=utf-8
-            Location: http://localhost:8000/api/app/hangupcall/None/
+            Content-Type: application/json
             Content-Language: en-us
+
+            <?xml version="1.0" encoding="utf-8"?>
+                <Response>
+                </Response>
     """
     class Meta:
-        queryset = Callrequest.objects.all()
         resource_name = 'hangupcall'
         authorization = Authorization()
         authentication = BasicAuthentication()
@@ -1428,28 +1427,52 @@ class HangupcallResource(ModelResource):
         detail_allowed_methods = ['post']
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
-    def obj_create(self, bundle, request=None, **kwargs):
-        """
-        A ORM-specific implementation of ``obj_create``.
-        """
-        logger.debug('Hangupcall API get called!')
-        
-        opt_request_uuid = bundle.data.get('RequestUUID')
-        opt_hangup_cause = bundle.data.get('HangupCause')
+    def override_urls(self):
 
-        callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid)
-        # 2 / FAILURE ; 3 / RETRY ; 4 / SUCCESS
-        if opt_hangup_cause=='NORMAL_CLEARING':
-            callrequest.status = 4 # Success
+        return [
+            url(r'^(?P<resource_name>%s)/$' % self._meta.resource_name, self.wrap_view('create')),
+        ]
+
+    def create_response(self, request, data, response_class=HttpResponse, **response_kwargs):
+        """"""
+        desired_format = self.determine_format(request)
+        serialized = data #self.serialize(request, data, desired_format)
+        return response_class(content=serialized, content_type=desired_format, **response_kwargs)
+
+    def create(self, request=None, **kwargs):
+        errors = self._meta.validation.is_valid(request)
+
+        if not errors:
+            logger.debug('Hangupcall API get called!')
+
+            opt_request_uuid = request.POST.get('RequestUUID')
+            opt_hangup_cause = request.POST.get('HangupCause')
+
+            callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid)
+            # 2 / FAILURE ; 3 / RETRY ; 4 / SUCCESS
+            if opt_hangup_cause=='NORMAL_CLEARING':
+                callrequest.status = 4 # Success
+            else:
+                callrequest.status = 2 # Failure
+            callrequest.hangup_cause = opt_hangup_cause
+            callrequest.save()
+
+            #TODO : Create CDR
+            object_list = []
+            logger.debug('Hangupcall API : Result 200!')
+            obj = CustomXmlEmitter()
+
+            return self.create_response(request, obj.render(request, object_list))
         else:
-            callrequest.status = 2 # Failure
-        callrequest.hangup_cause = opt_hangup_cause
-        callrequest.save()
+            if len(errors):
+                if request:
+                    desired_format = self.determine_format(request)
+                else:
+                    desired_format = self._meta.default_format
 
-        #TODO : Create CDR
-
-        logger.debug('Hangupcall API : Result 200!')
-        return bundle
+                serialized = self.serialize(request, errors, desired_format)
+                response = http.HttpBadRequest(content=serialized, content_type=desired_format)
+                raise ImmediateHttpResponse(response=response)
 
 
 class CdrValidation(Validation):

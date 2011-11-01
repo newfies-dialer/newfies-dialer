@@ -20,13 +20,11 @@ tastypie_api = Api(api_name='v1')
 tastypie_api.register(UserResource())
 tastypie_api.register(GatewayResource())
 tastypie_api.register(VoipAppResource())
-
 tastypie_api.register(CampaignResource())
 tastypie_api.register(PhonebookResource())
 tastypie_api.register(BulkContactResource())
 tastypie_api.register(CampaignDeleteCascadeResource())
 tastypie_api.register(CampaignSubscriberResource())
-
 tastypie_api.register(CallrequestResource())
 tastypie_api.register(AnswercallResource())
 tastypie_api.register(HangupcallResource())

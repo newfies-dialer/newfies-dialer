@@ -1,4 +1,4 @@
-.. automodule:: dialer_cdr.api.resources
+.. automodule:: api.resources
 
 .. _HangupcallResource-model:
 

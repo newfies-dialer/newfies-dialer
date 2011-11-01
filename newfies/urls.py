@@ -12,6 +12,7 @@ from voip_app.urls import urlpatterns as urlpatterns_voip_app
 
 from tastypie.api import Api
 from api.resources import *
+from common.custom_xml_emitter import *
 
 # tastypie api
 tastypie_api = Api(api_name='v1')

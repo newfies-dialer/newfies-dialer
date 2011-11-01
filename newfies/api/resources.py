@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.conf.urls.defaults import url
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.query import QuerySet
+from django.http import HttpResponse, HttpResponseNotFound
 
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie.authentication import BasicAuthentication
@@ -19,6 +20,8 @@ from dialer_campaign.models import Campaign, Phonebook, Contact, CampaignSubscri
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_gateway.models import Gateway
 from voip_app.models import VoipApp
+from common.custom_xml_emitter import *
+
 from tastypie import fields
 from dialer_campaign.function_def import user_attached_with_dialer_settings, \
     check_dialer_setting, dialer_setting_limit
@@ -65,7 +68,7 @@ class GatewayResource(ModelResource):
 
 class UserResource(ModelResource):
     class Meta:
-        allowed_methods = ['get'] # Don't display or update User
+        allowed_methods = ['get']
         queryset = User.objects.all()
         resource_name = 'user'
         fields = ['username', 'first_name', 'last_name', 'last_login', 'id']
@@ -1244,12 +1247,44 @@ class AnswercallResource(ModelResource):
         detail_allowed_methods = ['post']
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
+    def override_urls(self):
+
+        return [
+            url(r'^(?P<resource_name>%s)/temp/$' % self._meta.resource_name, self.wrap_view('obj_create_temp'),
+                {'emitter_format': 'custom_xml'}),
+        ]
+
+    
+    def obj_create_temp(self, request=None, **kwargs):
+        #print request
+        obj_callrequest = Callrequest.objects.get(request_uuid='2342jtdsf-00123')
+        #TODO : use constant
+        Callrequest.status = 8 # IN-PROGRESS
+        obj_callrequest.save()
+
+        # get the VoIP application
+        if obj_callrequest.voipapp.type == 1:
+            #Dial
+            timelimit = obj_callrequest.timelimit
+            callerid = obj_callrequest.callerid
+            gatewaytimeouts = obj_callrequest.timeout
+            gateways = obj_callrequest.voipapp.gateway.gateways
+            dial_command = 'Dial timeLimit="%s" callerId="%s"' % \
+                                (timelimit, callerid)
+            number_command = 'Number gateways="%s" gatewayTimeouts="%s"' % \
+                                (gateways, gatewaytimeouts)
+            object_list = [ {dial_command: {number_command: obj_callrequest.voipapp.data}, },]
+            
+            print CustomXmlEmitter.render(request, object_list)
+            return self.create_response(request, object_list, response_class=HttpResponse)
+        return 'error'
+
     def obj_create(self, bundle, request=None, **kwargs):
         """
         A ORM-specific implementation of ``obj_create``.
         """
         logger.debug('Answercall API get called!')
-        
+        #print bundle.POST
         opt_ALegRequestUUID = bundle.data.get('ALegRequestUUID')
         
         #TODO: If we update the Call to success here we should not do it in hangup url

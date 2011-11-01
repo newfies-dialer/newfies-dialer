@@ -1,4 +1,4 @@
-.. automodule:: dialer_campaign.api.resources
+.. automodule:: api.resources
 
 .. _campaignResource-model:
 

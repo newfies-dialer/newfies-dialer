@@ -1460,7 +1460,7 @@ class HangupcallResource(ModelResource):
             callrequest.save()
 
             #TODO : Create CDR
-            object_list = []
+            object_list = [{'result': 'OK'}]
             logger.debug('Hangupcall API : Result 200!')
             obj = CustomXmlEmitter()
 

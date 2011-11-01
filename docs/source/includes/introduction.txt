@@ -1,4 +1,3 @@
-:Version: 0.1.0
 :Web: http://www.newfies-dialer.org/
 :Download: http://www.newfies-dialer.org/download/
 :Source: https://github.com/Star2Billing/newfies-dialer/

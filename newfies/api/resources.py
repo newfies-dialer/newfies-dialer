@@ -1293,7 +1293,7 @@ class AnswercallResource(ModelResource):
         ]
 
     def create_response(self, request, data, response_class=HttpResponse, **response_kwargs):
-        """"""
+        
         desired_format = self.determine_format(request)
         serialized = data #self.serialize(request, data, desired_format)
         return response_class(content=serialized, content_type=desired_format, **response_kwargs)
@@ -1309,7 +1309,7 @@ class AnswercallResource(ModelResource):
 
             #TODO: If we update the Call to success here we should not do it in hangup url
             obj_callrequest = Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
-
+            
             #TODO : use constant
             Callrequest.status = 8 # IN-PROGRESS
             obj_callrequest.save()

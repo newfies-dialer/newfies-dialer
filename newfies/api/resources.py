@@ -16,11 +16,13 @@ from tastypie.throttle import BaseThrottle
 from tastypie.utils import dict_strip_unicode_keys, trailing_slash
 from tastypie.http import HttpCreated, HttpNoContent, HttpNotFound, HttpBadRequest
 from tastypie.exceptions import BadRequest, NotFound, ImmediateHttpResponse
+from tastypie import http
+
 from dialer_campaign.models import Campaign, Phonebook, Contact, CampaignSubscriber
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_gateway.models import Gateway
 from voip_app.models import VoipApp
-from common.custom_xml_emitter import *
+#from common.custom_xml_emitter import *
 
 from tastypie import fields
 from dialer_campaign.function_def import user_attached_with_dialer_settings, \
@@ -32,6 +34,17 @@ from random import choice, seed
 import time
 import uuid
 import simplejson
+
+
+try:
+    import cStringIO as StringIO
+except ImportError:
+    import StringIO
+from django.utils.encoding import smart_unicode
+from django.utils.xmlutils import SimplerXMLGenerator
+from django.contrib.auth import authenticate
+from django.http import HttpResponse
+from django.conf import settings
 
 seed()
 
@@ -1195,13 +1208,11 @@ class AnswercallValidation(Validation):
     """
     Answercall Validation Class
     """
-    def is_valid(self, bundle, request=None):
+    def is_valid(self, request=None):
         errors = {}
-
-        if not bundle.data:
-            errors['Data'] = ['Data set is empty']
-
-        opt_ALegRequestUUID = bundle.data.get('ALegRequestUUID')
+        
+        opt_ALegRequestUUID = request.POST.get('ALegRequestUUID')
+        
         if not opt_ALegRequestUUID:
             errors['ALegRequestUUID'] = ["Wrong parameters - missing ALegRequestUUID!"]
 
@@ -1214,6 +1225,29 @@ class AnswercallValidation(Validation):
                 
         return errors
 
+    
+class CustomXmlEmitter():
+    def _to_xml(self, xml, data):
+        if isinstance(data, (list, tuple)):
+            for item in data:
+                self._to_xml(xml, item)
+        elif isinstance(data, dict):
+            for key, value in data.iteritems():
+                xml.startElement(key, {})
+                self._to_xml(xml, value)
+                xml.endElement(key.split()[0])
+        else:
+            xml.characters(smart_unicode(data))
+
+    def render(self, request, data):
+        stream = StringIO.StringIO()
+        xml = SimplerXMLGenerator(stream, "utf-8")
+        xml.startDocument()
+        xml.startElement("Response", {})
+        self._to_xml(xml, data)
+        xml.endElement("Response")
+        xml.endDocument()
+        return stream.getvalue()
 
 class AnswercallResource(ModelResource):
     """
@@ -1225,20 +1259,25 @@ class AnswercallResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"ALegRequestUUID": "48092924-856d-11e0-a586-0147ddac9d3e"}' http://localhost:8000/api/v1/answercall/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data "ALegRequestUUID=48092924-856d-11e0-a586-0147ddac9d3e" http://localhost:8000/api/v1/answercall/
 
         Response::
 
-            HTTP/1.0 201 CREATED
-            Date: Fri, 23 Sep 2011 06:08:34 GMT
+            HTTP/1.0 200 OK
+            Date: Tue, 01 Nov 2011 11:30:59 GMT
             Server: WSGIServer/0.1 Python/2.7.1+
             Vary: Accept-Language, Cookie
-            Content-Type: text/html; charset=utf-8
-            Location: http://localhost:8000/api/app/answercall/None/
+            Content-Type: application/json
             Content-Language: en-us
+
+            <?xml version="1.0" encoding="utf-8"?>
+                <Response>
+                    <Dial timeLimit="3600" callerId="650784355">
+                        <Number gateways="user/,user" gatewayTimeouts="30000"></Number>
+                    </Dial>
+                </Response>
     """
     class Meta:
-        queryset = Callrequest.objects.all()
         resource_name = 'answercall'
         authorization = Authorization()
         authentication = BasicAuthentication()
@@ -1250,94 +1289,80 @@ class AnswercallResource(ModelResource):
     def override_urls(self):
 
         return [
-            url(r'^(?P<resource_name>%s)/temp/$' % self._meta.resource_name, self.wrap_view('obj_create_temp'),
-                {'emitter_format': 'custom_xml'}),
+            url(r'^(?P<resource_name>%s)/$' % self._meta.resource_name, self.wrap_view('create')),
         ]
 
-    
-    def obj_create_temp(self, request=None, **kwargs):
-        #print request
-        obj_callrequest = Callrequest.objects.get(request_uuid='2342jtdsf-00123')
-        #TODO : use constant
-        Callrequest.status = 8 # IN-PROGRESS
-        obj_callrequest.save()
+    def create_response(self, request, data, response_class=HttpResponse, **response_kwargs):
+        """"""
+        desired_format = self.determine_format(request)
+        serialized = data #self.serialize(request, data, desired_format)
+        return response_class(content=serialized, content_type=desired_format, **response_kwargs)
 
-        # get the VoIP application
-        if obj_callrequest.voipapp.type == 1:
-            #Dial
-            timelimit = obj_callrequest.timelimit
-            callerid = obj_callrequest.callerid
-            gatewaytimeouts = obj_callrequest.timeout
-            gateways = obj_callrequest.voipapp.gateway.gateways
-            dial_command = 'Dial timeLimit="%s" callerId="%s"' % \
-                                (timelimit, callerid)
-            number_command = 'Number gateways="%s" gatewayTimeouts="%s"' % \
-                                (gateways, gatewaytimeouts)
-            object_list = [ {dial_command: {number_command: obj_callrequest.voipapp.data}, },]
-            
-            print CustomXmlEmitter.render(request, object_list)
-            return self.create_response(request, object_list, response_class=HttpResponse)
-        return 'error'
+    def create(self, request=None, **kwargs):
 
-    def obj_create(self, bundle, request=None, **kwargs):
-        """
-        A ORM-specific implementation of ``obj_create``.
-        """
-        logger.debug('Answercall API get called!')
-        #print bundle.POST
-        opt_ALegRequestUUID = bundle.data.get('ALegRequestUUID')
+        errors = self._meta.validation.is_valid(request)
         
-        #TODO: If we update the Call to success here we should not do it in hangup url
-        obj_callrequest = Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
+        if not errors:
+            logger.debug('Answercall API get called!')
 
-        #TODO : use constant
-        Callrequest.status = 8 # IN-PROGRESS
-        obj_callrequest.save()
+            opt_ALegRequestUUID = request.POST.get('ALegRequestUUID')
 
-        # get the VoIP application
-        if obj_callrequest.voipapp.type == 1:
-            #Dial
-            timelimit = obj_callrequest.timelimit
-            callerid = obj_callrequest.callerid
-            gatewaytimeouts = obj_callrequest.timeout
-            gateways = obj_callrequest.voipapp.gateway.gateways
-            dial_command = 'Dial timeLimit="%s" callerId="%s"' % \
-                                (timelimit, callerid)
-            number_command = 'Number gateways="%s" gatewayTimeouts="%s"' % \
-                                (gateways, gatewaytimeouts)
-            
-            #return [ {dial_command: {number_command: obj_callrequest.voipapp.data}, },]
-            logger.debug('Diale command')
-            bundle.data['dial_command'] = [{number_command: obj_callrequest.voipapp.data}]
-            return bundle
+            #TODO: If we update the Call to success here we should not do it in hangup url
+            obj_callrequest = Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
 
-        elif obj_callrequest.voipapp.type == 2:
-            #PlayAudio
-            #return [ {'Play': obj_callrequest.voipapp.data},]
-            logger.debug('PlayAudio')
-            bundle.data['Play'] = obj_callrequest.voipapp.data
-            return bundle
+            #TODO : use constant
+            Callrequest.status = 8 # IN-PROGRESS
+            obj_callrequest.save()
 
-        elif obj_callrequest.voipapp.type == 3:
-            #Conference
-            #return [ {'Conference': obj_callrequest.voipapp.data},]
-            logger.debug('Conference')
-            bundle.data['Conference'] = obj_callrequest.voipapp.data
-            return bundle
+            # get the VoIP application
+            if obj_callrequest.voipapp.type == 1:
+                #Dial
+                timelimit = obj_callrequest.timelimit
+                callerid = obj_callrequest.callerid
+                gatewaytimeouts = obj_callrequest.timeout
+                gateways = obj_callrequest.voipapp.gateway.gateways
+                dial_command = 'Dial timeLimit="%s" callerId="%s"' % \
+                                    (timelimit, callerid)
+                number_command = 'Number gateways="%s" gatewayTimeouts="%s"' % \
+                                    (gateways, gatewaytimeouts)
 
-        elif obj_callrequest.voipapp.type == 4:
-            #Speak
-            #return [ {'Speak': obj_callrequest.voipapp.data},]
-            logger.debug('Speak')
-            bundle.data['Speak'] = obj_callrequest.voipapp.data
-            return bundle
+                object_list = [ {dial_command: {number_command: obj_callrequest.voipapp.data}, },]
+                logger.debug('Diale command')
 
-        #return [ {'Speak': 'Hello World'}, {'Dial': {'Number': '1000'}, },]
-        #return [ {'Speak': 'System error'},]
+            elif obj_callrequest.voipapp.type == 2:
+                #PlayAudio
+                object_list = [ {'Play': obj_callrequest.voipapp.data},]
+                logger.debug('PlayAudio')
 
-        #resp = rc.NOT_IMPLEMENTED
-        logger.error('Error with VoIP App type!')
-        return bundle
+            elif obj_callrequest.voipapp.type == 3:
+                #Conference
+                object_list = [ {'Conference': obj_callrequest.voipapp.data},]
+                logger.debug('Conference')
+
+            elif obj_callrequest.voipapp.type == 4:
+                #Speak
+                object_list = [ {'Speak': obj_callrequest.voipapp.data},]
+                logger.debug('Speak')
+
+            #return [ {'Speak': 'Hello World'}, {'Dial': {'Number': '1000'}, },]
+            #return [ {'Speak': 'System error'},]
+
+            #resp = rc.NOT_IMPLEMENTED
+            logger.error('Error with VoIP App type!')
+
+            obj = CustomXmlEmitter()
+            #print obj.render(request, object_list)
+            return self.create_response(request, obj.render(request, object_list))
+        else:
+            if len(errors):
+                if request:
+                    desired_format = self.determine_format(request)
+                else:
+                    desired_format = self._meta.default_format
+
+                serialized = self.serialize(request, errors, desired_format)
+                response = http.HttpBadRequest(content=serialized, content_type=desired_format)
+                raise ImmediateHttpResponse(response=response)
 
 
 class HangupcallValidation(Validation):

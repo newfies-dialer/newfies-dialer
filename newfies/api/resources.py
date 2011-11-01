@@ -1,3 +1,8 @@
+try:
+    import cStringIO as StringIO
+except ImportError:
+    import StringIO
+
 import logging
 
 from django.contrib.auth.models import User
@@ -5,6 +10,10 @@ from django.conf.urls.defaults import url
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.query import QuerySet
 from django.http import HttpResponse, HttpResponseNotFound
+from django.utils.encoding import smart_unicode
+from django.utils.xmlutils import SimplerXMLGenerator
+from django.contrib.auth import authenticate
+from django.conf import settings
 
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie.authentication import BasicAuthentication
@@ -34,17 +43,6 @@ from random import choice, seed
 import time
 import uuid
 import simplejson
-
-
-try:
-    import cStringIO as StringIO
-except ImportError:
-    import StringIO
-from django.utils.encoding import smart_unicode
-from django.utils.xmlutils import SimplerXMLGenerator
-from django.contrib.auth import authenticate
-from django.http import HttpResponse
-from django.conf import settings
 
 seed()
 
@@ -1204,28 +1202,6 @@ class CallrequestResource(ModelResource):
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
 
-class AnswercallValidation(Validation):
-    """
-    Answercall Validation Class
-    """
-    def is_valid(self, request=None):
-        errors = {}
-        
-        opt_ALegRequestUUID = request.POST.get('ALegRequestUUID')
-        
-        if not opt_ALegRequestUUID:
-            errors['ALegRequestUUID'] = ["Wrong parameters - missing ALegRequestUUID!"]
-
-        try:
-            obj_callrequest = Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
-            if not obj_callrequest.voipapp:
-                errors['VoIP App'] = ['This Call Request is not attached to a VoIP App!']
-        except:
-            errors['ALegRequestUUID'] = ['Call Request cannot be found!']
-                
-        return errors
-
-    
 class CustomXmlEmitter():
     def _to_xml(self, xml, data):
         if isinstance(data, (list, tuple)):
@@ -1248,6 +1224,29 @@ class CustomXmlEmitter():
         xml.endElement("Response")
         xml.endDocument()
         return stream.getvalue()
+
+
+class AnswercallValidation(Validation):
+    """
+    Answercall Validation Class
+    """
+    def is_valid(self, request=None):
+        errors = {}
+        
+        opt_ALegRequestUUID = request.POST.get('ALegRequestUUID')
+        
+        if not opt_ALegRequestUUID:
+            errors['ALegRequestUUID'] = ["Wrong parameters - missing ALegRequestUUID!"]
+
+        try:
+            obj_callrequest = Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
+            if not obj_callrequest.voipapp:
+                errors['VoIP App'] = ['This Call Request is not attached to a VoIP App!']
+        except:
+            errors['ALegRequestUUID'] = ['Call Request cannot be found!']
+                
+        return errors
+
 
 class AnswercallResource(ModelResource):
     """
@@ -1287,19 +1286,20 @@ class AnswercallResource(ModelResource):
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
     def override_urls(self):
-
+        """Override urls"""
         return [
             url(r'^(?P<resource_name>%s)/$' % self._meta.resource_name, self.wrap_view('create')),
         ]
 
     def create_response(self, request, data, response_class=HttpResponse, **response_kwargs):
-        
+        """To display API's result"""
         desired_format = self.determine_format(request)
         serialized = data #self.serialize(request, data, desired_format)
         return response_class(content=serialized, content_type=desired_format, **response_kwargs)
 
     def create(self, request=None, **kwargs):
-
+        """POST method of Answercall API"""
+        logger.debug('Answercall API validation called!')
         errors = self._meta.validation.is_valid(request)
         
         if not errors:
@@ -1428,18 +1428,20 @@ class HangupcallResource(ModelResource):
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
     def override_urls(self):
-
+        """Override url"""
         return [
             url(r'^(?P<resource_name>%s)/$' % self._meta.resource_name, self.wrap_view('create')),
         ]
 
     def create_response(self, request, data, response_class=HttpResponse, **response_kwargs):
-        """"""
+        """To display API's result"""
         desired_format = self.determine_format(request)
-        serialized = data #self.serialize(request, data, desired_format)
+        serialized = data # self.serialize(request, data, desired_format)
         return response_class(content=serialized, content_type=desired_format, **response_kwargs)
 
     def create(self, request=None, **kwargs):
+        """POST method of Hangupcall API"""
+        logger.debug('Hangupcall API validation called!')
         errors = self._meta.validation.is_valid(request)
 
         if not errors:
@@ -1628,4 +1630,3 @@ class CdrResource(ModelResource):
         # https://github.com/toastdriven/django-tastypie/blob/master/tastypie/http.py
         logger.debug('CDR API : Result 200')
         return bundle
-

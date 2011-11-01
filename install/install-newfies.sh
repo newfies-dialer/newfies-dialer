@@ -298,7 +298,16 @@ func_install_frontend(){
     echo ""
     echo "Create a super admin user..."
     python manage.py createsuperuser
-
+    
+    #echo ""
+    #echo "Create a super user for API, use a different username..."
+    #python manage.py createsuperuser
+    #echo ""
+    #echo "Enter the Username you enteded for the API"
+    #read APIUSERNAME
+    #echo ""
+    #echo "Enter the Password for the API "
+    #read APIPASSWORD
 
     #Collect static files from apps and other locations in a single location.
     python manage.py collectstatic -l --noinput
@@ -364,6 +373,10 @@ func_install_frontend(){
     CDR_API_URL="http:\/\/$IPADDR:9080\/$NEWFIES_CDR_API"
     cd "$FS_INSTALLED_PATH/conf/autoload_configs/"
     sed -i "s/NEWFIES_API_STORE_CDR/$CDR_API_URL/g" xml_cdr.conf.xml
+    
+    #Update API username and password
+    #sed -i "s/APIUSERNAME/$APIUSERNAME/g" xml_cdr.conf.xml
+    #sed -i "s/APIPASSWORD/$APIPASSWORD/g" xml_cdr.conf.xml
     
     #Update for Plivo URL & Authorize local IP
     sed -i "s/SERVER_IP_PORT/$IPADDR:9080/g" $INSTALL_DIR/settings_local.py

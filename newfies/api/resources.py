@@ -418,7 +418,7 @@ class CampaignResource(ModelResource):
     class Meta:
         queryset = Campaign.objects.all()
         resource_name = 'campaign'
-        authorization = IpAddressAuthorization()
+        authorization = Authorization()
         authentication = BasicAuthentication()
         validation = CampaignValidation()
         filtering = {
@@ -602,7 +602,7 @@ class PhonebookResource(ModelResource):
     class Meta:
         queryset = Phonebook.objects.all()
         resource_name = 'phonebook'
-        authorization = IpAddressAuthorization()
+        authorization = Authorization()
         authentication = BasicAuthentication()
         validation = PhonebookValidation()
         filtering = {
@@ -665,7 +665,7 @@ class BulkContactResource(ModelResource):
     class Meta:
         queryset = Contact.objects.all()
         resource_name = 'bulkcontact'
-        authorization = IpAddressAuthorization()
+        authorization = Authorization()
         authentication = BasicAuthentication()
         allowed_methods = ['post']
         validation = BulkContactValidation()
@@ -727,7 +727,7 @@ class CampaignDeleteCascadeResource(ModelResource):
     class Meta:
         queryset = Campaign.objects.all()
         resource_name = 'campaign_delete_cascade'
-        authorization = IpAddressAuthorization()
+        authorization = Authorization()
         authentication = BasicAuthentication()
         list_allowed_methods = ['delete']
         detail_allowed_methods = ['delete']
@@ -884,7 +884,7 @@ class CampaignSubscriberResource(ModelResource):
     class Meta:
         queryset = CampaignSubscriber.objects.all()
         resource_name = 'campaignsubscriber'
-        authorization = IpAddressAuthorization()
+        authorization = Authorization()
         authentication = BasicAuthentication()
         list_allowed_methods = ['get', 'post', 'put']
         detail_allowed_methods = ['get', 'post', 'put']
@@ -1202,7 +1202,7 @@ class CallrequestResource(ModelResource):
     class Meta:
         queryset = Callrequest.objects.all()
         resource_name = 'callrequest'
-        authorization = IpAddressAuthorization()
+        authorization = Authorization()
         authentication = BasicAuthentication()
         validation = CallrequestValidation()
         list_allowed_methods = ['get', 'post', 'put']

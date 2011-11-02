@@ -70,6 +70,7 @@ class IpAddressAuthorization(Authorization):
         if request.META['REMOTE_ADDR'] in API_ALLOWED_IP:
             return True
         else:
+            raise ImmediateHttpResponse(response=http.HttpUnauthorized())
             return False
 
 
@@ -1306,6 +1307,14 @@ class AnswercallResource(ModelResource):
 
     def create(self, request=None, **kwargs):
         """POST method of Answercall API"""
+        logger.debug('Answercall API authentication called!')
+        auth_result = self._meta.authentication.is_authenticated(request)
+        if not auth_result is True:
+            raise ImmediateHttpResponse(response=http.HttpUnauthorized())
+
+        logger.debug('Answercall API authorization called!')
+        auth_result = self._meta.authorization.is_authorized(request, object)
+        
         logger.debug('Answercall API validation called!')
         errors = self._meta.validation.is_valid(request)
         
@@ -1448,6 +1457,14 @@ class HangupcallResource(ModelResource):
 
     def create(self, request=None, **kwargs):
         """POST method of Hangupcall API"""
+        logger.debug('Hangupcall API authentication called!')
+        auth_result = self._meta.authentication.is_authenticated(request)
+        if not auth_result is True:
+            raise ImmediateHttpResponse(response=http.HttpUnauthorized())
+
+        logger.debug('Hangupcall API authorization called!')
+        auth_result = self._meta.authorization.is_authorized(request, object)
+
         logger.debug('Hangupcall API validation called!')
         errors = self._meta.validation.is_valid(request)
 
@@ -1564,9 +1581,15 @@ class CdrResource(ModelResource):
 
     def create(self, request=None, **kwargs):
         """POST method of CDR_Store API"""
-        
+        logger.debug('CDR API authentication called!')
+        auth_result = self._meta.authentication.is_authenticated(request)
+        if not auth_result is True:
+            raise ImmediateHttpResponse(response=http.HttpUnauthorized())
+
+        logger.debug('CDR API authorization called!')
+        auth_result = self._meta.authorization.is_authorized(request, object)
+
         errors = self._meta.validation.is_valid(request)
-        
         logger.debug('CDR API get called from IP %s' % request.META.get('REMOTE_ADDR'))
         
         if not errors:

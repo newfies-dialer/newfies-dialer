@@ -17,8 +17,7 @@ from django.conf import settings
 
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie.authentication import BasicAuthentication
-from tastypie.authorization import DjangoAuthorization
-from tastypie.authorization import Authorization
+from tastypie.authorization import Authorization, DjangoAuthorization
 from tastypie.serializers import Serializer
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
@@ -36,11 +35,11 @@ from voip_app.models import VoipApp
 from tastypie import fields
 from dialer_campaign.function_def import user_attached_with_dialer_settings, \
     check_dialer_setting, dialer_setting_limit
-
+from settings_local import API_ALLOWED_IP
 from datetime import datetime
 from random import choice, seed
-import urllib
 
+import urllib
 import time
 import uuid
 import simplejson
@@ -64,6 +63,14 @@ def get_value_if_none(x, value):
     if x is None:
         return value
     return x
+
+
+class IpAddressAuthorization(Authorization):
+    def is_authorized(self, request, object=None):
+        if request.META['REMOTE_ADDR'] in API_ALLOWED_IP:
+            return True
+        else:
+            return False
 
 
 class VoipAppResource(ModelResource):
@@ -410,7 +417,7 @@ class CampaignResource(ModelResource):
     class Meta:
         queryset = Campaign.objects.all()
         resource_name = 'campaign'
-        authorization = Authorization()
+        authorization = IpAddressAuthorization()
         authentication = BasicAuthentication()
         validation = CampaignValidation()
         filtering = {
@@ -594,7 +601,7 @@ class PhonebookResource(ModelResource):
     class Meta:
         queryset = Phonebook.objects.all()
         resource_name = 'phonebook'
-        authorization = Authorization()
+        authorization = IpAddressAuthorization()
         authentication = BasicAuthentication()
         validation = PhonebookValidation()
         filtering = {
@@ -657,7 +664,7 @@ class BulkContactResource(ModelResource):
     class Meta:
         queryset = Contact.objects.all()
         resource_name = 'bulkcontact'
-        authorization = Authorization()
+        authorization = IpAddressAuthorization()
         authentication = BasicAuthentication()
         allowed_methods = ['post']
         validation = BulkContactValidation()
@@ -719,7 +726,7 @@ class CampaignDeleteCascadeResource(ModelResource):
     class Meta:
         queryset = Campaign.objects.all()
         resource_name = 'campaign_delete_cascade'
-        authorization = Authorization()
+        authorization = IpAddressAuthorization()
         authentication = BasicAuthentication()
         list_allowed_methods = ['delete']
         detail_allowed_methods = ['delete']
@@ -876,7 +883,7 @@ class CampaignSubscriberResource(ModelResource):
     class Meta:
         queryset = CampaignSubscriber.objects.all()
         resource_name = 'campaignsubscriber'
-        authorization = Authorization()
+        authorization = IpAddressAuthorization()
         authentication = BasicAuthentication()
         list_allowed_methods = ['get', 'post', 'put']
         detail_allowed_methods = ['get', 'post', 'put']
@@ -1194,7 +1201,7 @@ class CallrequestResource(ModelResource):
     class Meta:
         queryset = Callrequest.objects.all()
         resource_name = 'callrequest'
-        authorization = Authorization()
+        authorization = IpAddressAuthorization()
         authentication = BasicAuthentication()
         validation = CallrequestValidation()
         list_allowed_methods = ['get', 'post', 'put']
@@ -1278,7 +1285,7 @@ class AnswercallResource(ModelResource):
     """
     class Meta:
         resource_name = 'answercall'
-        authorization = Authorization()
+        authorization = IpAddressAuthorization()
         authentication = BasicAuthentication()
         validation = AnswercallValidation()
         list_allowed_methods = ['post']
@@ -1387,6 +1394,7 @@ class HangupcallValidation(Validation):
         return errors
 
 
+
 class HangupcallResource(ModelResource):
     """
     **Attributes**:
@@ -1419,7 +1427,7 @@ class HangupcallResource(ModelResource):
     """
     class Meta:
         resource_name = 'hangupcall'
-        authorization = Authorization()
+        authorization = IpAddressAuthorization()
         authentication = BasicAuthentication()
         validation = HangupcallValidation()
         list_allowed_methods = ['post']
@@ -1534,7 +1542,7 @@ class CdrResource(ModelResource):
     """
     class Meta:
         resource_name = 'store_cdr'
-        authorization = Authorization()
+        authorization = IpAddressAuthorization()
         authentication = BasicAuthentication()
         validation = CdrValidation()
         #serializer = CustomJSONSerializer()

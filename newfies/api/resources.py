@@ -16,7 +16,7 @@ from django.contrib.auth import authenticate
 from django.conf import settings
 
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
-from tastypie.authentication import BasicAuthentication
+from tastypie.authentication import Authentication, BasicAuthentication
 from tastypie.authorization import Authorization, DjangoAuthorization
 from tastypie.serializers import Serializer
 from tastypie.validation import Validation
@@ -66,6 +66,14 @@ def get_value_if_none(x, value):
 
 
 class IpAddressAuthorization(Authorization):
+    def is_authorized(self, request, object=None):
+        if request.META['REMOTE_ADDR'] in API_ALLOWED_IP:
+            return True
+        else:
+            raise ImmediateHttpResponse(response=http.HttpUnauthorized())
+            return False
+
+class IpAddressAuthentication(Authentication):
     def is_authorized(self, request, object=None):
         if request.META['REMOTE_ADDR'] in API_ALLOWED_IP:
             return True
@@ -1287,7 +1295,7 @@ class AnswercallResource(ModelResource):
     class Meta:
         resource_name = 'answercall'
         authorization = IpAddressAuthorization()
-        authentication = BasicAuthentication()
+        authentication = IpAddressAuthentication()
         validation = AnswercallValidation()
         list_allowed_methods = ['post']
         detail_allowed_methods = ['post']
@@ -1437,7 +1445,7 @@ class HangupcallResource(ModelResource):
     class Meta:
         resource_name = 'hangupcall'
         authorization = IpAddressAuthorization()
-        authentication = BasicAuthentication()
+        authentication = IpAddressAuthentication()
         validation = HangupcallValidation()
         list_allowed_methods = ['post']
         detail_allowed_methods = ['post']
@@ -1560,7 +1568,7 @@ class CdrResource(ModelResource):
     class Meta:
         resource_name = 'store_cdr'
         authorization = IpAddressAuthorization()
-        authentication = BasicAuthentication()
+        authentication = IpAddressAuthentication()
         validation = CdrValidation()
         #serializer = CustomJSONSerializer()
         list_allowed_methods = ['post']

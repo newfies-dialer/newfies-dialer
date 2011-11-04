@@ -287,6 +287,25 @@ func_install_frontend(){
         echo "mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e 'CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;'"
         mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e "CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;"
     fi
+    
+    #Fix permission on python-egg
+    mkdir $INSTALL_DIR/.python-eggs
+    chmod 777 $INSTALL_DIR/.python-eggs
+
+    case $DIST in
+        'DEBIAN')
+            chown -R www-data.www-data $INSTALL_DIR/database/
+            touch /var/log/newfies/newfies-django.log
+            chown www-data:www-data /var/log/newfies/newfies-django.log
+            touch /var/log/newfies/newfies-django-db.log
+            chown www-data:www-data /var/log/newfies/newfies-django-db.log
+            touch /var/log/newfies/err-apache-newfies.log
+            chown www-data:www-data /var/log/newfies/err-apache-newfies.log
+        ;;
+        'CENTOS')
+            echo "Check what to do for CentOS..."
+        ;;
+    esac
 
 
     cd $INSTALL_DIR/
@@ -345,20 +364,9 @@ func_install_frontend(){
     ' > $APACHE_CONF_DIR/newfies.conf
     #correct the above file
     sed -i "s/@/'/g"  $APACHE_CONF_DIR/newfies.conf
-
-    #Fix permission on python-egg
-    mkdir $INSTALL_DIR/.python-eggs
-    chmod 777 $INSTALL_DIR/.python-eggs
-
+    
     case $DIST in
         'DEBIAN')
-            chown -R www-data.www-data $INSTALL_DIR/database/
-            touch /var/log/newfies/newfies-django.log
-            chown www-data:www-data /var/log/newfies/newfies-django.log
-            touch /var/log/newfies/newfies-django-db.log
-            chown www-data:www-data /var/log/newfies/newfies-django-db.log
-            touch /var/log/newfies/err-apache-newfies.log
-            chown www-data:www-data /var/log/newfies/err-apache-newfies.log
             service apache2 restart
         ;;
         'CENTOS')

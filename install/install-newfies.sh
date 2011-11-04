@@ -126,17 +126,16 @@ func_install_frontend(){
 
     echo ""
     echo ""
-    echo "This will install Web Newfies on your server"
-    echo "Press Enter to continue or CTRL-C to exit"
-    read TEMP
+    echo "This script will install Web Newfies on your server"
+    echo ""
+    echo ""
+    branch=STABLE
+    echo "Which version do you want to install ? DEVEL or STABLE [DEVEL/STABLE] (default:STABLE)"
+    read branch
 
     db_backend=MySQL
     echo "Do you want to install Newfies with SQLite or MySQL? [SQLite/MySQL] (default:MySQL)"
     read db_backend
-    
-    branch=STABLE
-    echo "Do you want to install Newfies DEVEL or STABLE? [DEVEL/STABLE] (default:STABLE)"
-    read branch
 
     #python setup tools
     echo "Install Dependencies and python modules..."

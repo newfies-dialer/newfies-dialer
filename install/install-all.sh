@@ -57,7 +57,7 @@ cd /usr/src/
 
 #Download Scripts
 wget https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-freeswitch.sh
-wget https://raw.github.com/plivo/plivo/master/scripts/plivo_install_beta.sh
+wget https://raw.github.com/plivo/plivo/master/scripts/plivo_install.sh
 wget https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-newfies.sh
 
 #Run the Install Scripts

@@ -30,7 +30,6 @@ from dialer_campaign.models import Campaign, Phonebook, Contact, CampaignSubscri
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_gateway.models import Gateway
 from voip_app.models import VoipApp
-#from common.custom_xml_emitter import *
 
 from tastypie import fields
 from dialer_campaign.function_def import user_attached_with_dialer_settings, \

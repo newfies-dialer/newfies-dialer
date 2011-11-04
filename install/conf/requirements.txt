@@ -1,4 +1,6 @@
 docutils
+importlib
+ordereddict
 simplejson==2.1.3
 sphinx
 redis

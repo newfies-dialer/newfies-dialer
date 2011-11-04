@@ -113,7 +113,8 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'sentry.client.middleware.SentryResponseErrorIdMiddleware',
+    'raven.contrib.django.middleware.SentryResponseErrorIdMiddleware',
+    'raven.contrib.django.middleware.Sentry404CatchMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -122,7 +123,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'pagination.middleware.PaginationMiddleware',
     'common.filter_persist_middleware.FilterPersistMiddleware',
-    'sentry.client.middleware.Sentry404CatchMiddleware',
 )
 
 
@@ -179,7 +179,7 @@ INSTALLED_APPS = (
     'notification',
     'voip_app',
     'sentry',
-    'sentry.client',
+    'raven.contrib.django',
     'admin_tools_stats',
     'chart_tools',
     'south',
@@ -355,7 +355,7 @@ LOGGING = {
         },  
         'sentry': {
             'level': 'DEBUG',
-            'class': 'sentry.client.handlers.SentryHandler',
+            'class': 'raven.contrib.django.handlers.SentryHandler',
             'formatter': 'verbose'
         },
         'console': {

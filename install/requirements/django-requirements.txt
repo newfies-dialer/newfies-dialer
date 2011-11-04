@@ -1,6 +1,5 @@
 django-celery
 django-kombu
-django-extensions
 django-haystack
 django-picklefield
 django-jsonfield==0.6

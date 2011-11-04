@@ -31,7 +31,7 @@ BeautifulSoup==3.2.0
 Pygments
 python-memcached
 django-memcache-status
-django-sentry==1.13
+django-sentry==1.13.5
 hg+https://bitbucket.org/izi/django-admin-tools
 git+git://github.com/jtauber/django-notification.git
 git+git://github.com/aerosol/identicon.git

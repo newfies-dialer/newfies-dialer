@@ -352,7 +352,7 @@ LOGGING = {
             'maxBytes': 1024*1024*5, # 5 MB
             'backupCount': 20,
             'formatter':'verbose',
-        },  
+        },
         'sentry': {
             'level': 'DEBUG',
             'class': 'raven.contrib.django.handlers.SentryHandler',

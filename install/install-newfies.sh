@@ -287,8 +287,8 @@ func_install_frontend(){
     fi
     
     #Fix permission on python-egg
-    mkdir $INSTALL_DIR/.python-eggs
-    chmod www-data:www-data $INSTALL_DIR/.python-eggs
+    mkdir /usr/share/newfies/.python-eggs
+    chown www-data:www-data /usr/share/newfies/.python-eggs
 
     
     cd $INSTALL_DIR/

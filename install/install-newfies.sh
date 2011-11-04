@@ -210,7 +210,6 @@ func_install_frontend(){
     
     #get Newfies
     echo "Install Newfies..."
-    mkdir /usr/share/
     cd /usr/src/
     rm -rf newfies-dialer
     mkdir /var/log/newfies
@@ -292,6 +291,11 @@ func_install_frontend(){
     mkdir $INSTALL_DIR/.python-eggs
     chmod 777 $INSTALL_DIR/.python-eggs
 
+    
+    cd $INSTALL_DIR/
+    #following line is for SQLite
+    mkdir database
+
     case $DIST in
         'DEBIAN')
             chown -R www-data.www-data $INSTALL_DIR/database/
@@ -307,10 +311,6 @@ func_install_frontend(){
         ;;
     esac
 
-
-    cd $INSTALL_DIR/
-    #following line is for SQLite
-    mkdir database
     python manage.py syncdb --noinput
     python manage.py migrate
     echo ""
@@ -563,7 +563,7 @@ done
 
 # Clean the system on MySQL
 #==========================
-# deactivate ; rm -rf /usr/share/newfies ; rm -rf /var/log/newfies ; rmvirtualenv newfies-dialer ; rm -rf /etc/init.d/newfies-celer* ; mysqladmin drop newfies --password=password
+# deactivate ; rm -rf /usr/share/newfies ; rm -rf /var/log/newfies ; rmvirtualenv newfies-dialer ; rm -rf /etc/init.d/newfies-celer* ; rm -rf /etc/default/newfies-celeryd ; rm /etc/apache2/sites-enabled/newfies.conf ; mysqladmin drop newfies --password=password
 
 # Create Database on MySQL
 #=========================

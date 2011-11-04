@@ -11,13 +11,13 @@ django-haystack
 mimeparse
 django
 MySQL-python==1.2.3
-Werkzeug==0.6.2
-amqplib==0.6.1
-anyjson==0.3
+Werkzeug
+amqplib==1.0.2
+anyjson==0.3.1
 django-jsonfield==0.6
 django-pagination==1.0.7
 django-picklefield
-django-urlauth==0.1.1
+django-urlauth==0.1.8
 django-uuidfield
 django-test-extensions
 django-chart-tools

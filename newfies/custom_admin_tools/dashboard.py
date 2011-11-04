@@ -93,7 +93,6 @@ class CustomIndexDashboard(Dashboard):
             collapsible=True,
             children=[
                 [_('Go to Newfies'), 'http://www.newfies-dialer.org/'],
-                [_('Go to FreedomFone'), 'http://www.freedomfone.org/'],
                 [_('Change password'),
                  reverse('%s:password_change' % site_name)],
                 [_('Log out'), reverse('%s:logout' % site_name)],

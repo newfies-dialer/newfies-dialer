@@ -563,7 +563,7 @@ done
 
 # Clean the system on MySQL
 #==========================
-# deactivate ; rm -rf /usr/share/newfies ; rm -rf /var/log/newfies ; rmvirtualenv newfies-dialer ; mysqladmin drop newfies --password=password
+# deactivate ; rm -rf /usr/share/newfies ; rm -rf /var/log/newfies ; rmvirtualenv newfies-dialer ; rm -rf /etc/init.d/newfies-celer* ; mysqladmin drop newfies --password=password
 
 # Create Database on MySQL
 #=========================

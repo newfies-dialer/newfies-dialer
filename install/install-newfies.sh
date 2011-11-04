@@ -126,8 +126,8 @@ func_install_frontend(){
 
     echo ""
     echo ""
-    echo "This script will install Web Newfies on your server"
-    echo ""
+    echo "This script will install Newfies-Dialer on your server"
+	echo "======================================================"
     echo ""
     branch=STABLE
     echo "Which version do you want to install ? DEVEL or STABLE [DEVEL/STABLE] (default:STABLE)"

@@ -559,3 +559,15 @@ while [ $ExitFinish -eq 0 ]; do
 	esac	
 	
 done
+
+
+# Clean the system on MySQL
+#==========================
+# deactivate ; rm -rf /usr/share/newfies ; rm -rf /var/log/newfies ; rmvirtualenv newfies-dialer ; mysqladmin drop newfies --password=password
+
+# Create Database on MySQL
+#=========================
+# mysqladmin drop newfies --password=password
+# mysqladmin create newfies --password=password
+
+

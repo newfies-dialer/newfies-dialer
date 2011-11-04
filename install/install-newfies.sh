@@ -239,7 +239,12 @@ func_install_frontend(){
 
     #Install Newfies depencencies
     easy_install -U distribute
-    pip install -r /usr/src/newfies-dialer/install/conf/requirements.txt
+    #For python 2.6 only
+    pip install importlib
+    echo "Install basic requirements..."
+    pip install -r /usr/src/newfies-dialer/install/requirements/basic-requirements.txt    
+    echo "Install Django requirements..."
+    pip install -r /usr/src/newfies-dialer/install/requirements/django-requirements.txt
     pip install plivohelper
     
     # copy settings_local.py into newfies dir

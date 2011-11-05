@@ -42,7 +42,7 @@ To get started with Newfies-Dialer you must have the following installed:
 - wsgiref >= 0.1.2 (Validation support for WSGI )
 - switch2bill-common (Common library that are reused by Star2Billing)
 - simu-prefix-country (Provide Prefix and Country information)
-- django-piston (Django application that create APIs for your sites.)
+- django-tastypie (Creating delicious APIs for Django)
 - BeautifulSoup >= 3.2.0 (HTML parser optimized for screen-scraping)
 - Pygments >= 1.4 (A generic syntax highlighter)
 - django-admin-tools (Collection of tools for the django administration)

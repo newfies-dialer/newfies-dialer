@@ -4,7 +4,7 @@
     <param name="url" value="NEWFIES_API_STORE_CDR"/>
 
     <!-- optional: credentials to send to web server -->
-    <!--    <param name="cred" value="user:pass"/> -->
+    <!-- <param name="cred" value="APIUSERNAME:APIPASSWORD"/> -->
 
     <!-- the total number of retries (not counting the first 'try') to post to webserver incase of failure -->
     <!-- <param name="retries" value="2"/> -->
@@ -18,7 +18,7 @@
 
     <!-- optional: if not present we do log the b leg -->
     <!-- true or false if we should create a cdr for the b leg of a call-->
-    <param name="log-b-leg" value="false"/>
+    <param name="log-b-leg" value="true"/>
     
     <!-- optional: if not present, all filenames are the uuid of the call -->
     <!-- true or false if a leg files are prefixed "a_" -->
@@ -32,7 +32,7 @@
     
     <!-- optional: full path to the error log dir for failed web posts if not specified its the same as log-dir -->
     <!-- either an absolute path, a relative path assuming ${prefix}/logs or a blank or omitted value will default to ${prefix}/logs/xml_cdr -->
-    <!-- <param name="err-log-dir" value="/tmp"/> -->
+    <param name="err-log-dir" value="err_xml_cdr"/>
 
     <!-- which auhtentification scheme to use. Supported values are: basic, digest, NTLM, GSS-NEGOTIATE or "any" for automatic detection -->
     <!--<param name="auth-scheme" value="basic"/>--> 

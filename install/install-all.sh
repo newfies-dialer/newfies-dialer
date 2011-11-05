@@ -14,10 +14,10 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
-# To download this script direct to your server type
-#wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-all.sh
 #
+# To download this script to your server,
+#
+# cd /usr/src/ ; rm install-all.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-all.sh ; chmod +x install-all.sh ; ./install-all.sh
 #
 #------------------------------------------------------------------------------------
 
@@ -57,7 +57,7 @@ cd /usr/src/
 
 #Download Scripts
 wget https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-freeswitch.sh
-wget https://raw.github.com/plivo/plivo/master/scripts/plivo_install_beta.sh
+wget https://raw.github.com/plivo/plivo/master/scripts/plivo_install.sh
 wget https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-newfies.sh
 
 #Run the Install Scripts

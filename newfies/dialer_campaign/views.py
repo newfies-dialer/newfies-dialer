@@ -809,7 +809,10 @@ def common_send_notification(request, status, recipient=None):
         recipient = request.user
         sender = User.objects.get(is_superuser=1, username=recipient)
     else:
-        sender = request.user
+        if request.user.is_anonymous():
+            sender = User.objects.get(is_superuser=1, username=recipient)
+        else:
+            sender = request.user
 
     if notification:
         note_label = notification.NoticeType.objects.get(default=status)
@@ -1732,7 +1735,7 @@ def campaign_add(request):
           via CampaignForm & get redirected to campaign list
     """
     # If dialer setting is not attached with user, redirect to campaign list
-    if user_attached_with_dilaer_settings(request):
+    if user_attached_with_dialer_settings(request):
         request.session['error_msg'] = \
         _("In order to add a campaign, you need to have your settings configured properly, please contact the admin.")
         return HttpResponseRedirect("/campaign/")
@@ -1822,7 +1825,7 @@ def campaign_change(request, object_id):
           via CampaignForm & get redirected to the campaign list
     """
     # If dialer setting is not attached with user, redirect to campaign list
-    if user_attached_with_dilaer_settings(request):
+    if user_attached_with_dialer_settings(request):
         return HttpResponseRedirect("/campaign/")
 
     campaign = Campaign.objects.get(pk=object_id)

@@ -28,6 +28,9 @@ DATABASES = {
                                          # Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default.
                                          # Not used with sqlite3.
+        'OPTIONS': {
+           'init_command': 'SET storage_engine=INNODB',
+        }
     }
 }
 
@@ -46,20 +49,16 @@ REDIS_DB = 0
 #REDIS_CONNECT_RETRY = True
 
 
-#PISTON
-#======
-PISTON_DISPLAY_ERRORS = True
-PISTON_EMAIL_ERRORS = "root@localhost.localdomain"
-#PISTON_IGNORE_DUPE_MODELS = True
-
+#EMAIL BACKEND
+#=============
 # Use only in Debug mode. Not in production
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 #PLIVO
 #=====
-PLIVO_DEFAULT_ANSWER_URL='http://SERVER_IP_PORT/api/dialer_cdr/answercall/'
-PLIVO_DEFAULT_HANGUP_URL='http://SERVER_IP_PORT/api/dialer_cdr/hangupcall/'
+PLIVO_DEFAULT_ANSWER_URL = 'http://127.0.0.1:8000/api/v1/answercall/'
+PLIVO_DEFAULT_HANGUP_URL = 'http://127.0.0.1:8000/api/v1/hangupcall/'
 
 # ADD 'dummy','plivo','twilio'
 NEWFIES_DIALER_ENGINE = 'dummy'

@@ -11,6 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from admin_tools.dashboard import modules, Dashboard, AppIndexDashboard
 from admin_tools.utils import get_admin_site_name
+from admin_tools_stats.modules import DashboardCharts, get_active_graph
 
 
 class HistoryDashboardModule(modules.LinkList):
@@ -78,10 +79,10 @@ class CustomIndexDashboard(Dashboard):
         ))
 
         # append an app list module for "Country_prefix"
-        self.children.append(modules.AppList(
-            _('DialCode'),
-            models=('prefix_country.*', ),
-        ))
+        #self.children.append(modules.AppList(
+        #    _('DialCode'),
+        #    models=('prefix_country.*', ),
+        #))
 
         # append a link list module for "quick links"
         self.children.append(modules.LinkList(
@@ -91,17 +92,32 @@ class CustomIndexDashboard(Dashboard):
             deletable=True,
             collapsible=True,
             children=[
-                [_('Go to Newfies'), 'http://www.newfies-dialer.org/'],
-                [_('Go to FreedomFone'), 'http://www.freedomfone.org/'],
+                [_('Go to Newfies-Dialer'), 'http://www.newfies-dialer.org/'],
                 [_('Change password'),
                  reverse('%s:password_change' % site_name)],
                 [_('Log out'), reverse('%s:logout' % site_name)],
             ],
         ))
+        
+        # append an app list module for "Country_prefix"
+        self.children.append(modules.AppList(
+            _('Dashboard Stats Settings'),
+            models=('admin_dashboard_stats.*', ),
+        ))
+
+        # Copy following code into your custom dashboard
+        graph_list = get_active_graph()
+        for i in graph_list:
+            kwargs = {}
+            kwargs['chart_size'] = "260x100"
+            kwargs['graph_key'] = i.graph_key
+            if request.POST.get('select_box_'+i.graph_key):
+                kwargs['select_box_'+i.graph_key] = request.POST['select_box_'+i.graph_key]
+
+            self.children.append(DashboardCharts(**kwargs))
 
         # append a recent actions module
         #self.children.append(modules.RecentActions(_('Recent Actions'), 5))
-
 
         # append a feed module
         #self.children.append(modules.Feed(

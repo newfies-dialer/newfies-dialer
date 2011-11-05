@@ -1,0 +1,16 @@
+TODO
+====
+
+1) dialer_campaign/api/resources.py
+
+    Need to review ``get_object_list()`` method of ``CampaignSubscriberResource``
+    (need to work on return result)
+
+2) dialer_cdr/api/resources.py
+
+    Need to review ``obj_create()`` method of ``AnswercallResource``
+    (need to work on return result)
+
+3) dialer_cdr/api/handlers.py
+
+    Need to implement ``cdrHandler`` & ``testcallHandler`` with tastypie (in dialer_cdr/api/resources.py)

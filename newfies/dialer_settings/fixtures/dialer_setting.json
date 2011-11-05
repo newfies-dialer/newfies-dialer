@@ -1,0 +1,19 @@
+[
+   {
+      "pk":1,
+      "model":"dialer_settings.dialersetting",
+      "fields":{
+         "max_number_campaign":10,
+         "updated_date":"2011-10-11 01:33:43",
+         "name":"default_dialer_setting",
+         "max_number_subscriber_campaign":10000,
+         "callmaxduration":1800,
+         "whitelist":"",
+         "blacklist":"",
+         "maxretry":3,
+         "created_date":"2011-10-11 01:33:43",
+         "max_frequency":100,
+         "max_calltimeout":45
+      }
+   }
+]

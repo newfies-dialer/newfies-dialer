@@ -10,8 +10,25 @@ from dialer_cdr.urls import urlpatterns as urlpatterns_dialer_cdr
 from user_profile.urls import urlpatterns as urlpatterns_user_profile
 from voip_app.urls import urlpatterns as urlpatterns_voip_app
 
-#js_info_dict = { 'domain': 'djangojs', 'packages': ('newfies',), }
-#, js_info_dict
+from tastypie.api import Api
+from api.resources import *
+
+# tastypie api
+tastypie_api = Api(api_name='v1')
+
+tastypie_api.register(UserResource())
+tastypie_api.register(GatewayResource())
+tastypie_api.register(VoipAppResource())
+tastypie_api.register(CampaignResource())
+tastypie_api.register(PhonebookResource())
+tastypie_api.register(BulkContactResource())
+tastypie_api.register(CampaignDeleteCascadeResource())
+tastypie_api.register(CampaignSubscriberResource())
+tastypie_api.register(CallrequestResource())
+tastypie_api.register(AnswercallResource())
+tastypie_api.register(HangupcallResource())
+tastypie_api.register(CdrResource())
+
 
 urlpatterns = patterns('',
     # redirect
@@ -39,11 +56,9 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
-
-    (r'^api/dialer_cdr/', include('dialer_cdr.api.urls'), ),
-
-    (r'^api/dialer_campaign/', include('dialer_campaign.api.urls')),
-
+    
+    (r'^api/', include(tastypie_api.urls)),
+    
     (r'^i18n/', include('django.conf.urls.i18n')),
     (r'^jsi18n/(?P<packages>\S+?)/$', 'django.views.i18n.javascript_catalog'),
 
@@ -55,6 +70,8 @@ urlpatterns = patterns('',
 
     (r'^static/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.STATIC_ROOT}),
+        
+    (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': 'static/newfies/images/favicon.png'}),
     
     (r'^sentry/', include('sentry.web.urls')),
 )

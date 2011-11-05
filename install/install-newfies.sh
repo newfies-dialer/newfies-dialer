@@ -15,14 +15,17 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-# To download this script direct to your server type
-#wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-newfies.sh
+# To download this script to your server,
+#
+# >> Install with Master script :
+# cd /usr/src/ ; rm install-newfies.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-newfies.sh ; chmod +x install-newfies.sh ; ./install-newfies.sh
+#
+# >> Install with develop script :
+# cd /usr/src/ ; rm install-newfies.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/develop/install/install-newfies.sh ; chmod +x install-newfies.sh ; ./install-newfies.sh
 #
 #TODO:
 # - Memcached
 
-#Variables
-VERSION=master
 #Install mode can me either CLONE or DOWNLOAD
 INSTALL_MODE='CLONE'
 DATETIME=$(date +"%Y%m%d%H%M%S")
@@ -35,7 +38,7 @@ MYHOST=
 MYHOSTPORT=
 #Freeswitch update vars
 FS_INSTALLED_PATH=/usr/local/freeswitch
-NEWFIES_CDR_API='api\/dialer_cdr\/store_cdr\/'
+NEWFIES_CDR_API='api\/v1\/store_cdr\/'
 
 CELERYD_USER="celery"
 CELERYD_GROUP="celery"
@@ -123,9 +126,12 @@ func_install_frontend(){
 
     echo ""
     echo ""
-    echo "This will install Web Newfies on your server"
-    echo "Press Enter to continue or CTRL-C to exit"
-    read TEMP
+    echo "This script will install Newfies-Dialer on your server"
+	echo "======================================================"
+    echo ""
+    branch=STABLE
+    echo "Which version do you want to install ? DEVEL or STABLE [DEVEL/STABLE] (default:STABLE)"
+    read branch
 
     db_backend=MySQL
     echo "Do you want to install Newfies with SQLite or MySQL? [SQLite/MySQL] (default:MySQL)"
@@ -141,6 +147,9 @@ func_install_frontend(){
             apt-get -y install python-setuptools python-dev build-essential 
             apt-get -y install libapache2-mod-python libapache2-mod-wsgi
             easy_install pip
+            #|FIXME: Strangely South need to be installed outside the Virtualenv
+            pip install -e hg+http://bitbucket.org/andrewgodwin/south/@ecaafda23e600e510e252734d67bf8f9f2362dc9#egg=South-dev
+
             #ln -s /usr/local/bin/pip /usr/bin/pip
             
             #Install Extra dependencies on New OS        
@@ -190,11 +199,7 @@ func_install_frontend(){
 
         mkdir /tmp/old-newfies-dialer_$DATETIME
         mv $INSTALL_DIR /tmp/old-newfies-dialer_$DATETIME
-
-        mysqldump -u $MYSQLUSER --password=$MYSQLPASSWORD $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql
-        
         echo "Files from $INSTALL_DIR has been moved to /tmp/old-newfies-dialer_$DATETIME"
-        echo "Mysql Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql"
         echo "Press Enter to continue"
         read TEMP
     fi
@@ -204,7 +209,6 @@ func_install_frontend(){
     
     #get Newfies
     echo "Install Newfies..."
-    mkdir /usr/share/
     cd /usr/src/
     rm -rf newfies-dialer
     mkdir /var/log/newfies
@@ -212,15 +216,22 @@ func_install_frontend(){
     case $INSTALL_MODE in
         'CLONE')
             git clone git://github.com/Star2Billing/newfies-dialer.git
+            
+            #Install Develop / Master
+            if echo $branch | grep -i "^DEVEL" > /dev/null ; then
+                cd newfies-dialer
+                git checkout -b develop --track origin/develop
+            fi
         ;;
-        'DOWNLOAD')
-            wget --no-check-certificate https://github.com/Star2Billing/newfies-dialer/tarball/$VERSION
-            mv master Star2Billing-newfies-dialer-$VERSION.tar.gz
-            tar xvzf Star2Billing-newfies-dialer-*.tar.gz
-            rm -rf Star2Billing-newfies-*.tar.gz
-            mv newfies-dialer newfies-dialer_$DATETIME
-            mv Star2Billing-newfies-* newfies-dialer        
-        ;;
+        # 'DOWNLOAD')
+        #    VERSION=master
+        #    wget --no-check-certificate https://github.com/Star2Billing/newfies-dialer/tarball/$VERSION
+        #    mv master Star2Billing-newfies-dialer-$VERSION.tar.gz
+        #    tar xvzf Star2Billing-newfies-dialer-*.tar.gz
+        #    rm -rf Star2Billing-newfies-*.tar.gz
+        #    mv newfies-dialer newfies-dialer_$DATETIME
+        #    mv Star2Billing-newfies-* newfies-dialer        
+        #;;
     esac
 
     # Copy files
@@ -228,15 +239,21 @@ func_install_frontend(){
 
     #Install Newfies depencencies
     easy_install -U distribute
-    pip install -r /usr/src/newfies-dialer/install/conf/requirements.txt
+    #For python 2.6 only
+    pip install importlib
+    echo "Install basic requirements..."
+    for line in $(cat /usr/src/newfies-dialer/install/requirements/basic-requirements.txt)
+    do
+        pip install $line
+    done
+    echo "Install Django requirements..."
+    for line in $(cat /usr/src/newfies-dialer/install/requirements/django-requirements.txt)
+    do
+        pip install $line
+    done
     pip install plivohelper
     
-    #Nasty hack to make piston compatible with django-admin-tools
-    #https://bitbucket.org/jespern/django-piston/issue/117/register-models-with-admin-in-an-adminpy    
-    sed -i "s/admin.site.register/#admin.site.register/" /usr/share/virtualenvs/newfies-dialer/lib/python2.6/site-packages/piston/models.py
-    #check on CentOS if virtualenv works
-    #sed -i "s/admin.site.register/#admin.site.register/" /usr/lib/python2.6/site-packages/django_piston-0.2.2-py2.6.egg/piston/models.py
-
+    
     # copy settings_local.py into newfies dir
     cp /usr/src/newfies-dialer/install/conf/settings_local.py $INSTALL_DIR
 
@@ -256,6 +273,13 @@ func_install_frontend(){
         # Nothing to do
         echo ""
     else
+        #Backup Mysql Database
+        echo "Run backup with mysqldump..."
+        mysqldump -u $MYSQLUSER --password=$MYSQLPASSWORD $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql
+        echo "Mysql Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql"
+        echo "Press Enter to continue"
+        read TEMP
+            
         # Setup settings_local.py for MySQL
         sed -i "s/'django.db.backends.sqlite3'/'django.db.backends.mysql'/"  $INSTALL_DIR/settings_local.py
         sed -i "s/.*'NAME'/       'NAME': '$DATABASENAME',#/"  $INSTALL_DIR/settings_local.py
@@ -273,18 +297,47 @@ func_install_frontend(){
         echo "mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e 'CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;'"
         mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e "CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;"
     fi
+    
+    #Fix permission on python-egg
+    mkdir /usr/share/newfies/.python-eggs
+    chown www-data:www-data /usr/share/newfies/.python-eggs
 
-
+    
     cd $INSTALL_DIR/
     #following line is for SQLite
     mkdir database
+
+    case $DIST in
+        'DEBIAN')
+            chown -R www-data.www-data $INSTALL_DIR/database/
+            touch /var/log/newfies/newfies-django.log
+            chown www-data:www-data /var/log/newfies/newfies-django.log
+            touch /var/log/newfies/newfies-django-db.log
+            chown www-data:www-data /var/log/newfies/newfies-django-db.log
+            touch /var/log/newfies/err-apache-newfies.log
+            chown www-data:www-data /var/log/newfies/err-apache-newfies.log
+        ;;
+        'CENTOS')
+            echo "Check what to do for CentOS..."
+        ;;
+    esac
+
     python manage.py syncdb --noinput
-    #python manage.py migrate
+    python manage.py migrate
     echo ""
     echo ""
     echo "Create a super admin user..."
     python manage.py createsuperuser
-
+    
+    #echo ""
+    #echo "Create a super user for API, use a different username..."
+    #python manage.py createsuperuser
+    #echo ""
+    #echo "Enter the Username you enteded for the API"
+    #read APIUSERNAME
+    #echo ""
+    #echo "Enter the Password for the API "
+    #read APIPASSWORD
 
     #Collect static files from apps and other locations in a single location.
     python manage.py collectstatic -l --noinput
@@ -322,18 +375,9 @@ func_install_frontend(){
     ' > $APACHE_CONF_DIR/newfies.conf
     #correct the above file
     sed -i "s/@/'/g"  $APACHE_CONF_DIR/newfies.conf
-
-    #Fix permission on python-egg
-    mkdir $INSTALL_DIR/.python-eggs
-    chmod 777 $INSTALL_DIR/.python-eggs
-
+    
     case $DIST in
         'DEBIAN')
-            chown -R www-data.www-data $INSTALL_DIR/database/
-            touch /var/log/newfies/newfies-django.log
-            chown www-data:www-data /var/log/newfies/newfies-django.log
-            touch /var/log/newfies/err-apache-newfies.log
-            chown www-data:www-data /var/log/newfies/err-apache-newfies.log
             service apache2 restart
         ;;
         'CENTOS')
@@ -348,6 +392,10 @@ func_install_frontend(){
     CDR_API_URL="http:\/\/$IPADDR:9080\/$NEWFIES_CDR_API"
     cd "$FS_INSTALLED_PATH/conf/autoload_configs/"
     sed -i "s/NEWFIES_API_STORE_CDR/$CDR_API_URL/g" xml_cdr.conf.xml
+    
+    #Update API username and password
+    #sed -i "s/APIUSERNAME/$APIUSERNAME/g" xml_cdr.conf.xml
+    #sed -i "s/APIPASSWORD/$APIPASSWORD/g" xml_cdr.conf.xml
     
     #Update for Plivo URL & Authorize local IP
     sed -i "s/SERVER_IP_PORT/$IPADDR:9080/g" $INSTALL_DIR/settings_local.py
@@ -522,3 +570,15 @@ while [ $ExitFinish -eq 0 ]; do
 	esac	
 	
 done
+
+
+# Clean the system on MySQL
+#==========================
+# deactivate ; rm -rf /usr/share/newfies ; rm -rf /var/log/newfies ; rmvirtualenv newfies-dialer ; rm -rf /etc/init.d/newfies-celer* ; rm -rf /etc/default/newfies-celeryd ; rm /etc/apache2/sites-enabled/newfies.conf ; mysqladmin drop newfies --password=password
+
+# Create Database on MySQL
+#=========================
+# mysqladmin drop newfies --password=password
+# mysqladmin create newfies --password=password
+
+

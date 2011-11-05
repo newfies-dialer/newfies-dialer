@@ -59,7 +59,7 @@ case $DIST in
     'DEBIAN')
         apt-get -y update
         apt-get -y install autoconf automake autotools-dev binutils bison build-essential cpp curl flex g++ gcc git-core libaudiofile-dev libc6-dev libdb-dev libexpat1 libgdbm-dev libgnutls-dev libmcrypt-dev libncurses5-dev libnewt-dev libpcre3 libpopt-dev libsctp-dev libsqlite3-dev libtiff4 libtiff4-dev libtool libx11-dev libxml2 libxml2-dev lksctp-tools lynx m4 make mcrypt ncftp nmap openssl sox sqlite3 ssl-cert ssl-cert unixodbc-dev unzip zip zlib1g-dev zlib1g-dev
-        
+        apt-get -y install libssl-dev pkg-config
         apt-get -y install libvorbis0a libogg0 libogg-dev libvorbis-dev
         ;;
     'CENTOS')
@@ -146,6 +146,8 @@ cd $FS_INSTALLED_PATH/conf/autoload_configs/
 # Place Newfies XML CDR conf in FreeSWITCH
 [ -f xml_cdr.conf.xml ] && mv xml_cdr.conf.xml xml_cdr.conf.xml.bak
 wget --no-check-certificate $FS_CONF_PATH/xml_cdr.conf.xml -O xml_cdr.conf.xml
+#create dir to store send error of CDR
+mkdir /usr/local/freeswitch/log/err_xml_cdr/
 
 #Return to current path
 cd $CURRENT_PATH

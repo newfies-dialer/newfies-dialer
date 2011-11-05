@@ -120,7 +120,7 @@ def month_year_range():
     return m_list
 
 
-def user_attached_with_dilaer_settings(request):
+def user_attached_with_dialer_settings(request):
     """Check user is attacehd with dialer setting or not"""
     try:
         user_obj = UserProfile.objects.get(user=request.user,

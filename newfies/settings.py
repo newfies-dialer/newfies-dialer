@@ -17,16 +17,17 @@ APPLICATION_DIR = os.path.dirname(globals()['__file__'])
 
 DATABASES = {
     'default': {
-        # Add 'postgresql_psycopg2','postgresql','mysql','sqlite3','oracle'
+        # 'postgresql_psycopg2','postgresql','mysql','sqlite3','oracle'
         'ENGINE': 'django.db.backends.sqlite3',
-        # Or path to database file if using sqlite3.
+        # Database name or path to database file if using sqlite3.
         'NAME': APPLICATION_DIR + '/database/test.db',
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost.
-                                         # Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default.
-                                         # Not used with sqlite3.
+        'HOST': '',                      # Not used with sqlite3.
+        'PORT': '',                      # Not used with sqlite3.
+        'OPTIONS': {
+           'init_command': 'SET storage_engine=INNODB',
+        }
     }
 }
 
@@ -112,7 +113,8 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'sentry.client.middleware.SentryResponseErrorIdMiddleware',
+    'raven.contrib.django.middleware.SentryResponseErrorIdMiddleware',
+    'raven.contrib.django.middleware.Sentry404CatchMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -120,9 +122,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'pagination.middleware.PaginationMiddleware',
-    #'debug_toolbar.middleware.DebugToolbarMiddleware',
     'common.filter_persist_middleware.FilterPersistMiddleware',
-    #'sentry.client.middleware.Sentry404CatchMiddleware',
 )
 
 
@@ -133,6 +133,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.media",
     "django.core.context_processors.static",
     "django.contrib.messages.context_processors.messages",
+    #needed by Sentry
     "django.core.context_processors.request",
 )
 
@@ -167,25 +168,53 @@ INSTALLED_APPS = (
     'dialer_gateway',
     'dialer_campaign',
     'dialer_cdr',
-    #'dialer_cdr.api',
     'dialer_settings',
     'user_profile',
     'common',
     'djcelery',
-    'django_extensions',
     'dateutil',
     'pagination',
     'memcache_status',
     'notification',
     'voip_app',
     'sentry',
-    'sentry.client',
-    #'debug_toolbar',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
-    'dilla',
-    #'test_extensions',
+    'raven.contrib.django',
+    'admin_tools_stats',
+    'chart_tools',
+    'south',
+    'tastypie',
 )
+
+# Debug Toolbar
+try:
+    import debug_toolbar
+except ImportError:
+    pass
+else:
+    INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar',)
+    MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + \
+        ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+    DEBUG_TOOLBAR_CONFIG = {
+        'INTERCEPT_REDIRECTS': False,
+    }
+
+# Django extensions
+try:
+    import django_extensions
+except ImportError:
+    pass
+else:
+    INSTALLED_APPS = INSTALLED_APPS + ('django_extensions',)
+
+# Dilla
+try:
+    import django_dilla
+except ImportError:
+    pass
+else:
+    INSTALLED_APPS = INSTALLED_APPS + ('dilla',)
+
+
 AUTH_PROFILE_MODULE = "user_profile.UserProfile"
 LOGIN_URL = '/pleaselog/'
 
@@ -268,29 +297,39 @@ ADMIN_TOOLS_INDEX_DASHBOARD =\
 ADMIN_TOOLS_APP_INDEX_DASHBOARD =\
 'custom_admin_tools.dashboard.CustomAppIndexDashboard'
 
-#PISTON
-#======
-PISTON_DISPLAY_ERRORS = True
-PISTON_EMAIL_ERRORS = "root@localhost.localdomain"
-#PISTON_IGNORE_DUPE_MODELS = True
 
+#EMAIL BACKEND
+#=============
 # Use only in Debug mode. Not in production
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
 #PLIVO
 #=====
-PLIVO_DEFAULT_ANSWER_URL = 'http://127.0.0.1:8000/api/dialer_cdr/answercall/'
-PLIVO_DEFAULT_HANGUP_URL = 'http://127.0.0.1:8000/api/dialer_cdr/hangupcall/'
+PLIVO_DEFAULT_ANSWER_URL = 'http://127.0.0.1:8000/api/v1/answercall/'
+PLIVO_DEFAULT_HANGUP_URL = 'http://127.0.0.1:8000/api/v1/hangupcall/'
 
 # ADD 'dummy','plivo','twilio'
 NEWFIES_DIALER_ENGINE = 'plivo'
 
 API_ALLOWED_IP = ['127.0.0.1', 'localhost']
 
+
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
+    'root': {
+        'level': 'DEBUG',
+        'handlers': ['sentry'],
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(asctime)s %(levelname)s || %(message)s'
+        },
+    },
     'handlers': {
         # Include the default Django email handler for errors
         # This is what you'd get without configuring logging at all.
@@ -300,30 +339,56 @@ LOGGING = {
              # But the emails are plain text by default - HTML is nicer
             'include_html': True,
         },
-        # Log to a text file that can be rotated by logrotate
-        'logfile': {
-            'class': 'logging.handlers.WatchedFileHandler',
-            'filename': '/var/log/newfies/newfies-django.log'
+        'default': {
+            'class':'logging.handlers.WatchedFileHandler',
+            'filename': '/var/log/newfies/newfies-django.log',
+            'formatter':'verbose',
+        },  
+        'default-db': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': '/var/log/newfies/newfies-django-db.log',
+            'maxBytes': 1024*1024*5, # 5 MB
+            'backupCount': 20,
+            'formatter':'verbose',
+        },
+        'sentry': {
+            'level': 'DEBUG',
+            'class': 'raven.contrib.django.handlers.SentryHandler',
+            'formatter': 'verbose'
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
         },
     },
     'loggers': {
         # Again, default Django configuration to email unhandled exceptions
+        'django': {
+            'handlers':['default'],
+            'propagate': False,
+            'level':'DEBUG',
+        },
         'django.request': {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
             'propagate': True,
         },
-        # Might as well log any errors anywhere else in Django
-        'django': {
-            'handlers': ['logfile'],
-            'level': 'ERROR',
+        'sentry.errors': {
+            'level': 'DEBUG',
+            'handlers': ['sentry'],
             'propagate': False,
         },
-        # Your own app - this assumes all your logger names start with "myapp."
-        'myapp': {
-            'handlers': ['logfile'],
-            'level': 'WARNING',  # Or maybe INFO or DEBUG
-            'propogate': False
+        'newfies.filelog': {
+            'handlers': ['default',],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['default-db'],
+            'level': 'DEBUG',
+            'propagate': False,
         },
     },
 }

@@ -242,10 +242,17 @@ func_install_frontend(){
     #For python 2.6 only
     pip install importlib
     echo "Install basic requirements..."
-    pip install -r /usr/src/newfies-dialer/install/requirements/basic-requirements.txt
+    for line in $(cat /usr/src/newfies-dialer/install/requirements/basic-requirements.txt)
+    do
+        pip install $line
+    done
     echo "Install Django requirements..."
-    pip install -r /usr/src/newfies-dialer/install/requirements/django-requirements.txt
+    for line in $(cat /usr/src/newfies-dialer/install/requirements/django-requirements.txt)
+    do
+        pip install $line
+    done
     pip install plivohelper
+    
     
     # copy settings_local.py into newfies dir
     cp /usr/src/newfies-dialer/install/conf/settings_local.py $INSTALL_DIR

@@ -6,6 +6,8 @@ django-urlauth==0.1.8
 django-uuidfield
 django-chart-tools
 django-memcache-status
+django-picklefield
+django-jsonfield==0.6
 hg+https://bitbucket.org/izi/django-admin-tools
 git+git://github.com/jtauber/django-notification.git
 git+git://github.com/mcroydon/django-qsstats.git

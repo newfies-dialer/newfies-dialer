@@ -62,7 +62,7 @@ wget https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-n
 
 #Run the Install Scripts
 bash install-freeswitch.sh
-bash plivo_install_beta.sh /usr/share/plivo
+bash plivo_install.sh /usr/share/plivo
 bash install-newfies.sh
 
 

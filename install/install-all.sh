@@ -57,23 +57,14 @@ cd /usr/src/
 
 #Download Scripts
 wget https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-freeswitch.sh
-wget https://raw.github.com/plivo/plivo/master/scripts/plivo_install.sh
+wget https://raw.github.com/plivo/plivo/master/scripts/plivo_install_beta.sh
 wget https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-newfies.sh
 
 #Run the Install Scripts
 bash install-freeswitch.sh
-bash plivo_install.sh /usr/share/plivo
+bash plivo_install_beta.sh /usr/share/plivo
 bash install-newfies.sh
 
 
-case $DIST in
-    'DEBIAN')
-        #Start Plivo after reboot
-        ln -s /usr/share/plivo/bin/plivo /etc/rc2.d/S99plivo
-    ;;
-    'CENTOS')
-        #Start Plivo after reboot
-        #TODO : Verify start for CentOS
-        ln -s /usr/share/plivo/bin/plivo /etc/rc3.d/S99plivo
-    ;;
-esac
+
+

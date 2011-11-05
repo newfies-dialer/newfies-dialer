@@ -54,6 +54,12 @@ class CustomIndexDashboard(Dashboard):
             _('Administration'),
             models=('django.contrib.*', 'user_profile.*', ),
         ))
+        
+        # append an app list module for "Dialer"
+        self.children.append(modules.AppList(
+            _('Dashboard Stats'),
+            models=('admin_tools_stats.*', ),
+        ))
 
         self.children.append(modules.AppList(
             _('Settings'),
@@ -85,6 +91,8 @@ class CustomIndexDashboard(Dashboard):
         #))
 
         # append a link list module for "quick links"
+        """
+        #Quick link seems to broke the admin design if too many element
         self.children.append(modules.LinkList(
             _('Quick links'),
             layout='inline',
@@ -98,6 +106,7 @@ class CustomIndexDashboard(Dashboard):
                 [_('Log out'), reverse('%s:logout' % site_name)],
             ],
         ))
+        """
         
         # append an app list module for "Country_prefix"
         self.children.append(modules.AppList(

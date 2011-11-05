@@ -1,8 +1,6 @@
 django-celery
 django-kombu
 django-haystack
-django-picklefield
-django-jsonfield==0.6
 django-pagination==1.0.7
 django-urlauth==0.1.8
 django-uuidfield
@@ -10,8 +8,6 @@ django-chart-tools
 django-memcache-status
 hg+https://bitbucket.org/izi/django-admin-tools
 git+git://github.com/jtauber/django-notification.git
-git+git://github.com/aerosol/identicon.git
-git+git://github.com/aerosol/django-dilla.git
 git+git://github.com/mcroydon/django-qsstats.git
 #git+https://github.com/toastdriven/django-tastypie.git#egg=tastypie
 git+git://github.com/Star2Billing/switch2bill-common.git
@@ -20,4 +16,3 @@ git+git://github.com/areski/django-countries.git
 -e hg+http://bitbucket.org/andrewgodwin/south/#egg=south
 git+git://github.com/Star2Billing/django-admin-tools-stats.git
 git+git://github.com/toastdriven/django-tastypie.git
-django-sentry==1.13.5

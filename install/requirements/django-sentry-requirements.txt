@@ -1,0 +1,2 @@
+django-paging
+django-sentry==1.13.5

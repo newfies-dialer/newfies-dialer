@@ -172,7 +172,6 @@ INSTALLED_APPS = (
     'user_profile',
     'common',
     'djcelery',
-    'django_extensions',
     'dateutil',
     'pagination',
     'memcache_status',

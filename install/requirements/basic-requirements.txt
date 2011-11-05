@@ -7,7 +7,6 @@ pyparsing
 python-dateutil==1.5
 uuid==1.30
 wsgiref==0.1.2
-#sphinx
 redis
 celery
 kombu

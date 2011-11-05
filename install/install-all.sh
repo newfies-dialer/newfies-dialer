@@ -66,5 +66,10 @@ bash plivo_install_beta.sh /usr/share/plivo
 bash install-newfies.sh
 
 
+#To Start Plivo:
+/etc/init.d/plivo start
+
+#To Start Plivo cache server:
+/etc/init.d/plivocache start
 
 

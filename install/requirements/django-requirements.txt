@@ -16,3 +16,4 @@ git+git://github.com/areski/django-countries.git
 -e hg+http://bitbucket.org/andrewgodwin/south/#egg=south
 git+git://github.com/Star2Billing/django-admin-tools-stats.git
 git+git://github.com/toastdriven/django-tastypie.git
+django-sentry==1.13.5

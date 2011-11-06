@@ -211,7 +211,8 @@ func_install_frontend(){
     echo "Install Newfies..."
     cd /usr/src/
     rm -rf newfies-dialer
-    mkdir /var/log/newfies
+    mkdir /var/log/newfies    
+    mkdir /var/run/celery
 
     case $INSTALL_MODE in
         'CLONE')
@@ -454,7 +455,8 @@ func_install_backend() {
     # Add init-scripts
     cp /usr/src/newfies-dialer/install/celery-init/etc/default/newfies-celeryd /etc/default/
     cp /usr/src/newfies-dialer/install/celery-init/etc/init.d/newfies-celeryd /etc/init.d/
-    cp /usr/src/newfies-dialer/install/celery-init/etc/init.d/newfies-celerybeat /etc/init.d/
+    #celerybeat script disabled
+    #cp /usr/src/newfies-dialer/install/celery-init/etc/init.d/newfies-celerybeat /etc/init.d/
 
     # Configure init-scripts
     sed -i "s/CELERYD_USER='celery'/CELERYD_USER='$CELERYD_USER'/g"  /etc/default/newfies-celeryd
@@ -462,16 +464,19 @@ func_install_backend() {
 
     chmod +x /etc/default/newfies-celeryd
     chmod +x /etc/init.d/newfies-celeryd
-    chmod +x /etc/init.d/newfies-celerybeat
+    #celerybeat script disabled
+    #chmod +x /etc/init.d/newfies-celerybeat
 
     #Debug
     #python $INSTALL_DIR/manage.py celeryd -E -B -l debug
 
     /etc/init.d/newfies-celeryd restart
-    /etc/init.d/newfies-celerybeat restart
+    #celerybeat script disabled
+    #/etc/init.d/newfies-celerybeat restart
     
     cd /etc/init.d; update-rc.d newfies-celeryd defaults 99
-    cd /etc/init.d; update-rc.d newfies-celerybeat defaults 99
+    #celerybeat script disabled
+    #cd /etc/init.d; update-rc.d newfies-celerybeat defaults 99
 
     echo ""
     echo ""

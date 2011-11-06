@@ -1,4 +1,4 @@
-django-celery
+django-celery==2.4.0
 django-kombu
 django-haystack
 django-pagination==1.0.7

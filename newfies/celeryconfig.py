@@ -11,7 +11,7 @@ BROKER_PORT = 6379         # Maps to redis port.
 BROKER_VHOST = "0"         # Maps to database number.
 
 CELERY_RESULT_BACKEND = "redis"
-REDIS_HOST = "localhost"
-REDIS_PORT = 6379
-REDIS_DB = 0
-#REDIS_CONNECT_RETRY = True
+CELERY_REDIS_HOST = "localhost"
+CELERY_REDIS_PORT = 6379
+CELERY_REDIS_DB = 0
+#CELERY_REDIS_CONNECT_RETRY = True

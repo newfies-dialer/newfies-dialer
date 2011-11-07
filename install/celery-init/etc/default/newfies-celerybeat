@@ -13,7 +13,7 @@ CELERY_CONFIG_MODULE="celeryconfig"
 
 # %n will be replaced with the nodename.
 CELERYBEAT_LOG_FILE="/var/log/newfies/celerybeat-%n.log"
-CELERYBEAT_PID_FILE="/var/run/celery/%n.pid"
+CELERYBEAT_PID_FILE="/var/run/celerybeat-%n.pid"
 
 #TODO : review user / group
 # Workers should run as an unprivileged user.

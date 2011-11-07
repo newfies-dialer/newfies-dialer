@@ -9,6 +9,9 @@ CELERYD_CHDIR='/usr/share/newfies'
 # How to call "manage.py celeryd_multi"
 CELERYD_MULTI="/usr/share/virtualenvs/newfies-dialer/bin/python $CELERYD_CHDIR/manage.py celeryd_multi"
 
+# How to call "manage.py celeryctl"
+CELERYD_CTL="/usr/share/virtualenvs/newfies-dialer/bin/python $CELERYD_CHDIR/manage.py celeryctl"
+
 # Extra arguments to celeryd
 #CELERYD_OPTS="--time-limit=300 --concurrency=8"
 

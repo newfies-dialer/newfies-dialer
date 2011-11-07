@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Newfies-Dialer 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-07 13:52+0100\n"
+"POT-Creation-Date: 2011-11-07 14:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Areski Belaid <areski@gmail.com>\n"
 "Language-Team: Areski Belaid <areski@gmail.com>\n"
@@ -288,8 +288,8 @@ msgstr "Tipo"
 msgid ""
 "Your settings are not configured properly, Please contact the administrator."
 msgstr ""
-"Su configuración no está configurado correctamente, "
-"por favor póngase en contacto con el administrador."
+"Su configuración no está configurado correctamente, por favor póngase en "
+"contacto con el administrador."
 
 #: dialer_campaign/models.py:17 dialer_gateway/models.py:7
 #: voip_app/models.py:8
@@ -1282,6 +1282,7 @@ msgstr "Presentar"
 #: templates/admin/dialer_campaign/contact/import_contact.html:60
 #: templates/admin/dialer_cdr/voipcall/change_list.html:60
 #: templates/frontend/contact/import_contact.html:70
+#: templates/frontend/contact/list.html:69
 #: templates/frontend/report/voipcall_report.html:46
 msgid "Reset"
 msgstr "Reajustar"
@@ -1756,10 +1757,6 @@ msgstr "Abonado(s) importado con éxito"
 msgid "Subscriber(s) not Imported"
 msgstr "El suscriptor(s) no importado"
 
-#: templates/frontend/contact/list.html:69
-msgid "Retset"
-msgstr ""
-
 #: templates/frontend/contact/list.html:95
 #: templates/frontend/phonebook/list.html:63
 #: templates/frontend/voipapp/list.html:42
@@ -2182,4 +2179,3 @@ msgstr "Borrar VoIP App"
 #, python-format
 msgid "%(count)s voipapp(s) are deleted successfully."
 msgstr "%(count)s voipapp(s) se ha eliminado correctamente."
-

@@ -211,8 +211,7 @@ func_install_frontend(){
     echo "Install Newfies..."
     cd /usr/src/
     rm -rf newfies-dialer
-    mkdir /var/log/newfies    
-    mkdir /var/run/celery
+    mkdir /var/log/newfies
 
     case $INSTALL_MODE in
         'CLONE')
@@ -436,8 +435,10 @@ func_install_backend() {
 
     IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
     IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
-
-
+    
+    #Create directory for pid file
+    mkdir -p /var/run/celery
+    
     #Install Celery & redis-server
     echo "Install Redis-server ..."
     func_install_redis_server
@@ -447,7 +448,6 @@ func_install_backend() {
 
     #Memcache installation
     #pip install python-memcached
-
 
     echo ""
     echo "Configure Celery..."

@@ -4,10 +4,10 @@ CELERYD_NODES="newfies-node1"
 #CELERYD_NODES="w1 w2 w3"
 
 # Where the Django project is.
-CELERYD_CHDIR='/usr/share/newfies/'
+CELERYD_CHDIR='/usr/share/newfies'
 
 # How to call "manage.py celeryd_multi"
-CELERYD_MULTI="$CELERYD_CHDIR/manage.py celeryd_multi"
+CELERYD_MULTI="/usr/share/virtualenvs/newfies-dialer/bin/python $CELERYD_CHDIR/manage.py celeryd_multi"
 
 # Extra arguments to celeryd
 #CELERYD_OPTS="--time-limit=300 --concurrency=8"
@@ -18,7 +18,7 @@ CELERYD_MULTI="$CELERYD_CHDIR/manage.py celeryd_multi"
 #note : on a single machine we can easily run celerybeat over celeryd
 
 # Path to celeryd
-CELERYD='/usr/share/virtualenvs/newfies-dialer/bin/python /usr/share/newfies/manage.py celeryd_detach'
+CELERYD='/usr/share/virtualenvs/newfies-dialer/bin/python $CELERYD_CHDIR/manage.py celeryd_detach'
 
 # celeryd options
 CELERYD_OPTS='-EB -l info'

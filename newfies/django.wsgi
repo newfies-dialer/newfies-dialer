@@ -6,6 +6,7 @@ workspace = os.path.dirname(project)
 sys.path.append(workspace)
 
 sys.path.insert(0, '/usr/share/virtualenvs/newfies-dialer/lib/python2.6/site-packages')
+sys.path.insert(1, '/usr/share/virtualenvs/newfies-dialer/lib/python2.7/site-packages')
 sys.path.append('/usr/share')
 sys.path.append('/usr/share/newfies')
 

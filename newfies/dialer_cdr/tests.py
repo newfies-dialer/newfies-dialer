@@ -133,24 +133,25 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
 
     def test_create_answercall(self):
         """Test Function to create a answercall"""
-        data = simplejson.dumps({"ALegRequestUUID": "20294e18-9d8f-11e0-aaa8-000c29bed6ad"})
+        data = {"ALegRequestUUID": "20294e18-9d8f-11e0-aaa8-000c29bed6ad"}
         response = self.client.post('/api/v1/answercall/',
-        data, content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 201)
+        data,  **self.extra)
+        print response
+        self.assertEqual(response.status_code, 200)
 
     def test_create_hangupcall(self):
         """Test Function to create a answercall"""
-        data = simplejson.dumps({"RequestUUID": "20294e18-9d8f-11e0-aaa8-000c29bed6ad",
-         "HangupCause": "SUBSCRIBER_ABSENT"})
+        data = {"RequestUUID": "20294e18-9d8f-11e0-aaa8-000c29bed6ad",
+         "HangupCause": "SUBSCRIBER_ABSENT"}
         response = self.client.post('/api/v1/hangupcall/',
-        data, content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 201)
+        data,  **self.extra)
+        self.assertEqual(response.status_code, 200)
 
     def test_create_cdr(self):
         """Test Function to create a CDR"""
         data = ('cdr=<?xml version="1.0"?><cdr><other></other><variables><plivo_request_uuid>20294e18-9d8f-11e0-aaa8-000c29bed6ad</plivo_request_uuid><duration>3</duration></variables><notvariables><plivo_request_uuid>TESTc</plivo_request_uuid><duration>5</duration></notvariables></cdr>')
         response = self.client.post('/api/v1/store_cdr/', data, content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 200)
 
 
 class NewfiesAdminInterfaceTestCase(TestCase):

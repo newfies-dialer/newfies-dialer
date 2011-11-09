@@ -47,7 +47,15 @@ seed()
 
 logger = logging.getLogger('newfies.filelog')
 
-
+CDR_VARIABLES = ['plivo_request_uuid', 'plivo_answer_url', 'plivo_app',
+                    'direction', 'endpoint_disposition', 'hangup_cause',
+                    'hangup_cause_q850', 'duration', 'billsec', 'progresssec',
+                    'answersec', 'waitsec', 'mduration', 'billmsec',
+                    'progressmsec', 'answermsec', 'waitmsec',
+                    'progress_mediamsec', 'call_uuid',
+                    'origination_caller_id_number', 'caller_id',
+                    'answer_epoch', 'answer_uepoch']
+                    
 def get_attribute(attrs, attr_name):
     """this is a helper to retrieve an attribute if it exists"""
     if attr_name in attrs:
@@ -1401,7 +1409,11 @@ class HangupcallValidation(Validation):
         opt_hangup_cause = request.POST.get('HangupCause')
         if not opt_hangup_cause:
             errors['HangupCause'] = ["Wrong parameters - missing HangupCause!"]
-
+        
+        for var_name in CDR_VARIABLES:
+            if not request.POST.get("variable_%s" % var_name):
+                errors[var_name] = ["Wrong parameters - missing %s!" % var_name]
+        
         try:
             callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid)
         except:
@@ -1426,7 +1438,7 @@ class HangupcallResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data "RequestUUID=48092924-856d-11e0-a586-0147ddac9d3e&HangupCause=SUBSCRIBER_ABSENT" http://localhost:8000/api/v1/hangupcall/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data "RequestUUID=e4fc2188-0af5-11e1-b64d-00231470a30c&HangupCause=SUBSCRIBER_ABSENT" http://localhost:8000/api/v1/hangupcall/
 
         Response::
 
@@ -1538,6 +1550,47 @@ class CustomJSONSerializer(Serializer):
         return data
 
 
+def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix=''):
+    """
+    Common function to create CDR / VoIP Call
+    
+    **Attributes**:
+    
+        * data : list with call details data
+        * obj_callrequest:  refer to the CallRequest object
+        * plivo_request_uuid : cdr uuid
+        
+    """
+
+    if data.has_key('answer_epoch') and data['answer_epoch']:
+        try:
+            cur_answer_epoch = int(data['answer_epoch'])
+        except ValueError:
+            raise
+        starting_date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(cur_answer_epoch))
+    else:
+        starting_date = None
+    
+    new_voipcall = VoIPCall(user = obj_callrequest.user,
+                            request_uuid=plivo_request_uuid,
+                            used_gateway=None, #TODO
+                            callrequest=obj_callrequest,
+                            callid=data["%s%s" % (data_prefix, 'call_uuid')] or '',
+                            callerid=data["%s%s" % (data_prefix, 'origination_caller_id_number')] or '',
+                            phone_number=data["%s%s" % (data_prefix, 'caller_id')] or '',
+                            dialcode=None, #TODO
+                            starting_date=starting_date,
+                            duration=data["%s%s" % (data_prefix, 'duration')] or 0,
+                            billsec=data["%s%s" % (data_prefix, 'billsec')] or 0,
+                            progresssec=data["%s%s" % (data_prefix, 'progresssec')] or 0,
+                            answersec=data["%s%s" % (data_prefix, 'answersec')] or 0,
+                            disposition=data["%s%s" % (data_prefix, 'endpoint_disposition')] or '',
+                            hangup_cause=data["%s%s" % (data_prefix, 'hangup_cause')] or '',
+                            hangup_cause_q850=data["%s%s" % (data_prefix, 'hangup_cause_q850')] or '',)
+
+    new_voipcall.save()
+    
+
 class CdrResource(ModelResource):
     """
     **Attributes**:
@@ -1620,21 +1673,11 @@ class CdrResource(ModelResource):
             #parse file
             #tree = ET.parse("/tmp/cdr.xml")
             
-
-            cdr_vars = ['plivo_request_uuid', 'plivo_answer_url', 'plivo_app',
-                        'direction', 'endpoint_disposition', 'hangup_cause',
-                        'hangup_cause_q850', 'duration', 'billsec', 'progresssec',
-                        'answersec', 'waitsec', 'mduration', 'billmsec',
-                        'progressmsec', 'answermsec', 'waitmsec',
-                        'progress_mediamsec', 'call_uuid',
-                        'origination_caller_id_number', 'caller_id',
-                        'answer_epoch', 'answer_uepoch']
-
             for j in lst:
-                if j.tag in cdr_vars:
+                if j.tag in CDR_VARIABLES:
                     data[j.tag] = urllib.unquote(j.text.decode("utf8"))
                     
-            for element in cdr_vars:
+            for element in CDR_VARIABLES:
                 if not data.has_key(element):
                     data[element] = None
                 else:
@@ -1646,14 +1689,15 @@ class CdrResource(ModelResource):
                 error_msg = 'CDR not related to Newfies/Plivo!'
                 logger.error(error_msg)
                 raise BadRequest(error_msg)
-
+            
             #TODO : delay if not find callrequest
             try:
                 #plivo add "a_" in front of the uuid for the aleg so we remove the "a_"
                 if data['plivo_request_uuid'][1:2]=='a_':
-                    obj_callrequest = Callrequest.objects.get(request_uuid=data['plivo_request_uuid'][2:])
+                    plivo_request_uuid = data['plivo_request_uuid'][2:]
                 else:
-                    obj_callrequest = Callrequest.objects.get(request_uuid=data['plivo_request_uuid'])
+                    plivo_request_uuid = data['plivo_request_uuid']
+                obj_callrequest = Callrequest.objects.get(request_uuid=plivo_request_uuid)
             except:
                 # Send notification to admin
                 from dialer_campaign.views import common_send_notification
@@ -1668,34 +1712,9 @@ class CdrResource(ModelResource):
                 logger.error(error_msg, extra={'stack': True})
 
                 raise BadRequest(error_msg)
-
-            if data.has_key('answer_epoch') and data['answer_epoch']:
-                try:
-                    cur_answer_epoch = int(data['answer_epoch'])
-                except ValueError:
-                    raise
-                starting_date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(cur_answer_epoch))
-            else:
-                starting_date = None
-
-            new_voipcall = VoIPCall(user = obj_callrequest.user,
-                                    request_uuid=data['plivo_request_uuid'],
-                                    used_gateway=None, #TODO
-                                    callrequest=obj_callrequest,
-                                    callid=data['call_uuid'] or '',
-                                    callerid=data['origination_caller_id_number'] or '',
-                                    phone_number=data['caller_id'] or '',
-                                    dialcode=None, #TODO
-                                    starting_date=starting_date,
-                                    duration=data['duration'] or 0,
-                                    billsec=data['billsec'] or 0,
-                                    progresssec=data['progresssec'] or 0,
-                                    answersec=data['answersec'] or 0,
-                                    disposition=data['endpoint_disposition'] or '',
-                                    hangup_cause=data['hangup_cause'] or '',
-                                    hangup_cause_q850=data['hangup_cause_q850'] or '',)
-
-            new_voipcall.save()
+            
+            # CREATE CDR - VOIP CALL
+            create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='')
 
             # List of HttpResponse : 
             # https://github.com/toastdriven/django-tastypie/blob/master/tastypie/http.py

@@ -1502,6 +1502,15 @@ class HangupcallResource(ModelResource):
             callrequest.hangup_cause = opt_hangup_cause
             callrequest.save()
 
+            data = {}
+            for element in CDR_VARIABLES:
+                if not request.POST.get('variable_%s' % element):
+                    data[element] = None
+                else:
+                    data[element] = request.POST.get('variable_%s' % element)
+
+            create_voipcall(obj_callrequest=callrequest, plivo_request_uuid=opt_request_uuid, data=data, data_prefix='')
+
             #TODO : Create CDR
             object_list = [{'result': 'OK'}]
             logger.debug('Hangupcall API : Result 200!')
@@ -1672,7 +1681,7 @@ class CdrResource(ModelResource):
 
             #parse file
             #tree = ET.parse("/tmp/cdr.xml")
-            
+
             for j in lst:
                 if j.tag in CDR_VARIABLES:
                     data[j.tag] = urllib.unquote(j.text.decode("utf8"))

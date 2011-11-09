@@ -26,6 +26,11 @@ CALLREQUEST_TYPE = (
     (3, _('RETRY DONE')),
 )
 
+LEG_TYPE = (
+    (1, _('A-Leg')),
+    (2, _('B-Leg')),
+)
+
 VOIPCALL_DISPOSITION = (
     ('ANSWER', u'ANSWER'),
     ('BUSY', u'BUSY'),
@@ -55,7 +60,9 @@ class CallRequestManager(models.Manager):
         #return Callrequest.objects.all()
         return Callrequest.objects.filter(**kwargs)
 
-    
+def str_uuid1():
+    return str(uuid1())
+
 class Callrequest(Model):
     """This defines the call request, the dialer will read any new request
     and attempt to deliver the call.
@@ -95,7 +102,7 @@ class Callrequest(Model):
     """
     user = models.ForeignKey('auth.User')
     request_uuid = models.CharField(verbose_name=_("RequestUUID"),
-                        default=uuid1(), db_index=True,
+                        default=str_uuid1(), db_index=True,
                         max_length=120, null=True, blank=True)
     call_time = models.DateTimeField(default=(lambda:datetime.now()))
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')
@@ -179,7 +186,7 @@ class VoIPCall(models.Model):
     """
     user = models.ForeignKey('auth.User', related_name='Call Sender')
     request_uuid = models.CharField(verbose_name=_("RequestUUID"),
-                        default=uuid1(), db_index=True,
+                        default=str_uuid1(), db_index=True,
                         max_length=120, null=True, blank=True)
     used_gateway = models.ForeignKey(Gateway, null=True, blank=True)
     callrequest = models.ForeignKey(Callrequest, null=True, blank=True)
@@ -200,6 +207,9 @@ class VoIPCall(models.Model):
                                    max_length=40, null=True, blank=True)
     hangup_cause = models.CharField(max_length=40, null=True, blank=True)
     hangup_cause_q850 = models.CharField(max_length=10, null=True, blank=True)
+    leg_type = models.SmallIntegerField(choices=LEG_TYPE, default=1, 
+                                        verbose_name="Leg",
+                                        null=True, blank=True, )
 
 
     def destination_name(self):

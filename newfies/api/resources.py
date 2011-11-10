@@ -1410,8 +1410,8 @@ class DialCallbackValidation(Validation):
     def is_valid(self, request=None):
         errors = {}
 
-        opt_request_uuid = request.POST.get('DialALegUUID')
-        if not opt_request_uuid:
+        opt_aleg_uuid = request.POST.get('DialALegUUID')
+        if not opt_aleg_uuid:
             errors['DialALegUUID'] = ["Wrong parameters - missing DialALegUUID!"]
 
         opt_request_uuid_bleg = request.POST.get('DialBLegUUID')
@@ -1423,7 +1423,7 @@ class DialCallbackValidation(Validation):
             errors['DialBLegStatus'] = ["Wrong parameters - missing DialBLegStatus!"]
         
         try:
-            callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid)
+            callrequest = Callrequest.objects.get(aleg_uuid=opt_aleg_uuid)
         except:
             errors['CallRequest'] = ["CallRequest not found - uuid:%s" % opt_request_uuid]
         print errors
@@ -1499,7 +1499,7 @@ class DialCallbackResource(ModelResource):
         if not errors:
             logger.debug('DialCallback API get called!')
             
-            opt_request_uuid = request.POST.get('DialALegUUID')
+            opt_aleg_uuid = request.POST.get('DialALegUUID')
             opt_dial_bleg_uuid = request.POST.get('DialBLegUUID')
             opt_dial_bleg_status = request.POST.get('DialBLegHangupCause')
             
@@ -1510,7 +1510,7 @@ class DialCallbackResource(ModelResource):
                 obj = CustomXmlEmitter()
                 return self.create_response(request, obj.render(request, object_list))
 
-            callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid)
+            callrequest = Callrequest.objects.get(aleg_uuid=opt_aleg_uuid)
                         
             data = {}
             for element in CDR_VARIABLES:
@@ -1519,7 +1519,11 @@ class DialCallbackResource(ModelResource):
                 else:
                     data[element] = request.POST.get('variable_%s' % element)
 
-            create_voipcall(obj_callrequest=callrequest, plivo_request_uuid=opt_request_uuid, data=data, data_prefix='')
+            create_voipcall(obj_callrequest=callrequest, 
+                                plivo_request_uuid=callrequest.request_uuid, 
+                                data=data, 
+                                data_prefix='', 
+                                leg='b')
             
             object_list = [{'result': 'OK'}]
             logger.debug('DialCallback API : Result 200!')
@@ -1644,6 +1648,7 @@ class HangupcallResource(ModelResource):
                 callrequest.status = 2 # Failure
             callrequest.hangup_cause = opt_hangup_cause
             callrequest.save()
+            print ('Call Request Updated')
             
             data = {}
             for element in CDR_VARIABLES:
@@ -1651,8 +1656,14 @@ class HangupcallResource(ModelResource):
                     data[element] = None
                 else:
                     data[element] = request.POST.get('variable_%s' % element)
-
-            create_voipcall(obj_callrequest=callrequest, plivo_request_uuid=opt_request_uuid, data=data, data_prefix='')
+                    
+            print ('Call Create VoIPCall')
+            create_voipcall(obj_callrequest=callrequest, 
+                                plivo_request_uuid=opt_request_uuid, 
+                                data=data, 
+                                data_prefix='', 
+                                leg='a',
+                                hangup_cause=opt_hangup_cause)
             
             object_list = [{'result': 'OK'}]
             logger.debug('Hangupcall API : Result 200!')
@@ -1694,7 +1705,7 @@ class CustomJSONSerializer(Serializer):
         return data
 
 
-def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix=''):
+def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='', leg='a', hangup_cause=''):
     """
     Common function to create CDR / VoIP Call
     
@@ -1706,6 +1717,7 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix=''):
         
     """
 
+    print ('Start Create CDR - Leg=%s' % leg)
     if data.has_key('answer_epoch') and data['answer_epoch']:
         try:
             cur_answer_epoch = int(data['answer_epoch'])
@@ -1715,8 +1727,23 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix=''):
     else:
         starting_date = None
     
+    leg_type = 1 if leg=='a' else 2
+    
+    
+    #check the right variable for hangup cause
+    data_hangup_cause = data["%s%s" % (data_prefix, 'hangup_cause')]
+    if data_hangup_cause and data_hangup_cause != '':
+        cdr_hangup_cause = data_hangup_cause
+    else:
+        cdr_hangup_cause = hangup_cause
+        
+    
+    print ('Create CDR - request_uuid=%s ; leg=%d ; hangup_cause= %s' % (plivo_request_uuid, leg_type, cdr_hangup_cause))
+    logger.debug('Create CDR - request_uuid=%s ; leg=%d ; hangup_cause= %s' % (plivo_request_uuid, leg_type, cdr_hangup_cause))
+    
     new_voipcall = VoIPCall(user = obj_callrequest.user,
                             request_uuid=plivo_request_uuid,
+                            leg_type=leg_type,
                             used_gateway=None, #TODO
                             callrequest=obj_callrequest,
                             callid=data["%s%s" % (data_prefix, 'call_uuid')] or '',
@@ -1729,10 +1756,12 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix=''):
                             progresssec=data["%s%s" % (data_prefix, 'progresssec')] or 0,
                             answersec=data["%s%s" % (data_prefix, 'answersec')] or 0,
                             disposition=data["%s%s" % (data_prefix, 'endpoint_disposition')] or '',
-                            hangup_cause=data["%s%s" % (data_prefix, 'hangup_cause')] or '',
+                            hangup_cause=cdr_hangup_cause,
                             hangup_cause_q850=data["%s%s" % (data_prefix, 'hangup_cause_q850')] or '',)
 
     new_voipcall.save()
+    print new_voipcall.id
+    print '----------------------------'
     
 
 class CdrResource(ModelResource):
@@ -1827,9 +1856,9 @@ class CdrResource(ModelResource):
                 else:
                     logger.debug("%s :> %s" % (element, data[element]))
 
+            #TODO: Add tag for newfies in outbound call
             if not 'plivo_request_uuid' in data or not data['plivo_request_uuid']:
                 #CDR not related to plivo
-                #TODO: Add tag for newfies in outbound call
                 error_msg = 'CDR not related to Newfies/Plivo!'
                 logger.error(error_msg)
                 raise BadRequest(error_msg)
@@ -1858,7 +1887,7 @@ class CdrResource(ModelResource):
                 raise BadRequest(error_msg)
             
             # CREATE CDR - VOIP CALL
-            create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='')
+            create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='', leg='a')
 
             # List of HttpResponse : 
             # https://github.com/toastdriven/django-tastypie/blob/master/tastypie/http.py

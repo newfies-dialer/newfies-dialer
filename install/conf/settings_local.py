@@ -59,6 +59,7 @@ REDIS_DB = 0
 #=====
 PLIVO_DEFAULT_ANSWER_URL = 'http://SERVER_IP_PORT/api/v1/answercall/'
 PLIVO_DEFAULT_HANGUP_URL = 'http://SERVER_IP_PORT/api/v1/hangupcall/'
+PLIVO_DEFAULT_DIALCALLBACK_URL = 'http://SERVER_IP_PORT/api/v1/dialcallback/'
 
 # ADD 'dummy','plivo','twilio'
 NEWFIES_DIALER_ENGINE = 'dummy'

@@ -1257,9 +1257,12 @@ class AnswercallValidation(Validation):
         errors = {}
         
         opt_ALegRequestUUID = request.POST.get('ALegRequestUUID')
-        
         if not opt_ALegRequestUUID:
             errors['ALegRequestUUID'] = ["Wrong parameters - missing ALegRequestUUID!"]
+
+        opt_CallUUID = request.POST.get('CallUUID')
+        if not opt_ALegRequestUUID:
+            errors['CallUUID'] = ["Wrong parameters - missing CallUUID!"]
 
         try:
             obj_callrequest = Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
@@ -1337,12 +1340,16 @@ class AnswercallResource(ModelResource):
             logger.debug('Answercall API get called!')
 
             opt_ALegRequestUUID = request.POST.get('ALegRequestUUID')
+            opt_CallUUID = request.POST.get('CallUUID')
+            
+            print "opt_CallUUID ==============> %s" % opt_CallUUID
 
             #TODO: If we update the Call to success here we should not do it in hangup url
             obj_callrequest = Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
             
             #TODO : use constant
             Callrequest.status = 8 # IN-PROGRESS
+            Callrequest.aleg_uuid = opt_CallUUID
             obj_callrequest.save()
 
             # get the VoIP application

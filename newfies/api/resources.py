@@ -1410,15 +1410,15 @@ class HangupcallValidation(Validation):
         if not opt_hangup_cause:
             errors['HangupCause'] = ["Wrong parameters - missing HangupCause!"]
         
-        for var_name in CDR_VARIABLES:
-            if not request.POST.get("variable_%s" % var_name):
-                errors[var_name] = ["Wrong parameters - missing %s!" % var_name]
+        #for var_name in CDR_VARIABLES:
+        #    if not request.POST.get("variable_%s" % var_name):
+        #        errors[var_name] = ["Wrong parameters - missing %s!" % var_name]
         
         try:
             callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid)
         except:
             errors['CallRequest'] = ["CallRequest not found!"]
-
+        
         return errors
 
 
@@ -1501,7 +1501,7 @@ class HangupcallResource(ModelResource):
                 callrequest.status = 2 # Failure
             callrequest.hangup_cause = opt_hangup_cause
             callrequest.save()
-
+            
             data = {}
             for element in CDR_VARIABLES:
                 if not request.POST.get('variable_%s' % element):

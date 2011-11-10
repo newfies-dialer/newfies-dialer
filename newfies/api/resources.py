@@ -1342,8 +1342,6 @@ class AnswercallResource(ModelResource):
             opt_ALegRequestUUID = request.POST.get('ALegRequestUUID')
             opt_CallUUID = request.POST.get('CallUUID')
             
-            print "opt_CallUUID ==============> %s" % opt_CallUUID
-
             #TODO: If we update the Call to success here we should not do it in hangup url
             obj_callrequest = Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
             
@@ -1426,7 +1424,6 @@ class DialCallbackValidation(Validation):
             callrequest = Callrequest.objects.get(aleg_uuid=opt_aleg_uuid)
         except:
             errors['CallRequest'] = ["CallRequest not found - uuid:%s" % opt_request_uuid]
-        print errors
         return errors
 
 
@@ -1501,7 +1498,7 @@ class DialCallbackResource(ModelResource):
             
             opt_aleg_uuid = request.POST.get('DialALegUUID')
             opt_dial_bleg_uuid = request.POST.get('DialBLegUUID')
-            opt_dial_bleg_status = request.POST.get('DialBLegHangupCause')
+            opt_dial_bleg_status = request.POST.get('DialBLegStatus')
             
             #We are just analyzing the hangup
             if opt_dial_bleg_status!='hangup':
@@ -1518,7 +1515,7 @@ class DialCallbackResource(ModelResource):
                     data[element] = None
                 else:
                     data[element] = request.POST.get('variable_%s' % element)
-
+            
             create_voipcall(obj_callrequest=callrequest, 
                                 plivo_request_uuid=callrequest.request_uuid, 
                                 data=data, 
@@ -1633,7 +1630,7 @@ class HangupcallResource(ModelResource):
 
         logger.debug('Hangupcall API validation called!')
         errors = self._meta.validation.is_valid(request)
-
+        
         if not errors:
             logger.debug('Hangupcall API get called!')
 
@@ -1648,7 +1645,6 @@ class HangupcallResource(ModelResource):
                 callrequest.status = 2 # Failure
             callrequest.hangup_cause = opt_hangup_cause
             callrequest.save()
-            print ('Call Request Updated')
             
             data = {}
             for element in CDR_VARIABLES:
@@ -1657,7 +1653,6 @@ class HangupcallResource(ModelResource):
                 else:
                     data[element] = request.POST.get('variable_%s' % element)
                     
-            print ('Call Create VoIPCall')
             create_voipcall(obj_callrequest=callrequest, 
                                 plivo_request_uuid=opt_request_uuid, 
                                 data=data, 
@@ -1717,7 +1712,6 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='', l
         
     """
 
-    print ('Start Create CDR - Leg=%s' % leg)
     if data.has_key('answer_epoch') and data['answer_epoch']:
         try:
             cur_answer_epoch = int(data['answer_epoch'])
@@ -1737,8 +1731,6 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='', l
     else:
         cdr_hangup_cause = hangup_cause
         
-    
-    print ('Create CDR - request_uuid=%s ; leg=%d ; hangup_cause= %s' % (plivo_request_uuid, leg_type, cdr_hangup_cause))
     logger.debug('Create CDR - request_uuid=%s ; leg=%d ; hangup_cause= %s' % (plivo_request_uuid, leg_type, cdr_hangup_cause))
     
     new_voipcall = VoIPCall(user = obj_callrequest.user,

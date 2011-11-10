@@ -88,8 +88,14 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='', l
     else:
         starting_date = None
     
-    leg_type = 1 if leg=='a' else 2
-    
+    if leg=='a':
+        #A-Leg
+        leg_type = 1
+        used_gateway = obj_callrequest.aleg_gateway
+    else:
+        #B-Leg
+        leg_type = 2
+        used_gateway = obj_callrequest.voipapp.gateway
     
     #check the right variable for hangup cause
     data_hangup_cause = data["%s%s" % (data_prefix, 'hangup_cause')]
@@ -97,13 +103,15 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='', l
         cdr_hangup_cause = data_hangup_cause
     else:
         cdr_hangup_cause = hangup_cause
-        
+    
+   
+    
     logger.debug('Create CDR - request_uuid=%s ; leg=%d ; hangup_cause= %s' % (plivo_request_uuid, leg_type, cdr_hangup_cause))
     
     new_voipcall = VoIPCall(user = obj_callrequest.user,
                             request_uuid=plivo_request_uuid,
                             leg_type=leg_type,
-                            used_gateway=None, #TODO
+                            used_gateway=used_gateway,
                             callrequest=obj_callrequest,
                             callid=data["%s%s" % (data_prefix, 'call_uuid')] or '',
                             callerid=data["%s%s" % (data_prefix, 'origination_caller_id_number')] or '',

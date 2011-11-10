@@ -27,6 +27,7 @@ tastypie_api.register(CampaignSubscriberResource())
 tastypie_api.register(CallrequestResource())
 tastypie_api.register(AnswercallResource())
 tastypie_api.register(HangupcallResource())
+tastypie_api.register(DialCallbackResource())
 tastypie_api.register(CdrResource())
 
 

@@ -34,7 +34,7 @@ from voip_app.models import VoipApp
 from tastypie import fields
 from dialer_campaign.function_def import user_attached_with_dialer_settings, \
     check_dialer_setting, dialer_setting_limit
-from settings_local import API_ALLOWED_IP
+from settings_local import API_ALLOWED_IP, PLIVO_DEFAULT_DIALCALLBACK_URL
 from datetime import datetime
 from random import choice, seed
 
@@ -1352,8 +1352,8 @@ class AnswercallResource(ModelResource):
                 callerid = obj_callrequest.callerid
                 gatewaytimeouts = obj_callrequest.timeout
                 gateways = obj_callrequest.voipapp.gateway.gateways
-                dial_command = 'Dial timeLimit="%s" callerId="%s"' % \
-                                    (timelimit, callerid)
+                dial_command = 'Dial timeLimit="%s" callerId="%s" callbackUrl="%s"' % \
+                                    (timelimit, callerid, PLIVO_DEFAULT_DIALCALLBACK_URL)
                 number_command = 'Number gateways="%s" gatewayTimeouts="%s"' % \
                                     (gateways, gatewaytimeouts)
 
@@ -1395,6 +1395,142 @@ class AnswercallResource(ModelResource):
                 raise ImmediateHttpResponse(response=response)
 
 
+
+class DialCallbackValidation(Validation):
+    """
+    DialCallback Validation Class
+    """
+    def is_valid(self, request=None):
+        errors = {}
+
+        opt_request_uuid = request.POST.get('DialALegUUID')
+        if not opt_request_uuid:
+            errors['DialALegUUID'] = ["Wrong parameters - missing DialALegUUID!"]
+
+        opt_request_uuid_bleg = request.POST.get('DialBLegUUID')
+        if not opt_request_uuid_bleg:
+            errors['DialBLegUUID'] = ["Wrong parameters - missing DialBLegUUID!"]
+
+        opt_dial_bleg_status = request.POST.get('DialBLegStatus')
+        if not opt_dial_bleg_status:
+            errors['DialBLegStatus'] = ["Wrong parameters - missing DialBLegStatus!"]
+        
+        try:
+            callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid)
+        except:
+            errors['CallRequest'] = ["CallRequest not found - uuid:%s" % opt_request_uuid]
+        print errors
+        return errors
+
+
+
+class DialCallbackResource(ModelResource):
+    """
+    **Attributes**:
+
+       * ``DialALegUUID`` - UUID ALeg
+       * ``DialBLegUUID`` - UUID BLeg
+       * ``DialBLegHangupCause`` - Hangup Cause
+
+    **Validation**:
+
+        * DialCallbackValidation()
+
+    **Create**:
+
+        CURL Usage::
+
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data "DialALegUUID=e4fc2188-0af5-11e1-b64d-00231470a30c&DialBLegUUID=e4fc2188-0af5-11e1-b64d-00231470a30c&DialBLegHangupCause=SUBSCRIBER_ABSENT" http://localhost:8000/api/v1/dialcallback/
+
+        Response::
+
+            HTTP/1.0 200 OK
+            Date: Tue, 01 Nov 2011 12:04:35 GMT
+            Server: WSGIServer/0.1 Python/2.7.1+
+            Vary: Accept-Language, Cookie
+            Content-Type: application/json
+            Content-Language: en-us
+
+            <?xml version="1.0" encoding="utf-8"?>
+                <Response>
+                </Response>
+    """
+    class Meta:
+        resource_name = 'dialcallback'
+        authorization = IpAddressAuthorization()
+        authentication = IpAddressAuthentication()
+        validation = DialCallbackValidation()
+        list_allowed_methods = ['post']
+        detail_allowed_methods = ['post']
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+
+    def override_urls(self):
+        """Override url"""
+        return [
+            url(r'^(?P<resource_name>%s)/$' % self._meta.resource_name, self.wrap_view('create')),
+        ]
+
+    def create_response(self, request, data, response_class=HttpResponse, **response_kwargs):
+        """To display API's result"""
+        desired_format = self.determine_format(request)
+        serialized = data # self.serialize(request, data, desired_format)
+        return response_class(content=serialized, content_type=desired_format, **response_kwargs)
+
+    def create(self, request=None, **kwargs):
+        """POST method of DialCallback API"""
+        logger.debug('DialCallback API authentication called!')
+        auth_result = self._meta.authentication.is_authenticated(request)
+        if not auth_result is True:
+            raise ImmediateHttpResponse(response=http.HttpUnauthorized())
+
+        logger.debug('DialCallback API authorization called!')
+        auth_result = self._meta.authorization.is_authorized(request, object)
+
+        logger.debug('DialCallback API validation called!')
+        errors = self._meta.validation.is_valid(request)
+
+        if not errors:
+            logger.debug('DialCallback API get called!')
+            
+            opt_request_uuid = request.POST.get('DialALegUUID')
+            opt_dial_bleg_uuid = request.POST.get('DialBLegUUID')
+            opt_dial_bleg_status = request.POST.get('DialBLegHangupCause')
+            
+            #We are just analyzing the hangup
+            if opt_dial_bleg_status!='hangup':
+                object_list = [{'result': 'OK - Bleg status is not Hangup'}]
+                logger.debug('DialCallback API : Result 200!')
+                obj = CustomXmlEmitter()
+                return self.create_response(request, obj.render(request, object_list))
+
+            callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid)
+                        
+            data = {}
+            for element in CDR_VARIABLES:
+                if not request.POST.get('variable_%s' % element):
+                    data[element] = None
+                else:
+                    data[element] = request.POST.get('variable_%s' % element)
+
+            create_voipcall(obj_callrequest=callrequest, plivo_request_uuid=opt_request_uuid, data=data, data_prefix='')
+            
+            object_list = [{'result': 'OK'}]
+            logger.debug('DialCallback API : Result 200!')
+            obj = CustomXmlEmitter()
+
+            return self.create_response(request, obj.render(request, object_list))
+        else:
+            if len(errors):
+                if request:
+                    desired_format = self.determine_format(request)
+                else:
+                    desired_format = self._meta.default_format
+
+                serialized = self.serialize(request, errors, desired_format)
+                response = http.HttpBadRequest(content=serialized, content_type=desired_format)
+                raise ImmediateHttpResponse(response=response)
+
+
 class HangupcallValidation(Validation):
     """
     Hangupcall Validation Class
@@ -1417,7 +1553,7 @@ class HangupcallValidation(Validation):
         try:
             callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid)
         except:
-            errors['CallRequest'] = ["CallRequest not found!"]
+            errors['CallRequest'] = ["CallRequest not found - uuid:%s" % opt_request_uuid]
         
         return errors
 
@@ -1510,8 +1646,7 @@ class HangupcallResource(ModelResource):
                     data[element] = request.POST.get('variable_%s' % element)
 
             create_voipcall(obj_callrequest=callrequest, plivo_request_uuid=opt_request_uuid, data=data, data_prefix='')
-
-            #TODO : Create CDR
+            
             object_list = [{'result': 'OK'}]
             logger.debug('Hangupcall API : Result 200!')
             obj = CustomXmlEmitter()
@@ -1538,13 +1673,6 @@ class CdrValidation(Validation):
         opt_cdr = request.POST.get('cdr')
         if not opt_cdr:
             errors['CDR'] = ["Wrong parameters - missing CDR!"]
-
-        """
-        try:
-            callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid)
-        except:
-            errors['CallRequest'] = ["CallRequest not found!"]
-        """
         
         return errors
 

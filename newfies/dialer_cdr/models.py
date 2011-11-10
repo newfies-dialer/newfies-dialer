@@ -104,6 +104,8 @@ class Callrequest(Model):
     request_uuid = models.CharField(verbose_name=_("RequestUUID"),
                         default=str_uuid1(), db_index=True,
                         max_length=120, null=True, blank=True)
+    aleg_uuid = models.CharField(max_length=120, help_text=_("A-Leg Call-ID"),
+                        null=True, blank=True)
     call_time = models.DateTimeField(default=(lambda:datetime.now()))
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')
     updated_date = models.DateTimeField(auto_now=True)

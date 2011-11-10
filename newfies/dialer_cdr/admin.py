@@ -25,7 +25,7 @@ class CallrequestAdmin(admin.ModelAdmin):
                        'campaign_subscriber'),
         }),
     )
-    list_display = ('id', 'user',  'request_uuid', 'call_time', 'campaign',
+    list_display = ('id', 'user',  'request_uuid', 'aleg_uuid', 'call_time', 'campaign',
             'status', 'callerid', 'phone_number', 'call_type',
             'num_attempt', 'last_attempt_time',)
     list_display_links = ('id', 'request_uuid', )

@@ -1752,8 +1752,6 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='', l
                             hangup_cause_q850=data["%s%s" % (data_prefix, 'hangup_cause_q850')] or '',)
 
     new_voipcall.save()
-    print new_voipcall.id
-    print '----------------------------'
     
 
 class CdrResource(ModelResource):

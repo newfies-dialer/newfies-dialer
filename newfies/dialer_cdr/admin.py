@@ -211,7 +211,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
                              i.starting_date,
                              i.duration,
                              get_disposition_name(i.disposition),
-                             i.gateway,
+                             i.used_gateway,
                              ])
         return response
 admin.site.register(VoIPCall, VoIPCallAdmin)

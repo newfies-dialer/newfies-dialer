@@ -35,6 +35,8 @@ CAMPAIGN_STATUS = (
     (4, u'END'),
 )
 
+CAMPAIGN_STATUS_COLOR = { 1: "green", 2: "blue", 3: "orange", 4: "red" }
+
 DAY_STATUS = (
     (1, _('YES')),
     (0, _('NO')),

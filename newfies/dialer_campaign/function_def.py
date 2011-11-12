@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from prefix_country.models import Country
-from dialer_campaign.models import Phonebook, Campaign, Contact, CAMPAIGN_STATUS
+from dialer_campaign.models import Phonebook, Campaign, Contact, CAMPAIGN_STATUS, CAMPAIGN_STATUS_COLOR
 from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting
 from voip_app.models import VoipApp
@@ -369,13 +369,13 @@ def get_campaign_status_name(id):
         if i[0] == id:
             #return i[1]
             if i[1] == 'START':
-                return 'STARTED'
+                return '<font color="' + CAMPAIGN_STATUS_COLOR[id] + '">'  + 'STARTED' + '</font>'
             if i[1] == 'PAUSE':
-                return 'PAUSED'
+                return '<font color="' + CAMPAIGN_STATUS_COLOR[id] + '">'  + 'PAUSED' + '</font>'
             if i[1] == 'ABORT':
-                return 'ABORTED'
+                return '<font color="' + CAMPAIGN_STATUS_COLOR[id] + '">'  + 'ABORTED' + '</font>'
             if i[1] == 'END':
-                return 'STOPPED'
+                return '<font color="' + CAMPAIGN_STATUS_COLOR[id] + '">'  + 'STOPPED' + '</font>'
 
 
 def user_dialer_setting(user):

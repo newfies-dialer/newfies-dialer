@@ -44,13 +44,31 @@ CELERYD_GROUP="celery"
 
 NEWFIES_ENV="newfies-dialer"
 
-SCRIPT_VIRTUALENVWRAPPER=""
-
 #------------------------------------------------------------------------------------
 
 
-#run common script
-source "$PWD/install-common.sh"
+# Identify Linux Distribution type
+if [ -f /etc/debian_version ] ; then
+    DIST='DEBIAN'
+elif [ -f /etc/redhat-release ] ; then
+    DIST='CENTOS'
+else
+    echo ""
+    echo "This Installer should be run on a CentOS or a Debian based system"
+    echo ""
+    exit 1
+fi
+
+
+# Set Script for virtualenv
+case $DIST in
+    'DEBIAN')
+        SCRIPT_VIRTUALENVWRAPPER="/usr/local/bin/virtualenvwrapper.sh"
+    ;;
+    'CENTOS')
+        SCRIPT_VIRTUALENVWRAPPER="/usr/bin/virtualenvwrapper.sh"
+    ;;
+esac
 
 
 #Function mysql db setting

@@ -19,11 +19,21 @@
 # To download this script direct to your server type
 #wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/freeswitch/install-freeswitch.sh
 #
-#TODO: 
+#TODO: memcache
 
 
-#run common script
-source "$PWD/install-common.sh"
+
+# Identify Linux Distribution type
+if [ -f /etc/debian_version ] ; then
+    DIST='DEBIAN'
+elif [ -f /etc/redhat-release ] ; then
+    DIST='CENTOS'
+else
+    echo ""
+    echo "This Installer should be run on a CentOS or a Debian based system"
+    echo ""
+    exit 1
+fi
 
 
 FS_CONF_PATH=https://raw.github.com/Star2Billing/newfies-dialer/master/install/freeswitch-conf

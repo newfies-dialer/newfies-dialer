@@ -162,14 +162,9 @@ func_install_frontend(){
             easy_install pip
             #|FIXME: Strangely South need to be installed outside the Virtualenv
             pip install -e hg+http://bitbucket.org/andrewgodwin/south/@ecaafda23e600e510e252734d67bf8f9f2362dc9#egg=South-dev
-
-            #ln -s /usr/local/bin/pip /usr/bin/pip
             
             #Install Extra dependencies on New OS        
-            apt-get -y install git-core
-            apt-get -y install mercurial
-            apt-get -y install gawk
-            #apt-get -y install python-importlib - does not exist in repository
+            apt-get -y install git-core mercurial gawk
                     
             if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
                  apt-get install sqlite3 libsqlite3-dev
@@ -190,6 +185,7 @@ func_install_frontend(){
             #Install Python dep  and pip
             yum -y install python-setuptools python-tools python-devel mod_python
             yum -y install python-pip
+            yum -y install mercurial python26-mod_wsgi
 
             if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
                  yum -y install sqlite

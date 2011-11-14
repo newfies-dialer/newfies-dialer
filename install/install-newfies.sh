@@ -60,13 +60,14 @@ else
 fi
 
 
-# Set Script for virtualenv
 case $DIST in
     'DEBIAN')
         SCRIPT_VIRTUALENVWRAPPER="/usr/local/bin/virtualenvwrapper.sh"
+        APACHE_USER="www-data"
     ;;
     'CENTOS')
         SCRIPT_VIRTUALENVWRAPPER="/usr/bin/virtualenvwrapper.sh"
+        APACHE_USER="apache"
     ;;
 esac
 
@@ -314,29 +315,21 @@ func_install_frontend(){
         mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e "CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;"
     fi
     
+    cd $INSTALL_DIR/
+    
     #Fix permission on python-egg
     mkdir /usr/share/newfies/.python-eggs
-    chown www-data:www-data /usr/share/newfies/.python-eggs
-
+    chown $APACHE_USER:$APACHE_USER /usr/share/newfies/.python-eggs
     
-    cd $INSTALL_DIR/
     #following line is for SQLite
     mkdir database
-
-    case $DIST in
-        'DEBIAN')
-            chown -R www-data.www-data $INSTALL_DIR/database/
-            touch /var/log/newfies/newfies-django.log
-            chown www-data:www-data /var/log/newfies/newfies-django.log
-            touch /var/log/newfies/newfies-django-db.log
-            chown www-data:www-data /var/log/newfies/newfies-django-db.log
-            touch /var/log/newfies/err-apache-newfies.log
-            chown www-data:www-data /var/log/newfies/err-apache-newfies.log
-        ;;
-        'CENTOS')
-            echo "Check what to do for CentOS..."
-        ;;
-    esac
+    chown -R $APACHE_USER:$APACHE_USER $INSTALL_DIR/database/
+    touch /var/log/newfies/newfies-django.log
+    chown $APACHE_USER:$APACHE_USER /var/log/newfies/newfies-django.log
+    touch /var/log/newfies/newfies-django-db.log
+    chown $APACHE_USER:$APACHE_USER /var/log/newfies/newfies-django-db.log
+    touch /var/log/newfies/err-apache-newfies.log
+    chown $APACHE_USER:$APACHE_USER /var/log/newfies/err-apache-newfies.log
 
     python manage.py syncdb --noinput
     python manage.py migrate

@@ -38,7 +38,6 @@ MYHOST=
 MYHOSTPORT=
 #Freeswitch update vars
 FS_INSTALLED_PATH=/usr/local/freeswitch
-NEWFIES_CDR_API='api\/v1\/store_cdr\/'
 
 CELERYD_USER="celery"
 CELERYD_GROUP="celery"
@@ -380,12 +379,13 @@ func_install_frontend(){
     IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
     IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
     
-    #Update Freeswitch XML CDR
-    CDR_API_URL="http:\/\/$IPADDR:9080\/$NEWFIES_CDR_API"
-    cd "$FS_INSTALLED_PATH/conf/autoload_configs/"
-    sed -i "s/NEWFIES_API_STORE_CDR/$CDR_API_URL/g" xml_cdr.conf.xml
-    
-    #Update API username and password
+    ##Update Freeswitch XML CDR
+    #NEWFIES_CDR_API='api\/v1\/store_cdr\/'
+    #CDR_API_URL="http:\/\/$IPADDR:9080\/$NEWFIES_CDR_API"
+    #cd "$FS_INSTALLED_PATH/conf/autoload_configs/"
+    #sed -i "s/NEWFIES_API_STORE_CDR/$CDR_API_URL/g" xml_cdr.conf.xml
+    #
+    ##Update API username and password
     #sed -i "s/APIUSERNAME/$APIUSERNAME/g" xml_cdr.conf.xml
     #sed -i "s/APIPASSWORD/$APIPASSWORD/g" xml_cdr.conf.xml
     

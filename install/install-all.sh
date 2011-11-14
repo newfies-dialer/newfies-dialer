@@ -49,11 +49,11 @@ read TEMP
 case $DIST in
     'DEBIAN')
         apt-get -y update
-        apt-get -y install vim
+        apt-get -y install vim git-core
     ;;
     'CENTOS')
         yum -y update
-        yum -y install mlocate vim
+        yum -y install mlocate vim git-core
     ;;
 esac
 

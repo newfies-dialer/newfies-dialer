@@ -6,10 +6,12 @@ from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.db.models import *
 from django.template.context import RequestContext
 from django.utils.translation import ugettext_lazy as _
+from django.utils import simplejson
+from django.db.models import Q
 from notification import models as notification
 from dialer_campaign.models import common_contact_authorization
 from dialer_campaign.views import current_view, notice_count
-from dialer_campaign.function_def import user_dialer_setting_msg
+from dialer_campaign.function_def import user_dialer_setting_msg, variable_value
 from dialer_settings.models import DialerSetting
 from user_profile.models import UserProfile
 from user_profile.forms import *
@@ -106,6 +108,78 @@ def customer_detail_change(request):
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))
+
+def call_style(val):
+    unseen_style = 'style="text-decoration:none;background-image:url(' + \
+                    settings.STATIC_URL + 'newfies/icons/new.png);"'
+    seen_style = 'style="text-decoration:none;background-image:url(' + \
+                    settings.STATIC_URL + 'newfies/icons/tick.png);"'
+    if val == 1:
+        return unseen_style
+    else:
+        return seen_style
+
+# Notification
+@login_required
+def notification_grid(request):
+    """notification list in json format for flexigrid
+
+    **Model**: notification.Notice
+    """
+    page = variable_value(request, 'page')
+    rp = variable_value(request, 'rp')
+    sortname = variable_value(request, 'sortname')
+    sortorder = variable_value(request, 'sortorder')
+    query = variable_value(request, 'query')
+    qtype = variable_value(request, 'qtype')
+
+    # page index
+    if int(page) > 1:
+        start_page = (int(page) - 1) * int(rp)
+        end_page = start_page + int(rp)
+    else:
+        start_page = int(0)
+        end_page = int(rp)
+
+
+    #notification_list = []
+    sortorder_sign = ''
+    if sortorder == 'desc':
+        sortorder_sign = '-'
+
+    user_notification = \
+    notification.Notice.objects.filter(recipient=request.user)
+    # Search on sender name
+    q = (Q(sender=request.user))
+    if q:
+        user_notification = user_notification.filter(q)
+
+    count = user_notification.count()
+    user_notification_list = \
+        user_notification.order_by(sortorder_sign + sortname)[start_page:end_page]
+
+
+
+    rows = [{'id': row.id,
+             'cell': ['<input type="checkbox" name="select" class="checkbox"\
+                      value="' + str(row.id) + '" />',
+                      row.id,
+                      row.message,
+                      str(row.notice_type),
+                      str(row.sender),
+                      str(row.added),
+                      str('<a href="../update_notice_status_cust/' + str(row.id) + '/" class="icon" ' + call_style(row.unseen)\
+                          + ' onClick="return get_alert_msg(' + \
+                          str(row.id) + ');">&nbsp;</a>'),
+
+             ]}for row in user_notification_list ]
+
+    data = {'rows': rows,
+            'page': page,
+            'total': count}
+    
+    return HttpResponse(simplejson.dumps(data), mimetype='application/json',
+                        content_type="application/json")
 
 
 @login_required

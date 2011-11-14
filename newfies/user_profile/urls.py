@@ -10,6 +10,7 @@ urlpatterns = patterns('',
 
 (r'^user_detail_change/', include('notification.urls')),
 (r'^view_notification/(?P<id>[^/]+)', 'user_profile.views.view_notification'),
+(r'^notification_grid/$', 'user_profile.views.notification_grid'),
 
 # Notification Status (seen/unseen) for customer UI
 (r'^update_notice_status_cust/(\d*)/$',

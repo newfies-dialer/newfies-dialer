@@ -28,3 +28,18 @@ else
     echo ""
     exit 1
 fi
+
+
+declare -i PY_MAJOR_VERSION
+declare -i PY_MINOR_VERSION
+PY_MAJOR_VERSION=$(python -V 2>&1 |sed -e 's/Python[[:space:]]\+\([0-9]\)\..*/\1/')
+PY_MINOR_VERSION=$(python -V 2>&1 |sed -e 's/Python[[:space:]]\+[0-9]\+\.\([0-9]\+\).*/\1/')
+
+if [ $PY_MAJOR_VERSION -ne 2 ] || [ $PY_MINOR_VERSION -lt 4 ]; then
+    echo ""
+    echo "Python version supported between 2.4.X - 2.7.X"
+    echo "Please install a compatible version of python."
+    echo ""
+    exit 1
+fi
+

@@ -43,6 +43,8 @@ CELERYD_USER="celery"
 CELERYD_GROUP="celery"
 
 NEWFIES_ENV="newfies-dialer"
+
+
 #------------------------------------------------------------------------------------
 
 
@@ -160,14 +162,15 @@ func_install_frontend(){
             # SET APACHE CONF
             APACHE_CONF_DIR="/etc/httpd/conf.d/"
             
-            yum -y install python-setuptools python-tools python-devel mod_python
-            #Install PIP
-            rpm -ivh http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-4.noarch.rpm 
-            # disable epel repository since by default it is enabled. It is not recommended to keep 
-            # non standard repositories activated. Use it just in case you need.
-            sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo 
+            ##Not needed with CentOS 6.X
+            #rpm -ivh http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-4.noarch.rpm 
+            ## disable epel repository since by default it is enabled. 
+            #sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo
+            #yum --enablerepo=epel install python-pip
             
-            yum --enablerepo=epel install python-pip
+            #Install Python dep  and pip
+            yum -y install python-setuptools python-tools python-devel mod_python
+            yum -y install python-pip
 
             if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
                  yum -y install sqlite

@@ -22,6 +22,10 @@
 #TODO: 
 
 
+#run common script
+source "$PWD/install-common.sh"
+
+
 FS_CONF_PATH=https://raw.github.com/Star2Billing/newfies-dialer/master/install/freeswitch-conf
 FS_INIT_PATH=https://raw.github.com/Star2Billing/newfies-dialer/master/install/freeswitch-init
 FS_GIT_REPO=git://git.freeswitch.org/freeswitch.git
@@ -32,19 +36,6 @@ FS_BASE_PATH=/usr/src/
 #####################################################
 
 CURRENT_PATH=$PWD
-
-# Identify Linux Distribution
-if [ -f /etc/debian_version ] ; then
-    DIST="DEBIAN"
-elif [ -f /etc/redhat-release ] ; then
-    DIST="CENTOS"
-else
-    echo ""
-    echo "This Installer should be run on a CentOS or a Debian based system"
-    echo ""
-    exit 1
-fi
-
 
 clear
 echo ""

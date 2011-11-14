@@ -47,17 +47,9 @@ NEWFIES_ENV="newfies-dialer"
 #------------------------------------------------------------------------------------
 
 
-# Identify Linux Distribution type
-if [ -f /etc/debian_version ] ; then
-    DIST='DEBIAN'
-elif [ -f /etc/redhat-release ] ; then
-    DIST='CENTOS'
-else
-    echo ""
-    echo "This Installer should be run on a CentOS or a Debian based system"
-    echo ""
-    exit 1
-fi
+#run common script
+source "$PWD/install-common.sh"
+
 
 #Function mysql db setting
 func_mysql_database_setting() {

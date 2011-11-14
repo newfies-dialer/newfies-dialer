@@ -22,17 +22,8 @@
 #------------------------------------------------------------------------------------
 
 
-# Identify Linux Distribution type
-if [ -f /etc/debian_version ] ; then
-    DIST='DEBIAN'
-elif [ -f /etc/redhat-release ] ; then
-    DIST='CENTOS'
-else
-    echo ""
-    echo "This Installer should be run on a CentOS or a Debian based system"
-    echo ""
-    exit 1
-fi
+#run common script
+source "$PWD/install-common.sh"
 
 
 echo ""
@@ -66,10 +57,13 @@ bash plivo_install_beta.sh /usr/share/plivo
 bash install-newfies.sh
 
 
-#To Start Plivo:
-/etc/init.d/plivo start
 
-#To Start Plivo cache server:
+#Stop Plivo & Cache Server
+/etc/init.d/plivo stop
+/etc/init.d/plivocache stop
+
+#Start Plivo & Cache Server
+/etc/init.d/plivo start
 /etc/init.d/plivocache start
 
 

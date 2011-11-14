@@ -64,10 +64,12 @@ case $DIST in
     'DEBIAN')
         SCRIPT_VIRTUALENVWRAPPER="/usr/local/bin/virtualenvwrapper.sh"
         APACHE_USER="www-data"
+        WSGI_ADDITIONAL=""
     ;;
     'CENTOS')
         SCRIPT_VIRTUALENVWRAPPER="/usr/bin/virtualenvwrapper.sh"
         APACHE_USER="apache"
+        WSGI_ADDITIONAL="WSGISocketPrefix run/wsgi"
     ;;
 esac
 
@@ -192,6 +194,9 @@ func_install_frontend(){
             else
                  yum -y install mysql-server mysql-devel
             fi
+            
+            chkconfig --levels 235 mysqld on
+            chkconfig --levels 235 httpd on
         ;;
     esac
     
@@ -320,13 +325,13 @@ func_install_frontend(){
     #following line is for SQLite
     mkdir database
     chown -R $APACHE_USER:$APACHE_USER $INSTALL_DIR/database/
+    
+    #following lines is for apache logs
     touch /var/log/newfies/newfies-django.log
-    chown $APACHE_USER:$APACHE_USER /var/log/newfies/newfies-django.log
     touch /var/log/newfies/newfies-django-db.log
-    chown $APACHE_USER:$APACHE_USER /var/log/newfies/newfies-django-db.log
     touch /var/log/newfies/err-apache-newfies.log
-    chown $APACHE_USER:$APACHE_USER /var/log/newfies/err-apache-newfies.log
-
+    chown -R $APACHE_USER:$APACHE_USER /var/log/newfies
+    
     python manage.py syncdb --noinput
     python manage.py migrate
     echo ""
@@ -351,6 +356,8 @@ func_install_frontend(){
     # prepare Apache
     echo "Prepare Apache configuration..."
     echo '
+    '$WSGI_ADDITIONAL'
+    
     Listen *:9080
     
     <VirtualHost *:9080>

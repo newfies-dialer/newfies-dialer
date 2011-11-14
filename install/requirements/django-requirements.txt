@@ -6,6 +6,7 @@ django-urlauth==0.1.8
 django-uuidfield
 django-chart-tools
 django-memcache-status
+django-cache-utils
 django-picklefield
 django-jsonfield==0.6
 hg+https://bitbucket.org/izi/django-admin-tools

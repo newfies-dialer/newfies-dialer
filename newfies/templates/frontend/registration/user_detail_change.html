@@ -92,10 +92,16 @@ $(function() {
         </form>
 	</div>
 	<div id="tabs-3">
-        
+
+        {% if msg_note %}
+        <div class="success">
+                <strong>{% trans "Alert" %} : </strong>  {{ msg_note }}
+        </div>
+        {% endif %}
 
         <form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">
         {% csrf_token %}
+        <input type="hidden" name="form-type" value="notificaation_list" />
         <table id="flex1" align="left" style="display:none;"></table>
         </form>
         <script type="text/javascript">

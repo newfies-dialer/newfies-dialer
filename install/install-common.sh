@@ -43,3 +43,15 @@ if [ $PY_MAJOR_VERSION -ne 2 ] || [ $PY_MINOR_VERSION -lt 4 ]; then
     exit 1
 fi
 
+
+# Set Script for virtualenv
+case $DIST in
+    'DEBIAN')
+        SCRIPT_VIRTUALENVWRAPPER="/usr/local/bin/virtualenvwrapper.sh"
+    ;;
+    'CENTOS')
+        SCRIPT_VIRTUALENVWRAPPER="/usr/bin/virtualenvwrapper.sh"
+    ;;
+esac
+
+

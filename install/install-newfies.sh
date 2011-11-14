@@ -44,6 +44,7 @@ CELERYD_GROUP="celery"
 
 NEWFIES_ENV="newfies-dialer"
 
+SCRIPT_VIRTUALENVWRAPPER=""
 
 #------------------------------------------------------------------------------------
 
@@ -101,12 +102,12 @@ func_setup_virtualenv() {
     if [ $chk -lt 1 ] ; then
         echo "Set Virtualenvwrapper into bash"
         echo "export WORKON_HOME=\/usr\/share\/virtualenvs" >> ~/.bashrc
-        echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
+        echo "source $SCRIPT_VIRTUALENVWRAPPER" >> ~/.bashrc
     fi
     
     # Setup virtualenv
     export WORKON_HOME=/usr/share/virtualenvs
-    source /usr/local/bin/virtualenvwrapper.sh
+    source $SCRIPT_VIRTUALENVWRAPPER
 
     mkvirtualenv --no-site-packages $NEWFIES_ENV
     workon $NEWFIES_ENV

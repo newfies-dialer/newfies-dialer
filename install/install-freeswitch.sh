@@ -145,8 +145,10 @@ cd $FS_INSTALLED_PATH/conf/autoload_configs/
 cd $CURRENT_PATH
 
 #Add alias fs_cli
-echo "alias fs_cli='/usr/local/freeswitch/bin/fs_cli'" >> ~/.bashrc
-    
+chk=`grep "fs_cli" ~/.bashrc|wc -l`
+if [ $chk -lt 1 ] ; then
+    echo "alias fs_cli='/usr/local/freeswitch/bin/fs_cli'" >> ~/.bashrc
+fi    
 
 #Install init.d script
 wget --no-check-certificate $FS_INIT_PATH/freeswitch -O /etc/init.d/freeswitch

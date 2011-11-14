@@ -169,8 +169,7 @@ def notification_grid(request):
                       str(row.sender),
                       str(row.added),
                       str('<a href="../update_notice_status_cust/' + str(row.id) + '/" class="icon" ' + call_style(row.unseen)\
-                          + ' onClick="return get_alert_msg(' + \
-                          str(row.id) + ');">&nbsp;</a>'),
+                          + ' ">&nbsp;</a>'),
 
              ]}for row in user_notification_list ]
 
@@ -180,6 +179,51 @@ def notification_grid(request):
     
     return HttpResponse(simplejson.dumps(data), mimetype='application/json',
                         content_type="application/json")
+
+
+
+@login_required
+def notification_del_read(request, object_id):
+    """Delete notification for the logged in user
+
+    **Attributes**:
+
+        * ``object_id`` - Selected notification object
+        * ``object_list`` - Selected notification objects
+
+    **Logic Description**:
+
+        * Delete/Mark as Read the selected notification from the notification list
+    """
+    try:
+        # When object_id is not 0
+        notification_obj = notification.Notice.objects.get(pk=object_id)
+        # Delete/Read notification
+        if object_id:
+            if request.POST.get('read_all') == 'false':
+                request.session["msg"] = _('"%(name)s" is deleted successfully.') \
+                % {'name': notification_obj.notice_type}
+                notification_obj.delete()
+            else:
+                request.session["msg"] = _('"%(name)s" is marked as read successfully.') \
+                % {'name': notification_obj.notice_type}
+                notification_obj.update(unseen=0)
+
+            return HttpResponseRedirect('/user_detail_change/?selected=2')
+    except:
+        # When object_id is 0 (Multiple recrod delete/mark as read)
+        values = request.POST.getlist('select')
+        values = ", ".join(["%s" % el for el in values])
+        notification_list = notification.Notice.objects.extra(where=['id IN (%s)' % values])
+        if request.POST.get('read_all') == 'false':
+            request.session["msg"] = _('%(count)s notification(s) are deleted successfully.')\
+            % {'count': notification_list.count()}
+            notification_list.delete()
+        else:
+            request.session["msg"] = _('%(count)s notification(s) are marked as read successfully.')\
+            % {'count': notification_list.count()}
+            notification_list.update(unseen=0)
+        return HttpResponseRedirect('/user_detail_change/?selected=2')
 
 
 @login_required

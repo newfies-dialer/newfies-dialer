@@ -51,6 +51,17 @@ $(document).ready(function() {
              {
                  confirm_string = 'you are going to delete '+$fields.length+' campaign(s)'
              }
+
+             if(document.location.href.search("/user_detail_change/") != -1)
+             {
+                 confirm_string = 'you are going to delete '+$fields.length+' notification(s)'
+                 
+                 if(document.getElementById('id_read_all').value == 'true')
+                 {
+                   confirm_string = 'you are going to mark  '+$fields.length+' notification(s) as read'
+                 }
+             }
+
              var answer = confirm(confirm_string);             
              return answer // answer is a boolean
         }

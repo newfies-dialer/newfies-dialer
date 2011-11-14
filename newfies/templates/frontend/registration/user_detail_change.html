@@ -16,7 +16,7 @@
 <script type="text/javascript" language="javascript">
 function get_alert_msg(id)
 {
-    confirm_string = '{% trans "you are going to delete a campaign" %}';
+    confirm_string = '{% trans "you are going to delete a notification" %}';
     var answer = confirm(confirm_string);
     return answer // answer is a boolean
 }
@@ -92,40 +92,7 @@ $(function() {
         </form>
 	</div>
 	<div id="tabs-3">
-        <!--<table id="rounded-corner" style="width:550px;">
-        <thead>
-        <tr>
-            <th class="rounded-company">{% trans "ID" %}</th>
-            <th class="rounded-q1">{% trans "Message" %}</th>
-            <th class="rounded-q2">{% trans "Notification type" %}</th>
-            <th class="rounded-q3">{% trans "Sender" %}</th>
-            <th class="rounded-q3">{% trans "Notification date" %}</th>
-            <th class="rounded-q4">{% trans "Status" %}</th>
-        </tr>
-        </thead>
-        {% autopaginate user_notification 10 %}
-		{% if user_notification %}
-            {% for note in user_notification %}
-            <tr>
-                <td>{{ note.id }}</td>
-                <td>{{ note.message }}</td>
-                <td>{{ note.notice_type }}</td>
-                <td>{{ note.sender }}</td>
-                <td>{{ note.added|timesince }}</td>
-                <td>
-                    {% if note.unseen == 1 %}
-                        <a href='../update_notice_status_cust/{{ note.id }}/' title="Unseen" {% icon 'new' %}>&nbsp;</a>
-                    {% else %}
-                        <a href='../update_notice_status_cust/{{ note.id }}/' title="Seen" {% icon 'tick' %}>&nbsp;</a>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-            <tr><td colspan=6 align=center>{% paginate %}</td></tr>
-        {% else %}
-            <tr><td colspan=6 align=center>{% trans "No Record(s) found." %}</td></tr>
-        {% endif %}
-       </table>-->
+        
 
         <form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">
         {% csrf_token %}
@@ -148,7 +115,9 @@ $(function() {
                 {display: '{% trans "Action" %}', name: '', width : 50, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
                 ],
             buttons : [
-                {name: '{% trans "Delete Selected" %}', bclass: 'delete', onpress : delete_button},
+                {name: '{% trans "Delete all notification" %}', bclass: 'delete', onpress : delete_button},
+                {separator: true},
+                {name: '{% trans "Mark all as read" %}', bclass: 'add', onpress : read_all_button},
                 ],
             sortname: "id",
             sortorder: "desc",
@@ -174,12 +143,25 @@ $(function() {
         });
 
 
-        function add_button()
+        function read_all_button()
         {
-            window.location = 'add/';
+            $('<input>').attr({
+                type: 'hidden',
+                id: 'id_read_all',
+                name: 'read_all',
+                value: 'true',
+            }).appendTo('#ListForm');
+
+            $('#ListForm').submit();
         }
         function delete_button()
         {
+            $('<input>').attr({
+                type: 'hidden',
+                id: 'id_read_all',
+                name: 'read_all',
+                value: 'false',
+            }).appendTo('#ListForm');
             $('#ListForm').submit();
         }
 

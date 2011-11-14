@@ -197,7 +197,7 @@ else:
     DEBUG_TOOLBAR_CONFIG = {
         'INTERCEPT_REDIRECTS': False,
     }
-    
+
 # Django extensions
 try:
     import django_extensions

@@ -119,7 +119,7 @@ func_setup_virtualenv() {
     chk=`grep "virtualenvwrapper" ~/.bashrc|wc -l`
     if [ $chk -lt 1 ] ; then
         echo "Set Virtualenvwrapper into bash"
-        echo "export WORKON_HOME=\/usr\/share\/virtualenvs" >> ~/.bashrc
+        echo "export WORKON_HOME=/usr/share/virtualenvs" >> ~/.bashrc
         echo "source $SCRIPT_VIRTUALENVWRAPPER" >> ~/.bashrc
     fi
     
@@ -194,7 +194,7 @@ func_install_frontend(){
             if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
                  yum -y install sqlite
             else
-                 yum -y install mysql-server
+                 yum -y install mysql-server mysql-devel
                  func_mysql_database_setting
             fi
         ;;

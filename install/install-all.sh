@@ -54,7 +54,7 @@ case $DIST in
     'CENTOS')
         yum -y update
         yum -y install mlocate vim
-        
+    ;;
 esac
 
 

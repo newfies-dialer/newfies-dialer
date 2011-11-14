@@ -174,7 +174,6 @@ func_install_frontend(){
                  apt-get install sqlite3 libsqlite3-dev
             else
                  apt-get -y install mysql-server libmysqlclient-dev
-                 func_mysql_database_setting
             fi
         ;;
         'CENTOS')
@@ -195,10 +194,14 @@ func_install_frontend(){
                  yum -y install sqlite
             else
                  yum -y install mysql-server mysql-devel
-                 func_mysql_database_setting
             fi
         ;;
     esac
+    
+    #Start Mysql 
+    /etc/init.d/mysqld start
+    /usr/bin/mysql_secure_installation
+    func_mysql_database_setting
 
     if [ -d "$INSTALL_DIR" ]; then
         # Newfies is already installed

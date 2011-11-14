@@ -185,7 +185,7 @@ func_install_frontend(){
             #Install Python dep  and pip
             yum -y install python-setuptools python-tools python-devel mod_python
             yum -y install python-pip
-            yum -y install mercurial python26-mod_wsgi
+            yum -y install mercurial mod_wsgi
 
             if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
                  yum -y install sqlite
@@ -365,7 +365,7 @@ func_install_frontend(){
         </Location>
 
         WSGIPassAuthorization On
-        WSGIDaemonProcess newfies user=www-data user=www-data threads=25
+        WSGIDaemonProcess newfies user='$APACHE_USER' user='$APACHE_USER' threads=25
         WSGIProcessGroup newfies
         WSGIScriptAlias / '$INSTALL_DIR'/django.wsgi
 

@@ -415,7 +415,6 @@ func_install_frontend(){
     sed -i "s/#'SERVER_IP',/'$IPADDR',/g" $INSTALL_DIR/settings_local.py
     sed -i "s/dummy/plivo/g" $INSTALL_DIR/settings_local.py
     
-    
     case $DIST in
         'DEBIAN')
             service apache2 restart
@@ -430,6 +429,7 @@ func_install_frontend(){
             
             #Selinux to allow apache to access this directory
             chcon -Rv --type=httpd_sys_content_t /usr/share/virtualenvs/newfies-dialer/
+            semanage port -a -t http_port_t -p tcp $HTTP_PORT
             service httpd restart
         ;;
     esac

@@ -592,7 +592,6 @@ while [ $ExitFinish -eq 0 ]; do
 			func_install_frontend
 			func_install_backend
 			echo done
-#			exit
 		;;
 		2) 
 			func_install_frontend

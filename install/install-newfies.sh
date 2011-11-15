@@ -485,10 +485,10 @@ func_install_backend() {
     echo "Configure Celery..."
 
     # Add init-scripts
-    cp /usr/src/newfies-dialer/install/celery-init/etc/default/newfies-celeryd /etc/default/
-    cp /usr/src/newfies-dialer/install/celery-init/etc/init.d/newfies-celeryd /etc/init.d/
+    cp /usr/src/newfies-dialer/install/celery-init/debian/etc/default/newfies-celeryd /etc/default/
+    cp /usr/src/newfies-dialer/install/celery-init/debian/etc/init.d/newfies-celeryd /etc/init.d/
     #celerybeat script disabled
-    #cp /usr/src/newfies-dialer/install/celery-init/etc/init.d/newfies-celerybeat /etc/init.d/
+    #cp /usr/src/newfies-dialer/install/celery-init/debian/etc/init.d/newfies-celerybeat /etc/init.d/
 
     # Configure init-scripts
     sed -i "s/CELERYD_USER='celery'/CELERYD_USER='$CELERYD_USER'/g"  /etc/default/newfies-celeryd

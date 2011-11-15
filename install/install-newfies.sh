@@ -44,6 +44,8 @@ CELERYD_GROUP="celery"
 
 NEWFIES_ENV="newfies-dialer"
 
+HTTP_PORT="8008"
+
 #------------------------------------------------------------------------------------
 
 
@@ -108,11 +110,10 @@ func_mysql_database_setting() {
 }
 
 func_iptables_configuration() {
-    #add 8008 port
-    iptables -A INPUT -p tcp -m tcp --dport 8008 -j ACCEPT
-
+    #add http port
+    iptables -A INPUT -p tcp -m tcp --dport $HTTP_PORT -j ACCEPT
+    
     service iptables save
-    service iptables restart
 }
 
 #Fuction to create the virtual env
@@ -366,9 +367,9 @@ func_install_frontend(){
     echo '
     '$WSGI_ADDITIONAL'
     
-    Listen *:8008
+    Listen *:'$HTTP_PORT'
     
-    <VirtualHost *:8008>
+    <VirtualHost *:'$HTTP_PORT'>
         DocumentRoot '$INSTALL_DIR'/
         ErrorLog /var/log/newfies/err-apache-newfies.log
         LogLevel warn
@@ -396,13 +397,32 @@ func_install_frontend(){
     #correct the above file
     sed -i "s/@/'/g"  $APACHE_CONF_DIR/newfies.conf
     
+    IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
+    IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
+    
+    ##Update Freeswitch XML CDR
+    #NEWFIES_CDR_API='api\/v1\/store_cdr\/'
+    #CDR_API_URL="http:\/\/$IPADDR:$HTTP_PORT\/$NEWFIES_CDR_API"
+    #cd "$FS_INSTALLED_PATH/conf/autoload_configs/"
+    #sed -i "s/NEWFIES_API_STORE_CDR/$CDR_API_URL/g" xml_cdr.conf.xml
+    #
+    ##Update API username and password
+    #sed -i "s/APIUSERNAME/$APIUSERNAME/g" xml_cdr.conf.xml
+    #sed -i "s/APIPASSWORD/$APIPASSWORD/g" xml_cdr.conf.xml
+    
+    #Update for Plivo URL & Authorize local IP
+    sed -i "s/SERVER_IP_PORT/$IPADDR:$HTTP_PORT/g" $INSTALL_DIR/settings_local.py
+    sed -i "s/#'SERVER_IP',/'$IPADDR',/g" $INSTALL_DIR/settings_local.py
+    sed -i "s/dummy/plivo/g" $INSTALL_DIR/settings_local.py
+    
+    
     case $DIST in
         'DEBIAN')
             service apache2 restart
         ;;
         'CENTOS')
             echo ""
-            echo "We will now add 8008 port to your Firewall"
+            echo "We will now add $HTTP_PORT port to your Firewall"
             echo "Press Enter to continue or CTRL-C to exit"
             read TEMP
         
@@ -413,24 +433,6 @@ func_install_frontend(){
             service httpd restart
         ;;
     esac
-
-    IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
-    IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
-    
-    ##Update Freeswitch XML CDR
-    #NEWFIES_CDR_API='api\/v1\/store_cdr\/'
-    #CDR_API_URL="http:\/\/$IPADDR:9080\/$NEWFIES_CDR_API"
-    #cd "$FS_INSTALLED_PATH/conf/autoload_configs/"
-    #sed -i "s/NEWFIES_API_STORE_CDR/$CDR_API_URL/g" xml_cdr.conf.xml
-    #
-    ##Update API username and password
-    #sed -i "s/APIUSERNAME/$APIUSERNAME/g" xml_cdr.conf.xml
-    #sed -i "s/APIPASSWORD/$APIPASSWORD/g" xml_cdr.conf.xml
-    
-    #Update for Plivo URL & Authorize local IP
-    sed -i "s/SERVER_IP_PORT/$IPADDR:9080/g" $INSTALL_DIR/settings_local.py
-    sed -i "s/#'SERVER_IP',/'$IPADDR',/g" $INSTALL_DIR/settings_local.py
-    sed -i "s/dummy/plivo/g" $INSTALL_DIR/settings_local.py
     
 
     echo ""

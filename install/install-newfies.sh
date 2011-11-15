@@ -484,31 +484,66 @@ func_install_backend() {
     echo ""
     echo "Configure Celery..."
 
-    # Add init-scripts
-    cp /usr/src/newfies-dialer/install/celery-init/debian/etc/default/newfies-celeryd /etc/default/
-    cp /usr/src/newfies-dialer/install/celery-init/debian/etc/init.d/newfies-celeryd /etc/init.d/
-    #celerybeat script disabled
-    #cp /usr/src/newfies-dialer/install/celery-init/debian/etc/init.d/newfies-celerybeat /etc/init.d/
-
-    # Configure init-scripts
-    sed -i "s/CELERYD_USER='celery'/CELERYD_USER='$CELERYD_USER'/g"  /etc/default/newfies-celeryd
-    sed -i "s/CELERYD_GROUP='celery'/CELERYD_GROUP='$CELERYD_GROUP'/g"  /etc/default/newfies-celeryd
-
-    chmod +x /etc/default/newfies-celeryd
-    chmod +x /etc/init.d/newfies-celeryd
-    #celerybeat script disabled
-    #chmod +x /etc/init.d/newfies-celerybeat
-
-    #Debug
-    #python $INSTALL_DIR/manage.py celeryd -E -B -l debug
-
-    /etc/init.d/newfies-celeryd restart
-    #celerybeat script disabled
-    #/etc/init.d/newfies-celerybeat restart
     
-    cd /etc/init.d; update-rc.d newfies-celeryd defaults 99
-    #celerybeat script disabled
-    #cd /etc/init.d; update-rc.d newfies-celerybeat defaults 99
+    case $DIST in
+        'DEBIAN')
+            # Add init-scripts
+            cp /usr/src/newfies-dialer/install/celery-init/debian/etc/default/newfies-celeryd /etc/default/
+            cp /usr/src/newfies-dialer/install/celery-init/debian/etc/init.d/newfies-celeryd /etc/init.d/
+            #celerybeat script disabled
+            #cp /usr/src/newfies-dialer/install/celery-init/debian/etc/init.d/newfies-celerybeat /etc/init.d/
+
+            # Configure init-scripts
+            sed -i "s/CELERYD_USER='celery'/CELERYD_USER='$CELERYD_USER'/g"  /etc/default/newfies-celeryd
+            sed -i "s/CELERYD_GROUP='celery'/CELERYD_GROUP='$CELERYD_GROUP'/g"  /etc/default/newfies-celeryd
+
+            chmod +x /etc/default/newfies-celeryd
+            chmod +x /etc/init.d/newfies-celeryd
+            #celerybeat script disabled
+            #chmod +x /etc/init.d/newfies-celerybeat
+
+            #Debug
+            #python $INSTALL_DIR/manage.py celeryd -E -B -l debug
+
+            /etc/init.d/newfies-celeryd restart
+            #celerybeat script disabled
+            #/etc/init.d/newfies-celerybeat restart
+            
+            cd /etc/init.d; update-rc.d newfies-celeryd defaults 99
+            #celerybeat script disabled
+            #cd /etc/init.d; update-rc.d newfies-celerybeat defaults 99
+        ;;
+        'CENTOS')
+            # Add init-scripts
+            cp /usr/src/newfies-dialer/install/celery-init/centos/etc/default/newfies-celeryd /etc/default/
+            cp /usr/src/newfies-dialer/install/celery-init/centos/etc/init.d/newfies-celeryd /etc/init.d/
+            #celerybeat script disabled
+            #cp /usr/src/newfies-dialer/install/celery-init/centos/etc/init.d/newfies-celerybeat /etc/init.d/
+
+            # Configure init-scripts
+            sed -i "s/CELERYD_USER='celery'/CELERYD_USER='$CELERYD_USER'/g"  /etc/default/newfies-celeryd
+            sed -i "s/CELERYD_GROUP='celery'/CELERYD_GROUP='$CELERYD_GROUP'/g"  /etc/default/newfies-celeryd
+
+            chmod +x /etc/default/newfies-celeryd
+            chmod +x /etc/init.d/newfies-celeryd
+            #celerybeat script disabled
+            #chmod +x /etc/init.d/newfies-celerybeat
+
+            #Debug
+            #python $INSTALL_DIR/manage.py celeryd -E -B -l debug
+
+            /etc/init.d/newfies-celeryd restart
+            #celerybeat script disabled
+            #/etc/init.d/newfies-celerybeat restart
+            
+            chkconfig --add newfies-celeryd
+            chkconfig --level 2345 newfies-celeryd on
+            
+            #celerybeat script disabled
+            #chkconfig --add newfies-celerybeat
+            #chkconfig --level 2345 newfies-celerybeat on
+        ;;
+    esac
 
     echo ""
     echo ""

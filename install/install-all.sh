@@ -54,6 +54,7 @@ case $DIST in
     'CENTOS')
         yum -y update
         yum -y install mlocate vim git-core
+        yum -y install policycoreutils-python
     ;;
 esac
 

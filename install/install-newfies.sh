@@ -187,10 +187,11 @@ func_install_frontend(){
             # SET APACHE CONF
             APACHE_CONF_DIR="/etc/httpd/conf.d/"
             
-            ##Not needed with CentOS 6.X
-            #rpm -ivh http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-4.noarch.rpm 
-            ## disable epel repository since by default it is enabled. 
-            #sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo
+            
+            #TODO : Check architecture
+            rpm -ivh http://download.fedora.redhat.com/pub/epel/6/x86_64/epel-release-6-5.noarch.rpm
+            # disable epel repository since by default it is enabled. 
+            sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo
             #yum --enablerepo=epel install python-pip
             
             #Install Python dep  and pip
@@ -565,37 +566,44 @@ func_install_backend() {
 
 #Install recent version of redis-server
 func_install_redis_server() {
-    #TODO : Verify this work on CentOS
-    cd /usr/src
-    wget http://redis.googlecode.com/files/redis-2.2.11.tar.gz
-    tar -zxf redis-2.2.11.tar.gz
-    cd redis-2.2.11
-    make
-    make install
-
-    cp /usr/src/newfies-dialer/install/redis/etc/redis.conf /etc/redis.conf
-    cp /usr/src/newfies-dialer/install/redis/etc/init.d/redis-server /etc/init.d/redis-server
-    chmod +x /etc/init.d/redis-server
-
-    useradd redis
-    mkdir -p /var/lib/redis
-    mkdir -p /var/log/redis
-    chown redis.redis /var/lib/redis
-    chown redis.redis /var/log/redis
-    
     case $DIST in
         'DEBIAN')
+            cd /usr/src
+            wget http://redis.googlecode.com/files/redis-2.2.11.tar.gz
+            tar -zxf redis-2.2.11.tar.gz
+            cd redis-2.2.11
+            make
+            make install
+
+            cp /usr/src/newfies-dialer/install/redis/debian/etc/redis.conf /etc/redis.conf
+            cp /usr/src/newfies-dialer/install/redis/debian/etc/init.d/redis-server /etc/init.d/redis-server
+            chmod +x /etc/init.d/redis-server
+
+            useradd redis
+            mkdir -p /var/lib/redis
+            mkdir -p /var/log/redis
+            chown redis.redis /var/lib/redis
+            chown redis.redis /var/log/redis
+            
             cd /etc/init.d/
             update-rc.d -f redis-server defaults
+
+            #Start redis-server
+            /etc/init.d/redis-server start
         ;;
-        'CENTOS')    
-            chkconfig --add redis-server
-	        chkconfig --level 2345 redis-server on
+        'CENTOS')
+            #install redis
+            yum -y --enablerepo=epel install redis
+            
+            chkconfig --add redis
+            chkconfig --level 2345 redis on
+            
+            /etc/init.d/redis start
+            #Fixme : /etc/init.d/redis
+            # pid seems to point at wrong place
+            # not critical but /etc/init.d/redis status won't work
         ;;
     esac
-
-    #Start redis-server
-    /etc/init.d/redis-server start
 }
 
 

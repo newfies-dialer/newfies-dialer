@@ -40,9 +40,9 @@ class VoIPCallAdmin(admin.ModelAdmin):
     of a VoIPCall."""
     can_add = False
     detail_title = _("Call Report")
-    list_display = ('id', 'user_link', 'leg_type', 'used_gateway_link', 'callid', 'callerid',
-                    'phone_number', 'starting_date', 'min_duration',
-                    'billsec', 'disposition', 'hangup_cause',
+    list_display = ('id', 'user_link', 'leg_type', 'used_gateway_link', 
+                    'callid', 'callerid', 'phone_number', 'starting_date', 
+                    'min_duration', 'billsec', 'disposition', 'hangup_cause',
                     'hangup_cause_q850')
 
     def user_link(self, obj):

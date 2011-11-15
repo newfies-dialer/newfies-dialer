@@ -25,7 +25,7 @@ def voipcall_report_grid(request):
 
     **Fields**: [id, user__username, used_gateway__name, callid, request_uuid,
                  callerid, phone_number, starting_date, sessiontime,
-                 disposition]
+                 disposition, leg_type]
 
     **Logic Description**:
 
@@ -114,13 +114,14 @@ def voipcall_report_grid(request):
             kwargs['starting_date__gte'] = datetime(tday.year,
                                                     tday.month,
                                                     tday.day, 0, 0, 0, 0)
-
-    voipcall_list = VoIPCall.objects.values('id', 'user__username',
-                    'used_gateway__name', 'callid', 'request_uuid', 'callerid',
-                    'phone_number', 'starting_date', 'duration',
-                    'billsec', 'disposition', 'hangup_cause',
-                    'hangup_cause_q850').filter(**kwargs)
-
+    
+    voipcall_list = VoIPCall.objects.filter(**kwargs)
+    
+    #obj = VoIPCall.objects.all()
+    #print voipcall_list[0].get_leg_type_display()
+    #print obj['leg_type']
+    #print obj#.get_leg_type_display()
+        
     count = voipcall_list.count()
     voipcall_list = \
         voipcall_list.order_by(sortorder_sign + sortname)[start_page:end_page]
@@ -129,21 +130,25 @@ def voipcall_report_grid(request):
                     settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
     delete_style = 'style="text-decoration:none;background-image:url(' + \
                     settings.STATIC_URL + 'newfies/icons/delete.png);"'
-
-    rows = [{'id': row['id'],
-             'cell': [ row['starting_date'].strftime('%Y-%m-%d %H:%M:%S'),
-                       row['callid'],
-                       row['callerid'],
-                       row['phone_number'],
-                       row['used_gateway__name'],
-                       #str(timedelta(seconds=row['duration'])), # original
-                       row['duration'], # dilla test
-                       row['billsec'],
-                       get_disposition_name(row['disposition']),
-                       row['hangup_cause'],
-                       row['hangup_cause_q850'],
-                       ]} for row in voipcall_list]
-
+    
+    rows = []
+    for row in voipcall_list:
+        gateway_used = row.used_gateway.name if row.used_gateway else ''
+        rows.append({'id': row.id,
+                 'cell': [ row.starting_date.strftime('%Y-%m-%d %H:%M:%S'),
+                           row.callid,
+                           row.get_leg_type_display(),
+                           row.callerid,
+                           row.phone_number,
+                           gateway_used,
+                           #str(timedelta(seconds=row.duration)), # original
+                           row.duration, # dilla test
+                           row.billsec,
+                           row.get_disposition_display(),
+                           row.hangup_cause,
+                           row.hangup_cause_q850,
+                           ]})
+        
     data = {'rows': rows,
             'page': page,
             'total': count}

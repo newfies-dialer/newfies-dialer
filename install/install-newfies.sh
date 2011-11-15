@@ -524,7 +524,6 @@ func_install_backend() {
             sed -i "s/CELERYD_USER='celery'/CELERYD_USER='$CELERYD_USER'/g"  /etc/default/newfies-celeryd
             sed -i "s/CELERYD_GROUP='celery'/CELERYD_GROUP='$CELERYD_GROUP'/g"  /etc/default/newfies-celeryd
 
-            chmod +x /etc/default/newfies-celeryd
             chmod +x /etc/init.d/newfies-celeryd
             #celerybeat script disabled
             #chmod +x /etc/init.d/newfies-celerybeat

@@ -107,6 +107,14 @@ func_mysql_database_setting() {
     fi
 }
 
+func_iptables_configuration() {
+    #add 8008 port
+    iptables -A INPUT -p tcp -m tcp --dport 8008 -j ACCEPT
+
+    service iptables save
+    service iptables restart
+}
+
 #Fuction to create the virtual env
 func_setup_virtualenv() {
 
@@ -393,6 +401,13 @@ func_install_frontend(){
             service apache2 restart
         ;;
         'CENTOS')
+            echo ""
+            echo "We will now add 8008 port to your Firewall"
+            echo "Press Enter to continue or CTRL-C to exit"
+            read TEMP
+        
+            func_iptables_configuration
+            
             #Selinux to allow apache to access this directory
             chcon -Rv --type=httpd_sys_content_t /usr/share/virtualenvs/newfies-dialer/
             service httpd restart

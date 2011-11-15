@@ -358,9 +358,9 @@ func_install_frontend(){
     echo '
     '$WSGI_ADDITIONAL'
     
-    Listen *:9080
+    Listen *:8008
     
-    <VirtualHost *:9080>
+    <VirtualHost *:8008>
         DocumentRoot '$INSTALL_DIR'/
         ErrorLog /var/log/newfies/err-apache-newfies.log
         LogLevel warn

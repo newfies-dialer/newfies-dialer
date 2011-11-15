@@ -393,6 +393,8 @@ func_install_frontend(){
             service apache2 restart
         ;;
         'CENTOS')
+            #Selinux to allow apache to access this directory
+            chcon -Rv --type=httpd_sys_content_t /usr/share/virtualenvs/newfies-dialer/
             service httpd restart
         ;;
     esac

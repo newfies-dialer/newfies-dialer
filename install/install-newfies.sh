@@ -443,7 +443,7 @@ func_install_frontend(){
     echo "**************************************************************"
     echo ""
     echo "Please log on to Newfies at "
-    echo "http://$IPADDR:9080"
+    echo "http://$IPADDR:$HTTP_PORT"
     echo "the username and password are the ones you entered during this installation."
     echo ""
     echo "Thank you for installing Newfies"

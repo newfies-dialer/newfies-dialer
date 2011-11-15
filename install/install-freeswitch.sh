@@ -168,7 +168,11 @@ case $DIST in
         cd /etc/init.d; update-rc.d freeswitch defaults 90
      ;;
     'CENTOS')
-        #
+        #Install init.d script
+        wget --no-check-certificate $FS_INIT_PATH/centos/freeswitch -O /etc/init.d/freeswitch
+        chmod 0755 /etc/init.d/freeswitch
+        chkconfig --add freeswitch
+        chkconfig --level 2345 freeswitch on
     ;;
 esac
 

@@ -160,10 +160,17 @@ if [ $chk -lt 1 ] ; then
     echo "alias fs_cli='/usr/local/freeswitch/bin/fs_cli'" >> ~/.bashrc
 fi    
 
-#Install init.d script
-wget --no-check-certificate $FS_INIT_PATH/freeswitch -O /etc/init.d/freeswitch
-chmod 0755 /etc/init.d/freeswitch
-cd /etc/init.d; update-rc.d freeswitch defaults 90
+case $DIST in
+    'DEBIAN')
+        #Install init.d script
+        wget --no-check-certificate $FS_INIT_PATH/debian/freeswitch -O /etc/init.d/freeswitch
+        chmod 0755 /etc/init.d/freeswitch
+        cd /etc/init.d; update-rc.d freeswitch defaults 90
+     ;;
+    'CENTOS')
+        #
+    ;;
+esac
 
 
 

@@ -116,12 +116,7 @@ def voipcall_report_grid(request):
                                                     tday.day, 0, 0, 0, 0)
     
     voipcall_list = VoIPCall.objects.filter(**kwargs)
-    
-    #obj = VoIPCall.objects.all()
-    #print voipcall_list[0].get_leg_type_display()
-    #print obj['leg_type']
-    #print obj#.get_leg_type_display()
-        
+       
     count = voipcall_list.count()
     voipcall_list = \
         voipcall_list.order_by(sortorder_sign + sortname)[start_page:end_page]

@@ -130,19 +130,19 @@ def voipcall_report_grid(request):
     for row in voipcall_list:
         gateway_used = row.used_gateway.name if row.used_gateway else ''
         rows.append({'id': row.id,
-                 'cell': [ row.starting_date.strftime('%Y-%m-%d %H:%M:%S'),
-                           row.callid,
-                           row.get_leg_type_display(),
-                           row.callerid,
-                           row.phone_number,
-                           gateway_used,
-                           #str(timedelta(seconds=row.duration)), # original
-                           row.duration, # dilla test
-                           row.billsec,
-                           row.get_disposition_display(),
-                           row.hangup_cause,
-                           row.hangup_cause_q850,
-                           ]})
+                     'cell': [ row.starting_date.strftime('%Y-%m-%d %H:%M:%S'),
+                               row.callid,
+                               row.get_leg_type_display(),
+                               row.callerid,
+                               row.phone_number,
+                               gateway_used,
+                               #str(timedelta(seconds=row.duration)), # original
+                               row.duration, # dilla test
+                               row.billsec,
+                               row.get_disposition_display(),
+                               row.hangup_cause,
+                               row.hangup_cause_q850,
+                               ]})
         
     data = {'rows': rows,
             'page': page,

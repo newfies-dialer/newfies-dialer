@@ -77,8 +77,6 @@ class VoIPCallAdmin(admin.ModelAdmin):
             return False
         return super(VoIPCallAdmin, self).has_add_permission(request)
 
-    
-
     def get_urls(self):
         urls = super(VoIPCallAdmin, self).get_urls()
         my_urls = patterns('',

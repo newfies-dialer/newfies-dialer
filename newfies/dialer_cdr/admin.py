@@ -45,10 +45,6 @@ class VoIPCallAdmin(admin.ModelAdmin):
                     'min_duration', 'billsec', 'disposition', 'hangup_cause',
                     'hangup_cause_q850')
 
-    def __init__(self, *args, **kwargs):
-        super(VoIPCallAdmin, self).__init__(*args, **kwargs)
-        self.list_display_links = (None, )
-
     def user_link(self, obj):
         """User link to user profile"""
         if obj.user.is_staff:
@@ -78,7 +74,9 @@ class VoIPCallAdmin(admin.ModelAdmin):
         """
         if not self.can_add:
             return False
-        return super(VoIPCall_ReportAdmin, self).has_add_permission(request)
+        return super(VoIPCallAdmin, self).has_add_permission(request)
+
+    
 
     def get_urls(self):
         urls = super(VoIPCallAdmin, self).get_urls()
@@ -96,16 +94,18 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
             * Queryset will be changed as per the search parameter selection
               on changelist_view
+
         """
         kwargs = {}
-        if request.method == 'POST':
+        if request.method == 'POST' and not "_saveasnew" in request.POST and not "_save" in request.POST:
             kwargs = voipcall_record_common_fun(request)
-        else:
-            tday = datetime.today()
-            kwargs['starting_date__gte'] = datetime(tday.year,
-                                                    tday.month,
-                                                    tday.day, 0, 0, 0, 0)
-
+        #elif not "_saveasnew" in request.POST and not "_save" in request.POST:
+        #    pass
+        #else:
+        #    tday = datetime.today()
+        #    kwargs['starting_date__gte'] = datetime(tday.year,
+        #                                            tday.month,
+        #                                            tday.day, 0, 0, 0, 0)
         qs = super(VoIPCallAdmin, self).queryset(request)
         return qs.filter(**kwargs).order_by('-starting_date')
 

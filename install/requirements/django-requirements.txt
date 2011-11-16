@@ -12,7 +12,6 @@ django-jsonfield==0.6
 hg+https://bitbucket.org/izi/django-admin-tools
 git+git://github.com/jtauber/django-notification.git
 git+git://github.com/mcroydon/django-qsstats.git
-#git+https://github.com/toastdriven/django-tastypie.git#egg=tastypie
 git+git://github.com/Star2Billing/switch2bill-common.git
 git+git://github.com/Star2Billing/simu-prefix-country.git
 git+git://github.com/areski/django-countries.git

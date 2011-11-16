@@ -16,15 +16,38 @@ Contents:
     :maxdepth: 3
 
     getting-started
-    installation
+
+
+.. toctree::
+    :maxdepth: 1
+
+    installation    
+
+.. toctree::
+    :maxdepth: 2
+    
+
     user-guide
     
 .. toctree::
     :maxdepth: 1
     
     configuration-defaults
+    
+.. toctree::
+    :maxdepth: 2
+    
     freeswitch-configuration
+    
+
+.. toctree::
+    :maxdepth: 1
+
     developer-doc
+    
+.. toctree::
+    :maxdepth: 2
+
     api-reference
     contributing
     faq

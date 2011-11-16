@@ -45,6 +45,10 @@ class VoIPCallAdmin(admin.ModelAdmin):
                     'min_duration', 'billsec', 'disposition', 'hangup_cause',
                     'hangup_cause_q850')
 
+    def __init__(self, *args, **kwargs):
+        super(VoIPCallAdmin, self).__init__(*args, **kwargs)
+        self.list_display_links = (None, )
+
     def user_link(self, obj):
         """User link to user profile"""
         if obj.user.is_staff:

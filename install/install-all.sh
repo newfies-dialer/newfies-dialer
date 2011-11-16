@@ -59,33 +59,36 @@ case $DIST in
 esac
 
 
+
+#Install Freeswitch
 cd /usr/src/
-
-
-#Download Scripts
 wget https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-freeswitch.sh
-wget https://raw.github.com/plivo/plivo/master/scripts/plivo_install_beta.sh
-wget https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-newfies.sh
-
-
-#Run the Install Scripts
 bash install-freeswitch.sh
-bash plivo_install_beta.sh /usr/share/plivo
-bash install-newfies.sh
 
+
+
+#Install Plivo
+cd /usr/src/
+wget https://raw.github.com/plivo/plivo/master/scripts/plivo_install_beta.sh
+bash plivo_install_beta.sh /usr/share/plivo
 
 #UPDATE Plivo configuration
 awk 'NR==12{print "EXTRA_FS_VARS = variable_user_context,Channel-Read-Codec-Bit-Rate,variable_plivo_answer_url,variable_plivo_app,variable_direction,variable_endpoint_disposition,variable_hangup_cause,variable_hangup_cause_q850,variable_duration,variable_billsec,variable_progresssec,variable_answersec,variable_waitsec,variable_mduration,variable_billmsec,variable_progressmsec,variable_answermsec,variable_waitmsec,variable_progress_mediamsec,variable_call_uuid,variable_origination_caller_id_number,variable_caller_id,variable_answer_epoch,variable_answer_uepoch"}1' /usr/share/plivo/etc/plivo/default.conf > /tmp/default.conf
 mv /tmp/default.conf /usr/share/plivo/etc/plivo/default.conf
 
-
-#Stop Plivo & Cache Server
+#Stop/Start Plivo & Cache Server
 /etc/init.d/plivo stop
 /etc/init.d/plivocache stop
-
-
-#Start Plivo & Cache Server
 /etc/init.d/plivo start
 /etc/init.d/plivocache start
+
+
+
+#Install Newfies
+cd /usr/src/
+wget https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-newfies.sh
+bash install-newfies.sh
+
+
 
 

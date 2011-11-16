@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.admin.options import IncorrectLookupParameters
 from django.conf.urls.defaults import *
 from django.http import HttpResponse
 from django.utils.translation import ugettext_lazy as _
@@ -87,28 +88,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
         )
         return my_urls + urls
 
-    def queryset(self, request):
-        """Override queryset method of django-admin for search parameters
-
-        **Logic Description**:
-
-            * Queryset will be changed as per the search parameter selection
-              on changelist_view
-
-        """
-        kwargs = {}
-        if request.method == 'POST' and not "_saveasnew" in request.POST and not "_save" in request.POST:
-            kwargs = voipcall_record_common_fun(request)
-        #elif not "_saveasnew" in request.POST and not "_save" in request.POST:
-        #    pass
-        #else:
-        #    tday = datetime.today()
-        #    kwargs['starting_date__gte'] = datetime(tday.year,
-        #                                            tday.month,
-        #                                            tday.day, 0, 0, 0, 0)
-        qs = super(VoIPCallAdmin, self).queryset(request)
-        return qs.filter(**kwargs).order_by('-starting_date')
-
+    
     def changelist_view(self, request, extra_context=None):
         """Override changelist_view method of django-admin for search parameters
 
@@ -124,6 +104,18 @@ class VoIPCallAdmin(admin.ModelAdmin):
         """
         opts = VoIPCall._meta
         app_label = opts.app_label
+
+        ChangeList = self.get_changelist(request)
+        try:
+            cl = ChangeList(request, self.model, self.list_display, self.list_display_links,
+                self.list_filter, self.date_hierarchy, self.search_fields,
+                self.list_select_related, self.list_per_page, self.list_editable, self)
+        except IncorrectLookupParameters:
+            if ERROR_FLAG in request.GET.keys():
+                return render_to_response('admin/invalid_setup.html', {'title': _('Database error')})
+            return HttpResponseRedirect(request.path + '?' + ERROR_FLAG + '=1')
+
+
         kwargs = {}
         form = VoipSearchForm()
         if request.method == 'POST':
@@ -134,6 +126,9 @@ class VoIPCallAdmin(admin.ModelAdmin):
             kwargs['starting_date__gte'] = datetime(tday.year,
                                                    tday.month,
                                                    tday.day, 0, 0, 0, 0)
+
+        formset = cl.formset = None
+        cl.result_list = cl.result_list.filter(**kwargs).order_by('-starting_date')
 
         # Session variable is used to get recrod set with searched option
         # into export file
@@ -169,6 +164,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             total_avg_duration = 0
 
         ctx = {
+            'cl': cl,
             'form': form,
             'total_data': total_data.reverse(),
             'total_duration': total_duration,

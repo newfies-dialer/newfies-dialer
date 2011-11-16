@@ -64,7 +64,7 @@ esac
 cd /usr/src/
 wget https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-freeswitch.sh
 bash install-freeswitch.sh
-
+/etc/init.d/freeswitch start
 
 
 #Install Plivo

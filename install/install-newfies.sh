@@ -111,7 +111,7 @@ func_mysql_database_setting() {
 
 func_iptables_configuration() {
     #add http port
-    iptables -A INPUT -p tcp -m tcp --dport $HTTP_PORT -j ACCEPT
+    iptables -I INPUT 2 -p tcp -m state --state NEW -m tcp --dport $HTTP_PORT -j ACCEPT
     
     service iptables save
 }

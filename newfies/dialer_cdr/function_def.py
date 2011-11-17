@@ -92,28 +92,19 @@ def voipcall_record_common_fun(request):
 
     # Patch code for persist search
     if request.method != 'POST':
-        try:
-            if request.session['from_date']:
-                from_date = request.session['from_date']
-                start_date = datetime(int(from_date[0:4]), int(from_date[5:7]),
-                                      int(from_date[8:10]), 0, 0, 0, 0)
-        except:
-            pass
 
-        try:
-            if request.session['to_date']:
-                to_date = request.session['to_date']
-                end_date = datetime(int(to_date[0:4]), int(to_date[5:7]),
-                                    int(to_date[8:10]), 23, 59, 59, 999999)
-        except:
-            pass
-        
-        try:
-            if request.session['status']:
-                disposition = request.session['status']
-        except:
-            pass
+        if  request.session.get('from_date'):
+            from_date = request.session['from_date']
+            start_date = datetime(int(from_date[0:4]), int(from_date[5:7]),
+                                  int(from_date[8:10]), 0, 0, 0, 0)
 
+        if  request.session.get('to_date'):
+            to_date = request.session['to_date']
+            end_date = datetime(int(to_date[0:4]), int(to_date[5:7]),
+                                int(to_date[8:10]), 23, 59, 59, 999999)
+
+        if request.session.get('status'):
+            disposition = request.session['status']
 
     kwargs = {}
     if start_date and end_date:

@@ -1,5 +1,5 @@
 from celery.task import Task, PeriodicTask
-from dialer_campaign.models import Campaign
+from dialer_campaign.models import Campaign, CampaignSubscriber
 from dialer_campaign.function_def import user_dialer_setting
 from dialer_cdr.models import Callrequest, VoIPCall
 from celery.decorators import task
@@ -127,9 +127,9 @@ def init_callrequest(callrequest_id, campaign_id):
         logger.error('Received RequestUUID :> ' + str(result['RequestUUID']))
 
     elif settings.NEWFIES_DIALER_ENGINE.lower() == 'plivo':
-        #Request Call via Plivo
-        from telefonyhelper import call_plivo
         try:
+            #Request Call via Plivo
+            from telefonyhelper import call_plivo
             result= call_plivo(callerid=obj_callrequest.callerid,
                         phone_number=obj_callrequest.phone_number,
                         Gateways=gateways,
@@ -145,6 +145,9 @@ def init_callrequest(callrequest_id, campaign_id):
             logger.error('error : call_plivo')
             obj_callrequest.status = 2 # Update to Failure
             obj_callrequest.save()
+            obj_subscriber = CampaignSubscriber.objects.get(id=obj_callrequest.campaign_subscriber.id)
+            obj_subscriber.status = 4 # Fail
+            obj_subscriber.save()
             return False
         logger.info(result)
         logger.error('Received RequestUUID :> ' + str(result['RequestUUID']))

@@ -1,8 +1,10 @@
 from django.contrib import admin
 from django.contrib.admin.options import IncorrectLookupParameters
+from django.contrib.admin.views.main import ERROR_FLAG
 from django.conf.urls.defaults import *
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ungettext
 from django.db.models import *
 from dialer_cdr.models import *
 from dialer_cdr.forms import *
@@ -45,9 +47,11 @@ class VoIPCallAdmin(admin.ModelAdmin):
                     'callid', 'callerid', 'phone_number', 'starting_date', 
                     'min_duration', 'billsec', 'disposition', 'hangup_cause',
                     'hangup_cause_q850')
+    #list_filter = ['disposition', 'starting_date']
 
     def user_link(self, obj):
         """User link to user profile"""
+        
         if obj.user.is_staff:
             url = reverse('admin:auth_staff_change', args=(obj.user_id,))
         else:
@@ -103,6 +107,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
         opts = VoIPCall._meta
         app_label = opts.app_label
 
+
         ChangeList = self.get_changelist(request)
         try:
             cl = ChangeList(request, self.model, self.list_display, self.list_display_links,
@@ -115,18 +120,25 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
 
         kwargs = {}
+        
         form = VoipSearchForm()
         if request.method == 'POST':
             form = VoipSearchForm(request.POST)
             kwargs = voipcall_record_common_fun(request)
+            request.session['from_date'] = request.POST.get('from_date')
+            request.session['to_date'] = request.POST.get('to_date')
+            request.session['status'] = request.POST.get('status')
         else:
+            kwargs = voipcall_record_common_fun(request)
             tday = datetime.today()
-            kwargs['starting_date__gte'] = datetime(tday.year,
-                                                   tday.month,
-                                                   tday.day, 0, 0, 0, 0)
+            if len(kwargs) == 0:
+                kwargs['starting_date__gte'] = datetime(tday.year,
+                                                        tday.month,
+                                                        tday.day, 0, 0, 0, 0)
 
         formset = cl.formset = None
         cl.result_list = cl.result_list.filter(**kwargs).order_by('-starting_date')
+        
 
         # Session variable is used to get recrod set with searched option
         # into export file
@@ -161,7 +173,12 @@ class VoIPCallAdmin(admin.ModelAdmin):
             total_calls = 0
             total_avg_duration = 0
 
+        selection_note_all = ungettext('%(total_count)s selected',
+            'All %(total_count)s selected', cl.result_count)
+        
         ctx = {
+            'selection_note': _('0 of %(cnt)s selected') % {'cnt': len(cl.result_list)},
+            'selection_note_all': selection_note_all % {'total_count': cl.result_count},
             'cl': cl,
             'form': form,
             'total_data': total_data.reverse(),

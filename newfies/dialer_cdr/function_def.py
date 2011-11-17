@@ -82,7 +82,6 @@ def voipcall_record_common_fun(request):
         from_date = request.POST.get('from_date')
         start_date = datetime(int(from_date[0:4]), int(from_date[5:7]),
                               int(from_date[8:10]), 0, 0, 0, 0)
-
     if request.POST.get('to_date'):
         to_date = request.POST.get('to_date')
         end_date = datetime(int(to_date[0:4]), int(to_date[5:7]),
@@ -91,6 +90,31 @@ def voipcall_record_common_fun(request):
     # Assign form field value to local variable
     disposition = variable_value(request, 'status')
 
+    # Patch code for persist search
+    if request.method != 'POST':
+        try:
+            if request.session['from_date']:
+                from_date = request.session['from_date']
+                start_date = datetime(int(from_date[0:4]), int(from_date[5:7]),
+                                      int(from_date[8:10]), 0, 0, 0, 0)
+        except:
+            pass
+
+        try:
+            if request.session['to_date']:
+                to_date = request.session['to_date']
+                end_date = datetime(int(to_date[0:4]), int(to_date[5:7]),
+                                    int(to_date[8:10]), 23, 59, 59, 999999)
+        except:
+            pass
+        
+        try:
+            if request.session['status']:
+                disposition = request.session['status']
+        except:
+            pass
+
+
     kwargs = {}
     if start_date and end_date:
         kwargs['starting_date__range'] = (start_date, end_date)
@@ -98,9 +122,10 @@ def voipcall_record_common_fun(request):
         kwargs['starting_date__gte'] = start_date
     if start_date == '' and end_date:
         kwargs['starting_date__lte'] = end_date
-
-    if disposition != 'all':
-        kwargs['disposition__exact'] = disposition
+    
+    if disposition:
+        if disposition != 'all':
+            kwargs['disposition__exact'] = disposition
 
     if len(kwargs) == 0:
         tday = datetime.today()

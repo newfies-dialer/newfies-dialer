@@ -51,6 +51,7 @@ Contents:
     api-reference
     contributing
     faq
+    troubleshooting
     resources
     
 

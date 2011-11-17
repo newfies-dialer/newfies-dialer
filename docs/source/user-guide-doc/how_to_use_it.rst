@@ -9,10 +9,19 @@ How to use Newfies-Dialer
 Create call list
 ----------------
 
-To create a call list, click on ``Add Phonebook``, add name of phonebook & its
+To create a call list, click on ``Add`` in Phonebook list, add name of phonebook & its
 description. Click on ``Contacts`` and add phone numbers in the contact list.
 You can also import your call list from csv files, via clicking on
 ``Import contact``.
+
+.. image:: ../_static/images/customer/update_phonebook.png
+
+
+.. image:: ../_static/images/customer/contact_list.png
+
+
+.. image:: ../_static/images/customer/import_contact.png
+    :width: 1000
 
 
 .. _campaign:
@@ -20,10 +29,17 @@ You can also import your call list from csv files, via clicking on
 Create campaign
 ---------------
 
-To create a campaign, click on ``Add campaign``, add details for the campaign.
+To create a campaign, click on ``Add`` in campaign list, add details for the campaign.
 Important: Add the campaign's start and end dates with times & week-day
 exceptions. Select the gateway through which calls will be routed & the phonebook(s)
 linked with the contacts.
+
+
+.. image:: ../_static/images/customer/campaign_list.png
+
+
+.. image:: ../_static/images/customer/update_campaign.png
+    :width: 1000
 
 
 .. _apply-dialer-settings:
@@ -35,10 +51,16 @@ Dialer settings has to be mapped with system users who are going to create campa
 If dialer setting is not mapped with system users, notification & mail has been sent to Super admin user.
 
 To create restrictions (like the Max. no of campaign, Max no of contacts etc.) for
-system User, Click on ``Add dialer settings``. Add numeric values for the limit.
+system User, Click on ``Add`` in dialer settings list of admin side. Add numeric values for the limit.
 
 To apply the dialer settings limit on a system user, click on ``Customers`` or ``Admins`` in admin UI,
 select the user to update, & apply the settings from the dialer settings list.
+
+.. image:: ../_static/images/admin/dialersetting_list.png
+    :width: 1000
+
+.. image:: ../_static/images/admin/update_dialersetting.png
+    :width: 1000
 
 
 .. _reach-to-contact:
@@ -49,6 +71,9 @@ Reach to contacts/subscribers
 A call-request will spool a call directly from the platform using a dialer gateway
 and update the call-request status after receiving a response from the gateway.
 
+.. image:: ../_static/images/admin/update_callrequest.png
+    :width: 1000
+
 .. _call-report:
 
 VoIP Call Report
@@ -58,3 +83,8 @@ As per the status of a call-request, it will be stored in the VoIP call records.
 This gives information of all the calls & call statistics made with the call-request
 and also you can search for records on the basis of date range. You can export the VoIP
 call report into a csv file.
+
+
+.. image:: ../_static/images/customer/callreport.png
+    :width: 1000
+

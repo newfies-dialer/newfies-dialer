@@ -213,7 +213,6 @@ class VoIPCall(models.Model):
                                         verbose_name="Leg",
                                         null=True, blank=True, )
 
-
     def destination_name(self):
         """Return Recipient dialcode"""
         if self.dialcode is None:

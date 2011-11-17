@@ -1116,9 +1116,9 @@ class CampaignSubscriberResource(ModelResource):
         campaign_id = int(bundle.data.get('pk'))
         camaign_obj = Campaign.objects.get(id=campaign_id)
         try:
-            campaignsubscriber = \
-            CampaignSubscriber.objects.get(duplicate_contact=bundle.data.get('contact'),
-                                           campaign=camaign_obj)
+            campaignsubscriber = CampaignSubscriber.objects.get(
+                                        duplicate_contact=bundle.data.get('contact'),
+                                        campaign=camaign_obj)
             campaignsubscriber.status = bundle.data.get('status')
             campaignsubscriber.save()
         except:
@@ -1710,13 +1710,18 @@ class HangupcallResource(ModelResource):
             opt_hangup_cause = request.POST.get('HangupCause')
 
             callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid)
+            obj_subscriber = CampaignSubscriber.objects.get(id=callrequest.campaign_subscriber.id)
             # 2 / FAILURE ; 3 / RETRY ; 4 / SUCCESS
             if opt_hangup_cause=='NORMAL_CLEARING':
                 callrequest.status = 4 # Success
+                obj_subscriber.status = 5 # Complete
             else:
                 callrequest.status = 2 # Failure
+                obj_subscriber.status = 4 # Fail
             callrequest.hangup_cause = opt_hangup_cause
+            #save callrequest & campaignsubscriber
             callrequest.save()
+            obj_subscriber.save()
             
             data = {}
             for element in CDR_VARIABLES:

@@ -8,42 +8,42 @@ Freeswitch Set-Up
 -----------------
 Configure trunks and gateways in Freeswitch by creating an XML file in 
 /usr/local/freeswitch/conf/sip_profiles/external/ and give it an identifiable name, 
-e.g. call-labs.xml, and place the following lines in the file, edited to suit your provider.
+e.g. call-labs.xml, and place the following lines in the file, edited to suit your provider::
 
-<include>
-<gateway name="ip address or hostname of carrier">
-<!--/// account username *required* ///-->
-<param name="username" value="your username provided by carrier"/>
-<!--/// auth realm: *optional* same as gateway name, if blank ///-->
-<!--<param name="realm" value="asterlink.com"/>-->
-<!--/// username to use in from: *optional* same as username, if blank ///-->
-<param name="from-user" value="your username provided by carrier"/>
-<!--/// domain to use in from: *optional* same as realm, if blank ///-->
-<!--param name="from-domain" value=""/-->
-<!--/// account password *required* ///-->
-<param name="password" value="your password supplied by carrier"/>
-<!--/// extension for inbound calls: *optional* same as username, if blank ///-->
-<!--<param name="extension" value="cluecon"/>-->
-<!--/// proxy host: *optional* same as realm, if blank ///-->
-<!--<param name="proxy" value="asterlink.com"/>-->
-<!--/// send register to this proxy: *optional* same as proxy, if blank ///-->
-<!--<param name="register-proxy" value="mysbc.com"/>-->
-<!--/// expire in seconds: *optional* 3600, if blank ///-->
-<!--<param name="expire-seconds" value="60"/>-->
-<!--/// do not register ///-->
-<param name="register" value="true"/>
-<!-- which transport to use for register -->
-<!--<param name="register-transport" value="udp"/>-->
-<!--How many seconds before a retry when a failure or timeout occurs -->
-<!--<param name="retry-seconds" value="30"/>-->
-<!--Use the callerid of an inbound call in the from field on outbound calls via this gateway -->
-<!--<param name="caller-id-in-from" value="false"/>-->
-<!--extra sip params to send in the contact-->
-<!--<param name="contact-params" value="tport=tcp"/>-->
-<!--send an options ping every x seconds, failure will unregister and/or mark it down-->
-<!--<param name="ping" value="25"/>-->
-</gateway>
-</include>
+    <include>
+    <gateway name="ip address or hostname of carrier">
+    <!--/// account username *required* ///-->
+    <param name="username" value="your username provided by carrier"/>
+    <!--/// auth realm: *optional* same as gateway name, if blank ///-->
+    <!--<param name="realm" value="asterlink.com"/>-->
+    <!--/// username to use in from: *optional* same as username, if blank ///-->
+    <param name="from-user" value="your username provided by carrier"/>
+    <!--/// domain to use in from: *optional* same as realm, if blank ///-->
+    <!--param name="from-domain" value=""/-->
+    <!--/// account password *required* ///-->
+    <param name="password" value="your password supplied by carrier"/>
+    <!--/// extension for inbound calls: *optional* same as username, if blank ///-->
+    <!--<param name="extension" value="cluecon"/>-->
+    <!--/// proxy host: *optional* same as realm, if blank ///-->
+    <!--<param name="proxy" value="asterlink.com"/>-->
+    <!--/// send register to this proxy: *optional* same as proxy, if blank ///-->
+    <!--<param name="register-proxy" value="mysbc.com"/>-->
+    <!--/// expire in seconds: *optional* 3600, if blank ///-->
+    <!--<param name="expire-seconds" value="60"/>-->
+    <!--/// do not register ///-->
+    <param name="register" value="true"/>
+    <!-- which transport to use for register -->
+    <!--<param name="register-transport" value="udp"/>-->
+    <!--How many seconds before a retry when a failure or timeout occurs -->
+    <!--<param name="retry-seconds" value="30"/>-->
+    <!--Use the callerid of an inbound call in the from field on outbound calls via this gateway -->
+    <!--<param name="caller-id-in-from" value="false"/>-->
+    <!--extra sip params to send in the contact-->
+    <!--<param name="contact-params" value="tport=tcp"/>-->
+    <!--send an options ping every x seconds, failure will unregister and/or mark it down-->
+    <!--<param name="ping" value="25"/>-->
+    </gateway>
+    </include>
 
 Then in the Freeswitch CLI (fs_cli) “sofia profile external restart reloadxml”. When the command is 
 complete, check the gateway has registered with the command “sofia status”.
@@ -56,7 +56,7 @@ admin,  add a new dialer gateway, e.g. sofia/gateway/myprovider/ (The final / is
 
 Only the fields in bold are compulsory.
 
-.. _apply-dialer-settings:
+.. _dialer-settings:
 
 Dialer Settings
 ---------------

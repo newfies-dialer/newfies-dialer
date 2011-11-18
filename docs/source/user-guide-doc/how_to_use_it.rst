@@ -122,3 +122,17 @@ As per the status of a call-request, it will be stored in the VoIP call records.
 This gives information of all the calls & call statistics made with the call-request
 and also you can search for records on the basis of date range. You can export the VoIP
 call report into a csv file.
+
+
+.. _Settings:
+
+Settings
+--------
+
+The settings page provides a number of functions:-
+
+Account - Change the detail of the account.
+Password - Change the password.
+Notifications - Display system notifications.
+Limitation - Displays the parameters of the dialer settings.
+Authorized - Facitiy to check that a number is not blacklisted.

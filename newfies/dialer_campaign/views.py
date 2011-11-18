@@ -1466,12 +1466,10 @@ def contact_import(request):
             # Read each Row
             for row in rdr:
                 row = striplist(row)
-
                 if (row and str(row[0]) > 0):
                     try:
                         # check field type
                         int(row[5])
-
                         phonebook = \
                         Phonebook.objects.get(pk=request.POST['phonebook'])
                         try:

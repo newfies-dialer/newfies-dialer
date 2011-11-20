@@ -666,7 +666,6 @@ def login_view(request):
         'errorlogin': errorlogin,
         'is_authenticated': request.user.is_authenticated(),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
-        'news': get_news(),
     }
 
     return render_to_response(template, data,
@@ -700,7 +699,6 @@ def index(request):
             'notice_count': notice_count(request),
             'loginform': loginform,
             'errorlogin': errorlogin,
-            'news': get_news(),
             'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
 
@@ -715,7 +713,6 @@ def pleaselog(request):
     data = {
         'loginform': loginform,
         'notlogged': True,
-        'news': get_news(),
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))

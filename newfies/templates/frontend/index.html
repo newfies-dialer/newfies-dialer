@@ -39,20 +39,6 @@
 
 		</p>
 	</div>
-	<h3><a href="#">{% trans "Download" %}</a></h3>
-	<div>
-		<p>
-        {% trans "Please visit" %} <a target="_blank" href="http://www.newfies-dialer.org/">http://www.newfies-dialer.org/</a> <br/>
-        {% trans "to download the latest release." %}
-        <br/><br/><br/>
-        
-        <a href="http://www.newfies-dialer.org/" target="_blank" ><img src='{{STATIC_URL}}newfies/icons/system-log-out-4.png' title="Download" alt="Download" width="110" class="info-icon"/></a>
-        
-        <br/><br/>
-
-        
-		</p>
-	</div>
 	<h3><a href="#">{% trans "Support" %}</a></h3>
 	<div>
 		<p>
@@ -66,20 +52,6 @@
 		<a href="mailto:sales@star2billing.com"><img src='{{STATIC_URL}}newfies/icons/system-help-3.png' title="Support" alt="Support" width="110" class="info-icon"/></a>
 		
 		
-	</div>
-	<h3><a href="#">{% trans "News" %}</a></h3>
-	<div>
-		{% if news %}
-            {% for rc in news %}
-            {{rc.0}}  <a href="{{rc.1}}">{{rc.1}}</a> {{rc.2}}
-            <hr>
-            {% endfor %}
-        {% endif %}
-
-        <br/><br/>
-        
-        <img src='{{STATIC_URL}}newfies/icons/knewsticker-2.png' title='News' alt="News" width="110" class="info-icon"/>
-        
 	</div>
 	
 	<h3><a href="#">{% trans "Licensing" %}</a></h3>

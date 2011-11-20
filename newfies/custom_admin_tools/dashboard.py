@@ -41,7 +41,7 @@ class CustomIndexDashboard(Dashboard):
         request = context['request']
 
         # we want a 3 columns layout
-        self.columns = 4
+        self.columns = 3
 
         site_name = get_admin_site_name(context)
 
@@ -107,6 +107,12 @@ class CustomIndexDashboard(Dashboard):
             ],
         ))
         """
+        # append a feed module
+        self.children.append(modules.Feed(
+            _('Latest Newfies-Dialer News'),
+            feed_url='http://www.newfies-dialer.org/category/blog/feed/',
+            limit=5
+        ))
         
         # append an app list module for "Country_prefix"
         self.children.append(modules.AppList(
@@ -128,12 +134,6 @@ class CustomIndexDashboard(Dashboard):
         # append a recent actions module
         #self.children.append(modules.RecentActions(_('Recent Actions'), 5))
 
-        # append a feed module
-        #self.children.append(modules.Feed(
-        #    _('Latest Django News'),
-        #    feed_url='http://www.djangoproject.com/rss/weblog/',
-        #    limit=5
-        #))
 
 
 class CustomAppIndexDashboard(AppIndexDashboard):

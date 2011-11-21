@@ -198,22 +198,23 @@ func_install_frontend(){
             yum -y install python-setuptools python-tools python-devel mod_python
             yum -y install python-pip
             yum -y install mercurial mod_wsgi
+            
+            #start http after reboot
+            chkconfig --levels 235 httpd on
 
             if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
                  yum -y install sqlite
             else
                  yum -y install mysql-server mysql-devel
+                 chkconfig --levels 235 mysqld on
+                 #Start Mysql 
+                /etc/init.d/mysqld start
+                /usr/bin/mysql_secure_installation
+                func_mysql_database_setting
             fi
-            
-            chkconfig --levels 235 mysqld on
-            chkconfig --levels 235 httpd on
         ;;
     esac
     
-    #Start Mysql 
-    /etc/init.d/mysqld start
-    /usr/bin/mysql_secure_installation
-    func_mysql_database_setting
 
     if [ -d "$INSTALL_DIR" ]; then
         # Newfies is already installed

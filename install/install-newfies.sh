@@ -299,8 +299,7 @@ func_install_frontend(){
 
     if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
         # Setup settings_local.py for SQLite
-        # Nothing to do
-        echo ""
+        sed -i "s/'init_command/#'init_command/g"  $INSTALL_DIR/settings_local.py
     else
         #Backup Mysql Database
         echo "Run backup with mysqldump..."

@@ -331,10 +331,7 @@ func_install_frontend(){
     #Fix permission on python-egg
     mkdir /usr/share/newfies/.python-eggs
     chown $APACHE_USER:$APACHE_USER /usr/share/newfies/.python-eggs
-    
-    #following line is for SQLite
     mkdir database
-    chown -R $APACHE_USER:$APACHE_USER $INSTALL_DIR/database/
     
     #following lines is for apache logs
     touch /var/log/newfies/newfies-django.log
@@ -361,7 +358,9 @@ func_install_frontend(){
 
     #Collect static files from apps and other locations in a single location.
     python manage.py collectstatic -l --noinput
-
+    
+    #Permission on database folder if we use SQLite    
+    chown -R $APACHE_USER:$APACHE_USER $INSTALL_DIR/database/
 
     # prepare Apache
     echo "Prepare Apache configuration..."

@@ -12,4 +12,4 @@ A Newfies-Dialer Voice Broadcasting Platform is assembled entirely from free
 and open source components including Freeswitch, Django, Plivo, Celery and 
 RabbitMQ.
 """
-VERSION = '1.0 (RC3)'
+VERSION = '1.0.0'

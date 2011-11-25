@@ -178,9 +178,14 @@ func_install_frontend(){
             apt-get -y install git-core mercurial gawk
                     
             if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
-                 apt-get install sqlite3 libsqlite3-dev
+                apt-get install sqlite3 libsqlite3-dev
             else
-                 apt-get -y install mysql-server libmysqlclient-dev
+                apt-get -y install mysql-server libmysqlclient-dev
+                #Start MySQL
+                /etc/init.d/mysqld start
+                #Configure MySQL
+                /usr/bin/mysql_secure_installation
+                func_mysql_database_setting
             fi
         ;;
         'CENTOS')
@@ -203,12 +208,13 @@ func_install_frontend(){
             chkconfig --levels 235 httpd on
 
             if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
-                 yum -y install sqlite
+                yum -y install sqlite
             else
-                 yum -y install mysql-server mysql-devel
-                 chkconfig --levels 235 mysqld on
-                 #Start Mysql 
+                yum -y install mysql-server mysql-devel
+                chkconfig --levels 235 mysqld on
+                #Start Mysql
                 /etc/init.d/mysqld start
+                #Configure MySQL
                 /usr/bin/mysql_secure_installation
                 func_mysql_database_setting
             fi

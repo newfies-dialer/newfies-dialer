@@ -1,5 +1,5 @@
 #!/bin/bash
-#   Installation script for Newfies
+#   Update script for Newfies
 #   Copyright (C) <2011>  <Star2Billing S.L> 
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License
@@ -34,7 +34,7 @@ elif [ -f /etc/redhat-release ] ; then
     DIST='CENTOS'
 else
     echo ""
-    echo "This Installer should be run on a CentOS or a Debian based system"
+    echo "This Update should run on a CentOS or a Debian based system"
     echo ""
     exit 1
 fi
@@ -54,7 +54,7 @@ case $DIST in
 esac
 
 
-#Function to install Frontend
+#Function to update Frontend
 func_update_frontend(){
 
     echo ""
@@ -170,7 +170,7 @@ func_update_frontend(){
 }
 
 
-#Function to install backend
+#Function to update backend
 func_update_backend() {
     echo ""
     echo ""
@@ -279,8 +279,7 @@ show_menu_newfies() {
 ExitFinish=0
 
 while [ $ExitFinish -eq 0 ]; do
-
-	# Show menu with Installation items
+    
 	show_menu_newfies
 
 	case $OPTION in

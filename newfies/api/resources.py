@@ -515,8 +515,8 @@ class CampaignResource(ModelResource):
         authorization = Authorization()
         authentication = BasicAuthentication()
         validation = CampaignValidation()
-        list_allowed_methods = ['post', 'get', 'put' 'delete']
-        detail_allowed_methods = ['post', 'get', 'put' 'delete']
+        list_allowed_methods = ['post', 'get', 'put', 'delete']
+        detail_allowed_methods = ['post', 'get', 'put', 'delete']
         filtering = {
             'name': ALL,
             'status': ALL,

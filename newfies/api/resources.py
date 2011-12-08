@@ -14,6 +14,7 @@ from django.utils.encoding import smart_unicode
 from django.utils.xmlutils import SimplerXMLGenerator
 from django.contrib.auth import authenticate
 from django.conf import settings
+from django.db import IntegrityError
 
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie.authentication import Authentication, BasicAuthentication
@@ -26,7 +27,8 @@ from tastypie.http import HttpCreated, HttpNoContent, HttpNotFound, HttpBadReque
 from tastypie.exceptions import BadRequest, NotFound, ImmediateHttpResponse
 from tastypie import http
 
-from dialer_campaign.models import Campaign, Phonebook, Contact, CampaignSubscriber
+from dialer_campaign.models import Campaign, Phonebook, Contact, CampaignSubscriber, \
+     get_unique_code
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_gateway.models import Gateway
 from voip_app.models import VoipApp
@@ -144,6 +146,12 @@ def get_value_if_none(x, value):
     return x
 
 
+def save_if_set(record, fproperty, value):
+    """function to save a property if it has been set"""
+    if value:
+        record.__dict__[fproperty] = value
+
+
 class IpAddressAuthorization(Authorization):
     def is_authorized(self, request, object=None):
         if request.META['REMOTE_ADDR'] in API_ALLOWED_IP:
@@ -189,31 +197,12 @@ class CampaignValidation(Validation):
     """
     Campaign Validation Class
     """
-    def is_valid(self, bundle, request=None):
+    def is_valid(self, request=None):
         errors = {}
-        if not bundle.data:
+
+        if not request.POST:
             errors['Data'] = ['Data set is empty']
 
-        startingdate = bundle.data.get('startingdate')
-        expirationdate = bundle.data.get('expirationdate')
-        if request.method == 'POST':
-            startingdate = get_value_if_none(startingdate, time.time())
-            # expires in 7 days
-            expirationdate = get_value_if_none(expirationdate, time.time() + 86400 * 7)
-
-            bundle.data['startingdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
-                                          time.gmtime(float(startingdate)))
-            bundle.data['expirationdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
-                                            time.gmtime(float(expirationdate)))
-
-        if request.method == 'PUT':
-            if startingdate:
-                bundle.data['startingdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
-                                              time.gmtime(float(startingdate)))
-            if expirationdate:
-                bundle.data['expirationdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
-                                                time.gmtime(float(expirationdate)))
-        
         if user_attached_with_dialer_settings(request):
             errors['user_dialer_setting'] = ['Your settings are not \
                         configured properly, Please contact the administrator.']
@@ -222,15 +211,14 @@ class CampaignValidation(Validation):
             errors['chk_campaign'] = ["You have too many campaigns. Max allowed %s" \
             % dialer_setting_limit(request, limit_for="campaign")]
 
-
-        frequency = bundle.data.get('frequency')
+        frequency = request.POST.get('frequency')
         if frequency:
             if check_dialer_setting(request, check_for="frequency",
                                         field_value=int(frequency)):
                 errors['chk_frequency'] = ["Maximum Frequency limit of %s exceeded." \
                 % dialer_setting_limit(request, limit_for="frequency")]
 
-        callmaxduration = bundle.data.get('callmaxduration')
+        callmaxduration = request.POST.get('callmaxduration')
         if callmaxduration:
             if check_dialer_setting(request,
                                     check_for="duration",
@@ -238,7 +226,7 @@ class CampaignValidation(Validation):
                 errors['chk_duration'] = ["Maximum Duration limit of %s exceeded." \
                 % dialer_setting_limit(request, limit_for="duration")]
 
-        maxretry = bundle.data.get('maxretry')
+        maxretry = request.POST.get('maxretry')
         if maxretry:
             if check_dialer_setting(request,
                                     check_for="retry",
@@ -246,7 +234,7 @@ class CampaignValidation(Validation):
                 errors['chk_duration'] = ["Maximum Retries limit of %s exceeded." \
                 % dialer_setting_limit(request, limit_for="retry")]
 
-        calltimeout = bundle.data.get('calltimeout')
+        calltimeout = request.POST.get('calltimeout')
         if calltimeout:
             if check_dialer_setting(request,
                                     check_for="timeout",
@@ -254,37 +242,36 @@ class CampaignValidation(Validation):
                 errors['chk_timeout'] = ["Maximum Timeout limit of %s exceeded." \
                 % dialer_setting_limit(request, limit_for="timeout")]
 
-        aleg_gateway_id = bundle.data.get('aleg_gateway')
+        aleg_gateway_id = request.POST.get('aleg_gateway')
         if aleg_gateway_id:
             try:
                 aleg_gateway_id = Gateway.objects.get(id=aleg_gateway_id).id
-                bundle.data['aleg_gateway'] = '/api/v1/gateway/%s/' % aleg_gateway_id
             except:
                 errors['chk_gateway'] = ["The Gateway ID doesn't exist!"]
 
-        voipapp_id = bundle.data.get('voipapp')
+        voipapp_id = request.POST.get('voipapp')
         if voipapp_id:
             try:
                 voip_app_id = VoipApp.objects.get(id=voipapp_id).id
-                bundle.data['voipapp'] = '/api/v1/voipapp/%s/' % voip_app_id
             except:
                 errors['chk_voipapp'] = ["The VoipApp doesn't exist!"]
 
         try:
             user_id = User.objects.get(username=request.user).id
-            bundle.data['user'] = '/api/v1/user/%s/' % user_id
         except:
             errors['chk_user'] = ["The User doesn't exist!"]
 
         if request.method=='POST':
-            name_count = Campaign.objects.filter(name=bundle.data.get('name'),
+            name_count = Campaign.objects.filter(name=request.POST.get('name'),
                                                  user=request.user).count()
             if (name_count!=0):
                 errors['chk_campaign_name'] = ["The Campaign name duplicated!"]
 
         return errors
 
-    
+def flatten_dict(dct):
+    return dict([ (str(k), dct.get(k)) for k in dct.keys() ])
+
 class CampaignResource(ModelResource):
     """
     **Attributes**:
@@ -339,17 +326,18 @@ class CampaignResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000"}' http://localhost:8000/api/v1/campaign/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data 'name=mycampaign&description=&callerid=1239876&startingdate=1301392136.0&expirationdate=1301332136.0&frequency=20&callmaxduration=50&maxretry=3&intervalretry=3000&calltimeout=45&aleg_gateway=1&voipapp=1&extra_data=2000' http://localhost:8000/api/v1/campaign/
 
         Response::
 
-            HTTP/1.0 201 CREATED
-            Date: Fri, 23 Sep 2011 06:08:34 GMT
+            HTTP/1.0 200 OK
+            Date: Thu, 08 Dec 2011 13:05:50 GMT
             Server: WSGIServer/0.1 Python/2.7.1+
             Vary: Accept-Language, Cookie
-            Content-Type: text/html; charset=utf-8
-            Location: http://localhost:8000/api/app/campaign/1/
+            Content-Type: application/json
             Content-Language: en-us
+
+            campaign id - 1 and phonebook id - 1
 
 
     **Read**:
@@ -508,16 +496,162 @@ class CampaignResource(ModelResource):
         authorization = Authorization()
         authentication = BasicAuthentication()
         validation = CampaignValidation()
-        filtering = {
-            'name': ALL,
-            'status': ALL,
-        }
+        list_allowed_methods = ['post', 'get', 'put' 'delete']
+        detail_allowed_methods = ['post', 'get', 'put' 'delete']
+        #filtering = {
+        #    'name': ALL,
+        #    'status': ALL,
+        #}
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
+    def override_urls(self):
+        """Override urls"""
+        return [
+            url(r'^(?P<resource_name>%s)/$' % self._meta.resource_name, self.wrap_view('create')),
+        ]
+
+    def create_response(self, request, data, response_class=HttpResponse, **response_kwargs):
+        """To display API's result"""
+        desired_format = self.determine_format(request)
+        serialized = data #self.serialize(request, data, desired_format)
+        return response_class(content=serialized, content_type=desired_format, **response_kwargs)
+
+    def create(self, request=None, **kwargs):
+        """POST method of campaign API"""
+        logger.debug('Campaign API authentication called!')
+        auth_result = self._meta.authentication.is_authenticated(request)
+        if not auth_result is True:
+            raise ImmediateHttpResponse(response=http.HttpUnauthorized())
+
+        logger.debug('Campaign API authorization called!')
+        auth_result = self._meta.authorization.is_authorized(request, object)
+
+        logger.debug('campaign API validation called!')
+        errors = self._meta.validation.is_valid(request)
+
+        if not errors:
+            logger.debug('campaign API get called!')
+
+            attrs = flatten_dict(request.POST)
+            name = get_attribute(attrs, 'name')
+            description = get_attribute(attrs, 'description')
+            status = 1 # per default
+            callerid = get_attribute(attrs, 'callerid')
+            startingdate = get_attribute(attrs, 'startingdate')
+            expirationdate = get_attribute(attrs, 'expirationdate')
+            frequency = get_attribute(attrs, 'frequency')
+            callmaxduration = get_attribute(attrs, 'callmaxduration')
+            maxretry = get_attribute(attrs, 'maxretry')
+            intervalretry = get_attribute(attrs, 'intervalretry')
+            calltimeout = get_attribute(attrs, 'calltimeout')
+            aleg_gateway = get_attribute(attrs, 'aleg_gateway')
+            voipapp = get_attribute(attrs, 'voipapp')
+            extra_data = get_attribute(attrs, 'extra_data')
+            daily_start_time = get_attribute(attrs, 'daily_start_time')
+            daily_stop_time = get_attribute(attrs, 'daily_stop_time')
+            monday = get_attribute(attrs, 'monday')
+            tuesday = get_attribute(attrs, 'tuesday')
+            wednesday = get_attribute(attrs, 'wednesday')
+            thursday = get_attribute(attrs, 'thursday')
+            friday = get_attribute(attrs, 'friday')
+            saturday = get_attribute(attrs, 'saturday')
+            sunday = get_attribute(attrs, 'sunday')
+
+            startingdate = get_value_if_none(startingdate, time.time())
+            # expires in 7 days
+            expirationdate = \
+            get_value_if_none(expirationdate, time.time() + 86400 * 7)
+
+            startingdate = \
+            time.strftime('%Y-%m-%d %H:%M:%S',
+                          time.gmtime(float(startingdate)))
+            expirationdate = \
+            time.strftime('%Y-%m-%d %H:%M:%S',
+                          time.gmtime(float(expirationdate)))
+
+            daily_start_time = get_value_if_none(daily_start_time, '00:00:00')
+            daily_stop_time = get_value_if_none(daily_stop_time, '23:59:59')
+            monday = get_value_if_none(monday, 1)
+            tuesday = get_value_if_none(tuesday, 1)
+            wednesday = get_value_if_none(wednesday, 1)
+            thursday = get_value_if_none(thursday, 1)
+            friday = get_value_if_none(friday, 1)
+            saturday = get_value_if_none(saturday, 1)
+            sunday = get_value_if_none(sunday, 1)
+
+            #TODO: Check it owns by user
+            try:
+                obj_aleg_gateway = Gateway.objects.get(id=aleg_gateway)
+            except Gateway.DoesNotExist:
+                resp = "The Gateway ID doesn't exist!"
+                logger.error(resp)
+                return resp
+
+            try:
+                obj_voip_app = VoipApp.objects.get(id=voipapp)
+            except VoipApp.DoesNotExist:
+                resp = "The VoipApp doesn't exist!"
+                logger.error(resp)
+                return resp
+
+            try:
+                new_campaign = Campaign.objects.create(user=request.user,
+                                    campaign_code=get_unique_code(length=5),
+                                    name=name,
+                                    description=description,
+                                    status=status,
+                                    callerid=callerid,
+                                    startingdate=startingdate,
+                                    expirationdate=expirationdate,
+                                    frequency=frequency,
+                                    callmaxduration=callmaxduration,
+                                    maxretry=maxretry,
+                                    intervalretry=intervalretry,
+                                    calltimeout=calltimeout,
+                                    aleg_gateway=obj_aleg_gateway,
+                                    voipapp=obj_voip_app,
+                                    extra_data=extra_data,
+                                    daily_start_time=daily_start_time,
+                                    daily_stop_time=daily_stop_time,
+                                    monday=monday,
+                                    tuesday=tuesday,
+                                    wednesday=wednesday,
+                                    thursday=thursday,
+                                    friday=friday,
+                                    saturday=saturday,
+                                    sunday=sunday,)
+            except IntegrityError:
+                resp = "The Campaign name duplicated!"
+                logger.error(resp)
+                return resp
+
+            new_phonebook = Phonebook.objects.create(user=request.user,
+                                name=name,
+                                description='Auto created Phonebook from API')
+
+            new_campaign.phonebook.add(new_phonebook)
+            new_campaign.save()
+
+            #return new_campaign
+            object_list = 'campaign id - %s and phonebook id - %s' % (new_campaign.id, new_phonebook.id)
+
+            return self.create_response(request, object_list)#, object_list
+        else:
+            if len(errors):
+                if request:
+                    desired_format = self.determine_format(request)
+                else:
+                    desired_format = self._meta.default_format
+
+                serialized = self.serialize(request, errors, desired_format)
+                response = http.HttpBadRequest(content=serialized, content_type=desired_format)
+                raise ImmediateHttpResponse(response=response)
+
+    """
     def obj_create(self, bundle, request=None, **kwargs):
-        """
+
         A ORM-specific implementation of ``obj_create``.
-        """
+
         logger.debug('Campaign API get called')
 
         bundle.obj = self._meta.object_class()
@@ -551,7 +685,7 @@ class CampaignResource(ModelResource):
         self.save_m2m(m2m_bundle)
         logger.debug('Campaign API : Result ok 200')
         return bundle
-
+    """
 
 class PhonebookValidation(Validation):
     """Phonebook Validation Class"""

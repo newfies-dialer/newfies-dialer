@@ -14,6 +14,7 @@ from django.utils.encoding import smart_unicode
 from django.utils.xmlutils import SimplerXMLGenerator
 from django.contrib.auth import authenticate
 from django.conf import settings
+from django.db import IntegrityError
 
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie.authentication import Authentication, BasicAuthentication
@@ -26,7 +27,8 @@ from tastypie.http import HttpCreated, HttpNoContent, HttpNotFound, HttpBadReque
 from tastypie.exceptions import BadRequest, NotFound, ImmediateHttpResponse
 from tastypie import http
 
-from dialer_campaign.models import Campaign, Phonebook, Contact, CampaignSubscriber
+from dialer_campaign.models import Campaign, Phonebook, Contact, CampaignSubscriber, \
+     get_unique_code
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_gateway.models import Gateway
 from voip_app.models import VoipApp
@@ -144,6 +146,12 @@ def get_value_if_none(x, value):
     return x
 
 
+def save_if_set(record, fproperty, value):
+    """function to save a property if it has been set"""
+    if value:
+        record.__dict__[fproperty] = value
+
+
 class IpAddressAuthorization(Authorization):
     def is_authorized(self, request, object=None):
         if request.META['REMOTE_ADDR'] in API_ALLOWED_IP:
@@ -191,16 +199,17 @@ class CampaignValidation(Validation):
     """
     def is_valid(self, bundle, request=None):
         errors = {}
+
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
 
         startingdate = bundle.data.get('startingdate')
         expirationdate = bundle.data.get('expirationdate')
+
         if request.method == 'POST':
             startingdate = get_value_if_none(startingdate, time.time())
             # expires in 7 days
             expirationdate = get_value_if_none(expirationdate, time.time() + 86400 * 7)
-
             bundle.data['startingdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
                                           time.gmtime(float(startingdate)))
             bundle.data['expirationdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
@@ -212,8 +221,8 @@ class CampaignValidation(Validation):
                                               time.gmtime(float(startingdate)))
             if expirationdate:
                 bundle.data['expirationdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
-                                                time.gmtime(float(expirationdate)))
-        
+                                                               time.gmtime(float(expirationdate)))
+
         if user_attached_with_dialer_settings(request):
             errors['user_dialer_setting'] = ['Your settings are not \
                         configured properly, Please contact the administrator.']
@@ -221,7 +230,6 @@ class CampaignValidation(Validation):
         if check_dialer_setting(request, check_for="campaign"):
             errors['chk_campaign'] = ["You have too many campaigns. Max allowed %s" \
             % dialer_setting_limit(request, limit_for="campaign")]
-
 
         frequency = bundle.data.get('frequency')
         if frequency:
@@ -284,7 +292,7 @@ class CampaignValidation(Validation):
 
         return errors
 
-    
+
 class CampaignResource(ModelResource):
     """
     **Attributes**:
@@ -343,14 +351,13 @@ class CampaignResource(ModelResource):
 
         Response::
 
-            HTTP/1.0 201 CREATED
-            Date: Fri, 23 Sep 2011 06:08:34 GMT
+            HTTP/1.0 200 OK
+            Date: Thu, 08 Dec 2011 13:05:50 GMT
             Server: WSGIServer/0.1 Python/2.7.1+
             Vary: Accept-Language, Cookie
             Content-Type: text/html; charset=utf-8
             Location: http://localhost:8000/api/app/campaign/1/
             Content-Language: en-us
-
 
     **Read**:
 
@@ -508,12 +515,14 @@ class CampaignResource(ModelResource):
         authorization = Authorization()
         authentication = BasicAuthentication()
         validation = CampaignValidation()
+        list_allowed_methods = ['post', 'get', 'put', 'delete']
+        detail_allowed_methods = ['post', 'get', 'put', 'delete']
         filtering = {
             'name': ALL,
             'status': ALL,
         }
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
-
+        
     def obj_create(self, bundle, request=None, **kwargs):
         """
         A ORM-specific implementation of ``obj_create``.
@@ -550,6 +559,7 @@ class CampaignResource(ModelResource):
         m2m_bundle = self.hydrate_m2m(bundle)
         self.save_m2m(m2m_bundle)
         logger.debug('Campaign API : Result ok 200')
+        
         return bundle
 
 

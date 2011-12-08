@@ -280,7 +280,7 @@ class CampaignValidation(Validation):
 
         try:
             user_id = User.objects.get(username=request.user).id
-            bundle.data['voipapp'] = '/api/v1/voipapp/%s/' % voip_app_id
+            bundle.data['user'] = '/api/v1/user/%s/' % user_id
         except:
             errors['chk_user'] = ["The User doesn't exist!"]
 

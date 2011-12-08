@@ -513,7 +513,7 @@ class CampaignResource(ModelResource):
             'status': ALL,
         }
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
-
+        
     def obj_create(self, bundle, request=None, **kwargs):
         """
         A ORM-specific implementation of ``obj_create``.
@@ -550,6 +550,7 @@ class CampaignResource(ModelResource):
         m2m_bundle = self.hydrate_m2m(bundle)
         self.save_m2m(m2m_bundle)
         logger.debug('Campaign API : Result ok 200')
+        
         return bundle
 
 

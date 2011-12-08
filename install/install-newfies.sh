@@ -618,11 +618,11 @@ func_install_redis_server() {
 #Menu Section for Script
 show_menu_newfies() {
 	clear
-	echo " > Newfies Installation Menu (DEBIAN)"
+	echo " > Newfies-Dialer Installation Menu"
 	echo "====================================="
-	echo "	1)  All"
-	echo "	2)  Newfies Web Frontend"
-	echo "	3)  Newfies Backend / Newfies-Celery"
+	echo "	1)  Install All"
+	echo "	2)  Install Newfies-Dialer Web Frontend"
+	echo "	3)  Install Newfies-Dialer Backend / Newfies-Celery"
 	echo "	0)  Quit"
 	echo -n "(0-3) : "
 	read OPTION < /dev/tty

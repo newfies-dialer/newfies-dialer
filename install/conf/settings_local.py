@@ -21,7 +21,7 @@ DATABASES = {
         # Add 'postgresql_psycopg2','postgresql','mysql','sqlite3','oracle'
         'ENGINE': 'django.db.backends.sqlite3',
         # Or path to database file if using sqlite3.
-        'NAME': APPLICATION_DIR + '/database/test.db',
+        'NAME': APPLICATION_DIR + '/database/newfies-dialer.db',
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost.

@@ -6,7 +6,8 @@
 Welcome to Newfies's documentation!
 ===================================
 
-:Release: |version|
+:Version: |version|
+:Release: |release|
 :Date: |today|
 
 

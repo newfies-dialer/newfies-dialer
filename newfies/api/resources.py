@@ -654,7 +654,7 @@ class CampaignResource(ModelResource):
     user = fields.ForeignKey(UserResource, 'user', full=True)
     aleg_gateway = fields.ForeignKey(GatewayResource, 'aleg_gateway', full=True)
     voipapp = fields.ForeignKey(VoipAppResource, 'voipapp', full=True)
-    phonebook = fields.ToManyField(PhonebookResource, 'phonebook', full=True)
+    phonebook = fields.ToManyField(PhonebookResource, 'phonebook', full=True, readonly=True)
     class Meta:
         queryset = Campaign.objects.all()
         resource_name = 'campaign'

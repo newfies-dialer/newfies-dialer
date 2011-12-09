@@ -1,15 +1,11 @@
-"""
-Newfies-Dialer is a voice broadcast application designed and built to automate
-the delivery of interactive phone calls to contacts, clients and the general
-public.
+# -*- coding: utf-8 -*-
+"""Voice Broadcast Application"""
+# :copyright: (c) 2010 - 2011 by Arezqui Belaid.
+# :license:   AGPL, see COPYING for more details.
 
-Newfies-Dialer is scalable from a single server to supporting distributed call
-processing across multiple cloud based telephony servers to make millions of
-outbound calls per day. The multi-user web interface allows every aspect of 
-the campaign to be controlled with detailed reporting.
-
-A Newfies-Dialer Voice Broadcasting Platform is assembled entirely from free 
-and open source components including Freeswitch, Django, Plivo, Celery and 
-RabbitMQ.
-"""
-VERSION = '1.0.0'
+VERSION = (1, 0, 6, "a")
+__version__ = ".".join(map(str, VERSION[0:3])) + "".join(VERSION[3:])
+__author__ = "Arezqui Belaid"
+__contact__ = "info@star2billing.com"
+__homepage__ = "http://www.newfies-dialer.org"
+__docformat__ = "restructuredtext"

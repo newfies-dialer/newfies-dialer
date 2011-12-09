@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Newfies's documentation!
-===================================
+Welcome to Newfies-Dialer's documentation!
+==========================================
 
 :Version: |version|
 :Release: |release|

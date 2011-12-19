@@ -1446,7 +1446,7 @@ class AnswercallResource(ModelResource):
                                     (gateways, gatewaytimeouts)
 
                 object_list = [ {dial_command: {number_command: obj_callrequest.voipapp.data}, },]
-                logger.debug('Diale command')
+                logger.debug('Dial command')
 
             elif obj_callrequest.voipapp.type == 2:
                 #PlayAudio

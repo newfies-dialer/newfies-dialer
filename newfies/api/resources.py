@@ -226,10 +226,6 @@ class PhonebookResource(ModelResource):
         * ``description`` - Short description of the Campaign
         * ``campaign_id`` - Campaign ID
 
-    **Validation**:
-
-        * PhonebookValidation()
-
     **Create**:
 
         CURL Usage::
@@ -480,14 +476,10 @@ class CampaignResource(ModelResource):
             * ``aleg_gateway`` - Defines the Gateway to use to call the\
                                  subscriber
             * ``voipapp`` - Defines the  application to use when the \
-                            call is established on the A-Leg
+                            call is established on the A-Leg 
             * ``extra_data`` - Defines the additional data to pass to the\
                                  application
 
-    **Validation**:
-
-        * CampaignValidation()
-    
     **Create**:
 
         CURL Usage::
@@ -742,10 +734,6 @@ class BulkContactResource(ModelResource):
         * ``phonebook_id`` - the phonebook Id to which we want to add\
         the contact
 
-    **Validation**:
-
-        * BulkContactValidation()
-
     **CURL Usage**::
 
         curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"phonebook_id": "1", "phoneno_list" : "12345,54344"}' http://localhost:8000/api/v1/bulkcontact/
@@ -771,7 +759,7 @@ class BulkContactResource(ModelResource):
 
     def obj_create(self, bundle, request=None, **kwargs):
         """
-        A ORM-specific implementation of ``obj_create``.
+        A ORM-specific implementation of ``obj_create``. 
         """
         logger.debug('BulkContact API get called')
 
@@ -920,6 +908,10 @@ class CampaignSubscriberValidation(Validation):
 
 class CampaignSubscriberResource(ModelResource):
     """
+    This API allows you to create, update and retrieve contact from a campaign. The new contacts will automatically called if the campaign is running.
+    The Read method will allow you to retrieve the status of a contact previously created.
+    The Update method will allow you to update an existing contact, for instance you can unsubscribe a contact if it hasn't been called yet.
+    
     **Attributes Details**:
 
         * ``contact`` - contact number of the Subscriber
@@ -928,12 +920,7 @@ class CampaignSubscriberResource(ModelResource):
         * ``email`` - email id of the Subscriber
         * ``description`` - Short description of the Subscriber
         * ``additional_vars`` - Additional settings for the Subscriber
-        * ``phonebook_id`` - the phonebook Id to which we want to add\
-        the Subscriber
-
-    **Validation**:
-
-        * CampaignSubscriberValidation()
+        * ``phonebook_id`` - the phonebook Id to which we want to add the Subscriber
 
     **Create**:
 
@@ -1196,10 +1183,6 @@ class CallrequestResource(ModelResource):
         * ``result`` -
         * ``hangup_cause`` -
         * ``last_attempt_time`` -
-
-    **Validation**:
-
-        * CallrequestValidation()
 
     **Create**:
 
@@ -1519,10 +1502,6 @@ class DialCallbackResource(ModelResource):
        * ``DialBLegUUID`` - UUID BLeg
        * ``DialBLegHangupCause`` - Hangup Cause
 
-    **Validation**:
-
-        * DialCallbackValidation()
-
     **Create**:
 
         CURL Usage::
@@ -1656,11 +1635,7 @@ class HangupcallResource(ModelResource):
 
        * ``RequestUUID`` - RequestUUID
        * ``HangupCause`` - Hangup Cause
-
-    **Validation**:
-
-        * HangupcallValidation()
-
+    
     **Create**:
 
         CURL Usage::
@@ -1783,10 +1758,6 @@ class CdrResource(ModelResource):
     **Attributes**:
 
         * ``cdr`` - XML string assigned from the Telephony engine
-
-    **Validation**:
-
-        * CdrValidation()
 
     **Create**:
 

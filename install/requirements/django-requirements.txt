@@ -19,3 +19,6 @@ git+git://github.com/areski/django-countries.git
 git+git://github.com/Star2Billing/django-admin-tools-stats.git
 git+git://github.com/toastdriven/django-tastypie.git
 django-sentry==1.13.5
+django-redis-cache
+django-redisboard
+git+git://github.com/areski/django-genericadmin.git

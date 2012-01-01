@@ -5,6 +5,8 @@ from django.forms import *
 from django.contrib import *
 from django.contrib.admin.widgets import *
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.contenttypes.models import ContentType
+
 from dialer_campaign.models import *
 from dialer_campaign.function_def import *
 from datetime import *
@@ -54,8 +56,10 @@ class Contact_fileImport(FileImport):
 class LoginForm(forms.Form):
     """Client Login Form"""
     user = forms.CharField(max_length=30, label=_('Username:'), required=True)
+    user.widget.attrs['class'] = 'input-small'
     password = forms.CharField(max_length=30, label=_('Password:'),
                required=True, widget=forms.PasswordInput())
+    password.widget.attrs['class'] = 'input-small'
 
 
 class PhonebookForm(ModelForm):
@@ -96,10 +100,14 @@ class CampaignForm(ModelForm):
     """Campaign ModelForm"""
     campaign_code = forms.CharField(widget=forms.HiddenInput)
     ds_user = forms.CharField(widget=forms.HiddenInput)
+
+    content_object = forms.ChoiceField()
+
     class Meta:
         model = Campaign
         fields = ['campaign_code', 'name', 'description',
-                  'callerid', 'status', 'aleg_gateway', 'voipapp',
+                  'callerid', 'status', 'aleg_gateway',
+                  'content_object', # 'content_type', 'object_id','voipapp',
                   'extra_data', 'phonebook',
                   'frequency', 'callmaxduration', 'maxretry',
                   'intervalretry', 'calltimeout',
@@ -115,10 +123,11 @@ class CampaignForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(CampaignForm, self).__init__(*args, **kwargs)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
+
         if user:
             self.fields['ds_user'].initial = user
             list_pb = []
-            list_voipapp = []
+            #list_voipapp = []
             list_gw = []
 
             list_pb.append((0, '---'))
@@ -127,17 +136,30 @@ class CampaignForm(ModelForm):
                 list_pb.append((i[0], i[1]))
             self.fields['phonebook'].choices = list_pb
 
-            list_voipapp.append((0, '---'))
-            vp_list = field_list("voipapp", user)
-            for i in vp_list:
-                list_voipapp.append((i[0], i[1]))
-            self.fields['voipapp'].choices = list_voipapp
+            #list_voipapp.append((0, '---'))
+            #vp_list = field_list("voipapp", user)
+            #for i in vp_list:
+            #    list_voipapp.append((i[0], i[1]))
+            #self.fields['voipapp'].choices = list_voipapp
 
             list_gw.append((0, '---'))
             gw_list = field_list("gateway", user)
             for i in gw_list:
                 list_gw.append((i[0], i[1]))
             self.fields['aleg_gateway'].choices = list_gw
+
+            from voip_app.models import VoipApp
+            from survey.models import SurveyApp
+            available_objects = list(VoipApp.objects.filter(user=user))
+            available_objects += list(SurveyApp.objects.filter(user=user))
+            object_choices = []
+            for obj in available_objects:
+                type_id = ContentType.objects.get_for_model(obj.__class__).id
+                obj_id = obj.id
+                form_value = "type:%s-id:%s" % (type_id, obj_id) #e.g."type:12-id:3"
+                display_text = str(ContentType.objects.get_for_model(obj.__class__)) + ' : ' + str(obj)
+                object_choices.append([form_value, display_text])
+            self.fields['content_object'].choices = object_choices
 
     def clean(self):
         cleaned_data = self.cleaned_data
@@ -181,8 +203,9 @@ class CampaignAdminForm(ModelForm):
     class Meta:
         model = Campaign
         fields = ['campaign_code', 'name', 'description', 'user', 'status',
-                  'callerid', 'startingdate', 'expirationdate',
-                  'aleg_gateway', 'voipapp', 'extra_data', 'phonebook',
+                  'callerid', 'startingdate', 'expirationdate', 'aleg_gateway',
+                  #'voipapp', 
+                  'content_type', 'object_id', 'extra_data', 'phonebook',
                   'frequency', 'callmaxduration', 'maxretry', 'intervalretry',
                   'calltimeout', 'daily_start_time', 'daily_stop_time',
                   'monday', 'tuesday', 'wednesday', 'thursday', 'friday',

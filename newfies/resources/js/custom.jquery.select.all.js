@@ -24,6 +24,14 @@ $(document).ready(function() {
              {
                  confirm_string = 'you are going to delete '+$fields.length+' contact(s) from your phonebook'
              }
+             if(document.location.href.search("/survey/") != -1)
+             {
+                 confirm_string = 'you are going to delete '+$fields.length+' survey(s) from your surveys'
+             }
+             if(document.location.href.search("/audio/") != -1)
+             {
+                 confirm_string = 'you are going to delete '+$fields.length+' audio(s) from your audio list'
+             }
              if(document.location.href.search("/phonebook/") != -1)
              {
                 var allVals = [];                

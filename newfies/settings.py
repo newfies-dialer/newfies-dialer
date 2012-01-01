@@ -109,7 +109,7 @@ SECRET_KEY = 'ujau$^uei_ak=@-v8va(&@q_sc0^1nn*qpwyc-776n&qoam@+v'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -123,6 +123,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'pagination.middleware.PaginationMiddleware',
     'common.filter_persist_middleware.FilterPersistMiddleware',
+    'audiofield.middleware.threadlocals.ThreadLocals',
 )
 
 
@@ -132,8 +133,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.static",
+    "django.core.context_processors.csrf",
     "django.contrib.messages.context_processors.messages",
-    'context_processors.newfies_version',
+    "context_processors.newfies_version",
     #needed by Sentry
     "django.core.context_processors.request",
 )
@@ -147,7 +149,12 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(APPLICATION_DIR, 'templates'),
 )
+
 INTERNAL_IPS = ('127.0.0.1',)
+
+DAJAXICE_MEDIA_PREFIX="dajaxice"
+#DAJAXICE_MEDIA_PREFIX = "dajax"  # http://domain.com/dajax/
+#DAJAXICE_CACHE_CONTROL = 10 * 24 * 60 * 60
 
 INSTALLED_APPS = (
     #admin tool apps
@@ -178,13 +185,30 @@ INSTALLED_APPS = (
     'memcache_status',
     'notification',
     'voip_app',
+    'survey',
     'sentry',
     'raven.contrib.django',
     'admin_tools_stats',
     'chart_tools',
     'south',
     'tastypie',
+    'audiofield',
+    'tagging',
+    'adminsortable',
+    'dajaxice',
+    'dajax',
+    'genericadmin',
 )
+
+
+# Redisboard
+try:
+    import redisboard
+except ImportError:
+    pass
+else:
+    INSTALLED_APPS = INSTALLED_APPS + ('redisboard',)
+
 
 # Debug Toolbar
 try:
@@ -245,12 +269,26 @@ DILLA_SPAMLIBS = [
 
 #MEMCACHE
 #========
+#CACHES = {
+#  'default': {
+#    'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+#    'LOCATION': '127.0.0.1:11211',
+#    'KEY_PREFIX': 'newfies_',
+#  }
+#}
+
+#REDIS-CACHE
+#===========
 CACHES = {
-  'default': {
-    'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-    'LOCATION': '127.0.0.1:11211',
-    'KEY_PREFIX': 'newfies_',
-  }
+    'default': {
+        'BACKEND': 'redis_cache.RedisCache',
+        'LOCATION': '127.0.0.1:6379',
+        #'OPTIONS': {
+        #    'DB': 1,
+        #    'PASSWORD': 'yadayada',
+        #    'PARSER_CLASS': 'redis.connection.HiredisParser'
+        #},
+    },
 }
 
 #CELERY SETTINGS
@@ -313,6 +351,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 PLIVO_DEFAULT_ANSWER_URL = 'http://127.0.0.1:8000/api/v1/answercall/'
 PLIVO_DEFAULT_HANGUP_URL = 'http://127.0.0.1:8000/api/v1/hangupcall/'
 PLIVO_DEFAULT_DIALCALLBACK_URL = 'http://127.0.0.1:8000/api/v1/dialcallback/'
+
+#TODO add consistancy between answercall api and survey_finestatemachine
+PLIVO_DEFAULT_SURVEY_ANSWER_URL = 'http://127.0.0.1:8000/survey_finestatemachine/'
 
 # ADD 'dummy','plivo','twilio'
 NEWFIES_DIALER_ENGINE = 'plivo'
@@ -398,6 +439,13 @@ LOGGING = {
     },
 }
 
+# Frontend widget values
+CHANNEL_TYPE_VALUE = 0  # 0-Keep original, 1-Mono, 2-Stereo
+
+FREQ_TYPE_VALUE = 8000  # 0-Keep original, 8000-8000Hz, 16000-16000Hz, 22050-22050Hz,
+                     # 44100-44100Hz, 48000-48000Hz, 96000-96000Hz
+
+CONVERT_TYPE_VALUE = 0 # 0-Keep original, 1-Convert to MP3, 2-Convert to WAV, 3-Convert to OGG
 
 #IMPORT LOCAL SETTINGS
 #=====================

@@ -1,11 +1,6 @@
 {% extends "frontend/master.html" %}
 {% load i18n dialer_cdr_extras %}
 
-{% block title %}
-{{ block.super }}
-{% trans "VoIP Call Report" %}
-{% endblock %}
-
 {% block extra_files %}
 <script type="text/javascript">
 $(function() {
@@ -32,6 +27,11 @@ td {
 }
 </style>
 {% endblock %}
+
+{% block content_header %}
+<h1>{% trans "VoIP Call Report" %} <small>{% trans "List detailed informations about each calls" %}</small></h1>
+{% endblock %}
+
 
 {% block content %}
 <br/>

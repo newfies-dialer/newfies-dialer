@@ -5,6 +5,8 @@ from dialer_gateway.models import Gateway
 from dialer_campaign.models import Campaign, CampaignSubscriber
 from voip_app.models import VoipApp
 from common.intermediate_model_base_class import Model
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes import generic
 from prefix_country.models import Prefix
 from uuid import uuid1
 
@@ -123,7 +125,7 @@ class Callrequest(Model):
 
     campaign_subscriber = models.ForeignKey(CampaignSubscriber,
                 null=True, blank=True,
-    help_text=_("Campaign Subscriber related to this callrequest"))
+                help_text=_("Campaign Subscriber related to this callrequest"))
 
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
                 help_text=_("Select Campaign"))
@@ -131,13 +133,14 @@ class Callrequest(Model):
                 verbose_name="A-Leg Gateway",
                 help_text=_("Select Gateway to use to reach the subscriber"))
 
-    voipapp = models.ForeignKey(VoipApp, null=True, blank=True,
-                                verbose_name="VoIP Application",
-    help_text=_("Select VoIP Application to use with this campaign"))
-
+    #used to define the VoIP App or the Survey
+    content_type = models.ForeignKey(ContentType, verbose_name=_("Type"))
+    object_id = models.PositiveIntegerField(verbose_name=_("Application"))
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    
     extra_data = models.CharField(max_length=120, blank=True,
-                                  verbose_name=_("Extra Data"),
-    help_text=_("Define the additional data to pass to the application"))
+                verbose_name=_("Extra Data"),
+                help_text=_("Define the additional data to pass to the application"))
 
     num_attempt = models.IntegerField(default=0)
     last_attempt_time = models.DateTimeField(null=True, blank=True)
@@ -195,7 +198,7 @@ class VoIPCall(models.Model):
     callid = models.CharField(max_length=120, help_text=_("VoIP Call-ID"))
     callerid = models.CharField(max_length=120, verbose_name='CallerID')
     phone_number = models.CharField(max_length=120,  null=True, blank=True,
-    help_text=_(u'The international number of the recipient, without the leading +'))
+        help_text=_(u'The international number of the recipient, without the leading +'))
 
     dialcode = models.ForeignKey(Prefix, verbose_name="Destination", null=True,
                                blank=True, help_text=_("Select Prefix"))

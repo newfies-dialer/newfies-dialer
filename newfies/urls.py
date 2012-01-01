@@ -9,9 +9,15 @@ from dialer_campaign.urls import urlpatterns as urlpatterns_dialer_campaign
 from dialer_cdr.urls import urlpatterns as urlpatterns_dialer_cdr
 from user_profile.urls import urlpatterns as urlpatterns_user_profile
 from voip_app.urls import urlpatterns as urlpatterns_voip_app
+from survey.urls import urlpatterns as urlpatterns_survey
+
 
 from tastypie.api import Api
 from api.resources import *
+from survey.api.resources import SurveyAppResource, SurveyQuestionResource, SurveyResponseResource
+
+from dajaxice.core import dajaxice_autodiscover
+dajaxice_autodiscover()
 
 # tastypie api
 tastypie_api = Api(api_name='v1')
@@ -19,6 +25,7 @@ tastypie_api = Api(api_name='v1')
 tastypie_api.register(UserResource())
 tastypie_api.register(GatewayResource())
 tastypie_api.register(VoipAppResource())
+tastypie_api.register(ContentTypeResource())
 tastypie_api.register(CampaignResource())
 tastypie_api.register(PhonebookResource())
 tastypie_api.register(BulkContactResource())
@@ -29,7 +36,9 @@ tastypie_api.register(AnswercallResource())
 tastypie_api.register(HangupcallResource())
 tastypie_api.register(DialCallbackResource())
 tastypie_api.register(CdrResource())
-
+tastypie_api.register(SurveyAppResource())
+tastypie_api.register(SurveyQuestionResource())
+tastypie_api.register(SurveyResponseResource())
 
 urlpatterns = patterns('',
     # redirect
@@ -54,6 +63,9 @@ urlpatterns = patterns('',
      'dialer_campaign.views.admin_user_report'),
     (r'^admin_user_report_graph/$',
      'dialer_campaign.views.admin_user_report_graph'),
+     
+    (r'^logout/$',
+     'dialer_campaign.views.logout_view'),
 
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
@@ -65,9 +77,6 @@ urlpatterns = patterns('',
 
     (r'^admin_tools/', include('admin_tools.urls')),
 
-    #(r'^$', include('dialer_campaign.urls')),
-    #(r'^dialer_cdr/', include('dialer_cdr.urls')),
-    #(r'^user_profile/', include('user_profile.urls')),
 
     (r'^static/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.STATIC_ROOT}),
@@ -75,12 +84,15 @@ urlpatterns = patterns('',
     (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': 'static/newfies/images/favicon.png'}),
     
     (r'^sentry/', include('sentry.web.urls')),
+    
+    (r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
 )
 
 urlpatterns += urlpatterns_dialer_campaign
 urlpatterns += urlpatterns_dialer_cdr
 urlpatterns += urlpatterns_user_profile
 urlpatterns += urlpatterns_voip_app
+urlpatterns += urlpatterns_survey
 
 handler404 = 'urls.custom_404_view'
 handler500 = 'urls.custom_500_view'

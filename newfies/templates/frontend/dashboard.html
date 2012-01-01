@@ -11,52 +11,33 @@
       //jQuery.noConflict(); // To resolve conflict with jquery & prototype
       (function($){ // jquey function call in (function($){})(jQuery);
           $(document).ready(function() {
-            $(".fg-button").hover(
-                function(){
-                    $(this).addClass("ui-state-hover");
-                },
-                function(){
-                    $(this).removeClass("ui-state-hover");
-                }
-            );
-            $('#buttonlogin').click(function(){
-              $("#requestlogin").animate({ height: 'show', opacity: 'show' }, 'slow');
-            });
-            $('#buttonlogout').click(function(){
-              $('#logout').submit();
-            });
-            $('#buttonadmin').click(function(){
-                var url = String(window.location);
-                var patt = "(https?|ftp|gopher|telnet|file|notes|ms-help)://[^/]+/";
-                window.location = url.match(patt)[0] + 'admin';
-            });
             $("#language-container").change(function() {
                 this.form.submit();
             });
           });
       })(jQuery);
     </script>
-
 {% endblock %}
 
-
+{% block content_header %}
+<h1>{% trans "Dashboard" %} <small>{% trans "Monitor in realtime how your campaign are performing" %}</small></h1>
+{% endblock %}
 
 {% block content %}
-
 <form method="POST" action="." id="id_searchform" name="searchform" enctype="multipart/form-data">{% csrf_token %}
-    <p>
-        {{ form.campaign.label }} {{ form.campaign }} {{ form.search_type }}
-        <input type="submit" name="submit" value="{% trans "Submit" %}">
-    </p>
+<p>
+    {{ form.campaign }} {{ form.search_type }}
+    <input type="submit" name="submit" value="{% trans "Submit" %}">
+</p>
 
-<P>
+<p>
     {% for j in total_data %}
        <!--{{ j }}<br/>-->
     {% endfor %}
     {% for i in final_calls %}
         <!--{{ i }}<br/>-->
     {% endfor %}
-</P>
+</p>
 
 
 <table align="center" id="rounded-corner">

@@ -12,17 +12,21 @@ from dialer_campaign.function_def import *
 from dialer_campaign.views import common_send_notification, \
     common_campaign_status
 import csv
+from genericadmin.admin import GenericAdminModelAdmin, GenericTabularInline
 
 
-class CampaignAdmin(admin.ModelAdmin):
+
+class CampaignAdmin(GenericAdminModelAdmin):
     """Allows the administrator to view and modify certain attributes
     of a Campaign."""
-    form = CampaignAdminForm
+    content_type_whitelist = ('voip_app/voipapp', 'survey/surveyapp', )
     fieldsets = (
         (_('Standard options'), {
             'fields': ('campaign_code', 'name', 'description', 'callerid',
                        'user', 'status', 'startingdate', 'expirationdate',
-                       'aleg_gateway', 'voipapp', 'extra_data', 'phonebook'),
+                       'aleg_gateway', 'content_type', 'object_id',
+                       'extra_data', 'phonebook',
+                       ),
         }),
         (_('Advanced options'), {
             'classes': ('collapse',),
@@ -32,14 +36,13 @@ class CampaignAdmin(admin.ModelAdmin):
                        'thursday', 'friday', 'saturday', 'sunday')
         }),
     )
-    list_display = ('id', 'campaign_code', 'name', 'user', 'startingdate',
-                    'expirationdate', 'frequency', 'callmaxduration',
-                    'maxretry', 'aleg_gateway',#'intervalretry', 'calltimeout',
-                    'voipapp', 'extra_data', 'status',
+    list_display = ('id', 'name', 'content_type', 'campaign_code', 'user', 
+                    'startingdate', 'expirationdate', 'frequency', 
+                    'callmaxduration', 'maxretry', 'aleg_gateway', 'status',
                     'update_campaign_status', 'count_contact_of_phonebook',
                     'campaignsubscriber_detail', 'progress_bar')
 
-    list_display_links = ('name', )
+    list_display_links = ('id', 'name', )
     #list_filter = ['user', 'status', 'startingdate', 'created_date']
     ordering = ('id', )
     filter_horizontal = ('phonebook',)

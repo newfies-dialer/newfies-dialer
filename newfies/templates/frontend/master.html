@@ -3,25 +3,102 @@
 <head xmlns="http://www.w3.org/1999/xhtml" lang="{{ LANGUAGE_CODE }}" xml:lang="{{ LANGUAGE_CODE }}">
 
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>{% block title %}Newfies{% endblock %} | 
-           {% trans "Customer Interface" noop %}</title>
+    <title>{% block title %}Newfies-Dialer{% endblock %} | {% trans "Customer Interface" noop %}</title>
     <link rel="icon" type="image/png" href="{{STATIC_URL}}newfies/images/favicon.png">
-
-    <!-- bluetrip css -->
-    <link rel="stylesheet" href="{{STATIC_URL}}newfies/css/blueprint/screen.css" type="text/css" media="screen, projection" />
-    <link rel="stylesheet" href="{{STATIC_URL}}newfies/css/blueprint/print.css" type="text/css" media="print" />
-    <!--[if IE]>
-    <link rel="stylesheet" href="{{STATIC_URL}}newfies/css/blueprint/ie.css" type="text/css" media="screen, projection" />
+    
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link rel="stylesheet" href="{{STATIC_URL}}newfies/css/blueprint/plugins/buttons/screen.css" type="text/css" media="screen, projection" />
+
+    
+    <!-- Le styles -->
+    <link href="{{STATIC_URL}}newfies/bootstrap-1.4.0/css/bootstrap.css" rel="stylesheet">
+    
+    <style type="text/css">
+      /* Override some defaults */
+      html, body {
+        background-color: #eee;
+      }
+      body {
+        padding-top: 60px; /* 40px to make the container go all the way to the bottom of the topbar */
+      }
+      .container > footer p {
+        text-align: center; /* center align it with the container */
+      }
+      .container {
+        width: 950px; /* downsize our container to make the content feel a bit tighter and more cohesive. NOTE: this removes two full columns from the grid, meaning you only go to 14 columns and not 16. */
+      }
+
+      /* The white background content wrapper */
+      .container > .content {
+        background-color: #fff;
+        padding: 50px;
+        margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
+        -webkit-border-radius: 6 0 6px 6px;
+           -moz-border-radius: 0 0 6px 6px;
+                border-radius: 0 0 6px 6px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+                box-shadow: 0 1px 2px rgba(0,0,0,.15);
+      }
+
+      /* Page header tweaks */
+      .page-header {
+        background-color: #f5f5f5;
+        padding: 20px 20px 10px;
+        margin: -20px -20px 20px;
+      }
+
+      /* Styles you shouldn't keep as they are for displaying this base example only */
+      .content .span10,
+      .content .span4 {
+        min-height: 500px;
+      }
+      /* Give a quick and non-cross-browser friendly divider */
+      .content .span4 {
+        margin-left: 0;
+        padding-left: 19px;
+        border-left: 1px solid #eee;
+      }
+
+      .topbar .btn {
+        border: 0;
+      }
+      
+      #language-container {
+        width: 110px;
+      }
+      
+      footer {
+        text-align: center; /* center align it with the container */
+      }
+
+    </style>
+
+    <!-- Le javascript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-modal.js"></script>
+    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-alerts.js"></script>
+    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-twipsy.js"></script>
+    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-popover.js"></script>
+    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-dropdown.js"></script>
+    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-scrollspy.js"></script>
+    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-tabs.js"></script>
+    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-buttons.js"></script>
+    
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
 
     <!-- Newfies custom css -->
-    <link type="text/css" media="screen" href="{{STATIC_URL}}newfies/css/newfile_custom.css" rel="stylesheet"/>
+    <link type="text/css" media="screen" href="{{STATIC_URL}}newfies/css/newfies_custom.css" rel="stylesheet"/>
     <!-- jquery UI css -->
     <link type="text/css" href="{{STATIC_URL}}newfies/css/smoothness/jquery-ui-1.8.14.custom.css" rel="stylesheet">
 
     <!-- Javascript -->
-    <script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-1.5.2.min.js"></script>
     <script type="text/javascript" src="{{STATIC_URL}}newfies/js/custom.validation.js"></script>
     <script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-ui-1.8.14.custom.min.js"></script>
 
@@ -46,154 +123,78 @@
         $('#buttonlogin').click(function(){
           $("#requestlogin").animate({ height: 'show', opacity: 'show' }, 'slow');
         });
-        $('#buttonlogout').click(function(){
-          $('#logout').submit();
-        });
-        $('#buttonadmin').click(function(){
-            var url = String(window.location);
-            var patt = "(https?|ftp|gopher|telnet|file|notes|ms-help)://[^/]+/";
-            window.location = url.match(patt)[0] + 'admin';
-        });
         $("#language-container").change(function() {
             this.form.submit();
         });
       });
     </script>
 
-    <style>
-    table {
-        margin-bottom:1.4em;
-        width:auto;
-    }
-    fieldset{
-        width: 950px;
-    }
-    
-    .login{
-        background: white;
-        border: 1px solid #ccc;
-        width: 28em;
-        height: 18em;
-        min-width: 320px;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: auto;
-    }
-
-    .icon {
-        padding-left: 5px;
-        padding-top: 2px;
-        padding-right: 13px;
-        padding-bottom: 2px;
-        background-repeat:
-        no-repeat;
-    }
-    </style>
-
 </head>
 
 <body>
 
+{% include "frontend/bootstrap_menu.html" %}
+
 <div class="container">
 
-    <div class="span-15">
-		<a href="#" target="_blank"><img src="{{STATIC_URL}}newfies/images/newfies.png" style="vertical-align:center;" height="80"/></a>
-	</div>   
+    <div class="content">
     
-    <div class="span-3" align="right">
-    <form action="/i18n/setlang/" method="post">
-        {% csrf_token %}
-        <select name="language" id="language-container">
-        {% for lang in LANGUAGES %}
-        <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected{% endifequal %}>{{ lang.1 }}</option>
-        {% endfor %}
-        </select>
-    </form>
-    </div>
+        <div class="page-header">
+          {% block content_header %}
+          <h1>Newfies-Dialer <small>{% trans "Voice Broadcasting solution" %}</small></h1>
+          {% endblock %}
+            {% if errorlogin %}
+                <div class="error">
+                    <span class="ui-icon ui-icon-alert" style="float: left; margin-right: 0.3em;"></span>
+                    <strong>Alert : </strong>  {{ errorlogin }}
+                </div>
+            {% else %}
+                {% if notlogged %}
+                <div class="error">
+                    <span class="ui-icon ui-icon-alert" style="float: left; margin-right: 0.3em;"></span>
+                    <strong>{% trans "Alert"  %} : </strong>  {% trans "Please login by clicking on login button"  %}
+                </div>
+                {% endif %}
+            {% endif %}
+        </div>
+        
+        {% block extra_files %}
+        {% endblock %}
 
-    <div class="prepend-2">
-    {% if user.is_authenticated %}
-        {% if user.is_superuser %}
-            <button id="buttonadmin" class="button-text-icon-gear">{% trans "Admin" %}</button>
-        {% endif %}
-    {% endif %}
-    </div>
-
-	<div class="prepend-2 last">
-	    {% include "frontend/login_option.html" %}
-    </div>
-
-
-	<div class="span-2 last">
-		{% include "frontend/login.html" %}
-	</div>
-    
-    {% if user.is_authenticated %}
-        <div class="span-22 last" align="right">
-            <div id="welcome-container">
-            {% trans "Welcome" %} {{ user.username|capfirst }}
-            {% if notice_count %} <a href="/user_detail_change/?selected=2">({% trans "You have" %} {{ notice_count }} {% trans "new notification" %})</a>   {% endif %}
-            </div>
-        </div>        
-    {% endif %}
-
-    <hr class="space">
-
-    <div class="span-24 last">
-	    {% if errorlogin %}
-            <div class="error">
-                <span class="ui-icon ui-icon-alert" style="float: left; margin-right: 0.3em;"></span>
-                <strong>Alert : </strong>  {{ errorlogin }}
-            </div>
-        {% else %}
-            {% if notlogged %}
-            <div class="error">
-                <span class="ui-icon ui-icon-alert" style="float: left; margin-right: 0.3em;"></span>
-                <strong>{% trans "Alert"  %} : </strong>  {% trans "Please login by clicking on login button"  %}
+        
+        {% if user.is_authenticated %}
+            {% if dialer_setting_msg %}
+            <div class="span-24 last">
+                <div class="error" id="rounded-corner-upper-table">
+                    <strong>{% trans "Alert" %} : </strong>  {{ dialer_setting_msg }}
+                    {% if not request.session.has_notified %}
+                        <br/>
+                        {% trans "To send notification to administrator" %} <a href="/notify/admin/">{% trans "Click here" %}</a>
+                    {% else %}
+                        {% trans "(Notification sent)" %}
+                    {% endif %}
+                </div>
             </div>
             {% endif %}
         {% endif %}
-		<br>
-	</div>
-
-    {% include "frontend/menu.html" %}
-
-    <p>&nbsp;</p>
-
-    {% block extra_files %}
-    {% endblock %}
-
-    <div class="span-4 last">&nbsp;</div>
-
-    <div class="span-24 last" align=center>
-    {% if user.is_authenticated %}
-        {% if dialer_setting_msg %}
-        <div class="error" id="rounded-corner-upper-table">
-                <strong>{% trans "Alert" %} : </strong>  {{ dialer_setting_msg }}
-                {% if not request.session.has_notified %}
-                    <br/>
-                    {% trans "To send notification to administrator" %} <a href="/notify/admin/">{% trans "Click here" %}</a>
-                {% else %}
-                    {% trans "(Notification sent)" %}
-                {% endif %}
-        </div>
-        {% endif %}
-    {% endif %}
-    {% block content %}
-    {% endblock %}
+        
+        {% block content %}
+        <!-- CONTENT BLOCK -->
+        {% endblock %}
     </div>
-
     
 
-    <div class="span-24 last" align=center>
-        <div id="footer">
-            <a href="http://www.newfies-dialer.org/" target="_blank">Newfies-Dialer</a> v{{ newfies_version }}, {% trans "Newfies-Dialer is software licensed under the "  %}
+    <footer>
+        <p>Newfies-Dialer v{{ newfies_version }} is an <a href="http://www.newfies-dialer.org/" target="_blank">{% trans "Autodialer software"  %}</a> {% trans "licensed under the "  %}
             <a href="http://www.fsf.org/licensing/licenses/agpl-3.0.html" target="_blank">AGPL 3</a>. <br/>
-            Copyright (C) 2010-2011 - Star2billing S.L. <a href="http://www.star2billing.com/" target="_blank">http://www.star2billing.com/</a>
-        </div>
-    </div>
+            Copyright (C) 2010-2011 - Star2billing S.L. <a href="http://www.star2billing.com/" target="_blank">http://www.star2billing.com/</a></p>
+    </footer>
+      
 
 </div>
+
+
+
 
 </body>
 </html>

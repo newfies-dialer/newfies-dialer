@@ -1,10 +1,6 @@
 {% extends "frontend/master.html" %}
 {% load dialer_cdr_extras i18n icons %}
 
-{% block title %}
-{{ block.super }}
-{% trans "Phonebook" %}
-{% endblock %}
 
 {% block extra_files %}
 <script type="text/javascript" src="{{STATIC_URL}}newfies/js/custom.jquery.select.all.js"></script>
@@ -36,6 +32,10 @@ function get_alert_msg(id)
     return answer // answer is a boolean
 }
 </script>
+{% endblock %}
+
+{% block content_header %}
+<h1>{% trans "Phonebook" %} <small>{% trans "List, add and edit your phonebook" %}</small></h1>
 {% endblock %}
 
 

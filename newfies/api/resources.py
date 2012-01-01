@@ -8,6 +8,8 @@ import logging
 from django.contrib.auth.models import User
 from django.conf.urls.defaults import url
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes import generic
 from django.db.models.query import QuerySet
 from django.http import HttpResponse, HttpResponseNotFound
 from django.utils.encoding import smart_unicode
@@ -26,16 +28,17 @@ from tastypie.utils import dict_strip_unicode_keys, trailing_slash
 from tastypie.http import HttpCreated, HttpNoContent, HttpNotFound, HttpBadRequest
 from tastypie.exceptions import BadRequest, NotFound, ImmediateHttpResponse
 from tastypie import http
+from tastypie import fields
 
 from dialer_campaign.models import Campaign, Phonebook, Contact, CampaignSubscriber, \
      get_unique_code
+from dialer_campaign.function_def import user_attached_with_dialer_settings, \
+    check_dialer_setting, dialer_setting_limit
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_gateway.models import Gateway
 from voip_app.models import VoipApp
+from survey.models import SurveyApp
 
-from tastypie import fields
-from dialer_campaign.function_def import user_attached_with_dialer_settings, \
-    check_dialer_setting, dialer_setting_limit
 from settings_local import API_ALLOWED_IP, PLIVO_DEFAULT_DIALCALLBACK_URL
 from datetime import datetime
 from random import choice, seed
@@ -50,13 +53,13 @@ seed()
 logger = logging.getLogger('newfies.filelog')
 
 CDR_VARIABLES = ['plivo_request_uuid', 'plivo_answer_url', 'plivo_app',
-                    'direction', 'endpoint_disposition', 'hangup_cause',
-                    'hangup_cause_q850', 'duration', 'billsec', 'progresssec',
-                    'answersec', 'waitsec', 'mduration', 'billmsec',
-                    'progressmsec', 'answermsec', 'waitmsec',
-                    'progress_mediamsec', 'call_uuid',
-                    'origination_caller_id_number', 'caller_id',
-                    'answer_epoch', 'answer_uepoch']
+                 'direction', 'endpoint_disposition', 'hangup_cause',
+                 'hangup_cause_q850', 'duration', 'billsec', 'progresssec',
+                 'answersec', 'waitsec', 'mduration', 'billmsec',
+                 'progressmsec', 'answermsec', 'waitmsec',
+                 'progress_mediamsec', 'call_uuid',
+                 'origination_caller_id_number', 'caller_id',
+                 'answer_epoch', 'answer_uepoch']
 
 
 class CustomJSONSerializer(Serializer):
@@ -169,6 +172,7 @@ class IpAddressAuthentication(Authentication):
             return False
 
 
+
 class VoipAppResource(ModelResource):
     class Meta:
         queryset = VoipApp.objects.all()
@@ -191,6 +195,15 @@ class UserResource(ModelResource):
             'username': 'exact',
         }
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+
+
+class ContentTypeResource(ModelResource):
+    class Meta:
+        queryset = ContentType.objects.all()
+        resource_name = "contenttype"
+        fields = ['model']
+        detail_allowed_methods = ['get',]
+        list_allowed_methods = ['get']
 
 
 class PhonebookValidation(Validation):
@@ -225,6 +238,10 @@ class PhonebookResource(ModelResource):
         * ``name`` - Name of the Phonebook
         * ``description`` - Short description of the Campaign
         * ``campaign_id`` - Campaign ID
+
+    **Validation**:
+
+        * PhonebookValidation()
 
     **Create**:
 
@@ -411,13 +428,24 @@ class CampaignValidation(Validation):
             except:
                 errors['chk_gateway'] = ["The Gateway ID doesn't exist!"]
 
-        voipapp_id = bundle.data.get('voipapp')
-        if voipapp_id:
+
+        content_type = bundle.data.get('content_type')
+        if content_type == 'voip_app' or content_type == 'survey':
             try:
-                voip_app_id = VoipApp.objects.get(id=voipapp_id).id
-                bundle.data['voipapp'] = '/api/v1/voipapp/%s/' % voip_app_id
+                content_type_id = ContentType.objects.get(app_label=str(content_type)).id
+                bundle.data['content_type'] = '/api/v1/contenttype/%s/' % content_type_id
             except:
-                errors['chk_voipapp'] = ["The VoipApp doesn't exist!"]
+                errors['chk_content_type'] = ["The ContentType doesn't exist!"]
+        else:
+            errors['chk_content_type'] = ["Entered wrong option. Please enter 'voip_app' or 'survey' !"]
+
+
+        object_id = bundle.data.get('object_id')
+        if object_id:
+            try:
+                bundle.data['object_id'] = object_id
+            except:
+                errors['chk_object_id'] = ["The Application object id doesn't exist!"]
 
         try:
             user_id = User.objects.get(username=request.user).id
@@ -475,16 +503,21 @@ class CampaignResource(ModelResource):
 
             * ``aleg_gateway`` - Defines the Gateway to use to call the\
                                  subscriber
-            * ``voipapp`` - Defines the  application to use when the \
-                            call is established on the A-Leg 
+            * ``content_type`` - Defines the application (``voip_app`` or ``survey``) to use when the \
+                                 call is established on the A-Leg
+            * ``object_id`` - Defines the object of content_type application
             * ``extra_data`` - Defines the additional data to pass to the\
                                  application
 
+    **Validation**:
+
+        * CampaignValidation()
+    
     **Create**:
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000"}' http://localhost:8000/api/v1/campaign/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "content_type": "voip_app", "object_id" : "1", "extra_data": "2000"}' http://localhost:8000/api/v1/campaign/
 
         Response::
 
@@ -539,6 +572,8 @@ class CampaignResource(ModelResource):
                      "thursday":true,
                      "tuesday":true,
                      "updated_date":"2011-06-15T00:49:16",
+                     "content_type":"/api/v1/contrib/contenttype/1/",
+                     "object_id":1,
                      "wednesday":true
                   }
                ]
@@ -548,7 +583,7 @@ class CampaignResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"name": "mylittlecampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0","frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000" }' http://localhost:8000/api/v1/campaign/%campaign_id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"name": "mylittlecampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0","frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1", "content_type": "survey", "object_id" : "1", "extra_data": "2000" }' http://localhost:8000/api/v1/campaign/%campaign_id%/
 
         Response::
 
@@ -634,10 +669,8 @@ class CampaignResource(ModelResource):
                         "id":"1",
                         "username":"areski"
                      },
-                     "voipapp":{
-                        "id":"1",
-                        "name":"Default_VoIP_App",
-                     },
+                     "content_type":"/api/v1/contrib/contenttype/1/",
+                     "object_id":1,
                      "wednesday":true
                   }
                ]
@@ -645,7 +678,8 @@ class CampaignResource(ModelResource):
     """
     user = fields.ForeignKey(UserResource, 'user', full=True)
     aleg_gateway = fields.ForeignKey(GatewayResource, 'aleg_gateway', full=True)
-    voipapp = fields.ForeignKey(VoipAppResource, 'voipapp', full=True)
+    #voipapp = fields.ForeignKey(VoipAppResource, 'voipapp', full=True)
+    content_type = fields.ForeignKey(ContentTypeResource, 'content_type')
     phonebook = fields.ToManyField(PhonebookResource, 'phonebook', full=True, readonly=True)
     class Meta:
         queryset = Campaign.objects.all()
@@ -734,6 +768,10 @@ class BulkContactResource(ModelResource):
         * ``phonebook_id`` - the phonebook Id to which we want to add\
         the contact
 
+    **Validation**:
+
+        * BulkContactValidation()
+
     **CURL Usage**::
 
         curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"phonebook_id": "1", "phoneno_list" : "12345,54344"}' http://localhost:8000/api/v1/bulkcontact/
@@ -759,7 +797,7 @@ class BulkContactResource(ModelResource):
 
     def obj_create(self, bundle, request=None, **kwargs):
         """
-        A ORM-specific implementation of ``obj_create``. 
+        A ORM-specific implementation of ``obj_create``.
         """
         logger.debug('BulkContact API get called')
 
@@ -908,10 +946,6 @@ class CampaignSubscriberValidation(Validation):
 
 class CampaignSubscriberResource(ModelResource):
     """
-    This API allows you to create, update and retrieve contact from a campaign. The new contacts will automatically called if the campaign is running.
-    The Read method will allow you to retrieve the status of a contact previously created.
-    The Update method will allow you to update an existing contact, for instance you can unsubscribe a contact if it hasn't been called yet.
-    
     **Attributes Details**:
 
         * ``contact`` - contact number of the Subscriber
@@ -920,7 +954,12 @@ class CampaignSubscriberResource(ModelResource):
         * ``email`` - email id of the Subscriber
         * ``description`` - Short description of the Subscriber
         * ``additional_vars`` - Additional settings for the Subscriber
-        * ``phonebook_id`` - the phonebook Id to which we want to add the Subscriber
+        * ``phonebook_id`` - the phonebook Id to which we want to add\
+        the Subscriber
+
+    **Validation**:
+
+        * CampaignSubscriberValidation()
 
     **Create**:
 
@@ -1184,6 +1223,10 @@ class CallrequestResource(ModelResource):
         * ``hangup_cause`` -
         * ``last_attempt_time`` -
 
+    **Validation**:
+
+        * CallrequestValidation()
+
     **Create**:
 
         CURL Usage::
@@ -1429,7 +1472,7 @@ class AnswercallResource(ModelResource):
                                     (gateways, gatewaytimeouts)
 
                 object_list = [ {dial_command: {number_command: obj_callrequest.voipapp.data}, },]
-                logger.debug('Dial command')
+                logger.debug('Diale command')
 
             elif obj_callrequest.voipapp.type == 2:
                 #PlayAudio
@@ -1570,7 +1613,7 @@ class DialCallbackResource(ModelResource):
                 return self.create_response(request, obj.render(request, object_list))
 
             callrequest = Callrequest.objects.get(aleg_uuid=opt_aleg_uuid)
-                        
+            
             data = {}
             for element in CDR_VARIABLES:
                 if not request.POST.get('variable_%s' % element):
@@ -1682,21 +1725,23 @@ class HangupcallResource(ModelResource):
         auth_result = self._meta.authentication.is_authenticated(request)
         if not auth_result is True:
             raise ImmediateHttpResponse(response=http.HttpUnauthorized())
-
-        logger.debug('Hangupcall API authorization called!')
+        
         auth_result = self._meta.authorization.is_authorized(request, object)
-
-        logger.debug('Hangupcall API validation called!')
         errors = self._meta.validation.is_valid(request)
         
         if not errors:
-            logger.debug('Hangupcall API get called!')
-
             opt_request_uuid = request.POST.get('RequestUUID')
             opt_hangup_cause = request.POST.get('HangupCause')
-
-            callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid)
-            obj_subscriber = CampaignSubscriber.objects.get(id=callrequest.campaign_subscriber.id)
+            try:
+                callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid)
+            except:
+                logger.debug('Hangupcall Error cannot find the Callrequest!')
+            
+            try:
+                obj_subscriber = CampaignSubscriber.objects.get(id=callrequest.campaign_subscriber.id)
+            except:
+                logger.debug('Hangupcall Error cannot find the Campaignubscriber!')
+            
             # 2 / FAILURE ; 3 / RETRY ; 4 / SUCCESS
             if opt_hangup_cause=='NORMAL_CLEARING':
                 callrequest.status = 4 # Success
@@ -1758,6 +1803,10 @@ class CdrResource(ModelResource):
     **Attributes**:
 
         * ``cdr`` - XML string assigned from the Telephony engine
+
+    **Validation**:
+
+        * CdrValidation()
 
     **Create**:
 
@@ -1892,7 +1941,3 @@ class CdrResource(ModelResource):
                 serialized = self.serialize(request, errors, desired_format)
                 response = http.HttpBadRequest(content=serialized, content_type=desired_format)
                 raise ImmediateHttpResponse(response=response)
-        
-        
-        
-        

@@ -85,10 +85,10 @@ class CustomIndexDashboard(Dashboard):
         ))
 
         # append an app list module for "Country_prefix"
-        #self.children.append(modules.AppList(
-        #    _('DialCode'),
-        #    models=('prefix_country.*', ),
-        #))
+        self.children.append(modules.AppList(
+            _('Survey'),
+            models=('survey.*', ),
+        ))
 
         # append a link list module for "quick links"
         """

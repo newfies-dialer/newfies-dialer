@@ -1,0 +1,40 @@
+{% extends "frontend/master.html" %}
+{% load i18n dialer_cdr_extras %}
+
+{% block extra_files %}
+    {% include "common_audiofield.html" %}
+{% endblock %}
+
+{% block content_header %}
+<h1>{% if action == 'update' %}
+            {% trans "Update" %}
+        {% else %}
+            {% trans "Add" %}
+        {% endif %} {% trans "Audio Files" %} <small>{% trans "Upload can be uploaded and used into your VoIP application" %}</small></h1>
+{% endblock %}
+
+{% block content %}
+<div class="span-24 last" align=left>
+<form method="POST" action="." enctype="multipart/form-data" id="update_form">{% csrf_token %}
+    <fieldset>
+        <legend>{% trans "Settings" %}</legend>
+            <table align=center border=1>
+               {{ form.as_table }}
+            </table>
+    </fieldset>
+
+    <table align="center">
+    <tr>
+        <td align="center" colspan=2>
+          {% if action == 'update' %}
+            <input id="update" type="submit" value="{% trans "Update" %}" />
+          {% else %}
+            <input id="add" type="submit" value="{% trans "Submit" %}" />
+          {% endif %}
+        </td>
+    </tr>
+    </table>
+    </form>
+</div>
+
+{% endblock %}

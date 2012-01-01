@@ -1,10 +1,7 @@
 {% extends "frontend/master.html" %}
 {% load i18n dialer_cdr_extras icons %}
 
-{% block title %}
-{{ block.super }}
-{% trans "Contact" %}
-{% endblock %}
+
 
 {% block extra_files %}
 <script language="javascript" type="text/javascript">
@@ -33,6 +30,10 @@ td {
     width: auto;
 }
 </style>
+{% endblock %}
+
+{% block content_header %}
+<h1>{% trans "Contact" %} <small>{% trans "List, add and edit your contact" %}</small></h1>
 {% endblock %}
 
 {% block content %}

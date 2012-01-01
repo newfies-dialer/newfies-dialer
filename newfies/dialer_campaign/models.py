@@ -3,6 +3,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.core.cache import cache
 from django.db.models.signals import post_save
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes import generic
 from dateutil.relativedelta import *
 from prefix_country.models import Country
 from dialer_gateway.models import Gateway
@@ -312,10 +314,18 @@ class Campaign(Model):
                 related_name="A-Leg Gateway",
                 help_text=_("Select gateway to use for this campaign"))
     #Campaign IVR/Application Destination
+    """
+    #comment to use genericforeign key
     voipapp = models.ForeignKey(VoipApp, verbose_name=_("VoIP Application"),
               related_name="VoIP Application",
-    help_text=_("Select VoIP Application to use with this campaign"))
-
+              help_text=_("Select VoIP Application to use with this campaign"))
+    """
+    content_type = models.ForeignKey(ContentType, verbose_name=_("Type"),
+                   limit_choices_to = {"model__in": ("surveyapp", "voipapp")},
+                   default=ContentType.objects.get(app_label="voip_app", model="voipapp").pk)
+    object_id = models.PositiveIntegerField(verbose_name=_("Application"))
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    
     extra_data = models.CharField(max_length=120, blank=True,
                 verbose_name=_("Extra Parameters"),
                 help_text=_("Additional application parameters."))

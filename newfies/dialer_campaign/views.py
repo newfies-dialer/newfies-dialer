@@ -609,6 +609,19 @@ def customer_dashboard(request, on_index=None):
     return render_to_response(template, data,
            context_instance=RequestContext(request))
 
+def logout_view(request):
+    """Check User credentials and logout
+    """
+    template = 'frontend/index.html'
+    logout(request)
+    
+    data = {
+        'module': current_view(request),
+        'is_authenticated': request.user.is_authenticated(),
+    }
+    
+    return render_to_response(template, data,
+           context_instance=RequestContext(request))
 
 def login_view(request):
     """Check User credentials
@@ -633,30 +646,27 @@ def login_view(request):
         except (KeyError):
             action = "login"
 
-        if action == "logout":
-            logout(request)
-        else:
-            loginform = LoginForm(request.POST)
-            if loginform.is_valid():
-                cd = loginform.cleaned_data
-                user = authenticate(username=cd['user'],
-                                    password=cd['password'])
-                if user is not None:
-                    if user.is_active:
-                        login(request, user)
-                        request.session['has_notified'] = False
-                        # Redirect to a success page (dashboard).
-                        return \
-                        HttpResponseRedirect('/dashboard/')
-                    else:
-                        # Return a 'disabled account' error message
-                        errorlogin = _('Disabled Account') #True
+        loginform = LoginForm(request.POST)
+        if loginform.is_valid():
+            cd = loginform.cleaned_data
+            user = authenticate(username=cd['user'],
+                                password=cd['password'])
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    request.session['has_notified'] = False
+                    # Redirect to a success page (dashboard).
+                    return \
+                    HttpResponseRedirect('/dashboard/')
                 else:
-                    # Return an 'invalid login' error message.
-                    errorlogin = _('Invalid Login.') #True
+                    # Return a 'disabled account' error message
+                    errorlogin = _('Disabled Account') #True
             else:
-                # Return an 'Valid User Credentials' error message.
-                errorlogin = _('Enter Valid User Credentials.') #True
+                # Return an 'invalid login' error message.
+                errorlogin = _('Invalid Login.') #True
+        else:
+            # Return an 'Valid User Credentials' error message.
+            errorlogin = _('Enter Valid User Credentials.') #True
     else:
         loginform = LoginForm()
 
@@ -1619,9 +1629,6 @@ def campaign_grid(request):
     """Campaign list in json format for flexigrid
 
     **Model**: Campaign
-
-    **Fields**: [id, campaign_code, name, startingdate, expirationdate,
-    aleg_gateway, aleg_gateway__name, status, voipapp__name]
     """
     page = variable_value(request, 'page')
     rp = variable_value(request, 'rp')
@@ -1647,8 +1654,8 @@ def campaign_grid(request):
     campaign_list = Campaign.objects\
                     .values('id', 'campaign_code', 'name', 'startingdate',
                             'expirationdate', 'aleg_gateway',
-                            'aleg_gateway__name', 'status',
-                            'voipapp__name').filter(user=request.user)
+                            'aleg_gateway__name', 'content_type__name', 'status')\
+                    .filter(user=request.user)#,'voipapp__name'
     count = campaign_list.count()
     campaign_list = \
         campaign_list.order_by(sortorder_sign + sortname)[start_page:end_page]
@@ -1664,9 +1671,7 @@ def campaign_grid(request):
                       row['campaign_code'],
                       row['name'],
                       row['startingdate'].strftime('%Y-%m-%d %H:%M:%S'),
-                      row['expirationdate'].strftime('%Y-%m-%d %H:%M:%S'),
-                      row['aleg_gateway__name'],
-                      row['voipapp__name'],
+                      row['content_type__name'],
                       count_contact_of_campaign(row['id']),
                       get_campaign_status_name(row['status']),
                       str('<a href="' + str(row['id']) + '/" class="icon" ' \
@@ -1752,9 +1757,20 @@ def campaign_add(request):
         form = CampaignForm(request.user, request.POST)
         if form.is_valid():
             obj = form.save(commit=False)
+
+            object_string = form.cleaned_data['content_object']
+            matches = re.match("type:(\d+)-id:(\d+)", object_string).groups()
+            object_type_id = matches[0] #get 45 from "type:45-id:38"
+            object_id = matches[1] #get 38 from "type:45-id:38"
+            object_type = ContentType.objects.get(id=object_type_id)
+
+            obj.content_type = object_type
+            obj.object_id = object_id
+
             obj.user = User.objects.get(username=request.user)
             obj.save()
             form.save_m2m()
+
             request.session["msg"] = _('"%(name)s" is added successfully.') %\
             {'name': request.POST['name']}
             return HttpResponseRedirect('/campaign/')
@@ -1824,7 +1840,8 @@ def campaign_change(request, object_id):
         return HttpResponseRedirect("/campaign/")
 
     campaign = Campaign.objects.get(pk=object_id)
-    form = CampaignForm(request.user, instance=campaign)
+    content_object = "type:%s-id:%s" % (campaign.content_type_id, campaign.object_id)
+    form = CampaignForm(request.user, instance=campaign, initial={'content_object': content_object})
     if request.method == 'POST':
         # Delete campaign
         if request.POST.get('delete'):
@@ -1833,7 +1850,18 @@ def campaign_change(request, object_id):
         else: # Update campaign
             form = CampaignForm(request.user, request.POST, instance=campaign)
             if form.is_valid():
-                form.save()
+                obj = form.save(commit=False)
+
+                object_string = form.cleaned_data['content_object']
+                matches = re.match("type:(\d+)-id:(\d+)", object_string).groups()
+                object_type_id = matches[0] #get 45 from "type:45-id:38"
+                object_id = matches[1] #get 38 from "type:45-id:38"
+                object_type = ContentType.objects.get(id=object_type_id)
+
+                obj.content_type = object_type
+                obj.object_id = object_id
+                obj.save()
+                
                 request.session["msg"] = _('"%(name)s" is updated successfully.') \
                 % {'name': request.POST['name']}
                 return HttpResponseRedirect('/campaign/')

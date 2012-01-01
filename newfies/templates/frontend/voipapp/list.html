@@ -1,10 +1,6 @@
 {% extends "frontend/master.html" %}
 {% load dialer_cdr_extras i18n icons %}
 
-{% block title %}
-{{ block.super }}
-{% trans "VoIP App" %}
-{% endblock %}
 
 {% block extra_files %}
 <script type="text/javascript" src="{{STATIC_URL}}newfies/js/custom.jquery.select.all.js"></script>
@@ -15,6 +11,9 @@
 <link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid_custom.css" type="text/css" />
 {% endblock %}
 
+{% block content_header %}
+<h1>{% trans "VoIP Application" %} <small>{% trans "List, add and edit your VoIP application" %}</small></h1>
+{% endblock %}
 
 {% block content %}
 

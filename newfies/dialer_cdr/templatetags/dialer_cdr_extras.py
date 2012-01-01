@@ -136,6 +136,24 @@ def campaign_status(value):
     return str(status)
 
 
+@register.filter(name='sort')
+def listsort(value):
+        if isinstance(value, dict):
+            new_dict = SortedDict()
+            key_list = value.keys()
+            key_list.sort()
+            for key in key_list:
+                new_dict[key] = value[key]
+            return new_dict
+        elif isinstance(value, list):
+            new_list = list(value)
+            new_list.sort()
+            return new_list
+        else:
+            return value
+        listsort.is_safe = True
+
+
 def get_fieldset(parser, token):
     try:
         name, fields, as_, variable_name, from_, form = token.split_contents()
@@ -165,6 +183,49 @@ class FieldSetNode(template.Node):
         return u''
 
 
+class ArgumentError(ValueError):
+    """Missing or incompatible argument."""
+
+
+def _regroup_table(seq, rows=None, columns=None):
+    if not (rows or columns):
+        raise ArgumentError("Missing one of rows or columns")
+
+    if columns:
+        rows = (len(seq) // columns) + 1
+    table = [seq[i::rows] for i in range(rows)]
+
+    # Pad out short rows
+    n = len(table[0])
+    return [row + [None for x in range(n - len(row))] for row in table]
+
+
+@register.filter
+def groupby_rows(seq, n):
+    """Returns a list of n lists. Each sub-list is the same length.
+
+    Short lists are padded with None. This is useful for creating HTML tables
+    from a sequence.
+
+    >>> groupby_rows(range(1, 11), 3)
+    [[1, 4, 7, 10], [2, 5, 8, None], [3, 6, 9, None]]
+    """
+    return _regroup_table(seq, rows=int(n))
+
+
+@register.filter
+def groupby_columns(seq, n):
+    """Returns a list of lists where each sub-list has n items.
+
+    Short lists are padded with None. This is useful for creating HTML tables
+    from a sequence.
+
+    >>> groupby_columns(range(1, 11), 3)
+    [[1, 5, 9], [2, 6, 10], [3, 7, None], [4, 8, None]]
+    """
+    return _regroup_table(seq, columns=int(n))
+
+
 register.filter('mul', mul)
 register.filter('subtract', subtract)
 register.filter('div', div)
@@ -179,4 +240,8 @@ register.filter('month_name', month_name)
 register.filter('cal_width', cal_width)
 register.filter('contact_status', contact_status)
 register.filter('campaign_status', campaign_status)
+register.filter('groupby_rows', groupby_rows)
+register.filter('groupby_columns', groupby_columns)
+
 get_fieldset = register.tag(get_fieldset)
+

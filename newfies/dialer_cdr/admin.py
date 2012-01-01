@@ -10,17 +10,19 @@ from dialer_cdr.models import *
 from dialer_cdr.forms import *
 from dialer_cdr.function_def import *
 import csv
+from genericadmin.admin import GenericAdminModelAdmin, GenericTabularInline
 
 
-class CallrequestAdmin(admin.ModelAdmin):
+class CallrequestAdmin(GenericAdminModelAdmin):
     """Allows the administrator to view and modify certain attributes
     of a Callrequest."""
+    content_type_whitelist = ('voip_app/voipapp', 'survey/surveyapp', )
     fieldsets = (
         (_('Standard options'), {
             'fields': ('user', 'request_uuid',  'call_time', 'campaign',
                        'status','hangup_cause', 'callerid', 'phone_number',
                        'timeout', 'timelimit', 'call_type', 'aleg_gateway',
-                       'voipapp', ),
+                       'content_type', 'object_id', ),
         }),
         (_('Advanced options'), {
             'classes': ('collapse',),
@@ -28,9 +30,9 @@ class CallrequestAdmin(admin.ModelAdmin):
                        'campaign_subscriber'),
         }),
     )
-    list_display = ('id', 'user',  'request_uuid', 'aleg_uuid', 'call_time', 'campaign',
-            'status', 'callerid', 'phone_number', 'call_type',
-            'num_attempt', 'last_attempt_time',)
+    list_display = ('id', 'user', 'campaign', 'content_type', 'request_uuid', 
+            'aleg_uuid', 'call_time', 'status', 'callerid', 'phone_number', 
+            'call_type', 'num_attempt', 'last_attempt_time',)
     list_display_links = ('id', 'request_uuid', )
     list_filter = ['callerid', 'call_time', 'status', 'call_type']
     ordering = ('id', )

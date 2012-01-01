@@ -1,9 +1,6 @@
 {% extends "frontend/master.html" %}
 {% load dialer_cdr_extras i18n icons pagination_tags %}
 
-{% block title %}
-{% trans 'User Detail Change' %}
-{% endblock %}
 
 
 {% block extra_files %}
@@ -21,6 +18,11 @@ function get_alert_msg(id)
     return answer // answer is a boolean
 }
 </script>
+{% endblock %}
+
+
+{% block content_header %}
+<h1>{% trans "Settings" %} <small>{% trans "configure your settings, change password, limitation and notification" %}</small></h1>
 {% endblock %}
 
 {% block content %}

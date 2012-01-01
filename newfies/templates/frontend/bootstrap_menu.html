@@ -1,0 +1,91 @@
+{% load i18n %}
+
+
+<div class="topbar">
+    <div class="topbar-inner">
+        <div class="container-fluid">
+          
+          
+          <a class="brand" href="/">
+              <img height="20" src="{{STATIC_URL}}newfies/images/newfies-icon.png" />
+              <span class="menu-label">Newfies-Dialer </span>
+          </a>
+          
+          {% if user.is_authenticated %}
+          <ul class="nav">
+            <li {% ifequal module 'customer_dashboard' %}class="active"{% endifequal %}><a href="/dashboard/">{% trans "Dashboard" %}</a></li>
+            <li {% ifequal module 'campaign' %}class="active"{% endifequal %}><a href="/campaign/">{% trans "Campaign" %}</a></li>
+            <li {% ifequal module 'phonebook' %}class="active"{% endifequal %}><a href="/phonebook/">{% trans "Phonebooks" %}</a></li>
+            <li {% ifequal module 'contact' %}class="active"{% endifequal %}><a href="/contact/">{% trans "Contacts" %}</a></li>
+            <li {% ifequal module 'audio' %}class="active"{% endifequal %}><a href="/audio/">{% trans "Audio files" %}</a></li>
+
+            <li class="dropdown" data-dropdown="dropdown" >
+              <a href="#" class="dropdown-toggle">{% trans "Reporting" %}</a>
+              <ul class="dropdown-menu">
+                <li {% ifequal module 'voipcall_report' %}class="active"{% endifequal %}><a href="/voipcall_report/">{% trans "Call Details Report" %}</a></li>
+                <li {% ifequal module 'survey_campaign_report' %}class="active"{% endifequal %}><a href="/survey_report/">{% trans "Survey Reporting" %}</a></li>
+              </ul>
+            </li>
+
+            <li class="dropdown" data-dropdown="dropdown" >
+              <a href="#" class="dropdown-toggle">{% trans "Modules" %}</a>
+              <ul class="dropdown-menu">
+                <li {% ifequal module 'voipapp' %}class="active"{% endifequal %}><a href="/voipapp/">{% trans "VoIP Apps" %}</a></li>
+                <li {% ifequal module 'survey' %}class="active"{% endifequal %}><a href="/survey/">{% trans "Surveys" %}</a></li>
+                <li class="divider"></li>
+                <li><a href="http://www.newfies-dialer.org/addons" target="_blank">{% trans "Add-ons" %}</a></li>
+              </ul>
+            </li>
+          </ul>
+          {% endif %}
+          
+          {% if user.is_authenticated %}
+            <li class="nav secondary-nav pull-right" data-dropdown="dropdown" >
+              <a href="#" class="dropdown-toggle">{{ user.username|capfirst }}</a>
+              <ul class="dropdown-menu">
+                <li {% ifequal module 'detail_change' %}class="active"{% endifequal %}><a href="/user_detail_change/">
+                        {% trans "Account settings" %}s</a></li>
+                <li {% ifequal module 'detail_change' %}class="active"{% endifequal %}><a href="/user_detail_change/">
+                        {% trans "Notifications" %}</a></li>
+                <li {% ifequal module 'detail_change' %}class="active"{% endifequal %}><a href="/user_detail_change/">
+                        {% trans "Limitations" %}</a></li>
+                <li class="divider"></li>
+                {% if user.is_superuser %}
+                <li><a href="/admin/"> {% trans "Administration" %}</a></li>
+                <li class="divider"></li>
+                {% endif %}
+                <li><a href="/logout/">{% trans "Log out" %}</a></li>
+              </ul>
+            </li>
+          {% endif %}
+          
+          {% if not user.is_authenticated %}
+          <form action="/login/" class="pull-right" method="post">
+            {% csrf_token %}
+            {% for field in loginform %}
+                {{ field }}
+            {% endfor %}
+            <button class="btn primary" type="submit">{% trans "Login" %}</button>
+            <a class="btn" href="/password_reset/">{% trans "Forgot password?" %}</a>
+          </form>
+          {% endif %}
+          
+          
+          <form action="/i18n/setlang/" method="post" class="pull-right">
+            {% csrf_token %}
+            <select name="language" id="language-container">
+            {% for lang in LANGUAGES %}
+            <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected{% endifequal %}>{{ lang.1 }}</option>
+            {% endfor %}
+            </select>
+            &nbsp;
+            
+            {% if notice_count %} <a href="/user_detail_change/?selected=2"><span class="label warning">{{ notice_count }} {% trans "new notifications" %}</span></a> &nbsp; {% endif %}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+          </form>
+          
+              
+            
+        </div>
+    </div>
+</div>

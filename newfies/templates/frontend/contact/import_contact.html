@@ -4,6 +4,10 @@
 {% block extra_files %}
 {% endblock %}
 
+{% block content_header %}
+<h1>{% trans "Import Contact" %} <small>{% trans "Import list of contact by uploading CSV files" %}</small></h1>
+{% endblock %}
+
 {% block content %}
 {% if msg %}
 <div class="success" id="rounded-corner-upper-table">        
@@ -57,7 +61,6 @@
 <form method="post" action="" enctype="multipart/form-data" >
 {% csrf_token %}
 <fieldset>
-    <legend>{% trans "Import Contact" %}</legend>
         <table border=1 align=center>
         {% get_fieldset phonebook,csv_file as contact_import_fields from form %}
         {{ contact_import_fields.as_table }}

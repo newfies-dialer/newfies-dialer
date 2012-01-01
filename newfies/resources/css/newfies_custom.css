@@ -11,24 +11,6 @@ img {
 }
 
 
-body {
-    font-size: 62.5%;
-    font-family: 'Segoe UI', Frutiger, Tahoma, Helvetica, 'Helvetica Neue', Arial, sans-serif;
-    /*background: #ECECEC;
-    color: #666;*/
-}
-
-.logo_cdrstat{
-    margin:20px 0 0 0;
-}
-
-#footer {
-    top : 70px;
-    height: 50px;
-    position: relative;
-    text-align: center;
-    color : #555555;
-}
 
 .fg-button { 
    outline: 0; 
@@ -62,12 +44,6 @@ body {
     border : 1px;
 }
 
-#cdr-container{ 
-    width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
 .search-form{ 
     width: 600px;
     margin-left: auto;
@@ -77,14 +53,6 @@ body {
 .info-icon{ 
     margin-left: 40%;
     border: 0;
-}
-
-a {color:#17598A;}
-
-a:focus, a:hover {color:#2779AA;}
-
-body, .ui-widget-header  {
-    color:#17598A;
 }
 
 .visualize {
@@ -127,10 +95,6 @@ body, .ui-widget-header  {
     font-size: 10px;
 }
 
-#welcome-container{
-    text-align: right;
-}
-
 .ui-priority-secondary { 
     border: 1px solid #77d5f7;
     background: #0078ae url(images/ui-bg_glass_45_0078ae_1x400.png) 50% 50% repeat-x;
@@ -142,8 +106,6 @@ body, .ui-widget-header  {
     background: #f8da4e url(images/ui-bg_glass_55_f8da4e_1x400.png) 50% 50% repeat-x;
     color: #915608;
 }
-
-
 
 #hor-minimalist-a
 {
@@ -580,27 +542,6 @@ body, .ui-widget-header  {
 {
 	font-size: 11px;
 }
-#background-image tbody td
-{
-	background: url('../images/table-images/back.png');
-}
-* html #background-image tbody td
-{
-	/*
-	   ----------------------------
-		PUT THIS ON IE6 ONLY STYLE
-		AS THE RULE INVALIDATES
-		YOUR STYLESHEET
-	   ----------------------------
-	*/
-	/*filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/table-images/back.png',sizingMethod='crop');*/
-	background: none;
-}
-#background-image tbody tr:hover td
-{
-	color: #339;
-	background: none;
-}
 
 
 #gradient-style
@@ -728,3 +669,14 @@ textarea {
 td {
     width: 800px;
 }
+
+
+.icon {
+    padding-left: 5px;
+    padding-top: 2px;
+    padding-right: 13px;
+    padding-bottom: 2px;
+    background-repeat:
+    no-repeat;
+}
+

@@ -28,6 +28,23 @@ class UserResource(ModelResource):
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
 
+class SurveyAppValidation(Validation):
+    """SurveyApp Validation Class"""
+    def is_valid(self, bundle, request=None):
+        errors = {}
+
+        if not bundle.data:
+            errors['Data'] = ['Data set is empty']
+
+        try:
+            user_id = User.objects.get(username=request.user).id
+            bundle.data['user'] = '/api/v1/user/%s/' % user_id
+        except:
+            errors['chk_user'] = ["The User doesn't exist!"]
+
+        return errors
+
+
 class SurveyAppResource(ModelResource):
     """
     **Attributes**:
@@ -133,6 +150,7 @@ class SurveyAppResource(ModelResource):
         resource_name = 'survey'
         authorization = Authorization()
         authentication = BasicAuthentication()
+        validation = SurveyAppValidation() 
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
 
@@ -305,6 +323,16 @@ class SurveyResponseValidation(Validation):
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
 
+        key = bundle.data.get('key')
+        if key:
+            dup_count = SurveyResponse.objects.filter(key=str(key)).count()
+            if request.method == 'POST':
+                if dup_count >= 1:
+                    errors['duplicate_key'] = ["Key is already exist!"]
+            if request.method == 'PUT':
+                if dup_count > 1:
+                    errors['duplicate_key'] = ["Key is already exist!"]
+
         surveyquestion_id = bundle.data.get('surveyquestion')
         if surveyquestion_id:
             try:
@@ -329,7 +357,7 @@ class SurveyResponseResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"question": "survey que", "tags": "", "user": "1", "surveyapp": "1", "message_type": "1"}' http://localhost:8000/api/v1/survey_response/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"key": "Apple", "keyvalue": "1", "surveyquestion": "1"}' http://localhost:8000/api/v1/survey_response/
 
         Response::
 
@@ -410,7 +438,7 @@ class SurveyResponseResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"question": "survey que", "tags": "", "user": "1", "surveyapp": "1", "message_type": "1"}' http://localhost:8000/api/v1/survey_response/%survey_response_id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"key": "Apple", "keyvalue": "1", "surveyquestion": "1"}' http://localhost:8000/api/v1/survey_response/%survey_response_id%/
 
         Response::
 

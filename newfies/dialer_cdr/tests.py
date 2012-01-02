@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.http import HttpRequest
 from dialer_cdr.test_utils import build_test_suite_from
+from django.contrib.contenttypes.models import ContentType
 #from user_profile.models import UserProfile
 import base64
 import simplejson
@@ -34,11 +35,11 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
     """Test cases for Newfies-Dialer API."""
     fixtures = ['gateway.json', 'auth_user', 'voipapp','phonebook',
                 'dialer_setting', 'campaign', 'campaign_subscriber',
-                'callrequest']
+                'callrequest', 'survey', 'survey_question', 'survey_response']
 
     def test_create_campaign(self):
         """Test Function to create a campaign"""
-        data = simplejson.dumps({"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000"})
+        data = simplejson.dumps({"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "content_type": "voip_app", "object_id" : "1", "extra_data": "2000"})
         response = self.client.post('/api/v1/campaign/',
         data, content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)
@@ -55,7 +56,7 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
     def test_update_campaign(self):
         """Test Function to update a campaign"""
         response = self.client.put('/api/v1/campaign/1/',
-                   simplejson.dumps({"status": "2"}),
+                   simplejson.dumps({"status": "2","content_type": "voip_app", "object_id" : "1"}),
                    content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 204)
 
@@ -119,7 +120,7 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
         """Test Function to create a callrequest"""
         data = simplejson.dumps({"request_uuid": "2342jtdsf-00153",
          "call_time": "2011-05-01 11:22:33", "phone_number": "8792749823",
-         "voipapp": "1", "timeout": "30000", "callerid": "650784355",
+         "content_type": "voip_app", "object_id" : "1", "timeout": "30000", "callerid": "650784355",
          "call_type": "1"})
         response = self.client.post('/api/v1/callrequest/',
         data, content_type='application/json', **self.extra)
@@ -140,7 +141,7 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
     def test_create_hangupcall(self):
-        """Test Function to create a answercall"""
+        """Test Function to create a hangupcall"""
         data = {"RequestUUID": "20294e18-9d8f-11e0-aaa8-000c29bed6ad",
          "HangupCause": "SUBSCRIBER_ABSENT"}
         response = self.client.post('/api/v1/hangupcall/',
@@ -153,7 +154,69 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
         response = self.client.post('/api/v1/store_cdr/', data, content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 200)
 
+    def test_create_survey(self):
+        """Test Function to create a survey"""
+        data = simplejson.dumps({"name": "mysurvey", "description": "Test"})
+        response = self.client.post('/api/v1/survey/', data,
+                   content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 201)
 
+    def test_read_survey(self):
+        """Test Function to get all surveys"""
+        response = self.client.get('/api/v1/survey/?format=json',
+        **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_survey(self):
+        """Test Function to update a survey"""
+        data = simplejson.dumps({"name": "mysurvey", "description": "test", "user": "1"})
+        response = self.client.put('/api/v1/survey/1/',
+                   data, content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 204)
+
+    def test_create_survey_question(self):
+        """Test Function to create a survey question"""
+        data = simplejson.dumps({"question": "survey que", "tags": "", "user": "1", "surveyapp": "1", "message_type": "1"})
+        response = self.client.post('/api/v1/survey_question/', data,
+                   content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 201)
+
+    def test_read_survey_question(self):
+        """Test Function to get all survey questions"""
+        response = self.client.get('/api/v1/survey_question/?format=json',
+        **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_survey_question(self):
+        """Test Function to update a survey question"""
+        data = simplejson.dumps({"question": "survey que", "tags": "", "surveyapp": "1", "message_type": "1"})
+        response = self.client.put('/api/v1/survey_question/1/',
+                   data, content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 204)
+
+    def test_create_survey_response(self):
+        """Test Function to create a survey response"""
+        data = simplejson.dumps({"key": "orange", "keyvalue": "1", "surveyquestion": "1"})
+        response = self.client.post('/api/v1/survey_question/', data,
+                   content_type='application/json', **self.extra)
+        print response
+        self.assertEqual(response.status_code, 201)
+
+    def test_read_survey_response(self):
+        """Test Function to get all survey response"""
+        response = self.client.get('/api/v1/survey_response/?format=json',
+        **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_survey_response(self):
+        """Test Function to update a survey response"""
+        data = simplejson.dumps({"key": "Apple", "keyvalue": "1", "surveyquestion": "1"})
+        response = self.client.put('/api/v1/survey_response/1/',
+                   data, content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 204)
+
+
+        
 class NewfiesAdminInterfaceTestCase(TestCase):
     """Test cases for Newfies Admin Interface."""
 
@@ -224,11 +287,23 @@ class NewfiesAdminInterfaceTestCase(TestCase):
         response = self.client.get('/admin/prefix_country/prefix/')
         self.failUnlessEqual(response.status_code, 200)
 
+        response = self.client.get('/admin/survey/')
+        self.failUnlessEqual(response.status_code, 200)
+        response = self.client.get('/admin/survey/surveyapp/')
+        self.failUnlessEqual(response.status_code, 200)
+        response = self.client.get('/admin/survey/surveyquestion/')
+        self.failUnlessEqual(response.status_code, 200)
+        response = self.client.get('/admin/survey/surveyresponse/')
+        self.failUnlessEqual(response.status_code, 200)
+        response = self.client.get('/admin/survey/surveycampaignresult/')
+        self.failUnlessEqual(response.status_code, 200)
+
 
 class NewfiesCustomerInterfaceTestCase(BaseAuthenticatedClient):
     """Test cases for Newfies Customer Interface."""
     fixtures = ['gateway.json', 'auth_user', 'voipapp','phonebook', 'contact',
-                'campaign', 'campaign_subscriber']
+                'campaign', 'campaign_subscriber', 'survey', 'surve_question',
+                'survey_response']
 
     def test_index(self):
         """Test Function to check customer index page"""
@@ -276,10 +351,14 @@ class NewfiesCustomerInterfaceTestCase(BaseAuthenticatedClient):
 
     def test_contact_view(self):
         """Test Function to check Contact"""
+        response = self.client.get('/contact/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+                                'frontend/contact/list.html')
         response = self.client.get('/contact/add/')
         self.assertEqual(response.status_code, 200)
         response = self.client.post('/contact/add/',
-                   data={'phonebook': '1', 'contact': '1234',
+                   data={'phonebook_id': '1', 'contact': '1234',
                          'last_name': 'xyz', 'first_name': 'abc',
                          'status': '1'})        
         self.assertEqual(response.status_code, 200)
@@ -292,22 +371,22 @@ class NewfiesCustomerInterfaceTestCase(BaseAuthenticatedClient):
                                 'frontend/contact/import_contact.html')
 
     def test_campaign_view(self):
-        """Test Function to check phonebook"""
+        """Test Function to check campaign"""
         response = self.client.get('/campaign/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
                                 'frontend/campaign/list.html')
         response = self.client.get('/campaign/add/')
+        self.assertTemplateUsed(response,
+                                'frontend/campaign/change.html')
         response = self.client.post('/campaign/add/',
         data={"name": "mylittlecampaign", "description": "xyz",
         "startingdate": "1301392136.0", "expirationdate": "1301332136.0",
         "frequency": "20", "callmaxduration": "50", "maxretry": "3",
         "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1",
-        "voipapp": "1", "voipapp_data": "2000"})
-        self.assertEqual(response.status_code, 200)
-        response = self.client.get('/campaign/1/')
-        self.assertTemplateUsed(response,
-                                'frontend/campaign/change.html')
+        "content_object": "type:30-id:1", "extra_data": "2000"})
+        self.assertEqual(response.status_code, 302)
+
 
     def test_voip_call_report(self):
         """Test Function to check VoIP call report"""
@@ -322,6 +401,20 @@ class NewfiesCustomerInterfaceTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
         'frontend/registration/user_detail_change.html')
+
+    def test_survey_view(self):
+        """Test Function survey view"""
+        response = self.client.get('/survey/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+                                'frontend/survey/survey_list.html')
+        response = self.client.post('/survey/add/',
+        data={"name": "mylittlecampaign", "description": "xyz"})
+        self.assertEqual(response.status_code, 200)
+        response = self.client.get('/survey/1/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+                                'frontend/survey/survey_change.html')
 
 
 class NewfiesCustomerInterfaceForgotPassTestCase(TestCase):

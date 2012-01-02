@@ -3,7 +3,7 @@
 
 
 
-{% block extra_files %}
+{% block extra_header %}
 <script type="text/javascript" src="{{STATIC_URL}}newfies/js/custom.jquery.select.all.js"></script>
 
 <!--flexigrid css & js-->
@@ -26,24 +26,18 @@ function get_alert_msg(id)
 {% endblock %}
 
 {% block content %}
-<script>
-$(function() {
-	$( "#tabs" ).tabs().tabs("select", {{ selected }});
-});
-</script>
 
 
-<div class="demo">
-
-<div id="tabs" style="width:600px;">
-	<ul>
-		<li><a href="#tabs-1">{% trans "Account" %}</a></li>
-		<li><a href="#tabs-2">{% trans "Password" %}</a></li>
-		<li><a href="#tabs-3">{% trans "Notifications" %}</a></li>
-        <li><a href="#tabs-4">{% trans "Limitation" %}</a></li>
-        <li><a href="#tabs-5">{% trans "Authorized" %}</a></li>
-	</ul>
-	<div id="tabs-1">
+<ul class="tabs" data-tabs="tabs">
+	<li {% if action == "tabs-1" %}class="active"{% endif %}><a href="#tabs-1">{% trans "Account" %}</a></li>
+	<li {% if action == "tabs-2" %}class="active"{% endif %}><a href="#tabs-2">{% trans "Password" %}</a></li>
+	<li {% if action == "tabs-3" %}class="active"{% endif %}><a href="#tabs-3">{% trans "Notifications" %}</a></li>
+    <li {% if action == "tabs-4" %}class="active"{% endif %}><a href="#tabs-4">{% trans "Limitation" %}</a></li>
+    <li {% if action == "tabs-5" %}class="active"{% endif %}><a href="#tabs-5">{% trans "Authorized" %}</a></li>
+</ul>
+	
+<div class="pill-content">
+	<div id="tabs-1"  {% if action == "tabs-1" or action == "" %}class="active"{% endif %}>
         {% if msg_detail %}
         <div class="success">                
                 <strong>{% trans "Alert" %} : </strong>  {{ msg_detail }}
@@ -61,6 +55,7 @@ $(function() {
                 {{ user_detail_form.as_table }}
                 <tr>
                 <td colspan=2 align=right>
+                    <input type="hidden" name="action" value="tabs-1" />
                     <input type="hidden" name="form-type" value="change-detail" />
                     <input type="submit" value="{% trans 'Change detail' %}" />
                 </td>
@@ -68,7 +63,7 @@ $(function() {
             </table>
         </form>
 	</div>
-	<div id="tabs-2">
+	<div id="tabs-2" {% if action == "tabs-2" %}class="active"{% endif %}>
         {% if msg_pass %}
         <div class="success">                
                 <strong>{% trans "Alert" %} : </strong>  {{ msg_pass }}
@@ -86,6 +81,7 @@ $(function() {
                 {{ user_password_form.as_table }}
                 <tr>
                 <td colspan=2 align=right>
+                    <input type="hidden" name="action" value="tabs-2" />
                     <input type="hidden" name="form-type" value="change-password" />
                     <input type="submit" value="{% trans 'Change password' %}" />
                 </td>
@@ -93,7 +89,7 @@ $(function() {
             </table>
         </form>
 	</div>
-	<div id="tabs-3">
+	<div id="tabs-3" {% if action == "tabs-3" %}class="active"{% endif %}>
 
         {% if msg_note %}
         <div class="success">
@@ -103,7 +99,8 @@ $(function() {
 
         <form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">
         {% csrf_token %}
-        <input type="hidden" name="form-type" value="notificaation_list" />
+        <input type="hidden" name="action" value="tabs-3" />
+        <input type="hidden" name="form-type" value="notification_list" />
         <table id="flex1" align="left" style="display:none;"></table>
         </form>
         <script type="text/javascript">
@@ -134,7 +131,7 @@ $(function() {
             useRp: true,
             rp: 10,
             showTableToggleBtn: true,
-            width: 550,
+            width: 750,
             height: 265,
             pagetext: '{% trans "Page" %}',
             outof: '{% trans "of" %}',
@@ -159,7 +156,7 @@ $(function() {
                 name: 'read_all',
                 value: 'true',
             }).appendTo('#ListForm');
-
+            
             $('#ListForm').submit();
         }
         function delete_button()
@@ -167,17 +164,16 @@ $(function() {
             $('<input>').attr({
                 type: 'hidden',
                 id: 'id_read_all',
-                name: 'read_all',
+                name: 'id_read_all',
                 value: 'false',
             }).appendTo('#ListForm');
+            
             $('#ListForm').submit();
         }
-
         </script>
 
-
-
 	</div>
+	
     <div id="tabs-4" align="left">
         {% if dialer_set %}
             <table style="width:370px;" >
@@ -216,7 +212,7 @@ $(function() {
             </table>
         {% endif %}
 	</div>
-    <div id="tabs-5" align="left">
+    <div id="tabs-5" align="left" {% if action == "tabs-5" %}class="active"{% endif %}>
         {% if msg_number %}
         <div class="success">
                 <strong>{% trans "Alert" %} : </strong>  {{ msg_number }}
@@ -234,6 +230,7 @@ $(function() {
                 {{ check_phone_no_form.as_table }}
                 <tr>
                 <td colspan=2 align=right>
+                    <input type="hidden" name="action" value="tabs-5" />
                     <input type="hidden" name="form-type" value="check-number" />
                     <input type="submit" value="{% trans 'Check' %}" />
                 </td>
@@ -243,6 +240,13 @@ $(function() {
 	</div>
 </div>
 
-</div>
+
+
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        $(".tabs").tabs();
+    });
+</script>
+
 
 {% endblock %}

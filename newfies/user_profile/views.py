@@ -57,14 +57,18 @@ def customer_detail_change(request):
     error_pass = ''
     error_number = ''
     selected = 0
+    action = ''
 
     if 'selected' in request.GET:
         selected = request.GET['selected']
-
+        
     if request.GET.get('msg_note') == 'true':
         msg_note = request.session['msg_note']
         
     if request.method == 'POST':
+        if 'action' in request.POST:
+            action = request.POST['action']
+        
         if request.POST['form-type'] == "change-detail":
             user_detail_form = UserChangeDetailForm(request.user, request.POST,
                                                     instance=user_detail)
@@ -110,6 +114,7 @@ def customer_detail_change(request):
         'notice_count': notice_count(request),
         'dialer_set': dialer_set,
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'action': action,
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))

@@ -2,13 +2,13 @@
    {
       "pk":1,
       "model":"dialer_campaign.campaign",
-      "fields":{
-         "voipapp":1,
+      "fields":{         
          "updated_date":"2011-06-15 00:49:16",
          "tuesday":1,
          "daily_stop_time":"23:59:59",
          "daily_start_time":"00:00:00",
          "frequency":10,
+	 "object_id":1,
          "saturday":1,
          "callerid":"123987",
          "callmaxduration":1800,
@@ -21,6 +21,7 @@
          "friday":1,
          "maxretry":3,
          "user":1,
+	 "content_type":31,
          "startingdate":"2011-06-15 00:01:15",
          "name":"Default_Campaign",
          "calltimeout":45,

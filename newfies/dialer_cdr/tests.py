@@ -38,7 +38,7 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
 
     def test_create_campaign(self):
         """Test Function to create a campaign"""
-        data = simplejson.dumps({"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "voipapp": "1", "extra_data": "2000"})
+        data = simplejson.dumps({"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "content_type": "voip_app", "object_id" : "1", "extra_data": "2000"})
         response = self.client.post('/api/v1/campaign/',
         data, content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)
@@ -55,7 +55,7 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
     def test_update_campaign(self):
         """Test Function to update a campaign"""
         response = self.client.put('/api/v1/campaign/1/',
-                   simplejson.dumps({"status": "2"}),
+                   simplejson.dumps({"status": "2","content_type": "voip_app", "object_id" : "1"}),
                    content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 204)
 
@@ -119,7 +119,7 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
         """Test Function to create a callrequest"""
         data = simplejson.dumps({"request_uuid": "2342jtdsf-00153",
          "call_time": "2011-05-01 11:22:33", "phone_number": "8792749823",
-         "voipapp": "1", "timeout": "30000", "callerid": "650784355",
+         "content_type": "voip_app", "object_id" : "1", "timeout": "30000", "callerid": "650784355",
          "call_type": "1"})
         response = self.client.post('/api/v1/callrequest/',
         data, content_type='application/json', **self.extra)
@@ -140,7 +140,7 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
     def test_create_hangupcall(self):
-        """Test Function to create a answercall"""
+        """Test Function to create a hangupcall"""
         data = {"RequestUUID": "20294e18-9d8f-11e0-aaa8-000c29bed6ad",
          "HangupCause": "SUBSCRIBER_ABSENT"}
         response = self.client.post('/api/v1/hangupcall/',

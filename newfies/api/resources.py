@@ -1177,13 +1177,23 @@ class CallrequestValidation(Validation):
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
 
-        voipapp_id = bundle.data.get('voipapp')
-        if voipapp_id:
+        content_type = bundle.data.get('content_type')
+        if content_type == 'voip_app' or content_type == 'survey':
             try:
-                voip_app_id = VoipApp.objects.get(id=voipapp_id).id
-                bundle.data['voipapp'] = '/api/v1/voipapp/%s/' % voip_app_id
+                content_type_id = ContentType.objects.get(app_label=str(content_type)).id
+                bundle.data['content_type'] = '/api/v1/contenttype/%s/' % content_type_id
             except:
-                errors['chk_voipapp'] = ["The VoipApp doesn't exist!"]
+                errors['chk_content_type'] = ["The ContentType doesn't exist!"]
+        else:
+            errors['chk_content_type'] = ["Entered wrong option. Please enter 'voip_app' or 'survey' !"]
+
+
+        object_id = bundle.data.get('object_id')
+        if object_id:
+            try:
+                bundle.data['object_id'] = object_id
+            except:
+                errors['chk_object_id'] = ["The Application object id doesn't exist!"]
                 
         try:
             user_id = User.objects.get(username=request.user).id
@@ -1212,7 +1222,6 @@ class CallrequestResource(ModelResource):
         * ``status`` -
         * ``campaign_subscriber`` -
         * ``campaign`` -
-        * ``voipapp`` -
         * ``callerid`` -
         * ``phone_number`` -
         * ``extra_dial_string`` -
@@ -1231,7 +1240,7 @@ class CallrequestResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"request_uuid": "2342jtdsf-00123", "call_time": "2011-10-20 12:21:22", "phone_number": "8792749823", "voipapp": "1","timeout": "30000", "callerid": "650784355", "call_type": "1"}' http://localhost:8000/api/v1/callrequest/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"request_uuid": "2342jtdsf-00123", "call_time": "2011-10-20 12:21:22", "phone_number": "8792749823", "content_type":"voip_app", "object_id":1, "timeout": "30000", "callerid": "650784355", "call_type": "1"}' http://localhost:8000/api/v1/callrequest/
 
         Response::
 
@@ -1290,16 +1299,6 @@ class CallrequestResource(ModelResource):
                         "resource_uri":"/api/v1/user/1/",
                         "username":"areski"
                      },
-                     "voipapp":{
-                        "created_date":"2011-04-08T08:00:09",
-                        "data":"",
-                        "description":"",
-                        "id":"1",
-                        "name":"Default_VoIP_App",
-                        "resource_uri":"/api/v1/voipapp/1/",
-                        "type":1,
-                        "updated_date":"2011-10-14T07:33:41"
-                     }
                   }
                ]
             }
@@ -1321,8 +1320,7 @@ class CallrequestResource(ModelResource):
             Content-Language: en-us
     """
     user = fields.ForeignKey(UserResource, 'user', full=True)
-    voipapp = fields.ForeignKey(VoipAppResource, 'voipapp', full=True)
-
+    content_type = fields.ForeignKey(ContentTypeResource, 'content_type', full=True)
     class Meta:
         queryset = Callrequest.objects.all()
         resource_name = 'callrequest'

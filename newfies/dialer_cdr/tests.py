@@ -153,7 +153,27 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
         response = self.client.post('/api/v1/store_cdr/', data, content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 200)
 
+    def test_create_survey(self):
+        """Test Function to create a survey"""
+        data = simplejson.dumps({"name": "mysurvey", "description": "Test"})
+        response = self.client.post('/api/v1/survey/', data,
+                   content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 201)
 
+    def test_read_survey(self):
+        """Test Function to get all surveys"""
+        response = self.client.get('/api/v1/survey/?format=json',
+        **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_survey(self):
+        """Test Function to update a survey"""
+        data = simplejson.dumps({"name": "mysurvey", "description": "test"})
+        response = self.client.put('/api/v1/survey/1/',
+                   data, content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 201)
+
+        
 class NewfiesAdminInterfaceTestCase(TestCase):
     """Test cases for Newfies Admin Interface."""
 

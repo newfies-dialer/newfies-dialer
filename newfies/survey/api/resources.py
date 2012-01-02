@@ -28,6 +28,23 @@ class UserResource(ModelResource):
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
 
+class SurveyAppValidation(Validation):
+    """SurveyApp Validation Class"""
+    def is_valid(self, bundle, request=None):
+        errors = {}
+
+        if not bundle.data:
+            errors['Data'] = ['Data set is empty']
+
+        try:
+            user_id = User.objects.get(username=request.user).id
+            bundle.data['user'] = '/api/v1/user/%s/' % user_id
+        except:
+            errors['chk_user'] = ["The User doesn't exist!"]
+
+        return errors
+
+
 class SurveyAppResource(ModelResource):
     """
     **Attributes**:
@@ -133,6 +150,7 @@ class SurveyAppResource(ModelResource):
         resource_name = 'survey'
         authorization = Authorization()
         authentication = BasicAuthentication()
+        validation = SurveyAppValidation() 
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
 

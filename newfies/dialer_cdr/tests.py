@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.http import HttpRequest
 from dialer_cdr.test_utils import build_test_suite_from
+from django.contrib.contenttypes.models import ContentType
 #from user_profile.models import UserProfile
 import base64
 import simplejson
@@ -195,9 +196,10 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
 
     def test_create_survey_response(self):
         """Test Function to create a survey response"""
-        data = simplejson.dumps({"key": "Apple", "keyvalue": "1", "surveyquestion": "1"})
+        data = simplejson.dumps({"key": "orange", "keyvalue": "1", "surveyquestion": "1"})
         response = self.client.post('/api/v1/survey_question/', data,
                    content_type='application/json', **self.extra)
+        print response
         self.assertEqual(response.status_code, 201)
 
     def test_read_survey_response(self):
@@ -369,22 +371,22 @@ class NewfiesCustomerInterfaceTestCase(BaseAuthenticatedClient):
                                 'frontend/contact/import_contact.html')
 
     def test_campaign_view(self):
-        """Test Function to check phonebook"""
+        """Test Function to check campaign"""
         response = self.client.get('/campaign/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
                                 'frontend/campaign/list.html')
         response = self.client.get('/campaign/add/')
+        self.assertTemplateUsed(response,
+                                'frontend/campaign/change.html')
         response = self.client.post('/campaign/add/',
         data={"name": "mylittlecampaign", "description": "xyz",
         "startingdate": "1301392136.0", "expirationdate": "1301332136.0",
         "frequency": "20", "callmaxduration": "50", "maxretry": "3",
         "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1",
-        "content_object": "type:30-id:1"})
-        self.assertEqual(response.status_code, 200)
-        response = self.client.get('/campaign/1/')
-        self.assertTemplateUsed(response,
-                                'frontend/campaign/change.html')
+        "content_object": "type:30-id:1", "extra_data": "2000"})
+        self.assertEqual(response.status_code, 302)
+
 
     def test_voip_call_report(self):
         """Test Function to check VoIP call report"""

@@ -323,6 +323,16 @@ class SurveyResponseValidation(Validation):
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
 
+        key = bundle.data.get('key')
+        if key:
+            dup_count = SurveyResponse.objects.filter(key=str(key)).count()
+            if request.method == 'POST':
+                if dup_count >= 1:
+                    errors['duplicate_key'] = ["Key is already exist!"]
+            if request.method == 'PUT':
+                if dup_count > 1:
+                    errors['duplicate_key'] = ["Key is already exist!"]
+
         surveyquestion_id = bundle.data.get('surveyquestion')
         if surveyquestion_id:
             try:

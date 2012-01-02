@@ -347,7 +347,7 @@ class SurveyResponseResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"question": "survey que", "tags": "", "user": "1", "surveyapp": "1", "message_type": "1"}' http://localhost:8000/api/v1/survey_response/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"key": "Apple", "keyvalue": "1", "surveyquestion": "1"}' http://localhost:8000/api/v1/survey_response/
 
         Response::
 
@@ -428,7 +428,7 @@ class SurveyResponseResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"question": "survey que", "tags": "", "user": "1", "surveyapp": "1", "message_type": "1"}' http://localhost:8000/api/v1/survey_response/%survey_response_id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"key": "Apple", "keyvalue": "1", "surveyquestion": "1"}' http://localhost:8000/api/v1/survey_response/%survey_response_id%/
 
         Response::
 

@@ -37,16 +37,25 @@ td {
 <br/>
     {% block custom-search %}
     <form method="POST" action="." enctype="multipart/form-data">
-    {% csrf_token %}
-    <table align="center" border=0 style="width:35%;align:center;">
-        {{ form.as_table }}
-        <tr>
-            <td colspan=2 align=right>
+      {% csrf_token %}
+      <fieldset>
+        <!-- <legend>Form legend</legend> -->
+            
+        {% for field in form %}
+        <div class="clearfix {% if field.errors %}error{% endif %}">
+            <label for="errorInput">{{ field.label }}</label>
+            <div class="input">
+              {{ field }}
+              <span class="help-inline">{{ field.errors }}</span>
+            </div>
+          </div>
+        {% endfor %}
+        
+        <div class="actions">
             <input type="submit" value="{% trans "Search" %}" class="btn primary"/>&nbsp;
             <input type="reset" name="reset" value="{% trans "Reset" %}" class="btn danger">
-            </td>
-        </tr>
-    </table>
+        </div>
+      </fieldset>
     </form>
     {% endblock %}
 

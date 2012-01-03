@@ -43,12 +43,11 @@ padding:1px 1px 1px 20px;
             <td >&nbsp;</td>
             <td align=left>
               {% if action == 'update' %}
-                <input id="update" class="btn info" type="submit" value="{% trans "Update" %}" />
+                <input id="update" class="btn primary" type="submit" value="{% trans "Update" %}" />
               {% else %}
-                <input id="add" class="btn info" type="submit" value="{% trans "Submit" %}" />
+                <input id="add" class="btn primary" type="submit" value="{% trans "Submit" %}" />
               {% endif %}
                &nbsp;&nbsp;
-              <input type="reset" class="btn" name="reset" value="{% trans "Clear" %}">&nbsp;&nbsp;
               {% if action == 'update' %}
                  <input id="delete" class="btn info" name="delete" type="submit" value="{% trans "Delete" %}" />
               {% endif %}

@@ -174,14 +174,7 @@ function get_alert_msg(id)
         }
         function mark_read_all_button()
         {
-            $('<input>').attr({
-                type: 'hidden',
-                id: 'id_mark_read_all',
-                name: 'mark_read_all',
-                value: 'true',
-            }).appendTo('#ListForm');
-
-            $('#ListForm').submit();
+            window.location.replace("/user_detail_change/?action=tabs-3&notification=mark_read_all");
         }
         </script>
 

@@ -160,7 +160,7 @@
 </script>
 
 <style>
-	.column { width: 960px; float: left; padding-bottom: 0px; }
+	.column { width: 910px; float: left; padding-bottom: 0px; }
 	.portlet { margin: 0 1em 1em 0; }
 	.portlet-header { margin: 0.3em; padding-bottom: 4px; padding-left: 0.2em; }
 	.portlet-header .ui-icon { float: right; }
@@ -280,7 +280,7 @@ function addFormField() {
        '<table  style="width:450px;" border="0" cellpadding="0" cellspacing="0" >'+
             '<thead><tr><th align=left>Response Key</th><th align=left>Key Value</th>'+
        '</tr></thead></table>'+
-       '<div id="divTxtRes_'+id_res+'"></div><input value="Add Response" onclick="javascript:addResFormField('+id_res+', 0); return false;" type="button" /></td>'+
+       '<div id="divTxtRes_'+id_res+'"></div><input class="btn info" value="Add Response" onclick="javascript:addResFormField('+id_res+', 0); return false;" type="button" /></td>'+
        '</tr>' +
     '</tbody>' +
     '</table>' +
@@ -496,7 +496,7 @@ function removeResFormField(id) {
                                         {% endif %}
                                     {% endfor %}
                                     <div id="divTxtRes_{{ que.id }}"></div>
-                                    <input type="button" value="Add Response" onclick="javascript:addResFormField({{ que.id }}, 1); return false;" />
+                                    <input type="button" class="btn info" value="Add Response" onclick="javascript:addResFormField({{ que.id }}, 1); return false;" />
                                     </td>
                                 </tr>
                                 <!--Response forms end-->
@@ -514,7 +514,7 @@ function removeResFormField(id) {
             <input type="hidden" id="id" value="0">
             <input type="hidden" id="id_new_que_form" value="0">
             <div id="divTxt"></div>
-            <input type="button" value="Add Question" onclick="javascript:addFormField(); return false;" />
+            <input type="button" value="Add Question" class="btn info" onclick="javascript:addFormField(); return false;" />
         </div>
     </fieldset>
     {% endif %}
@@ -523,9 +523,9 @@ function removeResFormField(id) {
     <tr>
         <td align="center" colspan=2>
           {% if action == 'update' %}
-            <input id="update" type="submit" onclick="javascript:document.getElementById('update_form').submit();" value="{% trans "Update" %}" />
+            <input id="update" type="submit" class="btn primary" onclick="javascript:document.getElementById('update_form').submit();" value="{% trans "Update" %}" />
           {% else %}
-            <input id="add" type="submit" value="{% trans "Submit" %}" />
+            <input id="add" type="submit" class="btn primary" value="{% trans "Submit" %}" />
           {% endif %}
         </td>
     </tr>

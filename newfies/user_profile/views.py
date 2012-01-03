@@ -64,6 +64,13 @@ def customer_detail_change(request):
         
     if request.GET.get('msg_note') == 'true':
         msg_note = request.session['msg_note']
+
+    # Mark all notification as read
+    if request.GET.get('notification') == 'mark_read_all':
+        notification_list = notification.Notice.objects.filter(unseen=1, recipient=request.user)
+        notification_list.update(unseen=0)
+        msg_note = _('All notifications are marked as read successfully.')
+
         
     if request.method == 'POST':
 
@@ -215,13 +222,6 @@ def notification_del_read(request, object_id):
 
             return HttpResponseRedirect('/user_detail_change/?action=tabs-3&msg_note=true')
     except:
-        # Mark all notification as read
-        if request.POST.get('mark_read_all') == 'true':
-            notification_list = notification.Notice.objects.filter(unseen=1, recipient=request.user)
-            notification_list.update(unseen=0)
-            request.session["msg_note"] = _('All notifications are marked as read successfully.')
-            return HttpResponseRedirect('/user_detail_change/?action=tabs-3&msg_note=true')
-
         # When object_id is 0 (Multiple recrod delete/mark as read)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])

@@ -25,7 +25,7 @@ from survey.models import *
 from survey.forms import *
 from dialer_cdr.models import Callrequest, VoIPCall
 from audiofield.models import AudioFile
-from audiofield.forms import CustomerAudioFileForm
+#from audiofield.forms import CustomerAudioFileForm
 from datetime import *
 from dateutil import parser
 
@@ -472,9 +472,9 @@ def audio_add(request):
         * Add a new audio which will belong to the logged in user
           via the CustomerAudioFileForm & get redirected to the audio list
     """
-    form = CustomerAudioFileForm()
+    form = NewfiesCustomerAudioFileForm()
     if request.method == 'POST':
-        form = CustomerAudioFileForm(request.POST, request.FILES)
+        form = NewfiesCustomerAudioFileForm(request.POST, request.FILES)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.user = User.objects.get(username=request.user)
@@ -533,7 +533,7 @@ def audio_del(request, object_id):
 def audio_change(request, object_id):
 
     obj = AudioFile.objects.get(pk=object_id)
-    form = CustomerAudioFileForm(instance=obj)
+    form = NewfiesCustomerAudioFileForm(instance=obj)
 
     if request.GET.get('delete'):
         # perform delete
@@ -544,7 +544,7 @@ def audio_change(request, object_id):
         return HttpResponseRedirect('/audio/')
 
     if request.method == 'POST':
-        form = CustomerAudioFileForm(request.POST, request.FILES, instance=obj)
+        form = NewfiesCustomerAudioFileForm(request.POST, request.FILES, instance=obj)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/audio/')

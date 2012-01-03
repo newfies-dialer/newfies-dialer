@@ -2,6 +2,11 @@
 {% load i18n dialer_cdr_extras %}
 
 {% block extra_files %}
+    <style>
+    .help-inline {
+        padding-left: 55px;
+    }
+    </style>
 {% endblock %}
 
 {% block content_header %}
@@ -57,26 +62,26 @@
 <br/>
 <br/>
 <div class="span-24 last" align=left>
-<form method="post" action="" enctype="multipart/form-data" >
-{% csrf_token %}
-     {{ form }}
-     <div class="actions">
-         <input type="submit" class="btn primary" name="submit" value="{% trans "Submit" %}" />
-     </div>
-<!--<fieldset>
-        <table border=1 align=center>
-        {% get_fieldset phonebook,csv_file as contact_import_fields from form %}
-        {{ contact_import_fields.as_table }}
-        </table>
-    </fieldset>
-    <table align=center border=1>
-    <tr>
-        <td colspan=2 align=right>
-        <input type="submit" class="btn primary" name="submit" value="{% trans "Submit" %}" />
-        </td>
-    </tr>
-    </table>-->
-</form>
+    <form method="post" action="" enctype="multipart/form-data" >
+    {% csrf_token %}
+
+         {% for field in form %}
+         <div class="clearfix{% if field.errors %} error{% endif %}">
+            <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+            <div class="input">
+                {{ field }}
+                {% if field.errors %}
+                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                {% endif %}
+                <span class="help-block">{{ field.help_text }} </span>
+            </div>
+         </div>
+         {% endfor %}
+
+         <div class="actions">
+             <input type="submit" class="btn primary" name="submit" value="{% trans "Submit" %}" />
+         </div>
+    </form>
 </div>
 
 

@@ -44,7 +44,7 @@ class Contact_fileImport(FileImport, BootstrapForm):
     phonebook = forms.ChoiceField(label=_("Phonebook"),
                                 choices=field_list("phonebook"),
                                 required=False,
-                                help_text="Select Phonebook")
+                                help_text=_("Select Phonebook"))
 
     def __init__(self, user, *args, **kwargs):
         super(Contact_fileImport, self).__init__(*args, **kwargs)

@@ -43,7 +43,7 @@ td {
             
         {% for field in form %}
         <div class="clearfix {% if field.errors %}error{% endif %}">
-            <label for="errorInput">{{ field.label }}</label>
+            <label>{{ field.label }}</label>
             <div class="input">
               {{ field }}
               <span class="help-inline">{{ field.errors }}</span>

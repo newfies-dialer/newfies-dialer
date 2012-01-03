@@ -18,7 +18,7 @@
 {% csrf_token %}
     <p>
         {{ form.campaign.label }} {{ form.campaign }}
-        <input type="submit" name="submit" value="{% trans "Submit" %}">
+        <input type="submit" class="btn primary" name="submit" value="{% trans "Submit" %}">
     </p>
 </form>
 

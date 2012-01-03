@@ -28,14 +28,14 @@
                 <td >&nbsp;</td>
                 <td align=left>
                   {% if action == 'update' %}
-                    <input id="update" type="submit" value="{% trans "Update" %}" />
+                    <input id="update" type="submit" class="btn primary" value="{% trans "Update" %}" />
                   {% else %}
-                    <input id="add" type="submit" value="{% trans "Submit" %}" />
+                    <input id="add" type="submit" class="btn primary" value="{% trans "Submit" %}" />
                   {% endif %}
                    &nbsp;&nbsp;
-                  <input type="reset" name="reset" value="{% trans "Clear" %}">&nbsp;&nbsp;
+                  <input type="reset" name="reset" class="btn danger" value="{% trans "Clear" %}">&nbsp;&nbsp;
                   {% if action == 'update' %}
-                     <input id="delete" name="delete" type="submit" value="{% trans "Delete" %}" />
+                     <input id="delete" class="btn info" name="delete" type="submit" value="{% trans "Delete" %}" />
                   {% endif %}
                </td>
             </tr>

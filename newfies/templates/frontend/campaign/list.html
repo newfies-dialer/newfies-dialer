@@ -26,13 +26,13 @@ function get_alert_msg(id)
 {% block content %}
 
 {% if msg %}
-<div class="success" id="rounded-corner-upper-table">        
+<div class="alert-message success">
         <strong>{% trans "Alert" %} : </strong>  {{ msg }}
 </div>
 {% endif %}
 
 {% if error_msg %}
-<div class="error" id="rounded-corner-upper-table">
+<div class="alert-message error">
     <strong>{% trans "Alert" %} : </strong>  {{ error_msg }}
 </div>
 {% endif %}

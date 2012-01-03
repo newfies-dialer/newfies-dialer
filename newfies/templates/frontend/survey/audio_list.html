@@ -31,7 +31,7 @@ function get_alert_msg(id)
 
 {% block content %}
 {% if msg %}
-<div class="success" id="rounded-corner-upper-table">        
+<div class="alert-message success">
         <strong>{% trans "Alert" %} : </strong>  {{ msg }}
 </div>
 {% endif %}
@@ -54,7 +54,7 @@ $("#flex1").flexigrid({
         {display: '{% trans "Name" %}', name: 'name', width: 240, sortable: true, align: 'center'},
         {display: '{% trans "Audio" %}', name: 'audio_file', width: 300, sortable: true, align: 'center'},
         {display: '{% trans "Date" %}', name: 'updated_date', width: 200, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
-        {display: '{% trans "Action" %}', name: '', width : 50, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
+        {display: '{% trans "Action" %}', name: '', width : 60, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
 		],
     buttons : [
 		{name: '{% trans "Add" %}', bclass: 'add', onpress : add_button},

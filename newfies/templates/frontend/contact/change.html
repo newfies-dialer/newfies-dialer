@@ -24,7 +24,18 @@ padding:1px 1px 1px 20px;
 
 <form method="POST" action="." enctype="multipart/form-data">
     {% csrf_token %}
-        {{ form }}
+        {% for field in form %}
+        <div class="clearfix{% if field.errors %} error{% endif %}">
+            <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+            <div class="input">
+                {{ field }}
+                {% if field.errors %}
+                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                {% endif %}
+                <span class="help-block">{{ field.help_text }} </span>
+            </div>
+        </div>
+        {% endfor %}
 
         <div class="actions">
             {% if action == 'update' %}

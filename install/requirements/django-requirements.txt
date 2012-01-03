@@ -22,4 +22,3 @@ django-sentry==1.13.5
 django-redis-cache
 django-redisboard
 git+git://github.com/areski/django-genericadmin.git
-git+git://github.com/earle/django-bootstrap.git#egg=bootstrap

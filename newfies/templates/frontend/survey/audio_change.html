@@ -17,7 +17,18 @@
 
 <form method="POST" action="." enctype="multipart/form-data" id="update_form">
     {% csrf_token %}
-    {{ form }}
+    {% for field in form %}
+     <div class="clearfix{% if field.errors %} error{% endif %}">
+        <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+        <div class="input">
+            {{ field }}
+            {% if field.errors %}
+                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+            {% endif %}
+            <span class="help-block">{{ field.help_text }} </span>
+        </div>
+     </div>
+     {% endfor %}
     <div class="actions">
          {% if action == 'update' %}
             <input id="update" class="btn primary" type="submit" value="{% trans "Update" %}" />
@@ -25,25 +36,6 @@
             <input id="add" type="submit" class="btn primary" value="{% trans "Submit" %}" />
          {% endif %}
     </div>
-    <!--<fieldset>
-        <legend>{% trans "Settings" %}</legend>
-            <table align=center border=1>
-               {{ form.as_table }}
-            </table>
-    </fieldset>
-
-    <table align="center">
-    <tr>
-        <td align="center" colspan=2>
-          {% if action == 'update' %}
-            <input id="update" class="btn primary" type="submit" value="{% trans "Update" %}" />
-          {% else %}
-            <input id="add" type="submit" class="btn primary" value="{% trans "Submit" %}" />
-          {% endif %}
-        </td>
-    </tr>
-    </table>
-    </form>-->
-
+    </form>
 
 {% endblock %}

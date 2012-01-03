@@ -7,8 +7,6 @@ from django.contrib.admin.widgets import *
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 
-from bootstrap.forms import BootstrapForm, BootstrapModelForm, Fieldset
-
 from dialer_campaign.models import *
 from dialer_campaign.function_def import *
 from datetime import *
@@ -39,7 +37,7 @@ class FileImport(forms.Form):
             return filename
 
 
-class Contact_fileImport(FileImport, BootstrapForm):
+class Contact_fileImport(FileImport):
     """Admin Form : Import CSV file with phonebook"""
     phonebook = forms.ChoiceField(label=_("Phonebook"),
                                 choices=field_list("phonebook"),
@@ -54,10 +52,6 @@ class Contact_fileImport(FileImport, BootstrapForm):
             self.fields['phonebook'].choices = field_list(name="phonebook",
                                                           user=user)
 
-    class Meta:
-        layout = (
-            Fieldset("Import Contact", "phonebook", "csv_file"),
-        )
 
 class LoginForm(forms.Form):
     """Client Login Form"""
@@ -68,7 +62,7 @@ class LoginForm(forms.Form):
     password.widget.attrs['class'] = 'input-small'
 
 
-class PhonebookForm(BootstrapModelForm):
+class PhonebookForm(ModelForm):
     """Phonebook ModelForm"""
 
     class Meta:
@@ -78,12 +72,9 @@ class PhonebookForm(BootstrapModelForm):
         widgets = {
             'description': Textarea(attrs={'cols': 26, 'rows': 3}),
         }
-        layout = (
-            Fieldset("Phonebook", "name", "description", ),
-        )
 
 
-class ContactForm(BootstrapModelForm):
+class ContactForm(ModelForm):
     """Contact ModelForm"""
 
     class Meta:
@@ -94,11 +85,6 @@ class ContactForm(BootstrapModelForm):
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
         }
-        layout = (
-            Fieldset("Contact", "phonebook", "contact", "last_name", "first_name",
-                     "email", "country", "city", "description", "status",
-                     "additional_vars"),
-        )
 
     def __init__(self, user, *args, **kwargs):
         super(ContactForm, self).__init__(*args, **kwargs)

@@ -6,11 +6,8 @@ from django.contrib import *
 from django.contrib.admin.widgets import *
 from django.utils.translation import ugettext_lazy as _
 from django.forms.models import inlineformset_factory
-from bootstrap.forms import BootstrapForm, BootstrapModelForm, Fieldset
 from survey.models import *
 from dialer_campaign.function_def import field_list
-from audiofield.models import AudioFile
-from audiofield.forms import CustomerAudioFileForm
 from datetime import *
 
 
@@ -93,11 +90,3 @@ class SurveyReportForm(forms.Form):
             for i in pb_list:
                 list.append((i[0], i[1]))
             self.fields['campaign'].choices = list
-
-            
-class NewfiesCustomerAudioFileForm(CustomerAudioFileForm, BootstrapModelForm):
-    class Meta:
-        model = AudioFile
-        layout = (
-            Fieldset("Audio File", 'name', 'audio_file'),
-        )

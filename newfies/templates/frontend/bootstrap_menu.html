@@ -43,11 +43,11 @@
             <li class="nav secondary-nav pull-right" data-dropdown="dropdown" >
               <a href="#" class="dropdown-toggle">{{ user.username|capfirst }}</a>
               <ul class="dropdown-menu">
-                <li {% ifequal module 'detail_change' %}class="active"{% endifequal %}><a href="/user_detail_change/">
+                <li {% ifequal module 'detail_change' %}class="active"{% endifequal %}><a href="/user_detail_change/?action=tabs-1">
                         {% trans "Account settings" %}s</a></li>
-                <li {% ifequal module 'detail_change' %}class="active"{% endifequal %}><a href="/user_detail_change/">
+                <li {% ifequal module 'detail_change' %}class="active"{% endifequal %}><a href="/user_detail_change/?action=tabs-3">
                         {% trans "Notifications" %}</a></li>
-                <li {% ifequal module 'detail_change' %}class="active"{% endifequal %}><a href="/user_detail_change/">
+                <li {% ifequal module 'detail_change' %}class="active"{% endifequal %}><a href="/user_detail_change/?action=tabs-4">
                         {% trans "Limitations" %}</a></li>
                 <li class="divider"></li>
                 {% if user.is_superuser %}
@@ -80,7 +80,7 @@
             </select>
             &nbsp;
             
-            {% if notice_count %} <a href="/user_detail_change/?selected=2"><span class="label warning">{{ notice_count }} {% trans "new notifications" %}</span></a> &nbsp; {% endif %}
+            {% if notice_count %} <a href="/user_detail_change/?action=tabs-3"><span class="label warning">{{ notice_count }} {% trans "new notifications" %}</span></a> &nbsp; {% endif %}
             &nbsp;&nbsp;&nbsp;&nbsp;
           </form>
           

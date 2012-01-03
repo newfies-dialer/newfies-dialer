@@ -18,6 +18,7 @@ function get_alert_msg(id)
     return answer // answer is a boolean
 }
 </script>
+
 {% endblock %}
 
 
@@ -27,24 +28,24 @@ function get_alert_msg(id)
 
 {% block content %}
 
-
 <ul class="tabs" data-tabs="tabs">
-	<li {% if action == "tabs-1" %}class="active"{% endif %}><a href="#tabs-1">{% trans "Account" %}</a></li>
-	<li {% if action == "tabs-2" %}class="active"{% endif %}><a href="#tabs-2">{% trans "Password" %}</a></li>
-	<li {% if action == "tabs-3" %}class="active"{% endif %}><a href="#tabs-3">{% trans "Notifications" %}</a></li>
+    <li {% if action == "tabs-1" %}class="active"{% endif %}><a href="#tabs-1">{% trans "Account" %}</a></li>
+    <li {% if action == "tabs-2" %}class="active"{% endif %}><a href="#tabs-2">{% trans "Password" %}</a></li>
+    <li {% if action == "tabs-3" %}class="active"{% endif %}><a href="#tabs-3">{% trans "Notifications" %}</a></li>
     <li {% if action == "tabs-4" %}class="active"{% endif %}><a href="#tabs-4">{% trans "Limitation" %}</a></li>
     <li {% if action == "tabs-5" %}class="active"{% endif %}><a href="#tabs-5">{% trans "Authorized" %}</a></li>
 </ul>
-	
+
 <div class="pill-content">
+    
 	<div id="tabs-1"  {% if action == "tabs-1" or action == "" %}class="active"{% endif %}>
         {% if msg_detail %}
-        <div class="success">                
+        <div class="alert-message success">
                 <strong>{% trans "Alert" %} : </strong>  {{ msg_detail }}
         </div>
         {% endif %}
         {% if error_detail %}
-        <div class="error">
+        <div class="alert-message error">
                 <span class="ui-icon ui-icon-alert" style="float: left; margin-right: 0.3em;"></span>
                 <strong>{% trans "Alert" %} : </strong>  {{ error_detail }}
         </div>
@@ -57,7 +58,7 @@ function get_alert_msg(id)
                 <td colspan=2 align=right>
                     <input type="hidden" name="action" value="tabs-1" />
                     <input type="hidden" name="form-type" value="change-detail" />
-                    <input type="submit" value="{% trans 'Change detail' %}" />
+                    <input type="submit" class="btn info" value="{% trans 'Change detail' %}" />
                 </td>
                 </tr>
             </table>
@@ -65,12 +66,12 @@ function get_alert_msg(id)
 	</div>
 	<div id="tabs-2" {% if action == "tabs-2" %}class="active"{% endif %}>
         {% if msg_pass %}
-        <div class="success">                
+        <div class="alert-message success">
                 <strong>{% trans "Alert" %} : </strong>  {{ msg_pass }}
         </div>
         {% endif %}
         {% if error_pass %}
-        <div class="error">
+        <div class="alert-message error">
                 <span class="ui-icon ui-icon-alert" style="float: left; margin-right: 0.3em;"></span>
                 <strong>{% trans "Alert" %} : </strong>  {{ error_pass }}
         </div>
@@ -83,7 +84,7 @@ function get_alert_msg(id)
                 <td colspan=2 align=right>
                     <input type="hidden" name="action" value="tabs-2" />
                     <input type="hidden" name="form-type" value="change-password" />
-                    <input type="submit" value="{% trans 'Change password' %}" />
+                    <input type="submit" class="btn info" value="{% trans 'Change password' %}" />
                 </td>
                 </tr>
             </table>
@@ -92,7 +93,7 @@ function get_alert_msg(id)
 	<div id="tabs-3" {% if action == "tabs-3" %}class="active"{% endif %}>
 
         {% if msg_note %}
-        <div class="success">
+        <div class="alert-message success">
                 <strong>{% trans "Alert" %} : </strong>  {{ msg_note }}
         </div>
         {% endif %}
@@ -186,7 +187,7 @@ function get_alert_msg(id)
 
 	</div>
 	
-    <div id="tabs-4" align="left">
+    <div id="tabs-4" align="left" {% if action == "tabs-4" %}class="active"{% endif %}>
         {% if dialer_set %}
             <table style="width:370px;" >
             <tr>
@@ -226,12 +227,12 @@ function get_alert_msg(id)
 	</div>
     <div id="tabs-5" align="left" {% if action == "tabs-5" %}class="active"{% endif %}>
         {% if msg_number %}
-        <div class="success">
+        <div class="alert-message success">
                 <strong>{% trans "Alert" %} : </strong>  {{ msg_number }}
         </div>
         {% endif %}
         {% if error_number %}
-        <div class="error">
+        <div class="alert-message error">
                 <span class="ui-icon ui-icon-alert" style="float: left; margin-right: 0.3em;"></span>
                 <strong>{% trans "Alert" %} : </strong>  {{ error_number }}
         </div>
@@ -244,7 +245,7 @@ function get_alert_msg(id)
                 <td colspan=2 align=right>
                     <input type="hidden" name="action" value="tabs-5" />
                     <input type="hidden" name="form-type" value="check-number" />
-                    <input type="submit" value="{% trans 'Check' %}" />
+                    <input type="submit" class="btn info" value="{% trans 'Check' %}" />
                 </td>
                 </tr>
             </table>
@@ -259,6 +260,5 @@ function get_alert_msg(id)
         $(".tabs").tabs();
     });
 </script>
-
 
 {% endblock %}

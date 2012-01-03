@@ -59,27 +59,25 @@ def customer_detail_change(request):
     selected = 0
     action = ''
 
-    if 'selected' in request.GET:
-        selected = request.GET['selected']
+    if 'action' in request.GET:
+        action = request.GET['action']
         
     if request.GET.get('msg_note') == 'true':
         msg_note = request.session['msg_note']
         
     if request.method == 'POST':
-        if 'action' in request.POST:
-            action = request.POST['action']
-        
+
         if request.POST['form-type'] == "change-detail":
             user_detail_form = UserChangeDetailForm(request.user, request.POST,
                                                     instance=user_detail)
-            selected = 0
+            action = 'tabs-1'
             if user_detail_form.is_valid():
                 user_detail_form.save()
                 msg_detail = _('Your detail has been changed successfully.')
             else:
                 error_detail = _('Please correct the errors below.')
         elif request.POST['form-type'] == "check-number": # check phone no
-            selected = 4
+            action = 'tabs-5'
             check_phone_no_form = CheckPhoneNumberForm(data=request.POST)
             if not common_contact_authorization(request.user,
                                                 request.POST['phone_number']):
@@ -89,7 +87,7 @@ def customer_detail_change(request):
         else: # "change-password"
             user_password_form = PasswordChangeForm(user=request.user,
                                                     data=request.POST)
-            selected = 1
+            action = 'tabs-2'
             if user_password_form.is_valid():
                 user_password_form.save()
                 msg_pass = _('Your password has been changed successfully.')
@@ -107,7 +105,6 @@ def customer_detail_change(request):
         'msg_pass': msg_pass,
         'msg_number': msg_number,
         'msg_note': msg_note,
-        'selected': selected,
         'error_detail': error_detail,
         'error_pass': error_pass,
         'error_number': error_number,
@@ -216,14 +213,14 @@ def notification_del_read(request, object_id):
                 % {'name': notification_obj.notice_type}
                 notification_obj.update(unseen=0)
 
-            return HttpResponseRedirect('/user_detail_change/?selected=2&msg_note=true')
+            return HttpResponseRedirect('/user_detail_change/?action=tabs-3&msg_note=true')
     except:
         # Mark all notification as read
         if request.POST.get('mark_read_all') == 'true':
             notification_list = notification.Notice.objects.filter(unseen=1, recipient=request.user)
             notification_list.update(unseen=0)
             request.session["msg_note"] = _('All notifications are marked as read successfully.')
-            return HttpResponseRedirect('/user_detail_change/?selected=2&msg_note=true')
+            return HttpResponseRedirect('/user_detail_change/?action=tabs-3&msg_note=true')
 
         # When object_id is 0 (Multiple recrod delete/mark as read)
         values = request.POST.getlist('select')
@@ -237,7 +234,7 @@ def notification_del_read(request, object_id):
             request.session["msg_note"] = _('%(count)s notification(s) are marked as read successfully.')\
             % {'count': notification_list.count()}
             notification_list.update(unseen=0)
-        return HttpResponseRedirect('/user_detail_change/?selected=2&msg_note=true')
+        return HttpResponseRedirect('/user_detail_change/?action=tabs-3&msg_note=true')
 
 
 @login_required

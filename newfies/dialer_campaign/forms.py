@@ -39,12 +39,12 @@ class FileImport(forms.Form):
             return filename
 
 
-class Contact_fileImport(FileImport):
+class Contact_fileImport(FileImport, BootstrapForm):
     """Admin Form : Import CSV file with phonebook"""
     phonebook = forms.ChoiceField(label=_("Phonebook"),
                                 choices=field_list("phonebook"),
                                 required=False,
-                                help_text=_("Select Phonebook"))
+                                help_text="Select Phonebook")
 
     def __init__(self, user, *args, **kwargs):
         super(Contact_fileImport, self).__init__(*args, **kwargs)
@@ -54,6 +54,10 @@ class Contact_fileImport(FileImport):
             self.fields['phonebook'].choices = field_list(name="phonebook",
                                                           user=user)
 
+    class Meta:
+        layout = (
+            Fieldset("Import Contact", "phonebook", "csv_file"),
+        )
 
 class LoginForm(forms.Form):
     """Client Login Form"""
@@ -79,7 +83,7 @@ class PhonebookForm(BootstrapModelForm):
         )
 
 
-class ContactForm(ModelForm):
+class ContactForm(BootstrapModelForm):
     """Contact ModelForm"""
 
     class Meta:
@@ -90,6 +94,11 @@ class ContactForm(ModelForm):
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
         }
+        layout = (
+            Fieldset("Contact", "phonebook", "contact", "last_name", "first_name",
+                     "email", "country", "city", "description", "status",
+                     "additional_vars"),
+        )
 
     def __init__(self, user, *args, **kwargs):
         super(ContactForm, self).__init__(*args, **kwargs)

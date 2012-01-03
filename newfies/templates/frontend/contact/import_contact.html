@@ -59,7 +59,11 @@
 <div class="span-24 last" align=left>
 <form method="post" action="" enctype="multipart/form-data" >
 {% csrf_token %}
-<fieldset>
+     {{ form }}
+     <div class="actions">
+         <input type="submit" class="btn primary" name="submit" value="{% trans "Submit" %}" />
+     </div>
+<!--<fieldset>
         <table border=1 align=center>
         {% get_fieldset phonebook,csv_file as contact_import_fields from form %}
         {{ contact_import_fields.as_table }}
@@ -71,7 +75,7 @@
         <input type="submit" class="btn primary" name="submit" value="{% trans "Submit" %}" />
         </td>
     </tr>
-    </table>
+    </table>-->
 </form>
 </div>
 

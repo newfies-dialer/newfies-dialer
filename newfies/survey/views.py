@@ -82,7 +82,6 @@ def survey_finestatemachine(request):
         cache.set(key_state, 0, 21600) # 21600secons = 6 hours
         current_state = 0
     
-    #print "current_state = %s" % current_state
     try:
         obj_callrequest = Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
     except:
@@ -102,7 +101,6 @@ def survey_finestatemachine(request):
     #Check if we receive a DTMF for the previous question if so store the result
     if DTMF and len(DTMF)>0 and current_state>0:
         #find the response for this key pressed
-        #print list_question[current_state-1]
         try:
             surveyresponse = SurveyResponse.objects.get(key=DTMF, surveyquestion=list_question[current_state-1])
             if not surveyresponse.keyvalue:
@@ -111,7 +109,6 @@ def survey_finestatemachine(request):
                 response_value = surveyresponse.keyvalue
         except:
             #it's possible that this response is not accepted
-            #print "There is no response defined for this key"
             response_value = DTMF
         
         new_surveycampaignresult = SurveyCampaignResult(campaign = obj_callrequest.campaign,

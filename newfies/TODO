@@ -1,16 +1,41 @@
 TODO
 ====
 
-1) dialer_campaign/api/resources.py
+- Verify all form and style on the frontend
 
-    Need to review ``get_object_list()`` method of ``CampaignSubscriberResource``
-    (need to work on return result)
+- Manage errors on all frontend forms
 
-2) dialer_cdr/api/resources.py
+- http://127.0.0.1:8000/user_detail_change/?action=tabs-4
+    if we dont enter a phonenumber, we got "Alert : This phone number is authorized."
 
-    Need to review ``obj_create()`` method of ``AnswercallResource``
-    (need to work on return result)
+- http://127.0.0.1:8000/user_detail_change/?selected=2
+    on notification if we click on the "new" button, tabs change
+    
+- http://127.0.0.1:8000/user_detail_change/?selected=2
 
-3) dialer_cdr/api/handlers.py
+- http://127.0.0.1:8000/audio/add/
+    fix layout
 
-    Need to implement ``cdrHandler`` & ``testcallHandler`` with tastypie (in dialer_cdr/api/resources.py)
+- add a setting to disable/enable the debug for audio flash : http://127.0.0.1:8000/audio/
+
+- survey edit :
+    1) reduce size of the field "response key"
+    
+    2) hide the field message type or remove it, this field should be automatically provisioned
+        if the user select an audio field the "message type" will be "Audio file" otherwise text to speech
+
+- Review the I18N of the whole application
+
+- Work on test
+
+- Add documentation for the Survey API
+
+- Refactor the template, css and code in view
+
+
+
+TODO BUT NOT FOR NOW
+====================
+- Support audio file on survey
+
+- include bootstrap jquery style

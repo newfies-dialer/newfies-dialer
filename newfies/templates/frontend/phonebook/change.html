@@ -14,32 +14,25 @@
 
 {% block content %}
 
-<div class="span-24 last" align=left>
-<form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
-    <fieldset>
-        <legend>{% trans "Settings" %}</legend>
-            <table align=center border=1>
-                {% get_fieldset name,description as phonebook_fields from form %}
-                {{ phonebook_fields.as_table }}
-            </table>
-        </fieldset>
-        <table align=center border=1 style="width: 500px;">
-        <tr>
-            <td >&nbsp;</td>
-            <td align=left>
-              {% if action == 'update' %}
-                <input id="update" type="submit" class="btn primary" value="{% trans "Update" %}" />
-              {% else %}
-                <input id="add" type="submit" class="btn primary" value="{% trans "Submit" %}" />
-              {% endif %}
-               &nbsp;&nbsp;
-              {% if action == 'update' %}
-                 <input id="delete" name="delete" class="btn info" type="submit" value="{% trans "Delete" %}" />
-              {% endif %}
-           </td>
-        </tr>
-    </table>
+
+<form method="POST" action="." enctype="multipart/form-data">
+    {% csrf_token %}
+
+        {{ form }}
+
+    <div class="actions">
+        {% if action == 'update' %}
+        <input id="update" type="submit" class="btn primary" value="{% trans "Update" %}" />
+        {% else %}
+        <input id="add" type="submit" class="btn primary" value="{% trans "Submit" %}" />
+        {% endif %}
+        &nbsp;&nbsp;
+        {% if action == 'update' %}
+         <input id="delete" name="delete" class="btn info" type="submit" value="{% trans "Delete" %}" />
+        {% endif %}
+    </div>
+           
 </form>
-</div>
+
  
 {% endblock %}

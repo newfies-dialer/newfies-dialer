@@ -7,6 +7,8 @@ from django.contrib.admin.widgets import *
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 
+from bootstrap.forms import BootstrapForm, BootstrapModelForm, Fieldset
+
 from dialer_campaign.models import *
 from dialer_campaign.function_def import *
 from datetime import *
@@ -62,7 +64,7 @@ class LoginForm(forms.Form):
     password.widget.attrs['class'] = 'input-small'
 
 
-class PhonebookForm(ModelForm):
+class PhonebookForm(BootstrapModelForm):
     """Phonebook ModelForm"""
 
     class Meta:
@@ -70,8 +72,11 @@ class PhonebookForm(ModelForm):
         fields = ['name', 'description']
         exclude = ('user',)
         widgets = {
-            'description': Textarea(attrs={'cols': 23, 'rows': 3}),
+            'description': Textarea(attrs={'cols': 26, 'rows': 3}),
         }
+        layout = (
+            Fieldset("Phonebook", "name", "description", ),
+        )
 
 
 class ContactForm(ModelForm):

@@ -112,11 +112,10 @@ function get_alert_msg(id)
             dataType: 'json',
             colModel : [
                 {display: '<input type="checkbox" onclick="toggleChecked(this.checked)">', name: '', width: 20, align: 'center'},
-                {display: '{% trans "ID" %}', name: 'id', width: 20, sortable: true, align: 'center'},
-                {display: '{% trans "Message" %}', name: 'message', width: 110, sortable: true, align: 'center'},
-                {display: '{% trans "Notification type" %}', name: 'notice_type', width: 110, sortable: true, align: 'center'},
+                {display: '{% trans "Message" %}', name: 'message', width: 250, sortable: true, align: 'center'},
+                {display: '{% trans "Notification type" %}', name: 'notice_type', width: 250, sortable: true, align: 'center'},
                 {display: '{% trans "Sender" %}', name: 'sender', width: 50, sortable: true, align: 'center'},
-                {display: '{% trans "Status" %}', name: 'added', width : 100, align: 'center'},
+                {display: '{% trans "Date" %}', name: 'added', width : 190, align: 'center'},
                 {display: '{% trans "Action" %}', name: '', width : 50, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
                 ],
             buttons : [
@@ -131,7 +130,7 @@ function get_alert_msg(id)
             useRp: true,
             rp: 10,
             showTableToggleBtn: true,
-            width: 750,
+            width: 900,
             height: 265,
             pagetext: '{% trans "Page" %}',
             outof: '{% trans "of" %}',

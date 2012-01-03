@@ -171,7 +171,6 @@ def notification_grid(request):
     rows = [{'id': row.id,
              'cell': ['<input type="checkbox" name="select" class="checkbox"\
                       value="' + str(row.id) + '" />',
-                      row.id,
                       row.message,
                       str(row.notice_type),
                       str(row.sender),

@@ -121,7 +121,9 @@ function get_alert_msg(id)
             buttons : [
                 {name: '{% trans "Delete all notification" %}', bclass: 'delete', onpress : delete_button},
                 {separator: true},
-                {name: '{% trans "Mark all as read" %}', bclass: 'add', onpress : read_all_button},
+                {name: '{% trans "Mark as read" %}', bclass: 'add', onpress : make_read_button},
+                {separator: true},
+                {name: '{% trans "Mark All as read" %}', bclass: 'add', onpress : mark_read_all_button},
                 ],
             sortname: "id",
             sortorder: "desc",
@@ -147,12 +149,12 @@ function get_alert_msg(id)
         });
 
 
-        function read_all_button()
+        function make_read_button()
         {
             $('<input>').attr({
                 type: 'hidden',
-                id: 'id_read_all',
-                name: 'read_all',
+                id: 'id_mark_read',
+                name: 'mark_read',
                 value: 'true',
             }).appendTo('#ListForm');
             
@@ -167,6 +169,17 @@ function get_alert_msg(id)
                 value: 'false',
             }).appendTo('#ListForm');
             
+            $('#ListForm').submit();
+        }
+        function mark_read_all_button()
+        {
+            $('<input>').attr({
+                type: 'hidden',
+                id: 'id_mark_read_all',
+                name: 'mark_read_all',
+                value: 'true',
+            }).appendTo('#ListForm');
+
             $('#ListForm').submit();
         }
         </script>

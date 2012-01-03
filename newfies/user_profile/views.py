@@ -207,7 +207,7 @@ def notification_del_read(request, object_id):
         notification_obj = notification.Notice.objects.get(pk=object_id)
         # Delete/Read notification
         if object_id:
-            if request.POST.get('read_all') == 'false':
+            if request.POST.get('mark_read') == 'false':
                 request.session["msg_note"] = _('"%(name)s" is deleted successfully.') \
                 % {'name': notification_obj.notice_type}
                 notification_obj.delete()
@@ -218,11 +218,18 @@ def notification_del_read(request, object_id):
 
             return HttpResponseRedirect('/user_detail_change/?selected=2&msg_note=true')
     except:
+        # Mark all notification as read
+        if request.POST.get('mark_read_all') == 'true':
+            notification_list = notification.Notice.objects.filter(unseen=1, recipient=request.user)
+            notification_list.update(unseen=0)
+            request.session["msg_note"] = _('All notifications are marked as read successfully.')
+            return HttpResponseRedirect('/user_detail_change/?selected=2&msg_note=true')
+
         # When object_id is 0 (Multiple recrod delete/mark as read)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
         notification_list = notification.Notice.objects.extra(where=['id IN (%s)' % values])
-        if request.POST.get('read_all') == 'false':
+        if request.POST.get('mark_read') == 'false':
             request.session["msg_note"] = _('%(count)s notification(s) are deleted successfully.')\
             % {'count': notification_list.count()}
             notification_list.delete()

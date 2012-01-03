@@ -38,14 +38,13 @@ $("#flex1").flexigrid({
     dataType: 'json',
 	colModel : [
         {display: '<input type="checkbox" onclick="toggleChecked(this.checked)">', name: '', width: 40, align: 'center'},
-		{display: '{% trans "Id" %}', name: 'id', width: 40, sortable: true, align: 'center'},
-        {display: '{% trans "Name" %}', name: 'name', width: 100, sortable: true, align: 'center'},
+        {display: '{% trans "Name" %}', name: 'name', width: 160, sortable: true, align: 'center'},
         {display: '{% trans "Description" %}', name: 'description', width: 160, sortable: true, align: 'center'},
-        {display: '{% trans "Type" %}', name: 'type', width: 50, sortable: true, align: 'center'},
+        {display: '{% trans "Type" %}', name: 'type', width: 80, sortable: true, align: 'center'},
         {display: '{% trans "Gateway" %}', name: 'gateway__name', width: 100, sortable: true, align: 'center'},
         {display: '{% trans "Data" %}', name: 'data', width: 100, sortable: true, align: 'center'},
-        {display: '{% trans "Date" %}', name: 'updated_date', width: 100, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
-        {display: '{% trans "Action" %}', name: '', width : 50, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
+        {display: '{% trans "Date" %}', name: 'updated_date', width: 120, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
+        {display: '{% trans "Action" %}', name: '', width : 49, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
 		],
     buttons : [
 		{name: '{% trans "Add" %}', bclass: 'add', onpress : add_button},
@@ -59,7 +58,7 @@ $("#flex1").flexigrid({
 	useRp: true,
 	rp: 10,
 	showTableToggleBtn: true,
-	width: 850,
+	width: 900,
 	height: 265,
     //preProcess: formatContactResults,
     onSuccess: function(data){

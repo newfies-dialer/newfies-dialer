@@ -187,7 +187,6 @@ def survey_grid(request):
     rows = [{'id': row['id'],
              'cell': ['<input type="checkbox" name="select" class="checkbox"\
                       value="' + str(row['id']) + '" />',
-                      row['id'],
                       row['name'],
                       row['description'],
                       row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
@@ -417,7 +416,6 @@ def audio_grid(request):
     rows = [{'id': row['id'],
              'cell': ['<input type="checkbox" name="select" class="checkbox"\
                       value="' + str(row['id']) + '" />',
-                      row['id'],
                       row['name'],
                       audio_file_player(row['audio_file']),
                       row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),

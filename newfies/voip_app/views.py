@@ -61,7 +61,6 @@ def voipapp_grid(request):
     rows = [{'id': row['id'],
              'cell': ['<input type="checkbox" name="select" class="checkbox"\
                       value="' + str(row['id']) + '" />',
-                      row['id'],
                       row['name'],
                       row['description'],
                       get_voipapp_type_name(row['type']),

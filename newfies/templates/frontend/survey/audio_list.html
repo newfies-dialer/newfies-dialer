@@ -52,9 +52,9 @@ $("#flex1").flexigrid({
 	colModel : [
         {display: '<input type="checkbox" onclick="toggleChecked(this.checked)">', name: '', width: 40, align: 'center'},
 		{display: '{% trans "Id" %}', name: 'id', width: 40, sortable: true, align: 'center'},
-        {display: '{% trans "Name" %}', name: 'name', width: 160, sortable: true, align: 'center'},
+        {display: '{% trans "Name" %}', name: 'name', width: 200, sortable: true, align: 'center'},
         {display: '{% trans "Audio" %}', name: 'audio_file', width: 300, sortable: true, align: 'center'},
-        {display: '{% trans "Date" %}', name: 'updated_date', width: 100, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
+        {display: '{% trans "Date" %}', name: 'updated_date', width: 200, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
         {display: '{% trans "Action" %}', name: '', width : 50, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
 		],
     buttons : [
@@ -69,7 +69,7 @@ $("#flex1").flexigrid({
 	useRp: true,
 	rp: 10,
 	showTableToggleBtn: true,
-	width: 750,
+	width: 900,
 	height: 265,
     pagetext: '{% trans "Page" %}',
     outof: '{% trans "of" %}',

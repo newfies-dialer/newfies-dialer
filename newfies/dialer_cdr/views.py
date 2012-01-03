@@ -140,8 +140,8 @@ def voipcall_report_grid(request):
                                row.duration, # dilla test
                                row.billsec,
                                row.get_disposition_display(),
-                               row.hangup_cause,
-                               row.hangup_cause_q850,
+                               #row.hangup_cause,
+                               #row.hangup_cause_q850,
                                ]})
         
     data = {'rows': rows,

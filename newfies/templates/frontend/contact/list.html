@@ -46,33 +46,34 @@ td {
 <br/>
        
 
-       <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
-               <table align="center" border=0 style="width:68%;" >
-                    <tr>
-                        <td>{{ form.contact_no.label }}</td>
-                        <td style="width: 450px;">{{ form.contact_no }}&nbsp;{{ form.contact_no_type|removetags:"ul li"|safe }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.name.label }}</td>
-                        <td>{{ form.name }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.phonebook.label }}</td>
-                        <td>{{ form.phonebook }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.status.label }}</td>
-                        <td>{{ form.status|removetags:"ul li"|safe }}</td>
-                    </tr>
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td><input type=submit name=submit value={% trans "Submit" %} />&nbsp;
-                            <input type=reset name=reset value={% trans "Reset" %} /></td>
-                    </tr>
-               </table>
-       </form>
+<form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+   <table align="center" border=0 style="width:68%;" >
+        <tr>
+            <td>{{ form.contact_no.label }}</td>
+            <td style="width: 450px;">{{ form.contact_no }}&nbsp;{{ form.contact_no_type|removetags:"ul li"|safe }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.name.label }}</td>
+            <td>{{ form.name }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.phonebook.label }}</td>
+            <td>{{ form.phonebook }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.status.label }}</td>
+            <td>{{ form.status|removetags:"ul li"|safe }}</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td><input type=submit name=submit value={% trans "Submit" %} />&nbsp;
+                <input type=reset name=reset value={% trans "Reset" %} />
+            </td>
+        </tr>
+   </table>
+</form>
 
-       <br/>
+<br/>
 
 <form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">
 {% csrf_token %}
@@ -95,11 +96,11 @@ $("#flex1").flexigrid({
         {display: '<input type="checkbox" onclick="toggleChecked(this.checked)">', name: '', width: 40, align: 'center'},
 		{display: '{% trans "Id" %}', name: 'id', width: 40, sortable: true, align: 'center'},
         {display: '{% trans "Phonebook" %}', name: 'phonebook__name', width: 100, sortable: true, align: 'center'},
-        {display: '{% trans "Contact" %}', name: 'contact', width: 100, sortable: true, align: 'center'},
-        {display: '{% trans "Last Name" %}', name: 'last_name', width: 80, sortable: true, align: 'center'},
-        {display: '{% trans "First Name" %}', name: 'first_name', width : 80, sortable : true, align: 'center'},
+        {display: '{% trans "Contact" %}', name: 'contact', width: 140, sortable: true, align: 'center'},
+        {display: '{% trans "Last Name" %}', name: 'last_name', width: 120, sortable: true, align: 'center'},
+        {display: '{% trans "First Name" %}', name: 'first_name', width : 120, sortable : true, align: 'center'},
         {display: '{% trans "Status" %}', name: 'status', width : 50, sortable : true, align: 'center', },
-        {display: '{% trans "Date" %}', name: 'updated_date', width: 100, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
+        {display: '{% trans "Date" %}', name: 'updated_date', width: 120, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
         {display: '{% trans "Action" %}', name: '', width : 50, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
 		],
     buttons : [
@@ -116,7 +117,7 @@ $("#flex1").flexigrid({
 	useRp: true,
 	rp: 10,
 	showTableToggleBtn: true,
-	width: 760,
+	width: 900,
 	height: 265,
     pagetext: '{% trans "Page" %}',
     outof: '{% trans "of" %}',

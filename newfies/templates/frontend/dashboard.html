@@ -20,17 +20,19 @@
 {% endblock %}
 
 {% block content_header %}
-<h1>{% trans "Dashboard" %} <small>{% trans "Monitor in realtime how your campaign are performing" %}</small></h1>
+<h1>{% trans "Dashboard" %} <small>{% trans "Monitor in realtime the performance of your campaign" %}</small></h1>
 {% endblock %}
 
 {% block content %}
+<div id="labels" align="center">
+
 <form method="POST" action="." id="id_searchform" name="searchform" enctype="multipart/form-data">{% csrf_token %}
-<p>
+<p align="center">
     {{ form.campaign }} {{ form.search_type }}
-    <input type="submit" name="submit" value="{% trans "Submit" %}">
+    <input type="submit" class="btn primary" name="submit" value="{% trans "Submit" %}">
 </p>
 
-<p>
+<p align="center">
     {% for j in total_data %}
        <!--{{ j }}<br/>-->
     {% endfor %}
@@ -127,9 +129,11 @@
 
 </script>
 <br/>
-<input type="submit" value="{% trans "Call Count" %}" name="call_count_button"/> /
-<input type="submit" value="{% trans "Duration" %}" name="duration_button"/>
+<input type="submit" class="btn" value="{% trans "Call Count" %}" name="call_count_button"/> /
+<input type="submit" class="btn info" value="{% trans "Duration" %}" name="duration_button"/>
 </form>
+
+</div>
 
 {% if total_data %}
 
@@ -232,11 +236,6 @@
         <th style="color: #111111; width: 120px;">{{ total_call_count }}  {% trans "TOTAL CALLS"  %}</th>
         <th style="color: #111111; width: 120px;"></th>
         <th style="color: #111111; width: 120px;"></th>
-    </tr>
-    <tr>
-        <th></th>
-        <th></th>
-        <th></th>
     </tr>
     <tr>
         <th style="color: {{ answered_color }}">{{ total_answered }}  {% trans "ANSWERED"  %}</th>

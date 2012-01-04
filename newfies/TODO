@@ -24,16 +24,19 @@ TODO
     2) hide the field message type or remove it, this field should be automatically provisioned
         if the user select an audio field the "message type" will be "Audio file" otherwise text to speech
 
-- Review the I18N of the whole application
+- On campaign edition, we shoud for the fieldset "Dialer settings" and "Campaign schedule"
+  have 2 columns as we did on our previous version : http://demo.newfies-dialer.org/campaign/1/ (demo / demo)
 
-- Work on test
+- fix alert : Alert : Your settings are not configured properly, Please contact the administrator. 
+To send notification to administrator
+
+- Review the I18N of the whole application
 
 - Add documentation for the Survey API
 
-- Refactor the template, css and code in view
+- Work on test
 
-- On campaign edition, we shoud for the fieldset "Dialer settings" and "Campaign schedule"
-  have 2 columns as we did on our previous version : http://demo.newfies-dialer.org/campaign/1/ (demo / demo)
+- Refactor the template, css and code in view
 
 
 TODO BUT NOT FOR NOW

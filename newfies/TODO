@@ -15,6 +15,9 @@ TODO
 
 - http://127.0.0.1:8000/audio/add/
     fix layout
+    
+- http://127.0.0.1:8000/campaign/36/
+    replace the label "content object" by "VoIP Application"
 
 - add a setting to disable/enable the debug for audio flash : http://127.0.0.1:8000/audio/
 

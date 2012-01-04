@@ -449,6 +449,7 @@ def audio_list(request):
         'msg': request.session.get('msg'),
         'notice_count': notice_count(request),
         'audio_list': audio_list,
+        'AUDIO_DEBUG': settings.AUDIO_DEBUG,
     }
     request.session['msg'] = ''
     return render_to_response(template, data,
@@ -485,6 +486,7 @@ def audio_add(request):
        'module': current_view(request),
        'form': form,
        'action': 'add',
+       'AUDIO_DEBUG': settings.AUDIO_DEBUG,
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))
@@ -551,6 +553,7 @@ def audio_change(request, object_id):
        'form': form,
        'module': current_view(request),
        'action': 'update',
+       'AUDIO_DEBUG': settings.AUDIO_DEBUG,
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))

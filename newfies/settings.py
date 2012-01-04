@@ -447,6 +447,8 @@ FREQ_TYPE_VALUE = 8000  # 0-Keep original, 8000-8000Hz, 16000-16000Hz, 22050-220
 
 CONVERT_TYPE_VALUE = 0 # 0-Keep original, 1-Convert to MP3, 2-Convert to WAV, 3-Convert to OGG
 
+AUDIO_DEBUG = 'true' # true/false
+
 #IMPORT LOCAL SETTINGS
 #=====================
 from settings_local import *

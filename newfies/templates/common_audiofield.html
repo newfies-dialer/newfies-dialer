@@ -29,9 +29,9 @@ soundManager.preferFlash = true; // for visualization effects
 soundManager.useHighPerformance = true; // keep flash on screen, boost performance
 soundManager.wmode = 'transparent'; // transparent SWF, if possible
 soundManager.useFastPolling = true; // increased JS callback frequency
-soundManager.url = {{STATIC_URL}}+'audiofield/swf/';
+soundManager.url = {{ STATIC_URL }}+'audiofield/swf/';
 soundManager.debugFlash = false;
-soundManager.debugMode = true;
+soundManager.debugMode = {{ AUDIO_DEBUG }};//true;
 // Added
 //soundManager.useHTML5Audio = false;
 

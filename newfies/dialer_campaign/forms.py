@@ -101,7 +101,7 @@ class CampaignForm(ModelForm):
     campaign_code = forms.CharField(widget=forms.HiddenInput)
     ds_user = forms.CharField(widget=forms.HiddenInput)
 
-    content_object = forms.ChoiceField()
+    content_object = forms.ChoiceField(label=_("VoIP Application"),)
 
     class Meta:
         model = Campaign

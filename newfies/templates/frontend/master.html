@@ -144,14 +144,12 @@
           <h1>Newfies-Dialer <small>{% trans "Voice Broadcasting solution" %}</small></h1>
           {% endblock %}
             {% if errorlogin %}
-                <div class="error">
-                    <span class="ui-icon ui-icon-alert" style="float: left; margin-right: 0.3em;"></span>
+                <div class="alert-message error">
                     <strong>Alert : </strong>  {{ errorlogin }}
                 </div>
             {% else %}
                 {% if notlogged %}
-                <div class="error">
-                    <span class="ui-icon ui-icon-alert" style="float: left; margin-right: 0.3em;"></span>
+                <div class="alert-message error">
                     <strong>{% trans "Alert"  %} : </strong>  {% trans "Please login by clicking on login button"  %}
                 </div>
                 {% endif %}
@@ -165,10 +163,9 @@
         {% if user.is_authenticated %}
             {% if dialer_setting_msg %}
             <div class="span-24 last">
-                <div class="error" id="rounded-corner-upper-table">
+                <div class="alert-message error">
                     <strong>{% trans "Alert" %} : </strong>  {{ dialer_setting_msg }}
                     {% if not request.session.has_notified %}
-                        <br/>
                         {% trans "To send notification to administrator" %} <a href="/notify/admin/">{% trans "Click here" %}</a>
                     {% else %}
                         {% trans "(Notification sent)" %}

@@ -40,7 +40,7 @@
         <fieldset>
             <legend>{% trans "Dialer settings" %}</legend>
 
-            {% get_fieldset frequency,callmaxduration,maxretry,intervalretry,calltimeout as campaign_settings_fields from form %}
+            {% get_fieldset frequency,callmaxduration,maxretry as campaign_settings_fields from form %}
             {% for field in campaign_settings_fields %}
             <div class="clearfix{% if field.errors %} error{% endif %}">
                 <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
@@ -53,70 +53,102 @@
                 </div>
             </div>
             {% endfor %}
+        
+            <div class="row">
+                <div class="span12">
+                    <div class="row">
+                        <div class="span6">
+                            <div class="clearfix{% if form.intervalretry.errors %} error{% endif %}">
+                                <label class="control-label" for="id_{{ form.intervalretry.name }}">{{ form.intervalretry.label }}</label>
+                                <div class="input">
+                                    {{ form.intervalretry }}
+                                    {% if form.intervalretry.errors %}
+                                        <span class="help-inline">{{ form.intervalretry.errors|removetags:"ul li"|safe }}</span>
+                                    {% endif %}
+                                    <span class="help-block">{{ form.intervalretry.help_text }} </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span6">
+                            <div class="clearfix{% if form.calltimeout.errors %} error{% endif %}">
+                                <label class="control-label" for="id_{{ form.calltimeout.name }}">{{ form.calltimeout.label }}</label>
+                                <div class="input">
+                                    {{ form.calltimeout }}
+                                    {% if form.daily_start_time.errors %}
+                                        <span class="help-inline">{{ form.calltimeout.errors|removetags:"ul li"|safe }}</span>
+                                    {% endif %}
+                                    <span class="help-block">{{ form.calltimeout.help_text }} </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
         </fieldset>
 
         <fieldset>
             <legend>{% trans "Campaign schedule" %}</legend>
-            <!--{% get_fieldset startingdate,expirationdate as campaign_schedule_fields from form %}
-            {% for field in campaign_schedule_fields %}
-            <div class="clearfix{% if field.errors %} error{% endif %}">
-                <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
-                <div class="input">
-                    {{ field }}
-                    {% if field.errors %}
-                        <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-                    {% endif %}
-                    <span class="help-block">{{ field.help_text }} </span>
-                </div>
-            </div>
-            {% endfor %}-->
+            
             <div class="row">
                 <div class="span12">
-                
-                <div class="row">
-                <div class="span6">
-                    <div class="clearfix{% if form.startingdate.errors %} error{% endif %}">
-                        <label class="control-label" for="id_{{ form.startingdate.name }}">{{ form.startingdate.label }}</label>
-                        <div class="input">
-
-                            {{ form.startingdate }}
-                            {% if form.startingdate.errors %}
-                                <span class="help-inline">{{ form.startingdate.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                            <span class="help-block">{{ form.startingdate.help_text }} </span>
-
+                    <div class="row">
+                        <div class="span6">
+                            <div class="clearfix{% if form.startingdate.errors %} error{% endif %}">
+                                <label class="control-label" for="id_{{ form.startingdate.name }}">{{ form.startingdate.label }}</label>
+                                <div class="input">
+                                    {{ form.startingdate }}
+                                    {% if form.startingdate.errors %}
+                                        <span class="help-inline">{{ form.startingdate.errors|removetags:"ul li"|safe }}</span>
+                                    {% endif %}
+                                    <span class="help-block">{{ form.startingdate.help_text }} </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span6">
+                            <div class="clearfix{% if form.daily_start_time.errors %} error{% endif %}">
+                                <label class="control-label" for="id_{{ form.daily_start_time.name }}">{{ form.daily_start_time.label }}</label>
+                                <div class="input">
+                                    {{ form.daily_start_time }}
+                                    {% if form.daily_start_time.errors %}
+                                        <span class="help-inline">{{ form.daily_start_time.errors|removetags:"ul li"|safe }}</span>
+                                    {% endif %}
+                                    <span class="help-block">{{ form.daily_start_time.help_text }} </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="span6">
-                    <div class="clearfix{% if form.daily_start_time.errors %} error{% endif %}">
-                        <label class="control-label" for="id_{{ form.daily_start_time.name }}">{{ form.daily_start_time.label }}</label>
-                        <div class="input">
-                            {{ form.daily_start_time }}
-                            {% if form.daily_start_time.errors %}
-                                <span class="help-inline">{{ form.daily_start_time.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                            <span class="help-block">{{ form.daily_start_time.help_text }} </span>
-                        </div>
-                    </div>
-                </div>
-                </div>
                 </div>
             </div>
 
-
-
-
-
-            <div class="clearfix{% if form.daily_stop_time.errors %} error{% endif %}">
-                <label class="control-label" for="id_{{ form.daily_stop_time.name }}">{{ form.daily_stop_time.label }}</label>
-                <div class="input">
-                    {{ form.daily_stop_time }}
-                    {% if form.daily_stop_time.errors %}
-                        <span class="help-inline">{{ form.daily_stop_time.errors|removetags:"ul li"|safe }}</span>
-                    {% endif %}
-                    <span class="help-block">{{ form.daily_stop_time.help_text }} </span>
+            <div class="row">
+                <div class="span12">
+                    <div class="row">
+                        <div class="span6">
+                            <div class="clearfix{% if form.expirationdate.errors %} error{% endif %}">
+                                <label class="control-label" for="id_{{ form.expirationdate.name }}">{{ form.expirationdate.label }}</label>
+                                <div class="input">
+                                    {{ form.expirationdate }}
+                                    {% if form.expirationdate.errors %}
+                                        <span class="help-inline">{{ form.expirationdate.errors|removetags:"ul li"|safe }}</span>
+                                    {% endif %}
+                                    <span class="help-block">{{ form.expirationdate.help_text }} </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span6">
+                            <div class="clearfix{% if form.daily_stop_time.errors %} error{% endif %}">
+                                <label class="control-label" for="id_{{ form.daily_stop_time.name }}">{{ form.daily_stop_time.label }}</label>
+                                <div class="input">
+                                    {{ form.daily_stop_time }}
+                                    {% if form.daily_stop_time.errors %}
+                                        <span class="help-inline">{{ form.daily_stop_time.errors|removetags:"ul li"|safe }}</span>
+                                    {% endif %}
+                                    <span class="help-block">{{ form.daily_stop_time.help_text }} </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

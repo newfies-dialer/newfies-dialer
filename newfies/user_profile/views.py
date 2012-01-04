@@ -86,11 +86,14 @@ def customer_detail_change(request):
         elif request.POST['form-type'] == "check-number": # check phone no
             action = 'tabs-5'
             check_phone_no_form = CheckPhoneNumberForm(data=request.POST)
-            if not common_contact_authorization(request.user,
-                                                request.POST['phone_number']):
-                error_number = _('This phone number is not authorized.')
+            if check_phone_no_form.is_valid():
+                if not common_contact_authorization(request.user,
+                                                    request.POST['phone_number']):
+                    error_number = _('This phone number is not authorized.')
+                else:
+                    msg_number = _('This phone number is authorized.')
             else:
-                msg_number = _('This phone number is authorized.')
+                error_number = _('Please correct the errors below.')
         else: # "change-password"
             user_password_form = PasswordChangeForm(user=request.user,
                                                     data=request.POST)

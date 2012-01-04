@@ -187,11 +187,13 @@ func_install_frontend(){
                 /usr/bin/mysql_secure_installation
                 func_mysql_database_setting
             fi
+            
+            #for audiofile convertion
+            apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
         ;;
         'CENTOS')
             # SET APACHE CONF
             APACHE_CONF_DIR="/etc/httpd/conf.d/"
-            
             
             #TODO : Check architecture
             rpm -ivh http://download.fedora.redhat.com/pub/epel/6/x86_64/epel-release-6-5.noarch.rpm
@@ -218,6 +220,9 @@ func_install_frontend(){
                 /usr/bin/mysql_secure_installation
                 func_mysql_database_setting
             fi
+            
+            #for audiofile convertion
+            yum -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
         ;;
     esac
     

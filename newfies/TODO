@@ -32,6 +32,8 @@ TODO
 
 - Refactor the template, css and code in view
 
+- On campaign edition, we shoud for the fieldset "Dialer settings" and "Campaign schedule"
+  have 2 columns as we did on our previous version : http://demo.newfies-dialer.org/campaign/1/ (demo / demo)
 
 
 TODO BUT NOT FOR NOW

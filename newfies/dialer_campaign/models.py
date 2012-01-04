@@ -321,8 +321,7 @@ class Campaign(Model):
               help_text=_("Select VoIP Application to use with this campaign"))
     """
     content_type = models.ForeignKey(ContentType, verbose_name=_("Type"),
-                   limit_choices_to = {"model__in": ("surveyapp", "voipapp")},
-                   default=ContentType.objects.get(app_label="voip_app", model="voipapp").pk)
+                   limit_choices_to = {"model__in": ("surveyapp", "voipapp")})
     object_id = models.PositiveIntegerField(verbose_name=_("Application"))
     content_object = generic.GenericForeignKey('content_type', 'object_id')
     

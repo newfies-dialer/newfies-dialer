@@ -50,32 +50,41 @@ label {
 <br/>
        
 
-<form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
-   <table align="center" border=0  >
-        <tr>
-            <td>{{ form.contact_no.label }}</td>
-            <td align="left">{{ form.contact_no }}&nbsp;</td>
-            <td align="left">{{ form.contact_no_type|removetags:"ul li"|safe }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.name.label }}</td>
-            <td colspan="2">{{ form.name }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.phonebook.label }}</td>
-            <td colspan="2">{{ form.phonebook }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.status.label }}</td>
-            <td colspan="2">{{ form.status|removetags:"ul li"|safe }}</td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td colspan="2"><input class="btn primary" type=submit name=submit value={% trans "Submit" %} />&nbsp;
-                <input class="btn danger" type=reset name=reset value={% trans "Reset" %} />
-            </td>
-        </tr>
-   </table>
+<form method="POST" action="." enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="clearfix{% if form.contact_no.errors %} error{% endif %}">
+        <label class="control-label" for="id_{{ form.contact_no.name }}">{{ form.contact_no.label }}</label>
+        <div class="input">
+            {{ form.contact_no }}<br/>
+            {{ form.contact_no_type|removetags:"ul li"|safe }}
+        </div>
+    </div>
+
+    {% get_fieldset name,phonebook as search_contact from form %}
+    {% for field in search_contact %}
+    <div class="clearfix{% if field.errors %} error{% endif %}">
+        <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+        <div class="input">
+            {{ field }}
+            {% if field.errors %}
+                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+            {% endif %}
+            <span class="help-block">{{ field.help_text }} </span>
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="clearfix{% if form.status.errors %} error{% endif %}">
+        <label class="control-label" for="id_{{ form.status.name }}">{{ form.status.label }}</label>
+        <div class="input">
+            {{ form.status|removetags:"ul li"|safe }}
+        </div>
+    </div>
+
+    <div class="actions">
+        <input class="btn primary" type=submit name=submit value={% trans "Submit" %} />&nbsp;
+        <input class="btn danger" type=reset name=reset value={% trans "Reset" %} />
+    </div>
 </form>
 
 <br/>

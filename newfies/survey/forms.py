@@ -69,8 +69,10 @@ class SurveyResponseForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(SurveyResponseForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
-        
+
         if instance.id:
+            self.fields['key'].widget.attrs['style'] = "width:150px"
+            self.fields['keyvalue'].widget.attrs['style'] = "width:150px"
             self.fields['key'].widget.attrs['onBlur'] = "response_form(" + str(instance.id) + ", " + str(instance.surveyquestion_id) + ", 1, 1);"
             self.fields['keyvalue'].widget.attrs['onBlur'] = "response_form(" + str(instance.id) + ", " + str(instance.surveyquestion_id) + ", 1, 1);"
 

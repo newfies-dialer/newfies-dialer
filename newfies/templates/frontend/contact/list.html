@@ -52,11 +52,26 @@ label {
 
 <form method="POST" action="." enctype="multipart/form-data">
     {% csrf_token %}
-    <div class="clearfix{% if form.contact_no.errors %} error{% endif %}">
-        <label class="control-label" for="id_{{ form.contact_no.name }}">{{ form.contact_no.label }}</label>
-        <div class="input">
-            {{ form.contact_no }}<br/>
-            {{ form.contact_no_type|removetags:"ul li"|safe }}
+    
+    <div class="row">
+        <div class="span16">
+            <div class="row">
+                <div class="span7">
+                    <div class="clearfix{% if form.contact_no.errors %} error{% endif %}">
+                        <label class="control-label" for="id_{{ form.contact_no.name }}">{{ form.contact_no.label }}</label>
+                        <div class="input">
+                            {{ form.contact_no }}
+                            {% if form.contact_no.errors %}
+                                <span class="help-inline">{{ form.contact_no.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.contact_no.help_text }} </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="span9">
+                    {{ form.contact_no_type|removetags:"ul li"|safe }}
+                </div>
+            </div>
         </div>
     </div>
 

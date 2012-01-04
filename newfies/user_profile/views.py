@@ -293,4 +293,4 @@ def update_notice_status_cust(request, id):
     """Notification Status (e.g. seen/unseen) can be changed from
     customer interface"""
     common_notification_status(request, id)
-    return HttpResponseRedirect('/user_detail_change/?selected=2')
+    return HttpResponseRedirect('/user_detail_change/?action=tabs-3')

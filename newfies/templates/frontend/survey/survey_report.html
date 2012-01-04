@@ -16,10 +16,22 @@
 
 <form method="POST" action="." enctype="multipart/form-data">
 {% csrf_token %}
-    <p>
-        {{ form.campaign.label }} {{ form.campaign }}
-        <input type="submit" class="btn primary" name="submit" value="{% trans "Submit" %}">
-    </p>
+    {% for field in form %}
+     <div class="clearfix{% if field.errors %} error{% endif %}">
+        <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+        <div class="input">
+            {{ field }}
+            {% if field.errors %}
+                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+            {% endif %}
+            <span class="help-block">{{ field.help_text }} </span>
+        </div>
+     </div>
+     {% endfor %}
+
+     <div class="actions">
+         <input type="submit" class="btn primary" name="submit" value="{% trans "Submit" %}">
+     </div>
 </form>
 
 {% if survey_result %}

@@ -31,12 +31,23 @@ def survey_question_add_update(request, id, data, form_type, after_initial_save,
 
     if form.is_valid():
         if form_type == 'old_form':
-            form.save()            
+            object = form.save(commit=False)
+            audio_message = form.cleaned_data.get('audio_message')
+            if audio_message is None:
+                object.message_type = 2 # Text2Speech
+            else:
+                object.message_type = 1 # Audio File
+            object.save()
             
         if form_type == 'new_form':            
             obj = form.save(commit=False)
             obj.user = User.objects.get(username=request.user)
             obj.surveyapp = form.cleaned_data.get('surveyapp')
+            audio_message = form.cleaned_data.get('audio_message')
+            if audio_message == '':
+                obj.message_type = 2 # Text2Speech
+            else:
+                obj.message_type = 1 # Audio File
             obj.save()
             dajax.assign('#id', 'value', obj.id)
 

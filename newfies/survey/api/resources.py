@@ -49,10 +49,13 @@ class SurveyAppResource(ModelResource):
     """
     **Attributes**:
 
-        * ``name`` -
+        * ``name`` - survey name 
         * ``description`` -
         * ``user_id`` - User ID
 
+    **Validation**:
+
+        * SurveyAppValidation()
 
     **Create**:
 
@@ -185,13 +188,15 @@ class SurveyQuestionResource(ModelResource):
     """
     **Attributes**:
 
-        * ``question`` -
-        * ``tags`` -
+        * ``question`` - survey question
         * ``user`` - User ID
         * ``surveyapp`` - surveyapp ID
-        * ``audio_message``
-        * ``message_type``
+        * ``audio_message`` - audio file
+        * ``message_type`` - Audio / Text2Speech
 
+    **Validation**:
+
+        * SurveyQuestionValidation()
 
     **Create**:
 
@@ -218,53 +223,52 @@ class SurveyQuestionResource(ModelResource):
 
         Response::
 
-        {
-            "meta":{
-              "limit":20,
-              "next":null,
-              "offset":0,
-              "previous":null,
-              "total_count":2
-            },
-            "objects":[
-              {
-                 "created_date":"2011-12-15T13:10:49",
-                 "id":"1",
-                 "message_type":1,
-                 "order":1,
-                 "question":"Test Servey Qus",
-                 "resource_uri":"/api/v1/survey_question/1/",
-                 "surveyapp":{
-                    "created_date":"2011-12-15T09:55:25",
-                    "description":"",
-                    "id":"5",
-                    "name":"new test",
-                    "order":2,
-                    "resource_uri":"/api/v1/survey/5/",
-                    "updated_date":"2011-12-15T09:55:25",
-                    "user":{
-                       "first_name":"",
-                       "id":"1",
-                       "last_login":"2011-12-14T07:26:00",
-                       "last_name":"",
-                       "resource_uri":"/api/v1/user/1/",
-                       "username":"areski"
-                    }
-                 },
-                 "tags":"",
-                 "updated_date":"2011-12-15T13:10:49",
-                 "user":{
-                    "first_name":"",
-                    "id":"1",
-                    "last_login":"2011-12-14T07:26:00",
-                    "last_name":"",
-                    "resource_uri":"/api/v1/user/1/",
-                    "username":"areski"
-                 }
-              },
-            ]
-        }
-
+            {
+                "meta":{
+                  "limit":20,
+                  "next":null,
+                  "offset":0,
+                  "previous":null,
+                  "total_count":2
+                },
+                "objects":[
+                   {
+                      "created_date":"2011-12-15T13:10:49",
+                      "id":"1",
+                      "message_type":1,
+                      "order":1,
+                      "question":"Test Servey Qus",
+                      "resource_uri":"/api/v1/survey_question/1/",
+                      "surveyapp":{
+                         "created_date":"2011-12-15T09:55:25",
+                         "description":"",
+                         "id":"5",
+                         "name":"new test",
+                         "order":2,
+                         "resource_uri":"/api/v1/survey/5/",
+                         "updated_date":"2011-12-15T09:55:25",
+                         "user":{
+                            "first_name":"",
+                            "id":"1",
+                            "last_login":"2011-12-14T07:26:00",
+                            "last_name":"",
+                            "resource_uri":"/api/v1/user/1/",
+                            "username":"areski"
+                         }
+                      },
+                      "tags":"",
+                      "updated_date":"2011-12-15T13:10:49",
+                      "user":{
+                         "first_name":"",
+                         "id":"1",
+                         "last_login":"2011-12-14T07:26:00",
+                         "last_name":"",
+                         "resource_uri":"/api/v1/user/1/",
+                         "username":"areski"
+                      }
+                   },
+                ]
+            }
 
     **Update**:
 
@@ -300,7 +304,6 @@ class SurveyQuestionResource(ModelResource):
             Content-Length: 0
             Content-Type: text/html; charset=utf-8
             Content-Language: en-us
-
     """
     user = fields.ForeignKey(UserResource, 'user', full=True)
     surveyapp = fields.ForeignKey(SurveyAppResource, 'surveyapp', full=True)
@@ -348,10 +351,13 @@ class SurveyResponseResource(ModelResource):
     """
     **Attributes**:
 
-        * ``key`` -
-        * ``key value`` -
+        * ``key`` - survey question's response key
+        * ``key value`` - response key value
         * ``surveyquestion`` - survey question ID
 
+    **Validation**:
+
+        * SurveyResponseValidation()
 
     **Create**:
 

@@ -160,13 +160,15 @@
 </script>
 
 <style>
-	.column { width: 910px; float: left; padding-bottom: 0px; }
+	.column { width: 900px; float: left; padding-bottom: 0px; }
 	.portlet { margin: 0 1em 1em 0; }
 	.portlet-header { margin: 0.3em; padding-bottom: 4px; padding-left: 0.2em; }
 	.portlet-header .ui-icon { float: right; }
 	.portlet-content { padding: 0.4em; }
 	.ui-sortable-placeholder { border: 1px dotted black; visibility: visible !important; height: 50px !important; }
 	.ui-sortable-placeholder * { visibility: hidden; }
+    .span5 {width: 160px;}
+    .span6 {width: 220px;}
 </style>
 <script>
 
@@ -248,46 +250,48 @@ function addFormField() {
 	<div class="portlet-content">'+
     '<form action="." id="new_survey_que_form_' + id +'" method="post" enctype="multipart/form-data">'+
     "{% csrf_token %}"+
-    '<table>'+
-    '<tbody>'+
-       '<thead><tr>'+
-          {% for field in new_survey_que_form.visible_fields %}
-          '<th>{{ field.label|capfirst }}</th>' +
-          {% endfor %}
-          '<th></th>'+
-       '</tr></thead>'+
-
-       '<tr>'+
-          {% for field in new_survey_que_form.visible_fields %}
-            '<td>'+
-            {% if forloop.first %}
-              {% for hidden in new_survey_que_form.hidden_fields %}
-              '{{ hidden|escapejs }}'+
-              {% endfor %}
-            {% endif %}
-              '{{ field.errors.as_ul }}'+             
-	      '{{ field|escapejs }}'+
-            '</td>'+
-            {% if forloop.last %}
-            '<td><!--<input value="Save" onclick="question_form('+id+', 0)" type="button">-->&nbsp;'+
-            '<a href="#" title="{% trans "Remove" %}" class="icon" style="text-decoration:none;background-image:url(\'{{ STATIC_URL }}newfies/icons/delete.png'+'\');" onClick="removeFormField(\'#row' + id + '\'); return false;" ></a></td>'+
-            {% endif %}
-          {% endfor %}
-       '</tr>'+
-       '<tr>' +
-       '<td colspan=5>'+
-       '<div class="row">'+
-            '<div class="span12">'+
-                  '<div class="row">'+
-                  '<div class="span6"><b>{% trans "Key" %}</b></div>'+
-                  '<div class="span6"><b>{% trans "Key Value" %}</b></div>'+
-                  '</div>'+
+    '<div class="row">'+
+       '<div class="span18">'+
+            '<div class="row">'+
+            {% for field in new_survey_que_form.visible_fields %}
+              '<div class="span9"><p><b>{{ field.label|capfirst }}</p></b></div>' +
+            {% endfor %}
             '</div>'+
        '</div>'+
-       '<div id="divTxtRes_'+id_res+'"></div><input class="btn info" value="Add Response" onclick="javascript:addResFormField('+id_res+', 0); return false;" type="button" /></td>'+
-       '</tr>' +
-    '</tbody>' +
-    '</table>' +
+    '</div>'+
+    '<div class="row">'+
+    '<div class="span17">'+
+        '<div class="row">'+
+    {% for field in new_survey_que_form.visible_fields %}
+        {% if forloop.first %}
+            {% for hidden in new_survey_que_form.hidden_fields %}
+                '{{ hidden|escapejs }}'+
+            {% endfor %}
+            '<div class="span9">'+
+                '{{ field|escapejs }}'+
+            '</div>'+
+        {% else %}
+            '<div class="span6">'+
+                '{{ field|escapejs }}'+
+            '</div>'+
+        {% endif %}
+        {% if forloop.last %}
+        '<div class="span2"><!--<input value="Save" onclick="question_form('+id+', 0)" type="button">-->&nbsp;'+
+        '<a href="#" title="{% trans "Remove" %}" class="icon" style="text-decoration:none;background-image:url(\'{{ STATIC_URL }}newfies/icons/delete.png'+'\');" onClick="removeFormField(\'#row' + id + '\'); return false;" ></a></div>'+
+        {% endif %}
+    {% endfor %}
+        '</div>'+
+    '</div>'+
+    '</div>'+
+    '<div class="row">'+
+        '<div class="span12">'+
+              '<div class="row">'+
+              '<div class="span5"><p><b>{% trans "Key" %}</b></p></div>'+
+              '<div class="span5"><p><b>{% trans "Key Value" %}</b></p></div>'+
+              '</div>'+
+        '</div>'+
+    '</div>'+
+    '<div id="divTxtRes_'+id_res+'"></div><input class="btn info" value="Add Response" onclick="javascript:addResFormField('+id_res+', 0); return false;" type="button" />'+
     '</form>' +
     '</div>' +
     '</div><div id="divTxt"></div>');
@@ -430,55 +434,69 @@ function removeResFormField(id) {
                     <div class="portlet-content">
                         <form id="que_form_{{ que.id }}" action="." method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <table border="0" cellpadding="0" cellspacing="0">
-                            <tbody>
+
                             {% for key, form in survey_que_forms.items %}
+
                             {% if forloop.first %}
-                            <thead>
-                                <tr >
+                            <div class="row">
+                            <div class="span17">
+                                <div class="row">
                                 {% for field in form.visible_fields %}
-                                <th>{{ field.label|capfirst }} </th>
+                                    {% if forloop.first %}
+                                        <div class="span9"><p><b>{{ field.label|capfirst }}</b></p></div>
+                                    {% else %}
+                                        <div class="span8"><p><b>{{ field.label|capfirst }}</b></p></div>
+                                    {% endif %}
                                 {% endfor %}
-                                <th></th>
-                                </tr>
-                            </thead>
+                                </div>
+                            </div>
+                            </div>
                             {% endif %}
+
                             {% if key|stringformat:"s" == que.id|stringformat:"s" %}
-                                <tr>
-                                    {% for field in form.visible_fields %}
-                                        <td>
-                                            {# Include the hidden fields in the form #}
-                                            {% if forloop.first %}
-                                              {% for hidden in form.hidden_fields %}
-                                              {{ hidden }}
-                                              {% endfor %}
-                                            {% endif %}
-                                              {{ field.errors.as_ul }}
-                                              {{ field.hidden_field }}{{ field }}
-                                        </td>
-                                        {% if forloop.last %}
-                                        <td>
+
+                            <div class="row">
+                            <div class="span17">
+                                <div class="row">
+                                {% for field in form.visible_fields %}
+                                    {% if forloop.first %}
+                                        {% for hidden in form.hidden_fields %}
+                                            {{ hidden }}
+                                        {% endfor %}
+                                        <div class="span9">
+                                            {{ field }}
+                                        </div>
+                                    {% else %}
+                                        <div class="span6">
+                                            {{ field.hidden_field }}{{ field }}
+                                        </div>
+                                    {% endif %}
+
+                                    {% if forloop.last %}
+                                        <div class="span2">
                                             <!--<input value="Save" onclick="question_form({{ que.id }}, 1);" type="button">-->&nbsp;
                                             <a href="#" title="{% trans "Delete" %}" class="icon" style="text-decoration:none;background-image:url('{{ STATIC_URL }}newfies/icons/delete.png');" onclick="question_delete_form({{ que.id }}, 1);removeFormField('#row{{ que.id }}'); return false;"></a>
-                                        </td>
-                                        {% endif %}
-                                    {% endfor %}
-                                </tr>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                                </div>
+                            </div>
+                            </div>
+
 
                                 <!--<tr><td colspan=5>Response</td></tr>Response forms start-->
                                 <!--extra to fix 1st survey response form-->
                                 <form>{% csrf_token %}</form>
                                 <!--extra-->
-                                <tr>
-                                    <td colspan=5>
+
                                     <div class="row">
                                         <div class="span12">
                                             <div class="row">
-                                                <div class="span6">
-                                                    <b>{% trans "Key" %}</b>
+                                                <div class="span5">
+                                                    <p><b>{% trans "Key" %}</b></p>
                                                 </div>
-                                                <div class="span6">
-                                                    <b>{% trans "Key Value" %}</b>
+                                                <div class="span5">
+                                                    <p><b>{% trans "Key Value" %}</b></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -518,14 +536,10 @@ function removeResFormField(id) {
                                     {% endfor %}
                                     <div id="divTxtRes_{{ que.id }}"></div>
                                     <input type="button" class="btn info" value="Add Response" onclick="javascript:addResFormField({{ que.id }}, 1); return false;" />
-                                    </td>
-                                </tr>
                                 <!--Response forms end-->
                             {% endif %}
 
                             {% endfor %}
-                            </tbody>
-                        </table>
                         </form>
                     </div>
                 </div>

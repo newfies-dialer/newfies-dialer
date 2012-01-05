@@ -27,7 +27,7 @@ function get_alert_msg(id)
             //alert("Request failed");
         }
     });
-    confirm_string = 'you are going to delete phonebook with ' + contact_count + ' contact(s)'
+    confirm_string = '{% trans "you are going to delete phonebook with" %} ' + contact_count + ' {% trans "contact(s)" %}'
     var answer = confirm(confirm_string);
     return answer // answer is a boolean
 }

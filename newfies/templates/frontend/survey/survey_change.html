@@ -246,7 +246,7 @@ function addFormField() {
     var id_res = ( document.getElementById("id_res") ? document.getElementById("id_res").value : 1);
 
 	$("#divTxt").replaceWith('<div id="row' + id + '" class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">\
-	<div class="portlet-header ui-widget-header ui-corner-all">New Question</div>\
+	<div class="portlet-header ui-widget-header ui-corner-all">{% trans "New Question" %}</div>\
 	<div class="portlet-content">'+
     '<form action="." id="new_survey_que_form_' + id +'" method="post" enctype="multipart/form-data">'+
     "{% csrf_token %}"+
@@ -291,7 +291,7 @@ function addFormField() {
               '</div>'+
         '</div>'+
     '</div>'+
-    '<div id="divTxtRes_'+id_res+'"></div><input class="btn info" value="Add Response" onclick="javascript:addResFormField('+id_res+', 0); return false;" type="button" />'+
+    '<div id="divTxtRes_'+id_res+'"></div><input class="btn info" value="{% trans "Add Response" %}" onclick="javascript:addResFormField('+id_res+', 0); return false;" type="button" />'+
     '</form>' +
     '</div>' +
     '</div><div id="divTxt"></div>');
@@ -534,7 +534,7 @@ function removeResFormField(id) {
                                     {% endif %}
                                 {% endfor %}
                                 <div id="divTxtRes_{{ que.id }}"></div>
-                                <input type="button" class="btn info" value="Add Response" onclick="javascript:addResFormField({{ que.id }}, 1); return false;" />
+                                <input type="button" class="btn info" value="{% trans "Add Response" %}" onclick="javascript:addResFormField({{ que.id }}, 1); return false;" />
                                 <!--Response forms end-->
                             {% endif %}
 
@@ -548,7 +548,7 @@ function removeResFormField(id) {
             <input type="hidden" id="id" value="0">
             <input type="hidden" id="id_new_que_form" value="0">
             <div id="divTxt"></div>
-            <input type="button" value="Add Question" class="btn info" onclick="javascript:addFormField(); return false;" />
+            <input type="button" value="{% trans "Add Question" %}" class="btn info" onclick="javascript:addFormField(); return false;" />
         </div>
     </fieldset>
     {% endif %}

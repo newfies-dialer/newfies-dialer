@@ -17,7 +17,7 @@
 <script type="text/javascript" language="javascript">
 function get_alert_msg(id)
 {
-    confirm_string = 'you are going to delete audio from your audio list';
+    confirm_string = '{% trans "you are going to delete audio from your audio list" %}';
     var answer = confirm(confirm_string);
     return answer // answer is a boolean
 }

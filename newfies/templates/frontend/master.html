@@ -145,7 +145,7 @@
           {% endblock %}
             {% if errorlogin %}
                 <div class="alert-message error">
-                    <strong>Alert : </strong>  {{ errorlogin }}
+                    <strong>{% trans "Alert"  %} : </strong>  {{ errorlogin }}
                 </div>
             {% else %}
                 {% if notlogged %}

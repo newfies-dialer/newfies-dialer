@@ -146,6 +146,7 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
          "HangupCause": "SUBSCRIBER_ABSENT"}
         response = self.client.post('/api/v1/hangupcall/',
         data,  **self.extra)
+        print response
         self.assertEqual(response.status_code, 200)
 
     def test_create_cdr(self):
@@ -197,9 +198,8 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
     def test_create_survey_response(self):
         """Test Function to create a survey response"""
         data = simplejson.dumps({"key": "orange", "keyvalue": "1", "surveyquestion": "1"})
-        response = self.client.post('/api/v1/survey_question/', data,
+        response = self.client.post('/api/v1/survey_response/', data,
                    content_type='application/json', **self.extra)
-        print response
         self.assertEqual(response.status_code, 201)
 
     def test_read_survey_response(self):

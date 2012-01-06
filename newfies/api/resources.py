@@ -1373,8 +1373,8 @@ class AnswercallValidation(Validation):
 
         try:
             obj_callrequest = Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
-            if not obj_callrequest.voipapp:
-                errors['VoIP App'] = ['This Call Request is not attached to a VoIP App!']
+            if not obj_callrequest.content_type:
+                errors['Attached App'] = ['This Call Request is not attached to a VoIP App or survey!']
         except:
             errors['ALegRequestUUID'] = ['Call Request cannot be found!']
                 

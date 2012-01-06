@@ -1,10 +1,10 @@
 from django.contrib.auth.models import User
 from django.utils import simplejson
-from dajaxice.decorators import dajaxice_register
-from dajax.core import Dajax
-from django.forms.models import inlineformset_factory
 from django.utils import simplejson
 from django.contrib.auth.decorators import login_required
+
+from dajaxice.decorators import dajaxice_register
+from dajax.core import Dajax
 
 from survey.models import *
 from survey.forms import SurveyQuestionForm, SurveyQuestionNewForm, SurveyResponseForm

@@ -306,8 +306,10 @@ def survey_change(request, object_id):
     form = SurveyForm(instance=survey)
     new_survey_que_form = SurveyQuestionNewForm(request.user, initial={'surveyapp': survey})
     new_survey_res_form = SurveyResponseForm()
+
     survey_que_form_collection = {}
     survey_res_form_collection = {}
+
     for survey_que in survey_que_list:
         f = SurveyQuestionForm(instance=survey_que)
         survey_que_form_collection['%s' % survey_que.id] = f

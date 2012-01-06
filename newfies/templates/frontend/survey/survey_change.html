@@ -284,10 +284,10 @@ function addFormField() {
     '</div>'+
     '</div>'+
     '<div class="row">'+
-        '<div class="span12">'+
+        '<div class="span6">'+
               '<div class="row">'+
-              '<div class="span5"><p><b>{% trans "Key" %}</b></p></div>'+
-              '<div class="span5"><p><b>{% trans "Key Value" %}</b></p></div>'+
+              '<div class="span2"><p><b>{% trans "Key" %}</b></p></div>'+
+              '<div class="span2"><p><b>{% trans "Key Value" %}</b></p></div>'+
               '</div>'+
         '</div>'+
     '</div>'+
@@ -319,10 +319,10 @@ function addResFormField(que_id, is_que_id_set) {
     '<form action="." id="new_response_form_' + id +'" method="post" enctype="multipart/form-data">'+
     "{% csrf_token %}"+
     '<div class="row">'+
-       '<div class="span12">'+
+       '<div class="span8">'+
           '<div class="row">'+
           {% for field in new_survey_res_form.visible_fields %}
-          '<div class="span5">'+
+          '<div class="span2">'+
             {% if forloop.first %}
               {% for hidden in new_survey_res_form.hidden_fields %}
                 '{{ hidden|escapejs }}'+
@@ -330,10 +330,10 @@ function addResFormField(que_id, is_que_id_set) {
             {% endif %}
               '{{ field.errors.as_ul }}'+
               {% if field.name == 'keyvalue' %}
-                '<input type="text" id="id_keyvalue" style="width:150px;" name="keyvalue" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
+                '<input type="text" id="id_keyvalue" class="input-small" name="keyvalue" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
               {% else %}
                 {% if field.name == 'key' %}
-                    '<input type="text" id="id_key" style="width:150px;" name="key" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
+                    '<input type="text" id="id_key" class="input-small" name="key" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
                 {% else %}
                     '{{ field|escapejs }}'+
                 {% endif %}                              
@@ -489,12 +489,12 @@ function removeResFormField(id) {
                                 <!--extra-->
 
                                 <div class="row">
-                                    <div class="span12">
+                                    <div class="span6">
                                         <div class="row">
-                                            <div class="span5">
+                                            <div class="span2">
                                                 <p><b>{% trans "Key" %}</b></p>
                                             </div>
-                                            <div class="span5">
+                                            <div class="span2">
                                                 <p><b>{% trans "Key Value" %}</b></p>
                                             </div>
                                         </div>
@@ -505,10 +505,10 @@ function removeResFormField(id) {
                                     {% if value_set.que_id|stringformat:"s" == que.id|stringformat:"s" %}
                                         <form action="." id="response_form_{{ key }}" method="post" enctype="multipart/form-data">{% csrf_token %}
                                         <div class="row">
-                                            <div class="span12">
+                                            <div class="span8">
                                                 <div class="row">
                                                 {% for field in value_set.form.visible_fields %}
-                                                    <div class="span5">
+                                                    <div class="span2">
                                                         {# Include the hidden fields in the form #}
                                                         {% if forloop.first %}
                                                           {% for hidden in value_set.form.hidden_fields %}

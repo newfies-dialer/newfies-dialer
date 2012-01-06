@@ -69,8 +69,8 @@ class SurveyResponseForm(ModelForm):
         instance = getattr(self, 'instance', None)
 
         if instance.id:
-            self.fields['key'].widget.attrs['class'] = "span3"
-            self.fields['keyvalue'].widget.attrs['class'] = "span3"
+            self.fields['key'].widget.attrs['class'] = "input-small"
+            self.fields['keyvalue'].widget.attrs['class'] = "input-small"
             self.fields['key'].widget.attrs['onBlur'] = "response_form(" + str(instance.id) + ", " + str(instance.surveyquestion_id) + ", 1, 1);"
             self.fields['keyvalue'].widget.attrs['onBlur'] = "response_form(" + str(instance.id) + ", " + str(instance.surveyquestion_id) + ", 1, 1);"
 

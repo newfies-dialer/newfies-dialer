@@ -1,22 +1,14 @@
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth.views import password_reset, password_reset_done,\
-password_reset_confirm, password_reset_complete
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.db.models import *
-from django.core.urlresolvers import reverse
-from django.core.mail import send_mail, mail_admins
 from django.conf import settings
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
-from django.db.models import Q
-from django.forms.models import inlineformset_factory, modelformset_factory
-from django.forms.formsets import formset_factory, BaseFormSet
 from django.views.decorators.csrf import csrf_exempt
+from django.core.cache import cache
 
 from dialer_campaign.models import Campaign
 from dialer_campaign.views import current_view, notice_count
@@ -26,11 +18,9 @@ from survey.forms import *
 from dialer_cdr.models import Callrequest, VoIPCall
 from audiofield.models import AudioFile
 from audiofield.forms import CustomerAudioFileForm
+
 from datetime import *
 from dateutil import parser
-
-import time
-from django.core.cache import cache
 
 import time
 import os.path

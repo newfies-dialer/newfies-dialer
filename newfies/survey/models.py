@@ -63,12 +63,14 @@ class SurveyQuestion(Sortable):
     class Meta(Sortable.Meta):
         ordering = Sortable.Meta.ordering + ['surveyapp']
     
-    question = models.CharField(max_length=500, help_text = 'Enter your question') # What is your prefered fruit?
+    question = models.CharField(max_length=500,
+                                help_text=_('Enter your question')) # What is your prefered fruit?
     tags = TagField(blank=True, max_length=1000)
     user = models.ForeignKey('auth.User', related_name='Survey owner')
-    surveyapp = models.ForeignKey(SurveyApp, verbose_name="SurveyApp")
+    surveyapp = models.ForeignKey(SurveyApp, verbose_name=_("SurveyApp"))
     
-    audio_message = models.ForeignKey(AudioFile, null=True, blank=True, verbose_name="Audio File")
+    audio_message = models.ForeignKey(AudioFile, null=True, blank=True,
+                                      verbose_name=_("Audio File"))
     message_type = models.IntegerField(max_length=20, choices=MESSAGE_TYPE, default='1',
                                         blank=True, null=True, verbose_name=_('Message type'))
     
@@ -83,8 +85,9 @@ class SurveyQuestion(Sortable):
 
 class SurveyResponse(models.Model):
     """SurveyResponse"""
-    key = models.CharField(max_length=9, blank=False, help_text = 'Define the key link to the response') # 1 ; 2
-    keyvalue = models.CharField(max_length=150, blank=True, verbose_name="Key Value") # Orange ; Kiwi
+    key = models.CharField(max_length=9, blank=False,
+                           help_text=_('Define the key link to the response')) # 1 ; 2
+    keyvalue = models.CharField(max_length=150, blank=True, verbose_name=_("Key Value")) # Orange ; Kiwi
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     
@@ -119,7 +122,4 @@ class SurveyCampaignResult(models.Model):
     
     def __unicode__(self):
         return '[%s] %s = %s' %(self.id, self.question, self.response)
-        
-
-
-
+    

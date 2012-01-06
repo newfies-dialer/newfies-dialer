@@ -5,7 +5,7 @@ from django.forms import *
 from django.contrib import *
 from django.contrib.admin.widgets import *
 from django.utils.translation import ugettext_lazy as _
-from django.forms.models import inlineformset_factory
+
 from survey.models import *
 from dialer_campaign.function_def import field_list
 from datetime import *
@@ -69,8 +69,8 @@ class SurveyResponseForm(ModelForm):
         instance = getattr(self, 'instance', None)
 
         if instance.id:
-            self.fields['key'].widget.attrs['style'] = "width:150px"
-            self.fields['keyvalue'].widget.attrs['style'] = "width:150px"
+            self.fields['key'].widget.attrs['class'] = "span3"
+            self.fields['keyvalue'].widget.attrs['class'] = "span3"
             self.fields['key'].widget.attrs['onBlur'] = "response_form(" + str(instance.id) + ", " + str(instance.surveyquestion_id) + ", 1, 1);"
             self.fields['keyvalue'].widget.attrs['onBlur'] = "response_form(" + str(instance.id) + ", " + str(instance.surveyquestion_id) + ", 1, 1);"
 

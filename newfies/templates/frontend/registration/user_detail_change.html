@@ -197,7 +197,7 @@ function get_alert_msg(id)
     <div id="tabs-4" align="left" {% if action == "tabs-4" %}class="active"{% endif %}>
         {% if dialer_set %}
 
-            <table style="width:370px;" class="bordered-table">
+            <table class="bordered-table zebra-striped">
             <tr>
                 <td>{% trans "Maximum calls per minute" %}</td>
                 <td>{{ dialer_set.max_frequency }}</td>

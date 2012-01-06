@@ -27,17 +27,17 @@
 <br/>
 
 <center>
-<table id="rounded-corner">
+<table class="bordered-table zebra-striped">
 <caption><center>{% trans "Sample File" %}</center></caption>
 <thead>
 <tr>
-    <th class="rounded-company">{% trans "contact" %}</th>
-    <th class="rounded-q1">{% trans "last name" %}</th>
-    <th class="rounded-q2">{% trans "first name" %}</th>
-    <th class="rounded-q3">{% trans "email-id" %}</th>
-    <th class="rounded-q3">{% trans "description" %}</th>
-    <th class="rounded-q3">{% trans "status" %}</th>
-    <th class="rounded-q4">{% trans "additional_vars" %}</th>
+    <th>{% trans "contact" %}</th>
+    <th>{% trans "last name" %}</th>
+    <th>{% trans "first name" %}</th>
+    <th>{% trans "email-id" %}</th>
+    <th>{% trans "description" %}</th>
+    <th>{% trans "status" %}</th>
+    <th>{% trans "additional_vars" %}</th>
 </tr>
 </thead>
 <tr>
@@ -89,51 +89,51 @@
 
 
 {% if success_import_list %}
-<table border=1 align=center>
-    <tr>
-        <th>{% trans "Subscriber(s) Successfully Imported" %} :</th>
-    </tr>
-{% for row in success_import_list %}
-    <tr class="{% cycle 'row1' 'row2' %}">
-        <td>
-            {{ row }}
-        </td>
-    </tr>
-{% endfor %}
-</table>
+    <table class="bordered-table zebra-striped">
+        <tr>
+            <th>{% trans "Subscriber(s) Successfully Imported" %} :</th>
+        </tr>
+        {% for row in success_import_list %}
+        <tr>
+            <td>
+                {{ row }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
 {% endif %}
 
 
 {% if error_import_list %}
 <br>
-<table border=1 align=center>
-    <tr>
-        <th>{% trans "Subscriber(s) not Imported" %} :</th>
-    </tr>
-{% for row in error_import_list %}
-    <tr class="{% cycle 'row1' 'row2' %}">
-        <td>
-            {{ row }}
-        </td>
-    </tr>
-{% endfor %}
-</table>
+    <table class="bordered-table zebra-striped">
+        <tr>
+            <th>{% trans "Subscriber(s) not Imported" %} :</th>
+        </tr>
+        {% for row in error_import_list %}
+        <tr>
+            <td>
+                {{ row }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
 {% endif %}
 
 {% if type_error_import_list %}
 <br>
-<table border=1 align=center>
-    <tr>
-        <th>{% trans "Type Miss-match" %} :</th>
-    </tr>
-{% for row in type_error_import_list %}
-    <tr class="{% cycle 'row1' 'row2' %}">
-        <td>
-            {{ row }}
-        </td>
-    </tr>
-{% endfor %}
-</table>
+    <table class="bordered-table zebra-striped">
+        <tr>
+            <th>{% trans "Type Miss-match" %} :</th>
+        </tr>
+        {% for row in type_error_import_list %}
+        <tr>
+            <td>
+                {{ row }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
 {% endif %}
 
 {% endblock %}

@@ -49,7 +49,7 @@
                 <!--{% for item in i.list %}
                     <td>{{ item.response__count }} contact(s) pressed {{ item.response }}</td>
                 {% endfor %}-->
-                <table class="bordered-table">
+                <table class="bordered-table zebra-striped">
                 {% for item in i.list|groupby_columns:5 %}
                 <tr>
                     {% for obj in item %}

@@ -3,41 +3,69 @@ TODO
 
 - Verify all form and style on the frontend
 
+  Done
+
 - Manage errors on all frontend forms
+
+  Done
 
 - http://127.0.0.1:8000/user_detail_change/?action=tabs-4
     if we dont enter a phonenumber, we got "Alert : This phone number is authorized."
 
+  Done
+
 - http://127.0.0.1:8000/user_detail_change/?selected=2
     on notification if we click on the "new" button, tabs change
+
+  Done
     
 - http://127.0.0.1:8000/user_detail_change/?selected=2
 
+  Done
+
 - http://127.0.0.1:8000/audio/add/
     fix layout
+
+  Done
     
 - http://127.0.0.1:8000/campaign/36/
     replace the label "content object" by "VoIP Application"
 
+  Done
+
 - add a setting to disable/enable the debug for audio flash : http://127.0.0.1:8000/audio/
+
+  Done
 
 - survey edit :
     1) reduce size of the field "response key"
+
+       Done
     
     2) hide the field message type or remove it, this field should be automatically provisioned
-        if the user select an audio field the "message type" will be "Audio file" otherwise text to speech
+       if the user select an audio field the "message type" will be "Audio file" otherwise text to speech
+
+       Done
 
 - On campaign edition, we shoud for the fieldset "Dialer settings" and "Campaign schedule"
   have 2 columns as we did on our previous version : http://demo.newfies-dialer.org/campaign/1/ (demo / demo)
 
+  Done
+
 - fix alert : Alert : Your settings are not configured properly, Please contact the administrator. 
 To send notification to administrator
+
+  Done
 
 - Review the I18N of the whole application
 
 - Add documentation for the Survey API
 
+  Done
+
 - Work on test
+
+  Done
 
 - Refactor the template, css and code in view
 
@@ -47,3 +75,5 @@ TODO BUT NOT FOR NOW
 - Support audio file on survey
 
 - include bootstrap jquery style
+
+  Done

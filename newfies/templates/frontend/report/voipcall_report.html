@@ -119,20 +119,20 @@ $("#flex1").flexigrid({
 {% block extra_data %}
 
 <div align=center>
-<table id="rounded-corner">
+<table class="bordered-table zebra-striped">
     <caption><center>{% trans "Call Detail Report Summary" %}</center></caption>
     <thead>
         <tr>
-            <th class="rounded-company">{% trans "Date" %}</th>
-            <th class="rounded-q1">{% trans "Duration" %}</th>
-            <th class="rounded-q2">{% trans "Graphic" %}</th>
-            <th class="rounded-q3">{% trans "Calls" %}</th>
-            <th class="rounded-q4"><acronym title="{% trans "Average Connection Time" %}">{% trans "ACT"  %}</acronym></th>
+            <th>{% trans "Date" %}</th>
+            <th>{% trans "Duration" %}</th>
+            <th>{% trans "Graphic" %}</th>
+            <th>{% trans "Calls" %}</th>
+            <th><acronym title="{% trans "Average Connection Time" %}">{% trans "ACT"  %}</acronym></th>
         </tr>
     </thead>
     <tbody>
         {% for td in total_data %}
-        <tr class="{% cycle 'row1' 'row2' %}">
+        <tr>
             <td>{{ td.starting_date }}</td>
             <td>{{ td.duration__sum|conv_min }}</td>
             <td>{% if max_duration > 0 %}

@@ -10,6 +10,13 @@ from survey.models import *
 from survey.forms import SurveyQuestionForm, SurveyQuestionNewForm, SurveyResponseForm
 
 
+def audio_msg_type(audio_message):
+    if audio_message is None:
+        return 2 # Text2Speech
+    else:
+        return 1 # Audio File
+
+
 @login_required
 @dajaxice_register
 def survey_question_add_update(request, id, data, form_type, after_initial_save, record_id):
@@ -33,10 +40,7 @@ def survey_question_add_update(request, id, data, form_type, after_initial_save,
         if form_type == 'old_form':
             object = form.save(commit=False)
             audio_message = form.cleaned_data.get('audio_message')
-            if audio_message is None:
-                object.message_type = 2 # Text2Speech
-            else:
-                object.message_type = 1 # Audio File
+            object.message_type = audio_msg_type(audio_message)
             object.save()
             
         if form_type == 'new_form':            
@@ -44,14 +48,9 @@ def survey_question_add_update(request, id, data, form_type, after_initial_save,
             obj.user = User.objects.get(username=request.user)
             obj.surveyapp = form.cleaned_data.get('surveyapp')
             audio_message = form.cleaned_data.get('audio_message')
-            if audio_message == '':
-                obj.message_type = 2 # Text2Speech
-            else:
-                obj.message_type = 1 # Audio File
+            obj.message_type = audio_msg_type(audio_message)
             obj.save()
             dajax.assign('#id', 'value', obj.id)
-
-        #dajax.remove_css_class('#que_form_'+id+' input','error')
         #dajax.alert("%s is succesfully saved !!" % form.cleaned_data.get('question'))
     else:
         if form_type == 'new_form':
@@ -59,8 +58,6 @@ def survey_question_add_update(request, id, data, form_type, after_initial_save,
         if form_type == 'old_form':
             dajax.remove_css_class('#que_form_'+id+' input','error')
         dajax.alert("error")
-        for error in form.errors:
-            dajax.add_css_class('#id_%s' % error,'error')
     return dajax.json()
 
 

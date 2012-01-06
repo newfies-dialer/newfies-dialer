@@ -225,10 +225,10 @@
     {% for td in final_calls %}
             [{{ td.starting_date }},(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}]<br/>
     {% endfor %}-->
-    <br/>
-    <div id="camp_pie" style="width:300px;height:300px;float:left;margin: 0px 50px 0px 50px;"></div>
+    
+    <div id="camp_pie" style="width:300px;height:270px;float:left;margin: 0px 50px 0px 50px;"></div>
 
-    <table style="width: 360px;margin: 50px 0px 0px 0px; background-color: #e6f7fe;" >
+    <table style="width: 360px;margin: 50px 0px 0px 0px; background-color: #e6f7fe;" class="bordered-table">
     <tr>
         <th style="color: #111111; width: 120px;">{{ total_call_count }}  {% trans "TOTAL CALLS"  %}</th>
         <th style="color: #111111; width: 120px;"></th>

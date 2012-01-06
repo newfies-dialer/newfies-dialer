@@ -376,15 +376,13 @@ class NewfiesCustomerInterfaceTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
                                 'frontend/campaign/list.html')
-        response = self.client.get('/campaign/add/')
-        self.assertTemplateUsed(response,
-                                'frontend/campaign/change.html')
         response = self.client.post('/campaign/add/',
         data={"name": "mylittlecampaign", "description": "xyz",
         "startingdate": "1301392136.0", "expirationdate": "1301332136.0",
         "frequency": "20", "callmaxduration": "50", "maxretry": "3",
         "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1",
         "content_object": "type:30-id:1", "extra_data": "2000"})
+        print response
         self.assertEqual(response.status_code, 302)
 
 
@@ -408,9 +406,10 @@ class NewfiesCustomerInterfaceTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
                                 'frontend/survey/survey_list.html')
-        response = self.client.post('/survey/add/',
-        data={"name": "mylittlecampaign", "description": "xyz"})
+        response = self.client.get('/survey/add/')
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+                                'frontend/survey/survey_change.html')
         response = self.client.get('/survey/1/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,

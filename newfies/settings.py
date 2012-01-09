@@ -327,7 +327,7 @@ LANGUAGES = (
     ('en', gettext('English')),
     #('fr', gettext('French')),
     ('es', gettext('Spanish')),
-    #('br', gettext('Brazilian')),
+    ('pt', gettext('Portuguese')),
 )
 
 #DJANGO-ADMIN-TOOL

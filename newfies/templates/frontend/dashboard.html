@@ -230,9 +230,7 @@
 
     <table style="width: 360px;margin: 50px 0px 0px 0px; background-color: #e6f7fe;" class="bordered-table">
     <tr>
-        <th style="color: #111111; width: 120px;">{{ total_call_count }}  {% trans "TOTAL CALLS"  %}</th>
-        <th style="color: #111111; width: 120px;"></th>
-        <th style="color: #111111; width: 120px;"></th>
+        <th style="color: #111111; width: 120px;" colspan="3">{{ total_call_count }}  {% trans "TOTAL CALLS"  %}</th>
     </tr>
     <tr>
         <th style="color: {{ answered_color }}">{{ total_answered }}  {% trans "ANSWERED"  %}</th>
@@ -252,6 +250,7 @@
     <tr>
         <th style="color: {{ congestion_color }}">{{ total_congestion }}  {% trans "CONGESTION"  %}</th>
         <th style="color: {{ forbiden_color }}">{{ total_forbiden }}  {% trans "FORBIDDEN"  %}</th>
+        <th>&nbsp;</th>
     </tr>
     </table>
     

@@ -1213,16 +1213,17 @@ class CallrequestResource(ModelResource):
     """
     **Attributes**:
 
+        * ``request_uuid`` - Unique id
+        * ``call_time`` - Total call time
+        * ``call_type`` - Call type
+        * ``status`` - Call request status
+        * ``callerid`` - Caller ID
         * ``callrequest_id``- Callrequest Id
-        * ``request_uuid`` -
-        * ``call_time`` -
-        * ``call_type`` -
         * ``timeout`` -
         * ``timelimit`` -
         * ``status`` -
         * ``campaign_subscriber`` -
         * ``campaign`` -
-        * ``callerid`` -
         * ``phone_number`` -
         * ``extra_dial_string`` -
         * ``extra_data`` -
@@ -1231,6 +1232,13 @@ class CallrequestResource(ModelResource):
         * ``result`` -
         * ``hangup_cause`` -
         * ``last_attempt_time`` -
+
+
+    **Relationships**:
+
+        * ``content_type`` - Defines the application (``voip_app`` or ``survey``) to use when the \
+                             call is established on the A-Leg
+        * ``object_id`` - Defines the object of content_type application
 
     **Validation**:
 

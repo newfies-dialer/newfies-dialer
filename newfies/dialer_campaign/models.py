@@ -245,8 +245,12 @@ class Campaign(Model):
 
     **Relationships**:
 
-        * ``voipapp`` - Foreign key relationship to the VoipApp model. \
-        VoIP Application to use with this campaign
+        * ``content_type`` - Defines the application (``voip_app`` or ``survey``) \
+        to use when the call is established on the A-Leg
+
+        * ``object_id`` - Defines the object of content_type application
+
+        * ``content_object`` - Used to define the VoIP App or the Survey with generic ForeignKey
 
         * ``phonebook`` - Many-To-Many relationship to the Phonebook model.
 

@@ -1565,7 +1565,7 @@ def get_url_campaign_status(id, status):
     'style="text-decoration:none;background-image:url(' + settings.STATIC_URL \
     + 'newfies/icons/control_stop_blue.png);"'
 
-    if status == "1":
+    if status == 1:
         url_str = "<a href='#' class='icon' title='" + _("campaign is running") + "' " +\
                   control_play_style + ">&nbsp;</a>\
                   <a href='update_campaign_status_cust/" + str(id) +\

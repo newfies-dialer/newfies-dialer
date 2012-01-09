@@ -266,13 +266,13 @@ class Campaign(Model):
 
     name = models.CharField(max_length=100)
     description = models.TextField(verbose_name=_('Description'), blank=True,
-                  null=True, help_text=_("Short description of the Campaign"))
+                  null=True, help_text=_("Campaign description"))
     user = models.ForeignKey('auth.User', related_name='Campaign owner')
     status = models.IntegerField(choices=CAMPAIGN_STATUS, default='2',
                 verbose_name=_("Status"), blank=True, null=True)
     callerid = models.CharField(max_length=80, blank=True,
                 verbose_name=_("CallerID"),
-                help_text=_("CallerID used to call the A-Leg"))
+                help_text=_("Outbound caller-ID"))
     #General Starting & Stopping date
     startingdate = models.DateTimeField(default=(lambda:datetime.now()),
                    verbose_name=_('Start'),
@@ -296,27 +296,27 @@ class Campaign(Model):
     sunday = models.BooleanField(default=True, verbose_name=_('Sunday'))
     #Campaign Settings
     frequency = models.IntegerField(default='10', blank=True, null=True, verbose_name=_('Frequency'),
-    help_text=_("Define the frequency, speed of the campaign. This is the number of calls per minute."))
+    help_text=_("Calls per Minute"))
 
     callmaxduration = models.IntegerField(default='1800', blank=True,
                       null=True, verbose_name=_('Call Max Duration'),
-    help_text=_("Define the call's duration maximum. (Value in seconds 1800 = 30 minutes)"))
+    help_text=_("Maximum call duration in seconds"))
 
     maxretry = models.IntegerField(default='0', blank=True, null=True,
                verbose_name=_('Max Retries'),
-               help_text=_("Define the max retries allowed per user."))
+               help_text=_("Maximum retries per contact"))
     intervalretry = models.IntegerField(default='300', blank=True, null=True,
                     verbose_name=_('Time between Retries'),
-    help_text=_("Define the time to wait between retries in seconds"))
+    help_text=_("Time delay in seconds before retrying contact"))
 
     calltimeout = models.IntegerField(default='45', blank=True, null=True,
                   verbose_name=_('Timeout on Call'),
-    help_text=_("Define the number of seconds to timeout on calls"))
+    help_text=_("Connection timeout in seconds"))
 
     #Gateways
     aleg_gateway = models.ForeignKey(Gateway, verbose_name=_("A-Leg Gateway"),
                 related_name="A-Leg Gateway",
-                help_text=_("Select gateway to use for this campaign"))
+                help_text=_("Select outbound gateway"))
     #Campaign IVR/Application Destination
     """
     #comment to use genericforeign key

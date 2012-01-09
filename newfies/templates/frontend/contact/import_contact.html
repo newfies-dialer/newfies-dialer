@@ -28,16 +28,16 @@
 
 <center>
 <table class="bordered-table zebra-striped">
-<caption><center>{% trans "Sample File" %}</center></caption>
+<caption><center><h3>{% trans "Sample File" %}</h3></center></caption>
 <thead>
 <tr>
     <th>{% trans "contact" %}</th>
     <th>{% trans "last name" %}</th>
     <th>{% trans "first name" %}</th>
-    <th>{% trans "email-id" %}</th>
+    <th>{% trans "email" %}</th>
     <th>{% trans "description" %}</th>
     <th>{% trans "status" %}</th>
-    <th>{% trans "additional_vars" %}</th>
+    <th>{% trans "additional variables" %}</th>
 </tr>
 </thead>
 <tr>
@@ -59,8 +59,9 @@
     <td>test</td>
 </tr>
 </table>
-<br/>
-{% trans "SUBSCRIBER STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')" %}</center>
+
+<span class="label notice">{% trans "SUBSCRIBER STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')" %}</span>
+</center>
 
 <br/>
 <br/>

@@ -1,6 +1,13 @@
 TODO
 ====
 
+- http://127.0.0.1:8000/campaign/
+  rename App to Type and add an extra column "App" which will give the name of the voip app or survey
+
+- replace all the "VoIP Apps" = "Voice Apps"
+  This changes needs to be done for API, directories (newfies/voip_app), files (voip_app_custom_spamlib.py)
+  and every reference in frontend and admin
+
 - Verify all form and style on the frontend
 
   Done
@@ -68,6 +75,8 @@ To send notification to administrator
   Done
 
 - Refactor the template, css and code in view
+
+
 
 
 TODO BUT NOT FOR NOW

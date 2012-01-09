@@ -1565,60 +1565,62 @@ def get_url_campaign_status(id, status):
     'style="text-decoration:none;background-image:url(' + settings.STATIC_URL \
     + 'newfies/icons/control_stop_blue.png);"'
 
-    if status == 1:
-        url_str = str("<a href='#' class='icon' title='" + _("campaign is running") + "' " +
+    if status == "1":
+        url_str = "<a href='#' class='icon' title='" + _("campaign is running") + "' " +\
                   control_play_style + ">&nbsp;</a>\
-                  <a href='update_campaign_status_cust/" + str(id) +
-                  "/2/' class='icon' title='" + _("Pause") + "' " +
-                  control_pause_blue_style +
-                  ">&nbsp;</a><a href='update_campaign_status_cust/" + str(id) +
-                  "/3/' class='icon' title='" + _("Abort") + "' " +
-                  control_abort_blue_style +
-                  ">&nbsp;</a><a href='update_campaign_status_cust/"
-                  + str(id) + "/4/' class='icon' title='" + _("Stop") + "' " +
-                  control_stop_blue_style + ">&nbsp;</a>")
+                  <a href='update_campaign_status_cust/" + str(id) +\
+                  "/2/' class='icon' title='" + _("Pause") + "' " +\
+                  str(control_pause_blue_style) +\
+                  ">&nbsp;</a><a href='update_campaign_status_cust/" + str(id) +\
+                  "/3/' class='icon' title='" + _("Abort") + "' " +\
+                  str(control_abort_blue_style) +\
+                  ">&nbsp;</a><a href='update_campaign_status_cust/"\
+                  + str(id) + "/4/' class='icon' title='" + _("Stop") + "' " +\
+                  str(control_stop_blue_style) + ">&nbsp;</a>"
+
     if status == 2:
-        url_str = str("<a href='update_campaign_status_cust/" + str(id) +
-                  "/1/' class='icon' title='" + _("Start") + "' " +
+        url_str = "<a href='update_campaign_status_cust/" + str(id) +\
+                  "/1/' class='icon' title='" + _("Start") + "' " +\
                   control_play_blue_style +">&nbsp;</a><a href='#'\
-                  class='icon' title='" + _("campaign is paused") + "' " +
-                  control_pause_style +">&nbsp;</a>" +
-                  "<a href='update_campaign_status_cust/" + str(id) +
-                  "/3/' class='icon' title='" + _("Abort") + "' " +
-                  control_abort_blue_style +
-                  ">&nbsp;</a>" +
-                  "<a href='update_campaign_status_cust/" + str(id) +
-                  "/4/' class='icon' title='" + _("Stop") + "' " +
-                  control_stop_blue_style +
-                  ">&nbsp;</a>")
-    if status == 3:
-        url_str = str("<a href='update_campaign_status_cust/" + str(id) +
-                  "/1/' class='icon' title='" + _("Start") + "' " +
-                  control_play_blue_style +
-                  ">&nbsp;</a>" + "<a href='update_campaign_status_cust/" +
-                  str(id) + "/2/' class='icon' \
-                  title='" + _("Pause") + "' " + control_pause_blue_style +
-                  ">&nbsp;</a>" +
-                  "<a href='#' class='icon' title='" + _("campaign is aborted") + "' " +
-                  control_abort_style + " >&nbsp;</a>" +
-                  "<a href='update_campaign_status_cust/" + str(id) +
-                  "/4/' class='icon' title='" + _("Stop") + "' " +
-                  control_stop_blue_style + ">&nbsp;</a>")
-    if status == 4:
-        url_str = str("<a href='update_campaign_status_cust/" + str(id) +
-                  "/1/' class='icon' title='" + _("Start") + "' " +
-                  control_play_blue_style +
-                  ">&nbsp;</a>" +
-                  "<a href='update_campaign_status_cust/" + str(id) +
-                  "/2/' class='icon' title='" + _("Pause") + "' " +
-                  control_pause_blue_style +
-                  ">&nbsp;</a>" +
-                  "<a href='update_campaign_status_cust/" + str(id) +
-                  "/3/' class='icon' title='" + _("Abort") + "' " +
-                  control_abort_blue_style +
+                  class='icon' title='" + _("campaign is paused") + "' " +\
+                  control_pause_style +">&nbsp;</a>" +\
+                  "<a href='update_campaign_status_cust/" + str(id) +\
+                  "/3/' class='icon' title='" + _("Abort") + "' " +\
+                  control_abort_blue_style +\
+                  ">&nbsp;</a>" +\
+                  "<a href='update_campaign_status_cust/" + str(id) +\
+                  "/4/' class='icon' title='" + _("Stop") + "' " +\
+                  control_stop_blue_style +\
                   ">&nbsp;</a>"
-                  "<a href='#' class='icon' title='" +_("campaign is stopped") + "' " +
-                  control_stop_style + ">&nbsp;</a>")
+
+    if status == 3:
+        url_str = "<a href='update_campaign_status_cust/" + str(id) +\
+                  "/1/' class='icon' title='" + _("Start") + "' " +\
+                  control_play_blue_style +\
+                  ">&nbsp;</a>" + "<a href='update_campaign_status_cust/" +\
+                  str(id) + "/2/' class='icon' \
+                  title='" + _("Pause") + "' " + control_pause_blue_style +\
+                  ">&nbsp;</a>" +\
+                  "<a href='#' class='icon' title='" + _("campaign is aborted") + "' " +\
+                  control_abort_style + " >&nbsp;</a>" +\
+                  "<a href='update_campaign_status_cust/" + str(id) +\
+                  "/4/' class='icon' title='" + _("Stop") + "' " +\
+                  control_stop_blue_style + ">&nbsp;</a>"
+    if status == 4:
+        url_str = "<a href='update_campaign_status_cust/" + str(id) +\
+                  "/1/' class='icon' title='" + _("Start") + "' " +\
+                  control_play_blue_style +\
+                  ">&nbsp;</a>" +\
+                  "<a href='update_campaign_status_cust/" + str(id) +\
+                  "/2/' class='icon' title='" + _("Pause") + "' " +\
+                  control_pause_blue_style +\
+                  ">&nbsp;</a>" +\
+                  "<a href='update_campaign_status_cust/" + str(id) +\
+                  "/3/' class='icon' title='" + _("Abort") + "' " +\
+                  control_abort_blue_style +\
+                  ">&nbsp;</a>"+\
+                  "<a href='#' class='icon' title='" +_("campaign is stopped") + "' " +\
+                  control_stop_style + ">&nbsp;</a>"
 
     return url_str
 
@@ -1674,14 +1676,12 @@ def campaign_grid(request):
                       row['content_type__name'],
                       count_contact_of_campaign(row['id']),
                       get_campaign_status_name(row['status']),
-                      str('<a href="' + str(row['id']) + '/" class="icon" ' \
-                      + update_style + ' title="'+_('Update campaign')+'">&nbsp;</a>' +
-                      '<a href="del/' + str(row['id']) + '/" class="icon" ' \
-                      + delete_style + ' onClick="return get_alert_msg(' +
-                      str(row['id'])
-                      + ');" title="'+_('Delete campaign')+'">&nbsp;</a>'
-                      + get_url_campaign_status(row['id'], row['status'])
-                      ),
+                      '<a href="' + str(row['id']) + '/" class="icon" ' \
+                      + update_style + ' title="'+_('Update campaign')+'">&nbsp;</a>' \
+                      + '<a href="del/' + str(row['id']) + '/" class="icon" ' + delete_style \
+                      + ' onClick="return get_alert_msg(' + str(row['id']) + ');" title="' \
+                      +_('Delete campaign')+'">&nbsp;</a>' \
+                      + get_url_campaign_status(row['id'], row['status']),
              ]}for row in campaign_list ]
 
     data = {'rows': rows,

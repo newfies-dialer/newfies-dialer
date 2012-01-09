@@ -238,7 +238,7 @@
 </script>
 
 <script type="text/javascript">
-
+var res_div_count = 0;
 // To add new question form
 function addFormField() {
 
@@ -291,11 +291,11 @@ function addFormField() {
               '</div>'+
         '</div>'+
     '</div>'+
-    '<div id="divTxtRes_'+id_res+'"></div><input class="btn info" value="{% trans "Add Response" %}" onclick="javascript:addResFormField('+id_res+', 0); return false;" type="button" />'+
+    '<div id="divTxtRes_'+res_div_count+'"></div><input class="btn info" value="{% trans "Add Response" %}" onclick="javascript:addResFormField('+res_div_count+', 0); return false;" type="button" />'+
     '</form>' +
     '</div>' +
     '</div><div id="divTxt"></div>');
-
+    res_div_count = res_div_count + 1;
     id = (id - 1) + 2;    
     document.getElementById("id").value = id;
 
@@ -314,7 +314,7 @@ function removeFormField(id) {
 function addResFormField(que_id, is_que_id_set) {
     
     var id = ( document.getElementById("id_res") ? document.getElementById("id_res").value : 1);
-
+    //alert(que_id);
 	$("#divTxtRes_"+que_id).append('<div id="row_res' + id + '">' +
     '<form action="." id="new_response_form_' + id +'" method="post" enctype="multipart/form-data">'+
     "{% csrf_token %}"+

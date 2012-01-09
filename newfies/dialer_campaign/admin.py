@@ -9,8 +9,7 @@ from django.shortcuts import render_to_response
 from dialer_campaign.models import *
 from dialer_campaign.forms import *
 from dialer_campaign.function_def import *
-from dialer_campaign.views import common_send_notification, \
-    common_campaign_status
+from dialer_campaign.views import common_send_notification, common_campaign_status
 import csv
 from genericadmin.admin import GenericAdminModelAdmin, GenericTabularInline
 

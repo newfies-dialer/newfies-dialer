@@ -1624,6 +1624,13 @@ def get_url_campaign_status(id, status):
 
     return url_str
 
+def get_app_name(app_label, model_name, object_id):
+    from django.db.models import get_model
+    try:
+        return get_model(app_label, model_name).objects.get(pk=object_id)
+    except:
+        return '-'
+
 
 # Campaign
 @login_required
@@ -1656,7 +1663,9 @@ def campaign_grid(request):
     campaign_list = Campaign.objects\
                     .values('id', 'campaign_code', 'name', 'startingdate',
                             'expirationdate', 'aleg_gateway',
-                            'aleg_gateway__name', 'content_type__name', 'status')\
+                            'aleg_gateway__name', 'content_type__name',
+                            'content_type__app_label', 'object_id',
+                            'content_type__model', 'status')\
                     .filter(user=request.user)#,'voipapp__name'
     count = campaign_list.count()
     campaign_list = \
@@ -1674,6 +1683,9 @@ def campaign_grid(request):
                       row['name'],
                       row['startingdate'].strftime('%Y-%m-%d %H:%M:%S'),
                       row['content_type__name'],
+                      str(get_app_name(row['content_type__app_label'],
+                                       row['content_type__model'],
+                                       row['object_id'])),
                       count_contact_of_campaign(row['id']),
                       get_campaign_status_name(row['status']),
                       '<a href="' + str(row['id']) + '/" class="icon" ' \

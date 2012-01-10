@@ -207,7 +207,7 @@ def voipcall_report(request):
                  .annotate(Sum('duration'))\
                  .annotate(Avg('duration'))\
                  .order_by('-starting_date')
-
+    
     # Following code will count total voip calls, duration
     if total_data.count() != 0:
         max_duration = \

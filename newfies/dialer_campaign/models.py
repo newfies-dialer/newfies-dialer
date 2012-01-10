@@ -114,7 +114,7 @@ class Contact(Model):
     """
     phonebook = models.ForeignKey(Phonebook, verbose_name=_('Phonebook'),
                                 help_text=_("Select Phonebook"))
-    contact = models.CharField(max_length=90, verbose_name=_('Contact'))
+    contact = models.CharField(max_length=90, verbose_name=_('Contact Number'))
     last_name = models.CharField(max_length=120, blank=True, null=True,
                                  verbose_name=_('Last Name'))
     first_name = models.CharField(max_length=120, blank=True, null=True,

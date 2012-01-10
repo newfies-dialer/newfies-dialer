@@ -8,7 +8,7 @@ from django.contrib.contenttypes import generic
 from dateutil.relativedelta import *
 from prefix_country.models import Country
 from dialer_gateway.models import Gateway
-from voip_app.models import VoipApp
+from voice_app.models import VoiceApp
 from user_profile.models import UserProfile
 from datetime import datetime, timedelta
 from common.intermediate_model_base_class import Model
@@ -245,12 +245,12 @@ class Campaign(Model):
 
     **Relationships**:
 
-        * ``content_type`` - Defines the application (``voip_app`` or ``survey``) \
+        * ``content_type`` - Defines the application (``voice_app`` or ``survey``) \
         to use when the call is established on the A-Leg
 
         * ``object_id`` - Defines the object of content_type application
 
-        * ``content_object`` - Used to define the VoIP App or the Survey with generic ForeignKey
+        * ``content_object`` - Used to define the Voice App or the Survey with generic ForeignKey
 
         * ``phonebook`` - Many-To-Many relationship to the Phonebook model.
 
@@ -325,7 +325,7 @@ class Campaign(Model):
               help_text=_("Select VoIP Application to use with this campaign"))
     """
     content_type = models.ForeignKey(ContentType, verbose_name=_("Type"),
-                   limit_choices_to = {"model__in": ("surveyapp", "voipapp")})
+                   limit_choices_to = {"model__in": ("surveyapp", "voiceapp")})
     object_id = models.PositiveIntegerField(verbose_name=_("Application"))
     content_object = generic.GenericForeignKey('content_type', 'object_id')
     

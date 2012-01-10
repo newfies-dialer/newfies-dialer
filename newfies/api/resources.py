@@ -36,7 +36,7 @@ from dialer_campaign.function_def import user_attached_with_dialer_settings, \
     check_dialer_setting, dialer_setting_limit
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_gateway.models import Gateway
-from voip_app.models import VoipApp
+from voice_app.models import VoiceApp
 from survey.models import SurveyApp
 
 from settings_local import API_ALLOWED_IP, PLIVO_DEFAULT_DIALCALLBACK_URL
@@ -173,10 +173,10 @@ class IpAddressAuthentication(Authentication):
 
 
 
-class VoipAppResource(ModelResource):
+class VoiceAppResource(ModelResource):
     class Meta:
-        queryset = VoipApp.objects.all()
-        resource_name = 'voipapp'
+        queryset = VoiceApp.objects.all()
+        resource_name = 'voiceapp'
 
 
 class GatewayResource(ModelResource):

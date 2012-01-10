@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block content_header %}
-<h1>{% trans "VoIP Application" %} <small>{% trans "List, add and edit your VoIP application" %}</small></h1>
+<h1>{% trans "Voice Application" %} <small>{% trans "List, add and edit your Voice application" %}</small></h1>
 {% endblock %}
 
 {% block content %}
@@ -33,7 +33,7 @@
 <script type="text/javascript">
 
 $("#flex1").flexigrid({
-    url: "/voipapp_grid/",
+    url: "/voiceapp_grid/",
     method: 'GET',
     dataType: 'json',
 	colModel : [
@@ -54,7 +54,7 @@ $("#flex1").flexigrid({
     sortname: "id",
 	sortorder: "asc",
 	usepager: true,
-	title: '{% trans "VoIP Apps" %}',
+	title: '{% trans "Voice Apps" %}',
 	useRp: true,
 	rp: 10,
 	showTableToggleBtn: true,

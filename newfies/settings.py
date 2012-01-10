@@ -184,7 +184,7 @@ INSTALLED_APPS = (
     'pagination',
     'memcache_status',
     'notification',
-    'voip_app',
+    'voice_app',
     'survey',
     'sentry',
     'raven.contrib.django',

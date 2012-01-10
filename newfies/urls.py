@@ -8,7 +8,7 @@ admin.autodiscover()
 from dialer_campaign.urls import urlpatterns as urlpatterns_dialer_campaign
 from dialer_cdr.urls import urlpatterns as urlpatterns_dialer_cdr
 from user_profile.urls import urlpatterns as urlpatterns_user_profile
-from voip_app.urls import urlpatterns as urlpatterns_voip_app
+from voice_app.urls import urlpatterns as urlpatterns_voice_app
 from survey.urls import urlpatterns as urlpatterns_survey
 
 
@@ -24,7 +24,7 @@ tastypie_api = Api(api_name='v1')
 
 tastypie_api.register(UserResource())
 tastypie_api.register(GatewayResource())
-tastypie_api.register(VoipAppResource())
+tastypie_api.register(VoiceAppResource())
 tastypie_api.register(ContentTypeResource())
 tastypie_api.register(CampaignResource())
 tastypie_api.register(PhonebookResource())
@@ -91,7 +91,7 @@ urlpatterns = patterns('',
 urlpatterns += urlpatterns_dialer_campaign
 urlpatterns += urlpatterns_dialer_cdr
 urlpatterns += urlpatterns_user_profile
-urlpatterns += urlpatterns_voip_app
+urlpatterns += urlpatterns_voice_app
 urlpatterns += urlpatterns_survey
 
 handler404 = 'urls.custom_404_view'

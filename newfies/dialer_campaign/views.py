@@ -1666,7 +1666,7 @@ def campaign_grid(request):
                             'aleg_gateway__name', 'content_type__name',
                             'content_type__app_label', 'object_id',
                             'content_type__model', 'status')\
-                    .filter(user=request.user)#,'voipapp__name'
+                    .filter(user=request.user)
     count = campaign_list.count()
     campaign_list = \
         campaign_list.order_by(sortorder_sign + sortname)[start_page:end_page]
@@ -1852,6 +1852,7 @@ def campaign_change(request, object_id):
         return HttpResponseRedirect("/campaign/")
 
     campaign = Campaign.objects.get(pk=object_id)
+
     content_object = "type:%s-id:%s" % (campaign.content_type_id, campaign.object_id)
     form = CampaignForm(request.user, instance=campaign, initial={'content_object': content_object})
     if request.method == 'POST':
@@ -1861,6 +1862,7 @@ def campaign_change(request, object_id):
             return HttpResponseRedirect('/campaign/')
         else: # Update campaign
             form = CampaignForm(request.user, request.POST, instance=campaign)
+            
             if form.is_valid():
                 obj = form.save(commit=False)
 

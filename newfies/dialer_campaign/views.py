@@ -703,11 +703,10 @@ def index(request):
     """
     template = 'frontend/index.html'
     errorlogin = ''
-    loginform = LoginForm()
     data = {'module': current_view(request),
             'user': request.user,
             'notice_count': notice_count(request),
-            'loginform': loginform,
+            'loginform': LoginForm(),
             'errorlogin': errorlogin,
             'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
@@ -718,10 +717,9 @@ def index(request):
 
 def pleaselog(request):
     template = 'frontend/index.html'
-    loginform = LoginForm()
 
     data = {
-        'loginform': loginform,
+        'loginform': LoginForm(),
         'notlogged': True,
     }
     return render_to_response(template, data,

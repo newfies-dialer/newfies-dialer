@@ -57,9 +57,11 @@ class LoginForm(forms.Form):
     """Client Login Form"""
     user = forms.CharField(max_length=30, label=_('Username:'), required=True)
     user.widget.attrs['class'] = 'input-small'
+    user.widget.attrs['placeholder'] = 'Username'
     password = forms.CharField(max_length=30, label=_('Password:'),
                required=True, widget=forms.PasswordInput())
     password.widget.attrs['class'] = 'input-small'
+    password.widget.attrs['placeholder'] = 'Password'
 
 
 class PhonebookForm(ModelForm):

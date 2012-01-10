@@ -14,9 +14,9 @@ urlpatterns = patterns('',
     # Password reset for Customer UI
     (r'^password_reset/$', 'dialer_campaign.views.cust_password_reset'),
     (r'^password_reset/done/$',
-    'dialer_campaign.views.cust_password_reset_done'),
+                    'dialer_campaign.views.cust_password_reset_done'),
     (r'^reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
-    'dialer_campaign.views.cust_password_reset_confirm'),
+                    'dialer_campaign.views.cust_password_reset_confirm'),
     (r'^reset/done/$', 'dialer_campaign.views.cust_password_reset_complete'),
 
     # Phonebook urls

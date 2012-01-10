@@ -11,7 +11,7 @@ class VoiceAppForm(ModelForm):
 
     class Meta:
         model = VoiceApp
-        fields = ['name', 'description', 'type', 'gateway', 'data']
+        fields = ['name', 'description', 'type', 'data', 'gateway']
         exclude = ('user', )
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),

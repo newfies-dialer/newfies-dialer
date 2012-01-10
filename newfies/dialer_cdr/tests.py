@@ -33,13 +33,13 @@ class BaseAuthenticatedClient(TestCase):
 
 class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
     """Test cases for Newfies-Dialer API."""
-    fixtures = ['gateway.json', 'auth_user', 'voipapp','phonebook',
+    fixtures = ['gateway.json', 'auth_user', 'voiceapp','phonebook',
                 'dialer_setting', 'campaign', 'campaign_subscriber',
                 'callrequest', 'survey', 'survey_question', 'survey_response']
 
     def test_create_campaign(self):
         """Test Function to create a campaign"""
-        data = simplejson.dumps({"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "content_type": "voip_app", "object_id" : "1", "extra_data": "2000"})
+        data = simplejson.dumps({"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "content_type": "voice_app", "object_id" : "1", "extra_data": "2000"})
         response = self.client.post('/api/v1/campaign/',
         data, content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)
@@ -56,7 +56,7 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
     def test_update_campaign(self):
         """Test Function to update a campaign"""
         response = self.client.put('/api/v1/campaign/1/',
-                   simplejson.dumps({"status": "2","content_type": "voip_app", "object_id" : "1"}),
+                   simplejson.dumps({"status": "2","content_type": "voice_app", "object_id" : "1"}),
                    content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 204)
 
@@ -120,7 +120,7 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
         """Test Function to create a callrequest"""
         data = simplejson.dumps({"request_uuid": "2342jtdsf-00153",
          "call_time": "2011-05-01 11:22:33", "phone_number": "8792749823",
-         "content_type": "voip_app", "object_id" : "1", "timeout": "30000", "callerid": "650784355",
+         "content_type": "voice_app", "object_id" : "1", "timeout": "30000", "callerid": "650784355",
          "call_type": "1"})
         response = self.client.post('/api/v1/callrequest/',
         data, content_type='application/json', **self.extra)
@@ -280,11 +280,9 @@ class NewfiesAdminInterfaceTestCase(TestCase):
         response = self.client.get('/admin/dialer_gateway/gateway/')
         self.failUnlessEqual(response.status_code, 200)
 
-        response = self.client.get('/admin/prefix_country/')
+        response = self.client.get('/admin/voice_app/')
         self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/prefix_country/country/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/prefix_country/prefix/')
+        response = self.client.get('/admin/voice_app/voiceapp/')
         self.failUnlessEqual(response.status_code, 200)
 
         response = self.client.get('/admin/survey/')
@@ -301,7 +299,7 @@ class NewfiesAdminInterfaceTestCase(TestCase):
 
 class NewfiesCustomerInterfaceTestCase(BaseAuthenticatedClient):
     """Test cases for Newfies Customer Interface."""
-    fixtures = ['gateway.json', 'auth_user', 'voipapp','phonebook', 'contact',
+    fixtures = ['gateway.json', 'auth_user', 'voiceapp','phonebook', 'contact',
                 'campaign', 'campaign_subscriber', 'survey', 'surve_question',
                 'survey_response']
 
@@ -321,16 +319,16 @@ class NewfiesCustomerInterfaceTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/dashboard.html')
 
-    def test_voipapp_view(self):
-        """Test Function to check voipapp"""
-        response = self.client.get('/voipapp/')
+    def test_voiceapp_view(self):
+        """Test Function to check voiceapp"""
+        response = self.client.get('/voiceapp/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
-                                'frontend/voipapp/list.html')
-        response = self.client.get('/voipapp/add/')
+                                'frontend/voiceapp/list.html')
+        response = self.client.get('/voiceapp/add/')
         self.assertTemplateUsed(response,
-                                'frontend/voipapp/change.html')
-        response = self.client.get('/voipapp/1/')
+                                'frontend/voiceapp/change.html')
+        response = self.client.get('/voiceapp/1/')
         self.assertEqual(response.status_code, 200)        
 
     def test_phonebook_view(self):

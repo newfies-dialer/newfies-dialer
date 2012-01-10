@@ -136,11 +136,11 @@ class CampaignForm(ModelForm):
                 list_pb.append((i[0], i[1]))
             self.fields['phonebook'].choices = list_pb
 
-            #list_voipapp.append((0, '---'))
-            #vp_list = field_list("voipapp", user)
+            #list_voiceapp.append((0, '---'))
+            #vp_list = field_list("voiceapp", user)
             #for i in vp_list:
-            #    list_voipapp.append((i[0], i[1]))
-            #self.fields['voipapp'].choices = list_voipapp
+            #    list_voiceapp.append((i[0], i[1]))
+            #self.fields['voiceapp'].choices = list_voiceapp
 
             list_gw.append((0, '---'))
             gw_list = field_list("gateway", user)
@@ -148,9 +148,9 @@ class CampaignForm(ModelForm):
                 list_gw.append((i[0], i[1]))
             self.fields['aleg_gateway'].choices = list_gw
 
-            from voip_app.models import VoipApp
+            from voice_app.models import VoiceApp
             from survey.models import SurveyApp
-            available_objects = list(VoipApp.objects.filter(user=user))
+            available_objects = list(VoiceApp.objects.filter(user=user))
             available_objects += list(SurveyApp.objects.filter(user=user))
             object_choices = []
             for obj in available_objects:

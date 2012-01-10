@@ -1624,6 +1624,13 @@ def get_url_campaign_status(id, status):
 
     return url_str
 
+def get_app_name(app_label, model_name, object_id):
+    from django.db.models import get_model
+    try:
+        return get_model(app_label, model_name).objects.get(pk=object_id)
+    except:
+        return '-'
+
 
 # Campaign
 @login_required
@@ -1656,8 +1663,10 @@ def campaign_grid(request):
     campaign_list = Campaign.objects\
                     .values('id', 'campaign_code', 'name', 'startingdate',
                             'expirationdate', 'aleg_gateway',
-                            'aleg_gateway__name', 'content_type__name', 'status')\
-                    .filter(user=request.user)#,'voipapp__name'
+                            'aleg_gateway__name', 'content_type__name',
+                            'content_type__app_label', 'object_id',
+                            'content_type__model', 'status')\
+                    .filter(user=request.user)
     count = campaign_list.count()
     campaign_list = \
         campaign_list.order_by(sortorder_sign + sortname)[start_page:end_page]
@@ -1674,6 +1683,9 @@ def campaign_grid(request):
                       row['name'],
                       row['startingdate'].strftime('%Y-%m-%d %H:%M:%S'),
                       row['content_type__name'],
+                      str(get_app_name(row['content_type__app_label'],
+                                       row['content_type__model'],
+                                       row['object_id'])),
                       count_contact_of_campaign(row['id']),
                       get_campaign_status_name(row['status']),
                       '<a href="' + str(row['id']) + '/" class="icon" ' \
@@ -1840,6 +1852,7 @@ def campaign_change(request, object_id):
         return HttpResponseRedirect("/campaign/")
 
     campaign = Campaign.objects.get(pk=object_id)
+
     content_object = "type:%s-id:%s" % (campaign.content_type_id, campaign.object_id)
     form = CampaignForm(request.user, instance=campaign, initial={'content_object': content_object})
     if request.method == 'POST':
@@ -1849,6 +1862,7 @@ def campaign_change(request, object_id):
             return HttpResponseRedirect('/campaign/')
         else: # Update campaign
             form = CampaignForm(request.user, request.POST, instance=campaign)
+            
             if form.is_valid():
                 obj = form.save(commit=False)
 

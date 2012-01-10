@@ -17,9 +17,9 @@ $(document).ready(function() {
         {            
              var confirm_string;
              var contact_count;
-             if(document.location.href.search("/voipapp/") != -1)
+             if(document.location.href.search("/voiceapp/") != -1)
              {
-                 confirm_string = 'you are going to delete '+$fields.length+' voipapp'
+                 confirm_string = 'you are going to delete '+$fields.length+' voiceapp'
              }
              if(document.location.href.search("/contact/") != -1)
              {

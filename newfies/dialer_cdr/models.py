@@ -3,7 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from datetime import *
 from dialer_gateway.models import Gateway
 from dialer_campaign.models import Campaign, CampaignSubscriber
-from voip_app.models import VoipApp
+from voice_app.models import VoiceApp
 from common.intermediate_model_base_class import Model
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
@@ -141,7 +141,7 @@ class Callrequest(Model):
                 verbose_name="A-Leg Gateway",
                 help_text=_("Select Gateway to use to reach the subscriber"))
 
-    #used to define the VoIP App or the Survey
+    #used to define the Voice App or the Survey
     content_type = models.ForeignKey(ContentType, verbose_name=_("Type"))
     object_id = models.PositiveIntegerField(verbose_name=_("Application"))
     content_object = generic.GenericForeignKey('content_type', 'object_id')

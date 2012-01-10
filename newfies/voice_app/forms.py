@@ -2,16 +2,16 @@ from django import forms
 from django.forms import *
 from django.contrib import *
 from django.contrib.admin.widgets import *
-from voip_app.models import *
+from voice_app.models import *
 from datetime import *
 
 
-class VoipAppForm(ModelForm):
-    """VoipApp ModelForm"""
+class VoiceAppForm(ModelForm):
+    """VoiceApp ModelForm"""
 
     class Meta:
-        model = VoipApp
-        fields = ['name', 'description', 'type', 'data','gateway']
+        model = VoiceApp
+        fields = ['name', 'description', 'type', 'data', 'gateway']
         exclude = ('user', )
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),

@@ -36,7 +36,7 @@ from dialer_campaign.function_def import user_attached_with_dialer_settings, \
     check_dialer_setting, dialer_setting_limit
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_gateway.models import Gateway
-from voip_app.models import VoipApp
+from voice_app.models import VoiceApp
 from survey.models import SurveyApp
 
 from settings_local import API_ALLOWED_IP, PLIVO_DEFAULT_DIALCALLBACK_URL
@@ -173,10 +173,10 @@ class IpAddressAuthentication(Authentication):
 
 
 
-class VoipAppResource(ModelResource):
+class VoiceAppResource(ModelResource):
     class Meta:
-        queryset = VoipApp.objects.all()
-        resource_name = 'voipapp'
+        queryset = VoiceApp.objects.all()
+        resource_name = 'voiceapp'
 
 
 class GatewayResource(ModelResource):
@@ -430,14 +430,14 @@ class CampaignValidation(Validation):
 
 
         content_type = bundle.data.get('content_type')
-        if content_type == 'voip_app' or content_type == 'survey':
+        if content_type == 'voice_app' or content_type == 'survey':
             try:
                 content_type_id = ContentType.objects.get(app_label=str(content_type)).id
                 bundle.data['content_type'] = '/api/v1/contenttype/%s/' % content_type_id
             except:
                 errors['chk_content_type'] = ["The ContentType doesn't exist!"]
         else:
-            errors['chk_content_type'] = ["Entered wrong option. Please enter 'voip_app' or 'survey' !"]
+            errors['chk_content_type'] = ["Entered wrong option. Please enter 'voice_app' or 'survey' !"]
 
 
         object_id = bundle.data.get('object_id')
@@ -503,7 +503,7 @@ class CampaignResource(ModelResource):
 
             * ``aleg_gateway`` - Defines the Gateway to use to call the\
                                  subscriber
-            * ``content_type`` - Defines the application (``voip_app`` or ``survey``) to use when the \
+            * ``content_type`` - Defines the application (``voice_app`` or ``survey``) to use when the \
                                  call is established on the A-Leg
             * ``object_id`` - Defines the object of content_type application
             * ``extra_data`` - Defines the additional data to pass to the\
@@ -517,7 +517,7 @@ class CampaignResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "content_type": "voip_app", "object_id" : "1", "extra_data": "2000"}' http://localhost:8000/api/v1/campaign/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "content_type": "voice_app", "object_id" : "1", "extra_data": "2000"}' http://localhost:8000/api/v1/campaign/
 
         Response::
 
@@ -1178,14 +1178,14 @@ class CallrequestValidation(Validation):
             errors['Data'] = ['Data set is empty']
 
         content_type = bundle.data.get('content_type')
-        if content_type == 'voip_app' or content_type == 'survey':
+        if content_type == 'voice_app' or content_type == 'survey':
             try:
                 content_type_id = ContentType.objects.get(app_label=str(content_type)).id
                 bundle.data['content_type'] = '/api/v1/contenttype/%s/' % content_type_id
             except:
                 errors['chk_content_type'] = ["The ContentType doesn't exist!"]
         else:
-            errors['chk_content_type'] = ["Entered wrong option. Please enter 'voip_app' or 'survey' !"]
+            errors['chk_content_type'] = ["Entered wrong option. Please enter 'voice_app' or 'survey' !"]
 
 
         object_id = bundle.data.get('object_id')
@@ -1236,7 +1236,7 @@ class CallrequestResource(ModelResource):
 
     **Relationships**:
 
-        * ``content_type`` - Defines the application (``voip_app`` or ``survey``) to use when the \
+        * ``content_type`` - Defines the application (``voice_app`` or ``survey``) to use when the \
                              call is established on the A-Leg
         * ``object_id`` - Defines the object of content_type application
 
@@ -1248,7 +1248,7 @@ class CallrequestResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"request_uuid": "2342jtdsf-00123", "call_time": "2011-10-20 12:21:22", "phone_number": "8792749823", "content_type":"voip_app", "object_id":1, "timeout": "30000", "callerid": "650784355", "call_type": "1"}' http://localhost:8000/api/v1/callrequest/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"request_uuid": "2342jtdsf-00123", "call_time": "2011-10-20 12:21:22", "phone_number": "8792749823", "content_type":"voice_app", "object_id":1, "timeout": "30000", "callerid": "650784355", "call_type": "1"}' http://localhost:8000/api/v1/callrequest/
 
         Response::
 
@@ -1382,7 +1382,7 @@ class AnswercallValidation(Validation):
         try:
             obj_callrequest = Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
             if not obj_callrequest.content_type:
-                errors['Attached App'] = ['This Call Request is not attached to a VoIP App or survey!']
+                errors['Attached App'] = ['This Call Request is not attached to a Voice App or survey!']
         except:
             errors['ALegRequestUUID'] = ['Call Request cannot be found!']
                 

@@ -17,8 +17,8 @@ APP_TYPE = (
 )
 
 
-class VoipApp(Model):
-    """VoipApp are VoIP application that are defined on the platform, you can
+class VoiceApp(Model):
+    """VoiceApp are VoIP application that are defined on the platform, you can
     have different type of application, some as simple as redirecting a call
     and some as complex as starting a complexe application call flow.
 
@@ -27,15 +27,15 @@ class VoipApp(Model):
 
     **Attributes**:
 
-        * ``name`` - VoIP application name.
-        * ``description`` - description about VoIP application.
+        * ``name`` - Voice application name.
+        * ``description`` - description about Voice application.
         * ``type`` - Application type
 
     **Relationships**:
 
         * ``gateway`` - Foreign key relationship to the Gateway model.
         * ``user`` - Foreign key relationship to the User model.\
-        Each voip app assigned to User
+        Each voice app assigned to User
 
     **Name of DB table**: voip_app
     """
@@ -67,16 +67,16 @@ class VoipApp(Model):
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:
-        db_table = u'voip_app'
-        verbose_name = _("VoIP Application")
-        verbose_name_plural = _("VoIP Applications")
+        db_table = u'voice_app'
+        verbose_name = _("Voice Application")
+        verbose_name_plural = _("Voice Applications")
 
     def __unicode__(self):
             return u"%s" % self.name
 
 
-def get_voipapp_type_name(id):
-    """To get name from voip APP_TYPE"""
+def get_voiceapp_type_name(id):
+    """To get name from voice APP_TYPE"""
     for i in APP_TYPE:
         if i[0] == id:
             return i[1]

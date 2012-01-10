@@ -1,6 +1,8 @@
 TODO
 ====
 
+- Login form on frontend should have "username" / "password" like the Search in this toolbar : http://twitter.github.com/bootstrap/#navigation
+
 - http://127.0.0.1:8000/campaign/
   rename App to Type and add an extra column "App" which will give the name of the voip app or survey
 

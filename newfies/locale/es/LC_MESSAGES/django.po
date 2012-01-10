@@ -366,7 +366,7 @@ msgstr "Fecha"
 #: dialer_campaign/models.py:80 templates/frontend/bootstrap_menu.html:18
 #: templates/frontend/phonebook/list.html:78
 msgid "Phonebooks"
-msgstr "Telefónicos"
+msgstr "Agendas"
 
 #: dialer_campaign/models.py:89 dialer_campaign/models.py:138
 #: templates/frontend/bootstrap_menu.html:19
@@ -1527,7 +1527,7 @@ msgstr "Escritorio"
 
 #: templates/frontend/bootstrap_menu.html:20
 msgid "Audio files"
-msgstr "Los archivos de audio"
+msgstr "Archivos audio"
 
 #: templates/frontend/bootstrap_menu.html:23
 msgid "Reporting"
@@ -1582,7 +1582,7 @@ msgstr "¿Olvidó su contraseña?"
 
 #: templates/frontend/bootstrap_menu.html:83
 msgid "new notifications"
-msgstr "nueva notificación"
+msgstr "nueva(s) notificación(s)"
 
 #: templates/frontend/dashboard.html:23
 msgid "Realtime campaign performance monitoring"
@@ -1766,7 +1766,7 @@ msgstr "Marcación Automática de software"
 
 #: templates/frontend/master.html:188
 msgid "licensed under the "
-msgstr "es un software bajo licencia"
+msgstr "bajo licencia"
 
 #: templates/frontend/campaign/change.html:9
 #: templates/frontend/campaign/change.html:171
@@ -2103,7 +2103,7 @@ msgstr "se va a eliminar una notificación"
 
 #: templates/frontend/registration/user_detail_change.html:26
 msgid "Password, notifications, account limits and number check"
-msgstr "Contraseña, las notificaciones, los cuenta y el número de cheque"
+msgstr "Contraseña, las notificaciones, limites de cuenta y verificación de número"
 
 #: templates/frontend/registration/user_detail_change.html:32
 msgid "Account"
@@ -2115,7 +2115,7 @@ msgstr "Contraseña"
 
 #: templates/frontend/registration/user_detail_change.html:36
 msgid "Number Check"
-msgstr "Número de cheque"
+msgstr "Verificación de Número"
 
 #: templates/frontend/registration/user_detail_change.html:70
 msgid "Change detail"
@@ -2339,7 +2339,7 @@ msgstr "Número de teléfono"
 
 #: user_profile/forms.py:34
 msgid "Check number is authorised to call"
-msgstr "Número de cheque está autorizado a llamar"
+msgstr "Número está autorizado a llamar"
 
 #: user_profile/management.py:11
 msgid "Campaign Started"

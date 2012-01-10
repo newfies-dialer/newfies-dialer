@@ -276,7 +276,7 @@ function addFormField() {
               '</div>'+
         '</div>'+
     '</div>'+
-    '<div id="divTxtRes_'+res_div_count+'"></div><input class="btn info" value="{% trans "Add Response" %}" onclick="javascript:addResFormField('+res_div_count+', 0); return false;" type="button" />'+
+    '<div id="divTxtRes_'+res_div_count+'"></div><input class="btn" value="{% trans "Add Response" %}" onclick="javascript:addResFormField('+res_div_count+', 0); return false;" type="button" />'+
     '</form>' +
     '</div>' +
     '</div><div id="divTxt"></div>');
@@ -519,7 +519,7 @@ function removeResFormField(id) {
                                     {% endif %}
                                 {% endfor %}
                                 <div id="divTxtRes_{{ que.id }}"></div>
-                                <input type="button" class="btn info" value="{% trans "Add Response" %}" onclick="javascript:addResFormField({{ que.id }}, 1); return false;" />
+                                <input type="button" class="btn" value="{% trans "Add Response" %}" onclick="javascript:addResFormField({{ que.id }}, 1); return false;" />
                                 <!--Response forms end-->
                             {% endif %}
 

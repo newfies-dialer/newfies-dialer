@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Newfies-Dialer 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-01-10 19:46+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2012-01-10 21:33+0100\n"
 "Last-Translator: Areski Belaid <areski@gmail.com>\n"
 "Language-Team: Areski Belaid <areski@gmail.com>\n"
 "Language: \n"
@@ -928,14 +928,10 @@ msgstr ""
 
 #: dialer_cdr/admin.py:178
 #, python-format
-msgid "%(total_count)s selected"
-msgid_plural "All %(total_count)s selected"
-msgstr[0] ""
-msgstr[1] ""
 
 #: dialer_cdr/admin.py:182
 #, python-format
-msgid "0 of %(cnt)s selected"
+msgid "%(total_count)s selected"
 msgstr ""
 
 #: dialer_cdr/admin.py:193
@@ -1341,14 +1337,10 @@ msgstr "Importar contactos"
 
 #: templates/admin/dialer_campaign/contact/change_list.html:40
 #: templates/admin/dialer_cdr/voipcall/change_list.html:47
-msgid "Please correct the error below."
-msgid_plural "Please correct the errors below."
-msgstr[0] "Por favor, corrija el error más adelante."
-msgstr[1] "Por favor, corrija los errors más adelante."
 
 #: templates/admin/dialer_campaign/contact/change_list.html:51
 #: templates/admin/dialer_cdr/voipcall/change_list.html:85
-msgid "Filter"
+msgid "Please correct the error below."
 msgstr "Filtro"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:18

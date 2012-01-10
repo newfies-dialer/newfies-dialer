@@ -9,7 +9,7 @@
             {% trans "Update" %}
         {% else %}
             {% trans "Add" %}
-        {% endif %} {% trans "VoIP Application" %} <small>{% trans "Configure your VoIP application" %}</small></h1>
+        {% endif %} {% trans "Voice Applications" %} <small>{% trans "Configure voice application" %}</small></h1>
 {% endblock %}
 
 {% block content %}
@@ -25,7 +25,7 @@
             {% if field.errors %}
                 <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
             {% endif %}
-            <span class="help-block">{{ field.help_text }} </span>
+            <span class="help-block">{{ field.help_text|safe }} </span>
         </div>
      </div>
      {% endfor %}

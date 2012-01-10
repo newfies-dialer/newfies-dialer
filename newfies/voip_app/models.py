@@ -41,13 +41,18 @@ class VoipApp(Model):
     """
     name = models.CharField(max_length=90)
     description = models.TextField(null=True, blank=True,
-                         help_text=_("Description about the Voip Application"))
+                         help_text=_("Voice Application Description"))
     type = models.IntegerField(max_length=20, choices=APP_TYPE, default='1',
            blank=True, null=True, verbose_name=_('Type'))
-    gateway = models.ForeignKey(Gateway, null=True, blank=True,
+    gateway = models.ForeignKey(Gateway, null=True, blank=True, 
+                    verbose_name=_('B-Leg'),
                     help_text=_("Gateway used if we redirect the call"))
     data = models.CharField(max_length=500, blank=True,
-    help_text=_("Data will be using Accordingly according to the type of App. For instance, if type is DIAL, we will dial the phonenumber stored in 'data', if type is CONFERENCE we will redirect in a conference room named by 'data', if we type is PLAYAUDIO file, we will play the audio url from 'data'"))
+                help_text=_("The value of 'data' depends on the type of voice application :<br/>"\
+                    "- Dial : The phone number to dial<br/>"\
+                    "- Conference : Conference room name or number<br/>"\
+                    "- Playaudio : Audio file URL<br/>"\
+                    "- Speak : The text to speak using TTS"))
 
     user = models.ForeignKey('auth.User', related_name='VoIP App owner')
     #extension = models.CharField(max_length=40,

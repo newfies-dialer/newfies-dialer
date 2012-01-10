@@ -23,14 +23,14 @@
               <a href="#" class="dropdown-toggle">{% trans "Reporting" %}</a>
               <ul class="dropdown-menu">
                 <li {% ifequal module 'voipcall_report' %}class="active"{% endifequal %}><a href="/voipcall_report/">{% trans "Call Reports" %}</a></li>
-                <li {% ifequal module 'survey_campaign_report' %}class="active"{% endifequal %}><a href="/survey_report/">{% trans "Survey Reporting" %}</a></li>
+                <li {% ifequal module 'survey_campaign_report' %}class="active"{% endifequal %}><a href="/survey_report/">{% trans "Survey Reports" %}</a></li>
               </ul>
             </li>
 
             <li class="dropdown" data-dropdown="dropdown" >
               <a href="#" class="dropdown-toggle">{% trans "Modules" %}</a>
               <ul class="dropdown-menu">
-                <li {% ifequal module 'voipapp' %}class="active"{% endifequal %}><a href="/voipapp/">{% trans "VoIP Apps" %}</a></li>
+                <li {% ifequal module 'voipapp' %}class="active"{% endifequal %}><a href="/voipapp/">{% trans "Voice Apps" %}</a></li>
                 <li {% ifequal module 'survey' %}class="active"{% endifequal %}><a href="/survey/">{% trans "Surveys" %}</a></li>
                 <li class="divider"></li>
                 <li><a href="http://www.newfies-dialer.org/add-ons" target="_blank">{% trans "Add-ons" %}</a></li>
@@ -48,7 +48,7 @@
                 <li {% ifequal module 'detail_change' %}class="active"{% endifequal %}><a href="/user_detail_change/?action=tabs-3">
                         {% trans "Notifications" %}</a></li>
                 <li {% ifequal module 'detail_change' %}class="active"{% endifequal %}><a href="/user_detail_change/?action=tabs-4">
-                        {% trans "Limitations" %}</a></li>
+                        {% trans "Account Limits" %}</a></li>
                 <li class="divider"></li>
                 {% if user.is_superuser %}
                 <li><a href="/admin/"> {% trans "Administration" %}</a></li>

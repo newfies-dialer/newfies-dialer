@@ -25,6 +25,8 @@ TODO
 
 - Refactor the template, css and code in view
 
+- Fix I18N on some of the pages such as :
+  http://127.0.0.1:8000/survey/1/ (check in spanish)
 
 
 

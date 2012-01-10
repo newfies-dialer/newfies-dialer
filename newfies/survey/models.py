@@ -42,8 +42,9 @@ class Text2speechMessage(models.Model):
 
 class SurveyApp(Sortable):
     """SurveyApp"""
-    name = models.CharField(max_length=90)
-    description = models.TextField(null=True, blank=True,
+    name = models.CharField(max_length=90, verbose_name='Name')
+    description = models.TextField(null=True, blank=True, 
+                         verbose_name='Description',
                          help_text=_("Survey Description"))
     user = models.ForeignKey('auth.User', related_name='owner')
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')

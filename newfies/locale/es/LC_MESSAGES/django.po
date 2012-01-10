@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Newfies-Dialer 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-10 19:46+0100\n"
+"POT-Creation-Date: 2012-01-10 23:42+0100\n"
 "PO-Revision-Date: 2012-01-10 21:33+0100\n"
 "Last-Translator: Areski Belaid <areski@gmail.com>\n"
 "Language-Team: Areski Belaid <areski@gmail.com>\n"
@@ -63,7 +63,7 @@ msgstr "VoIP del servidor"
 msgid "Audio Files"
 msgstr "Archivos de audio"
 
-#: custom_admin_tools/dashboard.py:98 survey/models.py:53
+#: custom_admin_tools/dashboard.py:98 survey/models.py:54
 #: templates/frontend/survey/survey.html:6
 #: templates/frontend/survey/survey_change.html:372
 #: templates/frontend/survey/survey_list.html:23
@@ -192,9 +192,10 @@ msgstr "Nombre de usuario:"
 msgid "Password:"
 msgstr "Contraseña:"
 
-#: dialer_campaign/forms.py:106
-msgid "VoIP Application"
-msgstr "Aplicación VoIP"
+#: dialer_campaign/forms.py:106 dialer_campaign/models.py:329
+#: dialer_cdr/models.py:146
+msgid "Application"
+msgstr "Aplicacione"
 
 #: dialer_campaign/forms.py:177
 #, python-format
@@ -400,9 +401,13 @@ msgstr "Parámetros adicionales"
 msgid "Contact"
 msgstr "Contacto"
 
-#: dialer_campaign/models.py:209 dialer_campaign/models.py:217
-msgid "result string is None"
-msgstr "cadena de resultado es None"
+#: dialer_campaign/models.py:209
+msgid "Error to identify the whitelist"
+msgstr ""
+
+#: dialer_campaign/models.py:217
+msgid "Error to identify the blacklist"
+msgstr ""
 
 #: dialer_campaign/models.py:263
 msgid "Campaign Code"
@@ -511,7 +516,8 @@ msgstr "Tiempo entre reintentos"
 
 #: dialer_campaign/models.py:310
 msgid "Time delay in seconds before retrying contact"
-msgstr "Tiempo de retardo en segundos antes de volver a intentar ponerse en contacto"
+msgstr ""
+"Tiempo de retardo en segundos antes de volver a intentar ponerse en contacto"
 
 #: dialer_campaign/models.py:313 dialer_settings/models.py:38
 msgid "Timeout on Call"
@@ -528,10 +534,6 @@ msgstr "A-Leg Gateway"
 #: dialer_campaign/models.py:319
 msgid "Select outbound gateway"
 msgstr "Seleccione Gateway de salida"
-
-#: dialer_campaign/models.py:329 dialer_cdr/models.py:146
-msgid "Application"
-msgstr "Aplicacione"
 
 #: dialer_campaign/models.py:333
 msgid "Extra Parameters"
@@ -927,11 +929,15 @@ msgid "Database error"
 msgstr "Base de datos de error"
 
 #: dialer_cdr/admin.py:178
-#, python-format
+#, fuzzy, python-format
+msgid "%(total_count)s selected"
+msgid_plural "All %(total_count)s selected"
+msgstr[0] "%(total_count)s seleccionado"
+msgstr[1] "%(total_count)s seleccionado"
 
 #: dialer_cdr/admin.py:182
-#, python-format
-msgid "%(total_count)s selected"
+#, fuzzy, python-format
+msgid "0 of %(cnt)s selected"
 msgstr "%(total_count)s seleccionado"
 
 #: dialer_cdr/admin.py:193
@@ -1002,7 +1008,7 @@ msgstr "Llamada de solicitud de"
 msgid "Call Requests"
 msgstr "Las solicitudes de llamada"
 
-#: dialer_cdr/models.py:206 survey/models.py:116
+#: dialer_cdr/models.py:206 survey/models.py:117
 msgid "VoIP Call-ID"
 msgstr "VoIP Call-ID"
 
@@ -1221,40 +1227,40 @@ msgstr ""
 msgid "Dialer Setting"
 msgstr "Dialer Configuración"
 
-#: survey/models.py:47
+#: survey/models.py:48
 msgid "Survey Description"
 msgstr "Descripción de encuesta"
 
-#: survey/models.py:54 templates/frontend/bootstrap_menu.html:34
+#: survey/models.py:55 templates/frontend/bootstrap_menu.html:34
 msgid "Surveys"
 msgstr "Encuestas"
 
-#: survey/models.py:67
+#: survey/models.py:68
 msgid "Enter your question"
 msgstr "Escriba su pregunta"
 
-#: survey/models.py:70
+#: survey/models.py:71
 msgid "SurveyApp"
 msgstr "Encuesta App"
 
-#: survey/models.py:73
+#: survey/models.py:74
 msgid "Audio File"
 msgstr "Archivo de audio"
 
-#: survey/models.py:75
+#: survey/models.py:76
 msgid "Message type"
 msgstr "Mensaje tipo"
 
-#: survey/models.py:88 templates/frontend/survey/survey_change.html:274
+#: survey/models.py:89 templates/frontend/survey/survey_change.html:274
 #: templates/frontend/survey/survey_change.html:480
 msgid "Key Digit"
 msgstr "Tecla numérica"
 
-#: survey/models.py:89
+#: survey/models.py:90
 msgid "Define the key link to the response"
 msgstr "Definir el vínculo clave para la respuesta"
 
-#: survey/models.py:90 templates/frontend/survey/survey_change.html:275
+#: survey/models.py:91 templates/frontend/survey/survey_change.html:275
 #: templates/frontend/survey/survey_change.html:483
 msgid "Key Value"
 msgstr "Valor de la clave"
@@ -1337,11 +1343,16 @@ msgstr "Importar contactos"
 
 #: templates/admin/dialer_campaign/contact/change_list.html:40
 #: templates/admin/dialer_cdr/voipcall/change_list.html:47
+#, fuzzy
+msgid "Please correct the error below."
+msgid_plural "Please correct the errors below."
+msgstr[0] "Filtro"
+msgstr[1] "Filtro"
 
 #: templates/admin/dialer_campaign/contact/change_list.html:51
 #: templates/admin/dialer_cdr/voipcall/change_list.html:85
-msgid "Please correct the error below."
-msgstr "Filtro"
+msgid "Filter"
+msgstr ""
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:18
 #: templates/frontend/contact/import_contact.html:31
@@ -1657,13 +1668,18 @@ msgstr "PROHIBIDO"
 msgid ""
 "is Voice Broadcasting and AutoDialer software to provide information via the "
 "phone."
-msgstr "es la voz de Radiodifusión y software AutoDialer para proporcionar información a través del teléfono."
+msgstr ""
+"es la voz de Radiodifusión y software AutoDialer para proporcionar "
+"información a través del teléfono."
 
 #: templates/frontend/index.html:11
 msgid ""
 "Newfies-Dialer can scale to make millions of calls daily by using realtime "
 "call processing across multiple servers in the cloud."
-msgstr "Newfies-Dialer se puede ampliar para hacer millones de llamadas diarias mediante el uso de procesamiento de llamadas en tiempo real a través de varios servidores en la nube."
+msgstr ""
+"Newfies-Dialer se puede ampliar para hacer millones de llamadas diarias "
+"mediante el uso de procesamiento de llamadas en tiempo real a través de "
+"varios servidores en la nube."
 
 #: templates/frontend/index.html:20
 msgid ""
@@ -2222,7 +2238,8 @@ msgid "Call Records"
 msgstr "Informe Llamadas"
 
 #: templates/frontend/survey/audio_change.html:13
-msgid "Upload audio to be used in VoIP applications"
+#, fuzzy
+msgid "Upload audio to be used in Voice applications"
 msgstr "Subir audio para ser utilizado en aplicaciones de VoIP"
 
 #: templates/frontend/survey/audio_list.html:20
@@ -2459,7 +2476,11 @@ msgid ""
 "The phone number to dial<br/>- Conference : Conference room name or "
 "number<br/>- Playaudio : Audio file URL<br/>- Speak : The text to speak "
 "using TTS"
-msgstr "El valor de \"datos\" depende del tipo de aplicación de voz: <br/> - Dial: El número de teléfono para marcar <br/> - Conferencia: El nombre de sesión o el número de <br/> - Playaudio: URL del archivo de audio <br/> - Hablar: El texto a hablar con el TTS"
+msgstr ""
+"El valor de \"datos\" depende del tipo de aplicación de voz: <br/> - Dial: "
+"El número de teléfono para marcar <br/> - Conferencia: El nombre de sesión o "
+"el número de <br/> - Playaudio: URL del archivo de audio <br/> - Hablar: El "
+"texto a hablar con el TTS"
 
 #: voice_app/views.py:71
 msgid "Update Voice App"
@@ -2470,5 +2491,12 @@ msgid "Delete Voice App"
 msgstr "Borrar Voz App"
 
 #: voice_app/views.py:175
+#, python-format
 msgid "%(count)s voiceapp(s) are deleted successfully."
 msgstr "%(count)s voz app(s) se ha eliminado correctamente."
+
+#~ msgid "VoIP Application"
+#~ msgstr "Aplicación VoIP"
+
+#~ msgid "result string is None"
+#~ msgstr "cadena de resultado es None"

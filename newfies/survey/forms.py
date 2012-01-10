@@ -85,7 +85,6 @@ class SurveyReportForm(forms.Form):
          # To get user's running campaign list
         if user:
             list = []
-            #list.append((0, '---'))
             pb_list = field_list("campaign", user)
             for i in pb_list:
                 list.append((i[0], i[1]))

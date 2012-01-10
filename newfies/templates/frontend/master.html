@@ -139,21 +139,24 @@
 
     <div class="content">
     
+      {% if errorlogin %}
+          <div class="alert-message error">
+              <strong>{% trans "Alert"  %} : </strong>  {{ errorlogin }}
+          </div>
+          </br>
+      {% else %}
+          {% if notlogged %}
+          <div class="alert-message error">
+              <strong>{% trans "Alert"  %} : </strong>  {% trans "Please login by clicking on login button"  %}
+          </div>
+          </br>
+          {% endif %}
+      {% endif %}
+
         <div class="page-header">
           {% block content_header %}
           <h1>Newfies-Dialer <small>{% trans "Voice Broadcasting solution" %}</small></h1>
           {% endblock %}
-            {% if errorlogin %}
-                <div class="alert-message error">
-                    <strong>{% trans "Alert"  %} : </strong>  {{ errorlogin }}
-                </div>
-            {% else %}
-                {% if notlogged %}
-                <div class="alert-message error">
-                    <strong>{% trans "Alert"  %} : </strong>  {% trans "Please login by clicking on login button"  %}
-                </div>
-                {% endif %}
-            {% endif %}
         </div>
         
         {% block extra_files %}

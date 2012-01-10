@@ -23,7 +23,7 @@ function get_alert_msg(id)
 
 
 {% block content_header %}
-<h1>{% trans "Settings" %} <small>{% trans "configure your settings, change password, limitation and notification" %}</small></h1>
+<h1>{% trans "Settings" %} <small>{% trans "Password, notifications, account limits and number check" %}</small></h1>
 {% endblock %}
 
 {% block content %}
@@ -32,8 +32,8 @@ function get_alert_msg(id)
     <li {% if action == "tabs-1" %}class="active"{% endif %}><a href="#tabs-1">{% trans "Account" %}</a></li>
     <li {% if action == "tabs-2" %}class="active"{% endif %}><a href="#tabs-2">{% trans "Password" %}</a></li>
     <li {% if action == "tabs-3" %}class="active"{% endif %}><a href="#tabs-3">{% trans "Notifications" %}</a></li>
-    <li {% if action == "tabs-4" %}class="active"{% endif %}><a href="#tabs-4">{% trans "Limitation" %}</a></li>
-    <li {% if action == "tabs-5" %}class="active"{% endif %}><a href="#tabs-5">{% trans "Authorized" %}</a></li>
+    <li {% if action == "tabs-4" %}class="active"{% endif %}><a href="#tabs-4">{% trans "Account Limits" %}</a></li>
+    <li {% if action == "tabs-5" %}class="active"{% endif %}><a href="#tabs-5">{% trans "Number Check" %}</a></li>
 </ul>
 
 <div class="pill-content">
@@ -134,11 +134,11 @@ function get_alert_msg(id)
                 {display: '{% trans "Action" %}', name: '', width : 70, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
                 ],
             buttons : [
-                {name: '{% trans "Delete all notification" %}', bclass: 'delete', onpress : delete_button},
+                {name: '{% trans "Delete all notifications" %}', bclass: 'delete', onpress : delete_button},
                 {separator: true},
                 {name: '{% trans "Mark as read" %}', bclass: 'add', onpress : make_read_button},
                 {separator: true},
-                {name: '{% trans "Mark All as read" %}', bclass: 'add', onpress : mark_read_all_button},
+                {name: '{% trans "Mark all as read" %}', bclass: 'add', onpress : mark_read_all_button},
                 ],
             sortname: "id",
             sortorder: "desc",
@@ -215,11 +215,11 @@ function get_alert_msg(id)
                 <td>{{ dialer_set.max_calltimeout }}</td>
             </tr>
             <tr>
-                <td>{% trans "Maximum campaign" %}</td>
+                <td>{% trans "Maximum campaigns" %}</td>
                 <td>{{ dialer_set.max_number_campaign }}</td>
             </tr>
             <tr>
-                <td>{% trans "Maximum subscriber per campaign" %}</td>
+                <td>{% trans "Maximum subscribers per campaign" %}</td>
                 <td>{{ dialer_set.max_number_subscriber_campaign }}</td>
             </tr>
             <tr>

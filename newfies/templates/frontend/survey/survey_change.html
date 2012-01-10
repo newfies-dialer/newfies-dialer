@@ -178,46 +178,31 @@
 
                 // survey question sorting logic
                 var result = $('.column').sortable('toArray');
-                //alert(result);
                 var id = (document.getElementById("id") ? document.getElementById("id").value : 0) ;
-                var flag = '0';//unset
+                var flag = '0'; // unset
                 j=1; // sort order
-                for(i=0; i < (result.length)-1; i++)
-                {
-                    if(result[i].split('row')[0]=='')
-                    {
-                        //alert(result[i].split('row')[1]);
-                        //alert(my_new_que.indexOf(result[i].split('row')[1]));
-                        for (inner=0; inner < my_new_que.length; inner++)
-                        {
-                            if(inner == result[i].split('row')[1])
-                            {
-                                //alert(my_new_que[result[i].split('row')[1]] + '-' + j);
+                for(i=0; i < (result.length)-1; i++) {
+                    if(result[i].split('row')[0]=='') {
+                        for (inner=0; inner < my_new_que.length; inner++) {
+                            if(inner == result[i].split('row')[1]) {
                                 question_sort_order(my_new_que[result[i].split('row')[1]], j);
                                 flag = 1; //set
                                 j++;
                             }
-                            if(flag==1)
-                            {
+                            if(flag==1) {
                                 break;
                             }
                         }
                         //for existing questions
-                        if(flag==1)
-                        {
-                            //reset
-                            flag=0;
+                        if(flag==1) {
+                            flag=0; // reset
                             continue;
-                        }
-                        else
-                        {
-                            //alert(result[i].split('row')[1] + '-' + j);
+                        } else {
                             question_sort_order(result[i].split('row')[1], j);
                             j++;
                         }
                     }
                 }
-                //alert('Questions have been successfully sorted!!');
             }
 		});
 
@@ -384,7 +369,7 @@ function removeResFormField(id) {
             {% trans "Update" %}
         {% else %}
             {% trans "Add" %}
-        {% endif %} {% trans "Survey" %} <small>{% trans "Configure your survey" %}</small></h1>
+        {% endif %} {% trans "Survey" %} <small>{% trans "Survey configuration" %}</small></h1>
 {% endblock %}
 
 

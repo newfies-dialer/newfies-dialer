@@ -44,7 +44,7 @@ class SurveyApp(Sortable):
     """SurveyApp"""
     name = models.CharField(max_length=90)
     description = models.TextField(null=True, blank=True,
-                         help_text=_("Survey Application Description"))
+                         help_text=_("Survey Description"))
     user = models.ForeignKey('auth.User', related_name='owner')
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')
     updated_date = models.DateTimeField(auto_now=True)

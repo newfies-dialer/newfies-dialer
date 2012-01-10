@@ -206,7 +206,7 @@ def common_contact_authorization(user, str_contact):
             if result:
                 return True
         except ValueError:
-            print _("result string is None")
+            print _("Error to identify the whitelist")
 
     if blacklist and len(blacklist) > 0:
         try:
@@ -214,8 +214,8 @@ def common_contact_authorization(user, str_contact):
             if result:
                 return False
         except ValueError:
-            print _("result string is None")
-
+            print _("Error to identify the blacklist")
+    
     return True
 
 

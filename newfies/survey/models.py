@@ -85,7 +85,7 @@ class SurveyQuestion(Sortable):
 
 class SurveyResponse(models.Model):
     """SurveyResponse"""
-    key = models.CharField(max_length=9, blank=False,
+    key = models.CharField(max_length=9, blank=False, verbose_name=_("Key Digit"),
                            help_text=_('Define the key link to the response')) # 1 ; 2
     keyvalue = models.CharField(max_length=150, blank=True, verbose_name=_("Key Value")) # Orange ; Kiwi
     created_date = models.DateTimeField(auto_now_add=True)

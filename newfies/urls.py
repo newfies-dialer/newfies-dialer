@@ -10,7 +10,7 @@ from dialer_cdr.urls import urlpatterns as urlpatterns_dialer_cdr
 from user_profile.urls import urlpatterns as urlpatterns_user_profile
 from voice_app.urls import urlpatterns as urlpatterns_voice_app
 from survey.urls import urlpatterns as urlpatterns_survey
-
+import os
 
 from tastypie.api import Api
 from api.resources import *
@@ -93,6 +93,13 @@ urlpatterns += urlpatterns_dialer_cdr
 urlpatterns += urlpatterns_user_profile
 urlpatterns += urlpatterns_voice_app
 urlpatterns += urlpatterns_survey
+
+
+urlpatterns += patterns('',
+    (r'^%s/(?P<path>.*)$' % settings.MEDIA_URL.strip(os.sep),
+        'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+)
+
 
 handler404 = 'urls.custom_404_view'
 handler500 = 'urls.custom_500_view'

@@ -346,6 +346,10 @@ func_install_frontend(){
     chown $APACHE_USER:$APACHE_USER /usr/share/newfies/.python-eggs
     mkdir database
     
+    #upload audio files
+    mkdir -p /usr/share/newfies/usermedia/upload/audiofiles
+    chown -R $APACHE_USER:$APACHE_USER /usr/share/newfies/usermedia
+    
     #following lines is for apache logs
     touch /var/log/newfies/newfies-django.log
     touch /var/log/newfies/newfies-django-db.log

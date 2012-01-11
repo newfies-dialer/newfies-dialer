@@ -109,7 +109,7 @@ You can also import your call list from csv files, via clicking on
 
 
 .. image:: ../_static/images/customer/import_contact.png
-    :width: 1000
+
 
 
 .. _campaign:
@@ -126,7 +126,8 @@ linked with the contacts.
 
 
 .. image:: ../_static/images/customer/update_campaign.png
-    :width: 1000
+    
+.. image:: ../_static/images/customer/update_campaign_part2.png
 
 
 .. _apply-dialer-settings:
@@ -174,7 +175,6 @@ call report into a csv file.
 
 
 .. image:: ../_static/images/customer/callreport.png
-    :width: 1000
 
 
 .. _survey-report:

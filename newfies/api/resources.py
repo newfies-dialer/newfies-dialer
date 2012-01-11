@@ -1538,7 +1538,7 @@ class DialCallbackValidation(Validation):
         try:
             callrequest = Callrequest.objects.get(aleg_uuid=opt_aleg_uuid)
         except:
-            errors['CallRequest'] = ["CallRequest not found - uuid:%s" % opt_request_uuid]
+            errors['CallRequest'] = ["Call request not found - uuid:%s" % opt_request_uuid]
         return errors
 
 
@@ -1672,7 +1672,7 @@ class HangupcallValidation(Validation):
         try:
             callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid)
         except:
-            errors['CallRequest'] = ["CallRequest not found - uuid:%s" % opt_request_uuid]
+            errors['CallRequest'] = ["Call request not found - uuid:%s" % opt_request_uuid]
         
         return errors
 

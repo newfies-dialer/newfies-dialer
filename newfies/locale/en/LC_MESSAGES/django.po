@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-11 12:23+0100\n"
+"POT-Creation-Date: 2012-01-11 16:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -121,11 +121,11 @@ msgstr ""
 msgid "Contact already exists !!"
 msgstr ""
 
-#: dialer_campaign/admin.py:231 dialer_campaign/views.py:1509
+#: dialer_campaign/admin.py:231
 #, python-format
 msgid ""
-"%(contact_record_count)s Contact(s) are uploaded successfully out of "
-"%(total_rows)s row(s) !!"
+"%(contact_record_count)s Contact(s) are uploaded, out of %(total_rows)s row"
+"(s) !!"
 msgstr ""
 
 #: dialer_campaign/admin.py:237
@@ -676,6 +676,13 @@ msgstr ""
 
 #: dialer_campaign/views.py:1494
 msgid "Subscriber already exists!"
+msgstr ""
+
+#: dialer_campaign/views.py:1509
+#, python-format
+msgid ""
+"%(contact_record_count)s Contact(s) are uploaded successfully out of "
+"%(total_rows)s row(s) !!"
 msgstr ""
 
 #: dialer_campaign/views.py:1516
@@ -1898,7 +1905,11 @@ msgid "Delete"
 msgstr ""
 
 #: templates/frontend/campaign/list.html:15
-msgid "you are going to delete a campaign"
+#: templates/frontend/contact/list.html:23
+#: templates/frontend/registration/user_detail_change.html:16
+#: templates/frontend/survey/audio_list.html:20
+#: templates/frontend/survey/survey_list.html:15
+msgid "Confirm deletion?"
 msgstr ""
 
 #: templates/frontend/campaign/list.html:23
@@ -2040,10 +2051,6 @@ msgstr ""
 msgid "Subscriber(s) not imported"
 msgstr ""
 
-#: templates/frontend/contact/list.html:23
-msgid "you are going to delete the contact from your phonebook"
-msgstr ""
-
 #: templates/frontend/contact/list.html:40
 msgid "List, add and edit contacts"
 msgstr ""
@@ -2066,7 +2073,7 @@ msgid "Contacts are stored in phonebooks"
 msgstr ""
 
 #: templates/frontend/phonebook/list.html:30
-msgid "you are going to delete phonebook with"
+msgid "Please confirm to delete this phonebook with"
 msgstr ""
 
 #: templates/frontend/phonebook/list.html:30
@@ -2160,10 +2167,6 @@ msgstr ""
 
 #: templates/frontend/registration/password_reset_form.html:32
 msgid "Reset my password"
-msgstr ""
-
-#: templates/frontend/registration/user_detail_change.html:16
-msgid "you are going to delete a notification"
 msgstr ""
 
 #: templates/frontend/registration/user_detail_change.html:26
@@ -2290,10 +2293,6 @@ msgstr ""
 msgid "Upload audio to be used in Voice applications"
 msgstr ""
 
-#: templates/frontend/survey/audio_list.html:20
-msgid "you are going to delete audio from your audio list"
-msgstr ""
-
 #: templates/frontend/survey/audio_list.html:28
 msgid "List, upload and edit audio files"
 msgstr ""
@@ -2331,10 +2330,6 @@ msgstr ""
 
 #: templates/frontend/survey/survey_change.html:544
 msgid "Update Survey"
-msgstr ""
-
-#: templates/frontend/survey/survey_list.html:15
-msgid "you are going to delete survey from your surveys"
 msgstr ""
 
 #: templates/frontend/survey/survey_list.html:23

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Newfies-Dialer 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-11 13:11+0100\n"
+"POT-Creation-Date: 2012-01-11 16:50+0100\n"
 "PO-Revision-Date: 2012-01-10 21:33+0100\n"
 "Last-Translator: Areski Belaid <areski@gmail.com>\n"
 "Language-Team: Areski Belaid <areski@gmail.com>\n"
@@ -124,11 +124,11 @@ msgstr ""
 msgid "Contact already exists !!"
 msgstr "Contacto ya existe!"
 
-#: dialer_campaign/admin.py:231 dialer_campaign/views.py:1509
-#, python-format
+#: dialer_campaign/admin.py:231
+#, fuzzy, python-format
 msgid ""
-"%(contact_record_count)s Contact(s) are uploaded successfully out of "
-"%(total_rows)s row(s) !!"
+"%(contact_record_count)s Contact(s) are uploaded, out of %(total_rows)s row"
+"(s) !!"
 msgstr ""
 "%(contact_record_count)s Contact(s) son uploaded éxito de %(total_rows)s fila"
 "(s)!"
@@ -692,6 +692,15 @@ msgstr "%(count)s contacto(s) se ha eliminado."
 #: dialer_campaign/views.py:1494
 msgid "Subscriber already exists!"
 msgstr "El suscriptor ya existen!"
+
+#: dialer_campaign/views.py:1509
+#, python-format
+msgid ""
+"%(contact_record_count)s Contact(s) are uploaded successfully out of "
+"%(total_rows)s row(s) !!"
+msgstr ""
+"%(contact_record_count)s Contact(s) son uploaded éxito de %(total_rows)s fila"
+"(s)!"
 
 #: dialer_campaign/views.py:1516
 msgid "Invalid value for import! Please check the import samples."
@@ -1544,7 +1553,7 @@ msgstr "CONTACTO DE ESTADO = ('1'-'ACTIVE') ('0'-'INACTIVE')"
 #: templates/frontend/survey/survey_report.html:33
 #: templates/frontend/voiceapp/change.html:37
 msgid "Submit"
-msgstr "Presentar"
+msgstr "Someter"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:60
 #: templates/admin/dialer_cdr/voipcall/change_list.html:60
@@ -1945,8 +1954,12 @@ msgid "Delete"
 msgstr "Borrar"
 
 #: templates/frontend/campaign/list.html:15
-msgid "you are going to delete a campaign"
-msgstr "you are going to borrar a campaign"
+#: templates/frontend/contact/list.html:23
+#: templates/frontend/registration/user_detail_change.html:16
+#: templates/frontend/survey/audio_list.html:20
+#: templates/frontend/survey/survey_list.html:15
+msgid "Confirm deletion?"
+msgstr ""
 
 #: templates/frontend/campaign/list.html:23
 msgid "List, add and edit campaigns"
@@ -2087,10 +2100,6 @@ msgstr "Suscriptor(s) importado"
 msgid "Subscriber(s) not imported"
 msgstr "Suscriptor(s) no importado"
 
-#: templates/frontend/contact/list.html:23
-msgid "you are going to delete the contact from your phonebook"
-msgstr "se va a eliminar contacto de su agenda"
-
 #: templates/frontend/contact/list.html:40
 msgid "List, add and edit contacts"
 msgstr "Lista, agregar y editar contactos"
@@ -2113,7 +2122,8 @@ msgid "Contacts are stored in phonebooks"
 msgstr "Los contactos se almacenan en directorios telefónicos"
 
 #: templates/frontend/phonebook/list.html:30
-msgid "you are going to delete phonebook with"
+#, fuzzy
+msgid "Please confirm to delete this phonebook with"
 msgstr "se va a borrar de la agenda con"
 
 #: templates/frontend/phonebook/list.html:30
@@ -2220,10 +2230,6 @@ msgstr ""
 #: templates/frontend/registration/password_reset_form.html:32
 msgid "Reset my password"
 msgstr "Perdí mi contraseña"
-
-#: templates/frontend/registration/user_detail_change.html:16
-msgid "you are going to delete a notification"
-msgstr "se va a eliminar una notificación"
 
 #: templates/frontend/registration/user_detail_change.html:26
 msgid "Password, notifications, account limits and number check"
@@ -2350,10 +2356,6 @@ msgstr "Informe Llamadas"
 msgid "Upload audio to be used in Voice applications"
 msgstr "Subir audio para ser utilizado en aplicaciones de Voz"
 
-#: templates/frontend/survey/audio_list.html:20
-msgid "you are going to delete audio from your audio list"
-msgstr "se va a borrar de audio de la lista de audio"
-
 #: templates/frontend/survey/audio_list.html:28
 msgid "List, upload and edit audio files"
 msgstr "Lista, cargar y editar archivos de audio"
@@ -2392,10 +2394,6 @@ msgstr "Añadir pregunta"
 #: templates/frontend/survey/survey_change.html:544
 msgid "Update Survey"
 msgstr "Editar la encuesta"
-
-#: templates/frontend/survey/survey_list.html:15
-msgid "you are going to delete survey from your surveys"
-msgstr "se va a borrar la encuesta de las encuestas"
 
 #: templates/frontend/survey/survey_list.html:23
 msgid "List, add and edit surveys"

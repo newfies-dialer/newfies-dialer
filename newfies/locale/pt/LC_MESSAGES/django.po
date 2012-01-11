@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-11 13:16+0100\n"
+"POT-Creation-Date: 2012-01-11 16:50+0100\n"
 "PO-Revision-Date: 2012-01-06 20:33-0300\n"
 "Last-Translator: Emerson Reis <eluizbr@gmail.com>\n"
 "Language-Team: PORTUGUES BRASIL <eluizbr@gmail.com>\n"
@@ -109,7 +109,7 @@ msgstr "Opções avançadas"
 #: dialer_campaign/admin.py:69 dialer_campaign/views.py:1765
 #, python-format
 msgid "you have too many campaigns. Max allowed %(limit)s"
-msgstr "você tem muitas campanhas. Max permitido %(limite)s"
+msgstr "você tem muitas campanhas. Max permitido %(limit)s"
 
 #: dialer_campaign/admin.py:123 dialer_campaign/admin.py:162
 #: dialer_campaign/views.py:1310 dialer_campaign/views.py:1445
@@ -117,17 +117,18 @@ msgstr "você tem muitas campanhas. Max permitido %(limite)s"
 msgid ""
 "You have too many contacts per campaign. You are allowed a maximum of "
 "%(limit)s"
-msgstr "Você tem muitos contatos por campanha. Está permitido um máximo de %(limite)s"
+msgstr ""
+"Você tem muitos contatos por campanha. Está permitido um máximo de %(limit)s"
 
 #: dialer_campaign/admin.py:215
 msgid "Contact already exists !!"
 msgstr "O contato já existe !!"
 
-#: dialer_campaign/admin.py:231 dialer_campaign/views.py:1509
-#, python-format
+#: dialer_campaign/admin.py:231
+#, fuzzy, python-format
 msgid ""
-"%(contact_record_count)s Contact(s) are uploaded successfully out of "
-"%(total_rows)s row(s) !!"
+"%(contact_record_count)s Contact(s) are uploaded, out of %(total_rows)s row"
+"(s) !!"
 msgstr ""
 "%(contact_record_count)s Contato(s) foram carregados com sucesso "
 "%(total_rows)s coluna(s) !!"
@@ -696,6 +697,15 @@ msgstr "%(count)s campanha(s) apagada com sucesso."
 msgid "Subscriber already exists!"
 msgstr "O contato já existe !!"
 
+#: dialer_campaign/views.py:1509
+#, python-format
+msgid ""
+"%(contact_record_count)s Contact(s) are uploaded successfully out of "
+"%(total_rows)s row(s) !!"
+msgstr ""
+"%(contact_record_count)s Contato(s) foram carregados com sucesso "
+"%(total_rows)s coluna(s) !!"
+
 #: dialer_campaign/views.py:1516
 #, fuzzy
 msgid "Invalid value for import! Please check the import samples."
@@ -949,11 +959,15 @@ msgid "Database error"
 msgstr "De erro de banco de dados"
 
 #: dialer_cdr/admin.py:178
-#, python-format
+#, fuzzy, python-format
+msgid "%(total_count)s selected"
+msgid_plural "All %(total_count)s selected"
+msgstr[0] "%(total_count)s selecionados"
+msgstr[1] "%(total_count)s selecionados"
 
 #: dialer_cdr/admin.py:182
-#, python-format
-msgid "%(total_count)s selected"
+#, fuzzy, python-format
+msgid "0 of %(cnt)s selected"
 msgstr "%(total_count)s selecionados"
 
 #: dialer_cdr/admin.py:193
@@ -1507,11 +1521,16 @@ msgstr "Importar contatos"
 
 #: templates/admin/dialer_campaign/contact/change_list.html:40
 #: templates/admin/dialer_cdr/voipcall/change_list.html:47
+#, fuzzy
+msgid "Please correct the error below."
+msgid_plural "Please correct the errors below."
+msgstr[0] "Filtro"
+msgstr[1] "Filtro"
 
 #: templates/admin/dialer_campaign/contact/change_list.html:51
 #: templates/admin/dialer_cdr/voipcall/change_list.html:85
-msgid "Please correct the error below."
-msgstr "Filtro"
+msgid "Filter"
+msgstr ""
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:18
 #: templates/frontend/contact/import_contact.html:31
@@ -1822,13 +1841,17 @@ msgstr "NEGADO"
 msgid ""
 "is Voice Broadcasting and AutoDialer software to provide information via the "
 "phone."
-msgstr "é voz Radiodifusão e AutoDialer software para fornecer informações através do telefone."
+msgstr ""
+"é voz Radiodifusão e AutoDialer software para fornecer informações através "
+"do telefone."
 
 #: templates/frontend/index.html:11
 msgid ""
 "Newfies-Dialer can scale to make millions of calls daily by using realtime "
 "call processing across multiple servers in the cloud."
-msgstr "Newfies-Dialer pode ser escalado para fazer milhões de chamadas diárias usando processamento de chamadas em tempo real em vários servidores na nuvem."
+msgstr ""
+"Newfies-Dialer pode ser escalado para fazer milhões de chamadas diárias "
+"usando processamento de chamadas em tempo real em vários servidores na nuvem."
 
 #: templates/frontend/index.html:20
 msgid ""
@@ -1959,8 +1982,12 @@ msgid "Delete"
 msgstr "Apagar"
 
 #: templates/frontend/campaign/list.html:15
-msgid "you are going to delete a campaign"
-msgstr "você está indo para excluir uma campanha"
+#: templates/frontend/contact/list.html:23
+#: templates/frontend/registration/user_detail_change.html:16
+#: templates/frontend/survey/audio_list.html:20
+#: templates/frontend/survey/survey_list.html:15
+msgid "Confirm deletion?"
+msgstr ""
 
 #: templates/frontend/campaign/list.html:23
 msgid "List, add and edit campaigns"
@@ -2103,10 +2130,6 @@ msgstr "Assinante(s) não importado(s)"
 msgid "Subscriber(s) not imported"
 msgstr "Assinante(s) não importado(s)"
 
-#: templates/frontend/contact/list.html:23
-msgid "you are going to delete the contact from your phonebook"
-msgstr "você está indo para excluir o contato de sua agenda"
-
 #: templates/frontend/contact/list.html:40
 msgid "List, add and edit contacts"
 msgstr "Lista, adicionar e editar contatos"
@@ -2129,7 +2152,8 @@ msgid "Contacts are stored in phonebooks"
 msgstr "Os contatos são armazenados em listas telefônicas"
 
 #: templates/frontend/phonebook/list.html:30
-msgid "you are going to delete phonebook with"
+#, fuzzy
+msgid "Please confirm to delete this phonebook with"
 msgstr "você está indo para excluir da agenda telefônica com"
 
 #: templates/frontend/phonebook/list.html:30
@@ -2235,10 +2259,6 @@ msgstr ""
 #: templates/frontend/registration/password_reset_form.html:32
 msgid "Reset my password"
 msgstr "Redefinir minha senha"
-
-#: templates/frontend/registration/user_detail_change.html:16
-msgid "you are going to delete a notification"
-msgstr "você está indo para excluir uma notificação"
 
 #: templates/frontend/registration/user_detail_change.html:26
 msgid "Password, notifications, account limits and number check"
@@ -2364,10 +2384,6 @@ msgstr "Relatório de chamadas"
 msgid "Upload audio to be used in Voice applications"
 msgstr "Upload de áudio a ser usado em aplicações de voz"
 
-#: templates/frontend/survey/audio_list.html:20
-msgid "you are going to delete audio from your audio list"
-msgstr "você vai apagar o áudio de sua lista de áudio"
-
 #: templates/frontend/survey/audio_list.html:28
 msgid "List, upload and edit audio files"
 msgstr "Lista, upload e editar arquivos de áudio"
@@ -2407,10 +2423,6 @@ msgstr "Adicionar pergunta"
 #, fuzzy
 msgid "Update Survey"
 msgstr "Atualizar"
-
-#: templates/frontend/survey/survey_list.html:15
-msgid "you are going to delete survey from your surveys"
-msgstr "você está indo para apagar pesquisa de suas pesquisas"
 
 #: templates/frontend/survey/survey_list.html:23
 msgid "List, add and edit surveys"
@@ -2589,7 +2601,11 @@ msgid ""
 "The phone number to dial<br/>- Conference : Conference room name or "
 "number<br/>- Playaudio : Audio file URL<br/>- Speak : The text to speak "
 "using TTS"
-msgstr "O valor de &#39;dados&#39; depende do tipo de aplicação de voz: <br/> - Dial: O número de telefone para discar <br/> - Conferência: Sala de conferências nome ou número <br/> - Playaudio: URL do arquivo de áudio <br/> - Falar: O texto a falar usando TTS"
+msgstr ""
+"O valor de &#39;dados&#39; depende do tipo de aplicação de voz: <br/> - "
+"Dial: O número de telefone para discar <br/> - Conferência: Sala de "
+"conferências nome ou número <br/> - Playaudio: URL do arquivo de áudio <br/> "
+"- Falar: O texto a falar usando TTS"
 
 #: voice_app/views.py:71
 msgid "Update Voice App"

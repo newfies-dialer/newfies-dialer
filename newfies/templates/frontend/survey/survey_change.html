@@ -227,7 +227,8 @@ var res_div_count = 0;
 // To add new question form
 function addFormField() {
 
-    var id = ( document.getElementById("id") ? document.getElementById("id").value : 0) ;
+    //var id = ( document.getElementById("id") ? document.getElementById("id").value : 0) ;
+    var id = ( document.getElementById("id_new_que_form") ? document.getElementById("id_new_que_form").value : 0)
     var id_res = ( document.getElementById("id_res") ? document.getElementById("id_res").value : 1);
 
 	$("#divTxt").replaceWith('<div id="row' + id + '" class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">\
@@ -276,7 +277,7 @@ function addFormField() {
               '</div>'+
         '</div>'+
     '</div>'+
-    '<div id="divTxtRes_'+res_div_count+'"></div><input class="btn" value="{% trans "Add Response" %}" onclick="javascript:addResFormField('+res_div_count+', 0); return false;" type="button" />'+
+    '<div id="divTxtRes_'+res_div_count+'"></div><input class="btn" value="{% trans "Add Response" %}" onclick="javascript:addResFormField('+id+', 0); return false;" type="button" />'+
     '</form>' +
     '</div>' +
     '</div><div id="divTxt"></div>');

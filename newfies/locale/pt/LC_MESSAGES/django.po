@@ -2359,7 +2359,7 @@ msgstr "Pergunta nova"
 #: templates/frontend/survey/survey_change.html:266
 #: templates/frontend/survey/survey_change.html:464
 msgid "Delete question"
-msgstr "Excluir pergunta"
+msgstr "Apagar pergunta"
 
 #: templates/frontend/survey/survey_change.html:280
 #: templates/frontend/survey/survey_change.html:523
@@ -2562,7 +2562,7 @@ msgstr "Atualização de voz App"
 
 #: voice_app/views.py:75
 msgid "Delete Voice App"
-msgstr "Excluir Voz App"
+msgstr "Apagar Voz App"
 
 #: voice_app/views.py:175
 #, python-format

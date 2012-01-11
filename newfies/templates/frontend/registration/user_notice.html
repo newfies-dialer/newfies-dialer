@@ -18,14 +18,12 @@
     </tr>
     </thead>
     {% if notice %}
-       
-        <tr>               
-            <td>{{ notice.message }}</td>
-            <td>{{ notice.notice_type }}</td>
-            <td>{{ notice.sender }}</td>
-            <td>{{ notice.added|timesince }}</td>
-        </tr>
-        
+      <tr>               
+        <td>{{ notice.message }}</td>
+        <td>{{ notice.notice_type }}</td>
+        <td>{{ notice.sender }}</td>
+        <td>{{ notice.added|timesince }}</td>
+      </tr>
     {% else %}
         <tr><td colspan="4" align="center">{% trans 'No Record(s) found.' %}</td></tr>
     {% endif %}

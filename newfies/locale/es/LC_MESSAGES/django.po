@@ -125,12 +125,11 @@ msgid "Contact already exists !!"
 msgstr "Contacto ya existe!"
 
 #: dialer_campaign/admin.py:231
-#, fuzzy, python-format
 msgid ""
 "%(contact_record_count)s Contact(s) are uploaded, out of %(total_rows)s row"
 "(s) !!"
 msgstr ""
-"%(contact_record_count)s Contact(s) son uploaded éxito de %(total_rows)s fila"
+"%(contact_record_count)s Contact(s) son subido con éxito de %(total_rows)s"
 "(s)!"
 
 #: dialer_campaign/admin.py:237
@@ -952,15 +951,11 @@ msgstr "Base de datos de error"
 
 #: dialer_cdr/admin.py:178
 #, python-format
-msgid "%(total_count)s selected"
-msgid_plural "All %(total_count)s selected"
-msgstr[0] "%(total_count)s seleccionado"
-msgstr[1] "%(total_count)s seleccionados"
 
 #: dialer_cdr/admin.py:182
 #, python-format
-msgid "0 of %(cnt)s selected"
-msgstr "0 de %(cnt)s seleccionado"
+msgid "%(total_count)s selected"
+msgstr "%(total_count)s seleccionado"
 
 #: dialer_cdr/admin.py:193
 msgid "VoIP Report"
@@ -1495,15 +1490,11 @@ msgstr "Importar contactos"
 
 #: templates/admin/dialer_campaign/contact/change_list.html:40
 #: templates/admin/dialer_cdr/voipcall/change_list.html:47
-msgid "Please correct the error below."
-msgid_plural "Please correct the errors below."
-msgstr[0] "Por favor, corrija el error por debajo"
-msgstr[1] "Por favor, corrija los errores por debajo"
 
 #: templates/admin/dialer_campaign/contact/change_list.html:51
 #: templates/admin/dialer_cdr/voipcall/change_list.html:85
-msgid "Filter"
-msgstr ""
+msgid "Please correct the error below."
+msgstr "Por favor, corrija el error más adelante."
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:18
 #: templates/frontend/contact/import_contact.html:31
@@ -1959,7 +1950,7 @@ msgstr "Borrar"
 #: templates/frontend/survey/audio_list.html:20
 #: templates/frontend/survey/survey_list.html:15
 msgid "Confirm deletion?"
-msgstr ""
+msgstr "Confirmar la eliminación?"
 
 #: templates/frontend/campaign/list.html:23
 msgid "List, add and edit campaigns"
@@ -2122,9 +2113,8 @@ msgid "Contacts are stored in phonebooks"
 msgstr "Los contactos se almacenan en directorios telefónicos"
 
 #: templates/frontend/phonebook/list.html:30
-#, fuzzy
 msgid "Please confirm to delete this phonebook with"
-msgstr "se va a borrar de la agenda con"
+msgstr "Por favor, confirme que quieres borrar esta agenda con"
 
 #: templates/frontend/phonebook/list.html:30
 msgid "contact(s)"

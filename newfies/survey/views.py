@@ -17,7 +17,6 @@ from survey.models import *
 from survey.forms import *
 from dialer_cdr.models import Callrequest, VoIPCall
 from audiofield.models import AudioFile
-from audiofield.forms import CustomerAudioFileForm
 
 from datetime import *
 from dateutil import parser
@@ -454,7 +453,7 @@ def audio_add(request):
 
     **Attributes**:
 
-        * ``form`` - CustomerAudioFileForm
+        * ``form`` - SurvyCustomerAudioFileForm
         * ``template`` - frontend/survey/audio_change.html
 
     **Logic Description**:
@@ -462,9 +461,9 @@ def audio_add(request):
         * Add a new audio which will belong to the logged in user
           via the CustomerAudioFileForm & get redirected to the audio list
     """
-    form = CustomerAudioFileForm()
+    form = SurvyCustomerAudioFileForm()
     if request.method == 'POST':
-        form = CustomerAudioFileForm(request.POST, request.FILES)
+        form = SurvyCustomerAudioFileForm(request.POST, request.FILES)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.user = User.objects.get(username=request.user)

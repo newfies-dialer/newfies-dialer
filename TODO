@@ -11,8 +11,11 @@ TODO
 - Refactor the template, css and code in view
 
 - Fix I18N on some of the pages such as :
+
   http://127.0.0.1:8000/survey/1/ (check in spanish)
   or http://127.0.0.1:8000/audio/add/ ; http://127.0.0.1:8000/contact/add/
+
+  Above links are working fine with spanish/portuguese
   
 - Work on test
 
@@ -25,7 +28,11 @@ TODO BUT NOT FOR NOW
 ====================
 - Support audio file on survey
 
+  Done
+
 - include bootstrap jquery style
+
+  Done
 
 - Add documentation for Survey User manual
 

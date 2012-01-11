@@ -8,6 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from survey.models import *
 from dialer_campaign.function_def import field_list
+from audiofield.forms import CustomerAudioFileForm
 from datetime import *
 
 
@@ -89,3 +90,10 @@ class SurveyReportForm(forms.Form):
             for i in pb_list:
                 list.append((i[0], i[1]))
             self.fields['campaign'].choices = list
+
+
+class SurvyCustomerAudioFileForm(CustomerAudioFileForm):
+
+    def __init__(self, *args, **kwargs):
+        super(SurvyCustomerAudioFileForm, self).__init__(*args, **kwargs)
+        self.fields['audio_file'].widget.attrs['class'] = "input-file"

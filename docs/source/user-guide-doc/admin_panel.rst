@@ -219,30 +219,30 @@ To Add/Update a dialer gateway
     :width: 1000
 
 
-.. _admin-voip-app-access:
+.. _admin-voice-app-access:
 
-VoIP Application
-~~~~~~~~~~~~~~~~
+Voice Application
+~~~~~~~~~~~~~~~~~
 
-The VoIP application list will be displayed from the following URL. You can add a new
-application by clicking ``Add VoIP Application``. Also from the application list,
+The Voice application list will be displayed from the following URL. You can add a new
+application by clicking ``Add Voice Application``. Also from the application list,
 click on the application to update.
 
 **URL**:
 
-    * http://localhost:8000/admin/voip_app/voipapp/
+    * http://localhost:8000/admin/voice_app/voiceapp/
 
-.. image:: ../_static/images/admin/voipapp_list.png
+.. image:: ../_static/images/admin/voiceapp_list.png
     :width: 1000
 
-To Add/Update a VoIP application
+To Add/Update a Voice application
 
 **URL**:
 
-    * http://localhost:8000/admin/voip_app/voipapp/add/
-    * http://localhost:8000/admin/voip_app/voipapp/1/
+    * http://localhost:8000/admin/voice_app/voiceapp/add/
+    * http://localhost:8000/admin/voice_app/voiceapp/1/
 
-.. image:: ../_static/images/admin/update_voipapp.png
+.. image:: ../_static/images/admin/update_voiceapp.png
     :width: 1000
 
 

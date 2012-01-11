@@ -2500,3 +2500,4 @@ msgstr "%(count)s voz app(s) se ha eliminado correctamente."
 
 #~ msgid "result string is None"
 #~ msgstr "cadena de resultado es None"
+

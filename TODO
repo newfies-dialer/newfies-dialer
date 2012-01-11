@@ -1,27 +1,6 @@
 TODO
 ====
 
-- Delete button of question (http://127.0.0.1:8000/survey/1/) doesn't work well
-  Delete Question should delete all the response and the question!
-
-- Survey : The "alt" attribute of button should say "Delete question" / "Delete response"
-
-  Done. It is replaced with button 
-
-- http://127.0.0.1:8000/password_reset/
-  The login form is not visible anymore
-
-  Done
-  
-- Replace Delete button on survey edition but a bootstrap button "danger" http://twitter.github.com/bootstrap/#forms
-
-  Done
-
-- http://127.0.0.1:8000/campaign/
-  rename App to Type and add an extra column "App" which will give the name of the voip app or survey
-
-  Done
-
 - replace all the "VoIP Apps" = "Voice Apps"
   This changes needs to be done for API, directories (newfies/voip_app), files (voip_app_custom_spamlib.py), template files, urls and every reference in frontend and admin
 
@@ -29,16 +8,15 @@ TODO
 
 - Review the I18N of the whole application
 
-- Work on test
-
-  Done
-
 - Refactor the template, css and code in view
 
 - Fix I18N on some of the pages such as :
   http://127.0.0.1:8000/survey/1/ (check in spanish)
   or http://127.0.0.1:8000/audio/add/ ; http://127.0.0.1:8000/contact/add/
   
+- Work on test
+
+  Done
 
 
 

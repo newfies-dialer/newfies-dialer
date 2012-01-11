@@ -302,7 +302,10 @@ To Add/Update a Call Request
     * http://localhost:8000/admin/dialer_cdr/callrequest/add/
     * http://localhost:8000/admin/dialer_cdr/callrequest/1/
 
-.. image:: ../_static/images/admin/update_callrequest.png
+.. image:: ../_static/images/admin/callrequest_part1.png
+    :width: 1000
+    
+.. image:: ../_static/images/admin/callrequest_part2.png
     :width: 1000
 
 VoIP Call Report

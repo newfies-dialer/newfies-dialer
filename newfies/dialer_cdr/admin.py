@@ -16,7 +16,7 @@ from genericadmin.admin import GenericAdminModelAdmin, GenericTabularInline
 class CallrequestAdmin(GenericAdminModelAdmin):
     """Allows the administrator to view and modify certain attributes
     of a Callrequest."""
-    content_type_whitelist = ('voip_app/voipapp', 'survey/surveyapp', )
+    content_type_whitelist = ('voice_app/voiceapp', 'survey/surveyapp', )
     fieldsets = (
         (_('Standard options'), {
             'fields': ('user', 'request_uuid',  'call_time', 'campaign',

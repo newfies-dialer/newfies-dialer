@@ -88,7 +88,6 @@ user's phonebook.
     * http://localhost:8000/dialer_campaign/contact/import/
 
 .. image:: ../_static/images/customer/import_contact.png
-    :width: 1000
 
 
 .. _voice-app:
@@ -106,7 +105,6 @@ this would be the words to convert to text to speech.
     * http://localhost:8000/voiceapp/
 
 .. image:: ../_static/images/customer/voiceapp_list.png
-    :width: 1000
 
 
 To Add/Update a contact in a voice app
@@ -117,7 +115,6 @@ To Add/Update a contact in a voice app
     * http://localhost:8000/voiceapp/1/
 
 .. image:: ../_static/images/customer/update_voiceapp.png
-    :width: 1000
 
 
 .. _survey-app:
@@ -132,7 +129,6 @@ coming soon...
     * http://localhost:8000/survey/
 
 .. image:: ../_static/images/customer/survey_list.png
-    :width: 1000
 
 To Add/Update a contact in a survey
 
@@ -142,7 +138,6 @@ To Add/Update a contact in a survey
     * http://localhost:8000/survey/1/
 
 .. image:: ../_static/images/customer/update_survey.png
-    :width: 1000
     
 
 .. _customer-campaign-access:
@@ -170,7 +165,9 @@ To Add/Update a Campaign for a logged in user
     * http://localhost:8000/dialer_campaign/campaign/1/
 
 .. image:: ../_static/images/customer/update_campaign.png
-    :width: 1000
+
+.. image:: ../_static/images/customer/update_campaign_part2.png
+
 
 
 .. _customer-dashboard-access:

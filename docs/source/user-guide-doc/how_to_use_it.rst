@@ -90,7 +90,6 @@ A number of surveys are provided with Newfies-Dialer. Click ``Add survey`` give 
 survey a name & add survey question with its responses. Coming soon ....
 
 .. image:: ../_static/images/customer/update_survey.png
-    :width: 1000
 
 .. _call-list:
 
@@ -109,7 +108,7 @@ You can also import your call list from csv files, via clicking on
 
 
 .. image:: ../_static/images/customer/import_contact.png
-    :width: 1000
+
 
 
 .. _campaign:
@@ -126,7 +125,8 @@ linked with the contacts.
 
 
 .. image:: ../_static/images/customer/update_campaign.png
-    :width: 1000
+    
+.. image:: ../_static/images/customer/update_campaign_part2.png
 
 
 .. _apply-dialer-settings:
@@ -174,7 +174,6 @@ call report into a csv file.
 
 
 .. image:: ../_static/images/customer/callreport.png
-    :width: 1000
 
 
 .. _survey-report:
@@ -186,7 +185,6 @@ coming soon...
 
 
 .. image:: ../_static/images/customer/surveyreport.png
-    :width: 1000
 
 
 .. _Settings:

@@ -18,7 +18,7 @@ from genericadmin.admin import GenericAdminModelAdmin, GenericTabularInline
 class CampaignAdmin(GenericAdminModelAdmin):
     """Allows the administrator to view and modify certain attributes
     of a Campaign."""
-    content_type_whitelist = ('voip_app/voipapp', 'survey/surveyapp', )
+    content_type_whitelist = ('voice_app/voiceapp', 'survey/surveyapp', )
     fieldsets = (
         (_('Standard options'), {
             'fields': ('campaign_code', 'name', 'description', 'callerid',

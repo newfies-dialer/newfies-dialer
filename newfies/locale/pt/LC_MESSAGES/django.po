@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-11 16:50+0100\n"
+"POT-Creation-Date: 2012-01-11 22:16+0100\n"
 "PO-Revision-Date: 2012-01-06 20:33-0300\n"
 "Last-Translator: Emerson Reis <eluizbr@gmail.com>\n"
 "Language-Team: PORTUGUES BRASIL <eluizbr@gmail.com>\n"
@@ -18,15 +18,15 @@ msgstr ""
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-Country: BRAZIL\n"
 
-#: settings.py:327
+#: settings.py:328
 msgid "English"
 msgstr "Ingles"
 
-#: settings.py:329
+#: settings.py:330
 msgid "Spanish"
 msgstr "Espanhol"
 
-#: settings.py:330
+#: settings.py:331
 msgid "Portuguese"
 msgstr "Português"
 
@@ -124,6 +124,7 @@ msgid "Contact already exists !!"
 msgstr "O contato já existe !!"
 
 #: dialer_campaign/admin.py:231
+#, python-format
 msgid ""
 "%(contact_record_count)s Contact(s) are uploaded, out of %(total_rows)s row"
 "(s) !!"
@@ -406,7 +407,7 @@ msgstr "Notas do contato"
 #: templates/frontend/contact/import_contact.html:39
 #: templates/frontend/contact/list.html:131
 msgid "Status"
-msgstr "Status"
+msgstr "Estado"
 
 #: dialer_campaign/models.py:132
 msgid "Additional parameters"
@@ -630,6 +631,7 @@ msgid "Dialer setting configuration"
 msgstr "Configurações do discador"
 
 #: dialer_campaign/views.py:899
+#, python-format
 msgid ""
 "Notification - User Dialer Setting The user \"%(user)s\" - \"%(user_id)s\" "
 "is not properly configured to use the system, please configure their dialer "
@@ -662,6 +664,7 @@ msgid "\"%(name)s\" is deleted."
 msgstr "\"%(name)s\" é excluído."
 
 #: dialer_campaign/views.py:1085
+#, python-format
 msgid "%(count)s phonebook(s) are deleted."
 msgstr "%(count)s phonebook(s) apagada com sucesso."
 
@@ -669,7 +672,7 @@ msgstr "%(count)s phonebook(s) apagada com sucesso."
 #: dialer_campaign/views.py:1885 survey/views.py:330 voice_app/views.py:206
 #, python-format
 msgid "\"%(name)s\" is updated."
-msgstr "\"%(name)s\" é atualizado."
+msgstr "\"%(name)s\" foi atualizado."
 
 #: dialer_campaign/views.py:1236
 msgid "Update contact"
@@ -680,12 +683,13 @@ msgid "Delete contact"
 msgstr "Excluir contato"
 
 #: dialer_campaign/views.py:1369
+#, python-format
 msgid "%(count)s contact(s) are deleted."
-msgstr "%(count)s contact(s) apagada com sucesso."
+msgstr "%(count)s contact(s) apagado com sucesso."
 
 #: dialer_campaign/views.py:1494
 msgid "Subscriber already exists!"
-msgstr ""
+msgstr "Assinate já existe!"
 
 #: dialer_campaign/views.py:1509
 #, python-format
@@ -749,6 +753,7 @@ msgstr ""
 "configuradas corretamente, entre em contato com o administrador."
 
 #: dialer_campaign/views.py:1835
+#, python-format
 msgid "%(count)s campaign(s) are deleted."
 msgstr "%(count)s campanha(s) apagada."
 
@@ -874,7 +879,7 @@ msgstr "Ativo Usuários"
 
 #: dialer_campaign/views.py:2134
 msgid "No Active Users:"
-msgstr ""
+msgstr "Nenhum usuário ativo"
 
 #: dialer_campaign/management/commands/create_contact.py:10
 msgid "\"phonebook_id|no_of_record\" \"phonebook_id|no_of_record\""
@@ -898,7 +903,7 @@ msgstr "Nenhum contato criado: %(count)s"
 #: dialer_campaign/management/commands/create_contact.py:38
 #: dialer_campaign/management/commands/create_subscriber.py:33
 msgid "Duplicate contact!"
-msgstr ""
+msgstr "Contato duplicado"
 
 #: dialer_campaign/management/commands/create_subscriber.py:10
 msgid "<phonenumber|phonebook_id, phonenumber|phonebook_id,...>"
@@ -935,9 +940,8 @@ msgid "User"
 msgstr "Usuário"
 
 #: dialer_cdr/admin.py:72
-#, fuzzy
 msgid "Gateway used"
-msgstr "Nome do Gateway"
+msgstr "Gateway utilizado"
 
 #: dialer_cdr/admin.py:120
 msgid "Database error"
@@ -947,13 +951,13 @@ msgstr "De erro de banco de dados"
 #, fuzzy, python-format
 msgid "%(total_count)s selected"
 msgid_plural "All %(total_count)s selected"
-msgstr[0] "%(total_count)s selecionados"
-msgstr[1] "%(total_count)s selecionados"
+msgstr[0] "%(total_count)s selecionado"
+msgstr[1] "%(total_count)s selecionado"
 
 #: dialer_cdr/admin.py:182
-#, fuzzy, python-format
+#, python-format
 msgid "0 of %(cnt)s selected"
-msgstr "%(total_count)s selecionados"
+msgstr "0 de %(cnt)s selecionado"
 
 #: dialer_cdr/admin.py:193
 msgid "VoIP Report"
@@ -1000,33 +1004,28 @@ msgid "CallerID used to call the A-Leg"
 msgstr "CallerID usado para chamar o telefone"
 
 #: dialer_cdr/models.py:129 dialer_cdr/models.py:212
-#, fuzzy
 msgid "Phone number"
 msgstr "Número de telefone"
 
 #: dialer_cdr/models.py:130
-#, fuzzy
 msgid "Time out"
-msgstr "Timeout"
+msgstr "Tempo limite"
 
 #: dialer_cdr/models.py:131
 msgid "Time limit"
 msgstr "Limite de tempo"
 
 #: dialer_cdr/models.py:133
-#, fuzzy
 msgid "Extra dial string"
-msgstr "Alterar configurações de discagem"
+msgstr "String de discagem extra"
 
 #: dialer_cdr/models.py:137
-#, fuzzy
 msgid "Campaign Subscriber related to this call request"
-msgstr "Assinante da campanha relacionada a este pedido de chamada"
+msgstr "Assinante da campanha relacionada neste pedido de chamada"
 
 #: dialer_cdr/models.py:143
-#, fuzzy
 msgid "Select gateway to use to call the subscriber"
-msgstr "Selecione o gateway usado para chegar ao assinante"
+msgstr "Selecione o gateway usado para chamar o assinante"
 
 #: dialer_cdr/models.py:151
 msgid "Extra Data"
@@ -1049,7 +1048,6 @@ msgid "Used gateway"
 msgstr "Gateway utilizado"
 
 #: dialer_cdr/models.py:208
-#, fuzzy
 msgid "Callrequest"
 msgstr "Solicitar chamada"
 
@@ -1062,18 +1060,16 @@ msgid "The international number of the recipient, without the leading +"
 msgstr "O número internacional do destinatário, sem a o +"
 
 #: dialer_cdr/models.py:215
-#, fuzzy
 msgid "Destination"
-msgstr "Descrição"
+msgstr "Destino"
 
 #: dialer_cdr/models.py:216
 msgid "Select Prefix"
 msgstr "Selecionar prefixo"
 
 #: dialer_cdr/models.py:217
-#, fuzzy
 msgid "Starting date"
-msgstr "Configurações de nome"
+msgstr "Data inicial"
 
 #: dialer_cdr/models.py:218
 #: templates/admin/dialer_cdr/voipcall/change_list.html:113
@@ -1088,9 +1084,8 @@ msgid "Bill sec"
 msgstr "Bill sec"
 
 #: dialer_cdr/models.py:220
-#, fuzzy
 msgid "Progress sec"
-msgstr "Progresso"
+msgstr "Progresso sec"
 
 #: dialer_cdr/models.py:221
 msgid "Answer sec"
@@ -1117,9 +1112,9 @@ msgid "VoIP Call"
 msgstr "Chamada VoIP"
 
 #: dialer_cdr/widgets.py:347
-#, fuzzy, python-format
+#, python-format
 msgid "The %(name)s \"%(obj)s\" was added."
-msgstr "O %(name)s \"%(obj)s\" foi adicionada com sucesso."
+msgstr "O %(name)s \"%(obj)s\" foi adicionado."
 
 #: dialer_cdr/widgets.py:353
 msgid "You may edit it again below."
@@ -1136,7 +1131,7 @@ msgstr "Adicionar outro"
 
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:19
 msgid "\"campaign_id|no_of_record\" \"campaign_id|no_of_record\""
-msgstr "\"Campaign_id | no_of_record\" \"campaign_id | no_of_record\""
+msgstr "\"Campaign_id|no_of_record\" \"campaign_id|no_of_record\""
 
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:20
 msgid ""
@@ -1189,9 +1184,8 @@ msgid "Gateway name"
 msgstr "Nome do Gateway"
 
 #: dialer_gateway/models.py:73
-#, fuzzy
 msgid "Gateway Status"
-msgstr "Nome do Gateway"
+msgstr "Gateway Status"
 
 #: dialer_gateway/models.py:75
 msgid "Gateway provider notes"
@@ -1206,9 +1200,8 @@ msgid "Remove prefix"
 msgstr "Remover prefixo"
 
 #: dialer_gateway/models.py:80
-#, fuzzy
 msgid "Gateways"
-msgstr "Gateway"
+msgstr "Gateways"
 
 #: dialer_gateway/models.py:81
 msgid ""
@@ -1221,9 +1214,8 @@ msgstr ""
 "será julgado em primeiro lugar"
 
 #: dialer_gateway/models.py:83
-#, fuzzy
 msgid "Gateway codecs"
-msgstr "Nome do Gateway"
+msgstr "Gateway codecs"
 
 #: dialer_gateway/models.py:84
 msgid ""
@@ -1234,9 +1226,8 @@ msgstr ""
 "cada gateway separados por vírgula"
 
 #: dialer_gateway/models.py:86
-#, fuzzy
 msgid "Gateway timeouts"
-msgstr "Nome do Gateway"
+msgstr "Gateway timeouts"
 
 #: dialer_gateway/models.py:87
 msgid ""
@@ -1244,9 +1235,8 @@ msgid ""
 msgstr "\"10,10\", # String de segundos e timeout separados por vírgula"
 
 #: dialer_gateway/models.py:89
-#, fuzzy
 msgid "Gateway retries"
-msgstr "Notas do provedor gateway"
+msgstr "Tentativas do gateway"
 
 #: dialer_gateway/models.py:90
 msgid ""
@@ -1257,9 +1247,8 @@ msgstr ""
 "vezes cada gateway deve ser repetida"
 
 #: dialer_gateway/models.py:92
-#, fuzzy
 msgid "Originate dial string"
-msgstr "Alterar configurações de discagem"
+msgstr "Originar string de discagem"
 
 #: dialer_gateway/models.py:93
 msgid ""
@@ -1282,14 +1271,12 @@ msgid "Add parameter"
 msgstr "Adicionar parâmetro"
 
 #: dialer_gateway/models.py:104
-#, fuzzy
 msgid "Call count"
-msgstr "Relatório de chamadas"
+msgstr "Contagem de chamada"
 
 #: dialer_gateway/models.py:105
-#, fuzzy
 msgid "Count in use"
-msgstr "Não é usuário administrador"
+msgstr "Contagem em uso"
 
 #: dialer_gateway/models.py:106
 msgid "Max concurrent calls"
@@ -1383,9 +1370,8 @@ msgid "Surveys"
 msgstr "Pesquisas"
 
 #: survey/models.py:67 survey/models.py:120
-#, fuzzy
 msgid "Question"
-msgstr "Descrição"
+msgstr "Pergunta"
 
 #: survey/models.py:68
 msgid "Enter your question"
@@ -1418,9 +1404,8 @@ msgid "Key Value"
 msgstr "Valor-chave"
 
 #: survey/models.py:118
-#, fuzzy
 msgid "Call-ID"
-msgstr "Call ID"
+msgstr "Call-ID"
 
 #: survey/models.py:121
 msgid "Response"
@@ -1435,9 +1420,9 @@ msgid "Delete survey"
 msgstr "Excluir pesquisa"
 
 #: survey/views.py:281
-#, fuzzy, python-format
+#, python-format
 msgid "%(count)s survey(s) are deleted."
-msgstr "%(count)s campanha(s) apagada com sucesso."
+msgstr "%(count)s pesquisa(s) apagada(s) com sucesso."
 
 #: survey/views.py:411
 msgid "Update audio"
@@ -1448,9 +1433,9 @@ msgid "Delete audio"
 msgstr "Excluir áudio"
 
 #: survey/views.py:516
-#, fuzzy, python-format
+#, python-format
 msgid "%(count)s audio(s) are deleted."
-msgstr "%(count)s campanha(s) apagada com sucesso."
+msgstr "%(count)s áudi(os) apagado(s) com sucesso."
 
 #: templates/404.html:5
 msgid "This page cannot be found!"
@@ -1465,14 +1450,12 @@ msgid "You've encountered an error!"
 msgstr "Você encontrou um erro!"
 
 #: templates/documentation.html:8
-#, fuzzy
 msgid "Newfies-Dialer Documentation"
-msgstr "Documentação do Newfies"
+msgstr "Documentação do Newfies-Dialer"
 
 #: templates/documentation.html:19
-#, fuzzy
 msgid "Newfies-Dialer : API Documentation"
-msgstr "Newfies Dialer : Documentação da API"
+msgstr "Newfies-Dialer : Documentação da API"
 
 #: templates/documentation.html:34
 msgid "Accepted methods"
@@ -1509,13 +1492,13 @@ msgstr "Importar contatos"
 #, fuzzy
 msgid "Please correct the error below."
 msgid_plural "Please correct the errors below."
-msgstr[0] "Filtro"
-msgstr[1] "Filtro"
+msgstr[0] "Por favor, corriga o erro abaixo."
+msgstr[1] "Por favor, corriga o erro abaixo."
 
 #: templates/admin/dialer_campaign/contact/change_list.html:51
 #: templates/admin/dialer_cdr/voipcall/change_list.html:85
 msgid "Filter"
-msgstr ""
+msgstr "Filtro"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:18
 #: templates/frontend/contact/import_contact.html:31
@@ -1574,12 +1557,10 @@ msgid "Reset"
 msgstr "Reiniciar"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:82
-#, fuzzy
 msgid "Contact(s) imported"
-msgstr "Contato(s) não importado(s)"
+msgstr "Contato(s) importado(s)"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:99
-#, fuzzy
 msgid "Contact(s) not imported"
 msgstr "Contato(s) não importado(s)"
 
@@ -1599,7 +1580,7 @@ msgid "Search"
 msgstr "Pesquisa"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:109
-#: templates/frontend/report/voipcall_report.html:123
+#: templates/frontend/report/voipcall_report.html:122
 msgid "Call Detail Report Summary"
 msgstr "Relatório detalhado da chamada"
 
@@ -1736,7 +1717,7 @@ msgstr "Login"
 
 #: templates/frontend/bootstrap_menu.html:69
 msgid "Forgot password?"
-msgstr "Alterar senha"
+msgstr "Alterar senha?"
 
 #: templates/frontend/bootstrap_menu.html:83
 msgid "new notifications"
@@ -1972,7 +1953,7 @@ msgstr "Apagar"
 #: templates/frontend/survey/audio_list.html:20
 #: templates/frontend/survey/survey_list.html:15
 msgid "Confirm deletion?"
-msgstr ""
+msgstr "Confirma a exclusão"
 
 #: templates/frontend/campaign/list.html:23
 msgid "List, add and edit campaigns"
@@ -2106,12 +2087,10 @@ msgid "SUBSCRIBER STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')"
 msgstr "STATUS DO ASSINANTE = ('1'-'ATIVO') ('0'-'INATIVO')"
 
 #: templates/frontend/contact/import_contact.html:95
-#, fuzzy
 msgid "Subscriber(s) imported"
-msgstr "Assinante(s) não importado(s)"
+msgstr "Assinante(s) importado(s)"
 
 #: templates/frontend/contact/import_contact.html:112
-#, fuzzy
 msgid "Subscriber(s) not imported"
 msgstr "Assinante(s) não importado(s)"
 
@@ -2137,9 +2116,8 @@ msgid "Contacts are stored in phonebooks"
 msgstr "Os contatos são armazenados em listas telefônicas"
 
 #: templates/frontend/phonebook/list.html:30
-#, fuzzy
 msgid "Please confirm to delete this phonebook with"
-msgstr "você está indo para excluir da agenda telefônica com"
+msgstr "Por favor, confirme para excluir esta agenda telefônica com"
 
 #: templates/frontend/phonebook/list.html:30
 msgid "contact(s)"
@@ -2172,11 +2150,8 @@ msgid "Enter new password"
 msgstr "Entre com a nova senha"
 
 #: templates/frontend/registration/password_reset_confirm.html:13
-#, fuzzy
 msgid "Please enter your new password twice for verification."
-msgstr ""
-"Por favor, digite a nova senha duas vezes para que possamos verificar se "
-"você digitou corretamente."
+msgstr "Por favor, digite a nova senha duas vezes confirmação."
 
 #: templates/frontend/registration/password_reset_confirm.html:33
 msgid "Change my password"
@@ -2328,7 +2303,7 @@ msgstr "aviso"
 msgid "Notification date"
 msgstr "Tipo de notificação"
 
-#: templates/frontend/registration/user_notice.html:30
+#: templates/frontend/registration/user_notice.html:28
 msgid "No Record(s) found."
 msgstr "No Record (s), aqui listados."
 
@@ -2405,9 +2380,8 @@ msgid "Add Question"
 msgstr "Adicionar pergunta"
 
 #: templates/frontend/survey/survey_change.html:544
-#, fuzzy
 msgid "Update Survey"
-msgstr "Atualizar"
+msgstr "Resultado da atualização"
 
 #: templates/frontend/survey/survey_list.html:23
 msgid "List, add and edit surveys"
@@ -2471,43 +2445,35 @@ msgid "Check number is authorised to call"
 msgstr "Número do cheque está autorizado a chamar"
 
 #: user_profile/management.py:11 user_profile/management.py:12
-#, fuzzy
 msgid "Campaign started"
 msgstr "Campanha inicada"
 
 #: user_profile/management.py:15 user_profile/management.py:16
-#, fuzzy
 msgid "Campaign paused"
 msgstr "Campanha pausada"
 
 #: user_profile/management.py:19 user_profile/management.py:20
-#, fuzzy
 msgid "Campaign aborted"
 msgstr "Campanha abortada"
 
 #: user_profile/management.py:23 user_profile/management.py:24
-#, fuzzy
 msgid "Campaign stopped"
 msgstr "Campanha parada"
 
 #: user_profile/management.py:27 user_profile/management.py:28
-#, fuzzy
 msgid "Campaign limit reached"
 msgstr "Limite campanha atingido"
 
 #: user_profile/management.py:31 user_profile/management.py:32
-#, fuzzy
 msgid "Contact limit reached"
 msgstr "Limite de contato atingido"
 
 #: user_profile/management.py:36
-#, fuzzy
 msgid "The user needs to be mapped with dialer settings by the administrator"
 msgstr ""
 "Usuário precisa ser mapeado com configuração do discador pelo administrador"
 
 #: user_profile/management.py:39 user_profile/management.py:40
-#, fuzzy
 msgid "Call request not found"
 msgstr "Solicitação de chamada não encontrada"
 
@@ -2536,13 +2502,12 @@ msgid "All notifications are marked as read."
 msgstr "Todas as notificações são marcadas como lidas."
 
 #: user_profile/views.py:83
-#, fuzzy
 msgid "Detail has been changed."
-msgstr "Seu detalhe foi alterado com sucesso."
+msgstr "Detalhe foi alterado."
 
 #: user_profile/views.py:85 user_profile/views.py:96 user_profile/views.py:105
 msgid "Please correct the errors below."
-msgstr "Por favor, corrija os erros abaixo."
+msgstr "Por favor, corriga os erros abaixo."
 
 #: user_profile/views.py:92
 msgid "This phone number is not authorized."
@@ -2553,9 +2518,8 @@ msgid "This phone number is authorized."
 msgstr "Este número de telefone esta autorizado."
 
 #: user_profile/views.py:103
-#, fuzzy
 msgid "Your password has been changed."
-msgstr "Sua senha foi alterada com sucesso."
+msgstr "Sua senha foi alterada."
 
 #: user_profile/views.py:222
 #, python-format
@@ -2563,14 +2527,14 @@ msgid "\"%(name)s\" is marked as read."
 msgstr "\"%(name)s\" é marcada como lida."
 
 #: user_profile/views.py:233
-#, fuzzy, python-format
+#, python-format
 msgid "%(count)s notification(s) are deleted."
-msgstr "%(count)s campanha(s) apagada com sucesso."
+msgstr "%(count)s notificação(ões) apagada(s) com sucesso."
 
 #: user_profile/views.py:237
-#, fuzzy, python-format
+#, python-format
 msgid "%(count)s notification(s) are marked as read."
-msgstr "%(count)s campanha(s) apagada com sucesso."
+msgstr "%(count)s notificação(ões) foi(ram) marcada(s) como lida(s)."
 
 #: voice_app/models.py:44
 msgid "Voice Application Description"
@@ -2587,10 +2551,10 @@ msgid ""
 "number<br/>- Playaudio : Audio file URL<br/>- Speak : The text to speak "
 "using TTS"
 msgstr ""
-"O valor de &#39;dados&#39; depende do tipo de aplicação de voz: <br/> - "
-"Dial: O número de telefone para discar <br/> - Conferência: Sala de "
-"conferências nome ou número <br/> - Playaudio: URL do arquivo de áudio <br/> "
-"- Falar: O texto a falar usando TTS"
+"O valor de 'dados' depende do tipo de aplicação de voz: <br/> - Dial: O "
+"número de telefone para discar <br/> - Conferência: Sala de conferências "
+"nome ou número <br/> - Playaudio: URL do arquivo de áudio <br/> - Falar: O "
+"texto a falar usando TTS"
 
 #: voice_app/views.py:71
 msgid "Update Voice App"
@@ -2601,6 +2565,6 @@ msgid "Delete Voice App"
 msgstr "Excluir Voz App"
 
 #: voice_app/views.py:175
-#, fuzzy, python-format
+#, python-format
 msgid "%(count)s voiceapp(s) are deleted."
-msgstr "%(count)s campanha(s) apagada com sucesso."
+msgstr "%(count)s voiceapp(s) apagado(s) com sucesso."

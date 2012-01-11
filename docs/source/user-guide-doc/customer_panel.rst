@@ -91,6 +91,60 @@ user's phonebook.
     :width: 1000
 
 
+.. _voice-app:
+
+Voice Application
+-----------------
+
+A number of voice applications are provided with Newfies-Dialer. Click ``Add Voice App`` give the
+voice application a name, select the type of  application from the dropdown, select the gateway
+to use if the call is to be redirected, and provide the data to be used, e.g. in the case of “Speak”
+this would be the words to convert to text to speech.
+
+**URL**:
+
+    * http://localhost:8000/voiceapp/
+
+.. image:: ../_static/images/customer/voiceapp_list.png
+    :width: 1000
+
+
+To Add/Update a contact in a voice app
+
+**URL**:
+
+    * http://localhost:8000/voiceapp/add/
+    * http://localhost:8000/voiceapp/1/
+
+.. image:: ../_static/images/customer/update_voiceapp.png
+    :width: 1000
+
+
+.. _survey-app:
+
+Survey
+------
+
+coming soon...
+
+**URL**:
+
+    * http://localhost:8000/survey/
+
+.. image:: ../_static/images/customer/survey_list.png
+    :width: 1000
+
+To Add/Update a contact in a survey
+
+**URL**:
+
+    * http://localhost:8000/survey/add/
+    * http://localhost:8000/survey/1/
+
+.. image:: ../_static/images/customer/update_survey.png
+    :width: 1000
+    
+
 .. _customer-campaign-access:
 
 Campaign

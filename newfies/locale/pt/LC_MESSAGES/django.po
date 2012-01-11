@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-10 21:25+0100\n"
+"POT-Creation-Date: 2012-01-11 12:23+0100\n"
 "PO-Revision-Date: 2012-01-06 20:33-0300\n"
 "Last-Translator: Emerson Reis <eluizbr@gmail.com>\n"
 "Language-Team: PORTUGUES BRASIL <eluizbr@gmail.com>\n"
@@ -63,9 +63,9 @@ msgstr "Servidor Voip"
 msgid "Audio Files"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:98 survey/models.py:53
+#: custom_admin_tools/dashboard.py:98 survey/models.py:54
 #: templates/frontend/survey/survey.html:6
-#: templates/frontend/survey/survey_change.html:372
+#: templates/frontend/survey/survey_change.html:373
 #: templates/frontend/survey/survey_list.html:23
 #: templates/frontend/survey/survey_list.html:60
 msgid "Survey"
@@ -80,7 +80,8 @@ msgid "Dashboard Stats Settings"
 msgstr ""
 
 #: custom_admin_tools/menu.py:17
-msgid "Newfies Dashboard"
+#, fuzzy
+msgid "Newfies-Dialer Dashboard"
 msgstr "Newfies Dashboard"
 
 #: custom_admin_tools/menu.py:20
@@ -105,13 +106,13 @@ msgstr ""
 msgid "Advanced options"
 msgstr ""
 
-#: dialer_campaign/admin.py:69
+#: dialer_campaign/admin.py:69 dialer_campaign/views.py:1765
 #, python-format
 msgid "you have too many campaigns. Max allowed %(limit)s"
 msgstr ""
 
 #: dialer_campaign/admin.py:123 dialer_campaign/admin.py:162
-#: dialer_campaign/views.py:1302 dialer_campaign/views.py:1437
+#: dialer_campaign/views.py:1310 dialer_campaign/views.py:1445
 #, python-format
 msgid ""
 "You have too many contacts per campaign. You are allowed a maximum of "
@@ -122,7 +123,7 @@ msgstr ""
 msgid "Contact already exists !!"
 msgstr "O contato já existe !!"
 
-#: dialer_campaign/admin.py:231 dialer_campaign/views.py:1501
+#: dialer_campaign/admin.py:231 dialer_campaign/views.py:1509
 #, python-format
 msgid ""
 "%(contact_record_count)s Contact(s) are uploaded successfully out of "
@@ -132,7 +133,8 @@ msgstr ""
 "%(total_rows)s coluna(s) !!"
 
 #: dialer_campaign/admin.py:237
-msgid "Error : invalid value for import! Please look at the import samples."
+#, fuzzy
+msgid "Error : invalid value for import! Check import samples."
 msgstr ""
 "Erro: valor inválido para importação! Por favor, olheos exemplos de "
 "importação."
@@ -190,8 +192,8 @@ msgstr "Usuário:"
 msgid "Password:"
 msgstr "Senha:"
 
-#: dialer_campaign/forms.py:106 dialer_campaign/models.py:329
-#: dialer_cdr/models.py:146
+#: dialer_campaign/forms.py:106 dialer_campaign/models.py:332
+#: dialer_cdr/models.py:147
 msgid "Application"
 msgstr "Aplicações"
 
@@ -297,16 +299,17 @@ msgstr "Ativo"
 msgid "All"
 msgstr "Tudo"
 
-#: dialer_campaign/forms.py:274 dialer_campaign/models.py:348
-#: survey/forms.py:80 templates/frontend/bootstrap_menu.html:17
+#: dialer_campaign/forms.py:274 dialer_campaign/models.py:351
+#: survey/forms.py:81 survey/models.py:114
+#: templates/frontend/bootstrap_menu.html:17
 #: templates/frontend/dashboard.html:48
 #: templates/frontend/campaign/change.html:12
 #: templates/frontend/campaign/list.html:23
 msgid "Campaign"
 msgstr "Campanha"
 
-#: dialer_campaign/forms.py:275 dialer_campaign/models.py:327
-#: dialer_cdr/models.py:145 templates/frontend/campaign/list.html:57
+#: dialer_campaign/forms.py:275 dialer_campaign/models.py:330
+#: dialer_cdr/models.py:146 templates/frontend/campaign/list.html:57
 #: templates/frontend/voiceapp/list.html:43 voice_app/models.py:46
 msgid "Type"
 msgstr "Tipo"
@@ -336,12 +339,14 @@ msgstr "SIM"
 msgid "NO"
 msgstr "NÃO"
 
-#: dialer_campaign/models.py:69 dialer_campaign/models.py:148
+#: dialer_campaign/models.py:69 dialer_campaign/models.py:150
+#: dialer_campaign/models.py:269 dialer_gateway/models.py:70
+#: dialer_settings/models.py:24 survey/models.py:45
 #: templates/frontend/campaign/list.html:55
 #: templates/frontend/phonebook/list.html:64
 #: templates/frontend/survey/audio_list.html:54
 #: templates/frontend/survey/survey_list.html:47
-#: templates/frontend/voiceapp/list.html:41
+#: templates/frontend/voiceapp/list.html:41 voice_app/models.py:42
 msgid "Name"
 msgstr "Nome"
 
@@ -349,7 +354,8 @@ msgstr "Nome"
 msgid "Phonebook Notes"
 msgstr "Notas da agenda telefônica"
 
-#: dialer_campaign/models.py:74 dialer_campaign/models.py:132
+#: dialer_campaign/models.py:74 dialer_campaign/models.py:134
+#: dialer_gateway/models.py:97 survey/models.py:50
 #: templates/admin/dialer_cdr/voipcall/change_list.html:112
 #: templates/frontend/contact/list.html:132
 #: templates/frontend/phonebook/list.html:66
@@ -357,7 +363,7 @@ msgstr "Notas da agenda telefônica"
 #: templates/frontend/report/voipcall_report.html:126
 #: templates/frontend/survey/audio_list.html:56
 #: templates/frontend/survey/survey_list.html:49
-#: templates/frontend/voiceapp/list.html:46
+#: templates/frontend/voiceapp/list.html:46 voice_app/models.py:66
 msgid "Date"
 msgstr "Data"
 
@@ -366,7 +372,7 @@ msgstr "Data"
 msgid "Phonebooks"
 msgstr "Agendas telefônicas"
 
-#: dialer_campaign/models.py:89 dialer_campaign/models.py:138
+#: dialer_campaign/models.py:89 dialer_campaign/models.py:140
 #: templates/frontend/bootstrap_menu.html:19
 #: templates/frontend/campaign/list.html:59
 #: templates/frontend/contact/list.html:40
@@ -379,172 +385,189 @@ msgstr "Contatos"
 msgid "Contact Number"
 msgstr "Número do contato"
 
+#: dialer_campaign/models.py:122
+#: templates/frontend/contact/import_contact.html:37
+msgid "Email"
+msgstr "Email"
+
+#: dialer_campaign/models.py:124
+#, fuzzy
+msgid "Country"
+msgstr "Prefixo do país"
+
 #: dialer_campaign/models.py:126
+msgid "City"
+msgstr ""
+
+#: dialer_campaign/models.py:128
 msgid "Contact Notes"
 msgstr "Notas do contato"
 
-#: dialer_campaign/models.py:128 dialer_campaign/models.py:272
-#: dialer_campaign/models.py:572 templates/frontend/campaign/list.html:60
+#: dialer_campaign/models.py:130 dialer_campaign/models.py:274
+#: dialer_campaign/models.py:575 dialer_cdr/models.py:125
+#: templates/frontend/campaign/list.html:60
 #: templates/frontend/contact/import_contact.html:39
 #: templates/frontend/contact/list.html:131
 msgid "Status"
 msgstr "Status"
 
-#: dialer_campaign/models.py:130
+#: dialer_campaign/models.py:132
 msgid "Additional parameters"
 msgstr "Parametros adicionais"
 
-#: dialer_campaign/models.py:137 dialer_campaign/models.py:414
-#: dialer_campaign/models.py:570 templates/frontend/contact/change.html:19
+#: dialer_campaign/models.py:139 dialer_campaign/models.py:417
+#: dialer_campaign/models.py:573 templates/frontend/contact/change.html:19
 msgid "Contact"
 msgstr "Contato"
 
-#: dialer_campaign/models.py:209
+#: dialer_campaign/models.py:211
 msgid "Error to identify the whitelist"
 msgstr ""
 
-#: dialer_campaign/models.py:217
+#: dialer_campaign/models.py:219
 msgid "Error to identify the blacklist"
 msgstr ""
 
-#: dialer_campaign/models.py:263
+#: dialer_campaign/models.py:265
 msgid "Campaign Code"
 msgstr ""
 
-#: dialer_campaign/models.py:264
+#: dialer_campaign/models.py:266
+#, fuzzy
 msgid ""
-"This code is autogenerated by the platform, this is used to identify the "
+"This code is auto-generated by the platform, this is used to identify the "
 "campaign"
 msgstr ""
 "Este código é gerado automaticamente pela plataforma, este é usado para "
 "identificar a campanha"
 
-#: dialer_campaign/models.py:268
-#: templates/frontend/contact/import_contact.html:38
+#: dialer_campaign/models.py:270 dialer_gateway/models.py:74
+#: survey/models.py:47 templates/frontend/contact/import_contact.html:38
 #: templates/frontend/phonebook/list.html:65
 #: templates/frontend/survey/survey_list.html:48
-#: templates/frontend/voiceapp/list.html:42
+#: templates/frontend/voiceapp/list.html:42 voice_app/models.py:43
 msgid "Description"
 msgstr "Descrição"
 
-#: dialer_campaign/models.py:269
+#: dialer_campaign/models.py:271
 msgid "Campaign description"
 msgstr ""
 
-#: dialer_campaign/models.py:274 dialer_cdr/models.py:127
+#: dialer_campaign/models.py:276 dialer_cdr/models.py:127
 msgid "CallerID"
 msgstr "CallerID"
 
-#: dialer_campaign/models.py:275
+#: dialer_campaign/models.py:277
 msgid "Outbound caller-ID"
 msgstr ""
 
-#: dialer_campaign/models.py:278 dialer_campaign/views.py:1581
-#: dialer_campaign/views.py:1596 dialer_campaign/views.py:1609
+#: dialer_campaign/models.py:280 dialer_campaign/views.py:1589
+#: dialer_campaign/views.py:1604 dialer_campaign/views.py:1617
 msgid "Start"
 msgstr "Iniciar"
 
-#: dialer_campaign/models.py:279 dialer_campaign/models.py:284
+#: dialer_campaign/models.py:281 dialer_campaign/models.py:286
 msgid "Date Format: YYYY-mm-DD HH:MM:SS"
 msgstr "Formato da data: YYYY-mm-DD HH:MM:SS"
 
-#: dialer_campaign/models.py:283
+#: dialer_campaign/models.py:285
 msgid "Finish"
 msgstr "Terminar"
 
-#: dialer_campaign/models.py:287 dialer_campaign/models.py:289
+#: dialer_campaign/models.py:289 dialer_campaign/models.py:291
 msgid "Time Format: HH:MM:SS"
 msgstr "Formato da hora: HH:MM:SS"
 
-#: dialer_campaign/models.py:290
+#: dialer_campaign/models.py:292
 msgid "Monday"
 msgstr ""
 
-#: dialer_campaign/models.py:291
+#: dialer_campaign/models.py:293
 msgid "Tuesday"
 msgstr ""
 
-#: dialer_campaign/models.py:292
+#: dialer_campaign/models.py:294
 msgid "Wednesday"
 msgstr ""
 
-#: dialer_campaign/models.py:293
+#: dialer_campaign/models.py:295
 msgid "Thursday"
 msgstr ""
 
-#: dialer_campaign/models.py:294
+#: dialer_campaign/models.py:296
 msgid "Friday"
 msgstr ""
 
-#: dialer_campaign/models.py:295
+#: dialer_campaign/models.py:297
 msgid "Saturday"
 msgstr ""
 
-#: dialer_campaign/models.py:296
+#: dialer_campaign/models.py:298
 msgid "Sunday"
 msgstr ""
 
-#: dialer_campaign/models.py:298
+#: dialer_campaign/models.py:301
 msgid "Frequency"
 msgstr ""
 
-#: dialer_campaign/models.py:299
+#: dialer_campaign/models.py:302
 msgid "Calls per Minute"
 msgstr "Chamadas por minuto"
 
-#: dialer_campaign/models.py:302 dialer_settings/models.py:31
-msgid "Call Max Duration"
+#: dialer_campaign/models.py:305 dialer_settings/models.py:31
+#, fuzzy
+msgid "Max Call Duration"
 msgstr "Duração máxima da chamada"
 
-#: dialer_campaign/models.py:303
+#: dialer_campaign/models.py:306
 msgid "Maximum call duration in seconds"
 msgstr "Tempo limite máximo da chamada em segundos"
 
-#: dialer_campaign/models.py:306 dialer_settings/models.py:35
+#: dialer_campaign/models.py:309 dialer_settings/models.py:35
 msgid "Max Retries"
 msgstr "Tentativas Max"
 
-#: dialer_campaign/models.py:307
+#: dialer_campaign/models.py:310
 msgid "Maximum retries per contact"
 msgstr "Máximo de tentativas por contato"
 
-#: dialer_campaign/models.py:309
+#: dialer_campaign/models.py:312
 msgid "Time between Retries"
 msgstr "Tempo entre tentativas"
 
-#: dialer_campaign/models.py:310
+#: dialer_campaign/models.py:313
 msgid "Time delay in seconds before retrying contact"
 msgstr ""
 
-#: dialer_campaign/models.py:313 dialer_settings/models.py:38
+#: dialer_campaign/models.py:316 dialer_settings/models.py:38
 msgid "Timeout on Call"
 msgstr "Tempo máximo na chamada"
 
-#: dialer_campaign/models.py:314
+#: dialer_campaign/models.py:317
 msgid "Connection timeout in seconds"
 msgstr "Tempo limite máximo da chamada em segundos"
 
-#: dialer_campaign/models.py:317
+#: dialer_campaign/models.py:320
 msgid "A-Leg Gateway"
 msgstr "A-Leg Gateway"
 
-#: dialer_campaign/models.py:319
+#: dialer_campaign/models.py:322
 msgid "Select outbound gateway"
 msgstr "Selecione o gateway"
 
-#: dialer_campaign/models.py:333
+#: dialer_campaign/models.py:336
 msgid "Extra Parameters"
 msgstr "Parâmetros extras"
 
-#: dialer_campaign/models.py:334
+#: dialer_campaign/models.py:337
 msgid "Additional application parameters."
 msgstr "Parâmetros adicionais da aplicação."
 
-#: dialer_campaign/models.py:349 templates/frontend/campaign/list.html:71
+#: dialer_campaign/models.py:352 templates/frontend/campaign/list.html:71
 msgid "Campaigns"
 msgstr "Campanhas"
 
-#: dialer_campaign/models.py:398 templates/frontend/campaign/list.html:61
+#: dialer_campaign/models.py:401 templates/frontend/campaign/list.html:61
 #: templates/frontend/contact/list.html:133
 #: templates/frontend/phonebook/list.html:68
 #: templates/frontend/registration/user_detail_change.html:134
@@ -554,44 +577,44 @@ msgstr "Campanhas"
 msgid "Action"
 msgstr "Ação"
 
-#: dialer_campaign/models.py:410
+#: dialer_campaign/models.py:413
 msgid "Phonebook Empty"
 msgstr "Agenda telefônica vazia"
 
-#: dialer_campaign/models.py:518
+#: dialer_campaign/models.py:521
 msgid "Progress"
 msgstr "Progresso"
 
-#: dialer_campaign/models.py:527
+#: dialer_campaign/models.py:530
 #, python-format
 msgid "<a href='%(link)s'>%(name)s</a>"
 msgstr ""
 
-#: dialer_campaign/models.py:527
+#: dialer_campaign/models.py:530
 msgid "Details"
 msgstr "Detalhes"
 
-#: dialer_campaign/models.py:530 dialer_campaign/models.py:579
+#: dialer_campaign/models.py:533 dialer_campaign/models.py:582
 msgid "Campaign Subscriber"
 msgstr "Assinante da campanha"
 
-#: dialer_campaign/models.py:560
+#: dialer_campaign/models.py:563
 msgid "Select Contact"
 msgstr "Selecionar contato"
 
-#: dialer_campaign/models.py:562 dialer_cdr/models.py:139
+#: dialer_campaign/models.py:565 dialer_cdr/models.py:140
 msgid "Select Campaign"
 msgstr "Selecionar campanha"
 
-#: dialer_campaign/models.py:564
+#: dialer_campaign/models.py:567
 msgid "Last attempt"
 msgstr ""
 
-#: dialer_campaign/models.py:566
+#: dialer_campaign/models.py:569
 msgid "Count attempts"
 msgstr "Contagem de tentativas"
 
-#: dialer_campaign/models.py:580
+#: dialer_campaign/models.py:583
 msgid "Campaign Subscribers"
 msgstr "Inscritos na campanha"
 
@@ -607,116 +630,118 @@ msgstr "Login inválido."
 msgid "Enter Valid User Credentials."
 msgstr "Digite credenciais de usuário válidas."
 
-#: dialer_campaign/views.py:889 user_profile/management.py:35
+#: dialer_campaign/views.py:897 user_profile/management.py:35
 msgid "Dialer setting configuration"
 msgstr "Configurações do discador"
 
-#: dialer_campaign/views.py:891
-#, python-format
+#: dialer_campaign/views.py:899
+#, fuzzy, python-format
 msgid ""
-"Newfies Notification - User Dialer Setting The user \"%(user)s\" - "
-"\"%(user_id)s\" is not configured properly to use your system, please "
-"configure his dialer settings."
+"Notification - User Dialer Setting The user \"%(user)s\" - \"%(user_id)s\" "
+"is not properly configured to use the system, please configure their dialer "
+"settings."
 msgstr ""
 "Notificação Newfies - Configuração do discador do usuário  \"%(user)s\" -  "
 "\"%(user_id)s\" não está configurado corretamente para usar o seu sistema, "
 "defina as configurações de seu discador."
 
-#: dialer_campaign/views.py:954
+#: dialer_campaign/views.py:962
 msgid "Update phonebook"
 msgstr ""
 
-#: dialer_campaign/views.py:958
+#: dialer_campaign/views.py:966
 msgid "Delete phonebook"
 msgstr ""
 
-#: dialer_campaign/views.py:1013 dialer_campaign/views.py:1315
-#: dialer_campaign/views.py:1784 survey/views.py:239 survey/views.py:472
+#: dialer_campaign/views.py:1021 dialer_campaign/views.py:1323
+#: dialer_campaign/views.py:1792 survey/views.py:238 survey/views.py:471
 #: voice_app/views.py:130
 #, python-format
-msgid "\"%(name)s\" is added successfully."
+msgid "\"%(name)s\" is added."
 msgstr ""
 
-#: dialer_campaign/views.py:1060 dialer_campaign/views.py:1351
-#: dialer_campaign/views.py:1818 survey/views.py:270 survey/views.py:505
+#: dialer_campaign/views.py:1068 dialer_campaign/views.py:1359
+#: dialer_campaign/views.py:1826 survey/views.py:269 survey/views.py:504
 #: user_profile/views.py:218 voice_app/views.py:163
 #, python-format
-msgid "\"%(name)s\" is deleted successfully."
+msgid "\"%(name)s\" is deleted."
 msgstr ""
 
-#: dialer_campaign/views.py:1077
+#: dialer_campaign/views.py:1085
+#, fuzzy, python-format
+msgid "%(count)s phonebook(s) are deleted."
+msgstr "%(count)s campanha(s) apagada com sucesso."
+
+#: dialer_campaign/views.py:1116 dialer_campaign/views.py:1402
+#: dialer_campaign/views.py:1885 survey/views.py:330 voice_app/views.py:206
 #, python-format
-msgid "%(count)s phonebook(s) are deleted successfully."
+msgid "\"%(name)s\" is updated."
 msgstr ""
 
-#: dialer_campaign/views.py:1108 dialer_campaign/views.py:1394
-#: dialer_campaign/views.py:1877 survey/views.py:331 voice_app/views.py:206
-#, python-format
-msgid "\"%(name)s\" is updated successfully."
-msgstr ""
-
-#: dialer_campaign/views.py:1228
+#: dialer_campaign/views.py:1236
 msgid "Update contact"
 msgstr ""
 
-#: dialer_campaign/views.py:1232
+#: dialer_campaign/views.py:1240
 msgid "Delete contact"
 msgstr ""
 
-#: dialer_campaign/views.py:1361
-#, python-format
-msgid "%(count)s contact(s) are deleted successfully."
-msgstr ""
+#: dialer_campaign/views.py:1369
+#, fuzzy, python-format
+msgid "%(count)s contact(s) are deleted."
+msgstr "%(count)s campanha(s) apagada com sucesso."
 
-#: dialer_campaign/views.py:1486
-msgid "Subscriber is already exist !!"
-msgstr ""
+#: dialer_campaign/views.py:1494
+#, fuzzy
+msgid "Subscriber already exists!"
+msgstr "O contato já existe !!"
 
-#: dialer_campaign/views.py:1508
-msgid "Invalid value for import! Please look at the import samples."
+#: dialer_campaign/views.py:1516
+#, fuzzy
+msgid "Invalid value for import! Please check the import samples."
 msgstr ""
 "Valor inválido para importação! Por favor, olhe os exemplos de importação."
 
-#: dialer_campaign/views.py:1567
+#: dialer_campaign/views.py:1575
 msgid "campaign is running"
 msgstr ""
 
-#: dialer_campaign/views.py:1570 dialer_campaign/views.py:1600
-#: dialer_campaign/views.py:1613
+#: dialer_campaign/views.py:1578 dialer_campaign/views.py:1608
+#: dialer_campaign/views.py:1621
 msgid "Pause"
 msgstr ""
 
-#: dialer_campaign/views.py:1573 dialer_campaign/views.py:1586
-#: dialer_campaign/views.py:1617
+#: dialer_campaign/views.py:1581 dialer_campaign/views.py:1594
+#: dialer_campaign/views.py:1625
 msgid "Abort"
 msgstr ""
 
-#: dialer_campaign/views.py:1576 dialer_campaign/views.py:1590
-#: dialer_campaign/views.py:1605
+#: dialer_campaign/views.py:1584 dialer_campaign/views.py:1598
+#: dialer_campaign/views.py:1613
 msgid "Stop"
 msgstr ""
 
-#: dialer_campaign/views.py:1583
+#: dialer_campaign/views.py:1591
 msgid "campaign is paused"
 msgstr "campanha pausada"
 
-#: dialer_campaign/views.py:1602
+#: dialer_campaign/views.py:1610
 msgid "campaign is aborted"
 msgstr "campanha abortada"
 
-#: dialer_campaign/views.py:1620
+#: dialer_campaign/views.py:1628
 msgid "campaign is stopped"
 msgstr "campanha parada"
 
-#: dialer_campaign/views.py:1690
+#: dialer_campaign/views.py:1698
 msgid "Update campaign"
 msgstr ""
 
-#: dialer_campaign/views.py:1693
+#: dialer_campaign/views.py:1701
 msgid "Delete campaign"
 msgstr ""
 
-#: dialer_campaign/views.py:1750
+#: dialer_campaign/views.py:1758
 msgid ""
 "In order to add a campaign, you need to have your settings configured "
 "properly, please contact the admin."
@@ -724,139 +749,136 @@ msgstr ""
 "Ao acrescentar uma campanha, você precisa ter suas configurações "
 "configuradas corretamente, entre em contato com o administrador."
 
-#: dialer_campaign/views.py:1757
-#, python-format
-msgid "you have too many campaign. Max allowed %(limit)s"
-msgstr "você tem muitas campanhas. Máximo permitido %(limit)s"
-
-#: dialer_campaign/views.py:1827
-#, python-format
-msgid "%(count)s campaign(s) are deleted successfully."
+#: dialer_campaign/views.py:1835
+#, fuzzy, python-format
+msgid "%(count)s campaign(s) are deleted."
 msgstr "%(count)s campanha(s) apagada com sucesso."
 
-#: dialer_campaign/views.py:1963
+#: dialer_campaign/views.py:1971
 msgid "Total Calls:"
 msgstr ""
 
-#: dialer_campaign/views.py:1964
+#: dialer_campaign/views.py:1972
 msgid "Total Duration:"
 msgstr ""
 
-#: dialer_campaign/views.py:1965
+#: dialer_campaign/views.py:1973
 msgid "Answered"
 msgstr ""
 
-#: dialer_campaign/views.py:1965
+#: dialer_campaign/views.py:1973
 msgid "Ans"
 msgstr ""
 
-#: dialer_campaign/views.py:1966
+#: dialer_campaign/views.py:1974
 msgid "Do not call"
 msgstr ""
 
-#: dialer_campaign/views.py:1966
+#: dialer_campaign/views.py:1974
 msgid "DNC"
 msgstr ""
 
-#: dialer_campaign/views.py:1967
+#: dialer_campaign/views.py:1975
 msgid "Busy"
 msgstr ""
 
-#: dialer_campaign/views.py:1968
+#: dialer_campaign/views.py:1976
 msgid "Not Answered"
 msgstr ""
 
-#: dialer_campaign/views.py:1968
+#: dialer_campaign/views.py:1976
 msgid "NA"
 msgstr ""
 
-#: dialer_campaign/views.py:1969
+#: dialer_campaign/views.py:1977
 msgid "Canceled"
 msgstr ""
 
-#: dialer_campaign/views.py:1969
+#: dialer_campaign/views.py:1977
 msgid "Canc"
 msgstr ""
 
-#: dialer_campaign/views.py:1970
+#: dialer_campaign/views.py:1978
 msgid "ChanUnavail"
 msgstr ""
 
-#: dialer_campaign/views.py:1970
+#: dialer_campaign/views.py:1978
 msgid "CU"
 msgstr ""
 
-#: dialer_campaign/views.py:1971
+#: dialer_campaign/views.py:1979
 msgid "Torture"
 msgstr ""
 
-#: dialer_campaign/views.py:1971
+#: dialer_campaign/views.py:1979
 msgid "Tort"
 msgstr ""
 
-#: dialer_campaign/views.py:1972
+#: dialer_campaign/views.py:1980
 msgid "Invalid Args"
 msgstr ""
 
-#: dialer_campaign/views.py:1972
+#: dialer_campaign/views.py:1980
 msgid "Inv"
 msgstr ""
 
-#: dialer_campaign/views.py:1973
+#: dialer_campaign/views.py:1981
 msgid "No Route"
 msgstr ""
 
-#: dialer_campaign/views.py:1973
+#: dialer_campaign/views.py:1981
 msgid "NoRo"
 msgstr ""
 
-#: dialer_campaign/views.py:1974
+#: dialer_campaign/views.py:1982
 msgid "Congestion"
 msgstr ""
 
-#: dialer_campaign/views.py:1974
+#: dialer_campaign/views.py:1982
 msgid "Cong"
 msgstr ""
 
-#: dialer_campaign/views.py:1975
-msgid "Forbiden"
+#: dialer_campaign/views.py:1983
+msgid "Forbidden"
 msgstr ""
 
-#: dialer_campaign/views.py:1975
+#: dialer_campaign/views.py:1983
 msgid "Forb"
 msgstr ""
 
-#: dialer_campaign/views.py:2057
+#: dialer_campaign/views.py:2065
 msgid "Total Campaigns:"
 msgstr "Total de Campanhas:"
 
-#: dialer_campaign/views.py:2058
+#: dialer_campaign/views.py:2066
 msgid "Active:"
 msgstr "Ativo:"
 
-#: dialer_campaign/views.py:2059
+#: dialer_campaign/views.py:2067
 msgid "Paused:"
 msgstr ""
 
-#: dialer_campaign/views.py:2060
+#: dialer_campaign/views.py:2068
 msgid "Aborted:"
 msgstr ""
 
-#: dialer_campaign/views.py:2061
-msgid "Stoped:"
+#: dialer_campaign/views.py:2069
+msgid "Stopped:"
 msgstr ""
 
-#: dialer_campaign/views.py:2124
-msgid "Total User:"
+#: dialer_campaign/views.py:2132
+msgid "Total Users:"
 msgstr ""
 
-#: dialer_campaign/views.py:2125
-msgid "Active User:"
-msgstr ""
+#: dialer_campaign/views.py:2133
+#, fuzzy
+msgid "Active Users:"
+msgstr "Ativo"
 
-#: dialer_campaign/views.py:2126
-msgid "None Active User:"
-msgstr ""
+#: dialer_campaign/views.py:2134
+#, fuzzy
+msgid "No Active Users:"
+msgstr "Ativo"
 
 #: dialer_campaign/management/commands/create_contact.py:10
 msgid "\"phonebook_id|no_of_record\" \"phonebook_id|no_of_record\""
@@ -879,8 +901,9 @@ msgstr "Nenhum contato criado: %(count)s"
 
 #: dialer_campaign/management/commands/create_contact.py:38
 #: dialer_campaign/management/commands/create_subscriber.py:33
-msgid "The contact is duplicated!"
-msgstr "O contato é duplicado!"
+#, fuzzy
+msgid "Duplicate contact!"
+msgstr "Selecionar contato"
 
 #: dialer_campaign/management/commands/create_subscriber.py:10
 msgid "<phonenumber|phonebook_id, phonenumber|phonebook_id,...>"
@@ -917,8 +940,9 @@ msgid "User"
 msgstr "Usuário"
 
 #: dialer_cdr/admin.py:72
-msgid "Used gateway"
-msgstr "Gateway utilizado"
+#, fuzzy
+msgid "Gateway used"
+msgstr "Nome do Gateway"
 
 #: dialer_cdr/admin.py:120
 msgid "Database error"
@@ -964,7 +988,7 @@ msgstr ""
 msgid "B-Leg"
 msgstr ""
 
-#: dialer_cdr/models.py:114 dialer_cdr/models.py:201
+#: dialer_cdr/models.py:114 dialer_cdr/models.py:202
 msgid "RequestUUID"
 msgstr "PedidoUUID"
 
@@ -980,49 +1004,126 @@ msgstr "Tipo de pedido de chamada"
 msgid "CallerID used to call the A-Leg"
 msgstr "CallerID usado para chamar o telefone"
 
-#: dialer_cdr/models.py:136
-msgid "Campaign Subscriber related to this callrequest"
+#: dialer_cdr/models.py:129 dialer_cdr/models.py:212
+#, fuzzy
+msgid "Phone number"
+msgstr "Número de telefone"
+
+#: dialer_cdr/models.py:130
+#, fuzzy
+msgid "Time out"
+msgstr "Timeout"
+
+#: dialer_cdr/models.py:131
+msgid "Time limit"
+msgstr ""
+
+#: dialer_cdr/models.py:133
+#, fuzzy
+msgid "Extra dial string"
+msgstr "Alterar configurações de discagem"
+
+#: dialer_cdr/models.py:137
+#, fuzzy
+msgid "Campaign Subscriber related to this call request"
 msgstr "Assinante da campanha relacionada a este pedido de chamada"
 
-#: dialer_cdr/models.py:142
-msgid "Select Gateway to use to reach the subscriber"
+#: dialer_cdr/models.py:143
+#, fuzzy
+msgid "Select gateway to use to call the subscriber"
 msgstr "Selecione o gateway usado para chegar ao assinante"
 
-#: dialer_cdr/models.py:150
+#: dialer_cdr/models.py:151
 msgid "Extra Data"
 msgstr "Dado extra"
 
-#: dialer_cdr/models.py:151
+#: dialer_cdr/models.py:152
 msgid "Define the additional data to pass to the application"
 msgstr "Definir os dados adicionais para passar para a aplicação"
 
-#: dialer_cdr/models.py:165
+#: dialer_cdr/models.py:166
 msgid "Call Request"
 msgstr "Solicitar chamada"
 
-#: dialer_cdr/models.py:166
+#: dialer_cdr/models.py:167
 msgid "Call Requests"
 msgstr "Chamadas solicitadas"
 
-#: dialer_cdr/models.py:206 survey/models.py:116
+#: dialer_cdr/models.py:206
+msgid "Used gateway"
+msgstr "Gateway utilizado"
+
+#: dialer_cdr/models.py:208
+#, fuzzy
+msgid "Callrequest"
+msgstr "Solicitar chamada"
+
+#: dialer_cdr/models.py:209 survey/models.py:117
 msgid "VoIP Call-ID"
 msgstr "VoIP Call-ID"
 
-#: dialer_cdr/models.py:209
+#: dialer_cdr/models.py:213
 msgid "The international number of the recipient, without the leading +"
 msgstr "O número internacional do destinatário, sem a o +"
 
-#: dialer_cdr/models.py:212
+#: dialer_cdr/models.py:215
+#, fuzzy
+msgid "Destination"
+msgstr "Descrição"
+
+#: dialer_cdr/models.py:216
 msgid "Select Prefix"
 msgstr "Selecionar prefixo"
 
-#: dialer_cdr/models.py:247 dialer_cdr/models.py:248
+#: dialer_cdr/models.py:217
+#, fuzzy
+msgid "Starting date"
+msgstr "Configurações de nome"
+
+#: dialer_cdr/models.py:218
+#: templates/admin/dialer_cdr/voipcall/change_list.html:113
+#: templates/frontend/dashboard.html:133
+#: templates/frontend/report/voipcall_report.html:88
+#: templates/frontend/report/voipcall_report.html:127
+msgid "Duration"
+msgstr "Duração"
+
+#: dialer_cdr/models.py:219
+msgid "Bill sec"
+msgstr ""
+
+#: dialer_cdr/models.py:220
+#, fuzzy
+msgid "Progress sec"
+msgstr "Progresso"
+
+#: dialer_cdr/models.py:221
+msgid "Answer sec"
+msgstr ""
+
+#: dialer_cdr/models.py:222
+msgid "Wait sec"
+msgstr ""
+
+#: dialer_cdr/models.py:225 templates/frontend/report/voipcall_report.html:90
+msgid "Disposition"
+msgstr "Disposição"
+
+#: dialer_cdr/models.py:227
+msgid "Hangup cause"
+msgstr ""
+
+#: dialer_cdr/models.py:230 templates/frontend/report/voipcall_report.html:84
+msgid "Leg"
+msgstr ""
+
+#: dialer_cdr/models.py:253 dialer_cdr/models.py:254
 msgid "VoIP Call"
 msgstr "Chamada VoIP"
 
 #: dialer_cdr/widgets.py:347
-#, python-format
-msgid "The %(name)s \"%(obj)s\" was added successfully."
+#, fuzzy, python-format
+msgid "The %(name)s \"%(obj)s\" was added."
 msgstr "O %(name)s \"%(obj)s\" foi adicionada com sucesso."
 
 #: dialer_cdr/widgets.py:353
@@ -1092,6 +1193,11 @@ msgstr "JINGLE"
 msgid "Gateway name"
 msgstr "Nome do Gateway"
 
+#: dialer_gateway/models.py:73
+#, fuzzy
+msgid "Gateway Status"
+msgstr "Nome do Gateway"
+
 #: dialer_gateway/models.py:75
 msgid "Gateway provider notes"
 msgstr "Notas do provedor gateway"
@@ -1104,6 +1210,11 @@ msgstr "Adicionar prefixo"
 msgid "Remove prefix"
 msgstr "Remover prefixo"
 
+#: dialer_gateway/models.py:80
+#, fuzzy
+msgid "Gateways"
+msgstr "Gateway"
+
 #: dialer_gateway/models.py:81
 msgid ""
 "Example : \"sofia/gateway/myprovider/\" or 2 for failover \"sofia/gateway/"
@@ -1114,6 +1225,11 @@ msgstr ""
 "myprovider/, user/\", # Strings separadas por vírgula. Primeiro na lista "
 "será julgado em primeiro lugar"
 
+#: dialer_gateway/models.py:83
+#, fuzzy
+msgid "Gateway codecs"
+msgstr "Nome do Gateway"
+
 #: dialer_gateway/models.py:84
 msgid ""
 "\"'PCMA,PCMU','PCMA,PCMU'\", # Codec string as needed by FS for each gateway "
@@ -1122,10 +1238,20 @@ msgstr ""
 "\"'PCMA,PCMU','PCMA,PCMU'\", # Strings de codec necessários pelo FS para "
 "cada gateway separados por vírgula"
 
+#: dialer_gateway/models.py:86
+#, fuzzy
+msgid "Gateway timeouts"
+msgstr "Nome do Gateway"
+
 #: dialer_gateway/models.py:87
 msgid ""
 "\"10,10\", # Seconds to timeout in string for each gateway separated by comma"
 msgstr "\"10,10\", # String de segundos e timeout separados por vírgula"
+
+#: dialer_gateway/models.py:89
+#, fuzzy
+msgid "Gateway retries"
+msgstr "Notas do provedor gateway"
 
 #: dialer_gateway/models.py:90
 msgid ""
@@ -1135,6 +1261,11 @@ msgstr ""
 "\"2,1\", # Repetir String para Gateways separados por vírgula, de quantas "
 "vezes cada gateway deve ser repetida"
 
+#: dialer_gateway/models.py:92
+#, fuzzy
+msgid "Originate dial string"
+msgstr "Alterar configurações de discagem"
+
 #: dialer_gateway/models.py:93
 msgid ""
 "Add Channels Variables : http://wiki.freeswitch.org/wiki/Channel_Variables, "
@@ -1143,6 +1274,10 @@ msgstr ""
 "Adicionar Variáveis ​​de Canais : http://wiki.freeswitch.org/wiki/"
 "Channel_Variables, EX: bridge_early_media=true,hangup_after_bridge=true"
 
+#: dialer_gateway/models.py:95
+msgid "Second used"
+msgstr ""
+
 #: dialer_gateway/models.py:101
 msgid "Select Gateway"
 msgstr "Selecione o gateway"
@@ -1150,6 +1285,16 @@ msgstr "Selecione o gateway"
 #: dialer_gateway/models.py:102
 msgid "Add parameter"
 msgstr "Adicionar parâmetro"
+
+#: dialer_gateway/models.py:104
+#, fuzzy
+msgid "Call count"
+msgstr "Relatório de chamadas"
+
+#: dialer_gateway/models.py:105
+#, fuzzy
+msgid "Count in use"
+msgstr "Não é usuário administrador"
 
 #: dialer_gateway/models.py:106
 msgid "Max concurrent calls"
@@ -1175,6 +1320,10 @@ msgstr "Alterar configurações de discagem"
 #: dialer_settings/models.py:25
 msgid "Settings name"
 msgstr "Configurações de nome"
+
+#: dialer_settings/models.py:28
+msgid "Max frequency"
+msgstr ""
 
 #: dialer_settings/models.py:29
 #: templates/frontend/registration/user_detail_change.html:202
@@ -1202,6 +1351,11 @@ msgstr "Número máximo de campanhas"
 msgid "Maximum subscribers per campaign"
 msgstr "Assinantes máximo por campanha"
 
+#: dialer_settings/models.py:46
+#: templates/frontend/registration/user_detail_change.html:230
+msgid "Blacklist"
+msgstr "Bloquear"
+
 #: dialer_settings/models.py:47
 msgid ""
 "Use regular expressions to blacklist phone numbers. For example, '^[2-4]"
@@ -1212,6 +1366,11 @@ msgstr ""
 "Exemplo, '^[2-4][1]+' irá prevenir todos os números de telefones começando "
 "com 2,3 ou 4 e seguido por 1 a ser chamado."
 
+#: dialer_settings/models.py:49
+#: templates/frontend/registration/user_detail_change.html:226
+msgid "Whitelist"
+msgstr "Liberar"
+
 #: dialer_settings/models.py:50
 msgid "Use regular expressions to whitelist phone numbers"
 msgstr "Use expressões regulares para números de telefone"
@@ -1220,72 +1379,86 @@ msgstr "Use expressões regulares para números de telefone"
 msgid "Dialer Setting"
 msgstr "Configuração do discador"
 
-#: survey/models.py:47
+#: survey/models.py:48
 msgid "Survey Description"
 msgstr ""
 
-#: survey/models.py:54 templates/frontend/bootstrap_menu.html:34
+#: survey/models.py:55 templates/frontend/bootstrap_menu.html:34
 msgid "Surveys"
 msgstr ""
 
-#: survey/models.py:67
+#: survey/models.py:67 survey/models.py:120
+#, fuzzy
+msgid "Question"
+msgstr "Descrição"
+
+#: survey/models.py:68
 msgid "Enter your question"
 msgstr ""
 
-#: survey/models.py:70
+#: survey/models.py:71
 msgid "SurveyApp"
 msgstr ""
 
-#: survey/models.py:73
+#: survey/models.py:74
 msgid "Audio File"
 msgstr ""
 
-#: survey/models.py:75
+#: survey/models.py:76
 msgid "Message type"
 msgstr ""
 
-#: survey/models.py:88 templates/frontend/survey/survey_change.html:274
-#: templates/frontend/survey/survey_change.html:480
+#: survey/models.py:89 templates/frontend/survey/survey_change.html:275
+#: templates/frontend/survey/survey_change.html:481
 msgid "Key Digit"
 msgstr ""
 
-#: survey/models.py:89
+#: survey/models.py:90
 msgid "Define the key link to the response"
 msgstr ""
 
-#: survey/models.py:90 templates/frontend/survey/survey_change.html:275
-#: templates/frontend/survey/survey_change.html:483
+#: survey/models.py:91 templates/frontend/survey/survey_change.html:276
+#: templates/frontend/survey/survey_change.html:484
 msgid "Key Value"
 msgstr ""
 
-#: survey/views.py:181
+#: survey/models.py:118
+#, fuzzy
+msgid "Call-ID"
+msgstr "Call ID"
+
+#: survey/models.py:121
+msgid "Response"
+msgstr ""
+
+#: survey/views.py:180
 msgid "Update survey"
 msgstr ""
 
-#: survey/views.py:185
+#: survey/views.py:184
 msgid "Delete survey"
 msgstr ""
 
-#: survey/views.py:282
-#, python-format
-msgid "%(count)s survey(s) are deleted successfully."
-msgstr ""
+#: survey/views.py:281
+#, fuzzy, python-format
+msgid "%(count)s survey(s) are deleted."
+msgstr "%(count)s campanha(s) apagada com sucesso."
 
-#: survey/views.py:412
+#: survey/views.py:411
 msgid "Update audio"
 msgstr ""
 
-#: survey/views.py:416
+#: survey/views.py:415
 msgid "Delete audio"
 msgstr ""
 
-#: survey/views.py:517
-#, python-format
-msgid "%(count)s audio(s) are deleted successfully."
-msgstr ""
+#: survey/views.py:516
+#, fuzzy, python-format
+msgid "%(count)s audio(s) are deleted."
+msgstr "%(count)s campanha(s) apagada com sucesso."
 
 #: templates/404.html:5
-msgid "This page cannot be found, oh noes!"
+msgid "This page cannot be found!"
 msgstr ""
 
 #: templates/404.html:8 templates/500.html:8
@@ -1293,15 +1466,17 @@ msgid "If you need assistance, you may reference this error as"
 msgstr ""
 
 #: templates/500.html:5
-msgid "You've encountered an error, oh noes!"
+msgid "You've encountered an error!"
 msgstr ""
 
 #: templates/documentation.html:8
-msgid "Newfies Dialer Documentation"
+#, fuzzy
+msgid "Newfies-Dialer Documentation"
 msgstr "Documentação do Newfies"
 
 #: templates/documentation.html:19
-msgid "Newfies Dialer : API Documentation"
+#, fuzzy
+msgid "Newfies-Dialer : API Documentation"
 msgstr "Newfies Dialer : Documentação da API"
 
 #: templates/documentation.html:34
@@ -1390,7 +1565,7 @@ msgstr "STATUS DO CONTATO = ('1'-'ATIVO') ('0'-'INATIVO')"
 #: templates/frontend/contact/import_contact.html:86
 #: templates/frontend/phonebook/change.html:38
 #: templates/frontend/survey/audio_change.html:36
-#: templates/frontend/survey/survey_change.html:545
+#: templates/frontend/survey/survey_change.html:546
 #: templates/frontend/survey/survey_report.html:33
 #: templates/frontend/voiceapp/change.html:37
 msgid "Submit"
@@ -1403,16 +1578,18 @@ msgid "Reset"
 msgstr "Reiniciar"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:82
-msgid "Contact(s) Successfully Imported"
-msgstr "Contato(s) importado(s) com sucesso"
+#, fuzzy
+msgid "Contact(s) imported"
+msgstr "Contato(s) não importado(s)"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:99
-msgid "Contact(s) not Imported"
+#, fuzzy
+msgid "Contact(s) not imported"
 msgstr "Contato(s) não importado(s)"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:115
 #: templates/frontend/contact/import_contact.html:128
-msgid "Type Miss-match"
+msgid "Type mismatch"
 msgstr ""
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:55
@@ -1429,13 +1606,6 @@ msgstr "Pesquisa"
 #: templates/frontend/report/voipcall_report.html:123
 msgid "Call Detail Report Summary"
 msgstr "Relatório detalhado da chamada"
-
-#: templates/admin/dialer_cdr/voipcall/change_list.html:113
-#: templates/frontend/dashboard.html:133
-#: templates/frontend/report/voipcall_report.html:88
-#: templates/frontend/report/voipcall_report.html:127
-msgid "Duration"
-msgstr "Duração"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:114
 #: templates/frontend/report/voipcall_report.html:128
@@ -1497,7 +1667,7 @@ msgstr ""
 #: templates/frontend/phonebook/list.html:71
 #: templates/frontend/survey/audio_change.html:12
 #: templates/frontend/survey/audio_list.html:60
-#: templates/frontend/survey/survey_change.html:371
+#: templates/frontend/survey/survey_change.html:372
 #: templates/frontend/survey/survey_list.html:53
 #: templates/frontend/voiceapp/change.html:11
 #: templates/frontend/voiceapp/list.html:50
@@ -1715,8 +1885,8 @@ msgstr "Interface do usuário"
 #: templates/frontend/registration/user_detail_change.html:239
 #: templates/frontend/registration/user_detail_change.html:244
 #: templates/frontend/survey/audio_list.html:35
-#: templates/frontend/survey/survey_change.html:380
-#: templates/frontend/survey/survey_change.html:386
+#: templates/frontend/survey/survey_change.html:381
+#: templates/frontend/survey/survey_change.html:387
 #: templates/frontend/survey/survey_list.html:29
 #: templates/frontend/survey/survey_report.html:12
 #: templates/frontend/voiceapp/list.html:22
@@ -1763,8 +1933,7 @@ msgstr "é um software licenciado sob a"
 #: templates/frontend/phonebook/change.html:36
 #: templates/frontend/survey/audio_change.html:10
 #: templates/frontend/survey/audio_change.html:34
-#: templates/frontend/survey/survey_change.html:369
-#: templates/frontend/survey/survey_change.html:543
+#: templates/frontend/survey/survey_change.html:370
 #: templates/frontend/voiceapp/change.html:9
 #: templates/frontend/voiceapp/change.html:35
 msgid "Update"
@@ -1793,8 +1962,6 @@ msgstr "Dias da semana"
 #: templates/frontend/campaign/change.html:177
 #: templates/frontend/contact/change.html:48
 #: templates/frontend/phonebook/change.html:42
-#: templates/frontend/survey/survey_change.html:463
-#: templates/frontend/survey/survey_change.html:510
 #: templates/frontend/voiceapp/change.html:41
 msgid "Delete"
 msgstr "Apagar"
@@ -1926,10 +2093,6 @@ msgstr ""
 msgid "First name"
 msgstr "Primeiro nome"
 
-#: templates/frontend/contact/import_contact.html:37
-msgid "Email"
-msgstr "Email"
-
 #: templates/frontend/contact/import_contact.html:40
 msgid "Additional variables"
 msgstr "Parametros adicionais"
@@ -1939,15 +2102,17 @@ msgid "SUBSCRIBER STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')"
 msgstr "STATUS DO ASSINANTE = ('1'-'ATIVO') ('0'-'INATIVO')"
 
 #: templates/frontend/contact/import_contact.html:95
-msgid "Subscriber(s) Successfully Imported"
-msgstr "Assinante(s) importado(s) com sucesso"
+#, fuzzy
+msgid "Subscriber(s) imported"
+msgstr "Assinante(s) não importado(s)"
 
 #: templates/frontend/contact/import_contact.html:112
-msgid "Subscriber(s) not Imported"
+#, fuzzy
+msgid "Subscriber(s) not imported"
 msgstr "Assinante(s) não importado(s)"
 
 #: templates/frontend/contact/list.html:23
-msgid "you are going to delete contact from your phonebook"
+msgid "you are going to delete the contact from your phonebook"
 msgstr ""
 
 #: templates/frontend/contact/list.html:40
@@ -2006,9 +2171,8 @@ msgid "Enter new password"
 msgstr "Entre com a nova senha"
 
 #: templates/frontend/registration/password_reset_confirm.html:13
-msgid ""
-"Please enter your new password twice so we can verify you typed it in "
-"correctly."
+#, fuzzy
+msgid "Please enter your new password twice for verification."
 msgstr ""
 "Por favor, digite a nova senha duas vezes para que possamos verificar se "
 "você digitou corretamente."
@@ -2155,14 +2319,6 @@ msgstr "Timeout"
 msgid "Maximum campaigns"
 msgstr "Campanha máxima"
 
-#: templates/frontend/registration/user_detail_change.html:226
-msgid "Whitelist"
-msgstr "Liberar"
-
-#: templates/frontend/registration/user_detail_change.html:230
-msgid "Blacklist"
-msgstr "Bloquear"
-
 #: templates/frontend/registration/user_detail_change.html:265
 msgid "Check"
 msgstr "verificar"
@@ -2191,10 +2347,6 @@ msgstr ""
 msgid "Call ID"
 msgstr "Call ID"
 
-#: templates/frontend/report/voipcall_report.html:84
-msgid "Leg"
-msgstr ""
-
 #: templates/frontend/report/voipcall_report.html:85
 msgid "Caller ID"
 msgstr "Caller ID"
@@ -2211,10 +2363,6 @@ msgstr "Gateway"
 #: templates/frontend/report/voipcall_report.html:89
 msgid "Bill Sec"
 msgstr ""
-
-#: templates/frontend/report/voipcall_report.html:90
-msgid "Disposition"
-msgstr "Disposição"
 
 #: templates/frontend/report/voipcall_report.html:95
 msgid "Call Records"
@@ -2236,27 +2384,37 @@ msgstr ""
 msgid "Audio"
 msgstr ""
 
-#: templates/frontend/survey/survey_change.html:234
+#: templates/frontend/survey/survey_change.html:235
 msgid "New Question"
 msgstr ""
 
-#: templates/frontend/survey/survey_change.html:265
-#: templates/frontend/survey/survey_change.html:329
-msgid "Remove"
+#: templates/frontend/survey/survey_change.html:266
+#: templates/frontend/survey/survey_change.html:464
+msgid "Delete question"
 msgstr ""
 
-#: templates/frontend/survey/survey_change.html:279
-#: templates/frontend/survey/survey_change.html:522
+#: templates/frontend/survey/survey_change.html:280
+#: templates/frontend/survey/survey_change.html:523
 msgid "Add Response"
 msgstr ""
 
-#: templates/frontend/survey/survey_change.html:372
+#: templates/frontend/survey/survey_change.html:330
+#: templates/frontend/survey/survey_change.html:511
+msgid "Delete response"
+msgstr ""
+
+#: templates/frontend/survey/survey_change.html:373
 msgid "Survey configuration"
 msgstr ""
 
-#: templates/frontend/survey/survey_change.html:536
+#: templates/frontend/survey/survey_change.html:537
 msgid "Add Question"
 msgstr ""
+
+#: templates/frontend/survey/survey_change.html:544
+#, fuzzy
+msgid "Update Survey"
+msgstr "Atualizar"
 
 #: templates/frontend/survey/survey_list.html:15
 msgid "you are going to delete survey from your surveys"
@@ -2323,66 +2481,46 @@ msgstr "Número de telefone"
 msgid "Check number is authorised to call"
 msgstr ""
 
-#: user_profile/management.py:11
-msgid "Campaign Started"
+#: user_profile/management.py:11 user_profile/management.py:12
+#, fuzzy
+msgid "Campaign started"
 msgstr "Campanha inicada"
 
-#: user_profile/management.py:12
-msgid "you have started campaign"
-msgstr "você iniciou a campanha"
-
-#: user_profile/management.py:15
-msgid "Campaign Paused"
+#: user_profile/management.py:15 user_profile/management.py:16
+#, fuzzy
+msgid "Campaign paused"
 msgstr "Campanha pausada"
 
-#: user_profile/management.py:16
-msgid "you have paused campaign"
-msgstr "você pausou a campanha"
-
-#: user_profile/management.py:19
-msgid "Campaign Aborted"
+#: user_profile/management.py:19 user_profile/management.py:20
+#, fuzzy
+msgid "Campaign aborted"
 msgstr "Campanha abortada"
 
-#: user_profile/management.py:20
-msgid "you have aborted campaign"
-msgstr "você abortou a camapanha"
-
-#: user_profile/management.py:23
-msgid "Campaign Stopped"
+#: user_profile/management.py:23 user_profile/management.py:24
+#, fuzzy
+msgid "Campaign stopped"
 msgstr "Campanha parada"
 
-#: user_profile/management.py:24
-msgid "you have stopped campaign"
-msgstr "você parou a campanha"
-
-#: user_profile/management.py:27
-msgid "Campaign Limit Reached"
+#: user_profile/management.py:27 user_profile/management.py:28
+#, fuzzy
+msgid "Campaign limit reached"
 msgstr "Limite campanha atingido"
 
-#: user_profile/management.py:28
-msgid "you have reached the no of campaign limit"
-msgstr "você não atingiu o limite de nenhuma campanha"
-
-#: user_profile/management.py:31
-msgid "Contact Limit Reached"
+#: user_profile/management.py:31 user_profile/management.py:32
+#, fuzzy
+msgid "Contact limit reached"
 msgstr "Limite de contato atingido"
 
-#: user_profile/management.py:32
-msgid "you have reached the no of contact limit"
-msgstr "você não atingiu o limite de nenhum contato"
-
 #: user_profile/management.py:36
-msgid "User need to be mapped with dialer setting by administrator"
+#, fuzzy
+msgid "The user needs to be mapped with dialer settings by the administrator"
 msgstr ""
 "Usuário precisa ser mapeado com configuração do discador pelo administrador"
 
-#: user_profile/management.py:39
-msgid "Callrequest not found"
+#: user_profile/management.py:39 user_profile/management.py:40
+#, fuzzy
+msgid "Call request not found"
 msgstr "Solicitação de chamada não encontrada"
-
-#: user_profile/management.py:40
-msgid "Callrequest is not found"
-msgstr "Não foi encontra solicitação de chamada"
 
 #: user_profile/models.py:38 user_profile/models.py:39
 msgid "User Profile"
@@ -2405,11 +2543,12 @@ msgid "Admins"
 msgstr "Administradores"
 
 #: user_profile/views.py:72
-msgid "All notifications are marked as read successfully."
+msgid "All notifications are marked as read."
 msgstr ""
 
 #: user_profile/views.py:83
-msgid "Your detail has been changed successfully."
+#, fuzzy
+msgid "Detail has been changed."
 msgstr "Seu detalhe foi alterado com sucesso."
 
 #: user_profile/views.py:85 user_profile/views.py:96 user_profile/views.py:105
@@ -2425,23 +2564,24 @@ msgid "This phone number is authorized."
 msgstr "Este número de telefone esta autorizado."
 
 #: user_profile/views.py:103
-msgid "Your password has been changed successfully."
+#, fuzzy
+msgid "Your password has been changed."
 msgstr "Sua senha foi alterada com sucesso."
 
 #: user_profile/views.py:222
 #, python-format
-msgid "\"%(name)s\" is marked as read successfully."
+msgid "\"%(name)s\" is marked as read."
 msgstr ""
 
 #: user_profile/views.py:233
-#, python-format
-msgid "%(count)s notification(s) are deleted successfully."
-msgstr ""
+#, fuzzy, python-format
+msgid "%(count)s notification(s) are deleted."
+msgstr "%(count)s campanha(s) apagada com sucesso."
 
 #: user_profile/views.py:237
-#, python-format
-msgid "%(count)s notification(s) are marked as read successfully."
-msgstr ""
+#, fuzzy, python-format
+msgid "%(count)s notification(s) are marked as read."
+msgstr "%(count)s campanha(s) apagada com sucesso."
 
 #: voice_app/models.py:44
 msgid "Voice Application Description"
@@ -2468,6 +2608,42 @@ msgid "Delete Voice App"
 msgstr ""
 
 #: voice_app/views.py:175
-#, python-format
-msgid "%(count)s voiceapp(s) are deleted successfully."
-msgstr ""
+#, fuzzy, python-format
+msgid "%(count)s voiceapp(s) are deleted."
+msgstr "%(count)s campanha(s) apagada com sucesso."
+
+#~ msgid "Call Max Duration"
+#~ msgstr "Duração máxima da chamada"
+
+#~ msgid "you have too many campaign. Max allowed %(limit)s"
+#~ msgstr "você tem muitas campanhas. Máximo permitido %(limit)s"
+
+#~ msgid "The contact is duplicated!"
+#~ msgstr "O contato é duplicado!"
+
+#~ msgid "Contact(s) Successfully Imported"
+#~ msgstr "Contato(s) importado(s) com sucesso"
+
+#~ msgid "Subscriber(s) Successfully Imported"
+#~ msgstr "Assinante(s) importado(s) com sucesso"
+
+#~ msgid "you have started campaign"
+#~ msgstr "você iniciou a campanha"
+
+#~ msgid "you have paused campaign"
+#~ msgstr "você pausou a campanha"
+
+#~ msgid "you have aborted campaign"
+#~ msgstr "você abortou a camapanha"
+
+#~ msgid "you have stopped campaign"
+#~ msgstr "você parou a campanha"
+
+#~ msgid "you have reached the no of campaign limit"
+#~ msgstr "você não atingiu o limite de nenhuma campanha"
+
+#~ msgid "you have reached the no of contact limit"
+#~ msgstr "você não atingiu o limite de nenhum contato"
+
+#~ msgid "Callrequest is not found"
+#~ msgstr "Não foi encontra solicitação de chamada"

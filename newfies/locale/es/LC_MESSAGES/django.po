@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Newfies-Dialer 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-11 12:24+0100\n"
+"POT-Creation-Date: 2012-01-11 13:11+0100\n"
 "PO-Revision-Date: 2012-01-10 21:33+0100\n"
 "Last-Translator: Areski Belaid <areski@gmail.com>\n"
 "Language-Team: Areski Belaid <areski@gmail.com>\n"
@@ -396,7 +396,7 @@ msgstr "País"
 
 #: dialer_campaign/models.py:126
 msgid "City"
-msgstr ""
+msgstr "Ciudad"
 
 #: dialer_campaign/models.py:128
 msgid "Contact Notes"
@@ -421,11 +421,11 @@ msgstr "Contacto"
 
 #: dialer_campaign/models.py:211
 msgid "Error to identify the whitelist"
-msgstr ""
+msgstr "Error para identificar en la lista blanca"
 
 #: dialer_campaign/models.py:219
 msgid "Error to identify the blacklist"
-msgstr ""
+msgstr "Error para identificar en la lista negra"
 
 #: dialer_campaign/models.py:265
 msgid "Campaign Code"
@@ -633,14 +633,15 @@ msgid "Dialer setting configuration"
 msgstr "Marcador de los valores de configuración"
 
 #: dialer_campaign/views.py:899
+#, python-format
 msgid ""
 "Notification - User Dialer Setting The user \"%(user)s\" - \"%(user_id)s\" "
 "is not properly configured to use the system, please configure their dialer "
 "settings."
 msgstr ""
-"Notificación - Marcador de configuración de usuario, el usuario "
-"\"%(user)s\" - \"%(user_id)s\" no está correctamente configurado para usar "
-"su sistema, configurar sus ajustes marcador."
+"Notificación - Marcador de configuración de usuario, el usuario \"%(user)s\" "
+"- \"%(user_id)s\" no está correctamente configurado para usar su sistema, "
+"configurar sus ajustes marcador."
 
 #: dialer_campaign/views.py:962
 msgid "Update phonebook"
@@ -653,21 +654,25 @@ msgstr "Eliminar la agenda"
 #: dialer_campaign/views.py:1021 dialer_campaign/views.py:1323
 #: dialer_campaign/views.py:1792 survey/views.py:238 survey/views.py:471
 #: voice_app/views.py:130
+#, python-format
 msgid "\"%(name)s\" is added."
 msgstr "\"%(name)s\", se agregó."
 
 #: dialer_campaign/views.py:1068 dialer_campaign/views.py:1359
 #: dialer_campaign/views.py:1826 survey/views.py:269 survey/views.py:504
 #: user_profile/views.py:218 voice_app/views.py:163
+#, python-format
 msgid "\"%(name)s\" is deleted."
 msgstr "\"%(name)s\" es eliminado."
 
 #: dialer_campaign/views.py:1085
+#, python-format
 msgid "%(count)s phonebook(s) are deleted."
 msgstr "%(count)s Agenda(s) se ha eliminado."
 
 #: dialer_campaign/views.py:1116 dialer_campaign/views.py:1402
 #: dialer_campaign/views.py:1885 survey/views.py:330 voice_app/views.py:206
+#, python-format
 msgid "\"%(name)s\" is updated."
 msgstr "\"%(name)s\" se ha actualizado."
 
@@ -680,6 +685,7 @@ msgid "Delete contact"
 msgstr "Eliminar contacto"
 
 #: dialer_campaign/views.py:1369
+#, python-format
 msgid "%(count)s contact(s) are deleted."
 msgstr "%(count)s contacto(s) se ha eliminado."
 
@@ -742,6 +748,7 @@ msgstr ""
 "administrador."
 
 #: dialer_campaign/views.py:1835
+#, python-format
 msgid "%(count)s campaign(s) are deleted."
 msgstr "%(count)s la campaña(s) se ha eliminado."
 
@@ -935,12 +942,14 @@ msgid "Database error"
 msgstr "Base de datos de error"
 
 #: dialer_cdr/admin.py:178
+#, python-format
 msgid "%(total_count)s selected"
 msgid_plural "All %(total_count)s selected"
 msgstr[0] "%(total_count)s seleccionado"
-msgstr[1] "%(total_count)s seleccionado"
+msgstr[1] "%(total_count)s seleccionados"
 
 #: dialer_cdr/admin.py:182
+#, python-format
 msgid "0 of %(cnt)s selected"
 msgstr "0 de %(cnt)s seleccionado"
 
@@ -998,7 +1007,7 @@ msgstr "Tiempo de espera"
 
 #: dialer_cdr/models.py:131
 msgid "Time limit"
-msgstr ""
+msgstr "Plazo"
 
 #: dialer_cdr/models.py:133
 msgid "Extra dial string"
@@ -1097,6 +1106,7 @@ msgid "VoIP Call"
 msgstr "Llamadas VoIP"
 
 #: dialer_cdr/widgets.py:347
+#, python-format
 msgid "The %(name)s \"%(obj)s\" was added."
 msgstr "El %(name)s \"%(obj)s\" se ha añadido."
 
@@ -1229,8 +1239,8 @@ msgid ""
 "\"2,1\", # Retry String for Gateways separated by comma, on how many times "
 "each gateway should be retried"
 msgstr ""
-"\"2,1\", # Reintentar Cadena para Pasarelas separados por una coma, "
-"el número de veces que cada Pasarela debe ser reintentado"
+"\"2,1\", # Reintentar Cadena para Pasarelas separados por una coma, el "
+"número de veces que cada Pasarela debe ser reintentado"
 
 #: dialer_gateway/models.py:92
 msgid "Originate dial string"
@@ -1246,7 +1256,7 @@ msgstr ""
 
 #: dialer_gateway/models.py:95
 msgid "Second used"
-msgstr ""
+msgstr "En segundo lugar utiliza"
 
 #: dialer_gateway/models.py:101
 msgid "Select Gateway"
@@ -1258,11 +1268,11 @@ msgstr "Añadir parámetro"
 
 #: dialer_gateway/models.py:104
 msgid "Call count"
-msgstr ""
+msgstr "Llame al número"
 
 #: dialer_gateway/models.py:105
 msgid "Count in use"
-msgstr ""
+msgstr "Contar en el uso de"
 
 #: dialer_gateway/models.py:106
 msgid "Max concurrent calls"
@@ -1407,6 +1417,7 @@ msgid "Delete survey"
 msgstr "Borrar"
 
 #: survey/views.py:281
+#, python-format
 msgid "%(count)s survey(s) are deleted."
 msgstr "%(count)s encuesta(s) se ha eliminado."
 
@@ -1419,6 +1430,7 @@ msgid "Delete audio"
 msgstr "Eliminación de audio"
 
 #: survey/views.py:516
+#, python-format
 msgid "%(count)s audio(s) are deleted."
 msgstr "%(count)s audio(s) se ha eliminado."
 
@@ -1476,13 +1488,13 @@ msgstr "Importar contactos"
 #: templates/admin/dialer_cdr/voipcall/change_list.html:47
 msgid "Please correct the error below."
 msgid_plural "Please correct the errors below."
-msgstr[0] "Por favor, corrija el error por debajo."
-msgstr[1] "Por favor, corrija los errores por debajo."
+msgstr[0] "Por favor, corrija el error por debajo"
+msgstr[1] "Por favor, corrija los errores por debajo"
 
 #: templates/admin/dialer_campaign/contact/change_list.html:51
 #: templates/admin/dialer_cdr/voipcall/change_list.html:85
 msgid "Filter"
-msgstr "Filtro"
+msgstr ""
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:18
 #: templates/frontend/contact/import_contact.html:31
@@ -2357,7 +2369,7 @@ msgstr "Nueva pregunta"
 #: templates/frontend/survey/survey_change.html:266
 #: templates/frontend/survey/survey_change.html:464
 msgid "Delete question"
-msgstr ""
+msgstr "Eliminar pregunta"
 
 #: templates/frontend/survey/survey_change.html:280
 #: templates/frontend/survey/survey_change.html:523
@@ -2367,7 +2379,7 @@ msgstr "Añadir respuesta"
 #: templates/frontend/survey/survey_change.html:330
 #: templates/frontend/survey/survey_change.html:511
 msgid "Delete response"
-msgstr ""
+msgstr "Eliminar la respuesta"
 
 #: templates/frontend/survey/survey_change.html:373
 msgid "Survey configuration"
@@ -2472,8 +2484,7 @@ msgstr "Ha llegado a su límite de contactos"
 
 #: user_profile/management.py:36
 msgid "The user needs to be mapped with dialer settings by the administrator"
-msgstr ""
-"El usuario necesita ser asignada con los ajustes por el administrador"
+msgstr "El usuario necesita ser asignada con los ajustes por el administrador"
 
 #: user_profile/management.py:39 user_profile/management.py:40
 msgid "Call request not found"
@@ -2524,14 +2535,17 @@ msgid "Your password has been changed."
 msgstr "Su contraseña se ha cambiado."
 
 #: user_profile/views.py:222
+#, python-format
 msgid "\"%(name)s\" is marked as read."
 msgstr "\"%(name)s\" está marcado como leído."
 
 #: user_profile/views.py:233
+#, python-format
 msgid "%(count)s notification(s) are deleted."
 msgstr "%(count)s notificación(es) se ha eliminado."
 
 #: user_profile/views.py:237
+#, python-format
 msgid "%(count)s notification(s) are marked as read."
 msgstr "%(count)s notificación(es) se marcan como leídos."
 
@@ -2564,5 +2578,6 @@ msgid "Delete Voice App"
 msgstr "Borrar Voz App"
 
 #: voice_app/views.py:175
+#, python-format
 msgid "%(count)s voiceapp(s) are deleted."
 msgstr "%(count)s voz app(s) se ha eliminado."

@@ -67,11 +67,13 @@ case $DIST in
         SCRIPT_VIRTUALENVWRAPPER="/usr/local/bin/virtualenvwrapper.sh"
         APACHE_USER="www-data"
         WSGI_ADDITIONAL=""
+        WSGIApplicationGroup=""
     ;;
     'CENTOS')
         SCRIPT_VIRTUALENVWRAPPER="/usr/bin/virtualenvwrapper.sh"
         APACHE_USER="apache"
         WSGI_ADDITIONAL="WSGISocketPrefix run/wsgi"
+        WSGIApplicationGroup="WSGIApplicationGroup %{GLOBAL}"
     ;;
 esac
 
@@ -400,6 +402,7 @@ func_install_frontend(){
             AllowOverride all
             Order deny,allow
             Allow from all
+            '$WSGIApplicationGroup'
         </Directory>
 
     </VirtualHost>

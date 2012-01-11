@@ -90,7 +90,6 @@ A number of surveys are provided with Newfies-Dialer. Click ``Add survey`` give 
 survey a name & add survey question with its responses. Coming soon ....
 
 .. image:: ../_static/images/customer/update_survey.png
-    :width: 1000
 
 .. _call-list:
 
@@ -186,7 +185,6 @@ coming soon...
 
 
 .. image:: ../_static/images/customer/surveyreport.png
-    :width: 1000
 
 
 .. _Settings:

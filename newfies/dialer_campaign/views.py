@@ -743,11 +743,13 @@ def cust_password_reset(request):
     ``password_reset_form``
     """
     if not request.user.is_authenticated():
+        data = {'loginform': LoginForm()}
         return password_reset(request,
         template_name='frontend/registration/password_reset_form.html',
         email_template_name='frontend/registration/password_reset_email.html',
         post_reset_redirect='/password_reset/done/',
-        from_email='newfies_admin@localhost.com')
+        from_email='newfies_admin@localhost.com',
+        extra_context=data)
     else:
         return HttpResponseRedirect("/")
 
@@ -760,8 +762,10 @@ def cust_password_reset_done(request):
     password.
     """
     if not request.user.is_authenticated():
+        data = {'loginform': LoginForm()}
         return password_reset_done(request,
-        template_name='frontend/registration/password_reset_done.html')
+        template_name='frontend/registration/password_reset_done.html',
+        extra_context=data)
     else:
         return HttpResponseRedirect("/")
 
@@ -773,9 +777,11 @@ def cust_password_reset_confirm(request, uidb36=None, token=None):
     This will allow a user to reset their password.
     """
     if not request.user.is_authenticated():
+        data = {'loginform': LoginForm()}
         return password_reset_confirm(request, uidb36=uidb36, token=token,
         template_name='frontend/registration/password_reset_confirm.html',
-        post_reset_redirect='/reset/done/')
+        post_reset_redirect='/reset/done/',
+        extra_context=data)
     else:
         return HttpResponseRedirect("/")
 
@@ -788,8 +794,10 @@ def cust_password_reset_complete(request):
     their password for the system.
     """
     if not request.user.is_authenticated():
+        data = {'loginform': LoginForm()}
         return password_reset_complete(request,
-        template_name='frontend/registration/password_reset_complete.html')
+        template_name='frontend/registration/password_reset_complete.html',
+        extra_context=data)
     else:
         return HttpResponseRedirect("/")
 

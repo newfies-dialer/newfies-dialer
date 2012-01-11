@@ -245,14 +245,14 @@ function addFormField() {
        '</div>'+
     '</div>'+
     '<div class="row">'+
-    '<div class="span17">'+
+    '<div class="span16">'+
         '<div class="row">'+
     {% for field in new_survey_que_form.visible_fields %}
         {% if forloop.first %}
             {% for hidden in new_survey_que_form.hidden_fields %}
                 '{{ hidden|escapejs }}'+
             {% endfor %}
-            '<div class="span9">'+
+            '<div class="span8">'+
                 '{{ field|escapejs }}'+
             '</div>'+
         {% else %}
@@ -261,8 +261,8 @@ function addFormField() {
             '</div>'+
         {% endif %}
         {% if forloop.last %}
-        '<div class="span2"><!--<input value="Save" onclick="question_form('+id+', 0)" type="button">-->&nbsp;'+
-        '<a href="#" title="{% trans "Remove" %}" class="icon" style="text-decoration:none;background-image:url(\'{{ STATIC_URL }}newfies/icons/delete.png'+'\');" onClick="removeFormField(\'#row' + id + '\'); return false;" ></a></div>'+
+        '<div class="span2"><!--<input value="Save" onclick="question_form('+id+', 0)" type="button">-->'+
+        '<input class="btn danger" value="{% trans "Delete question" %}" onClick="removeFormField(\'#row' + id + '\'); return false;" type="button"></div>'+
         {% endif %}
     {% endfor %}
         '</div>'+
@@ -325,8 +325,8 @@ function addResFormField(que_id, is_que_id_set) {
               {% endif %}
           '</div>'+
           {% if forloop.last %}
-            '<input type="hidden" id="new_response_id" value="0" /><!--<td><input value="Save" onclick="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')" type="button"></td>-->'+
-            '<div class="span2"><a href="#" title="{% trans "Remove" %}" class="icon" style="text-decoration:none;background-image:url(\'{{ STATIC_URL }}newfies/icons/delete.png'+'\');" onClick="removeResFormField(\'#row_res' + id + '\'); return false;" ></a></div>'+
+            '<input type="hidden" id="new_response_id" value="0" /><!--<input value="Save" onclick="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')" type="button">-->'+
+            '<div class="span2"><input value="{% trans "Delete response" %}" class="btn danger" onClick="removeResFormField(\'#row_res' + id + '\'); return false;" type="button"></div>'+
           {% endif %}
           {% endfor %}
           '</div>'+
@@ -441,14 +441,14 @@ function removeResFormField(id) {
                             {% if key|stringformat:"s" == que.id|stringformat:"s" %}
 
                             <div class="row">
-                            <div class="span17">
+                            <div class="span16">
                                 <div class="row">
                                 {% for field in form.visible_fields %}
                                     {% if forloop.first %}
                                         {% for hidden in form.hidden_fields %}
                                             {{ hidden }}
                                         {% endfor %}
-                                        <div class="span9">
+                                        <div class="span8">
                                             {{ field }}
                                         </div>
                                     {% else %}
@@ -459,8 +459,8 @@ function removeResFormField(id) {
 
                                     {% if forloop.last %}
                                         <div class="span2">
-                                            <!--<input value="Save" onclick="question_form({{ que.id }}, 1);" type="button">-->&nbsp;
-                                            <a href="#" title="{% trans "Delete" %}" class="icon" style="text-decoration:none;background-image:url('{{ STATIC_URL }}newfies/icons/delete.png');" onclick="question_delete_form({{ que.id }}, 1);removeFormField('#row{{ que.id }}'); return false;"></a>
+                                            <!--<input value="Save" onclick="question_form({{ que.id }}, 1);" type="button">-->
+                                            <input value="{% trans "Delete question" %}" class="btn danger" onclick="question_delete_form({{ que.id }}, 1);removeFormField('#row{{ que.id }}'); return false;" type="button">
                                         </div>
                                     {% endif %}
                                 {% endfor %}
@@ -507,7 +507,7 @@ function removeResFormField(id) {
                                                     {% if forloop.last %}
                                                     <div class="span2">
                                                         <!--<input value="Save" onclick="response_form({{ key }}, {{ que.id }}, 1, 1);" type="button">-->
-                                                        <a href="#" title="{% trans "Delete"  %}" class="icon" style="text-decoration:none;background-image:url('{{ STATIC_URL }}newfies/icons/delete.png');" onclick="response_delete_form({{ key }}, 1);removeResFormField('#response_form_{{ key }}'); return false;"></a>
+                                                        <input value="{% trans "Delete response" %}" class="btn danger" onclick="response_delete_form({{ key }}, 1);removeResFormField('#response_form_{{ key }}'); return false;" type="button">
                                                     </div>
                                                     {% endif %}
 

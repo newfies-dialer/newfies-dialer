@@ -1410,7 +1410,7 @@ msgstr "Respuesta"
 
 #: survey/views.py:180
 msgid "Update survey"
-msgstr "Actualización de la encuesta"
+msgstr "Editar la encuesta"
 
 #: survey/views.py:184
 msgid "Delete survey"
@@ -2391,7 +2391,7 @@ msgstr "Añadir pregunta"
 
 #: templates/frontend/survey/survey_change.html:544
 msgid "Update Survey"
-msgstr "Actualización de la encuesta"
+msgstr "Editar la encuesta"
 
 #: templates/frontend/survey/survey_list.html:15
 msgid "you are going to delete survey from your surveys"

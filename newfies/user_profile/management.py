@@ -8,36 +8,36 @@ if "notification" in settings.INSTALLED_APPS:
 
     def create_notice_types(app, created_models, verbosity, **kwargs):
         notification.create_notice_type("campaign_started",
-                                        _("Campaign Started"),
-                                        _("you have started campaign"),
+                                        _("Campaign started"),
+                                        _("Campaign started"),
                                         1)
         notification.create_notice_type("campaign_paused",
-                                        _("Campaign Paused"),
-                                        _("you have paused campaign"),
+                                        _("Campaign paused"),
+                                        _("Campaign paused"),
                                         2)
         notification.create_notice_type("campaign_aborted",
-                                        _("Campaign Aborted"),
-                                        _("you have aborted campaign"),
+                                        _("Campaign aborted"),
+                                        _("Campaign aborted"),
                                         3)
         notification.create_notice_type("campaign_stopped",
-                                        _("Campaign Stopped"),
-                                        _("you have stopped campaign"),
+                                        _("Campaign stopped"),
+                                        _("Campaign stopped"),
                                         4)
         notification.create_notice_type("campaign_limit_reached",
-                                        _("Campaign Limit Reached"),
-                                        _("you have reached the no of campaign limit"),
+                                        _("Campaign limit reached"),
+                                        _("Campaign limit reached"),
                                         5)
         notification.create_notice_type("contact_limit_reached",
-                                        _("Contact Limit Reached"),
-                                        _("you have reached the no of contact limit"),
+                                        _("Contact limit reached"),
+                                        _("Contact limit reached"),
                                         6)
         notification.create_notice_type("dialer_setting_configuration",
                                         _("Dialer setting configuration"),
-                                        _("User need to be mapped with dialer setting by administrator"),
+                                        _("The user needs to be mapped with dialer settings by the administrator"),
                                         7)
         notification.create_notice_type("callrequest_not_found",
-                                        _("Callrequest not found"),
-                                        _("Callrequest is not found"),
+                                        _("Call request not found"),
+                                        _("Call request not found"),
                                         8)
     signals.post_syncdb.connect(create_notice_types, sender=notification)
 else:

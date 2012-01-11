@@ -80,7 +80,7 @@ def customer_detail_change(request):
             action = 'tabs-1'
             if user_detail_form.is_valid():
                 user_detail_form.save()
-                msg_detail = _('Your detail has been changed successfully.')
+                msg_detail = _('Detail has been changed.')
             else:
                 error_detail = _('Please correct the errors below.')
         elif request.POST['form-type'] == "check-number": # check phone no

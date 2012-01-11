@@ -246,6 +246,39 @@ To Add/Update a Voice application
     :width: 1000
 
 
+.. _admin-survey-access:
+
+Survey
+~~~~~~
+
+comming soon...
+
+**URL**:
+
+    * http://localhost:8000/admin/survey/surveyapp/
+
+.. image:: ../_static/images/admin/survey_list.png
+    :width: 1000
+
+To Add/Update a survey
+
+**URL**:
+
+    * http://localhost:8000/admin/survey/surveyapp/add/
+    * http://localhost:8000/admin/survey/surveyapp/1/
+
+.. image:: ../_static/images/admin/update_survey.png
+    :width: 1000
+
+To Add/Update a survey question
+
+    * http://localhost:8000/admin/survey/surveyquestion/add/
+    * http://localhost:8000/admin/survey/surveyquestion/1/
+
+.. image:: ../_static/images/admin/update_surveyquestion.png
+    :width: 1000
+
+
 .. _admin-call-request-access:
 
 Call Request

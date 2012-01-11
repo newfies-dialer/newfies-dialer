@@ -42,12 +42,12 @@ class Text2speechMessage(models.Model):
 
 class SurveyApp(Sortable):
     """SurveyApp"""
-    name = models.CharField(max_length=90, verbose_name='Name')
+    name = models.CharField(max_length=90, verbose_name=_('Name'))
     description = models.TextField(null=True, blank=True, 
-                         verbose_name='Description',
+                         verbose_name=_('Description'),
                          help_text=_("Survey Description"))
     user = models.ForeignKey('auth.User', related_name='owner')
-    created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Date'))
     updated_date = models.DateTimeField(auto_now=True)
     
     class Meta:
@@ -64,7 +64,7 @@ class SurveyQuestion(Sortable):
     class Meta(Sortable.Meta):
         ordering = Sortable.Meta.ordering + ['surveyapp']
     
-    question = models.CharField(max_length=500,
+    question = models.CharField(max_length=500, verbose_name=_("Question"),
                                 help_text=_('Enter your question')) # What is your prefered fruit?
     tags = TagField(blank=True, max_length=1000)
     user = models.ForeignKey('auth.User', related_name='Survey owner')
@@ -111,13 +111,14 @@ class SurveyCampaignResult(models.Model):
     Idealy we can try to build 2 other table, survey_track_question (id, question_text), survey_track_response (id, response_text)
     Where question_text / response_text is unique
     """
-    campaign = models.ForeignKey(Campaign, null=True, blank=True)
+    campaign = models.ForeignKey(Campaign, null=True, blank=True, verbose_name=_("Campaign"))
     
     surveyapp = models.ForeignKey(SurveyApp, related_name='SurveyApp')
-    callid = models.CharField(max_length=120, help_text=_("VoIP Call-ID"))
+    callid = models.CharField(max_length=120, help_text=_("VoIP Call-ID"),
+                              verbose_name=_("Call-ID"))
     
-    question = models.CharField(max_length=500, blank=False) # What is your prefered fruit?
-    response = models.CharField(max_length=150, blank=False) # Orange ; Kiwi
+    question = models.CharField(max_length=500, blank=False, verbose_name=_("Question")) # What is your prefered fruit?
+    response = models.CharField(max_length=150, blank=False, verbose_name=_("Response")) # Orange ; Kiwi
     
     created_date = models.DateTimeField(auto_now_add=True)
     

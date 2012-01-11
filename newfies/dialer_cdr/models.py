@@ -122,14 +122,15 @@ class Callrequest(Model):
     call_type = models.IntegerField(choices=CALLREQUEST_TYPE, default='1',
                 verbose_name=_("Call Request Type"), blank=True, null=True)
     status = models.IntegerField(choices=CALLREQUEST_STATUS, default='1',
-                blank=True, null=True)
+                blank=True, null=True, verbose_name=_('Status'))
     callerid = models.CharField(max_length=80, blank=True,
                 verbose_name=_("CallerID"),
                 help_text=_("CallerID used to call the A-Leg"))
-    phone_number = models.CharField(max_length=80)
-    timeout = models.IntegerField(blank=True, default=30)
-    timelimit = models.IntegerField(blank=True, default=3600)
-    extra_dial_string = models.CharField(max_length=500, blank=True)
+    phone_number = models.CharField(max_length=80, verbose_name=_('Phone number'))
+    timeout = models.IntegerField(blank=True, default=30, verbose_name=_('Time out'))
+    timelimit = models.IntegerField(blank=True, default=3600, verbose_name=_('Time limit'))
+    extra_dial_string = models.CharField(max_length=500, blank=True,
+                                         verbose_name=_('Extra dial string'))
 
     campaign_subscriber = models.ForeignKey(CampaignSubscriber,
                 null=True, blank=True,
@@ -201,28 +202,33 @@ class VoIPCall(models.Model):
     request_uuid = models.CharField(verbose_name=_("RequestUUID"),
                         default=str_uuid1(), db_index=True,
                         max_length=120, null=True, blank=True)
-    used_gateway = models.ForeignKey(Gateway, null=True, blank=True)
-    callrequest = models.ForeignKey(Callrequest, null=True, blank=True)
+    used_gateway = models.ForeignKey(Gateway, null=True, blank=True,
+                                     verbose_name=_("Used gateway"))
+    callrequest = models.ForeignKey(Callrequest, null=True, blank=True,
+                                    verbose_name=_("Callrequest"))
     callid = models.CharField(max_length=120, help_text=_("VoIP Call-ID"))
     callerid = models.CharField(max_length=120, verbose_name='CallerID')
     phone_number = models.CharField(max_length=120,  null=True, blank=True,
+                                    verbose_name=_("Phone number"),
         help_text=_(u'The international number of the recipient, without the leading +'))
 
-    dialcode = models.ForeignKey(Prefix, verbose_name="Destination", null=True,
+    dialcode = models.ForeignKey(Prefix, verbose_name=_("Destination"), null=True,
                                blank=True, help_text=_("Select Prefix"))
-    starting_date = models.DateTimeField(auto_now_add=True)
-    duration = models.IntegerField(null=True, blank=True)
-    billsec = models.IntegerField(null=True, blank=True)
-    progresssec = models.IntegerField(null=True, blank=True)
-    answersec = models.IntegerField(null=True, blank=True)
-    waitsec = models.IntegerField(null=True, blank=True)
+    starting_date = models.DateTimeField(auto_now_add=True, verbose_name=_("Starting date"))
+    duration = models.IntegerField(null=True, blank=True, verbose_name=_("Duration"))
+    billsec = models.IntegerField(null=True, blank=True, verbose_name=_("Bill sec"))
+    progresssec = models.IntegerField(null=True, blank=True, verbose_name=_("Progress sec"))
+    answersec = models.IntegerField(null=True, blank=True, verbose_name=_("Answer sec"))
+    waitsec = models.IntegerField(null=True, blank=True, verbose_name=_("Wait sec"))
     disposition = models.CharField(choices=VOIPCALL_DISPOSITION,
-                                   max_length=40, null=True, blank=True)
-    hangup_cause = models.CharField(max_length=40, null=True, blank=True)
+                                   max_length=40, null=True, blank=True,
+                                   verbose_name=_("Disposition"))
+    hangup_cause = models.CharField(max_length=40, null=True, blank=True,
+                                    verbose_name=_("Hangup cause"))
     hangup_cause_q850 = models.CharField(max_length=10, null=True, blank=True)
     leg_type = models.SmallIntegerField(choices=LEG_TYPE, default=1, 
-                                        verbose_name="Leg",
-                                        null=True, blank=True, )
+                                        verbose_name=_("Leg"),
+                                        null=True, blank=True)
 
     def destination_name(self):
         """Return Recipient dialcode"""

@@ -92,7 +92,7 @@
 {% if success_import_list %}
     <table class="bordered-table zebra-striped">
         <tr>
-            <th>{% trans "Subscriber(s) Successfully Imported" %} :</th>
+            <th>{% trans "Subscriber(s) imported" %} :</th>
         </tr>
         {% for row in success_import_list %}
         <tr>
@@ -109,7 +109,7 @@
 <br>
     <table class="bordered-table zebra-striped">
         <tr>
-            <th>{% trans "Subscriber(s) not Imported" %} :</th>
+            <th>{% trans "Subscriber(s) not imported" %} :</th>
         </tr>
         {% for row in error_import_list %}
         <tr>
@@ -125,7 +125,7 @@
 <br>
     <table class="bordered-table zebra-striped">
         <tr>
-            <th>{% trans "Type Miss-match" %} :</th>
+            <th>{% trans "Type mismatch" %} :</th>
         </tr>
         {% for row in type_error_import_list %}
         <tr>

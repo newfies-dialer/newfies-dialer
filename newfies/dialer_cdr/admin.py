@@ -69,7 +69,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
                           args=(obj.used_gateway.id,))
             return '<a href="%s">%s</a>' %  (url, obj.used_gateway)
     used_gateway_link.allow_tags = True
-    used_gateway_link.short_description = _('Used gateway')
+    used_gateway_link.short_description = _('Gateway used')
 
     def has_add_permission(self, request):
         """Remove add permission on VoIP Call Report model

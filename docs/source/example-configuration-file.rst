@@ -133,7 +133,7 @@ the database picking out what is needed for any particular page.
                 obj = form.save(commit=False)
                 obj.user = User.objects.get(username=request.user)
                 obj.save()
-                request.session["msg"] = _('"%s" is added successfully.' %\
+                request.session["msg"] = _('"%s" is added.' %\
                 request.POST['name'])
                 return HttpResponseRedirect('/dialer_campaign/phonebook/')
         template = 'dialer_campaign/phonebook/change.html'

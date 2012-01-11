@@ -35,5 +35,5 @@ class Command(BaseCommand):
                                         phonebook=obj_phonebook)
                 print _("No of Contact created : %(count)s" % {'count': no_of_record})
             except IntegrityError:
-                print _("The contact is duplicated!")
+                print _("Duplicate contact!")
                 return False

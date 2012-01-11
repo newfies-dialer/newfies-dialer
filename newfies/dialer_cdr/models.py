@@ -101,7 +101,7 @@ class Callrequest(Model):
         * ``content_object`` - Used to define the VoIP App or the Survey with generic ForeignKey
 
         * ``aleg_gateway`` - Foreign key relationship to the Gateway model.\
-        Gateway to use to reach the subscriber
+        Gateway to use to call the subscriber
 
         * ``campaign_subscriber`` - Foreign key relationship to\
         the CampaignSubscriber Model.
@@ -133,13 +133,13 @@ class Callrequest(Model):
 
     campaign_subscriber = models.ForeignKey(CampaignSubscriber,
                 null=True, blank=True,
-                help_text=_("Campaign Subscriber related to this callrequest"))
+                help_text=_("Campaign Subscriber related to this call request"))
 
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
                 help_text=_("Select Campaign"))
     aleg_gateway = models.ForeignKey(Gateway, null=True, blank=True,
                 verbose_name="A-Leg Gateway",
-                help_text=_("Select Gateway to use to reach the subscriber"))
+                help_text=_("Select gateway to use to call the subscriber"))
 
     #used to define the Voice App or the Survey
     content_type = models.ForeignKey(ContentType, verbose_name=_("Type"))

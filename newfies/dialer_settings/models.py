@@ -28,7 +28,7 @@ class DialerSetting(models.Model):
     max_frequency = models.IntegerField(default='100', blank=True, null=True,
                                help_text=_("Maximum calls per minute"))
     callmaxduration = models.IntegerField(default='1800', blank=True,
-                      null=True, verbose_name=_('Call Max Duration'),
+                      null=True, verbose_name=_('Max Call Duration'),
     help_text=_("Maximum call duration in seconds (1800 = 30 Minutes)"))
 
     maxretry = models.IntegerField(default='3', blank=True, null=True,

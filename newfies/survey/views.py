@@ -235,7 +235,7 @@ def survey_add(request):
             obj = form.save(commit=False)
             obj.user = User.objects.get(username=request.user)
             obj.save()
-            request.session["msg"] = _('"%(name)s" is added successfully.') %\
+            request.session["msg"] = _('"%(name)s" is added.') %\
             {'name': request.POST['name']}
             return HttpResponseRedirect('/survey/%s/' % (obj.id))
     template = 'frontend/survey/survey_change.html'
@@ -266,7 +266,7 @@ def survey_del(request, object_id):
         survey = SurveyApp.objects.get(pk=object_id)
         if object_id:
             # 1) delete survey
-            request.session["msg"] = _('"%(name)s" is deleted successfully.') \
+            request.session["msg"] = _('"%(name)s" is deleted.') \
                                         % {'name': survey.name}
             survey.delete()
             return HttpResponseRedirect('/survey/')
@@ -278,7 +278,7 @@ def survey_del(request, object_id):
         # 1) delete survey
         survey_list = SurveyApp.objects.extra(where=['id IN (%s)' % values])
         request.session["msg"] =\
-        _('%(count)s survey(s) are deleted successfully.') \
+        _('%(count)s survey(s) are deleted.') \
         % {'count': survey_list.count()}
         survey_list.delete()
         return HttpResponseRedirect('/survey/')
@@ -327,7 +327,7 @@ def survey_change(request, object_id):
             form = SurveyForm(request.POST, request.user, instance=survey)
             if form.is_valid():
                 form.save()
-                request.session["msg"] = _('"%(name)s" is updated successfully.') \
+                request.session["msg"] = _('"%(name)s" is updated.') \
                 % {'name': request.POST['name']}
                 return HttpResponseRedirect('/survey/')
 
@@ -468,7 +468,7 @@ def audio_add(request):
             obj = form.save(commit=False)
             obj.user = User.objects.get(username=request.user)
             obj.save()
-            request.session["msg"] = _('"%(name)s" is added successfully.') %\
+            request.session["msg"] = _('"%(name)s" is added.') %\
             {'name': request.POST['name']}
             return HttpResponseRedirect('/audio/')
         
@@ -501,7 +501,7 @@ def audio_del(request, object_id):
         audio = AudioFile.objects.get(pk=object_id)
         if object_id:
             # 1) delete survey
-            request.session["msg"] = _('"%(name)s" is deleted successfully.') \
+            request.session["msg"] = _('"%(name)s" is deleted.') \
                                         % {'name': audio.name}
             audio.delete()
             return HttpResponseRedirect('/audio/')
@@ -513,7 +513,7 @@ def audio_del(request, object_id):
         # 1) delete audio
         audio_list = AudioFile.objects.extra(where=['id IN (%s)' % values])
         request.session["msg"] =\
-        _('%(count)s audio(s) are deleted successfully.') \
+        _('%(count)s audio(s) are deleted.') \
         % {'count': audio_list.count()}
         audio_list.delete()
         return HttpResponseRedirect('/audio/')

@@ -127,7 +127,7 @@ def voiceapp_add(request):
             obj = form.save(commit=False)
             obj.user = User.objects.get(username=request.user)
             obj.save()
-            request.session["msg"] = _('"%(name)s" is added successfully.') %\
+            request.session["msg"] = _('"%(name)s" is added.') %\
             request.POST
             return HttpResponseRedirect('/voiceapp/')
     template = 'frontend/voiceapp/change.html'
@@ -160,7 +160,7 @@ def voiceapp_del(request, object_id):
         voiceapp_list = VoiceApp.objects.get(pk=object_id)
         if object_id:
             # 1) delete voiceapp
-            request.session["msg"] = _('"%(name)s" is deleted successfully.' \
+            request.session["msg"] = _('"%(name)s" is deleted.' \
             % {'name': voiceapp_list.name})
             voiceapp_list.delete()
             return HttpResponseRedirect('/voiceapp/')
@@ -172,7 +172,7 @@ def voiceapp_del(request, object_id):
         # 2) delete voiceapp
         voiceapp_list = VoiceApp.objects.extra(where=['id IN (%s)' % values])
         request.session["msg"] =\
-        _('%(count)s voiceapp(s) are deleted successfully.' \
+        _('%(count)s voiceapp(s) are deleted.' \
         % {'count': voiceapp_list.count()})
         voiceapp_list.delete()
         return HttpResponseRedirect('/voiceapp/')
@@ -203,7 +203,7 @@ def voiceapp_change(request, object_id):
             form = VoiceAppForm(request.POST, instance=voiceapp)
             if form.is_valid():
                 form.save()
-                request.session["msg"] = _('"%(name)s" is updated successfully.' \
+                request.session["msg"] = _('"%(name)s" is updated.' \
                 % {'name': request.POST['name']})
                 return HttpResponseRedirect('/voiceapp/')
 

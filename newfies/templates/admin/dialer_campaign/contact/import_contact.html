@@ -79,7 +79,7 @@
 {% if success_import_list %}
 <table border=1>
     <tr>
-        <th>{% trans "Contact(s) Successfully Imported" %} :</th>
+        <th>{% trans "Contact(s) imported" %} :</th>
     </tr>
 {% for row in success_import_list %}
     <tr class="{% cycle 'row1' 'row2' %}">
@@ -96,7 +96,7 @@
 <br>
 <table border=1>
     <tr>
-        <th>{% trans "Contact(s) not Imported" %} :</th>
+        <th>{% trans "Contact(s) not imported" %} :</th>
     </tr>
 {% for row in error_import_list %}
     <tr class="{% cycle 'row1' 'row2' %}">
@@ -112,7 +112,7 @@
 <br>
 <table border=1>
     <tr>
-        <th>{% trans "Type Miss-match" %} :</th>
+        <th>{% trans "Type mismatch" %} :</th>
     </tr>
 {% for row in type_error_import_list %}
     <tr class="{% cycle 'row1' 'row2' %}">

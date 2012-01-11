@@ -234,7 +234,7 @@ class ContactAdmin(admin.ModelAdmin):
                                     # (contact_record_count, total_rows)
                                 success_import_list.append(row)
                         except:
-                            msg = _("Error : invalid value for import! Please look at the import samples.")
+                            msg = _("Error : invalid value for import! Check import samples.")
                             type_error_import_list.append(row)
         else:
             form = Contact_fileImport(request.user)

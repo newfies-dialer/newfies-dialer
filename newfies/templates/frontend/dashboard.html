@@ -188,7 +188,7 @@
                 { label: 'TORTURE' , data: [[1, {{ total_torture }}]], color: '{{ torture_color }}' },
                 { label: 'INVALIDARGS' , data: [[1, {{ total_invalidargs }}]], color: '{{ invalidargs_color }}' },
                 { label: 'NOROUTE' , data: [[1, {{ total_noroute }}]], color: '{{ noroute_color }}' },
-                { label: 'FORBIDDEN' , data: [[1, {{ total_forbiden }}]], color: '{{ forbiden_color }}' },
+                { label: 'FORBIDDEN' , data: [[1, {{ total_forbidden }}]], color: '{{ forbidden_color }}' },
             ];
             var options = {
                     series: {
@@ -249,7 +249,7 @@
     </tr>
     <tr>
         <th style="color: {{ congestion_color }}">{{ total_congestion }}  {% trans "CONGESTION"  %}</th>
-        <th style="color: {{ forbiden_color }}">{{ total_forbiden }}  {% trans "FORBIDDEN"  %}</th>
+        <th style="color: {{ forbidden_color }}">{{ total_forbidden }}  {% trans "FORBIDDEN"  %}</th>
         <th>&nbsp;</th>
     </tr>
     </table>

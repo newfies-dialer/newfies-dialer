@@ -344,7 +344,7 @@ class AutocompleteModelAdmin(admin.ModelAdmin):
         opts = obj._meta
         pk_value = obj._get_pk_val()
 
-        msg = _('The %(name)s "%(obj)s" was added successfully.') % \
+        msg = _('The %(name)s "%(obj)s" was added.') % \
         {'name': force_unicode(opts.verbose_name), 'obj': force_unicode(obj)}
         # Here, we distinguish between different save types by checking for
         # the presence of keys in request.POST.

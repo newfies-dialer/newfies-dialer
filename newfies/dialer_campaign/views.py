@@ -110,7 +110,7 @@ def customer_dashboard(request, on_index=None):
     total_torture = 0
     total_invalidargs = 0
     total_noroute = 0
-    total_forbiden = 0
+    total_forbidden = 0
     select_graph_for = 'Call Count'  # default (or Duration)
     search_type = 4  # default Last 24 hours
     selected_campaign = ''
@@ -207,7 +207,7 @@ def customer_dashboard(request, on_index=None):
             elif i['disposition'] == 'NOROUTE':
                 total_noroute = total_noroute + 1
             else:
-                total_forbiden = total_forbiden + 1 # FORBIDDEN
+                total_forbidden = total_forbidden + 1 # FORBIDDEN
 
         # following part got from cdr-stats 'global report' used by humblefinance
         # following calls list is without dispostion & group by call date
@@ -591,7 +591,7 @@ def customer_dashboard(request, on_index=None):
         'total_torture': total_torture,
         'total_invalidargs': total_invalidargs,
         'total_noroute': total_noroute,
-        'total_forbiden': total_forbiden,
+        'total_forbidden': total_forbidden,
         'answered_color': ANSWER_COLOR,
         'busy_color': BUSY_COLOR,
         'not_answered_color': NOANSWER_COLOR ,
@@ -602,7 +602,7 @@ def customer_dashboard(request, on_index=None):
         'torture_color': TORTURE_COLOR,
         'invalidargs_color': INVALIDARGS_COLOR,
         'noroute_color': NOROUTE_COLOR,
-        'forbiden_color': FORBIDDEN_COLOR,
+        'forbidden_color': FORBIDDEN_COLOR,
     }
     if on_index == 'yes':
         return data
@@ -896,7 +896,7 @@ def notify_admin(request):
         # Send mail to ADMINS
         subject = _('Dialer setting configuration')
         message = \
-        _('Newfies Notification - User Dialer Setting The user "%(user)s" - "%(user_id)s" is not configured properly to use your system, please configure his dialer settings.') %\
+        _('Notification - User Dialer Setting The user "%(user)s" - "%(user_id)s" is not properly configured to use the system, please configure their dialer settings.') %\
           {'user': request.user, 'user_id': request.user.id}
         # mail_admins() is a shortcut for sending an email to the site admins,
         # as defined in the ADMINS setting
@@ -1018,7 +1018,7 @@ def phonebook_add(request):
             obj = form.save(commit=False)
             obj.user = User.objects.get(username=request.user)
             obj.save()
-            request.session["msg"] = _('"%(name)s" is added successfully.') %\
+            request.session["msg"] = _('"%(name)s" is added.') %\
             {'name': request.POST['name']}
             return HttpResponseRedirect('/phonebook/')
     template = 'frontend/phonebook/change.html'
@@ -1065,7 +1065,7 @@ def phonebook_del(request, object_id):
             contact_list.delete()
 
             # 2) delete phonebook
-            request.session["msg"] = _('"%(name)s" is deleted successfully.') \
+            request.session["msg"] = _('"%(name)s" is deleted.') \
                                         % {'name': phonebook.name}
             phonebook.delete()
             return HttpResponseRedirect('/phonebook/')
@@ -1082,7 +1082,7 @@ def phonebook_del(request, object_id):
         # 2) delete phonebook
         phonebook_list = Phonebook.objects.extra(where=['id IN (%s)' % values])
         request.session["msg"] =\
-        _('%(count)s phonebook(s) are deleted successfully.') \
+        _('%(count)s phonebook(s) are deleted.') \
         % {'count': phonebook_list.count()}
         phonebook_list.delete()
         return HttpResponseRedirect('/phonebook/')
@@ -1113,7 +1113,7 @@ def phonebook_change(request, object_id):
             form = PhonebookForm(request.POST, instance=phonebook)
             if form.is_valid():
                 form.save()
-                request.session["msg"] = _('"%(name)s" is updated successfully.') \
+                request.session["msg"] = _('"%(name)s" is updated.') \
                 % {'name': request.POST['name']}
                 return HttpResponseRedirect('/phonebook/')
 
@@ -1320,7 +1320,7 @@ def contact_add(request):
         form = ContactForm(request.user, request.POST)
         if form.is_valid():
             form.save()
-            request.session["msg"] = _('"%(name)s" is added successfully.') %\
+            request.session["msg"] = _('"%(name)s" is added.') %\
             {'name': request.POST['contact']}
             return HttpResponseRedirect('/contact/')
 
@@ -1356,7 +1356,7 @@ def contact_del(request, object_id):
         contact = Contact.objects.get(pk=object_id)
         # Delete phonebook
         if object_id:
-            request.session["msg"] = _('"%(name)s" is deleted successfully.') \
+            request.session["msg"] = _('"%(name)s" is deleted.') \
             % {'name': contact.first_name}
             contact.delete()
             return HttpResponseRedirect('/contact/')
@@ -1366,7 +1366,7 @@ def contact_del(request, object_id):
         values = ", ".join(["%s" % el for el in values])
         contact_list = Contact.objects.extra(where=['id IN (%s)' % values])
         request.session["msg"] =\
-        _('%(count)s contact(s) are deleted successfully.') \
+        _('%(count)s contact(s) are deleted.') \
         % {'count': contact_list.count()}
         contact_list.delete()
         return HttpResponseRedirect('/contact/')
@@ -1399,7 +1399,7 @@ def contact_change(request, object_id):
                                   instance=contact)
             if form.is_valid():
                 form.save()
-                request.session["msg"] = _('"%(name)s" is updated successfully.') \
+                request.session["msg"] = _('"%(name)s" is updated.') \
                 % {'name': request.POST['contact']}
                 return HttpResponseRedirect('/contact/')
 
@@ -1491,7 +1491,7 @@ def contact_import(request):
                             contact = Contact.objects.get(
                                  phonebook_id=phonebook.id,
                                  contact=row[0])
-                            error_msg = _('Subscriber is already exist !!')
+                            error_msg = _('Subscriber already exists!')
                             error_import_list.append(row)
                         except:
                             # if not, insert record
@@ -1513,7 +1513,7 @@ def contact_import(request):
                             success_import_list.append(row)
                     except:
                         error_msg = \
-                        _("Invalid value for import! Please look at the import samples.")
+                        _("Invalid value for import! Please check the import samples.")
                         type_error_import_list.append(row)
 
     data = RequestContext(request, {
@@ -1762,7 +1762,7 @@ def campaign_add(request):
     if request.user and request.method != 'POST':
         # check Max Number of running campaign
         if check_dialer_setting(request, check_for="campaign"):
-            request.session['msg'] = msg = _("you have too many campaign. Max allowed %(limit)s") \
+            request.session['msg'] = msg = _("you have too many campaigns. Max allowed %(limit)s") \
             % {'limit': dialer_setting_limit(request, limit_for="campaign")}
 
             # campaign limit reached
@@ -1789,7 +1789,7 @@ def campaign_add(request):
             obj.save()
             form.save_m2m()
 
-            request.session["msg"] = _('"%(name)s" is added successfully.') %\
+            request.session["msg"] = _('"%(name)s" is added.') %\
             {'name': request.POST['name']}
             return HttpResponseRedirect('/campaign/')
 
@@ -1823,7 +1823,7 @@ def campaign_del(request, object_id):
         campaign = Campaign.objects.get(pk=object_id)
         # Delete campaign
         if object_id:
-            request.session["msg"] = _('"%(name)s" is deleted successfully.') \
+            request.session["msg"] = _('"%(name)s" is deleted.') \
             % {'name': campaign.name}
             campaign.delete()
             return HttpResponseRedirect('/campaign/')
@@ -1832,7 +1832,7 @@ def campaign_del(request, object_id):
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
         campaign_list = Campaign.objects.extra(where=['id IN (%s)' % values])
-        request.session["msg"] = _('%(count)s campaign(s) are deleted successfully.')\
+        request.session["msg"] = _('%(count)s campaign(s) are deleted.')\
         % {'count': campaign_list.count()}
         campaign_list.delete()
         return HttpResponseRedirect('/campaign/')
@@ -1882,7 +1882,7 @@ def campaign_change(request, object_id):
                 obj.object_id = object_id
                 obj.save()
                 
-                request.session["msg"] = _('"%(name)s" is updated successfully.') \
+                request.session["msg"] = _('"%(name)s" is updated.') \
                 % {'name': request.POST['name']}
                 return HttpResponseRedirect('/campaign/')
 
@@ -1926,7 +1926,7 @@ def admin_call_report(request):
     total_torture = 0
     total_invalidargs = 0
     total_noroute = 0
-    total_forbiden = 0
+    total_forbidden = 0
     select_data = \
         {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
 
@@ -1964,7 +1964,7 @@ def admin_call_report(request):
         elif i['disposition'] == 'NOROUTE':
             total_noroute = total_noroute + 1
         else:
-            total_forbiden = total_forbiden + 1 # FORBIDDEN
+            total_forbidden = total_forbidden + 1 # FORBIDDEN
 
 
     data = '<ul><li>'
@@ -1980,7 +1980,7 @@ def admin_call_report(request):
             <abbr title="'+_('Invalid Args')+'">' + _('Inv') + '</abbr>: ' + str(total_invalidargs) + ' | \
             <abbr title="'+_('No Route')+'">' + _('NoRo') + '</abbr>: ' + str(total_noroute) + ' | \
             <abbr title="'+_('Congestion')+'">' + _('Cong') + '</abbr>: ' + str(total_congestion) + ' | \
-            <abbr title="'+_('Forbiden')+'">' + _('Forb') + '</abbr>: ' + str(total_forbiden)
+            <abbr title="'+_('Forbidden')+'">' + _('Forb') + '</abbr>: ' + str(total_forbidden)
     data += '</li></ul>'
     #print data
     return HttpResponse(data, mimetype='application/html',
@@ -2066,7 +2066,7 @@ def admin_campaign_report(request):
     data += _('Active:') + str(total_active_campaigns_count) + ' |\
              '+_('Paused:') + str(total_pause_campaigns_count) + ' | \
              '+_('Aborted:') + str(total_abort_campaigns_count) + ' | \
-             '+_('Stoped:') + str(total_stop_campaigns_count) + '</li>'
+             '+_('Stopped:') + str(total_stop_campaigns_count) + '</li>'
     data += '</ul>'
     #print data
     return HttpResponse(data, mimetype='application/html',
@@ -2129,9 +2129,9 @@ def admin_user_report(request):
 
 
     data = '<ul>'
-    data += '<li><b>'+ _('Total User:') + str(total_user_count) + '</b> | \
-                 '+_('Active User:') + str(total_active_user_count) + ' | \
-                 '+_('None Active User:') + str(total_not_active_user_count) + '</li>'
+    data += '<li><b>'+ _('Total Users:') + str(total_user_count) + '</b> | \
+                 '+_('Active Users:') + str(total_active_user_count) + ' | \
+                 '+_('No Active Users:') + str(total_not_active_user_count) + '</li>'
     data += '</ul>'
     #print data
     return HttpResponse(data, mimetype='application/html',

@@ -670,7 +670,6 @@ td {
     width: 800px;
 }
 
-
 .icon {
     padding-left: 5px;
     padding-top: 2px;
@@ -683,4 +682,15 @@ td {
 td {
   font-size: 90%;
  
+}
+
+#customize the survey edition, this is for the sortable question header
+.portlet-header{
+    color: #404040;
+    font-weight: bold;
+    background-color: whiteSmoke;
+    margin: 0.5em;
+	padding: 10px 10px 10px 10px;
+    padding-bottom: 10px;
+	font-size: 20px;
 }

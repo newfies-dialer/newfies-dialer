@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
@@ -120,10 +121,10 @@ def survey_finestatemachine(request):
     
     #return the question
     html = '<Response>\n\
-                <GetDigits action="http://127.0.0.1:8000/survey_finestatemachine/" method="GET" numDigits="1" retries="1" validDigits="0123456789">\n\
+                <GetDigits action="%s" method="GET" numDigits="1" retries="3" validDigits="0123456789" timeout="10">\n\
                     <Speak>%s</Speak>\n\
                 </GetDigits>\
-            </Response>' % (list_question[current_state].question)
+            </Response>' % (settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL, list_question[current_state].question)
     return HttpResponse(html)
         
 

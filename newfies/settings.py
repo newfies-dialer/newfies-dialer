@@ -331,6 +331,8 @@ LANGUAGES = (
     ('pt', gettext('Portuguese')),
 )
 
+LANGUAGE_COOKIE_NAME = 'newfies_dialer_language'
+
 #DJANGO-ADMIN-TOOL
 #=================
 ADMIN_TOOLS_MENU = 'custom_admin_tools.menu.CustomMenu'

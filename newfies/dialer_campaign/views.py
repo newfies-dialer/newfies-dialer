@@ -731,8 +731,13 @@ def logout_view(request):
         del request.session['has_notified']
     except KeyError:
         pass
+
     logout(request)
-    return HttpResponseRedirect('/')
+    # set language cookie
+    response = HttpResponseRedirect('/')
+    response.set_cookie(settings.LANGUAGE_COOKIE_NAME,
+                        request.LANGUAGE_CODE)
+    return response
 
 
 def cust_password_reset(request):

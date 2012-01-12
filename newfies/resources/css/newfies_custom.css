@@ -684,7 +684,7 @@ td {
  
 }
 
-#customize the survey edition, this is for the sortable question header
+/* customize the survey edition, this is for the sortable question header */
 .portlet-header{
     color: #404040;
     font-weight: bold;

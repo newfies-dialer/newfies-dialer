@@ -176,15 +176,14 @@ Applications
 Screenshot
 ----------
 
-* Admin Dashboard :
+* Customer Frontend :
 
 .. image:: https://github.com/Star2Billing/newfies-dialer/raw/develop/docs/source/_static/images/customer_screenshot.png
 
 
-* Customer Frontend :
+* Admin Dashboard :
 
 .. image:: https://github.com/Star2Billing/newfies-dialer/raw/develop/docs/source/_static/images/admin_screenshot.png
-
 
 
 Coding Conventions
@@ -201,7 +200,7 @@ Conventions :
 Additional information
 -----------------------
 
-Fork the project on GitHub : https://github.com/Star2Billing/newfies
+Fork the project on GitHub : https://github.com/Star2Billing/newfies-dialer
 
 License : AGPL (https://raw.github.com/Star2Billing/newfies-dialer/master/COPYING)
 
@@ -214,5 +213,5 @@ Support
 Star2Billing S.L. (http://www.star2billing.com) offers consultancy including 
 installation, training and customization 
 
-Please email us at sales@star2billing.com for more information
+Please email us at newfies-dialer@star2billing.com for more information
 

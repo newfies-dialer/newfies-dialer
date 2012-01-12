@@ -1,27 +1,20 @@
 TODO
 ====
 
-- Review the I18N of the whole application
-
 - Refactor the template, css and code in view
 
 - Fix I18N on some of the pages such as :
 
-  http://127.0.0.1:8000/survey/1/ (check in spanish)
+  * http://127.0.0.1:8000/survey/1/ (check in spanish)
   or http://127.0.0.1:8000/audio/add/ ; http://127.0.0.1:8000/contact/add/
 
-- http://127.0.0.1:8000/audio/add/
+  * http://127.0.0.1:8000/audio/add/
   Audio Name, Audio file etc... is not being included in the PO
 
-- Make sure test work on all APIs
-
-
-- I18N need to be implemented for select checkbox and click on main delete button :
+  * Select checkbox and click on main delete button :
   http://127.0.0.1:8000/campaign/
 
-- update admin screenshot on readme.rst
-    https://github.com/Star2Billing/newfies-dialer/tree/develop
-    + add below it a other screenshot of the frontend dashboard
+- Make sure test work on all APIs
 
 - Add documentation for Survey User manual
 
@@ -61,3 +54,4 @@ TODO BUT NOT FOR NOW
 - Support audio file on survey
 
   Done
+  

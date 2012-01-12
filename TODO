@@ -20,18 +20,6 @@ TODO
     https://github.com/Star2Billing/newfies-dialer/tree/develop
     + add below it a other screenshot of the frontend dashboard
 
-
-
-TODO BUT NOT FOR NOW
-====================
-- Support audio file on survey
-
-  Done
-
-- include bootstrap jquery style
-
-  Done
-
 - Add documentation for Survey User manual
 
 - Additional User information
@@ -54,3 +42,11 @@ TODO BUT NOT FOR NOW
 
     Notes
 
+- Clean custom CSS, and add comments
+
+
+TODO BUT NOT FOR NOW
+====================
+- Support audio file on survey
+
+  Done

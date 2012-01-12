@@ -1,11 +1,6 @@
 TODO
 ====
 
-- replace all the "VoIP Apps" = "Voice Apps"
-  This changes needs to be done for API, directories (newfies/voip_app), files (voip_app_custom_spamlib.py), template files, urls and every reference in frontend and admin
-
-  Done
-
 - Review the I18N of the whole application
 
 - Refactor the template, css and code in view
@@ -14,20 +9,17 @@ TODO
 
   http://127.0.0.1:8000/survey/1/ (check in spanish)
   or http://127.0.0.1:8000/audio/add/ ; http://127.0.0.1:8000/contact/add/
-
   
-- Work on test
+- Make sure test work on all APIs
 
-  Done
 
 - I18N need to be implemented for select checkbox and click on main delete button :
   http://127.0.0.1:8000/campaign/
 
-- Save a cookies to remember the language choice
-
 - update admin screenshot on readme.rst
     https://github.com/Star2Billing/newfies-dialer/tree/develop
     + add below it a other screenshot of the frontend dashboard
+
 
 
 TODO BUT NOT FOR NOW
@@ -42,3 +34,22 @@ TODO BUT NOT FOR NOW
 
 - Add documentation for Survey User manual
 
+- Additional User information
+  
+  Increase the amount of information on Users
+    LAST NAME 
+    FIRST NAME  
+    EMAIL 
+    ADDRESS 
+    CITY  
+    STATE/PROVINCE  
+    COUNTRY 
+    ZIP/POSTAL CODE 
+    PHONE NUMBER  
+    FAX NUMBER  
+    COMPANY NAME  
+    COMPANY WEBSITE 
+
+    LANGUAGE
+
+    Notes

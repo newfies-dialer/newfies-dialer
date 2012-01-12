@@ -40,6 +40,13 @@ tastypie_api.register(SurveyAppResource())
 tastypie_api.register(SurveyQuestionResource())
 tastypie_api.register(SurveyResponseResource())
 
+js_info_dict = {
+    'packages': ('dialer_campaign',
+                 'voice_app',
+                 'survey',
+                 'audiofield'),
+}
+
 urlpatterns = patterns('',
     # redirect
     #('^$', 'django.views.generic.simple.redirect_to',
@@ -73,7 +80,7 @@ urlpatterns = patterns('',
     (r'^api/', include(tastypie_api.urls)),
     
     (r'^i18n/', include('django.conf.urls.i18n')),
-    (r'^jsi18n/(?P<packages>\S+?)/$', 'django.views.i18n.javascript_catalog'),
+    (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
 
     (r'^admin_tools/', include('admin_tools.urls')),
 

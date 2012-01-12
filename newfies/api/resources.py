@@ -100,7 +100,7 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='', l
     else:
         #B-Leg
         leg_type = 2
-        used_gateway = obj_callrequest.voipapp.gateway
+        used_gateway = obj_callrequest.content_object.gateway
     
     #check the right variable for hangup cause
     data_hangup_cause = data["%s%s" % (data_prefix, 'hangup_cause')]
@@ -678,7 +678,6 @@ class CampaignResource(ModelResource):
     """
     user = fields.ForeignKey(UserResource, 'user', full=True)
     aleg_gateway = fields.ForeignKey(GatewayResource, 'aleg_gateway', full=True)
-    #voipapp = fields.ForeignKey(VoipAppResource, 'voipapp', full=True)
     content_type = fields.ForeignKey(ContentTypeResource, 'content_type')
     phonebook = fields.ToManyField(PhonebookResource, 'phonebook', full=True, readonly=True)
     class Meta:
@@ -1465,45 +1464,51 @@ class AnswercallResource(ModelResource):
             obj_callrequest.aleg_uuid = opt_CallUUID
             obj_callrequest.save()
 
-            # get the VoIP application
-            if obj_callrequest.voipapp.type == 1:
-                #Dial
-                timelimit = obj_callrequest.timelimit
-                callerid = obj_callrequest.callerid
-                gatewaytimeouts = obj_callrequest.timeout
-                gateways = obj_callrequest.voipapp.gateway.gateways
-                dial_command = 'Dial timeLimit="%s" callerId="%s" callbackUrl="%s"' % \
-                                    (timelimit, callerid, PLIVO_DEFAULT_DIALCALLBACK_URL)
-                number_command = 'Number gateways="%s" gatewayTimeouts="%s"' % \
-                                    (gateways, gatewaytimeouts)
+            # check if Voice App
+            if not obj_callrequest.content_object.__class__.__name__ == 'VoiceApp':
+                logger.error('Error with App type, not a VoiceApp!')
 
-                object_list = [ {dial_command: {number_command: obj_callrequest.voipapp.data}, },]
-                logger.debug('Diale command')
+            else:
+                
+                if obj_callrequest.content_object.type == 1:
+                    #Dial
+                    timelimit = obj_callrequest.timelimit
+                    callerid = obj_callrequest.callerid
+                    gatewaytimeouts = obj_callrequest.timeout
+                    gateways = obj_callrequest.content_object.gateway.gateways
+                    dial_command = 'Dial timeLimit="%s" callerId="%s" callbackUrl="%s"' % \
+                                        (timelimit, callerid, PLIVO_DEFAULT_DIALCALLBACK_URL)
+                    number_command = 'Number gateways="%s" gatewayTimeouts="%s"' % \
+                                        (gateways, gatewaytimeouts)
 
-            elif obj_callrequest.voipapp.type == 2:
-                #PlayAudio
-                object_list = [ {'Play': obj_callrequest.voipapp.data},]
-                logger.debug('PlayAudio')
+                    object_list = [ {dial_command: {number_command: obj_callrequest.content_object.data}, },]
+                    logger.debug('Diale command')
 
-            elif obj_callrequest.voipapp.type == 3:
-                #Conference
-                object_list = [ {'Conference': obj_callrequest.voipapp.data},]
-                logger.debug('Conference')
+                elif obj_callrequest.content_object.type == 2:
+                    #PlayAudio
+                    object_list = [ {'Play': obj_callrequest.content_object.data},]
+                    logger.debug('PlayAudio')
 
-            elif obj_callrequest.voipapp.type == 4:
-                #Speak
-                object_list = [ {'Speak': obj_callrequest.voipapp.data},]
-                logger.debug('Speak')
+                elif obj_callrequest.content_object.type == 3:
+                    #Conference
+                    object_list = [ {'Conference': obj_callrequest.content_object.data},]
+                    logger.debug('Conference')
+
+                elif obj_callrequest.content_object.type == 4:
+                    #Speak
+                    object_list = [ {'Speak': obj_callrequest.content_object.data},]
+                    logger.debug('Speak')
+                else:
+                    logger.error('Error with Voice App type!')
 
             #return [ {'Speak': 'Hello World'}, {'Dial': {'Number': '1000'}, },]
             #return [ {'Speak': 'System error'},]
 
-            #resp = rc.NOT_IMPLEMENTED
-            logger.error('Error with VoIP App type!')
-
             obj = CustomXmlEmitter()
             return self.create_response(request, obj.render(request, object_list))
+
         else:
+            logger.debug('ERROR : ' + str(errors))
             if len(errors):
                 if request:
                     desired_format = self.determine_format(request)

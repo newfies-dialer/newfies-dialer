@@ -44,6 +44,11 @@ TODO
 
 - Clean custom CSS, and add comments
 
+- Edit user : http://127.0.0.1:8000/admin/auth/staff/1/
+  Pais, should display a proper list of country
+
+  Language also should have a list
+  
 
 TODO BUT NOT FOR NOW
 ====================

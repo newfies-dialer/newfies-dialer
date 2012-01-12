@@ -41,7 +41,9 @@ tastypie_api.register(SurveyQuestionResource())
 tastypie_api.register(SurveyResponseResource())
 
 js_info_dict = {
+    'domain': 'djangojs',
     'packages': ('dialer_campaign',
+                 'user_profile',
                  'voice_app',
                  'survey',
                  'audiofield'),

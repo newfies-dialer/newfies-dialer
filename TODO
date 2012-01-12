@@ -53,3 +53,6 @@ TODO BUT NOT FOR NOW
     LANGUAGE
 
     Notes
+
+- Add basic signup module
+  https://bitbucket.org/ubernostrum/django-registration/

@@ -176,11 +176,15 @@ Applications
 Screenshot
 ----------
 
+* Admin Dashboard :
 
-.. image:: https://github.com/Star2Billing/newfies-dialer/raw/master/docs/source/_static/images/admin_screenshot.png
+.. image:: https://github.com/Star2Billing/newfies-dialer/raw/develop/docs/source/_static/images/customer_screenshot.png
 
 
-.. image:: https://github.com/Star2Billing/newfies-dialer/raw/master/docs/source/_static/images/customer_screenshot.png
+* Customer Frontend :
+
+.. image:: https://github.com/Star2Billing/newfies-dialer/raw/develop/docs/source/_static/images/admin_screenshot.png
+
 
 
 Coding Conventions

@@ -23,6 +23,9 @@ TODO
 - Add documentation for Survey User manual
 
 - Additional User information
+
+  !!! The user should also be able to edit his personal information :
+  http://127.0.0.1:8000/user_detail_change/?action=tabs-1
   
   Increase the amount of information on Users
     LAST NAME 
@@ -48,7 +51,7 @@ TODO
   Pais, should display a proper list of country
 
   Language also should have a list
-  
+
 
 TODO BUT NOT FOR NOW
 ====================

@@ -318,8 +318,8 @@ class Campaign(Model):
 
     #Gateways
     aleg_gateway = models.ForeignKey(Gateway, verbose_name=_("A-Leg Gateway"),
-                related_name="A-Leg Gateway",
-                help_text=_("Select outbound gateway"))
+                                     related_name="A-Leg Gateway",
+                                     help_text=_("Select outbound gateway"))
     #Campaign IVR/Application Destination
     """
     #comment to use genericforeign key

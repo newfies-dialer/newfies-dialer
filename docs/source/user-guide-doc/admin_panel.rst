@@ -25,6 +25,7 @@ Dashboard
 Dashboard page for the admin interface after successful login with superuser credentials
 
 .. image:: ../_static/images/admin_screenshot.png
+    :width: 1000
 
 .. _admin-phonebook-access:
 

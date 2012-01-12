@@ -54,20 +54,20 @@ $(document).ready(function() {
                     }
                 });
                 
-                 confirm_string = $fields.length + 'phonebook(s)' + ' are going to be deleted' + ' with '+contact_count+' contact(s)'+ '?'
+                 confirm_string = $fields.length + ' phonebook(s)' + ' are going to be deleted' + ' with '+contact_count+' contact(s)'+ '?'
              }             
              if(document.location.href.search("/campaign/") != -1)
              {
-                 confirm_string = $fields.length + 'campaign(s)' + ' are going to be deleted' + '?'
+                 confirm_string = $fields.length + ' campaign(s)' + ' are going to be deleted' + '?'
              }
 
              if(document.location.href.search("/user_detail_change/") != -1)
              {
-                 confirm_string = $fields.length + 'notification(s)' + ' are going to be deleted' + '?'
+                 confirm_string = $fields.length + ' notification(s)' + ' are going to be deleted' + '?'
                  
                  if(document.getElementById('id_mark_read').value == 'true')
                  {
-                   confirm_string = $fields.length + 'notification(s)' + ' are going to be marked as read' + '?'
+                   confirm_string = $fields.length + ' notification(s)' + ' are going to be marked as read' + '?'
                  }
              }
 

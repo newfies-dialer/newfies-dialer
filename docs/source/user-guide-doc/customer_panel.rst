@@ -26,6 +26,7 @@ Index
 Index page for the customer interface after successful login with user credentials 
 
 .. image:: ../_static/images/customer_screenshot.png
+    :width: 1000
 
 
 .. _customer-phonebook-access:
@@ -77,7 +78,6 @@ To Add/Update a contact in a phonebook
     * http://localhost:8000/dialer_campaign/contact/1/
 
 .. image:: ../_static/images/customer/update_contact.png
-    :width: 1000
 
 To import bulk contacts into a phonebook, click on ``Import``.
 where you can upload contacts via a CSV file under a logged in 

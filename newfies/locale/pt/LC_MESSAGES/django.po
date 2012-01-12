@@ -1979,7 +1979,7 @@ msgstr "App"
 #: templates/frontend/survey/survey_list.html:55
 #: templates/frontend/voiceapp/list.html:52
 msgid "Delete Selected"
-msgstr "Delete Selected"
+msgstr "Apagar selecionado"
 
 #: templates/frontend/campaign/list.html:77
 #: templates/frontend/contact/list.html:151

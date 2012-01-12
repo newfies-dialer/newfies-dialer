@@ -3,14 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-01-12 05:05-0600\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2012-01-12 10:58-0300\n"
+"Last-Translator: Emerson Reis <eluizbr@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -21,143 +20,138 @@ msgstr ""
 #: resources/js/custom.jquery.select.all.js:13
 #: static/newfies/js/custom.jquery.select.all.js:13
 msgid "You must check at least one box!"
-msgstr ""
+msgstr "Você deve verificar pelo menos uma caixa!"
 
 #: resources/js/custom.jquery.select.all.js:22
 #: static/newfies/js/custom.jquery.select.all.js:22
 msgid "voice app(s) are going to be deleted"
-msgstr ""
+msgstr "voice app(s) seram apagados"
 
 #: resources/js/custom.jquery.select.all.js:26
 #: static/newfies/js/custom.jquery.select.all.js:26
 msgid "phonebook(s) are going to be deleted"
-msgstr ""
+msgstr "agenda(s) telefônica(s) seram apagados"
 
 #: resources/js/custom.jquery.select.all.js:30
 #: static/newfies/js/custom.jquery.select.all.js:30
 msgid "survey(s) are going to be deleted"
-msgstr ""
+msgstr "exame(s) seram apagados"
 
 #: resources/js/custom.jquery.select.all.js:34
 msgid "audio(s)"
-msgstr ""
+msgstr "áudio(s)"
 
 #: resources/js/custom.jquery.select.all.js:57
 msgid "phonebook(s) are going to be deleted with"
-msgstr ""
+msgstr "agenda(s) telefônica(s) seram apagados com"
 
 #: resources/js/custom.jquery.select.all.js:57
 msgid "contact(s)"
-msgstr ""
+msgstr "contato(s)"
 
 #: resources/js/custom.jquery.select.all.js:61
 msgid "campaign(s) are going to be deleted"
-msgstr ""
+msgstr "campanha(s) seram apagadas"
 
 #: resources/js/custom.jquery.select.all.js:66
 msgid "notification(s) are going to be deleted"
-msgstr ""
+msgstr "notificação(ões) seram apagados"
 
 #: resources/js/custom.jquery.select.all.js:70
 msgid "notification(s) are going to be marked as read"
-msgstr ""
+msgstr "notificação(ões) seram marcadas como lida"
 
 #: static/admin/js/SelectFilter2.js:77
 msgid "Clear all"
-msgstr ""
+msgstr "Limpar tudo"
 
 #: static/admin/js/actions.js:18
 msgid "%(sel)s of %(cnt)s selected"
 msgid_plural "%(sel)s of %(cnt)s selected"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(sel)s de %(cnt)s selecionado"
+msgstr[1] "%(sel)s de %(cnt)s selecionados"
 
 #: static/admin/js/actions.js:109
-msgid ""
-"You have unsaved changes on individual editable fields. If you run an "
-"action, your unsaved changes will be lost."
-msgstr ""
+msgid "You have unsaved changes on individual editable fields. If you run an action, your unsaved changes will be lost."
+msgstr "Você tem alterações não salvas em campos individuais editáveis​​. Se você executar esta ação, as alterações não salvas serão perdidas."
 
-#: static/admin/js/actions.js:121 static/admin/js/actions.min.js:6
-msgid ""
-"You have selected an action, but you haven't saved your changes to "
-"individual fields yet. Please click OK to save. You'll need to re-run the "
-"action."
-msgstr ""
+#: static/admin/js/actions.js:121
+#: static/admin/js/actions.min.js:6
+msgid "You have selected an action, but you haven't saved your changes to individual fields yet. Please click OK to save. You'll need to re-run the action."
+msgstr "Você selecionou uma ação, mas você não salvou as alterações nos campos individuais. Por favor, clique em OK para salvar. Você vai precisar re-executar a ação."
 
-#: static/admin/js/actions.js:123 static/admin/js/actions.min.js:6
-msgid ""
-"You have selected an action, and you haven't made any changes on individual "
-"fields. You're probably looking for the Go button rather than the Save "
-"button."
-msgstr ""
+#: static/admin/js/actions.js:123
+#: static/admin/js/actions.min.js:6
+msgid "You have selected an action, and you haven't made any changes on individual fields. You're probably looking for the Go button rather than the Save button."
+msgstr "Você selecionou uma ação, e você não realizou as alterações nos campos individuais. Provavelmente você está clicando no botão Ir ao invés do botão Salvar."
 
-#: static/admin/js/calendar.js:24 static/admin/js/dateparse.js:32
-msgid ""
-"January February March April May June July August September October November "
-"December"
-msgstr ""
+#: static/admin/js/calendar.js:24
+#: static/admin/js/dateparse.js:32
+msgid "January February March April May June July August September October November December"
+msgstr "Janeiro Fevereiro Março Abril Maio Junho Julho Agosto Setembro Outubro Novembro Dezembro"
 
 #: static/admin/js/calendar.js:25
 msgid "S M T W T F S"
-msgstr ""
+msgstr "D S T Q Q S S"
 
-#: static/admin/js/collapse.js:9 static/admin/js/collapse.js.py:21
+#: static/admin/js/collapse.js:9
+#: static/admin/js/collapse.js.py:21
 #: static/admin/js/collapse.min.js:1
 msgid "Show"
-msgstr ""
+msgstr "Exibir"
 
-#: static/admin/js/collapse.js:16 static/admin/js/collapse.min.js:1
+#: static/admin/js/collapse.js:16
+#: static/admin/js/collapse.min.js:1
 msgid "Hide"
-msgstr ""
+msgstr "Esconder"
 
 #: static/admin/js/dateparse.js:33
 msgid "Sunday Monday Tuesday Wednesday Thursday Friday Saturday"
-msgstr ""
+msgstr "Domingo Segunda Terça Quarta Quinta Sexta Sábado"
 
 #: static/admin/js/admin/DateTimeShortcuts.js:49
 #: static/admin/js/admin/DateTimeShortcuts.js:84
 msgid "Now"
-msgstr ""
+msgstr "Agora"
 
 #: static/admin/js/admin/DateTimeShortcuts.js:53
 msgid "Clock"
-msgstr ""
+msgstr "Relógio"
 
 #: static/admin/js/admin/DateTimeShortcuts.js:80
 msgid "Choose a time"
-msgstr ""
+msgstr "Escolha uma hora"
 
 #: static/admin/js/admin/DateTimeShortcuts.js:85
 msgid "Midnight"
-msgstr ""
+msgstr "meia-noite"
 
 #: static/admin/js/admin/DateTimeShortcuts.js:86
 msgid "6 a.m."
-msgstr ""
+msgstr "06:00"
 
 #: static/admin/js/admin/DateTimeShortcuts.js:87
 msgid "Noon"
-msgstr ""
+msgstr "meio-dia"
 
 #: static/admin/js/admin/DateTimeShortcuts.js:91
 #: static/admin/js/admin/DateTimeShortcuts.js:188
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: static/admin/js/admin/DateTimeShortcuts.js:133
 #: static/admin/js/admin/DateTimeShortcuts.js:182
 msgid "Today"
-msgstr ""
+msgstr "Hoje"
 
 #: static/admin/js/admin/DateTimeShortcuts.js:137
 msgid "Calendar"
-msgstr ""
+msgstr "Calendário"
 
 #: static/admin/js/admin/DateTimeShortcuts.js:180
 msgid "Yesterday"
-msgstr ""
+msgstr "Amanhã"
 
 #: static/admin/js/admin/DateTimeShortcuts.js:184
 msgid "Tomorrow"
-msgstr ""
+msgstr "Ontem"

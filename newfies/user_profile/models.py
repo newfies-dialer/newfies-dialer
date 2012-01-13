@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.conf.global_settings import LANGUAGES
 
-from prefix_country.models import Country
+from django_countries import CountryField
 from dialer_gateway.models import Gateway
 from dialer_settings.models import DialerSetting
 
@@ -32,8 +32,7 @@ class UserProfile(models.Model):
                             verbose_name=_('City'))
     state = models.CharField(max_length=120, blank=True, null=True,
                              verbose_name=_('State'))
-    country = models.ForeignKey(Country, blank=True, null=True,
-                                verbose_name=_('Country'))
+    country = CountryField(blank=True, null=True, verbose_name=_('Country'))
     zip_code = models.CharField(max_length=120, blank=True, null=True,
                                 verbose_name=_('Zip code'))
     phone_no = models.CharField(max_length=90, blank=True, null=True,

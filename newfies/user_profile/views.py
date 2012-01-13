@@ -33,9 +33,9 @@ def customer_detail_change(request):
     user_detail = User.objects.get(username=request.user)
     user_detail_extened = UserProfile.objects.get(user=user_detail)
 
-    user_detail_form = UserChangeDetailForm(user=request.user,
+    user_detail_form = UserChangeDetailForm(request.user,
                                             instance=user_detail)
-    user_detail_extened_form = UserChangeDetailExtendForm(user=request.user,
+    user_detail_extened_form = UserChangeDetailExtendForm(request.user,
                                                           instance=user_detail_extened)
     
     user_password_form = PasswordChangeForm(user=request.user)

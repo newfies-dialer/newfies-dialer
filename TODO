@@ -1,37 +1,8 @@
 TODO
 ====
 
-- Edit user : http://127.0.0.1:8000/admin/auth/staff/1/
-  Pais, should display a proper list of country
-
-  Language also should have a list
-
 - API to create campaign should accept phonebook ID to attach to,
   if it doesn't it will create a new phonebook
-
-- Additional User information
-
-  !!! The user should also be able to edit his personal information :
-  http://127.0.0.1:8000/user_detail_change/?action=tabs-1
-  
-  Increase the amount of information on Users
-    LAST NAME 
-    FIRST NAME  
-    EMAIL 
-    ADDRESS 
-    CITY  
-    STATE/PROVINCE  
-    COUNTRY 
-    ZIP/POSTAL CODE 
-    PHONE NUMBER  
-    FAX NUMBER  
-    COMPANY NAME  
-    COMPANY WEBSITE 
-
-    LANGUAGE
-
-    Notes
-
 
 - Refactor the template, css and code in view
 

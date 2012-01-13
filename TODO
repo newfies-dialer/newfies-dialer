@@ -48,4 +48,5 @@ TODO
 
   Language also should have a list
 
-  
+- API to create campaign should accept phonebook ID to attach to,
+  if it doesn't it will create a new phonebook

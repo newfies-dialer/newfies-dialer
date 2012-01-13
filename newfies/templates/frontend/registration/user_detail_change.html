@@ -51,7 +51,7 @@ function get_alert_msg(id)
         {% endif %}
         <br/>
         <form action="" method="post">{% csrf_token %}
-            {% for field in user_detail_form %}
+             {% for field in user_detail_form %}
              <div class="clearfix{% if field.errors %} error{% endif %}">
                 <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
                 <div class="input">
@@ -63,6 +63,20 @@ function get_alert_msg(id)
                 </div>
              </div>
              {% endfor %}
+
+             {% for field in user_detail_extened_form %}
+             <div class="clearfix{% if field.errors %} error{% endif %}">
+                <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                <div class="input">
+                    {{ field }}
+                    {% if field.errors %}
+                        <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                    {% endif %}
+                    <span class="help-block">{{ field.help_text }} </span>
+                </div>
+             </div>
+             {% endfor %}
+
 
              <div class="actions">
                  <input type="hidden" name="action" value="tabs-1" />

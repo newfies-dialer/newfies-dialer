@@ -23,7 +23,7 @@ def customer_detail_change(request):
 
     **Attributes**:
 
-        * ``form`` - UserChangeDetailForm, PasswordChangeForm, CheckPhoneNumberForm
+        * ``form`` - UserChangeDetailForm, UserChangeDetailExtendForm, PasswordChangeForm, CheckPhoneNumberForm
         * ``template`` - 'frontend/registration/user_detail_change.html'
 
     **Logic Description**:
@@ -31,8 +31,13 @@ def customer_detail_change(request):
         * User is able to change his/her detail.
     """
     user_detail = User.objects.get(username=request.user)
+    user_detail_extened = UserProfile.objects.get(user=user_detail)
+
     user_detail_form = UserChangeDetailForm(user=request.user,
                                             instance=user_detail)
+    user_detail_extened_form = UserChangeDetailExtendForm(user=request.user,
+                                                          instance=user_detail_extened)
+    
     user_password_form = PasswordChangeForm(user=request.user)
     check_phone_no_form = CheckPhoneNumberForm()
 
@@ -77,9 +82,13 @@ def customer_detail_change(request):
         if request.POST['form-type'] == "change-detail":
             user_detail_form = UserChangeDetailForm(request.user, request.POST,
                                                     instance=user_detail)
+            user_detail_extened_form = UserChangeDetailExtendForm(request.user,
+                                                                  request.POST,
+                                                                  instance=user_detail_extened)
             action = 'tabs-1'
-            if user_detail_form.is_valid():
+            if user_detail_form.is_valid() and user_detail_extened_form.is_valid():
                 user_detail_form.save()
+                user_detail_extened_form.save()
                 msg_detail = _('Detail has been changed.')
             else:
                 error_detail = _('Please correct the errors below.')
@@ -108,6 +117,7 @@ def customer_detail_change(request):
     data = {
         'module': current_view(request),
         'user_detail_form': user_detail_form,
+        'user_detail_extened_form': user_detail_extened_form,
         'user_password_form': user_password_form,
         'check_phone_no_form': check_phone_no_form,
         'user_notification': user_notification,

@@ -6,7 +6,7 @@ from django.db.models.signals import post_save
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from dateutil.relativedelta import *
-from prefix_country.models import Country
+from django_countries import CountryField
 from dialer_gateway.models import Gateway
 from voice_app.models import VoiceApp
 from user_profile.models import UserProfile
@@ -120,8 +120,7 @@ class Contact(Model):
     first_name = models.CharField(max_length=120, blank=True, null=True,
                                   verbose_name=_('First Name'))
     email = models.EmailField(blank=True, null=True, verbose_name=_('Email'))
-    country = models.ForeignKey(Country, blank=True, null=True,
-                                verbose_name=_('Country'))
+    country = CountryField(blank=True, null=True, verbose_name=_('Country'))
     city = models.CharField(max_length=120, blank=True, null=True,
                             verbose_name=_('City'))
     description = models.TextField(null=True, blank=True,

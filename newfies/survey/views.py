@@ -119,12 +119,25 @@ def survey_finestatemachine(request):
         html = '<Response><Hangup/></Response>'
         return HttpResponse(html)
     
+    #retrieve the basename of the url
+    url = settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL
+    slashparts = url.split('/')
+    url_basename = '/'.join(slashparts[:3])
+
+    if list_question[current_state].message_type == 1 and \
+        list_question[0].audio_message.audio_file.url:
+        #Audio file
+        question = "<Play>%s%s</Play>" % (url_basename, list_question[0].audio_message.audio_file.url)
+    else:
+        #Text2Speech
+        question = "<Speak>%s</Speak>" % list_question[current_state].question
+
     #return the question
     html = '<Response>\n\
                 <GetDigits action="%s" method="GET" numDigits="1" retries="3" validDigits="0123456789" timeout="10">\n\
-                    <Speak>%s</Speak>\n\
+                    %s\n\
                 </GetDigits>\
-            </Response>' % (settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL, list_question[current_state].question)
+            </Response>' % (settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL, question)
     return HttpResponse(html)
         
 

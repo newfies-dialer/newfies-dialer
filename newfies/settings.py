@@ -176,7 +176,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.markup',
     'countries',
-    'prefix_country',
+    #'prefix_country',
     'dialer_gateway',
     'dialer_campaign',
     'dialer_cdr',

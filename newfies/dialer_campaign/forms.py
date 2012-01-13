@@ -94,8 +94,6 @@ class ContactForm(ModelForm):
         if user:
             self.fields['phonebook'].choices = field_list(name="phonebook",
                                                           user=user)
-            self.fields['country'].choices = field_list(name="country",
-                                                        user=user)
 
 
 class CampaignForm(ModelForm):

@@ -175,7 +175,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     'django.contrib.markup',
-    'countries',
+    'django_countries',
     #'prefix_country',
     'dialer_gateway',
     'dialer_campaign',

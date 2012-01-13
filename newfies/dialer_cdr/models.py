@@ -7,7 +7,7 @@ from voice_app.models import VoiceApp
 from common.intermediate_model_base_class import Model
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from prefix_country.models import Prefix
+from country_dialcode.models import Prefix
 from uuid import uuid1
 
 

@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from prefix_country.models import Country
+from country_dialcode.models import Country
 from dialer_campaign.models import Phonebook, Campaign, Contact, CAMPAIGN_STATUS, CAMPAIGN_STATUS_COLOR
 from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting

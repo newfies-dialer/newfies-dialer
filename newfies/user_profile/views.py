@@ -31,7 +31,12 @@ def customer_detail_change(request):
         * User is able to change his/her detail.
     """
     user_detail = User.objects.get(username=request.user)
-    user_detail_extened = UserProfile.objects.get(user=user_detail)
+    try:
+        user_detail_extened = UserProfile.objects.get(user=user_detail)
+    except UserProfile.DoesNotExist:
+        #create UserProfile
+        user_detail_extened = UserProfile(user=user_detail)
+        user_detail_extened.save()
 
     user_detail_form = UserChangeDetailForm(request.user,
                                             instance=user_detail)

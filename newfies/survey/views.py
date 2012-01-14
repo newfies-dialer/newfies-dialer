@@ -125,16 +125,17 @@ def survey_finestatemachine(request):
     url_basename = '/'.join(slashparts[:3])
 
     if list_question[current_state].message_type == 1 and \
-        list_question[0].audio_message.audio_file.url:
+        hasattr(list_question[current_state], 'audio_message') and \
+        list_question[current_state].audio_message.audio_file.url:
         #Audio file
-        question = "<Play>%s%s</Play>" % (url_basename, list_question[0].audio_message.audio_file.url)
+        question = "<Play>%s%s</Play>" % (url_basename, list_question[current_state].audio_message.audio_file.url)
     else:
         #Text2Speech
         question = "<Speak>%s</Speak>" % list_question[current_state].question
 
     #return the question
     html = '<Response>\n\
-                <GetDigits action="%s" method="GET" numDigits="1" retries="3" validDigits="0123456789" timeout="10">\n\
+                <GetDigits action="%s" method="GET" numDigits="1" retries="1" validDigits="0123456789" timeout="10" finishOnKey="#">\n\
                     %s\n\
                 </GetDigits>\
             </Response>' % (settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL, question)

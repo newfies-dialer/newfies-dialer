@@ -19,4 +19,7 @@ Contents:
     ./api-doc/cdr_resource
     ./api-doc/answercall_resource
     ./api-doc/hangupcall_resource
+    ./api-doc/survey_resource
+    ./api-doc/survey_question_resource
+    ./api-doc/survey_response_resource
 

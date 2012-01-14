@@ -1,12 +1,9 @@
 {% extends "frontend/master.html" %}
 {% load dialer_cdr_extras i18n icons pagination_tags %}
 
-{% block title %}
-{% trans 'User Detail Change' %}
-{% endblock %}
 
 
-{% block extra_files %}
+{% block extra_header %}
 <script type="text/javascript" src="{{STATIC_URL}}newfies/js/custom.jquery.select.all.js"></script>
 
 <!--flexigrid css & js-->
@@ -16,92 +13,123 @@
 <script type="text/javascript" language="javascript">
 function get_alert_msg(id)
 {
-    confirm_string = '{% trans "you are going to delete a notification" %}';
+    confirm_string = '{% trans "Confirm deletion?" %}';
     var answer = confirm(confirm_string);
     return answer // answer is a boolean
 }
 </script>
+
+{% endblock %}
+
+
+{% block content_header %}
+<h1>{% trans "Settings" %} <small>{% trans "Password, notifications, account limits and number check" %}</small></h1>
 {% endblock %}
 
 {% block content %}
-<script>
-$(function() {
-	$( "#tabs" ).tabs().tabs("select", {{ selected }});
-});
-</script>
 
+<ul class="tabs" data-tabs="tabs">
+    <li {% if action == "tabs-1" %}class="active"{% endif %}><a href="#tabs-1">{% trans "Account" %}</a></li>
+    <li {% if action == "tabs-2" %}class="active"{% endif %}><a href="#tabs-2">{% trans "Password" %}</a></li>
+    <li {% if action == "tabs-3" %}class="active"{% endif %}><a href="#tabs-3">{% trans "Notifications" %}</a></li>
+    <li {% if action == "tabs-4" %}class="active"{% endif %}><a href="#tabs-4">{% trans "Account Limits" %}</a></li>
+    <li {% if action == "tabs-5" %}class="active"{% endif %}><a href="#tabs-5">{% trans "Number Check" %}</a></li>
+</ul>
 
-<div class="demo">
-
-<div id="tabs" style="width:600px;">
-	<ul>
-		<li><a href="#tabs-1">{% trans "Account" %}</a></li>
-		<li><a href="#tabs-2">{% trans "Password" %}</a></li>
-		<li><a href="#tabs-3">{% trans "Notifications" %}</a></li>
-        <li><a href="#tabs-4">{% trans "Limitation" %}</a></li>
-        <li><a href="#tabs-5">{% trans "Authorized" %}</a></li>
-	</ul>
-	<div id="tabs-1">
+<div class="pill-content">
+    
+	<div id="tabs-1"  {% if action == "tabs-1" or action == "" %}class="active"{% endif %}>
         {% if msg_detail %}
-        <div class="success">                
+        <div class="alert-message success">
                 <strong>{% trans "Alert" %} : </strong>  {{ msg_detail }}
         </div>
         {% endif %}
         {% if error_detail %}
-        <div class="error">
-                <span class="ui-icon ui-icon-alert" style="float: left; margin-right: 0.3em;"></span>
+        <div class="alert-message error">
                 <strong>{% trans "Alert" %} : </strong>  {{ error_detail }}
         </div>
         {% endif %}
         <br/>
         <form action="" method="post">{% csrf_token %}
-            <table align=center border=1>
-                {{ user_detail_form.as_table }}
-                <tr>
-                <td colspan=2 align=right>
-                    <input type="hidden" name="form-type" value="change-detail" />
-                    <input type="submit" value="{% trans 'Change detail' %}" />
-                </td>
-                </tr>
-            </table>
+             {% for field in user_detail_form %}
+             <div class="clearfix{% if field.errors %} error{% endif %}">
+                <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                <div class="input">
+                    {{ field }}
+                    {% if field.errors %}
+                        <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                    {% endif %}
+                    <span class="help-block">{{ field.help_text }} </span>
+                </div>
+             </div>
+             {% endfor %}
+
+             {% for field in user_detail_extened_form %}
+             <div class="clearfix{% if field.errors %} error{% endif %}">
+                <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                <div class="input">
+                    {{ field }}
+                    {% if field.errors %}
+                        <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                    {% endif %}
+                    <span class="help-block">{{ field.help_text }} </span>
+                </div>
+             </div>
+             {% endfor %}
+
+
+             <div class="actions">
+                 <input type="hidden" name="action" value="tabs-1" />
+                 <input type="hidden" name="form-type" value="change-detail" />
+                 <input type="submit" class="btn primary" value="{% trans 'Change detail' %}" />
+             </div>
         </form>
 	</div>
-	<div id="tabs-2">
+	<div id="tabs-2" {% if action == "tabs-2" %}class="active"{% endif %}>
         {% if msg_pass %}
-        <div class="success">                
+        <div class="alert-message success">
                 <strong>{% trans "Alert" %} : </strong>  {{ msg_pass }}
         </div>
         {% endif %}
         {% if error_pass %}
-        <div class="error">
-                <span class="ui-icon ui-icon-alert" style="float: left; margin-right: 0.3em;"></span>
+        <div class="alert-message error">
                 <strong>{% trans "Alert" %} : </strong>  {{ error_pass }}
         </div>
         {% endif %}
         <br/>
         <form action="" method="post">{% csrf_token %}
-            <table align=center border=1>
-                {{ user_password_form.as_table }}
-                <tr>
-                <td colspan=2 align=right>
-                    <input type="hidden" name="form-type" value="change-password" />
-                    <input type="submit" value="{% trans 'Change password' %}" />
-                </td>
-                </tr>
-            </table>
+             {% for field in user_password_form %}
+             <div class="clearfix{% if field.errors %} error{% endif %}">
+                <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                <div class="input">
+                    {{ field }}
+                    {% if field.errors %}
+                        <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                    {% endif %}
+                    <span class="help-block">{{ field.help_text }} </span>
+                </div>
+             </div>
+             {% endfor %}
+
+             <div class="actions">
+                 <input type="hidden" name="action" value="tabs-2" />
+                 <input type="hidden" name="form-type" value="change-password" />
+                 <input type="submit" class="btn primary" value="{% trans 'Change password' %}" />
+             </div>
         </form>
 	</div>
-	<div id="tabs-3">
+	<div id="tabs-3" {% if action == "tabs-3" %}class="active"{% endif %}>
 
         {% if msg_note %}
-        <div class="success">
+        <div class="alert-message success">
                 <strong>{% trans "Alert" %} : </strong>  {{ msg_note }}
         </div>
         {% endif %}
 
         <form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">
         {% csrf_token %}
-        <input type="hidden" name="form-type" value="notificaation_list" />
+        <input type="hidden" name="action" value="tabs-3" />
+        <input type="hidden" name="form-type" value="notification_list" />
         <table id="flex1" align="left" style="display:none;"></table>
         </form>
         <script type="text/javascript">
@@ -113,17 +141,18 @@ $(function() {
             dataType: 'json',
             colModel : [
                 {display: '<input type="checkbox" onclick="toggleChecked(this.checked)">', name: '', width: 20, align: 'center'},
-                {display: '{% trans "ID" %}', name: 'id', width: 20, sortable: true, align: 'center'},
-                {display: '{% trans "Message" %}', name: 'message', width: 110, sortable: true, align: 'center'},
-                {display: '{% trans "Notification type" %}', name: 'notice_type', width: 110, sortable: true, align: 'center'},
+                {display: '{% trans "Message" %}', name: 'message', width: 250, sortable: true, align: 'center'},
+                {display: '{% trans "Notification type" %}', name: 'notice_type', width: 250, sortable: true, align: 'center'},
                 {display: '{% trans "Sender" %}', name: 'sender', width: 50, sortable: true, align: 'center'},
-                {display: '{% trans "Status" %}', name: 'added', width : 100, align: 'center'},
-                {display: '{% trans "Action" %}', name: '', width : 50, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
+                {display: '{% trans "Date" %}', name: 'added', width : 190, align: 'center'},
+                {display: '{% trans "Action" %}', name: '', width : 70, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
                 ],
             buttons : [
-                {name: '{% trans "Delete all notification" %}', bclass: 'delete', onpress : delete_button},
+                {name: '{% trans "Delete all notifications" %}', bclass: 'delete', onpress : delete_button},
                 {separator: true},
-                {name: '{% trans "Mark all as read" %}', bclass: 'add', onpress : read_all_button},
+                {name: '{% trans "Mark as read" %}', bclass: 'add', onpress : make_read_button},
+                {separator: true},
+                {name: '{% trans "Mark all as read" %}', bclass: 'add', onpress : mark_read_all_button},
                 ],
             sortname: "id",
             sortorder: "desc",
@@ -132,7 +161,7 @@ $(function() {
             useRp: true,
             rp: 10,
             showTableToggleBtn: true,
-            width: 550,
+            width: 900,
             height: 265,
             pagetext: '{% trans "Page" %}',
             outof: '{% trans "of" %}',
@@ -149,15 +178,15 @@ $(function() {
         });
 
 
-        function read_all_button()
+        function make_read_button()
         {
             $('<input>').attr({
                 type: 'hidden',
-                id: 'id_read_all',
-                name: 'read_all',
+                id: 'id_mark_read',
+                name: 'mark_read',
                 value: 'true',
             }).appendTo('#ListForm');
-
+            
             $('#ListForm').submit();
         }
         function delete_button()
@@ -165,20 +194,24 @@ $(function() {
             $('<input>').attr({
                 type: 'hidden',
                 id: 'id_read_all',
-                name: 'read_all',
+                name: 'id_read_all',
                 value: 'false',
             }).appendTo('#ListForm');
+            
             $('#ListForm').submit();
         }
-
+        function mark_read_all_button()
+        {
+            window.location.replace("/user_detail_change/?action=tabs-3&notification=mark_read_all");
+        }
         </script>
 
-
-
 	</div>
-    <div id="tabs-4" align="left">
+	
+    <div id="tabs-4" align="left" {% if action == "tabs-4" %}class="active"{% endif %}>
         {% if dialer_set %}
-            <table style="width:370px;" >
+
+            <table class="bordered-table zebra-striped">
             <tr>
                 <td>{% trans "Maximum calls per minute" %}</td>
                 <td>{{ dialer_set.max_frequency }}</td>
@@ -196,11 +229,11 @@ $(function() {
                 <td>{{ dialer_set.max_calltimeout }}</td>
             </tr>
             <tr>
-                <td>{% trans "Maximum campaign" %}</td>
+                <td>{% trans "Maximum campaigns" %}</td>
                 <td>{{ dialer_set.max_number_campaign }}</td>
             </tr>
             <tr>
-                <td>{% trans "Maximum subscriber per campaign" %}</td>
+                <td>{% trans "Maximum subscribers per campaign" %}</td>
                 <td>{{ dialer_set.max_number_subscriber_campaign }}</td>
             </tr>
             <tr>
@@ -214,33 +247,47 @@ $(function() {
             </table>
         {% endif %}
 	</div>
-    <div id="tabs-5" align="left">
+    <div id="tabs-5" align="left" {% if action == "tabs-5" %}class="active"{% endif %}>
         {% if msg_number %}
-        <div class="success">
+        <div class="alert-message success">
                 <strong>{% trans "Alert" %} : </strong>  {{ msg_number }}
         </div>
         {% endif %}
         {% if error_number %}
-        <div class="error">
-                <span class="ui-icon ui-icon-alert" style="float: left; margin-right: 0.3em;"></span>
+        <div class="alert-message error">
                 <strong>{% trans "Alert" %} : </strong>  {{ error_number }}
         </div>
         {% endif %}
         <br/>
         <form action="" method="post">{% csrf_token %}
-            <table align=center border=1 style="width:370px;">
-                {{ check_phone_no_form.as_table }}
-                <tr>
-                <td colspan=2 align=right>
-                    <input type="hidden" name="form-type" value="check-number" />
-                    <input type="submit" value="{% trans 'Check' %}" />
-                </td>
-                </tr>
-            </table>
+            {% for field in check_phone_no_form %}
+            <div class="clearfix{% if field.errors %} error{% endif %}">
+                <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                <div class="input">
+                    {{ field }}
+                    {% if field.errors %}
+                        <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                    {% endif %}
+                    <span class="help-block">{{ field.help_text }} </span>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="actions">
+                <input type="hidden" name="action" value="tabs-5" />
+                <input type="hidden" name="form-type" value="check-number" />
+                <input type="submit" class="btn primary" value="{% trans 'Check' %}" />
+            </div>
         </form>
 	</div>
 </div>
 
-</div>
+
+
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        $(".tabs").tabs();
+    });
+</script>
 
 {% endblock %}

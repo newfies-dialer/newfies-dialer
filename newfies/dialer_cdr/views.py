@@ -140,8 +140,8 @@ def voipcall_report_grid(request):
                                row.duration, # dilla test
                                row.billsec,
                                row.get_disposition_display(),
-                               row.hangup_cause,
-                               row.hangup_cause_q850,
+                               #row.hangup_cause,
+                               #row.hangup_cause_q850,
                                ]})
         
     data = {'rows': rows,
@@ -207,7 +207,7 @@ def voipcall_report(request):
                  .annotate(Sum('duration'))\
                  .annotate(Avg('duration'))\
                  .order_by('-starting_date')
-
+    
     # Following code will count total voip calls, duration
     if total_data.count() != 0:
         max_duration = \

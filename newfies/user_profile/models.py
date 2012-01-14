@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+
+from user_profile.fields import LanguageField
+from django_countries import CountryField
 from dialer_gateway.models import Gateway
 from dialer_settings.models import DialerSetting
 
@@ -23,6 +26,27 @@ class UserProfile(models.Model):
     **Name of DB table**: user_profile
     """
     user = models.OneToOneField(User)
+    address = models.CharField(blank=True, null=True,
+                               max_length=200, verbose_name=_('Address'))
+    city = models.CharField(max_length=120, blank=True, null=True,
+                            verbose_name=_('City'))
+    state = models.CharField(max_length=120, blank=True, null=True,
+                             verbose_name=_('State'))
+    country = CountryField(blank=True, null=True, verbose_name=_('Country'))
+    zip_code = models.CharField(max_length=120, blank=True, null=True,
+                                verbose_name=_('Zip code'))
+    phone_no = models.CharField(max_length=90, blank=True, null=True,
+                                verbose_name=_('Phone number'))
+    fax = models.CharField(max_length=90, blank=True, null=True,
+                           verbose_name=_('Fax Number'))
+    company_name = models.CharField(max_length=90, blank=True, null=True,
+                                    verbose_name=_('Company name'))
+    company_website = models.URLField(verify_exists=False,
+                                      max_length=90, blank=True, null=True,
+                                      verbose_name=_('Company website'))
+    language = LanguageField(blank=True, null=True, verbose_name=_('Language'))
+    note = models.CharField(max_length=250, blank=True, null=True,
+                            verbose_name=_('Note'))
     accountcode = models.PositiveIntegerField(null=True, blank=True)
     #voip_gateway = models.ForeignKey(Gateway, verbose_name='VoIP Gateway',
     #                            help_text=_("Select VoIP Gateway"))

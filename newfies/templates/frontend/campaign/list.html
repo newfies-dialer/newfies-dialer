@@ -1,10 +1,6 @@
 {% extends "frontend/master.html" %}
 {% load dialer_cdr_extras icons i18n %}
 
-{% block title %}
-{{ block.super }}
-{% trans "Campaign" %}
-{% endblock %}
 
 {% block extra_files %}
 <script type="text/javascript" src="{{STATIC_URL}}newfies/js/custom.jquery.select.all.js"></script>
@@ -16,23 +12,27 @@
 <script type="text/javascript" language="javascript">
 function get_alert_msg(id)
 {
-    confirm_string = '{% trans "you are going to delete a campaign" %}';
+    confirm_string = '{% trans "Confirm deletion?" %}';
     var answer = confirm(confirm_string);
     return answer // answer is a boolean
 }
 </script>
 {% endblock %}
 
+{% block content_header %}
+<h1>{% trans "Campaign" %} <small>{% trans "List, add and edit campaigns" %}</small></h1>
+{% endblock %}
+
 {% block content %}
 
 {% if msg %}
-<div class="success" id="rounded-corner-upper-table">        
+<div class="alert-message success">
         <strong>{% trans "Alert" %} : </strong>  {{ msg }}
 </div>
 {% endif %}
 
 {% if error_msg %}
-<div class="error" id="rounded-corner-upper-table">
+<div class="alert-message error">
     <strong>{% trans "Alert" %} : </strong>  {{ error_msg }}
 </div>
 {% endif %}
@@ -50,14 +50,13 @@ $("#flex1").flexigrid({
     method: 'GET',
     dataType: 'json',
 	colModel : [
-        {display: '<input type="checkbox" onclick="toggleChecked(this.checked)">', name: '', width: 40, align: 'center'},
-		{display: '{% trans "Campaign code" %}', name: 'campaign_code', width: 95, sortable: true, align: 'center'},
+        {display: '<input type="checkbox" onclick="toggleChecked(this.checked)">', name: '', width: 20, align: 'center'},
+		{display: '{% trans "Key" %}', name: 'campaign_code', width: 58, sortable: true, align: 'center'},
         {display: '{% trans "Name" %}', name: 'name', width: 120, sortable: true, align: 'center'},
-        {display: '{% trans "Start date" %}', name: 'startingdate', width: 100, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
-        {display: '{% trans "End date" %}', name: 'expirationdate', width: 100, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
-        {display: '{% trans "A-Leg gateway" %}', name: 'aleg_gateway', width: 100, sortable: true, align: 'center'},
-        {display: '{% trans "VoIP App" %}', name: 'voipapp__name', width: 100, sortable: true, align: 'center'},
-        {display: '{% trans "Contacts" %}', name: '', width: 65, sortable: true, align: 'center'},
+        {display: '{% trans "Start date" %}', name: 'startingdate', width: 110, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
+        {display: '{% trans "Type" %}', name: 'content_type__name', width: 110, sortable: true, align: 'center'},
+        {display: '{% trans "App" %}', name: '', width: 100, sortable: true, align: 'center'},
+        {display: '{% trans "Contacts" %}', name: '', width: 100, sortable: true, align: 'center'},
         {display: '{% trans "Status" %}', name: 'status', width: 60, sortable: true, align: 'center'},
         {display: '{% trans "Action" %}', name: '', width : 120, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
 		],
@@ -73,7 +72,7 @@ $("#flex1").flexigrid({
 	useRp: true,
 	rp: 10,
 	showTableToggleBtn: true,
-	width: 1010,
+	width: 910,
 	height: 265,
     pagetext: '{% trans "Page" %}',
     outof: '{% trans "of" %}',

@@ -4,41 +4,46 @@
 {% block extra_files %}
 {% endblock %}
 
-{% block content %}
-
-<center>{% if action == 'update' %}
+{% block content_header %}
+<h1>{% if action == 'update' %}
             {% trans "Update" %}
         {% else %}
             {% trans "Add" %}
-        {% endif %}{% trans "Phonebook" %}</center>
+        {% endif %} {% trans "Phonebook" %} <small>{% trans "Contacts are stored in phonebooks" %}</small></h1>
+{% endblock %}
 
-<div class="span-24 last" align=left>
-<form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
-    <fieldset>
-        <legend>{% trans "Phonebook" %}</legend>
-            <table align=center border=1>
-                {% get_fieldset name,description as phonebook_fields from form %}
-                {{ phonebook_fields.as_table }}
-            </table>
-        </fieldset>
-        <table align=center border=1 style="width: 500px;">
-        <tr>
-            <td >&nbsp;</td>
-            <td align=left>
-              {% if action == 'update' %}
-                <input id="update" type="submit" value="{% trans "Update" %}" />
-              {% else %}
-                <input id="add" type="submit" value="{% trans "Submit" %}" />
-              {% endif %}
-               &nbsp;&nbsp;
-              <input type="reset" name="reset" value="{% trans "Clear" %}">&nbsp;&nbsp;
-              {% if action == 'update' %}
-                 <input id="delete" name="delete" type="submit" value="{% trans "Delete" %}" />
-              {% endif %}
-           </td>
-        </tr>
-    </table>
+{% block content %}
+
+
+<form method="POST" action="." enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {% for field in form %}
+    <div class="clearfix{% if field.errors %} error{% endif %}">
+        <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+        <div class="input">
+            {{ field }}
+            {% if field.errors %}
+                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+            {% endif %}
+            <span class="help-block">{{ field.help_text }} </span>
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="actions">
+        {% if action == 'update' %}
+        <input id="update" type="submit" class="btn primary" value="{% trans "Update" %}" />
+        {% else %}
+        <input id="add" type="submit" class="btn primary" value="{% trans "Submit" %}" />
+        {% endif %}
+        &nbsp;&nbsp;
+        {% if action == 'update' %}
+         <input id="delete" name="delete" class="btn danger" type="submit" value="{% trans "Delete" %}" />
+        {% endif %}
+    </div>
+           
 </form>
-</div>
+
  
 {% endblock %}

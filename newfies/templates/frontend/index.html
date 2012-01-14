@@ -1,73 +1,39 @@
 {% extends "frontend/master.html" %}
 {% load i18n %}
 
-{% block title %}
-{{ block.super }}
-{% trans "Info" %}
-{% endblock %}
-
-{% block extra_files %}
-  <script>
-  $(document).ready(function() {
-    $("#accordion").accordion({ autoHeight: false,  clearStyle: true  });
-  });
-  </script>
-{% endblock %}
 
 {% block content %}
 
-<div id="accordeon-container" align=left>
-<div id="accordion">    
-	<h3><a href="#">{% trans "Info"  %}</a></h3>
-	<div>
-		<p>
-		<br/>
-		
-		<a href="http://www.newfies-dialer.org/" target="_blank" >Newfies-Dialer</a> 
-		{% trans "is a Bulk Dialer & Voice Broadcasting application dedicated to provide information via phone technology." %}<br/><br/>
-		
-		{% trans "Newfies-Dialer has been built using a messaging system so that it can support distributed processing on cloud servers. The platform is focused on real-time operations and task call distributions to clustered brokers and workers meaning that many millions of calls can be processed daily." %}<br/><br/>
-		
-        {% trans "Support, alternative licensing and consultancy is available from " %} 
-        <a target="_blank" href="http://www.newfies-dialer.org/about-us/contact/">Star2Billing S.L.</a>
-        <br/>
-        <br/>
+<!-- Main hero unit for a primary marketing message or call to action -->
+        <div class="hero-unit">
         
-        <a href="http://www.newfies-dialer.org/" target="_blank" ><img src='{{STATIC_URL}}newfies/icons/help-about-2.png' title="Info" alt="Info" width="110" class="info-icon"/></a>
+          <img src="{{STATIC_URL}}newfies/images/newfies-dialer.png" height="120"/>
+		  <p><a href="http://www.newfies-dialer.org/" target="_blank" >Newfies-Dialer</a>  {% trans "is Voice Broadcasting and AutoDialer software to provide information via the phone." %} {% trans "Newfies-Dialer can scale to make millions of calls daily by using realtime call processing across multiple servers in the cloud." %}</p>
+		  
+          <p><a class="btn primary large" href="http://www.newfies-dialer.org/about-us/contact/">Learn more &raquo;</a></p>
         
-        <br/><br/>
-
-		</p>
-	</div>
-	<h3><a href="#">{% trans "Support" %}</a></h3>
-	<div>
-		<p>
-        {% trans "Star2Billing S.L. offers consultancy including installation, training and customisation on Newfies-Dialer" %} :
-        <a target="_blank" href="http://www.newfies-dialer.org/support/">http://www.newfies-dialer.org/support/</a>
-        <br/><br/>
-        {% trans "Purchasing consultancy is a good way to help support the development of Newfies-Dialer, and can speed the time of deployment, leaving time free to concentrate on more profitable and productive tasks." %}
-        <br/><br/>
-        {% trans "Contact us at" %} <a href="mailto:sales@star2billing.com">sales@star2billing.com</a> {% trans "for more information" %}<br/><br/>
-		
-		<a href="mailto:sales@star2billing.com"><img src='{{STATIC_URL}}newfies/icons/system-help-3.png' title="Support" alt="Support" width="110" class="info-icon"/></a>
-		
-		
-	</div>
-	
-	<h3><a href="#">{% trans "Licensing" %}</a></h3>
-	<div>
-		<p>
-        {% trans "Newfies-Dialer is licensed under" %} <a href="http://www.fsf.org/licensing/licenses/agpl-3.0.html" target="_blank">AGPL 3</a>,
-        {% trans "however an alternative license can be purchased if the AGPL license is not suitable for your requirements. See " %} 
-        <a target="_blank" href="http://www.newfies-dialer.org/">http://www.newfies-dialer.org/</a>
-        <br/>
-		<br><a href="http://www.fsf.org/licensing/licenses/agpl-3.0.html" target="_blank"><img src="{{STATIC_URL}}newfies/icons/agplv3-155x51.png" class="info-icon"></a>
+        </div>
+        <!-- Example row of columns -->
+        <div class="row">
+          <div class="span7">
+            <h2>Support</h2>
+            <p>{% trans "Star2Billing S.L. offers consultancy including installation, training and customisation on Newfies-Dialer" %}</p>
+            <p>{% trans "Contact us at" %} <a href="mailto:newfies-dialer@star2billing.com">newfies-dialer@star2billing.com</a> {% trans "for more information" %}<p>
+            <p><a class="btn" href="http://www.newfies-dialer.org/support/">Get Support &raquo;</a></p>
+          </div>
+          <div class="span7 offset1">
+            <h2>Licensing</h2>
+             <p>{% trans "Newfies-Dialer is licensed under" %} <a href="http://www.fsf.org/licensing/licenses/agpl-3.0.html" target="_blank">AGPL 3</a>,
+        {% trans "however an alternative license can be purchased if the AGPL license is not suitable for your requirements." %}</p>
+            <p><a class="btn" href="http://www.newfies-dialer.org/support/licensing/">View Licensing details &raquo;</a></p>
+         </div>
+        </div>
         
-        <br/><br/>
-	</div>
+      </div>
 	
 </div>
 </div>
 
 {% endblock %}
+
 

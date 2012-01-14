@@ -8,7 +8,7 @@ from time import sleep
 from uuid import uuid1
 from django.conf import settings
 from dialer_gateway.utils import phonenumber_change_prefix
-
+import sys
 
 class callrequest_pending(PeriodicTask):
     """A periodic task that checks for pending calls
@@ -98,6 +98,14 @@ def init_callrequest(callrequest_id, campaign_id):
     gateway_retries = obj_callrequest.aleg_gateway.gateway_retries
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
     callmaxduration = obj_campaign.callmaxduration
+    
+    if obj_campaign.content_type.app_label=='survey':
+        #Use Survey Statemachine
+        answer_url = settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL
+    else:
+        answer_url = settings.PLIVO_DEFAULT_ANSWER_URL
+        #Test url
+        #answer_url = 'http://localhost/~areski/django/MyProjects/plivohelper-php/examples/test.php?answer=1'
 
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
 
@@ -137,17 +145,17 @@ def init_callrequest(callrequest_id, campaign_id):
                         GatewayTimeouts=gateway_timeouts,
                         GatewayRetries=gateway_retries,
                         ExtraDialString=originate_dial_string,
-                        AnswerUrl=settings.PLIVO_DEFAULT_ANSWER_URL,
-                        #AnswerUrl='http://localhost/~areski/django/MyProjects/plivohelper-php/examples/test.php?answer=1',
+                        AnswerUrl=answer_url,
                         HangupUrl=settings.PLIVO_DEFAULT_HANGUP_URL,
                         TimeLimit=str(callmaxduration))
         except:
             logger.error('error : call_plivo')
             obj_callrequest.status = 2 # Update to Failure
             obj_callrequest.save()
-            obj_subscriber = CampaignSubscriber.objects.get(id=obj_callrequest.campaign_subscriber.id)
-            obj_subscriber.status = 4 # Fail
-            obj_subscriber.save()
+            if obj_callrequest.campaign_subscriber and obj_callrequest.campaign_subscriber.id:
+                obj_subscriber = CampaignSubscriber.objects.get(id=obj_callrequest.campaign_subscriber.id)
+                obj_subscriber.status = 4 # Fail
+                obj_subscriber.save()
             return False
         logger.info(result)
         logger.error('Received RequestUUID :> ' + str(result['RequestUUID']))
@@ -337,14 +345,15 @@ class init_call_retry(PeriodicTask):
                 # Crete new callrequest, Assign parent_callrequest, Change callrequest_type
                 # & num_attempt
                 obj = Callrequest(request_uuid=uuid1(),
-                                  parent_callrequest_id=callreq.id,
-                                  call_type=1,
-                                  num_attempt=callreq.num_attempt+1,
-                                  user=callreq.user,
-                                  campaign_id=callreq.campaign_id,
-                                  aleg_gateway_id=callreq.aleg_gateway_id,
-                                  voipapp_id=callreq.voipapp_id,
-                                  phone_number=callreq.phone_number)
+                                    parent_callrequest_id=callreq.id,
+                                    call_type=1,
+                                    num_attempt=callreq.num_attempt+1,
+                                    user=callreq.user,
+                                    campaign_id=callreq.campaign_id,
+                                    aleg_gateway_id=callreq.aleg_gateway_id,
+                                    content_type=callreq.content_type,
+                                    object_id=callreq.object_id,
+                                    phone_number=callreq.phone_number)
                 obj.save()
                 # TODO : perform retry
                 init_callrequest.delay(obj.id, obj.campaign_id)

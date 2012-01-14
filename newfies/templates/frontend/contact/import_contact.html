@@ -2,36 +2,46 @@
 {% load i18n dialer_cdr_extras %}
 
 {% block extra_files %}
+    <style>
+    .help-inline {
+        padding-left: 55px;
+    }
+    </style>
+{% endblock %}
+
+{% block content_header %}
+<h1>{% trans "Import Contact" %} <small>{% trans "Import list of contact by uploading CSV files" %}</small></h1>
 {% endblock %}
 
 {% block content %}
 {% if msg %}
-<div class="success" id="rounded-corner-upper-table">        
+<div class="alert-message success">
         <strong>{% trans "Alert" %} : </strong>  {{ msg }}
 </div>
 {% endif %}
 {% if error_msg %}
-<div class="error" id="rounded-corner-upper-table">
-        <span class="ui-icon ui-icon-alert" style="float: left; margin-right: 0.3em;"></span>
+<div class="alert-message error">
         <strong>{% trans "Alert" %} : </strong>  {{ error_msg }}
 </div>
 {% endif %}
 <br/>
-<table id="rounded-corner">
-<caption><center>{% trans "Sample File" %}</center></caption>
+
+<center>
+<table class="bordered-table zebra-striped">
+<caption><center><h3>{% trans "Sample File" %}</h3></center></caption>
 <thead>
 <tr>
-    <th class="rounded-company">{% trans "contact" %}</th>
-    <th class="rounded-q1">{% trans "last name" %}</th>
-    <th class="rounded-q2">{% trans "first name" %}</th>
-    <th class="rounded-q3">{% trans "email-id" %}</th>
-    <th class="rounded-q3">{% trans "description" %}</th>
-    <th class="rounded-q3">{% trans "status" %}</th>
-    <th class="rounded-q4">{% trans "additional_vars" %}</th>
+    <th>{% trans "Contact number" %}</th>
+    <th>{% trans "Last name" %}</th>
+    <th>{% trans "First name" %}</th>
+    <th>{% trans "Email" %}</th>
+    <th>{% trans "Description" %}</th>
+    <th>{% trans "Status" %}</th>
+    <th>{% trans "Additional variables" %}</th>
 </tr>
 </thead>
 <tr>
-    <td>1234</td>
+    <td>650784355</td>
     <td>Belaid</td>
     <td>Arezqui</td>
     <td>areski@gmail.com</td>
@@ -40,7 +50,7 @@
     <td>test</td>
 </tr>
 <tr>
-    <td>5678</td>
+    <td>650723032</td>
     <td>Fourth</td>
     <td>John</td>
     <td>john@gmail.com</td>
@@ -49,78 +59,82 @@
     <td>test</td>
 </tr>
 </table>
-<br/>
-<center>{% trans "SUBSCRIBER STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')" %}</center>
+
+<span class="label notice">{% trans "SUBSCRIBER STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')" %}</span>
+</center>
+
 <br/>
 <br/>
 <div class="span-24 last" align=left>
-<form method="post" action="" enctype="multipart/form-data" >
-{% csrf_token %}
-<fieldset>
-    <legend>{% trans "Import Contact" %}</legend>
-        <table border=1 align=center>
-        {% get_fieldset phonebook,csv_file as contact_import_fields from form %}
-        {{ contact_import_fields.as_table }}
-        </table>
-    </fieldset>
-    <table align=center border=1>
-    <tr>
-        <td colspan=2 align=right>
-        <input type="submit" class="l-1" name="submit" value="{% trans "Submit" %}" />&nbsp;
-        <input type="reset" name="reset" class="j-2" value="{% trans "Reset" %}" />
-        </td>
-    </tr>
-    </table>
-</form>
+    <form method="post" action="" enctype="multipart/form-data" >
+    {% csrf_token %}
+
+         {% for field in form %}
+         <div class="clearfix{% if field.errors %} error{% endif %}">
+            <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+            <div class="input">
+                {{ field }}
+                {% if field.errors %}
+                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                {% endif %}
+                <span class="help-block">{{ field.help_text }} </span>
+            </div>
+         </div>
+         {% endfor %}
+
+         <div class="actions">
+             <input type="submit" class="btn primary" name="submit" value="{% trans "Submit" %}" />
+         </div>
+    </form>
 </div>
 
 
 {% if success_import_list %}
-<table border=1 align=center>
-    <tr>
-        <th>{% trans "Subscriber(s) Successfully Imported" %} :</th>
-    </tr>
-{% for row in success_import_list %}
-    <tr class="{% cycle 'row1' 'row2' %}">
-        <td>
-            {{ row }}
-        </td>
-    </tr>
-{% endfor %}
-</table>
+    <table class="bordered-table zebra-striped">
+        <tr>
+            <th>{% trans "Subscriber(s) imported" %} :</th>
+        </tr>
+        {% for row in success_import_list %}
+        <tr>
+            <td>
+                {{ row }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
 {% endif %}
 
 
 {% if error_import_list %}
 <br>
-<table border=1 align=center>
-    <tr>
-        <th>{% trans "Subscriber(s) not Imported" %} :</th>
-    </tr>
-{% for row in error_import_list %}
-    <tr class="{% cycle 'row1' 'row2' %}">
-        <td>
-            {{ row }}
-        </td>
-    </tr>
-{% endfor %}
-</table>
+    <table class="bordered-table zebra-striped">
+        <tr>
+            <th>{% trans "Subscriber(s) not imported" %} :</th>
+        </tr>
+        {% for row in error_import_list %}
+        <tr>
+            <td>
+                {{ row }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
 {% endif %}
 
 {% if type_error_import_list %}
 <br>
-<table border=1 align=center>
-    <tr>
-        <th>{% trans "Type Miss-match" %} :</th>
-    </tr>
-{% for row in type_error_import_list %}
-    <tr class="{% cycle 'row1' 'row2' %}">
-        <td>
-            {{ row }}
-        </td>
-    </tr>
-{% endfor %}
-</table>
+    <table class="bordered-table zebra-striped">
+        <tr>
+            <th>{% trans "Type mismatch" %} :</th>
+        </tr>
+        {% for row in type_error_import_list %}
+        <tr>
+            <td>
+                {{ row }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
 {% endif %}
 
 {% endblock %}

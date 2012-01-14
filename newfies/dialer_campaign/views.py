@@ -110,7 +110,7 @@ def customer_dashboard(request, on_index=None):
     total_torture = 0
     total_invalidargs = 0
     total_noroute = 0
-    total_forbiden = 0
+    total_forbidden = 0
     select_graph_for = 'Call Count'  # default (or Duration)
     search_type = 4  # default Last 24 hours
     selected_campaign = ''
@@ -207,7 +207,7 @@ def customer_dashboard(request, on_index=None):
             elif i['disposition'] == 'NOROUTE':
                 total_noroute = total_noroute + 1
             else:
-                total_forbiden = total_forbiden + 1 # FORBIDDEN
+                total_forbidden = total_forbidden + 1 # FORBIDDEN
 
         # following part got from cdr-stats 'global report' used by humblefinance
         # following calls list is without dispostion & group by call date
@@ -591,7 +591,7 @@ def customer_dashboard(request, on_index=None):
         'total_torture': total_torture,
         'total_invalidargs': total_invalidargs,
         'total_noroute': total_noroute,
-        'total_forbiden': total_forbiden,
+        'total_forbidden': total_forbidden,
         'answered_color': ANSWER_COLOR,
         'busy_color': BUSY_COLOR,
         'not_answered_color': NOANSWER_COLOR ,
@@ -602,13 +602,26 @@ def customer_dashboard(request, on_index=None):
         'torture_color': TORTURE_COLOR,
         'invalidargs_color': INVALIDARGS_COLOR,
         'noroute_color': NOROUTE_COLOR,
-        'forbiden_color': FORBIDDEN_COLOR,
+        'forbidden_color': FORBIDDEN_COLOR,
     }
     if on_index == 'yes':
         return data
     return render_to_response(template, data,
            context_instance=RequestContext(request))
 
+def logout_view(request):
+    """Check User credentials and logout
+    """
+    template = 'frontend/index.html'
+    logout(request)
+    
+    data = {
+        'module': current_view(request),
+        'is_authenticated': request.user.is_authenticated(),
+    }
+    
+    return render_to_response(template, data,
+           context_instance=RequestContext(request))
 
 def login_view(request):
     """Check User credentials
@@ -633,30 +646,27 @@ def login_view(request):
         except (KeyError):
             action = "login"
 
-        if action == "logout":
-            logout(request)
-        else:
-            loginform = LoginForm(request.POST)
-            if loginform.is_valid():
-                cd = loginform.cleaned_data
-                user = authenticate(username=cd['user'],
-                                    password=cd['password'])
-                if user is not None:
-                    if user.is_active:
-                        login(request, user)
-                        request.session['has_notified'] = False
-                        # Redirect to a success page (dashboard).
-                        return \
-                        HttpResponseRedirect('/dashboard/')
-                    else:
-                        # Return a 'disabled account' error message
-                        errorlogin = _('Disabled Account') #True
+        loginform = LoginForm(request.POST)
+        if loginform.is_valid():
+            cd = loginform.cleaned_data
+            user = authenticate(username=cd['user'],
+                                password=cd['password'])
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    request.session['has_notified'] = False
+                    # Redirect to a success page (dashboard).
+                    return \
+                    HttpResponseRedirect('/dashboard/')
                 else:
-                    # Return an 'invalid login' error message.
-                    errorlogin = _('Invalid Login.') #True
+                    # Return a 'disabled account' error message
+                    errorlogin = _('Disabled Account') #True
             else:
-                # Return an 'Valid User Credentials' error message.
-                errorlogin = _('Enter Valid User Credentials.') #True
+                # Return an 'invalid login' error message.
+                errorlogin = _('Invalid Login.') #True
+        else:
+            # Return an 'Valid User Credentials' error message.
+            errorlogin = _('Enter Valid User Credentials.') #True
     else:
         loginform = LoginForm()
 
@@ -693,11 +703,10 @@ def index(request):
     """
     template = 'frontend/index.html'
     errorlogin = ''
-    loginform = LoginForm()
     data = {'module': current_view(request),
             'user': request.user,
             'notice_count': notice_count(request),
-            'loginform': loginform,
+            'loginform': LoginForm(),
             'errorlogin': errorlogin,
             'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
@@ -708,10 +717,9 @@ def index(request):
 
 def pleaselog(request):
     template = 'frontend/index.html'
-    loginform = LoginForm()
 
     data = {
-        'loginform': loginform,
+        'loginform': LoginForm(),
         'notlogged': True,
     }
     return render_to_response(template, data,
@@ -723,8 +731,13 @@ def logout_view(request):
         del request.session['has_notified']
     except KeyError:
         pass
+
     logout(request)
-    return HttpResponseRedirect('/')
+    # set language cookie
+    response = HttpResponseRedirect('/')
+    response.set_cookie(settings.LANGUAGE_COOKIE_NAME,
+                        request.LANGUAGE_CODE)
+    return response
 
 
 def cust_password_reset(request):
@@ -735,11 +748,13 @@ def cust_password_reset(request):
     ``password_reset_form``
     """
     if not request.user.is_authenticated():
+        data = {'loginform': LoginForm()}
         return password_reset(request,
         template_name='frontend/registration/password_reset_form.html',
         email_template_name='frontend/registration/password_reset_email.html',
         post_reset_redirect='/password_reset/done/',
-        from_email='newfies_admin@localhost.com')
+        from_email='newfies_admin@localhost.com',
+        extra_context=data)
     else:
         return HttpResponseRedirect("/")
 
@@ -752,8 +767,10 @@ def cust_password_reset_done(request):
     password.
     """
     if not request.user.is_authenticated():
+        data = {'loginform': LoginForm()}
         return password_reset_done(request,
-        template_name='frontend/registration/password_reset_done.html')
+        template_name='frontend/registration/password_reset_done.html',
+        extra_context=data)
     else:
         return HttpResponseRedirect("/")
 
@@ -765,9 +782,11 @@ def cust_password_reset_confirm(request, uidb36=None, token=None):
     This will allow a user to reset their password.
     """
     if not request.user.is_authenticated():
+        data = {'loginform': LoginForm()}
         return password_reset_confirm(request, uidb36=uidb36, token=token,
         template_name='frontend/registration/password_reset_confirm.html',
-        post_reset_redirect='/reset/done/')
+        post_reset_redirect='/reset/done/',
+        extra_context=data)
     else:
         return HttpResponseRedirect("/")
 
@@ -780,8 +799,10 @@ def cust_password_reset_complete(request):
     their password for the system.
     """
     if not request.user.is_authenticated():
+        data = {'loginform': LoginForm()}
         return password_reset_complete(request,
-        template_name='frontend/registration/password_reset_complete.html')
+        template_name='frontend/registration/password_reset_complete.html',
+        extra_context=data)
     else:
         return HttpResponseRedirect("/")
 
@@ -880,7 +901,7 @@ def notify_admin(request):
         # Send mail to ADMINS
         subject = _('Dialer setting configuration')
         message = \
-        _('Newfies Notification - User Dialer Setting The user "%(user)s" - "%(user_id)s" is not configured properly to use your system, please configure his dialer settings.') %\
+        _('Notification - User Dialer Setting The user "%(user)s" - "%(user_id)s" is not properly configured to use the system, please configure their dialer settings.') %\
           {'user': request.user, 'user_id': request.user.id}
         # mail_admins() is a shortcut for sending an email to the site admins,
         # as defined in the ADMINS setting
@@ -1002,7 +1023,7 @@ def phonebook_add(request):
             obj = form.save(commit=False)
             obj.user = User.objects.get(username=request.user)
             obj.save()
-            request.session["msg"] = _('"%(name)s" is added successfully.') %\
+            request.session["msg"] = _('"%(name)s" is added.') %\
             {'name': request.POST['name']}
             return HttpResponseRedirect('/phonebook/')
     template = 'frontend/phonebook/change.html'
@@ -1049,7 +1070,7 @@ def phonebook_del(request, object_id):
             contact_list.delete()
 
             # 2) delete phonebook
-            request.session["msg"] = _('"%(name)s" is deleted successfully.') \
+            request.session["msg"] = _('"%(name)s" is deleted.') \
                                         % {'name': phonebook.name}
             phonebook.delete()
             return HttpResponseRedirect('/phonebook/')
@@ -1066,7 +1087,7 @@ def phonebook_del(request, object_id):
         # 2) delete phonebook
         phonebook_list = Phonebook.objects.extra(where=['id IN (%s)' % values])
         request.session["msg"] =\
-        _('%(count)s phonebook(s) are deleted successfully.') \
+        _('%(count)s phonebook(s) are deleted.') \
         % {'count': phonebook_list.count()}
         phonebook_list.delete()
         return HttpResponseRedirect('/phonebook/')
@@ -1097,7 +1118,7 @@ def phonebook_change(request, object_id):
             form = PhonebookForm(request.POST, instance=phonebook)
             if form.is_valid():
                 form.save()
-                request.session["msg"] = _('"%(name)s" is updated successfully.') \
+                request.session["msg"] = _('"%(name)s" is updated.') \
                 % {'name': request.POST['name']}
                 return HttpResponseRedirect('/phonebook/')
 
@@ -1304,7 +1325,7 @@ def contact_add(request):
         form = ContactForm(request.user, request.POST)
         if form.is_valid():
             form.save()
-            request.session["msg"] = _('"%(name)s" is added successfully.') %\
+            request.session["msg"] = _('"%(name)s" is added.') %\
             {'name': request.POST['contact']}
             return HttpResponseRedirect('/contact/')
 
@@ -1340,7 +1361,7 @@ def contact_del(request, object_id):
         contact = Contact.objects.get(pk=object_id)
         # Delete phonebook
         if object_id:
-            request.session["msg"] = _('"%(name)s" is deleted successfully.') \
+            request.session["msg"] = _('"%(name)s" is deleted.') \
             % {'name': contact.first_name}
             contact.delete()
             return HttpResponseRedirect('/contact/')
@@ -1350,7 +1371,7 @@ def contact_del(request, object_id):
         values = ", ".join(["%s" % el for el in values])
         contact_list = Contact.objects.extra(where=['id IN (%s)' % values])
         request.session["msg"] =\
-        _('%(count)s contact(s) are deleted successfully.') \
+        _('%(count)s contact(s) are deleted.') \
         % {'count': contact_list.count()}
         contact_list.delete()
         return HttpResponseRedirect('/contact/')
@@ -1383,7 +1404,7 @@ def contact_change(request, object_id):
                                   instance=contact)
             if form.is_valid():
                 form.save()
-                request.session["msg"] = _('"%(name)s" is updated successfully.') \
+                request.session["msg"] = _('"%(name)s" is updated.') \
                 % {'name': request.POST['contact']}
                 return HttpResponseRedirect('/contact/')
 
@@ -1475,7 +1496,7 @@ def contact_import(request):
                             contact = Contact.objects.get(
                                  phonebook_id=phonebook.id,
                                  contact=row[0])
-                            error_msg = _('Subscriber is already exist !!')
+                            error_msg = _('Subscriber already exists!')
                             error_import_list.append(row)
                         except:
                             # if not, insert record
@@ -1497,7 +1518,7 @@ def contact_import(request):
                             success_import_list.append(row)
                     except:
                         error_msg = \
-                        _("Invalid value for import! Please look at the import samples.")
+                        _("Invalid value for import! Please check the import samples.")
                         type_error_import_list.append(row)
 
     data = RequestContext(request, {
@@ -1556,61 +1577,70 @@ def get_url_campaign_status(id, status):
     + 'newfies/icons/control_stop_blue.png);"'
 
     if status == 1:
-        url_str = str("<a href='#' class='icon' title='" + _("campaign is running") + "' " +
+        url_str = "<a href='#' class='icon' title='" + _("campaign is running") + "' " +\
                   control_play_style + ">&nbsp;</a>\
-                  <a href='update_campaign_status_cust/" + str(id) +
-                  "/2/' class='icon' title='" + _("Pause") + "' " +
-                  control_pause_blue_style +
-                  ">&nbsp;</a><a href='update_campaign_status_cust/" + str(id) +
-                  "/3/' class='icon' title='" + _("Abort") + "' " +
-                  control_abort_blue_style +
-                  ">&nbsp;</a><a href='update_campaign_status_cust/"
-                  + str(id) + "/4/' class='icon' title='" + _("Stop") + "' " +
-                  control_stop_blue_style + ">&nbsp;</a>")
+                  <a href='update_campaign_status_cust/" + str(id) +\
+                  "/2/' class='icon' title='" + _("Pause") + "' " +\
+                  str(control_pause_blue_style) +\
+                  ">&nbsp;</a><a href='update_campaign_status_cust/" + str(id) +\
+                  "/3/' class='icon' title='" + _("Abort") + "' " +\
+                  str(control_abort_blue_style) +\
+                  ">&nbsp;</a><a href='update_campaign_status_cust/"\
+                  + str(id) + "/4/' class='icon' title='" + _("Stop") + "' " +\
+                  str(control_stop_blue_style) + ">&nbsp;</a>"
+
     if status == 2:
-        url_str = str("<a href='update_campaign_status_cust/" + str(id) +
-                  "/1/' class='icon' title='" + _("Start") + "' " +
+        url_str = "<a href='update_campaign_status_cust/" + str(id) +\
+                  "/1/' class='icon' title='" + _("Start") + "' " +\
                   control_play_blue_style +">&nbsp;</a><a href='#'\
-                  class='icon' title='" + _("campaign is paused") + "' " +
-                  control_pause_style +">&nbsp;</a>" +
-                  "<a href='update_campaign_status_cust/" + str(id) +
-                  "/3/' class='icon' title='" + _("Abort") + "' " +
-                  control_abort_blue_style +
-                  ">&nbsp;</a>" +
-                  "<a href='update_campaign_status_cust/" + str(id) +
-                  "/4/' class='icon' title='" + _("Stop") + "' " +
-                  control_stop_blue_style +
-                  ">&nbsp;</a>")
-    if status == 3:
-        url_str = str("<a href='update_campaign_status_cust/" + str(id) +
-                  "/1/' class='icon' title='" + _("Start") + "' " +
-                  control_play_blue_style +
-                  ">&nbsp;</a>" + "<a href='update_campaign_status_cust/" +
-                  str(id) + "/2/' class='icon' \
-                  title='" + _("Pause") + "' " + control_pause_blue_style +
-                  ">&nbsp;</a>" +
-                  "<a href='#' class='icon' title='" + _("campaign is aborted") + "' " +
-                  control_abort_style + " >&nbsp;</a>" +
-                  "<a href='update_campaign_status_cust/" + str(id) +
-                  "/4/' class='icon' title='" + _("Stop") + "' " +
-                  control_stop_blue_style + ">&nbsp;</a>")
-    if status == 4:
-        url_str = str("<a href='update_campaign_status_cust/" + str(id) +
-                  "/1/' class='icon' title='" + _("Start") + "' " +
-                  control_play_blue_style +
-                  ">&nbsp;</a>" +
-                  "<a href='update_campaign_status_cust/" + str(id) +
-                  "/2/' class='icon' title='" + _("Pause") + "' " +
-                  control_pause_blue_style +
-                  ">&nbsp;</a>" +
-                  "<a href='update_campaign_status_cust/" + str(id) +
-                  "/3/' class='icon' title='" + _("Abort") + "' " +
-                  control_abort_blue_style +
+                  class='icon' title='" + _("campaign is paused") + "' " +\
+                  control_pause_style +">&nbsp;</a>" +\
+                  "<a href='update_campaign_status_cust/" + str(id) +\
+                  "/3/' class='icon' title='" + _("Abort") + "' " +\
+                  control_abort_blue_style +\
+                  ">&nbsp;</a>" +\
+                  "<a href='update_campaign_status_cust/" + str(id) +\
+                  "/4/' class='icon' title='" + _("Stop") + "' " +\
+                  control_stop_blue_style +\
                   ">&nbsp;</a>"
-                  "<a href='#' class='icon' title='" +_("campaign is stopped") + "' " +
-                  control_stop_style + ">&nbsp;</a>")
+
+    if status == 3:
+        url_str = "<a href='update_campaign_status_cust/" + str(id) +\
+                  "/1/' class='icon' title='" + _("Start") + "' " +\
+                  control_play_blue_style +\
+                  ">&nbsp;</a>" + "<a href='update_campaign_status_cust/" +\
+                  str(id) + "/2/' class='icon' \
+                  title='" + _("Pause") + "' " + control_pause_blue_style +\
+                  ">&nbsp;</a>" +\
+                  "<a href='#' class='icon' title='" + _("campaign is aborted") + "' " +\
+                  control_abort_style + " >&nbsp;</a>" +\
+                  "<a href='update_campaign_status_cust/" + str(id) +\
+                  "/4/' class='icon' title='" + _("Stop") + "' " +\
+                  control_stop_blue_style + ">&nbsp;</a>"
+    if status == 4:
+        url_str = "<a href='update_campaign_status_cust/" + str(id) +\
+                  "/1/' class='icon' title='" + _("Start") + "' " +\
+                  control_play_blue_style +\
+                  ">&nbsp;</a>" +\
+                  "<a href='update_campaign_status_cust/" + str(id) +\
+                  "/2/' class='icon' title='" + _("Pause") + "' " +\
+                  control_pause_blue_style +\
+                  ">&nbsp;</a>" +\
+                  "<a href='update_campaign_status_cust/" + str(id) +\
+                  "/3/' class='icon' title='" + _("Abort") + "' " +\
+                  control_abort_blue_style +\
+                  ">&nbsp;</a>"+\
+                  "<a href='#' class='icon' title='" +_("campaign is stopped") + "' " +\
+                  control_stop_style + ">&nbsp;</a>"
 
     return url_str
+
+def get_app_name(app_label, model_name, object_id):
+    from django.db.models import get_model
+    try:
+        return get_model(app_label, model_name).objects.get(pk=object_id)
+    except:
+        return '-'
 
 
 # Campaign
@@ -1619,9 +1649,6 @@ def campaign_grid(request):
     """Campaign list in json format for flexigrid
 
     **Model**: Campaign
-
-    **Fields**: [id, campaign_code, name, startingdate, expirationdate,
-    aleg_gateway, aleg_gateway__name, status, voipapp__name]
     """
     page = variable_value(request, 'page')
     rp = variable_value(request, 'rp')
@@ -1647,8 +1674,10 @@ def campaign_grid(request):
     campaign_list = Campaign.objects\
                     .values('id', 'campaign_code', 'name', 'startingdate',
                             'expirationdate', 'aleg_gateway',
-                            'aleg_gateway__name', 'status',
-                            'voipapp__name').filter(user=request.user)
+                            'aleg_gateway__name', 'content_type__name',
+                            'content_type__app_label', 'object_id',
+                            'content_type__model', 'status')\
+                    .filter(user=request.user)
     count = campaign_list.count()
     campaign_list = \
         campaign_list.order_by(sortorder_sign + sortname)[start_page:end_page]
@@ -1664,19 +1693,18 @@ def campaign_grid(request):
                       row['campaign_code'],
                       row['name'],
                       row['startingdate'].strftime('%Y-%m-%d %H:%M:%S'),
-                      row['expirationdate'].strftime('%Y-%m-%d %H:%M:%S'),
-                      row['aleg_gateway__name'],
-                      row['voipapp__name'],
+                      row['content_type__name'],
+                      str(get_app_name(row['content_type__app_label'],
+                                       row['content_type__model'],
+                                       row['object_id'])),
                       count_contact_of_campaign(row['id']),
                       get_campaign_status_name(row['status']),
-                      str('<a href="' + str(row['id']) + '/" class="icon" ' \
-                      + update_style + ' title="'+_('Update campaign')+'">&nbsp;</a>' +
-                      '<a href="del/' + str(row['id']) + '/" class="icon" ' \
-                      + delete_style + ' onClick="return get_alert_msg(' +
-                      str(row['id'])
-                      + ');" title="'+_('Delete campaign')+'">&nbsp;</a>'
-                      + get_url_campaign_status(row['id'], row['status'])
-                      ),
+                      '<a href="' + str(row['id']) + '/" class="icon" ' \
+                      + update_style + ' title="'+_('Update campaign')+'">&nbsp;</a>' \
+                      + '<a href="del/' + str(row['id']) + '/" class="icon" ' + delete_style \
+                      + ' onClick="return get_alert_msg(' + str(row['id']) + ');" title="' \
+                      +_('Delete campaign')+'">&nbsp;</a>' \
+                      + get_url_campaign_status(row['id'], row['status']),
              ]}for row in campaign_list ]
 
     data = {'rows': rows,
@@ -1739,7 +1767,7 @@ def campaign_add(request):
     if request.user and request.method != 'POST':
         # check Max Number of running campaign
         if check_dialer_setting(request, check_for="campaign"):
-            request.session['msg'] = msg = _("you have too many campaign. Max allowed %(limit)s") \
+            request.session['msg'] = msg = _("you have too many campaigns. Max allowed %(limit)s") \
             % {'limit': dialer_setting_limit(request, limit_for="campaign")}
 
             # campaign limit reached
@@ -1752,10 +1780,21 @@ def campaign_add(request):
         form = CampaignForm(request.user, request.POST)
         if form.is_valid():
             obj = form.save(commit=False)
+
+            object_string = form.cleaned_data['content_object']
+            matches = re.match("type:(\d+)-id:(\d+)", object_string).groups()
+            object_type_id = matches[0] #get 45 from "type:45-id:38"
+            object_id = matches[1] #get 38 from "type:45-id:38"
+            object_type = ContentType.objects.get(id=object_type_id)
+
+            obj.content_type = object_type
+            obj.object_id = object_id
+
             obj.user = User.objects.get(username=request.user)
             obj.save()
             form.save_m2m()
-            request.session["msg"] = _('"%(name)s" is added successfully.') %\
+
+            request.session["msg"] = _('"%(name)s" is added.') %\
             {'name': request.POST['name']}
             return HttpResponseRedirect('/campaign/')
 
@@ -1789,7 +1828,7 @@ def campaign_del(request, object_id):
         campaign = Campaign.objects.get(pk=object_id)
         # Delete campaign
         if object_id:
-            request.session["msg"] = _('"%(name)s" is deleted successfully.') \
+            request.session["msg"] = _('"%(name)s" is deleted.') \
             % {'name': campaign.name}
             campaign.delete()
             return HttpResponseRedirect('/campaign/')
@@ -1798,7 +1837,7 @@ def campaign_del(request, object_id):
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
         campaign_list = Campaign.objects.extra(where=['id IN (%s)' % values])
-        request.session["msg"] = _('%(count)s campaign(s) are deleted successfully.')\
+        request.session["msg"] = _('%(count)s campaign(s) are deleted.')\
         % {'count': campaign_list.count()}
         campaign_list.delete()
         return HttpResponseRedirect('/campaign/')
@@ -1824,7 +1863,9 @@ def campaign_change(request, object_id):
         return HttpResponseRedirect("/campaign/")
 
     campaign = Campaign.objects.get(pk=object_id)
-    form = CampaignForm(request.user, instance=campaign)
+
+    content_object = "type:%s-id:%s" % (campaign.content_type_id, campaign.object_id)
+    form = CampaignForm(request.user, instance=campaign, initial={'content_object': content_object})
     if request.method == 'POST':
         # Delete campaign
         if request.POST.get('delete'):
@@ -1832,9 +1873,21 @@ def campaign_change(request, object_id):
             return HttpResponseRedirect('/campaign/')
         else: # Update campaign
             form = CampaignForm(request.user, request.POST, instance=campaign)
+            
             if form.is_valid():
-                form.save()
-                request.session["msg"] = _('"%(name)s" is updated successfully.') \
+                obj = form.save(commit=False)
+
+                object_string = form.cleaned_data['content_object']
+                matches = re.match("type:(\d+)-id:(\d+)", object_string).groups()
+                object_type_id = matches[0] #get 45 from "type:45-id:38"
+                object_id = matches[1] #get 38 from "type:45-id:38"
+                object_type = ContentType.objects.get(id=object_type_id)
+
+                obj.content_type = object_type
+                obj.object_id = object_id
+                obj.save()
+                
+                request.session["msg"] = _('"%(name)s" is updated.') \
                 % {'name': request.POST['name']}
                 return HttpResponseRedirect('/campaign/')
 
@@ -1878,7 +1931,7 @@ def admin_call_report(request):
     total_torture = 0
     total_invalidargs = 0
     total_noroute = 0
-    total_forbiden = 0
+    total_forbidden = 0
     select_data = \
         {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
 
@@ -1916,7 +1969,7 @@ def admin_call_report(request):
         elif i['disposition'] == 'NOROUTE':
             total_noroute = total_noroute + 1
         else:
-            total_forbiden = total_forbiden + 1 # FORBIDDEN
+            total_forbidden = total_forbidden + 1 # FORBIDDEN
 
 
     data = '<ul><li>'
@@ -1932,7 +1985,7 @@ def admin_call_report(request):
             <abbr title="'+_('Invalid Args')+'">' + _('Inv') + '</abbr>: ' + str(total_invalidargs) + ' | \
             <abbr title="'+_('No Route')+'">' + _('NoRo') + '</abbr>: ' + str(total_noroute) + ' | \
             <abbr title="'+_('Congestion')+'">' + _('Cong') + '</abbr>: ' + str(total_congestion) + ' | \
-            <abbr title="'+_('Forbiden')+'">' + _('Forb') + '</abbr>: ' + str(total_forbiden)
+            <abbr title="'+_('Forbidden')+'">' + _('Forb') + '</abbr>: ' + str(total_forbidden)
     data += '</li></ul>'
     #print data
     return HttpResponse(data, mimetype='application/html',
@@ -2018,7 +2071,7 @@ def admin_campaign_report(request):
     data += _('Active:') + str(total_active_campaigns_count) + ' |\
              '+_('Paused:') + str(total_pause_campaigns_count) + ' | \
              '+_('Aborted:') + str(total_abort_campaigns_count) + ' | \
-             '+_('Stoped:') + str(total_stop_campaigns_count) + '</li>'
+             '+_('Stopped:') + str(total_stop_campaigns_count) + '</li>'
     data += '</ul>'
     #print data
     return HttpResponse(data, mimetype='application/html',
@@ -2081,9 +2134,9 @@ def admin_user_report(request):
 
 
     data = '<ul>'
-    data += '<li><b>'+ _('Total User:') + str(total_user_count) + '</b> | \
-                 '+_('Active User:') + str(total_active_user_count) + ' | \
-                 '+_('None Active User:') + str(total_not_active_user_count) + '</li>'
+    data += '<li><b>'+ _('Total Users:') + str(total_user_count) + '</b> | \
+                 '+_('Active Users:') + str(total_active_user_count) + ' | \
+                 '+_('No Active Users:') + str(total_not_active_user_count) + '</li>'
     data += '</ul>'
     #print data
     return HttpResponse(data, mimetype='application/html',

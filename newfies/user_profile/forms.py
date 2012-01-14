@@ -28,9 +28,22 @@ class UserChangeDetailForm(ModelForm):
         return self.user
 
 
+class UserChangeDetailExtendForm(ModelForm):
+    """A form used to change the detail of a user in the Customer UI."""
+    class Meta:
+        model = UserProfile
+        fields = ["address", "city", "state", "country", "zip_code", "phone_no",
+                  "fax", "company_name", "company_website", "language", "note"]
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(UserChangeDetailExtendForm, self).__init__(*args, **kwargs)
+
+
 class CheckPhoneNumberForm(forms.Form):
     """A form used to check the phone number in the Customer UI."""
-    phone_number = forms.CharField(label=_('Phone Number'), required=True)
+    phone_number = forms.CharField(label=_('Phone Number'), required=True,
+                                help_text=_("Check number is authorised to call"))
 
 
 class UserProfileForm(ModelForm):

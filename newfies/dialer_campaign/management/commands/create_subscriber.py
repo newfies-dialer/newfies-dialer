@@ -30,7 +30,7 @@ class Command(BaseCommand):
                                     contact=myphonenumber,
                                     phonebook=obj_phonebook)
             except IntegrityError:
-                print _("The contact is duplicated!")
+                print _("Duplicate contact!")
                 return False
 
             print _("Contact created id:%(id)s" % {'id': new_contact.id})

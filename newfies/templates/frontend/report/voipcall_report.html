@@ -1,11 +1,6 @@
 {% extends "frontend/master.html" %}
 {% load i18n dialer_cdr_extras %}
 
-{% block title %}
-{{ block.super }}
-{% trans "VoIP Call Report" %}
-{% endblock %}
-
 {% block extra_files %}
 <script type="text/javascript">
 $(function() {
@@ -33,20 +28,34 @@ td {
 </style>
 {% endblock %}
 
+{% block content_header %}
+<h1>{% trans "Call Reports" %} <small>{% trans "Detailed call data" %}</small></h1>
+{% endblock %}
+
+
 {% block content %}
 <br/>
     {% block custom-search %}
     <form method="POST" action="." enctype="multipart/form-data">
-    {% csrf_token %}
-    <table align="center" border=0 style="width:35%;align:center;">
-        {{ form.as_table }}
-        <tr>
-            <td colspan=2 align=right>
-            <input type="submit" value="{% trans "Search" %}" class="l-1" />&nbsp;
-            <input type="reset" class="j-2" name="reset" value="{% trans "Reset" %}">
-            </td>
-        </tr>
-    </table>
+      {% csrf_token %}
+      <fieldset>
+        <!-- <legend>Form legend</legend> -->
+            
+        {% for field in form %}
+        <div class="clearfix {% if field.errors %}error{% endif %}">
+            <label>{{ field.label }}</label>
+            <div class="input">
+              {{ field }}
+              <span class="help-inline">{{ field.errors }}</span>
+            </div>
+          </div>
+        {% endfor %}
+        
+        <div class="actions">
+            <input type="submit" value="{% trans "Search" %}" class="btn primary"/>&nbsp;
+            <input type="reset" name="reset" value="{% trans "Reset" %}" class="btn danger">
+        </div>
+      </fieldset>
     </form>
     {% endblock %}
 
@@ -70,17 +79,15 @@ $("#flex1").flexigrid({
     method: 'GET',
     dataType: 'json',
 	colModel : [
-        {display: '{% trans "Start date" %}', name: 'starting_date', width: 100, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
-        {display: '{% trans "Call ID" %}', name: 'callid', width: 100, sortable: true, align: 'center'},
-        {display: '{% trans "Leg" %}', name: 'leg_type', width: 100, sortable: true, align: 'center'},
+        {display: '{% trans "Start date" %}', name: 'starting_date', width: 120, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
+        {display: '{% trans "Call ID" %}', name: 'callid', width: 140, sortable: true, align: 'center'},
+        {display: '{% trans "Leg" %}', name: 'leg_type', width: 60, sortable: true, align: 'center'},
         {display: '{% trans "Caller ID" %}', name: 'callerid', width: 80, sortable: true, align: 'center'},
-        {display: '{% trans "Phone No." %}', name: 'phone_number', width: 100, sortable: true, align: 'center'},
+        {display: '{% trans "Phone No." %}', name: 'phone_number', width: 120, sortable: true, align: 'center'},
         {display: '{% trans "Gateway" %}', name: 'used_gateway', width: 100, sortable: true, align: 'center'},
-        {display: '{% trans "Duration" %}', name: 'duration', width: 60, sortable: true, align: 'center'},
-        {display: '{% trans "Bill Sec" %}', name: 'billsec', width: 60, sortable: true, align: 'center'},
+        {display: '{% trans "Duration" %}', name: 'duration', width: 50, sortable: true, align: 'center'},
+        {display: '{% trans "Bill Sec" %}', name: 'billsec', width: 50, sortable: true, align: 'center'},
         {display: '{% trans "Disposition" %}', name: 'disposition', width: 60, sortable: true, align: 'center'},
-        {display: '{% trans "Hangup Cause" %}', name: 'hangup_cause', width: 100, sortable: true, align: 'center'},
-        {display: '{% trans "q850" %}', name: 'hangup_cause_q850', width: 60, sortable: true, align: 'center'},
 		],    
     sortname: "id",
 	sortorder: "asc",
@@ -89,7 +96,7 @@ $("#flex1").flexigrid({
 	useRp: true,
 	rp: 10,
 	showTableToggleBtn: true,
-	width: 940,
+	width: 900,
 	height: 265,
     pagetext: '{% trans "Page" %}',
     outof: '{% trans "of" %}',
@@ -108,52 +115,52 @@ $("#flex1").flexigrid({
 </script>
 {% endblock %}
 
-  <br/><br/>
- {% block extra_data %}
+<br/><br/>
+{% block extra_data %}
 
-        <table align="center" id="rounded-corner">
-        <caption><center>{% trans "Call Detail Report Summary" %}</center></caption>
-        <thead>
-            <tr>
-                <th class="rounded-company">{% trans "Date" %}</th>
-                <th class="rounded-q1">{% trans "Duration" %}</th>
-                <th class="rounded-q2">{% trans "Graphic" %}</th>
-                <th class="rounded-q3">{% trans "Calls" %}</th>
-                <th class="rounded-q4"><acronym title="{% trans "Average Connection Time" %}">{% trans "ACT"  %}</acronym></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for td in total_data %}
-            <tr class="{% cycle 'row1' 'row2' %}">
-                <td>{{ td.starting_date }}</td>
-                <td>{{ td.duration__sum|conv_min }}</td>
-                <td>{% if max_duration > 0 %}
-                    <img src="{{STATIC_URL}}newfies/images/spacer.png" width="{{td.duration__sum|cal_width:max_duration}}" style="vertical-align:center;" height="10"/>
-                    {% endif %}
-                </td>
-                <td>{{ td.starting_date__count }}</td>
-                
-                <td>{{ td.duration__avg|conv_min }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-        <tfoot>
-            <tr>
-                <td>{% trans "Total"  %}</td>
-                <td>{{ total_duration|conv_min }}</td>
-                <td></td>
-                <td>{{ total_calls }}</td>
-                <td>{{ total_avg_duration|conv_min }}</td>
-            </tr>
-        </tfoot>
-    </table>
- 
-    <br/>
-    
-    <div align=center>
-        {% trans "Export CSV file"  %} <br/>
-        <a href="/export_voipcall_report/"><img src='{{STATIC_URL}}newfies/icons/x-office-spreadsheet.png' width="75"/></a>
-    </div>
-    {% endblock %}
+<div align=center>
+<h3><center>{% trans "Call Detail Report Summary" %}</center></h3>
+<table class="bordered-table zebra-striped">
+    <thead>
+        <tr>
+            <th>{% trans "Date" %}</th>
+            <th>{% trans "Duration" %}</th>
+            <th>{% trans "Graphic" %}</th>
+            <th>{% trans "Calls" %}</th>
+            <th><acronym title="{% trans "Average Connection Time" %}">{% trans "ACT"  %}</acronym></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for td in total_data %}
+        <tr>
+            <td>{{ td.starting_date }}</td>
+            <td>{{ td.duration__sum|conv_min }}</td>
+            <td>{% if max_duration > 0 %}
+                <img src="{{STATIC_URL}}newfies/images/spacer.png" width="{{td.duration__sum|cal_width:max_duration}}" style="vertical-align:center;" height="10"/>
+                {% endif %}
+            </td>
+            <td>{{ td.starting_date__count }}</td>
+            
+            <td>{{ td.duration__avg|conv_min }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>{% trans "Total"  %}</td>
+            <td>{{ total_duration|conv_min }}</td>
+            <td></td>
+            <td>{{ total_calls }}</td>
+            <td>{{ total_avg_duration|conv_min }}</td>
+        </tr>
+    </tfoot>
+</table>
+
+<br/>
+
+{% trans "Export CSV file"  %} <br/>
+<a href="/export_voipcall_report/"><img src='{{STATIC_URL}}newfies/icons/x-office-spreadsheet.png' width="75"/></a>
+</div>
+{% endblock %}
 
 {% endblock %}

@@ -1,0 +1,100 @@
+{% extends "frontend/master.html" %}
+{% load dialer_cdr_extras i18n icons %}
+
+{% block title %}
+{{ block.super }}
+{% trans "Audio Files" %}
+{% endblock %}
+
+{% block extra_files %}
+{% include "common_audiofield.html" %}
+<script type="text/javascript" src="{{STATIC_URL}}newfies/js/custom.jquery.select.all.js"></script>
+
+<!--flexigrid css & js-->
+<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid.css" type="text/css" />
+<script type="text/javascript" src="{{STATIC_URL}}newfies/js/flexigrid.js"></script>
+<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid_custom.css" type="text/css" />
+<script type="text/javascript" language="javascript">
+function get_alert_msg(id)
+{
+    confirm_string = '{% trans "Confirm deletion?" %}';
+    var answer = confirm(confirm_string);
+    return answer // answer is a boolean
+}
+</script>
+{% endblock %}
+
+{% block content_header %}
+<h1>{% trans "Audio Files" %} <small>{% trans "List, upload and edit audio files" %}</small></h1>
+{% endblock %}
+
+
+{% block content %}
+{% if msg %}
+<div class="alert-message success">
+        <strong>{% trans "Alert" %} : </strong>  {{ msg }}
+</div>
+{% endif %}
+
+<br/>
+
+<form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">
+{% csrf_token %}
+<table id="flex1" align="left" style="display:none;"></table>
+</form>
+<script type="text/javascript">
+
+
+$("#flex1").flexigrid({
+    url: "/audio_grid/",
+    method: 'GET',
+    dataType: 'json',
+	colModel : [
+        {display: '<input type="checkbox" onclick="toggleChecked(this.checked)">', name: '', width: 40, align: 'center'},
+        {display: '{% trans "Name" %}', name: 'name', width: 240, sortable: true, align: 'center'},
+        {display: '{% trans "Audio" %}', name: 'audio_file', width: 300, sortable: true, align: 'center'},
+        {display: '{% trans "Date" %}', name: 'updated_date', width: 200, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
+        {display: '{% trans "Action" %}', name: '', width : 60, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
+		],
+    buttons : [
+		{name: '{% trans "Add" %}', bclass: 'add', onpress : add_button},
+        {separator: true},        
+        {name: '{% trans "Delete Selected" %}', bclass: 'delete', onpress : delete_button},
+		],
+    sortname: "id",
+	sortorder: "asc",
+	usepager: true,
+	title: '{% trans "Audio Files" %}',
+	useRp: true,
+	rp: 10,
+	showTableToggleBtn: true,
+	width: 900,
+	height: 265,
+    pagetext: '{% trans "Page" %}',
+    outof: '{% trans "of" %}',
+    nomsg: '{% trans "No items" %}',
+    procmsg: '{% trans "Processing, please wait ..." %}',
+    pagestat: '{% trans "Displaying" %} {from} {% trans "to" %} {to} {% trans "of" %} {total} {% trans "items" %}',
+    //preProcess: formatContactResults,
+    onSuccess: function(data){
+        //alert(data);
+        //alert("Request not failed");
+    },
+    onError: function(){
+        alert("Request failed");
+    },
+});
+
+
+function add_button()
+{
+    window.location = 'add/';
+}
+function delete_button()
+{
+    $('#ListForm').submit();
+}
+
+</script>
+
+{% endblock %}

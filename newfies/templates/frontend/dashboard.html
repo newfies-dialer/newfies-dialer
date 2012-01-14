@@ -11,61 +11,44 @@
       //jQuery.noConflict(); // To resolve conflict with jquery & prototype
       (function($){ // jquey function call in (function($){})(jQuery);
           $(document).ready(function() {
-            $(".fg-button").hover(
-                function(){
-                    $(this).addClass("ui-state-hover");
-                },
-                function(){
-                    $(this).removeClass("ui-state-hover");
-                }
-            );
-            $('#buttonlogin').click(function(){
-              $("#requestlogin").animate({ height: 'show', opacity: 'show' }, 'slow');
-            });
-            $('#buttonlogout').click(function(){
-              $('#logout').submit();
-            });
-            $('#buttonadmin').click(function(){
-                var url = String(window.location);
-                var patt = "(https?|ftp|gopher|telnet|file|notes|ms-help)://[^/]+/";
-                window.location = url.match(patt)[0] + 'admin';
-            });
             $("#language-container").change(function() {
                 this.form.submit();
             });
           });
       })(jQuery);
     </script>
-
 {% endblock %}
 
-
+{% block content_header %}
+<h1>{% trans "Dashboard" %} <small>{% trans "Realtime campaign performance monitoring" %}</small></h1>
+{% endblock %}
 
 {% block content %}
+<div id="label" align="center">
 
 <form method="POST" action="." id="id_searchform" name="searchform" enctype="multipart/form-data">{% csrf_token %}
-    <p>
-        {{ form.campaign.label }} {{ form.campaign }} {{ form.search_type }}
-        <input type="submit" name="submit" value="{% trans "Submit" %}">
-    </p>
+<p align="center">
+    {{ form.campaign }} {{ form.search_type }}
+    <input type="submit" class="btn primary" name="submit" value="{% trans "Submit" %}">
+</p>
 
-<P>
+<p align="center">
     {% for j in total_data %}
        <!--{{ j }}<br/>-->
     {% endfor %}
     {% for i in final_calls %}
         <!--{{ i }}<br/>-->
     {% endfor %}
-</P>
+</p>
 
 
-<table align="center" id="rounded-corner">
+<table align="center" class="bordered-table zebra-striped">
         <thead>
         <tr>
-            <th class="rounded-company">{% trans "Campaign" %}</th>
-            <th class="rounded-q1">{% trans "Total Phonebook Contacts" %}</th>
-            <th class="rounded-q2">{% trans "Total Campaign Contacts" %}</th>
-            <th class="rounded-q4">{% trans "Contacted Today" %}</th>
+            <th>{% trans "Campaign" %}</th>
+            <th>{% trans "Total Phonebook Contacts" %}</th>
+            <th>{% trans "Total Campaign Contacts" %}</th>
+            <th>{% trans "Contacted Today" %}</th>
         </tr>
         </thead>
         <tr>
@@ -146,9 +129,11 @@
 
 </script>
 <br/>
-<input type="submit" value="{% trans "Call Count" %}" name="call_count_button"/> /
-<input type="submit" value="{% trans "Duration" %}" name="duration_button"/>
+<input type="submit" class="btn" value="{% trans "Call Count" %}" name="call_count_button"/> /
+<input type="submit" class="btn info" value="{% trans "Duration" %}" name="duration_button"/>
 </form>
+
+</div>
 
 {% if total_data %}
 
@@ -159,9 +144,6 @@
 	</div>
 </div>
     
-
-
-
 {% endif %}
 
 
@@ -206,7 +188,7 @@
                 { label: 'TORTURE' , data: [[1, {{ total_torture }}]], color: '{{ torture_color }}' },
                 { label: 'INVALIDARGS' , data: [[1, {{ total_invalidargs }}]], color: '{{ invalidargs_color }}' },
                 { label: 'NOROUTE' , data: [[1, {{ total_noroute }}]], color: '{{ noroute_color }}' },
-                { label: 'FORBIDDEN' , data: [[1, {{ total_forbiden }}]], color: '{{ forbiden_color }}' },
+                { label: 'FORBIDDEN' , data: [[1, {{ total_forbidden }}]], color: '{{ forbidden_color }}' },
             ];
             var options = {
                     series: {
@@ -243,19 +225,12 @@
     {% for td in final_calls %}
             [{{ td.starting_date }},(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}]<br/>
     {% endfor %}-->
-    <br/>
-    <div id="camp_pie" style="width:300px;height:300px;float:left;margin: 0px 50px 0px 50px;"></div>
+    
+    <div id="camp_pie" style="width:300px;height:270px;float:left;margin: 0px 50px 0px 50px;"></div>
 
-    <table style="width: 360px;margin: 50px 0px 0px 0px; background-color: #e6f7fe;" >
+    <table style="width: 370px;margin: 50px 0px 0px 0px; background-color: #e6f7fe;" class="bordered-table">
     <tr>
-        <th style="color: #111111; width: 120px;">{{ total_call_count }}  {% trans "TOTAL CALLS"  %}</th>
-        <th style="color: #111111; width: 120px;"></th>
-        <th style="color: #111111; width: 120px;"></th>
-    </tr>
-    <tr>
-        <th></th>
-        <th></th>
-        <th></th>
+        <th style="color: #111111; width: 120px;" colspan="3">{{ total_call_count }}  {% trans "TOTAL CALLS"  %}</th>
     </tr>
     <tr>
         <th style="color: {{ answered_color }}">{{ total_answered }}  {% trans "ANSWERED"  %}</th>
@@ -274,7 +249,8 @@
     </tr>
     <tr>
         <th style="color: {{ congestion_color }}">{{ total_congestion }}  {% trans "CONGESTION"  %}</th>
-        <th style="color: {{ forbiden_color }}">{{ total_forbiden }}  {% trans "FORBIDDEN"  %}</th>
+        <th style="color: {{ forbidden_color }}">{{ total_forbidden }}  {% trans "FORBIDDEN"  %}</th>
+        <th>&nbsp;</th>
     </tr>
     </table>
     

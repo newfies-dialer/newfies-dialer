@@ -1,0 +1,92 @@
+{% extends "frontend/master.html" %}
+{% load i18n dialer_cdr_extras %}
+
+{% block title %}
+{{ block.super }}
+{% trans "Survey" %}
+{% endblock %}
+
+{% block extra_files %}
+<script type="text/javascript" src="{{STATIC_URL}}newfies/js/inlineforms.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+        $('.add-row').click(function() {
+    	    return addForm(this, 'form');
+        });
+        $('.delete-row').click(function() {
+    	    return deleteForm(this, 'form');
+        })
+    })
+
+</script>
+{% endblock %}
+
+{% block content %}
+
+<form method="post" action=".">{% csrf_token %}
+    <table>
+    {{ form_question.as_table }}
+    </table>
+
+    {{ formset_response.non_form_errors.as_ }}
+    {{ formset_response.management_form }}
+    <table id="formset" class="form">
+    {% for form in formset_response.forms %}
+      {% if forloop.first %}
+      <thead><tr >
+        {% for field in form.visible_fields %}
+        <th>{{ field.label|capfirst }}</th>
+        {% endfor %}
+      </tr></thead>
+      {% endif %}
+      <tr class="{% cycle row1,row2 %} dynamic-form">
+      {% for field in form.visible_fields %}
+        <td>
+        {# Include the hidden fields in the form #}
+        {% if forloop.first %}
+          {% for hidden in form.hidden_fields %}
+          {{ hidden }}
+          {% endfor %}
+        {% endif %}
+          {{ field.errors.as_ul }}
+          {{ field }}<a id="remove-{{ form.prefix }}-row" href="javascript:void(0)" class="delete-row"></a>
+        </td>
+      {% endfor %}
+      </tr>
+    {% endfor %}
+    <tr>
+        <td colspan="6"><a href="javascript:void(0)" class="add-row">+ Add</a></td>
+    </tr>
+    </table>
+
+   
+    <table>
+        <tr>
+            <td><input type="submit" name="submit" value="Submit"> <input type="reset" name="reset" value="Reset"></td>
+        </tr>
+    </table>
+</form>
+<!--
+    <form action="" method="POST">{% csrf_token %}
+    <div class="section">
+        <table>
+        {{ form_question.as_table }}
+        </table>
+    </div>
+
+    <h2>Response</h2>
+    {{ formset_response.management_form }}
+    {% for form in formset_response.forms %}
+    <div class="item">
+      {{ form.as_p }}
+      <p style=""><a class="delete" href="#">Delete</a></p>
+    </div>
+    {% endfor %}
+
+    <p><a id="add" href="#">Add another item</a></p>
+    -->
+    <input type="submit" value=" Submit " />
+
+</form>
+{% endblock %}

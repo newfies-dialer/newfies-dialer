@@ -76,11 +76,20 @@ in admin UI, select the user to update, & apply the settings from the dialer set
 Create Voice Application
 ----------------------------
 
-A number of voice applications are provided with Newfies-Dialer. Click ``Add VoIP App`` give the  
+A number of voice applications are provided with Newfies-Dialer. Click ``Add Voice App`` give the
 voice application a name, select the type of  application from the dropdown, select the gateway 
 to use if the call is to be redirected, and provide the data to be used, e.g. in the case of “Speak” 
 this would be the words to convert to text to speech.
 
+.. _Survey:
+
+Create Survey
+-------------
+
+A number of surveys are provided with Newfies-Dialer. Click ``Add survey`` give the
+survey a name & add survey question with its responses. Coming soon ....
+
+.. image:: ../_static/images/customer/update_survey.png
 
 .. _call-list:
 
@@ -99,7 +108,7 @@ You can also import your call list from csv files, via clicking on
 
 
 .. image:: ../_static/images/customer/import_contact.png
-    :width: 1000
+
 
 
 .. _campaign:
@@ -116,7 +125,8 @@ linked with the contacts.
 
 
 .. image:: ../_static/images/customer/update_campaign.png
-    :width: 1000
+    
+.. image:: ../_static/images/customer/update_campaign_part2.png
 
 
 .. _apply-dialer-settings:
@@ -164,7 +174,17 @@ call report into a csv file.
 
 
 .. image:: ../_static/images/customer/callreport.png
-    :width: 1000
+
+
+.. _survey-report:
+
+Survey Report
+-------------
+
+coming soon...
+
+
+.. image:: ../_static/images/customer/surveyreport.png
 
 
 .. _Settings:

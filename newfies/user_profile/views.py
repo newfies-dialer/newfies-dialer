@@ -23,7 +23,7 @@ def customer_detail_change(request):
 
     **Attributes**:
 
-        * ``form`` - UserChangeDetailForm, PasswordChangeForm, CheckPhoneNumberForm
+        * ``form`` - UserChangeDetailForm, UserChangeDetailExtendForm, PasswordChangeForm, CheckPhoneNumberForm
         * ``template`` - 'frontend/registration/user_detail_change.html'
 
     **Logic Description**:
@@ -31,8 +31,18 @@ def customer_detail_change(request):
         * User is able to change his/her detail.
     """
     user_detail = User.objects.get(username=request.user)
-    user_detail_form = UserChangeDetailForm(user=request.user,
+    try:
+        user_detail_extened = UserProfile.objects.get(user=user_detail)
+    except UserProfile.DoesNotExist:
+        #create UserProfile
+        user_detail_extened = UserProfile(user=user_detail)
+        user_detail_extened.save()
+
+    user_detail_form = UserChangeDetailForm(request.user,
                                             instance=user_detail)
+    user_detail_extened_form = UserChangeDetailExtendForm(request.user,
+                                                          instance=user_detail_extened)
+    
     user_password_form = PasswordChangeForm(user=request.user)
     check_phone_no_form = CheckPhoneNumberForm()
 
@@ -57,38 +67,54 @@ def customer_detail_change(request):
     error_pass = ''
     error_number = ''
     selected = 0
+    action = ''
 
-    if 'selected' in request.GET:
-        selected = request.GET['selected']
-
+    if 'action' in request.GET:
+        action = request.GET['action']
+        
     if request.GET.get('msg_note') == 'true':
         msg_note = request.session['msg_note']
+
+    # Mark all notification as read
+    if request.GET.get('notification') == 'mark_read_all':
+        notification_list = notification.Notice.objects.filter(unseen=1, recipient=request.user)
+        notification_list.update(unseen=0)
+        msg_note = _('All notifications are marked as read.')
+
         
     if request.method == 'POST':
+
         if request.POST['form-type'] == "change-detail":
             user_detail_form = UserChangeDetailForm(request.user, request.POST,
                                                     instance=user_detail)
-            selected = 0
-            if user_detail_form.is_valid():
+            user_detail_extened_form = UserChangeDetailExtendForm(request.user,
+                                                                  request.POST,
+                                                                  instance=user_detail_extened)
+            action = 'tabs-1'
+            if user_detail_form.is_valid() and user_detail_extened_form.is_valid():
                 user_detail_form.save()
-                msg_detail = _('Your detail has been changed successfully.')
+                user_detail_extened_form.save()
+                msg_detail = _('Detail has been changed.')
             else:
                 error_detail = _('Please correct the errors below.')
         elif request.POST['form-type'] == "check-number": # check phone no
-            selected = 4
+            action = 'tabs-5'
             check_phone_no_form = CheckPhoneNumberForm(data=request.POST)
-            if not common_contact_authorization(request.user,
-                                                request.POST['phone_number']):
-                error_number = _('This phone number is not authorized.')
+            if check_phone_no_form.is_valid():
+                if not common_contact_authorization(request.user,
+                                                    request.POST['phone_number']):
+                    error_number = _('This phone number is not authorized.')
+                else:
+                    msg_number = _('This phone number is authorized.')
             else:
-                msg_number = _('This phone number is authorized.')
+                error_number = _('Please correct the errors below.')
         else: # "change-password"
             user_password_form = PasswordChangeForm(user=request.user,
                                                     data=request.POST)
-            selected = 1
+            action = 'tabs-2'
             if user_password_form.is_valid():
                 user_password_form.save()
-                msg_pass = _('Your password has been changed successfully.')
+                msg_pass = _('Your password has been changed.')
             else:
                 error_pass = _('Please correct the errors below.')
 
@@ -96,6 +122,7 @@ def customer_detail_change(request):
     data = {
         'module': current_view(request),
         'user_detail_form': user_detail_form,
+        'user_detail_extened_form': user_detail_extened_form,
         'user_password_form': user_password_form,
         'check_phone_no_form': check_phone_no_form,
         'user_notification': user_notification,
@@ -103,13 +130,13 @@ def customer_detail_change(request):
         'msg_pass': msg_pass,
         'msg_number': msg_number,
         'msg_note': msg_note,
-        'selected': selected,
         'error_detail': error_detail,
         'error_pass': error_pass,
         'error_number': error_number,
         'notice_count': notice_count(request),
         'dialer_set': dialer_set,
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'action': action,
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))
@@ -166,7 +193,6 @@ def notification_grid(request):
     rows = [{'id': row.id,
              'cell': ['<input type="checkbox" name="select" class="checkbox"\
                       value="' + str(row.id) + '" />',
-                      row.id,
                       row.message,
                       str(row.notice_type),
                       str(row.sender),
@@ -203,30 +229,30 @@ def notification_del_read(request, object_id):
         notification_obj = notification.Notice.objects.get(pk=object_id)
         # Delete/Read notification
         if object_id:
-            if request.POST.get('read_all') == 'false':
-                request.session["msg_note"] = _('"%(name)s" is deleted successfully.') \
+            if request.POST.get('mark_read') == 'false':
+                request.session["msg_note"] = _('"%(name)s" is deleted.') \
                 % {'name': notification_obj.notice_type}
                 notification_obj.delete()
             else:
-                request.session["msg_note"] = _('"%(name)s" is marked as read successfully.') \
+                request.session["msg_note"] = _('"%(name)s" is marked as read.') \
                 % {'name': notification_obj.notice_type}
                 notification_obj.update(unseen=0)
 
-            return HttpResponseRedirect('/user_detail_change/?selected=2&msg_note=true')
+            return HttpResponseRedirect('/user_detail_change/?action=tabs-3&msg_note=true')
     except:
         # When object_id is 0 (Multiple recrod delete/mark as read)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
         notification_list = notification.Notice.objects.extra(where=['id IN (%s)' % values])
-        if request.POST.get('read_all') == 'false':
-            request.session["msg_note"] = _('%(count)s notification(s) are deleted successfully.')\
+        if request.POST.get('mark_read') == 'false':
+            request.session["msg_note"] = _('%(count)s notification(s) are deleted.')\
             % {'count': notification_list.count()}
             notification_list.delete()
         else:
-            request.session["msg_note"] = _('%(count)s notification(s) are marked as read successfully.')\
+            request.session["msg_note"] = _('%(count)s notification(s) are marked as read.')\
             % {'count': notification_list.count()}
             notification_list.update(unseen=0)
-        return HttpResponseRedirect('/user_detail_change/?selected=2&msg_note=true')
+        return HttpResponseRedirect('/user_detail_change/?action=tabs-3&msg_note=true')
 
 
 @login_required
@@ -282,4 +308,4 @@ def update_notice_status_cust(request, id):
     """Notification Status (e.g. seen/unseen) can be changed from
     customer interface"""
     common_notification_status(request, id)
-    return HttpResponseRedirect('/user_detail_change/?selected=2')
+    return HttpResponseRedirect('/user_detail_change/?action=tabs-3')

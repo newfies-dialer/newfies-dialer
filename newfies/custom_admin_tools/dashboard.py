@@ -48,28 +48,31 @@ class CustomIndexDashboard(Dashboard):
         #self.children.append(
         #            HistoryDashboardModule()
         #)
-
-        # append an app list module for "Administration"
-        self.children.append(modules.AppList(
-            _('Administration'),
-            models=('django.contrib.*', 'user_profile.*', ),
+        
+        
+        self.children.append(modules.Group(
+            title="General",
+            display="tabs",
+            children=[
+                modules.AppList(
+                    title='User',
+                    models=('django.contrib.*', 'user_profile.*', ),
+                ),
+                modules.AppList(
+                    _('Task Manager'),
+                    models=('djcelery.*', ),
+                ),
+                modules.AppList(
+                    _('Dashboard Stats'),
+                    models=('admin_tools_stats.*', ),
+                ),
+                modules.RecentActions(_('Recent Actions'), 5),
+            ]
         ))
         
-        # append an app list module for "Dialer"
-        self.children.append(modules.AppList(
-            _('Dashboard Stats'),
-            models=('admin_tools_stats.*', ),
-        ))
-
         self.children.append(modules.AppList(
             _('Settings'),
             models=('dialer_settings.*', ),
-        ))
-
-        # append an app list module for "Dialer"
-        self.children.append(modules.AppList(
-            _('Task Manager'),
-            models=('djcelery.*', ),
         ))
 
         # append an app list module for "Dialer"
@@ -81,14 +84,20 @@ class CustomIndexDashboard(Dashboard):
         # append an app list module for "Dialer"
         self.children.append(modules.AppList(
             _('Voip Server'),
-            models=('voip_app.*', ),
+            models=('voice_app.*', ),
+        ))
+        
+        # append an app list module for "Dialer"
+        self.children.append(modules.AppList(
+            _('Audio Files'),
+            models=('audiofield.*', ),
         ))
 
         # append an app list module for "Country_prefix"
-        #self.children.append(modules.AppList(
-        #    _('DialCode'),
-        #    models=('prefix_country.*', ),
-        #))
+        self.children.append(modules.AppList(
+            _('Survey'),
+            models=('survey.*', ),
+        ))
 
         # append a link list module for "quick links"
         """
@@ -124,16 +133,14 @@ class CustomIndexDashboard(Dashboard):
         graph_list = get_active_graph()
         for i in graph_list:
             kwargs = {}
-            kwargs['chart_size'] = "260x100"
+            kwargs['chart_size'] = "360x100"
             kwargs['graph_key'] = i.graph_key
             if request.POST.get('select_box_'+i.graph_key):
                 kwargs['select_box_'+i.graph_key] = request.POST['select_box_'+i.graph_key]
 
             self.children.append(DashboardCharts(**kwargs))
 
-        # append a recent actions module
-        #self.children.append(modules.RecentActions(_('Recent Actions'), 5))
-
+        
 
 
 class CustomAppIndexDashboard(AppIndexDashboard):

@@ -67,11 +67,13 @@ case $DIST in
         SCRIPT_VIRTUALENVWRAPPER="/usr/local/bin/virtualenvwrapper.sh"
         APACHE_USER="www-data"
         WSGI_ADDITIONAL=""
+        WSGIApplicationGroup=""
     ;;
     'CENTOS')
         SCRIPT_VIRTUALENVWRAPPER="/usr/bin/virtualenvwrapper.sh"
         APACHE_USER="apache"
         WSGI_ADDITIONAL="WSGISocketPrefix run/wsgi"
+        WSGIApplicationGroup="WSGIApplicationGroup %{GLOBAL}"
     ;;
 esac
 
@@ -187,11 +189,13 @@ func_install_frontend(){
                 /usr/bin/mysql_secure_installation
                 func_mysql_database_setting
             fi
+            
+            #for audiofile convertion
+            apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
         ;;
         'CENTOS')
             # SET APACHE CONF
             APACHE_CONF_DIR="/etc/httpd/conf.d/"
-            
             
             #TODO : Check architecture
             rpm -ivh http://download.fedora.redhat.com/pub/epel/6/x86_64/epel-release-6-5.noarch.rpm
@@ -218,6 +222,9 @@ func_install_frontend(){
                 /usr/bin/mysql_secure_installation
                 func_mysql_database_setting
             fi
+            
+            #for audiofile convertion
+            yum -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
         ;;
     esac
     
@@ -339,6 +346,10 @@ func_install_frontend(){
     chown $APACHE_USER:$APACHE_USER /usr/share/newfies/.python-eggs
     mkdir database
     
+    #upload audio files
+    mkdir -p /usr/share/newfies/usermedia/upload/audiofiles
+    chown -R $APACHE_USER:$APACHE_USER /usr/share/newfies/usermedia
+    
     #following lines is for apache logs
     touch /var/log/newfies/newfies-django.log
     touch /var/log/newfies/newfies-django-db.log
@@ -395,6 +406,7 @@ func_install_frontend(){
             AllowOverride all
             Order deny,allow
             Allow from all
+            '$WSGIApplicationGroup'
         </Directory>
 
     </VirtualHost>
@@ -435,6 +447,7 @@ func_install_frontend(){
             
             #Selinux to allow apache to access this directory
             chcon -Rv --type=httpd_sys_content_t /usr/share/virtualenvs/newfies-dialer/
+            chcon -Rv --type=httpd_sys_content_t /usr/share/newfies/usermedia
             semanage port -a -t http_port_t -p tcp $HTTP_PORT
             #Allowing Apache to access Redis port
             semanage port -a -t http_port_t -p tcp 6379

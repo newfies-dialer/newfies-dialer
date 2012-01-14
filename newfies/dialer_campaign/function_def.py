@@ -1,10 +1,10 @@
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from prefix_country.models import Country
+from country_dialcode.models import Country
 from dialer_campaign.models import Phonebook, Campaign, Contact, CAMPAIGN_STATUS, CAMPAIGN_STATUS_COLOR
 from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting
-from voip_app.models import VoipApp
+from voice_app.models import VoiceApp
 from user_profile.models import UserProfile
 from dateutil.relativedelta import *
 from dateutil.rrule import *
@@ -28,8 +28,8 @@ def field_list(name, user=None):
     if name == "campaign" and user is not None:
         list = Campaign.objects.filter(user=user)
 
-    if name == "voipapp" and user is not None:
-        list = VoipApp.objects.filter(user=user)
+    if name == "voiceapp" and user is not None:
+        list = VoiceApp.objects.filter(user=user)
 
     if name == "gateway" and user is not None:
         list = UserProfile.objects.get(user=user)

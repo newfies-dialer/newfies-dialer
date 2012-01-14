@@ -1,10 +1,6 @@
 {% extends "frontend/master.html" %}
 {% load dialer_cdr_extras i18n icons %}
 
-{% block title %}
-{{ block.super }}
-{% trans "Phonebook" %}
-{% endblock %}
 
 {% block extra_files %}
 <script type="text/javascript" src="{{STATIC_URL}}newfies/js/custom.jquery.select.all.js"></script>
@@ -31,17 +27,21 @@ function get_alert_msg(id)
             //alert("Request failed");
         }
     });
-    confirm_string = 'you are going to delete phonebook with ' + contact_count + ' contact(s)'
+    confirm_string = '{% trans "Please confirm to delete this phonebook with" %} ' + contact_count + ' {% trans "contact(s)" %}'
     var answer = confirm(confirm_string);
     return answer // answer is a boolean
 }
 </script>
 {% endblock %}
 
+{% block content_header %}
+<h1>{% trans "Phonebook" %} <small>{% trans "List, add and edit phonebooks" %}</small></h1>
+{% endblock %}
+
 
 {% block content %}
 {% if msg %}
-<div class="success" id="rounded-corner-upper-table">        
+<div class="alert-message success">
         <strong>{% trans "Alert" %} : </strong>  {{ msg }}
 </div>
 {% endif %}
@@ -61,11 +61,11 @@ $("#flex1").flexigrid({
 	colModel : [
         {display: '<input type="checkbox" onclick="toggleChecked(this.checked)">', name: '', width: 40, align: 'center'},
 		{display: '{% trans "Id" %}', name: 'id', width: 40, sortable: true, align: 'center'},
-        {display: '{% trans "Name" %}', name: 'name', width: 100, sortable: true, align: 'center'},
-        {display: '{% trans "Description" %}', name: 'description', width: 160, sortable: true, align: 'center'},
-        {display: '{% trans "Date" %}', name: 'updated_date', width: 100, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
-        {display: '{% trans "Contacts" %}', name: '', width: 40, sortable: true, align: 'center'},
-        {display: '{% trans "Action" %}', name: '', width : 50, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
+        {display: '{% trans "Name" %}', name: 'name', width: 180, sortable: true, align: 'center'},
+        {display: '{% trans "Description" %}', name: 'description', width: 250, sortable: true, align: 'center'},
+        {display: '{% trans "Date" %}', name: 'updated_date', width: 150, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
+        {display: '{% trans "Contacts" %}', name: '', width: 80, sortable: true, align: 'center'},
+        {display: '{% trans "Action" %}', name: '', width : 80, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
 		],
     buttons : [
 		{name: '{% trans "Add" %}', bclass: 'add', onpress : add_button},
@@ -79,7 +79,7 @@ $("#flex1").flexigrid({
 	useRp: true,
 	rp: 10,
 	showTableToggleBtn: true,
-	width: 616,
+	width: 900,
 	height: 265,
     pagetext: '{% trans "Page" %}',
     outof: '{% trans "of" %}',

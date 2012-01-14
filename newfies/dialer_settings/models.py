@@ -21,14 +21,14 @@ class DialerSetting(models.Model):
 
     **Name of DB table**: dialer_setting
     """
-    name = models.CharField(max_length=50, blank=False, null=True,
+    name = models.CharField(max_length=50, blank=False, null=True, verbose_name=_("Name"),
                     help_text=_("Settings name"))
 
     #Campaign Settings
-    max_frequency = models.IntegerField(default='100', blank=True, null=True,
+    max_frequency = models.IntegerField(default='100', blank=True, null=True, verbose_name=_("Max frequency"),
                                help_text=_("Maximum calls per minute"))
     callmaxduration = models.IntegerField(default='1800', blank=True,
-                      null=True, verbose_name=_('Call Max Duration'),
+                      null=True, verbose_name=_('Max Call Duration'),
     help_text=_("Maximum call duration in seconds (1800 = 30 Minutes)"))
 
     maxretry = models.IntegerField(default='3', blank=True, null=True,
@@ -43,10 +43,10 @@ class DialerSetting(models.Model):
     max_number_subscriber_campaign = models.IntegerField(default=10000,
                                help_text=_("Maximum subscribers per campaign"))
 
-    blacklist = models.TextField(blank=True, null=True, default='',
+    blacklist = models.TextField(blank=True, null=True, default='', verbose_name=_("Blacklist"),
     help_text=_("Use regular expressions to blacklist phone numbers. For example, '^[2-4][1]+' will prevent all phone numbers starting with 2,3 or 4 and followed by 1 being called."))
 
-    whitelist = models.TextField(blank=True, null=True, default='',
+    whitelist = models.TextField(blank=True, null=True, default='', verbose_name=_("Whitelist"),
     help_text=_("Use regular expressions to whitelist phone numbers"))
 
     created_date = models.DateTimeField(auto_now_add=True)

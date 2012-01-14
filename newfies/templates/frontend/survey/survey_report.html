@@ -1,0 +1,71 @@
+{% extends "frontend/master.html" %}
+{% load dialer_cdr_extras i18n icons %}
+
+
+{% block content_header %}
+<h1>{% trans "Survey Report" %} <small>{% trans "Monitor survey results" %}</small></h1>
+{% endblock %}
+
+{% block content %}
+{% if msg %}
+<div class="success" id="rounded-corner-upper-table">        
+        <strong>{% trans "Alert" %} : </strong>  {{ msg }}
+</div>
+{% endif %}
+
+
+<form method="POST" action="." enctype="multipart/form-data">
+{% csrf_token %}
+    {% for field in form %}
+     <div class="clearfix{% if field.errors %} error{% endif %}">
+        <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+        <div class="input">
+            {{ field }}
+            {% if field.errors %}
+                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+            {% endif %}
+            <span class="help-block">{{ field.help_text }} </span>
+        </div>
+     </div>
+     {% endfor %}
+
+     <div class="actions">
+         <input type="submit" class="btn primary" name="submit" value="{% trans "Submit" %}">
+     </div>
+</form>
+
+{% if survey_result %}
+    {% regroup survey_result by question as result %}
+
+    {% for i in result %}
+        <table align="center" class="bordered-table">
+            <tr>
+                <thead>
+                    <th colspan=5>{{ i.grouper }}</th>
+                </thead>
+            </tr>
+            <tr>
+                <td colspan=5>
+                <!--{% for item in i.list %}
+                    <td>{{ item.response__count }} contact(s) pressed {{ item.response }}</td>
+                {% endfor %}-->
+                <table class="bordered-table zebra-striped">
+                {% for item in i.list|groupby_columns:5 %}
+                <tr>
+                    {% for obj in item %}
+                        {% if obj %}
+                            <td>{{ obj.response__count }} contact(s) pressed {{ obj.response }}</td>
+                        {% else %}
+                            <td>&nbsp;</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+                </table>
+                </td>
+            </tr>
+        </table>
+    {% endfor %}
+{% endif %}
+
+{% endblock %}

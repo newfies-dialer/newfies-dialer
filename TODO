@@ -4,6 +4,8 @@ TODO
 - API to create campaign should accept phonebook ID to attach to,
   if it doesn't it will create a new phonebook
 
+- If a campaign is created on the frontend in status "START" the campaign is not being processed by Celery.tasks, we need to update the campaign again to make it works
+
 - Refactor the template, css and code in view
 
 - Fix I18N on some of the pages such as :
@@ -22,5 +24,4 @@ TODO
 - Add documentation for Survey User manual
 
 - Clean custom CSS, and add comments
-
 

@@ -7,6 +7,10 @@ TODO
 - On list of Audiofiles, display the url of the audio file too :
   http://127.0.0.1:8000/audio/
 
+- http://127.0.0.1:8000/survey_report/
+
+  Survey report show drop-downs for campaigns and surveys, it should only show campaigns with surveys. 
+
 - If a campaign is created on the frontend in status "START" the campaign is not being processed by Celery.tasks, we need to update the campaign again to make it works
 
 - Refactor the template, css and code in view

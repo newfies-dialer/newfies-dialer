@@ -116,29 +116,104 @@ To Add/Update a contact in a voice app
 
 .. image:: ../_static/images/customer/update_voiceapp.png
 
+A Number of voice applications currently supported are:-
+
+ **Dial**
+The dial command allows the call to be redirected another destination. In this case, Select the B-Leg
+as the trunk to be used for the redirected call.
+ 
+ **Conference** 
+Direct the contact into a conference which has previously been defined in Freeswitch. In the Data 
+field, put the name or extension number.
+ 
+ **PlayAudio** 
+PlayAudio plays a sound file that has previously been uploaded to the system.
+ 
+The Audio is uploaded via the Audio Files menu on the top menu. Click add, then select the file on
+your computer to be uploaded. The file will be renamed with a unique name. It can be played via the
+web browser.
+ 
+In the data field in the voice application, either put the full file path to the sound file. 
+Typically this is /usr/share/newfies/usermedia/upload/audiofiles/audio-file-XXXX-12345678.mp3
+ 
+However where there are multiple Freeswitch nodes and workers, the sound file can uploaded to 
+Newfies-Dialer, and the Web URL placed in the Data field. Typically, this will be
+  
+	* http://domain.tld:8008/mediafiles/upload/audiofiles/-XXXX-12345678.mp3
+	
+This allows other Freeswitch nodes to download and play the audio file on demand without having to 
+upload it to each node.
+ 
+ **Speak**
+  
+This will call a contact, and then using the text to speech engine, which is Flite as standard, 
+play the audio in the Data field.
+  
+ **Survey**
+A survey and polling application which is described in more detail in a subsequent section.
+
 
 .. _survey-app:
 
 Survey
 ------
 
-coming soon...
+The survey application for Newfies-Dialer allows polls and surveys to be taken over the phone.
+
+Each contact is called, and then played a sound file. After the sound file is heard, the user can
+enter their answer through the phone keypad using keys 0 to 9.
+
+Therefore before creating the survey, the first job is to upload the audio for the survey. One audio
+file is required for each question.
+
+**Uploading Audio Files**:
+
+Select Audio Files from the top menu then click add.
+
+Enter a name to describe the audio, then click chose file, select the file you require from your
+computer, then click submit.
+
+Note that only mp3, Wav and ogg formats are supported.
+
+The audio file will then be uploaded and renamed so that it is unique.
+
+**Create the Survey**:
 
 **URL**:
 
     * http://localhost:8000/survey/
-
-.. image:: ../_static/images/customer/survey_list.png
-
-To Add/Update a contact in a survey
-
-**URL**:
-
     * http://localhost:8000/survey/add/
     * http://localhost:8000/survey/1/
 
-.. image:: ../_static/images/customer/update_survey.png
+.. image:: ../_static/images/customer/survey_list.png
+
+Select Modules from the top menu, then Survey. 
+
+Click the add button, then give the survey a name and description, then click Submit.
+
+A button will now appear to add a question.
+
+In the question field, put in some text to describe the question - e.g "What is 1+1"; select the audio
+file pertaining to the question which was uploaded in the previous step.
+
+Then click Add Response. A further two fields will appear named Key Digit and Key Value. In key Digit
+put a number from 0 to 9 which should be pressed for this answer. In the example "What is 1+1", "2"
+should be placed in the Key Digit Field" 
+
+The Key Value field is used in the survey reports, and so in this case, you would put "Correct" as 
+1+1=2. You may chose to add responses 0,1 and 3 to 9 as key digits, with key values of "Wrong" as 
+these answers will then be summed up in the Survey Reports.
+
+You can then go on to add another question, and its associated responses. On completion, click 
+Update Survey.
+
+To use the Survey in a campaign, simply create a campaign as normal, and select the Survey name in
+the Application drop-down.
     
+**Survey Results**    
+
+When the survey is complete, the survey results can be inspected by clicking Reporting on the top 
+and selecting Survey Results from the drop-down.
 
 .. _customer-campaign-access:
 

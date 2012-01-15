@@ -31,7 +31,11 @@ soundManager.wmode = 'transparent'; // transparent SWF, if possible
 soundManager.useFastPolling = true; // increased JS callback frequency
 soundManager.url = {{ STATIC_URL }}+'audiofield/swf/';
 soundManager.debugFlash = false;
-soundManager.debugMode = {{ AUDIO_DEBUG }};//true;
+{% if AUDIO_DEBUG %}
+soundManager.debugMode = true;
+{% else %}
+soundManager.debugMode = false;
+{% endif %}
 // Added
 //soundManager.useHTML5Audio = false;
 

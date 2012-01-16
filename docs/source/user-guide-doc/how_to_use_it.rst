@@ -128,11 +128,17 @@ Important: Add the campaign's start and end dates with times & week-day
 exceptions. Select the gateway through which calls will be routed & the phonebook(s)
 linked with the contacts.
 
+
+Campaing list:
+
 .. image:: ../_static/images/customer/campaign_list.png
 
 
+Update Campaign:
 .. image:: ../_static/images/customer/update_campaign.png
-    
+
+
+Update Campaign:
 .. image:: ../_static/images/customer/update_campaign_part2.png
 
 

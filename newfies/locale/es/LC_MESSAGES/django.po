@@ -952,14 +952,10 @@ msgstr "Base de datos de error"
 
 #: dialer_cdr/admin.py:178
 #, python-format
-msgid "%(total_count)s selected"
-msgid_plural "All %(total_count)s selected"
-msgstr[0] "%(total_count)s seleccionado"
-msgstr[1] "%(total_count)s seleccionados"
 
 #: dialer_cdr/admin.py:182
 #, python-format
-msgid "0 of %(cnt)s selected"
+msgid "%(total_count)s selected"
 msgstr "0 de %(cnt)s seleccionados"
 
 #: dialer_cdr/admin.py:193
@@ -1455,7 +1451,7 @@ msgstr "No Registro(s) que se encuentran."
 
 #: survey/views.py:600
 msgid "No campaign attached with survey."
-msgstr ""
+msgstr "Ninguna campaña unida con la encuesta."
 
 #: templates/404.html:5
 msgid "This page cannot be found!"
@@ -1509,14 +1505,10 @@ msgstr "Importar contactos"
 
 #: templates/admin/dialer_campaign/contact/change_list.html:40
 #: templates/admin/dialer_cdr/voipcall/change_list.html:47
-msgid "Please correct the error below."
-msgid_plural "Please correct the errors below."
-msgstr[0] "Por favor, corrija el error debajo."
-msgstr[1] "Por favor, corrija el error debajo."
 
 #: templates/admin/dialer_campaign/contact/change_list.html:51
 #: templates/admin/dialer_cdr/voipcall/change_list.html:85
-msgid "Filter"
+msgid "Please correct the error below."
 msgstr "Filtro"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:18
@@ -1744,7 +1736,7 @@ msgstr "nueva(s) notificación(s)"
 
 #: templates/frontend/custom_jquery_select_all.html:16
 msgid "You must check at least one box!"
-msgstr ""
+msgstr "Usted debe marcar al menos una caja!"
 
 #: templates/frontend/custom_jquery_select_all.html:27
 #, fuzzy
@@ -2446,7 +2438,7 @@ msgstr "Eliminar pregunta"
 msgid ""
 "If no audio file is selected, then text to speech is used to read out the "
 "question"
-msgstr ""
+msgstr "Si no hay ningún archivo de audio está seleccionada, texto a voz se utiliza para leer la pregunta"
 
 #: templates/frontend/survey/survey_change.html:285
 #: templates/frontend/survey/survey_change.html:532
@@ -2521,119 +2513,119 @@ msgstr "fechas importantes"
 
 #: user_profile/fields.py:21
 msgid "Afar"
-msgstr ""
+msgstr "Lejos"
 
 #: user_profile/fields.py:22
 msgid "Abkhazian"
-msgstr ""
+msgstr "Abjasia"
 
 #: user_profile/fields.py:23
 msgid "Afrikaans"
-msgstr ""
+msgstr "Africaans"
 
 #: user_profile/fields.py:24
 msgid "Akan"
-msgstr ""
+msgstr "Akan"
 
 #: user_profile/fields.py:25 user_profile/fields.py:187
 msgid "Albanian"
-msgstr ""
+msgstr "Albanés"
 
 #: user_profile/fields.py:26
 msgid "Amharic"
-msgstr ""
+msgstr "Amárico"
 
 #: user_profile/fields.py:27
 msgid "Arabic"
-msgstr ""
+msgstr "Árabe"
 
 #: user_profile/fields.py:28
 msgid "Aragonese"
-msgstr ""
+msgstr "Aragonés"
 
 #: user_profile/fields.py:29 user_profile/fields.py:95
 msgid "Armenian"
-msgstr ""
+msgstr "Armenio"
 
 #: user_profile/fields.py:30
 msgid "Assamese"
-msgstr ""
+msgstr "Assamese"
 
 #: user_profile/fields.py:31
 msgid "Avaric"
-msgstr ""
+msgstr "Avaric"
 
 #: user_profile/fields.py:32
 msgid "Avestan"
-msgstr ""
+msgstr "Avestan"
 
 #: user_profile/fields.py:33
 msgid "Aymara"
-msgstr ""
+msgstr "Aimara"
 
 #: user_profile/fields.py:34
 msgid "Azerbaijani"
-msgstr ""
+msgstr "Azerbaiyán"
 
 #: user_profile/fields.py:35
 msgid "Bashkir"
-msgstr ""
+msgstr "Bashkir"
 
 #: user_profile/fields.py:36
 msgid "Bambara"
-msgstr ""
+msgstr "Bambara"
 
 #: user_profile/fields.py:37 user_profile/fields.py:68
 msgid "Basque"
-msgstr ""
+msgstr "Vasco"
 
 #: user_profile/fields.py:38
 msgid "Belarusian"
-msgstr ""
+msgstr "Bielorruso"
 
 #: user_profile/fields.py:39
 msgid "Bengali"
-msgstr ""
+msgstr "Bengalí"
 
 #: user_profile/fields.py:40
 msgid "Bihari languages"
-msgstr ""
+msgstr "Bihari idiomas"
 
 #: user_profile/fields.py:41
 msgid "Bislama"
-msgstr ""
+msgstr "Bislama"
 
 #: user_profile/fields.py:42 user_profile/fields.py:201
 msgid "Tibetan"
-msgstr ""
+msgstr "Tibetana"
 
 #: user_profile/fields.py:43
 msgid "Bosnian"
-msgstr ""
+msgstr "Bosnio"
 
 #: user_profile/fields.py:44
 msgid "Breton"
-msgstr ""
+msgstr "Breton"
 
 #: user_profile/fields.py:45
 msgid "Bulgarian"
-msgstr ""
+msgstr "Búlgaro"
 
 #: user_profile/fields.py:46 user_profile/fields.py:145
 msgid "Burmese"
-msgstr ""
+msgstr "Birmano"
 
 #: user_profile/fields.py:47
 msgid "Catalan; Valencian"
-msgstr ""
+msgstr "Catalán, valenciano"
 
 #: user_profile/fields.py:48 user_profile/fields.py:58
 msgid "Czech"
-msgstr ""
+msgstr "Checo"
 
 #: user_profile/fields.py:49
 msgid "Chamorro"
-msgstr ""
+msgstr "Chamorro"
 
 #: user_profile/fields.py:50
 #, fuzzy
@@ -2642,17 +2634,17 @@ msgstr "Comprobar"
 
 #: user_profile/fields.py:51 user_profile/fields.py:223
 msgid "Chinese"
-msgstr ""
+msgstr "Chino"
 
 #: user_profile/fields.py:52
 msgid ""
 "Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church "
 "Slavonic"
-msgstr ""
+msgstr "Iglesia eslava, antiguo eslavo, eslavo eclesiástico, antiguo búlgaro, antiguo eslavo eclesiástico"
 
 #: user_profile/fields.py:53
 msgid "Chuvash"
-msgstr ""
+msgstr "Chuvashia"
 
 #: user_profile/fields.py:54
 #, fuzzy
@@ -2661,15 +2653,15 @@ msgstr "Terminar"
 
 #: user_profile/fields.py:55
 msgid "Corsican"
-msgstr ""
+msgstr "Corso"
 
 #: user_profile/fields.py:56
 msgid "Cree"
-msgstr ""
+msgstr "Cree"
 
 #: user_profile/fields.py:57 user_profile/fields.py:216
 msgid "Welsh"
-msgstr ""
+msgstr "Galés"
 
 #: user_profile/fields.py:59
 #, fuzzy
@@ -2678,39 +2670,39 @@ msgstr "Español"
 
 #: user_profile/fields.py:60 user_profile/fields.py:79
 msgid "German"
-msgstr ""
+msgstr "Alemán"
 
 #: user_profile/fields.py:61
 msgid "Divehi; Dhivehi; Maldivian"
-msgstr ""
+msgstr "Divehi; Dhivehi, Maldivas"
 
 #: user_profile/fields.py:62 user_profile/fields.py:152
 msgid "Dutch; Flemish"
-msgstr ""
+msgstr "Holandeses, flamencos"
 
 #: user_profile/fields.py:63
 msgid "Dzongkha"
-msgstr ""
+msgstr "Dzongkha"
 
 #: user_profile/fields.py:64 user_profile/fields.py:84
 msgid "Greek, Modern (1453-)"
-msgstr ""
+msgstr "Griego, Moderno (1453 -)"
 
 #: user_profile/fields.py:66
 msgid "Esperanto"
-msgstr ""
+msgstr "Esperanto"
 
 #: user_profile/fields.py:67
 msgid "Estonian"
-msgstr ""
+msgstr "Estonia"
 
 #: user_profile/fields.py:69
 msgid "Ewe"
-msgstr ""
+msgstr "Oveja"
 
 #: user_profile/fields.py:70
 msgid "Faroese"
-msgstr ""
+msgstr "Las Islas Feroe"
 
 #: user_profile/fields.py:71 user_profile/fields.py:163
 #, fuzzy
@@ -2719,7 +2711,7 @@ msgstr "Información personal"
 
 #: user_profile/fields.py:72
 msgid "Fijian"
-msgstr ""
+msgstr "Fiyi"
 
 #: user_profile/fields.py:73
 #, fuzzy
@@ -2728,39 +2720,39 @@ msgstr "Terminar"
 
 #: user_profile/fields.py:74 user_profile/fields.py:75
 msgid "French"
-msgstr ""
+msgstr "Francés"
 
 #: user_profile/fields.py:76
 msgid "Western Frisian"
-msgstr ""
+msgstr "Oeste de Frisia"
 
 #: user_profile/fields.py:77
 msgid "Fulah"
-msgstr ""
+msgstr "Fulah"
 
 #: user_profile/fields.py:78 user_profile/fields.py:112
 msgid "Georgian"
-msgstr ""
+msgstr "Georgiano"
 
 #: user_profile/fields.py:80
 msgid "Gaelic; Scottish Gaelic"
-msgstr ""
+msgstr "Gaélico, gaélico escocés"
 
 #: user_profile/fields.py:81
 msgid "Irish"
-msgstr ""
+msgstr "Irlandés"
 
 #: user_profile/fields.py:82
 msgid "Galician"
-msgstr ""
+msgstr "Gallego"
 
 #: user_profile/fields.py:83
 msgid "Manx"
-msgstr ""
+msgstr "La Isla de Man"
 
 #: user_profile/fields.py:85
 msgid "Guarani"
-msgstr ""
+msgstr "Guaraní"
 
 #: user_profile/fields.py:86
 #, fuzzy
@@ -2769,43 +2761,43 @@ msgstr "Duración"
 
 #: user_profile/fields.py:87
 msgid "Haitian; Haitian Creole"
-msgstr ""
+msgstr "Haití, el criollo haitiano"
 
 #: user_profile/fields.py:88
 msgid "Hausa"
-msgstr ""
+msgstr "Hausa"
 
 #: user_profile/fields.py:89
 msgid "Hebrew"
-msgstr ""
+msgstr "Hebreo"
 
 #: user_profile/fields.py:90
 msgid "Herero"
-msgstr ""
+msgstr "Herero"
 
 #: user_profile/fields.py:91
 msgid "Hindi"
-msgstr ""
+msgstr "Hindi"
 
 #: user_profile/fields.py:92
 msgid "Hiri Motu"
-msgstr ""
+msgstr "Hiri Motu"
 
 #: user_profile/fields.py:93
 msgid "Croatian"
-msgstr ""
+msgstr "Croata"
 
 #: user_profile/fields.py:94
 msgid "Hungarian"
-msgstr ""
+msgstr "Húngaro"
 
 #: user_profile/fields.py:96
 msgid "Igbo"
-msgstr ""
+msgstr "Igbo"
 
 #: user_profile/fields.py:97 user_profile/fields.py:105
 msgid "Icelandic"
-msgstr ""
+msgstr "Islandés"
 
 #: user_profile/fields.py:98
 #, fuzzy
@@ -2814,235 +2806,235 @@ msgstr "Identificación"
 
 #: user_profile/fields.py:99
 msgid "Sichuan Yi; Nuosu"
-msgstr ""
+msgstr "Sichuan Yi; Nuosu"
 
 #: user_profile/fields.py:100
 msgid "Inuktitut"
-msgstr ""
+msgstr "Inuktitut"
 
 #: user_profile/fields.py:101
 msgid "Interlingue; Occidental"
-msgstr ""
+msgstr "Interlingue; Occidental"
 
 #: user_profile/fields.py:102
 msgid "Interlingua (International Auxiliary Language Association)"
-msgstr ""
+msgstr "Interlingua (auxiliar internacional de la Asociación de la Lengua)"
 
 #: user_profile/fields.py:103
 msgid "Indonesian"
-msgstr ""
+msgstr "Indonesio"
 
 #: user_profile/fields.py:104
 msgid "Inupiaq"
-msgstr ""
+msgstr "Inupiaq"
 
 #: user_profile/fields.py:106
 msgid "Italian"
-msgstr ""
+msgstr "Italiano"
 
 #: user_profile/fields.py:107
 msgid "Javanese"
-msgstr ""
+msgstr "Javanés"
 
 #: user_profile/fields.py:108
 msgid "Japanese"
-msgstr ""
+msgstr "Japonés"
 
 #: user_profile/fields.py:109
 msgid "Kalaallisut; Greenlandic"
-msgstr ""
+msgstr "Kalaallisut, Groenlandia"
 
 #: user_profile/fields.py:110
 msgid "Kannada"
-msgstr ""
+msgstr "Canarés"
 
 #: user_profile/fields.py:111
 msgid "Kashmiri"
-msgstr ""
+msgstr "Cachemira"
 
 #: user_profile/fields.py:113
 msgid "Kanuri"
-msgstr ""
+msgstr "Kanuri"
 
 #: user_profile/fields.py:114
 msgid "Kazakh"
-msgstr ""
+msgstr "Kazajstán"
 
 #: user_profile/fields.py:115
 msgid "Central Khmer"
-msgstr ""
+msgstr "Central de Khmer"
 
 #: user_profile/fields.py:116
 msgid "Kikuyu; Gikuyu"
-msgstr ""
+msgstr "Kikuyu, gikuyu"
 
 #: user_profile/fields.py:117
 msgid "Kinyarwanda"
-msgstr ""
+msgstr "Kinyarwanda"
 
 #: user_profile/fields.py:118
 msgid "Kirghiz; Kyrgyz"
-msgstr ""
+msgstr "Kirguises, Kirguistán"
 
 #: user_profile/fields.py:119
 msgid "Komi"
-msgstr ""
+msgstr "Komi"
 
 #: user_profile/fields.py:120
 msgid "Kongo"
-msgstr ""
+msgstr "Kongo"
 
 #: user_profile/fields.py:121
 msgid "Korean"
-msgstr ""
+msgstr "Coreano"
 
 #: user_profile/fields.py:122
 msgid "Kuanyama; Kwanyama"
-msgstr ""
+msgstr "Kuanyama; Kwanyama"
 
 #: user_profile/fields.py:123
 msgid "Kurdish"
-msgstr ""
+msgstr "Kurdo"
 
 #: user_profile/fields.py:124
 msgid "Lao"
-msgstr ""
+msgstr "Lao"
 
 #: user_profile/fields.py:125
 msgid "Latin"
-msgstr ""
+msgstr "Latino"
 
 #: user_profile/fields.py:126
 msgid "Latvian"
-msgstr ""
+msgstr "Letón"
 
 #: user_profile/fields.py:127
 msgid "Limburgan; Limburger; Limburgish"
-msgstr ""
+msgstr "Limburgan; Limburger, Limburgués"
 
 #: user_profile/fields.py:128
 msgid "Lingala"
-msgstr ""
+msgstr "Lingala"
 
 #: user_profile/fields.py:129
 msgid "Lithuanian"
-msgstr ""
+msgstr "Lituano"
 
 #: user_profile/fields.py:130
 msgid "Luxembourgish; Letzeburgesch"
-msgstr ""
+msgstr "El luxemburgués, el luxemburgués"
 
 #: user_profile/fields.py:131
 msgid "Luba-Katanga"
-msgstr ""
+msgstr "Luba-Katanga"
 
 #: user_profile/fields.py:132
 msgid "Ganda"
-msgstr ""
+msgstr "Ganda"
 
 #: user_profile/fields.py:133 user_profile/fields.py:139
 msgid "Macedonian"
-msgstr ""
+msgstr "Macedonio"
 
 #: user_profile/fields.py:134
 msgid "Marshallese"
-msgstr ""
+msgstr "De las Islas Marshall"
 
 #: user_profile/fields.py:135
 msgid "Malayalam"
-msgstr ""
+msgstr "Malayalam"
 
 #: user_profile/fields.py:136 user_profile/fields.py:143
 msgid "Maori"
-msgstr ""
+msgstr "Maorí"
 
 #: user_profile/fields.py:137
 msgid "Marathi"
-msgstr ""
+msgstr "Marathi"
 
 #: user_profile/fields.py:138 user_profile/fields.py:144
 msgid "Malay"
-msgstr ""
+msgstr "Malayo"
 
 #: user_profile/fields.py:140
 msgid "Malagasy"
-msgstr ""
+msgstr "Madagascar"
 
 #: user_profile/fields.py:141
 msgid "Maltese"
-msgstr ""
+msgstr "Maltés"
 
 #: user_profile/fields.py:142
 msgid "Mongolian"
-msgstr ""
+msgstr "Mongol"
 
 #: user_profile/fields.py:146
 msgid "Nauru"
-msgstr ""
+msgstr "Nauru"
 
 #: user_profile/fields.py:147
 msgid "Navajo; Navaho"
-msgstr ""
+msgstr "Navajo; Navajo"
 
 #: user_profile/fields.py:148
 msgid "Ndebele, South; South Ndebele"
-msgstr ""
+msgstr "Ndebele, Sur, Ndebele del sur"
 
 #: user_profile/fields.py:149
 msgid "Ndebele, North; North Ndebele"
-msgstr ""
+msgstr "Ndebele, Norte, Norte Ndebele"
 
 #: user_profile/fields.py:150
 msgid "Ndonga"
-msgstr ""
+msgstr "Ndonga"
 
 #: user_profile/fields.py:151
 msgid "Nepali"
-msgstr ""
+msgstr "Nepalí"
 
 #: user_profile/fields.py:153
 msgid "Norwegian Nynorsk; Nynorsk, Norwegian"
-msgstr ""
+msgstr "Nynorsk, Nynorsk, noruego"
 
 #: user_profile/fields.py:154
 msgid "Bokmal, Norwegian; Norwegian Bokmal"
-msgstr ""
+msgstr "Bokmål, noruego, Noruego Bokmål"
 
 #: user_profile/fields.py:155
 msgid "Norwegian"
-msgstr ""
+msgstr "Noruego"
 
 #: user_profile/fields.py:156
 msgid "Chichewa; Chewa; Nyanja"
-msgstr ""
+msgstr "Chichewa, chewa; nyanja"
 
 #: user_profile/fields.py:157
 msgid "Occitan (post 1500)"
-msgstr ""
+msgstr "Occitano (post 1500)"
 
 #: user_profile/fields.py:158
 msgid "Ojibwa"
-msgstr ""
+msgstr "Ojibwa"
 
 #: user_profile/fields.py:159
 msgid "Oriya"
-msgstr ""
+msgstr "Oriya"
 
 #: user_profile/fields.py:160
 msgid "Oromo"
-msgstr ""
+msgstr "Oromo"
 
 #: user_profile/fields.py:161
 msgid "Ossetian; Ossetic"
-msgstr ""
+msgstr "Osetia del Sur; osetio"
 
 #: user_profile/fields.py:162
 msgid "Panjabi; Punjabi"
-msgstr ""
+msgstr "Panjabi, Punjabi"
 
 #: user_profile/fields.py:164
 msgid "Pali"
-msgstr ""
+msgstr "Pali"
 
 #: user_profile/fields.py:165
 #, fuzzy
@@ -3051,87 +3043,87 @@ msgstr "Inglés"
 
 #: user_profile/fields.py:167
 msgid "Pushto; Pashto"
-msgstr ""
+msgstr "Pushto; Pashto"
 
 #: user_profile/fields.py:168
 msgid "Quechua"
-msgstr ""
+msgstr "Quechua"
 
 #: user_profile/fields.py:169
 msgid "Romansh"
-msgstr ""
+msgstr "Romanche"
 
 #: user_profile/fields.py:170 user_profile/fields.py:171
 msgid "Romanian; Moldavian; Moldovan"
-msgstr ""
+msgstr "Rumania, Moldavia, Moldavia"
 
 #: user_profile/fields.py:172
 msgid "Rundi"
-msgstr ""
+msgstr "Rundi"
 
 #: user_profile/fields.py:173
 msgid "Russian"
-msgstr ""
+msgstr "Ruso"
 
 #: user_profile/fields.py:174
 msgid "Sango"
-msgstr ""
+msgstr "Sango"
 
 #: user_profile/fields.py:175
 msgid "Sanskrit"
-msgstr ""
+msgstr "Sánscrito"
 
 #: user_profile/fields.py:176
 msgid "Sinhala; Sinhalese"
-msgstr ""
+msgstr "Cingalés, singalés"
 
 #: user_profile/fields.py:177 user_profile/fields.py:178
 msgid "Slovak"
-msgstr ""
+msgstr "Eslovaco"
 
 #: user_profile/fields.py:179
 msgid "Slovenian"
-msgstr ""
+msgstr "Esloveno"
 
 #: user_profile/fields.py:180
 msgid "Northern Sami"
-msgstr ""
+msgstr "Sami del norte"
 
 #: user_profile/fields.py:181
 msgid "Samoan"
-msgstr ""
+msgstr "Samoa"
 
 #: user_profile/fields.py:182
 msgid "Shona"
-msgstr ""
+msgstr "Shona"
 
 #: user_profile/fields.py:183
 msgid "Sindhi"
-msgstr ""
+msgstr "Sindhi"
 
 #: user_profile/fields.py:184
 msgid "Somali"
-msgstr ""
+msgstr "Somalí"
 
 #: user_profile/fields.py:185
 msgid "Sotho, Southern"
-msgstr ""
+msgstr "Lesotho, el sur de"
 
 #: user_profile/fields.py:186
 msgid "Spanish; Castilian"
-msgstr ""
+msgstr "Español, castellano"
 
 #: user_profile/fields.py:188
 msgid "Sardinian"
-msgstr ""
+msgstr "Sardo"
 
 #: user_profile/fields.py:189
 msgid "Serbian"
-msgstr ""
+msgstr "Serbio"
 
 #: user_profile/fields.py:190
 msgid "Swati"
-msgstr ""
+msgstr "Swati"
 
 #: user_profile/fields.py:191
 #, fuzzy
@@ -3140,87 +3132,87 @@ msgstr "Domingo"
 
 #: user_profile/fields.py:192
 msgid "Swahili"
-msgstr ""
+msgstr "Swahili"
 
 #: user_profile/fields.py:193
 msgid "Swedish"
-msgstr ""
+msgstr "Sueco"
 
 #: user_profile/fields.py:194
 msgid "Tahitian"
-msgstr ""
+msgstr "Tahitian"
 
 #: user_profile/fields.py:195
 msgid "Tamil"
-msgstr ""
+msgstr "Tamil"
 
 #: user_profile/fields.py:196
 msgid "Tatar"
-msgstr ""
+msgstr "Tártara"
 
 #: user_profile/fields.py:197
 msgid "Telugu"
-msgstr ""
+msgstr "Telugu"
 
 #: user_profile/fields.py:198
 msgid "Tajik"
-msgstr ""
+msgstr "Tayikistán"
 
 #: user_profile/fields.py:199
 msgid "Tagalog"
-msgstr ""
+msgstr "Tagalog"
 
 #: user_profile/fields.py:200
 msgid "Thai"
-msgstr ""
+msgstr "Tailandés"
 
 #: user_profile/fields.py:202
 msgid "Tigrinya"
-msgstr ""
+msgstr "Tigrinya"
 
 #: user_profile/fields.py:203
 msgid "Tonga (Tonga Islands)"
-msgstr ""
+msgstr "Tonga (Islas Tonga)"
 
 #: user_profile/fields.py:204
 msgid "Tswana"
-msgstr ""
+msgstr "Tswana"
 
 #: user_profile/fields.py:205
 msgid "Tsonga"
-msgstr ""
+msgstr "Tsonga"
 
 #: user_profile/fields.py:206
 msgid "Turkmen"
-msgstr ""
+msgstr "Turkmenistán"
 
 #: user_profile/fields.py:207
 msgid "Turkish"
-msgstr ""
+msgstr "Turco"
 
 #: user_profile/fields.py:208
 msgid "Twi"
-msgstr ""
+msgstr "Twi"
 
 #: user_profile/fields.py:209
 msgid "Uighur; Uyghur"
-msgstr ""
+msgstr "Uigur; Uyghur"
 
 #: user_profile/fields.py:210
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ucranio"
 
 #: user_profile/fields.py:211
 msgid "Urdu"
-msgstr ""
+msgstr "Urdu"
 
 #: user_profile/fields.py:212
 msgid "Uzbek"
-msgstr ""
+msgstr "Uzbeco"
 
 #: user_profile/fields.py:213
 msgid "Venda"
-msgstr ""
+msgstr "Venda"
 
 #: user_profile/fields.py:214
 #, fuzzy
@@ -3229,39 +3221,39 @@ msgstr "primer nombre"
 
 #: user_profile/fields.py:215
 msgid "Volapuk"
-msgstr ""
+msgstr "Volapuk"
 
 #: user_profile/fields.py:217
 msgid "Walloon"
-msgstr ""
+msgstr "Valonia"
 
 #: user_profile/fields.py:218
 msgid "Wolof"
-msgstr ""
+msgstr "Wolof"
 
 #: user_profile/fields.py:219
 msgid "Xhosa"
-msgstr ""
+msgstr "Xhosa"
 
 #: user_profile/fields.py:220
 msgid "Yiddish"
-msgstr ""
+msgstr "Yídish"
 
 #: user_profile/fields.py:221
 msgid "Yoruba"
-msgstr ""
+msgstr "Yoruba"
 
 #: user_profile/fields.py:222
 msgid "Zhuang; Chuang"
-msgstr ""
+msgstr "Zhuang, Chuang"
 
 #: user_profile/fields.py:224
 msgid "Zulu"
-msgstr ""
+msgstr "Zulú"
 
 #: user_profile/fields.py:232
 msgid "Stores language codes"
-msgstr ""
+msgstr "Almacena los códigos del lenguaje"
 
 #: user_profile/forms.py:12
 msgid "Email address"

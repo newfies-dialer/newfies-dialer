@@ -14,9 +14,15 @@ TODO
   * Select checkbox and click on main delete button :
   http://127.0.0.1:8000/campaign/
 
+  Converted with html translation. Done.
+  Just need to add translation in po file
+
+
 - Make sure test work on all APIs
 
 - Add documentation for Survey User manual
+
+  Done
 
 - Clean custom CSS, and add comments
 

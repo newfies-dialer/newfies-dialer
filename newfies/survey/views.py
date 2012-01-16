@@ -369,7 +369,7 @@ def audio_file_player(audio_file):
     """audio player tag for frontend"""
     if audio_file:
         file_url = settings.MEDIA_URL + str(audio_file)
-        player_string = '<ul class="playlist"><li style="width:180px;">\
+        player_string = '<ul class="playlist"><li style="width:220px;">\
         <a href="%s">%s</a></li></ul>' % (file_url, os.path.basename(file_url))
         return player_string
 

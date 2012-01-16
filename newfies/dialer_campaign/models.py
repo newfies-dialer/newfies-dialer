@@ -312,20 +312,12 @@ class Campaign(Model):
     help_text=_("Time delay in seconds before retrying contact"))
 
     calltimeout = models.IntegerField(default='45', blank=True, null=True,
-                  verbose_name=_('Timeout on Call'),
-    help_text=_("Connection timeout in seconds"))
-
+                    verbose_name=_('Timeout on Call'),
+                    help_text=_("Connection timeout in seconds"))
     #Gateways
     aleg_gateway = models.ForeignKey(Gateway, verbose_name=_("A-Leg Gateway"),
-                                     related_name="A-Leg Gateway",
-                                     help_text=_("Select outbound gateway"))
-    #Campaign IVR/Application Destination
-    """
-    #comment to use genericforeign key
-    voipapp = models.ForeignKey(VoipApp, verbose_name=_("VoIP Application"),
-              related_name="VoIP Application",
-              help_text=_("Select VoIP Application to use with this campaign"))
-    """
+                    related_name="A-Leg Gateway", 
+                    help_text=_("Select outbound gateway"))
     content_type = models.ForeignKey(ContentType, verbose_name=_("Type"),
                    limit_choices_to = {"model__in": ("surveyapp", "voiceapp")})
     object_id = models.PositiveIntegerField(verbose_name=_("Application"))

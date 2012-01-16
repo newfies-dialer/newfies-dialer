@@ -118,15 +118,19 @@ To Add/Update a contact in a voice app
 
 A Number of voice applications currently supported are:-
 
- **Dial**
+**Dial**:
+ 
 The dial command allows the call to be redirected another destination. In this case, Select the B-Leg
 as the trunk to be used for the redirected call.
  
- **Conference** 
+**Conference**:
+ 
 Direct the contact into a conference which has previously been defined in Freeswitch. In the Data 
 field, put the name or extension number.
- 
- **PlayAudio** 
+
+
+**PlayAudio**:
+
 PlayAudio plays a sound file that has previously been uploaded to the system.
  
 The Audio is uploaded via the Audio Files menu on the top menu. Click add, then select the file on
@@ -144,12 +148,12 @@ Newfies-Dialer, and the Web URL placed in the Data field. Typically, this will b
 This allows other Freeswitch nodes to download and play the audio file on demand without having to 
 upload it to each node.
  
- **Speak**
+**Speak**:
   
 This will call a contact, and then using the text to speech engine, which is Flite as standard, 
 play the audio in the Data field.
   
- **Survey**
+**Survey**:
 A survey and polling application which is described in more detail in a subsequent section.
 
 

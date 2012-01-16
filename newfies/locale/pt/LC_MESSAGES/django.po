@@ -69,7 +69,7 @@ msgstr "Arquivos de áudio"
 #: templates/frontend/survey/survey_list.html:23
 #: templates/frontend/survey/survey_list.html:60
 msgid "Survey"
-msgstr "Vistoria"
+msgstr "Enquete"
 
 #: custom_admin_tools/dashboard.py:121
 msgid "Latest Newfies-Dialer News"
@@ -77,7 +77,7 @@ msgstr "Últimas Notícias Newfies-Dialer"
 
 #: custom_admin_tools/dashboard.py:128
 msgid "Dashboard Stats Settings"
-msgstr "Configurações do painel Estatísticas"
+msgstr "Estatísticas de configuraçao da Dashboard"
 
 #: custom_admin_tools/menu.py:17
 msgid "Newfies-Dialer Dashboard"
@@ -477,23 +477,23 @@ msgstr "Formato da hora: HH:MM:SS"
 
 #: dialer_campaign/models.py:292
 msgid "Monday"
-msgstr "Segunda-feira"
+msgstr "Segunda"
 
 #: dialer_campaign/models.py:293
 msgid "Tuesday"
-msgstr "Terça-feira"
+msgstr "Terça"
 
 #: dialer_campaign/models.py:294
 msgid "Wednesday"
-msgstr "Quarta-feira"
+msgstr "Quarta"
 
 #: dialer_campaign/models.py:295
 msgid "Thursday"
-msgstr "Quinta-feira"
+msgstr "Quinta"
 
 #: dialer_campaign/models.py:296
 msgid "Friday"
-msgstr "Sexta-feira"
+msgstr "Sexta"
 
 #: dialer_campaign/models.py:297
 msgid "Saturday"
@@ -654,14 +654,14 @@ msgstr "Excluir da lista telefônica"
 #: voice_app/views.py:130
 #, python-format
 msgid "\"%(name)s\" is added."
-msgstr "\"%(name)s\" é adicionado."
+msgstr "\"%(name)s\" foi adicionado."
 
 #: dialer_campaign/views.py:1068 dialer_campaign/views.py:1359
 #: dialer_campaign/views.py:1826 survey/views.py:269 survey/views.py:504
 #: user_profile/views.py:218 voice_app/views.py:163
 #, python-format
 msgid "\"%(name)s\" is deleted."
-msgstr "\"%(name)s\" é excluído."
+msgstr "\"%(name)s\" foi excluído."
 
 #: dialer_campaign/views.py:1085
 #, python-format
@@ -767,7 +767,7 @@ msgstr "Duração total:"
 
 #: dialer_campaign/views.py:1973
 msgid "Answered"
-msgstr "Respondeu"
+msgstr "Atendeu"
 
 #: dialer_campaign/views.py:1973
 msgid "Ans"
@@ -948,11 +948,10 @@ msgid "Database error"
 msgstr "De erro de banco de dados"
 
 #: dialer_cdr/admin.py:178
-#, fuzzy, python-format
 msgid "%(total_count)s selected"
 msgid_plural "All %(total_count)s selected"
 msgstr[0] "%(total_count)s selecionado"
-msgstr[1] "%(total_count)s selecionado"
+msgstr[1] "Todas %(total_count)s selecionadas"
 
 #: dialer_cdr/admin.py:182
 #, python-format
@@ -1367,7 +1366,7 @@ msgstr "Descrição levantamento"
 
 #: survey/models.py:55 templates/frontend/bootstrap_menu.html:34
 msgid "Surveys"
-msgstr "Pesquisas"
+msgstr "Enquetes"
 
 #: survey/models.py:67 survey/models.py:120
 msgid "Question"
@@ -1392,7 +1391,7 @@ msgstr "Tipo de mensagem"
 #: survey/models.py:89 templates/frontend/survey/survey_change.html:275
 #: templates/frontend/survey/survey_change.html:481
 msgid "Key Digit"
-msgstr "Digit-chave"
+msgstr "Digito chave"
 
 #: survey/models.py:90
 msgid "Define the key link to the response"
@@ -1401,7 +1400,7 @@ msgstr "Definir o elo fundamental para a resposta"
 #: survey/models.py:91 templates/frontend/survey/survey_change.html:276
 #: templates/frontend/survey/survey_change.html:484
 msgid "Key Value"
-msgstr "Valor-chave"
+msgstr "Valor da chave"
 
 #: survey/models.py:118
 msgid "Call-ID"
@@ -1489,11 +1488,10 @@ msgstr "Importar contatos"
 
 #: templates/admin/dialer_campaign/contact/change_list.html:40
 #: templates/admin/dialer_cdr/voipcall/change_list.html:47
-#, fuzzy
 msgid "Please correct the error below."
 msgid_plural "Please correct the errors below."
 msgstr[0] "Por favor, corriga o erro abaixo."
-msgstr[1] "Por favor, corriga o erro abaixo."
+msgstr[1] "Por favor, corriga os erros abaixo."
 
 #: templates/admin/dialer_campaign/contact/change_list.html:51
 #: templates/admin/dialer_cdr/voipcall/change_list.html:85
@@ -1725,7 +1723,7 @@ msgstr "nova(s) notificação(ões)"
 
 #: templates/frontend/dashboard.html:23
 msgid "Realtime campaign performance monitoring"
-msgstr "Monitoramento de desempenho em tempo real da campanha"
+msgstr "Monitorar o desempenho em tempo real da campanha"
 
 #: templates/frontend/dashboard.html:49
 msgid "Total Phonebook Contacts"
@@ -1753,15 +1751,15 @@ msgstr "ACT :"
 
 #: templates/frontend/dashboard.html:132
 msgid "Call Count"
-msgstr "Chamada Conde"
+msgstr "Total de ligações"
 
 #: templates/frontend/dashboard.html:233
 msgid "TOTAL CALLS"
-msgstr "TOTAL DE CHAMADAS"
+msgstr "TOTAL DE LIGAÇÕES"
 
 #: templates/frontend/dashboard.html:236
 msgid "ANSWERED"
-msgstr "ATENDIDO"
+msgstr "ATENDEU"
 
 #: templates/frontend/dashboard.html:237
 msgid "DONTCALL"
@@ -1781,7 +1779,7 @@ msgstr "TORTURA"
 
 #: templates/frontend/dashboard.html:243
 msgid "NOANSWER"
-msgstr "SEM RESPOSTA"
+msgstr "NÃO ATENDE"
 
 #: templates/frontend/dashboard.html:246
 msgid "INVALIDARGS"
@@ -1808,16 +1806,15 @@ msgid ""
 "is Voice Broadcasting and AutoDialer software to provide information via the "
 "phone."
 msgstr ""
-"é voz Radiodifusão e AutoDialer software para fornecer informações através "
-"do telefone."
+"é um software de envio de ligações em massa através do telefone."
 
 #: templates/frontend/index.html:11
 msgid ""
 "Newfies-Dialer can scale to make millions of calls daily by using realtime "
 "call processing across multiple servers in the cloud."
 msgstr ""
-"Newfies-Dialer pode ser escalado para fazer milhões de chamadas diárias "
-"usando processamento de chamadas em tempo real em vários servidores na nuvem."
+"Newfies-Dialer pode ser utilizado para fazer milhões de ligações diárias "
+"usando processamento de ligações em tempo real utilizando vários servidores na nuvem."
 
 #: templates/frontend/index.html:20
 msgid ""
@@ -1825,7 +1822,7 @@ msgid ""
 "customisation on Newfies-Dialer"
 msgstr ""
 "Star2Billing S.L. oferece consultoria, incluindo instalação, treinamento e "
-"personalização em Newfies-Dialer"
+"personalização do Newfies-Dialer"
 
 #: templates/frontend/index.html:21
 msgid "Contact us at"
@@ -1957,7 +1954,7 @@ msgstr "Confirma a exclusão"
 
 #: templates/frontend/campaign/list.html:23
 msgid "List, add and edit campaigns"
-msgstr "Lista, adicionar e editar campanhas"
+msgstr "Listar, adicionar e editar campanhas"
 
 #: templates/frontend/campaign/list.html:54
 msgid "Key"
@@ -2060,7 +2057,7 @@ msgstr "itens"
 
 #: templates/frontend/contact/change.html:19
 msgid "Add contact details"
-msgstr "Adicionar detalhes aos contactos"
+msgstr "Adicionar detalhes dos contactos"
 
 #: templates/frontend/contact/import_contact.html:13
 msgid "Import list of contact by uploading CSV files"
@@ -2096,11 +2093,11 @@ msgstr "Assinante(s) não importado(s)"
 
 #: templates/frontend/contact/list.html:40
 msgid "List, add and edit contacts"
-msgstr "Lista, adicionar e editar contatos"
+msgstr "Listar, adicionar e editar contatos"
 
 #: templates/frontend/contact/list.html:101
 msgid "Clear"
-msgstr "Claro"
+msgstr "Limpar"
 
 #: templates/frontend/contact/list.html:126
 #: templates/frontend/phonebook/list.html:63
@@ -2109,7 +2106,7 @@ msgstr "ID"
 
 #: templates/frontend/contact/list.html:138
 msgid "Import"
-msgstr "Importação"
+msgstr "Importar"
 
 #: templates/frontend/phonebook/change.html:12
 msgid "Contacts are stored in phonebooks"
@@ -2125,7 +2122,7 @@ msgstr "contato (s)"
 
 #: templates/frontend/phonebook/list.html:38
 msgid "List, add and edit phonebooks"
-msgstr "Lista, adicionar e editar listas telefônicas"
+msgstr "Listar, adicionar e editar listas telefônicas"
 
 #: templates/frontend/registration/password_reset_complete.html:4
 #: templates/frontend/registration/password_reset_complete.html:8
@@ -2313,19 +2310,19 @@ msgstr "Relatório de chamadas"
 
 #: templates/frontend/report/voipcall_report.html:32
 msgid "Detailed call data"
-msgstr "Detalhada de chamadas de dados"
+msgstr "Dados detalhados da ligação"
 
 #: templates/frontend/report/voipcall_report.html:83
 msgid "Call ID"
-msgstr "Call ID"
+msgstr "ID da ligação"
 
 #: templates/frontend/report/voipcall_report.html:85
 msgid "Caller ID"
-msgstr "Caller ID"
+msgstr "ID do chamador"
 
 #: templates/frontend/report/voipcall_report.html:86
 msgid "Phone No."
-msgstr "No telefone"
+msgstr "Num. telefone"
 
 #: templates/frontend/report/voipcall_report.html:87
 #: templates/frontend/voiceapp/list.html:44 user_profile/models.py:30
@@ -2334,19 +2331,19 @@ msgstr "Gateway"
 
 #: templates/frontend/report/voipcall_report.html:89
 msgid "Bill Sec"
-msgstr "Bill Sec"
+msgstr "Seg Bilh"
 
 #: templates/frontend/report/voipcall_report.html:95
 msgid "Call Records"
-msgstr "Relatório de chamadas"
+msgstr "Relatório de ligação"
 
 #: templates/frontend/survey/audio_change.html:13
 msgid "Upload audio to be used in Voice applications"
-msgstr "Upload de áudio a ser usado em aplicações de voz"
+msgstr "Enviar áudio a ser utilizado na aplicação de voz"
 
 #: templates/frontend/survey/audio_list.html:28
 msgid "List, upload and edit audio files"
-msgstr "Lista, upload e editar arquivos de áudio"
+msgstr "Listar, enviar e editar arquivos de áudio"
 
 #: templates/frontend/survey/audio_list.html:55
 msgid "Audio"
@@ -2385,15 +2382,15 @@ msgstr "Resultado da atualização"
 
 #: templates/frontend/survey/survey_list.html:23
 msgid "List, add and edit surveys"
-msgstr "Lista, adicionar e editar pesquisas"
+msgstr "Listar, adicionar e editar enquetes"
 
 #: templates/frontend/survey/survey_report.html:6
 msgid "Survey Report"
-msgstr "Relatório de Pesquisa"
+msgstr "Relatório de Enquete"
 
 #: templates/frontend/survey/survey_report.html:6
 msgid "Monitor survey results"
-msgstr "Levantamento monitorar resultados"
+msgstr "Monitorar resultado da enquete"
 
 #: templates/frontend/voiceapp/change.html:12
 #: templates/frontend/voiceapp/list.html:15 voice_app/models.py:72
@@ -2406,7 +2403,7 @@ msgstr "Configure aplicação de voz"
 
 #: templates/frontend/voiceapp/list.html:15
 msgid "List, add and edit voice applications"
-msgstr "Lista, adicionar e editar aplicações de voz"
+msgstr "Listar, adicionar e editar aplicações de voz"
 
 #: templates/frontend/voiceapp/list.html:45
 msgid "Data"
@@ -2552,9 +2549,9 @@ msgid ""
 "using TTS"
 msgstr ""
 "O valor de 'dados' depende do tipo de aplicação de voz: <br/> - Dial: O "
-"número de telefone para discar <br/> - Conferência: Sala de conferências "
+"número do telefone a ser discado <br/> - Conferência: Sala de conferências "
 "nome ou número <br/> - Playaudio: URL do arquivo de áudio <br/> - Falar: O "
-"texto a falar usando TTS"
+"texto ser falado usando TTS"
 
 #: voice_app/views.py:71
 msgid "Update Voice App"
@@ -2562,7 +2559,7 @@ msgstr "Atualização de voz App"
 
 #: voice_app/views.py:75
 msgid "Delete Voice App"
-msgstr "Apagar Voz App"
+msgstr "Apagar App de voz"
 
 #: voice_app/views.py:175
 #, python-format

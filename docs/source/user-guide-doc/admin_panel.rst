@@ -44,14 +44,6 @@ both dialer-settings and a gateway attached to their account.
 
 
 
-Groups
-~~~~~~
-
-coming soon.
-
-
-
-
 Sites
 ~~~~~
 

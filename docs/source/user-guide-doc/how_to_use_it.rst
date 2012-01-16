@@ -101,11 +101,18 @@ description. Click on ``Contacts`` and add phone numbers in the contact list.
 You can also import your call list from csv files, via clicking on
 ``Import contact``.
 
+
+Update Phonebook:
+
 .. image:: ../_static/images/customer/update_phonebook.png
 
 
+Contact List:
+
 .. image:: ../_static/images/customer/contact_list.png
 
+
+Import contact:
 
 .. image:: ../_static/images/customer/import_contact.png
 
@@ -143,9 +150,13 @@ system User, Click on ``Add`` in dialer settings list of admin side. Add numeric
 To apply the dialer settings limit on a system user, click on ``Customers`` or ``Admins`` in admin UI,
 select the user to update, & apply the settings from the dialer settings list.
 
+
+Dialer settings:
 .. image:: ../_static/images/admin/dialersetting_list.png
     :width: 1000
 
+
+Update dialer settings:
 .. image:: ../_static/images/admin/update_dialersetting.png
     :width: 1000
 

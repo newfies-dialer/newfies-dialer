@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-16 14:16+0100\n"
+"POT-Creation-Date: 2012-01-16 14:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,7 +42,7 @@ msgid "Recent Actions"
 msgstr ""
 
 #: custom_admin_tools/dashboard.py:74
-#: templates/frontend/registration/user_detail_change.html:26
+#: templates/frontend/registration/user_detail_change.html:24
 msgid "Settings"
 msgstr ""
 
@@ -57,16 +57,16 @@ msgstr ""
 #: custom_admin_tools/dashboard.py:92
 #: templates/frontend/survey/audio_change.html:13
 #: templates/frontend/survey/audio_list.html:6
-#: templates/frontend/survey/audio_list.html:28
-#: templates/frontend/survey/audio_list.html:68
+#: templates/frontend/survey/audio_list.html:29
+#: templates/frontend/survey/audio_list.html:69
 msgid "Audio Files"
 msgstr ""
 
 #: custom_admin_tools/dashboard.py:98 survey/models.py:54
 #: templates/frontend/survey/survey.html:6
 #: templates/frontend/survey/survey_change.html:378
-#: templates/frontend/survey/survey_list.html:23
-#: templates/frontend/survey/survey_list.html:60
+#: templates/frontend/survey/survey_list.html:24
+#: templates/frontend/survey/survey_list.html:61
 msgid "Survey"
 msgstr ""
 
@@ -167,9 +167,9 @@ msgid "Document types accepted: %s"
 msgstr ""
 
 #: dialer_campaign/forms.py:42 dialer_campaign/models.py:79
-#: dialer_campaign/models.py:115 templates/frontend/contact/list.html:127
+#: dialer_campaign/models.py:115 templates/frontend/contact/list.html:129
 #: templates/frontend/phonebook/change.html:12
-#: templates/frontend/phonebook/list.html:38
+#: templates/frontend/phonebook/list.html:41
 msgid "Phonebook"
 msgstr ""
 
@@ -211,12 +211,12 @@ msgid "Maximum Timeout limit of %d exceeded."
 msgstr ""
 
 #: dialer_campaign/forms.py:221 dialer_campaign/models.py:119
-#: templates/frontend/contact/list.html:129
+#: templates/frontend/contact/list.html:131
 msgid "Last Name"
 msgstr ""
 
 #: dialer_campaign/forms.py:222 dialer_campaign/models.py:121
-#: templates/frontend/contact/list.html:130
+#: templates/frontend/contact/list.html:132
 msgid "First Name"
 msgstr ""
 
@@ -297,13 +297,13 @@ msgstr ""
 #: templates/frontend/bootstrap_menu.html:17
 #: templates/frontend/dashboard.html:48
 #: templates/frontend/campaign/change.html:12
-#: templates/frontend/campaign/list.html:23
+#: templates/frontend/campaign/list.html:24
 msgid "Campaign"
 msgstr ""
 
 #: dialer_campaign/forms.py:273 dialer_campaign/models.py:329
-#: dialer_cdr/models.py:146 templates/frontend/campaign/list.html:57
-#: templates/frontend/voiceapp/list.html:43 voice_app/models.py:46
+#: dialer_cdr/models.py:146 templates/frontend/campaign/list.html:58
+#: templates/frontend/voiceapp/list.html:44 voice_app/models.py:46
 msgid "Type"
 msgstr ""
 
@@ -333,11 +333,11 @@ msgstr ""
 #: dialer_campaign/models.py:69 dialer_campaign/models.py:149
 #: dialer_campaign/models.py:268 dialer_gateway/models.py:70
 #: dialer_settings/models.py:24 survey/models.py:45
-#: templates/frontend/campaign/list.html:55
-#: templates/frontend/phonebook/list.html:64
-#: templates/frontend/survey/audio_list.html:54
-#: templates/frontend/survey/survey_list.html:47
-#: templates/frontend/voiceapp/list.html:41 voice_app/models.py:42
+#: templates/frontend/campaign/list.html:56
+#: templates/frontend/phonebook/list.html:67
+#: templates/frontend/survey/audio_list.html:55
+#: templates/frontend/survey/survey_list.html:48
+#: templates/frontend/voiceapp/list.html:42 voice_app/models.py:42
 msgid "Name"
 msgstr ""
 
@@ -348,31 +348,31 @@ msgstr ""
 #: dialer_campaign/models.py:74 dialer_campaign/models.py:133
 #: dialer_gateway/models.py:97 survey/models.py:50
 #: templates/admin/dialer_cdr/voipcall/change_list.html:112
-#: templates/frontend/contact/list.html:132
-#: templates/frontend/phonebook/list.html:66
-#: templates/frontend/registration/user_detail_change.html:147
+#: templates/frontend/contact/list.html:134
+#: templates/frontend/phonebook/list.html:69
+#: templates/frontend/registration/user_detail_change.html:145
 #: templates/frontend/report/voipcall_report.html:126
-#: templates/frontend/survey/audio_list.html:57
-#: templates/frontend/survey/survey_list.html:49
-#: templates/frontend/voiceapp/list.html:46 voice_app/models.py:66
+#: templates/frontend/survey/audio_list.html:58
+#: templates/frontend/survey/survey_list.html:50
+#: templates/frontend/voiceapp/list.html:47 voice_app/models.py:66
 msgid "Date"
 msgstr ""
 
 #: dialer_campaign/models.py:80 templates/frontend/bootstrap_menu.html:18
-#: templates/frontend/phonebook/list.html:78
+#: templates/frontend/phonebook/list.html:81
 msgid "Phonebooks"
 msgstr ""
 
 #: dialer_campaign/models.py:89 dialer_campaign/models.py:139
 #: templates/frontend/bootstrap_menu.html:19
-#: templates/frontend/campaign/list.html:59
-#: templates/frontend/contact/list.html:40
-#: templates/frontend/contact/list.html:145
-#: templates/frontend/phonebook/list.html:67
+#: templates/frontend/campaign/list.html:60
+#: templates/frontend/contact/list.html:42
+#: templates/frontend/contact/list.html:147
+#: templates/frontend/phonebook/list.html:70
 msgid "Contacts"
 msgstr ""
 
-#: dialer_campaign/models.py:117 templates/frontend/contact/list.html:128
+#: dialer_campaign/models.py:117 templates/frontend/contact/list.html:130
 msgid "Contact Number"
 msgstr ""
 
@@ -395,9 +395,9 @@ msgstr ""
 
 #: dialer_campaign/models.py:129 dialer_campaign/models.py:273
 #: dialer_campaign/models.py:574 dialer_cdr/models.py:125
-#: templates/frontend/campaign/list.html:60
+#: templates/frontend/campaign/list.html:61
 #: templates/frontend/contact/import_contact.html:39
-#: templates/frontend/contact/list.html:131
+#: templates/frontend/contact/list.html:133
 msgid "Status"
 msgstr ""
 
@@ -430,9 +430,9 @@ msgstr ""
 
 #: dialer_campaign/models.py:269 dialer_gateway/models.py:74
 #: survey/models.py:47 templates/frontend/contact/import_contact.html:38
-#: templates/frontend/phonebook/list.html:65
-#: templates/frontend/survey/survey_list.html:48
-#: templates/frontend/voiceapp/list.html:42 voice_app/models.py:43
+#: templates/frontend/phonebook/list.html:68
+#: templates/frontend/survey/survey_list.html:49
+#: templates/frontend/voiceapp/list.html:43 voice_app/models.py:43
 msgid "Description"
 msgstr ""
 
@@ -549,17 +549,17 @@ msgstr ""
 msgid "Additional application parameters."
 msgstr ""
 
-#: dialer_campaign/models.py:351 templates/frontend/campaign/list.html:71
+#: dialer_campaign/models.py:351 templates/frontend/campaign/list.html:72
 msgid "Campaigns"
 msgstr ""
 
-#: dialer_campaign/models.py:400 templates/frontend/campaign/list.html:61
-#: templates/frontend/contact/list.html:133
-#: templates/frontend/phonebook/list.html:68
-#: templates/frontend/registration/user_detail_change.html:148
-#: templates/frontend/survey/audio_list.html:58
-#: templates/frontend/survey/survey_list.html:50
-#: templates/frontend/voiceapp/list.html:47
+#: dialer_campaign/models.py:400 templates/frontend/campaign/list.html:62
+#: templates/frontend/contact/list.html:135
+#: templates/frontend/phonebook/list.html:71
+#: templates/frontend/registration/user_detail_change.html:146
+#: templates/frontend/survey/audio_list.html:59
+#: templates/frontend/survey/survey_list.html:51
+#: templates/frontend/voiceapp/list.html:48
 msgid "Action"
 msgstr ""
 
@@ -1277,7 +1277,7 @@ msgid "Max frequency"
 msgstr ""
 
 #: dialer_settings/models.py:29
-#: templates/frontend/registration/user_detail_change.html:216
+#: templates/frontend/registration/user_detail_change.html:214
 msgid "Maximum calls per minute"
 msgstr ""
 
@@ -1298,12 +1298,12 @@ msgid "Maximum number of campaigns"
 msgstr ""
 
 #: dialer_settings/models.py:44
-#: templates/frontend/registration/user_detail_change.html:236
+#: templates/frontend/registration/user_detail_change.html:234
 msgid "Maximum subscribers per campaign"
 msgstr ""
 
 #: dialer_settings/models.py:46
-#: templates/frontend/registration/user_detail_change.html:244
+#: templates/frontend/registration/user_detail_change.html:242
 msgid "Blacklist"
 msgstr ""
 
@@ -1315,7 +1315,7 @@ msgid ""
 msgstr ""
 
 #: dialer_settings/models.py:49
-#: templates/frontend/registration/user_detail_change.html:240
+#: templates/frontend/registration/user_detail_change.html:238
 msgid "Whitelist"
 msgstr ""
 
@@ -1407,7 +1407,11 @@ msgstr ""
 msgid "%(count)s audio(s) are deleted."
 msgstr ""
 
-#: survey/views.py:596
+#: survey/views.py:597
+msgid "No record found!."
+msgstr ""
+
+#: survey/views.py:600
 msgid "No campaign attached with survey."
 msgstr ""
 
@@ -1518,7 +1522,7 @@ msgstr ""
 #: templates/frontend/phonebook/change.html:38
 #: templates/frontend/survey/audio_change.html:36
 #: templates/frontend/survey/survey_change.html:555
-#: templates/frontend/survey/survey_report.html:47
+#: templates/frontend/survey/survey_report.html:40
 #: templates/frontend/voiceapp/change.html:37
 msgid "Submit"
 msgstr ""
@@ -1547,7 +1551,7 @@ msgid "Search Option"
 msgstr ""
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:59
-#: templates/frontend/contact/list.html:100
+#: templates/frontend/contact/list.html:102
 #: templates/frontend/report/voipcall_report.html:55
 msgid "Search"
 msgstr ""
@@ -1610,17 +1614,17 @@ msgstr ""
 
 #: templates/admin_tools/dashboard/modules/app_list.html:50
 #: templates/frontend/campaign/change.html:11
-#: templates/frontend/campaign/list.html:64
+#: templates/frontend/campaign/list.html:65
 #: templates/frontend/contact/change.html:18
-#: templates/frontend/contact/list.html:136
+#: templates/frontend/contact/list.html:138
 #: templates/frontend/phonebook/change.html:11
-#: templates/frontend/phonebook/list.html:71
+#: templates/frontend/phonebook/list.html:74
 #: templates/frontend/survey/audio_change.html:12
-#: templates/frontend/survey/audio_list.html:61
+#: templates/frontend/survey/audio_list.html:62
 #: templates/frontend/survey/survey_change.html:377
-#: templates/frontend/survey/survey_list.html:53
+#: templates/frontend/survey/survey_list.html:54
 #: templates/frontend/voiceapp/change.html:11
-#: templates/frontend/voiceapp/list.html:50
+#: templates/frontend/voiceapp/list.html:51
 msgid "Add"
 msgstr ""
 
@@ -1658,7 +1662,7 @@ msgid "Modules"
 msgstr ""
 
 #: templates/frontend/bootstrap_menu.html:33
-#: templates/frontend/voiceapp/list.html:57
+#: templates/frontend/voiceapp/list.html:58
 msgid "Voice Apps"
 msgstr ""
 
@@ -1671,12 +1675,12 @@ msgid "Account settings"
 msgstr ""
 
 #: templates/frontend/bootstrap_menu.html:49
-#: templates/frontend/registration/user_detail_change.html:34
+#: templates/frontend/registration/user_detail_change.html:32
 msgid "Notifications"
 msgstr ""
 
 #: templates/frontend/bootstrap_menu.html:51
-#: templates/frontend/registration/user_detail_change.html:35
+#: templates/frontend/registration/user_detail_change.html:33
 msgid "Account Limits"
 msgstr ""
 
@@ -1694,6 +1698,46 @@ msgstr ""
 
 #: templates/frontend/bootstrap_menu.html:83
 msgid "new notifications"
+msgstr ""
+
+#: templates/frontend/custom_jquery_select_all.html:16
+msgid "You must check at least one box!"
+msgstr ""
+
+#: templates/frontend/custom_jquery_select_all.html:27
+msgid " voice app(s) are going to be deleted?"
+msgstr ""
+
+#: templates/frontend/custom_jquery_select_all.html:31
+msgid " phonebook(s) are going to be deleted?"
+msgstr ""
+
+#: templates/frontend/custom_jquery_select_all.html:35
+msgid " survey(s) are going to be deleted?"
+msgstr ""
+
+#: templates/frontend/custom_jquery_select_all.html:39
+msgid " audio(s) are going to be deleted?"
+msgstr ""
+
+#: templates/frontend/custom_jquery_select_all.html:62
+msgid " phonebook(s) are going to be deleted with "
+msgstr ""
+
+#: templates/frontend/custom_jquery_select_all.html:62
+msgid " contact(s)?"
+msgstr ""
+
+#: templates/frontend/custom_jquery_select_all.html:67
+msgid " campaign(s) are going to be deleted?"
+msgstr ""
+
+#: templates/frontend/custom_jquery_select_all.html:72
+msgid " notification(s) are going to be deleted?"
+msgstr ""
+
+#: templates/frontend/custom_jquery_select_all.html:76
+msgid " notification(s) are going to be marked as read?"
 msgstr ""
 
 #: templates/frontend/dashboard.html:23
@@ -1817,27 +1861,26 @@ msgid "Customer Interface"
 msgstr ""
 
 #: templates/frontend/master.html:144 templates/frontend/master.html.py:150
-#: templates/frontend/master.html:170 templates/frontend/campaign/list.html:30
-#: templates/frontend/campaign/list.html:36
+#: templates/frontend/master.html:170 templates/frontend/campaign/list.html:31
+#: templates/frontend/campaign/list.html:37
 #: templates/frontend/contact/import_contact.html:19
 #: templates/frontend/contact/import_contact.html:24
-#: templates/frontend/contact/list.html:47
-#: templates/frontend/phonebook/list.html:45
-#: templates/frontend/registration/user_detail_change.html:44
-#: templates/frontend/registration/user_detail_change.html:49
-#: templates/frontend/registration/user_detail_change.html:91
-#: templates/frontend/registration/user_detail_change.html:96
-#: templates/frontend/registration/user_detail_change.html:125
-#: templates/frontend/registration/user_detail_change.html:253
-#: templates/frontend/registration/user_detail_change.html:258
-#: templates/frontend/survey/audio_list.html:35
+#: templates/frontend/contact/list.html:49
+#: templates/frontend/phonebook/list.html:48
+#: templates/frontend/registration/user_detail_change.html:42
+#: templates/frontend/registration/user_detail_change.html:47
+#: templates/frontend/registration/user_detail_change.html:89
+#: templates/frontend/registration/user_detail_change.html:94
+#: templates/frontend/registration/user_detail_change.html:123
+#: templates/frontend/registration/user_detail_change.html:251
+#: templates/frontend/registration/user_detail_change.html:256
+#: templates/frontend/survey/audio_list.html:36
 #: templates/frontend/survey/survey_change.html:386
 #: templates/frontend/survey/survey_change.html:392
-#: templates/frontend/survey/survey_list.html:29
+#: templates/frontend/survey/survey_list.html:30
 #: templates/frontend/survey/survey_report.html:13
 #: templates/frontend/survey/survey_report.html:19
-#: templates/frontend/survey/survey_report.html:25
-#: templates/frontend/voiceapp/list.html:22
+#: templates/frontend/voiceapp/list.html:23
 msgid "Alert"
 msgstr ""
 
@@ -1914,114 +1957,114 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: templates/frontend/campaign/list.html:15
-#: templates/frontend/contact/list.html:23
-#: templates/frontend/registration/user_detail_change.html:16
-#: templates/frontend/survey/audio_list.html:20
-#: templates/frontend/survey/survey_list.html:15
+#: templates/frontend/campaign/list.html:13
+#: templates/frontend/contact/list.html:22
+#: templates/frontend/registration/user_detail_change.html:12
+#: templates/frontend/survey/audio_list.html:18
+#: templates/frontend/survey/survey_list.html:13
 msgid "Confirm deletion?"
 msgstr ""
 
-#: templates/frontend/campaign/list.html:23
+#: templates/frontend/campaign/list.html:24
 msgid "List, add and edit campaigns"
 msgstr ""
 
-#: templates/frontend/campaign/list.html:54
+#: templates/frontend/campaign/list.html:55
 msgid "Key"
 msgstr ""
 
-#: templates/frontend/campaign/list.html:56
+#: templates/frontend/campaign/list.html:57
 #: templates/frontend/report/voipcall_report.html:82
 msgid "Start date"
 msgstr ""
 
-#: templates/frontend/campaign/list.html:58
+#: templates/frontend/campaign/list.html:59
 msgid "App"
 msgstr ""
 
-#: templates/frontend/campaign/list.html:66
-#: templates/frontend/contact/list.html:140
-#: templates/frontend/phonebook/list.html:73
-#: templates/frontend/survey/audio_list.html:63
-#: templates/frontend/survey/survey_list.html:55
-#: templates/frontend/voiceapp/list.html:52
+#: templates/frontend/campaign/list.html:67
+#: templates/frontend/contact/list.html:142
+#: templates/frontend/phonebook/list.html:76
+#: templates/frontend/survey/audio_list.html:64
+#: templates/frontend/survey/survey_list.html:56
+#: templates/frontend/voiceapp/list.html:53
 msgid "Delete Selected"
 msgstr ""
 
-#: templates/frontend/campaign/list.html:77
-#: templates/frontend/contact/list.html:151
-#: templates/frontend/phonebook/list.html:84
-#: templates/frontend/registration/user_detail_change.html:166
+#: templates/frontend/campaign/list.html:78
+#: templates/frontend/contact/list.html:153
+#: templates/frontend/phonebook/list.html:87
+#: templates/frontend/registration/user_detail_change.html:164
 #: templates/frontend/report/voipcall_report.html:101
-#: templates/frontend/survey/audio_list.html:74
-#: templates/frontend/survey/survey_list.html:66
+#: templates/frontend/survey/audio_list.html:75
+#: templates/frontend/survey/survey_list.html:67
 msgid "Page"
 msgstr ""
 
-#: templates/frontend/campaign/list.html:78
-#: templates/frontend/campaign/list.html:81
-#: templates/frontend/contact/list.html:152
-#: templates/frontend/contact/list.html:155
-#: templates/frontend/phonebook/list.html:85
+#: templates/frontend/campaign/list.html:79
+#: templates/frontend/campaign/list.html:82
+#: templates/frontend/contact/list.html:154
+#: templates/frontend/contact/list.html:157
 #: templates/frontend/phonebook/list.html:88
-#: templates/frontend/registration/user_detail_change.html:167
-#: templates/frontend/registration/user_detail_change.html:170
+#: templates/frontend/phonebook/list.html:91
+#: templates/frontend/registration/user_detail_change.html:165
+#: templates/frontend/registration/user_detail_change.html:168
 #: templates/frontend/report/voipcall_report.html:102
 #: templates/frontend/report/voipcall_report.html:105
-#: templates/frontend/survey/audio_list.html:75
-#: templates/frontend/survey/audio_list.html:78
-#: templates/frontend/survey/survey_list.html:67
-#: templates/frontend/survey/survey_list.html:70
+#: templates/frontend/survey/audio_list.html:76
+#: templates/frontend/survey/audio_list.html:79
+#: templates/frontend/survey/survey_list.html:68
+#: templates/frontend/survey/survey_list.html:71
 msgid "of"
 msgstr ""
 
-#: templates/frontend/campaign/list.html:79
-#: templates/frontend/contact/list.html:153
-#: templates/frontend/phonebook/list.html:86
-#: templates/frontend/registration/user_detail_change.html:168
+#: templates/frontend/campaign/list.html:80
+#: templates/frontend/contact/list.html:155
+#: templates/frontend/phonebook/list.html:89
+#: templates/frontend/registration/user_detail_change.html:166
 #: templates/frontend/report/voipcall_report.html:103
-#: templates/frontend/survey/audio_list.html:76
-#: templates/frontend/survey/survey_list.html:68
+#: templates/frontend/survey/audio_list.html:77
+#: templates/frontend/survey/survey_list.html:69
 msgid "No items"
 msgstr ""
 
-#: templates/frontend/campaign/list.html:80
-#: templates/frontend/contact/list.html:154
-#: templates/frontend/phonebook/list.html:87
-#: templates/frontend/registration/user_detail_change.html:169
+#: templates/frontend/campaign/list.html:81
+#: templates/frontend/contact/list.html:156
+#: templates/frontend/phonebook/list.html:90
+#: templates/frontend/registration/user_detail_change.html:167
 #: templates/frontend/report/voipcall_report.html:104
-#: templates/frontend/survey/audio_list.html:77
-#: templates/frontend/survey/survey_list.html:69
+#: templates/frontend/survey/audio_list.html:78
+#: templates/frontend/survey/survey_list.html:70
 msgid "Processing, please wait ..."
 msgstr ""
 
-#: templates/frontend/campaign/list.html:81
-#: templates/frontend/contact/list.html:155
-#: templates/frontend/phonebook/list.html:88
-#: templates/frontend/registration/user_detail_change.html:170
+#: templates/frontend/campaign/list.html:82
+#: templates/frontend/contact/list.html:157
+#: templates/frontend/phonebook/list.html:91
+#: templates/frontend/registration/user_detail_change.html:168
 #: templates/frontend/report/voipcall_report.html:105
-#: templates/frontend/survey/audio_list.html:78
-#: templates/frontend/survey/survey_list.html:70
+#: templates/frontend/survey/audio_list.html:79
+#: templates/frontend/survey/survey_list.html:71
 msgid "Displaying"
 msgstr ""
 
-#: templates/frontend/campaign/list.html:81
-#: templates/frontend/contact/list.html:155
-#: templates/frontend/phonebook/list.html:88
-#: templates/frontend/registration/user_detail_change.html:170
+#: templates/frontend/campaign/list.html:82
+#: templates/frontend/contact/list.html:157
+#: templates/frontend/phonebook/list.html:91
+#: templates/frontend/registration/user_detail_change.html:168
 #: templates/frontend/report/voipcall_report.html:105
-#: templates/frontend/survey/audio_list.html:78
-#: templates/frontend/survey/survey_list.html:70
+#: templates/frontend/survey/audio_list.html:79
+#: templates/frontend/survey/survey_list.html:71
 msgid "to"
 msgstr ""
 
-#: templates/frontend/campaign/list.html:81
-#: templates/frontend/contact/list.html:155
-#: templates/frontend/phonebook/list.html:88
-#: templates/frontend/registration/user_detail_change.html:170
+#: templates/frontend/campaign/list.html:82
+#: templates/frontend/contact/list.html:157
+#: templates/frontend/phonebook/list.html:91
+#: templates/frontend/registration/user_detail_change.html:168
 #: templates/frontend/report/voipcall_report.html:105
-#: templates/frontend/survey/audio_list.html:78
-#: templates/frontend/survey/survey_list.html:70
+#: templates/frontend/survey/audio_list.html:79
+#: templates/frontend/survey/survey_list.html:71
 msgid "items"
 msgstr ""
 
@@ -2061,20 +2104,20 @@ msgstr ""
 msgid "Subscriber(s) not imported"
 msgstr ""
 
-#: templates/frontend/contact/list.html:40
+#: templates/frontend/contact/list.html:42
 msgid "List, add and edit contacts"
 msgstr ""
 
-#: templates/frontend/contact/list.html:101
+#: templates/frontend/contact/list.html:103
 msgid "Clear"
 msgstr ""
 
-#: templates/frontend/contact/list.html:126
-#: templates/frontend/phonebook/list.html:63
+#: templates/frontend/contact/list.html:128
+#: templates/frontend/phonebook/list.html:66
 msgid "Id"
 msgstr ""
 
-#: templates/frontend/contact/list.html:138
+#: templates/frontend/contact/list.html:140
 msgid "Import"
 msgstr ""
 
@@ -2090,7 +2133,7 @@ msgstr ""
 msgid "contact(s)"
 msgstr ""
 
-#: templates/frontend/phonebook/list.html:38
+#: templates/frontend/phonebook/list.html:41
 msgid "List, add and edit phonebooks"
 msgstr ""
 
@@ -2179,78 +2222,78 @@ msgstr ""
 msgid "Reset my password"
 msgstr ""
 
-#: templates/frontend/registration/user_detail_change.html:26
+#: templates/frontend/registration/user_detail_change.html:24
 msgid "Password, notifications, account limits and number check"
 msgstr ""
 
-#: templates/frontend/registration/user_detail_change.html:32
+#: templates/frontend/registration/user_detail_change.html:30
 msgid "Account"
 msgstr ""
 
-#: templates/frontend/registration/user_detail_change.html:33
+#: templates/frontend/registration/user_detail_change.html:31
 msgid "Password"
 msgstr ""
 
-#: templates/frontend/registration/user_detail_change.html:36
+#: templates/frontend/registration/user_detail_change.html:34
 msgid "Number Check"
 msgstr ""
 
-#: templates/frontend/registration/user_detail_change.html:84
+#: templates/frontend/registration/user_detail_change.html:82
 msgid "Change detail"
 msgstr ""
 
-#: templates/frontend/registration/user_detail_change.html:117
+#: templates/frontend/registration/user_detail_change.html:115
 msgid "Change password"
 msgstr ""
 
-#: templates/frontend/registration/user_detail_change.html:144
+#: templates/frontend/registration/user_detail_change.html:142
 #: templates/frontend/registration/user_notice.html:14
 msgid "Message"
 msgstr ""
 
-#: templates/frontend/registration/user_detail_change.html:145
+#: templates/frontend/registration/user_detail_change.html:143
 #: templates/frontend/registration/user_notice.html:15
 msgid "Notification type"
 msgstr ""
 
-#: templates/frontend/registration/user_detail_change.html:146
+#: templates/frontend/registration/user_detail_change.html:144
 #: templates/frontend/registration/user_notice.html:16
 msgid "Sender"
 msgstr ""
 
-#: templates/frontend/registration/user_detail_change.html:151
+#: templates/frontend/registration/user_detail_change.html:149
 msgid "Delete all notifications"
 msgstr ""
 
-#: templates/frontend/registration/user_detail_change.html:153
+#: templates/frontend/registration/user_detail_change.html:151
 msgid "Mark as read"
 msgstr ""
 
-#: templates/frontend/registration/user_detail_change.html:155
+#: templates/frontend/registration/user_detail_change.html:153
 msgid "Mark all as read"
 msgstr ""
 
-#: templates/frontend/registration/user_detail_change.html:160
+#: templates/frontend/registration/user_detail_change.html:158
 msgid "Notification"
 msgstr ""
 
-#: templates/frontend/registration/user_detail_change.html:220
+#: templates/frontend/registration/user_detail_change.html:218
 msgid "Maximum call duration"
 msgstr ""
 
-#: templates/frontend/registration/user_detail_change.html:224
+#: templates/frontend/registration/user_detail_change.html:222
 msgid "Maximum retries"
 msgstr ""
 
-#: templates/frontend/registration/user_detail_change.html:228
+#: templates/frontend/registration/user_detail_change.html:226
 msgid "Timeout"
 msgstr ""
 
-#: templates/frontend/registration/user_detail_change.html:232
+#: templates/frontend/registration/user_detail_change.html:230
 msgid "Maximum campaigns"
 msgstr ""
 
-#: templates/frontend/registration/user_detail_change.html:279
+#: templates/frontend/registration/user_detail_change.html:277
 msgid "Check"
 msgstr ""
 
@@ -2287,7 +2330,7 @@ msgid "Phone No."
 msgstr ""
 
 #: templates/frontend/report/voipcall_report.html:87
-#: templates/frontend/voiceapp/list.html:44 user_profile/models.py:54
+#: templates/frontend/voiceapp/list.html:45 user_profile/models.py:54
 msgid "Gateway"
 msgstr ""
 
@@ -2303,15 +2346,15 @@ msgstr ""
 msgid "Upload audio to be used in Voice applications"
 msgstr ""
 
-#: templates/frontend/survey/audio_list.html:28
+#: templates/frontend/survey/audio_list.html:29
 msgid "List, upload and edit audio files"
 msgstr ""
 
-#: templates/frontend/survey/audio_list.html:55
+#: templates/frontend/survey/audio_list.html:56
 msgid "Audio"
 msgstr ""
 
-#: templates/frontend/survey/audio_list.html:56
+#: templates/frontend/survey/audio_list.html:57
 msgid "Audio URL"
 msgstr ""
 
@@ -2353,7 +2396,7 @@ msgstr ""
 msgid "Update Survey"
 msgstr ""
 
-#: templates/frontend/survey/survey_list.html:23
+#: templates/frontend/survey/survey_list.html:24
 msgid "List, add and edit surveys"
 msgstr ""
 
@@ -2365,12 +2408,8 @@ msgstr ""
 msgid "Monitor survey results"
 msgstr ""
 
-#: templates/frontend/survey/survey_report.html:25
-msgid "No record found!"
-msgstr ""
-
 #: templates/frontend/voiceapp/change.html:12
-#: templates/frontend/voiceapp/list.html:15 voice_app/models.py:72
+#: templates/frontend/voiceapp/list.html:16 voice_app/models.py:72
 msgid "Voice Applications"
 msgstr ""
 
@@ -2378,11 +2417,11 @@ msgstr ""
 msgid "Configure voice application"
 msgstr ""
 
-#: templates/frontend/voiceapp/list.html:15
+#: templates/frontend/voiceapp/list.html:16
 msgid "List, add and edit voice applications"
 msgstr ""
 
-#: templates/frontend/voiceapp/list.html:45
+#: templates/frontend/voiceapp/list.html:46
 msgid "Data"
 msgstr ""
 

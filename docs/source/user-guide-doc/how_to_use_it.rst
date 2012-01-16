@@ -184,7 +184,7 @@ exceptions. Select the gateway through which calls will be routed & the phoneboo
 linked with the contacts.
 
 
-Campaing list:
+Campaign list:
 
 .. image:: ../_static/images/customer/campaign_list.png
 

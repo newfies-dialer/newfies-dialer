@@ -17,50 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: resources/js/custom.jquery.select.all.js:13
-#: static/newfies/js/custom.jquery.select.all.js:13
-msgid "You must check at least one box!"
-msgstr ""
-
-#: resources/js/custom.jquery.select.all.js:22
-#: static/newfies/js/custom.jquery.select.all.js:22
-msgid "voice app(s) are going to be deleted"
-msgstr ""
-
-#: resources/js/custom.jquery.select.all.js:26
-#: static/newfies/js/custom.jquery.select.all.js:26
-msgid "phonebook(s) are going to be deleted"
-msgstr ""
-
-#: resources/js/custom.jquery.select.all.js:30
-#: static/newfies/js/custom.jquery.select.all.js:30
-msgid "survey(s) are going to be deleted"
-msgstr ""
-
-#: resources/js/custom.jquery.select.all.js:34
-msgid "audio(s)"
-msgstr ""
-
-#: resources/js/custom.jquery.select.all.js:57
-msgid "phonebook(s) are going to be deleted with"
-msgstr ""
-
-#: resources/js/custom.jquery.select.all.js:57
-msgid "contact(s)"
-msgstr ""
-
-#: resources/js/custom.jquery.select.all.js:61
-msgid "campaign(s) are going to be deleted"
-msgstr ""
-
-#: resources/js/custom.jquery.select.all.js:66
-msgid "notification(s) are going to be deleted"
-msgstr ""
-
-#: resources/js/custom.jquery.select.all.js:70
-msgid "notification(s) are going to be marked as read"
-msgstr ""
-
 #: static/admin/js/SelectFilter2.js:77
 msgid "Clear all"
 msgstr ""

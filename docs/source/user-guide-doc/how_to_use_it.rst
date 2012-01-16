@@ -86,10 +86,65 @@ this would be the words to convert to text to speech.
 Create Survey
 -------------
 
-A number of surveys are provided with Newfies-Dialer. Click ``Add survey`` give the
-survey a name & add survey question with its responses. Coming soon ....
 
 .. image:: ../_static/images/customer/update_survey.png
+
+The survey application for Newfies-Dialer allows polls and surveys to be taken over the phone.
+
+Each contact is called, and then played a sound file. After the sound file is heard, the user can
+enter their answer through the phone keypad using keys 0 to 9.
+
+Therefore before creating the survey, the first job is to upload the audio for the survey. One audio
+file is required for each question.
+
+**Uploading Audio Files**:
+
+Select Audio Files from the top menu then click add.
+
+Enter a name to describe the audio, then click chose file, select the file you require from your
+computer, then click submit.
+
+Note that only mp3, Wav and ogg formats are supported.
+
+The audio file will then be uploaded and renamed so that it is unique.
+
+**Create the Survey**:
+
+**URL**:
+
+    * http://localhost:8000/survey/
+    * http://localhost:8000/survey/add/
+    * http://localhost:8000/survey/1/
+
+.. image:: ../_static/images/customer/survey_list.png
+
+Select Modules from the top menu, then Survey. 
+
+Click the add button, then give the survey a name and description, then click Submit.
+
+A button will now appear to add a question.
+
+In the question field, put in some text to describe the question - e.g "What is 1+1"; select the audio
+file pertaining to the question which was uploaded in the previous step.
+
+If no audio file is selected, then the system will automatically play the text in the question field 
+using the text to speech engine.
+
+Then click Add Response. A further two fields will appear named Key Digit and Key Value. In key Digit
+put a number from 0 to 9 which should be pressed for this answer. In the example "What is 1+1", "2"
+should be placed in the Key Digit Field" 
+
+The Key Value field is used in the survey reports, and so in this case, you would put "Correct" as 
+1+1=2. You may chose to add responses 0,1 and 3 to 9 as key digits, with key values of "Wrong" as 
+these answers will then be summed up in the Survey Reports.
+
+You can then go on to add another question, and its associated responses. On completion, click 
+Update Survey.
+
+To use the Survey in a campaign, simply create a campaign as normal, and select the Survey name in
+the Application drop-down.
+        
+
 
 .. _call-list:
 
@@ -169,7 +224,7 @@ Update dialer settings:
 
 .. _reach-to-contact:
 
-Reach to contacts/subscribers
+Call contacts/subscribers
 -----------------------------
 
 A call-request will spool a call directly from the platform using a dialer gateway
@@ -198,11 +253,10 @@ call report into a csv file.
 Survey Report
 -------------
 
-coming soon...
-
-
 .. image:: ../_static/images/customer/surveyreport.png
 
+When the survey is complete, the survey results can be inspected by clicking Reporting on the top 
+and selecting Survey Results from the drop-down.
 
 .. _Settings:
 

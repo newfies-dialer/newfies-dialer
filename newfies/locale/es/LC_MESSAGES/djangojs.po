@@ -18,50 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: resources/js/custom.jquery.select.all.js:13
-#: static/newfies/js/custom.jquery.select.all.js:13
-msgid "You must check at least one box!"
-msgstr "Usted debe marcar al menos una caja!"
-
-#: resources/js/custom.jquery.select.all.js:22
-#: static/newfies/js/custom.jquery.select.all.js:22
-msgid "voice app(s) are going to be deleted"
-msgstr "aplicación(s) de voz van a ser eliminados"
-
-#: resources/js/custom.jquery.select.all.js:26
-#: static/newfies/js/custom.jquery.select.all.js:26
-msgid "phonebook(s) are going to be deleted"
-msgstr "directorio(s) telefónico van a ser eliminados"
-
-#: resources/js/custom.jquery.select.all.js:30
-#: static/newfies/js/custom.jquery.select.all.js:30
-msgid "survey(s) are going to be deleted"
-msgstr "encuesta(s) van a ser eliminados"
-
-#: resources/js/custom.jquery.select.all.js:34
-msgid "audio(s)"
-msgstr "audio(s)"
-
-#: resources/js/custom.jquery.select.all.js:57
-msgid "phonebook(s) are going to be deleted with"
-msgstr "directorio(s) telefónico van a ser eliminados con"
-
-#: resources/js/custom.jquery.select.all.js:57
-msgid "contact(s)"
-msgstr "contacto(s)"
-
-#: resources/js/custom.jquery.select.all.js:61
-msgid "campaign(s) are going to be deleted"
-msgstr "campaña(s) van a ser eliminados"
-
-#: resources/js/custom.jquery.select.all.js:66
-msgid "notification(s) are going to be deleted"
-msgstr "notificación(s) van a ser eliminados"
-
-#: resources/js/custom.jquery.select.all.js:70
-msgid "notification(s) are going to be marked as read"
-msgstr "notificación(s) van a ser marcados como leídos"
-
 #: static/admin/js/SelectFilter2.js:77
 msgid "Clear all"
 msgstr "Borrar todos"

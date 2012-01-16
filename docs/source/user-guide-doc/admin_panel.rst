@@ -26,6 +26,45 @@ Dashboard page for the admin interface after successful login with superuser cre
 
 .. image:: ../_static/images/admin_screenshot.png
     :width: 1000
+    
+
+Admin
+~~~~~
+
+The Admin section allows you to create administrators who have access the admin screens. Levels of 
+access can be set. If the administrator is to be allowed to make calls, then a gateway and dialer-
+settings must be set for that administrator.
+
+
+Customers
+~~~~~~~~~
+
+Customers only have access to the customer panel. Before a customer can make calls, they must have
+both dialer-settings and a gateway attached to their account.
+
+
+
+Groups
+~~~~~~
+
+coming soon.
+
+
+
+
+Sites
+~~~~~
+
+Some of the features of Newfies-Dialer are dependent on the hostname or IP address, so this has to 
+be set correctly in site address.
+ 
+In the Admin dashboard, locate the “Sites” link and click change. By default, there will be an entry
+of “example.com”. Edit this setting to reflect the hostname of the server, or if you do not have 
+this set up, the IP address. e.g.  http://www.domain.tld:8008 or in the case of an IP address, 
+http://192.168.1.200:8008
+
+	* http://localhost:8000/admin/sites/
+
 
 .. _admin-phonebook-access:
 

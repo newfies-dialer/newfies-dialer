@@ -196,6 +196,9 @@ A button will now appear to add a question.
 In the question field, put in some text to describe the question - e.g "What is 1+1"; select the audio
 file pertaining to the question which was uploaded in the previous step.
 
+If no audio file is selected, then the system will automatically play the text in the question field 
+using the text to speech engine.
+
 Then click Add Response. A further two fields will appear named Key Digit and Key Value. In key Digit
 put a number from 0 to 9 which should be pressed for this answer. In the example "What is 1+1", "2"
 should be placed in the Key Digit Field" 

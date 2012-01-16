@@ -213,11 +213,13 @@ select the user to update, & apply the settings from the dialer settings list.
 
 
 Dialer settings:
+
 .. image:: ../_static/images/admin/dialersetting_list.png
     :width: 1000
 
 
 Update dialer settings:
+
 .. image:: ../_static/images/admin/update_dialersetting.png
     :width: 1000
 
@@ -263,11 +265,11 @@ and selecting Survey Results from the drop-down.
 Settings
 --------
 
-The settings page provides a number of functions:-
+The settings page provides a number of functions:
 
-Account - Change the detail of the account.
-Password - Change the password.
-Notifications - Display system notifications.
-Limitation - Displays the parameters of the dialer settings.
-Authorized - Facitiy to check that a number is not blacklisted.
+    * Account - Change the detail of the account.
+    * Password - Change the password.
+    * Notifications - Display system notifications.
+    * Limitation - Displays the parameters of the dialer settings.
+    * Authorized - Facitiy to check that a number is not blacklisted.
 

@@ -1,6 +1,9 @@
 TODO
 ====
 
+- Help text behind the question : http://127.0.0.1:8000/survey/1/
+  If no audio file is selected, then text to speech is used to read out the question. 
+
 - API to create campaign should accept phonebook ID to attach to,
   if it doesn't it will create a new phonebook
 

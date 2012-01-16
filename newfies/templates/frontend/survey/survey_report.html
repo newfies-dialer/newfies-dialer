@@ -7,11 +7,25 @@
 {% endblock %}
 
 {% block content %}
+    
 {% if msg %}
-<div class="success" id="rounded-corner-upper-table">        
+    <div class="alert-message success">
         <strong>{% trans "Alert" %} : </strong>  {{ msg }}
-</div>
+    </div>
 {% endif %}
+
+{% if err_msg %}
+    <div class="alert-message danger">
+        <strong>{% trans "Alert" %} : </strong>  {{ err_msg }}
+    </div>
+{% endif %}
+
+{% if not survey_result %}
+    <div class="alert-message danger">
+        <strong>{% trans "Alert" %} : </strong>  {% trans "No record found!" %}
+    </div>
+{% endif %}
+
 
 
 <form method="POST" action="." enctype="multipart/form-data">

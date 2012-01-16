@@ -13,7 +13,9 @@ TODO
 
 - http://127.0.0.1:8000/survey_report/
 
-  Survey report show drop-downs for campaigns and surveys, it should only show campaigns with surveys. 
+  Survey report show drop-downs for campaigns and surveys, it should only show campaigns with surveys.
+
+  Done
 
 - If a campaign is created on the frontend in status "START" the campaign is not being processed by Celery.tasks, we need to update the campaign again to make it works
 

@@ -583,20 +583,23 @@ def survey_report(request):
     if request.method == 'POST':
         form = SurveyReportForm(request.user, request.POST)
         if form.is_valid():
-            campaign_obj = Campaign.objects.get(id=int(request.POST['campaign']))
-            survey_result = SurveyCampaignResult.objects.filter(campaign=campaign_obj)\
-            .values('question', 'response').annotate(Count('response')).distinct().order_by('question')
+            try:
+                campaign_obj = Campaign.objects.get(id=int(request.POST['campaign']))
+                survey_result = SurveyCampaignResult.objects.filter(campaign=campaign_obj)\
+                .values('question', 'response').annotate(Count('response')).distinct().order_by('question')
+            except:
+                request.session["err_msg"] = _('No campaign attached with survey.')
 
-            #for i in survey_result:
-            #    print i
     template = 'frontend/survey/survey_report.html'
     data = {
         'module': current_view(request),
         'msg': request.session.get('msg'),
+        'err_msg': request.session.get('err_msg'),
         'notice_count': notice_count(request),
         'form': form,
         'survey_result': survey_result,
     }
     request.session['msg'] = ''
+    request.session['err_msg'] = ''
     return render_to_response(template, data,
            context_instance=RequestContext(request))

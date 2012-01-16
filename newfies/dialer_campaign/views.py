@@ -1792,6 +1792,11 @@ def campaign_add(request):
 
             obj.user = User.objects.get(username=request.user)
             obj.save()
+
+            # Start tasks to import subscriber
+            if obj.status == 1:
+                collect_subscriber.delay(obj.pk)
+
             form.save_m2m()
 
             request.session["msg"] = _('"%(name)s" is added.') %\
@@ -1873,7 +1878,7 @@ def campaign_change(request, object_id):
             return HttpResponseRedirect('/campaign/')
         else: # Update campaign
             form = CampaignForm(request.user, request.POST, instance=campaign)
-            
+            previous_status = campaign.status
             if form.is_valid():
                 obj = form.save(commit=False)
 
@@ -1886,7 +1891,12 @@ def campaign_change(request, object_id):
                 obj.content_type = object_type
                 obj.object_id = object_id
                 obj.save()
-                
+
+                # Start tasks to import subscriber
+                if obj.status == 1 and previous_status != 1:
+                    collect_subscriber.delay(obj.id)
+
+
                 request.session["msg"] = _('"%(name)s" is updated.') \
                 % {'name': request.POST['name']}
                 return HttpResponseRedirect('/campaign/')

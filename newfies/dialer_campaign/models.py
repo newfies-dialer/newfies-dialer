@@ -595,7 +595,7 @@ def post_save_add_contact(sender, **kwargs):
 
     **Logic Description**:
 
-        * When snew contact is added into ``Contact`` model, active the
+        * When new contact is added into ``Contact`` model, active the
           campaign list will be checked with the contact status.
         * If the active campaign list count is more than one & the contact 
           is active, the contact will be added into ``CampaignSubscriber`` 

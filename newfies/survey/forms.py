@@ -5,9 +5,10 @@ from django.forms import *
 from django.contrib import *
 from django.contrib.admin.widgets import *
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.contenttypes.models import ContentType
 
 from survey.models import *
-from dialer_campaign.function_def import field_list
+from dialer_campaign.models import Campaign
 from audiofield.forms import CustomerAudioFileForm
 from datetime import *
 
@@ -83,12 +84,17 @@ class SurveyReportForm(forms.Form):
     def __init__(self, user, *args, **kwargs):
         super(SurveyReportForm, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['campaign']
-         # To get user's running campaign list
+        # To get user's campaign list which are attached with survey app
         if user:
             list = []
-            pb_list = field_list("campaign", user)
-            for i in pb_list:
-                list.append((i[0], i[1]))
+            try:
+                camp_list = Campaign.objects.filter(user=user,
+                                     content_type=ContentType.objects.get(name='survey'))
+                pb_list = ((l.id, l.name) for l in camp_list)
+                for i in pb_list:
+                    list.append((i[0], i[1]))
+            except:
+                list.append((0, ''))
             self.fields['campaign'].choices = list
 
 

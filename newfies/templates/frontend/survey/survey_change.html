@@ -270,6 +270,11 @@ function addFormField() {
     '</div>'+
     '</div>'+
     '<div class="row">'+
+        '<div class="span9">'+
+            '<span class="help-inline">{% trans "If no audio file is selected, then text to speech is used to read out the question" %}</span>'+
+        '</div>'+
+    '</div><span>&nbsp;</span>'+
+    '<div class="row">'+
         '<div class="span6">'+
               '<div class="row">'+
               '<div class="span2"><p><b>{% trans "Key Digit" %}</b></p></div>'+
@@ -468,7 +473,11 @@ function removeResFormField(id) {
                                 </div>
                             </div>
                             </div>
-
+                            <div class="row">
+                                <div class="span9">
+                                    <span class="help-inline">{% trans "If no audio file is selected, then text to speech is used to read out the question" %}</span>
+                                </div>
+                            </div>
                                 <!--Response forms start-->
                                 <!--extra to fix 1st survey response form-->
                                 <form>{% csrf_token %}</form>

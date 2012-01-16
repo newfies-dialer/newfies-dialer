@@ -1,11 +1,6 @@
 TODO
 ====
 
-- API to create campaign should accept phonebook ID to attach to,
-  if it doesn't it will create a new phonebook
-
-- Refactor the template, css and code in view
-
 - Fix I18N on some of the pages such as :
 
   * http://127.0.0.1:8000/survey/1/ (check in spanish)
@@ -14,13 +9,9 @@ TODO
   * http://127.0.0.1:8000/audio/add/
   Audio Name, Audio file etc... is not being included in the PO
 
-  * Select checkbox and click on main delete button :
-  http://127.0.0.1:8000/campaign/
+- Refactor the template, css and code in view
 
 - Make sure test work on all APIs
 
-- Add documentation for Survey User manual
-
 - Clean custom CSS, and add comments
-
 

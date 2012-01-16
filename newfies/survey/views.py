@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
@@ -368,7 +369,7 @@ def audio_file_player(audio_file):
     """audio player tag for frontend"""
     if audio_file:
         file_url = settings.MEDIA_URL + str(audio_file)
-        player_string = '<ul class="playlist"><li style="width:280px;">\
+        player_string = '<ul class="playlist"><li style="width:220px;">\
         <a href="%s">%s</a></li></ul>' % (file_url, os.path.basename(file_url))
         return player_string
 
@@ -414,14 +415,19 @@ def audio_grid(request):
                     settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
     delete_style = 'style="text-decoration:none;background-image:url(' + \
                     settings.STATIC_URL + 'newfies/icons/delete.png);"'
-
+    link_style = 'style="text-decoration:none;background-image:url(' + \
+                    settings.STATIC_URL + 'newfies/icons/link.png);"'
+    domain = Site.objects.get_current().domain
 
     rows = [{'id': row['id'],
              'cell': ['<input type="checkbox" name="select" class="checkbox"\
                       value="' + str(row['id']) + '" />',
                       row['name'],
                       audio_file_player(row['audio_file']),
+                      '<input type="text" value="' + domain + settings.MEDIA_URL + str(row['audio_file'])+ '">',
                       row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
+                      '<a href="' + settings.MEDIA_URL + str(row['audio_file']) + '" class="icon" ' \
+                      + link_style + ' title="' + _('Download audio') + '">&nbsp;</a>' +
                       '<a href="' + str(row['id']) + '/" class="icon" ' \
                       + update_style + ' title="' + _('Update audio') + '">&nbsp;</a>' +
                       '<a href="del/' + str(row['id']) + '/" class="icon" ' \
@@ -582,20 +588,27 @@ def survey_report(request):
     if request.method == 'POST':
         form = SurveyReportForm(request.user, request.POST)
         if form.is_valid():
-            campaign_obj = Campaign.objects.get(id=int(request.POST['campaign']))
-            survey_result = SurveyCampaignResult.objects.filter(campaign=campaign_obj)\
-            .values('question', 'response').annotate(Count('response')).distinct().order_by('question')
+            try:
+                campaign_obj = Campaign.objects.get(id=int(request.POST['campaign']))
+                survey_result = SurveyCampaignResult.objects.filter(campaign=campaign_obj)\
+                .values('question', 'response').annotate(Count('response')).distinct().order_by('question')
 
-            #for i in survey_result:
-            #    print i
+                if not survey_result:
+                    request.session["err_msg"] = _('No record found!.')
+
+            except:
+                request.session["err_msg"] = _('No campaign attached with survey.')
+
     template = 'frontend/survey/survey_report.html'
     data = {
         'module': current_view(request),
         'msg': request.session.get('msg'),
+        'err_msg': request.session.get('err_msg'),
         'notice_count': notice_count(request),
         'form': form,
         'survey_result': survey_result,
     }
     request.session['msg'] = ''
+    request.session['err_msg'] = ''
     return render_to_response(template, data,
            context_instance=RequestContext(request))

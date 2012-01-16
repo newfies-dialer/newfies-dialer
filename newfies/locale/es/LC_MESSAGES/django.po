@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Newfies-Dialer 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-12 15:43+0100\n"
+"POT-Creation-Date: 2012-01-16 14:41+0100\n"
 "PO-Revision-Date: 2012-01-10 21:33+0100\n"
 "Last-Translator: Areski Belaid <areski@gmail.com>\n"
 "Language-Team: Areski Belaid <areski@gmail.com>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: settings.py:328
+#: settings.py:328 user_profile/fields.py:65
 msgid "English"
 msgstr "Inglés"
 
@@ -26,7 +26,7 @@ msgstr "Inglés"
 msgid "Spanish"
 msgstr "Español"
 
-#: settings.py:331
+#: settings.py:331 user_profile/fields.py:166
 msgid "Portuguese"
 msgstr "Portugués"
 
@@ -43,7 +43,7 @@ msgid "Recent Actions"
 msgstr "Acciones recientes"
 
 #: custom_admin_tools/dashboard.py:74
-#: templates/frontend/registration/user_detail_change.html:26
+#: templates/frontend/registration/user_detail_change.html:24
 msgid "Settings"
 msgstr "Configuración"
 
@@ -58,16 +58,16 @@ msgstr "VoIP del servidor"
 #: custom_admin_tools/dashboard.py:92
 #: templates/frontend/survey/audio_change.html:13
 #: templates/frontend/survey/audio_list.html:6
-#: templates/frontend/survey/audio_list.html:28
-#: templates/frontend/survey/audio_list.html:67
+#: templates/frontend/survey/audio_list.html:29
+#: templates/frontend/survey/audio_list.html:69
 msgid "Audio Files"
 msgstr "Archivos de audio"
 
 #: custom_admin_tools/dashboard.py:98 survey/models.py:54
 #: templates/frontend/survey/survey.html:6
-#: templates/frontend/survey/survey_change.html:373
-#: templates/frontend/survey/survey_list.html:23
-#: templates/frontend/survey/survey_list.html:60
+#: templates/frontend/survey/survey_change.html:378
+#: templates/frontend/survey/survey_list.html:24
+#: templates/frontend/survey/survey_list.html:61
 msgid "Survey"
 msgstr "Estudio"
 
@@ -174,9 +174,9 @@ msgid "Document types accepted: %s"
 msgstr "Los tipos de documentos aceptados: %s"
 
 #: dialer_campaign/forms.py:42 dialer_campaign/models.py:79
-#: dialer_campaign/models.py:115 templates/frontend/contact/list.html:127
+#: dialer_campaign/models.py:115 templates/frontend/contact/list.html:129
 #: templates/frontend/phonebook/change.html:12
-#: templates/frontend/phonebook/list.html:38
+#: templates/frontend/phonebook/list.html:41
 msgid "Phonebook"
 msgstr "Agenda"
 
@@ -192,125 +192,125 @@ msgstr "Nombre de usuario:"
 msgid "Password:"
 msgstr "Contraseña:"
 
-#: dialer_campaign/forms.py:106 dialer_campaign/models.py:332
+#: dialer_campaign/forms.py:104 dialer_campaign/models.py:331
 #: dialer_cdr/models.py:147
 msgid "Application"
 msgstr "Aplicacione"
 
-#: dialer_campaign/forms.py:177
+#: dialer_campaign/forms.py:175
 #, python-format
 msgid "Maximum Frequency limit of %d exceeded."
 msgstr "Límite de frecuencia máxima de %d supera."
 
-#: dialer_campaign/forms.py:183
+#: dialer_campaign/forms.py:181
 #, python-format
 msgid "Maximum Duration limit of %d exceeded."
 msgstr "Limitar la duración máxima de %d supera."
 
-#: dialer_campaign/forms.py:189
+#: dialer_campaign/forms.py:187
 #, python-format
 msgid "Maximum Retries limit of %d exceeded."
 msgstr "Límite máximo de reintentos de %d supera."
 
-#: dialer_campaign/forms.py:195
+#: dialer_campaign/forms.py:193
 #, python-format
 msgid "Maximum Timeout limit of %d exceeded."
 msgstr "Límite de tiempo de espera máximo de %d supera."
 
-#: dialer_campaign/forms.py:223 dialer_campaign/models.py:119
-#: templates/frontend/contact/list.html:129
+#: dialer_campaign/forms.py:221 dialer_campaign/models.py:119
+#: templates/frontend/contact/list.html:131
 msgid "Last Name"
 msgstr "Apellido"
 
-#: dialer_campaign/forms.py:224 dialer_campaign/models.py:121
-#: templates/frontend/contact/list.html:130
+#: dialer_campaign/forms.py:222 dialer_campaign/models.py:121
+#: templates/frontend/contact/list.html:132
 msgid "First Name"
 msgstr "Nombre"
 
-#: dialer_campaign/forms.py:228
+#: dialer_campaign/forms.py:226
 msgid "Contains"
 msgstr "Contiene"
 
-#: dialer_campaign/forms.py:229
+#: dialer_campaign/forms.py:227
 msgid "Equals"
 msgstr "Es igual"
 
-#: dialer_campaign/forms.py:230
+#: dialer_campaign/forms.py:228
 msgid "Begins with"
 msgstr "Comienza con"
 
-#: dialer_campaign/forms.py:231
+#: dialer_campaign/forms.py:229
 msgid "Ends with"
 msgstr "Termina con"
 
-#: dialer_campaign/forms.py:235
+#: dialer_campaign/forms.py:233
 msgid "Last 30 days"
 msgstr "Últimos 30 días"
 
-#: dialer_campaign/forms.py:236
+#: dialer_campaign/forms.py:234
 msgid "Last 7 days"
 msgstr "Últimos 7 días"
 
-#: dialer_campaign/forms.py:237
+#: dialer_campaign/forms.py:235
 msgid "Yesterday"
 msgstr "Ayer"
 
-#: dialer_campaign/forms.py:238
+#: dialer_campaign/forms.py:236
 msgid "Last 24 hours"
 msgstr "Últimas 24 horas"
 
-#: dialer_campaign/forms.py:239
+#: dialer_campaign/forms.py:237
 msgid "Last 12 hours"
 msgstr "Últimas 12 horas"
 
-#: dialer_campaign/forms.py:240
+#: dialer_campaign/forms.py:238
 msgid "Last 6 hours"
 msgstr "Últimas 6 horas"
 
-#: dialer_campaign/forms.py:241
+#: dialer_campaign/forms.py:239
 msgid "Last hour"
 msgstr "Última hora"
 
-#: dialer_campaign/forms.py:248
+#: dialer_campaign/forms.py:246
 msgid "Contact Number:"
 msgstr "Teléfono de contacto:"
 
-#: dialer_campaign/forms.py:252
+#: dialer_campaign/forms.py:250
 msgid "Contact Name:"
 msgstr "Nombre del contacto:"
 
-#: dialer_campaign/forms.py:254
+#: dialer_campaign/forms.py:252
 msgid "Phonebook:"
 msgstr "Agenda:"
 
-#: dialer_campaign/forms.py:255
+#: dialer_campaign/forms.py:253
 msgid "Status:"
 msgstr "Estado:"
 
-#: dialer_campaign/forms.py:256
+#: dialer_campaign/forms.py:254
 msgid "Inactive"
 msgstr "Inactivo"
 
-#: dialer_campaign/forms.py:256
+#: dialer_campaign/forms.py:254
 msgid "Active "
 msgstr "Activo"
 
-#: dialer_campaign/forms.py:257
+#: dialer_campaign/forms.py:255
 msgid "All"
 msgstr "Todos"
 
-#: dialer_campaign/forms.py:274 dialer_campaign/models.py:351
-#: survey/forms.py:81 survey/models.py:114
+#: dialer_campaign/forms.py:272 dialer_campaign/models.py:350
+#: survey/forms.py:82 survey/models.py:114
 #: templates/frontend/bootstrap_menu.html:17
 #: templates/frontend/dashboard.html:48
 #: templates/frontend/campaign/change.html:12
-#: templates/frontend/campaign/list.html:23
+#: templates/frontend/campaign/list.html:24
 msgid "Campaign"
 msgstr "Campaña"
 
-#: dialer_campaign/forms.py:275 dialer_campaign/models.py:330
-#: dialer_cdr/models.py:146 templates/frontend/campaign/list.html:57
-#: templates/frontend/voiceapp/list.html:43 voice_app/models.py:46
+#: dialer_campaign/forms.py:273 dialer_campaign/models.py:329
+#: dialer_cdr/models.py:146 templates/frontend/campaign/list.html:58
+#: templates/frontend/voiceapp/list.html:44 voice_app/models.py:46
 msgid "Type"
 msgstr "Tipo"
 
@@ -339,14 +339,14 @@ msgstr "SI"
 msgid "NO"
 msgstr "NO"
 
-#: dialer_campaign/models.py:69 dialer_campaign/models.py:150
-#: dialer_campaign/models.py:269 dialer_gateway/models.py:70
+#: dialer_campaign/models.py:69 dialer_campaign/models.py:149
+#: dialer_campaign/models.py:268 dialer_gateway/models.py:70
 #: dialer_settings/models.py:24 survey/models.py:45
-#: templates/frontend/campaign/list.html:55
-#: templates/frontend/phonebook/list.html:64
-#: templates/frontend/survey/audio_list.html:54
-#: templates/frontend/survey/survey_list.html:47
-#: templates/frontend/voiceapp/list.html:41 voice_app/models.py:42
+#: templates/frontend/campaign/list.html:56
+#: templates/frontend/phonebook/list.html:67
+#: templates/frontend/survey/audio_list.html:55
+#: templates/frontend/survey/survey_list.html:48
+#: templates/frontend/voiceapp/list.html:42 voice_app/models.py:42
 msgid "Name"
 msgstr "Nombre"
 
@@ -354,34 +354,34 @@ msgstr "Nombre"
 msgid "Phonebook Notes"
 msgstr "Notas de la agenda"
 
-#: dialer_campaign/models.py:74 dialer_campaign/models.py:134
+#: dialer_campaign/models.py:74 dialer_campaign/models.py:133
 #: dialer_gateway/models.py:97 survey/models.py:50
 #: templates/admin/dialer_cdr/voipcall/change_list.html:112
-#: templates/frontend/contact/list.html:132
-#: templates/frontend/phonebook/list.html:66
-#: templates/frontend/registration/user_detail_change.html:133
+#: templates/frontend/contact/list.html:134
+#: templates/frontend/phonebook/list.html:69
+#: templates/frontend/registration/user_detail_change.html:145
 #: templates/frontend/report/voipcall_report.html:126
-#: templates/frontend/survey/audio_list.html:56
-#: templates/frontend/survey/survey_list.html:49
-#: templates/frontend/voiceapp/list.html:46 voice_app/models.py:66
+#: templates/frontend/survey/audio_list.html:58
+#: templates/frontend/survey/survey_list.html:50
+#: templates/frontend/voiceapp/list.html:47 voice_app/models.py:66
 msgid "Date"
 msgstr "Fecha"
 
 #: dialer_campaign/models.py:80 templates/frontend/bootstrap_menu.html:18
-#: templates/frontend/phonebook/list.html:78
+#: templates/frontend/phonebook/list.html:81
 msgid "Phonebooks"
 msgstr "Agendas"
 
-#: dialer_campaign/models.py:89 dialer_campaign/models.py:140
+#: dialer_campaign/models.py:89 dialer_campaign/models.py:139
 #: templates/frontend/bootstrap_menu.html:19
-#: templates/frontend/campaign/list.html:59
-#: templates/frontend/contact/list.html:40
-#: templates/frontend/contact/list.html:145
-#: templates/frontend/phonebook/list.html:67
+#: templates/frontend/campaign/list.html:60
+#: templates/frontend/contact/list.html:42
+#: templates/frontend/contact/list.html:147
+#: templates/frontend/phonebook/list.html:70
 msgid "Contacts"
 msgstr "Contactos"
 
-#: dialer_campaign/models.py:117 templates/frontend/contact/list.html:128
+#: dialer_campaign/models.py:117 templates/frontend/contact/list.html:130
 msgid "Contact Number"
 msgstr "Teléfono de contacto"
 
@@ -390,48 +390,48 @@ msgstr "Teléfono de contacto"
 msgid "Email"
 msgstr "Email"
 
-#: dialer_campaign/models.py:124 user_profile/models.py:35
+#: dialer_campaign/models.py:123 user_profile/models.py:35
 msgid "Country"
 msgstr "País"
 
-#: dialer_campaign/models.py:126 user_profile/models.py:31
+#: dialer_campaign/models.py:125 user_profile/models.py:32
 msgid "City"
 msgstr "Ciudad"
 
-#: dialer_campaign/models.py:128
+#: dialer_campaign/models.py:127
 msgid "Contact Notes"
 msgstr "Notas de contacto"
 
-#: dialer_campaign/models.py:130 dialer_campaign/models.py:274
-#: dialer_campaign/models.py:575 dialer_cdr/models.py:125
-#: templates/frontend/campaign/list.html:60
+#: dialer_campaign/models.py:129 dialer_campaign/models.py:273
+#: dialer_campaign/models.py:574 dialer_cdr/models.py:125
+#: templates/frontend/campaign/list.html:61
 #: templates/frontend/contact/import_contact.html:39
-#: templates/frontend/contact/list.html:131
+#: templates/frontend/contact/list.html:133
 msgid "Status"
 msgstr "Estado"
 
-#: dialer_campaign/models.py:132
+#: dialer_campaign/models.py:131
 msgid "Additional parameters"
 msgstr "Parámetros adicionales"
 
-#: dialer_campaign/models.py:139 dialer_campaign/models.py:417
-#: dialer_campaign/models.py:573 templates/frontend/contact/change.html:19
+#: dialer_campaign/models.py:138 dialer_campaign/models.py:416
+#: dialer_campaign/models.py:572 templates/frontend/contact/change.html:19
 msgid "Contact"
 msgstr "Contacto"
 
-#: dialer_campaign/models.py:211
+#: dialer_campaign/models.py:210
 msgid "Error to identify the whitelist"
 msgstr "Error para identificar en la lista blanca"
 
-#: dialer_campaign/models.py:219
+#: dialer_campaign/models.py:218
 msgid "Error to identify the blacklist"
 msgstr "Error para identificar en la lista negra"
 
-#: dialer_campaign/models.py:265
+#: dialer_campaign/models.py:264
 msgid "Campaign Code"
 msgstr "Campaña Código"
 
-#: dialer_campaign/models.py:266
+#: dialer_campaign/models.py:265
 msgid ""
 "This code is auto-generated by the platform, this is used to identify the "
 "campaign"
@@ -439,180 +439,180 @@ msgstr ""
 "Este código se genera automáticamente por la plataforma, esta se utiliza "
 "para identificar la campaña"
 
-#: dialer_campaign/models.py:270 dialer_gateway/models.py:74
+#: dialer_campaign/models.py:269 dialer_gateway/models.py:74
 #: survey/models.py:47 templates/frontend/contact/import_contact.html:38
-#: templates/frontend/phonebook/list.html:65
-#: templates/frontend/survey/survey_list.html:48
-#: templates/frontend/voiceapp/list.html:42 voice_app/models.py:43
+#: templates/frontend/phonebook/list.html:68
+#: templates/frontend/survey/survey_list.html:49
+#: templates/frontend/voiceapp/list.html:43 voice_app/models.py:43
 msgid "Description"
 msgstr "Descripción"
 
-#: dialer_campaign/models.py:271
+#: dialer_campaign/models.py:270
 msgid "Campaign description"
 msgstr "Campaña descripción"
 
-#: dialer_campaign/models.py:276 dialer_cdr/models.py:127
+#: dialer_campaign/models.py:275 dialer_cdr/models.py:127
 msgid "CallerID"
 msgstr "CallerID"
 
-#: dialer_campaign/models.py:277
+#: dialer_campaign/models.py:276
 msgid "Outbound caller-ID"
 msgstr "Salientes de identificación de llamada"
 
-#: dialer_campaign/models.py:280 dialer_campaign/views.py:1594
+#: dialer_campaign/models.py:279 dialer_campaign/views.py:1594
 #: dialer_campaign/views.py:1609 dialer_campaign/views.py:1622
 msgid "Start"
 msgstr "Comienzo"
 
-#: dialer_campaign/models.py:281 dialer_campaign/models.py:286
+#: dialer_campaign/models.py:280 dialer_campaign/models.py:285
 msgid "Date Format: YYYY-mm-DD HH:MM:SS"
 msgstr "Formato de fecha: YYYY-mm-DD HH:MM:SS"
 
-#: dialer_campaign/models.py:285
+#: dialer_campaign/models.py:284
 msgid "Finish"
 msgstr "Terminar"
 
-#: dialer_campaign/models.py:289 dialer_campaign/models.py:291
+#: dialer_campaign/models.py:288 dialer_campaign/models.py:290
 msgid "Time Format: HH:MM:SS"
 msgstr "Formato de hora: HH:MM:SS"
 
-#: dialer_campaign/models.py:292
+#: dialer_campaign/models.py:291
 msgid "Monday"
 msgstr "Lunes"
 
-#: dialer_campaign/models.py:293
+#: dialer_campaign/models.py:292
 msgid "Tuesday"
 msgstr "Martes"
 
-#: dialer_campaign/models.py:294
+#: dialer_campaign/models.py:293
 msgid "Wednesday"
 msgstr "Miercoles"
 
-#: dialer_campaign/models.py:295
+#: dialer_campaign/models.py:294
 msgid "Thursday"
 msgstr "Jueves"
 
-#: dialer_campaign/models.py:296
+#: dialer_campaign/models.py:295
 msgid "Friday"
 msgstr "Viernes"
 
-#: dialer_campaign/models.py:297
+#: dialer_campaign/models.py:296
 msgid "Saturday"
 msgstr "Sábado"
 
-#: dialer_campaign/models.py:298
+#: dialer_campaign/models.py:297
 msgid "Sunday"
 msgstr "Domingo"
 
-#: dialer_campaign/models.py:301
+#: dialer_campaign/models.py:300
 msgid "Frequency"
 msgstr "Frecuencia"
 
-#: dialer_campaign/models.py:302
+#: dialer_campaign/models.py:301
 msgid "Calls per Minute"
 msgstr "Llamadas por minuto"
 
-#: dialer_campaign/models.py:305 dialer_settings/models.py:31
+#: dialer_campaign/models.py:304 dialer_settings/models.py:31
 msgid "Max Call Duration"
 msgstr "Máximo Duración de la Llamada"
 
-#: dialer_campaign/models.py:306
+#: dialer_campaign/models.py:305
 msgid "Maximum call duration in seconds"
 msgstr "Duración máxima de llamada en segundos"
 
-#: dialer_campaign/models.py:309 dialer_settings/models.py:35
+#: dialer_campaign/models.py:308 dialer_settings/models.py:35
 msgid "Max Retries"
 msgstr "Max reintentos"
 
-#: dialer_campaign/models.py:310
+#: dialer_campaign/models.py:309
 msgid "Maximum retries per contact"
 msgstr "Intentos máximos por contacto"
 
-#: dialer_campaign/models.py:312
+#: dialer_campaign/models.py:311
 msgid "Time between Retries"
 msgstr "Tiempo entre reintentos"
 
-#: dialer_campaign/models.py:313
+#: dialer_campaign/models.py:312
 msgid "Time delay in seconds before retrying contact"
 msgstr ""
 "Tiempo de retardo en segundos antes de volver a intentar ponerse en contacto"
 
-#: dialer_campaign/models.py:316 dialer_settings/models.py:38
+#: dialer_campaign/models.py:315 dialer_settings/models.py:38
 msgid "Timeout on Call"
 msgstr "Tiempo de espera de llamadas"
 
-#: dialer_campaign/models.py:317
+#: dialer_campaign/models.py:316
 msgid "Connection timeout in seconds"
 msgstr "Máximo tiempo de espera de llamada en segundos"
 
-#: dialer_campaign/models.py:320
+#: dialer_campaign/models.py:319
 msgid "A-Leg Gateway"
 msgstr "A-Leg Gateway"
 
-#: dialer_campaign/models.py:322
+#: dialer_campaign/models.py:321
 msgid "Select outbound gateway"
 msgstr "Seleccione Gateway de salida"
 
-#: dialer_campaign/models.py:336
+#: dialer_campaign/models.py:335
 msgid "Extra Parameters"
 msgstr "Los parámetros adicionales"
 
-#: dialer_campaign/models.py:337
+#: dialer_campaign/models.py:336
 msgid "Additional application parameters."
 msgstr "Parámetros adicionales de la aplicación."
 
-#: dialer_campaign/models.py:352 templates/frontend/campaign/list.html:71
+#: dialer_campaign/models.py:351 templates/frontend/campaign/list.html:72
 msgid "Campaigns"
 msgstr "Campañas"
 
-#: dialer_campaign/models.py:401 templates/frontend/campaign/list.html:61
-#: templates/frontend/contact/list.html:133
-#: templates/frontend/phonebook/list.html:68
-#: templates/frontend/registration/user_detail_change.html:134
-#: templates/frontend/survey/audio_list.html:57
-#: templates/frontend/survey/survey_list.html:50
-#: templates/frontend/voiceapp/list.html:47
+#: dialer_campaign/models.py:400 templates/frontend/campaign/list.html:62
+#: templates/frontend/contact/list.html:135
+#: templates/frontend/phonebook/list.html:71
+#: templates/frontend/registration/user_detail_change.html:146
+#: templates/frontend/survey/audio_list.html:59
+#: templates/frontend/survey/survey_list.html:51
+#: templates/frontend/voiceapp/list.html:48
 msgid "Action"
 msgstr "Acción"
 
-#: dialer_campaign/models.py:413
+#: dialer_campaign/models.py:412
 msgid "Phonebook Empty"
 msgstr "Agenda vacía"
 
-#: dialer_campaign/models.py:521
+#: dialer_campaign/models.py:520
 msgid "Progress"
 msgstr "Progreso"
 
-#: dialer_campaign/models.py:530
+#: dialer_campaign/models.py:529
 #, python-format
 msgid "<a href='%(link)s'>%(name)s</a>"
 msgstr "<a href='%(link)s'>%(name)s</a>"
 
-#: dialer_campaign/models.py:530
+#: dialer_campaign/models.py:529
 msgid "Details"
 msgstr "Detalles"
 
-#: dialer_campaign/models.py:533 dialer_campaign/models.py:582
+#: dialer_campaign/models.py:532 dialer_campaign/models.py:581
 msgid "Campaign Subscriber"
 msgstr "Campaña de abonado"
 
-#: dialer_campaign/models.py:563
+#: dialer_campaign/models.py:562
 msgid "Select Contact"
 msgstr "Seleccione un contacto"
 
-#: dialer_campaign/models.py:565 dialer_cdr/models.py:140
+#: dialer_campaign/models.py:564 dialer_cdr/models.py:140
 msgid "Select Campaign"
 msgstr "Seleccione la campaña"
 
-#: dialer_campaign/models.py:567
+#: dialer_campaign/models.py:566
 msgid "Last attempt"
 msgstr "'Ultimo intento"
 
-#: dialer_campaign/models.py:569
+#: dialer_campaign/models.py:568
 msgid "Count attempts"
 msgstr "Número de intentos"
 
-#: dialer_campaign/models.py:583
+#: dialer_campaign/models.py:582
 msgid "Campaign Subscribers"
 msgstr "Suscriptores de campaña"
 
@@ -652,15 +652,15 @@ msgid "Delete phonebook"
 msgstr "Eliminar la agenda"
 
 #: dialer_campaign/views.py:1026 dialer_campaign/views.py:1328
-#: dialer_campaign/views.py:1797 survey/views.py:238 survey/views.py:471
+#: dialer_campaign/views.py:1802 survey/views.py:254 survey/views.py:492
 #: voice_app/views.py:130
 #, python-format
 msgid "\"%(name)s\" is added."
 msgstr "\"%(name)s\", se agregó."
 
 #: dialer_campaign/views.py:1073 dialer_campaign/views.py:1364
-#: dialer_campaign/views.py:1831 survey/views.py:269 survey/views.py:504
-#: user_profile/views.py:218 voice_app/views.py:163
+#: dialer_campaign/views.py:1836 survey/views.py:285 survey/views.py:525
+#: user_profile/views.py:233 voice_app/views.py:163
 #, python-format
 msgid "\"%(name)s\" is deleted."
 msgstr "\"%(name)s\" es eliminado."
@@ -671,7 +671,7 @@ msgid "%(count)s phonebook(s) are deleted."
 msgstr "%(count)s Agenda(s) se ha eliminado."
 
 #: dialer_campaign/views.py:1121 dialer_campaign/views.py:1407
-#: dialer_campaign/views.py:1890 survey/views.py:330 voice_app/views.py:206
+#: dialer_campaign/views.py:1900 survey/views.py:346 voice_app/views.py:206
 #, python-format
 msgid "\"%(name)s\" is updated."
 msgstr "\"%(name)s\" se ha actualizado."
@@ -756,132 +756,132 @@ msgstr ""
 "configurado correctamente, por favor póngase en contacto con el "
 "administrador."
 
-#: dialer_campaign/views.py:1840
+#: dialer_campaign/views.py:1845
 #, python-format
 msgid "%(count)s campaign(s) are deleted."
 msgstr "%(count)s la campaña(s) se ha eliminado."
 
-#: dialer_campaign/views.py:1976
+#: dialer_campaign/views.py:1986
 msgid "Total Calls:"
 msgstr "Total de llamadas:"
 
-#: dialer_campaign/views.py:1977
+#: dialer_campaign/views.py:1987
 msgid "Total Duration:"
 msgstr "Total de Duración:"
 
-#: dialer_campaign/views.py:1978
+#: dialer_campaign/views.py:1988
 msgid "Answered"
 msgstr "Respuesta"
 
-#: dialer_campaign/views.py:1978
+#: dialer_campaign/views.py:1988
 msgid "Ans"
 msgstr "Res"
 
-#: dialer_campaign/views.py:1979
+#: dialer_campaign/views.py:1989
 msgid "Do not call"
 msgstr "No llame"
 
-#: dialer_campaign/views.py:1979
+#: dialer_campaign/views.py:1989
 msgid "DNC"
 msgstr "DNC"
 
-#: dialer_campaign/views.py:1980
+#: dialer_campaign/views.py:1990
 msgid "Busy"
 msgstr "Ocupado"
 
-#: dialer_campaign/views.py:1981
+#: dialer_campaign/views.py:1991
 msgid "Not Answered"
 msgstr "No respuesta"
 
-#: dialer_campaign/views.py:1981
+#: dialer_campaign/views.py:1991
 msgid "NA"
 msgstr "NA"
 
-#: dialer_campaign/views.py:1982
+#: dialer_campaign/views.py:1992
 msgid "Canceled"
 msgstr "Cancelado"
 
-#: dialer_campaign/views.py:1982
+#: dialer_campaign/views.py:1992
 msgid "Canc"
 msgstr "Canc"
 
-#: dialer_campaign/views.py:1983
+#: dialer_campaign/views.py:1993
 msgid "ChanUnavail"
 msgstr "ChanUnavail"
 
-#: dialer_campaign/views.py:1983
+#: dialer_campaign/views.py:1993
 msgid "CU"
 msgstr "CU"
 
-#: dialer_campaign/views.py:1984
+#: dialer_campaign/views.py:1994
 msgid "Torture"
 msgstr "Tortura"
 
-#: dialer_campaign/views.py:1984
+#: dialer_campaign/views.py:1994
 msgid "Tort"
 msgstr "Tort"
 
-#: dialer_campaign/views.py:1985
+#: dialer_campaign/views.py:1995
 msgid "Invalid Args"
 msgstr "Inválida args"
 
-#: dialer_campaign/views.py:1985
+#: dialer_campaign/views.py:1995
 msgid "Inv"
 msgstr "Inv"
 
-#: dialer_campaign/views.py:1986
+#: dialer_campaign/views.py:1996
 msgid "No Route"
 msgstr "No hay ruta"
 
-#: dialer_campaign/views.py:1986
+#: dialer_campaign/views.py:1996
 msgid "NoRo"
 msgstr "Noro"
 
-#: dialer_campaign/views.py:1987
+#: dialer_campaign/views.py:1997
 msgid "Congestion"
 msgstr "Congestión"
 
-#: dialer_campaign/views.py:1987
+#: dialer_campaign/views.py:1997
 msgid "Cong"
 msgstr "Cong"
 
-#: dialer_campaign/views.py:1988
+#: dialer_campaign/views.py:1998
 msgid "Forbidden"
 msgstr "Prohibida"
 
-#: dialer_campaign/views.py:1988
+#: dialer_campaign/views.py:1998
 msgid "Forb"
 msgstr "Herbáceas"
 
-#: dialer_campaign/views.py:2070
+#: dialer_campaign/views.py:2080
 msgid "Total Campaigns:"
 msgstr "Total campañas:"
 
-#: dialer_campaign/views.py:2071
+#: dialer_campaign/views.py:2081
 msgid "Active:"
 msgstr "Activo:"
 
-#: dialer_campaign/views.py:2072
+#: dialer_campaign/views.py:2082
 msgid "Paused:"
 msgstr "Pausa:"
 
-#: dialer_campaign/views.py:2073
+#: dialer_campaign/views.py:2083
 msgid "Aborted:"
 msgstr "Abortado:"
 
-#: dialer_campaign/views.py:2074
+#: dialer_campaign/views.py:2084
 msgid "Stopped:"
 msgstr "Parada:"
 
-#: dialer_campaign/views.py:2137
+#: dialer_campaign/views.py:2147
 msgid "Total Users:"
 msgstr "Total usuarios:"
 
-#: dialer_campaign/views.py:2138
+#: dialer_campaign/views.py:2148
 msgid "Active Users:"
 msgstr "Usuarios Activos:"
 
-#: dialer_campaign/views.py:2139
+#: dialer_campaign/views.py:2149
 msgid "No Active Users:"
 msgstr "Usuarios Non Activos:"
 
@@ -951,14 +951,12 @@ msgid "Database error"
 msgstr "Base de datos de error"
 
 #: dialer_cdr/admin.py:178
-msgid "%(total_count)s selected"
-msgid_plural "All %(total_count)s selected"
-msgstr[0] "%(total_count)s seleccionado"
-msgstr[1] "%(total_count)s seleccionados"
+#, python-format
 
 #: dialer_cdr/admin.py:182
-msgid "0 of %(cnt)s selected"
-msgstr "0 de %(cnt)s seleccionados"
+#, python-format
+msgid "%(total_count)s selected"
+msgstr "%(total_count)s seleccionados"
 
 #: dialer_cdr/admin.py:193
 msgid "VoIP Report"
@@ -1275,11 +1273,11 @@ msgstr "Añadir parámetro"
 
 #: dialer_gateway/models.py:104
 msgid "Call count"
-msgstr "Llame al número"
+msgstr "Numero de Llamadas"
 
 #: dialer_gateway/models.py:105
 msgid "Count in use"
-msgstr "Contar en el uso de"
+msgstr "Conteo en uso"
 
 #: dialer_gateway/models.py:106
 msgid "Max concurrent calls"
@@ -1311,7 +1309,7 @@ msgid "Max frequency"
 msgstr "Frecuencia máxima"
 
 #: dialer_settings/models.py:29
-#: templates/frontend/registration/user_detail_change.html:202
+#: templates/frontend/registration/user_detail_change.html:214
 msgid "Maximum calls per minute"
 msgstr "Llama máximo por minuto"
 
@@ -1332,12 +1330,12 @@ msgid "Maximum number of campaigns"
 msgstr "El número máximo de campañas"
 
 #: dialer_settings/models.py:44
-#: templates/frontend/registration/user_detail_change.html:222
+#: templates/frontend/registration/user_detail_change.html:234
 msgid "Maximum subscribers per campaign"
 msgstr "Suscriptores máximo por campaña"
 
 #: dialer_settings/models.py:46
-#: templates/frontend/registration/user_detail_change.html:230
+#: templates/frontend/registration/user_detail_change.html:242
 msgid "Blacklist"
 msgstr "Lista negra"
 
@@ -1352,7 +1350,7 @@ msgstr ""
 "2,3 o 4 y seguido por una que se llama."
 
 #: dialer_settings/models.py:49
-#: templates/frontend/registration/user_detail_change.html:226
+#: templates/frontend/registration/user_detail_change.html:238
 msgid "Whitelist"
 msgstr "Lista blanca"
 
@@ -1393,8 +1391,8 @@ msgstr "Archivo de audio"
 msgid "Message type"
 msgstr "Mensaje tipo"
 
-#: survey/models.py:89 templates/frontend/survey/survey_change.html:275
-#: templates/frontend/survey/survey_change.html:481
+#: survey/models.py:89 templates/frontend/survey/survey_change.html:280
+#: templates/frontend/survey/survey_change.html:490
 msgid "Key Digit"
 msgstr "Tecla numérica"
 
@@ -1402,8 +1400,8 @@ msgstr "Tecla numérica"
 msgid "Define the key link to the response"
 msgstr "Definir el vínculo clave para la respuesta"
 
-#: survey/models.py:91 templates/frontend/survey/survey_change.html:276
-#: templates/frontend/survey/survey_change.html:484
+#: survey/models.py:91 templates/frontend/survey/survey_change.html:281
+#: templates/frontend/survey/survey_change.html:493
 msgid "Key Value"
 msgstr "Valor de la clave"
 
@@ -1415,31 +1413,43 @@ msgstr "Call-ID"
 msgid "Response"
 msgstr "Respuesta"
 
-#: survey/views.py:180
+#: survey/views.py:196
 msgid "Update survey"
 msgstr "Editar la encuesta"
 
-#: survey/views.py:184
+#: survey/views.py:200
 msgid "Delete survey"
 msgstr "Borrar"
 
-#: survey/views.py:281
+#: survey/views.py:297
 #, python-format
 msgid "%(count)s survey(s) are deleted."
 msgstr "%(count)s encuesta(s) se ha eliminado."
 
-#: survey/views.py:411
+#: survey/views.py:430
+msgid "Download audio"
+msgstr "Descargar audio"
+
+#: survey/views.py:432
 msgid "Update audio"
 msgstr "Actualización de audio"
 
-#: survey/views.py:415
+#: survey/views.py:436
 msgid "Delete audio"
 msgstr "Eliminación de audio"
 
-#: survey/views.py:516
+#: survey/views.py:537
 #, python-format
 msgid "%(count)s audio(s) are deleted."
 msgstr "%(count)s audio(s) se ha eliminado."
+
+#: survey/views.py:597
+msgid "No record found!."
+msgstr "No Registro(s)."
+
+#: survey/views.py:600
+msgid "No campaign attached with survey."
+msgstr "Ninguna campaña unida con la encuesta."
 
 #: templates/404.html:5
 msgid "This page cannot be found!"
@@ -1493,14 +1503,10 @@ msgstr "Importar contactos"
 
 #: templates/admin/dialer_campaign/contact/change_list.html:40
 #: templates/admin/dialer_cdr/voipcall/change_list.html:47
-msgid "Please correct the error below."
-msgid_plural "Please correct the errors below."
-msgstr[0] "Por favor, corrija el error debajo."
-msgstr[1] "Por favor, corrija el error debajo."
 
 #: templates/admin/dialer_campaign/contact/change_list.html:51
 #: templates/admin/dialer_cdr/voipcall/change_list.html:85
-msgid "Filter"
+msgid "Please correct the error below."
 msgstr "Filtro"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:18
@@ -1547,8 +1553,8 @@ msgstr "CONTACTO DE ESTADO = ('1'-'ACTIVE') ('0'-'INACTIVE')"
 #: templates/frontend/contact/import_contact.html:86
 #: templates/frontend/phonebook/change.html:38
 #: templates/frontend/survey/audio_change.html:36
-#: templates/frontend/survey/survey_change.html:546
-#: templates/frontend/survey/survey_report.html:33
+#: templates/frontend/survey/survey_change.html:555
+#: templates/frontend/survey/survey_report.html:40
 #: templates/frontend/voiceapp/change.html:37
 msgid "Submit"
 msgstr "Someter"
@@ -1577,7 +1583,7 @@ msgid "Search Option"
 msgstr "Opción de búsqueda"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:59
-#: templates/frontend/contact/list.html:100
+#: templates/frontend/contact/list.html:102
 #: templates/frontend/report/voipcall_report.html:55
 msgid "Search"
 msgstr "Búsqueda"
@@ -1640,17 +1646,17 @@ msgstr "Aplicación de Voz"
 
 #: templates/admin_tools/dashboard/modules/app_list.html:50
 #: templates/frontend/campaign/change.html:11
-#: templates/frontend/campaign/list.html:64
+#: templates/frontend/campaign/list.html:65
 #: templates/frontend/contact/change.html:18
-#: templates/frontend/contact/list.html:136
+#: templates/frontend/contact/list.html:138
 #: templates/frontend/phonebook/change.html:11
-#: templates/frontend/phonebook/list.html:71
+#: templates/frontend/phonebook/list.html:74
 #: templates/frontend/survey/audio_change.html:12
-#: templates/frontend/survey/audio_list.html:60
-#: templates/frontend/survey/survey_change.html:372
-#: templates/frontend/survey/survey_list.html:53
+#: templates/frontend/survey/audio_list.html:62
+#: templates/frontend/survey/survey_change.html:377
+#: templates/frontend/survey/survey_list.html:54
 #: templates/frontend/voiceapp/change.html:11
-#: templates/frontend/voiceapp/list.html:50
+#: templates/frontend/voiceapp/list.html:51
 msgid "Add"
 msgstr "Añadir"
 
@@ -1688,7 +1694,7 @@ msgid "Modules"
 msgstr "Módulos"
 
 #: templates/frontend/bootstrap_menu.html:33
-#: templates/frontend/voiceapp/list.html:57
+#: templates/frontend/voiceapp/list.html:58
 msgid "Voice Apps"
 msgstr "Voz Apps"
 
@@ -1701,12 +1707,12 @@ msgid "Account settings"
 msgstr "Cuenta"
 
 #: templates/frontend/bootstrap_menu.html:49
-#: templates/frontend/registration/user_detail_change.html:34
+#: templates/frontend/registration/user_detail_change.html:32
 msgid "Notifications"
 msgstr "Notificaciones"
 
 #: templates/frontend/bootstrap_menu.html:51
-#: templates/frontend/registration/user_detail_change.html:35
+#: templates/frontend/registration/user_detail_change.html:33
 msgid "Account Limits"
 msgstr "Límites de Cuenta"
 
@@ -1725,6 +1731,46 @@ msgstr "¿Olvidó su contraseña?"
 #: templates/frontend/bootstrap_menu.html:83
 msgid "new notifications"
 msgstr "nueva(s) notificación(s)"
+
+#: templates/frontend/custom_jquery_select_all.html:16
+msgid "You must check at least one box!"
+msgstr "Usted debe marcar al menos una caja!"
+
+#: templates/frontend/custom_jquery_select_all.html:27
+msgid " voice app(s) are going to be deleted?"
+msgstr " aplicación(s) de voz van a ser eliminados?"
+
+#: templates/frontend/custom_jquery_select_all.html:31
+msgid " phonebook(s) are going to be deleted?"
+msgstr " agenda(s) van a ser eliminados?"
+
+#: templates/frontend/custom_jquery_select_all.html:35
+msgid " survey(s) are going to be deleted?"
+msgstr " encuesta(s) van a ser eliminados?"
+
+#: templates/frontend/custom_jquery_select_all.html:39
+msgid " audio(s) are going to be deleted?"
+msgstr " audio(s) van a ser eliminados?"
+
+#: templates/frontend/custom_jquery_select_all.html:62
+msgid " phonebook(s) are going to be deleted with "
+msgstr " agenda(s) van a ser eliminados con "
+
+#: templates/frontend/custom_jquery_select_all.html:62
+msgid " contact(s)?"
+msgstr "contacto(s)?"
+
+#: templates/frontend/custom_jquery_select_all.html:67
+msgid " campaign(s) are going to be deleted?"
+msgstr " campaña(s) van a ser eliminados?"
+
+#: templates/frontend/custom_jquery_select_all.html:72
+msgid " notification(s) are going to be deleted?"
+msgstr " notificación(s) van a ser eliminados?"
+
+#: templates/frontend/custom_jquery_select_all.html:76
+msgid " notification(s) are going to be marked as read?"
+msgstr " notificación(s) van a ser marcados como leídos?"
 
 #: templates/frontend/dashboard.html:23
 msgid "Realtime campaign performance monitoring"
@@ -1856,25 +1902,26 @@ msgid "Customer Interface"
 msgstr "Interfaz del cliente"
 
 #: templates/frontend/master.html:144 templates/frontend/master.html.py:150
-#: templates/frontend/master.html:170 templates/frontend/campaign/list.html:30
-#: templates/frontend/campaign/list.html:36
+#: templates/frontend/master.html:170 templates/frontend/campaign/list.html:31
+#: templates/frontend/campaign/list.html:37
 #: templates/frontend/contact/import_contact.html:19
 #: templates/frontend/contact/import_contact.html:24
-#: templates/frontend/contact/list.html:47
-#: templates/frontend/phonebook/list.html:45
-#: templates/frontend/registration/user_detail_change.html:44
-#: templates/frontend/registration/user_detail_change.html:49
-#: templates/frontend/registration/user_detail_change.html:77
-#: templates/frontend/registration/user_detail_change.html:82
-#: templates/frontend/registration/user_detail_change.html:111
-#: templates/frontend/registration/user_detail_change.html:239
-#: templates/frontend/registration/user_detail_change.html:244
-#: templates/frontend/survey/audio_list.html:35
-#: templates/frontend/survey/survey_change.html:381
-#: templates/frontend/survey/survey_change.html:387
-#: templates/frontend/survey/survey_list.html:29
-#: templates/frontend/survey/survey_report.html:12
-#: templates/frontend/voiceapp/list.html:22
+#: templates/frontend/contact/list.html:49
+#: templates/frontend/phonebook/list.html:48
+#: templates/frontend/registration/user_detail_change.html:42
+#: templates/frontend/registration/user_detail_change.html:47
+#: templates/frontend/registration/user_detail_change.html:89
+#: templates/frontend/registration/user_detail_change.html:94
+#: templates/frontend/registration/user_detail_change.html:123
+#: templates/frontend/registration/user_detail_change.html:251
+#: templates/frontend/registration/user_detail_change.html:256
+#: templates/frontend/survey/audio_list.html:36
+#: templates/frontend/survey/survey_change.html:386
+#: templates/frontend/survey/survey_change.html:392
+#: templates/frontend/survey/survey_list.html:30
+#: templates/frontend/survey/survey_report.html:13
+#: templates/frontend/survey/survey_report.html:19
+#: templates/frontend/voiceapp/list.html:23
 msgid "Alert"
 msgstr "Alerta"
 
@@ -1918,7 +1965,7 @@ msgstr "bajo licencia"
 #: templates/frontend/phonebook/change.html:36
 #: templates/frontend/survey/audio_change.html:10
 #: templates/frontend/survey/audio_change.html:34
-#: templates/frontend/survey/survey_change.html:370
+#: templates/frontend/survey/survey_change.html:375
 #: templates/frontend/voiceapp/change.html:9
 #: templates/frontend/voiceapp/change.html:35
 msgid "Update"
@@ -1932,7 +1979,7 @@ msgstr "Establezca los parámetros de la campaña"
 msgid "General settings"
 msgstr "Configuración general"
 
-#: templates/frontend/campaign/change.html:41 user_profile/models.py:57
+#: templates/frontend/campaign/change.html:41 user_profile/models.py:56
 msgid "Dialer settings"
 msgstr "Marcador de configuración"
 
@@ -1951,114 +1998,114 @@ msgstr "Dias desde la semana"
 msgid "Delete"
 msgstr "Borrar"
 
-#: templates/frontend/campaign/list.html:15
-#: templates/frontend/contact/list.html:23
-#: templates/frontend/registration/user_detail_change.html:16
-#: templates/frontend/survey/audio_list.html:20
-#: templates/frontend/survey/survey_list.html:15
+#: templates/frontend/campaign/list.html:13
+#: templates/frontend/contact/list.html:22
+#: templates/frontend/registration/user_detail_change.html:12
+#: templates/frontend/survey/audio_list.html:18
+#: templates/frontend/survey/survey_list.html:13
 msgid "Confirm deletion?"
 msgstr "Confirmar la eliminación?"
 
-#: templates/frontend/campaign/list.html:23
+#: templates/frontend/campaign/list.html:24
 msgid "List, add and edit campaigns"
 msgstr "Lista, agregar y editar las campañas"
 
-#: templates/frontend/campaign/list.html:54
+#: templates/frontend/campaign/list.html:55
 msgid "Key"
 msgstr "Clave"
 
-#: templates/frontend/campaign/list.html:56
+#: templates/frontend/campaign/list.html:57
 #: templates/frontend/report/voipcall_report.html:82
 msgid "Start date"
 msgstr "Comienzo Fecha"
 
-#: templates/frontend/campaign/list.html:58
+#: templates/frontend/campaign/list.html:59
 msgid "App"
 msgstr "De la aplicación"
 
-#: templates/frontend/campaign/list.html:66
-#: templates/frontend/contact/list.html:140
-#: templates/frontend/phonebook/list.html:73
-#: templates/frontend/survey/audio_list.html:62
-#: templates/frontend/survey/survey_list.html:55
-#: templates/frontend/voiceapp/list.html:52
+#: templates/frontend/campaign/list.html:67
+#: templates/frontend/contact/list.html:142
+#: templates/frontend/phonebook/list.html:76
+#: templates/frontend/survey/audio_list.html:64
+#: templates/frontend/survey/survey_list.html:56
+#: templates/frontend/voiceapp/list.html:53
 msgid "Delete Selected"
 msgstr "Borrar"
 
-#: templates/frontend/campaign/list.html:77
-#: templates/frontend/contact/list.html:151
-#: templates/frontend/phonebook/list.html:84
-#: templates/frontend/registration/user_detail_change.html:152
+#: templates/frontend/campaign/list.html:78
+#: templates/frontend/contact/list.html:153
+#: templates/frontend/phonebook/list.html:87
+#: templates/frontend/registration/user_detail_change.html:164
 #: templates/frontend/report/voipcall_report.html:101
-#: templates/frontend/survey/audio_list.html:73
-#: templates/frontend/survey/survey_list.html:66
+#: templates/frontend/survey/audio_list.html:75
+#: templates/frontend/survey/survey_list.html:67
 msgid "Page"
 msgstr "página"
 
-#: templates/frontend/campaign/list.html:78
-#: templates/frontend/campaign/list.html:81
-#: templates/frontend/contact/list.html:152
-#: templates/frontend/contact/list.html:155
-#: templates/frontend/phonebook/list.html:85
+#: templates/frontend/campaign/list.html:79
+#: templates/frontend/campaign/list.html:82
+#: templates/frontend/contact/list.html:154
+#: templates/frontend/contact/list.html:157
 #: templates/frontend/phonebook/list.html:88
-#: templates/frontend/registration/user_detail_change.html:153
-#: templates/frontend/registration/user_detail_change.html:156
+#: templates/frontend/phonebook/list.html:91
+#: templates/frontend/registration/user_detail_change.html:165
+#: templates/frontend/registration/user_detail_change.html:168
 #: templates/frontend/report/voipcall_report.html:102
 #: templates/frontend/report/voipcall_report.html:105
-#: templates/frontend/survey/audio_list.html:74
-#: templates/frontend/survey/audio_list.html:77
-#: templates/frontend/survey/survey_list.html:67
-#: templates/frontend/survey/survey_list.html:70
+#: templates/frontend/survey/audio_list.html:76
+#: templates/frontend/survey/audio_list.html:79
+#: templates/frontend/survey/survey_list.html:68
+#: templates/frontend/survey/survey_list.html:71
 msgid "of"
 msgstr "of"
 
-#: templates/frontend/campaign/list.html:79
-#: templates/frontend/contact/list.html:153
-#: templates/frontend/phonebook/list.html:86
-#: templates/frontend/registration/user_detail_change.html:154
+#: templates/frontend/campaign/list.html:80
+#: templates/frontend/contact/list.html:155
+#: templates/frontend/phonebook/list.html:89
+#: templates/frontend/registration/user_detail_change.html:166
 #: templates/frontend/report/voipcall_report.html:103
-#: templates/frontend/survey/audio_list.html:75
-#: templates/frontend/survey/survey_list.html:68
+#: templates/frontend/survey/audio_list.html:77
+#: templates/frontend/survey/survey_list.html:69
 msgid "No items"
 msgstr "página"
 
-#: templates/frontend/campaign/list.html:80
-#: templates/frontend/contact/list.html:154
-#: templates/frontend/phonebook/list.html:87
-#: templates/frontend/registration/user_detail_change.html:155
+#: templates/frontend/campaign/list.html:81
+#: templates/frontend/contact/list.html:156
+#: templates/frontend/phonebook/list.html:90
+#: templates/frontend/registration/user_detail_change.html:167
 #: templates/frontend/report/voipcall_report.html:104
-#: templates/frontend/survey/audio_list.html:76
-#: templates/frontend/survey/survey_list.html:69
+#: templates/frontend/survey/audio_list.html:78
+#: templates/frontend/survey/survey_list.html:70
 msgid "Processing, please wait ..."
 msgstr "En Proceso, por favor espere ..."
 
-#: templates/frontend/campaign/list.html:81
-#: templates/frontend/contact/list.html:155
-#: templates/frontend/phonebook/list.html:88
-#: templates/frontend/registration/user_detail_change.html:156
+#: templates/frontend/campaign/list.html:82
+#: templates/frontend/contact/list.html:157
+#: templates/frontend/phonebook/list.html:91
+#: templates/frontend/registration/user_detail_change.html:168
 #: templates/frontend/report/voipcall_report.html:105
-#: templates/frontend/survey/audio_list.html:77
-#: templates/frontend/survey/survey_list.html:70
+#: templates/frontend/survey/audio_list.html:79
+#: templates/frontend/survey/survey_list.html:71
 msgid "Displaying"
 msgstr "Mostrando"
 
-#: templates/frontend/campaign/list.html:81
-#: templates/frontend/contact/list.html:155
-#: templates/frontend/phonebook/list.html:88
-#: templates/frontend/registration/user_detail_change.html:156
+#: templates/frontend/campaign/list.html:82
+#: templates/frontend/contact/list.html:157
+#: templates/frontend/phonebook/list.html:91
+#: templates/frontend/registration/user_detail_change.html:168
 #: templates/frontend/report/voipcall_report.html:105
-#: templates/frontend/survey/audio_list.html:77
-#: templates/frontend/survey/survey_list.html:70
+#: templates/frontend/survey/audio_list.html:79
+#: templates/frontend/survey/survey_list.html:71
 msgid "to"
 msgstr "a"
 
-#: templates/frontend/campaign/list.html:81
-#: templates/frontend/contact/list.html:155
-#: templates/frontend/phonebook/list.html:88
-#: templates/frontend/registration/user_detail_change.html:156
+#: templates/frontend/campaign/list.html:82
+#: templates/frontend/contact/list.html:157
+#: templates/frontend/phonebook/list.html:91
+#: templates/frontend/registration/user_detail_change.html:168
 #: templates/frontend/report/voipcall_report.html:105
-#: templates/frontend/survey/audio_list.html:77
-#: templates/frontend/survey/survey_list.html:70
+#: templates/frontend/survey/audio_list.html:79
+#: templates/frontend/survey/survey_list.html:71
 msgid "items"
 msgstr "elementos"
 
@@ -2098,20 +2145,20 @@ msgstr "Suscriptor(s) importado"
 msgid "Subscriber(s) not imported"
 msgstr "Suscriptor(s) no importado"
 
-#: templates/frontend/contact/list.html:40
+#: templates/frontend/contact/list.html:42
 msgid "List, add and edit contacts"
 msgstr "Lista, agregar y editar contactos"
 
-#: templates/frontend/contact/list.html:101
+#: templates/frontend/contact/list.html:103
 msgid "Clear"
 msgstr "Claro"
 
-#: templates/frontend/contact/list.html:126
-#: templates/frontend/phonebook/list.html:63
+#: templates/frontend/contact/list.html:128
+#: templates/frontend/phonebook/list.html:66
 msgid "Id"
 msgstr "Identificación"
 
-#: templates/frontend/contact/list.html:138
+#: templates/frontend/contact/list.html:140
 msgid "Import"
 msgstr "importación"
 
@@ -2127,7 +2174,7 @@ msgstr "Por favor, confirme que quieres borrar esta agenda con"
 msgid "contact(s)"
 msgstr "contacto(s)"
 
-#: templates/frontend/phonebook/list.html:38
+#: templates/frontend/phonebook/list.html:41
 msgid "List, add and edit phonebooks"
 msgstr "Lista, añadir y editar guías telefónicas"
 
@@ -2228,79 +2275,79 @@ msgstr ""
 msgid "Reset my password"
 msgstr "Perdí mi contraseña"
 
-#: templates/frontend/registration/user_detail_change.html:26
+#: templates/frontend/registration/user_detail_change.html:24
 msgid "Password, notifications, account limits and number check"
 msgstr ""
 "Contraseña, las notificaciones, limites de cuenta y verificación de número"
 
-#: templates/frontend/registration/user_detail_change.html:32
+#: templates/frontend/registration/user_detail_change.html:30
 msgid "Account"
 msgstr "Cuenta"
 
-#: templates/frontend/registration/user_detail_change.html:33
+#: templates/frontend/registration/user_detail_change.html:31
 msgid "Password"
 msgstr "Contraseña"
 
-#: templates/frontend/registration/user_detail_change.html:36
+#: templates/frontend/registration/user_detail_change.html:34
 msgid "Number Check"
 msgstr "Verificación de Número"
 
-#: templates/frontend/registration/user_detail_change.html:70
+#: templates/frontend/registration/user_detail_change.html:82
 msgid "Change detail"
 msgstr "Cambiar los detalles"
 
-#: templates/frontend/registration/user_detail_change.html:103
+#: templates/frontend/registration/user_detail_change.html:115
 msgid "Change password"
 msgstr "Cambiar la contraseña"
 
-#: templates/frontend/registration/user_detail_change.html:130
+#: templates/frontend/registration/user_detail_change.html:142
 #: templates/frontend/registration/user_notice.html:14
 msgid "Message"
 msgstr "Mensaje"
 
-#: templates/frontend/registration/user_detail_change.html:131
+#: templates/frontend/registration/user_detail_change.html:143
 #: templates/frontend/registration/user_notice.html:15
 msgid "Notification type"
 msgstr "Notificación de tipo"
 
-#: templates/frontend/registration/user_detail_change.html:132
+#: templates/frontend/registration/user_detail_change.html:144
 #: templates/frontend/registration/user_notice.html:16
 msgid "Sender"
 msgstr "Remitente"
 
-#: templates/frontend/registration/user_detail_change.html:137
+#: templates/frontend/registration/user_detail_change.html:149
 msgid "Delete all notifications"
 msgstr "Eliminar todas las notificaciones"
 
-#: templates/frontend/registration/user_detail_change.html:139
+#: templates/frontend/registration/user_detail_change.html:151
 msgid "Mark as read"
 msgstr "Marcar como leído"
 
-#: templates/frontend/registration/user_detail_change.html:141
+#: templates/frontend/registration/user_detail_change.html:153
 msgid "Mark all as read"
 msgstr "Marcar todos como leídos"
 
-#: templates/frontend/registration/user_detail_change.html:146
+#: templates/frontend/registration/user_detail_change.html:158
 msgid "Notification"
 msgstr "Notificación"
 
-#: templates/frontend/registration/user_detail_change.html:206
+#: templates/frontend/registration/user_detail_change.html:218
 msgid "Maximum call duration"
 msgstr "Máximo de duración de la llamada"
 
-#: templates/frontend/registration/user_detail_change.html:210
+#: templates/frontend/registration/user_detail_change.html:222
 msgid "Maximum retries"
 msgstr "Máximo de reintentos"
 
-#: templates/frontend/registration/user_detail_change.html:214
+#: templates/frontend/registration/user_detail_change.html:226
 msgid "Timeout"
 msgstr "Tiempo de espera"
 
-#: templates/frontend/registration/user_detail_change.html:218
+#: templates/frontend/registration/user_detail_change.html:230
 msgid "Maximum campaigns"
 msgstr "Máxima quantidad de Campañas"
 
-#: templates/frontend/registration/user_detail_change.html:265
+#: templates/frontend/registration/user_detail_change.html:277
 msgid "Check"
 msgstr "Comprobar"
 
@@ -2337,7 +2384,7 @@ msgid "Phone No."
 msgstr "Num Teléfono"
 
 #: templates/frontend/report/voipcall_report.html:87
-#: templates/frontend/voiceapp/list.html:44 user_profile/models.py:55
+#: templates/frontend/voiceapp/list.html:45 user_profile/models.py:54
 msgid "Gateway"
 msgstr "Pasarela"
 
@@ -2353,46 +2400,57 @@ msgstr "Informe Llamadas"
 msgid "Upload audio to be used in Voice applications"
 msgstr "Subir audio para ser utilizado en aplicaciones de Voz"
 
-#: templates/frontend/survey/audio_list.html:28
+#: templates/frontend/survey/audio_list.html:29
 msgid "List, upload and edit audio files"
 msgstr "Lista, cargar y editar archivos de audio"
 
-#: templates/frontend/survey/audio_list.html:55
+#: templates/frontend/survey/audio_list.html:56
 msgid "Audio"
 msgstr "Audio"
+
+#: templates/frontend/survey/audio_list.html:57
+msgid "Audio URL"
+msgstr "Audio URL"
 
 #: templates/frontend/survey/survey_change.html:235
 msgid "New Question"
 msgstr "Nueva pregunta"
 
 #: templates/frontend/survey/survey_change.html:266
-#: templates/frontend/survey/survey_change.html:464
+#: templates/frontend/survey/survey_change.html:469
 msgid "Delete question"
 msgstr "Eliminar pregunta"
 
-#: templates/frontend/survey/survey_change.html:280
-#: templates/frontend/survey/survey_change.html:523
+#: templates/frontend/survey/survey_change.html:274
+#: templates/frontend/survey/survey_change.html:478
+msgid ""
+"If no audio file is selected, then text to speech is used to read out the "
+"question"
+msgstr "Si no hay ningún archivo de audio está seleccionada, texto a voz se utiliza para leer la pregunta"
+
+#: templates/frontend/survey/survey_change.html:285
+#: templates/frontend/survey/survey_change.html:532
 msgid "Add Response"
 msgstr "Añadir respuesta"
 
-#: templates/frontend/survey/survey_change.html:330
-#: templates/frontend/survey/survey_change.html:511
+#: templates/frontend/survey/survey_change.html:335
+#: templates/frontend/survey/survey_change.html:520
 msgid "Delete response"
 msgstr "Eliminar la respuesta"
 
-#: templates/frontend/survey/survey_change.html:373
+#: templates/frontend/survey/survey_change.html:378
 msgid "Survey configuration"
 msgstr "Encuesta configuración"
 
-#: templates/frontend/survey/survey_change.html:537
+#: templates/frontend/survey/survey_change.html:546
 msgid "Add Question"
 msgstr "Añadir pregunta"
 
-#: templates/frontend/survey/survey_change.html:544
+#: templates/frontend/survey/survey_change.html:553
 msgid "Update Survey"
 msgstr "Editar la encuesta"
 
-#: templates/frontend/survey/survey_list.html:23
+#: templates/frontend/survey/survey_list.html:24
 msgid "List, add and edit surveys"
 msgstr "Lista, agregar y editar las encuestas"
 
@@ -2405,7 +2463,7 @@ msgid "Monitor survey results"
 msgstr "Monitor de resultados de la encuesta"
 
 #: templates/frontend/voiceapp/change.html:12
-#: templates/frontend/voiceapp/list.html:15 voice_app/models.py:72
+#: templates/frontend/voiceapp/list.html:16 voice_app/models.py:72
 msgid "Voice Applications"
 msgstr "Aplicaciones de Voz"
 
@@ -2413,11 +2471,11 @@ msgstr "Aplicaciones de Voz"
 msgid "Configure voice application"
 msgstr "Configurar aplicaciones de voz"
 
-#: templates/frontend/voiceapp/list.html:15
+#: templates/frontend/voiceapp/list.html:16
 msgid "List, add and edit voice applications"
 msgstr "Lista, agregar y editar las aplicaciones de voz"
 
-#: templates/frontend/voiceapp/list.html:45
+#: templates/frontend/voiceapp/list.html:46
 msgid "Data"
 msgstr "Datos"
 
@@ -2429,27 +2487,761 @@ msgstr "Gracias por utilizar Newfies."
 msgid "Log in again"
 msgstr "Conectarse de nuevo"
 
-#: user_profile/admin.py:29
+#: user_profile/admin.py:30
 msgid "Personal info"
 msgstr "Información personal"
 
-#: user_profile/admin.py:33
+#: user_profile/admin.py:34
 msgid "Permission"
 msgstr "Permiso"
 
-#: user_profile/admin.py:36
+#: user_profile/admin.py:37
 msgid "Important dates"
 msgstr "fechas importantes"
+
+#: user_profile/fields.py:21
+msgid "Afar"
+msgstr "Lejos"
+
+#: user_profile/fields.py:22
+msgid "Abkhazian"
+msgstr "Abjasia"
+
+#: user_profile/fields.py:23
+msgid "Afrikaans"
+msgstr "Africaans"
+
+#: user_profile/fields.py:24
+msgid "Akan"
+msgstr "Akan"
+
+#: user_profile/fields.py:25 user_profile/fields.py:187
+msgid "Albanian"
+msgstr "Albanés"
+
+#: user_profile/fields.py:26
+msgid "Amharic"
+msgstr "Amárico"
+
+#: user_profile/fields.py:27
+msgid "Arabic"
+msgstr "Árabe"
+
+#: user_profile/fields.py:28
+msgid "Aragonese"
+msgstr "Aragonés"
+
+#: user_profile/fields.py:29 user_profile/fields.py:95
+msgid "Armenian"
+msgstr "Armenio"
+
+#: user_profile/fields.py:30
+msgid "Assamese"
+msgstr "Assamese"
+
+#: user_profile/fields.py:31
+msgid "Avaric"
+msgstr "Avaric"
+
+#: user_profile/fields.py:32
+msgid "Avestan"
+msgstr "Avestan"
+
+#: user_profile/fields.py:33
+msgid "Aymara"
+msgstr "Aimara"
+
+#: user_profile/fields.py:34
+msgid "Azerbaijani"
+msgstr "Azerbaiyán"
+
+#: user_profile/fields.py:35
+msgid "Bashkir"
+msgstr "Bashkir"
+
+#: user_profile/fields.py:36
+msgid "Bambara"
+msgstr "Bambara"
+
+#: user_profile/fields.py:37 user_profile/fields.py:68
+msgid "Basque"
+msgstr "Vasco"
+
+#: user_profile/fields.py:38
+msgid "Belarusian"
+msgstr "Bielorruso"
+
+#: user_profile/fields.py:39
+msgid "Bengali"
+msgstr "Bengalí"
+
+#: user_profile/fields.py:40
+msgid "Bihari languages"
+msgstr "Bihari idiomas"
+
+#: user_profile/fields.py:41
+msgid "Bislama"
+msgstr "Bislama"
+
+#: user_profile/fields.py:42 user_profile/fields.py:201
+msgid "Tibetan"
+msgstr "Tibetana"
+
+#: user_profile/fields.py:43
+msgid "Bosnian"
+msgstr "Bosnio"
+
+#: user_profile/fields.py:44
+msgid "Breton"
+msgstr "Breton"
+
+#: user_profile/fields.py:45
+msgid "Bulgarian"
+msgstr "Búlgaro"
+
+#: user_profile/fields.py:46 user_profile/fields.py:145
+msgid "Burmese"
+msgstr "Birmano"
+
+#: user_profile/fields.py:47
+msgid "Catalan; Valencian"
+msgstr "Catalán, valenciano"
+
+#: user_profile/fields.py:48 user_profile/fields.py:58
+msgid "Czech"
+msgstr "Checo"
+
+#: user_profile/fields.py:49
+msgid "Chamorro"
+msgstr "Chamorro"
+
+#: user_profile/fields.py:50
+msgid "Chechen"
+msgstr "Chechenia"
+
+#: user_profile/fields.py:51 user_profile/fields.py:223
+msgid "Chinese"
+msgstr "Chino"
+
+#: user_profile/fields.py:52
+msgid ""
+"Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church "
+"Slavonic"
+msgstr "Iglesia eslava, antiguo eslavo, eslavo eclesiástico, antiguo búlgaro, antiguo eslavo eclesiástico"
+
+#: user_profile/fields.py:53
+msgid "Chuvash"
+msgstr "Chuvashia"
+
+#: user_profile/fields.py:54
+msgid "Cornish"
+msgstr "Cornualles"
+
+#: user_profile/fields.py:55
+msgid "Corsican"
+msgstr "Corso"
+
+#: user_profile/fields.py:56
+msgid "Cree"
+msgstr "Cree"
+
+#: user_profile/fields.py:57 user_profile/fields.py:216
+msgid "Welsh"
+msgstr "Galés"
+
+#: user_profile/fields.py:59
+msgid "Danish"
+msgstr "Danés"
+
+#: user_profile/fields.py:60 user_profile/fields.py:79
+msgid "German"
+msgstr "Alemán"
+
+#: user_profile/fields.py:61
+msgid "Divehi; Dhivehi; Maldivian"
+msgstr "Divehi; Dhivehi, Maldivas"
+
+#: user_profile/fields.py:62 user_profile/fields.py:152
+msgid "Dutch; Flemish"
+msgstr "Holandeses, flamencos"
+
+#: user_profile/fields.py:63
+msgid "Dzongkha"
+msgstr "Dzongkha"
+
+#: user_profile/fields.py:64 user_profile/fields.py:84
+msgid "Greek, Modern (1453-)"
+msgstr "Griego, Moderno (1453 -)"
+
+#: user_profile/fields.py:66
+msgid "Esperanto"
+msgstr "Esperanto"
+
+#: user_profile/fields.py:67
+msgid "Estonian"
+msgstr "Estonia"
+
+#: user_profile/fields.py:69
+msgid "Ewe"
+msgstr "Oveja"
+
+#: user_profile/fields.py:70
+msgid "Faroese"
+msgstr "Las Islas Feroe"
+
+#: user_profile/fields.py:71 user_profile/fields.py:163
+msgid "Persian"
+msgstr "Persa"
+
+#: user_profile/fields.py:72
+msgid "Fijian"
+msgstr "Fiyi"
+
+#: user_profile/fields.py:73
+msgid "Finnish"
+msgstr "Finlandés"
+
+#: user_profile/fields.py:74 user_profile/fields.py:75
+msgid "French"
+msgstr "Francés"
+
+#: user_profile/fields.py:76
+msgid "Western Frisian"
+msgstr "Oeste de Frisia"
+
+#: user_profile/fields.py:77
+msgid "Fulah"
+msgstr "Fulah"
+
+#: user_profile/fields.py:78 user_profile/fields.py:112
+msgid "Georgian"
+msgstr "Georgiano"
+
+#: user_profile/fields.py:80
+msgid "Gaelic; Scottish Gaelic"
+msgstr "Gaélico, gaélico escocés"
+
+#: user_profile/fields.py:81
+msgid "Irish"
+msgstr "Irlandés"
+
+#: user_profile/fields.py:82
+msgid "Galician"
+msgstr "Gallego"
+
+#: user_profile/fields.py:83
+msgid "Manx"
+msgstr "La Isla de Man"
+
+#: user_profile/fields.py:85
+msgid "Guarani"
+msgstr "Guaraní"
+
+#: user_profile/fields.py:86
+msgid "Gujarati"
+msgstr "Gujarati"
+
+#: user_profile/fields.py:87
+msgid "Haitian; Haitian Creole"
+msgstr "Haití, el criollo haitiano"
+
+#: user_profile/fields.py:88
+msgid "Hausa"
+msgstr "Hausa"
+
+#: user_profile/fields.py:89
+msgid "Hebrew"
+msgstr "Hebreo"
+
+#: user_profile/fields.py:90
+msgid "Herero"
+msgstr "Herero"
+
+#: user_profile/fields.py:91
+msgid "Hindi"
+msgstr "Hindi"
+
+#: user_profile/fields.py:92
+msgid "Hiri Motu"
+msgstr "Hiri Motu"
+
+#: user_profile/fields.py:93
+msgid "Croatian"
+msgstr "Croata"
+
+#: user_profile/fields.py:94
+msgid "Hungarian"
+msgstr "Húngaro"
+
+#: user_profile/fields.py:96
+msgid "Igbo"
+msgstr "Igbo"
+
+#: user_profile/fields.py:97 user_profile/fields.py:105
+msgid "Icelandic"
+msgstr "Islandés"
+
+#: user_profile/fields.py:98
+msgid "Ido"
+msgstr "Ido"
+
+#: user_profile/fields.py:99
+msgid "Sichuan Yi; Nuosu"
+msgstr "Sichuan Yi; Nuosu"
+
+#: user_profile/fields.py:100
+msgid "Inuktitut"
+msgstr "Inuktitut"
+
+#: user_profile/fields.py:101
+msgid "Interlingue; Occidental"
+msgstr "Interlingue; Occidental"
+
+#: user_profile/fields.py:102
+msgid "Interlingua (International Auxiliary Language Association)"
+msgstr "Interlingua (auxiliar internacional de la Asociación de la Lengua)"
+
+#: user_profile/fields.py:103
+msgid "Indonesian"
+msgstr "Indonesio"
+
+#: user_profile/fields.py:104
+msgid "Inupiaq"
+msgstr "Inupiaq"
+
+#: user_profile/fields.py:106
+msgid "Italian"
+msgstr "Italiano"
+
+#: user_profile/fields.py:107
+msgid "Javanese"
+msgstr "Javanés"
+
+#: user_profile/fields.py:108
+msgid "Japanese"
+msgstr "Japonés"
+
+#: user_profile/fields.py:109
+msgid "Kalaallisut; Greenlandic"
+msgstr "Kalaallisut, Groenlandia"
+
+#: user_profile/fields.py:110
+msgid "Kannada"
+msgstr "Canarés"
+
+#: user_profile/fields.py:111
+msgid "Kashmiri"
+msgstr "Cachemira"
+
+#: user_profile/fields.py:113
+msgid "Kanuri"
+msgstr "Kanuri"
+
+#: user_profile/fields.py:114
+msgid "Kazakh"
+msgstr "Kazajstán"
+
+#: user_profile/fields.py:115
+msgid "Central Khmer"
+msgstr "Central de Khmer"
+
+#: user_profile/fields.py:116
+msgid "Kikuyu; Gikuyu"
+msgstr "Kikuyu, gikuyu"
+
+#: user_profile/fields.py:117
+msgid "Kinyarwanda"
+msgstr "Kinyarwanda"
+
+#: user_profile/fields.py:118
+msgid "Kirghiz; Kyrgyz"
+msgstr "Kirguises, Kirguistán"
+
+#: user_profile/fields.py:119
+msgid "Komi"
+msgstr "Komi"
+
+#: user_profile/fields.py:120
+msgid "Kongo"
+msgstr "Kongo"
+
+#: user_profile/fields.py:121
+msgid "Korean"
+msgstr "Coreano"
+
+#: user_profile/fields.py:122
+msgid "Kuanyama; Kwanyama"
+msgstr "Kuanyama; Kwanyama"
+
+#: user_profile/fields.py:123
+msgid "Kurdish"
+msgstr "Kurdo"
+
+#: user_profile/fields.py:124
+msgid "Lao"
+msgstr "Lao"
+
+#: user_profile/fields.py:125
+msgid "Latin"
+msgstr "Latino"
+
+#: user_profile/fields.py:126
+msgid "Latvian"
+msgstr "Letón"
+
+#: user_profile/fields.py:127
+msgid "Limburgan; Limburger; Limburgish"
+msgstr "Limburgan; Limburger, Limburgués"
+
+#: user_profile/fields.py:128
+msgid "Lingala"
+msgstr "Lingala"
+
+#: user_profile/fields.py:129
+msgid "Lithuanian"
+msgstr "Lituano"
+
+#: user_profile/fields.py:130
+msgid "Luxembourgish; Letzeburgesch"
+msgstr "El luxemburgués, el luxemburgués"
+
+#: user_profile/fields.py:131
+msgid "Luba-Katanga"
+msgstr "Luba-Katanga"
+
+#: user_profile/fields.py:132
+msgid "Ganda"
+msgstr "Ganda"
+
+#: user_profile/fields.py:133 user_profile/fields.py:139
+msgid "Macedonian"
+msgstr "Macedonio"
+
+#: user_profile/fields.py:134
+msgid "Marshallese"
+msgstr "De las Islas Marshall"
+
+#: user_profile/fields.py:135
+msgid "Malayalam"
+msgstr "Malayalam"
+
+#: user_profile/fields.py:136 user_profile/fields.py:143
+msgid "Maori"
+msgstr "Maorí"
+
+#: user_profile/fields.py:137
+msgid "Marathi"
+msgstr "Marathi"
+
+#: user_profile/fields.py:138 user_profile/fields.py:144
+msgid "Malay"
+msgstr "Malayo"
+
+#: user_profile/fields.py:140
+msgid "Malagasy"
+msgstr "Madagascar"
+
+#: user_profile/fields.py:141
+msgid "Maltese"
+msgstr "Maltés"
+
+#: user_profile/fields.py:142
+msgid "Mongolian"
+msgstr "Mongol"
+
+#: user_profile/fields.py:146
+msgid "Nauru"
+msgstr "Nauru"
+
+#: user_profile/fields.py:147
+msgid "Navajo; Navaho"
+msgstr "Navajo; Navajo"
+
+#: user_profile/fields.py:148
+msgid "Ndebele, South; South Ndebele"
+msgstr "Ndebele, Sur, Ndebele del sur"
+
+#: user_profile/fields.py:149
+msgid "Ndebele, North; North Ndebele"
+msgstr "Ndebele, Norte, Norte Ndebele"
+
+#: user_profile/fields.py:150
+msgid "Ndonga"
+msgstr "Ndonga"
+
+#: user_profile/fields.py:151
+msgid "Nepali"
+msgstr "Nepalí"
+
+#: user_profile/fields.py:153
+msgid "Norwegian Nynorsk; Nynorsk, Norwegian"
+msgstr "Nynorsk, Nynorsk, noruego"
+
+#: user_profile/fields.py:154
+msgid "Bokmal, Norwegian; Norwegian Bokmal"
+msgstr "Bokmål, noruego, Noruego Bokmål"
+
+#: user_profile/fields.py:155
+msgid "Norwegian"
+msgstr "Noruego"
+
+#: user_profile/fields.py:156
+msgid "Chichewa; Chewa; Nyanja"
+msgstr "Chichewa, chewa; nyanja"
+
+#: user_profile/fields.py:157
+msgid "Occitan (post 1500)"
+msgstr "Occitano (post 1500)"
+
+#: user_profile/fields.py:158
+msgid "Ojibwa"
+msgstr "Ojibwa"
+
+#: user_profile/fields.py:159
+msgid "Oriya"
+msgstr "Oriya"
+
+#: user_profile/fields.py:160
+msgid "Oromo"
+msgstr "Oromo"
+
+#: user_profile/fields.py:161
+msgid "Ossetian; Ossetic"
+msgstr "Osetia del Sur; osetio"
+
+#: user_profile/fields.py:162
+msgid "Panjabi; Punjabi"
+msgstr "Panjabi, Punjabi"
+
+#: user_profile/fields.py:164
+msgid "Pali"
+msgstr "Pali"
+
+#: user_profile/fields.py:165
+msgid "Polish"
+msgstr "Polaco"
+
+#: user_profile/fields.py:167
+msgid "Pushto; Pashto"
+msgstr "Pushto; Pashto"
+
+#: user_profile/fields.py:168
+msgid "Quechua"
+msgstr "Quechua"
+
+#: user_profile/fields.py:169
+msgid "Romansh"
+msgstr "Romanche"
+
+#: user_profile/fields.py:170 user_profile/fields.py:171
+msgid "Romanian; Moldavian; Moldovan"
+msgstr "Rumania, Moldavia, Moldavia"
+
+#: user_profile/fields.py:172
+msgid "Rundi"
+msgstr "Rundi"
+
+#: user_profile/fields.py:173
+msgid "Russian"
+msgstr "Ruso"
+
+#: user_profile/fields.py:174
+msgid "Sango"
+msgstr "Sango"
+
+#: user_profile/fields.py:175
+msgid "Sanskrit"
+msgstr "Sánscrito"
+
+#: user_profile/fields.py:176
+msgid "Sinhala; Sinhalese"
+msgstr "Cingalés, singalés"
+
+#: user_profile/fields.py:177 user_profile/fields.py:178
+msgid "Slovak"
+msgstr "Eslovaco"
+
+#: user_profile/fields.py:179
+msgid "Slovenian"
+msgstr "Esloveno"
+
+#: user_profile/fields.py:180
+msgid "Northern Sami"
+msgstr "Sami del norte"
+
+#: user_profile/fields.py:181
+msgid "Samoan"
+msgstr "Samoa"
+
+#: user_profile/fields.py:182
+msgid "Shona"
+msgstr "Shona"
+
+#: user_profile/fields.py:183
+msgid "Sindhi"
+msgstr "Sindhi"
+
+#: user_profile/fields.py:184
+msgid "Somali"
+msgstr "Somalí"
+
+#: user_profile/fields.py:185
+msgid "Sotho, Southern"
+msgstr "Lesotho, el sur de"
+
+#: user_profile/fields.py:186
+msgid "Spanish; Castilian"
+msgstr "Español, castellano"
+
+#: user_profile/fields.py:188
+msgid "Sardinian"
+msgstr "Sardo"
+
+#: user_profile/fields.py:189
+msgid "Serbian"
+msgstr "Serbio"
+
+#: user_profile/fields.py:190
+msgid "Swati"
+msgstr "Swati"
+
+#: user_profile/fields.py:191
+msgid "Sundanese"
+msgstr "Sundanese"
+
+#: user_profile/fields.py:192
+msgid "Swahili"
+msgstr "Swahili"
+
+#: user_profile/fields.py:193
+msgid "Swedish"
+msgstr "Sueco"
+
+#: user_profile/fields.py:194
+msgid "Tahitian"
+msgstr "Tahitian"
+
+#: user_profile/fields.py:195
+msgid "Tamil"
+msgstr "Tamil"
+
+#: user_profile/fields.py:196
+msgid "Tatar"
+msgstr "Tártara"
+
+#: user_profile/fields.py:197
+msgid "Telugu"
+msgstr "Telugu"
+
+#: user_profile/fields.py:198
+msgid "Tajik"
+msgstr "Tayikistán"
+
+#: user_profile/fields.py:199
+msgid "Tagalog"
+msgstr "Tagalog"
+
+#: user_profile/fields.py:200
+msgid "Thai"
+msgstr "Tailandés"
+
+#: user_profile/fields.py:202
+msgid "Tigrinya"
+msgstr "Tigrinya"
+
+#: user_profile/fields.py:203
+msgid "Tonga (Tonga Islands)"
+msgstr "Tonga (Islas Tonga)"
+
+#: user_profile/fields.py:204
+msgid "Tswana"
+msgstr "Tswana"
+
+#: user_profile/fields.py:205
+msgid "Tsonga"
+msgstr "Tsonga"
+
+#: user_profile/fields.py:206
+msgid "Turkmen"
+msgstr "Turkmenistán"
+
+#: user_profile/fields.py:207
+msgid "Turkish"
+msgstr "Turco"
+
+#: user_profile/fields.py:208
+msgid "Twi"
+msgstr "Twi"
+
+#: user_profile/fields.py:209
+msgid "Uighur; Uyghur"
+msgstr "Uigur; Uyghur"
+
+#: user_profile/fields.py:210
+msgid "Ukrainian"
+msgstr "Ucranio"
+
+#: user_profile/fields.py:211
+msgid "Urdu"
+msgstr "Urdu"
+
+#: user_profile/fields.py:212
+msgid "Uzbek"
+msgstr "Uzbeco"
+
+#: user_profile/fields.py:213
+msgid "Venda"
+msgstr "Venda"
+
+#: user_profile/fields.py:214
+msgid "Vietnamese"
+msgstr "Vietnamita"
+
+#: user_profile/fields.py:215
+msgid "Volapuk"
+msgstr "Volapuk"
+
+#: user_profile/fields.py:217
+msgid "Walloon"
+msgstr "Valonia"
+
+#: user_profile/fields.py:218
+msgid "Wolof"
+msgstr "Wolof"
+
+#: user_profile/fields.py:219
+msgid "Xhosa"
+msgstr "Xhosa"
+
+#: user_profile/fields.py:220
+msgid "Yiddish"
+msgstr "Yídish"
+
+#: user_profile/fields.py:221
+msgid "Yoruba"
+msgstr "Yoruba"
+
+#: user_profile/fields.py:222
+msgid "Zhuang; Chuang"
+msgstr "Zhuang, Chuang"
+
+#: user_profile/fields.py:224
+msgid "Zulu"
+msgstr "Zulú"
+
+#: user_profile/fields.py:232
+msgid "Stores language codes"
+msgstr "Almacena los códigos del lenguaje"
 
 #: user_profile/forms.py:12
 msgid "Email address"
 msgstr "Dirección de correo electrónico"
 
-#: user_profile/forms.py:33
+#: user_profile/forms.py:45
 msgid "Phone Number"
 msgstr "Número de teléfono"
 
-#: user_profile/forms.py:34
+#: user_profile/forms.py:46
 msgid "Check number is authorised to call"
 msgstr "Número está autorizado a llamar"
 
@@ -2485,11 +3277,11 @@ msgstr "El usuario necesita ser asignada con los ajustes por el administrador"
 msgid "Call request not found"
 msgstr "Solicitud de llamada no se encuentran"
 
-#: user_profile/models.py:29
+#: user_profile/models.py:30
 msgid "Address"
 msgstr "Dirección"
 
-#: user_profile/models.py:33
+#: user_profile/models.py:34
 msgid "State"
 msgstr "Estado"
 
@@ -2509,69 +3301,70 @@ msgstr "nombre de compañía"
 msgid "Company website"
 msgstr "Web de la compañía"
 
-#: user_profile/models.py:48
+#: user_profile/models.py:47
 msgid "Language"
 msgstr "Lenguaje"
 
-#: user_profile/models.py:50
+#: user_profile/models.py:49
 msgid "Note"
 msgstr "Nota"
 
-#: user_profile/models.py:63 user_profile/models.py:64
+#: user_profile/models.py:62 user_profile/models.py:63
 msgid "User Profile"
 msgstr "Perfil de usuario"
 
-#: user_profile/models.py:72
+#: user_profile/models.py:71
 msgid "Customer"
 msgstr "Cliente"
 
-#: user_profile/models.py:73
+#: user_profile/models.py:72
 msgid "Customers"
 msgstr "Clientes"
 
-#: user_profile/models.py:81
+#: user_profile/models.py:80
 msgid "Admin"
 msgstr "Administración"
 
-#: user_profile/models.py:82
+#: user_profile/models.py:81
 msgid "Admins"
 msgstr "Administradores"
 
-#: user_profile/views.py:72
+#: user_profile/views.py:82
 msgid "All notifications are marked as read."
 msgstr "Todas las notificaciones se marcan como leídos."
 
-#: user_profile/views.py:83
+#: user_profile/views.py:97
 msgid "Detail has been changed."
 msgstr "Detalle se ha cambiado."
 
-#: user_profile/views.py:85 user_profile/views.py:96 user_profile/views.py:105
+#: user_profile/views.py:99 user_profile/views.py:110
+#: user_profile/views.py:119
 msgid "Please correct the errors below."
 msgstr "Por favor, corrija los errores a continuación."
 
-#: user_profile/views.py:92
+#: user_profile/views.py:106
 msgid "This phone number is not authorized."
 msgstr "Este número de teléfono no está autorizado."
 
-#: user_profile/views.py:94
+#: user_profile/views.py:108
 msgid "This phone number is authorized."
 msgstr "Este número de teléfono está autorizado."
 
-#: user_profile/views.py:103
+#: user_profile/views.py:117
 msgid "Your password has been changed."
 msgstr "Su contraseña se ha cambiado."
 
-#: user_profile/views.py:222
+#: user_profile/views.py:237
 #, python-format
 msgid "\"%(name)s\" is marked as read."
 msgstr "\"%(name)s\" está marcado como leído."
 
-#: user_profile/views.py:233
+#: user_profile/views.py:248
 #, python-format
 msgid "%(count)s notification(s) are deleted."
 msgstr "%(count)s notificación(es) se ha eliminado."
 
-#: user_profile/views.py:237
+#: user_profile/views.py:252
 #, python-format
 msgid "%(count)s notification(s) are marked as read."
 msgstr "%(count)s notificación(es) se marcan como leídos."

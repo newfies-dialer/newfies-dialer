@@ -252,7 +252,28 @@ To Add/Update a Voice application
 Survey
 ~~~~~~
 
-comming soon...
+The survey application for Newfies-Dialer allows polls and surveys to be taken over the phone.
+
+Each contact is called, and then played a sound file. After the sound file is heard, the user can
+enter their answer through the phone keypad using keys 0 to 9.
+
+Therefore before creating the survey, the first job is to upload the audio for the survey. One audio
+file is required for each question.
+
+ **Add Audio File**
+
+CLick Audio Files, then click Add.
+
+Give the audio file a descriptive name, chose the file to upload.
+
+In the Admin screens, there are options to convert to other formats, change the number of channels, 
+e.g. change from stereo to mono, and down-sample the frequency. Finally, the user can be assigned.   
+
+ **Survey Admin Functions**
+
+From the admin screen, Surveys can be added, deleted and edited. Additionally, survey questions can 
+be re-ordered.
+
 
 **URL**:
 
@@ -278,6 +299,10 @@ To Add/Update a survey question
 
 .. image:: ../_static/images/admin/update_surveyquestion.png
     :width: 1000
+    
+When the survey is complete, the results can be inspected.
+
+ 	* http://localhost:8000/admin/survey/surveycampaignresult/
 
 
 .. _admin-call-request-access:

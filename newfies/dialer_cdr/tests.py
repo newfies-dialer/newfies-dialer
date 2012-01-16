@@ -39,7 +39,7 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
 
     def test_create_campaign(self):
         """Test Function to create a campaign"""
-        data = simplejson.dumps({"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "content_type": "voice_app", "object_id" : "1", "extra_data": "2000"})
+        data = simplejson.dumps({"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "content_type": "voice_app", "object_id" : "1", "extra_data": "2000", "phonebook_id": "1"})
         response = self.client.post('/api/v1/campaign/',
         data, content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)

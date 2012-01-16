@@ -368,7 +368,7 @@ def audio_file_player(audio_file):
     """audio player tag for frontend"""
     if audio_file:
         file_url = settings.MEDIA_URL + str(audio_file)
-        player_string = '<ul class="playlist"><li style="width:280px;">\
+        player_string = '<ul class="playlist"><li style="width:180px;">\
         <a href="%s">%s</a></li></ul>' % (file_url, os.path.basename(file_url))
         return player_string
 
@@ -421,6 +421,7 @@ def audio_grid(request):
                       value="' + str(row['id']) + '" />',
                       row['name'],
                       audio_file_player(row['audio_file']),
+                      settings.MEDIA_URL + str(row['audio_file']),
                       row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
                       '<a href="' + str(row['id']) + '/" class="icon" ' \
                       + update_style + ' title="' + _('Update audio') + '">&nbsp;</a>' +

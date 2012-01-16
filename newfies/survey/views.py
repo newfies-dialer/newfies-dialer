@@ -587,6 +587,10 @@ def survey_report(request):
                 campaign_obj = Campaign.objects.get(id=int(request.POST['campaign']))
                 survey_result = SurveyCampaignResult.objects.filter(campaign=campaign_obj)\
                 .values('question', 'response').annotate(Count('response')).distinct().order_by('question')
+
+                if not survey_result:
+                    request.session["err_msg"] = _('No record found!.')
+
             except:
                 request.session["err_msg"] = _('No campaign attached with survey.')
 

@@ -20,13 +20,6 @@
     </div>
 {% endif %}
 
-{% if not survey_result %}
-    <div class="alert-message danger">
-        <strong>{% trans "Alert" %} : </strong>  {% trans "No record found!" %}
-    </div>
-{% endif %}
-
-
 
 <form method="POST" action="." enctype="multipart/form-data">
 {% csrf_token %}

@@ -1,11 +1,7 @@
 {% extends "frontend/master.html" %}
 {% load dialer_cdr_extras i18n icons pagination_tags %}
 
-
-
 {% block extra_header %}
-<script type="text/javascript" src="{{STATIC_URL}}newfies/js/custom.jquery.select.all.js"></script>
-
 <!--flexigrid css & js-->
 <link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid.css" type="text/css" />
 <script type="text/javascript" src="{{STATIC_URL}}newfies/js/flexigrid.js"></script>
@@ -19,6 +15,8 @@ function get_alert_msg(id)
 }
 </script>
 
+{% include "frontend/custom_jquery_select_all.html" %}
+    
 {% endblock %}
 
 

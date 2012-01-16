@@ -52,11 +52,11 @@ $("#flex1").flexigrid({
     dataType: 'json',
 	colModel : [
         {display: '<input type="checkbox" onclick="toggleChecked(this.checked)">', name: '', width: 20, align: 'center'},
-        {display: '{% trans "Name" %}', name: 'name', width: 80, sortable: true, align: 'center'},
-        {display: '{% trans "Audio" %}', name: 'audio_file', width: 200, sortable: true, align: 'center'},
-        {display: '{% trans "Path" %}', name: '', width: 350, sortable: true, align: 'center'},
+        {display: '{% trans "Name" %}', name: 'name', width: 100, sortable: true, align: 'center'},
+        {display: '{% trans "Audio" %}', name: 'audio_file', width: 240, sortable: true, align: 'center'},
+        {display: '{% trans "Audio URL" %}', name: '', width: 250, sortable: true, align: 'center'},
         {display: '{% trans "Date" %}', name: 'updated_date', width: 110, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
-        {display: '{% trans "Action" %}', name: '', width : 40, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
+        {display: '{% trans "Action" %}', name: '', width : 80, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
 		],
     buttons : [
 		{name: '{% trans "Add" %}', bclass: 'add', onpress : add_button},

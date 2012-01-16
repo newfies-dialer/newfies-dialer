@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
@@ -414,15 +415,19 @@ def audio_grid(request):
                     settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
     delete_style = 'style="text-decoration:none;background-image:url(' + \
                     settings.STATIC_URL + 'newfies/icons/delete.png);"'
-
+    link_style = 'style="text-decoration:none;background-image:url(' + \
+                    settings.STATIC_URL + 'newfies/icons/link.png);"'
+    domain = Site.objects.get_current().domain
 
     rows = [{'id': row['id'],
              'cell': ['<input type="checkbox" name="select" class="checkbox"\
                       value="' + str(row['id']) + '" />',
                       row['name'],
                       audio_file_player(row['audio_file']),
-                      settings.MEDIA_URL + str(row['audio_file']),
+                      '<input type="text" value="' + domain + settings.MEDIA_URL + str(row['audio_file'])+ '">',
                       row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
+                      '<a href="' + settings.MEDIA_URL + str(row['audio_file']) + '" class="icon" ' \
+                      + link_style + ' title="' + _('Download audio') + '">&nbsp;</a>' +
                       '<a href="' + str(row['id']) + '/" class="icon" ' \
                       + update_style + ' title="' + _('Update audio') + '">&nbsp;</a>' +
                       '<a href="del/' + str(row['id']) + '/" class="icon" ' \

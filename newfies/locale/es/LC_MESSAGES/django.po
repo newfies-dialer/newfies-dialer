@@ -956,7 +956,7 @@ msgstr "Base de datos de error"
 #: dialer_cdr/admin.py:182
 #, python-format
 msgid "%(total_count)s selected"
-msgstr "0 de %(cnt)s seleccionados"
+msgstr "%(total_count)s seleccionados"
 
 #: dialer_cdr/admin.py:193
 msgid "VoIP Report"
@@ -1273,11 +1273,11 @@ msgstr "Añadir parámetro"
 
 #: dialer_gateway/models.py:104
 msgid "Call count"
-msgstr "Llame al número"
+msgstr "Numero de Llamadas"
 
 #: dialer_gateway/models.py:105
 msgid "Count in use"
-msgstr "Contar en el uso de"
+msgstr "Conteo en uso"
 
 #: dialer_gateway/models.py:106
 msgid "Max concurrent calls"
@@ -1427,9 +1427,8 @@ msgid "%(count)s survey(s) are deleted."
 msgstr "%(count)s encuesta(s) se ha eliminado."
 
 #: survey/views.py:430
-#, fuzzy
 msgid "Download audio"
-msgstr "Eliminación de audio"
+msgstr "Descargar audio"
 
 #: survey/views.py:432
 msgid "Update audio"
@@ -1445,9 +1444,8 @@ msgid "%(count)s audio(s) are deleted."
 msgstr "%(count)s audio(s) se ha eliminado."
 
 #: survey/views.py:597
-#, fuzzy
 msgid "No record found!."
-msgstr "No Registro(s) que se encuentran."
+msgstr "No Registro(s)."
 
 #: survey/views.py:600
 msgid "No campaign attached with survey."
@@ -1739,49 +1737,40 @@ msgid "You must check at least one box!"
 msgstr "Usted debe marcar al menos una caja!"
 
 #: templates/frontend/custom_jquery_select_all.html:27
-#, fuzzy
 msgid " voice app(s) are going to be deleted?"
-msgstr "%(count)s voz app(s) se ha eliminado."
+msgstr " aplicación(s) de voz van a ser eliminados?"
 
 #: templates/frontend/custom_jquery_select_all.html:31
-#, fuzzy
 msgid " phonebook(s) are going to be deleted?"
-msgstr "%(count)s Agenda(s) se ha eliminado."
+msgstr " agenda(s) van a ser eliminados?"
 
 #: templates/frontend/custom_jquery_select_all.html:35
-#, fuzzy
 msgid " survey(s) are going to be deleted?"
-msgstr "%(count)s encuesta(s) se ha eliminado."
+msgstr " encuesta(s) van a ser eliminados?"
 
 #: templates/frontend/custom_jquery_select_all.html:39
-#, fuzzy
 msgid " audio(s) are going to be deleted?"
-msgstr "%(count)s audio(s) se ha eliminado."
+msgstr " audio(s) van a ser eliminados?"
 
 #: templates/frontend/custom_jquery_select_all.html:62
-#, fuzzy
 msgid " phonebook(s) are going to be deleted with "
-msgstr "%(count)s Agenda(s) se ha eliminado."
+msgstr " agenda(s) van a ser eliminados con "
 
 #: templates/frontend/custom_jquery_select_all.html:62
-#, fuzzy
 msgid " contact(s)?"
-msgstr "contacto(s)"
+msgstr "contacto(s)?"
 
 #: templates/frontend/custom_jquery_select_all.html:67
-#, fuzzy
 msgid " campaign(s) are going to be deleted?"
-msgstr "%(count)s la campaña(s) se ha eliminado."
+msgstr " campaña(s) van a ser eliminados?"
 
 #: templates/frontend/custom_jquery_select_all.html:72
-#, fuzzy
 msgid " notification(s) are going to be deleted?"
-msgstr "%(count)s notificación(es) se ha eliminado."
+msgstr " notificación(s) van a ser eliminados?"
 
 #: templates/frontend/custom_jquery_select_all.html:76
-#, fuzzy
 msgid " notification(s) are going to be marked as read?"
-msgstr "Todas las notificaciones se marcan como leídos."
+msgstr " notificación(s) van a ser marcados como leídos?"
 
 #: templates/frontend/dashboard.html:23
 msgid "Realtime campaign performance monitoring"
@@ -2420,9 +2409,8 @@ msgid "Audio"
 msgstr "Audio"
 
 #: templates/frontend/survey/audio_list.html:57
-#, fuzzy
 msgid "Audio URL"
-msgstr "Audio"
+msgstr "Audio URL"
 
 #: templates/frontend/survey/survey_change.html:235
 msgid "New Question"
@@ -2628,9 +2616,8 @@ msgid "Chamorro"
 msgstr "Chamorro"
 
 #: user_profile/fields.py:50
-#, fuzzy
 msgid "Chechen"
-msgstr "Comprobar"
+msgstr "Chechenia"
 
 #: user_profile/fields.py:51 user_profile/fields.py:223
 msgid "Chinese"
@@ -2647,9 +2634,8 @@ msgid "Chuvash"
 msgstr "Chuvashia"
 
 #: user_profile/fields.py:54
-#, fuzzy
 msgid "Cornish"
-msgstr "Terminar"
+msgstr "Cornualles"
 
 #: user_profile/fields.py:55
 msgid "Corsican"
@@ -2664,9 +2650,8 @@ msgid "Welsh"
 msgstr "Galés"
 
 #: user_profile/fields.py:59
-#, fuzzy
 msgid "Danish"
-msgstr "Español"
+msgstr "Danés"
 
 #: user_profile/fields.py:60 user_profile/fields.py:79
 msgid "German"
@@ -2705,18 +2690,16 @@ msgid "Faroese"
 msgstr "Las Islas Feroe"
 
 #: user_profile/fields.py:71 user_profile/fields.py:163
-#, fuzzy
 msgid "Persian"
-msgstr "Información personal"
+msgstr "Persa"
 
 #: user_profile/fields.py:72
 msgid "Fijian"
 msgstr "Fiyi"
 
 #: user_profile/fields.py:73
-#, fuzzy
 msgid "Finnish"
-msgstr "Terminar"
+msgstr "Finlandés"
 
 #: user_profile/fields.py:74 user_profile/fields.py:75
 msgid "French"
@@ -2755,9 +2738,8 @@ msgid "Guarani"
 msgstr "Guaraní"
 
 #: user_profile/fields.py:86
-#, fuzzy
 msgid "Gujarati"
-msgstr "Duración"
+msgstr "Gujarati"
 
 #: user_profile/fields.py:87
 msgid "Haitian; Haitian Creole"
@@ -2800,9 +2782,8 @@ msgid "Icelandic"
 msgstr "Islandés"
 
 #: user_profile/fields.py:98
-#, fuzzy
 msgid "Ido"
-msgstr "Identificación"
+msgstr "Ido"
 
 #: user_profile/fields.py:99
 msgid "Sichuan Yi; Nuosu"
@@ -3037,9 +3018,8 @@ msgid "Pali"
 msgstr "Pali"
 
 #: user_profile/fields.py:165
-#, fuzzy
 msgid "Polish"
-msgstr "Inglés"
+msgstr "Polaco"
 
 #: user_profile/fields.py:167
 msgid "Pushto; Pashto"
@@ -3126,9 +3106,8 @@ msgid "Swati"
 msgstr "Swati"
 
 #: user_profile/fields.py:191
-#, fuzzy
 msgid "Sundanese"
-msgstr "Domingo"
+msgstr "Sundanese"
 
 #: user_profile/fields.py:192
 msgid "Swahili"
@@ -3215,9 +3194,8 @@ msgid "Venda"
 msgstr "Venda"
 
 #: user_profile/fields.py:214
-#, fuzzy
 msgid "Vietnamese"
-msgstr "primer nombre"
+msgstr "Vietnamita"
 
 #: user_profile/fields.py:215
 msgid "Volapuk"

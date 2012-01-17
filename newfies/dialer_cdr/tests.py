@@ -35,7 +35,8 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
     """Test cases for Newfies-Dialer API."""
     fixtures = ['gateway.json', 'auth_user', 'voiceapp','phonebook',
                 'dialer_setting', 'campaign', 'campaign_subscriber',
-                'callrequest', 'survey', 'survey_question', 'survey_response']
+                'callrequest', 'survey', 'survey_question',
+                'survey_response']
 
     def test_create_campaign(self):
         """Test Function to create a campaign"""
@@ -134,24 +135,22 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
 
     def test_create_answercall(self):
         """Test Function to create a answercall"""
-        data = {"ALegRequestUUID": "20294e18-9d8f-11e0-aaa8-000c29bed6ad"}
+        data = {"ALegRequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875"}
         response = self.client.post('/api/v1/answercall/',
         data,  **self.extra)
-        print response
         self.assertEqual(response.status_code, 200)
 
     def test_create_hangupcall(self):
         """Test Function to create a hangupcall"""
-        data = {"RequestUUID": "20294e18-9d8f-11e0-aaa8-000c29bed6ad",
+        data = {"RequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875",
          "HangupCause": "SUBSCRIBER_ABSENT"}
         response = self.client.post('/api/v1/hangupcall/',
         data,  **self.extra)
-        print response
         self.assertEqual(response.status_code, 200)
 
     def test_create_cdr(self):
         """Test Function to create a CDR"""
-        data = ('cdr=<?xml version="1.0"?><cdr><other></other><variables><plivo_request_uuid>20294e18-9d8f-11e0-aaa8-000c29bed6ad</plivo_request_uuid><duration>3</duration></variables><notvariables><plivo_request_uuid>TESTc</plivo_request_uuid><duration>5</duration></notvariables></cdr>')
+        data = ('cdr=<?xml version="1.0"?><cdr><other></other><variables><plivo_request_uuid>e8fee8f6-40dd-11e1-964f-000c296bd875</plivo_request_uuid><duration>3</duration></variables><notvariables><plivo_request_uuid>TESTc</plivo_request_uuid><duration>5</duration></notvariables></cdr>')
         response = self.client.post('/api/v1/store_cdr/', data, content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 200)
 

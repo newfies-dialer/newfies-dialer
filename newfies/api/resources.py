@@ -1471,11 +1471,11 @@ class AnswercallResource(ModelResource):
             obj_callrequest.save()
 
             # check if Voice App
-            if not obj_callrequest.content_object.__class__.__name__ == 'VoiceApp':
+            if obj_callrequest.content_object.__class__.__name__ != 'VoiceApp':
+                object_list = []
                 logger.error('Error with App type, not a VoiceApp!')
-
             else:
-                
+
                 if obj_callrequest.content_object.type == 1:
                     #Dial
                     timelimit = obj_callrequest.timelimit

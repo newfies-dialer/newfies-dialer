@@ -379,7 +379,6 @@ class NewfiesCustomerInterfaceTestCase(BaseAuthenticatedClient):
         "frequency": "20", "callmaxduration": "50", "maxretry": "3",
         "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1",
         "content_object": "type:30-id:1", "extra_data": "2000"})
-        print response
         self.assertEqual(response.status_code, 302)
 
 

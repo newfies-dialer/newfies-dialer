@@ -965,7 +965,7 @@ def phonebook_grid(request):
                       '<a href="' + str(row['id']) + '/" class="icon" ' \
                       + update_style + ' title="' + _('Update phonebook') + '">&nbsp;</a>' +
                       '<a href="del/' + str(row['id']) + '/" class="icon" ' \
-                      + delete_style + ' onClick="return get_alert_msg(' +
+                      + delete_style + ' onClick="return get_alert_msg_for_phonebook(' +
                       str(row['id']) +
                       ');"  title="' + _('Delete phonebook') + '">&nbsp;</a>']}\
                       for row in phonebook_list]

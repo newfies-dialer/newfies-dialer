@@ -1,52 +1,20 @@
 {% extends "frontend/master.html" %}
 {% load dialer_cdr_extras i18n icons %}
 
-
 {% block extra_files %}
-<script type="text/javascript" src="{{STATIC_URL}}newfies/js/custom.jquery.select.all.js"></script>
-
-<!--flexigrid css & js-->
-<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid.css" type="text/css" />
-<script type="text/javascript" src="{{STATIC_URL}}newfies/js/flexigrid.js"></script>
-<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid_custom.css" type="text/css" />
-
-<script type="text/javascript" language="javascript">
-function get_alert_msg(id)
-{    
-    $.ajax({
-        url: "http://127.0.0.1:8000/phonebook/contact_count/",
-        type: "GET",
-        async: false,
-        cache: false,
-        timeout: 30000,
-        data: "pb_ids=" + id,
-        success: function(data) {
-            contact_count = data;
-        },
-        error: function() {
-            //alert("Request failed");
-        }
-    });
-    confirm_string = '{% trans "Please confirm to delete this phonebook with" %} ' + contact_count + ' {% trans "contact(s)" %}'
-    var answer = confirm(confirm_string);
-    return answer // answer is a boolean
-}
-</script>
-
-{% include "frontend/custom_jquery_select_all.html" %}
-
+    {% include "frontend/custom_jquery_select_all.html" %}
 {% endblock %}
 
 {% block content_header %}
-<h1>{% trans "Phonebook" %} <small>{% trans "List, add and edit phonebooks" %}</small></h1>
+    <h1>{% trans "Phonebook" %} <small>{% trans "List, add and edit phonebooks" %}</small></h1>
 {% endblock %}
 
 
 {% block content %}
 {% if msg %}
-<div class="alert-message success">
+    <div class="alert-message success">
         <strong>{% trans "Alert" %} : </strong>  {{ msg }}
-</div>
+    </div>
 {% endif %}
 
 <br/>
@@ -54,8 +22,8 @@ function get_alert_msg(id)
 {% csrf_token %}
 <table id="flex1" align="left" style="display:none;"></table>
 </form>
-<script type="text/javascript">
 
+<script type="text/javascript">
 
 $("#flex1").flexigrid({
     url: "/phonebook_grid/", 

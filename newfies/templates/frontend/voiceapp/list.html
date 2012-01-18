@@ -3,13 +3,7 @@
 
 
 {% block extra_files %}
-<!--flexigrid css & js-->
-<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid.css" type="text/css" />
-<script type="text/javascript" src="{{STATIC_URL}}newfies/js/flexigrid.js"></script>
-<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid_custom.css" type="text/css" />
-
-{% include "frontend/custom_jquery_select_all.html" %}
-    
+    {% include "frontend/custom_jquery_select_all.html" %}
 {% endblock %}
 
 {% block content_header %}
@@ -19,9 +13,9 @@
 {% block content %}
 
 {% if msg %}
-<div class="alert-message success">
+    <div class="alert-message success">
         <strong>{% trans "Alert" %} : </strong>  {{ msg }}
-</div>
+    </div>
 {% endif %}
 
 <br/>

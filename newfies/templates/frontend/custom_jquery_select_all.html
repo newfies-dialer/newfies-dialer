@@ -83,3 +83,39 @@ $(document).ready(function() {
     });
 });
 </script>
+
+
+<!--flexigrid css & js-->
+<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid.css" type="text/css" />
+<script type="text/javascript" src="{{STATIC_URL}}newfies/js/flexigrid.js"></script>
+<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid_custom.css" type="text/css" />
+
+<script type="text/javascript" language="javascript">
+function get_alert_msg(id)
+{
+    confirm_string = '{% trans "Confirm deletion?" %}';
+    var answer = confirm(confirm_string);
+    return answer // answer is a boolean
+}
+
+function get_alert_msg_for_phonebook(id)
+{
+    $.ajax({
+        url: "http://127.0.0.1:8000/phonebook/contact_count/",
+        type: "GET",
+        async: false,
+        cache: false,
+        timeout: 30000,
+        data: "pb_ids=" + id,
+        success: function(data) {
+            contact_count = data;
+        },
+        error: function() {
+            //alert("Request failed");
+        }
+    });
+    confirm_string = '{% trans "Please confirm to delete this phonebook with" %} ' + contact_count + ' {% trans "contact(s)" %}'
+    var answer = confirm(confirm_string);
+    return answer // answer is a boolean
+}
+</script>

@@ -11,19 +11,9 @@
         });
     });
 </script>
+    
+    {% include "frontend/custom_jquery_select_all.html" %}
 
-<!--flexigrid css & js-->
-<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid.css" type="text/css" />
-<script type="text/javascript" src="{{STATIC_URL}}newfies/js/flexigrid.js"></script>
-<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid_custom.css" type="text/css" />
-<script type="text/javascript" language="javascript">
-function get_alert_msg(id)
-{
-    confirm_string = '{% trans "Confirm deletion?" %}';
-    var answer = confirm(confirm_string);
-    return answer // answer is a boolean
-}
-</script>
 <style type="text/css">
 table td {
     width: auto;
@@ -34,7 +24,7 @@ label {
 }
 </style>
 
-{% include "frontend/custom_jquery_select_all.html" %}
+
     
 {% endblock %}
 

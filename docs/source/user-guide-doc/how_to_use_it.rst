@@ -190,10 +190,10 @@ Campaign list:
 
 
 Update Campaign:
+
 .. image:: ../_static/images/customer/update_campaign.png
 
 
-Update Campaign:
 .. image:: ../_static/images/customer/update_campaign_part2.png
 
 
@@ -273,3 +273,4 @@ The settings page provides a number of functions:
     * Limitation - Displays the parameters of the dialer settings.
     * Authorized - Facitiy to check that a number is not blacklisted.
 
+.. image:: ../_static/images/customer/account_setting.png

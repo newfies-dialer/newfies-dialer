@@ -20,7 +20,7 @@ APP_TYPE = (
 class VoiceApp(Model):
     """VoiceApp are VoIP application that are defined on the platform, you can
     have different type of application, some as simple as redirecting a call
-    and some as complex as starting a complexe application call flow.
+    and some as complex as starting a complex application call flow.
 
     Right now, only the redirection is implemented but this allow you to create
     the application you want on your server and redirect the user to it easily.

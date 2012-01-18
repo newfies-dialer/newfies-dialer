@@ -165,7 +165,7 @@ def voiceapp_del(request, object_id):
             voiceapp_list.delete()
             return HttpResponseRedirect('/voiceapp/')
     except:
-        # When object_id is 0 (Multiple recrod delete)
+        # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
 

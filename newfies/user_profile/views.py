@@ -240,7 +240,7 @@ def notification_del_read(request, object_id):
 
             return HttpResponseRedirect('/user_detail_change/?action=tabs-3&msg_note=true')
     except:
-        # When object_id is 0 (Multiple recrod delete/mark as read)
+        # When object_id is 0 (Multiple records delete/mark as read)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
         notification_list = notification.Notice.objects.extra(where=['id IN (%s)' % values])

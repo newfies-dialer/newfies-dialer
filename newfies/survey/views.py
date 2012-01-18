@@ -70,7 +70,7 @@ def survey_finestatemachine(request):
     surveyapp_id = cache.get(key_surveyapp)
     
     if not current_state:
-        cache.set(key_state, 0, 21600) # 21600secons = 6 hours
+        cache.set(key_state, 0, 21600) # 21600 seconds = 6 hours
         current_state = 0
     
     try:
@@ -79,7 +79,7 @@ def survey_finestatemachine(request):
         return HttpResponse(content="Error : retrieving Callrequest with the ALegRequestUUID", status=400)
     
     surveyapp_id = obj_callrequest.object_id
-    cache.set(key_surveyapp, surveyapp_id, 21600) # 21600secons = 6 hours
+    cache.set(key_surveyapp, surveyapp_id, 21600) # 21600 seconds = 6 hours
     
     #TODO : use constant
     obj_callrequest.status = 8 # IN-PROGRESS
@@ -99,7 +99,7 @@ def survey_finestatemachine(request):
             else:
                 response_value = surveyresponse.keyvalue
         except:
-            #it's possible that this response is not accepted
+            #It's possible that this response is not accepted
             response_value = DTMF
         
         new_surveycampaignresult = SurveyCampaignResult(campaign = obj_callrequest.campaign,
@@ -287,7 +287,7 @@ def survey_del(request, object_id):
             survey.delete()
             return HttpResponseRedirect('/survey/')
     except:
-        # When object_id is 0 (Multiple recrod delete)
+        # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
 
@@ -329,7 +329,7 @@ def survey_change(request, object_id):
         f = SurveyQuestionForm(instance=survey_que)
         survey_que_form_collection['%s' % survey_que.id] = f
 
-        # servey question response
+        # survey question response
         survey_response_list = SurveyResponse.objects.filter(surveyquestion=survey_que)
         for survey_res in sorted(survey_response_list):
             r = SurveyResponseForm(instance=survey_res)
@@ -527,7 +527,7 @@ def audio_del(request, object_id):
             audio.delete()
             return HttpResponseRedirect('/audio/')
     except:
-        # When object_id is 0 (Multiple recrod delete)
+        # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
 

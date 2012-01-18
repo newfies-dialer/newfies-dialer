@@ -193,7 +193,7 @@ def voipcall_report(request):
     voipcall_list = \
     VoIPCall.objects.filter(**kwargs).order_by('-starting_date')
 
-    # Session variable is used to get recrod set with searched option
+    # Session variable is used to get record set with searched option
     # into export file
     request.session['voipcall_record_qs'] = voipcall_list
 

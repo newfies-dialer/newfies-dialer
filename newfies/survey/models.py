@@ -65,7 +65,7 @@ class SurveyQuestion(Sortable):
         ordering = Sortable.Meta.ordering + ['surveyapp']
     
     question = models.CharField(max_length=500, verbose_name=_("Question"),
-                                help_text=_('Enter your question')) # What is your prefered fruit?
+                                help_text=_('Enter your question')) # What is your preferred fruit?
     tags = TagField(blank=True, max_length=1000)
     user = models.ForeignKey('auth.User', related_name='Survey owner')
     surveyapp = models.ForeignKey(SurveyApp, verbose_name=_("SurveyApp"))
@@ -108,7 +108,7 @@ class SurveyCampaignResult(models.Model):
     That will be difficult to scale for reporting
     One big issue is when the user update the survey in time, we need to keep an history somehow of the question/response
     
-    Idealy we can try to build 2 other table, survey_track_question (id, question_text), survey_track_response (id, response_text)
+    Ideally we can try to build 2 other table, survey_track_question (id, question_text), survey_track_response (id, response_text)
     Where question_text / response_text is unique
     """
     campaign = models.ForeignKey(Campaign, null=True, blank=True, verbose_name=_("Campaign"))

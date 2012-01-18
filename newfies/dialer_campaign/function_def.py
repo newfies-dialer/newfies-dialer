@@ -84,7 +84,7 @@ def month_year_range():
 
 
 def user_attached_with_dialer_settings(request):
-    """Check user is attacehd with dialer setting or not"""
+    """Check user is attached with dialer setting or not"""
     try:
         user_obj = UserProfile.objects.get(user=request.user,
                                            dialersetting__isnull=False)
@@ -234,7 +234,7 @@ def variable_value(request, field_name):
 
 
 def type_field_chk(base_field, base_field_type, field_name):
-    """Type fileds (e.g. equal to, begins with, ends with, contains)
+    """Type fields (e.g. equal to, begins with, ends with, contains)
     are checked."""
     kwargs = {}
     if base_field != '':

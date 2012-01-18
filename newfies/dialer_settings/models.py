@@ -15,7 +15,7 @@ class DialerSetting(models.Model):
         * ``maxretry`` - Max retries allowed per user
         * ``max_calltimeout`` - Maximum number of seconds to timeout on calls
         * ``max_number_campaign`` - Max Number of campaigns
-        * ``max_number_subscriber_campaign`` - Max Number of subscribera
+        * ``max_number_subscriber_campaign`` - Max Number of subscriber
         * ``blacklist`` - Used to blacklist phone numbers to be called
         * ``whitelist`` - Used to whitelist phone numbers to be called
 

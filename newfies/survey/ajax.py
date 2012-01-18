@@ -51,7 +51,7 @@ def survey_question_add_update(request, id, data, form_type, after_initial_save,
             obj.message_type = audio_msg_type(audio_message)
             obj.save()
             dajax.assign('#id', 'value', obj.id)
-        #dajax.alert("%s is succesfully saved !!" % form.cleaned_data.get('question'))
+        #dajax.alert("%s is successfully saved !!" % form.cleaned_data.get('question'))
     else:
         if form_type == 'new_form':
             dajax.remove_css_class('#new_survey_que_form_'+id+' input','error')
@@ -131,7 +131,7 @@ def survey_response_add_update(request, id, que_id, data, form_type, new_respons
             obj.save()
             dajax.assign('#new_response_id', 'value', obj.id)
 
-        #dajax.alert("(%s - %s) is succesfully saved !!" % (form.cleaned_data.get('key'),
+        #dajax.alert("(%s - %s) is successfully saved !!" % (form.cleaned_data.get('key'),
         #                                                   form.cleaned_data.get('keyvalue')))
     else:
         if form_type == 'new_form':
@@ -157,7 +157,7 @@ def survey_question_delete(request, id):
         for survey_resp in survey_response_list:
             survey_resp.delete()
         survey_question.delete()
-        #dajax.alert("(%s) is succesfully deleted !!" % (que))
+        #dajax.alert("(%s) is successfully deleted !!" % (que))
     except:
         dajax.alert("%s is not exist !!" % (id))
         for error in form.errors:
@@ -175,7 +175,7 @@ def survey_response_delete(request, id):
         key = survey_response.key
         keyvalue = survey_response.keyvalue
         survey_response.delete()
-        #dajax.alert("(%s - %s) is succesfully deleted !!" % (key, keyvalue))
+        #dajax.alert("(%s - %s) is successfully deleted !!" % (key, keyvalue))
     except:
         dajax.alert("%s is not exist !!" % (id))
         for error in form.errors:
@@ -192,7 +192,7 @@ def survey_question_sort(request, id, sort_order):
         survey_question = SurveyQuestion.objects.get(pk=int(id))
         survey_question.order = sort_order
         survey_question.save()
-        #dajax.alert("(%s) has been succesfully sorted !!" % (survey_question.question))
+        #dajax.alert("(%s) has been successfully sorted !!" % (survey_question.question))
     except:
         #dajax.alert("%s is not exist !!" % (id))
         for error in form.errors:

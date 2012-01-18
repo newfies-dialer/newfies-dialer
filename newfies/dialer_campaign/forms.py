@@ -136,12 +136,6 @@ class CampaignForm(ModelForm):
                 list_pb.append((i[0], i[1]))
             self.fields['phonebook'].choices = list_pb
 
-            #list_voiceapp.append((0, '---'))
-            #vp_list = field_list("voiceapp", user)
-            #for i in vp_list:
-            #    list_voiceapp.append((i[0], i[1]))
-            #self.fields['voiceapp'].choices = list_voiceapp
-
             list_gw.append((0, '---'))
             gw_list = field_list("gateway", user)
             for i in gw_list:
@@ -204,7 +198,6 @@ class CampaignAdminForm(ModelForm):
         model = Campaign
         fields = ['campaign_code', 'name', 'description', 'user', 'status',
                   'callerid', 'startingdate', 'expirationdate', 'aleg_gateway',
-                  #'voipapp', 
                   'content_type', 'object_id', 'extra_data', 'phonebook',
                   'frequency', 'callmaxduration', 'maxretry', 'intervalretry',
                   'calltimeout', 'daily_start_time', 'daily_stop_time',
@@ -242,7 +235,6 @@ SEARCH_TYPE = (
 
 class ContactSearchForm(forms.Form):
     """Search Form on Contact List"""
-
     contact_no = forms.CharField(label=_('Contact Number:'), required=False,
                            widget=forms.TextInput(attrs={'size': 15}))
     contact_no_type = forms.ChoiceField(label='', required=False, initial=1,
@@ -251,8 +243,7 @@ class ContactSearchForm(forms.Form):
                            widget=forms.TextInput(attrs={'size': 15}))
     phonebook = forms.ChoiceField(label=_('Phonebook:'), required=False)
     status = forms.TypedChoiceField(label=_('Status:'), required=False,
-             choices=(('0', _('Inactive')), ('1', _('Active ')),
-                      ('2', _('All'))),
+             choices=(('0', _('Inactive')), ('1', _('Active ')), ('2', _('All'))),
              widget=forms.RadioSelect, initial='2')
 
     def __init__(self, user, *args, **kwargs):

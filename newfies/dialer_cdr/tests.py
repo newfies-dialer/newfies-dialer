@@ -2,8 +2,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.http import HttpRequest
 from dialer_cdr.test_utils import build_test_suite_from
-from django.contrib.contenttypes.models import ContentType
-#from user_profile.models import UserProfile
+
 import base64
 import simplejson
 
@@ -217,7 +216,7 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
 
         
 class NewfiesAdminInterfaceTestCase(TestCase):
-    """Test cases for Newfies Admin Interface."""
+    """Test cases for Newfies-Dialer Admin Interface."""
 
     def setUp(self):
         """To create admin user"""
@@ -245,7 +244,7 @@ class NewfiesAdminInterfaceTestCase(TestCase):
         self.assertEqual(response, True)
 
     def test_admin_newfies(self):
-        """Test Function to check Newfies Admin pages"""
+        """Test Function to check Newfies-Dialer Admin pages"""
         response = self.client.get('/admin/auth/')
         self.failUnlessEqual(response.status_code, 200)
 
@@ -297,7 +296,7 @@ class NewfiesAdminInterfaceTestCase(TestCase):
 
 
 class NewfiesCustomerInterfaceTestCase(BaseAuthenticatedClient):
-    """Test cases for Newfies Customer Interface."""
+    """Test cases for Newfies-Dialer Customer Interface."""
     fixtures = ['gateway.json', 'auth_user', 'voiceapp','phonebook', 'contact',
                 'campaign', 'campaign_subscriber', 'survey', 'surve_question',
                 'survey_response']
@@ -410,10 +409,14 @@ class NewfiesCustomerInterfaceTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
                                 'frontend/survey/survey_change.html')
+        response = self.client.get('/survey_report/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+                                'frontend/survey/survey_report.html')
 
 
 class NewfiesCustomerInterfaceForgotPassTestCase(TestCase):
-    """Test cases for Newfies Customer Interface. for forgot password"""
+    """Test cases for Newfies-Dialer Customer Interface. for forgot password"""
 
     def test_check_password_reset(self):
         """Test Function to check password reset"""

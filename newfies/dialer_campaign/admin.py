@@ -69,7 +69,7 @@ class CampaignAdmin(GenericAdminModelAdmin):
             msg = _("you have too many campaigns. Max allowed %(limit)s") \
             % {'limit': dialer_setting_limit(request, limit_for="campaign")}
             messages.error(request, msg)
-            print msg
+            
             # campaign limit reached
             #common_send_notification(request, '3')
             return HttpResponseRedirect(reverse(

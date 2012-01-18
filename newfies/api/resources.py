@@ -466,7 +466,7 @@ class CampaignResource(ModelResource):
     """
     **Attributes**:
 
-            * ``campaign_code`` - Autogenerate campaign code
+            * ``campaign_code`` - Auto-generated campaign code
             * ``name`` - Name of the Campaign
             * ``description`` - Short description of the Campaign
             * ``callerid`` - Caller ID

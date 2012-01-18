@@ -41,12 +41,12 @@ urlpatterns = patterns('',
     (r'^campaign_grid/$', 'dialer_campaign.views.campaign_grid'),
     (r'^campaign/add/$', 'dialer_campaign.views.campaign_add'),
     (r'^campaign/del/(.+)/$', 'dialer_campaign.views.campaign_del'),
-    # Campaign Actions (start/stop/pause) for customer UI
+    # Campaign Actions (start|stop|pause|abort) for customer UI
     (r'^campaign/update_campaign_status_cust/(\d*)/(\d*)/$',
                     'dialer_campaign.views.update_campaign_status_cust'),
     (r'^campaign/(.+)/$', 'dialer_campaign.views.campaign_change'),
 
-    # Campaign Actions (start/stop/pause) for Admin UI
+    # Campaign Actions (start|stop|pause|abort) for Admin UI
     (r'^update_campaign_status_admin/(\d*)/(\d*)/$',
                     'dialer_campaign.views.update_campaign_status_admin'),
     # Send notification to admin regarding dialer setting

@@ -225,7 +225,7 @@ class Campaign(Model):
 
     **Attributes**:
 
-        * ``campaign_code`` - Autogenerate campaign code to identify the campaign
+        * ``campaign_code`` - Auto-generated campaign code to identify the campaign
         * ``name`` - Campaign name
         * ``description`` - Description about the Campaign
         * ``status`` - Campaign status
@@ -348,7 +348,7 @@ class Campaign(Model):
         For example,
         If campaign is active, you can change status to 'Pause' or 'Stop'
         """
-        # active - 1 | pause - 2 | stop - 4
+        # active - 1 | pause - 2 | abort - 3 | stop - 4
         if self.status == 1:
             return "<a href='%s'>Pause</a> | <a href='%s'>Abort</a> \
             | <a href='%s'>Stop</a>" % \
@@ -408,8 +408,7 @@ class Campaign(Model):
     count_contact_of_phonebook.short_description = _('Contact')
 
     def is_authorized_contact(self, str_contact):
-        """Check if a contact is authorized
-        """
+        """Check if a contact is authorized"""
         return common_contact_authorization(self.user, str_contact)
 
 

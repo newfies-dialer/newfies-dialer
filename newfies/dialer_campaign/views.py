@@ -610,8 +610,7 @@ def customer_dashboard(request, on_index=None):
            context_instance=RequestContext(request))
 
 def logout_view(request):
-    """Check User credentials and logout
-    """
+    """Check User credentials and logout"""
     template = 'frontend/index.html'
     logout(request)
     
@@ -872,7 +871,7 @@ def common_campaign_status(pk, status):
 
 @login_required
 def update_campaign_status_admin(request, pk, status):
-    """Campaign Status (e.g. start|stop|pause) can be changed from
+    """Campaign Status (e.g. start|stop|pause|abort) can be changed from
     admin interface (via campaign list)"""
     recipient = common_campaign_status(pk, status)
     common_send_notification(request, status, recipient)
@@ -882,7 +881,7 @@ def update_campaign_status_admin(request, pk, status):
 
 @login_required
 def update_campaign_status_cust(request, pk, status):
-    """Campaign Status (e.g. start|stop|pause) can be changed from
+    """Campaign Status (e.g. start|stop|pause|abort) can be changed from
     customer interface (via dialer_campaign/campaign list)"""
     recipient = common_campaign_status(pk, status)
     common_send_notification(request, status, recipient)
@@ -1075,7 +1074,7 @@ def phonebook_del(request, object_id):
             phonebook.delete()
             return HttpResponseRedirect('/phonebook/')
     except:
-        # When object_id is 0 (Multiple recrod delete)
+        # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
 
@@ -1366,7 +1365,7 @@ def contact_del(request, object_id):
             contact.delete()
             return HttpResponseRedirect('/contact/')
     except:
-        # When object_id is 0 (Multiple recrod delete)
+        # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
         contact_list = Contact.objects.extra(where=['id IN (%s)' % values])
@@ -1491,7 +1490,7 @@ def contact_import(request):
                         phonebook = \
                         Phonebook.objects.get(pk=request.POST['phonebook'])
                         try:
-                            # check if prefix is alredy
+                            # check if prefix is already
                             # exist with retail plan or not
                             contact = Contact.objects.get(
                                  phonebook_id=phonebook.id,
@@ -1838,7 +1837,7 @@ def campaign_del(request, object_id):
             campaign.delete()
             return HttpResponseRedirect('/campaign/')
     except:
-        # When object_id is 0 (Multiple recrod delete)
+        # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
         campaign_list = Campaign.objects.extra(where=['id IN (%s)' % values])

@@ -168,3 +168,59 @@ Newfies-Dialer Views
 ------------------------
 
   .. autofunction:: campaign_change
+
+
+
+.. automodule:: survey.views
+
+.. _survey_list:
+
+:class:`survey_list`
+--------------------
+
+  .. autofunction:: survey_list
+
+.. _survey_add:
+
+:class:`survey_add`
+-------------------
+
+  .. autofunction:: survey_add
+
+
+.. _survey_change:
+
+:class:`survey_change`
+----------------------
+
+  .. autofunction:: survey_change
+
+.. _survey_report:
+
+:class:`survey_report`
+----------------------
+
+  .. autofunction:: survey_report
+
+
+.. _audio_list:
+
+:class:`audio_list`
+-------------------
+
+  .. autofunction:: audio_list
+
+.. _audio_add:
+
+:class:`audio_add`
+------------------
+
+  .. autofunction:: audio_add
+
+
+.. _audio_change:
+
+:class:`audio_change`
+---------------------
+
+  .. autofunction:: audio_change

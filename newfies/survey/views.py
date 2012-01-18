@@ -542,7 +542,18 @@ def audio_del(request, object_id):
 
 @login_required
 def audio_change(request, object_id):
+    """Update Audio for the logged in user
 
+    **Attributes**:
+
+        * ``form`` - SurvyCustomerAudioFileForm
+        * ``template`` - frontend/survey/audio_change.html
+
+    **Logic Description**:
+
+        * Update audio which is belong to the logged in user
+          via the CustomerAudioFileForm & get redirected to the audio list
+    """
     obj = AudioFile.objects.get(pk=object_id)
     form = CustomerAudioFileForm(instance=obj)
 

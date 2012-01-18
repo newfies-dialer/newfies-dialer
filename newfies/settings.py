@@ -439,6 +439,11 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': False,
         },
+        'audiofield_log': {
+            'handlers': ['default',],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
     },
 }
 

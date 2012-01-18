@@ -9,7 +9,6 @@
     <h1>{% trans "Phonebook" %} <small>{% trans "List, add and edit phonebooks" %}</small></h1>
 {% endblock %}
 
-
 {% block content %}
 {% if msg %}
     <div class="alert-message success">
@@ -18,9 +17,9 @@
 {% endif %}
 
 <br/>
-<form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">
-{% csrf_token %}
-<table id="flex1" align="left" style="display:none;"></table>
+    
+<form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">{% csrf_token %}
+    <table id="flex1" align="left" style="display:none;"></table>
 </form>
 
 <script type="text/javascript">

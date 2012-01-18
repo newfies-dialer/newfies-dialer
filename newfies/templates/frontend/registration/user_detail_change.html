@@ -1,13 +1,12 @@
 {% extends "frontend/master.html" %}
-{% load dialer_cdr_extras i18n icons pagination_tags %}
+{% load dialer_cdr_extras i18n icons %}
 
 {% block extra_header %}
     {% include "frontend/custom_jquery_select_all.html" %}
 {% endblock %}
 
-
 {% block content_header %}
-<h1>{% trans "Settings" %} <small>{% trans "Password, notifications, account limits and number check" %}</small></h1>
+    <h1>{% trans "Settings" %} <small>{% trans "Password, notifications, account limits and number check" %}</small></h1>
 {% endblock %}
 
 {% block content %}
@@ -23,17 +22,21 @@
 <div class="pill-content">
     
 	<div id="tabs-1"  {% if action == "tabs-1" or action == "" %}class="active"{% endif %}>
+
         {% if msg_detail %}
-        <div class="alert-message success">
+            <div class="alert-message success">
                 <strong>{% trans "Alert" %} : </strong>  {{ msg_detail }}
-        </div>
+            </div>
         {% endif %}
+
         {% if error_detail %}
-        <div class="alert-message error">
+            <div class="alert-message error">
                 <strong>{% trans "Alert" %} : </strong>  {{ error_detail }}
-        </div>
+            </div>
         {% endif %}
+
         <br/>
+
         <form action="" method="post">{% csrf_token %}
              {% for field in user_detail_form %}
              <div class="clearfix{% if field.errors %} error{% endif %}">
@@ -61,26 +64,30 @@
              </div>
              {% endfor %}
 
-
              <div class="actions">
                  <input type="hidden" name="action" value="tabs-1" />
                  <input type="hidden" name="form-type" value="change-detail" />
                  <input type="submit" class="btn primary" value="{% trans 'Change detail' %}" />
              </div>
         </form>
-	</div>
-	<div id="tabs-2" {% if action == "tabs-2" %}class="active"{% endif %}>
+
+    </div>
+
+    <div id="tabs-2" {% if action == "tabs-2" %}class="active"{% endif %}>
+
         {% if msg_pass %}
-        <div class="alert-message success">
+            <div class="alert-message success">
                 <strong>{% trans "Alert" %} : </strong>  {{ msg_pass }}
-        </div>
+            </div>
         {% endif %}
         {% if error_pass %}
-        <div class="alert-message error">
+            <div class="alert-message error">
                 <strong>{% trans "Alert" %} : </strong>  {{ error_pass }}
-        </div>
+            </div>
         {% endif %}
+
         <br/>
+
         <form action="" method="post">{% csrf_token %}
              {% for field in user_password_form %}
              <div class="clearfix{% if field.errors %} error{% endif %}">
@@ -101,13 +108,15 @@
                  <input type="submit" class="btn primary" value="{% trans 'Change password' %}" />
              </div>
         </form>
-	</div>
-	<div id="tabs-3" {% if action == "tabs-3" %}class="active"{% endif %}>
+
+    </div>
+
+    <div id="tabs-3" {% if action == "tabs-3" %}class="active"{% endif %}>
 
         {% if msg_note %}
-        <div class="alert-message success">
+            <div class="alert-message success">
                 <strong>{% trans "Alert" %} : </strong>  {{ msg_note }}
-        </div>
+            </div>
         {% endif %}
 
         <form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">
@@ -116,8 +125,8 @@
         <input type="hidden" name="form-type" value="notification_list" />
         <table id="flex1" align="left" style="display:none;"></table>
         </form>
-        <script type="text/javascript">
 
+        <script type="text/javascript">
 
         $("#flex1").flexigrid({
             url: "/notification_grid/",
@@ -161,7 +170,6 @@
             },
         });
 
-
         function make_read_button()
         {
             $('<input>').attr({
@@ -193,6 +201,7 @@
 	</div>
 	
     <div id="tabs-4" align="left" {% if action == "tabs-4" %}class="active"{% endif %}>
+
         {% if dialer_set %}
 
             <table class="bordered-table zebra-striped">
@@ -230,19 +239,24 @@
             </tr>
             </table>
         {% endif %}
-	</div>
+
+    </div>
+
     <div id="tabs-5" align="left" {% if action == "tabs-5" %}class="active"{% endif %}>
+
         {% if msg_number %}
-        <div class="alert-message success">
+            <div class="alert-message success">
                 <strong>{% trans "Alert" %} : </strong>  {{ msg_number }}
-        </div>
+            </div>
         {% endif %}
         {% if error_number %}
-        <div class="alert-message error">
+            <div class="alert-message error">
                 <strong>{% trans "Alert" %} : </strong>  {{ error_number }}
-        </div>
+            </div>
         {% endif %}
+
         <br/>
+
         <form action="" method="post">{% csrf_token %}
             {% for field in check_phone_no_form %}
             <div class="clearfix{% if field.errors %} error{% endif %}">

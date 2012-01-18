@@ -2,44 +2,41 @@
 {% load i18n dialer_cdr_extras %}
 
 {% block extra_files %}
-<script type="text/javascript">
-$(function() {
-    var dates = $('#id_from_date, #id_to_date').datepicker({
-        defaultDate: "+1w",
-        changeMonth: true,
-        dateFormat: 'yy-mm-dd',
-        onSelect: function(selectedDate) {
-            var option = this.id == "id_from_date" ? "minDate" : "maxDate";
-            var instance = $(this).data("datepicker");
-            var date = $.datepicker.parseDate(instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
-            dates.not(this).datepicker("option", option, date);
-        }
+    <script type="text/javascript">
+    $(function() {
+        var dates = $('#id_from_date, #id_to_date').datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            dateFormat: 'yy-mm-dd',
+            onSelect: function(selectedDate) {
+                var option = this.id == "id_from_date" ? "minDate" : "maxDate";
+                var instance = $(this).data("datepicker");
+                var date = $.datepicker.parseDate(instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
+                dates.not(this).datepicker("option", option, date);
+            }
+        });
     });
-});
-</script>
+    </script>
 
     {% include "frontend/custom_jquery_select_all.html" %}
 
-<style type="text/css">
-td {
-    width: auto;
-}
-</style>
+    <style type="text/css">
+    td {
+        width: auto;
+    }
+    </style>
 {% endblock %}
 
 {% block content_header %}
-<h1>{% trans "Call Reports" %} <small>{% trans "Detailed call data" %}</small></h1>
+    <h1>{% trans "Call Reports" %} <small>{% trans "Detailed call data" %}</small></h1>
 {% endblock %}
 
 
 {% block content %}
 <br/>
     {% block custom-search %}
-    <form method="POST" action="." enctype="multipart/form-data">
-      {% csrf_token %}
-      <fieldset>
-        <!-- <legend>Form legend</legend> -->
-            
+    <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+
         {% for field in form %}
         <div class="clearfix {% if field.errors %}error{% endif %}">
             <label>{{ field.label }}</label>
@@ -54,7 +51,7 @@ td {
             <input type="submit" value="{% trans "Search" %}" class="btn primary"/>&nbsp;
             <input type="reset" name="reset" value="{% trans "Reset" %}" class="btn danger">
         </div>
-      </fieldset>
+      
     </form>
     {% endblock %}
 
@@ -62,8 +59,7 @@ td {
 
 {% block record_list %}
 
-<form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">
-{% csrf_token %}
+<form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">{% csrf_token %}
 <table id="flex1" align="left" style="display:none;"></table>
 </form>
 

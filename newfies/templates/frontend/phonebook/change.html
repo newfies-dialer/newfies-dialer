@@ -5,18 +5,20 @@
 {% endblock %}
 
 {% block content_header %}
-<h1>{% if action == 'update' %}
+    <h1>
+        {% if action == 'update' %}
             {% trans "Update" %}
         {% else %}
             {% trans "Add" %}
-        {% endif %} {% trans "Phonebook" %} <small>{% trans "Contacts are stored in phonebooks" %}</small></h1>
+        {% endif %}
+        {% trans "Phonebook" %}
+        <small>{% trans "Contacts are stored in phonebooks" %}</small>
+    </h1>
 {% endblock %}
 
 {% block content %}
 
-
-<form method="POST" action="." enctype="multipart/form-data">
-    {% csrf_token %}
+<form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
 
     {% for field in form %}
     <div class="clearfix{% if field.errors %} error{% endif %}">
@@ -45,5 +47,4 @@
            
 </form>
 
- 
 {% endblock %}

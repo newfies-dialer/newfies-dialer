@@ -14,12 +14,15 @@
    var counter_id = (document.getElementById("id_new_que_form") ? document.getElementById("id_new_que_form").value : 0);
    var my_new_que=new Array();
    var arry_count = 0;
+
+   /* to sort question order */
    function temp_call()
    {
        my_new_que[arry_count] = document.getElementById("id").value;
-       //alert(my_new_que[arry_count]);
        arry_count++;
    }
+
+   /* to save question */
    function to_call_question_form()
    {
         //Reset for new record
@@ -44,6 +47,7 @@
             question_form_after_initial_save(form_id-1, record_id, 1);
         }
    }
+
 
    function question_form_after_initial_save(id, record_id, form_type)
    {
@@ -141,7 +145,8 @@
        Dajaxice.survey.survey_question_sort(Dajax.process, {'id': id, 'sort_order': sort_order});
    }
 
-   function my_js_callback(data){
+   function my_js_callback(data)
+   {
         if(data==Dajaxice.EXCEPTION){
             //alert('Error! Something happens!');
         }
@@ -286,6 +291,7 @@ function addFormField() {
     '</form>' +
     '</div>' +
     '</div><div id="divTxt"></div>');
+
     res_div_count = res_div_count + 1;
     id = (id - 1) + 2;    
     document.getElementById("id").value = id;
@@ -297,7 +303,6 @@ function addFormField() {
 
 // To remvoe added question form
 function removeFormField(id) {
-    //alert(id);
 	$(id).remove();
 }
 
@@ -347,6 +352,7 @@ function addResFormField(que_id, is_que_id_set) {
         $('#new_response_form_' + (id-1) +' input[type="text"]').attr('onBlur', 'response_form('+document.getElementById("new_response_id").value+', '+document.getElementById("id_new_que_form").value+', 1, 1)');
         $('#new_response_form_' + (id-1)).attr('id','response_form_'+document.getElementById("new_response_id").value);
     }
+
     //new response (with whom que id is set) form's id & onblur event must be changed to updated the newly entered values
     if(document.getElementById("new_response_id").value != 0 && que_id != 0 && is_que_id_set == 1)
     {
@@ -371,26 +377,28 @@ function removeResFormField(id) {
 {% endblock %}
 
 {% block content_header %}
-<h1>{% if action == 'update' %}
+    <h1>{% if action == 'update' %}
             {% trans "Update" %}
         {% else %}
             {% trans "Add" %}
-        {% endif %} {% trans "Survey" %} <small>{% trans "Survey configuration" %}</small></h1>
+        {% endif %} {% trans "Survey" %}
+        <small>{% trans "Survey configuration" %}</small>
+    </h1>
 {% endblock %}
 
 
 {% block content %}
 
 {% if msg %}
-<div class="alert-message success">
+    <div class="alert-message success">
         <strong>{% trans "Alert" %} : </strong>  {{ msg }}
-</div>
+    </div>
 {% endif %}
 
 {% if error_msg %}
-<div class="error" id="rounded-corner-upper-table">
-    <strong>{% trans "Alert" %} : </strong>  {{ error_msg }}
-</div>
+    <div class="error" id="rounded-corner-upper-table">
+        <strong>{% trans "Alert" %} : </strong>  {{ error_msg }}
+    </div>
 {% endif %}
 
 

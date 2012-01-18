@@ -10,65 +10,66 @@
 {% endblock %}
 
 {% block content_header %}
-<h1>{% trans "Import Contact" %} <small>{% trans "Import list of contact by uploading CSV files" %}</small></h1>
+    <h1>{% trans "Import Contact" %} <small>{% trans "Import list of contact by uploading CSV files" %}</small></h1>
 {% endblock %}
 
 {% block content %}
-{% if msg %}
-<div class="alert-message success">
-        <strong>{% trans "Alert" %} : </strong>  {{ msg }}
-</div>
-{% endif %}
-{% if error_msg %}
-<div class="alert-message error">
-        <strong>{% trans "Alert" %} : </strong>  {{ error_msg }}
-</div>
-{% endif %}
+    {% if msg %}
+    <div class="alert-message success">
+            <strong>{% trans "Alert" %} : </strong>  {{ msg }}
+    </div>
+    {% endif %}
+
+    {% if error_msg %}
+    <div class="alert-message error">
+            <strong>{% trans "Alert" %} : </strong>  {{ error_msg }}
+    </div>
+    {% endif %}
+
+    <br/>
+
+    <center>
+        <table class="bordered-table zebra-striped">
+        <caption><center><h3>{% trans "Sample File" %}</h3></center></caption>
+        <thead>
+        <tr>
+            <th>{% trans "Contact number" %}</th>
+            <th>{% trans "Last name" %}</th>
+            <th>{% trans "First name" %}</th>
+            <th>{% trans "Email" %}</th>
+            <th>{% trans "Description" %}</th>
+            <th>{% trans "Status" %}</th>
+            <th>{% trans "Additional variables" %}</th>
+        </tr>
+        </thead>
+        <tr>
+            <td>650784355</td>
+            <td>Belaid</td>
+            <td>Arezqui</td>
+            <td>areski@gmail.com</td>
+            <td>test subscriber</td>
+            <td>1</td>
+            <td>test</td>
+        </tr>
+        <tr>
+            <td>650723032</td>
+            <td>Fourth</td>
+            <td>John</td>
+            <td>john@gmail.com</td>
+            <td>test subscriber</td>
+            <td>0</td>
+            <td>test</td>
+        </tr>
+        </table>
+
+        <span class="label notice">{% trans "SUBSCRIBER STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')" %}</span>
+    </center>
+
+<br/>
 <br/>
 
-<center>
-<table class="bordered-table zebra-striped">
-<caption><center><h3>{% trans "Sample File" %}</h3></center></caption>
-<thead>
-<tr>
-    <th>{% trans "Contact number" %}</th>
-    <th>{% trans "Last name" %}</th>
-    <th>{% trans "First name" %}</th>
-    <th>{% trans "Email" %}</th>
-    <th>{% trans "Description" %}</th>
-    <th>{% trans "Status" %}</th>
-    <th>{% trans "Additional variables" %}</th>
-</tr>
-</thead>
-<tr>
-    <td>650784355</td>
-    <td>Belaid</td>
-    <td>Arezqui</td>
-    <td>areski@gmail.com</td>
-    <td>test subscriber</td>
-    <td>1</td>
-    <td>test</td>
-</tr>
-<tr>
-    <td>650723032</td>
-    <td>Fourth</td>
-    <td>John</td>
-    <td>john@gmail.com</td>
-    <td>test subscriber</td>
-    <td>0</td>
-    <td>test</td>
-</tr>
-</table>
-
-<span class="label notice">{% trans "SUBSCRIBER STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')" %}</span>
-</center>
-
-<br/>
-<br/>
 <div class="span-24 last" align=left>
-    <form method="post" action="" enctype="multipart/form-data" >
-    {% csrf_token %}
-
+    <form method="post" action="" enctype="multipart/form-data" >{% csrf_token %}
          {% for field in form %}
          <div class="clearfix{% if field.errors %} error{% endif %}">
             <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
@@ -87,7 +88,6 @@
          </div>
     </form>
 </div>
-
 
 {% if success_import_list %}
     <table class="bordered-table zebra-striped">

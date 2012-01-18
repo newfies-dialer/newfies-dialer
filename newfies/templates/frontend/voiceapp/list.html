@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content_header %}
-<h1>{% trans "Voice Applications" %} <small>{% trans "List, add and edit voice applications" %}</small></h1>
+    <h1>{% trans "Voice Applications" %} <small>{% trans "List, add and edit voice applications" %}</small></h1>
 {% endblock %}
 
 {% block content %}
@@ -20,9 +20,8 @@
 
 <br/>
 
-<form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">
-{% csrf_token %}
-<table id="flex1" align="left" style="display:none;"></table>
+<form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">{% csrf_token %}
+    <table id="flex1" align="left" style="display:none;"></table>
 </form>
 
 <script type="text/javascript">
@@ -64,7 +63,6 @@ $("#flex1").flexigrid({
     },
 });
 
-
 function add_button()
 {
     window.location = 'add/';
@@ -73,7 +71,6 @@ function delete_button()
 {
     $('#ListForm').submit();
 }
-
 </script>
 
 {% endblock %}

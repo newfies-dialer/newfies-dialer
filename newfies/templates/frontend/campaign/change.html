@@ -5,17 +5,19 @@
 {% endblock %}
 
 {% block content_header %}
-<h1>{% if action == 'update' %}
+    <h1>{% if action == 'update' %}
             {% trans "Update" %}
         {% else %}
             {% trans "Add" %}
-        {% endif %} {% trans "Campaign" %} <small>{% trans "Set campaign parameters" %}</small></h1>
+        {% endif %} {% trans "Campaign" %}
+        <small>{% trans "Set campaign parameters" %}</small>
+    </h1>
 {% endblock %}
 
 {% block content %}
 
 <div class="span-24 last" align=left>
-<form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+    <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
         <fieldset>
             <legend>{% trans "General settings" %}</legend>
             {% get_fieldset campaign_code,ds_user,name,description,status,callerid,aleg_gateway,content_object,extra_data,phonebook as campaign_fields from form %}
@@ -36,10 +38,8 @@
             {% endfor %}
         </fieldset>
 
-
         <fieldset>
             <legend>{% trans "Dialer settings" %}</legend>
-
             {% get_fieldset frequency,callmaxduration,maxretry as campaign_settings_fields from form %}
             {% for field in campaign_settings_fields %}
             <div class="clearfix{% if field.errors %} error{% endif %}">
@@ -53,7 +53,7 @@
                 </div>
             </div>
             {% endfor %}
-        
+
             <div class="row">
                 <div class="span12">
                     <div class="row">
@@ -84,12 +84,10 @@
                     </div>
                 </div>
             </div>
-            
         </fieldset>
 
         <fieldset>
             <legend>{% trans "Campaign schedule" %}</legend>
-            
             <div class="row">
                 <div class="span12">
                     <div class="row">
@@ -177,8 +175,7 @@
                  <input id="delete" name="delete" class="btn danger" type="submit" value="{% trans "Delete" %}" />
               {% endif %}
         </div>
-</form>
-
+    </form>
 </div>
  
 {% endblock %}

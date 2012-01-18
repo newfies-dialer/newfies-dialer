@@ -1,9 +1,8 @@
 {% extends "frontend/master.html" %}
 {% load dialer_cdr_extras i18n icons %}
 
-
 {% block content_header %}
-<h1>{% trans "Survey Report" %} <small>{% trans "Monitor survey results" %}</small></h1>
+    <h1>{% trans "Survey Report" %} <small>{% trans "Monitor survey results" %}</small></h1>
 {% endblock %}
 
 {% block content %}
@@ -20,9 +19,9 @@
     </div>
 {% endif %}
 
-
 <form method="POST" action="." enctype="multipart/form-data">
 {% csrf_token %}
+    {# survey result form #}
     {% for field in form %}
      <div class="clearfix{% if field.errors %} error{% endif %}">
         <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
@@ -42,36 +41,36 @@
 </form>
 
 {% if survey_result %}
+    {# grouping of survey result #}
     {% regroup survey_result by question as result %}
 
     {% for i in result %}
-        <table align="center" class="bordered-table">
+    <table align="center" class="bordered-table">
+        <tr>
+            <thead>
+                <th colspan=5>{{ i.grouper }}</th>
+            </thead>
+        </tr>
+        <tr>
+            <td colspan=5>
+            <!--{% for item in i.list %}<td>{{ item.response__count }} contact(s) pressed {{ item.response }}</td>{% endfor %}-->
+            <table class="bordered-table zebra-striped">
+            {# survey result will be managed in 5 columns #}
+            {% for item in i.list|groupby_columns:5 %}
             <tr>
-                <thead>
-                    <th colspan=5>{{ i.grouper }}</th>
-                </thead>
-            </tr>
-            <tr>
-                <td colspan=5>
-                <!--{% for item in i.list %}
-                    <td>{{ item.response__count }} contact(s) pressed {{ item.response }}</td>
-                {% endfor %}-->
-                <table class="bordered-table zebra-striped">
-                {% for item in i.list|groupby_columns:5 %}
-                <tr>
-                    {% for obj in item %}
-                        {% if obj %}
-                            <td>{{ obj.response__count }} contact(s) pressed {{ obj.response }}</td>
-                        {% else %}
-                            <td>&nbsp;</td>
-                        {% endif %}
-                    {% endfor %}
-                </tr>
+                {% for obj in item %}
+                    {% if obj %}
+                        <td>{{ obj.response__count }} contact(s) pressed {{ obj.response }}</td>
+                    {% else %}
+                        <td>&nbsp;</td>
+                    {% endif %}
                 {% endfor %}
-                </table>
-                </td>
             </tr>
-        </table>
+            {% endfor %}
+            </table>
+            </td>
+        </tr>
+    </table>
     {% endfor %}
 {% endif %}
 

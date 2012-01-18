@@ -1,49 +1,42 @@
 {% extends "frontend/master.html" %}
 {% load i18n dialer_cdr_extras icons %}
 
-
-
 {% block extra_files %}
-<script language="javascript" type="text/javascript">
-    $(document).ready(function() {
-        $("#id_contact_no").keydown(function(event) {
-            numeric(event);
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function() {
+            $("#id_contact_no").keydown(function(event) {
+                numeric(event);
+            });
         });
-    });
-</script>
+    </script>
     
     {% include "frontend/custom_jquery_select_all.html" %}
 
-<style type="text/css">
-table td {
-    width: auto;
-    padding: 10px 5px 9px 0px;
-}
-label {
-    text-align: left;
-}
-</style>
-
-
-    
+    <style type="text/css">
+    table td {
+        width: auto;
+        padding: 10px 5px 9px 0px;
+    }
+    label {
+        text-align: left;
+    }
+    </style>
 {% endblock %}
 
 {% block content_header %}
-<h1>{% trans "Contacts" %} <small>{% trans "List, add and edit contacts" %}</small></h1>
+    <h1>{% trans "Contacts" %} <small>{% trans "List, add and edit contacts" %}</small></h1>
 {% endblock %}
 
 {% block content %}
 
 {% if msg %}
-<div class="alert-message success">
+    <div class="alert-message success">
         <strong>{% trans "Alert"  %} : </strong>  {{ msg }}
-</div>
+    </div>
 {% endif %}
 <br/>
-       
 
-<form method="POST" action="." enctype="multipart/form-data">
-    {% csrf_token %}
+<form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
     
     <div class="row">
         <div class="span16">
@@ -96,11 +89,12 @@ label {
 
 <br/>
 
-<form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">
-{% csrf_token %}
-<table id="flex1" align="left" style="display:none;"></table>
+<form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">{% csrf_token %}
+    <table id="flex1" align="left" style="display:none;"></table>
 </form>
+
 <script type="text/javascript">
+
 var kwargs = ('{{ kwargs }}'.replace(/\&#39;/g, "'"));//'{{ kwargs }}'
 var name = ('{{ name }}'.replace(/\&#39;/g, "'"));//'{{ q }}'
 var arr = new Array(2);
@@ -155,7 +149,6 @@ $("#flex1").flexigrid({
     },
 });
 
-
 function add_button()
 {
     window.location = 'add/';
@@ -168,6 +161,6 @@ function delete_button()
 {
     $('#ListForm').submit();
 }
-
 </script>
+
 {% endblock %}

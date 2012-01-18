@@ -50,17 +50,16 @@
 <br/>
 
 
-<form method="post" action="" enctype="multipart/form-data" >
-{% csrf_token %}
-<table border=0>
-{{ form.as_table }}
-<tr>
-    <td colspan=2 align=right>
-    <input type="submit" class="l-1" name="submit" value="{% trans "Submit" %}" />&nbsp;
-    <input type="reset" name="reset" class="j-2" value="{% trans "Reset" %}" />
-    </td>
-</tr>
-</table>
+<form method="post" action="" enctype="multipart/form-data" >{% csrf_token %}
+    <table border=0>
+    {{ form.as_table }}
+    <tr>
+        <td colspan=2 align=right>
+        <input type="submit" class="l-1" name="submit" value="{% trans "Submit" %}" />&nbsp;
+        <input type="reset" name="reset" class="j-2" value="{% trans "Reset" %}" />
+        </td>
+    </tr>
+    </table>
 </form>
 
 <br/>
@@ -77,51 +76,50 @@
 
 
 {% if success_import_list %}
-<table border=1>
+    <table border=1>
     <tr>
         <th>{% trans "Contact(s) imported" %} :</th>
     </tr>
-{% for row in success_import_list %}
+    {% for row in success_import_list %}
     <tr class="{% cycle 'row1' 'row2' %}">
         <td>
             {{ row }}
         </td>
     </tr>
-{% endfor %}
-</table>
+    {% endfor %}
+    </table>
 {% endif %}
-
 
 {% if error_import_list %}
 <br>
-<table border=1>
+    <table border=1>
     <tr>
         <th>{% trans "Contact(s) not imported" %} :</th>
     </tr>
-{% for row in error_import_list %}
+    {% for row in error_import_list %}
     <tr class="{% cycle 'row1' 'row2' %}">
         <td>
             {{ row }}
         </td>
     </tr>
-{% endfor %}
-</table>
+    {% endfor %}
+    </table>
 {% endif %}
 
 {% if type_error_import_list %}
 <br>
-<table border=1>
+    <table border=1>
     <tr>
         <th>{% trans "Type mismatch" %} :</th>
     </tr>
-{% for row in type_error_import_list %}
+    {% for row in type_error_import_list %}
     <tr class="{% cycle 'row1' 'row2' %}">
         <td>
             {{ row }}
         </td>
     </tr>
-{% endfor %}
-</table>
+    {% endfor %}
+    </table>
 {% endif %}
 
 

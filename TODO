@@ -1,23 +1,7 @@
 TODO
 ====
 
-- Fix I18N on some of the pages such as :
-
-  * http://127.0.0.1:8000/survey/1/ (check in spanish)
-    http://127.0.0.1:8000/contact/add/
-
-  Done
-
-  * http://127.0.0.1:8000/audio/add/
-  Audio Name, Audio file etc... is not being included in the PO
-
-  Done
-
 - Refactor the template, css and code in view
-
-- Make sure test work on all APIs
-
-  Done.
 
 - Clean custom CSS, and add comments
 

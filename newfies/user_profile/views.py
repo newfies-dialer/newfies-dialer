@@ -253,32 +253,6 @@ def notification_del_read(request, object_id):
         return HttpResponseRedirect('/user_detail_change/?action=tabs-3&msg_note=true')
 
 
-@login_required
-def view_notification(request, id):
-    """Notice view in detail on Customer UI
-
-    **Attributes**
-
-        * ``template`` - 'frontend/registration/user_notice.html'
-
-    **Logic Description**:
-
-        * User is able to change his/her detail.
-    """
-    user_notice = notification.Notice.objects.get(pk=id)
-    user_notice.unseen = 0
-    user_notice.save()
-    template = 'frontend/registration/user_notice.html'
-    data = {
-        'module': current_view(request),
-        'notice': user_notice,
-        'notice_count': notice_count(request),
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
-    }
-    return render_to_response(template, data,
-           context_instance=RequestContext(request))
-
-
 def common_notification_status(request, id):
     """Notification Status (e.g. seen/unseen) need to be change.
     It is a common function for admin and customer UI

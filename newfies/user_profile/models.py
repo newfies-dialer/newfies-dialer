@@ -14,6 +14,18 @@ class UserProfile(models.Model):
     **Attributes**:
 
         * ``accountcode`` - Account name.
+        * ``address`` -
+        * ``city`` -
+        * ``state`` -
+        * ``address`` - 
+        * ``country`` -
+        * ``zip_code`` -
+        * ``phone_no`` -
+        * ``fax`` -
+        * ``company_name`` -
+        * ``company_website`` -
+        * ``language`` -
+        * ``note`` -
 
     **Relationships**:
 

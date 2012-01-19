@@ -141,7 +141,6 @@ class VoIPCallAdmin(admin.ModelAdmin):
         formset = cl.formset = None
         cl.result_list = cl.result_list.filter(**kwargs).order_by('-starting_date')
         
-
         # Session variable is used to get record set with searched option
         # into export file
         request.session['voipcall_record_qs'] = \
@@ -151,7 +150,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
         select_data = \
         {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
         total_data = ''
-        # Get Total Rrecords from VoIPCall Report table for Daily Call Report
+        # Get Total Records from VoIPCall Report table for Daily Call Report
         total_data = VoIPCall.objects.extra(select=select_data)\
                      .values('starting_date')\
                      .filter(**kwargs).annotate(Count('starting_date'))\

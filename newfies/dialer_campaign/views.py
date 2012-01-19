@@ -934,7 +934,6 @@ def phonebook_grid(request):
         start_page = int(0)
         end_page = int(rp)
 
-
     #phonebook_list = []
     sortorder_sign = ''
     if sortorder == 'desc':
@@ -1894,7 +1893,6 @@ def campaign_change(request, object_id):
                 # Start tasks to import subscriber
                 if obj.status == 1 and previous_status != 1:
                     collect_subscriber.delay(obj.id)
-
 
                 request.session["msg"] = _('"%(name)s" is updated.') \
                 % {'name': request.POST['name']}

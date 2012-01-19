@@ -1656,7 +1656,6 @@ def campaign_grid(request):
         start_page = int(0)
         end_page = int(rp)
 
-
     #campaign_list = []
     sortorder_sign = ''
     if sortorder == 'desc':
@@ -1727,6 +1726,19 @@ def campaign_list(request):
            context_instance=RequestContext(request))
 
 
+def common_content_type_function(object_string):
+    """It is used by campaign_add & campaign_change to get ContentType object detail"""
+    result_array = {}
+    matches = re.match("type:(\d+)-id:(\d+)", object_string).groups()
+    object_type_id = matches[0] #get 45 from "type:45-id:38"
+    result_array['object_id'] = matches[1] #get 38 from "type:45-id:38"
+    try:
+        result_array['object_type'] = ContentType.objects.get(id=object_type_id)
+    except:
+        pass
+    return result_array
+
+
 @login_required
 def campaign_add(request):
     """Add a new campaign for the logged in user
@@ -1766,23 +1778,15 @@ def campaign_add(request):
         form = CampaignForm(request.user, request.POST)
         if form.is_valid():
             obj = form.save(commit=False)
-
-            object_string = form.cleaned_data['content_object']
-            matches = re.match("type:(\d+)-id:(\d+)", object_string).groups()
-            object_type_id = matches[0] #get 45 from "type:45-id:38"
-            object_id = matches[1] #get 38 from "type:45-id:38"
-            object_type = ContentType.objects.get(id=object_type_id)
-
-            obj.content_type = object_type
-            obj.object_id = object_id
-
+            result_array = common_content_type_function(form.cleaned_data['content_object'])
+            obj.content_type = result_array['object_type']
+            obj.object_id = result_array['object_id']
             obj.user = User.objects.get(username=request.user)
             obj.save()
 
             # Start tasks to import subscriber
             if obj.status == 1:
                 collect_subscriber.delay(obj.pk)
-
             form.save_m2m()
 
             request.session["msg"] = _('"%(name)s" is added.') %\
@@ -1867,15 +1871,9 @@ def campaign_change(request, object_id):
             previous_status = campaign.status
             if form.is_valid():
                 obj = form.save(commit=False)
-
-                object_string = form.cleaned_data['content_object']
-                matches = re.match("type:(\d+)-id:(\d+)", object_string).groups()
-                object_type_id = matches[0] #get 45 from "type:45-id:38"
-                object_id = matches[1] #get 38 from "type:45-id:38"
-                object_type = ContentType.objects.get(id=object_type_id)
-
-                obj.content_type = object_type
-                obj.object_id = object_id
+                result_array = common_content_type_function(form.cleaned_data['content_object'])
+                obj.content_type = result_array['object_type']
+                obj.object_id = result_array['object_id']
                 obj.save()
 
                 # Start tasks to import subscriber

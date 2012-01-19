@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from country_dialcode.models import Country
 from dialer_campaign.models import Phonebook, Campaign, Contact, CAMPAIGN_STATUS, CAMPAIGN_STATUS_COLOR
 from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting
@@ -14,7 +13,6 @@ import calendar
 import string
 import urllib
 import time
-
 
 
 def field_list(name, user=None):
@@ -34,12 +32,7 @@ def field_list(name, user=None):
     if name == "gateway" and user is not None:
         list = UserProfile.objects.get(user=user)
         list = list.userprofile_gateway.all()
-
-    if name == "country" and user is not None:
-        list = Country.objects.all()
-        return ((l.id, l.countryname) for l in list)
-    #else:
-    #    list = []
+    
     return ((l.id, l.name) for l in list)
 
 

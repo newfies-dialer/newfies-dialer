@@ -120,11 +120,6 @@ def voipcall_report_grid(request):
     count = voipcall_list.count()
     voipcall_list = \
         voipcall_list.order_by(sortorder_sign + sortname)[start_page:end_page]
-
-    update_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
-    delete_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/delete.png);"'
     
     rows = []
     for row in voipcall_list:

@@ -625,6 +625,7 @@ def logout_view(request):
     return render_to_response(template, data,
            context_instance=RequestContext(request))
 
+
 def login_view(request):
     """Check User credentials
 
@@ -1200,12 +1201,6 @@ def contact_grid(request):
         .values('id', 'phonebook__name', 'contact', 'last_name',
                 'first_name', 'description', 'status', 'additional_vars',
                 'updated_date').all()
-
-        # Search option on grid but not working
-        #if str(query) and str(qtype):
-            #grid_search_kwargs = {}
-            #grid_search_kwargs[qtype] = query
-            #contact_list = contact_list.filter(**grid_search_kwargs)
 
         if kwargs:
             kwargs = ast.literal_eval(kwargs)

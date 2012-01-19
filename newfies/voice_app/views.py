@@ -164,7 +164,7 @@ def voiceapp_del(request, object_id):
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
 
-        # 2) delete voiceapp
+        # 1) delete voiceapp
         voiceapp_list = VoiceApp.objects.extra(where=['id IN (%s)' % values])
         request.session["msg"] =\
         _('%(count)s voiceapp(s) are deleted.' \

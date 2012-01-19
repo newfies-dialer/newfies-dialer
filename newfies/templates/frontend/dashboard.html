@@ -20,7 +20,7 @@
 {% endblock %}
 
 {% block content_header %}
-<h1>{% trans "Dashboard" %} <small>{% trans "Realtime campaign performance monitoring" %}</small></h1>
+    <h1>{% trans "Dashboard" %} <small>{% trans "Realtime campaign performance monitoring" %}</small></h1>
 {% endblock %}
 
 {% block content %}
@@ -43,21 +43,20 @@
 
 
 <table align="center" class="bordered-table zebra-striped">
-        <thead>
-        <tr>
-            <th>{% trans "Campaign" %}</th>
-            <th>{% trans "Total Phonebook Contacts" %}</th>
-            <th>{% trans "Total Campaign Contacts" %}</th>
-            <th>{% trans "Contacted Today" %}</th>
-        </tr>
-        </thead>
-        <tr>
-            <td class="rounded-foot-left">{{ campaign_count }}</td>
-            <td>{{ total_of_phonebook_contacts }}</td>
-            <td>{{ campaign_phonebbok_active_contact_count }}</td>
-            <td class="rounded-foot-right">{{ reached_contact }}</td>
-        </tr>
-
+    <thead>
+    <tr>
+        <th>{% trans "Campaign" %}</th>
+        <th>{% trans "Total Phonebook Contacts" %}</th>
+        <th>{% trans "Total Campaign Contacts" %}</th>
+        <th>{% trans "Contacted Today" %}</th>
+    </tr>
+    </thead>
+    <tr>
+        <td class="rounded-foot-left">{{ campaign_count }}</td>
+        <td>{{ total_of_phonebook_contacts }}</td>
+        <td>{{ campaign_phonebbok_active_contact_count }}</td>
+        <td class="rounded-foot-right">{{ reached_contact }}</td>
+    </tr>
 </table>
 
 <script type="text/javascript">

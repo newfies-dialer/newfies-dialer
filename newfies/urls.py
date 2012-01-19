@@ -58,20 +58,6 @@ urlpatterns = patterns('',
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # custom admin urls for admin dashboard
-    (r'^admin_call_report/$',
-     'dialer_campaign.views.admin_call_report'),
-    (r'^admin_call_report_graph/$',
-     'dialer_campaign.views.admin_call_report_graph'),
-    (r'^admin_campaign_report/$',
-     'dialer_campaign.views.admin_campaign_report'),
-    (r'^admin_campaign_report_graph/$',
-     'dialer_campaign.views.admin_campaign_report_graph'),
-    (r'^admin_user_report/$',
-     'dialer_campaign.views.admin_user_report'),
-    (r'^admin_user_report_graph/$',
-     'dialer_campaign.views.admin_user_report_graph'),
      
     (r'^logout/$',
      'dialer_campaign.views.logout_view'),

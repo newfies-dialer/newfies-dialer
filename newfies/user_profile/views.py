@@ -199,7 +199,6 @@ def notification_grid(request):
                       str(row.added),
                       str('<a href="../update_notice_status_cust/' + str(row.id) + '/" class="icon" ' \
                           + call_style(row.unseen) + ' ">&nbsp;</a>'),
-
              ]}for row in user_notification_list ]
 
     data = {'rows': rows,
@@ -208,7 +207,6 @@ def notification_grid(request):
     
     return HttpResponse(simplejson.dumps(data), mimetype='application/json',
                         content_type="application/json")
-
 
 
 @login_required

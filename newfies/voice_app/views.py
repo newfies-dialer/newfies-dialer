@@ -9,7 +9,7 @@ from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from voice_app.models import VoiceApp, get_voiceapp_type_name
 from voice_app.forms import VoiceAppForm
-from dialer_campaign.views import current_view, notice_count
+from dialer_campaign.views import current_view, notice_count, update_style, delete_style
 from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_campaign.function_def import *
 from datetime import *
@@ -52,11 +52,6 @@ def voiceapp_grid(request):
     count = voiceapp_list.count()
     voiceapp_list = \
         voiceapp_list.order_by(sortorder_sign + sortname)[start_page:end_page]
-
-    update_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
-    delete_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/delete.png);"'
 
     rows = [{'id': row['id'],
              'cell': ['<input type="checkbox" name="select" class="checkbox"\

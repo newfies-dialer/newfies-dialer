@@ -43,6 +43,10 @@ INVALIDARGS_COLOR = '#9B5C00'
 NOROUTE_COLOR = '#057D9F'
 FORBIDDEN_COLOR = '#A61700'
 
+update_style = 'style="text-decoration:none;background-image:url(' + \
+                    settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
+delete_style = 'style="text-decoration:none;background-image:url(' + \
+                settings.STATIC_URL + 'newfies/icons/delete.png);"'
 
 def current_view(request):
     name = getmodule(stack()[1][0]).__name__
@@ -569,8 +573,7 @@ def customer_dashboard(request, on_index=None):
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'campaign_count': campaign_count,
         'total_of_phonebook_contacts': total_of_phonebook_contacts,
-        'campaign_phonebbok_active_contact_count': \
-        campaign_phonebbok_active_contact_count,
+        'campaign_phonebbok_active_contact_count': campaign_phonebbok_active_contact_count,
         'reached_contact': reached_contact,
         'notice_count': notice_count(request),
         'total_data': total_data, # for humblefinanace graph
@@ -948,11 +951,6 @@ def phonebook_grid(request):
     phonebook_list = \
         phonebook_list.order_by(sortorder_sign + sortname)[start_page:end_page]
 
-    update_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
-    delete_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/delete.png);"'
-
     rows = [{'id': row['id'],
              'cell': ['<input type="checkbox" name="select" class="checkbox"\
                       value="' + str(row['id']) + '" />',
@@ -1223,11 +1221,6 @@ def contact_grid(request):
     count = contact_list.count()
     contact_list = \
         contact_list.order_by(sortorder_sign + sortname)[start_page:end_page]
-
-    update_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
-    delete_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/delete.png);"'
 
     rows = [{'id': row['id'],
              'cell': ['<input type="checkbox" name="select" class="checkbox"\
@@ -1679,11 +1672,6 @@ def campaign_grid(request):
     count = campaign_list.count()
     campaign_list = \
         campaign_list.order_by(sortorder_sign + sortname)[start_page:end_page]
-
-    update_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
-    delete_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/delete.png);"'
 
     rows = [{'id': row['id'],
              'cell': ['<input type="checkbox" name="select" class="checkbox"\

@@ -66,7 +66,6 @@ def customer_detail_change(request):
     error_detail = ''
     error_pass = ''
     error_number = ''
-    selected = 0
     action = ''
 
     if 'action' in request.GET:
@@ -81,9 +80,7 @@ def customer_detail_change(request):
         notification_list.update(unseen=0)
         msg_note = _('All notifications are marked as read.')
 
-        
     if request.method == 'POST':
-
         if request.POST['form-type'] == "change-detail":
             user_detail_form = UserChangeDetailForm(request.user, request.POST,
                                                     instance=user_detail)
@@ -141,6 +138,7 @@ def customer_detail_change(request):
     return render_to_response(template, data,
            context_instance=RequestContext(request))
 
+
 def call_style(val):
     unseen_style = 'style="text-decoration:none;background-image:url(' + \
                     settings.STATIC_URL + 'newfies/icons/new.png);"'
@@ -150,6 +148,7 @@ def call_style(val):
         return unseen_style
     else:
         return seen_style
+
 
 # Notification
 @login_required

@@ -15,6 +15,7 @@ class SurveyQuestionInline(SortableTabularInline):
 
 
 class SurveyAppAdmin(SortableAdmin):
+    """Allows the administrator to view and modify survey."""
     inlines = [SurveyQuestionInline,]
     list_display = ('id', 'name', 'created_date',)
     list_display_links = ('id', 'name', )
@@ -22,6 +23,7 @@ admin.site.register(SurveyApp, SurveyAppAdmin)
 
 
 class SurveyResponseAdmin(admin.ModelAdmin):
+    """Allows the administrator to view and modify attributes of a survey response."""
     list_display = ('key', 'keyvalue', 'created_date',)
     search_fields = ['key', 'keyvalue',]
 admin.site.register(SurveyResponse, SurveyResponseAdmin)
@@ -33,6 +35,7 @@ class SurveyResponseInline(admin.TabularInline):
 
 
 class SurveyQuestionAdmin(SortableAdmin):
+    """Allows the administrator to view and modify survey question."""
     inlines = [
         SurveyResponseInline,
     ]
@@ -45,6 +48,7 @@ admin.site.register(SurveyQuestion, SurveyQuestionAdmin)
 
 
 class SurveyCampaignResultAdmin(admin.ModelAdmin):
+    """Allows the administrator to view and modify survey campaign result."""
     list_display = ('campaign', 'surveyapp', 'callid', 'question', 'response', 'created_date',)
     search_fields = ['campaign', 'surveyapp', 'question', ]
 admin.site.register(SurveyCampaignResult, SurveyCampaignResultAdmin)

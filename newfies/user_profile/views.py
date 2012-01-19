@@ -66,7 +66,6 @@ def customer_detail_change(request):
     error_detail = ''
     error_pass = ''
     error_number = ''
-    selected = 0
     action = ''
 
     if 'action' in request.GET:
@@ -81,9 +80,7 @@ def customer_detail_change(request):
         notification_list.update(unseen=0)
         msg_note = _('All notifications are marked as read.')
 
-        
     if request.method == 'POST':
-
         if request.POST['form-type'] == "change-detail":
             user_detail_form = UserChangeDetailForm(request.user, request.POST,
                                                     instance=user_detail)
@@ -141,6 +138,7 @@ def customer_detail_change(request):
     return render_to_response(template, data,
            context_instance=RequestContext(request))
 
+
 def call_style(val):
     unseen_style = 'style="text-decoration:none;background-image:url(' + \
                     settings.STATIC_URL + 'newfies/icons/new.png);"'
@@ -150,6 +148,7 @@ def call_style(val):
         return unseen_style
     else:
         return seen_style
+
 
 # Notification
 @login_required
@@ -199,7 +198,6 @@ def notification_grid(request):
                       str(row.added),
                       str('<a href="../update_notice_status_cust/' + str(row.id) + '/" class="icon" ' \
                           + call_style(row.unseen) + ' ">&nbsp;</a>'),
-
              ]}for row in user_notification_list ]
 
     data = {'rows': rows,
@@ -208,7 +206,6 @@ def notification_grid(request):
     
     return HttpResponse(simplejson.dumps(data), mimetype='application/json',
                         content_type="application/json")
-
 
 
 @login_required
@@ -253,32 +250,6 @@ def notification_del_read(request, object_id):
             % {'count': notification_list.count()}
             notification_list.update(unseen=0)
         return HttpResponseRedirect('/user_detail_change/?action=tabs-3&msg_note=true')
-
-
-@login_required
-def view_notification(request, id):
-    """Notice view in detail on Customer UI
-
-    **Attributes**
-
-        * ``template`` - 'frontend/registration/user_notice.html'
-
-    **Logic Description**:
-
-        * User is able to change his/her detail.
-    """
-    user_notice = notification.Notice.objects.get(pk=id)
-    user_notice.unseen = 0
-    user_notice.save()
-    template = 'frontend/registration/user_notice.html'
-    data = {
-        'module': current_view(request),
-        'notice': user_notice,
-        'notice_count': notice_count(request),
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
-    }
-    return render_to_response(template, data,
-           context_instance=RequestContext(request))
 
 
 def common_notification_status(request, id):

@@ -107,7 +107,7 @@ class CampaignForm(ModelForm):
         model = Campaign
         fields = ['campaign_code', 'name', 'description',
                   'callerid', 'status', 'aleg_gateway',
-                  'content_object', # 'content_type', 'object_id','voipapp',
+                  'content_object', # 'content_type', 'object_id'
                   'extra_data', 'phonebook',
                   'frequency', 'callmaxduration', 'maxretry',
                   'intervalretry', 'calltimeout',
@@ -127,7 +127,6 @@ class CampaignForm(ModelForm):
         if user:
             self.fields['ds_user'].initial = user
             list_pb = []
-            #list_voipapp = []
             list_gw = []
 
             list_pb.append((0, '---'))
@@ -263,7 +262,6 @@ class DashboardForm(forms.Form):
     campaign = forms.ChoiceField(label=_('Campaign'), required=False)
     search_type = forms.ChoiceField(label=_('Type'), required=False, initial=4,
                                     choices=SEARCH_TYPE)
-
 
     def __init__(self, user, *args, **kwargs):
         super(DashboardForm, self).__init__(*args, **kwargs)

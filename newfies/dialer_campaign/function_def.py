@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from country_dialcode.models import Country
 from dialer_campaign.models import Phonebook, Campaign, Contact, CAMPAIGN_STATUS, CAMPAIGN_STATUS_COLOR
 from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting
@@ -14,7 +13,6 @@ import calendar
 import string
 import urllib
 import time
-
 
 
 def field_list(name, user=None):
@@ -34,12 +32,7 @@ def field_list(name, user=None):
     if name == "gateway" and user is not None:
         list = UserProfile.objects.get(user=user)
         list = list.userprofile_gateway.all()
-
-    if name == "country" and user is not None:
-        list = Country.objects.all()
-        return ((l.id, l.countryname) for l in list)
-    #else:
-    #    list = []
+    
     return ((l.id, l.name) for l in list)
 
 
@@ -356,117 +349,3 @@ def user_dialer_setting_msg(user):
     if not user_dialer_setting(user):
         msg = _('Your settings are not configured properly, Please contact the administrator.')
     return msg
-
-
-def common_graph_function(common_list, field_name, report_type,
-                          start_date, end_date, call_type=''):
-    """Common graph function for admin dashboard graphs which returns
-    data of calls, campaign & user"""
-    rows = []
-    maxtime = end_date
-    mintime = start_date
-    common_dict = {}
-    if report_type == 'today':
-        if common_list:
-            for data in common_list:
-                temp_time = datetime(int(str(data[field_name])[0:4]),
-                                     int(str(data[field_name])[5:7]),
-                                     int(str(data[field_name])[8:10]),
-                                     int(str(data[field_name])[11:13]),
-                                     0, 0, 0)
-
-                if temp_time > maxtime:
-                    maxtime = temp_time
-                elif temp_time < mintime:
-                    mintime = temp_time
-
-                if call_type == 'DURATION':
-                    common_dict[int(temp_time.strftime("%Y%m%d%H"))] = \
-                    {field_name + '__count': int(data[field_name + '__count']),
-                     'duration__sum':data['duration__sum']}
-                else:
-                    common_dict[int(temp_time.strftime("%Y%m%d%H"))] = \
-                    {field_name + '__count': int(data[field_name + '__count'])}
-
-
-            dateList = date_range(mintime, maxtime, q=3)
-            i = 0
-            for date in dateList:
-                inttime = int(date.strftime("%Y%m%d%H"))
-
-                if inttime in common_dict.keys():
-
-                    if call_type == 'DURATION':
-                        rows.append({
-                           'date': int(time.mktime(date.timetuple())),
-                           'count': common_dict[inttime]['duration__sum'],
-                        })
-                    else:
-                        rows.append({
-                           'date': int(time.mktime(date.timetuple())),
-                           'count': common_dict[inttime][field_name + '__count'],
-                        })
-                else:
-                    rows.append({
-                       'date': int(time.mktime(date.timetuple())),
-                       'count': 0,
-                     })
-                i += 1
-        # converted start & end date into time format
-        graph_start_date = int(time.mktime(start_date.timetuple()))
-        graph_end_date = int(time.mktime(end_date.timetuple()))
-        graph_type = 'hour'
-
-    if report_type == 'last_seven_days' or report_type == '':
-        if common_list:
-            for data in common_list:
-                temp_time = datetime(int(str(data[field_name])[0:4]),
-                                     int(str(data[field_name])[5:7]),
-                                     int(str(data[field_name])[8:10]),
-                                     0, 0, 0, 0)
-
-                if temp_time > maxtime:
-                    maxtime = temp_time
-                elif temp_time < mintime:
-                    mintime = temp_time
-
-                if call_type == 'DURATION':
-                    common_dict[int(temp_time.strftime("%Y%m%d"))] = \
-                    {field_name + '__count': int(data[field_name + '__count']),
-                     'duration__sum':data['duration__sum']}
-                else:
-                    common_dict[int(temp_time.strftime("%Y%m%d"))] = \
-                    {field_name + '__count': int(data[field_name + '__count'])}
-
-            dateList = date_range(mintime, maxtime, q=2)
-            i = 0
-            for date in dateList:
-                inttime = int(date.strftime("%Y%m%d"))
-                if inttime in common_dict.keys():
-                    if call_type == 'DURATION':
-                        rows.append({
-                           'date':  date.strftime("%Y-%m-%d"),
-                           'count': common_dict[inttime]['duration__sum'],
-                        })
-                    else:
-                        rows.append({
-                           'date':  date.strftime("%Y-%m-%d"),
-                           'count': common_dict[inttime][field_name + '__count'],
-                        })
-                else:
-                    rows.append({
-                       'date':  date.strftime("%Y-%m-%d"),
-                       'count': 0,
-                     })
-                i += 1
-        graph_start_date = start_date.strftime('%Y-%m-%d')
-        graph_end_date = end_date.strftime('%Y-%m-%d')
-        graph_type = 'day'
-
-    data = {
-        'common': rows,
-        'graph_start_date': graph_start_date,
-        'graph_end_date': graph_end_date,
-        'graph_type': graph_type,
-    }
-    return data

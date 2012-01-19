@@ -80,3 +80,40 @@ Newfies-Dialer Admin Views
 
 .. autoclass:: DialerSettingAdmin
     :members:
+
+
+.. automodule:: survey.admin
+
+.. _surveyappadmin:
+
+:class:`SurveyAppAdmin`
+-----------------------
+
+.. autoclass:: SurveyAppAdmin
+    :members:
+
+.. _surveyquestionadmin:
+
+:class:`SurveyQuestionAdmin`
+----------------------------
+
+.. autoclass:: SurveyQuestionAdmin
+    :members:
+
+
+.. _surveyresponseadmin:
+
+:class:`SurveyResponseAdmin`
+----------------------------
+
+.. autoclass:: SurveyResponseAdmin
+    :members:
+
+
+.. _surveycampaignresultadmin:
+
+:class:`SurveyCampaignResultAdmin`
+----------------------------------
+
+.. autoclass:: SurveyCampaignResultAdmin
+    :members:

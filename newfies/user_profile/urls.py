@@ -9,7 +9,6 @@ urlpatterns = patterns('',
 (r'^user_detail_change/$', 'user_profile.views.customer_detail_change'),
 
 (r'^user_detail_change/', include('notification.urls')),
-(r'^view_notification/(?P<id>[^/]+)', 'user_profile.views.view_notification'),
 (r'^notification_grid/$', 'user_profile.views.notification_grid'),
 (r'^user_detail_change/del/(.+)/$', 'user_profile.views.notification_del_read'),
 

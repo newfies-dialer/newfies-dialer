@@ -7,7 +7,6 @@ import base64
 import simplejson
 
 
-
 class BaseAuthenticatedClient(TestCase):
     """Common Authentication"""
 
@@ -214,7 +213,6 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 204)
 
 
-        
 class NewfiesAdminInterfaceTestCase(TestCase):
     """Test cases for Newfies-Dialer Admin Interface."""
 
@@ -379,7 +377,6 @@ class NewfiesCustomerInterfaceTestCase(BaseAuthenticatedClient):
         "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1",
         "content_object": "type:30-id:1", "extra_data": "2000"})
         self.assertEqual(response.status_code, 302)
-
 
     def test_voip_call_report(self):
         """Test Function to check VoIP call report"""

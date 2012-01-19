@@ -13,7 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
 
 from dialer_campaign.models import Campaign
-from dialer_campaign.views import current_view, notice_count
+from dialer_campaign.views import current_view, notice_count, update_style, delete_style
 from dialer_campaign.function_def import variable_value
 from survey.models import *
 from survey.forms import *
@@ -180,11 +180,6 @@ def survey_grid(request):
     count = survey_list.count()
     survey_list = \
         survey_list.order_by(sortorder_sign + sortname)[start_page:end_page]
-
-    update_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
-    delete_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/delete.png);"'
 
     rows = [{'id': row['id'],
              'cell': ['<input type="checkbox" name="select" class="checkbox"\
@@ -411,10 +406,6 @@ def audio_grid(request):
     audio_list = \
         audio_list.order_by(sortorder_sign + sortname)[start_page:end_page]
 
-    update_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
-    delete_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/delete.png);"'
     link_style = 'style="text-decoration:none;background-image:url(' + \
                     settings.STATIC_URL + 'newfies/icons/link.png);"'
     domain = Site.objects.get_current().domain
@@ -542,7 +533,18 @@ def audio_del(request, object_id):
 
 @login_required
 def audio_change(request, object_id):
+    """Update Audio for the logged in user
 
+    **Attributes**:
+
+        * ``form`` - SurvyCustomerAudioFileForm
+        * ``template`` - frontend/survey/audio_change.html
+
+    **Logic Description**:
+
+        * Update audio which is belong to the logged in user
+          via the CustomerAudioFileForm & get redirected to the audio list
+    """
     obj = AudioFile.objects.get(pk=object_id)
     form = CustomerAudioFileForm(instance=obj)
 

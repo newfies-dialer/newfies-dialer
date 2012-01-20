@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Newfies-Dialer 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-20 11:56+0100\n"
+"POT-Creation-Date: 2012-01-20 11:57+0100\n"
 "PO-Revision-Date: 2012-01-10 21:33+0100\n"
 "Last-Translator: Areski Belaid <areski@gmail.com>\n"
 "Language-Team: Areski Belaid <areski@gmail.com>\n"
@@ -826,16 +826,14 @@ msgid "Database error"
 msgstr "Base de datos de error"
 
 #: dialer_cdr/admin.py:177
-#, fuzzy, python-format
 msgid "%(total_count)s selected"
 msgid_plural "All %(total_count)s selected"
 msgstr[0] "%(total_count)s seleccionados"
 msgstr[1] "%(total_count)s seleccionados"
 
 #: dialer_cdr/admin.py:181
-#, fuzzy, python-format
 msgid "0 of %(cnt)s selected"
-msgstr "%(total_count)s seleccionados"
+msgstr "0 de %(cnt)s seleccionados"
 
 #: dialer_cdr/admin.py:192
 msgid "VoIP Report"
@@ -1382,16 +1380,15 @@ msgstr "Importar contactos"
 
 #: templates/admin/dialer_campaign/contact/change_list.html:38
 #: templates/admin/dialer_cdr/voipcall/change_list.html:48
-#, fuzzy
 msgid "Please correct the error below."
 msgid_plural "Please correct the errors below."
-msgstr[0] "Filtro"
-msgstr[1] "Filtro"
+msgstr[0] ""
+msgstr[1] ""
 
 #: templates/admin/dialer_campaign/contact/change_list.html:49
 #: templates/admin/dialer_cdr/voipcall/change_list.html:86
 msgid "Filter"
-msgstr ""
+msgstr "Filtro"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:18
 #: templates/frontend/contact/import_contact.html:33
@@ -3270,105 +3267,3 @@ msgstr "Borrar Voz App"
 #, python-format
 msgid "%(count)s voiceapp(s) are deleted."
 msgstr "%(count)s voz app(s) se ha eliminado."
-
-#~ msgid "Total Calls:"
-#~ msgstr "Total de llamadas:"
-
-#~ msgid "Total Duration:"
-#~ msgstr "Total de Duración:"
-
-#~ msgid "Answered"
-#~ msgstr "Respuesta"
-
-#~ msgid "Ans"
-#~ msgstr "Res"
-
-#~ msgid "Do not call"
-#~ msgstr "No llame"
-
-#~ msgid "DNC"
-#~ msgstr "DNC"
-
-#~ msgid "Busy"
-#~ msgstr "Ocupado"
-
-#~ msgid "Not Answered"
-#~ msgstr "No respuesta"
-
-#~ msgid "NA"
-#~ msgstr "NA"
-
-#~ msgid "Canceled"
-#~ msgstr "Cancelado"
-
-#~ msgid "Canc"
-#~ msgstr "Canc"
-
-#~ msgid "ChanUnavail"
-#~ msgstr "ChanUnavail"
-
-#~ msgid "CU"
-#~ msgstr "CU"
-
-#~ msgid "Torture"
-#~ msgstr "Tortura"
-
-#~ msgid "Tort"
-#~ msgstr "Tort"
-
-#~ msgid "Invalid Args"
-#~ msgstr "Inválida args"
-
-#~ msgid "Inv"
-#~ msgstr "Inv"
-
-#~ msgid "No Route"
-#~ msgstr "No hay ruta"
-
-#~ msgid "NoRo"
-#~ msgstr "Noro"
-
-#~ msgid "Congestion"
-#~ msgstr "Congestión"
-
-#~ msgid "Cong"
-#~ msgstr "Cong"
-
-#~ msgid "Forbidden"
-#~ msgstr "Prohibida"
-
-#~ msgid "Forb"
-#~ msgstr "Herbáceas"
-
-#~ msgid "Total Campaigns:"
-#~ msgstr "Total campañas:"
-
-#~ msgid "Active:"
-#~ msgstr "Activo:"
-
-#~ msgid "Paused:"
-#~ msgstr "Pausa:"
-
-#~ msgid "Aborted:"
-#~ msgstr "Abortado:"
-
-#~ msgid "Stopped:"
-#~ msgstr "Parada:"
-
-#~ msgid "Total Users:"
-#~ msgstr "Total usuarios:"
-
-#~ msgid "Active Users:"
-#~ msgstr "Usuarios Activos:"
-
-#~ msgid "No Active Users:"
-#~ msgstr "Usuarios Non Activos:"
-
-#~ msgid "Notice"
-#~ msgstr "Aviso"
-
-#~ msgid "Notification date"
-#~ msgstr "Fecha de notificación"
-
-#~ msgid "No Record(s) found."
-#~ msgstr "No Registro(s) que se encuentran."

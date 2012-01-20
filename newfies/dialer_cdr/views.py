@@ -6,7 +6,7 @@ from django.db.models import *
 from django.template.context import RequestContext
 from django.utils.translation import ugettext_lazy as _
 from django.utils import simplejson
-from dialer_campaign.views import current_view, notice_count
+from dialer_campaign.views import current_view, notice_count, grid_common_function
 from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_cdr.models import *
 from dialer_cdr.forms import VoipSearchForm
@@ -31,24 +31,12 @@ def voipcall_report_grid(request):
 
         * Get VoIP call list according to search parameters for loggedin user
     """
-    page = variable_value(request, 'page')
-    rp = variable_value(request, 'rp')
-    sortname = variable_value(request, 'sortname')
-    sortorder = variable_value(request, 'sortorder')
-    query = variable_value(request, 'query')
-    qtype = variable_value(request, 'qtype')
-
-    # page index
-    if int(page) > 1:
-        start_page = (int(page) - 1) * int(rp)
-        end_page = start_page + int(rp)
-    else:
-        start_page = int(0)
-        end_page = int(rp)
-
-    sortorder_sign = ''
-    if sortorder == 'desc':
-        sortorder_sign = '-'
+    grid_data = grid_common_function(request)
+    page = int(grid_data['page'])
+    start_page = int(grid_data['start_page'])
+    end_page = int(grid_data['end_page'])
+    sortorder_sign = grid_data['sortorder_sign']
+    sortname = grid_data['sortname']
 
 
     # Search vars
@@ -142,7 +130,6 @@ def voipcall_report_grid(request):
     data = {'rows': rows,
             'page': page,
             'total': count}
-
     return HttpResponse(simplejson.dumps(data), mimetype='application/json',
                         content_type="application/json")
 

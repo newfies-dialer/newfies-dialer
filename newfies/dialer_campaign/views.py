@@ -914,6 +914,32 @@ def notify_admin(request):
     return HttpResponseRedirect('/dashboard/')
 
 
+def grid_common_function(request):
+    """To get common flexigrid variable"""
+    grid_data = {}
+    
+    grid_data['page'] = variable_value(request, 'page')
+    grid_data['rp'] = variable_value(request, 'rp')
+    grid_data['sortname'] = variable_value(request, 'sortname')
+    grid_data['sortorder'] = variable_value(request, 'sortorder')
+    grid_data['query'] = variable_value(request, 'query')
+    grid_data['qtype'] = variable_value(request, 'qtype')
+
+    # page index
+    if int(grid_data['page']) > 1:
+        grid_data['start_page'] = (int(grid_data['page']) - 1) * int(grid_data['rp'])
+        grid_data['end_page'] = grid_data['start_page'] + int(grid_data['rp'])
+    else:
+        grid_data['start_page'] = int(0)
+        grid_data['end_page'] = int(grid_data['rp'])
+
+    grid_data['sortorder_sign'] = ''
+    if grid_data['sortorder'] == 'desc':
+        grid_data['sortorder_sign'] = '-'
+    
+    return grid_data
+
+
 # Phonebook
 @login_required
 def phonebook_grid(request):
@@ -923,25 +949,12 @@ def phonebook_grid(request):
     
     **Fields**: [id, name, description, updated_date]
     """
-    page = variable_value(request, 'page')
-    rp = variable_value(request, 'rp')
-    sortname = variable_value(request, 'sortname')
-    sortorder = variable_value(request, 'sortorder')
-    query = variable_value(request, 'query')
-    qtype = variable_value(request, 'qtype')
-
-    # page index
-    if int(page) > 1:
-        start_page = (int(page) - 1) * int(rp)
-        end_page = start_page + int(rp)
-    else:
-        start_page = int(0)
-        end_page = int(rp)
-
-    #phonebook_list = []
-    sortorder_sign = ''
-    if sortorder == 'desc':
-        sortorder_sign = '-'
+    grid_data = grid_common_function(request)
+    page = int(grid_data['page'])
+    start_page = int(grid_data['start_page'])
+    end_page = int(grid_data['end_page'])
+    sortorder_sign = grid_data['sortorder_sign']
+    sortname = grid_data['sortname']
 
     phonebook_list = Phonebook.objects\
                      .values('id', 'name', 'description', 'updated_date')\
@@ -949,8 +962,7 @@ def phonebook_grid(request):
                      .filter(user=request.user)
 
     count = phonebook_list.count()
-    phonebook_list = \
-        phonebook_list.order_by(sortorder_sign + sortname)[start_page:end_page]
+    phonebook_list = phonebook_list.order_by(sortorder_sign + sortname)[start_page:end_page]
 
     rows = [{'id': row['id'],
              'cell': ['<input type="checkbox" name="select" class="checkbox"\
@@ -1140,20 +1152,12 @@ def contact_grid(request):
     **Fields**: [id, phonebook__name, contact, last_name, first_name,
                  description, status, additional_vars, updated_date]
     """
-    page = variable_value(request, 'page')
-    rp = variable_value(request, 'rp')
-    sortname = variable_value(request, 'sortname')
-    sortorder = variable_value(request, 'sortorder')
-    query = variable_value(request, 'query')
-    qtype = variable_value(request, 'qtype')
-
-    # page index
-    if int(page) > 1:
-        start_page = (int(page) - 1) * int(rp)
-        end_page = start_page + int(rp)
-    else:
-        start_page = int(0)
-        end_page = int(rp)
+    grid_data = grid_common_function(request)
+    page = int(grid_data['page'])
+    start_page = int(grid_data['start_page'])
+    end_page = int(grid_data['end_page'])
+    sortorder_sign = grid_data['sortorder_sign']
+    sortname = grid_data['sortname']
 
     kwargs = {}
     name = ''
@@ -1188,9 +1192,6 @@ def contact_grid(request):
     phonebook_id_list = phonebook_id_list[:-1]
 
     contact_list = []
-    sortorder_sign = ''
-    if sortorder == 'desc':
-        sortorder_sign = '-'
 
     if phonebook_id_list:
         select_data = \
@@ -1636,25 +1637,12 @@ def campaign_grid(request):
 
     **Model**: Campaign
     """
-    page = variable_value(request, 'page')
-    rp = variable_value(request, 'rp')
-    sortname = variable_value(request, 'sortname')
-    sortorder = variable_value(request, 'sortorder')
-    query = variable_value(request, 'query')
-    qtype = variable_value(request, 'qtype')
-
-    # page index
-    if int(page) > 1:
-        start_page = (int(page) - 1) * int(rp)
-        end_page = start_page + int(rp)
-    else:
-        start_page = int(0)
-        end_page = int(rp)
-
-    #campaign_list = []
-    sortorder_sign = ''
-    if sortorder == 'desc':
-        sortorder_sign = '-'
+    grid_data = grid_common_function(request)
+    page = int(grid_data['page'])
+    start_page = int(grid_data['start_page'])
+    end_page = int(grid_data['end_page'])
+    sortorder_sign = grid_data['sortorder_sign']
+    sortname = grid_data['sortname']
 
     campaign_list = Campaign.objects\
                     .values('id', 'campaign_code', 'name', 'startingdate',
@@ -1690,7 +1678,6 @@ def campaign_grid(request):
     data = {'rows': rows,
             'page': page,
             'total': count}
-
     return HttpResponse(simplejson.dumps(data), mimetype='application/json',
                         content_type="application/json")
 

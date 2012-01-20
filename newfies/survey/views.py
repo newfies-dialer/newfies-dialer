@@ -13,7 +13,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
 
 from dialer_campaign.models import Campaign
-from dialer_campaign.views import current_view, notice_count, update_style, delete_style
+from dialer_campaign.views import current_view, notice_count, update_style, \
+    delete_style, grid_common_function
 from dialer_campaign.function_def import variable_value
 from survey.models import *
 from survey.forms import *
@@ -152,26 +153,12 @@ def survey_grid(request):
 
     **Fields**: [id, name, description, updated_date]
     """
-    page = variable_value(request, 'page')
-    rp = variable_value(request, 'rp')
-    sortname = variable_value(request, 'sortname')
-    sortorder = variable_value(request, 'sortorder')
-    query = variable_value(request, 'query')
-    qtype = variable_value(request, 'qtype')
-
-    # page index
-    if int(page) > 1:
-        start_page = (int(page) - 1) * int(rp)
-        end_page = start_page + int(rp)
-    else:
-        start_page = int(0)
-        end_page = int(rp)
-
-
-    #survey_list = []
-    sortorder_sign = ''
-    if sortorder == 'desc':
-        sortorder_sign = '-'
+    grid_data = grid_common_function(request)
+    page = int(grid_data['page'])
+    start_page = int(grid_data['start_page'])
+    end_page = int(grid_data['end_page'])
+    sortorder_sign = grid_data['sortorder_sign']
+    sortname = grid_data['sortname']
 
     survey_list = SurveyApp.objects\
                      .values('id', 'name', 'description', 'updated_date')\
@@ -377,26 +364,12 @@ def audio_grid(request):
 
     **Fields**: [id, name, description, updated_date]
     """
-    page = variable_value(request, 'page')
-    rp = variable_value(request, 'rp')
-    sortname = variable_value(request, 'sortname')
-    sortorder = variable_value(request, 'sortorder')
-    query = variable_value(request, 'query')
-    qtype = variable_value(request, 'qtype')
-
-    # page index
-    if int(page) > 1:
-        start_page = (int(page) - 1) * int(rp)
-        end_page = start_page + int(rp)
-    else:
-        start_page = int(0)
-        end_page = int(rp)
-
-
-    #survey_list = []
-    sortorder_sign = ''
-    if sortorder == 'desc':
-        sortorder_sign = '-'
+    grid_data = grid_common_function(request)
+    page = int(grid_data['page'])
+    start_page = int(grid_data['start_page'])
+    end_page = int(grid_data['end_page'])
+    sortorder_sign = grid_data['sortorder_sign']
+    sortname = grid_data['sortname']
 
     audio_list = AudioFile.objects\
                      .values('id', 'name', 'audio_file', 'updated_date')\

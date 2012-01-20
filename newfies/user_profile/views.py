@@ -10,7 +10,7 @@ from django.utils import simplejson
 from django.db.models import Q
 from notification import models as notification
 from dialer_campaign.models import common_contact_authorization
-from dialer_campaign.views import current_view, notice_count
+from dialer_campaign.views import current_view, notice_count, grid_common_function
 from dialer_campaign.function_def import user_dialer_setting_msg, variable_value
 from dialer_settings.models import DialerSetting
 from user_profile.models import UserProfile
@@ -157,26 +157,12 @@ def notification_grid(request):
 
     **Model**: notification.Notice
     """
-    page = variable_value(request, 'page')
-    rp = variable_value(request, 'rp')
-    sortname = variable_value(request, 'sortname')
-    sortorder = variable_value(request, 'sortorder')
-    query = variable_value(request, 'query')
-    qtype = variable_value(request, 'qtype')
-
-    # page index
-    if int(page) > 1:
-        start_page = (int(page) - 1) * int(rp)
-        end_page = start_page + int(rp)
-    else:
-        start_page = int(0)
-        end_page = int(rp)
-
-
-    #notification_list = []
-    sortorder_sign = ''
-    if sortorder == 'desc':
-        sortorder_sign = '-'
+    grid_data = grid_common_function(request)
+    page = int(grid_data['page'])
+    start_page = int(grid_data['start_page'])
+    end_page = int(grid_data['end_page'])
+    sortorder_sign = grid_data['sortorder_sign']
+    sortname = grid_data['sortname']
 
     user_notification = \
     notification.Notice.objects.filter(recipient=request.user)

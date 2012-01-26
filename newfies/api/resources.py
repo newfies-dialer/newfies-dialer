@@ -979,6 +979,7 @@ class CampaignSubscriberResource(ModelResource):
             Server: WSGIServer/0.1 Python/2.6.2
             Vary: Authorization
             Content-Length: 0
+            Location: http://localhost:8000/api/v1/campaignsubscriber/1/
             Content-Type: text/plain
 
     **Read**:
@@ -1120,6 +1121,9 @@ class CampaignSubscriberResource(ModelResource):
                                 status=1, # default active
                                 phonebook=obj_phonebook)
 
+        # Assign new contact object
+        bundle.obj = new_contact
+        
         logger.debug('CampaignSubscriber POST API : result ok 200')
         return bundle
 

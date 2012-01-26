@@ -71,16 +71,13 @@ case $DIST in
         if [ ! -f /etc/yum.repos.d/rpmforge.repo ];
             then
                 # Install RPMFORGE Repo
-        rpm --import http://apt.sw.be/RPM-GPG-KEY.dag.txt
-        echo '
-[rpmforge]
-name = Red Hat Enterprise $releasever - RPMforge.net - dag
-mirrorlist = http://apt.sw.be/redhat/el5/en/mirrors-rpmforge
-enabled = 0
-protect = 0
-gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmforge-dag
-gpgcheck = 1
-' > /etc/yum.repos.d/rpmforge.repo
+                #Check architecture
+        		KERNELARCH=$(uname -p)
+        		if [ $KERNELARCH = "x86_64" ]; then
+					rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.x86_64.rpm
+				else
+					rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.i686.rpm
+				fi
         fi
 
         yum -y --enablerepo=rpmforge install git-core

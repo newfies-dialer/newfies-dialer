@@ -197,17 +197,25 @@ func_install_frontend(){
             # SET APACHE CONF
             APACHE_CONF_DIR="/etc/httpd/conf.d/"
             
-            #TODO : Check architecture
-            rpm -ivh http://download.fedora.redhat.com/pub/epel/6/x86_64/epel-release-6-5.noarch.rpm
-            # disable epel repository since by default it is enabled. 
-            sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo
-            #yum --enablerepo=epel install python-pip
-            
+			if [ ! -f /etc/yum.repos.d/rpmforge.repo ];
+            	then
+                	# Install RPMFORGE Repo
+                	#Check architecture
+        			KERNELARCH=$(uname -p)
+        			if [ $KERNELARCH = "x86_64" ]; then
+						rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.x86_64.rpm
+					else
+						rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.i686.rpm
+					fi
+        	fi
+       
+         
             #Install Python dep  and pip
-            yum -y install python-setuptools python-tools python-devel mod_python
-            yum -y install python-pip
-            yum -y install mercurial mod_wsgi
-            
+            #Install epel repo for pip and mod_python
+            rpm -ivh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-5.noarch.rpm
+            # disable epel repository since by default it is enabled.
+            sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo
+            yum -y --enablerepo=epel install python-pip mod_python python-setuptools python-tools python-devel mercurial mod_wsgi
             #start http after reboot
             chkconfig --levels 235 httpd on
 
@@ -222,9 +230,6 @@ func_install_frontend(){
                 /usr/bin/mysql_secure_installation
                 func_mysql_database_setting
             fi
-            
-            #for audiofile convertion
-            yum -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
         ;;
     esac
     

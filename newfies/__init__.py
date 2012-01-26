@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Voice Broadcast Application"""
-# :copyright: (c) 2010 - 2011 by Arezqui Belaid.
-# :license:   AGPL, see COPYING for more details.
+"""Autodialer & Voice Broadcast Application"""
+# :copyright: (c) 2011 - 2012 by Arezqui Belaid.
+# :license: AGPL, see COPYING for more details.
 
-VERSION = (1, 1, 0, "")
+VERSION = (1, 1, 1, "")
 __version__ = ".".join(map(str, VERSION[0:3])) + "".join(VERSION[3:])
 __author__ = "Arezqui Belaid"
 __contact__ = "info@star2billing.com"

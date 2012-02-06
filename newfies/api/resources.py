@@ -986,10 +986,6 @@ class CampaignSubscriberResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber/?format=json
-
-                or
-
             curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber/%campaign_id%/?format=json
 
         Response:
@@ -1039,11 +1035,11 @@ class CampaignSubscriberResource(ModelResource):
 
         from django.db import connection, transaction
         cursor = connection.cursor()
-
-        campaign_id = int(camp_id)
+        
         contact = ''
-
-        if not campaign_id:
+        try:
+            campaign_id = int(camp_id)
+        except:
             error_msg = "No value for Campaign ID !"
             logger.error(error_msg)
             raise BadRequest(error_msg)

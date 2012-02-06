@@ -990,6 +990,17 @@ class CampaignSubscriberResource(ModelResource):
 
         Response:
 
+            {
+               "count_attempt":1,
+               "created_date":"2012-01-17T03:58:49",
+               "duplicate_contact":"123456789",
+               "id":"1",
+               "last_attempt":"2012-01-17T15:28:37",
+               "resource_uri":"/api/v1/campaignsubscriber/1/",
+               "status":1,
+               "updated_date":"2012-01-17T03:58:49"
+            }
+
 
     **Update**:
 

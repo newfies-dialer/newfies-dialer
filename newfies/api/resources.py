@@ -990,16 +990,20 @@ class CampaignSubscriberResource(ModelResource):
 
         Response:
 
-            {
-               "count_attempt":1,
-               "created_date":"2012-01-17T03:58:49",
-               "duplicate_contact":"123456789",
-               "id":"1",
-               "last_attempt":"2012-01-17T15:28:37",
-               "resource_uri":"/api/v1/campaignsubscriber/1/",
-               "status":1,
-               "updated_date":"2012-01-17T03:58:49"
-            }
+            [
+               {
+                  "contact_id":1,
+                  "count_attempt":1,
+                  "last_attempt":"2012-01-17T15:28:37",
+                  "status":2
+               },
+               {
+                  "contact_id":2,
+                  "count_attempt":1,
+                  "last_attempt":"2012-02-06T17:00:38",
+                  "status":1
+               }
+            ]
 
 
     **Update**:
@@ -1031,12 +1035,20 @@ class CampaignSubscriberResource(ModelResource):
         }
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
-    def get_object_list(self, request):
-        """
-        An ORM-specific implementation of ``get_object_list``.
+    def override_urls(self):
+        """Override urls"""
+        return [
+            url(r'^(?P<resource_name>%s)/(.+)/$' % self._meta.resource_name, self.wrap_view('read')),
+        ]
 
-        Returns a queryset that may have been limited by other overrides.
-        """
+    def read_response(self, request, data, response_class=HttpResponse, **response_kwargs):
+        """To display API's result"""
+        desired_format = self.determine_format(request)
+        serialized = self.serialize(request, data, desired_format)
+        return response_class(content=serialized, content_type=desired_format, **response_kwargs)
+
+    def read(self, request=None, **kwargs):
+        """GET method of CampaignSubscriber API"""
         logger.debug('CampaignSubscriber GET API get called')
 
         temp_url = request.META['PATH_INFO']
@@ -1052,6 +1064,13 @@ class CampaignSubscriberResource(ModelResource):
             campaign_id = int(camp_id)
         except:
             error_msg = "No value for Campaign ID !"
+            logger.error(error_msg)
+            raise BadRequest(error_msg)
+
+        try:
+            Campaign.objects.get(id=campaign_id)
+        except:
+            error_msg = "Campaign ID does not exists!"
             logger.error(error_msg)
             raise BadRequest(error_msg)
 
@@ -1102,13 +1121,14 @@ class CampaignSubscriberResource(ModelResource):
                 result_string = str(result_string) + str(record[0])
             else:
                 result_string = str(result_string) + str(record[0]) + ', '
+                i = i + 1
 
-        result_string = result_string
         logger.debug('CampaignSubscriber GET API : result ok 200')
-        try:
-            return self._meta.queryset.filter(contact__in=[result_string])._clone()
-        except:
-            return self._meta.queryset._clone()
+        #try:
+        #    return self._meta.queryset.filter(contact__in=[eval(result_string)])._clone()
+        #except:
+        #    return self._meta.queryset._clone()
+        return self.read_response(request, result)
     
     def obj_create(self, bundle, request=None, **kwargs):
 

@@ -1035,19 +1035,7 @@ class CampaignSubscriberResource(ModelResource):
         }
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
-    def override_urls(self):
-        """Override urls"""
-        return [
-            url(r'^(?P<resource_name>%s)/(.+)/$' % self._meta.resource_name, self.wrap_view('read')),
-        ]
-
-    def read_response(self, request, data, response_class=HttpResponse, **response_kwargs):
-        """To display API's result"""
-        desired_format = self.determine_format(request)
-        serialized = self.serialize(request, data, desired_format)
-        return response_class(content=serialized, content_type=desired_format, **response_kwargs)
-
-    def read(self, request=None, **kwargs):
+    def get_object_list(self, request, **response_kwargs):
         """GET method of CampaignSubscriber API"""
         logger.debug('CampaignSubscriber GET API get called')
 
@@ -1124,11 +1112,16 @@ class CampaignSubscriberResource(ModelResource):
                 i = i + 1
 
         logger.debug('CampaignSubscriber GET API : result ok 200')
-        #try:
-        #    return self._meta.queryset.filter(contact__in=[eval(result_string)])._clone()
-        #except:
-        #    return self._meta.queryset._clone()
-        return self.read_response(request, result)
+        try:
+            return self._meta.queryset.filter(contact__in=[eval(result_string)])._clone()
+        except:
+            return self._meta.queryset._clone()
+        #return self.read_response(request, result)
+        #response_class=HttpResponse
+        #desired_format = self.determine_format(request)
+        #serialized = self.serialize(request, result, desired_format)
+        #return response_class(content=serialized, content_type=desired_format, **response_kwargs)
+
     
     def obj_create(self, bundle, request=None, **kwargs):
 

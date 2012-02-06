@@ -986,13 +986,20 @@ class CampaignSubscriberResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber/?format=json
-
-                or
-
             curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber/%campaign_id%/?format=json
 
         Response:
+
+            {
+               "count_attempt":1,
+               "created_date":"2012-01-17T03:58:49",
+               "duplicate_contact":"123456789",
+               "id":"1",
+               "last_attempt":"2012-01-17T15:28:37",
+               "resource_uri":"/api/v1/campaignsubscriber/1/",
+               "status":1,
+               "updated_date":"2012-01-17T03:58:49"
+            }
 
 
     **Update**:
@@ -1039,11 +1046,11 @@ class CampaignSubscriberResource(ModelResource):
 
         from django.db import connection, transaction
         cursor = connection.cursor()
-
-        campaign_id = int(camp_id)
+        
         contact = ''
-
-        if not campaign_id:
+        try:
+            campaign_id = int(camp_id)
+        except:
             error_msg = "No value for Campaign ID !"
             logger.error(error_msg)
             raise BadRequest(error_msg)
@@ -1133,44 +1140,20 @@ class CampaignSubscriberResource(ModelResource):
         """
         logger.debug('CampaignSubscriber PUT API get called')
 
-        if not bundle.obj or not bundle.obj.pk:
-            # Attempt to hydrate data from kwargs before doing a lookup for the object.
-            # This step is needed so certain values (like datetime) will pass model validation.
-            try:
-                bundle.obj = self.get_object_list(request).model()
-                bundle.data.update(kwargs)
-                bundle = self.full_hydrate(bundle)
-                lookup_kwargs = kwargs.copy()
-                lookup_kwargs.update(dict(
-                    (k, getattr(bundle.obj, k))
-                    for k in kwargs.keys()
-                    if getattr(bundle.obj, k) is not None))
-            except:
-                # if there is trouble hydrating the data, fall back to just
-                # using kwargs by itself (usually it only contains a "pk" key
-                # and this will work fine.
-                lookup_kwargs = kwargs
-            try:
-                bundle.obj = self.obj_get(request, **lookup_kwargs)
-            except ObjectDoesNotExist:
-                error_msg = "A model instance matching the provided arguments could not be found."
-                logger.error(error_msg)
-                raise NotFound(error_msg)
+        temp_url = request.META['PATH_INFO']
+        temp_id = temp_url.split('/api/v1/campaignsubscriber/')[1]
+        campaign_id = temp_id.split('/')[0]
 
-        bundle = self.full_hydrate(bundle)
-
-        campaign_id = int(bundle.data.get('pk'))
         camaign_obj = Campaign.objects.get(id=campaign_id)
         try:
-            campaignsubscriber = CampaignSubscriber.objects.get(
-                                        duplicate_contact=bundle.data.get('contact'),
-                                        campaign=camaign_obj)
+            campaignsubscriber = CampaignSubscriber.objects.get(duplicate_contact=bundle.data.get('contact'),
+                                                                campaign=camaign_obj)
             campaignsubscriber.status = bundle.data.get('status')
             campaignsubscriber.save()
         except:
             error_msg = "A model instance matching the provided arguments could not be found."
             logger.error(error_msg)
-            raise NotFound(error_msg)
+            raise BadRequest(error_msg)
 
         logger.debug('CampaignSubscriber PUT API : result ok 200')
         return bundle

@@ -982,6 +982,35 @@ class CampaignSubscriberResource(ModelResource):
             Location: http://localhost:8000/api/v1/campaignsubscriber/1/
             Content-Type: text/plain
 
+    **Read**:
+
+            CURL Usage::
+
+                curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber/?format=json
+
+            Response::
+
+                {
+                   "meta":{
+                      "limit":20,
+                      "next":null,
+                      "offset":0,
+                      "previous":null,
+                      "total_count":1
+                   },
+                   "objects":[
+                      {
+                         "count_attempt":1,
+                         "created_date":"2012-01-17T03:58:49",
+                         "duplicate_contact":"123456789",
+                         "id":"1",
+                         "last_attempt":"2012-01-17T15:28:37",
+                         "resource_uri":"/api/v1/campaignsubscriber/1/",
+                         "status":2,
+                         "updated_date":"2012-02-07T02:22:19"
+                      }
+                   ]
+                }
 
     **Update**:
 
@@ -1004,8 +1033,8 @@ class CampaignSubscriberResource(ModelResource):
         resource_name = 'campaignsubscriber'
         authorization = Authorization()
         authentication = BasicAuthentication()
-        list_allowed_methods = ['post', 'put']
-        detail_allowed_methods = ['post', 'put']
+        list_allowed_methods = ['get', 'post', 'put']
+        detail_allowed_methods = ['get', 'post', 'put']
         validation = CampaignSubscriberValidation()
         filtering = {
             'contact': 'exact',
@@ -1062,7 +1091,7 @@ class CampaignSubscriberResource(ModelResource):
         return bundle
 
 
-class CampaignSubscriberGetResource(ModelResource):
+class CampaignSubscriberPerCampaignResource(ModelResource):
     """
     **Attributes Details**:
 
@@ -1075,9 +1104,9 @@ class CampaignSubscriberGetResource(ModelResource):
 
             CURL Usage::
 
-                curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriberget/%campaign_id%/?format=json
+                curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber_per_campaign/%campaign_id%/?format=json
 
-            Response:
+            Response::
 
                 [
                    {
@@ -1096,7 +1125,7 @@ class CampaignSubscriberGetResource(ModelResource):
 
     """
     class Meta:
-        resource_name = 'campaignsubscriberget'
+        resource_name = 'campaignsubscriber_per_campaign'
         authorization = Authorization()
         authentication = BasicAuthentication()
         list_allowed_methods = ['get']
@@ -1127,7 +1156,7 @@ class CampaignSubscriberGetResource(ModelResource):
 
 
         temp_url = request.META['PATH_INFO']
-        temp_id = temp_url.split('/api/v1/campaignsubscriberget/')[1]
+        temp_id = temp_url.split('/api/v1/campaignsubscriber_per_campaign/')[1]
         camp_id = temp_id.split('/')[0]
         #contact = temp_id.split('/')[1]
 

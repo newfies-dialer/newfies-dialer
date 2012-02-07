@@ -957,12 +957,29 @@ class CampaignSubscriberResource(ModelResource):
 
             curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber/?format=json
 
-                or
+        Response::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber/%campaign_id%/?format=json
-
-        Response:
-
+            {
+               "meta":{
+                  "limit":20,
+                  "next":null,
+                  "offset":0,
+                  "previous":null,
+                  "total_count":1
+               },
+               "objects":[
+                  {
+                     "count_attempt":1,
+                     "created_date":"2012-01-17T03:58:49",
+                     "duplicate_contact":"123456789",
+                     "id":"1",
+                     "last_attempt":"2012-01-17T15:28:37",
+                     "resource_uri":"/api/v1/campaignsubscriber/1/",
+                     "status":2,
+                     "updated_date":"2012-02-07T02:22:19"
+                  }
+               ]
+            }
 
     **Update**:
 
@@ -992,85 +1009,6 @@ class CampaignSubscriberResource(ModelResource):
             'contact': 'exact',
         }
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
-
-    def get_object_list(self, request):
-        """
-        An ORM-specific implementation of ``get_object_list``.
-
-        Returns a queryset that may have been limited by other overrides.
-        """
-        logger.debug('CampaignSubscriber GET API get called')
-
-        temp_url = request.META['PATH_INFO']
-        temp_id = temp_url.split('/api/v1/campaignsubscriber/')[1]
-        camp_id = temp_id.split('/')[0]
-        #contact = temp_id.split('/')[1]
-
-        from django.db import connection, transaction
-        cursor = connection.cursor()
-
-        campaign_id = int(camp_id)
-        contact = ''
-
-        if not campaign_id:
-            error_msg = "No value for Campaign ID !"
-            logger.error(error_msg)
-            raise BadRequest(error_msg)
-
-        if contact:
-            if not isint(contact):
-                error_msg = "Wrong value for contact !"
-                logger.error(error_msg)
-                raise BadRequest(error_msg)
-
-            sql_statement = 'SELECT contact_id, last_attempt, count_attempt,'\
-                    'dialer_campaign_subscriber.status '\
-                    'FROM dialer_campaign_subscriber '\
-                    'LEFT JOIN dialer_callrequest ON '\
-                    'campaign_subscriber_id=dialer_campaign_subscriber.id '\
-                    'LEFT JOIN dialer_campaign ON '\
-                    'dialer_callrequest.campaign_id=dialer_campaign.id '\
-                    'WHERE dialer_campaign_subscriber.campaign_id = %s '\
-                    'AND dialer_campaign_subscriber.duplicate_contact = "%s"'\
-                    % (str(campaign_id), str(contact))
-
-        else:
-            sql_statement = 'SELECT contact_id, last_attempt, count_attempt,'\
-                        'dialer_campaign_subscriber.status '\
-                        'FROM dialer_campaign_subscriber '\
-                        'LEFT JOIN dialer_callrequest ON '\
-                        'campaign_subscriber_id=' \
-                        'dialer_campaign_subscriber.id '\
-                        'LEFT JOIN dialer_campaign ON '\
-                        'dialer_callrequest.campaign_id=dialer_campaign.id '\
-                        'WHERE dialer_campaign_subscriber.campaign_id' \
-                        '= %s' % (str(campaign_id))
-
-        cursor.execute(sql_statement)
-        row = cursor.fetchall()
-
-        result = []
-        result_string = ''
-        limit = list(row).__len__()
-        i = 0
-        for record in row:
-            modrecord = {}
-            modrecord['contact_id'] = record[0]
-            modrecord['last_attempt'] = record[1]
-            modrecord['count_attempt'] = record[2]
-            modrecord['status'] = record[3]
-            result.append(modrecord)
-            if i == (limit - 1):
-                result_string = str(result_string) + str(record[0])
-            else:
-                result_string = str(result_string) + str(record[0]) + ', '
-
-        result_string = result_string
-        logger.debug('CampaignSubscriber GET API : result ok 200')
-        try:
-            return self._meta.queryset.filter(contact__in=[result_string])._clone()
-        except:
-            return self._meta.queryset._clone()
     
     def obj_create(self, bundle, request=None, **kwargs):
 
@@ -1142,6 +1080,146 @@ class CampaignSubscriberResource(ModelResource):
 
         logger.debug('CampaignSubscriber PUT API : result ok 200')
         return bundle
+
+
+class CampaignSubscriberPerCampaignResource(ModelResource):
+    """
+    **Attributes Details**:
+
+        * ``contact_id`` - contact id
+        * ``count_attempt`` - no of call attempt
+        * ``last_attempt`` - last call attempt
+        * ``status`` - call status
+
+    **Read**:
+
+        CURL Usage::
+
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber_per_campaign/%campaign_id%/?format=json
+
+        Response::
+
+            [
+               {
+                  "contact_id":1,
+                  "count_attempt":1,
+                  "last_attempt":"2012-01-17T15:28:37",
+                  "status":2
+               },
+               {
+                  "contact_id":2,
+                  "count_attempt":1,
+                  "last_attempt":"2012-02-06T17:00:38",
+                  "status":1
+               }
+            ]
+
+    """
+    class Meta:
+        resource_name = 'campaignsubscriber_per_campaign'
+        authorization = Authorization()
+        authentication = BasicAuthentication()
+        list_allowed_methods = ['get']
+        detail_allowed_methods = ['get']
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+
+    def override_urls(self):
+        """Override urls"""
+        return [
+            url(r'^(?P<resource_name>%s)/(.+)/$' % self._meta.resource_name, self.wrap_view('read')),
+        ]
+
+    def read_response(self, request, data, response_class=HttpResponse, **response_kwargs):
+        """To display API's result"""
+        desired_format = self.determine_format(request)
+        serialized = self.serialize(request, data, desired_format)
+        return response_class(content=serialized, content_type=desired_format, **response_kwargs)
+
+    def read(self, request=None, **kwargs):
+        """GET method of CampaignSubscriber API"""
+        logger.debug('CampaignSubscriber GET API get called')
+        auth_result = self._meta.authentication.is_authenticated(request)
+        if not auth_result is True:
+            raise ImmediateHttpResponse(response=http.HttpUnauthorized())
+
+        logger.debug('CampaignSubscriber GET API authorization called!')
+        auth_result = self._meta.authorization.is_authorized(request, object)
+
+
+        temp_url = request.META['PATH_INFO']
+        temp_id = temp_url.split('/api/v1/campaignsubscriber_per_campaign/')[1]
+        camp_id = temp_id.split('/')[0]
+        #contact = temp_id.split('/')[1]
+
+        from django.db import connection, transaction
+        cursor = connection.cursor()
+
+        contact = ''
+        try:
+            campaign_id = int(camp_id)
+        except:
+            error_msg = "No value for Campaign ID !"
+            logger.error(error_msg)
+            raise BadRequest(error_msg)
+
+        try:
+            Campaign.objects.get(id=campaign_id)
+        except:
+            error_msg = "Campaign ID does not exists!"
+            logger.error(error_msg)
+            raise BadRequest(error_msg)
+
+        if contact:
+            if not isint(contact):
+                error_msg = "Wrong value for contact !"
+                logger.error(error_msg)
+                raise BadRequest(error_msg)
+
+            sql_statement = 'SELECT contact_id, last_attempt, count_attempt,'\
+                    'dialer_campaign_subscriber.status '\
+                    'FROM dialer_campaign_subscriber '\
+                    'LEFT JOIN dialer_callrequest ON '\
+                    'campaign_subscriber_id=dialer_campaign_subscriber.id '\
+                    'LEFT JOIN dialer_campaign ON '\
+                    'dialer_callrequest.campaign_id=dialer_campaign.id '\
+                    'WHERE dialer_campaign_subscriber.campaign_id = %s '\
+                    'AND dialer_campaign_subscriber.duplicate_contact = "%s"'\
+                    % (str(campaign_id), str(contact))
+
+        else:
+            sql_statement = 'SELECT contact_id, last_attempt, count_attempt,'\
+                        'dialer_campaign_subscriber.status '\
+                        'FROM dialer_campaign_subscriber '\
+                        'LEFT JOIN dialer_callrequest ON '\
+                        'campaign_subscriber_id=' \
+                        'dialer_campaign_subscriber.id '\
+                        'LEFT JOIN dialer_campaign ON '\
+                        'dialer_callrequest.campaign_id=dialer_campaign.id '\
+                        'WHERE dialer_campaign_subscriber.campaign_id' \
+                        '= %s' % (str(campaign_id))
+
+        cursor.execute(sql_statement)
+        row = cursor.fetchall()
+
+        result = []
+        result_string = ''
+        limit = list(row).__len__()
+        i = 0
+        for record in row:
+            modrecord = {}
+            modrecord['contact_id'] = record[0]
+            modrecord['last_attempt'] = record[1]
+            modrecord['count_attempt'] = record[2]
+            modrecord['status'] = record[3]
+            result.append(modrecord)
+            if i == (limit - 1):
+                result_string = str(result_string) + str(record[0])
+            else:
+                result_string = str(result_string) + str(record[0]) + ', '
+                i = i + 1
+
+        logger.debug('CampaignSubscriber GET API : result ok 200')
+        return self.read_response(request, result)
 
 
 class CallrequestValidation(Validation):

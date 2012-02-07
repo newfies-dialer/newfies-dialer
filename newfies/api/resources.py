@@ -1076,10 +1076,10 @@ class CampaignSubscriberResource(ModelResource):
         temp_id = temp_url.split('/api/v1/campaignsubscriber/')[1]
         campaign_id = temp_id.split('/')[0]
 
-        camaign_obj = Campaign.objects.get(id=campaign_id)
+        campaign_obj = Campaign.objects.get(id=campaign_id)
         try:
             campaignsubscriber = CampaignSubscriber.objects.get(duplicate_contact=bundle.data.get('contact'),
-                                                                campaign=camaign_obj)
+                                                                campaign=campaign_obj)
             campaignsubscriber.status = bundle.data.get('status')
             campaignsubscriber.save()
         except:

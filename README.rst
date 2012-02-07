@@ -30,6 +30,7 @@ campaigns, add phonebooks, subscribers, as well as record audio messages
 and design more complex IVR (Interactive Voice Response) applications.
 When ready and tested, the campaign can be launched from the interface.
 
+
 History
 -------
 Newfies-Dialer was commissioned by a charity named Kubatana 

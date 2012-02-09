@@ -6,7 +6,7 @@ To activate your custom menu add the following to your settings.py::
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from admin_tools.menu import items, Menu
-
+import newfies
 
 class CustomMenu(Menu):
     """Custom Menu for admin site."""
@@ -14,7 +14,7 @@ class CustomMenu(Menu):
     def __init__(self, **kwargs):
         Menu.__init__(self, **kwargs)
         self.children += [
-            items.MenuItem(_('Newfies-Dialer Dashboard'), reverse('admin:index')),
+            items.MenuItem(_('Newfies-Dialer' + ' V' + newfies.__version__), reverse('admin:index')),
             items.Bookmarks(),
             items.AppList(
                 _('Applications'),

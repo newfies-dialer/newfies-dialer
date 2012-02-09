@@ -95,13 +95,13 @@ setup(
     download_url='https://github.com/Star2Billing/newfies-dialer/tarball/master',
     packages=find_packages(),
     include_package_data=True,
-    license='AGPL License',
+    license='MPL 2.0 License',
     classifiers=[
         'Development Status :: 1 - Beta',
         'Environment :: Web Environment',
         'Framework :: Django',
         'Intended Audience :: Developers, Users',
-        'License :: OSI Approved :: AGPL License',
+        'License :: OSI Approved :: MPL 2.0 License',
         'Operating System :: OS Independent',
         'Programming Language :: Python, Javascript, HTML',
         'Topic :: Voice Broadcast Software'

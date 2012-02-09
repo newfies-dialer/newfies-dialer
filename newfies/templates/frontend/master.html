@@ -2,6 +2,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <head xmlns="http://www.w3.org/1999/xhtml" lang="{{ LANGUAGE_CODE }}" xml:lang="{{ LANGUAGE_CODE }}">
 
+<!--
+- Newfies-Dialer License
+- http://www.newfies-dialer.org
+- 
+- This Source Code Form is subject to the terms of the Mozilla Public 
+- License, v. 2.0. If a copy of the MPL was not distributed with this file, 
+- You can obtain one at http://mozilla.org/MPL/2.0/.
+- 
+- Copyright (C) 2011-2012 Star2Billing S.L.
+- 
+- The Initial Developer of the Original Code is
+- Arezqui Belaid <info@star2billing.com>
+-
+-->
+
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>{% block title %}Newfies-Dialer{% endblock %} | {% trans "Customer Interface" noop %}</title>
     <link rel="icon" type="image/png" href="{{STATIC_URL}}newfies/images/favicon.png">
@@ -125,12 +140,7 @@
         {% endblock %}
     </div>
     
-
-    <footer>
-        <p>Newfies-Dialer v{{ newfies_version }} {% trans "is" %} <a href="http://www.newfies-dialer.org/" target="_blank">{% trans "Autodialer software" %}</a> {% trans "licensed under the "  %}
-            <a href="http://www.fsf.org/licensing/licenses/agpl-3.0.html" target="_blank">AGPL 3</a>. <br/>
-            Copyright (C) 2010-2012 - Star2billing S.L. <a href="http://www.star2billing.com" target="_blank">http://www.star2billing.com</a></p>
-    </footer>
+{% include "frontend/footer.html" %}
       
 </div>
 

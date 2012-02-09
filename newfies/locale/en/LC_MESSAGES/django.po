@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-20 11:59+0100\n"
+"POT-Creation-Date: 2012-02-09 19:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,8 +77,8 @@ msgstr ""
 msgid "Dashboard Stats Settings"
 msgstr ""
 
-#: custom_admin_tools/menu.py:17
-msgid "Newfies-Dialer Dashboard"
+#: custom_admin_tools/menu.py:17 templates/frontend/bootstrap_menu.html:11
+msgid "Newfies-Dialer"
 msgstr ""
 
 #: custom_admin_tools/menu.py:20
@@ -1315,7 +1315,7 @@ msgid "Accepted methods"
 msgstr ""
 
 #: templates/admin/base_site.html:4
-msgid "Newfies Admin"
+msgid "Newfies-Dialer Admin"
 msgstr ""
 
 #: templates/admin/filter.html:2
@@ -1505,10 +1505,6 @@ msgstr ""
 
 #: templates/admin_tools/dashboard/modules/app_list.html:51
 msgid "Change"
-msgstr ""
-
-#: templates/frontend/bootstrap_menu.html:11
-msgid "Newfies-Dialer"
 msgstr ""
 
 #: templates/frontend/bootstrap_menu.html:16
@@ -1739,16 +1735,16 @@ msgstr ""
 
 #: templates/frontend/index.html:27
 msgid ""
-"however an alternative license can be purchased if the AGPL license is not "
+"however an alternative license can be purchased if the MPL V2 license is not "
 "suitable for your requirements."
 msgstr ""
 
-#: templates/frontend/master.html:6
+#: templates/frontend/master.html:21
 msgid "Customer Interface"
 msgstr ""
 
-#: templates/frontend/master.html:86 templates/frontend/master.html.py:92
-#: templates/frontend/master.html:112 templates/frontend/campaign/list.html:16
+#: templates/frontend/master.html:101 templates/frontend/master.html.py:107
+#: templates/frontend/master.html:127 templates/frontend/campaign/list.html:16
 #: templates/frontend/campaign/list.html:22
 #: templates/frontend/contact/import_contact.html:19
 #: templates/frontend/contact/import_contact.html:25
@@ -1771,36 +1767,24 @@ msgstr ""
 msgid "Alert"
 msgstr ""
 
-#: templates/frontend/master.html:92
+#: templates/frontend/master.html:107
 msgid "Please login by clicking on login button"
 msgstr ""
 
-#: templates/frontend/master.html:100
+#: templates/frontend/master.html:115
 msgid "Voice Broadcasting solution"
 msgstr ""
 
-#: templates/frontend/master.html:114
+#: templates/frontend/master.html:129
 msgid "To send notification to administrator"
 msgstr ""
 
-#: templates/frontend/master.html:114
+#: templates/frontend/master.html:129
 msgid "Click here"
 msgstr ""
 
-#: templates/frontend/master.html:116
+#: templates/frontend/master.html:131
 msgid "(Notification sent)"
-msgstr ""
-
-#: templates/frontend/master.html:130
-msgid "is"
-msgstr ""
-
-#: templates/frontend/master.html:130
-msgid "Autodialer software"
-msgstr ""
-
-#: templates/frontend/master.html:130
-msgid "licensed under the "
 msgstr ""
 
 #: templates/frontend/campaign/change.html:9

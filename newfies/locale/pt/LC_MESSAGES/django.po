@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-20 12:00+0100\n"
+"POT-Creation-Date: 2012-02-09 19:32+0100\n"
 "PO-Revision-Date: 2012-01-06 20:33-0300\n"
 "Last-Translator: Emerson Reis <eluizbr@gmail.com>\n"
 "Language-Team: PORTUGUES BRASIL <eluizbr@gmail.com>\n"
@@ -78,9 +78,9 @@ msgstr "Últimas Notícias Newfies-Dialer"
 msgid "Dashboard Stats Settings"
 msgstr "Estatísticas de configuraçao da Dashboard"
 
-#: custom_admin_tools/menu.py:17
-msgid "Newfies-Dialer Dashboard"
-msgstr "Newfies-Dialer Dashboard"
+#: custom_admin_tools/menu.py:17 templates/frontend/bootstrap_menu.html:11
+msgid "Newfies-Dialer"
+msgstr "Newfies-Dialer"
 
 #: custom_admin_tools/menu.py:20
 msgid "Applications"
@@ -1349,8 +1349,8 @@ msgid "Accepted methods"
 msgstr "Métodos aceitos"
 
 #: templates/admin/base_site.html:4
-msgid "Newfies Admin"
-msgstr "Administrador Newfies"
+msgid "Newfies-Dialer Admin"
+msgstr "Newfies-Dialer Admin"
 
 #: templates/admin/filter.html:2
 #, python-format
@@ -1540,10 +1540,6 @@ msgstr "Adicionar"
 #: templates/admin_tools/dashboard/modules/app_list.html:51
 msgid "Change"
 msgstr "Alterar"
-
-#: templates/frontend/bootstrap_menu.html:11
-msgid "Newfies-Dialer"
-msgstr "Newfies-Dialer"
 
 #: templates/frontend/bootstrap_menu.html:16
 #: templates/frontend/dashboard.html:5 templates/frontend/dashboard.html:23
@@ -1778,18 +1774,18 @@ msgstr "Newfies-Dialer está licenciado sob"
 
 #: templates/frontend/index.html:27
 msgid ""
-"however an alternative license can be purchased if the AGPL license is not "
+"however an alternative license can be purchased if the MPL V2 license is not "
 "suitable for your requirements."
 msgstr ""
-"no entanto uma licença alternativa pode ser comprada se a licença AGPL não "
+"no entanto uma licença alternativa pode ser comprada se a licença MPL V2 não "
 "for adequada para suas necessidades."
 
-#: templates/frontend/master.html:6
+#: templates/frontend/master.html:21
 msgid "Customer Interface"
 msgstr "Interface do usuário"
 
-#: templates/frontend/master.html:86 templates/frontend/master.html.py:92
-#: templates/frontend/master.html:112 templates/frontend/campaign/list.html:16
+#: templates/frontend/master.html:101 templates/frontend/master.html.py:107
+#: templates/frontend/master.html:127 templates/frontend/campaign/list.html:16
 #: templates/frontend/campaign/list.html:22
 #: templates/frontend/contact/import_contact.html:19
 #: templates/frontend/contact/import_contact.html:25
@@ -1812,37 +1808,25 @@ msgstr "Interface do usuário"
 msgid "Alert"
 msgstr "Alerta"
 
-#: templates/frontend/master.html:92
+#: templates/frontend/master.html:107
 msgid "Please login by clicking on login button"
 msgstr "Faça o login clicando no botão de login"
 
-#: templates/frontend/master.html:100
+#: templates/frontend/master.html:115
 msgid "Voice Broadcasting solution"
 msgstr "Voz solução Broadcasting"
 
-#: templates/frontend/master.html:114
+#: templates/frontend/master.html:129
 msgid "To send notification to administrator"
 msgstr "Para enviar uma notificação ao administrador"
 
-#: templates/frontend/master.html:114
+#: templates/frontend/master.html:129
 msgid "Click here"
 msgstr "Clique aqui"
 
-#: templates/frontend/master.html:116
+#: templates/frontend/master.html:131
 msgid "(Notification sent)"
 msgstr "(Notificação enviada)"
-
-#: templates/frontend/master.html:130
-msgid "is"
-msgstr "é"
-
-#: templates/frontend/master.html:130
-msgid "Autodialer software"
-msgstr "Autodialer software"
-
-#: templates/frontend/master.html:130
-msgid "licensed under the "
-msgstr "é um software licenciado sob a"
 
 #: templates/frontend/campaign/change.html:9
 #: templates/frontend/campaign/change.html:169
@@ -3253,3 +3237,4 @@ msgstr "Apagar App de voz"
 #, python-format
 msgid "%(count)s voiceapp(s) are deleted."
 msgstr "%(count)s voiceapp(s) apagado(s) com sucesso."
+

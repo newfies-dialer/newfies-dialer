@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Newfies-Dialer 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-20 11:57+0100\n"
+"POT-Creation-Date: 2012-02-09 19:31+0100\n"
 "PO-Revision-Date: 2012-01-10 21:33+0100\n"
 "Last-Translator: Areski Belaid <areski@gmail.com>\n"
 "Language-Team: Areski Belaid <areski@gmail.com>\n"
@@ -78,9 +78,9 @@ msgstr "Últimas Noticias Newfies-Dialer"
 msgid "Dashboard Stats Settings"
 msgstr "Escritorio Stats Configuración"
 
-#: custom_admin_tools/menu.py:17
-msgid "Newfies-Dialer Dashboard"
-msgstr "Newfies-Dialer escritorio"
+#: custom_admin_tools/menu.py:17 templates/frontend/bootstrap_menu.html:11
+msgid "Newfies-Dialer"
+msgstr "Newfies-Dialer"
 
 #: custom_admin_tools/menu.py:20
 msgid "Applications"
@@ -826,12 +826,14 @@ msgid "Database error"
 msgstr "Base de datos de error"
 
 #: dialer_cdr/admin.py:177
+#, python-format
 msgid "%(total_count)s selected"
 msgid_plural "All %(total_count)s selected"
 msgstr[0] "%(total_count)s seleccionados"
 msgstr[1] "%(total_count)s seleccionados"
 
 #: dialer_cdr/admin.py:181
+#, python-format
 msgid "0 of %(cnt)s selected"
 msgstr "0 de %(cnt)s seleccionados"
 
@@ -1353,8 +1355,8 @@ msgid "Accepted methods"
 msgstr "Métodos aceptados"
 
 #: templates/admin/base_site.html:4
-msgid "Newfies Admin"
-msgstr "Newfies Administración"
+msgid "Newfies-Dialer Admin"
+msgstr "Newfies-Dialer Admin"
 
 #: templates/admin/filter.html:2
 #, python-format
@@ -1544,10 +1546,6 @@ msgstr "Añadir"
 #: templates/admin_tools/dashboard/modules/app_list.html:51
 msgid "Change"
 msgstr "Cambio"
-
-#: templates/frontend/bootstrap_menu.html:11
-msgid "Newfies-Dialer"
-msgstr "Newfies-Dialer"
 
 #: templates/frontend/bootstrap_menu.html:16
 #: templates/frontend/dashboard.html:5 templates/frontend/dashboard.html:23
@@ -1784,18 +1782,18 @@ msgstr "Newfies está licenciado bajo"
 
 #: templates/frontend/index.html:27
 msgid ""
-"however an alternative license can be purchased if the AGPL license is not "
+"however an alternative license can be purchased if the MPL V2 license is not "
 "suitable for your requirements."
 msgstr ""
-"Sin embargo, una licencia alternativa se puede comprar si la licencia AGPL "
+"Sin embargo, una licencia alternativa se puede comprar si la licencia MPL V2 "
 "no es adecuado para sus necesidades."
 
-#: templates/frontend/master.html:6
+#: templates/frontend/master.html:21
 msgid "Customer Interface"
 msgstr "Interfaz del cliente"
 
-#: templates/frontend/master.html:86 templates/frontend/master.html.py:92
-#: templates/frontend/master.html:112 templates/frontend/campaign/list.html:16
+#: templates/frontend/master.html:101 templates/frontend/master.html.py:107
+#: templates/frontend/master.html:127 templates/frontend/campaign/list.html:16
 #: templates/frontend/campaign/list.html:22
 #: templates/frontend/contact/import_contact.html:19
 #: templates/frontend/contact/import_contact.html:25
@@ -1818,37 +1816,25 @@ msgstr "Interfaz del cliente"
 msgid "Alert"
 msgstr "Alerta"
 
-#: templates/frontend/master.html:92
+#: templates/frontend/master.html:107
 msgid "Please login by clicking on login button"
 msgstr "Por favor, ingresa haciendo clic en el botón de inicio de sesión"
 
-#: templates/frontend/master.html:100
+#: templates/frontend/master.html:115
 msgid "Voice Broadcasting solution"
 msgstr "Voz de Radiodifusión solución"
 
-#: templates/frontend/master.html:114
+#: templates/frontend/master.html:129
 msgid "To send notification to administrator"
 msgstr "Para enviar una notificación al administrador"
 
-#: templates/frontend/master.html:114
+#: templates/frontend/master.html:129
 msgid "Click here"
 msgstr "Haga clic aquí"
 
-#: templates/frontend/master.html:116
+#: templates/frontend/master.html:131
 msgid "(Notification sent)"
 msgstr "(Notificación enviada)"
-
-#: templates/frontend/master.html:130
-msgid "is"
-msgstr "es"
-
-#: templates/frontend/master.html:130
-msgid "Autodialer software"
-msgstr "Marcación Automática de software"
-
-#: templates/frontend/master.html:130
-msgid "licensed under the "
-msgstr "bajo licencia"
 
 #: templates/frontend/campaign/change.html:9
 #: templates/frontend/campaign/change.html:169
@@ -3267,3 +3253,4 @@ msgstr "Borrar Voz App"
 #, python-format
 msgid "%(count)s voiceapp(s) are deleted."
 msgstr "%(count)s voz app(s) se ha eliminado."
+

@@ -44,7 +44,7 @@
               <a href="#" class="dropdown-toggle">{{ user.username|capfirst }}</a>
               <ul class="dropdown-menu">
                 <li {% ifequal module 'detail_change' %}class="active"{% endifequal %}><a href="/user_detail_change/?action=tabs-1">
-                        {% trans "Account settings" %}s</a></li>
+                        {% trans "Account settings" %}</a></li>
                 <li {% ifequal module 'detail_change' %}class="active"{% endifequal %}><a href="/user_detail_change/?action=tabs-3">
                         {% trans "Notifications" %}</a></li>
                 <li {% ifequal module 'detail_change' %}class="active"{% endifequal %}><a href="/user_detail_change/?action=tabs-4">

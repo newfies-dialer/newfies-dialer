@@ -58,6 +58,13 @@ CDR_VARIABLES = ['plivo_request_uuid', 'plivo_answer_url', 'plivo_app',
                     'origination_caller_id_number', 'caller_id',
                     'answer_epoch', 'answer_uepoch']
 
+def get_contact(id):
+    try:
+        con_obj = Contact.objects.get(pk=id)
+        return con_obj.contact
+    except:
+        return ''
+
 
 class CustomJSONSerializer(Serializer):
     
@@ -1080,14 +1087,6 @@ class CampaignSubscriberResource(ModelResource):
 
         logger.debug('CampaignSubscriber PUT API : result ok 200')
         return bundle
-
-
-def get_contact(id):
-    try:
-        con_obj = Contact.objects.get(pk=id)
-        return con_obj.contact
-    except:
-        return ''
     
 
 class CampaignSubscriberPerCampaignResource(ModelResource):

@@ -1121,13 +1121,17 @@ class CampaignSubscriberPerCampaignResource(ModelResource):
                       "contact_id":1,
                       "count_attempt":1,
                       "last_attempt":"2012-01-17T15:28:37",
-                      "status":2
+                      "status":2,
+                      "campaign_subscriber_id": 1,
+                      "contact": "640234123"
                    },
                    {
                       "contact_id":2,
                       "count_attempt":1,
                       "last_attempt":"2012-02-06T17:00:38",
-                      "status":1
+                      "status":1,
+                      "campaign_subscriber_id": 2,
+                      "contact": "640234000"
                    }
                 ]
 

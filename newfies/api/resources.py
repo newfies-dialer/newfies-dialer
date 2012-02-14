@@ -1034,9 +1034,10 @@ class CampaignSubscriberResource(ModelResource):
                                 description=bundle.data.get('description'),
                                 status=1, # default active
                                 phonebook=obj_phonebook)
+
         # Assign new contact object
         bundle.obj = new_contact
-
+        
         logger.debug('CampaignSubscriber POST API : result ok 200')
         return bundle
 
@@ -1046,44 +1047,20 @@ class CampaignSubscriberResource(ModelResource):
         """
         logger.debug('CampaignSubscriber PUT API get called')
 
-        if not bundle.obj or not bundle.obj.pk:
-            # Attempt to hydrate data from kwargs before doing a lookup for the object.
-            # This step is needed so certain values (like datetime) will pass model validation.
-            try:
-                bundle.obj = self.get_object_list(request).model()
-                bundle.data.update(kwargs)
-                bundle = self.full_hydrate(bundle)
-                lookup_kwargs = kwargs.copy()
-                lookup_kwargs.update(dict(
-                    (k, getattr(bundle.obj, k))
-                    for k in kwargs.keys()
-                    if getattr(bundle.obj, k) is not None))
-            except:
-                # if there is trouble hydrating the data, fall back to just
-                # using kwargs by itself (usually it only contains a "pk" key
-                # and this will work fine.
-                lookup_kwargs = kwargs
-            try:
-                bundle.obj = self.obj_get(request, **lookup_kwargs)
-            except ObjectDoesNotExist:
-                error_msg = "A model instance matching the provided arguments could not be found."
-                logger.error(error_msg)
-                raise NotFound(error_msg)
+        temp_url = request.META['PATH_INFO']
+        temp_id = temp_url.split('/api/v1/campaignsubscriber/')[1]
+        campaign_id = temp_id.split('/')[0]
 
-        bundle = self.full_hydrate(bundle)
-
-        campaign_id = int(bundle.data.get('pk'))
-        camaign_obj = Campaign.objects.get(id=campaign_id)
+        campaign_obj = Campaign.objects.get(id=campaign_id)
         try:
-            campaignsubscriber = CampaignSubscriber.objects.get(
-                                        duplicate_contact=bundle.data.get('contact'),
-                                        campaign=camaign_obj)
+            campaignsubscriber = CampaignSubscriber.objects.get(duplicate_contact=bundle.data.get('contact'),
+                                                                campaign=campaign_obj)
             campaignsubscriber.status = bundle.data.get('status')
             campaignsubscriber.save()
         except:
             error_msg = "A model instance matching the provided arguments could not be found."
             logger.error(error_msg)
-            raise NotFound(error_msg)
+            raise BadRequest(error_msg)
 
         logger.debug('CampaignSubscriber PUT API : result ok 200')
         return bundle

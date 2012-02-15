@@ -1196,7 +1196,7 @@ class CampaignSubscriberPerCampaignResource(ModelResource):
                 logger.error(error_msg)
                 raise BadRequest(error_msg)
 
-            sql_statement = 'SELECT contact_id, last_attempt, count_attempt,'\
+            sql_statement = 'SELECT DISTINCT contact_id, last_attempt, count_attempt,'\
                             'dialer_campaign_subscriber.status,'\
                             'dialer_campaign_subscriber.id '\
                             'FROM dialer_campaign_subscriber '\
@@ -1209,7 +1209,7 @@ class CampaignSubscriberPerCampaignResource(ModelResource):
                             % (str(campaign_id), str(contact))
 
         else:
-            sql_statement = 'SELECT contact_id, last_attempt, count_attempt,'\
+            sql_statement = 'SELECT DISTINCT contact_id, last_attempt, count_attempt,'\
                             'dialer_campaign_subscriber.status, '\
                             'dialer_campaign_subscriber.id '\
                             'FROM dialer_campaign_subscriber '\

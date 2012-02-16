@@ -1078,8 +1078,10 @@ class CampaignSubscriberPerCampaignResource(ModelResource):
     **Read**:
 
         CURL Usage::
-
+            
             curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber_per_campaign/%campaign_id%/?format=json
+            or
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber_per_campaign/%campaign_id%/%contact%/?format=json
 
         Response::
 
@@ -1137,12 +1139,14 @@ class CampaignSubscriberPerCampaignResource(ModelResource):
         temp_url = request.META['PATH_INFO']
         temp_id = temp_url.split('/api/v1/campaignsubscriber_per_campaign/')[1]
         camp_id = temp_id.split('/')[0]
-        #contact = temp_id.split('/')[1]
+        try:
+            contact = temp_id.split('/')[1]
+        except:
+            contact = False
 
         from django.db import connection, transaction
         cursor = connection.cursor()
 
-        contact = ''
         try:
             campaign_id = int(camp_id)
         except:

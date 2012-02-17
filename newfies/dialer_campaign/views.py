@@ -192,7 +192,7 @@ def customer_dashboard(request, on_index=None):
                                 })
             if i['disposition'] == 'ANSWER':
                 total_answered = total_answered + 1
-            elif i['disposition'] == 'BUSY':
+            elif i['disposition'] == 'BUSY' or i['disposition'] == 'USER_BUSY':
                 total_busy = total_busy + 1
             elif i['disposition'] == 'NOANSWER':
                 total_not_answered = total_not_answered + 1

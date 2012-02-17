@@ -56,40 +56,13 @@ def init_callrequest(callrequest_id, campaign_id):
         logger.error("Can't find the campaign : %s" % campaign_id)
         return False
     
-    phone_number = obj_callrequest.phone_number
     if obj_callrequest.aleg_gateway:
         id_aleg_gateway = obj_callrequest.aleg_gateway.id
-        dialout_phone_number = phonenumber_change_prefix(phone_number,
+        dialout_phone_number = phonenumber_change_prefix(obj_callrequest.phone_number,
                                          id_aleg_gateway)
     else:
-        dialout_phone_number = phone_number
+        dialout_phone_number = obj_callrequest.phone_number
     logger.info("dialout_phone_number : %s" % dialout_phone_number)
-
-    #Construct the dialing out path
-    """
-    **Gateway Attributes**:
-
-        * ``name`` - Gateway name.
-        * ``description`` - Description about Gateway.
-        * ``addprefix`` - Add prefix.
-        * ``removeprefix`` - Remove prefix.
-        * ``gateways`` - "user/,user", # Gateway string to try dialing \
-        separated by comma. First in list will be tried first
-        * ``gateway_codecs`` - "'PCMA,PCMU','PCMA,PCMU'", \
-        # Codec string as needed by FS for each gateway separated by comma
-        * ``gateway_timeouts`` - "10,10", # Seconds to timeout in string for\
-        each gateway separated by comma
-        * ``gateway_retries`` - "2,1", # Retry String for Gateways separated\
-        by a comma, on how many times each gateway should be retried
-        * ``originate_dial_string`` - originate_dial_string
-        * ``secondused`` -
-        * ``failover`` -
-        * ``addparameter`` -
-        * ``count_call`` -
-        * ``count_in_use`` -
-        * ``maximum_call`` -
-        * ``status`` - Gateway status
-    """
 
     #Retrieve the Gateway for the A-Leg
     gateways = obj_callrequest.aleg_gateway.gateways
@@ -128,7 +101,7 @@ def init_callrequest(callrequest_id, campaign_id):
     if settings.NEWFIES_DIALER_ENGINE.lower() == 'dummy':
         #Use Dummy TestCall
         res = dummy_testcall.delay(callerid=obj_callrequest.callerid,
-                                   phone_number=obj_callrequest.phone_number,
+                                   phone_number=dialout_phone_number,
                                    gateway=gateways)
         result = res.get()
         logger.info(result)
@@ -139,7 +112,7 @@ def init_callrequest(callrequest_id, campaign_id):
             #Request Call via Plivo
             from telefonyhelper import call_plivo
             result= call_plivo(callerid=obj_callrequest.callerid,
-                        phone_number=obj_callrequest.phone_number,
+                        phone_number=dialout_phone_number,
                         Gateways=gateways,
                         GatewayCodecs=gateway_codecs,
                         GatewayTimeouts=gateway_timeouts,

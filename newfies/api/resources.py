@@ -1563,7 +1563,13 @@ class AnswercallResource(ModelResource):
 
                 elif obj_callrequest.content_object.type == 2:
                     #PlayAudio
-                    object_list = [ {'Play': obj_callrequest.content_object.data},]
+                    
+                    #retrieve the basename of the url
+                    url = settings.PLIVO_DEFAULT_ANSWER_URL
+                    slashparts = url.split('/')
+                    url_basename = '/'.join(slashparts[:3])
+    
+                    object_list = [ {'Play': url_basename + obj_callrequest.content_object.data},]
                     logger.debug('PlayAudio')
 
                 elif obj_callrequest.content_object.type == 3:

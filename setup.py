@@ -1,3 +1,17 @@
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
+
 import os
 from setuptools import setup, find_packages
 from setuptools.dist import Distribution
@@ -22,7 +36,6 @@ except pkg_resources.DistributionNotFound:
 Distribution({
     "setup_requires": add_django_dependency and  ['Django >=1.3.0'] or []
 })
-
 
 
 COMMANDS = {}
@@ -61,7 +74,6 @@ def parse_requirements(file_name):
             requirements.append(line)
     return requirements
 
-
 def parse_dependency_links(file_name, install_flag=False):
     dependency_links = []
     for line in open(file_name, 'r').read().split('\n'):
@@ -82,7 +94,6 @@ def parse_dependency_links(file_name, install_flag=False):
 install_flag=False
 if sys.argv[1] == "install":
     install_flag = True
-
 
 setup(
     name='newfies-dialer',
@@ -124,5 +135,3 @@ setup(
     # devel
     cmdclass = COMMANDS,
 )
-
-

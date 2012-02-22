@@ -1209,7 +1209,9 @@ class CampaignSubscriberPerCampaignResource(ModelResource):
             raise BadRequest(error_msg)
 
         if contact:
-            if not isint(contact):
+            try:
+                int_contact = int(contact)
+            except ValueError:
                 error_msg = "Wrong value for contact !"
                 logger.error(error_msg)
                 raise BadRequest(error_msg)

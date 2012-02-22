@@ -1077,32 +1077,32 @@ class CampaignSubscriberPerCampaignResource(ModelResource):
 
     **Read**:
 
-        CURL Usage::
-            
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber_per_campaign/%campaign_id%/?format=json
-            or
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber_per_campaign/%campaign_id%/%contact%/?format=json
+            CURL Usage::
+                
+                curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber_per_campaign/%campaign_id%/?format=json
+                or
+                curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber_per_campaign/%campaign_id%/%contact%/?format=json
 
-        Response::
+            Response::
 
-            [
-               {
-                  "contact_id":1,
-                  "count_attempt":1,
-                  "last_attempt":"2012-01-17T15:28:37",
-                  "status":2,
-                  "campaign_subscriber_id": 1,
-                  "contact": "640234123"
-               },
-               {
-                  "contact_id":2,
-                  "count_attempt":1,
-                  "last_attempt":"2012-02-06T17:00:38",
-                  "status":1,
-                  "campaign_subscriber_id": 2,
-                  "contact": "640234000"
-               }
-            ]
+                [
+                   {
+                      "contact_id":1,
+                      "count_attempt":1,
+                      "last_attempt":"2012-01-17T15:28:37",
+                      "status":2,
+                      "campaign_subscriber_id": 1,
+                      "contact": "640234123"
+                   },
+                   {
+                      "contact_id":2,
+                      "count_attempt":1,
+                      "last_attempt":"2012-02-06T17:00:38",
+                      "status":1,
+                      "campaign_subscriber_id": 2,
+                      "contact": "640234000"
+                   }
+                ]
 
     """
     class Meta:
@@ -1162,13 +1162,15 @@ class CampaignSubscriberPerCampaignResource(ModelResource):
             raise BadRequest(error_msg)
 
         if contact:
-            if not isint(contact):
+            try:
+                int_contact = int(contact)
+            except ValueError:
                 error_msg = "Wrong value for contact !"
                 logger.error(error_msg)
                 raise BadRequest(error_msg)
 
             sql_statement = 'SELECT DISTINCT contact_id, last_attempt, count_attempt,'\
-                            'dialer_campaign_subscriber.status '\
+                            'dialer_campaign_subscriber.status, '\
                             'dialer_campaign_subscriber.id '\
                             'FROM dialer_campaign_subscriber '\
                             'LEFT JOIN dialer_callrequest ON '\

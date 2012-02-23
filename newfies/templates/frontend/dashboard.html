@@ -26,7 +26,7 @@
 {% block content %}
 <div id="label" align="center">
 
-<form method="POST" action="." id="id_searchform" name="searchform" enctype="multipart/form-data">{% csrf_token %}
+<form class="well form-inline" method="POST" action="." id="id_searchform" name="searchform" enctype="multipart/form-data">{% csrf_token %}
 <p align="center">
     {{ form.campaign }} {{ form.search_type }}
     <input type="submit" class="btn primary" name="submit" value="{% trans "Submit" %}">
@@ -42,7 +42,7 @@
 </p>
 
 
-<table align="center" class="bordered-table zebra-striped">
+<table align="center" class="table table-striped table-bordered table-condensed">
     <thead>
     <tr>
         <th>{% trans "Campaign" %}</th>
@@ -60,7 +60,6 @@
 </table>
 
 <script type="text/javascript">
-
     var jsonData = [
     {% for td in total_data %}
        {date:'{{ td.date }}', year:{{ td.year }},day:{{ td.day }}, month:{{ td.month }}, calls:{{ td.starting_date__count }}, duration:'{{ td.duration__sum|conv_min }}', act:'{{ td.duration__avg|conv_min }}'},
@@ -122,21 +121,19 @@
         {% else %}
             HumbleFinance.init('finance', durationData, callData, summaryData);
         {% endif %}
-
       });
 })(jQuery);
-
 </script>
-<br/>
-<input type="submit" class="btn" value="{% trans "Call Count" %}" name="call_count_button"/> /
-<input type="submit" class="btn info" value="{% trans "Duration" %}" name="duration_button"/>
+
+<input type="submit" class="btn" value="{% trans "Call Count" %}" name="call_count_button"/> &nbsp; &nbsp;
+<input type="submit" class="btn-info" value="{% trans "Duration" %}" name="duration_button"/>
 </form>
 
 </div>
 
 {% if total_data %}
 
-<div id="finance" style="position: relative; margin: 40px 0px; width: 900px; border: 1px solid #99CCFF;">
+<div id="finance">
 	<div id="labels">
 	    <div id="financeTitle"></div>
 	    <div id="dateRange"></div>

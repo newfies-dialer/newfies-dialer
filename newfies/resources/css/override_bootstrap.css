@@ -1,29 +1,12 @@
 /* CSS Document */
 html, body {
-    background-color: #eee; /* default background-color: #fff */
-}
-
-body {
-    padding-top: 60px; /* 60px padding from topbar (menu) (default padding : 0px) */
-}
-
-.container {
-    width: 950px; /* default width: 940px */
-}
-
-/* The white background content wrapper */
-.container > .content {
-    background-color: #fff;
-    padding: 50px; /* padding from left-top-right-bottom */
-    margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
+    background-color: #fff; /* default background-color: #fff */
 }
 
 /* Page header in content wrapper */
 .page-header {
     background-color: #f5f5f5;
-    padding: 20px 20px 10px;  /* affected width & height of Page header */
-    margin: -20px -20px 20px; /* Page header bigger & align top which distinguish
-                                 from normal page content */
+    padding: 10px 20px 10px;  /* affected width & height of Page header */
 }
 
 #language-container {
@@ -31,5 +14,61 @@ body {
 }
 
 footer {
+    padding: 40px 20px 10px;
     text-align: center; /* center align it with the container */
+}
+
+.brand img {
+    height: 25px;
+    width: 25px;
+}
+
+.navbar-fixed-top .brand {
+  font-size: 30px;
+  font-weight: bold;
+  color: #000;
+  text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.125);
+  -webkit-transition: all .2s linear;
+     -moz-transition: all .2s linear;
+          transition: all .2s linear;
+}
+
+ul.nav {
+    padding: 5px;
+}
+
+
+
+
+/* * * Responsive * * */
+
+// Landscape phones and down
+@media (max-width: 480px) {
+    #finance {
+        position: relative; margin: 40px 0px; width: 350px; border: 1px solid #99CCFF;
+    }
+}
+
+// Landscape phone to portrait tablet
+@media (max-width: 768px) {
+    #finance {
+        position: relative; margin: 40px 0px; width: 700px; border: 1px solid #99CCFF;
+    }
+
+}
+
+// Portrait tablet to landscape and desktop
+@media (min-width: 768px) and (max-width: 980px) {
+    #finance {
+        position: relative; margin: 40px 0px; width: 900px; border: 1px solid #99CCFF;
+    }
+
+}
+
+// Large desktop
+@media (min-width: 1200px) {
+    #finance {
+        position: relative; margin: 40px 0px; width: 1000px; border: 1px solid #99CCFF;
+    }
+
 }

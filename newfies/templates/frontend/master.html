@@ -19,6 +19,7 @@
 
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>{% block title %}Newfies-Dialer{% endblock %} | {% trans "Customer Interface" noop %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="{{STATIC_URL}}newfies/images/favicon.png">
     
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -27,7 +28,14 @@
     <![endif]-->
 
     <!-- Le styles -->
-    <link href="{{STATIC_URL}}newfies/bootstrap-1.4.0/css/bootstrap.css" rel="stylesheet">
+    <link href="{{STATIC_URL}}newfies/bootstrap-2.0.1/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <link href="{{STATIC_URL}}newfies/bootstrap-2.0.1/css/bootstrap-responsive.css" rel="stylesheet">
 
     <!--Override bootstrap-->
     <link href="{{STATIC_URL}}newfies/css/override_bootstrap.css" rel="stylesheet">
@@ -38,15 +46,8 @@
     <script type="text/javascript" src="{{STATIC_URL}}newfies/js/custom.validation.js"></script>
     <script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-ui-1.8.16.custom.min.js"></script>
     
-    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-modal.js"></script>
-    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-alerts.js"></script>
-    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-twipsy.js"></script>
-    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-popover.js"></script>
-    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-dropdown.js"></script>
-    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-scrollspy.js"></script>
-    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-tabs.js"></script>
-    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-buttons.js"></script>
-    
+    <script src="{{STATIC_URL}}newfies/bootstrap-2.0.1/js/bootstrap.js"></script>
+
     <!-- Le fav and touch icons -->
     <link rel="shortcut icon" href="{{STATIC_URL}}newfies/images/favicon.png">
     <link rel="apple-touch-icon" href="{{STATIC_URL}}newfies/images/apple-touch-icon.png">
@@ -94,31 +95,52 @@
 
 <div class="container">
 
-    <div class="content">
+        {% if not user.is_authenticated %}
+        <form class="well form-inline" action="/login/" class="pull-right" method="post">
+            {% csrf_token %}
+            {% for field in loginform %}
+                {{ field }}
+            {% endfor %}
+            <button class="btn primary" type="submit">{% trans "Login" %}</button>
+            <a class="btn" href="/password_reset/">{% trans "Forgot password?" %}</a>
+        </form>
+
+        <form class="well form-inline" action="/i18n/setlang/" method="post" class="pull-right">
+        {% csrf_token %}
+        {% trans "Display language" %} : <select name="language" id="language-container" class="input-small" >
+        {% for lang in LANGUAGES %}
+        <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected{% endifequal %}>{{ lang.1 }}</option>
+        {% endfor %}
+        </select>
+        {% endif %}
+        
+        {% if notice_count %} <a href="/user_detail_change/?action=tabs-3"><span class="label warning">{{ notice_count }} {% trans "new notifications" %}</span></a> &nbsp; {% endif %}
+        &nbsp;&nbsp;&nbsp;&nbsp;
+      </form>
     
-      {% if errorlogin %}
-          <div class="alert-message error">
-              <strong>{% trans "Alert"  %} : </strong>  {{ errorlogin }}
-          </div>
-          </br>
-      {% else %}
-          {% if notlogged %}
-          <div class="alert-message error">
-              <strong>{% trans "Alert"  %} : </strong>  {% trans "Please login by clicking on login button"  %}
-          </div>
-          </br>
-          {% endif %}
-      {% endif %}
+        {% if errorlogin %}
+        <div class="alert-message error">
+            <strong>{% trans "Alert"  %} : </strong>  {{ errorlogin }}
+        </div>
+        </br>
+        {% else %}
+            {% if notlogged %}
+            <div class="alert-message error">
+                <strong>{% trans "Alert"  %} : </strong>  {% trans "Please login by clicking on login button"  %}
+            </div>
+            </br>
+        {% endif %}
+        {% endif %}
 
         <div class="page-header">
-          {% block content_header %}
-            <h1>Newfies-Dialer <small>{% trans "Voice Broadcasting solution" %}</small></h1>
-          {% endblock %}
+            {% block content_header %}
+                <h1>Newfies-Dialer <small>{% trans "Voice Broadcasting solution" %}</small></h1>
+            {% endblock %}
         </div>
         
         {% block extra_files %}
-        {% endblock %}
 
+        {% endblock %}
         
         {% if user.is_authenticated %}
             {% if dialer_setting_msg %}
@@ -138,11 +160,11 @@
         {% block content %}
         <!-- CONTENT BLOCK -->
         {% endblock %}
-    </div>
+
     
 {% include "frontend/footer.html" %}
       
-</div>
+</div><!-- div container -->
 
 </body>
 </html>

@@ -227,6 +227,7 @@ else:
 
 
 # Debug Toolbar
+"""
 try:
     import debug_toolbar
 except ImportError:
@@ -238,6 +239,7 @@ else:
     DEBUG_TOOLBAR_CONFIG = {
         'INTERCEPT_REDIRECTS': False,
     }
+"""
 
 # Django extensions
 try:

@@ -19,27 +19,27 @@ $(document).ready(function() {
         }
         else
         {
-             var confirm_string;
-             var contact_count;
+            var confirm_string;
+            var contact_count;
 
-             if(document.location.href.search("/voiceapp/") != -1)
-             {
-                 confirm_string =  $fields.length + '{% trans " voice app(s) are going to be deleted?" %}';
-             }
-             if(document.location.href.search("/contact/") != -1)
-             {
-                 confirm_string = $fields.length +  '{% trans " phonebook(s) are going to be deleted?" %}' ;
-             }
-             if(document.location.href.search("/survey/") != -1)
-             {
-                 confirm_string = $fields.length + '{% trans " survey(s) are going to be deleted?" %}';
-             }
-             if(document.location.href.search("/audio/") != -1)
-             {
-                 confirm_string = $fields.length + '{% trans " audio(s) are going to be deleted?" %}';
-             }
-             if(document.location.href.search("/phonebook/") != -1)
-             {
+            if(document.location.href.search("/voiceapp/") != -1)
+            {
+                confirm_string =  $fields.length + '{% trans " voice app(s) are going to be deleted?" %}';
+            }
+            if(document.location.href.search("/contact/") != -1)
+            {
+                confirm_string = $fields.length +  '{% trans " phonebook(s) are going to be deleted?" %}' ;
+            }
+            if(document.location.href.search("/survey/") != -1)
+            {
+                confirm_string = $fields.length + '{% trans " survey(s) are going to be deleted?" %}';
+            }
+            if(document.location.href.search("/audio/") != -1)
+            {
+                confirm_string = $fields.length + '{% trans " audio(s) are going to be deleted?" %}';
+            }
+            if(document.location.href.search("/phonebook/") != -1)
+            {
                 var allVals = [];                
                 $fields.each(function() {
                    allVals.push($(this).val());                   
@@ -59,26 +59,24 @@ $(document).ready(function() {
                     }
                 });
                 
-                 confirm_string = $fields.length + '{% trans " phonebook(s) are going to be deleted with " %}' + contact_count + '{% trans " contact(s)?" %}';
-             }
+                confirm_string = $fields.length + '{% trans " phonebook(s) are going to be deleted with " %}' + contact_count + '{% trans " contact(s)?" %}';
+            }
+            if(document.location.href.search("/campaign/") != -1)
+            {
+                confirm_string = $fields.length + '{% trans " campaign(s) are going to be deleted?" %}';
+            }
+            if(document.location.href.search("/user_detail_change/") != -1)
+            {
+                confirm_string = $fields.length + '{% trans " notification(s) are going to be deleted?" %}';
 
-             if(document.location.href.search("/campaign/") != -1)
-             {
-                 confirm_string = $fields.length + '{% trans " campaign(s) are going to be deleted?" %}';
-             }
+                if(document.getElementById('id_mark_read') && document.getElementById('id_mark_read').value == 'true')
+                {
+                    confirm_string = $fields.length + '{% trans " notification(s) are going to be marked as read?" %}';
+                }
+            }
 
-             if(document.location.href.search("/user_detail_change/") != -1)
-             {
-                 confirm_string = $fields.length + '{% trans " notification(s) are going to be deleted?" %}';
-                 
-                 if(document.getElementById('id_mark_read').value == 'true')
-                 {
-                   confirm_string = $fields.length + '{% trans " notification(s) are going to be marked as read?" %}';
-                 }
-             }
-
-             var answer = confirm(confirm_string);
-             return answer; // answer is a boolean
+            var answer = confirm(confirm_string);
+            return answer; // answer is a boolean
         }
     });
 });

@@ -141,7 +141,7 @@
                 {display: '{% trans "Action" %}', name: '', width : 70, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
                 ],
             buttons : [
-                {name: '{% trans "Delete all notifications" %}', bclass: 'delete', onpress : delete_button},
+                {name: '{% trans "Delete notifications" %}', bclass: 'delete', onpress : delete_button},
                 {separator: true},
                 {name: '{% trans "Mark as read" %}', bclass: 'add', onpress : make_read_button},
                 {separator: true},
@@ -185,8 +185,8 @@
         {
             $('<input>').attr({
                 type: 'hidden',
-                id: 'id_read_all',
-                name: 'id_read_all',
+                id: 'id_mark_read',
+                name: 'mark_read',
                 value: 'false',
             }).appendTo('#ListForm');
             

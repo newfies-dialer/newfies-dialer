@@ -203,7 +203,6 @@ INSTALLED_APPS = (
     'notification',
     'voice_app',
     'survey',
-    'sentry',
     'raven.contrib.django',
     'admin_tools_stats',
     'chart_tools',
@@ -381,7 +380,7 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
     'root': {
-        'level': 'DEBUG',
+        'level': 'WARNING',
         'handlers': ['sentry'],
     },
     'formatters': {
@@ -415,7 +414,7 @@ LOGGING = {
             'formatter':'verbose',
         },
         'sentry': {
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'class': 'raven.contrib.django.handlers.SentryHandler',
             'formatter': 'verbose'
         },
@@ -437,11 +436,6 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
-        'sentry.errors': {
-            'level': 'DEBUG',
-            'handlers': ['sentry'],
-            'propagate': False,
-        },
         'newfies.filelog': {
             'handlers': ['default',],
             'level': 'DEBUG',
@@ -449,7 +443,17 @@ LOGGING = {
         },
         'django.db.backends': {
             'handlers': ['default-db'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'raven': {
             'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'sentry.errors': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
             'propagate': False,
         },
         'audiofield_log': {
@@ -459,6 +463,11 @@ LOGGING = {
         },
     },
 }
+
+#SENTRY SETTINGS
+#===============
+#SENTRY_DSN = 'http://332214d1bc06499b935be796a2076e0f:37facd4a9dba44409db3bf0980629ea1@localhost:9000/1'
+
 
 # Frontend widget values
 CHANNEL_TYPE_VALUE = 1  # 0-Keep original, 1-Mono, 2-Stereo

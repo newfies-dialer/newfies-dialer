@@ -11,17 +11,18 @@
 
 {% block content %}
 
-<ul class="tabs" data-tabs="tabs">
-    <li {% if action == "tabs-1" %}class="active"{% endif %}><a href="#tabs-1">{% trans "Account" %}</a></li>
-    <li {% if action == "tabs-2" %}class="active"{% endif %}><a href="#tabs-2">{% trans "Password" %}</a></li>
-    <li {% if action == "tabs-3" %}class="active"{% endif %}><a href="#tabs-3">{% trans "Notifications" %}</a></li>
-    <li {% if action == "tabs-4" %}class="active"{% endif %}><a href="#tabs-4">{% trans "Account Limits" %}</a></li>
-    <li {% if action == "tabs-5" %}class="active"{% endif %}><a href="#tabs-5">{% trans "Number Check" %}</a></li>
+
+<ul class="nav nav-tabs">
+    <li {% if action == "tabs-1" %}class="active"{% endif %} data-toggle="tab"><a href="#tabs-1">{% trans "Account" %}</a></li>
+    <li {% if action == "tabs-2" %}class="active"{% endif %} data-toggle="tab"><a href="#tabs-2">{% trans "Password" %}</a></li>
+    <li {% if action == "tabs-3" %}class="active"{% endif %} data-toggle="tab"><a href="#tabs-3">{% trans "Notifications" %}</a></li>
+    <li {% if action == "tabs-4" %}class="active"{% endif %} data-toggle="tab"><a href="#tabs-4">{% trans "Account Limits" %}</a></li>
+    <li {% if action == "tabs-5" %}class="active"{% endif %} data-toggle="tab"><a href="#tabs-5">{% trans "Number Check" %}</a></li>
 </ul>
 
-<div class="pill-content">
+<div class="tab-content">
     
-	<div id="tabs-1"  {% if action == "tabs-1" or action == "" %}class="active"{% endif %}>
+	<div id="tabs-1" class="tab-pane {% if action == "tabs-1" or action == "" %}active{% endif %}">
 
         {% if msg_detail %}
             <div class="alert-message success">
@@ -73,7 +74,7 @@
 
     </div>
 
-    <div id="tabs-2" {% if action == "tabs-2" %}class="active"{% endif %}>
+    <div id="tabs-2" class="tab-pane {% if action == "tabs-2" %}active{% endif %}">
 
         {% if msg_pass %}
             <div class="alert-message success">
@@ -111,7 +112,7 @@
 
     </div>
 
-    <div id="tabs-3" {% if action == "tabs-3" %}class="active"{% endif %}>
+    <div id="tabs-3" class="tab-pane {% if action == "tabs-3" %}active{% endif %}">
 
         {% if msg_note %}
             <div class="alert-message success">
@@ -200,7 +201,7 @@
 
 	</div>
 	
-    <div id="tabs-4" align="left" {% if action == "tabs-4" %}class="active"{% endif %}>
+    <div id="tabs-4" align="left" class="tab-pane {% if action == "tabs-4" %}active{% endif %}">
 
         {% if dialer_set %}
 
@@ -242,7 +243,7 @@
 
     </div>
 
-    <div id="tabs-5" align="left" {% if action == "tabs-5" %}class="active"{% endif %}>
+    <div id="tabs-5" align="left"  class="tab-pane {% if action == "tabs-5" %}active{% endif %}">
 
         {% if msg_number %}
             <div class="alert-message success">
@@ -286,6 +287,10 @@
     jQuery(document).ready(function ($) {
         $(".tabs").tabs();
     });
+
+  $(function () {
+    $('.tabs a:last').tab('show');
+  })
 </script>
 
 {% endblock %}

@@ -1081,7 +1081,7 @@ class CampaignSubscriberResource(ModelResource):
                                 description=bundle.data.get('description'),
                                 status=1, # default active
                                 phonebook=obj_phonebook)
-
+        
         # Assign new contact object
         bundle.obj = new_contact
         

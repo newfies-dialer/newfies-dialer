@@ -173,6 +173,31 @@ class campaign_running(PeriodicTask):
 
             check_campaign_pendingcall.delay(campaign.id)
 
+
+class campaign_spool_contact(PeriodicTask):
+    """A periodic task that checks the campaign, add subscribers
+
+    **Usage**:
+
+        campaign_spool_contact.delay()
+    """
+
+    run_every = timedelta(seconds=15)
+    #The campaign have to run every minutes in order to control the number
+    # of calls per minute. Cons : new calls might delay 60seconds
+    #run_every = timedelta(seconds=60)
+
+    def run(self, **kwargs):
+        logger = self.get_logger(**kwargs)
+        logger.info( "TASK :: campaign_spool_contact")
+
+        for campaign in Campaign.objects.get_running_campaign():
+            logger.debug("=> Campaign name %s (id:%s)" % (campaign.name,
+                                                         str(campaign.id)))
+
+            collect_subscriber.delay(campaign.id)
+
+
 @task()
 def collect_subscriber(campaign_id):
     """This task will collect all the subscribers

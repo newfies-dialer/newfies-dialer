@@ -294,9 +294,6 @@ func_install_frontend(){
     echo "Install Dependencies and python modules..."
     case $DIST in
         'DEBIAN')
-            # SET APACHE CONF
-            APACHE_CONF_DIR="/etc/apache2/sites-enabled/"
-
             apt-get -y install python-setuptools python-dev build-essential 
             apt-get -y install libapache2-mod-python libapache2-mod-wsgi
             easy_install pip
@@ -321,9 +318,6 @@ func_install_frontend(){
             apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
         ;;
         'CENTOS')
-            # SET APACHE CONF
-            APACHE_CONF_DIR="/etc/httpd/conf.d/"
-            
 			if [ ! -f /etc/yum.repos.d/rpmforge.repo ];
             	then
                 	# Install RPMFORGE Repo
@@ -335,8 +329,6 @@ func_install_frontend(){
 						rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.i686.rpm
 					fi
         	fi
-       
-         
             #Install Python dep  and pip
             #Install epel repo for pip and mod_python
             rpm -ivh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-5.noarch.rpm
@@ -790,12 +782,14 @@ func_identify_os
 case $DIST in
     'DEBIAN')
         SCRIPT_VIRTUALENVWRAPPER="/usr/local/bin/virtualenvwrapper.sh"
+        APACHE_CONF_DIR="/etc/apache2/sites-enabled/"
         APACHE_USER="www-data"
         WSGI_ADDITIONAL=""
         WSGIApplicationGroup=""
     ;;
     'CENTOS')
         SCRIPT_VIRTUALENVWRAPPER="/usr/bin/virtualenvwrapper.sh"
+        APACHE_CONF_DIR="/etc/httpd/conf.d/"
         APACHE_USER="apache"
         WSGI_ADDITIONAL="WSGISocketPrefix run/wsgi"
         WSGIApplicationGroup="WSGIApplicationGroup %{GLOBAL}"

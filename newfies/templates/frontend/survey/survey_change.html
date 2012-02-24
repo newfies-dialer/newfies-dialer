@@ -175,7 +175,7 @@
 	.ui-sortable-placeholder * { visibility: hidden; }
     /* change span width for response inputs */
     .span5 {width: 160px;}
-    .span6 {width: 220px;}
+    .span6 {width: auto;}
 </style>
 
 <script type="text/javascript">
@@ -254,14 +254,14 @@ function addFormField() {
        '</div>'+
     '</div>'+
     '<div class="row">'+
-    '<div class="span16">'+
+    '<div class="span14">'+
         '<div class="row">'+
     {% for field in new_survey_que_form.visible_fields %}
         {% if forloop.first %}
             {% for hidden in new_survey_que_form.hidden_fields %}
                 '{{ hidden|escapejs }}'+
             {% endfor %}
-            '<div class="span8">'+
+            '<div class="span6">'+
                 '{{ field|escapejs }}'+
             '</div>'+
         {% else %}
@@ -271,7 +271,7 @@ function addFormField() {
         {% endif %}
         {% if forloop.last %}
         '<div class="span2"><!--<input value="Save" onclick="question_form('+id+', 0)" type="button">-->'+
-        '<input class="btn danger" value="{% trans "Delete question" %}" onClick="removeFormField(\'#row' + id + '\'); return false;" type="button"></div>'+
+        '<input class="btn-danger" value="{% trans "Delete question" %}" onClick="removeFormField(\'#row' + id + '\'); return false;" type="button"></div>'+
         {% endif %}
     {% endfor %}
         '</div>'+
@@ -340,7 +340,7 @@ function addResFormField(que_id, is_que_id_set) {
           '</div>'+
           {% if forloop.last %}
             '<input type="hidden" id="new_response_id" value="0" /><!--<input value="Save" onclick="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')" type="button">-->'+
-            '<div class="span2"><input value="{% trans "Delete response" %}" class="btn danger" onClick="removeResFormField(\'#row_res' + id + '\'); return false;" type="button"></div>'+
+            '<div class="span2"><input value="{% trans "Delete response" %}" class="btn-danger" onClick="removeResFormField(\'#row_res' + id + '\'); return false;" type="button"></div>'+
           {% endif %}
           {% endfor %}
           '</div>'+
@@ -458,14 +458,14 @@ function removeResFormField(id) {
                             {% if key|stringformat:"s" == que.id|stringformat:"s" %}
 
                             <div class="row">
-                            <div class="span16">
+                            <div class="span14">
                                 <div class="row">
                                 {% for field in form.visible_fields %}
                                     {% if forloop.first %}
                                         {% for hidden in form.hidden_fields %}
                                             {{ hidden }}
                                         {% endfor %}
-                                        <div class="span8">
+                                        <div class="span6">
                                             {{ field }}
                                         </div>
                                     {% else %}

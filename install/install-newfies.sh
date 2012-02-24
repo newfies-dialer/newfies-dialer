@@ -32,6 +32,7 @@ INSTALL_MODE='CLONE'
 DATETIME=$(date +"%Y%m%d%H%M%S")
 KERNELARCH=$(uname -p)
 INSTALL_DIR='/usr/share/newfies'
+INSTALL_DIR_WELCOME='/var/www/newfies'
 DATABASENAME=$INSTALL_DIR'/database/newfies.db'
 MYSQLUSER=
 MYSQLPASSWORD=
@@ -101,42 +102,43 @@ func_accept_license() {
         exit 0
     else
         echo "Licence accepted !"
-    fi 
+    fi
 }
 
 
 #Function install the landing page
 func_install_landing_page() {
-    echo ""
-    echo "Add Apache configuration..."
-    echo '
-    Listen *:80
+
+    mkdir -p $INSTALL_DIR_WELCOME
+    # Copy files
+    cp -r /usr/src/newfies-dialer/install/landing-page $INSTALL_DIR_WELCOME
     
+    echo ""
+    echo "Add Apache configuration for landing page..."
+    echo '    
     <VirtualHost *:80>
-        DocumentRoot '$INSTALL_DIR'/
-        LogLevel warn
-
-        Alias /static/ "'$INSTALL_DIR'/static/"
-
-        <Location "/static/">
-            SetHandler None
-        </Location>
-
-        WSGIPassAuthorization On
-        WSGIDaemonProcess newfies user='$APACHE_USER' user='$APACHE_USER' threads=25
-        WSGIProcessGroup newfies
-        WSGIScriptAlias / '$INSTALL_DIR'/django.wsgi
-
-        <Directory '$INSTALL_DIR'>
-            AllowOverride all
-            Order deny,allow
-            Allow from all
-            '$WSGIApplicationGroup'
+        DocumentRoot '$INSTALL_DIR_WELCOME'/
+        DirectoryIndex index.html index.htm index.php index.php4 index.php5
+        
+        <Directory '$INSTALL_DIR_WELCOME'>
+            Options Indexes IncludesNOEXEC FollowSymLinks
+            allow from all
+            AllowOverride All
+            allow from all
         </Directory>
 
     </VirtualHost>
     
-    ' > $APACHE_CONF_DIR/newfies.conf
+    ' > $APACHE_CONF_DIR/welcome-newfies.conf
+    
+    case $DIST in
+        'DEBIAN')
+            service apache2 restart
+        ;;
+        'CENTOS')
+            service httpd restart
+        ;;
+    esac
 }
 
 
@@ -714,12 +716,16 @@ show_menu_newfies() {
 # * * * * * * * * * * * * Start Script * * * * * * * * * * * *
 
 
-#Request the user to accept the license
-func_accept_license
-
 #Identify the OS
 func_identify_os
 
+#Request the user to accept the license
+func_accept_license
+
+#Install welcome page
+func_install_landing_page
+
+#Prepare settings for installation
 case $DIST in
     'DEBIAN')
         SCRIPT_VIRTUALENVWRAPPER="/usr/local/bin/virtualenvwrapper.sh"

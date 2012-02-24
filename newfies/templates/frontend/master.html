@@ -101,7 +101,7 @@
             {% for field in loginform %}
                 {{ field }}
             {% endfor %}
-            <button class="btn primary" type="submit">{% trans "Login" %}</button>
+            <button class="btn-primary" type="submit">{% trans "Login" %}</button>
             <a class="btn" href="/password_reset/">{% trans "Forgot password?" %}</a>
         </form>
 
@@ -119,13 +119,13 @@
       </form>
     
         {% if errorlogin %}
-        <div class="alert-message error">
+        <div class="alert alert-error">
             <strong>{% trans "Alert"  %} : </strong>  {{ errorlogin }}
         </div>
         </br>
         {% else %}
             {% if notlogged %}
-            <div class="alert-message error">
+            <div class="alert alert-error">
                 <strong>{% trans "Alert"  %} : </strong>  {% trans "Please login by clicking on login button"  %}
             </div>
             </br>
@@ -145,7 +145,7 @@
         {% if user.is_authenticated %}
             {% if dialer_setting_msg %}
             <div class="span-24 last">
-                <div class="alert-message error">
+                <div class="alert alert-error">
                     <strong>{% trans "Alert" %} : </strong>  {{ dialer_setting_msg }}
                     {% if not request.session.has_notified %}
                         {% trans "To send notification to administrator" %} <a href="/notify/admin/">{% trans "Click here" %}</a>

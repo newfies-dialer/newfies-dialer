@@ -78,8 +78,8 @@ func_accept_license() {
     more MPL-V2.0.txt
     echo ""
     echo ""
-    echo "Newfies-Dialer License"
-    echo "http://www.newfies-dialer.org"
+    echo "Newfies-Dialer License MPL V2.0"
+    echo "Further information at http://www.newfies-dialer.org/support/licensing/"
     echo ""
     echo "This Source Code Form is subject to the terms of the Mozilla Public"
     echo "License, v. 2.0. If a copy of the MPL was not distributed with this file,"

@@ -45,32 +45,33 @@ NEWFIES_ENV="newfies-dialer"
 HTTP_PORT="8008"
 
 
-# Identify Linux Distribution type
-if [ -f /etc/debian_version ] ; then
-    DIST='DEBIAN'
-elif [ -f /etc/redhat-release ] ; then
-    DIST='CENTOS'
-else
+#Function accept_license
+func_accept_license() {
     echo ""
-    echo "This Installer should be run on a CentOS or a Debian based system"
     echo ""
-    exit 1
-fi
-
-case $DIST in
-    'DEBIAN')
-        SCRIPT_VIRTUALENVWRAPPER="/usr/local/bin/virtualenvwrapper.sh"
-        APACHE_USER="www-data"
-        WSGI_ADDITIONAL=""
-        WSGIApplicationGroup=""
-    ;;
-    'CENTOS')
-        SCRIPT_VIRTUALENVWRAPPER="/usr/bin/virtualenvwrapper.sh"
-        APACHE_USER="apache"
-        WSGI_ADDITIONAL="WSGISocketPrefix run/wsgi"
-        WSGIApplicationGroup="WSGIApplicationGroup %{GLOBAL}"
-    ;;
-esac
+    echo "# Newfies-Dialer License"
+    echo "# http://www.newfies-dialer.org"
+    echo "#"
+    echo "# This Source Code Form is subject to the terms of the Mozilla Public"
+    echo "# License, v. 2.0. If a copy of the MPL was not distributed with this file,"
+    echo "# You can obtain one at http://mozilla.org/MPL/2.0/."
+    echo "#"
+    echo "# Copyright (C) 2011-2012 Star2Billing S.L."
+    echo ""
+    echo ""
+    echo ""
+    echo "Do you accept the terms of the Newfies-Dialer license ? [YES/NO]"
+    echo ""
+    read YESNO_LICENSE
+    
+    if echo $YESNO_LICENSE | grep -i "^YES" > /dev/null ; then
+        #license accepted
+        echo ""
+    else
+        echo "Bye!"
+        exit 1
+    fi
+}
 
 
 #Function mysql db setting
@@ -643,6 +644,42 @@ show_menu_newfies() {
 
 
 
+# * * * * * * * * * * * * Start Script * * * * * * * * * * * *
+
+
+#Request the user to accept the license
+func_accept_license
+
+
+# Identify Linux Distribution type
+if [ -f /etc/debian_version ] ; then
+    DIST='DEBIAN'
+elif [ -f /etc/redhat-release ] ; then
+    DIST='CENTOS'
+else
+    echo ""
+    echo "This Installer should be run on a CentOS or a Debian based system"
+    echo ""
+    exit 1
+fi
+
+case $DIST in
+    'DEBIAN')
+        SCRIPT_VIRTUALENVWRAPPER="/usr/local/bin/virtualenvwrapper.sh"
+        APACHE_USER="www-data"
+        WSGI_ADDITIONAL=""
+        WSGIApplicationGroup=""
+    ;;
+    'CENTOS')
+        SCRIPT_VIRTUALENVWRAPPER="/usr/bin/virtualenvwrapper.sh"
+        APACHE_USER="apache"
+        WSGI_ADDITIONAL="WSGISocketPrefix run/wsgi"
+        WSGIApplicationGroup="WSGIApplicationGroup %{GLOBAL}"
+    ;;
+esac
+
+
+
 ExitFinish=0
 
 while [ $ExitFinish -eq 0 ]; do
@@ -669,6 +706,7 @@ while [ $ExitFinish -eq 0 ]; do
 	esac	
 	
 done
+
 
 
 # Clean the system on MySQL

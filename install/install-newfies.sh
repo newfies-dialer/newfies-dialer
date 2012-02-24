@@ -45,6 +45,30 @@ NEWFIES_ENV="newfies-dialer"
 HTTP_PORT="8008"
 
 
+
+func_identify_os() {
+    # Identify Linux Distribution type
+    if [ -f /etc/debian_version ] ; then
+        DIST='DEBIAN'
+        if [ "$(lsb_release -cs)" != "lucid" ] ; then
+		    echo "This script is only intended to run on Ubuntu LTS 10.04 or CentOS 6.2"
+		    exit 255
+	    fi
+    elif [ -f /etc/redhat-release ] ; then
+        DIST='CENTOS'
+        if [ "$(awk '{print $3}' /etc/redhat-release)" != "6.2" ] ; then
+        	echo "This script is only intended to run on Ubuntu LTS 10.04 or CentOS 6.2"
+        	exit 255
+        fi
+    else
+        echo ""
+        echo "This script is only intended to run on Ubuntu LTS 10.04 or CentOS 6.2"
+        echo ""
+        exit 1
+    fi
+}
+
+
 #Function accept_license
 func_accept_license() {
     echo ""
@@ -693,18 +717,8 @@ show_menu_newfies() {
 #Request the user to accept the license
 func_accept_license
 
-
-# Identify Linux Distribution type
-if [ -f /etc/debian_version ] ; then
-    DIST='DEBIAN'
-elif [ -f /etc/redhat-release ] ; then
-    DIST='CENTOS'
-else
-    echo ""
-    echo "This Installer should be run on a CentOS or a Debian based system"
-    echo ""
-    exit 1
-fi
+#Identify the OS
+func_identify_os
 
 case $DIST in
     'DEBIAN')

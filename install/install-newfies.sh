@@ -249,7 +249,7 @@ func_install_frontend(){
             else
                 apt-get -y install mysql-server libmysqlclient-dev
                 #Start MySQL
-                /etc/init.d/mysqld start
+                /etc/init.d/mysql start
                 #Configure MySQL
                 /usr/bin/mysql_secure_installation
                 func_mysql_database_setting
@@ -312,6 +312,9 @@ func_install_frontend(){
         mkdir /tmp/old-newfies-dialer_$DATETIME
         mv $INSTALL_DIR /tmp/old-newfies-dialer_$DATETIME
         echo "Files from $INSTALL_DIR has been moved to /tmp/old-newfies-dialer_$DATETIME"
+        echo "Run backup with mysqldump..."
+        mysqldump -u $MYSQLUSER --password=$MYSQLPASSWORD $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql
+        echo "Mysql Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql"
         echo "Press Enter to continue"
         read TEMP
     fi
@@ -384,12 +387,6 @@ func_install_frontend(){
         # Setup settings_local.py for SQLite
         sed -i "s/'init_command/#'init_command/g"  $INSTALL_DIR/settings_local.py
     else
-        #Backup Mysql Database
-        echo "Run backup with mysqldump..."
-        mysqldump -u $MYSQLUSER --password=$MYSQLPASSWORD $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql
-        echo "Mysql Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql"
-        echo "Press Enter to continue"
-        read TEMP
             
         # Setup settings_local.py for MySQL
         sed -i "s/'django.db.backends.sqlite3'/'django.db.backends.mysql'/"  $INSTALL_DIR/settings_local.py
@@ -401,9 +398,10 @@ func_install_frontend(){
     
         # Create the Database
         echo "Remove Existing Database if exists..."
-        echo "mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e 'DROP DATABASE $DATABASENAME;'"
-        mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e "DROP DATABASE $DATABASENAME;"
-
+  		if [ -d "/var/lib/mysql/$DATABASENAME" ]; then
+	        echo "mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e 'DROP DATABASE $DATABASENAME;'"
+    	    mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e "DROP DATABASE $DATABASENAME;"
+		fi
         echo "Create Database..."
         echo "mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e 'CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;'"
         mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e "CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;"

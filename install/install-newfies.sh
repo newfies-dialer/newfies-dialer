@@ -503,6 +503,9 @@ func_install_frontend(){
     sed -i "s/#'SERVER_IP',/'$IPADDR',/g" $INSTALL_DIR/settings_local.py
     sed -i "s/dummy/plivo/g" $INSTALL_DIR/settings_local.py
     
+    #Update Welcome page IP
+    sed -i "s/LOCALHOST/$IPADDR:$HTTP_PORT/g" $INSTALL_DIR_WELCOME/index.html
+    
     case $DIST in
         'DEBIAN')
             service apache2 restart

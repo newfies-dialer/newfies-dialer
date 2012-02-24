@@ -114,7 +114,7 @@ func_install_landing_page() {
     cp -r /usr/src/newfies-dialer/install/landing-page $INSTALL_DIR_WELCOME
     
     echo ""
-    echo "Add Apache configuration for landing page..."
+    echo "Add Apache configuration for Welcome page..."
     echo '    
     <VirtualHost *:80>
         DocumentRoot '$INSTALL_DIR_WELCOME'/
@@ -786,12 +786,6 @@ show_menu_newfies() {
 #Identify the OS
 func_identify_os
 
-#Request the user to accept the license
-func_accept_license
-
-#Install welcome page
-func_install_landing_page
-
 #Prepare settings for installation
 case $DIST in
     'DEBIAN')
@@ -808,7 +802,11 @@ case $DIST in
     ;;
 esac
 
+#Request the user to accept the license
+func_accept_license
 
+#Install welcome page
+func_install_landing_page
 
 ExitFinish=0
 

@@ -166,7 +166,7 @@
 
 <style type="text/css">
     /* style for question box for jquery UI sort*/
-	.column { width: auto; float: left; padding-bottom: 0px; }
+	.column { width: 1145px; float: left; padding-bottom: 0px; }
 	.portlet { margin: 0 1em 1em 0; }
 	.portlet-header { margin: 0.3em; padding-bottom: 4px; padding-left: 0.2em; }
 	.portlet-header .ui-icon { float: right; }
@@ -175,7 +175,7 @@
 	.ui-sortable-placeholder * { visibility: hidden; }
     /* change span width for response inputs */
     .span5 {width: 160px;}
-    .span6 {width: auto;}
+    /*.span6 {width: auto;}*/
 </style>
 
 <script type="text/javascript">
@@ -245,16 +245,16 @@ function addFormField() {
     '<form action="." id="new_survey_que_form_' + id +'" method="post" enctype="multipart/form-data">'+
     "{% csrf_token %}"+
     '<div class="row">'+
-       '<div class="span18">'+
+       '<div class="span12">'+
             '<div class="row">'+
             {% for field in new_survey_que_form.visible_fields %}
-              '<div class="span9"><p><b>{{ field.label|capfirst }}</p></b></div>' +
+              '<div class="span6"><p><b>{{ field.label|capfirst }}</p></b></div>' +
             {% endfor %}
             '</div>'+
        '</div>'+
     '</div>'+
     '<div class="row">'+
-    '<div class="span14">'+
+    '<div class="span12">'+
         '<div class="row">'+
     {% for field in new_survey_que_form.visible_fields %}
         {% if forloop.first %}
@@ -265,7 +265,7 @@ function addFormField() {
                 '{{ field|escapejs }}'+
             '</div>'+
         {% else %}
-            '<div class="span6">'+
+            '<div class="span3">'+
                 '{{ field|escapejs }}'+
             '</div>'+
         {% endif %}
@@ -278,12 +278,12 @@ function addFormField() {
     '</div>'+
     '</div>'+
     '<div class="row">'+
-        '<div class="span9">'+
+        '<div class="span6">'+
             '<span class="help-inline">{% trans "If no audio file is selected, then text to speech is used to read out the question" %}</span>'+
         '</div>'+
     '</div><span>&nbsp;</span>'+
     '<div class="row">'+
-        '<div class="span6">'+
+        '<div class="span4">'+
               '<div class="row">'+
               '<div class="span2"><p><b>{% trans "Key Digit" %}</b></p></div>'+
               '<div class="span2"><p><b>{% trans "Key Value" %}</b></p></div>'+
@@ -318,7 +318,7 @@ function addResFormField(que_id, is_que_id_set) {
     '<form action="." id="new_response_form_' + id +'" method="post" enctype="multipart/form-data">'+
     "{% csrf_token %}"+
     '<div class="row">'+
-       '<div class="span8">'+
+       '<div class="span6">'+
           '<div class="row">'+
           {% for field in new_survey_res_form.visible_fields %}
           '<div class="span2">'+
@@ -441,13 +441,13 @@ function removeResFormField(id) {
 
                             {% if forloop.first %}
                             <div class="row">
-                            <div class="span17">
+                            <div class="span12">
                                 <div class="row">
                                 {% for field in form.visible_fields %}
                                     {% if forloop.first %}
-                                        <div class="span9"><p><b>{{ field.label|capfirst }}</b></p></div>
+                                        <div class="span6"><p><b>{{ field.label|capfirst }}</b></p></div>
                                     {% else %}
-                                        <div class="span8"><p><b>{{ field.label|capfirst }}</b></p></div>
+                                        <div class="span6"><p><b>{{ field.label|capfirst }}</b></p></div>
                                     {% endif %}
                                 {% endfor %}
                                 </div>
@@ -458,7 +458,7 @@ function removeResFormField(id) {
                             {% if key|stringformat:"s" == que.id|stringformat:"s" %}
 
                             <div class="row">
-                            <div class="span14">
+                            <div class="span12">
                                 <div class="row">
                                 {% for field in form.visible_fields %}
                                     {% if forloop.first %}
@@ -469,7 +469,7 @@ function removeResFormField(id) {
                                             {{ field }}
                                         </div>
                                     {% else %}
-                                        <div class="span6">
+                                        <div class="span3">
                                             {{ field.hidden_field }}{{ field }}
                                         </div>
                                     {% endif %}
@@ -485,7 +485,7 @@ function removeResFormField(id) {
                             </div>
                             </div>
                             <div class="row">
-                                <div class="span9">
+                                <div class="span6">
                                     <span class="help-inline">{% trans "If no audio file is selected, then text to speech is used to read out the question" %}</span>
                                 </div>
                             </div>
@@ -495,7 +495,7 @@ function removeResFormField(id) {
                                 <!--extra-->
 
                                 <div class="row">
-                                    <div class="span6">
+                                    <div class="span4">
                                         <div class="row">
                                             <div class="span2">
                                                 <p><b>{% trans "Key Digit" %}</b></p>
@@ -511,7 +511,7 @@ function removeResFormField(id) {
                                     {% if value_set.que_id|stringformat:"s" == que.id|stringformat:"s" %}
                                         <form action="." id="response_form_{{ key }}" method="post" enctype="multipart/form-data">{% csrf_token %}
                                         <div class="row">
-                                            <div class="span8">
+                                            <div class="span6">
                                                 <div class="row">
                                                 {% for field in value_set.form.visible_fields %}
                                                     <div class="span2">

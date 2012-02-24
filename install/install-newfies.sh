@@ -92,12 +92,12 @@ func_accept_license() {
     echo ""
     read ACCEPT
     
-    while [ "$ACCEPT" != "yes" ]  && [ "$ACCEPT" != "no" ] && [ "$ACCEPT" != "YES" ]  && [ "$ACCEPT" != "NO" ]; do
-        echo "I agree to be bound by the terms of the license - [yes/no]"
+    while [ "$ACCEPT" != "yes" ]  && [ "$ACCEPT" != "Yes" ] && [ "$ACCEPT" != "YES" ]  && [ "$ACCEPT" != "no" ]  && [ "$ACCEPT" != "No" ]  && [ "$ACCEPT" != "NO" ]; do
+        echo "I agree to be bound by the terms of the license - [YES/NO]"
         read ACCEPT
     done
     
-    if [ "$ACCEPT" != "yes" ]; then
+    if [ "$ACCEPT" != "yes" ]  && [ "$ACCEPT" != "Yes" ] && [ "$ACCEPT" != "YES" ]; then
         echo "License rejected !"
         exit 0
     else

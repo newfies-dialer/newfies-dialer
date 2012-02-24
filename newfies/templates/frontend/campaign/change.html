@@ -16,7 +16,7 @@
 
 {% block content %}
 
-<div class="span-24 last" align=left>
+
     <form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
         <fieldset>
             <legend>{% trans "General settings" %}</legend>
@@ -26,7 +26,7 @@
             {% endfor %}
             {% for field in campaign_fields.visible_fields %}
                 <div class="clearfix{% if field.errors %} error{% endif %}">
-                    <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                    <label for="id_{{ field.name }}">{{ field.label }}</label>
                     <div class="input">
                         {{ field }}
                         {% if field.errors %}
@@ -166,16 +166,16 @@
 
         <div class="actions">
               {% if action == 'update' %}
-                <input id="update" type="submit" class="btn primary" value="{% trans "Update" %}" />
+                <input id="update" type="submit" class="btn-primary" value="{% trans "Update" %}" />
               {% else %}
-                <input id="add" type="submit" class="btn primary" value="{% trans "Submit" %}" />
+                <input id="add" type="submit" class="btn-primary" value="{% trans "Submit" %}" />
               {% endif %}
                &nbsp;&nbsp;
               {% if action == 'update' %}
-                 <input id="delete" name="delete" class="btn danger" type="submit" value="{% trans "Delete" %}" />
+                 <input id="delete" name="delete" class="btn-danger" type="submit" value="{% trans "Delete" %}" />
               {% endif %}
         </div>
     </form>
-</div>
+
  
 {% endblock %}

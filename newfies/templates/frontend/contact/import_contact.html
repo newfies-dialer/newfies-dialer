@@ -15,13 +15,13 @@
 
 {% block content %}
     {% if msg %}
-    <div class="alert-message success">
+    <div class="alert alert-success">
         <strong>{% trans "Alert" %} : </strong>  {{ msg }}
     </div>
     {% endif %}
 
     {% if error_msg %}
-    <div class="alert-message error">
+    <div class="alert alert-error">
         <strong>{% trans "Alert" %} : </strong>  {{ error_msg }}
     </div>
     {% endif %}
@@ -68,8 +68,8 @@
 <br/>
 <br/>
 
-<div class="span-24 last" align=left>
-    <form method="post" action="" enctype="multipart/form-data" >{% csrf_token %}
+
+    <form class="well" method="post" action="" enctype="multipart/form-data" >{% csrf_token %}
          {% for field in form %}
          <div class="clearfix{% if field.errors %} error{% endif %}">
             <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
@@ -84,10 +84,10 @@
          {% endfor %}
 
          <div class="actions">
-             <input type="submit" class="btn primary" name="submit" value="{% trans "Submit" %}" />
+             <input type="submit" class="btn-primary" name="submit" value="{% trans "Submit" %}" />
          </div>
     </form>
-</div>
+
 
 {% if success_import_list %}
     <table class="table table-striped table-bordered table-condensed">

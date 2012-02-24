@@ -166,7 +166,7 @@
 
 <style type="text/css">
     /* style for question box for jquery UI sort*/
-	.column { width: 900px; float: left; padding-bottom: 0px; }
+	.column { width: auto; float: left; padding-bottom: 0px; }
 	.portlet { margin: 0 1em 1em 0; }
 	.portlet-header { margin: 0.3em; padding-bottom: 4px; padding-left: 0.2em; }
 	.portlet-header .ui-icon { float: right; }
@@ -393,20 +393,20 @@ function removeResFormField(id) {
 {% block content %}
 
 {% if msg %}
-    <div class="alert-message success">
+    <div class="alert alert-success">
         <strong>{% trans "Alert" %} : </strong>  {{ msg }}
     </div>
 {% endif %}
 
 {% if error_msg %}
-    <div class="error" id="rounded-corner-upper-table">
+    <div class="alert alert-error">
         <strong>{% trans "Alert" %} : </strong>  {{ error_msg }}
     </div>
 {% endif %}
 
 
-<div class="span-24 last" align=left>
-<form method="POST" action="." enctype="multipart/form-data" id="update_form">{% csrf_token %}
+
+<form class="well" method="POST" action="." enctype="multipart/form-data" id="update_form">{% csrf_token %}
 
     </fieldset>
     {% for field in form %}
@@ -477,7 +477,7 @@ function removeResFormField(id) {
                                     {% if forloop.last %}
                                         <div class="span2">
                                             <!--<input value="Save" onclick="question_form({{ que.id }}, 1);" type="button">-->
-                                            <input value="{% trans "Delete question" %}" class="btn danger" onclick="question_delete_form({{ que.id }}, 1);removeFormField('#row{{ que.id }}'); return false;" type="button">
+                                            <input value="{% trans "Delete question" %}" class="btn-danger" onclick="question_delete_form({{ que.id }}, 1);removeFormField('#row{{ que.id }}'); return false;" type="button">
                                         </div>
                                     {% endif %}
                                 {% endfor %}
@@ -528,7 +528,7 @@ function removeResFormField(id) {
                                                     {% if forloop.last %}
                                                     <div class="span2">
                                                         <!--<input value="Save" onclick="response_form({{ key }}, {{ que.id }}, 1, 1);" type="button">-->
-                                                        <input value="{% trans "Delete response" %}" class="btn danger" onclick="response_delete_form({{ key }}, 1);removeResFormField('#response_form_{{ key }}'); return false;" type="button">
+                                                        <input value="{% trans "Delete response" %}" class="btn-danger" onclick="response_delete_form({{ key }}, 1);removeResFormField('#response_form_{{ key }}'); return false;" type="button">
                                                     </div>
                                                     {% endif %}
 
@@ -554,18 +554,18 @@ function removeResFormField(id) {
             <input type="hidden" id="id" value="0">
             <input type="hidden" id="id_new_que_form" value="0">
             <div id="divTxt"></div>
-            <input type="button" value="{% trans "Add Question" %}" class="btn info" onclick="javascript:addFormField(); return false;" />
+            <input type="button" value="{% trans "Add Question" %}" class="btn-info" onclick="javascript:addFormField(); return false;" />
         </div>
     </fieldset>
     {% endif %}
 
     <div class="actions">
         {% if action == 'update' %}
-           <div align="right"><input id="update" type="submit" class="btn primary" onclick="javascript:document.getElementById('update_form').submit();" value="{% trans "Update Survey" %}" /></div>
+           <div align="right"><input id="update" type="submit" class="btn-primary" onclick="javascript:document.getElementById('update_form').submit();" value="{% trans "Update Survey" %}" /></div>
         {% else %}
-           <input id="add" type="submit" class="btn primary" value="{% trans "Submit" %}" />
+           <input id="add" type="submit" class="btn-primary" value="{% trans "Submit" %}" />
         {% endif %}
     </div>
 </form>
-</div>
+
 {% endblock %}

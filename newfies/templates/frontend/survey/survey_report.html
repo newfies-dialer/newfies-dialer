@@ -8,18 +8,18 @@
 {% block content %}
     
 {% if msg %}
-    <div class="alert-message success">
+    <div class="alert alert-success">
         <strong>{% trans "Alert" %} : </strong>  {{ msg }}
     </div>
 {% endif %}
 
 {% if err_msg %}
-    <div class="alert-message danger">
+    <div class="alert alert-error">
         <strong>{% trans "Alert" %} : </strong>  {{ err_msg }}
     </div>
 {% endif %}
 
-<form method="POST" action="." enctype="multipart/form-data">
+<form class="well form-search" method="POST" action="." enctype="multipart/form-data">
 {% csrf_token %}
     {# survey result form #}
     {% for field in form %}
@@ -36,7 +36,7 @@
      {% endfor %}
 
      <div class="actions">
-         <input type="submit" class="btn primary" name="submit" value="{% trans "Submit" %}">
+         <input type="submit" class="btn-primary" name="submit" value="{% trans "Submit" %}">
      </div>
 </form>
 

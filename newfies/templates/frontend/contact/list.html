@@ -30,13 +30,13 @@
 {% block content %}
 
 {% if msg %}
-    <div class="alert-message success">
+    <div class="alert alert-success">
         <strong>{% trans "Alert"  %} : </strong>  {{ msg }}
     </div>
 {% endif %}
 <br/>
 
-<form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+<form class="well form-search" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
     
     <div class="row">
         <div class="span16">
@@ -82,8 +82,8 @@
     </div>
 
     <div class="actions">
-        <input class="btn primary" type=submit name=submit value={% trans "Search" %} />&nbsp;
-        <input class="btn danger" type=reset name=reset value={% trans "Clear" %} />
+        <input class="btn-primary" type=submit name=submit value={% trans "Search" %} />&nbsp;
+        <input class="btn-danger" type=reset name=reset value={% trans "Clear" %} />
     </div>
 </form>
 
@@ -110,11 +110,11 @@ $("#flex1").flexigrid({
 	colModel : [
         {display: '<input type="checkbox" onclick="toggleChecked(this.checked)">', name: '', width: 40, align: 'center'},
 		{display: '{% trans "Id" %}', name: 'id', width: 40, sortable: true, align: 'center'},
-        {display: '{% trans "Phonebook" %}', name: 'phonebook__name', width: 100, sortable: true, align: 'center'},
-        {display: '{% trans "Contact Number" %}', name: 'contact', width: 140, sortable: true, align: 'center'},
-        {display: '{% trans "Last Name" %}', name: 'last_name', width: 120, sortable: true, align: 'center'},
-        {display: '{% trans "First Name" %}', name: 'first_name', width : 120, sortable : true, align: 'center'},
-        {display: '{% trans "Status" %}', name: 'status', width : 50, sortable : true, align: 'center', },
+        {display: '{% trans "Phonebook" %}', name: 'phonebook__name', width: 200, sortable: true, align: 'center'},
+        {display: '{% trans "Contact Number" %}', name: 'contact', width: 200, sortable: true, align: 'center'},
+        {display: '{% trans "Last Name" %}', name: 'last_name', width: 150, sortable: true, align: 'center'},
+        {display: '{% trans "First Name" %}', name: 'first_name', width : 150, sortable : true, align: 'center'},
+        {display: '{% trans "Status" %}', name: 'status', width : 100, sortable : true, align: 'center', },
         {display: '{% trans "Date" %}', name: 'updated_date', width: 120, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
         {display: '{% trans "Action" %}', name: '', width : 50, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
 		],

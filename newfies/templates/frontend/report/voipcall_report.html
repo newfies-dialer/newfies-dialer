@@ -35,7 +35,7 @@
 {% block content %}
 <br/>
     {% block custom-search %}
-    <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+    <form class="well form-search" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
 
         {% for field in form %}
         <div class="clearfix {% if field.errors %}error{% endif %}">
@@ -46,10 +46,10 @@
             </div>
           </div>
         {% endfor %}
-        
+        <label></label>
         <div class="actions">
-            <input type="submit" value="{% trans "Search" %}" class="btn primary"/>&nbsp;
-            <input type="reset" name="reset" value="{% trans "Reset" %}" class="btn danger">
+            <input type="submit" value="{% trans "Search" %}" class="btn-primary"/>&nbsp;
+            <input type="reset" name="reset" value="{% trans "Reset" %}" class="btn-danger">
         </div>
       
     </form>
@@ -74,15 +74,15 @@ $("#flex1").flexigrid({
     method: 'GET',
     dataType: 'json',
 	colModel : [
-        {display: '{% trans "Start date" %}', name: 'starting_date', width: 120, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
-        {display: '{% trans "Call ID" %}', name: 'callid', width: 140, sortable: true, align: 'center'},
-        {display: '{% trans "Leg" %}', name: 'leg_type', width: 60, sortable: true, align: 'center'},
-        {display: '{% trans "Caller ID" %}', name: 'callerid', width: 80, sortable: true, align: 'center'},
-        {display: '{% trans "Phone No." %}', name: 'phone_number', width: 120, sortable: true, align: 'center'},
-        {display: '{% trans "Gateway" %}', name: 'used_gateway', width: 100, sortable: true, align: 'center'},
-        {display: '{% trans "Duration" %}', name: 'duration', width: 50, sortable: true, align: 'center'},
-        {display: '{% trans "Bill Sec" %}', name: 'billsec', width: 50, sortable: true, align: 'center'},
-        {display: '{% trans "Disposition" %}', name: 'disposition', width: 60, sortable: true, align: 'center'},
+        {display: '{% trans "Start date" %}', name: 'starting_date', width: 150, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
+        {display: '{% trans "Call ID" %}', name: 'callid', width: 150, sortable: true, align: 'center'},
+        {display: '{% trans "Leg" %}', name: 'leg_type', width: 100, sortable: true, align: 'center'},
+        {display: '{% trans "Caller ID" %}', name: 'callerid', width: 100, sortable: true, align: 'center'},
+        {display: '{% trans "Phone No." %}', name: 'phone_number', width: 150, sortable: true, align: 'center'},
+        {display: '{% trans "Gateway" %}', name: 'used_gateway', width: 150, sortable: true, align: 'center'},
+        {display: '{% trans "Duration" %}', name: 'duration', width: 80, sortable: true, align: 'center'},
+        {display: '{% trans "Bill Sec" %}', name: 'billsec', width: 80, sortable: true, align: 'center'},
+        {display: '{% trans "Disposition" %}', name: 'disposition', width: 100, sortable: true, align: 'center'},
 		],    
     sortname: "id",
 	sortorder: "asc",
@@ -153,7 +153,7 @@ $("#flex1").flexigrid({
 
 <br/>
 
-{% trans "Export CSV file"  %} <br/>
+<h3>{% trans "Export CSV file"  %}</h3> <br/>
 <a href="/export_voipcall_report/"><img src='{{STATIC_URL}}newfies/icons/x-office-spreadsheet.png' width="75"/></a>
 </div>
 {% endblock %}

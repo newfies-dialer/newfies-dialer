@@ -18,7 +18,7 @@
 
 {% block content %}
 
-<form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+<form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
 
     {% for field in form %}
     <div class="clearfix{% if field.errors %} error{% endif %}">
@@ -28,20 +28,20 @@
             {% if field.errors %}
                 <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
             {% endif %}
-            <span class="help-block">{{ field.help_text }} </span>
+                <span class="help-block">{{ field.help_text }} </span>
         </div>
     </div>
     {% endfor %}
 
     <div class="actions">
         {% if action == 'update' %}
-        <input id="update" type="submit" class="btn primary" value="{% trans "Update" %}" />
+        <input id="update" type="submit" class="btn-primary" value="{% trans "Update" %}" />
         {% else %}
-        <input id="add" type="submit" class="btn primary" value="{% trans "Submit" %}" />
+        <input id="add" type="submit" class="btn-primary" value="{% trans "Submit" %}" />
         {% endif %}
         &nbsp;&nbsp;
         {% if action == 'update' %}
-         <input id="delete" name="delete" class="btn danger" type="submit" value="{% trans "Delete" %}" />
+         <input id="delete" name="delete" class="btn-danger" type="submit" value="{% trans "Delete" %}" />
         {% endif %}
     </div>
            

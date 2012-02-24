@@ -110,7 +110,7 @@ func_accept_license() {
 func_install_landing_page() {
     mkdir -p $INSTALL_DIR_WELCOME
     # Copy files
-    cp -r /usr/src/newfies-dialer/install/landing-page/ $INSTALL_DIR_WELCOME
+    cp -r /usr/src/newfies-dialer/install/landing-page/* $INSTALL_DIR_WELCOME
     
     echo ""
     echo "Add Apache configuration for Welcome page..."

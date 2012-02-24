@@ -65,15 +65,19 @@ func_accept_license() {
     echo ""
     echo "I agree to be bound by the terms of the license - [YES/NO]"
     echo ""
-    read YESNO_LICENSE
+    read ACCEPT
     
-    if echo $YESNO_LICENSE | grep -i "^YES" > /dev/null ; then
-        #license accepted
-        echo ""
+    while [ "$ACCEPT" != "yes" ]  && [ "$ACCEPT" != "no" ] && [ "$ACCEPT" != "YES" ]  && [ "$ACCEPT" != "NO" ]; do
+        echo "I agree to be bound by the terms of the license - [yes/no]"
+        read ACCEPT
+    done
+    
+    if [ "$ACCEPT" != "yes" ]; then
+        echo "License rejected !"
+        exit 0
     else
-        echo "Bye!"
-        exit 1
-    fi
+        echo "Licence accepted !"
+    fi 
 }
 
 

@@ -146,6 +146,7 @@ func_check_dependencies() {
     echo ""
     echo "Checking Python dependencies..."
     echo ""
+    
     #Check South
     grep_pip=`pip freeze| grep south`
     if echo $grep_pip | grep -i "south" > /dev/null ; then
@@ -208,9 +209,9 @@ func_check_dependencies() {
 #Function mysql db setting
 func_mysql_database_setting() {
     echo ""
-    
     echo "Configure Mysql Settings..."
     echo ""
+    
     echo "Enter Mysql hostname (default:localhost)"
     read MYHOST
     if [ -z "$MYHOST" ]; then

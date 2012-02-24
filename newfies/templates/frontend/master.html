@@ -95,28 +95,34 @@
 
 <div class="container">
 
+
+        <div class="row-fluid">
         {% if not user.is_authenticated %}
-        <form class="well form-inline" action="/login/" class="pull-right" method="post">
+        <div class="span6">
+            <form class="well" action="/login/" class="pull-right" method="post">
             {% csrf_token %}
             {% for field in loginform %}
                 {{ field }}
             {% endfor %}
-            <button class="btn" type="submit">{% trans "Login" %}</button>
+            <button class="btn-primary" type="submit">{% trans "Login" %}</button>
             <a class="btn" href="/password_reset/">{% trans "Forgot password?" %}</a>
         </form>
-
-        <form class="well form-inline" action="/i18n/setlang/" method="post" class="pull-right">
-        {% csrf_token %}
-        {% trans "Display language" %} : <select name="language" id="language-container" class="input-small" >
-        {% for lang in LANGUAGES %}
-        <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected{% endifequal %}>{{ lang.1 }}</option>
-        {% endfor %}
-        </select>
+        </div>
+        <div class="span6">
+            <form class="well form-inline" action="/i18n/setlang/" method="post" class="pull-right">
+                {% csrf_token %}
+                {% trans "Display language" %} : <select name="language" id="language-container" class="input-small" >
+                {% for lang in LANGUAGES %}
+                <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected{% endifequal %}>{{ lang.1 }}</option>
+                {% endfor %}
+                </select>
+                {% if notice_count %} <a href="/user_detail_change/?action=tabs-3"><span class="label warning">{{ notice_count }} {% trans "new notifications" %}</span></a> &nbsp; {% endif %}
+                &nbsp;&nbsp;&nbsp;&nbsp;
+            </form>
+        </div>
         {% endif %}
-        
-        {% if notice_count %} <a href="/user_detail_change/?action=tabs-3"><span class="label warning">{{ notice_count }} {% trans "new notifications" %}</span></a> &nbsp; {% endif %}
-        &nbsp;&nbsp;&nbsp;&nbsp;
-      </form>
+        </div>
+
     
         {% if errorlogin %}
         <div class="alert alert-error">

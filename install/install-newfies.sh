@@ -74,6 +74,9 @@ func_identify_os() {
 #Function accept_license
 func_accept_license() {
     echo ""
+    wget --no-check-certificate -q -O  MPL-V2.0.txt https://raw.github.com/Star2Billing/newfies-dialer/develop/COPYING
+    more MPL-V2.0.txt
+    echo ""
     echo ""
     echo "# Newfies-Dialer License"
     echo "# http://www.newfies-dialer.org"
@@ -86,8 +89,6 @@ func_accept_license() {
     echo ""
     echo ""
     echo ""
-    wget --no-check-certificate -q -O  MPL-V2.0.txt https://raw.github.com/Star2Billing/newfies-dialer/develop/COPYING
-    more MPL-V2.0.txt
     echo ""
     echo "I agree to be bound by the terms of the license - [YES/NO]"
     echo ""

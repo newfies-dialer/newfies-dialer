@@ -11,13 +11,13 @@
 
 {% block content %}
 
-
+<div class="tabbable">
 <ul class="nav nav-tabs">
-    <li {% if action == "tabs-1" %}class="active"{% endif %} data-toggle="tab"><a href="#tabs-1">{% trans "Account" %}</a></li>
-    <li {% if action == "tabs-2" %}class="active"{% endif %} data-toggle="tab"><a href="#tabs-2">{% trans "Password" %}</a></li>
-    <li {% if action == "tabs-3" %}class="active"{% endif %} data-toggle="tab"><a href="#tabs-3">{% trans "Notifications" %}</a></li>
-    <li {% if action == "tabs-4" %}class="active"{% endif %} data-toggle="tab"><a href="#tabs-4">{% trans "Account Limits" %}</a></li>
-    <li {% if action == "tabs-5" %}class="active"{% endif %} data-toggle="tab"><a href="#tabs-5">{% trans "Number Check" %}</a></li>
+    <li {% if action == "tabs-1" %}class="active"{% endif %}><a href="#tabs-1" data-toggle="tab">{% trans "Account" %}</a></li>
+    <li {% if action == "tabs-2" %}class="active"{% endif %}><a href="#tabs-2" data-toggle="tab">{% trans "Password" %}</a></li>
+    <li {% if action == "tabs-3" %}class="active"{% endif %}><a href="#tabs-3" data-toggle="tab">{% trans "Notifications" %}</a></li>
+    <li {% if action == "tabs-4" %}class="active"{% endif %}><a href="#tabs-4" data-toggle="tab">{% trans "Account Limits" %}</a></li>
+    <li {% if action == "tabs-5" %}class="active"{% endif %}><a href="#tabs-5" data-toggle="tab">{% trans "Number Check" %}</a></li>
 </ul>
 
 <div class="tab-content">
@@ -25,20 +25,20 @@
 	<div id="tabs-1" class="tab-pane {% if action == "tabs-1" or action == "" %}active{% endif %}">
 
         {% if msg_detail %}
-            <div class="alert-message success">
+            <div class="alert alert-success">
                 <strong>{% trans "Alert" %} : </strong>  {{ msg_detail }}
             </div>
         {% endif %}
 
         {% if error_detail %}
-            <div class="alert-message error">
+            <div class="alert alert-error">
                 <strong>{% trans "Alert" %} : </strong>  {{ error_detail }}
             </div>
         {% endif %}
 
         <br/>
 
-        <form action="" method="post">{% csrf_token %}
+        <form class="well" action="" method="post">{% csrf_token %}
              {% for field in user_detail_form %}
              <div class="clearfix{% if field.errors %} error{% endif %}">
                 <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
@@ -68,7 +68,7 @@
              <div class="actions">
                  <input type="hidden" name="action" value="tabs-1" />
                  <input type="hidden" name="form-type" value="change-detail" />
-                 <input type="submit" class="btn primary" value="{% trans 'Change detail' %}" />
+                 <input type="submit" class="btn-primary" value="{% trans 'Change detail' %}" />
              </div>
         </form>
 
@@ -77,19 +77,19 @@
     <div id="tabs-2" class="tab-pane {% if action == "tabs-2" %}active{% endif %}">
 
         {% if msg_pass %}
-            <div class="alert-message success">
+            <div class="alert alert-success">
                 <strong>{% trans "Alert" %} : </strong>  {{ msg_pass }}
             </div>
         {% endif %}
         {% if error_pass %}
-            <div class="alert-message error">
+            <div class="alert alert-error">
                 <strong>{% trans "Alert" %} : </strong>  {{ error_pass }}
             </div>
         {% endif %}
 
         <br/>
 
-        <form action="" method="post">{% csrf_token %}
+        <form class="well" action="" method="post">{% csrf_token %}
              {% for field in user_password_form %}
              <div class="clearfix{% if field.errors %} error{% endif %}">
                 <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
@@ -106,7 +106,7 @@
              <div class="actions">
                  <input type="hidden" name="action" value="tabs-2" />
                  <input type="hidden" name="form-type" value="change-password" />
-                 <input type="submit" class="btn primary" value="{% trans 'Change password' %}" />
+                 <input type="submit" class="btn-primary" value="{% trans 'Change password' %}" />
              </div>
         </form>
 
@@ -115,7 +115,7 @@
     <div id="tabs-3" class="tab-pane {% if action == "tabs-3" %}active{% endif %}">
 
         {% if msg_note %}
-            <div class="alert-message success">
+            <div class="alert alert-success">
                 <strong>{% trans "Alert" %} : </strong>  {{ msg_note }}
             </div>
         {% endif %}
@@ -134,12 +134,12 @@
             method: 'GET',
             dataType: 'json',
             colModel : [
-                {display: '<input type="checkbox" onclick="toggleChecked(this.checked)">', name: '', width: 20, align: 'center'},
-                {display: '{% trans "Message" %}', name: 'message', width: 250, sortable: true, align: 'center'},
-                {display: '{% trans "Notification type" %}', name: 'notice_type', width: 250, sortable: true, align: 'center'},
-                {display: '{% trans "Sender" %}', name: 'sender', width: 50, sortable: true, align: 'center'},
-                {display: '{% trans "Date" %}', name: 'added', width : 190, align: 'center'},
-                {display: '{% trans "Action" %}', name: '', width : 70, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
+                {display: '<input type="checkbox" onclick="toggleChecked(this.checked)">', name: '', width: 50, align: 'center'},
+                {display: '{% trans "Message" %}', name: 'message', width: 300, sortable: true, align: 'center'},
+                {display: '{% trans "Notification type" %}', name: 'notice_type', width: 300, sortable: true, align: 'center'},
+                {display: '{% trans "Sender" %}', name: 'sender', width: 100, sortable: true, align: 'center'},
+                {display: '{% trans "Date" %}', name: 'added', width : 250, align: 'center'},
+                {display: '{% trans "Action" %}', name: '', width : 100, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
                 ],
             buttons : [
                 {name: '{% trans "Delete notifications" %}', bclass: 'delete', onpress : delete_button},
@@ -246,19 +246,19 @@
     <div id="tabs-5" align="left"  class="tab-pane {% if action == "tabs-5" %}active{% endif %}">
 
         {% if msg_number %}
-            <div class="alert-message success">
+            <div class="alert alert-success">
                 <strong>{% trans "Alert" %} : </strong>  {{ msg_number }}
             </div>
         {% endif %}
         {% if error_number %}
-            <div class="alert-message error">
+            <div class="alert alert-error">
                 <strong>{% trans "Alert" %} : </strong>  {{ error_number }}
             </div>
         {% endif %}
 
         <br/>
 
-        <form action="" method="post">{% csrf_token %}
+        <form class="well" action="" method="post">{% csrf_token %}
             {% for field in check_phone_no_form %}
             <div class="clearfix{% if field.errors %} error{% endif %}">
                 <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
@@ -275,12 +275,12 @@
             <div class="actions">
                 <input type="hidden" name="action" value="tabs-5" />
                 <input type="hidden" name="form-type" value="check-number" />
-                <input type="submit" class="btn primary" value="{% trans 'Check' %}" />
+                <input type="submit" class="btn-primary" value="{% trans 'Check' %}" />
             </div>
         </form>
 	</div>
 </div>
-
+</div>
 
 
 <script type="text/javascript">

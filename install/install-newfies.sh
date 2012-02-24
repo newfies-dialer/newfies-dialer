@@ -44,6 +44,7 @@ CELERYD_USER="celery"
 CELERYD_GROUP="celery"
 NEWFIES_ENV="newfies-dialer"
 HTTP_PORT="8008"
+SOUTH_SOURCE='hg+http://bitbucket.org/andrewgodwin/south/@ecaafda23e600e510e252734d67bf8f9f2362dc9#egg=South-dev'
 
 
 
@@ -141,7 +142,68 @@ func_install_landing_page() {
     esac
 }
 
-
+func_check_dependencies() {
+    echo ""
+    echo "Checking Python dependencies..."
+    echo ""
+    #Check South
+    grep_pip=`pip freeze| grep south`
+    if echo $grep_pip | grep -i "south" > /dev/null ; then
+        echo "OK : South installed..."
+    else
+        echo "Error : South not installed..."
+        exit 1
+    fi
+    
+    #Check Django
+    grep_pip=`pip freeze| grep Django`
+    if echo $grep_pip | grep -i "Django" > /dev/null ; then
+        echo "OK : Django installed..."
+    else
+        echo "Error : Django not installed..."
+        exit 1
+    fi
+    
+    #Check MySQL-python
+    grep_pip=`pip freeze| grep MySQL-python`
+    if echo $grep_pip | grep -i "MySQL-python" > /dev/null ; then
+        echo "OK : MySQL-python installed..."
+    else
+        echo "Error : MySQL-python not installed..."
+        exit 1
+    fi
+    
+    #Check celery
+    grep_pip=`pip freeze| grep celery`
+    if echo $grep_pip | grep -i "celery" > /dev/null ; then
+        echo "OK : celery installed..."
+    else
+        echo "Error : celery not installed..."
+        exit 1
+    fi
+    
+    #Check django-tastypie
+    grep_pip=`pip freeze| grep django-tastypie`
+    if echo $grep_pip | grep -i "django-tastypie" > /dev/null ; then
+        echo "OK : django-tastypie installed..."
+    else
+        echo "Error : django-tastypie not installed..."
+        exit 1
+    fi
+    
+    #Check raven
+    grep_pip=`pip freeze| grep raven`
+    if echo $grep_pip | grep -i "raven" > /dev/null ; then
+        echo "OK : raven installed..."
+    else
+        echo "Error : raven not installed..."
+        exit 1
+    fi
+    
+    echo ""
+    echo "Python dependencies successfully installed!"
+    echo ""
+}
 
 #Function mysql db setting
 func_mysql_database_setting() {
@@ -239,7 +301,7 @@ func_install_frontend(){
             apt-get -y install libapache2-mod-python libapache2-mod-wsgi
             easy_install pip
             #|FIXME: Strangely South need to be installed outside the Virtualenv
-            pip install -e hg+http://bitbucket.org/andrewgodwin/south/@ecaafda23e600e510e252734d67bf8f9f2362dc9#egg=South-dev
+            pip install -e $SOUTH_SOURCE
             
             #Install Extra dependencies on New OS        
             apt-get -y install git-core mercurial gawk
@@ -365,6 +427,11 @@ func_install_frontend(){
     done
     pip install plivohelper
     
+    #Add South install again
+    pip install -e $SOUTH_SOURCE
+    
+    #Check Python dependencies
+    func_check_dependencies
     
     # copy settings_local.py into newfies dir
     cp /usr/src/newfies-dialer/install/conf/settings_local.py $INSTALL_DIR
@@ -374,7 +441,6 @@ func_install_frontend(){
     RANDPASSW=`</dev/urandom tr -dc A-Za-z0-9| (head -c $1 > /dev/null 2>&1 || head -c 50)`
     sed -i "s/^SECRET_KEY.*/SECRET_KEY = \'$RANDPASSW\'/g"  $INSTALL_DIR/settings.py
     echo ""
-
 
     # Disable Debug
     sed -i "s/DEBUG = True/DEBUG = False/g"  $INSTALL_DIR/settings_local.py

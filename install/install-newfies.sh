@@ -60,7 +60,10 @@ func_accept_license() {
     echo ""
     echo ""
     echo ""
-    echo "Do you accept the terms of the Newfies-Dialer license ? [YES/NO]"
+    wget --no-check-certificate -q -O  MPL-V2.0.txt https://raw.github.com/Star2Billing/newfies-dialer/develop/COPYING
+    more MPL-V2.0.txt
+    echo ""
+    echo "I agree to be bound by the terms of the license - [YES/NO]"
     echo ""
     read YESNO_LICENSE
     
@@ -72,6 +75,42 @@ func_accept_license() {
         exit 1
     fi
 }
+
+
+#Function install the landing page
+func_install_landing_page() {
+    echo ""
+    echo "Add Apache configuration..."
+    echo '
+    Listen *:80
+    
+    <VirtualHost *:80>
+        DocumentRoot '$INSTALL_DIR'/
+        LogLevel warn
+
+        Alias /static/ "'$INSTALL_DIR'/static/"
+
+        <Location "/static/">
+            SetHandler None
+        </Location>
+
+        WSGIPassAuthorization On
+        WSGIDaemonProcess newfies user='$APACHE_USER' user='$APACHE_USER' threads=25
+        WSGIProcessGroup newfies
+        WSGIScriptAlias / '$INSTALL_DIR'/django.wsgi
+
+        <Directory '$INSTALL_DIR'>
+            AllowOverride all
+            Order deny,allow
+            Allow from all
+            '$WSGIApplicationGroup'
+        </Directory>
+
+    </VirtualHost>
+    
+    ' > $APACHE_CONF_DIR/newfies.conf
+}
+
 
 
 #Function mysql db setting

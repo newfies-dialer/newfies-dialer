@@ -99,13 +99,13 @@
         <div class="row-fluid">
         {% if not user.is_authenticated %}
         <div class="span6">
-            <form class="well" action="/login/" class="pull-right" method="post">
+            <form class="well form-inline" action="/login/" class="pull-right" method="post">
             {% csrf_token %}
             {% for field in loginform %}
                 {{ field }}
             {% endfor %}
-            <button class="btn-primary" type="submit">{% trans "Login" %}</button>
-            <a class="btn" href="/password_reset/">{% trans "Forgot password?" %}</a>
+            <button class="btn" type="submit">{% trans "Login" %}</button>
+            <a class="btn btn-primary" href="/password_reset/">{% trans "Forgot password?" %}</a>
         </form>
         </div>
         <div class="span6">

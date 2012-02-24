@@ -108,10 +108,9 @@ func_accept_license() {
 
 #Function install the landing page
 func_install_landing_page() {
-
     mkdir -p $INSTALL_DIR_WELCOME
     # Copy files
-    cp -r /usr/src/newfies-dialer/install/landing-page $INSTALL_DIR_WELCOME
+    cp -r /usr/src/newfies-dialer/install/landing-page/ $INSTALL_DIR_WELCOME
     
     echo ""
     echo "Add Apache configuration for Welcome page..."
@@ -133,6 +132,7 @@ func_install_landing_page() {
     
     case $DIST in
         'DEBIAN')
+            mv /etc/apache2/sites-enabled/000-default /tmp/
             service apache2 restart
         ;;
         'CENTOS')

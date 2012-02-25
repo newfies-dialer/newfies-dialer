@@ -150,16 +150,16 @@
         
         {% if user.is_authenticated %}
             {% if dialer_setting_msg %}
-            <div class="span-24 last">
-                <div class="alert alert-error">
-                    <strong>{% trans "Alert" %} : </strong>  {{ dialer_setting_msg }}
-                    {% if not request.session.has_notified %}
-                        {% trans "To send notification to administrator" %} <a href="/notify/admin/">{% trans "Click here" %}</a>
-                    {% else %}
-                        {% trans "(Notification sent)" %}
-                    {% endif %}
-                </div>
+
+            <div class="alert alert-error">
+                <strong>{% trans "Alert" %} : </strong>  {{ dialer_setting_msg }}
+                {% if not request.session.has_notified %}
+                    {% trans "To send notification to administrator" %} <a href="/notify/admin/">{% trans "Click here" %}</a>
+                {% else %}
+                    {% trans "(Notification sent)" %}
+                {% endif %}
             </div>
+
             {% endif %}
         {% endif %}
         

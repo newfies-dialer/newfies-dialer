@@ -166,7 +166,7 @@
 
 <style type="text/css">
     /* style for question box for jquery UI sort*/
-	.column { width: 1145px; float: left; padding-bottom: 0px; }
+	.column { width: 95%; float: left; padding-bottom: 0px; }
 	.portlet { margin: 0 1em 1em 0; }
 	.portlet-header { margin: 0.3em; padding-bottom: 4px; padding-left: 0.2em; }
 	.portlet-header .ui-icon { float: right; }
@@ -270,7 +270,7 @@ function addFormField() {
             '</div>'+
         {% endif %}
         {% if forloop.last %}
-        '<div class="span2"><!--<input value="Save" onclick="question_form('+id+', 0)" type="button">-->'+
+        '<div class="span3"><!--<input value="Save" onclick="question_form('+id+', 0)" type="button">-->'+
         '<input class="btn-danger" value="{% trans "Delete question" %}" onClick="removeFormField(\'#row' + id + '\'); return false;" type="button"></div>'+
         {% endif %}
     {% endfor %}
@@ -475,7 +475,7 @@ function removeResFormField(id) {
                                     {% endif %}
 
                                     {% if forloop.last %}
-                                        <div class="span2">
+                                        <div class="span3">
                                             <!--<input value="Save" onclick="question_form({{ que.id }}, 1);" type="button">-->
                                             <input value="{% trans "Delete question" %}" class="btn-danger" onclick="question_delete_form({{ que.id }}, 1);removeFormField('#row{{ que.id }}'); return false;" type="button">
                                         </div>

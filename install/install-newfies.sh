@@ -241,6 +241,7 @@ func_mysql_database_setting() {
 func_iptables_configuration() {
     #add http port
     iptables -I INPUT 2 -p tcp -m state --state NEW -m tcp --dport $HTTP_PORT -j ACCEPT
+    iptables -I INPUT 3 -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT
     
     service iptables save
 }
@@ -568,7 +569,7 @@ func_install_frontend(){
         ;;
         'CENTOS')
             echo ""
-            echo "We will now add $HTTP_PORT port to your Firewall"
+            echo "We will now add port $HTTP_PORT  and port 80 to your Firewall"
             echo "Press Enter to continue or CTRL-C to exit"
             read TEMP
         

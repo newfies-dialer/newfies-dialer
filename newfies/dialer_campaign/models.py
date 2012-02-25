@@ -202,8 +202,10 @@ def common_contact_authorization(user, str_contact):
     try:
         obj_userprofile = UserProfile.objects.get(user=user)
     except UserProfile.DoesNotExist:
-        #"UserProfile.DoesNotExist"
-        return True
+        return False
+
+    if not obj_userprofile.dialersetting:
+        return False
 
     whitelist = obj_userprofile.dialersetting.whitelist
     blacklist = obj_userprofile.dialersetting.blacklist

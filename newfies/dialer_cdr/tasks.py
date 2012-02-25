@@ -86,6 +86,11 @@ def init_callrequest(callrequest_id, campaign_id):
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
     callmaxduration = obj_campaign.callmaxduration
     
+    #Sanitize gateways
+    gateways = gateways.strip()
+    if gateways[-1] != '/':
+        gateways = gateways + '/'
+    
     if obj_campaign.content_type.app_label=='survey':
         #Use Survey Statemachine
         answer_url = settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL

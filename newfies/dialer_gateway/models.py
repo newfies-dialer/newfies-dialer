@@ -61,7 +61,7 @@ class Gateway(Model):
         * ``description`` - Description about the Gateway.
         * ``addprefix`` - Add prefix.
         * ``removeprefix`` - Remove prefix.
-        * ``gateways`` - "user/,user", # Gateway string to try dialing \
+        * ``gateways`` - "user/,user/", # Gateway string to try dialing \
         separated by comma. First in the list will be tried first
         * ``gateway_codecs`` - "'PCMA,PCMU','PCMA,PCMU'", \
         # Codec string as needed by FS for each gateway separated by comma

@@ -312,7 +312,11 @@ func_install_frontend(){
                 /etc/init.d/mysql start
                 #Configure MySQL
                 /usr/bin/mysql_secure_installation
-                func_mysql_database_setting
+				until mysql -u$MYSQLUSER -p$MYSQLPASSWORD -P$MYHOSTPORT -h$MYHOST -e ";" ; do 
+					clear 
+                	echo "Enter correct database settings"
+                	func_mysql_database_setting
+                done
             fi
             
             #for audiofile convertion
@@ -348,7 +352,11 @@ func_install_frontend(){
                 /etc/init.d/mysqld start
                 #Configure MySQL
                 /usr/bin/mysql_secure_installation
-                func_mysql_database_setting
+				until mysql -u$MYSQLUSER -p$MYSQLPASSWORD -P$MYHOSTPORT -h$MYHOST -e ";" ; do 
+					clear 
+                	echo "Enter correct database settings"
+                	func_mysql_database_setting
+                done            
             fi
         ;;
     esac

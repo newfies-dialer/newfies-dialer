@@ -269,7 +269,7 @@ func_setup_virtualenv() {
     export WORKON_HOME=/usr/share/virtualenvs
     source $SCRIPT_VIRTUALENVWRAPPER
 
-    mkvirtualenv --no-site-packages $NEWFIES_ENV
+    mkvirtualenv $NEWFIES_ENV
     workon $NEWFIES_ENV
     
     echo "Virtualenv $NEWFIES_ENV created and activated"

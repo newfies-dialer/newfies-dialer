@@ -552,6 +552,11 @@ func_install_frontend(){
     
     IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
     IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
+    if [ -z "$IPADDR" ]; then
+        clear
+        echo "we have not detected your IP address automatically, please enter it manually"
+        read IPADDR
+	fi
     
     ##Update Freeswitch XML CDR
     #NEWFIES_CDR_API='api\/v1\/store_cdr\/'
@@ -627,6 +632,11 @@ func_install_backend() {
 
     IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
     IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
+    if [ -z "$IPADDR" ]; then
+        clear
+        echo "we have not detected your IP address automatically, please enter it manually"
+        read IPADDR
+	fi
     
     #Create directory for pid file
     mkdir -p /var/run/celery
@@ -808,8 +818,7 @@ esac
 #Request the user to accept the license
 func_accept_license
 
-#Install welcome page
-func_install_landing_page
+
 
 ExitFinish=0
 
@@ -821,11 +830,13 @@ while [ $ExitFinish -eq 0 ]; do
 	case $OPTION in
 		1) 
 			func_install_frontend
+			func_install_landing_page
 			func_install_backend
 			echo done
 		;;
 		2) 
 			func_install_frontend
+			func_install_landing_page
 		;;
 		3) 
 			func_install_backend

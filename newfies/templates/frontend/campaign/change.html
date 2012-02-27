@@ -19,8 +19,7 @@
 
     <form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
         <fieldset>
-            <legend>{% trans "General settings" %}</legend>
-
+            <legend style="width:1130px;">{% trans "General settings" %}</legend>
             <div class="span12">
                 <div class="row">
                     {% get_fieldset name,description,status as campaign_fields from form %}
@@ -60,13 +59,12 @@
                             </div>
                         </div>
                     {% endfor %}
-
-                    </div>
                 </div>
+            </div>
         </fieldset>
 
         <fieldset>
-            <legend>{% trans "Dialer settings" %}</legend>
+            <legend style="width:1130px;">{% trans "Dialer settings" %}</legend>
 
             <div class="span12">
                 <div class="row">
@@ -91,7 +89,7 @@
         </fieldset>
 
         <fieldset>
-            <legend>{% trans "Campaign schedule" %}</legend>
+            <legend style="width:1130px;">{% trans "Campaign schedule" %}</legend>
             <div class="span12">
                 <div class="row">
                     <div class="span6">

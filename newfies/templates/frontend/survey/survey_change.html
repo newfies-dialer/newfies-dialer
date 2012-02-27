@@ -175,7 +175,7 @@
 	.ui-sortable-placeholder * { visibility: hidden; }
     /* change span width for response inputs */
     .span5 {width: 160px;}
-    /*.span6 {width: auto;}*/
+
 </style>
 
 <script type="text/javascript">
@@ -437,9 +437,9 @@ function removeResFormField(id) {
                         <form id="que_form_{{ que.id }}" action="." method="post" enctype="multipart/form-data">
                         {% csrf_token %}
 
-                            {% for key, form in survey_que_forms.items %}
+                            {% for key, form in survey_que_forms.items %}                           
 
-                            {% if forloop.first %}
+                            <!--{% if forloop.first %}
                             <div class="row">
                             <div class="span12">
                                 <div class="row">
@@ -453,7 +453,7 @@ function removeResFormField(id) {
                                 </div>
                             </div>
                             </div>
-                            {% endif %}
+                            {% endif %}-->
 
                             {% if key|stringformat:"s" == que.id|stringformat:"s" %}
 
@@ -466,16 +466,20 @@ function removeResFormField(id) {
                                             {{ hidden }}
                                         {% endfor %}
                                         <div class="span6">
-                                            {{ field }}
+                                            <b>{{ field.label|capfirst }}</b><br/>
+                                            {{ field }}<br/>
+                                            <span class="help-inline">{% trans "If no audio file is selected, then text to speech is used to read out the question" %}</span>
                                         </div>
                                     {% else %}
                                         <div class="span3">
-                                            {{ field.hidden_field }}{{ field }}
+                                            {{ field.hidden_field }}
+                                            <b>{{ field.label|capfirst }}</b><br/>
+                                            {{ field }}
                                         </div>
                                     {% endif %}
 
                                     {% if forloop.last %}
-                                        <div class="span3">
+                                        <div class="span3"><br/>
                                             <!--<input value="Save" onclick="question_form({{ que.id }}, 1);" type="button">-->
                                             <input value="{% trans "Delete question" %}" class="btn-danger" onclick="question_delete_form({{ que.id }}, 1);removeFormField('#row{{ que.id }}'); return false;" type="button">
                                         </div>
@@ -484,17 +488,17 @@ function removeResFormField(id) {
                                 </div>
                             </div>
                             </div>
-                            <div class="row">
+                            <!--<div class="row">
                                 <div class="span6">
                                     <span class="help-inline">{% trans "If no audio file is selected, then text to speech is used to read out the question" %}</span>
                                 </div>
-                            </div>
+                            </div>-->
                                 <!--Response forms start-->
                                 <!--extra to fix 1st survey response form-->
                                 <form>{% csrf_token %}</form>
                                 <!--extra-->
 
-                                <div class="row">
+                                <!--<div class="row">
                                     <div class="span4">
                                         <div class="row">
                                             <div class="span2">
@@ -505,7 +509,7 @@ function removeResFormField(id) {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>-->
 
                                 {% for key, value_set in survey_res_form_collection.items|sort %}
                                     {% if value_set.que_id|stringformat:"s" == que.id|stringformat:"s" %}
@@ -522,11 +526,17 @@ function removeResFormField(id) {
                                                           {% endfor %}
                                                         {% endif %}
                                                           <!--{{ field.errors.as_ul }}-->
-                                                          {{ field.hidden_field }}{{ field }}
+                                                        {{ field.hidden_field }}
+
+                                                        {% if forloop.first %}<b>{% trans "Key Digit" %}</b>{% endif %}
+                                                        {% if forloop.last %}<b>{% trans "Key Value" %}</b>{% endif %}
+                                                        <br/>
+
+                                                        {{ field }}
                                                     </div>
 
                                                     {% if forloop.last %}
-                                                    <div class="span2">
+                                                    <div class="span2"><br/>
                                                         <!--<input value="Save" onclick="response_form({{ key }}, {{ que.id }}, 1, 1);" type="button">-->
                                                         <input value="{% trans "Delete response" %}" class="btn-danger" onclick="response_delete_form({{ key }}, 1);removeResFormField('#response_form_{{ key }}'); return false;" type="button">
                                                     </div>

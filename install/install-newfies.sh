@@ -808,8 +808,7 @@ esac
 #Request the user to accept the license
 func_accept_license
 
-#Install welcome page
-func_install_landing_page
+
 
 ExitFinish=0
 
@@ -821,11 +820,13 @@ while [ $ExitFinish -eq 0 ]; do
 	case $OPTION in
 		1) 
 			func_install_frontend
+			func_install_landing_page
 			func_install_backend
 			echo done
 		;;
 		2) 
 			func_install_frontend
+			func_install_landing_page
 		;;
 		3) 
 			func_install_backend

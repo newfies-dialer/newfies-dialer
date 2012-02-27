@@ -72,8 +72,9 @@ def init_callrequest(callrequest_id, campaign_id):
     
     if obj_callrequest.aleg_gateway:
         id_aleg_gateway = obj_callrequest.aleg_gateway.id
-        dialout_phone_number = phonenumber_change_prefix(obj_callrequest.phone_number,
-                                         id_aleg_gateway)
+        dialout_phone_number = phonenumber_change_prefix(
+                                                obj_callrequest.phone_number,
+                                                id_aleg_gateway)
     else:
         dialout_phone_number = obj_callrequest.phone_number
     logger.info("dialout_phone_number : %s" % dialout_phone_number)
@@ -90,7 +91,7 @@ def init_callrequest(callrequest_id, campaign_id):
     gateways = gateways.strip()
     if gateways[-1] != '/':
         gateways = gateways + '/'
-    
+
     if obj_campaign.content_type.app_label=='survey':
         #Use Survey Statemachine
         answer_url = settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL
@@ -100,7 +101,11 @@ def init_callrequest(callrequest_id, campaign_id):
         #answer_url = 'http://localhost/~areski/django/MyProjects/plivohelper-php/examples/test.php?answer=1'
 
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
-
+    if obj_callrequest.user.userprofile.accountcode and \
+        obj_callrequest.user.userprofile.accountcode > 0:
+        originate_dial_string = originate_dial_string + \
+            ',accountcode=' + str(obj_callrequest.user.userprofile.accountcode)
+    
     #Send Call to API
     #http://ask.github.com/celery/userguide/remote-tasks.html
 
@@ -196,9 +201,9 @@ def dummy_testcall(callerid, phone_number, gateway):
                 (dummy_testcall.request.id,
                  dummy_testcall.request.args,
                  dummy_testcall.request.kwargs))
-    logger.info("Waiting 1 seconds...")
     sleep(1)
-
+    logger.info("Waiting 1 seconds...")
+    
     request_uuid = uuid1()
 
     #Trigger AnswerURL
@@ -237,7 +242,6 @@ def dummy_test_answerurl(request_uuid):
     #Update CallRequest
     obj_callrequest.status = 4 # SUCCESS
     obj_callrequest.save()
-
     #Create CDR
     new_voipcall = VoIPCall(user=obj_callrequest.user,
                             request_uuid=obj_callrequest.request_uuid,
@@ -249,7 +253,6 @@ def dummy_test_answerurl(request_uuid):
                             billsec=0,
                             disposition=1)
     new_voipcall.save()
-
     #lock to limit running process, do so per campaign
     #http://ask.github.com/celery/cookbook/tasks.html
 

@@ -793,15 +793,15 @@ msgstr "קוראים דו\"ח"
 
 #: dialer_cdr/admin.py:77
 msgid "User"
-msgstr ""
+msgstr "משתמש"
 
 #: dialer_cdr/admin.py:86
 msgid "Gateway used"
-msgstr ""
+msgstr "השער משמש"
 
 #: dialer_cdr/admin.py:134
 msgid "Database error"
-msgstr ""
+msgstr "מסד הנתונים שגיאה"
 
 #: dialer_cdr/admin.py:191
 #, python-format
@@ -809,119 +809,119 @@ msgstr ""
 #: dialer_cdr/admin.py:195
 #, python-format
 msgid "%(total_count)s selected"
-msgstr ""
+msgstr "(TOTAL_COUNT)%s נבחר"
 
 #: dialer_cdr/admin.py:206
 msgid "VoIP Report"
-msgstr ""
+msgstr "דו\"ח ה-VoIP"
 
 #: dialer_cdr/forms.py:32
 msgid "Disposition :"
-msgstr ""
+msgstr "אופי:"
 
 #: dialer_cdr/models.py:40
 msgid "ALLOW RETRY"
-msgstr ""
+msgstr "מתירות נסה שנית"
 
 #: dialer_cdr/models.py:41
 msgid "CANNOT RETRY"
-msgstr ""
+msgstr "לא יכול לנסות שוב"
 
 #: dialer_cdr/models.py:42
 msgid "RETRY DONE"
-msgstr ""
+msgstr "נסה שוב את הפעולה הושלמה"
 
 #: dialer_cdr/models.py:46
 msgid "A-Leg"
-msgstr ""
+msgstr "רגל"
 
 #: dialer_cdr/models.py:47 voice_app/models.py:61
 msgid "B-Leg"
-msgstr ""
+msgstr "B-Leg"
 
 #: dialer_cdr/models.py:128 dialer_cdr/models.py:216
 msgid "RequestUUID"
-msgstr ""
+msgstr "RequestUUID"
 
 #: dialer_cdr/models.py:131
 msgid "A-Leg Call-ID"
-msgstr ""
+msgstr "Leg-Call-ID"
 
 #: dialer_cdr/models.py:137
 msgid "Call Request Type"
-msgstr ""
+msgstr "סוג שיחת בקשה"
 
 #: dialer_cdr/models.py:142
 msgid "CallerID used to call the A-Leg"
-msgstr ""
+msgstr "זיהוי שיחה נהג לכנות-Leg"
 
 #: dialer_cdr/models.py:143 dialer_cdr/models.py:226 user_profile/models.py:65
 msgid "Phone number"
-msgstr ""
+msgstr "מספר טלפון"
 
 #: dialer_cdr/models.py:144
 msgid "Time out"
-msgstr ""
+msgstr "פסק זמן"
 
 #: dialer_cdr/models.py:145
 msgid "Time limit"
-msgstr ""
+msgstr "הגבל את הזמן"
 
 #: dialer_cdr/models.py:147
 msgid "Extra dial string"
-msgstr ""
+msgstr "חיוג נוסף מחרוזת"
 
 #: dialer_cdr/models.py:151
 msgid "Campaign Subscriber related to this call request"
-msgstr ""
+msgstr "מבצע מנוי הקשור לבקשה זו שיחה"
 
 #: dialer_cdr/models.py:157
 msgid "Select gateway to use to call the subscriber"
-msgstr ""
+msgstr "שער בחר להשתמש להתקשר מנוי"
 
 #: dialer_cdr/models.py:165
 msgid "Extra Data"
-msgstr ""
+msgstr "נתונים נוספים"
 
 #: dialer_cdr/models.py:166
 msgid "Define the additional data to pass to the application"
-msgstr ""
+msgstr "מגדירים את הנתונים הנוספים לעבור ליישום"
 
 #: dialer_cdr/models.py:180
 msgid "Call Request"
-msgstr ""
+msgstr "בקשה לשיחה"
 
 #: dialer_cdr/models.py:181
 msgid "Call Requests"
-msgstr ""
+msgstr "שיחה בקשות"
 
 #: dialer_cdr/models.py:220
 msgid "Used gateway"
-msgstr ""
+msgstr "משמש שער"
 
 #: dialer_cdr/models.py:222
 msgid "Callrequest"
-msgstr ""
+msgstr "Callrequest"
 
 #: dialer_cdr/models.py:223 survey/models.py:189
 msgid "VoIP Call-ID"
-msgstr ""
+msgstr "שיחות VoIP-ID"
 
 #: dialer_cdr/models.py:227
 msgid "The international number of the recipient, without the leading +"
-msgstr ""
+msgstr "מספר בינלאומי של הנמען, ללא + מוביל"
 
 #: dialer_cdr/models.py:229
 msgid "Destination"
-msgstr ""
+msgstr "יעד"
 
 #: dialer_cdr/models.py:230
 msgid "Select Prefix"
-msgstr ""
+msgstr "בחר קידומת"
 
 #: dialer_cdr/models.py:231
 msgid "Starting date"
-msgstr ""
+msgstr "החל תאריך"
 
 #: dialer_cdr/models.py:232
 #: templates/admin/dialer_cdr/voipcall/change_list.html:114
@@ -929,463 +929,459 @@ msgstr ""
 #: templates/frontend/report/voipcall_report.html:83
 #: templates/frontend/report/voipcall_report.html:122
 msgid "Duration"
-msgstr ""
+msgstr "משך"
 
 #: dialer_cdr/models.py:233
 msgid "Bill sec"
-msgstr ""
+msgstr "ביל שניות"
 
 #: dialer_cdr/models.py:234
 msgid "Progress sec"
-msgstr ""
+msgstr "התקדמות שניות"
 
 #: dialer_cdr/models.py:235
 msgid "Answer sec"
-msgstr ""
+msgstr "עונה שנייה"
 
 #: dialer_cdr/models.py:236
 msgid "Wait sec"
-msgstr ""
+msgstr "חכו שניה"
 
 #: dialer_cdr/models.py:239 templates/frontend/report/voipcall_report.html:85
 msgid "Disposition"
-msgstr ""
+msgstr "מזג"
 
 #: dialer_cdr/models.py:241
 msgid "Hangup cause"
-msgstr ""
+msgstr "נתק סיבה"
 
 #: dialer_cdr/models.py:244 templates/frontend/report/voipcall_report.html:79
 msgid "Leg"
-msgstr ""
+msgstr "רגל"
 
 #: dialer_cdr/models.py:267 dialer_cdr/models.py:268
 msgid "VoIP Call"
-msgstr ""
+msgstr "שיחות ה-VoIP"
 
 #: dialer_cdr/widgets.py:361
 #, python-format
 msgid "The %(name)s \"%(obj)s\" was added."
-msgstr ""
+msgstr "% (Name) s \"% (obj) s\" נוסף."
 
 #: dialer_cdr/widgets.py:367
 msgid "You may edit it again below."
-msgstr ""
+msgstr "ניתן לערוך אותו שוב מתחת."
 
 #: dialer_cdr/widgets.py:380
 #, python-format
 msgid "You may add another %s below."
-msgstr ""
+msgstr "ניתן להוסיף%s נוסף מתחת."
 
 #: dialer_cdr/widgets.py:411
 msgid "Add Another"
-msgstr ""
+msgstr "להוסיף עוד"
 
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:33
 msgid "\"campaign_id|no_of_record\" \"campaign_id|no_of_record\""
-msgstr ""
+msgstr "\"CAMPAIGN_ID | no_of_record\" \"CAMPAIGN_ID | no_of_record\""
 
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:34
 msgid ""
 "Creates no of new call requests and CDRs for a given campaign_id & no of "
 "records"
-msgstr ""
+msgstr "יוצר לא הבקשות טלפוניים CDRs חדשים CAMPAIGN_ID נתון & כל הרשומות"
 
 
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:49
 #, python-format
 msgid "Can't find this Campaign : %(id)s"
-msgstr ""
+msgstr "לא ניתן למצוא את המבצע:% (id) של"
 
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:72
 #, python-format
 msgid "No of Callrequest & CDR created :%(count)s"
-msgstr ""
+msgstr "לא של Callrequest & CDR נוצר: (count) s%"
 
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:74
 msgid "Callrequest & CDR are not created!"
-msgstr ""
+msgstr "Callrequest & CDR לא נוצרים!"
 
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:77
 msgid "No admin user"
-msgstr ""
+msgstr "לא admin המשתמש"
 
 #: dialer_gateway/models.py:26
 msgid "SIP"
-msgstr ""
+msgstr "SIP"
 
 #: dialer_gateway/models.py:27
 msgid "LOCAL"
-msgstr ""
+msgstr "מקומי"
 
 #: dialer_gateway/models.py:28
 msgid "GSM"
-msgstr ""
+msgstr "GSM"
 
 #: dialer_gateway/models.py:29
 msgid "SKINNY"
-msgstr ""
+msgstr "סקיני"
 
 #: dialer_gateway/models.py:30
 msgid "JINGLE"
-msgstr ""
+msgstr "ומקשקשים"
 
 #: dialer_gateway/models.py:85
 msgid "Gateway name"
-msgstr ""
+msgstr "השער שם"
 
 #: dialer_gateway/models.py:87
 msgid "Gateway Status"
-msgstr ""
+msgstr "שער סטטוס"
 
 #: dialer_gateway/models.py:89
 msgid "Gateway provider notes"
-msgstr ""
+msgstr "ספק שער הערות"
 
 #: dialer_gateway/models.py:90
 msgid "Add prefix"
-msgstr ""
+msgstr "הוספת הקידומת"
 
 #: dialer_gateway/models.py:92
 msgid "Remove prefix"
-msgstr ""
+msgstr "הסרה של קידומת"
 
 #: dialer_gateway/models.py:94
 msgid "Gateways"
-msgstr ""
+msgstr "שערים"
 
 #: dialer_gateway/models.py:95
 msgid ""
 "Example : \"sofia/gateway/myprovider/\" or 2 for failover \"sofia/gateway/"
 "myprovider/, user/\", # Gateway string to try dialing separated by comma. "
 "First in list will be tried first"
-msgstr ""
+msgstr "דוגמה: \"סופיה / שער / myprovider /\" או 2 על \"משתמש סופיה / שער / myprovider /, /\" מעבר לגיבוי בעת כשל, מחרוזת # Gateway לנסות חיוג מופרדים באמצעות פסיק. הראשון ברשימה יישפט 1"
 
 #: dialer_gateway/models.py:97
 msgid "Gateway codecs"
-msgstr ""
+msgstr "שער קודקים"
 
 #: dialer_gateway/models.py:98
 msgid ""
 "\"'PCMA,PCMU','PCMA,PCMU'\", # Codec string as needed by FS for each gateway "
 "separated by comma"
-msgstr ""
+msgstr "\"&#39;PCMA, PCMU\", \"PCMA, PCMU&#39;\", # מחרוזת Codec לפי הצורך על ידי FS עבור שער זה מופרדים על ידי פסיק"
 
 #: dialer_gateway/models.py:100
 msgid "Gateway timeouts"
-msgstr ""
+msgstr "שער זמנים קצובים"
 
 #: dialer_gateway/models.py:101
 msgid ""
 "\"10,10\", # Seconds to timeout in string for each gateway separated by comma"
-msgstr ""
+msgstr "\"10,10\", # שניות כדי פסק הזמן במחרוזת של שער אחד מפריד פסיק"
 
 #: dialer_gateway/models.py:103
 msgid "Gateway retries"
-msgstr ""
+msgstr "שער נסיונות"
 
 #: dialer_gateway/models.py:104
 msgid ""
 "\"2,1\", # Retry String for Gateways separated by comma, on how many times "
 "each gateway should be retried"
-msgstr ""
+msgstr "\"2,1\", # נסה שוב מחרוזת של שערים מופרדים באמצעות פסיק, על כמה פעמים כל שער צריך יועמדו שנית"
 
 #: dialer_gateway/models.py:106
 msgid "Originate dial string"
-msgstr ""
+msgstr "מקורם לחייג מחרוזת"
 
 #: dialer_gateway/models.py:107
 msgid ""
 "Add Channels Variables : http://wiki.freeswitch.org/wiki/Channel_Variables, "
 "ie: bridge_early_media=true,hangup_after_bridge=true"
-msgstr ""
+msgstr "להוסיף משתנים ערוצים: http://wiki.freeswitch.org/wiki/Channel_Variables, כלומר: bridge_early_media = נכון, hangup_after_bridge = נכון"
 
 #: dialer_gateway/models.py:109
 msgid "Second used"
-msgstr ""
+msgstr "השתמשו שנית"
 
 #: dialer_gateway/models.py:115
 msgid "Select Gateway"
-msgstr ""
+msgstr "בחר Gateway"
 
 #: dialer_gateway/models.py:116
 msgid "Add parameter"
-msgstr ""
+msgstr "הוספת פרמטר"
 
 #: dialer_gateway/models.py:118
 msgid "Call count"
-msgstr ""
+msgstr "קוראים לספור"
 
 #: dialer_gateway/models.py:119
 msgid "Count in use"
-msgstr ""
+msgstr "ספירת בשימוש"
 
 #: dialer_gateway/models.py:120
 msgid "Max concurrent calls"
-msgstr ""
+msgstr "מקס שיחות בו זמנית"
 
 #: dialer_gateway/models.py:126
 #: templates/admin_tools/dashboard/modules/app_list.html:13
 msgid "Dialer Gateway"
-msgstr ""
+msgstr "חייגן Gateway"
 
 #: dialer_gateway/models.py:127
 msgid "Dialer Gateways"
-msgstr ""
+msgstr "חייגן שערים"
 
 #: dialer_settings/admin.py:59
 msgid "Add dialer settings"
-msgstr ""
+msgstr "הוספת הגדרות חייגן"
 
 #: dialer_settings/admin.py:70
 msgid "Change dialer settings"
-msgstr ""
+msgstr "שינוי הגדרות חייגן"
 
 #: dialer_settings/models.py:39
 msgid "Settings name"
-msgstr ""
+msgstr "הגדרות שם"
 
 #: dialer_settings/models.py:42
 msgid "Max frequency"
-msgstr ""
+msgstr "מקס תדר"
 
 #: dialer_settings/models.py:43
 #: templates/frontend/registration/user_detail_change.html:211
 msgid "Maximum calls per minute"
-msgstr ""
+msgstr "שיחות מקסימום לדקה"
 
 #: dialer_settings/models.py:46
 msgid "Maximum call duration in seconds (1800 = 30 Minutes)"
-msgstr ""
+msgstr "משך השיחה המקסימלי בשניות (1800 = 30 דקות)"
 
 #: dialer_settings/models.py:50
 msgid "Maximum retries per user."
-msgstr ""
+msgstr "נסיונות מקסימום לכל משתמש."
 
 #: dialer_settings/models.py:53
 msgid "Maximum call timeout in seconds"
-msgstr ""
+msgstr "שיחת פסק זמן מקסימלי תוך שניות"
 
 #: dialer_settings/models.py:56
 msgid "Maximum number of campaigns"
-msgstr ""
+msgstr "מספר מרבי של מסעות פרסום"
 
 #: dialer_settings/models.py:58
 #: templates/frontend/registration/user_detail_change.html:231
 msgid "Maximum subscribers per campaign"
-msgstr ""
+msgstr "מנויים מקסימום לכל מסע פרסום"
 
 #: dialer_settings/models.py:60
 #: templates/frontend/registration/user_detail_change.html:239
 msgid "Blacklist"
-msgstr ""
+msgstr "לכלול ברשימה השחורה"
 
 #: dialer_settings/models.py:61
 msgid ""
 "Use regular expressions to blacklist phone numbers. For example, '^[2-4]"
 "[1]+' will prevent all phone numbers starting with 2,3 or 4 and followed by "
 "1 being called."
-msgstr ""
+msgstr "השתמש בביטויים רגילים לרשימה השחורה מספרי טלפון. לדוגמה, \"^ [2-4] [1] +\" ימנע את כל מספרי הטלפון המתחיל ב 2,3 או 4 ואחריו 1 להיקרא."
 
 #: dialer_settings/models.py:63
 #: templates/frontend/registration/user_detail_change.html:235
 msgid "Whitelist"
-msgstr ""
+msgstr "הרשימה הלבנה"
 
 #: dialer_settings/models.py:64
 msgid "Use regular expressions to whitelist phone numbers"
-msgstr ""
+msgstr "השתמש בביטויים רגילים למספרי טלפון לרשימה הלבנה"
 
 #: dialer_settings/models.py:73 dialer_settings/models.py:74
 msgid "Dialer Setting"
-msgstr ""
+msgstr "הגדרת חייגן"
 
 #: survey/models.py:75
 msgid "Survey Description"
-msgstr ""
+msgstr "סקר תיאור"
 
 #: survey/models.py:82 templates/frontend/bootstrap_menu.html:39
 msgid "Surveys"
-msgstr ""
+msgstr "סקרים"
 
 #: survey/models.py:111 survey/models.py:192
 msgid "Question"
-msgstr ""
+msgstr "שאלה"
 
 #: survey/models.py:112
 msgid "Enter your question"
-msgstr ""
+msgstr "הזן את שאלתך"
 
 #: survey/models.py:115
 msgid "SurveyApp"
-msgstr ""
+msgstr "SurveyApp"
 
 #: survey/models.py:118
 msgid "Audio File"
-msgstr ""
+msgstr "קובץ אודיו"
 
 #: survey/models.py:120
 msgid "Message type"
-msgstr ""
+msgstr "סוג הודעה"
 
 #: survey/models.py:146 templates/frontend/survey/survey_change.html:288
 #: templates/frontend/survey/survey_change.html:501
 msgid "Key Digit"
-msgstr ""
+msgstr "המפתח ספרות"
 
 #: survey/models.py:147
 msgid "Define the key link to the response"
-msgstr ""
+msgstr "הגדר את הקישור המפתח התגובה"
 
 #: survey/models.py:148 templates/frontend/survey/survey_change.html:289
 #: templates/frontend/survey/survey_change.html:504
 msgid "Key Value"
-msgstr ""
+msgstr "מפתח ערך"
 
 #: survey/models.py:190
 msgid "Call-ID"
-msgstr ""
+msgstr "השיחה-ID"
 
 #: survey/models.py:193
 msgid "Response"
-msgstr ""
+msgstr "תגובה"
 
 #: survey/views.py:192
 msgid "Update survey"
-msgstr ""
+msgstr "עדכון בסקר"
 
 #: survey/views.py:196
 msgid "Delete survey"
-msgstr ""
+msgstr "מחיקת סקר"
 
 #: survey/views.py:293
 #, python-format
 msgid "%(count)s survey(s) are deleted."
-msgstr ""
+msgstr "(Count) s% בסקר (ים) יימחקו."
 
 #: survey/views.py:408
 msgid "Download audio"
-msgstr ""
+msgstr "הורד אודיו"
 
 #: survey/views.py:410
 msgid "Update audio"
-msgstr ""
+msgstr "עדכן אודיו"
 
 #: survey/views.py:414
 msgid "Delete audio"
-msgstr ""
+msgstr "מחק אודיו"
 
 #: survey/views.py:515
 #, python-format
 msgid "%(count)s audio(s) are deleted."
-msgstr ""
+msgstr "% (Count) של אודיו (ים) יימחקו."
 
 #: survey/views.py:586
 msgid "No record found!."
-msgstr ""
+msgstr "שיא לא נמצאו."
 
 #: survey/views.py:589
 msgid "No campaign attached with survey."
-msgstr ""
+msgstr "הקמפיין לא מחובר עם הסקר."
 
 #: templates/404.html:20
 msgid "This page cannot be found!"
-msgstr ""
+msgstr "דף זה לא ניתן למצוא!"
 
 #: templates/404.html:23 templates/500.html:23
 msgid "If you need assistance, you may reference this error as"
-msgstr ""
+msgstr "אם אתם זקוקים לעזרה, אתה עשוי להפנות את השגיאה כמו"
 
 #: templates/500.html:20
 msgid "You've encountered an error!"
-msgstr ""
+msgstr "נתקלת בשגיאה!"
 
 #: templates/documentation.html:8
 msgid "Newfies-Dialer Documentation"
-msgstr ""
+msgstr "Newfies-חייגן תיעוד"
 
 #: templates/documentation.html:19
 msgid "Newfies-Dialer : API Documentation"
-msgstr ""
+msgstr "Newfies-חייגן: תיעוד API"
 
 #: templates/documentation.html:34
 msgid "Accepted methods"
-msgstr ""
+msgstr "שיטות מקובלות"
 
 #: templates/admin/base_site.html:4
 msgid "Newfies-Dialer Admin"
-msgstr ""
+msgstr "Newfies חייגן-Admin"
 
 #: templates/admin/filter.html:2
 #, python-format
 msgid " By %(filter_title)s "
-msgstr ""
+msgstr "על ידי (filter_title)%s"
 
 #: templates/admin/dialer_campaign/contact/change_list.html:8
 #: templates/admin/dialer_campaign/contact/import_contact.html:6
 #: templates/admin/dialer_cdr/voipcall/change_list.html:8
 #: templates/registration/logged_out.html:4
 msgid "Home"
-msgstr ""
+msgstr "בית"
 
 #: templates/admin/dialer_campaign/contact/change_list.html:28
 #: templates/admin/dialer_cdr/voipcall/change_list.html:72
 #, python-format
 msgid "Add %(name)s"
-msgstr ""
+msgstr "הוסף% (name) s"
 
 #: templates/admin/dialer_campaign/contact/change_list.html:31
 msgid "Import Contacts"
-msgstr ""
+msgstr "ייבוא ​​אנשי קשר"
 
 #: templates/admin/dialer_campaign/contact/change_list.html:38
 #: templates/admin/dialer_cdr/voipcall/change_list.html:48
-msgid "Please correct the error below."
-msgid_plural "Please correct the errors below."
-msgstr[0] ""
-msgstr[1] ""
 
 #: templates/admin/dialer_campaign/contact/change_list.html:49
 #: templates/admin/dialer_cdr/voipcall/change_list.html:86
-msgid "Filter"
-msgstr ""
+msgid "Please correct the error below."
+msgstr "נא לתקן את השגיאה הבאה."
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:18
 #: templates/frontend/contact/import_contact.html:33
 msgid "Sample File"
-msgstr ""
+msgstr "לדוגמה קובץ"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:20
 msgid "contact"
-msgstr ""
+msgstr "ליצור קשר"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:21
 msgid "last name"
-msgstr ""
+msgstr "שם משפחה"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:22
 msgid "first name"
-msgstr ""
+msgstr "שם פרטי"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:23
 msgid "email-id"
-msgstr ""
+msgstr "דוא\"ל-id"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:24
 msgid "description"
-msgstr ""
+msgstr "תאור"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:25
 msgid "status"
-msgstr ""
+msgstr "מצב"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:26
 msgid "additional_vars"
-msgstr ""
+msgstr "additional_vars"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:48
 msgid "CONTACT STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')"
-msgstr ""
+msgstr "צור קשר = סטטוס (&#39;1 &#39;-&#39; פעילה &#39;) (&#39;0&#39; - &#39;לא פעילה&#39;)"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:58
 #: templates/frontend/dashboard.html:32
@@ -1398,92 +1394,92 @@ msgstr ""
 #: templates/frontend/survey/survey_report.html:39
 #: templates/frontend/voiceapp/change.html:40
 msgid "Submit"
-msgstr ""
+msgstr "להגיש"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:59
 #: templates/admin/dialer_cdr/voipcall/change_list.html:61
 #: templates/frontend/report/voipcall_report.html:52
 msgid "Reset"
-msgstr ""
+msgstr "לאתחל"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:81
 msgid "Contact(s) imported"
-msgstr ""
+msgstr "צור (ים) יובאו"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:97
 msgid "Contact(s) not imported"
-msgstr ""
+msgstr "צור (ים) לא יובאו"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:113
 #: templates/frontend/contact/import_contact.html:128
 msgid "Type mismatch"
-msgstr ""
+msgstr "סוג התאמה"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:56
 msgid "Search Option"
-msgstr ""
+msgstr "אפשרויות חיפוש"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:60
 #: templates/frontend/contact/list.html:85
 #: templates/frontend/report/voipcall_report.html:51
 msgid "Search"
-msgstr ""
+msgstr "חיפוש"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:110
 #: templates/frontend/report/voipcall_report.html:117
 msgid "Call Detail Report Summary"
-msgstr ""
+msgstr "קוראים דוח סיכום פרטי"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:115
 #: templates/frontend/report/voipcall_report.html:123
 msgid "Graphic"
-msgstr ""
+msgstr "גרפי"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:116
 #: templates/frontend/report/voipcall_report.html:124
 msgid "Calls"
-msgstr ""
+msgstr "שיחות"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:117
 #: templates/frontend/report/voipcall_report.html:125
 msgid "Average Connection Time"
-msgstr ""
+msgstr "חיבור ממוצע זמן"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:117
 #: templates/frontend/report/voipcall_report.html:125
 msgid "ACT"
-msgstr ""
+msgstr "מערכה"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:136
 #: templates/frontend/report/voipcall_report.html:145
 msgid "Total"
-msgstr ""
+msgstr "סך הכל"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:149
 #: templates/frontend/report/voipcall_report.html:156
 msgid "Export CSV file"
-msgstr ""
+msgstr "ייצוא קובץ CSV"
 
 #: templates/admin_tools/dashboard/modules/app_list.html:7
 msgid "Dialer Campaign"
-msgstr ""
+msgstr "חייגן קמפיין"
 
 #: templates/admin_tools/dashboard/modules/app_list.html:10
 msgid "Dialer CDR"
-msgstr ""
+msgstr "חייגן CDR"
 
 #: templates/admin_tools/dashboard/modules/app_list.html:16
 msgid "Prefix Country"
-msgstr ""
+msgstr "קידומת המדינה"
 
 #: templates/admin_tools/dashboard/modules/app_list.html:19
 msgid "Dialer Settings"
-msgstr ""
+msgstr "הגדרות חייגן"
 
 #: templates/admin_tools/dashboard/modules/app_list.html:22
 #: voice_app/models.py:84
 msgid "Voice Application"
-msgstr ""
+msgstr "קול יישום"
 
 #: templates/admin_tools/dashboard/modules/app_list.html:50
 #: templates/frontend/campaign/change.html:11
@@ -1499,251 +1495,251 @@ msgstr ""
 #: templates/frontend/voiceapp/change.html:12
 #: templates/frontend/voiceapp/list.html:44
 msgid "Add"
-msgstr ""
+msgstr "להוסיף"
 
 #: templates/admin_tools/dashboard/modules/app_list.html:51
 msgid "Change"
-msgstr ""
+msgstr "לשנות"
 
 #: templates/frontend/bootstrap_menu.html:21
 #: templates/frontend/dashboard.html:5 templates/frontend/dashboard.html:23
 msgid "Dashboard"
-msgstr ""
+msgstr "לוח מחוונים"
 
 #: templates/frontend/bootstrap_menu.html:25
 msgid "Audio files"
-msgstr ""
+msgstr "קבצי אודיו"
 
 #: templates/frontend/bootstrap_menu.html:28
 msgid "Reporting"
-msgstr ""
+msgstr "דיווח"
 
 #: templates/frontend/bootstrap_menu.html:30
 msgid "Call Detail Report"
-msgstr ""
+msgstr "קוראים דו\"ח פירוט"
 
 #: templates/frontend/bootstrap_menu.html:31
 msgid "Survey Reports"
-msgstr ""
+msgstr "סקר דוחות"
 
 #: templates/frontend/bootstrap_menu.html:36
 msgid "Modules"
-msgstr ""
+msgstr "מודולים"
 
 #: templates/frontend/bootstrap_menu.html:38
 #: templates/frontend/voiceapp/list.html:51
 msgid "Voice Apps"
-msgstr ""
+msgstr "קול Apps"
 
 #: templates/frontend/bootstrap_menu.html:41
 msgid "Add-ons"
-msgstr ""
+msgstr "תוספות"
 
 #: templates/frontend/bootstrap_menu.html:53
 msgid "Account settings"
-msgstr ""
+msgstr "הגדרות חשבון"
 
 #: templates/frontend/bootstrap_menu.html:55
 #: templates/frontend/registration/user_detail_change.html:18
 msgid "Notifications"
-msgstr ""
+msgstr "הודעות"
 
 #: templates/frontend/bootstrap_menu.html:57
 #: templates/frontend/registration/user_detail_change.html:19
 msgid "Account Limits"
-msgstr ""
+msgstr "חשבון גבולות"
 
 #: templates/frontend/bootstrap_menu.html:63
 msgid "Log out"
-msgstr ""
+msgstr "התנתק"
 
 #: templates/frontend/custom_jquery_select_all.html:16
 msgid "You must check at least one box!"
-msgstr ""
+msgstr "עליך לבדוק לפחות תיבה אחת!"
 
 #: templates/frontend/custom_jquery_select_all.html:27
 msgid " voice app(s) are going to be deleted?"
-msgstr ""
+msgstr "קול App (ים) הולכים להימחק?"
 
 #: templates/frontend/custom_jquery_select_all.html:31
 msgid " phonebook(s) are going to be deleted?"
-msgstr ""
+msgstr "ספר טלפונים (ים) הולכים להימחק?"
 
 #: templates/frontend/custom_jquery_select_all.html:35
 msgid " survey(s) are going to be deleted?"
-msgstr ""
+msgstr "סקר (ים) הולכים להימחק?"
 
 #: templates/frontend/custom_jquery_select_all.html:39
 msgid " audio(s) are going to be deleted?"
-msgstr ""
+msgstr "אודיו (ים) הולכים להימחק?"
 
 #: templates/frontend/custom_jquery_select_all.html:62
 msgid " phonebook(s) are going to be deleted with "
-msgstr ""
+msgstr "ספר טלפונים (ים) הולכים להימחק עם"
 
 #: templates/frontend/custom_jquery_select_all.html:62
 msgid " contact(s)?"
-msgstr ""
+msgstr "מגע (ים)?"
 
 #: templates/frontend/custom_jquery_select_all.html:66
 msgid " campaign(s) are going to be deleted?"
-msgstr ""
+msgstr "הקמפיין (ים) הולכים להימחק?"
 
 #: templates/frontend/custom_jquery_select_all.html:70
 msgid " notification(s) are going to be deleted?"
-msgstr ""
+msgstr "ההודעות (ים) הולכים להימחק?"
 
 #: templates/frontend/custom_jquery_select_all.html:74
 msgid " notification(s) are going to be marked as read?"
-msgstr ""
+msgstr "ההודעות (ים) הולך להיות מסומנים לקרוא?"
 
 #: templates/frontend/custom_jquery_select_all.html:94
 msgid "Confirm deletion?"
-msgstr ""
+msgstr "לאשר את המחיקה?"
 
 #: templates/frontend/custom_jquery_select_all.html:115
 msgid "Please confirm to delete this phonebook with"
-msgstr ""
+msgstr "נא לאשר למחוק את ספר הטלפונים עם"
 
 #: templates/frontend/custom_jquery_select_all.html:115
 msgid "contact(s)"
-msgstr ""
+msgstr "מגע (ים)"
 
 #: templates/frontend/dashboard.html:23
 msgid "Realtime campaign performance monitoring"
-msgstr ""
+msgstr "מסע בזמן אמת מעקב אחר ביצועים"
 
 #: templates/frontend/dashboard.html:49
 msgid "Total Phonebook Contacts"
-msgstr ""
+msgstr "ספר טלפונים אנשי קשר סך הכל"
 
 #: templates/frontend/dashboard.html:50
 msgid "Total Campaign Contacts"
-msgstr ""
+msgstr "קמפיין אנשי קשר סך הכל"
 
 #: templates/frontend/dashboard.html:51
 msgid "Contacted Today"
-msgstr ""
+msgstr "פנה היום"
 
 #: templates/frontend/dashboard.html:98
 msgid "Calls :"
-msgstr ""
+msgstr "שיחות:"
 
 #: templates/frontend/dashboard.html:98
 msgid "Duration :"
-msgstr ""
+msgstr "משך הפעילות:"
 
 #: templates/frontend/dashboard.html:98
 msgid "ACT :"
-msgstr ""
+msgstr "המעשה:"
 
 #: templates/frontend/dashboard.html:128
 msgid "Call Count"
-msgstr ""
+msgstr "מונה הקריאות"
 
 #: templates/frontend/dashboard.html:229
 msgid "TOTAL CALLS"
-msgstr ""
+msgstr "סך שיחות"
 
 #: templates/frontend/dashboard.html:232
 msgid "ANSWERED"
-msgstr ""
+msgstr "תשובה"
 
 #: templates/frontend/dashboard.html:233
 msgid "DONTCALL"
-msgstr ""
+msgstr "DONTCALL"
 
 #: templates/frontend/dashboard.html:234
 msgid "BUSY"
-msgstr ""
+msgstr "עסוק"
 
 #: templates/frontend/dashboard.html:237
 msgid "CHANUNAVAIL"
-msgstr ""
+msgstr "CHANUNAVAIL"
 
 #: templates/frontend/dashboard.html:238
 msgid "TORTURE"
-msgstr ""
+msgstr "עינויים"
 
 #: templates/frontend/dashboard.html:239
 msgid "NOANSWER"
-msgstr ""
+msgstr "NOANSWER"
 
 #: templates/frontend/dashboard.html:242
 msgid "INVALIDARGS"
-msgstr ""
+msgstr "INVALIDARGS"
 
 #: templates/frontend/dashboard.html:243
 msgid "CANCEL"
-msgstr ""
+msgstr "ביטול"
 
 #: templates/frontend/dashboard.html:244
 msgid "NOROUTE"
-msgstr ""
+msgstr "NOROUTE"
 
 #: templates/frontend/dashboard.html:247
 msgid "CONGESTION"
-msgstr ""
+msgstr "גודש"
 
 #: templates/frontend/dashboard.html:248
 msgid "FORBIDDEN"
-msgstr ""
+msgstr "איסור"
 
 #: templates/frontend/index.html:12
 msgid ""
 "is Voice Broadcasting and AutoDialer software to provide information via the "
 "phone."
-msgstr ""
+msgstr "הוא קול השידור ותוכנה AutoDialer לספק מידע דרך הטלפון."
 
 #: templates/frontend/index.html:12
 msgid ""
 "Newfies-Dialer can scale to make millions of calls daily by using realtime "
 "call processing across multiple servers in the cloud."
-msgstr ""
+msgstr "Newfies-חייגן יכול לשנות את קנה המידה כדי להפוך מיליוני שיחות יומיות באמצעות עיבוד שיחות בזמן אמת על פני מספר שרתים בענן."
 
 #: templates/frontend/index.html:22
 msgid ""
 "Star2Billing S.L. offers consultancy including installation, training and "
 "customisation on Newfies-Dialer"
-msgstr ""
+msgstr "Star2Billing SL מציעה ייעוץ כולל הדרכה התקנה, התאמה אישית על Newfies-חייגן"
 
 #: templates/frontend/index.html:23
 msgid "Contact us at"
-msgstr ""
+msgstr "צרו עמנו קשר"
 
 #: templates/frontend/index.html:23
 msgid "for more information"
-msgstr ""
+msgstr "לפרטים נוספים"
 
 #: templates/frontend/index.html:29
 msgid "Newfies-Dialer is licensed under"
-msgstr ""
+msgstr "Newfies-חייגן מופץ ברשיון"
 
 #: templates/frontend/index.html:30
 msgid ""
 "however an alternative license can be purchased if the MPL V2 license is not "
 "suitable for your requirements."
-msgstr ""
+msgstr "עם זאת רישיון חלופי אם ניתן לרכוש רישיון MPL V2 אינו מתאים לדרישות שלך."
 
 #: templates/frontend/master.html:21
 msgid "Customer Interface"
-msgstr ""
+msgstr "לקוחות ממשק"
 
 #: templates/frontend/master.html:111
 msgid "Login"
-msgstr ""
+msgstr "כניסה"
 
 #: templates/frontend/master.html:112
 msgid "Forgot password?"
-msgstr ""
+msgstr "שכחת את הסיסמה?"
 
 #: templates/frontend/master.html:118
 msgid "Display language"
-msgstr ""
+msgstr "הצגת השפה"
 
 #: templates/frontend/master.html:123
 msgid "new notifications"
-msgstr ""
+msgstr "חדשות והודעות"
 
 #: templates/frontend/master.html:133 templates/frontend/master.html.py:139
 #: templates/frontend/master.html:159 templates/frontend/campaign/list.html:16
@@ -1767,27 +1763,27 @@ msgstr ""
 #: templates/frontend/survey/survey_report.html:18
 #: templates/frontend/voiceapp/list.html:17
 msgid "Alert"
-msgstr ""
+msgstr "ערני"
 
 #: templates/frontend/master.html:139
 msgid "Please login by clicking on login button"
-msgstr ""
+msgstr "בבקשה התחבר על ידי לחיצה על כפתור התחברות"
 
 #: templates/frontend/master.html:147
 msgid "Voice Broadcasting solution"
-msgstr ""
+msgstr "קול פתרון השידור"
 
 #: templates/frontend/master.html:161
 msgid "To send notification to administrator"
-msgstr ""
+msgstr "כדי לשלוח הודעה למנהל"
 
 #: templates/frontend/master.html:161
 msgid "Click here"
-msgstr ""
+msgstr "לחץ כאן"
 
 #: templates/frontend/master.html:163
 msgid "(Notification sent)"
-msgstr ""
+msgstr "(הודעה נשלח)"
 
 #: templates/frontend/campaign/change.html:9
 #: templates/frontend/campaign/change.html:171
@@ -1801,51 +1797,51 @@ msgstr ""
 #: templates/frontend/voiceapp/change.html:10
 #: templates/frontend/voiceapp/change.html:38
 msgid "Update"
-msgstr ""
+msgstr "לעדכן"
 
 #: templates/frontend/campaign/change.html:13
 msgid "Set campaign parameters"
-msgstr ""
+msgstr "להגדיר את הפרמטרים של מסע הפרסום"
 
 #: templates/frontend/campaign/change.html:22
 msgid "General settings"
-msgstr ""
+msgstr "הגדרות כלליות"
 
 #: templates/frontend/campaign/change.html:69 user_profile/models.py:82
 msgid "Dialer settings"
-msgstr ""
+msgstr "הגדרות חייגן"
 
 #: templates/frontend/campaign/change.html:94
 msgid "Campaign schedule"
-msgstr ""
+msgstr "הקמפיין לוח הזמנים"
 
 #: templates/frontend/campaign/change.html:152
 msgid "Week Days"
-msgstr ""
+msgstr "בשבוע ימים"
 
 #: templates/frontend/campaign/change.html:177
 #: templates/frontend/contact/change.html:48
 #: templates/frontend/phonebook/change.html:44
 #: templates/frontend/voiceapp/change.html:44
 msgid "Delete"
-msgstr ""
+msgstr "למחוק"
 
 #: templates/frontend/campaign/list.html:9
 msgid "List, add and edit campaigns"
-msgstr ""
+msgstr "רשימה, להוסיף ולערוך את מסעות הפרסום"
 
 #: templates/frontend/campaign/list.html:39
 msgid "Key"
-msgstr ""
+msgstr "מפתח"
 
 #: templates/frontend/campaign/list.html:41
 #: templates/frontend/report/voipcall_report.html:77
 msgid "Start date"
-msgstr ""
+msgstr "תאריך התחלה"
 
 #: templates/frontend/campaign/list.html:43
 msgid "App"
-msgstr ""
+msgstr "App"
 
 #: templates/frontend/campaign/list.html:51
 #: templates/frontend/contact/list.html:126
@@ -1854,7 +1850,7 @@ msgstr ""
 #: templates/frontend/survey/survey_list.html:42
 #: templates/frontend/voiceapp/list.html:46
 msgid "Delete Selected"
-msgstr ""
+msgstr "מחק נבחרים"
 
 #: templates/frontend/campaign/list.html:62
 #: templates/frontend/contact/list.html:137
@@ -1864,7 +1860,7 @@ msgstr ""
 #: templates/frontend/survey/audio_list.html:60
 #: templates/frontend/survey/survey_list.html:53
 msgid "Page"
-msgstr ""
+msgstr "עמוד"
 
 #: templates/frontend/campaign/list.html:63
 #: templates/frontend/campaign/list.html:66
@@ -1881,7 +1877,7 @@ msgstr ""
 #: templates/frontend/survey/survey_list.html:54
 #: templates/frontend/survey/survey_list.html:57
 msgid "of"
-msgstr ""
+msgstr "של"
 
 #: templates/frontend/campaign/list.html:64
 #: templates/frontend/contact/list.html:139
@@ -1891,7 +1887,7 @@ msgstr ""
 #: templates/frontend/survey/audio_list.html:62
 #: templates/frontend/survey/survey_list.html:55
 msgid "No items"
-msgstr ""
+msgstr "אין פריטים"
 
 #: templates/frontend/campaign/list.html:65
 #: templates/frontend/contact/list.html:140
@@ -1901,7 +1897,7 @@ msgstr ""
 #: templates/frontend/survey/audio_list.html:63
 #: templates/frontend/survey/survey_list.html:56
 msgid "Processing, please wait ..."
-msgstr ""
+msgstr "עיבוד, אנא המתן ..."
 
 #: templates/frontend/campaign/list.html:66
 #: templates/frontend/contact/list.html:141
@@ -1911,7 +1907,7 @@ msgstr ""
 #: templates/frontend/survey/audio_list.html:64
 #: templates/frontend/survey/survey_list.html:57
 msgid "Displaying"
-msgstr ""
+msgstr "מציג"
 
 #: templates/frontend/campaign/list.html:66
 #: templates/frontend/contact/list.html:141
@@ -1921,7 +1917,7 @@ msgstr ""
 #: templates/frontend/survey/audio_list.html:64
 #: templates/frontend/survey/survey_list.html:57
 msgid "to"
-msgstr ""
+msgstr "אל"
 
 #: templates/frontend/campaign/list.html:66
 #: templates/frontend/contact/list.html:141
@@ -1931,1247 +1927,1247 @@ msgstr ""
 #: templates/frontend/survey/audio_list.html:64
 #: templates/frontend/survey/survey_list.html:57
 msgid "items"
-msgstr ""
+msgstr "פריטים"
 
 #: templates/frontend/contact/change.html:20
 msgid "Add contact details"
-msgstr ""
+msgstr "הוספת פרטי אנשי קשר"
 
 #: templates/frontend/contact/import_contact.html:13
 msgid "Import list of contact by uploading CSV files"
-msgstr ""
+msgstr "ייבוא ​​רשימת אנשי הקשר על ידי העלאת קבצים-CSV"
 
 #: templates/frontend/contact/import_contact.html:36
 msgid "Contact number"
-msgstr ""
+msgstr "צור מספר"
 
 #: templates/frontend/contact/import_contact.html:37
 msgid "Last name"
-msgstr ""
+msgstr "שם משפחה"
 
 #: templates/frontend/contact/import_contact.html:38
 msgid "First name"
-msgstr ""
+msgstr "שם פרטי"
 
 #: templates/frontend/contact/import_contact.html:42
 msgid "Additional variables"
-msgstr ""
+msgstr "משתנים נוספים"
 
 #: templates/frontend/contact/import_contact.html:65
 msgid "SUBSCRIBER STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')"
-msgstr ""
+msgstr "מנוי סטטוס = (&#39;1 &#39;-&#39; פעילה &#39;) (&#39;0&#39; - &#39;לא פעילה&#39;)"
 
 #: templates/frontend/contact/import_contact.html:95
 msgid "Subscriber(s) imported"
-msgstr ""
+msgstr "מנוי (ים) יובאו"
 
 #: templates/frontend/contact/import_contact.html:112
 msgid "Subscriber(s) not imported"
-msgstr ""
+msgstr "מנוי (ים) לא יובאו"
 
 #: templates/frontend/contact/list.html:27
 msgid "List, add and edit contacts"
-msgstr ""
+msgstr "רשימה, להוסיף ולערוך קשרים"
 
 #: templates/frontend/contact/list.html:86
 msgid "Clear"
-msgstr ""
+msgstr "נקה"
 
 #: templates/frontend/contact/list.html:112
 #: templates/frontend/phonebook/list.html:33
 msgid "Id"
-msgstr ""
+msgstr "תעודת זהות"
 
 #: templates/frontend/contact/list.html:124
 msgid "Import"
-msgstr ""
+msgstr "יבוא"
 
 #: templates/frontend/phonebook/change.html:15
 msgid "Contacts are stored in phonebooks"
-msgstr ""
+msgstr "אנשי קשר מאוחסנים ספרי טלפונים"
 
 #: templates/frontend/phonebook/list.html:9
 msgid "List, add and edit phonebooks"
-msgstr ""
+msgstr "רשימה, להוסיף ולערוך ספרי טלפונים"
 
 #: templates/frontend/registration/password_reset_complete.html:4
 #: templates/frontend/registration/password_reset_complete.html:8
 msgid "Password reset complete"
-msgstr ""
+msgstr "איפוס סיסמה המלא"
 
 #: templates/frontend/registration/password_reset_complete.html:10
 msgid "Your password has been set.  You may go ahead and log in now."
-msgstr ""
+msgstr "הסיסמה שלך נקבע. אולי אתם מוזמנים להיכנס עכשיו."
 
 #: templates/frontend/registration/password_reset_complete.html:12
 msgid "Log in"
-msgstr ""
+msgstr "התחבר"
 
 #: templates/frontend/registration/password_reset_confirm.html:4
 #: templates/frontend/registration/password_reset_form.html:4
 msgid "Password reset"
-msgstr ""
+msgstr "איפוס סיסמה"
 
 #: templates/frontend/registration/password_reset_confirm.html:11
 msgid "Enter new password"
-msgstr ""
+msgstr "הזן את הסיסמה החדשה"
 
 #: templates/frontend/registration/password_reset_confirm.html:13
 msgid "Please enter your new password twice for verification."
-msgstr ""
+msgstr "אנא הכנס את הסיסמה החדשה פעמיים לשם אימות."
 
 #: templates/frontend/registration/password_reset_confirm.html:26
 msgid "Change my password"
-msgstr ""
+msgstr "לשנות את הסיסמה שלי"
 
 #: templates/frontend/registration/password_reset_confirm.html:33
 msgid "Password reset unsuccessful"
-msgstr ""
+msgstr "איפוס הסיסמה לא מוצלח"
 
 #: templates/frontend/registration/password_reset_confirm.html:36
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used.  Please request a new password reset."
-msgstr ""
+msgstr "הקישור איפוס סיסמה לא תקין, אולי כי זה כבר נעשה שימוש. נא לבקש איפוס סיסמה חדש."
 
 #: templates/frontend/registration/password_reset_done.html:4
 #: templates/frontend/registration/password_reset_done.html:8
 msgid "Password reset successful"
-msgstr ""
+msgstr "איפוס הסיסמה מוצלחת"
 
 #: templates/frontend/registration/password_reset_done.html:10
 msgid ""
 "We've e-mailed you instructions for setting your password to the e-mail "
 "address you submitted. You should be receiving it shortly."
-msgstr ""
+msgstr "יש לנו בדואר אלקטרוני את הוראות לקביעת הסיסמה אל כתובת הדואר האלקטרוני ששלחת. אתה צריך להתקבל בקרוב."
 
 #: templates/frontend/registration/password_reset_email.html:5
 #, python-format
 msgid ""
 "You're receiving this e-mail because you requested a password reset for your "
 "user account at %(site_name)s."
-msgstr ""
+msgstr "אתה מקבל את הדואר האלקטרוני כי ביקשת איפוס סיסמה עבור חשבון המשתמש שלך ב% (SITE_NAME) s."
 
 #: templates/frontend/registration/password_reset_email.html:7
 msgid "Please go to the following page and choose a new password:"
-msgstr ""
+msgstr "נא לעבור לדף הבא ולבחור סיסמה חדשה:"
 
 #: templates/frontend/registration/password_reset_email.html:11
 msgid "Your username, in case you've forgotten:"
-msgstr ""
+msgstr "שם המשתמש שלך, במקרה ששכחת:"
 
 #: templates/frontend/registration/password_reset_email.html:13
 #, python-format
 msgid "The %(site_name)s team"
-msgstr ""
+msgstr "(SITE_NAME)% צוות"
 
 #: templates/frontend/registration/password_reset_form.html:10
 msgid "Forgotten your password?"
-msgstr ""
+msgstr "שכחת את הסיסמה?"
 
 #: templates/frontend/registration/password_reset_form.html:12
 msgid ""
 "Enter your e-mail address below, and we'll e-mail instructions for setting a "
 "new one."
-msgstr ""
+msgstr "הכנס את כתובת הדואר האלקטרוני שלך, ואנו דואר אלקטרוני הוראות לקביעת חדש."
 
 #: templates/frontend/registration/password_reset_form.html:22
 msgid "Reset my password"
-msgstr ""
+msgstr "לאפס את הסיסמה שלי"
 
 #: templates/frontend/registration/user_detail_change.html:9
 msgid "Password, notifications, account limits and number check"
-msgstr ""
+msgstr "סיסמה, הודעות, מגבלות חשבון בדוק מספר"
 
 #: templates/frontend/registration/user_detail_change.html:16
 msgid "Account"
-msgstr ""
+msgstr "חשבון"
 
 #: templates/frontend/registration/user_detail_change.html:17
 msgid "Password"
-msgstr ""
+msgstr "סיסמה"
 
 #: templates/frontend/registration/user_detail_change.html:20
 msgid "Number Check"
-msgstr ""
+msgstr "מספר צ&#39;ק"
 
 #: templates/frontend/registration/user_detail_change.html:21
 msgid "Change language "
-msgstr ""
+msgstr "לשנות את השפה"
 
 #: templates/frontend/registration/user_detail_change.html:72
 msgid "Change detail"
-msgstr ""
+msgstr "שינוי הפרטים"
 
 #: templates/frontend/registration/user_detail_change.html:110
 msgid "Change password"
-msgstr ""
+msgstr "לשנות את הסיסמה"
 
 #: templates/frontend/registration/user_detail_change.html:139
 msgid "Message"
-msgstr ""
+msgstr "הודעה"
 
 #: templates/frontend/registration/user_detail_change.html:140
 msgid "Notification type"
-msgstr ""
+msgstr "הודעה על סוג"
 
 #: templates/frontend/registration/user_detail_change.html:141
 msgid "Sender"
-msgstr ""
+msgstr "שולח"
 
 #: templates/frontend/registration/user_detail_change.html:146
 msgid "Delete notifications"
-msgstr ""
+msgstr "מחק הודעות"
 
 #: templates/frontend/registration/user_detail_change.html:148
 msgid "Mark as read"
-msgstr ""
+msgstr "סמן את כל קורא"
 
 #: templates/frontend/registration/user_detail_change.html:150
 msgid "Mark all as read"
-msgstr ""
+msgstr "סמן את כל לקרוא"
 
 #: templates/frontend/registration/user_detail_change.html:155
 msgid "Notification"
-msgstr ""
+msgstr "הודעה"
 
 #: templates/frontend/registration/user_detail_change.html:215
 msgid "Maximum call duration"
-msgstr ""
+msgstr "משך השיחה המקסימלי"
 
 #: templates/frontend/registration/user_detail_change.html:219
 msgid "Maximum retries"
-msgstr ""
+msgstr "מקסימום נסיונות"
 
 #: templates/frontend/registration/user_detail_change.html:223
 msgid "Timeout"
-msgstr ""
+msgstr "פסק זמן"
 
 #: templates/frontend/registration/user_detail_change.html:227
 msgid "Maximum campaigns"
-msgstr ""
+msgstr "מקסימום קמפיינים"
 
 #: templates/frontend/registration/user_detail_change.html:279
 msgid "Check"
-msgstr ""
+msgstr "לבדוק"
 
 #: templates/frontend/registration/user_detail_change.html:291
 msgid "Select language"
-msgstr ""
+msgstr "בחר את השפה"
 
 #: templates/frontend/report/voipcall_report.html:31
 msgid "Call Reports"
-msgstr ""
+msgstr "שיחה דוחות"
 
 #: templates/frontend/report/voipcall_report.html:31
 msgid "Detailed call data"
-msgstr ""
+msgstr "שיחות נתונים מפורטים"
 
 #: templates/frontend/report/voipcall_report.html:78
 msgid "Call ID"
-msgstr ""
+msgstr "קוראים ID"
 
 #: templates/frontend/report/voipcall_report.html:80
 msgid "Caller ID"
-msgstr ""
+msgstr "שיחה מזוהה"
 
 #: templates/frontend/report/voipcall_report.html:81
 msgid "Phone No."
-msgstr ""
+msgstr "מספר טלפון"
 
 #: templates/frontend/report/voipcall_report.html:82
 #: templates/frontend/voiceapp/list.html:38 user_profile/models.py:80
 msgid "Gateway"
-msgstr ""
+msgstr "שער"
 
 #: templates/frontend/report/voipcall_report.html:84
 msgid "Bill Sec"
-msgstr ""
+msgstr "ביל שניות"
 
 #: templates/frontend/report/voipcall_report.html:90
 msgid "Call Records"
-msgstr ""
+msgstr "רשימת שיחות"
 
 #: templates/frontend/survey/audio_change.html:16
 msgid "Upload audio to be used in Voice applications"
-msgstr ""
+msgstr "טען אודיו לשמש יישומי קול"
 
 #: templates/frontend/survey/audio_list.html:15
 msgid "List, upload and edit audio files"
-msgstr ""
+msgstr "רשימה, להעלות ולערוך קבצי אודיו"
 
 #: templates/frontend/survey/audio_list.html:41
 msgid "Audio"
-msgstr ""
+msgstr "שמע"
 
 #: templates/frontend/survey/audio_list.html:42
 msgid "Audio URL"
-msgstr ""
+msgstr "אודיו URL"
 
 #: templates/frontend/survey/survey_change.html:243
 msgid "New Question"
-msgstr ""
+msgstr "שאלה חדשה"
 
 #: templates/frontend/survey/survey_change.html:274
 #: templates/frontend/survey/survey_change.html:480
 msgid "Delete question"
-msgstr ""
+msgstr "מחק את השאלה"
 
 #: templates/frontend/survey/survey_change.html:282
 #: templates/frontend/survey/survey_change.html:489
 msgid ""
 "If no audio file is selected, then text to speech is used to read out the "
 "question"
-msgstr ""
+msgstr "אם אין קובץ שמע נבחרה, ואז טקסט לדיבור משמש כדי לקרוא את השאלה"
 
 #: templates/frontend/survey/survey_change.html:293
 #: templates/frontend/survey/survey_change.html:543
 msgid "Add Response"
-msgstr ""
+msgstr "הוסף תגובה"
 
 #: templates/frontend/survey/survey_change.html:343
 #: templates/frontend/survey/survey_change.html:531
 msgid "Delete response"
-msgstr ""
+msgstr "מחק את התגובה"
 
 #: templates/frontend/survey/survey_change.html:388
 msgid "Survey configuration"
-msgstr ""
+msgstr "סקר תצורה"
 
 #: templates/frontend/survey/survey_change.html:557
 msgid "Add Question"
-msgstr ""
+msgstr "הוסף שאלה"
 
 #: templates/frontend/survey/survey_change.html:564
 msgid "Update Survey"
-msgstr ""
+msgstr "עדכון סקר"
 
 #: templates/frontend/survey/survey_list.html:9
 msgid "List, add and edit surveys"
-msgstr ""
+msgstr "רשימה, להוסיף ולערוך סקרים"
 
 #: templates/frontend/survey/survey_report.html:5
 msgid "Survey Report"
-msgstr ""
+msgstr "סקר דוח"
 
 #: templates/frontend/survey/survey_report.html:5
 msgid "Monitor survey results"
-msgstr ""
+msgstr "מעקב אחר תוצאות הסקר"
 
 #: templates/frontend/voiceapp/change.html:14
 #: templates/frontend/voiceapp/list.html:10 voice_app/models.py:85
 msgid "Voice Applications"
-msgstr ""
+msgstr "קול יישומים"
 
 #: templates/frontend/voiceapp/change.html:15
 msgid "Configure voice application"
-msgstr ""
+msgstr "קביעת התצורה של יישום קול"
 
 #: templates/frontend/voiceapp/list.html:10
 msgid "List, add and edit voice applications"
-msgstr ""
+msgstr "רשימה, להוסיף ולערוך יישומי קול"
 
 #: templates/frontend/voiceapp/list.html:39
 msgid "Data"
-msgstr ""
+msgstr "נתונים"
 
 #: templates/registration/logged_out.html:8
 msgid "Thank you for using Newfies."
-msgstr ""
+msgstr "תודה על השימוש Newfies."
 
 #: templates/registration/logged_out.html:10
 msgid "Log in again"
-msgstr ""
+msgstr "להתחבר שוב"
 
 #: user_profile/admin.py:44
 msgid "Personal info"
-msgstr ""
+msgstr "מידע אישי"
 
 #: user_profile/admin.py:48
 msgid "Permission"
-msgstr ""
+msgstr "רשות"
 
 #: user_profile/admin.py:51
 msgid "Important dates"
-msgstr ""
+msgstr "תאריכים חשובים"
 
 #: user_profile/fields.py:37
 msgid "Afar"
-msgstr ""
+msgstr "למרחקים"
 
 #: user_profile/fields.py:38
 msgid "Abkhazian"
-msgstr ""
+msgstr "אבחזית"
 
 #: user_profile/fields.py:39
 msgid "Afrikaans"
-msgstr ""
+msgstr "אפריקאנס"
 
 #: user_profile/fields.py:40
 msgid "Akan"
-msgstr ""
+msgstr "אקאן"
 
 #: user_profile/fields.py:41 user_profile/fields.py:203
 msgid "Albanian"
-msgstr ""
+msgstr "אלבנית"
 
 #: user_profile/fields.py:42
 msgid "Amharic"
-msgstr ""
+msgstr "אמהרית"
 
 #: user_profile/fields.py:43
 msgid "Arabic"
-msgstr ""
+msgstr "ערבית"
 
 #: user_profile/fields.py:44
 msgid "Aragonese"
-msgstr ""
+msgstr "האראגוני"
 
 #: user_profile/fields.py:45 user_profile/fields.py:111
 msgid "Armenian"
-msgstr ""
+msgstr "ארמני"
 
 #: user_profile/fields.py:46
 msgid "Assamese"
-msgstr ""
+msgstr "אסאמית"
 
 #: user_profile/fields.py:47
 msgid "Avaric"
-msgstr ""
+msgstr "Avaric"
 
 #: user_profile/fields.py:48
 msgid "Avestan"
-msgstr ""
+msgstr "Avestan"
 
 #: user_profile/fields.py:49
 msgid "Aymara"
-msgstr ""
+msgstr "האיימארה"
 
 #: user_profile/fields.py:50
 msgid "Azerbaijani"
-msgstr ""
+msgstr "אזרביג&#39;אן"
 
 #: user_profile/fields.py:51
 msgid "Bashkir"
-msgstr ""
+msgstr "באשקירית"
 
 #: user_profile/fields.py:52
 msgid "Bambara"
-msgstr ""
+msgstr "Bambara"
 
 #: user_profile/fields.py:53 user_profile/fields.py:84
 msgid "Basque"
-msgstr ""
+msgstr "הבסקים"
 
 #: user_profile/fields.py:54
 msgid "Belarusian"
-msgstr ""
+msgstr "בלארוסית"
 
 #: user_profile/fields.py:55
 msgid "Bengali"
-msgstr ""
+msgstr "בנגלית"
 
 #: user_profile/fields.py:56
 msgid "Bihari languages"
-msgstr ""
+msgstr "ביהרי שפות"
 
 #: user_profile/fields.py:57
 msgid "Bislama"
-msgstr ""
+msgstr "ביסלמה"
 
 #: user_profile/fields.py:58 user_profile/fields.py:217
 msgid "Tibetan"
-msgstr ""
+msgstr "הטיבטי"
 
 #: user_profile/fields.py:59
 msgid "Bosnian"
-msgstr ""
+msgstr "בוסניה"
 
 #: user_profile/fields.py:60
 msgid "Breton"
-msgstr ""
+msgstr "ברטון"
 
 #: user_profile/fields.py:61
 msgid "Bulgarian"
-msgstr ""
+msgstr "בולגריה"
 
 #: user_profile/fields.py:62 user_profile/fields.py:161
 msgid "Burmese"
-msgstr ""
+msgstr "בורמה"
 
 #: user_profile/fields.py:63
 msgid "Catalan; Valencian"
-msgstr ""
+msgstr "קטלאנית, Valencian"
 
 #: user_profile/fields.py:64 user_profile/fields.py:74
 msgid "Czech"
-msgstr ""
+msgstr "צ"
 
 #: user_profile/fields.py:65
 msgid "Chamorro"
-msgstr ""
+msgstr "צ&#39;אמורו"
 
 #: user_profile/fields.py:66
 msgid "Chechen"
-msgstr ""
+msgstr "צ&#39;צ&#39;ניה"
 
 #: user_profile/fields.py:67 user_profile/fields.py:239
 msgid "Chinese"
-msgstr ""
+msgstr "סינית"
 
 #: user_profile/fields.py:68
 msgid ""
 "Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church "
 "Slavonic"
-msgstr ""
+msgstr "הכנסייה הסלאבית; סלאבי ישן, כנסיית סלאבי, ישן בולגרית, הכנסייה העתיקה סלאבי"
 
 #: user_profile/fields.py:69
 msgid "Chuvash"
-msgstr ""
+msgstr "חבשי"
 
 #: user_profile/fields.py:70
 msgid "Cornish"
-msgstr ""
+msgstr "קורניש"
 
 #: user_profile/fields.py:71
 msgid "Corsican"
-msgstr ""
+msgstr "קורסיקה"
 
 #: user_profile/fields.py:72
 msgid "Cree"
-msgstr ""
+msgstr "קריס"
 
 #: user_profile/fields.py:73 user_profile/fields.py:232
 msgid "Welsh"
-msgstr ""
+msgstr "וולשי"
 
 #: user_profile/fields.py:75
 msgid "Danish"
-msgstr ""
+msgstr "דני"
 
 #: user_profile/fields.py:76 user_profile/fields.py:95
 msgid "German"
-msgstr ""
+msgstr "גרמנית"
 
 #: user_profile/fields.py:77
 msgid "Divehi; Dhivehi; Maldivian"
-msgstr ""
+msgstr "Divehi; Dhivehi; המלדיבית"
 
 #: user_profile/fields.py:78 user_profile/fields.py:168
 msgid "Dutch; Flemish"
-msgstr ""
+msgstr "ההולנדי, הפלמי"
 
 #: user_profile/fields.py:79
 msgid "Dzongkha"
-msgstr ""
+msgstr "דזונקה"
 
 #: user_profile/fields.py:80 user_profile/fields.py:100
 msgid "Greek, Modern (1453-)"
-msgstr ""
+msgstr "יוונית, מודרנית (1453 -)"
 
 #: user_profile/fields.py:82
 msgid "Esperanto"
-msgstr ""
+msgstr "אספרנטו"
 
 #: user_profile/fields.py:83
 msgid "Estonian"
-msgstr ""
+msgstr "אסטוניה"
 
 #: user_profile/fields.py:85
 msgid "Ewe"
-msgstr ""
+msgstr "כבשה"
 
 #: user_profile/fields.py:86
 msgid "Faroese"
-msgstr ""
+msgstr "פארואזית"
 
 #: user_profile/fields.py:87 user_profile/fields.py:179
 msgid "Persian"
-msgstr ""
+msgstr "פרסי"
 
 #: user_profile/fields.py:88
 msgid "Fijian"
-msgstr ""
+msgstr "פיג&#39;י"
 
 #: user_profile/fields.py:89
 msgid "Finnish"
-msgstr ""
+msgstr "פינית"
 
 #: user_profile/fields.py:90 user_profile/fields.py:91
 msgid "French"
-msgstr ""
+msgstr "צרפתית"
 
 #: user_profile/fields.py:92
 msgid "Western Frisian"
-msgstr ""
+msgstr "פריזית מערבית"
 
 #: user_profile/fields.py:93
 msgid "Fulah"
-msgstr ""
+msgstr "Fulah"
 
 #: user_profile/fields.py:94 user_profile/fields.py:128
 msgid "Georgian"
-msgstr ""
+msgstr "גאורגיה"
 
 #: user_profile/fields.py:96
 msgid "Gaelic; Scottish Gaelic"
-msgstr ""
+msgstr "גאלית, סקוטית גאלית"
 
 #: user_profile/fields.py:97
 msgid "Irish"
-msgstr ""
+msgstr "אירית"
 
 #: user_profile/fields.py:98
 msgid "Galician"
-msgstr ""
+msgstr "גליציה"
 
 #: user_profile/fields.py:99
 msgid "Manx"
-msgstr ""
+msgstr "מאנקס"
 
 #: user_profile/fields.py:101
 msgid "Guarani"
-msgstr ""
+msgstr "גוארני"
 
 #: user_profile/fields.py:102
 msgid "Gujarati"
-msgstr ""
+msgstr "גוג&#39;ראטית"
 
 #: user_profile/fields.py:103
 msgid "Haitian; Haitian Creole"
-msgstr ""
+msgstr "האיטי: האיטי קריאולי"
 
 #: user_profile/fields.py:104
 msgid "Hausa"
-msgstr ""
+msgstr "האוסה"
 
 #: user_profile/fields.py:105
 msgid "Hebrew"
-msgstr ""
+msgstr "עברית"
 
 #: user_profile/fields.py:106
 msgid "Herero"
-msgstr ""
+msgstr "Herero"
 
 #: user_profile/fields.py:107
 msgid "Hindi"
-msgstr ""
+msgstr "הינדי"
 
 #: user_profile/fields.py:108
 msgid "Hiri Motu"
-msgstr ""
+msgstr "הירי Motu"
 
 #: user_profile/fields.py:109
 msgid "Croatian"
-msgstr ""
+msgstr "קרואטית"
 
 #: user_profile/fields.py:110
 msgid "Hungarian"
-msgstr ""
+msgstr "הונגרי"
 
 #: user_profile/fields.py:112
 msgid "Igbo"
-msgstr ""
+msgstr "איגבו"
 
 #: user_profile/fields.py:113 user_profile/fields.py:121
 msgid "Icelandic"
-msgstr ""
+msgstr "איסלנדית"
 
 #: user_profile/fields.py:114
 msgid "Ido"
-msgstr ""
+msgstr "עידו"
 
 #: user_profile/fields.py:115
 msgid "Sichuan Yi; Nuosu"
-msgstr ""
+msgstr "סיצ&#39;ואן יי; Nuosu"
 
 #: user_profile/fields.py:116
 msgid "Inuktitut"
-msgstr ""
+msgstr "אינוקטיטוט"
 
 #: user_profile/fields.py:117
 msgid "Interlingue; Occidental"
-msgstr ""
+msgstr "אינטרלינגואה, אוקסידנטל"
 
 #: user_profile/fields.py:118
 msgid "Interlingua (International Auxiliary Language Association)"
-msgstr ""
+msgstr "אינטרלינגואה (בינלאומי עזר שפה האגודה)"
 
 #: user_profile/fields.py:119
 msgid "Indonesian"
-msgstr ""
+msgstr "אינדונזית"
 
 #: user_profile/fields.py:120
 msgid "Inupiaq"
-msgstr ""
+msgstr "עירק"
 
 #: user_profile/fields.py:122
 msgid "Italian"
-msgstr ""
+msgstr "איטלקית"
 
 #: user_profile/fields.py:123
 msgid "Javanese"
-msgstr ""
+msgstr "יאוני"
 
 #: user_profile/fields.py:124
 msgid "Japanese"
-msgstr ""
+msgstr "יפנית"
 
 #: user_profile/fields.py:125
 msgid "Kalaallisut; Greenlandic"
-msgstr ""
+msgstr "Kalaallisut; גרינלנדית"
 
 #: user_profile/fields.py:126
 msgid "Kannada"
-msgstr ""
+msgstr "קנאדה"
 
 #: user_profile/fields.py:127
 msgid "Kashmiri"
-msgstr ""
+msgstr "קשמירי"
 
 #: user_profile/fields.py:129
 msgid "Kanuri"
-msgstr ""
+msgstr "Kanuri"
 
 #: user_profile/fields.py:130
 msgid "Kazakh"
-msgstr ""
+msgstr "קזחסטן"
 
 #: user_profile/fields.py:131
 msgid "Central Khmer"
-msgstr ""
+msgstr "מרכז החמר"
 
 #: user_profile/fields.py:132
 msgid "Kikuyu; Gikuyu"
-msgstr ""
+msgstr "קיקויו, Gikuyu"
 
 #: user_profile/fields.py:133
 msgid "Kinyarwanda"
-msgstr ""
+msgstr "קיניארוונדה"
 
 #: user_profile/fields.py:134
 msgid "Kirghiz; Kyrgyz"
-msgstr ""
+msgstr "קירגהיז; הקירגיזית"
 
 #: user_profile/fields.py:135
 msgid "Komi"
-msgstr ""
+msgstr "קומי"
 
 #: user_profile/fields.py:136
 msgid "Kongo"
-msgstr ""
+msgstr "קונגו"
 
 #: user_profile/fields.py:137
 msgid "Korean"
-msgstr ""
+msgstr "קוריאה"
 
 #: user_profile/fields.py:138
 msgid "Kuanyama; Kwanyama"
-msgstr ""
+msgstr "Kuanyama; Kwanyama"
 
 #: user_profile/fields.py:139
 msgid "Kurdish"
-msgstr ""
+msgstr "כורדי"
 
 #: user_profile/fields.py:140
 msgid "Lao"
-msgstr ""
+msgstr "לאו"
 
 #: user_profile/fields.py:141
 msgid "Latin"
-msgstr ""
+msgstr "לטינית"
 
 #: user_profile/fields.py:142
 msgid "Latvian"
-msgstr ""
+msgstr "לטביה"
 
 #: user_profile/fields.py:143
 msgid "Limburgan; Limburger; Limburgish"
-msgstr ""
+msgstr "Limburgan; ה\"לימבורגר; Limburgish"
 
 #: user_profile/fields.py:144
 msgid "Lingala"
-msgstr ""
+msgstr "לינגלה"
 
 #: user_profile/fields.py:145
 msgid "Lithuanian"
-msgstr ""
+msgstr "ליטא"
 
 #: user_profile/fields.py:146
 msgid "Luxembourgish; Letzeburgesch"
-msgstr ""
+msgstr "לוקסמבורגית, Letzeburgesch"
 
 #: user_profile/fields.py:147
 msgid "Luba-Katanga"
-msgstr ""
+msgstr "לובה, קטנגה"
 
 #: user_profile/fields.py:148
 msgid "Ganda"
-msgstr ""
+msgstr "Ganda"
 
 #: user_profile/fields.py:149 user_profile/fields.py:155
 msgid "Macedonian"
-msgstr ""
+msgstr "מקדוניה"
 
 #: user_profile/fields.py:150
 msgid "Marshallese"
-msgstr ""
+msgstr "איי מרשל"
 
 #: user_profile/fields.py:151
 msgid "Malayalam"
-msgstr ""
+msgstr "מלאיאלאם"
 
 #: user_profile/fields.py:152 user_profile/fields.py:159
 msgid "Maori"
-msgstr ""
+msgstr "מאורי"
 
 #: user_profile/fields.py:153
 msgid "Marathi"
-msgstr ""
+msgstr "מרטהי"
 
 #: user_profile/fields.py:154 user_profile/fields.py:160
 msgid "Malay"
-msgstr ""
+msgstr "מלאית"
 
 #: user_profile/fields.py:156
 msgid "Malagasy"
-msgstr ""
+msgstr "מלגשית"
 
 #: user_profile/fields.py:157
 msgid "Maltese"
-msgstr ""
+msgstr "מלטה"
 
 #: user_profile/fields.py:158
 msgid "Mongolian"
-msgstr ""
+msgstr "מונגולי"
 
 #: user_profile/fields.py:162
 msgid "Nauru"
-msgstr ""
+msgstr "נאורו"
 
 #: user_profile/fields.py:163
 msgid "Navajo; Navaho"
-msgstr ""
+msgstr "נבאחו: Navaho"
 
 #: user_profile/fields.py:164
 msgid "Ndebele, South; South Ndebele"
-msgstr ""
+msgstr "Ndebele, דרום, דרום Ndebele"
 
 #: user_profile/fields.py:165
 msgid "Ndebele, North; North Ndebele"
-msgstr ""
+msgstr "Ndebele, צפון, צפון Ndebele"
 
 #: user_profile/fields.py:166
 msgid "Ndonga"
-msgstr ""
+msgstr "Ndonga"
 
 #: user_profile/fields.py:167
 msgid "Nepali"
-msgstr ""
+msgstr "נפאלית"
 
 #: user_profile/fields.py:169
 msgid "Norwegian Nynorsk; Nynorsk, Norwegian"
-msgstr ""
+msgstr "Nynorsk נורבגית; Nynorsk, נורבגית"
 
 #: user_profile/fields.py:170
 msgid "Bokmal, Norwegian; Norwegian Bokmal"
-msgstr ""
+msgstr "נורווגית ספרותית, נורבגית, נורבגית נורווגית ספרותית"
 
 #: user_profile/fields.py:171
 msgid "Norwegian"
-msgstr ""
+msgstr "נורווגית"
 
 #: user_profile/fields.py:172
 msgid "Chichewa; Chewa; Nyanja"
-msgstr ""
+msgstr "Chichewa; Chewa; Nyanja"
 
 #: user_profile/fields.py:173
 msgid "Occitan (post 1500)"
-msgstr ""
+msgstr "אוקסיטנית (הודעה 1500)"
 
 #: user_profile/fields.py:174
 msgid "Ojibwa"
-msgstr ""
+msgstr "Ojibwa"
 
 #: user_profile/fields.py:175
 msgid "Oriya"
-msgstr ""
+msgstr "אוריה"
 
 #: user_profile/fields.py:176
 msgid "Oromo"
-msgstr ""
+msgstr "אורומו"
 
 #: user_profile/fields.py:177
 msgid "Ossetian; Ossetic"
-msgstr ""
+msgstr "אוסטיה, Ossetic"
 
 #: user_profile/fields.py:178
 msgid "Panjabi; Punjabi"
-msgstr ""
+msgstr "פנג&#39;אביות; פונג&#39;בית"
 
 #: user_profile/fields.py:180
 msgid "Pali"
-msgstr ""
+msgstr "פאלי"
 
 #: user_profile/fields.py:181
 msgid "Polish"
-msgstr ""
+msgstr "פולני"
 
 #: user_profile/fields.py:183
 msgid "Pushto; Pashto"
-msgstr ""
+msgstr "Pushto, פשטו"
 
 #: user_profile/fields.py:184
 msgid "Quechua"
-msgstr ""
+msgstr "קצ&#39;ואה"
 
 #: user_profile/fields.py:185
 msgid "Romansh"
-msgstr ""
+msgstr "רומאנש"
 
 #: user_profile/fields.py:186 user_profile/fields.py:187
 msgid "Romanian; Moldavian; Moldovan"
-msgstr ""
+msgstr "רומניה, מולדובה, מולדובה"
 
 #: user_profile/fields.py:188
 msgid "Rundi"
-msgstr ""
+msgstr "Rundi"
 
 #: user_profile/fields.py:189
 msgid "Russian"
-msgstr ""
+msgstr "רוסי"
 
 #: user_profile/fields.py:190
 msgid "Sango"
-msgstr ""
+msgstr "Sango"
 
 #: user_profile/fields.py:191
 msgid "Sanskrit"
-msgstr ""
+msgstr "בסנסקריט"
 
 #: user_profile/fields.py:192
 msgid "Sinhala; Sinhalese"
-msgstr ""
+msgstr "סינהאלה; סינהאלית"
 
 #: user_profile/fields.py:193 user_profile/fields.py:194
 msgid "Slovak"
-msgstr ""
+msgstr "הסלובקית"
 
 #: user_profile/fields.py:195
 msgid "Slovenian"
-msgstr ""
+msgstr "סלובניה"
 
 #: user_profile/fields.py:196
 msgid "Northern Sami"
-msgstr ""
+msgstr "צפון סמי"
 
 #: user_profile/fields.py:197
 msgid "Samoan"
-msgstr ""
+msgstr "סמואי"
 
 #: user_profile/fields.py:198
 msgid "Shona"
-msgstr ""
+msgstr "שפתם"
 
 #: user_profile/fields.py:199
 msgid "Sindhi"
-msgstr ""
+msgstr "סינדהית"
 
 #: user_profile/fields.py:200
 msgid "Somali"
-msgstr ""
+msgstr "סומליה"
 
 #: user_profile/fields.py:201
 msgid "Sotho, Southern"
-msgstr ""
+msgstr "Sotho, דרום"
 
 #: user_profile/fields.py:202
 msgid "Spanish; Castilian"
-msgstr ""
+msgstr "ספרדית, קסטיליאנית"
 
 #: user_profile/fields.py:204
 msgid "Sardinian"
-msgstr ""
+msgstr "סרדיניה"
 
 #: user_profile/fields.py:205
 msgid "Serbian"
-msgstr ""
+msgstr "הסרבית"
 
 #: user_profile/fields.py:206
 msgid "Swati"
-msgstr ""
+msgstr "Swati"
 
 #: user_profile/fields.py:207
 msgid "Sundanese"
-msgstr ""
+msgstr "סודנית"
 
 #: user_profile/fields.py:208
 msgid "Swahili"
-msgstr ""
+msgstr "סוואהילית"
 
 #: user_profile/fields.py:209
 msgid "Swedish"
-msgstr ""
+msgstr "שוודית"
 
 #: user_profile/fields.py:210
 msgid "Tahitian"
-msgstr ""
+msgstr "טהיטי"
 
 #: user_profile/fields.py:211
 msgid "Tamil"
-msgstr ""
+msgstr "טמיל"
 
 #: user_profile/fields.py:212
 msgid "Tatar"
-msgstr ""
+msgstr "טטרית"
 
 #: user_profile/fields.py:213
 msgid "Telugu"
-msgstr ""
+msgstr "טלוגו"
 
 #: user_profile/fields.py:214
 msgid "Tajik"
-msgstr ""
+msgstr "טג&#39;יקית"
 
 #: user_profile/fields.py:215
 msgid "Tagalog"
-msgstr ""
+msgstr "טגלוג"
 
 #: user_profile/fields.py:216
 msgid "Thai"
-msgstr ""
+msgstr "תאילנדי"
 
 #: user_profile/fields.py:218
 msgid "Tigrinya"
-msgstr ""
+msgstr "טיגרית"
 
 #: user_profile/fields.py:219
 msgid "Tonga (Tonga Islands)"
-msgstr ""
+msgstr "טונגה (איי טונגה)"
 
 #: user_profile/fields.py:220
 msgid "Tswana"
-msgstr ""
+msgstr "Tswana"
 
 #: user_profile/fields.py:221
 msgid "Tsonga"
-msgstr ""
+msgstr "טסונגה"
 
 #: user_profile/fields.py:222
 msgid "Turkmen"
-msgstr ""
+msgstr "הטורקמנים"
 
 #: user_profile/fields.py:223
 msgid "Turkish"
-msgstr ""
+msgstr "טורקית"
 
 #: user_profile/fields.py:224
 msgid "Twi"
-msgstr ""
+msgstr "טווי"
 
 #: user_profile/fields.py:225
 msgid "Uighur; Uyghur"
-msgstr ""
+msgstr "האויגורים, האויגורים"
 
 #: user_profile/fields.py:226
 msgid "Ukrainian"
-msgstr ""
+msgstr "אוקראינית"
 
 #: user_profile/fields.py:227
 msgid "Urdu"
-msgstr ""
+msgstr "אורדו"
 
 #: user_profile/fields.py:228
 msgid "Uzbek"
-msgstr ""
+msgstr "האוזבקי"
 
 #: user_profile/fields.py:229
 msgid "Venda"
-msgstr ""
+msgstr "וונדה"
 
 #: user_profile/fields.py:230
 msgid "Vietnamese"
-msgstr ""
+msgstr "ויאטנמית"
 
 #: user_profile/fields.py:231
 msgid "Volapuk"
-msgstr ""
+msgstr "וולאפוק"
 
 #: user_profile/fields.py:233
 msgid "Walloon"
-msgstr ""
+msgstr "Walloon"
 
 #: user_profile/fields.py:234
 msgid "Wolof"
-msgstr ""
+msgstr "וולוף"
 
 #: user_profile/fields.py:235
 msgid "Xhosa"
-msgstr ""
+msgstr "שושה"
 
 #: user_profile/fields.py:236
 msgid "Yiddish"
-msgstr ""
+msgstr "אידיש"
 
 #: user_profile/fields.py:237
 msgid "Yoruba"
-msgstr ""
+msgstr "יורובה"
 
 #: user_profile/fields.py:238
 msgid "Zhuang; Chuang"
-msgstr ""
+msgstr "ואנג, צ&#39;ואנג"
 
 #: user_profile/fields.py:240
 msgid "Zulu"
-msgstr ""
+msgstr "זולו"
 
 #: user_profile/fields.py:248
 msgid "Stores language codes"
-msgstr ""
+msgstr "חנויות קודי השפה"
 
 #: user_profile/forms.py:26
 msgid "Email address"
-msgstr ""
+msgstr "כתובת דוא\"ל"
 
 #: user_profile/forms.py:59
 msgid "Phone Number"
-msgstr ""
+msgstr "מספר טלפון"
 
 #: user_profile/forms.py:60
 msgid "Check number is authorised to call"
-msgstr ""
+msgstr "מספר צ&#39;ק רשאי להתקשר"
 
 #: user_profile/management.py:25 user_profile/management.py:26
 msgid "Campaign started"
-msgstr ""
+msgstr "הקמפיין התחיל"
 
 #: user_profile/management.py:29 user_profile/management.py:30
 msgid "Campaign paused"
-msgstr ""
+msgstr "מסע פרסום מושהה"
 
 #: user_profile/management.py:33 user_profile/management.py:34
 msgid "Campaign aborted"
-msgstr ""
+msgstr "בוטל מבצע"
 
 #: user_profile/management.py:37 user_profile/management.py:38
 msgid "Campaign stopped"
-msgstr ""
+msgstr "הקמפיין עצר"
 
 #: user_profile/management.py:41 user_profile/management.py:42
 msgid "Campaign limit reached"
-msgstr ""
+msgstr "הקמפיין הגיע לגבול"
 
 #: user_profile/management.py:45 user_profile/management.py:46
 msgid "Contact limit reached"
-msgstr ""
+msgstr "צור הגבול הגיעו"
 
 #: user_profile/management.py:50
 msgid "The user needs to be mapped with dialer settings by the administrator"
-msgstr ""
+msgstr "המשתמש צריך להיות ממופה עם הגדרות חייגן ידי מנהל"
 
 #: user_profile/management.py:53 user_profile/management.py:54
 msgid "Call request not found"
-msgstr ""
+msgstr "התקשר לבקש לא נמצא"
 
 #: user_profile/models.py:56
 msgid "Address"
-msgstr ""
+msgstr "כתובת"
 
 #: user_profile/models.py:60
 msgid "State"
-msgstr ""
+msgstr "מדינה"
 
 #: user_profile/models.py:63
 msgid "Zip code"
-msgstr ""
+msgstr "מיקוד"
 
 #: user_profile/models.py:67
 msgid "Fax Number"
-msgstr ""
+msgstr "מספר פקס"
 
 #: user_profile/models.py:69
 msgid "Company name"
-msgstr ""
+msgstr "שם החברה"
 
 #: user_profile/models.py:72
 msgid "Company website"
-msgstr ""
+msgstr "אתר החברה"
 
 #: user_profile/models.py:73
 msgid "Language"
-msgstr ""
+msgstr "שפה"
 
 #: user_profile/models.py:75
 msgid "Note"
-msgstr ""
+msgstr "הערה"
 
 #: user_profile/models.py:88 user_profile/models.py:89
 msgid "User Profile"
-msgstr ""
+msgstr "פרופיל"
 
 #: user_profile/models.py:97
 msgid "Customer"
-msgstr ""
+msgstr "לקוח"
 
 #: user_profile/models.py:98
 msgid "Customers"
-msgstr ""
+msgstr "לקוחות"
 
 #: user_profile/models.py:106
 msgid "Admin"
-msgstr ""
+msgstr "Admin"
 
 #: user_profile/models.py:107
 msgid "Admins"
-msgstr ""
+msgstr "מנהלים"
 
 #: user_profile/views.py:95
 msgid "All notifications are marked as read."
-msgstr ""
+msgstr "הודעות כל מסומנים לקריאה."
 
 #: user_profile/views.py:108
 msgid "Detail has been changed."
-msgstr ""
+msgstr "פרט השתנה."
 
 #: user_profile/views.py:110 user_profile/views.py:121
 #: user_profile/views.py:130
 msgid "Please correct the errors below."
-msgstr ""
+msgstr "אנא תקן את השגיאות הבאות."
 
 #: user_profile/views.py:117
 msgid "This phone number is not authorized."
-msgstr ""
+msgstr "מספר הטלפון הזה אינו מורשה."
 
 #: user_profile/views.py:119
 msgid "This phone number is authorized."
-msgstr ""
+msgstr "מספר הטלפון הזה מוסמך."
 
 #: user_profile/views.py:128
 msgid "Your password has been changed."
-msgstr ""
+msgstr "סיסמתך שונתה."
 
 #: user_profile/views.py:234
 #, python-format
 msgid "\"%(name)s\" is marked as read."
-msgstr ""
+msgstr "\"% (Name) s\" מסומן לקרוא."
 
 #: user_profile/views.py:245
 #, python-format
 msgid "%(count)s notification(s) are deleted."
-msgstr ""
+msgstr "(Count) s% ההודעות (ים) נמחק."
 
 #: user_profile/views.py:249
 #, python-format
 msgid "%(count)s notification(s) are marked as read."
-msgstr ""
+msgstr "(Count) s% ההודעות (ים) מסומן לקרוא."
 
 #: voice_app/models.py:57
 msgid "Voice Application Description"
-msgstr ""
+msgstr "יישום קול תיאור"
 
 #: voice_app/models.py:62
 msgid "Gateway used if we redirect the call"
-msgstr ""
+msgstr "השער משמש אם להפנות את השיחה"
 
 #: voice_app/models.py:64
 msgid ""
@@ -3179,17 +3175,18 @@ msgid ""
 "The phone number to dial<br/>- Conference : Conference room name or "
 "number<br/>- Playaudio : Audio file URL<br/>- Speak : The text to speak "
 "using TTS"
-msgstr ""
+msgstr "הערך של \"נתונים\" תלוי בסוג של יישום קול: <br/> - חיוג: מספר טלפון לחיוג <br/> - כנס: חדר הישיבות שם או מספר <br/> - Playaudio: כתובת קובץ אודיו <br/> - דבר: טקסט לדבר באמצעות TTS"
 
 #: voice_app/views.py:69
 msgid "Update Voice App"
-msgstr ""
+msgstr "עדכון קול App"
 
 #: voice_app/views.py:73
 msgid "Delete Voice App"
-msgstr ""
+msgstr "מחק App קול"
 
 #: voice_app/views.py:173
 #, python-format
 msgid "%(count)s voiceapp(s) are deleted."
-msgstr ""
+msgstr "% (Count) s voiceapp (ים) יימחקו."
+

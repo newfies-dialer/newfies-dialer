@@ -142,6 +142,16 @@
         {% endif %}
         {% endif %}
 
+        {% if notice_count %}
+            <div class="row">
+            <div class="span12">
+                <a href="/user_detail_change/?action=tabs-3">
+                    <span class="label warning">{{ notice_count }} {% trans "new notifications" %}</span>
+                </a>
+            </div>
+            </div>
+        {% endif %}
+
         <div class="page-header">
             {% block content_header %}
                 <h1>Newfies-Dialer <small>{% trans "Voice Broadcasting solution" %}</small></h1>
@@ -166,7 +176,7 @@
 
             {% endif %}
         {% endif %}
-        
+
         {% block content %}
         <!-- CONTENT BLOCK -->
         {% endblock %}

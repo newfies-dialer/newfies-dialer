@@ -591,9 +591,11 @@ func_install_frontend(){
             #Selinux to allow apache to access this directory
             chcon -Rv --type=httpd_sys_content_t /usr/share/virtualenvs/newfies-dialer/
             chcon -Rv --type=httpd_sys_content_t /usr/share/newfies/usermedia
+            chcon -Rv --type=httpd_sys_content_t /var/www/newfies
             semanage port -a -t http_port_t -p tcp $HTTP_PORT
             #Allowing Apache to access Redis port
             semanage port -a -t http_port_t -p tcp 6379
+            semanage port -a -t http_port_t -p tcp 80
             
             service httpd restart
         ;;

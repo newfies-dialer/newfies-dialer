@@ -552,6 +552,11 @@ func_install_frontend(){
     
     IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
     IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
+    if [ -z "$IPADDR" ]; then
+        clear
+        echo "we have not detected your IP address automatically, please enter it manually"
+        read IPADDR
+	fi
     
     ##Update Freeswitch XML CDR
     #NEWFIES_CDR_API='api\/v1\/store_cdr\/'
@@ -627,6 +632,11 @@ func_install_backend() {
 
     IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
     IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
+    if [ -z "$IPADDR" ]; then
+        clear
+        echo "we have not detected your IP address automatically, please enter it manually"
+        read IPADDR
+	fi
     
     #Create directory for pid file
     mkdir -p /var/run/celery

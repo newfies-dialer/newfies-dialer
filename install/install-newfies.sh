@@ -139,6 +139,9 @@ func_install_landing_page() {
             service httpd restart
         ;;
     esac
+    
+    #Update Welcome page IP
+    sed -i "s/LOCALHOST/$IPADDR:$HTTP_PORT/g" $INSTALL_DIR_WELCOME/index.html    
 }
 
 func_check_dependencies() {
@@ -573,8 +576,7 @@ func_install_frontend(){
     sed -i "s/#'SERVER_IP',/'$IPADDR',/g" $INSTALL_DIR/settings_local.py
     sed -i "s/dummy/plivo/g" $INSTALL_DIR/settings_local.py
     
-    #Update Welcome page IP
-    sed -i "s/LOCALHOST/$IPADDR:$HTTP_PORT/g" $INSTALL_DIR_WELCOME/index.html
+
     
     case $DIST in
         'DEBIAN')
@@ -591,11 +593,9 @@ func_install_frontend(){
             #Selinux to allow apache to access this directory
             chcon -Rv --type=httpd_sys_content_t /usr/share/virtualenvs/newfies-dialer/
             chcon -Rv --type=httpd_sys_content_t /usr/share/newfies/usermedia
-            chcon -Rv --type=httpd_sys_content_t /var/www/newfies
             semanage port -a -t http_port_t -p tcp $HTTP_PORT
             #Allowing Apache to access Redis port
             semanage port -a -t http_port_t -p tcp 6379
-            semanage port -a -t http_port_t -p tcp 80
             
             service httpd restart
         ;;

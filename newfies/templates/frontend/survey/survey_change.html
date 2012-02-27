@@ -175,7 +175,6 @@
 	.ui-sortable-placeholder * { visibility: hidden; }
     /* change span width for response inputs */
     .span5 {width: 160px;}
-
 </style>
 
 <script type="text/javascript">
@@ -477,14 +476,12 @@ function removeResFormField(id) {
                                                         {% if forloop.first %}<b>{% trans "Key Digit" %}</b>{% endif %}
                                                         {% if forloop.last %}<b>{% trans "Key Value" %}</b>{% endif %}
                                                         <br/>
-
                                                         {{ field }}
                                                     </div>
-
                                                     {% if forloop.last %}
                                                     <div class="span2"><br/>
                                                         <!--<input value="Save" onclick="response_form({{ key }}, {{ que.id }}, 1, 1);" type="button">-->
-                                                        <input value="{% trans "Delete response" %}" class="btn-danger" onclick="response_delete_form({{ key }}, 1);removeResFormField('#response_form_{{ key }}'); return false;" type="button">
+                                                        <input value="{% trans "Delete response" %}" class="btn-danger" onclick="response_delete_form({{ key }}, 1);removeResFormField('#response_form_{{ key }}'); return false;" type="button" />
                                                     </div>
                                                     {% endif %}
 

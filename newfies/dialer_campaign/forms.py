@@ -137,6 +137,7 @@ class CampaignForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(CampaignForm, self).__init__(*args, **kwargs)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
+        self.fields['description'].widget.attrs['class'] = "input-xlarge"
 
         if user:
             self.fields['ds_user'].initial = user

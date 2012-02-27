@@ -32,13 +32,13 @@ class callrequest_pending(PeriodicTask):
         callrequest_pending.delay()
     """
     # 1000000 ms = 1 sec
-    run_every = timedelta(microseconds=10000000)
+    run_every = timedelta(microseconds=1000000) # every seconds
 
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
         logger.info("TASK :: callrequest_pending")
 
-        list_callrequest = Callrequest.objects.get_pending_callrequest()[:20]
+        list_callrequest = Callrequest.objects.get_pending_callrequest()[:100]
         if not list_callrequest:
             logger.debug("No Pending Calls")
 
@@ -105,7 +105,7 @@ def init_callrequest(callrequest_id, campaign_id):
         obj_callrequest.user.userprofile.accountcode > 0:
         originate_dial_string = originate_dial_string + \
             ',accountcode=' + str(obj_callrequest.user.userprofile.accountcode)
-    
+
     #Send Call to API
     #http://ask.github.com/celery/userguide/remote-tasks.html
 

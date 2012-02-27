@@ -52,7 +52,6 @@ def add(x, y):
 
 
 
-
 #TODO: Put a priority on this task
 @task()
 def check_campaign_pendingcall(campaign_id):
@@ -96,9 +95,13 @@ def check_campaign_pendingcall(campaign_id):
 
     #Get the subscriber of this campaign
     # get_pending_subscriber get Max 1000 records
-    list_subscriber = obj_campaign.get_pending_subscriber(frequency)
-    #print (list_subscriber)
-
+    list_subscriber = obj_campaign.get_pending_subscriber_update(
+                            frequency, 
+                            6 # Update to In Process
+                            )
+    #if list_subscriber:
+    #    print len(list_subscriber)
+    
     try:
         no_subscriber = list_subscriber.count()
     except AttributeError:
@@ -125,25 +128,20 @@ def check_campaign_pendingcall(campaign_id):
 
         #Create a Callrequest Instance to track the call task
         new_callrequest = Callrequest(status=1, # PENDING
-                                call_type=call_type,
-                                call_time=datetime.now(),
-                                timeout=obj_campaign.calltimeout,
-                                callerid=obj_campaign.callerid,
-                                phone_number=elem_camp_subscriber.contact.contact,
-                                campaign=obj_campaign,
-                                aleg_gateway=obj_campaign.aleg_gateway,
-                                content_type=obj_campaign.content_type,
-                                object_id=obj_campaign.object_id,
-                                user=obj_campaign.user,
-                                extra_data=obj_campaign.extra_data,
-                                timelimit=obj_campaign.callmaxduration,
-                                campaign_subscriber=elem_camp_subscriber)
+                            call_type=call_type,
+                            call_time=datetime.now(),
+                            timeout=obj_campaign.calltimeout,
+                            callerid=obj_campaign.callerid,
+                            phone_number=elem_camp_subscriber.contact.contact,
+                            campaign=obj_campaign,
+                            aleg_gateway=obj_campaign.aleg_gateway,
+                            content_type=obj_campaign.content_type,
+                            object_id=obj_campaign.object_id,
+                            user=obj_campaign.user,
+                            extra_data=obj_campaign.extra_data,
+                            timelimit=obj_campaign.callmaxduration,
+                            campaign_subscriber=elem_camp_subscriber)
         new_callrequest.save()
-
-        #Update the campaign status
-        elem_camp_subscriber.status = 6 # Update to In Process
-        elem_camp_subscriber.callrequest = new_callrequest
-        elem_camp_subscriber.save()
         
         #Todo Check if it's a good practice / implement a PID algorithm
         if no_subscriber > 1:
@@ -158,7 +156,10 @@ class campaign_running(PeriodicTask):
         campaign_running.delay()
     """
 
-    run_every = timedelta(seconds=15)
+    run_every = timedelta(seconds=60)
+    #NOTE : until we implement a PID Controller : 
+    #http://en.wikipedia.org/wiki/PID_controller
+
     #The campaign have to run every minutes in order to control the number
     # of calls per minute. Cons : new calls might delay 60seconds
     #run_every = timedelta(seconds=60)

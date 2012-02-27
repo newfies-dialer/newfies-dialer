@@ -52,6 +52,13 @@ class Command(BaseCommand):
                 try:
                     length=5
                     chars="1234567890"
+                    
+                    #'survey'
+                    try:
+                        content_type_id = ContentType.objects.get(app_label=str('voice_app')).id
+                    except:
+                        content_type_id = 1
+
                     for i in range(1, int(no_of_record) + 1):
                         phonenumber = '' . join([choice(chars) for i in range(length)])
                         new_callrequest = Callrequest.objects.create(
@@ -61,7 +68,10 @@ class Command(BaseCommand):
                                             campaign=obj_campaign,
                                             aleg_gateway_id=1,
                                             status=choice("12345678"),
-                                            call_type=1)
+                                            call_type=1,
+                                            content_type_id=content_type_id,
+                                            object_id=1)
+
                         new_cdr = VoIPCall.objects.create(
                                             request_uuid=uuid1(),
                                             user=admin_user,

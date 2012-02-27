@@ -132,14 +132,16 @@
 </div>
 
 {% if total_data %}
-
-<div id="finance">
-	<div id="labels">
-	    <div id="financeTitle"></div>
-	    <div id="dateRange"></div>
-	</div>
+<div class="row">
+    <div class="span12">
+    <div id="finance">
+        <div id="labels">
+            <div id="financeTitle"></div>
+            <div id="dateRange"></div>
+        </div>
+    </div>
+    </div>
 </div>
-    
 {% endif %}
 
 
@@ -217,39 +219,50 @@
     })(jQuery);
 
     </script>
+
     <!--
     {% for td in final_calls %}
             [{{ td.starting_date }},(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}]<br/>
     {% endfor %}-->
-    
-    <div id="camp_pie" style="width:300px;height:270px;float:left;margin: 0px 50px 0px 50px;"></div>
 
-    <table style="width: 370px;margin: 50px 0px 0px 0px; background-color: #e6f7fe;" class="bordered-table">
-    <tr>
-        <th style="color: #111111; width: 120px;" colspan="3">{{ total_call_count }}  {% trans "TOTAL CALLS"  %}</th>
-    </tr>
-    <tr>
-        <th style="color: {{ answered_color }}">{{ total_answered }}  {% trans "ANSWERED"  %}</th>
-        <th style="color: {{ dontcall_color }}">{{ total_dontcall }}  {% trans "DONTCALL"  %}</th>
-        <th style="color: {{ busy_color }}">{{ total_busy }}  {% trans "BUSY"  %}</th>
-    </tr>
-    <tr>
-        <th style="color: {{ chanunavail_color }}">{{ total_chanunavail }}  {% trans "CHANUNAVAIL"  %}</th>
-        <th style="color: {{ torture_color }}">{{ total_torture }}  {% trans "TORTURE"  %}</th>
-        <th style="color: {{ not_answered_color }}">{{ total_not_answered }}  {% trans "NOANSWER"  %}</th>
-    </tr>
-    <tr>
-        <th style="color: {{ invalidargs_color }}">{{ total_invalidargs }}  {% trans "INVALIDARGS"  %}</th>
-        <th style="color: {{ cancel_color }}">{{ total_cancel }}  {% trans "CANCEL"  %}</th>
-        <th style="color: {{ noroute_color }}">{{ total_noroute }}  {% trans "NOROUTE"  %}</th>
-    </tr>
-    <tr>
-        <th style="color: {{ congestion_color }}">{{ total_congestion }}  {% trans "CONGESTION"  %}</th>
-        <th style="color: {{ forbidden_color }}">{{ total_forbidden }}  {% trans "FORBIDDEN"  %}</th>
-        <th>&nbsp;</th>
-    </tr>
-    </table>
-    
-    <div id="hover" style="float: left;"><span style="font-weight: bold; color: rgb(148, 64, 237);"></span></div>
+    <div class="row">
+    <div class="span12">
+        <div class="row">
+            <div class="span6">
+                <div id="camp_pie" style="width:300px;height:270px;float:left;margin: 0px 50px 0px 50px;"></div>
+            </div>
+
+            <div class="span6">
+            <table style="width: 370px;margin: 50px 0px 0px 0px; background-color: #e6f7fe;" class="bordered-table">
+            <tr>
+                <th style="color: #111111; width: 120px;" colspan="3">{{ total_call_count }}  {% trans "TOTAL CALLS"  %}</th>
+            </tr>
+            <tr>
+                <th style="color: {{ answered_color }}">{{ total_answered }}  {% trans "ANSWERED"  %}</th>
+                <th style="color: {{ dontcall_color }}">{{ total_dontcall }}  {% trans "DONTCALL"  %}</th>
+                <th style="color: {{ busy_color }}">{{ total_busy }}  {% trans "BUSY"  %}</th>
+            </tr>
+            <tr>
+                <th style="color: {{ chanunavail_color }}">{{ total_chanunavail }}  {% trans "CHANUNAVAIL"  %}</th>
+                <th style="color: {{ torture_color }}">{{ total_torture }}  {% trans "TORTURE"  %}</th>
+                <th style="color: {{ not_answered_color }}">{{ total_not_answered }}  {% trans "NOANSWER"  %}</th>
+            </tr>
+            <tr>
+                <th style="color: {{ invalidargs_color }}">{{ total_invalidargs }}  {% trans "INVALIDARGS"  %}</th>
+                <th style="color: {{ cancel_color }}">{{ total_cancel }}  {% trans "CANCEL"  %}</th>
+                <th style="color: {{ noroute_color }}">{{ total_noroute }}  {% trans "NOROUTE"  %}</th>
+            </tr>
+            <tr>
+                <th style="color: {{ congestion_color }}">{{ total_congestion }}  {% trans "CONGESTION"  %}</th>
+                <th style="color: {{ forbidden_color }}">{{ total_forbidden }}  {% trans "FORBIDDEN"  %}</th>
+                <th>&nbsp;</th>
+            </tr>
+            </table>
+
+            <div id="hover" style="float: left;"><span style="font-weight: bold; color: rgb(148, 64, 237);"></span></div>
+            </div>
+        </div>
+    </div>
+    </div>
 {% endif %}
 {% endblock %}

@@ -125,7 +125,7 @@ def check_campaign_pendingcall(campaign_id):
             elem_camp_subscriber.status = 7 # Update to Not Authorized
             elem_camp_subscriber.save()
             return True
-
+        
         #Create a Callrequest Instance to track the call task
         new_callrequest = Callrequest(status=1, # PENDING
                             call_type=call_type,

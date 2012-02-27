@@ -153,7 +153,6 @@ class VoIPCallAdmin(admin.ModelAdmin):
                                                         tday.day, 0, 0, 0, 0)
 
         formset = cl.formset = None
-        cl.result_list = cl.result_list.filter(**kwargs).order_by('-starting_date')
         
         # Session variable is used to get record set with searched option
         # into export file

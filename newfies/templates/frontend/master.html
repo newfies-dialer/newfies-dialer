@@ -120,7 +120,6 @@
                 <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected{% endifequal %}>{{ lang.1 }}</option>
                 {% endfor %}
                 </select>
-                {% if notice_count %} <a href="/user_detail_change/?action=tabs-3"><span class="label warning">{{ notice_count }} {% trans "new notifications" %}</span></a> &nbsp; {% endif %}
                 &nbsp;&nbsp;&nbsp;&nbsp;
             </form>
         </div>
@@ -140,16 +139,6 @@
             </div>
             </br>
         {% endif %}
-        {% endif %}
-
-        {% if notice_count %}
-            <div class="row">
-            <div class="span12">
-                <a href="/user_detail_change/?action=tabs-3">
-                    <span class="label warning">{{ notice_count }} {% trans "new notifications" %}</span>
-                </a>
-            </div>
-            </div>
         {% endif %}
 
         <div class="page-header">

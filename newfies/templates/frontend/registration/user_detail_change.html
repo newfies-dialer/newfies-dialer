@@ -41,7 +41,7 @@
 
         <form class="well" action="" method="post">{% csrf_token %}
              {% for field in user_detail_form %}
-             <div class="clearfix{% if field.errors %} error{% endif %}">
+             <div class="clearfix{% if field.errors %} control-group error{% endif %}">
                 <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
                 <div class="input">
                     {{ field }}
@@ -54,7 +54,7 @@
              {% endfor %}
 
              {% for field in user_detail_extened_form %}
-             <div class="clearfix{% if field.errors %} error{% endif %}">
+             <div class="clearfix{% if field.errors %} control-group error{% endif %}">
                 <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
                 <div class="input">
                     {{ field }}
@@ -92,7 +92,7 @@
 
         <form class="well" action="" method="post">{% csrf_token %}
              {% for field in user_password_form %}
-             <div class="clearfix{% if field.errors %} error{% endif %}">
+             <div class="clearfix{% if field.errors %} control-group error{% endif %}">
                 <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
                 <div class="input">
                     {{ field }}
@@ -261,7 +261,7 @@
 
         <form class="well" action="" method="post">{% csrf_token %}
             {% for field in check_phone_no_form %}
-            <div class="clearfix{% if field.errors %} error{% endif %}">
+            <div class="clearfix{% if field.errors %} control-group error{% endif %}">
                 <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
                 <div class="input">
                     {{ field }}

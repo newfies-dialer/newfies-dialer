@@ -28,7 +28,7 @@
                     {% endfor %}
                     {% for field in campaign_fields.visible_fields %}
                         <div class="span12">
-                            <div class="clearfix{% if field.errors %} error{% endif %}">
+                            <div class="clearfix{% if field.errors %} control-group error{% endif %}">
                                 <label for="id_{{ field.name }}">{{ field.label }}</label>
                                 <div class="input">
                                     {{ field }}
@@ -47,7 +47,7 @@
                     {% endfor %}
                     {% for field in campaign_fields.visible_fields %}
                         <div class="span6">
-                            <div class="clearfix{% if field.errors %} error{% endif %}">
+                            <div class="clearfix{% if field.errors %} control-group error{% endif %}">
                                 <label for="id_{{ field.name }}">{{ field.label }}</label>
                                 <div class="input">
                                     {{ field }}
@@ -71,7 +71,7 @@
                 {% get_fieldset frequency,callmaxduration,maxretry,intervalretry,calltimeout as campaign_settings_fields from form %}
                 {% for field in campaign_settings_fields %}
                     <div class="span6">
-                        <div class="clearfix{% if field.errors %} error{% endif %}">
+                        <div class="clearfix{% if field.errors %} control-group error{% endif %}">
                             <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
                             <div class="input">
                                 {{ field }}
@@ -93,7 +93,7 @@
             <div class="span12">
                 <div class="row">
                     <div class="span6">
-                        <div class="clearfix{% if form.startingdate.errors %} error{% endif %}">
+                        <div class="clearfix{% if form.startingdate.errors %} control-group error{% endif %}">
                             <label class="control-label" for="id_{{ form.startingdate.name }}">{{ form.startingdate.label }}</label>
                             <div class="input">
                                 {{ form.startingdate }}
@@ -105,7 +105,7 @@
                         </div>
                     </div>
                     <div class="span6">
-                        <div class="clearfix{% if form.daily_start_time.errors %} error{% endif %}">
+                        <div class="clearfix{% if form.daily_start_time.errors %} control-group error{% endif %}">
                             <label class="control-label" for="id_{{ form.daily_start_time.name }}">{{ form.daily_start_time.label }}</label>
                             <div class="input">
                                 {{ form.daily_start_time }}
@@ -122,7 +122,7 @@
             <div class="span12">
                 <div class="row">
                     <div class="span6">
-                        <div class="clearfix{% if form.expirationdate.errors %} error{% endif %}">
+                        <div class="clearfix{% if form.expirationdate.errors %} control-group error{% endif %}">
                             <label class="control-label" for="id_{{ form.expirationdate.name }}">{{ form.expirationdate.label }}</label>
                             <div class="input">
                                 {{ form.expirationdate }}
@@ -134,7 +134,7 @@
                         </div>
                     </div>
                     <div class="span6">
-                        <div class="clearfix{% if form.daily_stop_time.errors %} error{% endif %}">
+                        <div class="clearfix{% if form.daily_stop_time.errors %} control-group error{% endif %}">
                             <label class="control-label" for="id_{{ form.daily_stop_time.name }}">{{ form.daily_stop_time.label }}</label>
                             <div class="input">
                                 {{ form.daily_stop_time }}

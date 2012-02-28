@@ -1278,8 +1278,9 @@ def contact_list(request):
 
     template = 'frontend/contact/list.html'
     data = {
-        'module': current_view(request),        
+        'module': current_view(request),
         'msg': request.session.get('msg'),
+        'error_msg': request.session.get('error_msg'),
         'form': form,
         'user': request.user,
         'kwargs': kwargs,
@@ -1327,6 +1328,10 @@ def contact_add(request):
         if form.is_valid():
             form.save()
             request.session["msg"] = _('"%(name)s" is added.') %\
+            {'name': request.POST['contact']}
+            return HttpResponseRedirect('/contact/')
+        else:
+            request.session["error_msg"] = _('"%(name)s" is not added.') %\
             {'name': request.POST['contact']}
             return HttpResponseRedirect('/contact/')
 

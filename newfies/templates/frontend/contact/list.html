@@ -34,6 +34,11 @@
         <strong>{% trans "Alert"  %} : </strong>  {{ msg }}
     </div>
 {% endif %}
+{% if error_msg %}
+    <div class="alert alert-error">
+        <strong>{% trans "Alert"  %} : </strong>  {{ error_msg }}
+    </div>
+{% endif %}
 <br/>
 
 <form class="well form-search" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}

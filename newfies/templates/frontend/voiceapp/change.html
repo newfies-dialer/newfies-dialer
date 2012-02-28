@@ -21,7 +21,7 @@
 
     <form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
         {% for field in form %}
-         <div class="clearfix{% if field.errors %} error{% endif %}">
+         <div class="clearfix{% if field.errors %} control-group error{% endif %}">
             <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
             <div class="input">
                 {{ field }}

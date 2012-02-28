@@ -1301,7 +1301,7 @@ msgstr "%(count)s pesquisa(s) apagada(s) com sucesso."
 
 #: survey/views.py:408
 msgid "Download audio"
-msgstr ""
+msgstr "Download áudio"
 
 #: survey/views.py:410
 msgid "Update audio"
@@ -1318,11 +1318,11 @@ msgstr "%(count)s áudi(os) apagado(s) com sucesso."
 
 #: survey/views.py:586
 msgid "No record found!."
-msgstr ""
+msgstr "Nenhum registro encontrado"
 
 #: survey/views.py:589
 msgid "No campaign attached with survey."
-msgstr ""
+msgstr "Nenhuma campanha anexada a enquete"
 
 #: templates/404.html:20
 msgid "This page cannot be found!"
@@ -1595,27 +1595,27 @@ msgstr "Sair"
 
 #: templates/frontend/custom_jquery_select_all.html:16
 msgid "You must check at least one box!"
-msgstr ""
+msgstr "Você deve marca ao menos uma opção!"
 
 #: templates/frontend/custom_jquery_select_all.html:27
 msgid " voice app(s) are going to be deleted?"
-msgstr ""
+msgstr "O(s) aplicativo(s) de voz será(am) apagado(s)?"
 
 #: templates/frontend/custom_jquery_select_all.html:31
 msgid " phonebook(s) are going to be deleted?"
-msgstr ""
+msgstr "A(s) agenda(s) Telefônica(s) será(am) apagada(s)?"
 
 #: templates/frontend/custom_jquery_select_all.html:35
 msgid " survey(s) are going to be deleted?"
-msgstr ""
+msgstr "A(s) Enquete(s) será(am) apagada(s)?"
 
 #: templates/frontend/custom_jquery_select_all.html:39
 msgid " audio(s) are going to be deleted?"
-msgstr ""
+msgstr "O(s) áudio(s) será(am) apagado(s)?"
 
 #: templates/frontend/custom_jquery_select_all.html:62
 msgid " phonebook(s) are going to be deleted with "
-msgstr ""
+msgstr "A(s) agenda(s) Telefônica(s) será(am) apagada(s) com "
 
 #: templates/frontend/custom_jquery_select_all.html:62
 msgid " contact(s)?"
@@ -1623,19 +1623,19 @@ msgstr " contato(s)?"
 
 #: templates/frontend/custom_jquery_select_all.html:66
 msgid " campaign(s) are going to be deleted?"
-msgstr ""
+msgstr "A(s) campanha(s) será(am)  apagada(s)?"
 
 #: templates/frontend/custom_jquery_select_all.html:70
 msgid " notification(s) are going to be deleted?"
-msgstr ""
+msgstr "A(s) notificação(ões) será(am) apagada(s)?"
 
 #: templates/frontend/custom_jquery_select_all.html:74
 msgid " notification(s) are going to be marked as read?"
-msgstr ""
+msgstr "A(s) notificação(ões) foi(ram) marcada(s) como lida(s)?"
 
 #: templates/frontend/custom_jquery_select_all.html:94
 msgid "Confirm deletion?"
-msgstr ""
+msgstr "Confirmar exclusão?"
 
 #: templates/frontend/custom_jquery_select_all.html:115
 msgid "Please confirm to delete this phonebook with"
@@ -1781,9 +1781,8 @@ msgid "Forgot password?"
 msgstr "Alterar senha?"
 
 #: templates/frontend/master.html:118
-#, fuzzy
 msgid "Display language"
-msgstr "Exibindo"
+msgstr "Exibir idioma"
 
 #: templates/frontend/master.html:123
 msgid "new notifications"
@@ -1861,7 +1860,7 @@ msgstr "Configuração do discador"
 
 #: templates/frontend/campaign/change.html:94
 msgid "Campaign schedule"
-msgstr "Agenda de campanha"
+msgstr "Agendamento da  campanha"
 
 #: templates/frontend/campaign/change.html:152
 msgid "Week Days"
@@ -2149,7 +2148,7 @@ msgstr "Verifique o número"
 
 #: templates/frontend/registration/user_detail_change.html:21
 msgid "Change language "
-msgstr ""
+msgstr "Alterar idioma"
 
 #: templates/frontend/registration/user_detail_change.html:72
 msgid "Change detail"
@@ -2172,9 +2171,8 @@ msgid "Sender"
 msgstr "Remetente"
 
 #: templates/frontend/registration/user_detail_change.html:146
-#, fuzzy
 msgid "Delete notifications"
-msgstr "Apagar todas as notificações"
+msgstr "Apagar notificações"
 
 #: templates/frontend/registration/user_detail_change.html:148
 msgid "Mark as read"
@@ -2209,9 +2207,8 @@ msgid "Check"
 msgstr "verificar"
 
 #: templates/frontend/registration/user_detail_change.html:291
-#, fuzzy
 msgid "Select language"
-msgstr "Selecionar campanha"
+msgstr "Selecionar idioma"
 
 #: templates/frontend/report/voipcall_report.html:31
 msgid "Call Reports"
@@ -2276,7 +2273,7 @@ msgstr "Apagar pergunta"
 msgid ""
 "If no audio file is selected, then text to speech is used to read out the "
 "question"
-msgstr ""
+msgstr "Se nenum arquivo de áudio for selecionado, o texto digito será falado"
 
 #: templates/frontend/survey/survey_change.html:293
 #: templates/frontend/survey/survey_change.html:543
@@ -2298,7 +2295,7 @@ msgstr "Adicionar pergunta"
 
 #: templates/frontend/survey/survey_change.html:564
 msgid "Update Survey"
-msgstr "Resultado da atualização"
+msgstr "Atualizar enquete"
 
 #: templates/frontend/survey/survey_list.html:9
 msgid "List, add and edit surveys"
@@ -3130,7 +3127,7 @@ msgstr "Solicitação de chamada não encontrada"
 
 #: user_profile/models.py:56
 msgid "Address"
-msgstr ""
+msgstr "Endereço"
 
 #: user_profile/models.py:60
 msgid "State"
@@ -3138,27 +3135,27 @@ msgstr "Estado"
 
 #: user_profile/models.py:63
 msgid "Zip code"
-msgstr ""
+msgstr "CEP"
 
 #: user_profile/models.py:67
 msgid "Fax Number"
-msgstr ""
+msgstr "Número do Fax"
 
 #: user_profile/models.py:69
 msgid "Company name"
-msgstr ""
+msgstr "Nome da Empresa"
 
 #: user_profile/models.py:72
 msgid "Company website"
-msgstr ""
+msgstr "Site da empresa"
 
 #: user_profile/models.py:73
 msgid "Language"
-msgstr ""
+msgstr "Idioma"
 
 #: user_profile/models.py:75
 msgid "Note"
-msgstr ""
+msgstr "Nota"
 
 #: user_profile/models.py:88 user_profile/models.py:89
 msgid "User Profile"

@@ -1322,6 +1322,7 @@ def contact_add(request):
             return HttpResponseRedirect("/contact/")
 
     form = ContactForm(request.user)
+    error_msg = False
     # Add contact
     if request.method == 'POST':
         form = ContactForm(request.user, request.POST)
@@ -1331,19 +1332,20 @@ def contact_add(request):
             {'name': request.POST['contact']}
             return HttpResponseRedirect('/contact/')
         else:
-            request.session["error_msg"] = _('"%(name)s" is not added.') %\
-            {'name': request.POST['contact']}
-            return HttpResponseRedirect('/contact/')
+            if len(request.POST['contact'])>0:
+                error_msg = _('"%(name)s" cannot be added.') %\
+                {'name': request.POST['contact']}
 
     phonebook_count = Phonebook.objects.filter(user=request.user).count()    
     template = 'frontend/contact/change.html'
     data = {
-       'module': current_view(request),
-       'form': form,
-       'action': 'add',
-       'phonebook_count': phonebook_count,
-       'notice_count': notice_count(request),
-       'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'module': current_view(request),
+        'form': form,
+        'action': 'add',
+        'error_msg': error_msg,
+        'phonebook_count': phonebook_count,
+        'notice_count': notice_count(request),
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))

@@ -6,8 +6,8 @@ cd newfies
 #./manage.py test --verbosity=2
 
 #Run NewfiesApiTestCase
-echo "manage.py test dialer_cdr.NewfiesApiTestCase --verbosity=2"
-./manage.py test dialer_cdr.NewfiesApiTestCase --verbosity=2
+echo "manage.py test dialer_cdr.NewfiesTastypieApiTestCase --verbosity=2"
+./manage.py test dialer_cdr.NewfiesTastypieApiTestCase --verbosity=2
 echo ""
 echo "Press any key to continue..."
 read TEMP

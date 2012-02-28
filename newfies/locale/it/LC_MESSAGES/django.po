@@ -107,7 +107,7 @@ msgstr "Opzioni avanzate"
 #: dialer_campaign/admin.py:83 dialer_campaign/views.py:1764
 #, python-format
 msgid "you have too many campaigns. Max allowed %(limit)s"
-msgstr "avete troppe campagne. Massima consentita %(limite)s"
+msgstr "avete troppe campagne. Massima consentita %(limit)s"
 
 #: dialer_campaign/admin.py:137 dialer_campaign/admin.py:176
 #: dialer_campaign/views.py:1316 dialer_campaign/views.py:1451
@@ -115,7 +115,7 @@ msgstr "avete troppe campagne. Massima consentita %(limite)s"
 msgid ""
 "You have too many contacts per campaign. You are allowed a maximum of "
 "%(limit)s"
-msgstr "Avete troppi contatti per campagna. È consentito un massimo di %(limite)s"
+msgstr "Avete troppi contatti per campagna. È consentito un massimo di %(limit)s"
 
 #: dialer_campaign/admin.py:229
 msgid "Contact already exists !!"
@@ -649,12 +649,12 @@ msgstr "\"%(name)s\" si aggiunge."
 #: user_profile/views.py:230 voice_app/views.py:161
 #, python-format
 msgid "\"%(name)s\" is deleted."
-msgstr "\"% (Name) s\" è soppressa."
+msgstr "\"%(name)s\" è soppressa."
 
 #: dialer_campaign/views.py:1113
 #, python-format
 msgid "%(count)s phonebook(s) are deleted."
-msgstr "% (Count) rubrica s (s) sono soppresse."
+msgstr "%(count)s rubrica(s) sono soppresse."
 
 #: dialer_campaign/views.py:1144 dialer_campaign/views.py:1408
 #: dialer_campaign/views.py:1879 survey/views.py:342 voice_app/views.py:204
@@ -738,7 +738,7 @@ msgstr "Per aggiungere una campagna, è necessario che le impostazioni configura
 #: dialer_campaign/views.py:1831
 #, python-format
 msgid "%(count)s campaign(s) are deleted."
-msgstr "% (Count) la campagna s (s) sono soppresse."
+msgstr "%(count)s la campagna(s) sono soppresse."
 
 #: dialer_campaign/management/commands/create_contact.py:24
 msgid "\"phonebook_id|no_of_record\" \"phonebook_id|no_of_record\""
@@ -995,12 +995,12 @@ msgstr "Non crea di nuove richieste di chiamata e CDR per un campaign_id dato e 
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:49
 #, python-format
 msgid "Can't find this Campaign : %(id)s"
-msgstr "Non riesco a trovare questa campagna:% (id) s"
+msgstr "Non riesco a trovare questa campagna: %(id)s"
 
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:82
 #, python-format
 msgid "No of Callrequest & CDR created : %(count)s"
-msgstr "Numero di Callrequest & CDR creato:% (count) s"
+msgstr "Numero di Callrequest & CDR creato: %(count)s"
 
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:84
 msgid "Callrequest & CDR are not created!"

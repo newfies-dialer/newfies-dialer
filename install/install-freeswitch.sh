@@ -53,6 +53,39 @@ echo "Press Enter to continue or CTRL-C to exit"
 echo ""
 read INPUT
 
+func_install_fs_source() {
+    #install fs from source
+   	echo "installing from source"
+	    	
+	# Install FreeSWITCH
+	cd $FS_BASE_PATH
+	git clone $FS_GIT_REPO
+	cd $FS_BASE_PATH/freeswitch
+	sh bootstrap.sh && ./configure --prefix=/usr/local/freeswitch
+	[ -f modules.conf ] && cp modules.conf modules.conf.bak
+	sed -i -e \
+	"s/#applications\/mod_curl/applications\/mod_curl/g" \
+	-e "s/#asr_tts\/mod_flite/asr_tts\/mod_flite/g" \
+	-e "s/#asr_tts\/mod_tts_commandline/asr_tts\/mod_tts_commandline/g" \
+	-e "s/#formats\/mod_shout/formats\/mod_shout/g" \
+	-e "s/#endpoints\/mod_dingaling/endpoints\/mod_dingaling/g" \
+	-e "s/#formats\/mod_shell_stream/formats\/mod_shell_stream/g" \
+	-e "s/#say\/mod_say_de/say\/mod_say_de/g" \
+	-e "s/#say\/mod_say_es/say\/mod_say_es/g" \
+	-e "s/#say\/mod_say_fr/say\/mod_say_fr/g" \
+	-e "s/#say\/mod_say_it/say\/mod_say_it/g" \
+	-e "s/#say\/mod_say_nl/say\/mod_say_nl/g" \
+	-e "s/#say\/mod_say_ru/say\/mod_say_ru/g" \
+	-e "s/#say\/mod_say_zh/say\/mod_say_zh/g" \
+	-e "s/#say\/mod_say_hu/say\/mod_say_hu/g" \
+	-e "s/#say\/mod_say_th/say\/mod_say_th/g" \
+	-e "s/#xml_int\/mod_xml_cdr/xml_int\/mod_xml_cdr/g" \
+	modules.conf
+	make && make install && make sounds-install && make moh-install
+
+#installed fs from source 
+}
+
 
 echo "Setting up Prerequisites and Dependencies for FreeSWITCH"
 case $DIST in
@@ -61,12 +94,17 @@ case $DIST in
         apt-get -y install autoconf automake autotools-dev binutils bison build-essential cpp curl flex g++ gcc git-core libaudiofile-dev libc6-dev libdb-dev libexpat1 libgdbm-dev libgnutls-dev libmcrypt-dev libncurses5-dev libnewt-dev libpcre3 libpopt-dev libsctp-dev libsqlite3-dev libtiff4 libtiff4-dev libtool libx11-dev libxml2 libxml2-dev lksctp-tools lynx m4 make mcrypt ncftp nmap openssl sox sqlite3 ssl-cert ssl-cert unixodbc-dev unzip zip zlib1g-dev zlib1g-dev
         apt-get -y install libssl-dev pkg-config
         apt-get -y install libvorbis0a libogg0 libogg-dev libvorbis-dev
+        #Install Freeswitch
+        func_install_fs_source
         ;;
     'CENTOS')
+    	echo ""
+    	echo "Do you want to install Freeswitch via the yum repository instead of from source [y/n]" 
+		read YUMSOURCE
         yum -y update
         yum -y install autoconf automake bzip2 cpio curl curl-devel curl-devel expat-devel fileutils gcc-c++ gettext-devel gnutls-devel libjpeg-devel libogg-devel libtiff-devel libtool libvorbis-devel make ncurses-devel nmap openssl openssl-devel openssl-devel perl patch unixODBC unixODBC-devel unzip wget zip zlib zlib-devel
 
-        #install the RPMFORGE Repository
+		#install the RPMFORGE Repository
         if [ ! -f /etc/yum.repos.d/rpmforge.repo ];
             then
                 # Install RPMFORGE Repo
@@ -78,36 +116,26 @@ case $DIST in
 					rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.i686.rpm
 				fi
         fi
-
+        
         yum -y --enablerepo=rpmforge install git-core
+        
+		if [ "$YUMSOURCE" = "y" ] || [ "$YUMSOURCE" = "Y" ]; then
+	    	echo "Installing via yum repository"
+	    	
+	    	# install the Freeswitch Repo
+			rpm -Uvh http://files.freeswitch.org/yum/freeswitch-release-1-0.noarch.rpm
+
+			# install the freeswitch files
+			yum -y install freeswitch-config-vanilla freeswitch-codec-siren freeswitch-codec-passthru-amr freeswitch-application-conference freeswitch-application-db freeswitch-endpoint-dingaling freeswitch-application-enum freeswitch-application-esf freeswitch-application-expr freeswitch-application-fifo freeswitch-asrtts-flite freeswitch-application-fsv freeswitch-codec-passthru-g723_1 freeswitch-codec-passthru-g729 freeswitch-codec-h26x freeswitch-application-hash freeswitch-application-httapi freeswitch-codec-ilbc freeswitch-format-local-stream freeswitch-lua freeswitch-format-native-file freeswitch-lang-de freeswitch-lang-en freeswitch-lang-fr freeswitch-lang-ru freeswitch-format-mod-shout freeswitch-codec-speex freeswitch-spidermonkey freeswitch-format-tone-stream freeswitch-asrtts-tts-commandline freeswitch-application-valet_parking freeswitch-application-voicemail freeswitch-format-shell-stream
+	    	
+    	else
+        	echo "installing from source"
+        	func_install_fs_source
+    	fi
+     
     ;;
 esac
-
-# Install FreeSWITCH
-cd $FS_BASE_PATH
-git clone $FS_GIT_REPO
-cd $FS_BASE_PATH/freeswitch
-sh bootstrap.sh && ./configure --prefix=/usr/local/freeswitch
-[ -f modules.conf ] && cp modules.conf modules.conf.bak
-sed -i -e \
-"s/#applications\/mod_curl/applications\/mod_curl/g" \
--e "s/#asr_tts\/mod_flite/asr_tts\/mod_flite/g" \
--e "s/#asr_tts\/mod_tts_commandline/asr_tts\/mod_tts_commandline/g" \
--e "s/#formats\/mod_shout/formats\/mod_shout/g" \
--e "s/#endpoints\/mod_dingaling/endpoints\/mod_dingaling/g" \
--e "s/#formats\/mod_shell_stream/formats\/mod_shell_stream/g" \
--e "s/#say\/mod_say_de/say\/mod_say_de/g" \
--e "s/#say\/mod_say_es/say\/mod_say_es/g" \
--e "s/#say\/mod_say_fr/say\/mod_say_fr/g" \
--e "s/#say\/mod_say_it/say\/mod_say_it/g" \
--e "s/#say\/mod_say_nl/say\/mod_say_nl/g" \
--e "s/#say\/mod_say_ru/say\/mod_say_ru/g" \
--e "s/#say\/mod_say_zh/say\/mod_say_zh/g" \
--e "s/#say\/mod_say_hu/say\/mod_say_hu/g" \
--e "s/#say\/mod_say_th/say\/mod_say_th/g" \
--e "s/#xml_int\/mod_xml_cdr/xml_int\/mod_xml_cdr/g" \
-modules.conf
-make && make install && make sounds-install && make moh-install
+    
 
 # Enable FreeSWITCH modules
 cd $FS_INSTALLED_PATH/conf/autoload_configs/

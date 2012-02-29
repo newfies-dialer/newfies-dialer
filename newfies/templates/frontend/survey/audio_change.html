@@ -6,19 +6,24 @@
 {% endblock %}
 
 {% block content_header %}
-<h1>{% if action == 'update' %}
+    <h1>
+        {% if action == 'update' %}
             {% trans "Update" %}
         {% else %}
             {% trans "Add" %}
-        {% endif %} {% trans "Audio Files" %} <small>{% trans "Upload audio to be used in Voice applications" %}</small></h1>
+        {% endif %}
+        {% trans "Audio Files" %}
+        <small>{% trans "Upload audio to be used in Voice applications" %}</small>
+    </h1>
 {% endblock %}
 
 {% block content %}
 
-<form method="POST" action="." enctype="multipart/form-data" id="update_form">
-    {% csrf_token %}
+<form class="well" method="POST" action="." enctype="multipart/form-data" id="update_form">{% csrf_token %}
+
+    {# audiofield form #}
     {% for field in form %}
-     <div class="clearfix{% if field.errors %} error{% endif %}">
+    <div class="clearfix{% if field.errors %} control-group error{% endif %}">
         <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
         <div class="input">
             {{ field }}
@@ -27,15 +32,17 @@
             {% endif %}
             <span class="help-block">{{ field.help_text }} </span>
         </div>
-     </div>
-     {% endfor %}
+    </div>
+    {% endfor %}
+
     <div class="actions">
          {% if action == 'update' %}
-            <input id="update" class="btn primary" type="submit" value="{% trans "Update" %}" />
+            <input id="update" class="btn-primary" type="submit" value="{% trans "Update" %}" />
          {% else %}
-            <input id="add" type="submit" class="btn primary" value="{% trans "Submit" %}" />
+            <input id="add" type="submit" class="btn-primary" value="{% trans "Submit" %}" />
          {% endif %}
     </div>
-    </form>
+
+</form>
 
 {% endblock %}

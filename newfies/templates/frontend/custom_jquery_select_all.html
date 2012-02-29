@@ -19,33 +19,33 @@ $(document).ready(function() {
         }
         else
         {
-             var confirm_string;
-             var contact_count;
+            var confirm_string;
+            var contact_count;
 
-             if(document.location.href.search("/voiceapp/") != -1)
-             {
-                 confirm_string =  $fields.length + '{% trans " voice app(s) are going to be deleted?" %}';
-             }
-             if(document.location.href.search("/contact/") != -1)
-             {
-                 confirm_string = $fields.length +  '{% trans " phonebook(s) are going to be deleted?" %}' ;
-             }
-             if(document.location.href.search("/survey/") != -1)
-             {
-                 confirm_string = $fields.length + '{% trans " survey(s) are going to be deleted?" %}';
-             }
-             if(document.location.href.search("/audio/") != -1)
-             {
-                 confirm_string = $fields.length + '{% trans " audio(s) are going to be deleted?" %}';
-             }
-             if(document.location.href.search("/phonebook/") != -1)
-             {
+            if(document.location.href.search("/voiceapp/") != -1)
+            {
+                confirm_string =  $fields.length + '{% trans " voice app(s) are going to be deleted?" %}';
+            }
+            if(document.location.href.search("/contact/") != -1)
+            {
+                confirm_string = $fields.length +  '{% trans " phonebook(s) are going to be deleted?" %}' ;
+            }
+            if(document.location.href.search("/survey/") != -1)
+            {
+                confirm_string = $fields.length + '{% trans " survey(s) are going to be deleted?" %}';
+            }
+            if(document.location.href.search("/audio/") != -1)
+            {
+                confirm_string = $fields.length + '{% trans " audio(s) are going to be deleted?" %}';
+            }
+            if(document.location.href.search("/phonebook/") != -1)
+            {
                 var allVals = [];                
                 $fields.each(function() {
                    allVals.push($(this).val());                   
                 });                                 
                 $.ajax({
-                    url: "http://127.0.0.1:8000/dialer_campaign/phonebook/contact_count/",
+                    url: "http://127.0.0.1:8000/phonebook/contact_count/",
                     type: "GET",
                     async: false,
                     cache: false,
@@ -59,27 +59,61 @@ $(document).ready(function() {
                     }
                 });
                 
-                 confirm_string = $fields.length + '{% trans " phonebook(s) are going to be deleted with " %}' + contact_count + '{% trans " contact(s)?" %}';
-             }
+                confirm_string = $fields.length + '{% trans " phonebook(s) are going to be deleted with " %}' + contact_count + '{% trans " contact(s)?" %}';
+            }
+            if(document.location.href.search("/campaign/") != -1)
+            {
+                confirm_string = $fields.length + '{% trans " campaign(s) are going to be deleted?" %}';
+            }
+            if(document.location.href.search("/user_detail_change/") != -1)
+            {
+                confirm_string = $fields.length + '{% trans " notification(s) are going to be deleted?" %}';
 
-             if(document.location.href.search("/campaign/") != -1)
-             {
-                 confirm_string = $fields.length + '{% trans " campaign(s) are going to be deleted?" %}';
-             }
+                if(document.getElementById('id_mark_read') && document.getElementById('id_mark_read').value == 'true')
+                {
+                    confirm_string = $fields.length + '{% trans " notification(s) are going to be marked as read?" %}';
+                }
+            }
 
-             if(document.location.href.search("/user_detail_change/") != -1)
-             {
-                 confirm_string = $fields.length + '{% trans " notification(s) are going to be deleted?" %}';
-                 
-                 if(document.getElementById('id_mark_read').value == 'true')
-                 {
-                   confirm_string = $fields.length + '{% trans " notification(s) are going to be marked as read?" %}';
-                 }
-             }
-
-             var answer = confirm(confirm_string);
-             return answer; // answer is a boolean
+            var answer = confirm(confirm_string);
+            return answer; // answer is a boolean
         }
     });
 });
+</script>
+
+
+<!--flexigrid css & js-->
+<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid.css" type="text/css" />
+<script type="text/javascript" src="{{STATIC_URL}}newfies/js/flexigrid.js"></script>
+<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid_custom.css" type="text/css" />
+
+<script type="text/javascript" language="javascript">
+function get_alert_msg(id)
+{
+    confirm_string = '{% trans "Confirm deletion?" %}';
+    var answer = confirm(confirm_string);
+    return answer // answer is a boolean
+}
+
+function get_alert_msg_for_phonebook(id)
+{
+    $.ajax({
+        url: "http://127.0.0.1:8000/phonebook/contact_count/",
+        type: "GET",
+        async: false,
+        cache: false,
+        timeout: 30000,
+        data: "pb_ids=" + id,
+        success: function(data) {
+            contact_count = data;
+        },
+        error: function() {
+            //alert("Request failed");
+        }
+    });
+    confirm_string = '{% trans "Please confirm to delete this phonebook with" %} ' + contact_count + ' {% trans "contact(s)" %}'
+    var answer = confirm(confirm_string);
+    return answer // answer is a boolean
+}
 </script>

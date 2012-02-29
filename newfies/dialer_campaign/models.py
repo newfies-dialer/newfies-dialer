@@ -1,3 +1,17 @@
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
@@ -66,7 +80,7 @@ class Phonebook(Model):
 
     **Name of DB table**: dialer_phonebook
     """
-    name = models.CharField(unique=True, max_length=90, verbose_name=_('Name'))
+    name = models.CharField(max_length=90, verbose_name=_('Name'))
     description = models.TextField(null=True, blank=True,
                   help_text=_("Phonebook Notes"))
     user = models.ForeignKey('auth.User', related_name='Phonebook owner')
@@ -188,8 +202,10 @@ def common_contact_authorization(user, str_contact):
     try:
         obj_userprofile = UserProfile.objects.get(user=user)
     except UserProfile.DoesNotExist:
-        #"UserProfile.DoesNotExist"
-        return True
+        return False
+
+    if not obj_userprofile.dialersetting:
+        return False
 
     whitelist = obj_userprofile.dialersetting.whitelist
     blacklist = obj_userprofile.dialersetting.blacklist
@@ -225,7 +241,7 @@ class Campaign(Model):
 
     **Attributes**:
 
-        * ``campaign_code`` - Autogenerate campaign code to identify the campaign
+        * ``campaign_code`` - Auto-generated campaign code to identify the campaign
         * ``name`` - Campaign name
         * ``description`` - Description about the Campaign
         * ``status`` - Campaign status
@@ -312,20 +328,12 @@ class Campaign(Model):
     help_text=_("Time delay in seconds before retrying contact"))
 
     calltimeout = models.IntegerField(default='45', blank=True, null=True,
-                  verbose_name=_('Timeout on Call'),
-    help_text=_("Connection timeout in seconds"))
-
+                    verbose_name=_('Timeout on Call'),
+                    help_text=_("Connection timeout in seconds"))
     #Gateways
     aleg_gateway = models.ForeignKey(Gateway, verbose_name=_("A-Leg Gateway"),
-                                     related_name="A-Leg Gateway",
-                                     help_text=_("Select outbound gateway"))
-    #Campaign IVR/Application Destination
-    """
-    #comment to use genericforeign key
-    voipapp = models.ForeignKey(VoipApp, verbose_name=_("VoIP Application"),
-              related_name="VoIP Application",
-              help_text=_("Select VoIP Application to use with this campaign"))
-    """
+                    related_name="A-Leg Gateway", 
+                    help_text=_("Select outbound gateway"))
     content_type = models.ForeignKey(ContentType, verbose_name=_("Type"),
                    limit_choices_to = {"model__in": ("surveyapp", "voiceapp")})
     object_id = models.PositiveIntegerField(verbose_name=_("Application"))
@@ -356,7 +364,7 @@ class Campaign(Model):
         For example,
         If campaign is active, you can change status to 'Pause' or 'Stop'
         """
-        # active - 1 | pause - 2 | stop - 4
+        # active - 1 | pause - 2 | abort - 3 | stop - 4
         if self.status == 1:
             return "<a href='%s'>Pause</a> | <a href='%s'>Abort</a> \
             | <a href='%s'>Stop</a>" % \
@@ -416,8 +424,7 @@ class Campaign(Model):
     count_contact_of_phonebook.short_description = _('Contact')
 
     def is_authorized_contact(self, str_contact):
-        """Check if a contact is authorized
-        """
+        """Check if a contact is authorized"""
         return common_contact_authorization(self.user, str_contact)
 
 
@@ -538,6 +545,21 @@ class Campaign(Model):
         .all()[:limit]
         if not list_subscriber:
             return False
+        return list_subscriber
+
+    def get_pending_subscriber_update(self, limit=1000, status=6):
+        """Get all the pending subscribers from the campaign"""
+        #TODO in django 1.4 : replace by SELECT FOR UPDATE
+        list_subscriber = \
+        CampaignSubscriber.objects.filter(campaign=self.id, status=1)\
+        .all()[:limit]
+
+        if not list_subscriber:
+            return False
+        for elem_subscriber in list_subscriber:
+            elem_subscriber.status = status
+            elem_subscriber.save()
+
         return list_subscriber
 
 

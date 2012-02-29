@@ -1,3 +1,17 @@
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from datetime import *
@@ -47,7 +61,7 @@ class Gateway(Model):
         * ``description`` - Description about the Gateway.
         * ``addprefix`` - Add prefix.
         * ``removeprefix`` - Remove prefix.
-        * ``gateways`` - "user/,user", # Gateway string to try dialing \
+        * ``gateways`` - "user/,user/", # Gateway string to try dialing \
         separated by comma. First in the list will be tried first
         * ``gateway_codecs`` - "'PCMA,PCMU','PCMA,PCMU'", \
         # Codec string as needed by FS for each gateway separated by comma
@@ -78,19 +92,19 @@ class Gateway(Model):
     removeprefix = models.CharField(verbose_name=_('Remove prefix'),
                    max_length=60, blank=True)
     gateways = models.CharField(max_length=500, verbose_name=_("Gateways"),
-    help_text=_('Example : "sofia/gateway/myprovider/" or 2 for failover "sofia/gateway/myprovider/, user/", # Gateway string to try dialing separated by comma. First in list will be tried first'))
+                help_text=_('Example : "sofia/gateway/myprovider/" or 2 for failover "sofia/gateway/myprovider/, user/", # Gateway string to try dialing separated by comma. First in list will be tried first'))
 
     gateway_codecs = models.CharField(max_length=500, blank=True, verbose_name=_("Gateway codecs"),
-    help_text=_('"\'PCMA,PCMU\',\'PCMA,PCMU\'", # Codec string as needed by FS for each gateway separated by comma'))
+                help_text=_('"\'PCMA,PCMU\',\'PCMA,PCMU\'", # Codec string as needed by FS for each gateway separated by comma'))
 
     gateway_timeouts = models.CharField(max_length=500, blank=True, verbose_name=_("Gateway timeouts"),
-    help_text=_('"10,10", # Seconds to timeout in string for each gateway separated by comma'))
+                help_text=_('"10,10", # Seconds to timeout in string for each gateway separated by comma'))
 
     gateway_retries = models.CharField(max_length=500, blank=True, verbose_name=_("Gateway retries"),
-    help_text=_('"2,1", # Retry String for Gateways separated by comma, on how many times each gateway should be retried'))
+                help_text=_('"2,1", # Retry String for Gateways separated by comma, on how many times each gateway should be retried'))
 
     originate_dial_string = models.CharField(max_length=500, blank=True, verbose_name=_("Originate dial string"),
-    help_text=_('Add Channels Variables : http://wiki.freeswitch.org/wiki/Channel_Variables, ie: bridge_early_media=true,hangup_after_bridge=true'))
+                help_text=_('Add Channels Variables : http://wiki.freeswitch.org/wiki/Channel_Variables, ie: bridge_early_media=true,hangup_after_bridge=true'))
 
     secondused = models.IntegerField(null=True, blank=True, verbose_name=_("Second used"))
 

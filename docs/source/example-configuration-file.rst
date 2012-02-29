@@ -151,13 +151,12 @@ The Admin Module
 The classes defined in ``admin.py`` tell Django what attributes
 are visible and modifiable from the admin site.
 
-Code for naming convention (e.g. Voip -> VoIP) (in admin.py)
 
 **Example:**
 ::
 
     def get_urls(self):
-        urls = super(VoipAppAdmin, self).get_urls()
+        urls = super(VoiceAppAdmin, self).get_urls()
         my_urls = patterns('',
             (r'^add/$', self.admin_site.admin_view(self.add_view)),
         )
@@ -165,9 +164,9 @@ Code for naming convention (e.g. Voip -> VoIP) (in admin.py)
 
     def add_view(self, request, extra_context=None):
         ctx = {
-            'app_label': _('VoIP'),
-            'title': _('Add VoIP'),
+            'app_label': _('Voice'),
+            'title': _('Add Voice'),
         }
-        return super(VoipAppAdmin, self)\
+        return super(VoiceAppAdmin, self)\
                .add_view(request, extra_context=ctx)
 

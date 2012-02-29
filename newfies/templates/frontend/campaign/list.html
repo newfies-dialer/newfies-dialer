@@ -1,50 +1,34 @@
 {% extends "frontend/master.html" %}
 {% load dialer_cdr_extras icons i18n %}
 
-
 {% block extra_files %}
-<!--flexigrid css & js-->
-<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid.css" type="text/css" />
-<script type="text/javascript" src="{{STATIC_URL}}newfies/js/flexigrid.js"></script>
-<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid_custom.css" type="text/css" />
-<script type="text/javascript" language="javascript">
-function get_alert_msg(id)
-{
-    confirm_string = '{% trans "Confirm deletion?" %}';
-    var answer = confirm(confirm_string);
-    return answer // answer is a boolean
-}
-</script>
-
-{% include "frontend/custom_jquery_select_all.html" %}
-    
+    {% include "frontend/custom_jquery_select_all.html" %}
 {% endblock %}
 
 {% block content_header %}
-<h1>{% trans "Campaign" %} <small>{% trans "List, add and edit campaigns" %}</small></h1>
+    <h1>{% trans "Campaign" %} <small>{% trans "List, add and edit campaigns" %}</small></h1>
 {% endblock %}
 
 {% block content %}
 
 {% if msg %}
-<div class="alert-message success">
+    <div class="alert alert-success">
         <strong>{% trans "Alert" %} : </strong>  {{ msg }}
-</div>
+    </div>
 {% endif %}
 
 {% if error_msg %}
-<div class="alert-message error">
-    <strong>{% trans "Alert" %} : </strong>  {{ error_msg }}
-</div>
+    <div class="alert alert-error">
+        <strong>{% trans "Alert" %} : </strong>  {{ error_msg }}
+    </div>
 {% endif %}
 
 <br/>
-<form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">
-{% csrf_token %}
-<table id="flex1" align="left" style="display:none;"></table>
+<form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">{% csrf_token %}
+    <table id="flex1" align="left" style="display:none;"></table>
 </form>
-<script type="text/javascript">
 
+<script type="text/javascript">
 
 $("#flex1").flexigrid({
     url: "/campaign_grid/",
@@ -52,14 +36,14 @@ $("#flex1").flexigrid({
     dataType: 'json',
 	colModel : [
         {display: '<input type="checkbox" onclick="toggleChecked(this.checked)">', name: '', width: 20, align: 'center'},
-		{display: '{% trans "Key" %}', name: 'campaign_code', width: 58, sortable: true, align: 'center'},
-        {display: '{% trans "Name" %}', name: 'name', width: 120, sortable: true, align: 'center'},
-        {display: '{% trans "Start date" %}', name: 'startingdate', width: 110, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
-        {display: '{% trans "Type" %}', name: 'content_type__name', width: 110, sortable: true, align: 'center'},
+		{display: '{% trans "Key" %}', name: 'campaign_code', width: 100, sortable: true, align: 'center'},
+        {display: '{% trans "Name" %}', name: 'name', width: 200, sortable: true, align: 'center'},
+        {display: '{% trans "Start date" %}', name: 'startingdate', width: 150, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
+        {display: '{% trans "Type" %}', name: 'content_type__name', width: 100, sortable: true, align: 'center'},
         {display: '{% trans "App" %}', name: '', width: 100, sortable: true, align: 'center'},
         {display: '{% trans "Contacts" %}', name: '', width: 100, sortable: true, align: 'center'},
-        {display: '{% trans "Status" %}', name: 'status', width: 60, sortable: true, align: 'center'},
-        {display: '{% trans "Action" %}', name: '', width : 120, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
+        {display: '{% trans "Status" %}', name: 'status', width: 100, sortable: true, align: 'center'},
+        {display: '{% trans "Action" %}', name: '', width : 200, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
 		],
     buttons : [
 		{name: '{% trans "Add" %}', bclass: 'add', onpress : add_button},
@@ -73,7 +57,7 @@ $("#flex1").flexigrid({
 	useRp: true,
 	rp: 10,
 	showTableToggleBtn: true,
-	width: 910,
+	//width: 910,
 	height: 265,
     pagetext: '{% trans "Page" %}',
     outof: '{% trans "of" %}',

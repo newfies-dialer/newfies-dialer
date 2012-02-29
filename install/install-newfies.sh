@@ -1,21 +1,20 @@
 #!/bin/bash
-#   Installation script for Newfies
-#   Copyright (C) <2011>  <Star2Billing S.L> 
-#This program is free software; you can redistribute it and/or
-#modify it under the terms of the GNU General Public License
-#as published by the Free Software Foundation; either version 2
-#of the License, or (at your option) any later version.
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
 
-#This program is distributed in the hope that it will be useful,
-#but WITHOUT ANY WARRANTY; without even the implied warranty of
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#GNU General Public License for more details.
-
-#You should have received a copy of the GNU General Public License
-#along with this program; if not, write to the Free Software
-#Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
-# To download this script to your server,
+#
+# To download and run the script on your server :
 #
 # >> Install with Master script :
 # cd /usr/src/ ; rm install-newfies.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-newfies.sh ; chmod +x install-newfies.sh ; ./install-newfies.sh
@@ -23,14 +22,17 @@
 # >> Install with develop script :
 # cd /usr/src/ ; rm install-newfies.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/develop/install/install-newfies.sh ; chmod +x install-newfies.sh ; ./install-newfies.sh
 #
+#
 #TODO:
 # - Memcached
+
 
 #Install mode can me either CLONE or DOWNLOAD
 INSTALL_MODE='CLONE'
 DATETIME=$(date +"%Y%m%d%H%M%S")
 KERNELARCH=$(uname -p)
 INSTALL_DIR='/usr/share/newfies'
+INSTALL_DIR_WELCOME='/var/www/newfies'
 DATABASENAME=$INSTALL_DIR'/database/newfies.db'
 MYSQLUSER=
 MYSQLPASSWORD=
@@ -38,52 +40,180 @@ MYHOST=
 MYHOSTPORT=
 #Freeswitch update vars
 FS_INSTALLED_PATH=/usr/local/freeswitch
-
 CELERYD_USER="celery"
 CELERYD_GROUP="celery"
-
 NEWFIES_ENV="newfies-dialer"
-
 HTTP_PORT="8008"
+SOUTH_SOURCE='hg+http://bitbucket.org/andrewgodwin/south/@ecaafda23e600e510e252734d67bf8f9f2362dc9#egg=South-dev'
 
-#------------------------------------------------------------------------------------
 
 
-# Identify Linux Distribution type
-if [ -f /etc/debian_version ] ; then
-    DIST='DEBIAN'
-elif [ -f /etc/redhat-release ] ; then
-    DIST='CENTOS'
-else
+func_identify_os() {
+    # Identify Linux Distribution type
+    if [ -f /etc/debian_version ] ; then
+        DIST='DEBIAN'
+        if [ "$(lsb_release -cs)" != "lucid" ] ; then
+		    echo "This script is only intended to run on Ubuntu LTS 10.04 or CentOS 6.2"
+		    exit 255
+	    fi
+    elif [ -f /etc/redhat-release ] ; then
+        DIST='CENTOS'
+        if [ "$(awk '{print $3}' /etc/redhat-release)" != "6.2" ] ; then
+        	echo "This script is only intended to run on Ubuntu LTS 10.04 or CentOS 6.2"
+        	exit 255
+        fi
+    else
+        echo ""
+        echo "This script is only intended to run on Ubuntu LTS 10.04 or CentOS 6.2"
+        echo ""
+        exit 1
+    fi
+}
+
+
+#Function accept_license
+func_accept_license() {
     echo ""
-    echo "This Installer should be run on a CentOS or a Debian based system"
+    wget --no-check-certificate -q -O  MPL-V2.0.txt https://raw.github.com/Star2Billing/newfies-dialer/develop/COPYING
+    more MPL-V2.0.txt
     echo ""
-    exit 1
-fi
+    echo ""
+    echo "Newfies-Dialer License MPL V2.0"
+    echo "Further information at http://www.newfies-dialer.org/support/licensing/"
+    echo ""
+    echo "This Source Code Form is subject to the terms of the Mozilla Public"
+    echo "License, v. 2.0. If a copy of the MPL was not distributed with this file,"
+    echo "You can obtain one at http://mozilla.org/MPL/2.0/."
+    echo ""
+    echo "Copyright (C) 2011-2012 Star2Billing S.L."
+    echo ""
+    echo ""
+    echo "I agree to be bound by the terms of the license - [YES/NO]"
+    echo ""
+    read ACCEPT
+    
+    while [ "$ACCEPT" != "yes" ]  && [ "$ACCEPT" != "Yes" ] && [ "$ACCEPT" != "YES" ]  && [ "$ACCEPT" != "no" ]  && [ "$ACCEPT" != "No" ]  && [ "$ACCEPT" != "NO" ]; do
+        echo "I agree to be bound by the terms of the license - [YES/NO]"
+        read ACCEPT
+    done
+    
+    if [ "$ACCEPT" != "yes" ]  && [ "$ACCEPT" != "Yes" ] && [ "$ACCEPT" != "YES" ]; then
+        echo "License rejected !"
+        exit 0
+    else
+        echo "Licence accepted !"
+    fi
+}
 
 
-case $DIST in
-    'DEBIAN')
-        SCRIPT_VIRTUALENVWRAPPER="/usr/local/bin/virtualenvwrapper.sh"
-        APACHE_USER="www-data"
-        WSGI_ADDITIONAL=""
-        WSGIApplicationGroup=""
-    ;;
-    'CENTOS')
-        SCRIPT_VIRTUALENVWRAPPER="/usr/bin/virtualenvwrapper.sh"
-        APACHE_USER="apache"
-        WSGI_ADDITIONAL="WSGISocketPrefix run/wsgi"
-        WSGIApplicationGroup="WSGIApplicationGroup %{GLOBAL}"
-    ;;
-esac
+#Function install the landing page
+func_install_landing_page() {
+    mkdir -p $INSTALL_DIR_WELCOME
+    # Copy files
+    cp -r /usr/src/newfies-dialer/install/landing-page/* $INSTALL_DIR_WELCOME
+    
+    echo ""
+    echo "Add Apache configuration for Welcome page..."
+    echo '    
+    <VirtualHost *:80>
+        DocumentRoot '$INSTALL_DIR_WELCOME'/
+        DirectoryIndex index.html index.htm index.php index.php4 index.php5
+        
+        <Directory '$INSTALL_DIR_WELCOME'>
+            Options Indexes IncludesNOEXEC FollowSymLinks
+            allow from all
+            AllowOverride All
+            allow from all
+        </Directory>
 
+    </VirtualHost>
+    
+    ' > $APACHE_CONF_DIR/welcome-newfies.conf
+    
+    case $DIST in
+        'DEBIAN')
+            mv /etc/apache2/sites-enabled/000-default /tmp/
+            service apache2 restart
+        ;;
+        'CENTOS')
+            service httpd restart
+        ;;
+    esac
+    
+    #Update Welcome page IP
+    sed -i "s/LOCALHOST/$IPADDR:$HTTP_PORT/g" $INSTALL_DIR_WELCOME/index.html    
+}
+
+func_check_dependencies() {
+    echo ""
+    echo "Checking Python dependencies..."
+    echo ""
+    
+    #Check South
+    grep_pip=`pip freeze| grep south`
+    if echo $grep_pip | grep -i "south" > /dev/null ; then
+        echo "OK : South installed..."
+    else
+        echo "Error : South not installed..."
+        exit 1
+    fi
+    
+    #Check Django
+    grep_pip=`pip freeze| grep Django`
+    if echo $grep_pip | grep -i "Django" > /dev/null ; then
+        echo "OK : Django installed..."
+    else
+        echo "Error : Django not installed..."
+        exit 1
+    fi
+    
+    #Check MySQL-python
+    grep_pip=`pip freeze| grep MySQL-python`
+    if echo $grep_pip | grep -i "MySQL-python" > /dev/null ; then
+        echo "OK : MySQL-python installed..."
+    else
+        echo "Error : MySQL-python not installed..."
+        exit 1
+    fi
+    
+    #Check celery
+    grep_pip=`pip freeze| grep celery`
+    if echo $grep_pip | grep -i "celery" > /dev/null ; then
+        echo "OK : celery installed..."
+    else
+        echo "Error : celery not installed..."
+        exit 1
+    fi
+    
+    #Check django-tastypie
+    grep_pip=`pip freeze| grep django-tastypie`
+    if echo $grep_pip | grep -i "django-tastypie" > /dev/null ; then
+        echo "OK : django-tastypie installed..."
+    else
+        echo "Error : django-tastypie not installed..."
+        exit 1
+    fi
+    
+    #Check raven
+    grep_pip=`pip freeze| grep raven`
+    if echo $grep_pip | grep -i "raven" > /dev/null ; then
+        echo "OK : raven installed..."
+    else
+        echo "Error : raven not installed..."
+        exit 1
+    fi
+    
+    echo ""
+    echo "Python dependencies successfully installed!"
+    echo ""
+}
 
 #Function mysql db setting
 func_mysql_database_setting() {
     echo ""
-    
     echo "Configure Mysql Settings..."
     echo ""
+    
     echo "Enter Mysql hostname (default:localhost)"
     read MYHOST
     if [ -z "$MYHOST" ]; then
@@ -114,6 +244,7 @@ func_mysql_database_setting() {
 func_iptables_configuration() {
     #add http port
     iptables -I INPUT 2 -p tcp -m state --state NEW -m tcp --dport $HTTP_PORT -j ACCEPT
+    iptables -I INPUT 3 -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT
     
     service iptables save
 }
@@ -141,7 +272,7 @@ func_setup_virtualenv() {
     export WORKON_HOME=/usr/share/virtualenvs
     source $SCRIPT_VIRTUALENVWRAPPER
 
-    mkvirtualenv --no-site-packages $NEWFIES_ENV
+    mkvirtualenv $NEWFIES_ENV
     workon $NEWFIES_ENV
     
     echo "Virtualenv $NEWFIES_ENV created and activated"
@@ -167,14 +298,11 @@ func_install_frontend(){
     echo "Install Dependencies and python modules..."
     case $DIST in
         'DEBIAN')
-            # SET APACHE CONF
-            APACHE_CONF_DIR="/etc/apache2/sites-enabled/"
-
             apt-get -y install python-setuptools python-dev build-essential 
             apt-get -y install libapache2-mod-python libapache2-mod-wsgi
             easy_install pip
             #|FIXME: Strangely South need to be installed outside the Virtualenv
-            pip install -e hg+http://bitbucket.org/andrewgodwin/south/@ecaafda23e600e510e252734d67bf8f9f2362dc9#egg=South-dev
+            pip install -e $SOUTH_SOURCE
             
             #Install Extra dependencies on New OS        
             apt-get -y install git-core mercurial gawk
@@ -184,30 +312,37 @@ func_install_frontend(){
             else
                 apt-get -y install mysql-server libmysqlclient-dev
                 #Start MySQL
-                /etc/init.d/mysqld start
+                /etc/init.d/mysql start
                 #Configure MySQL
                 /usr/bin/mysql_secure_installation
-                func_mysql_database_setting
+				until mysql -u$MYSQLUSER -p$MYSQLPASSWORD -P$MYHOSTPORT -h$MYHOST -e ";" ; do 
+					clear 
+                	echo "Enter correct database settings"
+                	func_mysql_database_setting
+                done
             fi
             
             #for audiofile convertion
             apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
         ;;
         'CENTOS')
-            # SET APACHE CONF
-            APACHE_CONF_DIR="/etc/httpd/conf.d/"
-            
-            #TODO : Check architecture
-            rpm -ivh http://download.fedora.redhat.com/pub/epel/6/x86_64/epel-release-6-5.noarch.rpm
-            # disable epel repository since by default it is enabled. 
-            sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo
-            #yum --enablerepo=epel install python-pip
-            
+			if [ ! -f /etc/yum.repos.d/rpmforge.repo ];
+            	then
+                	# Install RPMFORGE Repo
+                	#Check architecture
+        			KERNELARCH=$(uname -p)
+        			if [ $KERNELARCH = "x86_64" ]; then
+						rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.x86_64.rpm
+					else
+						rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.i686.rpm
+					fi
+        	fi
             #Install Python dep  and pip
-            yum -y install python-setuptools python-tools python-devel mod_python
-            yum -y install python-pip
-            yum -y install mercurial mod_wsgi
-            
+            #Install epel repo for pip and mod_python
+            rpm -ivh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-5.noarch.rpm
+            # disable epel repository since by default it is enabled.
+            sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo
+            yum -y --enablerepo=epel install python-pip mod_python python-setuptools python-tools python-devel mercurial mod_wsgi
             #start http after reboot
             chkconfig --levels 235 httpd on
 
@@ -220,11 +355,12 @@ func_install_frontend(){
                 /etc/init.d/mysqld start
                 #Configure MySQL
                 /usr/bin/mysql_secure_installation
-                func_mysql_database_setting
+				until mysql -u$MYSQLUSER -p$MYSQLPASSWORD -P$MYHOSTPORT -h$MYHOST -e ";" ; do 
+					clear 
+                	echo "Enter correct database settings"
+                	func_mysql_database_setting
+                done            
             fi
-            
-            #for audiofile convertion
-            yum -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
         ;;
     esac
     
@@ -242,6 +378,9 @@ func_install_frontend(){
         mkdir /tmp/old-newfies-dialer_$DATETIME
         mv $INSTALL_DIR /tmp/old-newfies-dialer_$DATETIME
         echo "Files from $INSTALL_DIR has been moved to /tmp/old-newfies-dialer_$DATETIME"
+        echo "Run backup with mysqldump..."
+        mysqldump -u $MYSQLUSER --password=$MYSQLPASSWORD $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql
+        echo "Mysql Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql"
         echo "Press Enter to continue"
         read TEMP
     fi
@@ -295,6 +434,11 @@ func_install_frontend(){
     done
     pip install plivohelper
     
+    #Add South install again
+    pip install -e $SOUTH_SOURCE
+    
+    #Check Python dependencies
+    func_check_dependencies
     
     # copy settings_local.py into newfies dir
     cp /usr/src/newfies-dialer/install/conf/settings_local.py $INSTALL_DIR
@@ -305,7 +449,6 @@ func_install_frontend(){
     sed -i "s/^SECRET_KEY.*/SECRET_KEY = \'$RANDPASSW\'/g"  $INSTALL_DIR/settings.py
     echo ""
 
-
     # Disable Debug
     sed -i "s/DEBUG = True/DEBUG = False/g"  $INSTALL_DIR/settings_local.py
     sed -i "s/TEMPLATE_DEBUG = DEBUG/TEMPLATE_DEBUG = False/g"  $INSTALL_DIR/settings_local.py
@@ -314,12 +457,6 @@ func_install_frontend(){
         # Setup settings_local.py for SQLite
         sed -i "s/'init_command/#'init_command/g"  $INSTALL_DIR/settings_local.py
     else
-        #Backup Mysql Database
-        echo "Run backup with mysqldump..."
-        mysqldump -u $MYSQLUSER --password=$MYSQLPASSWORD $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql
-        echo "Mysql Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql"
-        echo "Press Enter to continue"
-        read TEMP
             
         # Setup settings_local.py for MySQL
         sed -i "s/'django.db.backends.sqlite3'/'django.db.backends.mysql'/"  $INSTALL_DIR/settings_local.py
@@ -331,9 +468,10 @@ func_install_frontend(){
     
         # Create the Database
         echo "Remove Existing Database if exists..."
-        echo "mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e 'DROP DATABASE $DATABASENAME;'"
-        mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e "DROP DATABASE $DATABASENAME;"
-
+  		if [ -d "/var/lib/mysql/$DATABASENAME" ]; then
+	        echo "mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e 'DROP DATABASE $DATABASENAME;'"
+    	    mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e "DROP DATABASE $DATABASENAME;"
+		fi
         echo "Create Database..."
         echo "mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e 'CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;'"
         mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e "CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;"
@@ -417,6 +555,11 @@ func_install_frontend(){
     
     IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
     IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
+    if [ -z "$IPADDR" ]; then
+        clear
+        echo "we have not detected your IP address automatically, please enter it manually"
+        read IPADDR
+	fi
     
     ##Update Freeswitch XML CDR
     #NEWFIES_CDR_API='api\/v1\/store_cdr\/'
@@ -433,13 +576,15 @@ func_install_frontend(){
     sed -i "s/#'SERVER_IP',/'$IPADDR',/g" $INSTALL_DIR/settings_local.py
     sed -i "s/dummy/plivo/g" $INSTALL_DIR/settings_local.py
     
+
+    
     case $DIST in
         'DEBIAN')
             service apache2 restart
         ;;
         'CENTOS')
             echo ""
-            echo "We will now add $HTTP_PORT port to your Firewall"
+            echo "We will now add port $HTTP_PORT  and port 80 to your Firewall"
             echo "Press Enter to continue or CTRL-C to exit"
             read TEMP
         
@@ -489,6 +634,11 @@ func_install_backend() {
 
     IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
     IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
+    if [ -z "$IPADDR" ]; then
+        clear
+        echo "we have not detected your IP address automatically, please enter it manually"
+        read IPADDR
+	fi
     
     #Create directory for pid file
     mkdir -p /var/run/celery
@@ -643,6 +793,35 @@ show_menu_newfies() {
 
 
 
+# * * * * * * * * * * * * Start Script * * * * * * * * * * * *
+
+
+#Identify the OS
+func_identify_os
+
+#Prepare settings for installation
+case $DIST in
+    'DEBIAN')
+        SCRIPT_VIRTUALENVWRAPPER="/usr/local/bin/virtualenvwrapper.sh"
+        APACHE_CONF_DIR="/etc/apache2/sites-enabled/"
+        APACHE_USER="www-data"
+        WSGI_ADDITIONAL=""
+        WSGIApplicationGroup=""
+    ;;
+    'CENTOS')
+        SCRIPT_VIRTUALENVWRAPPER="/usr/bin/virtualenvwrapper.sh"
+        APACHE_CONF_DIR="/etc/httpd/conf.d/"
+        APACHE_USER="apache"
+        WSGI_ADDITIONAL="WSGISocketPrefix run/wsgi"
+        WSGIApplicationGroup="WSGIApplicationGroup %{GLOBAL}"
+    ;;
+esac
+
+#Request the user to accept the license
+func_accept_license
+
+
+
 ExitFinish=0
 
 while [ $ExitFinish -eq 0 ]; do
@@ -653,11 +832,13 @@ while [ $ExitFinish -eq 0 ]; do
 	case $OPTION in
 		1) 
 			func_install_frontend
+			func_install_landing_page
 			func_install_backend
 			echo done
 		;;
 		2) 
 			func_install_frontend
+			func_install_landing_page
 		;;
 		3) 
 			func_install_backend
@@ -669,6 +850,7 @@ while [ $ExitFinish -eq 0 ]; do
 	esac	
 	
 done
+
 
 
 # Clean the system on MySQL

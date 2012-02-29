@@ -1,3 +1,17 @@
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
+
 from django.conf.urls.defaults import *
 from django.conf import settings
 from user_profile.views import *
@@ -9,7 +23,6 @@ urlpatterns = patterns('',
 (r'^user_detail_change/$', 'user_profile.views.customer_detail_change'),
 
 (r'^user_detail_change/', include('notification.urls')),
-(r'^view_notification/(?P<id>[^/]+)', 'user_profile.views.view_notification'),
 (r'^notification_grid/$', 'user_profile.views.notification_grid'),
 (r'^user_detail_change/del/(.+)/$', 'user_profile.views.notification_del_read'),
 

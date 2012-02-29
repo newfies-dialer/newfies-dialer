@@ -46,7 +46,7 @@ Be sure to also read the :ref:`contributing` section in the documentation.
 License
 =======
 
-This software is licensed under the `AGPL License`. See the :file:`LICENSE`
+This software is licensed under the `MPL 2.0 License`. See the :file:`LICENSE`
 file in the top distribution directory for the full license text.
 
 .. # vim: syntax=rst expandtab tabstop=4 shiftwidth=4 shiftround

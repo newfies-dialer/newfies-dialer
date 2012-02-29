@@ -1,3 +1,17 @@
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from datetime import *
@@ -15,7 +29,7 @@ class DialerSetting(models.Model):
         * ``maxretry`` - Max retries allowed per user
         * ``max_calltimeout`` - Maximum number of seconds to timeout on calls
         * ``max_number_campaign`` - Max Number of campaigns
-        * ``max_number_subscriber_campaign`` - Max Number of subscribera
+        * ``max_number_subscriber_campaign`` - Max Number of subscriber
         * ``blacklist`` - Used to blacklist phone numbers to be called
         * ``whitelist`` - Used to whitelist phone numbers to be called
 

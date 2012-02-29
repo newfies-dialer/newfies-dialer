@@ -1,3 +1,16 @@
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
 import plivohelper
 
 REST_API_URL = 'http://127.0.0.1:8088'
@@ -17,8 +30,7 @@ def call_plivo(callerid=None, phone_number=None, Gateways=None,
     # Define Channel Variable -
     # http://wiki.freeswitch.org/wiki/Channel_Variables
     extra_dial_string = "bridge_early_media=true,hangup_after_bridge=true"
-
-    #TODO : See if we want to merge ExtraDialString
+    extra_dial_string = extra_dial_string + ExtraDialString
 
     if not phone_number:
         print "Error : Phone Number needs to be defined!"

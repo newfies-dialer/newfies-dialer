@@ -7,56 +7,41 @@
 {% endblock %}
 
 {% block extra_files %}
-{% include "common_audiofield.html" %}
-<!--flexigrid css & js-->
-<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid.css" type="text/css" />
-<script type="text/javascript" src="{{STATIC_URL}}newfies/js/flexigrid.js"></script>
-<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid_custom.css" type="text/css" />
-<script type="text/javascript" language="javascript">
-function get_alert_msg(id)
-{
-    confirm_string = '{% trans "Confirm deletion?" %}';
-    var answer = confirm(confirm_string);
-    return answer // answer is a boolean
-}
-</script>
-
-{% include "frontend/custom_jquery_select_all.html" %}
-    
+    {% include "common_audiofield.html" %}
+    {% include "frontend/custom_jquery_select_all.html" %}
 {% endblock %}
 
 {% block content_header %}
-<h1>{% trans "Audio Files" %} <small>{% trans "List, upload and edit audio files" %}</small></h1>
+    <h1>{% trans "Audio Files" %} <small>{% trans "List, upload and edit audio files" %}</small></h1>
 {% endblock %}
 
 
 {% block content %}
 {% if msg %}
-<div class="alert-message success">
+    <div class="alert alert-success">
         <strong>{% trans "Alert" %} : </strong>  {{ msg }}
-</div>
+    </div>
 {% endif %}
 
 <br/>
 
-<form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">
-{% csrf_token %}
-<table id="flex1" align="left" style="display:none;"></table>
+<form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">{% csrf_token %}
+    <table id="flex1" align="left" style="display:none;"></table>
 </form>
-<script type="text/javascript">
 
+<script type="text/javascript">
 
 $("#flex1").flexigrid({
     url: "/audio_grid/",
     method: 'GET',
     dataType: 'json',
 	colModel : [
-        {display: '<input type="checkbox" onclick="toggleChecked(this.checked)">', name: '', width: 20, align: 'center'},
+        {display: '<input type="checkbox" onclick="toggleChecked(this.checked)">', name: '', width: 50, align: 'center'},
         {display: '{% trans "Name" %}', name: 'name', width: 100, sortable: true, align: 'center'},
-        {display: '{% trans "Audio" %}', name: 'audio_file', width: 240, sortable: true, align: 'center'},
-        {display: '{% trans "Audio URL" %}', name: '', width: 250, sortable: true, align: 'center'},
-        {display: '{% trans "Date" %}', name: 'updated_date', width: 110, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
-        {display: '{% trans "Action" %}', name: '', width : 80, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
+        {display: '{% trans "Audio" %}', name: 'audio_file', width: 250, sortable: true, align: 'center'},
+        {display: '{% trans "Audio URL" %}', name: '', width: 300, sortable: true, align: 'center'},
+        {display: '{% trans "Date" %}', name: 'updated_date', width: 250, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
+        {display: '{% trans "Action" %}', name: '', width : 150, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
 		],
     buttons : [
 		{name: '{% trans "Add" %}', bclass: 'add', onpress : add_button},
@@ -70,7 +55,7 @@ $("#flex1").flexigrid({
 	useRp: true,
 	rp: 10,
 	showTableToggleBtn: true,
-	width: 870,
+	//width: 870,
 	height: 265,
     pagetext: '{% trans "Page" %}',
     outof: '{% trans "of" %}',
@@ -87,7 +72,6 @@ $("#flex1").flexigrid({
     },
 });
 
-
 function add_button()
 {
     window.location = 'add/';
@@ -96,7 +80,6 @@ function delete_button()
 {
     $('#ListForm').submit();
 }
-
 </script>
 
 {% endblock %}

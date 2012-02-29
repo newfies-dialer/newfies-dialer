@@ -1,3 +1,17 @@
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
+
 from django.contrib import admin
 from django.contrib.admin.options import IncorrectLookupParameters
 from django.contrib.admin.views.main import ERROR_FLAG
@@ -139,10 +153,8 @@ class VoIPCallAdmin(admin.ModelAdmin):
                                                         tday.day, 0, 0, 0, 0)
 
         formset = cl.formset = None
-        cl.result_list = cl.result_list.filter(**kwargs).order_by('-starting_date')
         
-
-        # Session variable is used to get recrod set with searched option
+        # Session variable is used to get record set with searched option
         # into export file
         request.session['voipcall_record_qs'] = \
         super(VoIPCallAdmin, self).queryset(request).filter(**kwargs)\
@@ -151,7 +163,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
         select_data = \
         {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
         total_data = ''
-        # Get Total Rrecords from VoIPCall Report table for Daily Call Report
+        # Get Total Records from VoIPCall Report table for Daily Call Report
         total_data = VoIPCall.objects.extra(select=select_data)\
                      .values('starting_date')\
                      .filter(**kwargs).annotate(Count('starting_date'))\

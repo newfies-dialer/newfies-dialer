@@ -1,3 +1,17 @@
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
+
 from celery.task import Task, PeriodicTask
 from dialer_campaign.models import Campaign, CampaignSubscriber
 from dialer_campaign.function_def import user_dialer_setting
@@ -6,9 +20,15 @@ from celery.decorators import task
 from django.db import IntegrityError
 from datetime import datetime, timedelta
 from time import sleep
+from django.conf import settings
 #from celery.task.http import HttpDispatchTask
 #from common_functions import isint
 
+
+if settings.DIALERDEBUG:
+    Timelaps = 5
+else:
+    Timelaps = 60
 
 @task(default_retry_delay=30 * 60)  # retry in 30 minutes.
 def add(x, y):
@@ -35,7 +55,6 @@ def add(x, y):
     except Exception, exc:
         self.retry(exc=exc, countdown=60)  # override the default and
                                            # retry in 1 minute
-
 
 
 
@@ -82,9 +101,13 @@ def check_campaign_pendingcall(campaign_id):
 
     #Get the subscriber of this campaign
     # get_pending_subscriber get Max 1000 records
-    list_subscriber = obj_campaign.get_pending_subscriber(frequency)
-    #print (list_subscriber)
-
+    list_subscriber = obj_campaign.get_pending_subscriber_update(
+                            frequency, 
+                            6 # Update to In Process
+                            )
+    #if list_subscriber:
+    #    print len(list_subscriber)
+    
     try:
         no_subscriber = list_subscriber.count()
     except AttributeError:
@@ -111,25 +134,20 @@ def check_campaign_pendingcall(campaign_id):
 
         #Create a Callrequest Instance to track the call task
         new_callrequest = Callrequest(status=1, # PENDING
-                                call_type=call_type,
-                                call_time=datetime.now(),
-                                timeout=obj_campaign.calltimeout,
-                                callerid=obj_campaign.callerid,
-                                phone_number=elem_camp_subscriber.contact.contact,
-                                campaign=obj_campaign,
-                                aleg_gateway=obj_campaign.aleg_gateway,
-                                content_type=obj_campaign.content_type,
-                                object_id=obj_campaign.object_id,
-                                user=obj_campaign.user,
-                                extra_data=obj_campaign.extra_data,
-                                timelimit=obj_campaign.callmaxduration,
-                                campaign_subscriber=elem_camp_subscriber)
+                            call_type=call_type,
+                            call_time=datetime.now(),
+                            timeout=obj_campaign.calltimeout,
+                            callerid=obj_campaign.callerid,
+                            phone_number=elem_camp_subscriber.contact.contact,
+                            campaign=obj_campaign,
+                            aleg_gateway=obj_campaign.aleg_gateway,
+                            content_type=obj_campaign.content_type,
+                            object_id=obj_campaign.object_id,
+                            user=obj_campaign.user,
+                            extra_data=obj_campaign.extra_data,
+                            timelimit=obj_campaign.callmaxduration,
+                            campaign_subscriber=elem_camp_subscriber)
         new_callrequest.save()
-
-        #Update the campaign status
-        elem_camp_subscriber.status = 6 # Update to In Process
-        elem_camp_subscriber.callrequest = new_callrequest
-        elem_camp_subscriber.save()
         
         #Todo Check if it's a good practice / implement a PID algorithm
         if no_subscriber > 1:
@@ -144,6 +162,33 @@ class campaign_running(PeriodicTask):
         campaign_running.delay()
     """
 
+    run_every = timedelta(seconds=Timelaps)
+    #NOTE : until we implement a PID Controller : 
+    #http://en.wikipedia.org/wiki/PID_controller
+
+    #The campaign have to run every minutes in order to control the number
+    # of calls per minute. Cons : new calls might delay 60seconds
+    #run_every = timedelta(seconds=60)
+
+    def run(self, **kwargs):
+        logger = self.get_logger(**kwargs)
+        logger.warning( "TASK :: campaign_running")
+
+        for campaign in Campaign.objects.get_running_campaign():
+            logger.debug("=> Campaign name %s (id:%s)" % (campaign.name,
+                                                         campaign.id))
+
+            check_campaign_pendingcall.delay(campaign.id)
+
+
+class campaign_spool_contact(PeriodicTask):
+    """A periodic task that checks the campaign, add subscribers
+
+    **Usage**:
+
+        campaign_spool_contact.delay()
+    """
+
     run_every = timedelta(seconds=15)
     #The campaign have to run every minutes in order to control the number
     # of calls per minute. Cons : new calls might delay 60seconds
@@ -151,13 +196,14 @@ class campaign_running(PeriodicTask):
 
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
-        logger.info( "TASK :: campaign_running")
+        logger.info( "TASK :: campaign_spool_contact")
 
         for campaign in Campaign.objects.get_running_campaign():
             logger.debug("=> Campaign name %s (id:%s)" % (campaign.name,
-                                                         campaign.id))
+                                                         str(campaign.id)))
 
-            check_campaign_pendingcall.delay(campaign.id)
+            collect_subscriber.delay(campaign.id)
+
 
 @task()
 def collect_subscriber(campaign_id):

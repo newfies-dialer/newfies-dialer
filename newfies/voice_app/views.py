@@ -1,3 +1,17 @@
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
+
 # Create your views here.
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -9,7 +23,8 @@ from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from voice_app.models import VoiceApp, get_voiceapp_type_name
 from voice_app.forms import VoiceAppForm
-from dialer_campaign.views import current_view, notice_count
+from dialer_campaign.views import current_view, notice_count, update_style, delete_style, \
+    grid_common_function
 from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_campaign.function_def import *
 from datetime import *
@@ -25,24 +40,12 @@ def voiceapp_grid(request):
     **Fields**: [id, name, user, description, type, gateway__name,
                  updated_date]
     """
-    page = variable_value(request, 'page')
-    rp = variable_value(request, 'rp')
-    sortname = variable_value(request, 'sortname')
-    sortorder = variable_value(request, 'sortorder')
-    query = variable_value(request, 'query')
-    qtype = variable_value(request, 'qtype')
-
-    # page index
-    if int(page) > 1:
-        start_page = (int(page) - 1) * int(rp)
-        end_page = start_page + int(rp)
-    else:
-        start_page = int(0)
-        end_page = int(rp)
-
-    sortorder_sign = ''
-    if sortorder == 'desc':
-        sortorder_sign = '-'
+    grid_data = grid_common_function(request)
+    page = int(grid_data['page'])
+    start_page = int(grid_data['start_page'])
+    end_page = int(grid_data['end_page'])
+    sortorder_sign = grid_data['sortorder_sign']
+    sortname = grid_data['sortname']
 
     voiceapp_list = VoiceApp.objects\
                    .values('id', 'name', 'user', 'description', 'type',
@@ -52,11 +55,6 @@ def voiceapp_grid(request):
     count = voiceapp_list.count()
     voiceapp_list = \
         voiceapp_list.order_by(sortorder_sign + sortname)[start_page:end_page]
-
-    update_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
-    delete_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/delete.png);"'
 
     rows = [{'id': row['id'],
              'cell': ['<input type="checkbox" name="select" class="checkbox"\
@@ -165,11 +163,11 @@ def voiceapp_del(request, object_id):
             voiceapp_list.delete()
             return HttpResponseRedirect('/voiceapp/')
     except:
-        # When object_id is 0 (Multiple recrod delete)
+        # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
 
-        # 2) delete voiceapp
+        # 1) delete voiceapp
         voiceapp_list = VoiceApp.objects.extra(where=['id IN (%s)' % values])
         request.session["msg"] =\
         _('%(count)s voiceapp(s) are deleted.' \

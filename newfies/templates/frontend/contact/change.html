@@ -2,52 +2,58 @@
 {% load i18n dialer_cdr_extras %}
 
 {% block extra_files %}
-<style>
-.add {
-background:transparent url({{STATIC_URL}}newfies/icons/add.png) no-repeat scroll left center;
-padding:1px 1px 1px 20px;
-}
-</style>
+    <style type="text/css">
+    .add {
+        background:transparent url('{{STATIC_URL}}newfies/icons/add.png') no-repeat scroll left center;
+        padding:1px 1px 1px 20px;
+    }
+    </style>
 {% endblock %}
 
-
 {% block content_header %}
-<h1>{% if action == 'update' %}
+    <h1>
+        {% if action == 'update' %}
             {% trans "Update" %}
         {% else %}
             {% trans "Add" %}
-        {% endif %} {% trans "Contact" %} <small>{% trans "Add contact details" %}</small></h1>
+        {% endif %} {% trans "Contact" %}
+        <small>{% trans "Add contact details" %}</small>
+    </h1>
 {% endblock %}
-
 
 {% block content %}
 
-<form method="POST" action="." enctype="multipart/form-data">
-    {% csrf_token %}
-        {% for field in form %}
-        <div class="clearfix{% if field.errors %} error{% endif %}">
-            <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
-            <div class="input">
-                {{ field }}
-                {% if field.errors %}
-                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-                {% endif %}
-                <span class="help-block">{{ field.help_text }} </span>
-            </div>
-        </div>
-        {% endfor %}
+{% if error_msg %}
+    <div class="alert alert-error">
+        <strong>{% trans "Alert"  %} : </strong>  {{ error_msg }}
+    </div>
+{% endif %}
 
-        <div class="actions">
-            {% if action == 'update' %}
-                <input id="update" class="btn primary" type="submit" value="{% trans "Update" %}" />
-            {% else %}
-                <input id="add" class="btn primary" type="submit" value="{% trans "Submit" %}" />
+<form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+    {% for field in form %}
+    <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+        <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+        <div class="input">
+            {{ field }}
+            {% if field.errors %}
+                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
             {% endif %}
-                &nbsp;&nbsp;
-            {% if action == 'update' %}
-                <input id="delete" class="btn danger" name="delete" type="submit" value="{% trans "Delete" %}" />
-            {% endif %}
+            <span class="help-block">{{ field.help_text }} </span>
         </div>
+    </div>
+    {% endfor %}
+
+    <div class="actions">
+        {% if action == 'update' %}
+            <input id="update" class="btn-primary" type="submit" value="{% trans "Update" %}" />
+        {% else %}
+            <input id="add" class="btn-primary" type="submit" value="{% trans "Submit" %}" />
+        {% endif %}
+            &nbsp;&nbsp;
+        {% if action == 'update' %}
+            <input id="delete" class="btn-danger" name="delete" type="submit" value="{% trans "Delete" %}" />
+        {% endif %}
+    </div>
 </form>
  
 {% endblock %}

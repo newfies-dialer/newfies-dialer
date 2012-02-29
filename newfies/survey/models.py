@@ -1,3 +1,17 @@
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
@@ -41,7 +55,20 @@ class Text2speechMessage(models.Model):
 
 
 class SurveyApp(Sortable):
-    """SurveyApp"""
+    """This defines the Survey
+
+    **Attributes**:
+
+        * ``name`` - survey name.
+        * ``description`` - description about the survey.
+
+    **Relationships**:
+
+        * ``user`` - Foreign key relationship to the User model.\
+        Each survey is assigned to a User
+
+    **Name of DB table**: surveyapp
+    """
     name = models.CharField(max_length=90, verbose_name=_('Name'))
     description = models.TextField(null=True, blank=True, 
                          verbose_name=_('Description'),
@@ -60,12 +87,29 @@ class SurveyApp(Sortable):
 
 
 class SurveyQuestion(Sortable):
-    """Survey Question"""
+    """This defines the question for survey
+
+    **Attributes**:
+
+        * ``question`` - survey name.
+        * ``tags`` -
+        * ``message_type`` -
+
+    **Relationships**:
+
+        * ``user`` - Foreign key relationship to the User model.\
+        Each survey question is assigned to a User
+        * ``surveyapp`` - Foreign key relationship to the SurveyApp model.\
+        Each survey question is assigned to a SurveyApp
+        * ``audio_message`` - Foreign key relationship to the AudioFile model.
+
+    **Name of DB table**: survey_question
+    """
     class Meta(Sortable.Meta):
         ordering = Sortable.Meta.ordering + ['surveyapp']
     
     question = models.CharField(max_length=500, verbose_name=_("Question"),
-                                help_text=_('Enter your question')) # What is your prefered fruit?
+                                help_text=_('Enter your question')) # What is your preferred fruit?
     tags = TagField(blank=True, max_length=1000)
     user = models.ForeignKey('auth.User', related_name='Survey owner')
     surveyapp = models.ForeignKey(SurveyApp, verbose_name=_("SurveyApp"))
@@ -85,7 +129,20 @@ class SurveyQuestion(Sortable):
     
 
 class SurveyResponse(models.Model):
-    """SurveyResponse"""
+    """This defines the response for survey question
+
+    **Attributes**:
+
+        * ``key`` - Key digit.
+        * ``keyvalue`` - Key Value
+
+    **Relationships**:
+
+        * ``surveyquestion`` - Foreign key relationship to the SurveyQuestion model.\
+        Each survey response is assigned to a SurveyQuestion
+
+    **Name of DB table**: survey_response
+    """
     key = models.CharField(max_length=9, blank=False, verbose_name=_("Key Digit"),
                            help_text=_('Define the key link to the response')) # 1 ; 2
     keyvalue = models.CharField(max_length=150, blank=True, verbose_name=_("Key Value")) # Orange ; Kiwi
@@ -103,13 +160,28 @@ class SurveyResponse(models.Model):
 
 
 class SurveyCampaignResult(models.Model):
-    """SurveyCampaignResult
+    """This gives survey result
     
     That will be difficult to scale for reporting
     One big issue is when the user update the survey in time, we need to keep an history somehow of the question/response
     
-    Idealy we can try to build 2 other table, survey_track_question (id, question_text), survey_track_response (id, response_text)
+    Ideally we can try to build 2 other table, survey_track_question (id, question_text), survey_track_response (id, response_text)
     Where question_text / response_text is unique
+
+    **Attributes**:
+
+        * ``callid`` - VoIP Call-ID
+        * ``question`` - survey question
+        * ``response`` - survey question's response
+
+    **Relationships**:
+
+        * ``campaign`` - Foreign key relationship to the Campaign model.\
+        Each survey result is belonged to a Campaign
+        * ``surveyapp`` - Foreign key relationship to the SurveyApp model.\
+        Each survey question is assigned to a SurveyApp
+
+    **Name of DB table**: survey_campaign_result
     """
     campaign = models.ForeignKey(Campaign, null=True, blank=True, verbose_name=_("Campaign"))
     

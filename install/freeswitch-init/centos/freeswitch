@@ -41,8 +41,6 @@ do_setlimits() {
         return 0
 }
 
-
-
 # source to get FREESWITCH_OPTIONS
 [ -f /etc/sysconfig/freeswitch ] && . /etc/sysconfig/freeswitch
 
@@ -89,4 +87,3 @@ case "$1" in
 esac
 
 exit $RETVAL
-

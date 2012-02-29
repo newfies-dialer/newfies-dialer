@@ -71,6 +71,16 @@ Objects Description
     :members:
 
 
+.. automodule:: voice_app.models
+
+.. _VoiceApp-model:
+
+:class:`VoiceApp`
+-----------------
+
+.. autoclass:: VoiceApp
+    :members:
+
 
 .. automodule:: dialer_gateway.models
 
@@ -94,6 +104,42 @@ Objects Description
     :members:
 
 
+.. automodule:: survey.models
+
+.. _SurveyApp-model:
+
+:class:`SurveyApp`
+------------------
+
+.. autoclass:: SurveyApp
+    :members:
+
+.. _SurveyQuestion-model:
+
+:class:`SurveyQuestion`
+-----------------------
+
+.. autoclass:: SurveyQuestion
+    :members:
+
+.. _SurveyResponse-model:
+
+:class:`SurveyResponse`
+-----------------------
+
+.. autoclass:: SurveyResponse
+    :members:
+
+.. _SurveyCampaignResult-model:
+
+:class:`SurveyCampaignResult`
+-----------------------------
+
+.. autoclass:: SurveyCampaignResult
+    :members:
+
+
+
 .. automodule:: user_profile.models
 
 .. _UserProfile-model:
@@ -103,6 +149,7 @@ Objects Description
 
 .. autoclass:: UserProfile
     :members:
+
 
 
 .. _database-design:

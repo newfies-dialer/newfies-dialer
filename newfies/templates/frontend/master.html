@@ -2,8 +2,24 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <head xmlns="http://www.w3.org/1999/xhtml" lang="{{ LANGUAGE_CODE }}" xml:lang="{{ LANGUAGE_CODE }}">
 
+<!--
+- Newfies-Dialer License
+- http://www.newfies-dialer.org
+- 
+- This Source Code Form is subject to the terms of the Mozilla Public 
+- License, v. 2.0. If a copy of the MPL was not distributed with this file, 
+- You can obtain one at http://mozilla.org/MPL/2.0/.
+- 
+- Copyright (C) 2011-2012 Star2Billing S.L.
+- 
+- The Initial Developer of the Original Code is
+- Arezqui Belaid <info@star2billing.com>
+-
+-->
+
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>{% block title %}Newfies-Dialer{% endblock %} | {% trans "Customer Interface" noop %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="{{STATIC_URL}}newfies/images/favicon.png">
     
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -11,90 +27,36 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    
     <!-- Le styles -->
-    <link href="{{STATIC_URL}}newfies/bootstrap-1.4.0/css/bootstrap.css" rel="stylesheet">
-    
+    <link href="{{STATIC_URL}}newfies/bootstrap-2.0.1/css/bootstrap.css" rel="stylesheet">
+    <!-- RTL -->
+    <!-- <link href="{{STATIC_URL}}newfies/bootstrap-2.0.1/css/rtl/bootstrap-rtl.min.css" rel="stylesheet"> -->
     <style type="text/css">
-      /* Override some defaults */
-      html, body {
-        background-color: #eee;
-      }
       body {
-        padding-top: 60px; /* 40px to make the container go all the way to the bottom of the topbar */
+        padding-top: 60px;
+        padding-bottom: 40px;
       }
-      .container > footer p {
-        text-align: center; /* center align it with the container */
-      }
-      .container {
-        width: 950px; /* downsize our container to make the content feel a bit tighter and more cohesive. NOTE: this removes two full columns from the grid, meaning you only go to 14 columns and not 16. */
-      }
-
-      /* The white background content wrapper */
-      .container > .content {
-        background-color: #fff;
-        padding: 50px;
-        margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
-        -webkit-border-radius: 6 0 6px 6px;
-           -moz-border-radius: 0 0 6px 6px;
-                border-radius: 0 0 6px 6px;
-        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
-           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
-                box-shadow: 0 1px 2px rgba(0,0,0,.15);
-      }
-
-      /* Page header tweaks */
-      .page-header {
-        background-color: #f5f5f5;
-        padding: 20px 20px 10px;
-        margin: -20px -20px 20px;
-      }
-
-      /* Styles you shouldn't keep as they are for displaying this base example only */
-      .content .span10,
-      .content .span4 {
-        min-height: 500px;
-      }
-      /* Give a quick and non-cross-browser friendly divider */
-      .content .span4 {
-        margin-left: 0;
-        padding-left: 19px;
-        border-left: 1px solid #eee;
-      }
-
-      .topbar .btn {
-        border: 0;
-      }
-      
-      #language-container {
-        width: 110px;
-      }
-      
-      footer {
-        text-align: center; /* center align it with the container */
-      }
-
     </style>
+    <link href="{{STATIC_URL}}newfies/bootstrap-2.0.1/css/bootstrap-responsive.css" rel="stylesheet">
+    <!-- <link href="{{STATIC_URL}}newfies/bootstrap-2.0.1/css/rtl/bootstrap-responsive-rtl.min.css" rel="stylesheet">
+    <link href="{{STATIC_URL}}newfies/bootstrap-2.0.1/css/rtl/rtl.css" rel="stylesheet"> -->
+
+    <!--Override bootstrap-->
+    <link href="{{STATIC_URL}}newfies/css/override_bootstrap.css" rel="stylesheet">
+
     <script type="text/javascript" src="{% url django.views.i18n.javascript_catalog %}"></script>
     <!-- Le javascript -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-1.7.1.min.js"></script>
     <script type="text/javascript" src="{{STATIC_URL}}newfies/js/custom.validation.js"></script>
     <script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-ui-1.8.16.custom.min.js"></script>
     
-    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-modal.js"></script>
-    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-alerts.js"></script>
-    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-twipsy.js"></script>
-    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-popover.js"></script>
-    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-dropdown.js"></script>
-    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-scrollspy.js"></script>
-    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-tabs.js"></script>
-    <script src="{{STATIC_URL}}newfies/bootstrap-1.4.0/js/bootstrap-buttons.js"></script>
-    
+    <script src="{{STATIC_URL}}newfies/bootstrap-2.0.1/js/bootstrap.js"></script>
+
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="images/favicon.ico">
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    <link rel="shortcut icon" href="{{STATIC_URL}}newfies/images/favicon.png">
+    <link rel="apple-touch-icon" href="{{STATIC_URL}}newfies/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{STATIC_URL}}newfies/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{STATIC_URL}}newfies/images/apple-touch-icon-114x114.png">
 
     <!-- jquery UI css -->
     <link type="text/css" href="{{STATIC_URL}}newfies/css/jquery-ui-bootstrap/jquery-ui-1.8.16.custom.css" rel="stylesheet">
@@ -137,64 +99,81 @@
 
 <div class="container">
 
-    <div class="content">
+
+        <div class="row-fluid">
+        {% if not user.is_authenticated %}
+        <div class="span6">
+            <form class="well form-inline" action="/login/" class="pull-right" method="post">
+            {% csrf_token %}
+            {% for field in loginform %}
+                {{ field }}
+            {% endfor %}
+            <button class="btn" type="submit">{% trans "Login" %}</button>
+            <a class="btn btn-primary" href="/password_reset/">{% trans "Forgot password?" %}</a>
+        </form>
+        </div>
+        <div class="span6">
+            <form class="well form-inline" action="/i18n/setlang/" method="post" class="pull-right">
+                {% csrf_token %}
+                {% trans "Display language" %} : <select name="language" id="language-container" class="input-small" >
+                {% for lang in LANGUAGES %}
+                <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected{% endifequal %}>{{ lang.1 }}</option>
+                {% endfor %}
+                </select>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+            </form>
+        </div>
+        {% endif %}
+        </div>
+
     
-      {% if errorlogin %}
-          <div class="alert-message error">
-              <strong>{% trans "Alert"  %} : </strong>  {{ errorlogin }}
-          </div>
-          </br>
-      {% else %}
-          {% if notlogged %}
-          <div class="alert-message error">
-              <strong>{% trans "Alert"  %} : </strong>  {% trans "Please login by clicking on login button"  %}
-          </div>
-          </br>
-          {% endif %}
-      {% endif %}
+        {% if errorlogin %}
+        <div class="alert alert-error">
+            <strong>{% trans "Alert"  %} : </strong>  {{ errorlogin }}
+        </div>
+        </br>
+        {% else %}
+            {% if notlogged %}
+            <div class="alert alert-error">
+                <strong>{% trans "Alert"  %} : </strong>  {% trans "Please login by clicking on login button"  %}
+            </div>
+            </br>
+        {% endif %}
+        {% endif %}
 
         <div class="page-header">
-          {% block content_header %}
-          <h1>Newfies-Dialer <small>{% trans "Voice Broadcasting solution" %}</small></h1>
-          {% endblock %}
+            {% block content_header %}
+                <h1>Newfies-Dialer <small>{% trans "Voice Broadcasting solution" %}</small></h1>
+            {% endblock %}
         </div>
         
         {% block extra_files %}
-        {% endblock %}
 
+        {% endblock %}
         
         {% if user.is_authenticated %}
             {% if dialer_setting_msg %}
-            <div class="span-24 last">
-                <div class="alert-message error">
-                    <strong>{% trans "Alert" %} : </strong>  {{ dialer_setting_msg }}
-                    {% if not request.session.has_notified %}
-                        {% trans "To send notification to administrator" %} <a href="/notify/admin/">{% trans "Click here" %}</a>
-                    {% else %}
-                        {% trans "(Notification sent)" %}
-                    {% endif %}
-                </div>
+
+            <div class="alert alert-error">
+                <strong>{% trans "Alert" %} : </strong>  {{ dialer_setting_msg }}
+                {% if not request.session.has_notified %}
+                    {% trans "To send notification to administrator" %} <a href="/notify/admin/">{% trans "Click here" %}</a>
+                {% else %}
+                    {% trans "(Notification sent)" %}
+                {% endif %}
             </div>
+
             {% endif %}
         {% endif %}
-        
+
         {% block content %}
         <!-- CONTENT BLOCK -->
         {% endblock %}
-    </div>
+
     
-
-    <footer>
-        <p>Newfies-Dialer v{{ newfies_version }} {% trans "is" %} <a href="http://www.newfies-dialer.org/" target="_blank">{% trans "Autodialer software" %}</a> {% trans "licensed under the "  %}
-            <a href="http://www.fsf.org/licensing/licenses/agpl-3.0.html" target="_blank">AGPL 3</a>. <br/>
-            Copyright (C) 2010-2012 - Star2billing S.L. <a href="http://www.star2billing.com" target="_blank">http://www.star2billing.com</a></p>
-    </footer>
+{% include "frontend/footer.html" %}
       
-
-</div>
-
-
-
+</div><!-- div container -->
 
 </body>
 </html>

@@ -202,7 +202,7 @@ Additional information
 
 Fork the project on GitHub : https://github.com/Star2Billing/newfies-dialer
 
-License : AGPL (https://raw.github.com/Star2Billing/newfies-dialer/master/COPYING)
+License : MPL 2.0 (https://raw.github.com/Star2Billing/newfies-dialer/master/COPYING)
 
 Website : http://www.newfies-dialer.org
 

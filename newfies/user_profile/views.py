@@ -1,3 +1,17 @@
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
+
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
@@ -10,7 +24,7 @@ from django.utils import simplejson
 from django.db.models import Q
 from notification import models as notification
 from dialer_campaign.models import common_contact_authorization
-from dialer_campaign.views import current_view, notice_count
+from dialer_campaign.views import current_view, notice_count, grid_common_function
 from dialer_campaign.function_def import user_dialer_setting_msg, variable_value
 from dialer_settings.models import DialerSetting
 from user_profile.models import UserProfile
@@ -66,7 +80,6 @@ def customer_detail_change(request):
     error_detail = ''
     error_pass = ''
     error_number = ''
-    selected = 0
     action = ''
 
     if 'action' in request.GET:
@@ -81,9 +94,7 @@ def customer_detail_change(request):
         notification_list.update(unseen=0)
         msg_note = _('All notifications are marked as read.')
 
-        
     if request.method == 'POST':
-
         if request.POST['form-type'] == "change-detail":
             user_detail_form = UserChangeDetailForm(request.user, request.POST,
                                                     instance=user_detail)
@@ -141,6 +152,7 @@ def customer_detail_change(request):
     return render_to_response(template, data,
            context_instance=RequestContext(request))
 
+
 def call_style(val):
     unseen_style = 'style="text-decoration:none;background-image:url(' + \
                     settings.STATIC_URL + 'newfies/icons/new.png);"'
@@ -151,6 +163,7 @@ def call_style(val):
     else:
         return seen_style
 
+
 # Notification
 @login_required
 def notification_grid(request):
@@ -158,26 +171,12 @@ def notification_grid(request):
 
     **Model**: notification.Notice
     """
-    page = variable_value(request, 'page')
-    rp = variable_value(request, 'rp')
-    sortname = variable_value(request, 'sortname')
-    sortorder = variable_value(request, 'sortorder')
-    query = variable_value(request, 'query')
-    qtype = variable_value(request, 'qtype')
-
-    # page index
-    if int(page) > 1:
-        start_page = (int(page) - 1) * int(rp)
-        end_page = start_page + int(rp)
-    else:
-        start_page = int(0)
-        end_page = int(rp)
-
-
-    #notification_list = []
-    sortorder_sign = ''
-    if sortorder == 'desc':
-        sortorder_sign = '-'
+    grid_data = grid_common_function(request)
+    page = int(grid_data['page'])
+    start_page = int(grid_data['start_page'])
+    end_page = int(grid_data['end_page'])
+    sortorder_sign = grid_data['sortorder_sign']
+    sortname = grid_data['sortname']
 
     user_notification = \
     notification.Notice.objects.filter(recipient=request.user)
@@ -199,7 +198,6 @@ def notification_grid(request):
                       str(row.added),
                       str('<a href="../update_notice_status_cust/' + str(row.id) + '/" class="icon" ' \
                           + call_style(row.unseen) + ' ">&nbsp;</a>'),
-
              ]}for row in user_notification_list ]
 
     data = {'rows': rows,
@@ -208,7 +206,6 @@ def notification_grid(request):
     
     return HttpResponse(simplejson.dumps(data), mimetype='application/json',
                         content_type="application/json")
-
 
 
 @login_required
@@ -240,7 +237,7 @@ def notification_del_read(request, object_id):
 
             return HttpResponseRedirect('/user_detail_change/?action=tabs-3&msg_note=true')
     except:
-        # When object_id is 0 (Multiple recrod delete/mark as read)
+        # When object_id is 0 (Multiple records delete/mark as read)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
         notification_list = notification.Notice.objects.extra(where=['id IN (%s)' % values])
@@ -253,32 +250,6 @@ def notification_del_read(request, object_id):
             % {'count': notification_list.count()}
             notification_list.update(unseen=0)
         return HttpResponseRedirect('/user_detail_change/?action=tabs-3&msg_note=true')
-
-
-@login_required
-def view_notification(request, id):
-    """Notice view in detail on Customer UI
-
-    **Attributes**
-
-        * ``template`` - 'frontend/registration/user_notice.html'
-
-    **Logic Description**:
-
-        * User is able to change his/her detail.
-    """
-    user_notice = notification.Notice.objects.get(pk=id)
-    user_notice.unseen = 0
-    user_notice.save()
-    template = 'frontend/registration/user_notice.html'
-    data = {
-        'module': current_view(request),
-        'notice': user_notice,
-        'notice_count': notice_count(request),
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
-    }
-    return render_to_response(template, data,
-           context_instance=RequestContext(request))
 
 
 def common_notification_status(request, id):

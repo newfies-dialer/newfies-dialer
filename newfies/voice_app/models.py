@@ -1,3 +1,16 @@
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from dialer_gateway.models import Gateway
@@ -20,7 +33,7 @@ APP_TYPE = (
 class VoiceApp(Model):
     """VoiceApp are VoIP application that are defined on the platform, you can
     have different type of application, some as simple as redirecting a call
-    and some as complex as starting a complexe application call flow.
+    and some as complex as starting a complex application call flow.
 
     Right now, only the redirection is implemented but this allow you to create
     the application you want on your server and redirect the user to it easily.

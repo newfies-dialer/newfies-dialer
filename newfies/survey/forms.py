@@ -1,3 +1,17 @@
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
+
 from django.contrib.auth.models import User
 from django import forms
 from django.forms.util import ErrorList
@@ -37,7 +51,7 @@ class SurveyQuestionForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(SurveyQuestionForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
-        self.fields['question'].widget.attrs['class'] = 'span8'
+        self.fields['question'].widget.attrs['class'] = 'span6'
         if instance.id:
             js_function = "question_form(" + str(instance.id) + ", 1);"
             self.fields['question'].widget.attrs['onBlur'] = js_function
@@ -53,7 +67,7 @@ class SurveyQuestionNewForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(SurveyQuestionNewForm, self).__init__(*args, **kwargs)
         self.fields['surveyapp'].widget = forms.HiddenInput()
-        self.fields['question'].widget.attrs['class'] = 'span8'
+        self.fields['question'].widget.attrs['class'] = 'span6'
         js_function = "var initial_que_save=1;to_call_question_form();"
         self.fields['question'].widget.attrs['onBlur'] = js_function
         self.fields['audio_message'].widget.attrs['onChange'] = js_function

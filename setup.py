@@ -1,3 +1,17 @@
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
+
 import os
 from setuptools import setup, find_packages
 from setuptools.dist import Distribution
@@ -22,7 +36,6 @@ except pkg_resources.DistributionNotFound:
 Distribution({
     "setup_requires": add_django_dependency and  ['Django >=1.3.0'] or []
 })
-
 
 
 COMMANDS = {}
@@ -61,7 +74,6 @@ def parse_requirements(file_name):
             requirements.append(line)
     return requirements
 
-
 def parse_dependency_links(file_name, install_flag=False):
     dependency_links = []
     for line in open(file_name, 'r').read().split('\n'):
@@ -83,7 +95,6 @@ install_flag=False
 if sys.argv[1] == "install":
     install_flag = True
 
-
 setup(
     name='newfies-dialer',
     version=VERSION.replace(' ', '-'),
@@ -95,13 +106,13 @@ setup(
     download_url='https://github.com/Star2Billing/newfies-dialer/tarball/master',
     packages=find_packages(),
     include_package_data=True,
-    license='AGPL License',
+    license='MPL 2.0 License',
     classifiers=[
         'Development Status :: 1 - Beta',
         'Environment :: Web Environment',
         'Framework :: Django',
         'Intended Audience :: Developers, Users',
-        'License :: OSI Approved :: AGPL License',
+        'License :: OSI Approved :: MPL 2.0 License',
         'Operating System :: OS Independent',
         'Programming Language :: Python, Javascript, HTML',
         'Topic :: Voice Broadcast Software'
@@ -124,5 +135,3 @@ setup(
     # devel
     cmdclass = COMMANDS,
 )
-
-

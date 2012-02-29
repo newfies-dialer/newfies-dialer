@@ -1,3 +1,17 @@
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
+
 from optparse import make_option
 from django.core.management.base import BaseCommand, CommandError
 from django.utils.translation import ugettext_lazy as _
@@ -38,6 +52,13 @@ class Command(BaseCommand):
                 try:
                     length=5
                     chars="1234567890"
+                    
+                    #'survey'
+                    try:
+                        content_type_id = ContentType.objects.get(app_label=str('voice_app')).id
+                    except:
+                        content_type_id = 1
+
                     for i in range(1, int(no_of_record) + 1):
                         phonenumber = '' . join([choice(chars) for i in range(length)])
                         new_callrequest = Callrequest.objects.create(
@@ -47,7 +68,10 @@ class Command(BaseCommand):
                                             campaign=obj_campaign,
                                             aleg_gateway_id=1,
                                             status=choice("12345678"),
-                                            call_type=1)
+                                            call_type=1,
+                                            content_type_id=content_type_id,
+                                            object_id=1)
+
                         new_cdr = VoIPCall.objects.create(
                                             request_uuid=uuid1(),
                                             user=admin_user,

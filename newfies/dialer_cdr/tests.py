@@ -1,12 +1,24 @@
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
+
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.http import HttpRequest
 from dialer_cdr.test_utils import build_test_suite_from
-from django.contrib.contenttypes.models import ContentType
-#from user_profile.models import UserProfile
+
 import base64
 import simplejson
-
 
 
 class BaseAuthenticatedClient(TestCase):
@@ -35,7 +47,8 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
     """Test cases for Newfies-Dialer API."""
     fixtures = ['gateway.json', 'auth_user', 'voiceapp','phonebook',
                 'dialer_setting', 'campaign', 'campaign_subscriber',
-                'callrequest', 'survey', 'survey_question', 'survey_response']
+                'callrequest', 'survey', 'survey_question',
+                'survey_response']
 
     def test_create_campaign(self):
         """Test Function to create a campaign"""
@@ -134,24 +147,22 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
 
     def test_create_answercall(self):
         """Test Function to create a answercall"""
-        data = {"ALegRequestUUID": "20294e18-9d8f-11e0-aaa8-000c29bed6ad"}
+        data = {"ALegRequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875"}
         response = self.client.post('/api/v1/answercall/',
         data,  **self.extra)
-        print response
         self.assertEqual(response.status_code, 200)
 
     def test_create_hangupcall(self):
         """Test Function to create a hangupcall"""
-        data = {"RequestUUID": "20294e18-9d8f-11e0-aaa8-000c29bed6ad",
+        data = {"RequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875",
          "HangupCause": "SUBSCRIBER_ABSENT"}
         response = self.client.post('/api/v1/hangupcall/',
         data,  **self.extra)
-        print response
         self.assertEqual(response.status_code, 200)
 
     def test_create_cdr(self):
         """Test Function to create a CDR"""
-        data = ('cdr=<?xml version="1.0"?><cdr><other></other><variables><plivo_request_uuid>20294e18-9d8f-11e0-aaa8-000c29bed6ad</plivo_request_uuid><duration>3</duration></variables><notvariables><plivo_request_uuid>TESTc</plivo_request_uuid><duration>5</duration></notvariables></cdr>')
+        data = ('cdr=<?xml version="1.0"?><cdr><other></other><variables><plivo_request_uuid>e8fee8f6-40dd-11e1-964f-000c296bd875</plivo_request_uuid><duration>3</duration></variables><notvariables><plivo_request_uuid>TESTc</plivo_request_uuid><duration>5</duration></notvariables></cdr>')
         response = self.client.post('/api/v1/store_cdr/', data, content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 200)
 
@@ -216,9 +227,8 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 204)
 
 
-        
 class NewfiesAdminInterfaceTestCase(TestCase):
-    """Test cases for Newfies Admin Interface."""
+    """Test cases for Newfies-Dialer Admin Interface."""
 
     def setUp(self):
         """To create admin user"""
@@ -246,7 +256,7 @@ class NewfiesAdminInterfaceTestCase(TestCase):
         self.assertEqual(response, True)
 
     def test_admin_newfies(self):
-        """Test Function to check Newfies Admin pages"""
+        """Test Function to check Newfies-Dialer Admin pages"""
         response = self.client.get('/admin/auth/')
         self.failUnlessEqual(response.status_code, 200)
 
@@ -298,7 +308,7 @@ class NewfiesAdminInterfaceTestCase(TestCase):
 
 
 class NewfiesCustomerInterfaceTestCase(BaseAuthenticatedClient):
-    """Test cases for Newfies Customer Interface."""
+    """Test cases for Newfies-Dialer Customer Interface."""
     fixtures = ['gateway.json', 'auth_user', 'voiceapp','phonebook', 'contact',
                 'campaign', 'campaign_subscriber', 'survey', 'surve_question',
                 'survey_response']
@@ -380,9 +390,7 @@ class NewfiesCustomerInterfaceTestCase(BaseAuthenticatedClient):
         "frequency": "20", "callmaxduration": "50", "maxretry": "3",
         "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1",
         "content_object": "type:30-id:1", "extra_data": "2000"})
-        print response
         self.assertEqual(response.status_code, 302)
-
 
     def test_voip_call_report(self):
         """Test Function to check VoIP call report"""
@@ -412,10 +420,14 @@ class NewfiesCustomerInterfaceTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
                                 'frontend/survey/survey_change.html')
+        response = self.client.get('/survey_report/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+                                'frontend/survey/survey_report.html')
 
 
 class NewfiesCustomerInterfaceForgotPassTestCase(TestCase):
-    """Test cases for Newfies Customer Interface. for forgot password"""
+    """Test cases for Newfies-Dialer Customer Interface. for forgot password"""
 
     def test_check_password_reset(self):
         """Test Function to check password reset"""

@@ -1,3 +1,17 @@
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
+
 from django.conf.urls.defaults import *
 from django.conf import settings
 from dialer_campaign.views import *
@@ -41,12 +55,12 @@ urlpatterns = patterns('',
     (r'^campaign_grid/$', 'dialer_campaign.views.campaign_grid'),
     (r'^campaign/add/$', 'dialer_campaign.views.campaign_add'),
     (r'^campaign/del/(.+)/$', 'dialer_campaign.views.campaign_del'),
-    # Campaign Actions (start/stop/pause) for customer UI
+    # Campaign Actions (start|stop|pause|abort) for customer UI
     (r'^campaign/update_campaign_status_cust/(\d*)/(\d*)/$',
                     'dialer_campaign.views.update_campaign_status_cust'),
     (r'^campaign/(.+)/$', 'dialer_campaign.views.campaign_change'),
 
-    # Campaign Actions (start/stop/pause) for Admin UI
+    # Campaign Actions (start|stop|pause|abort) for Admin UI
     (r'^update_campaign_status_admin/(\d*)/(\d*)/$',
                     'dialer_campaign.views.update_campaign_status_admin'),
     # Send notification to admin regarding dialer setting

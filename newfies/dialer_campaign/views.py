@@ -1,3 +1,17 @@
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
+
 # Create your views here.
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -43,6 +57,10 @@ INVALIDARGS_COLOR = '#9B5C00'
 NOROUTE_COLOR = '#057D9F'
 FORBIDDEN_COLOR = '#A61700'
 
+update_style = 'style="text-decoration:none;background-image:url(' + \
+                    settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
+delete_style = 'style="text-decoration:none;background-image:url(' + \
+                settings.STATIC_URL + 'newfies/icons/delete.png);"'
 
 def current_view(request):
     name = getmodule(stack()[1][0]).__name__
@@ -188,7 +206,7 @@ def customer_dashboard(request, on_index=None):
                                 })
             if i['disposition'] == 'ANSWER':
                 total_answered = total_answered + 1
-            elif i['disposition'] == 'BUSY':
+            elif i['disposition'] == 'BUSY' or i['disposition'] == 'USER_BUSY':
                 total_busy = total_busy + 1
             elif i['disposition'] == 'NOANSWER':
                 total_not_answered = total_not_answered + 1
@@ -569,8 +587,7 @@ def customer_dashboard(request, on_index=None):
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'campaign_count': campaign_count,
         'total_of_phonebook_contacts': total_of_phonebook_contacts,
-        'campaign_phonebbok_active_contact_count': \
-        campaign_phonebbok_active_contact_count,
+        'campaign_phonebbok_active_contact_count': campaign_phonebbok_active_contact_count,
         'reached_contact': reached_contact,
         'notice_count': notice_count(request),
         'total_data': total_data, # for humblefinanace graph
@@ -610,8 +627,7 @@ def customer_dashboard(request, on_index=None):
            context_instance=RequestContext(request))
 
 def logout_view(request):
-    """Check User credentials and logout
-    """
+    """Check User credentials and logout"""
     template = 'frontend/index.html'
     logout(request)
     
@@ -622,6 +638,7 @@ def logout_view(request):
     
     return render_to_response(template, data,
            context_instance=RequestContext(request))
+
 
 def login_view(request):
     """Check User credentials
@@ -872,7 +889,7 @@ def common_campaign_status(pk, status):
 
 @login_required
 def update_campaign_status_admin(request, pk, status):
-    """Campaign Status (e.g. start|stop|pause) can be changed from
+    """Campaign Status (e.g. start|stop|pause|abort) can be changed from
     admin interface (via campaign list)"""
     recipient = common_campaign_status(pk, status)
     common_send_notification(request, status, recipient)
@@ -882,7 +899,7 @@ def update_campaign_status_admin(request, pk, status):
 
 @login_required
 def update_campaign_status_cust(request, pk, status):
-    """Campaign Status (e.g. start|stop|pause) can be changed from
+    """Campaign Status (e.g. start|stop|pause|abort) can be changed from
     customer interface (via dialer_campaign/campaign list)"""
     recipient = common_campaign_status(pk, status)
     common_send_notification(request, status, recipient)
@@ -911,6 +928,32 @@ def notify_admin(request):
     return HttpResponseRedirect('/dashboard/')
 
 
+def grid_common_function(request):
+    """To get common flexigrid variable"""
+    grid_data = {}
+    
+    grid_data['page'] = variable_value(request, 'page')
+    grid_data['rp'] = variable_value(request, 'rp')
+    grid_data['sortname'] = variable_value(request, 'sortname')
+    grid_data['sortorder'] = variable_value(request, 'sortorder')
+    grid_data['query'] = variable_value(request, 'query')
+    grid_data['qtype'] = variable_value(request, 'qtype')
+
+    # page index
+    if int(grid_data['page']) > 1:
+        grid_data['start_page'] = (int(grid_data['page']) - 1) * int(grid_data['rp'])
+        grid_data['end_page'] = grid_data['start_page'] + int(grid_data['rp'])
+    else:
+        grid_data['start_page'] = int(0)
+        grid_data['end_page'] = int(grid_data['rp'])
+
+    grid_data['sortorder_sign'] = ''
+    if grid_data['sortorder'] == 'desc':
+        grid_data['sortorder_sign'] = '-'
+    
+    return grid_data
+
+
 # Phonebook
 @login_required
 def phonebook_grid(request):
@@ -920,26 +963,12 @@ def phonebook_grid(request):
     
     **Fields**: [id, name, description, updated_date]
     """
-    page = variable_value(request, 'page')
-    rp = variable_value(request, 'rp')
-    sortname = variable_value(request, 'sortname')
-    sortorder = variable_value(request, 'sortorder')
-    query = variable_value(request, 'query')
-    qtype = variable_value(request, 'qtype')
-
-    # page index
-    if int(page) > 1:
-        start_page = (int(page) - 1) * int(rp)
-        end_page = start_page + int(rp)
-    else:
-        start_page = int(0)
-        end_page = int(rp)
-
-
-    #phonebook_list = []
-    sortorder_sign = ''
-    if sortorder == 'desc':
-        sortorder_sign = '-'
+    grid_data = grid_common_function(request)
+    page = int(grid_data['page'])
+    start_page = int(grid_data['start_page'])
+    end_page = int(grid_data['end_page'])
+    sortorder_sign = grid_data['sortorder_sign']
+    sortname = grid_data['sortname']
 
     phonebook_list = Phonebook.objects\
                      .values('id', 'name', 'description', 'updated_date')\
@@ -947,13 +976,7 @@ def phonebook_grid(request):
                      .filter(user=request.user)
 
     count = phonebook_list.count()
-    phonebook_list = \
-        phonebook_list.order_by(sortorder_sign + sortname)[start_page:end_page]
-
-    update_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
-    delete_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/delete.png);"'
+    phonebook_list = phonebook_list.order_by(sortorder_sign + sortname)[start_page:end_page]
 
     rows = [{'id': row['id'],
              'cell': ['<input type="checkbox" name="select" class="checkbox"\
@@ -966,7 +989,7 @@ def phonebook_grid(request):
                       '<a href="' + str(row['id']) + '/" class="icon" ' \
                       + update_style + ' title="' + _('Update phonebook') + '">&nbsp;</a>' +
                       '<a href="del/' + str(row['id']) + '/" class="icon" ' \
-                      + delete_style + ' onClick="return get_alert_msg(' +
+                      + delete_style + ' onClick="return get_alert_msg_for_phonebook(' +
                       str(row['id']) +
                       ');"  title="' + _('Delete phonebook') + '">&nbsp;</a>']}\
                       for row in phonebook_list]
@@ -1075,7 +1098,7 @@ def phonebook_del(request, object_id):
             phonebook.delete()
             return HttpResponseRedirect('/phonebook/')
     except:
-        # When object_id is 0 (Multiple recrod delete)
+        # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
 
@@ -1143,20 +1166,12 @@ def contact_grid(request):
     **Fields**: [id, phonebook__name, contact, last_name, first_name,
                  description, status, additional_vars, updated_date]
     """
-    page = variable_value(request, 'page')
-    rp = variable_value(request, 'rp')
-    sortname = variable_value(request, 'sortname')
-    sortorder = variable_value(request, 'sortorder')
-    query = variable_value(request, 'query')
-    qtype = variable_value(request, 'qtype')
-
-    # page index
-    if int(page) > 1:
-        start_page = (int(page) - 1) * int(rp)
-        end_page = start_page + int(rp)
-    else:
-        start_page = int(0)
-        end_page = int(rp)
+    grid_data = grid_common_function(request)
+    page = int(grid_data['page'])
+    start_page = int(grid_data['start_page'])
+    end_page = int(grid_data['end_page'])
+    sortorder_sign = grid_data['sortorder_sign']
+    sortname = grid_data['sortname']
 
     kwargs = {}
     name = ''
@@ -1191,9 +1206,6 @@ def contact_grid(request):
     phonebook_id_list = phonebook_id_list[:-1]
 
     contact_list = []
-    sortorder_sign = ''
-    if sortorder == 'desc':
-        sortorder_sign = '-'
 
     if phonebook_id_list:
         select_data = \
@@ -1204,12 +1216,6 @@ def contact_grid(request):
         .values('id', 'phonebook__name', 'contact', 'last_name',
                 'first_name', 'description', 'status', 'additional_vars',
                 'updated_date').all()
-
-        # Search option on grid but not working
-        #if str(query) and str(qtype):
-            #grid_search_kwargs = {}
-            #grid_search_kwargs[qtype] = query
-            #contact_list = contact_list.filter(**grid_search_kwargs)
 
         if kwargs:
             kwargs = ast.literal_eval(kwargs)
@@ -1225,11 +1231,6 @@ def contact_grid(request):
     count = contact_list.count()
     contact_list = \
         contact_list.order_by(sortorder_sign + sortname)[start_page:end_page]
-
-    update_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
-    delete_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/delete.png);"'
 
     rows = [{'id': row['id'],
              'cell': ['<input type="checkbox" name="select" class="checkbox"\
@@ -1277,8 +1278,9 @@ def contact_list(request):
 
     template = 'frontend/contact/list.html'
     data = {
-        'module': current_view(request),        
+        'module': current_view(request),
         'msg': request.session.get('msg'),
+        'error_msg': request.session.get('error_msg'),
         'form': form,
         'user': request.user,
         'kwargs': kwargs,
@@ -1320,6 +1322,7 @@ def contact_add(request):
             return HttpResponseRedirect("/contact/")
 
     form = ContactForm(request.user)
+    error_msg = False
     # Add contact
     if request.method == 'POST':
         form = ContactForm(request.user, request.POST)
@@ -1328,16 +1331,21 @@ def contact_add(request):
             request.session["msg"] = _('"%(name)s" is added.') %\
             {'name': request.POST['contact']}
             return HttpResponseRedirect('/contact/')
+        else:
+            if len(request.POST['contact'])>0:
+                error_msg = _('"%(name)s" cannot be added.') %\
+                {'name': request.POST['contact']}
 
     phonebook_count = Phonebook.objects.filter(user=request.user).count()    
     template = 'frontend/contact/change.html'
     data = {
-       'module': current_view(request),
-       'form': form,
-       'action': 'add',
-       'phonebook_count': phonebook_count,
-       'notice_count': notice_count(request),
-       'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'module': current_view(request),
+        'form': form,
+        'action': 'add',
+        'error_msg': error_msg,
+        'phonebook_count': phonebook_count,
+        'notice_count': notice_count(request),
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))
@@ -1366,7 +1374,7 @@ def contact_del(request, object_id):
             contact.delete()
             return HttpResponseRedirect('/contact/')
     except:
-        # When object_id is 0 (Multiple recrod delete)
+        # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
         contact_list = Contact.objects.extra(where=['id IN (%s)' % values])
@@ -1491,7 +1499,7 @@ def contact_import(request):
                         phonebook = \
                         Phonebook.objects.get(pk=request.POST['phonebook'])
                         try:
-                            # check if prefix is alredy
+                            # check if prefix is already
                             # exist with retail plan or not
                             contact = Contact.objects.get(
                                  phonebook_id=phonebook.id,
@@ -1650,26 +1658,12 @@ def campaign_grid(request):
 
     **Model**: Campaign
     """
-    page = variable_value(request, 'page')
-    rp = variable_value(request, 'rp')
-    sortname = variable_value(request, 'sortname')
-    sortorder = variable_value(request, 'sortorder')
-    query = variable_value(request, 'query')
-    qtype = variable_value(request, 'qtype')
-
-    # page index
-    if int(page) > 1:
-        start_page = (int(page) - 1) * int(rp)
-        end_page = start_page + int(rp)
-    else:
-        start_page = int(0)
-        end_page = int(rp)
-
-
-    #campaign_list = []
-    sortorder_sign = ''
-    if sortorder == 'desc':
-        sortorder_sign = '-'
+    grid_data = grid_common_function(request)
+    page = int(grid_data['page'])
+    start_page = int(grid_data['start_page'])
+    end_page = int(grid_data['end_page'])
+    sortorder_sign = grid_data['sortorder_sign']
+    sortname = grid_data['sortname']
 
     campaign_list = Campaign.objects\
                     .values('id', 'campaign_code', 'name', 'startingdate',
@@ -1681,11 +1675,6 @@ def campaign_grid(request):
     count = campaign_list.count()
     campaign_list = \
         campaign_list.order_by(sortorder_sign + sortname)[start_page:end_page]
-
-    update_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
-    delete_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/delete.png);"'
 
     rows = [{'id': row['id'],
              'cell': ['<input type="checkbox" name="select" class="checkbox"\
@@ -1710,7 +1699,6 @@ def campaign_grid(request):
     data = {'rows': rows,
             'page': page,
             'total': count}
-
     return HttpResponse(simplejson.dumps(data), mimetype='application/json',
                         content_type="application/json")
 
@@ -1739,6 +1727,19 @@ def campaign_list(request):
     request.session['error_msg'] = ''
     return render_to_response(template, data,
            context_instance=RequestContext(request))
+
+
+def common_content_type_function(object_string):
+    """It is used by campaign_add & campaign_change to get ContentType object detail"""
+    result_array = {}
+    matches = re.match("type:(\d+)-id:(\d+)", object_string).groups()
+    object_type_id = matches[0] #get 45 from "type:45-id:38"
+    result_array['object_id'] = matches[1] #get 38 from "type:45-id:38"
+    try:
+        result_array['object_type'] = ContentType.objects.get(id=object_type_id)
+    except:
+        pass
+    return result_array
 
 
 @login_required
@@ -1780,23 +1781,15 @@ def campaign_add(request):
         form = CampaignForm(request.user, request.POST)
         if form.is_valid():
             obj = form.save(commit=False)
-
-            object_string = form.cleaned_data['content_object']
-            matches = re.match("type:(\d+)-id:(\d+)", object_string).groups()
-            object_type_id = matches[0] #get 45 from "type:45-id:38"
-            object_id = matches[1] #get 38 from "type:45-id:38"
-            object_type = ContentType.objects.get(id=object_type_id)
-
-            obj.content_type = object_type
-            obj.object_id = object_id
-
+            result_array = common_content_type_function(form.cleaned_data['content_object'])
+            obj.content_type = result_array['object_type']
+            obj.object_id = result_array['object_id']
             obj.user = User.objects.get(username=request.user)
             obj.save()
 
             # Start tasks to import subscriber
             if obj.status == 1:
                 collect_subscriber.delay(obj.pk)
-
             form.save_m2m()
 
             request.session["msg"] = _('"%(name)s" is added.') %\
@@ -1838,7 +1831,7 @@ def campaign_del(request, object_id):
             campaign.delete()
             return HttpResponseRedirect('/campaign/')
     except:
-        # When object_id is 0 (Multiple recrod delete)
+        # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
         campaign_list = Campaign.objects.extra(where=['id IN (%s)' % values])
@@ -1881,21 +1874,14 @@ def campaign_change(request, object_id):
             previous_status = campaign.status
             if form.is_valid():
                 obj = form.save(commit=False)
-
-                object_string = form.cleaned_data['content_object']
-                matches = re.match("type:(\d+)-id:(\d+)", object_string).groups()
-                object_type_id = matches[0] #get 45 from "type:45-id:38"
-                object_id = matches[1] #get 38 from "type:45-id:38"
-                object_type = ContentType.objects.get(id=object_type_id)
-
-                obj.content_type = object_type
-                obj.object_id = object_id
+                result_array = common_content_type_function(form.cleaned_data['content_object'])
+                obj.content_type = result_array['object_type']
+                obj.object_id = result_array['object_id']
                 obj.save()
 
                 # Start tasks to import subscriber
                 if obj.status == 1 and previous_status != 1:
                     collect_subscriber.delay(obj.id)
-
 
                 request.session["msg"] = _('"%(name)s" is updated.') \
                 % {'name': request.POST['name']}
@@ -1911,275 +1897,3 @@ def campaign_change(request, object_id):
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))
-
-
-@staff_member_required
-def admin_call_report(request):
-    """Call report on admin dashboard"""
-    report_type = 'last_seven_days'
-    report_type = variable_value(request, 'report_type')
-
-    if report_type == 'last_seven_days' or report_type == '':
-        # search_type = 2 for Last 7 days option
-        start_date = calculate_date(search_type=2)
-        end_date = datetime.now()
-
-    if report_type == 'today':
-        now = datetime.now()
-        start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
-        end_date = datetime.now()
-
-    total_duration_sum = 0
-    total_call_count = 0
-    total_answered = 0
-    total_not_answered = 0
-    total_busy = 0
-    total_cancel = 0
-    total_congestion = 0
-    total_chanunavail = 0
-    total_dontcall = 0
-    total_torture = 0
-    total_invalidargs = 0
-    total_noroute = 0
-    total_forbidden = 0
-    select_data = \
-        {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
-
-    # This calls list is used by pie chart
-    calls = VoIPCall.objects\
-            .filter(duration__isnull=False,
-                    starting_date__range=(start_date, end_date))\
-            .extra(select=select_data)\
-            .values('starting_date', 'disposition').annotate(Sum('duration'))\
-            .annotate(Avg('duration'))\
-            .annotate(Count('starting_date'))\
-            .order_by('starting_date')
-
-    total_call_count = calls.count()
-    for i in calls:
-        total_duration_sum = total_duration_sum + int(i['duration__sum'])
-        if i['disposition'] == 'ANSWER':
-            total_answered = total_answered + 1
-        elif i['disposition'] == 'BUSY':
-            total_busy = total_busy + 1
-        elif i['disposition'] == 'NOANSWER':
-            total_not_answered = total_not_answered + 1
-        elif i['disposition'] == 'CANCEL':
-            total_cancel = total_cancel + 1
-        elif i['disposition'] == 'CONGESTION':
-            total_congestion = total_congestion + 1
-        elif i['disposition'] == 'CHANUNAVAIL':
-            total_chanunavail = total_chanunavail + 1
-        elif i['disposition'] == 'DONTCALL':
-            total_dontcall = total_dontcall + 1
-        elif i['disposition'] == 'TORTURE':
-            total_torture = total_torture + 1
-        elif i['disposition'] == 'INVALIDARGS':
-            total_invalidargs = total_invalidargs + 1
-        elif i['disposition'] == 'NOROUTE':
-            total_noroute = total_noroute + 1
-        else:
-            total_forbidden = total_forbidden + 1 # FORBIDDEN
-
-
-    data = '<ul><li>'
-    data += '<b>' + _('Total Calls:')  + str(total_call_count) + ' | \
-            '+ _('Total Duration:') + str(total_duration_sum) + '</b><br/>'
-    data += '<abbr title="'+_('Answered')+'">' + _('Ans') + '</abbr>: ' + str(total_answered) + ' | \
-            <abbr title="'+_('Do not call')+'">' + _('DNC') + '</abbr>: ' + str(total_dontcall) + ' | \
-            <abbr title="'+_('Busy')+'">'+ _('Busy') + '</abbr>: ' + str(total_busy) + ' | \
-            <abbr title="'+_('Not Answered')+'">' + _('NA') + '</abbr>: ' + str(total_not_answered) + '| \
-            <abbr title="'+_('Canceled')+'">' + _('Canc') + '</abbr>: ' + str(total_cancel) + ' | \
-            <abbr title="'+_('ChanUnavail')+'">' + _('CU') + '</abbr>: ' + str(total_chanunavail) + ' | \
-            <abbr title="'+_('Torture')+'">' + _('Tort') + '</abbr>: ' + str(total_torture) + ' | \
-            <abbr title="'+_('Invalid Args')+'">' + _('Inv') + '</abbr>: ' + str(total_invalidargs) + ' | \
-            <abbr title="'+_('No Route')+'">' + _('NoRo') + '</abbr>: ' + str(total_noroute) + ' | \
-            <abbr title="'+_('Congestion')+'">' + _('Cong') + '</abbr>: ' + str(total_congestion) + ' | \
-            <abbr title="'+_('Forbidden')+'">' + _('Forb') + '</abbr>: ' + str(total_forbidden)
-    data += '</li></ul>'
-    #print data
-    return HttpResponse(data, mimetype='application/html',
-                        content_type="application/html")
-
-
-@staff_member_required
-def admin_call_report_graph(request):
-    """Call report graph on admin dashboard"""
-    call_type = ''
-    report_type = 'last_seven_days'
-    call_type = variable_value(request, 'call_type')
-    report_type = variable_value(request, 'report_type')
-    now = datetime.now()
-    if report_type == 'last_seven_days' or report_type == '':
-        # search_type = 2 For Last 7 days option
-        start_date = calculate_date(search_type=2)
-        end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999) \
-                   + relativedelta(days=int(1))
-        select_data = \
-        {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
-    
-    if report_type == 'today':
-        start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
-        end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999)
-        select_data = \
-        {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,13)"}
-    
-
-    if call_type == 'DURATION' or call_type == 'ALL' or call_type == '':
-        calls = VoIPCall.objects\
-                .filter(duration__isnull=False,
-                        starting_date__range=(start_date, end_date))\
-                .extra(select=select_data)\
-                .values('starting_date')\
-                .annotate(Sum('duration'))\
-                .annotate(Count('starting_date'))\
-                .order_by('starting_date')
-    else:
-        calls = VoIPCall.objects\
-                .filter(duration__isnull=False,
-                        starting_date__range=(start_date, end_date),
-                        disposition=call_type)\
-                .extra(select=select_data)\
-                .values('starting_date')\
-                .annotate(Sum('duration'))\
-                .annotate(Count('starting_date'))\
-                .order_by('starting_date')
-    total_call_count = calls.count()
-    data = common_graph_function(calls, 'starting_date',
-                                 report_type, start_date, end_date,
-                                 call_type)
-    return HttpResponse(simplejson.dumps(data), mimetype='application/json',
-                        content_type="application/json")
-
-
-@staff_member_required
-def admin_campaign_report(request):
-    """Campaign report on admin dashboard"""
-    report_type = 'last_seven_days'
-    report_type = variable_value(request, 'report_type')
-
-    if report_type == 'last_seven_days' or report_type == '':
-        # search_type = 2 for Last 7 days option
-        start_date = calculate_date(search_type=2)
-        end_date = datetime.now()
-
-    if report_type == 'today':
-        now = datetime.now()
-        start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
-        end_date = datetime.now()
-
-    campaigns = Campaign.objects.filter(created_date__range=(start_date, end_date))
-
-    total_campaigns_count = campaigns.count()
-    total_active_campaigns_count = campaigns.filter(status=1).count()
-    total_pause_campaigns_count = campaigns.filter(status=2).count()
-    total_abort_campaigns_count = campaigns.filter(status=3).count()
-    total_stop_campaigns_count = campaigns.filter(status=4).count()
-
-    data = '<ul>'
-    data += '<li><b>'+_('Total Campaigns:') + str(total_campaigns_count) + '</b> | '
-    data += _('Active:') + str(total_active_campaigns_count) + ' |\
-             '+_('Paused:') + str(total_pause_campaigns_count) + ' | \
-             '+_('Aborted:') + str(total_abort_campaigns_count) + ' | \
-             '+_('Stopped:') + str(total_stop_campaigns_count) + '</li>'
-    data += '</ul>'
-    #print data
-    return HttpResponse(data, mimetype='application/html',
-                        content_type="application/html")
-
-
-@staff_member_required
-def admin_campaign_report_graph(request):
-    """Campaign report graph on admin dashboard"""
-    report_type = variable_value(request, 'report_type')
-    now = datetime.now()
-    if report_type == 'last_seven_days' or report_type == '':
-        # search_type = 2 For Last 7 days option
-        start_date = calculate_date(search_type=2)
-        end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999) \
-                   + relativedelta(days=int(1))
-        select_data = \
-        {"created_date": "SUBSTR(CAST(created_date as CHAR(30)),1,10)"}
-
-    if report_type == 'today':
-        start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
-        end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999)
-        select_data = \
-        {"created_date": "SUBSTR(CAST(created_date as CHAR(30)),1,13)"}
-
-    campaigns = Campaign.objects.values('created_date')\
-                .filter(created_date__range=(start_date, end_date))\
-                .extra(select=select_data)\
-                .values('created_date')\
-                .annotate(Count('created_date'))
-    data = common_graph_function(campaigns, 'created_date',
-                                 report_type, start_date, end_date)
-
-    return HttpResponse(simplejson.dumps(data), mimetype='application/json',
-                        content_type="application/json")
-
-
-@staff_member_required
-def admin_user_report(request):
-    """User report on admin dashboard"""
-    report_type = 'last_seven_days'
-    report_type = variable_value(request, 'report_type')
-
-    if report_type == 'last_seven_days' or report_type == '':
-        # search_type = 2 for Last 7 days option
-        start_date = calculate_date(search_type=2)
-        end_date = datetime.now()
-
-    if report_type == 'today':
-        now = datetime.now()
-        start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
-        end_date = datetime.now()
-
-    users_list = User.objects.filter(date_joined__range=(start_date, end_date))
-    total_user_count = users_list.count()
-    total_active_user_count = users_list.filter(is_active=1).count()
-    total_not_active_user_count = users_list.filter(is_active=0).count()
-    total_admin_count = users_list.filter(is_staff=1).count()
-    total_customer_count = users_list.filter(is_staff=0).count()
-
-
-    data = '<ul>'
-    data += '<li><b>'+ _('Total Users:') + str(total_user_count) + '</b> | \
-                 '+_('Active Users:') + str(total_active_user_count) + ' | \
-                 '+_('No Active Users:') + str(total_not_active_user_count) + '</li>'
-    data += '</ul>'
-    #print data
-    return HttpResponse(data, mimetype='application/html',
-                        content_type="application/html")
-
-
-@staff_member_required
-def admin_user_report_graph(request):
-    """User report graph on admin dashboard"""
-    report_type = variable_value(request, 'report_type')
-    now = datetime.now()
-    if report_type == 'last_seven_days' or report_type == '':
-        # search_type = 2 For Last 7 days option
-        start_date = calculate_date(search_type=2)
-        end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999) \
-                   + relativedelta(days=int(1))
-        select_data = \
-        {"date_joined": "SUBSTR(CAST(date_joined as CHAR(30)),1,10)"}
-
-    if report_type == 'today':
-        start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
-        end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999)
-        select_data = \
-        {"date_joined": "SUBSTR(CAST(date_joined as CHAR(30)),1,13)"}
-
-    
-    users_list = User.objects.filter(date_joined__range=(start_date, end_date))\
-                .extra(select=select_data)\
-                .values('date_joined')\
-                .annotate(Count('date_joined'))\
-                .order_by('date_joined')
-    
-    data = common_graph_function(users_list, 'date_joined',
-                                 report_type, start_date, end_date)
-    return HttpResponse(simplejson.dumps(data), mimetype='application/json',
-                        content_type="application/json")

@@ -1,3 +1,17 @@
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
+
 from celery.task import Task, PeriodicTask
 from dialer_campaign.models import Campaign, CampaignSubscriber
 from dialer_campaign.function_def import user_dialer_setting
@@ -18,13 +32,13 @@ class callrequest_pending(PeriodicTask):
         callrequest_pending.delay()
     """
     # 1000000 ms = 1 sec
-    run_every = timedelta(microseconds=10000000)
+    run_every = timedelta(microseconds=1000000) # every seconds
 
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
         logger.info("TASK :: callrequest_pending")
 
-        list_callrequest = Callrequest.objects.get_pending_callrequest()[:20]
+        list_callrequest = Callrequest.objects.get_pending_callrequest()[:100]
         if not list_callrequest:
             logger.debug("No Pending Calls")
 
@@ -56,40 +70,17 @@ def init_callrequest(callrequest_id, campaign_id):
         logger.error("Can't find the campaign : %s" % campaign_id)
         return False
     
-    phone_number = obj_callrequest.phone_number
     if obj_callrequest.aleg_gateway:
         id_aleg_gateway = obj_callrequest.aleg_gateway.id
-        dialout_phone_number = phonenumber_change_prefix(phone_number,
-                                         id_aleg_gateway)
+        dialout_phone_number = phonenumber_change_prefix(
+                                                obj_callrequest.phone_number,
+                                                id_aleg_gateway)
     else:
-        dialout_phone_number = phone_number
+        dialout_phone_number = obj_callrequest.phone_number
     logger.info("dialout_phone_number : %s" % dialout_phone_number)
 
-    #Construct the dialing out path
-    """
-    **Gateway Attributes**:
-
-        * ``name`` - Gateway name.
-        * ``description`` - Description about Gateway.
-        * ``addprefix`` - Add prefix.
-        * ``removeprefix`` - Remove prefix.
-        * ``gateways`` - "user/,user", # Gateway string to try dialing \
-        separated by comma. First in list will be tried first
-        * ``gateway_codecs`` - "'PCMA,PCMU','PCMA,PCMU'", \
-        # Codec string as needed by FS for each gateway separated by comma
-        * ``gateway_timeouts`` - "10,10", # Seconds to timeout in string for\
-        each gateway separated by comma
-        * ``gateway_retries`` - "2,1", # Retry String for Gateways separated\
-        by a comma, on how many times each gateway should be retried
-        * ``originate_dial_string`` - originate_dial_string
-        * ``secondused`` -
-        * ``failover`` -
-        * ``addparameter`` -
-        * ``count_call`` -
-        * ``count_in_use`` -
-        * ``maximum_call`` -
-        * ``status`` - Gateway status
-    """
+    if settings.DIALERDEBUG:
+        dialout_phone_number = settings.DIALERDEBUG_PHONENUMBER
 
     #Retrieve the Gateway for the A-Leg
     gateways = obj_callrequest.aleg_gateway.gateways
@@ -99,6 +90,11 @@ def init_callrequest(callrequest_id, campaign_id):
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
     callmaxduration = obj_campaign.callmaxduration
     
+    #Sanitize gateways
+    gateways = gateways.strip()
+    if gateways[-1] != '/':
+        gateways = gateways + '/'
+
     if obj_campaign.content_type.app_label=='survey':
         #Use Survey Statemachine
         answer_url = settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL
@@ -108,6 +104,10 @@ def init_callrequest(callrequest_id, campaign_id):
         #answer_url = 'http://localhost/~areski/django/MyProjects/plivohelper-php/examples/test.php?answer=1'
 
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
+    if obj_callrequest.user.userprofile.accountcode and \
+        obj_callrequest.user.userprofile.accountcode > 0:
+        originate_dial_string = originate_dial_string + \
+            ',accountcode=' + str(obj_callrequest.user.userprofile.accountcode)
 
     #Send Call to API
     #http://ask.github.com/celery/userguide/remote-tasks.html
@@ -128,7 +128,7 @@ def init_callrequest(callrequest_id, campaign_id):
     if settings.NEWFIES_DIALER_ENGINE.lower() == 'dummy':
         #Use Dummy TestCall
         res = dummy_testcall.delay(callerid=obj_callrequest.callerid,
-                                   phone_number=obj_callrequest.phone_number,
+                                   phone_number=dialout_phone_number,
                                    gateway=gateways)
         result = res.get()
         logger.info(result)
@@ -139,7 +139,7 @@ def init_callrequest(callrequest_id, campaign_id):
             #Request Call via Plivo
             from telefonyhelper import call_plivo
             result= call_plivo(callerid=obj_callrequest.callerid,
-                        phone_number=obj_callrequest.phone_number,
+                        phone_number=dialout_phone_number,
                         Gateways=gateways,
                         GatewayCodecs=gateway_codecs,
                         GatewayTimeouts=gateway_timeouts,
@@ -204,9 +204,9 @@ def dummy_testcall(callerid, phone_number, gateway):
                 (dummy_testcall.request.id,
                  dummy_testcall.request.args,
                  dummy_testcall.request.kwargs))
-    logger.info("Waiting 1 seconds...")
     sleep(1)
-
+    logger.info("Waiting 1 seconds...")
+    
     request_uuid = uuid1()
 
     #Trigger AnswerURL
@@ -245,7 +245,6 @@ def dummy_test_answerurl(request_uuid):
     #Update CallRequest
     obj_callrequest.status = 4 # SUCCESS
     obj_callrequest.save()
-
     #Create CDR
     new_voipcall = VoIPCall(user=obj_callrequest.user,
                             request_uuid=obj_callrequest.request_uuid,
@@ -257,7 +256,6 @@ def dummy_test_answerurl(request_uuid):
                             billsec=0,
                             disposition=1)
     new_voipcall.save()
-
     #lock to limit running process, do so per campaign
     #http://ask.github.com/celery/cookbook/tasks.html
 

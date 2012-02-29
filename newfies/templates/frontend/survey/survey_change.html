@@ -14,12 +14,15 @@
    var counter_id = (document.getElementById("id_new_que_form") ? document.getElementById("id_new_que_form").value : 0);
    var my_new_que=new Array();
    var arry_count = 0;
+
+   /* to sort question order */
    function temp_call()
    {
        my_new_que[arry_count] = document.getElementById("id").value;
-       //alert(my_new_que[arry_count]);
        arry_count++;
    }
+
+   /* to save question */
    function to_call_question_form()
    {
         //Reset for new record
@@ -44,6 +47,7 @@
             question_form_after_initial_save(form_id-1, record_id, 1);
         }
    }
+
 
    function question_form_after_initial_save(id, record_id, form_type)
    {
@@ -141,7 +145,8 @@
        Dajaxice.survey.survey_question_sort(Dajax.process, {'id': id, 'sort_order': sort_order});
    }
 
-   function my_js_callback(data){
+   function my_js_callback(data)
+   {
         if(data==Dajaxice.EXCEPTION){
             //alert('Error! Something happens!');
         }
@@ -159,18 +164,20 @@
 
 </script>
 
-<style>
-	.column { width: 900px; float: left; padding-bottom: 0px; }
+<style type="text/css">
+    /* style for question box for jquery UI sort*/
+	.column { width: 95%; float: left; padding-bottom: 0px; }
 	.portlet { margin: 0 1em 1em 0; }
 	.portlet-header { margin: 0.3em; padding-bottom: 4px; padding-left: 0.2em; }
 	.portlet-header .ui-icon { float: right; }
 	.portlet-content { padding: 0.4em; }
 	.ui-sortable-placeholder { border: 1px dotted black; visibility: visible !important; height: 50px !important; }
 	.ui-sortable-placeholder * { visibility: hidden; }
+    /* change span width for response inputs */
     .span5 {width: 160px;}
-    .span6 {width: 220px;}
 </style>
-<script>
+
+<script type="text/javascript">
 
 	$(function() {
 		$( ".column" ).sortable({
@@ -237,55 +244,34 @@ function addFormField() {
     '<form action="." id="new_survey_que_form_' + id +'" method="post" enctype="multipart/form-data">'+
     "{% csrf_token %}"+
     '<div class="row">'+
-       '<div class="span18">'+
-            '<div class="row">'+
-            {% for field in new_survey_que_form.visible_fields %}
-              '<div class="span9"><p><b>{{ field.label|capfirst }}</p></b></div>' +
-            {% endfor %}
-            '</div>'+
-       '</div>'+
-    '</div>'+
-    '<div class="row">'+
-    '<div class="span16">'+
+    '<div class="span12">'+
         '<div class="row">'+
     {% for field in new_survey_que_form.visible_fields %}
         {% if forloop.first %}
             {% for hidden in new_survey_que_form.hidden_fields %}
                 '{{ hidden|escapejs }}'+
             {% endfor %}
-            '<div class="span8">'+
-                '{{ field|escapejs }}'+
+            '<div class="span6">'+
+                '<b>{{ field.label|capfirst }}</b><br/>{{ field|escapejs }}<br/><span class="help-inline">{% trans "If no audio file is selected, then text to speech is used to read out the question" %}</span>'+
             '</div>'+
         {% else %}
-            '<div class="span6">'+
-                '{{ field|escapejs }}'+
+            '<div class="span3">'+
+                '<b>{{ field.label|capfirst }}</b><br/>{{ field|escapejs }}'+
             '</div>'+
         {% endif %}
         {% if forloop.last %}
-        '<div class="span2"><!--<input value="Save" onclick="question_form('+id+', 0)" type="button">-->'+
-        '<input class="btn danger" value="{% trans "Delete question" %}" onClick="removeFormField(\'#row' + id + '\'); return false;" type="button"></div>'+
+        '<div class="span3"><!--<input value="Save" onclick="question_form('+id+', 0)" type="button">-->'+
+        '<br/><input class="btn-danger" value="{% trans "Delete question" %}" onClick="removeFormField(\'#row' + id + '\'); return false;" type="button"></div>'+
         {% endif %}
     {% endfor %}
         '</div>'+
     '</div>'+
     '</div>'+
-    '<div class="row">'+
-        '<div class="span9">'+
-            '<span class="help-inline">{% trans "If no audio file is selected, then text to speech is used to read out the question" %}</span>'+
-        '</div>'+
-    '</div><span>&nbsp;</span>'+
-    '<div class="row">'+
-        '<div class="span6">'+
-              '<div class="row">'+
-              '<div class="span2"><p><b>{% trans "Key Digit" %}</b></p></div>'+
-              '<div class="span2"><p><b>{% trans "Key Value" %}</b></p></div>'+
-              '</div>'+
-        '</div>'+
-    '</div>'+
     '<div id="divTxtRes_'+res_div_count+'"></div><input class="btn" value="{% trans "Add Response" %}" onclick="javascript:addResFormField('+id+', 0); return false;" type="button" />'+
     '</form>' +
     '</div>' +
     '</div><div id="divTxt"></div>');
+
     res_div_count = res_div_count + 1;
     id = (id - 1) + 2;    
     document.getElementById("id").value = id;
@@ -297,7 +283,6 @@ function addFormField() {
 
 // To remvoe added question form
 function removeFormField(id) {
-    //alert(id);
 	$(id).remove();
 }
 
@@ -310,7 +295,7 @@ function addResFormField(que_id, is_que_id_set) {
     '<form action="." id="new_response_form_' + id +'" method="post" enctype="multipart/form-data">'+
     "{% csrf_token %}"+
     '<div class="row">'+
-       '<div class="span8">'+
+       '<div class="span6">'+
           '<div class="row">'+
           {% for field in new_survey_res_form.visible_fields %}
           '<div class="span2">'+
@@ -321,10 +306,10 @@ function addResFormField(que_id, is_que_id_set) {
             {% endif %}
               '{{ field.errors.as_ul }}'+
               {% if field.name == 'keyvalue' %}
-                '<input type="text" id="id_keyvalue" class="input-small" name="keyvalue" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
+                '<b>{% trans "Key Digit" %}</b><br/><input type="text" id="id_keyvalue" class="input-small" name="keyvalue" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
               {% else %}
                 {% if field.name == 'key' %}
-                    '<input type="text" id="id_key" class="input-small" name="key" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
+                    '<b>{% trans "Key Value" %}</b><br/><input type="text" id="id_key" class="input-small" name="key" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
                 {% else %}
                     '{{ field|escapejs }}'+
                 {% endif %}                              
@@ -332,7 +317,7 @@ function addResFormField(que_id, is_que_id_set) {
           '</div>'+
           {% if forloop.last %}
             '<input type="hidden" id="new_response_id" value="0" /><!--<input value="Save" onclick="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')" type="button">-->'+
-            '<div class="span2"><input value="{% trans "Delete response" %}" class="btn danger" onClick="removeResFormField(\'#row_res' + id + '\'); return false;" type="button"></div>'+
+            '<div class="span2"><br/><input value="{% trans "Delete response" %}" class="btn-danger" onClick="removeResFormField(\'#row_res' + id + '\'); return false;" type="button"></div>'+
           {% endif %}
           {% endfor %}
           '</div>'+
@@ -347,6 +332,7 @@ function addResFormField(que_id, is_que_id_set) {
         $('#new_response_form_' + (id-1) +' input[type="text"]').attr('onBlur', 'response_form('+document.getElementById("new_response_id").value+', '+document.getElementById("id_new_que_form").value+', 1, 1)');
         $('#new_response_form_' + (id-1)).attr('id','response_form_'+document.getElementById("new_response_id").value);
     }
+
     //new response (with whom que id is set) form's id & onblur event must be changed to updated the newly entered values
     if(document.getElementById("new_response_id").value != 0 && que_id != 0 && is_que_id_set == 1)
     {
@@ -371,35 +357,37 @@ function removeResFormField(id) {
 {% endblock %}
 
 {% block content_header %}
-<h1>{% if action == 'update' %}
+    <h1>{% if action == 'update' %}
             {% trans "Update" %}
         {% else %}
             {% trans "Add" %}
-        {% endif %} {% trans "Survey" %} <small>{% trans "Survey configuration" %}</small></h1>
+        {% endif %} {% trans "Survey" %}
+        <small>{% trans "Survey configuration" %}</small>
+    </h1>
 {% endblock %}
 
 
 {% block content %}
 
 {% if msg %}
-<div class="alert-message success">
+    <div class="alert alert-success">
         <strong>{% trans "Alert" %} : </strong>  {{ msg }}
-</div>
+    </div>
 {% endif %}
 
 {% if error_msg %}
-<div class="error" id="rounded-corner-upper-table">
-    <strong>{% trans "Alert" %} : </strong>  {{ error_msg }}
-</div>
+    <div class="alert alert-error">
+        <strong>{% trans "Alert" %} : </strong>  {{ error_msg }}
+    </div>
 {% endif %}
 
 
-<div class="span-24 last" align=left>
-<form method="POST" action="." enctype="multipart/form-data" id="update_form">{% csrf_token %}
+
+<form class="well" method="POST" action="." enctype="multipart/form-data" id="update_form">{% csrf_token %}
 
     </fieldset>
     {% for field in form %}
-    <div class="clearfix{% if field.errors %} error{% endif %}">
+    <div class="clearfix{% if field.errors %} control-group error{% endif %}">
         <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
         <div class="input">
             {{ field }}
@@ -426,81 +414,53 @@ function removeResFormField(id) {
                         <form id="que_form_{{ que.id }}" action="." method="post" enctype="multipart/form-data">
                         {% csrf_token %}
 
-                            {% for key, form in survey_que_forms.items %}
-
-                            {% if forloop.first %}
-                            <div class="row">
-                            <div class="span17">
-                                <div class="row">
-                                {% for field in form.visible_fields %}
-                                    {% if forloop.first %}
-                                        <div class="span9"><p><b>{{ field.label|capfirst }}</b></p></div>
-                                    {% else %}
-                                        <div class="span8"><p><b>{{ field.label|capfirst }}</b></p></div>
-                                    {% endif %}
-                                {% endfor %}
-                                </div>
-                            </div>
-                            </div>
-                            {% endif %}
+                            {% for key, form in survey_que_forms.items %}                                                       
 
                             {% if key|stringformat:"s" == que.id|stringformat:"s" %}
 
                             <div class="row">
-                            <div class="span16">
+                            <div class="span12">
                                 <div class="row">
                                 {% for field in form.visible_fields %}
                                     {% if forloop.first %}
                                         {% for hidden in form.hidden_fields %}
                                             {{ hidden }}
                                         {% endfor %}
-                                        <div class="span8">
-                                            {{ field }}
+                                        <div class="span6">
+                                            <b>{{ field.label|capfirst }}</b><br/>
+                                            {{ field }}<br/>
+                                            <span class="help-inline">{% trans "If no audio file is selected, then text to speech is used to read out the question" %}</span>
                                         </div>
                                     {% else %}
-                                        <div class="span6">
-                                            {{ field.hidden_field }}{{ field }}
+                                        <div class="span3">
+                                            {{ field.hidden_field }}
+                                            <b>{{ field.label|capfirst }}</b><br/>
+                                            {{ field }}
                                         </div>
                                     {% endif %}
 
                                     {% if forloop.last %}
-                                        <div class="span2">
+                                        <div class="span3"><br/>
                                             <!--<input value="Save" onclick="question_form({{ que.id }}, 1);" type="button">-->
-                                            <input value="{% trans "Delete question" %}" class="btn danger" onclick="question_delete_form({{ que.id }}, 1);removeFormField('#row{{ que.id }}'); return false;" type="button">
+                                            <input value="{% trans "Delete question" %}" class="btn-danger" onclick="question_delete_form({{ que.id }}, 1);removeFormField('#row{{ que.id }}'); return false;" type="button">
                                         </div>
                                     {% endif %}
                                 {% endfor %}
                                 </div>
                             </div>
                             </div>
-                            <div class="row">
-                                <div class="span9">
-                                    <span class="help-inline">{% trans "If no audio file is selected, then text to speech is used to read out the question" %}</span>
-                                </div>
-                            </div>
+
                                 <!--Response forms start-->
                                 <!--extra to fix 1st survey response form-->
                                 <form>{% csrf_token %}</form>
                                 <!--extra-->
 
-                                <div class="row">
-                                    <div class="span6">
-                                        <div class="row">
-                                            <div class="span2">
-                                                <p><b>{% trans "Key Digit" %}</b></p>
-                                            </div>
-                                            <div class="span2">
-                                                <p><b>{% trans "Key Value" %}</b></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 {% for key, value_set in survey_res_form_collection.items|sort %}
                                     {% if value_set.que_id|stringformat:"s" == que.id|stringformat:"s" %}
                                         <form action="." id="response_form_{{ key }}" method="post" enctype="multipart/form-data">{% csrf_token %}
                                         <div class="row">
-                                            <div class="span8">
+                                            <div class="span6">
                                                 <div class="row">
                                                 {% for field in value_set.form.visible_fields %}
                                                     <div class="span2">
@@ -511,13 +471,17 @@ function removeResFormField(id) {
                                                           {% endfor %}
                                                         {% endif %}
                                                           <!--{{ field.errors.as_ul }}-->
-                                                          {{ field.hidden_field }}{{ field }}
-                                                    </div>
+                                                        {{ field.hidden_field }}
 
+                                                        {% if forloop.first %}<b>{% trans "Key Digit" %}</b>{% endif %}
+                                                        {% if forloop.last %}<b>{% trans "Key Value" %}</b>{% endif %}
+                                                        <br/>
+                                                        {{ field }}
+                                                    </div>
                                                     {% if forloop.last %}
-                                                    <div class="span2">
+                                                    <div class="span2"><br/>
                                                         <!--<input value="Save" onclick="response_form({{ key }}, {{ que.id }}, 1, 1);" type="button">-->
-                                                        <input value="{% trans "Delete response" %}" class="btn danger" onclick="response_delete_form({{ key }}, 1);removeResFormField('#response_form_{{ key }}'); return false;" type="button">
+                                                        <input value="{% trans "Delete response" %}" class="btn-danger" onclick="response_delete_form({{ key }}, 1);removeResFormField('#response_form_{{ key }}'); return false;" type="button" />
                                                     </div>
                                                     {% endif %}
 
@@ -543,18 +507,18 @@ function removeResFormField(id) {
             <input type="hidden" id="id" value="0">
             <input type="hidden" id="id_new_que_form" value="0">
             <div id="divTxt"></div>
-            <input type="button" value="{% trans "Add Question" %}" class="btn info" onclick="javascript:addFormField(); return false;" />
+            <input type="button" value="{% trans "Add Question" %}" class="btn-info" onclick="javascript:addFormField(); return false;" />
         </div>
     </fieldset>
     {% endif %}
 
     <div class="actions">
         {% if action == 'update' %}
-           <div align="right"><input id="update" type="submit" class="btn primary" onclick="javascript:document.getElementById('update_form').submit();" value="{% trans "Update Survey" %}" /></div>
+           <div align="right"><input id="update" type="submit" class="btn-primary" onclick="javascript:document.getElementById('update_form').submit();" value="{% trans "Update Survey" %}" /></div>
         {% else %}
-           <input id="add" type="submit" class="btn primary" value="{% trans "Submit" %}" />
+           <input id="add" type="submit" class="btn-primary" value="{% trans "Submit" %}" />
         {% endif %}
     </div>
 </form>
-</div>
+
 {% endblock %}

@@ -1,3 +1,17 @@
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
+
 try:
     import cStringIO as StringIO
 except ImportError:
@@ -60,6 +74,14 @@ CDR_VARIABLES = ['plivo_request_uuid', 'plivo_answer_url', 'plivo_app',
                  'progress_mediamsec', 'call_uuid',
                  'origination_caller_id_number', 'caller_id',
                  'answer_epoch', 'answer_uepoch']
+
+
+def get_contact(id):
+    try:
+        con_obj = Contact.objects.get(pk=id)
+        return con_obj.contact
+    except:
+        return ''
 
 
 class CustomJSONSerializer(Serializer):
@@ -466,7 +488,7 @@ class CampaignResource(ModelResource):
     """
     **Attributes**:
 
-            * ``campaign_code`` - Autogenerate campaign code
+            * ``campaign_code`` - Auto-generated campaign code
             * ``name`` - Name of the Campaign
             * ``description`` - Short description of the Campaign
             * ``callerid`` - Caller ID
@@ -979,20 +1001,38 @@ class CampaignSubscriberResource(ModelResource):
             Server: WSGIServer/0.1 Python/2.6.2
             Vary: Authorization
             Content-Length: 0
+            Location: http://localhost:8000/api/v1/campaignsubscriber/1/
             Content-Type: text/plain
 
     **Read**:
 
-        CURL Usage::
+            CURL Usage::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber/?format=json
+                curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber/?format=json
 
-                or
+            Response::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber/%campaign_id%/?format=json
-
-        Response:
-
+                {
+                   "meta":{
+                      "limit":20,
+                      "next":null,
+                      "offset":0,
+                      "previous":null,
+                      "total_count":1
+                   },
+                   "objects":[
+                      {
+                         "count_attempt":1,
+                         "created_date":"2012-01-17T03:58:49",
+                         "duplicate_contact":"123456789",
+                         "id":"1",
+                         "last_attempt":"2012-01-17T15:28:37",
+                         "resource_uri":"/api/v1/campaignsubscriber/1/",
+                         "status":2,
+                         "updated_date":"2012-02-07T02:22:19"
+                      }
+                   ]
+                }
 
     **Update**:
 
@@ -1023,85 +1063,7 @@ class CampaignSubscriberResource(ModelResource):
         }
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
 
-    def get_object_list(self, request):
-        """
-        An ORM-specific implementation of ``get_object_list``.
 
-        Returns a queryset that may have been limited by other overrides.
-        """
-        logger.debug('CampaignSubscriber GET API get called')
-
-        temp_url = request.META['PATH_INFO']
-        temp_id = temp_url.split('/api/v1/campaignsubscriber/')[1]
-        camp_id = temp_id.split('/')[0]
-        #contact = temp_id.split('/')[1]
-
-        from django.db import connection, transaction
-        cursor = connection.cursor()
-
-        campaign_id = int(camp_id)
-        contact = ''
-
-        if not campaign_id:
-            error_msg = "No value for Campaign ID !"
-            logger.error(error_msg)
-            raise BadRequest(error_msg)
-
-        if contact:
-            if not isint(contact):
-                error_msg = "Wrong value for contact !"
-                logger.error(error_msg)
-                raise BadRequest(error_msg)
-
-            sql_statement = 'SELECT contact_id, last_attempt, count_attempt,'\
-                    'dialer_campaign_subscriber.status '\
-                    'FROM dialer_campaign_subscriber '\
-                    'LEFT JOIN dialer_callrequest ON '\
-                    'campaign_subscriber_id=dialer_campaign_subscriber.id '\
-                    'LEFT JOIN dialer_campaign ON '\
-                    'dialer_callrequest.campaign_id=dialer_campaign.id '\
-                    'WHERE dialer_campaign_subscriber.campaign_id = %s '\
-                    'AND dialer_campaign_subscriber.duplicate_contact = "%s"'\
-                    % (str(campaign_id), str(contact))
-
-        else:
-            sql_statement = 'SELECT contact_id, last_attempt, count_attempt,'\
-                        'dialer_campaign_subscriber.status '\
-                        'FROM dialer_campaign_subscriber '\
-                        'LEFT JOIN dialer_callrequest ON '\
-                        'campaign_subscriber_id=' \
-                        'dialer_campaign_subscriber.id '\
-                        'LEFT JOIN dialer_campaign ON '\
-                        'dialer_callrequest.campaign_id=dialer_campaign.id '\
-                        'WHERE dialer_campaign_subscriber.campaign_id' \
-                        '= %s' % (str(campaign_id))
-
-        cursor.execute(sql_statement)
-        row = cursor.fetchall()
-
-        result = []
-        result_string = ''
-        limit = list(row).__len__()
-        i = 0
-        for record in row:
-            modrecord = {}
-            modrecord['contact_id'] = record[0]
-            modrecord['last_attempt'] = record[1]
-            modrecord['count_attempt'] = record[2]
-            modrecord['status'] = record[3]
-            result.append(modrecord)
-            if i == (limit - 1):
-                result_string = str(result_string) + str(record[0])
-            else:
-                result_string = str(result_string) + str(record[0]) + ', '
-
-        result_string = result_string
-        logger.debug('CampaignSubscriber GET API : result ok 200')
-        try:
-            return self._meta.queryset.filter(contact__in=[result_string])._clone()
-        except:
-            return self._meta.queryset._clone()
-    
     def obj_create(self, bundle, request=None, **kwargs):
 
         logger.debug('CampaignSubscriber POST API get called')
@@ -1119,7 +1081,10 @@ class CampaignSubscriberResource(ModelResource):
                                 description=bundle.data.get('description'),
                                 status=1, # default active
                                 phonebook=obj_phonebook)
-
+        
+        # Assign new contact object
+        bundle.obj = new_contact
+        
         logger.debug('CampaignSubscriber POST API : result ok 200')
         return bundle
 
@@ -1129,47 +1094,169 @@ class CampaignSubscriberResource(ModelResource):
         """
         logger.debug('CampaignSubscriber PUT API get called')
 
-        if not bundle.obj or not bundle.obj.pk:
-            # Attempt to hydrate data from kwargs before doing a lookup for the object.
-            # This step is needed so certain values (like datetime) will pass model validation.
-            try:
-                bundle.obj = self.get_object_list(request).model()
-                bundle.data.update(kwargs)
-                bundle = self.full_hydrate(bundle)
-                lookup_kwargs = kwargs.copy()
-                lookup_kwargs.update(dict(
-                    (k, getattr(bundle.obj, k))
-                    for k in kwargs.keys()
-                    if getattr(bundle.obj, k) is not None))
-            except:
-                # if there is trouble hydrating the data, fall back to just
-                # using kwargs by itself (usually it only contains a "pk" key
-                # and this will work fine.
-                lookup_kwargs = kwargs
-            try:
-                bundle.obj = self.obj_get(request, **lookup_kwargs)
-            except ObjectDoesNotExist:
-                error_msg = "A model instance matching the provided arguments could not be found."
-                logger.error(error_msg)
-                raise NotFound(error_msg)
+        temp_url = request.META['PATH_INFO']
+        temp_id = temp_url.split('/api/v1/campaignsubscriber/')[1]
+        campaign_id = temp_id.split('/')[0]
 
-        bundle = self.full_hydrate(bundle)
-
-        campaign_id = int(bundle.data.get('pk'))
-        camaign_obj = Campaign.objects.get(id=campaign_id)
+        campaign_obj = Campaign.objects.get(id=campaign_id)
         try:
-            campaignsubscriber = CampaignSubscriber.objects.get(
-                                        duplicate_contact=bundle.data.get('contact'),
-                                        campaign=camaign_obj)
+            campaignsubscriber = CampaignSubscriber.objects.get(duplicate_contact=bundle.data.get('contact'),
+                                                                campaign=campaign_obj)
             campaignsubscriber.status = bundle.data.get('status')
             campaignsubscriber.save()
         except:
             error_msg = "A model instance matching the provided arguments could not be found."
             logger.error(error_msg)
-            raise NotFound(error_msg)
+            raise BadRequest(error_msg)
 
         logger.debug('CampaignSubscriber PUT API : result ok 200')
         return bundle
+
+
+class CampaignSubscriberPerCampaignResource(ModelResource):
+    """
+    **Attributes Details**:
+
+        * ``contact_id`` - contact id
+        * ``count_attempt`` - no of call attempt
+        * ``last_attempt`` - last call attempt
+        * ``status`` - call status
+
+    **Read**:
+
+            CURL Usage::
+                
+                curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber_per_campaign/%campaign_id%/?format=json
+                or
+                curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber_per_campaign/%campaign_id%/%contact%/?format=json
+
+            Response::
+
+                [
+                   {
+                      "contact_id":1,
+                      "count_attempt":1,
+                      "last_attempt":"2012-01-17T15:28:37",
+                      "status":2,
+                      "campaign_subscriber_id": 1,
+                      "contact": "640234123"
+                   },
+                   {
+                      "contact_id":2,
+                      "count_attempt":1,
+                      "last_attempt":"2012-02-06T17:00:38",
+                      "status":1,
+                      "campaign_subscriber_id": 2,
+                      "contact": "640234000"
+                   }
+                ]
+
+    """
+    class Meta:
+        resource_name = 'campaignsubscriber_per_campaign'
+        authorization = Authorization()
+        authentication = BasicAuthentication()
+        list_allowed_methods = ['get']
+        detail_allowed_methods = ['get']
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+
+    def override_urls(self):
+        """Override urls"""
+        return [
+            url(r'^(?P<resource_name>%s)/(.+)/$' % self._meta.resource_name, self.wrap_view('read')),
+        ]
+
+    def read_response(self, request, data, response_class=HttpResponse, **response_kwargs):
+        """To display API's result"""
+        desired_format = self.determine_format(request)
+        serialized = self.serialize(request, data, desired_format)
+        return response_class(content=serialized, content_type=desired_format, **response_kwargs)
+
+    def read(self, request=None, **kwargs):
+        """GET method of CampaignSubscriber API"""
+        logger.debug('CampaignSubscriber GET API get called')
+        auth_result = self._meta.authentication.is_authenticated(request)
+        if not auth_result is True:
+            raise ImmediateHttpResponse(response=http.HttpUnauthorized())
+
+        logger.debug('CampaignSubscriber GET API authorization called!')
+        auth_result = self._meta.authorization.is_authorized(request, object)
+
+
+        temp_url = request.META['PATH_INFO']
+        temp_id = temp_url.split('/api/v1/campaignsubscriber_per_campaign/')[1]
+        camp_id = temp_id.split('/')[0]
+        try:
+            contact = temp_id.split('/')[1]
+        except:
+            contact = False
+
+        from django.db import connection, transaction
+        cursor = connection.cursor()
+        
+        try:
+            campaign_id = int(camp_id)
+        except:
+            error_msg = "No value for Campaign ID !"
+            logger.error(error_msg)
+            raise BadRequest(error_msg)
+
+        try:
+            Campaign.objects.get(id=campaign_id)
+        except:
+            error_msg = "Campaign ID does not exists!"
+            logger.error(error_msg)
+            raise BadRequest(error_msg)
+
+        if contact:
+            try:
+                int_contact = int(contact)
+            except ValueError:
+                error_msg = "Wrong value for contact !"
+                logger.error(error_msg)
+                raise BadRequest(error_msg)
+
+            sql_statement = 'SELECT DISTINCT contact_id, last_attempt, count_attempt,'\
+                            'dialer_campaign_subscriber.status,'\
+                            'dialer_campaign_subscriber.id '\
+                            'FROM dialer_campaign_subscriber '\
+                            'LEFT JOIN dialer_callrequest ON '\
+                            'campaign_subscriber_id=dialer_campaign_subscriber.id '\
+                            'LEFT JOIN dialer_campaign ON '\
+                            'dialer_callrequest.campaign_id=dialer_campaign.id '\
+                            'WHERE dialer_campaign_subscriber.campaign_id = %s '\
+                            'AND dialer_campaign_subscriber.duplicate_contact = "%s"'\
+                            % (str(campaign_id), str(contact))
+
+        else:
+            sql_statement = 'SELECT DISTINCT contact_id, last_attempt, count_attempt,'\
+                            'dialer_campaign_subscriber.status, '\
+                            'dialer_campaign_subscriber.id '\
+                            'FROM dialer_campaign_subscriber '\
+                            'LEFT JOIN dialer_callrequest ON '\
+                            'campaign_subscriber_id=' \
+                            'dialer_campaign_subscriber.id '\
+                            'LEFT JOIN dialer_campaign ON '\
+                            'dialer_callrequest.campaign_id=dialer_campaign.id '\
+                            'WHERE dialer_campaign_subscriber.campaign_id' \
+                            '= %s' % (str(campaign_id))
+
+        cursor.execute(sql_statement)
+        row = cursor.fetchall()
+
+        result = []
+        for record in row:
+            modrecord = {}
+            modrecord['contact_id'] = record[0]
+            modrecord['last_attempt'] = record[1]
+            modrecord['count_attempt'] = record[2]
+            modrecord['status'] = record[3]
+            modrecord['campaign_subscriber_id'] = record[4]
+            modrecord['contact'] = get_contact(record[0])
+            result.append(modrecord)
+
+        logger.debug('CampaignSubscriber GET API : result ok 200')
+        return self.read_response(request, result)
 
 
 class CallrequestValidation(Validation):
@@ -1471,11 +1558,11 @@ class AnswercallResource(ModelResource):
             obj_callrequest.save()
 
             # check if Voice App
-            if not obj_callrequest.content_object.__class__.__name__ == 'VoiceApp':
+            if obj_callrequest.content_object.__class__.__name__ != 'VoiceApp':
+                object_list = []
                 logger.error('Error with App type, not a VoiceApp!')
-
             else:
-                
+
                 if obj_callrequest.content_object.type == 1:
                     #Dial
                     timelimit = obj_callrequest.timelimit

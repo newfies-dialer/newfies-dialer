@@ -1,3 +1,16 @@
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
 from django.conf.urls.defaults import handler404, handler500, include,\
      patterns, url
 from django.conf import settings
@@ -31,6 +44,7 @@ tastypie_api.register(PhonebookResource())
 tastypie_api.register(BulkContactResource())
 tastypie_api.register(CampaignDeleteCascadeResource())
 tastypie_api.register(CampaignSubscriberResource())
+tastypie_api.register(CampaignSubscriberPerCampaignResource())
 tastypie_api.register(CallrequestResource())
 tastypie_api.register(AnswercallResource())
 tastypie_api.register(HangupcallResource())
@@ -58,20 +72,6 @@ urlpatterns = patterns('',
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # custom admin urls for admin dashboard
-    (r'^admin_call_report/$',
-     'dialer_campaign.views.admin_call_report'),
-    (r'^admin_call_report_graph/$',
-     'dialer_campaign.views.admin_call_report_graph'),
-    (r'^admin_campaign_report/$',
-     'dialer_campaign.views.admin_campaign_report'),
-    (r'^admin_campaign_report_graph/$',
-     'dialer_campaign.views.admin_campaign_report_graph'),
-    (r'^admin_user_report/$',
-     'dialer_campaign.views.admin_user_report'),
-    (r'^admin_user_report_graph/$',
-     'dialer_campaign.views.admin_user_report_graph'),
      
     (r'^logout/$',
      'dialer_campaign.views.logout_view'),

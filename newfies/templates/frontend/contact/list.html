@@ -1,59 +1,47 @@
 {% extends "frontend/master.html" %}
 {% load i18n dialer_cdr_extras icons %}
 
-
-
 {% block extra_files %}
-<script language="javascript" type="text/javascript">
-    $(document).ready(function() {
-        $("#id_contact_no").keydown(function(event) {
-            numeric(event);
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function() {
+            $("#id_contact_no").keydown(function(event) {
+                numeric(event);
+            });
         });
-    });
-</script>
-
-<!--flexigrid css & js-->
-<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid.css" type="text/css" />
-<script type="text/javascript" src="{{STATIC_URL}}newfies/js/flexigrid.js"></script>
-<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid_custom.css" type="text/css" />
-<script type="text/javascript" language="javascript">
-function get_alert_msg(id)
-{
-    confirm_string = '{% trans "Confirm deletion?" %}';
-    var answer = confirm(confirm_string);
-    return answer // answer is a boolean
-}
-</script>
-<style type="text/css">
-table td {
-    width: auto;
-    padding: 10px 5px 9px 0px;
-}
-label {
-    text-align: left;
-}
-</style>
-
-{% include "frontend/custom_jquery_select_all.html" %}
+    </script>
     
+    {% include "frontend/custom_jquery_select_all.html" %}
+
+    <style type="text/css">
+    table td {
+        width: auto;
+        padding: 10px 5px 9px 0px;
+    }
+    label {
+        text-align: left;
+    }
+    </style>
 {% endblock %}
 
 {% block content_header %}
-<h1>{% trans "Contacts" %} <small>{% trans "List, add and edit contacts" %}</small></h1>
+    <h1>{% trans "Contacts" %} <small>{% trans "List, add and edit contacts" %}</small></h1>
 {% endblock %}
 
 {% block content %}
 
 {% if msg %}
-<div class="alert-message success">
+    <div class="alert alert-success">
         <strong>{% trans "Alert"  %} : </strong>  {{ msg }}
-</div>
+    </div>
+{% endif %}
+{% if error_msg %}
+    <div class="alert alert-error">
+        <strong>{% trans "Alert"  %} : </strong>  {{ error_msg }}
+    </div>
 {% endif %}
 <br/>
-       
 
-<form method="POST" action="." enctype="multipart/form-data">
-    {% csrf_token %}
+<form class="well form-search" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
     
     <div class="row">
         <div class="span16">
@@ -99,18 +87,19 @@ label {
     </div>
 
     <div class="actions">
-        <input class="btn primary" type=submit name=submit value={% trans "Search" %} />&nbsp;
-        <input class="btn danger" type=reset name=reset value={% trans "Clear" %} />
+        <input class="btn-primary" type=submit name=submit value={% trans "Search" %} />&nbsp;
+        <input class="btn-danger" type=reset name=reset value={% trans "Clear" %} />
     </div>
 </form>
 
 <br/>
 
-<form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">
-{% csrf_token %}
-<table id="flex1" align="left" style="display:none;"></table>
+<form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">{% csrf_token %}
+    <table id="flex1" align="left" style="display:none;"></table>
 </form>
+
 <script type="text/javascript">
+
 var kwargs = ('{{ kwargs }}'.replace(/\&#39;/g, "'"));//'{{ kwargs }}'
 var name = ('{{ name }}'.replace(/\&#39;/g, "'"));//'{{ q }}'
 var arr = new Array(2);
@@ -126,11 +115,11 @@ $("#flex1").flexigrid({
 	colModel : [
         {display: '<input type="checkbox" onclick="toggleChecked(this.checked)">', name: '', width: 40, align: 'center'},
 		{display: '{% trans "Id" %}', name: 'id', width: 40, sortable: true, align: 'center'},
-        {display: '{% trans "Phonebook" %}', name: 'phonebook__name', width: 100, sortable: true, align: 'center'},
-        {display: '{% trans "Contact Number" %}', name: 'contact', width: 140, sortable: true, align: 'center'},
-        {display: '{% trans "Last Name" %}', name: 'last_name', width: 120, sortable: true, align: 'center'},
-        {display: '{% trans "First Name" %}', name: 'first_name', width : 120, sortable : true, align: 'center'},
-        {display: '{% trans "Status" %}', name: 'status', width : 50, sortable : true, align: 'center', },
+        {display: '{% trans "Phonebook" %}', name: 'phonebook__name', width: 200, sortable: true, align: 'center'},
+        {display: '{% trans "Contact Number" %}', name: 'contact', width: 200, sortable: true, align: 'center'},
+        {display: '{% trans "Last Name" %}', name: 'last_name', width: 150, sortable: true, align: 'center'},
+        {display: '{% trans "First Name" %}', name: 'first_name', width : 150, sortable : true, align: 'center'},
+        {display: '{% trans "Status" %}', name: 'status', width : 100, sortable : true, align: 'center', },
         {display: '{% trans "Date" %}', name: 'updated_date', width: 120, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
         {display: '{% trans "Action" %}', name: '', width : 50, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
 		],
@@ -148,7 +137,7 @@ $("#flex1").flexigrid({
 	useRp: true,
 	rp: 10,
 	showTableToggleBtn: true,
-	width: 900,
+	//width: 900,
 	height: 265,
     pagetext: '{% trans "Page" %}',
     outof: '{% trans "of" %}',
@@ -165,7 +154,6 @@ $("#flex1").flexigrid({
     },
 });
 
-
 function add_button()
 {
     window.location = 'add/';
@@ -178,6 +166,6 @@ function delete_button()
 {
     $('#ListForm').submit();
 }
-
 </script>
+
 {% endblock %}

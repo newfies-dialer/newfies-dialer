@@ -1,3 +1,17 @@
+#
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
+#
+# This Source Code Form is subject to the terms of the Mozilla Public 
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2011-2012 Star2Billing S.L.
+# 
+# The Initial Developer of the Original Code is
+# Arezqui Belaid <info@star2billing.com>
+#
+
 from django.contrib.auth.models import User
 from django import forms
 from django.forms.util import ErrorList
@@ -107,7 +121,7 @@ class CampaignForm(ModelForm):
         model = Campaign
         fields = ['campaign_code', 'name', 'description',
                   'callerid', 'status', 'aleg_gateway',
-                  'content_object', # 'content_type', 'object_id','voipapp',
+                  'content_object', # 'content_type', 'object_id'
                   'extra_data', 'phonebook',
                   'frequency', 'callmaxduration', 'maxretry',
                   'intervalretry', 'calltimeout',
@@ -123,11 +137,11 @@ class CampaignForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(CampaignForm, self).__init__(*args, **kwargs)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
+        self.fields['description'].widget.attrs['class'] = "input-xlarge"
 
         if user:
             self.fields['ds_user'].initial = user
             list_pb = []
-            #list_voipapp = []
             list_gw = []
 
             list_pb.append((0, '---'))
@@ -135,12 +149,6 @@ class CampaignForm(ModelForm):
             for i in pb_list:
                 list_pb.append((i[0], i[1]))
             self.fields['phonebook'].choices = list_pb
-
-            #list_voiceapp.append((0, '---'))
-            #vp_list = field_list("voiceapp", user)
-            #for i in vp_list:
-            #    list_voiceapp.append((i[0], i[1]))
-            #self.fields['voiceapp'].choices = list_voiceapp
 
             list_gw.append((0, '---'))
             gw_list = field_list("gateway", user)
@@ -204,7 +212,6 @@ class CampaignAdminForm(ModelForm):
         model = Campaign
         fields = ['campaign_code', 'name', 'description', 'user', 'status',
                   'callerid', 'startingdate', 'expirationdate', 'aleg_gateway',
-                  #'voipapp', 
                   'content_type', 'object_id', 'extra_data', 'phonebook',
                   'frequency', 'callmaxduration', 'maxretry', 'intervalretry',
                   'calltimeout', 'daily_start_time', 'daily_stop_time',
@@ -242,7 +249,6 @@ SEARCH_TYPE = (
 
 class ContactSearchForm(forms.Form):
     """Search Form on Contact List"""
-
     contact_no = forms.CharField(label=_('Contact Number:'), required=False,
                            widget=forms.TextInput(attrs={'size': 15}))
     contact_no_type = forms.ChoiceField(label='', required=False, initial=1,
@@ -251,8 +257,7 @@ class ContactSearchForm(forms.Form):
                            widget=forms.TextInput(attrs={'size': 15}))
     phonebook = forms.ChoiceField(label=_('Phonebook:'), required=False)
     status = forms.TypedChoiceField(label=_('Status:'), required=False,
-             choices=(('0', _('Inactive')), ('1', _('Active ')),
-                      ('2', _('All'))),
+             choices=(('0', _('Inactive')), ('1', _('Active ')), ('2', _('All'))),
              widget=forms.RadioSelect, initial='2')
 
     def __init__(self, user, *args, **kwargs):
@@ -272,7 +277,6 @@ class DashboardForm(forms.Form):
     campaign = forms.ChoiceField(label=_('Campaign'), required=False)
     search_type = forms.ChoiceField(label=_('Type'), required=False, initial=4,
                                     choices=SEARCH_TYPE)
-
 
     def __init__(self, user, *args, **kwargs):
         super(DashboardForm, self).__init__(*args, **kwargs)

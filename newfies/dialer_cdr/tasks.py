@@ -79,6 +79,9 @@ def init_callrequest(callrequest_id, campaign_id):
         dialout_phone_number = obj_callrequest.phone_number
     logger.info("dialout_phone_number : %s" % dialout_phone_number)
 
+    if settings.DIALERDEBUG:
+        dialout_phone_number = settings.DIALERDEBUG_PHONENUMBER
+
     #Retrieve the Gateway for the A-Leg
     gateways = obj_callrequest.aleg_gateway.gateways
     gateway_codecs = obj_callrequest.aleg_gateway.gateway_codecs

@@ -481,7 +481,11 @@ CONVERT_TYPE_VALUE = 2 # 0-Keep original, 1-Convert to MP3, 2-Convert to WAV, 3-
 
 AUDIO_DEBUG = False
 
+#DEBUG DIALER
+#============
+DIALERDEBUG = False
+DIALERDEBUG_PHONENUMBER = 1000
+
 #IMPORT LOCAL SETTINGS
 #=====================
 from settings_local import *
-

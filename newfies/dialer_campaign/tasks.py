@@ -20,9 +20,15 @@ from celery.decorators import task
 from django.db import IntegrityError
 from datetime import datetime, timedelta
 from time import sleep
+from django.conf import settings
 #from celery.task.http import HttpDispatchTask
 #from common_functions import isint
 
+
+if settings.DIALERDEBUG:
+    Timelaps = 5
+else:
+    Timelaps = 60
 
 @task(default_retry_delay=30 * 60)  # retry in 30 minutes.
 def add(x, y):
@@ -125,7 +131,7 @@ def check_campaign_pendingcall(campaign_id):
             elem_camp_subscriber.status = 7 # Update to Not Authorized
             elem_camp_subscriber.save()
             return True
-        
+
         #Create a Callrequest Instance to track the call task
         new_callrequest = Callrequest(status=1, # PENDING
                             call_type=call_type,
@@ -156,7 +162,7 @@ class campaign_running(PeriodicTask):
         campaign_running.delay()
     """
 
-    run_every = timedelta(seconds=60)
+    run_every = timedelta(seconds=Timelaps)
     #NOTE : until we implement a PID Controller : 
     #http://en.wikipedia.org/wiki/PID_controller
 
@@ -166,7 +172,7 @@ class campaign_running(PeriodicTask):
 
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
-        logger.info( "TASK :: campaign_running")
+        logger.warning( "TASK :: campaign_running")
 
         for campaign in Campaign.objects.get_running_campaign():
             logger.debug("=> Campaign name %s (id:%s)" % (campaign.name,

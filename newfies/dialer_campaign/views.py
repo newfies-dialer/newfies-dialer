@@ -93,7 +93,7 @@ def customer_dashboard(request, on_index=None):
     campaign_phonebbok_active_contact_count = 0
     for i in campaign:
         campaign_phonebbok_active_contact_count +=\
-        Contact.objects.filter(phonebook__campaign=i.id, status=1).count()
+            Contact.objects.filter(phonebook__campaign=i.id, status=1).count()
         campaign_id_list += str(i.id) + ","
     campaign_id_list = campaign_id_list[:-1]
 
@@ -204,6 +204,7 @@ def customer_dashboard(request, on_index=None):
                                 'duration__avg': i['duration__avg'],
                                 'disposition': i['disposition']
                                 })
+            
             if i['disposition'] == 'ANSWER':
                 total_answered = total_answered + 1
             elif i['disposition'] == 'BUSY' or i['disposition'] == 'USER_BUSY':
@@ -326,32 +327,34 @@ def customer_dashboard(request, on_index=None):
                         ", " + str(date.year)
 
             if inttime in calls_dict.keys():
-                total_data.append({'count': i, 'day': date.day,
-                                   'month': date.month, 'year': date.year,
-                                   'date': name_date,
-                'starting_date__count': \
-                    calls_dict[inttime]['starting_date__count'],
-                'duration__sum': calls_dict[inttime]['duration__sum'],
-                'duration__avg': calls_dict[inttime]['duration__avg'],
-                #'disposition': calls_dict[inttime]['disposition'],
-                'starting_date': calls_dict[inttime]['starting_datetime'],
-                })
+                total_data.append({
+                        'count': i, 'day': date.day,
+                        'month': date.month, 'year': date.year,
+                        'date': name_date,
+                        'starting_date__count': \
+                            calls_dict[inttime]['starting_date__count'],
+                        'duration__sum': calls_dict[inttime]['duration__sum'],
+                        'duration__avg': calls_dict[inttime]['duration__avg'],
+                        #'disposition': calls_dict[inttime]['disposition'],
+                        'starting_date': calls_dict[inttime]['starting_datetime'],
+                    })
 
                 # Extra part: To count total no of calls & their duration
-                total_duration_sum = \
-                total_duration_sum + calls_dict[inttime]['duration__sum']
+                total_duration_sum = total_duration_sum + \
+                                calls_dict[inttime]['duration__sum']
                 total_call_count = total_call_count + \
-                              calls_dict[inttime]['starting_date__count']
+                                calls_dict[inttime]['starting_date__count']
             else:
                 date = parser.parse(str(date))
-                total_data.append({'count':i, 'day':date.day,
-                                   'month':date.month, 'year':date.year,
-                                   'date':name_date ,
-                                   'starting_date__count':0,
-                                   'duration__sum':0, 'duration__avg':0,
-                                   'disposition': '',
-                                   'starting_date': inttime,
-                                   })
+                total_data.append({
+                       'count':i, 'day':date.day,
+                       'month':date.month, 'year':date.year,
+                       'date':name_date ,
+                       'starting_date__count':0,
+                       'duration__sum':0, 'duration__avg':0,
+                       'disposition': '',
+                       'starting_date': inttime,
+                    })
             i += 1
 
         #  following sample code for Last 7 days option

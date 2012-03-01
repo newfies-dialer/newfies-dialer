@@ -1874,6 +1874,7 @@ def campaign_change(request, object_id):
             form = CampaignForm(request.user, request.POST, instance=campaign)
             previous_status = campaign.status
             if form.is_valid():
+                form.save()
                 obj = form.save(commit=False)
                 result_array = common_content_type_function(form.cleaned_data['content_object'])
                 obj.content_type = result_array['object_type']

@@ -206,27 +206,27 @@ def customer_dashboard(request, on_index=None):
                                 })
             
             if i['disposition'] == 'ANSWER':
-                total_answered = total_answered + 1
+                total_answered += i['starting_date__count']
             elif i['disposition'] == 'BUSY' or i['disposition'] == 'USER_BUSY':
-                total_busy = total_busy + 1
+                total_busy += i['starting_date__count']
             elif i['disposition'] == 'NOANSWER':
-                total_not_answered = total_not_answered + 1
+                total_not_answered += i['starting_date__count']
             elif i['disposition'] == 'CANCEL':
-                total_cancel = total_cancel + 1
+                total_cancel += i['starting_date__count']
             elif i['disposition'] == 'CONGESTION':
-                total_congestion = total_congestion + 1
+                total_congestion += i['starting_date__count']
             elif i['disposition'] == 'CHANUNAVAIL':
-                total_chanunavail = total_chanunavail + 1
+                total_chanunavail += i['starting_date__count']
             elif i['disposition'] == 'DONTCALL':
-                total_dontcall = total_dontcall + 1
+                total_dontcall += i['starting_date__count']
             elif i['disposition'] == 'TORTURE':
-                total_torture = total_torture + 1
+                total_torture += i['starting_date__count']
             elif i['disposition'] == 'INVALIDARGS':
-                total_invalidargs = total_invalidargs + 1
+                total_invalidargs += i['starting_date__count']
             elif i['disposition'] == 'NOROUTE':
-                total_noroute = total_noroute + 1
+                total_noroute += i['starting_date__count']
             else:
-                total_forbidden = total_forbidden + 1 # FORBIDDEN
+                total_forbidden += i['starting_date__count'] # FORBIDDEN
 
         # following part got from cdr-stats 'global report' used by humblefinance
         # following calls list is without dispostion & group by call date
@@ -340,10 +340,8 @@ def customer_dashboard(request, on_index=None):
                     })
 
                 # Extra part: To count total no of calls & their duration
-                total_duration_sum = total_duration_sum + \
-                                calls_dict[inttime]['duration__sum']
-                total_call_count = total_call_count + \
-                                calls_dict[inttime]['starting_date__count']
+                total_duration_sum = total_duration_sum + calls_dict[inttime]['duration__sum']
+                total_call_count += calls_dict[inttime]['starting_date__count']
             else:
                 date = parser.parse(str(date))
                 total_data.append({

@@ -344,6 +344,7 @@ LANGUAGES = (
     ('es', gettext('Spanish')),
     ('pt', gettext('Portuguese')),
     ('zh', gettext('Chinese')),
+    ('tr', gettext('Turkish')),
 )
 
 LANGUAGE_COOKIE_NAME = 'newfies_dialer_language'

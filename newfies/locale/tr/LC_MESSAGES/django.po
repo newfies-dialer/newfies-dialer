@@ -3,22 +3,24 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: 1.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-02 12:55+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2012-03-04 19:32+0200\n"
+"Last-Translator: serhat alpaslan <s.alpaslan@netglobalturkey.com>\n"
+"Language-Team: LANGUAGE <s.alpaslan@netglobalturkey.com>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
+"X-Poedit-Language: Turkish\n"
+"X-Poedit-Country: TURKEY\n"
 
-#: settings.py:342 user_profile/fields.py:81
+#: settings.py:342
+#: user_profile/fields.py:81
 msgid "English"
 msgstr "İngilizce"
 
@@ -26,7 +28,8 @@ msgstr "İngilizce"
 msgid "Spanish"
 msgstr "İspanyolca"
 
-#: settings.py:345 user_profile/fields.py:182
+#: settings.py:345
+#: user_profile/fields.py:182
 msgid "Portuguese"
 msgstr "Portekizce"
 
@@ -38,7 +41,8 @@ msgstr "Görev Yöneticisi"
 msgid "Dashboard Stats"
 msgstr "Pano İstatistikleri"
 
-#: custom_admin_tools/dashboard.py:83 custom_admin_tools/dashboard.py:173
+#: custom_admin_tools/dashboard.py:83
+#: custom_admin_tools/dashboard.py:173
 msgid "Recent Actions"
 msgstr "Son Eylemler"
 
@@ -63,7 +67,8 @@ msgstr "Voip Sunucu"
 msgid "Audio Files"
 msgstr "Ses Dosyaları"
 
-#: custom_admin_tools/dashboard.py:112 survey/models.py:81
+#: custom_admin_tools/dashboard.py:112
+#: survey/models.py:81
 #: templates/frontend/survey/survey_change.html:364
 #: templates/frontend/survey/survey_list.html:9
 #: templates/frontend/survey/survey_list.html:47
@@ -76,9 +81,10 @@ msgstr "Son Newfies-Dialer Haberler"
 
 #: custom_admin_tools/dashboard.py:142
 msgid "Dashboard Stats Settings"
-msgstr "Pano İstatistikleri Ayarları"
+msgstr "Pano İstatistik Ayarları"
 
-#: custom_admin_tools/menu.py:31 templates/frontend/bootstrap_menu.html:15
+#: custom_admin_tools/menu.py:31
+#: templates/frontend/bootstrap_menu.html:15
 msgid "Newfies-Dialer"
 msgstr "Newfies-Dialer"
 
@@ -86,7 +92,8 @@ msgstr "Newfies-Dialer"
 msgid "Applications"
 msgstr "Uygulamalar"
 
-#: custom_admin_tools/menu.py:38 templates/frontend/bootstrap_menu.html:60
+#: custom_admin_tools/menu.py:38
+#: templates/frontend/bootstrap_menu.html:60
 msgid "Administration"
 msgstr "Yönetim"
 
@@ -94,48 +101,49 @@ msgstr "Yönetim"
 msgid "Customer Panel"
 msgstr "Müşteri Paneli"
 
-#: dialer_campaign/admin.py:37 dialer_cdr/admin.py:35
+#: dialer_campaign/admin.py:37
+#: dialer_cdr/admin.py:35
 #: dialer_gateway/admin.py:34
 msgid "Standard options"
 msgstr "Standart seçenekler"
 
-#: dialer_campaign/admin.py:44 dialer_cdr/admin.py:41
+#: dialer_campaign/admin.py:44
+#: dialer_cdr/admin.py:41
 #: dialer_gateway/admin.py:39
 msgid "Advanced options"
 msgstr "Gelişmiş seçenekler"
 
-#: dialer_campaign/admin.py:83 dialer_campaign/views.py:1772
+#: dialer_campaign/admin.py:83
+#: dialer_campaign/views.py:1772
 #, python-format
 msgid "you have too many campaigns. Max allowed %(limit)s"
-msgstr "Çok fazla kampanyaları var. Max %(limit)s izin"
+msgstr "Çok fazla kampanyanız bulunmakta.Hesabınıza en fazla %(limit) sınır tanımlanmıştır."
 
-#: dialer_campaign/admin.py:137 dialer_campaign/admin.py:176
-#: dialer_campaign/views.py:1318 dialer_campaign/views.py:1459
+#: dialer_campaign/admin.py:137
+#: dialer_campaign/admin.py:176
+#: dialer_campaign/views.py:1318
+#: dialer_campaign/views.py:1459
 #, python-format
-msgid ""
-"You have too many contacts per campaign. You are allowed a maximum of "
-"%(limit)s"
-msgstr "Kampanya başına çok kişiler var. Sen maksimum %(limit)s ler kabul edilir"
+msgid "You have too many contacts per campaign. You are allowed a maximum of %(limit)s"
+msgstr "Kampanya için çok fazla kişi girişi yapıldı. En fazla %(limit)s kabul edilmektedir."
 
 #: dialer_campaign/admin.py:229
 msgid "Contact already exists !!"
-msgstr "İletişim zaten var!"
+msgstr "Kişi sistemde zaten kayıtlı!"
 
 #: dialer_campaign/admin.py:245
 #, python-format
-msgid ""
-"%(contact_record_count)s Contact(s) are uploaded, out of %(total_rows)s row"
-"(s) !!"
+msgid "%(contact_record_count)s Contact(s) are uploaded, out of %(total_rows)s row(s) !!"
 msgstr "%(contact_record_count)s İletişim (ler) %(total_rows)s dışında, s row (s) yüklenir!"
 
 #: dialer_campaign/admin.py:251
 msgid "Error : invalid value for import! Check import samples."
-msgstr "Hata: ithalat için geçersiz değer! Ithalat örnekleri kontrol edin."
+msgstr "Hata: İçe aktarım sırasında yanlış bir değer girdiniz ! İçe aktarım örneklerini kontrol edin."
 
 #: dialer_campaign/admin.py:257
 #: templates/frontend/contact/import_contact.html:13
 msgid "Import Contact"
-msgstr "İletişim İthalat"
+msgstr "Kişileri içe Aktar"
 
 #: dialer_campaign/admin.py:261
 msgid "Dialer_campaign"
@@ -145,7 +153,8 @@ msgstr "Dialer_campaign"
 msgid "From"
 msgstr "Itibaren"
 
-#: dialer_campaign/forms.py:32 dialer_campaign/forms.py:34
+#: dialer_campaign/forms.py:32
+#: dialer_campaign/forms.py:34
 msgid "Date Format"
 msgstr "Tarih Biçimi"
 
@@ -166,14 +175,17 @@ msgstr "CSV dosyası Gözat"
 msgid "Document types accepted: %s"
 msgstr "Belge türleri kabul edilir: %s"
 
-#: dialer_campaign/forms.py:56 dialer_campaign/models.py:93
-#: dialer_campaign/models.py:129 templates/frontend/contact/list.html:118
+#: dialer_campaign/forms.py:56
+#: dialer_campaign/models.py:93
+#: dialer_campaign/models.py:129
+#: templates/frontend/contact/list.html:118
 #: templates/frontend/phonebook/change.html:14
 #: templates/frontend/phonebook/list.html:9
 msgid "Phonebook"
 msgstr "Telefon Rehberi"
 
-#: dialer_campaign/forms.py:59 dialer_campaign/models.py:130
+#: dialer_campaign/forms.py:59
+#: dialer_campaign/models.py:130
 msgid "Select Phonebook"
 msgstr "Rehber seçin"
 
@@ -185,7 +197,8 @@ msgstr "Kullanıcı Adı:"
 msgid "Password:"
 msgstr "Şifre:"
 
-#: dialer_campaign/forms.py:118 dialer_campaign/models.py:339
+#: dialer_campaign/forms.py:118
+#: dialer_campaign/models.py:339
 #: dialer_cdr/models.py:161
 msgid "Application"
 msgstr "Uygulama"
@@ -210,12 +223,14 @@ msgstr "%d Maksimum Retries sınırı aşıldı."
 msgid "Maximum Timeout limit of %d exceeded."
 msgstr "%d Maksimum zaman aşımı sınırı aşıldı."
 
-#: dialer_campaign/forms.py:228 dialer_campaign/models.py:133
+#: dialer_campaign/forms.py:228
+#: dialer_campaign/models.py:133
 #: templates/frontend/contact/list.html:120
 msgid "Last Name"
 msgstr "Soyadı"
 
-#: dialer_campaign/forms.py:229 dialer_campaign/models.py:135
+#: dialer_campaign/forms.py:229
+#: dialer_campaign/models.py:135
 #: templates/frontend/contact/list.html:121
 msgid "First Name"
 msgstr "Isim"
@@ -282,7 +297,7 @@ msgstr "Durum:"
 
 #: dialer_campaign/forms.py:260
 msgid "Inactive"
-msgstr "Atıl"
+msgstr "Pasif"
 
 #: dialer_campaign/forms.py:260
 msgid "Active "
@@ -292,8 +307,10 @@ msgstr "Aktif"
 msgid "All"
 msgstr "Tüm"
 
-#: dialer_campaign/forms.py:277 dialer_campaign/models.py:358
-#: survey/forms.py:96 survey/models.py:186
+#: dialer_campaign/forms.py:277
+#: dialer_campaign/models.py:358
+#: survey/forms.py:96
+#: survey/models.py:186
 #: templates/frontend/bootstrap_menu.html:22
 #: templates/frontend/dashboard.html:48
 #: templates/frontend/campaign/change.html:12
@@ -301,23 +318,27 @@ msgstr "Tüm"
 msgid "Campaign"
 msgstr "Kampanya"
 
-#: dialer_campaign/forms.py:278 dialer_campaign/models.py:337
-#: dialer_cdr/models.py:160 templates/frontend/campaign/list.html:42
-#: templates/frontend/voiceapp/list.html:37 voice_app/models.py:59
+#: dialer_campaign/forms.py:278
+#: dialer_campaign/models.py:337
+#: dialer_cdr/models.py:160
+#: templates/frontend/campaign/list.html:42
+#: templates/frontend/voiceapp/list.html:37
+#: voice_app/models.py:59
 msgid "Type"
 msgstr "Tip"
 
 #: dialer_campaign/function_def.py:364
-msgid ""
-"Your settings are not configured properly, Please contact the administrator."
-msgstr "Sizin ayarları düzgün yapılandırılmamış olabilir, yöneticisiyle iletişime geçin."
+msgid "Your settings are not configured properly, Please contact the administrator."
+msgstr "Ayarlarınız düzgün yapılandırılmamıştır. Lüten sistem yöneticinizle iletişime geçiniz."
 
-#: dialer_campaign/models.py:33 dialer_gateway/models.py:21
+#: dialer_campaign/models.py:33
+#: dialer_gateway/models.py:21
 #: voice_app/models.py:21
 msgid "ACTIVE"
 msgstr "AKTİF"
 
-#: dialer_campaign/models.py:34 dialer_gateway/models.py:22
+#: dialer_campaign/models.py:34
+#: dialer_gateway/models.py:22
 #: voice_app/models.py:22
 msgid "INACTIVE"
 msgstr "ETKİN DEĞİL"
@@ -330,23 +351,29 @@ msgstr "EVET"
 msgid "NO"
 msgstr "NO"
 
-#: dialer_campaign/models.py:83 dialer_campaign/models.py:163
-#: dialer_campaign/models.py:284 dialer_gateway/models.py:84
-#: dialer_settings/models.py:38 survey/models.py:72
+#: dialer_campaign/models.py:83
+#: dialer_campaign/models.py:163
+#: dialer_campaign/models.py:284
+#: dialer_gateway/models.py:84
+#: dialer_settings/models.py:38
+#: survey/models.py:72
 #: templates/frontend/campaign/list.html:40
 #: templates/frontend/phonebook/list.html:34
 #: templates/frontend/survey/audio_list.html:40
 #: templates/frontend/survey/survey_list.html:34
-#: templates/frontend/voiceapp/list.html:35 voice_app/models.py:55
+#: templates/frontend/voiceapp/list.html:35
+#: voice_app/models.py:55
 msgid "Name"
 msgstr "Isim"
 
 #: dialer_campaign/models.py:85
 msgid "Phonebook Notes"
-msgstr "Telefon defteri Notlar"
+msgstr "Telefon defteri Notları"
 
-#: dialer_campaign/models.py:88 dialer_campaign/models.py:147
-#: dialer_gateway/models.py:111 survey/models.py:77
+#: dialer_campaign/models.py:88
+#: dialer_campaign/models.py:147
+#: dialer_gateway/models.py:111
+#: survey/models.py:77
 #: templates/admin/dialer_cdr/voipcall/change_list.html:113
 #: templates/frontend/contact/list.html:123
 #: templates/frontend/phonebook/list.html:36
@@ -354,16 +381,19 @@ msgstr "Telefon defteri Notlar"
 #: templates/frontend/report/voipcall_report.html:121
 #: templates/frontend/survey/audio_list.html:43
 #: templates/frontend/survey/survey_list.html:36
-#: templates/frontend/voiceapp/list.html:40 voice_app/models.py:79
+#: templates/frontend/voiceapp/list.html:40
+#: voice_app/models.py:79
 msgid "Date"
 msgstr "Tarih"
 
-#: dialer_campaign/models.py:94 templates/frontend/bootstrap_menu.html:23
+#: dialer_campaign/models.py:94
+#: templates/frontend/bootstrap_menu.html:23
 #: templates/frontend/phonebook/list.html:48
 msgid "Phonebooks"
 msgstr "Telefon rehberi"
 
-#: dialer_campaign/models.py:103 dialer_campaign/models.py:153
+#: dialer_campaign/models.py:103
+#: dialer_campaign/models.py:153
 #: templates/frontend/bootstrap_menu.html:24
 #: templates/frontend/campaign/list.html:44
 #: templates/frontend/contact/list.html:27
@@ -372,7 +402,8 @@ msgstr "Telefon rehberi"
 msgid "Contacts"
 msgstr "Kişiler"
 
-#: dialer_campaign/models.py:131 templates/frontend/contact/list.html:119
+#: dialer_campaign/models.py:131
+#: templates/frontend/contact/list.html:119
 msgid "Contact Number"
 msgstr "Sayı İletişim"
 
@@ -381,20 +412,24 @@ msgstr "Sayı İletişim"
 msgid "Email"
 msgstr "E-posta"
 
-#: dialer_campaign/models.py:137 user_profile/models.py:61
+#: dialer_campaign/models.py:137
+#: user_profile/models.py:61
 msgid "Country"
 msgstr "Ülke"
 
-#: dialer_campaign/models.py:139 user_profile/models.py:58
+#: dialer_campaign/models.py:139
+#: user_profile/models.py:58
 msgid "City"
 msgstr "Şehir"
 
 #: dialer_campaign/models.py:141
 msgid "Contact Notes"
-msgstr "Notlar İletişim"
+msgstr "İletişim Notları"
 
-#: dialer_campaign/models.py:143 dialer_campaign/models.py:289
-#: dialer_campaign/models.py:596 dialer_cdr/models.py:139
+#: dialer_campaign/models.py:143
+#: dialer_campaign/models.py:289
+#: dialer_campaign/models.py:596
+#: dialer_cdr/models.py:139
 #: templates/frontend/campaign/list.html:45
 #: templates/frontend/contact/import_contact.html:41
 #: templates/frontend/contact/list.html:122
@@ -405,42 +440,46 @@ msgstr "Durum"
 msgid "Additional parameters"
 msgstr "Ek parametreler"
 
-#: dialer_campaign/models.py:152 dialer_campaign/models.py:424
-#: dialer_campaign/models.py:594 templates/frontend/contact/change.html:19
+#: dialer_campaign/models.py:152
+#: dialer_campaign/models.py:424
+#: dialer_campaign/models.py:594
+#: templates/frontend/contact/change.html:19
 msgid "Contact"
-msgstr "Temas"
+msgstr "İletişim"
 
 #: dialer_campaign/models.py:226
 msgid "Error to identify the whitelist"
-msgstr "Beyaz liste tanımlamak için Hata"
+msgstr "Beyaz liste tanımlasında hata bulundu"
 
 #: dialer_campaign/models.py:234
 msgid "Error to identify the blacklist"
-msgstr "Kara liste tanımlamak için Hata-"
+msgstr "Kara liste tanımlamasında hata bulundu-"
 
 #: dialer_campaign/models.py:280
 msgid "Campaign Code"
 msgstr "Kampanya Kodu"
 
 #: dialer_campaign/models.py:281
-msgid ""
-"This code is auto-generated by the platform, this is used to identify the "
-"campaign"
+msgid "This code is auto-generated by the platform, this is used to identify the campaign"
 msgstr "Bu kod platform tarafından otomatik oluşturulur, bu kampanyayı tanımlamak için kullanılır"
 
-#: dialer_campaign/models.py:285 dialer_gateway/models.py:88
-#: survey/models.py:74 templates/frontend/contact/import_contact.html:40
+#: dialer_campaign/models.py:285
+#: dialer_gateway/models.py:88
+#: survey/models.py:74
+#: templates/frontend/contact/import_contact.html:40
 #: templates/frontend/phonebook/list.html:35
 #: templates/frontend/survey/survey_list.html:35
-#: templates/frontend/voiceapp/list.html:36 voice_app/models.py:56
+#: templates/frontend/voiceapp/list.html:36
+#: voice_app/models.py:56
 msgid "Description"
-msgstr "Tanım"
+msgstr "Açıklama"
 
 #: dialer_campaign/models.py:286
 msgid "Campaign description"
 msgstr "Kampanya açıklaması"
 
-#: dialer_campaign/models.py:291 dialer_cdr/models.py:141
+#: dialer_campaign/models.py:291
+#: dialer_cdr/models.py:141
 msgid "CallerID"
 msgstr "CallerID"
 
@@ -448,20 +487,24 @@ msgstr "CallerID"
 msgid "Outbound caller-ID"
 msgstr "Arayan numarayı Çıkan"
 
-#: dialer_campaign/models.py:295 dialer_campaign/views.py:1603
-#: dialer_campaign/views.py:1618 dialer_campaign/views.py:1631
+#: dialer_campaign/models.py:295
+#: dialer_campaign/views.py:1603
+#: dialer_campaign/views.py:1618
+#: dialer_campaign/views.py:1631
 msgid "Start"
 msgstr "Başlatmak"
 
-#: dialer_campaign/models.py:296 dialer_campaign/models.py:301
+#: dialer_campaign/models.py:296
+#: dialer_campaign/models.py:301
 msgid "Date Format: YYYY-mm-DD HH:MM:SS"
 msgstr "Tarih Biçimi: YYYY-AA-GG SS: DD: SS"
 
 #: dialer_campaign/models.py:300
 msgid "Finish"
-msgstr "Bitirmek"
+msgstr "Bitiş"
 
-#: dialer_campaign/models.py:304 dialer_campaign/models.py:306
+#: dialer_campaign/models.py:304
+#: dialer_campaign/models.py:306
 msgid "Time Format: HH:MM:SS"
 msgstr "Zaman Formatı: SS: dd: ss"
 
@@ -499,19 +542,21 @@ msgstr "Frekans"
 
 #: dialer_campaign/models.py:317
 msgid "Calls per Minute"
-msgstr "Dakika başına Aramalar"
+msgstr "Dakika başına arama sayısı"
 
-#: dialer_campaign/models.py:320 dialer_settings/models.py:45
+#: dialer_campaign/models.py:320
+#: dialer_settings/models.py:45
 msgid "Max Call Duration"
-msgstr "Maksimum arama süresi"
+msgstr "En fazla  arama süresi"
 
 #: dialer_campaign/models.py:321
 msgid "Maximum call duration in seconds"
 msgstr "Saniyede Maksimum arama süresi"
 
-#: dialer_campaign/models.py:324 dialer_settings/models.py:49
+#: dialer_campaign/models.py:324
+#: dialer_settings/models.py:49
 msgid "Max Retries"
-msgstr "Max Retries"
+msgstr "En fazla deneme"
 
 #: dialer_campaign/models.py:325
 msgid "Maximum retries per contact"
@@ -519,15 +564,16 @@ msgstr "Kişi başına en fazla deneme"
 
 #: dialer_campaign/models.py:327
 msgid "Time between Retries"
-msgstr "Retries arasındaki süre"
+msgstr "Deneme arasındaki süre"
 
 #: dialer_campaign/models.py:328
 msgid "Time delay in seconds before retrying contact"
-msgstr "Temas yeniden denemeden önce saniye zaman gecikmesi"
+msgstr "İletişim numarasını aramadan önceki bekleme süresi"
 
-#: dialer_campaign/models.py:331 dialer_settings/models.py:52
+#: dialer_campaign/models.py:331
+#: dialer_settings/models.py:52
 msgid "Timeout on Call"
-msgstr "Call Zaman Aşımı"
+msgstr "Çağrı zaman aşımı"
 
 #: dialer_campaign/models.py:332
 msgid "Connection timeout in seconds"
@@ -549,11 +595,13 @@ msgstr "Ekstra Parametreler"
 msgid "Additional application parameters."
 msgstr "Ek uygulama parametreleri."
 
-#: dialer_campaign/models.py:359 templates/frontend/campaign/list.html:56
+#: dialer_campaign/models.py:359
+#: templates/frontend/campaign/list.html:56
 msgid "Campaigns"
 msgstr "Kampanyalar"
 
-#: dialer_campaign/models.py:408 templates/frontend/campaign/list.html:46
+#: dialer_campaign/models.py:408
+#: templates/frontend/campaign/list.html:46
 #: templates/frontend/contact/list.html:124
 #: templates/frontend/phonebook/list.html:38
 #: templates/frontend/registration/user_detail_change.html:143
@@ -565,11 +613,11 @@ msgstr "Eylem"
 
 #: dialer_campaign/models.py:420
 msgid "Phonebook Empty"
-msgstr "Boş Telefon Rehberi"
+msgstr "Telefon rehberiniz boş"
 
 #: dialer_campaign/models.py:527
 msgid "Progress"
-msgstr "Ilerleme"
+msgstr "İşlem"
 
 #: dialer_campaign/models.py:536
 #, python-format
@@ -578,19 +626,21 @@ msgstr "<a href='%(link)s'>%(name)s</a>"
 
 #: dialer_campaign/models.py:536
 msgid "Details"
-msgstr "Ayrıntılar"
+msgstr "Detaylar"
 
-#: dialer_campaign/models.py:539 dialer_campaign/models.py:603
+#: dialer_campaign/models.py:539
+#: dialer_campaign/models.py:603
 msgid "Campaign Subscriber"
-msgstr "Kampanya Abone"
+msgstr "Kampanya Aboneleri"
 
 #: dialer_campaign/models.py:584
 msgid "Select Contact"
-msgstr "Seçin İletişim"
+msgstr "Kişi seç"
 
-#: dialer_campaign/models.py:586 dialer_cdr/models.py:154
+#: dialer_campaign/models.py:586
+#: dialer_cdr/models.py:154
 msgid "Select Campaign"
-msgstr "Kampanya seçin"
+msgstr "Kampanya seç"
 
 #: dialer_campaign/models.py:588
 msgid "Last attempt"
@@ -598,11 +648,11 @@ msgstr "Son deneme"
 
 #: dialer_campaign/models.py:590
 msgid "Count attempts"
-msgstr "Girişimleri Sayısı"
+msgstr "Deneme sayısı"
 
 #: dialer_campaign/models.py:604
 msgid "Campaign Subscribers"
-msgstr "Kampanya Aboneler"
+msgstr "Kampanya Aboneleri"
 
 #: dialer_campaign/views.py:681
 msgid "Disabled Account"
@@ -616,36 +666,41 @@ msgstr "Giriş Geçersiz."
 msgid "Enter Valid User Credentials."
 msgstr "Geçerli Kullanıcı Kimlik Bilgileri girin."
 
-#: dialer_campaign/views.py:920 user_profile/management.py:49
+#: dialer_campaign/views.py:920
+#: user_profile/management.py:49
 msgid "Dialer setting configuration"
-msgstr "Dialer ayar yapılandırma"
+msgstr "Arama ayarları düzenle"
 
 #: dialer_campaign/views.py:922
 #, python-format
-msgid ""
-"Notification - User Dialer Setting The user \"%(user)s\" - \"%(user_id)s\" "
-"is not properly configured to use the system, please configure their dialer "
-"settings."
+msgid "Notification - User Dialer Setting The user \"%(user)s\" - \"%(user_id)s\" is not properly configured to use the system, please configure their dialer settings."
 msgstr "Bildirim - kullanıcı ayarlama Kullanıcı Dialer \"%(user)s\" - \"%(user_id)s\" doğru sistemi kullanmak üzere yapılandırılmamış değil, onların çevirici ayarları yapılandırın."
 
 #: dialer_campaign/views.py:991
 msgid "Update phonebook"
-msgstr "Telefon defteri Update"
+msgstr "Telefon defterini güncelle"
 
 #: dialer_campaign/views.py:995
 msgid "Delete phonebook"
 msgstr "Telefon rehberi sil"
 
-#: dialer_campaign/views.py:1050 dialer_campaign/views.py:1332
-#: dialer_campaign/views.py:1796 survey/views.py:250 survey/views.py:470
+#: dialer_campaign/views.py:1050
+#: dialer_campaign/views.py:1332
+#: dialer_campaign/views.py:1796
+#: survey/views.py:250
+#: survey/views.py:470
 #: voice_app/views.py:128
 #, python-format
 msgid "\"%(name)s\" is added."
 msgstr "\"%(name)s\" eklenir."
 
-#: dialer_campaign/views.py:1097 dialer_campaign/views.py:1373
-#: dialer_campaign/views.py:1830 survey/views.py:281 survey/views.py:503
-#: user_profile/views.py:230 voice_app/views.py:161
+#: dialer_campaign/views.py:1097
+#: dialer_campaign/views.py:1373
+#: dialer_campaign/views.py:1830
+#: survey/views.py:281
+#: survey/views.py:503
+#: user_profile/views.py:230
+#: voice_app/views.py:161
 #, python-format
 msgid "\"%(name)s\" is deleted."
 msgstr "\"%(name)s\" silinir."
@@ -655,15 +710,18 @@ msgstr "\"%(name)s\" silinir."
 msgid "%(count)s phonebook(s) are deleted."
 msgstr "%(count)s rehberi (ler) silinir."
 
-#: dialer_campaign/views.py:1145 dialer_campaign/views.py:1416
-#: dialer_campaign/views.py:1888 survey/views.py:342 voice_app/views.py:204
+#: dialer_campaign/views.py:1145
+#: dialer_campaign/views.py:1416
+#: dialer_campaign/views.py:1888
+#: survey/views.py:342
+#: voice_app/views.py:204
 #, python-format
 msgid "\"%(name)s\" is updated."
-msgstr "\"%(name)s\" güncellenir."
+msgstr "\"%(name)s\" güncellendi."
 
 #: dialer_campaign/views.py:1243
 msgid "Update contact"
-msgstr "Iletişim Update"
+msgstr "Iletişim Güncelle"
 
 #: dialer_campaign/views.py:1247
 msgid "Delete contact"
@@ -672,12 +730,12 @@ msgstr "Kişiyi sil"
 #: dialer_campaign/views.py:1337
 #, python-format
 msgid "\"%(name)s\" cannot be added."
-msgstr "\"%(name)s\" eklenemez."
+msgstr "\"%(name)s\" eklenemiyor."
 
 #: dialer_campaign/views.py:1383
 #, python-format
 msgid "%(count)s contact(s) are deleted."
-msgstr "%(count)s Kişi (ler) silinir."
+msgstr "%(count)s Kişi (ler) silindi."
 
 #: dialer_campaign/views.py:1508
 msgid "Subscriber already exists!"
@@ -685,30 +743,31 @@ msgstr "Abone zaten var!"
 
 #: dialer_campaign/views.py:1523
 #, python-format
-msgid ""
-"%(contact_record_count)s Contact(s) are uploaded successfully out of "
-"%(total_rows)s row(s) !!"
-msgstr "%(contact_record_count)s İletişim (ler) %(total_rows)s başarıyla dışarı yüklenir!"
+msgid "%(contact_record_count)s Contact(s) are uploaded successfully out of %(total_rows)s row(s) !!"
+msgstr "%(contact_record_count)s Kişi(ler) %(total_rows)s başarıyla içe aktarıldı!"
 
 #: dialer_campaign/views.py:1530
 msgid "Invalid value for import! Please check the import samples."
-msgstr "Ithalat için geçersiz değer! Ithalat numuneleri kontrol ediniz."
+msgstr "İçe aktarma  için geçersiz değer! İçe aktarılan değerleri kontrol ediniz."
 
 #: dialer_campaign/views.py:1589
 msgid "campaign is running"
 msgstr "kampanyasını yürütüyor"
 
-#: dialer_campaign/views.py:1592 dialer_campaign/views.py:1622
+#: dialer_campaign/views.py:1592
+#: dialer_campaign/views.py:1622
 #: dialer_campaign/views.py:1635
 msgid "Pause"
 msgstr "Duraklat"
 
-#: dialer_campaign/views.py:1595 dialer_campaign/views.py:1608
+#: dialer_campaign/views.py:1595
+#: dialer_campaign/views.py:1608
 #: dialer_campaign/views.py:1639
 msgid "Abort"
 msgstr "Iptal etmek"
 
-#: dialer_campaign/views.py:1598 dialer_campaign/views.py:1612
+#: dialer_campaign/views.py:1598
+#: dialer_campaign/views.py:1612
 #: dialer_campaign/views.py:1627
 msgid "Stop"
 msgstr "Dur"
@@ -734,9 +793,7 @@ msgid "Delete campaign"
 msgstr "Kampanyası sil"
 
 #: dialer_campaign/views.py:1765
-msgid ""
-"In order to add a campaign, you need to have your settings configured "
-"properly, please contact the admin."
+msgid "In order to add a campaign, you need to have your settings configured properly, please contact the admin."
 msgstr "Kampanya eklemek için, ayarlarınızı düzgün yapılandırılmış olması gerekir, yönetici ile temasa geçiniz."
 
 #: dialer_campaign/views.py:1839
@@ -779,22 +836,23 @@ msgstr "Belirli bir telefon numarası ve telefon rehberi için yeni bir iletişi
 #: dialer_campaign/management/commands/create_subscriber.py:50
 #, python-format
 msgid "Contact created id:%(id)s"
-msgstr "Oluşturulan id İletişim:%(id)s"
+msgstr "Oluşturulan id bilgisi:%(id)s"
 
 #: dialer_campaign/management/commands/create_subscriber.py:55
 msgid "Can't find a Campaign with this phonebook"
-msgstr "Bu telefon defteri ile bir Kampanya bulamıyor"
+msgstr "Bu telefon defteri ile ilişkilendirilmiş kampanya bulunamıyor! "
 
 #: dialer_campaign/management/commands/create_subscriber.py:58
 #, python-format
 msgid "Launch Task : collect_subscriber(%(id)s)"
 msgstr "Görev başlatın: collect_subscriber (%(id)s ler)"
 
-#: dialer_cdr/admin.py:61 dialer_cdr/admin.py:206
+#: dialer_cdr/admin.py:61
+#: dialer_cdr/admin.py:206
 #: templates/admin/dialer_cdr/voipcall/change_list.html:14
 #: templates/admin_tools/dashboard/modules/app_list.html:40
 msgid "Call Report"
-msgstr "Rapor Çağrı"
+msgstr "Çağrı Raporu"
 
 #: dialer_cdr/admin.py:77
 msgid "User"
@@ -802,15 +860,13 @@ msgstr "Kullanıcı"
 
 #: dialer_cdr/admin.py:86
 msgid "Gateway used"
-msgstr "Ağ geçidi kullanılır"
+msgstr "Kullanılan Arama Geçidi"
 
 #: dialer_cdr/admin.py:134
 msgid "Database error"
 msgstr "Veritabanı hatası"
 
 #: dialer_cdr/admin.py:190
-#, python-format
-
 #: dialer_cdr/admin.py:194
 #, python-format
 msgid "%(total_count)s selected"
@@ -826,25 +882,27 @@ msgstr "Disposition:"
 
 #: dialer_cdr/models.py:40
 msgid "ALLOW RETRY"
-msgstr "Tekrar İZİN"
+msgstr "Tekrar Deneme İzni"
 
 #: dialer_cdr/models.py:41
 msgid "CANNOT RETRY"
-msgstr "Tekrar CANNOT"
+msgstr "Tekrar Deneyemiyor"
 
 #: dialer_cdr/models.py:42
 msgid "RETRY DONE"
-msgstr "YAPILAN Retry"
+msgstr "Deneme Yapıldı"
 
 #: dialer_cdr/models.py:46
 msgid "A-Leg"
 msgstr "A-Leg"
 
-#: dialer_cdr/models.py:47 voice_app/models.py:61
+#: dialer_cdr/models.py:47
+#: voice_app/models.py:61
 msgid "B-Leg"
 msgstr "B-Leg"
 
-#: dialer_cdr/models.py:128 dialer_cdr/models.py:216
+#: dialer_cdr/models.py:128
+#: dialer_cdr/models.py:216
 msgid "RequestUUID"
 msgstr "RequestUUID"
 
@@ -854,13 +912,15 @@ msgstr "A-Leg Çağrı Kimliği"
 
 #: dialer_cdr/models.py:137
 msgid "Call Request Type"
-msgstr "İstek Türü Çağrı"
+msgstr "Çağrı İstek Şekli"
 
 #: dialer_cdr/models.py:142
 msgid "CallerID used to call the A-Leg"
-msgstr "CallerID A-Leg aramak için kullanılan"
+msgstr "A-Leg Üzerinden kullanılan Caller ID"
 
-#: dialer_cdr/models.py:143 dialer_cdr/models.py:226 user_profile/models.py:65
+#: dialer_cdr/models.py:143
+#: dialer_cdr/models.py:226
+#: user_profile/models.py:65
 msgid "Phone number"
 msgstr "Telefon numarası"
 
@@ -878,11 +938,11 @@ msgstr "Ekstra arama dizesini"
 
 #: dialer_cdr/models.py:151
 msgid "Campaign Subscriber related to this call request"
-msgstr "Bu çağrı isteği ile ilgili Kampanya Abone"
+msgstr "Bu çağrı isteği ile ilgili Kampanya Abonesi"
 
 #: dialer_cdr/models.py:157
 msgid "Select gateway to use to call the subscriber"
-msgstr "Abone aramak için kullanmak için ağ geçidi seçin"
+msgstr "Abone aramak için kullanılacak arama ağ geçidini seçin"
 
 #: dialer_cdr/models.py:165
 msgid "Extra Data"
@@ -890,31 +950,32 @@ msgstr "Ekstra Bilgi"
 
 #: dialer_cdr/models.py:166
 msgid "Define the additional data to pass to the application"
-msgstr "Uygulamasına geçirilecek ek verileri tanımlamak"
+msgstr "Uygulamada pas geçilecek ek bilgileri tanımlayın"
 
 #: dialer_cdr/models.py:180
 msgid "Call Request"
-msgstr "Talep Arayın"
+msgstr "Çağrı istek"
 
 #: dialer_cdr/models.py:181
 msgid "Call Requests"
-msgstr "Çağrı İstekler"
+msgstr "Çağrı İstekleri"
 
 #: dialer_cdr/models.py:220
 msgid "Used gateway"
-msgstr "İkinci ağ geçidi"
+msgstr "Kullanılan Arama Geçidi"
 
 #: dialer_cdr/models.py:222
 msgid "Callrequest"
-msgstr "Callrequest"
+msgstr "ÇağrıSorgulama"
 
-#: dialer_cdr/models.py:223 survey/models.py:189
+#: dialer_cdr/models.py:223
+#: survey/models.py:189
 msgid "VoIP Call-ID"
 msgstr "VoIP Çağrı Kimliği"
 
 #: dialer_cdr/models.py:227
 msgid "The international number of the recipient, without the leading +"
-msgstr "Öncü + olmadan alıcının uluslararası numarası,"
+msgstr "Ön Kod + olmadan alıcının uluslararası numarası,"
 
 #: dialer_cdr/models.py:229
 msgid "Destination"
@@ -922,7 +983,7 @@ msgstr "Hedef"
 
 #: dialer_cdr/models.py:230
 msgid "Select Prefix"
-msgstr "Önek seçin"
+msgstr "Önek Kod"
 
 #: dialer_cdr/models.py:231
 msgid "Starting date"
@@ -938,33 +999,36 @@ msgstr "Süre"
 
 #: dialer_cdr/models.py:233
 msgid "Bill sec"
-msgstr "Bill sn"
+msgstr "Faturalandırılan İşlem süresi (sn)"
 
 #: dialer_cdr/models.py:234
 msgid "Progress sec"
-msgstr "İlerleme sn"
+msgstr "İşlem süresi sn"
 
 #: dialer_cdr/models.py:235
 msgid "Answer sec"
-msgstr "Sn cevap"
+msgstr "Cevap süresi (sn)"
 
 #: dialer_cdr/models.py:236
 msgid "Wait sec"
 msgstr "Saniye bekleyin"
 
-#: dialer_cdr/models.py:239 templates/frontend/report/voipcall_report.html:85
+#: dialer_cdr/models.py:239
+#: templates/frontend/report/voipcall_report.html:85
 msgid "Disposition"
 msgstr "Eğilim"
 
 #: dialer_cdr/models.py:241
 msgid "Hangup cause"
-msgstr "Neden kapatmayacaktır"
+msgstr "Cevap Sebepleri"
 
-#: dialer_cdr/models.py:244 templates/frontend/report/voipcall_report.html:79
+#: dialer_cdr/models.py:244
+#: templates/frontend/report/voipcall_report.html:79
 msgid "Leg"
 msgstr "Bacak"
 
-#: dialer_cdr/models.py:267 dialer_cdr/models.py:268
+#: dialer_cdr/models.py:267
+#: dialer_cdr/models.py:268
 msgid "VoIP Call"
 msgstr "VoIP Çağrı"
 
@@ -991,9 +1055,7 @@ msgid "\"campaign_id|no_of_record\" \"campaign_id|no_of_record\""
 msgstr "\"Campaign_id | no_of_record\" \"campaign_id | no_of_record\""
 
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:34
-msgid ""
-"Creates no of new call requests and CDRs for a given campaign_id & no of "
-"records"
+msgid "Creates no of new call requests and CDRs for a given campaign_id & no of records"
 msgstr "Kayıtların belirli bir campaign_id ve hayır için yeni bir çağrı istek ve CDRs hiçbir oluşturur"
 
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:49
@@ -1012,7 +1074,7 @@ msgstr "Callrequest & CDR oluşturulan değildir!"
 
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:87
 msgid "No admin user"
-msgstr "Admin kullanıcı yok"
+msgstr "Admin kullanıcısı bulunamadı"
 
 #: dialer_gateway/models.py:26
 msgid "SIP"
@@ -1059,10 +1121,7 @@ msgid "Gateways"
 msgstr "Ağ Geçitleri"
 
 #: dialer_gateway/models.py:95
-msgid ""
-"Example : \"sofia/gateway/myprovider/\" or 2 for failover \"sofia/gateway/"
-"myprovider/, user/\", # Gateway string to try dialing separated by comma. "
-"First in list will be tried first"
+msgid "Example : \"sofia/gateway/myprovider/\" or 2 for failover \"sofia/gateway/myprovider/, user/\", # Gateway string to try dialing separated by comma. First in list will be tried first"
 msgstr "Örnek: failover \"sofia / ağ geçidi / myprovider / kullanıcı /\", virgülle ayrılmış arama denemek # Ağ Geçidi string için \"sofia / ağ geçidi / myprovider /\" veya 2. Listede ilk ilk denenecek"
 
 #: dialer_gateway/models.py:97
@@ -1070,9 +1129,7 @@ msgid "Gateway codecs"
 msgstr "Ağ Geçidi codec"
 
 #: dialer_gateway/models.py:98
-msgid ""
-"\"'PCMA,PCMU','PCMA,PCMU'\", # Codec string as needed by FS for each gateway "
-"separated by comma"
+msgid "\"'PCMA,PCMU','PCMA,PCMU'\", # Codec string as needed by FS for each gateway separated by comma"
 msgstr "\"&#39;PCMA, PCMU&#39;, &#39;PCMA, PCMU&#39;\", virgülle ayrılmış, her ağ geçidi için FS tarafından gerektiği gibi # Kodek dize"
 
 #: dialer_gateway/models.py:100
@@ -1080,8 +1137,7 @@ msgid "Gateway timeouts"
 msgstr "Ağ geçidi zaman aşımı"
 
 #: dialer_gateway/models.py:101
-msgid ""
-"\"10,10\", # Seconds to timeout in string for each gateway separated by comma"
+msgid "\"10,10\", # Seconds to timeout in string for each gateway separated by comma"
 msgstr "Virgülle ayrılmış her ağ geçidi için \"10,10\", # Saniye dizesinde zaman aşımı"
 
 #: dialer_gateway/models.py:103
@@ -1089,24 +1145,20 @@ msgid "Gateway retries"
 msgstr "Ağ Geçidi deneme"
 
 #: dialer_gateway/models.py:104
-msgid ""
-"\"2,1\", # Retry String for Gateways separated by comma, on how many times "
-"each gateway should be retried"
+msgid "\"2,1\", # Retry String for Gateways separated by comma, on how many times each gateway should be retried"
 msgstr "\"2,1\", # Her bir ağ geçidi yeniden denenmesi gerektiğini kaç kez, virgülle ayrılmış geçitleri için Dize dene"
 
 #: dialer_gateway/models.py:106
 msgid "Originate dial string"
-msgstr "Dize aramak Menşeli"
+msgstr "Arama biçimi belirleme"
 
 #: dialer_gateway/models.py:107
-msgid ""
-"Add Channels Variables : http://wiki.freeswitch.org/wiki/Channel_Variables, "
-"ie: bridge_early_media=true,hangup_after_bridge=true"
+msgid "Add Channels Variables : http://wiki.freeswitch.org/wiki/Channel_Variables, ie: bridge_early_media=true,hangup_after_bridge=true"
 msgstr "Kanallar Değişkenler ekle: http://wiki.freeswitch.org/wiki/Channel_Variables, yani: bridge_early_media = true, hangup_after_bridge = true"
 
 #: dialer_gateway/models.py:109
 msgid "Second used"
-msgstr "İkinci kullanılır"
+msgstr "Kullanılan Saniye Miktarı"
 
 #: dialer_gateway/models.py:115
 msgid "Select Gateway"
@@ -1118,7 +1170,7 @@ msgstr "Parametre ekle"
 
 #: dialer_gateway/models.py:118
 msgid "Call count"
-msgstr "Saymak Çağrı"
+msgstr "Çağrı sayısı"
 
 #: dialer_gateway/models.py:119
 msgid "Count in use"
@@ -1185,10 +1237,7 @@ msgid "Blacklist"
 msgstr "Kara listeye almak"
 
 #: dialer_settings/models.py:61
-msgid ""
-"Use regular expressions to blacklist phone numbers. For example, '^[2-4]"
-"[1]+' will prevent all phone numbers starting with 2,3 or 4 and followed by "
-"1 being called."
+msgid "Use regular expressions to blacklist phone numbers. For example, '^[2-4][1]+' will prevent all phone numbers starting with 2,3 or 4 and followed by 1 being called."
 msgstr "Telefon numaralarını kara listeye düzenli ifadeleri kullanabilirsiniz. Örneğin, &#39;^ [2-4] [1] +&#39; 2,3 veya 4 ile başlayan telefon numaralarını önlemek ve 1 çağrıldığını takip edecektir."
 
 #: dialer_settings/models.py:63
@@ -1200,7 +1249,8 @@ msgstr "Beyaz liste"
 msgid "Use regular expressions to whitelist phone numbers"
 msgstr "Beyaz telefon numaraları için normal ifadeleri kullanın"
 
-#: dialer_settings/models.py:73 dialer_settings/models.py:74
+#: dialer_settings/models.py:73
+#: dialer_settings/models.py:74
 msgid "Dialer Setting"
 msgstr "Dialer Ayarı"
 
@@ -1208,11 +1258,13 @@ msgstr "Dialer Ayarı"
 msgid "Survey Description"
 msgstr "Anket Açıklaması"
 
-#: survey/models.py:82 templates/frontend/bootstrap_menu.html:39
+#: survey/models.py:82
+#: templates/frontend/bootstrap_menu.html:39
 msgid "Surveys"
 msgstr "Anketler"
 
-#: survey/models.py:111 survey/models.py:192
+#: survey/models.py:111
+#: survey/models.py:192
 msgid "Question"
 msgstr "Soru"
 
@@ -1232,19 +1284,21 @@ msgstr "Ses Dosyası"
 msgid "Message type"
 msgstr "Mesaj türü"
 
-#: survey/models.py:146 templates/frontend/survey/survey_change.html:309
+#: survey/models.py:146
+#: templates/frontend/survey/survey_change.html:309
 #: templates/frontend/survey/survey_change.html:476
 msgid "Key Digit"
-msgstr "Rakam Anahtar"
+msgstr "Rakam Anahtarı"
 
 #: survey/models.py:147
 msgid "Define the key link to the response"
-msgstr "Cevap anahtarı linki tanımlayın"
+msgstr "Cevap anahtarı bağlantısı tanımlayın"
 
-#: survey/models.py:148 templates/frontend/survey/survey_change.html:312
+#: survey/models.py:148
+#: templates/frontend/survey/survey_change.html:312
 #: templates/frontend/survey/survey_change.html:477
 msgid "Key Value"
-msgstr "Key Değeri"
+msgstr "Anahtar Değeri"
 
 #: survey/models.py:190
 msgid "Call-ID"
@@ -1265,19 +1319,19 @@ msgstr "Anketi sil"
 #: survey/views.py:293
 #, python-format
 msgid "%(count)s survey(s) are deleted."
-msgstr "%(count)s anketi (ler) silinir."
+msgstr "%(count)s anketi (ler) silindi."
 
 #: survey/views.py:408
 msgid "Download audio"
-msgstr "Ses indirin"
+msgstr "Sesi indirin"
 
 #: survey/views.py:410
 msgid "Update audio"
-msgstr "Ses Update"
+msgstr "Sesi Güncelle"
 
 #: survey/views.py:414
 msgid "Delete audio"
-msgstr "Ses sil"
+msgstr "Sesi sil"
 
 #: survey/views.py:515
 #, python-format
@@ -1290,27 +1344,28 @@ msgstr "Kayıt bulunamadı!."
 
 #: survey/views.py:589
 msgid "No campaign attached with survey."
-msgstr "Hiçbir kampanya anket ile tutturulur."
+msgstr "Hiçbir kampanya anket ile ilişkilendirilmedi."
 
 #: templates/404.html:20
 msgid "This page cannot be found!"
 msgstr "Bu sayfa bulunamıyor!"
 
-#: templates/404.html:23 templates/500.html:23
+#: templates/404.html:23
+#: templates/500.html:23
 msgid "If you need assistance, you may reference this error as"
-msgstr "Eğer yardıma ihtiyacınız varsa, bu hata olarak başvuruda bulunabilir"
+msgstr "Eğer yardıma ihtiyacınız varsa, bu hata kodunu kullanabilirsiniz"
 
 #: templates/500.html:20
 msgid "You've encountered an error!"
-msgstr "Sen bir hatayla karşılaştı ettik!"
+msgstr "Bir hata ile karşılaştın"
 
 #: templates/documentation.html:8
 msgid "Newfies-Dialer Documentation"
-msgstr "Newfies-Dialer Belgeler"
+msgstr "Newfies-Dialer Belgeleri"
 
 #: templates/documentation.html:19
 msgid "Newfies-Dialer : API Documentation"
-msgstr "Newfies-Dialer: API Dokümantasyon"
+msgstr "Newfies-Dialer: API Dokümantasyonu"
 
 #: templates/documentation.html:34
 msgid "Accepted methods"
@@ -1330,7 +1385,7 @@ msgstr "%(filter_title)s tarafından"
 #: templates/admin/dialer_cdr/voipcall/change_list.html:8
 #: templates/registration/logged_out.html:4
 msgid "Home"
-msgstr "Ev"
+msgstr "Ana Sayfa"
 
 #: templates/admin/dialer_campaign/contact/change_list.html:28
 #: templates/admin/dialer_cdr/voipcall/change_list.html:72
@@ -1340,11 +1395,10 @@ msgstr "Ekle %(name)s"
 
 #: templates/admin/dialer_campaign/contact/change_list.html:31
 msgid "Import Contacts"
-msgstr "Kişileri Al"
+msgstr "Kişileri İçe Aktar"
 
 #: templates/admin/dialer_campaign/contact/change_list.html:38
 #: templates/admin/dialer_cdr/voipcall/change_list.html:48
-
 #: templates/admin/dialer_campaign/contact/change_list.html:49
 #: templates/admin/dialer_cdr/voipcall/change_list.html:86
 msgid "Please correct the error below."
@@ -1369,7 +1423,7 @@ msgstr "isim"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:23
 msgid "email-id"
-msgstr "e-id"
+msgstr "eposta-id"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:24
 msgid "description"
@@ -1385,7 +1439,7 @@ msgstr "additional_vars"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:48
 msgid "CONTACT STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')"
-msgstr "&#39;(&#39;0 -&#39; ETKİN DEĞİL &#39;) - DURUM = (&#39; &#39;AKTİF &#39;1)&#39; İLETİŞİM"
+msgstr "KİŞİ DURUMU = ('1'-'AKTIF') ('0'-'PASIF')"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:58
 #: templates/frontend/dashboard.html:32
@@ -1408,11 +1462,11 @@ msgstr "Reset"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:81
 msgid "Contact(s) imported"
-msgstr "Kişi (ler) ithal"
+msgstr "Kişi (ler) İçe aktarıldı."
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:97
 msgid "Contact(s) not imported"
-msgstr "Kişi (ler) ithal değil"
+msgstr "Kişi (ler) içe aktarılamadı."
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:113
 #: templates/frontend/contact/import_contact.html:128
@@ -1421,7 +1475,7 @@ msgstr "Tip uyuşmazlığı"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:56
 msgid "Search Option"
-msgstr "Arama Seçeneği"
+msgstr "Arama Seçenekleri"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:60
 #: templates/frontend/contact/list.html:90
@@ -1432,7 +1486,7 @@ msgstr "Ara"
 #: templates/admin/dialer_cdr/voipcall/change_list.html:110
 #: templates/frontend/report/voipcall_report.html:117
 msgid "Call Detail Report Summary"
-msgstr "Detay Rapor Özeti Çağrı"
+msgstr "Çağrı Raporu Özeti"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:115
 #: templates/frontend/report/voipcall_report.html:123
@@ -1462,7 +1516,7 @@ msgstr "Toplam"
 #: templates/admin/dialer_cdr/voipcall/change_list.html:149
 #: templates/frontend/report/voipcall_report.html:156
 msgid "Export CSV file"
-msgstr "CSV dosyası"
+msgstr "CSV Olarak Dışa Aktar"
 
 #: templates/admin_tools/dashboard/modules/app_list.html:7
 msgid "Dialer Campaign"
@@ -1474,7 +1528,7 @@ msgstr "Dialer CDR"
 
 #: templates/admin_tools/dashboard/modules/app_list.html:16
 msgid "Prefix Country"
-msgstr "Önek Ülke"
+msgstr "Ülke Ön Kodları"
 
 #: templates/admin_tools/dashboard/modules/app_list.html:19
 msgid "Dialer Settings"
@@ -1499,16 +1553,17 @@ msgstr "Ses Uygulaması"
 #: templates/frontend/voiceapp/change.html:12
 #: templates/frontend/voiceapp/list.html:44
 msgid "Add"
-msgstr "Eklemek"
+msgstr "Ekle"
 
 #: templates/admin_tools/dashboard/modules/app_list.html:51
 msgid "Change"
-msgstr "Değiştirmek"
+msgstr "Değiştir"
 
 #: templates/frontend/bootstrap_menu.html:21
-#: templates/frontend/dashboard.html:5 templates/frontend/dashboard.html:23
+#: templates/frontend/dashboard.html:5
+#: templates/frontend/dashboard.html:23
 msgid "Dashboard"
-msgstr "Gösterge paneli"
+msgstr "Ön İzleme"
 
 #: templates/frontend/bootstrap_menu.html:25
 msgid "Audio files"
@@ -1520,20 +1575,20 @@ msgstr "Raporlama"
 
 #: templates/frontend/bootstrap_menu.html:30
 msgid "Call Detail Report"
-msgstr "Detay Raporu Çağrı"
+msgstr "Çağrı Detay Raporu"
 
 #: templates/frontend/bootstrap_menu.html:31
 msgid "Survey Reports"
-msgstr "Araştırma Raporları"
+msgstr "Anket Raporları"
 
 #: templates/frontend/bootstrap_menu.html:36
 msgid "Modules"
-msgstr "Modülleri"
+msgstr "Modüller"
 
 #: templates/frontend/bootstrap_menu.html:38
 #: templates/frontend/voiceapp/list.html:51
 msgid "Voice Apps"
-msgstr "Ses Apps"
+msgstr "Ses Aplikasyonları"
 
 #: templates/frontend/bootstrap_menu.html:41
 msgid "Add-ons"
@@ -1555,11 +1610,11 @@ msgstr "Hesap Sınırları"
 
 #: templates/frontend/bootstrap_menu.html:63
 msgid "Log out"
-msgstr "Oturumu"
+msgstr "Çıkış"
 
 #: templates/frontend/bootstrap_menu.html:71
 msgid "notifications"
-msgstr "bildirimleri"
+msgstr "bildirimler"
 
 #: templates/frontend/custom_jquery_select_all.html:16
 msgid "You must check at least one box!"
@@ -1567,15 +1622,15 @@ msgstr "En az bir onay kutusunu gerekir!"
 
 #: templates/frontend/custom_jquery_select_all.html:27
 msgid " voice app(s) are going to be deleted?"
-msgstr "ses uygulaması (ler) silinecek gidiyorsun?"
+msgstr "ses uygulaması (ler) silinecek ?"
 
 #: templates/frontend/custom_jquery_select_all.html:31
 msgid " phonebook(s) are going to be deleted?"
-msgstr "telefon rehberi (ler) silinecek gidiyorsun?"
+msgstr "telefon rehberi (ler) silinecek?"
 
 #: templates/frontend/custom_jquery_select_all.html:35
 msgid " survey(s) are going to be deleted?"
-msgstr "Anket (ler) silinecek gidiyorsun?"
+msgstr "Anket (ler) silinecek ?"
 
 #: templates/frontend/custom_jquery_select_all.html:39
 msgid " audio(s) are going to be deleted?"
@@ -1583,7 +1638,7 @@ msgstr "ses (ler) silinecek gidiyorsun?"
 
 #: templates/frontend/custom_jquery_select_all.html:62
 msgid " phonebook(s) are going to be deleted with "
-msgstr "telefon rehberi (ler) ile silinecek gidiyor"
+msgstr "telefon rehberi (ler) ile silinecek ?"
 
 #: templates/frontend/custom_jquery_select_all.html:62
 msgid " contact(s)?"
@@ -1591,19 +1646,19 @@ msgstr "Kişi (ler)?"
 
 #: templates/frontend/custom_jquery_select_all.html:66
 msgid " campaign(s) are going to be deleted?"
-msgstr "kampanyası (ler) silinecek gidiyorsun?"
+msgstr "kampanyası (ler) silinecek?"
 
 #: templates/frontend/custom_jquery_select_all.html:70
 msgid " notification(s) are going to be deleted?"
-msgstr "bildirim (ler) silinecek gidiyorsun?"
+msgstr "bildirim (ler) silinecek ?"
 
 #: templates/frontend/custom_jquery_select_all.html:74
 msgid " notification(s) are going to be marked as read?"
-msgstr "bildirim (ler) okundu olarak işaretlenmesi için gidiyorsun?"
+msgstr "bildirim (ler) okundu olarak işaretlenecek ?"
 
 #: templates/frontend/custom_jquery_select_all.html:94
 msgid "Confirm deletion?"
-msgstr "Silme işlemini onayla?"
+msgstr "Silme işlemini onaylıyormusunuz ?"
 
 #: templates/frontend/custom_jquery_select_all.html:115
 msgid "Please confirm to delete this phonebook with"
@@ -1619,7 +1674,7 @@ msgstr "Gerçek zamanlı kampanya performans izleme"
 
 #: templates/frontend/dashboard.html:49
 msgid "Total Phonebook Contacts"
-msgstr "Toplam Rehber Rehber"
+msgstr "Rehberdeki Toplam Kişi Sayısı"
 
 #: templates/frontend/dashboard.html:50
 msgid "Total Campaign Contacts"
@@ -1663,7 +1718,7 @@ msgstr "MEŞGUL"
 
 #: templates/frontend/dashboard.html:247
 msgid "CHANUNAVAIL"
-msgstr "CHANUNAVAIL"
+msgstr "TIKANIKLIK"
 
 #: templates/frontend/dashboard.html:248
 msgid "TORTURE"
@@ -1671,11 +1726,11 @@ msgstr "İŞKENCE"
 
 #: templates/frontend/dashboard.html:249
 msgid "NOANSWER"
-msgstr "NOANSWER"
+msgstr "CEVAPSIZ"
 
 #: templates/frontend/dashboard.html:252
 msgid "INVALIDARGS"
-msgstr "INVALIDARGS"
+msgstr "YANLIŞ ARGUMAN"
 
 #: templates/frontend/dashboard.html:253
 msgid "CANCEL"
@@ -1683,7 +1738,7 @@ msgstr "İPTAL"
 
 #: templates/frontend/dashboard.html:254
 msgid "NOROUTE"
-msgstr "NOROUTE"
+msgstr "ARANAMAYAN BÖLGE"
 
 #: templates/frontend/dashboard.html:257
 msgid "CONGESTION"
@@ -1694,21 +1749,15 @@ msgid "FORBIDDEN"
 msgstr "YASAK"
 
 #: templates/frontend/index.html:12
-msgid ""
-"is Voice Broadcasting and AutoDialer software to provide information via the "
-"phone."
-msgstr "Ses Yayın ve telefon yoluyla bilgi vermek Autodialer yazılımdır."
+msgid "is Voice Broadcasting and AutoDialer software to provide information via the phone."
+msgstr "Ses yayını ve telefon ile bilgi vermek için OtomatikArama yazılımıdır."
 
 #: templates/frontend/index.html:12
-msgid ""
-"Newfies-Dialer can scale to make millions of calls daily by using realtime "
-"call processing across multiple servers in the cloud."
-msgstr "Newfies-Dialer bulut içinde birden çok sunucu arasında gerçek zamanlı arama işlemci kullanarak günlük aramaların milyonlarca yapmak için ölçeklendirilebilir."
+msgid "Newfies-Dialer can scale to make millions of calls daily by using realtime call processing across multiple servers in the cloud."
+msgstr "Newfies-Dialer milyonlarca çağrıyı eş zamanlı olarak iletmenizi sağlar."
 
 #: templates/frontend/index.html:22
-msgid ""
-"Star2Billing S.L. offers consultancy including installation, training and "
-"customisation on Newfies-Dialer"
+msgid "Star2Billing S.L. offers consultancy including installation, training and customisation on Newfies-Dialer"
 msgstr "Star2Billing SL Newfies-Dialer kurulum, eğitim ve özelleştirme dahil olmak üzere danışmanlık hizmeti sunmaktadır"
 
 #: templates/frontend/index.html:23
@@ -1724,14 +1773,12 @@ msgid "Newfies-Dialer is licensed under"
 msgstr "Newfies-Dialer altında lisanslanmıştır"
 
 #: templates/frontend/index.html:30
-msgid ""
-"however an alternative license can be purchased if the MPL V2 license is not "
-"suitable for your requirements."
+msgid "however an alternative license can be purchased if the MPL V2 license is not suitable for your requirements."
 msgstr "MPL V2 lisans ihtiyaçlarınız için uygun değilse ancak alternatif bir lisans satın alınabilir."
 
 #: templates/frontend/master.html:21
 msgid "Customer Interface"
-msgstr ""
+msgstr "Müşteri Arayüzü"
 
 #: templates/frontend/master.html:111
 msgid "Login"
@@ -1745,8 +1792,10 @@ msgstr "Şifremi Unuttum?"
 msgid "Display language"
 msgstr "Dil Göster"
 
-#: templates/frontend/master.html:132 templates/frontend/master.html.py:138
-#: templates/frontend/master.html:158 templates/frontend/campaign/list.html:16
+#: templates/frontend/master.html:132
+#: templates/frontend/master.html.py:138
+#: templates/frontend/master.html:158
+#: templates/frontend/campaign/list.html:16
 #: templates/frontend/campaign/list.html:22
 #: templates/frontend/contact/change.html:28
 #: templates/frontend/contact/import_contact.html:19
@@ -1769,7 +1818,7 @@ msgstr "Dil Göster"
 #: templates/frontend/survey/survey_report.html:18
 #: templates/frontend/voiceapp/list.html:17
 msgid "Alert"
-msgstr "Uyarmak"
+msgstr "Uyarı"
 
 #: templates/frontend/master.html:138
 msgid "Please login by clicking on login button"
@@ -1777,11 +1826,11 @@ msgstr "Giriş butonuna tıklayarak giriş yapınız"
 
 #: templates/frontend/master.html:146
 msgid "Voice Broadcasting solution"
-msgstr "Ses Yayın çözümü"
+msgstr "Ses Yayın Çözümü"
 
 #: templates/frontend/master.html:160
 msgid "To send notification to administrator"
-msgstr "Yönetici bildirim göndermek için"
+msgstr "Yöneticiye bildirimde bulunun "
 
 #: templates/frontend/master.html:160
 msgid "Click here"
@@ -1803,7 +1852,7 @@ msgstr "(Bildirim gönderildi)"
 #: templates/frontend/voiceapp/change.html:10
 #: templates/frontend/voiceapp/change.html:38
 msgid "Update"
-msgstr "Güncelleştirmek"
+msgstr "Güncelle"
 
 #: templates/frontend/campaign/change.html:13
 msgid "Set campaign parameters"
@@ -1813,7 +1862,8 @@ msgstr "Kampanya parametreleri ayarlayın"
 msgid "General settings"
 msgstr "Genel ayarlar"
 
-#: templates/frontend/campaign/change.html:67 user_profile/models.py:82
+#: templates/frontend/campaign/change.html:67
+#: user_profile/models.py:82
 msgid "Dialer settings"
 msgstr "Dialer ayarları"
 
@@ -1903,7 +1953,7 @@ msgstr "Öğe yok"
 #: templates/frontend/survey/audio_list.html:63
 #: templates/frontend/survey/survey_list.html:56
 msgid "Processing, please wait ..."
-msgstr "İşleme, lütfen bekleyin ..."
+msgstr "İşlem yapılıyor lütfen bekleyiniz..."
 
 #: templates/frontend/campaign/list.html:66
 #: templates/frontend/contact/list.html:146
@@ -1941,7 +1991,7 @@ msgstr "İletişim bilgilerini ekle"
 
 #: templates/frontend/contact/import_contact.html:13
 msgid "Import list of contact by uploading CSV files"
-msgstr "Yükleme CSV dosyaları ile temas İthalat listesi"
+msgstr "CSV Dosyalar ile İçe Aktarın"
 
 #: templates/frontend/contact/import_contact.html:36
 msgid "Contact number"
@@ -1957,23 +2007,23 @@ msgstr "Isim"
 
 #: templates/frontend/contact/import_contact.html:42
 msgid "Additional variables"
-msgstr "Ek değişkenleri"
+msgstr "Ek değişkenler"
 
 #: templates/frontend/contact/import_contact.html:65
 msgid "SUBSCRIBER STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')"
-msgstr "ABONE DURUMU = (&#39;1 &#39;-&#39; AKTİF &#39;) (&#39;0&#39; - &#39;ETKİN DEĞİL&#39;)"
+msgstr "ABONE DURUMU = ('1'-'AKTİF') ('0'-'PASİF')"
 
 #: templates/frontend/contact/import_contact.html:95
 msgid "Subscriber(s) imported"
-msgstr "Abone (ler) ithal"
+msgstr "Abone (ler) İçe Aktarıldı."
 
 #: templates/frontend/contact/import_contact.html:112
 msgid "Subscriber(s) not imported"
-msgstr "Abone (ler) ithal değil"
+msgstr "Abone (ler) İçe Aktarılamadı."
 
 #: templates/frontend/contact/list.html:27
 msgid "List, add and edit contacts"
-msgstr "Kartvizit eklemek ve düzenlemek, listeleyin"
+msgstr "Kişileri listeleyin , ekleyin ve güncelleyin"
 
 #: templates/frontend/contact/list.html:91
 msgid "Clear"
@@ -1986,24 +2036,24 @@ msgstr "Kimlik"
 
 #: templates/frontend/contact/list.html:129
 msgid "Import"
-msgstr "Ithal"
+msgstr "İçe Aktar"
 
 #: templates/frontend/phonebook/change.html:15
 msgid "Contacts are stored in phonebooks"
-msgstr "Kontaklar rehber saklanır"
+msgstr "Kişiler Rehbere eklendi."
 
 #: templates/frontend/phonebook/list.html:9
 msgid "List, add and edit phonebooks"
-msgstr "Listeleme, ekleme ve düzenleme rehberi"
+msgstr "Telefon rehberlerinizi listeleyin , ekleyin yada düzenleyin"
 
 #: templates/frontend/registration/password_reset_complete.html:4
 #: templates/frontend/registration/password_reset_complete.html:8
 msgid "Password reset complete"
-msgstr "Tam Parola sıfırlama"
+msgstr "Parola sıfırlama tamamlandı"
 
 #: templates/frontend/registration/password_reset_complete.html:11
 msgid "Your password has been set.  You may go ahead and log in now."
-msgstr "Parolanız kuruldu. Siz devam edin ve şimdi giriş yapabilirsiniz."
+msgstr "Parolanız tanımlandı . Şimdi işlemlerinize devam edebilir yada giriş yapabilirsiniz."
 
 #: templates/frontend/registration/password_reset_complete.html:14
 msgid "Log in"
@@ -2028,31 +2078,25 @@ msgstr "Şifremi değiştir"
 
 #: templates/frontend/registration/password_reset_confirm.html:34
 msgid "Password reset unsuccessful"
-msgstr "Şifre başarısız sıfırlamak"
+msgstr "Şifre sıfırlama işlemi başarısız oldu"
 
 #: templates/frontend/registration/password_reset_confirm.html:39
-msgid ""
-"The password reset link was invalid, possibly because it has already been "
-"used.  Please request a new password reset."
-msgstr "Parola sıfırlama linki zaten kullanılmış muhtemelen, çünkü geçersiz oldu. Yeni bir parola sıfırlama talep ediniz."
+msgid "The password reset link was invalid, possibly because it has already been used.  Please request a new password reset."
+msgstr "Şifre sıfırlama linkiniz yanlış yada daha önce kullanılmış olabilir. Lütfen yeni şifre sıfırlama linki talep ediniz."
 
 #: templates/frontend/registration/password_reset_done.html:4
 #: templates/frontend/registration/password_reset_done.html:8
 msgid "Password reset successful"
-msgstr "Şifre başarılı sıfırlamak"
+msgstr "Şifre Sıfırlama İşlemi Başarılı..."
 
 #: templates/frontend/registration/password_reset_done.html:10
-msgid ""
-"We've e-mailed you instructions for setting your password to the e-mail "
-"address you submitted. You should be receiving it shortly."
-msgstr "Size gönderilen e-posta adresinize şifrenizi için talimatlar e-posta var. Kısa aldıktan edilmelidir."
+msgid "We've e-mailed you instructions for setting your password to the e-mail address you submitted. You should be receiving it shortly."
+msgstr "Size gönderilen e-posta adresinize şifrenizi yeniden tanımlamanız gerekli yönergeler gönderildi. Kısa süre içerisinde lütfen e-posta adresinizi kontrol ediniz."
 
 #: templates/frontend/registration/password_reset_email.html:5
 #, python-format
-msgid ""
-"You're receiving this e-mail because you requested a password reset for your "
-"user account at %(site_name)s."
-msgstr "Eğer adresinden kullanıcı hesabı %(site_name)s için parola sıfırlama talep çünkü bu e-posta alıyorsunuz."
+msgid "You're receiving this e-mail because you requested a password reset for your user account at %(site_name)s."
+msgstr " %(site_name)s kullanıcısı için şifre yenileme talebinde bulundunuz."
 
 #: templates/frontend/registration/password_reset_email.html:7
 msgid "Please go to the following page and choose a new password:"
@@ -2060,7 +2104,7 @@ msgstr "Aşağıdaki sayfasına gidin ve yeni bir şifre seçin:"
 
 #: templates/frontend/registration/password_reset_email.html:11
 msgid "Your username, in case you've forgotten:"
-msgstr "Kullanıcı adınız, durumda unuttuysanız:"
+msgstr "Kullanıcı adınız,"
 
 #: templates/frontend/registration/password_reset_email.html:13
 #, python-format
@@ -2072,10 +2116,8 @@ msgid "Forgotten your password?"
 msgstr "Şifrenizi mi unuttunuz?"
 
 #: templates/frontend/registration/password_reset_form.html:12
-msgid ""
-"Enter your e-mail address below, and we'll e-mail instructions for setting a "
-"new one."
-msgstr "Aşağıya e-posta adresinizi girin ve biz yeni bir ayarlama için e-posta talimatları edeceğiz."
+msgid "Enter your e-mail address below, and we'll e-mail instructions for setting a new one."
+msgstr "Aşağıya e-posta adresinizi girin ve size yeni bir e-posta göndereceğiz. Bu eposta içerisinde yeni ayarlarınız bulunacaktır."
 
 #: templates/frontend/registration/password_reset_form.html:22
 msgid "Reset my password"
@@ -2083,7 +2125,7 @@ msgstr "Şifremi Sıfırla"
 
 #: templates/frontend/registration/user_detail_change.html:9
 msgid "Password, notifications, account limits and number check"
-msgstr "Şifre, bildirimler, hesap sınırları ve numarayı kontrol"
+msgstr "Şifre, bildirimler, hesap sınırları ve numara kontrolü"
 
 #: templates/frontend/registration/user_detail_change.html:16
 msgid "Account"
@@ -2095,11 +2137,11 @@ msgstr "Şifre"
 
 #: templates/frontend/registration/user_detail_change.html:20
 msgid "Number Check"
-msgstr "Kontrol Numarası"
+msgstr "Numara Kontrolü"
 
 #: templates/frontend/registration/user_detail_change.html:21
 msgid "Change language "
-msgstr "Dilini değiştirme"
+msgstr "Dil değiştirme"
 
 #: templates/frontend/registration/user_detail_change.html:72
 msgid "Change detail"
@@ -2131,11 +2173,11 @@ msgstr "Okundu olarak işaretle"
 
 #: templates/frontend/registration/user_detail_change.html:150
 msgid "Mark all as read"
-msgstr "Olarak okunur Tümünü işaretle"
+msgstr "Tümünü okundu olarak işaretle"
 
 #: templates/frontend/registration/user_detail_change.html:155
 msgid "Notification"
-msgstr "Tebliğ"
+msgstr "Bildirim"
 
 #: templates/frontend/registration/user_detail_change.html:215
 msgid "Maximum call duration"
@@ -2151,7 +2193,7 @@ msgstr "Zaman Aşımı"
 
 #: templates/frontend/registration/user_detail_change.html:227
 msgid "Maximum campaigns"
-msgstr "Maksimum kampanyaları"
+msgstr "Maksimum kampanya sayısı"
 
 #: templates/frontend/registration/user_detail_change.html:279
 msgid "Check"
@@ -2167,7 +2209,7 @@ msgstr "Çağrı Raporları"
 
 #: templates/frontend/report/voipcall_report.html:31
 msgid "Detailed call data"
-msgstr "Detaylı arama veri"
+msgstr "Detaylı Çağrı Datası"
 
 #: templates/frontend/report/voipcall_report.html:78
 msgid "Call ID"
@@ -2182,7 +2224,8 @@ msgid "Phone No."
 msgstr "Telefon No"
 
 #: templates/frontend/report/voipcall_report.html:82
-#: templates/frontend/voiceapp/list.html:38 user_profile/models.py:80
+#: templates/frontend/voiceapp/list.html:38
+#: user_profile/models.py:80
 msgid "Gateway"
 msgstr "Geçit"
 
@@ -2192,15 +2235,15 @@ msgstr "Bill Sec"
 
 #: templates/frontend/report/voipcall_report.html:90
 msgid "Call Records"
-msgstr "Arama kaydı"
+msgstr "Arama kayıtları"
 
 #: templates/frontend/survey/audio_change.html:16
 msgid "Upload audio to be used in Voice applications"
-msgstr "Ses uygulamalarda kullanılmak üzere ses karşıya"
+msgstr "Ses uygulamalarında kullanılmak üzere ses dosyası yükle"
 
 #: templates/frontend/survey/audio_list.html:15
 msgid "List, upload and edit audio files"
-msgstr "Listelemek, upload ve ses dosyalarını düzenlemek"
+msgstr "Listeleme, yükleme ve ses dosyalarını güncelle"
 
 #: templates/frontend/survey/audio_list.html:41
 msgid "Audio"
@@ -2216,25 +2259,23 @@ msgstr "Yeni Soru"
 
 #: templates/frontend/survey/survey_change.html:255
 #: templates/frontend/survey/survey_change.html:432
-msgid ""
-"If no audio file is selected, then text to speech is used to read out the "
-"question"
-msgstr "Hiçbir ses dosyası seçilirse, daha sonra konuşma metni soruyu okumak için kullanılır"
+msgid "If no audio file is selected, then text to speech is used to read out the question"
+msgstr "Hiçbir ses dosyası seçilmez ise TEXT TO SPEECH teknolojisi kullanılarak soru okunacaktır."
 
 #: templates/frontend/survey/survey_change.html:264
 #: templates/frontend/survey/survey_change.html:445
 msgid "Delete question"
-msgstr "Soru sil"
+msgstr "Soruyu sil"
 
 #: templates/frontend/survey/survey_change.html:270
 #: templates/frontend/survey/survey_change.html:496
 msgid "Add Response"
-msgstr "Tepki ekle"
+msgstr "Cevap Ekle"
 
 #: templates/frontend/survey/survey_change.html:320
 #: templates/frontend/survey/survey_change.html:484
 msgid "Delete response"
-msgstr "Yanıtı sil"
+msgstr "Cevap Sil"
 
 #: templates/frontend/survey/survey_change.html:365
 msgid "Survey configuration"
@@ -2246,22 +2287,23 @@ msgstr "Soru ekle"
 
 #: templates/frontend/survey/survey_change.html:517
 msgid "Update Survey"
-msgstr "Anket Update"
+msgstr "Anket Güncelle"
 
 #: templates/frontend/survey/survey_list.html:9
 msgid "List, add and edit surveys"
-msgstr "Anketler ekleyebilir ve düzenleyebilirsiniz, listeleyin"
+msgstr "Anketler ekleyebilir ve düzenleyebilirsiniz, listeleyebilirsiniz"
 
 #: templates/frontend/survey/survey_report.html:5
 msgid "Survey Report"
-msgstr "Araştırması Raporu"
+msgstr "Anketı Raporu"
 
 #: templates/frontend/survey/survey_report.html:5
 msgid "Monitor survey results"
-msgstr "Anket sonuçlarını izlemek"
+msgstr "Anket sonuçlarını izle"
 
 #: templates/frontend/voiceapp/change.html:14
-#: templates/frontend/voiceapp/list.html:10 voice_app/models.py:85
+#: templates/frontend/voiceapp/list.html:10
+#: voice_app/models.py:85
 msgid "Voice Applications"
 msgstr "Ses Uygulamaları"
 
@@ -2271,7 +2313,7 @@ msgstr "Ses uygulama yapılandırma"
 
 #: templates/frontend/voiceapp/list.html:10
 msgid "List, add and edit voice applications"
-msgstr "Listeleme, ekleme ve ses uygulamaları düzenlemek"
+msgstr "Listeleme, ekleme ve ses uygulamaları düzenle"
 
 #: templates/frontend/voiceapp/list.html:39
 msgid "Data"
@@ -2283,7 +2325,7 @@ msgstr "Newfies kullandığınız için teşekkür ederiz."
 
 #: templates/registration/logged_out.html:10
 msgid "Log in again"
-msgstr "Tekrar oturum"
+msgstr "Tekrar giriş yapın"
 
 #: user_profile/admin.py:44
 msgid "Personal info"
@@ -2307,13 +2349,14 @@ msgstr "Abhaz"
 
 #: user_profile/fields.py:39
 msgid "Afrikaans"
-msgstr "Afrikaans"
+msgstr "Afrika"
 
 #: user_profile/fields.py:40
 msgid "Akan"
 msgstr "Akan"
 
-#: user_profile/fields.py:41 user_profile/fields.py:203
+#: user_profile/fields.py:41
+#: user_profile/fields.py:203
 msgid "Albanian"
 msgstr "Arnavut"
 
@@ -2329,7 +2372,8 @@ msgstr "Arapça"
 msgid "Aragonese"
 msgstr "Aragonese"
 
-#: user_profile/fields.py:45 user_profile/fields.py:111
+#: user_profile/fields.py:45
+#: user_profile/fields.py:111
 msgid "Armenian"
 msgstr "Ermeni"
 
@@ -2351,7 +2395,7 @@ msgstr "Aymara"
 
 #: user_profile/fields.py:50
 msgid "Azerbaijani"
-msgstr "Azeri"
+msgstr "Azerbaycan"
 
 #: user_profile/fields.py:51
 msgid "Bashkir"
@@ -2361,7 +2405,8 @@ msgstr "Başkurt"
 msgid "Bambara"
 msgstr "Bambara"
 
-#: user_profile/fields.py:53 user_profile/fields.py:84
+#: user_profile/fields.py:53
+#: user_profile/fields.py:84
 msgid "Basque"
 msgstr "Bask"
 
@@ -2381,7 +2426,8 @@ msgstr "Bihari dilleri"
 msgid "Bislama"
 msgstr "Bislama"
 
-#: user_profile/fields.py:58 user_profile/fields.py:217
+#: user_profile/fields.py:58
+#: user_profile/fields.py:217
 msgid "Tibetan"
 msgstr "Tibet"
 
@@ -2395,9 +2441,10 @@ msgstr "Breton"
 
 #: user_profile/fields.py:61
 msgid "Bulgarian"
-msgstr "Bulgar"
+msgstr "Bulgaristan"
 
-#: user_profile/fields.py:62 user_profile/fields.py:161
+#: user_profile/fields.py:62
+#: user_profile/fields.py:161
 msgid "Burmese"
 msgstr "Birmanya"
 
@@ -2405,7 +2452,8 @@ msgstr "Birmanya"
 msgid "Catalan; Valencian"
 msgstr "Katalan; Valencian"
 
-#: user_profile/fields.py:64 user_profile/fields.py:74
+#: user_profile/fields.py:64
+#: user_profile/fields.py:74
 msgid "Czech"
 msgstr "Çek"
 
@@ -2417,14 +2465,13 @@ msgstr "Chamorro"
 msgid "Chechen"
 msgstr "Çeçen"
 
-#: user_profile/fields.py:67 user_profile/fields.py:239
+#: user_profile/fields.py:67
+#: user_profile/fields.py:239
 msgid "Chinese"
 msgstr "Çin"
 
 #: user_profile/fields.py:68
-msgid ""
-"Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church "
-"Slavonic"
+msgid "Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic"
 msgstr "Kilise Slav; Eski Slavca, Kilise Slav, Eski Bulgar; Eski Kilise Slav"
 
 #: user_profile/fields.py:69
@@ -2443,31 +2490,35 @@ msgstr "Korsikalı"
 msgid "Cree"
 msgstr "Cree"
 
-#: user_profile/fields.py:73 user_profile/fields.py:232
+#: user_profile/fields.py:73
+#: user_profile/fields.py:232
 msgid "Welsh"
-msgstr "Sözünü tutmamak"
+msgstr "Welsh"
 
 #: user_profile/fields.py:75
 msgid "Danish"
-msgstr "Danimarkalı"
+msgstr "Danimarka"
 
-#: user_profile/fields.py:76 user_profile/fields.py:95
+#: user_profile/fields.py:76
+#: user_profile/fields.py:95
 msgid "German"
-msgstr "Alman"
+msgstr "Almanya"
 
 #: user_profile/fields.py:77
 msgid "Divehi; Dhivehi; Maldivian"
-msgstr "Divehi; Dhivehi; Maldiv"
+msgstr "Divehi; Dhivehi; Maldivler"
 
-#: user_profile/fields.py:78 user_profile/fields.py:168
+#: user_profile/fields.py:78
+#: user_profile/fields.py:168
 msgid "Dutch; Flemish"
-msgstr "Hollandalı; Flaman"
+msgstr "Hollandalı; Flemenk"
 
 #: user_profile/fields.py:79
 msgid "Dzongkha"
 msgstr "Dzongkha"
 
-#: user_profile/fields.py:80 user_profile/fields.py:100
+#: user_profile/fields.py:80
+#: user_profile/fields.py:100
 msgid "Greek, Modern (1453-)"
 msgstr "(1453 -) Modern Yunanca"
 
@@ -2487,7 +2538,8 @@ msgstr "Koyun"
 msgid "Faroese"
 msgstr "Faroe"
 
-#: user_profile/fields.py:87 user_profile/fields.py:179
+#: user_profile/fields.py:87
+#: user_profile/fields.py:179
 msgid "Persian"
 msgstr "Farsça"
 
@@ -2499,7 +2551,8 @@ msgstr "Fiji"
 msgid "Finnish"
 msgstr "Fince"
 
-#: user_profile/fields.py:90 user_profile/fields.py:91
+#: user_profile/fields.py:90
+#: user_profile/fields.py:91
 msgid "French"
 msgstr "Fransız"
 
@@ -2511,7 +2564,8 @@ msgstr "Batı Frizce"
 msgid "Fulah"
 msgstr "Fulah"
 
-#: user_profile/fields.py:94 user_profile/fields.py:128
+#: user_profile/fields.py:94
+#: user_profile/fields.py:128
 msgid "Georgian"
 msgstr "Gürcü"
 
@@ -2575,7 +2629,8 @@ msgstr "Macar"
 msgid "Igbo"
 msgstr "İbo"
 
-#: user_profile/fields.py:113 user_profile/fields.py:121
+#: user_profile/fields.py:113
+#: user_profile/fields.py:121
 msgid "Icelandic"
 msgstr "İzlanda"
 
@@ -2625,7 +2680,7 @@ msgstr "Kalaallisut; Grönlandca"
 
 #: user_profile/fields.py:126
 msgid "Kannada"
-msgstr "Kannada"
+msgstr "Kanada"
 
 #: user_profile/fields.py:127
 msgid "Kashmiri"
@@ -2653,7 +2708,7 @@ msgstr "Kinyarwanda"
 
 #: user_profile/fields.py:134
 msgid "Kirghiz; Kyrgyz"
-msgstr "Kırgız, Kırgız"
+msgstr " Kırgız"
 
 #: user_profile/fields.py:135
 msgid "Komi"
@@ -2673,7 +2728,7 @@ msgstr "Kuanyama; Kwanyama"
 
 #: user_profile/fields.py:139
 msgid "Kurdish"
-msgstr "Kürt"
+msgstr "Kürtçe"
 
 #: user_profile/fields.py:140
 msgid "Lao"
@@ -2711,7 +2766,8 @@ msgstr "Luba-Katanga"
 msgid "Ganda"
 msgstr "Ganda"
 
-#: user_profile/fields.py:149 user_profile/fields.py:155
+#: user_profile/fields.py:149
+#: user_profile/fields.py:155
 msgid "Macedonian"
 msgstr "Makedonya"
 
@@ -2723,7 +2779,8 @@ msgstr "Marshall Adaları"
 msgid "Malayalam"
 msgstr "Malayalam"
 
-#: user_profile/fields.py:152 user_profile/fields.py:159
+#: user_profile/fields.py:152
+#: user_profile/fields.py:159
 msgid "Maori"
 msgstr "Maori"
 
@@ -2731,7 +2788,8 @@ msgstr "Maori"
 msgid "Marathi"
 msgstr "Marathi"
 
-#: user_profile/fields.py:154 user_profile/fields.py:160
+#: user_profile/fields.py:154
+#: user_profile/fields.py:160
 msgid "Malay"
 msgstr "Malay"
 
@@ -2769,7 +2827,7 @@ msgstr "Ndonga"
 
 #: user_profile/fields.py:167
 msgid "Nepali"
-msgstr "Nepali"
+msgstr "Nepal"
 
 #: user_profile/fields.py:169
 msgid "Norwegian Nynorsk; Nynorsk, Norwegian"
@@ -2829,9 +2887,10 @@ msgstr "Quechua"
 
 #: user_profile/fields.py:185
 msgid "Romansh"
-msgstr "Romanş"
+msgstr "Roman"
 
-#: user_profile/fields.py:186 user_profile/fields.py:187
+#: user_profile/fields.py:186
+#: user_profile/fields.py:187
 msgid "Romanian; Moldavian; Moldovan"
 msgstr "Romanya, Moldova, Moldova"
 
@@ -2855,7 +2914,8 @@ msgstr "Sanskritçe"
 msgid "Sinhala; Sinhalese"
 msgstr "Sinhala; Seylanca"
 
-#: user_profile/fields.py:193 user_profile/fields.py:194
+#: user_profile/fields.py:193
+#: user_profile/fields.py:194
 msgid "Slovak"
 msgstr "Slovakça"
 
@@ -2965,7 +3025,7 @@ msgstr "Türkmen"
 
 #: user_profile/fields.py:223
 msgid "Turkish"
-msgstr "Türk"
+msgstr "Türkçe"
 
 #: user_profile/fields.py:224
 msgid "Twi"
@@ -3029,7 +3089,7 @@ msgstr "Zulu"
 
 #: user_profile/fields.py:248
 msgid "Stores language codes"
-msgstr "Mağazalar dil kodları"
+msgstr "Barındırılan Dil Kodları"
 
 #: user_profile/forms.py:26
 msgid "Email address"
@@ -3041,39 +3101,46 @@ msgstr "Telefon Numarası"
 
 #: user_profile/forms.py:60
 msgid "Check number is authorised to call"
-msgstr "Kontrol numarayı aramak için yetkili"
+msgstr "İzin verilen numaralar için kontrol alanı"
 
-#: user_profile/management.py:25 user_profile/management.py:26
+#: user_profile/management.py:25
+#: user_profile/management.py:26
 msgid "Campaign started"
 msgstr "Kampanya başladı"
 
-#: user_profile/management.py:29 user_profile/management.py:30
+#: user_profile/management.py:29
+#: user_profile/management.py:30
 msgid "Campaign paused"
 msgstr "Kampanya duraklatıldı"
 
-#: user_profile/management.py:33 user_profile/management.py:34
+#: user_profile/management.py:33
+#: user_profile/management.py:34
 msgid "Campaign aborted"
-msgstr "Iptal Kampanya"
+msgstr "Kampanya İptal Edildi"
 
-#: user_profile/management.py:37 user_profile/management.py:38
+#: user_profile/management.py:37
+#: user_profile/management.py:38
 msgid "Campaign stopped"
 msgstr "Kampanya durdu"
 
-#: user_profile/management.py:41 user_profile/management.py:42
+#: user_profile/management.py:41
+#: user_profile/management.py:42
 msgid "Campaign limit reached"
-msgstr "Kampanya sınırına ulaşıldı"
+msgstr "Kampanya limiti aşıldı"
 
-#: user_profile/management.py:45 user_profile/management.py:46
+#: user_profile/management.py:45
+#: user_profile/management.py:46
 msgid "Contact limit reached"
-msgstr "Sınırına ulaşıldı İletişim"
+msgstr "İletişim sınırı aşıldı"
 
 #: user_profile/management.py:50
 msgid "The user needs to be mapped with dialer settings by the administrator"
-msgstr "Kullanıcı yönetici tarafından çevirici ayarları ile eşlenmiş gerekiyor"
+msgstr "Yönetici kullanıcı için arama ayarlarını tanımlamasını yapması gerekmektedir."
 
-#: user_profile/management.py:53 user_profile/management.py:54
+#: user_profile/management.py:53
+#: user_profile/management.py:54
 msgid "Call request not found"
-msgstr "Çağrı talebinde bulunmadı"
+msgstr "Çağrı talebi bulunamadı"
 
 #: user_profile/models.py:56
 msgid "Address"
@@ -3081,7 +3148,7 @@ msgstr "Adres"
 
 #: user_profile/models.py:60
 msgid "State"
-msgstr "Devlet"
+msgstr "Ülke"
 
 #: user_profile/models.py:63
 msgid "Zip code"
@@ -3105,9 +3172,10 @@ msgstr "Dil"
 
 #: user_profile/models.py:75
 msgid "Note"
-msgstr "Dikkat"
+msgstr "Notlar"
 
-#: user_profile/models.py:88 user_profile/models.py:89
+#: user_profile/models.py:88
+#: user_profile/models.py:89
 msgid "User Profile"
 msgstr "Kullanıcı Profili"
 
@@ -3125,17 +3193,18 @@ msgstr "Yönetici"
 
 #: user_profile/models.py:107
 msgid "Admins"
-msgstr "Admins"
+msgstr "Yöneticiler"
 
 #: user_profile/views.py:95
 msgid "All notifications are marked as read."
-msgstr "Tüm bildirimler okundu olarak işaretlenir."
+msgstr "Tüm bildirimler okundu olarak işaretlendi."
 
 #: user_profile/views.py:108
 msgid "Detail has been changed."
 msgstr "Detay değiştirildi."
 
-#: user_profile/views.py:110 user_profile/views.py:121
+#: user_profile/views.py:110
+#: user_profile/views.py:121
 #: user_profile/views.py:130
 msgid "Please correct the errors below."
 msgstr "Aşağıdaki hataları düzeltin."
@@ -3155,44 +3224,40 @@ msgstr "Parolanız değiştirildi."
 #: user_profile/views.py:234
 #, python-format
 msgid "\"%(name)s\" is marked as read."
-msgstr "\"%(name)s\" okunur olarak işaretlenir."
+msgstr "\"%(name)s\" okundu olarak işaretlendi."
 
 #: user_profile/views.py:245
 #, python-format
 msgid "%(count)s notification(s) are deleted."
-msgstr "%(count)s bildirim (ler) silinir."
+msgstr "%(count)s bildirim (ler) silindi."
 
 #: user_profile/views.py:249
 #, python-format
 msgid "%(count)s notification(s) are marked as read."
-msgstr "%(count)s bildirim (ler) okunur olarak işaretlenir."
+msgstr "%(count)s bildirim (ler) okunur olarak işaretlendi."
 
 #: voice_app/models.py:57
 msgid "Voice Application Description"
-msgstr "Ses Uygulaması Açıklama"
+msgstr "Ses Uygulaması Açıklaması"
 
 #: voice_app/models.py:62
 msgid "Gateway used if we redirect the call"
-msgstr "Biz çağrı yönlendirme eğer ağ geçidi kullanılır"
+msgstr "Çağrı direkt olarak aranmayacaksa kullanılacak olan Ağ geçidi"
 
 #: voice_app/models.py:64
-msgid ""
-"The value of 'data' depends on the type of voice application :<br/>- Dial : "
-"The phone number to dial<br/>- Conference : Conference room name or "
-"number<br/>- Playaudio : Audio file URL<br/>- Speak : The text to speak "
-"using TTS"
-msgstr "&#39;Veri&#39; değeri sesli uygulama türüne bağlıdır: <br/> - Arama: Telefon numarasını çevirmek için <br/> - Konferans: Konferans odası adı veya numarası <br/> - Playaudio: Ses dosya URL <br/> - Speak: TTS kullanarak konuşmak metni"
+msgid "The value of 'data' depends on the type of voice application :<br/>- Dial : The phone number to dial<br/>- Conference : Conference room name or number<br/>- Playaudio : Audio file URL<br/>- Speak : The text to speak using TTS"
+msgstr "Data; değeri sesli uygulama türüne bağlıdır: <br/> - Dial: Telefon numarasını çevirmek için kullanılır <br/> - Conference: Konferans odası adı veya numarası <br/> - Playaudio: ses dosyası dnletilir URL girmeniz gerekir. <br/> - Speak: TTS kullanarak metni ses çevirebilirsiniz"
 
 #: voice_app/views.py:69
 msgid "Update Voice App"
-msgstr "Güncelleme Ses App"
+msgstr "Ses Aplikasyonu Güncelle"
 
 #: voice_app/views.py:73
 msgid "Delete Voice App"
-msgstr "Ses App sil"
+msgstr "Ses Aplikasyonu sil"
 
 #: voice_app/views.py:173
 #, python-format
 msgid "%(count)s voiceapp(s) are deleted."
-msgstr "%(count)s voiceapp (ler) silinir."
+msgstr "%(count)s voiceapp (ler) silindi."
 

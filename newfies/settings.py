@@ -343,6 +343,7 @@ LANGUAGES = (
     #('fr', gettext('French')),
     ('es', gettext('Spanish')),
     ('pt', gettext('Portuguese')),
+    ('zh', gettext('Chinese')),
 )
 
 LANGUAGE_COOKIE_NAME = 'newfies_dialer_language'

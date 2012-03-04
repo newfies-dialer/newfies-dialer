@@ -343,6 +343,8 @@ LANGUAGES = (
     #('fr', gettext('French')),
     ('es', gettext('Spanish')),
     ('pt', gettext('Portuguese')),
+    ('zh', gettext('Chinese')),
+    ('tr', gettext('Turkish')),
 )
 
 LANGUAGE_COOKIE_NAME = 'newfies_dialer_language'
@@ -375,9 +377,12 @@ PLIVO_DEFAULT_SURVEY_ANSWER_URL = 'http://127.0.0.1:8000/survey_finestatemachine
 # ADD 'dummy','plivo','twilio'
 NEWFIES_DIALER_ENGINE = 'plivo'
 
+#TASTYPIE API
+#============
 API_ALLOWED_IP = ['127.0.0.1', 'localhost']
 
-
+#LOGGING
+#=======
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,

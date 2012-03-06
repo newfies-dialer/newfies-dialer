@@ -300,12 +300,11 @@ func_install_frontend(){
         'DEBIAN')
             apt-get -y install python-setuptools python-dev build-essential 
             apt-get -y install libapache2-mod-python libapache2-mod-wsgi
+            apt-get -y install git-core mercurial gawk
             easy_install pip
+            
             #|FIXME: Strangely South need to be installed outside the Virtualenv
             pip install -e $SOUTH_SOURCE
-            
-            #Install Extra dependencies on New OS        
-            apt-get -y install git-core mercurial gawk
                     
             if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
                 apt-get install sqlite3 libsqlite3-dev

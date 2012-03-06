@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-16 14:40+0100\n"
+"POT-Creation-Date: 2012-03-04 23:43+0100\n"
 "PO-Revision-Date: 2012-02-28 23:20+0800\n"
 "Last-Translator: samlin <sam@theta.com.tw>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,1468 +16,1309 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: settings.py:328
-#: user_profile/fields.py:65
+#: settings.py:342 user_profile/fields.py:81
 msgid "English"
 msgstr "英語 "
 
-#: settings.py:330
+#: settings.py:344
 msgid "Spanish"
 msgstr "西班牙語"
 
-#: settings.py:331
-#: user_profile/fields.py:166
+#: settings.py:345 user_profile/fields.py:182
 msgid "Portuguese"
 msgstr "葡萄牙語"
 
-#: custom_admin_tools/dashboard.py:62
+#: settings.py:346 user_profile/fields.py:67 user_profile/fields.py:239
+msgid "Chinese"
+msgstr "中文"
+
+#: settings.py:347 user_profile/fields.py:223
+msgid "Turkish"
+msgstr ""
+
+#: custom_admin_tools/dashboard.py:76
 msgid "Task Manager"
 msgstr "工作管理員"
 
-#: custom_admin_tools/dashboard.py:66
+#: custom_admin_tools/dashboard.py:80
 msgid "Dashboard Stats"
 msgstr "儀表板狀態"
 
-#: custom_admin_tools/dashboard.py:69
-#: custom_admin_tools/dashboard.py:159
+#: custom_admin_tools/dashboard.py:83 custom_admin_tools/dashboard.py:173
 msgid "Recent Actions"
 msgstr "最近動作"
 
-#: custom_admin_tools/dashboard.py:74
-#: templates/frontend/registration/user_detail_change.html:24
+#: custom_admin_tools/dashboard.py:88
+#: templates/frontend/registration/user_detail_change.html:9
 msgid "Settings"
 msgstr "設定"
 
-#: custom_admin_tools/dashboard.py:80
+#: custom_admin_tools/dashboard.py:94
 msgid "Voip Dialer"
 msgstr "Voip 撥號程序"
 
-#: custom_admin_tools/dashboard.py:86
+#: custom_admin_tools/dashboard.py:100
 msgid "Voip Server"
 msgstr " Voip 伺服器"
 
-#: custom_admin_tools/dashboard.py:92
-#: templates/frontend/survey/audio_change.html:13
+#: custom_admin_tools/dashboard.py:106
+#: templates/frontend/survey/audio_change.html:15
 #: templates/frontend/survey/audio_list.html:6
-#: templates/frontend/survey/audio_list.html:29
-#: templates/frontend/survey/audio_list.html:69
+#: templates/frontend/survey/audio_list.html:15
+#: templates/frontend/survey/audio_list.html:54
 msgid "Audio Files"
 msgstr "語音檔"
 
-#: custom_admin_tools/dashboard.py:98
-#: survey/models.py:54
-#: templates/frontend/survey/survey.html:6
-#: templates/frontend/survey/survey_change.html:378
-#: templates/frontend/survey/survey_list.html:24
-#: templates/frontend/survey/survey_list.html:61
+#: custom_admin_tools/dashboard.py:112 survey/models.py:81
+#: templates/frontend/survey/survey_change.html:364
+#: templates/frontend/survey/survey_list.html:9
+#: templates/frontend/survey/survey_list.html:47
 msgid "Survey"
 msgstr "民意調查"
 
-#: custom_admin_tools/dashboard.py:121
+#: custom_admin_tools/dashboard.py:135
 msgid "Latest Newfies-Dialer News"
 msgstr "關於Newfies-Dialer最新消息"
 
-#: custom_admin_tools/dashboard.py:128
+#: custom_admin_tools/dashboard.py:142
 msgid "Dashboard Stats Settings"
 msgstr "儀表板狀態設定"
 
-#: custom_admin_tools/menu.py:17
-msgid "Newfies-Dialer Dashboard"
-msgstr "Newfies-Dialer 儀表板"
+#: custom_admin_tools/menu.py:31 templates/frontend/bootstrap_menu.html:15
+msgid "Newfies-Dialer"
+msgstr "Newfies-Dialer"
 
-#: custom_admin_tools/menu.py:20
+#: custom_admin_tools/menu.py:34
 msgid "Applications"
 msgstr "應用程式"
 
-#: custom_admin_tools/menu.py:24
-#: templates/frontend/bootstrap_menu.html:54
+#: custom_admin_tools/menu.py:38 templates/frontend/bootstrap_menu.html:60
 msgid "Administration"
 msgstr "管理區"
 
-#: custom_admin_tools/menu.py:27
+#: custom_admin_tools/menu.py:41
 msgid "Customer Panel"
 msgstr "使用者控制台"
 
-#: dialer_campaign/admin.py:23
-#: dialer_cdr/admin.py:21
-#: dialer_gateway/admin.py:20
+#: dialer_campaign/admin.py:37 dialer_cdr/admin.py:35
+#: dialer_gateway/admin.py:34
 msgid "Standard options"
 msgstr "標準選項"
 
-#: dialer_campaign/admin.py:30
-#: dialer_cdr/admin.py:27
-#: dialer_gateway/admin.py:25
+#: dialer_campaign/admin.py:44 dialer_cdr/admin.py:41
+#: dialer_gateway/admin.py:39
 msgid "Advanced options"
 msgstr "進階選項"
 
-#: dialer_campaign/admin.py:69
-#: dialer_campaign/views.py:1770
+#: dialer_campaign/admin.py:83 dialer_campaign/views.py:1772
 #, python-format
 msgid "you have too many campaigns. Max allowed %(limit)s"
 msgstr "您的競選活動太多.最大允許值為 %(limit)s"
 
-#: dialer_campaign/admin.py:123
-#: dialer_campaign/admin.py:162
-#: dialer_campaign/views.py:1315
-#: dialer_campaign/views.py:1450
+#: dialer_campaign/admin.py:137 dialer_campaign/admin.py:176
+#: dialer_campaign/views.py:1318 dialer_campaign/views.py:1459
 #, python-format
-msgid "You have too many contacts per campaign. You are allowed a maximum of %(limit)s"
+msgid ""
+"You have too many contacts per campaign. You are allowed a maximum of "
+"%(limit)s"
 msgstr "您的競選活動的聯絡人數量超過.您的最大數值為%(limit)s"
 
-#: dialer_campaign/admin.py:215
+#: dialer_campaign/admin.py:229
 msgid "Contact already exists !!"
 msgstr "使用者已經存在!!"
 
-#: dialer_campaign/admin.py:231
+#: dialer_campaign/admin.py:245
 #, python-format
-msgid "%(contact_record_count)s Contact(s) are uploaded, out of %(total_rows)s row(s) !!"
+msgid ""
+"%(contact_record_count)s Contact(s) are uploaded, out of %(total_rows)s row"
+"(s) !!"
 msgstr "%(contact_record_count)s 聯絡人已經上傳, 超過 %(total_rows)s 列 !!"
 
-#: dialer_campaign/admin.py:237
+#: dialer_campaign/admin.py:251
 msgid "Error : invalid value for import! Check import samples."
 msgstr "錯誤:匯入無效的數值!請檢查匯入樣本."
 
-#: dialer_campaign/admin.py:243
+#: dialer_campaign/admin.py:257
 #: templates/frontend/contact/import_contact.html:13
 msgid "Import Contact"
 msgstr "匯入聯絡人"
 
-#: dialer_campaign/admin.py:247
+#: dialer_campaign/admin.py:261
 msgid "Dialer_campaign"
 msgstr "撥號程序_競選活動"
 
-#: dialer_campaign/forms.py:17
+#: dialer_campaign/forms.py:31
 msgid "From"
 msgstr "從"
 
-#: dialer_campaign/forms.py:18
-#: dialer_campaign/forms.py:20
+#: dialer_campaign/forms.py:32 dialer_campaign/forms.py:34
 msgid "Date Format"
 msgstr "日期格式"
 
-#: dialer_campaign/forms.py:19
+#: dialer_campaign/forms.py:33
 msgid "To"
 msgstr "到"
 
-#: dialer_campaign/forms.py:25
+#: dialer_campaign/forms.py:39
 msgid "Upload CSV File "
 msgstr "上傳 CSV 檔案"
 
-#: dialer_campaign/forms.py:27
+#: dialer_campaign/forms.py:41
 msgid "Browse CSV file"
 msgstr "瀏覽 CSV 檔案"
 
-#: dialer_campaign/forms.py:34
+#: dialer_campaign/forms.py:48
 #, python-format
 msgid "Document types accepted: %s"
 msgstr "文件型態已接受: %s"
 
-#: dialer_campaign/forms.py:42
-#: dialer_campaign/models.py:79
-#: dialer_campaign/models.py:115
-#: templates/frontend/contact/list.html:129
-#: templates/frontend/phonebook/change.html:12
-#: templates/frontend/phonebook/list.html:41
+#: dialer_campaign/forms.py:56 dialer_campaign/models.py:93
+#: dialer_campaign/models.py:129 templates/frontend/contact/list.html:118
+#: templates/frontend/phonebook/change.html:14
+#: templates/frontend/phonebook/list.html:9
 msgid "Phonebook"
 msgstr "電話簿"
 
-#: dialer_campaign/forms.py:45
-#: dialer_campaign/models.py:116
+#: dialer_campaign/forms.py:59 dialer_campaign/models.py:130
 msgid "Select Phonebook"
 msgstr "選擇電話簿"
 
-#: dialer_campaign/forms.py:58
+#: dialer_campaign/forms.py:72
 msgid "Username:"
 msgstr "使用者帳號:"
 
-#: dialer_campaign/forms.py:61
+#: dialer_campaign/forms.py:75
 msgid "Password:"
 msgstr "密碼:"
 
-#: dialer_campaign/forms.py:104
-#: dialer_campaign/models.py:331
-#: dialer_cdr/models.py:147
+#: dialer_campaign/forms.py:118 dialer_campaign/models.py:339
+#: dialer_cdr/models.py:161
 msgid "Application"
 msgstr "應用程式"
 
-#: dialer_campaign/forms.py:175
+#: dialer_campaign/forms.py:183
 #, python-format
 msgid "Maximum Frequency limit of %d exceeded."
 msgstr "最大頻率限制 %d 超過."
 
-#: dialer_campaign/forms.py:181
+#: dialer_campaign/forms.py:189
 #, python-format
 msgid "Maximum Duration limit of %d exceeded."
 msgstr "最大間隔時間 %d 超過."
 
-#: dialer_campaign/forms.py:187
+#: dialer_campaign/forms.py:195
 #, python-format
 msgid "Maximum Retries limit of %d exceeded."
 msgstr "最大重試次數 %d 超過."
 
-#: dialer_campaign/forms.py:193
+#: dialer_campaign/forms.py:201
 #, python-format
 msgid "Maximum Timeout limit of %d exceeded."
 msgstr "最大時間限制 %d 超過."
 
-#: dialer_campaign/forms.py:221
-#: dialer_campaign/models.py:119
-#: templates/frontend/contact/list.html:131
+#: dialer_campaign/forms.py:228 dialer_campaign/models.py:133
+#: templates/frontend/contact/list.html:120
 msgid "Last Name"
 msgstr "名字"
 
-#: dialer_campaign/forms.py:222
-#: dialer_campaign/models.py:121
-#: templates/frontend/contact/list.html:132
+#: dialer_campaign/forms.py:229 dialer_campaign/models.py:135
+#: templates/frontend/contact/list.html:121
 msgid "First Name"
 msgstr "姓名"
 
-#: dialer_campaign/forms.py:226
+#: dialer_campaign/forms.py:233
 msgid "Contains"
 msgstr "包含"
 
-#: dialer_campaign/forms.py:227
+#: dialer_campaign/forms.py:234
 msgid "Equals"
 msgstr "相等"
 
-#: dialer_campaign/forms.py:228
+#: dialer_campaign/forms.py:235
 msgid "Begins with"
 msgstr "開始"
 
-#: dialer_campaign/forms.py:229
+#: dialer_campaign/forms.py:236
 msgid "Ends with"
 msgstr "結束"
 
-#: dialer_campaign/forms.py:233
+#: dialer_campaign/forms.py:240
 msgid "Last 30 days"
 msgstr "過去30天"
 
-#: dialer_campaign/forms.py:234
+#: dialer_campaign/forms.py:241
 msgid "Last 7 days"
 msgstr "最近 7 天"
 
-#: dialer_campaign/forms.py:235
+#: dialer_campaign/forms.py:242
 msgid "Yesterday"
 msgstr "昨天"
 
-#: dialer_campaign/forms.py:236
+#: dialer_campaign/forms.py:243
 msgid "Last 24 hours"
 msgstr "過去24小時"
 
-#: dialer_campaign/forms.py:237
+#: dialer_campaign/forms.py:244
 msgid "Last 12 hours"
 msgstr "最近 12 小時"
 
-#: dialer_campaign/forms.py:238
+#: dialer_campaign/forms.py:245
 msgid "Last 6 hours"
 msgstr "最近 6 小時"
 
-#: dialer_campaign/forms.py:239
+#: dialer_campaign/forms.py:246
 msgid "Last hour"
 msgstr "最近一個小時"
 
-#: dialer_campaign/forms.py:246
+#: dialer_campaign/forms.py:252
 msgid "Contact Number:"
 msgstr "連絡電話:"
 
-#: dialer_campaign/forms.py:250
+#: dialer_campaign/forms.py:256
 msgid "Contact Name:"
 msgstr "聯絡姓名:"
 
-#: dialer_campaign/forms.py:252
+#: dialer_campaign/forms.py:258
 msgid "Phonebook:"
 msgstr "電話簿:"
 
-#: dialer_campaign/forms.py:253
+#: dialer_campaign/forms.py:259
 msgid "Status:"
 msgstr "狀態:"
 
-#: dialer_campaign/forms.py:254
+#: dialer_campaign/forms.py:260
 msgid "Inactive"
 msgstr "未啟動"
 
-#: dialer_campaign/forms.py:254
+#: dialer_campaign/forms.py:260
 msgid "Active "
 msgstr "啟動"
 
-#: dialer_campaign/forms.py:255
+#: dialer_campaign/forms.py:260
 msgid "All"
 msgstr "所有"
 
-#: dialer_campaign/forms.py:272
-#: dialer_campaign/models.py:350
-#: survey/forms.py:82
-#: survey/models.py:114
-#: templates/frontend/bootstrap_menu.html:17
+#: dialer_campaign/forms.py:277 dialer_campaign/models.py:358
+#: survey/forms.py:96 survey/models.py:186
+#: templates/frontend/bootstrap_menu.html:22
 #: templates/frontend/dashboard.html:48
 #: templates/frontend/campaign/change.html:12
-#: templates/frontend/campaign/list.html:24
+#: templates/frontend/campaign/list.html:9
 msgid "Campaign"
 msgstr "競選活動"
 
-#: dialer_campaign/forms.py:273
-#: dialer_campaign/models.py:329
-#: dialer_cdr/models.py:146
-#: templates/frontend/campaign/list.html:58
-#: templates/frontend/voiceapp/list.html:44
-#: voice_app/models.py:46
+#: dialer_campaign/forms.py:278 dialer_campaign/models.py:337
+#: dialer_cdr/models.py:160 templates/frontend/campaign/list.html:42
+#: templates/frontend/voiceapp/list.html:37 voice_app/models.py:59
 msgid "Type"
 msgstr "型態"
 
-#: dialer_campaign/function_def.py:357
-msgid "Your settings are not configured properly, Please contact the administrator."
+#: dialer_campaign/function_def.py:364
+msgid ""
+"Your settings are not configured properly, Please contact the administrator."
 msgstr "您的設定可能不正確, 請聯絡管理者"
 
-#: dialer_campaign/models.py:19
-#: dialer_gateway/models.py:7
-#: voice_app/models.py:8
+#: dialer_campaign/models.py:33 dialer_gateway/models.py:21
+#: voice_app/models.py:21
 msgid "ACTIVE"
 msgstr "啟動"
 
-#: dialer_campaign/models.py:20
-#: dialer_gateway/models.py:8
-#: voice_app/models.py:9
+#: dialer_campaign/models.py:34 dialer_gateway/models.py:22
+#: voice_app/models.py:22
 msgid "INACTIVE"
 msgstr "未啟動"
 
-#: dialer_campaign/models.py:43
+#: dialer_campaign/models.py:57
 msgid "YES"
 msgstr "是"
 
-#: dialer_campaign/models.py:44
+#: dialer_campaign/models.py:58
 msgid "NO"
 msgstr "否"
 
-#: dialer_campaign/models.py:69
-#: dialer_campaign/models.py:149
-#: dialer_campaign/models.py:268
-#: dialer_gateway/models.py:70
-#: dialer_settings/models.py:24
-#: survey/models.py:45
-#: templates/frontend/campaign/list.html:56
-#: templates/frontend/phonebook/list.html:67
-#: templates/frontend/survey/audio_list.html:55
-#: templates/frontend/survey/survey_list.html:48
-#: templates/frontend/voiceapp/list.html:42
-#: voice_app/models.py:42
+#: dialer_campaign/models.py:83 dialer_campaign/models.py:163
+#: dialer_campaign/models.py:284 dialer_gateway/models.py:84
+#: dialer_settings/models.py:38 survey/models.py:72
+#: templates/frontend/campaign/list.html:40
+#: templates/frontend/phonebook/list.html:34
+#: templates/frontend/survey/audio_list.html:40
+#: templates/frontend/survey/survey_list.html:34
+#: templates/frontend/voiceapp/list.html:35 voice_app/models.py:55
 msgid "Name"
 msgstr "姓名"
 
-#: dialer_campaign/models.py:71
+#: dialer_campaign/models.py:85
 msgid "Phonebook Notes"
 msgstr "電話簿註記"
 
-#: dialer_campaign/models.py:74
-#: dialer_campaign/models.py:133
-#: dialer_gateway/models.py:97
-#: survey/models.py:50
-#: templates/admin/dialer_cdr/voipcall/change_list.html:112
-#: templates/frontend/contact/list.html:134
-#: templates/frontend/phonebook/list.html:69
-#: templates/frontend/registration/user_detail_change.html:145
-#: templates/frontend/report/voipcall_report.html:126
-#: templates/frontend/survey/audio_list.html:58
-#: templates/frontend/survey/survey_list.html:50
-#: templates/frontend/voiceapp/list.html:47
-#: voice_app/models.py:66
+#: dialer_campaign/models.py:88 dialer_campaign/models.py:147
+#: dialer_gateway/models.py:111 survey/models.py:77
+#: templates/admin/dialer_cdr/voipcall/change_list.html:113
+#: templates/frontend/contact/list.html:123
+#: templates/frontend/phonebook/list.html:36
+#: templates/frontend/registration/user_detail_change.html:142
+#: templates/frontend/report/voipcall_report.html:121
+#: templates/frontend/survey/audio_list.html:43
+#: templates/frontend/survey/survey_list.html:36
+#: templates/frontend/voiceapp/list.html:40 voice_app/models.py:79
 msgid "Date"
 msgstr "日期"
 
-#: dialer_campaign/models.py:80
-#: templates/frontend/bootstrap_menu.html:18
-#: templates/frontend/phonebook/list.html:81
+#: dialer_campaign/models.py:94 templates/frontend/bootstrap_menu.html:23
+#: templates/frontend/phonebook/list.html:48
 msgid "Phonebooks"
 msgstr "電話簿"
 
-#: dialer_campaign/models.py:89
-#: dialer_campaign/models.py:139
-#: templates/frontend/bootstrap_menu.html:19
-#: templates/frontend/campaign/list.html:60
-#: templates/frontend/contact/list.html:42
-#: templates/frontend/contact/list.html:147
-#: templates/frontend/phonebook/list.html:70
+#: dialer_campaign/models.py:103 dialer_campaign/models.py:153
+#: templates/frontend/bootstrap_menu.html:24
+#: templates/frontend/campaign/list.html:44
+#: templates/frontend/contact/list.html:27
+#: templates/frontend/contact/list.html:136
+#: templates/frontend/phonebook/list.html:37
 msgid "Contacts"
 msgstr "連絡者"
 
-#: dialer_campaign/models.py:117
-#: templates/frontend/contact/list.html:130
+#: dialer_campaign/models.py:131 templates/frontend/contact/list.html:119
 msgid "Contact Number"
 msgstr "連絡電話"
 
-#: dialer_campaign/models.py:122
-#: templates/frontend/contact/import_contact.html:37
+#: dialer_campaign/models.py:136
+#: templates/frontend/contact/import_contact.html:39
 msgid "Email"
 msgstr "電郵"
 
-#: dialer_campaign/models.py:123
-#: user_profile/models.py:35
+#: dialer_campaign/models.py:137 user_profile/models.py:61
 msgid "Country"
 msgstr "國家"
 
-#: dialer_campaign/models.py:125
-#: user_profile/models.py:32
+#: dialer_campaign/models.py:139 user_profile/models.py:58
 msgid "City"
 msgstr "城市"
 
-#: dialer_campaign/models.py:127
+#: dialer_campaign/models.py:141
 msgid "Contact Notes"
 msgstr "聯絡人註記"
 
-#: dialer_campaign/models.py:129
-#: dialer_campaign/models.py:273
-#: dialer_campaign/models.py:574
-#: dialer_cdr/models.py:125
-#: templates/frontend/campaign/list.html:61
-#: templates/frontend/contact/import_contact.html:39
-#: templates/frontend/contact/list.html:133
+#: dialer_campaign/models.py:143 dialer_campaign/models.py:289
+#: dialer_campaign/models.py:596 dialer_cdr/models.py:139
+#: templates/frontend/campaign/list.html:45
+#: templates/frontend/contact/import_contact.html:41
+#: templates/frontend/contact/list.html:122
 msgid "Status"
 msgstr "狀態"
 
-#: dialer_campaign/models.py:131
+#: dialer_campaign/models.py:145
 msgid "Additional parameters"
 msgstr "額外參數"
 
-#: dialer_campaign/models.py:138
-#: dialer_campaign/models.py:416
-#: dialer_campaign/models.py:572
-#: templates/frontend/contact/change.html:19
+#: dialer_campaign/models.py:152 dialer_campaign/models.py:424
+#: dialer_campaign/models.py:594 templates/frontend/contact/change.html:19
 msgid "Contact"
 msgstr "連路人"
 
-#: dialer_campaign/models.py:210
+#: dialer_campaign/models.py:226
 msgid "Error to identify the whitelist"
 msgstr "白名單識別錯誤"
 
-#: dialer_campaign/models.py:218
+#: dialer_campaign/models.py:234
 msgid "Error to identify the blacklist"
 msgstr "黑名單識別錯誤"
 
-#: dialer_campaign/models.py:264
+#: dialer_campaign/models.py:280
 msgid "Campaign Code"
 msgstr "競選活動代碼"
 
-#: dialer_campaign/models.py:265
-msgid "This code is auto-generated by the platform, this is used to identify the campaign"
+#: dialer_campaign/models.py:281
+msgid ""
+"This code is auto-generated by the platform, this is used to identify the "
+"campaign"
 msgstr "此代碼為此平台自動產生, 用來識別競選活動."
 
-#: dialer_campaign/models.py:269
-#: dialer_gateway/models.py:74
-#: survey/models.py:47
-#: templates/frontend/contact/import_contact.html:38
-#: templates/frontend/phonebook/list.html:68
-#: templates/frontend/survey/survey_list.html:49
-#: templates/frontend/voiceapp/list.html:43
-#: voice_app/models.py:43
+#: dialer_campaign/models.py:285 dialer_gateway/models.py:88
+#: survey/models.py:74 templates/frontend/contact/import_contact.html:40
+#: templates/frontend/phonebook/list.html:35
+#: templates/frontend/survey/survey_list.html:35
+#: templates/frontend/voiceapp/list.html:36 voice_app/models.py:56
 msgid "Description"
 msgstr "內容"
 
-#: dialer_campaign/models.py:270
+#: dialer_campaign/models.py:286
 msgid "Campaign description"
 msgstr "競選活動內容"
 
-#: dialer_campaign/models.py:275
-#: dialer_cdr/models.py:127
+#: dialer_campaign/models.py:291 dialer_cdr/models.py:141
 msgid "CallerID"
 msgstr "來電號碼"
 
-#: dialer_campaign/models.py:276
+#: dialer_campaign/models.py:292
 msgid "Outbound caller-ID"
 msgstr "撥出號碼"
 
-#: dialer_campaign/models.py:279
-#: dialer_campaign/views.py:1594
-#: dialer_campaign/views.py:1609
-#: dialer_campaign/views.py:1622
+#: dialer_campaign/models.py:295 dialer_campaign/views.py:1603
+#: dialer_campaign/views.py:1618 dialer_campaign/views.py:1631
 msgid "Start"
 msgstr "開始"
 
-#: dialer_campaign/models.py:280
-#: dialer_campaign/models.py:285
+#: dialer_campaign/models.py:296 dialer_campaign/models.py:301
 msgid "Date Format: YYYY-mm-DD HH:MM:SS"
 msgstr "日期格式: YYYY-mm-DD HH:MM:SS"
 
-#: dialer_campaign/models.py:284
+#: dialer_campaign/models.py:300
 msgid "Finish"
 msgstr "完成"
 
-#: dialer_campaign/models.py:288
-#: dialer_campaign/models.py:290
+#: dialer_campaign/models.py:304 dialer_campaign/models.py:306
 msgid "Time Format: HH:MM:SS"
 msgstr "時間格式: HH:MM:SS"
 
-#: dialer_campaign/models.py:291
+#: dialer_campaign/models.py:307
 msgid "Monday"
 msgstr "星期一"
 
-#: dialer_campaign/models.py:292
+#: dialer_campaign/models.py:308
 msgid "Tuesday"
 msgstr "星期二"
 
-#: dialer_campaign/models.py:293
+#: dialer_campaign/models.py:309
 msgid "Wednesday"
 msgstr "星期三"
 
-#: dialer_campaign/models.py:294
+#: dialer_campaign/models.py:310
 msgid "Thursday"
 msgstr "星期四"
 
-#: dialer_campaign/models.py:295
+#: dialer_campaign/models.py:311
 msgid "Friday"
 msgstr "星期五"
 
-#: dialer_campaign/models.py:296
+#: dialer_campaign/models.py:312
 msgid "Saturday"
 msgstr "星期六"
 
-#: dialer_campaign/models.py:297
+#: dialer_campaign/models.py:313
 msgid "Sunday"
 msgstr "星期日"
 
-#: dialer_campaign/models.py:300
+#: dialer_campaign/models.py:316
 msgid "Frequency"
 msgstr "頻率"
 
-#: dialer_campaign/models.py:301
+#: dialer_campaign/models.py:317
 msgid "Calls per Minute"
 msgstr "每分鐘通數"
 
-#: dialer_campaign/models.py:304
-#: dialer_settings/models.py:31
+#: dialer_campaign/models.py:320 dialer_settings/models.py:45
 msgid "Max Call Duration"
 msgstr "最大撥號間隔"
 
-#: dialer_campaign/models.py:305
+#: dialer_campaign/models.py:321
 msgid "Maximum call duration in seconds"
 msgstr "短時間內的最大撥號間隔"
 
-#: dialer_campaign/models.py:308
-#: dialer_settings/models.py:35
+#: dialer_campaign/models.py:324 dialer_settings/models.py:49
 msgid "Max Retries"
 msgstr "重試最大值"
 
-#: dialer_campaign/models.py:309
+#: dialer_campaign/models.py:325
 msgid "Maximum retries per contact"
 msgstr "每位聯絡人最大重試次數"
 
-#: dialer_campaign/models.py:311
+#: dialer_campaign/models.py:327
 msgid "Time between Retries"
 msgstr "上次重試失敗後下一次開始的時間間隔"
 
-#: dialer_campaign/models.py:312
+#: dialer_campaign/models.py:328
 msgid "Time delay in seconds before retrying contact"
 msgstr "重新嘗試接觸前間隔秒數"
 
-#: dialer_campaign/models.py:315
-#: dialer_settings/models.py:38
+#: dialer_campaign/models.py:331 dialer_settings/models.py:52
 msgid "Timeout on Call"
 msgstr "暫停撥打"
 
-#: dialer_campaign/models.py:316
+#: dialer_campaign/models.py:332
 msgid "Connection timeout in seconds"
 msgstr "暫停連接秒數"
 
-#: dialer_campaign/models.py:319
+#: dialer_campaign/models.py:334
 msgid "A-Leg Gateway"
 msgstr "A-Leg 語音閘道器"
 
-#: dialer_campaign/models.py:321
+#: dialer_campaign/models.py:336
 msgid "Select outbound gateway"
 msgstr "選擇撥出閘道器"
 
-#: dialer_campaign/models.py:335
+#: dialer_campaign/models.py:343
 msgid "Extra Parameters"
 msgstr "額外參數"
 
-#: dialer_campaign/models.py:336
+#: dialer_campaign/models.py:344
 msgid "Additional application parameters."
 msgstr "額外的應用程式參數."
 
-#: dialer_campaign/models.py:351
-#: templates/frontend/campaign/list.html:72
+#: dialer_campaign/models.py:359 templates/frontend/campaign/list.html:56
 msgid "Campaigns"
 msgstr "競選活動"
 
-#: dialer_campaign/models.py:400
-#: templates/frontend/campaign/list.html:62
-#: templates/frontend/contact/list.html:135
-#: templates/frontend/phonebook/list.html:71
-#: templates/frontend/registration/user_detail_change.html:146
-#: templates/frontend/survey/audio_list.html:59
-#: templates/frontend/survey/survey_list.html:51
-#: templates/frontend/voiceapp/list.html:48
+#: dialer_campaign/models.py:408 templates/frontend/campaign/list.html:46
+#: templates/frontend/contact/list.html:124
+#: templates/frontend/phonebook/list.html:38
+#: templates/frontend/registration/user_detail_change.html:143
+#: templates/frontend/survey/audio_list.html:44
+#: templates/frontend/survey/survey_list.html:37
+#: templates/frontend/voiceapp/list.html:41
 msgid "Action"
 msgstr "動作"
 
-#: dialer_campaign/models.py:412
+#: dialer_campaign/models.py:420
 msgid "Phonebook Empty"
 msgstr "電話簿為空白"
 
-#: dialer_campaign/models.py:520
+#: dialer_campaign/models.py:527
 msgid "Progress"
 msgstr "進度"
 
-#: dialer_campaign/models.py:529
+#: dialer_campaign/models.py:536
 #, python-format
 msgid "<a href='%(link)s'>%(name)s</a>"
 msgstr "<a href='%(link)s'>%(name)s</a>"
 
-#: dialer_campaign/models.py:529
+#: dialer_campaign/models.py:536
 msgid "Details"
 msgstr "詳細內容"
 
-#: dialer_campaign/models.py:532
-#: dialer_campaign/models.py:581
+#: dialer_campaign/models.py:539 dialer_campaign/models.py:603
 msgid "Campaign Subscriber"
 msgstr "競選活動電話用戶"
 
-#: dialer_campaign/models.py:562
+#: dialer_campaign/models.py:584
 msgid "Select Contact"
 msgstr "選擇聯絡人"
 
-#: dialer_campaign/models.py:564
-#: dialer_cdr/models.py:140
+#: dialer_campaign/models.py:586 dialer_cdr/models.py:154
 msgid "Select Campaign"
 msgstr "選擇競選活動"
 
-#: dialer_campaign/models.py:566
+#: dialer_campaign/models.py:588
 msgid "Last attempt"
 msgstr "最後嘗試"
 
-#: dialer_campaign/models.py:568
+#: dialer_campaign/models.py:590
 msgid "Count attempts"
 msgstr "嘗試次數"
 
-#: dialer_campaign/models.py:582
+#: dialer_campaign/models.py:604
 msgid "Campaign Subscribers"
 msgstr "競選活動電話用戶"
 
-#: dialer_campaign/views.py:663
+#: dialer_campaign/views.py:681
 msgid "Disabled Account"
 msgstr "關閉帳號"
 
-#: dialer_campaign/views.py:666
+#: dialer_campaign/views.py:684
 msgid "Invalid Login."
 msgstr "錯誤登入."
 
-#: dialer_campaign/views.py:669
+#: dialer_campaign/views.py:687
 msgid "Enter Valid User Credentials."
 msgstr "輸入合法使用者證件."
 
-#: dialer_campaign/views.py:902
-#: user_profile/management.py:35
+#: dialer_campaign/views.py:920 user_profile/management.py:49
 msgid "Dialer setting configuration"
 msgstr "撥號設定設置"
 
-#: dialer_campaign/views.py:904
+#: dialer_campaign/views.py:922
 #, python-format
-msgid "Notification - User Dialer Setting The user \"%(user)s\" - \"%(user_id)s\" is not properly configured to use the system, please configure their dialer settings."
-msgstr "通知 - 使用者撥號程序設定\"%(user)s\" - \"%(user_id)s\" 可能沒有設定, 請先設定他的撥號程序."
+msgid ""
+"Notification - User Dialer Setting The user \"%(user)s\" - \"%(user_id)s\" "
+"is not properly configured to use the system, please configure their dialer "
+"settings."
+msgstr ""
+"通知 - 使用者撥號程序設定\"%(user)s\" - \"%(user_id)s\" 可能沒有設定, 請先設"
+"定他的撥號程序."
 
-#: dialer_campaign/views.py:967
+#: dialer_campaign/views.py:991
 msgid "Update phonebook"
 msgstr "更新電話簿"
 
-#: dialer_campaign/views.py:971
+#: dialer_campaign/views.py:995
 msgid "Delete phonebook"
 msgstr "刪除電話簿"
 
-#: dialer_campaign/views.py:1026
-#: dialer_campaign/views.py:1328
-#: dialer_campaign/views.py:1802
-#: survey/views.py:254
-#: survey/views.py:492
-#: voice_app/views.py:130
+#: dialer_campaign/views.py:1050 dialer_campaign/views.py:1332
+#: dialer_campaign/views.py:1796 survey/views.py:250 survey/views.py:470
+#: voice_app/views.py:128
 #, python-format
 msgid "\"%(name)s\" is added."
 msgstr "\"%(name)s\" 已經新增."
 
-#: dialer_campaign/views.py:1073
-#: dialer_campaign/views.py:1364
-#: dialer_campaign/views.py:1836
-#: survey/views.py:285
-#: survey/views.py:525
-#: user_profile/views.py:233
-#: voice_app/views.py:163
+#: dialer_campaign/views.py:1097 dialer_campaign/views.py:1373
+#: dialer_campaign/views.py:1830 survey/views.py:281 survey/views.py:503
+#: user_profile/views.py:230 voice_app/views.py:161
 #, python-format
 msgid "\"%(name)s\" is deleted."
 msgstr "\"%(name)s\" 已經刪除."
 
-#: dialer_campaign/views.py:1090
+#: dialer_campaign/views.py:1114
 #, python-format
 msgid "%(count)s phonebook(s) are deleted."
 msgstr "%(count)s 電話簿已經刪除."
 
-#: dialer_campaign/views.py:1121
-#: dialer_campaign/views.py:1407
-#: dialer_campaign/views.py:1900
-#: survey/views.py:346
-#: voice_app/views.py:206
+#: dialer_campaign/views.py:1145 dialer_campaign/views.py:1416
+#: dialer_campaign/views.py:1888 survey/views.py:342 voice_app/views.py:204
 #, python-format
 msgid "\"%(name)s\" is updated."
 msgstr "\"%(name)s\" 已經更新."
 
-#: dialer_campaign/views.py:1241
+#: dialer_campaign/views.py:1243
 msgid "Update contact"
 msgstr "更新聯絡人"
 
-#: dialer_campaign/views.py:1245
+#: dialer_campaign/views.py:1247
 msgid "Delete contact"
 msgstr "刪除聯絡人"
 
-#: dialer_campaign/views.py:1374
+#: dialer_campaign/views.py:1337
+#, fuzzy, python-format
+msgid "\"%(name)s\" cannot be added."
+msgstr "\"%(name)s\" 已經新增."
+
+#: dialer_campaign/views.py:1383
 #, python-format
 msgid "%(count)s contact(s) are deleted."
 msgstr "%(count)s 聯絡人已經刪除."
 
-#: dialer_campaign/views.py:1499
+#: dialer_campaign/views.py:1508
 msgid "Subscriber already exists!"
 msgstr "電話用戶已經存在!"
 
-#: dialer_campaign/views.py:1514
+#: dialer_campaign/views.py:1523
 #, python-format
-msgid "%(contact_record_count)s Contact(s) are uploaded successfully out of %(total_rows)s row(s) !!"
+msgid ""
+"%(contact_record_count)s Contact(s) are uploaded successfully out of "
+"%(total_rows)s row(s) !!"
 msgstr "%(contact_record_count)s 聯絡人上傳成功, 超過 %(total_rows)s 列 !!"
 
-#: dialer_campaign/views.py:1521
+#: dialer_campaign/views.py:1530
 msgid "Invalid value for import! Please check the import samples."
 msgstr "匯入錯誤的數值!請檢查匯入的樣本."
 
-#: dialer_campaign/views.py:1580
+#: dialer_campaign/views.py:1589
 msgid "campaign is running"
 msgstr "競選活動-執行中"
 
-#: dialer_campaign/views.py:1583
-#: dialer_campaign/views.py:1613
-#: dialer_campaign/views.py:1626
+#: dialer_campaign/views.py:1592 dialer_campaign/views.py:1622
+#: dialer_campaign/views.py:1635
 msgid "Pause"
 msgstr "暫停"
 
-#: dialer_campaign/views.py:1586
-#: dialer_campaign/views.py:1599
-#: dialer_campaign/views.py:1630
+#: dialer_campaign/views.py:1595 dialer_campaign/views.py:1608
+#: dialer_campaign/views.py:1639
 msgid "Abort"
 msgstr "中斷"
 
-#: dialer_campaign/views.py:1589
-#: dialer_campaign/views.py:1603
-#: dialer_campaign/views.py:1618
+#: dialer_campaign/views.py:1598 dialer_campaign/views.py:1612
+#: dialer_campaign/views.py:1627
 msgid "Stop"
 msgstr "停止"
 
-#: dialer_campaign/views.py:1596
+#: dialer_campaign/views.py:1605
 msgid "campaign is paused"
 msgstr "競選活動-暫停中"
 
-#: dialer_campaign/views.py:1615
+#: dialer_campaign/views.py:1624
 msgid "campaign is aborted"
 msgstr "競選活動-中斷"
 
-#: dialer_campaign/views.py:1633
+#: dialer_campaign/views.py:1642
 msgid "campaign is stopped"
 msgstr "競選活動-停止中"
 
-#: dialer_campaign/views.py:1703
+#: dialer_campaign/views.py:1693
 msgid "Update campaign"
 msgstr "更新競選活動"
 
-#: dialer_campaign/views.py:1706
+#: dialer_campaign/views.py:1696
 msgid "Delete campaign"
 msgstr "刪除競選活動"
 
-#: dialer_campaign/views.py:1763
-msgid "In order to add a campaign, you need to have your settings configured properly, please contact the admin."
+#: dialer_campaign/views.py:1765
+msgid ""
+"In order to add a campaign, you need to have your settings configured "
+"properly, please contact the admin."
 msgstr "為了新增競選活動, 您需要正確的設定, 請聯絡系統管理者."
 
-#: dialer_campaign/views.py:1845
+#: dialer_campaign/views.py:1839
 #, python-format
 msgid "%(count)s campaign(s) are deleted."
 msgstr "%(count)s 競選活動已經刪除."
 
-#: dialer_campaign/views.py:1986
-msgid "Total Calls:"
-msgstr "全部撥號數:"
-
-#: dialer_campaign/views.py:1987
-msgid "Total Duration:"
-msgstr "全部間隔:"
-
-#: dialer_campaign/views.py:1988
-msgid "Answered"
-msgstr "回答"
-
-#: dialer_campaign/views.py:1988
-msgid "Ans"
-msgstr "回答"
-
-#: dialer_campaign/views.py:1989
-msgid "Do not call"
-msgstr "無法撥號"
-
-#: dialer_campaign/views.py:1989
-msgid "DNC"
-msgstr "DNC"
-
-#: dialer_campaign/views.py:1990
-msgid "Busy"
-msgstr "忙碌中"
-
-#: dialer_campaign/views.py:1991
-msgid "Not Answered"
-msgstr "無回應"
-
-#: dialer_campaign/views.py:1991
-msgid "NA"
-msgstr "NA"
-
-#: dialer_campaign/views.py:1992
-msgid "Canceled"
-msgstr "已取消"
-
-#: dialer_campaign/views.py:1992
-msgid "Canc"
-msgstr "Canc"
-
-#: dialer_campaign/views.py:1993
-msgid "ChanUnavail"
-msgstr "ChanUnavail"
-
-#: dialer_campaign/views.py:1993
-msgid "CU"
-msgstr "CU"
-
-#: dialer_campaign/views.py:1994
-msgid "Torture"
-msgstr "Torture"
-
-#: dialer_campaign/views.py:1994
-msgid "Tort"
-msgstr "侵權行為"
-
-#: dialer_campaign/views.py:1995
-msgid "Invalid Args"
-msgstr "對方用戶不存在"
-
-#: dialer_campaign/views.py:1995
-msgid "Inv"
-msgstr "Inv"
-
-#: dialer_campaign/views.py:1996
-msgid "No Route"
-msgstr "無路由"
-
-#: dialer_campaign/views.py:1996
-msgid "NoRo"
-msgstr "NoRo"
-
-#: dialer_campaign/views.py:1997
-msgid "Congestion"
-msgstr "擁塞"
-
-#: dialer_campaign/views.py:1997
-msgid "Cong"
-msgstr "Cong"
-
-#: dialer_campaign/views.py:1998
-msgid "Forbidden"
-msgstr "禁止"
-
-#: dialer_campaign/views.py:1998
-msgid "Forb"
-msgstr "Forb"
-
-#: dialer_campaign/views.py:2080
-msgid "Total Campaigns:"
-msgstr "全部的競選活動:"
-
-#: dialer_campaign/views.py:2081
-msgid "Active:"
-msgstr "啟動:"
-
-#: dialer_campaign/views.py:2082
-msgid "Paused:"
-msgstr "暫停:"
-
-#: dialer_campaign/views.py:2083
-msgid "Aborted:"
-msgstr "中斷:"
-
-#: dialer_campaign/views.py:2084
-msgid "Stopped:"
-msgstr "停止:"
-
-#: dialer_campaign/views.py:2147
-msgid "Total Users:"
-msgstr "全部使用者:"
-
-#: dialer_campaign/views.py:2148
-msgid "Active Users:"
-msgstr "使用中的使用者:"
-
-#: dialer_campaign/views.py:2149
-msgid "No Active Users:"
-msgstr "無使用中的使用者:"
-
-#: dialer_campaign/management/commands/create_contact.py:10
+#: dialer_campaign/management/commands/create_contact.py:24
 msgid "\"phonebook_id|no_of_record\" \"phonebook_id|no_of_record\""
 msgstr "\"phonebook_id|no_of_record\" \"phonebook_id|no_of_record\""
 
-#: dialer_campaign/management/commands/create_contact.py:11
+#: dialer_campaign/management/commands/create_contact.py:25
 msgid "Creates new contacts for a given phonebook and no of records"
 msgstr "無此紀錄，在電話簿建立新聯絡人"
 
-#: dialer_campaign/management/commands/create_contact.py:25
-#: dialer_campaign/management/commands/create_subscriber.py:25
+#: dialer_campaign/management/commands/create_contact.py:39
+#: dialer_campaign/management/commands/create_subscriber.py:39
 #, python-format
 msgid "Can't find this Phonebook : %(id)s"
 msgstr "找不到此電話簿: %(id)s"
 
-#: dialer_campaign/management/commands/create_contact.py:36
+#: dialer_campaign/management/commands/create_contact.py:50
 #, python-format
 msgid "No of Contact created : %(count)s"
 msgstr "無聯絡人新增 : %(count)s"
 
-#: dialer_campaign/management/commands/create_contact.py:38
-#: dialer_campaign/management/commands/create_subscriber.py:33
+#: dialer_campaign/management/commands/create_contact.py:52
+#: dialer_campaign/management/commands/create_subscriber.py:47
 msgid "Duplicate contact!"
 msgstr "重複"
 
-#: dialer_campaign/management/commands/create_subscriber.py:10
+#: dialer_campaign/management/commands/create_subscriber.py:24
 msgid "<phonenumber|phonebook_id, phonenumber|phonebook_id,...>"
 msgstr "<phonenumber|phonebook_id, phonenumber|phonebook_id,..."
 
-#: dialer_campaign/management/commands/create_subscriber.py:11
+#: dialer_campaign/management/commands/create_subscriber.py:25
 msgid "Creates a new contact for a given phonenumber and phonebook"
 msgstr "在電話簿建立新聯絡人"
 
-#: dialer_campaign/management/commands/create_subscriber.py:36
+#: dialer_campaign/management/commands/create_subscriber.py:50
 #, python-format
 msgid "Contact created id:%(id)s"
 msgstr "新增聯絡人 id:%(id)s"
 
-#: dialer_campaign/management/commands/create_subscriber.py:41
+#: dialer_campaign/management/commands/create_subscriber.py:55
 msgid "Can't find a Campaign with this phonebook"
 msgstr "電話簿中沒有競選活動"
 
-#: dialer_campaign/management/commands/create_subscriber.py:44
+#: dialer_campaign/management/commands/create_subscriber.py:58
 #, python-format
 msgid "Launch Task : collect_subscriber(%(id)s)"
 msgstr "Launch Task : collect_subscriber(%(id)s)"
 
-#: dialer_cdr/admin.py:47
-#: dialer_cdr/admin.py:194
+#: dialer_cdr/admin.py:61 dialer_cdr/admin.py:206
 #: templates/admin/dialer_cdr/voipcall/change_list.html:14
 #: templates/admin_tools/dashboard/modules/app_list.html:40
 msgid "Call Report"
 msgstr "撥號列表"
 
-#: dialer_cdr/admin.py:63
+#: dialer_cdr/admin.py:77
 msgid "User"
 msgstr "使用者"
 
-#: dialer_cdr/admin.py:72
+#: dialer_cdr/admin.py:86
 msgid "Gateway used"
 msgstr "已使用過的語音閘道器"
 
-#: dialer_cdr/admin.py:120
+#: dialer_cdr/admin.py:134
 msgid "Database error"
 msgstr "資料庫錯誤"
 
-#: dialer_cdr/admin.py:178
+#: dialer_cdr/admin.py:190
 #, python-format
 msgid "%(total_count)s selected"
 msgid_plural "All %(total_count)s selected"
 msgstr[0] ""
 msgstr[1] ""
 
-#: dialer_cdr/admin.py:182
+#: dialer_cdr/admin.py:194
 #, python-format
 msgid "0 of %(cnt)s selected"
 msgstr "0 of %(cnt)s 選擇"
 
-#: dialer_cdr/admin.py:193
+#: dialer_cdr/admin.py:205
 msgid "VoIP Report"
 msgstr "VoIP 報表"
 
-#: dialer_cdr/forms.py:18
+#: dialer_cdr/forms.py:32
 msgid "Disposition :"
 msgstr "清除："
 
-#: dialer_cdr/models.py:26
+#: dialer_cdr/models.py:40
 msgid "ALLOW RETRY"
 msgstr "允許重試"
 
-#: dialer_cdr/models.py:27
+#: dialer_cdr/models.py:41
 msgid "CANNOT RETRY"
 msgstr "無法重試"
 
-#: dialer_cdr/models.py:28
+#: dialer_cdr/models.py:42
 msgid "RETRY DONE"
 msgstr "已經重試"
 
-#: dialer_cdr/models.py:32
+#: dialer_cdr/models.py:46
 msgid "A-Leg"
 msgstr "A-Leg"
 
-#: dialer_cdr/models.py:33
-#: voice_app/models.py:48
+#: dialer_cdr/models.py:47 voice_app/models.py:61
 msgid "B-Leg"
 msgstr "B-Leg"
 
-#: dialer_cdr/models.py:114
-#: dialer_cdr/models.py:202
+#: dialer_cdr/models.py:128 dialer_cdr/models.py:216
 msgid "RequestUUID"
 msgstr "要求UUID"
 
-#: dialer_cdr/models.py:117
+#: dialer_cdr/models.py:131
 msgid "A-Leg Call-ID"
 msgstr "A-Leg Call-ID"
 
-#: dialer_cdr/models.py:123
+#: dialer_cdr/models.py:137
 msgid "Call Request Type"
 msgstr "撥號請求型態"
 
-#: dialer_cdr/models.py:128
+#: dialer_cdr/models.py:142
 msgid "CallerID used to call the A-Leg"
 msgstr "已使用撥出號碼撥到A-Leg"
 
-#: dialer_cdr/models.py:129
-#: dialer_cdr/models.py:212
-#: user_profile/models.py:39
+#: dialer_cdr/models.py:143 dialer_cdr/models.py:226 user_profile/models.py:65
 msgid "Phone number"
 msgstr "電話號碼"
 
-#: dialer_cdr/models.py:130
+#: dialer_cdr/models.py:144
 msgid "Time out"
 msgstr "時間到"
 
-#: dialer_cdr/models.py:131
+#: dialer_cdr/models.py:145
 msgid "Time limit"
 msgstr "時間限制"
 
-#: dialer_cdr/models.py:133
+#: dialer_cdr/models.py:147
 msgid "Extra dial string"
 msgstr "額外撥號字串"
 
-#: dialer_cdr/models.py:137
+#: dialer_cdr/models.py:151
 msgid "Campaign Subscriber related to this call request"
 msgstr "競選活動訂戶關聯至此撥號需求"
 
-#: dialer_cdr/models.py:143
+#: dialer_cdr/models.py:157
 msgid "Select gateway to use to call the subscriber"
 msgstr "選擇語音閘道撥打到電話訂戶"
 
-#: dialer_cdr/models.py:151
+#: dialer_cdr/models.py:165
 msgid "Extra Data"
 msgstr "額外資料"
 
-#: dialer_cdr/models.py:152
+#: dialer_cdr/models.py:166
 msgid "Define the additional data to pass to the application"
 msgstr "定義額外的資料以通過申請"
 
-#: dialer_cdr/models.py:166
+#: dialer_cdr/models.py:180
 msgid "Call Request"
 msgstr "撥號要求"
 
-#: dialer_cdr/models.py:167
+#: dialer_cdr/models.py:181
 msgid "Call Requests"
 msgstr "撥號要求"
 
-#: dialer_cdr/models.py:206
+#: dialer_cdr/models.py:220
 msgid "Used gateway"
 msgstr "已使用過的語音閘道"
 
-#: dialer_cdr/models.py:208
+#: dialer_cdr/models.py:222
 msgid "Callrequest"
 msgstr "撥號要求"
 
-#: dialer_cdr/models.py:209
-#: survey/models.py:117
+#: dialer_cdr/models.py:223 survey/models.py:189
 msgid "VoIP Call-ID"
 msgstr "VoIP Call-ID"
 
-#: dialer_cdr/models.py:213
+#: dialer_cdr/models.py:227
 msgid "The international number of the recipient, without the leading +"
 msgstr "國際電話號碼不需要加上前置號"
 
-#: dialer_cdr/models.py:215
+#: dialer_cdr/models.py:229
 msgid "Destination"
 msgstr "對方號碼"
 
-#: dialer_cdr/models.py:216
+#: dialer_cdr/models.py:230
 msgid "Select Prefix"
 msgstr "選擇前置號"
 
-#: dialer_cdr/models.py:217
+#: dialer_cdr/models.py:231
 msgid "Starting date"
 msgstr "開始日期"
 
-#: dialer_cdr/models.py:218
-#: templates/admin/dialer_cdr/voipcall/change_list.html:113
-#: templates/frontend/dashboard.html:133
-#: templates/frontend/report/voipcall_report.html:88
-#: templates/frontend/report/voipcall_report.html:127
+#: dialer_cdr/models.py:232
+#: templates/admin/dialer_cdr/voipcall/change_list.html:114
+#: templates/frontend/dashboard.html:129
+#: templates/frontend/report/voipcall_report.html:83
+#: templates/frontend/report/voipcall_report.html:122
 msgid "Duration"
 msgstr "間隔"
 
-#: dialer_cdr/models.py:219
+#: dialer_cdr/models.py:233
 msgid "Bill sec"
 msgstr "帳單秒數"
 
-#: dialer_cdr/models.py:220
+#: dialer_cdr/models.py:234
 msgid "Progress sec"
 msgstr "處理秒數"
 
-#: dialer_cdr/models.py:221
+#: dialer_cdr/models.py:235
 msgid "Answer sec"
 msgstr "回應秒數"
 
-#: dialer_cdr/models.py:222
+#: dialer_cdr/models.py:236
 msgid "Wait sec"
 msgstr "等待秒數"
 
-#: dialer_cdr/models.py:225
-#: templates/frontend/report/voipcall_report.html:90
+#: dialer_cdr/models.py:239 templates/frontend/report/voipcall_report.html:85
 msgid "Disposition"
 msgstr "清除："
 
-#: dialer_cdr/models.py:227
+#: dialer_cdr/models.py:241
 msgid "Hangup cause"
 msgstr "掛斷原因"
 
-#: dialer_cdr/models.py:230
-#: templates/frontend/report/voipcall_report.html:84
+#: dialer_cdr/models.py:244 templates/frontend/report/voipcall_report.html:79
 msgid "Leg"
 msgstr "Leg"
 
-#: dialer_cdr/models.py:253
-#: dialer_cdr/models.py:254
+#: dialer_cdr/models.py:267 dialer_cdr/models.py:268
 msgid "VoIP Call"
 msgstr "VoIP 撥號"
 
-#: dialer_cdr/widgets.py:347
+#: dialer_cdr/widgets.py:361
 #, python-format
 msgid "The %(name)s \"%(obj)s\" was added."
 msgstr "%(name)s \"%(obj)s\" 新增."
 
-#: dialer_cdr/widgets.py:353
+#: dialer_cdr/widgets.py:367
 msgid "You may edit it again below."
 msgstr "您可能要在編輯下面一次"
 
-#: dialer_cdr/widgets.py:366
+#: dialer_cdr/widgets.py:380
 #, python-format
 msgid "You may add another %s below."
 msgstr "您可能新增其他%s"
 
-#: dialer_cdr/widgets.py:397
+#: dialer_cdr/widgets.py:411
 msgid "Add Another"
 msgstr "新增其他"
 
-#: dialer_cdr/management/commands/create_callrequest_cdr.py:19
+#: dialer_cdr/management/commands/create_callrequest_cdr.py:33
 msgid "\"campaign_id|no_of_record\" \"campaign_id|no_of_record\""
 msgstr "\"campaign_id|no_of_record\" \"campaign_id|no_of_record\""
 
-#: dialer_cdr/management/commands/create_callrequest_cdr.py:20
-msgid "Creates no of new call requests and CDRs for a given campaign_id & no of records"
+#: dialer_cdr/management/commands/create_callrequest_cdr.py:34
+msgid ""
+"Creates no of new call requests and CDRs for a given campaign_id & no of "
+"records"
 msgstr "對競選活動ID與紀錄的數字新增新的要求與指令"
 
-#: dialer_cdr/management/commands/create_callrequest_cdr.py:35
+#: dialer_cdr/management/commands/create_callrequest_cdr.py:49
 #, python-format
 msgid "Can't find this Campaign : %(id)s"
 msgstr "找不到這個競選活動 : %(id)s"
 
-#: dialer_cdr/management/commands/create_callrequest_cdr.py:58
+#: dialer_cdr/management/commands/create_callrequest_cdr.py:82
 #, python-format
 msgid "No of Callrequest & CDR created :%(count)s"
 msgstr "無撥號要求&CDR新增 %(count)s"
 
-#: dialer_cdr/management/commands/create_callrequest_cdr.py:60
+#: dialer_cdr/management/commands/create_callrequest_cdr.py:84
 msgid "Callrequest & CDR are not created!"
 msgstr "撥號要求 & CDR 無建立!"
 
-#: dialer_cdr/management/commands/create_callrequest_cdr.py:63
+#: dialer_cdr/management/commands/create_callrequest_cdr.py:87
 msgid "No admin user"
 msgstr "無admin使用者"
 
-#: dialer_gateway/models.py:12
+#: dialer_gateway/models.py:26
 msgid "SIP"
 msgstr "SIP"
 
-#: dialer_gateway/models.py:13
+#: dialer_gateway/models.py:27
 msgid "LOCAL"
 msgstr "本地"
 
-#: dialer_gateway/models.py:14
+#: dialer_gateway/models.py:28
 msgid "GSM"
 msgstr "GSM"
 
-#: dialer_gateway/models.py:15
+#: dialer_gateway/models.py:29
 msgid "SKINNY"
 msgstr "內部消息"
 
-#: dialer_gateway/models.py:16
+#: dialer_gateway/models.py:30
 msgid "JINGLE"
 msgstr "鈴鐺聲"
 
-#: dialer_gateway/models.py:71
+#: dialer_gateway/models.py:85
 msgid "Gateway name"
 msgstr "語音閘道名稱"
 
-#: dialer_gateway/models.py:73
+#: dialer_gateway/models.py:87
 msgid "Gateway Status"
 msgstr "語音閘道器狀態"
 
-#: dialer_gateway/models.py:75
+#: dialer_gateway/models.py:89
 msgid "Gateway provider notes"
 msgstr "語音閘道器供應商註記"
 
-#: dialer_gateway/models.py:76
+#: dialer_gateway/models.py:90
 msgid "Add prefix"
 msgstr "新增前置號"
 
-#: dialer_gateway/models.py:78
+#: dialer_gateway/models.py:92
 msgid "Remove prefix"
 msgstr "移除前置號"
 
-#: dialer_gateway/models.py:80
+#: dialer_gateway/models.py:94
 msgid "Gateways"
 msgstr "語音閘道器"
 
-#: dialer_gateway/models.py:81
-msgid "Example : \"sofia/gateway/myprovider/\" or 2 for failover \"sofia/gateway/myprovider/, user/\", # Gateway string to try dialing separated by comma. First in list will be tried first"
-msgstr "範例 : \"sofia/gateway/myprovider/\" or 2 for failover \"sofia/gateway/myprovider/, user/\", # 語音閘道字串嘗試撥出."
+#: dialer_gateway/models.py:95
+msgid ""
+"Example : \"sofia/gateway/myprovider/\" or 2 for failover \"sofia/gateway/"
+"myprovider/, user/\", # Gateway string to try dialing separated by comma. "
+"First in list will be tried first"
+msgstr ""
+"範例 : \"sofia/gateway/myprovider/\" or 2 for failover \"sofia/gateway/"
+"myprovider/, user/\", # 語音閘道字串嘗試撥出."
 
-#: dialer_gateway/models.py:83
+#: dialer_gateway/models.py:97
 msgid "Gateway codecs"
 msgstr "語音閘道器解碼"
 
-#: dialer_gateway/models.py:84
-msgid "\"'PCMA,PCMU','PCMA,PCMU'\", # Codec string as needed by FS for each gateway separated by comma"
-msgstr "\"'PCMA,PCMU','PCMA,PCMU'\", # 每個語音閘道必須要有解碼字串且要用逗號分隔"
+#: dialer_gateway/models.py:98
+msgid ""
+"\"'PCMA,PCMU','PCMA,PCMU'\", # Codec string as needed by FS for each gateway "
+"separated by comma"
+msgstr ""
+"\"'PCMA,PCMU','PCMA,PCMU'\", # 每個語音閘道必須要有解碼字串且要用逗號分隔"
 
-#: dialer_gateway/models.py:86
+#: dialer_gateway/models.py:100
 msgid "Gateway timeouts"
 msgstr "語音閘道器時間到"
 
-#: dialer_gateway/models.py:87
-msgid "\"10,10\", # Seconds to timeout in string for each gateway separated by comma"
+#: dialer_gateway/models.py:101
+msgid ""
+"\"10,10\", # Seconds to timeout in string for each gateway separated by comma"
 msgstr "\"10,10\", # 每個語音閘道超時字串必須用逗號分隔"
 
-#: dialer_gateway/models.py:89
+#: dialer_gateway/models.py:103
 msgid "Gateway retries"
 msgstr "語音閘道器重試"
 
-#: dialer_gateway/models.py:90
-msgid "\"2,1\", # Retry String for Gateways separated by comma, on how many times each gateway should be retried"
-msgstr "\"2,1\", # 每個語音扎到重試字串必須用逗號分隔, 每個語音閘道應該重試多少次 "
+#: dialer_gateway/models.py:104
+msgid ""
+"\"2,1\", # Retry String for Gateways separated by comma, on how many times "
+"each gateway should be retried"
+msgstr ""
+"\"2,1\", # 每個語音扎到重試字串必須用逗號分隔, 每個語音閘道應該重試多少次 "
 
-#: dialer_gateway/models.py:92
+#: dialer_gateway/models.py:106
 msgid "Originate dial string"
 msgstr "產生撥號"
 
-#: dialer_gateway/models.py:93
-msgid "Add Channels Variables : http://wiki.freeswitch.org/wiki/Channel_Variables, ie: bridge_early_media=true,hangup_after_bridge=true"
-msgstr "新增通道變數 : http://wiki.freeswitch.org/wiki/Channel_Variables, ie: bridge_early_media=true,hangup_after_bridge=true"
+#: dialer_gateway/models.py:107
+msgid ""
+"Add Channels Variables : http://wiki.freeswitch.org/wiki/Channel_Variables, "
+"ie: bridge_early_media=true,hangup_after_bridge=true"
+msgstr ""
+"新增通道變數 : http://wiki.freeswitch.org/wiki/Channel_Variables, ie: "
+"bridge_early_media=true,hangup_after_bridge=true"
 
-#: dialer_gateway/models.py:95
+#: dialer_gateway/models.py:109
 msgid "Second used"
 msgstr "第二次使用"
 
-#: dialer_gateway/models.py:101
+#: dialer_gateway/models.py:115
 msgid "Select Gateway"
 msgstr "選擇語音閘道器"
 
-#: dialer_gateway/models.py:102
+#: dialer_gateway/models.py:116
 msgid "Add parameter"
 msgstr "新增參數"
 
-#: dialer_gateway/models.py:104
+#: dialer_gateway/models.py:118
 msgid "Call count"
 msgstr "撥號計數"
 
-#: dialer_gateway/models.py:105
+#: dialer_gateway/models.py:119
 msgid "Count in use"
 msgstr "使用次數"
 
-#: dialer_gateway/models.py:106
+#: dialer_gateway/models.py:120
 msgid "Max concurrent calls"
 msgstr "最大同時撥號數"
 
-#: dialer_gateway/models.py:112
+#: dialer_gateway/models.py:126
 #: templates/admin_tools/dashboard/modules/app_list.html:13
 msgid "Dialer Gateway"
 msgstr "撥號程序語音閘道器"
 
-#: dialer_gateway/models.py:113
+#: dialer_gateway/models.py:127
 msgid "Dialer Gateways"
 msgstr "撥號程序語音閘道器"
 
-#: dialer_settings/admin.py:45
+#: dialer_settings/admin.py:59
 msgid "Add dialer settings"
 msgstr "新增撥號設定"
 
-#: dialer_settings/admin.py:56
+#: dialer_settings/admin.py:70
 msgid "Change dialer settings"
 msgstr "改變撥號設定"
 
-#: dialer_settings/models.py:25
+#: dialer_settings/models.py:39
 msgid "Settings name"
 msgstr "設定名稱"
 
-#: dialer_settings/models.py:28
+#: dialer_settings/models.py:42
 msgid "Max frequency"
 msgstr "最大頻率"
 
-#: dialer_settings/models.py:29
-#: templates/frontend/registration/user_detail_change.html:214
+#: dialer_settings/models.py:43
+#: templates/frontend/registration/user_detail_change.html:211
 msgid "Maximum calls per minute"
 msgstr "每分鐘最大呼叫"
 
-#: dialer_settings/models.py:32
+#: dialer_settings/models.py:46
 msgid "Maximum call duration in seconds (1800 = 30 Minutes)"
 msgstr "最長撥通秒數(1800=30分鐘)"
 
-#: dialer_settings/models.py:36
+#: dialer_settings/models.py:50
 msgid "Maximum retries per user."
 msgstr "每個使用者最大重試次數"
 
-#: dialer_settings/models.py:39
+#: dialer_settings/models.py:53
 msgid "Maximum call timeout in seconds"
 msgstr "最長暫停撥打秒數"
 
-#: dialer_settings/models.py:42
+#: dialer_settings/models.py:56
 msgid "Maximum number of campaigns"
 msgstr "競選活動最大數量"
 
-#: dialer_settings/models.py:44
-#: templates/frontend/registration/user_detail_change.html:234
+#: dialer_settings/models.py:58
+#: templates/frontend/registration/user_detail_change.html:231
 msgid "Maximum subscribers per campaign"
 msgstr "每個競選活動最大電話用戶"
 
-#: dialer_settings/models.py:46
-#: templates/frontend/registration/user_detail_change.html:242
+#: dialer_settings/models.py:60
+#: templates/frontend/registration/user_detail_change.html:239
 msgid "Blacklist"
 msgstr "黑名單"
 
-#: dialer_settings/models.py:47
-msgid "Use regular expressions to blacklist phone numbers. For example, '^[2-4][1]+' will prevent all phone numbers starting with 2,3 or 4 and followed by 1 being called."
+#: dialer_settings/models.py:61
+msgid ""
+"Use regular expressions to blacklist phone numbers. For example, '^[2-4]"
+"[1]+' will prevent all phone numbers starting with 2,3 or 4 and followed by "
+"1 being called."
 msgstr "使用正規式到黑名單電話號碼"
 
-#: dialer_settings/models.py:49
-#: templates/frontend/registration/user_detail_change.html:238
+#: dialer_settings/models.py:63
+#: templates/frontend/registration/user_detail_change.html:235
 msgid "Whitelist"
 msgstr "白名單"
 
-#: dialer_settings/models.py:50
+#: dialer_settings/models.py:64
 msgid "Use regular expressions to whitelist phone numbers"
 msgstr "使用正規式到黑名單電話號碼"
 
-#: dialer_settings/models.py:59
-#: dialer_settings/models.py:60
+#: dialer_settings/models.py:73 dialer_settings/models.py:74
 msgid "Dialer Setting"
 msgstr "撥號設定"
 
-#: survey/models.py:48
+#: survey/models.py:75
 msgid "Survey Description"
 msgstr "民意調查內容"
 
-#: survey/models.py:55
-#: templates/frontend/bootstrap_menu.html:34
+#: survey/models.py:82 templates/frontend/bootstrap_menu.html:39
 msgid "Surveys"
 msgstr "民意調查"
 
-#: survey/models.py:67
-#: survey/models.py:120
+#: survey/models.py:111 survey/models.py:192
 msgid "Question"
 msgstr "問題"
 
-#: survey/models.py:68
+#: survey/models.py:112
 msgid "Enter your question"
 msgstr "輸入您的問題"
 
-#: survey/models.py:71
+#: survey/models.py:115
 msgid "SurveyApp"
 msgstr "民意調查App"
 
-#: survey/models.py:74
+#: survey/models.py:118
 msgid "Audio File"
 msgstr "語音檔案"
 
-#: survey/models.py:76
+#: survey/models.py:120
 msgid "Message type"
 msgstr "訊息型態"
 
-#: survey/models.py:89
-#: templates/frontend/survey/survey_change.html:280
-#: templates/frontend/survey/survey_change.html:490
+#: survey/models.py:146 templates/frontend/survey/survey_change.html:309
+#: templates/frontend/survey/survey_change.html:476
 msgid "Key Digit"
 msgstr "輸入號碼"
 
-#: survey/models.py:90
+#: survey/models.py:147
 msgid "Define the key link to the response"
 msgstr "定義連結回應的關鍵連結"
 
-#: survey/models.py:91
-#: templates/frontend/survey/survey_change.html:281
-#: templates/frontend/survey/survey_change.html:493
+#: survey/models.py:148 templates/frontend/survey/survey_change.html:312
+#: templates/frontend/survey/survey_change.html:477
 msgid "Key Value"
 msgstr "數值"
 
-#: survey/models.py:118
+#: survey/models.py:190
 msgid "Call-ID"
 msgstr "Call-ID"
 
-#: survey/models.py:121
+#: survey/models.py:193
 msgid "Response"
 msgstr "回應"
 
-#: survey/views.py:196
+#: survey/views.py:192
 msgid "Update survey"
 msgstr "更新民意調查"
 
-#: survey/views.py:200
+#: survey/views.py:196
 msgid "Delete survey"
 msgstr "刪除民意調查"
 
-#: survey/views.py:297
+#: survey/views.py:293
 #, python-format
 msgid "%(count)s survey(s) are deleted."
 msgstr "%(count)s 民意調查已經刪除."
 
-#: survey/views.py:430
+#: survey/views.py:408
 msgid "Download audio"
 msgstr "下載錄音檔"
 
-#: survey/views.py:432
+#: survey/views.py:410
 msgid "Update audio"
 msgstr "更新語音檔"
 
-#: survey/views.py:436
+#: survey/views.py:414
 msgid "Delete audio"
 msgstr "刪除語音檔"
 
-#: survey/views.py:537
+#: survey/views.py:515
 #, python-format
 msgid "%(count)s audio(s) are deleted."
 msgstr "%(count)s 語音檔案已經刪除."
 
-#: survey/views.py:597
+#: survey/views.py:586
 msgid "No record found!."
 msgstr "找不到紀錄!."
 
-#: survey/views.py:600
+#: survey/views.py:589
 msgid "No campaign attached with survey."
 msgstr "無競選活動附加到民意調查"
 
-#: templates/404.html:5
+#: templates/404.html:20
 msgid "This page cannot be found!"
 msgstr "找不到此頁!."
 
-#: templates/404.html:8
-#: templates/500.html:8
+#: templates/404.html:23 templates/500.html:23
 msgid "If you need assistance, you may reference this error as"
 msgstr "如果您需要協助, 您可以參照這個錯誤在"
 
-#: templates/500.html:5
+#: templates/500.html:20
 msgid "You've encountered an error!"
 msgstr "您遇到了錯誤!"
 
@@ -1494,8 +1335,9 @@ msgid "Accepted methods"
 msgstr "接受方法"
 
 #: templates/admin/base_site.html:4
-msgid "Newfies Admin"
-msgstr "Newfies 管理者"
+#, fuzzy
+msgid "Newfies-Dialer Admin"
+msgstr "Newfies-Dialer"
 
 #: templates/admin/filter.html:2
 #, python-format
@@ -1509,30 +1351,30 @@ msgstr ""
 msgid "Home"
 msgstr "首頁"
 
-#: templates/admin/dialer_campaign/contact/change_list.html:30
-#: templates/admin/dialer_cdr/voipcall/change_list.html:71
+#: templates/admin/dialer_campaign/contact/change_list.html:28
+#: templates/admin/dialer_cdr/voipcall/change_list.html:72
 #, python-format
 msgid "Add %(name)s"
 msgstr "新增 %(name)s"
 
-#: templates/admin/dialer_campaign/contact/change_list.html:33
+#: templates/admin/dialer_campaign/contact/change_list.html:31
 msgid "Import Contacts"
 msgstr "匯入聯絡人"
 
-#: templates/admin/dialer_campaign/contact/change_list.html:40
-#: templates/admin/dialer_cdr/voipcall/change_list.html:47
+#: templates/admin/dialer_campaign/contact/change_list.html:38
+#: templates/admin/dialer_cdr/voipcall/change_list.html:48
 msgid "Please correct the error below."
 msgid_plural "Please correct the errors below."
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/admin/dialer_campaign/contact/change_list.html:51
-#: templates/admin/dialer_cdr/voipcall/change_list.html:85
+#: templates/admin/dialer_campaign/contact/change_list.html:49
+#: templates/admin/dialer_cdr/voipcall/change_list.html:86
 msgid "Filter"
 msgstr "過濾器"
 
 #: templates/admin/dialer_campaign/contact/import_contact.html:18
-#: templates/frontend/contact/import_contact.html:31
+#: templates/frontend/contact/import_contact.html:33
 msgid "Sample File"
 msgstr "範例檔案"
 
@@ -1568,80 +1410,80 @@ msgstr "額外_變數"
 msgid "CONTACT STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')"
 msgstr "聯絡人狀態 = ('1'-'ACTIVE') ('0'-'INACTIVE')"
 
-#: templates/admin/dialer_campaign/contact/import_contact.html:59
+#: templates/admin/dialer_campaign/contact/import_contact.html:58
 #: templates/frontend/dashboard.html:32
-#: templates/frontend/campaign/change.html:173
-#: templates/frontend/contact/change.html:44
-#: templates/frontend/contact/import_contact.html:86
-#: templates/frontend/phonebook/change.html:38
-#: templates/frontend/survey/audio_change.html:36
-#: templates/frontend/survey/survey_change.html:555
-#: templates/frontend/survey/survey_report.html:40
-#: templates/frontend/voiceapp/change.html:37
+#: templates/frontend/campaign/change.html:171
+#: templates/frontend/contact/change.html:50
+#: templates/frontend/contact/import_contact.html:87
+#: templates/frontend/phonebook/change.html:40
+#: templates/frontend/survey/audio_change.html:42
+#: templates/frontend/survey/survey_change.html:519
+#: templates/frontend/survey/survey_report.html:39
+#: templates/frontend/voiceapp/change.html:40
 msgid "Submit"
 msgstr "確定"
 
-#: templates/admin/dialer_campaign/contact/import_contact.html:60
-#: templates/admin/dialer_cdr/voipcall/change_list.html:60
-#: templates/frontend/report/voipcall_report.html:56
+#: templates/admin/dialer_campaign/contact/import_contact.html:59
+#: templates/admin/dialer_cdr/voipcall/change_list.html:61
+#: templates/frontend/report/voipcall_report.html:52
 msgid "Reset"
 msgstr "重置"
 
-#: templates/admin/dialer_campaign/contact/import_contact.html:82
+#: templates/admin/dialer_campaign/contact/import_contact.html:81
 msgid "Contact(s) imported"
 msgstr "聯絡人已匯入"
 
-#: templates/admin/dialer_campaign/contact/import_contact.html:99
+#: templates/admin/dialer_campaign/contact/import_contact.html:97
 msgid "Contact(s) not imported"
 msgstr "聯絡人無法匯入"
 
-#: templates/admin/dialer_campaign/contact/import_contact.html:115
+#: templates/admin/dialer_campaign/contact/import_contact.html:113
 #: templates/frontend/contact/import_contact.html:128
 msgid "Type mismatch"
 msgstr "型態不符合"
 
-#: templates/admin/dialer_cdr/voipcall/change_list.html:55
+#: templates/admin/dialer_cdr/voipcall/change_list.html:56
 msgid "Search Option"
 msgstr "搜尋項目"
 
-#: templates/admin/dialer_cdr/voipcall/change_list.html:59
-#: templates/frontend/contact/list.html:102
-#: templates/frontend/report/voipcall_report.html:55
+#: templates/admin/dialer_cdr/voipcall/change_list.html:60
+#: templates/frontend/contact/list.html:90
+#: templates/frontend/report/voipcall_report.html:51
 msgid "Search"
 msgstr "搜尋"
 
-#: templates/admin/dialer_cdr/voipcall/change_list.html:109
-#: templates/frontend/report/voipcall_report.html:122
+#: templates/admin/dialer_cdr/voipcall/change_list.html:110
+#: templates/frontend/report/voipcall_report.html:117
 msgid "Call Detail Report Summary"
 msgstr "撥號詳細報表一覽"
 
-#: templates/admin/dialer_cdr/voipcall/change_list.html:114
-#: templates/frontend/report/voipcall_report.html:128
+#: templates/admin/dialer_cdr/voipcall/change_list.html:115
+#: templates/frontend/report/voipcall_report.html:123
 msgid "Graphic"
 msgstr "圖形"
 
-#: templates/admin/dialer_cdr/voipcall/change_list.html:115
-#: templates/frontend/report/voipcall_report.html:129
+#: templates/admin/dialer_cdr/voipcall/change_list.html:116
+#: templates/frontend/report/voipcall_report.html:124
 msgid "Calls"
 msgstr "撥號"
 
-#: templates/admin/dialer_cdr/voipcall/change_list.html:116
-#: templates/frontend/report/voipcall_report.html:130
+#: templates/admin/dialer_cdr/voipcall/change_list.html:117
+#: templates/frontend/report/voipcall_report.html:125
 msgid "Average Connection Time"
 msgstr "平均連線時間"
 
-#: templates/admin/dialer_cdr/voipcall/change_list.html:116
-#: templates/frontend/report/voipcall_report.html:130
+#: templates/admin/dialer_cdr/voipcall/change_list.html:117
+#: templates/frontend/report/voipcall_report.html:125
 msgid "ACT"
 msgstr "ACT"
 
-#: templates/admin/dialer_cdr/voipcall/change_list.html:135
-#: templates/frontend/report/voipcall_report.html:150
+#: templates/admin/dialer_cdr/voipcall/change_list.html:136
+#: templates/frontend/report/voipcall_report.html:145
 msgid "Total"
 msgstr "總計"
 
-#: templates/admin/dialer_cdr/voipcall/change_list.html:148
-#: templates/frontend/report/voipcall_report.html:161
+#: templates/admin/dialer_cdr/voipcall/change_list.html:149
+#: templates/frontend/report/voipcall_report.html:156
 msgid "Export CSV file"
 msgstr "匯出 CSV 檔案"
 
@@ -1662,23 +1504,23 @@ msgid "Dialer Settings"
 msgstr "撥號者設定"
 
 #: templates/admin_tools/dashboard/modules/app_list.html:22
-#: voice_app/models.py:71
+#: voice_app/models.py:84
 msgid "Voice Application"
 msgstr "語音應用程式"
 
 #: templates/admin_tools/dashboard/modules/app_list.html:50
 #: templates/frontend/campaign/change.html:11
-#: templates/frontend/campaign/list.html:65
+#: templates/frontend/campaign/list.html:49
 #: templates/frontend/contact/change.html:18
-#: templates/frontend/contact/list.html:138
-#: templates/frontend/phonebook/change.html:11
-#: templates/frontend/phonebook/list.html:74
-#: templates/frontend/survey/audio_change.html:12
-#: templates/frontend/survey/audio_list.html:62
-#: templates/frontend/survey/survey_change.html:377
-#: templates/frontend/survey/survey_list.html:54
-#: templates/frontend/voiceapp/change.html:11
-#: templates/frontend/voiceapp/list.html:51
+#: templates/frontend/contact/list.html:127
+#: templates/frontend/phonebook/change.html:12
+#: templates/frontend/phonebook/list.html:41
+#: templates/frontend/survey/audio_change.html:13
+#: templates/frontend/survey/audio_list.html:47
+#: templates/frontend/survey/survey_change.html:363
+#: templates/frontend/survey/survey_list.html:40
+#: templates/frontend/voiceapp/change.html:12
+#: templates/frontend/voiceapp/list.html:44
 msgid "Add"
 msgstr "新增"
 
@@ -1686,74 +1528,62 @@ msgstr "新增"
 msgid "Change"
 msgstr "變更"
 
-#: templates/frontend/bootstrap_menu.html:11
-msgid "Newfies-Dialer"
-msgstr "Newfies-Dialer"
-
-#: templates/frontend/bootstrap_menu.html:16
-#: templates/frontend/dashboard.html:5
-#: templates/frontend/dashboard.html:23
+#: templates/frontend/bootstrap_menu.html:21
+#: templates/frontend/dashboard.html:5 templates/frontend/dashboard.html:23
 msgid "Dashboard"
 msgstr "儀表板"
 
-#: templates/frontend/bootstrap_menu.html:20
+#: templates/frontend/bootstrap_menu.html:25
 msgid "Audio files"
 msgstr "語音檔案"
 
-#: templates/frontend/bootstrap_menu.html:23
+#: templates/frontend/bootstrap_menu.html:28
 msgid "Reporting"
 msgstr "報表"
 
-#: templates/frontend/bootstrap_menu.html:25
+#: templates/frontend/bootstrap_menu.html:30
 msgid "Call Detail Report"
 msgstr "撥號詳細報表"
 
-#: templates/frontend/bootstrap_menu.html:26
+#: templates/frontend/bootstrap_menu.html:31
 msgid "Survey Reports"
 msgstr "民意調查報表"
 
-#: templates/frontend/bootstrap_menu.html:31
+#: templates/frontend/bootstrap_menu.html:36
 msgid "Modules"
 msgstr "模組"
 
-#: templates/frontend/bootstrap_menu.html:33
-#: templates/frontend/voiceapp/list.html:58
+#: templates/frontend/bootstrap_menu.html:38
+#: templates/frontend/voiceapp/list.html:51
 msgid "Voice Apps"
 msgstr "語音應用程式"
 
-#: templates/frontend/bootstrap_menu.html:36
+#: templates/frontend/bootstrap_menu.html:41
 msgid "Add-ons"
 msgstr "附加組件"
 
-#: templates/frontend/bootstrap_menu.html:47
+#: templates/frontend/bootstrap_menu.html:53
 msgid "Account settings"
 msgstr "帳戶設定"
 
-#: templates/frontend/bootstrap_menu.html:49
-#: templates/frontend/registration/user_detail_change.html:32
+#: templates/frontend/bootstrap_menu.html:55
+#: templates/frontend/registration/user_detail_change.html:18
 msgid "Notifications"
 msgstr "通知"
 
-#: templates/frontend/bootstrap_menu.html:51
-#: templates/frontend/registration/user_detail_change.html:33
+#: templates/frontend/bootstrap_menu.html:57
+#: templates/frontend/registration/user_detail_change.html:19
 msgid "Account Limits"
 msgstr "帳戶限制"
 
-#: templates/frontend/bootstrap_menu.html:57
+#: templates/frontend/bootstrap_menu.html:63
 msgid "Log out"
 msgstr "登出"
 
-#: templates/frontend/bootstrap_menu.html:68
-msgid "Login"
-msgstr "登入"
-
-#: templates/frontend/bootstrap_menu.html:69
-msgid "Forgot password?"
-msgstr "忘記密碼?"
-
-#: templates/frontend/bootstrap_menu.html:83
-msgid "new notifications"
-msgstr "新的通知"
+#: templates/frontend/bootstrap_menu.html:71
+#, fuzzy
+msgid "notifications"
+msgstr "通知"
 
 #: templates/frontend/custom_jquery_select_all.html:16
 msgid "You must check at least one box!"
@@ -1783,17 +1613,29 @@ msgstr "電話簿將要刪除及"
 msgid " contact(s)?"
 msgstr "聯絡人?"
 
-#: templates/frontend/custom_jquery_select_all.html:67
+#: templates/frontend/custom_jquery_select_all.html:66
 msgid " campaign(s) are going to be deleted?"
 msgstr "競選活動將要刪除?"
 
-#: templates/frontend/custom_jquery_select_all.html:72
+#: templates/frontend/custom_jquery_select_all.html:70
 msgid " notification(s) are going to be deleted?"
 msgstr "通知將要刪除?"
 
-#: templates/frontend/custom_jquery_select_all.html:76
+#: templates/frontend/custom_jquery_select_all.html:74
 msgid " notification(s) are going to be marked as read?"
 msgstr "通知將要標記為已閱讀?"
+
+#: templates/frontend/custom_jquery_select_all.html:94
+msgid "Confirm deletion?"
+msgstr "確定要刪除?"
+
+#: templates/frontend/custom_jquery_select_all.html:115
+msgid "Please confirm to delete this phonebook with"
+msgstr "請確認要刪除此電話簿及"
+
+#: templates/frontend/custom_jquery_select_all.html:115
+msgid "contact(s)"
+msgstr "聯絡人"
 
 #: templates/frontend/dashboard.html:23
 msgid "Realtime campaign performance monitoring"
@@ -1811,81 +1653,98 @@ msgstr "全部競選活動聯絡人"
 msgid "Contacted Today"
 msgstr "今日聯絡人"
 
-#: templates/frontend/dashboard.html:100
+#: templates/frontend/dashboard.html:98
 msgid "Calls :"
 msgstr "撥號:"
 
-#: templates/frontend/dashboard.html:100
+#: templates/frontend/dashboard.html:98
 msgid "Duration :"
 msgstr "間隔:"
 
-#: templates/frontend/dashboard.html:100
+#: templates/frontend/dashboard.html:98
 msgid "ACT :"
 msgstr "ACT"
 
-#: templates/frontend/dashboard.html:132
+#: templates/frontend/dashboard.html:128
 msgid "Call Count"
 msgstr "撥號計數"
 
-#: templates/frontend/dashboard.html:233
+#: templates/frontend/dashboard.html:239
 msgid "TOTAL CALLS"
 msgstr "總撥號數"
 
-#: templates/frontend/dashboard.html:236
+#: templates/frontend/dashboard.html:242
 msgid "ANSWERED"
 msgstr "回答"
 
-#: templates/frontend/dashboard.html:237
+#: templates/frontend/dashboard.html:243
 msgid "DONTCALL"
 msgstr "不撥號"
 
-#: templates/frontend/dashboard.html:238
+#: templates/frontend/dashboard.html:244
 msgid "BUSY"
 msgstr "忙碌中"
 
-#: templates/frontend/dashboard.html:241
+#: templates/frontend/dashboard.html:247
 msgid "CHANUNAVAIL"
 msgstr "CHANUNAVAIL"
 
-#: templates/frontend/dashboard.html:242
+#: templates/frontend/dashboard.html:248
 msgid "TORTURE"
 msgstr "TORTURE"
 
-#: templates/frontend/dashboard.html:243
+#: templates/frontend/dashboard.html:249
 msgid "NOANSWER"
 msgstr "無回應"
 
-#: templates/frontend/dashboard.html:246
+#: templates/frontend/dashboard.html:252
 msgid "INVALIDARGS"
 msgstr "INVALIDARGS"
 
-#: templates/frontend/dashboard.html:247
+#: templates/frontend/dashboard.html:253
 msgid "CANCEL"
 msgstr "取消"
 
-#: templates/frontend/dashboard.html:248
+#: templates/frontend/dashboard.html:254
 msgid "NOROUTE"
 msgstr "無路由"
 
-#: templates/frontend/dashboard.html:251
+#: templates/frontend/dashboard.html:257
 msgid "CONGESTION"
 msgstr "擁塞"
 
-#: templates/frontend/dashboard.html:252
+#: templates/frontend/dashboard.html:258
 msgid "FORBIDDEN"
 msgstr "禁止"
 
-#: templates/frontend/index.html:11
-msgid "is Voice Broadcasting and AutoDialer software to provide information via the phone."
+#: templates/frontend/index.html:12
+msgid ""
+"is Voice Broadcasting and AutoDialer software to provide information via the "
+"phone."
 msgstr "語音撥號以及自動撥號軟體經由電話發送訊息"
 
-#: templates/frontend/index.html:11
-msgid "Newfies-Dialer can scale to make millions of calls daily by using realtime call processing across multiple servers in the cloud."
+#: templates/frontend/index.html:12
+msgid ""
+"Newfies-Dialer can scale to make millions of calls daily by using realtime "
+"call processing across multiple servers in the cloud."
 msgstr "Newfies-Dialer可以透過雲端在多個伺服器中，每天即時撥打上百萬通電話"
 
+#: templates/frontend/index.html:14
+msgid "Learn more"
+msgstr ""
+
+#: templates/frontend/index.html:19
+#, fuzzy
+msgid "Support"
+msgstr "匯入"
+
 #: templates/frontend/index.html:20
-msgid "Star2Billing S.L. offers consultancy including installation, training and customisation on Newfies-Dialer"
-msgstr "Star2Billing S.L. offers consultancy including installation, training and customisation on Newfies-Dialer"
+msgid ""
+"Star2Billing S.L. offers consultancy including installation, training and "
+"customisation on Newfies-Dialer"
+msgstr ""
+"Star2Billing S.L. offers consultancy including installation, training and "
+"customisation on Newfies-Dialer"
 
 #: templates/frontend/index.html:21
 msgid "Contact us at"
@@ -1895,230 +1754,237 @@ msgstr "聯絡我們"
 msgid "for more information"
 msgstr "更多資訊"
 
+#: templates/frontend/index.html:22
+msgid "Get Support"
+msgstr ""
+
 #: templates/frontend/index.html:26
+msgid "Licensing"
+msgstr ""
+
+#: templates/frontend/index.html:27
 msgid "Newfies-Dialer is licensed under"
 msgstr "Newfies-Dialer is licensed under"
 
-#: templates/frontend/index.html:27
-msgid "however an alternative license can be purchased if the AGPL license is not suitable for your requirements."
+#: templates/frontend/index.html:28
+#, fuzzy
+msgid ""
+"however an alternative license can be purchased if the MPL V2 license is not "
+"suitable for your requirements."
 msgstr "如果AGPL授權不是用於您的需求, 您可以購買另一種授權方式"
 
-#: templates/frontend/master.html:6
+#: templates/frontend/index.html:29
+msgid "View Licensing details"
+msgstr ""
+
+#: templates/frontend/master.html:21
 msgid "Customer Interface"
 msgstr "使用者介面"
 
-#: templates/frontend/master.html:144
-#: templates/frontend/master.html.py:150
-#: templates/frontend/master.html:170
-#: templates/frontend/campaign/list.html:31
-#: templates/frontend/campaign/list.html:37
+#: templates/frontend/master.html:111
+msgid "Login"
+msgstr "登入"
+
+#: templates/frontend/master.html:112
+msgid "Forgot password?"
+msgstr "忘記密碼?"
+
+#: templates/frontend/master.html:118
+#, fuzzy
+msgid "Display language"
+msgstr "顯示"
+
+#: templates/frontend/master.html:132 templates/frontend/master.html.py:138
+#: templates/frontend/master.html:158 templates/frontend/campaign/list.html:16
+#: templates/frontend/campaign/list.html:22
+#: templates/frontend/contact/change.html:28
 #: templates/frontend/contact/import_contact.html:19
-#: templates/frontend/contact/import_contact.html:24
-#: templates/frontend/contact/list.html:49
-#: templates/frontend/phonebook/list.html:48
-#: templates/frontend/registration/user_detail_change.html:42
-#: templates/frontend/registration/user_detail_change.html:47
-#: templates/frontend/registration/user_detail_change.html:89
-#: templates/frontend/registration/user_detail_change.html:94
-#: templates/frontend/registration/user_detail_change.html:123
+#: templates/frontend/contact/import_contact.html:25
+#: templates/frontend/contact/list.html:34
+#: templates/frontend/contact/list.html:39
+#: templates/frontend/phonebook/list.html:15
+#: templates/frontend/registration/user_detail_change.html:30
+#: templates/frontend/registration/user_detail_change.html:36
+#: templates/frontend/registration/user_detail_change.html:82
+#: templates/frontend/registration/user_detail_change.html:87
+#: templates/frontend/registration/user_detail_change.html:120
 #: templates/frontend/registration/user_detail_change.html:251
 #: templates/frontend/registration/user_detail_change.html:256
-#: templates/frontend/survey/audio_list.html:36
-#: templates/frontend/survey/survey_change.html:386
-#: templates/frontend/survey/survey_change.html:392
-#: templates/frontend/survey/survey_list.html:30
-#: templates/frontend/survey/survey_report.html:13
-#: templates/frontend/survey/survey_report.html:19
-#: templates/frontend/voiceapp/list.html:23
+#: templates/frontend/survey/audio_list.html:22
+#: templates/frontend/survey/survey_change.html:374
+#: templates/frontend/survey/survey_change.html:380
+#: templates/frontend/survey/survey_list.html:16
+#: templates/frontend/survey/survey_report.html:12
+#: templates/frontend/survey/survey_report.html:18
+#: templates/frontend/voiceapp/list.html:17
 msgid "Alert"
 msgstr "警告"
 
-#: templates/frontend/master.html:150
+#: templates/frontend/master.html:138
 msgid "Please login by clicking on login button"
 msgstr "請按下登入按鈕進行登錄"
 
-#: templates/frontend/master.html:158
+#: templates/frontend/master.html:146
 msgid "Voice Broadcasting solution"
 msgstr "語音廣播解決方案"
 
-#: templates/frontend/master.html:172
+#: templates/frontend/master.html:160
 msgid "To send notification to administrator"
 msgstr "寄送通知給管理者"
 
-#: templates/frontend/master.html:172
+#: templates/frontend/master.html:160
 msgid "Click here"
 msgstr "按下這裡"
 
-#: templates/frontend/master.html:174
+#: templates/frontend/master.html:162
 msgid "(Notification sent)"
 msgstr "(Notification sent)"
 
-#: templates/frontend/master.html:188
-msgid "is"
-msgstr "是"
-
-#: templates/frontend/master.html:188
-msgid "Autodialer software"
-msgstr "自動撥號軟體"
-
-#: templates/frontend/master.html:188
-msgid "licensed under the "
-msgstr "授權底下"
-
 #: templates/frontend/campaign/change.html:9
-#: templates/frontend/campaign/change.html:171
+#: templates/frontend/campaign/change.html:169
 #: templates/frontend/contact/change.html:16
-#: templates/frontend/contact/change.html:42
-#: templates/frontend/phonebook/change.html:9
-#: templates/frontend/phonebook/change.html:36
-#: templates/frontend/survey/audio_change.html:10
-#: templates/frontend/survey/audio_change.html:34
-#: templates/frontend/survey/survey_change.html:375
-#: templates/frontend/voiceapp/change.html:9
-#: templates/frontend/voiceapp/change.html:35
+#: templates/frontend/contact/change.html:48
+#: templates/frontend/phonebook/change.html:10
+#: templates/frontend/phonebook/change.html:38
+#: templates/frontend/survey/audio_change.html:11
+#: templates/frontend/survey/audio_change.html:40
+#: templates/frontend/survey/survey_change.html:361
+#: templates/frontend/voiceapp/change.html:10
+#: templates/frontend/voiceapp/change.html:38
 msgid "Update"
 msgstr "更新"
 
-#: templates/frontend/campaign/change.html:12
+#: templates/frontend/campaign/change.html:13
 msgid "Set campaign parameters"
 msgstr "設定競選活動參數"
 
-#: templates/frontend/campaign/change.html:20
+#: templates/frontend/campaign/change.html:22
 msgid "General settings"
 msgstr "一般設定"
 
-#: templates/frontend/campaign/change.html:41
-#: user_profile/models.py:56
+#: templates/frontend/campaign/change.html:67 user_profile/models.py:82
 msgid "Dialer settings"
 msgstr "撥號設定"
 
-#: templates/frontend/campaign/change.html:91
+#: templates/frontend/campaign/change.html:92
 msgid "Campaign schedule"
 msgstr "競選活動排程"
 
-#: templates/frontend/campaign/change.html:156
+#: templates/frontend/campaign/change.html:150
 msgid "Week Days"
 msgstr "星期天"
 
-#: templates/frontend/campaign/change.html:177
-#: templates/frontend/contact/change.html:48
-#: templates/frontend/phonebook/change.html:42
-#: templates/frontend/voiceapp/change.html:41
+#: templates/frontend/campaign/change.html:175
+#: templates/frontend/contact/change.html:54
+#: templates/frontend/phonebook/change.html:44
+#: templates/frontend/voiceapp/change.html:44
 msgid "Delete"
 msgstr "刪除"
 
-#: templates/frontend/campaign/list.html:13
-#: templates/frontend/contact/list.html:22
-#: templates/frontend/registration/user_detail_change.html:12
-#: templates/frontend/survey/audio_list.html:18
-#: templates/frontend/survey/survey_list.html:13
-msgid "Confirm deletion?"
-msgstr "確定要刪除?"
-
-#: templates/frontend/campaign/list.html:24
+#: templates/frontend/campaign/list.html:9
 msgid "List, add and edit campaigns"
 msgstr "列出,新增以及編輯競選活動"
 
-#: templates/frontend/campaign/list.html:55
+#: templates/frontend/campaign/list.html:39
 msgid "Key"
 msgstr "Key"
 
-#: templates/frontend/campaign/list.html:57
-#: templates/frontend/report/voipcall_report.html:82
+#: templates/frontend/campaign/list.html:41
+#: templates/frontend/report/voipcall_report.html:77
 msgid "Start date"
 msgstr "開始日期"
 
-#: templates/frontend/campaign/list.html:59
+#: templates/frontend/campaign/list.html:43
 msgid "App"
 msgstr "App"
 
-#: templates/frontend/campaign/list.html:67
-#: templates/frontend/contact/list.html:142
-#: templates/frontend/phonebook/list.html:76
-#: templates/frontend/survey/audio_list.html:64
-#: templates/frontend/survey/survey_list.html:56
-#: templates/frontend/voiceapp/list.html:53
+#: templates/frontend/campaign/list.html:51
+#: templates/frontend/contact/list.html:131
+#: templates/frontend/phonebook/list.html:43
+#: templates/frontend/survey/audio_list.html:49
+#: templates/frontend/survey/survey_list.html:42
+#: templates/frontend/voiceapp/list.html:46
 msgid "Delete Selected"
 msgstr "刪除所選者"
 
-#: templates/frontend/campaign/list.html:78
-#: templates/frontend/contact/list.html:153
-#: templates/frontend/phonebook/list.html:87
-#: templates/frontend/registration/user_detail_change.html:164
-#: templates/frontend/report/voipcall_report.html:101
-#: templates/frontend/survey/audio_list.html:75
-#: templates/frontend/survey/survey_list.html:67
+#: templates/frontend/campaign/list.html:62
+#: templates/frontend/contact/list.html:142
+#: templates/frontend/phonebook/list.html:54
+#: templates/frontend/registration/user_detail_change.html:161
+#: templates/frontend/report/voipcall_report.html:96
+#: templates/frontend/survey/audio_list.html:60
+#: templates/frontend/survey/survey_list.html:53
 msgid "Page"
 msgstr "頁"
 
-#: templates/frontend/campaign/list.html:79
-#: templates/frontend/campaign/list.html:82
-#: templates/frontend/contact/list.html:154
-#: templates/frontend/contact/list.html:157
-#: templates/frontend/phonebook/list.html:88
-#: templates/frontend/phonebook/list.html:91
+#: templates/frontend/campaign/list.html:63
+#: templates/frontend/campaign/list.html:66
+#: templates/frontend/contact/list.html:143
+#: templates/frontend/contact/list.html:146
+#: templates/frontend/phonebook/list.html:55
+#: templates/frontend/phonebook/list.html:58
+#: templates/frontend/registration/user_detail_change.html:162
 #: templates/frontend/registration/user_detail_change.html:165
-#: templates/frontend/registration/user_detail_change.html:168
-#: templates/frontend/report/voipcall_report.html:102
-#: templates/frontend/report/voipcall_report.html:105
-#: templates/frontend/survey/audio_list.html:76
-#: templates/frontend/survey/audio_list.html:79
-#: templates/frontend/survey/survey_list.html:68
-#: templates/frontend/survey/survey_list.html:71
+#: templates/frontend/report/voipcall_report.html:97
+#: templates/frontend/report/voipcall_report.html:100
+#: templates/frontend/survey/audio_list.html:61
+#: templates/frontend/survey/audio_list.html:64
+#: templates/frontend/survey/survey_list.html:54
+#: templates/frontend/survey/survey_list.html:57
 msgid "of"
 msgstr "的"
 
-#: templates/frontend/campaign/list.html:80
-#: templates/frontend/contact/list.html:155
-#: templates/frontend/phonebook/list.html:89
-#: templates/frontend/registration/user_detail_change.html:166
-#: templates/frontend/report/voipcall_report.html:103
-#: templates/frontend/survey/audio_list.html:77
-#: templates/frontend/survey/survey_list.html:69
+#: templates/frontend/campaign/list.html:64
+#: templates/frontend/contact/list.html:144
+#: templates/frontend/phonebook/list.html:56
+#: templates/frontend/registration/user_detail_change.html:163
+#: templates/frontend/report/voipcall_report.html:98
+#: templates/frontend/survey/audio_list.html:62
+#: templates/frontend/survey/survey_list.html:55
 msgid "No items"
 msgstr "無此項目"
 
-#: templates/frontend/campaign/list.html:81
-#: templates/frontend/contact/list.html:156
-#: templates/frontend/phonebook/list.html:90
-#: templates/frontend/registration/user_detail_change.html:167
-#: templates/frontend/report/voipcall_report.html:104
-#: templates/frontend/survey/audio_list.html:78
-#: templates/frontend/survey/survey_list.html:70
+#: templates/frontend/campaign/list.html:65
+#: templates/frontend/contact/list.html:145
+#: templates/frontend/phonebook/list.html:57
+#: templates/frontend/registration/user_detail_change.html:164
+#: templates/frontend/report/voipcall_report.html:99
+#: templates/frontend/survey/audio_list.html:63
+#: templates/frontend/survey/survey_list.html:56
 msgid "Processing, please wait ..."
 msgstr "處理中, 請稍後..."
 
-#: templates/frontend/campaign/list.html:82
-#: templates/frontend/contact/list.html:157
-#: templates/frontend/phonebook/list.html:91
-#: templates/frontend/registration/user_detail_change.html:168
-#: templates/frontend/report/voipcall_report.html:105
-#: templates/frontend/survey/audio_list.html:79
-#: templates/frontend/survey/survey_list.html:71
+#: templates/frontend/campaign/list.html:66
+#: templates/frontend/contact/list.html:146
+#: templates/frontend/phonebook/list.html:58
+#: templates/frontend/registration/user_detail_change.html:165
+#: templates/frontend/report/voipcall_report.html:100
+#: templates/frontend/survey/audio_list.html:64
+#: templates/frontend/survey/survey_list.html:57
 msgid "Displaying"
 msgstr "顯示"
 
-#: templates/frontend/campaign/list.html:82
-#: templates/frontend/contact/list.html:157
-#: templates/frontend/phonebook/list.html:91
-#: templates/frontend/registration/user_detail_change.html:168
-#: templates/frontend/report/voipcall_report.html:105
-#: templates/frontend/survey/audio_list.html:79
-#: templates/frontend/survey/survey_list.html:71
+#: templates/frontend/campaign/list.html:66
+#: templates/frontend/contact/list.html:146
+#: templates/frontend/phonebook/list.html:58
+#: templates/frontend/registration/user_detail_change.html:165
+#: templates/frontend/report/voipcall_report.html:100
+#: templates/frontend/survey/audio_list.html:64
+#: templates/frontend/survey/survey_list.html:57
 msgid "to"
 msgstr "到"
 
-#: templates/frontend/campaign/list.html:82
-#: templates/frontend/contact/list.html:157
-#: templates/frontend/phonebook/list.html:91
-#: templates/frontend/registration/user_detail_change.html:168
-#: templates/frontend/report/voipcall_report.html:105
-#: templates/frontend/survey/audio_list.html:79
-#: templates/frontend/survey/survey_list.html:71
+#: templates/frontend/campaign/list.html:66
+#: templates/frontend/contact/list.html:146
+#: templates/frontend/phonebook/list.html:58
+#: templates/frontend/registration/user_detail_change.html:165
+#: templates/frontend/report/voipcall_report.html:100
+#: templates/frontend/survey/audio_list.html:64
+#: templates/frontend/survey/survey_list.html:57
 msgid "items"
 msgstr "項目"
 
-#: templates/frontend/contact/change.html:19
+#: templates/frontend/contact/change.html:20
 msgid "Add contact details"
 msgstr "新增聯絡人詳細資料"
 
@@ -2126,23 +1992,23 @@ msgstr "新增聯絡人詳細資料"
 msgid "Import list of contact by uploading CSV files"
 msgstr "藉由上傳CSV檔案匯入聯絡人"
 
-#: templates/frontend/contact/import_contact.html:34
+#: templates/frontend/contact/import_contact.html:36
 msgid "Contact number"
 msgstr "連絡電話"
 
-#: templates/frontend/contact/import_contact.html:35
+#: templates/frontend/contact/import_contact.html:37
 msgid "Last name"
 msgstr "名字"
 
-#: templates/frontend/contact/import_contact.html:36
+#: templates/frontend/contact/import_contact.html:38
 msgid "First name"
 msgstr "姓氏"
 
-#: templates/frontend/contact/import_contact.html:40
+#: templates/frontend/contact/import_contact.html:42
 msgid "Additional variables"
 msgstr "額外變數"
 
-#: templates/frontend/contact/import_contact.html:63
+#: templates/frontend/contact/import_contact.html:65
 msgid "SUBSCRIBER STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')"
 msgstr "電話訂戶狀態 = ('1'-'ACTIVE') ('0'-'INACTIVE')"
 
@@ -2154,36 +2020,28 @@ msgstr "電話用戶已匯入"
 msgid "Subscriber(s) not imported"
 msgstr "電話用戶無匯入"
 
-#: templates/frontend/contact/list.html:42
+#: templates/frontend/contact/list.html:27
 msgid "List, add and edit contacts"
 msgstr "顯示, 新增 以及編輯聯絡人"
 
-#: templates/frontend/contact/list.html:103
+#: templates/frontend/contact/list.html:91
 msgid "Clear"
 msgstr "清除"
 
-#: templates/frontend/contact/list.html:128
-#: templates/frontend/phonebook/list.html:66
+#: templates/frontend/contact/list.html:117
+#: templates/frontend/phonebook/list.html:33
 msgid "Id"
 msgstr "Id"
 
-#: templates/frontend/contact/list.html:140
+#: templates/frontend/contact/list.html:129
 msgid "Import"
 msgstr "匯入"
 
-#: templates/frontend/phonebook/change.html:12
+#: templates/frontend/phonebook/change.html:15
 msgid "Contacts are stored in phonebooks"
 msgstr "聯絡人已經儲存至電話簿"
 
-#: templates/frontend/phonebook/list.html:30
-msgid "Please confirm to delete this phonebook with"
-msgstr "請確認要刪除此電話簿及"
-
-#: templates/frontend/phonebook/list.html:30
-msgid "contact(s)"
-msgstr "聯絡人"
-
-#: templates/frontend/phonebook/list.html:41
+#: templates/frontend/phonebook/list.html:9
 msgid "List, add and edit phonebooks"
 msgstr "顯示,  新增以及編輯電話簿"
 
@@ -2192,11 +2050,11 @@ msgstr "顯示,  新增以及編輯電話簿"
 msgid "Password reset complete"
 msgstr "密碼重設完成"
 
-#: templates/frontend/registration/password_reset_complete.html:10
+#: templates/frontend/registration/password_reset_complete.html:11
 msgid "Your password has been set.  You may go ahead and log in now."
 msgstr "您的密碼已經設定. 您現在可以開始進行登入."
 
-#: templates/frontend/registration/password_reset_complete.html:12
+#: templates/frontend/registration/password_reset_complete.html:14
 msgid "Log in"
 msgstr "登入"
 
@@ -2213,16 +2071,18 @@ msgstr "輸入新密碼"
 msgid "Please enter your new password twice for verification."
 msgstr "請輸入您的新密碼兩次做認證."
 
-#: templates/frontend/registration/password_reset_confirm.html:33
+#: templates/frontend/registration/password_reset_confirm.html:26
 msgid "Change my password"
 msgstr "變更我的密碼"
 
-#: templates/frontend/registration/password_reset_confirm.html:40
+#: templates/frontend/registration/password_reset_confirm.html:34
 msgid "Password reset unsuccessful"
 msgstr "密碼重新設定不成功"
 
-#: templates/frontend/registration/password_reset_confirm.html:43
-msgid "The password reset link was invalid, possibly because it has already been used.  Please request a new password reset."
+#: templates/frontend/registration/password_reset_confirm.html:39
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a new password reset."
 msgstr "此密碼重置連結錯誤, 有可能是您已經使用過.請重新申請新密碼重置一次."
 
 #: templates/frontend/registration/password_reset_done.html:4
@@ -2231,12 +2091,18 @@ msgid "Password reset successful"
 msgstr "密碼重新設定成功"
 
 #: templates/frontend/registration/password_reset_done.html:10
-msgid "We've e-mailed you instructions for setting your password to the e-mail address you submitted. You should be receiving it shortly."
-msgstr "我們通過電子郵件發送給您設置您的密碼到您所提交的電子郵件地址的說明。你應該很快會收到"
+msgid ""
+"We've e-mailed you instructions for setting your password to the e-mail "
+"address you submitted. You should be receiving it shortly."
+msgstr ""
+"我們通過電子郵件發送給您設置您的密碼到您所提交的電子郵件地址的說明。你應該很"
+"快會收到"
 
 #: templates/frontend/registration/password_reset_email.html:5
 #, python-format
-msgid "You're receiving this e-mail because you requested a password reset for your user account at %(site_name)s."
+msgid ""
+"You're receiving this e-mail because you requested a password reset for your "
+"user account at %(site_name)s."
 msgstr "您將會收到一封郵件關於您要求重新為 %(site_name)s 重新設定密碼."
 
 #: templates/frontend/registration/password_reset_email.html:7
@@ -2257,213 +2123,210 @@ msgid "Forgotten your password?"
 msgstr "忘記您的密碼?"
 
 #: templates/frontend/registration/password_reset_form.html:12
-msgid "Enter your e-mail address below, and we'll e-mail instructions for setting a new one."
+msgid ""
+"Enter your e-mail address below, and we'll e-mail instructions for setting a "
+"new one."
 msgstr "請在下面輸入您的電子郵件, 我們將經由電子郵件發送操作說明給您."
 
-#: templates/frontend/registration/password_reset_form.html:32
+#: templates/frontend/registration/password_reset_form.html:22
 msgid "Reset my password"
 msgstr "重新設定密碼"
 
-#: templates/frontend/registration/user_detail_change.html:24
+#: templates/frontend/registration/user_detail_change.html:9
 msgid "Password, notifications, account limits and number check"
 msgstr "密碼, 通知, 帳戶限制以及數字檢查"
 
-#: templates/frontend/registration/user_detail_change.html:30
+#: templates/frontend/registration/user_detail_change.html:16
 msgid "Account"
 msgstr "帳號"
 
-#: templates/frontend/registration/user_detail_change.html:31
+#: templates/frontend/registration/user_detail_change.html:17
 msgid "Password"
 msgstr "密碼"
 
-#: templates/frontend/registration/user_detail_change.html:34
+#: templates/frontend/registration/user_detail_change.html:20
 msgid "Number Check"
 msgstr "數字檢查"
 
-#: templates/frontend/registration/user_detail_change.html:82
+#: templates/frontend/registration/user_detail_change.html:21
+msgid "Change language "
+msgstr ""
+
+#: templates/frontend/registration/user_detail_change.html:72
 msgid "Change detail"
 msgstr "變更細節"
 
-#: templates/frontend/registration/user_detail_change.html:115
+#: templates/frontend/registration/user_detail_change.html:110
 msgid "Change password"
 msgstr "變更密碼"
 
-#: templates/frontend/registration/user_detail_change.html:142
-#: templates/frontend/registration/user_notice.html:14
+#: templates/frontend/registration/user_detail_change.html:139
 msgid "Message"
 msgstr "訊息"
 
-#: templates/frontend/registration/user_detail_change.html:143
-#: templates/frontend/registration/user_notice.html:15
+#: templates/frontend/registration/user_detail_change.html:140
 msgid "Notification type"
 msgstr "通知型態"
 
-#: templates/frontend/registration/user_detail_change.html:144
-#: templates/frontend/registration/user_notice.html:16
+#: templates/frontend/registration/user_detail_change.html:141
 msgid "Sender"
 msgstr "寄件者"
 
-#: templates/frontend/registration/user_detail_change.html:149
-msgid "Delete all notifications"
+#: templates/frontend/registration/user_detail_change.html:146
+#, fuzzy
+msgid "Delete notifications"
 msgstr "刪除所有通知訊息"
 
-#: templates/frontend/registration/user_detail_change.html:151
+#: templates/frontend/registration/user_detail_change.html:148
 msgid "Mark as read"
 msgstr "標記為已閱讀"
 
-#: templates/frontend/registration/user_detail_change.html:153
+#: templates/frontend/registration/user_detail_change.html:150
 msgid "Mark all as read"
 msgstr "標記全部為已閱讀"
 
-#: templates/frontend/registration/user_detail_change.html:158
+#: templates/frontend/registration/user_detail_change.html:155
 msgid "Notification"
 msgstr "通知"
 
-#: templates/frontend/registration/user_detail_change.html:218
+#: templates/frontend/registration/user_detail_change.html:215
 msgid "Maximum call duration"
 msgstr "最大撥號間隔"
 
-#: templates/frontend/registration/user_detail_change.html:222
+#: templates/frontend/registration/user_detail_change.html:219
 msgid "Maximum retries"
 msgstr "重試最大值"
 
-#: templates/frontend/registration/user_detail_change.html:226
+#: templates/frontend/registration/user_detail_change.html:223
 msgid "Timeout"
 msgstr "時間到"
 
-#: templates/frontend/registration/user_detail_change.html:230
+#: templates/frontend/registration/user_detail_change.html:227
 msgid "Maximum campaigns"
 msgstr "競選活動最大值"
 
-#: templates/frontend/registration/user_detail_change.html:277
+#: templates/frontend/registration/user_detail_change.html:279
 msgid "Check"
 msgstr "檢查"
 
-#: templates/frontend/registration/user_notice.html:5
-msgid "Notice"
-msgstr "通知"
+#: templates/frontend/registration/user_detail_change.html:291
+#, fuzzy
+msgid "Select language"
+msgstr "選擇競選活動"
 
-#: templates/frontend/registration/user_notice.html:17
-msgid "Notification date"
-msgstr "通知日期"
-
-#: templates/frontend/registration/user_notice.html:28
-msgid "No Record(s) found."
-msgstr "找不到紀錄."
-
-#: templates/frontend/report/voipcall_report.html:32
+#: templates/frontend/report/voipcall_report.html:31
 msgid "Call Reports"
 msgstr "撥號報表"
 
-#: templates/frontend/report/voipcall_report.html:32
+#: templates/frontend/report/voipcall_report.html:31
 msgid "Detailed call data"
 msgstr "撥號資料內容"
 
-#: templates/frontend/report/voipcall_report.html:83
+#: templates/frontend/report/voipcall_report.html:78
 msgid "Call ID"
 msgstr "撥號ID"
 
-#: templates/frontend/report/voipcall_report.html:85
+#: templates/frontend/report/voipcall_report.html:80
 msgid "Caller ID"
 msgstr "撥號者ID"
 
-#: templates/frontend/report/voipcall_report.html:86
+#: templates/frontend/report/voipcall_report.html:81
 msgid "Phone No."
 msgstr "電話號碼."
 
-#: templates/frontend/report/voipcall_report.html:87
-#: templates/frontend/voiceapp/list.html:45
-#: user_profile/models.py:54
+#: templates/frontend/report/voipcall_report.html:82
+#: templates/frontend/voiceapp/list.html:38 user_profile/models.py:80
 msgid "Gateway"
 msgstr "語音閘道器"
 
-#: templates/frontend/report/voipcall_report.html:89
+#: templates/frontend/report/voipcall_report.html:84
 msgid "Bill Sec"
 msgstr "帳單秒數"
 
-#: templates/frontend/report/voipcall_report.html:95
+#: templates/frontend/report/voipcall_report.html:90
 msgid "Call Records"
 msgstr "撥號紀錄"
 
-#: templates/frontend/survey/audio_change.html:13
+#: templates/frontend/survey/audio_change.html:16
 msgid "Upload audio to be used in Voice applications"
 msgstr "上船語音檔案至語音應用程式"
 
-#: templates/frontend/survey/audio_list.html:29
+#: templates/frontend/survey/audio_list.html:15
 msgid "List, upload and edit audio files"
 msgstr "顯示, 上傳 以及 編輯語音檔"
 
-#: templates/frontend/survey/audio_list.html:56
+#: templates/frontend/survey/audio_list.html:41
 msgid "Audio"
 msgstr "語音檔"
 
-#: templates/frontend/survey/audio_list.html:57
+#: templates/frontend/survey/audio_list.html:42
 msgid "Audio URL"
 msgstr "語音檔案網址"
 
-#: templates/frontend/survey/survey_change.html:235
+#: templates/frontend/survey/survey_change.html:242
 msgid "New Question"
 msgstr "新的問題"
 
-#: templates/frontend/survey/survey_change.html:266
-#: templates/frontend/survey/survey_change.html:469
+#: templates/frontend/survey/survey_change.html:255
+#: templates/frontend/survey/survey_change.html:432
+msgid ""
+"If no audio file is selected, then text to speech is used to read out the "
+"question"
+msgstr "如果沒有語音檔被選擇，然後使用TTS出問題"
+
+#: templates/frontend/survey/survey_change.html:264
+#: templates/frontend/survey/survey_change.html:445
 msgid "Delete question"
 msgstr "刪除問題"
 
-#: templates/frontend/survey/survey_change.html:274
-#: templates/frontend/survey/survey_change.html:478
-msgid "If no audio file is selected, then text to speech is used to read out the question"
-msgstr "如果沒有語音檔被選擇，然後使用TTS出問題"
-
-#: templates/frontend/survey/survey_change.html:285
-#: templates/frontend/survey/survey_change.html:532
+#: templates/frontend/survey/survey_change.html:270
+#: templates/frontend/survey/survey_change.html:496
 msgid "Add Response"
 msgstr "新增回應"
 
-#: templates/frontend/survey/survey_change.html:335
-#: templates/frontend/survey/survey_change.html:520
+#: templates/frontend/survey/survey_change.html:320
+#: templates/frontend/survey/survey_change.html:484
 msgid "Delete response"
 msgstr "刪除回應"
 
-#: templates/frontend/survey/survey_change.html:378
+#: templates/frontend/survey/survey_change.html:365
 msgid "Survey configuration"
 msgstr "民意調查設定"
 
-#: templates/frontend/survey/survey_change.html:546
+#: templates/frontend/survey/survey_change.html:510
 msgid "Add Question"
 msgstr "新增問題"
 
-#: templates/frontend/survey/survey_change.html:553
+#: templates/frontend/survey/survey_change.html:517
 msgid "Update Survey"
 msgstr "更新民意調查"
 
-#: templates/frontend/survey/survey_list.html:24
+#: templates/frontend/survey/survey_list.html:9
 msgid "List, add and edit surveys"
 msgstr "列出,新增以及編輯民意調查"
 
-#: templates/frontend/survey/survey_report.html:6
+#: templates/frontend/survey/survey_report.html:5
 msgid "Survey Report"
 msgstr "民意調查報表"
 
-#: templates/frontend/survey/survey_report.html:6
+#: templates/frontend/survey/survey_report.html:5
 msgid "Monitor survey results"
 msgstr "監控民意調查結果"
 
-#: templates/frontend/voiceapp/change.html:12
-#: templates/frontend/voiceapp/list.html:16
-#: voice_app/models.py:72
+#: templates/frontend/voiceapp/change.html:14
+#: templates/frontend/voiceapp/list.html:10 voice_app/models.py:85
 msgid "Voice Applications"
 msgstr "語音應用程式"
 
-#: templates/frontend/voiceapp/change.html:12
+#: templates/frontend/voiceapp/change.html:15
 msgid "Configure voice application"
 msgstr "設定語音應用程式"
 
-#: templates/frontend/voiceapp/list.html:16
+#: templates/frontend/voiceapp/list.html:10
 msgid "List, add and edit voice applications"
 msgstr "顯示, 新增 以及 編輯語音應用程式"
 
-#: templates/frontend/voiceapp/list.html:46
+#: templates/frontend/voiceapp/list.html:39
 msgid "Data"
 msgstr "資料"
 
@@ -2475,937 +2338,1028 @@ msgstr "感謝您使用Newfies."
 msgid "Log in again"
 msgstr "重新登入一次"
 
-#: user_profile/admin.py:30
+#: user_profile/admin.py:44
 msgid "Personal info"
 msgstr "個人資訊"
 
-#: user_profile/admin.py:34
+#: user_profile/admin.py:48
 msgid "Permission"
 msgstr "權限"
 
-#: user_profile/admin.py:37
+#: user_profile/admin.py:51
 msgid "Important dates"
 msgstr "重要日期"
 
-#: user_profile/fields.py:21
+#: user_profile/fields.py:37
 msgid "Afar"
 msgstr ""
 
-#: user_profile/fields.py:22
+#: user_profile/fields.py:38
 msgid "Abkhazian"
 msgstr ""
 
-#: user_profile/fields.py:23
+#: user_profile/fields.py:39
 msgid "Afrikaans"
 msgstr ""
 
-#: user_profile/fields.py:24
+#: user_profile/fields.py:40
 msgid "Akan"
 msgstr ""
 
-#: user_profile/fields.py:25
-#: user_profile/fields.py:187
+#: user_profile/fields.py:41 user_profile/fields.py:203
 msgid "Albanian"
 msgstr ""
 
-#: user_profile/fields.py:26
+#: user_profile/fields.py:42
 msgid "Amharic"
 msgstr ""
 
-#: user_profile/fields.py:27
+#: user_profile/fields.py:43
 msgid "Arabic"
 msgstr ""
 
-#: user_profile/fields.py:28
+#: user_profile/fields.py:44
 msgid "Aragonese"
 msgstr ""
 
-#: user_profile/fields.py:29
-#: user_profile/fields.py:95
+#: user_profile/fields.py:45 user_profile/fields.py:111
 msgid "Armenian"
 msgstr ""
 
-#: user_profile/fields.py:30
+#: user_profile/fields.py:46
 msgid "Assamese"
 msgstr ""
 
-#: user_profile/fields.py:31
+#: user_profile/fields.py:47
 msgid "Avaric"
 msgstr ""
 
-#: user_profile/fields.py:32
+#: user_profile/fields.py:48
 msgid "Avestan"
 msgstr ""
 
-#: user_profile/fields.py:33
+#: user_profile/fields.py:49
 msgid "Aymara"
 msgstr ""
 
-#: user_profile/fields.py:34
+#: user_profile/fields.py:50
 msgid "Azerbaijani"
 msgstr ""
 
-#: user_profile/fields.py:35
+#: user_profile/fields.py:51
 msgid "Bashkir"
 msgstr ""
 
-#: user_profile/fields.py:36
+#: user_profile/fields.py:52
 msgid "Bambara"
 msgstr ""
 
-#: user_profile/fields.py:37
-#: user_profile/fields.py:68
+#: user_profile/fields.py:53 user_profile/fields.py:84
 msgid "Basque"
 msgstr ""
 
-#: user_profile/fields.py:38
+#: user_profile/fields.py:54
 msgid "Belarusian"
 msgstr ""
 
-#: user_profile/fields.py:39
+#: user_profile/fields.py:55
 msgid "Bengali"
 msgstr ""
 
-#: user_profile/fields.py:40
+#: user_profile/fields.py:56
 msgid "Bihari languages"
 msgstr ""
 
-#: user_profile/fields.py:41
+#: user_profile/fields.py:57
 msgid "Bislama"
 msgstr ""
 
-#: user_profile/fields.py:42
-#: user_profile/fields.py:201
+#: user_profile/fields.py:58 user_profile/fields.py:217
 msgid "Tibetan"
 msgstr ""
 
-#: user_profile/fields.py:43
+#: user_profile/fields.py:59
 msgid "Bosnian"
 msgstr ""
 
-#: user_profile/fields.py:44
+#: user_profile/fields.py:60
 msgid "Breton"
 msgstr ""
 
-#: user_profile/fields.py:45
+#: user_profile/fields.py:61
 msgid "Bulgarian"
 msgstr ""
 
-#: user_profile/fields.py:46
-#: user_profile/fields.py:145
+#: user_profile/fields.py:62 user_profile/fields.py:161
 msgid "Burmese"
 msgstr ""
 
-#: user_profile/fields.py:47
+#: user_profile/fields.py:63
 msgid "Catalan; Valencian"
 msgstr ""
 
-#: user_profile/fields.py:48
-#: user_profile/fields.py:58
+#: user_profile/fields.py:64 user_profile/fields.py:74
 msgid "Czech"
 msgstr ""
 
-#: user_profile/fields.py:49
+#: user_profile/fields.py:65
 msgid "Chamorro"
 msgstr ""
 
-#: user_profile/fields.py:50
+#: user_profile/fields.py:66
 msgid "Chechen"
 msgstr ""
 
-#: user_profile/fields.py:51
-#: user_profile/fields.py:223
-msgid "Chinese"
-msgstr "中文"
-
-#: user_profile/fields.py:52
-msgid "Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic"
-msgstr ""
-
-#: user_profile/fields.py:53
-msgid "Chuvash"
-msgstr ""
-
-#: user_profile/fields.py:54
-msgid "Cornish"
-msgstr ""
-
-#: user_profile/fields.py:55
-msgid "Corsican"
-msgstr ""
-
-#: user_profile/fields.py:56
-msgid "Cree"
-msgstr ""
-
-#: user_profile/fields.py:57
-#: user_profile/fields.py:216
-msgid "Welsh"
-msgstr ""
-
-#: user_profile/fields.py:59
-msgid "Danish"
-msgstr ""
-
-#: user_profile/fields.py:60
-#: user_profile/fields.py:79
-msgid "German"
-msgstr ""
-
-#: user_profile/fields.py:61
-msgid "Divehi; Dhivehi; Maldivian"
-msgstr ""
-
-#: user_profile/fields.py:62
-#: user_profile/fields.py:152
-msgid "Dutch; Flemish"
-msgstr ""
-
-#: user_profile/fields.py:63
-msgid "Dzongkha"
-msgstr ""
-
-#: user_profile/fields.py:64
-#: user_profile/fields.py:84
-msgid "Greek, Modern (1453-)"
-msgstr ""
-
-#: user_profile/fields.py:66
-msgid "Esperanto"
-msgstr ""
-
-#: user_profile/fields.py:67
-msgid "Estonian"
+#: user_profile/fields.py:68
+msgid ""
+"Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church "
+"Slavonic"
 msgstr ""
 
 #: user_profile/fields.py:69
-msgid "Ewe"
+msgid "Chuvash"
 msgstr ""
 
 #: user_profile/fields.py:70
-msgid "Faroese"
+msgid "Cornish"
 msgstr ""
 
 #: user_profile/fields.py:71
-#: user_profile/fields.py:163
-msgid "Persian"
-msgstr "波斯語"
-
-#: user_profile/fields.py:72
-msgid "Fijian"
+msgid "Corsican"
 msgstr ""
 
-#: user_profile/fields.py:73
-msgid "Finnish"
-msgstr "芬蘭與"
+#: user_profile/fields.py:72
+msgid "Cree"
+msgstr ""
 
-#: user_profile/fields.py:74
+#: user_profile/fields.py:73 user_profile/fields.py:232
+msgid "Welsh"
+msgstr ""
+
 #: user_profile/fields.py:75
-msgid "French"
-msgstr "法語"
+msgid "Danish"
+msgstr ""
 
-#: user_profile/fields.py:76
-msgid "Western Frisian"
+#: user_profile/fields.py:76 user_profile/fields.py:95
+msgid "German"
 msgstr ""
 
 #: user_profile/fields.py:77
-msgid "Fulah"
+msgid "Divehi; Dhivehi; Maldivian"
 msgstr ""
 
-#: user_profile/fields.py:78
-#: user_profile/fields.py:112
-msgid "Georgian"
+#: user_profile/fields.py:78 user_profile/fields.py:168
+msgid "Dutch; Flemish"
 msgstr ""
 
-#: user_profile/fields.py:80
-msgid "Gaelic; Scottish Gaelic"
+#: user_profile/fields.py:79
+msgid "Dzongkha"
 msgstr ""
 
-#: user_profile/fields.py:81
-msgid "Irish"
+#: user_profile/fields.py:80 user_profile/fields.py:100
+msgid "Greek, Modern (1453-)"
 msgstr ""
 
 #: user_profile/fields.py:82
-msgid "Galician"
+msgid "Esperanto"
 msgstr ""
 
 #: user_profile/fields.py:83
-msgid "Manx"
+msgid "Estonian"
 msgstr ""
 
 #: user_profile/fields.py:85
-msgid "Guarani"
+msgid "Ewe"
 msgstr ""
 
 #: user_profile/fields.py:86
-msgid "Gujarati"
+msgid "Faroese"
 msgstr ""
 
-#: user_profile/fields.py:87
-msgid "Haitian; Haitian Creole"
-msgstr ""
+#: user_profile/fields.py:87 user_profile/fields.py:179
+msgid "Persian"
+msgstr "波斯語"
 
 #: user_profile/fields.py:88
-msgid "Hausa"
+msgid "Fijian"
 msgstr ""
 
 #: user_profile/fields.py:89
-msgid "Hebrew"
-msgstr ""
+msgid "Finnish"
+msgstr "芬蘭與"
 
-#: user_profile/fields.py:90
-msgid "Herero"
-msgstr ""
-
-#: user_profile/fields.py:91
-msgid "Hindi"
-msgstr ""
+#: user_profile/fields.py:90 user_profile/fields.py:91
+msgid "French"
+msgstr "法語"
 
 #: user_profile/fields.py:92
-msgid "Hiri Motu"
+msgid "Western Frisian"
 msgstr ""
 
 #: user_profile/fields.py:93
-msgid "Croatian"
+msgid "Fulah"
 msgstr ""
 
-#: user_profile/fields.py:94
-msgid "Hungarian"
+#: user_profile/fields.py:94 user_profile/fields.py:128
+msgid "Georgian"
 msgstr ""
 
 #: user_profile/fields.py:96
-msgid "Igbo"
+msgid "Gaelic; Scottish Gaelic"
 msgstr ""
 
 #: user_profile/fields.py:97
-#: user_profile/fields.py:105
-msgid "Icelandic"
+msgid "Irish"
 msgstr ""
 
 #: user_profile/fields.py:98
-msgid "Ido"
+msgid "Galician"
 msgstr ""
 
 #: user_profile/fields.py:99
-msgid "Sichuan Yi; Nuosu"
-msgstr ""
-
-#: user_profile/fields.py:100
-msgid "Inuktitut"
+msgid "Manx"
 msgstr ""
 
 #: user_profile/fields.py:101
-msgid "Interlingue; Occidental"
+msgid "Guarani"
 msgstr ""
 
 #: user_profile/fields.py:102
-msgid "Interlingua (International Auxiliary Language Association)"
+msgid "Gujarati"
 msgstr ""
 
 #: user_profile/fields.py:103
-msgid "Indonesian"
+msgid "Haitian; Haitian Creole"
 msgstr ""
 
 #: user_profile/fields.py:104
-msgid "Inupiaq"
+msgid "Hausa"
+msgstr ""
+
+#: user_profile/fields.py:105
+msgid "Hebrew"
 msgstr ""
 
 #: user_profile/fields.py:106
-msgid "Italian"
+msgid "Herero"
 msgstr ""
 
 #: user_profile/fields.py:107
-msgid "Javanese"
+msgid "Hindi"
 msgstr ""
 
 #: user_profile/fields.py:108
-msgid "Japanese"
-msgstr "日本"
+msgid "Hiri Motu"
+msgstr ""
 
 #: user_profile/fields.py:109
-msgid "Kalaallisut; Greenlandic"
+msgid "Croatian"
 msgstr ""
 
 #: user_profile/fields.py:110
-msgid "Kannada"
+msgid "Hungarian"
 msgstr ""
 
-#: user_profile/fields.py:111
-msgid "Kashmiri"
+#: user_profile/fields.py:112
+msgid "Igbo"
 msgstr ""
 
-#: user_profile/fields.py:113
-msgid "Kanuri"
+#: user_profile/fields.py:113 user_profile/fields.py:121
+msgid "Icelandic"
 msgstr ""
 
 #: user_profile/fields.py:114
-msgid "Kazakh"
+msgid "Ido"
 msgstr ""
 
 #: user_profile/fields.py:115
-msgid "Central Khmer"
+msgid "Sichuan Yi; Nuosu"
 msgstr ""
 
 #: user_profile/fields.py:116
-msgid "Kikuyu; Gikuyu"
+msgid "Inuktitut"
 msgstr ""
 
 #: user_profile/fields.py:117
-msgid "Kinyarwanda"
+msgid "Interlingue; Occidental"
 msgstr ""
 
 #: user_profile/fields.py:118
-msgid "Kirghiz; Kyrgyz"
+msgid "Interlingua (International Auxiliary Language Association)"
 msgstr ""
 
 #: user_profile/fields.py:119
-msgid "Komi"
+msgid "Indonesian"
 msgstr ""
 
 #: user_profile/fields.py:120
-msgid "Kongo"
-msgstr ""
-
-#: user_profile/fields.py:121
-msgid "Korean"
+msgid "Inupiaq"
 msgstr ""
 
 #: user_profile/fields.py:122
-msgid "Kuanyama; Kwanyama"
+msgid "Italian"
 msgstr ""
 
 #: user_profile/fields.py:123
-msgid "Kurdish"
+msgid "Javanese"
 msgstr ""
 
 #: user_profile/fields.py:124
-msgid "Lao"
-msgstr ""
+msgid "Japanese"
+msgstr "日本"
 
 #: user_profile/fields.py:125
-msgid "Latin"
+msgid "Kalaallisut; Greenlandic"
 msgstr ""
 
 #: user_profile/fields.py:126
-msgid "Latvian"
+msgid "Kannada"
 msgstr ""
 
 #: user_profile/fields.py:127
-msgid "Limburgan; Limburger; Limburgish"
-msgstr ""
-
-#: user_profile/fields.py:128
-msgid "Lingala"
+msgid "Kashmiri"
 msgstr ""
 
 #: user_profile/fields.py:129
-msgid "Lithuanian"
+msgid "Kanuri"
 msgstr ""
 
 #: user_profile/fields.py:130
-msgid "Luxembourgish; Letzeburgesch"
+msgid "Kazakh"
 msgstr ""
 
 #: user_profile/fields.py:131
-msgid "Luba-Katanga"
+msgid "Central Khmer"
 msgstr ""
 
 #: user_profile/fields.py:132
-msgid "Ganda"
+msgid "Kikuyu; Gikuyu"
 msgstr ""
 
 #: user_profile/fields.py:133
-#: user_profile/fields.py:139
-msgid "Macedonian"
+msgid "Kinyarwanda"
 msgstr ""
 
 #: user_profile/fields.py:134
-msgid "Marshallese"
+msgid "Kirghiz; Kyrgyz"
 msgstr ""
 
 #: user_profile/fields.py:135
-msgid "Malayalam"
+msgid "Komi"
 msgstr ""
 
 #: user_profile/fields.py:136
-#: user_profile/fields.py:143
-msgid "Maori"
+msgid "Kongo"
 msgstr ""
 
 #: user_profile/fields.py:137
-msgid "Marathi"
+msgid "Korean"
 msgstr ""
 
 #: user_profile/fields.py:138
-#: user_profile/fields.py:144
-msgid "Malay"
+msgid "Kuanyama; Kwanyama"
+msgstr ""
+
+#: user_profile/fields.py:139
+msgid "Kurdish"
 msgstr ""
 
 #: user_profile/fields.py:140
-msgid "Malagasy"
+msgid "Lao"
 msgstr ""
 
 #: user_profile/fields.py:141
-msgid "Maltese"
+msgid "Latin"
 msgstr ""
 
 #: user_profile/fields.py:142
-msgid "Mongolian"
+msgid "Latvian"
+msgstr ""
+
+#: user_profile/fields.py:143
+msgid "Limburgan; Limburger; Limburgish"
+msgstr ""
+
+#: user_profile/fields.py:144
+msgid "Lingala"
+msgstr ""
+
+#: user_profile/fields.py:145
+msgid "Lithuanian"
 msgstr ""
 
 #: user_profile/fields.py:146
-msgid "Nauru"
+msgid "Luxembourgish; Letzeburgesch"
 msgstr ""
 
 #: user_profile/fields.py:147
-msgid "Navajo; Navaho"
+msgid "Luba-Katanga"
 msgstr ""
 
 #: user_profile/fields.py:148
-msgid "Ndebele, South; South Ndebele"
+msgid "Ganda"
 msgstr ""
 
-#: user_profile/fields.py:149
-msgid "Ndebele, North; North Ndebele"
+#: user_profile/fields.py:149 user_profile/fields.py:155
+msgid "Macedonian"
 msgstr ""
 
 #: user_profile/fields.py:150
-msgid "Ndonga"
+msgid "Marshallese"
 msgstr ""
 
 #: user_profile/fields.py:151
-msgid "Nepali"
+msgid "Malayalam"
+msgstr ""
+
+#: user_profile/fields.py:152 user_profile/fields.py:159
+msgid "Maori"
 msgstr ""
 
 #: user_profile/fields.py:153
-msgid "Norwegian Nynorsk; Nynorsk, Norwegian"
+msgid "Marathi"
 msgstr ""
 
-#: user_profile/fields.py:154
-msgid "Bokmal, Norwegian; Norwegian Bokmal"
-msgstr ""
-
-#: user_profile/fields.py:155
-msgid "Norwegian"
+#: user_profile/fields.py:154 user_profile/fields.py:160
+msgid "Malay"
 msgstr ""
 
 #: user_profile/fields.py:156
-msgid "Chichewa; Chewa; Nyanja"
+msgid "Malagasy"
 msgstr ""
 
 #: user_profile/fields.py:157
-msgid "Occitan (post 1500)"
+msgid "Maltese"
 msgstr ""
 
 #: user_profile/fields.py:158
-msgid "Ojibwa"
-msgstr ""
-
-#: user_profile/fields.py:159
-msgid "Oriya"
-msgstr ""
-
-#: user_profile/fields.py:160
-msgid "Oromo"
-msgstr ""
-
-#: user_profile/fields.py:161
-msgid "Ossetian; Ossetic"
+msgid "Mongolian"
 msgstr ""
 
 #: user_profile/fields.py:162
-msgid "Panjabi; Punjabi"
+msgid "Nauru"
+msgstr ""
+
+#: user_profile/fields.py:163
+msgid "Navajo; Navaho"
 msgstr ""
 
 #: user_profile/fields.py:164
-msgid "Pali"
+msgid "Ndebele, South; South Ndebele"
 msgstr ""
 
 #: user_profile/fields.py:165
-msgid "Polish"
+msgid "Ndebele, North; North Ndebele"
+msgstr ""
+
+#: user_profile/fields.py:166
+msgid "Ndonga"
 msgstr ""
 
 #: user_profile/fields.py:167
-msgid "Pushto; Pashto"
-msgstr ""
-
-#: user_profile/fields.py:168
-msgid "Quechua"
+msgid "Nepali"
 msgstr ""
 
 #: user_profile/fields.py:169
-msgid "Romansh"
+msgid "Norwegian Nynorsk; Nynorsk, Norwegian"
 msgstr ""
 
 #: user_profile/fields.py:170
+msgid "Bokmal, Norwegian; Norwegian Bokmal"
+msgstr ""
+
 #: user_profile/fields.py:171
-msgid "Romanian; Moldavian; Moldovan"
+msgid "Norwegian"
 msgstr ""
 
 #: user_profile/fields.py:172
-msgid "Rundi"
+msgid "Chichewa; Chewa; Nyanja"
 msgstr ""
 
 #: user_profile/fields.py:173
-msgid "Russian"
+msgid "Occitan (post 1500)"
 msgstr ""
 
 #: user_profile/fields.py:174
-msgid "Sango"
+msgid "Ojibwa"
 msgstr ""
 
 #: user_profile/fields.py:175
-msgid "Sanskrit"
+msgid "Oriya"
 msgstr ""
 
 #: user_profile/fields.py:176
-msgid "Sinhala; Sinhalese"
+msgid "Oromo"
 msgstr ""
 
 #: user_profile/fields.py:177
-#: user_profile/fields.py:178
-msgid "Slovak"
+msgid "Ossetian; Ossetic"
 msgstr ""
 
-#: user_profile/fields.py:179
-msgid "Slovenian"
+#: user_profile/fields.py:178
+msgid "Panjabi; Punjabi"
 msgstr ""
 
 #: user_profile/fields.py:180
-msgid "Northern Sami"
+msgid "Pali"
 msgstr ""
 
 #: user_profile/fields.py:181
-msgid "Samoan"
-msgstr ""
-
-#: user_profile/fields.py:182
-msgid "Shona"
+msgid "Polish"
 msgstr ""
 
 #: user_profile/fields.py:183
-msgid "Sindhi"
+msgid "Pushto; Pashto"
 msgstr ""
 
 #: user_profile/fields.py:184
-msgid "Somali"
+msgid "Quechua"
 msgstr ""
 
 #: user_profile/fields.py:185
-msgid "Sotho, Southern"
+msgid "Romansh"
 msgstr ""
 
-#: user_profile/fields.py:186
-msgid "Spanish; Castilian"
+#: user_profile/fields.py:186 user_profile/fields.py:187
+msgid "Romanian; Moldavian; Moldovan"
 msgstr ""
 
 #: user_profile/fields.py:188
-msgid "Sardinian"
+msgid "Rundi"
 msgstr ""
 
 #: user_profile/fields.py:189
-msgid "Serbian"
+msgid "Russian"
 msgstr ""
 
 #: user_profile/fields.py:190
-msgid "Swati"
+msgid "Sango"
 msgstr ""
 
 #: user_profile/fields.py:191
-msgid "Sundanese"
+msgid "Sanskrit"
 msgstr ""
 
 #: user_profile/fields.py:192
-msgid "Swahili"
+msgid "Sinhala; Sinhalese"
 msgstr ""
 
-#: user_profile/fields.py:193
-msgid "Swedish"
-msgstr ""
-
-#: user_profile/fields.py:194
-msgid "Tahitian"
+#: user_profile/fields.py:193 user_profile/fields.py:194
+msgid "Slovak"
 msgstr ""
 
 #: user_profile/fields.py:195
-msgid "Tamil"
+msgid "Slovenian"
 msgstr ""
 
 #: user_profile/fields.py:196
-msgid "Tatar"
+msgid "Northern Sami"
 msgstr ""
 
 #: user_profile/fields.py:197
-msgid "Telugu"
+msgid "Samoan"
 msgstr ""
 
 #: user_profile/fields.py:198
-msgid "Tajik"
+msgid "Shona"
 msgstr ""
 
 #: user_profile/fields.py:199
-msgid "Tagalog"
+msgid "Sindhi"
 msgstr ""
 
 #: user_profile/fields.py:200
-msgid "Thai"
+msgid "Somali"
+msgstr ""
+
+#: user_profile/fields.py:201
+msgid "Sotho, Southern"
 msgstr ""
 
 #: user_profile/fields.py:202
-msgid "Tigrinya"
-msgstr ""
-
-#: user_profile/fields.py:203
-msgid "Tonga (Tonga Islands)"
+msgid "Spanish; Castilian"
 msgstr ""
 
 #: user_profile/fields.py:204
-msgid "Tswana"
+msgid "Sardinian"
 msgstr ""
 
 #: user_profile/fields.py:205
-msgid "Tsonga"
+msgid "Serbian"
 msgstr ""
 
 #: user_profile/fields.py:206
-msgid "Turkmen"
+msgid "Swati"
 msgstr ""
 
 #: user_profile/fields.py:207
-msgid "Turkish"
+msgid "Sundanese"
 msgstr ""
 
 #: user_profile/fields.py:208
-msgid "Twi"
+msgid "Swahili"
 msgstr ""
 
 #: user_profile/fields.py:209
-msgid "Uighur; Uyghur"
+msgid "Swedish"
 msgstr ""
 
 #: user_profile/fields.py:210
-msgid "Ukrainian"
+msgid "Tahitian"
 msgstr ""
 
 #: user_profile/fields.py:211
-msgid "Urdu"
+msgid "Tamil"
 msgstr ""
 
 #: user_profile/fields.py:212
-msgid "Uzbek"
+msgid "Tatar"
 msgstr ""
 
 #: user_profile/fields.py:213
-msgid "Venda"
+msgid "Telugu"
 msgstr ""
 
 #: user_profile/fields.py:214
-msgid "Vietnamese"
+msgid "Tajik"
 msgstr ""
 
 #: user_profile/fields.py:215
-msgid "Volapuk"
+msgid "Tagalog"
 msgstr ""
 
-#: user_profile/fields.py:217
-msgid "Walloon"
+#: user_profile/fields.py:216
+msgid "Thai"
 msgstr ""
 
 #: user_profile/fields.py:218
-msgid "Wolof"
+msgid "Tigrinya"
 msgstr ""
 
 #: user_profile/fields.py:219
-msgid "Xhosa"
+msgid "Tonga (Tonga Islands)"
 msgstr ""
 
 #: user_profile/fields.py:220
-msgid "Yiddish"
+msgid "Tswana"
 msgstr ""
 
 #: user_profile/fields.py:221
-msgid "Yoruba"
+msgid "Tsonga"
 msgstr ""
 
 #: user_profile/fields.py:222
-msgid "Zhuang; Chuang"
+msgid "Turkmen"
 msgstr ""
 
 #: user_profile/fields.py:224
+msgid "Twi"
+msgstr ""
+
+#: user_profile/fields.py:225
+msgid "Uighur; Uyghur"
+msgstr ""
+
+#: user_profile/fields.py:226
+msgid "Ukrainian"
+msgstr ""
+
+#: user_profile/fields.py:227
+msgid "Urdu"
+msgstr ""
+
+#: user_profile/fields.py:228
+msgid "Uzbek"
+msgstr ""
+
+#: user_profile/fields.py:229
+msgid "Venda"
+msgstr ""
+
+#: user_profile/fields.py:230
+msgid "Vietnamese"
+msgstr ""
+
+#: user_profile/fields.py:231
+msgid "Volapuk"
+msgstr ""
+
+#: user_profile/fields.py:233
+msgid "Walloon"
+msgstr ""
+
+#: user_profile/fields.py:234
+msgid "Wolof"
+msgstr ""
+
+#: user_profile/fields.py:235
+msgid "Xhosa"
+msgstr ""
+
+#: user_profile/fields.py:236
+msgid "Yiddish"
+msgstr ""
+
+#: user_profile/fields.py:237
+msgid "Yoruba"
+msgstr ""
+
+#: user_profile/fields.py:238
+msgid "Zhuang; Chuang"
+msgstr ""
+
+#: user_profile/fields.py:240
 msgid "Zulu"
 msgstr ""
 
-#: user_profile/fields.py:232
+#: user_profile/fields.py:248
 msgid "Stores language codes"
 msgstr ""
 
-#: user_profile/forms.py:12
+#: user_profile/forms.py:26
 msgid "Email address"
 msgstr "電郵"
 
-#: user_profile/forms.py:45
+#: user_profile/forms.py:59
 msgid "Phone Number"
 msgstr "電話號碼"
 
-#: user_profile/forms.py:46
+#: user_profile/forms.py:60
 msgid "Check number is authorised to call"
 msgstr "檢查此號碼為授權撥出"
 
-#: user_profile/management.py:11
-#: user_profile/management.py:12
+#: user_profile/management.py:25 user_profile/management.py:26
 msgid "Campaign started"
 msgstr "競選活動已經開始"
 
-#: user_profile/management.py:15
-#: user_profile/management.py:16
+#: user_profile/management.py:29 user_profile/management.py:30
 msgid "Campaign paused"
 msgstr "競選活動已經暫停"
 
-#: user_profile/management.py:19
-#: user_profile/management.py:20
+#: user_profile/management.py:33 user_profile/management.py:34
 msgid "Campaign aborted"
 msgstr "競選活動中斷"
 
-#: user_profile/management.py:23
-#: user_profile/management.py:24
+#: user_profile/management.py:37 user_profile/management.py:38
 msgid "Campaign stopped"
 msgstr "競選活動停止"
 
-#: user_profile/management.py:27
-#: user_profile/management.py:28
+#: user_profile/management.py:41 user_profile/management.py:42
 msgid "Campaign limit reached"
 msgstr "競選活動達到限制"
 
-#: user_profile/management.py:31
-#: user_profile/management.py:32
+#: user_profile/management.py:45 user_profile/management.py:46
 msgid "Contact limit reached"
 msgstr "聯絡人達到限制"
 
-#: user_profile/management.py:36
+#: user_profile/management.py:50
 msgid "The user needs to be mapped with dialer settings by the administrator"
 msgstr "經由管理者您可以這個使用者需要對應到撥號程序設定"
 
-#: user_profile/management.py:39
-#: user_profile/management.py:40
+#: user_profile/management.py:53 user_profile/management.py:54
 msgid "Call request not found"
 msgstr "找不到撥號要求"
 
-#: user_profile/models.py:30
+#: user_profile/models.py:56
 msgid "Address"
 msgstr "地址"
 
-#: user_profile/models.py:34
+#: user_profile/models.py:60
 msgid "State"
 msgstr "區"
 
-#: user_profile/models.py:37
+#: user_profile/models.py:63
 msgid "Zip code"
 msgstr "區"
 
-#: user_profile/models.py:41
+#: user_profile/models.py:67
 msgid "Fax Number"
 msgstr "傳真號碼"
 
-#: user_profile/models.py:43
+#: user_profile/models.py:69
 msgid "Company name"
 msgstr "公司名稱"
 
-#: user_profile/models.py:46
+#: user_profile/models.py:72
 msgid "Company website"
 msgstr "公司網站"
 
-#: user_profile/models.py:47
+#: user_profile/models.py:73
 msgid "Language"
 msgstr "語系"
 
-#: user_profile/models.py:49
+#: user_profile/models.py:75
 msgid "Note"
 msgstr "註記"
 
-#: user_profile/models.py:62
-#: user_profile/models.py:63
+#: user_profile/models.py:88 user_profile/models.py:89
 msgid "User Profile"
 msgstr "使用者資料"
 
-#: user_profile/models.py:71
+#: user_profile/models.py:97
 msgid "Customer"
 msgstr "客戶"
 
-#: user_profile/models.py:72
+#: user_profile/models.py:98
 msgid "Customers"
 msgstr "客戶"
 
-#: user_profile/models.py:80
+#: user_profile/models.py:106
 msgid "Admin"
 msgstr "管理者"
 
-#: user_profile/models.py:81
+#: user_profile/models.py:107
 msgid "Admins"
 msgstr "管理者"
 
-#: user_profile/views.py:82
+#: user_profile/views.py:95
 msgid "All notifications are marked as read."
 msgstr "所有通知已經標記為已閱讀"
 
-#: user_profile/views.py:97
+#: user_profile/views.py:108
 msgid "Detail has been changed."
 msgstr "內容已變更"
 
-#: user_profile/views.py:99
-#: user_profile/views.py:110
-#: user_profile/views.py:119
+#: user_profile/views.py:110 user_profile/views.py:121
+#: user_profile/views.py:130
 msgid "Please correct the errors below."
 msgstr "請修正下面的錯誤"
 
-#: user_profile/views.py:106
+#: user_profile/views.py:117
 msgid "This phone number is not authorized."
 msgstr "這電話號碼未經授權"
 
-#: user_profile/views.py:108
+#: user_profile/views.py:119
 msgid "This phone number is authorized."
 msgstr "這電話號碼已經授權"
 
-#: user_profile/views.py:117
+#: user_profile/views.py:128
 msgid "Your password has been changed."
 msgstr "密碼已經變更"
 
-#: user_profile/views.py:237
+#: user_profile/views.py:234
 #, python-format
 msgid "\"%(name)s\" is marked as read."
 msgstr "\"%(name)s\" 已經標記為已閱讀."
 
-#: user_profile/views.py:248
+#: user_profile/views.py:245
 #, python-format
 msgid "%(count)s notification(s) are deleted."
 msgstr "%(count)s 通知已經刪除."
 
-#: user_profile/views.py:252
+#: user_profile/views.py:249
 #, python-format
 msgid "%(count)s notification(s) are marked as read."
 msgstr "%(count)s 通知圍標記已經閱讀"
 
-#: voice_app/models.py:44
+#: voice_app/models.py:57
 msgid "Voice Application Description"
 msgstr "語音應用程式詳述"
 
-#: voice_app/models.py:49
+#: voice_app/models.py:62
 msgid "Gateway used if we redirect the call"
 msgstr "語音閘道使用中, 如果我們重新導向這個撥號"
 
-#: voice_app/models.py:51
-msgid "The value of 'data' depends on the type of voice application :<br/>- Dial : The phone number to dial<br/>- Conference : Conference room name or number<br/>- Playaudio : Audio file URL<br/>- Speak : The text to speak using TTS"
-msgstr "'data'裡面的數值會依照使用的不同的語音應用程式而有所不同:<br/>- Dial : 要撥出的號碼l<br/>- Conference : 會議室號碼或電戶號碼<br/>- Playaudio : 語音檔案網址<br/>- Speak : 文字轉語音使用 TTS"
+#: voice_app/models.py:64
+msgid ""
+"The value of 'data' depends on the type of voice application :<br/>- Dial : "
+"The phone number to dial<br/>- Conference : Conference room name or "
+"number<br/>- Playaudio : Audio file URL<br/>- Speak : The text to speak "
+"using TTS"
+msgstr ""
+"'data'裡面的數值會依照使用的不同的語音應用程式而有所不同:<br/>- Dial : 要撥出"
+"的號碼l<br/>- Conference : 會議室號碼或電戶號碼<br/>- Playaudio : 語音檔案網"
+"址<br/>- Speak : 文字轉語音使用 TTS"
 
-#: voice_app/views.py:71
+#: voice_app/views.py:69
 msgid "Update Voice App"
 msgstr "更新語音應用程式"
 
-#: voice_app/views.py:75
+#: voice_app/views.py:73
 msgid "Delete Voice App"
 msgstr "刪除語音應用程式"
 
-#: voice_app/views.py:175
+#: voice_app/views.py:173
 #, python-format
 msgid "%(count)s voiceapp(s) are deleted."
 msgstr "%(count)s 語音應用程式已經刪除."
 
+#~ msgid "Newfies-Dialer Dashboard"
+#~ msgstr "Newfies-Dialer 儀表板"
+
+#~ msgid "Total Calls:"
+#~ msgstr "全部撥號數:"
+
+#~ msgid "Total Duration:"
+#~ msgstr "全部間隔:"
+
+#~ msgid "Answered"
+#~ msgstr "回答"
+
+#~ msgid "Ans"
+#~ msgstr "回答"
+
+#~ msgid "Do not call"
+#~ msgstr "無法撥號"
+
+#~ msgid "DNC"
+#~ msgstr "DNC"
+
+#~ msgid "Busy"
+#~ msgstr "忙碌中"
+
+#~ msgid "Not Answered"
+#~ msgstr "無回應"
+
+#~ msgid "NA"
+#~ msgstr "NA"
+
+#~ msgid "Canceled"
+#~ msgstr "已取消"
+
+#~ msgid "Canc"
+#~ msgstr "Canc"
+
+#~ msgid "ChanUnavail"
+#~ msgstr "ChanUnavail"
+
+#~ msgid "CU"
+#~ msgstr "CU"
+
+#~ msgid "Torture"
+#~ msgstr "Torture"
+
+#~ msgid "Tort"
+#~ msgstr "侵權行為"
+
+#~ msgid "Invalid Args"
+#~ msgstr "對方用戶不存在"
+
+#~ msgid "Inv"
+#~ msgstr "Inv"
+
+#~ msgid "No Route"
+#~ msgstr "無路由"
+
+#~ msgid "NoRo"
+#~ msgstr "NoRo"
+
+#~ msgid "Congestion"
+#~ msgstr "擁塞"
+
+#~ msgid "Cong"
+#~ msgstr "Cong"
+
+#~ msgid "Forbidden"
+#~ msgstr "禁止"
+
+#~ msgid "Forb"
+#~ msgstr "Forb"
+
+#~ msgid "Total Campaigns:"
+#~ msgstr "全部的競選活動:"
+
+#~ msgid "Active:"
+#~ msgstr "啟動:"
+
+#~ msgid "Paused:"
+#~ msgstr "暫停:"
+
+#~ msgid "Aborted:"
+#~ msgstr "中斷:"
+
+#~ msgid "Stopped:"
+#~ msgstr "停止:"
+
+#~ msgid "Total Users:"
+#~ msgstr "全部使用者:"
+
+#~ msgid "Active Users:"
+#~ msgstr "使用中的使用者:"
+
+#~ msgid "No Active Users:"
+#~ msgstr "無使用中的使用者:"
+
+#~ msgid "Newfies Admin"
+#~ msgstr "Newfies 管理者"
+
+#~ msgid "new notifications"
+#~ msgstr "新的通知"
+
+#~ msgid "is"
+#~ msgstr "是"
+
+#~ msgid "Autodialer software"
+#~ msgstr "自動撥號軟體"
+
+#~ msgid "licensed under the "
+#~ msgstr "授權底下"
+
+#~ msgid "Notice"
+#~ msgstr "通知"
+
+#~ msgid "Notification date"
+#~ msgstr "通知日期"
+
+#~ msgid "No Record(s) found."
+#~ msgstr "找不到紀錄."

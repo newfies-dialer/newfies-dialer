@@ -573,15 +573,19 @@ func_install_frontend(){
     #Update for Plivo URL & Authorize local IP
     sed -i "s/SERVER_IP_PORT/$IPADDR:$HTTP_PORT/g" $INSTALL_DIR/settings_local.py
     sed -i "s/#'SERVER_IP',/'$IPADDR',/g" $INSTALL_DIR/settings_local.py
-    sed -i "s/dummy/plivo/g" $INSTALL_DIR/settings_local.py
+    sed -i "s/dummy/plivo/g" $INSTALL_DIR/settings_local.py 
     
 
     
     case $DIST in
         'DEBIAN')
             service apache2 restart
+            #Get TZ
+			ZONE=$(head -1 /etc/timezone)
         ;;
         'CENTOS')
+        	#Get TZ
+			. /etc/sysconfig/clock
             echo ""
             echo "We will now add port $HTTP_PORT  and port 80 to your Firewall"
             echo "Press Enter to continue or CTRL-C to exit"
@@ -599,6 +603,9 @@ func_install_frontend(){
             service httpd restart
         ;;
     esac
+    
+    #Set Timezone in settings_local.py
+    sed -i "s@Europe/Madrid@$ZONE@g" $INSTALL_DIR/settings_local.py
     
 
     echo ""

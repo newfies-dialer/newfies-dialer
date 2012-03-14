@@ -200,7 +200,7 @@ class campaign_spool_contact(PeriodicTask):
         logger.info( "TASK :: campaign_spool_contact")
 
         for campaign in Campaign.objects.get_running_campaign():
-            logger.debug("=> Campaign name %s (id:%s)" % (campaign.name,
+            logger.debug("=> Spool Contact : Campaign name %s (id:%s)" % (campaign.name,
                                                          str(campaign.id)))
 
             collect_subscriber.delay(campaign.id)

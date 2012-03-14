@@ -94,7 +94,7 @@ class CustomJSONSerializer(Serializer):
         return data
 
 
-def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='', leg='a', hangup_cause=''):
+def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='', leg='a', hangup_cause='', from_plivo='', to_plivo=''):
     """
     Common function to create CDR / VoIP Call
     
@@ -131,8 +131,11 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='', l
     else:
         cdr_hangup_cause = hangup_cause
     
-   
-    
+    if cdr_hangup_cause == 'USER_BUSY':
+        disposition = 'BUSY'
+    else:
+        disposition = data["%s%s" % (data_prefix, 'endpoint_disposition')] or ''
+
     logger.debug('Create CDR - request_uuid=%s ; leg=%d ; hangup_cause= %s' % (plivo_request_uuid, leg_type, cdr_hangup_cause))
     
     new_voipcall = VoIPCall(user = obj_callrequest.user,
@@ -141,15 +144,15 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='', l
                             used_gateway=used_gateway,
                             callrequest=obj_callrequest,
                             callid=data["%s%s" % (data_prefix, 'call_uuid')] or '',
-                            callerid=data["%s%s" % (data_prefix, 'origination_caller_id_number')] or '',
-                            phone_number=data["%s%s" % (data_prefix, 'caller_id')] or '',
+                            callerid=from_plivo,
+                            phone_number=to_plivo,
                             dialcode=None, #TODO
                             starting_date=starting_date,
                             duration=data["%s%s" % (data_prefix, 'duration')] or 0,
                             billsec=data["%s%s" % (data_prefix, 'billsec')] or 0,
                             progresssec=data["%s%s" % (data_prefix, 'progresssec')] or 0,
                             answersec=data["%s%s" % (data_prefix, 'answersec')] or 0,
-                            disposition=data["%s%s" % (data_prefix, 'endpoint_disposition')] or '',
+                            disposition=disposition,
                             hangup_cause=cdr_hangup_cause,
                             hangup_cause_q850=data["%s%s" % (data_prefix, 'hangup_cause_q850')] or '',)
 
@@ -1724,12 +1727,17 @@ class DialCallbackResource(ModelResource):
                     data[element] = None
                 else:
                     data[element] = request.POST.get('variable_%s' % element)
-            
+
+            from_plivo = request.POST.get('From')
+            to_plivo = request.POST.get('To')
+
             create_voipcall(obj_callrequest=callrequest, 
                                 plivo_request_uuid=callrequest.request_uuid, 
                                 data=data, 
                                 data_prefix='', 
-                                leg='b')
+                                leg='b',
+                                from_plivo=from_plivo,
+                                to_plivo=to_plivo)
             
             object_list = [{'result': 'OK'}]
             logger.debug('DialCallback API : Result 200!')
@@ -1843,20 +1851,22 @@ class HangupcallResource(ModelResource):
             
             try:
                 obj_subscriber = CampaignSubscriber.objects.get(id=callrequest.campaign_subscriber.id)
+                if opt_hangup_cause=='NORMAL_CLEARING':
+                    obj_subscriber.status = 5 # Complete
+                else:
+                    obj_subscriber.status = 4 # Fail
+                obj_subscriber.save()
             except:
                 logger.debug('Hangupcall Error cannot find the Campaignubscriber!')
             
             # 2 / FAILURE ; 3 / RETRY ; 4 / SUCCESS
             if opt_hangup_cause=='NORMAL_CLEARING':
                 callrequest.status = 4 # Success
-                obj_subscriber.status = 5 # Complete
             else:
                 callrequest.status = 2 # Failure
-                obj_subscriber.status = 4 # Fail
             callrequest.hangup_cause = opt_hangup_cause
             #save callrequest & campaignsubscriber
             callrequest.save()
-            obj_subscriber.save()
             
             data = {}
             for element in CDR_VARIABLES:
@@ -1864,13 +1874,18 @@ class HangupcallResource(ModelResource):
                     data[element] = None
                 else:
                     data[element] = request.POST.get('variable_%s' % element)
-                    
+            
+            from_plivo = request.POST.get('From')
+            to_plivo = request.POST.get('To')
+
             create_voipcall(obj_callrequest=callrequest, 
                                 plivo_request_uuid=opt_request_uuid, 
                                 data=data, 
                                 data_prefix='', 
                                 leg='a',
-                                hangup_cause=opt_hangup_cause)
+                                hangup_cause=opt_hangup_cause,
+                                from_plivo=from_plivo,
+                                to_plivo=to_plivo)
             
             object_list = [{'result': 'OK'}]
             logger.debug('Hangupcall API : Result 200!')

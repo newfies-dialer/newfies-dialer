@@ -74,6 +74,7 @@ def check_campaign_pendingcall(campaign_id):
         obj_campaign = Campaign.objects.get(id=campaign_id)
     except:
         logger.error('Can\'t find this campaign')
+        return False
 
     #TODO: Control the Speed
     #if there is many task pending we should slow down
@@ -199,7 +200,7 @@ class campaign_spool_contact(PeriodicTask):
         logger.info( "TASK :: campaign_spool_contact")
 
         for campaign in Campaign.objects.get_running_campaign():
-            logger.debug("=> Campaign name %s (id:%s)" % (campaign.name,
+            logger.debug("=> Spool Contact : Campaign name %s (id:%s)" % (campaign.name,
                                                          str(campaign.id)))
 
             collect_subscriber.delay(campaign.id)

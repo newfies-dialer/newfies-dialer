@@ -74,6 +74,7 @@ def check_campaign_pendingcall(campaign_id):
         obj_campaign = Campaign.objects.get(id=campaign_id)
     except:
         logger.error('Can\'t find this campaign')
+        return False
 
     #TODO: Control the Speed
     #if there is many task pending we should slow down

@@ -94,6 +94,7 @@ case $DIST in
         apt-get -y install autoconf automake autotools-dev binutils bison build-essential cpp curl flex g++ gcc git-core libaudiofile-dev libc6-dev libdb-dev libexpat1 libgdbm-dev libgnutls-dev libmcrypt-dev libncurses5-dev libnewt-dev libpcre3 libpopt-dev libsctp-dev libsqlite3-dev libtiff4 libtiff4-dev libtool libx11-dev libxml2 libxml2-dev lksctp-tools lynx m4 make mcrypt ncftp nmap openssl sox sqlite3 ssl-cert ssl-cert unixodbc-dev unzip zip zlib1g-dev zlib1g-dev
         apt-get -y install libssl-dev pkg-config
         apt-get -y install libvorbis0a libogg0 libogg-dev libvorbis-dev
+        apt-get -y install flite
         #Install Freeswitch
         func_install_fs_source
         ;;
@@ -103,6 +104,7 @@ case $DIST in
 		read YUMSOURCE
         yum -y update
         yum -y install autoconf automake bzip2 cpio curl curl-devel curl-devel expat-devel fileutils gcc-c++ gettext-devel gnutls-devel libjpeg-devel libogg-devel libtiff-devel libtool libvorbis-devel make ncurses-devel nmap openssl openssl-devel openssl-devel perl patch unixODBC unixODBC-devel unzip wget zip zlib zlib-devel
+        yum -y install flite
 
 		#install the RPMFORGE Repository
         if [ ! -f /etc/yum.repos.d/rpmforge.repo ];

@@ -37,8 +37,14 @@ ul.nav {
     padding: 5px;
 }
 
+.help-block {
+  margin-top: -5px;
+  margin-bottom: 20px;
+}
 
-
+label {
+  font-size: 15px;
+}
 
 /* * * Responsive * * */
 

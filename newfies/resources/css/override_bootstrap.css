@@ -42,6 +42,14 @@ ul.nav {
   margin-bottom: 20px;
 }
 
+.input {
+  margin-bottom: 20px;
+}
+
+.row {
+  margin-bottom: 10px;
+}
+
 label {
   font-size: 15px;
 }

@@ -388,7 +388,7 @@ class CampaignValidation(Validation):
         
         startingdate = bundle.data.get('startingdate')
         expirationdate = bundle.data.get('expirationdate')
-        
+
         if request.method == 'POST':
             startingdate = get_value_if_none(startingdate, time.time())
             # expires in 7 days
@@ -726,7 +726,8 @@ class CampaignResource(ModelResource):
         """
         logger.debug('Campaign API get called')
 
-        self.is_valid(bundle, request)
+        #Uncomment this, it seems to fix API for some users
+        #self.is_valid(bundle, request)
         bundle.obj = self._meta.object_class()
 
         for key, value in kwargs.items():

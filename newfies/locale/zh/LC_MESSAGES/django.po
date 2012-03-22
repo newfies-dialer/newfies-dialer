@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-04 23:43+0100\n"
+"POT-Creation-Date: 2012-03-22 09:33+0100\n"
 "PO-Revision-Date: 2012-02-28 23:20+0800\n"
 "Last-Translator: samlin <sam@theta.com.tw>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -678,7 +678,6 @@ msgid "Delete contact"
 msgstr "刪除聯絡人"
 
 #: dialer_campaign/views.py:1337
-#, fuzzy, python-format
 msgid "\"%(name)s\" cannot be added."
 msgstr "\"%(name)s\" 已經新增."
 
@@ -820,8 +819,8 @@ msgstr "資料庫錯誤"
 #, python-format
 msgid "%(total_count)s selected"
 msgid_plural "All %(total_count)s selected"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(total_count)s selected"
+msgstr[1] "All %(total_count)s selected"
 
 #: dialer_cdr/admin.py:194
 #, python-format
@@ -1016,7 +1015,7 @@ msgstr "找不到這個競選活動 : %(id)s"
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:82
 #, python-format
 msgid "No of Callrequest & CDR created :%(count)s"
-msgstr "無撥號要求&CDR新增 %(count)s"
+msgstr "無撥號要求&CDR新增 :%(count)s"
 
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:84
 msgid "Callrequest & CDR are not created!"
@@ -1335,9 +1334,8 @@ msgid "Accepted methods"
 msgstr "接受方法"
 
 #: templates/admin/base_site.html:4
-#, fuzzy
 msgid "Newfies-Dialer Admin"
-msgstr "Newfies-Dialer"
+msgstr ""
 
 #: templates/admin/filter.html:2
 #, python-format
@@ -1365,8 +1363,8 @@ msgstr "匯入聯絡人"
 #: templates/admin/dialer_cdr/voipcall/change_list.html:48
 msgid "Please correct the error below."
 msgid_plural "Please correct the errors below."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Please correct the error below."
+msgstr[1] "Please correct the errors below."
 
 #: templates/admin/dialer_campaign/contact/change_list.html:49
 #: templates/admin/dialer_cdr/voipcall/change_list.html:86
@@ -1581,9 +1579,8 @@ msgid "Log out"
 msgstr "登出"
 
 #: templates/frontend/bootstrap_menu.html:71
-#, fuzzy
 msgid "notifications"
-msgstr "通知"
+msgstr ""
 
 #: templates/frontend/custom_jquery_select_all.html:16
 msgid "You must check at least one box!"
@@ -1734,7 +1731,6 @@ msgid "Learn more"
 msgstr ""
 
 #: templates/frontend/index.html:19
-#, fuzzy
 msgid "Support"
 msgstr "匯入"
 
@@ -1767,11 +1763,10 @@ msgid "Newfies-Dialer is licensed under"
 msgstr "Newfies-Dialer is licensed under"
 
 #: templates/frontend/index.html:28
-#, fuzzy
 msgid ""
 "however an alternative license can be purchased if the MPL V2 license is not "
 "suitable for your requirements."
-msgstr "如果AGPL授權不是用於您的需求, 您可以購買另一種授權方式"
+msgstr ""
 
 #: templates/frontend/index.html:29
 msgid "View Licensing details"
@@ -1790,9 +1785,8 @@ msgid "Forgot password?"
 msgstr "忘記密碼?"
 
 #: templates/frontend/master.html:118
-#, fuzzy
 msgid "Display language"
-msgstr "顯示"
+msgstr ""
 
 #: templates/frontend/master.html:132 templates/frontend/master.html.py:138
 #: templates/frontend/master.html:158 templates/frontend/campaign/list.html:16
@@ -2173,9 +2167,8 @@ msgid "Sender"
 msgstr "寄件者"
 
 #: templates/frontend/registration/user_detail_change.html:146
-#, fuzzy
 msgid "Delete notifications"
-msgstr "刪除所有通知訊息"
+msgstr ""
 
 #: templates/frontend/registration/user_detail_change.html:148
 msgid "Mark as read"
@@ -2210,9 +2203,8 @@ msgid "Check"
 msgstr "檢查"
 
 #: templates/frontend/registration/user_detail_change.html:291
-#, fuzzy
 msgid "Select language"
-msgstr "選擇競選活動"
+msgstr ""
 
 #: templates/frontend/report/voipcall_report.html:31
 msgid "Call Reports"
@@ -2331,8 +2323,8 @@ msgid "Data"
 msgstr "資料"
 
 #: templates/registration/logged_out.html:8
-msgid "Thank you for using Newfies."
-msgstr "感謝您使用Newfies."
+msgid "Thank you for using Newfies-Dialer."
+msgstr "感謝您使用Newfies-Dialer."
 
 #: templates/registration/logged_out.html:10
 msgid "Log in again"

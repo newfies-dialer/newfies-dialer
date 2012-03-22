@@ -382,10 +382,10 @@ class CampaignValidation(Validation):
     """
     def is_valid(self, bundle, request=None):
         errors = {}
-
+        
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
-
+        
         startingdate = bundle.data.get('startingdate')
         expirationdate = bundle.data.get('expirationdate')
 
@@ -393,6 +393,7 @@ class CampaignValidation(Validation):
             startingdate = get_value_if_none(startingdate, time.time())
             # expires in 7 days
             expirationdate = get_value_if_none(expirationdate, time.time() + 86400 * 7)
+            
             bundle.data['startingdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
                                           time.gmtime(float(startingdate)))
             bundle.data['expirationdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
@@ -725,6 +726,8 @@ class CampaignResource(ModelResource):
         """
         logger.debug('Campaign API get called')
 
+        #Uncomment this, it seems to fix API for some users
+        #self.is_valid(bundle, request)
         bundle.obj = self._meta.object_class()
 
         for key, value in kwargs.items():

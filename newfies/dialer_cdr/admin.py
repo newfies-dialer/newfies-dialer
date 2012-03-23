@@ -103,8 +103,8 @@ class VoIPCallAdmin(admin.ModelAdmin):
         urls = super(VoIPCallAdmin, self).get_urls()
         my_urls = patterns('',
             (r'^$', self.admin_site.admin_view(self.changelist_view)),
-            (r'^aggregate_report/$',
-             self.admin_site.admin_view(self.aggregate_voip_report)),
+            (r'^voip_report/$',
+             self.admin_site.admin_view(self.voip_report)),
             (r'^export_voip_report/$',
              self.admin_site.admin_view(self.export_voip_report)),
         )
@@ -178,7 +178,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
                .changelist_view(request, extra_context=ctx)
 
 
-    def aggregate_voip_report(self, request):
+    def voip_report(self, request):
         opts = VoIPCall._meta
         app_label = opts.app_label
 
@@ -240,7 +240,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             'title': _('Call Aggregate Report'),
         })
 
-        return render_to_response('admin/dialer_cdr/voipcall/aggregate_report.html',
+        return render_to_response('admin/dialer_cdr/voipcall/voip_report.html',
                context_instance=ctx)
 
     def export_voip_report(self, request):

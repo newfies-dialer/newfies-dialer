@@ -16,7 +16,9 @@ from django.contrib import admin
 from django.contrib.admin.options import IncorrectLookupParameters
 from django.contrib.admin.views.main import ERROR_FLAG
 from django.conf.urls.defaults import *
+from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render_to_response
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext
 from django.db.models import *
@@ -101,12 +103,13 @@ class VoIPCallAdmin(admin.ModelAdmin):
         urls = super(VoIPCallAdmin, self).get_urls()
         my_urls = patterns('',
             (r'^$', self.admin_site.admin_view(self.changelist_view)),
+            (r'^aggregate_report/$',
+             self.admin_site.admin_view(self.aggregate_voip_report)),
             (r'^export_voip_report/$',
              self.admin_site.admin_view(self.export_voip_report)),
         )
         return my_urls + urls
 
-    
     def changelist_view(self, request, extra_context=None):
         """Override changelist_view method of django-admin for search parameters
 
@@ -123,7 +126,6 @@ class VoIPCallAdmin(admin.ModelAdmin):
         opts = VoIPCall._meta
         app_label = opts.app_label
 
-
         ChangeList = self.get_changelist(request)
         try:
             cl = ChangeList(request, self.model, self.list_display, self.list_display_links,
@@ -133,7 +135,6 @@ class VoIPCallAdmin(admin.ModelAdmin):
             if ERROR_FLAG in request.GET.keys():
                 return render_to_response('admin/invalid_setup.html', {'title': _('Database error')})
             return HttpResponseRedirect(request.path + '?' + ERROR_FLAG + '=1')
-
 
         kwargs = {}
         
@@ -160,8 +161,47 @@ class VoIPCallAdmin(admin.ModelAdmin):
         super(VoIPCallAdmin, self).queryset(request).filter(**kwargs)\
         .order_by('-starting_date')
 
+        selection_note_all = ungettext('%(total_count)s selected',
+            'All %(total_count)s selected', cl.result_count)
+
+        ctx = {
+            'selection_note': _('0 of %(cnt)s selected') % {'cnt': len(cl.result_list)},
+            'selection_note_all': selection_note_all % {'total_count': cl.result_count},
+            'cl': cl,
+            'form': form,
+            'opts': opts,
+            'model_name': opts.object_name.lower(),
+            'app_label': _('VoIP Report'),
+            'title': _('Call Report'),
+        }
+        return super(VoIPCallAdmin, self)\
+               .changelist_view(request, extra_context=ctx)
+
+
+    def aggregate_voip_report(self, request):
+        opts = VoIPCall._meta
+        app_label = opts.app_label
+
+        kwargs = {}
+
+        form = VoipSearchForm()
+        if request.method == 'POST':
+            form = VoipSearchForm(request.POST)
+            kwargs = voipcall_record_common_fun(request)
+            request.session['from_date'] = request.POST.get('from_date')
+            request.session['to_date'] = request.POST.get('to_date')
+            request.session['status'] = request.POST.get('status')
+        else:
+            kwargs = voipcall_record_common_fun(request)
+            tday = datetime.today()
+            if len(kwargs) == 0:
+                kwargs['starting_date__gte'] = datetime(tday.year,
+                                                        tday.month,
+                                                        tday.day, 0, 0, 0, 0)
+
         select_data = \
         {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
+
         total_data = ''
         # Get Total Records from VoIPCall Report table for Daily Call Report
         total_data = VoIPCall.objects.extra(select=select_data)\
@@ -187,13 +227,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             total_calls = 0
             total_avg_duration = 0
 
-        selection_note_all = ungettext('%(total_count)s selected',
-            'All %(total_count)s selected', cl.result_count)
-        
-        ctx = {
-            'selection_note': _('0 of %(cnt)s selected') % {'cnt': len(cl.result_list)},
-            'selection_note_all': selection_note_all % {'total_count': cl.result_count},
-            'cl': cl,
+        ctx = RequestContext(request, {
             'form': form,
             'total_data': total_data.reverse(),
             'total_duration': total_duration,
@@ -203,10 +237,11 @@ class VoIPCallAdmin(admin.ModelAdmin):
             'opts': opts,
             'model_name': opts.object_name.lower(),
             'app_label': _('VoIP Report'),
-            'title': _('Call Report'),
-        }
-        return super(VoIPCallAdmin, self)\
-               .changelist_view(request, extra_context=ctx)
+            'title': _('Call Aggregate Report'),
+        })
+
+        return render_to_response('admin/dialer_cdr/voipcall/aggregate_report.html',
+               context_instance=ctx)
 
     def export_voip_report(self, request):
         """Export a CSV file of VoIP call records

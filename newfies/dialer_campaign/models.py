@@ -491,7 +491,7 @@ class Campaign(Model):
         # Cache campaignsubscriber_count
         count_contact = \
         Contact.objects.filter(phonebook__campaign=self.id).count()
-
+        
         # Cache need to be set per campaign
         # campaignsubscriber_count_key_campaign_id_1
         campaignsubscriber_count = \
@@ -499,12 +499,15 @@ class Campaign(Model):
         #campaignsubscriber_count = None
         if campaignsubscriber_count is None:
             list_contact = \
-            Contact.objects.filter(phonebook__campaign=self.id).all()
+            Contact.objects.values_list('id').filter(phonebook__campaign=self.id)
             campaignsubscriber_count = 0
-            for a in list_contact:
-                campaignsubscriber_count += CampaignSubscriber.objects\
-                .filter(contact=a.id, campaign=self.id, status=5).count()
 
+            try:
+                campaignsubscriber_count += CampaignSubscriber.objects\
+            .filter(contact__in=list_contact, campaign=self.id, status=5).count()
+            except:
+                pass
+            
             cache.set("campaignsubscriber_count_key_campaign_id_" \
             + str(self.id), campaignsubscriber_count, 5)
 

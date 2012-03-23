@@ -228,7 +228,8 @@ class VoIPCall(models.Model):
 
     dialcode = models.ForeignKey(Prefix, verbose_name=_("Destination"), null=True,
                                blank=True, help_text=_("Select Prefix"))
-    starting_date = models.DateTimeField(auto_now_add=True, verbose_name=_("Starting date"))
+    starting_date = models.DateTimeField(auto_now_add=True, verbose_name=_("Starting date"),
+                                         db_index=True)
     duration = models.IntegerField(null=True, blank=True, verbose_name=_("Duration"))
     billsec = models.IntegerField(null=True, blank=True, verbose_name=_("Bill sec"))
     progresssec = models.IntegerField(null=True, blank=True, verbose_name=_("Progress sec"))

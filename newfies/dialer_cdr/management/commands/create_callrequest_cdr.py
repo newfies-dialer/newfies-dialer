@@ -28,8 +28,8 @@ VOIPCALL_DISPOSITION = ['ANSWER','BUSY', 'NOANSWER', 'CANCEL', 'CONGESTION',
                         'NOROUTE', 'FORBIDDEN']
 
 class Command(BaseCommand):
-    # Use : create_callrequest_cdr '13843453|1' '324242|1'
-    #                              'phone_no|campaign_id'
+    # Use : create_callrequest_cdr '1|1324242' '3|124242'
+    #                              'campaign_id|no_of_record'
     args = _('"campaign_id|no_of_record" "campaign_id|no_of_record"')
     help = _("Creates no of new call requests and CDRs for a given campaign_id & no of records")
 

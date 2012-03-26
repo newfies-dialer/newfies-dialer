@@ -11,8 +11,8 @@
        <a href="../">
          {{ app_label|capfirst }}
       </a>
-      &rsaquo; {% trans "Call Report" %}
-      <!--{{ cl.opts.verbose_name_plural|capfirst }}-->
+      &rsaquo; <a href="../">{% trans "Call Report" %}</a>
+      &rsaquo; {% trans "Call aggregate report" %}
     </div>
   {% endblock %}
 {% endif %}
@@ -64,53 +64,47 @@ $(function() {
     </form>
 {% endblock %}
 
-{% block object-tools %}
-    <ul class="object-tools">
-    {% if has_add_permission %}
-    <li>
-        <a href="add/{% if is_popup %}?_popup=1{% endif %}" class="addlink">
-          {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
-        </a>
-    </li>
-    {% endif %}
-    <li><a href="voip_report/" class="addlink">{% trans "voip report" %}</a></li>
-    </ul>
-{% endblock %}
-
-<div class="module{% if cl.has_filters %} filtered{% endif %}" id="changelist">
-  {% block search %}{% search_form cl %}{% endblock %}
-  {% block date_hierarchy %}{% date_hierarchy cl %}{% endblock %}
-
-  {% block filters %}
-    {% if cl.has_filters %}
-      <div id="changelist-filter">
-        <h2>{% trans 'Filter' %}</h2>
-        {% for spec in cl.filter_specs %}{% admin_list_filter cl spec %}{% endfor %}
-      </div>
-    {% endif %}
-  {% endblock %}
-
-  <form id="changelist-form" action="" method="post"{% if cl.formset.is_multipart %} enctype="multipart/form-data"{% endif %}>{% csrf_token %}
-  {% if cl.formset %}
-    {{ cl.formset.management_form }}
-  {% endif %}
-  {% block result_list %}
-      {% if action_form and actions_on_top and cl.full_result_count %}{% admin_actions %}{% endif %}
-      {% result_list cl %}
-      {% if action_form and actions_on_bottom and cl.full_result_count %}{% admin_actions %}{% endif %}
-  {% endblock %}
-  {% block pagination %}{% pagination cl %}{% endblock %}
-  </form>
-</div>
-
-<br/>
 
 {% block extra_data %}
-
-<div align=center>
-    {% trans "Export CSV file"  %} <br/>
-    <a href="export_voip_report/"><img src='{{STATIC_URL}}newfies/icons/x-office-spreadsheet.png' width="75"/></a>
+<p>&nbsp;</p>
+<div>
+    <table  class="module" align=left>
+    <caption>{% trans "Call Detail Report Summary"  %}</caption>
+    <thead>
+        <tr>
+            <th scope="col">{% trans "Date"  %}</th>
+            <th scope="col">{% trans "Duration"  %}</th>
+            <th scope="col">{% trans "Graphic"  %}</th>
+            <th scope="col">{% trans "Calls"  %}</th>
+            <th scope="col"><acronym title="{% trans "Average Connection Time"  %}">{% trans "ACT"  %}</acronym></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for td in total_data %}
+        <tr class="{% cycle 'row1' 'row2' %}">
+            <td>{{ td.starting_date }}</td>
+            <td>{{ td.duration__sum|conv_min }}</td>
+            <td>{% if max_duration > 0 %}
+                <img src="{{STATIC_URL}}newfies/images/spacer.png" width="{{ td.duration__sum|cal_width:max_duration }}" style="vertical-align:center;" height="10"/>
+                {% endif %}
+            </td>
+            <td>{{ td.starting_date__count }}</td>
+            <td>{{ td.duration__avg|conv_min }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>{% trans "Total"  %}</td>
+            <td>{{ total_duration|conv_min }}</td>
+            <td></td>
+            <td>{{ total_calls }}</td>
+            <td>{{ total_avg_duration|conv_min }}</td>
+        </tr>
+    </tfoot>
+    </table>
 </div>
+
 {% endblock %}
 
 </div>

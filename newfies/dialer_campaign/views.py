@@ -1201,22 +1201,17 @@ def contact_grid(request):
                     name = kwargs_list[1]
 
     phonebook_id_list = ''
-    phonebook_objs = Phonebook.objects.filter(user=request.user)
-    for i in phonebook_objs:
-        phonebook_id_list += str(i.id) + ","
-    phonebook_id_list = phonebook_id_list[:-1]
-
+    phonebook_id_list = Phonebook.objects.values_list('id').filter(user=request.user)
     contact_list = []
 
     if phonebook_id_list:
         select_data = \
         {"status": "(CASE status WHEN 1 THEN 'ACTIVE' ELSE 'INACTIVE' END)"}
         contact_list = Contact.objects\
-        .extra(select=select_data,
-               where=['phonebook_id IN (%s) ' % phonebook_id_list])\
+        .extra(select=select_data)\
         .values('id', 'phonebook__name', 'contact', 'last_name',
                 'first_name', 'description', 'status', 'additional_vars',
-                'updated_date').all()
+                'updated_date').filter(phonebook__in=phonebook_id_list)
 
         if kwargs:
             kwargs = ast.literal_eval(kwargs)

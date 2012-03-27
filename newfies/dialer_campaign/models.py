@@ -499,7 +499,7 @@ class Campaign(Model):
         #campaignsubscriber_count = None
         if campaignsubscriber_count is None:
             list_contact = \
-            Contact.objects.values_list('id').filter(phonebook__campaign=self.id)
+            Contact.objects.values_list('id', flat=True).filter(phonebook__campaign=self.id)
             campaignsubscriber_count = 0
 
             try:

@@ -100,7 +100,6 @@ def customer_dashboard(request, on_index=None):
     # Phonebook list for logged in user
     phonebook_id_list = Phonebook.objects.values_list('id').filter(user=request.user)
 
-
     # Total count of contacts for logged in user
     total_of_phonebook_contacts = 0
     if phonebook_id_list:
@@ -133,6 +132,7 @@ def customer_dashboard(request, on_index=None):
     twelve_hour_list = []
     common_hour_result_set = []
     only_data_date_list = []
+
     if campaign_id_list:
         selected_campaign = campaign_id_list[0] # default campaign id
 
@@ -370,7 +370,7 @@ def customer_dashboard(request, on_index=None):
 
                     # check dateList date into seven_days_option_list date
                     if str(calls_itme['date_in_int'])[0:8] == inttime:
-                        # compare prvious & current date & count
+                        # compare previous & current date & count
                         if previuos_data_date == str(calls_itme['date_in_int'])[0:8] \
                            and current_previous_count == 0:
 
@@ -1197,7 +1197,7 @@ def contact_grid(request):
                     name = kwargs_list[1]
 
     phonebook_id_list = ''
-    phonebook_id_list = Phonebook.objects.values_list('id').filter(user=request.user)
+    phonebook_id_list = Phonebook.objects.values_list('id', flat=True).filter(user=request.user)
     contact_list = []
 
     if phonebook_id_list:

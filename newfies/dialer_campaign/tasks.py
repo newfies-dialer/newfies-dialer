@@ -262,3 +262,33 @@ class campaign_expire_check(PeriodicTask):
             logger.debug("=> Campaign name %s (id:%s)" % (campaign.name,
                                                          campaign.id))
             common_campaign_status(campaign.id, 4)
+
+            
+@task()
+def import_phonebook(phonebook_id, campaign_id):
+    """
+    Read all the contact from phonebook_id and insert them into campaignsubscriber
+    """
+    def run(self, **kwargs):
+        logger = self.get_logger(**kwargs)
+        logger.info( "TASK :: import_phonebook")
+
+        obj_campaign = Campaign.objects.get(id=campaign_id)
+
+        # imported_phonebook
+        if not obj_campaign.imported_phonebook: # missing phonebook
+            #Retrieve the list of active contact
+            list_contact = Contact.objects.filter(phonebook_id=phonebook_id,
+                                                  status=1)
+            #Create CampaignSubscribers for each new active contact
+            for elem_contact in list_contact:
+                try:
+                    CampaignSubscriber.objects.create(
+                                        contact=elem_contact,
+                                        status=1, #START
+                                        duplicate_contact=elem_contact.contact,
+                                        campaign=obj_campaign)
+                except IntegrityError, e:
+                    #We don't stop if it fails to add a subscriber to one campaign
+                    logger.error("IntegrityError to create CampaignSubscriber "\
+                        "contact_id=%s - Error:%s" % (elem_contact.id, e))

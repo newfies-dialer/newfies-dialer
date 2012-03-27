@@ -50,7 +50,7 @@ class CallrequestAdmin(GenericAdminModelAdmin):
             'aleg_uuid', 'call_time', 'status', 'callerid', 'phone_number', 
             'call_type', 'num_attempt', 'last_attempt_time',)
     list_display_links = ('id', 'request_uuid', )
-    list_filter = ['callerid', 'call_time', 'status', 'call_type']
+    list_filter = ['callerid', 'call_time', 'status', 'call_type', 'campaign']
     ordering = ('id', )
     search_fields  = ('request_uuid', )
 admin.site.register(Callrequest, CallrequestAdmin)

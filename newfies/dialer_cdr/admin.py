@@ -147,19 +147,21 @@ class VoIPCallAdmin(admin.ModelAdmin):
             request.session['status'] = request.POST.get('status')
         else:
             kwargs = voipcall_record_common_fun(request)
-            tday = datetime.today()
-            if len(kwargs) == 0:
-                kwargs['starting_date__gte'] = datetime(tday.year,
-                                                        tday.month,
-                                                        tday.day, 0, 0, 0, 0)
+            
+        tday = datetime.today()
+        if len(kwargs) == 0:
+            kwargs['starting_date__gte'] = datetime(tday.year,
+                                                    tday.month,
+                                                    tday.day, 0, 0, 0, 0)
 
         formset = cl.formset = None
         
         # Session variable is used to get record set with searched option
         # into export file
         request.session['voipcall_record_qs'] = \
-        super(VoIPCallAdmin, self).queryset(request).filter(**kwargs)\
-        .order_by('-starting_date')
+        super(VoIPCallAdmin, self).queryset(request).values('request_uuid', 'callrequest_id',
+                                   'dialcode_id', 'progresssec', 'answersec', 'waitsec')\
+                                  .filter(**kwargs).order_by('-starting_date')
 
         selection_note_all = ungettext('%(total_count)s selected',
             'All %(total_count)s selected', cl.result_count)

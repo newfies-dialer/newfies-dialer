@@ -151,7 +151,6 @@ class Contact(Model):
         db_table = u'dialer_contact'
         verbose_name = _("Contact")
         verbose_name_plural = _("Contacts")
-        unique_together = ['contact', 'phonebook']
 
     def __unicode__(self):
         return u"%s (%s)" % (self.contact, self.last_name)
@@ -466,6 +465,8 @@ class Campaign(Model):
         """List of active contacts that do not exist in Campaign Subscriber"""
         # The list of active contacts that doesn't
         # exist in CampaignSubscriber
+
+        #TODO : This might kill performance on huge phonebook...
         query = \
         'SELECT dc.id, dc.phonebook_id, dc.contact, dc.last_name, \
         dc.first_name, dc.email, dc.city, dc.description, \

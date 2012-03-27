@@ -391,9 +391,13 @@ class CampaignValidation(Validation):
 
         if request.method == 'POST':
             startingdate = get_value_if_none(startingdate, time.time())
-            # expires in 7 days
-            expirationdate = get_value_if_none(expirationdate, time.time() + 86400 * 7)
+            # expires in 90 days
+            expirationdate = get_value_if_none(expirationdate, time.time() + 86400 * 90)
             
+            #Startdate and expirationdate are UTC -> convert to localtime
+            startingdate = float(startingdate) - time.altzone
+            expirationdate = float(expirationdate) - time.altzone
+
             bundle.data['startingdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
                                           time.gmtime(float(startingdate)))
             bundle.data['expirationdate'] = time.strftime('%Y-%m-%d %H:%M:%S',

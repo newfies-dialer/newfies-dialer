@@ -347,6 +347,9 @@ class Campaign(Model):
 
     phonebook = models.ManyToManyField(Phonebook, blank=True, null=True)
 
+    imported_phonebook = models.CharField(max_length=500, default='',
+                                verbose_name=_('List of Imported Phonebook'))
+
     objects = CampaignManager()
 
     def __unicode__(self):

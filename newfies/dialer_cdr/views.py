@@ -118,7 +118,7 @@ def voipcall_report_grid(request):
                                                     tday.day, 0, 0, 0, 0)
     
     voipcall_list = VoIPCall.objects.filter(**kwargs)
-       
+
     count = voipcall_list.count()
     voipcall_list = \
         voipcall_list.order_by(sortorder_sign + sortname)[start_page:end_page]
@@ -187,7 +187,10 @@ def voipcall_report(request):
                                                tday.day, 0, 0, 0, 0)
 
     voipcall_list = \
-    VoIPCall.objects.filter(**kwargs).order_by('-starting_date')
+    VoIPCall.objects.values('user', 'callid', 'callerid', 'phone_number',
+                     'starting_date', 'duration', 'billsec',
+                     'disposition', 'hangup_cause', 'hangup_cause_q850',
+                     'used_gateway').filter(**kwargs).order_by('-starting_date')
 
     # Session variable is used to get record set with searched option
     # into export file

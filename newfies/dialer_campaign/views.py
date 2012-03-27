@@ -83,6 +83,7 @@ def customer_dashboard(request, on_index=None):
         * ``template`` - frontend/dashboard.html
         * ``form`` - DashboardForm
     """
+
     # All campaign for logged in User
     campaign = Campaign.objects.filter(user=request.user)
     campaign_count = campaign.count()

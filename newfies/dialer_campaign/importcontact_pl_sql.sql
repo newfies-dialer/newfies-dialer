@@ -1,23 +1,21 @@
-DROP PROCEDURE IF EXISTS importcontact_pl_sql;
-
+delimiter //
+DROP PROCEDURE IF EXISTS importcontact_pl_sql//
 CREATE PROCEDURE importcontact_pl_sql()
 BEGIN
 
-    DECLARE campaign_id INTEGER (10);
-    DECLARE phonebook_id INTEGER (10);
+    DECLARE campaign_id INT;
+    DECLARE phonebook_id INT;
+    DECLARE cur CURSOR FOR SELECT id, contact FROM dialer_contact WHERE phonebook_id=phonebook_id;
 
-    DECLARE cur1 CURSOR FOR
-        SELECT id, campaign_id, contact FROM dialer_contact WHERE phonebook_id=phonebook_id;
-
-    OPEN cur1;
-
+    OPEN cur;
     read_loop: LOOP
-        FETCH cur1 INTO id, campaign_id, contact;
+        FETCH cur INTO campaign_id;
 
-        INSERT INTO dialer_campaign_subscriber (contact_id, campaign_id, duplicate_contact, 1, NOW(), NOW()) VALUES (id, campaign_id, contact, status, created_date, updated_date)
+        INSERT INTO dialer_campaign_subscriber (contact_id, campaign_id, duplicate_contact, status, created_date, updated_date) VALUES (id, campaign_id, contact, 1, NOW(), NOW());
 
     END LOOP;
-
-    CLOSE cur1;
+    CLOSE cur;
 
 END;
+//
+delimiter;

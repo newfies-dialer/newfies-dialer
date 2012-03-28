@@ -1095,6 +1095,10 @@ class CampaignSubscriberResource(ModelResource):
         
         # Assign new contact object
         bundle.obj = new_contact
+
+        #TODO: Check the campaign using this phonebook
+        #Insert the contact to the campaignsubscriber also for each campaign 
+        #using this phonebook
         
         logger.debug('CampaignSubscriber POST API : result ok 200')
         return bundle

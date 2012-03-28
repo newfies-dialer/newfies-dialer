@@ -242,15 +242,12 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
 
     # Call PL-SQL stored procedure
     #CampaignSubscriber.importcontact_pl_sql(campaign_id, phonebook_id)
-
-    #TODO : Rewrite this using PL SQL
     
-    print "ISSUE HERE : REPLACE WITH PL SQL"
     # Data insert operation - commit required
     sqlimport = "INSERT IGNORE INTO dialer_campaign_subscriber (contact_id, campaign_id, duplicate_contact, status, created_date, updated_date) "\
                 "SELECT id, %d, contact, 1, NOW(), NOW() FROM dialer_contact WHERE phonebook_id=%d" % (campaign_id, phonebook_id)
-    print sqlimport
-    print "************************"
+    logger.debug( "\nimportcontact_custom_sql :: %s" % sqlimport)
+    
     cursor.execute(sqlimport)
     transaction.commit_unless_managed()
 
@@ -262,7 +259,7 @@ def import_phonebook(campaign_id, phonebook_id):
     Read all the contact from phonebook_id and insert them into campaignsubscriber
     """
     logger = import_phonebook.get_logger()
-    logger.info( "\n\n\nTASK :: import_phonebook")
+    logger.info( "\nTASK :: import_phonebook")
 
     #TODO: Add a semafore 
 

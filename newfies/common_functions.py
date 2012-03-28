@@ -136,3 +136,21 @@ def check_celeryd_process():
         return True
     else:
         return False
+
+
+def search_tag_string(mstring, tag):
+    """
+    Search in string tag with their value
+    mstring = needledtag1=143432,needledtag2=143432
+    """
+    if not mstring or len(mstring)<2:
+        return False
+    sval = {}
+    try:
+        sval = dict(e.split('=') for e in mstring.split(','))
+    except ValueError:
+        return False
+    if sval.has_key(tag):
+        return sval[tag]
+    else:
+        return False

@@ -52,6 +52,7 @@ from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_gateway.models import Gateway
 from voice_app.models import VoiceApp
 from survey.models import SurveyApp
+from common_functions import search_tag_string
 
 from settings_local import API_ALLOWED_IP, PLIVO_DEFAULT_DIALCALLBACK_URL
 from datetime import datetime
@@ -1465,7 +1466,6 @@ class CustomXmlEmitter():
         xml.endDocument()
         return stream.getvalue()
 
-
 class AnswercallValidation(Validation):
     """
     Answercall Validation Class
@@ -1573,6 +1573,15 @@ class AnswercallResource(ModelResource):
                 logger.error('Error with App type, not a VoiceApp!')
             else:
 
+                data = obj_callrequest.content_object.data
+
+                extra_data = obj_callrequest.campaign.extra_data
+                if extra_data and len(extra_data) > 1:
+                    #check if we have a voice_app_data tag to replace data on application
+                    voice_app_data = search_tag_string(extra_data, 'voice_app_data')
+                    if voice_app_data:
+                        data = voice_app_data
+
                 if obj_callrequest.content_object.type == 1:
                     #Dial
                     timelimit = obj_callrequest.timelimit
@@ -1584,22 +1593,22 @@ class AnswercallResource(ModelResource):
                     number_command = 'Number gateways="%s" gatewayTimeouts="%s"' % \
                                         (gateways, gatewaytimeouts)
 
-                    object_list = [ {dial_command: {number_command: obj_callrequest.content_object.data}, },]
-                    logger.debug('Diale command')
+                    object_list = [ {dial_command: {number_command: data}, },]
+                    logger.debug('Dial command')
 
                 elif obj_callrequest.content_object.type == 2:
                     #PlayAudio
-                    object_list = [ {'Play': obj_callrequest.content_object.data},]
+                    object_list = [ {'Play': data},]
                     logger.debug('PlayAudio')
 
                 elif obj_callrequest.content_object.type == 3:
                     #Conference
-                    object_list = [ {'Conference': obj_callrequest.content_object.data},]
+                    object_list = [ {'Conference': data},]
                     logger.debug('Conference')
 
                 elif obj_callrequest.content_object.type == 4:
                     #Speak
-                    object_list = [ {'Speak': obj_callrequest.content_object.data},]
+                    object_list = [ {'Speak': data},]
                     logger.debug('Speak')
                 else:
                     logger.error('Error with Voice App type!')

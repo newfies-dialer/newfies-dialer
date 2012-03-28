@@ -1,6 +1,11 @@
-delimiter //
-DROP PROCEDURE IF EXISTS importcontact_pl_sql//
-CREATE PROCEDURE importcontact_pl_sql()
+
+DROP PROCEDURE IF EXISTS importcontact_pl_sql;
+
+
+DELIMITER //
+
+CREATE PROCEDURE `importcontact_pl_sql` ()
+LANGUAGE SQL  
 BEGIN
 
     DECLARE campaign_id INT;
@@ -16,6 +21,5 @@ BEGIN
     END LOOP;
     CLOSE cur;
 
-END;
-//
-delimiter;
+END //
+DELIMITER ;

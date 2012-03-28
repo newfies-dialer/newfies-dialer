@@ -204,8 +204,7 @@ class campaign_spool_contact(PeriodicTask):
 
             #IF mysql
             if settings.DATABASES['default']['ENGINE']=='django.db.backends.mysql':
-                #store procedure only created for mysql at the moment
-                #TODO: Create store procedure importcontact_pl_sql for Postgresql
+                #INSERT IGNORE WORK FOR MYSQL / Check for other DB Engine
                 collect_subscriber_optimized.delay(campaign.id)
             else:
                 collect_subscriber.delay(campaign.id)
@@ -242,13 +241,13 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
     cursor = connection.cursor()
 
     # Call PL-SQL stored procedure
-    CampaignSubscriber.importcontact_pl_sql(campaign_id, phonebook_id)
+    #CampaignSubscriber.importcontact_pl_sql(campaign_id, phonebook_id)
 
     #TODO : Rewrite this using PL SQL
     
     print "ISSUE HERE : REPLACE WITH PL SQL"
     # Data insert operation - commit required
-    sqlimport = "INSERT INTO dialer_campaign_subscriber (contact_id, campaign_id, duplicate_contact, status, created_date, updated_date) "\
+    sqlimport = "INSERT IGNORE INTO dialer_campaign_subscriber (contact_id, campaign_id, duplicate_contact, status, created_date, updated_date) "\
                 "SELECT id, %d, contact, 1, NOW(), NOW() FROM dialer_contact WHERE phonebook_id=%d" % (campaign_id, phonebook_id)
     print sqlimport
     print "************************"

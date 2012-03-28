@@ -1,10 +1,11 @@
 delimiter //
+DROP PROCEDURE IF EXISTS importcontact_pl_sql//
 CREATE PROCEDURE importcontact_pl_sql()
 BEGIN
 
     DECLARE campaign_id INT;
     DECLARE phonebook_id INT;
-    DECLARE cur CURSOR FOR SELECT id, contact FROM dialer_contact WHERE phonebook_id=1;
+    DECLARE cur CURSOR FOR SELECT id, contact FROM dialer_contact WHERE phonebook_id=phonebook_id;
 
     OPEN cur;
     read_loop: LOOP

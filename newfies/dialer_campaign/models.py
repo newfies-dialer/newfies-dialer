@@ -19,6 +19,7 @@ from django.core.cache import cache
 from django.db.models.signals import post_save
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
+from django.db import connection 
 from dateutil.relativedelta import *
 from django_countries import CountryField
 from dialer_gateway.models import Gateway
@@ -616,6 +617,19 @@ class CampaignSubscriber(Model):
 
     def contact_name(self):
         return self.contact.name
+
+    # static method to perform a stored procedure
+    @staticmethod
+    def importcontact_pl_sql(campaign_id, phonebook_id):
+        # create a cursor
+        cur = connection.cursor()
+
+        # execute the stored procedure passing in
+        # campaign_id, phonebook_id as a parameter
+        cur.callproc('importcontact_pl_sql', [campaign_id, phonebook_id])
+
+        cur.close()
+        return True
 
 
 def post_save_add_contact(sender, **kwargs):

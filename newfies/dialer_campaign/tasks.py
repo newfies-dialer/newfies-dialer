@@ -234,6 +234,9 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
     from django.db import connection, transaction
     cursor = connection.cursor()
 
+    # Call PL-SQL stored procedure
+    CampaignSubscriber.importcontact_pl_sql(campaign_id, phonebook_id)
+
     #TODO : Rewrite this using PL SQL
     
     print "ISSUE HERE : REPLACE WITH PL SQL"

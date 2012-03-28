@@ -202,7 +202,14 @@ class campaign_spool_contact(PeriodicTask):
             logger.debug("=> Spool Contact : Campaign name %s (id:%s)" % (campaign.name,
                                                          str(campaign.id)))
 
-            collect_subscriber_optimized.delay(campaign.id)
+            #IF mysql
+            if settings.DATABASES['default']['ENGINE']=='django.db.backends.mysql':
+                #store procedure only created for mysql at the moment
+                #TODO: Create store procedure importcontact_pl_sql for Postgresql
+                collect_subscriber_optimized.delay(campaign.id)
+            else:
+                collect_subscriber.delay(campaign.id)
+
 
 
 @task()

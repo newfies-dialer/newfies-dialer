@@ -619,6 +619,7 @@ class CampaignSubscriber(Model):
         return self.contact.name
 
     # static method to perform a stored procedure
+    # Ref link - http://www.chrisumbel.com/article/django_python_stored_procedures.aspx
     @staticmethod
     def importcontact_pl_sql(campaign_id, phonebook_id):
         # create a cursor

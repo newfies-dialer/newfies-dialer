@@ -271,6 +271,7 @@ def import_phonebook(campaign_id, phonebook_id):
     else:
         sep = ','
     obj_campaign.imported_phonebook = obj_campaign.imported_phonebook + '%s%d' % (sep, phonebook_id)
+    obj_campaign.save()
 
 
 @task()

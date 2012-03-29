@@ -186,8 +186,8 @@ class Callrequest(Model):
     
 class VoIPCallManager(models.Manager):
     def get_query_set(self):
-        return super(VoIPCallManager, self).get_query_set().defer("request_uuid",
-                                "progresssec", "dialcode", "answersec", "waitsec")
+        return super(VoIPCallManager, self).get_query_set()\
+        .defer("request_uuid", "progresssec", "dialcode", "answersec", "waitsec")
 
 
 class VoIPCall(models.Model):
@@ -220,7 +220,7 @@ class VoIPCall(models.Model):
     """
     user = models.ForeignKey('auth.User', related_name='Call Sender')
     request_uuid = models.CharField(verbose_name=_("RequestUUID"),
-                        default=str_uuid1(), db_index=True,
+                        default=str_uuid1(),
                         max_length=120, null=True, blank=True)
     used_gateway = models.ForeignKey(Gateway, null=True, blank=True,
                                      verbose_name=_("Used gateway"))

@@ -1099,22 +1099,28 @@ class CampaignSubscriberResource(ModelResource):
         #TODO: Check the campaign using this phonebook
         #Insert the contact to the campaignsubscriber also for each campaign 
         #using this phonebook
-
-        campaign_obj = Campaign.objects.filter(phonebook=obj_phonebook, user=request.user)
-        for camp_obj in campaign_obj:
-            phonbook_list = camp_obj.phonebook.values_list('id', flat=True).all()
-            if phonbook_list:
-                if obj_phonebook.id not in phonbook_list:
-                    contact_list = Contact.objects.filter(phonebook=obj_phonebook, status=1)
-                    for con_obj in contact_list:
-                        try:
-                            CampaignSubscriber.objects.create(
-                                                 contact=con_obj,
-                                                 duplicate_contact=con_obj.contact,
-                                                 status=1, # START
-                                                 campaign=camp_obj)
-                        except:
-                            pass
+        try:
+            campaign_obj = Campaign.objects.filter(phonebook=obj_phonebook, user=request.user)
+            for camp_obj in campaign_obj:
+                phonbook_list = camp_obj.phonebook.values_list('id', flat=True).all()
+                phonbook_list = [int(integral) for integral in phonbook_list]
+                common_phonbook_list = []
+                if phonbook_list:
+                    # for example:- camp_obj.imported_phonebook = [1]
+                    common_phonbook_list = list(set(camp_obj.imported_phonebook) & set(phonbook_list))
+                    if common_phonbook_list:
+                        contact_list = Contact.objects.filter(phonebook__in=common_phonbook_list, status=1)
+                        for con_obj in contact_list:
+                            try:
+                                CampaignSubscriber.objects.create(
+                                                     contact=con_obj,
+                                                     duplicate_contact=con_obj.contact,
+                                                     status=1, # START
+                                                     campaign=camp_obj)
+                            except:
+                                pass
+        except:
+            pass
 
         logger.debug('CampaignSubscriber POST API : result ok 200')
         return bundle

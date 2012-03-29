@@ -119,14 +119,15 @@ class VoIPCallAdmin(admin.ModelAdmin):
             request.session['to_date'] = request.POST.get('to_date')
             request.session['status'] = request.POST.get('status')
         else:
+            if request.GET.get('p'):
+                request.session['from_date'] = request.POST.get('from_date')
+                request.session['to_date'] = request.POST.get('to_date')
+                request.session['status'] = request.POST.get('status')
+            if not request.GET.get('p'):
+                request.session['from_date'] = ''
+                request.session['to_date'] = ''
+                request.session['status'] = ''
             kwargs = voipcall_record_common_fun(request)
-
-        tday = datetime.today()
-        if len(kwargs) == 0:
-            kwargs['starting_date__gte'] = datetime(tday.year,
-                                                    tday.month,
-                                                    tday.day, 0, 0, 0, 0)
-
         return kwargs
 
     def queryset(self, request):
@@ -155,6 +156,12 @@ class VoIPCallAdmin(admin.ModelAdmin):
         form = VoipSearchForm()
         if request.method == 'POST':
             form = VoipSearchForm(request.POST)
+        else:
+            if request.GET.get('p'):
+                form = VoipSearchForm(initial={'from_date': request.session['from_date'],
+                                               'to_date': request.session['to_date'],
+                                               'status': request.session['status']})
+
 
         ChangeList = self.get_changelist(request)
         try:
@@ -169,14 +176,15 @@ class VoIPCallAdmin(admin.ModelAdmin):
         formset = cl.formset = None
 
         # Session variable is used to get record set with searched option into export file
-        request.session['voipcall_record_qs'] = self.queryset(request)
+        qs = self.queryset(request)
+        request.session['voipcall_record_qs'] = qs
 
         selection_note_all = ungettext('%(total_count)s selected',
             'All %(total_count)s selected', cl.result_count)
 
         ctx = {
             'selection_note': _('0 of %(cnt)s selected') % {'cnt': len(cl.result_list)},
-            'selection_note_all': selection_note_all % {'total_count': self.queryset(request).count()},
+            'selection_note_all': selection_note_all % {'total_count': qs.count()},
             'cl': cl,
             'form': form,
             'opts': opts,

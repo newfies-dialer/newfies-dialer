@@ -974,10 +974,6 @@ class CampaignSubscriberValidation(Validation):
                     errors['phonebook_error'] = ["Phonebook is not selected!"]
             else:
                 errors['phonebook_error'] = ["Phonebook is not selected!"]
-
-            contact_count = Contact.objects.filter(contact=bundle.data.get('contact')).count()
-            if (contact_count!=0):
-                errors['chk_contact_no'] = ["The Contact no is duplicated!"]
         
         return errors
 
@@ -1096,9 +1092,7 @@ class CampaignSubscriberResource(ModelResource):
         # Assign new contact object
         bundle.obj = new_contact
 
-        #TODO: Check the campaign using this phonebook
-        #Insert the contact to the campaignsubscriber also for each campaign 
-        #using this phonebook
+        #Insert the contact to the campaignsubscriber also for each campaign using this phonebook
         try:
             campaign_obj = Campaign.objects.filter(phonebook=obj_phonebook, user=request.user)
             for camp_obj in campaign_obj:

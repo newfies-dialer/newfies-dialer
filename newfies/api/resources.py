@@ -1102,12 +1102,18 @@ class CampaignSubscriberResource(ModelResource):
         try:
             campaign_obj = Campaign.objects.filter(phonebook=obj_phonebook, user=request.user)
             for camp_obj in campaign_obj:
+                imported_phonebook = []
+                if camp_obj.imported_phonebook:
+                    # for example:- camp_obj.imported_phonebook = 1,2,3
+                    # So convert imported_phonebook string into int list
+                    imported_phonebook = map(int, camp_obj.imported_phonebook.split(','))
+
                 phonbook_list = camp_obj.phonebook.values_list('id', flat=True).all()
                 phonbook_list = map(int, phonbook_list)
+
                 common_phonbook_list = []
                 if phonbook_list:
-                    # for example:- camp_obj.imported_phonebook = [1]
-                    common_phonbook_list = list(set(camp_obj.imported_phonebook) & set(phonbook_list))
+                    common_phonbook_list = list(set(imported_phonebook) & set(phonbook_list))
                     if common_phonbook_list:
                         contact_list = Contact.objects.filter(phonebook__in=common_phonbook_list, status=1)
                         for con_obj in contact_list:
@@ -1119,6 +1125,7 @@ class CampaignSubscriberResource(ModelResource):
                                                      campaign=camp_obj)
                             except:
                                 pass
+
         except:
             pass
 

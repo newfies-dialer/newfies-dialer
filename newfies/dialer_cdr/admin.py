@@ -111,6 +111,10 @@ class VoIPCallAdmin(admin.ModelAdmin):
         )
         return my_urls + urls
 
+    def queryset(self, request):
+        qs = VoIPCall.admin # Use the admin manager regardless of what the default one is
+        return qs
+
     def changelist_view(self, request, extra_context=None):
         """Override changelist_view method of django-admin for search parameters
 
@@ -157,12 +161,13 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
         formset = cl.formset = None
         
-        # Session variable is used to get record set with searched option
-        # into export file
+        # Session variable is used to get record set with searched option into export file
+        #print super(VoIPCallAdmin, self).queryset(request).query
         request.session['voipcall_record_qs'] = \
-        super(VoIPCallAdmin, self).queryset(request).values('request_uuid', 'callrequest_id',
-                                   'dialcode_id', 'progresssec', 'answersec', 'waitsec')\
-                                  .filter(**kwargs).order_by('-starting_date')
+                self.queryset(request).values('user', 'callid', 'used_gateway',
+                                              'callerid', 'phone_number', 'starting_date',
+                                              'duration', 'disposition')\
+                                      .filter(**kwargs).order_by('-starting_date').query
 
         selection_note_all = ungettext('%(total_count)s selected',
             'All %(total_count)s selected', cl.result_count)

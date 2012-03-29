@@ -1103,7 +1103,7 @@ class CampaignSubscriberResource(ModelResource):
             campaign_obj = Campaign.objects.filter(phonebook=obj_phonebook, user=request.user)
             for camp_obj in campaign_obj:
                 phonbook_list = camp_obj.phonebook.values_list('id', flat=True).all()
-                phonbook_list = [int(integral) for integral in phonbook_list]
+                phonbook_list = map(int, phonbook_list)
                 common_phonbook_list = []
                 if phonbook_list:
                     # for example:- camp_obj.imported_phonebook = [1]

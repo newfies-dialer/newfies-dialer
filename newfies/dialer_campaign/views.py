@@ -83,6 +83,7 @@ def customer_dashboard(request, on_index=None):
         * ``template`` - frontend/dashboard.html
         * ``form`` - DashboardForm
     """
+
     # All campaign for logged in User
     campaign = Campaign.objects.filter(user=request.user)
     campaign_count = campaign.count()
@@ -99,7 +100,6 @@ def customer_dashboard(request, on_index=None):
 
     # Phonebook list for logged in user
     phonebook_id_list = Phonebook.objects.values_list('id').filter(user=request.user)
-
 
     # Total count of contacts for logged in user
     total_of_phonebook_contacts = 0
@@ -133,6 +133,7 @@ def customer_dashboard(request, on_index=None):
     twelve_hour_list = []
     common_hour_result_set = []
     only_data_date_list = []
+
     if campaign_id_list:
         selected_campaign = campaign_id_list[0] # default campaign id
 
@@ -205,7 +206,7 @@ def customer_dashboard(request, on_index=None):
                 total_answered += i['starting_date__count']
             elif i['disposition'] == 'BUSY' or i['disposition'] == 'USER_BUSY':
                 total_busy += i['starting_date__count']
-            elif i['disposition'] == 'NOANSWER':
+            elif i['disposition'] == 'NOANSWER' or i['disposition'] == 'NO_ANSWER':
                 total_not_answered += i['starting_date__count']
             elif i['disposition'] == 'CANCEL':
                 total_cancel += i['starting_date__count']
@@ -219,7 +220,7 @@ def customer_dashboard(request, on_index=None):
                 total_torture += i['starting_date__count']
             elif i['disposition'] == 'INVALIDARGS':
                 total_invalidargs += i['starting_date__count']
-            elif i['disposition'] == 'NOROUTE':
+            elif i['disposition'] == 'NOROUTE' or i['disposition'] == 'NO_ROUTE':
                 total_noroute += i['starting_date__count']
             else:
                 total_forbidden += i['starting_date__count'] # FORBIDDEN
@@ -370,7 +371,7 @@ def customer_dashboard(request, on_index=None):
 
                     # check dateList date into seven_days_option_list date
                     if str(calls_itme['date_in_int'])[0:8] == inttime:
-                        # compare prvious & current date & count
+                        # compare previous & current date & count
                         if previuos_data_date == str(calls_itme['date_in_int'])[0:8] \
                            and current_previous_count == 0:
 
@@ -1197,7 +1198,7 @@ def contact_grid(request):
                     name = kwargs_list[1]
 
     phonebook_id_list = ''
-    phonebook_id_list = Phonebook.objects.values_list('id').filter(user=request.user)
+    phonebook_id_list = Phonebook.objects.values_list('id', flat=True).filter(user=request.user)
     contact_list = []
 
     if phonebook_id_list:

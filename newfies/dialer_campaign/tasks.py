@@ -106,8 +106,8 @@ def check_campaign_pendingcall(campaign_id):
                             frequency, 
                             6 # Update to In Process
                             )
-    #if list_subscriber:
-    #    print len(list_subscriber)
+    if list_subscriber:
+        logger.debug("Number of subscriber found : %d" % len(list_subscriber))
     
     try:
         no_subscriber = list_subscriber.count()
@@ -162,7 +162,6 @@ class campaign_running(PeriodicTask):
 
         campaign_running.delay()
     """
-
     run_every = timedelta(seconds=Timelaps)
     #NOTE : until we implement a PID Controller : 
     #http://en.wikipedia.org/wiki/PID_controller
@@ -203,7 +202,79 @@ class campaign_spool_contact(PeriodicTask):
             logger.debug("=> Spool Contact : Campaign name %s (id:%s)" % (campaign.name,
                                                          str(campaign.id)))
 
-            collect_subscriber.delay(campaign.id)
+            #IF mysql
+            if settings.DATABASES['default']['ENGINE']=='django.db.backends.mysql':
+                #INSERT IGNORE WORK FOR MYSQL / Check for other DB Engine
+                collect_subscriber_optimized.delay(campaign.id)
+            else:
+                #TODO: Make optimization for Postgresql
+                collect_subscriber.delay(campaign.id)
+
+
+
+@task()
+def collect_subscriber_optimized(campaign_id):
+    """This task will collect all the subscribers
+
+    **Attributes**:
+
+        * ``campaign_id`` - Campaign ID
+    """
+    logger = collect_subscriber_optimized.get_logger()
+    logger.debug("Collect subscribers for the campaign = %s" % str(campaign_id))
+
+    #Retrieve the list of active contact
+    obj_campaign = Campaign.objects.get(id=campaign_id)
+
+    list_phonebook = obj_campaign.phonebook.all()
+
+    for item_phonebook in list_phonebook:
+        phonebook_id = item_phonebook.id
+
+        # check if phonebook_id is missing in imported_phonebook list
+        if not str(phonebook_id) in obj_campaign.imported_phonebook.split(','):
+            #Run import
+            import_phonebook.delay(obj_campaign.id, phonebook_id)
+
+
+def importcontact_custom_sql(campaign_id, phonebook_id):
+    from django.db import connection, transaction
+    cursor = connection.cursor()
+
+    # Call PL-SQL stored procedure
+    #CampaignSubscriber.importcontact_pl_sql(campaign_id, phonebook_id)
+    
+    # Data insert operation - commit required
+    sqlimport = "INSERT IGNORE INTO dialer_campaign_subscriber (contact_id, campaign_id, duplicate_contact, status, created_date, updated_date) "\
+                "SELECT id, %d, contact, 1, NOW(), NOW() FROM dialer_contact WHERE phonebook_id=%d" % (campaign_id, phonebook_id)
+    
+    cursor.execute(sqlimport)
+    transaction.commit_unless_managed()
+
+    return True
+            
+@task()
+def import_phonebook(campaign_id, phonebook_id):
+    """
+    Read all the contact from phonebook_id and insert them into campaignsubscriber
+    """
+    logger = import_phonebook.get_logger()
+    logger.info( "\nTASK :: import_phonebook")
+
+    #TODO: Add a semafore 
+
+    obj_campaign = Campaign.objects.get(id=campaign_id)
+
+    #Faster method, ask the Database to do the job
+    importcontact_custom_sql(campaign_id, phonebook_id)
+
+    #Add the phonebook id to the imported list
+    if obj_campaign.imported_phonebook == '':
+        sep = ''
+    else:
+        sep = ','
+    obj_campaign.imported_phonebook = obj_campaign.imported_phonebook + '%s%d' % (sep, phonebook_id)
+    obj_campaign.save()
 
 
 @task()
@@ -262,3 +333,4 @@ class campaign_expire_check(PeriodicTask):
             logger.debug("=> Campaign name %s (id:%s)" % (campaign.name,
                                                          campaign.id))
             common_campaign_status(campaign.id, 4)
+

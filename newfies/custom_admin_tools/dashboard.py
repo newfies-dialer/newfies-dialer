@@ -26,7 +26,7 @@ from django.core.urlresolvers import reverse
 from admin_tools.dashboard import modules, Dashboard, AppIndexDashboard
 from admin_tools.utils import get_admin_site_name
 from admin_tools_stats.modules import DashboardCharts, get_active_graph
-
+from django.conf import settings
 
 class HistoryDashboardModule(modules.LinkList):
     title = 'History'
@@ -130,12 +130,14 @@ class CustomIndexDashboard(Dashboard):
             ],
         ))
         """
-        # append a feed module
-        self.children.append(modules.Feed(
-            _('Latest Newfies-Dialer News'),
-            feed_url='http://www.newfies-dialer.org/category/blog/feed/',
-            limit=5
-        ))
+        
+        if not settings.DEBUG:
+            # append a feed module
+            self.children.append(modules.Feed(
+                _('Latest Newfies-Dialer News'),
+                feed_url='http://www.newfies-dialer.org/category/blog/feed/',
+                limit=5
+            ))
         
         # append an app list module for "Country_prefix"
         self.children.append(modules.AppList(

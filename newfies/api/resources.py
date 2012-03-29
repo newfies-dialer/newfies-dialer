@@ -52,6 +52,7 @@ from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_gateway.models import Gateway
 from voice_app.models import VoiceApp
 from survey.models import SurveyApp
+from common_functions import search_tag_string
 
 from settings_local import API_ALLOWED_IP, PLIVO_DEFAULT_DIALCALLBACK_URL
 from datetime import datetime
@@ -391,9 +392,13 @@ class CampaignValidation(Validation):
 
         if request.method == 'POST':
             startingdate = get_value_if_none(startingdate, time.time())
-            # expires in 7 days
-            expirationdate = get_value_if_none(expirationdate, time.time() + 86400 * 7)
+            # expires in 90 days
+            expirationdate = get_value_if_none(expirationdate, time.time() + 86400 * 90)
             
+            #Startdate and expirationdate are UTC -> convert to localtime
+            startingdate = float(startingdate) - time.altzone
+            expirationdate = float(expirationdate) - time.altzone
+
             bundle.data['startingdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
                                           time.gmtime(float(startingdate)))
             bundle.data['expirationdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
@@ -969,10 +974,6 @@ class CampaignSubscriberValidation(Validation):
                     errors['phonebook_error'] = ["Phonebook is not selected!"]
             else:
                 errors['phonebook_error'] = ["Phonebook is not selected!"]
-
-            contact_count = Contact.objects.filter(contact=bundle.data.get('contact')).count()
-            if (contact_count!=0):
-                errors['chk_contact_no'] = ["The Contact no is duplicated!"]
         
         return errors
 
@@ -1090,7 +1091,38 @@ class CampaignSubscriberResource(ModelResource):
         
         # Assign new contact object
         bundle.obj = new_contact
-        
+
+        #Insert the contact to the campaignsubscriber also for each campaign using this phonebook
+        try:
+            campaign_obj = Campaign.objects.filter(phonebook=obj_phonebook, user=request.user)
+            for camp_obj in campaign_obj:
+                imported_phonebook = []
+                if camp_obj.imported_phonebook:
+                    # for example:- camp_obj.imported_phonebook = 1,2,3
+                    # So convert imported_phonebook string into int list
+                    imported_phonebook = map(int, camp_obj.imported_phonebook.split(','))
+
+                phonbook_list = camp_obj.phonebook.values_list('id', flat=True).all()
+                phonbook_list = map(int, phonbook_list)
+
+                common_phonbook_list = []
+                if phonbook_list:
+                    common_phonbook_list = list(set(imported_phonebook) & set(phonbook_list))
+                    if common_phonbook_list:
+                        contact_list = Contact.objects.filter(phonebook__in=common_phonbook_list, status=1)
+                        for con_obj in contact_list:
+                            try:
+                                CampaignSubscriber.objects.create(
+                                                     contact=con_obj,
+                                                     duplicate_contact=con_obj.contact,
+                                                     status=1, # START
+                                                     campaign=camp_obj)
+                            except:
+                                pass
+
+        except:
+            pass
+
         logger.debug('CampaignSubscriber POST API : result ok 200')
         return bundle
 
@@ -1461,7 +1493,6 @@ class CustomXmlEmitter():
         xml.endDocument()
         return stream.getvalue()
 
-
 class AnswercallValidation(Validation):
     """
     Answercall Validation Class
@@ -1569,6 +1600,15 @@ class AnswercallResource(ModelResource):
                 logger.error('Error with App type, not a VoiceApp!')
             else:
 
+                data = obj_callrequest.content_object.data
+
+                extra_data = obj_callrequest.campaign.extra_data
+                if extra_data and len(extra_data) > 1:
+                    #check if we have a voice_app_data tag to replace data on application
+                    voice_app_data = search_tag_string(extra_data, 'voice_app_data')
+                    if voice_app_data:
+                        data = voice_app_data
+
                 if obj_callrequest.content_object.type == 1:
                     #Dial
                     timelimit = obj_callrequest.timelimit
@@ -1580,22 +1620,22 @@ class AnswercallResource(ModelResource):
                     number_command = 'Number gateways="%s" gatewayTimeouts="%s"' % \
                                         (gateways, gatewaytimeouts)
 
-                    object_list = [ {dial_command: {number_command: obj_callrequest.content_object.data}, },]
-                    logger.debug('Diale command')
+                    object_list = [ {dial_command: {number_command: data}, },]
+                    logger.debug('Dial command')
 
                 elif obj_callrequest.content_object.type == 2:
                     #PlayAudio
-                    object_list = [ {'Play': obj_callrequest.content_object.data},]
+                    object_list = [ {'Play': data},]
                     logger.debug('PlayAudio')
 
                 elif obj_callrequest.content_object.type == 3:
                     #Conference
-                    object_list = [ {'Conference': obj_callrequest.content_object.data},]
+                    object_list = [ {'Conference': data},]
                     logger.debug('Conference')
 
                 elif obj_callrequest.content_object.type == 4:
                     #Speak
-                    object_list = [ {'Speak': obj_callrequest.content_object.data},]
+                    object_list = [ {'Speak': data},]
                     logger.debug('Speak')
                 else:
                     logger.error('Error with Voice App type!')
@@ -1799,7 +1839,7 @@ class HangupcallResource(ModelResource):
         CURL Usage::
 
             curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data "RequestUUID=e4fc2188-0af5-11e1-b64d-00231470a30c&HangupCause=SUBSCRIBER_ABSENT" http://localhost:8000/api/v1/hangupcall/
-
+        
         Response::
 
             HTTP/1.0 200 OK

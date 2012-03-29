@@ -19,6 +19,7 @@ from django.core.cache import cache
 from django.db.models.signals import post_save
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
+from django.db import connection 
 from dateutil.relativedelta import *
 from django_countries import CountryField
 from dialer_gateway.models import Gateway
@@ -151,7 +152,6 @@ class Contact(Model):
         db_table = u'dialer_contact'
         verbose_name = _("Contact")
         verbose_name_plural = _("Contacts")
-        unique_together = ['contact', 'phonebook']
 
     def __unicode__(self):
         return u"%s (%s)" % (self.contact, self.last_name)
@@ -348,6 +348,9 @@ class Campaign(Model):
 
     phonebook = models.ManyToManyField(Phonebook, blank=True, null=True)
 
+    imported_phonebook = models.CharField(max_length=500, default='',
+                                verbose_name=_('List of Imported Phonebook'))
+
     objects = CampaignManager()
 
     def __unicode__(self):
@@ -466,6 +469,8 @@ class Campaign(Model):
         """List of active contacts that do not exist in Campaign Subscriber"""
         # The list of active contacts that doesn't
         # exist in CampaignSubscriber
+
+        #TODO : This might kill performance on huge phonebook...
         query = \
         'SELECT dc.id, dc.phonebook_id, dc.contact, dc.last_name, \
         dc.first_name, dc.email, dc.city, dc.description, \
@@ -499,7 +504,7 @@ class Campaign(Model):
         #campaignsubscriber_count = None
         if campaignsubscriber_count is None:
             list_contact = \
-            Contact.objects.values_list('id').filter(phonebook__campaign=self.id)
+            Contact.objects.values_list('id', flat=True).filter(phonebook__campaign=self.id)
             campaignsubscriber_count = 0
 
             try:
@@ -612,6 +617,20 @@ class CampaignSubscriber(Model):
 
     def contact_name(self):
         return self.contact.name
+
+    # static method to perform a stored procedure
+    # Ref link - http://www.chrisumbel.com/article/django_python_stored_procedures.aspx
+    @staticmethod
+    def importcontact_pl_sql(campaign_id, phonebook_id):
+        # create a cursor
+        cur = connection.cursor()
+
+        # execute the stored procedure passing in
+        # campaign_id, phonebook_id as a parameter
+        cur.callproc('importcontact_pl_sql', [campaign_id, phonebook_id])
+
+        cur.close()
+        return True
 
 
 def post_save_add_contact(sender, **kwargs):

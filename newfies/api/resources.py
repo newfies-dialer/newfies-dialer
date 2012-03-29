@@ -1839,7 +1839,7 @@ class HangupcallResource(ModelResource):
         CURL Usage::
 
             curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data "RequestUUID=e4fc2188-0af5-11e1-b64d-00231470a30c&HangupCause=SUBSCRIBER_ABSENT" http://localhost:8000/api/v1/hangupcall/
-
+        
         Response::
 
             HTTP/1.0 200 OK

@@ -106,8 +106,8 @@ def check_campaign_pendingcall(campaign_id):
                             frequency, 
                             6 # Update to In Process
                             )
-    #if list_subscriber:
-    #    print len(list_subscriber)
+    if list_subscriber:
+        logger.debug("Number of subscriber found : %d" % len(list_subscriber))
     
     try:
         no_subscriber = list_subscriber.count()

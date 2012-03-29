@@ -207,6 +207,7 @@ class campaign_spool_contact(PeriodicTask):
                 #INSERT IGNORE WORK FOR MYSQL / Check for other DB Engine
                 collect_subscriber_optimized.delay(campaign.id)
             else:
+                #TODO: Make optimization for Postgresql
                 collect_subscriber.delay(campaign.id)
 
 
@@ -246,7 +247,6 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
     # Data insert operation - commit required
     sqlimport = "INSERT IGNORE INTO dialer_campaign_subscriber (contact_id, campaign_id, duplicate_contact, status, created_date, updated_date) "\
                 "SELECT id, %d, contact, 1, NOW(), NOW() FROM dialer_contact WHERE phonebook_id=%d" % (campaign_id, phonebook_id)
-    logger.debug( "\nimportcontact_custom_sql :: %s" % sqlimport)
     
     cursor.execute(sqlimport)
     transaction.commit_unless_managed()

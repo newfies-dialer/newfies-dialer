@@ -130,8 +130,8 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'raven.contrib.django.middleware.SentryResponseErrorIdMiddleware',
-    'raven.contrib.django.middleware.Sentry404CatchMiddleware',
+    #'raven.contrib.django.middleware.SentryResponseErrorIdMiddleware',
+    #'raven.contrib.django.middleware.Sentry404CatchMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -203,7 +203,7 @@ INSTALLED_APPS = (
     'notification',
     'voice_app',
     'survey',
-    'raven.contrib.django',
+    #'raven.contrib.django',
     'admin_tools_stats',
     'chart_tools',
     'south',
@@ -216,6 +216,13 @@ INSTALLED_APPS = (
     'genericadmin',
 )
 
+# Django extensions
+try:
+    import gunicorn
+except ImportError:
+    pass
+else:
+    INSTALLED_APPS = INSTALLED_APPS + ('gunicorn',)
 
 # Redisboard
 try:
@@ -227,7 +234,6 @@ else:
 
 
 # Debug Toolbar
-"""
 try:
     import debug_toolbar
 except ImportError:
@@ -239,7 +245,7 @@ else:
     DEBUG_TOOLBAR_CONFIG = {
         'INTERCEPT_REDIRECTS': False,
     }
-"""
+
 
 # Django extensions
 try:
@@ -386,10 +392,10 @@ API_ALLOWED_IP = ['127.0.0.1', 'localhost']
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
-    'root': {
-        'level': 'WARNING',
-        'handlers': ['sentry'],
-    },
+    #'root': {
+    #    'level': 'WARNING',
+    #    'handlers': ['sentry'],
+    #},
     'formatters': {
         'verbose': {
             'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
@@ -420,11 +426,11 @@ LOGGING = {
             'backupCount': 20,
             'formatter':'verbose',
         },
-        'sentry': {
-            'level': 'ERROR',
-            'class': 'raven.contrib.django.handlers.SentryHandler',
-            'formatter': 'verbose'
-        },
+        #'sentry': {
+        #    'level': 'ERROR',
+        #    'class': 'raven.contrib.django.handlers.SentryHandler',
+        #    'formatter': 'verbose'
+        #},
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
@@ -453,16 +459,16 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': False,
         },
-        'raven': {
-            'level': 'DEBUG',
-            'handlers': ['console'],
-            'propagate': False,
-        },
-        'sentry.errors': {
-            'level': 'DEBUG',
-            'handlers': ['console'],
-            'propagate': False,
-        },
+        #'raven': {
+        #    'level': 'DEBUG',
+        #    'handlers': ['console'],
+        #    'propagate': False,
+        #},
+        #'sentry.errors': {
+        #    'level': 'DEBUG',
+        #    'handlers': ['console'],
+        #    'propagate': False,
+        #},
         'audiofield_log': {
             'handlers': ['default',],
             'level': 'DEBUG',

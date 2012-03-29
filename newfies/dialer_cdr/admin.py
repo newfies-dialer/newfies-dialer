@@ -46,9 +46,10 @@ class CallrequestAdmin(GenericAdminModelAdmin):
                        'campaign_subscriber'),
         }),
     )
-    list_display = ('id', 'user', 'campaign', 'content_type', 'request_uuid',
-                    'aleg_uuid', 'call_time', 'status', 'callerid', 'phone_number',
-                    'call_type', 'num_attempt', 'last_attempt_time',)
+    #NOTE : display user / content_type low the performance
+    list_display = ('id', 'request_uuid', 'aleg_uuid', 'call_time', 
+                    'status', 'callerid', 'phone_number', 'call_type', 
+                    'num_attempt', 'last_attempt_time',)
     list_display_links = ('id', 'request_uuid', )
     list_filter = ['callerid', 'call_time', 'status', 'call_type', 'campaign']
     ordering = ('id', )
@@ -62,7 +63,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
     of a VoIPCall."""
     can_add = False
     detail_title = _("Call Report")
-    list_display = ('id', 'user_link', 'leg_type', 'used_gateway_link', 
+    list_display = ('id', 'leg_type', 
                     'callid', 'callerid', 'phone_number', 'starting_date', 
                     'min_duration', 'billsec', 'disposition', 'hangup_cause',
                     'hangup_cause_q850')
@@ -296,4 +297,18 @@ class VoIPCallAdmin(admin.ModelAdmin):
                              i.used_gateway,
                              ])
         return response
+
 admin.site.register(VoIPCall, VoIPCallAdmin)
+
+
+"""
+class VoIPCallAdmin2(admin.ModelAdmin):
+    can_add = False    detail_title = _("Call Report")
+    list_display = ('id', 'leg_type', 'used_gateway_link', 
+                    'callid', 'callerid', 'phone_number', 'starting_date', 
+                    'min_duration', 'billsec', 'disposition', 'hangup_cause',
+                    'hangup_cause_q850')
+    #list_filter = ['disposition', 'starting_date']
+
+admin.site.register(VoIPCall, VoIPCallAdmin2)
+"""

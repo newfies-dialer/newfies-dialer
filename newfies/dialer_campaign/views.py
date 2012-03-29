@@ -206,7 +206,7 @@ def customer_dashboard(request, on_index=None):
                 total_answered += i['starting_date__count']
             elif i['disposition'] == 'BUSY' or i['disposition'] == 'USER_BUSY':
                 total_busy += i['starting_date__count']
-            elif i['disposition'] == 'NOANSWER':
+            elif i['disposition'] == 'NOANSWER' or i['disposition'] == 'NO_ANSWER':
                 total_not_answered += i['starting_date__count']
             elif i['disposition'] == 'CANCEL':
                 total_cancel += i['starting_date__count']
@@ -220,7 +220,7 @@ def customer_dashboard(request, on_index=None):
                 total_torture += i['starting_date__count']
             elif i['disposition'] == 'INVALIDARGS':
                 total_invalidargs += i['starting_date__count']
-            elif i['disposition'] == 'NOROUTE':
+            elif i['disposition'] == 'NOROUTE' or i['disposition'] == 'NO_ROUTE':
                 total_noroute += i['starting_date__count']
             else:
                 total_forbidden += i['starting_date__count'] # FORBIDDEN

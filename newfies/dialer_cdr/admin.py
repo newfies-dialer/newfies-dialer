@@ -154,7 +154,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             if request.GET.get('starting_date__gte'):
                 from_date = variable_value(request, 'starting_date__gte')
             if request.GET.get('starting_date__lte'):
-                to_date = variable_value(request, 'starting_date__lte')
+                to_date = variable_value(request, 'starting_date__lte')[0:10]
             if request.GET.get('disposition__exact'):
                 status = variable_value(request, 'disposition__exact')
             form = VoipSearchForm(initial={'status': status, 'from_date': from_date, 'to_date': to_date})

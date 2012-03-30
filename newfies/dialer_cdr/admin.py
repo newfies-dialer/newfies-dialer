@@ -25,8 +25,10 @@ from django.db.models import *
 from dialer_cdr.models import *
 from dialer_cdr.forms import *
 from dialer_cdr.function_def import *
-import csv
+
+from datetime import *
 from genericadmin.admin import GenericAdminModelAdmin, GenericTabularInline
+import csv
 
 
 class CallrequestAdmin(GenericAdminModelAdmin):
@@ -64,10 +66,15 @@ class VoIPCallAdmin(admin.ModelAdmin):
     can_add = False
     detail_title = _("Call Report")
     list_display = ('id', 'leg_type', 
-                    'callid', 'callerid', 'phone_number', 'starting_date', 
+                    'callid', 'callerid', 'phone_number', 'starting_date_link',
                     'min_duration', 'billsec', 'disposition', 'hangup_cause',
                     'hangup_cause_q850')
-    #list_filter = ['disposition', 'starting_date']
+
+    def starting_date_link(self, obj):
+        """starting_date format"""
+        return obj.starting_date.strftime('%B %d, %Y, %H:%M:%S %P')
+    starting_date_link.allow_tags = True
+    starting_date_link.short_description = _('Starting date')
 
     def user_link(self, obj):
         """User link to user profile"""

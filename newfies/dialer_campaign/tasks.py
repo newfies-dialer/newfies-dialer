@@ -16,11 +16,14 @@ from celery.task import Task, PeriodicTask
 from dialer_campaign.models import Campaign, CampaignSubscriber
 from dialer_campaign.function_def import user_dialer_setting
 from dialer_cdr.models import Callrequest, VoIPCall
+from dialer_cdr.tasks import init_callrequest
 from celery.decorators import task
 from django.db import IntegrityError
 from datetime import datetime, timedelta
 from time import sleep
 from django.conf import settings
+from math import ceil
+from datetime import datetime, timedelta
 #from celery.task.http import HttpDispatchTask
 #from common_functions import isint
 
@@ -120,12 +123,14 @@ def check_campaign_pendingcall(campaign_id):
 
     #find how to dispatch them in the current minutes
     time_to_wait = 60.0 / no_subscriber
+    count = 0
 
     for elem_camp_subscriber in list_subscriber:
         """Loop on Subscriber and start the initcall task"""
+        count = count + 1
         logger.info("Add CallRequest for Subscriber (%s) & wait (%s) " % 
                         (str(elem_camp_subscriber.id), str(time_to_wait)))
-        
+
         #Check if the contact is authorized
         if not obj_campaign.is_authorized_contact(elem_camp_subscriber.contact.contact):
             logger.error("Error : Contact not authorized")
@@ -151,8 +156,11 @@ def check_campaign_pendingcall(campaign_id):
         new_callrequest.save()
         
         #Todo Check if it's a good practice / implement a PID algorithm
-        if no_subscriber > 1:
-            sleep(time_to_wait)
+        second_towait = ceil(count  * time_to_wait)
+        launch_date = datetime.now() + timedelta(seconds=second_towait)
+
+        logger.info("Init CallRequest at %s" % (launch_date.strftime("%b %d %Y %I:%M:%S")))
+        init_callrequest.apply_async(args=[new_callrequest.id, obj_campaign.id], eta=launch_date)
 
 
 class campaign_running(PeriodicTask):

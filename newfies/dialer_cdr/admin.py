@@ -25,8 +25,10 @@ from django.db.models import *
 from dialer_cdr.models import *
 from dialer_cdr.forms import *
 from dialer_cdr.function_def import *
-import csv
+
+from datetime import *
 from genericadmin.admin import GenericAdminModelAdmin, GenericTabularInline
+import csv
 
 
 class CallrequestAdmin(GenericAdminModelAdmin):
@@ -64,10 +66,9 @@ class VoIPCallAdmin(admin.ModelAdmin):
     can_add = False
     detail_title = _("Call Report")
     list_display = ('id', 'leg_type', 
-                    'callid', 'callerid', 'phone_number', 'starting_date', 
+                    'callid', 'callerid', 'phone_number', 'starting_date',
                     'min_duration', 'billsec', 'disposition', 'hangup_cause',
                     'hangup_cause_q850')
-    #list_filter = ['disposition', 'starting_date']
 
     def user_link(self, obj):
         """User link to user profile"""
@@ -112,31 +113,6 @@ class VoIPCallAdmin(admin.ModelAdmin):
         )
         return my_urls + urls
 
-    def search_request(self, request):
-        kwargs = {}
-        if request.method == 'POST':
-            kwargs = voipcall_record_common_fun(request)
-            request.session['from_date'] = request.POST.get('from_date')
-            request.session['to_date'] = request.POST.get('to_date')
-            request.session['status'] = request.POST.get('status')
-        else:
-            if request.GET.get('p'):
-                request.session['from_date'] = request.POST.get('from_date')
-                request.session['to_date'] = request.POST.get('to_date')
-                request.session['status'] = request.POST.get('status')
-            if not request.GET.get('p'):
-                request.session['from_date'] = ''
-                request.session['to_date'] = ''
-                request.session['status'] = ''
-            kwargs = voipcall_record_common_fun(request)
-        return kwargs
-
-    def queryset(self, request):
-        qs = VoIPCall.admin # Use the admin manager regardless of what the default one is
-        kwargs = {}
-        kwargs = self.search_request(request)
-        return qs.filter(**kwargs).order_by('-starting_date')
-
     def changelist_view(self, request, extra_context=None):
         """Override changelist_view method of django-admin for search parameters
 
@@ -152,16 +128,23 @@ class VoIPCallAdmin(admin.ModelAdmin):
         """
         opts = VoIPCall._meta
         app_label = opts.app_label
-        kwargs = {}
-
+                
+        query_string = ''
         form = VoipSearchForm()
         if request.method == 'POST':
-            form = VoipSearchForm(request.POST)
+            query_string = voipcall_search_admin_form_fun(request)
+            return HttpResponseRedirect("/admin/"+opts.app_label+"/"+opts.object_name.lower()+"/?"+query_string)
         else:
-            if request.GET.get('p'):
-                form = VoipSearchForm(initial={'from_date': request.session['from_date'],
-                                               'to_date': request.session['to_date'],
-                                               'status': request.session['status']})
+            status = ''
+            from_date = ''
+            to_date = ''
+            if request.GET.get('starting_date__gte'):
+                from_date = variable_value(request, 'starting_date__gte')
+            if request.GET.get('starting_date__lte'):
+                to_date = variable_value(request, 'starting_date__lte')[0:10]
+            if request.GET.get('disposition__exact'):
+                status = variable_value(request, 'disposition__exact')
+            form = VoipSearchForm(initial={'status': status, 'from_date': from_date, 'to_date': to_date})
 
 
         ChangeList = self.get_changelist(request)
@@ -174,18 +157,25 @@ class VoIPCallAdmin(admin.ModelAdmin):
                 return render_to_response('admin/invalid_setup.html', {'title': _('Database error')})
             return HttpResponseRedirect(request.path + '?' + ERROR_FLAG + '=1')
 
+        kwargs = {}
+        if request.META['QUERY_STRING'] == '':
+            tday = datetime.today()
+            kwargs['starting_date__gte'] = datetime(tday.year,
+                                                    tday.month,
+                                                    tday.day, 0, 0, 0, 0)
+            cl.root_query_set.filter(**kwargs)
+
         formset = cl.formset = None
 
         # Session variable is used to get record set with searched option into export file
-        qs = self.queryset(request)
-        request.session['voipcall_record_qs'] = qs
+        request.session['voipcall_record_qs'] = cl.root_query_set
 
         selection_note_all = ungettext('%(total_count)s selected',
             'All %(total_count)s selected', cl.result_count)
 
         ctx = {
             'selection_note': _('0 of %(cnt)s selected') % {'cnt': len(cl.result_list)},
-            'selection_note_all': selection_note_all % {'total_count': qs.count()},
+            'selection_note_all': selection_note_all % {'total_count': cl.result_count},
             'cl': cl,
             'form': form,
             'opts': opts,

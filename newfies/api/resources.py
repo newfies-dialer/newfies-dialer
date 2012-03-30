@@ -2029,7 +2029,6 @@ class CdrResource(ModelResource):
             #decoded_cdr = urllib.unquote(opt_cdr.decode("utf8"))
             decoded_cdr = opt_cdr
             
-            #TODO Add a try and catch exception
             data = {}
             try:
                 import xml.etree.ElementTree as ET

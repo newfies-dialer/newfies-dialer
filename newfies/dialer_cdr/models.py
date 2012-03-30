@@ -136,7 +136,8 @@ class Callrequest(Model):
     call_type = models.IntegerField(choices=CALLREQUEST_TYPE, default='1',
                 verbose_name=_("Call Request Type"), blank=True, null=True)
     status = models.IntegerField(choices=CALLREQUEST_STATUS, default='1',
-                blank=True, null=True, verbose_name=_('Status'))
+                blank=True, null=True, db_index=True,
+                verbose_name=_('Status'))
     callerid = models.CharField(max_length=80, blank=True,
                 verbose_name=_("CallerID"),
                 help_text=_("CallerID used to call the A-Leg"))
@@ -182,12 +183,6 @@ class Callrequest(Model):
 
     def __unicode__(self):
             return u"%s [%s]" % (self.id, self.request_uuid)
-
-    
-class VoIPCallManager(models.Manager):
-    def get_query_set(self):
-        return super(VoIPCallManager, self).get_query_set()\
-        .defer("request_uuid", "progresssec", "dialcode", "answersec", "waitsec")
 
 
 class VoIPCall(models.Model):
@@ -250,9 +245,6 @@ class VoIPCall(models.Model):
     leg_type = models.SmallIntegerField(choices=LEG_TYPE, default=1, 
                                         verbose_name=_("Leg"),
                                         null=True, blank=True)
-
-    objects = models.Manager()
-    admin = VoIPCallManager() #Custom manager
 
     def destination_name(self):
         """Return Recipient dialcode"""

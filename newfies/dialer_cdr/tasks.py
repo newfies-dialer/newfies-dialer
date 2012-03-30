@@ -16,39 +16,60 @@ from celery.task import Task, PeriodicTask
 from dialer_campaign.models import Campaign, CampaignSubscriber
 from dialer_campaign.function_def import user_dialer_setting
 from dialer_cdr.models import Callrequest, VoIPCall
-from celery.decorators import task
+from celery.decorators import task, periodic_task
 from datetime import datetime, timedelta
 from time import sleep
 from uuid import uuid1
 from django.conf import settings
 from dialer_gateway.utils import phonenumber_change_prefix
 import sys
+from django.core.cache import cache
+from django.utils.hashcompat import md5_constructor as md5
 
-class callrequest_pending(PeriodicTask):
-    """A periodic task that checks for pending calls
+LOCK_EXPIRE = 60 * 1 # Lock expires in 1 minute
 
-    **Usage**:
 
-        callrequest_pending.delay()
-    """
-    # 1000000 ms = 1 sec
-    run_every = timedelta(microseconds=1000000) # every seconds
+def single_instance_task(timeout):
+    def task_exc(func):
+        def wrapper(*args, **kwargs):
+            lock_id = "celery-single-instance-" + func.__name__
+            print lock_id
+            acquire_lock = lambda: cache.add(lock_id, "true", timeout)
+            release_lock = lambda: cache.delete(lock_id)
+            if acquire_lock():
+                try:
+                    func(*args, **kwargs)
+                finally:
+                    release_lock()
+        return wrapper
+    return task_exc
 
-    def run(self, **kwargs):
-        logger = self.get_logger(**kwargs)
-        logger.info("TASK :: callrequest_pending")
+"""
+@periodic_task(run_every=timedelta(seconds=1))
+@single_instance_task(LOCK_EXPIRE)
+def callrequest_pending(*args, **kwargs):
+    #A periodic task that checks for pending calls 
+    #**Usage**:
+    #    callrequest_pending.delay()
+    #
+    logger = callrequest_pending.get_logger()
+    logger.info("TASK :: callrequest_pending")
 
-        list_callrequest = Callrequest.objects.get_pending_callrequest()[:100]
-        if not list_callrequest:
-            logger.debug("No Pending Calls")
+    #TODO: Django 1.4 select_for_update
+    list_callrequest = Callrequest.objects.get_pending_callrequest()[:settings.MAX_CALLS_PER_SECOND]
+    logger.info("callrequest_pending - number_found=%d" % len(list_callrequest))
 
-        for callrequest in list_callrequest:
-            logger.error("=> CallRequest (id:%s, phone_number:%s)" %
-                        (callrequest.id, callrequest.phone_number))
+    if not list_callrequest:
+        logger.debug("No Pending Calls")
 
-            callrequest.status = 7 # Update to Process
-            callrequest.save()
-            init_callrequest.delay(callrequest.id, callrequest.campaign.id)
+    for callrequest in list_callrequest:
+        logger.info("=> CallRequest (id:%s, phone_number:%s)" %
+                    (callrequest.id, callrequest.phone_number))
+
+        callrequest.status = 7 # Update to Process
+        callrequest.save()
+        init_callrequest.delay(callrequest.id, callrequest.campaign.id)
+"""
 
 
 @task()
@@ -61,6 +82,8 @@ def init_callrequest(callrequest_id, campaign_id):
     """
     logger = init_callrequest.get_logger()
     obj_callrequest = Callrequest.objects.get(id=callrequest_id)
+    obj_callrequest.status = 7 # Update to Process
+    obj_callrequest.save()
     logger.info("TASK :: init_callrequest - status = %s" %
                                         str(obj_callrequest.status))
 

@@ -176,7 +176,7 @@ def voipcall_search_admin_form_fun(request):
 
     if disposition:
         if disposition != 'all':
-            disposition_string = 'disposition__exact='+disposition
+            disposition_string = 'disposition__exact=' + disposition
             query_string = return_query_string(query_string, disposition_string)
 
     return query_string

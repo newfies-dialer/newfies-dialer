@@ -112,30 +112,19 @@ class VoIPCallAdmin(admin.ModelAdmin):
         )
         return my_urls + urls
 
-    def search_request(self, request):
-        kwargs = {}
-        if request.method == 'POST':
-            kwargs = voipcall_record_common_fun(request)
-            request.session['from_date'] = request.POST.get('from_date')
-            request.session['to_date'] = request.POST.get('to_date')
-            request.session['status'] = request.POST.get('status')
-        else:
-            if request.GET.get('p'):
-                request.session['from_date'] = request.POST.get('from_date')
-                request.session['to_date'] = request.POST.get('to_date')
-                request.session['status'] = request.POST.get('status')
-            if not request.GET.get('p'):
-                request.session['from_date'] = ''
-                request.session['to_date'] = ''
-                request.session['status'] = ''
-            kwargs = voipcall_record_common_fun(request)
-        return kwargs
-
     def queryset(self, request):
         qs = VoIPCall.admin # Use the admin manager regardless of what the default one is
+        
+        query_string = voipcall_search_admin_form_fun(request)
         kwargs = {}
-        kwargs = self.search_request(request)
-        return qs.filter(**kwargs).order_by('-starting_date')
+        if request.method == 'GET' and not query_string:
+            tday = datetime.today()
+            kwargs['starting_date__gte'] = datetime(tday.year,
+                                                    tday.month,
+                                                    tday.day, 0, 0, 0, 0)
+            return qs.filter(**kwargs).order_by('-starting_date')
+
+        return qs
 
     def changelist_view(self, request, extra_context=None):
         """Override changelist_view method of django-admin for search parameters
@@ -152,16 +141,23 @@ class VoIPCallAdmin(admin.ModelAdmin):
         """
         opts = VoIPCall._meta
         app_label = opts.app_label
-        kwargs = {}
-
+                
+        query_string = ''
         form = VoipSearchForm()
         if request.method == 'POST':
-            form = VoipSearchForm(request.POST)
+            query_string = voipcall_search_admin_form_fun(request)
+            return HttpResponseRedirect("/admin/"+opts.app_label+"/"+opts.object_name.lower()+"/?"+query_string)
         else:
-            if request.GET.get('p'):
-                form = VoipSearchForm(initial={'from_date': request.session['from_date'],
-                                               'to_date': request.session['to_date'],
-                                               'status': request.session['status']})
+            status = ''
+            from_date = ''
+            to_date = ''
+            if request.GET.get('starting_date__gte'):
+                from_date = variable_value(request, 'starting_date__gte')
+            if request.GET.get('starting_date__lte'):
+                to_date = variable_value(request, 'starting_date__lte')
+            if request.GET.get('disposition__exact'):
+                status = variable_value(request, 'disposition__exact')
+            form = VoipSearchForm(initial={'status': status, 'from_date': from_date, 'to_date': to_date})
 
 
         ChangeList = self.get_changelist(request)

@@ -140,6 +140,48 @@ def voipcall_record_common_fun(request):
     return kwargs
 
 
+def return_query_string(query_string, para):
+    if query_string:
+        query_string += '&' + para
+    else:
+        query_string = para
+    return query_string
+
+
+def voipcall_search_admin_form_fun(request):
+    """Return query string for Voipcall_Report Changelist_view"""
+    start_date = ''
+    end_date = ''
+    if request.POST.get('from_date'):
+        start_date = request.POST.get('from_date')
+
+    if request.POST.get('to_date'):
+        end_date = request.POST.get('to_date')
+
+    # Assign form field value to local variable
+    disposition = variable_value(request, 'status')
+    query_string = ''
+
+    if start_date and end_date:
+        date_string = 'starting_date__gte=' + start_date + '&starting_date__lte=' + end_date
+        query_string = return_query_string(query_string, date_string)
+
+    if start_date and end_date == '':
+        date_string = 'starting_date__gte=' + start_date
+        query_string = return_query_string(query_string, date_string)
+
+    if start_date == '' and end_date:
+        date_string = 'starting_date__lte=' + end_date
+        query_string = return_query_string(query_string, date_string)
+
+    if disposition:
+        if disposition != 'all':
+            disposition_string = 'disposition__exact='+disposition
+            query_string = return_query_string(query_string, disposition_string)
+
+    return query_string
+
+
 def get_disposition_id(name):
     """To get id from voip_call_disposition_list"""
     for i in VOIPCALL_DISPOSITION:

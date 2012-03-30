@@ -23,6 +23,11 @@ from uuid import uuid1
 from django.conf import settings
 from dialer_gateway.utils import phonenumber_change_prefix
 import sys
+from django.core.cache import cache
+from django.utils.hashcompat import md5_constructor as md5
+
+LOCK_EXPIRE = 60 * 1 # Lock expires in 1 minute
+
 
 class callrequest_pending(PeriodicTask):
     """A periodic task that checks for pending calls
@@ -31,24 +36,41 @@ class callrequest_pending(PeriodicTask):
 
         callrequest_pending.delay()
     """
-    # 1000000 ms = 1 sec
-    run_every = timedelta(microseconds=1000000) # every seconds
+    run_every = timedelta(seconds=1) # every seconds
 
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
         logger.info("TASK :: callrequest_pending")
 
-        list_callrequest = Callrequest.objects.get_pending_callrequest()[:100]
-        if not list_callrequest:
-            logger.debug("No Pending Calls")
+        lock_id = "%s-lock" % (self.name)
+        
+        # cache.add fails if if the key already exists
+        acquire_lock = lambda: cache.add(lock_id, "true", LOCK_EXPIRE)
+        # memcache delete is very slow, but we have to use it to take
+        # advantage of using add() for atomic locking
+        release_lock = lambda: cache.delete(lock_id)
 
-        for callrequest in list_callrequest:
-            logger.error("=> CallRequest (id:%s, phone_number:%s)" %
-                        (callrequest.id, callrequest.phone_number))
+        if acquire_lock():
 
-            callrequest.status = 7 # Update to Process
-            callrequest.save()
-            init_callrequest.delay(callrequest.id, callrequest.campaign.id)
+            #TODO: Django 1.4 select_for_update
+            list_callrequest = Callrequest.objects.get_pending_callrequest()[:settings.MAX_CALLS_PER_SECOND]
+            logger.info("callrequest_pending - number_found=%d" % len(list_callrequest))
+
+            if not list_callrequest:
+                logger.debug("No Pending Calls")
+
+            for callrequest in list_callrequest:
+                logger.info("=> CallRequest (id:%s, phone_number:%s)" %
+                            (callrequest.id, callrequest.phone_number))
+
+                callrequest.status = 7 # Update to Process
+                callrequest.save()
+                init_callrequest.delay(callrequest.id, callrequest.campaign.id)
+                
+            #Release lock    
+            release_lock()
+        else:
+            logger.error("ERROR :: %s is already being imported by another worker" % (self.name))
 
 
 @task()

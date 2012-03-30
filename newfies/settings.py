@@ -72,9 +72,11 @@ USE_I18N = True
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale
-USE_L10N = True
+USE_L10N = False
 
+DATETIME_FORMAT = 'Y-m-d H:i:s'
 
+DATE_FORMAT = 'Y-m-d'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -480,6 +482,10 @@ LOGGING = {
 #SENTRY SETTINGS
 #===============
 #SENTRY_DSN = 'http://332214d1bc06499b935be796a2076e0f:37facd4a9dba44409db3bf0980629ea1@localhost:9000/1'
+
+#DIALER
+#======
+MAX_CALLS_PER_SECOND=20 #By default configured to 20 calls per second
 
 
 # Frontend widget values

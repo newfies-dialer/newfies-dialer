@@ -136,7 +136,8 @@ class Callrequest(Model):
     call_type = models.IntegerField(choices=CALLREQUEST_TYPE, default='1',
                 verbose_name=_("Call Request Type"), blank=True, null=True)
     status = models.IntegerField(choices=CALLREQUEST_STATUS, default='1',
-                blank=True, null=True, verbose_name=_('Status'))
+                blank=True, null=True, db_index=True,
+                verbose_name=_('Status'))
     callerid = models.CharField(max_length=80, blank=True,
                 verbose_name=_("CallerID"),
                 help_text=_("CallerID used to call the A-Leg"))

@@ -112,19 +112,6 @@ class VoIPCallAdmin(admin.ModelAdmin):
         )
         return my_urls + urls
 
-    def queryset(self, request):
-        qs = VoIPCall.admin # Use the admin manager regardless of what the default one is
-        
-        kwargs = {}
-        if request.META['QUERY_STRING'] == '':
-            tday = datetime.today()
-            kwargs['starting_date__gte'] = datetime(tday.year,
-                                                    tday.month,
-                                                    tday.day, 0, 0, 0, 0)
-            qs.filter(**kwargs)
-
-        return qs.order_by('-starting_date')
-
     def changelist_view(self, request, extra_context=None):
         """Override changelist_view method of django-admin for search parameters
 
@@ -168,6 +155,14 @@ class VoIPCallAdmin(admin.ModelAdmin):
             if ERROR_FLAG in request.GET.keys():
                 return render_to_response('admin/invalid_setup.html', {'title': _('Database error')})
             return HttpResponseRedirect(request.path + '?' + ERROR_FLAG + '=1')
+
+        kwargs = {}
+        if request.META['QUERY_STRING'] == '':
+            tday = datetime.today()
+            kwargs['starting_date__gte'] = datetime(tday.year,
+                                                    tday.month,
+                                                    tday.day, 0, 0, 0, 0)
+            cl.root_query_set.filter(**kwargs)
 
         formset = cl.formset = None
 

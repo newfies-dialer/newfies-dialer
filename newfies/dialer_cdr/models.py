@@ -183,12 +183,6 @@ class Callrequest(Model):
     def __unicode__(self):
             return u"%s [%s]" % (self.id, self.request_uuid)
 
-    
-class VoIPCallManager(models.Manager):
-    def get_query_set(self):
-        return super(VoIPCallManager, self).get_query_set()\
-        .defer("request_uuid", "progresssec", "dialcode", "answersec", "waitsec")
-
 
 class VoIPCall(models.Model):
     """This gives information of all the calls made with
@@ -250,9 +244,6 @@ class VoIPCall(models.Model):
     leg_type = models.SmallIntegerField(choices=LEG_TYPE, default=1, 
                                         verbose_name=_("Leg"),
                                         null=True, blank=True)
-
-    objects = models.Manager()
-    admin = VoIPCallManager() #Custom manager
 
     def destination_name(self):
         """Return Recipient dialcode"""

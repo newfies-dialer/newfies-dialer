@@ -653,9 +653,6 @@ func_install_backend() {
     echo "Install Redis-server ..."
     func_install_redis_server
 
-    #Install Celery
-    pip install Celery
-
     #Memcache installation
     #pip install python-memcached
 

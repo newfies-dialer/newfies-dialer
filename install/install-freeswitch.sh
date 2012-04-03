@@ -56,12 +56,29 @@ read INPUT
 func_install_fs_source() {
     #install fs from source
    	echo "installing from source"
+   	
+   	#Add Freeswitch group and user
+	grep -c "^freeswitch:" /etc/group &> /dev/null
+	if [ $? = 1 ]; then
+       /usr/sbin/groupadd -r -f freeswitch
+	else
+       echo "group freeswitch already present"
+	fi
+
+	grep -c "^freeswitch:" /etc/passwd &> /dev/null
+	if [ $? = 1 ]; then
+       echo "adding user freeswitch..."
+       /usr/sbin/useradd -r -c "freeswitch" -g freeswitch freeswitch
+	else
+       echo "user freeswitch already present"
+	fi
+
 	    	
 	# Install FreeSWITCH
 	cd $FS_BASE_PATH
 	git clone $FS_GIT_REPO
 	cd $FS_BASE_PATH/freeswitch
-	sh bootstrap.sh && ./configure --prefix=/usr/local/freeswitch
+	sh bootstrap.sh && ./configure --without-pgsql --prefix=/usr/local/freeswitch --sysconfdir=/etc/freeswitch/
 	[ -f modules.conf ] && cp modules.conf modules.conf.bak
 	sed -i -e \
 	"s/#applications\/mod_curl/applications\/mod_curl/g" \
@@ -83,6 +100,10 @@ func_install_fs_source() {
 	modules.conf
 	make && make install && make sounds-install && make moh-install
 
+
+	#Set permissions
+	chown -R freeswitch:freeswitch /usr/local/freeswitch /etc/freeswitch
+	
 #installed fs from source 
 }
 
@@ -129,7 +150,7 @@ case $DIST in
 
 			# install the freeswitch files
 			yum -y install freeswitch-config-vanilla freeswitch-codec-siren freeswitch-codec-passthru-amr freeswitch-application-conference freeswitch-application-db freeswitch-endpoint-dingaling freeswitch-application-enum freeswitch-application-esf freeswitch-application-expr freeswitch-application-fifo freeswitch-asrtts-flite freeswitch-application-fsv freeswitch-codec-passthru-g723_1 freeswitch-codec-passthru-g729 freeswitch-codec-h26x freeswitch-application-hash freeswitch-application-httapi freeswitch-codec-ilbc freeswitch-format-local-stream freeswitch-lua freeswitch-format-native-file freeswitch-lang-de freeswitch-lang-en freeswitch-lang-fr freeswitch-lang-ru freeswitch-format-mod-shout freeswitch-codec-speex freeswitch-spidermonkey freeswitch-format-tone-stream freeswitch-asrtts-tts-commandline freeswitch-application-valet_parking freeswitch-application-voicemail freeswitch-format-shell-stream
-	    	
+	    		    	
     	else
         	echo "installing from source"
         	func_install_fs_source
@@ -170,7 +191,7 @@ wget --no-check-certificate $FS_CONF_PATH/public.xml -O public.xml
 
 
 #Configure XML CDR
-cd $FS_INSTALLED_PATH/conf/autoload_configs/
+#cd $FS_INSTALLED_PATH/conf/autoload_configs/
 
 #this is commented as we don't use xml_cdr anymore
 ## Place Newfies XML CDR conf in FreeSWITCH
@@ -182,11 +203,7 @@ cd $FS_INSTALLED_PATH/conf/autoload_configs/
 #Return to current path
 cd $CURRENT_PATH
 
-#Add alias fs_cli
-chk=`grep "fs_cli" ~/.bashrc|wc -l`
-if [ $chk -lt 1 ] ; then
-    echo "alias fs_cli='/usr/local/freeswitch/bin/fs_cli'" >> ~/.bashrc
-fi    
+
 
 case $DIST in
     'DEBIAN')
@@ -200,9 +217,36 @@ case $DIST in
         wget --no-check-certificate $FS_INIT_PATH/centos/freeswitch -O /etc/init.d/freeswitch
         chmod 0755 /etc/init.d/freeswitch
         chkconfig --add freeswitch
-        chkconfig --level 2345 freeswitch on
+        chkconfig --level 345 freeswitch on
     ;;
 esac
+
+
+#replace with our own working init script as per http://jira.freeswitch.org/browse/FS-4042
+if [ "$YUMSOURCE" = "y" ] || [ "$YUMSOURCE" = "Y" ]; then
+    	echo "Installed via yum repository"
+    	
+		#replace with our own working init script as per http://jira.freeswitch.org/browse/FS-4042
+    	rm -f /etc/init.d/freeswitch
+    	#Install init.d script
+       	wget --no-check-certificate $FS_INIT_PATH/centos/freeswitch -O /etc/init.d/freeswitch
+       	chmod 0755 /etc/init.d/freeswitch
+       	chkconfig --add freeswitch
+       	chkconfig --level 345 freeswitch on
+       	sed -i "s@/usr/local/freeswitch/bin@/usr/bin@g" /etc/init.d/freeswitch
+		sed -i "s@/usr/local/freeswitch/run@/var/run/freeswitch@g" /etc/init.d/freeswitch
+		/etc/init.d/freeswitch start
+		#We will remove this when the bug is fixed.
+		    	
+else
+       	echo "installing from source"
+		#Add alias fs_cli
+		chk=`grep "fs_cli" ~/.bashrc|wc -l`
+		if [ $chk -lt 1 ] ; then
+   			echo "alias fs_cli='/usr/local/freeswitch/bin/fs_cli'" >> ~/.bashrc
+    	fi
+fi
+
 
 
 

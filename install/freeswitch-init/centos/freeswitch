@@ -48,7 +48,7 @@ do_setlimits() {
 do_start() {
 	echo -n $"Starting $prog: "
         do_setlimits
-        $DAEMON -nc -u $FS_USER $FREESWITCH_OPTIONS &>/dev/null
+        $DAEMON -nc $FREESWITCH_OPTIONS &>/dev/null
         RETVAL=$?
 	[ $RETVAL -eq 0 ] && success || failure
         echo 

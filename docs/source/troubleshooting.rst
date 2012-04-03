@@ -55,6 +55,13 @@ All the logs are centralized into one single directory **/var/log/newfies/**
 **celery-newfies-node1.log** : This contains celery activity
 
 
+The logs files for plivo can be find in this directory : /usr/share/plivo/tmp/
+
+**plivo-rest.log** : Plivo REST APIs logs
+
+**plivo-outbound.log** : Logs of communication between FreeSWITCH and Plivo
+
+
 
 .. _run-quick-test-call:
 

@@ -8,7 +8,7 @@ django-chart-tools
 django-memcache-status
 django-cache-utils
 django-picklefield
-django-jsonfield==0.6
+django-jsonfield==0.8.1
 django-countries==1.1.2
 hg+https://bitbucket.org/izi/django-admin-tools
 git+git://github.com/jtauber/django-notification.git

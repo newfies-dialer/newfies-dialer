@@ -39,6 +39,7 @@ FS_CONF_PATH=https://raw.github.com/Star2Billing/newfies-dialer/master/install/f
 FS_INIT_PATH=https://raw.github.com/Star2Billing/newfies-dialer/master/install/freeswitch-init
 FS_GIT_REPO=git://git.freeswitch.org/freeswitch.git
 FS_INSTALLED_PATH=/usr/local/freeswitch
+FS_CONFIG_PATH=/etc/freeswitch
 
 #####################################################
 FS_BASE_PATH=/usr/src/
@@ -161,7 +162,7 @@ esac
     
 
 # Enable FreeSWITCH modules
-cd $FS_INSTALLED_PATH/conf/autoload_configs/
+cd $FS_CONFIG_PATH/autoload_configs/
 [ -f modules.conf.xml ] && cp modules.conf.xml modules.conf.xml.bak
 sed -i -r \
 -e "s/<\!--\s?<load module=\"mod_xml_curl\"\/>\s?-->/<load module=\"mod_xml_curl\"\/>/g" \
@@ -179,7 +180,7 @@ modules.conf.xml
 
 
 #Configure Dialplan
-cd $FS_INSTALLED_PATH/conf/dialplan/
+cd $FS_CONFIG_PATH/conf/dialplan/
 
 # Place Plivo Default Dialplan in FreeSWITCH
 [ -f default.xml ] && mv default.xml default.xml.bak

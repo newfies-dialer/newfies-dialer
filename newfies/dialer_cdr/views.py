@@ -62,6 +62,9 @@ def voipcall_report_grid(request):
     end_date = ''
     disposition = 'all'
 
+    if not sortorder_sign == '':
+        sortorder_sign = '-'
+    
     # get querystring from URL
     q_arr = list(request.get_full_path().split('?'))
     j = 0
@@ -74,7 +77,6 @@ def voipcall_report_grid(request):
         j = j + 1
 
     if "from_date" in q_para:
-
         # decode query string
         decoded_string = urllib.unquote(q_para.decode("utf8"))
 

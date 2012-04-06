@@ -123,7 +123,7 @@ def init_callrequest(callrequest_id, campaign_id):
         answer_url = settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL
     else:
         answer_url = settings.PLIVO_DEFAULT_ANSWER_URL
-    
+
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
     if obj_callrequest.user.userprofile.accountcode and \
         obj_callrequest.user.userprofile.accountcode > 0:
@@ -190,7 +190,10 @@ def init_callrequest(callrequest_id, campaign_id):
     #Update CampaignSubscriber
     if obj_callrequest.campaign_subscriber and obj_callrequest.campaign_subscriber.id:
         obj_subscriber = CampaignSubscriber.objects.get(id=obj_callrequest.campaign_subscriber.id)
-        obj_subscriber.count_attempt = obj_subscriber.count_attempt + 1
+        if obj_subscriber.count_attempt == None or not obj_subscriber.count_attempt >=0:
+            obj_subscriber.count_attempt = 1
+        else:
+            obj_subscriber.count_attempt = obj_subscriber.count_attempt + 1
         obj_subscriber.last_attempt = datetime.now()
         obj_subscriber.save()
 
@@ -332,15 +335,16 @@ def dummy_test_hangupurl(request_uuid):
     return True
 
 
+"""
+#reimplemented on the hangup url
+
 class init_call_retry(PeriodicTask):
-    """
-    A periodic task that checks the failed callrequest & perform retry
-
-    **Usage**:
-
-        init_call_retry.delay()
-    """
-    run_every = timedelta(seconds=300)
+    #A periodic task that checks the failed callrequest & perform retry
+    #
+    #**Usage**:
+    #
+    #    init_call_retry.delay()
+    run_every = timedelta(seconds=60)
     def run(self, **kwargs):
         logger = init_call_retry.get_logger()
         logger.info("TASK :: init_call_retry")
@@ -373,7 +377,7 @@ class init_call_retry(PeriodicTask):
                     break
 
                 # TODO : Review Logic
-                # Crete new callrequest, Assign parent_callrequest, Change callrequest_type
+                # Create new callrequest, Assign parent_callrequest, Change callrequest_type
                 # & num_attempt
                 obj = Callrequest(request_uuid=uuid1(),
                                     parent_callrequest_id=callreq.id,
@@ -392,3 +396,4 @@ class init_call_retry(PeriodicTask):
             logger.error("Can't find failed callrequest")
             return False
         return True
+"""

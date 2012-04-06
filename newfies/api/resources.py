@@ -44,10 +44,11 @@ from tastypie.exceptions import BadRequest, NotFound, ImmediateHttpResponse
 from tastypie import http
 from tastypie import fields
 
+from dialer_cdr.tasks import init_callrequest
 from dialer_campaign.models import Campaign, Phonebook, Contact, CampaignSubscriber, \
      get_unique_code
 from dialer_campaign.function_def import user_attached_with_dialer_settings, \
-    check_dialer_setting, dialer_setting_limit
+    check_dialer_setting, dialer_setting_limit, user_dialer_setting
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_gateway.models import Gateway
 from voice_app.models import VoiceApp
@@ -55,7 +56,7 @@ from survey.models import SurveyApp
 from common_functions import search_tag_string
 
 from settings_local import API_ALLOWED_IP, PLIVO_DEFAULT_DIALCALLBACK_URL
-from datetime import datetime
+from datetime import datetime, timedelta
 from random import choice, seed
 
 import urllib
@@ -1817,7 +1818,6 @@ class HangupcallValidation(Validation):
         #for var_name in CDR_VARIABLES:
         #    if not request.POST.get("variable_%s" % var_name):
         #        errors[var_name] = ["Wrong parameters - missing %s!" % var_name]
-        
         try:
             callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid)
         except:
@@ -1933,6 +1933,39 @@ class HangupcallResource(ModelResource):
             object_list = [{'result': 'OK'}]
             logger.debug('Hangupcall API : Result 200!')
             obj = CustomXmlEmitter()
+            
+            #We will manage the retry directly from the API
+            if opt_hangup_cause!='NORMAL_CLEARING' and callrequest.call_type==1: #Allow retry
+                #Update to Retry Done
+                callrequest.call_type = 3
+                callrequest.save()
+
+                dialer_set = user_dialer_setting(callrequest.user)
+                if callrequest.num_attempt >= callrequest.campaign.maxretry \
+                    or callrequest.num_attempt >= dialer_set.maxretry:
+                    logger.error("Not allowed retry - Maxretry reached (%d)" % callrequest.campaign.maxretry)
+                else:
+                    #Allowed Retry
+
+                    # TODO : Review Logic
+                    # Create new callrequest, Assign parent_callrequest, Change callrequest_type
+                    # & num_attempt
+                    new_callrequest = Callrequest(request_uuid=uuid.uuid1(),
+                                        parent_callrequest_id=callrequest.id,
+                                        call_type=1,
+                                        num_attempt=callrequest.num_attempt+1,
+                                        user=callrequest.user,
+                                        campaign_id=callrequest.campaign_id,
+                                        aleg_gateway_id=callrequest.aleg_gateway_id,
+                                        content_type=callrequest.content_type,
+                                        object_id=callrequest.object_id,
+                                        phone_number=callrequest.phone_number)
+                    new_callrequest.save()
+                    #Todo Check if it's a good practice / implement a PID algorithm
+                    second_towait = callrequest.campaign.intervalretry
+                    launch_date = datetime.now() + timedelta(seconds=second_towait)
+                    logger.info("Init Retry CallRequest at %s" % (launch_date.strftime("%b %d %Y %I:%M:%S")))
+                    init_callrequest.apply_async(args=[new_callrequest.id, callrequest.campaign.id], eta=launch_date)
 
             return self.create_response(request, obj.render(request, object_list))
         else:

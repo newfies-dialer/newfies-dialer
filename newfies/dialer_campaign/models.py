@@ -596,7 +596,6 @@ class CampaignSubscriber(Model):
                                         verbose_name=_("Last attempt"))
     count_attempt = models.IntegerField(null=True, blank=True, 
                     verbose_name=_("Count attempts"), default='0')
-
     #We duplicate contact to create a unique constraint
     duplicate_contact = models.CharField(max_length=90,
                         verbose_name=_("Contact"))

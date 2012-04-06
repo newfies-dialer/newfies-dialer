@@ -123,9 +123,7 @@ def init_callrequest(callrequest_id, campaign_id):
         answer_url = settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL
     else:
         answer_url = settings.PLIVO_DEFAULT_ANSWER_URL
-        #Test url
-        #answer_url = 'http://localhost/~areski/django/MyProjects/plivohelper-php/examples/test.php?answer=1'
-
+    
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
     if obj_callrequest.user.userprofile.accountcode and \
         obj_callrequest.user.userprofile.accountcode > 0:
@@ -178,6 +176,7 @@ def init_callrequest(callrequest_id, campaign_id):
             if obj_callrequest.campaign_subscriber and obj_callrequest.campaign_subscriber.id:
                 obj_subscriber = CampaignSubscriber.objects.get(id=obj_callrequest.campaign_subscriber.id)
                 obj_subscriber.status = 4 # Fail
+
                 obj_subscriber.save()
             return False
         logger.info(result)
@@ -187,6 +186,13 @@ def init_callrequest(callrequest_id, campaign_id):
         logger.error('No other method supported, use one of these options :'\
                      'dummy ; plivo')
         return False
+
+    #Update CampaignSubscriber
+    if obj_callrequest.campaign_subscriber and obj_callrequest.campaign_subscriber.id:
+        obj_subscriber = CampaignSubscriber.objects.get(id=obj_callrequest.campaign_subscriber.id)
+        obj_subscriber.count_attempt = obj_subscriber.count_attempt + 1
+        obj_subscriber.last_attempt = datetime.now()
+        obj_subscriber.save()
 
     #Update CallRequest Object
     obj_callrequest.request_uuid = result['RequestUUID']
@@ -255,9 +261,9 @@ def dummy_test_answerurl(request_uuid):
                 (dummy_test_answerurl.request.id,
                  dummy_test_answerurl.request.args,
                  dummy_test_answerurl.request.kwargs))
+    
     logger.info("Waiting 1 seconds...")
     sleep(1)
-
     #find Callrequest
     try:
         obj_callrequest = Callrequest.objects.get(request_uuid=request_uuid)
@@ -287,12 +293,15 @@ def dummy_test_answerurl(request_uuid):
 
 @task(default_retry_delay=2)  # retry in 2 seconds.
 def dummy_test_hangupurl(request_uuid):
-    """This task triggers a call to local answer
+    """
+    This task triggers a call to local answer
     This is used for test purposes to simulate the behavior of Plivo
 
     **Attributes**:
 
-        * ``RequestUUID`` - A unique identifier for API request."""
+        * ``RequestUUID`` - A unique identifier for API request.
+
+    """
     logger = dummy_test_hangupurl.get_logger()
     logger.info("TASK :: dummy_test_hangupurl")
     logger = dummy_test_hangupurl.get_logger()
@@ -324,7 +333,8 @@ def dummy_test_hangupurl(request_uuid):
 
 
 class init_call_retry(PeriodicTask):
-    """A periodic task that checks the failed callrequest & perform retry
+    """
+    A periodic task that checks the failed callrequest & perform retry
 
     **Usage**:
 

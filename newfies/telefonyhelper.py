@@ -30,7 +30,8 @@ def call_plivo(callerid=None, phone_number=None, Gateways=None,
     # Define Channel Variable -
     # http://wiki.freeswitch.org/wiki/Channel_Variables
     extra_dial_string = "bridge_early_media=true,hangup_after_bridge=true"
-    extra_dial_string = extra_dial_string + ExtraDialString
+    if len(ExtraDialString) > 0:
+        extra_dial_string = extra_dial_string + ',' + ExtraDialString
 
     if not phone_number:
         print "Error : Phone Number needs to be defined!"

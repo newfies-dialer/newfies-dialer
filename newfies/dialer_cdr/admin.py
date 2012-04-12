@@ -267,7 +267,6 @@ class VoIPCallAdmin(admin.ModelAdmin):
         response = HttpResponse(mimetype='text/csv')
         # force download.
         response['Content-Disposition'] = 'attachment;filename=export.csv'
-        # the csv writer
         writer = csv.writer(response)
 
         # super(VoIPCall_ReportAdmin, self).queryset(request)

@@ -168,7 +168,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
         formset = cl.formset = None
 
         # Session variable is used to get record set with searched option into export file
-        request.session['voipcall_record_qs'] = cl.root_query_set
+        request.session['admin_voipcall_record_qs'] = cl.root_query_set
 
         selection_note_all = ungettext('%(total_count)s selected',
             'All %(total_count)s selected', cl.result_count)
@@ -257,7 +257,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
         **Important variable**:
 
-            * request.session['voipcall_record_qs'] - stores voipcall query set
+            * request.session['admin_voipcall_record_qs'] - stores voipcall query set
 
         **Exported fields**: [user, callid, callerid, phone_number,
                               starting_date, duration, disposition,
@@ -271,7 +271,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
         writer = csv.writer(response)
 
         # super(VoIPCall_ReportAdmin, self).queryset(request)
-        qs = request.session['voipcall_record_qs']
+        qs = request.session['admin_voipcall_record_qs']
 
         writer.writerow(['user', 'callid', 'callerid',
                          'phone_number', 'starting_date', 'duration',

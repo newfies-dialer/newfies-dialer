@@ -271,16 +271,16 @@ def export_voipcall_report(request):
                      'disposition', 'hangup_cause', 'hangup_cause_q850',
                      'used_gateway'])
     for i in qs:
-        writer.writerow([i.user,
-                         i.callid,
-                         i.callerid,
-                         i.phone_number,
-                         i.starting_date,
-                         i.duration,
-                         i.billsec,
-                         get_disposition_name(i.disposition),
-                         i.hangup_cause,
-                         i.hangup_cause_q850,
-                         i.used_gateway,
+        writer.writerow([i['user'],
+                         i['callid'],
+                         i['callerid'],
+                         i['phone_number'],
+                         i['starting_date'],
+                         i['duration'],
+                         i['billsec'],
+                         get_disposition_name(i['disposition']),
+                         i['hangup_cause'],
+                         i['hangup_cause_q850'],
+                         i['used_gateway'],
                          ])
     return response

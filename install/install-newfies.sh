@@ -687,6 +687,22 @@ func_install_backend() {
             cd /etc/init.d; update-rc.d newfies-celeryd defaults 99
             #celerybeat script disabled
             #cd /etc/init.d; update-rc.d newfies-celerybeat defaults 99
+            
+            #Check permissions on /dev/shm to ensure that celery can start and run for openVZ. 
+			DIR="/dev/shm"
+			echo "Checking the permissions for $dir"
+			stat $DIR
+			echo "##############################################"
+			if [ `stat -c "%a" $DIR` -ge 777 ] ; then
+     			echo "$DIR has Read Write permissions."
+			else
+     			echo "$DIR has no read write permissions."
+        		chmod -R 777 /dev/shm
+        		if [ `grep -i /dev/shm /etc/fstab | wc -l` -eq 0 ]; then
+                	echo "Adding fstab entry to set permissions /dev/shm"
+                	echo "none /dev/shm tmpfs rw,nosuid,nodev,noexec 0 0" >> /etc/fstab
+        		fi
+			fi
         ;;
         'CENTOS')
             # Add init-scripts

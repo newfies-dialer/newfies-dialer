@@ -15,7 +15,7 @@
 
 #
 # To download and run the script on your server :
-# wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/freeswitch/install-freeswitch.sh
+# wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-freeswitch.sh
 #
 #
 #TODO: install memcache

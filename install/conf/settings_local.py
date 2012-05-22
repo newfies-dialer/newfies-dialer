@@ -82,3 +82,15 @@ API_ALLOWED_IP = [
             'localhost', 
             #'SERVER_IP',
                 ]
+                
+#TEXT-TO-SPEECH
+#==============
+ACCOUNT_LOGIN = 'EVAL_XXXX'
+APPLICATION_LOGIN = 'EVAL_XXXXXXX'
+APPLICATION_PASSWORD = 'XXXXXXXX'
+
+SERVICE_URL = 'http://vaas.acapela-group.com/Services/Synthesizer'
+QUALITY = '22k' # 22k, 8k, 8ka, 8kmu
+TTS_ENGINE = 'FLITE' #FLITE, CEPSTRAL, ACAPELA
+ACAPELA_GENDER = 'W'
+ACAPELA_INTONATION = 'NORMAL'

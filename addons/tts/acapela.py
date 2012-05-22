@@ -122,9 +122,13 @@ class Acapela(object):
         
     def run(self):
         """run will call acapela API and and produce audio"""
-        encdata = parse.urlencode(self.data)
-        request.urlretrieve(self.SERVICE_URL, self.DIRECTORY + self.filename, data=encdata)
-        return self.filename
+        #check if file exists
+        if os.path.isfile(self.DIRECTORY + self.filename):
+            return self.filename
+        else:
+            encdata = parse.urlencode(self.data)
+            request.urlretrieve(self.SERVICE_URL, self.DIRECTORY + self.filename, data=encdata)
+            return self.filename
         
         
 

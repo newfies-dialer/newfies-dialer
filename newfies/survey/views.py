@@ -452,7 +452,7 @@ def audio_add(request):
 
     **Attributes**:
 
-        * ``form`` - SurvyCustomerAudioFileForm
+        * ``form`` - SurveyCustomerAudioFileForm
         * ``template`` - frontend/survey/audio_change.html
 
     **Logic Description**:
@@ -460,9 +460,9 @@ def audio_add(request):
         * Add a new audio which will belong to the logged in user
           via the CustomerAudioFileForm & get redirected to the audio list
     """
-    form = SurvyCustomerAudioFileForm()
+    form = SurveyCustomerAudioFileForm()
     if request.method == 'POST':
-        form = SurvyCustomerAudioFileForm(request.POST, request.FILES)
+        form = SurveyCustomerAudioFileForm(request.POST, request.FILES)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.user = User.objects.get(username=request.user)

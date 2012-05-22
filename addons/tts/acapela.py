@@ -22,7 +22,7 @@ APPLICATION_PASSWORD = 'XXXXXXXX'
 SERVICE_URL = 'http://vaas.acapela-group.com/Services/Synthesizer'
 QUALITY = '22k' # 22k, 8k, 8ka, 8kmu
 TTS_ENGINE = 'ACAPELA'
-
+DIRECTORY = '/tmp/'
 
 class Acapela(object):
 
@@ -33,6 +33,7 @@ class Acapela(object):
     APPLICATION_PASSWORD = None
     SERVICE_URL = None
     QUALITY = None
+    DIRECTORY = ''
     
     #Available voices list
     #http://www.acapela-vaas.com/ReleasedDocumentation/voices_list.php
@@ -78,7 +79,7 @@ class Acapela(object):
     data = {}
     filename = None
     
-    def __init__(self, tts_engine, account_login, application_login, application_password, service_url, quality):
+    def __init__(self, tts_engine, account_login, application_login, application_password, service_url, quality, directory=''):
         """construct Acapela TTS"""
         self.TTS_ENGINE = tts_engine
         self.ACCOUNT_LOGIN = account_login
@@ -86,6 +87,7 @@ class Acapela(object):
         self.APPLICATION_PASSWORD = application_password
         self.SERVICE_URL = service_url
         self.QUALITY = quality
+        self.DIRECTORY = directory
     
     def prepare(self, text, lang, gender, intonation):
         """Prepare Acapela TTS"""
@@ -108,7 +110,7 @@ class Acapela(object):
     def run(self):
         """run will call acapela API and and produce audio"""
         encdata = parse.urlencode(self.data)
-        request.urlretrieve(self.SERVICE_URL, self.filename, data=encdata)
+        request.urlretrieve(self.SERVICE_URL, self.DIRECTORY + self.filename, data=encdata)
         return self.filename
         
         
@@ -117,8 +119,7 @@ if __name__ == "__main__":
 
 
     #Construct
-    tts_acapela = Acapela(TTS_ENGINE, ACCOUNT_LOGIN, APPLICATION_LOGIN, APPLICATION_PASSWORD, SERVICE_URL, QUALITY)
-    
+    tts_acapela = Acapela(TTS_ENGINE, ACCOUNT_LOGIN, APPLICATION_LOGIN, APPLICATION_PASSWORD, SERVICE_URL, QUALITY, DIRECTORY)    
 
     #General settings for test
     gender = 'W'

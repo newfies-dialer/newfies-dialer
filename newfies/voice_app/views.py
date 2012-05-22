@@ -49,7 +49,7 @@ def voiceapp_grid(request):
 
     voiceapp_list = VoiceApp.objects\
                    .values('id', 'name', 'user', 'description', 'type',
-                           'data', 'gateway__name',
+                           'data', 'tts_language', 'gateway__name',
                            'updated_date').filter(user=request.user)
 
     count = voiceapp_list.count()
@@ -64,6 +64,7 @@ def voiceapp_grid(request):
                       get_voiceapp_type_name(row['type']),
                       row['gateway__name'],
                       row['data'],
+                      row['tts_language'],
                       row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
                       '<a href="' + str(row['id']) + '/" class="icon" ' \
                       + update_style + ' title="' + _('Update Voice App') + '">&nbsp;</a>' +\
@@ -72,7 +73,7 @@ def voiceapp_grid(request):
                       str(row['id']) +\
                       ');"  title="' + _('Delete Voice App') + '">&nbsp;</a>'
                       ]} for row in voiceapp_list]
-
+    
     data = {'rows': rows,
             'page': page,
             'total': count}

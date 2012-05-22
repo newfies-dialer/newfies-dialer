@@ -31,6 +31,7 @@ from django.utils.xmlutils import SimplerXMLGenerator
 from django.contrib.auth import authenticate
 from django.conf import settings
 from django.db import IntegrityError
+from django.contrib.sites.models import Site
 
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie.authentication import Authentication, BasicAuthentication
@@ -1600,8 +1601,8 @@ class AnswercallResource(ModelResource):
                 object_list = []
                 logger.error('Error with App type, not a VoiceApp!')
             else:
-
                 data = obj_callrequest.content_object.data
+                tts_language = obj_callrequest.content_object.tts_language
 
                 extra_data = obj_callrequest.campaign.extra_data
                 if extra_data and len(extra_data) > 1:
@@ -1636,8 +1637,23 @@ class AnswercallResource(ModelResource):
 
                 elif obj_callrequest.content_object.type == 4:
                     #Speak
-                    object_list = [ {'Speak': data},]
-                    logger.debug('Speak')
+                    if settings.TTS_ENGINE != 'ACAPELA':
+                        object_list = [ {'Speak': data},]
+                        logger.debug('Speak')
+                    else:
+                        from texttospeech import acapela
+                        DIRECTORY = settings.MEDIA_ROOT + '/tts/'
+                        
+                        domain = Site.objects.get_current().domain
+                        
+                        tts_acapela = acapela.Acapela(settings.TTS_ENGINE, settings.ACCOUNT_LOGIN, settings.APPLICATION_LOGIN, settings.APPLICATION_PASSWORD, settings.SERVICE_URL, settings.QUALITY, DIRECTORY)
+                        tts_acapela.prepare(data, tts_language, settings.ACAPELA_GENDER, settings.ACAPELA_INTONATION)
+                        output_filename = tts_acapela.run()
+
+                        audiofile_url = domain + settings.MEDIA_URL + 'tts/' + output_filename
+
+                        object_list = [ {'Play': audiofile_url},]
+                        logger.debug('PlayAudio-TTS')
                 else:
                     logger.error('Error with Voice App type!')
 

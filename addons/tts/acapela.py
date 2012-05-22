@@ -25,6 +25,15 @@ TTS_ENGINE = 'ACAPELA'
 
 
 class Acapela(object):
+
+    #Properties
+    TTS_ENGINE = None
+    ACCOUNT_LOGIN = None
+    APPLICATION_LOGIN = None
+    APPLICATION_PASSWORD = None
+    SERVICE_URL = None
+    QUALITY = None
+    
     #Available voices list
     #http://www.acapela-vaas.com/ReleasedDocumentation/voices_list.php
     langs  = {
@@ -69,19 +78,28 @@ class Acapela(object):
     data = {}
     filename = None
     
-    def __init__(self, text, lang, gender, intonation):
+    def __init__(self, tts_engine, account_login, application_login, application_password, service_url, quality):
         """construct Acapela TTS"""
-        key =  TTS_ENGINE + '-' + hashlib.md5(text + lang + gender + intonation).hexdigest()
+        self.TTS_ENGINE = tts_engine
+        self.ACCOUNT_LOGIN = account_login
+        self.APPLICATION_LOGIN = application_login
+        self.APPLICATION_PASSWORD = application_password
+        self.SERVICE_URL = service_url
+        self.QUALITY = quality
+    
+    def prepare(self, text, lang, gender, intonation):
+        """Prepare Acapela TTS"""
+        key =  self.TTS_ENGINE + '-' + hashlib.md5(text + lang + gender + intonation).hexdigest()
         self.data = {
             'cl_env': 'FLASH_AS_3.0',
             'req_snd_id': key,
-            'cl_login': ACCOUNT_LOGIN,
+            'cl_login': self.ACCOUNT_LOGIN,
             'cl_vers': '1-30',
             'req_err_as_id3': 'yes',
-            'req_voice': self.langs[lang][gender][intonation] + QUALITY,
-            'cl_app': APPLICATION_LOGIN,
+            'req_voice': self.langs[lang][gender][intonation] + self.QUALITY,
+            'cl_app': self.APPLICATION_LOGIN,
             'prot_vers': '2',
-            'cl_pwd': APPLICATION_PASSWORD,
+            'cl_pwd': self.APPLICATION_PASSWORD,
             'req_asw_type': 'STREAM',
         }
         self.filename = "%s-%s.mp3" % (key, lang)
@@ -90,12 +108,17 @@ class Acapela(object):
     def run(self):
         """run will call acapela API and and produce audio"""
         encdata = parse.urlencode(self.data)
-        request.urlretrieve(SERVICE_URL, self.filename, data=encdata)
+        request.urlretrieve(self.SERVICE_URL, self.filename, data=encdata)
         return self.filename
         
         
 
 if __name__ == "__main__":
+
+
+    #Construct
+    tts_acapela = Acapela(TTS_ENGINE, ACCOUNT_LOGIN, APPLICATION_LOGIN, APPLICATION_PASSWORD, SERVICE_URL, QUALITY)
+    
 
     #General settings for test
     gender = 'W'
@@ -104,28 +127,28 @@ if __name__ == "__main__":
     #Spanish
     lang = 'ES'
     text = "Newfies-Dialer es una aplicación de transmisión de voz diseñado y construido para automatizar la entrega de las llamadas telefónicas interactivas a contactos, clientes y público en general."
-    tts_acapela = Acapela(text, lang, gender, intonation)
+    tts_acapela.prepare(text, lang, gender, intonation)
     output_filename = tts_acapela.run()
     print "Recorded TTS to %s" % output_filename
     
     #Portuguese
     lang = 'BR'
     text = "Newfies-Dialer é um aplicativo de transmissão de voz projetada e construída para automatizar a entrega de telefonemas interativos para contatos, clientes e público em geral."
-    tts_acapela = Acapela(text, lang, gender, intonation)
+    tts_acapela.prepare(text, lang, gender, intonation)
     output_filename = tts_acapela.run()
     print "Recorded TTS to %s" % output_filename
     
     #French
     lang = 'FR'
     text = "Newfies-Dialer est une application de diffusion vocale conçu et construit pour automatiser la livraison des appels téléphoniques interactifs à des contacts, des clients et le public en général."
-    tts_acapela = Acapela(text, lang, gender, intonation)
+    tts_acapela.prepare(text, lang, gender, intonation)
     output_filename = tts_acapela.run()
     print "Recorded TTS to %s" % output_filename
     
     #English
     lang = 'EN'
     text = "Newfies-Dialer is a voice broadcast application designed and built to automate the delivery of interactive phone calls to contacts, clients and the general public."
-    tts_acapela = Acapela(text, lang, gender, intonation)
+    tts_acapela.prepare(text, lang, gender, intonation)
     output_filename = tts_acapela.run()
     print "Recorded TTS to %s" % output_filename
     

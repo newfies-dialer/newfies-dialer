@@ -498,6 +498,18 @@ CONVERT_TYPE_VALUE = 2 # 0-Keep original, 1-Convert to MP3, 2-Convert to WAV, 3-
 
 AUDIO_DEBUG = False
 
+
+#TEXT-TO-SPEECH
+#==============
+ACCOUNT_LOGIN = 'EVAL_XXXX'
+APPLICATION_LOGIN = 'EVAL_XXXXXXX'
+APPLICATION_PASSWORD = 'XXXXXXXX'
+
+SERVICE_URL = 'http://vaas.acapela-group.com/Services/Synthesizer'
+QUALITY = '22k' # 22k, 8k, 8ka, 8kmu
+TTS_ENGINE = 'ACAPELA' #FLITE, CEPSTRAL, ACAPELA
+
+
 #DEBUG DIALER
 #============
 DIALERDEBUG = False

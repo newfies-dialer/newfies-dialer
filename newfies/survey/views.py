@@ -524,7 +524,7 @@ def audio_change(request, object_id):
 
     **Attributes**:
 
-        * ``form`` - SurvyCustomerAudioFileForm
+        * ``form`` - SurveyCustomerAudioFileForm
         * ``template`` - frontend/survey/audio_change.html
 
     **Logic Description**:

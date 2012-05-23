@@ -112,8 +112,8 @@ class SurveyReportForm(forms.Form):
             self.fields['campaign'].choices = list
 
 
-class SurvyCustomerAudioFileForm(CustomerAudioFileForm):
+class SurveyCustomerAudioFileForm(CustomerAudioFileForm):
 
     def __init__(self, *args, **kwargs):
-        super(SurvyCustomerAudioFileForm, self).__init__(*args, **kwargs)
+        super(SurveyCustomerAudioFileForm, self).__init__(*args, **kwargs)
         self.fields['audio_file'].widget.attrs['class'] = "input-file"

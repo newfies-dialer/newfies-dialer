@@ -9,6 +9,7 @@ Newfies Tasks
 .. autoclass:: dialer_campaign.tasks.collect_subscriber
 
 .. autoclass:: dialer_cdr.tasks.init_callrequest
-.. autoclass:: dialer_cdr.tasks.callrequest_pending
+..
+    autoclass:: dialer_cdr.tasks.callrequest_pending
 
 

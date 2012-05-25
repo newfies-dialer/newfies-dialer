@@ -42,7 +42,7 @@ import urllib
 import qsstats
 import time
 import csv
-import ast
+import ast, re
 
 # Define disposition color
 ANSWER_COLOR = '#8BEA00'

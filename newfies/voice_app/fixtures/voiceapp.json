@@ -3,11 +3,13 @@
       "pk":1,
       "model":"voice_app.voiceapp",
       "fields":{
-         "updated_date":"2011-06-29 05:56:53",
+         "updated_date":"2012-05-25T05:56:37",
          "name":"Default_Voice_App",
-         "user":1,
-         "created_date":"2011-04-08 08:00:09",
          "type":1,
+         "tts_language":null,
+         "user":1,
+         "created_date":"2012-05-25T05:56:37",
+         "data":"",
          "gateway":1,
          "description":""
       }

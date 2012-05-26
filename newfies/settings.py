@@ -2,12 +2,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -112,14 +112,12 @@ STATICFILES_DIRS = (
     ("newfies", os.path.join(APPLICATION_DIR, "resources")),
 )
 
-
-
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -172,7 +170,7 @@ TEMPLATE_DIRS = (
 
 INTERNAL_IPS = ('127.0.0.1',)
 
-DAJAXICE_MEDIA_PREFIX="dajaxice"
+DAJAXICE_MEDIA_PREFIX = "dajaxice"
 #DAJAXICE_MEDIA_PREFIX = "dajax"  # http://domain.com/dajax/
 #DAJAXICE_CACHE_CONTROL = 10 * 24 * 60 * 60
 
@@ -381,7 +379,8 @@ PLIVO_DEFAULT_HANGUP_URL = 'http://127.0.0.1:8000/api/v1/hangupcall/'
 PLIVO_DEFAULT_DIALCALLBACK_URL = 'http://127.0.0.1:8000/api/v1/dialcallback/'
 
 #TODO add consistancy between answercall api and survey_finestatemachine
-PLIVO_DEFAULT_SURVEY_ANSWER_URL = 'http://127.0.0.1:8000/survey_finestatemachine/'
+PLIVO_DEFAULT_SURVEY_ANSWER_URL = 'http://127.0.0.1:8000/' \
+                                  'survey_finestatemachine/'
 
 # ADD 'dummy','plivo','twilio'
 NEWFIES_DIALER_ENGINE = 'plivo'
@@ -401,7 +400,8 @@ LOGGING = {
     #},
     'formatters': {
         'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+            'format': '%(levelname)s %(asctime)s %(module)s '
+                      '%(process)d %(thread)d %(message)s'
         },
         'simple': {
             'format': '%(asctime)s %(levelname)s || %(message)s'
@@ -417,17 +417,17 @@ LOGGING = {
             'include_html': True,
         },
         'default': {
-            'class':'logging.handlers.WatchedFileHandler',
+            'class': 'logging.handlers.WatchedFileHandler',
             'filename': '/var/log/newfies/newfies-django.log',
-            'formatter':'verbose',
-        },  
+            'formatter': 'verbose',
+        },
         'default-db': {
-            'level':'DEBUG',
-            'class':'logging.handlers.RotatingFileHandler',
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': '/var/log/newfies/newfies-django-db.log',
-            'maxBytes': 1024*1024*5, # 5 MB
+            'maxBytes': 1024 * 1024 * 5,  # 5 MB
             'backupCount': 20,
-            'formatter':'verbose',
+            'formatter': 'verbose',
         },
         #'sentry': {
         #    'level': 'ERROR',
@@ -443,9 +443,9 @@ LOGGING = {
     'loggers': {
         # Again, default Django configuration to email unhandled exceptions
         'django': {
-            'handlers':['default'],
+            'handlers': ['default'],
             'propagate': False,
-            'level':'DEBUG',
+            'level': 'DEBUG',
         },
         'django.request': {
             'handlers': ['mail_admins'],
@@ -453,7 +453,7 @@ LOGGING = {
             'propagate': True,
         },
         'newfies.filelog': {
-            'handlers': ['default',],
+            'handlers': ['default'],
             'level': 'DEBUG',
             'propagate': False,
         },
@@ -473,7 +473,7 @@ LOGGING = {
         #    'propagate': False,
         #},
         'audiofield_log': {
-            'handlers': ['default',],
+            'handlers': ['default'],
             'level': 'DEBUG',
             'propagate': False,
         },
@@ -482,20 +482,22 @@ LOGGING = {
 
 #SENTRY SETTINGS
 #===============
-#SENTRY_DSN = 'http://332214d1bc06499b935be796a2076e0f:37facd4a9dba44409db3bf0980629ea1@localhost:9000/1'
+#SENTRY_DSN = 'http://asdada:asdasd@localhost:9000/1'
 
 #DIALER
 #======
-MAX_CALLS_PER_SECOND=20 #By default configured to 20 calls per second
+MAX_CALLS_PER_SECOND = 20  # By default configured to 20 calls per second
 
 
 # Frontend widget values
 CHANNEL_TYPE_VALUE = 1  # 0-Keep original, 1-Mono, 2-Stereo
 
-FREQ_TYPE_VALUE = 8000  # 0-Keep original, 8000-8000Hz, 16000-16000Hz, 22050-22050Hz,
-                     # 44100-44100Hz, 48000-48000Hz, 96000-96000Hz
+# 0-Keep original, 8000-8000Hz, 16000-16000Hz, 22050-22050Hz,
+# 44100-44100Hz, 48000-48000Hz, 96000-96000Hz
+FREQ_TYPE_VALUE = 8000
 
-CONVERT_TYPE_VALUE = 2 # 0-Keep original, 1-Convert to MP3, 2-Convert to WAV, 3-Convert to OGG
+# 0-Keep original, 1-Convert to MP3, 2-Convert to WAV, 3-Convert to OGG
+CONVERT_TYPE_VALUE = 2
 
 AUDIO_DEBUG = False
 
@@ -507,8 +509,8 @@ APPLICATION_LOGIN = 'EVAL_XXXXXXX'
 APPLICATION_PASSWORD = 'XXXXXXXX'
 
 SERVICE_URL = 'http://vaas.acapela-group.com/Services/Synthesizer'
-QUALITY = '22k' # 22k, 8k, 8ka, 8kmu
-TTS_ENGINE = 'FLITE' #FLITE, CEPSTRAL, ACAPELA
+QUALITY = '22k'  # 22k, 8k, 8ka, 8kmu
+TTS_ENGINE = 'FLITE'  # FLITE, CEPSTRAL, ACAPELA
 ACAPELA_GENDER = 'W'
 ACAPELA_INTONATION = 'NORMAL'
 

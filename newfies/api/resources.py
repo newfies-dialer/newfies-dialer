@@ -1641,7 +1641,7 @@ class AnswercallResource(ModelResource):
                         object_list = [ {'Speak': data},]
                         logger.debug('Speak')
                     else:
-                        from texttospeech import acapela
+                        import acapela
                         DIRECTORY = settings.MEDIA_ROOT + '/tts/'
                         
                         domain = Site.objects.get_current().domain

@@ -2,12 +2,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -54,13 +54,13 @@ def survey_finestatemachine(request):
     current_state = None
     next_state = None
     testdebug = False
-    
+
     #Load Plivo Post parameters
     opt_ALegRequestUUID = request.POST.get('ALegRequestUUID')
     opt_CallUUID = request.POST.get('CallUUID')
     DTMF = request.POST.get('Digits')
     #print "DTMF=%s - opt_CallUUID=%s" % (DTMF, opt_CallUUID)
-    
+
     if testdebug:
         #implemented to test in browser
         if not opt_ALegRequestUUID:
@@ -68,47 +68,49 @@ def survey_finestatemachine(request):
         if not opt_CallUUID:
             opt_CallUUID = request.GET.get('CallUUID')
         if not opt_CallUUID:
-            opt_CallUUID=opt_ALegRequestUUID
+            opt_CallUUID = opt_ALegRequestUUID
         if not DTMF:
             DTMF = request.GET.get('Digits')
         #print "DTMF=%s - opt_CallUUID=%s" % (DTMF, opt_CallUUID)
-    
+
     if not opt_ALegRequestUUID:
         return HttpResponse(content="Error : missing parameter ALegRequestUUID", status=400)
-    
+
     #Create the keys to store the cache
     key_state = "%s_state" % opt_CallUUID
     key_surveyapp = "%s_surveyapp_id" % opt_CallUUID
-    
+
     #Retrieve the values of the keys
     current_state = cache.get(key_state)
     surveyapp_id = cache.get(key_surveyapp)
-    
+
     if not current_state:
-        cache.set(key_state, 0, 21600) # 21600 seconds = 6 hours
+        cache.set(key_state, 0, 21600)  # 21600 seconds = 6 hours
         current_state = 0
-    
+
     try:
         obj_callrequest = Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
     except:
         return HttpResponse(content="Error : retrieving Callrequest with the ALegRequestUUID", status=400)
-    
+
     surveyapp_id = obj_callrequest.object_id
-    cache.set(key_surveyapp, surveyapp_id, 21600) # 21600 seconds = 6 hours
-    
+    cache.set(key_surveyapp, surveyapp_id, 21600)  # 21600 seconds = 6 hours
+
     #TODO : use constant
-    obj_callrequest.status = 8 # IN-PROGRESS
+    obj_callrequest.status = 8  # IN-PROGRESS
     obj_callrequest.aleg_uuid = opt_CallUUID
     obj_callrequest.save()
-    
+
     #Load the questions
     list_question = SurveyQuestion.objects.filter(surveyapp=surveyapp_id).order_by('order')
-    
+
     #Check if we receive a DTMF for the previous question if so store the result
-    if DTMF and len(DTMF)>0 and current_state>0:
+    if DTMF and len(DTMF) > 0 and current_state > 0:
         #find the response for this key pressed
         try:
-            surveyresponse = SurveyResponse.objects.get(key=DTMF, surveyquestion=list_question[current_state-1])
+            surveyresponse = SurveyResponse.objects.get(
+                            key=DTMF,
+                            surveyquestion=list_question[current_state - 1])
             if not surveyresponse.keyvalue:
                 response_value = DTMF
             else:
@@ -123,18 +125,18 @@ def survey_finestatemachine(request):
                                     question=list_question[current_state-1].question,
                                     response=response_value)
         new_surveycampaignresult.save()
-    
+
     #Transition go to next state
     next_state = current_state + 1
     cache.set(key_state, next_state, 21600)
     #print "Saved state in Cache (%s = %s)" % (key_state, next_state)
-    
+
     try:
         list_question[current_state]
     except IndexError:
         html = '<Response><Hangup/></Response>'
         return HttpResponse(html)
-    
+
     #retrieve the basename of the url
     url = settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL
     slashparts = url.split('/')
@@ -156,7 +158,6 @@ def survey_finestatemachine(request):
                 </GetDigits>\
             </Response>' % (settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL, question)
     return HttpResponse(html)
-        
 
 
 @login_required
@@ -177,7 +178,7 @@ def survey_grid(request):
     survey_list = SurveyApp.objects\
                      .values('id', 'name', 'description', 'updated_date')\
                      .filter(user=request.user)
-    
+
     count = survey_list.count()
     survey_list = \
         survey_list.order_by(sortorder_sign + sortname)[start_page:end_page]

@@ -41,7 +41,7 @@ p.developmentversion {
 div.related {
     width: {{ page_width - 20 }}px;
     padding: 5px 10px;
-    background: #DEE8EF;
+    background: #FFF49F;
     margin: 15px auto 15px auto;
 }
 
@@ -155,12 +155,12 @@ div.sphinxsidebar input {
 /* -- body styles ----------------------------------------------------------- */
 
 a {
-    color: #3AAADC;
+    color: #D72129;
     text-decoration: underline;
 }
 
 a:hover {
-    color: #3AAADC;
+    color: #D72129;
     text-decoration: underline;
 }
 

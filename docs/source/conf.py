@@ -228,3 +228,11 @@ man_pages = [
     ('index', 'newfies-dialer', u'Newfies-Dialer Documentation',
      [u'Arezqui Belaid'], 1)
 ]
+
+html_theme = "newfies-dialer"
+html_theme_path = ["_theme"]
+html_sidebars = {
+    'index': ['sidebarintro.html', 'sourcelink.html', 'searchbox.html'],
+    '**': ['sidebarlogo.html', 'relations.html',
+           'sourcelink.html', 'searchbox.html'],
+}

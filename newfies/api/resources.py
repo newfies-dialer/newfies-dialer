@@ -1617,51 +1617,63 @@ class AnswercallResource(ModelResource):
                     callerid = obj_callrequest.callerid
                     gatewaytimeouts = obj_callrequest.timeout
                     gateways = obj_callrequest.content_object.gateway.gateways
-                    dial_command = 'Dial timeLimit="%s" callerId="%s" callbackUrl="%s"' % \
-                                        (timelimit, callerid, PLIVO_DEFAULT_DIALCALLBACK_URL)
-                    number_command = 'Number gateways="%s" gatewayTimeouts="%s"' % \
-                                        (gateways, gatewaytimeouts)
+                    dial_command = 'Dial timeLimit="%s"'\
+                                    '-callerId="%s"'\
+                                    '-callbackUrl="%s"' % \
+                                    (timelimit,
+                                     callerid,
+                                     PLIVO_DEFAULT_DIALCALLBACK_URL)
+                    number_command = 'Number gateways="%s" ' \
+                                     'gatewayTimeouts="%s"' % \
+                                      (gateways, gatewaytimeouts)
 
-                    object_list = [ {dial_command: {number_command: data}, },]
+                    object_list = [{dial_command: {number_command: data}}]
                     logger.debug('Dial command')
 
                 elif obj_callrequest.content_object.type == 2:
                     #PlayAudio
-                    object_list = [ {'Play': data},]
+                    object_list = [{'Play': data}]
                     logger.debug('PlayAudio')
 
                 elif obj_callrequest.content_object.type == 3:
                     #Conference
-                    object_list = [ {'Conference': data},]
+                    object_list = [{'Conference': data}]
                     logger.debug('Conference')
 
                 elif obj_callrequest.content_object.type == 4:
                     #Speak
                     if settings.TTS_ENGINE != 'ACAPELA':
-                        object_list = [ {'Speak': data},]
+                        object_list = [{'Speak': data}]
                         logger.debug('Speak')
                     else:
                         import acapela
                         DIRECTORY = settings.MEDIA_ROOT + '/tts/'
-                        
                         domain = Site.objects.get_current().domain
-                        
-                        tts_acapela = acapela.Acapela(settings.TTS_ENGINE, settings.ACCOUNT_LOGIN, settings.APPLICATION_LOGIN, settings.APPLICATION_PASSWORD, settings.SERVICE_URL, settings.QUALITY, DIRECTORY)
-                        tts_acapela.prepare(data, tts_language, settings.ACAPELA_GENDER, settings.ACAPELA_INTONATION)
+                        tts_acapela = acapela.Acapela(
+                                        settings.TTS_ENGINE,
+                                        settings.ACCOUNT_LOGIN,
+                                        settings.APPLICATION_LOGIN,
+                                        settings.APPLICATION_PASSWORD,
+                                        settings.SERVICE_URL,
+                                        settings.QUALITY,
+                                        DIRECTORY)
+                        tts_acapela.prepare(
+                                        data,
+                                        tts_language,
+                                        settings.ACAPELA_GENDER,
+                                        settings.ACAPELA_INTONATION)
                         output_filename = tts_acapela.run()
 
-                        audiofile_url = domain + settings.MEDIA_URL + 'tts/' + output_filename
-
-                        object_list = [ {'Play': audiofile_url},]
+                        audiofile_url = domain + settings.MEDIA_URL + \
+                                            'tts/' + output_filename
+                        object_list = [{'Play': audiofile_url}]
                         logger.debug('PlayAudio-TTS')
                 else:
                     logger.error('Error with Voice App type!')
 
-            #return [ {'Speak': 'Hello World'}, {'Dial': {'Number': '1000'}, },]
-            #return [ {'Speak': 'System error'},]
-
             obj = CustomXmlEmitter()
-            return self.create_response(request, obj.render(request, object_list))
+            return self.create_response(request,
+                    obj.render(request, object_list))
 
         else:
             logger.debug('ERROR : ' + str(errors))
@@ -1672,9 +1684,9 @@ class AnswercallResource(ModelResource):
                     desired_format = self._meta.default_format
 
                 serialized = self.serialize(request, errors, desired_format)
-                response = http.HttpBadRequest(content=serialized, content_type=desired_format)
+                response = http.HttpBadRequest(content=serialized,
+                                        content_type=desired_format)
                 raise ImmediateHttpResponse(response=response)
-
 
 
 class DialCallbackValidation(Validation):
@@ -1701,7 +1713,6 @@ class DialCallbackValidation(Validation):
         except:
             errors['CallRequest'] = ["Call request not found - uuid:%s" % opt_request_uuid]
         return errors
-
 
 
 class DialCallbackResource(ModelResource):
@@ -1738,7 +1749,9 @@ class DialCallbackResource(ModelResource):
         validation = DialCallbackValidation()
         list_allowed_methods = ['post']
         detail_allowed_methods = ['post']
-        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+        # throttle : default 1000 calls / hour
+        throttle = BaseThrottle(throttle_at=1000,
+                                timeframe=3600)
 
     def override_urls(self):
         """Override url"""
@@ -1767,20 +1780,17 @@ class DialCallbackResource(ModelResource):
 
         if not errors:
             logger.debug('DialCallback API get called!')
-            
             opt_aleg_uuid = request.POST.get('DialALegUUID')
             opt_dial_bleg_uuid = request.POST.get('DialBLegUUID')
             opt_dial_bleg_status = request.POST.get('DialBLegStatus')
-            
             #We are just analyzing the hangup
-            if opt_dial_bleg_status!='hangup':
+            if opt_dial_bleg_status != 'hangup':
                 object_list = [{'result': 'OK - Bleg status is not Hangup'}]
                 logger.debug('DialCallback API : Result 200!')
                 obj = CustomXmlEmitter()
                 return self.create_response(request, obj.render(request, object_list))
 
             callrequest = Callrequest.objects.get(aleg_uuid=opt_aleg_uuid)
-            
             data = {}
             for element in CDR_VARIABLES:
                 if not request.POST.get('variable_%s' % element):
@@ -1791,19 +1801,19 @@ class DialCallbackResource(ModelResource):
             from_plivo = request.POST.get('From')
             to_plivo = request.POST.get('To')
 
-            create_voipcall(obj_callrequest=callrequest, 
-                                plivo_request_uuid=callrequest.request_uuid, 
-                                data=data, 
-                                data_prefix='', 
+            create_voipcall(obj_callrequest=callrequest,
+                                plivo_request_uuid=callrequest.request_uuid,
+                                data=data,
+                                data_prefix='',
                                 leg='b',
                                 from_plivo=from_plivo,
                                 to_plivo=to_plivo)
-            
             object_list = [{'result': 'OK'}]
             logger.debug('DialCallback API : Result 200!')
             obj = CustomXmlEmitter()
 
-            return self.create_response(request, obj.render(request, object_list))
+            return self.create_response(request, 
+                        obj.render(request, object_list))
         else:
             if len(errors):
                 if request:
@@ -1812,7 +1822,9 @@ class DialCallbackResource(ModelResource):
                     desired_format = self._meta.default_format
 
                 serialized = self.serialize(request, errors, desired_format)
-                response = http.HttpBadRequest(content=serialized, content_type=desired_format)
+                response = http.HttpBadRequest(
+                                content=serialized,
+                                content_type=desired_format)
                 raise ImmediateHttpResponse(response=response)
 
 
@@ -1849,13 +1861,13 @@ class HangupcallResource(ModelResource):
 
        * ``RequestUUID`` - RequestUUID
        * ``HangupCause`` - Hangup Cause
-    
+
     **Create**:
 
         CURL Usage::
 
             curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data "RequestUUID=e4fc2188-0af5-11e1-b64d-00231470a30c&HangupCause=SUBSCRIBER_ABSENT" http://localhost:8000/api/v1/hangupcall/
-        
+
         Response::
 
             HTTP/1.0 200 OK
@@ -1876,7 +1888,9 @@ class HangupcallResource(ModelResource):
         validation = HangupcallValidation()
         list_allowed_methods = ['post']
         detail_allowed_methods = ['post']
-        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+        # throttle : default 1000 calls / hour
+        throttle = BaseThrottle(throttle_at=1000,
+                                timeframe=3600)
 
     def override_urls(self):
         """Override url"""
@@ -1887,7 +1901,7 @@ class HangupcallResource(ModelResource):
     def create_response(self, request, data, response_class=HttpResponse, **response_kwargs):
         """To display API's result"""
         desired_format = self.determine_format(request)
-        serialized = data # self.serialize(request, data, desired_format)
+        serialized = data
         return response_class(content=serialized, content_type=desired_format, **response_kwargs)
 
     def create(self, request=None, **kwargs):
@@ -1896,10 +1910,8 @@ class HangupcallResource(ModelResource):
         auth_result = self._meta.authentication.is_authenticated(request)
         if not auth_result is True:
             raise ImmediateHttpResponse(response=http.HttpUnauthorized())
-        
         auth_result = self._meta.authorization.is_authorized(request, object)
         errors = self._meta.validation.is_valid(request)
-        
         if not errors:
             opt_request_uuid = request.POST.get('RequestUUID')
             opt_hangup_cause = request.POST.get('HangupCause')
@@ -1907,51 +1919,48 @@ class HangupcallResource(ModelResource):
                 callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid)
             except:
                 logger.debug('Hangupcall Error cannot find the Callrequest!')
-            
             try:
                 obj_subscriber = CampaignSubscriber.objects.get(id=callrequest.campaign_subscriber.id)
                 if opt_hangup_cause=='NORMAL_CLEARING':
-                    obj_subscriber.status = 5 # Complete
+                    obj_subscriber.status = 5  # Complete
                 else:
-                    obj_subscriber.status = 4 # Fail
+                    obj_subscriber.status = 4  # Fail
                 obj_subscriber.save()
             except:
                 logger.debug('Hangupcall Error cannot find the Campaignubscriber!')
             
             # 2 / FAILURE ; 3 / RETRY ; 4 / SUCCESS
-            if opt_hangup_cause=='NORMAL_CLEARING':
-                callrequest.status = 4 # Success
+            if opt_hangup_cause == 'NORMAL_CLEARING':
+                callrequest.status = 4  # Success
             else:
-                callrequest.status = 2 # Failure
+                callrequest.status = 2  # Failure
             callrequest.hangup_cause = opt_hangup_cause
             #save callrequest & campaignsubscriber
             callrequest.save()
-            
             data = {}
             for element in CDR_VARIABLES:
                 if not request.POST.get('variable_%s' % element):
                     data[element] = None
                 else:
                     data[element] = request.POST.get('variable_%s' % element)
-            
             from_plivo = request.POST.get('From')
             to_plivo = request.POST.get('To')
 
-            create_voipcall(obj_callrequest=callrequest, 
-                                plivo_request_uuid=opt_request_uuid, 
-                                data=data, 
-                                data_prefix='', 
-                                leg='a',
-                                hangup_cause=opt_hangup_cause,
-                                from_plivo=from_plivo,
-                                to_plivo=to_plivo)
-            
+            create_voipcall(obj_callrequest=callrequest,
+                            plivo_request_uuid=opt_request_uuid, 
+                            data=data, 
+                            data_prefix='', 
+                            leg='a',
+                            hangup_cause=opt_hangup_cause,
+                            from_plivo=from_plivo,
+                            to_plivo=to_plivo)
             object_list = [{'result': 'OK'}]
             logger.debug('Hangupcall API : Result 200!')
             obj = CustomXmlEmitter()
-            
+
             #We will manage the retry directly from the API
-            if opt_hangup_cause!='NORMAL_CLEARING' and callrequest.call_type==1: #Allow retry
+            if opt_hangup_cause != 'NORMAL_CLEARING' \
+                and callrequest.call_type == 1:  # Allow retry
                 #Update to Retry Done
                 callrequest.call_type = 3
                 callrequest.save()
@@ -1964,18 +1973,19 @@ class HangupcallResource(ModelResource):
                     #Allowed Retry
 
                     # TODO : Review Logic
-                    # Create new callrequest, Assign parent_callrequest, Change callrequest_type
-                    # & num_attempt
-                    new_callrequest = Callrequest(request_uuid=uuid.uuid1(),
-                                        parent_callrequest_id=callrequest.id,
-                                        call_type=1,
-                                        num_attempt=callrequest.num_attempt+1,
-                                        user=callrequest.user,
-                                        campaign_id=callrequest.campaign_id,
-                                        aleg_gateway_id=callrequest.aleg_gateway_id,
-                                        content_type=callrequest.content_type,
-                                        object_id=callrequest.object_id,
-                                        phone_number=callrequest.phone_number)
+                    # Create new callrequest, Assign parent_callrequest,
+                    # Change callrequest_type & num_attempt
+                    new_callrequest = Callrequest(
+                                    request_uuid=uuid.uuid1(),
+                                    parent_callrequest_id=callrequest.id,
+                                    call_type=1,
+                                    num_attempt=callrequest.num_attempt + 1,
+                                    user=callrequest.user,
+                                    campaign_id=callrequest.campaign_id,
+                                    aleg_gateway_id=callrequest.aleg_gateway_id,
+                                    content_type=callrequest.content_type,
+                                    object_id=callrequest.object_id,
+                                    phone_number=callrequest.phone_number)
                     new_callrequest.save()
                     #Todo Check if it's a good practice / implement a PID algorithm
                     second_towait = callrequest.campaign.intervalretry
@@ -1992,7 +2002,9 @@ class HangupcallResource(ModelResource):
                     desired_format = self._meta.default_format
 
                 serialized = self.serialize(request, errors, desired_format)
-                response = http.HttpBadRequest(content=serialized, content_type=desired_format)
+                response = http.HttpBadRequest(
+                                    content=serialized,
+                                    content_type=desired_format)
                 raise ImmediateHttpResponse(response=response)
 
 
@@ -2005,7 +2017,6 @@ class CdrValidation(Validation):
         opt_cdr = request.POST.get('cdr')
         if not opt_cdr:
             errors['CDR'] = ["Wrong parameters - missing CDR!"]
-        
         return errors
 
 
@@ -2024,7 +2035,7 @@ class CdrResource(ModelResource):
         CURL Usage::
 
             curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data 'cdr=<?xml version="1.0"?><cdr><other></other><variables><plivo_request_uuid>af41ac8a-ede4-11e0-9cca-00231470a30c</plivo_request_uuid><duration>3</duration></variables><notvariables><plivo_request_uuid>TESTc</plivo_request_uuid><duration>5</duration></notvariables></cdr>' http://localhost:8000/api/v1/store_cdr/
-                     
+
         Response::
 
             HTTP/1.0 201 CREATED
@@ -2043,7 +2054,8 @@ class CdrResource(ModelResource):
         #serializer = CustomJSONSerializer()
         list_allowed_methods = ['post']
         detail_allowed_methods = ['post']
-        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+        # throttle : default 1000 calls / hour
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
 
     def override_urls(self):
         """Override url"""
@@ -2069,15 +2081,12 @@ class CdrResource(ModelResource):
 
         errors = self._meta.validation.is_valid(request)
         logger.debug('CDR API get called from IP %s' % request.META.get('REMOTE_ADDR'))
-        
         if not errors:
 
             opt_cdr = request.POST.get('cdr')
-            
             #XML parsing doesn't work if you urldecode first
             #decoded_cdr = urllib.unquote(opt_cdr.decode("utf8"))
             decoded_cdr = opt_cdr
-            
             data = {}
             try:
                 import xml.etree.ElementTree as ET
@@ -2087,30 +2096,27 @@ class CdrResource(ModelResource):
                 logger.debug('Error parse XML')
                 raise
 
-            #parse file
-            #tree = ET.parse("/tmp/cdr.xml")
-
             for j in lst:
                 if j.tag in CDR_VARIABLES:
                     data[j.tag] = urllib.unquote(j.text.decode("utf8"))
-                    
             for element in CDR_VARIABLES:
-                if not data.has_key(element):
+                if element in data:
                     data[element] = None
                 else:
                     logger.debug("%s :> %s" % (element, data[element]))
 
             #TODO: Add tag for newfies in outbound call
-            if not 'plivo_request_uuid' in data or not data['plivo_request_uuid']:
-                #CDR not related to plivo
+            if not 'plivo_request_uuid' in data \
+                or not data['plivo_request_uuid']:
+                # CDR not related to plivo
                 error_msg = 'CDR not related to Newfies/Plivo!'
                 logger.error(error_msg)
                 raise BadRequest(error_msg)
-            
+
             #TODO : delay if not find callrequest
             try:
                 #plivo add "a_" in front of the uuid for the aleg so we remove the "a_"
-                if data['plivo_request_uuid'][1:2]=='a_':
+                if data['plivo_request_uuid'][1:2] == 'a_':
                     plivo_request_uuid = data['plivo_request_uuid'][2:]
                 else:
                     plivo_request_uuid = data['plivo_request_uuid']

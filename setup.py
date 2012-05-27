@@ -102,14 +102,14 @@ if sys.argv[1] == 'install':
 setup(
     name='newfies-dialer',
     version=VERSION.replace(' ', '-'),
-    description='Newfies is a Bulk Dialer and Voice Broadcasting application dedicated to provide information via phone technology.'
-        ,
+    description='Newfies is a Bulk Dialer and Voice Broadcasting application '
+                'dedicated to provide information via phone technology.',
     long_description=open('README.rst').read(),
     author='Belaid Arezqui',
     author_email='areski@gmail.com',
     url='http://www.newfies-dialer.org/',
-    download_url='https://github.com/Star2Billing/newfies-dialer/tarball/master'
-        ,
+    download_url='https://github.com/Star2Billing/newfies-dialer'
+                '/tarball/master',
     packages=find_packages(),
     include_package_data=True,
     license='MPL 2.0 License',
@@ -124,10 +124,9 @@ setup(
         'Topic :: Voice Broadcast Software',
         ],
     zip_safe=False,
-    install_requires=parse_requirements('install/conf/requirements.txt'
-            ),
-    dependency_links=parse_dependency_links('install/conf/requirements.txt'
-            , install_flag),
+    install_requires=parse_requirements('install/conf/requirements.txt'),
+    dependency_links=parse_dependency_links('install/conf/requirements.txt',
+        install_flag),
     setup_requires=['Django >= 1.3.0', 'Sphinx >= 0.4.2'],
     cmdclass=COMMANDS,
     )

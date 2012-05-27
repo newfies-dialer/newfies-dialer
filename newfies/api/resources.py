@@ -2,12 +2,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -21,16 +21,14 @@ import logging
 
 from django.contrib.auth.models import User
 from django.conf.urls.defaults import url
-from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.db.models.query import QuerySet
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse
 from django.utils.encoding import smart_unicode
 from django.utils.xmlutils import SimplerXMLGenerator
 from django.contrib.auth import authenticate
 from django.conf import settings
-from django.db import IntegrityError
 from django.contrib.sites.models import Site
 
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
@@ -141,25 +139,27 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='', l
 
     logger.debug('Create CDR - request_uuid=%s ; leg=%d ; hangup_cause= %s' % (plivo_request_uuid, leg_type, cdr_hangup_cause))
     
-    new_voipcall = VoIPCall(user = obj_callrequest.user,
-                            request_uuid=plivo_request_uuid,
-                            leg_type=leg_type,
-                            used_gateway=used_gateway,
-                            callrequest=obj_callrequest,
-                            callid=data["%s%s" % (data_prefix, 'call_uuid')] or '',
-                            callerid=from_plivo,
-                            phone_number=to_plivo,
-                            dialcode=None, #TODO
-                            starting_date=starting_date,
-                            duration=data["%s%s" % (data_prefix, 'duration')] or 0,
-                            billsec=data["%s%s" % (data_prefix, 'billsec')] or 0,
-                            progresssec=data["%s%s" % (data_prefix, 'progresssec')] or 0,
-                            answersec=data["%s%s" % (data_prefix, 'answersec')] or 0,
-                            disposition=disposition,
-                            hangup_cause=cdr_hangup_cause,
-                            hangup_cause_q850=data["%s%s" % (data_prefix, 'hangup_cause_q850')] or '',)
+    new_voipcall = VoIPCall(
+                    user=obj_callrequest.user,
+                    request_uuid=plivo_request_uuid,
+                    leg_type=leg_type,
+                    used_gateway=used_gateway,
+                    callrequest=obj_callrequest,
+                    callid=data["%s%s" % (data_prefix, 'call_uuid')] or '',
+                    callerid=from_plivo,
+                    phone_number=to_plivo,
+                    dialcode=None, #TODO
+                    starting_date=starting_date,
+                    duration=data["%s%s" % (data_prefix, 'duration')] or 0,
+                    billsec=data["%s%s" % (data_prefix, 'billsec')] or 0,
+                    progresssec=data["%s%s" % (data_prefix, 'progresssec')] or 0,
+                    answersec=data["%s%s" % (data_prefix, 'answersec')] or 0,
+                    disposition=disposition,
+                    hangup_cause=cdr_hangup_cause,
+                    hangup_cause_q850=data["%s%s" % (data_prefix, 'hangup_cause_q850')] or '',)
 
     new_voipcall.save()
+
 
 def get_attribute(attrs, attr_name):
     """this is a helper to retrieve an attribute if it exists"""
@@ -191,6 +191,7 @@ class IpAddressAuthorization(Authorization):
             raise ImmediateHttpResponse(response=http.HttpUnauthorized())
             return False
 
+
 class IpAddressAuthentication(Authentication):
     def is_authorized(self, request, object=None):
         if request.META['REMOTE_ADDR'] in API_ALLOWED_IP:
@@ -198,7 +199,6 @@ class IpAddressAuthentication(Authentication):
         else:
             raise ImmediateHttpResponse(response=http.HttpUnauthorized())
             return False
-
 
 
 class VoiceAppResource(ModelResource):
@@ -222,7 +222,7 @@ class UserResource(ModelResource):
         filtering = {
             'username': 'exact',
         }
-        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
 
 
 class ContentTypeResource(ModelResource):
@@ -230,7 +230,7 @@ class ContentTypeResource(ModelResource):
         queryset = ContentType.objects.all()
         resource_name = "contenttype"
         fields = ['model']
-        detail_allowed_methods = ['get',]
+        detail_allowed_methods = ['get']
         list_allowed_methods = ['get']
 
 
@@ -367,6 +367,7 @@ class PhonebookResource(ModelResource):
             curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/phonebook/?name=myphonebook
     """
     user = fields.ForeignKey(UserResource, 'user', full=True)
+
     class Meta:
         queryset = Phonebook.objects.all()
         resource_name = 'phonebook'
@@ -376,7 +377,7 @@ class PhonebookResource(ModelResource):
         filtering = {
             'name': ALL,
         }
-        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
 
 
 class CampaignValidation(Validation):
@@ -385,10 +386,8 @@ class CampaignValidation(Validation):
     """
     def is_valid(self, bundle, request=None):
         errors = {}
-        
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
-        
         startingdate = bundle.data.get('startingdate')
         expirationdate = bundle.data.get('expirationdate')
 
@@ -396,7 +395,6 @@ class CampaignValidation(Validation):
             startingdate = get_value_if_none(startingdate, time.time())
             # expires in 90 days
             expirationdate = get_value_if_none(expirationdate, time.time() + 86400 * 90)
-            
             #Startdate and expirationdate are UTC -> convert to localtime
             startingdate = float(startingdate) - time.altzone
             expirationdate = float(expirationdate) - time.altzone
@@ -486,10 +484,10 @@ class CampaignValidation(Validation):
         except:
             errors['chk_user'] = ["The User doesn't exist!"]
 
-        if request.method=='POST':
+        if request.method == 'POST':
             name_count = Campaign.objects.filter(name=bundle.data.get('name'),
                                                  user=request.user).count()
-            if (name_count!=0):
+            if (name_count != 0):
                 errors['chk_campaign_name'] = ["The Campaign name duplicated!"]
 
         return errors
@@ -545,7 +543,7 @@ class CampaignResource(ModelResource):
     **Validation**:
 
         * CampaignValidation()
-    
+
     **Create**:
 
         CURL Usage::
@@ -710,9 +708,14 @@ class CampaignResource(ModelResource):
             }
     """
     user = fields.ForeignKey(UserResource, 'user', full=True)
-    aleg_gateway = fields.ForeignKey(GatewayResource, 'aleg_gateway', full=True)
-    content_type = fields.ForeignKey(ContentTypeResource, 'content_type')
-    phonebook = fields.ToManyField(PhonebookResource, 'phonebook', full=True, readonly=True)
+    aleg_gateway = fields.ForeignKey(GatewayResource,
+                                'aleg_gateway', full=True)
+    content_type = fields.ForeignKey(ContentTypeResource,
+                                'content_type')
+    phonebook = fields.ToManyField(PhonebookResource,
+                                'phonebook', full=True,
+                                readonly=True)
+    
     class Meta:
         queryset = Campaign.objects.all()
         resource_name = 'campaign'
@@ -725,8 +728,8 @@ class CampaignResource(ModelResource):
             'name': ALL,
             'status': ALL,
         }
-        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
-        
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
+
     def obj_create(self, bundle, request=None, **kwargs):
         """
         A ORM-specific implementation of ``obj_create``.
@@ -749,7 +752,8 @@ class CampaignResource(ModelResource):
         bundle.obj.save()
 
         try:
-            phonebook_obj = Phonebook.objects.get(pk=bundle.data['phonebook_id'])
+            phonebook_obj = Phonebook.objects.get(
+                                pk=bundle.data['phonebook_id'])
             bundle.obj.phonebook.add(phonebook_obj)
             bundle.obj.save()
         except:
@@ -771,7 +775,6 @@ class CampaignResource(ModelResource):
         m2m_bundle = self.hydrate_m2m(bundle)
         self.save_m2m(m2m_bundle)
         logger.debug('Campaign API : Result ok 200')
-        
         return bundle
 
 
@@ -782,7 +785,6 @@ class BulkContactValidation(Validation):
 
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
-            
         if check_dialer_setting(request, check_for="contact"):
             errors['contact_dialer_setting'] = ["You have too many contacts per campaign. \
                 You are allowed a maximum of %s" % dialer_setting_limit(request, limit_for="contact")]
@@ -798,7 +800,7 @@ class BulkContactValidation(Validation):
 
         return errors
 
-    
+
 class BulkContactResource(ModelResource):
     """API to bulk create contacts
 
@@ -833,7 +835,7 @@ class BulkContactResource(ModelResource):
         authentication = BasicAuthentication()
         allowed_methods = ['post']
         validation = BulkContactValidation()
-        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
 
     def obj_create(self, bundle, request=None, **kwargs):
         """
@@ -843,11 +845,10 @@ class BulkContactResource(ModelResource):
 
         bundle.obj = self._meta.object_class()
         bundle = self.full_hydrate(bundle)
-        
+
         phoneno_list = bundle.data.get('phoneno_list')
         phonebook_id = bundle.data.get('phonebook_id')
         phonenolist = list(phoneno_list.split(","))
-        total_no = len(list(phonenolist))
 
         try:
             obj_phonebook = Phonebook.objects.get(id=phonebook_id)
@@ -865,7 +866,6 @@ class BulkContactResource(ModelResource):
 
         logger.debug('BulkContact API : result ok 200')
         return bundle
-
 
 
 class CampaignDeleteCascadeResource(ModelResource):
@@ -895,7 +895,7 @@ class CampaignDeleteCascadeResource(ModelResource):
         authentication = BasicAuthentication()
         list_allowed_methods = ['delete']
         detail_allowed_methods = ['delete']
-        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
 
     def obj_delete(self, request=None, **kwargs):
         """
@@ -923,7 +923,8 @@ class CampaignDeleteCascadeResource(ModelResource):
 
             if phonebook_count == 0:
                 del_campaign.delete()
-            else: # phonebook_count > 0
+            else:
+                # phonebook_count > 0
                 other_campaing_count = \
                 Campaign.objects.filter(user=request.user,
                          phonebook__in=del_campaign.phonebook.all())\
@@ -934,14 +935,12 @@ class CampaignDeleteCascadeResource(ModelResource):
 
                     # 1) delete all contacts which are belong to phonebook
                     contact_list = Contact.objects\
-                    .filter(phonebook__in=del_campaign.phonebook.all())
-                    total_contact = contact_list.count()
+                            .filter(phonebook__in=del_campaign.phonebook.all())
                     contact_list.delete()
 
                     # 2) delete phonebook
                     phonebook_list = Phonebook.objects\
-                    .filter(id__in=del_campaign.phonebook.all())
-                    total_phonebook = phonebook_list.count()
+                            .filter(id__in=del_campaign.phonebook.all())
                     phonebook_list.delete()
 
                     # 3) delete campaign
@@ -962,12 +961,12 @@ class CampaignSubscriberValidation(Validation):
 
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
-            
+
         if check_dialer_setting(request, check_for="contact"):
             errors['contact_dialer_setting'] = ["You have too many contacts per campaign. \
                 You are allowed a maximum of %s" % dialer_setting_limit(request, limit_for="contact")]
 
-        if request.method=='POST':
+        if request.method == 'POST':
             phonebook_id = bundle.data.get('phonebook_id')
             if phonebook_id:
                 try:
@@ -976,7 +975,7 @@ class CampaignSubscriberValidation(Validation):
                     errors['phonebook_error'] = ["Phonebook is not selected!"]
             else:
                 errors['phonebook_error'] = ["Phonebook is not selected!"]
-        
+
         return errors
 
 
@@ -1070,7 +1069,7 @@ class CampaignSubscriberResource(ModelResource):
         filtering = {
             'contact': 'exact',
         }
-        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
 
 
     def obj_create(self, bundle, request=None, **kwargs):
@@ -1079,7 +1078,7 @@ class CampaignSubscriberResource(ModelResource):
 
         phonebook_id = bundle.data.get('phonebook_id')
         obj_phonebook = Phonebook.objects.get(id=phonebook_id)
-        
+
         #this method will also create a record into CampaignSubscriber
         #this is defined in signal post_save_add_contact
         new_contact = Contact.objects.create(
@@ -1088,15 +1087,17 @@ class CampaignSubscriberResource(ModelResource):
                                 first_name=bundle.data.get('first_name'),
                                 email=bundle.data.get('email'),
                                 description=bundle.data.get('description'),
-                                status=1, # default active
+                                status=1,  # default active
                                 phonebook=obj_phonebook)
-        
         # Assign new contact object
         bundle.obj = new_contact
 
-        #Insert the contact to the campaignsubscriber also for each campaign using this phonebook
+        # Insert the contact to the campaignsubscriber also for
+        # each campaign using this phonebook
         try:
-            campaign_obj = Campaign.objects.filter(phonebook=obj_phonebook, user=request.user)
+            campaign_obj = Campaign.objects.filter(
+                                phonebook=obj_phonebook,
+                                user=request.user)
             for camp_obj in campaign_obj:
                 imported_phonebook = []
                 if camp_obj.imported_phonebook:
@@ -2115,38 +2116,48 @@ class CdrResource(ModelResource):
 
             #TODO : delay if not find callrequest
             try:
-                #plivo add "a_" in front of the uuid for the aleg so we remove the "a_"
+                # plivo add "a_" in front of the uuid
+                # for the aleg so we remove the "a_"
                 if data['plivo_request_uuid'][1:2] == 'a_':
                     plivo_request_uuid = data['plivo_request_uuid'][2:]
                 else:
                     plivo_request_uuid = data['plivo_request_uuid']
-                obj_callrequest = Callrequest.objects.get(request_uuid=plivo_request_uuid)
+                obj_callrequest = Callrequest.objects.get(
+                                        request_uuid=plivo_request_uuid)
             except:
                 # Send notification to admin
                 from dialer_campaign.views import common_send_notification
                 from django.contrib.auth.models import User
-                recipient_list = User.objects.filter(is_superuser=1, is_active=1)
+                recipient_list = User.objects.filter(
+                                    is_superuser=1,
+                                    is_active=1)
                 # send to all admin user
                 for recipient in recipient_list:
                     # callrequest_not_found - notification id 8
                     common_send_notification(request, 8, recipient)
 
-                error_msg = "Error, there is no callrequest for this uuid %s " % data['plivo_request_uuid']
+                error_msg = "Error, there is no callrequest for " \
+                            "this uuid %s " % data['plivo_request_uuid']
                 logger.error(error_msg, extra={'stack': True})
 
                 raise BadRequest(error_msg)
-            
-            # CREATE CDR - VOIP CALL
-            create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='', leg='a')
 
-            # List of HttpResponse : 
+            # CREATE CDR - VOIP CALL
+            create_voipcall(
+                        obj_callrequest,
+                        plivo_request_uuid,
+                        data,
+                        data_prefix='',
+                        leg='a')
+
+            # List of HttpResponse :
             # https://github.com/toastdriven/django-tastypie/blob/master/tastypie/http.py
             logger.debug('CDR API : Result 200')
-            
+
             object_list = [{'result': 'OK'}]
             obj = CustomXmlEmitter()
             return self.create_response(request, obj.render(request, object_list))
-            
+
         else:
             if len(errors):
                 if request:
@@ -2155,5 +2166,7 @@ class CdrResource(ModelResource):
                     desired_format = self._meta.default_format
 
                 serialized = self.serialize(request, errors, desired_format)
-                response = http.HttpBadRequest(content=serialized, content_type=desired_format)
+                response = http.HttpBadRequest(
+                                    content=serialized,
+                                    content_type=desired_format)
                 raise ImmediateHttpResponse(response=response)

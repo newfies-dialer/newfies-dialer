@@ -18,4 +18,5 @@ Pygments
 python-memcached
 coverage
 feedparser
-Django==1.3.1
+git+git://github.com/areski/python-acapela.git
+Django==1.4

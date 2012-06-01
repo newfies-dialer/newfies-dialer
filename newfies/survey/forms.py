@@ -2,12 +2,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -46,8 +46,8 @@ class SurveyQuestionForm(ModelForm):
 
     class Meta:
         model = SurveyQuestion
-        fields = ['question', 'audio_message',]
-    
+        fields = ['question', 'audio_message']
+
     def __init__(self, *args, **kwargs):
         super(SurveyQuestionForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
@@ -57,13 +57,13 @@ class SurveyQuestionForm(ModelForm):
             self.fields['question'].widget.attrs['onBlur'] = js_function
             self.fields['audio_message'].widget.attrs['onChange'] = js_function
 
-        
+
 class SurveyQuestionNewForm(ModelForm):
     """SurveyQuestionNew ModelForm"""
     class Meta:
         model = SurveyQuestion
         fields = ['question', 'surveyapp', 'audio_message']
-        
+
     def __init__(self, user, *args, **kwargs):
         super(SurveyQuestionNewForm, self).__init__(*args, **kwargs)
         self.fields['surveyapp'].widget = forms.HiddenInput()

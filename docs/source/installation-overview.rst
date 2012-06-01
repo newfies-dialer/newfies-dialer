@@ -16,7 +16,7 @@ To get started with Newfies-Dialer you must have the following installed:
 
 - python >= 2.4 (programming language)
 - Apache / http server with WSGI modules
-- Django Framework >= 1.3 (Python based Web framework)
+- Django Framework >= 1.4 (Python based Web framework)
 - Celery >= 2.2 (Asynchronous task queue/job queue based on distributed message passing)
 - MySQL-python >= 1.2.3 (MySQL for python language)
 - Werkzeug >= 0.6.2 (Collection of various utilities for WSGI applications)

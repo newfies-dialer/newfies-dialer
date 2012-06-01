@@ -516,7 +516,7 @@ msgstr "Duração máxima da chamada"
 
 #: dialer_campaign/models.py:321
 msgid "Maximum call duration in seconds"
-msgstr "Tempo limite máximo da chamada em segundos"
+msgstr "Duração máxima da chamada em segundos"
 
 #: dialer_campaign/models.py:324 dialer_settings/models.py:49
 msgid "Max Retries"
@@ -540,7 +540,7 @@ msgstr "Tempo máximo na chamada"
 
 #: dialer_campaign/models.py:332
 msgid "Connection timeout in seconds"
-msgstr "Tempo limite máximo da chamada em segundos"
+msgstr "Tempo limite de conexão em segundos"
 
 #: dialer_campaign/models.py:334
 msgid "A-Leg Gateway"

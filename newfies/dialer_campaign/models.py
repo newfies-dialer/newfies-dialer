@@ -471,21 +471,21 @@ class Campaign(Model):
 
         #TODO : This might kill performance on huge phonebook...
         query = \
-        'SELECT dc.id, dc.phonebook_id, dc.contact, dc.last_name, \
-        dc.first_name, dc.email, dc.city, dc.description, \
-        dc.status, dc.additional_vars, dc.created_date, dc.updated_date \
-        FROM dialer_contact as dc \
-        INNER JOIN dialer_phonebook ON \
-        (dc.phonebook_id = dialer_phonebook.id) \
-        INNER JOIN dialer_campaign_phonebook ON \
-        (dialer_phonebook.id = dialer_campaign_phonebook.phonebook_id) \
-        WHERE dialer_campaign_phonebook.campaign_id = %s \
-        AND dc.status = 1 \
-        AND dc.id NOT IN \
-        (SELECT  dialer_campaign_subscriber.contact_id \
-        FROM dialer_campaign_subscriber \
-        WHERE dialer_campaign_subscriber.campaign_id = %s)' % \
-        (str(self.id), str(self.id),)
+            'SELECT dc.id, dc.phonebook_id, dc.contact, dc.last_name, \
+            dc.first_name, dc.email, dc.city, dc.description, \
+            dc.status, dc.additional_vars, dc.created_date, dc.updated_date \
+            FROM dialer_contact as dc \
+            INNER JOIN dialer_phonebook ON \
+            (dc.phonebook_id = dialer_phonebook.id) \
+            INNER JOIN dialer_campaign_phonebook ON \
+            (dialer_phonebook.id = dialer_campaign_phonebook.phonebook_id) \
+            WHERE dialer_campaign_phonebook.campaign_id = %s \
+            AND dc.status = 1 \
+            AND dc.id NOT IN \
+            (SELECT  dialer_campaign_subscriber.contact_id \
+            FROM dialer_campaign_subscriber \
+            WHERE dialer_campaign_subscriber.campaign_id = %s)' % \
+            (str(self.id), str(self.id),)
 
         raw_contact_list = Contact.objects.raw(query)
         return raw_contact_list

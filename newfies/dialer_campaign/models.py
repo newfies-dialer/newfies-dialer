@@ -25,7 +25,9 @@ from dialer_gateway.models import Gateway
 from user_profile.models import UserProfile
 from datetime import datetime
 from common.intermediate_model_base_class import Model
-from random import choice
+from random import choice, seed
+
+seed()
 
 
 CONTACT_STATUS = (

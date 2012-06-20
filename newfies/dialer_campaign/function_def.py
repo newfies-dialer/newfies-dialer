@@ -2,31 +2,29 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from dialer_campaign.models import Phonebook, Campaign, Contact, CAMPAIGN_STATUS, CAMPAIGN_STATUS_COLOR
+from dialer_campaign.models import Phonebook, Campaign, \
+                                Contact, CAMPAIGN_STATUS, \
+                                CAMPAIGN_STATUS_COLOR
 from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting
 from voice_app.models import VoiceApp
-from user_profile.models import UserProfile
 from dateutil.relativedelta import *
 from dateutil.rrule import *
 from dateutil.parser import *
 from datetime import *
 import calendar
-import string
-import urllib
-import time
 
 
 def field_list(name, user=None):
@@ -46,7 +44,7 @@ def field_list(name, user=None):
     if name == "gateway" and user is not None:
         list = UserProfile.objects.get(user=user)
         list = list.userprofile_gateway.all()
-    
+
     return ((l.id, l.name) for l in list)
 
 
@@ -145,8 +143,8 @@ def check_dialer_setting(request, check_for, field_value=''):
                     campaign_list = Campaign.objects.filter(user=request.user)
                     for i in campaign_list:
                         # Total contacts per campaign
-                        contact_count = \
-                        Contact.objects.filter(phonebook__campaign=i.id).count()
+                        contact_count = Contact.objects\
+                                    .filter(phonebook__campaign=i.id).count()
                         # Total active contacts matched with
                         # max_number_subscriber_campaign
                         if contact_count >= \
@@ -292,28 +290,28 @@ def calculate_date(search_type):
     search_type = int(search_type)
     # Last 30 days
     if search_type == 1:
-        start_date = end_date+relativedelta(days=-int(30))
+        start_date = end_date + relativedelta(days=-int(30))
     # Last 7 days
     if search_type == 2:
-        start_date = end_date+relativedelta(days=-int(7))
+        start_date = end_date + relativedelta(days=-int(7))
     # Yesterday
     if search_type == 3:
-        start_date = end_date+relativedelta(days=-int(1),
+        start_date = end_date + relativedelta(days=-int(1),
                                             hour=0,
                                             minute=0,
                                             second=0)
     # Last 24 hours
     if search_type == 4:
-        start_date = end_date+relativedelta(hours=-int(24))
+        start_date = end_date + relativedelta(hours=-int(24))
     # Last 12 hours
     if search_type == 5:
-        start_date = end_date+relativedelta(hours=-int(12))
+        start_date = end_date + relativedelta(hours=-int(12))
     # Last 6 hours
     if search_type == 6:
-        start_date = end_date+relativedelta(hours=-int(6))
+        start_date = end_date + relativedelta(hours=-int(6))
     # Last hour
     if search_type == 7:
-        start_date = end_date+relativedelta(hours=-int(1))
+        start_date = end_date + relativedelta(hours=-int(1))
 
     return start_date
 
@@ -339,13 +337,17 @@ def get_campaign_status_name(id):
         if i[0] == id:
             #return i[1]
             if i[1] == 'START':
-                return '<font color="' + CAMPAIGN_STATUS_COLOR[id] + '">'  + 'STARTED' + '</font>'
+                return '<font color="' + CAMPAIGN_STATUS_COLOR[id] + '">' \
+                    + 'STARTED' + '</font>'
             if i[1] == 'PAUSE':
-                return '<font color="' + CAMPAIGN_STATUS_COLOR[id] + '">'  + 'PAUSED' + '</font>'
+                return '<font color="' + CAMPAIGN_STATUS_COLOR[id] + '">' \
+                    + 'PAUSED' + '</font>'
             if i[1] == 'ABORT':
-                return '<font color="' + CAMPAIGN_STATUS_COLOR[id] + '">'  + 'ABORTED' + '</font>'
+                return '<font color="' + CAMPAIGN_STATUS_COLOR[id] + '">' \
+                    + 'ABORTED' + '</font>'
             if i[1] == 'END':
-                return '<font color="' + CAMPAIGN_STATUS_COLOR[id] + '">'  + 'STOPPED' + '</font>'
+                return '<font color="' + CAMPAIGN_STATUS_COLOR[id] + '">' \
+                    + 'STOPPED' + '</font>'
 
 
 def user_dialer_setting(user):

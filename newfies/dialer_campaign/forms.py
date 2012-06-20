@@ -2,12 +2,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -62,7 +62,7 @@ class Contact_fileImport(FileImport):
         super(Contact_fileImport, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['phonebook', 'csv_file']
         # To get user's phonebook list
-        if user: # and not user.is_superuser
+        if user:  # and not user.is_superuser
             self.fields['phonebook'].choices = field_list(name="phonebook",
                                                           user=user)
 
@@ -121,7 +121,7 @@ class CampaignForm(ModelForm):
         model = Campaign
         fields = ['campaign_code', 'name', 'description',
                   'callerid', 'status', 'aleg_gateway',
-                  'content_object', # 'content_type', 'object_id'
+                  'content_object',  # 'content_type', 'object_id'
                   'extra_data', 'phonebook',
                   'frequency', 'callmaxduration', 'maxretry',
                   'intervalretry', 'calltimeout',
@@ -164,8 +164,10 @@ class CampaignForm(ModelForm):
             for obj in available_objects:
                 type_id = ContentType.objects.get_for_model(obj.__class__).id
                 obj_id = obj.id
-                form_value = "type:%s-id:%s" % (type_id, obj_id) #e.g."type:12-id:3"
-                display_text = str(ContentType.objects.get_for_model(obj.__class__)) + ' : ' + str(obj)
+                # form_value - e.g."type:12-id:3"
+                form_value = "type:%s-id:%s" % (type_id, obj_id)
+                display_text = str(ContentType.objects\
+                            .get_for_model(obj.__class__)) + ' : ' + str(obj)
                 object_choices.append([form_value, display_text])
             self.fields['content_object'].choices = object_choices
 
@@ -218,7 +220,7 @@ class CampaignAdminForm(ModelForm):
                   'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
                   'saturday', 'sunday']
 
-    def __init__(self,  *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(CampaignAdminForm, self).__init__(*args, **kwargs)
         self.fields['campaign_code'].widget.attrs['readonly'] = True
         self.fields['campaign_code'].initial = get_unique_code(length=5)
@@ -257,8 +259,12 @@ class ContactSearchForm(forms.Form):
                            widget=forms.TextInput(attrs={'size': 15}))
     phonebook = forms.ChoiceField(label=_('Phonebook:'), required=False)
     status = forms.TypedChoiceField(label=_('Status:'), required=False,
-             choices=(('0', _('Inactive')), ('1', _('Active ')), ('2', _('All'))),
-             widget=forms.RadioSelect, initial='2')
+                choices=(
+                    ('0', _('Inactive')),
+                    ('1', _('Active ')),
+                    ('2', _('All'))),
+                widget=forms.RadioSelect,
+                initial='2')
 
     def __init__(self, user, *args, **kwargs):
         super(ContactSearchForm, self).__init__(*args, **kwargs)

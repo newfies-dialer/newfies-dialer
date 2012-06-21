@@ -20,10 +20,10 @@ from dialer_campaign.models import Phonebook, Campaign, \
 from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting
 from voice_app.models import VoiceApp
-from dateutil.relativedelta import *
-from dateutil.rrule import *
-from dateutil.parser import *
-from datetime import *
+from dateutil.relativedelta import relativedelta
+from dateutil.rrule import rrule, DAILY, HOURLY
+from dateutil.parser import parse
+from datetime import datetime, timedelta
 import calendar
 
 

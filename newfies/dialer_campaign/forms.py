@@ -15,22 +15,23 @@
 from django.contrib.auth.models import User
 from django import forms
 from django.forms.util import ErrorList
-from django.forms import *
-from django.contrib import *
-from django.contrib.admin.widgets import *
+from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 
-from dialer_campaign.models import *
-from dialer_campaign.function_def import *
-from datetime import *
+from dialer_campaign.models import Phonebook, \
+                                   Contact, \
+                                   Campaign, \
+                                   CampaignSubscriber, \
+                                   get_unique_code
+from dialer_campaign.function_def import field_list, user_dialer_setting
 
 
 class SearchForm(forms.Form):
     """General Search Form with From & To date para."""
-    from_date = CharField(label=_('From'), required=False, max_length=10,
+    from_date = forms.CharField(label=_('From'), required=False, max_length=10,
     help_text=_("Date Format") + ": <em>YYYY-MM-DD</em>.")
-    to_date = CharField(label=_('To'), required=False, max_length=10,
+    to_date = forms.CharField(label=_('To'), required=False, max_length=10,
     help_text=_("Date Format") + ": <em>YYYY-MM-DD</em>.")
 
 

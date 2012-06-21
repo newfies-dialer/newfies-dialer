@@ -233,7 +233,6 @@ except ImportError:
 else:
     INSTALLED_APPS = INSTALLED_APPS + ('redisboard',)
 
-
 # Debug Toolbar
 try:
     import debug_toolbar
@@ -246,7 +245,6 @@ else:
     DEBUG_TOOLBAR_CONFIG = {
         'INTERCEPT_REDIRECTS': False,
     }
-
 
 # Django extensions
 try:

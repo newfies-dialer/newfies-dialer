@@ -19,7 +19,7 @@ from django.core.cache import cache
 from django.db.models.signals import post_save
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from dateutil.relativedelta import *
+from dateutil.relativedelta import relativedelta
 from django_countries import CountryField
 from dialer_gateway.models import Gateway
 from user_profile.models import UserProfile

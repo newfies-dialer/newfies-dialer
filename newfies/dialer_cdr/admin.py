@@ -152,9 +152,11 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
         ChangeList = self.get_changelist(request)
         try:
-            cl = ChangeList(request, self.model, self.list_display, self.list_display_links,
-                 self.list_filter, self.date_hierarchy, self.search_fields,
-                 self.list_select_related, self.list_per_page, self.list_editable, self)
+            cl = ChangeList(request, self.model, self.list_display,
+                 self.list_display_links, self.list_filter, self.date_hierarchy,
+                 self.search_fields, self.list_select_related,
+                 self.list_per_page, self.list_max_show_all, self.list_editable,
+                 self)
         except IncorrectLookupParameters:
             if ERROR_FLAG in request.GET.keys():
                 return render_to_response('admin/invalid_setup.html', {'title': _('Database error')})

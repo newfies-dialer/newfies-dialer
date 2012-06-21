@@ -11,12 +11,10 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-
 from django.contrib import admin
 from django.contrib import messages
 from django.conf.urls.defaults import patterns
 from django.utils.translation import ugettext as _
-#from django.db.models import *
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -24,8 +22,8 @@ from dialer_campaign.models import Phonebook, Contact, Campaign, CampaignSubscri
 from dialer_campaign.forms import Contact_fileImport
 from dialer_campaign.function_def import check_dialer_setting
 from dialer_campaign.views import common_send_notification
-import csv
 from genericadmin.admin import GenericAdminModelAdmin
+import csv
 
 
 class CampaignAdmin(GenericAdminModelAdmin):

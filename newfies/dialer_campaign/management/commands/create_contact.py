@@ -15,7 +15,7 @@
 from optparse import make_option
 from django.core.management.base import BaseCommand, CommandError
 from django.utils.translation import ugettext as _
-from dialer_campaign.models import *
+from dialer_campaign.models import Phonebook, Contact
 from django.db import IntegrityError
 
 

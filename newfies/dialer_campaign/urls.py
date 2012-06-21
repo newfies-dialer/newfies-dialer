@@ -11,7 +11,6 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-
 from django.conf.urls.defaults import patterns
 from django.conf import settings
 from dialer_campaign.views import index, login_view, logout_view, \
@@ -21,6 +20,7 @@ from dialer_campaign.views import index, login_view, logout_view, \
     contact_list, contact_grid, contact_add, contact_import, contact_del, contact_change,\
     campaign_list, campaign_grid, contact_add, campaign_del, update_campaign_status_cust,\
     campaign_change, update_campaign_status_admin, notify_admin
+
 
 urlpatterns = patterns('dialer_campaign.views',
     (r'^$', 'index'),

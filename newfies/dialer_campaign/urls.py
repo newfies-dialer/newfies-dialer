@@ -12,15 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from django.conf.urls.defaults import patterns
-from django.conf import settings
-from dialer_campaign.views import index, login_view, logout_view, \
-    pleaselog, customer_dashboard, cust_password_reset, cust_password_reset_done,\
-    cust_password_reset_confirm, cust_password_reset_complete, phonebook_list,\
-    phonebook_grid, phonebook_add, get_contact_count, phonebook_del, phonebook_change,\
-    contact_list, contact_grid, contact_add, contact_import, contact_del, contact_change,\
-    campaign_list, campaign_grid, contact_add, campaign_del, update_campaign_status_cust,\
-    campaign_change, update_campaign_status_admin, notify_admin
-
+from dialer_campaign.views import *
 
 urlpatterns = patterns('dialer_campaign.views',
     (r'^$', 'index'),

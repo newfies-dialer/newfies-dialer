@@ -12,7 +12,6 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.contrib.auth.models import User
 from django import forms
 from django.forms.util import ErrorList
 from django.forms import ModelForm, Textarea
@@ -22,7 +21,6 @@ from django.contrib.contenttypes.models import ContentType
 from dialer_campaign.models import Phonebook, \
                                    Contact, \
                                    Campaign, \
-                                   CampaignSubscriber, \
                                    get_unique_code
 from dialer_campaign.function_def import field_list, user_dialer_setting
 

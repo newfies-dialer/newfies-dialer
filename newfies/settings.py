@@ -264,6 +264,14 @@ except ImportError:
 else:
     INSTALLED_APPS = INSTALLED_APPS + ('dilla',)
 
+# SMS MODULE
+try:
+    import sms_campaign
+except ImportError:
+    pass
+else:
+    INSTALLED_APPS = INSTALLED_APPS + ('sms_campaign',)
+
 
 AUTH_PROFILE_MODULE = "user_profile.UserProfile"
 LOGIN_URL = '/pleaselog/'

@@ -22,46 +22,38 @@ import logging
 from django.contrib.auth.models import User
 from django.conf.urls.defaults import url
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
-from django.db.models.query import QuerySet
 from django.http import HttpResponse
 from django.utils.encoding import smart_unicode
 from django.utils.xmlutils import SimplerXMLGenerator
-from django.contrib.auth import authenticate
 from django.conf import settings
 from django.contrib.sites.models import Site
+from django.db import connection
 
-from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
+from tastypie.resources import ModelResource, ALL
 from tastypie.authentication import Authentication, BasicAuthentication
-from tastypie.authorization import Authorization, DjangoAuthorization
+from tastypie.authorization import Authorization
 from tastypie.serializers import Serializer
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
-from tastypie.utils import dict_strip_unicode_keys, trailing_slash
-from tastypie.http import HttpCreated, HttpNoContent, HttpNotFound, HttpBadRequest
 from tastypie.exceptions import BadRequest, NotFound, ImmediateHttpResponse
 from tastypie import http
 from tastypie import fields
 
 from dialer_cdr.tasks import init_callrequest
-from dialer_campaign.models import Campaign, Phonebook, Contact, CampaignSubscriber, \
-     get_unique_code
+from dialer_campaign.models import Campaign, Phonebook, Contact, \
+                        CampaignSubscriber
 from dialer_campaign.function_def import user_attached_with_dialer_settings, \
     check_dialer_setting, dialer_setting_limit, user_dialer_setting
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_gateway.models import Gateway
 from voice_app.models import VoiceApp
-from survey.models import SurveyApp
 from common_functions import search_tag_string
-
 from settings_local import API_ALLOWED_IP, PLIVO_DEFAULT_DIALCALLBACK_URL
 from datetime import datetime, timedelta
-from random import choice, seed
-
+from random import seed
 import urllib
 import time
 import uuid
-import simplejson
 
 seed()
 
@@ -100,7 +92,8 @@ class CustomJSONSerializer(Serializer):
         return data
 
 
-def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='', leg='a', hangup_cause='', from_plivo='', to_plivo=''):
+def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='',
+    leg='a', hangup_cause='', from_plivo='', to_plivo=''):
     """
     Common function to create CDR / VoIP Call
 
@@ -112,16 +105,17 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='', l
 
     """
 
-    if data.has_key('answer_epoch') and data['answer_epoch']:
+    if 'answer_epoch' in data and data['answer_epoch']:
         try:
             cur_answer_epoch = int(data['answer_epoch'])
         except ValueError:
             raise
-        starting_date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(cur_answer_epoch))
+        starting_date = time.strftime("%Y-%m-%d %H:%M:%S",
+                            time.localtime(cur_answer_epoch))
     else:
         starting_date = None
 
-    if leg=='a':
+    if leg == 'a':
         #A-Leg
         leg_type = 1
         used_gateway = obj_callrequest.aleg_gateway
@@ -140,9 +134,11 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='', l
     if cdr_hangup_cause == 'USER_BUSY':
         disposition = 'BUSY'
     else:
-        disposition = data["%s%s" % (data_prefix, 'endpoint_disposition')] or ''
+        disposition = data["%s%s" % \
+                        (data_prefix, 'endpoint_disposition')] or ''
 
-    logger.debug('Create CDR - request_uuid=%s ; leg=%d ; hangup_cause= %s' % (plivo_request_uuid, leg_type, cdr_hangup_cause))
+    logger.debug('Create CDR - request_uuid=%s ; leg=%d ; hangup_cause= %s' % \
+                    (plivo_request_uuid, leg_type, cdr_hangup_cause))
 
     new_voipcall = VoIPCall(
                     user=obj_callrequest.user,
@@ -153,15 +149,17 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='', l
                     callid=data["%s%s" % (data_prefix, 'call_uuid')] or '',
                     callerid=from_plivo,
                     phone_number=to_plivo,
-                    dialcode=None, #TODO
+                    dialcode=None,  # TODO
                     starting_date=starting_date,
                     duration=data["%s%s" % (data_prefix, 'duration')] or 0,
                     billsec=data["%s%s" % (data_prefix, 'billsec')] or 0,
-                    progresssec=data["%s%s" % (data_prefix, 'progresssec')] or 0,
+                    progresssec=data["%s%s" % \
+                                        (data_prefix, 'progresssec')] or 0,
                     answersec=data["%s%s" % (data_prefix, 'answersec')] or 0,
                     disposition=disposition,
                     hangup_cause=cdr_hangup_cause,
-                    hangup_cause_q850=data["%s%s" % (data_prefix, 'hangup_cause_q850')] or '',)
+                    hangup_cause_q850=data["%s%s" % \
+                                    (data_prefix, 'hangup_cause_q850')] or '',)
 
     new_voipcall.save()
 
@@ -251,9 +249,9 @@ class PhonebookValidation(Validation):
             campaign_id = bundle.data.get('campaign_id')
             if campaign_id:
                 try:
-                    campaign = Campaign.objects.get(id=campaign_id)
+                    Campaign.objects.get(id=campaign_id)
                 except:
-                    errors['chk_campaign'] = ['The Campaign ID does not exist!']
+                    errors['chk_campaign'] = ['Campaign ID does not exist!']
 
         try:
             user_id = User.objects.get(username=request.user).id
@@ -399,7 +397,8 @@ class CampaignValidation(Validation):
         if request.method == 'POST':
             startingdate = get_value_if_none(startingdate, time.time())
             # expires in 90 days
-            expirationdate = get_value_if_none(expirationdate, time.time() + 86400 * 90)
+            expirationdate = get_value_if_none(expirationdate,
+                                        time.time() + 86400 * 90)
             #Startdate and expirationdate are UTC -> convert to localtime
             startingdate = float(startingdate) - time.altzone
             expirationdate = float(expirationdate) - time.altzone
@@ -411,25 +410,25 @@ class CampaignValidation(Validation):
 
         if request.method == 'PUT':
             if startingdate:
-                bundle.data['startingdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
-                                              time.gmtime(float(startingdate)))
+                bundle.data['startingdate'] = time.strftime(
+                    '%Y-%m-%d %H:%M:%S', time.gmtime(float(startingdate)))
             if expirationdate:
-                bundle.data['expirationdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
-                                                               time.gmtime(float(expirationdate)))
+                bundle.data['expirationdate'] = time.strftime(
+                    '%Y-%m-%d %H:%M:%S', time.gmtime(float(expirationdate)))
 
         if user_attached_with_dialer_settings(request):
             errors['user_dialer_setting'] = ['Your settings are not \
-                        configured properly, Please contact the administrator.']
+                    configured properly, Please contact the administrator.']
 
         if check_dialer_setting(request, check_for="campaign"):
-            errors['chk_campaign'] = ["You have too many campaigns. Max allowed %s" \
+            errors['chk_campaign'] = ["Too many campaigns. Max allowed %s" \
             % dialer_setting_limit(request, limit_for="campaign")]
 
         frequency = bundle.data.get('frequency')
         if frequency:
             if check_dialer_setting(request, check_for="frequency",
                                         field_value=int(frequency)):
-                errors['chk_frequency'] = ["Maximum Frequency limit of %s exceeded." \
+                errors['chk_frequency'] = ["Frequency limit of %s exceeded." \
                 % dialer_setting_limit(request, limit_for="frequency")]
 
         callmaxduration = bundle.data.get('callmaxduration')
@@ -437,7 +436,7 @@ class CampaignValidation(Validation):
             if check_dialer_setting(request,
                                     check_for="duration",
                                     field_value=int(callmaxduration)):
-                errors['chk_duration'] = ["Maximum Duration limit of %s exceeded." \
+                errors['chk_duration'] = ["Duration limit of %s exceeded." \
                 % dialer_setting_limit(request, limit_for="duration")]
 
         maxretry = bundle.data.get('maxretry')
@@ -445,7 +444,7 @@ class CampaignValidation(Validation):
             if check_dialer_setting(request,
                                     check_for="retry",
                                     field_value=int(maxretry)):
-                errors['chk_duration'] = ["Maximum Retries limit of %s exceeded." \
+                errors['chk_duration'] = ["Retries limit of %s exceeded." \
                 % dialer_setting_limit(request, limit_for="retry")]
 
         calltimeout = bundle.data.get('calltimeout')
@@ -453,35 +452,37 @@ class CampaignValidation(Validation):
             if check_dialer_setting(request,
                                     check_for="timeout",
                                     field_value=int(calltimeout)):
-                errors['chk_timeout'] = ["Maximum Timeout limit of %s exceeded." \
+                errors['chk_timeout'] = ["Timeout limit of %s exceeded." \
                 % dialer_setting_limit(request, limit_for="timeout")]
 
         aleg_gateway_id = bundle.data.get('aleg_gateway')
         if aleg_gateway_id:
             try:
                 aleg_gateway_id = Gateway.objects.get(id=aleg_gateway_id).id
-                bundle.data['aleg_gateway'] = '/api/v1/gateway/%s/' % aleg_gateway_id
+                bundle.data['aleg_gateway'] = '/api/v1/gateway/%s/' % \
+                                                aleg_gateway_id
             except:
                 errors['chk_gateway'] = ["The Gateway ID doesn't exist!"]
-
 
         content_type = bundle.data.get('content_type')
         if content_type == 'voice_app' or content_type == 'survey':
             try:
-                content_type_id = ContentType.objects.get(app_label=str(content_type)).id
-                bundle.data['content_type'] = '/api/v1/contenttype/%s/' % content_type_id
+                content_type_id = ContentType.objects\
+                                        .get(app_label=str(content_type)).id
+                bundle.data['content_type'] = '/api/v1/contenttype/%s/' % \
+                                        content_type_id
             except:
                 errors['chk_content_type'] = ["The ContentType doesn't exist!"]
         else:
-            errors['chk_content_type'] = ["Entered wrong option. Please enter 'voice_app' or 'survey' !"]
-
+            errors['chk_content_type'] = ["Entered wrong option. Please enter \
+                                            'voice_app' or 'survey' !"]
 
         object_id = bundle.data.get('object_id')
         if object_id:
             try:
                 bundle.data['object_id'] = object_id
             except:
-                errors['chk_object_id'] = ["The Application object id doesn't exist!"]
+                errors['chk_object_id'] = ["App Object ID doesn't exist!"]
 
         try:
             user_id = User.objects.get(username=request.user).id
@@ -533,17 +534,18 @@ class CampaignResource(ModelResource):
             * ``maxretry`` - Defines the max retries allowed per user.
             * ``intervalretry`` - Defines the time to wait between retries\
                                   in seconds
-            * ``calltimeout`` - Defines the number of seconds to timeout on calls
+            * ``calltimeout`` - Set seconds of call timeout
 
         **Gateways**:
 
             * ``aleg_gateway`` - Defines the Gateway to use to call the\
                                  subscriber
-            * ``content_type`` - Defines the application (``voice_app`` or ``survey``) to use when the \
-                                 call is established on the A-Leg
+            * ``content_type`` - Defines the application (``voice_app`` \
+                                or ``survey``) to use when the \
+                                call is established on the A-Leg
             * ``object_id`` - Defines the object of content_type application
             * ``extra_data`` - Defines the additional data to pass to the\
-                                 application
+                                application
 
     **Validation**:
 
@@ -766,13 +768,13 @@ class CampaignResource(ModelResource):
             try:
                 # New phonebook
                 new_phonebook = Phonebook.objects.create(user=request.user,
-                                        name=bundle.obj.name + '-' + bundle.obj.campaign_code,
-                                        description='Auto created Phonebook from API')
+                        name=bundle.obj.name + '-' + bundle.obj.campaign_code,
+                        description='Auto created Phonebook from API')
                 bundle.obj.phonebook.add(new_phonebook)
                 bundle.obj.save()
             except:
                 #raise
-                error_msg = 'The Autogenerated Phonebook name duplicated - Internal Error!'
+                error_msg = 'Auto-Created Phonebook Name duplicated!'
                 logger.error(error_msg)
                 raise BadRequest(error_msg)
 
@@ -791,13 +793,14 @@ class BulkContactValidation(Validation):
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
         if check_dialer_setting(request, check_for="contact"):
-            errors['contact_dialer_setting'] = ["You have too many contacts per campaign. \
-                You are allowed a maximum of %s" % dialer_setting_limit(request, limit_for="contact")]
+            errors['contact_dialer_setting'] = ["You have too many contacts \
+                per campaign. You are allowed a maximum of %s" % \
+                dialer_setting_limit(request, limit_for="contact")]
 
         phonebook_id = bundle.data.get('phonebook_id')
         if phonebook_id:
             try:
-                obj_phonebook = Phonebook.objects.get(id=phonebook_id)
+                Phonebook.objects.get(id=phonebook_id)
             except Phonebook.DoesNotExist:
                 errors['phonebook_error'] = ["Phonebook is not selected!"]
         else:
@@ -954,28 +957,30 @@ class CampaignDeleteCascadeResource(ModelResource):
                     del_campaign.delete()
                 logger.debug('CampaignDeleteCascade API : result ok 200')
         except:
-            error_msg = "A model instance matching the provided arguments could not be found."
+            error_msg = "A model matching arguments not found."
             logger.error(error_msg)
             raise NotFound(error_msg)
 
 
 class CampaignSubscriberValidation(Validation):
-    """CampaignSubscriber Validation Class"""
+    """
+    CampaignSubscriber Validation Class
+    """
     def is_valid(self, bundle, request=None):
         errors = {}
-
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
 
         if check_dialer_setting(request, check_for="contact"):
-            errors['contact_dialer_setting'] = ["You have too many contacts per campaign. \
-                You are allowed a maximum of %s" % dialer_setting_limit(request, limit_for="contact")]
+            errors['contact_dialer_setting'] = ["You have too many contacts \
+                per campaign. You are allowed a maximum of %s" % \
+                dialer_setting_limit(request, limit_for="contact")]
 
         if request.method == 'POST':
             phonebook_id = bundle.data.get('phonebook_id')
             if phonebook_id:
                 try:
-                    obj_phonebook = Phonebook.objects.get(id=phonebook_id)
+                    Phonebook.objects.get(id=phonebook_id)
                 except Phonebook.DoesNotExist:
                     errors['phonebook_error'] = ["Phonebook is not selected!"]
             else:
@@ -1019,33 +1024,33 @@ class CampaignSubscriberResource(ModelResource):
 
     **Read**:
 
-            CURL Usage::
+        CURL Usage::
 
-                curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber/?format=json
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber/?format=json
 
-            Response::
+        Response::
 
-                {
-                   "meta":{
-                      "limit":20,
-                      "next":null,
-                      "offset":0,
-                      "previous":null,
-                      "total_count":1
-                   },
-                   "objects":[
-                      {
-                         "count_attempt":1,
-                         "created_date":"2012-01-17T03:58:49",
-                         "duplicate_contact":"123456789",
-                         "id":"1",
-                         "last_attempt":"2012-01-17T15:28:37",
-                         "resource_uri":"/api/v1/campaignsubscriber/1/",
-                         "status":2,
-                         "updated_date":"2012-02-07T02:22:19"
-                      }
-                   ]
-                }
+            {
+               "meta":{
+                  "limit":20,
+                  "next":null,
+                  "offset":0,
+                  "previous":null,
+                  "total_count":1
+               },
+               "objects":[
+                  {
+                     "count_attempt":1,
+                     "created_date":"2012-01-17T03:58:49",
+                     "duplicate_contact":"123456789",
+                     "id":"1",
+                     "last_attempt":"2012-01-17T15:28:37",
+                     "resource_uri":"/api/v1/campaignsubscriber/1/",
+                     "status":2,
+                     "updated_date":"2012-02-07T02:22:19"
+                  }
+               ]
+            }
 
     **Update**:
 
@@ -1076,9 +1081,10 @@ class CampaignSubscriberResource(ModelResource):
         }
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
 
-
     def obj_create(self, bundle, request=None, **kwargs):
-
+        """
+        TODO: Add doc
+        """
         logger.debug('CampaignSubscriber POST API get called')
 
         phonebook_id = bundle.data.get('phonebook_id')
@@ -1099,37 +1105,42 @@ class CampaignSubscriberResource(ModelResource):
 
         # Insert the contact to the campaignsubscriber also for
         # each campaign using this phonebook
-        try:
-            campaign_obj = Campaign.objects.filter(
-                                phonebook=obj_phonebook,
-                                user=request.user)
-            for camp_obj in campaign_obj:
-                imported_phonebook = []
-                if camp_obj.imported_phonebook:
-                    # for example:- camp_obj.imported_phonebook = 1,2,3
-                    # So convert imported_phonebook string into int list
-                    imported_phonebook = map(int, camp_obj.imported_phonebook.split(','))
 
-                phonbook_list = camp_obj.phonebook.values_list('id', flat=True).all()
-                phonbook_list = map(int, phonbook_list)
+        campaign_obj = Campaign.objects.filter(
+                            phonebook=obj_phonebook,
+                            user=request.user)
+        for camp_obj in campaign_obj:
+            imported_phonebook = []
+            if camp_obj.imported_phonebook:
+                # for example:- camp_obj.imported_phonebook = 1,2,3
+                # So convert imported_phonebook string into int list
+                imported_phonebook = map(int,
+                                        camp_obj.imported_phonebook.split(','))
 
-                common_phonbook_list = []
-                if phonbook_list:
-                    common_phonbook_list = list(set(imported_phonebook) & set(phonbook_list))
-                    if common_phonbook_list:
-                        contact_list = Contact.objects.filter(phonebook__in=common_phonbook_list, status=1)
-                        for con_obj in contact_list:
-                            try:
-                                CampaignSubscriber.objects.create(
-                                                     contact=con_obj,
-                                                     duplicate_contact=con_obj.contact,
-                                                     status=1, # START
-                                                     campaign=camp_obj)
-                            except:
-                                pass
+            phonbook_list = camp_obj.phonebook\
+                                    .values_list('id', flat=True)\
+                                    .all()
+            phonbook_list = map(int, phonbook_list)
 
-        except:
-            pass
+            common_phonbook_list = []
+            if phonbook_list:
+                common_phonbook_list = list(set(imported_phonebook) & \
+                                        set(phonbook_list))
+                if common_phonbook_list:
+                    contact_list = Contact.objects\
+                            .filter(
+                                phonebook__in=common_phonbook_list,
+                                status=1)
+                    for con_obj in contact_list:
+                        try:
+                            CampaignSubscriber.objects.create(
+                                     contact=con_obj,
+                                     duplicate_contact=con_obj.contact,
+                                     status=1,  # START
+                                     campaign=camp_obj)
+                        except:
+                            #TODO Catching duplicate error
+                            pass
 
         logger.debug('CampaignSubscriber POST API : result ok 200')
         return bundle
@@ -1146,12 +1157,13 @@ class CampaignSubscriberResource(ModelResource):
 
         campaign_obj = Campaign.objects.get(id=campaign_id)
         try:
-            campaignsubscriber = CampaignSubscriber.objects.get(duplicate_contact=bundle.data.get('contact'),
-                                                                campaign=campaign_obj)
+            campaignsubscriber = CampaignSubscriber.objects\
+                    .get(duplicate_contact=bundle.data.get('contact'),
+                        campaign=campaign_obj)
             campaignsubscriber.status = bundle.data.get('status')
             campaignsubscriber.save()
         except:
-            error_msg = "A model instance matching the provided arguments could not be found."
+            error_msg = "A model matching arguments could not be found."
             logger.error(error_msg)
             raise BadRequest(error_msg)
 
@@ -1170,32 +1182,32 @@ class CampaignSubscriberPerCampaignResource(ModelResource):
 
     **Read**:
 
-            CURL Usage::
+        CURL Usage::
 
-                curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber_per_campaign/%campaign_id%/?format=json
-                or
-                curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber_per_campaign/%campaign_id%/%contact%/?format=json
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber_per_campaign/%campaign_id%/?format=json
+            or
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber_per_campaign/%campaign_id%/%contact%/?format=json
 
-            Response::
+        Response::
 
-                [
-                   {
-                      "contact_id":1,
-                      "count_attempt":1,
-                      "last_attempt":"2012-01-17T15:28:37",
-                      "status":2,
-                      "campaign_subscriber_id": 1,
-                      "contact": "640234123"
-                   },
-                   {
-                      "contact_id":2,
-                      "count_attempt":1,
-                      "last_attempt":"2012-02-06T17:00:38",
-                      "status":1,
-                      "campaign_subscriber_id": 2,
-                      "contact": "640234000"
-                   }
-                ]
+            [
+               {
+                  "contact_id":1,
+                  "count_attempt":1,
+                  "last_attempt":"2012-01-17T15:28:37",
+                  "status":2,
+                  "campaign_subscriber_id": 1,
+                  "contact": "640234123"
+               },
+               {
+                  "contact_id":2,
+                  "count_attempt":1,
+                  "last_attempt":"2012-02-06T17:00:38",
+                  "status":1,
+                  "campaign_subscriber_id": 2,
+                  "contact": "640234000"
+               }
+            ]
 
     """
     class Meta:
@@ -1204,19 +1216,23 @@ class CampaignSubscriberPerCampaignResource(ModelResource):
         authentication = BasicAuthentication()
         list_allowed_methods = ['get']
         detail_allowed_methods = ['get']
-        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+        # default 1000 calls / hour
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
 
     def override_urls(self):
         """Override urls"""
         return [
-            url(r'^(?P<resource_name>%s)/(.+)/$' % self._meta.resource_name, self.wrap_view('read')),
+            url(r'^(?P<resource_name>%s)/(.+)/$' % \
+                self._meta.resource_name, self.wrap_view('read')),
         ]
 
-    def read_response(self, request, data, response_class=HttpResponse, **response_kwargs):
+    def read_response(self, request, data,
+        response_class=HttpResponse, **response_kwargs):
         """To display API's result"""
         desired_format = self.determine_format(request)
         serialized = self.serialize(request, data, desired_format)
-        return response_class(content=serialized, content_type=desired_format, **response_kwargs)
+        return response_class(content=serialized,
+                    content_type=desired_format, **response_kwargs)
 
     def read(self, request=None, **kwargs):
         """GET method of CampaignSubscriber API"""
@@ -1228,7 +1244,6 @@ class CampaignSubscriberPerCampaignResource(ModelResource):
         logger.debug('CampaignSubscriber GET API authorization called!')
         auth_result = self._meta.authorization.is_authorized(request, object)
 
-
         temp_url = request.META['PATH_INFO']
         temp_id = temp_url.split('/api/v1/campaignsubscriber_per_campaign/')[1]
         camp_id = temp_id.split('/')[0]
@@ -1237,7 +1252,6 @@ class CampaignSubscriberPerCampaignResource(ModelResource):
         except:
             contact = False
 
-        from django.db import connection, transaction
         cursor = connection.cursor()
 
         try:
@@ -1256,36 +1270,36 @@ class CampaignSubscriberPerCampaignResource(ModelResource):
 
         if contact:
             try:
-                int_contact = int(contact)
+                int(contact)
             except ValueError:
                 error_msg = "Wrong value for contact !"
                 logger.error(error_msg)
                 raise BadRequest(error_msg)
 
-            sql_statement = 'SELECT DISTINCT contact_id, last_attempt, count_attempt,'\
-                            'dialer_campaign_subscriber.status,'\
-                            'dialer_campaign_subscriber.id '\
-                            'FROM dialer_campaign_subscriber '\
-                            'LEFT JOIN dialer_callrequest ON '\
-                            'campaign_subscriber_id=dialer_campaign_subscriber.id '\
-                            'LEFT JOIN dialer_campaign ON '\
-                            'dialer_callrequest.campaign_id=dialer_campaign.id '\
-                            'WHERE dialer_campaign_subscriber.campaign_id = %s '\
-                            'AND dialer_campaign_subscriber.duplicate_contact = "%s"'\
-                            % (str(campaign_id), str(contact))
+            sql_statement = 'SELECT DISTINCT contact_id, last_attempt, '\
+                'count_attempt, dialer_campaign_subscriber.status,'\
+                'dialer_campaign_subscriber.id '\
+                'FROM dialer_campaign_subscriber '\
+                'LEFT JOIN dialer_callrequest ON '\
+                'campaign_subscriber_id=dialer_campaign_subscriber.id '\
+                'LEFT JOIN dialer_campaign ON '\
+                'dialer_callrequest.campaign_id=dialer_campaign.id '\
+                'WHERE dialer_campaign_subscriber.campaign_id = %s '\
+                'AND dialer_campaign_subscriber.duplicate_contact = "%s"'\
+                % (str(campaign_id), str(contact))
 
         else:
-            sql_statement = 'SELECT DISTINCT contact_id, last_attempt, count_attempt,'\
-                            'dialer_campaign_subscriber.status, '\
-                            'dialer_campaign_subscriber.id '\
-                            'FROM dialer_campaign_subscriber '\
-                            'LEFT JOIN dialer_callrequest ON '\
-                            'campaign_subscriber_id=' \
-                            'dialer_campaign_subscriber.id '\
-                            'LEFT JOIN dialer_campaign ON '\
-                            'dialer_callrequest.campaign_id=dialer_campaign.id '\
-                            'WHERE dialer_campaign_subscriber.campaign_id' \
-                            '= %s' % (str(campaign_id))
+            sql_statement = 'SELECT DISTINCT contact_id, last_attempt, '\
+                'count_attempt, dialer_campaign_subscriber.status, '\
+                'dialer_campaign_subscriber.id '\
+                'FROM dialer_campaign_subscriber '\
+                'LEFT JOIN dialer_callrequest ON '\
+                'campaign_subscriber_id=' \
+                'dialer_campaign_subscriber.id '\
+                'LEFT JOIN dialer_campaign ON '\
+                'dialer_callrequest.campaign_id=dialer_campaign.id '\
+                'WHERE dialer_campaign_subscriber.campaign_id' \
+                '= %s' % (str(campaign_id))
 
         cursor.execute(sql_statement)
         row = cursor.fetchall()
@@ -1318,20 +1332,22 @@ class CallrequestValidation(Validation):
         content_type = bundle.data.get('content_type')
         if content_type == 'voice_app' or content_type == 'survey':
             try:
-                content_type_id = ContentType.objects.get(app_label=str(content_type)).id
-                bundle.data['content_type'] = '/api/v1/contenttype/%s/' % content_type_id
+                content_type_id = ContentType.objects\
+                                    .get(app_label=str(content_type)).id
+                bundle.data['content_type'] = '/api/v1/contenttype/%s/' \
+                                                    % content_type_id
             except:
                 errors['chk_content_type'] = ["The ContentType doesn't exist!"]
         else:
-            errors['chk_content_type'] = ["Entered wrong option. Please enter 'voice_app' or 'survey' !"]
-
+            errors['chk_content_type'] = ["Wrong option. \
+                                            Enter 'voice_app' or 'survey' !"]
 
         object_id = bundle.data.get('object_id')
         if object_id:
             try:
                 bundle.data['object_id'] = object_id
             except:
-                errors['chk_object_id'] = ["The Application object id doesn't exist!"]
+                errors['chk_object_id'] = ["App object Id doesn't exist!"]
 
         try:
             user_id = User.objects.get(username=request.user).id
@@ -1339,9 +1355,11 @@ class CallrequestValidation(Validation):
         except:
             errors['chk_user'] = ["The User doesn't exist!"]
 
-        if request.method=='POST':
-            rq_count = Callrequest.objects.filter(request_uuid=bundle.data.get('request_uuid')).count()
-            if (rq_count!=0):
+        if request.method == 'POST':
+            rq_count = Callrequest.objects\
+                    .filter(request_uuid=bundle.data.get('request_uuid'))\
+                    .count()
+            if (rq_count != 0):
                 errors['chk_request_uuid'] = ["The Request uuid duplicated!"]
 
         return errors
@@ -1466,7 +1484,9 @@ class CallrequestResource(ModelResource):
             Content-Language: en-us
     """
     user = fields.ForeignKey(UserResource, 'user', full=True)
-    content_type = fields.ForeignKey(ContentTypeResource, 'content_type', full=True)
+    content_type = fields.ForeignKey(ContentTypeResource,
+                            'content_type', full=True)
+
     class Meta:
         queryset = Callrequest.objects.all()
         resource_name = 'callrequest'
@@ -1475,7 +1495,8 @@ class CallrequestResource(ModelResource):
         validation = CallrequestValidation()
         list_allowed_methods = ['get', 'post', 'put']
         detail_allowed_methods = ['get', 'post', 'put']
-        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+        # default 1000 calls / hour
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
 
 
 class CustomXmlEmitter():
@@ -1522,7 +1543,7 @@ class AnswercallValidation(Validation):
             obj_callrequest = Callrequest.objects.get(
                                             request_uuid=opt_ALegRequestUUID)
             if not obj_callrequest.content_type:
-                errors['Attached App'] = ['Not attached to a Voice App or survey!']
+                errors['Attached App'] = ['Not attached to Voice App/Survey']
         except:
             errors['ALegRequestUUID'] = ['Call Request cannot be found!']
 
@@ -1553,7 +1574,8 @@ class AnswercallResource(ModelResource):
             <?xml version="1.0" encoding="utf-8"?>
                 <Response>
                     <Dial timeLimit="3600" callerId="650784355">
-                        <Number gateways="user/,user" gatewayTimeouts="30000"></Number>
+                        <Number gateways="user/,user" gatewayTimeouts="30000">
+                        </Number>
                     </Dial>
                 </Response>
     """
@@ -1564,19 +1586,23 @@ class AnswercallResource(ModelResource):
         validation = AnswercallValidation()
         list_allowed_methods = ['post']
         detail_allowed_methods = ['post']
-        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+        # default 1000 calls / hour
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
 
     def override_urls(self):
         """Override urls"""
         return [
-            url(r'^(?P<resource_name>%s)/$' % self._meta.resource_name, self.wrap_view('create')),
+            url(r'^(?P<resource_name>%s)/$' % \
+                self._meta.resource_name, self.wrap_view('create')),
         ]
 
-    def create_response(self, request, data, response_class=HttpResponse, **response_kwargs):
+    def create_response(self, request, data,
+        response_class=HttpResponse, **response_kwargs):
         """To display API's result"""
         desired_format = self.determine_format(request)
-        serialized = data #self.serialize(request, data, desired_format)
-        return response_class(content=serialized, content_type=desired_format, **response_kwargs)
+        serialized = data
+        return response_class(content=serialized,
+                        content_type=desired_format, **response_kwargs)
 
     def create(self, request=None, **kwargs):
         """POST method of Answercall API"""
@@ -1598,10 +1624,11 @@ class AnswercallResource(ModelResource):
             opt_CallUUID = request.POST.get('CallUUID')
 
             #TODO: If we update the Call to success here we should not do it in hangup url
-            obj_callrequest = Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
+            obj_callrequest = Callrequest.objects\
+                                    .get(request_uuid=opt_ALegRequestUUID)
 
             #TODO : use constant
-            obj_callrequest.status = 8 # IN-PROGRESS
+            obj_callrequest.status = 8  # IN-PROGRESS
             obj_callrequest.aleg_uuid = opt_CallUUID
             obj_callrequest.save()
 
@@ -1615,8 +1642,9 @@ class AnswercallResource(ModelResource):
 
                 extra_data = obj_callrequest.campaign.extra_data
                 if extra_data and len(extra_data) > 1:
-                    #check if we have a voice_app_data tag to replace data on application
-                    voice_app_data = search_tag_string(extra_data, 'voice_app_data')
+                    #check if we have a voice_app_data tag to replace
+                    voice_app_data = search_tag_string(extra_data,
+                                                        'voice_app_data')
                     if voice_app_data:
                         data = voice_app_data
 
@@ -1707,21 +1735,21 @@ class DialCallbackValidation(Validation):
 
         opt_aleg_uuid = request.POST.get('DialALegUUID')
         if not opt_aleg_uuid:
-            errors['DialALegUUID'] = ["Wrong parameters - miss DialALegUUID!"]
+            errors['DialALegUUID'] = ["Missing DialALegUUID!"]
 
         opt_request_uuid_bleg = request.POST.get('DialBLegUUID')
         if not opt_request_uuid_bleg:
-            errors['DialBLegUUID'] = ["Wrong parameters - miss DialBLegUUID!"]
+            errors['DialBLegUUID'] = ["Missing DialBLegUUID!"]
 
         opt_dial_bleg_status = request.POST.get('DialBLegStatus')
         if not opt_dial_bleg_status:
-            errors['DialBLegStatus'] = ["Wrong parameters - miss DialBLegStatus!"]
+            errors['DialBLegStatus'] = ["Missing DialBLegStatus!"]
 
         try:
-            callrequest = Callrequest.objects.get(aleg_uuid=opt_aleg_uuid)
+            Callrequest.objects.get(aleg_uuid=opt_aleg_uuid)
         except:
             errors['CallRequest'] = ["Call request not found - uuid:%s" % \
-                                        opt_request_uuid]
+                                        opt_request_uuid_bleg]
         return errors
 
 
@@ -1774,7 +1802,7 @@ class DialCallbackResource(ModelResource):
         response_class=HttpResponse, **response_kwargs):
         """To display API's result"""
         desired_format = self.determine_format(request)
-        serialized = data # self.serialize(request, data, desired_format)
+        serialized = data
         return response_class(content=serialized,
                             content_type=desired_format, **response_kwargs)
 
@@ -1801,8 +1829,9 @@ class DialCallbackResource(ModelResource):
                 object_list = [{'result': 'OK - Bleg status is not Hangup'}]
                 logger.debug('DialCallback API : Result 200!')
                 obj = CustomXmlEmitter()
-                return self.create_response(request, obj.render(request, object_list))
-
+                return self.create_response(
+                                request,
+                                obj.render(request, object_list))
             callrequest = Callrequest.objects.get(aleg_uuid=opt_aleg_uuid)
             data = {}
             for element in CDR_VARIABLES:
@@ -1860,10 +1889,10 @@ class HangupcallValidation(Validation):
         #    if not request.POST.get("variable_%s" % var_name):
         #        errors[var_name] = ["Wrong parameters - miss %s!" % var_name]
         try:
-            callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid)
+            Callrequest.objects.get(request_uuid=opt_request_uuid)
         except:
-            errors['CallRequest'] = ["Call request not found - uuid:%s" % opt_request_uuid]
-
+            errors['CallRequest'] = ["CallRequest not found - uuid:%s" % \
+                                opt_request_uuid]
         return errors
 
 
@@ -2108,7 +2137,8 @@ class CdrResource(ModelResource):
         auth_result = self._meta.authorization.is_authorized(request, object)
 
         errors = self._meta.validation.is_valid(request)
-        logger.debug('CDR API get called from IP %s' % request.META.get('REMOTE_ADDR'))
+        logger.debug('CDR API get called from IP %s' % \
+                request.META.get('REMOTE_ADDR'))
         if not errors:
 
             opt_cdr = request.POST.get('cdr')
@@ -2183,7 +2213,8 @@ class CdrResource(ModelResource):
 
             object_list = [{'result': 'OK'}]
             obj = CustomXmlEmitter()
-            return self.create_response(request, obj.render(request, object_list))
+            return self.create_response(request, \
+                            obj.render(request, object_list))
 
         else:
             if len(errors):

@@ -12,9 +12,11 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns
 from django.conf import settings
-from voice_app.views import *
+from voice_app.views import voiceapp_list, voiceapp_grid, \
+                            voiceapp_add, voiceapp_del, \
+                            voiceapp_change
 
 
 urlpatterns = patterns('voice_app.views',

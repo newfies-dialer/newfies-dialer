@@ -12,11 +12,8 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from django import forms
-from django.forms import *
-from django.contrib import *
-from django.contrib.admin.widgets import *
-from voice_app.models import *
-from datetime import *
+from django.forms import ModelForm
+from voice_app.models import VoiceApp
 
 
 class VoiceAppForm(ModelForm):

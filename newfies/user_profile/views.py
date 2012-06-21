@@ -17,7 +17,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse, Http404
-from django.db.models import *
 from django.template.context import RequestContext
 from django.utils.translation import ugettext_lazy as _
 from django.utils import simplejson
@@ -28,7 +27,10 @@ from dialer_campaign.views import current_view, notice_count, grid_common_functi
 from dialer_campaign.function_def import user_dialer_setting_msg, variable_value
 from dialer_settings.models import DialerSetting
 from user_profile.models import UserProfile
-from user_profile.forms import *
+from user_profile.forms import UserChangeDetailForm, \
+                               UserChangeDetailExtendForm, \
+                               CheckPhoneNumberForm,\
+                               UserProfileForm
 
 
 @login_required

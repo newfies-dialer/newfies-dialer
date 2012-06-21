@@ -27,6 +27,7 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.db.models import Q
+from django.contrib.contenttypes.models import ContentType
 from notification import models as notification
 from dialer_campaign.models import Phonebook, Contact, Campaign, CampaignSubscriber
 from dialer_campaign.forms import ContactSearchForm, Contact_fileImport, LoginForm,\
@@ -38,6 +39,7 @@ from dialer_campaign.function_def import user_attached_with_dialer_settings, \
                                 striplist, calculate_date, date_range, \
                                 get_campaign_status_name, user_dialer_setting_msg
 from dialer_campaign.tasks import collect_subscriber
+
 from dialer_cdr.models import VoIPCall
 from inspect import stack, getmodule
 from datetime import datetime, timedelta

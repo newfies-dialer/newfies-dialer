@@ -15,9 +15,10 @@
 from optparse import make_option
 from django.core.management.base import BaseCommand, CommandError
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
-from dialer_campaign.models import *
-from dialer_cdr.models import *
+from dialer_campaign.models import Campaign
+from dialer_cdr.models import VoIPCall
 from django.db import IntegrityError
 from random import choice
 from uuid import uuid1

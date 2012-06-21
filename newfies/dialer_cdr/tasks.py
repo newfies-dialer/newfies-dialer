@@ -13,18 +13,18 @@
 #
 
 from celery.task import Task, PeriodicTask
+from celery.decorators import task, periodic_task
+from django.conf import settings
+from django.core.cache import cache
+from django.utils.hashcompat import md5_constructor as md5
 from dialer_campaign.models import Campaign, CampaignSubscriber
 from dialer_campaign.function_def import user_dialer_setting
 from dialer_cdr.models import Callrequest, VoIPCall
-from celery.decorators import task, periodic_task
+from dialer_gateway.utils import phonenumber_change_prefix
 from datetime import datetime, timedelta
 from time import sleep
 from uuid import uuid1
-from django.conf import settings
-from dialer_gateway.utils import phonenumber_change_prefix
 import sys
-from django.core.cache import cache
-from django.utils.hashcompat import md5_constructor as md5
 
 LOCK_EXPIRE = 60 * 1 # Lock expires in 1 minute
 

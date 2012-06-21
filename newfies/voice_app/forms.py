@@ -12,7 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from django import forms
-from django.forms import ModelForm
+from django.forms import ModelForm, Textarea
 from voice_app.models import VoiceApp
 
 

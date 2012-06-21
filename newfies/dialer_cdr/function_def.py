@@ -12,11 +12,11 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from dialer_cdr.models import *
-from datetime import *
-from random import *
+#from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_campaign.function_def import validate_days
 from dialer_cdr.models import VOIPCALL_DISPOSITION
+from datetime import datetime
+from random import choice
 
 
 def pass_gen():
@@ -28,23 +28,6 @@ def pass_gen():
     pass_str_char = ''.join([choice(chars) for i in range(char_length)])
     pass_str_digit = ''.join([choice(digit) for i in range(digit_length)])
     return pass_str_char + pass_str_digit
-
-
-def variable_value(request, field_name):
-    """Variables are checked with request & return field value"""
-    if request.method == 'GET':
-        if field_name in request.GET:
-            field_name = request.GET[field_name]
-        else:
-            field_name = ''
-
-    if request.method == 'POST':
-        if field_name in request.POST:
-            field_name = request.POST[field_name]
-        else:
-            field_name = ''
-
-    return field_name
 
 
 def is_number(s):

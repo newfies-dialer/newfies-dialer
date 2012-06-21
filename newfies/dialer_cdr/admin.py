@@ -15,19 +15,22 @@
 from django.contrib import admin
 from django.contrib.admin.options import IncorrectLookupParameters
 from django.contrib.admin.views.main import ERROR_FLAG
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext
-from django.db.models import *
-from dialer_cdr.models import *
-from dialer_cdr.forms import *
-from dialer_cdr.function_def import *
+from django.db.models import Sum, Avg, Count
+from dialer_cdr.models import Callrequest, VoIPCall
+from dialer_cdr.forms import VoipSearchForm
+from dialer_cdr.function_def import voipcall_record_common_fun, \
+                                    voipcall_search_admin_form_fun, \
+                                    get_disposition_name
+from dialer_campaign.function_def import variable_value
 
-from datetime import *
 from genericadmin.admin import GenericAdminModelAdmin, GenericTabularInline
+from datetime import datetime
 import csv
 
 
@@ -49,8 +52,8 @@ class CallrequestAdmin(GenericAdminModelAdmin):
         }),
     )
     #NOTE : display user / content_type low the performance
-    list_display = ('id', 'request_uuid', 'aleg_uuid', 'call_time', 
-                    'status', 'callerid', 'phone_number', 'call_type', 
+    list_display = ('id', 'request_uuid', 'aleg_uuid', 'call_time',
+                    'status', 'callerid', 'phone_number', 'call_type',
                     'num_attempt', 'last_attempt_time',)
     list_display_links = ('id', 'request_uuid', )
     list_filter = ['callerid', 'call_time', 'status', 'call_type', 'campaign']
@@ -65,14 +68,14 @@ class VoIPCallAdmin(admin.ModelAdmin):
     of a VoIPCall."""
     can_add = False
     detail_title = _("Call Report")
-    list_display = ('id', 'leg_type', 
+    list_display = ('id', 'leg_type',
                     'callid', 'callerid', 'phone_number', 'starting_date',
                     'min_duration', 'billsec', 'disposition', 'hangup_cause',
                     'hangup_cause_q850')
 
     def user_link(self, obj):
         """User link to user profile"""
-        
+
         if obj.user.is_staff:
             url = reverse('admin:auth_staff_change', args=(obj.user_id,))
         else:
@@ -128,7 +131,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
         """
         opts = VoIPCall._meta
         app_label = opts.app_label
-                
+
         query_string = ''
         form = VoipSearchForm()
         if request.method == 'POST':
@@ -149,9 +152,11 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
         ChangeList = self.get_changelist(request)
         try:
-            cl = ChangeList(request, self.model, self.list_display, self.list_display_links,
-                self.list_filter, self.date_hierarchy, self.search_fields,
-                self.list_select_related, self.list_per_page, self.list_editable, self)
+            cl = ChangeList(request, self.model, self.list_display,
+                 self.list_display_links, self.list_filter, self.date_hierarchy,
+                 self.search_fields, self.list_select_related,
+                 self.list_per_page, self.list_max_show_all, self.list_editable,
+                 self)
         except IncorrectLookupParameters:
             if ERROR_FLAG in request.GET.keys():
                 return render_to_response('admin/invalid_setup.html', {'title': _('Database error')})

@@ -17,17 +17,15 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
-from django.db.models import *
+
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from voice_app.models import VoiceApp, get_voiceapp_type_name
 from voice_app.forms import VoiceAppForm
 from dialer_campaign.views import current_view, notice_count, update_style, delete_style, \
-    grid_common_function
+                                  grid_common_function
 from dialer_campaign.function_def import user_dialer_setting_msg
-from dialer_campaign.function_def import *
-from datetime import *
 
 
 # voice_app

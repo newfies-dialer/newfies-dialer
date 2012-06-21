@@ -19,7 +19,7 @@ from django.contrib.auth.views import password_reset, password_reset_done,\
 password_reset_confirm, password_reset_complete
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
-from django.db.models import *
+from django.db.models import Sum, Avg, Count
 from django.core.urlresolvers import reverse
 from django.core.mail import mail_admins
 from django.conf import settings
@@ -27,14 +27,22 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.db.models import Q
+from django.contrib.contenttypes.models import ContentType
 from notification import models as notification
-from dialer_campaign.models import *
-from dialer_campaign.forms import *
-from dialer_campaign.function_def import *
+from dialer_campaign.models import Phonebook, Contact, Campaign, CampaignSubscriber
+from dialer_campaign.forms import ContactSearchForm, Contact_fileImport, LoginForm,\
+                                  PhonebookForm, ContactForm, CampaignForm, \
+                                  ContactSearchForm, DashboardForm
+from dialer_campaign.function_def import user_attached_with_dialer_settings, \
+                                check_dialer_setting, dialer_setting_limit, \
+                                variable_value, contact_search_common_fun,\
+                                striplist, calculate_date, date_range, \
+                                get_campaign_status_name, user_dialer_setting_msg
 from dialer_campaign.tasks import collect_subscriber
-from dialer_cdr.models import *
+
+from dialer_cdr.models import VoIPCall
 from inspect import stack, getmodule
-from datetime import *
+from datetime import datetime, timedelta
 from dateutil import parser
 import urllib
 import qsstats

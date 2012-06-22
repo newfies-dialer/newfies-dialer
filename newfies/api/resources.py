@@ -12,56 +12,18 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-try:
-    import cStringIO as StringIO
-except ImportError:
-    import StringIO
-
-import logging
-
-from django.contrib.auth.models import User
-from django.conf.urls.defaults import url
-from django.contrib.contenttypes.models import ContentType
-from django.http import HttpResponse
 from django.utils.encoding import smart_unicode
 from django.utils.xmlutils import SimplerXMLGenerator
 from django.conf import settings
-from django.contrib.sites.models import Site
-from django.db import connection
 
-from tastypie.resources import ModelResource, ALL
-from tastypie.authentication import Authentication, BasicAuthentication
-from tastypie.authorization import Authorization
-from tastypie.serializers import Serializer
-from tastypie.validation import Validation
-from tastypie.throttle import BaseThrottle
-from tastypie.exceptions import BadRequest, NotFound, ImmediateHttpResponse
-from tastypie import http
-from tastypie import fields
-
-from dialer_cdr.tasks import init_callrequest
-from dialer_campaign.models import Campaign, Phonebook, Contact, \
-                        CampaignSubscriber
-from dialer_campaign.function_def import user_attached_with_dialer_settings, \
-    check_dialer_setting, dialer_setting_limit, user_dialer_setting
 from dialer_cdr.models import Callrequest, VoIPCall
-from dialer_gateway.models import Gateway
-from voice_app.models import VoiceApp
-
-
-from common_functions import search_tag_string
-from settings_local import API_ALLOWED_IP, PLIVO_DEFAULT_DIALCALLBACK_URL
-from datetime import datetime, timedelta
+from settings_local import API_ALLOWED_IP
 from random import seed
 import urllib
 import time
-import uuid
+import logging
 
 seed()
-
-
-#
-#TODO: Split this files into different ones for each API
 
 
 logger = logging.getLogger('newfies.filelog')
@@ -211,5 +173,3 @@ class CustomXmlEmitter():
         xml.endElement("Response")
         xml.endDocument()
         return stream.getvalue()
-
-

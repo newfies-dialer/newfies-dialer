@@ -1,4 +1,4 @@
-.. automodule:: api.resources
+.. automodule:: api.callrequest_api
 
 .. _callrequestResource-model:
 

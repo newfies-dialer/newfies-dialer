@@ -1,4 +1,4 @@
-.. automodule:: api.resources
+.. automodule:: api.campaign_delete_cascade_api
 
 .. _campaignDeleteCascadeResource-model:
 

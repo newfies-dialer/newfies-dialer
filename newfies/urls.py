@@ -38,8 +38,9 @@ from api.dialcallback_api import DialCallbackResource
 from api.hangupcall_api import HangupcallResource
 from api.store_cdr_api import CdrResource
 from survey.api.survey_api import SurveyAppResource
-#from survey.api.resources import SurveyQuestionResource, \
-#                                    SurveyResponseResource
+from survey.api.survey_question_api import SurveyQuestionResource
+from survey.api.survey_response_api import SurveyResponseResource
+
 import os
 from django.contrib import admin
 admin.autodiscover()
@@ -64,10 +65,9 @@ tastypie_api.register(DialCallbackResource())
 tastypie_api.register(HangupcallResource())
 tastypie_api.register(CdrResource())
 tastypie_api.register(SurveyAppResource())
-"""
 tastypie_api.register(SurveyQuestionResource())
 tastypie_api.register(SurveyResponseResource())
-"""
+
 js_info_dict = {
     'domain': 'djangojs',
     'packages': ('dialer_campaign',

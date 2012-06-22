@@ -32,7 +32,7 @@ from api.gateway_api import GatewayResource
 from api.content_type_api import ContentTypeResource
 from api.phonebook_api import PhonebookResource
 from api.campaign_api import CampaignResource
-
+from api.bulk_contact_api import BulkContactResource
 #from api.resources import *
 from survey.api.resources import SurveyAppResource, SurveyQuestionResource, SurveyResponseResource
 
@@ -47,8 +47,8 @@ tastypie_api.register(GatewayResource())
 tastypie_api.register(ContentTypeResource())
 tastypie_api.register(PhonebookResource())
 tastypie_api.register(CampaignResource())
-"""
 tastypie_api.register(BulkContactResource())
+"""
 tastypie_api.register(CampaignDeleteCascadeResource())
 tastypie_api.register(CampaignSubscriberResource())
 tastypie_api.register(CampaignSubscriberPerCampaignResource())

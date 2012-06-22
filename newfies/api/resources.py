@@ -52,6 +52,7 @@ from api.user_api import UserResource
 from api.gateway_api import GatewayResource
 from api.content_type_api import ContentTypeResource
 from api.phonebook_api import PhonebookResource
+from api.user_api import UserResource
 
 from common_functions import search_tag_string
 from settings_local import API_ALLOWED_IP, PLIVO_DEFAULT_DIALCALLBACK_URL

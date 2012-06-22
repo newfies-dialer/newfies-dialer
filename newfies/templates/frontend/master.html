@@ -5,13 +5,13 @@
 <!--
 - Newfies-Dialer License
 - http://www.newfies-dialer.org
-- 
-- This Source Code Form is subject to the terms of the Mozilla Public 
-- License, v. 2.0. If a copy of the MPL was not distributed with this file, 
+-
+- This Source Code Form is subject to the terms of the Mozilla Public
+- License, v. 2.0. If a copy of the MPL was not distributed with this file,
 - You can obtain one at http://mozilla.org/MPL/2.0/.
-- 
+-
 - Copyright (C) 2011-2012 Star2Billing S.L.
-- 
+-
 - The Initial Developer of the Original Code is
 - Arezqui Belaid <info@star2billing.com>
 -
@@ -44,7 +44,7 @@
 <!--Override bootstrap-->
 <link href="{{STATIC_URL}}newfies/css/override_bootstrap.css" rel="stylesheet">
 
-<script type="text/javascript" src="{% url django.views.i18n.javascript_catalog %}"></script>
+
 <!-- Le javascript -->
 <script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}newfies/js/custom.validation.js"></script>
@@ -125,7 +125,7 @@
         {% endif %}
         </div>
 
-    
+
         {% if errorlogin %}
         <div class="alert alert-error">
             <strong>{% trans "Alert"  %} : </strong>  {{ errorlogin }}
@@ -145,11 +145,11 @@
                 <h1>Newfies-Dialer <small>{% trans "Voice Broadcasting solution" %}</small></h1>
             {% endblock %}
         </div>
-        
+
         {% block extra_files %}
 
         {% endblock %}
-        
+
         {% if user.is_authenticated %}
             {% if dialer_setting_msg %}
 
@@ -169,9 +169,9 @@
         <!-- CONTENT BLOCK -->
         {% endblock %}
 
-    
+
 {% include "frontend/footer.html" %}
-      
+
 </div><!-- div container -->
 
 </body>

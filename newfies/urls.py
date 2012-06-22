@@ -81,6 +81,7 @@ urlpatterns = patterns('',
     (r'^i18n/', include('django.conf.urls.i18n')),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
     (r'^admin_tools/', include('admin_tools.urls')),
+    (r'^sms_campaign/', include('sms_module.urls')),
     (r'^static/(?P<path>.*)$', 'django.views.static.serve',
                         {'document_root': settings.STATIC_ROOT}),
     (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', \

@@ -2,12 +2,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -82,15 +82,15 @@ urlpatterns = patterns('',
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-     
+
     (r'^logout/$',
      'dialer_campaign.views.logout_view'),
 
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
-    
+
     (r'^api/', include(tastypie_api.urls)),
-    
+
     (r'^i18n/', include('django.conf.urls.i18n')),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
 
@@ -99,11 +99,11 @@ urlpatterns = patterns('',
 
     (r'^static/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.STATIC_ROOT}),
-        
+
     (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': 'static/newfies/images/favicon.png'}),
-    
+
     (r'^sentry/', include('sentry.web.urls')),
-    
+
     (r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
 )
 

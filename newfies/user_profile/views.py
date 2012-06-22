@@ -157,7 +157,7 @@ def customer_detail_change(request):
 
 
 def call_style(val):
-
+    """Notification icon style"""
     unseen_style = \
         'style="text-decoration:none;background-image:url(%snewfies/icons/new.png);"' \
             % settings.STATIC_URL

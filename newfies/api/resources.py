@@ -16,6 +16,11 @@ from django.utils.encoding import smart_unicode
 from django.utils.xmlutils import SimplerXMLGenerator
 from django.conf import settings
 
+from tastypie.authentication import Authentication, BasicAuthentication
+from tastypie.authorization import Authorization
+from tastypie.serializers import Serializer
+from tastypie.exceptions import ImmediateHttpResponse
+
 from dialer_cdr.models import Callrequest, VoIPCall
 from settings_local import API_ALLOWED_IP
 from random import seed
@@ -173,3 +178,5 @@ class CustomXmlEmitter():
         xml.endElement("Response")
         xml.endDocument()
         return stream.getvalue()
+
+

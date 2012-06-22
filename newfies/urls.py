@@ -26,6 +26,10 @@ from survey.urls import urlpatterns as urlpatterns_survey
 import os
 
 from tastypie.api import Api
+from api.user_api import UserResource
+from api.gateway_api import GatewayResource
+from api.voiceapp_api import VoiceAppResource
+
 from api.resources import *
 from survey.api.resources import SurveyAppResource, SurveyQuestionResource, SurveyResponseResource
 

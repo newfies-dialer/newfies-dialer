@@ -47,6 +47,8 @@ from dialer_campaign.function_def import user_attached_with_dialer_settings, \
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_gateway.models import Gateway
 from voice_app.models import VoiceApp
+from api.user_api import UserResource
+from api.gateway_api import GatewayResource
 from common_functions import search_tag_string
 from settings_local import API_ALLOWED_IP, PLIVO_DEFAULT_DIALCALLBACK_URL
 from datetime import datetime, timedelta
@@ -202,30 +204,6 @@ class IpAddressAuthentication(Authentication):
         else:
             raise ImmediateHttpResponse(response=http.HttpUnauthorized())
             return False
-
-
-class VoiceAppResource(ModelResource):
-    class Meta:
-        queryset = VoiceApp.objects.all()
-        resource_name = 'voiceapp'
-
-
-class GatewayResource(ModelResource):
-    class Meta:
-        queryset = Gateway.objects.all()
-        resource_name = 'gateway'
-
-
-class UserResource(ModelResource):
-    class Meta:
-        allowed_methods = ['get']
-        queryset = User.objects.all()
-        resource_name = 'user'
-        fields = ['username', 'first_name', 'last_name', 'last_login', 'id']
-        filtering = {
-            'username': 'exact',
-        }
-        throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
 
 
 class ContentTypeResource(ModelResource):

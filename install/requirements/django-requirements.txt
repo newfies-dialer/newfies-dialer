@@ -11,7 +11,8 @@ django-picklefield
 django-jsonfield==0.8.0
 django-countries==1.1.2
 hg+https://bitbucket.org/izi/django-admin-tools
-git+git://github.com/jtauber/django-notification.git
+git+git://github.com/Star2Billing/django-notification
+#git+git://github.com/jtauber/django-notification.git
 git+git://github.com/mcroydon/django-qsstats.git
 git+git://github.com/Star2Billing/switch2bill-common.git
 git+git://github.com/Star2Billing/django-country-dialcode.git

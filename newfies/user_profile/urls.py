@@ -2,34 +2,29 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 
 from django.conf.urls.defaults import patterns, include
-from django.conf import settings
-from user_profile.views import customer_detail_change,\
-                               notification_grid, \
-                               notification_del_read, \
-                               update_notice_status_cust
 
 
 urlpatterns = patterns('',
+    # User detail change for Customer UI
+    (r'^user_detail_change/$', 'user_profile.views.customer_detail_change'),
 
-# User detail change for Customer UI
-(r'^user_detail_change/$', 'user_profile.views.customer_detail_change'),
+    (r'^user_detail_change/', include('notification.urls')),
+    (r'^notification_grid/$', 'user_profile.views.notification_grid'),
+    (r'^user_detail_change/del/(.+)/$',
+                    'user_profile.views.notification_del_read'),
 
-(r'^user_detail_change/', include('notification.urls')),
-(r'^notification_grid/$', 'user_profile.views.notification_grid'),
-(r'^user_detail_change/del/(.+)/$', 'user_profile.views.notification_del_read'),
-
-# Notification Status (seen/unseen) for customer UI
-(r'^update_notice_status_cust/(\d*)/$',
-                'user_profile.views.update_notice_status_cust'),
+    # Notification Status (seen/unseen) for customer UI
+    (r'^update_notice_status_cust/(\d*)/$',
+                    'user_profile.views.update_notice_status_cust'),
 )

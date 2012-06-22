@@ -11,20 +11,15 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-from django.conf.urls.defaults import handler404, handler500, include,\
-     patterns, url
+from django.conf.urls.defaults import handler404, handler500, \
+                                    include, patterns
 from django.conf import settings
 from django.conf.urls.i18n import *
-# Uncomment the next two lines to enable the admin:
-from django.contrib import admin
-admin.autodiscover()
 from dialer_campaign.urls import urlpatterns as urlpatterns_dialer_campaign
 from dialer_cdr.urls import urlpatterns as urlpatterns_dialer_cdr
 from user_profile.urls import urlpatterns as urlpatterns_user_profile
 from voice_app.urls import urlpatterns as urlpatterns_voice_app
 from survey.urls import urlpatterns as urlpatterns_survey
-import os
-
 from tastypie.api import Api
 from api.user_api import UserResource
 from api.voiceapp_api import VoiceAppResource
@@ -35,11 +30,15 @@ from api.campaign_api import CampaignResource
 from api.bulk_contact_api import BulkContactResource
 from api.campaign_delete_cascade_api import CampaignDeleteCascadeResource
 from api.campaign_subscriber_api import CampaignSubscriberResource
-from api.campaignsubscriber_per_campaign_api import CampaignSubscriberPerCampaignResource
+from api.campaignsubscriber_per_campaign_api import \
+                                    CampaignSubscriberPerCampaignResource
 from api.callrequest_api import CallrequestResource
 #from api.resources import *
-from survey.api.resources import SurveyAppResource, SurveyQuestionResource, SurveyResponseResource
-
+from survey.api.resources import SurveyAppResource, SurveyQuestionResource, \
+                                    SurveyResponseResource
+import os
+from django.contrib import admin
+admin.autodiscover()
 from dajaxice.core import dajaxice_autodiscover
 dajaxice_autodiscover()
 
@@ -101,7 +100,8 @@ urlpatterns = patterns('',
     (r'^static/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.STATIC_ROOT}),
 
-    (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': 'static/newfies/images/favicon.png'}),
+    (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', \
+                            {'url': 'static/newfies/images/favicon.png'}),
 
     (r'^sentry/', include('sentry.web.urls')),
 

@@ -34,6 +34,7 @@ from api.campaignsubscriber_per_campaign_api import \
                                     CampaignSubscriberPerCampaignResource
 from api.callrequest_api import CallrequestResource
 from api.answercall_api import AnswercallResource
+from api.dialcallback_api import DialCallbackResource
 #from api.resources import *
 from survey.api.resources import SurveyAppResource, SurveyQuestionResource, \
                                     SurveyResponseResource
@@ -57,9 +58,9 @@ tastypie_api.register(CampaignSubscriberResource())
 tastypie_api.register(CampaignSubscriberPerCampaignResource())
 tastypie_api.register(CallrequestResource())
 tastypie_api.register(AnswercallResource())
+tastypie_api.register(DialCallbackResource())
 """
 tastypie_api.register(HangupcallResource())
-tastypie_api.register(DialCallbackResource())
 tastypie_api.register(CdrResource())
 tastypie_api.register(SurveyAppResource())
 tastypie_api.register(SurveyQuestionResource())

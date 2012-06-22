@@ -29,6 +29,8 @@ from tastypie.api import Api
 from api.user_api import UserResource
 from api.gateway_api import GatewayResource
 from api.voiceapp_api import VoiceAppResource
+from api.content_type_api import ContentTypeResource
+from api.phonebook_api import PhonebookResource
 
 from api.resources import *
 from survey.api.resources import SurveyAppResource, SurveyQuestionResource, SurveyResponseResource

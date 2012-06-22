@@ -15,7 +15,7 @@
 #
 
 from tastypie.resources import ModelResource
-from voice_app.models.models import VoiceApp
+from voice_app.models import VoiceApp
 
 
 class VoiceAppResource(ModelResource):

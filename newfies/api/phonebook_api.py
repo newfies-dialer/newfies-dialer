@@ -13,12 +13,13 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-from django.contrib.auth.models import User
-from tastypie.resources import ModelResource
+
+from tastypie.resources import ModelResource, ALL
 from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import Authorization
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
+from tastypie import fields
 
 from api.user_api import UserResource
 from dialer_campaign.models import Campaign, Phonebook

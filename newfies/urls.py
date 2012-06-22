@@ -27,12 +27,12 @@ import os
 
 from tastypie.api import Api
 from api.user_api import UserResource
-from api.gateway_api import GatewayResource
 from api.voiceapp_api import VoiceAppResource
+from api.gateway_api import GatewayResource
 from api.content_type_api import ContentTypeResource
 from api.phonebook_api import PhonebookResource
 
-from api.resources import *
+#from api.resources import *
 from survey.api.resources import SurveyAppResource, SurveyQuestionResource, SurveyResponseResource
 
 from dajaxice.core import dajaxice_autodiscover
@@ -40,13 +40,13 @@ dajaxice_autodiscover()
 
 # tastypie api
 tastypie_api = Api(api_name='v1')
-
 tastypie_api.register(UserResource())
-tastypie_api.register(GatewayResource())
 tastypie_api.register(VoiceAppResource())
+tastypie_api.register(GatewayResource())
 tastypie_api.register(ContentTypeResource())
-tastypie_api.register(CampaignResource())
 tastypie_api.register(PhonebookResource())
+"""
+tastypie_api.register(CampaignResource())
 tastypie_api.register(BulkContactResource())
 tastypie_api.register(CampaignDeleteCascadeResource())
 tastypie_api.register(CampaignSubscriberResource())
@@ -59,7 +59,7 @@ tastypie_api.register(CdrResource())
 tastypie_api.register(SurveyAppResource())
 tastypie_api.register(SurveyQuestionResource())
 tastypie_api.register(SurveyResponseResource())
-
+"""
 js_info_dict = {
     'domain': 'djangojs',
     'packages': ('dialer_campaign',

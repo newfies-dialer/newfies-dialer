@@ -34,6 +34,7 @@ from api.phonebook_api import PhonebookResource
 from api.campaign_api import CampaignResource
 from api.bulk_contact_api import BulkContactResource
 from api.campaign_delete_cascade_api import CampaignDeleteCascadeResource
+from api.campaign_subscriber_api import CampaignSubscriberResource
 #from api.resources import *
 from survey.api.resources import SurveyAppResource, SurveyQuestionResource, SurveyResponseResource
 
@@ -50,8 +51,8 @@ tastypie_api.register(PhonebookResource())
 tastypie_api.register(CampaignResource())
 tastypie_api.register(BulkContactResource())
 tastypie_api.register(CampaignDeleteCascadeResource())
-"""
 tastypie_api.register(CampaignSubscriberResource())
+"""
 tastypie_api.register(CampaignSubscriberPerCampaignResource())
 tastypie_api.register(CallrequestResource())
 tastypie_api.register(AnswercallResource())

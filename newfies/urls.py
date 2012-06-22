@@ -74,37 +74,17 @@ js_info_dict = {
 }
 
 urlpatterns = patterns('',
-    # redirect
-    #('^$', 'django.views.generic.simple.redirect_to',
-    #{'url': '/dialer_campaign/'}),
-
-    # Example:
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    (r'^logout/$',
-     'dialer_campaign.views.logout_view'),
-
-    # Uncomment the next line to enable the admin:
+    (r'^logout/$', 'dialer_campaign.views.logout_view'),
     (r'^admin/', include(admin.site.urls)),
-
     (r'^api/', include(tastypie_api.urls)),
-
     (r'^i18n/', include('django.conf.urls.i18n')),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
-
     (r'^admin_tools/', include('admin_tools.urls')),
-
-
     (r'^static/(?P<path>.*)$', 'django.views.static.serve',
-        {'document_root': settings.STATIC_ROOT}),
-
+                        {'document_root': settings.STATIC_ROOT}),
     (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', \
                             {'url': 'static/newfies/images/favicon.png'}),
-
-    (r'^sentry/', include('sentry.web.urls')),
-
+    #(r'^sentry/', include('sentry.web.urls')),
     (r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
 )
 
@@ -113,7 +93,6 @@ urlpatterns += urlpatterns_dialer_cdr
 urlpatterns += urlpatterns_user_profile
 urlpatterns += urlpatterns_voice_app
 urlpatterns += urlpatterns_survey
-
 
 urlpatterns += patterns('',
     (r'^%s/(?P<path>.*)$' % settings.MEDIA_URL.strip(os.sep),

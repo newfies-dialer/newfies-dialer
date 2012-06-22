@@ -23,7 +23,6 @@ from tastypie.exceptions import BadRequest
 from tastypie import fields
 
 from dialer_campaign.models import Contact, Phonebook
-
 from dialer_campaign.function_def import  check_dialer_setting, dialer_setting_limit
 
 import logging

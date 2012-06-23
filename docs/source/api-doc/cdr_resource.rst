@@ -1,4 +1,4 @@
-.. automodule:: api.resources
+.. automodule:: api.store_cdr_api
 
 .. _CdrResourceResource-model:
 

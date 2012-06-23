@@ -24,7 +24,6 @@ from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie import http
-from tastypie import fields
 
 from dialer_cdr.models import Callrequest
 from settings_local import PLIVO_DEFAULT_DIALCALLBACK_URL

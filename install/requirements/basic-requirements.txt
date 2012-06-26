@@ -8,7 +8,7 @@ python-dateutil==1.5
 uuid==1.30
 wsgiref==0.1.2
 redis
-celery==2.5.3
+celery==2.5.5
 kombu
 mimeparse
 MySQL-python==1.2.3

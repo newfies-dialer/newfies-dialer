@@ -101,7 +101,7 @@ bash install-freeswitch.sh
 
 #Install Plivo
 cd /usr/src/
-wget https://raw.github.com/plivo/plivo/master/scripts/plivo_install.sh
+wget https://raw.github.com/plivo/plivoframework/master/scripts/plivo_install.sh
 bash plivo_install.sh /usr/share/plivo
 
 #UPDATE Plivo configuration

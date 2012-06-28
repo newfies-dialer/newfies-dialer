@@ -19,23 +19,24 @@
 #
 
 
+# Identify Linux Distribution type
 func_identify_os() {
-    # Identify Linux Distribution type
+    
     if [ -f /etc/debian_version ] ; then
         DIST='DEBIAN'
-        if [ "$(lsb_release -cs)" != "lucid" ] ; then
-		    echo "This script is only intended to run on Ubuntu LTS 10.04 or CentOS 6.2"
+        if [ "$(lsb_release -cs)" != "lucid" ] && [ "$(lsb_release -cs)" != "precise" ]; then
+		    echo "This script is only intended to run on Ubuntu LTS 10.04 / 12.04 or CentOS 6.2"
 		    exit 255
 	    fi
     elif [ -f /etc/redhat-release ] ; then
         DIST='CENTOS'
         if [ "$(awk '{print $3}' /etc/redhat-release)" != "6.2" ] ; then
-        	echo "This script is only intended to run on Ubuntu LTS 10.04 or CentOS 6.2"
+        	echo "This script is only intended to run on Ubuntu LTS 10.04 / 12.04 or CentOS 6.2"
         	exit 255
         fi
     else
         echo ""
-        echo "This script is only intended to run on Ubuntu LTS 10.04 or CentOS 6.2"
+        echo "This script is only intended to run on Ubuntu LTS 10.04 / 12.04 or CentOS 6.2"
         echo ""
         exit 1
     fi
@@ -94,14 +95,14 @@ esac
 
 #Install Freeswitch
 cd /usr/src/
-wget https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-freeswitch.sh
+wget https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-freeswitch.sh -O install-freeswitch.sh
 bash install-freeswitch.sh
 /etc/init.d/freeswitch start
 
 
 #Install Plivo
 cd /usr/src/
-wget https://raw.github.com/plivo/plivoframework/master/scripts/plivo_install.sh
+wget https://raw.github.com/plivo/plivoframework/master/scripts/plivo_install.sh -O plivo_install.sh
 bash plivo_install.sh /usr/share/plivo
 
 #UPDATE Plivo configuration
@@ -118,7 +119,7 @@ mv /tmp/default.conf /usr/share/plivo/etc/plivo/default.conf
 
 #Install Newfies
 cd /usr/src/
-wget https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-newfies.sh
+wget https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-newfies.sh -O install-newfies.sh
 bash install-newfies.sh
 
 

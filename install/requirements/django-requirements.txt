@@ -13,6 +13,8 @@ django-countries==1.1.2
 hg+https://bitbucket.org/izi/django-admin-tools
 git+git://github.com/Star2Billing/django-notification
 #git+git://github.com/jtauber/django-notification.git
+#raven==1.4.4
+#sentry==3.1.4
 git+git://github.com/mcroydon/django-qsstats.git
 git+git://github.com/Star2Billing/switch2bill-common.git
 git+git://github.com/Star2Billing/django-country-dialcode.git
@@ -27,5 +29,3 @@ django-tagging==0.3.1
 git+git://github.com/Star2Billing/django-audiofield.git
 django-dajax==0.8.4
 django-dajaxice==0.2
-#raven==1.4.4
-#sentry==3.1.4

@@ -48,23 +48,24 @@ SOUTH_SOURCE='hg+http://bitbucket.org/andrewgodwin/south/@ecaafda23e600e510e2527
 
 
 
+# Identify Linux Distribution type
 func_identify_os() {
-    # Identify Linux Distribution type
+    
     if [ -f /etc/debian_version ] ; then
         DIST='DEBIAN'
-        if [ "$(lsb_release -cs)" != "lucid" ] ; then
-		    echo "This script is only intended to run on Ubuntu LTS 10.04 or CentOS 6.2"
+        if [ "$(lsb_release -cs)" != "lucid" ] && [ "$(lsb_release -cs)" != "precise" ]; then
+		    echo "This script is only intended to run on Ubuntu LTS 10.04 / 12.04 or CentOS 6.2"
 		    exit 255
 	    fi
     elif [ -f /etc/redhat-release ] ; then
         DIST='CENTOS'
         if [ "$(awk '{print $3}' /etc/redhat-release)" != "6.2" ] ; then
-        	echo "This script is only intended to run on Ubuntu LTS 10.04 or CentOS 6.2"
+        	echo "This script is only intended to run on Ubuntu LTS 10.04 / 12.04 or CentOS 6.2"
         	exit 255
         fi
     else
         echo ""
-        echo "This script is only intended to run on Ubuntu LTS 10.04 or CentOS 6.2"
+        echo "This script is only intended to run on Ubuntu LTS 10.04 / 12.04 or CentOS 6.2"
         echo ""
         exit 1
     fi
@@ -764,7 +765,11 @@ func_install_redis_server() {
             if [ "$(lsb_release -cs)" == "precise" ]; then
                 #Ubuntu 12.04 TLS
                 apt-get -y install redis-server
+<<<<<<< HEAD
                 /etc/init.d/redis-server.dpkg-dist start
+=======
+                /etc/init.d/redis-server restart
+>>>>>>> Fixes for Ubuntu 10.04
             else
                 #Ubuntu 10.04 TLS
                 cd /usr/src

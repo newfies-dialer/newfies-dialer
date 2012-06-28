@@ -765,11 +765,7 @@ func_install_redis_server() {
             if [ "$(lsb_release -cs)" == "precise" ]; then
                 #Ubuntu 12.04 TLS
                 apt-get -y install redis-server
-<<<<<<< HEAD
-                /etc/init.d/redis-server.dpkg-dist start
-=======
                 /etc/init.d/redis-server restart
->>>>>>> Fixes for Ubuntu 10.04
             else
                 #Ubuntu 10.04 TLS
                 cd /usr/src

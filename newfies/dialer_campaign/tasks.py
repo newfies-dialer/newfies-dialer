@@ -231,7 +231,8 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
     sqlimport = "INSERT IGNORE INTO dialer_campaign_subscriber (contact_id, "\
         "campaign_id, duplicate_contact, status, created_date, updated_date) "\
         "SELECT id, %d, contact, 1, NOW(), NOW() FROM dialer_contact "\
-        "WHERE phonebook_id=%d" % (campaign_id, phonebook_id)
+        "WHERE phonebook_id=%d AND dialer_contact.status=1" % \
+        (campaign_id, phonebook_id)
 
     cursor.execute(sqlimport)
     transaction.commit_unless_managed()

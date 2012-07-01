@@ -254,6 +254,16 @@ except ImportError:
 else:
     INSTALLED_APPS = INSTALLED_APPS + ('django_extensions',)
 
+# Nose
+try:
+    import nose  #TODO: Check / replace by django_nose
+except ImportError:
+    pass
+else:
+    INSTALLED_APPS = INSTALLED_APPS + ('django_nose',)
+    TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+
 # Dilla
 try:
     import django_dilla

@@ -273,19 +273,21 @@ else:
     INSTALLED_APPS = INSTALLED_APPS + ('dilla',)
 
 # SMS MODULE
+"""
+try:
+    import sms
+except ImportError:
+    pass
+else:
+    INSTALLED_APPS = INSTALLED_APPS + ('sms',)
+
 try:
     import sms_module
 except ImportError:
     pass
 else:
     INSTALLED_APPS = INSTALLED_APPS + ('sms_module',)
-try:
-    import sms_gateway
-except ImportError:
-    pass
-else:
-    INSTALLED_APPS = INSTALLED_APPS + ('sms_gateway',)
-
+"""
 
 AUTH_PROFILE_MODULE = "user_profile.UserProfile"
 LOGIN_URL = '/pleaselog/'

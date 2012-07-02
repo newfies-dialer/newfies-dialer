@@ -360,7 +360,6 @@ func_install_frontend(){
         ;;
     esac
 
-
     if [ -d "$INSTALL_DIR" ]; then
         # Newfies is already installed
         echo ""

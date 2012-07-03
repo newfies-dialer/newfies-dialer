@@ -26,7 +26,6 @@ from tastypie import fields
 
 from api.user_api import UserResource
 from api.content_type_api import ContentTypeResource
-from dialer_campaign.models import Campaign, Phonebook
 from dialer_cdr.models import Callrequest
 
 

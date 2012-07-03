@@ -15,8 +15,6 @@
 #
 
 from django.conf.urls.defaults import url
-from django.conf import settings
-from django.contrib.sites.models import Site
 from django.http import HttpResponse
 
 from tastypie.resources import ModelResource
@@ -26,12 +24,14 @@ from tastypie.exceptions import ImmediateHttpResponse
 from tastypie import http
 
 from dialer_cdr.models import Callrequest
+from dialer_campaign.function_def import user_dialer_setting
 from api.resources import CustomXmlEmitter, \
                           IpAddressAuthorization, \
                           IpAddressAuthentication,\
-                          create_voipcall
-
+                          create_voipcall,\
+                          CDR_VARIABLES
 import logging
+from uuid import uuid1
 
 logger = logging.getLogger('newfies.filelog')
 
@@ -190,7 +190,7 @@ class HangupcallResource(ModelResource):
                     # Create new callrequest, Assign parent_callrequest,
                     # Change callrequest_type & num_attempt
                     new_callrequest = Callrequest(
-                        request_uuid=uuid.uuid1(),
+                        request_uuid=uuid1(),
                         parent_callrequest_id=callrequest.id,
                         call_type=1,
                         num_attempt=callrequest.num_attempt + 1,
@@ -204,7 +204,7 @@ class HangupcallResource(ModelResource):
                     #Todo Check if it's a good practice
                     #implement a PID algorithm
                     second_towait = callrequest.campaign.intervalretry
-                    launch_date = datetime.now() +\
+                    launch_date = datetime.now() + \
                                   timedelta(seconds=second_towait)
                     logger.info("Init Retry CallRequest at %s" %\
                                 (launch_date.strftime("%b %d %Y %I:%M:%S")))

@@ -20,10 +20,11 @@ from tastypie.authorization import Authorization
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import BadRequest
-from tastypie import fields
 
-from dialer_campaign.models import Contact, Phonebook, Campaign, CampaignSubscriber
-from dialer_campaign.function_def import  check_dialer_setting, dialer_setting_limit
+from dialer_campaign.models import Contact, Phonebook, \
+                            Campaign, CampaignSubscriber
+from dialer_campaign.function_def import check_dialer_setting, \
+                            dialer_setting_limit
 
 import logging
 
@@ -41,8 +42,8 @@ class CampaignSubscriberValidation(Validation):
 
         if check_dialer_setting(request, check_for="contact"):
             errors['contact_dialer_setting'] = ["You have too many contacts \
-                per campaign. You are allowed a maximum of %s" %\
-                                                dialer_setting_limit(request, limit_for="contact")]
+                per campaign. You are allowed a maximum of %s" % \
+                        dialer_setting_limit(request, limit_for="contact")]
 
         if request.method == 'POST':
             phonebook_id = bundle.data.get('phonebook_id')

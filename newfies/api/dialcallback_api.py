@@ -15,11 +15,8 @@
 #
 
 from django.conf.urls.defaults import url
-from django.conf import settings
-from django.contrib.sites.models import Site
 from django.http import HttpResponse
-
-from tastypie.resources import ModelResource, ALL
+from tastypie.resources import ModelResource
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import ImmediateHttpResponse
@@ -28,8 +25,9 @@ from tastypie import http
 from dialer_cdr.models import Callrequest
 from api.resources import CustomXmlEmitter, \
                           IpAddressAuthorization, \
-                          IpAddressAuthentication,\
-                          create_voipcall
+                          IpAddressAuthentication, \
+                          create_voipcall, \
+                          CDR_VARIABLES
 
 import logging
 

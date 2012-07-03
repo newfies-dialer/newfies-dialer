@@ -136,7 +136,8 @@ class AnswercallResource(ModelResource):
             opt_ALegRequestUUID = request.POST.get('ALegRequestUUID')
             opt_CallUUID = request.POST.get('CallUUID')
 
-            #TODO: If we update the Call to success here we should not do it in hangup url
+            #TODO: If we update the Call to success here we should
+            # not do it in hangup url
             obj_callrequest = Callrequest.objects\
             .get(request_uuid=opt_ALegRequestUUID)
 
@@ -157,7 +158,7 @@ class AnswercallResource(ModelResource):
                 if extra_data and len(extra_data) > 1:
                     #check if we have a voice_app_data tag to replace
                     voice_app_data = search_tag_string(extra_data,
-                        'voice_app_data')
+                                    'voice_app_data')
                     if voice_app_data:
                         data = voice_app_data
 

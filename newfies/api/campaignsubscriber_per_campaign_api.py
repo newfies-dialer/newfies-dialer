@@ -14,7 +14,6 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.contrib.auth.models import User
 from django.conf.urls.defaults import url
 from django.http import HttpResponse
 from django.db import connection
@@ -22,17 +21,16 @@ from django.db import connection
 from tastypie.resources import ModelResource
 from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import Authorization
-from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import BadRequest, ImmediateHttpResponse
 from tastypie import http
-from tastypie import fields
 
 from dialer_campaign.models import Contact, Campaign
 
 import logging
 
 logger = logging.getLogger('newfies.filelog')
+
 
 def get_contact(id):
     try:
@@ -148,29 +146,29 @@ class CampaignSubscriberPerCampaignResource(ModelResource):
                 raise BadRequest(error_msg)
 
             sql_statement = 'SELECT DISTINCT contact_id, last_attempt, '\
-                            'count_attempt, dialer_campaign_subscriber.status,'\
-                            'dialer_campaign_subscriber.id '\
-                            'FROM dialer_campaign_subscriber '\
-                            'LEFT JOIN dialer_callrequest ON '\
-                            'campaign_subscriber_id=dialer_campaign_subscriber.id '\
-                            'LEFT JOIN dialer_campaign ON '\
-                            'dialer_callrequest.campaign_id=dialer_campaign.id '\
-                            'WHERE dialer_campaign_subscriber.campaign_id = %s '\
-                            'AND dialer_campaign_subscriber.duplicate_contact = "%s"'\
-            % (str(campaign_id), str(contact))
+                'count_attempt, dialer_campaign_subscriber.status,'\
+                'dialer_campaign_subscriber.id '\
+                'FROM dialer_campaign_subscriber '\
+                'LEFT JOIN dialer_callrequest ON '\
+                'campaign_subscriber_id=dialer_campaign_subscriber.id '\
+                'LEFT JOIN dialer_campaign ON '\
+                'dialer_callrequest.campaign_id=dialer_campaign.id '\
+                'WHERE dialer_campaign_subscriber.campaign_id = %s '\
+                'AND dialer_campaign_subscriber.duplicate_contact = "%s"'\
+                % (str(campaign_id), str(contact))
 
         else:
             sql_statement = 'SELECT DISTINCT contact_id, last_attempt, '\
-                            'count_attempt, dialer_campaign_subscriber.status, '\
-                            'dialer_campaign_subscriber.id '\
-                            'FROM dialer_campaign_subscriber '\
-                            'LEFT JOIN dialer_callrequest ON '\
-                            'campaign_subscriber_id='\
-                            'dialer_campaign_subscriber.id '\
-                            'LEFT JOIN dialer_campaign ON '\
-                            'dialer_callrequest.campaign_id=dialer_campaign.id '\
-                            'WHERE dialer_campaign_subscriber.campaign_id'\
-                            '= %s' % (str(campaign_id))
+                'count_attempt, dialer_campaign_subscriber.status, '\
+                'dialer_campaign_subscriber.id '\
+                'FROM dialer_campaign_subscriber '\
+                'LEFT JOIN dialer_callrequest ON '\
+                'campaign_subscriber_id='\
+                'dialer_campaign_subscriber.id '\
+                'LEFT JOIN dialer_campaign ON '\
+                'dialer_callrequest.campaign_id=dialer_campaign.id '\
+                'WHERE dialer_campaign_subscriber.campaign_id'\
+                '= %s' % (str(campaign_id))
 
         cursor.execute(sql_statement)
         row = cursor.fetchall()

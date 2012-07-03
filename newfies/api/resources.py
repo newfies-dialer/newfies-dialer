@@ -14,14 +14,14 @@
 
 from django.utils.encoding import smart_unicode
 from django.utils.xmlutils import SimplerXMLGenerator
-from django.conf import settings
 
-from tastypie.authentication import Authentication, BasicAuthentication
+from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
 from tastypie.serializers import Serializer
 from tastypie.exceptions import ImmediateHttpResponse
+from tastypie import http
 
-from dialer_cdr.models import Callrequest, VoIPCall
+from dialer_cdr.models import VoIPCall
 from settings_local import API_ALLOWED_IP
 from random import seed
 import urllib
@@ -32,6 +32,16 @@ seed()
 
 
 logger = logging.getLogger('newfies.filelog')
+
+
+CDR_VARIABLES = ['plivo_request_uuid', 'plivo_answer_url', 'plivo_app',
+                 'direction', 'endpoint_disposition', 'hangup_cause',
+                 'hangup_cause_q850', 'duration', 'billsec', 'progresssec',
+                 'answersec', 'waitsec', 'mduration', 'billmsec',
+                 'progressmsec', 'answermsec', 'waitmsec',
+                 'progress_mediamsec', 'call_uuid',
+                 'origination_caller_id_number', 'caller_id',
+                 'answer_epoch', 'answer_uepoch']
 
 
 class CustomJSONSerializer(Serializer):
@@ -170,6 +180,7 @@ class CustomXmlEmitter():
             xml.characters(smart_unicode(data))
 
     def render(self, request, data):
+        from cStringIO import StringIO
         stream = StringIO.StringIO()
         xml = SimplerXMLGenerator(stream, "utf-8")
         xml.startDocument()
@@ -178,5 +189,3 @@ class CustomXmlEmitter():
         xml.endElement("Response")
         xml.endDocument()
         return stream.getvalue()
-
-

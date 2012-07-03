@@ -22,28 +22,21 @@ from django.http import HttpResponse
 from tastypie.resources import ModelResource
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
-from tastypie.exceptions import ImmediateHttpResponse
+from tastypie.exceptions import ImmediateHttpResponse, \
+                                BadRequest
 from tastypie import http
 
 from dialer_cdr.models import Callrequest
 from api.resources import CustomXmlEmitter, \
                           IpAddressAuthorization, \
                           IpAddressAuthentication,\
-                          create_voipcall
+                          create_voipcall,\
+                          CDR_VARIABLES
 
 import logging
 import urllib
 
 logger = logging.getLogger('newfies.filelog')
-
-CDR_VARIABLES = ['plivo_request_uuid', 'plivo_answer_url', 'plivo_app',
-                 'direction', 'endpoint_disposition', 'hangup_cause',
-                 'hangup_cause_q850', 'duration', 'billsec', 'progresssec',
-                 'answersec', 'waitsec', 'mduration', 'billmsec',
-                 'progressmsec', 'answermsec', 'waitmsec',
-                 'progress_mediamsec', 'call_uuid',
-                 'origination_caller_id_number', 'caller_id',
-                 'answer_epoch', 'answer_uepoch']
 
 
 class CdrValidation(Validation):

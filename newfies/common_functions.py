@@ -2,12 +2,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -18,19 +18,19 @@ import urllib
 import os
 
 
-def relative_days(from_day,from_year):
+def relative_days(from_day, from_year):
     """Related to date manipulation"""
     if from_day == 30:
-        relative_days=2
+        relative_days = 2
         return relative_days
     elif from_day == 31:
-        relative_days=1
+        relative_days = 1
         return relative_days
     else:
         if calendar.isleap(from_year) == 'false':
-            relative_days=2
+            relative_days = 2
         else:
-            relative_days=1
+            relative_days = 1
         return relative_days
 
 
@@ -45,8 +45,8 @@ def uniq(inlist):
 
 def get_unique_id():
     """Generate unique id"""
-    length=8
-    chars="abcdefghijklmnopqrstuvwxyz1234567890"
+    length = 8
+    chars = "abcdefghijklmnopqrstuvwxyz1234567890"
     return ''.join([choice(chars) for i in range(length)])
 
 
@@ -54,7 +54,7 @@ def get_news(url):
     """Get news from an simple API
     Usage get_news('http://www.newfies-dialer.org/news')"""
     news_final = []
-    try :
+    try:
         news_handler = urllib.urlopen()
         news = news_handler.read()
         news = nl2br(news)
@@ -64,15 +64,15 @@ def get_news(url):
         value = {}
         for newsweb in news:
             value = string.split(newsweb, '|')
-            if len(value[0]) > 1 :
-                news_array[value[0]]=value[1]
+            if len(value[0]) > 1:
+                news_array[value[0]] = value[1]
 
         info = {}
         for k in news_array:
-            link = k[int(k.find("http://")-1):len(k)]
-            info = k[0:int(k.find("http://")-1)]
+            link = k[int(k.find("http://") - 1):len(k)]
+            info = k[0:int(k.find("http://") - 1)]
             info = string.split(k, ' - ')
-            news_final.append((info[0],info[1],news_array[k]))
+            news_final.append((info[0], info[1], news_array[k]))
 
         news_handler.close()
     except IndexError:
@@ -83,7 +83,7 @@ def get_news(url):
     return news_final
 
 
-def variable_value(request,field_name):
+def variable_value(request, field_name):
     """Variable check with request"""
     if request.method == 'GET':
         if field_name in request.GET:
@@ -143,14 +143,14 @@ def search_tag_string(mstring, tag):
     Search in string tag with their value
     mstring = needledtag1=143432,needledtag2=143432
     """
-    if not mstring or len(mstring)<2:
+    if not mstring or len(mstring) < 2:
         return False
     sval = {}
     try:
         sval = dict(e.split('=') for e in mstring.split(','))
     except ValueError:
         return False
-    if sval.has_key(tag):
+    if tag in sval:
         return sval[tag]
     else:
         return False

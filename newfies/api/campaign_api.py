@@ -32,8 +32,10 @@ from api.phonebook_api import PhonebookResource
 from api.resources import get_value_if_none
 from dialer_campaign.models import Campaign, Phonebook
 from dialer_gateway.models import Gateway
-from dialer_campaign.function_def import user_attached_with_dialer_settings,\
-     check_dialer_setting, dialer_setting_limit, user_dialer_setting
+from dialer_campaign.function_def import \
+            user_attached_with_dialer_settings, \
+            check_dialer_setting, \
+            dialer_setting_limit
 import time
 import logging
 
@@ -79,14 +81,14 @@ class CampaignValidation(Validation):
 
         if check_dialer_setting(request, check_for="campaign"):
             errors['chk_campaign'] = ["Too many campaigns. Max allowed %s"\
-                                      % dialer_setting_limit(request, limit_for="campaign")]
+                    % dialer_setting_limit(request, limit_for="campaign")]
 
         frequency = bundle.data.get('frequency')
         if frequency:
             if check_dialer_setting(request, check_for="frequency",
                 field_value=int(frequency)):
                 errors['chk_frequency'] = ["Frequency limit of %s exceeded."\
-                                           % dialer_setting_limit(request, limit_for="frequency")]
+                    % dialer_setting_limit(request, limit_for="frequency")]
 
         callmaxduration = bundle.data.get('callmaxduration')
         if callmaxduration:
@@ -94,7 +96,7 @@ class CampaignValidation(Validation):
                 check_for="duration",
                 field_value=int(callmaxduration)):
                 errors['chk_duration'] = ["Duration limit of %s exceeded."\
-                                          % dialer_setting_limit(request, limit_for="duration")]
+                    % dialer_setting_limit(request, limit_for="duration")]
 
         maxretry = bundle.data.get('maxretry')
         if maxretry:
@@ -102,7 +104,7 @@ class CampaignValidation(Validation):
                 check_for="retry",
                 field_value=int(maxretry)):
                 errors['chk_duration'] = ["Retries limit of %s exceeded."\
-                                          % dialer_setting_limit(request, limit_for="retry")]
+                    % dialer_setting_limit(request, limit_for="retry")]
 
         calltimeout = bundle.data.get('calltimeout')
         if calltimeout:
@@ -110,7 +112,7 @@ class CampaignValidation(Validation):
                 check_for="timeout",
                 field_value=int(calltimeout)):
                 errors['chk_timeout'] = ["Timeout limit of %s exceeded."\
-                                         % dialer_setting_limit(request, limit_for="timeout")]
+                    % dialer_setting_limit(request, limit_for="timeout")]
 
         aleg_gateway_id = bundle.data.get('aleg_gateway')
         if aleg_gateway_id:

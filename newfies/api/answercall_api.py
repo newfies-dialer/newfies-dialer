@@ -19,7 +19,7 @@ from django.conf import settings
 from django.contrib.sites.models import Site
 from django.http import HttpResponse
 
-from tastypie.resources import ModelResource, ALL
+from tastypie.resources import ModelResource
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import ImmediateHttpResponse
@@ -30,6 +30,7 @@ from settings_local import PLIVO_DEFAULT_DIALCALLBACK_URL
 from api.resources import CustomXmlEmitter, \
                           IpAddressAuthorization, \
                           IpAddressAuthentication
+from dialer_campaign.function_def import search_tag_string
 
 import logging
 

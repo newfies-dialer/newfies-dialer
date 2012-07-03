@@ -24,6 +24,7 @@ from dialer_campaign.models import Contact, Phonebook, Campaign
 
 import logging
 
+
 logger = logging.getLogger('newfies.filelog')
 
 

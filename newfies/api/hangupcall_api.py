@@ -24,12 +24,15 @@ from tastypie.exceptions import ImmediateHttpResponse
 from tastypie import http
 
 from dialer_cdr.models import Callrequest
+from dialer_cdr.tasks import init_callrequest
+from dialer_campaign.models import CampaignSubscriber
 from dialer_campaign.function_def import user_dialer_setting
 from api.resources import CustomXmlEmitter, \
                           IpAddressAuthorization, \
                           IpAddressAuthentication,\
                           create_voipcall,\
                           CDR_VARIABLES
+from datetime import datetime, timedelta
 import logging
 from uuid import uuid1
 

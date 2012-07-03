@@ -15,8 +15,6 @@
 #
 
 from django.conf.urls.defaults import url
-from django.conf import settings
-from django.contrib.sites.models import Site
 from django.http import HttpResponse
 
 from tastypie.resources import ModelResource

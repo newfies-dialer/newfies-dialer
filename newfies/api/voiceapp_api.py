@@ -22,4 +22,3 @@ class VoiceAppResource(ModelResource):
     class Meta:
         queryset = VoiceApp.objects.all()
         resource_name = 'voiceapp'
-

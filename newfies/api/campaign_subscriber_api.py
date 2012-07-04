@@ -223,9 +223,15 @@ class CampaignSubscriberResource(ModelResource):
         temp_url = request.META['PATH_INFO']
         temp_id = temp_url.split('/api/v1/campaignsubscriber/')[1]
         campaign_id = temp_id.split('/')[0]
-    
+
         try:
             campaign_obj = Campaign.objects.get(id=campaign_id)
+        except:
+            error_msg = "Campaign ID does not exists!"
+            logger.error(error_msg)
+            raise BadRequest(error_msg)
+
+        try:
             campaignsubscriber = CampaignSubscriber.objects\
             .get(duplicate_contact=bundle.data.get('contact'),
                 campaign=campaign_obj)

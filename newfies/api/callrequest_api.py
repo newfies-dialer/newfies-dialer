@@ -181,7 +181,7 @@ class CallrequestResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"status": "5"}' http://localhost:8000/api/v1/callrequest/%callrequest_id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"content_type":"voice_app", "object_id":1, "status": "5"}' http://localhost:8000/api/v1/callrequest/%callrequest_id%/
 
         Response::
 

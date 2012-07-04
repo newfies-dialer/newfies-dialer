@@ -43,8 +43,7 @@ class PhonebookValidation(Validation):
                     errors['chk_campaign'] = ['Campaign ID does not exist!']
 
         try:
-            username = bundle.data.get('user')
-            user_id = User.objects.get(username=username).id
+            user_id = User.objects.get(username=request.user).id
             bundle.data['user'] = '/api/v1/user/%s/' % user_id
         except:
             errors['chk_user'] = ["The User doesn't exist!"]
@@ -68,7 +67,7 @@ class PhonebookResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mylittlephonebook", "description": "", "campaign_id": "1", "user": "areski"}' http://localhost:8000/api/v1/phonebook/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mylittlephonebook", "description": "", "campaign_id": "1"}' http://localhost:8000/api/v1/phonebook/
 
         Response::
 
@@ -122,7 +121,7 @@ class PhonebookResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"name": "myphonebook", "description": "", "user": "areski"}' http://localhost:8000/api/v1/phonebook/%phonebook_id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"name": "myphonebook", "description": ""}' http://localhost:8000/api/v1/phonebook/%phonebook_id%/
 
         Response::
 

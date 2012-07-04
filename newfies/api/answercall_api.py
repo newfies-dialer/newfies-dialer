@@ -30,7 +30,7 @@ from settings_local import PLIVO_DEFAULT_DIALCALLBACK_URL
 from api.resources import CustomXmlEmitter, \
                           IpAddressAuthorization, \
                           IpAddressAuthentication
-from dialer_campaign.function_def import search_tag_string
+from common_functions import search_tag_string
 
 import logging
 

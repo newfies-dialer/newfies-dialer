@@ -46,7 +46,7 @@ class SurveyQuestionForm(ModelForm):
 
     class Meta:
         model = SurveyQuestion
-        fields = ['question', 'audio_message']
+        fields = ['question', 'audio_message', 'type']
 
     def __init__(self, *args, **kwargs):
         super(SurveyQuestionForm, self).__init__(*args, **kwargs)
@@ -62,7 +62,7 @@ class SurveyQuestionNewForm(ModelForm):
     """SurveyQuestionNew ModelForm"""
     class Meta:
         model = SurveyQuestion
-        fields = ['question', 'surveyapp', 'audio_message']
+        fields = ['question', 'surveyapp', 'audio_message', 'type']
 
     def __init__(self, user, *args, **kwargs):
         super(SurveyQuestionNewForm, self).__init__(*args, **kwargs)

@@ -245,24 +245,41 @@ function addFormField() {
     "{% csrf_token %}"+
     '<div class="row">'+
     '<div class="span12">'+
-        '<div class="row">'+
+        ''+
     {% for field in new_survey_que_form.visible_fields %}
         {% if forloop.first %}
             {% for hidden in new_survey_que_form.hidden_fields %}
                 '{{ hidden|escapejs }}'+
             {% endfor %}
+	    '<!--1st row start div-->' +
+	    '<div class="row">' +	
             '<div class="span6">'+
                 '<b>{{ field.label|capfirst }}</b><br/>{{ field|escapejs }}<br/><span class="help-inline">{% trans "If no audio file is selected, then text to speech is used to read out the question" %}</span>'+
             '</div>'+
         {% else %}
-            '<div class="span3">'+
-                '<b>{{ field.label|capfirst }}</b><br/>{{ field|escapejs }}'+
-            '</div>'+
+		{% if field.name == 'audio_message' %}
+		    '<div class="span3">'+
+		        '<b>{{ field.label|capfirst }}</b><br/>{{ field|escapejs }}'+
+		    '</div>'+
+		{% endif %}
         {% endif %}
-        {% if forloop.last %}
-        '<div class="span3"><!--<input value="Save" onclick="question_form('+id+', 0)" type="button">-->'+
-        '<br/><input class="btn-danger" value="{% trans "Delete question" %}" onClick="removeFormField(\'#row' + id + '\'); return false;" type="button"></div>'+
-        {% endif %}
+        
+	{% if field.name == 'audio_message' %}
+		'<div class="span3"><!--<input value="Save" onclick="question_form('+id+', 0)" type="button">-->'+
+		'<br/><input class="btn-danger" value="{% trans "Delete question" %}" onClick="removeFormField(\'#row' + id + '\'); return false;" type="button"></div>'+
+		'</div>' + 
+		'<!--1st row end div-->' +
+	{% endif %}
+        
+	{% if field.name == 'type' %}
+	'<!--2nd row start div-->'+	
+	'<div class="row">' +
+		'<div class="span6">' + 
+		'<b>{{ field.label|capfirst }}</b><br/>{{ field|escapejs }}' +                    		                                                
+		'</div>' +
+	'</div>' +
+	'<!--2nd row end div-->' +
+	{% endif %}
     {% endfor %}
         '</div>'+
     '</div>'+
@@ -424,37 +441,52 @@ function removeResFormField(id) {
 
                             {% if key|stringformat:"s" == que.id|stringformat:"s" %}
 
-                            <div class="row">
-                            <div class="span12">
-                                <div class="row">
-                                {% for field in form.visible_fields %}
-                                    {% if forloop.first %}
-                                        {% for hidden in form.hidden_fields %}
-                                            {{ hidden }}
-                                        {% endfor %}
-                                        <div class="span6">
-                                            <b>{{ field.label|capfirst }}</b><br/>
-                                            {{ field }}<br/>
-                                            <span class="help-inline">{% trans "If no audio file is selected, then text to speech is used to read out the question" %}</span>
-                                        </div>
-                                    {% else %}
-                                        <div class="span3">
-                                            {{ field.hidden_field }}
-                                            <b>{{ field.label|capfirst }}</b><br/>
-                                            {{ field }}
-                                        </div>
-                                    {% endif %}
+                            	<div class="row">
+	                            <div class="span12">					
+		                        {% for field in form.visible_fields %}
+		                            {% if forloop.first %}
+		                                {% for hidden in form.hidden_fields %}
+		                                    {{ hidden }}
+		                                {% endfor %}
+						<!--1st row start div-->
+						<div class="row">	                        
+		                                <div class="span6">
+		                                    <b>{{ field.label|capfirst }}</b><br/>
+		                                    {{ field }}<br/>
+		                                    <span class="help-inline">{% trans "If no audio file is selected, then text to speech is used to read out the question" %}</span>
+		                                </div>
+		                            {% else %}
+						{% if field.name == 'audio_message' %}
+		                                <div class="span3">
+		                                    {{ field.hidden_field }}
+		                                    <b>{{ field.label|capfirst }}</b><br/>
+		                                    {{ field }}
+		                                </div>
+						{% endif %}
+		                            {% endif %}
 
-                                    {% if forloop.last %}
-                                        <div class="span3"><br/>
-                                            <!--<input value="Save" onclick="question_form({{ que.id }}, 1);" type="button">-->
-                                            <input value="{% trans "Delete question" %}" class="btn-danger" onclick="question_delete_form({{ que.id }}, 1);removeFormField('#row{{ que.id }}'); return false;" type="button">
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-                                </div>
-                            </div>
-                            </div>
+		                            {% if field.name == 'audio_message' %}
+		                                <div class="span3"><br/>
+		                                    <!--<input value="Save" onclick="question_form({{ que.id }}, 1);" type="button">-->
+		                                    <input value="{% trans "Delete question" %}" class="btn-danger" onclick="question_delete_form({{ que.id }}, 1);removeFormField('#row{{ que.id }}'); return false;" type="button">
+		                                </div>
+						</div><!--1st row end div-->						                            
+		                            {% endif %}
+
+					{% if field.name == 'type' %}
+					<!--2nd row start div-->
+					<div class="row">
+					    <div class="span6">
+			                        <b>{{ field.label|capfirst }}</b><br/>
+			                            {{ field }}		                                    
+			                    </div>					
+					</div>
+					<!--2nd row end div-->					
+					{% endif %}
+
+		                        {% endfor %}										
+	                           </div>
+                             </div>
 
                                 <!--Response forms start-->
                                 <!--extra to fix 1st survey response form-->

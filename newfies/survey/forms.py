@@ -12,9 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.contrib.auth.models import User
 from django import forms
-from django.forms.util import ErrorList
 from django.forms import *
 from django.contrib import *
 from django.contrib.admin.widgets import *
@@ -66,7 +64,8 @@ class SurveyQuestionNewForm(ModelForm):
     """SurveyQuestionNew ModelForm"""
     class Meta:
         model = SurveyQuestion
-        fields = ['question', 'surveyapp', 'audio_message', 'type', 'data', 'gateway']
+        fields = ['question', 'surveyapp', 'audio_message', 'type', \
+                    'data', 'gateway']
 
     def __init__(self, user, *args, **kwargs):
         super(SurveyQuestionNewForm, self).__init__(*args, **kwargs)
@@ -94,10 +93,12 @@ class SurveyResponseForm(ModelForm):
         self.fields['key'].widget.attrs['class'] = "input-small"
         self.fields['keyvalue'].widget.attrs['class'] = "input-small"
         if instance.id:
-            js_function = "response_form(" + str(instance.id) + ", " + str(instance.surveyquestion_id) + ", 1, 1);"
+            js_function = "response_form(" + str(instance.id) + ", " + \
+                            str(instance.surveyquestion_id) + ", 1, 1);"
             self.fields['key'].widget.attrs['onBlur'] = js_function
             self.fields['keyvalue'].widget.attrs['onBlur'] = js_function
-            self.fields['goto_surveyquestion'].widget.attrs['onBlur'] = js_function
+            self.fields['goto_surveyquestion'].widget\
+                    .attrs['onBlur'] = js_function
 
 
 class SurveyReportForm(forms.Form):
@@ -112,7 +113,7 @@ class SurveyReportForm(forms.Form):
             list = []
             try:
                 camp_list = Campaign.objects.filter(user=user,
-                                     content_type=ContentType.objects.get(name='survey'))
+                        content_type=ContentType.objects.get(name='survey'))
                 pb_list = ((l.id, l.name) for l in camp_list)
                 for i in pb_list:
                     list.append((i[0], i[1]))

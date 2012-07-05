@@ -29,15 +29,12 @@ from django.core.cache import cache
 from dialer_campaign.models import Campaign
 from dialer_campaign.views import current_view, notice_count, update_style, \
     delete_style, grid_common_function
-from dialer_campaign.function_def import variable_value
 from survey.models import *
 from survey.forms import *
-from dialer_cdr.models import Callrequest, VoIPCall
+from dialer_cdr.models import Callrequest
 from audiofield.models import AudioFile
 
 from datetime import *
-from dateutil import parser
-
 import time
 import os.path
 
@@ -102,9 +99,10 @@ def survey_finestatemachine(request):
     obj_callrequest.save()
 
     #Load the questions
-    list_question = SurveyQuestion.objects.filter(surveyapp=surveyapp_id).order_by('order')
+    list_question = SurveyQuestion.objects\
+                    .filter(surveyapp=surveyapp_id).order_by('order')
 
-    #Check if we receive a DTMF for the previous question if so store the result
+    #Check if we receive a DTMF for the previous question then store the result
     if DTMF and len(DTMF) > 0 and current_state > 0:
         #find the response for this key pressed
         try:
@@ -118,12 +116,13 @@ def survey_finestatemachine(request):
         except:
             #It's possible that this response is not accepted
             response_value = DTMF
-        
-        new_surveycampaignresult = SurveyCampaignResult(campaign = obj_callrequest.campaign,
-                                    surveyapp_id=surveyapp_id,
-                                    callid=opt_CallUUID,
-                                    question=list_question[current_state-1].question,
-                                    response=response_value)
+
+        new_surveycampaignresult = SurveyCampaignResult(
+                    campaign=obj_callrequest.campaign,
+                    surveyapp_id=surveyapp_id,
+                    callid=opt_CallUUID,
+                    question=list_question[current_state - 1].question,
+                    response=response_value)
         new_surveycampaignresult.save()
 
     #Transition go to next state
@@ -146,7 +145,9 @@ def survey_finestatemachine(request):
         hasattr(list_question[current_state], 'audio_message') and \
         list_question[current_state].audio_message.audio_file.url:
         #Audio file
-        question = "<Play>%s%s</Play>" % (url_basename, list_question[current_state].audio_message.audio_file.url)
+        question = "<Play>%s%s</Play>" % (
+                    url_basename,
+                    list_question[current_state].audio_message.audio_file.url)
     else:
         #Text2Speech
         question = "<Speak>%s</Speak>" % list_question[current_state].question
@@ -184,19 +185,19 @@ def survey_grid(request):
         survey_list.order_by(sortorder_sign + sortname)[start_page:end_page]
 
     rows = [{'id': row['id'],
-             'cell': ['<input type="checkbox" name="select" class="checkbox"\
-                      value="' + str(row['id']) + '" />',
-                      row['name'],
-                      row['description'],
-                      row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
-                      '<a href="' + str(row['id']) + '/" class="icon" ' \
-                      + update_style + ' title="' + _('Update survey') + '">&nbsp;</a>' +
-                      '<a href="del/' + str(row['id']) + '/" class="icon" ' \
-                      + delete_style + ' onClick="return get_alert_msg(' +
-                      str(row['id']) +
-                      ');"  title="' + _('Delete survey') + '">&nbsp;</a>']}\
-                      for row in survey_list]
-
+            'cell': ['<input type="checkbox" name="select" class="checkbox"\
+                value="' + str(row['id']) + '" />',
+                row['name'],
+                row['description'],
+                row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
+                '<a href="' + str(row['id']) + '/" class="icon" ' \
+                + update_style + ' title="' + \
+                _('Update survey') + '">&nbsp;</a>' +
+                '<a href="del/' + str(row['id']) + '/" class="icon" ' \
+                + delete_style + ' onClick="return get_alert_msg(' +
+                str(row['id']) +
+                ');"  title="' + _('Delete survey') + '">&nbsp;</a>']}\
+                for row in survey_list]
     data = {'rows': rows,
             'page': page,
             'total': count}
@@ -313,10 +314,13 @@ def survey_change(request, object_id):
           via SurveyForm & get redirected to survey list
     """
     survey = SurveyApp.objects.get(pk=object_id)
-    survey_que_list = SurveyQuestion.objects.filter(surveyapp=survey).order_by('order')
+    survey_que_list = SurveyQuestion.objects\
+                        .filter(surveyapp=survey).order_by('order')
 
     form = SurveyForm(instance=survey)
-    new_survey_que_form = SurveyQuestionNewForm(request.user, initial={'surveyapp': survey})
+    new_survey_que_form = SurveyQuestionNewForm(
+                            request.user,
+                            initial={'surveyapp': survey})
     new_survey_res_form = SurveyResponseForm()
 
     survey_que_form_collection = {}
@@ -327,7 +331,8 @@ def survey_change(request, object_id):
         survey_que_form_collection['%s' % survey_que.id] = f
 
         # survey question response
-        survey_response_list = SurveyResponse.objects.filter(surveyquestion=survey_que)
+        survey_response_list = SurveyResponse.objects\
+                                .filter(surveyquestion=survey_que)
         for survey_res in sorted(survey_response_list):
             r = SurveyResponseForm(instance=survey_res)
             survey_res_form_collection['%s' % survey_res.id] = {'form': r, 'que_id': survey_res.surveyquestion_id}
@@ -391,29 +396,33 @@ def audio_grid(request):
                      .filter(user=request.user)
 
     count = audio_list.count()
-    audio_list = \
-        audio_list.order_by(sortorder_sign + sortname)[start_page:end_page]
+    audio_list = audio_list\
+            .order_by(sortorder_sign + sortname)[start_page:end_page]
 
     link_style = 'style="text-decoration:none;background-image:url(' + \
                     settings.STATIC_URL + 'newfies/icons/link.png);"'
     domain = Site.objects.get_current().domain
 
     rows = [{'id': row['id'],
-             'cell': ['<input type="checkbox" name="select" class="checkbox"\
-                      value="' + str(row['id']) + '" />',
-                      row['name'],
-                      audio_file_player(row['audio_file']),
-                      '<input type="text" value="' + domain + settings.MEDIA_URL + str(row['audio_file'])+ '">',
-                      row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
-                      '<a href="' + settings.MEDIA_URL + str(row['audio_file']) + '" class="icon" ' \
-                      + link_style + ' title="' + _('Download audio') + '">&nbsp;</a>' +
-                      '<a href="' + str(row['id']) + '/" class="icon" ' \
-                      + update_style + ' title="' + _('Update audio') + '">&nbsp;</a>' +
-                      '<a href="del/' + str(row['id']) + '/" class="icon" ' \
-                      + delete_style + ' onClick="return get_alert_msg(' +
-                      str(row['id']) +
-                      ');"  title="' + _('Delete audio') + '">&nbsp;</a>']}\
-                      for row in audio_list]
+            'cell': ['<input type="checkbox" name="select" class="checkbox"\
+                value="' + str(row['id']) + '" />',
+                row['name'],
+                audio_file_player(row['audio_file']),
+                '<input type="text" value="' + domain + \
+                settings.MEDIA_URL + str(row['audio_file']) + '">',
+                row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
+                '<a href="' + settings.MEDIA_URL + \
+                str(row['audio_file']) + '" class="icon" ' \
+                + link_style + ' title="' + _('Download audio') + \
+                '">&nbsp;</a>' +
+                '<a href="' + str(row['id']) + '/" class="icon" ' \
+                + update_style + ' title="' + _('Update audio') + \
+                '">&nbsp;</a>' +
+                '<a href="del/' + str(row['id']) + '/" class="icon" ' \
+                + delete_style + ' onClick="return get_alert_msg(' +
+                str(row['id']) +
+                ');"  title="' + _('Delete audio') + '">&nbsp;</a>']}\
+                for row in audio_list]
 
     data = {'rows': rows,
             'page': page,
@@ -471,7 +480,7 @@ def audio_add(request):
             request.session["msg"] = _('"%(name)s" is added.') %\
             {'name': request.POST['name']}
             return HttpResponseRedirect('/audio/')
-        
+
     template = 'frontend/survey/audio_change.html'
     data = {
        'module': current_view(request),
@@ -579,9 +588,14 @@ def survey_report(request):
         form = SurveyReportForm(request.user, request.POST)
         if form.is_valid():
             try:
-                campaign_obj = Campaign.objects.get(id=int(request.POST['campaign']))
-                survey_result = SurveyCampaignResult.objects.filter(campaign=campaign_obj)\
-                .values('question', 'response').annotate(Count('response')).distinct().order_by('question')
+                campaign_obj = Campaign.objects\
+                                .get(id=int(request.POST['campaign']))
+                survey_result = SurveyCampaignResult.objects\
+                                .filter(campaign=campaign_obj)\
+                                .values('question', 'response')\
+                                .annotate(Count('response'))\
+                                .distinct()\
+                                .order_by('question')
 
                 if not survey_result:
                     request.session["err_msg"] = _('No record found!.')

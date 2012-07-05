@@ -39,8 +39,11 @@ MESSAGE_TYPE = (
 """
 class Text2speechMessage(models.Model):
     name = models.CharField(max_length=150, blank=False, verbose_name="Name")
-    tts_message = models.TextField(max_length=1500, blank=True, verbose_name="Text2Speech Message", help_text = 'Define the text2speech message')
-    tts_engine = models.CharField(choices=TTS_CHOICES, max_length=120, blank=True, verbose_name="TTS Engine")
+    tts_message = models.TextField(max_length=1500, blank=True,
+                        verbose_name="Text2Speech Message",
+                        help_text = 'Define the text2speech message')
+    tts_engine = models.CharField(choices=TTS_CHOICES, max_length=120,
+                        blank=True, verbose_name="TTS Engine")
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     #code_language = models.ForeignKey(Language, verbose_name="Language")

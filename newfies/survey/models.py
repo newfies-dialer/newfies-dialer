@@ -17,6 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from tagging.fields import TagField
 from dialer_campaign.models import Campaign
+from dialer_gateway.models import Gateway
 from audiofield.models import AudioFile
 from adminsortable.models import Sortable
 
@@ -24,6 +25,7 @@ from adminsortable.models import Sortable
 
 from south.modelsinspector import add_introspection_rules
 add_introspection_rules([], ["^tagging.fields.TagField"])
+add_introspection_rules([], ["^audiofield.fields.AudioField"])
 
 
 TTS_CHOICES = (
@@ -35,6 +37,15 @@ MESSAGE_TYPE = (
     (1,             u'Audio File'),
     (2,             u'Text2Speech'),
 )
+
+APP_TYPE = (
+    (1, u'DIAL'),
+    #(2, u'PLAYAUDIO'),
+    (3, u'CONFERENCE'),
+    #(4, u'SPEAK'),
+    (5, u'RECORDING'),
+)
+
 
 """
 class Text2speechMessage(models.Model):
@@ -121,6 +132,17 @@ class SurveyQuestion(Sortable):
     message_type = models.IntegerField(max_length=20, choices=MESSAGE_TYPE,
                             default='1', blank=True, null=True,
                             verbose_name=_('Message type'))
+
+    type = models.IntegerField(max_length=20, choices=APP_TYPE, default='1',
+           blank=True, null=True, verbose_name=_('Type'))
+    gateway = models.ForeignKey(Gateway, null=True, blank=True,
+                    verbose_name=_('B-Leg'),
+                    help_text=_("Gateway used if we redirect the call"))
+    data = models.CharField(max_length=500, blank=True,
+                    help_text=_("The value of 'data' depends on the type of voice application :<br/>"\
+                    "- Dial : The phone number to dial<br/>"\
+                    "- Conference : Conference room name or number<br/>"))
+
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 

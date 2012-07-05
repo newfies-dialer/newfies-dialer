@@ -34,8 +34,8 @@ TTS_CHOICES = (
 )
 
 MESSAGE_TYPE = (
-    (1,             u'Audio File'),
-    (2,             u'Text2Speech'),
+    (1, u'Audio File'),
+    (2, u'Text2Speech'),
 )
 
 APP_TYPE = (

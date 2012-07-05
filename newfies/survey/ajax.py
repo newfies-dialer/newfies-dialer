@@ -63,6 +63,7 @@ def survey_question_add_update(request, id, data, form_type, after_initial_save,
             obj.surveyapp = form.cleaned_data.get('surveyapp')
             audio_message = form.cleaned_data.get('audio_message')
             obj.message_type = audio_msg_type(audio_message)
+            obj.type = form.cleaned_data.get('type')
             obj.save()
             dajax.assign('#id', 'value', obj.id)
         #dajax.alert("%s is successfully saved !!" % form.cleaned_data.get('question'))

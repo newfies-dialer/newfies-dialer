@@ -83,7 +83,7 @@ class Migration(SchemaMigration):
     models = {
         'audiofield.audiofile': {
             'Meta': {'object_name': 'AudioFile', 'db_table': "u'audio_file'"},
-            'audio_file': ('audiofield.fields.AudioField', [], {'max_length': '100', 'blank': 'True'}),
+            'audio_file': ('audiofield.fields.AudioField', [], {'ext_whitelist': '(".mp3", ".wav", ".ogg")', 'upload_to': '"upload/audiofiles"', 'blank': 'True'}),
             'created_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '150'}),

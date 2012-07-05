@@ -78,7 +78,7 @@ class SurveyResponseForm(ModelForm):
 
     class Meta:
         model = SurveyResponse
-        fields = ['key', 'keyvalue']
+        fields = ['key', 'keyvalue', 'goto_surveyquestion']
 
     def __init__(self, *args, **kwargs):
         super(SurveyResponseForm, self).__init__(*args, **kwargs)

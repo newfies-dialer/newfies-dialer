@@ -295,10 +295,10 @@ function addResFormField(que_id, is_que_id_set) {
     '<form action="." id="new_response_form_' + id +'" method="post" enctype="multipart/form-data">'+
     "{% csrf_token %}"+
     '<div class="row">'+
-       '<div class="span6">'+
+       '<div class="span9">'+
           '<div class="row">'+
           {% for field in new_survey_res_form.visible_fields %}
-          '<div class="span2">'+
+          ''+
             {% if forloop.first %}
               {% for hidden in new_survey_res_form.hidden_fields %}
                 '{{ hidden|escapejs }}'+
@@ -306,12 +306,16 @@ function addResFormField(que_id, is_que_id_set) {
             {% endif %}
               '{{ field.errors.as_ul }}'+
               {% if field.name == 'keyvalue' %}
-                '<b>{% trans "Key Digit" %}</b><br/><input type="text" id="id_keyvalue" class="input-small" name="keyvalue" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
+                '<div class="span2"><b>{% trans "Key Digit" %}</b><br/><input type="text" id="id_keyvalue" class="input-small" name="keyvalue" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
               {% else %}
                 {% if field.name == 'key' %}
-                    '<b>{% trans "Key Value" %}</b><br/><input type="text" id="id_key" class="input-small" name="key" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
+                    '<div class="span2"><b>{% trans "Key Value" %}</b><br/><input type="text" id="id_key" class="input-small" name="key" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
                 {% else %}
-                    '{{ field|escapejs }}'+
+		    {% if field.name == 'goto_surveyquestion' %}
+			'<div class="span3"><b>{% trans "Survey Que." %}</b><br/>' + '{{ field|escapejs }}' +
+		    {% else %}		
+                    	'{{ field|escapejs }}'+
+		    {% endif %} 
                 {% endif %}                              
               {% endif %}
           '</div>'+
@@ -460,10 +464,10 @@ function removeResFormField(id) {
                                     {% if value_set.que_id|stringformat:"s" == que.id|stringformat:"s" %}
                                         <form action="." id="response_form_{{ key }}" method="post" enctype="multipart/form-data">{% csrf_token %}
                                         <div class="row">
-                                            <div class="span6">
+                                            <div class="span9">
                                                 <div class="row">
                                                 {% for field in value_set.form.visible_fields %}
-                                                    <div class="span2">
+
                                                         {# Include the hidden fields in the form #}
                                                         {% if forloop.first %}
                                                           {% for hidden in value_set.form.hidden_fields %}
@@ -473,8 +477,9 @@ function removeResFormField(id) {
                                                           <!--{{ field.errors.as_ul }}-->
                                                         {{ field.hidden_field }}
 
-                                                        {% if forloop.first %}<b>{% trans "Key Digit" %}</b>{% endif %}
-                                                        {% if forloop.last %}<b>{% trans "Key Value" %}</b>{% endif %}
+                                                        {% if forloop.first %}<div class="span2"><b>{% trans "Key Digit" %}</b>{% endif %}
+                                                        {% if forloop.counter == 2 %}<div class="span2"><b>{% trans "Key Value" %}</b>{% endif %}
+                                                        {% if forloop.last %}<div class="span3"><b>{% trans "Survey Que." %}</b>{% endif %}
                                                         <br/>
                                                         {{ field }}
                                                     </div>
@@ -522,3 +527,4 @@ function removeResFormField(id) {
 </form>
 
 {% endblock %}
+

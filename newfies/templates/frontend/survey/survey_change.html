@@ -297,8 +297,7 @@ function addResFormField(que_id, is_que_id_set) {
     '<div class="row">'+
        '<div class="span9">'+
           '<div class="row">'+
-          {% for field in new_survey_res_form.visible_fields %}
-          ''+
+          {% for field in new_survey_res_form.visible_fields %}          
             {% if forloop.first %}
               {% for hidden in new_survey_res_form.hidden_fields %}
                 '{{ hidden|escapejs }}'+
@@ -312,7 +311,7 @@ function addResFormField(que_id, is_que_id_set) {
                     '<div class="span2"><b>{% trans "Key Value" %}</b><br/><input type="text" id="id_key" class="input-small" name="key" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
                 {% else %}
 		    {% if field.name == 'goto_surveyquestion' %}
-			'<div class="span3"><b>{% trans "Survey Que." %}</b><br/>' + '{{ field|escapejs }}' +
+			'<div class="span3"><b>{% trans "Goto question" %}</b><br/>' + '{{ field|escapejs }}' + 
 		    {% else %}		
                     	'{{ field|escapejs }}'+
 		    {% endif %} 
@@ -329,6 +328,9 @@ function addResFormField(que_id, is_que_id_set) {
     '</div>'+
     '</form>'+
     '</div>');
+
+    // added onBlur attribute on goto_surveyquestion field	
+    $("id_goto_surveyquestion").attr("onBlur", "response_form(" + id + "," + que_id + ", 0, " + is_que_id_set + ")");	
 
     //previous new response form's id & onblur event must be changed to updated the newly entered values
     if(document.getElementById("new_response_id").value != 0 && que_id == 0 && is_que_id_set == 0)
@@ -479,7 +481,7 @@ function removeResFormField(id) {
 
                                                         {% if forloop.first %}<div class="span2"><b>{% trans "Key Digit" %}</b>{% endif %}
                                                         {% if forloop.counter == 2 %}<div class="span2"><b>{% trans "Key Value" %}</b>{% endif %}
-                                                        {% if forloop.last %}<div class="span3"><b>{% trans "Survey Que." %}</b>{% endif %}
+                                                        {% if forloop.last %}<div class="span3"><b>{% trans "Goto question" %}</b>{% endif %}
                                                         <br/>
                                                         {{ field }}
                                                     </div>

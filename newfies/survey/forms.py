@@ -46,7 +46,7 @@ class SurveyQuestionForm(ModelForm):
 
     class Meta:
         model = SurveyQuestion
-        fields = ['question', 'audio_message', 'type']
+        fields = ['question', 'audio_message', 'type', 'data', 'gateway']
 
     def __init__(self, *args, **kwargs):
         super(SurveyQuestionForm, self).__init__(*args, **kwargs)
@@ -57,13 +57,16 @@ class SurveyQuestionForm(ModelForm):
             self.fields['question'].widget.attrs['onBlur'] = js_function
             self.fields['audio_message'].widget.attrs['onChange'] = js_function
             self.fields['type'].widget.attrs['onChange'] = js_function
+            self.fields['data'].widget.attrs['onBlur'] = js_function
+            self.fields['data'].widget.attrs['class'] = "input-small"
+            self.fields['gateway'].widget.attrs['onChange'] = js_function
 
 
 class SurveyQuestionNewForm(ModelForm):
     """SurveyQuestionNew ModelForm"""
     class Meta:
         model = SurveyQuestion
-        fields = ['question', 'surveyapp', 'audio_message', 'type']
+        fields = ['question', 'surveyapp', 'audio_message', 'type', 'data', 'gateway']
 
     def __init__(self, user, *args, **kwargs):
         super(SurveyQuestionNewForm, self).__init__(*args, **kwargs)
@@ -73,6 +76,9 @@ class SurveyQuestionNewForm(ModelForm):
         self.fields['question'].widget.attrs['onBlur'] = js_function
         self.fields['audio_message'].widget.attrs['onChange'] = js_function
         self.fields['type'].widget.attrs['onChange'] = js_function
+        self.fields['data'].widget.attrs['class'] = "input-small"
+        self.fields['data'].widget.attrs['onBlur'] = js_function
+        self.fields['gateway'].widget.attrs['onChange'] = js_function
 
 
 class SurveyResponseForm(ModelForm):

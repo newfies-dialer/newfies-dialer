@@ -37,7 +37,7 @@
         {
             var id = document.getElementById("id_new_que_form").value;
             question_form(id-1, 0);
-            initial_que_save = initial_que_save + 1;
+            initial_que_save = initial_que_save + 1;	    	
             setTimeout("temp_call()", 400);
         }
         else
@@ -57,6 +57,7 @@
            data = $('#new_survey_que_form_' + id).serializeObject();
            form_type = 'old_form'
        }
+	
        Dajaxice.survey.survey_question_add_update(Dajax.process, {'id': id, 'data': data, 'form_type': form_type, 'after_initial_save':1, 'record_id': record_id});
    }
 
@@ -74,7 +75,7 @@
            data = $('#que_form_' + id).serializeObject();           
            form_type = 'old_form'
        }
-
+       		
        Dajaxice.survey.survey_question_add_update(Dajax.process, {'id': id, 'data': data, 'form_type': form_type, 'after_initial_save':0, 'record_id': ''});
    }
 
@@ -274,12 +275,23 @@ function addFormField() {
 	{% if field.name == 'type' %}
 	'<!--2nd row start div-->'+	
 	'<div class="row">' +
-		'<div class="span6">' + 
+		'<div class="span4">' + 
+		'<b>{{ field.label|capfirst }}</b><br/>{{ field|escapejs }}' +                    		                                                
+		'</div>' +		
+	{% endif %}
+	{% if field.name == 'data' %}
+		'<div class="span2">' + 
 		'<b>{{ field.label|capfirst }}</b><br/>{{ field|escapejs }}' +                    		                                                
 		'</div>' +
-	'</div>' +
-	'<!--2nd row end div-->' +
 	{% endif %}
+	{% if field.name == 'gateway' %}
+		'<div class="span4">' + 
+		'<b>{{ field.label|capfirst }}</b><br/>{{ field|escapejs }}' +                    		                                                
+		'</div>' +
+		'</div>' +
+		'<!--2nd row end div-->' +
+	{% endif %}
+
     {% endfor %}
         '</div>'+
     '</div>'+
@@ -473,17 +485,30 @@ function removeResFormField(id) {
 						</div><!--1st row end div-->						                            
 		                            {% endif %}
 
-					{% if field.name == 'type' %}
-					<!--2nd row start div-->
-					<div class="row">
-					    <div class="span6">
+				
+					    {% if field.name == 'type' %}
+					    <!--2nd row start-->
+					    <div class="row">			
+					    <div class="span4">
 			                        <b>{{ field.label|capfirst }}</b><br/>
 			                            {{ field }}		                                    
-			                    </div>					
-					</div>
-					<!--2nd row end div-->					
-					{% endif %}
-
+			                    </div>
+					    {% endif %}	
+					    {% if field.name == 'data' %}			
+					    <div class="span2">
+			                        <b>{{ field.label|capfirst }}</b><br/>
+			                            {{ field }}		                                    
+			                    </div>
+					    {% endif %}
+					    {% if field.name == 'gateway' %}			
+					    <div class="span4">
+			                        <b>{{ field.label|capfirst }}</b><br/>
+			                            {{ field }}		                                    
+			                    </div>
+					    </div>
+					    <!--2nd row end div-->	
+					    {% endif %}					
+																			
 		                        {% endfor %}										
 	                           </div>
                              </div>

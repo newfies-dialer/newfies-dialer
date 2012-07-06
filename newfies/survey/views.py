@@ -327,7 +327,7 @@ def survey_change(request, object_id):
     survey_res_form_collection = {}
 
     for survey_que in survey_que_list:
-        f = SurveyQuestionForm(instance=survey_que)
+        f = SurveyQuestionForm(request.user, instance=survey_que)
         survey_que_form_collection['%s' % survey_que.id] = f
 
         # survey question response

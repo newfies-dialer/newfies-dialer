@@ -20,8 +20,10 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 
 from survey.models import *
+from survey.function_def import field_list
 from dialer_campaign.models import Campaign
 from audiofield.forms import CustomerAudioFileForm
+
 from datetime import *
 
 
@@ -39,6 +41,17 @@ class SurveyForm(ModelForm):
             self.fields.keyOrder = ['name', 'description']
 
 
+def get_audiofile_list(user):
+    """Get audio file list for logged in user
+    with default none option"""
+    list_af = []
+    list_af.append((0, '---'))
+    af_list = field_list(name="audiofile", user=user)
+    for i in af_list:
+        list_af.append((i[0], i[1]))
+    return list_af
+
+
 class SurveyQuestionForm(ModelForm):
     """SurveyQuestion ModelForm"""
 
@@ -46,14 +59,19 @@ class SurveyQuestionForm(ModelForm):
         model = SurveyQuestion
         fields = ['question', 'audio_message', 'type', 'data', 'gateway']
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         super(SurveyQuestionForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         self.fields['question'].widget.attrs['class'] = 'span6'
         if instance.id:
             js_function = "question_form(" + str(instance.id) + ", 1);"
             self.fields['question'].widget.attrs['onBlur'] = js_function
-            self.fields['audio_message'].widget.attrs['onChange'] = js_function
+            # To get user's audio file list
+            if user:
+                self.fields['audio_message'].choices = \
+                    get_audiofile_list(user)
+                self.fields['audio_message'].widget.attrs['onChange'] = \
+                    js_function
             self.fields['type'].widget.attrs['onChange'] = js_function
             self.fields['data'].widget.attrs['onBlur'] = js_function
             self.fields['gateway'].widget.attrs['onChange'] = js_function
@@ -72,7 +90,12 @@ class SurveyQuestionNewForm(ModelForm):
         self.fields['question'].widget.attrs['class'] = 'span6'
         js_function = "var initial_que_save=1;to_call_question_form();"
         self.fields['question'].widget.attrs['onBlur'] = js_function
-        self.fields['audio_message'].widget.attrs['onChange'] = js_function
+        # To get user's audio file list
+        if user:
+            self.fields['audio_message'].choices = \
+                get_audiofile_list(user)
+            self.fields['audio_message'].widget.attrs['onChange'] = \
+                js_function
         self.fields['type'].widget.attrs['onChange'] = js_function
         self.fields['data'].widget.attrs['onBlur'] = js_function
         self.fields['gateway'].widget.attrs['onChange'] = js_function

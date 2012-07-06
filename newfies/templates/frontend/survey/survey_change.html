@@ -280,7 +280,7 @@ function addFormField() {
 		'</div>' +		
 	{% endif %}
 	{% if field.name == 'data' %}
-		'<div class="span2">' + 
+		'<div class="span4">' +
 		'<b>{{ field.label|capfirst }}</b><br/>{{ field|escapejs }}' +                    		                                                
 		'</div>' +
 	{% endif %}
@@ -495,7 +495,7 @@ function removeResFormField(id) {
 			                    </div>
 					    {% endif %}	
 					    {% if field.name == 'data' %}			
-					    <div class="span2">
+					    <div class="span4">
 			                        <b>{{ field.label|capfirst }}</b><br/>
 			                            {{ field }}		                                    
 			                    </div>

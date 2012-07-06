@@ -56,7 +56,6 @@ class SurveyQuestionForm(ModelForm):
             self.fields['audio_message'].widget.attrs['onChange'] = js_function
             self.fields['type'].widget.attrs['onChange'] = js_function
             self.fields['data'].widget.attrs['onBlur'] = js_function
-            self.fields['data'].widget.attrs['class'] = "input-small"
             self.fields['gateway'].widget.attrs['onChange'] = js_function
 
 
@@ -75,7 +74,6 @@ class SurveyQuestionNewForm(ModelForm):
         self.fields['question'].widget.attrs['onBlur'] = js_function
         self.fields['audio_message'].widget.attrs['onChange'] = js_function
         self.fields['type'].widget.attrs['onChange'] = js_function
-        self.fields['data'].widget.attrs['class'] = "input-small"
         self.fields['data'].widget.attrs['onBlur'] = js_function
         self.fields['gateway'].widget.attrs['onChange'] = js_function
 

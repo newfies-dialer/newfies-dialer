@@ -228,6 +228,7 @@
 
 		//$( ".column" ).disableSelection();
 	});
+
 </script>
 
 <script type="text/javascript">
@@ -387,6 +388,43 @@ function addResFormField(que_id, is_que_id_set) {
 function removeResFormField(id) {
 	$(id).remove();
 }
+
+$(function() {
+    var intervalID = setInterval(function call_update_question() {
+
+        if(document.location.href.search("/survey/") != -1)
+        {
+            pathArray = window.location.pathname.split( '/' );
+            surveyapp_id = pathArray[2];
+
+            $.ajax({
+                url: "/survey/question_list/",
+                type: "GET",
+                async: false,
+                cache: false,
+                timeout: 30000,
+                data: "surveyapp_id=" + surveyapp_id,
+                success: function(data) {
+                    var data_array = data.split(",");
+
+                    var options = '';
+                    for (var i = 0; i < data_array.length; i+2) {
+                        options += '<option value="' + data_array[i] + '">' + data_array[i+1] + '</option>';
+                    }
+                    //alert(options);
+
+                },
+                error: function() {
+                    alert("Request failed");
+                }
+            });
+        }
+
+    }, 5000);
+
+});
+
+
 </script>
 {% endblock %}
 

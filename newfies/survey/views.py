@@ -299,6 +299,18 @@ def survey_del(request, object_id):
 
 
 @login_required
+def survey_question_list(request):
+    que_list = SurveyQuestion.objects\
+                .filter(surveyapp_id=request.GET['surveyapp_id'],
+                        user=request.user).order_by('order')
+    result_string = ''
+    for i in que_list:
+        result_string += str(i.id) + ',' + str(i.question)
+    #print result_string
+    return HttpResponse(result_string)
+
+
+@login_required
 def survey_change(request, object_id):
     """Update/Delete Survey for the logged in user
 

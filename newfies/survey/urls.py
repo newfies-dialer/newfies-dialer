@@ -18,6 +18,7 @@ from survey.views import *
 
 
 urlpatterns = patterns('',
+    (r'^survey/question_list/$', 'survey.views.survey_question_list'),
     # Survey urls
     (r'^survey/$', 'survey.views.survey_list'),
     (r'^survey_grid/$', 'survey.views.survey_grid'),
@@ -27,6 +28,7 @@ urlpatterns = patterns('',
     (r'^survey_finestatemachine/$', 'survey.views.survey_finestatemachine'),
 
     (r'^survey_report/$', 'survey.views.survey_report'),
+
 
 
     # Audio urls

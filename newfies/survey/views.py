@@ -321,7 +321,7 @@ def survey_change(request, object_id):
     new_survey_que_form = SurveyQuestionNewForm(
                             request.user,
                             initial={'surveyapp': survey})
-    new_survey_res_form = SurveyResponseForm()
+    new_survey_res_form = SurveyResponseForm(request.user)
 
     survey_que_form_collection = {}
     survey_res_form_collection = {}
@@ -334,8 +334,9 @@ def survey_change(request, object_id):
         survey_response_list = SurveyResponse.objects\
                                 .filter(surveyquestion=survey_que)
         for survey_res in sorted(survey_response_list):
-            r = SurveyResponseForm(instance=survey_res)
-            survey_res_form_collection['%s' % survey_res.id] = {'form': r, 'que_id': survey_res.surveyquestion_id}
+            r = SurveyResponseForm(request.user, instance=survey_res)
+            survey_res_form_collection['%s' % survey_res.id] = {'form': r,
+                                    'que_id': survey_res.surveyquestion_id}
 
     if request.method == 'POST':
         if request.POST.get('delete'):

@@ -79,7 +79,7 @@ def survey_question_add_update(request, id, data, form_type,
 @login_required
 @dajaxice_register
 def survey_response_add_update(request, id, que_id, data,
-    form_type, new_response_id):
+                               form_type, new_response_id):
     """ Ajax method to update the response """
     dajax = Dajax()
 
@@ -96,22 +96,20 @@ def survey_response_add_update(request, id, que_id, data,
         return dajax.json()
 
     if form_type == 'old_form':
-        form = SurveyResponseForm(data)
+        form = SurveyResponseForm(request.user, data)
         survey_response = SurveyResponse.objects.get(pk=int(id))
-        form = SurveyResponseForm(data, instance=survey_response)
+        form = SurveyResponseForm(request.user, data, instance=survey_response)
 
     if form_type == 'new_form':
-        form = SurveyResponseForm(data)
+        form = SurveyResponseForm(request.user, data)
 
         if int(new_response_id) != 0:
             survey_response = SurveyResponse.objects\
                                     .get(pk=int(new_response_id))
-            form = SurveyResponseForm(data, instance=survey_response)
+            form = SurveyResponseForm(request.user, data, instance=survey_response)
 
     if form.is_valid():
         key = form.cleaned_data.get("key")
-        keyvalue = form.cleaned_data.get('keyvalue')
-        #TODO: Check keyvalue, this vars is never used
 
         duplicate_count = 0
         # start checking of duplicate key

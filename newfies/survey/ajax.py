@@ -34,19 +34,19 @@ def audio_msg_type(audio_message):
 @login_required
 @dajaxice_register
 def survey_question_add_update(request, id, data, form_type,
-    after_initial_save, record_id):
+                               after_initial_save, record_id):
     """ Ajax method to update the question """
     dajax = Dajax()
 
     if form_type == 'old_form':
-        form = SurveyQuestionForm(data)
+        form = SurveyQuestionForm(request.user, data)
 
         if after_initial_save == 1 and record_id:
             survey_question = SurveyQuestion.objects.get(pk=int(record_id))
         else:
             survey_question = SurveyQuestion.objects.get(pk=int(id))
 
-        form = SurveyQuestionForm(data, instance=survey_question)
+        form = SurveyQuestionForm(request.user, data, instance=survey_question)
 
     if form_type == 'new_form':
         form = SurveyQuestionNewForm(request.user, data)
@@ -62,9 +62,6 @@ def survey_question_add_update(request, id, data, form_type,
             obj = form.save(commit=False)
             obj.user = User.objects.get(username=request.user)
             obj.surveyapp = form.cleaned_data.get('surveyapp')
-            audio_message = form.cleaned_data.get('audio_message')
-            obj.message_type = audio_msg_type(audio_message)
-            obj.type = form.cleaned_data.get('type')
             obj.save()
             dajax.assign('#id', 'value', obj.id)
         #dajax.alert("%s is successfully saved !!" % \
@@ -75,7 +72,7 @@ def survey_question_add_update(request, id, data, form_type,
                                     'error')
         if form_type == 'old_form':
             dajax.remove_css_class('#que_form_' + id + ' input', 'error')
-        dajax.alert("error")
+        #dajax.alert("error")
     return dajax.json()
 
 

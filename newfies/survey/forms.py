@@ -45,7 +45,7 @@ def get_audiofile_list(user):
     """Get audio file list for logged in user
     with default none option"""
     list_af = []
-    list_af.append((0, '---'))
+    list_af.append(('', '---'))
     af_list = field_list(name="audiofile", user=user)
     for i in af_list:
         list_af.append((i[0], i[1]))
@@ -57,7 +57,8 @@ class SurveyQuestionForm(ModelForm):
 
     class Meta:
         model = SurveyQuestion
-        fields = ['question', 'audio_message', 'type', 'data', 'gateway']
+        fields = ['question', 'audio_message', 'type',
+                  'data', 'gateway']
 
     def __init__(self, user, *args, **kwargs):
         super(SurveyQuestionForm, self).__init__(*args, **kwargs)
@@ -67,11 +68,10 @@ class SurveyQuestionForm(ModelForm):
             js_function = "question_form(" + str(instance.id) + ", 1);"
             self.fields['question'].widget.attrs['onBlur'] = js_function
             # To get user's audio file list
-            if user:
-                self.fields['audio_message'].choices = \
+            self.fields['audio_message'].choices = \
                     get_audiofile_list(user)
-                self.fields['audio_message'].widget.attrs['onChange'] = \
-                    js_function
+            self.fields['audio_message'].widget.attrs['onChange'] = \
+                js_function
             self.fields['type'].widget.attrs['onChange'] = js_function
             self.fields['data'].widget.attrs['onBlur'] = js_function
             self.fields['gateway'].widget.attrs['onChange'] = js_function
@@ -81,8 +81,8 @@ class SurveyQuestionNewForm(ModelForm):
     """SurveyQuestionNew ModelForm"""
     class Meta:
         model = SurveyQuestion
-        fields = ['question', 'surveyapp', 'audio_message', 'type', \
-                    'data', 'gateway']
+        fields = ['question', 'surveyapp', 'audio_message', 'type',
+                  'data', 'gateway']
 
     def __init__(self, user, *args, **kwargs):
         super(SurveyQuestionNewForm, self).__init__(*args, **kwargs)
@@ -91,11 +91,10 @@ class SurveyQuestionNewForm(ModelForm):
         js_function = "var initial_que_save=1;to_call_question_form();"
         self.fields['question'].widget.attrs['onBlur'] = js_function
         # To get user's audio file list
-        if user:
-            self.fields['audio_message'].choices = \
-                get_audiofile_list(user)
-            self.fields['audio_message'].widget.attrs['onChange'] = \
-                js_function
+        self.fields['audio_message'].choices = \
+            get_audiofile_list(user)
+        self.fields['audio_message'].widget.attrs['onChange'] = \
+            js_function
         self.fields['type'].widget.attrs['onChange'] = js_function
         self.fields['data'].widget.attrs['onBlur'] = js_function
         self.fields['gateway'].widget.attrs['onChange'] = js_function

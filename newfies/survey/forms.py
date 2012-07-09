@@ -127,7 +127,7 @@ class SurveyResponseForm(ModelForm):
             self.fields['key'].widget.attrs['onBlur'] = js_function
             self.fields['keyvalue'].widget.attrs['onBlur'] = js_function
             self.fields['goto_surveyquestion'].widget\
-                    .attrs['onBlur'] = js_function 
+                    .attrs['onBlur'] = js_function
 
 
 class SurveyReportForm(forms.Form):

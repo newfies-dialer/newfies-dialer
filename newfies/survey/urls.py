@@ -18,12 +18,13 @@ from survey.views import *
 
 
 urlpatterns = patterns('',
-    (r'^survey/question_list/$', 'survey.views.survey_question_list'),
+
     # Survey urls
     (r'^survey/$', 'survey.views.survey_list'),
     (r'^survey_grid/$', 'survey.views.survey_grid'),
     (r'^survey/add/$', 'survey.views.survey_add'),
     (r'^survey/del/(.+)/$', 'survey.views.survey_del'),
+    (r'^survey/question_list/$', 'survey.views.survey_question_list'),
     (r'^survey/(.+)/$', 'survey.views.survey_change'),
     (r'^survey_finestatemachine/$', 'survey.views.survey_finestatemachine'),
 

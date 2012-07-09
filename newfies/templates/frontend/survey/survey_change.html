@@ -389,41 +389,38 @@ function removeResFormField(id) {
 	$(id).remove();
 }
 
-$(function() {
-    var intervalID = setInterval(function call_update_question() {
+// function update goto question field 
+function call_update_question() {
 
-        if(document.location.href.search("/survey/") != -1)
-        {
-            pathArray = window.location.pathname.split( '/' );
-            surveyapp_id = pathArray[2];
+    if(document.location.href.search("/survey/") != -1)
+    {
+        pathArray = window.location.pathname.split( '/' );
+        surveyapp_id = pathArray[2];
 
-            $.ajax({
-                url: "/survey/question_list/",
-                type: "GET",
-                async: false,
-                cache: false,
-                timeout: 30000,
-                data: "surveyapp_id=" + surveyapp_id,
-                success: function(data) {
-                    var data_array = data.split(",");
+        $.ajax({
+            url: "/survey/question_list/",
+            type: "GET",
+            async: false,
+            cache: false,
+            timeout: 30000,
+            data: "surveyapp_id=" + surveyapp_id,
+            success: function(data) {
+                var data_array = data.split(",");
+                var options = '';
 
-                    var options = '';
-                    for (var i = 0; i < data_array.length; i+2) {
-                        options += '<option value="' + data_array[i] + '">' + data_array[i+1] + '</option>';
-                    }
-                    //alert(options);
-
-                },
-                error: function() {
-                    alert("Request failed");
+                for (var i = 0; i < data_array.length; i+=2) {
+                    options += '<option value="' + data_array[i].toString()  + '">' + data_array[i+1].toString() + '</option>';
                 }
-            });
-        }
 
-    }, 5000);
+                $("select#id_goto_surveyquestion").html(options);
+            },
+            error: function() {
+                alert("Request failed");
+            }
+        });
+    }
 
-});
-
+}
 
 </script>
 {% endblock %}

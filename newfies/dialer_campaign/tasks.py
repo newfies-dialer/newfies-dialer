@@ -2,28 +2,26 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from celery.task import Task, PeriodicTask
+from celery.task import PeriodicTask
 from dialer_campaign.models import Campaign, CampaignSubscriber
 from dialer_campaign.function_def import user_dialer_setting
-from dialer_cdr.models import Callrequest, VoIPCall
+from dialer_cdr.models import Callrequest
 from dialer_cdr.tasks import init_callrequest
 from celery.decorators import task
 from django.db import IntegrityError
 from datetime import datetime, timedelta
-from time import sleep
 from django.conf import settings
 from math import ceil
-from datetime import datetime, timedelta
 #from celery.task.http import HttpDispatchTask
 #from common_functions import isint
 
@@ -32,33 +30,6 @@ if settings.DIALERDEBUG:
     Timelaps = 5
 else:
     Timelaps = 60
-
-@task(default_retry_delay=30 * 60)  # retry in 30 minutes.
-def add(x, y):
-    """This task adds 2 numbers.
-    For instance (1, 2) will return '3'
-
-    **Attributes**:
-
-        * ``x`` -
-        * ``y`` -
-
-    **Troubleshoot**:
-
-        * python manage.py shell_plus
-        * from  dialer_campaign import tasks
-        * mytask = tasks.add.delay(1,5)
-        * mytask.result
-    """
-
-    print("Executing task id %r, args: %r kwargs: %r" % (
-        add.request.id, add.request.args, add.request.kwargs))
-    try:
-        return x + y
-    except Exception, exc:
-        self.retry(exc=exc, countdown=60)  # override the default and
-                                           # retry in 1 minute
-
 
 
 #TODO: Put a priority on this task
@@ -81,7 +52,7 @@ def check_campaign_pendingcall(campaign_id):
 
     #TODO: Control the Speed
     #if there is many task pending we should slow down
-    frequency = obj_campaign.frequency # default 10 calls per minutes
+    frequency = obj_campaign.frequency  # default 10 calls per minutes
 
     dialer_set = user_dialer_setting(obj_campaign.user)
 
@@ -106,12 +77,12 @@ def check_campaign_pendingcall(campaign_id):
     #Get the subscriber of this campaign
     # get_pending_subscriber get Max 1000 records
     list_subscriber = obj_campaign.get_pending_subscriber_update(
-                            frequency, 
-                            6 # Update to In Process
+                            frequency,
+                            6  # Update to In Process
                             )
     if list_subscriber:
         logger.debug("Number of subscriber found : %d" % len(list_subscriber))
-    
+
     try:
         no_subscriber = list_subscriber.count()
     except AttributeError:
@@ -128,18 +99,19 @@ def check_campaign_pendingcall(campaign_id):
     for elem_camp_subscriber in list_subscriber:
         """Loop on Subscriber and start the initcall task"""
         count = count + 1
-        logger.info("Add CallRequest for Subscriber (%s) & wait (%s) " % 
+        logger.info("Add CallRequest for Subscriber (%s) & wait (%s) " %
                         (str(elem_camp_subscriber.id), str(time_to_wait)))
 
         #Check if the contact is authorized
-        if not obj_campaign.is_authorized_contact(elem_camp_subscriber.contact.contact):
+        if not obj_campaign.is_authorized_contact(
+                        elem_camp_subscriber.contact.contact):
             logger.error("Error : Contact not authorized")
-            elem_camp_subscriber.status = 7 # Update to Not Authorized
+            elem_camp_subscriber.status = 7  # Update to Not Authorized
             elem_camp_subscriber.save()
             return True
 
         #Create a Callrequest Instance to track the call task
-        new_callrequest = Callrequest(status=1, # PENDING
+        new_callrequest = Callrequest(status=1,  # PENDING
                             call_type=call_type,
                             call_time=datetime.now(),
                             timeout=obj_campaign.calltimeout,
@@ -154,13 +126,16 @@ def check_campaign_pendingcall(campaign_id):
                             timelimit=obj_campaign.callmaxduration,
                             campaign_subscriber=elem_camp_subscriber)
         new_callrequest.save()
-        
+
         #Todo Check if it's a good practice / implement a PID algorithm
-        second_towait = ceil(count  * time_to_wait)
+        second_towait = ceil(count * time_to_wait)
         launch_date = datetime.now() + timedelta(seconds=second_towait)
 
-        logger.info("Init CallRequest at %s" % (launch_date.strftime("%b %d %Y %I:%M:%S")))
-        init_callrequest.apply_async(args=[new_callrequest.id, obj_campaign.id], eta=launch_date)
+        logger.info("Init CallRequest at %s" % \
+                        (launch_date.strftime("%b %d %Y %I:%M:%S")))
+        init_callrequest.apply_async(
+                    args=[new_callrequest.id, obj_campaign.id],
+                    eta=launch_date)
 
 
 class campaign_running(PeriodicTask):
@@ -171,7 +146,7 @@ class campaign_running(PeriodicTask):
         campaign_running.delay()
     """
     run_every = timedelta(seconds=Timelaps)
-    #NOTE : until we implement a PID Controller : 
+    #NOTE : until we implement a PID Controller :
     #http://en.wikipedia.org/wiki/PID_controller
 
     #The campaign have to run every minutes in order to control the number
@@ -180,7 +155,7 @@ class campaign_running(PeriodicTask):
 
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
-        logger.warning( "TASK :: campaign_running")
+        logger.warning("TASK :: campaign_running")
 
         for campaign in Campaign.objects.get_running_campaign():
             logger.debug("=> Campaign name %s (id:%s)" % (campaign.name,
@@ -204,20 +179,19 @@ class campaign_spool_contact(PeriodicTask):
 
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
-        logger.info( "TASK :: campaign_spool_contact")
+        logger.info("TASK :: campaign_spool_contact")
 
         for campaign in Campaign.objects.get_running_campaign():
-            logger.debug("=> Spool Contact : Campaign name %s (id:%s)" % (campaign.name,
-                                                         str(campaign.id)))
+            logger.debug("=> Spool Contact : Campaign name %s (id:%s)" % \
+                (campaign.name, str(campaign.id)))
 
             #IF mysql
-            if settings.DATABASES['default']['ENGINE']=='django.db.backends.mysql':
+            if settings.DATABASES['default']['ENGINE'] == 'django.db.backends.mysql':
                 #INSERT IGNORE WORK FOR MYSQL / Check for other DB Engine
                 collect_subscriber_optimized.delay(campaign.id)
             else:
                 #TODO: Make optimization for Postgresql
                 collect_subscriber.delay(campaign.id)
-
 
 
 @task()
@@ -229,7 +203,8 @@ def collect_subscriber_optimized(campaign_id):
         * ``campaign_id`` - Campaign ID
     """
     logger = collect_subscriber_optimized.get_logger()
-    logger.debug("Collect subscribers for the campaign = %s" % str(campaign_id))
+    logger.debug("Collect subscribers for the campaign = %s" % \
+                str(campaign_id))
 
     #Retrieve the list of active contact
     obj_campaign = Campaign.objects.get(id=campaign_id)
@@ -251,25 +226,29 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
 
     # Call PL-SQL stored procedure
     #CampaignSubscriber.importcontact_pl_sql(campaign_id, phonebook_id)
-    
+
     # Data insert operation - commit required
-    sqlimport = "INSERT IGNORE INTO dialer_campaign_subscriber (contact_id, campaign_id, duplicate_contact, status, created_date, updated_date) "\
-                "SELECT id, %d, contact, 1, NOW(), NOW() FROM dialer_contact WHERE phonebook_id=%d" % (campaign_id, phonebook_id)
-    
+    sqlimport = "INSERT IGNORE INTO dialer_campaign_subscriber (contact_id, "\
+        "campaign_id, duplicate_contact, status, created_date, updated_date) "\
+        "SELECT id, %d, contact, 1, NOW(), NOW() FROM dialer_contact "\
+        "WHERE phonebook_id=%d AND dialer_contact.status=1" % \
+        (campaign_id, phonebook_id)
+
     cursor.execute(sqlimport)
     transaction.commit_unless_managed()
 
     return True
-            
+
+
 @task()
 def import_phonebook(campaign_id, phonebook_id):
     """
-    Read all the contact from phonebook_id and insert them into campaignsubscriber
+    Read all the contact from phonebook_id and insert into campaignsubscriber
     """
     logger = import_phonebook.get_logger()
-    logger.info( "\nTASK :: import_phonebook")
+    logger.info("\nTASK :: import_phonebook")
 
-    #TODO: Add a semafore 
+    #TODO: Add a semafore
 
     obj_campaign = Campaign.objects.get(id=campaign_id)
 
@@ -281,7 +260,8 @@ def import_phonebook(campaign_id, phonebook_id):
         sep = ''
     else:
         sep = ','
-    obj_campaign.imported_phonebook = obj_campaign.imported_phonebook + '%s%d' % (sep, phonebook_id)
+    obj_campaign.imported_phonebook = obj_campaign.imported_phonebook + \
+            '%s%d' % (sep, phonebook_id)
     obj_campaign.save()
 
 
@@ -294,7 +274,8 @@ def collect_subscriber(campaign_id):
         * ``campaign_id`` - Campaign ID
     """
     logger = collect_subscriber.get_logger()
-    logger.debug("Collect subscribers for the campaign = %s" % str(campaign_id))
+    logger.debug("Collect subscribers for the campaign = %s" % \
+                        str(campaign_id))
 
     #Retrieve the list of active contact
     obj_campaign = Campaign.objects.get(id=campaign_id)
@@ -309,10 +290,10 @@ def collect_subscriber(campaign_id):
         for elem_contact in list_contact:
             try:
                 CampaignSubscriber.objects.create(
-                                    contact=elem_contact,
-                                    status=1, #START
-                                    duplicate_contact=elem_contact.contact,
-                                    campaign=obj_campaign)
+                            contact=elem_contact,
+                            status=1,  # START
+                            duplicate_contact=elem_contact.contact,
+                            campaign=obj_campaign)
             except IntegrityError, e:
                 #We don't stop if it fails to add a subscriber to one campaign
                 logger.error("IntegrityError to create CampaignSubscriber "\
@@ -335,10 +316,9 @@ class campaign_expire_check(PeriodicTask):
 
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
-        logger.info( "TASK :: campaign_expire_check")
+        logger.info("TASK :: campaign_expire_check")
         from dialer_campaign.views import common_campaign_status
         for campaign in Campaign.objects.get_expired_campaign():
             logger.debug("=> Campaign name %s (id:%s)" % (campaign.name,
                                                          campaign.id))
             common_campaign_status(campaign.id, 4)
-

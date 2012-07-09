@@ -1,4 +1,4 @@
-.. automodule:: api.resources
+.. automodule:: api.hangupcall_api
 
 .. _HangupcallResource-model:
 

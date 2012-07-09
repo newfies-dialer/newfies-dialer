@@ -2,31 +2,30 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 
 from celery.task import Task, PeriodicTask
+from celery.decorators import task, periodic_task
+from django.conf import settings
+from django.core.cache import cache
 from dialer_campaign.models import Campaign, CampaignSubscriber
 from dialer_campaign.function_def import user_dialer_setting
 from dialer_cdr.models import Callrequest, VoIPCall
-from celery.decorators import task, periodic_task
+from dialer_gateway.utils import phonenumber_change_prefix
 from datetime import datetime, timedelta
 from time import sleep
 from uuid import uuid1
-from django.conf import settings
-from dialer_gateway.utils import phonenumber_change_prefix
-import sys
-from django.core.cache import cache
-from django.utils.hashcompat import md5_constructor as md5
 
-LOCK_EXPIRE = 60 * 1 # Lock expires in 1 minute
+
+LOCK_EXPIRE = 60 * 1  # Lock expires in 1 minute
 
 
 def single_instance_task(timeout):
@@ -48,7 +47,7 @@ def single_instance_task(timeout):
 @periodic_task(run_every=timedelta(seconds=1))
 @single_instance_task(LOCK_EXPIRE)
 def callrequest_pending(*args, **kwargs):
-    #A periodic task that checks for pending calls 
+    #A periodic task that checks for pending calls
     #**Usage**:
     #    callrequest_pending.delay()
     #
@@ -82,7 +81,7 @@ def init_callrequest(callrequest_id, campaign_id):
     """
     logger = init_callrequest.get_logger()
     obj_callrequest = Callrequest.objects.get(id=callrequest_id)
-    obj_callrequest.status = 7 # Update to Process
+    obj_callrequest.status = 7  # Update to Process
     obj_callrequest.save()
     logger.info("TASK :: init_callrequest - status = %s" %
                                         str(obj_callrequest.status))
@@ -92,7 +91,7 @@ def init_callrequest(callrequest_id, campaign_id):
     except:
         logger.error("Can't find the campaign : %s" % campaign_id)
         return False
-    
+
     if obj_callrequest.aleg_gateway:
         id_aleg_gateway = obj_callrequest.aleg_gateway.id
         dialout_phone_number = phonenumber_change_prefix(
@@ -112,13 +111,13 @@ def init_callrequest(callrequest_id, campaign_id):
     gateway_retries = obj_callrequest.aleg_gateway.gateway_retries
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
     callmaxduration = obj_campaign.callmaxduration
-    
+
     #Sanitize gateways
     gateways = gateways.strip()
     if gateways[-1] != '/':
         gateways = gateways + '/'
 
-    if obj_campaign.content_type.app_label=='survey':
+    if obj_campaign.content_type.app_label == 'survey':
         #Use Survey Statemachine
         answer_url = settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL
     else:
@@ -159,7 +158,8 @@ def init_callrequest(callrequest_id, campaign_id):
         try:
             #Request Call via Plivo
             from telefonyhelper import call_plivo
-            result= call_plivo(callerid=obj_callrequest.callerid,
+            result = call_plivo(
+                        callerid=obj_callrequest.callerid,
                         phone_number=dialout_phone_number,
                         Gateways=gateways,
                         GatewayCodecs=gateway_codecs,
@@ -171,11 +171,13 @@ def init_callrequest(callrequest_id, campaign_id):
                         TimeLimit=str(callmaxduration))
         except:
             logger.error('error : call_plivo')
-            obj_callrequest.status = 2 # Update to Failure
+            obj_callrequest.status = 2  # Update to Failure
             obj_callrequest.save()
-            if obj_callrequest.campaign_subscriber and obj_callrequest.campaign_subscriber.id:
-                obj_subscriber = CampaignSubscriber.objects.get(id=obj_callrequest.campaign_subscriber.id)
-                obj_subscriber.status = 4 # Fail
+            if obj_callrequest.campaign_subscriber \
+                and obj_callrequest.campaign_subscriber.id:
+                obj_subscriber = CampaignSubscriber.objects.get(
+                            id=obj_callrequest.campaign_subscriber.id)
+                obj_subscriber.status = 4  # Fail
 
                 obj_subscriber.save()
             return False
@@ -188,9 +190,12 @@ def init_callrequest(callrequest_id, campaign_id):
         return False
 
     #Update CampaignSubscriber
-    if obj_callrequest.campaign_subscriber and obj_callrequest.campaign_subscriber.id:
-        obj_subscriber = CampaignSubscriber.objects.get(id=obj_callrequest.campaign_subscriber.id)
-        if obj_subscriber.count_attempt == None or not obj_subscriber.count_attempt >=0:
+    if obj_callrequest.campaign_subscriber \
+        and obj_callrequest.campaign_subscriber.id:
+        obj_subscriber = CampaignSubscriber.objects.get(
+                    id=obj_callrequest.campaign_subscriber.id)
+        if obj_subscriber.count_attempt == None \
+            or not obj_subscriber.count_attempt >= 0:
             obj_subscriber.count_attempt = 1
         else:
             obj_subscriber.count_attempt = obj_subscriber.count_attempt + 1
@@ -238,7 +243,7 @@ def dummy_testcall(callerid, phone_number, gateway):
                  dummy_testcall.request.kwargs))
     sleep(1)
     logger.info("Waiting 1 seconds...")
-    
+
     request_uuid = uuid1()
 
     #Trigger AnswerURL
@@ -246,7 +251,7 @@ def dummy_testcall(callerid, phone_number, gateway):
     #Trigger HangupURL
     dummy_test_hangupurl.delay(request_uuid)
 
-    return {'RequestUUID' : request_uuid}
+    return {'RequestUUID': request_uuid}
 
 
 @task(default_retry_delay=2)  # retry in 2 seconds.
@@ -264,7 +269,7 @@ def dummy_test_answerurl(request_uuid):
                 (dummy_test_answerurl.request.id,
                  dummy_test_answerurl.request.args,
                  dummy_test_answerurl.request.kwargs))
-    
+
     logger.info("Waiting 1 seconds...")
     sleep(1)
     #find Callrequest
@@ -318,12 +323,12 @@ def dummy_test_hangupurl(request_uuid):
     #find VoIPCall
     try:
         obj_voipcall = VoIPCall.objects.get(request_uuid=request_uuid)
-    except :
+    except:
         sleep(1)
         obj_voipcall = VoIPCall.objects.get(request_uuid=request_uuid)
 
     #Update VoIPCall
-    obj_voipcall.status = 'ANSWER' # 1
+    obj_voipcall.status = 'ANSWER'
     obj_voipcall.duration = 55
     obj_voipcall.billsec = 55
     obj_voipcall.save()
@@ -331,7 +336,7 @@ def dummy_test_hangupurl(request_uuid):
     obj_callrequest = Callrequest.objects.get(request_uuid=request_uuid)
     obj_callrequest.hangup_cause = 'NORMAL_CLEARING'
     obj_callrequest.save()
-    
+
     return True
 
 
@@ -350,7 +355,8 @@ class init_call_retry(PeriodicTask):
         logger.info("TASK :: init_call_retry")
         try:
             # get callrequest which are failed
-            callreq_retry_list = Callrequest.objects.filter(status=2, call_type=1)
+            callreq_retry_list = Callrequest.objects\
+                                    .filter(status=2, call_type=1)
             for callreq in callreq_retry_list:
                 try:
                     # Call type => Retry Done = 3
@@ -372,13 +378,13 @@ class init_call_retry(PeriodicTask):
                     # Call type =>  Can Not Retry = 2
                     callreq.call_type = 2
                     callreq.save()
-                    logger.error("Can't find dialer setting for user of the campaign : %s" \
+                    logger.error("Can't find dialer setting on campaign : %s" \
                                  % callreq.campaign_id)
                     break
 
                 # TODO : Review Logic
-                # Create new callrequest, Assign parent_callrequest, Change callrequest_type
-                # & num_attempt
+                # Create new callrequest, Assign parent_callrequest
+                # Change callrequest_type & num_attempt
                 obj = Callrequest(request_uuid=uuid1(),
                                     parent_callrequest_id=callreq.id,
                                     call_type=1,

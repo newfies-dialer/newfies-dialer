@@ -17,18 +17,21 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse, Http404
-from django.db.models import *
 from django.template.context import RequestContext
 from django.utils.translation import ugettext_lazy as _
 from django.utils import simplejson
 from django.db.models import Q
+from django.conf import settings
 from notification import models as notification
 from dialer_campaign.models import common_contact_authorization
 from dialer_campaign.views import current_view, notice_count, grid_common_function
 from dialer_campaign.function_def import user_dialer_setting_msg, variable_value
 from dialer_settings.models import DialerSetting
 from user_profile.models import UserProfile
-from user_profile.forms import *
+from user_profile.forms import UserChangeDetailForm, \
+                               UserChangeDetailExtendForm, \
+                               CheckPhoneNumberForm,\
+                               UserProfileForm
 
 
 @login_required
@@ -154,11 +157,15 @@ def customer_detail_change(request):
 
 
 def call_style(val):
-    unseen_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/new.png);"'
-    seen_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/tick.png);"'
-    if val == 1:
+    """Notification icon style"""
+    unseen_style = \
+        'style="text-decoration:none;background-image:url(%snewfies/icons/new.png);"' \
+            % settings.STATIC_URL
+    seen_style = \
+        'style="text-decoration:none;background-image:url(%snewfies/icons/tick.png);"' \
+            % settings.STATIC_URL
+
+    if val:
         return unseen_style
     else:
         return seen_style
@@ -192,12 +199,12 @@ def notification_grid(request):
     rows = [{'id': row.id,
              'cell': ['<input type="checkbox" name="select" class="checkbox"\
                       value="' + str(row.id) + '" />',
-                      row.message,
+                      str(row.message),
                       str(row.notice_type),
                       str(row.sender),
                       str(row.added),
                       str('<a href="../update_notice_status_cust/' + str(row.id) + '/" class="icon" ' \
-                          + call_style(row.unseen) + ' ">&nbsp;</a>'),
+                        + call_style(row.unseen)  + '>&nbsp;</a>' ),
              ]}for row in user_notification_list ]
 
     data = {'rows': rows,

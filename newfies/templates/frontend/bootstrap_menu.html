@@ -18,8 +18,21 @@
 
           {% if user.is_authenticated %}
             <ul class="nav">
-              <li {% ifequal module 'customer_dashboard' %}class="active"{% endifequal %}><a href="/dashboard/">{% trans "Dashboard" %}</a></li>
-              <li {% ifequal module 'campaign' %}class="active"{% endifequal %}><a href="/campaign/">{% trans "Campaign" %}</a></li>
+
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Dashboard" %} <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                      <li {% ifequal module 'customer_dashboard' %}class="active"{% endifequal %}><a href="/dashboard/">{% trans "Voice Dashboard" %}</a></li>
+                  </ul>
+              </li>
+
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Campaign" %} <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                      <li {% ifequal module 'campaign' %}class="active"{% endifequal %}><a href="/campaign/">{% trans "Voice Campaign" %}</a></li>
+                  </ul>
+              </li>
+
               <li {% ifequal module 'phonebook' %}class="active"{% endifequal %}><a href="/phonebook/">{% trans "Phonebooks" %}</a></li>
               <li {% ifequal module 'contact' %}class="active"{% endifequal %}><a href="/contact/">{% trans "Contacts" %}</a></li>
               <li {% ifequal module 'audio' %}class="active"{% endifequal %}><a href="/audio/">{% trans "Audio files" %}</a></li>
@@ -46,7 +59,7 @@
 
             {% if user.is_authenticated %}
             <ul class="nav pull-right">
-              <li id="fat-menu" class="dropdown">
+              <li id="fat-menu-1" class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username|capfirst }} <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li {% ifequal module 'detail_change' %}class="active"{% endifequal %}><a href="/user_detail_change/?action=tabs-1">
@@ -66,7 +79,7 @@
             </ul>
             {% if notice_count %}
             <ul class="nav pull-right">
-              <li id="fat-menu" class="dropdown">
+              <li id="fat-menu-2" class="dropdown">
                 <a href="/user_detail_change/?action=tabs-3">
                     <span class="label label-warning">{{ notice_count }} {% trans "notifications" %}</span>
                 </a>
@@ -75,7 +88,7 @@
             {% endif %}
 
             {% endif %}
-          
+
       </div><!--/.nav-collapse -->
     </div>
   </div>

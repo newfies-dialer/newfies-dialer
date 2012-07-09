@@ -13,9 +13,6 @@
 #
 
 from django import forms
-from django.forms import *
-from django.contrib import *
-from django.contrib.admin.widgets import *
 from django.utils.translation import ugettext_lazy as _
 from dialer_cdr.models import VOIPCALL_DISPOSITION
 from dialer_campaign.forms import SearchForm

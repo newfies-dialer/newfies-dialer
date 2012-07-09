@@ -2,47 +2,55 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 
-# Create your views here.
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.views import password_reset, password_reset_done,\
-password_reset_confirm, password_reset_complete
+                        password_reset_confirm, password_reset_complete
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
-from django.db.models import *
+from django.db.models import Sum, Avg, Count
 from django.core.urlresolvers import reverse
-from django.core.mail import send_mail, mail_admins
+from django.core.mail import mail_admins
 from django.conf import settings
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.db.models import Q
+from django.contrib.contenttypes.models import ContentType
 from notification import models as notification
-from dialer_campaign.models import *
-from dialer_campaign.forms import *
-from dialer_campaign.function_def import *
+from dialer_campaign.models import Phonebook, Contact, Campaign, \
+                        CampaignSubscriber
+from dialer_campaign.forms import ContactSearchForm, Contact_fileImport, \
+                        LoginForm, PhonebookForm, ContactForm, CampaignForm, \
+                        DashboardForm
+from dialer_campaign.function_def import user_attached_with_dialer_settings, \
+                        check_dialer_setting, dialer_setting_limit, \
+                        variable_value, contact_search_common_fun,\
+                        striplist, calculate_date, date_range, \
+                        get_campaign_status_name, user_dialer_setting_msg
 from dialer_campaign.tasks import collect_subscriber
-from dialer_cdr.models import *
+
+from dialer_cdr.models import VoIPCall
 from inspect import stack, getmodule
-from datetime import *
+from datetime import datetime
 from dateutil import parser
+from dateutil.relativedelta import relativedelta
 import urllib
-import qsstats
 import time
 import csv
-import ast, re
+import ast
+import re
 
 # Define disposition color
 ANSWER_COLOR = '#8BEA00'
@@ -62,6 +70,7 @@ update_style = 'style="text-decoration:none;background-image:url(' + \
 delete_style = 'style="text-decoration:none;background-image:url(' + \
                 settings.STATIC_URL + 'newfies/icons/delete.png);"'
 
+
 def current_view(request):
     name = getmodule(stack()[1][0]).__name__
     return stack()[1][3]
@@ -76,7 +85,7 @@ def customer_dashboard(request, on_index=None):
         * Total Campaigns contacts
         * Amount of contact reached today
         * Disposition of calls via pie chart
-        * Call records & Duration of calls are shown on graph by days/hours basis.
+        * Call records & Duration of calls are shown on graph by days/hours
 
     **Attributes**:
 
@@ -91,15 +100,16 @@ def customer_dashboard(request, on_index=None):
     # Contacts count which are active and belong to those phonebook(s) which is
     # associated with all campaign
     campaign_id_list = ''
-    campaign_phonebbok_active_contact_count = 0
+    pb_active_contact_count = 0
     for i in campaign:
-        campaign_phonebbok_active_contact_count +=\
+        pb_active_contact_count +=\
             Contact.objects.filter(phonebook__campaign=i.id, status=1).count()
         campaign_id_list += str(i.id) + ","
     campaign_id_list = campaign_id_list[:-1]
 
     # Phonebook list for logged in user
-    phonebook_id_list = Phonebook.objects.values_list('id').filter(user=request.user)
+    phonebook_id_list = Phonebook.objects.values_list('id')\
+                                .filter(user=request.user)
 
     # Total count of contacts for logged in user
     total_of_phonebook_contacts = 0
@@ -108,8 +118,8 @@ def customer_dashboard(request, on_index=None):
         Contact.objects.filter(phonebook__in=phonebook_id_list).count()
 
     form = DashboardForm(request.user)
-    total_data = [] # for humblefinance chart
-    final_calls = [] # for pie chart
+    total_data = []  # for humblefinance chart
+    final_calls = []  # for pie chart
     min_limit = ''
     max_limit = ''
     total_duration_sum = 0
@@ -135,7 +145,7 @@ def customer_dashboard(request, on_index=None):
     only_data_date_list = []
 
     if campaign_id_list:
-        selected_campaign = campaign_id_list[0] # default campaign id
+        selected_campaign = campaign_id_list[0]  # default campaign id
 
     # selected_campaign should not be empty
     if selected_campaign:
@@ -156,14 +166,15 @@ def customer_dashboard(request, on_index=None):
         max_limit = time.mktime(end_date.timetuple())
 
         # date_length is used to do group by starting_date
-        if int(search_type) >= 2: # all options except 30 days
+        if int(search_type) >= 2:  # all options except 30 days
             date_length = 13
-            if int(search_type) == 3: # yesterday 
+            if int(search_type) == 3:  # yesterday
                 now = datetime.now()
-                start_date = datetime(now.year,
-                                      now.month,
-                                      now.day,
-                                      0, 0, 0, 0) - relativedelta(days=1)
+                start_date = datetime(
+                                now.year,
+                                now.month,
+                                now.day,
+                                0, 0, 0, 0) - relativedelta(days=1)
                 end_date = datetime(now.year,
                                     now.month,
                                     now.day,
@@ -171,7 +182,7 @@ def customer_dashboard(request, on_index=None):
             if int(search_type) >= 5:
                 date_length = 16
         else:
-            date_length = 10 # Last 30 days option
+            date_length = 10  # Last 30 days option
 
         select_data = \
             {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1," + \
@@ -184,7 +195,8 @@ def customer_dashboard(request, on_index=None):
                              user=request.user,
                              starting_date__range=(start_date, end_date))\
                      .extra(select=select_data)\
-                     .values('starting_date', 'disposition').annotate(Sum('duration'))\
+                     .values('starting_date', 'disposition')\
+                     .annotate(Sum('duration'))\
                      .annotate(Avg('duration'))\
                      .annotate(Count('starting_date'))\
                      .order_by('starting_date')
@@ -193,20 +205,23 @@ def customer_dashboard(request, on_index=None):
         for i in calls:
             # convert unicode date string into date
             starting_datetime = parser.parse(str(i['starting_date']))
-            final_calls.append({'starting_date': i['starting_date'],
-                                'starting_datetime': \
-                                    time.mktime(starting_datetime.timetuple()),
-                                'starting_date__count': i['starting_date__count'],
-                                'duration__sum': i['duration__sum'],
-                                'duration__avg': i['duration__avg'],
-                                'disposition': i['disposition']
-                                })
-            
+            final_calls.append(
+                    {
+                    'starting_date': i['starting_date'],
+                    'starting_datetime': \
+                        time.mktime(starting_datetime.timetuple()),
+                    'starting_date__count': i['starting_date__count'],
+                    'duration__sum': i['duration__sum'],
+                    'duration__avg': i['duration__avg'],
+                    'disposition': i['disposition']
+                    })
+
             if i['disposition'] == 'ANSWER':
                 total_answered += i['starting_date__count']
             elif i['disposition'] == 'BUSY' or i['disposition'] == 'USER_BUSY':
                 total_busy += i['starting_date__count']
-            elif i['disposition'] == 'NOANSWER' or i['disposition'] == 'NO_ANSWER':
+            elif i['disposition'] == 'NOANSWER' \
+                or i['disposition'] == 'NO_ANSWER':
                 total_not_answered += i['starting_date__count']
             elif i['disposition'] == 'CANCEL':
                 total_cancel += i['starting_date__count']
@@ -220,12 +235,13 @@ def customer_dashboard(request, on_index=None):
                 total_torture += i['starting_date__count']
             elif i['disposition'] == 'INVALIDARGS':
                 total_invalidargs += i['starting_date__count']
-            elif i['disposition'] == 'NOROUTE' or i['disposition'] == 'NO_ROUTE':
+            elif i['disposition'] == 'NOROUTE' \
+                or i['disposition'] == 'NO_ROUTE':
                 total_noroute += i['starting_date__count']
             else:
-                total_forbidden += i['starting_date__count'] # FORBIDDEN
+                total_forbidden += i['starting_date__count']  # FORBIDDEN
 
-        # following part got from cdr-stats 'global report' used by humblefinance
+        # This part got from cdr-stats 'global report' used by humblefinance
         # following calls list is without dispostion & group by call date
         calls = VoIPCall.objects\
                      .filter(callrequest__campaign=selected_campaign,
@@ -248,8 +264,8 @@ def customer_dashboard(request, on_index=None):
                                  int(data['starting_date'][5:7]),
                                  int(data['starting_date'][8:10]),
                                  int(data['starting_date'][11:13]),
-                                 0, # int(data['starting_date'][14:16])
-                                 0, # int(data['starting_date'][17:19])
+                                 0,
+                                 0,
                                  0)
                 if int(search_type) >= 5:
                     ctime = datetime(int(data['starting_date'][0:4]),
@@ -257,7 +273,7 @@ def customer_dashboard(request, on_index=None):
                                  int(data['starting_date'][8:10]),
                                  int(data['starting_date'][11:13]),
                                  int(data['starting_date'][14:16]),
-                                 0, # int(data['starting_date'][17:19])
+                                 0,
                                  0)
             else:
                 ctime = datetime(int(data['starting_date'][0:4]),
@@ -275,27 +291,27 @@ def customer_dashboard(request, on_index=None):
             # all options except 30 days
             if int(search_type) >= 2:
                 calls_dict[int(ctime.strftime("%Y%m%d%H"))] = \
-                {'starting_date__count':data['starting_date__count'],
-                 'duration__sum':data['duration__sum'],
-                 'duration__avg':data['duration__avg'],
+                {'starting_date__count': data['starting_date__count'],
+                 'duration__sum': data['duration__sum'],
+                 'duration__avg': data['duration__avg'],
                  #'date_in_int': int(ctime.strftime("%Y%m%d%H")),
                  'starting_datetime': time.mktime(ctime.timetuple()),
                 }
                 seven_days_option_list.append({
-                 'starting_date__count':data['starting_date__count'],
-                 'starting_date':data['starting_date'],
-                 'duration__sum':data['duration__sum'],
-                 'duration__avg':data['duration__avg'],
+                 'starting_date__count': data['starting_date__count'],
+                 'starting_date': data['starting_date'],
+                 'duration__sum': data['duration__sum'],
+                 'duration__avg': data['duration__avg'],
                  'date_in_int': int(ctime.strftime("%Y%m%d%H")),
                  'starting_datetime': time.mktime(ctime.timetuple()),
                 })
                 only_data_date_list.append(ctime.strftime("%Y%m%d"))
                 if int(search_type) >= 5:
                     twelve_hour_list.append({
-                     'starting_date__count':data['starting_date__count'],
-                     'starting_date':data['starting_date'],
-                     'duration__sum':data['duration__sum'],
-                     'duration__avg':data['duration__avg'],
+                     'starting_date__count': data['starting_date__count'],
+                     'starting_date': data['starting_date'],
+                     'duration__sum': data['duration__sum'],
+                     'duration__avg': data['duration__avg'],
                      'date_in_int': int(ctime.strftime("%Y%m%d%H%M")),
                      'starting_datetime': time.mktime(ctime.timetuple()),
                     })
@@ -303,9 +319,9 @@ def customer_dashboard(request, on_index=None):
             else:
                 # Last 30 days option
                 calls_dict[int(ctime.strftime("%Y%m%d"))] = \
-                {'starting_date__count':data['starting_date__count'],
-                 'duration__sum':data['duration__sum'],
-                 'duration__avg':data['duration__avg'],
+                {'starting_date__count': data['starting_date__count'],
+                 'duration__sum': data['duration__sum'],
+                 'duration__avg': data['duration__avg'],
                  #'date_in_int': int(ctime.strftime("%Y%m%d")),
                  'starting_datetime': time.mktime(ctime.timetuple()),
                 }
@@ -317,7 +333,7 @@ def customer_dashboard(request, on_index=None):
             # Yesterday & 24 hrs
             if int(search_type) >= 2:
                 inttime = int(date.strftime("%Y%m%d%H"))
-            else: # Last 30 days
+            else:  # Last 30 days
                 inttime = int(date.strftime("%Y%m%d"))
 
             name_date = _(date.strftime("%B")) + " " + str(date.day) + \
@@ -325,28 +341,32 @@ def customer_dashboard(request, on_index=None):
 
             if inttime in calls_dict.keys():
                 total_data.append({
-                        'count': i, 'day': date.day,
-                        'month': date.month, 'year': date.year,
-                        'date': name_date,
-                        'starting_date__count': \
-                            calls_dict[inttime]['starting_date__count'],
-                        'duration__sum': calls_dict[inttime]['duration__sum'],
-                        'duration__avg': calls_dict[inttime]['duration__avg'],
-                        #'disposition': calls_dict[inttime]['disposition'],
-                        'starting_date': calls_dict[inttime]['starting_datetime'],
-                    })
+                    'count': i, 'day': date.day,
+                    'month': date.month, 'year': date.year,
+                    'date': name_date,
+                    'starting_date__count': \
+                        calls_dict[inttime]['starting_date__count'],
+                    'duration__sum': calls_dict[inttime]['duration__sum'],
+                    'duration__avg': calls_dict[inttime]['duration__avg'],
+                    #'disposition': calls_dict[inttime]['disposition'],
+                    'starting_date': calls_dict[inttime]['starting_datetime'],
+                })
 
                 # Extra part: To count total no of calls & their duration
-                total_duration_sum = total_duration_sum + calls_dict[inttime]['duration__sum']
+                total_duration_sum = total_duration_sum + \
+                                calls_dict[inttime]['duration__sum']
                 total_call_count += calls_dict[inttime]['starting_date__count']
             else:
                 date = parser.parse(str(date))
                 total_data.append({
-                       'count':i, 'day':date.day,
-                       'month':date.month, 'year':date.year,
-                       'date':name_date ,
-                       'starting_date__count':0,
-                       'duration__sum':0, 'duration__avg':0,
+                       'count': i,
+                       'day': date.day,
+                       'month': date.month,
+                       'year': date.year,
+                       'date': name_date,
+                       'starting_date__count': 0,
+                       'duration__sum': 0,
+                       'duration__avg': 0,
                        'disposition': '',
                        'starting_date': inttime,
                     })
@@ -359,86 +379,103 @@ def customer_dashboard(request, on_index=None):
             try:
                 # Search inttime time only_data_date_list
                 only_data_date_list.index(inttime)
-                # current/previous date & count check to avoid duplicate records
+                # current/previous date & count check to avoid duplicate
                 # in final record set
                 current_data_date = inttime
-                previuos_data_date = ''
+                previous_date = ''
                 current_previous_count = 0
 
-                for calls_itme in seven_days_option_list:
-                    if previuos_data_date == '':
-                        previuos_data_date = current_data_date
+                for icalls in seven_days_option_list:
+                    if previous_date == '':
+                        previous_date = current_data_date
 
                     # check dateList date into seven_days_option_list date
-                    if str(calls_itme['date_in_int'])[0:8] == inttime:
+                    if str(icalls['date_in_int'])[0:8] == inttime:
                         # compare previous & current date & count
-                        if previuos_data_date == str(calls_itme['date_in_int'])[0:8] \
-                           and current_previous_count == 0:
+                        if previous_date == str(icalls['date_in_int'])[0:8] \
+                            and current_previous_count == 0:
 
                             # count increment
                             current_previous_count = current_previous_count + 1
                             # per day option
                             for option in [0, 6, 12, 18]:
-                                temp_date = str(calls_itme['date_in_int'])[0:8]
+                                temp_date = str(icalls['date_in_int'])[0:8]
                                 name_date = \
                                 datetime.strptime(str(temp_date[0:4] + '-' +
                                                       temp_date[4:6] + '-' +
                                                       temp_date[6:8] + ' ' +
                                                       str(option).zfill(2)),
                                                       '%Y-%m-%d %H')
-                                name_date = _(date.strftime("%B")) + " " + str(date.day) + \
-                                             ", " + str(date.year)
-                                seven_days_result_set.append({'count':j,
-                                                    'day': temp_date[6:8],
-                                                    'month':temp_date[4:6],
-                                                    'year': temp_date[0:4],
-                                                    'date':name_date ,
-                                                    'starting_date__count':0,
-                                                    'duration__sum':0,
-                                                    'duration__avg':0,
-                                                    'starting_date': inttime,
-                                                   })
+                                name_date = _(date.strftime("%B")) + " " + \
+                                                str(date.day) + \
+                                                ", " + str(date.year)
+                                seven_days_result_set.append(
+                                    {
+                                    'count': j,
+                                    'day': temp_date[6:8],
+                                    'month': temp_date[4:6],
+                                    'year': temp_date[0:4],
+                                    'date': name_date,
+                                    'starting_date__count': 0,
+                                    'duration__sum': 0,
+                                    'duration__avg': 0,
+                                    'starting_date': inttime,
+                                    })
                                 j += 1
                         else:
-                            previuos_data_date = str(calls_itme['date_in_int'])[0:8]
+                            previous_date = str(icalls['date_in_int'])[0:8]
                             current_previous_count = current_previous_count + 1
 
                         # only add seven_days_option_list record
                         name_date = \
-                        datetime.strptime(str(calls_itme['starting_date']), '%Y-%m-%d %H')
+                        datetime.strptime(str(icalls['starting_date']),
+                                        '%Y-%m-%d %H')
 
-                        name_date = _(name_date.strftime("%B")) + " " + str(name_date.day) + \
+                        name_date = _(name_date.strftime("%B")) + " " + \
+                                    str(name_date.day) + \
                                      ", " + str(date.year)
-                        seven_days_result_set.append({'count': j,
-                                'day': temp_date[6:8], 'month':temp_date[4:6],
-                                'year': temp_date[0:4], 'date':name_date ,
-                                'starting_date__count': \
-                                    calls_itme['starting_date__count'],
-                                'duration__sum': calls_itme['duration__sum'],
-                                'duration__avg': calls_itme['duration__avg'],
-                               })
+                        seven_days_result_set.append(
+                            {
+                            'count': j,
+                            'day': temp_date[6:8],
+                            'month': temp_date[4:6],
+                            'year': temp_date[0:4],
+                            'date': name_date,
+                            'starting_date__count': \
+                                    icalls['starting_date__count'],
+                            'duration__sum': icalls['duration__sum'],
+                            'duration__avg': icalls['duration__avg'],
+                            })
                         j += 1
             except:
                 # add data for dates which are not in seven_days_option_list
                 inttime = datetime.strptime(str(inttime), '%Y%m%d')
                 # per day option
                 for option in [0, 6, 12, 18]:
-                    temp_date = str(inttime)[0:4] + str(inttime)[5:7] + str(inttime)[8:10]
+                    temp_date = str(inttime)[0:4] + \
+                                    str(inttime)[5:7] + \
+                                    str(inttime)[8:10]
                     name_date = \
                     datetime.strptime(str(temp_date[0:4] + '-' +
                                           temp_date[4:6] + '-' +
                                           temp_date[6:8] + ' ' +
                                           str(option).zfill(2)),
                                           '%Y-%m-%d %H')
-                    name_date = _(date.strftime("%B")) + " " + str(date.day) + \
-                                 ", " + str(date.year)
-                    seven_days_result_set.append({'count':j, 'day': temp_date[6:8],
-                                            'month':temp_date[4:6], 'year': temp_date[0:4],
-                                            'date':name_date ,
-                                            'starting_date__count':0,
-                                            'duration__sum':0, 'duration__avg':0,
-                                            'starting_date': inttime,
-                                           })
+                    name_date = _(date.strftime("%B")) + " " + \
+                                    str(date.day) + \
+                                    ", " + str(date.year)
+                    seven_days_result_set.append(
+                        {
+                        'count': j,
+                        'day': temp_date[6:8],
+                        'month': temp_date[4:6],
+                        'year': temp_date[0:4],
+                        'date': name_date,
+                        'starting_date__count': 0,
+                        'duration__sum': 0,
+                        'duration__avg': 0,
+                        'starting_date': inttime,
+                        })
                     j += 1
 
         m = 0
@@ -449,20 +486,20 @@ def customer_dashboard(request, on_index=None):
             try:
                 # Search inttime time twelve_hour_list
                 only_data_date_list.index(inttime)
-                # current/previous date & count check to avoid duplicate records
+                # current/previous date & count check to avoid duplicate
                 # in final record set
                 current_data_date = inttime
-                previuos_data_date = ''
+                previous_date = ''
                 current_previous_count = 0
                 # last_hour_list = twelve_hour_list
-                for calls_itme in twelve_hour_list:
-                    if previuos_data_date == '':
-                        previuos_data_date = current_data_date
+                for icalls in twelve_hour_list:
+                    if previous_date == '':
+                        previous_date = current_data_date
 
                     # check dateList date into seven_days_option_list date
-                    if str(calls_itme['date_in_int'])[0:10] == inttime:
+                    if str(icalls['date_in_int'])[0:10] == inttime:
                         # compare prvious & current date & count
-                        if previuos_data_date == str(calls_itme['date_in_int'])[0:10] \
+                        if previous_date == str(icalls['date_in_int'])[0:10] \
                            and current_previous_count == 0:
 
                             # count increment
@@ -475,50 +512,52 @@ def customer_dashboard(request, on_index=None):
                                 min_list = [0, 15, 30, 45]
 
                             if int(search_type) == 7:
-                                min_list = [i for i in range(60) if i%5==0]
+                                min_list = [i for i in range(60) if i % 5 == 0]
 
                             for option in min_list:
-                                temp_date = str(calls_itme['date_in_int'])[0:10]
+                                temp_date = str(icalls['date_in_int'])[0:10]
                                 name_date = \
                                 datetime.strptime(str(temp_date[0:4] + '-' +
                                                       temp_date[4:6] + '-' +
                                                       temp_date[6:8] + ' ' +
-                                                      temp_date[9:11] + ':'+
+                                                      temp_date[9:11] + ':' +
                                                       str(option).zfill(2)),
                                                       '%Y-%m-%d %H:%M')
                                 name_date = \
                                 _(date.strftime("%B")) + " " +\
                                 str(date.day) + ", " + str(date.year)
-                                common_hour_result_set.append({'count':m,
+                                common_hour_result_set.append({'count': m,
                                                     'day': temp_date[6:8],
-                                                    'month':temp_date[4:6],
+                                                    'month': temp_date[4:6],
                                                     'year': temp_date[0:4],
-                                                    'date':name_date ,
-                                                    'starting_date__count':0,
-                                                    'duration__sum':0,
-                                                    'duration__avg':0,
+                                                    'date': name_date,
+                                                    'starting_date__count': 0,
+                                                    'duration__sum': 0,
+                                                    'duration__avg': 0,
                                                     'starting_date': inttime,
                                                    })
                                 m += 1
                         else:
-                            previuos_data_date = str(calls_itme['date_in_int'])[0:10]
+                            previous_date = str(icalls['date_in_int'])[0:10]
                             current_previous_count = current_previous_count + 1
 
                         # only add data records
                         name_date = \
-                        datetime.strptime(str(calls_itme['starting_date']), '%Y-%m-%d %H:%M')
+                        datetime.strptime(str(icalls['starting_date']),
+                                            '%Y-%m-%d %H:%M')
 
-                        name_date = _(name_date.strftime("%B")) + " " + str(name_date.day) + \
-                                     ", " + str(date.year)
+                        name_date = _(name_date.strftime("%B")) + " " + \
+                                    str(name_date.day) + \
+                                    ", " + str(date.year)
                         common_hour_result_set.append({'count': m,
                                 'day': temp_date[6:8],
-                                'month':temp_date[4:6],
+                                'month': temp_date[4:6],
                                 'year': temp_date[0:4],
-                                'date':name_date ,
+                                'date': name_date,
                                 'starting_date__count': \
-                                    calls_itme['starting_date__count'],
-                                'duration__sum': calls_itme['duration__sum'],
-                                'duration__avg': calls_itme['duration__avg'],
+                                    icalls['starting_date__count'],
+                                'duration__sum': icalls['duration__sum'],
+                                'duration__avg': icalls['duration__avg'],
                                })
                         m += 1
             except:
@@ -531,22 +570,19 @@ def customer_dashboard(request, on_index=None):
                     min_list = [0, 15, 30, 45]
 
                 if int(search_type) == 7:
-                    min_list = [i for i in range(60) if i%5==0]
+                    min_list = [i for i in range(60) if i % 5 == 0]
 
                 for option in min_list:
-                    temp_date = \
-                    str(inttime)[0:4] + str(inttime)[5:7] + str(inttime)[8:10] + \
-                    str(inttime)[11:13]
-                    name_date = \
-                    datetime.strptime(str(temp_date[0:4] + '-' +
-                                          temp_date[4:6] + '-' +
-                                          temp_date[6:8] + ' ' +
-                                          temp_date[9:11] + ':'+
-                                          str(option).zfill(2)),
-                                          '%Y-%m-%d %H:%M')
-                    name_date = _(date.strftime("%B")) + " " + str(date.day) + \
-                                 ", " + str(date.year)
-                    common_hour_result_set.append({'count':m,
+                    temp_date = str(inttime)[0:4] + str(inttime)[5:7] + \
+                                str(inttime)[8:10] + str(inttime)[11:13]
+                    name_date = datetime.strptime(str(temp_date[0:4] + '-' +
+                                    temp_date[4:6] + '-' +
+                                    temp_date[6:8] + ' ' +
+                                    temp_date[9:11] + ':' +
+                                    str(option).zfill(2)), '%Y-%m-%d %H:%M')
+                    name_date = _(date.strftime("%B")) + " " + \
+                                str(date.day) + ", " + str(date.year)
+                    common_hour_result_set.append({'count': m,
                                                    'day': temp_date[6:8],
                                                    'month': temp_date[4:6],
                                                    'year': temp_date[0:4],
@@ -563,7 +599,9 @@ def customer_dashboard(request, on_index=None):
             total_data = seven_days_result_set
 
         # total_data = (Last 12 hrs / Last 6 hrs/ Last hour)
-        if int(search_type) == 5 or int(search_type) == 6 or int(search_type) == 7:
+        if int(search_type) == 5 \
+            or int(search_type) == 6 \
+            or int(search_type) == 7:
             total_data = common_hour_result_set
 
     # Contacts which are successfully called for running campaign
@@ -573,8 +611,9 @@ def customer_dashboard(request, on_index=None):
         start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
         end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999)
         campaign_subscriber = CampaignSubscriber.objects\
-        .filter(campaign=i.id, # status=5,
-                updated_date__range=(start_date, end_date)).count()
+                .filter(campaign=i.id,  # status=5,
+                        updated_date__range=(start_date, end_date))\
+                .count()
         reached_contact += campaign_subscriber
 
     template = 'frontend/dashboard.html'
@@ -585,11 +624,11 @@ def customer_dashboard(request, on_index=None):
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'campaign_count': campaign_count,
         'total_of_phonebook_contacts': total_of_phonebook_contacts,
-        'campaign_phonebbok_active_contact_count': campaign_phonebbok_active_contact_count,
+        'pb_active_contact_count': pb_active_contact_count,
         'reached_contact': reached_contact,
         'notice_count': notice_count(request),
-        'total_data': total_data, # for humblefinanace graph
-        'final_calls': final_calls, # for flot graph
+        'total_data': total_data,  # for humblefinanace graph
+        'final_calls': final_calls,  # for flot graph
         'min_limit': min_limit,
         'max_limit': max_limit,
         'select_graph_for': select_graph_for,
@@ -609,7 +648,7 @@ def customer_dashboard(request, on_index=None):
         'total_forbidden': total_forbidden,
         'answered_color': ANSWER_COLOR,
         'busy_color': BUSY_COLOR,
-        'not_answered_color': NOANSWER_COLOR ,
+        'not_answered_color': NOANSWER_COLOR,
         'cancel_color': CANCEL_COLOR,
         'congestion_color': CONGESTION_COLOR,
         'chanunavail_color': CHANUNAVAIL_COLOR,
@@ -624,18 +663,34 @@ def customer_dashboard(request, on_index=None):
     return render_to_response(template, data,
            context_instance=RequestContext(request))
 
+
 def logout_view(request):
     """Check User credentials and logout"""
     template = 'frontend/index.html'
     logout(request)
-    
+
     data = {
         'module': current_view(request),
         'is_authenticated': request.user.is_authenticated(),
     }
-    
+
     return render_to_response(template, data,
            context_instance=RequestContext(request))
+
+
+#FIXME: double logout_view
+def logout_view(request):
+    try:
+        del request.session['has_notified']
+    except KeyError:
+        pass
+
+    logout(request)
+    # set language cookie
+    response = HttpResponseRedirect('/')
+    response.set_cookie(settings.LANGUAGE_COOKIE_NAME,
+                        request.LANGUAGE_CODE)
+    return response
 
 
 def login_view(request):
@@ -655,12 +710,8 @@ def login_view(request):
     """
     template = 'frontend/index.html'
     errorlogin = ''
-    if request.method == 'POST':
-        try:
-            action = request.POST['action']
-        except (KeyError):
-            action = "login"
 
+    if request.method == 'POST':
         loginform = LoginForm(request.POST)
         if loginform.is_valid():
             cd = loginform.cleaned_data
@@ -675,13 +726,13 @@ def login_view(request):
                     HttpResponseRedirect('/dashboard/')
                 else:
                     # Return a 'disabled account' error message
-                    errorlogin = _('Disabled Account') #True
+                    errorlogin = _('Disabled Account')
             else:
                 # Return an 'invalid login' error message.
-                errorlogin = _('Invalid Login.') #True
+                errorlogin = _('Invalid Login.')
         else:
             # Return an 'Valid User Credentials' error message.
-            errorlogin = _('Enter Valid User Credentials.') #True
+            errorlogin = _('Enter Valid User Credentials.')
     else:
         loginform = LoginForm()
 
@@ -739,20 +790,6 @@ def pleaselog(request):
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))
-
-
-def logout_view(request):
-    try:
-        del request.session['has_notified']
-    except KeyError:
-        pass
-
-    logout(request)
-    # set language cookie
-    response = HttpResponseRedirect('/')
-    response.set_cookie(settings.LANGUAGE_COOKIE_NAME,
-                        request.LANGUAGE_CODE)
-    return response
 
 
 def cust_password_reset(request):
@@ -915,12 +952,11 @@ def notify_admin(request):
         common_send_notification(request, 7, recipient)
         # Send mail to ADMINS
         subject = _('Dialer setting configuration')
-        message = \
-        _('Notification - User Dialer Setting The user "%(user)s" - "%(user_id)s" is not properly configured to use the system, please configure their dialer settings.') %\
+        message = _('Notification - User Dialer Setting The user "%(user)s" - "%(user_id)s" is not properly configured to use the system, please configure their dialer settings.') %\
           {'user': request.user, 'user_id': request.user.id}
         # mail_admins() is a shortcut for sending an email to the site admins,
         # as defined in the ADMINS setting
-        mail_admins(subject, message) # html_message='text/html'
+        mail_admins(subject, message)
         request.session['has_notified'] = True
 
     return HttpResponseRedirect('/dashboard/')
@@ -929,7 +965,7 @@ def notify_admin(request):
 def grid_common_function(request):
     """To get common flexigrid variable"""
     grid_data = {}
-    
+
     grid_data['page'] = variable_value(request, 'page')
     grid_data['rp'] = variable_value(request, 'rp')
     grid_data['sortname'] = variable_value(request, 'sortname')
@@ -939,7 +975,8 @@ def grid_common_function(request):
 
     # page index
     if int(grid_data['page']) > 1:
-        grid_data['start_page'] = (int(grid_data['page']) - 1) * int(grid_data['rp'])
+        grid_data['start_page'] = (int(grid_data['page']) - 1) * \
+                                    int(grid_data['rp'])
         grid_data['end_page'] = grid_data['start_page'] + int(grid_data['rp'])
     else:
         grid_data['start_page'] = int(0)
@@ -948,7 +985,7 @@ def grid_common_function(request):
     grid_data['sortorder_sign'] = ''
     if grid_data['sortorder'] == 'desc':
         grid_data['sortorder_sign'] = '-'
-    
+
     return grid_data
 
 
@@ -956,9 +993,9 @@ def grid_common_function(request):
 @login_required
 def phonebook_grid(request):
     """Phonebook list in json format for flexigrid.
-    
+
     **Model**: Phonebook
-    
+
     **Fields**: [id, name, description, updated_date]
     """
     grid_data = grid_common_function(request)
@@ -974,23 +1011,25 @@ def phonebook_grid(request):
                      .filter(user=request.user)
 
     count = phonebook_list.count()
-    phonebook_list = phonebook_list.order_by(sortorder_sign + sortname)[start_page:end_page]
+    phonebook_list = phonebook_list\
+                .order_by(sortorder_sign + sortname)[start_page:end_page]
 
-    rows = [{'id': row['id'],
-             'cell': ['<input type="checkbox" name="select" class="checkbox"\
-                      value="' + str(row['id']) + '" />',
-                      row['id'],
-                      row['name'],
-                      row['description'],
-                      row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
-                      row['contact_count'],
-                      '<a href="' + str(row['id']) + '/" class="icon" ' \
-                      + update_style + ' title="' + _('Update phonebook') + '">&nbsp;</a>' +
-                      '<a href="del/' + str(row['id']) + '/" class="icon" ' \
-                      + delete_style + ' onClick="return get_alert_msg_for_phonebook(' +
-                      str(row['id']) +
-                      ');"  title="' + _('Delete phonebook') + '">&nbsp;</a>']}\
-                      for row in phonebook_list]
+    rows = [
+        {'id': row['id'],
+        'cell': ['<input type="checkbox" name="select" class="checkbox"\
+        value="' + str(row['id']) + '" />',
+        row['id'],
+        row['name'],
+        row['description'],
+        row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
+        row['contact_count'],
+        '<a href="' + str(row['id']) + '/" class="icon" ' \
+        + update_style + ' title="' + _('Update phonebook') + '">&nbsp;</a>' +
+        '<a href="del/' + str(row['id']) + '/" class="icon" ' \
+        + delete_style + ' onClick="return get_alert_msg_for_phonebook(' +
+        str(row['id']) +
+        ');"  title="' + _('Delete phonebook') + '">&nbsp;</a>']}\
+        for row in phonebook_list]
 
     data = {'rows': rows,
             'page': page,
@@ -1013,7 +1052,7 @@ def phonebook_list(request):
     """
     template = 'frontend/phonebook/list.html'
     data = {
-        'module': current_view(request),        
+        'module': current_view(request),
         'msg': request.session.get('msg'),
         'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
@@ -1198,15 +1237,17 @@ def contact_grid(request):
                     name = kwargs_list[1]
 
     phonebook_id_list = ''
-    phonebook_id_list = Phonebook.objects.values_list('id', flat=True).filter(user=request.user)
+    phonebook_id_list = Phonebook.objects\
+                            .values_list('id', flat=True)\
+                            .filter(user=request.user)
     contact_list = []
 
     if phonebook_id_list:
-        select_data = \
-        {"status": "(CASE status WHEN 1 THEN 'ACTIVE' ELSE 'INACTIVE' END)"}
+        select_data = {"status":
+                    "(CASE status WHEN 1 THEN 'ACTIVE' ELSE 'INACTIVE' END)"}
         contact_list = Contact.objects\
-        .extra(select=select_data)\
-        .values('id', 'phonebook__name', 'contact', 'last_name',
+            .extra(select=select_data)\
+            .values('id', 'phonebook__name', 'contact', 'last_name',
                 'first_name', 'description', 'status', 'additional_vars',
                 'updated_date').filter(phonebook__in=phonebook_id_list)
 
@@ -1225,19 +1266,20 @@ def contact_grid(request):
     contact_list = \
         contact_list.order_by(sortorder_sign + sortname)[start_page:end_page]
 
-    rows = [{'id': row['id'],
-             'cell': ['<input type="checkbox" name="select" class="checkbox"\
-                      value="' + str(row['id']) + '" />',
-                      row['id'], row['phonebook__name'], row['contact'],
-                      row['last_name'], row['first_name'], row['status'],
-                      row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
-                      '<a href="' + str(row['id']) + '/" class="icon" ' \
-                      + update_style + ' title="' + _('Update contact') + '">&nbsp;</a>' +
-                      '<a href="del/' + str(row['id']) + '/" class="icon" ' \
-                      + delete_style + ' onClick="return get_alert_msg(' +
-                      str(row['id']) +
-                      ');" title="' + _('Delete contact') + '">&nbsp;</a>']}\
-                      for row in contact_list]
+    rows = [
+        {'id': row['id'],
+        'cell': ['<input type="checkbox" name="select" class="checkbox"\
+        value="' + str(row['id']) + '" />',
+        row['id'], row['phonebook__name'], row['contact'],
+        row['last_name'], row['first_name'], row['status'],
+        row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
+        '<a href="' + str(row['id']) + '/" class="icon" ' \
+        + update_style + ' title="' + _('Update contact') + '">&nbsp;</a>' +
+        '<a href="del/' + str(row['id']) + '/" class="icon" ' \
+        + delete_style + ' onClick="return get_alert_msg(' +
+        str(row['id']) +
+        ');" title="' + _('Delete contact') + '">&nbsp;</a>']
+        } for row in contact_list]
 
     data = {'rows': rows,
             'page': page,
@@ -1307,8 +1349,8 @@ def contact_add(request):
         # check  Max Number of subscriber per campaign
         if check_dialer_setting(request, check_for="contact"):
             request.session['msg'] = \
-            _("You have too many contacts per campaign. You are allowed a maximum of %(limit)s") % \
-            {'limit': dialer_setting_limit(request, limit_for="contact")}
+                _("You have too many contacts per campaign. You are allowed a maximum of %(limit)s") % \
+                {'limit': dialer_setting_limit(request, limit_for="contact")}
 
             # contact limit reached
             common_send_notification(request, '6')
@@ -1325,11 +1367,11 @@ def contact_add(request):
             {'name': request.POST['contact']}
             return HttpResponseRedirect('/contact/')
         else:
-            if len(request.POST['contact'])>0:
+            if len(request.POST['contact']) > 0:
                 error_msg = _('"%(name)s" cannot be added.') %\
                 {'name': request.POST['contact']}
 
-    phonebook_count = Phonebook.objects.filter(user=request.user).count()    
+    phonebook_count = Phonebook.objects.filter(user=request.user).count()
     template = 'frontend/contact/change.html'
     data = {
         'module': current_view(request),
@@ -1400,7 +1442,8 @@ def contact_change(request, object_id):
         if request.POST.get('delete'):
             contact_del(request, object_id)
             return HttpResponseRedirect('/contact/')
-        else: # Update contact
+        else:
+            # Update contact
             form = ContactForm(request.user, request.POST,
                                   instance=contact)
             if form.is_valid():
@@ -1435,7 +1478,7 @@ def contact_import(request):
         * Before adding contacts, check dialer setting limit if applicable
           to the user.
         * Add new contacts which will belong to the logged in user
-          via csv file & get the result (upload success and failure 
+          via csv file & get the result (upload success and failure
           statistics)
 
     **Important variable**:
@@ -1448,15 +1491,14 @@ def contact_import(request):
         # check  Max Number of subscribers per campaign
         if check_dialer_setting(request, check_for="contact"):
             request.session['msg'] = \
-            _("You have too many contacts per campaign. You are allowed a maximum of %(limit)s") % \
-            {'limit': dialer_setting_limit(request, limit_for="contact")}
+                _("You have too many contacts per campaign. You are allowed a maximum of %(limit)s") % \
+                {'limit': dialer_setting_limit(request, limit_for="contact")}
 
             # contact limit reached
             common_send_notification(request, '6')
             return HttpResponseRedirect("/contact/")
 
     form = Contact_fileImport(request.user)
-    file_exts = ('.csv', )
     rdr = ''  # will contain CSV data
     msg = ''
     error_msg = ''
@@ -1513,13 +1555,13 @@ def contact_import(request):
                             contact_record_count = \
                                 contact_record_count + 1
                             msg = _('%(contact_record_count)s Contact(s) are uploaded successfully out of %(total_rows)s row(s) !!') \
-                            % {'contact_record_count': contact_record_count,
-                               'total_rows': total_rows}
+                                % {'contact_record_count': contact_record_count,
+                                    'total_rows': total_rows}
 
                             success_import_list.append(row)
                     except:
                         error_msg = \
-                        _("Invalid value for import! Please check the import samples.")
+                            _("Invalid value for import! Please check the import samples.")
                         type_error_import_list.append(row)
 
     data = RequestContext(request, {
@@ -1551,90 +1593,99 @@ def count_contact_of_campaign(campaign_id):
 def get_url_campaign_status(id, status):
 
     control_play_style = \
-    'style="text-decoration:none;background-image:url(' + settings.STATIC_URL\
-    + 'newfies/icons/control_play.png);"'
+        'style="text-decoration:none;background-image:url(' \
+        + settings.STATIC_URL \
+        + 'newfies/icons/control_play.png);"'
     control_pause_style = \
-    'style="text-decoration:none;background-image:url(' + settings.STATIC_URL \
-    + 'newfies/icons/control_pause.png);"'
+        'style="text-decoration:none;background-image:url(' \
+        + settings.STATIC_URL \
+        + 'newfies/icons/control_pause.png);"'
     control_abort_style = \
-    'style="text-decoration:none;background-image:url(' + settings.STATIC_URL\
-    + 'newfies/icons/abort.png);"'
+        'style="text-decoration:none;background-image:url(' \
+        + settings.STATIC_URL\
+        + 'newfies/icons/abort.png);"'
     control_stop_style = \
-    'style="text-decoration:none;background-image:url(' + settings.STATIC_URL\
-    + 'newfies/icons/control_stop.png);"'
-
+        'style="text-decoration:none;background-image:url(' \
+        + settings.STATIC_URL\
+        + 'newfies/icons/control_stop.png);"'
 
     control_play_blue_style = \
-    'style="text-decoration:none;background-image:url(' + settings.STATIC_URL \
-    + 'newfies/icons/control_play_blue.png);"'
+        'style="text-decoration:none;background-image:url(' \
+        + settings.STATIC_URL \
+        + 'newfies/icons/control_play_blue.png);"'
     control_pause_blue_style = \
-    'style="text-decoration:none;background-image:url(' + settings.STATIC_URL \
-    + 'newfies/icons/control_pause_blue.png);"'
+        'style="text-decoration:none;background-image:url(' \
+        + settings.STATIC_URL \
+        + 'newfies/icons/control_pause_blue.png);"'
     control_abort_blue_style = \
-    'style="text-decoration:none;background-image:url(' + settings.STATIC_URL \
-    + 'newfies/icons/abort.png);"' # control_abort_blue
+        'style="text-decoration:none;background-image:url(' \
+        + settings.STATIC_URL \
+        + 'newfies/icons/abort.png);"'
     control_stop_blue_style = \
-    'style="text-decoration:none;background-image:url(' + settings.STATIC_URL \
-    + 'newfies/icons/control_stop_blue.png);"'
+        'style="text-decoration:none;background-image:url(' \
+        + settings.STATIC_URL \
+        + 'newfies/icons/control_stop_blue.png);"'
 
     if status == 1:
-        url_str = "<a href='#' class='icon' title='" + _("campaign is running") + "' " +\
-                  control_play_style + ">&nbsp;</a>\
-                  <a href='update_campaign_status_cust/" + str(id) +\
-                  "/2/' class='icon' title='" + _("Pause") + "' " +\
-                  str(control_pause_blue_style) +\
-                  ">&nbsp;</a><a href='update_campaign_status_cust/" + str(id) +\
-                  "/3/' class='icon' title='" + _("Abort") + "' " +\
-                  str(control_abort_blue_style) +\
-                  ">&nbsp;</a><a href='update_campaign_status_cust/"\
-                  + str(id) + "/4/' class='icon' title='" + _("Stop") + "' " +\
-                  str(control_stop_blue_style) + ">&nbsp;</a>"
+        url_str = "<a href='#' class='icon' title='" + \
+            _("campaign is running") + "' " +\
+            control_play_style + ">&nbsp;</a>\
+            <a href='update_campaign_status_cust/" + str(id) +\
+            "/2/' class='icon' title='" + _("Pause") + "' " +\
+            str(control_pause_blue_style) +\
+            ">&nbsp;</a><a href='update_campaign_status_cust/" + str(id) +\
+            "/3/' class='icon' title='" + _("Abort") + "' " +\
+            str(control_abort_blue_style) +\
+            ">&nbsp;</a><a href='update_campaign_status_cust/"\
+            + str(id) + "/4/' class='icon' title='" + _("Stop") + "' " +\
+            str(control_stop_blue_style) + ">&nbsp;</a>"
 
     if status == 2:
         url_str = "<a href='update_campaign_status_cust/" + str(id) +\
-                  "/1/' class='icon' title='" + _("Start") + "' " +\
-                  control_play_blue_style +">&nbsp;</a><a href='#'\
-                  class='icon' title='" + _("campaign is paused") + "' " +\
-                  control_pause_style +">&nbsp;</a>" +\
-                  "<a href='update_campaign_status_cust/" + str(id) +\
-                  "/3/' class='icon' title='" + _("Abort") + "' " +\
-                  control_abort_blue_style +\
-                  ">&nbsp;</a>" +\
-                  "<a href='update_campaign_status_cust/" + str(id) +\
-                  "/4/' class='icon' title='" + _("Stop") + "' " +\
-                  control_stop_blue_style +\
-                  ">&nbsp;</a>"
+            "/1/' class='icon' title='" + _("Start") + "' " +\
+            control_play_blue_style + ">&nbsp;</a><a href='#' \
+            class='icon' title='" + _("campaign is paused") + "' " +\
+            control_pause_style + ">&nbsp;</a>" +\
+            "<a href='update_campaign_status_cust/" + str(id) +\
+            "/3/' class='icon' title='" + _("Abort") + "' " +\
+            control_abort_blue_style +\
+            ">&nbsp;</a>" +\
+            "<a href='update_campaign_status_cust/" + str(id) +\
+            "/4/' class='icon' title='" + _("Stop") + "' " +\
+            control_stop_blue_style +\
+            ">&nbsp;</a>"
 
     if status == 3:
         url_str = "<a href='update_campaign_status_cust/" + str(id) +\
-                  "/1/' class='icon' title='" + _("Start") + "' " +\
-                  control_play_blue_style +\
-                  ">&nbsp;</a>" + "<a href='update_campaign_status_cust/" +\
-                  str(id) + "/2/' class='icon' \
-                  title='" + _("Pause") + "' " + control_pause_blue_style +\
-                  ">&nbsp;</a>" +\
-                  "<a href='#' class='icon' title='" + _("campaign is aborted") + "' " +\
-                  control_abort_style + " >&nbsp;</a>" +\
-                  "<a href='update_campaign_status_cust/" + str(id) +\
-                  "/4/' class='icon' title='" + _("Stop") + "' " +\
-                  control_stop_blue_style + ">&nbsp;</a>"
+            "/1/' class='icon' title='" + _("Start") + "' " +\
+            control_play_blue_style +\
+            ">&nbsp;</a>" + "<a href='update_campaign_status_cust/" +\
+            str(id) + "/2/' class='icon' \
+            title='" + _("Pause") + "' " + control_pause_blue_style +\
+            ">&nbsp;</a>" +\
+            "<a href='#' class='icon' title='" + _("campaign is aborted") +\
+            "' " + control_abort_style + " >&nbsp;</a>" +\
+            "<a href='update_campaign_status_cust/" + str(id) +\
+            "/4/' class='icon' title='" + _("Stop") + "' " +\
+            control_stop_blue_style + ">&nbsp;</a>"
     if status == 4:
         url_str = "<a href='update_campaign_status_cust/" + str(id) +\
-                  "/1/' class='icon' title='" + _("Start") + "' " +\
-                  control_play_blue_style +\
-                  ">&nbsp;</a>" +\
-                  "<a href='update_campaign_status_cust/" + str(id) +\
-                  "/2/' class='icon' title='" + _("Pause") + "' " +\
-                  control_pause_blue_style +\
-                  ">&nbsp;</a>" +\
-                  "<a href='update_campaign_status_cust/" + str(id) +\
-                  "/3/' class='icon' title='" + _("Abort") + "' " +\
-                  control_abort_blue_style +\
-                  ">&nbsp;</a>"+\
-                  "<a href='#' class='icon' title='" +_("campaign is stopped") + "' " +\
-                  control_stop_style + ">&nbsp;</a>"
+            "/1/' class='icon' title='" + _("Start") + "' " +\
+            control_play_blue_style +\
+            ">&nbsp;</a>" +\
+            "<a href='update_campaign_status_cust/" + str(id) +\
+            "/2/' class='icon' title='" + _("Pause") + "' " +\
+            control_pause_blue_style +\
+            ">&nbsp;</a>" +\
+            "<a href='update_campaign_status_cust/" + str(id) +\
+            "/3/' class='icon' title='" + _("Abort") + "' " +\
+            control_abort_blue_style +\
+            ">&nbsp;</a>" + \
+            "<a href='#' class='icon' title='" + _("campaign is stopped") + \
+            "' " + control_stop_style + ">&nbsp;</a>"
 
     return url_str
+
 
 def get_app_name(app_label, model_name, object_id):
     from django.db.models import get_model
@@ -1669,25 +1720,27 @@ def campaign_grid(request):
     campaign_list = \
         campaign_list.order_by(sortorder_sign + sortname)[start_page:end_page]
 
-    rows = [{'id': row['id'],
-             'cell': ['<input type="checkbox" name="select" class="checkbox"\
-                      value="' + str(row['id']) + '" />',
-                      row['campaign_code'],
-                      row['name'],
-                      row['startingdate'].strftime('%Y-%m-%d %H:%M:%S'),
-                      row['content_type__name'],
-                      str(get_app_name(row['content_type__app_label'],
-                                       row['content_type__model'],
-                                       row['object_id'])),
-                      count_contact_of_campaign(row['id']),
-                      get_campaign_status_name(row['status']),
-                      '<a href="' + str(row['id']) + '/" class="icon" ' \
-                      + update_style + ' title="'+_('Update campaign')+'">&nbsp;</a>' \
-                      + '<a href="del/' + str(row['id']) + '/" class="icon" ' + delete_style \
-                      + ' onClick="return get_alert_msg(' + str(row['id']) + ');" title="' \
-                      +_('Delete campaign')+'">&nbsp;</a>' \
-                      + get_url_campaign_status(row['id'], row['status']),
-             ]}for row in campaign_list ]
+    rows = [
+        {'id': row['id'],
+        'cell': ['<input type="checkbox" name="select" class="checkbox"\
+        value="' + str(row['id']) + '" />',
+        row['campaign_code'],
+        row['name'],
+        row['startingdate'].strftime('%Y-%m-%d %H:%M:%S'),
+        row['content_type__name'],
+        str(get_app_name(row['content_type__app_label'],
+                        row['content_type__model'],
+                        row['object_id'])),
+        count_contact_of_campaign(row['id']),
+        get_campaign_status_name(row['status']),
+        '<a href="' + str(row['id']) + '/" class="icon" ' \
+        + update_style + ' title="' + _('Update campaign') + '">&nbsp;</a>' \
+        + '<a href="del/' + str(row['id']) \
+        + '/" class="icon" ' + delete_style \
+        + ' onClick="return get_alert_msg(' + str(row['id']) + ');" title="' \
+        + _('Delete campaign') + '">&nbsp;</a>' \
+        + get_url_campaign_status(row['id'], row['status']),
+        ]} for row in campaign_list]
 
     data = {'rows': rows,
             'page': page,
@@ -1710,7 +1763,7 @@ def campaign_list(request):
     """
     template = 'frontend/campaign/list.html'
     data = {
-        'module': current_view(request),        
+        'module': current_view(request),
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
         'notice_count': notice_count(request),
@@ -1722,14 +1775,17 @@ def campaign_list(request):
            context_instance=RequestContext(request))
 
 
-def common_content_type_function(object_string):
-    """It is used by campaign_add & campaign_change to get ContentType object detail"""
+def get_content_type(object_string):
+    """
+    It is used by campaign_add & campaign_change to get ContentType object
+    """
     result_array = {}
     matches = re.match("type:(\d+)-id:(\d+)", object_string).groups()
-    object_type_id = matches[0] #get 45 from "type:45-id:38"
-    result_array['object_id'] = matches[1] #get 38 from "type:45-id:38"
+    object_type_id = matches[0]  # get 45 from "type:45-id:38"
+    result_array['object_id'] = matches[1]  # get 38 from "type:45-id:38"
     try:
-        result_array['object_type'] = ContentType.objects.get(id=object_type_id)
+        result_array['object_type'] = ContentType.objects\
+                                        .get(id=object_type_id)
     except:
         pass
     return result_array
@@ -1754,15 +1810,17 @@ def campaign_add(request):
     # If dialer setting is not attached with user, redirect to campaign list
     if user_attached_with_dialer_settings(request):
         request.session['error_msg'] = \
-        _("In order to add a campaign, you need to have your settings configured properly, please contact the admin.")
+            _("In order to add a campaign, you need to have your settings configured properly, please contact the admin.")
         return HttpResponseRedirect("/campaign/")
 
     # Check dialer setting limit
     if request.user and request.method != 'POST':
         # check Max Number of running campaign
         if check_dialer_setting(request, check_for="campaign"):
-            request.session['msg'] = msg = _("you have too many campaigns. Max allowed %(limit)s") \
-            % {'limit': dialer_setting_limit(request, limit_for="campaign")}
+            msg = _("you have too many campaigns. Max allowed %(limit)s") \
+                    % {'limit': \
+                    dialer_setting_limit(request, limit_for="campaign")}
+            request.session['msg'] = msg
 
             # campaign limit reached
             common_send_notification(request, '5')
@@ -1774,7 +1832,8 @@ def campaign_add(request):
         form = CampaignForm(request.user, request.POST)
         if form.is_valid():
             obj = form.save(commit=False)
-            result_array = common_content_type_function(form.cleaned_data['content_object'])
+            result_array = get_content_type(
+                                form.cleaned_data['content_object'])
             obj.content_type = result_array['object_type']
             obj.object_id = result_array['object_id']
             obj.user = User.objects.get(username=request.user)
@@ -1855,20 +1914,26 @@ def campaign_change(request, object_id):
 
     campaign = Campaign.objects.get(pk=object_id)
 
-    content_object = "type:%s-id:%s" % (campaign.content_type_id, campaign.object_id)
-    form = CampaignForm(request.user, instance=campaign, initial={'content_object': content_object})
+    content_object = "type:%s-id:%s" % \
+                        (campaign.content_type_id, campaign.object_id)
+    form = CampaignForm(
+                    request.user,
+                    instance=campaign,
+                    initial={'content_object': content_object})
     if request.method == 'POST':
         # Delete campaign
         if request.POST.get('delete'):
             campaign_del(request, object_id)
             return HttpResponseRedirect('/campaign/')
-        else: # Update campaign
+        else:
+            # Update campaign
             form = CampaignForm(request.user, request.POST, instance=campaign)
             previous_status = campaign.status
             if form.is_valid():
                 form.save()
                 obj = form.save(commit=False)
-                result_array = common_content_type_function(form.cleaned_data['content_object'])
+                result_array = get_content_type(
+                                    form.cleaned_data['content_object'])
                 obj.content_type = result_array['object_type']
                 obj.object_id = result_array['object_id']
                 obj.save()

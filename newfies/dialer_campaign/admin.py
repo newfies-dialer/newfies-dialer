@@ -2,36 +2,35 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-
 from django.contrib import admin
 from django.contrib import messages
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns
 from django.utils.translation import ugettext as _
-from django.db.models import *
 from django.template import RequestContext
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
-from dialer_campaign.models import *
-from dialer_campaign.forms import *
-from dialer_campaign.function_def import *
-from dialer_campaign.views import common_send_notification, common_campaign_status
+from dialer_campaign.models import Phonebook, Contact, Campaign, CampaignSubscriber
+from dialer_campaign.forms import Contact_fileImport
+from dialer_campaign.function_def import check_dialer_setting
+from dialer_campaign.views import common_send_notification
+from genericadmin.admin import GenericAdminModelAdmin
 import csv
-from genericadmin.admin import GenericAdminModelAdmin, GenericTabularInline
-
 
 
 class CampaignAdmin(GenericAdminModelAdmin):
-    """Allows the administrator to view and modify certain attributes
-    of a Campaign."""
+    """
+    Allows the administrator to view and modify certain attributes
+    of a Campaign.
+    """
     content_type_whitelist = ('voice_app/voiceapp', 'survey/surveyapp', )
     fieldsets = (
         (_('Standard options'), {
@@ -49,8 +48,8 @@ class CampaignAdmin(GenericAdminModelAdmin):
                        'thursday', 'friday', 'saturday', 'sunday')
         }),
     )
-    list_display = ('id', 'name', 'content_type', 'campaign_code', 'user', 
-                    'startingdate', 'expirationdate', 'frequency', 
+    list_display = ('id', 'name', 'content_type', 'campaign_code', 'user',
+                    'startingdate', 'expirationdate', 'frequency',
                     'callmaxduration', 'maxretry', 'aleg_gateway', 'status',
                     'update_campaign_status', 'count_contact_of_phonebook',
                     'campaignsubscriber_detail', 'progress_bar')
@@ -69,21 +68,23 @@ class CampaignAdmin(GenericAdminModelAdmin):
         return my_urls + urls
 
     def add_view(self, request, extra_context=None):
-        """Override django add_view method for checking the dialer setting limit
+        """
+        Override django add_view method for checking the dialer setting limit
 
         **Logic Description**:
 
-            * Before adding campaign, checked dialer setting limit if applicable
-              to the user, if matched, the user will be redirected to 
+            * Before adding campaign, check dialer setting limit if applicable
+              to the user, if matched then the user will be redirected to
               the campaign list
         """
         # Check dialer setting limit
         # check Max Number of running campaigns
         if check_dialer_setting(request, check_for="campaign"):
             msg = _("you have too many campaigns. Max allowed %(limit)s") \
-            % {'limit': dialer_setting_limit(request, limit_for="campaign")}
+                % {'limit':
+                    dialer_setting_limit(request, limit_for="campaign")}
             messages.error(request, msg)
-            
+
             # campaign limit reached
             #common_send_notification(request, '3')
             return HttpResponseRedirect(reverse(
@@ -127,7 +128,7 @@ class ContactAdmin(admin.ModelAdmin):
         **Logic Description**:
 
             * Before adding a contact, check the dialer setting limit if
-              applicable to the user. If matched, the user will be 
+              applicable to the user. If matched, the user will be
               redirected to the contact list
         """
         # Check dialer setting limit
@@ -183,8 +184,6 @@ class ContactAdmin(admin.ModelAdmin):
                             "admin:dialer_campaign_contact_changelist"))
 
         opts = Contact._meta
-        app_label = opts.app_label
-        file_exts = ('.csv', )
         rdr = ''  # will contain CSV data
         msg = ''
         success_import_list = []
@@ -224,8 +223,8 @@ class ContactAdmin(admin.ModelAdmin):
                                 # check if prefix is already
                                 # existing in the retail plan or not
                                 contact = Contact.objects.get(
-                                     phonebook_id=phonebook.id,
-                                     contact=row[0])
+                                        phonebook_id=phonebook.id,
+                                        contact=row[0])
                                 msg = _('Contact already exists !!')
                                 error_import_list.append(row)
                             except:
@@ -241,11 +240,9 @@ class ContactAdmin(admin.ModelAdmin):
                                       additional_vars=row[6])
                                 contact_record_count = \
                                     contact_record_count + 1
-                                msg = \
-                                _('%(contact_record_count)s Contact(s) are uploaded, out of %(total_rows)s row(s) !!')\
-                                 % {'contact_record_count': contact_record_count,
-                                    'total_rows': total_rows}
-                                    # (contact_record_count, total_rows)
+                                msg = _('%(contact_record_count)s Contact(s) are uploaded, out of %(total_rows)s row(s) !!')\
+                                    % {'contact_record_count': contact_record_count,
+                                        'total_rows': total_rows}
                                 success_import_list.append(row)
                         except:
                             msg = _("Error : invalid value for import! Check import samples.")

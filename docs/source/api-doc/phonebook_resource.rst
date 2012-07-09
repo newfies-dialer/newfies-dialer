@@ -1,4 +1,4 @@
-.. automodule:: api.resources
+.. automodule:: api.phonebook_api
 
 .. _phonebookResource-model:
 

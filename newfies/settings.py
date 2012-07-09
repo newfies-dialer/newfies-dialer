@@ -233,7 +233,6 @@ except ImportError:
 else:
     INSTALLED_APPS = INSTALLED_APPS + ('redisboard',)
 
-
 # Debug Toolbar
 try:
     import debug_toolbar
@@ -247,7 +246,6 @@ else:
         'INTERCEPT_REDIRECTS': False,
     }
 
-
 # Django extensions
 try:
     import django_extensions
@@ -255,6 +253,16 @@ except ImportError:
     pass
 else:
     INSTALLED_APPS = INSTALLED_APPS + ('django_extensions',)
+
+# Nose
+try:
+    import nose  #TODO: Check / replace by django_nose
+except ImportError:
+    pass
+else:
+    INSTALLED_APPS = INSTALLED_APPS + ('django_nose',)
+    TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
 
 # Dilla
 try:
@@ -264,6 +272,22 @@ except ImportError:
 else:
     INSTALLED_APPS = INSTALLED_APPS + ('dilla',)
 
+# SMS MODULE
+"""
+try:
+    import sms
+except ImportError:
+    pass
+else:
+    INSTALLED_APPS = INSTALLED_APPS + ('sms',)
+
+try:
+    import sms_module
+except ImportError:
+    pass
+else:
+    INSTALLED_APPS = INSTALLED_APPS + ('sms_module',)
+"""
 
 AUTH_PROFILE_MODULE = "user_profile.UserProfile"
 LOGIN_URL = '/pleaselog/'

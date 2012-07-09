@@ -1,4 +1,4 @@
-.. automodule:: api.resources
+.. automodule:: api.answercall_api
 
 .. _answercallResource-model:
 

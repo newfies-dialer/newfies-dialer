@@ -2,12 +2,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -15,7 +15,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
-from django.core.urlresolvers import reverse
 from tagging.fields import TagField
 from dialer_campaign.models import Campaign
 from audiofield.models import AudioFile
@@ -45,13 +44,13 @@ class Text2speechMessage(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     #code_language = models.ForeignKey(Language, verbose_name="Language")
-    
+
     #link to user
     user = models.ForeignKey('auth.User', related_name='TTS Message owner')
-    
+
     def __unicode__(self):
         return '[%s] %s' %(self.id, self.name)
-"""        
+"""
 
 
 class SurveyApp(Sortable):
@@ -70,20 +69,20 @@ class SurveyApp(Sortable):
     **Name of DB table**: surveyapp
     """
     name = models.CharField(max_length=90, verbose_name=_('Name'))
-    description = models.TextField(null=True, blank=True, 
-                         verbose_name=_('Description'),
-                         help_text=_("Survey Description"))
+    description = models.TextField(null=True, blank=True,
+                        verbose_name=_('Description'),
+                        help_text=_("Survey Description"))
     user = models.ForeignKey('auth.User', related_name='owner')
-    created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Date'))
+    created_date = models.DateTimeField(auto_now_add=True,
+                        verbose_name=_('Date'))
     updated_date = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         verbose_name = _("Survey")
         verbose_name_plural = _("Surveys")
-    
+
     def __unicode__(self):
             return u"%s" % self.name
-
 
 
 class SurveyQuestion(Sortable):
@@ -107,26 +106,26 @@ class SurveyQuestion(Sortable):
     """
     class Meta(Sortable.Meta):
         ordering = Sortable.Meta.ordering + ['surveyapp']
-    
-    question = models.CharField(max_length=500, verbose_name=_("Question"),
-                                help_text=_('Enter your question')) # What is your preferred fruit?
+
+    question = models.CharField(max_length=500,
+                            verbose_name=_("Question"),
+                            help_text=_('Enter your question'))
     tags = TagField(blank=True, max_length=1000)
     user = models.ForeignKey('auth.User', related_name='Survey owner')
     surveyapp = models.ForeignKey(SurveyApp, verbose_name=_("SurveyApp"))
-    
     audio_message = models.ForeignKey(AudioFile, null=True, blank=True,
                                       verbose_name=_("Audio File"))
-    message_type = models.IntegerField(max_length=20, choices=MESSAGE_TYPE, default='1',
-                                        blank=True, null=True, verbose_name=_('Message type'))
-    
+    message_type = models.IntegerField(max_length=20, choices=MESSAGE_TYPE,
+                            default='1', blank=True, null=True,
+                            verbose_name=_('Message type'))
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
-    
+
     sortable_by = SurveyApp
-    
+
     def __unicode__(self):
         return self.question
-    
+
 
 class SurveyResponse(models.Model):
     """This defines the response for survey question
@@ -138,34 +137,39 @@ class SurveyResponse(models.Model):
 
     **Relationships**:
 
-        * ``surveyquestion`` - Foreign key relationship to the SurveyQuestion model.\
+        * ``surveyquestion`` - Foreign key relationship to the SurveyQuestion.\
         Each survey response is assigned to a SurveyQuestion
 
     **Name of DB table**: survey_response
     """
-    key = models.CharField(max_length=9, blank=False, verbose_name=_("Key Digit"),
-                           help_text=_('Define the key link to the response')) # 1 ; 2
-    keyvalue = models.CharField(max_length=150, blank=True, verbose_name=_("Key Value")) # Orange ; Kiwi
+    key = models.CharField(max_length=9, blank=False,
+                    verbose_name=_("Key Digit"),
+                    help_text=_('Define the key link to the response'))  # 1;2
+    keyvalue = models.CharField(max_length=150, blank=True,
+                    verbose_name=_("Key Value"))  # Orange ; Kiwi
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
-    
-    surveyquestion = models.ForeignKey(SurveyQuestion, related_name='SurveyQuestion')
-    goto_surveyquestion = models.ForeignKey(SurveyQuestion, null=True, blank=True, related_name='Goto SurveyQuestion')
-    
+    surveyquestion = models.ForeignKey(SurveyQuestion,
+                    related_name='SurveyQuestion')
+    goto_surveyquestion = models.ForeignKey(SurveyQuestion, null=True,
+                    blank=True, related_name='Goto SurveyQuestion')
+
     class Meta:
         unique_together = ("key", "surveyquestion")
-    
+
     def __unicode__(self):
-        return '[%s] %s' %(self.id, self.keyvalue)
+        return '[%s] %s' % (self.id, self.keyvalue)
 
 
 class SurveyCampaignResult(models.Model):
     """This gives survey result
-    
+
     That will be difficult to scale for reporting
-    One big issue is when the user update the survey in time, we need to keep an history somehow of the question/response
-    
-    Ideally we can try to build 2 other table, survey_track_question (id, question_text), survey_track_response (id, response_text)
+    One big issue is when the user update the survey in time, we need to keep
+    an history somehow of the question/response
+
+    Ideally we can try to build 2 other table, survey_track_question
+    (id, question_text), survey_track_response (id, response_text)
     Where question_text / response_text is unique
 
     **Attributes**:
@@ -183,17 +187,19 @@ class SurveyCampaignResult(models.Model):
 
     **Name of DB table**: survey_campaign_result
     """
-    campaign = models.ForeignKey(Campaign, null=True, blank=True, verbose_name=_("Campaign"))
-    
+    campaign = models.ForeignKey(Campaign, null=True, blank=True,
+                    verbose_name=_("Campaign"))
+
     surveyapp = models.ForeignKey(SurveyApp, related_name='SurveyApp')
     callid = models.CharField(max_length=120, help_text=_("VoIP Call-ID"),
-                              verbose_name=_("Call-ID"))
-    
-    question = models.CharField(max_length=500, blank=False, verbose_name=_("Question")) # What is your prefered fruit?
-    response = models.CharField(max_length=150, blank=False, verbose_name=_("Response")) # Orange ; Kiwi
-    
+                    verbose_name=_("Call-ID"))
+
+    question = models.CharField(max_length=500, blank=False,
+                    verbose_name=_("Question"))  # What is your prefered fruit?
+    response = models.CharField(max_length=150, blank=False,
+                    verbose_name=_("Response"))  # Orange ; Kiwi
+
     created_date = models.DateTimeField(auto_now_add=True)
-    
+
     def __unicode__(self):
-        return '[%s] %s = %s' %(self.id, self.question, self.response)
-    
+        return '[%s] %s = %s' % (self.id, self.question, self.response)

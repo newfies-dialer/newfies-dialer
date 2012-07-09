@@ -3,12 +3,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -48,23 +48,24 @@ SOUTH_SOURCE='hg+http://bitbucket.org/andrewgodwin/south/@ecaafda23e600e510e2527
 
 
 
+# Identify Linux Distribution type
 func_identify_os() {
-    # Identify Linux Distribution type
+
     if [ -f /etc/debian_version ] ; then
         DIST='DEBIAN'
-        if [ "$(lsb_release -cs)" != "lucid" ] ; then
-		    echo "This script is only intended to run on Ubuntu LTS 10.04 or CentOS 6.2"
+        if [ "$(lsb_release -cs)" != "lucid" ] && [ "$(lsb_release -cs)" != "precise" ]; then
+		    echo "This script is only intended to run on Ubuntu LTS 10.04 / 12.04 or CentOS 6.2"
 		    exit 255
 	    fi
     elif [ -f /etc/redhat-release ] ; then
         DIST='CENTOS'
         if [ "$(awk '{print $3}' /etc/redhat-release)" != "6.2" ] ; then
-        	echo "This script is only intended to run on Ubuntu LTS 10.04 or CentOS 6.2"
+        	echo "This script is only intended to run on Ubuntu LTS 10.04 / 12.04 or CentOS 6.2"
         	exit 255
         fi
     else
         echo ""
-        echo "This script is only intended to run on Ubuntu LTS 10.04 or CentOS 6.2"
+        echo "This script is only intended to run on Ubuntu LTS 10.04 / 12.04 or CentOS 6.2"
         echo ""
         exit 1
     fi
@@ -91,12 +92,12 @@ func_accept_license() {
     echo "I agree to be bound by the terms of the license - [YES/NO]"
     echo ""
     read ACCEPT
-    
+
     while [ "$ACCEPT" != "yes" ]  && [ "$ACCEPT" != "Yes" ] && [ "$ACCEPT" != "YES" ]  && [ "$ACCEPT" != "no" ]  && [ "$ACCEPT" != "No" ]  && [ "$ACCEPT" != "NO" ]; do
         echo "I agree to be bound by the terms of the license - [YES/NO]"
         read ACCEPT
     done
-    
+
     if [ "$ACCEPT" != "yes" ]  && [ "$ACCEPT" != "Yes" ] && [ "$ACCEPT" != "YES" ]; then
         echo "License rejected !"
         exit 0
@@ -111,14 +112,14 @@ func_install_landing_page() {
     mkdir -p $INSTALL_DIR_WELCOME
     # Copy files
     cp -r /usr/src/newfies-dialer/install/landing-page/* $INSTALL_DIR_WELCOME
-    
+
     echo ""
     echo "Add Apache configuration for Welcome page..."
-    echo '    
+    echo '
     <VirtualHost *:80>
         DocumentRoot '$INSTALL_DIR_WELCOME'/
         DirectoryIndex index.html index.htm index.php index.php4 index.php5
-        
+
         <Directory '$INSTALL_DIR_WELCOME'>
             Options Indexes IncludesNOEXEC FollowSymLinks
             allow from all
@@ -127,9 +128,9 @@ func_install_landing_page() {
         </Directory>
 
     </VirtualHost>
-    
+
     ' > $APACHE_CONF_DIR/welcome-newfies.conf
-    
+
     case $DIST in
         'DEBIAN')
             mv /etc/apache2/sites-enabled/000-default /tmp/
@@ -139,16 +140,16 @@ func_install_landing_page() {
             service httpd restart
         ;;
     esac
-    
+
     #Update Welcome page IP
-    sed -i "s/LOCALHOST/$IPADDR:$HTTP_PORT/g" $INSTALL_DIR_WELCOME/index.html    
+    sed -i "s/LOCALHOST/$IPADDR:$HTTP_PORT/g" $INSTALL_DIR_WELCOME/index.html
 }
 
 func_check_dependencies() {
     echo ""
     echo "Checking Python dependencies..."
     echo ""
-    
+
     #Check South
     grep_pip=`pip freeze| grep south`
     if echo $grep_pip | grep -i "south" > /dev/null ; then
@@ -157,7 +158,7 @@ func_check_dependencies() {
         echo "Error : South not installed..."
         exit 1
     fi
-    
+
     #Check Django
     grep_pip=`pip freeze| grep Django`
     if echo $grep_pip | grep -i "Django" > /dev/null ; then
@@ -166,7 +167,7 @@ func_check_dependencies() {
         echo "Error : Django not installed..."
         exit 1
     fi
-    
+
     #Check MySQL-python
     grep_pip=`pip freeze| grep MySQL-python`
     if echo $grep_pip | grep -i "MySQL-python" > /dev/null ; then
@@ -175,7 +176,7 @@ func_check_dependencies() {
         echo "Error : MySQL-python not installed..."
         exit 1
     fi
-    
+
     #Check celery
     grep_pip=`pip freeze| grep celery`
     if echo $grep_pip | grep -i "celery" > /dev/null ; then
@@ -184,7 +185,7 @@ func_check_dependencies() {
         echo "Error : celery not installed..."
         exit 1
     fi
-    
+
     #Check django-tastypie
     grep_pip=`pip freeze| grep django-tastypie`
     if echo $grep_pip | grep -i "django-tastypie" > /dev/null ; then
@@ -193,16 +194,7 @@ func_check_dependencies() {
         echo "Error : django-tastypie not installed..."
         exit 1
     fi
-    
-    #Check raven
-    grep_pip=`pip freeze| grep raven`
-    if echo $grep_pip | grep -i "raven" > /dev/null ; then
-        echo "OK : raven installed..."
-    else
-        echo "Error : raven not installed..."
-        exit 1
-    fi
-    
+
     echo ""
     echo "Python dependencies successfully installed!"
     echo ""
@@ -213,7 +205,7 @@ func_mysql_database_setting() {
     echo ""
     echo "Configure Mysql Settings..."
     echo ""
-    
+
     echo "Enter Mysql hostname (default:localhost)"
     read MYHOST
     if [ -z "$MYHOST" ]; then
@@ -245,7 +237,7 @@ func_iptables_configuration() {
     #add http port
     iptables -I INPUT 2 -p tcp -m state --state NEW -m tcp --dport $HTTP_PORT -j ACCEPT
     iptables -I INPUT 3 -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT
-    
+
     service iptables save
 }
 
@@ -256,10 +248,10 @@ func_setup_virtualenv() {
     echo ""
     echo "This will install virtualenv & virtualenvwrapper"
     echo "and create a new virtualenv : $NEWFIES_ENV"
-    
+
     easy_install virtualenv
     easy_install virtualenvwrapper
-    
+
     # Enable virtualenvwrapper
     chk=`grep "virtualenvwrapper" ~/.bashrc|wc -l`
     if [ $chk -lt 1 ] ; then
@@ -267,14 +259,14 @@ func_setup_virtualenv() {
         echo "export WORKON_HOME=/usr/share/virtualenvs" >> ~/.bashrc
         echo "source $SCRIPT_VIRTUALENVWRAPPER" >> ~/.bashrc
     fi
-    
+
     # Setup virtualenv
     export WORKON_HOME=/usr/share/virtualenvs
     source $SCRIPT_VIRTUALENVWRAPPER
 
     mkvirtualenv $NEWFIES_ENV
     workon $NEWFIES_ENV
-    
+
     echo "Virtualenv $NEWFIES_ENV created and activated"
 }
 
@@ -298,14 +290,14 @@ func_install_frontend(){
     echo "Install Dependencies and python modules..."
     case $DIST in
         'DEBIAN')
-            apt-get -y install python-setuptools python-dev build-essential 
+            apt-get -y install python-setuptools python-dev build-essential
             apt-get -y install libapache2-mod-python libapache2-mod-wsgi
             apt-get -y install git-core mercurial gawk
             easy_install pip
-            
+
             #|FIXME: Strangely South need to be installed outside the Virtualenv
             pip install -e $SOUTH_SOURCE
-                    
+
             if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
                 apt-get install sqlite3 libsqlite3-dev
             else
@@ -314,13 +306,13 @@ func_install_frontend(){
                 /etc/init.d/mysql start
                 #Configure MySQL
                 /usr/bin/mysql_secure_installation
-				until mysql -u$MYSQLUSER -p$MYSQLPASSWORD -P$MYHOSTPORT -h$MYHOST -e ";" ; do 
-					clear 
+				until mysql -u$MYSQLUSER -p$MYSQLPASSWORD -P$MYHOSTPORT -h$MYHOST -e ";" ; do
+					clear
                 	echo "Enter correct database settings"
                 	func_mysql_database_setting
                 done
             fi
-            
+
             #for audiofile convertion
             apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
         ;;
@@ -336,14 +328,14 @@ func_install_frontend(){
 						rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.i686.rpm
 					fi
         	fi
-        	
+
             #Install epel repo for pip and mod_python
             if [ $KERNELARCH = "x86_64" ]; then
 				rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-7.noarch.rpm
 			else
 				rpm -ivh http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-7.noarch.rpm
 			fi
-            
+
             # disable epel repository since by default it is enabled.
             sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo
             yum -y --enablerepo=epel install python-pip mod_python python-setuptools python-tools python-devel mercurial mod_wsgi
@@ -359,15 +351,14 @@ func_install_frontend(){
                 /etc/init.d/mysqld start
                 #Configure MySQL
                 /usr/bin/mysql_secure_installation
-				until mysql -u$MYSQLUSER -p$MYSQLPASSWORD -P$MYHOSTPORT -h$MYHOST -e ";" ; do 
-					clear 
+				until mysql -u$MYSQLUSER -p$MYSQLPASSWORD -P$MYHOSTPORT -h$MYHOST -e ";" ; do
+					clear
                 	echo "Enter correct database settings"
                 	func_mysql_database_setting
-                done            
+                done
             fi
         ;;
     esac
-    
 
     if [ -d "$INSTALL_DIR" ]; then
         # Newfies is already installed
@@ -391,7 +382,7 @@ func_install_frontend(){
 
     #Create and enable virtualenv
     func_setup_virtualenv
-    
+
     #get Newfies
     echo "Install Newfies..."
     cd /usr/src/
@@ -401,7 +392,7 @@ func_install_frontend(){
     case $INSTALL_MODE in
         'CLONE')
             git clone git://github.com/Star2Billing/newfies-dialer.git
-            
+
             #Install Develop / Master
             if echo $branch | grep -i "^DEVEL" > /dev/null ; then
                 cd newfies-dialer
@@ -415,7 +406,7 @@ func_install_frontend(){
         #    tar xvzf Star2Billing-newfies-dialer-*.tar.gz
         #    rm -rf Star2Billing-newfies-*.tar.gz
         #    mv newfies-dialer newfies-dialer_$DATETIME
-        #    mv Star2Billing-newfies-* newfies-dialer        
+        #    mv Star2Billing-newfies-* newfies-dialer
         #;;
     esac
 
@@ -427,23 +418,23 @@ func_install_frontend(){
     #For python 2.6 only
     pip install importlib
     echo "Install basic requirements..."
-    for line in $(cat /usr/src/newfies-dialer/install/requirements/basic-requirements.txt)
+    for line in $(cat /usr/src/newfies-dialer/install/requirements/basic-requirements.txt | grep -v \#)
     do
         pip install $line
     done
     echo "Install Django requirements..."
-    for line in $(cat /usr/src/newfies-dialer/install/requirements/django-requirements.txt)
+    for line in $(cat /usr/src/newfies-dialer/install/requirements/django-requirements.txt | grep -v \#)
     do
         pip install $line
     done
     pip install plivohelper
-    
+
     #Add South install again
     pip install -e $SOUTH_SOURCE
-    
+
     #Check Python dependencies
     func_check_dependencies
-    
+
     # copy settings_local.py into newfies dir
     cp /usr/src/newfies-dialer/install/conf/settings_local.py $INSTALL_DIR
 
@@ -461,7 +452,7 @@ func_install_frontend(){
         # Setup settings_local.py for SQLite
         sed -i "s/'init_command/#'init_command/g"  $INSTALL_DIR/settings_local.py
     else
-            
+
         # Setup settings_local.py for MySQL
         sed -i "s/'django.db.backends.sqlite3'/'django.db.backends.mysql'/"  $INSTALL_DIR/settings_local.py
         sed -i "s/.*'NAME'/       'NAME': '$DATABASENAME',#/"  $INSTALL_DIR/settings_local.py
@@ -469,7 +460,7 @@ func_install_frontend(){
         sed -i "/'PASSWORD'/s/''/'$MYSQLPASSWORD'/" $INSTALL_DIR/settings_local.py
         sed -i "/'HOST'/s/''/'$MYHOST'/" $INSTALL_DIR/settings_local.py
         sed -i "/'PORT'/s/''/'$MYHOSTPORT'/" $INSTALL_DIR/settings_local.py
-    
+
         # Create the Database
         echo "Remove Existing Database if exists..."
   		if [ -d "/var/lib/mysql/$DATABASENAME" ]; then
@@ -480,31 +471,31 @@ func_install_frontend(){
         echo "mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e 'CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;'"
         mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e "CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;"
     fi
-    
+
     cd $INSTALL_DIR/
-    
+
     #Fix permission on python-egg
     mkdir /usr/share/newfies/.python-eggs
     chown $APACHE_USER:$APACHE_USER /usr/share/newfies/.python-eggs
     mkdir database
-    
+
     #upload audio files
     mkdir -p /usr/share/newfies/usermedia/upload/audiofiles
     chown -R $APACHE_USER:$APACHE_USER /usr/share/newfies/usermedia
-    
+
     #following lines is for apache logs
     touch /var/log/newfies/newfies-django.log
     touch /var/log/newfies/newfies-django-db.log
     touch /var/log/newfies/err-apache-newfies.log
     chown -R $APACHE_USER:$APACHE_USER /var/log/newfies
-    
+
     python manage.py syncdb --noinput
     python manage.py migrate
     echo ""
     echo ""
     echo "Create a super admin user..."
     python manage.py createsuperuser
-    
+
     #echo ""
     #echo "Create a super user for API, use a different username..."
     #python manage.py createsuperuser
@@ -517,17 +508,17 @@ func_install_frontend(){
 
     #Collect static files from apps and other locations in a single location.
     python manage.py collectstatic -l --noinput
-    
-    #Permission on database folder if we use SQLite    
+
+    #Permission on database folder if we use SQLite
     chown -R $APACHE_USER:$APACHE_USER $INSTALL_DIR/database/
 
     # prepare Apache
     echo "Prepare Apache configuration..."
     echo '
     '$WSGI_ADDITIONAL'
-    
+
     Listen *:'$HTTP_PORT'
-    
+
     <VirtualHost *:'$HTTP_PORT'>
         DocumentRoot '$INSTALL_DIR'/
         ErrorLog /var/log/newfies/err-apache-newfies.log
@@ -552,11 +543,11 @@ func_install_frontend(){
         </Directory>
 
     </VirtualHost>
-    
+
     ' > $APACHE_CONF_DIR/newfies.conf
     #correct the above file
     sed -i "s/@/'/g"  $APACHE_CONF_DIR/newfies.conf
-    
+
     IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
     IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
     if [ -z "$IPADDR" ]; then
@@ -564,7 +555,7 @@ func_install_frontend(){
         echo "we have not detected your IP address automatically, please enter it manually"
         read IPADDR
 	fi
-    
+
     ##Update Freeswitch XML CDR
     #NEWFIES_CDR_API='api\/v1\/store_cdr\/'
     #CDR_API_URL="http:\/\/$IPADDR:$HTTP_PORT\/$NEWFIES_CDR_API"
@@ -574,12 +565,12 @@ func_install_frontend(){
     ##Update API username and password
     #sed -i "s/APIUSERNAME/$APIUSERNAME/g" xml_cdr.conf.xml
     #sed -i "s/APIPASSWORD/$APIPASSWORD/g" xml_cdr.conf.xml
-    
+
     #Update for Plivo URL & Authorize local IP
     sed -i "s/SERVER_IP_PORT/$IPADDR:$HTTP_PORT/g" $INSTALL_DIR/settings_local.py
     sed -i "s/#'SERVER_IP',/'$IPADDR',/g" $INSTALL_DIR/settings_local.py
-    sed -i "s/dummy/plivo/g" $INSTALL_DIR/settings_local.py 
-    
+    sed -i "s/dummy/plivo/g" $INSTALL_DIR/settings_local.py
+
     case $DIST in
         'DEBIAN')
             service apache2 restart
@@ -593,23 +584,23 @@ func_install_frontend(){
             echo "We will now add port $HTTP_PORT  and port 80 to your Firewall"
             echo "Press Enter to continue or CTRL-C to exit"
             read TEMP
-        
+
             func_iptables_configuration
-            
+
             #Selinux to allow apache to access this directory
             chcon -Rv --type=httpd_sys_content_t /usr/share/virtualenvs/newfies-dialer/
             chcon -Rv --type=httpd_sys_content_t /usr/share/newfies/usermedia
             semanage port -a -t http_port_t -p tcp $HTTP_PORT
             #Allowing Apache to access Redis port
             semanage port -a -t http_port_t -p tcp 6379
-            
+
             service httpd restart
         ;;
     esac
-    
+
     #Set Timezone in settings_local.py
     sed -i "s@Europe/Madrid@$ZONE@g" $INSTALL_DIR/settings_local.py
-    
+
 
     echo ""
     echo ""
@@ -648,10 +639,10 @@ func_install_backend() {
         echo "we have not detected your IP address automatically, please enter it manually"
         read IPADDR
 	fi
-    
+
     #Create directory for pid file
     mkdir -p /var/run/celery
-    
+
     #Install Celery & redis-server
     echo "Install Redis-server ..."
     func_install_redis_server
@@ -662,7 +653,7 @@ func_install_backend() {
     echo ""
     echo "Configure Celery..."
 
-    
+
     case $DIST in
         'DEBIAN')
             # Add init-scripts
@@ -686,12 +677,12 @@ func_install_backend() {
             /etc/init.d/newfies-celeryd restart
             #celerybeat script disabled
             #/etc/init.d/newfies-celerybeat restart
-            
+
             cd /etc/init.d; update-rc.d newfies-celeryd defaults 99
             #celerybeat script disabled
             #cd /etc/init.d; update-rc.d newfies-celerybeat defaults 99
-            
-            #Check permissions on /dev/shm to ensure that celery can start and run for openVZ. 
+
+            #Check permissions on /dev/shm to ensure that celery can start and run for openVZ.
 			DIR="/dev/shm"
 			echo "Checking the permissions for $dir"
 			stat $DIR
@@ -728,10 +719,10 @@ func_install_backend() {
             /etc/init.d/newfies-celeryd restart
             #celerybeat script disabled
             #/etc/init.d/newfies-celerybeat restart
-            
+
             chkconfig --add newfies-celeryd
             chkconfig --level 2345 newfies-celeryd on
-            
+
             #celerybeat script disabled
             #chkconfig --add newfies-celerybeat
             #chkconfig --level 2345 newfies-celerybeat on
@@ -761,36 +752,42 @@ func_install_backend() {
 func_install_redis_server() {
     case $DIST in
         'DEBIAN')
-            cd /usr/src
-            wget http://redis.googlecode.com/files/redis-2.2.11.tar.gz
-            tar -zxf redis-2.2.11.tar.gz
-            cd redis-2.2.11
-            make
-            make install
+            if [ "$(lsb_release -cs)" == "precise" ]; then
+                #Ubuntu 12.04 TLS
+                apt-get -y install redis-server
+                /etc/init.d/redis-server restart
+            else
+                #Ubuntu 10.04 TLS
+                cd /usr/src
+                wget http://redis.googlecode.com/files/redis-2.4.14.tar.gz
+                tar -zxf redis-2.4.14.tar.gz
+                cd redis-2.4.14
+                make
+                make install
 
-            cp /usr/src/newfies-dialer/install/redis/debian/etc/redis.conf /etc/redis.conf
-            cp /usr/src/newfies-dialer/install/redis/debian/etc/init.d/redis-server /etc/init.d/redis-server
-            chmod +x /etc/init.d/redis-server
+                cp /usr/src/cdr-stats/install/redis/debian/etc/redis.conf /etc/redis.conf
+                cp /usr/src/cdr-stats/install/redis/debian/etc/init.d/redis-server /etc/init.d/redis-server
+                chmod +x /etc/init.d/redis-server
+                useradd redis
+                mkdir -p /var/lib/redis
+                mkdir -p /var/log/redis
+                chown redis.redis /var/lib/redis
+                chown redis.redis /var/log/redis
 
-            useradd redis
-            mkdir -p /var/lib/redis
-            mkdir -p /var/log/redis
-            chown redis.redis /var/lib/redis
-            chown redis.redis /var/log/redis
-            
-            cd /etc/init.d/
-            update-rc.d -f redis-server defaults
+                cd /etc/init.d/
+                update-rc.d -f redis-server defaults
 
-            #Start redis-server
-            /etc/init.d/redis-server start
+                #Start redis-server
+                /etc/init.d/redis-server start
+            fi
         ;;
         'CENTOS')
             #install redis
             yum -y --enablerepo=epel install redis
-            
+
             chkconfig --add redis
             chkconfig --level 2345 redis on
-            
+
             /etc/init.d/redis start
             #Fixme : /etc/init.d/redis
             # pid seems to point at wrong place
@@ -798,7 +795,6 @@ func_install_redis_server() {
         ;;
     esac
 }
-
 
 #Menu Section for Script
 show_menu_newfies() {
@@ -852,25 +848,25 @@ while [ $ExitFinish -eq 0 ]; do
 	show_menu_newfies
 
 	case $OPTION in
-		1) 
+		1)
 			func_install_frontend
 			func_install_landing_page
 			func_install_backend
 			echo done
 		;;
-		2) 
+		2)
 			func_install_frontend
 			func_install_landing_page
 		;;
-		3) 
+		3)
 			func_install_backend
 		;;
 		0)
 		ExitFinish=1
 		;;
 		*)
-	esac	
-	
+	esac
+
 done
 
 

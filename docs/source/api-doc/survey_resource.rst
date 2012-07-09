@@ -1,4 +1,4 @@
-.. automodule:: survey.api.resources
+.. automodule:: survey.api.survey_api
 
 .. _surveyappResource-model:
 

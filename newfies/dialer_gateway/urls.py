@@ -12,7 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns
 from django.conf import settings
 from dialer_gateway.views import *
 

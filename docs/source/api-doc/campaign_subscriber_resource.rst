@@ -1,4 +1,4 @@
-.. automodule:: api.resources
+.. automodule:: api.campaign_subscriber_api
 
 .. _campaignsubscriberResource-model:
 

@@ -150,8 +150,8 @@ func_check_dependencies() {
     echo ""
 
     #Check South
-    grep_pip=`pip freeze| grep south`
-    if echo $grep_pip | grep -i "south" > /dev/null ; then
+    grep_pip=`pip freeze| grep South`
+    if echo $grep_pip | grep -i "South" > /dev/null ; then
         echo "OK : South installed..."
     else
         echo "Error : South not installed..."

@@ -304,8 +304,14 @@ def survey_question_list(request):
                 .filter(surveyapp_id=request.GET['surveyapp_id'],
                         user=request.user).order_by('order')
     result_string = ''
+    rec_count = 1
     for i in que_list:
-        result_string += str(i.id) + ',' + str(i.question)
+        if len(que_list) == rec_count:
+            result_string += str(i.id) + ',' + str(i.question)
+        else:
+            result_string += str(i.id) + ',' + str(i.question) + ','
+
+        rec_count += 1
 
     return HttpResponse(result_string)
 

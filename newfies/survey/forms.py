@@ -121,6 +121,8 @@ class SurveyResponseForm(ModelForm):
         self.fields['key'].widget.attrs['class'] = "input-small"
         self.fields['keyvalue'].widget.attrs['class'] = "input-small"
         self.fields['goto_surveyquestion'].choices = get_question_list(user)
+        self.fields['goto_surveyquestion'].widget\
+            .attrs['onfocus'] = 'call_update_question();'
         if instance.id:
             js_function = "response_form(" + str(instance.id) + ", " + \
                             str(instance.surveyquestion_id) + ", 1, 1);"

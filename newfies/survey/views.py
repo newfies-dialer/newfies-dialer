@@ -306,7 +306,7 @@ def survey_question_list(request):
     result_string = ''
     for i in que_list:
         result_string += str(i.id) + ',' + str(i.question)
-    #print result_string
+
     return HttpResponse(result_string)
 
 

@@ -300,6 +300,7 @@ def survey_del(request, object_id):
 
 @login_required
 def survey_question_list(request):
+    """Get survey question list from AJAX request"""
     que_list = SurveyQuestion.objects\
                 .filter(surveyapp_id=request.GET['surveyapp_id'],
                         user=request.user).order_by('order')

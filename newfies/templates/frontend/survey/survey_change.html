@@ -410,7 +410,7 @@ function call_update_question(class_id) {
                 }
 
                 //$("select#id_goto_surveyquestion").html(options);
-		$("."+class_id+" #id_goto_surveyquestion").html(options);
+		        $("."+class_id+" #id_goto_surveyquestion").html(options);
             },
             error: function() {
                 alert("Request failed");
@@ -521,22 +521,22 @@ function call_update_question(class_id) {
                                     {% if field.name == 'type' %}
                                     <!--2nd row start-->
                                     <div class="row">
-                                    <div class="span4">
-                                                <b>{{ field.label|capfirst }}</b><br/>
-                                                    {{ field }}
-                                            </div>
+                                        <div class="span4">
+                                            <b>{{ field.label|capfirst }}</b><br/>
+                                               {{ field }}
+                                        </div>
                                     {% endif %}
                                     {% if field.name == 'data' %}
-                                    <div class="span4">
-                                                <b>{{ field.label|capfirst }}</b><br/>
-                                                    {{ field }}
-                                            </div>
+                                        <div class="span4">
+                                            <b>{{ field.label|capfirst }}</b><br/>
+                                               {{ field }}
+                                        </div>
                                     {% endif %}
                                     {% if field.name == 'gateway' %}
-                                    <div class="span4">
-                                                <b>{{ field.label|capfirst }}</b><br/>
-                                                    {{ field }}
-                                            </div>
+                                        <div class="span4">
+                                            <b>{{ field.label|capfirst }}</b><br/>
+                                               {{ field }}
+                                        </div>
                                     </div>
                                     <!--2nd row end div-->
                                     {% endif %}

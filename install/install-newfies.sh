@@ -44,7 +44,6 @@ CELERYD_USER="celery"
 CELERYD_GROUP="celery"
 NEWFIES_ENV="newfies-dialer"
 HTTP_PORT="8008"
-SOUTH_SOURCE='hg+http://bitbucket.org/andrewgodwin/south/@ecaafda23e600e510e252734d67bf8f9f2362dc9#egg=South-dev'
 
 
 
@@ -295,9 +294,6 @@ func_install_frontend(){
             apt-get -y install git-core mercurial gawk
             easy_install pip
 
-            #|FIXME: Strangely South need to be installed outside the Virtualenv
-            pip install -e $SOUTH_SOURCE
-
             if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
                 apt-get install sqlite3 libsqlite3-dev
             else
@@ -428,10 +424,7 @@ func_install_frontend(){
         pip install $line
     done
     pip install plivohelper
-
-    #Add South install again
-    pip install -e $SOUTH_SOURCE
-
+    
     #Check Python dependencies
     func_check_dependencies
 

@@ -40,7 +40,9 @@ from survey.forms import SurveyForm, \
                          SurveyDetailReportForm
 from dialer_cdr.models import Callrequest
 from audiofield.models import AudioFile
-
+from dialer_campaign.function_def import variable_value
+from dialer_cdr.models import VoIPCall
+from dialer_cdr.function_def import voipcall_record_common_fun
 from datetime import datetime
 import time
 import os.path
@@ -657,29 +659,87 @@ def survey_detail_report(request):
 
         * List all survey_report which belong to the logged in user.
     """
-    form = SurveyDetailReportForm(request.user)
-    survey_result = ''
+    kwargs = {}
+    kwargs['user'] = request.user
+    tday = datetime.today()
+    from_date = tday.strftime("%Y-%m-%d")
+    to_date = tday.strftime("%Y-%m-%d")
+    form = SurveyDetailReportForm(request.user,
+                                  initial={'from_date': from_date,
+                                           'to_date': to_date})
     if request.method == 'POST':
         form = SurveyDetailReportForm(request.user, request.POST)
         if form.is_valid():
-            try:
-                campaign_obj = Campaign.objects\
-                .get(id=int(request.POST['campaign']))
-                survey_result = SurveyCampaignResult.objects\
-                .filter(campaign=campaign_obj)\
-                .values('question', 'response')\
-                .annotate(Count('response'))\
-                .distinct()\
-                .order_by('question')
+            if request.POST['from_date'] != "":
+                from_date = request.POST['from_date']
+            if request.POST['to_date'] != "":
+                to_date = request.POST['to_date']
+            kwargs = voipcall_record_common_fun(request)
+    else:
 
-                if not survey_result:
-                    request.session["err_msg"] = _('No record found!.')
+        kwargs['starting_date__gte'] = datetime(tday.year,
+                                                tday.month,
+                                                tday.day,
+                                                0, 0, 0, 0)
+    total_data = ''
+    survey_result = ''
+    max_duration = 0
+    total_duration = 0
+    total_calls = 0
+    total_avg_duration = 0
+    try:
+        campaign_obj = Campaign.objects\
+            .get(id=int(request.POST['campaign']))
 
-            except:
-                request.session["err_msg"] = _('No campaign attached with survey.')
+        survey_result = SurveyCampaignResult.objects\
+            .filter(campaign=campaign_obj)\
+            .values('question', 'response')\
+            .annotate(Count('response'))\
+            .distinct()\
+            .order_by('question')
+
+        voipcall_list =\
+            VoIPCall.objects.values('user', 'callid', 'callerid', 'phone_number',
+                'starting_date', 'duration', 'billsec',
+                'disposition', 'hangup_cause', 'hangup_cause_q850',
+                'used_gateway').filter(**kwargs).order_by('-starting_date')
+
+        select_data =\
+            {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
+
+        # Get Total Rrecords from VoIPCall Report table for Daily Call Report
+        total_data = VoIPCall.objects.extra(select=select_data)\
+            .values('starting_date')\
+            .filter(**kwargs).annotate(Count('starting_date'))\
+            .annotate(Sum('duration'))\
+            .annotate(Avg('duration'))\
+            .order_by('-starting_date')
+
+        # Following code will count total voip calls, duration
+        if total_data.count() != 0:
+            max_duration =\
+                max([x['duration__sum'] for x in total_data])
+            total_duration =\
+                sum([x['duration__sum'] for x in total_data])
+            total_calls =\
+                sum([x['starting_date__count'] for x in total_data])
+            total_avg_duration =\
+                (sum([x['duration__avg']\
+                    for x in total_data])) / total_data.count()
+
+        if not survey_result:
+            request.session["err_msg"] = _('No record found!.')
+
+    except:
+        request.session["err_msg"] = _('No campaign attached with survey.')
 
     template = 'frontend/survey/survey_detail_report.html'
     data = {
+        'total_data': total_data,
+        'total_duration': total_duration,
+        'total_calls': total_calls,
+        'total_avg_duration': total_avg_duration,
+        'max_duration': max_duration,
         'module': current_view(request),
         'msg': request.session.get('msg'),
         'err_msg': request.session.get('err_msg'),

@@ -698,7 +698,7 @@ def survey_detail_report(request):
             .distinct()\
             .order_by('question')
 
-        voipcall_list =\
+        rows =\
             VoIPCall.objects.values('user', 'callid', 'callerid', 'phone_number',
                 'starting_date', 'duration', 'billsec',
                 'disposition', 'hangup_cause', 'hangup_cause_q850',
@@ -731,10 +731,15 @@ def survey_detail_report(request):
             request.session["err_msg"] = _('No record found!.')
 
     except:
+        rows = []
         request.session["err_msg"] = _('No campaign attached with survey.')
 
     template = 'frontend/survey/survey_detail_report.html'
+    PAGE_SIZE = 10
     data = {
+        'rows': rows,
+        'PAGE_SIZE': PAGE_SIZE,
+        'col_name_with_order': [],
         'total_data': total_data,
         'total_duration': total_duration,
         'total_calls': total_calls,

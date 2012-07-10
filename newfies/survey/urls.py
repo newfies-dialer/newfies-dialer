@@ -29,6 +29,7 @@ urlpatterns = patterns('',
     (r'^survey_finestatemachine/$', 'survey.views.survey_finestatemachine'),
 
     (r'^survey_report/$', 'survey.views.survey_report'),
+    (r'^survey_detail_report/$', 'survey.views.survey_detail_report'),
 
 
 

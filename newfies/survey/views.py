@@ -18,7 +18,7 @@ from django.contrib.sites.models import Site
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
-from django.db.models import *
+from django.db.models import Sum, Avg, Count
 from django.conf import settings
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
@@ -29,12 +29,19 @@ from django.core.cache import cache
 from dialer_campaign.models import Campaign
 from dialer_campaign.views import current_view, notice_count, update_style, \
     delete_style, grid_common_function
-from survey.models import *
-from survey.forms import *
+from survey.models import SurveyApp, SurveyQuestion, \
+                          SurveyResponse, SurveyCampaignResult
+from survey.forms import SurveyForm, \
+                         SurveyQuestionForm, \
+                         SurveyQuestionNewForm, \
+                         SurveyResponseForm, \
+                         SurveyReportForm, \
+                         SurveyCustomerAudioFileForm, \
+                         SurveyDetailReportForm
 from dialer_cdr.models import Callrequest
 from audiofield.models import AudioFile
 
-from datetime import *
+from datetime import datetime
 import time
 import os.path
 
@@ -592,7 +599,7 @@ def audio_change(request, object_id):
 
 @login_required
 def survey_report(request):
-    """AudioFile list for the logged in user
+    """Survey report
 
     **Attributes**:
 
@@ -636,3 +643,51 @@ def survey_report(request):
     request.session['err_msg'] = ''
     return render_to_response(template, data,
            context_instance=RequestContext(request))
+
+
+@login_required
+def survey_detail_report(request):
+    """Survey detail report for the logged in user
+
+    **Attributes**:
+
+        * ``template`` - frontend/survey/survey_detail_report.html
+
+    **Logic Description**:
+
+        * List all survey_report which belong to the logged in user.
+    """
+    form = SurveyDetailReportForm(request.user)
+    survey_result = ''
+    if request.method == 'POST':
+        form = SurveyDetailReportForm(request.user, request.POST)
+        if form.is_valid():
+            try:
+                campaign_obj = Campaign.objects\
+                .get(id=int(request.POST['campaign']))
+                survey_result = SurveyCampaignResult.objects\
+                .filter(campaign=campaign_obj)\
+                .values('question', 'response')\
+                .annotate(Count('response'))\
+                .distinct()\
+                .order_by('question')
+
+                if not survey_result:
+                    request.session["err_msg"] = _('No record found!.')
+
+            except:
+                request.session["err_msg"] = _('No campaign attached with survey.')
+
+    template = 'frontend/survey/survey_detail_report.html'
+    data = {
+        'module': current_view(request),
+        'msg': request.session.get('msg'),
+        'err_msg': request.session.get('err_msg'),
+        'notice_count': notice_count(request),
+        'form': form,
+        'survey_result': survey_result,
+        }
+    request.session['msg'] = ''
+    request.session['err_msg'] = ''
+    return render_to_response(template, data,
+        context_instance=RequestContext(request))

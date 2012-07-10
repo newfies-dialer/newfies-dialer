@@ -551,7 +551,7 @@ function toggle_gateway_field(que_id) {
                                     {% endif %}
                                     {% if field.name == 'gateway' %}
                                         <div class="span4 gateway_{{ que.id }}" style="{% if form.type.value == 1 %}display:block;{% endif %}">
-                                            <b id="id_gateway_label">{{ field.label|capfirst }}</b><br/>
+                                            {{ form.type.value }}<b id="id_gateway_label">{{ field.label|capfirst }}</b><br/>
                                                {{ field }}
                                         </div>
                                     </div>

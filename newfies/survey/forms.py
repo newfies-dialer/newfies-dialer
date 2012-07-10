@@ -22,6 +22,7 @@ from django.contrib.contenttypes.models import ContentType
 from survey.models import *
 from survey.function_def import field_list
 from dialer_campaign.models import Campaign
+from dialer_cdr.forms import VoipSearchForm
 from audiofield.forms import CustomerAudioFileForm
 
 from datetime import *
@@ -154,6 +155,14 @@ class SurveyReportForm(forms.Form):
             except:
                 list.append((0, ''))
             self.fields['campaign'].choices = list
+
+
+class SurveyDetailReportForm(VoipSearchForm, SurveyReportForm):
+
+    def __init__(self, user, *args, **kwargs):
+        super(SurveyDetailReportForm, self).__init__(user, *args, **kwargs)
+        self.fields.keyOrder = ['from_date', 'to_date', 'status', 'campaign']
+
 
 
 class SurveyCustomerAudioFileForm(CustomerAudioFileForm):

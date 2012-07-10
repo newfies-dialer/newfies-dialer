@@ -21,8 +21,6 @@ from dialer_gateway.models import Gateway
 from audiofield.models import AudioFile
 from adminsortable.models import Sortable
 
-
-
 from south.modelsinspector import add_introspection_rules
 add_introspection_rules([], ["^tagging.fields.TagField"])
 add_introspection_rules([], ["^audiofield.fields.AudioField"])

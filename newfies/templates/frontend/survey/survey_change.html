@@ -342,7 +342,7 @@ function addResFormField(que_id, is_que_id_set) {
 		    {% if field.name == 'goto_surveyquestion' %}
 			'<div class="span3 goto_'+id+'"><b>{% trans "Goto question" %}</b><br/><select id="id_goto_surveyquestion" name="goto_surveyquestion" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')" onfocus="call_update_question(\'goto_'+id+'\');"></select>' + //'{{ field|escapejs }}' + 
 		    {% else %}		
-                    	'{{ field|escapejs }}'+
+                '{{ field|escapejs }}'+
 		    {% endif %} 
                 {% endif %}                              
               {% endif %}
@@ -569,7 +569,7 @@ function call_update_question(class_id) {
 
                                                         {% if forloop.first %}<div class="span2"><b>{% trans "Key Digit" %}</b>{% endif %}
                                                         {% if forloop.counter == 2 %}<div class="span2"><b>{% trans "Key Value" %}</b>{% endif %}
-                                                        {% if forloop.last %}<div class="span3"><b>{% trans "Goto question" %}</b>{% endif %}
+                                                        {% if forloop.last %}<div class="span3 goto_{{ key }}"><b>{% trans "Goto question" %}</b>{% endif %}
                                                         <br/>
                                                         {{ field }}
                                                     </div>

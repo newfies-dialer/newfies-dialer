@@ -424,7 +424,7 @@ func_install_frontend(){
         pip install $line
     done
     pip install plivohelper
-    
+
     #Check Python dependencies
     func_check_dependencies
 
@@ -758,8 +758,8 @@ func_install_redis_server() {
                 make
                 make install
 
-                cp /usr/src/cdr-stats/install/redis/debian/etc/redis.conf /etc/redis.conf
-                cp /usr/src/cdr-stats/install/redis/debian/etc/init.d/redis-server /etc/init.d/redis-server
+                cp /usr/src/newfies-dialer/install/redis/debian/etc/redis.conf /etc/redis.conf
+                cp /usr/src/newfies-dialer/install/redis/debian/etc/init.d/redis-server /etc/init.d/redis-server
                 chmod +x /etc/init.d/redis-server
                 useradd redis
                 mkdir -p /var/lib/redis

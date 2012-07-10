@@ -40,6 +40,7 @@ FS_INIT_PATH=https://raw.github.com/Star2Billing/newfies-dialer/master/install/f
 FS_GIT_REPO=git://git.freeswitch.org/freeswitch.git
 FS_INSTALLED_PATH=/usr/local/freeswitch
 FS_CONFIG_PATH=/etc/freeswitch
+FS_DOWNLOAD=http://files.freeswitch.org/freeswitch-1.2.rc2.tar.bz2
 
 #####################################################
 FS_BASE_PATH=/usr/src/
@@ -77,9 +78,16 @@ func_install_fs_source() {
 	    	
 	# Install FreeSWITCH
 	cd $FS_BASE_PATH
-	git clone $FS_GIT_REPO
+#	git clone $FS_GIT_REPO
+        rm -rf freeswitch
+        rm -rf freeswitch-*.tar.*
+        wget $FS_DOWNLOAD
+        tar jxf freeswitch-*.tar.*
+        rm freeswitch-*.tar.*
+        mv freeswitch-* freeswitch
 	cd $FS_BASE_PATH/freeswitch
-	sh bootstrap.sh && ./configure --without-pgsql --prefix=/usr/local/freeswitch --sysconfdir=/etc/freeswitch/
+	./configure --without-pgsql --prefix=/usr/local/freeswitch --sysconfdir=/etc/freeswitch/
+#	sh bootstrap.sh && ./configure --without-pgsql --prefix=/usr/local/freeswitch --sysconfdir=/etc/freeswitch/
 	[ -f modules.conf ] && cp modules.conf modules.conf.bak
 	sed -i -e \
 	"s/#applications\/mod_curl/applications\/mod_curl/g" \

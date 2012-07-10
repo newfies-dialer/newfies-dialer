@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
-
 #
-# CDR-Stats License
-# http://www.cdr-stats.org
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -169,14 +167,14 @@ class AnswercallResource(ModelResource):
                     callerid = obj_callrequest.callerid
                     gatewaytimeouts = obj_callrequest.timeout
                     gateways = obj_callrequest.content_object.gateway.gateways
-                    dial_command = 'Dial timeLimit="%s"'\
-                                   '-callerId="%s"'\
-                                   '-callbackUrl="%s"' %\
+                    dial_command = 'Dial timeLimit="%s" ' \
+                                   'callerId="%s" ' \
+                                   'callbackUrl="%s"' % \
                                    (timelimit,
                                     callerid,
                                     PLIVO_DEFAULT_DIALCALLBACK_URL)
-                    number_command = 'Number gateways="%s" '\
-                                     'gatewayTimeouts="%s"' %\
+                    number_command = 'Number gateways="%s" ' \
+                                     'gatewayTimeouts="%s"' % \
                                      (gateways, gatewaytimeouts)
 
                     object_list = [{dial_command: {number_command: data}}]

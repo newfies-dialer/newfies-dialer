@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 #
-# CDR-Stats License
-# http://www.cdr-stats.org
+# Newfies-Dialer License
+# http://www.newfies-dialer.org
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,

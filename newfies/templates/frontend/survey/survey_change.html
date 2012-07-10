@@ -420,6 +420,18 @@ function call_update_question(class_id) {
 
 }
 
+// function update goto question field
+function toggle_gateway_field(que_id) {
+    var type_id = $(".type_"+que_id+" #id_type").val();
+    if(type_id == 1)
+    {
+        $(".gateway_"+que_id+" #id_gateway").show();
+    }
+    else
+    {
+        $(".gateway_"+que_id+" #id_gateway").hide();
+    }
+}
 </script>
 {% endblock %}
 
@@ -520,7 +532,7 @@ function call_update_question(class_id) {
                                     {% if field.name == 'type' %}
                                     <!--2nd row start-->
                                     <div class="row">
-                                        <div class="span4">
+                                        <div class="span4 type_{{ que.id }}">
                                             <b>{{ field.label|capfirst }}</b><br/>
                                                {{ field }}
                                         </div>
@@ -532,7 +544,7 @@ function call_update_question(class_id) {
                                         </div>
                                     {% endif %}
                                     {% if field.name == 'gateway' %}
-                                        <div class="span4">
+                                        <div class="span4 gateway_{{ que.id }}" style="{% if form.gateway.value == 1 %}display:block;{% endif %}">
                                             <b>{{ field.label|capfirst }}</b><br/>
                                                {{ field }}
                                         </div>

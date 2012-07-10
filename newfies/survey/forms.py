@@ -83,7 +83,8 @@ class SurveyQuestionForm(ModelForm):
             js_function = "question_form(" + str(instance.id) + ", 1);"
             self.fields['question'].widget.attrs['onBlur'] = js_function
             self.fields['audio_message'].widget.attrs['onChange'] = js_function
-            self.fields['type'].widget.attrs['onChange'] = js_function
+            self.fields['type'].widget.attrs['onChange'] = js_function + \
+                            'toggle_gateway_field("' + str(instance.id) + '")'
             self.fields['data'].widget.attrs['onBlur'] = js_function
             self.fields['gateway'].widget.attrs['onChange'] = js_function
 

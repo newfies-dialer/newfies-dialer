@@ -275,7 +275,7 @@ function addFormField() {
 	{% if field.name == 'type' %}
 	'<!--2nd row start div-->'+	
 	'<div class="row">' +
-		'<div class="span4">' + 
+		'<div class="span4 type_'+id+'">' + 
 		'<b>{{ field.label|capfirst }}</b><br/>{{ field|escapejs }}' +                    		                                                
 		'</div>' +		
 	{% endif %}
@@ -285,7 +285,7 @@ function addFormField() {
 		'</div>' +
 	{% endif %}
 	{% if field.name == 'gateway' %}
-		'<div class="span4">' + 
+		'<div class="span4 gateway_'+id+'">' + 
 		'<b>{{ field.label|capfirst }}</b><br/>{{ field|escapejs }}' +                    		                                                
 		'</div>' +
 		'</div>' +
@@ -308,6 +308,9 @@ function addFormField() {
     var id_new_que_form  = document.getElementById("id_new_que_form").value  ;
     id_new_que_form = (id_new_que_form - 1) + 2;    
     document.getElementById("id_new_que_form").value = id_new_que_form;
+    
+    // used to toggle gateway filed	
+    $('.type_' + (id-1) + ' #id_type').attr('onChange','toggle_gateway_field(' + (id-1) + ')');	
 }
 
 // To remvoe added question form
@@ -544,7 +547,7 @@ function toggle_gateway_field(que_id) {
                                         </div>
                                     {% endif %}
                                     {% if field.name == 'gateway' %}
-                                        <div class="span4 gateway_{{ que.id }}" style="{% if form.gateway.value == 1 %}display:block;{% endif %}">
+                                        <div class="span4 gateway_{{ que.id }}" style="{% if form.type.value == 1 %}display:block;{% endif %}">
                                             <b>{{ field.label|capfirst }}</b><br/>
                                                {{ field }}
                                         </div>

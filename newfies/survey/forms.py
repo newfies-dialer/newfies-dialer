@@ -130,7 +130,8 @@ class SurveyResponseForm(ModelForm):
             self.fields['goto_surveyquestion'].widget\
                     .attrs['onBlur'] = js_function
             self.fields['goto_surveyquestion'].widget\
-                .attrs['onfocus'] = 'call_update_question("goto_'+ str(instance.id) + '")'
+                .attrs['onfocus'] = \
+                    'call_update_question("goto_'+ str(instance.id) + '");'
 
 
 class SurveyReportForm(forms.Form):

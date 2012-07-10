@@ -286,7 +286,7 @@ function addFormField() {
 	{% endif %}
 	{% if field.name == 'gateway' %}
 		'<div class="span4 gateway_'+id+'">' + 
-		'<b>{{ field.label|capfirst }}</b><br/>{{ field|escapejs }}' +                    		                                                
+		'<b id="id_gateway_label">{{ field.label|capfirst }}</b><br/>{{ field|escapejs }}' +                    		                                                
 		'</div>' +
 		'</div>' +
 		'<!--2nd row end div-->' +
@@ -429,10 +429,13 @@ function toggle_gateway_field(que_id) {
     if(type_id == 1)
     {
         $(".gateway_"+que_id+" #id_gateway").show();
+        $(".gateway_"+que_id+" #id_gateway_label").text('{% trans "B-Leg" %}');
+
     }
     else
     {
         $(".gateway_"+que_id+" #id_gateway").hide();
+        $(".gateway_"+que_id+" #id_gateway_label").text('');
     }
 }
 </script>
@@ -548,7 +551,7 @@ function toggle_gateway_field(que_id) {
                                     {% endif %}
                                     {% if field.name == 'gateway' %}
                                         <div class="span4 gateway_{{ que.id }}" style="{% if form.type.value == 1 %}display:block;{% endif %}">
-                                            <b>{{ field.label|capfirst }}</b><br/>
+                                            <b id="id_gateway_label">{{ field.label|capfirst }}</b><br/>
                                                {{ field }}
                                         </div>
                                     </div>

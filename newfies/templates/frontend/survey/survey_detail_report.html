@@ -70,7 +70,7 @@
 <div class="tab-content">
     <div id="tabs-1" class="tab-pane {% if action == "tabs-1" or action == "" %}active{% endif %}">
         <p>&nbsp;</p>
-        <div ><!--class="graph_header"-->
+        <div class="graph_header">
             {% trans "Survey calls detail records"|title %} -
             <b>
                 {% if start_date  %}
@@ -97,10 +97,10 @@
                 <th>
                     {% ifequal col_name_with_order.sort_field 'callerid' %}
                         {% sort_link "<i class='icon-chevron-up'></i>" "callerid"  %}
-                        {% trans "CLID" %}
+                        {% trans "Call ID" %}
                         {% sort_link "<i class='icon-chevron-down'></i>" "-callerid"  %}
                     {% else %}
-                        {% sort_link "CLID" "-callerid"  %}
+                        {% sort_link "Call ID" "-callerid"  %}
                     {% endifequal %}
                 </th>
                 <th>

@@ -12,33 +12,31 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns
 from django.conf import settings
 from survey.views import *
 
 
-urlpatterns = patterns('',
+urlpatterns = patterns('survey.views',
 
     # Survey urls
-    (r'^survey/$', 'survey.views.survey_list'),
-    (r'^survey_grid/$', 'survey.views.survey_grid'),
-    (r'^survey/add/$', 'survey.views.survey_add'),
-    (r'^survey/del/(.+)/$', 'survey.views.survey_del'),
-    (r'^survey/question_list/$', 'survey.views.survey_question_list'),
-    (r'^survey/(.+)/$', 'survey.views.survey_change'),
-    (r'^survey_finestatemachine/$', 'survey.views.survey_finestatemachine'),
+    (r'^survey/$', 'survey_list'),
+    (r'^survey_grid/$', 'survey_grid'),
+    (r'^survey/add/$', 'survey_add'),
+    (r'^survey/del/(.+)/$', 'survey_del'),
+    (r'^survey/question_list/$', 'survey_question_list'),
+    (r'^survey/(.+)/$', 'survey_change'),
+    (r'^survey_finestatemachine/$', 'survey_finestatemachine'),
 
-    (r'^survey_report/$', 'survey.views.survey_report'),
-    (r'^survey_detail_report/$', 'survey.views.survey_detail_report'),
-    (r'^export_surveycall_report/$', 'survey.views.export_surveycall_report'),
-
-
+    (r'^survey_report/$', 'survey_report'),
+    (r'^survey_detail_report/$', 'survey_detail_report'),
+    (r'^export_surveycall_report/$', 'export_surveycall_report'),
 
     # Audio urls
-    (r'^audio/$', 'survey.views.audio_list'),
-    (r'^audio_grid/$', 'survey.views.audio_grid'),
-    (r'^audio/add/$', 'survey.views.audio_add'),
-    (r'^audio/del/(.+)/$', 'survey.views.audio_del'),
-    (r'^audio/(.+)/$', 'survey.views.audio_change'),
+    (r'^audio/$', 'audio_list'),
+    (r'^audio_grid/$', 'audio_grid'),
+    (r'^audio/add/$', 'audio_add'),
+    (r'^audio/del/(.+)/$', 'audio_del'),
+    (r'^audio/(.+)/$', 'audio_change'),
 )
 

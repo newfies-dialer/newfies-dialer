@@ -40,6 +40,7 @@ from survey.forms import SurveyForm, \
                          SurveyDetailReportForm
 from dialer_cdr.models import Callrequest
 from audiofield.models import AudioFile
+from audiofield.forms import CustomerAudioFileForm
 from dialer_campaign.function_def import variable_value
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.function_def import voipcall_record_common_fun
@@ -794,13 +795,15 @@ def survey_detail_report(request):
             else:
                 col_name_with_order['sort_field'] = sort_field
 
+        # List of Survey VoIP call report
         rows = VoIPCall.objects.filter(**kwargs).order_by(sort_field)
         request.session['session_surveycalls'] = rows
 
+        # Daily Survey VoIP call report
         select_data =\
             {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
 
-        # Get Total Rrecords from VoIPCall Report table for Daily Call Report
+        # Get Total from VoIPCall table for Daily Call Report
         total_data = VoIPCall.objects.extra(select=select_data)\
             .values('starting_date')\
             .filter(**kwargs).annotate(Count('starting_date'))\
@@ -811,14 +814,14 @@ def survey_detail_report(request):
         # Following code will count total voip calls, duration
         if total_data.count() != 0:
             max_duration =\
-            max([x['duration__sum'] for x in total_data])
+                max([x['duration__sum'] for x in total_data])
             total_duration =\
-            sum([x['duration__sum'] for x in total_data])
+                sum([x['duration__sum'] for x in total_data])
             total_calls =\
-            sum([x['starting_date__count'] for x in total_data])
+                sum([x['starting_date__count'] for x in total_data])
             total_avg_duration =\
-            (sum([x['duration__avg']\
-                  for x in total_data])) / total_data.count()
+                (sum([x['duration__avg']\
+                    for x in total_data])) / total_data.count()
 
         if not survey_result:
             request.session["err_msg"] = _('No record found!.')
@@ -828,7 +831,8 @@ def survey_detail_report(request):
         if campaign_id == '':
             request.session["err_msg"] = _('Select campaign first.')
         else:
-            request.session["err_msg"] = _('No campaign attached with survey.')
+            request.session["err_msg"] = \
+                _('No campaign attached with survey.')
 
     template = 'frontend/survey/survey_detail_report.html'
     PAGE_SIZE = 10

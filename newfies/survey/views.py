@@ -667,7 +667,16 @@ def survey_detail_report(request):
     form = SurveyDetailReportForm(request.user,
                                   initial={'from_date': from_date,
                                            'to_date': to_date})
+    search_tag = 0
+    total_data = ''
+    survey_result = ''
+    max_duration = 0
+    total_duration = 0
+    total_calls = 0
+    total_avg_duration = 0
+
     if request.method == 'POST':
+        search_tag = 1
         form = SurveyDetailReportForm(request.user, request.POST)
         if form.is_valid():
             if request.POST['from_date'] != "":
@@ -675,67 +684,61 @@ def survey_detail_report(request):
             if request.POST['to_date'] != "":
                 to_date = request.POST['to_date']
             kwargs = voipcall_record_common_fun(request)
+
+            try:
+                campaign_obj = Campaign.objects\
+                    .get(id=int(request.POST['campaign']))
+
+                survey_result = SurveyCampaignResult.objects\
+                    .filter(campaign=campaign_obj)\
+                    .values('question', 'response')\
+                    .annotate(Count('response'))\
+                    .distinct()\
+                    .order_by('question')
+
+                kwargs['callrequest__campaign'] = campaign_obj
+
+                rows =\
+                    VoIPCall.objects.values('user', 'callid', 'callerid', 'phone_number',
+                        'starting_date', 'duration', 'billsec',
+                        'disposition', 'hangup_cause', 'hangup_cause_q850',
+                        'used_gateway').filter(**kwargs).order_by('-starting_date')
+
+                select_data =\
+                    {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
+
+                # Get Total Rrecords from VoIPCall Report table for Daily Call Report
+                total_data = VoIPCall.objects.extra(select=select_data)\
+                    .values('starting_date')\
+                    .filter(**kwargs).annotate(Count('starting_date'))\
+                    .annotate(Sum('duration'))\
+                    .annotate(Avg('duration'))\
+                    .order_by('-starting_date')
+
+                # Following code will count total voip calls, duration
+                if total_data.count() != 0:
+                    max_duration =\
+                    max([x['duration__sum'] for x in total_data])
+                    total_duration =\
+                    sum([x['duration__sum'] for x in total_data])
+                    total_calls =\
+                    sum([x['starting_date__count'] for x in total_data])
+                    total_avg_duration =\
+                    (sum([x['duration__avg']\
+                          for x in total_data])) / total_data.count()
+
+                if not survey_result:
+                    request.session["err_msg"] = _('No record found!.')
+
+            except:
+                rows = []
+                request.session["err_msg"] = _('No campaign attached with survey.')
     else:
-
-        kwargs['starting_date__gte'] = datetime(tday.year,
-                                                tday.month,
-                                                tday.day,
-                                                0, 0, 0, 0)
-    total_data = ''
-    survey_result = ''
-    max_duration = 0
-    total_duration = 0
-    total_calls = 0
-    total_avg_duration = 0
-    try:
-        campaign_obj = Campaign.objects\
-            .get(id=int(request.POST['campaign']))
-
-        survey_result = SurveyCampaignResult.objects\
-            .filter(campaign=campaign_obj)\
-            .values('question', 'response')\
-            .annotate(Count('response'))\
-            .distinct()\
-            .order_by('question')
-
-        rows =\
-            VoIPCall.objects.values('user', 'callid', 'callerid', 'phone_number',
-                'starting_date', 'duration', 'billsec',
-                'disposition', 'hangup_cause', 'hangup_cause_q850',
-                'used_gateway').filter(**kwargs).order_by('-starting_date')
-
-        select_data =\
-            {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
-
-        # Get Total Rrecords from VoIPCall Report table for Daily Call Report
-        total_data = VoIPCall.objects.extra(select=select_data)\
-            .values('starting_date')\
-            .filter(**kwargs).annotate(Count('starting_date'))\
-            .annotate(Sum('duration'))\
-            .annotate(Avg('duration'))\
-            .order_by('-starting_date')
-
-        # Following code will count total voip calls, duration
-        if total_data.count() != 0:
-            max_duration =\
-                max([x['duration__sum'] for x in total_data])
-            total_duration =\
-                sum([x['duration__sum'] for x in total_data])
-            total_calls =\
-                sum([x['starting_date__count'] for x in total_data])
-            total_avg_duration =\
-                (sum([x['duration__avg']\
-                    for x in total_data])) / total_data.count()
-
-        if not survey_result:
-            request.session["err_msg"] = _('No record found!.')
-
-    except:
         rows = []
-        request.session["err_msg"] = _('No campaign attached with survey.')
 
     template = 'frontend/survey/survey_detail_report.html'
     PAGE_SIZE = 10
+    action = 'tabs-1'
     data = {
         'rows': rows,
         'PAGE_SIZE': PAGE_SIZE,
@@ -751,6 +754,8 @@ def survey_detail_report(request):
         'notice_count': notice_count(request),
         'form': form,
         'survey_result': survey_result,
+        'action': action,
+        'search_tag': search_tag,
         }
     request.session['msg'] = ''
     request.session['err_msg'] = ''

@@ -14,7 +14,8 @@
 #
 
 from django.contrib import admin
-from survey.models import *
+from survey.models import SurveyApp, SurveyQuestion, \
+                          SurveyResponse, SurveyCampaignResult
 from adminsortable.admin import SortableAdmin, SortableTabularInline
 
 

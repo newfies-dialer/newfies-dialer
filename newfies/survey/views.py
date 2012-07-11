@@ -303,8 +303,8 @@ def survey_del(request, object_id):
         # 1) delete survey
         survey_list = SurveyApp.objects.extra(where=['id IN (%s)' % values])
         request.session["msg"] =\
-        _('%(count)s survey(s) are deleted.') \
-        % {'count': survey_list.count()}
+            _('%(count)s survey(s) are deleted.') \
+                % {'count': survey_list.count()}
         survey_list.delete()
         return HttpResponseRedirect('/survey/')
 
@@ -377,7 +377,7 @@ def survey_change(request, object_id):
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('"%(name)s" is updated.') \
-                % {'name': request.POST['name']}
+                    % {'name': request.POST['name']}
                 return HttpResponseRedirect('/survey/')
 
     template = 'frontend/survey/survey_change.html'
@@ -831,7 +831,8 @@ def survey_detail_report(request):
     except:
         rows = []
         if campaign_id == '':
-            request.session["err_msg"] = _('To select survey campaign, please click on search.')
+            request.session["err_msg"] = \
+                _('To select survey campaign, please click on search.')
         else:
             request.session["err_msg"] = \
                 _('No campaign attached with survey.')

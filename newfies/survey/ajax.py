@@ -18,7 +18,8 @@ from django.contrib.auth.decorators import login_required
 from dajaxice.decorators import dajaxice_register
 from dajax.core import Dajax
 
-from survey.models import *
+from survey.models import SurveyApp, SurveyQuestion,\
+                          SurveyResponse, SurveyCampaignResult
 from survey.forms import SurveyQuestionForm, \
                         SurveyQuestionNewForm, \
                         SurveyResponseForm

@@ -13,19 +13,16 @@
 #
 
 from django import forms
-from django.forms import *
-from django.contrib import *
-from django.contrib.admin.widgets import *
+from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 
-from survey.models import *
+from survey.models import SurveyApp, SurveyQuestion,\
+                          SurveyResponse, SurveyCampaignResult
 from survey.function_def import field_list
 from dialer_campaign.models import Campaign
 from dialer_cdr.forms import VoipSearchForm
 from audiofield.forms import CustomerAudioFileForm
-
-from datetime import *
 
 
 class SurveyForm(ModelForm):

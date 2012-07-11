@@ -30,6 +30,7 @@ urlpatterns = patterns('',
 
     (r'^survey_report/$', 'survey.views.survey_report'),
     (r'^survey_detail_report/$', 'survey.views.survey_detail_report'),
+    (r'^export_surveycall_report/$', 'survey.views.export_surveycall_report'),
 
 
 

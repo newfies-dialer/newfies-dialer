@@ -45,6 +45,7 @@ from dialer_cdr.models import VoIPCall
 from dialer_cdr.function_def import voipcall_record_common_fun
 from datetime import datetime
 import time
+import csv
 import os.path
 
 
@@ -673,6 +674,8 @@ def survey_detail_report(request):
     total_calls = 0
     total_avg_duration = 0
     records_per_page = 10
+    disposition = ''
+    col_name_with_order = []
 
     if request.method == 'POST':
         search_tag = 1
@@ -683,6 +686,7 @@ def survey_detail_report(request):
             request.session['session_to_date'] = ''
             request.session['session_campaign_id'] = ''
             request.session['session_disposition'] = ''
+            request.session['session_surveycalls'] = ''
 
             if "from_date" in request.POST:
                 # From
@@ -712,6 +716,7 @@ def survey_detail_report(request):
                 request.session['session_campaign_id'] = campaign_id
     else:
         rows = []
+        campaign_id = ''
 
     try:
         if request.GET.get('page') or request.GET.get('sort_by'):
@@ -738,6 +743,7 @@ def survey_detail_report(request):
         request.session['session_to_date'] = to_date
         request.session['session_campaign_id'] = ''
         request.session['session_disposition'] = ''
+        request.session['session_surveycalls'] = ''
         request.session['session_search_tag'] = search_tag
         request.session['session_records_per_page'] = records_per_page
 
@@ -789,6 +795,7 @@ def survey_detail_report(request):
                 col_name_with_order['sort_field'] = sort_field
 
         rows = VoIPCall.objects.filter(**kwargs).order_by(sort_field)
+        request.session['session_surveycalls'] = rows
 
         select_data =\
             {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
@@ -818,7 +825,10 @@ def survey_detail_report(request):
 
     except:
         rows = []
-        request.session["err_msg"] = _('No campaign attached with survey.')
+        if campaign_id == '':
+            request.session["err_msg"] = _('Select campaign first.')
+        else:
+            request.session["err_msg"] = _('No campaign attached with survey.')
 
     template = 'frontend/survey/survey_detail_report.html'
     PAGE_SIZE = 10
@@ -840,8 +850,54 @@ def survey_detail_report(request):
         'survey_result': survey_result,
         'action': action,
         'search_tag': search_tag,
+        'start_date': start_date,
+        'end_date': end_date,
         }
     request.session['msg'] = ''
     request.session['err_msg'] = ''
     return render_to_response(template, data,
         context_instance=RequestContext(request))
+
+
+@login_required
+def export_surveycall_report(request):
+    """Export CSV file of Survey VoIP call record
+
+    **Important variable**:
+
+        * ``request.session['surveycall_record_qs']`` - stores survey voipcall query set
+
+    **Exported fields**: ['starting_date', 'user', 'callid', 'callerid',
+                          'phone_number', 'duration', 'billsec',
+                          'disposition', 'hangup_cause', 'hangup_cause_q850',
+                          'used_gateway']
+    """
+
+    # get the response object, this can be used as a stream.
+    response = HttpResponse(mimetype='text/csv')
+    # force download.
+    response['Content-Disposition'] = 'attachment;filename=export.csv'
+    # the csv writer
+    writer = csv.writer(response)
+
+    qs = request.session['session_surveycalls']
+
+    writer.writerow(['starting_date', 'user', 'callid', 'callerid',
+                     'phone_number', 'duration', 'billsec',
+                     'disposition', 'hangup_cause', 'hangup_cause_q850',
+                     'used_gateway'])
+    for i in qs:
+        writer.writerow([i.starting_date,
+                         i.user,
+                         i.callid,
+                         i.callerid,
+                         i.phone_number,
+                         i.duration,
+                         i.billsec,
+                         i.disposition,
+                         i.hangup_cause,
+                         i.hangup_cause_q850,
+                         i.used_gateway,
+                         ])
+
+    return response

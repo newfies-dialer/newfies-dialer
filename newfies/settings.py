@@ -292,6 +292,10 @@ else:
     INSTALLED_APPS = INSTALLED_APPS + ('sms_module',)
 """
 
+#No of records per page
+#=======================
+PAGE_SIZE = 10
+
 AUTH_PROFILE_MODULE = "user_profile.UserProfile"
 LOGIN_URL = '/pleaselog/'
 

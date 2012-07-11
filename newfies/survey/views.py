@@ -677,6 +677,8 @@ def survey_detail_report(request):
     records_per_page = 10
     disposition = ''
     col_name_with_order = []
+    PAGE_SIZE = settings.PAGE_SIZE
+    action = 'tabs-1'
 
     if request.method == 'POST':
         search_tag = 1
@@ -829,14 +831,13 @@ def survey_detail_report(request):
     except:
         rows = []
         if campaign_id == '':
-            request.session["err_msg"] = _('Select campaign first.')
+            request.session["err_msg"] = _('To select survey campaign, please click on search.')
         else:
             request.session["err_msg"] = \
                 _('No campaign attached with survey.')
 
     template = 'frontend/survey/survey_detail_report.html'
-    PAGE_SIZE = 10
-    action = 'tabs-1'
+
     data = {
         'rows': rows,
         'PAGE_SIZE': PAGE_SIZE,

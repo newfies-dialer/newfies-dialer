@@ -98,12 +98,12 @@
       {% endif %}
 
       $(".collapse").on('hide', function () {
-          $('#toggle_btn span').text('{% trans "advanced search"|title %}');
+          $('#toggle_btn span').text('{% trans "Search"|title %}');
           $('#toggle_btn i').toggleClass('icon-search');
           $('#toggle_btn i').toggleClass('icon-zoom-out');
       });
       $(".collapse").on('hidden', function () {
-          $('#toggle_btn span').text('{% trans "advanced search"|title %}');
+          $('#toggle_btn span').text('{% trans "Search"|title %}');
       });
       $(".collapse").on('show', function () {
           $('#toggle_btn span').text('{% trans "Hide search" %}');

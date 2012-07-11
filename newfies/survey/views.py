@@ -700,7 +700,7 @@ def survey_detail_report(request):
 
                 rows =\
                     VoIPCall.objects.values('user', 'callid', 'callerid', 'phone_number',
-                        'starting_date', 'duration', 'billsec',
+                        'starting_date', 'duration', 'billsec', 'leg_type',
                         'disposition', 'hangup_cause', 'hangup_cause_q850',
                         'used_gateway').filter(**kwargs).order_by('-starting_date')
 

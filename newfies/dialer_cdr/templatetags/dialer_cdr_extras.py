@@ -239,6 +239,14 @@ def groupby_columns(seq, n):
     """
     return _regroup_table(seq, columns=int(n))
 
+@register.filter()
+def leg_type_name(value):
+    """Campaign Status"""
+    LEG_TYPE = {1: 'A-leg',
+                2: 'B-leg',
+               }
+    status = LEG_TYPE[value]
+    return str(status)
 
 register.filter('mul', mul)
 register.filter('subtract', subtract)
@@ -256,6 +264,7 @@ register.filter('contact_status', contact_status)
 register.filter('campaign_status', campaign_status)
 register.filter('groupby_rows', groupby_rows)
 register.filter('groupby_columns', groupby_columns)
+register.filter('leg_type_name', leg_type_name)
 
 get_fieldset = register.tag(get_fieldset)
 

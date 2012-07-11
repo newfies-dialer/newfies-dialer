@@ -14,7 +14,7 @@
 
 from optparse import make_option
 from django.core.management.base import BaseCommand, CommandError
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
 from dialer_campaign.models import Campaign
@@ -54,9 +54,9 @@ class Command(BaseCommand):
                     length=5
                     chars="1234567890"
 
-                    #'survey'
+                    #'surveyapp' | 'voiceapp'
                     try:
-                        content_type_id = ContentType.objects.get(app_label=str('voice_app')).id
+                        content_type_id = ContentType.objects.get(model='voiceapp').id
                     except:
                         content_type_id = 1
 

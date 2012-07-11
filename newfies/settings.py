@@ -287,6 +287,10 @@ except ImportError:
     pass
 else:
     INSTALLED_APPS = INSTALLED_APPS + ('sms_module',)
+
+#DEBUG SMS
+#=========
+SMSDEBUG = False
 """
 
 AUTH_PROFILE_MODULE = "user_profile.UserProfile"

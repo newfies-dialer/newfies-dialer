@@ -19,46 +19,6 @@ from datetime import datetime
 from random import choice
 
 
-def pass_gen():
-    """Unique password generator"""
-    char_length = 2
-    digit_length = 6
-    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    digit = "1234567890"
-    pass_str_char = ''.join([choice(chars) for i in range(char_length)])
-    pass_str_digit = ''.join([choice(digit) for i in range(digit_length)])
-    return pass_str_char + pass_str_digit
-
-
-def is_number(s):
-    """Check digit is int or float"""
-    try:
-        if float(s):
-            return True
-        elif int(s):
-            return True
-        else:
-            return False
-    except ValueError:
-        return False
-
-
-def is_int_no(no):
-    """Check digit is int"""
-    if int(no):
-        return True
-    else:
-        return False
-
-
-def is_float_no(no):
-    """Check Float Value"""
-    if float(no):
-        return True
-    else:
-        return False
-
-
 def rate_range():
     """Filter range symbol"""
     LIST = (('', 'All'),

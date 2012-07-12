@@ -319,9 +319,9 @@ def survey_question_list(request):
     rec_count = 1
     for i in que_list:
         if len(que_list) == rec_count:
-            result_string += str(i.id) + ',' + str(i.question)
+            result_string += str(i.id) + '-|-' + str(i.question)
         else:
-            result_string += str(i.id) + ',' + str(i.question) + ','
+            result_string += str(i.id) + '-|-' + str(i.question) + '-|-'
 
         rec_count += 1
 

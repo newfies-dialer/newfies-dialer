@@ -131,7 +131,7 @@ class SurveyQuestion(Sortable):
                             default='1', blank=True, null=True,
                             verbose_name=_('Message type'))
 
-    type = models.IntegerField(max_length=20, choices=APP_TYPE, default='1',
+    type = models.IntegerField(max_length=20, choices=APP_TYPE,
            blank=True, null=True, verbose_name=_('Action type'))
     gateway = models.ForeignKey(Gateway, null=True, blank=True,
                     verbose_name=_('B-Leg'),

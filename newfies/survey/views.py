@@ -649,6 +649,60 @@ def survey_report(request):
            context_instance=RequestContext(request))
 
 
+def survey_cdr_daily_report(kwargs):
+    """Get survey voip call daily report"""
+    max_duration = 0
+    total_duration = 0
+    total_calls = 0
+    total_avg_duration = 0
+
+    # Daily Survey VoIP call report
+    select_data =\
+        {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
+
+    # Get Total from VoIPCall table for Daily Call Report
+    total_data = VoIPCall.objects.extra(select=select_data)\
+        .values('starting_date')\
+        .filter(**kwargs).annotate(Count('starting_date'))\
+        .annotate(Sum('duration'))\
+        .annotate(Avg('duration'))\
+        .order_by('-starting_date')
+
+    # Following code will count total voip calls, duration
+    if total_data.count() != 0:
+        max_duration =\
+            max([x['duration__sum'] for x in total_data])
+        total_duration =\
+            sum([x['duration__sum'] for x in total_data])
+        total_calls =\
+            sum([x['starting_date__count'] for x in total_data])
+        total_avg_duration =\
+            (sum([x['duration__avg']\
+                for x in total_data])) / total_data.count()
+
+    survey_cdr_daily_data = {
+        'total_data': total_data,
+        'total_duration': total_duration,
+        'total_calls': total_calls,
+        'total_avg_duration': total_avg_duration,
+        'max_duration': max_duration,
+        }
+
+    return survey_cdr_daily_data
+
+
+def get_survey_result(campaign_obj):
+    """Get survey result report from selected survey campaign"""
+    survey_result = SurveyCampaignResult.objects\
+        .filter(campaign=campaign_obj)\
+        .values('question', 'response')\
+        .annotate(Count('response'))\
+        .distinct()\
+        .order_by('question')
+
+    return survey_result
+
+
 @login_required
 def survey_detail_report(request):
     """Survey detail report for the logged in user
@@ -670,13 +724,16 @@ def survey_detail_report(request):
     search_tag = 0
     total_data = ''
     survey_result = ''
-    max_duration = 0
-    total_duration = 0
-    total_calls = 0
-    total_avg_duration = 0
     records_per_page = 10
     disposition = ''
     col_name_with_order = []
+    survey_cdr_daily_data = {
+        'total_data': '',
+        'total_duration': '',
+        'total_calls': '',
+        'total_avg_duration': '',
+        'max_duration': '',
+    }
     PAGE_SIZE = settings.PAGE_SIZE
     action = 'tabs-1'
 
@@ -690,6 +747,8 @@ def survey_detail_report(request):
             request.session['session_campaign_id'] = ''
             request.session['session_disposition'] = ''
             request.session['session_surveycalls'] = ''
+            request.session['session_survey_result'] = ''
+            request.session['session_survey_cdr_daily_data'] = {}
 
             if "from_date" in request.POST:
                 # From
@@ -747,9 +806,9 @@ def survey_detail_report(request):
         request.session['session_campaign_id'] = ''
         request.session['session_disposition'] = ''
         request.session['session_surveycalls'] = ''
+        request.session['session_survey_result'] = ''
         request.session['session_search_tag'] = search_tag
         request.session['session_records_per_page'] = records_per_page
-
 
     start_date = datetime(int(from_date[0:4]),
                           int(from_date[5:7]),
@@ -777,12 +836,12 @@ def survey_detail_report(request):
         campaign_id = int(campaign_id)
         campaign_obj = Campaign.objects.get(id=campaign_id)
 
-        survey_result = SurveyCampaignResult.objects\
-            .filter(campaign=campaign_obj)\
-            .values('question', 'response')\
-            .annotate(Count('response'))\
-            .distinct()\
-            .order_by('question')
+        # Get survey result report from session while using pagination & sorting
+        if request.GET.get('page') or request.GET.get('sort_by'):
+            survey_result = request.session['session_survey_result']
+        else:
+            survey_result = get_survey_result(campaign_obj)
+            request.session['session_survey_result'] = survey_result
 
         kwargs['callrequest__campaign'] = campaign_obj
 
@@ -801,32 +860,13 @@ def survey_detail_report(request):
         rows = VoIPCall.objects.filter(**kwargs).order_by(sort_field)
         request.session['session_surveycalls'] = rows
 
-        # Daily Survey VoIP call report
-        select_data =\
-            {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
+        # Get daily report from session while using pagination & sorting
+        if request.GET.get('page') or request.GET.get('sort_by'):
+            survey_cdr_daily_data = request.session['session_survey_cdr_daily_data']
+        else:
+            survey_cdr_daily_data = survey_cdr_daily_report(kwargs)
+            request.session['session_survey_cdr_daily_data'] = survey_cdr_daily_data
 
-        # Get Total from VoIPCall table for Daily Call Report
-        total_data = VoIPCall.objects.extra(select=select_data)\
-            .values('starting_date')\
-            .filter(**kwargs).annotate(Count('starting_date'))\
-            .annotate(Sum('duration'))\
-            .annotate(Avg('duration'))\
-            .order_by('-starting_date')
-
-        # Following code will count total voip calls, duration
-        if total_data.count() != 0:
-            max_duration =\
-                max([x['duration__sum'] for x in total_data])
-            total_duration =\
-                sum([x['duration__sum'] for x in total_data])
-            total_calls =\
-                sum([x['starting_date__count'] for x in total_data])
-            total_avg_duration =\
-                (sum([x['duration__avg']\
-                    for x in total_data])) / total_data.count()
-
-        if not survey_result:
-            request.session["err_msg"] = _('No record found!.')
 
     except:
         rows = []
@@ -843,11 +883,11 @@ def survey_detail_report(request):
         'rows': rows,
         'PAGE_SIZE': PAGE_SIZE,
         'col_name_with_order': col_name_with_order,
-        'total_data': total_data,
-        'total_duration': total_duration,
-        'total_calls': total_calls,
-        'total_avg_duration': total_avg_duration,
-        'max_duration': max_duration,
+        'total_data': survey_cdr_daily_data['total_data'],
+        'total_duration': survey_cdr_daily_data['total_duration'],
+        'total_calls': survey_cdr_daily_data['total_calls'],
+        'total_avg_duration': survey_cdr_daily_data['total_avg_duration'],
+        'max_duration': survey_cdr_daily_data['max_duration'],
         'module': current_view(request),
         'msg': request.session.get('msg'),
         'err_msg': request.session.get('err_msg'),

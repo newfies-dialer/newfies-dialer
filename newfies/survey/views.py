@@ -900,6 +900,7 @@ def export_surveycall_report(request):
                      'disposition', 'hangup_cause', 'hangup_cause_q850',
                      'used_gateway', 'question', 'response'])
     for i in qs:
+        #TODO : row is not defined
         gateway_used = row.used_gateway.name if row.used_gateway else ''
         writer.writerow([i.starting_date,
                          i.user,

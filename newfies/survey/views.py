@@ -41,9 +41,9 @@ from survey.forms import SurveyForm, \
 from dialer_cdr.models import Callrequest
 from audiofield.models import AudioFile
 from audiofield.forms import CustomerAudioFileForm
-from dialer_campaign.function_def import variable_value
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.function_def import voipcall_record_common_fun
+from common.common_functions import variable_value
 from datetime import datetime
 import time
 import csv
@@ -392,6 +392,7 @@ def survey_change(request, object_id):
        'survey_res_form_collection': survey_res_form_collection,
        'new_survey_res_form': new_survey_res_form,
        'msg': request.session.get('msg'),
+       'notice_count': notice_count(request),
     }
     request.session['msg'] = ''
     return render_to_response(template, data,

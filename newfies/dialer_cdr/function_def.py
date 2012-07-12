@@ -13,7 +13,7 @@
 #
 
 #from dialer_cdr.models import Callrequest, VoIPCall
-from dialer_campaign.function_def import validate_days, variable_value
+from common.common_functions import validate_days, variable_value
 from dialer_cdr.models import VOIPCALL_DISPOSITION
 from datetime import datetime
 from random import choice

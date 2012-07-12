@@ -36,12 +36,12 @@ from dialer_campaign.forms import ContactSearchForm, Contact_fileImport, \
                         DashboardForm
 from dialer_campaign.function_def import user_attached_with_dialer_settings, \
                         check_dialer_setting, dialer_setting_limit, \
-                        variable_value, contact_search_common_fun,\
-                        striplist, calculate_date, date_range, \
+                        contact_search_common_fun,\
+                        calculate_date, date_range, \
                         get_campaign_status_name, user_dialer_setting_msg
 from dialer_campaign.tasks import collect_subscriber
-
 from dialer_cdr.models import VoIPCall
+from common.common_functions import variable_value, striplist
 from inspect import stack, getmodule
 from datetime import datetime
 from dateutil import parser

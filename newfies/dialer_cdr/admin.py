@@ -27,8 +27,7 @@ from dialer_cdr.forms import VoipSearchForm
 from dialer_cdr.function_def import voipcall_record_common_fun, \
                                     voipcall_search_admin_form_fun, \
                                     get_disposition_name
-from dialer_campaign.function_def import variable_value
-
+from common.common_functions import variable_value
 from genericadmin.admin import GenericAdminModelAdmin, GenericTabularInline
 from datetime import datetime
 import csv

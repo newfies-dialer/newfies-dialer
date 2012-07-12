@@ -14,7 +14,6 @@
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.contenttypes.models import ContentType
 from tagging.fields import TagField
 from dialer_campaign.models import Campaign
 from dialer_gateway.models import Gateway
@@ -120,16 +119,17 @@ class SurveyQuestion(Sortable):
         ordering = Sortable.Meta.ordering + ['surveyapp']
 
     question = models.CharField(max_length=500,
-                            verbose_name=_("Question"),
-                            help_text=_('Enter your question'))
+                    verbose_name=_("Question"),
+                    help_text=_('Enter your question'))
     tags = TagField(blank=True, max_length=1000)
     user = models.ForeignKey('auth.User', related_name='Survey owner')
     surveyapp = models.ForeignKey(SurveyApp, verbose_name=_("SurveyApp"))
     audio_message = models.ForeignKey(AudioFile, null=True, blank=True,
-                                      verbose_name=_("Audio File"))
-    message_type = models.IntegerField(max_length=20, choices=MESSAGE_TYPE,
-                            default='1', blank=True, null=True,
-                            verbose_name=_('Message type'))
+                    verbose_name=_("Audio File"))
+    message_type = models.IntegerField(max_length=20,
+                    choices=MESSAGE_TYPE,
+                    default='1', blank=True, null=True,
+                    verbose_name=_('Message type'))
 
     type = models.IntegerField(max_length=20, choices=APP_TYPE,
            blank=True, null=True, verbose_name=_('Action type'))

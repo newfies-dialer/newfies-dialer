@@ -19,7 +19,6 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.db.models import Sum, Avg, Count
-from django.conf import settings
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
@@ -28,24 +27,22 @@ from django.core.cache import cache
 from django.db.models import Q
 from dialer_campaign.models import Campaign
 from dialer_campaign.views import current_view, notice_count, update_style, \
-    delete_style, grid_common_function
+                        delete_style, grid_common_function
 from survey.models import SurveyApp, SurveyQuestion, \
-                          SurveyResponse, SurveyCampaignResult
+                        SurveyResponse, SurveyCampaignResult
 from survey.forms import SurveyForm, \
-                         SurveyQuestionForm, \
-                         SurveyQuestionNewForm, \
-                         SurveyResponseForm, \
-                         SurveyReportForm, \
-                         SurveyCustomerAudioFileForm, \
-                         SurveyDetailReportForm
+                        SurveyQuestionForm, \
+                        SurveyQuestionNewForm, \
+                        SurveyResponseForm, \
+                        SurveyCustomerAudioFileForm, \
+                        SurveyDetailReportForm
 from dialer_cdr.models import Callrequest
 from audiofield.models import AudioFile
 from audiofield.forms import CustomerAudioFileForm
 from dialer_cdr.models import VoIPCall
-from dialer_cdr.function_def import voipcall_record_common_fun
 from common.common_functions import variable_value
 from datetime import datetime
-import time
+from dateutil.relativedelta import relativedelta
 import csv
 import os.path
 
@@ -82,7 +79,9 @@ def survey_finestatemachine(request):
         #print "DTMF=%s - opt_CallUUID=%s" % (DTMF, opt_CallUUID)
 
     if not opt_ALegRequestUUID:
-        return HttpResponse(content="Error : missing parameter ALegRequestUUID", status=400)
+        return HttpResponse(
+                content="Error : missing parameter ALegRequestUUID",
+                status=400)
 
     #Create the keys to store the cache
     key_state = "%s_state" % opt_CallUUID
@@ -97,9 +96,12 @@ def survey_finestatemachine(request):
         current_state = 0
 
     try:
-        obj_callrequest = Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
+        obj_callrequest = Callrequest.objects\
+                .get(request_uuid=opt_ALegRequestUUID)
     except:
-        return HttpResponse(content="Error : retrieving Callrequest with the ALegRequestUUID", status=400)
+        return HttpResponse(
+            content="Error : retrieving Callrequest with the ALegRequestUUID",
+            status=400)
 
     surveyapp_id = obj_callrequest.object_id
     cache.set(key_surveyapp, surveyapp_id, 21600)  # 21600 seconds = 6 hours
@@ -684,7 +686,6 @@ def survey_report(request):
                                   initial={'from_date': from_date,
                                            'to_date': to_date})
     search_tag = 1
-    total_data = ''
     survey_result = ''
     disposition = ''
     col_name_with_order = []
@@ -753,8 +754,8 @@ def survey_report(request):
     except NameError:
         tday = datetime.today()
         from_date = tday.strftime('%Y-%m-01')
-        last_day = ((datetime(tday.year, tday.month, 1, 23, 59, 59, 999999) +\
-                     relativedelta(months=1)) -\
+        last_day = ((datetime(tday.year, tday.month, 1, 23, 59, 59, 999999) + \
+                    relativedelta(months=1)) - \
                     relativedelta(days=1)).strftime('%d')
         to_date = tday.strftime('%Y-%m-' + last_day)
         search_tag = 0
@@ -824,7 +825,8 @@ def survey_report(request):
                 'question': 'SELECT question ' + from_query,
                 'response': 'SELECT response ' + from_query,
             },
-        ).exclude(callid='')#.exclude(Q(question__isnull=True) | Q(question__exact=''))
+        ).exclude(callid='')
+        #.exclude(Q(question__isnull=True) | Q(question__exact=''))
 
         request.session['session_surveycalls'] = rows
 

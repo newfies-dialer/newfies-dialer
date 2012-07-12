@@ -602,54 +602,6 @@ def audio_change(request, object_id):
            context_instance=RequestContext(request))
 
 
-@login_required
-def survey_report(request):
-    """Survey report
-
-    **Attributes**:
-
-        * ``template`` - frontend/survey/survey_report.html
-
-    **Logic Description**:
-
-        * List all survey_report which belong to the logged in user.
-    """
-    form = SurveyReportForm(request.user)
-    survey_result = ''
-    if request.method == 'POST':
-        form = SurveyReportForm(request.user, request.POST)
-        if form.is_valid():
-            try:
-                campaign_obj = Campaign.objects\
-                                .get(id=int(request.POST['campaign']))
-                survey_result = SurveyCampaignResult.objects\
-                                .filter(campaign=campaign_obj)\
-                                .values('question', 'response')\
-                                .annotate(Count('response'))\
-                                .distinct()\
-                                .order_by('question')
-
-                if not survey_result:
-                    request.session["err_msg"] = _('No record found!.')
-
-            except:
-                request.session["err_msg"] = _('No campaign attached with survey.')
-
-    template = 'frontend/survey/survey_report.html'
-    data = {
-        'module': current_view(request),
-        'msg': request.session.get('msg'),
-        'err_msg': request.session.get('err_msg'),
-        'notice_count': notice_count(request),
-        'form': form,
-        'survey_result': survey_result,
-    }
-    request.session['msg'] = ''
-    request.session['err_msg'] = ''
-    return render_to_response(template, data,
-           context_instance=RequestContext(request))
-
-
 def survey_cdr_daily_report(kwargs):
     """Get survey voip call daily report"""
     max_duration = 0
@@ -705,12 +657,12 @@ def get_survey_result(campaign_obj):
 
 
 @login_required
-def survey_detail_report(request):
+def survey_report(request):
     """Survey detail report for the logged in user
 
     **Attributes**:
 
-        * ``template`` - frontend/survey/survey_detail_report.html
+        * ``template`` - frontend/survey/survey_report.html
 
     **Logic Description**:
 
@@ -722,7 +674,7 @@ def survey_detail_report(request):
     form = SurveyDetailReportForm(request.user,
                                   initial={'from_date': from_date,
                                            'to_date': to_date})
-    search_tag = 0
+    search_tag = 1
     total_data = ''
     survey_result = ''
     disposition = ''
@@ -738,7 +690,7 @@ def survey_detail_report(request):
     action = 'tabs-1'
 
     if request.method == 'POST':
-        search_tag = 1
+        #search_tag = 1
         form = SurveyDetailReportForm(request.user, request.POST)
         if form.is_valid():
             # set session var value
@@ -868,14 +820,11 @@ def survey_detail_report(request):
                 survey_cdr_daily_data
     except:
         rows = []
-        if campaign_id == '':
-            request.session["err_msg"] = \
-                _('To select survey campaign, please click on search.')
-        else:
+        if request.method == 'POST':
             request.session["err_msg"] = \
                 _('No campaign attached with survey.')
 
-    template = 'frontend/survey/survey_detail_report.html'
+    template = 'frontend/survey/survey_report.html'
 
     data = {
         'rows': rows,

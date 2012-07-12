@@ -219,7 +219,7 @@
             {% else %}
                 <tr>
                     <td colspan="8" align="center">
-                        {% trans "no records found"|title %}
+                        {% trans "no record found"|title %}
                     </td>
                 </tr>
             {% endif %}
@@ -313,6 +313,9 @@
                 </tr>
             </table>
             {% endfor %}
+        {% else %}
+            <p>&nbsp;</p>
+            <div class="graph_header">{% trans "no record found"|title %}</div>
         {% endif %}
     </div>
 </div>

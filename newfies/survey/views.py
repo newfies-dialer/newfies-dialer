@@ -612,14 +612,23 @@ def survey_cdr_daily_report(kwargs):
     # Daily Survey VoIP call report
     select_data =\
         {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
-
+    from_query = \
+        'FROM survey_surveycampaignresult '\
+        'WHERE survey_surveycampaignresult.callid = dialer_cdr.callid'
     # Get Total from VoIPCall table for Daily Call Report
     total_data = VoIPCall.objects.extra(select=select_data)\
         .values('starting_date')\
         .filter(**kwargs).annotate(Count('starting_date'))\
         .annotate(Sum('duration'))\
         .annotate(Avg('duration'))\
-        .order_by('-starting_date')
+        .order_by('-starting_date')\
+        .extra(
+            select={
+                'question': 'SELECT question ' + from_query,
+                'response': 'SELECT response ' + from_query,
+                },
+        )\
+        .exclude(callid='')
 
     # Following code will count total voip calls, duration
     if total_data.count() != 0:
@@ -807,14 +816,16 @@ def survey_report(request):
                 col_name_with_order['sort_field'] = sort_field
 
         # List of Survey VoIP call report
-        from_query = 'FROM survey_surveycampaignresult WHERE survey_surveycampaignresult.callid = dialer_cdr.callid'
+        from_query =\
+            'FROM survey_surveycampaignresult '\
+            'WHERE survey_surveycampaignresult.callid = dialer_cdr.callid'
         rows = VoIPCall.objects.filter(**kwargs).order_by(sort_field).extra(
             select={
                 'question': 'SELECT question ' + from_query,
                 'response': 'SELECT response ' + from_query,
             },
         ).exclude(callid='')#.exclude(Q(question__isnull=True) | Q(question__exact=''))
-        
+
         request.session['session_surveycalls'] = rows
 
         # Get daily report from session while using pagination & sorting
@@ -885,7 +896,7 @@ def export_surveycall_report(request):
     writer.writerow(['starting_date', 'user', 'callid', 'callerid',
                      'phone_number', 'duration', 'billsec',
                      'disposition', 'hangup_cause', 'hangup_cause_q850',
-                     'used_gateway'])
+                     'used_gateway', 'question', 'response'])
     for i in qs:
         gateway_used = row.used_gateway.name if row.used_gateway else ''
         writer.writerow([i.starting_date,
@@ -899,6 +910,8 @@ def export_surveycall_report(request):
                          i.hangup_cause,
                          i.hangup_cause_q850,
                          gateway_used,
+                         i.question,
+                         i.response,
                          ])
 
     return response

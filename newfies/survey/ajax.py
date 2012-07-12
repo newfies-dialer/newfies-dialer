@@ -21,8 +21,8 @@ from dajax.core import Dajax
 from survey.models import SurveyApp, SurveyQuestion,\
                           SurveyResponse, SurveyCampaignResult
 from survey.forms import SurveyQuestionForm, \
-                        SurveyQuestionNewForm, \
-                        SurveyResponseForm
+                         SurveyQuestionNewForm, \
+                         SurveyResponseForm
 
 
 def audio_msg_type(audio_message):

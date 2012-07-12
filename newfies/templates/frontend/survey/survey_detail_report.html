@@ -166,12 +166,12 @@
                 {% for row in rows %}
                     <tr>
                         <td>{{ row.starting_date }}</td>
-                        <td>{{ row.caller_id_number }}</td>
+                        <td>{{ row.callerid }}</td>
                         <td>{{ row.leg_type|leg_type_name }}</td>
                         <td>{{ row.phone_number }}</td>
                         <td>
                             {% if row.used_gateway %}
-                                {{ row.used_gateway__name }}
+                                {{ row.used_gateway.name }}
                             {% endif %}
                         </td>
                         <td>{{ row.duration|conv_min }}</td>

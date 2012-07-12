@@ -56,7 +56,7 @@ class Command(BaseCommand):
 
                     #'surveyapp' | 'voiceapp'
                     try:
-                        content_type_id = ContentType.objects.get(model='voiceapp').id
+                        content_type_id = ContentType.objects.get(model='surveyapp').id
                     except:
                         content_type_id = 1
 

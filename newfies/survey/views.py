@@ -25,7 +25,7 @@ from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
-
+from django.db.models import Q
 from dialer_campaign.models import Campaign
 from dialer_campaign.views import current_view, notice_count, update_style, \
     delete_style, grid_common_function
@@ -807,7 +807,14 @@ def survey_report(request):
                 col_name_with_order['sort_field'] = sort_field
 
         # List of Survey VoIP call report
-        rows = VoIPCall.objects.filter(**kwargs).order_by(sort_field)
+        from_query = 'FROM survey_surveycampaignresult WHERE survey_surveycampaignresult.callid = dialer_cdr.callid'
+        rows = VoIPCall.objects.filter(**kwargs).order_by(sort_field).extra(
+            select={
+                'question': 'SELECT question ' + from_query,
+                'response': 'SELECT response ' + from_query,
+            },
+        ).exclude(callid='')#.exclude(Q(question__isnull=True) | Q(question__exact=''))
+        
         request.session['session_surveycalls'] = rows
 
         # Get daily report from session while using pagination & sorting

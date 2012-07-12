@@ -724,7 +724,6 @@ def survey_detail_report(request):
     search_tag = 0
     total_data = ''
     survey_result = ''
-    records_per_page = 10
     disposition = ''
     col_name_with_order = []
     survey_cdr_daily_data = {
@@ -787,7 +786,6 @@ def survey_detail_report(request):
             campaign_id = request.session.get('session_campaign_id')
             disposition = request.session.get('session_disposition')
             search_tag = request.session.get('session_search_tag')
-            records_per_page = request.session.get('session_records_per_page')
         else:
             from_date
     except NameError:
@@ -799,7 +797,6 @@ def survey_detail_report(request):
         to_date = tday.strftime('%Y-%m-' + last_day)
         search_tag = 0
 
-        records_per_page = settings.PAGE_SIZE
         # unset session var value
         request.session['session_from_date'] = from_date
         request.session['session_to_date'] = to_date
@@ -808,7 +805,6 @@ def survey_detail_report(request):
         request.session['session_surveycalls'] = ''
         request.session['session_survey_result'] = ''
         request.session['session_search_tag'] = search_tag
-        request.session['session_records_per_page'] = records_per_page
 
     start_date = datetime(int(from_date[0:4]),
                           int(from_date[5:7]),
@@ -836,7 +832,8 @@ def survey_detail_report(request):
         campaign_id = int(campaign_id)
         campaign_obj = Campaign.objects.get(id=campaign_id)
 
-        # Get survey result report from session while using pagination & sorting
+        # Get survey result report from session
+        # while using pagination & sorting
         if request.GET.get('page') or request.GET.get('sort_by'):
             survey_result = request.session['session_survey_result']
         else:
@@ -862,12 +859,12 @@ def survey_detail_report(request):
 
         # Get daily report from session while using pagination & sorting
         if request.GET.get('page') or request.GET.get('sort_by'):
-            survey_cdr_daily_data = request.session['session_survey_cdr_daily_data']
+            survey_cdr_daily_data = \
+                request.session['session_survey_cdr_daily_data']
         else:
             survey_cdr_daily_data = survey_cdr_daily_report(kwargs)
-            request.session['session_survey_cdr_daily_data'] = survey_cdr_daily_data
-
-
+            request.session['session_survey_cdr_daily_data'] = \
+                survey_cdr_daily_data
     except:
         rows = []
         if campaign_id == '':

@@ -154,9 +154,15 @@ def survey_finestatemachine(request):
     slashparts = url.split('/')
     url_basename = '/'.join(slashparts[:3])
 
-    if list_question[current_state].message_type == 1 and \
-        hasattr(list_question[current_state], 'audio_message') and \
-        list_question[current_state].audio_message.audio_file.url:
+    audio_file_url = False
+    if list_question[current_state].message_type == 1:
+        try:
+            audio_file_url = list_question[current_state]\
+                                    .audio_message.audio_file.url
+        except:
+            audio_file_url = False
+
+    if audio_file_url:
         #Audio file
         question = "<Play>%s%s</Play>" % (
                     url_basename,

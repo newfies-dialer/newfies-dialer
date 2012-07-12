@@ -136,6 +136,10 @@ def check_campaign_pendingcall(campaign_id):
         init_callrequest.apply_async(
                     args=[new_callrequest.id, obj_campaign.id],
                     eta=launch_date)
+        #Shell_plus
+        # new_callrequest_id = 112
+        # obj_campaign_id = 3
+        # init_callrequest.apply_async(args=[new_callrequest_id, obj_campaign_id], eta=launch_date)
 
 
 class campaign_running(PeriodicTask):

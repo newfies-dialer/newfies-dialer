@@ -340,13 +340,16 @@ function addResFormField(que_id, is_que_id_set) {
             {% endif %}
               '{{ field.errors.as_ul }}'+
               {% if field.name == 'keyvalue' %}
-                '<div class="span2"><b>{% trans "Key Digit" %}</b><br/><input type="text" id="id_keyvalue" class="input-small" name="keyvalue" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
+                '<div class="span2"><b>{% trans "Key Digit" %}</b><br/>'+
+                '<input type="text" id="id_keyvalue" class="input-small" name="keyvalue" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
               {% else %}
                 {% if field.name == 'key' %}
-                    '<div class="span2"><b>{% trans "Key Value" %}</b><br/><input type="text" id="id_key" class="input-small" name="key" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
+                    '<div class="span2"><b>{% trans "Key Value" %}</b><br/>'+
+                    '<input type="text" id="id_key" class="input-small" name="key" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
                 {% else %}
 		    {% if field.name == 'goto_surveyquestion' %}
-			'<div class="span3 goto_'+id+'"><b>{% trans "Goto question" %}</b><br/><select id="id_goto_surveyquestion" name="goto_surveyquestion" onchange="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')" onfocus="call_update_question(\'goto_'+id+'\');"></select>' + //'{{ field|escapejs }}' +
+			'<div class="span3 goto_'+id+'"><b>{% trans "Goto question" %}</b><br/>'+
+            '<select id="id_goto_surveyquestion" name="goto_surveyquestion" onchange="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')" onfocus="call_update_question(\'goto_'+id+'\');"></select>' +
 		    {% else %}		
                 '{{ field|escapejs }}'+
 		    {% endif %} 

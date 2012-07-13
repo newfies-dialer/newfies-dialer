@@ -17,7 +17,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
-
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
@@ -66,7 +65,8 @@ def voiceapp_grid(request):
                       row['tts_language'],
                       row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
                       '<a href="' + str(row['id']) + '/" class="icon" ' \
-                      + update_style + ' title="' + _('Update Voice App') + '">&nbsp;</a>' +\
+                      + update_style + ' title="' + _('Update Voice App') +\
+                      '">&nbsp;</a>' +\
                       '<a href="del/' + str(row['id']) + '/" class="icon" ' \
                       + delete_style + ' onClick="return get_alert_msg(' +\
                       str(row['id']) +\
@@ -126,7 +126,7 @@ def voiceapp_add(request):
             obj.user = User.objects.get(username=request.user)
             obj.save()
             request.session["msg"] = _('"%(name)s" is added.') %\
-            request.POST
+                request.POST
             return HttpResponseRedirect('/voiceapp/')
     template = 'frontend/voiceapp/change.html'
     data = {
@@ -159,7 +159,7 @@ def voiceapp_del(request, object_id):
         if object_id:
             # 1) delete voiceapp
             request.session["msg"] = _('"%(name)s" is deleted.' \
-            % {'name': voiceapp_list.name})
+                % {'name': voiceapp_list.name})
             voiceapp_list.delete()
             return HttpResponseRedirect('/voiceapp/')
     except:
@@ -169,9 +169,8 @@ def voiceapp_del(request, object_id):
 
         # 1) delete voiceapp
         voiceapp_list = VoiceApp.objects.extra(where=['id IN (%s)' % values])
-        request.session["msg"] =\
-        _('%(count)s voiceapp(s) are deleted.' \
-        % {'count': voiceapp_list.count()})
+        request.session["msg"] = _('%(count)s voiceapp(s) are deleted.' \
+            % {'count': voiceapp_list.count()})
         voiceapp_list.delete()
         return HttpResponseRedirect('/voiceapp/')
 
@@ -202,7 +201,7 @@ def voiceapp_change(request, object_id):
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('"%(name)s" is updated.' \
-                % {'name': request.POST['name']})
+                    % {'name': request.POST['name']})
                 return HttpResponseRedirect('/voiceapp/')
 
     template = 'frontend/voiceapp/change.html'

@@ -62,14 +62,6 @@ def get_question_list(user):
     return list_sq
 
 
-def get_action_type_list():
-    """Get action type list"""
-    list_at = []
-    for i in APP_TYPE:
-        list_at.append((i[0], i[1]))
-    return list_at
-
-
 class SurveyQuestionForm(ModelForm):
     """SurveyQuestion ModelForm"""
 
@@ -84,7 +76,7 @@ class SurveyQuestionForm(ModelForm):
         self.fields['question'].widget.attrs['class'] = 'span6'
         # To get user's audio file list
         self.fields['audio_message'].choices = get_audiofile_list(user)
-        self.fields['type'].choices = get_action_type_list()
+        self.fields['type'].choices = APP_TYPE
         if instance.id:
             js_function = "question_form(" + str(instance.id) + ", 1);"
             self.fields['question'].widget.attrs['onBlur'] = js_function
@@ -107,7 +99,7 @@ class SurveyQuestionNewForm(ModelForm):
         self.fields['surveyapp'].widget = forms.HiddenInput()
         self.fields['question'].widget.attrs['class'] = 'span6'
         self.fields['audio_message'].choices = get_audiofile_list(user)
-        self.fields['type'].choices = get_action_type_list()
+        self.fields['type'].choices = APP_TYPE
 
         js_function = "var initial_que_save=1;to_call_question_form();"
         self.fields['question'].widget.attrs['onBlur'] = js_function

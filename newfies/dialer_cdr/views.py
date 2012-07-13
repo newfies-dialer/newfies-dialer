@@ -272,6 +272,7 @@ def export_voipcall_report(request):
                      'disposition', 'hangup_cause', 'hangup_cause_q850',
                      'used_gateway'])
     for i in qs:
+        gateway_used = i.used_gateway.name if i.used_gateway else ''
         writer.writerow([i['user'],
                          i['callid'],
                          i['callerid'],
@@ -282,6 +283,6 @@ def export_voipcall_report(request):
                          get_disposition_name(i['disposition']),
                          i['hangup_cause'],
                          i['hangup_cause_q850'],
-                         i['used_gateway'],
+                         gateway_used,
                          ])
     return response

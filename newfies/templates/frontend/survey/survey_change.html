@@ -38,7 +38,7 @@
             var id = document.getElementById("id_new_que_form").value;
             question_form(id-1, 0);
             initial_que_save = initial_que_save + 1;	    	
-            setTimeout("temp_call()", 400);
+            setTimeout("temp_call()", 10);
         }
         else
         {   // update record with new form after  initial save
@@ -67,15 +67,15 @@
        if (form_type==0)
        {
            data = $('#new_survey_que_form_' + id).serializeObject();
-           form_type = 'new_form'
+           form_type = 'new_form';
        }
        else
        {
            //data = $('#my_form').serialize(true);
            data = $('#que_form_' + id).serializeObject();           
-           form_type = 'old_form'
+           form_type = 'old_form';
        }
-       		
+
        Dajaxice.survey.survey_question_add_update(Dajax.process, {'id': id, 'data': data, 'form_type': form_type, 'after_initial_save':0, 'record_id': ''});
    }
 
@@ -301,6 +301,9 @@ function addFormField() {
     '</div>' +
     '</div><div id="divTxt"></div>');
 
+    // fixed focus to 1st field of the form
+    $("#new_survey_que_form_" + id +  " #id_question").focus();
+
     res_div_count = res_div_count + 1;
     id = (id - 1) + 2;    
     document.getElementById("id").value = id;
@@ -343,7 +346,7 @@ function addResFormField(que_id, is_que_id_set) {
                     '<div class="span2"><b>{% trans "Key Value" %}</b><br/><input type="text" id="id_key" class="input-small" name="key" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
                 {% else %}
 		    {% if field.name == 'goto_surveyquestion' %}
-			'<div class="span3 goto_'+id+'"><b>{% trans "Goto question" %}</b><br/><select id="id_goto_surveyquestion" name="goto_surveyquestion" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')" onfocus="call_update_question(\'goto_'+id+'\');"></select>' + //'{{ field|escapejs }}' + 
+			'<div class="span3 goto_'+id+'"><b>{% trans "Goto question" %}</b><br/><select id="id_goto_surveyquestion" name="goto_surveyquestion" onchange="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')" onfocus="call_update_question(\'goto_'+id+'\');"></select>' + //'{{ field|escapejs }}' +
 		    {% else %}		
                 '{{ field|escapejs }}'+
 		    {% endif %} 
@@ -360,18 +363,21 @@ function addResFormField(que_id, is_que_id_set) {
     '</div>'+
     '</form>'+
     '</div>');
-    
+
+    // fixed focus to 1st field of the form
+    $("#new_response_form_" + id +  " #id_key").focus();
+
     //previous new response form's id & onblur event must be changed to updated the newly entered values
     if(document.getElementById("new_response_id").value != 0 && que_id == 0 && is_que_id_set == 0)
     {
-        $('#new_response_form_' + (id-1) +' input[type="text"]').attr('onBlur', 'response_form('+document.getElementById("new_response_id").value+', '+document.getElementById("id_new_que_form").value+', 1, 1)');
+        $('#new_response_form_' + (id-1) +' input[type="text"]').attr('onblur', 'response_form('+document.getElementById("new_response_id").value+', '+document.getElementById("id_new_que_form").value+', 1, 1)');
         $('#new_response_form_' + (id-1)).attr('id','response_form_'+document.getElementById("new_response_id").value);
     }
 
     //new response (with whom que id is set) form's id & onblur event must be changed to updated the newly entered values
     if(document.getElementById("new_response_id").value != 0 && que_id != 0 && is_que_id_set == 1)
     {
-        $('#new_response_form_' + (id-1) +' input[type="text"]').attr('onBlur', 'response_form('+document.getElementById("new_response_id").value+', '+que_id+', 1, 1)');
+        $('#new_response_form_' + (id-1) +' input[type="text"]').attr('onblur', 'response_form('+document.getElementById("new_response_id").value+', '+que_id+', 1, 1)');
         $('#new_response_form_' + (id-1)).attr('id','response_form_'+document.getElementById("new_response_id").value);
     }
 

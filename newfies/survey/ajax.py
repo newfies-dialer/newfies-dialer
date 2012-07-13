@@ -69,8 +69,8 @@ def survey_question_add_update(request, id, data, form_type,
         #    form.cleaned_data.get('question'))
     else:
         if form_type == 'new_form':
-            dajax.remove_css_class('#new_survey_que_form_' + id + ' input', \
-                                    'error')
+            dajax.remove_css_class('#new_survey_que_form_' + id + ' input',
+                                   'error')
         if form_type == 'old_form':
             dajax.remove_css_class('#que_form_' + id + ' input', 'error')
         #dajax.alert("error")

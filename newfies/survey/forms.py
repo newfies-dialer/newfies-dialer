@@ -99,6 +99,7 @@ class SurveyQuestionNewForm(ModelForm):
         self.fields['surveyapp'].widget = forms.HiddenInput()
         self.fields['question'].widget.attrs['class'] = 'span6'
         self.fields['audio_message'].choices = get_audiofile_list(user)
+
         js_function = "var initial_que_save=1;to_call_question_form();"
         self.fields['question'].widget.attrs['onBlur'] = js_function
         self.fields['audio_message'].widget.attrs['onChange'] = js_function
@@ -127,7 +128,7 @@ class SurveyResponseForm(ModelForm):
             self.fields['key'].widget.attrs['onBlur'] = js_function
             self.fields['keyvalue'].widget.attrs['onBlur'] = js_function
             self.fields['goto_surveyquestion'].widget\
-                    .attrs['onBlur'] = js_function
+                    .attrs['onChange'] = js_function
             self.fields['goto_surveyquestion'].widget\
                 .attrs['onfocus'] = \
                     'call_update_question("goto_'+ str(instance.id) + '");'

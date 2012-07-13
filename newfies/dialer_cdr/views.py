@@ -12,7 +12,6 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-# Create your views here.
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
@@ -213,13 +212,14 @@ def voipcall_report(request):
     # Following code will count total voip calls, duration
     if total_data.count() != 0:
         max_duration = \
-        max([x['duration__sum'] for x in total_data])
+            max([x['duration__sum'] for x in total_data])
         total_duration = \
-        sum([x['duration__sum'] for x in total_data])
-        total_calls = sum([x['starting_date__count'] for x in total_data])
+            sum([x['duration__sum'] for x in total_data])
+        total_calls = \
+            sum([x['starting_date__count'] for x in total_data])
         total_avg_duration = \
-        (sum([x['duration__avg']\
-        for x in total_data])) / total_data.count()
+            (sum([x['duration__avg']\
+                for x in total_data])) / total_data.count()
     else:
         max_duration = 0
         total_duration = 0
@@ -272,6 +272,7 @@ def export_voipcall_report(request):
                      'disposition', 'hangup_cause', 'hangup_cause_q850',
                      'used_gateway'])
     for i in qs:
+        gateway_used = i.used_gateway.name if i.used_gateway else ''
         writer.writerow([i['user'],
                          i['callid'],
                          i['callerid'],
@@ -282,6 +283,6 @@ def export_voipcall_report(request):
                          get_disposition_name(i['disposition']),
                          i['hangup_cause'],
                          i['hangup_cause_q850'],
-                         i['used_gateway'],
+                         gateway_used,
                          ])
     return response

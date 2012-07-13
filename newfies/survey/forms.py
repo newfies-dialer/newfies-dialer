@@ -130,7 +130,7 @@ class SurveyResponseForm(ModelForm):
             self.fields['goto_surveyquestion'].widget\
                     .attrs['onChange'] = js_function
             self.fields['goto_surveyquestion'].widget\
-                .attrs['onfocus'] = \
+                .attrs['onclick'] = \
                     'call_update_question("goto_'+ str(instance.id) + '");'
 
 

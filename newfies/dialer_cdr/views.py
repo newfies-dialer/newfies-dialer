@@ -12,7 +12,6 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-# Create your views here.
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
@@ -213,13 +212,14 @@ def voipcall_report(request):
     # Following code will count total voip calls, duration
     if total_data.count() != 0:
         max_duration = \
-        max([x['duration__sum'] for x in total_data])
+            max([x['duration__sum'] for x in total_data])
         total_duration = \
-        sum([x['duration__sum'] for x in total_data])
-        total_calls = sum([x['starting_date__count'] for x in total_data])
+            sum([x['duration__sum'] for x in total_data])
+        total_calls = \
+            sum([x['starting_date__count'] for x in total_data])
         total_avg_duration = \
-        (sum([x['duration__avg']\
-        for x in total_data])) / total_data.count()
+            (sum([x['duration__avg']\
+                for x in total_data])) / total_data.count()
     else:
         max_duration = 0
         total_duration = 0

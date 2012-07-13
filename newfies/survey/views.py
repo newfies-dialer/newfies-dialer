@@ -443,7 +443,8 @@ def audio_file_player(audio_file):
     if audio_file:
         file_url = settings.MEDIA_URL + str(audio_file)
         player_string = '<ul class="playlist"><li style="width:220px;">\
-        <a href="%s">%s</a></li></ul>' % (file_url, os.path.basename(file_url))
+            <a href="%s">%s</a></li></ul>' % (file_url,
+                                              os.path.basename(file_url))
         return player_string
 
 
@@ -549,7 +550,7 @@ def audio_add(request):
             obj.user = User.objects.get(username=request.user)
             obj.save()
             request.session["msg"] = _('"%(name)s" is added.') %\
-            {'name': request.POST['name']}
+                {'name': request.POST['name']}
             return HttpResponseRedirect('/audio/')
 
     template = 'frontend/survey/audio_change.html'
@@ -593,8 +594,8 @@ def audio_del(request, object_id):
         # 1) delete audio
         audio_list = AudioFile.objects.extra(where=['id IN (%s)' % values])
         request.session["msg"] =\
-        _('%(count)s audio(s) are deleted.') \
-        % {'count': audio_list.count()}
+            _('%(count)s audio(s) are deleted.') \
+                % {'count': audio_list.count()}
         audio_list.delete()
         return HttpResponseRedirect('/audio/')
 
@@ -625,7 +626,9 @@ def audio_change(request, object_id):
         return HttpResponseRedirect('/audio/')
 
     if request.method == 'POST':
-        form = CustomerAudioFileForm(request.POST, request.FILES, instance=obj)
+        form = CustomerAudioFileForm(request.POST,
+                                     request.FILES,
+                                     instance=obj)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/audio/')
@@ -857,13 +860,13 @@ def survey_report(request):
         from_query =\
             'FROM survey_surveycampaignresult '\
             'WHERE survey_surveycampaignresult.callid = dialer_cdr.callid'
-        rows = VoIPCall.objects.filter(**kwargs).order_by(sort_field).extra(
-            select={
-                'question': 'SELECT question ' + from_query,
-                'response': 'SELECT response ' + from_query,
-            },
-        ).exclude(callid='')
-        #.exclude(Q(question__isnull=True) | Q(question__exact=''))
+        rows = VoIPCall.objects.filter(**kwargs).order_by(sort_field)\
+               .extra(
+                   select={
+                       'question': 'SELECT question ' + from_query,
+                       'response': 'SELECT response ' + from_query,
+                   },
+               ).exclude(callid='')
 
         request.session['session_surveycalls'] = rows
 

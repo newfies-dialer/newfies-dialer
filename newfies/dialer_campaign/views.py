@@ -41,8 +41,7 @@ from dialer_campaign.function_def import user_attached_with_dialer_settings, \
                         get_campaign_status_name, user_dialer_setting_msg
 from dialer_campaign.tasks import collect_subscriber
 from dialer_cdr.models import VoIPCall
-from common.common_functions import variable_value, striplist
-from inspect import stack, getmodule
+from common.common_functions import variable_value, striplist, current_view
 from datetime import datetime
 from dateutil import parser
 from dateutil.relativedelta import relativedelta
@@ -69,11 +68,6 @@ update_style = 'style="text-decoration:none;background-image:url(' + \
                     settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
 delete_style = 'style="text-decoration:none;background-image:url(' + \
                 settings.STATIC_URL + 'newfies/icons/delete.png);"'
-
-
-def current_view(request):
-    name = getmodule(stack()[1][0]).__name__
-    return stack()[1][3]
 
 
 @login_required

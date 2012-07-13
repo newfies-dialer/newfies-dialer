@@ -26,7 +26,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
 from django.db.models import Q
 from dialer_campaign.models import Campaign
-from dialer_campaign.views import current_view, notice_count, update_style, \
+from dialer_campaign.views import notice_count, update_style, \
                         delete_style, grid_common_function
 from survey.models import SurveyApp, SurveyQuestion, \
                         SurveyResponse, SurveyCampaignResult
@@ -40,7 +40,7 @@ from dialer_cdr.models import Callrequest
 from audiofield.models import AudioFile
 from audiofield.forms import CustomerAudioFileForm
 from dialer_cdr.models import VoIPCall
-from common.common_functions import variable_value
+from common.common_functions import variable_value, current_view
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import csv

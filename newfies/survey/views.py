@@ -58,7 +58,7 @@ def survey_finestatemachine(request):
     default_transition = None
     current_state = None
     next_state = None
-    testdebug = True
+    testdebug = False
     delcache = False
 
     #Load Plivo Post parameters
@@ -69,6 +69,8 @@ def survey_finestatemachine(request):
 
     if testdebug:
         #implemented to test in browser
+        #usage :
+        #http://127.0.0.1:8000/survey_finestatemachine/?ALegRequestUUID=df8a8478-cc57-11e1-aa17-00231470a30c&Digits=1&RecordFile=tesfilename.mp3
         if not opt_ALegRequestUUID:
             opt_ALegRequestUUID = request.GET.get('ALegRequestUUID')
         if not opt_CallUUID:
@@ -143,9 +145,6 @@ def survey_finestatemachine(request):
         else:
             RecordFile = request.POST.get('RecordFile')
             RecordingDuration = request.POST.get('RecordingDuration')
-        print "************ Previous Recording"
-        print RecordFile
-        print RecordingDuration
         new_surveycampaignresult = SurveyCampaignResult(
                 campaign=obj_callrequest.campaign,
                 surveyapp_id=surveyapp_id,
@@ -154,7 +153,6 @@ def survey_finestatemachine(request):
                 record_file=RecordFile,
                 recording_duration=RecordingDuration)
         new_surveycampaignresult.save()
-        print "Save response...\n"
     #Check if we receive a DTMF for the previous question then store the result
     elif DTMF and len(DTMF) > 0 and current_state > 0:
         #find the response for this key pressed
@@ -172,13 +170,11 @@ def survey_finestatemachine(request):
             if surveyresponse and surveyresponse.goto_surveyquestion:
                 l = 0
                 for question in list_question:
-                    print question.id
                     if question.id == surveyresponse.goto_surveyquestion.id:
                         current_state = l
-                        print "Found it (%d) (l=%d)!" % (question.id, l)
+                        #print "Found it (%d) (l=%d)!" % (question.id, l)
                         break
                     l = l + 1
-                print "current_state = %s" % str(current_state)
         except:
             #It's possible that this response is not accepted
             response_value = DTMF
@@ -190,11 +186,6 @@ def survey_finestatemachine(request):
                     question=obj_prev_qt,
                     response=response_value)
             new_surveycampaignresult.save()
-            print "Save response...\n"
-            print obj_prev_qt
-            print obj_prev_qt.id
-            print response_value
-            print
 
         except IndexError:
             # error index
@@ -205,7 +196,7 @@ def survey_finestatemachine(request):
     next_state = current_state + 1
 
     cache.set(key_state, next_state, 21600)
-    print "Saved state in Cache (%s = %s)" % (key_state, next_state)
+    #print "Saved state in Cache (%s = %s)" % (key_state, next_state)
 
     try:
         list_question[current_state]
@@ -246,9 +237,11 @@ def survey_finestatemachine(request):
             'retries="1" validDigits="0123456789" timeout="10" ' \
             'finishOnKey="#">\n' \
             '       %s\n' \
-            '   </GetDigits>' \
+            '   </GetDigits>\n' \
+            '   <Redirect>%s</Redirect>\n' \
             '</Response>' % \
-            (settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL, question)
+            (settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL, question,
+                settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
     #Recording
     elif list_question[current_state].type == 2:
         html = \

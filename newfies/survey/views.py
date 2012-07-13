@@ -202,12 +202,20 @@ def survey_finestatemachine(request):
         #Text2Speech
         question = "<Speak>%s</Speak>" % list_question[current_state].question
 
-    #return the question
-    html = '<Response>\n\
-                <GetDigits action="%s" method="GET" numDigits="1" retries="1" validDigits="0123456789" timeout="10" finishOnKey="#">\n\
+    if list_question[current_state].type == 0:  # Menu
+        #return the question
+        html = '<Response>\n\
+                    <GetDigits action="%s" method="GET" numDigits="1" retries="1" validDigits="0123456789" timeout="10" finishOnKey="#">\n\
+                        %s\n\
+                    </GetDigits>\
+                </Response>' % (settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL, question)
+    else:  # Hangup
+        #return the question
+        html = '<Response>\n\
                     %s\n\
-                </GetDigits>\
-            </Response>' % (settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL, question)
+                    <Hangup />\
+                </Response>' % (question)
+
     return HttpResponse(html)
 
 

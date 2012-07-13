@@ -137,8 +137,11 @@ def check_campaign_pendingcall(campaign_id):
                     args=[new_callrequest.id, obj_campaign.id],
                     eta=launch_date)
         #Shell_plus
+        # from dialer_cdr.tasks import init_callrequest
+        # from datetime import datetime
         # new_callrequest_id = 112
         # obj_campaign_id = 3
+        # launch_date = datetime.now()
         # init_callrequest.apply_async(args=[new_callrequest_id, obj_campaign_id], eta=launch_date)
 
 

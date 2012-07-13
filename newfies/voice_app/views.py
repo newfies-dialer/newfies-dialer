@@ -23,9 +23,10 @@ from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from voice_app.models import VoiceApp, get_voiceapp_type_name
 from voice_app.forms import VoiceAppForm
-from dialer_campaign.views import current_view, notice_count, update_style, delete_style, \
+from dialer_campaign.views import notice_count, update_style, delete_style, \
                                   grid_common_function
 from dialer_campaign.function_def import user_dialer_setting_msg
+from common.common_functions import current_view
 
 
 # voice_app

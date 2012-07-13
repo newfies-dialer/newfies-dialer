@@ -58,7 +58,8 @@ def survey_finestatemachine(request):
     default_transition = None
     current_state = None
     next_state = None
-    testdebug = False
+    testdebug = True
+    delcache = False
 
     #Load Plivo Post parameters
     opt_ALegRequestUUID = request.POST.get('ALegRequestUUID')
@@ -76,6 +77,7 @@ def survey_finestatemachine(request):
             opt_CallUUID = opt_ALegRequestUUID
         if not DTMF:
             DTMF = request.GET.get('Digits')
+        delcache = request.GET.get('delcache')
         #print "DTMF=%s - opt_CallUUID=%s" % (DTMF, opt_CallUUID)
 
     if not opt_ALegRequestUUID:
@@ -86,6 +88,10 @@ def survey_finestatemachine(request):
     #Create the keys to store the cache
     key_state = "%s_state" % opt_CallUUID
     key_surveyapp = "%s_surveyapp_id" % opt_CallUUID
+
+    if testdebug and delcache:
+        cache.delete(key_state)
+        cache.delete(key_surveyapp)
 
     #Retrieve the values of the keys
     current_state = cache.get(key_state)
@@ -106,14 +112,18 @@ def survey_finestatemachine(request):
     surveyapp_id = obj_callrequest.object_id
     cache.set(key_surveyapp, surveyapp_id, 21600)  # 21600 seconds = 6 hours
 
-    #TODO : use constant
-    obj_callrequest.status = 8  # IN-PROGRESS
-    obj_callrequest.aleg_uuid = opt_CallUUID
-    obj_callrequest.save()
+    if current_state == 0:
+        #TODO : use constant
+        obj_callrequest.status = 8  # IN-PROGRESS
+        obj_callrequest.aleg_uuid = opt_CallUUID
+        obj_callrequest.save()
+
+    print "current_state = %s" % str(current_state)
 
     #Load the questions
     list_question = SurveyQuestion.objects\
-                    .filter(surveyapp=surveyapp_id).order_by('order')
+                        .filter(surveyapp=surveyapp_id).order_by('order')
+    print list_question
 
     #Check if we receive a DTMF for the previous question then store the result
     if DTMF and len(DTMF) > 0 and current_state > 0:
@@ -122,26 +132,47 @@ def survey_finestatemachine(request):
             surveyresponse = SurveyResponse.objects.get(
                             key=DTMF,
                             surveyquestion=list_question[current_state - 1])
+            print "surveyresponse = "
+            print surveyresponse
             if not surveyresponse.keyvalue:
                 response_value = DTMF
             else:
                 response_value = surveyresponse.keyvalue
+            print "response_value = %s" % str(response_value)
+
+            #if there is a response for this DTMF then reset the current_state
+            if surveyresponse and surveyresponse.goto_surveyquestion:
+                l = 0
+                for question in list_question:
+                    print question.id
+                    if question.id == surveyresponse.goto_surveyquestion.id:
+                        current_state = l
+                        print "Found it (%d) (l=%d)!" % (question.id, l)
+                        print surveyresponse.goto_surveyquestion
+                        break
+                    l = l + 1
+                print "current_state = %s" % str(current_state)
         except:
             #It's possible that this response is not accepted
             response_value = DTMF
-
-        new_surveycampaignresult = SurveyCampaignResult(
+        try:
+            new_surveycampaignresult = SurveyCampaignResult(
                     campaign=obj_callrequest.campaign,
                     surveyapp_id=surveyapp_id,
                     callid=opt_CallUUID,
                     question=list_question[current_state - 1].question,
                     response=response_value)
-        new_surveycampaignresult.save()
+            new_surveycampaignresult.save()
+        except IndexError:
+            # error index
+            html = '<Response><Hangup/></Response>'
+            return HttpResponse(html)
 
     #Transition go to next state
     next_state = current_state + 1
+
     cache.set(key_state, next_state, 21600)
-    #print "Saved state in Cache (%s = %s)" % (key_state, next_state)
+    print "Saved state in Cache (%s = %s)" % (key_state, next_state)
 
     try:
         list_question[current_state]

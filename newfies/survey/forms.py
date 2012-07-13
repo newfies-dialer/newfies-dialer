@@ -16,9 +16,8 @@ from django import forms
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
-
-from survey.models import SurveyApp, SurveyQuestion,\
-                          SurveyResponse, SurveyCampaignResult
+from survey.models import SurveyApp, SurveyQuestion, \
+                          SurveyResponse
 from survey.function_def import field_list
 from dialer_campaign.models import Campaign
 from dialer_cdr.forms import VoipSearchForm
@@ -131,7 +130,7 @@ class SurveyResponseForm(ModelForm):
                     .attrs['onChange'] = js_function
             self.fields['goto_surveyquestion'].widget\
                 .attrs['onfocus'] = \
-                    'call_update_question("goto_'+ str(instance.id) + '");'
+                    'call_update_question("goto_' + str(instance.id) + '");'
 
 
 class SurveyReportForm(forms.Form):
@@ -160,7 +159,6 @@ class SurveyDetailReportForm(VoipSearchForm, SurveyReportForm):
     def __init__(self, user, *args, **kwargs):
         super(SurveyDetailReportForm, self).__init__(user, *args, **kwargs)
         self.fields.keyOrder = ['from_date', 'to_date', 'status', 'campaign']
-
 
 
 class SurveyCustomerAudioFileForm(CustomerAudioFileForm):

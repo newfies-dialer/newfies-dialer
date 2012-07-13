@@ -223,6 +223,11 @@ class SurveyCampaignResult(models.Model):
                     verbose_name=_("Question"))  # What is your prefered fruit?
     response = models.CharField(max_length=150, blank=False,
                     verbose_name=_("Response"))  # Orange ; Kiwi
+    record_file = models.CharField(max_length=200, blank=False, default='',
+                    verbose_name=_("Record File"))
+    recording_duration = models.IntegerField(max_length=20,
+                    blank=True, default=0,
+                    null=True, verbose_name=_('Recording Duration'))
 
     created_date = models.DateTimeField(auto_now_add=True)
 

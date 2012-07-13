@@ -87,6 +87,7 @@ def survey_finestatemachine(request):
 
     #Create the keys to store the cache
     key_state = "%s_state" % opt_CallUUID
+    key_prev_qt = "%s_prev_qt" % opt_CallUUID  # Previous question
     key_surveyapp = "%s_surveyapp_id" % opt_CallUUID
 
     if testdebug and delcache:
@@ -96,11 +97,21 @@ def survey_finestatemachine(request):
     #Retrieve the values of the keys
     current_state = cache.get(key_state)
     surveyapp_id = cache.get(key_surveyapp)
+    obj_prev_qt = False
 
     if not current_state:
         cache.set(key_state, 0, 21600)  # 21600 seconds = 6 hours
+        cache.set(key_prev_qt, 0, 21600)  # 21600 seconds = 6 hours
         current_state = 0
-
+    else:
+        prev_qt = cache.get(key_prev_qt)
+        if prev_qt:
+            print "\nPREVIOUS QUESTION ::> %d" % prev_qt
+            #Get previous Question
+            try:
+                obj_prev_qt = SurveyQuestion.objects.get(id=prev_qt)
+            except:
+                obj_prev_qt = False
     try:
         obj_callrequest = Callrequest.objects\
                 .get(request_uuid=opt_ALegRequestUUID)
@@ -118,27 +129,44 @@ def survey_finestatemachine(request):
         obj_callrequest.aleg_uuid = opt_CallUUID
         obj_callrequest.save()
 
-    print "current_state = %s" % str(current_state)
+    #print "current_state = %s" % str(current_state)
 
     #Load the questions
     list_question = SurveyQuestion.objects\
                         .filter(surveyapp=surveyapp_id).order_by('order')
-    print list_question
 
+    if obj_prev_qt and obj_prev_qt.type == 2:
+        #Previous Recording
+        if testdebug:
+            RecordFile = request.GET.get('RecordFile')
+            RecordingDuration = request.GET.get('RecordingDuration')
+        else:
+            RecordFile = request.POST.get('RecordFile')
+            RecordingDuration = request.POST.get('RecordingDuration')
+        print "************ Previous Recording"
+        print RecordFile
+        print RecordingDuration
+        new_surveycampaignresult = SurveyCampaignResult(
+                campaign=obj_callrequest.campaign,
+                surveyapp_id=surveyapp_id,
+                callid=opt_CallUUID,
+                question=obj_prev_qt,
+                record_file=RecordFile,
+                recording_duration=RecordingDuration)
+        new_surveycampaignresult.save()
+        print "Save response...\n"
     #Check if we receive a DTMF for the previous question then store the result
-    if DTMF and len(DTMF) > 0 and current_state > 0:
+    elif DTMF and len(DTMF) > 0 and current_state > 0:
         #find the response for this key pressed
         try:
+            #Get list of responses of the previous Question
             surveyresponse = SurveyResponse.objects.get(
                             key=DTMF,
-                            surveyquestion=list_question[current_state - 1])
-            print "surveyresponse = "
-            print surveyresponse
-            if not surveyresponse.keyvalue:
+                            surveyquestion=obj_prev_qt)
+            if not surveyresponse or not surveyresponse.keyvalue:
                 response_value = DTMF
             else:
                 response_value = surveyresponse.keyvalue
-            print "response_value = %s" % str(response_value)
 
             #if there is a response for this DTMF then reset the current_state
             if surveyresponse and surveyresponse.goto_surveyquestion:
@@ -148,7 +176,6 @@ def survey_finestatemachine(request):
                     if question.id == surveyresponse.goto_surveyquestion.id:
                         current_state = l
                         print "Found it (%d) (l=%d)!" % (question.id, l)
-                        print surveyresponse.goto_surveyquestion
                         break
                     l = l + 1
                 print "current_state = %s" % str(current_state)
@@ -160,9 +187,15 @@ def survey_finestatemachine(request):
                     campaign=obj_callrequest.campaign,
                     surveyapp_id=surveyapp_id,
                     callid=opt_CallUUID,
-                    question=list_question[current_state - 1].question,
+                    question=obj_prev_qt,
                     response=response_value)
             new_surveycampaignresult.save()
+            print "Save response...\n"
+            print obj_prev_qt
+            print obj_prev_qt.id
+            print response_value
+            print
+
         except IndexError:
             # error index
             html = '<Response><Hangup/></Response>'
@@ -176,6 +209,9 @@ def survey_finestatemachine(request):
 
     try:
         list_question[current_state]
+        #set previous question
+        prev_qt = list_question[current_state].id
+        cache.set(key_prev_qt, prev_qt, 21600)
     except IndexError:
         html = '<Response><Hangup/></Response>'
         return HttpResponse(html)
@@ -204,24 +240,23 @@ def survey_finestatemachine(request):
 
     #Menu
     if list_question[current_state].type == 0:
-        html = '<Response>\n' \
+        html = \
+            '<Response>\n' \
             '   <GetDigits action="%s" method="GET" numDigits="1" ' \
             'retries="1" validDigits="0123456789" timeout="10" ' \
             'finishOnKey="#">\n' \
             '       %s\n' \
             '   </GetDigits>' \
-            ' </Response>' % \
+            '</Response>' % \
             (settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL, question)
     #Recording
-    if list_question[current_state].type == 2:
-        html = '<Response>\n' \
-            '   <GetDigits action="%s" method="GET" numDigits="1" ' \
-            'retries="1" validDigits="0123456789" timeout="10" ' \
-            'finishOnKey="#">\n' \
-            '       %s\n' \
-            '   </GetDigits>' \
-            ' </Response>' % \
-            (settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL, question)
+    elif list_question[current_state].type == 2:
+        html = \
+            '<Response>\n' \
+            '   %s\n' \
+            '   <Record maxLength="30" finishOnKey="*" action="%s" method="GET" />' \
+            '</Response>' % \
+            (question, settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
     # Hangup
     else:
         html = \

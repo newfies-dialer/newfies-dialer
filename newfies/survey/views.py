@@ -202,19 +202,35 @@ def survey_finestatemachine(request):
         #Text2Speech
         question = "<Speak>%s</Speak>" % list_question[current_state].question
 
-    if list_question[current_state].type == 0:  # Menu
-        #return the question
-        html = '<Response>\n\
-                    <GetDigits action="%s" method="GET" numDigits="1" retries="1" validDigits="0123456789" timeout="10" finishOnKey="#">\n\
-                        %s\n\
-                    </GetDigits>\
-                </Response>' % (settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL, question)
-    else:  # Hangup
-        #return the question
-        html = '<Response>\n\
-                    %s\n\
-                    <Hangup />\
-                </Response>' % (question)
+    #Menu
+    if list_question[current_state].type == 0:
+        html = '<Response>\n' \
+            '   <GetDigits action="%s" method="GET" numDigits="1" ' \
+            'retries="1" validDigits="0123456789" timeout="10" ' \
+            'finishOnKey="#">\n' \
+            '       %s\n' \
+            '   </GetDigits>' \
+            ' </Response>' % \
+            (settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL, question)
+    #Recording
+    if list_question[current_state].type == 2:
+        html = '<Response>\n' \
+            '   <GetDigits action="%s" method="GET" numDigits="1" ' \
+            'retries="1" validDigits="0123456789" timeout="10" ' \
+            'finishOnKey="#">\n' \
+            '       %s\n' \
+            '   </GetDigits>' \
+            ' </Response>' % \
+            (settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL, question)
+    # Hangup
+    else:
+        html = \
+            '<Response>\n' \
+            '   %s\n' \
+            '   <Hangup />' \
+            '</Response>' % (question)
+        next_state = current_state
+        cache.set(key_state, next_state, 21600)
 
     return HttpResponse(html)
 

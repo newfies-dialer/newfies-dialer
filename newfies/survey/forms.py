@@ -17,7 +17,7 @@ from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from survey.models import SurveyApp, SurveyQuestion, \
-                          SurveyResponse
+                          SurveyResponse, APP_TYPE
 from survey.function_def import field_list
 from dialer_campaign.models import Campaign
 from dialer_cdr.forms import VoipSearchForm
@@ -62,6 +62,14 @@ def get_question_list(user):
     return list_sq
 
 
+def get_action_type_list():
+    """Get action type list"""
+    list_at = []
+    for i in APP_TYPE:
+        list_at.append((i[0], i[1]))
+    return list_at
+
+
 class SurveyQuestionForm(ModelForm):
     """SurveyQuestion ModelForm"""
 
@@ -76,6 +84,7 @@ class SurveyQuestionForm(ModelForm):
         self.fields['question'].widget.attrs['class'] = 'span6'
         # To get user's audio file list
         self.fields['audio_message'].choices = get_audiofile_list(user)
+        self.fields['type'].choices = get_action_type_list()
         if instance.id:
             js_function = "question_form(" + str(instance.id) + ", 1);"
             self.fields['question'].widget.attrs['onBlur'] = js_function
@@ -98,6 +107,7 @@ class SurveyQuestionNewForm(ModelForm):
         self.fields['surveyapp'].widget = forms.HiddenInput()
         self.fields['question'].widget.attrs['class'] = 'span6'
         self.fields['audio_message'].choices = get_audiofile_list(user)
+        self.fields['type'].choices = get_action_type_list()
 
         js_function = "var initial_que_save=1;to_call_question_form();"
         self.fields['question'].widget.attrs['onBlur'] = js_function

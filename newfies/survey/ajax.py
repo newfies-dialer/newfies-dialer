@@ -47,7 +47,9 @@ def survey_question_add_update(request, id, data, form_type,
         else:
             survey_question = SurveyQuestion.objects.get(pk=int(id))
 
-        form = SurveyQuestionForm(request.user, data, instance=survey_question)
+        form = SurveyQuestionForm(request.user,
+                                  data,
+                                  instance=survey_question)
 
     if form_type == 'new_form':
         form = SurveyQuestionNewForm(request.user, data)
@@ -99,7 +101,9 @@ def survey_response_add_update(request, id, que_id, data,
     if form_type == 'old_form':
         form = SurveyResponseForm(request.user, data)
         survey_response = SurveyResponse.objects.get(pk=int(id))
-        form = SurveyResponseForm(request.user, data, instance=survey_response)
+        form = SurveyResponseForm(request.user,
+                                  data,
+                                  instance=survey_response)
 
     if form_type == 'new_form':
         form = SurveyResponseForm(request.user, data)
@@ -107,7 +111,9 @@ def survey_response_add_update(request, id, que_id, data,
         if int(new_response_id) != 0:
             survey_response = SurveyResponse.objects\
                                     .get(pk=int(new_response_id))
-            form = SurveyResponseForm(request.user, data, instance=survey_response)
+            form = SurveyResponseForm(request.user,
+                                      data,
+                                      instance=survey_response)
 
     if form.is_valid():
         key = form.cleaned_data.get("key")
@@ -119,7 +125,7 @@ def survey_response_add_update(request, id, que_id, data,
             if resp_obj.key != key:
                 duplicate_count = SurveyResponse.objects\
                                     .filter(key=key,
-                                        surveyquestion=resp_obj.surveyquestion)\
+                                    surveyquestion=resp_obj.surveyquestion)\
                                     .count()
 
         if form_type == 'new_form':
@@ -133,13 +139,13 @@ def survey_response_add_update(request, id, que_id, data,
                                     surveyquestion=surveyquestion).count()
 
         if duplicate_count >= 1 and form_type == 'old_form':
-            #dajax.alert("error : (%s) duplicate record key & previous key (%s) is not changed!" % (key,
-            #                                                                                       resp_obj.key))
+            #dajax.alert("error : (%s) duplicate record key & previous \
+            # key (%s) is not changed!" % (key, resp_obj.key))
             return dajax.json()
 
         if duplicate_count >= 1 \
             and form_type == 'new_form' \
-            and int(new_response_id) == 0:
+                and int(new_response_id) == 0:
             #dajax.alert("error : (%s) duplicate record key !" % (key))
             return dajax.json()
 
@@ -158,7 +164,7 @@ def survey_response_add_update(request, id, que_id, data,
         #        form.cleaned_data.get('keyvalue')))
     else:
         if form_type == 'new_form':
-            dajax.remove_css_class('#new_survey_que_form_' + id + ' input', \
+            dajax.remove_css_class('#new_survey_que_form_' + id + ' input',\
                                     'error')
         if form_type == 'old_form':
             dajax.remove_css_class('#que_form_' + id + ' input', 'error')
@@ -200,7 +206,8 @@ def survey_response_delete(request, id):
         survey_response.delete()
         # key = survey_response.key
         # keyvalue = survey_response.keyvalue
-        # dajax.alert("(%s - %s) is successfully deleted !!" % (key, keyvalue))
+        # dajax.alert("(%s - %s) is successfully deleted !!" \
+        # % (key, keyvalue))
     except:
         dajax.alert("%s is not exist !!" % (id))
         for error in form.errors:

@@ -190,10 +190,7 @@ def voipcall_report(request):
                                                tday.day, 0, 0, 0, 0)
 
     voipcall_list = \
-        VoIPCall.objects.values('user', 'callid', 'callerid', 'phone_number',
-                 'starting_date', 'duration', 'billsec',
-                 'disposition', 'hangup_cause', 'hangup_cause_q850',
-                 'used_gateway').filter(**kwargs).order_by('-starting_date')
+        VoIPCall.objects.filter(**kwargs).order_by('-starting_date')
 
     # Session variable is used to get record set with searched option
     # into export file
@@ -274,16 +271,16 @@ def export_voipcall_report(request):
                      'used_gateway'])
     for i in qs:
         gateway_used = i.used_gateway.name if i.used_gateway else ''
-        writer.writerow([i['user'],
-                         i['callid'],
-                         i['callerid'],
-                         i['phone_number'],
-                         i['starting_date'],
-                         i['duration'],
-                         i['billsec'],
-                         get_disposition_name(i['disposition']),
-                         i['hangup_cause'],
-                         i['hangup_cause_q850'],
+        writer.writerow([i.user,
+                         i.callid,
+                         i.callerid,
+                         i.phone_number,
+                         i.starting_date,
+                         i.duration,
+                         i.billsec,
+                         get_disposition_name(i.disposition),
+                         i.hangup_cause,
+                         i.hangup_cause_q850,
                          gateway_used,
                          ])
     return response

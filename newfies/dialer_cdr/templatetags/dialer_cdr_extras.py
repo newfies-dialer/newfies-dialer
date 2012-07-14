@@ -255,6 +255,7 @@ def que_res_string(val):
     """Modify survey result string for display"""
     if not val:
         return ''
+
     val_list = val.split("-|-")
     result_string = ''
 

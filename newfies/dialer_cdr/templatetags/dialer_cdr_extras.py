@@ -257,7 +257,7 @@ def que_res_string(val):
         return ''
 
     val_list = val.split("-|-")
-    result_string = ''
+    result_string = '<table>'
 
     rec_count = 1
     for i in val_list:
@@ -269,16 +269,17 @@ def que_res_string(val):
 
         if "*|**|*" in i:
             que_audio = i.split("*|**|*")
-            result_string += str(que_audio[0]) +_(' / Audio : Play Button ')\
-                             + str(que_audio[1]) + line_end_with
+            result_string += '<tr><td>' + str(que_audio[0]) \
+                             + '</td><td>' +_('Play Button :') \
+                             + str(que_audio[1]) + '</td></tr>'
         else:
             que_res = i.split("*|*")
-            result_string += str(que_res[0]) + _(' / Result : ')\
-                             + str(que_res[1]) + line_end_with
-
+            result_string += '<tr><td>' + str(que_res[0])\
+                             + '</td><td>' + str(que_res[1]) + '</td></tr>'
         rec_count += 1
 
-    return str(result_string)
+    result_string += '</table>'
+    return result_string
 
 
 register.filter('mul', mul)

@@ -17,6 +17,7 @@ from django.template.defaultfilters import *
 from django.conf import settings
 from django import forms
 from django.utils.datastructures import SortedDict
+from django.utils.translation import ugettext as _
 import operator
 import copy
 
@@ -248,6 +249,35 @@ def leg_type_name(value):
     status = LEG_TYPE[value]
     return str(status)
 
+
+@register.filter()
+def que_res_string(val):
+    """Modify survey result string for display"""
+    val_list = val.split("-|-")
+    result_string = ''
+
+    rec_count = 1
+    for i in val_list:
+
+        if len(val_list) == rec_count:
+            line_end_with = ''
+        else:
+            line_end_with = ', '
+
+        if "*|**|*" in i:
+            que_audio = i.split("*|**|*")
+            result_string += str(que_audio[0]) +_(' / Audio : Play Button ')\
+                             + str(que_audio[1]) + line_end_with
+        else:
+            que_res = i.split("*|*")
+            result_string += str(que_res[0]) + _(' / Result : ')\
+                             + str(que_res[1]) + line_end_with
+
+        rec_count += 1
+
+    return str(result_string)
+
+
 register.filter('mul', mul)
 register.filter('subtract', subtract)
 register.filter('div', div)
@@ -265,6 +295,7 @@ register.filter('campaign_status', campaign_status)
 register.filter('groupby_rows', groupby_rows)
 register.filter('groupby_columns', groupby_columns)
 register.filter('leg_type_name', leg_type_name)
+register.filter('que_res_string', que_res_string)
 
 get_fieldset = register.tag(get_fieldset)
 

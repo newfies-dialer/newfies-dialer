@@ -721,17 +721,8 @@ def survey_cdr_daily_report(kwargs):
         .extra(
             select={
                 'question_response':\
-                    'SELECT group_concat(CONCAT_WS(" / ' + _("Result")\
-                    + ' : ",question,response) SEPARATOR ", ") '\
-                    + from_query\
-                    + ' and survey_surveycampaignresult.response != "" '\
-                    + group_by_query,
-                'question_record_file':\
-                    'SELECT group_concat(CONCAT_WS(" / '\
-                    + _("Audio: Play Button")\
-                    + ' ",question,record_file) SEPARATOR ", " ) '\
-                    + from_query\
-                    + ' and survey_surveycampaignresult.record_file != "" '\
+                    'SELECT group_concat(CONCAT_WS("*|*",question,response, record_file) SEPARATOR "-|-") '\
+                    + from_query
                     + group_by_query,
                 },
         ).exclude(callid='')
@@ -928,24 +919,14 @@ def survey_report(request):
 
         # SELECT group_concat(CONCAT_WS("/Result:",question,response) SEPARATOR ", ")
         rows = VoIPCall.objects.filter(**kwargs).order_by(sort_field)\
-               .extra(
-                   select={
-                       'question_response': \
-                           'SELECT group_concat(CONCAT_WS(" / ' + _("Result") \
-                           + ' : ",question,response) SEPARATOR ", ") ' \
-                           + from_query \
-                           + ' and survey_surveycampaignresult.response != "" ' \
-                           + group_by_query,
-                       'question_record_file': \
-                           'SELECT group_concat(CONCAT_WS(" / ' \
-                           + _("Audio: Play Button") \
-                           + ' ",question,record_file) SEPARATOR ", " ) ' \
-                           + from_query \
-                           + ' and survey_surveycampaignresult.record_file != "" ' \
-                           + group_by_query,
-                   },
-               ).exclude(callid='')
-
+        .extra(
+            select={
+                'question_response':\
+                    'SELECT group_concat(CONCAT_WS("*|*",question,response, record_file) SEPARATOR "-|-") '\
+                    + from_query
+                    + group_by_query,
+                },
+        ).exclude(callid='')
         request.session['session_surveycalls'] = rows
 
         # Get daily report from session while using pagination & sorting

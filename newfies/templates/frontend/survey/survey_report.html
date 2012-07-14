@@ -213,7 +213,7 @@
                             {% endif %}
                         </td>
                         <td>{{ row.disposition }}</td>
-                        <td>{{ row.question_response }} {{ row.question_record_file }}</td>
+                        <td>{{ row.question_response|que_res_string }}</td>
                     </tr>
                 {% endfor %}
 

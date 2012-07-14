@@ -413,6 +413,8 @@ PLIVO_DEFAULT_DIALCALLBACK_URL = 'http://127.0.0.1:8000/api/v1/dialcallback/'
 PLIVO_DEFAULT_SURVEY_ANSWER_URL = 'http://127.0.0.1:8000/' \
                                   'survey_finestatemachine/'
 
+FS_RECORDING_PATH = '/usr/share/newfies/usermedia/recording/'
+
 # ADD 'dummy','plivo','twilio'
 NEWFIES_DIALER_ENGINE = 'plivo'
 

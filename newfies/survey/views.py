@@ -108,7 +108,7 @@ def survey_finestatemachine(request):
     else:
         prev_qt = cache.get(key_prev_qt)
         if prev_qt:
-            print "\nPREVIOUS QUESTION ::> %d" % prev_qt
+            #print "\nPREVIOUS QUESTION ::> %d" % prev_qt
             #Get previous Question
             try:
                 obj_prev_qt = SurveyQuestion.objects.get(id=prev_qt)
@@ -145,6 +145,10 @@ def survey_finestatemachine(request):
         else:
             RecordFile = request.POST.get('RecordFile')
             RecordingDuration = request.POST.get('RecordingDuration')
+        try:
+            RecordFile = os.path.split(RecordFile)[1]
+        except:
+            RecordFile = ''
         new_surveycampaignresult = SurveyCampaignResult(
                 campaign=obj_callrequest.campaign,
                 surveyapp_id=surveyapp_id,
@@ -239,17 +243,21 @@ def survey_finestatemachine(request):
             '       %s\n' \
             '   </GetDigits>\n' \
             '   <Redirect>%s</Redirect>\n' \
-            '</Response>' % \
-            (settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL, question,
+            '</Response>' % (
+                settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
+                question,
                 settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
     #Recording
     elif list_question[current_state].type == 2:
         html = \
             '<Response>\n' \
             '   %s\n' \
-            '   <Record maxLength="30" finishOnKey="*" action="%s" method="GET" />' \
-            '</Response>' % \
-            (question, settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
+            '   <Record maxLength="120" finishOnKey="*#" action="%s" ' \
+            'method="GET" filePath="%s" timeout="10"/>' \
+            '</Response>' % (
+                question,
+                settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
+                settings.FS_RECORDING_PATH)
     # Hangup
     else:
         html = \

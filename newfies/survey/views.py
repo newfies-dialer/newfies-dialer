@@ -763,12 +763,12 @@ def get_survey_result(campaign_obj):
     """Get survey result report from selected survey campaign"""
     survey_result = SurveyCampaignResult.objects\
         .filter(campaign=campaign_obj)\
-        .values('question', 'response')\
-        .exclude(Q(response__isnull=True) | Q(response__exact=''))\
+        .values('question', 'response', 'record_file')\
         .annotate(Count('response'))\
+        .annotate(Count('record_file'))\
         .distinct()\
         .order_by('question')
-
+    
     return survey_result
 
 

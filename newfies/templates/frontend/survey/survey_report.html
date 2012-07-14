@@ -304,7 +304,11 @@
                     <tr>
                         {% for obj in item %}
                             {% if obj %}
-                                <td>{{ obj.response__count }} contact(s) pressed {{ obj.response }}</td>
+                                {% if not obj.record_file %}
+                                    <td>{{ obj.response__count }} {% trans "contact(s) pressed" %} {{ obj.response }}</td>
+                                {% else %}
+                                    <td>{{ obj.record_file__count }} {% trans "contact(s) left a recorded message" %}</td>
+                                {% endif %}
                             {% else %}
                                 <td>&nbsp;</td>
                             {% endif %}

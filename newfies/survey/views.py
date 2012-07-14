@@ -911,14 +911,20 @@ def survey_report(request):
         # List of Survey VoIP call report
         from_query =\
             'FROM survey_surveycampaignresult '\
-            'WHERE survey_surveycampaignresult.callid = dialer_cdr.callid'
+            'WHERE survey_surveycampaignresult.callid = dialer_cdr.callid '\
+            'GROUP BY survey_surveycampaignresult.callid'
         rows = VoIPCall.objects.filter(**kwargs).order_by(sort_field)\
                .extra(
                    select={
-                       'question': 'SELECT question ' + from_query,
-                       'response': 'SELECT response ' + from_query,
+                       'question_response': \
+                           'SELECT group_concat(CONCAT(question,response,record_file) SEPARATOR "|" ) ' \
+                           + from_query,
+                       #'response': 'SELECT group_concat(response SEPARATOR ", " ) ' + from_query,
                    },
                ).exclude(callid='')
+
+        #for i in rows:
+        #    print i
 
         request.session['session_surveycalls'] = rows
 

@@ -188,8 +188,7 @@
                         {% sort_link "Disposition" "-disposition"  %}
                     {% endifequal %}
                 </th>
-                <th>{% trans "Question" %}</th>
-                <th>{% trans "Response" %}</th>
+                <th>{% trans "Survey Result" %}</th>
             </tr>
             </thead>
             {% if rows %}
@@ -214,14 +213,13 @@
                             {% endif %}
                         </td>
                         <td>{{ row.disposition }}</td>
-                        <td>{{ row.question }}</td>
-                        <td>{{ row.response }}</td>
+                        <td>{{ row.question_response }}</td>
                     </tr>
                 {% endfor %}
 
             {% else %}
                 <tr>
-                    <td colspan="10" align="center">
+                    <td colspan="9" align="center">
                         {% trans "no record found"|title %}
                     </td>
                 </tr>

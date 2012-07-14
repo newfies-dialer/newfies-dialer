@@ -18,6 +18,7 @@ from django.conf import settings
 from django import forms
 from django.utils.datastructures import SortedDict
 from django.utils.translation import ugettext as _
+from survey.views import survey_audio_recording
 import operator
 import copy
 
@@ -270,8 +271,9 @@ def que_res_string(val):
         if "*|**|*" in i:
             que_audio = i.split("*|**|*")
             result_string += '<tr><td>' + str(que_audio[0]) \
-                             + '</td><td>' +_('Play Button :') \
-                             + str(que_audio[1]) + '</td></tr>'
+                             + '</td><td>'\
+                             + survey_audio_recording(str(que_audio[1]))\
+                             + '</td></tr>'
         else:
             que_res = i.split("*|*")
             result_string += '<tr><td>' + str(que_res[0])\

@@ -708,7 +708,9 @@ def survey_cdr_daily_report(kwargs):
         {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
     from_query = \
         'FROM survey_surveycampaignresult '\
-        'WHERE survey_surveycampaignresult.callid = dialer_cdr.callid'
+        'WHERE survey_surveycampaignresult.callid = dialer_cdr.callid '
+    group_by_query = 'GROUP BY survey_surveycampaignresult.callid'
+
     # Get Total from VoIPCall table for Daily Call Report
     total_data = VoIPCall.objects.extra(select=select_data)\
         .values('starting_date')\
@@ -718,11 +720,21 @@ def survey_cdr_daily_report(kwargs):
         .order_by('-starting_date')\
         .extra(
             select={
-                'question': 'SELECT question ' + from_query,
-                'response': 'SELECT response ' + from_query,
+                'question_response':\
+                    'SELECT group_concat(CONCAT_WS(" / ' + _("Result")\
+                    + ' : ",question,response) SEPARATOR ", ") '\
+                    + from_query\
+                    + ' and survey_surveycampaignresult.response != "" '\
+                    + group_by_query,
+                'question_record_file':\
+                    'SELECT group_concat(CONCAT_WS(" / '\
+                    + _("Audio: Play Button")\
+                    + ' ",question,record_file) SEPARATOR ", " ) '\
+                    + from_query\
+                    + ' and survey_surveycampaignresult.record_file != "" '\
+                    + group_by_query,
                 },
-        )\
-        .exclude(callid='')
+        ).exclude(callid='')
 
     # Following code will count total voip calls, duration
     if total_data.count() != 0:
@@ -913,22 +925,26 @@ def survey_report(request):
             'FROM survey_surveycampaignresult '\
             'WHERE survey_surveycampaignresult.callid = dialer_cdr.callid '
         group_by_query = 'GROUP BY survey_surveycampaignresult.callid'
+
+        # SELECT group_concat(CONCAT_WS("/Result:",question,response) SEPARATOR ", ")
         rows = VoIPCall.objects.filter(**kwargs).order_by(sort_field)\
                .extra(
                    select={
                        'question_response': \
-                           'SELECT group_concat(CONCAT_WS(" / Result : ",question,response) SEPARATOR ", ") ' \
-                           + from_query + ' and survey_surveycampaignresult.response != "" ' \
+                           'SELECT group_concat(CONCAT_WS(" / ' + _("Result") \
+                           + ' : ",question,response) SEPARATOR ", ") ' \
+                           + from_query \
+                           + ' and survey_surveycampaignresult.response != "" ' \
                            + group_by_query,
                        'question_record_file': \
-                           'SELECT group_concat(CONCAT_WS(" / Audio: Play Button ",question,record_file) SEPARATOR ", " ) ' \
-                           + from_query + ' and survey_surveycampaignresult.record_file != "" ' \
+                           'SELECT group_concat(CONCAT_WS(" / ' \
+                           + _("Audio: Play Button") \
+                           + ' ",question,record_file) SEPARATOR ", " ) ' \
+                           + from_query \
+                           + ' and survey_surveycampaignresult.record_file != "" ' \
                            + group_by_query,
                    },
                ).exclude(callid='')
-
-        #for i in rows:
-        #    print i
 
         request.session['session_surveycalls'] = rows
 

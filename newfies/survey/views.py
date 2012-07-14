@@ -764,6 +764,7 @@ def get_survey_result(campaign_obj):
     survey_result = SurveyCampaignResult.objects\
         .filter(campaign=campaign_obj)\
         .values('question', 'response')\
+        .exclude(Q(response__isnull=True) | Q(response__exact=''))\
         .annotate(Count('response'))\
         .distinct()\
         .order_by('question')

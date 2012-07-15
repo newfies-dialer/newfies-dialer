@@ -2,23 +2,23 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 
 from optparse import make_option
 from django.core.management.base import BaseCommand, CommandError
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
 from dialer_campaign.models import Campaign
-from dialer_cdr.models import VoIPCall
+from dialer_cdr.models import Callrequest, VoIPCall
 from django.db import IntegrityError
 from random import choice
 from uuid import uuid1
@@ -53,10 +53,10 @@ class Command(BaseCommand):
                 try:
                     length=5
                     chars="1234567890"
-                    
-                    #'survey'
+
+                    #'surveyapp' | 'voiceapp'
                     try:
-                        content_type_id = ContentType.objects.get(app_label=str('voice_app')).id
+                        content_type_id = ContentType.objects.get(model='surveyapp').id
                     except:
                         content_type_id = 1
 

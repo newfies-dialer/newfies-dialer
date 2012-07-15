@@ -89,6 +89,36 @@
         this.form.submit();
     });
   });
+
+  // toggle event for forms
+  $(function() {
+
+      {% if search_tag == 1 %}
+          $(".collapse").collapse();
+      {% endif %}
+
+      $(".collapse").on('hide', function () {
+          $('#toggle_btn span').text('{% trans "Search"|title %}');
+          $('#toggle_btn i').toggleClass('icon-search');
+          $('#toggle_btn i').toggleClass('icon-zoom-out');
+      });
+      $(".collapse").on('hidden', function () {
+          $('#toggle_btn span').text('{% trans "Search"|title %}');
+      });
+      $(".collapse").on('show', function () {
+          $('#toggle_btn span').text('{% trans "Hide search" %}');
+          $('#toggle_btn i').toggleClass('icon-search');
+          $('#toggle_btn i').toggleClass('icon-zoom-out');
+      });
+
+      $(".collapse").on('shown', function () {
+          $('#toggle_btn span').text('{% trans "Hide search" %}');
+      });
+
+      {% if search_tag == 0 %}
+          $(".collapse").collapse('hide');
+      {% endif %}
+  });
 </script>
 </head>
 

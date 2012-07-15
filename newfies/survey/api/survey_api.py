@@ -146,10 +146,12 @@ class SurveyAppResource(ModelResource):
 
     """
     user = fields.ForeignKey(UserResource, 'user', full=True)
+
     class Meta:
         queryset = SurveyApp.objects.all()
         resource_name = 'survey'
         authorization = Authorization()
         authentication = BasicAuthentication()
         validation = SurveyAppValidation()
-        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+        # default 1000 calls / hour
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600)

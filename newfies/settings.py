@@ -139,7 +139,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'pagination.middleware.PaginationMiddleware',
+    #'pagination.middleware.PaginationMiddleware',
+    'linaro_django_pagination.middleware.PaginationMiddleware',
     'common.filter_persist_middleware.FilterPersistMiddleware',
     'audiofield.middleware.threadlocals.ThreadLocals',
 )
@@ -199,11 +200,13 @@ INSTALLED_APPS = (
     'common',
     'djcelery',
     'dateutil',
-    'pagination',
+    #'pagination',
+    'linaro_django_pagination',
     'memcache_status',
     'notification',
     'voice_app',
     'survey',
+    'common',
     #'raven.contrib.django',
     'admin_tools_stats',
     'chart_tools',
@@ -292,6 +295,10 @@ else:
 #=========
 SMSDEBUG = False
 """
+
+#No of records per page
+#=======================
+PAGE_SIZE = 10
 
 AUTH_PROFILE_MODULE = "user_profile.UserProfile"
 LOGIN_URL = '/pleaselog/'
@@ -409,6 +416,8 @@ PLIVO_DEFAULT_DIALCALLBACK_URL = 'http://127.0.0.1:8000/api/v1/dialcallback/'
 #TODO add consistancy between answercall api and survey_finestatemachine
 PLIVO_DEFAULT_SURVEY_ANSWER_URL = 'http://127.0.0.1:8000/' \
                                   'survey_finestatemachine/'
+
+FS_RECORDING_PATH = '/usr/share/newfies/usermedia/recording/'
 
 # ADD 'dummy','plivo','twilio'
 NEWFIES_DIALER_ENGINE = 'plivo'

@@ -55,8 +55,10 @@ def callrequest_pending(*args, **kwargs):
     logger.info("TASK :: callrequest_pending")
 
     #TODO: Django 1.4 select_for_update
-    list_callrequest = Callrequest.objects.get_pending_callrequest()[:settings.MAX_CALLS_PER_SECOND]
-    logger.info("callrequest_pending - number_found=%d" % len(list_callrequest))
+    list_callrequest = Callrequest.objects\
+                .get_pending_callrequest()[:settings.MAX_CALLS_PER_SECOND]
+    logger.info("callrequest_pending - number_found=%d" % \
+                len(list_callrequest))
 
     if not list_callrequest:
         logger.debug("No Pending Calls")

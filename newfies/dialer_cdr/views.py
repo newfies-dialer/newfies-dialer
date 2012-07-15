@@ -12,20 +12,20 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-# Create your views here.
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.db.models import *
 from django.template.context import RequestContext
 from django.utils.translation import ugettext_lazy as _
 from django.utils import simplejson
-from dialer_campaign.views import current_view, notice_count, grid_common_function
+from dialer_campaign.views import notice_count, grid_common_function
 from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.forms import VoipSearchForm
 from dialer_cdr.function_def import voipcall_record_common_fun, get_disposition_name
-from dialer_campaign.function_def import variable_value
+from common.common_functions import variable_value, current_view
 from datetime import datetime
 import csv
 import urllib
@@ -56,7 +56,6 @@ def voipcall_report_grid(request):
 
     # Search vars
     kwargs = {}
-    kwargs['user'] = request.user
     from_date = ''
     start_date = ''
     to_date = ''
@@ -119,7 +118,8 @@ def voipcall_report_grid(request):
             kwargs['starting_date__gte'] = datetime(tday.year,
                                                     tday.month,
                                                     tday.day, 0, 0, 0, 0)
-    
+    kwargs['user'] = User.objects.get(username=request.user)
+
     voipcall_list = VoIPCall.objects.filter(**kwargs)
 
     count = voipcall_list.count()
@@ -169,7 +169,7 @@ def voipcall_report(request):
         * ``request.session['voipcall_record_qs']`` - stores voipcall query set
     """
     kwargs = {}
-    kwargs['user'] = request.user
+    kwargs['user'] = User.objects.get(username=request.user)
     from_date = ''
     to_date = ''
     disposition = variable_value(request, 'status')
@@ -190,18 +190,15 @@ def voipcall_report(request):
                                                tday.day, 0, 0, 0, 0)
 
     voipcall_list = \
-    VoIPCall.objects.values('user', 'callid', 'callerid', 'phone_number',
-                     'starting_date', 'duration', 'billsec',
-                     'disposition', 'hangup_cause', 'hangup_cause_q850',
-                     'used_gateway').filter(**kwargs).order_by('-starting_date')
+        VoIPCall.objects.filter(**kwargs).order_by('-starting_date')
 
     # Session variable is used to get record set with searched option
     # into export file
     request.session['voipcall_record_qs'] = voipcall_list
 
     select_data = \
-    {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
-    total_data = ''
+        {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
+
     # Get Total Rrecords from VoIPCall Report table for Daily Call Report
     total_data = VoIPCall.objects.extra(select=select_data)\
                  .values('starting_date')\
@@ -209,17 +206,18 @@ def voipcall_report(request):
                  .annotate(Sum('duration'))\
                  .annotate(Avg('duration'))\
                  .order_by('-starting_date')
-    
+
     # Following code will count total voip calls, duration
     if total_data.count() != 0:
         max_duration = \
-        max([x['duration__sum'] for x in total_data])
+            max([x['duration__sum'] for x in total_data])
         total_duration = \
-        sum([x['duration__sum'] for x in total_data])
-        total_calls = sum([x['starting_date__count'] for x in total_data])
+            sum([x['duration__sum'] for x in total_data])
+        total_calls = \
+            sum([x['starting_date__count'] for x in total_data])
         total_avg_duration = \
-        (sum([x['duration__avg']\
-        for x in total_data])) / total_data.count()
+            (sum([x['duration__avg']\
+                for x in total_data])) / total_data.count()
     else:
         max_duration = 0
         total_duration = 0
@@ -272,16 +270,17 @@ def export_voipcall_report(request):
                      'disposition', 'hangup_cause', 'hangup_cause_q850',
                      'used_gateway'])
     for i in qs:
-        writer.writerow([i['user'],
-                         i['callid'],
-                         i['callerid'],
-                         i['phone_number'],
-                         i['starting_date'],
-                         i['duration'],
-                         i['billsec'],
-                         get_disposition_name(i['disposition']),
-                         i['hangup_cause'],
-                         i['hangup_cause_q850'],
-                         i['used_gateway'],
+        gateway_used = i.used_gateway.name if i.used_gateway else ''
+        writer.writerow([i.user,
+                         i.callid,
+                         i.callerid,
+                         i.phone_number,
+                         i.starting_date,
+                         i.duration,
+                         i.billsec,
+                         get_disposition_name(i.disposition),
+                         i.hangup_cause,
+                         i.hangup_cause_q850,
+                         gateway_used,
                          ])
     return response

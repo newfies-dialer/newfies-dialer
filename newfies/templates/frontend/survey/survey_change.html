@@ -37,8 +37,8 @@
         {
             var id = document.getElementById("id_new_que_form").value;
             question_form(id-1, 0);
-            initial_que_save = initial_que_save + 1;
-            setTimeout("temp_call()", 400);
+            initial_que_save = initial_que_save + 1;	    	
+            setTimeout("temp_call()", 10);
         }
         else
         {   // update record with new form after  initial save
@@ -57,6 +57,7 @@
            data = $('#new_survey_que_form_' + id).serializeObject();
            form_type = 'old_form'
        }
+	
        Dajaxice.survey.survey_question_add_update(Dajax.process, {'id': id, 'data': data, 'form_type': form_type, 'after_initial_save':1, 'record_id': record_id});
    }
 
@@ -66,13 +67,13 @@
        if (form_type==0)
        {
            data = $('#new_survey_que_form_' + id).serializeObject();
-           form_type = 'new_form'
+           form_type = 'new_form';
        }
        else
        {
            //data = $('#my_form').serialize(true);
            data = $('#que_form_' + id).serializeObject();           
-           form_type = 'old_form'
+           form_type = 'old_form';
        }
 
        Dajaxice.survey.survey_question_add_update(Dajax.process, {'id': id, 'data': data, 'form_type': form_type, 'after_initial_save':0, 'record_id': ''});
@@ -227,6 +228,7 @@
 
 		//$( ".column" ).disableSelection();
 	});
+
 </script>
 
 <script type="text/javascript">
@@ -245,24 +247,51 @@ function addFormField() {
     "{% csrf_token %}"+
     '<div class="row">'+
     '<div class="span12">'+
-        '<div class="row">'+
     {% for field in new_survey_que_form.visible_fields %}
         {% if forloop.first %}
             {% for hidden in new_survey_que_form.hidden_fields %}
                 '{{ hidden|escapejs }}'+
             {% endfor %}
+	    '<!--1st row start div-->' +
+	    '<div class="row">' +	
             '<div class="span6">'+
                 '<b>{{ field.label|capfirst }}</b><br/>{{ field|escapejs }}<br/><span class="help-inline">{% trans "If no audio file is selected, then text to speech is used to read out the question" %}</span>'+
             '</div>'+
         {% else %}
-            '<div class="span3">'+
-                '<b>{{ field.label|capfirst }}</b><br/>{{ field|escapejs }}'+
-            '</div>'+
+		{% if field.name == 'audio_message' %}
+		    '<div class="span3">'+
+		        '<b>{{ field.label|capfirst }}</b><br/>{{ field|escapejs }}'+
+		    '</div>'+
+		{% endif %}
         {% endif %}
-        {% if forloop.last %}
-        '<div class="span3"><!--<input value="Save" onclick="question_form('+id+', 0)" type="button">-->'+
-        '<br/><input class="btn-danger" value="{% trans "Delete question" %}" onClick="removeFormField(\'#row' + id + '\'); return false;" type="button"></div>'+
-        {% endif %}
+        
+	{% if field.name == 'audio_message' %}
+		'<div class="span3"><!--<input value="Save" onclick="question_form('+id+', 0)" type="button">-->'+
+		'<br/><input class="btn-danger" value="{% trans "Delete question" %}" onClick="removeFormField(\'#row' + id + '\'); return false;" type="button"></div>'+
+		'</div>' + 
+		'<!--1st row end div-->' +
+	{% endif %}
+        
+	{% if field.name == 'type' %}
+	'<!--2nd row start div-->'+	
+	'<div class="row">' +
+		'<div class="span4 type_'+id+'">' + 
+		'<b>{{ field.label|capfirst }}</b><br/>{{ field|escapejs }}' +                    		                                                
+		'</div>' +		
+	{% endif %}
+	{% if field.name == 'data' %}
+		'<div class="span4">' +
+		'<b>{{ field.label|capfirst }}</b><br/>{{ field|escapejs }}' +                    		                                                
+		'</div>' +
+	{% endif %}
+	{% if field.name == 'gateway' %}
+		'<div class="span4 gateway_'+id+'">' + 
+		'<b id="id_gateway_label">{{ field.label|capfirst }}</b><br/>{{ field|escapejs }}' +                    		                                                
+		'</div>' +
+		'</div>' +
+		'<!--2nd row end div-->' +
+	{% endif %}
+
     {% endfor %}
         '</div>'+
     '</div>'+
@@ -272,6 +301,9 @@ function addFormField() {
     '</div>' +
     '</div><div id="divTxt"></div>');
 
+    // fixed focus to 1st field of the form
+    $("#new_survey_que_form_" + id +  " #id_question").focus();
+
     res_div_count = res_div_count + 1;
     id = (id - 1) + 2;    
     document.getElementById("id").value = id;
@@ -279,6 +311,9 @@ function addFormField() {
     var id_new_que_form  = document.getElementById("id_new_que_form").value  ;
     id_new_que_form = (id_new_que_form - 1) + 2;    
     document.getElementById("id_new_que_form").value = id_new_que_form;
+    
+    // used to toggle gateway filed	
+    $('.type_' + (id-1) + ' #id_type').attr('onChange','toggle_gateway_field(' + (id-1) + ')');	
 }
 
 // To remvoe added question form
@@ -295,10 +330,9 @@ function addResFormField(que_id, is_que_id_set) {
     '<form action="." id="new_response_form_' + id +'" method="post" enctype="multipart/form-data">'+
     "{% csrf_token %}"+
     '<div class="row">'+
-       '<div class="span6">'+
+       '<div class="span9">'+
           '<div class="row">'+
-          {% for field in new_survey_res_form.visible_fields %}
-          '<div class="span2">'+
+          {% for field in new_survey_res_form.visible_fields %}          
             {% if forloop.first %}
               {% for hidden in new_survey_res_form.hidden_fields %}
                 '{{ hidden|escapejs }}'+
@@ -306,12 +340,19 @@ function addResFormField(que_id, is_que_id_set) {
             {% endif %}
               '{{ field.errors.as_ul }}'+
               {% if field.name == 'keyvalue' %}
-                '<b>{% trans "Key Digit" %}</b><br/><input type="text" id="id_keyvalue" class="input-small" name="keyvalue" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
+                '<div class="span2"><b>{% trans "Key Digit" %}</b><br/>'+
+                '<input type="text" id="id_keyvalue" class="input-small" name="keyvalue" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
               {% else %}
                 {% if field.name == 'key' %}
-                    '<b>{% trans "Key Value" %}</b><br/><input type="text" id="id_key" class="input-small" name="key" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
+                    '<div class="span2"><b>{% trans "Key Value" %}</b><br/>'+
+                    '<input type="text" id="id_key" class="input-small" name="key" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
                 {% else %}
-                    '{{ field|escapejs }}'+
+		    {% if field.name == 'goto_surveyquestion' %}
+			'<div class="span3 goto_'+id+'"><b>{% trans "Goto question" %}</b><br/>'+
+            '<select id="id_goto_surveyquestion" name="goto_surveyquestion" onchange="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')" onfocus="call_update_question(\'goto_'+id+'\');"></select>' +
+		    {% else %}		
+                '{{ field|escapejs }}'+
+		    {% endif %} 
                 {% endif %}                              
               {% endif %}
           '</div>'+
@@ -326,17 +367,20 @@ function addResFormField(que_id, is_que_id_set) {
     '</form>'+
     '</div>');
 
+    // fixed focus to 1st field of the form
+    $("#new_response_form_" + id +  " #id_key").focus();
+
     //previous new response form's id & onblur event must be changed to updated the newly entered values
     if(document.getElementById("new_response_id").value != 0 && que_id == 0 && is_que_id_set == 0)
     {
-        $('#new_response_form_' + (id-1) +' input[type="text"]').attr('onBlur', 'response_form('+document.getElementById("new_response_id").value+', '+document.getElementById("id_new_que_form").value+', 1, 1)');
+        $('#new_response_form_' + (id-1) +' input[type="text"]').attr('onblur', 'response_form('+document.getElementById("new_response_id").value+', '+document.getElementById("id_new_que_form").value+', 1, 1)');
         $('#new_response_form_' + (id-1)).attr('id','response_form_'+document.getElementById("new_response_id").value);
     }
 
     //new response (with whom que id is set) form's id & onblur event must be changed to updated the newly entered values
     if(document.getElementById("new_response_id").value != 0 && que_id != 0 && is_que_id_set == 1)
     {
-        $('#new_response_form_' + (id-1) +' input[type="text"]').attr('onBlur', 'response_form('+document.getElementById("new_response_id").value+', '+que_id+', 1, 1)');
+        $('#new_response_form_' + (id-1) +' input[type="text"]').attr('onblur', 'response_form('+document.getElementById("new_response_id").value+', '+que_id+', 1, 1)');
         $('#new_response_form_' + (id-1)).attr('id','response_form_'+document.getElementById("new_response_id").value);
     }
 
@@ -352,6 +396,56 @@ function addResFormField(que_id, is_que_id_set) {
 // To remove added form
 function removeResFormField(id) {
 	$(id).remove();
+}
+
+// function update goto question field
+function call_update_question(class_id) {
+
+    if(document.location.href.search("/survey/") != -1)
+    {
+        pathArray = window.location.pathname.split( '/' );
+        surveyapp_id = pathArray[2];
+
+        $.ajax({
+            url: "/survey/question_list/",
+            type: "GET",
+            async: false,
+            cache: false,
+            timeout: 30000,
+            data: "surveyapp_id=" + surveyapp_id,
+            success: function(data) {
+                var data_array = data.split("-|-");
+                var options = '';
+                options += '<option value="">---</option>';
+                for (var i = 0; i < data_array.length; i+=2) {
+                    options += '<option value=' + data_array[i].toString()  + '>' + data_array[i+1].toString() + '</option>';
+                }
+
+                //$("select#id_goto_surveyquestion").html(options);
+		        $("."+class_id+" #id_goto_surveyquestion").html(options);
+            },
+            error: function() {
+                alert("Request failed");
+            }
+        });
+    }
+
+}
+
+// function update goto question field
+function toggle_gateway_field(que_id) {
+    var type_id = $(".type_"+que_id+" #id_type").val();
+    if(type_id == 2)
+    {
+        $(".gateway_"+que_id+" #id_gateway").show();
+        $(".gateway_"+que_id+" #id_gateway_label").text('{% trans "B-Leg" %}');
+
+    }
+    else
+    {
+        $(".gateway_"+que_id+" #id_gateway").hide();
+        $(".gateway_"+que_id+" #id_gateway_label").text('');
+    }
 }
 </script>
 {% endblock %}
@@ -418,36 +512,63 @@ function removeResFormField(id) {
 
                             {% if key|stringformat:"s" == que.id|stringformat:"s" %}
 
-                            <div class="row">
-                            <div class="span12">
-                                <div class="row">
-                                {% for field in form.visible_fields %}
-                                    {% if forloop.first %}
-                                        {% for hidden in form.hidden_fields %}
-                                            {{ hidden }}
-                                        {% endfor %}
-                                        <div class="span6">
+                            	<div class="row">
+	                            <div class="span12">					
+		                        {% for field in form.visible_fields %}
+		                            {% if forloop.first %}
+		                                {% for hidden in form.hidden_fields %}
+		                                    {{ hidden }}
+		                                {% endfor %}
+						            <!--1st row start div-->
+						            <div class="row">
+		                                <div class="span6">
+		                                    <b>{{ field.label|capfirst }}</b><br/>
+		                                    {{ field }}<br/>
+		                                    <span class="help-inline">{% trans "If no audio file is selected, then text to speech is used to read out the question" %}</span>
+		                                </div>
+		                            {% else %}
+						            {% if field.name == 'audio_message' %}
+		                                <div class="span3">
+		                                    {{ field.hidden_field }}
+		                                    <b>{{ field.label|capfirst }}</b><br/>
+		                                    {{ field }}
+		                                </div>
+						            {% endif %}
+		                            {% endif %}
+
+		                            {% if field.name == 'audio_message' %}
+		                                <div class="span3"><br/>
+		                                    <!--<input value="Save" onclick="question_form({{ que.id }}, 1);" type="button">-->
+		                                    <input value="{% trans "Delete question" %}" class="btn-danger" onclick="question_delete_form({{ que.id }}, 1);removeFormField('#row{{ que.id }}'); return false;" type="button">
+		                                </div>
+						                </div><!--1st row end div-->
+		                            {% endif %}
+				
+                                    {% if field.name == 'type' %}
+                                    <!--2nd row start-->
+                                    <div class="row">
+                                        <div class="span4 type_{{ que.id }}">
                                             <b>{{ field.label|capfirst }}</b><br/>
-                                            {{ field }}<br/>
-                                            <span class="help-inline">{% trans "If no audio file is selected, then text to speech is used to read out the question" %}</span>
+                                               {{ field }}
                                         </div>
-                                    {% else %}
-                                        <div class="span3">
-                                            {{ field.hidden_field }}
+                                    {% endif %}
+                                    {% if field.name == 'data' %}
+                                        <div class="span4">
                                             <b>{{ field.label|capfirst }}</b><br/>
+                                               {{ field }}
+                                        </div>
+                                    {% endif %}
+                                    {% if field.name == 'gateway' %}
+                                        <div class="span4 gateway_{{ que.id }}" style="{% if form.type.value == 1 %}display:block;{% endif %}">
+                                            <b id="id_gateway_label">{{ field.label|capfirst }}</b><br/>
                                             {{ field }}
                                         </div>
+                                    </div>
+                                    <!--2nd row end div-->
                                     {% endif %}
 
-                                    {% if forloop.last %}
-                                        <div class="span3"><br/>
-                                            <!--<input value="Save" onclick="question_form({{ que.id }}, 1);" type="button">-->
-                                            <input value="{% trans "Delete question" %}" class="btn-danger" onclick="question_delete_form({{ que.id }}, 1);removeFormField('#row{{ que.id }}'); return false;" type="button">
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-                                </div>
-                            </div>
+		                        {% endfor %}
+	                           </div>
                             </div>
 
                                 <!--Response forms start-->
@@ -460,10 +581,10 @@ function removeResFormField(id) {
                                     {% if value_set.que_id|stringformat:"s" == que.id|stringformat:"s" %}
                                         <form action="." id="response_form_{{ key }}" method="post" enctype="multipart/form-data">{% csrf_token %}
                                         <div class="row">
-                                            <div class="span6">
+                                            <div class="span9">
                                                 <div class="row">
                                                 {% for field in value_set.form.visible_fields %}
-                                                    <div class="span2">
+
                                                         {# Include the hidden fields in the form #}
                                                         {% if forloop.first %}
                                                           {% for hidden in value_set.form.hidden_fields %}
@@ -473,8 +594,9 @@ function removeResFormField(id) {
                                                           <!--{{ field.errors.as_ul }}-->
                                                         {{ field.hidden_field }}
 
-                                                        {% if forloop.first %}<b>{% trans "Key Digit" %}</b>{% endif %}
-                                                        {% if forloop.last %}<b>{% trans "Key Value" %}</b>{% endif %}
+                                                        {% if forloop.first %}<div class="span2"><b>{% trans "Key Digit" %}</b>{% endif %}
+                                                        {% if forloop.counter == 2 %}<div class="span2"><b>{% trans "Key Value" %}</b>{% endif %}
+                                                        {% if forloop.last %}<div class="span3 goto_{{ key }}"><b>{% trans "Goto question" %}</b>{% endif %}
                                                         <br/>
                                                         {{ field }}
                                                     </div>
@@ -520,5 +642,5 @@ function removeResFormField(id) {
         {% endif %}
     </div>
 </form>
-
 {% endblock %}
+

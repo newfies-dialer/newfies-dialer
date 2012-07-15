@@ -2,12 +2,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -16,6 +16,7 @@ from django.contrib import admin
 from django.contrib.admin.options import IncorrectLookupParameters
 from django.contrib.admin.views.main import ERROR_FLAG
 from django.conf.urls.defaults import patterns
+from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -27,8 +28,7 @@ from dialer_cdr.forms import VoipSearchForm
 from dialer_cdr.function_def import voipcall_record_common_fun, \
                                     voipcall_search_admin_form_fun, \
                                     get_disposition_name
-from dialer_campaign.function_def import variable_value
-
+from common.common_functions import variable_value
 from genericadmin.admin import GenericAdminModelAdmin, GenericTabularInline
 from datetime import datetime
 import csv
@@ -41,7 +41,7 @@ class CallrequestAdmin(GenericAdminModelAdmin):
     fieldsets = (
         (_('Standard options'), {
             'fields': ('user', 'request_uuid',  'call_time', 'campaign',
-                       'status','hangup_cause', 'callerid', 'phone_number',
+                       'status', 'hangup_cause', 'callerid', 'phone_number',
                        'timeout', 'timelimit', 'call_type', 'aleg_gateway',
                        'content_type', 'object_id', ),
         }),
@@ -58,7 +58,7 @@ class CallrequestAdmin(GenericAdminModelAdmin):
     list_display_links = ('id', 'request_uuid', )
     list_filter = ['callerid', 'call_time', 'status', 'call_type', 'campaign']
     ordering = ('id', )
-    search_fields  = ('request_uuid', )
+    search_fields = ('request_uuid', )
 
 admin.site.register(Callrequest, CallrequestAdmin)
 
@@ -80,7 +80,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             url = reverse('admin:auth_staff_change', args=(obj.user_id,))
         else:
             url = reverse('admin:auth_customer_change', args=(obj.user_id,))
-        return '<a href="%s"><b>%s</b></a>' %  (url, obj.user)
+        return '<a href="%s"><b>%s</b></a>' % (url, obj.user)
     user_link.allow_tags = True
     user_link.short_description = _('User')
 
@@ -89,7 +89,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
         if obj.used_gateway:
             url = reverse('admin:dialer_gateway_gateway_change',
                           args=(obj.used_gateway.id,))
-            return '<a href="%s">%s</a>' %  (url, obj.used_gateway)
+            return '<a href="%s">%s</a>' % (url, obj.used_gateway)
     used_gateway_link.allow_tags = True
     used_gateway_link.short_description = _('Gateway used')
 
@@ -136,7 +136,8 @@ class VoIPCallAdmin(admin.ModelAdmin):
         form = VoipSearchForm()
         if request.method == 'POST':
             query_string = voipcall_search_admin_form_fun(request)
-            return HttpResponseRedirect("/admin/"+opts.app_label+"/"+opts.object_name.lower()+"/?"+query_string)
+            return HttpResponseRedirect("/admin/" + opts.app_label + "/" + \
+                opts.object_name.lower() + "/?" + query_string)
         else:
             status = ''
             from_date = ''
@@ -214,7 +215,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
                                                         tday.day, 0, 0, 0, 0)
 
         select_data = \
-        {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
+            {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
 
         total_data = ''
         # Get Total Records from VoIPCall Report table for Daily Call Report
@@ -228,13 +229,14 @@ class VoIPCallAdmin(admin.ModelAdmin):
         # Following code will count total voip calls, duration
         if total_data.count() != 0:
             max_duration = \
-            max([x['duration__sum'] for x in total_data])
+                max([x['duration__sum'] for x in total_data])
             total_duration = \
-            sum([x['duration__sum'] for x in total_data])
-            total_calls = sum([x['starting_date__count'] for x in total_data])
+                sum([x['duration__sum'] for x in total_data])
+            total_calls = \
+                sum([x['starting_date__count'] for x in total_data])
             total_avg_duration = \
-            (sum([x['duration__avg']\
-            for x in total_data])) / total_data.count()
+                (sum([x['duration__avg']\
+                for x in total_data])) / total_data.count()
         else:
             max_duration = 0
             total_duration = 0
@@ -281,6 +283,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
                          'phone_number', 'starting_date', 'duration',
                          'disposition', 'gateway'])
         for i in qs:
+            gateway_used = i.used_gateway.name if i.used_gateway else ''
             writer.writerow([i.user,
                              i.callid,
                              i.callerid,
@@ -288,7 +291,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
                              i.starting_date,
                              i.duration,
                              get_disposition_name(i.disposition),
-                             i.used_gateway,
+                             gateway_used,
                              ])
         return response
 

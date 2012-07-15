@@ -48,10 +48,13 @@ class SurveyResponseValidation(Validation):
         surveyquestion_id = bundle.data.get('surveyquestion')
         if surveyquestion_id:
             try:
-                surveyquestion_id = SurveyQuestion.objects.get(id=surveyquestion_id).id
-                bundle.data['surveyquestion'] = '/api/v1/survey_question/%s/' % surveyquestion_id
+                surveyquestion_id = SurveyQuestion.objects\
+                      .get(id=surveyquestion_id).id
+                bundle.data['surveyquestion'] = \
+                      '/api/v1/survey_question/%s/' % surveyquestion_id
             except:
-                errors['surveyquestion'] = ["The Survey question ID doesn't exist!"]
+                errors['surveyquestion'] = \
+                      ["The Survey question ID doesn't exist!"]
 
         return errors
 
@@ -185,11 +188,14 @@ class SurveyResponseResource(ModelResource):
             Content-Language: en-us
 
     """
-    surveyquestion = fields.ForeignKey(SurveyQuestionResource, 'surveyquestion', full=True)
+    surveyquestion = fields.ForeignKey(SurveyQuestionResource,
+                                'surveyquestion', full=True)
+
     class Meta:
         queryset = SurveyResponse.objects.all()
         resource_name = 'survey_response'
         authorization = Authorization()
         authentication = BasicAuthentication()
         validation = SurveyResponseValidation()
-        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+        # default 1000 calls / hour
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600)

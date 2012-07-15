@@ -14,7 +14,8 @@
 #
 
 from django.contrib import admin
-from survey.models import *
+from survey.models import SurveyApp, SurveyQuestion, \
+                          SurveyResponse, SurveyCampaignResult
 from adminsortable.admin import SortableAdmin, SortableTabularInline
 
 
@@ -31,7 +32,6 @@ class SurveyAppAdmin(SortableAdmin):
     list_display = ('id', 'name', 'created_date')
     list_display_links = ('id', 'name')
 
-
 admin.site.register(SurveyApp, SurveyAppAdmin)
 
 
@@ -44,7 +44,6 @@ class SurveyResponseAdmin(admin.ModelAdmin):
 
     list_display = ('key', 'keyvalue', 'created_date')
     search_fields = ['key', 'keyvalue']
-
 
 admin.site.register(SurveyResponse, SurveyResponseAdmin)
 
@@ -61,11 +60,11 @@ class SurveyQuestionAdmin(SortableAdmin):
     """Allows the administrator to view and modify survey question."""
 
     inlines = [SurveyResponseInline]
-    list_display = ('question', 'created_date')
+    list_display = ('id', 'user', 'surveyapp', 'question', 'audio_message',
+                    'type', 'gateway', 'created_date')
     search_fields = ['question']
     list_display_links = ('question', )
-    list_filter = ['created_date']
-
+    list_filter = ['created_date', 'surveyapp']
 
 admin.site.register(SurveyQuestion, SurveyQuestionAdmin)
 
@@ -74,15 +73,12 @@ class SurveyCampaignResultAdmin(admin.ModelAdmin):
 
     """Allows the administrator to view and modify survey campaign result."""
 
-    list_display = (
-        'campaign',
-        'surveyapp',
-        'callid',
-        'question',
-        'response',
-        'created_date',
-        )
+    list_display = ('id', 'campaign', 'surveyapp', 'callid', 'question',
+                    'response', 'record_file', 'recording_duration',
+                    'created_date')
     search_fields = ['campaign', 'surveyapp', 'question']
-
+    list_filter = ['created_date', 'surveyapp']
+    list_display_links = ('id', 'question', )
+    ordering = ('id', )
 
 admin.site.register(SurveyCampaignResult, SurveyCampaignResultAdmin)

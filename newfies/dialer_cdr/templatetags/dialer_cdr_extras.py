@@ -2,12 +2,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -17,6 +17,8 @@ from django.template.defaultfilters import *
 from django.conf import settings
 from django import forms
 from django.utils.datastructures import SortedDict
+from django.utils.translation import ugettext as _
+from survey.views import survey_audio_recording
 import operator
 import copy
 
@@ -239,6 +241,48 @@ def groupby_columns(seq, n):
     """
     return _regroup_table(seq, columns=int(n))
 
+@register.filter()
+def leg_type_name(value):
+    """Campaign Status"""
+    LEG_TYPE = {1: 'A-leg',
+                2: 'B-leg',
+               }
+    status = LEG_TYPE[value]
+    return str(status)
+
+
+@register.filter()
+def que_res_string(val):
+    """Modify survey result string for display"""
+    if not val:
+        return ''
+
+    val_list = val.split("-|-")
+    result_string = '<table>'
+
+    rec_count = 1
+    for i in val_list:
+
+        if len(val_list) == rec_count:
+            line_end_with = ''
+        else:
+            line_end_with = ', '
+
+        if "*|**|*" in i:
+            que_audio = i.split("*|**|*")
+            result_string += '<tr><td>' + str(que_audio[0]) \
+                             + '</td><td>'\
+                             + survey_audio_recording(str(que_audio[1]))\
+                             + '</td></tr>'
+        else:
+            que_res = i.split("*|*")
+            result_string += '<tr><td>' + str(que_res[0])\
+                             + '</td><td>' + str(que_res[1]) + '</td></tr>'
+        rec_count += 1
+
+    result_string += '</table>'
+    return result_string
+
 
 register.filter('mul', mul)
 register.filter('subtract', subtract)
@@ -256,6 +300,8 @@ register.filter('contact_status', contact_status)
 register.filter('campaign_status', campaign_status)
 register.filter('groupby_rows', groupby_rows)
 register.filter('groupby_columns', groupby_columns)
+register.filter('leg_type_name', leg_type_name)
+register.filter('que_res_string', que_res_string)
 
 get_fieldset = register.tag(get_fieldset)
 

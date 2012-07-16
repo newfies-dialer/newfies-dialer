@@ -2,12 +2,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -73,7 +73,7 @@ class CallRequestManager(models.Manager):
         tday = datetime.now()
         kwargs['call_time__lte'] = datetime(tday.year, tday.month,
             tday.day, tday.hour, tday.minute, tday.second, tday.microsecond)
-        
+
         #return Callrequest.objects.all()
         return Callrequest.objects.filter(**kwargs)
 
@@ -162,7 +162,7 @@ class Callrequest(Model):
     content_type = models.ForeignKey(ContentType, verbose_name=_("Type"))
     object_id = models.PositiveIntegerField(verbose_name=_("Application"))
     content_object = generic.GenericForeignKey('content_type', 'object_id')
-    
+
     extra_data = models.CharField(max_length=120, blank=True,
                 verbose_name=_("Extra Data"),
                 help_text=_("Define the additional data to pass to the application"))
@@ -204,7 +204,7 @@ class VoIPCall(models.Model):
         * ``waitsec`` -
         * ``disposition`` - Disposition of the call
         * ``hangup_cause`` -
-        * ``hangup_cause_q850`` - 
+        * ``hangup_cause_q850`` -
 
     **Relationships**:
 
@@ -216,36 +216,43 @@ class VoIPCall(models.Model):
     """
     user = models.ForeignKey('auth.User', related_name='Call Sender')
     request_uuid = models.CharField(verbose_name=_("RequestUUID"),
-                        default=str_uuid1(),
-                        max_length=120, null=True, blank=True)
+                    default=str_uuid1(),
+                    max_length=120, null=True, blank=True)
     used_gateway = models.ForeignKey(Gateway, null=True, blank=True,
-                                     verbose_name=_("Used gateway"))
+
     callrequest = models.ForeignKey(Callrequest, null=True, blank=True,
-                                    verbose_name=_("Callrequest"))
+                    verbose_name=_("Callrequest"))
     callid = models.CharField(max_length=120, help_text=_("VoIP Call-ID"))
     callerid = models.CharField(max_length=120, verbose_name='CallerID')
     phone_number = models.CharField(max_length=120,  null=True, blank=True,
-                                    verbose_name=_("Phone number"),
+                    verbose_name=_("Phone number"),
         help_text=_(u'The international number of the recipient, without the leading +'))
 
-    dialcode = models.ForeignKey(Prefix, verbose_name=_("Destination"), null=True,
-                               blank=True, help_text=_("Select Prefix"))
-    starting_date = models.DateTimeField(auto_now_add=True, verbose_name=_("Starting date"),
-                                         db_index=True)
-    duration = models.IntegerField(null=True, blank=True, verbose_name=_("Duration"))
-    billsec = models.IntegerField(null=True, blank=True, verbose_name=_("Bill sec"))
-    progresssec = models.IntegerField(null=True, blank=True, verbose_name=_("Progress sec"))
-    answersec = models.IntegerField(null=True, blank=True, verbose_name=_("Answer sec"))
-    waitsec = models.IntegerField(null=True, blank=True, verbose_name=_("Wait sec"))
+    dialcode = models.ForeignKey(Prefix, verbose_name=_("Destination"),
+                    null=True, blank=True,
+                    help_text=_("Select Prefix"))
+    starting_date = models.DateTimeField(auto_now_add=True,
+                    verbose_name=_("Starting date"),
+                    db_index=True)
+    duration = models.IntegerField(null=True, blank=True,
+                    verbose_name=_("Duration"))
+    billsec = models.IntegerField(null=True, blank=True,
+                    verbose_name=_("Bill sec"))
+    progresssec = models.IntegerField(null=True, blank=True,
+                    verbose_name=_("Progress sec"))
+    answersec = models.IntegerField(null=True, blank=True,
+                    verbose_name=_("Answer sec"))
+    waitsec = models.IntegerField(null=True, blank=True,
+                    verbose_name=_("Wait sec"))
     disposition = models.CharField(choices=VOIPCALL_DISPOSITION,
-                                   max_length=40, null=True, blank=True,
-                                   verbose_name=_("Disposition"))
+                   max_length=40, null=True, blank=True,
+                   verbose_name=_("Disposition"))
     hangup_cause = models.CharField(max_length=40, null=True, blank=True,
-                                    verbose_name=_("Hangup cause"))
+                    verbose_name=_("Hangup cause"))
     hangup_cause_q850 = models.CharField(max_length=10, null=True, blank=True)
-    leg_type = models.SmallIntegerField(choices=LEG_TYPE, default=1, 
-                                        verbose_name=_("Leg"),
-                                        null=True, blank=True)
+    leg_type = models.SmallIntegerField(choices=LEG_TYPE, default=1,
+                    verbose_name=_("Leg"),
+                    null=True, blank=True)
 
     def destination_name(self):
         """Return Recipient dialcode"""
@@ -262,7 +269,7 @@ class VoIPCall(models.Model):
         else:
             min = 0
             sec = 0
-        
+
         return "%02d" % min + ":" + "%02d" % sec
 
     class Meta:

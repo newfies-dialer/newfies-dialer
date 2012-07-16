@@ -90,14 +90,15 @@ class Command(BaseCommand):
 
                         for i in range(0, 3):
                             # for survey campaign result
-                            if choice(SURVEY_RESULT_QUE) == \
+                            question = choice(SURVEY_RESULT_QUE)
+                            if question == \
                                'lease record a message to comment on our agent after the beep':
                                 response = ''
                                 record_file = 'xyz.mp3'
                             else:
                                 response = choice("12345678")
                                 record_file = ''
-                            question = choice(SURVEY_RESULT_QUE)
+
 
                             survey_campaign_result = \
                                 SurveyCampaignResult.objects.create(

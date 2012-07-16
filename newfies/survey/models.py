@@ -17,7 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 from tagging.fields import TagField
 from dialer_campaign.models import Campaign
 from dialer_gateway.models import Gateway
-from dialer_cdr import VoIPCall
+from dialer_cdr.models import VoIPCall
 from audiofield.models import AudioFile
 from adminsortable.models import Sortable
 
@@ -229,6 +229,7 @@ class SurveyCampaignResult(models.Model):
     recording_duration = models.IntegerField(max_length=20,
                     blank=True, default=0,
                     null=True, verbose_name=_('Recording Duration'))
+    voipcall = models.ForeignKey(VoIPCall, related_name='VoIPCall')
 
     created_date = models.DateTimeField(auto_now_add=True)
 

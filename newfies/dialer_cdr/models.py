@@ -29,7 +29,7 @@ from datetime import datetime
 CALLREQUEST_STATUS = (
     (1, u'PENDING'),
     (2, u'FAILURE'),
-    (3, u'RETRY'), # spawn for retry
+    (3, u'RETRY'),  # spawn for retry
     (4, u'SUCCESS'),
     (5, u'ABORT'),
     (6, u'PAUSE'),
@@ -77,8 +77,10 @@ class CallRequestManager(models.Manager):
         #return Callrequest.objects.all()
         return Callrequest.objects.filter(**kwargs)
 
+
 def str_uuid1():
     return str(uuid1())
+
 
 class Callrequest(Model):
     """This defines the call request, the dialer will read any new request
@@ -113,7 +115,8 @@ class Callrequest(Model):
 
         * ``object_id`` - Defines the object of content_type application
 
-        * ``content_object`` - Used to define the VoIP App or the Survey with generic ForeignKey
+        * ``content_object`` - Used to define the VoIP App or the Survey with \
+        generic ForeignKey
 
         * ``aleg_gateway`` - Foreign key relationship to the Gateway model.\
         Gateway to use to call the subscriber
@@ -131,7 +134,7 @@ class Callrequest(Model):
                         max_length=120, null=True, blank=True)
     aleg_uuid = models.CharField(max_length=120, help_text=_("A-Leg Call-ID"),
                         db_index=True, null=True, blank=True)
-    call_time = models.DateTimeField(default=(lambda:datetime.now()))
+    call_time = models.DateTimeField(default=(lambda: datetime.now()))
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')
     updated_date = models.DateTimeField(auto_now=True)
     call_type = models.IntegerField(choices=CALLREQUEST_TYPE, default='1',
@@ -142,11 +145,14 @@ class Callrequest(Model):
     callerid = models.CharField(max_length=80, blank=True,
                 verbose_name=_("CallerID"),
                 help_text=_("CallerID used to call the A-Leg"))
-    phone_number = models.CharField(max_length=80, verbose_name=_('Phone number'))
-    timeout = models.IntegerField(blank=True, default=30, verbose_name=_('Time out'))
-    timelimit = models.IntegerField(blank=True, default=3600, verbose_name=_('Time limit'))
+    phone_number = models.CharField(max_length=80,
+                verbose_name=_('Phone number'))
+    timeout = models.IntegerField(blank=True, default=30,
+                verbose_name=_('Time out'))
+    timelimit = models.IntegerField(blank=True, default=3600,
+                verbose_name=_('Time limit'))
     extra_dial_string = models.CharField(max_length=500, blank=True,
-                                         verbose_name=_('Extra dial string'))
+                verbose_name=_('Extra dial string'))
 
     campaign_subscriber = models.ForeignKey(CampaignSubscriber,
                 null=True, blank=True,

@@ -110,7 +110,8 @@ class Callrequest(Model):
         * ``user`` - Foreign key relationship to the User model.\
         Each campaign assigned to a User
 
-        * ``content_type`` - Defines the application (``voip_app`` or ``survey``) \
+        * ``content_type`` - Defines the application \
+        (``voip_app`` or ``survey``) \
         to use when the call is established on the A-Leg
 
         * ``object_id`` - Defines the object of content_type application
@@ -232,7 +233,7 @@ class VoIPCall(models.Model):
     callerid = models.CharField(max_length=120, verbose_name='CallerID')
     phone_number = models.CharField(max_length=120,  null=True, blank=True,
                     verbose_name=_("Phone number"),
-        help_text=_(u'The international number of the recipient, without the leading +'))
+                    help_text=_(u'The international number of the recipient, without the leading +'))
 
     dialcode = models.ForeignKey(Prefix, verbose_name=_("Destination"),
                     null=True, blank=True,

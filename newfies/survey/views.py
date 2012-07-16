@@ -37,7 +37,7 @@ from survey.forms import SurveyForm, \
                         SurveyCustomerAudioFileForm, \
                         SurveyDetailReportForm
 from survey.function_def import get_que_res_string
-from dialer_cdr.models import Callrequest
+from dialer_cdr.models import Callrequest, VoIPCall
 from audiofield.models import AudioFile
 from audiofield.forms import CustomerAudioFileForm
 from dialer_cdr.models import VoIPCall
@@ -138,6 +138,8 @@ def survey_finestatemachine(request):
     list_question = SurveyQuestion.objects\
                         .filter(surveyapp=surveyapp_id).order_by('order')
 
+    obj_voipcall = VoIPCall.objects.get(callid=opt_CallUUID)
+
     if obj_prev_qt and obj_prev_qt.type == 2:
         #Previous Recording
         if testdebug:
@@ -156,7 +158,8 @@ def survey_finestatemachine(request):
                 callid=opt_CallUUID,
                 question=obj_prev_qt,
                 record_file=RecordFile,
-                recording_duration=RecordingDuration)
+                recording_duration=RecordingDuration,
+                voipcall=obj_voipcall)
         new_surveycampaignresult.save()
     #Check if we receive a DTMF for the previous question then store the result
     elif DTMF and len(DTMF) > 0 and current_state > 0:
@@ -189,7 +192,8 @@ def survey_finestatemachine(request):
                     surveyapp_id=surveyapp_id,
                     callid=opt_CallUUID,
                     question=obj_prev_qt,
-                    response=response_value)
+                    response=response_value,
+                    voipcall=obj_voipcall)
             new_surveycampaignresult.save()
 
         except IndexError:
@@ -768,7 +772,7 @@ def get_survey_result(campaign_obj):
         .annotate(Count('record_file'))\
         .distinct()\
         .order_by('question')
-    
+
     return survey_result
 
 
@@ -937,12 +941,12 @@ def survey_report(request):
             'WHERE survey_surveycampaignresult.callid = dialer_cdr.callid '
         group_by_query = 'GROUP BY survey_surveycampaignresult.callid'
 
-        # SELECT group_concat(CONCAT_WS("/Result:",question,response) SEPARATOR ", ")
+        # SELECT group_concat(CONCAT_WS("/Result:", question, response) SEPARATOR ", ")
         rows = VoIPCall.objects.filter(**kwargs)\
         .extra(
             select={
                 'question_response':\
-                    'SELECT group_concat(CONCAT_WS("*|*",question,response,record_file) SEPARATOR "-|-") '\
+                    'SELECT group_concat(CONCAT_WS("*|*", question, response, record_file) SEPARATOR "-|-") '\
                     + from_query\
                     + group_by_query,
                 },

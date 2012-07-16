@@ -17,6 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 from tagging.fields import TagField
 from dialer_campaign.models import Campaign
 from dialer_gateway.models import Gateway
+from dialer_cdr import VoIPCall
 from audiofield.models import AudioFile
 from adminsortable.models import Sortable
 

@@ -31,7 +31,7 @@ VOIPCALL_DISPOSITION = ['ANSWER','BUSY', 'NOANSWER', 'CANCEL', 'CONGESTION',
 
 SURVEY_RESULT_QUE = ['Please rank our support from 1 to 9, 1 being low and 9 being high',
                      'Were you satisfy by the technical expertise of our agent, press 1 for yes press 2 for no and 3 to go back',
-                    #'lease record a message to comment on our agent after the beep'
+                     'lease record a message to comment on our agent after the beep'
                     ]
 
 
@@ -88,15 +88,25 @@ class Command(BaseCommand):
                                             duration=random.randint(1, 100),
                                             disposition=choice(VOIPCALL_DISPOSITION))
 
-                        #for i in range(0, 2):
-                        # for survey campaign result
-                        survey_campaign_result = \
-                            SurveyCampaignResult.objects.create(
-                                                 campaign=obj_campaign,
-                                                 surveyapp_id=1,
-                                                 question=choice(SURVEY_RESULT_QUE),
-                                                 response=choice("12345678"),
-                                                 voipcall=new_cdr)
+                        for i in range(0, 3):
+                            # for survey campaign result
+                            if choice(SURVEY_RESULT_QUE) == \
+                               'lease record a message to comment on our agent after the beep':
+                                response = ''
+                                record_file = 'xyz.mp3'
+                            else:
+                                response = choice("12345678")
+                                record_file = ''
+                            question = choice(SURVEY_RESULT_QUE)
+
+                            survey_campaign_result = \
+                                SurveyCampaignResult.objects.create(
+                                                     campaign=obj_campaign,
+                                                     surveyapp_id=1,
+                                                     question=question,
+                                                     response=response,
+                                                     record_file=record_file,
+                                                     voipcall=new_cdr)
 
 
                     print _("No of Callrequest & CDR created :%(count)s" % {'count': no_of_record})

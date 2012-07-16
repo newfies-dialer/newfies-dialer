@@ -18,11 +18,11 @@ from django.contrib.auth.decorators import login_required
 from dajaxice.decorators import dajaxice_register
 from dajax.core import Dajax
 
-from survey.models import SurveyApp, SurveyQuestion,\
-                          SurveyResponse, SurveyCampaignResult
+from survey.models import SurveyQuestion,\
+                        SurveyResponse
 from survey.forms import SurveyQuestionForm, \
-                         SurveyQuestionNewForm, \
-                         SurveyResponseForm
+                        SurveyQuestionNewForm, \
+                        SurveyResponseForm
 
 
 def audio_msg_type(audio_message):

@@ -12,7 +12,6 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from audiofield.models import AudioFile
 
@@ -45,8 +44,9 @@ def get_que_res_string(val):
 
         if "*|**|*" in i:
             que_audio = i.split("*|**|*")
-            result_string += str(que_audio[0]) +_(' / Audio : Play Button ')\
-                             + str(que_audio[1]) + line_end_with
+            result_string += str(que_audio[0]) \
+                        + _(' / Audio : Play Button ')\
+                        + str(que_audio[1]) + line_end_with
         else:
             que_res = i.split("*|*")
             result_string += str(que_res[0]) + _(' / Result : ')\

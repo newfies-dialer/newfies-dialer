@@ -31,10 +31,8 @@ class SurveyResponseValidation(Validation):
     """
     def is_valid(self, bundle, request=None):
         errors = {}
-
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
-
         key = bundle.data.get('key')
         if key:
             dup_count = SurveyResponse.objects.filter(key=str(key)).count()

@@ -17,7 +17,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from dialer_gateway.models import Gateway
 from dialer_campaign.models import Campaign, CampaignSubscriber
-from voice_app.models import VoiceApp
 from common.intermediate_model_base_class import Model
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic

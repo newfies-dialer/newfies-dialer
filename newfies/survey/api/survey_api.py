@@ -30,10 +30,8 @@ class SurveyAppValidation(Validation):
     """SurveyApp Validation Class"""
     def is_valid(self, bundle, request=None):
         errors = {}
-
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
-
         try:
             user_id = User.objects.get(username=request.user).id
             bundle.data['user'] = '/api/v1/user/%s/' % user_id

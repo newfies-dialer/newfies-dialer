@@ -737,7 +737,7 @@ def survey_cdr_daily_report(kwargs):
         .extra(
             select={
                 'question_response':\
-                    'SELECT group_concat(CONCAT_WS("*|*",question,response, record_file) SEPARATOR "-|-") '\
+                    'SELECT group_concat(CONCAT_WS("*|*", question, response, record_file) SEPARATOR "-|-") '\
                     + from_query\
                     + group_by_query,
                 },
@@ -769,7 +769,8 @@ def survey_cdr_daily_report(kwargs):
 def get_survey_result(campaign_obj):
     """Get survey result report from selected survey campaign"""
     survey_result = SurveyCampaignResult.objects\
-        .filter(campaign=campaign_obj)\
+        .filter(campaign=campaign_obj,
+                voipcall__disposition__exact='ANSWER')\
         .values('question', 'response', 'record_file')\
         .annotate(Count('response'))\
         .annotate(Count('record_file'))\

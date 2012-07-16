@@ -126,12 +126,12 @@
                     {% endifequal %}
                 </th>
                 <th>
-                    {% ifequal col_name_with_order.sort_field 'callerid' %}
-                        {% sort_link "<i class='icon-chevron-up'></i>" "callerid"  %}
+                    {% ifequal col_name_with_order.sort_field 'callid' %}
+                        {% sort_link "<i class='icon-chevron-up'></i>" "callid"  %}
                         {% trans "Call ID" %}
-                        {% sort_link "<i class='icon-chevron-down'></i>" "-callerid"  %}
+                        {% sort_link "<i class='icon-chevron-down'></i>" "-callid"  %}
                     {% else %}
-                        {% sort_link "Call ID" "-callerid"  %}
+                        {% sort_link "Call ID" "-callid"  %}
                     {% endifequal %}
                 </th>
                 <th>
@@ -198,7 +198,7 @@
                 {% for row in rows %}
                     <tr>
                         <td>{{ row.starting_date }}</td>
-                        <td>{{ row.callerid }}</td>
+                        <td>{{ row.callid }}</td>
                         <td>{{ row.leg_type|leg_type_name }}</td>
                         <td>{{ row.phone_number }}</td>
                         <td>

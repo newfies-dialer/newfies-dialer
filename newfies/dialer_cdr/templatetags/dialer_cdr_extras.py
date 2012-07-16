@@ -258,7 +258,7 @@ def que_res_string(val):
         return ''
 
     val_list = val.split("-|-")
-    result_string = '<table>'
+    result_string = '<table class="table table-striped table-bordered table-condensed">'
 
     rec_count = 1
     for i in val_list:

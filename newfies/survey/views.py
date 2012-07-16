@@ -892,6 +892,7 @@ def survey_report(request):
     kwargs = {}
     survey_result_kwargs = {}
     kwargs['user'] = request.user
+    survey_result_kwargs['voipcall__user'] = request.user
     kwargs['disposition__exact'] = 'ANSWER'
 
     if start_date and end_date:

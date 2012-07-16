@@ -809,7 +809,6 @@ def survey_report(request):
                                            'to_date': to_date})
     search_tag = 1
     survey_result = ''
-    disposition = ''
     col_name_with_order = []
     survey_cdr_daily_data = {
         'total_data': '',
@@ -829,7 +828,6 @@ def survey_report(request):
             request.session['session_from_date'] = ''
             request.session['session_to_date'] = ''
             request.session['session_campaign_id'] = ''
-            request.session['session_disposition'] = ''
             request.session['session_surveycalls'] = ''
             request.session['session_survey_result'] = ''
             request.session['session_survey_cdr_daily_data'] = {}
@@ -852,11 +850,6 @@ def survey_report(request):
                                     23, 59, 59, 999999)
                 request.session['session_to_date'] = to_date
 
-            disposition = variable_value(request, 'status')
-            if disposition:
-                if disposition != 'all':
-                    request.session['session_disposition'] = disposition
-
             campaign_id = variable_value(request, 'campaign')
             if campaign_id:
                 request.session['session_campaign_id'] = campaign_id
@@ -869,7 +862,6 @@ def survey_report(request):
             from_date = request.session.get('session_from_date')
             to_date = request.session.get('session_to_date')
             campaign_id = request.session.get('session_campaign_id')
-            disposition = request.session.get('session_disposition')
             search_tag = request.session.get('session_search_tag')
         else:
             from_date
@@ -886,7 +878,6 @@ def survey_report(request):
         request.session['session_from_date'] = from_date
         request.session['session_to_date'] = to_date
         request.session['session_campaign_id'] = ''
-        request.session['session_disposition'] = ''
         request.session['session_surveycalls'] = ''
         request.session['session_survey_result'] = ''
         request.session['session_search_tag'] = search_tag
@@ -902,16 +893,14 @@ def survey_report(request):
 
     kwargs = {}
     kwargs['user'] = request.user
+    kwargs['disposition__exact'] = 'ANSWER'
+
     if start_date and end_date:
         kwargs['starting_date__range'] = (start_date, end_date)
     if start_date and end_date == '':
         kwargs['starting_date__gte'] = start_date
     if start_date == '' and end_date:
         kwargs['starting_date__lte'] = end_date
-
-    if disposition:
-        if disposition != 'all':
-            kwargs['disposition__exact'] = disposition
 
     try:
         campaign_id = int(campaign_id)
@@ -946,14 +935,14 @@ def survey_report(request):
 
         # SELECT group_concat(CONCAT_WS("/Result:", question, response) SEPARATOR ", ")
         rows = VoIPCall.objects.filter(**kwargs).order_by(sort_field)\
-        .extra(
-            select={
-                'question_response':\
-                    'SELECT group_concat(CONCAT_WS("*|*", question, response, record_file) SEPARATOR "-|-") '\
-                    + from_query\
-                    + group_by_query,
-                },
-        )#.exclude(callid='')
+               .extra(
+                   select={
+                       'question_response':\
+                           'SELECT group_concat(CONCAT_WS("*|*", question, response, record_file) SEPARATOR "-|-") '\
+                           + from_query\
+                           + group_by_query,
+                       },
+               )#.exclude(callid='')
         request.session['session_surveycalls'] = rows
 
         # Get daily report from session while using pagination & sorting

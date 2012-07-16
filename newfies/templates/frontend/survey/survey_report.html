@@ -65,20 +65,6 @@
                         </div>
                     </div>
                     <div class="span4">
-                        <label class="control-label" for="id_{{ form.status.name }}">{{ form.status.label }}</label>
-                        <div class="input">
-                            {{ form.status }}
-                            <span class="help-block">{{ form.status.help_text|safe }} </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="span12">
-                <div class="row">
-                    <div class="span4">
                         <label class="control-label" for="id_{{ form.campaign.name }}">{{ form.campaign.label }}</label>
                         <div class="input">
                             {{ form.campaign }}
@@ -88,6 +74,7 @@
                 </div>
             </div>
         </div>
+
         <label></label>
         <div class="actions">
             <input type="submit" class="btn-primary" name="submit" value="{% trans "Submit" %}">

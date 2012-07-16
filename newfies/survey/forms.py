@@ -160,7 +160,7 @@ class SurveyDetailReportForm(VoipSearchForm, SurveyReportForm):
 
     def __init__(self, user, *args, **kwargs):
         super(SurveyDetailReportForm, self).__init__(user, *args, **kwargs)
-        self.fields.keyOrder = ['from_date', 'to_date', 'status', 'campaign']
+        self.fields.keyOrder = ['from_date', 'to_date', 'campaign']
 
 
 class SurveyCustomerAudioFileForm(CustomerAudioFileForm):

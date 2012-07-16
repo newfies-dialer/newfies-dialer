@@ -40,7 +40,6 @@ from survey.function_def import get_que_res_string
 from dialer_cdr.models import Callrequest, VoIPCall
 from audiofield.models import AudioFile
 from audiofield.forms import CustomerAudioFileForm
-from dialer_cdr.models import VoIPCall
 from common.common_functions import variable_value, current_view
 from datetime import datetime
 from dateutil.relativedelta import relativedelta

@@ -138,7 +138,10 @@ def survey_finestatemachine(request):
     list_question = SurveyQuestion.objects\
                         .filter(surveyapp=surveyapp_id).order_by('order')
 
-    obj_voipcall = VoIPCall.objects.get(callid=opt_CallUUID)
+    try:
+        obj_voipcall = VoIPCall.objects.get(callid=opt_CallUUID)
+    except:
+        obj_voipcall = None
 
     if obj_prev_qt and obj_prev_qt.type == 2:
         #Previous Recording

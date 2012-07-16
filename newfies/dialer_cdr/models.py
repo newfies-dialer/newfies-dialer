@@ -226,7 +226,7 @@ class VoIPCall(models.Model):
                     default=str_uuid1(),
                     max_length=120, null=True, blank=True)
     used_gateway = models.ForeignKey(Gateway, null=True, blank=True,
-
+                    verbose_name=_("Used gateway"))
     callrequest = models.ForeignKey(Callrequest, null=True, blank=True,
                     verbose_name=_("Callrequest"))
     callid = models.CharField(max_length=120, help_text=_("VoIP Call-ID"))

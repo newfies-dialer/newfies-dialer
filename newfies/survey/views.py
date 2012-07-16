@@ -137,11 +137,6 @@ def survey_finestatemachine(request):
     list_question = SurveyQuestion.objects\
                         .filter(surveyapp=surveyapp_id).order_by('order')
 
-    try:
-        obj_voipcall = VoIPCall.objects.get(callid=opt_CallUUID)
-    except:
-        obj_voipcall = None
-
     if obj_prev_qt and obj_prev_qt.type == 2:
         #Previous Recording
         if testdebug:
@@ -161,7 +156,7 @@ def survey_finestatemachine(request):
                 question=obj_prev_qt,
                 record_file=RecordFile,
                 recording_duration=RecordingDuration,
-                voipcall=obj_voipcall)
+                callrequest=obj_callrequest)
         new_surveycampaignresult.save()
     #Check if we receive a DTMF for the previous question then store the result
     elif DTMF and len(DTMF) > 0 and current_state > 0:
@@ -195,7 +190,7 @@ def survey_finestatemachine(request):
                     callid=opt_CallUUID,
                     question=obj_prev_qt,
                     response=response_value,
-                    voipcall=obj_voipcall)
+                    callrequest=obj_callrequest)
             new_surveycampaignresult.save()
 
         except IndexError:

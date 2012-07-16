@@ -725,7 +725,6 @@ def survey_cdr_daily_report(kwargs):
     from_query = \
         'FROM survey_surveycampaignresult '\
         'WHERE survey_surveycampaignresult.voipcall_id = dialer_cdr.id '
-    group_by_query = 'GROUP BY survey_surveycampaignresult.voipcall_id '
 
     # Get Total from VoIPCall table for Daily Call Report
     total_data = VoIPCall.objects.extra(select=select_data)\
@@ -738,8 +737,7 @@ def survey_cdr_daily_report(kwargs):
             select={
                 'question_response':\
                     'SELECT group_concat(CONCAT_WS("*|*", question, response, record_file) SEPARATOR "-|-") '\
-                    + from_query\
-                    + group_by_query,
+                    + from_query,
                 },
         )#.exclude(callid='')
 
@@ -766,11 +764,10 @@ def survey_cdr_daily_report(kwargs):
     return survey_cdr_daily_data
 
 
-def get_survey_result(campaign_obj):
+def get_survey_result(survey_result_kwargs):
     """Get survey result report from selected survey campaign"""
     survey_result = SurveyCampaignResult.objects\
-        .filter(campaign=campaign_obj,
-                voipcall__disposition__exact='ANSWER')\
+        .filter(**survey_result_kwargs)\
         .values('question', 'response', 'record_file')\
         .annotate(Count('response'))\
         .annotate(Count('record_file'))\
@@ -893,26 +890,32 @@ def survey_report(request):
                         23, 59, 59, 999999)
 
     kwargs = {}
+    survey_result_kwargs = {}
     kwargs['user'] = request.user
     kwargs['disposition__exact'] = 'ANSWER'
 
     if start_date and end_date:
         kwargs['starting_date__range'] = (start_date, end_date)
+        survey_result_kwargs['created_date__range'] = (start_date, end_date)
     if start_date and end_date == '':
         kwargs['starting_date__gte'] = start_date
+        survey_result_kwargs['created_date__gte'] = start_date
     if start_date == '' and end_date:
         kwargs['starting_date__lte'] = end_date
+        survey_result_kwargs['created_date__lte'] = end_date
 
     try:
         campaign_id = int(campaign_id)
         campaign_obj = Campaign.objects.get(id=campaign_id)
+        survey_result_kwargs['campaign'] = campaign_obj
+        survey_result_kwargs['voipcall__disposition__exact'] = 'ANSWER'
 
         # Get survey result report from session
         # while using pagination & sorting
         if request.GET.get('page') or request.GET.get('sort_by'):
             survey_result = request.session['session_survey_result']
         else:
-            survey_result = get_survey_result(campaign_obj)
+            survey_result = get_survey_result(survey_result_kwargs)
             request.session['session_survey_result'] = survey_result
 
         kwargs['callrequest__campaign'] = campaign_obj
@@ -932,7 +935,6 @@ def survey_report(request):
         from_query =\
             'FROM survey_surveycampaignresult '\
             'WHERE survey_surveycampaignresult.voipcall_id = dialer_cdr.id '
-        group_by_query = 'GROUP BY survey_surveycampaignresult.voipcall_id '
 
         # SELECT group_concat(CONCAT_WS("/Result:", question, response) SEPARATOR ", ")
         rows = VoIPCall.objects.filter(**kwargs).order_by(sort_field)\
@@ -940,8 +942,7 @@ def survey_report(request):
                    select={
                        'question_response':\
                            'SELECT group_concat(CONCAT_WS("*|*", question, response, record_file) SEPARATOR "-|-") '\
-                           + from_query\
-                           + group_by_query,
+                           + from_query
                        },
                )#.exclude(callid='')
         request.session['session_surveycalls'] = rows

@@ -724,8 +724,8 @@ def survey_cdr_daily_report(kwargs):
         {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
     from_query = \
         'FROM survey_surveycampaignresult '\
-        'WHERE survey_surveycampaignresult.callid = dialer_cdr.callid '
-    group_by_query = 'GROUP BY survey_surveycampaignresult.callid'
+        'WHERE survey_surveycampaignresult.voipcall_id = dialer_cdr.id '
+    group_by_query = 'GROUP BY survey_surveycampaignresult.voipcall_id '
 
     # Get Total from VoIPCall table for Daily Call Report
     total_data = VoIPCall.objects.extra(select=select_data)\
@@ -741,7 +741,7 @@ def survey_cdr_daily_report(kwargs):
                     + from_query\
                     + group_by_query,
                 },
-        ).exclude(callid='')
+        )#.exclude(callid='')
 
     # Following code will count total voip calls, duration
     if total_data.count() != 0:
@@ -941,11 +941,11 @@ def survey_report(request):
         # List of Survey VoIP call report
         from_query =\
             'FROM survey_surveycampaignresult '\
-            'WHERE survey_surveycampaignresult.callid = dialer_cdr.callid '
-        group_by_query = 'GROUP BY survey_surveycampaignresult.callid'
+            'WHERE survey_surveycampaignresult.voipcall_id = dialer_cdr.id '
+        group_by_query = 'GROUP BY survey_surveycampaignresult.voipcall_id '
 
         # SELECT group_concat(CONCAT_WS("/Result:", question, response) SEPARATOR ", ")
-        rows = VoIPCall.objects.filter(**kwargs)\
+        rows = VoIPCall.objects.filter(**kwargs).order_by(sort_field)\
         .extra(
             select={
                 'question_response':\
@@ -953,7 +953,7 @@ def survey_report(request):
                     + from_query\
                     + group_by_query,
                 },
-        ).exclude(callid='').order_by(sort_field)
+        )#.exclude(callid='')
         request.session['session_surveycalls'] = rows
 
         # Get daily report from session while using pagination & sorting

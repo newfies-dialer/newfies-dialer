@@ -84,19 +84,19 @@ class Command(BaseCommand):
                                             request_uuid=uuid1(),
                                             user=admin_user,
                                             callrequest=new_callrequest,
-                                            callid='123456',
                                             phone_number=phonenumber,
                                             duration=random.randint(1, 100),
                                             disposition=choice(VOIPCALL_DISPOSITION))
 
+                        #for i in range(0, 2):
                         # for survey campaign result
                         survey_campaign_result = \
                             SurveyCampaignResult.objects.create(
                                                  campaign=obj_campaign,
                                                  surveyapp_id=1,
-                                                 callid='123456',
                                                  question=choice(SURVEY_RESULT_QUE),
-                                                 response=choice("12345678"))
+                                                 response=choice("12345678"),
+                                                 voipcall=new_cdr)
 
 
                     print _("No of Callrequest & CDR created :%(count)s" % {'count': no_of_record})

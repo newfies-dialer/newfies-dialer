@@ -18,8 +18,9 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
 from dialer_campaign.models import Campaign
-from dialer_cdr.models import Callrequest, VoIPCall
 from django.db import IntegrityError
+from dialer_cdr.models import Callrequest, VoIPCall
+from survey.models import SurveyCampaignResult
 from random import choice
 from uuid import uuid1
 import random
@@ -27,6 +28,12 @@ import random
 VOIPCALL_DISPOSITION = ['ANSWER','BUSY', 'NOANSWER', 'CANCEL', 'CONGESTION',
                         'CHANUNAVAIL', 'DONTCALL', 'TORTURE', 'INVALIDARGS',
                         'NOROUTE', 'FORBIDDEN']
+
+SURVEY_RESULT_QUE = ['Please rank our support from 1 to 9, 1 being low and 9 being high',
+                     'Were you satisfy by the technical expertise of our agent, press 1 for yes press 2 for no and 3 to go back',
+                    #'lease record a message to comment on our agent after the beep'
+                    ]
+
 
 class Command(BaseCommand):
     # Use : create_callrequest_cdr '1|1324242' '3|124242'
@@ -77,9 +84,21 @@ class Command(BaseCommand):
                                             request_uuid=uuid1(),
                                             user=admin_user,
                                             callrequest=new_callrequest,
+                                            callid='123456',
                                             phone_number=phonenumber,
                                             duration=random.randint(1, 100),
                                             disposition=choice(VOIPCALL_DISPOSITION))
+
+                        # for survey campaign result
+                        survey_campaign_result = \
+                            SurveyCampaignResult.objects.create(
+                                                 campaign=obj_campaign,
+                                                 surveyapp_id=1,
+                                                 callid='123456',
+                                                 question=choice(SURVEY_RESULT_QUE),
+                                                 response=choice("12345678"))
+
+
                     print _("No of Callrequest & CDR created :%(count)s" % {'count': no_of_record})
                 except IntegrityError:
                     print _("Callrequest & CDR are not created!")

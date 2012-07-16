@@ -731,7 +731,7 @@ def survey_cdr_daily_report(kwargs):
             select={
                 'question_response':\
                     'SELECT group_concat(CONCAT_WS("*|*",question,response, record_file) SEPARATOR "-|-") '\
-                    + from_query
+                    + from_query\
                     + group_by_query,
                 },
         ).exclude(callid='')
@@ -938,15 +938,15 @@ def survey_report(request):
         group_by_query = 'GROUP BY survey_surveycampaignresult.callid'
 
         # SELECT group_concat(CONCAT_WS("/Result:",question,response) SEPARATOR ", ")
-        rows = VoIPCall.objects.filter(**kwargs).order_by(sort_field)\
+        rows = VoIPCall.objects.filter(**kwargs)\
         .extra(
             select={
                 'question_response':\
-                    'SELECT group_concat(CONCAT_WS("*|*",question,response, record_file) SEPARATOR "-|-") '\
-                    + from_query
+                    'SELECT group_concat(CONCAT_WS("*|*",question,response,record_file) SEPARATOR "-|-") '\
+                    + from_query\
                     + group_by_query,
                 },
-        ).exclude(callid='')
+        ).exclude(callid='').order_by(sort_field)
         request.session['session_surveycalls'] = rows
 
         # Get daily report from session while using pagination & sorting

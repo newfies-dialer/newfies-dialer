@@ -14,8 +14,6 @@
 
 from django import template
 from django.template.defaultfilters import *
-from django.conf import settings
-from django import forms
 from django.utils.datastructures import SortedDict
 from django.utils.translation import ugettext as _
 from survey.views import survey_audio_recording
@@ -174,8 +172,8 @@ def get_fieldset(parser, token):
     try:
         name, fields, as_, variable_name, from_, form = token.split_contents()
     except ValueError:
-        raise template.TemplateSyntaxError('bad arguments for %r'  %\
-        token.split_contents()[0])
+        raise template.TemplateSyntaxError('bad arguments for %r' %\
+                        token.split_contents()[0])
 
     return FieldSetNode(fields.split(','), variable_name, form)
 
@@ -241,6 +239,7 @@ def groupby_columns(seq, n):
     """
     return _regroup_table(seq, columns=int(n))
 
+
 @register.filter()
 def leg_type_name(value):
     """Campaign Status"""
@@ -260,12 +259,14 @@ def que_res_string(val):
         return ''
 
     val_list = val.split("-|-")
-    result_string = '<table class="table table-striped table-bordered table-condensed">'
+    result_string = '<table class="table table-striped table-bordered '\
+                    'table-condensed">'
 
     rec_count = 1
     for i in val_list:
 
         if len(val_list) == rec_count:
+            #TODO: line_end_with defined but not used ?
             line_end_with = ''
         else:
             line_end_with = ', '
@@ -273,9 +274,10 @@ def que_res_string(val):
         if "*|**|*" in i:
             que_audio = i.split("*|**|*")
             result_string += '<tr><td>' + str(que_audio[0]) \
-                             + '</td><td>&nbsp;'\
-                             + '</td></tr>'
-            #+ survey_audio_recording(str(que_audio[1]))\
+                            + '</td><td>&nbsp;' \
+                            + '</td></tr>'
+                            #+ survey_audio_recording(str(que_audio[1])) \
+
         else:
             que_res = i.split("*|*")
             result_string += '<tr><td>' + str(que_res[0])\

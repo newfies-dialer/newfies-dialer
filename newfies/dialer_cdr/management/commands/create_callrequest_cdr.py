@@ -107,7 +107,7 @@ class Command(BaseCommand):
                                                      question=question,
                                                      response=response,
                                                      record_file=record_file,
-                                                     voipcall=new_cdr)
+                                                     callrequest=new_callrequest)
 
 
                     print _("No of Callrequest & CDR created :%(count)s" % {'count': no_of_record})

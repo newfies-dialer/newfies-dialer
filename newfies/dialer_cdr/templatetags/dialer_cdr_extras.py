@@ -244,6 +244,8 @@ def groupby_columns(seq, n):
 @register.filter()
 def leg_type_name(value):
     """Campaign Status"""
+    if not value:
+        return ''
     LEG_TYPE = {1: 'A-leg',
                 2: 'B-leg',
                }

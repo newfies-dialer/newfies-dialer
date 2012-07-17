@@ -718,7 +718,7 @@ def survey_cdr_daily_report(kwargs):
         {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
     from_query = \
         'FROM survey_surveycampaignresult '\
-        'WHERE survey_surveycampaignresult.voipcall_id = dialer_cdr.id '
+        'WHERE survey_surveycampaignresult.callrequest_id = dialer_callrequest.id '
 
     # Get Total from VoIPCall table for Daily Call Report
     total_data = VoIPCall.objects.extra(select=select_data)\
@@ -884,10 +884,11 @@ def survey_report(request):
                         23, 59, 59, 999999)
 
     kwargs = {}
-    survey_result_kwargs = {}
     kwargs['user'] = request.user
-    survey_result_kwargs['voipcall__user'] = request.user
     kwargs['disposition__exact'] = 'ANSWER'
+
+    survey_result_kwargs = {}
+    survey_result_kwargs['callrequest__user'] = request.user
 
     if start_date and end_date:
         kwargs['starting_date__range'] = (start_date, end_date)
@@ -903,7 +904,7 @@ def survey_report(request):
         campaign_id = int(campaign_id)
         campaign_obj = Campaign.objects.get(id=campaign_id)
         survey_result_kwargs['campaign'] = campaign_obj
-        survey_result_kwargs['voipcall__disposition__exact'] = 'ANSWER'
+        #survey_result_kwargs['callrequest__hangup_cause__exact'] = ''
 
         # Get survey result report from session
         # while using pagination & sorting
@@ -929,7 +930,7 @@ def survey_report(request):
         # List of Survey VoIP call report
         from_query =\
             'FROM survey_surveycampaignresult '\
-            'WHERE survey_surveycampaignresult.voipcall_id = dialer_cdr.id '
+            'WHERE survey_surveycampaignresult.callrequest_id = dialer_callrequest.id '
 
         # SELECT group_concat(CONCAT_WS("/Result:", question, response) SEPARATOR ", ")
         rows = VoIPCall.objects.filter(**kwargs).order_by(sort_field)\

@@ -500,6 +500,72 @@ def survey_change(request, object_id):
            context_instance=RequestContext(request))
 
 
+@login_required
+def survey_question(request, id):
+    try:
+        menu = request.GET.get('menu')
+    except:
+        menu = 'on'
+
+    survey = SurveyApp.objects.get(pk=object_id)
+    survey_que_form = SurveyQuestionNewForm(request.user,
+                                            initial={'surveyapp': survey})
+
+    ctx = {'form': survey_que_form,
+           'menu': menu}
+    return render_to_response(
+        'frontend/survey/survey_question.html', ctx,
+        context_instance=RequestContext(request))
+
+
+@login_required
+def survey_change_simple(request, object_id):
+    """Update/Delete Survey for the logged in user
+
+    **Attributes**:
+
+        * ``object_id`` - Selected survey object
+        * ``form`` - SurveyForm
+        * ``template`` - frontend/survey/change.html
+
+    **Logic Description**:
+
+        * Update/delete selected survey from the survey list
+          via SurveyForm & get redirected to survey list
+    """
+    survey = SurveyApp.objects.get(pk=object_id)
+    survey_que_list = SurveyQuestion.objects\
+        .filter(surveyapp=survey).order_by('order')
+
+    form = SurveyForm(instance=survey)
+
+    if request.method == 'POST':
+        if request.POST.get('delete'):
+            survey_del(request, object_id)
+            return HttpResponseRedirect('/survey/')
+        else:
+            form = SurveyForm(request.POST, request.user, instance=survey)
+            if form.is_valid():
+                form.save()
+                request.session["msg"] = _('"%(name)s" is updated.')\
+                % {'name': request.POST['name']}
+                return HttpResponseRedirect('/survey/')
+
+    template = 'frontend/survey/survey_change_simple.html'
+
+    data = {
+        'survey_obj_id': object_id,
+        'module': current_view(request),
+        'action': 'update',
+        'form': form,
+        'msg': request.session.get('msg'),
+        'notice_count': notice_count(request),
+        }
+    request.session['msg'] = ''
+    return render_to_response(template, data,
+        context_instance=RequestContext(request))
+
+
 def audio_file_player(audio_file):
     """audio player tag for frontend"""
     if audio_file:

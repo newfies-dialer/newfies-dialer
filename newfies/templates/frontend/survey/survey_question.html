@@ -1,0 +1,32 @@
+{% extends "frontend/master.html" %}
+{% load i18n dialer_cdr_extras dajaxice_templatetags %}
+
+{% block extra_files %}
+{% endblock %}
+
+{% block content %}
+    <form class="well" method="POST" action="." enctype="multipart/form-data" id="update_form">{% csrf_token %}
+
+        {% for field in form %}
+            <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                <div class="input">
+                    {{ field }}
+                    {% if field.errors %}
+                        <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                    {% endif %}
+                    <span class="help-block">{{ field.help_text }} </span>
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="actions">
+            {% if action == 'update' %}
+                <input id="update" class="btn-primary" type="submit" value="{% trans "Update" %}" />
+            {% else %}
+                <input id="add" type="submit" class="btn-primary" value="{% trans "Submit" %}" />
+            {% endif %}
+        </div>
+
+    </form>
+{% endblock %}

@@ -157,7 +157,16 @@ def survey_response_add_update(request, id, que_id, data,
             obj = form.save(commit=False)
             obj.surveyquestion = surveyquestion
             obj.save()
+
             dajax.assign('#new_response_id', 'value', obj.id)
+            dajax.assign('#new_response_form_' + str(id), 'id', 'response_form_' + str(obj.id))
+
+            js_function = 'response_form(' + str(obj.id) + ', ' + str(obj.surveyquestion_id) + ', 1, 1);'
+            dajax.assign('#response_form_' + str(obj.id) + '.id_key', 'onBlur', js_function)
+            dajax.assign('#response_form_' + str(obj.id) + '.id_keyvalue', 'onBlur', js_function)
+            dajax.assign('#response_form_' + str(obj.id) + '.id_goto_surveyquestion', 'onChange', js_function)
+
+            #dajax.assign('#response_form_' + str(obj.id) + '.id_delete_response', 'onClick', '') #'response_delete_form(' + str(obj.id) + ', 1);removeResFormField("#response_form_' + str(obj.id) +'"); return false;'
 
         # dajax.alert("(%s - %s) is successfully saved !!" % \
         #        (form.cleaned_data.get('key'),

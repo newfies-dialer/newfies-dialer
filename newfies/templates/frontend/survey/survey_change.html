@@ -358,7 +358,7 @@ function addResFormField(que_id, is_que_id_set) {
           '</div>'+
           {% if forloop.last %}
             '<input type="hidden" id="new_response_id" value="0" /><!--<input value="Save" onclick="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')" type="button">-->'+
-            '<div class="span2"><br/><input value="{% trans "Delete response" %}" class="btn-danger" onClick="removeResFormField(\'#row_res' + id + '\'); return false;" type="button"></div>'+
+            '<div class="span2"><br/><input id="id_delete_response" name="delete_response" value="{% trans "Delete response" %}" class="btn-danger" onClick="removeResFormField(\'#row_res' + id + '\'); return false;" type="button"></div>'+
           {% endif %}
           {% endfor %}
           '</div>'+

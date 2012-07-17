@@ -273,11 +273,9 @@ def que_res_string(val):
 
         if "*|**|*" in i:
             que_audio = i.split("*|**|*")
-            result_string += '<tr><td>' + str(que_audio[0]) \
-                            + '</td><td>&nbsp;' \
+            result_string += '<tr><td colspan="2">' + str(que_audio[0]) \
+                            + survey_audio_recording(str(que_audio[1])) \
                             + '</td></tr>'
-                            #+ survey_audio_recording(str(que_audio[1])) \
-
         else:
             que_res = i.split("*|*")
             result_string += '<tr><td>' + str(que_res[0])\

@@ -774,7 +774,7 @@ def get_survey_result(survey_result_kwargs):
 def survey_audio_recording(audio_file):
     """audio player tag for frontend for survey recording"""
     if audio_file:
-        file_url = settings.FS_RECORDING_PATH + str(audio_file)
+        file_url = settings.MEDIA_URL + 'recording/' + str(audio_file)
         player_string = '<ul class="playlist"><li style="width:auto;">\
             <a href="%s">%s</a></li></ul>' % (file_url,
                                               os.path.basename(file_url))

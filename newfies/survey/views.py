@@ -507,7 +507,7 @@ def survey_question(request, id):
     except:
         menu = 'on'
 
-    survey = SurveyApp.objects.get(pk=object_id)
+    survey = SurveyApp.objects.get(pk=id)
     survey_que_form = SurveyQuestionNewForm(request.user,
                                             initial={'surveyapp': survey})
 

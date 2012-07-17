@@ -44,7 +44,7 @@
         </div>
     {% endfor %}
 
-    <a class="btn" data-toggle="modal" href="#modal-create-{{ survey_obj_id }}" class="ajax-modal-{{ survey_obj_id }}" url='/survey_question/{{ survey_obj_id }}/' data-controls-modal='modal-create-content-{{ survey_obj_id }}'>
+    <a data-toggle="modal" href="#modal-create-{{ survey_obj_id }}" class="ajax-modal-{{ survey_obj_id }}" url='/survey_question/{{ survey_obj_id }}/' data-controls-modal='modal-create-content-{{ survey_obj_id }}'>
         {% trans "Add survey question" %}
     </a>
 
@@ -54,7 +54,7 @@
 
             var url = $(this).attr('url');
             var modal_id = $(this).attr('data-controls-modal');
-            url = url + "/?menu=on";
+            url = url + "?menu=off";
             $("#" + modal_id).load(url);
         })
 
@@ -63,7 +63,7 @@
     <div id="modal-create-{{ survey_obj_id }}" class="modal hide fade" >
         <div class="modal-header">
             <a class="close" data-dismiss="modal" >&times;</a>
-            <h3>{% trans "Call Details" %}</h3>
+            <h3>{% trans "Survey Question" %}</h3>
         </div>
         <div class="modal-body" id="modal-create-content-{{ survey_obj_id }}">
         </div>

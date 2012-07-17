@@ -264,13 +264,6 @@ def que_res_string(val):
 
     rec_count = 1
     for i in val_list:
-
-        if len(val_list) == rec_count:
-            #TODO: line_end_with defined but not used ?
-            line_end_with = ''
-        else:
-            line_end_with = ', '
-
         if "*|**|*" in i:
             que_audio = i.split("*|**|*")
             result_string += '<tr><td colspan="2">' + str(que_audio[0]) \

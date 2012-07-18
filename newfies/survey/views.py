@@ -546,24 +546,28 @@ def survey_question_add(request):
 
 @login_required
 def survey_question_change(request, id):
-    """Update Audio for the logged in user
+    """Update survey question for the logged in user
 
     **Attributes**:
 
-        * ``form`` - SurveyCustomerAudioFileForm
-        * ``template`` - frontend/survey/audio_change.html
+        * ``form`` - SurveyQuestionForm
+        * ``template`` - frontend/survey/survey_question.html
 
     **Logic Description**:
 
-        * Update audio which is belong to the logged in user
-          via the CustomerAudioFileForm & get redirected to the audio list
+        *
     """
-    survey_que = SurveyQuestion.objects.get(pk=id)
+    survey_que = SurveyQuestion.objects.get(pk=int(id))
     form = SurveyQuestionForm(request.user, instance=survey_que)
 
     if request.GET.get('delete'):
         # perform delete
         surveyapp_id = survey_que.surveyapp_id
+        survey_response_list = SurveyResponse.objects\
+                                .filter(surveyquestion=survey_que)
+        for survey_resp in survey_response_list:
+            survey_resp.delete()
+
         survey_que.delete()
         return HttpResponseRedirect('/survey/%s/' % str(surveyapp_id))
 

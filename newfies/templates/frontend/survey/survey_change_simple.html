@@ -122,6 +122,8 @@
                             <a data-toggle="modal" href="#modal-update-edit" class="ajax-modal-edit btn" url='/survey_question/{{ que.id }}/' data-controls-modal='modal-update-content-edit'>
                                 {% trans "Edit" %}
                             </a>
+                            /
+                            <a href="/survey_question/{{ que.id }}/?delete=true" class="btn">{% trans "Delete" %}</a>
                         </div>
                         <div class="portlet-content">
 

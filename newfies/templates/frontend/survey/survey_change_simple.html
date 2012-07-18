@@ -136,7 +136,41 @@
                                             <div class="span2"><b>{% trans "Key" %}</b><br/>{{ res_obj.key }}</div>
                                             <div class="span2"><b>{% trans "Key Value" %}</b><br/>{{ res_obj.keyvalue }}</div>
                                             <div class="span2"><b>{% trans "Goto question" %}</b><br/>{{ res_obj.goto_surveyquestion }}</div>
+                                            <div class="span2"><br/>
+                                                <a data-toggle="modal" href="#survey-response-update-edit-{{ res_obj.id }}" class="survey-response-edit-{{ res_obj.id }} btn" url='/survey_response/{{ res_obj.id }}/' data-controls-modal='survey-response-update-content-edit-{{ res_obj.id }}'>
+                                                    {% trans "Edit" %}
+                                                </a>
+                                                /
+                                                <a href="/survey_response/{{ res_obj.id }}/?delete=true" class="btn">{% trans "Delete" %}</a>
+                                            </div>
+
+                                            <!--update response in modal-->
+                                            <script type="text/javascript" charset="utf-8">
+
+                                                $(".survey-response-edit-{{ res_obj.id }}").live('click', function() {
+
+                                                    var url = $(this).attr('url');
+                                                    var modal_id = $(this).attr('data-controls-modal');
+                                                    $("#" + modal_id).load(url);
+                                                })
+
+                                            </script>
+                                            <!-- updaet survey response modal content-->
+                                            <div id="survey-response-update-edit-{{ res_obj.id }}" class="modal hide fade" >
+                                                <div class="modal-header">
+                                                    <a class="close" data-dismiss="modal" >&times;</a>
+                                                    <!--<h3>{% trans "Survey Response" %}</h3>-->
+                                                </div>
+                                                <div class="modal-body" id="survey-response-update-content-edit-{{ res_obj.id }}">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+                                                </div>
+                                            </div>
+
+
                                         </div>
+
                                         {% endfor %}
                                     {% endifequal %}
                                     </div>
@@ -181,6 +215,7 @@
 
     </p>
 
+
     <!--update question in modal-->
     <script type="text/javascript" charset="utf-8">
 
@@ -188,7 +223,6 @@
 
             var url = $(this).attr('url');
             var modal_id = $(this).attr('data-controls-modal');
-            //url = url + "?surveyapp_id=" + {{ survey_obj_id }};
             $("#" + modal_id).load(url);
         })
 

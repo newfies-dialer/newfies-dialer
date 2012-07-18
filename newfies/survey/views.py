@@ -586,7 +586,6 @@ def survey_question_change(request, id):
         'survey_question_id': id,
         'module': current_view(request),
         'action': 'update',
-        'AUDIO_DEBUG': settings.AUDIO_DEBUG,
         }
     return render_to_response(template, data,
         context_instance=RequestContext(request))
@@ -631,6 +630,48 @@ def survey_response_add(request):
         'action': 'add'
     }
     request.session['err_msg'] = ''
+    return render_to_response(template, data,
+        context_instance=RequestContext(request))
+
+
+@login_required
+def survey_response_change(request, id):
+    """Update survey question for the logged in user
+
+    **Attributes**:
+
+        * ``form`` - SurveyQuestionForm
+        * ``template`` - frontend/survey/survey_question.html
+
+    **Logic Description**:
+
+        *
+    """
+    survey_resp = SurveyResponse.objects.get(pk=int(id))
+    form = SurveyResponseForm(request.user, instance=survey_resp)
+
+    if request.GET.get('delete'):
+        # perform delete
+        surveyapp_id = survey_resp.surveyquestion.surveyapp_id
+        survey_resp.delete()
+        return HttpResponseRedirect('/survey/%s/' % str(surveyapp_id))
+
+    if request.method == 'POST':
+        form = SurveyResponseForm(request.user,
+                                  request.POST,
+                                  instance=survey_resp)
+        if form.is_valid():
+            obj = form.save()
+            return HttpResponseRedirect('/survey/%s/'\
+            % str(obj.surveyquestion.surveyapp_id))
+
+    template = 'frontend/survey/survey_response_change.html'
+    data = {
+        'form': form,
+        'survey_response_id': id,
+        'module': current_view(request),
+        'action': 'update',
+        }
     return render_to_response(template, data,
         context_instance=RequestContext(request))
 

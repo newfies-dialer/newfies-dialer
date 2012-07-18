@@ -3,6 +3,11 @@
 
 {% block extra_files %}
 
+    {% dajaxice_js_import %}
+
+    <script src="{{ STATIC_URL }}newfies/js/jquery.dajax.core.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}newfies/js/jquery.ba-serializeobject.js" type="text/javascript"></script>
+
     <style type="text/css">
             /* style for question box for jquery UI sort*/
         .column { width: 95%; float: left; padding-bottom: 0px; }
@@ -18,36 +23,23 @@
 
     <script type="text/javascript">
 
+        // To sort question
+        function question_sort_order(id, sort_order)
+        {
+            Dajaxice.survey.survey_question_sort(Dajax.process, {'id': id, 'sort_order': sort_order});
+        }
+
         $(function() {
+            //alert('hi');
             $( ".column" ).sortable({
                 update: function(event, ui) {
 
                     // survey question sorting logic
                     var result = $('.column').sortable('toArray');
-                    var id = (document.getElementById("id") ? document.getElementById("id").value : 0) ;
-                    var flag = '0'; // unset
                     j=1; // sort order
-                    for(i=0; i < (result.length)-1; i++) {
-                        if(result[i].split('row')[0]=='') {
-                            for (inner=0; inner < my_new_que.length; inner++) {
-                                if(inner == result[i].split('row')[1]) {
-                                    question_sort_order(my_new_que[result[i].split('row')[1]], j);
-                                    flag = 1; //set
-                                    j++;
-                                }
-                                if(flag==1) {
-                                    break;
-                                }
-                            }
-                            //for existing questions
-                            if(flag==1) {
-                                flag=0; // reset
-                                continue;
-                            } else {
-                                question_sort_order(result[i].split('row')[1], j);
-                                j++;
-                            }
-                        }
+                    for(i=0; i < (result.length); i++) {
+                        question_sort_order(result[i].split('row')[1], j);
+                        j++;
                     }
                 }
             });

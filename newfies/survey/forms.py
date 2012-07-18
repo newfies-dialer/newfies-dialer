@@ -67,24 +67,25 @@ class SurveyQuestionForm(ModelForm):
 
     class Meta:
         model = SurveyQuestion
-        fields = ['question', 'audio_message', 'type',
+        fields = ['question', 'surveyapp', 'audio_message', 'type',
                   'data', 'gateway']
 
     def __init__(self, user, *args, **kwargs):
         super(SurveyQuestionForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
-        self.fields['question'].widget.attrs['class'] = 'span6'
+        self.fields['question'].widget.attrs['class'] = 'span5'
+        self.fields['surveyapp'].widget = forms.HiddenInput()
         # To get user's audio file list
         self.fields['audio_message'].choices = get_audiofile_list(user)
         self.fields['type'].choices = APP_TYPE
         if instance.id:
             js_function = "question_form(" + str(instance.id) + ", 1);"
-            self.fields['question'].widget.attrs['onBlur'] = js_function
-            self.fields['audio_message'].widget.attrs['onChange'] = js_function
-            self.fields['type'].widget.attrs['onChange'] = js_function + \
-                            'toggle_gateway_field("' + str(instance.id) + '")'
-            self.fields['data'].widget.attrs['onBlur'] = js_function
-            self.fields['gateway'].widget.attrs['onChange'] = js_function
+            #self.fields['question'].widget.attrs['onBlur'] = js_function
+            #self.fields['audio_message'].widget.attrs['onChange'] = js_function
+            #self.fields['type'].widget.attrs['onChange'] = js_function + \
+            #                'toggle_gateway_field("' + str(instance.id) + '")'
+            #self.fields['data'].widget.attrs['onBlur'] = js_function
+            #self.fields['gateway'].widget.attrs['onChange'] = js_function
 
 
 class SurveyQuestionNewForm(ModelForm):
@@ -97,7 +98,7 @@ class SurveyQuestionNewForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(SurveyQuestionNewForm, self).__init__(*args, **kwargs)
         self.fields['surveyapp'].widget = forms.HiddenInput()
-        self.fields['question'].widget.attrs['class'] = 'span6'
+        self.fields['question'].widget.attrs['class'] = 'span5'
         self.fields['audio_message'].choices = get_audiofile_list(user)
         self.fields['type'].choices = APP_TYPE
 

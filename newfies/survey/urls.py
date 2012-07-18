@@ -25,6 +25,8 @@ urlpatterns = patterns('survey.views',
     (r'^survey/question_list/$', 'survey_question_list'),
     #(r'^survey/(.+)/$', 'survey_change'),
     (r'^survey/(.+)/$', 'survey_change_simple'),
+
+    (r'^survey_question/add/$', 'survey_question_add'),
     (r'^survey_question/(?P<id>\w+)/$', 'survey_question'),
     (r'^survey_finestatemachine/$', 'survey_finestatemachine'),
 

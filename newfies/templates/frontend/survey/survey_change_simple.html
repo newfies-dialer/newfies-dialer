@@ -43,8 +43,9 @@
             </div>
         </div>
     {% endfor %}
+    <p>&nbsp;</p>
 
-    <a data-toggle="modal" href="#modal-create-{{ survey_obj_id }}" class="ajax-modal-{{ survey_obj_id }}" url='/survey_question/{{ survey_obj_id }}/' data-controls-modal='modal-create-content-{{ survey_obj_id }}'>
+    <a data-toggle="modal" href="#modal-create-{{ survey_obj_id }}" class="ajax-modal-{{ survey_obj_id }} btn" url='/survey_question/{{ survey_obj_id }}/' data-controls-modal='modal-create-content-{{ survey_obj_id }}'>
         {% trans "Add survey question" %}
     </a>
 
@@ -63,7 +64,7 @@
     <div id="modal-create-{{ survey_obj_id }}" class="modal hide fade" >
         <div class="modal-header">
             <a class="close" data-dismiss="modal" >&times;</a>
-            <h3>{% trans "Survey Question" %}</h3>
+            <!--<h3>{% trans "Survey Question" %}</h3>-->
         </div>
         <div class="modal-body" id="modal-create-content-{{ survey_obj_id }}">
         </div>
@@ -71,7 +72,7 @@
             <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
         </div>
     </div>
-
+    <p>&nbsp;</p>
     <div class="actions">
          {% if action == 'update' %}
             <input id="update" class="btn-primary" type="submit" value="{% trans "Update" %}" />

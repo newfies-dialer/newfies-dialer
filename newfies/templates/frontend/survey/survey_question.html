@@ -4,29 +4,83 @@
 {% block extra_files %}
 {% endblock %}
 
+{% block content_header %}
+    <h1>{% if action == 'update' %}
+        {% trans "Update" %}
+    {% else %}
+        {% trans "Add" %}
+    {% endif %} {% trans "Survey Question" %}
+        <small></small>
+    </h1>
+{% endblock %}
+
 {% block content %}
-    <form class="well" method="POST" action="." enctype="multipart/form-data" id="update_form">{% csrf_token %}
 
-        {% for field in form %}
-            <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-                <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
-                <div class="input">
-                    {{ field }}
-                    {% if field.errors %}
-                        <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-                    {% endif %}
-                    <span class="help-block">{{ field.help_text }} </span>
-                </div>
+    {% if err_msg %}
+        <script type="text/javascript" charset="utf-8">
+
+            $(window).load(function(){
+                $('#survey_que_modal').modal('show');
+            });
+
+            var url = '/survey/' + '{{ form.surveyapp.value }}';
+            $(".close").live('click', function() {
+
+                $(location).attr('href',url);
+            });
+
+            var KEYCODE_ESC = 27;
+            $(document).keyup(function(e) {
+                if (e.keyCode == KEYCODE_ESC) { $(location).attr('href',url); }
+            });
+        </script>
+        <!-- modal content-->
+        <div class="modal hide fade" id="survey_que_modal">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal" >&times;</a>
+                <h3>{% trans "Survey Question" %}</h3>
             </div>
-        {% endfor %}
+            <div class="modal-body">
+    {% endif %}
 
-        <div class="actions">
-            {% if action == 'update' %}
-                <input id="update" class="btn-primary" type="submit" value="{% trans "Update" %}" />
-            {% else %}
-                <input id="add" type="submit" class="btn-primary" value="{% trans "Submit" %}" />
-            {% endif %}
+        <form class="well" method="POST" action="/survey_question/add/" enctype="multipart/form-data" id="update_form">{% csrf_token %}
+
+            {% for field in form %}
+                {% ifnotequal field.name 'surveyapp' %}
+                    <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                        <div class="input">
+                            {{ field }}
+                            {% if field.errors %}
+                                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ field.help_text|safe }} </span>
+                        </div>
+                    </div>
+                {% else %}
+                    {{ field }}
+                {% endifnotequal %}
+            {% endfor %}
+
+            <div class="actions">
+                {% if action == 'update' %}
+                    <input id="update" class="btn-primary" type="submit" value="{% trans "Update" %}" />
+                {% else %}
+                    <input id="add" type="submit" class="btn-primary" value="{% trans "Submit" %}" />
+                {% endif %}
+            </div>
+
+        </form>
+
+    {% if err_msg %}
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
+            </div>
         </div>
+    {% endif %}
 
-    </form>
+
+
+
 {% endblock %}

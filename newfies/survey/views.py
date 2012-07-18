@@ -585,7 +585,7 @@ def survey_change_simple(request, object_id):
                     .filter(surveyquestion=survey_que)
         if res_list:
             # survey question response
-            survey_response_list[str(survey_que.id)] = res_list
+            survey_response_list['%s' % survey_que.id] = res_list
     print survey_response_list
 
     form = SurveyForm(instance=survey)

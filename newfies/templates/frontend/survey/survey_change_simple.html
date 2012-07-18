@@ -120,11 +120,19 @@
                     <div id="row{{ que.id }}" class="portlet">
                         <div class="portlet-header">{{ que.question }}</div>
                         <div class="portlet-content">
-                            {% for res_obj in survey_response_list %}
-                                
-                                {% ifequal res_obj que.id %}
-                                    {{ res_obj }}
-                                {% endifequal %}
+
+                            {% for key, res_objs in survey_response_list.items %}
+                                <div class="row">
+                                    <div class="span12">
+                                    {% ifequal key|stringformat:"s" que.id|stringformat:"s" %}
+                                        {% for res_obj in res_objs  %}
+                                        <div class="row">
+                                            <div class="span6">{{ res_obj.key }} - {{ res_obj.keyvalue }}</div>
+                                        </div>
+                                        {% endfor %}
+                                    {% endifequal %}
+                                    </div>
+                                </div>
                             {% endfor %}
                         </div>
                     </div>

@@ -501,24 +501,6 @@ def survey_change(request, object_id):
 
 
 @login_required
-def survey_question(request, id):
-    try:
-        menu = request.GET.get('menu')
-    except:
-        menu = 'on'
-
-    survey = SurveyApp.objects.get(pk=id)
-    survey_que_form = SurveyQuestionForm(request.user,
-                                         initial={'surveyapp': survey})
-
-    ctx = {'form': survey_que_form,
-           'menu': menu}
-    return render_to_response(
-        'frontend/survey/survey_question.html', ctx,
-        context_instance=RequestContext(request))
-
-
-@login_required
 def survey_question_add(request):
     """Add new Survey for the logged in user
 
@@ -532,7 +514,10 @@ def survey_question_add(request):
         * Add a new survey which will belong to the logged in user
           via the SurveyForm & get redirected to the survey list
     """
-    form = SurveyQuestionForm(request.user)
+    surveyapp_id = request.GET.get('surveyapp_id')
+    survey = SurveyApp.objects.get(pk=surveyapp_id)
+
+    form = SurveyQuestionForm(request.user, initial={'surveyapp': survey})
     request.session['err_msg'] = ''
     if request.method == 'POST':
         form = SurveyQuestionForm(request.user, request.POST)
@@ -550,6 +535,7 @@ def survey_question_add(request):
     template = 'frontend/survey/survey_question.html'
     data = {
         'form': form,
+        'surveyapp_id': surveyapp_id,
         'err_msg': request.session.get('err_msg'),
         'action': 'add'
         }
@@ -558,6 +544,48 @@ def survey_question_add(request):
         context_instance=RequestContext(request))
 
 
+@login_required
+def survey_question_change(request, id):
+    """Update Audio for the logged in user
+
+    **Attributes**:
+
+        * ``form`` - SurveyCustomerAudioFileForm
+        * ``template`` - frontend/survey/audio_change.html
+
+    **Logic Description**:
+
+        * Update audio which is belong to the logged in user
+          via the CustomerAudioFileForm & get redirected to the audio list
+    """
+    survey_que = SurveyQuestion.objects.get(pk=id)
+    form = SurveyQuestionForm(request.user, instance=survey_que)
+
+    if request.GET.get('delete'):
+        # perform delete
+        surveyapp_id = survey_que.surveyapp_id
+        survey_que.delete()
+        return HttpResponseRedirect('/survey/%s/' % str(surveyapp_id))
+
+    if request.method == 'POST':
+        form = SurveyQuestionForm(request.user,
+                                  request.POST,
+                                  instance=survey_que)
+        if form.is_valid():
+            obj = form.save()
+            return HttpResponseRedirect('/survey/%s/'  \
+                % str(obj.surveyapp_id))
+
+    template = 'frontend/survey/survey_question.html'
+    data = {
+        'form': form,
+        'survey_question_id': id,
+        'module': current_view(request),
+        'action': 'update',
+        'AUDIO_DEBUG': settings.AUDIO_DEBUG,
+        }
+    return render_to_response(template, data,
+        context_instance=RequestContext(request))
 
 
 @login_required
@@ -586,7 +614,6 @@ def survey_change_simple(request, object_id):
         if res_list:
             # survey question response
             survey_response_list['%s' % survey_que.id] = res_list
-    print survey_response_list
 
     form = SurveyForm(instance=survey)
 

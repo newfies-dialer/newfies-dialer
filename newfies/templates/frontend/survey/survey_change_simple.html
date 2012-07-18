@@ -118,7 +118,11 @@
                 {% if survey_que_list %}
                     {% for que in survey_que_list %}
                     <div id="row{{ que.id }}" class="portlet">
-                        <div class="portlet-header">{{ que.question }}</div>
+                        <div class="portlet-header">{{ que.question }}
+                            <a data-toggle="modal" href="#modal-update-edit" class="ajax-modal-edit btn" url='/survey_question/{{ que.id }}/' data-controls-modal='modal-update-content-edit'>
+                                {% trans "Edit" %}
+                            </a>
+                        </div>
                         <div class="portlet-content">
 
                             {% for key, res_objs in survey_response_list.items %}
@@ -144,28 +148,53 @@
 
     </p>
 
-    <a data-toggle="modal" href="#modal-create-{{ survey_obj_id }}" class="ajax-modal-{{ survey_obj_id }} btn" url='/survey_question/{{ survey_obj_id }}/' data-controls-modal='modal-create-content-{{ survey_obj_id }}'>
+    <!--update question in modal-->
+    <script type="text/javascript" charset="utf-8">
+
+        $(".ajax-modal-edit").live('click', function() {
+
+            var url = $(this).attr('url');
+            var modal_id = $(this).attr('data-controls-modal');
+            //url = url + "?surveyapp_id=" + {{ survey_obj_id }};
+            $("#" + modal_id).load(url);
+        })
+
+    </script>
+    <!-- updaet survey question modal content-->
+    <div id="modal-update-edit" class="modal hide fade" >
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal" >&times;</a>
+            <!--<h3>{% trans "Survey Question" %}</h3>-->
+        </div>
+        <div class="modal-body" id="modal-update-content-edit">
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+        </div>
+    </div>
+
+    <a data-toggle="modal" href="#modal-create-add" class="ajax-modal-add btn" url='/survey_question/add/' data-controls-modal='modal-create-content-add'>
         {% trans "Add survey question" %}
     </a>
 
     <script type="text/javascript" charset="utf-8">
 
-        $(".ajax-modal-{{ survey_obj_id }}").live('click', function() {
+        $(".ajax-modal-add").live('click', function() {
 
             var url = $(this).attr('url');
             var modal_id = $(this).attr('data-controls-modal');
-            url = url + "?menu=off";
+            url = url + "?surveyapp_id=" + {{ survey_obj_id }};
             $("#" + modal_id).load(url);
         })
 
     </script>
     <!-- modal content-->
-    <div id="modal-create-{{ survey_obj_id }}" class="modal hide fade" >
+    <div id="modal-create-add" class="modal hide fade" >
         <div class="modal-header">
             <a class="close" data-dismiss="modal" >&times;</a>
             <!--<h3>{% trans "Survey Question" %}</h3>-->
         </div>
-        <div class="modal-body" id="modal-create-content-{{ survey_obj_id }}">
+        <div class="modal-body" id="modal-create-content-add">
         </div>
         <div class="modal-footer">
             <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>

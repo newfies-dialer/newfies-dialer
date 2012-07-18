@@ -532,7 +532,7 @@ def survey_question_add(request):
             request.session["err_msg"] = _('Question is not added.')
             #surveyapp_id = request.POST['surveyapp']
 
-    template = 'frontend/survey/survey_question.html'
+    template = 'frontend/survey/survey_question_change.html'
     data = {
         'form': form,
         'surveyapp_id': surveyapp_id,
@@ -580,7 +580,7 @@ def survey_question_change(request, id):
             return HttpResponseRedirect('/survey/%s/'  \
                 % str(obj.surveyapp_id))
 
-    template = 'frontend/survey/survey_question.html'
+    template = 'frontend/survey/survey_question_change.html'
     data = {
         'form': form,
         'survey_question_id': id,
@@ -588,6 +588,49 @@ def survey_question_change(request, id):
         'action': 'update',
         'AUDIO_DEBUG': settings.AUDIO_DEBUG,
         }
+    return render_to_response(template, data,
+        context_instance=RequestContext(request))
+
+
+@login_required
+def survey_response_add(request):
+    """Add new Survey for the logged in user
+
+    **Attributes**:
+
+        * ``form`` - SurveyAppForm
+        * ``template`` - frontend/survey/change.html
+
+    **Logic Description**:
+
+        * Add a new survey which will belong to the logged in user
+          via the SurveyForm & get redirected to the survey list
+    """
+    surveyquestion_id = request.GET.get('surveyquestion_id')
+    survey_que = SurveyQuestion.objects.get(pk=int(surveyquestion_id))
+    form = SurveyResponseForm(request.user,
+                              initial={'surveyquestion': survey_que})
+    request.session['err_msg'] = ''
+    if request.method == 'POST':
+        form = SurveyResponseForm(request.user, request.POST)
+        if form.is_valid():
+            obj = form.save()
+            request.session["msg"] = _('"%(key)s" is added.') %\
+                                     {'key': request.POST['key']}
+            return HttpResponseRedirect('/survey/%s/' \
+                % (obj.surveyquestion.surveyapp_id))
+        else:
+            request.session["err_msg"] = _('Response is not added.')
+            #surveyapp_id = request.POST['surveyapp']
+
+    template = 'frontend/survey/survey_response_change.html'
+    data = {
+        'form': form,
+        'surveyquestion_id': surveyquestion_id,
+        'err_msg': request.session.get('err_msg'),
+        'action': 'add'
+    }
+    request.session['err_msg'] = ''
     return render_to_response(template, data,
         context_instance=RequestContext(request))
 

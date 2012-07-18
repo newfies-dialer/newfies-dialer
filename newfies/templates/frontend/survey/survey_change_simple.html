@@ -119,7 +119,7 @@
                     {% for que in survey_que_list %}
                     <div id="row{{ que.id }}" class="portlet">
                         <div class="portlet-header">{{ que.question }}
-                            <a data-toggle="modal" href="#modal-update-edit" class="ajax-modal-edit btn" url='/survey_question/{{ que.id }}/' data-controls-modal='modal-update-content-edit'>
+                            <a data-toggle="modal" href="#survey-question-update-edit" class="survey-question-edit btn" url='/survey_question/{{ que.id }}/' data-controls-modal='survey-question-update-content-edit'>
                                 {% trans "Edit" %}
                             </a>
                             /
@@ -133,13 +133,44 @@
                                     {% ifequal key|stringformat:"s" que.id|stringformat:"s" %}
                                         {% for res_obj in res_objs  %}
                                         <div class="row">
-                                            <div class="span6">{{ res_obj.key }} - {{ res_obj.keyvalue }}</div>
+                                            <div class="span2"><b>{% trans "Key" %}</b><br/>{{ res_obj.key }}</div>
+                                            <div class="span2"><b>{% trans "Key Value" %}</b><br/>{{ res_obj.keyvalue }}</div>
+                                            <div class="span2"><b>{% trans "Goto question" %}</b><br/>{{ res_obj.goto_surveyquestion }}</div>
                                         </div>
                                         {% endfor %}
                                     {% endifequal %}
                                     </div>
                                 </div>
                             {% endfor %}
+
+                            <a data-toggle="modal" href="#survey-question-response-create-add-{{ que.id }}" class="survey-question-response-add-{{ que.id }} btn" url='/survey_response/add/' data-controls-modal='survey-question-response-create-content-add-{{ que.id }}'>
+                                {% trans "Add survey response" %}
+                            </a>
+
+                            <script type="text/javascript" charset="utf-8">
+
+                                $(".survey-question-response-add-{{ que.id }}").live('click', function() {
+
+                                    var url = $(this).attr('url');
+                                    var modal_id = $(this).attr('data-controls-modal');
+                                    url = url + "?surveyquestion_id=" + {{ que.id }};
+                                    $("#" + modal_id).load(url);
+                                })
+
+                            </script>
+                            <!-- modal content-->
+                            <div id="survey-question-response-create-add-{{ que.id }}" class="modal hide fade" >
+                                <div class="modal-header">
+                                    <a class="close" data-dismiss="modal" >&times;</a>
+                                    <!--<h3>{% trans "Survey Response" %}</h3>-->
+                                </div>
+                                <div class="modal-body" id="survey-question-response-create-content-add-{{ que.id }}">
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                     {% endfor %}
@@ -153,7 +184,7 @@
     <!--update question in modal-->
     <script type="text/javascript" charset="utf-8">
 
-        $(".ajax-modal-edit").live('click', function() {
+        $(".survey-question-edit").live('click', function() {
 
             var url = $(this).attr('url');
             var modal_id = $(this).attr('data-controls-modal');
@@ -163,25 +194,27 @@
 
     </script>
     <!-- updaet survey question modal content-->
-    <div id="modal-update-edit" class="modal hide fade" >
+    <div id="survey-question-update-edit" class="modal hide fade" >
         <div class="modal-header">
             <a class="close" data-dismiss="modal" >&times;</a>
             <!--<h3>{% trans "Survey Question" %}</h3>-->
         </div>
-        <div class="modal-body" id="modal-update-content-edit">
+        <div class="modal-body" id="survey-question-update-content-edit">
         </div>
         <div class="modal-footer">
             <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
         </div>
     </div>
 
-    <a data-toggle="modal" href="#modal-create-add" class="ajax-modal-add btn" url='/survey_question/add/' data-controls-modal='modal-create-content-add'>
+
+
+    <a data-toggle="modal" href="#survey-question-create-add" class="survey-question-add btn" url='/survey_question/add/' data-controls-modal='survey-question-create-content-add'>
         {% trans "Add survey question" %}
     </a>
 
     <script type="text/javascript" charset="utf-8">
 
-        $(".ajax-modal-add").live('click', function() {
+        $(".survey-question-add").live('click', function() {
 
             var url = $(this).attr('url');
             var modal_id = $(this).attr('data-controls-modal');
@@ -191,12 +224,12 @@
 
     </script>
     <!-- modal content-->
-    <div id="modal-create-add" class="modal hide fade" >
+    <div id="survey-question-create-add" class="modal hide fade" >
         <div class="modal-header">
             <a class="close" data-dismiss="modal" >&times;</a>
             <!--<h3>{% trans "Survey Question" %}</h3>-->
         </div>
-        <div class="modal-body" id="modal-create-content-add">
+        <div class="modal-body" id="survey-question-create-content-add">
         </div>
         <div class="modal-footer">
             <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
@@ -210,8 +243,6 @@
             <input id="add" type="submit" class="btn-primary" value="{% trans "Submit" %}" />
          {% endif %}
     </div>
-
-
 
 </form>
 

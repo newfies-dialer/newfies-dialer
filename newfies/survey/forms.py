@@ -115,11 +115,12 @@ class SurveyResponseForm(ModelForm):
 
     class Meta:
         model = SurveyResponse
-        fields = ['key', 'keyvalue', 'goto_surveyquestion']
+        fields = ['key', 'keyvalue', 'surveyquestion', 'goto_surveyquestion']
 
     def __init__(self, user, *args, **kwargs):
         super(SurveyResponseForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
+        self.fields['surveyquestion'].widget = forms.HiddenInput()
         self.fields['key'].widget.attrs['class'] = "input-small"
         self.fields['keyvalue'].widget.attrs['class'] = "input-small"
         self.fields['goto_surveyquestion'].choices = get_question_list(user)
@@ -127,13 +128,13 @@ class SurveyResponseForm(ModelForm):
         if instance.id:
             js_function = "response_form(" + str(instance.id) + ", " + \
                             str(instance.surveyquestion_id) + ", 1, 1);"
-            self.fields['key'].widget.attrs['onBlur'] = js_function
-            self.fields['keyvalue'].widget.attrs['onBlur'] = js_function
-            self.fields['goto_surveyquestion'].widget\
-                    .attrs['onChange'] = js_function
-            self.fields['goto_surveyquestion'].widget\
-                .attrs['onfocus'] = \
-                    'call_update_question("goto_' + str(instance.id) + '");'
+            #self.fields['key'].widget.attrs['onBlur'] = js_function
+            #self.fields['keyvalue'].widget.attrs['onBlur'] = js_function
+            #self.fields['goto_surveyquestion'].widget\
+            #        .attrs['onChange'] = js_function
+            #self.fields['goto_surveyquestion'].widget\
+            #    .attrs['onfocus'] = \
+            #        'call_update_question("goto_' + str(instance.id) + '");'
 
 
 class SurveyReportForm(forms.Form):

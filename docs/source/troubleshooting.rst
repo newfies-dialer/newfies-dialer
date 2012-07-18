@@ -44,8 +44,8 @@ All the logs are centralized into one single directory **/var/log/newfies/**
 
 
 **newfies-django-db.log** : This contains all the Database queries performed by the UI
-    
-    
+
+
 **newfies-django.log** : All the logger events from Django
 
 
@@ -63,6 +63,24 @@ The logs files for plivo can be find in this directory : /usr/share/plivo/tmp/
 
 
 
+.. _enable-debug:
+
+Enable the debug
+================
+
+When you get a message "Server Error, You've encountered an error!", you might want
+to enable the debugger to get a full traceback of the error.
+
+To enable the debugger, edit the file /usr/share/newfies-dialer/settings_local.py
+and set those settings as follow::
+
+    DEBUG = True
+    TEMPLATE_DEBUG = DEBUG
+
+Note that you should be able to get the traceback in
+**/var/log/newfies/err-apache-newfies.log**
+
+
 .. _run-quick-test-call:
 
 How to run a quick test call
@@ -78,7 +96,7 @@ If there are no calls queued, this means that the campaign is not properly confi
 You should:
 
     1. Check if the campaign is started that the "Start time", "Finish Time" and server time are correct.
-    
+
     2. Make sure that you configured a Dialer Setting for the user running the campaign, although there will be a warning for this on the Customer UI : http://your-ip:8008/admin/dialer_settings/dialersetting/
 
 If there is an existing Call Request, check the status, and check the Celery log stored in /var/log/newfies
@@ -116,22 +134,22 @@ Start celery with the --events option on, so celery sends events for celerymon t
     $ workon newfies-dialer
     $ cd /usr/share/newfies/
     $ python manage.py celeryd -E
-    
-    
+
+
 Run the monitor server::
 
     $ workon newfies-dialer
     $ cd /usr/share/newfies/
     $ python manage.py celerymon
-    
-    
+
+
 However, in production you probably want to run the monitor in the background, as a daemon::
 
     $ workon newfies-dialer
     $ cd /usr/share/newfies/
     $ python manage.py celerymon --detach
-    
-    
+
+
 For a complete listing of the command line arguments available, with a short description, you can use the help command::
 
     $ workon newfies-dialer
@@ -184,7 +202,7 @@ Entering the Freeswitch CLI shold indicate whether it is running by typing fs_cl
 If the Freeswitch CLI cannot be launched, then the status of freeswitch can be checked with::
 
     $ ps aux | grep freeswitch
-    or 
+    or
     $ /etc/init.d/freeswitch status
 
 
@@ -204,22 +222,22 @@ The step by step checklist below should be used to validate that all components 
 User interface :
 
     * 1. Dialer Gateway matching a configured trunk is set up in the UI
-    
+
     * 2. Dialer Settings configured and attached to the appropriate user
-    
+
     * 3. Phonebook Created with contacts attached to the phonebook
-    
+
     * 4. Configured voice application
-    
+
     * 5. Campaign created, and started, with a phone book attached, and the campaign schedule current
 
 
 Backend :
 
     * 1. Celery Monitor Running
-    
+
     * 2. Plivo Running
-    
+
     * 3. Freeswitch running
 
 

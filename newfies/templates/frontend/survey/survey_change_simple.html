@@ -111,11 +111,11 @@
                     {% for que in survey_que_list %}
                     <div id="row{{ que.id }}" class="portlet">
                         <div class="portlet-header">{{ que.question }}
-                            <a data-toggle="modal" href="#survey-question-update-edit" class="survey-question-edit btn" url='/survey_question/{{ que.id }}/' data-controls-modal='survey-question-update-content-edit'>
+                            <a data-toggle="modal" href="#survey-question-update-edit" class="survey-question-edit btn btn-info" url='/survey_question/{{ que.id }}/' data-controls-modal='survey-question-update-content-edit'>
                                 {% trans "Edit" %}
                             </a>
                             /
-                            <a href="/survey_question/{{ que.id }}/?delete=true" class="btn">{% trans "Delete" %}</a>
+                            <a href="/survey_question/{{ que.id }}/?delete=true" class="btn btn-danger">{% trans "Delete" %}</a>
                         </div>
                         <div class="portlet-content">
 
@@ -129,11 +129,11 @@
                                             <div class="span2"><b>{% trans "Key Value" %}</b><br/>{{ res_obj.keyvalue }}</div>
                                             <div class="span2"><b>{% trans "Goto question" %}</b><br/>{{ res_obj.goto_surveyquestion }}</div>
                                             <div class="span2"><br/>
-                                                <a data-toggle="modal" href="#survey-response-update-edit-{{ res_obj.id }}" class="survey-response-edit-{{ res_obj.id }} btn" url='/survey_response/{{ res_obj.id }}/' data-controls-modal='survey-response-update-content-edit-{{ res_obj.id }}'>
+                                                <a data-toggle="modal" href="#survey-response-update-edit-{{ res_obj.id }}" class="survey-response-edit-{{ res_obj.id }} btn btn-info" url='/survey_response/{{ res_obj.id }}/' data-controls-modal='survey-response-update-content-edit-{{ res_obj.id }}'>
                                                     {% trans "Edit" %}
                                                 </a>
                                                 /
-                                                <a href="/survey_response/{{ res_obj.id }}/?delete=true" class="btn">{% trans "Delete" %}</a>
+                                                <a href="/survey_response/{{ res_obj.id }}/?delete=true" class="btn btn-danger">{% trans "Delete" %}</a>
                                             </div>
 
                                             <!--update response in modal-->
@@ -170,7 +170,7 @@
                             {% endfor %}
 
                             <a data-toggle="modal" href="#survey-question-response-create-add-{{ que.id }}" class="survey-question-response-add-{{ que.id }} btn" url='/survey_response/add/' data-controls-modal='survey-question-response-create-content-add-{{ que.id }}'>
-                                {% trans "Add survey response" %}
+                                {% trans "Add Response" %}
                             </a>
 
                             <script type="text/javascript" charset="utf-8">
@@ -233,9 +233,8 @@
     </div>
 
 
-
-    <a data-toggle="modal" href="#survey-question-create-add" class="survey-question-add btn" url='/survey_question/add/' data-controls-modal='survey-question-create-content-add'>
-        {% trans "Add survey question" %}
+    <a data-toggle="modal" href="#survey-question-create-add" class="survey-question-add btn btn-info" url='/survey_question/add/' data-controls-modal='survey-question-create-content-add'>
+        {% trans "Add Question" %}
     </a>
 
     <script type="text/javascript" charset="utf-8">
@@ -262,12 +261,13 @@
         </div>
     </div>
     <p>&nbsp;</p>
+
     <div class="actions">
-         {% if action == 'update' %}
-            <input id="update" class="btn-primary" type="submit" value="{% trans "Update" %}" />
-         {% else %}
+        {% if action == 'update' %}
+            <div align="right"><input id="update" type="submit" class="btn-primary" onclick="javascript:document.getElementById('update_form').submit();" value="{% trans "Update Survey" %}" /></div>
+        {% else %}
             <input id="add" type="submit" class="btn-primary" value="{% trans "Submit" %}" />
-         {% endif %}
+        {% endif %}
     </div>
 
 </form>

@@ -2,6 +2,73 @@
 {% load i18n dialer_cdr_extras dajaxice_templatetags %}
 
 {% block extra_files %}
+
+    <style type="text/css">
+            /* style for question box for jquery UI sort*/
+        .column { width: 95%; float: left; padding-bottom: 0px; }
+        .portlet { margin: 0 1em 1em 0; }
+        .portlet-header { margin: 0.3em; padding-bottom: 4px; padding-left: 0.2em; }
+        .portlet-header .ui-icon { float: right; }
+        .portlet-content { padding: 0.4em; }
+        .ui-sortable-placeholder { border: 1px dotted black; visibility: visible !important; height: 50px !important; }
+        .ui-sortable-placeholder * { visibility: hidden; }
+            /* change span width for response inputs */
+        .span5 {width: 160px;}
+    </style>
+
+    <script type="text/javascript">
+
+        $(function() {
+            $( ".column" ).sortable({
+                update: function(event, ui) {
+
+                    // survey question sorting logic
+                    var result = $('.column').sortable('toArray');
+                    var id = (document.getElementById("id") ? document.getElementById("id").value : 0) ;
+                    var flag = '0'; // unset
+                    j=1; // sort order
+                    for(i=0; i < (result.length)-1; i++) {
+                        if(result[i].split('row')[0]=='') {
+                            for (inner=0; inner < my_new_que.length; inner++) {
+                                if(inner == result[i].split('row')[1]) {
+                                    question_sort_order(my_new_que[result[i].split('row')[1]], j);
+                                    flag = 1; //set
+                                    j++;
+                                }
+                                if(flag==1) {
+                                    break;
+                                }
+                            }
+                            //for existing questions
+                            if(flag==1) {
+                                flag=0; // reset
+                                continue;
+                            } else {
+                                question_sort_order(result[i].split('row')[1], j);
+                                j++;
+                            }
+                        }
+                    }
+                }
+            });
+
+            $( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+                    .find( ".portlet-header" )
+                    .addClass( "ui-widget-header ui-corner-all" )
+                    .prepend( "<span class='ui-icon ui-icon-minusthick'></span>")
+                    .end()
+                    .find( ".portlet-content" );
+
+            $( ".portlet-header .ui-icon" ).click(function() {
+                $( this ).toggleClass( "ui-icon-minusthick" ).toggleClass( "ui-icon-plusthick" );
+                $( this ).parents( ".portlet:first" ).find( ".portlet-content" ).toggle();
+            });
+
+            //$( ".column" ).disableSelection();
+        });
+
+    </script>
+
 {% endblock %}
 
 {% block content_header %}
@@ -44,6 +111,30 @@
         </div>
     {% endfor %}
     <p>&nbsp;</p>
+    <p>
+        {% if action == 'update' %}
+        <fieldset>
+            <div class="column">
+                {% if survey_que_list %}
+                    {% for que in survey_que_list %}
+                    <div id="row{{ que.id }}" class="portlet">
+                        <div class="portlet-header">{{ que.question }}</div>
+                        <div class="portlet-content">
+                            {% for res_obj in survey_response_list %}
+                                
+                                {% ifequal res_obj que.id %}
+                                    {{ res_obj }}
+                                {% endifequal %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </fieldset>
+        {% endif %}
+
+    </p>
 
     <a data-toggle="modal" href="#modal-create-{{ survey_obj_id }}" class="ajax-modal-{{ survey_obj_id }} btn" url='/survey_question/{{ survey_obj_id }}/' data-controls-modal='modal-create-content-{{ survey_obj_id }}'>
         {% trans "Add survey question" %}

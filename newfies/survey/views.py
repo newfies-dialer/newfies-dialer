@@ -579,6 +579,15 @@ def survey_change_simple(request, object_id):
     survey_que_list = SurveyQuestion.objects\
         .filter(surveyapp=survey).order_by('order')
 
+    survey_response_list = {}
+    for survey_que in survey_que_list:
+        res_list = SurveyResponse.objects\
+                    .filter(surveyquestion=survey_que)
+        if res_list:
+            # survey question response
+            survey_response_list[str(survey_que.id)] = res_list
+    print survey_response_list
+
     form = SurveyForm(instance=survey)
 
     if request.method == 'POST':
@@ -597,6 +606,8 @@ def survey_change_simple(request, object_id):
 
     data = {
         'survey_obj_id': object_id,
+        'survey_que_list': survey_que_list,
+        'survey_response_list': survey_response_list,
         'module': current_view(request),
         'action': 'update',
         'form': form,

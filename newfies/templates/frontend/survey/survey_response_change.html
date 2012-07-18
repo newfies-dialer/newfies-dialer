@@ -23,7 +23,7 @@
                 $('#survey_res_modal').modal('show');
             });
 
-            var url = '/survey/' + '{{ form.surveyquestion.value }}';
+            var url = '/survey/' + '{{ surveyapp_id }}';
             $(".close").live('click', function() {
 
                 $(location).attr('href',url);

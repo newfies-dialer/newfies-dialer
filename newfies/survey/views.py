@@ -597,13 +597,13 @@ def survey_response_add(request):
 
     **Attributes**:
 
-        * ``form`` - SurveyAppForm
-        * ``template`` - frontend/survey/change.html
+        * ``form`` - SurveyResponseForm
+        * ``template`` - frontend/survey/survey_response_change.html
 
     **Logic Description**:
 
-        * Add a new survey which will belong to the logged in user
-          via the SurveyForm & get redirected to the survey list
+        * Add a new survey response which will belong to the logged in user
+          via the SurveyResponseForm & get redirected to the selected survey
     """
     surveyquestion_id = request.GET.get('surveyquestion_id')
     survey_que = SurveyQuestion.objects.get(pk=int(surveyquestion_id))
@@ -616,16 +616,17 @@ def survey_response_add(request):
             obj = form.save()
             request.session["msg"] = _('"%(key)s" is added.') %\
                                      {'key': request.POST['key']}
-            return HttpResponseRedirect('/survey/%s/' \
+            return HttpResponseRedirect('/survey/%s/'\
                 % (obj.surveyquestion.surveyapp_id))
         else:
+            form._errors["key"] = _("duplicate record key !")
             request.session["err_msg"] = _('Response is not added.')
-            #surveyapp_id = request.POST['surveyapp']
 
     template = 'frontend/survey/survey_response_change.html'
     data = {
         'form': form,
         'surveyquestion_id': surveyquestion_id,
+        'surveyapp_id': survey_que.surveyapp_id,
         'err_msg': request.session.get('err_msg'),
         'action': 'add'
     }

@@ -1,0 +1,292 @@
+{% extends "frontend/master.html" %}
+{% load i18n dialer_cdr_extras dajaxice_templatetags %}
+
+{% block extra_files %}
+
+    {% dajaxice_js_import %}
+
+    <script src="{{ STATIC_URL }}newfies/js/jquery.dajax.core.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}newfies/js/jquery.ba-serializeobject.js" type="text/javascript"></script>
+
+    <style type="text/css">
+            /* style for question box for jquery UI sort*/
+        .column { width: 95%; float: left; padding-bottom: 0px; }
+        .portlet { margin: 0 1em 1em 0; }
+        .portlet-header { margin: 0.3em; padding-bottom: 4px; padding-left: 0.2em; }
+        .portlet-header .ui-icon { float: right; }
+        .portlet-content { padding: 0.4em; }
+        .ui-sortable-placeholder { border: 1px dotted black; visibility: visible !important; height: 50px !important; }
+        .ui-sortable-placeholder * { visibility: hidden; }
+            /* change span width for response inputs */
+        .span5 {width: 160px;}
+    </style>
+
+    <script type="text/javascript">
+
+        // To sort question
+        function question_sort_order(id, sort_order)
+        {
+            Dajaxice.survey.survey_question_sort(Dajax.process, {'id': id, 'sort_order': sort_order});
+        }
+
+        $(function() {
+            //alert('hi');
+            $( ".column" ).sortable({
+                update: function(event, ui) {
+
+                    // survey question sorting logic
+                    var result = $('.column').sortable('toArray');
+                    j=1; // sort order
+                    for(i=0; i < (result.length); i++) {
+                        question_sort_order(result[i].split('row')[1], j);
+                        j++;
+                    }
+                }
+            });
+
+            $( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+                    .find( ".portlet-header" )
+                    .addClass( "ui-widget-header ui-corner-all" )
+                    .prepend( "<span class='ui-icon ui-icon-minusthick'></span>")
+                    .end()
+                    .find( ".portlet-content" );
+
+            $( ".portlet-header .ui-icon" ).click(function() {
+                $( this ).toggleClass( "ui-icon-minusthick" ).toggleClass( "ui-icon-plusthick" );
+                $( this ).parents( ".portlet:first" ).find( ".portlet-content" ).toggle();
+            });
+
+            //$( ".column" ).disableSelection();
+        });
+
+    </script>
+
+{% endblock %}
+
+{% block content_header %}
+    <h1>{% if action == 'update' %}
+        {% trans "Update" %}
+    {% else %}
+        {% trans "Add" %}
+    {% endif %} {% trans "Survey" %}
+        <small>{% trans "Survey configuration" %}</small>
+    </h1>
+{% endblock %}
+
+{% block content %}
+
+{% if msg %}
+    <div class="alert alert-success">
+        <strong>{% trans "Alert" %} : </strong>  {{ msg }}
+    </div>
+{% endif %}
+
+{% if error_msg %}
+    <div class="alert alert-error">
+        <strong>{% trans "Alert" %} : </strong>  {{ error_msg }}
+    </div>
+{% endif %}
+
+<form class="well" method="POST" action="." enctype="multipart/form-data" id="update_form">{% csrf_token %}
+
+
+    {% for field in form %}
+        <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+            <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+            <div class="input">
+                {{ field }}
+                {% if field.errors %}
+                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                {% endif %}
+                <span class="help-block">{{ field.help_text }} </span>
+            </div>
+        </div>
+    {% endfor %}
+    <p>&nbsp;</p>
+    <p>
+        {% if action == 'update' %}
+        <fieldset>
+            <div class="column">
+                {% if survey_que_list %}
+                    {% for que in survey_que_list %}
+                    <div id="row{{ que.id }}" class="portlet">
+                        <div class="portlet-header">{{ que.question }}</div>
+                        <div class="portlet-content">
+                            <div class="row">
+                                <div class="span12">
+                                    <div class="row">
+                                        <div class="span2"><b>{% trans "Audio message" %}</b><br/>{{ que.audio_message.name }}</div>
+                                        <div class="span2"><b>{% trans "Action type" %}</b><br/>{{ que.type|action_type_name }}</div>
+                                        <div class="span2"><b>{% trans "Data" %}</b><br/>{% if que.data %}{{ que.data }}{% else %} {% trans "None" %} {% endif %}</div>
+                                        <div class="span3"><b>{% trans "Gateway" %}</b><br/>{% if que.gateway %}{{ que.gateway }}{% else %} {% trans "None" %} {% endif %}</div>
+                                        <div class="span3">
+                                            <button data-toggle="modal" href="#survey-question-update-edit" class="survey-question-edit btn btn-info" url='/survey_question/{{ que.id }}/' data-controls-modal='survey-question-update-content-edit'>
+                                                {% trans "Edit" %}
+                                            </button>
+                                            <input value="{% trans "Delete" %}" onclick="document.location.href='/survey_question/{{ que.id }}/?delete=true';" class="btn btn-danger" type="button" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="span8">
+                                {% for key, res_objs in survey_response_list.items %}
+                                    {% ifequal key|stringformat:"s" que.id|stringformat:"s" %}
+
+                                        <table class="table table-striped table-bordered table-condensed">
+                                            <thead>
+                                            <tr>
+                                                <th><b>{% trans "Key" %}</b></th>
+                                                <th><b>{% trans "Key Value" %}</b></th>
+                                                <th><b>{% trans "Goto question" %}</b></th>
+                                                <th>&nbsp;</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            {% for res_obj in res_objs  %}
+                                                <tr>
+                                                    <td>{{ res_obj.key }}</td>
+                                                    <td>{{ res_obj.keyvalue }}</td>
+                                                    <td>{{ res_obj.goto_surveyquestion }}</td>
+                                                    <td>
+                                                        <a data-toggle="modal" style="{{ update_style }}" title="{% trans "Edit response" %}" href="#survey-response-update-edit-{{ res_obj.id }}" class="survey-response-edit-{{ res_obj.id }} icon" url='/survey_response/{{ res_obj.id }}/' data-controls-modal='survey-response-update-content-edit-{{ res_obj.id }}'>
+                                                            &nbsp;
+                                                        </a>
+                                                        <a style="{{ delete_style }}" href="/survey_response/{{ res_obj.id }}/?delete=true" class="icon" title="{% trans "Delete response" %}">
+                                                            &nbsp;
+                                                        </a>
+
+                                                        <!--update response in modal-->
+                                                        <script type="text/javascript" charset="utf-8">
+
+                                                            $(".survey-response-edit-{{ res_obj.id }}").live('click', function() {
+
+                                                                var url = $(this).attr('url');
+                                                                var modal_id = $(this).attr('data-controls-modal');
+                                                                $("#" + modal_id).load(url);
+                                                            })
+
+                                                        </script>
+                                                        <!-- updaet survey response modal content-->
+                                                        <div id="survey-response-update-edit-{{ res_obj.id }}" class="modal hide fade" >
+                                                            <div class="modal-body" id="survey-response-update-content-edit-{{ res_obj.id }}">
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+
+                                    {% endifequal %}
+                                {% endfor %}
+                                </div>
+                            </div>
+
+                            <button data-toggle="modal" href="#survey-question-response-create-add-{{ que.id }}" class="survey-question-response-add-{{ que.id }} btn" url='/survey_response/add/' data-controls-modal='survey-question-response-create-content-add-{{ que.id }}'>
+                                {% trans "Add Response" %}
+                            </button>
+
+                            <script type="text/javascript" charset="utf-8">
+                                $(".survey-question-response-add-{{ que.id }}").live('click', function() {
+
+                                    var url = $(this).attr('url');
+                                    var modal_id = $(this).attr('data-controls-modal');
+                                    url = url + "?surveyquestion_id=" + {{ que.id }};
+                                    $("#" + modal_id).load(url);
+                                })
+                            </script>
+
+                            <!-- modal content-->
+                            <div id="survey-question-response-create-add-{{ que.id }}" class="modal hide fade" >
+                                <div class="modal-header">
+                                    <a class="close" data-dismiss="modal" >&times;</a>
+                                    <h1>
+                                        {% trans "Add" %} {% trans "Survey Response" %}
+                                        <small></small>
+                                    </h1>
+                                </div>
+                                <div class="modal-body" id="survey-question-response-create-content-add-{{ que.id }}">
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="#" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </fieldset>
+        {% endif %}
+
+    </p>
+
+
+    <!--update question in modal-->
+    <script type="text/javascript" charset="utf-8">
+
+        $(".survey-question-edit").live('click', function() {
+            var url = $(this).attr('url');
+            var modal_id = $(this).attr('data-controls-modal');
+            $("#" + modal_id).load(url);
+        })
+
+    </script>
+    <!-- updaet survey question modal content-->
+    <div id="survey-question-update-edit" class="modal hide fade" >
+
+        <div class="modal-body" id="survey-question-update-content-edit">
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+        </div>
+    </div>
+
+    <button data-toggle="modal" href="#survey-question-create-add" class="survey-question-add btn btn-info" url='/survey_question/add/' data-controls-modal='survey-question-create-content-add'>
+        {% trans "Add Question" %}
+    </button>
+
+    <script type="text/javascript" charset="utf-8">
+
+        $(".survey-question-add").live('click', function() {
+
+            var url = $(this).attr('url');
+            var modal_id = $(this).attr('data-controls-modal');
+            url = url + "?surveyapp_id=" + {{ survey_obj_id }};
+            $("#" + modal_id).load(url);
+        })
+
+    </script>
+    <!-- modal content-->
+    <div id="survey-question-create-add" class="modal hide fade" >
+        <a class="close" data-dismiss="modal" >&times;</a>
+        <h1>
+            {% trans "Add" %} {% trans "Survey Question" %}
+            <small></small>
+        </h1>
+        <div class="modal-body" id="survey-question-create-content-add">
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+        </div>
+    </div>
+    <p>&nbsp;</p>
+
+    <div class="actions">
+        {% if action == 'update' %}
+            <div align="right"><input id="update" type="submit" class="btn-primary" onclick="javascript:document.getElementById('update_form').submit();" value="{% trans "Update Survey" %}" /></div>
+        {% else %}
+            <input id="add" type="submit" class="btn-primary" value="{% trans "Submit" %}" />
+        {% endif %}
+    </div>
+
+</form>
+
+{% endblock %}

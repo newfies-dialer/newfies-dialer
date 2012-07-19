@@ -49,13 +49,14 @@ def get_audiofile_list(user):
     return list_af
 
 
-def get_question_list(user):
+def get_question_list(user, surveyapp_id):
     """Get survey question list for logged in user
     with default none option"""
     list_sq = []
     list_sq.append(('', '---'))
 
-    list = SurveyQuestion.objects.filter(user=user)
+    list = SurveyQuestion.objects.filter(user=user,
+                        surveyapp_id=surveyapp_id)
     for i in list:
         list_sq.append((i.id, i.question))
 
@@ -67,24 +68,21 @@ class SurveyQuestionForm(ModelForm):
 
     class Meta:
         model = SurveyQuestion
-        fields = ['question', 'audio_message', 'type',
+        fields = ['question', 'surveyapp', 'audio_message', 'type',
                   'data', 'gateway']
 
     def __init__(self, user, *args, **kwargs):
         super(SurveyQuestionForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
-        self.fields['question'].widget.attrs['class'] = 'span6'
+        self.fields['question'].widget.attrs['class'] = 'span5'
+        self.fields['surveyapp'].widget = forms.HiddenInput()
         # To get user's audio file list
         self.fields['audio_message'].choices = get_audiofile_list(user)
+        self.fields['audio_message'].widget.attrs['class'] = 'span2'
         self.fields['type'].choices = APP_TYPE
-        if instance.id:
-            js_function = "question_form(" + str(instance.id) + ", 1);"
-            self.fields['question'].widget.attrs['onBlur'] = js_function
-            self.fields['audio_message'].widget.attrs['onChange'] = js_function
-            self.fields['type'].widget.attrs['onChange'] = js_function + \
-                            'toggle_gateway_field("' + str(instance.id) + '")'
-            self.fields['data'].widget.attrs['onBlur'] = js_function
-            self.fields['gateway'].widget.attrs['onChange'] = js_function
+        self.fields['type'].widget.attrs['class'] = 'span2'
+        #self.fields['data'].widget.attrs['class'] = 'span3'
+        self.fields['gateway'].widget.attrs['class'] = 'span2'
 
 
 class SurveyQuestionNewForm(ModelForm):
@@ -97,9 +95,10 @@ class SurveyQuestionNewForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(SurveyQuestionNewForm, self).__init__(*args, **kwargs)
         self.fields['surveyapp'].widget = forms.HiddenInput()
-        self.fields['question'].widget.attrs['class'] = 'span6'
+        self.fields['question'].widget.attrs['class'] = 'span5'
         self.fields['audio_message'].choices = get_audiofile_list(user)
         self.fields['type'].choices = APP_TYPE
+
 
         js_function = "var initial_que_save=1;to_call_question_form();"
         self.fields['question'].widget.attrs['onBlur'] = js_function
@@ -114,25 +113,26 @@ class SurveyResponseForm(ModelForm):
 
     class Meta:
         model = SurveyResponse
-        fields = ['key', 'keyvalue', 'goto_surveyquestion']
+        fields = ['key', 'keyvalue', 'surveyquestion', 'goto_surveyquestion']
 
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, user, surveyapp_id, *args, **kwargs):
         super(SurveyResponseForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
+        self.fields['surveyquestion'].widget = forms.HiddenInput()
         self.fields['key'].widget.attrs['class'] = "input-small"
         self.fields['keyvalue'].widget.attrs['class'] = "input-small"
-        self.fields['goto_surveyquestion'].choices = get_question_list(user)
+        self.fields['goto_surveyquestion'].choices = get_question_list(user, surveyapp_id)
 
         if instance.id:
             js_function = "response_form(" + str(instance.id) + ", " + \
                             str(instance.surveyquestion_id) + ", 1, 1);"
-            self.fields['key'].widget.attrs['onBlur'] = js_function
-            self.fields['keyvalue'].widget.attrs['onBlur'] = js_function
-            self.fields['goto_surveyquestion'].widget\
-                    .attrs['onChange'] = js_function
-            self.fields['goto_surveyquestion'].widget\
-                .attrs['onfocus'] = \
-                    'call_update_question("goto_' + str(instance.id) + '");'
+            #self.fields['key'].widget.attrs['onBlur'] = js_function
+            #self.fields['keyvalue'].widget.attrs['onBlur'] = js_function
+            #self.fields['goto_surveyquestion'].widget\
+            #        .attrs['onChange'] = js_function
+            #self.fields['goto_surveyquestion'].widget\
+            #    .attrs['onfocus'] = \
+            #        'call_update_question("goto_' + str(instance.id) + '");'
 
 
 class SurveyReportForm(forms.Form):

@@ -124,11 +124,14 @@
 
 <body>
 
-{% include "frontend/bootstrap_menu.html" %}
+{% block menu %}
+    {% include "frontend/bootstrap_menu.html" %}
+{% endblock %}
 
+{% block container %}
 <div class="container">
 
-
+    {% block row_fluid %}
         <div class="row-fluid">
         {% if not user.is_authenticated %}
         <div class="span6">
@@ -154,6 +157,7 @@
         </div>
         {% endif %}
         </div>
+    {% endblock %}
 
 
         {% if errorlogin %}
@@ -170,15 +174,17 @@
         {% endif %}
         {% endif %}
 
+    {% block header %}
         <div class="page-header">
             {% block content_header %}
                 <h1>Newfies-Dialer <small>{% trans "Voice Broadcasting solution" %}</small></h1>
             {% endblock %}
         </div>
+    {% endblock %}
 
-        {% block extra_files %}
+    {% block extra_files %}
 
-        {% endblock %}
+    {% endblock %}
 
         {% if user.is_authenticated %}
             {% if dialer_setting_msg %}
@@ -195,14 +201,16 @@
             {% endif %}
         {% endif %}
 
-        {% block content %}
-        <!-- CONTENT BLOCK -->
-        {% endblock %}
+    {% block content %}
+    <!-- CONTENT BLOCK -->
+    {% endblock %}
 
-
-{% include "frontend/footer.html" %}
+    {% block footer %}
+        {% include "frontend/footer.html" %}
+    {% endblock %}
 
 </div><!-- div container -->
+{% endblock %}
 
 </body>
 </html>

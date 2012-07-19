@@ -27,8 +27,8 @@ def field_list(name, user=None):
     return ((l.id, l.name) for l in list)
 
 
-def get_que_res_string(val):
-    """Modify survey result string for display"""
+def export_question_result(val):
+    """Modify survey result string for export"""
     if not val:
         return ''
     val_list = val.split("-|-")
@@ -40,16 +40,16 @@ def get_que_res_string(val):
         if len(val_list) == rec_count:
             line_end_with = ''
         else:
-            line_end_with = ', '
+            line_end_with = '\t'
 
         if "*|**|*" in i:
             que_audio = i.split("*|**|*")
             result_string += str(que_audio[0]) \
-                        + _(' / Audio : Play Button ')\
+                        + '\t' +_('Audio File') + ': ' \
                         + str(que_audio[1]) + line_end_with
         else:
             que_res = i.split("*|*")
-            result_string += str(que_res[0]) + _(' / Result : ')\
+            result_string += str(que_res[0]) + '\t' + _('Key') + ': ' \
                              + str(que_res[1]) + line_end_with
 
         rec_count += 1

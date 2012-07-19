@@ -24,7 +24,6 @@ from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
-from django.db.models import Q
 from dialer_campaign.models import Campaign
 from dialer_campaign.views import notice_count, update_style, \
                         delete_style, grid_common_function
@@ -36,7 +35,7 @@ from survey.forms import SurveyForm, \
                         SurveyResponseForm, \
                         SurveyCustomerAudioFileForm, \
                         SurveyDetailReportForm
-from survey.function_def import get_que_res_string
+from survey.function_def import export_question_result
 from dialer_cdr.models import Callrequest, VoIPCall
 from audiofield.models import AudioFile
 from audiofield.forms import CustomerAudioFileForm
@@ -46,6 +45,11 @@ from dateutil.relativedelta import relativedelta
 import csv
 import os.path
 
+update_style_template = 'text-decoration:none;background-image:url(' +\
+                        settings.STATIC_URL + 'newfies/icons/page_edit.png);'
+delete_style_template = 'text-decoration:none;background-image:url(' +\
+                        settings.STATIC_URL + 'newfies/icons/delete.png);'
+
 
 @csrf_exempt
 def survey_finestatemachine(request):
@@ -54,8 +58,6 @@ def survey_finestatemachine(request):
     **Model**: SurveyQuestion
 
     """
-    initial_state = None
-    default_transition = None
     current_state = None
     next_state = None
     testdebug = False
@@ -240,7 +242,7 @@ def survey_finestatemachine(request):
         html = \
             '<Response>\n' \
             '   <GetDigits action="%s" method="GET" numDigits="1" ' \
-            'retries="1" validDigits="0123456789" timeout="10" ' \
+            'retries="1" validDigits="0123456789" timeout="5" ' \
             'finishOnKey="#">\n' \
             '       %s\n' \
             '   </GetDigits>\n' \
@@ -255,7 +257,7 @@ def survey_finestatemachine(request):
             '<Response>\n' \
             '   %s\n' \
             '   <Record maxLength="120" finishOnKey="*#" action="%s" ' \
-            'method="GET" filePath="%s" timeout="10"/>' \
+            'method="GET" filePath="%s" timeout="5"/>' \
             '</Response>' % (
                 question,
                 settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
@@ -500,6 +502,269 @@ def survey_change(request, object_id):
            context_instance=RequestContext(request))
 
 
+@login_required
+def survey_question_add(request):
+    """Add new Survey for the logged in user
+
+    **Attributes**:
+
+        * ``form`` - SurveyAppForm
+        * ``template`` - frontend/survey/change.html
+
+    **Logic Description**:
+
+        * Add a new survey which will belong to the logged in user
+          via the SurveyForm & get redirected to the survey list
+    """
+    surveyapp_id = request.GET.get('surveyapp_id')
+    survey = SurveyApp.objects.get(pk=surveyapp_id)
+
+    form = SurveyQuestionForm(request.user, initial={'surveyapp': survey})
+    request.session['err_msg'] = ''
+    if request.method == 'POST':
+        form = SurveyQuestionForm(request.user, request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.user = User.objects.get(username=request.user)
+            obj.save()
+            request.session["msg"] = _('"%(question)s" is added.') %\
+                                       {'question': request.POST['question']}
+            return HttpResponseRedirect('/survey/%s/#row%s' \
+                        % (obj.surveyapp_id, obj.id))
+        else:
+            request.session["err_msg"] = _('Question is not added.')
+            #surveyapp_id = request.POST['surveyapp']
+
+    template = 'frontend/survey/survey_question_change.html'
+
+    data = {
+        'form': form,
+        'surveyapp_id': surveyapp_id,
+        'err_msg': request.session.get('err_msg'),
+        'action': 'add'
+        }
+    request.session['err_msg'] = ''
+    return render_to_response(template, data,
+        context_instance=RequestContext(request))
+
+
+@login_required
+def survey_question_change(request, id):
+    """Update survey question for the logged in user
+
+    **Attributes**:
+
+        * ``form`` - SurveyQuestionForm
+        * ``template`` - frontend/survey/survey_question.html
+
+    **Logic Description**:
+
+        *
+    """
+    survey_que = SurveyQuestion.objects.get(pk=int(id))
+    form = SurveyQuestionForm(request.user, instance=survey_que)
+    request.session['err_msg'] = ''
+    if request.GET.get('delete'):
+        # perform delete
+        surveyapp_id = survey_que.surveyapp_id
+        survey_response_list = SurveyResponse.objects\
+                                .filter(surveyquestion=survey_que)
+        for survey_resp in survey_response_list:
+            survey_resp.delete()
+
+        survey_que.delete()
+        return HttpResponseRedirect('/survey/%s/' % (surveyapp_id))
+
+    if request.method == 'POST':
+        form = SurveyQuestionForm(request.user,
+                                  request.POST,
+                                  instance=survey_que)
+        if form.is_valid():
+            obj = form.save()
+            return HttpResponseRedirect('/survey/%s/#row%s'  \
+                % (obj.surveyapp_id, obj.id))
+        else:
+            request.session["err_msg"] = _('Question is not added.')
+
+    template = 'frontend/survey/survey_question_change.html'
+    data = {
+        'form': form,
+        'surveyapp_id': survey_que.surveyapp_id,
+        'survey_question_id': id,
+        'module': current_view(request),
+        'err_msg': request.session.get('err_msg'),
+        'action': 'update',
+        }
+    request.session['err_msg'] = ''
+    return render_to_response(template, data,
+        context_instance=RequestContext(request))
+
+
+@login_required
+def survey_response_add(request):
+    """Add new Survey for the logged in user
+
+    **Attributes**:
+
+        * ``form`` - SurveyResponseForm
+        * ``template`` - frontend/survey/survey_response_change.html
+
+    **Logic Description**:
+
+        * Add a new survey response which will belong to the logged in user
+          via the SurveyResponseForm & get redirected to the selected survey
+    """
+    surveyquestion_id = request.GET.get('surveyquestion_id')
+    survey_que = SurveyQuestion.objects.get(pk=int(surveyquestion_id))
+    form = SurveyResponseForm(request.user, survey_que.surveyapp_id,
+                              initial={'surveyquestion': survey_que})
+    request.session['err_msg'] = ''
+    if request.method == 'POST':
+        form = SurveyResponseForm(request.user,
+                                  survey_que.surveyapp_id,
+                                  request.POST)
+        if form.is_valid():
+            obj = form.save()
+            request.session["msg"] = _('"%(key)s" is added.') %\
+                                     {'key': request.POST['key']}
+            return HttpResponseRedirect('/survey/%s/#row%s'\
+                % (obj.surveyquestion.surveyapp_id,
+                   obj.surveyquestion.id))
+        else:
+            form._errors["key"] = _("duplicate record key !")
+            request.session["err_msg"] = _('Response is not added.')
+
+    template = 'frontend/survey/survey_response_change.html'
+    data = {
+        'form': form,
+        'surveyquestion_id': surveyquestion_id,
+        'surveyapp_id': survey_que.surveyapp_id,
+        'err_msg': request.session.get('err_msg'),
+        'action': 'add'
+    }
+    request.session['err_msg'] = ''
+    return render_to_response(template, data,
+        context_instance=RequestContext(request))
+
+
+@login_required
+def survey_response_change(request, id):
+    """Update survey question for the logged in user
+
+    **Attributes**:
+
+        * ``form`` - SurveyQuestionForm
+        * ``template`` - frontend/survey/survey_question.html
+
+    **Logic Description**:
+
+        *
+    """
+    survey_resp = SurveyResponse.objects.get(pk=int(id))
+    form = SurveyResponseForm(request.user,
+        survey_resp.surveyquestion.surveyapp_id,
+        instance=survey_resp)
+    request.session['err_msg'] = ''
+    if request.GET.get('delete'):
+        # perform delete
+        surveyapp_id = survey_resp.surveyquestion.surveyapp_id
+        survey_resp.delete()
+        return HttpResponseRedirect('/survey/%s/' % str(surveyapp_id))
+
+    if request.method == 'POST':
+        form = SurveyResponseForm(request.user,
+            survey_resp.surveyquestion.surveyapp_id,
+            request.POST,
+            instance=survey_resp)
+        if form.is_valid():
+            obj = form.save()
+            return HttpResponseRedirect('/survey/%s/#row%s'\
+            % (obj.surveyquestion.surveyapp_id,
+               obj.surveyquestion.id))
+        else:
+            duplicate_count =\
+            SurveyResponse.objects.filter(key=request.POST['key'],
+                surveyquestion=survey_resp.surveyquestion).count()
+            if request.POST['key'] == survey_resp.key:
+                if duplicate_count >= 1:
+                    form._errors["key"] = _("duplicate record key !")
+            request.session["err_msg"] = _('Response is not added.')
+
+    template = 'frontend/survey/survey_response_change.html'
+    data = {
+        'form': form,
+        'surveyquestion_id': survey_resp.surveyquestion_id,
+        'surveyapp_id': survey_resp.surveyquestion.surveyapp_id,
+        'survey_response_id': id,
+        'module': current_view(request),
+        'action': 'update',
+        'err_msg': request.session.get('err_msg'),
+        }
+    request.session['err_msg'] = ''
+    return render_to_response(template, data,
+        context_instance=RequestContext(request))
+
+
+@login_required
+def survey_change_simple(request, object_id):
+    """Update/Delete Survey for the logged in user
+
+    **Attributes**:
+
+        * ``object_id`` - Selected survey object
+        * ``form`` - SurveyForm
+        * ``template`` - frontend/survey/change.html
+
+    **Logic Description**:
+
+        * Update/delete selected survey from the survey list
+          via SurveyForm & get redirected to survey list
+    """
+    survey = SurveyApp.objects.get(pk=object_id)
+    survey_que_list = SurveyQuestion.objects\
+        .filter(surveyapp=survey).order_by('order')
+
+    survey_response_list = {}
+    for survey_que in survey_que_list:
+        res_list = SurveyResponse.objects\
+                    .filter(surveyquestion=survey_que).order_by('key')
+        if res_list:
+            # survey question response
+            survey_response_list['%s' % survey_que.id] = res_list
+
+    form = SurveyForm(instance=survey)
+
+    if request.method == 'POST':
+        if request.POST.get('delete'):
+            survey_del(request, object_id)
+            return HttpResponseRedirect('/survey/')
+        else:
+            form = SurveyForm(request.POST, request.user, instance=survey)
+            if form.is_valid():
+                form.save()
+                request.session["msg"] = _('"%(name)s" is updated.')\
+                % {'name': request.POST['name']}
+                return HttpResponseRedirect('/survey/')
+
+    template = 'frontend/survey/survey_change_simple.html'
+
+    data = {
+        'survey_obj_id': object_id,
+        'survey_que_list': survey_que_list,
+        'survey_response_list': survey_response_list,
+        'module': current_view(request),
+        'action': 'update',
+        'form': form,
+        'msg': request.session.get('msg'),
+        'notice_count': notice_count(request),
+        'update_style': update_style_template,
+        'delete_style': delete_style_template,
+        }
+    request.session['msg'] = ''
+    return render_to_response(template, data,
+        context_instance=RequestContext(request))
+
+
 def audio_file_player(audio_file):
     """audio player tag for frontend"""
     if audio_file:
@@ -718,7 +983,8 @@ def survey_cdr_daily_report(kwargs):
         {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
     from_query = \
         'FROM survey_surveycampaignresult '\
-        'WHERE survey_surveycampaignresult.callrequest_id = dialer_callrequest.id '
+        'WHERE survey_surveycampaignresult.callrequest_id = '\
+        'dialer_callrequest.id '
 
     # Get Total from VoIPCall table for Daily Call Report
     total_data = VoIPCall.objects.extra(select=select_data)\
@@ -733,7 +999,7 @@ def survey_cdr_daily_report(kwargs):
                     'SELECT group_concat(CONCAT_WS("*|*", question, response, record_file) SEPARATOR "-|-") '\
                     + from_query,
                 },
-        )#.exclude(callid='')
+        )  # .exclude(callid='')
 
     # Following code will count total voip calls, duration
     if total_data.count() != 0:
@@ -779,6 +1045,9 @@ def survey_audio_recording(audio_file):
             <a href="%s">%s</a></li></ul>' % (file_url,
                                               os.path.basename(file_url))
         return player_string
+    else:
+        return '<br/><span class="label label-important">%s</span>' % \
+                    _('No recording')
 
 
 @login_required
@@ -930,17 +1199,18 @@ def survey_report(request):
         # List of Survey VoIP call report
         from_query =\
             'FROM survey_surveycampaignresult '\
-            'WHERE survey_surveycampaignresult.callrequest_id = dialer_callrequest.id '
+            'WHERE survey_surveycampaignresult.callrequest_id = '\
+            'dialer_callrequest.id '
 
         # SELECT group_concat(CONCAT_WS("/Result:", question, response) SEPARATOR ", ")
         rows = VoIPCall.objects.filter(**kwargs).order_by(sort_field)\
-               .extra(
-                   select={
-                       'question_response':\
-                           'SELECT group_concat(CONCAT_WS("*|*", question, response, record_file) SEPARATOR "-|-") '\
-                           + from_query
-                       },
-               )#.exclude(callid='')
+                .extra(
+                    select={
+                        'question_response':\
+                            'SELECT group_concat(CONCAT_WS("*|*", question, response, record_file) SEPARATOR "-|-") '\
+                            + from_query
+                        },
+                )  # .exclude(callid='')
         request.session['session_surveycalls'] = rows
 
         # Get daily report from session while using pagination & sorting
@@ -991,7 +1261,8 @@ def export_surveycall_report(request):
 
     **Important variable**:
 
-        * ``request.session['surveycall_record_qs']`` - stores survey voipcall query set
+        * ``request.session['surveycall_record_qs']`` - stores survey voipcall
+            query set
 
     **Exported fields**: ['starting_date', 'user', 'callid', 'callerid',
                           'phone_number', 'duration', 'billsec',
@@ -1008,24 +1279,15 @@ def export_surveycall_report(request):
 
     qs = request.session['session_surveycalls']
 
-    writer.writerow(['starting_date', 'user', 'callid', 'callerid',
-                     'phone_number', 'duration', 'billsec',
-                     'disposition', 'hangup_cause', 'hangup_cause_q850',
-                     'used_gateway', 'survey result'])
+    writer.writerow(['starting_date', 'destination', 'duration',
+                     'disposition', 'hangup_cause', 'survey result'])
     for i in qs:
-        gateway_used = i.used_gateway.name if i.used_gateway else ''
-        writer.writerow([i.starting_date,
-                         i.user,
-                         i.callid,
-                         i.callerid,
-                         i.phone_number,
-                         i.duration,
-                         i.billsec,
-                         i.disposition,
-                         i.hangup_cause,
-                         i.hangup_cause_q850,
-                         gateway_used,
-                         get_que_res_string(str(i.question_response)),
-                         ])
-
+        writer.writerow([
+                        i.starting_date,
+                        i.phone_number,
+                        i.duration,
+                        i.disposition,
+                        i.hangup_cause,
+                        export_question_result(str(i.question_response)),
+                        ])
     return response

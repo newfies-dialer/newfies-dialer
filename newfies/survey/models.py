@@ -37,13 +37,13 @@ MESSAGE_TYPE = (
 )
 
 APP_TYPE = (
-    (0, u'MENU'),
-    (1, u'HANGUP'),
-    (2, u'RECORDING'),
-    #(3, u'DIAL'),
-    #(4, u'PLAYAUDIO'),
-    #(5, u'CONFERENCE'),
-    #(6, u'SPEAK'),
+    (1, u'MENU'),
+    (2, u'HANGUP'),
+    (3, u'RECORDING'),
+    #(4, u'DIAL'),
+    #(5, u'PLAYAUDIO'),
+    #(6, u'CONFERENCE'),
+    #(7, u'SPEAK'),
 )
 
 

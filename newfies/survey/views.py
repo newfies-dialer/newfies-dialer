@@ -656,9 +656,9 @@ def survey_response_change(request, id):
     """
     survey_resp = SurveyResponse.objects.get(pk=int(id))
     form = SurveyResponseForm(request.user,
-                              survey_resp.surveyquestion.surveyapp_id,
-                              instance=survey_resp)
-
+        survey_resp.surveyquestion.surveyapp_id,
+        instance=survey_resp)
+    request.session['err_msg'] = ''
     if request.GET.get('delete'):
         # perform delete
         surveyapp_id = survey_resp.surveyquestion.surveyapp_id
@@ -667,22 +667,34 @@ def survey_response_change(request, id):
 
     if request.method == 'POST':
         form = SurveyResponseForm(request.user,
-                                  survey_resp.surveyquestion.surveyapp_id,
-                                  request.POST,
-                                  instance=survey_resp)
+            survey_resp.surveyquestion.surveyapp_id,
+            request.POST,
+            instance=survey_resp)
         if form.is_valid():
             obj = form.save()
             return HttpResponseRedirect('/survey/%s/#row%s'\
-                % (obj.surveyquestion.surveyapp_id,
-                   obj.surveyquestion.id))
+            % (obj.surveyquestion.surveyapp_id,
+               obj.surveyquestion.id))
+        else:
+            duplicate_count =\
+            SurveyResponse.objects.filter(key=request.POST['key'],
+                surveyquestion=survey_resp.surveyquestion).count()
+            if request.POST['key'] == survey_resp.key:
+                if duplicate_count >= 1:
+                    form._errors["key"] = _("duplicate record key !")
+            request.session["err_msg"] = _('Response is not added.')
 
     template = 'frontend/survey/survey_response_change.html'
     data = {
         'form': form,
+        'surveyquestion_id': survey_resp.surveyquestion_id,
+        'surveyapp_id': survey_resp.surveyquestion.surveyapp_id,
         'survey_response_id': id,
         'module': current_view(request),
         'action': 'update',
+        'err_msg': request.session.get('err_msg'),
         }
+    request.session['err_msg'] = ''
     return render_to_response(template, data,
         context_instance=RequestContext(request))
 

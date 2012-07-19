@@ -89,20 +89,29 @@
 
 <form class="well" method="POST" action="." enctype="multipart/form-data" id="update_form">{% csrf_token %}
 
-
-    {% for field in form %}
-        <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-            <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+    <div class="row">
+        <div class="span4 clearfix{% if form.name.errors %} control-group error{% endif %}">
+            <label class="control-label">{{ form.name.label }}</label>
             <div class="input">
-                {{ field }}
-                {% if field.errors %}
-                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <span class="help-inline">{{ form.name.errors|removetags:"ul li"|safe }}</span>
                 {% endif %}
-                <span class="help-block">{{ field.help_text }} </span>
+                <span class="help-block">{{ form.name.help_text }} </span>
             </div>
         </div>
-    {% endfor %}
-    <p>&nbsp;</p>
+        <div class="span4 clearfix{% if form.description.errors %} control-group error{% endif %}">
+            <label class="control-label" for="id_{{ form.description.name }}">{{ form.description.label }}</label>
+            <div class="input">
+                {{ form.description }}
+                {% if form.description.errors %}
+                    <span class="help-inline">{{ form.description.errors|removetags:"ul li"|safe }}</span>
+                {% endif %}
+                <span class="help-block">{{ form.description.help_text }} </span>
+            </div>
+        </div>
+    </div>
+
     <p>
         {% if action == 'update' %}
         <fieldset>
@@ -227,7 +236,6 @@
         {% endif %}
 
     </p>
-
 
     <!--update question in modal-->
     <script type="text/javascript" charset="utf-8">

@@ -283,7 +283,6 @@ def que_res_string(val):
         if "*|**|*" in i:
             que_audio = i.split("*|**|*")
             if que_audio:
-                print que_audio[1]
                 result_string += '<tr><td colspan="2">' + str(que_audio[0]) \
                                 + survey_audio_recording(str(que_audio[1])) \
                                 + '</td></tr>'
@@ -319,4 +318,3 @@ register.filter('action_type_name', action_type_name)
 
 
 get_fieldset = register.tag(get_fieldset)
-

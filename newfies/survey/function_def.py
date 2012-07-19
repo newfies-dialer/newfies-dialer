@@ -49,8 +49,9 @@ def export_question_result(val):
                         + str(que_audio[1]) + line_end_with
         else:
             que_res = i.split("*|*")
-            result_string += str(que_res[0]) + '\t' + _('Key') + ': ' \
-                             + str(que_res[1]) + line_end_with
+            if que_res:
+                result_string += str(que_res[0]) + '\t' + _('Key') + ': ' \
+                            + str(que_res[1]) + line_end_with
 
         rec_count += 1
 

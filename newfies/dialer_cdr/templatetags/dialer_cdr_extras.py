@@ -17,6 +17,8 @@ from django.template.defaultfilters import *
 from django.utils.datastructures import SortedDict
 from django.utils.translation import ugettext as _
 from survey.views import survey_audio_recording
+from survey.models import APP_TYPE
+from dialer_cdr.models import LEG_TYPE
 import operator
 import copy
 
@@ -242,13 +244,27 @@ def groupby_columns(seq, n):
 
 @register.filter()
 def leg_type_name(value):
-    """Campaign Status"""
+    """leg type"""
     if not value:
         return ''
-    LEG_TYPE = {1: 'A-leg',
-                2: 'B-leg',
-               }
-    status = LEG_TYPE[value]
+    TYPE = dict(LEG_TYPE)
+    try:
+        status = TYPE[value]
+    except:
+        status = ''
+    return str(status)
+
+
+@register.filter()
+def action_type_name(value):
+    """action type name"""
+    if not value:
+        return ''
+    TYPE = dict(APP_TYPE)
+    try:
+        status = TYPE[value]
+    except:
+        status = ''
     return str(status)
 
 
@@ -297,6 +313,8 @@ register.filter('groupby_rows', groupby_rows)
 register.filter('groupby_columns', groupby_columns)
 register.filter('leg_type_name', leg_type_name)
 register.filter('que_res_string', que_res_string)
+register.filter('action_type_name', action_type_name)
+
 
 get_fieldset = register.tag(get_fieldset)
 

@@ -695,6 +695,8 @@ def survey_change_simple(request, object_id):
     survey = SurveyApp.objects.get(pk=object_id)
     survey_que_list = SurveyQuestion.objects\
         .filter(surveyapp=survey).order_by('order')
+    #for i in survey_que_list:
+    #    print i.type
 
     survey_response_list = {}
     for survey_que in survey_que_list:

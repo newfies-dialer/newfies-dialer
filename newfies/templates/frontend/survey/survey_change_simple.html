@@ -110,14 +110,25 @@
                 {% if survey_que_list %}
                     {% for que in survey_que_list %}
                     <div id="row{{ que.id }}" class="portlet">
-                        <div class="portlet-header">{{ que.question }}
-                            <a data-toggle="modal" href="#survey-question-update-edit" class="survey-question-edit btn btn-info" url='/survey_question/{{ que.id }}/' data-controls-modal='survey-question-update-content-edit'>
-                                {% trans "Edit" %}
-                            </a>
-                            /
-                            <a href="/survey_question/{{ que.id }}/?delete=true" class="btn btn-danger">{% trans "Delete" %}</a>
-                        </div>
+                        <div class="portlet-header">{{ que.question }}</div>
                         <div class="portlet-content">
+                            <div class="row">
+                                <div class="span12">
+                                    <div class="row">
+                                        <div class="span2"><b>{% trans "Audio message" %}</b><br/>{{ que.audio_message.name }}</div>
+                                        <div class="span2"><b>{% trans "Action type" %}</b><br/>{{ que.type|action_type_name }}</div>
+                                        <div class="span2"><b>{% trans "Data" %}</b><br/>{% if que.data %}{{ que.data }}{% else %} {% trans "None" %} {% endif %}</div>
+                                        <div class="span2"><b>{% trans "Gateway" %}</b><br/>{% if que.gateway %}{{ que.gateway }}{% else %} {% trans "None" %} {% endif %}</div>
+                                        <div class="span4"><br/>
+                                            <a data-toggle="modal" href="#survey-question-update-edit" class="survey-question-edit btn btn-info" url='/survey_question/{{ que.id }}/' data-controls-modal='survey-question-update-content-edit'>
+                                                {% trans "Edit" %}
+                                            </a>
+                                            /
+                                            <a href="/survey_question/{{ que.id }}/?delete=true" class="btn btn-danger">{% trans "Delete" %}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             {% for key, res_objs in survey_response_list.items %}
                                 <div class="row">

@@ -237,7 +237,7 @@ def survey_finestatemachine(request):
         html = \
             '<Response>\n' \
             '   <GetDigits action="%s" method="GET" numDigits="1" ' \
-            'retries="1" validDigits="0123456789" timeout="10" ' \
+            'retries="1" validDigits="0123456789" timeout="5" ' \
             'finishOnKey="#">\n' \
             '       %s\n' \
             '   </GetDigits>\n' \
@@ -252,7 +252,7 @@ def survey_finestatemachine(request):
             '<Response>\n' \
             '   %s\n' \
             '   <Record maxLength="120" finishOnKey="*#" action="%s" ' \
-            'method="GET" filePath="%s" timeout="10"/>' \
+            'method="GET" filePath="%s" timeout="5"/>' \
             '</Response>' % (
                 question,
                 settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,

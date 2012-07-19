@@ -136,7 +136,7 @@
                                         {% for res_obj in res_objs  %}
                                         <div class="row">
                                             <div class="span2"><b>{% trans "Key" %}</b><br/>{{ res_obj.key }}</div>
-                                            <div class="span2"><b>{% trans "Key Value" %}</b><br/>{{ res_obj.keyvalue }}</div>
+                                            <div class="span2"><b>{% trans "Value" %}</b><br/>{{ res_obj.keyvalue }}</div>
                                             <div class="span2"><b>{% trans "Goto question" %}</b><br/>{{ res_obj.goto_surveyquestion }}</div>
                                             <div class="span4">
                                                 <button data-toggle="modal" href="#survey-response-update-edit-{{ res_obj.id }}" class="survey-response-edit-{{ res_obj.id }} btn btn-info" url='/survey_response/{{ res_obj.id }}/' data-controls-modal='survey-response-update-content-edit-{{ res_obj.id }}'>

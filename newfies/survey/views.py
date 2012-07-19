@@ -605,11 +605,13 @@ def survey_response_add(request):
     """
     surveyquestion_id = request.GET.get('surveyquestion_id')
     survey_que = SurveyQuestion.objects.get(pk=int(surveyquestion_id))
-    form = SurveyResponseForm(request.user,
+    form = SurveyResponseForm(request.user, survey_que.surveyapp_id,
                               initial={'surveyquestion': survey_que})
     request.session['err_msg'] = ''
     if request.method == 'POST':
-        form = SurveyResponseForm(request.user, request.POST)
+        form = SurveyResponseForm(request.user,
+                                  survey_que.surveyapp_id,
+                                  request.POST)
         if form.is_valid():
             obj = form.save()
             request.session["msg"] = _('"%(key)s" is added.') %\
@@ -648,7 +650,9 @@ def survey_response_change(request, id):
         *
     """
     survey_resp = SurveyResponse.objects.get(pk=int(id))
-    form = SurveyResponseForm(request.user, instance=survey_resp)
+    form = SurveyResponseForm(request.user,
+                              survey_resp.surveyquestion.surveyapp_id,
+                              instance=survey_resp)
 
     if request.GET.get('delete'):
         # perform delete
@@ -658,6 +662,7 @@ def survey_response_change(request, id):
 
     if request.method == 'POST':
         form = SurveyResponseForm(request.user,
+                                  survey_resp.surveyquestion.surveyapp_id,
                                   request.POST,
                                   instance=survey_resp)
         if form.is_valid():

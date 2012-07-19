@@ -562,7 +562,7 @@ def survey_question_change(request, id):
     """
     survey_que = SurveyQuestion.objects.get(pk=int(id))
     form = SurveyQuestionForm(request.user, instance=survey_que)
-
+    request.session['err_msg'] = ''
     if request.GET.get('delete'):
         # perform delete
         surveyapp_id = survey_que.surveyapp_id
@@ -582,14 +582,18 @@ def survey_question_change(request, id):
             obj = form.save()
             return HttpResponseRedirect('/survey/%s/#row%s'  \
                 % (obj.surveyapp_id, obj.id))
+        else:
+            request.session["err_msg"] = _('Question is not added.')
 
     template = 'frontend/survey/survey_question_change.html'
     data = {
         'form': form,
         'survey_question_id': id,
         'module': current_view(request),
+        'err_msg': request.session.get('err_msg'),
         'action': 'update',
         }
+    request.session['err_msg'] = ''
     return render_to_response(template, data,
         context_instance=RequestContext(request))
 

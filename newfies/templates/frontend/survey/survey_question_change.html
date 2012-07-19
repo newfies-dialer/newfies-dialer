@@ -13,19 +13,18 @@
 {% block header %}
 {% endblock %}
 
-{% block content_header %}
-    <h1>{% if action == 'update' %}
-        {% trans "Update" %}
-    {% else %}
-        {% trans "Add" %}
-    {% endif %} {% trans "Survey Question" %}
-        <small></small>
-    </h1>
-{% endblock %}
-
-
 {% block container %}
+
 {% block content %}
+
+    {% if action == 'update' %}
+        {% block content_header %}
+            <h1>
+                {% trans "Update" %} {% trans "Survey Question" %}
+                <small></small>
+            </h1>
+        {% endblock %}
+    {% endif %}
 
     {% if err_msg %}
         <script type="text/javascript" charset="utf-8">
@@ -34,7 +33,7 @@
                 $('#survey_que_modal').modal('show');
             });
 
-            var url = '/survey/' + '{{ form.surveyapp.value }}';
+            var url = '/survey/' + '{{ form.surveyapp.value }}'  + '/#row{{ surveyquestion_id }}';
             $(".close").live('click', function() {
 
                 $(location).attr('href',url);

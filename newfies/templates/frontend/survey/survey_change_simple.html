@@ -121,9 +121,9 @@
                                         <div class="span2"><b>{% trans "Gateway" %}</b><br/>{% if que.gateway %}{{ que.gateway }}{% else %} {% trans "None" %} {% endif %}</div>
                                         <div class="span4">
                                             <button data-toggle="modal" href="#survey-question-update-edit" class="survey-question-edit btn btn-info" url='/survey_question/{{ que.id }}/' data-controls-modal='survey-question-update-content-edit'>
-                                                {% trans "Edit Question" %}
+                                                {% trans "Edit" %}
                                             </button>
-                                            <input value="{% trans "Delete Question" %}" onclick="document.location.href='/survey_question/{{ que.id }}/?delete=true';" class="btn btn-danger" type="button" />
+                                            <input value="{% trans "Delete" %}" onclick="document.location.href='/survey_question/{{ que.id }}/?delete=true';" class="btn btn-danger" type="button" />
                                         </div>
                                     </div>
                                 </div>
@@ -267,10 +267,11 @@
     </script>
     <!-- modal content-->
     <div id="survey-question-create-add" class="modal hide fade" >
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal" >&times;</a>
-            <!--<h3>{% trans "Survey Question" %}</h3>-->
-        </div>
+        <a class="close" data-dismiss="modal" >&times;</a>
+        <h1>
+            {% trans "Add" %} {% trans "Survey Question" %}
+            <small></small>
+        </h1>
         <div class="modal-body" id="survey-question-create-content-add">
         </div>
         <div class="modal-footer">

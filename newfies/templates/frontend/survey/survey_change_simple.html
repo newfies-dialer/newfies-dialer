@@ -119,12 +119,11 @@
                                         <div class="span2"><b>{% trans "Action type" %}</b><br/>{{ que.type|action_type_name }}</div>
                                         <div class="span2"><b>{% trans "Data" %}</b><br/>{% if que.data %}{{ que.data }}{% else %} {% trans "None" %} {% endif %}</div>
                                         <div class="span2"><b>{% trans "Gateway" %}</b><br/>{% if que.gateway %}{{ que.gateway }}{% else %} {% trans "None" %} {% endif %}</div>
-                                        <div class="span4"><br/>
-                                            <a data-toggle="modal" href="#survey-question-update-edit" class="survey-question-edit btn btn-info" url='/survey_question/{{ que.id }}/' data-controls-modal='survey-question-update-content-edit'>
-                                                {% trans "Edit" %}
-                                            </a>
-                                            /
-                                            <a href="/survey_question/{{ que.id }}/?delete=true" class="btn btn-danger">{% trans "Delete" %}</a>
+                                        <div class="span4">
+                                            <button data-toggle="modal" href="#survey-question-update-edit" class="survey-question-edit btn btn-info" url='/survey_question/{{ que.id }}/' data-controls-modal='survey-question-update-content-edit'>
+                                                {% trans "Edit Question" %}
+                                            </button>
+                                            <input value="{% trans "Delete Question" %}" onclick="document.location.href='/survey_question/{{ que.id }}/?delete=true';" class="btn btn-danger" type="button" />
                                         </div>
                                     </div>
                                 </div>
@@ -139,12 +138,11 @@
                                             <div class="span2"><b>{% trans "Key" %}</b><br/>{{ res_obj.key }}</div>
                                             <div class="span2"><b>{% trans "Key Value" %}</b><br/>{{ res_obj.keyvalue }}</div>
                                             <div class="span2"><b>{% trans "Goto question" %}</b><br/>{{ res_obj.goto_surveyquestion }}</div>
-                                            <div class="span2"><br/>
-                                                <a data-toggle="modal" href="#survey-response-update-edit-{{ res_obj.id }}" class="survey-response-edit-{{ res_obj.id }} btn btn-info" url='/survey_response/{{ res_obj.id }}/' data-controls-modal='survey-response-update-content-edit-{{ res_obj.id }}'>
-                                                    {% trans "Edit" %}
-                                                </a>
-                                                /
-                                                <a href="/survey_response/{{ res_obj.id }}/?delete=true" class="btn btn-danger">{% trans "Delete" %}</a>
+                                            <div class="span4">
+                                                <button data-toggle="modal" href="#survey-response-update-edit-{{ res_obj.id }}" class="survey-response-edit-{{ res_obj.id }} btn btn-info" url='/survey_response/{{ res_obj.id }}/' data-controls-modal='survey-response-update-content-edit-{{ res_obj.id }}'>
+                                                    {% trans "Edit Response" %}
+                                                </button>
+                                                <input value="{% trans "Delete response" %}" onclick="document.location.href='/survey_response/{{ res_obj.id }}/?delete=true';" class="btn btn-danger" type="button" />
                                             </div>
 
                                             <!--update response in modal-->
@@ -180,9 +178,9 @@
                                 </div>
                             {% endfor %}
 
-                            <a data-toggle="modal" href="#survey-question-response-create-add-{{ que.id }}" class="survey-question-response-add-{{ que.id }} btn" url='/survey_response/add/' data-controls-modal='survey-question-response-create-content-add-{{ que.id }}'>
+                            <button data-toggle="modal" href="#survey-question-response-create-add-{{ que.id }}" class="survey-question-response-add-{{ que.id }} btn" url='/survey_response/add/' data-controls-modal='survey-question-response-create-content-add-{{ que.id }}'>
                                 {% trans "Add Response" %}
-                            </a>
+                            </button>
 
                             <script type="text/javascript" charset="utf-8">
 
@@ -243,10 +241,9 @@
         </div>
     </div>
 
-
-    <a data-toggle="modal" href="#survey-question-create-add" class="survey-question-add btn btn-info" url='/survey_question/add/' data-controls-modal='survey-question-create-content-add'>
+    <button data-toggle="modal" href="#survey-question-create-add" class="survey-question-add btn btn-info" url='/survey_question/add/' data-controls-modal='survey-question-create-content-add'>
         {% trans "Add Question" %}
-    </a>
+    </button>
 
     <script type="text/javascript" charset="utf-8">
 

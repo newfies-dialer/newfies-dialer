@@ -129,51 +129,62 @@
                                 </div>
                             </div>
 
-                            {% for key, res_objs in survey_response_list.items %}
-                                <div class="row">
-                                    <div class="span12">
-                                    {% ifequal key|stringformat:"s" que.id|stringformat:"s" %}
-                                        {% for res_obj in res_objs  %}
-                                        <div class="row">
-                                            <div class="span2"><b>{% trans "Key" %}</b><br/>{{ res_obj.key }}</div>
-                                            <div class="span2"><b>{% trans "Value" %}</b><br/>{{ res_obj.keyvalue }}</div>
-                                            <div class="span2"><b>{% trans "Goto question" %}</b><br/>{{ res_obj.goto_surveyquestion }}</div>
-                                            <div class="span4">
-                                                <button data-toggle="modal" href="#survey-response-update-edit-{{ res_obj.id }}" class="survey-response-edit-{{ res_obj.id }} btn btn-info" url='/survey_response/{{ res_obj.id }}/' data-controls-modal='survey-response-update-content-edit-{{ res_obj.id }}'>
-                                                    {% trans "Edit Response" %}
-                                                </button>
-                                                <input value="{% trans "Delete response" %}" onclick="document.location.href='/survey_response/{{ res_obj.id }}/?delete=true';" class="btn btn-danger" type="button" />
-                                            </div>
+                            <div class="row">
+                                <div class="span8">
+                                    <table class="table table-striped table-bordered table-condensed">
+                                        <thead>
+                                        <tr>
+                                            <th><b>{% trans "Key" %}</b></th>
+                                            <th><b>{% trans "Key Value" %}</b></th>
+                                            <th><b>{% trans "Goto question" %}</b></th>
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                        </thead>
 
-                                            <!--update response in modal-->
-                                            <script type="text/javascript" charset="utf-8">
+                                        <tbody>
+                                        {% for key, res_objs in survey_response_list.items %}
+                                            {% ifequal key|stringformat:"s" que.id|stringformat:"s" %}
+                                                {% for res_obj in res_objs  %}
+                                                    <tr>
+                                                        <td>{{ res_obj.key }}</td>
+                                                        <td>{{ res_obj.keyvalue }}</td>
+                                                        <td>{{ res_obj.goto_surveyquestion }}</td>
+                                                        <td>
+                                                            <a data-toggle="modal" style="{{ update_style }}" title="{% trans "Edit response" %}" href="#survey-response-update-edit-{{ res_obj.id }}" class="survey-response-edit-{{ res_obj.id }} icon" url='/survey_response/{{ res_obj.id }}/' data-controls-modal='survey-response-update-content-edit-{{ res_obj.id }}'>
+                                                                &nbsp;
+                                                            </a>
+                                                            <a style="{{ delete_style }}" href="/survey_response/{{ res_obj.id }}/?delete=true" class="icon" title="{% trans "Delete response" %}">
+                                                                &nbsp;
+                                                            </a>
 
-                                                $(".survey-response-edit-{{ res_obj.id }}").live('click', function() {
-                                                    var url = $(this).attr('url');
-                                                    var modal_id = $(this).attr('data-controls-modal');
-                                                    $("#" + modal_id).load(url);
-                                                })
+                                                            <!--update response in modal-->
+                                                            <script type="text/javascript" charset="utf-8">
 
-                                            </script>
-                                            <!-- updaet survey response modal content-->
-                                            <div id="survey-response-update-edit-{{ res_obj.id }}" class="modal hide fade" >
-                                                <div class="modal-header">
-                                                    <a class="close" data-dismiss="modal" >&times;</a>
-                                                    <!--<h3>{% trans "Survey Response" %}</h3>-->
-                                                </div>
-                                                <div class="modal-body" id="survey-response-update-content-edit-{{ res_obj.id }}">
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                                $(".survey-response-edit-{{ res_obj.id }}").live('click', function() {
 
+                                                                    var url = $(this).attr('url');
+                                                                    var modal_id = $(this).attr('data-controls-modal');
+                                                                    $("#" + modal_id).load(url);
+                                                                })
+
+                                                            </script>
+                                                            <!-- updaet survey response modal content-->
+                                                            <div id="survey-response-update-edit-{{ res_obj.id }}" class="modal hide fade" >
+                                                                <div class="modal-body" id="survey-response-update-content-edit-{{ res_obj.id }}">
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% endifequal %}
                                         {% endfor %}
-                                    {% endifequal %}
-                                    </div>
+                                        </tbody>
+                                    </table>
                                 </div>
-                            {% endfor %}
+                            </div>
 
                             <button data-toggle="modal" href="#survey-question-response-create-add-{{ que.id }}" class="survey-question-response-add-{{ que.id }} btn" url='/survey_response/add/' data-controls-modal='survey-question-response-create-content-add-{{ que.id }}'>
                                 {% trans "Add Response" %}

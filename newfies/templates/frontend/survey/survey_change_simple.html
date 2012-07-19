@@ -97,7 +97,6 @@
                 {% if form.name.errors %}
                     <span class="help-inline">{{ form.name.errors|removetags:"ul li"|safe }}</span>
                 {% endif %}
-                <span class="help-block">{{ form.name.help_text }} </span>
             </div>
         </div>
         <div class="span4 clearfix{% if form.description.errors %} control-group error{% endif %}">
@@ -107,7 +106,6 @@
                 {% if form.description.errors %}
                     <span class="help-inline">{{ form.description.errors|removetags:"ul li"|safe }}</span>
                 {% endif %}
-                <span class="help-block">{{ form.description.help_text }} </span>
             </div>
         </div>
     </div>

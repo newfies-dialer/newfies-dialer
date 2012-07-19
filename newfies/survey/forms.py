@@ -36,6 +36,8 @@ class SurveyForm(ModelForm):
         instance = getattr(self, 'instance', None)
         if instance.id:
             self.fields.keyOrder = ['name', 'description']
+        self.fields['description'].widget = forms.TextInput()
+        self.fields['description'].widget.attrs['class'] = 'span4'
 
 
 def get_audiofile_list(user):

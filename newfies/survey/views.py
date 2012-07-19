@@ -527,7 +527,8 @@ def survey_question_add(request):
             obj.save()
             request.session["msg"] = _('"%(question)s" is added.') %\
                                        {'question': request.POST['question']}
-            return HttpResponseRedirect('/survey/%s/' % (obj.surveyapp_id))
+            return HttpResponseRedirect('/survey/%s/#row%s' \
+                        % (obj.surveyapp_id, obj.id))
         else:
             request.session["err_msg"] = _('Question is not added.')
             #surveyapp_id = request.POST['surveyapp']
@@ -569,7 +570,7 @@ def survey_question_change(request, id):
             survey_resp.delete()
 
         survey_que.delete()
-        return HttpResponseRedirect('/survey/%s/' % str(surveyapp_id))
+        return HttpResponseRedirect('/survey/%s/' % (surveyapp_id))
 
     if request.method == 'POST':
         form = SurveyQuestionForm(request.user,
@@ -577,8 +578,8 @@ def survey_question_change(request, id):
                                   instance=survey_que)
         if form.is_valid():
             obj = form.save()
-            return HttpResponseRedirect('/survey/%s/'  \
-                % str(obj.surveyapp_id))
+            return HttpResponseRedirect('/survey/%s/#row%s'  \
+                % (obj.surveyapp_id, obj.id))
 
     template = 'frontend/survey/survey_question_change.html'
     data = {
@@ -616,8 +617,9 @@ def survey_response_add(request):
             obj = form.save()
             request.session["msg"] = _('"%(key)s" is added.') %\
                                      {'key': request.POST['key']}
-            return HttpResponseRedirect('/survey/%s/'\
-                % (obj.surveyquestion.surveyapp_id))
+            return HttpResponseRedirect('/survey/%s/#row%s'\
+                % (obj.surveyquestion.surveyapp_id,
+                   obj.surveyquestion.id))
         else:
             form._errors["key"] = _("duplicate record key !")
             request.session["err_msg"] = _('Response is not added.')
@@ -663,8 +665,9 @@ def survey_response_change(request, id):
                                   instance=survey_resp)
         if form.is_valid():
             obj = form.save()
-            return HttpResponseRedirect('/survey/%s/'\
-            % str(obj.surveyquestion.surveyapp_id))
+            return HttpResponseRedirect('/survey/%s/#row%s'\
+                % (obj.surveyquestion.surveyapp_id,
+                   obj.surveyquestion.id))
 
     template = 'frontend/survey/survey_response_change.html'
     data = {
@@ -695,8 +698,6 @@ def survey_change_simple(request, object_id):
     survey = SurveyApp.objects.get(pk=object_id)
     survey_que_list = SurveyQuestion.objects\
         .filter(surveyapp=survey).order_by('order')
-    #for i in survey_que_list:
-    #    print i.type
 
     survey_response_list = {}
     for survey_que in survey_que_list:

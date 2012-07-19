@@ -290,7 +290,7 @@ def que_res_string(val):
         else:
             que_res = i.split("*|*")
             result_string += '<tr><td>' + str(que_res[0])\
-                             + '</td><td>' + str(que_res[1]) + '</td></tr>'
+                             + '</td><td class="survey_result_key">' + str(que_res[1]) + '</td></tr>'
         rec_count += 1
 
     result_string += '</table>'

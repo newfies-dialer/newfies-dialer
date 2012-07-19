@@ -113,39 +113,12 @@
                     {% endifequal %}
                 </th>
                 <th>
-                    {% ifequal col_name_with_order.sort_field 'callid' %}
-                        {% sort_link "<i class='icon-chevron-up'></i>" "callid"  %}
-                        {% trans "Call ID" %}
-                        {% sort_link "<i class='icon-chevron-down'></i>" "-callid"  %}
-                    {% else %}
-                        {% sort_link "Call ID" "-callid"  %}
-                    {% endifequal %}
-                </th>
-                <th>
-                    {% ifequal col_name_with_order.sort_field 'used_gateway' %}
-                        {% sort_link "<i class='icon-chevron-up'></i>" "leg_type"  %}
-                        {% trans "Leg" %}
-                        {% sort_link "<i class='icon-chevron-down'></i>" "-leg_type"  %}
-                    {% else %}
-                        {% sort_link "Leg" "-leg_type"  %}
-                    {% endifequal %}
-                </th>
-                <th>
                     {% ifequal col_name_with_order.sort_field 'phone_number' %}
                         {% sort_link "<i class='icon-chevron-up'></i>" "phone_number"  %}
                         {% trans "Destination" %}
                         {% sort_link "<i class='icon-chevron-down'></i>" "-phone_number"  %}
                     {% else %}
                         {% sort_link "Destination" "-phone_number"  %}
-                    {% endifequal %}
-                </th>
-                <th>
-                    {% ifequal col_name_with_order.sort_field 'used_gateway' %}
-                        {% sort_link "<i class='icon-chevron-up'></i>" "used_gateway"  %}
-                        {% trans "Gateway" %}
-                        {% sort_link "<i class='icon-chevron-down'></i>" "-used_gateway"  %}
-                    {% else %}
-                        {% sort_link "Gateway" "-used_gateway"  %}
                     {% endifequal %}
                 </th>
                 <th>
@@ -158,17 +131,6 @@
                     {% endifequal %}
                 </th>
                 <th>
-                    {% ifequal col_name_with_order.sort_field 'billsec' %}
-                        {% sort_link "<i class='icon-chevron-up'></i>" "billsec"  %}
-                        <abbr title='{% trans "Bill Seconds" %}'>{% trans "Bill" %}</abbr>
-                        {% sort_link "<i class='icon-chevron-down'></i>" "-billsec"  %}
-                    {% else %}
-                        <abbr title={% trans 'Bill Seconds' %}>
-                            {% sort_link "Bill" "-billsec"  %}
-                        </abbr>
-                    {% endifequal %}
-                </th>
-                <th>
                     {% ifequal col_name_with_order.sort_field 'disposition' %}
                         {% sort_link "<i class='icon-chevron-up'></i>" "disposition"  %}
                         {% trans "Account" %}
@@ -177,7 +139,7 @@
                         {% sort_link "Disposition" "-disposition"  %}
                     {% endifequal %}
                 </th>
-                <th>{% trans "Survey Result" %}</th>
+                <th width="60%">{% trans "Survey Result" %}</th>
             </tr>
             </thead>
             {% if rows %}
@@ -185,22 +147,8 @@
                 {% for row in rows %}
                     <tr>
                         <td>{{ row.starting_date }}</td>
-                        <td>{{ row.callid }}</td>
-                        <td>{{ row.leg_type|leg_type_name }}</td>
                         <td>{{ row.phone_number }}</td>
-                        <td>
-                            {% if row.used_gateway %}
-                                {{ row.used_gateway.name }}
-                            {% endif %}
-                        </td>
                         <td>{{ row.duration|conv_min }}</td>
-                        <td>
-                            {% if result == 1 %}
-                                {{ row.billsec|conv_min }}
-                            {% else %}
-                                {{ row.billsec }}
-                            {% endif %}
-                        </td>
                         <td>{{ row.disposition }}</td>
                         <td>{{ row.question_response|que_res_string|safe }}</td>
                     </tr>

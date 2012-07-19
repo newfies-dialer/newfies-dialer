@@ -1264,10 +1264,8 @@ def export_surveycall_report(request):
         * ``request.session['surveycall_record_qs']`` - stores survey voipcall
             query set
 
-    **Exported fields**: ['starting_date', 'user', 'callid', 'callerid',
-                          'phone_number', 'duration', 'billsec',
-                          'disposition', 'hangup_cause', 'hangup_cause_q850',
-                          'used_gateway']
+    **Exported fields**: ['starting_date', 'phone_number', 'duration',
+                          'disposition', 'survey results']
     """
 
     # get the response object, this can be used as a stream.
@@ -1280,14 +1278,13 @@ def export_surveycall_report(request):
     qs = request.session['session_surveycalls']
 
     writer.writerow(['starting_date', 'destination', 'duration',
-                     'disposition', 'hangup_cause', 'survey result'])
+                     'disposition', 'survey result'])
     for i in qs:
         writer.writerow([
                         i.starting_date,
                         i.phone_number,
                         i.duration,
                         i.disposition,
-                        i.hangup_cause,
                         export_question_result(str(i.question_response)),
                         ])
     return response

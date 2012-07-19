@@ -149,7 +149,6 @@
                                             <script type="text/javascript" charset="utf-8">
 
                                                 $(".survey-response-edit-{{ res_obj.id }}").live('click', function() {
-
                                                     var url = $(this).attr('url');
                                                     var modal_id = $(this).attr('data-controls-modal');
                                                     $("#" + modal_id).load(url);
@@ -168,8 +167,6 @@
                                                     <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
                                                 </div>
                                             </div>
-
-
                                         </div>
 
                                         {% endfor %}
@@ -183,7 +180,6 @@
                             </button>
 
                             <script type="text/javascript" charset="utf-8">
-
                                 $(".survey-question-response-add-{{ que.id }}").live('click', function() {
 
                                     var url = $(this).attr('url');
@@ -191,8 +187,8 @@
                                     url = url + "?surveyquestion_id=" + {{ que.id }};
                                     $("#" + modal_id).load(url);
                                 })
-
                             </script>
+
                             <!-- modal content-->
                             <div id="survey-question-response-create-add-{{ que.id }}" class="modal hide fade" >
                                 <div class="modal-header">
@@ -224,7 +220,6 @@
     <script type="text/javascript" charset="utf-8">
 
         $(".survey-question-edit").live('click', function() {
-
             var url = $(this).attr('url');
             var modal_id = $(this).attr('data-controls-modal');
             $("#" + modal_id).load(url);

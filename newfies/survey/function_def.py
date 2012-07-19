@@ -35,23 +35,30 @@ def export_question_result(val):
     result_string = ''
 
     rec_count = 1
+    if len(val_list) == rec_count:
+        line_end_with = ''
+    else:
+        line_end_with = '\t'
+
     for i in val_list:
-
-        if len(val_list) == rec_count:
-            line_end_with = ''
-        else:
-            line_end_with = '\t'
-
-        if "*|**|*" in i:
+        if not i:
+            continue
+        if i.find("*|**|*") > 0:
             que_audio = i.split("*|**|*")
             result_string += str(que_audio[0]) \
-                        + '\t' +_('Audio File') + ': ' \
+                        + '\t' + _('Audio File') + ': ' \
                         + str(que_audio[1]) + line_end_with
         else:
             que_res = i.split("*|*")
-            if que_res:
-                result_string += str(que_res[0]) + '\t' + _('Key') + ': ' \
-                            + str(que_res[1]) + line_end_with
+            try:
+                result_string += str(que_res[0]) + '\t'
+            except:
+                result_string += ''
+            try:
+                result_string += _('Key') + ': ' \
+                        + str(que_res[1]) + line_end_with
+            except:
+                result_string += ''
 
         rec_count += 1
 

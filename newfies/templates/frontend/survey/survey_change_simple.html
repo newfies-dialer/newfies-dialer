@@ -197,12 +197,15 @@
                             <div id="survey-question-response-create-add-{{ que.id }}" class="modal hide fade" >
                                 <div class="modal-header">
                                     <a class="close" data-dismiss="modal" >&times;</a>
-                                    <!--<h3>{% trans "Survey Response" %}</h3>-->
+                                    <h1>
+                                        {% trans "Add" %} {% trans "Survey Response" %}
+                                        <small></small>
+                                    </h1>
                                 </div>
                                 <div class="modal-body" id="survey-question-response-create-content-add-{{ que.id }}">
                                 </div>
                                 <div class="modal-footer">
-                                    <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+                                    <a href="#" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
                                 </div>
                             </div>
 

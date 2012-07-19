@@ -1,19 +1,21 @@
 {% extends "frontend/master.html" %}
 {% load i18n dialer_cdr_extras dajaxice_templatetags %}
 
+{% block menu %}
+{% endblock %}
+
 {% block extra_files %}
 {% endblock %}
 
-{% block content_header %}
-    <h1>{% if action == 'update' %}
-        {% trans "Update" %}
-    {% else %}
-        {% trans "Add" %}
-    {% endif %} {% trans "Survey Response" %}
-        <small></small>
-    </h1>
+{% block row_fluid %}
 {% endblock %}
 
+{% block header %}
+{% endblock %}
+
+{% block content_header %}
+{% endblock %}
+{% block container %}
 {% block content %}
 
     {% if err_msg %}
@@ -86,7 +88,10 @@
         </div>
     {% endif %}
 
+{% endblock %}
 
 
+{% block footer %}
+{% endblock %}
 
 {% endblock %}

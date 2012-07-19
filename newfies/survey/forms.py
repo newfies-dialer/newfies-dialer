@@ -49,13 +49,14 @@ def get_audiofile_list(user):
     return list_af
 
 
-def get_question_list(user):
+def get_question_list(user, surveyapp_id):
     """Get survey question list for logged in user
     with default none option"""
     list_sq = []
     list_sq.append(('', '---'))
 
-    list = SurveyQuestion.objects.filter(user=user)
+    list = SurveyQuestion.objects.filter(user=user,
+                        surveyapp_id=surveyapp_id)
     for i in list:
         list_sq.append((i.id, i.question))
 
@@ -117,13 +118,13 @@ class SurveyResponseForm(ModelForm):
         model = SurveyResponse
         fields = ['key', 'keyvalue', 'surveyquestion', 'goto_surveyquestion']
 
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, user, surveyapp_id, *args, **kwargs):
         super(SurveyResponseForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         self.fields['surveyquestion'].widget = forms.HiddenInput()
         self.fields['key'].widget.attrs['class'] = "input-small"
         self.fields['keyvalue'].widget.attrs['class'] = "input-small"
-        self.fields['goto_surveyquestion'].choices = get_question_list(user)
+        self.fields['goto_surveyquestion'].choices = get_question_list(user, surveyapp_id)
 
         if instance.id:
             js_function = "response_form(" + str(instance.id) + ", " + \

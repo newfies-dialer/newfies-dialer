@@ -1020,6 +1020,9 @@ def survey_audio_recording(audio_file):
             <a href="%s">%s</a></li></ul>' % (file_url,
                                               os.path.basename(file_url))
         return player_string
+    else:
+        return '<br/><span class="label label-important">%s</span>' % \
+                    _('No recording')
 
 
 @login_required

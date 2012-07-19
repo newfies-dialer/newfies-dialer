@@ -536,6 +536,7 @@ def survey_question_add(request):
             #surveyapp_id = request.POST['surveyapp']
 
     template = 'frontend/survey/survey_question_change.html'
+
     data = {
         'form': form,
         'surveyapp_id': surveyapp_id,
@@ -588,6 +589,7 @@ def survey_question_change(request, id):
     template = 'frontend/survey/survey_question_change.html'
     data = {
         'form': form,
+        'surveyapp_id': survey_que.surveyapp_id,
         'survey_question_id': id,
         'module': current_view(request),
         'err_msg': request.session.get('err_msg'),

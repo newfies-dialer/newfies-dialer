@@ -78,15 +78,11 @@ class SurveyQuestionForm(ModelForm):
         self.fields['surveyapp'].widget = forms.HiddenInput()
         # To get user's audio file list
         self.fields['audio_message'].choices = get_audiofile_list(user)
+        self.fields['audio_message'].widget.attrs['class'] = 'span2'
         self.fields['type'].choices = APP_TYPE
-        if instance.id:
-            js_function = "question_form(" + str(instance.id) + ", 1);"
-            #self.fields['question'].widget.attrs['onBlur'] = js_function
-            #self.fields['audio_message'].widget.attrs['onChange'] = js_function
-            #self.fields['type'].widget.attrs['onChange'] = js_function + \
-            #                'toggle_gateway_field("' + str(instance.id) + '")'
-            #self.fields['data'].widget.attrs['onBlur'] = js_function
-            #self.fields['gateway'].widget.attrs['onChange'] = js_function
+        self.fields['type'].widget.attrs['class'] = 'span2'
+        #self.fields['data'].widget.attrs['class'] = 'span3'
+        self.fields['gateway'].widget.attrs['class'] = 'span2'
 
 
 class SurveyQuestionNewForm(ModelForm):
@@ -102,6 +98,7 @@ class SurveyQuestionNewForm(ModelForm):
         self.fields['question'].widget.attrs['class'] = 'span5'
         self.fields['audio_message'].choices = get_audiofile_list(user)
         self.fields['type'].choices = APP_TYPE
+
 
         js_function = "var initial_que_save=1;to_call_question_form();"
         self.fields['question'].widget.attrs['onBlur'] = js_function

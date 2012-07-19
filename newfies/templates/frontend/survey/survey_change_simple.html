@@ -118,8 +118,8 @@
                                         <div class="span2"><b>{% trans "Audio message" %}</b><br/>{{ que.audio_message.name }}</div>
                                         <div class="span2"><b>{% trans "Action type" %}</b><br/>{{ que.type|action_type_name }}</div>
                                         <div class="span2"><b>{% trans "Data" %}</b><br/>{% if que.data %}{{ que.data }}{% else %} {% trans "None" %} {% endif %}</div>
-                                        <div class="span2"><b>{% trans "Gateway" %}</b><br/>{% if que.gateway %}{{ que.gateway }}{% else %} {% trans "None" %} {% endif %}</div>
-                                        <div class="span4">
+                                        <div class="span3"><b>{% trans "Gateway" %}</b><br/>{% if que.gateway %}{{ que.gateway }}{% else %} {% trans "None" %} {% endif %}</div>
+                                        <div class="span3">
                                             <button data-toggle="modal" href="#survey-question-update-edit" class="survey-question-edit btn btn-info" url='/survey_question/{{ que.id }}/' data-controls-modal='survey-question-update-content-edit'>
                                                 {% trans "Edit" %}
                                             </button>

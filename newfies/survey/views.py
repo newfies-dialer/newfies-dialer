@@ -139,7 +139,7 @@ def survey_finestatemachine(request):
     list_question = SurveyQuestion.objects\
                         .filter(surveyapp=surveyapp_id).order_by('order')
 
-    if obj_prev_qt and obj_prev_qt.type == 2:
+    if obj_prev_qt and obj_prev_qt.type == 3:
         #Previous Recording
         if testdebug:
             RecordFile = request.GET.get('RecordFile')
@@ -238,7 +238,7 @@ def survey_finestatemachine(request):
         question = "<Speak>%s</Speak>" % list_question[current_state].question
 
     #Menu
-    if list_question[current_state].type == 0:
+    if list_question[current_state].type == 1:
         html = \
             '<Response>\n' \
             '   <GetDigits action="%s" method="GET" numDigits="1" ' \
@@ -252,7 +252,7 @@ def survey_finestatemachine(request):
                 question,
                 settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
     #Recording
-    elif list_question[current_state].type == 2:
+    elif list_question[current_state].type == 3:
         html = \
             '<Response>\n' \
             '   %s\n' \

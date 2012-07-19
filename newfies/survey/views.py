@@ -24,7 +24,6 @@ from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
-from django.db.models import Q
 from dialer_campaign.models import Campaign
 from dialer_campaign.views import notice_count, update_style, \
                         delete_style, grid_common_function
@@ -54,8 +53,6 @@ def survey_finestatemachine(request):
     **Model**: SurveyQuestion
 
     """
-    initial_state = None
-    default_transition = None
     current_state = None
     next_state = None
     testdebug = False
@@ -956,7 +953,8 @@ def survey_cdr_daily_report(kwargs):
         {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
     from_query = \
         'FROM survey_surveycampaignresult '\
-        'WHERE survey_surveycampaignresult.callrequest_id = dialer_callrequest.id '
+        'WHERE survey_surveycampaignresult.callrequest_id = '\
+        'dialer_callrequest.id '
 
     # Get Total from VoIPCall table for Daily Call Report
     total_data = VoIPCall.objects.extra(select=select_data)\
@@ -971,7 +969,7 @@ def survey_cdr_daily_report(kwargs):
                     'SELECT group_concat(CONCAT_WS("*|*", question, response, record_file) SEPARATOR "-|-") '\
                     + from_query,
                 },
-        )#.exclude(callid='')
+        )  # .exclude(callid='')
 
     # Following code will count total voip calls, duration
     if total_data.count() != 0:
@@ -1168,17 +1166,18 @@ def survey_report(request):
         # List of Survey VoIP call report
         from_query =\
             'FROM survey_surveycampaignresult '\
-            'WHERE survey_surveycampaignresult.callrequest_id = dialer_callrequest.id '
+            'WHERE survey_surveycampaignresult.callrequest_id = '\
+            'dialer_callrequest.id '
 
         # SELECT group_concat(CONCAT_WS("/Result:", question, response) SEPARATOR ", ")
         rows = VoIPCall.objects.filter(**kwargs).order_by(sort_field)\
-               .extra(
-                   select={
-                       'question_response':\
-                           'SELECT group_concat(CONCAT_WS("*|*", question, response, record_file) SEPARATOR "-|-") '\
-                           + from_query
-                       },
-               )#.exclude(callid='')
+                .extra(
+                    select={
+                        'question_response':\
+                            'SELECT group_concat(CONCAT_WS("*|*", question, response, record_file) SEPARATOR "-|-") '\
+                            + from_query
+                        },
+                )  # .exclude(callid='')
         request.session['session_surveycalls'] = rows
 
         # Get daily report from session while using pagination & sorting
@@ -1229,7 +1228,8 @@ def export_surveycall_report(request):
 
     **Important variable**:
 
-        * ``request.session['surveycall_record_qs']`` - stores survey voipcall query set
+        * ``request.session['surveycall_record_qs']`` - stores survey voipcall
+            query set
 
     **Exported fields**: ['starting_date', 'user', 'callid', 'callerid',
                           'phone_number', 'duration', 'billsec',

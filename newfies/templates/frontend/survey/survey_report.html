@@ -51,6 +51,13 @@
             <div class="span12">
                 <div class="row">
                     <div class="span4">
+                        <label class="control-label" for="id_{{ form.campaign.name }}">{{ form.campaign.label }}</label>
+                        <div class="input">
+                            {{ form.campaign }}
+                            <span class="help-block">{{ form.campaign.help_text|safe }} </span>
+                        </div>
+                    </div>
+                    <div class="span4">
                         <label class="control-label" for="id_{{ form.from_date.name }}">{{ form.from_date.label }}</label>
                         <div class="input">
                             {{ form.from_date }}
@@ -62,13 +69,6 @@
                         <div class="input">
                             {{ form.to_date }}
                             <span class="help-block">{{ form.to_date.help_text|safe }} </span>
-                        </div>
-                    </div>
-                    <div class="span4">
-                        <label class="control-label" for="id_{{ form.campaign.name }}">{{ form.campaign.label }}</label>
-                        <div class="input">
-                            {{ form.campaign }}
-                            <span class="help-block">{{ form.campaign.help_text|safe }} </span>
                         </div>
                     </div>
                 </div>

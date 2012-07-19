@@ -721,7 +721,7 @@ def survey_change_simple(request, object_id):
     survey_response_list = {}
     for survey_que in survey_que_list:
         res_list = SurveyResponse.objects\
-                    .filter(surveyquestion=survey_que)
+                    .filter(surveyquestion=survey_que).order_by('key')
         if res_list:
             # survey question response
             survey_response_list['%s' % survey_que.id] = res_list

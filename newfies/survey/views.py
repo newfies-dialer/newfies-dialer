@@ -35,7 +35,7 @@ from survey.forms import SurveyForm, \
                         SurveyResponseForm, \
                         SurveyCustomerAudioFileForm, \
                         SurveyDetailReportForm
-from survey.function_def import get_que_res_string
+from survey.function_def import export_question_result
 from dialer_cdr.models import Callrequest, VoIPCall
 from audiofield.models import AudioFile
 from audiofield.forms import CustomerAudioFileForm
@@ -1261,24 +1261,15 @@ def export_surveycall_report(request):
 
     qs = request.session['session_surveycalls']
 
-    writer.writerow(['starting_date', 'user', 'callid', 'callerid',
-                     'phone_number', 'duration', 'billsec',
-                     'disposition', 'hangup_cause', 'hangup_cause_q850',
-                     'used_gateway', 'survey result'])
+    writer.writerow(['starting_date', 'destination', 'duration',
+                     'disposition', 'hangup_cause', 'survey result'])
     for i in qs:
-        gateway_used = i.used_gateway.name if i.used_gateway else ''
-        writer.writerow([i.starting_date,
-                         i.user,
-                         i.callid,
-                         i.callerid,
-                         i.phone_number,
-                         i.duration,
-                         i.billsec,
-                         i.disposition,
-                         i.hangup_cause,
-                         i.hangup_cause_q850,
-                         gateway_used,
-                         get_que_res_string(str(i.question_response)),
-                         ])
-
+        writer.writerow([
+                        i.starting_date,
+                        i.phone_number,
+                        i.duration,
+                        i.disposition,
+                        i.hangup_cause,
+                        export_question_result(str(i.question_response)),
+                        ])
     return response

@@ -145,7 +145,7 @@
                                             <thead>
                                             <tr>
                                                 <th class="survey_result_key"><b>{% trans "Key" %}</b></th>
-                                                <th><b>{% trans "Key Value" %}</b></th>
+                                                <th class="survey_result_key"><b>{% trans "Value" %}</b></th>
                                                 <th><b>{% trans "Goto question" %}</b></th>
                                                 <th class="survey_result_key">&nbsp;</th>
                                             </tr>
@@ -155,7 +155,7 @@
                                             {% for res_obj in res_objs  %}
                                                 <tr>
                                                     <td class="survey_result_key">{{ res_obj.key }}</td>
-                                                    <td>{{ res_obj.keyvalue }}</td>
+                                                    <td class="survey_result_key">{{ res_obj.keyvalue }}</td>
                                                     <td>{{ res_obj.goto_surveyquestion }}</td>
                                                     <td class="survey_result_key">
                                                         <a data-toggle="modal" style="{{ update_style }}" title="{% trans "Edit response" %}" href="#survey-response-update-edit-{{ res_obj.id }}" class="survey-response-edit-{{ res_obj.id }} icon" url='/survey_response/{{ res_obj.id }}/' data-controls-modal='survey-response-update-content-edit-{{ res_obj.id }}'>&nbsp;</a>

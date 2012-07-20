@@ -75,8 +75,6 @@ class SurveyQuestionForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(SurveyQuestionForm, self).__init__(*args, **kwargs)
-        #TODO instance defined but not used
-        instance = getattr(self, 'instance', None)
         self.fields['question'].widget.attrs['class'] = 'span5'
         self.fields['surveyapp'].widget = forms.HiddenInput()
         # To get user's audio file list

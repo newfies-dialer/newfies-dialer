@@ -88,9 +88,8 @@ class Command(BaseCommand):
                                             duration=random.randint(1, 100),
                                             disposition=choice(VOIPCALL_DISPOSITION))
 
-                        for i in range(0, 3):
+                        for question in SURVEY_RESULT_QUE:
                             # for survey campaign result
-                            question = choice(SURVEY_RESULT_QUE)
                             if question == \
                                'lease record a message to comment on our agent after the beep':
                                 response = ''

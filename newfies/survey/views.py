@@ -1285,7 +1285,7 @@ def export_surveycall_report(request):
         survey_que = SurveyQuestion.objects\
                 .filter(surveyapp_id=int(campaign_obj.object_id))
         for i in survey_que:
-            column_list.append(str(i.question))
+            column_list.append(str(i.question.replace(',', ' ')))
 
     writer.writerow(column_list)
     for i in qs:

@@ -29,6 +29,7 @@ def field_list(name, user=None):
 
 def export_question_result(val, column_question):
     """Modify survey result string for export"""
+    #TODO : It might need some refactoring
     if not val:
         return ''
     val_list = val.split("-|-")
@@ -51,7 +52,7 @@ def export_question_result(val, column_question):
 
             # check audio que
             if str(column_question) == str(que_audio[0]):
-                return str(que_audio[1])
+                return str(que_audio[1].replace(',', ' '))
         else:
             que_res = i.split("*|*")
             try:
@@ -59,7 +60,7 @@ def export_question_result(val, column_question):
 
                 # check normal que
                 if str(column_question) == str(que_res[0]):
-                    return str(que_res[1])
+                    return str(que_res[1].replace(',', ' '))
             except:
                 result_string += ''
             try:
@@ -70,5 +71,5 @@ def export_question_result(val, column_question):
 
         rec_count += 1
 
-    #return str(result_string)
+    #return str(result_string.replace(',', ' '))
     return ''

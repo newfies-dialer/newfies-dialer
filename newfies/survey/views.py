@@ -900,7 +900,7 @@ def audio_change(request, object_id):
            context_instance=RequestContext(request))
 
 
-def survey_cdr_daily_report(kwargs):
+def survey_cdr_daily_report(kwargs, from_query, select_group_query):
     """Get survey voip call daily report"""
     max_duration = 0
     total_duration = 0
@@ -910,10 +910,6 @@ def survey_cdr_daily_report(kwargs):
     # Daily Survey VoIP call report
     select_data =\
         {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
-    from_query = \
-        'FROM survey_surveycampaignresult '\
-        'WHERE survey_surveycampaignresult.callrequest_id = '\
-        'dialer_callrequest.id '
 
     # Get Total from VoIPCall table for Daily Call Report
     total_data = VoIPCall.objects.extra(select=select_data)\
@@ -924,9 +920,7 @@ def survey_cdr_daily_report(kwargs):
         .order_by('-starting_date')\
         .extra(
             select={
-                'question_response':\
-                    'SELECT group_concat(CONCAT_WS("*|*", question, response, record_file) SEPARATOR "-|-") '\
-                    + from_query,
+                'question_response': select_group_query + from_query,
                 },
         )  # .exclude(callid='')
 
@@ -1130,16 +1124,18 @@ def survey_report(request):
             'FROM survey_surveycampaignresult '\
             'WHERE survey_surveycampaignresult.callrequest_id = '\
             'dialer_callrequest.id '
+        select_group_query = 'SELECT group_concat(CONCAT_WS("*|*", question, response, record_file) SEPARATOR "-|-") '
 
         # SELECT group_concat(CONCAT_WS("/Result:", question, response) SEPARATOR ", ")
-        rows = VoIPCall.objects.filter(**kwargs).order_by(sort_field)\
+        rows = VoIPCall.objects\
+                .only('starting_date', 'phone_number', 'duration', 'disposition')\
+                .filter(**kwargs)\
                 .extra(
                     select={
-                        'question_response':\
-                            'SELECT group_concat(CONCAT_WS("*|*", question, response, record_file) SEPARATOR "-|-") '\
-                            + from_query
+                        'question_response': select_group_query + from_query
                         },
-                )  # .exclude(callid='')
+                ).order_by(sort_field)  # .exclude(callid='')
+
         request.session['session_surveycalls'] = rows
 
         # Get daily report from session while using pagination & sorting
@@ -1147,7 +1143,9 @@ def survey_report(request):
             survey_cdr_daily_data = \
                 request.session['session_survey_cdr_daily_data']
         else:
-            survey_cdr_daily_data = survey_cdr_daily_report(kwargs)
+            survey_cdr_daily_data = survey_cdr_daily_report(kwargs,
+                                                            from_query,
+                                                    select_group_query)
             request.session['session_survey_cdr_daily_data'] = \
                 survey_cdr_daily_data
     except:

@@ -28,6 +28,7 @@ import random
 VOIPCALL_DISPOSITION = ['ANSWER','BUSY', 'NOANSWER', 'CANCEL', 'CONGESTION',
                         'CHANUNAVAIL', 'DONTCALL', 'TORTURE', 'INVALIDARGS',
                         'NOROUTE', 'FORBIDDEN']
+VOIPCALL_DISPOSITION = ['ANSWER']
 
 SURVEY_RESULT_QUE = ['Please rank our support from 1 to 9, 1 being low and 9 being high',
                      'Were you satisfy by the technical expertise of our agent, press 1 for yes press 2 for no and 3 to go back',

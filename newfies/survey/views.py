@@ -607,8 +607,8 @@ def survey_response_change(request, id):
         if form.is_valid():
             obj = form.save()
             return HttpResponseRedirect('/survey/%s/#row%s'\
-            % (obj.surveyquestion.surveyapp_id,
-               obj.surveyquestion.id))
+                % (obj.surveyquestion.surveyapp_id,
+                   obj.surveyquestion.id))
         else:
             duplicate_count =\
             SurveyResponse.objects.filter(key=request.POST['key'],
@@ -1101,7 +1101,7 @@ def survey_report(request):
         campaign_id = int(campaign_id)
         campaign_obj = Campaign.objects.get(id=campaign_id)
         survey_result_kwargs['campaign'] = campaign_obj
-        #survey_result_kwargs['callrequest__hangup_cause__exact'] = ''
+        survey_result_kwargs['callrequest__status'] = 4
 
         # Get survey result report from session
         # while using pagination & sorting

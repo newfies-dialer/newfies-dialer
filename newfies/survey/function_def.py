@@ -29,26 +29,17 @@ def field_list(name, user=None):
 
 def export_question_result(val, column_question):
     """Modify survey result string for export"""
-    #TODO : It might need some refactoring
     if not val:
         return ''
     val_list = val.split("-|-")
     result_string = ''
 
     rec_count = 1
-    if len(val_list) == rec_count:
-        line_end_with = ''
-    else:
-        line_end_with = '\t'
-
     for i in val_list:
         if not i:
             continue
         if i.find("*|**|*") > 0:
             que_audio = i.split("*|**|*")
-            result_string += str(que_audio[0]) \
-                        + '\t\n' + _('Audio File') + ': ' \
-                        + str(que_audio[1]) + line_end_with
 
             # check audio que
             if str(column_question) == str(que_audio[0]):
@@ -56,16 +47,9 @@ def export_question_result(val, column_question):
         else:
             que_res = i.split("*|*")
             try:
-                result_string += str(que_res[0]) + '\t'
-
                 # check normal que
                 if str(column_question) == str(que_res[0]):
                     return str(que_res[1].replace(',', ' '))
-            except:
-                result_string += ''
-            try:
-                result_string += _('Key') + ': ' \
-                        + str(que_res[1]) + line_end_with
             except:
                 result_string += ''
 

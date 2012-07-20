@@ -31,7 +31,6 @@ from survey.models import SurveyApp, SurveyQuestion, \
                         SurveyResponse, SurveyCampaignResult
 from survey.forms import SurveyForm, \
                         SurveyQuestionForm, \
-                        SurveyQuestionNewForm, \
                         SurveyResponseForm, \
                         SurveyCustomerAudioFileForm, \
                         SurveyDetailReportForm
@@ -432,77 +431,6 @@ def survey_question_list(request):
 
 
 @login_required
-def survey_change(request, object_id):
-    """Update/Delete Survey for the logged in user
-
-    **Attributes**:
-
-        * ``object_id`` - Selected survey object
-        * ``form`` - SurveyForm
-        * ``template`` - frontend/survey/change.html
-
-    **Logic Description**:
-
-        * Update/delete selected survey from the survey list
-          via SurveyForm & get redirected to survey list
-    """
-    survey = SurveyApp.objects.get(pk=object_id)
-    survey_que_list = SurveyQuestion.objects\
-                        .filter(surveyapp=survey).order_by('order')
-
-    form = SurveyForm(instance=survey)
-    new_survey_que_form = SurveyQuestionNewForm(
-                            request.user,
-                            initial={'surveyapp': survey})
-    new_survey_res_form = SurveyResponseForm(request.user)
-
-    survey_que_form_collection = {}
-    survey_res_form_collection = {}
-
-    for survey_que in survey_que_list:
-        f = SurveyQuestionForm(request.user, instance=survey_que)
-        survey_que_form_collection['%s' % survey_que.id] = f
-
-        # survey question response
-        survey_response_list = SurveyResponse.objects\
-                                .filter(surveyquestion=survey_que)
-        for survey_res in sorted(survey_response_list):
-            r = SurveyResponseForm(request.user, instance=survey_res)
-            survey_res_form_collection['%s' % survey_res.id] = {'form': r,
-                                    'que_id': survey_res.surveyquestion_id}
-
-    if request.method == 'POST':
-        if request.POST.get('delete'):
-            survey_del(request, object_id)
-            return HttpResponseRedirect('/survey/')
-        else:
-            form = SurveyForm(request.POST, request.user, instance=survey)
-            if form.is_valid():
-                form.save()
-                request.session["msg"] = _('"%(name)s" is updated.') \
-                    % {'name': request.POST['name']}
-                return HttpResponseRedirect('/survey/')
-
-    template = 'frontend/survey/survey_change.html'
-
-    data = {
-       'module': current_view(request),
-       'action': 'update',
-       'form': form,
-       'survey_que_list': survey_que_list,
-       'survey_que_forms': survey_que_form_collection,
-       'new_survey_que_form': new_survey_que_form,
-       'survey_res_form_collection': survey_res_form_collection,
-       'new_survey_res_form': new_survey_res_form,
-       'msg': request.session.get('msg'),
-       'notice_count': notice_count(request),
-    }
-    request.session['msg'] = ''
-    return render_to_response(template, data,
-           context_instance=RequestContext(request))
-
-
-@login_required
 def survey_question_add(request):
     """Add new Survey for the logged in user
 
@@ -706,7 +634,7 @@ def survey_response_change(request, id):
 
 
 @login_required
-def survey_change_simple(request, object_id):
+def survey_change(request, object_id):
     """Update/Delete Survey for the logged in user
 
     **Attributes**:
@@ -746,7 +674,7 @@ def survey_change_simple(request, object_id):
                 % {'name': request.POST['name']}
                 return HttpResponseRedirect('/survey/')
 
-    template = 'frontend/survey/survey_change_simple.html'
+    template = 'frontend/survey/survey_change.html'
 
     data = {
         'survey_obj_id': object_id,
@@ -1298,6 +1226,6 @@ def export_surveycall_report(request):
         for que in survey_que:
             result_row_list.append(
                 export_question_result(str(i.question_response),
-                                    str(que.question)))
+                                       str(que.question)))
         writer.writerow(result_row_list)
     return response

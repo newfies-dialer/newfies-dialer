@@ -88,27 +88,6 @@ class SurveyQuestionForm(ModelForm):
         self.fields['gateway'].widget.attrs['class'] = 'span2'
 
 
-class SurveyQuestionNewForm(ModelForm):
-    """SurveyQuestionNew ModelForm"""
-    class Meta:
-        model = SurveyQuestion
-        fields = ['question', 'surveyapp', 'audio_message', 'type',
-                  'data', 'gateway']
-
-    def __init__(self, user, *args, **kwargs):
-        super(SurveyQuestionNewForm, self).__init__(*args, **kwargs)
-        self.fields['surveyapp'].widget = forms.HiddenInput()
-        self.fields['question'].widget.attrs['class'] = 'span5'
-        self.fields['audio_message'].choices = get_audiofile_list(user)
-        self.fields['type'].choices = APP_TYPE
-        js_function = "var initial_que_save=1;to_call_question_form();"
-        self.fields['question'].widget.attrs['onBlur'] = js_function
-        self.fields['audio_message'].widget.attrs['onChange'] = js_function
-        self.fields['type'].widget.attrs['onChange'] = js_function
-        self.fields['data'].widget.attrs['onBlur'] = js_function
-        self.fields['gateway'].widget.attrs['onChange'] = js_function
-
-
 class SurveyResponseForm(ModelForm):
     """SurveyResponse ModelForm"""
 
@@ -124,17 +103,6 @@ class SurveyResponseForm(ModelForm):
         self.fields['keyvalue'].widget.attrs['class'] = "input-small"
         self.fields['goto_surveyquestion'].choices = get_question_list(user,
                                                             surveyapp_id)
-        if instance.id:
-            #TODO js_function defined but not used
-            js_function = "response_form(" + str(instance.id) + ", " + \
-                            str(instance.surveyquestion_id) + ", 1, 1);"
-            #self.fields['key'].widget.attrs['onBlur'] = js_function
-            #self.fields['keyvalue'].widget.attrs['onBlur'] = js_function
-            #self.fields['goto_surveyquestion'].widget\
-            #        .attrs['onChange'] = js_function
-            #self.fields['goto_surveyquestion'].widget\
-            #    .attrs['onfocus'] = \
-            #        'call_update_question("goto_' + str(instance.id) + '");'
 
 
 class SurveyReportForm(forms.Form):

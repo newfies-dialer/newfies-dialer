@@ -24,22 +24,6 @@ from dialer_cdr.forms import VoipSearchForm
 from audiofield.forms import CustomerAudioFileForm
 
 
-class SurveyForm(ModelForm):
-    """SurveyApp ModelForm"""
-
-    class Meta:
-        model = SurveyApp
-        exclude = ('user',)
-
-    def __init__(self, *args, **kwargs):
-        super(SurveyForm, self).__init__(*args, **kwargs)
-        instance = getattr(self, 'instance', None)
-        if instance.id:
-            self.fields.keyOrder = ['name', 'description']
-        self.fields['description'].widget = forms.TextInput()
-        self.fields['description'].widget.attrs['class'] = 'span4'
-
-
 def get_audiofile_list(user):
     """Get audio file list for logged in user
     with default none option"""
@@ -58,11 +42,27 @@ def get_question_list(user, surveyapp_id):
     list_sq.append(('', '---'))
 
     list = SurveyQuestion.objects.filter(user=user,
-                        surveyapp_id=surveyapp_id)
+        surveyapp_id=surveyapp_id)
     for i in list:
         list_sq.append((i.id, i.question))
 
     return list_sq
+
+
+class SurveyForm(ModelForm):
+    """SurveyApp ModelForm"""
+
+    class Meta:
+        model = SurveyApp
+        exclude = ('user',)
+
+    def __init__(self, *args, **kwargs):
+        super(SurveyForm, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        if instance.id:
+            self.fields.keyOrder = ['name', 'description']
+        self.fields['description'].widget = forms.TextInput()
+        self.fields['description'].widget.attrs['class'] = 'span4'
 
 
 class SurveyQuestionForm(ModelForm):

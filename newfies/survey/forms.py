@@ -75,6 +75,7 @@ class SurveyQuestionForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(SurveyQuestionForm, self).__init__(*args, **kwargs)
+        #TODO instance defined but not used
         instance = getattr(self, 'instance', None)
         self.fields['question'].widget.attrs['class'] = 'span5'
         self.fields['surveyapp'].widget = forms.HiddenInput()
@@ -100,8 +101,6 @@ class SurveyQuestionNewForm(ModelForm):
         self.fields['question'].widget.attrs['class'] = 'span5'
         self.fields['audio_message'].choices = get_audiofile_list(user)
         self.fields['type'].choices = APP_TYPE
-
-
         js_function = "var initial_que_save=1;to_call_question_form();"
         self.fields['question'].widget.attrs['onBlur'] = js_function
         self.fields['audio_message'].widget.attrs['onChange'] = js_function
@@ -123,9 +122,10 @@ class SurveyResponseForm(ModelForm):
         self.fields['surveyquestion'].widget = forms.HiddenInput()
         self.fields['key'].widget.attrs['class'] = "input-small"
         self.fields['keyvalue'].widget.attrs['class'] = "input-small"
-        self.fields['goto_surveyquestion'].choices = get_question_list(user, surveyapp_id)
-
+        self.fields['goto_surveyquestion'].choices = get_question_list(user,
+                                                            surveyapp_id)
         if instance.id:
+            #TODO js_function defined but not used
             js_function = "response_form(" + str(instance.id) + ", " + \
                             str(instance.surveyquestion_id) + ", 1, 1);"
             #self.fields['key'].widget.attrs['onBlur'] = js_function

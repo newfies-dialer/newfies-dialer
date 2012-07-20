@@ -20,10 +20,10 @@
     {% if action == 'update' %}
         {% block content_header %}
             <a class="close" data-dismiss="modal" >&times;</a>
-            <h1>
+            <h3>
                 {% trans "Update" %} {% trans "Survey Question" %}
                 <small></small>
-            </h1>
+            </h3>
         {% endblock %}
     {% endif %}
 
@@ -49,13 +49,13 @@
         <div class="modal hide fade" id="survey_que_modal">
             <div class="modal-header">
                 <a class="close" data-dismiss="modal" >&times;</a>
-                <h1>{% if action == 'update' %}
+                <h3>{% if action == 'update' %}
                     {% trans "Update" %}
                 {% else %}
                     {% trans "Add" %}
                 {% endif %} {% trans "Survey Question" %}
                     <small></small>
-                </h1>
+                </h3>
             </div>
             <div class="modal-body">
     {% endif %}

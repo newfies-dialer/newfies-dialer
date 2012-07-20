@@ -44,6 +44,7 @@ from dateutil.relativedelta import relativedelta
 import csv
 import os.path
 
+#TODO: There is no a more elegant way to do this using only template
 update_style_template = 'text-decoration:none;background-image:url(' +\
                         settings.STATIC_URL + 'newfies/icons/page_edit.png);'
 delete_style_template = 'text-decoration:none;background-image:url(' +\

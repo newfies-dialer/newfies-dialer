@@ -686,6 +686,10 @@ td.survey_result_key {
     font-weight: bold;
 }
 
+td.survey_edit_key {
+    width: 70px;
+}
+
 /* customize the survey edition, this is for the sortable question header */
 .portlet-header{
     color: #404040;

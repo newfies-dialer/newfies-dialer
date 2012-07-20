@@ -130,15 +130,7 @@
                         {% sort_link "Duration" "-duration"  %}
                     {% endifequal %}
                 </th>
-                <th>
-                    {% ifequal col_name_with_order.sort_field 'disposition' %}
-                        {% sort_link "<i class='icon-chevron-up'></i>" "disposition"  %}
-                        {% trans "Account" %}
-                        {% sort_link "<i class='icon-chevron-down'></i>" "-disposition"  %}
-                    {% else %}
-                        {% sort_link "Disposition" "-disposition"  %}
-                    {% endifequal %}
-                </th>
+                <th>{% trans "Disposition" %}</th>
                 <th width="60%">{% trans "Survey Result" %}</th>
             </tr>
             </thead>

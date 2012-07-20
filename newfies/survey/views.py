@@ -1128,12 +1128,13 @@ def survey_report(request):
         # SELECT group_concat(CONCAT_WS("/Result:", question, response) SEPARATOR ", ")
         rows = VoIPCall.objects\
                 .only('starting_date', 'phone_number', 'duration', 'disposition')\
-                .filter(**kwargs).order_by(sort_field)\
+                .filter(**kwargs)\
                 .extra(
                     select={
                         'question_response': select_group_query + from_query
                         },
-                )  # .exclude(callid='')
+                ).order_by(sort_field)  # .exclude(callid='')
+
         request.session['session_surveycalls'] = rows
 
         # Get daily report from session while using pagination & sorting

@@ -27,7 +27,7 @@ def field_list(name, user=None):
     return ((l.id, l.name) for l in list)
 
 
-def export_question_result(val):
+def export_question_result(val, column_question):
     """Modify survey result string for export"""
     if not val:
         return ''
@@ -38,23 +38,28 @@ def export_question_result(val):
     if len(val_list) == rec_count:
         line_end_with = ''
     else:
-        line_end_with = '\t\n'
+        line_end_with = '\t'
 
     for i in val_list:
         if not i:
             continue
         if i.find("*|**|*") > 0:
             que_audio = i.split("*|**|*")
-            result_string += _('Que. : ') + str(que_audio[0]) \
+            result_string += str(que_audio[0]) \
                         + '\t\n' + _('Audio File') + ': ' \
                         + str(que_audio[1]) + line_end_with
+
+            # check audio que
+            if str(column_question) == str(que_audio[0]):
+                return str(que_audio[1])
         else:
             que_res = i.split("*|*")
             try:
-                if str(que_res[0]) != 'None':
-                    result_string += _('Que. : ') + str(que_res[0]) + '\t\n'
-                else:
-                    result_string += str(que_res[0]) + '\t\n'
+                result_string += str(que_res[0]) + '\t'
+
+                # check normal que
+                if str(column_question) == str(que_res[0]):
+                    return str(que_res[1])
             except:
                 result_string += ''
             try:
@@ -65,4 +70,5 @@ def export_question_result(val):
 
         rec_count += 1
 
-    return str(result_string)
+    #return str(result_string)
+    return ''

@@ -1277,14 +1277,27 @@ def export_surveycall_report(request):
 
     qs = request.session['session_surveycalls']
 
-    writer.writerow(['starting_date', 'destination', 'duration',
-                     'disposition', 'survey result'])
+    campaign_id = request.session['session_campaign_id']
+    campaign_obj = Campaign.objects.get(pk=campaign_id)
+    column_list = ['starting_date', 'destination', 'duration',
+                   'disposition']
+    if str(campaign_obj.content_type) == 'Survey':
+        survey_que = \
+            SurveyQuestion.objects.filter(surveyapp_id=int(campaign_obj.object_id))
+        title_que = ''
+        for i in survey_que:
+            column_list.append(str(i.question))
+
+    writer.writerow(column_list)
     for i in qs:
-        writer.writerow([
-                        i.starting_date,
-                        i.phone_number,
-                        i.duration,
-                        i.disposition,
-                        export_question_result(str(i.question_response)),
-                        ])
+        result_row_list = [
+            i.starting_date,
+            i.phone_number,
+            i.duration,
+            i.disposition,
+            ]
+        for que in survey_que:
+            result_row_list.append(export_question_result(str(i.question_response),
+                                                          str(que.question)))
+        writer.writerow(result_row_list)
     return response

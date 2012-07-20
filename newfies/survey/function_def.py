@@ -38,20 +38,23 @@ def export_question_result(val):
     if len(val_list) == rec_count:
         line_end_with = ''
     else:
-        line_end_with = '\t'
+        line_end_with = '\t\n'
 
     for i in val_list:
         if not i:
             continue
         if i.find("*|**|*") > 0:
             que_audio = i.split("*|**|*")
-            result_string += str(que_audio[0]) \
-                        + '\t' + _('Audio File') + ': ' \
+            result_string += _('Que. : ') + str(que_audio[0]) \
+                        + '\t\n' + _('Audio File') + ': ' \
                         + str(que_audio[1]) + line_end_with
         else:
             que_res = i.split("*|*")
             try:
-                result_string += str(que_res[0]) + '\t'
+                if str(que_res[0]) != 'None':
+                    result_string += _('Que. : ') + str(que_res[0]) + '\t\n'
+                else:
+                    result_string += str(que_res[0]) + '\t\n'
             except:
                 result_string += ''
             try:

@@ -77,12 +77,10 @@ class SurveyQuestionForm(ModelForm):
         super(SurveyQuestionForm, self).__init__(*args, **kwargs)
         self.fields['question'].widget.attrs['class'] = 'span5'
         self.fields['surveyapp'].widget = forms.HiddenInput()
-        # To get user's audio file list
         self.fields['audio_message'].choices = get_audiofile_list(user)
         self.fields['audio_message'].widget.attrs['class'] = 'span2'
         self.fields['type'].choices = APP_TYPE
         self.fields['type'].widget.attrs['class'] = 'span2'
-        #self.fields['data'].widget.attrs['class'] = 'span3'
         self.fields['gateway'].widget.attrs['class'] = 'span2'
 
 
@@ -95,7 +93,6 @@ class SurveyResponseForm(ModelForm):
 
     def __init__(self, user, surveyapp_id, *args, **kwargs):
         super(SurveyResponseForm, self).__init__(*args, **kwargs)
-        instance = getattr(self, 'instance', None)
         self.fields['surveyquestion'].widget = forms.HiddenInput()
         self.fields['key'].widget.attrs['class'] = "input-small"
         self.fields['keyvalue'].widget.attrs['class'] = "input-small"

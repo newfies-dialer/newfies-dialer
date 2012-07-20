@@ -1209,6 +1209,7 @@ def export_surveycall_report(request):
     campaign_obj = Campaign.objects.get(pk=campaign_id)
     column_list = ['starting_date', 'destination', 'duration',
                    'disposition']
+
     if str(campaign_obj.content_type) == 'Survey':
         survey_que = SurveyQuestion.objects\
                 .filter(surveyapp_id=int(campaign_obj.object_id))
@@ -1218,11 +1219,12 @@ def export_surveycall_report(request):
     writer.writerow(column_list)
     for i in qs:
         result_row_list = [
-            i.starting_date,
-            i.phone_number,
-            i.duration,
-            i.disposition,
-            ]
+                            i.starting_date,
+                            i.phone_number,
+                            i.duration,
+                            i.disposition,
+                          ]
+
         for que in survey_que:
             result_row_list.append(
                 export_question_result(str(i.question_response),

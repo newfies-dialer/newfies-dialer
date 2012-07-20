@@ -17,8 +17,9 @@ from django.template.defaultfilters import *
 from django.utils.datastructures import SortedDict
 from django.utils.translation import ugettext as _
 from survey.views import survey_audio_recording
-from survey.models import APP_TYPE
+from dialer_campaign.models import CAMPAIGN_STATUS
 from dialer_cdr.models import LEG_TYPE
+from survey.models import APP_TYPE
 import operator
 import copy
 
@@ -144,12 +145,15 @@ def contact_status(value):
 @register.filter()
 def campaign_status(value):
     """Campaign Status"""
-    CAMPAIGN_STATUS = {1: 'Start',
-                       2: 'Pause',
-                       3: 'Abort',
-                       4: 'End'}
-    status = CAMPAIGN_STATUS[value]
+    if not value:
+        return ''
+    STATUS = dict(CAMPAIGN_STATUS)
+    try:
+        status = STATUS[value]
+    except:
+        status = ''
     return str(status)
+
 
 
 @register.filter(name='sort')
@@ -278,7 +282,6 @@ def que_res_string(val):
     result_string = '<table class="table table-striped table-bordered '\
                     'table-condensed">'
 
-    rec_count = 1
     for i in val_list:
         if "*|**|*" in i:
             que_audio = i.split("*|**|*")
@@ -291,7 +294,6 @@ def que_res_string(val):
             result_string += '<tr><td>' + str(que_res[0])\
                              + '</td><td class="survey_result_key">' \
                              + str(que_res[1]) + '</td></tr>'
-        rec_count += 1
 
     result_string += '</table>'
     return result_string

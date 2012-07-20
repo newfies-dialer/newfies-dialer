@@ -32,18 +32,19 @@ def export_question_result(val, column_question):
     if not val:
         return ''
     val_list = val.split("-|-")
-    result_string = ''
 
-    rec_count = 1
     for i in val_list:
         if not i:
             continue
+
         if i.find("*|**|*") > 0:
             que_audio = i.split("*|**|*")
-
-            # check audio que
-            if str(column_question) == str(que_audio[0]):
-                return str(que_audio[1].replace(',', ' '))
+            try:
+                # check audio que
+                if str(column_question) == str(que_audio[0]):
+                    return str(que_audio[1].replace(',', ' '))
+            except:
+                pass
         else:
             que_res = i.split("*|*")
             try:
@@ -51,9 +52,6 @@ def export_question_result(val, column_question):
                 if str(column_question) == str(que_res[0]):
                     return str(que_res[1].replace(',', ' '))
             except:
-                result_string += ''
+                pass
 
-        rec_count += 1
-
-    #return str(result_string.replace(',', ' '))
     return ''

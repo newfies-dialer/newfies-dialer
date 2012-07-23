@@ -44,9 +44,15 @@ from survey.api.survey_response_api import SurveyResponseResource
 
 import os
 from django.contrib import admin
-admin.autodiscover()
 from dajaxice.core import dajaxice_autodiscover
 dajaxice_autodiscover()
+
+try:
+    admin.autodiscover()
+except admin.sites.AlreadyRegistered:
+    # nose imports the admin.py files during tests, so
+    # the models have already been registered.
+    pass
 
 # tastypie api
 tastypie_api = Api(api_name='v1')

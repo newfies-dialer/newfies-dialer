@@ -32,11 +32,11 @@ msgstr "Português"
 
 #: settings.py:389 user_profile/fields.py:65 user_profile/fields.py:237
 msgid "Chinese"
-msgstr ""
+msgstr "Chines"
 
 #: settings.py:390 user_profile/fields.py:221
 msgid "Turkish"
-msgstr ""
+msgstr "Turco"
 
 #: custom_admin_tools/dashboard.py:70
 msgid "Task Manager"
@@ -599,9 +599,8 @@ msgid "Additional application parameters."
 msgstr "Parâmetros adicionais da aplicação."
 
 #: dialer_campaign/models.py:352
-#, fuzzy
 msgid "List of Imported Phonebook"
-msgstr "Listar, adicionar e editar listas telefônicas"
+msgstr "Lista de agenda importada"
 
 #: dialer_campaign/models.py:362 templates/frontend/campaign/list.html:56
 msgid "Campaigns"
@@ -713,9 +712,8 @@ msgid "Delete contact"
 msgstr "Excluir contato"
 
 #: dialer_campaign/views.py:1365
-#, fuzzy, python-format
 msgid "\"%(name)s\" cannot be added."
-msgstr "\"%(name)s\" foi adicionado."
+msgstr "\"%(name)s\" não foi adicionado."
 
 #: dialer_campaign/views.py:1411
 #, python-format
@@ -876,9 +874,8 @@ msgid "VoIP Report"
 msgstr "Relatório VoIP"
 
 #: dialer_cdr/admin.py:256
-#, fuzzy
 msgid "Call Aggregate Report"
-msgstr "Relatório Detalhado da Chamada"
+msgstr "Chamar relatório agregado"
 
 #: dialer_cdr/forms.py:29
 msgid "Disposition :"
@@ -1283,7 +1280,7 @@ msgstr "Configuração do discador"
 
 #: survey/forms.py:100
 msgid "Goto"
-msgstr ""
+msgstr "Ir para"
 
 #: survey/models.py:88
 msgid "Survey Description"
@@ -1314,25 +1311,22 @@ msgid "Message type"
 msgstr "Tipo de mensagem"
 
 #: survey/models.py:138 templates/frontend/survey/survey_change.html:126
-#, fuzzy
 msgid "Action type"
-msgstr "Tipo de notificação"
+msgstr "Tipo de ação"
 
 #: survey/models.py:141 voice_app/models.py:67
 msgid "Gateway used if we redirect the call"
 msgstr "Gateway utilizado se redirecionar a chamada"
 
 #: survey/models.py:143
-#, fuzzy
 msgid ""
 "The value of 'data' depends on the type of voice application :<br/>- Dial : "
 "The phone number to dial<br/>- Conference : Conference room name or "
 "number<br/>"
 msgstr ""
-"O valor de 'dados' depende do tipo de aplicação de voz: <br/> - Dial: O "
-"número do telefone a ser discado <br/> - Conferência: Sala de conferências "
-"nome ou número <br/> - Playaudio: URL do arquivo de áudio <br/> - Falar: O "
-"texto ser falado usando TTS"
+"O valor de 'data' depende do tipo de aplicação de voz: <br/> - Dial: O "
+"número do telefone a ser discado <br/> - Conferência: Nome da sala de conferências "
+"ou número <br/>"
 
 #: survey/models.py:172
 msgid "Key Digit"
@@ -1356,12 +1350,11 @@ msgstr "Resposta"
 
 #: survey/models.py:228
 msgid "Record File"
-msgstr ""
+msgstr "Gravar arquivo"
 
 #: survey/models.py:231
-#, fuzzy
 msgid "Recording Duration"
-msgstr "Configuração pesquisa"
+msgstr "Duração da gravação"
 
 #: survey/views.py:300
 msgid "Update survey"
@@ -1377,32 +1370,28 @@ msgid "%(count)s survey(s) are deleted."
 msgstr "%(count)s pesquisa(s) apagada(s) com sucesso."
 
 #: survey/views.py:450
-#, fuzzy, python-format
 msgid "\"%(question)s\" is added."
-msgstr "\"%(name)s\" foi adicionado."
+msgstr "\"%(question)s\" foi adicionada."
 
 #: survey/views.py:455 survey/views.py:507
 msgid "Question is not added."
-msgstr ""
+msgstr "Pergunta não foi adicionada"
 
 #: survey/views.py:548
-#, fuzzy, python-format
 msgid "\"%(key)s\" is added."
-msgstr "\"%(name)s\" foi adicionado."
+msgstr "\"%(key)s\" foi adicionada."
 
 #: survey/views.py:554 survey/views.py:610
-#, fuzzy
 msgid "duplicate record key !"
-msgstr "Contato duplicado"
+msgstr "Chave de registro duplicada !"
 
 #: survey/views.py:555 survey/views.py:611
 msgid "Response is not added."
-msgstr ""
+msgstr "Resposta não foi adicionada."
 
 #: survey/views.py:756
-#, fuzzy
 msgid "No recording"
-msgstr "Nenhum registro encontrado"
+msgstr "Nenhuma gravaçào"
 
 #: survey/views.py:938
 msgid "No campaign attached with survey."
@@ -1559,7 +1548,6 @@ msgid "Search"
 msgstr "Pesquisa"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:76
-#, fuzzy
 msgid "voip report"
 msgstr "Relatório VoIP"
 
@@ -1570,7 +1558,6 @@ msgid "Export CSV file"
 msgstr "Exportar arquivo CVS"
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:15
-#, fuzzy
 msgid "Call aggregate report"
 msgstr "Relatório Detalhado da Chamada"
 
@@ -1661,14 +1648,12 @@ msgid "Dashboard"
 msgstr "Dashboard"
 
 #: templates/frontend/bootstrap_menu.html:25
-#, fuzzy
 msgid "Voice Dashboard"
-msgstr "Dashboard"
+msgstr "Voz Dashboard"
 
 #: templates/frontend/bootstrap_menu.html:32
-#, fuzzy
 msgid "Voice Campaign"
-msgstr "Discador da camapnha"
+msgstr "Camapnha de voz"
 
 #: templates/frontend/bootstrap_menu.html:38
 msgid "Audio files"
@@ -1718,9 +1703,8 @@ msgid "Log out"
 msgstr "Sair"
 
 #: templates/frontend/bootstrap_menu.html:84
-#, fuzzy
 msgid "notifications"
-msgstr "Notificações"
+msgstr "notificações"
 
 #: templates/frontend/custom_jquery_select_all.html:16
 msgid "You must check at least one box!"
@@ -1871,12 +1855,11 @@ msgstr ""
 
 #: templates/frontend/index.html:14
 msgid "Learn more"
-msgstr ""
+msgstr "Ler mais"
 
 #: templates/frontend/index.html:19
-#, fuzzy
 msgid "Support"
-msgstr "Importar"
+msgstr "Suporte"
 
 #: templates/frontend/index.html:20
 msgid ""
@@ -1896,11 +1879,11 @@ msgstr "para mais informações"
 
 #: templates/frontend/index.html:22
 msgid "Get Support"
-msgstr ""
+msgstr "Contatar Suporte"
 
 #: templates/frontend/index.html:26
 msgid "Licensing"
-msgstr ""
+msgstr "Licenciamento"
 
 #: templates/frontend/index.html:27
 msgid "Newfies-Dialer is licensed under"
@@ -1916,7 +1899,7 @@ msgstr ""
 
 #: templates/frontend/index.html:29
 msgid "View Licensing details"
-msgstr ""
+msgstr "Visualizar detalhes do licenciamento"
 
 #: templates/frontend/master.html:21
 msgid "Customer Interface"
@@ -1924,7 +1907,7 @@ msgstr "Interface do usuário"
 
 #: templates/frontend/master.html:109 templates/frontend/master.html.py:115
 msgid "Hide search"
-msgstr ""
+msgstr "Esconder pesquisa"
 
 #: templates/frontend/master.html:143
 msgid "Login"
@@ -2427,9 +2410,8 @@ msgid "Survey configuration"
 msgstr "Configuração pesquisa"
 
 #: templates/frontend/survey/survey_change.html:125
-#, fuzzy
 msgid "Audio message"
-msgstr "Arquivos de áudio"
+msgstr "Mensagem de áudio"
 
 #: templates/frontend/survey/survey_change.html:127
 #: templates/frontend/voiceapp/list.html:39
@@ -2439,26 +2421,23 @@ msgstr "Dados"
 #: templates/frontend/survey/survey_change.html:127
 #: templates/frontend/survey/survey_change.html:128
 msgid "None"
-msgstr ""
+msgstr "Nenhum"
 
 #: templates/frontend/survey/survey_change.html:132
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: templates/frontend/survey/survey_change.html:149
-#, fuzzy
 msgid "Value"
-msgstr "Valor da chave"
+msgstr "Valor"
 
 #: templates/frontend/survey/survey_change.html:150
-#, fuzzy
 msgid "Goto question"
-msgstr "Apagar pergunta"
+msgstr "Ir para a pergunta"
 
 #: templates/frontend/survey/survey_change.html:162
-#, fuzzy
 msgid "Edit response"
-msgstr "Adicionar Resposta"
+msgstr "Eitar Resposta"
 
 #: templates/frontend/survey/survey_change.html:163
 msgid "Delete response"
@@ -2471,7 +2450,7 @@ msgstr "Apagar resposta"
 #: templates/frontend/survey/survey_question_change.html:147
 #: templates/frontend/survey/survey_response_change.html:96
 msgid "Close"
-msgstr ""
+msgstr "Fechar"
 
 #: templates/frontend/survey/survey_change.html:196
 msgid "Add Response"
@@ -2480,9 +2459,8 @@ msgstr "Adicionar Resposta"
 #: templates/frontend/survey/survey_change.html:214
 #: templates/frontend/survey/survey_response_change.html:25
 #: templates/frontend/survey/survey_response_change.html:57
-#, fuzzy
 msgid "Survey Response"
-msgstr "Relatórios de pesquisa"
+msgstr "Resposta da enquete"
 
 #: templates/frontend/survey/survey_change.html:256
 msgid "Add Question"
@@ -2491,9 +2469,8 @@ msgstr "Adicionar pergunta"
 #: templates/frontend/survey/survey_change.html:275
 #: templates/frontend/survey/survey_question_change.html:24
 #: templates/frontend/survey/survey_question_change.html:56
-#, fuzzy
 msgid "Survey Question"
-msgstr "Descrição levantamento"
+msgstr "Pergunta da enquete"
 
 #: templates/frontend/survey/survey_change.html:289
 msgid "Update Survey"
@@ -2504,62 +2481,53 @@ msgid "List, add and edit surveys"
 msgstr "Listar, adicionar e editar enquetes"
 
 #: templates/frontend/survey/survey_report.html:25
-#, fuzzy
 msgid "Survey Detail Report"
-msgstr "Relatório de Enquete"
+msgstr "Relatório detalhado da enquete"
 
 #: templates/frontend/survey/survey_report.html:25
-#, fuzzy
 msgid "Monitor survey reports"
-msgstr "Monitorar resultado da enquete"
+msgstr "Monitorar resulatório da enquete"
 
 #: templates/frontend/survey/survey_report.html:43
-#, fuzzy
 msgid "Survey calls"
-msgstr "Enquetes"
+msgstr "Chamadas da enquete"
 
 #: templates/frontend/survey/survey_report.html:44
-#, fuzzy
 msgid "Survey daily call report"
-msgstr "Relatório de Enquete"
+msgstr "Relatório diário das ligações da enquete"
 
 #: templates/frontend/survey/survey_report.html:45
-#, fuzzy
 msgid "Survey result"
-msgstr "Enquetes"
+msgstr "Resultado da enquetes"
 
 #: templates/frontend/survey/survey_report.html:92
 msgid "Survey call detail records"
-msgstr ""
+msgstr "Registros detalhados das ligações da enquete"
 
 #: templates/frontend/survey/survey_report.html:109
-#, fuzzy
 msgid "Call-date"
-msgstr "Call-ID"
+msgstr "Data da ligação"
 
 #: templates/frontend/survey/survey_report.html:134
-#, fuzzy
 msgid "Survey Result"
-msgstr "Relatório de Enquete"
+msgstr "Resultado da Enquete"
 
 #: templates/frontend/survey/survey_report.html:152
 #: templates/frontend/survey/survey_report.html:252
-#, fuzzy
 msgid "no record found"
 msgstr "Nenhum registro encontrado"
 
 #: templates/frontend/survey/survey_report.html:158
 msgid "total calls"
-msgstr ""
+msgstr "total de ligações"
 
 #: templates/frontend/survey/survey_report.html:235
-#, fuzzy
 msgid "contact(s) pressed"
-msgstr "Contato(s) importado(s)"
+msgstr "Contato(s) pressionado(s)"
 
 #: templates/frontend/survey/survey_report.html:237
 msgid "contact(s) left a recorded message"
-msgstr ""
+msgstr "contato(s) que deixaram um recado"
 
 #: templates/frontend/voiceapp/change.html:14
 #: templates/frontend/voiceapp/list.html:10 voice_app/models.py:94
@@ -2575,24 +2543,22 @@ msgid "List, add and edit voice applications"
 msgstr "Listar, adicionar e editar aplicações de voz"
 
 #: templates/frontend/voiceapp/list.html:40
-#, fuzzy
 msgid "TTS Language"
-msgstr "Idioma"
+msgstr "Idioma do TTS"
 
 #: templates/pagination/pagination.html:11
 #: templates/pagination/pagination.html:14
 msgid "Previous"
-msgstr ""
+msgstr "Anterior"
 
 #: templates/pagination/pagination.html:37
 #: templates/pagination/pagination.html:40
 msgid "Next"
-msgstr ""
+msgstr "Próximo"
 
 #: templates/registration/logged_out.html:8
-#, fuzzy
 msgid "Thank you for using Newfies-Dialer."
-msgstr "Obrigado por usar Newfies."
+msgstr "Obrigado por usar Newfies-Dialer."
 
 #: templates/registration/logged_out.html:10
 msgid "Log in again"
@@ -3490,13 +3456,12 @@ msgstr ""
 "texto ser falado usando TTS"
 
 #: voice_app/models.py:75
-#, fuzzy
 msgid "Text-to-Speech Language"
-msgstr "Selecionar idioma"
+msgstr "Idioma Text-to-Speech"
 
 #: voice_app/models.py:76
 msgid "Set the Text-to-Speech Engine"
-msgstr ""
+msgstr "Configure o Text-to-Speech"
 
 #: voice_app/views.py:68
 msgid "Update Voice App"
@@ -3511,14 +3476,14 @@ msgstr "Apagar App de voz"
 msgid "%(count)s voiceapp(s) are deleted."
 msgstr "%(count)s voiceapp(s) apagado(s) com sucesso."
 
-#~ msgid "new notifications"
-#~ msgstr "nova(s) notificação(ões)"
+msgid "new notifications"
+msgstr "nova(s) notificação(ções)"
 
-#~ msgid "New Question"
-#~ msgstr "Pergunta nova"
+msgid "New Question"
+msgstr "Pergunta nova"
 
-#~ msgid ""
-#~ "If no audio file is selected, then text to speech is used to read out the "
-#~ "question"
-#~ msgstr ""
-#~ "Se nenum arquivo de áudio for selecionado, o texto digito será falado"
+msgid ""
+"If no audio file is selected, then text to speech is used to read out the "
+"question"
+msgstr ""
+"Se nenhum arquivo de áudio for selecionado, o texto digitado será falado"

@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n dialer_cdr_extras dajaxice_templatetags %}
+{% load i18n dialer_cdr_extras dajaxice_templatetags icons %}
 
 {% block extra_files %}
 
@@ -158,8 +158,8 @@
                                                     <td class="survey_edit_key">{{ res_obj.keyvalue }}</td>
                                                     <td>{{ res_obj.goto_surveyquestion }}</td>
                                                     <td class="survey_edit_key">
-                                                        <a data-toggle="modal" style="{{ update_style }}" title="{% trans "Edit response" %}" href="#survey-response-update-edit-{{ res_obj.id }}" class="survey-response-edit-{{ res_obj.id }} icon" url='/survey_response/{{ res_obj.id }}/' data-controls-modal='survey-response-update-content-edit-{{ res_obj.id }}'>&nbsp;</a>
-                                                        <a style="{{ delete_style }}" href="/survey_response/{{ res_obj.id }}/?delete=true" class="icon" title="{% trans "Delete response" %}">&nbsp;</a>
+                                                        <a data-toggle="modal" {% icon_style 'page_edit' %} title="{% trans "Edit response" %}" href="#survey-response-update-edit-{{ res_obj.id }}" class="survey-response-edit-{{ res_obj.id }} icon" url='/survey_response/{{ res_obj.id }}/' data-controls-modal='survey-response-update-content-edit-{{ res_obj.id }}'>&nbsp;</a>
+                                                        <a {% icon_style 'delete' %} href="/survey_response/{{ res_obj.id }}/?delete=true" class="icon" title="{% trans "Delete response" %}">&nbsp;</a>
 
                                                         <!--update response in modal-->
                                                         <script type="text/javascript" charset="utf-8">

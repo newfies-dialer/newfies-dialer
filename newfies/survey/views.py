@@ -41,12 +41,6 @@ from dateutil.relativedelta import relativedelta
 import csv
 import os.path
 
-#TODO: There is no a more elegant way to do this using only template
-update_style_template = 'text-decoration:none;background-image:url(' +\
-                        settings.STATIC_URL + 'newfies/icons/page_edit.png);'
-delete_style_template = 'text-decoration:none;background-image:url(' +\
-                        settings.STATIC_URL + 'newfies/icons/delete.png);'
-
 
 @csrf_exempt
 def survey_finestatemachine(request):
@@ -683,8 +677,6 @@ def survey_change(request, object_id):
         'form': form,
         'msg': request.session.get('msg'),
         'notice_count': notice_count(request),
-        'update_style': update_style_template,
-        'delete_style': delete_style_template,
         }
     request.session['msg'] = ''
     return render_to_response(template, data,

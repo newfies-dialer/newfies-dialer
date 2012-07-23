@@ -2,12 +2,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -15,22 +15,15 @@
 from django import forms
 from django.conf import settings
 from django.utils.safestring import mark_safe
-from django.utils.text import truncate_words
 from django.contrib import admin
 from django.db import models
-from django.contrib.auth.models import Message
 from django.http import HttpResponse, HttpResponseNotFound, \
                         HttpResponseRedirect
-from django.db.models.query import QuerySet
-from django.utils.encoding import smart_str
 from django.contrib.admin.widgets import RelatedFieldWidgetWrapper
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import force_unicode
 from django.utils.html import escape
-from django.utils.safestring import mark_safe
 from django.utils.datastructures import MultiValueDict, MergeDict
-import operator
-import settings
 
 
 class ForeignKeySearchInput(forms.HiddenInput):

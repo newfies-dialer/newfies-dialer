@@ -593,9 +593,9 @@ def survey_response_change(request, id):
 
     if request.method == 'POST':
         form = SurveyResponseForm(request.user,
-            survey_resp.surveyquestion.surveyapp_id,
-            request.POST,
-            instance=survey_resp)
+                    survey_resp.surveyquestion.surveyapp_id,
+                    request.POST,
+                    instance=survey_resp)
         if form.is_valid():
             obj = form.save()
             return HttpResponseRedirect('/survey/%s/#row%s'\

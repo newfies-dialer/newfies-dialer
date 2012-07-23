@@ -27,7 +27,6 @@ from dialer_campaign.views import notice_count, update_style, \
                         delete_style, grid_common_function
 from dialer_audio.forms import SurveyCustomerAudioFileForm
 from audiofield.models import AudioFile
-from audiofield.forms import CustomerAudioFileForm
 from common.common_functions import current_view
 import os.path
 
@@ -103,7 +102,7 @@ def audio_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/survey/audio_list.html
+        * ``template`` - frontend/audio/audio_list.html
 
     **Logic Description**:
 
@@ -129,7 +128,7 @@ def audio_add(request):
     **Attributes**:
 
         * ``form`` - SurveyCustomerAudioFileForm
-        * ``template`` - frontend/survey/audio_change.html
+        * ``template`` - frontend/audio/audio_change.html
 
     **Logic Description**:
 
@@ -201,7 +200,7 @@ def audio_change(request, object_id):
     **Attributes**:
 
         * ``form`` - SurveyCustomerAudioFileForm
-        * ``template`` - frontend/survey/audio_change.html
+        * ``template`` - frontend/audio/audio_change.html
 
     **Logic Description**:
 
@@ -209,7 +208,7 @@ def audio_change(request, object_id):
           via the CustomerAudioFileForm & get redirected to the audio list
     """
     obj = AudioFile.objects.get(pk=object_id)
-    form = CustomerAudioFileForm(instance=obj)
+    form = SurveyCustomerAudioFileForm(instance=obj)
 
     if request.GET.get('delete'):
         # perform delete
@@ -220,9 +219,9 @@ def audio_change(request, object_id):
         return HttpResponseRedirect('/audio/')
 
     if request.method == 'POST':
-        form = CustomerAudioFileForm(request.POST,
-                                     request.FILES,
-                                     instance=obj)
+        form = SurveyCustomerAudioFileForm(request.POST,
+                                           request.FILES,
+                                           instance=obj)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/audio/')

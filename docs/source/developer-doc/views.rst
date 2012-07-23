@@ -203,6 +203,8 @@ Newfies-Dialer Views
   .. autofunction:: survey_report
 
 
+.. automodule:: dialer_audio.views
+
 .. _audio_list:
 
 :class:`audio_list`

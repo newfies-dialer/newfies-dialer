@@ -250,10 +250,11 @@
             <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
         </div>
     </div>
-
-    <button data-toggle="modal" href="#survey-question-create-add" class="survey-question-add btn btn-info" url='/survey_question/add/' data-controls-modal='survey-question-create-content-add'>
-        {% trans "Add Question" %}
-    </button>
+    {% if action == 'update' %}
+        <button data-toggle="modal" href="#survey-question-create-add" class="survey-question-add btn btn-info" url='/survey_question/add/' data-controls-modal='survey-question-create-content-add'>
+            {% trans "Add Question" %}
+        </button>
+    {% endif %}
 
     <script type="text/javascript" charset="utf-8">
 
@@ -279,10 +280,11 @@
             <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
         </div>
     </div>
-    <p>&nbsp;</p>
+
 
     <div class="actions">
         {% if action == 'update' %}
+            <p>&nbsp;</p>
             <div align="right"><input id="update" type="submit" class="btn-primary" onclick="javascript:document.getElementById('update_form').submit();" value="{% trans "Update Survey" %}" /></div>
         {% else %}
             <input id="add" type="submit" class="btn-primary" value="{% trans "Submit" %}" />

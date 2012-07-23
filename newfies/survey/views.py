@@ -603,8 +603,8 @@ def survey_response_change(request, id):
                    obj.surveyquestion.id))
         else:
             duplicate_count =\
-            SurveyResponse.objects.filter(key=request.POST['key'],
-                surveyquestion=survey_resp.surveyquestion).count()
+                SurveyResponse.objects.filter(key=request.POST['key'],
+                    surveyquestion=survey_resp.surveyquestion).count()
             if request.POST['key'] == survey_resp.key:
                 if duplicate_count >= 1:
                     form._errors["key"] = _("duplicate record key !")
@@ -663,7 +663,7 @@ def survey_change(request, object_id):
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('"%(name)s" is updated.')\
-                % {'name': request.POST['name']}
+                    % {'name': request.POST['name']}
                 return HttpResponseRedirect('/survey/')
 
     template = 'frontend/survey/survey_change.html'
@@ -705,7 +705,7 @@ def survey_cdr_daily_report(kwargs, from_query, select_group_query):
             select={
                 'question_response': select_group_query + from_query,
                 },
-        )  # .exclude(callid='')
+        )
 
     # Following code will count total voip calls, duration
     if total_data.count() != 0:

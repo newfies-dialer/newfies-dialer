@@ -88,7 +88,8 @@
 {% endif %}
 
 <form class="well" method="POST" action="." enctype="multipart/form-data" id="update_form">{% csrf_token %}
-
+<div class="row">
+<div class="span12">
     <div class="row">
         <div class="span4 clearfix{% if form.name.errors %} control-group error{% endif %}">
             <label class="control-label">{{ form.name.label }}</label>
@@ -108,7 +109,21 @@
                 {% endif %}
             </div>
         </div>
+        <div class="span4 clearfix">
+            <label class="control-label">&nbsp;</label>
+            <div class="input">
+                <div align="center">
+                {% if action == 'update' %}
+                    <input id="update" type="submit" class="btn btn-primary" onclick="javascript:document.getElementById('update_form').submit();" value="{% trans "Update Survey" %}" />
+                {% else %}
+                    <input id="add" type="submit" class="btn btn-primary" value="{% trans "Submit" %}" />
+                {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
+</div>
+</div>
 
     <p>
         {% if action == 'update' %}
@@ -280,16 +295,6 @@
         <div class="modal-footer">
             <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
         </div>
-    </div>
-
-
-    <div class="actions">
-        {% if action == 'update' %}
-            <p>&nbsp;</p>
-            <div align="right"><input id="update" type="submit" class="btn-primary" onclick="javascript:document.getElementById('update_form').submit();" value="{% trans "Update Survey" %}" /></div>
-        {% else %}
-            <input id="add" type="submit" class="btn-primary" value="{% trans "Submit" %}" />
-        {% endif %}
     </div>
 
 </form>

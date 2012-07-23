@@ -178,35 +178,34 @@ class CampaignSubscriberResource(ModelResource):
         campaign_obj = Campaign.objects.filter(
             phonebook=obj_phonebook,
             user=request.user)
-        for camp_obj in campaign_obj:
+        for c_campaign in campaign_obj:
             imported_phonebook = []
-            if camp_obj.imported_phonebook:
-                # for example:- camp_obj.imported_phonebook = 1,2,3
+            if c_campaign.imported_phonebook:
+                # for example:- c_campaign.imported_phonebook = 1,2,3
                 # So convert imported_phonebook string into int list
                 imported_phonebook = map(int,
-                    camp_obj.imported_phonebook.split(','))
+                    c_campaign.imported_phonebook.split(','))
 
-            phonbook_list = camp_obj.phonebook\
-            .values_list('id', flat=True)\
-            .all()
-            phonbook_list = map(int, phonbook_list)
+            phonebook_list = c_campaign.phonebook\
+                                .values_list('id', flat=True)\
+                                .all()
+            phonebook_list = map(int, phonebook_list)
 
-            common_phonbook_list = []
-            if phonbook_list:
-                common_phonbook_list = list(set(imported_phonebook) &\
-                                            set(phonbook_list))
-                if common_phonbook_list:
+            common_phonebook_list = []
+            if phonebook_list:
+                common_phonebook_list = list(set(imported_phonebook) &\
+                                            set(phonebook_list))
+                if common_phonebook_list:
                     contact_list = Contact.objects\
-                    .filter(
-                        phonebook__in=common_phonbook_list,
-                        status=1)
+                                .filter(phonebook__in=common_phonebook_list,
+                                    status=1)
                     for con_obj in contact_list:
                         try:
                             CampaignSubscriber.objects.create(
                                 contact=con_obj,
                                 duplicate_contact=con_obj.contact,
                                 status=1,  # START
-                                campaign=camp_obj)
+                                campaign=c_campaign)
                         except:
                             #TODO Catching duplicate error
                             pass

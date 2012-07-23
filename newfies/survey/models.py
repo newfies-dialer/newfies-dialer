@@ -14,16 +14,16 @@
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.contenttypes.models import ContentType
 from tagging.fields import TagField
 from dialer_campaign.models import Campaign
+from dialer_gateway.models import Gateway
+from dialer_cdr.models import Callrequest
 from audiofield.models import AudioFile
 from adminsortable.models import Sortable
 
-
-
 from south.modelsinspector import add_introspection_rules
 add_introspection_rules([], ["^tagging.fields.TagField"])
+add_introspection_rules([], ["^audiofield.fields.AudioField"])
 
 
 TTS_CHOICES = (
@@ -32,15 +32,29 @@ TTS_CHOICES = (
 )
 
 MESSAGE_TYPE = (
-    (1,             u'Audio File'),
-    (2,             u'Text2Speech'),
+    (1, u'Audio File'),
+    (2, u'Text2Speech'),
 )
+
+APP_TYPE = (
+    (1, u'MENU'),
+    (2, u'HANGUP'),
+    (3, u'RECORDING'),
+    #(4, u'DIAL'),
+    #(5, u'PLAYAUDIO'),
+    #(6, u'CONFERENCE'),
+    #(7, u'SPEAK'),
+)
+
 
 """
 class Text2speechMessage(models.Model):
     name = models.CharField(max_length=150, blank=False, verbose_name="Name")
-    tts_message = models.TextField(max_length=1500, blank=True, verbose_name="Text2Speech Message", help_text = 'Define the text2speech message')
-    tts_engine = models.CharField(choices=TTS_CHOICES, max_length=120, blank=True, verbose_name="TTS Engine")
+    tts_message = models.TextField(max_length=1500, blank=True,
+                        verbose_name="Text2Speech Message",
+                        help_text = 'Define the text2speech message')
+    tts_engine = models.CharField(choices=TTS_CHOICES, max_length=120,
+                        blank=True, verbose_name="TTS Engine")
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     #code_language = models.ForeignKey(Language, verbose_name="Language")
@@ -108,16 +122,28 @@ class SurveyQuestion(Sortable):
         ordering = Sortable.Meta.ordering + ['surveyapp']
 
     question = models.CharField(max_length=500,
-                            verbose_name=_("Question"),
-                            help_text=_('Enter your question'))
+                    verbose_name=_("Question"),
+                    help_text=_('Enter your question'))
     tags = TagField(blank=True, max_length=1000)
     user = models.ForeignKey('auth.User', related_name='Survey owner')
     surveyapp = models.ForeignKey(SurveyApp, verbose_name=_("SurveyApp"))
     audio_message = models.ForeignKey(AudioFile, null=True, blank=True,
-                                      verbose_name=_("Audio File"))
-    message_type = models.IntegerField(max_length=20, choices=MESSAGE_TYPE,
-                            default='1', blank=True, null=True,
-                            verbose_name=_('Message type'))
+                    verbose_name=_("Audio File"))
+    message_type = models.IntegerField(max_length=20,
+                    choices=MESSAGE_TYPE,
+                    default='1', blank=True, null=True,
+                    verbose_name=_('Message type'))
+
+    type = models.IntegerField(max_length=20, choices=APP_TYPE,
+           blank=True, null=True, verbose_name=_('Action type'))
+    gateway = models.ForeignKey(Gateway, null=True, blank=True,
+                    verbose_name=_('B-Leg'),
+                    help_text=_("Gateway used if we redirect the call"))
+    data = models.CharField(max_length=500, blank=True,
+                    help_text=_("The value of 'data' depends on the type of voice application :<br/>"\
+                    "- Dial : The phone number to dial<br/>"\
+                    "- Conference : Conference room name or number<br/>"))
+
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -198,6 +224,12 @@ class SurveyCampaignResult(models.Model):
                     verbose_name=_("Question"))  # What is your prefered fruit?
     response = models.CharField(max_length=150, blank=False,
                     verbose_name=_("Response"))  # Orange ; Kiwi
+    record_file = models.CharField(max_length=200, blank=False, default='',
+                    verbose_name=_("Record File"))
+    recording_duration = models.IntegerField(max_length=20,
+                    blank=True, default=0,
+                    null=True, verbose_name=_('Recording Duration'))
+    callrequest = models.ForeignKey(Callrequest, related_name='Callrequest')
 
     created_date = models.DateTimeField(auto_now_add=True)
 

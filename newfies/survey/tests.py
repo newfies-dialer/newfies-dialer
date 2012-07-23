@@ -2,12 +2,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -20,6 +20,7 @@ Replace these with more appropriate tests for your application.
 """
 
 from django.test import TestCase
+
 
 class SimpleTest(TestCase):
     def test_basic_addition(self):
@@ -34,4 +35,3 @@ Another way to test that 1 + 1 is equal to 2.
 >>> 1 + 1 == 2
 True
 """}
-

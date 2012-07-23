@@ -2,24 +2,25 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 
 from optparse import make_option
 from django.core.management.base import BaseCommand, CommandError
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
 from dialer_campaign.models import Campaign
-from dialer_cdr.models import VoIPCall
 from django.db import IntegrityError
+from dialer_cdr.models import Callrequest, VoIPCall
+from survey.models import SurveyCampaignResult
 from random import choice
 from uuid import uuid1
 import random
@@ -27,6 +28,13 @@ import random
 VOIPCALL_DISPOSITION = ['ANSWER','BUSY', 'NOANSWER', 'CANCEL', 'CONGESTION',
                         'CHANUNAVAIL', 'DONTCALL', 'TORTURE', 'INVALIDARGS',
                         'NOROUTE', 'FORBIDDEN']
+VOIPCALL_DISPOSITION = ['ANSWER']
+
+SURVEY_RESULT_QUE = ['Please rank our support from 1 to 9, 1 being low and 9 being high',
+                     'Were you satisfy by the technical expertise of our agent, press 1 for yes press 2 for no and 3 to go back',
+                     'lease record a message to comment on our agent after the beep'
+                    ]
+
 
 class Command(BaseCommand):
     # Use : create_callrequest_cdr '1|1324242' '3|124242'
@@ -53,10 +61,10 @@ class Command(BaseCommand):
                 try:
                     length=5
                     chars="1234567890"
-                    
-                    #'survey'
+
+                    #'surveyapp' | 'voiceapp'
                     try:
-                        content_type_id = ContentType.objects.get(app_label=str('voice_app')).id
+                        content_type_id = ContentType.objects.get(model='surveyapp').id
                     except:
                         content_type_id = 1
 
@@ -80,6 +88,28 @@ class Command(BaseCommand):
                                             phone_number=phonenumber,
                                             duration=random.randint(1, 100),
                                             disposition=choice(VOIPCALL_DISPOSITION))
+
+                        for question in SURVEY_RESULT_QUE:
+                            # for survey campaign result
+                            if question == \
+                               'lease record a message to comment on our agent after the beep':
+                                response = ''
+                                record_file = 'xyz.mp3'
+                            else:
+                                response = choice("12345678")
+                                record_file = ''
+
+
+                            survey_campaign_result = \
+                                SurveyCampaignResult.objects.create(
+                                                     campaign=obj_campaign,
+                                                     surveyapp_id=1,
+                                                     question=question,
+                                                     response=response,
+                                                     record_file=record_file,
+                                                     callrequest=new_callrequest)
+
+
                     print _("No of Callrequest & CDR created :%(count)s" % {'count': no_of_record})
                 except IntegrityError:
                     print _("Callrequest & CDR are not created!")

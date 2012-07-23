@@ -1,0 +1,107 @@
+{% extends "frontend/master.html" %}
+{% load i18n dialer_cdr_extras dajaxice_templatetags %}
+
+{% block extra_files %}
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block row_fluid %}
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+
+{% block container %}
+
+{% block content %}
+
+    {% if action == 'update' %}
+        {% block content_header %}
+            <a class="close" data-dismiss="modal" >&times;</a>
+            <h3>
+                {% trans "Update" %} {% trans "Survey Response" %}
+                <small></small>
+            </h3>
+        {% endblock %}
+    {% endif %}
+
+    {% if err_msg %}
+        <script type="text/javascript" charset="utf-8">
+
+            $(window).load(function(){
+                $('#survey_res_modal').modal('show');
+            });
+
+            var url = '/survey/' + '{{ surveyapp_id }}' + '/#row{{ surveyquestion_id }}';
+            $(".close").live('click', function() {
+
+                $(location).attr('href',url);
+            });
+
+            var KEYCODE_ESC = 27;
+            $(document).keyup(function(e) {
+                if (e.keyCode == KEYCODE_ESC) { $(location).attr('href',url); }
+            });
+        </script>
+        <!-- modal content-->
+        <div class="modal hide fade" id="survey_res_modal">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal" >&times;</a>
+                <h3>{% if action == 'update' %}
+                    {% trans "Update" %}
+                {% else %}
+                    {% trans "Add" %}
+                {% endif %} {% trans "Survey Response" %}
+                    <small></small>
+                </h3>
+            </div>
+            <div class="modal-body">
+    {% endif %}
+
+        <form class="well" method="POST" action="{% if action == 'update' %}/survey_response/{{ survey_response_id }}/{% else %}/survey_response/add/?surveyquestion_id={{ surveyquestion_id }}{% endif %}" enctype="multipart/form-data" id="update_form">{% csrf_token %}
+
+            {% for field in form %}
+                {% ifnotequal field.name 'surveyquestion' %}
+                    <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                        <div class="input">
+                            {{ field }}
+                            {% if field.errors %}
+                                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ field.help_text|safe }} </span>
+                        </div>
+                    </div>
+                {% else %}
+                    {{ field }}
+                {% endifnotequal %}
+            {% endfor %}
+
+            <div class="actions">
+                {% if action == 'update' %}
+                    <input id="update" class="btn-primary" type="submit" value="{% trans "Update" %}" />
+                {% else %}
+                    <input id="add" type="submit" class="btn-primary" value="{% trans "Submit" %}" />
+                {% endif %}
+            </div>
+
+        </form>
+
+    {% if err_msg %}
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+
+{% block footer %}
+{% endblock %}
+
+{% endblock %}

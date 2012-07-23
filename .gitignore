@@ -10,3 +10,4 @@ docs/build/*
 contact_*.txt
 TEST
 newfies/usermedia/tts/*.*
+newfies/usermedia/recording/*.*

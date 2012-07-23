@@ -2,21 +2,24 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 
 from django import template
 from django.template.defaultfilters import *
-from django.conf import settings
-from django import forms
 from django.utils.datastructures import SortedDict
+from django.utils.translation import ugettext as _
+from survey.views import survey_audio_recording
+from dialer_campaign.models import CAMPAIGN_STATUS
+from dialer_cdr.models import LEG_TYPE
+from survey.models import APP_TYPE
 import operator
 import copy
 
@@ -142,12 +145,15 @@ def contact_status(value):
 @register.filter()
 def campaign_status(value):
     """Campaign Status"""
-    CAMPAIGN_STATUS = {1: 'Start',
-                       2: 'Pause',
-                       3: 'Abort',
-                       4: 'End'}
-    status = CAMPAIGN_STATUS[value]
+    if not value:
+        return ''
+    STATUS = dict(CAMPAIGN_STATUS)
+    try:
+        status = STATUS[value]
+    except:
+        status = ''
     return str(status)
+
 
 
 @register.filter(name='sort')
@@ -172,8 +178,8 @@ def get_fieldset(parser, token):
     try:
         name, fields, as_, variable_name, from_, form = token.split_contents()
     except ValueError:
-        raise template.TemplateSyntaxError('bad arguments for %r'  %\
-        token.split_contents()[0])
+        raise template.TemplateSyntaxError('bad arguments for %r' %\
+                        token.split_contents()[0])
 
     return FieldSetNode(fields.split(','), variable_name, form)
 
@@ -240,6 +246,59 @@ def groupby_columns(seq, n):
     return _regroup_table(seq, columns=int(n))
 
 
+@register.filter()
+def leg_type_name(value):
+    """leg type"""
+    if not value:
+        return ''
+    TYPE = dict(LEG_TYPE)
+    try:
+        status = TYPE[value]
+    except:
+        status = ''
+    return str(status)
+
+
+@register.filter()
+def action_type_name(value):
+    """action type name"""
+    if not value:
+        return ''
+    TYPE = dict(APP_TYPE)
+    try:
+        status = TYPE[value]
+    except:
+        status = ''
+    return str(status)
+
+
+@register.filter()
+def que_res_string(val):
+    """Modify survey result string for display"""
+    if not val:
+        return ''
+
+    val_list = val.split("-|-")
+    result_string = '<table class="table table-striped table-bordered '\
+                    'table-condensed">'
+
+    for i in val_list:
+        if "*|**|*" in i:
+            que_audio = i.split("*|**|*")
+            if que_audio:
+                result_string += '<tr><td colspan="2">' + str(que_audio[0]) \
+                                + survey_audio_recording(str(que_audio[1])) \
+                                + '</td></tr>'
+        else:
+            que_res = i.split("*|*")
+            result_string += '<tr><td>' + str(que_res[0])\
+                             + '</td><td class="survey_result_key">' \
+                             + str(que_res[1]) + '</td></tr>'
+
+    result_string += '</table>'
+    return result_string
+
+
 register.filter('mul', mul)
 register.filter('subtract', subtract)
 register.filter('div', div)
@@ -256,6 +315,9 @@ register.filter('contact_status', contact_status)
 register.filter('campaign_status', campaign_status)
 register.filter('groupby_rows', groupby_rows)
 register.filter('groupby_columns', groupby_columns)
+register.filter('leg_type_name', leg_type_name)
+register.filter('que_res_string', que_res_string)
+register.filter('action_type_name', action_type_name)
+
 
 get_fieldset = register.tag(get_fieldset)
-

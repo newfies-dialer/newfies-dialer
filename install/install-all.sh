@@ -25,18 +25,18 @@ func_identify_os() {
     if [ -f /etc/debian_version ] ; then
         DIST='DEBIAN'
         if [ "$(lsb_release -cs)" != "lucid" ] && [ "$(lsb_release -cs)" != "precise" ]; then
-		    echo "This script is only intended to run on Ubuntu LTS 10.04 / 12.04 or CentOS 6.2"
+		    echo "This script is only intended to run on Ubuntu LTS 10.04 / 12.04 or CentOS 6.2 / 6.3"
 		    exit 255
 	    fi
     elif [ -f /etc/redhat-release ] ; then
         DIST='CENTOS'
-        if [ "$(awk '{print $3}' /etc/redhat-release)" != "6.2" ] ; then
-        	echo "This script is only intended to run on Ubuntu LTS 10.04 / 12.04 or CentOS 6.2"
+        if [ "$(awk '{print $3}' /etc/redhat-release)" != "6.2" ] && [ "$(awk '{print $3}' /etc/redhat-release)" != "6.3" ] ; then
+        	echo "This script is only intended to run on Ubuntu LTS 10.04 / 12.04 or CentOS 6.2 / 6.3"
         	exit 255
         fi
     else
         echo ""
-        echo "This script is only intended to run on Ubuntu LTS 10.04 / 12.04 or CentOS 6.2"
+        echo "This script is only intended to run on Ubuntu LTS 10.04 / 12.04 or CentOS 6.2 / 6.3"
         echo ""
         exit 1
     fi
@@ -47,7 +47,7 @@ func_identify_os
 
 echo ""
 echo ""
-echo "> > > This is only to be installed on a fresh new installation of CentOS 6.2 or Ubuntu LTS 10.04! < < <"
+echo "> > > This is only to be installed on a fresh new installation of CentOS 6.2 / 6.3 or Ubuntu LTS 10.04 / 12.04! < < <"
 echo ""
 echo "It will install Freeswitch, Plivo & Newfies on your server"
 echo "Press Enter to continue or CTRL-C to exit"

@@ -2,18 +2,17 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from optparse import make_option
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.utils.translation import ugettext as _
 from dialer_campaign.models import Phonebook, Contact, Campaign
 from django.db import IntegrityError
@@ -36,7 +35,8 @@ class Command(BaseCommand):
             try:
                 obj_phonebook = Phonebook.objects.get(id=myphonebook_id)
             except:
-                print _('Can\'t find this Phonebook : %(id)s' % {'id': myphonebook_id})
+                print _('Can\'t find this Phonebook : %(id)s' % \
+                        {'id': myphonebook_id})
                 return False
 
             try:
@@ -55,6 +55,6 @@ class Command(BaseCommand):
                 print _('Can\'t find a Campaign with this phonebook')
                 return False
 
-            print _("Launch Task : collect_subscriber(%(id)s)" % {'id': str(obj_campaign.id)})
+            print _("Launch Task : collect_subscriber(%(id)s)" % \
+                    {'id': str(obj_campaign.id)})
             collect_subscriber.delay(obj_campaign.id)
- 

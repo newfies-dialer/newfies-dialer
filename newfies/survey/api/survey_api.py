@@ -30,10 +30,8 @@ class SurveyAppValidation(Validation):
     """SurveyApp Validation Class"""
     def is_valid(self, bundle, request=None):
         errors = {}
-
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
-
         try:
             user_id = User.objects.get(username=request.user).id
             bundle.data['user'] = '/api/v1/user/%s/' % user_id
@@ -146,10 +144,12 @@ class SurveyAppResource(ModelResource):
 
     """
     user = fields.ForeignKey(UserResource, 'user', full=True)
+
     class Meta:
         queryset = SurveyApp.objects.all()
         resource_name = 'survey'
         authorization = Authorization()
         authentication = BasicAuthentication()
         validation = SurveyAppValidation()
-        throttle = BaseThrottle(throttle_at=1000, timeframe=3600) #default 1000 calls / hour
+        # default 1000 calls / hour
+        throttle = BaseThrottle(throttle_at=1000, timeframe=3600)

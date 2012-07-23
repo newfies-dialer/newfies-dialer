@@ -2,12 +2,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -74,15 +74,17 @@ PLIVO_DEFAULT_HANGUP_URL = 'http://SERVER_IP_PORT/api/v1/hangupcall/'
 PLIVO_DEFAULT_DIALCALLBACK_URL = 'http://SERVER_IP_PORT/api/v1/dialcallback/'
 PLIVO_DEFAULT_SURVEY_ANSWER_URL = 'http://SERVER_IP_PORT/survey_finestatemachine/'
 
+FS_RECORDING_PATH = '/usr/share/newfies/usermedia/recording/'
+
 # ADD 'dummy','plivo','twilio'
 NEWFIES_DIALER_ENGINE = 'dummy'
 
 API_ALLOWED_IP = [
-            '127.0.0.1', 
-            'localhost', 
+            '127.0.0.1',
+            'localhost',
             #'SERVER_IP',
                 ]
-                
+
 #TEXT-TO-SPEECH
 #==============
 ACCOUNT_LOGIN = 'EVAL_XXXX'
@@ -90,7 +92,7 @@ APPLICATION_LOGIN = 'EVAL_XXXXXXX'
 APPLICATION_PASSWORD = 'XXXXXXXX'
 
 SERVICE_URL = 'http://vaas.acapela-group.com/Services/Synthesizer'
-QUALITY = '22k' # 22k, 8k, 8ka, 8kmu
-TTS_ENGINE = 'FLITE' #FLITE, CEPSTRAL, ACAPELA
+QUALITY = '22k'  # 22k, 8k, 8ka, 8kmu
+TTS_ENGINE = 'FLITE'  # FLITE, CEPSTRAL, ACAPELA
 ACAPELA_GENDER = 'W'
 ACAPELA_INTONATION = 'NORMAL'

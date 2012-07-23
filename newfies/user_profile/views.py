@@ -24,14 +24,15 @@ from django.db.models import Q
 from django.conf import settings
 from notification import models as notification
 from dialer_campaign.models import common_contact_authorization
-from dialer_campaign.views import current_view, notice_count, grid_common_function
-from dialer_campaign.function_def import user_dialer_setting_msg, variable_value
+from dialer_campaign.views import notice_count, grid_common_function
+from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_settings.models import DialerSetting
 from user_profile.models import UserProfile
 from user_profile.forms import UserChangeDetailForm, \
                                UserChangeDetailExtendForm, \
                                CheckPhoneNumberForm,\
                                UserProfileForm
+from common.common_functions import variable_value, current_view
 
 
 @login_required
@@ -57,8 +58,9 @@ def customer_detail_change(request):
 
     user_detail_form = UserChangeDetailForm(request.user,
                                             instance=user_detail)
-    user_detail_extened_form = UserChangeDetailExtendForm(request.user,
-                                                          instance=user_detail_extened)
+    user_detail_extened_form = \
+        UserChangeDetailExtendForm(request.user,
+                                   instance=user_detail_extened)
     
     user_password_form = PasswordChangeForm(user=request.user)
     check_phone_no_form = CheckPhoneNumberForm()
@@ -70,7 +72,7 @@ def customer_detail_change(request):
         dialer_set = ''
 
     user_notification = \
-    notification.Notice.objects.filter(recipient=request.user)
+        notification.Notice.objects.filter(recipient=request.user)
     # Search on sender name
     q = (Q(sender=request.user))
     if q:
@@ -93,19 +95,23 @@ def customer_detail_change(request):
 
     # Mark all notification as read
     if request.GET.get('notification') == 'mark_read_all':
-        notification_list = notification.Notice.objects.filter(unseen=1, recipient=request.user)
+        notification_list = \
+            notification.Notice.objects.filter(unseen=1,
+                                               recipient=request.user)
         notification_list.update(unseen=0)
         msg_note = _('All notifications are marked as read.')
 
     if request.method == 'POST':
         if request.POST['form-type'] == "change-detail":
-            user_detail_form = UserChangeDetailForm(request.user, request.POST,
+            user_detail_form = UserChangeDetailForm(request.user,
+                                                    request.POST,
                                                     instance=user_detail)
-            user_detail_extened_form = UserChangeDetailExtendForm(request.user,
-                                                                  request.POST,
-                                                                  instance=user_detail_extened)
+            user_detail_extened_form = \
+                UserChangeDetailExtendForm(request.user, request.POST,
+                                           instance=user_detail_extened)
             action = 'tabs-1'
-            if user_detail_form.is_valid() and user_detail_extened_form.is_valid():
+            if user_detail_form.is_valid() \
+                and user_detail_extened_form.is_valid():
                 user_detail_form.save()
                 user_detail_extened_form.save()
                 msg_detail = _('Detail has been changed.')
@@ -116,7 +122,7 @@ def customer_detail_change(request):
             check_phone_no_form = CheckPhoneNumberForm(data=request.POST)
             if check_phone_no_form.is_valid():
                 if not common_contact_authorization(request.user,
-                                                    request.POST['phone_number']):
+                                                request.POST['phone_number']):
                     error_number = _('This phone number is not authorized.')
                 else:
                     msg_number = _('This phone number is authorized.')
@@ -159,10 +165,12 @@ def customer_detail_change(request):
 def call_style(val):
     """Notification icon style"""
     unseen_style = \
-        'style="text-decoration:none;background-image:url(%snewfies/icons/new.png);"' \
+        'style="text-decoration:none;' + \
+        'background-image:url(%snewfies/icons/new.png);"' \
             % settings.STATIC_URL
     seen_style = \
-        'style="text-decoration:none;background-image:url(%snewfies/icons/tick.png);"' \
+        'style="text-decoration:none;' + \
+        'background-image:url(%snewfies/icons/tick.png);"' \
             % settings.STATIC_URL
 
     if val:
@@ -186,15 +194,15 @@ def notification_grid(request):
     sortname = grid_data['sortname']
 
     user_notification = \
-    notification.Notice.objects.filter(recipient=request.user)
+        notification.Notice.objects.filter(recipient=request.user)
     # Search on sender name
     q = (Q(sender=request.user))
     if q:
         user_notification = user_notification.filter(q)
 
     count = user_notification.count()
-    user_notification_list = \
-        user_notification.order_by(sortorder_sign + sortname)[start_page:end_page]
+    user_notification_list = user_notification\
+                     .order_by(sortorder_sign + sortname)[start_page:end_page]
 
     rows = [{'id': row.id,
              'cell': ['<input type="checkbox" name="select" class="checkbox"\
@@ -203,8 +211,9 @@ def notification_grid(request):
                       str(row.notice_type),
                       str(row.sender),
                       str(row.added),
-                      str('<a href="../update_notice_status_cust/' + str(row.id) + '/" class="icon" ' \
-                        + call_style(row.unseen)  + '>&nbsp;</a>' ),
+                      str('<a href="../update_notice_status_cust/' \
+                      + str(row.id) + '/" class="icon" ' \
+                      + call_style(row.unseen)  + '>&nbsp;</a>' ),
              ]}for row in user_notification_list ]
 
     data = {'rows': rows,
@@ -235,28 +244,32 @@ def notification_del_read(request, object_id):
         if object_id:
             if request.POST.get('mark_read') == 'false':
                 request.session["msg_note"] = _('"%(name)s" is deleted.') \
-                % {'name': notification_obj.notice_type}
+                    % {'name': notification_obj.notice_type}
                 notification_obj.delete()
             else:
                 request.session["msg_note"] = _('"%(name)s" is marked as read.') \
-                % {'name': notification_obj.notice_type}
+                    % {'name': notification_obj.notice_type}
                 notification_obj.update(unseen=0)
 
-            return HttpResponseRedirect('/user_detail_change/?action=tabs-3&msg_note=true')
+            return HttpResponseRedirect(
+                    '/user_detail_change/?action=tabs-3&msg_note=true')
     except:
         # When object_id is 0 (Multiple records delete/mark as read)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
         notification_list = notification.Notice.objects.extra(where=['id IN (%s)' % values])
         if request.POST.get('mark_read') == 'false':
-            request.session["msg_note"] = _('%(count)s notification(s) are deleted.')\
-            % {'count': notification_list.count()}
+            request.session["msg_note"] = \
+                _('%(count)s notification(s) are deleted.')\
+                    % {'count': notification_list.count()}
             notification_list.delete()
         else:
-            request.session["msg_note"] = _('%(count)s notification(s) are marked as read.')\
-            % {'count': notification_list.count()}
+            request.session["msg_note"] = \
+                _('%(count)s notification(s) are marked as read.')\
+                    % {'count': notification_list.count()}
             notification_list.update(unseen=0)
-        return HttpResponseRedirect('/user_detail_change/?action=tabs-3&msg_note=true')
+        return HttpResponseRedirect(
+            '/user_detail_change/?action=tabs-3&msg_note=true')
 
 
 def common_notification_status(request, id):

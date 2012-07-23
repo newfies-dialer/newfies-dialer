@@ -2,12 +2,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -57,11 +57,12 @@ class VoiceApp(Model):
     **Name of DB table**: voip_app
     """
     name = models.CharField(max_length=90, verbose_name=_("Name"))
-    description = models.TextField(null=True, blank=True, verbose_name=_("Description"),
+    description = models.TextField(null=True, blank=True,
+                    verbose_name=_("Description"),
                     help_text=_("Voice Application Description"))
     type = models.IntegerField(max_length=20, choices=APP_TYPE, default='1',
            blank=True, null=True, verbose_name=_('Type'))
-    gateway = models.ForeignKey(Gateway, null=True, blank=True, 
+    gateway = models.ForeignKey(Gateway, null=True, blank=True,
                     verbose_name=_('B-Leg'),
                     help_text=_("Gateway used if we redirect the call"))
     data = models.CharField(max_length=500, blank=True,
@@ -70,7 +71,8 @@ class VoiceApp(Model):
                     "- Conference : Conference room name or number<br/>"\
                     "- Playaudio : Audio file URL<br/>"\
                     "- Speak : The text to speak using TTS"))
-    tts_language = LanguageField(blank=True, null=True, verbose_name=_('Text-to-Speech Language'),
+    tts_language = LanguageField(blank=True, null=True,
+                    verbose_name=_('Text-to-Speech Language'),
                     help_text=_("Set the Text-to-Speech Engine"))
 
     user = models.ForeignKey('auth.User', related_name='VoIP App owner')
@@ -82,7 +84,8 @@ class VoiceApp(Model):
     #room = models.CharField(max_length=200,
     #                help_text=_("If CONFERENCE, define here the room number"))
 
-    created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Date'))
+    created_date = models.DateTimeField(auto_now_add=True,
+                    verbose_name=_('Date'))
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:

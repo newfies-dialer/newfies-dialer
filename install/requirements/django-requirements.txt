@@ -29,3 +29,4 @@ django-tagging==0.3.1
 git+git://github.com/Star2Billing/django-audiofield.git
 django-dajax==0.8.4
 django-dajaxice==0.2
+linaro_django_pagination

@@ -4,11 +4,15 @@
 {% block extra_files %}
 {% endblock %}
 
+{% block menu %}
+{% endblock %}
+
 {% block row_fluid %}
 {% endblock %}
 
 {% block header %}
 {% endblock %}
+
 
 {% block container %}
 
@@ -24,7 +28,7 @@
         {% endblock %}
     {% endif %}
 
-    {% if err_msg %}
+
         <script type="text/javascript" charset="utf-8">
 
             $(window).load(function(){
@@ -55,7 +59,7 @@
                 </h3>
             </div>
             <div class="modal-body">
-    {% endif %}
+
 
         <form class="well" method="POST" action="{% if action == 'update' %}/survey_response/{{ survey_response_id }}/{% else %}/survey_response/add/?surveyquestion_id={{ surveyquestion_id }}{% endif %}" enctype="multipart/form-data" id="update_form">{% csrf_token %}
 
@@ -86,13 +90,13 @@
 
         </form>
 
-    {% if err_msg %}
+
             </div>
             <div class="modal-footer">
                 <a href="#" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
             </div>
         </div>
-    {% endif %}
+
 
 {% endblock %}
 

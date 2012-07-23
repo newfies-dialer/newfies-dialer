@@ -2,18 +2,20 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 
 import unittest
 
+
+#TODO: Move this to common
 
 def build_test_suite_from(test_cases):
     """Returns a single or group of unittest test suite(s) that's ready to be

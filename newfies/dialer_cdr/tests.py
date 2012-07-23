@@ -14,7 +14,6 @@
 
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
-from django.http import HttpRequest
 from dialer_cdr.test_utils import build_test_suite_from
 
 import base64

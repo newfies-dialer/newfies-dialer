@@ -26,6 +26,9 @@ from django.utils.html import escape
 from django.utils.datastructures import MultiValueDict, MergeDict
 
 
+#TODO: Check if this can move to common
+#TODO: Verify what is really used
+
 class ForeignKeySearchInput(forms.HiddenInput):
     #  A Widget for displaying ForeignKeys in an autocomplete search input
     #  instead in a <select> box.

@@ -25,7 +25,6 @@ from dateutil.relativedelta import relativedelta
 from dateutil.rrule import rrule, DAILY, HOURLY
 from dateutil.parser import parse
 from datetime import datetime, timedelta
-import calendar
 
 
 def field_list(name, user=None):

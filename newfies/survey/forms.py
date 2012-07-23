@@ -97,6 +97,7 @@ class SurveyResponseForm(ModelForm):
         self.fields['keyvalue'].widget.attrs['class'] = "input-small"
         self.fields['goto_surveyquestion'].choices = get_question_list(user,
                                                             surveyapp_id)
+        self.fields['goto_surveyquestion'].label = _('Goto')
 
 
 class SurveyReportForm(forms.Form):

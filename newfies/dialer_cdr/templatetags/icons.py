@@ -28,3 +28,9 @@ def listicon(icon_name):
     return 'style="text-decoration:none;list-style-image:url(' \
            + settings.STATIC_URL + 'newfies/icons/' + icon_name + '.png);"'
 register.simple_tag(listicon)
+
+
+def icon_style(icon_name):
+    return 'style="text-decoration:none;background-image:url(' +\
+           settings.STATIC_URL + 'newfies/icons/'+ icon_name +'.png);"'
+register.simple_tag(icon_style)

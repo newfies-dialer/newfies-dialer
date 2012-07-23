@@ -206,6 +206,7 @@ INSTALLED_APPS = (
     'notification',
     'voice_app',
     'survey',
+    'dialer_audio',
     'common',
     #'raven.contrib.django',
     'admin_tools_stats',

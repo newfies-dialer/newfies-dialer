@@ -21,7 +21,6 @@ from survey.models import SurveyApp, SurveyQuestion, \
 from survey.function_def import field_list
 from dialer_campaign.models import Campaign
 from dialer_cdr.forms import VoipSearchForm
-from audiofield.forms import CustomerAudioFileForm
 
 
 def get_audiofile_list(user):
@@ -126,10 +125,3 @@ class SurveyDetailReportForm(VoipSearchForm, SurveyReportForm):
     def __init__(self, user, *args, **kwargs):
         super(SurveyDetailReportForm, self).__init__(user, *args, **kwargs)
         self.fields.keyOrder = ['from_date', 'to_date', 'campaign']
-
-
-class SurveyCustomerAudioFileForm(CustomerAudioFileForm):
-
-    def __init__(self, *args, **kwargs):
-        super(SurveyCustomerAudioFileForm, self).__init__(*args, **kwargs)
-        self.fields['audio_file'].widget.attrs['class'] = "input-file"

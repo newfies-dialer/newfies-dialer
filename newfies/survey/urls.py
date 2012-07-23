@@ -36,10 +36,4 @@ urlpatterns = patterns('survey.views',
     (r'^survey_report/$', 'survey_report'),
     (r'^export_surveycall_report/$', 'export_surveycall_report'),
 
-    # Audio urls
-    (r'^audio/$', 'audio_list'),
-    (r'^audio_grid/$', 'audio_grid'),
-    (r'^audio/add/$', 'audio_add'),
-    (r'^audio/del/(.+)/$', 'audio_del'),
-    (r'^audio/(.+)/$', 'audio_change'),
 )

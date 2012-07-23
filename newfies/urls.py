@@ -20,6 +20,7 @@ from dialer_cdr.urls import urlpatterns as urlpatterns_dialer_cdr
 from user_profile.urls import urlpatterns as urlpatterns_user_profile
 from voice_app.urls import urlpatterns as urlpatterns_voice_app
 from survey.urls import urlpatterns as urlpatterns_survey
+from dialer_audio.urls import urlpatterns as urlpatterns_dialer_audio
 from tastypie.api import Api
 from api.user_api import UserResource
 from api.voiceapp_api import VoiceAppResource
@@ -97,6 +98,7 @@ urlpatterns += urlpatterns_dialer_cdr
 urlpatterns += urlpatterns_user_profile
 urlpatterns += urlpatterns_voice_app
 urlpatterns += urlpatterns_survey
+urlpatterns += urlpatterns_dialer_audio
 
 urlpatterns += patterns('',
     (r'^%s/(?P<path>.*)$' % settings.MEDIA_URL.strip(os.sep),

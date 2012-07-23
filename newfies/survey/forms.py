@@ -69,8 +69,8 @@ class SurveyQuestionForm(ModelForm):
 
     class Meta:
         model = SurveyQuestion
-        fields = ['question', 'surveyapp', 'audio_message', 'type',
-                  'data', 'gateway']
+        fields = ['question', 'surveyapp', 'audio_message', 'type']
+        # remove those fields for now 'data', 'gateway'
 
     def __init__(self, user, *args, **kwargs):
         super(SurveyQuestionForm, self).__init__(*args, **kwargs)
@@ -80,7 +80,7 @@ class SurveyQuestionForm(ModelForm):
         self.fields['audio_message'].widget.attrs['class'] = 'span2'
         self.fields['type'].choices = APP_TYPE
         self.fields['type'].widget.attrs['class'] = 'span2'
-        self.fields['gateway'].widget.attrs['class'] = 'span2'
+        #self.fields['gateway'].widget.attrs['class'] = 'span2'
 
 
 class SurveyResponseForm(ModelForm):
@@ -97,6 +97,7 @@ class SurveyResponseForm(ModelForm):
         self.fields['keyvalue'].widget.attrs['class'] = "input-small"
         self.fields['goto_surveyquestion'].choices = get_question_list(user,
                                                             surveyapp_id)
+        self.fields['goto_surveyquestion'].label = _('Goto')
 
 
 class SurveyReportForm(forms.Form):

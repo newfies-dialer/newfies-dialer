@@ -22,7 +22,7 @@
 {% endblock %}
 
 {% block content_header %}
-    <h1>{% trans "Survey Detail report" %} <small>{% trans "Monitor survey results with voip calls" %}</small></h1>
+    <h1>{% trans "Survey Detail Report" %} <small>{% trans "Monitor survey reports" %}</small></h1>
 {% endblock %}
 
 {% block content %}
@@ -89,7 +89,7 @@
 <div class="tab-content">
     <div id="tabs-1" class="tab-pane {% if action == "tabs-1" or action == "" %}active{% endif %}">
         <div class="graph_header">
-            {% trans "Survey calls detail records"|title %} -
+            {% trans "Survey call detail records"|title %} -
             <b>
                 {% if start_date  %}
                     {{ start_date|date:"jS N Y" }}

@@ -428,8 +428,8 @@ def survey_question_add(request):
 
     **Attributes**:
 
-        * ``form`` - SurveyAppForm
-        * ``template`` - frontend/survey/change.html
+        * ``form`` - SurveyQuestionForm
+        * ``template`` - frontend/survey/survey_question_change.html
 
     **Logic Description**:
 
@@ -475,7 +475,7 @@ def survey_question_change(request, id):
     **Attributes**:
 
         * ``form`` - SurveyQuestionForm
-        * ``template`` - frontend/survey/survey_question.html
+        * ``template`` - frontend/survey/survey_question_change.html
 
     **Logic Description**:
 

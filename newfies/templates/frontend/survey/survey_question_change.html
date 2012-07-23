@@ -96,15 +96,19 @@
                 </div>
             </div>
 
+            {% if False %}
+            {# Commented this part as data and gateway aren't used yet #}
             <div class="row">
                 <div class="span5 clearfix{% if form.data.errors %} control-group error{% endif %}">
                     <label class="control-label" for="id_{{ form.data.name }}">{{ form.data.label }}</label>
                     <div class="input">
-                        {{ form.data }}
-                        {% if form.data.errors %}
-                            <span class="help-inline">{{ form.data.errors|removetags:"ul li"|safe }}</span>
+                        {% if form.data %}
+                            {{ form.data }}
+                            {% if form.data.errors %}
+                                <span class="help-inline">{{ form.data.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.data.help_text|safe }} </span>
                         {% endif %}
-                        <span class="help-block">{{ form.data.help_text|safe }} </span>
                     </div>
                 </div>
             </div>
@@ -121,6 +125,8 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
+
 
             <div class="actions">
                 {% if action == 'update' %}

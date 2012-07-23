@@ -159,9 +159,9 @@
                                                     <td class="survey_edit_key">{{ res_obj.keyvalue }}</td>
                                                     <td>{{ res_obj.goto_surveyquestion }}</td>
                                                     <td class="survey_edit_key">
-                                                        <!--<a data-toggle="modal" {% icon_style 'page_edit' %} title="{% trans "Edit response" %}" href="#survey-response-update-edit-{{ res_obj.id }}" class="survey-response-edit-{{ res_obj.id }} icon" url='/survey_response/{{ res_obj.id }}/' data-controls-modal='survey-response-update-content-edit-{{ res_obj.id }}'>&nbsp;</a>-->
+                                                        <a data-toggle="modal" {% icon_style 'page_edit' %} title="{% trans "Edit response" %}" href="#survey-response-update-edit-{{ res_obj.id }}" class="survey-response-edit-{{ res_obj.id }} icon" url='/survey_response/{{ res_obj.id }}/' data-controls-modal='survey-response-update-content-edit-{{ res_obj.id }}'>&nbsp;</a>
                                                         <a {% icon_style 'delete' %} href="/survey_response/{{ res_obj.id }}/?delete=true" class="icon" title="{% trans "Delete response" %}">&nbsp;</a>
-                                                        <a href="/survey_response/{{ res_obj.id }}/" {% icon_style 'page_edit' %} class="icon"></a>
+
                                                         <!--update response in modal-->
                                                         <script type="text/javascript" charset="utf-8">
 
@@ -174,7 +174,7 @@
 
                                                         </script>
                                                         <!-- updaet survey response modal content-->
-                                                        <div id="survey-response-update-edit-{{ res_obj.id }}" class="modal show fade" >
+                                                            <div id="survey-response-update-edit-{{ res_obj.id }}" class="modal hide fade" >
                                                             <div class="modal-body" id="survey-response-update-content-edit-{{ res_obj.id }}">
                                                             </div>
                                                             <div class="modal-footer">

@@ -13,10 +13,6 @@
 #
 
 from django.conf.urls.defaults import patterns
-from django.conf import settings
-from dialer_cdr.views import voipcall_report, \
-                             voipcall_report_grid, \
-                             export_voipcall_report
 
 
 urlpatterns = patterns('dialer_cdr.views',

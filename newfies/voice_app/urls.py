@@ -13,16 +13,11 @@
 #
 
 from django.conf.urls.defaults import patterns
-#TODO: Not used voiceapp_grid ?
-from voice_app.views import voiceapp_list, voiceapp_grid, \
-                            voiceapp_add, voiceapp_del, \
-                            voiceapp_change
-
 
 urlpatterns = patterns('voice_app.views',
-(r'^voiceapp/$', 'voiceapp_list'),
-(r'^voiceapp_grid/$', 'voiceapp_grid'),
-(r'^voiceapp/add/$', 'voiceapp_add'),
-(r'^voiceapp/del/(.+)/$', 'voiceapp_del'),
-(r'^voiceapp/(.+)/$', 'voiceapp_change'),
+    (r'^voiceapp/$', 'voiceapp_list'),
+    (r'^voiceapp_grid/$', 'voiceapp_grid'),
+    (r'^voiceapp/add/$', 'voiceapp_add'),
+    (r'^voiceapp/del/(.+)/$', 'voiceapp_del'),
+    (r'^voiceapp/(.+)/$', 'voiceapp_change'),
 )

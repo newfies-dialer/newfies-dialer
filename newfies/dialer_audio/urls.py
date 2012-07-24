@@ -13,7 +13,6 @@
 #
 
 from django.conf.urls.defaults import patterns
-from dialer_audio.views import *
 
 
 urlpatterns = patterns('dialer_audio.views',

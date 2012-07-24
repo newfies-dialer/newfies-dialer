@@ -13,10 +13,8 @@
 #
 
 from django.conf.urls.defaults import patterns
-from django.conf import settings
-from dialer_gateway.views import *
 
 
-urlpatterns = patterns('',
+urlpatterns = patterns('dialer_gateway.views',
 
 )

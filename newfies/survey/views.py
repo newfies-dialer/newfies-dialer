@@ -909,7 +909,6 @@ def survey_report(request):
             'dialer_callrequest.id '
         select_group_query = 'SELECT group_concat(CONCAT_WS("*|*", question, response, record_file) SEPARATOR "-|-") '
 
-        # SELECT group_concat(CONCAT_WS("/Result:", question, response) SEPARATOR ", ")
         rows = VoIPCall.objects\
                 .only('starting_date', 'phone_number', 'duration', 'disposition')\
                 .filter(**kwargs)\
@@ -917,7 +916,7 @@ def survey_report(request):
                     select={
                         'question_response': select_group_query + from_query
                         },
-                ).order_by(sort_field)  # .exclude(callid='')
+                ).order_by(sort_field)
 
         request.session['session_surveycalls'] = rows
 

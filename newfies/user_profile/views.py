@@ -16,7 +16,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.http import HttpResponseRedirect, HttpResponse
 from django.template.context import RequestContext
 from django.utils.translation import ugettext_lazy as _
 from django.utils import simplejson
@@ -30,9 +30,8 @@ from dialer_settings.models import DialerSetting
 from user_profile.models import UserProfile
 from user_profile.forms import UserChangeDetailForm, \
                                UserChangeDetailExtendForm, \
-                               CheckPhoneNumberForm,\
-                               UserProfileForm
-from common.common_functions import variable_value, current_view
+                               CheckPhoneNumberForm
+from common.common_functions import current_view
 
 
 @login_required
@@ -41,7 +40,8 @@ def customer_detail_change(request):
 
     **Attributes**:
 
-        * ``form`` - UserChangeDetailForm, UserChangeDetailExtendForm, PasswordChangeForm, CheckPhoneNumberForm
+        * ``form`` - UserChangeDetailForm, UserChangeDetailExtendForm,
+                        PasswordChangeForm, CheckPhoneNumberForm
         * ``template`` - 'frontend/registration/user_detail_change.html'
 
     **Logic Description**:
@@ -119,7 +119,7 @@ def customer_detail_change(request):
                 msg_detail = _('Detail has been changed.')
             else:
                 error_detail = _('Please correct the errors below.')
-        elif request.POST['form-type'] == "check-number": # check phone no
+        elif request.POST['form-type'] == "check-number":  # check phone no
             action = 'tabs-5'
             check_phone_no_form = CheckPhoneNumberForm(data=request.POST)
             if check_phone_no_form.is_valid():
@@ -130,7 +130,7 @@ def customer_detail_change(request):
                     msg_number = _('This phone number is authorized.')
             else:
                 error_number = _('Please correct the errors below.')
-        else: # "change-password"
+        else:  # "change-password"
             user_password_form = PasswordChangeForm(user=request.user,
                                                     data=request.POST)
             action = 'tabs-2'
@@ -216,8 +216,8 @@ def notification_grid(request):
                       str(row.added),
                       str('<a href="../update_notice_status_cust/' \
                       + str(row.id) + '/" class="icon" ' \
-                      + call_style(row.unseen)  + '>&nbsp;</a>' ),
-             ]}for row in user_notification_list ]
+                      + call_style(row.unseen) + '>&nbsp;</a>'),
+             ]}for row in user_notification_list]
 
     data = {'rows': rows,
             'page': page,
@@ -238,7 +238,7 @@ def notification_del_read(request, object_id):
 
     **Logic Description**:
 
-        * Delete/Mark as Read the selected notification from the notification list
+        * Delete/Mark as Read the selected notification
     """
     try:
         # When object_id is not 0

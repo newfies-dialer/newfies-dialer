@@ -2,12 +2,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -72,7 +72,7 @@ def voiceapp_grid(request):
                       str(row['id']) +\
                       ');"  title="' + _('Delete Voice App') + '">&nbsp;</a>'
                       ]} for row in voiceapp_list]
-    
+
     data = {'rows': rows,
             'page': page,
             'total': count}
@@ -94,7 +94,7 @@ def voiceapp_list(request):
     """
     template = 'frontend/voiceapp/list.html'
     data = {
-        'module': current_view(request),        
+        'module': current_view(request),
         'msg': request.session.get('msg'),
         'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),

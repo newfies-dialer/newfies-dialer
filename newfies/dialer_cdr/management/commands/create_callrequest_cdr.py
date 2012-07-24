@@ -64,7 +64,7 @@ class Command(BaseCommand):
 
                     #'surveyapp' | 'voiceapp'
                     try:
-                        content_type_id = ContentType.objects.get(model='surveyapp').id
+                        content_type_id = ContentType.objects.get(model='voiceapp').id
                     except:
                         content_type_id = 1
 
@@ -88,7 +88,7 @@ class Command(BaseCommand):
                                             phone_number=phonenumber,
                                             duration=random.randint(1, 100),
                                             disposition=choice(VOIPCALL_DISPOSITION))
-
+                        
                         for question in SURVEY_RESULT_QUE:
                             # for survey campaign result
                             if question == \

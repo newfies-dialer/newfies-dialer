@@ -14,54 +14,12 @@
 
 from django import template
 from django.template.defaultfilters import *
-from django.utils.datastructures import SortedDict
 from django.utils.translation import ugettext as _
 from survey.views import survey_audio_recording
 from dialer_campaign.models import CAMPAIGN_STATUS
 from dialer_cdr.models import LEG_TYPE
 from survey.models import APP_TYPE
 import operator
-import copy
-
-
-@register.filter()
-def profit_amount(value, arg):
-    """Profit Percentage without % sign"""
-    val = value - arg
-    return round(val * 100, 2)
-
-
-@register.filter
-def adjust_for_pagination(value, page):
-    value, page = int(value), int(page)
-    adjusted_value = value + ((page - 1) * 10)
-    return adjusted_value
-
-
-@register.filter()
-def month_int(value):
-    val = int(value[0:2])
-    return val
-
-
-@register.filter()
-def month_name(value, arg):
-    """Get month name"""
-    month_dict = {1: "Jan", 2: "Feb", 3: "Mar", 4: "Apr", 5: "May",
-                  6: "Jun", 7: "Jul", 8: "Aug", 9: "Sep", 10: "Oct",
-                  11: "Nov", 12: "Dec"}
-    no = int(value)
-    m_name = month_dict[no]
-    return str(m_name) + " " + str(arg)
-
-
-@register.filter()
-def cal_width(value, max):
-    """Get width"""
-    if not value or not max:
-        return "None"
-    width = (value / float(max)) * 200
-    return width
 
 
 @register.filter()
@@ -84,25 +42,6 @@ def campaign_status(value):
     except:
         status = ''
     return str(status)
-
-
-
-@register.filter(name='sort')
-def listsort(value):
-        if isinstance(value, dict):
-            new_dict = SortedDict()
-            key_list = value.keys()
-            key_list.sort()
-            for key in key_list:
-                new_dict[key] = value[key]
-            return new_dict
-        elif isinstance(value, list):
-            new_list = list(value)
-            new_list.sort()
-            return new_list
-        else:
-            return value
-        listsort.is_safe = True
 
 
 @register.filter()
@@ -158,12 +97,6 @@ def que_res_string(val):
     return result_string
 
 
-
-register.filter('profit_amount', profit_amount)
-register.filter('adjust_for_pagination', adjust_for_pagination)
-register.filter('month_int', month_int)
-register.filter('month_name', month_name)
-register.filter('cal_width', cal_width)
 register.filter('contact_status', contact_status)
 register.filter('campaign_status', campaign_status)
 register.filter('leg_type_name', leg_type_name)

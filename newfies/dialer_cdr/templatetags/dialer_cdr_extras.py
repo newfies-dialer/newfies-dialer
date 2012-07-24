@@ -25,43 +25,6 @@ import copy
 
 
 @register.filter()
-def mul(value, arg):
-    """Multiplication"""
-    return value * arg
-mul.is_safe = True
-
-
-@register.filter()
-def div(value, arg):
-    """Division"""
-    if arg is None:
-        return 0
-    elif arg is 0:
-        return 0
-    else:
-        return value / arg
-
-
-@register.filter()
-def subtract(value, arg):
-    """Subtraction"""
-    return value - arg
-
-
-@register.filter()
-def percent(value):
-    """Percentage with % sign"""
-    return str(round(value * 100, 2)) + " %"
-
-
-@register.filter()
-def profit_in_percentage(value, arg):
-    """Profit Percentage with % sign"""
-    val = value - arg
-    return str(round(val * 100, 2)) + " %"
-
-
-@register.filter()
 def profit_amount(value, arg):
     """Profit Percentage without % sign"""
     val = value - arg
@@ -73,38 +36,6 @@ def adjust_for_pagination(value, page):
     value, page = int(value), int(page)
     adjusted_value = value + ((page - 1) * 10)
     return adjusted_value
-
-
-@register.filter()
-def time_in_min(value, arg):
-    """Time in min & sec"""
-    if int(value) != 0:
-        if arg == 'min':
-            min = int(value / 60)
-            sec = int(value % 60)
-            return "%02d" % min + ":" + "%02d" % sec + "min"
-        else:
-            min = int(value / 60)
-            min = (min * 60)
-            sec = int(value % 60)
-            total_sec = min + sec
-            return str(total_sec + " sec")
-    else:
-        return str("00:00 min")
-
-
-@register.filter()
-def conv_min(value):
-    """Convert sec into min"""
-    try:
-        if int(value) != 0:
-            min = int(value / 60)
-            sec = int(value % 60)
-            return "%02d" % min + ":" + "%02d" % sec
-        else:
-            return "00:00"
-    except ValueError:
-        return "None"
 
 
 @register.filter()
@@ -174,49 +105,6 @@ def listsort(value):
         listsort.is_safe = True
 
 
-class ArgumentError(ValueError):
-    """Missing or incompatible argument."""
-
-
-def _regroup_table(seq, rows=None, columns=None):
-    if not (rows or columns):
-        raise ArgumentError("Missing one of rows or columns")
-
-    if columns:
-        rows = (len(seq) // columns) + 1
-    table = [seq[i::rows] for i in range(rows)]
-
-    # Pad out short rows
-    n = len(table[0])
-    return [row + [None for x in range(n - len(row))] for row in table]
-
-
-@register.filter
-def groupby_rows(seq, n):
-    """Returns a list of n lists. Each sub-list is the same length.
-
-    Short lists are padded with None. This is useful for creating HTML tables
-    from a sequence.
-
-    >>> groupby_rows(range(1, 11), 3)
-    [[1, 4, 7, 10], [2, 5, 8, None], [3, 6, 9, None]]
-    """
-    return _regroup_table(seq, rows=int(n))
-
-
-@register.filter
-def groupby_columns(seq, n):
-    """Returns a list of lists where each sub-list has n items.
-
-    Short lists are padded with None. This is useful for creating HTML tables
-    from a sequence.
-
-    >>> groupby_columns(range(1, 11), 3)
-    [[1, 5, 9], [2, 6, 10], [3, 7, None], [4, 8, None]]
-    """
-    return _regroup_table(seq, columns=int(n))
-
-
 @register.filter()
 def leg_type_name(value):
     """leg type"""
@@ -270,22 +158,14 @@ def que_res_string(val):
     return result_string
 
 
-register.filter('mul', mul)
-register.filter('subtract', subtract)
-register.filter('div', div)
-register.filter('percent', percent)
-register.filter('profit_in_percentage', profit_in_percentage)
+
 register.filter('profit_amount', profit_amount)
 register.filter('adjust_for_pagination', adjust_for_pagination)
-register.filter('conv_min', conv_min)
-register.filter('time_in_min', time_in_min)
 register.filter('month_int', month_int)
 register.filter('month_name', month_name)
 register.filter('cal_width', cal_width)
 register.filter('contact_status', contact_status)
 register.filter('campaign_status', campaign_status)
-register.filter('groupby_rows', groupby_rows)
-register.filter('groupby_columns', groupby_columns)
 register.filter('leg_type_name', leg_type_name)
 register.filter('que_res_string', que_res_string)
 register.filter('action_type_name', action_type_name)

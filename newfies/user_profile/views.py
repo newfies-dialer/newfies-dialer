@@ -2,12 +2,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -54,6 +54,7 @@ def customer_detail_change(request):
     except UserProfile.DoesNotExist:
         #create UserProfile
         user_detail_extened = UserProfile(user=user_detail)
+        #DEMO / Disable
         user_detail_extened.save()
 
     user_detail_form = UserChangeDetailForm(request.user,
@@ -61,7 +62,7 @@ def customer_detail_change(request):
     user_detail_extened_form = \
         UserChangeDetailExtendForm(request.user,
                                    instance=user_detail_extened)
-    
+
     user_password_form = PasswordChangeForm(user=request.user)
     check_phone_no_form = CheckPhoneNumberForm()
 
@@ -89,7 +90,7 @@ def customer_detail_change(request):
 
     if 'action' in request.GET:
         action = request.GET['action']
-        
+
     if request.GET.get('msg_note') == 'true':
         msg_note = request.session['msg_note']
 
@@ -112,6 +113,7 @@ def customer_detail_change(request):
             action = 'tabs-1'
             if user_detail_form.is_valid() \
                 and user_detail_extened_form.is_valid():
+                #DEMO / Disable
                 user_detail_form.save()
                 user_detail_extened_form.save()
                 msg_detail = _('Detail has been changed.')
@@ -133,6 +135,7 @@ def customer_detail_change(request):
                                                     data=request.POST)
             action = 'tabs-2'
             if user_password_form.is_valid():
+                #DEMO / Disable
                 user_password_form.save()
                 msg_pass = _('Your password has been changed.')
             else:
@@ -219,7 +222,7 @@ def notification_grid(request):
     data = {'rows': rows,
             'page': page,
             'total': count}
-    
+
     return HttpResponse(simplejson.dumps(data), mimetype='application/json',
                         content_type="application/json")
 

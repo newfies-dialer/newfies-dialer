@@ -12,14 +12,11 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django import template
 from django.template.defaultfilters import *
-from django.utils.translation import ugettext as _
 from survey.views import survey_audio_recording
 from dialer_campaign.models import CAMPAIGN_STATUS
 from dialer_cdr.models import LEG_TYPE
 from survey.models import APP_TYPE
-import operator
 
 
 @register.filter()
@@ -84,14 +81,15 @@ def que_res_string(val):
         if "*|**|*" in i:
             que_audio = i.split("*|**|*")
             if que_audio:
-                result_string += '<tr><td colspan="2">' + str(que_audio[0]) \
+                new_string = '<tr><td colspan="2">' + str(que_audio[0]) \
                                 + survey_audio_recording(str(que_audio[1])) \
                                 + '</td></tr>'
+                result_string += new_string.encode('utf-8')
         else:
             que_res = i.split("*|*")
-            result_string += '<tr><td>' + str(que_res[0])\
-                             + '</td><td class="survey_result_key">' \
-                             + str(que_res[1]) + '</td></tr>'
+            result_string += '<tr><td>' + que_res[0].encode('utf-8') \
+                                + '</td><td class="survey_result_key">' \
+                                + que_res[1].encode('utf-8') + '</td></tr>'
 
     result_string += '</table>'
     return result_string
@@ -102,4 +100,3 @@ register.filter('campaign_status', campaign_status)
 register.filter('leg_type_name', leg_type_name)
 register.filter('que_res_string', que_res_string)
 register.filter('action_type_name', action_type_name)
-

@@ -27,12 +27,7 @@ class BaseAuthenticatedClient(TestCase):
     def setUp(self):
         """To create admin user"""
         self.client = Client()
-        self.user = \
-        User.objects.create_user('admin', 'admin@world.com', 'admin')
-        self.user.is_staff = True
-        self.user.is_superuser = True
-        self.user.is_active = True
-        self.user.save()
+        self.user = User.objects.get(username='admin')
         auth = '%s:%s' % ('admin', 'admin')
         auth = 'Basic %s' % base64.encodestring(auth)
         auth = auth.strip()
@@ -47,6 +42,7 @@ class TestDialerCampaignView(BaseAuthenticatedClient):
     """
     TODO: Add documentation
     """
+    fixtures = ['auth_user.json']
 
     def test_dialer_campaign(self):
         response = self.client.get("/admin/dialer_campaign/phonebook/")
@@ -79,8 +75,9 @@ class TestDialerCampaignCustomerView(BaseAuthenticatedClient):
     """
     TODO: Add documentation
     """
-    fixtures = ['gateway.json', 'auth_user', 'voiceapp', 'phonebook',
-                'contact', 'campaign', 'campaign_subscriber']
+    fixtures = ['dialer_setting.json', 'gateway.json', 'auth_user',
+                'voiceapp', 'phonebook', 'contact', 'campaign',
+                'campaign_subscriber']
 
     def test_phonebook_view(self):
         """Test Function to check phonebook"""
@@ -91,8 +88,11 @@ class TestDialerCampaignCustomerView(BaseAuthenticatedClient):
         response = self.client.get('/phonebook/add/')
         self.assertEqual(response.status_code, 200)
         response = self.client.post('/phonebook/add/',
-            data={'name': 'My Phonebook', 'description': 'phonebook',
-                  'user': self.user})
+            data={
+                'name': 'My Phonebook',
+                'description': 'phonebook',
+                'user': self.user
+                })
         response = self.client.get('/phonebook/1/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
@@ -141,12 +141,12 @@ class TestDialerCampaignCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 302)
 
 
-class TestDialerCampaignModel(object):
+class TestDialerCampaignModel(TestCase):
     """
     TODO: Add documentation
     """
 
-    fixtures = ['gateway.json']
+    fixtures = ['dialer_setting.json', 'gateway.json', 'auth_user.json']
 
     def setup(self):
         self.user = User.objects.get(username='admin')

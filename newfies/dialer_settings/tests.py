@@ -25,8 +25,8 @@ class BaseAuthenticatedClient(TestCase):
     def setUp(self):
         """To create admin user"""
         self.client = Client()
-        self.user = \
-        User.objects.create_user('admin', 'admin@world.com', 'admin')
+        self.user = User.objects\
+                        .create_user('admin', 'admin@world.com', 'admin')
         self.user.is_staff = True
         self.user.is_superuser = True
         self.user.is_active = True

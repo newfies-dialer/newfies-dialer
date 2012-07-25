@@ -14,7 +14,8 @@
 
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
-from dialer_campaign.models import Phonebook, Contact, Campaign, CampaignSubscriber
+from dialer_campaign.models import Phonebook, Contact, Campaign, \
+                            CampaignSubscriber
 from django.contrib.contenttypes.models import ContentType
 import nose.tools as nt
 import base64
@@ -42,7 +43,7 @@ class BaseAuthenticatedClient(TestCase):
         self.assertTrue(login)
 
 
-class DialerCampaignView(BaseAuthenticatedClient):
+class TestDialerCampaignView(BaseAuthenticatedClient):
     """
     TODO: Add documentation
     """
@@ -74,7 +75,7 @@ class DialerCampaignView(BaseAuthenticatedClient):
         self.failUnlessEqual(response.status_code, 200)
 
 
-class DialerCampaignCustomerView(BaseAuthenticatedClient):
+class TestDialerCampaignCustomerView(BaseAuthenticatedClient):
     """
     TODO: Add documentation
     """
@@ -140,10 +141,11 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 302)
 
 
-class DialerCampaignModel(object):
+class TestDialerCampaignModel(object):
     """
     TODO: Add documentation
     """
+
     def setup(self):
         self.user = User.objects.get(username='admin')
         # Phonebook model

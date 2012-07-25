@@ -22,7 +22,7 @@ Replace this with more appropriate tests for your application.
 from django.test import TestCase
 
 
-class ForgotPassTestCase(TestCase):
+class TestForgotPassword(TestCase):
     """Test cases for Newfies-Dialer Customer Interface. for forgot password"""
 
     def test_check_password_reset(self):

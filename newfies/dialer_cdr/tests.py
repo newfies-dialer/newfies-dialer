@@ -14,6 +14,8 @@
 
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
+from dialer_cdr.models import Callrequest, VoIPCall
+import nose.tools as nt
 import base64
 
 
@@ -39,24 +41,8 @@ class BaseAuthenticatedClient(TestCase):
         self.assertTrue(login)
 
 
-class AdminTestCase(TestCase):
+class DialerCdrView(BaseAuthenticatedClient):
     """Test cases for Admin Interface."""
-
-    def setUp(self):
-        """To create admin user"""
-        self.client = Client()
-        self.user = \
-        User.objects.create_user('admin', 'admin@world.com', 'admin')
-        self.user.is_staff = True
-        self.user.is_superuser = True
-        self.user.is_active = True
-        self.user.save()
-        auth = '%s:%s' % ('admin', 'admin')
-        auth = 'Basic %s' % base64.encodestring(auth)
-        auth = auth.strip()
-        self.extra = {
-            'HTTP_AUTHORIZATION': auth,
-        }
 
     def test_admin_index(self):
         """Test Function to check Admin index page"""
@@ -78,23 +64,9 @@ class AdminTestCase(TestCase):
         response = self.client.get('/admin/dialer_cdr/callrequest/')
         self.failUnlessEqual(response.status_code, 200)
 
-        response = self.client.get('/admin/survey/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/survey/surveyapp/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/survey/surveyquestion/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/survey/surveyresponse/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/survey/surveycampaignresult/')
-        self.failUnlessEqual(response.status_code, 200)
 
-
-class CustomerPanelTestCase(BaseAuthenticatedClient):
+class DialerCdrCustomerView(BaseAuthenticatedClient):
     """Test cases for Newfies-Dialer Customer Interface."""
-    fixtures = ['gateway.json', 'auth_user', 'voiceapp', 'phonebook',
-                'contact', 'campaign', 'campaign_subscriber', 'survey',
-                'surve_question', 'survey_response']
 
     def test_index(self):
         """Test Function to check customer index page"""

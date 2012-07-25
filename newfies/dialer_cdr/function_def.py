@@ -2,21 +2,20 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 
 #from dialer_cdr.models import Callrequest, VoIPCall
-from common.common_functions import validate_days, variable_value
+from common.common_functions import variable_value
 from dialer_cdr.models import VOIPCALL_DISPOSITION
 from datetime import datetime
-from random import choice
 
 
 def rate_range():
@@ -50,12 +49,12 @@ def voipcall_record_common_fun(request):
     # Patch code for persist search
     if request.method != 'POST':
 
-        if  request.session.get('from_date'):
+        if request.session.get('from_date'):
             from_date = request.session['from_date']
             start_date = datetime(int(from_date[0:4]), int(from_date[5:7]),
                                   int(from_date[8:10]), 0, 0, 0, 0)
 
-        if  request.session.get('to_date'):
+        if request.session.get('to_date'):
             to_date = request.session['to_date']
             end_date = datetime(int(to_date[0:4]), int(to_date[5:7]),
                                 int(to_date[8:10]), 23, 59, 59, 999999)
@@ -70,7 +69,7 @@ def voipcall_record_common_fun(request):
         kwargs['starting_date__gte'] = start_date
     if start_date == '' and end_date:
         kwargs['starting_date__lte'] = end_date
-    
+
     if disposition:
         if disposition != 'all':
             kwargs['disposition__exact'] = disposition
@@ -106,7 +105,8 @@ def voipcall_search_admin_form_fun(request):
     query_string = ''
 
     if start_date and end_date:
-        date_string = 'starting_date__gte=' + start_date + '&starting_date__lte=' + end_date + '+23%3A59%3A59'
+        date_string = 'starting_date__gte=' + start_date + \
+                    '&starting_date__lte=' + end_date + '+23%3A59%3A59'
         query_string = return_query_string(query_string, date_string)
 
     if start_date and end_date == '':
@@ -120,7 +120,8 @@ def voipcall_search_admin_form_fun(request):
     if disposition:
         if disposition != 'all':
             disposition_string = 'disposition__exact=' + disposition
-            query_string = return_query_string(query_string, disposition_string)
+            query_string = return_query_string(query_string,
+                                            disposition_string)
 
     return query_string
 

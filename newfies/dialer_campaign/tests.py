@@ -42,7 +42,7 @@ class BaseAuthenticatedClient(TestCase):
         self.assertTrue(login)
 
 
-class TestDialerCampaignView(BaseAuthenticatedClient):
+class DialerCampaignView(BaseAuthenticatedClient):
     """
     TODO: Add documentation
     """
@@ -74,7 +74,7 @@ class TestDialerCampaignView(BaseAuthenticatedClient):
         self.failUnlessEqual(response.status_code, 200)
 
 
-class TestDialerCampaignCustomerView(BaseAuthenticatedClient):
+class DialerCampaignCustomerView(BaseAuthenticatedClient):
     """
     TODO: Add documentation
     """
@@ -140,28 +140,24 @@ class TestDialerCampaignCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 302)
 
 
-class TestDialerCampaignModel(object):
+class DialerCampaignModel(object):
     """
     TODO: Add documentation
     """
     def setup(self):
-        self.user =\
-            User.objects.get(username='admin')
-
+        self.user = User.objects.get(username='admin')
         # Phonebook model
         self.phonebook = Phonebook(
             name='test_phonebook',
             user=self.user,
             )
         self.phonebook.save()
-
         # Contact model
         self.contact = Contact(
             phonebook=self.phonebook,
             contact=123456789,
         )
         self.contact.save()
-
         # Campaign model
         try:
             content_type_id = ContentType.objects.get(model='voiceapp').id
@@ -176,8 +172,6 @@ class TestDialerCampaignModel(object):
             object_id=1,
         )
         self.campaign.save()
-
-
         # CampaignSubscriber model
         self.campaignsubscriber = CampaignSubscriber(
             contact=self.contact,
@@ -198,4 +192,3 @@ class TestDialerCampaignModel(object):
         self.contact.delete()
         self.campaign.delete()
         self.campaignsubscriber.delete()
-

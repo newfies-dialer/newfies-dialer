@@ -475,7 +475,7 @@ class NewfiesCustomerInterfaceTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
                                 'frontend/survey/survey_list.html')
-        response = self.client.get('/survey/1/')
+        response = self.client.get('/survey/add/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
                                 'frontend/survey/survey_change.html')

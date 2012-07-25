@@ -260,7 +260,7 @@ else:
 
 # Nose
 try:
-    import nose  #TODO: Check / replace by django_nose
+    import nose
 except ImportError:
     pass
 else:

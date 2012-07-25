@@ -158,7 +158,7 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
     def test_create_callrequest(self):
         """Test Function to create a callrequest"""
         data = simplejson.dumps({
-                    "request_uuid": "2342jtdsf-00153",
+                    "request_uuid": "df8a8478-cc57-11e1-aa17-00231470a30c",
                     "call_time": "2011-05-01 11:22:33",
                     "phone_number": "8792749823",
                     "content_type": "voice_app",
@@ -527,4 +527,3 @@ test_cases = [
 
 def suite():
     return build_test_suite_from(test_cases)
-

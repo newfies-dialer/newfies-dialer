@@ -526,3 +526,4 @@ test_cases = [
 
 def suite():
     return build_test_suite_from(test_cases)
+

@@ -232,8 +232,8 @@ class CampaignSubscriberResource(ModelResource):
 
         try:
             campaignsubscriber = CampaignSubscriber.objects\
-            .get(duplicate_contact=bundle.data.get('contact'),
-                campaign=campaign_obj)
+                .get(duplicate_contact=bundle.data.get('contact'),
+                    campaign=campaign_obj)
             campaignsubscriber.status = bundle.data.get('status')
             campaignsubscriber.save()
         except:

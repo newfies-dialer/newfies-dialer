@@ -13,50 +13,50 @@
 #
 
 
-from celery.task import PeriodicTask
-from celery.decorators import task
-from common.only_one_task import only_one
-from datetime import datetime, timedelta
-from math import ceil
-from time import sleep
+# from celery.task import PeriodicTask
+# from celery.decorators import task
+# from common.only_one_task import only_one
+# from datetime import datetime, timedelta
+# from math import ceil
+# from time import sleep
 
-LOCK_EXPIRE = 60 * 60 * 1  # Lock expires in 1 hours
-
-
-@task()
-def mylittletask_adder(id):
-    """This will execute the outbound calls in the campaign
-
-    **Attributes**:
-
-        * ``campaign_id`` - Campaign ID
-    """
-    logger = mylittletask_adder.get_logger()
-    logger.info("\nTASK :: mylittletask_adder %s" % str(id))
-    sleep(10)
-    logger.info("END TASK :: mylittletask_adder %s" % str(id))
+# LOCK_EXPIRE = 60 * 60 * 1  # Lock expires in 1 hours
 
 
-class task_runner(PeriodicTask):
-    """A periodic task that launch other tasks
+# @task()
+# def mylittletask_adder(id):
+#     """This will execute the outbound calls in the campaign
 
-    **Usage**:
+#     **Attributes**:
 
-        task_runner.delay()
-    """
-    run_every = timedelta(seconds=30)
+#         * ``campaign_id`` - Campaign ID
+#     """
+#     logger = mylittletask_adder.get_logger()
+#     logger.info("\nTASK :: mylittletask_adder %s" % str(id))
+#     sleep(10)
+#     logger.info("END TASK :: mylittletask_adder %s" % str(id))
 
-    @only_one(key="task_runner", timeout=LOCK_EXPIRE)
-    def run(self, **kwargs):
-        logger = self.get_logger(**kwargs)
-        logger.warning("TASK :: task_runner")
 
-        for time_to_wait in range(0, 30):
-            second_towait = ceil(time_to_wait)
-            launch_date = datetime.now() + timedelta(seconds=second_towait)
+# class task_runner(PeriodicTask):
+#     """A periodic task that launch other tasks
 
-            logger.info("Will launch mylittletask_adder  at %s" % \
-                            (launch_date.strftime("%b %d %Y %I:%M:%S")))
-            mylittletask_adder.apply_async(
-                        args=[second_towait],
-                        eta=launch_date)
+#     **Usage**:
+
+#         task_runner.delay()
+#     """
+#     run_every = timedelta(seconds=30)
+
+#     @only_one(key="task_runner", timeout=LOCK_EXPIRE)
+#     def run(self, **kwargs):
+#         logger = self.get_logger(**kwargs)
+#         logger.warning("TASK :: task_runner")
+
+#         for time_to_wait in range(0, 30):
+#             second_towait = ceil(time_to_wait)
+#             launch_date = datetime.now() + timedelta(seconds=second_towait)
+
+#             logger.info("Will launch mylittletask_adder  at %s" % \
+#                             (launch_date.strftime("%b %d %Y %I:%M:%S")))
+#             mylittletask_adder.apply_async(
+#                         args=[second_towait],
+#                         eta=launch_date)

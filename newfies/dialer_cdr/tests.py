@@ -14,8 +14,6 @@
 
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
-from common.test_utils import build_test_suite_from
-
 import base64
 import simplejson
 
@@ -42,7 +40,7 @@ class BaseAuthenticatedClient(TestCase):
         self.assertTrue(login)
 
 
-class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
+class ApiTestCase(BaseAuthenticatedClient):
     """Test cases for Newfies-Dialer API."""
     fixtures = ['gateway.json', 'auth_user', 'voiceapp', 'phonebook',
                 'dialer_setting', 'campaign', 'campaign_subscriber',
@@ -515,15 +513,3 @@ class NewfiesCustomerInterfaceForgotPassTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
         'frontend/registration/password_reset_complete.html')
-
-
-test_cases = [
-    NewfiesTastypieApiTestCase,
-    NewfiesAdminInterfaceTestCase,
-    NewfiesCustomerInterfaceTestCase,
-    NewfiesCustomerInterfaceForgotPassTestCase,
-]
-
-
-def suite():
-    return build_test_suite_from(test_cases)

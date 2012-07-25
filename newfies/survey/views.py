@@ -233,13 +233,14 @@ def survey_finestatemachine(request):
         html = \
             '<Response>\n' \
             '   <GetDigits action="%s" method="GET" numDigits="1" ' \
-            'retries="1" validDigits="0123456789" timeout="5" ' \
+            'retries="1" validDigits="0123456789" timeout="%s" ' \
             'finishOnKey="#">\n' \
             '       %s\n' \
             '   </GetDigits>\n' \
             '   <Redirect>%s</Redirect>\n' \
             '</Response>' % (
                 settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
+                settings.MENU_TIMEOUT,
                 question,
                 settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
     #Recording
@@ -248,11 +249,12 @@ def survey_finestatemachine(request):
             '<Response>\n' \
             '   %s\n' \
             '   <Record maxLength="120" finishOnKey="*#" action="%s" ' \
-            'method="GET" filePath="%s" timeout="5"/>' \
+            'method="GET" filePath="%s" timeout="%s"/>' \
             '</Response>' % (
                 question,
                 settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
-                settings.FS_RECORDING_PATH)
+                settings.FS_RECORDING_PATH,
+                settings.MENU_TIMEOUT)
     # Hangup
     else:
         html = \

@@ -76,6 +76,9 @@ PLIVO_DEFAULT_SURVEY_ANSWER_URL = 'http://SERVER_IP_PORT/survey_finestatemachine
 
 FS_RECORDING_PATH = '/usr/share/newfies/usermedia/recording/'
 
+#Time to wait between menu / questions in survey
+MENU_TIMEOUT = '5'
+
 # ADD 'dummy','plivo','twilio'
 NEWFIES_DIALER_ENGINE = 'dummy'
 

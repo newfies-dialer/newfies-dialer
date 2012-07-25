@@ -146,6 +146,8 @@ class TestDialerCampaignModel(object):
     TODO: Add documentation
     """
 
+    fixtures = ['gateway.json']
+
     def setup(self):
         self.user = User.objects.get(username='admin')
         # Phonebook model

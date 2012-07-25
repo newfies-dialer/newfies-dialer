@@ -93,6 +93,9 @@ class VoiceApp(Model):
         verbose_name = _("Voice Application")
         verbose_name_plural = _("Voice Applications")
 
+    def set_name(self, name):
+        self.name = name
+
     def __unicode__(self):
             return u"%s" % self.name
 

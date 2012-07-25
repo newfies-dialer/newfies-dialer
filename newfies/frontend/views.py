@@ -52,21 +52,6 @@ FORBIDDEN_COLOR = '#A61700'
 
 
 def logout_view(request):
-    """Check User credentials and logout"""
-    template = 'frontend/index.html'
-    logout(request)
-
-    data = {
-        'module': current_view(request),
-        'is_authenticated': request.user.is_authenticated(),
-    }
-
-    return render_to_response(template, data,
-           context_instance=RequestContext(request))
-
-
-#FIXME: double logout_view
-def logout_view(request):
     try:
         del request.session['has_notified']
     except KeyError:

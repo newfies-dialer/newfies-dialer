@@ -19,7 +19,76 @@ when you run "manage.py test".
 Replace this with more appropriate tests for your application.
 """
 
-from django.test import TestCase
+from django.contrib.auth.models import User
+from django.test import TestCase, Client
+from dialer_cdr.models import Callrequest, VoIPCall
+import nose.tools as nt
+
+
+class BaseAuthenticatedClient(TestCase):
+    """Common Authentication"""
+
+    def setUp(self):
+        """To create admin user"""
+        self.client = Client()
+        self.user =\
+        User.objects.create_user('admin', 'admin@world.com', 'admin')
+        self.user.is_staff = True
+        self.user.is_superuser = True
+        self.user.is_active = True
+        self.user.save()
+        auth = '%s:%s' % ('admin', 'admin')
+        auth = 'Basic %s' % base64.encodestring(auth)
+        auth = auth.strip()
+        self.extra = {
+            'HTTP_AUTHORIZATION': auth,
+            }
+        login = self.client.login(username='admin', password='admin')
+        self.assertTrue(login)
+
+
+class FrontendView(BaseAuthenticatedClient):
+    """Test cases for Admin Interface."""
+
+    def test_admin(self):
+        """Test Function to check Admin index page"""
+        response = self.client.get('/admin/')
+        self.failUnlessEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'admin/base_site.html')
+        response = self.client.login(username=self.user.username,
+            password='admin')
+        self.assertEqual(response, True)
+        response = self.client.get('/admin/auth/')
+        self.failUnlessEqual(response.status_code, 200)
+
+
+class FrontendCustomerView(BaseAuthenticatedClient):
+    """Test cases for Newfies-Dialer Customer Interface."""
+
+    def test_index(self):
+        """Test Function to check customer index page"""
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'frontend/index.html')
+        response = self.client.post('/login/',
+                {'username': 'userapi',
+                 'password': 'passapi'})
+        self.assertEqual(response.status_code, 200)
+
+    def test_dashboard(self):
+        """Test Function to check customer dashboard"""
+        response = self.client.get('/dashboard/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'frontend/dashboard.html')
+
+    def test_user_settings(self):
+        """Test Function to check User settings"""
+        response = self.client.get('/user_detail_change/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+            'frontend/registration/user_detail_change.html')
+
+
 
 
 class TestForgotPassword(TestCase):

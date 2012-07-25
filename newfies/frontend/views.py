@@ -179,7 +179,6 @@ def pleaselog(request):
            context_instance=RequestContext(request))
 
 
-
 @login_required
 def customer_dashboard(request, on_index=None):
     """Customer dashboard gives the following information

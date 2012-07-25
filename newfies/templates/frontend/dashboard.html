@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load dialer_cdr_extras icons i18n %}
+{% load i18n common_tags %}
 
 {% block title %}
 {% trans 'Dashboard' %}
@@ -126,7 +126,7 @@
 </script>
 
 <input type="submit" class="btn" value="{% trans "Call Count" %}" name="call_count_button"/> &nbsp; &nbsp;
-<input type="submit" class="btn-info" value="{% trans "Duration" %}" name="duration_button"/>
+<input type="submit" class="btn btn-info" value="{% trans "Duration" %}" name="duration_button"/>
 </form>
 
 </div>

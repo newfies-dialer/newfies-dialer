@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n dialer_cdr_extras dajaxice_templatetags icons %}
+{% load i18n dialer_cdr_extras dajaxice_templatetags common_tags icons %}
 
 {% block extra_files %}
 
@@ -91,24 +91,20 @@
 <div class="row">
 <div class="span12">
     <div class="row">
-        <div class="span4 clearfix{% if form.name.errors %} control-group error{% endif %}">
-            <label class="control-label">{{ form.name.label }}</label>
-            <div class="input">
-                {{ form.name }}
-                {% if form.name.errors %}
-                    <span class="help-inline">{{ form.name.errors|removetags:"ul li"|safe }}</span>
-                {% endif %}
+        {% get_fieldset name,description as survey_fields from form %}
+        {% for field in survey_fields.visible_fields %}
+            <div class="span4 clearfix{% if field.errors %} control-group error{% endif %}">
+                <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                <div class="input">
+                    {{ field }}
+                    {% if field.errors %}
+                        <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                    {% endif %}
+                    <span class="help-block">{{ field.help_text }} </span>
+                </div>
             </div>
-        </div>
-        <div class="span4 clearfix{% if form.description.errors %} control-group error{% endif %}">
-            <label class="control-label" for="id_{{ form.description.name }}">{{ form.description.label }}</label>
-            <div class="input">
-                {{ form.description }}
-                {% if form.description.errors %}
-                    <span class="help-inline">{{ form.description.errors|removetags:"ul li"|safe }}</span>
-                {% endif %}
-            </div>
-        </div>
+        {% endfor %}
+
         <div class="span4 clearfix">
             <label class="control-label">&nbsp;</label>
             <div class="input">

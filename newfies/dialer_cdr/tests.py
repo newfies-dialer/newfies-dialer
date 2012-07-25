@@ -14,7 +14,7 @@
 
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
-from dialer_cdr.test_utils import build_test_suite_from
+from common.test_utils import build_test_suite_from
 
 import base64
 import simplejson
@@ -149,11 +149,11 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
 
     def test_update_campaign_subscriber(self):
         """Test Function to update a campaign subscriber"""
-        data = simplejson.dumps({"status": "2",
-                "contact": "123546"})
+        data = simplejson.dumps({"status": "1",
+                "contact": "640234000"})
         response = self.client.put('/api/v1/campaignsubscriber/1/',
                    data, content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 204)
 
     def test_create_callrequest(self):
         """Test Function to create a callrequest"""
@@ -178,7 +178,8 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
 
     def test_create_answercall(self):
         """Test Function to create a answercall"""
-        data = {"ALegRequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875"}
+        data = {"ALegRequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875",
+                "CallUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875"}
         response = self.client.post('/api/v1/answercall/', data, **self.extra)
         self.assertEqual(response.status_code, 200)
 
@@ -460,6 +461,15 @@ class NewfiesCustomerInterfaceTestCase(BaseAuthenticatedClient):
         self.assertTemplateUsed(response,
         'frontend/registration/user_detail_change.html')
 
+    def test_audio_view(self):
+        """Test Function audio view"""
+        response = self.client.get('/audio/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+            'frontend/audio/audio_list.html')
+        response = self.client.get('/audio/add/')
+        self.assertEqual(response.status_code, 200)
+
     def test_survey_view(self):
         """Test Function survey view"""
         response = self.client.get('/survey/')
@@ -517,3 +527,4 @@ test_cases = [
 
 def suite():
     return build_test_suite_from(test_cases)
+

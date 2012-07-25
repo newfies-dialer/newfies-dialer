@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n dialer_cdr_extras %}
+{% load i18n common_tags %}
 
 {% block extra_files %}
     <script type="text/javascript">
@@ -48,8 +48,8 @@
         {% endfor %}
         <label></label>
         <div class="actions">
-            <input type="submit" value="{% trans "Search" %}" class="btn-primary"/>&nbsp;
-            <input type="reset" name="reset" value="{% trans "Reset" %}" class="btn-danger">
+            <input type="submit" value="{% trans "Search" %}" class="btn btn-primary"/>&nbsp;
+            <input type="reset" name="reset" value="{% trans "Reset" %}" class="btn btn-danger">
         </div>
       
     </form>

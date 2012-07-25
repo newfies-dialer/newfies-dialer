@@ -420,6 +420,9 @@ PLIVO_DEFAULT_SURVEY_ANSWER_URL = 'http://127.0.0.1:8000/' \
 
 FS_RECORDING_PATH = '/usr/share/newfies/usermedia/recording/'
 
+#Time to wait between menu / questions in survey
+MENU_TIMEOUT = '5'
+
 # ADD 'dummy','plivo','twilio'
 NEWFIES_DIALER_ENGINE = 'plivo'
 

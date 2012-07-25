@@ -12,7 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from django.conf.urls.defaults import patterns
-from dialer_campaign.views import *
+
 
 urlpatterns = patterns('dialer_campaign.views',
     (r'^$', 'index'),

@@ -233,13 +233,14 @@ def survey_finestatemachine(request):
         html = \
             '<Response>\n' \
             '   <GetDigits action="%s" method="GET" numDigits="1" ' \
-            'retries="1" validDigits="0123456789" timeout="5" ' \
+            'retries="1" validDigits="0123456789" timeout="%s" ' \
             'finishOnKey="#">\n' \
             '       %s\n' \
             '   </GetDigits>\n' \
             '   <Redirect>%s</Redirect>\n' \
             '</Response>' % (
                 settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
+                settings.MENU_TIMEOUT,
                 question,
                 settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
     #Recording
@@ -248,11 +249,12 @@ def survey_finestatemachine(request):
             '<Response>\n' \
             '   %s\n' \
             '   <Record maxLength="120" finishOnKey="*#" action="%s" ' \
-            'method="GET" filePath="%s" timeout="5"/>' \
+            'method="GET" filePath="%s" timeout="%s"/>' \
             '</Response>' % (
                 question,
                 settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
-                settings.FS_RECORDING_PATH)
+                settings.FS_RECORDING_PATH,
+                settings.MENU_TIMEOUT)
     # Hangup
     else:
         html = \
@@ -909,7 +911,6 @@ def survey_report(request):
             'dialer_callrequest.id '
         select_group_query = 'SELECT group_concat(CONCAT_WS("*|*", question, response, record_file) SEPARATOR "-|-") '
 
-        # SELECT group_concat(CONCAT_WS("/Result:", question, response) SEPARATOR ", ")
         rows = VoIPCall.objects\
                 .only('starting_date', 'phone_number', 'duration', 'disposition')\
                 .filter(**kwargs)\
@@ -917,7 +918,7 @@ def survey_report(request):
                     select={
                         'question_response': select_group_query + from_query
                         },
-                ).order_by(sort_field)  # .exclude(callid='')
+                ).order_by(sort_field)
 
         request.session['session_surveycalls'] = rows
 

@@ -13,7 +13,6 @@
 #
 
 from django.conf.urls.defaults import patterns
-from survey.views import *
 
 
 urlpatterns = patterns('survey.views',

@@ -2,12 +2,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -16,7 +16,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.http import HttpResponseRedirect, HttpResponse
 from django.template.context import RequestContext
 from django.utils.translation import ugettext_lazy as _
 from django.utils import simplejson
@@ -30,9 +30,8 @@ from dialer_settings.models import DialerSetting
 from user_profile.models import UserProfile
 from user_profile.forms import UserChangeDetailForm, \
                                UserChangeDetailExtendForm, \
-                               CheckPhoneNumberForm,\
-                               UserProfileForm
-from common.common_functions import variable_value, current_view
+                               CheckPhoneNumberForm
+from common.common_functions import current_view
 
 
 @login_required
@@ -41,7 +40,8 @@ def customer_detail_change(request):
 
     **Attributes**:
 
-        * ``form`` - UserChangeDetailForm, UserChangeDetailExtendForm, PasswordChangeForm, CheckPhoneNumberForm
+        * ``form`` - UserChangeDetailForm, UserChangeDetailExtendForm,
+                        PasswordChangeForm, CheckPhoneNumberForm
         * ``template`` - 'frontend/registration/user_detail_change.html'
 
     **Logic Description**:
@@ -54,6 +54,7 @@ def customer_detail_change(request):
     except UserProfile.DoesNotExist:
         #create UserProfile
         user_detail_extened = UserProfile(user=user_detail)
+        #DEMO / Disable
         user_detail_extened.save()
 
     user_detail_form = UserChangeDetailForm(request.user,
@@ -61,7 +62,7 @@ def customer_detail_change(request):
     user_detail_extened_form = \
         UserChangeDetailExtendForm(request.user,
                                    instance=user_detail_extened)
-    
+
     user_password_form = PasswordChangeForm(user=request.user)
     check_phone_no_form = CheckPhoneNumberForm()
 
@@ -89,7 +90,7 @@ def customer_detail_change(request):
 
     if 'action' in request.GET:
         action = request.GET['action']
-        
+
     if request.GET.get('msg_note') == 'true':
         msg_note = request.session['msg_note']
 
@@ -112,12 +113,13 @@ def customer_detail_change(request):
             action = 'tabs-1'
             if user_detail_form.is_valid() \
                 and user_detail_extened_form.is_valid():
+                #DEMO / Disable
                 user_detail_form.save()
                 user_detail_extened_form.save()
                 msg_detail = _('Detail has been changed.')
             else:
                 error_detail = _('Please correct the errors below.')
-        elif request.POST['form-type'] == "check-number": # check phone no
+        elif request.POST['form-type'] == "check-number":  # check phone no
             action = 'tabs-5'
             check_phone_no_form = CheckPhoneNumberForm(data=request.POST)
             if check_phone_no_form.is_valid():
@@ -128,11 +130,12 @@ def customer_detail_change(request):
                     msg_number = _('This phone number is authorized.')
             else:
                 error_number = _('Please correct the errors below.')
-        else: # "change-password"
+        else:  # "change-password"
             user_password_form = PasswordChangeForm(user=request.user,
                                                     data=request.POST)
             action = 'tabs-2'
             if user_password_form.is_valid():
+                #DEMO / Disable
                 user_password_form.save()
                 msg_pass = _('Your password has been changed.')
             else:
@@ -213,13 +216,13 @@ def notification_grid(request):
                       str(row.added),
                       str('<a href="../update_notice_status_cust/' \
                       + str(row.id) + '/" class="icon" ' \
-                      + call_style(row.unseen)  + '>&nbsp;</a>' ),
-             ]}for row in user_notification_list ]
+                      + call_style(row.unseen) + '>&nbsp;</a>'),
+             ]}for row in user_notification_list]
 
     data = {'rows': rows,
             'page': page,
             'total': count}
-    
+
     return HttpResponse(simplejson.dumps(data), mimetype='application/json',
                         content_type="application/json")
 
@@ -235,7 +238,7 @@ def notification_del_read(request, object_id):
 
     **Logic Description**:
 
-        * Delete/Mark as Read the selected notification from the notification list
+        * Delete/Mark as Read the selected notification
     """
     try:
         # When object_id is not 0

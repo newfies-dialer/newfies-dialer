@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n dialer_cdr_extras dajaxice_templatetags %}
+{% load i18n common_tags %}
 
 {% block extra_files %}
 {% endblock %}
@@ -62,29 +62,28 @@
     {% endif %}
 
         <form class="well" method="POST" action="{% if action == 'update' %}/survey_response/{{ survey_response_id }}/{% else %}/survey_response/add/?surveyquestion_id={{ surveyquestion_id }}{% endif %}" enctype="multipart/form-data" id="update_form">{% csrf_token %}
-
-            {% for field in form %}
-                {% ifnotequal field.name 'surveyquestion' %}
-                    <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-                        <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
-                        <div class="input">
-                            {{ field }}
-                            {% if field.errors %}
-                                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                            <span class="help-block">{{ field.help_text|safe }} </span>
-                        </div>
+            {% get_fieldset key,keyvalue,surveyquestion,goto_surveyquestion as survey_response_fields from form %}
+            {% for field in survey_response_fields.hidden_fields %}
+                {{ field }}
+            {% endfor %}
+            {% for field in survey_response_fields.visible_fields %}
+                <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                    <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                    <div class="input">
+                        {{ field }}
+                        {% if field.errors %}
+                            <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                        {% endif %}
+                        <span class="help-block">{{ field.help_text }} </span>
                     </div>
-                {% else %}
-                    {{ field }}
-                {% endifnotequal %}
+                </div>
             {% endfor %}
 
             <div class="actions">
                 {% if action == 'update' %}
-                    <input id="update" class="btn-primary" type="submit" value="{% trans "Update" %}" />
+                    <input id="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
                 {% else %}
-                    <input id="add" type="submit" class="btn-primary" value="{% trans "Submit" %}" />
+                    <input id="add" type="submit" class="btn btn-primary" value="{% trans "Submit" %}" />
                 {% endif %}
             </div>
 

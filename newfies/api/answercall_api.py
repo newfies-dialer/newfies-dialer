@@ -72,7 +72,7 @@ class AnswercallResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data "ALegRequestUUID=48092924-856d-11e0-a586-0147ddac9d3e" http://localhost:8000/api/v1/answercall/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data "ALegRequestUUID=48092924-856d-11e0-a586-0147ddac9d3e&CallUUID=48092924-856d-11e0-a586-0147ddac9d3e" http://localhost:8000/api/v1/answercall/
 
         Response::
 
@@ -138,7 +138,7 @@ class AnswercallResource(ModelResource):
             #TODO: If we update the Call to success here we should
             # not do it in hangup url
             obj_callrequest = Callrequest.objects\
-            .get(request_uuid=opt_ALegRequestUUID)
+                .get(request_uuid=opt_ALegRequestUUID)
 
             #TODO : use constant
             obj_callrequest.status = 8  # IN-PROGRESS

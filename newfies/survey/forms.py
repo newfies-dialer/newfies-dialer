@@ -125,4 +125,4 @@ class SurveyDetailReportForm(VoipSearchForm, SurveyReportForm):
 
     def __init__(self, user, *args, **kwargs):
         super(SurveyDetailReportForm, self).__init__(user, *args, **kwargs)
-        self.fields.keyOrder = ['from_date', 'to_date', 'campaign']
+        self.fields.keyOrder = [ 'campaign', 'from_date', 'to_date']

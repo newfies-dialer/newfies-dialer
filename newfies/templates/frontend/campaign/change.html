@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n dialer_cdr_extras %}
+{% load i18n common_tags %}
 
 {% block extra_files %}
 {% endblock %}
@@ -166,13 +166,13 @@
         <br/>
         <div class="actions">
               {% if action == 'update' %}
-                <input id="update" type="submit" class="btn-primary" value="{% trans "Update" %}" />
+                <input id="update" type="submit" class="btn btn-primary" value="{% trans "Update" %}" />
               {% else %}
-                <input id="add" type="submit" class="btn-primary" value="{% trans "Submit" %}" />
+                <input id="add" type="submit" class="btn btn-primary" value="{% trans "Submit" %}" />
               {% endif %}
                &nbsp;&nbsp;
               {% if action == 'update' %}
-                 <input id="delete" name="delete" class="btn-danger" type="submit" value="{% trans "Delete" %}" />
+                 <input id="delete" name="delete" class="btn btn-danger" type="submit" value="{% trans "Delete" %}" />
               {% endif %}
         </div>
     </form>

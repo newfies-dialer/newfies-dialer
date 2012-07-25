@@ -44,45 +44,22 @@ class BaseAuthenticatedClient(TestCase):
 class DialerCdrView(BaseAuthenticatedClient):
     """Test cases for Admin Interface."""
 
-    def test_admin_index(self):
-        """Test Function to check Admin index page"""
-        response = self.client.get('/admin/')
-        self.failUnlessEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'admin/base_site.html')
-        response = self.client.login(username=self.user.username,
-                                     password='admin')
-        self.assertEqual(response, True)
-
     def test_admin_newfies(self):
         """Test Function to check Newfies-Dialer Admin pages"""
-        response = self.client.get('/admin/auth/')
-        self.failUnlessEqual(response.status_code, 200)
         response = self.client.get('/admin/dialer_cdr/')
         self.failUnlessEqual(response.status_code, 200)
         response = self.client.get('/admin/dialer_cdr/voipcall/')
         self.failUnlessEqual(response.status_code, 200)
+        response = self.client.get('/admin/dialer_cdr/voipcall/add/')
+        self.failUnlessEqual(response.status_code, 200)
         response = self.client.get('/admin/dialer_cdr/callrequest/')
+        self.failUnlessEqual(response.status_code, 200)
+        response = self.client.get('/admin/dialer_cdr/callrequest/add/')
         self.failUnlessEqual(response.status_code, 200)
 
 
 class DialerCdrCustomerView(BaseAuthenticatedClient):
     """Test cases for Newfies-Dialer Customer Interface."""
-
-    def test_index(self):
-        """Test Function to check customer index page"""
-        response = self.client.get('/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/index.html')
-        response = self.client.post('/login/',
-                    {'username': 'userapi',
-                     'password': 'passapi'})
-        self.assertEqual(response.status_code, 200)
-
-    def test_dashboard(self):
-        """Test Function to check customer dashboard"""
-        response = self.client.get('/dashboard/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/dashboard.html')
 
     def test_voip_call_report(self):
         """Test Function to check VoIP call report"""
@@ -90,11 +67,4 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
         'frontend/report/voipcall_report.html')
-
-    def test_user_settings(self):
-        """Test Function to check User settings"""
-        response = self.client.get('/user_detail_change/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-        'frontend/registration/user_detail_change.html')
 

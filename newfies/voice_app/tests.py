@@ -45,9 +45,6 @@ class TestVoiceAppAdminView(BaseAuthenticatedClient):
     """
     TODO: Add documentation
     """
-    def setup(self):
-        self.client = Client()
-
     def test_voiceapp(self):
         response = self.client.get("/admin/voice_app/voiceapp/")
         self.assertEqual(response.status_code, 200)
@@ -60,9 +57,6 @@ class TestVoiceAppCustomerView(BaseAuthenticatedClient):
     TODO: Add documentation
     """
     fixtures = ['voiceapp']
-
-    def setup(self):
-        self.client = Client()
 
     def test_voiceapp(self):
         response = self.client.get('/voiceapp/')

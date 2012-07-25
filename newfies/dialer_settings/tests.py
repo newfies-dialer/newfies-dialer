@@ -61,7 +61,7 @@ class TestDialerSettingModel(object):
     """
     def setup(self):
         self.dialer_setting = DialerSetting(
-            name='test setting',
+            name='test_setting',
             max_frequency=100,
             callmaxduration=1800,
             maxretry=3,
@@ -72,7 +72,7 @@ class TestDialerSettingModel(object):
         self.dialer_setting.save()
 
     def test_name(self):
-        nt.assert_equal(self.dialer_setting.name, "test setting")
+        nt.assert_equal(self.dialer_setting.name, "test_setting")
 
     def teardown(self):
         self.dialer_setting.delete()

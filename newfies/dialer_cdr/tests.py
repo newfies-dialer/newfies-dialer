@@ -73,31 +73,12 @@ class AdminTestCase(TestCase):
         response = self.client.get('/admin/auth/')
         self.failUnlessEqual(response.status_code, 200)
 
-        response = self.client.get('/admin/dialer_campaign/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/dialer_campaign/contact/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = \
-        self.client.get('/admin/dialer_campaign/contact/import_contact/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = \
-        self.client.get('/admin/dialer_campaign/campaignsubscriber/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/dialer_campaign/campaign/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/dialer_campaign/phonebook/')
-        self.failUnlessEqual(response.status_code, 200)
 
         response = self.client.get('/admin/dialer_cdr/')
         self.failUnlessEqual(response.status_code, 200)
         response = self.client.get('/admin/dialer_cdr/voipcall/')
         self.failUnlessEqual(response.status_code, 200)
         response = self.client.get('/admin/dialer_cdr/callrequest/')
-        self.failUnlessEqual(response.status_code, 200)
-
-        response = self.client.get('/admin/dialer_gateway/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/dialer_gateway/gateway/')
         self.failUnlessEqual(response.status_code, 200)
 
         response = self.client.get('/admin/survey/')
@@ -134,64 +115,6 @@ class CustomerPanelTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/dashboard.html')
 
-
-    def test_phonebook_view(self):
-        """Test Function to check phonebook"""
-        response = self.client.get('/phonebook/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-                                'frontend/phonebook/list.html')
-        response = self.client.get('/phonebook/add/')
-        self.assertEqual(response.status_code, 200)
-        response = self.client.post('/phonebook/add/',
-                   data={'name': 'My Phonebook', 'description': 'phonebook',
-                         'user': self.user})
-        response = self.client.get('/phonebook/1/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-                                'frontend/phonebook/change.html')
-
-    def test_contact_view(self):
-        """Test Function to check Contact"""
-        response = self.client.get('/contact/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-                                'frontend/contact/list.html')
-        response = self.client.get('/contact/add/')
-        self.assertEqual(response.status_code, 200)
-        response = self.client.post('/contact/add/',
-                   data={'phonebook_id': '1', 'contact': '1234',
-                         'last_name': 'xyz', 'first_name': 'abc',
-                         'status': '1'})
-        self.assertEqual(response.status_code, 200)
-        response = self.client.get('/contact/1/')
-        self.assertTemplateUsed(response,
-                                'frontend/contact/change.html')
-        response = self.client.get('/contact/import/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-                                'frontend/contact/import_contact.html')
-
-    def test_campaign_view(self):
-        """Test Function to check campaign"""
-        response = self.client.get('/campaign/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-                                'frontend/campaign/list.html')
-        response = self.client.post('/campaign/add/', data={
-                    "name": "mylittlecampaign",
-                    "description": "xyz",
-                    "startingdate": "1301392136.0",
-                    "expirationdate": "1301332136.0",
-                    "frequency": "20",
-                    "callmaxduration": "50",
-                    "maxretry": "3",
-                    "intervalretry": "3000",
-                    "calltimeout": "60",
-                    "aleg_gateway": "1",
-                    "content_object": "type:30-id:1",
-                    "extra_data": "2000"})
-        self.assertEqual(response.status_code, 302)
 
     def test_voip_call_report(self):
         """Test Function to check VoIP call report"""

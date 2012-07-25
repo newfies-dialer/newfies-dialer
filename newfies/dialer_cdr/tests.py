@@ -73,9 +73,6 @@ class AdminTestCase(TestCase):
         response = self.client.get('/admin/auth/')
         self.failUnlessEqual(response.status_code, 200)
 
-        response = self.client.get('/admin/dialer_settings/')
-        self.failUnlessEqual(response.status_code, 200)
-
         response = self.client.get('/admin/dialer_campaign/')
         self.failUnlessEqual(response.status_code, 200)
         response = self.client.get('/admin/dialer_campaign/contact/')

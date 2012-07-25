@@ -14,7 +14,7 @@
 
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
-from dialer_gateway.models import Gateway
+from dialer_settings.models import DialerSetting
 import nose.tools as nt
 import base64
 
@@ -41,34 +41,38 @@ class BaseAuthenticatedClient(TestCase):
         self.assertTrue(login)
 
 
-class TestGatewayView(BaseAuthenticatedClient):
+class TestDialerSettingView(BaseAuthenticatedClient):
     """
     TODO: Add documentation
     """
     def setup(self):
         self.client = Client()
 
-    def test_gateway(self):
-        response = self.client.get("/admin/dialer_gateway/gateway/")
-        self.assertEqual(response.status_code, 200)
-        response = self.client.get("/admin/dialer_gateway/gateway/add/")
+    def test_dialer_setting(self):
+        response = self.client.get('/admin/dialer_settings/dialersetting/')
+        self.failUnlessEqual(response.status_code, 200)
+        response = self.client.get("/admin/dialer_settings/dialersetting/add/")
         self.assertEqual(response.status_code, 200)
 
 
-class TestGatewayModel(object):
+class TestDialerSettingModel(object):
     """
     TODO: Add documentation
     """
     def setup(self):
-        self.gateway = Gateway(
-            name='test gateway',
-            status=1,
+        self.dialer_setting = DialerSetting(
+            name='test setting',
+            max_frequency=100,
+            callmaxduration=1800,
+            maxretry=3,
+            max_calltimeout=45,
+            max_number_campaign=10,
+            max_number_subscriber_campaign=1000,
             )
-        self.gateway.set_name("MyGateway")
-        self.gateway.save()
+        self.dialer_setting.save()
 
     def test_name(self):
-        nt.assert_equal(self.gateway.name, "MyGateway")
+        nt.assert_equal(self.dialer_setting.name, "test setting")
 
     def teardown(self):
-        self.gateway.delete()
+        self.dialer_setting.delete()

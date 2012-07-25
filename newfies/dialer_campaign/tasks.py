@@ -17,6 +17,7 @@ from dialer_campaign.models import Campaign, CampaignSubscriber
 from dialer_campaign.function_def import user_dialer_setting
 from dialer_cdr.models import Callrequest
 from dialer_cdr.tasks import init_callrequest
+from common.only_one_task import only_one
 from celery.decorators import task
 from django.db import IntegrityError
 from datetime import datetime, timedelta
@@ -30,6 +31,8 @@ if settings.DIALERDEBUG:
     Timelaps = 5
 else:
     Timelaps = 60
+
+LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
 
 
 #TODO: Put a priority on this task
@@ -160,6 +163,7 @@ class campaign_running(PeriodicTask):
     # of calls per minute. Cons : new calls might delay 60seconds
     #run_every = timedelta(seconds=60)
 
+    @only_one(key="campaign_running", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
         logger.warning("TASK :: campaign_running")
@@ -184,6 +188,7 @@ class campaign_spool_contact(PeriodicTask):
     # of calls per minute. Cons : new calls might delay 60seconds
     #run_every = timedelta(seconds=60)
 
+    @only_one(key="campaign_spool_contact", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
         logger.info("TASK :: campaign_spool_contact")
@@ -321,6 +326,7 @@ class campaign_expire_check(PeriodicTask):
     # of calls per minute. Cons : new calls might delay 60seconds
     #run_every = timedelta(seconds=60)
 
+    @only_one(key="campaign_expire_check", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
         logger.info("TASK :: campaign_expire_check")

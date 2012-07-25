@@ -1559,13 +1559,13 @@ msgstr "Exportar arquivo CVS"
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:15
 msgid "Call aggregate report"
-msgstr "Relatório Detalhado da Chamada"
+msgstr "Relatório de ligações agregado"
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:72
 #: templates/frontend/report/voipcall_report.html:117
 #: templates/frontend/survey/survey_report.html:174
 msgid "Call Detail Report Summary"
-msgstr "Relatório detalhado da chamada"
+msgstr "Resumo detalhado das ligações"
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:77
 #: templates/frontend/report/voipcall_report.html:123
@@ -1669,7 +1669,7 @@ msgstr "Relatório Detalhado da Chamada"
 
 #: templates/frontend/bootstrap_menu.html:44
 msgid "Survey Reports"
-msgstr "Relatórios de pesquisa"
+msgstr "Relatórios de enquetes"
 
 #: templates/frontend/bootstrap_menu.html:49
 msgid "Modules"
@@ -2407,7 +2407,7 @@ msgstr "Relatório de ligação"
 
 #: templates/frontend/survey/survey_change.html:72
 msgid "Survey configuration"
-msgstr "Configuração pesquisa"
+msgstr "Configurar enquete"
 
 #: templates/frontend/survey/survey_change.html:125
 msgid "Audio message"
@@ -2486,11 +2486,11 @@ msgstr "Relatório detalhado da enquete"
 
 #: templates/frontend/survey/survey_report.html:25
 msgid "Monitor survey reports"
-msgstr "Monitorar resulatório da enquete"
+msgstr "Relatório da enquete"
 
 #: templates/frontend/survey/survey_report.html:43
 msgid "Survey calls"
-msgstr "Chamadas da enquete"
+msgstr "Ligações da enquete"
 
 #: templates/frontend/survey/survey_report.html:44
 msgid "Survey daily call report"
@@ -2498,7 +2498,7 @@ msgstr "Relatório diário das ligações da enquete"
 
 #: templates/frontend/survey/survey_report.html:45
 msgid "Survey result"
-msgstr "Resultado da enquetes"
+msgstr "Resultado da enquete"
 
 #: templates/frontend/survey/survey_report.html:92
 msgid "Survey call detail records"
@@ -2510,7 +2510,7 @@ msgstr "Data da ligação"
 
 #: templates/frontend/survey/survey_report.html:134
 msgid "Survey Result"
-msgstr "Resultado da Enquete"
+msgstr "Resultado da enquete"
 
 #: templates/frontend/survey/survey_report.html:152
 #: templates/frontend/survey/survey_report.html:252

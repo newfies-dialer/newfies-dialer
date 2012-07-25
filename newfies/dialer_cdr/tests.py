@@ -126,21 +126,3 @@ class CustomerPanelTestCase(BaseAuthenticatedClient):
         self.assertTemplateUsed(response,
         'frontend/registration/user_detail_change.html')
 
-    def test_survey_view(self):
-        """Test Function survey view"""
-        response = self.client.get('/survey/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-                                'frontend/survey/survey_list.html')
-        response = self.client.get('/survey/add/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-                                'frontend/survey/survey_change.html')
-        response = self.client.get('/survey/1/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-                                'frontend/survey/survey_change.html')
-        response = self.client.get('/survey_report/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-                                'frontend/survey/survey_report.html')

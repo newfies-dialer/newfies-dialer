@@ -12,26 +12,121 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-"""
-This file demonstrates two different styles of tests (one doctest and one
-unittest). These will both pass when you run "manage.py test".
-
-Replace these with more appropriate tests for your application.
-"""
-
-from django.test import TestCase
+from django.contrib.auth.models import User
+from django.test import TestCase, Client
+from survey.models import SurveyApp, SurveyQuestion,\
+    SurveyResponse, SurveyCampaignResult
+import nose.tools as nt
+import base64
 
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.failUnlessEqual(1 + 1, 2)
+class BaseAuthenticatedClient(TestCase):
+    """Common Authentication to setup test"""
 
-__test__ = {"doctest": """
-Another way to test that 1 + 1 is equal to 2.
+    def setUp(self):
+        """To create admin user"""
+        self.client = Client()
+        self.user =\
+        User.objects.create_user('admin', 'admin@world.com', 'admin')
+        self.user.is_staff = True
+        self.user.is_superuser = True
+        self.user.is_active = True
+        self.user.save()
+        auth = '%s:%s' % ('admin', 'admin')
+        auth = 'Basic %s' % base64.encodestring(auth)
+        auth = auth.strip()
+        self.extra = {
+            'HTTP_AUTHORIZATION': auth,
+            }
+        login = self.client.login(username='admin', password='admin')
+        self.assertTrue(login)
 
->>> 1 + 1 == 2
-True
-"""}
+
+class TestSurveyAdminView(BaseAuthenticatedClient):
+    """
+    TODO: Add documentation
+    """
+    def test_survey(self):
+        response = self.client.get('/admin/survey/surveyapp/')
+        self.failUnlessEqual(response.status_code, 200)
+        response = self.client.get('/admin/survey/surveyapp/add/')
+        self.failUnlessEqual(response.status_code, 200)
+        response = self.client.get('/admin/survey/surveyquestion/')
+        self.failUnlessEqual(response.status_code, 200)
+        response = self.client.get('/admin/survey/surveyquestion/add/')
+        self.failUnlessEqual(response.status_code, 200)
+        response = self.client.get('/admin/survey/surveyresponse/')
+        self.failUnlessEqual(response.status_code, 200)
+        response = self.client.get('/admin/survey/surveyresponse/add/')
+        self.failUnlessEqual(response.status_code, 200)
+        response = self.client.get('/admin/survey/surveycampaignresult/')
+        self.failUnlessEqual(response.status_code, 200)
+        response = self.client.get('/admin/survey/surveycampaignresult/add/')
+        self.failUnlessEqual(response.status_code, 200)
+
+class TestSurveyCustomerView(BaseAuthenticatedClient):
+    """
+    TODO: Add documentation
+    """
+    fixtures = ['survey', 'surve_question', 'survey_response']
+
+    def test_survey_view(self):
+        """Test Function survey view"""
+        response = self.client.get('/survey/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+            'frontend/survey/survey_list.html')
+        response = self.client.get('/survey/add/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+            'frontend/survey/survey_change.html')
+        response = self.client.get('/survey/1/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+            'frontend/survey/survey_change.html')
+        response = self.client.get('/survey_report/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+            'frontend/survey/survey_report.html')
+
+
+class TestSurveyModel(object):
+    """
+    TODO: Add documentation
+    """
+    def setup(self):
+        self.user =\
+        User.objects.get(username='admin')
+
+        # SurveyApp model
+        self.survey = SurveyApp(
+            name='test_survey',
+            user=self.user,
+        )
+        self.survey.save()
+
+        # SurveyQuestion model
+        self.survey_question = SurveyQuestion(
+            question='test_question',
+            user=self.user,
+            surveyapp=self.survey,
+        )
+        self.survey_question.save()
+
+        # SurveyResponse model
+        self.survey_response = SurveyResponse(
+            key='5',
+            keyvalue='egg',
+            surveyquestion=self.survey_question,
+        )
+        self.survey_response.save()
+
+    def test_name(self):
+        nt.assert_equal(self.survey.name, "test_survey")
+        nt.assert_equal(self.survey_question.question, "test_question")
+        nt.assert_equal(self.survey_response.key, "5")
+
+    def teardown(self):
+        self.survey.delete()
+        self.survey_question.delete()
+        self.survey_response.delete()

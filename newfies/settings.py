@@ -266,7 +266,7 @@ except ImportError:
 else:
     INSTALLED_APPS = INSTALLED_APPS + ('django_nose',)
     TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
+    
 
 # Dilla
 try:

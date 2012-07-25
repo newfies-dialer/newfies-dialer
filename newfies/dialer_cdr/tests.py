@@ -149,11 +149,11 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
 
     def test_update_campaign_subscriber(self):
         """Test Function to update a campaign subscriber"""
-        data = simplejson.dumps({"status": "2",
-                "contact": "123546"})
+        data = simplejson.dumps({"status": "1",
+                "contact": "640234000"})
         response = self.client.put('/api/v1/campaignsubscriber/1/',
                    data, content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 204)
 
     def test_create_callrequest(self):
         """Test Function to create a callrequest"""

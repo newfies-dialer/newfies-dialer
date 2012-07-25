@@ -13,13 +13,9 @@
 #
 
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import password_reset, password_reset_done,\
-                        password_reset_confirm, password_reset_complete
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
-from django.db.models import Sum, Avg, Count
 from django.core.urlresolvers import reverse
 from django.core.mail import mail_admins
 from django.conf import settings
@@ -27,104 +23,29 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.db.models import Q
+from django.db.models import Count
 from django.contrib.contenttypes.models import ContentType
 from notification import models as notification
-from dialer_campaign.models import Phonebook, Contact, Campaign, \
-                        CampaignSubscriber
+from frontend.views import notice_count
+from dialer_campaign.models import Phonebook, Contact, Campaign
 from dialer_campaign.forms import ContactSearchForm, Contact_fileImport, \
-                        LoginForm, PhonebookForm, ContactForm, CampaignForm, \
-                        DashboardForm
+                            PhonebookForm, ContactForm, CampaignForm
 from dialer_campaign.function_def import user_attached_with_dialer_settings, \
                         check_dialer_setting, dialer_setting_limit, \
                         contact_search_common_fun,\
-                        calculate_date, date_range, \
                         get_campaign_status_name, user_dialer_setting_msg
 from dialer_campaign.tasks import collect_subscriber
-from dialer_cdr.models import VoIPCall
 from common.common_functions import variable_value, striplist, current_view
-from datetime import datetime
-from dateutil import parser
-from dateutil.relativedelta import relativedelta
 import urllib
-import time
 import csv
 import ast
 import re
-from frontend.views import notice_count
 
 
 update_style = 'style="text-decoration:none;background-image:url(' + \
                     settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
 delete_style = 'style="text-decoration:none;background-image:url(' + \
                 settings.STATIC_URL + 'newfies/icons/delete.png);"'
-
-
-
-def cust_password_reset(request):
-    """Use ``django.contrib.auth.views.password_reset`` view method for
-    forgotten password on the Customer UI
-
-    This method sends an e-mail to the user's email-id which is entered in
-    ``password_reset_form``
-    """
-    if not request.user.is_authenticated():
-        data = {'loginform': LoginForm()}
-        return password_reset(request,
-        template_name='frontend/registration/password_reset_form.html',
-        email_template_name='frontend/registration/password_reset_email.html',
-        post_reset_redirect='/password_reset/done/',
-        from_email='newfies_admin@localhost.com',
-        extra_context=data)
-    else:
-        return HttpResponseRedirect("/")
-
-
-def cust_password_reset_done(request):
-    """Use ``django.contrib.auth.views.password_reset_done`` view method for
-    forgotten password on the Customer UI
-
-    This will show a message to the user who is seeking to reset their
-    password.
-    """
-    if not request.user.is_authenticated():
-        data = {'loginform': LoginForm()}
-        return password_reset_done(request,
-        template_name='frontend/registration/password_reset_done.html',
-        extra_context=data)
-    else:
-        return HttpResponseRedirect("/")
-
-
-def cust_password_reset_confirm(request, uidb36=None, token=None):
-    """Use ``django.contrib.auth.views.password_reset_confirm`` view method for
-    forgotten password on the Customer UI
-
-    This will allow a user to reset their password.
-    """
-    if not request.user.is_authenticated():
-        data = {'loginform': LoginForm()}
-        return password_reset_confirm(request, uidb36=uidb36, token=token,
-        template_name='frontend/registration/password_reset_confirm.html',
-        post_reset_redirect='/reset/done/',
-        extra_context=data)
-    else:
-        return HttpResponseRedirect("/")
-
-
-def cust_password_reset_complete(request):
-    """Use ``django.contrib.auth.views.password_reset_complete`` view method
-    for forgotten password on theCustomer UI
-
-    This shows an acknowledgement to the user after successfully resetting
-    their password for the system.
-    """
-    if not request.user.is_authenticated():
-        data = {'loginform': LoginForm()}
-        return password_reset_complete(request,
-        template_name='frontend/registration/password_reset_complete.html',
-        extra_context=data)
-    else:
-        return HttpResponseRedirect("/")
 
 
 def common_send_notification(request, status, recipient=None):
@@ -805,7 +726,7 @@ def contact_import(request):
                         try:
                             # check if prefix is already
                             # exist with retail plan or not
-                            contact = Contact.objects.get(
+                            Contact.objects.get(
                                  phonebook_id=phonebook.id,
                                  contact=row[0])
                             error_msg = _('Subscriber already exists!')

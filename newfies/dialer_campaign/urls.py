@@ -16,13 +16,6 @@ from django.conf.urls.defaults import patterns
 
 urlpatterns = patterns('dialer_campaign.views',
 
-    # Password reset for Customer UI
-    (r'^password_reset/$', 'cust_password_reset'),
-    (r'^password_reset/done/$', 'cust_password_reset_done'),
-    (r'^reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
-                    'cust_password_reset_confirm'),
-    (r'^reset/done/$', 'cust_password_reset_complete'),
-
     # Phonebook urls
     (r'^phonebook/$', 'phonebook_list'),
     (r'^phonebook_grid/$', 'phonebook_grid'),
@@ -38,7 +31,6 @@ urlpatterns = patterns('dialer_campaign.views',
     (r'^contact/import/$', 'contact_import'),
     (r'^contact/del/(.+)/$', 'contact_del'),
     (r'^contact/(.+)/$', 'contact_change'),
-
 
     # Campaign urls
     (r'^campaign/$', 'campaign_list'),

@@ -103,11 +103,6 @@ class AdminTestCase(TestCase):
         response = self.client.get('/admin/dialer_gateway/gateway/')
         self.failUnlessEqual(response.status_code, 200)
 
-        response = self.client.get('/admin/voice_app/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/voice_app/voiceapp/')
-        self.failUnlessEqual(response.status_code, 200)
-
         response = self.client.get('/admin/survey/')
         self.failUnlessEqual(response.status_code, 200)
         response = self.client.get('/admin/survey/surveyapp/')
@@ -142,17 +137,6 @@ class CustomerPanelTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/dashboard.html')
 
-    def test_voiceapp_view(self):
-        """Test Function to check voiceapp"""
-        response = self.client.get('/voiceapp/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-                                'frontend/voiceapp/list.html')
-        response = self.client.get('/voiceapp/add/')
-        self.assertTemplateUsed(response,
-                                'frontend/voiceapp/change.html')
-        response = self.client.get('/voiceapp/1/')
-        self.assertEqual(response.status_code, 200)
 
     def test_phonebook_view(self):
         """Test Function to check phonebook"""
@@ -225,15 +209,6 @@ class CustomerPanelTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
         'frontend/registration/user_detail_change.html')
-
-    def test_audio_view(self):
-        """Test Function audio view"""
-        response = self.client.get('/audio/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-            'frontend/audio/audio_list.html')
-        response = self.client.get('/audio/add/')
-        self.assertEqual(response.status_code, 200)
 
     def test_survey_view(self):
         """Test Function survey view"""

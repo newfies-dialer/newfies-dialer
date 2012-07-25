@@ -178,7 +178,8 @@ class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
 
     def test_create_answercall(self):
         """Test Function to create a answercall"""
-        data = {"ALegRequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875"}
+        data = {"ALegRequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875",
+                "CallUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875"}
         response = self.client.post('/api/v1/answercall/', data, **self.extra)
         self.assertEqual(response.status_code, 200)
 

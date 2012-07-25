@@ -15,6 +15,7 @@ from django.conf.urls.defaults import handler404, handler500, \
                                     include, patterns
 from django.conf import settings
 from django.conf.urls.i18n import *
+from frontend.urls import urlpatterns as urlpatterns_frontend
 from dialer_campaign.urls import urlpatterns as urlpatterns_dialer_campaign
 from dialer_cdr.urls import urlpatterns as urlpatterns_dialer_cdr
 from user_profile.urls import urlpatterns as urlpatterns_user_profile
@@ -85,7 +86,7 @@ js_info_dict = {
 }
 
 urlpatterns = patterns('',
-    (r'^logout/$', 'dialer_campaign.views.logout_view'),
+    (r'^logout/$', 'frontend.views.logout_view'),
     (r'^admin/', include(admin.site.urls)),
     (r'^api/', include(tastypie_api.urls)),
     (r'^i18n/', include('django.conf.urls.i18n')),
@@ -99,6 +100,7 @@ urlpatterns = patterns('',
     (r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
 )
 
+urlpatterns += urlpatterns_frontend
 urlpatterns += urlpatterns_dialer_campaign
 urlpatterns += urlpatterns_dialer_cdr
 urlpatterns += urlpatterns_user_profile

@@ -15,12 +15,6 @@ from django.conf.urls.defaults import patterns
 
 
 urlpatterns = patterns('dialer_campaign.views',
-    (r'^$', 'index'),
-    (r'^login/$', 'login_view'),
-    (r'^logout/$', 'logout_view'),
-    (r'^index/$', 'index'),
-    (r'^pleaselog/$', 'pleaselog'),
-    (r'^dashboard/$', 'customer_dashboard'),
 
     # Password reset for Customer UI
     (r'^password_reset/$', 'cust_password_reset'),

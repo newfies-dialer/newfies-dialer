@@ -21,7 +21,6 @@ Replace this with more appropriate tests for your application.
 
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
-from dialer_cdr.models import Callrequest, VoIPCall
 import nose.tools as nt
 
 
@@ -91,7 +90,7 @@ class FrontendCustomerView(BaseAuthenticatedClient):
 
 
 
-class TestForgotPassword(TestCase):
+class FrontendForgotPassword(TestCase):
     """Test cases for Newfies-Dialer Customer Interface. for forgot password"""
 
     def test_check_password_reset(self):

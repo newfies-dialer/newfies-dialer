@@ -101,7 +101,7 @@ if sys.argv[1] == 'install':
 
 setup(
     name='newfies-dialer',
-    version=VERSION.replace(' ', '-'),
+    version="-".join(VERSION),
     description='Newfies is a Bulk Dialer and Voice Broadcasting application '
                 'dedicated to provide information via phone technology.',
     long_description=open('README.rst').read(),

@@ -4,6 +4,7 @@
 *nbproject*
 *devserver*
 *.idea*
+*.egg
 test.db
 newfies/settings_local.py
 docs/build/*
@@ -11,3 +12,5 @@ contact_*.txt
 TEST
 newfies/usermedia/tts/*.*
 newfies/usermedia/recording/*.*
+build/
+dist/

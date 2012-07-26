@@ -22,9 +22,8 @@ admin.site.register(User)
 
 
 class UserProfileAdminView(BaseAuthenticatedClient):
-    """
-    TODO: Add documentation
-    """
+    """Test Function to check UserProfile Admin pages"""
+
     def test_user_profile(self):
         response = self.client.get("/admin/auth/staff/")
         self.assertEqual(response.status_code, 200)
@@ -37,6 +36,7 @@ class UserProfileAdminView(BaseAuthenticatedClient):
 
 
 class UserProfileCustomerView(BaseAuthenticatedClient):
+    """Test Function to check UserProfile Customer pages"""
 
     def test_user_settings(self):
         """Test Function to check User settings"""
@@ -47,9 +47,8 @@ class UserProfileCustomerView(BaseAuthenticatedClient):
 
 
 class UserProfileModel(object):
-    """
-    TODO: Add documentation
-    """
+    """Test UserProfile Model"""
+
     def setup(self):
         self.user =\
             User.objects.get(username='admin')

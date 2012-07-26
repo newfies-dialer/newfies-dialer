@@ -18,9 +18,8 @@ import nose.tools as nt
 
 
 class DialerSettingView(BaseAuthenticatedClient):
-    """
-    TODO: Add documentation
-    """
+    """Test Function to check DialerSetting Admin pages"""
+
     def test_dialer_setting(self):
         response = self.client.get('/admin/dialer_settings/dialersetting/')
         self.failUnlessEqual(response.status_code, 200)
@@ -29,9 +28,8 @@ class DialerSettingView(BaseAuthenticatedClient):
 
 
 class DialerSettingModel(object):
-    """
-    TODO: Add documentation
-    """
+    """Test DialerSetting model"""
+
     def setup(self):
         self.dialer_setting = DialerSetting(
             name='test_setting',

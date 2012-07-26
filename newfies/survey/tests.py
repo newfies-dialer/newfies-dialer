@@ -20,9 +20,10 @@ import nose.tools as nt
 
 
 class SurveyAdminView(BaseAuthenticatedClient):
+    """Test Function to check Survey, SurveyQuestion,
+       SurveyResponse Admin pages
     """
-    TODO: Add documentation
-    """
+
     def test_surveyadmin_view(self):
         response = self.client.get('/admin/survey/surveyapp/')
         self.failUnlessEqual(response.status_code, 200)
@@ -43,9 +44,10 @@ class SurveyAdminView(BaseAuthenticatedClient):
 
 
 class SurveyCustomerView(BaseAuthenticatedClient):
+    """Test Function to check Survey, SurveyQuestion,
+       SurveyResponse Customer pages
     """
-    TODO: Add documentation
-    """
+
     fixtures = ['survey', 'surve_question', 'survey_response']
 
     def test_survey_view(self):
@@ -69,9 +71,8 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
 
 class SurveyModel(object):
-    """
-    TODO: Add documentation
-    """
+    """Test Survey, SurveyQuestion, SurveyResponse Model"""
+
     def setup(self):
         self.user =\
             User.objects.get(username='admin')

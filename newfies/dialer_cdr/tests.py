@@ -20,7 +20,7 @@ import nose.tools as nt
 
 
 class DialerCdrView(BaseAuthenticatedClient):
-    """Test cases for Admin Interface."""
+    """Test cases for Callrequest, VoIPCall Admin Interface."""
 
     def test_admin_newfies(self):
         """Test Function to check Newfies-Dialer Admin pages"""
@@ -33,7 +33,7 @@ class DialerCdrView(BaseAuthenticatedClient):
 
 
 class DialerCdrCustomerView(BaseAuthenticatedClient):
-    """Test cases for Newfies-Dialer Customer Interface."""
+    """Test cases for Callrequest, VoIPCall Customer Interface."""
 
     def test_voip_call_report(self):
         """Test Function to check VoIP call report"""
@@ -44,10 +44,7 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
 
 
 class DialerCdrModel(object):
-    """
-    TODO: Add documentation
-    """
-    fixtures = ['dialer_setting.json', 'gateway.json', 'auth_user.json']
+    """Test Callrequest, VoIPCall models"""
 
     def setup(self):
         self.user =\
@@ -57,7 +54,6 @@ class DialerCdrModel(object):
             content_type_id = ContentType.objects.get(model='voiceapp').id
         except:
             content_type_id = 1
-
 
         # Callrequest model
         self.callrequest = Callrequest(

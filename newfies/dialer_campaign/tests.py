@@ -21,8 +21,8 @@ import nose.tools as nt
 
 
 class DialerCampaignView(BaseAuthenticatedClient):
-    """
-    TODO: Add documentation
+    """Test cases for Phonebook, Contact, Campaign, CampaignSubscriber
+       Admin Interface.
     """
 
     def test_dialer_campaign(self):
@@ -53,8 +53,8 @@ class DialerCampaignView(BaseAuthenticatedClient):
 
 
 class DialerCampaignCustomerView(BaseAuthenticatedClient):
-    """
-    TODO: Add documentation
+    """Test cases for Phonebook, Contact, Campaign, CampaignSubscriber
+       Customer Interface.
     """
     fixtures = ['dialer_setting.json', 'gateway.json',
                 'voiceapp', 'phonebook', 'contact', 'campaign',
@@ -123,9 +123,8 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
 
 
 class DialerCampaignModel(object):
-    """
-    TODO: Add documentation
-    """
+    """Test Phonebook, Contact, Campaign, CampaignSubscriber models"""
+
     def setup(self):
         self.user = User.objects.get(username='admin')
 

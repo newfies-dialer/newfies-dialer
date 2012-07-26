@@ -24,7 +24,7 @@ from django.test import TestCase
 
 
 class FrontendView(BaseAuthenticatedClient):
-    """Test cases for Admin Interface."""
+    """Test cases for Newfies-Dialer Admin Interface."""
 
     def test_admin(self):
         """Test Function to check Admin index page"""

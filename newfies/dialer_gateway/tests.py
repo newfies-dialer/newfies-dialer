@@ -19,9 +19,7 @@ import nose.tools as nt
 
 
 class GatewayView(BaseAuthenticatedClient):
-    """
-    TODO: Add documentation
-    """
+    """Test Function to check Gateway Admin pages"""
 
     def test_gateway(self):
         response = self.client.get("/admin/dialer_gateway/gateway/")
@@ -31,9 +29,8 @@ class GatewayView(BaseAuthenticatedClient):
 
 
 class GatewayModel(object):
-    """
-    TODO: Add documentation
-    """
+    """Test Gateway model"""
+
     def setup(self):
         self.gateway = Gateway(
             name='test gateway',

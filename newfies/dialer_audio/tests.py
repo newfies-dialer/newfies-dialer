@@ -19,9 +19,8 @@ import nose.tools as nt
 
 
 class AudioFileAdminView(BaseAuthenticatedClient):
-    """
-    TODO: Add documentation
-    """
+    """Test cases for AudioFile Admin Interface."""
+
     def test_audiofile_admin(self):
         response = self.client.get("/admin/audiofield/audiofile/")
         self.assertEqual(response.status_code, 200)
@@ -30,6 +29,7 @@ class AudioFileAdminView(BaseAuthenticatedClient):
 
 
 class AudioFileCustomerView(BaseAuthenticatedClient):
+    """Test cases for AudioFile Customer Interface."""
 
     def test_audiofile_customer(self):
         response = self.client.get('/audio/')
@@ -40,12 +40,11 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
 
 
 class TestAudioFileModel(object):
-    """
-    TODO: Add documentation
-    """
+    """Test AudioFile model"""
+
     def setup(self):
-        self.user =\
-            User.objects.get(username='admin')
+        self.user = User.objects.get(username='admin')
+
         self.audiofile = AudioFile(
             name='MyAudio',
             user=self.user,

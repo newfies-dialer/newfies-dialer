@@ -19,9 +19,8 @@ import nose.tools as nt
 
 
 class VoiceAppAdminView(BaseAuthenticatedClient):
-    """
-    TODO: Add documentation
-    """
+    """Test Function to check Voice App Admin pages"""
+
     def test_voiceapp(self):
         response = self.client.get("/admin/voice_app/voiceapp/")
         self.assertEqual(response.status_code, 200)
@@ -30,9 +29,7 @@ class VoiceAppAdminView(BaseAuthenticatedClient):
 
 
 class VoiceAppCustomerView(BaseAuthenticatedClient):
-    """
-    TODO: Add documentation
-    """
+    """Test Function to check Voice App Customer pages"""
     fixtures = ['voiceapp']
 
     def test_voiceapp(self):
@@ -46,12 +43,9 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
 
 
 class VoiceAppModel(object):
-    """
-    TODO: Add documentation
-    """
+    """Test Voice app Model"""
     def setup(self):
-        self.user =\
-            User.objects.get(username='admin')
+        self.user = User.objects.get(username='admin')
         self.voiceapp = VoiceApp(
             name='test voiceapp',
             type=1,

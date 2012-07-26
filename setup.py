@@ -101,7 +101,7 @@ if sys.argv[1] == 'install':
 
 setup(
     name='newfies-dialer',
-    version=VERSION.replace(' ', '-'),
+    version="-".join(map(str, VERSION[0:3])) + "".join(VERSION[3:]),
     description='Newfies is a Bulk Dialer and Voice Broadcasting application '
                 'dedicated to provide information via phone technology.',
     long_description=open('README.rst').read(),
@@ -124,8 +124,8 @@ setup(
         'Topic :: Voice Broadcast Software',
         ],
     zip_safe=False,
-    install_requires=parse_requirements('install/conf/requirements.txt'),
-    dependency_links=parse_dependency_links('install/conf/requirements.txt',
+    install_requires=parse_requirements('install/requirements/django-requirements.txt'),
+    dependency_links=parse_dependency_links('install/requirements/basic-requirements.txt',
         install_flag),
     setup_requires=['Django >= 1.3.0', 'Sphinx >= 0.4.2'],
     cmdclass=COMMANDS,

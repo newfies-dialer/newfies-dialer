@@ -80,15 +80,6 @@ class FrontendCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/dashboard.html')
 
-    def test_user_settings(self):
-        """Test Function to check User settings"""
-        response = self.client.get('/user_detail_change/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-            'frontend/registration/user_detail_change.html')
-
-
-
 
 class FrontendForgotPassword(TestCase):
     """Test cases for Newfies-Dialer Customer Interface. for forgot password"""

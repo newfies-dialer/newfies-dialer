@@ -42,11 +42,11 @@ class BaseAuthenticatedClient(TestCase):
         self.assertTrue(login)
 
 
-class TestSurveyAdminView(BaseAuthenticatedClient):
+class SurveyAdminView(BaseAuthenticatedClient):
     """
     TODO: Add documentation
     """
-    def test_survey(self):
+    def test_surveyadmin_view(self):
         response = self.client.get('/admin/survey/surveyapp/')
         self.failUnlessEqual(response.status_code, 200)
         response = self.client.get('/admin/survey/surveyapp/add/')
@@ -64,7 +64,8 @@ class TestSurveyAdminView(BaseAuthenticatedClient):
         response = self.client.get('/admin/survey/surveycampaignresult/add/')
         self.failUnlessEqual(response.status_code, 200)
 
-class TestSurveyCustomerView(BaseAuthenticatedClient):
+
+class SurveyCustomerView(BaseAuthenticatedClient):
     """
     TODO: Add documentation
     """
@@ -90,13 +91,13 @@ class TestSurveyCustomerView(BaseAuthenticatedClient):
             'frontend/survey/survey_report.html')
 
 
-class TestSurveyModel(object):
+class SurveyModel(object):
     """
     TODO: Add documentation
     """
     def setup(self):
         self.user =\
-        User.objects.get(username='admin')
+            User.objects.get(username='admin')
 
         # SurveyApp model
         self.survey = SurveyApp(

@@ -66,7 +66,7 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
         'frontend/report/voipcall_report.html')
 
 
-class TestCallrequestModel(object):
+class CallrequestModel(object):
     """
     TODO: Add documentation
     """

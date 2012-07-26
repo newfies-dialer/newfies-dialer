@@ -13,41 +13,15 @@
 #
 
 from django.contrib.auth.models import User
-from django.test import TestCase, Client
+from common.test_utils import BaseAuthenticatedClient
 from audiofield.models import AudioFile
 import nose.tools as nt
-import base64
 
 
-class BaseAuthenticatedClient(TestCase):
-    """Common Authentication to setup test"""
-
-    def setUp(self):
-        """To create admin user"""
-        self.client = Client()
-        self.user = \
-        User.objects.create_user('admin', 'admin@world.com', 'admin')
-        self.user.is_staff = True
-        self.user.is_superuser = True
-        self.user.is_active = True
-        self.user.save()
-        auth = '%s:%s' % ('admin', 'admin')
-        auth = 'Basic %s' % base64.encodestring(auth)
-        auth = auth.strip()
-        self.extra = {
-            'HTTP_AUTHORIZATION': auth,
-        }
-        login = self.client.login(username='admin', password='admin')
-        self.assertTrue(login)
-
-
-class TestAudioFileView(BaseAuthenticatedClient):
+class AudioFileAdminView(BaseAuthenticatedClient):
     """
     TODO: Add documentation
     """
-    def setup(self):
-        self.client = Client()
-
     def test_audiofile_admin(self):
         response = self.client.get("/admin/audiofield/audiofile/")
         self.assertEqual(response.status_code, 200)
@@ -55,13 +29,14 @@ class TestAudioFileView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
 
+class AudioFileCustomerView(BaseAuthenticatedClient):
+
     def test_audiofile_customer(self):
         response = self.client.get('/audio/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/audio/audio_list.html')
         response = self.client.get('/audio/add/')
         self.assertEqual(response.status_code, 200)
-
 
 
 class TestAudioFileModel(object):

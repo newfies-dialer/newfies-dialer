@@ -19,31 +19,8 @@ when you run "manage.py test".
 Replace this with more appropriate tests for your application.
 """
 
-from django.contrib.auth.models import User
-from django.test import TestCase, Client
-import nose.tools as nt
-
-
-class BaseAuthenticatedClient(TestCase):
-    """Common Authentication"""
-
-    def setUp(self):
-        """To create admin user"""
-        self.client = Client()
-        self.user =\
-        User.objects.create_user('admin', 'admin@world.com', 'admin')
-        self.user.is_staff = True
-        self.user.is_superuser = True
-        self.user.is_active = True
-        self.user.save()
-        auth = '%s:%s' % ('admin', 'admin')
-        auth = 'Basic %s' % base64.encodestring(auth)
-        auth = auth.strip()
-        self.extra = {
-            'HTTP_AUTHORIZATION': auth,
-            }
-        login = self.client.login(username='admin', password='admin')
-        self.assertTrue(login)
+from common.test_utils import BaseAuthenticatedClient
+from django.test import TestCase
 
 
 class FrontendView(BaseAuthenticatedClient):
@@ -57,8 +34,6 @@ class FrontendView(BaseAuthenticatedClient):
         response = self.client.login(username=self.user.username,
             password='admin')
         self.assertEqual(response, True)
-        response = self.client.get('/admin/auth/')
-        self.failUnlessEqual(response.status_code, 200)
 
 
 class FrontendCustomerView(BaseAuthenticatedClient):

@@ -13,33 +13,10 @@
 #
 
 from django.contrib.auth.models import User
-from django.test import TestCase, Client
+from common.test_utils import BaseAuthenticatedClient
 from django.contrib.contenttypes.models import ContentType
 from dialer_cdr.models import Callrequest, VoIPCall
 import nose.tools as nt
-import base64
-
-
-class BaseAuthenticatedClient(TestCase):
-    """Common Authentication"""
-
-    def setUp(self):
-        """To create admin user"""
-        self.client = Client()
-        self.user = \
-        User.objects.create_user('admin', 'admin@world.com', 'admin')
-        self.user.is_staff = True
-        self.user.is_superuser = True
-        self.user.is_active = True
-        self.user.save()
-        auth = '%s:%s' % ('admin', 'admin')
-        auth = 'Basic %s' % base64.encodestring(auth)
-        auth = auth.strip()
-        self.extra = {
-            'HTTP_AUTHORIZATION': auth,
-        }
-        login = self.client.login(username='admin', password='admin')
-        self.assertTrue(login)
 
 
 class DialerCdrView(BaseAuthenticatedClient):
@@ -66,7 +43,7 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
         'frontend/report/voipcall_report.html')
 
 
-class CallrequestModel(object):
+class DialerCdrModel(object):
     """
     TODO: Add documentation
     """

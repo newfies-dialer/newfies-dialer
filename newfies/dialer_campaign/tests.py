@@ -13,36 +13,17 @@
 #
 
 from django.contrib.auth.models import User
-from django.test import TestCase, Client
+from django.contrib.contenttypes.models import ContentType
 from dialer_campaign.models import Phonebook, Contact, Campaign, \
                             CampaignSubscriber
-from django.contrib.contenttypes.models import ContentType
+from common.test_utils import BaseAuthenticatedClient
 import nose.tools as nt
-import base64
 
 
-class BaseAuthenticatedClient(TestCase):
-    """Common Authentication to setup test"""
-
-    def setUp(self):
-        """To create admin user"""
-        self.client = Client()
-        self.user = User.objects.get(username='admin')
-        auth = '%s:%s' % ('admin', 'admin')
-        auth = 'Basic %s' % base64.encodestring(auth)
-        auth = auth.strip()
-        self.extra = {
-            'HTTP_AUTHORIZATION': auth,
-        }
-        login = self.client.login(username='admin', password='admin')
-        self.assertTrue(login)
-
-
-class TestDialerCampaignView(BaseAuthenticatedClient):
+class DialerCampaignView(BaseAuthenticatedClient):
     """
     TODO: Add documentation
     """
-    fixtures = ['auth_user.json']
 
     def test_dialer_campaign(self):
         response = self.client.get("/admin/dialer_campaign/phonebook/")
@@ -71,11 +52,11 @@ class TestDialerCampaignView(BaseAuthenticatedClient):
         self.failUnlessEqual(response.status_code, 200)
 
 
-class TestDialerCampaignCustomerView(BaseAuthenticatedClient):
+class DialerCampaignCustomerView(BaseAuthenticatedClient):
     """
     TODO: Add documentation
     """
-    fixtures = ['dialer_setting.json', 'gateway.json', 'auth_user',
+    fixtures = ['dialer_setting.json', 'gateway.json',
                 'voiceapp', 'phonebook', 'contact', 'campaign',
                 'campaign_subscriber']
 
@@ -141,21 +122,20 @@ class TestDialerCampaignCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 302)
 
 
-class TestDialerCampaignModel(TestCase):
+class DialerCampaignModel(object):
     """
     TODO: Add documentation
     """
-
-    fixtures = ['dialer_setting.json', 'gateway.json', 'auth_user.json']
-
     def setup(self):
         self.user = User.objects.get(username='admin')
+
         # Phonebook model
         self.phonebook = Phonebook(
             name='test_phonebook',
             user=self.user,
             )
         self.phonebook.save()
+
         # Contact model
         self.contact = Contact(
             phonebook=self.phonebook,
@@ -186,7 +166,7 @@ class TestDialerCampaignModel(TestCase):
         self.campaignsubscriber.save()
 
     def test_name(self):
-        nt.assert_equal(self.phonebook.name, "test_phonebook")
+        nt.assert_equal(self.phonebook.name, 'test_phonebook')
         nt.assert_equal(self.contact.phonebook, self.phonebook)
         nt.assert_equal(self.campaign.name, "sample_campaign")
         nt.assert_equal(self.campaignsubscriber.contact, self.contact)

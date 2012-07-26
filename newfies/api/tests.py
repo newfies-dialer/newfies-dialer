@@ -13,36 +13,13 @@
 #
 
 from django.contrib.auth.models import User
-from django.test import TestCase, Client
-import base64
+from common.test_utils import BaseAuthenticatedClient
 import simplejson
-
-
-class BaseAuthenticatedClient(TestCase):
-    """Common Authentication"""
-
-    def setUp(self):
-        """To create admin user"""
-        self.client = Client()
-        self.user = \
-        User.objects.create_user('admin', 'admin@world.com', 'admin')
-        self.user.is_staff = True
-        self.user.is_superuser = True
-        self.user.is_active = True
-        self.user.save()
-        auth = '%s:%s' % ('admin', 'admin')
-        auth = 'Basic %s' % base64.encodestring(auth)
-        auth = auth.strip()
-        self.extra = {
-            'HTTP_AUTHORIZATION': auth,
-        }
-        login = self.client.login(username='admin', password='admin')
-        self.assertTrue(login)
 
 
 class ApiTestCase(BaseAuthenticatedClient):
     """Test cases for Newfies-Dialer API."""
-    fixtures = ['gateway.json', 'auth_user', 'voiceapp', 'phonebook',
+    fixtures = ['gateway.json', 'voiceapp', 'phonebook', 'contenttypes',
                 'dialer_setting', 'campaign', 'campaign_subscriber',
                 'callrequest', 'survey', 'survey_question',
                 'survey_response']
@@ -66,7 +43,7 @@ class ApiTestCase(BaseAuthenticatedClient):
                 "extra_data": "2000",
                 "phonebook_id": "1"})
         response = self.client.post('/api/v1/campaign/',
-        data, content_type='application/json', **self.extra)
+            data, content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)
 
     def test_read_campaign(self):

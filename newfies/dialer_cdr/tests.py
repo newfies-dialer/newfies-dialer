@@ -22,7 +22,7 @@ import nose.tools as nt
 class DialerCdrView(BaseAuthenticatedClient):
     """Test cases for Callrequest, VoIPCall Admin Interface."""
 
-    def test_admin_newfies(self):
+    def test_admin(self):
         """Test Function to check Newfies-Dialer Admin pages"""
         response = self.client.get('/admin/dialer_cdr/callrequest/')
         self.failUnlessEqual(response.status_code, 200)
@@ -35,7 +35,7 @@ class DialerCdrView(BaseAuthenticatedClient):
 class DialerCdrCustomerView(BaseAuthenticatedClient):
     """Test cases for Callrequest, VoIPCall Customer Interface."""
 
-    def test_voip_call_report(self):
+    def test_customer(self):
         """Test Function to check VoIP call report"""
         response = self.client.get('/voipcall_report/')
         self.assertEqual(response.status_code, 200)

@@ -25,56 +25,74 @@ How to run test
 
 **1. Run Full Test Suit**::
 
-    $ python manage.py test --verbosity=2
+    $ python manage.py test
 
-**2. Run NewfiesTastypieApiTestCase**::
+**2. Run Individual Test**::
 
-    $ python manage.py test dialer_cdr.NewfiesTastypieApiTestCase --verbosity=2
+    $ python manage.py test api
 
-**3. Run NewfiesAdminInterfaceTestCase**::
+    $ python manage.py test dialer_campaign
 
-    $ python manage.py test dialer_cdr.NewfiesAdminInterfaceTestCase --verbosity=2
+    $ python manage.py test dialer_cdr
 
-**4. Run NewfiesCustomerInterfaceTestCase**::
+    $ python manage.py test dialer_audio
 
-    $ python manage.py test dialer_cdr.NewfiesCustomerInterfaceTestCase --verbosity=2
+    $ python manage.py test dialer_gateway
+
+    $ python manage.py test dialer_settings
+
+    $ python manage.py test frontend
+
+    $ python manage.py test survey
+
+    $ python manage.py test user_profile
+
+    $ python manage.py test voice_app
 
 
-.. automodule:: dialer_cdr.tests
+
+
+.. automodule:: api.tests
 
 ----------------------
 Tastypie API Test Case
 ----------------------
-.. _NewfiesTastypieApiTestCase-model:
+.. _ApiTestCase:
 
-.. autoclass:: NewfiesTastypieApiTestCase
+.. autoclass:: ApiTestCase
     :members:
 
 
--------------------------
-Admin Interface Test Case
--------------------------
+---------------
+Model Test Case
+---------------
 
-.. _NewfiesAdminInterfaceTestCase-model:
+.. _DialerCampaignModel:
 
-.. autoclass:: NewfiesAdminInterfaceTestCase
+.. autoclass::DialerCampaignModel
+    :members:
+
+.. _DialerCdrModel:
+
+.. autoclass::DialerCdrModel
     :members:
 
 
-----------------------------
-Customer Interface Test Case
-----------------------------
-
-.. _NewfiesCustomerInterfaceTestCase-model:
-
-.. autoclass:: NewfiesCustomerInterfaceTestCase
-    :members:
+.. automodule:: frontend.tests
 
 -----------------------------------
 Customer Interface Forgot Test Case
 -----------------------------------
 
-.. _NewfiesCustomerInterfaceForgotPassTestCase-model:
+.. _FrontendForgotPassword:
 
-.. autoclass:: NewfiesCustomerInterfaceForgotPassTestCase
+.. autoclass:: FrontendForgotPassword
     :members:
+
+
+
+.. toctree::
+    :maxdepth: 2
+
+    ./admin-testcases
+    ./customer-testcases

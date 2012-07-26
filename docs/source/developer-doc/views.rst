@@ -2,8 +2,7 @@
 
 Newfies-Dialer Views
 ====================
-.. automodule:: dialer_campaign.views
-
+.. automodule:: frontend.views
 
 .. _index-view:
 
@@ -49,6 +48,8 @@ Newfies-Dialer Views
 
   .. autofunction:: cust_password_reset_confirm
 
+
+.. automodule:: dialer_campaign.views
 
 .. _common_send_notification:
 
@@ -201,6 +202,7 @@ Newfies-Dialer Views
 ----------------------
 
   .. autofunction:: survey_report
+
 
 
 .. automodule:: dialer_audio.views

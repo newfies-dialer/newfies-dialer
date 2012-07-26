@@ -51,31 +51,13 @@ How to run test
 
 
 
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: api.tests
-
-----------------------
-Tastypie API Test Case
-----------------------
-.. _ApiTestCase:
-
-.. autoclass:: ApiTestCase
-    :members:
-
-
----------------
-Model Test Case
----------------
-
-.. _DialerCampaignModel:
-
-.. autoclass::DialerCampaignModel
-    :members:
-
-.. _DialerCdrModel:
-
-.. autoclass::DialerCdrModel
-    :members:
+    ./testcases/api-testcases
+    ./testcases/admin-testcases
+    ./testcases/customer-testcases
+    ./testcases/model-testcases
 
 
 .. automodule:: frontend.tests
@@ -88,11 +70,3 @@ Customer Interface Forgot Test Case
 
 .. autoclass:: FrontendForgotPassword
     :members:
-
-
-
-.. toctree::
-    :maxdepth: 2
-
-    ./admin-testcases
-    ./customer-testcases

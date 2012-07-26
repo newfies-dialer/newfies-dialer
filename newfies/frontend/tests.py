@@ -12,13 +12,6 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
-"""
-
 from common.test_utils import BaseAuthenticatedClient
 from django.test import TestCase
 

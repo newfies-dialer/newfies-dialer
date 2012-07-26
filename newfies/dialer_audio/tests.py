@@ -39,7 +39,7 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
 
-class TestAudioFileModel(object):
+class AudioFileModel(object):
     """Test AudioFile model"""
 
     def setup(self):

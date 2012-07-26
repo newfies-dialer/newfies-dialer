@@ -19,6 +19,11 @@ Customer Interface Test Case
 .. autoclass:: DialerCampaignCustomerView
     :members:
 
+.. _DialerCampaignModel:
+
+.. autoclass::DialerCampaignModel
+    :members:
+
 
 .. automodule:: dialer_cdr.tests
 
@@ -54,3 +59,6 @@ Customer Interface Test Case
 
 .. autoclass:: VoiceAppCustomerView
     :members:
+
+
+

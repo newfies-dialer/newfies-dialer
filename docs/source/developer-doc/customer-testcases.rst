@@ -4,6 +4,14 @@
 Customer Interface Test Case
 ----------------------------
 
+.. automodule:: frontend.tests
+
+.. _FrontendCustomerView-customer:
+
+.. autoclass:: FrontendCustomerView
+    :members:
+
+
 .. automodule:: dialer_campaign.tests
 
 .. _DialerCampaignCustomerView-customer:
@@ -17,4 +25,32 @@ Customer Interface Test Case
 .. _DialerCdrCustomerView-customer:
 
 .. autoclass:: DialerCdrCustomerView
+    :members:
+
+
+.. automodule:: dialer_audio.tests
+
+
+.. _AudioFileCustomerView-admin:
+
+.. autoclass:: AudioFileCustomerView
+    :members:
+
+
+.. automodule:: survey.tests
+
+
+.. _SurveyCustomerView-admin:
+
+.. autoclass:: SurveyCustomerView
+    :members:
+
+
+
+.. automodule:: voice_app.tests
+
+
+.. _VoiceAppCustomerView-admin:
+
+.. autoclass:: VoiceAppCustomerView
     :members:

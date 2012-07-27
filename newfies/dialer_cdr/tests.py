@@ -52,6 +52,9 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
 class DialerCdrModel(object):
     """Test Callrequest, VoIPCall models"""
 
+    fixtures = ['gateway.json', 'auth_user.json', 'contenttype',
+                'campaign', 'campaign_subscriber']
+
     def setup(self):
         self.user = User.objects.get(username='admin')
 

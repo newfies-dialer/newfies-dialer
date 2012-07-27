@@ -34,6 +34,8 @@ class DialerSettingView(BaseAuthenticatedClient):
 class DialerSettingModel(object):
     """Test DialerSetting model"""
 
+    fixtures = ['auth_user.json']
+
     def setup(self):
         self.dialer_setting = DialerSetting(
             name='test_setting',

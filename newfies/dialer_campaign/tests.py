@@ -159,6 +159,10 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
 class DialerCampaignModel(object):
     """Test Phonebook, Contact, Campaign, CampaignSubscriber models"""
 
+    fixtures = ['gateway.json', 'voiceapp.json', 'auth_user.json',
+                'contenttype', 'phonebook', 'contact', 'campaign',
+                'campaign_subscriber']
+
     def setup(self):
         self.user = User.objects.get(username='admin')
 

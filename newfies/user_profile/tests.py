@@ -59,6 +59,8 @@ class UserProfileCustomerView(BaseAuthenticatedClient):
 class UserProfileModel(object):
     """Test UserProfile Model"""
 
+    fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting']
+
     def setup(self):
         self.user = User.objects.get(username='admin')
         self.user_profile = Staff(

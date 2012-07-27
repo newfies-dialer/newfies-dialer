@@ -136,11 +136,11 @@ class CdrResource(ModelResource):
                 if element in data:
                     data[element] = None
                 else:
-                    logger.debug("%s :> %s" % (element, data[element]))
+                    logger.debug("%s not found!")
 
             #TODO: Add tag for newfies in outbound call
-            if not 'plivo_request_uuid' in data\
-            or not data['plivo_request_uuid']:
+            if not 'plivo_request_uuid' in data \
+                or not data['plivo_request_uuid']:
                 # CDR not related to plivo
                 error_msg = 'CDR not related to Newfies/Plivo!'
                 logger.error(error_msg)

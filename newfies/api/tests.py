@@ -18,7 +18,7 @@ import simplejson
 
 class ApiTestCase(BaseAuthenticatedClient):
     """Test cases for Newfies-Dialer API."""
-    fixtures = ['gateway.json', 'voiceapp', 'phonebook',
+    fixtures = ['gateway.json', 'voiceapp', 'phonebook', 'auth_user.json',
                 'dialer_setting', 'campaign', 'campaign_subscriber',
                 'callrequest', 'survey', 'survey_question',
                 'survey_response']

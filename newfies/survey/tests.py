@@ -48,7 +48,8 @@ class SurveyCustomerView(BaseAuthenticatedClient):
        SurveyResponse Customer pages
     """
 
-    fixtures = ['survey.json', 'survey_question', 'survey_response']
+    fixtures = ['auth_user.json', 'survey.json', 'survey_question.json',
+                'survey_response.json']
 
     def test_survey_view(self):
         """Test Function survey view"""
@@ -82,6 +83,8 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 class SurveyModel(object):
     """Test Survey, SurveyQuestion, SurveyResponse Model"""
 
+    fixtures = ['auth_user.json']
+
     def setup(self):
         self.user = User.objects.get(username='admin')
 
@@ -113,7 +116,7 @@ class SurveyModel(object):
             surveyapp=self.survey,
             question='test_question',
             response='5',
-            callrequest_id=1,
+            callrequest_id=None,
         )
         self.survey_result.save()
 

@@ -58,8 +58,8 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
     """
 
     fixtures = ['dialer_setting.json', 'auth_user.json', 'gateway.json',
-                'voiceapp', 'phonebook', 'contact', 'campaign',
-                'campaign_subscriber']
+                'voiceapp.json', 'phonebook.json', 'contact.json',
+                'campaign.json', 'campaign_subscriber.json']
 
     def test_phonebook_view_list(self):
         """Test Function to check phonebook list"""
@@ -109,7 +109,8 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         """Test Function to check import Contact"""
         response = self.client.get('/contact/import/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/contact/import_contact.html')
+        self.assertTemplateUsed(response,
+                'frontend/contact/import_contact.html')
 
     def test_campaign_view_list(self):
         """Test Function to check campaign list"""

@@ -56,7 +56,8 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
     """Test cases for Phonebook, Contact, Campaign, CampaignSubscriber
        Customer Interface.
     """
-    fixtures = ['dialer_setting.json', 'gateway.json',
+
+    fixtures = ['dialer_setting.json', 'auth_user.json', 'gateway.json',
                 'voiceapp', 'phonebook', 'contact', 'campaign',
                 'campaign_subscriber']
 

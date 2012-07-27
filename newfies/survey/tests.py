@@ -19,8 +19,6 @@ from survey.models import SurveyApp, SurveyQuestion,\
 import nose.tools as nt
 
 
-#TODO : missing test for SurveyCampaignResult
-
 class SurveyAdminView(BaseAuthenticatedClient):
     """Test Function to check Survey, SurveyQuestion,
        SurveyResponse Admin pages
@@ -50,7 +48,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
        SurveyResponse Customer pages
     """
 
-    fixtures = ['auth_user.json', 'survey.json']
+    fixtures = ['survey.json', 'survey_question', 'survey_response']
 
     def test_survey_view(self):
         """Test Function survey view"""
@@ -110,12 +108,23 @@ class SurveyModel(object):
         )
         self.survey_response.save()
 
+        # SurveyCampaignResult model
+        self.survey_result = SurveyCampaignResult(
+            surveyapp=self.survey,
+            question='test_question',
+            response='5',
+            callrequest_id=1,
+        )
+        self.survey_result.save()
+
     def test_name(self):
         nt.assert_equal(self.survey.name, "test_survey")
         nt.assert_equal(self.survey_question.question, "test_question")
         nt.assert_equal(self.survey_response.key, "5")
+        nt.assert_equal(self.survey_result.surveyapp, self.survey)
 
     def teardown(self):
         self.survey.delete()
         self.survey_question.delete()
         self.survey_response.delete()
+        self.survey_result.delete()

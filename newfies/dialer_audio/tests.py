@@ -31,12 +31,15 @@ class AudioFileAdminView(BaseAuthenticatedClient):
 class AudioFileCustomerView(BaseAuthenticatedClient):
     """Test cases for AudioFile Customer Interface."""
 
-    def test_audiofile_customer(self):
+    def test_audiofile_view_list(self):
         response = self.client.get('/audio/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/audio/audio_list.html')
+
+    def test_audiofile_view_add(self):
         response = self.client.get('/audio/add/')
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'frontend/audio/audio_change.html')
 
 
 class AudioFileModel(object):

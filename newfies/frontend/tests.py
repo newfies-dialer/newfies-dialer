@@ -12,7 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from common.test_utils import BaseAuthenticatedClient
+from common.utils import BaseAuthenticatedClient
 from django.test import TestCase
 
 

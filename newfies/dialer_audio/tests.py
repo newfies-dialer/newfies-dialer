@@ -13,7 +13,7 @@
 #
 
 from django.contrib.auth.models import User
-from common.test_utils import BaseAuthenticatedClient
+from common.utils import BaseAuthenticatedClient
 from audiofield.models import AudioFile
 import nose.tools as nt
 

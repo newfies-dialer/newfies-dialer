@@ -12,13 +12,13 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from common.test_utils import BaseAuthenticatedClient
+from common.utils import BaseAuthenticatedClient
 import simplejson
 
 
 class ApiTestCase(BaseAuthenticatedClient):
     """Test cases for Newfies-Dialer API."""
-    fixtures = ['gateway.json', 'voiceapp', 'phonebook', 
+    fixtures = ['gateway.json', 'voiceapp', 'phonebook',
                 'dialer_setting', 'campaign', 'campaign_subscriber',
                 'callrequest', 'survey', 'survey_question',
                 'survey_response']

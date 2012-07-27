@@ -13,7 +13,7 @@
 #
 
 from dialer_settings.models import DialerSetting
-from common.test_utils import BaseAuthenticatedClient
+from common.utils import BaseAuthenticatedClient
 import nose.tools as nt
 
 

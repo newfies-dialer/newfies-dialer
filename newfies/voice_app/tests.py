@@ -14,7 +14,7 @@
 
 from django.contrib.auth.models import User
 from voice_app.models import VoiceApp
-from common.test_utils import BaseAuthenticatedClient
+from common.utils import BaseAuthenticatedClient
 import nose.tools as nt
 
 

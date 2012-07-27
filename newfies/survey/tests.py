@@ -13,7 +13,7 @@
 #
 
 from django.contrib.auth.models import User
-from common.test_utils import BaseAuthenticatedClient
+from common.utils import BaseAuthenticatedClient
 from survey.models import SurveyApp, SurveyQuestion,\
     SurveyResponse, SurveyCampaignResult
 import nose.tools as nt

@@ -16,7 +16,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from dialer_campaign.models import Phonebook, Contact, Campaign, \
                             CampaignSubscriber
-from common.test_utils import BaseAuthenticatedClient
+from common.utils import BaseAuthenticatedClient
 import nose.tools as nt
 
 

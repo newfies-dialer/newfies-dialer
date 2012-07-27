@@ -13,7 +13,7 @@
 #
 
 from django.contrib.auth.models import User
-from common.test_utils import BaseAuthenticatedClient
+from common.utils import BaseAuthenticatedClient
 from django.contrib.contenttypes.models import ContentType
 from dialer_cdr.models import Callrequest, VoIPCall
 import nose.tools as nt

@@ -14,7 +14,7 @@
 
 from django.contrib.auth.models import User
 from user_profile.models import Staff, Customer
-from common.test_utils import BaseAuthenticatedClient
+from common.utils import BaseAuthenticatedClient
 import nose.tools as nt
 
 from django.contrib import admin

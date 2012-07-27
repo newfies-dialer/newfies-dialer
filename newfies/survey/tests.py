@@ -19,6 +19,8 @@ from survey.models import SurveyApp, SurveyQuestion,\
 import nose.tools as nt
 
 
+#TODO : missing test for SurveyCampaignResult
+
 class SurveyAdminView(BaseAuthenticatedClient):
     """Test Function to check Survey, SurveyQuestion,
        SurveyResponse Admin pages
@@ -48,7 +50,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
        SurveyResponse Customer pages
     """
 
-    fixtures = ['survey', 'surve_question', 'survey_response']
+    fixtures = ['auth_user.json', 'survey.json']
 
     def test_survey_view(self):
         """Test Function survey view"""

@@ -79,14 +79,10 @@ class DialerCdrModel(object):
         )
         self.voipcall.save()
 
-
     def test_name(self):
         nt.assert_equal(self.callrequest.phone_number, "123456")
         nt.assert_equal(self.voipcall.phone_number, "123456")
 
-
     def teardown(self):
         self.callrequest.delete()
         self.voipcall.delete()
-
-

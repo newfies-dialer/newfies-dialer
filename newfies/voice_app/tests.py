@@ -30,7 +30,7 @@ class VoiceAppAdminView(BaseAuthenticatedClient):
 
 class VoiceAppCustomerView(BaseAuthenticatedClient):
     """Test Function to check Voice App Customer pages"""
-    fixtures = ['voiceapp']
+    fixtures = ['auth_user.json', 'gateway.json', 'voiceapp.json']
 
     def test_voiceapp(self):
         response = self.client.get('/voiceapp/')
@@ -44,6 +44,9 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
 
 class VoiceAppModel(object):
     """Test Voice app Model"""
+
+    fixtures = ['auth_user.json', 'gateway.json', 'voiceapp.json']
+
     def setup(self):
         self.user = User.objects.get(username='admin')
         self.voiceapp = VoiceApp(

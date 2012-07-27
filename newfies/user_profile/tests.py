@@ -50,8 +50,7 @@ class UserProfileModel(object):
     """Test UserProfile Model"""
 
     def setup(self):
-        self.user =\
-            User.objects.get(username='admin')
+        self.user = User.objects.get(username='admin')
         self.user_profile = Staff(
             user=self.user,
             userprofile_gateway_id=1,

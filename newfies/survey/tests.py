@@ -74,8 +74,7 @@ class SurveyModel(object):
     """Test Survey, SurveyQuestion, SurveyResponse Model"""
 
     def setup(self):
-        self.user =\
-            User.objects.get(username='admin')
+        self.user = User.objects.get(username='admin')
 
         # SurveyApp model
         self.survey = SurveyApp(

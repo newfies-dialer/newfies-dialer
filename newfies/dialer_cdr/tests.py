@@ -47,8 +47,7 @@ class DialerCdrModel(object):
     """Test Callrequest, VoIPCall models"""
 
     def setup(self):
-        self.user =\
-            User.objects.get(username='admin')
+        self.user = User.objects.get(username='admin')
 
         try:
             content_type_id = ContentType.objects.get(model='voiceapp').id

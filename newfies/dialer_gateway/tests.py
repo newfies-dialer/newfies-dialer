@@ -12,7 +12,6 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.contrib.auth.models import User
 from common.test_utils import BaseAuthenticatedClient
 from dialer_gateway.models import Gateway
 import nose.tools as nt

@@ -24,21 +24,43 @@ class SurveyAdminView(BaseAuthenticatedClient):
        SurveyResponse Admin pages
     """
 
-    def test_surveyadmin_view(self):
+    def test_admin_surveyapp_view_list(self):
+        """Test Function to check admin surveyapp list"""
         response = self.client.get('/admin/survey/surveyapp/')
         self.failUnlessEqual(response.status_code, 200)
+
+    def test_admin_surveyapp_view_add(self):
+        """Test Function to check admin surveyapp add"""
         response = self.client.get('/admin/survey/surveyapp/add/')
         self.failUnlessEqual(response.status_code, 200)
+
+    def test_admin_surveyquestion_view_list(self):
+        """Test Function to check admin surveyquestion list"""
         response = self.client.get('/admin/survey/surveyquestion/')
         self.failUnlessEqual(response.status_code, 200)
+
+    def test_admin_surveyquestion_view_add(self):
+        """Test Function to check admin surveyquestion add"""
         response = self.client.get('/admin/survey/surveyquestion/add/')
         self.failUnlessEqual(response.status_code, 200)
+
+    def test_admin_surveyresponse_view_list(self):
+        """Test Function to check admin surveyresponse list"""
         response = self.client.get('/admin/survey/surveyresponse/')
         self.failUnlessEqual(response.status_code, 200)
+
+    def test_admin_surveyresponse_view_add(self):
+        """Test Function to check admin surveyresponse add"""
         response = self.client.get('/admin/survey/surveyresponse/add/')
         self.failUnlessEqual(response.status_code, 200)
+
+    def test_admin_surveycampaignresult_view_list(self):
+        """Test Function to check admin surveycampaignresult list"""
         response = self.client.get('/admin/survey/surveycampaignresult/')
         self.failUnlessEqual(response.status_code, 200)
+
+    def test_admin_surveycampaignresult_view_add(self):
+        """Test Function to check admin surveycampaignresult add"""
         response = self.client.get('/admin/survey/surveycampaignresult/add/')
         self.failUnlessEqual(response.status_code, 200)
 

@@ -21,9 +21,13 @@ import nose.tools as nt
 class AudioFileAdminView(BaseAuthenticatedClient):
     """Test cases for AudioFile Admin Interface."""
 
-    def test_audiofile_admin(self):
+    def test_admin_audiofile_view_list(self):
+        """Test Function to check admin audiofile list"""
         response = self.client.get("/admin/audiofield/audiofile/")
         self.assertEqual(response.status_code, 200)
+
+    def test_admin_audiofile_view_add(self):
+        """Test Function to check admin audiofile add"""
         response = self.client.get("/admin/audiofield/audiofile/add/")
         self.assertEqual(response.status_code, 200)
 

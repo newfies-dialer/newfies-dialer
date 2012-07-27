@@ -24,13 +24,23 @@ admin.site.register(User)
 class UserProfileAdminView(BaseAuthenticatedClient):
     """Test Function to check UserProfile Admin pages"""
 
-    def test_user_profile(self):
+    def test_admin_staff_view_list(self):
+        """Test Function to check admin staff list"""
         response = self.client.get("/admin/auth/staff/")
         self.assertEqual(response.status_code, 200)
+
+    def test_admin_staff_view_add(self):
+        """Test Function to check admin staff add"""
         response = self.client.get("/admin/auth/staff/add/")
         self.assertEqual(response.status_code, 200)
+
+    def test_admin_customer_view_list(self):
+        """Test Function to check admin customer list"""
         response = self.client.get("/admin/auth/customer/")
         self.assertEqual(response.status_code, 200)
+
+    def test_admin_customer_view_add(self):
+        """Test Function to check admin customer add"""
         response = self.client.get("/admin/auth/customer/add/")
         self.assertEqual(response.status_code, 200)
 

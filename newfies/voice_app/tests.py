@@ -21,9 +21,13 @@ import nose.tools as nt
 class VoiceAppAdminView(BaseAuthenticatedClient):
     """Test Function to check Voice App Admin pages"""
 
-    def test_voiceapp(self):
+    def test_admin_voiceapp_view_list(self):
+        """Test Function to check admin voiceapp list"""
         response = self.client.get("/admin/voice_app/voiceapp/")
         self.assertEqual(response.status_code, 200)
+
+    def test_admin_voiceapp_view_add(self):
+        """Test Function to check admin voiceapp add"""
         response = self.client.get("/admin/voice_app/voiceapp/add/")
         self.assertEqual(response.status_code, 200)
 

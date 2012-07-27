@@ -20,9 +20,13 @@ import nose.tools as nt
 class DialerSettingView(BaseAuthenticatedClient):
     """Test Function to check DialerSetting Admin pages"""
 
-    def test_dialer_setting(self):
+    def test_admin_dialersetting_view_list(self):
+        """Test Function to check admin dialersetting list"""
         response = self.client.get('/admin/dialer_settings/dialersetting/')
         self.failUnlessEqual(response.status_code, 200)
+
+    def test_admin_dialersetting_view_add(self):
+        """Test Function to check admin dialersetting add"""
         response = self.client.get("/admin/dialer_settings/dialersetting/add/")
         self.assertEqual(response.status_code, 200)
 

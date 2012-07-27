@@ -56,20 +56,29 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         """Test Function survey view"""
         response = self.client.get('/survey/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-            'frontend/survey/survey_list.html')
+
+    def test_survey_view_list(self):
+        """Test Function survey view list"""
+        response = self.client.get('/survey/')
+        self.assertTemplateUsed(response, 'frontend/survey/survey_list.html')
+
+    def test_survey_view_add(self):
+        """Test Function survey view add"""
         response = self.client.get('/survey/add/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-            'frontend/survey/survey_change.html')
+        self.assertTemplateUsed(response, 'frontend/survey/survey_change.html')
+
+    def test_survey_view_get(self):
+        """Test Function survey view get"""
         response = self.client.get('/survey/1/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-            'frontend/survey/survey_change.html')
+        self.assertTemplateUsed(response, 'frontend/survey/survey_change.html')
+
+    def test_survey_view_report(self):
+        """Test Function survey view report"""
         response = self.client.get('/survey_report/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-            'frontend/survey/survey_report.html')
+        self.assertTemplateUsed(response, 'frontend/survey/survey_report.html')
 
 
 class SurveyModel(object):

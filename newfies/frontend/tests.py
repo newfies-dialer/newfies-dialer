@@ -38,8 +38,8 @@ class FrontendCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/index.html')
         response = self.client.post('/login/',
-                {'username': 'userapi',
-                 'password': 'passapi'})
+                {'username': 'admin',
+                 'password': 'admin'})
         self.assertEqual(response.status_code, 200)
 
     def test_dashboard(self):
@@ -59,6 +59,9 @@ class FrontendForgotPassword(TestCase):
         self.assertTemplateUsed(
             response,
             'frontend/registration/password_reset_form.html')
+        response = self.client.post('/password_reset/',
+                {'email': 'admin@localhost.com'})
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.get('/password_reset/done/')
         self.assertEqual(response.status_code, 200)
@@ -71,6 +74,10 @@ class FrontendForgotPassword(TestCase):
         self.assertTemplateUsed(
             response,
             'frontend/registration/password_reset_confirm.html')
+        response = self.client.post('/reset/1-2xc-5791af4cc6b67e88ce8e/',
+                {'new_password1': 'admin',
+                 'new_password2': 'admin' })
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.get('/reset/done/')
         self.assertEqual(response.status_code, 200)

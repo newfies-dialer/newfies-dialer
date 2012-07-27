@@ -124,8 +124,8 @@ def notice_count(request):
     """Get count of logged in user's notifications"""
     try:
         notice_count = \
-        notification.Notice.objects.filter(recipient=request.user,
-                                           unseen=1).count()
+            notification.Notice.objects.filter(recipient=request.user,
+                                               unseen=1).count()
     except:
         notice_count = ''
     return notice_count

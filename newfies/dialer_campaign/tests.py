@@ -25,28 +25,49 @@ class DialerCampaignView(BaseAuthenticatedClient):
        Admin Interface.
     """
 
-    def test_dialer_campaign(self):
+    def test_admin_phonebook_view_list(self):
+        """Test Function to check admin phonebook list"""
         response = self.client.get("/admin/dialer_campaign/phonebook/")
         self.failUnlessEqual(response.status_code, 200)
+    def test_admin_phonebook_view_list(self):
+        """Test Function to check admin phonebook add"""
         response = self.client.get("/admin/dialer_campaign/phonebook/add/")
         self.assertEqual(response.status_code, 200)
 
+    def test_admin_contact_view_list(self):
+        """Test Function to check admin contact list"""
         response = self.client.get("/admin/dialer_campaign/contact/")
         self.failUnlessEqual(response.status_code, 200)
+
+    def test_admin_contact_view_add(self):
+        """Test Function to check admin contact add"""
         response = self.client.get("/admin/dialer_campaign/contact/add/")
         self.assertEqual(response.status_code, 200)
+
+    def test_admin_contact_view_import(self):
+        """Test Function to check admin import contact"""
         response =\
             self.client.get('/admin/dialer_campaign/contact/import_contact/')
         self.failUnlessEqual(response.status_code, 200)
 
+    def test_admin_campaign_view_list(self):
+        """Test Function to check admin campaign list"""
         response = self.client.get('/admin/dialer_campaign/campaign/')
         self.failUnlessEqual(response.status_code, 200)
+
+    def test_admin_campaign_view_add(self):
+        """Test Function to check admin campaign add"""
         response = self.client.get('/admin/dialer_campaign/campaign/add/')
         self.failUnlessEqual(response.status_code, 200)
 
+    def test_admin_ampaignsubscriber_view_list(self):
+        """Test Function to check admin campaignsubscriber list"""
         response =\
             self.client.get('/admin/dialer_campaign/campaignsubscriber/')
         self.failUnlessEqual(response.status_code, 200)
+
+    def test_admin_ampaignsubscriber_view_add(self):
+        """Test Function to check admin campaignsubscriber add"""
         response =\
             self.client.get('/admin/dialer_campaign/campaignsubscriber/add/')
         self.failUnlessEqual(response.status_code, 200)
@@ -138,6 +159,10 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
 
 class DialerCampaignModel(object):
     """Test Phonebook, Contact, Campaign, CampaignSubscriber models"""
+
+    fixtures = ['gateway.json', 'voiceapp.json', 'auth_user.json',
+                'contenttype', 'phonebook', 'contact', 'campaign',
+                'campaign_subscriber']
 
     def setup(self):
         self.user = User.objects.get(username='admin')

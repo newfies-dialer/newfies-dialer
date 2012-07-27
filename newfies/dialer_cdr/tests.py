@@ -22,12 +22,18 @@ import nose.tools as nt
 class DialerCdrView(BaseAuthenticatedClient):
     """Test cases for Callrequest, VoIPCall Admin Interface."""
 
-    def test_admin(self):
-        """Test Function to check Newfies-Dialer Admin pages"""
+    def test_admin_callrequest_view_list(self):
+        """Test Function to check admin callrequest list"""
         response = self.client.get('/admin/dialer_cdr/callrequest/')
         self.failUnlessEqual(response.status_code, 200)
+
+    def test_admin_callrequest_view_add(self):
+        """Test Function to check admin callrequest add"""
         response = self.client.get('/admin/dialer_cdr/callrequest/add/')
         self.failUnlessEqual(response.status_code, 200)
+
+    def test_admin_voipcall_view_list(self):
+        """Test Function to check admin voipcall list"""
         response = self.client.get('/admin/dialer_cdr/voipcall/')
         self.failUnlessEqual(response.status_code, 200)
 
@@ -35,7 +41,7 @@ class DialerCdrView(BaseAuthenticatedClient):
 class DialerCdrCustomerView(BaseAuthenticatedClient):
     """Test cases for Callrequest, VoIPCall Customer Interface."""
 
-    def test_customer(self):
+    def test_customer_voipcall(self):
         """Test Function to check VoIP call report"""
         response = self.client.get('/voipcall_report/')
         self.assertEqual(response.status_code, 200)
@@ -45,6 +51,9 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
 
 class DialerCdrModel(object):
     """Test Callrequest, VoIPCall models"""
+
+    fixtures = ['gateway.json', 'auth_user.json', 'contenttype',
+                'campaign', 'campaign_subscriber']
 
     def setup(self):
         self.user = User.objects.get(username='admin')

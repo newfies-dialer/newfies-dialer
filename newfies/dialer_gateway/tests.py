@@ -20,9 +20,13 @@ import nose.tools as nt
 class GatewayView(BaseAuthenticatedClient):
     """Test Function to check Gateway Admin pages"""
 
-    def test_gateway(self):
+    def test_admin_gateway_view_list(self):
+        """Test Function to check admin gateway list"""
         response = self.client.get("/admin/dialer_gateway/gateway/")
         self.assertEqual(response.status_code, 200)
+
+    def test_admin_gateway_view_add(self):
+        """Test Function to check admin gateway add"""
         response = self.client.get("/admin/dialer_gateway/gateway/add/")
         self.assertEqual(response.status_code, 200)
 

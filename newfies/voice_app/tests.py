@@ -32,10 +32,12 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
     """Test Function to check Voice App Customer pages"""
     fixtures = ['voiceapp']
 
-    def test_voiceapp(self):
+    def test_voiceapp_view_list(self):
         response = self.client.get('/voiceapp/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/voiceapp/list.html')
+
+    def test_voiceapp_view_add(self):
         response = self.client.get('/voiceapp/add/')
         self.assertTemplateUsed(response, 'frontend/voiceapp/change.html')
         response = self.client.get('/voiceapp/1/')

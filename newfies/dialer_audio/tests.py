@@ -49,6 +49,8 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
 class AudioFileModel(object):
     """Test AudioFile model"""
 
+    fixtures = ['auth_user.json']
+
     def setup(self):
         self.user = User.objects.get(username='admin')
 

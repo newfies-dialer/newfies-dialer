@@ -61,12 +61,14 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
                 'voiceapp', 'phonebook', 'contact', 'campaign',
                 'campaign_subscriber']
 
-    def test_phonebook_view(self):
-        """Test Function to check phonebook"""
+    def test_phonebook_view_list(self):
+        """Test Function to check phonebook list"""
         response = self.client.get('/phonebook/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-            'frontend/phonebook/list.html')
+        self.assertTemplateUsed(response, 'frontend/phonebook/list.html')
+
+    def test_phonebook_view_add(self):
+        """Test Function to check add phonebook"""
         response = self.client.get('/phonebook/add/')
         self.assertEqual(response.status_code, 200)
         response = self.client.post('/phonebook/add/',
@@ -74,18 +76,22 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
                 'name': 'My Phonebook',
                 'description': 'phonebook',
                 'user': self.user
-                })
+            })
+        self.assertEqual(response.status_code, 302)
+
+    def test_phonebook_view_update(self):
         response = self.client.get('/phonebook/1/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-            'frontend/phonebook/change.html')
+        self.assertTemplateUsed(response, 'frontend/phonebook/change.html')
 
-    def test_contact_view(self):
-        """Test Function to check Contact"""
+    def test_contact_view_list(self):
+        """Test Function to check Contact list"""
         response = self.client.get('/contact/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-            'frontend/contact/list.html')
+        self.assertTemplateUsed(response, 'frontend/contact/list.html')
+
+    def test_contact_view_add(self):
+        """Test Function to check add Contact"""
         response = self.client.get('/contact/add/')
         self.assertEqual(response.status_code, 200)
         response = self.client.post('/contact/add/',
@@ -93,20 +99,26 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
                   'last_name': 'xyz', 'first_name': 'abc',
                   'status': '1'})
         self.assertEqual(response.status_code, 200)
+
+    def test_contact_view_update(self):
+        """Test Function to check update Contact"""
         response = self.client.get('/contact/1/')
-        self.assertTemplateUsed(response,
-            'frontend/contact/change.html')
+        self.assertTemplateUsed(response, 'frontend/contact/change.html')
+
+    def test_contact_view_import(self):
+        """Test Function to check import Contact"""
         response = self.client.get('/contact/import/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-            'frontend/contact/import_contact.html')
+        self.assertTemplateUsed(response, 'frontend/contact/import_contact.html')
 
-    def test_campaign_view(self):
-        """Test Function to check campaign"""
+    def test_campaign_view_list(self):
+        """Test Function to check campaign list"""
         response = self.client.get('/campaign/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-            'frontend/campaign/list.html')
+        self.assertTemplateUsed(response, 'frontend/campaign/list.html')
+
+    def test_campaign_view_add(self):
+        """Test Function to check add campaign"""
         response = self.client.post('/campaign/add/', data={
             "name": "mylittlecampaign",
             "description": "xyz",

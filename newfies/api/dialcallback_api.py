@@ -99,8 +99,8 @@ class DialCallbackResource(ModelResource):
         throttle = BaseThrottle(throttle_at=1000,
             timeframe=3600)
 
-    def override_urls(self):
-        """Override url"""
+    def prepend_urls(self):
+        """Prepend urls"""
         return [
             url(r'^(?P<resource_name>%s)/$' %\
                 self._meta.resource_name, self.wrap_view('create')),

@@ -135,7 +135,8 @@ class Callrequest(Model):
     aleg_uuid = models.CharField(max_length=120, help_text=_("A-Leg Call-ID"),
                         db_index=True, null=True, blank=True)
     call_time = models.DateTimeField(default=(lambda: datetime.now()))
-    created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')
+    created_date = models.DateTimeField(auto_now_add=True,
+                                        verbose_name='Date')
     updated_date = models.DateTimeField(auto_now=True)
     call_type = models.IntegerField(choices=CALLREQUEST_TYPE, default='1',
                 verbose_name=_("Call Request Type"), blank=True, null=True)
@@ -155,8 +156,8 @@ class Callrequest(Model):
                 verbose_name=_('Extra dial string'))
 
     campaign_subscriber = models.ForeignKey(CampaignSubscriber,
-                null=True, blank=True,
-                help_text=_("Campaign Subscriber related to this call request"))
+            null=True, blank=True,
+            help_text=_("Campaign Subscriber related to this call request"))
 
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
                 help_text=_("Select Campaign"))
@@ -170,8 +171,8 @@ class Callrequest(Model):
     content_object = generic.GenericForeignKey('content_type', 'object_id')
 
     extra_data = models.CharField(max_length=120, blank=True,
-                verbose_name=_("Extra Data"),
-                help_text=_("Define the additional data to pass to the application"))
+        verbose_name=_("Extra Data"),
+        help_text=_("Define the additional data to pass to the application"))
 
     num_attempt = models.IntegerField(default=0)
     last_attempt_time = models.DateTimeField(null=True, blank=True)

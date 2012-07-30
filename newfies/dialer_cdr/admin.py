@@ -148,7 +148,9 @@ class VoIPCallAdmin(admin.ModelAdmin):
                 to_date = variable_value(request, 'starting_date__lte')[0:10]
             if request.GET.get('disposition__exact'):
                 status = variable_value(request, 'disposition__exact')
-            form = VoipSearchForm(initial={'status': status, 'from_date': from_date, 'to_date': to_date})
+            form = VoipSearchForm(initial={'status': status,
+                                           'from_date': from_date,
+                                           'to_date': to_date})
 
 
         ChangeList = self.get_changelist(request)
@@ -160,7 +162,8 @@ class VoIPCallAdmin(admin.ModelAdmin):
                  self)
         except IncorrectLookupParameters:
             if ERROR_FLAG in request.GET.keys():
-                return render_to_response('admin/invalid_setup.html', {'title': _('Database error')})
+                return render_to_response('admin/invalid_setup.html',
+                        {'title': _('Database error')})
             return HttpResponseRedirect(request.path + '?' + ERROR_FLAG + '=1')
 
         kwargs = {}
@@ -180,8 +183,10 @@ class VoIPCallAdmin(admin.ModelAdmin):
             'All %(total_count)s selected', cl.result_count)
 
         ctx = {
-            'selection_note': _('0 of %(cnt)s selected') % {'cnt': len(cl.result_list)},
-            'selection_note_all': selection_note_all % {'total_count': cl.result_count},
+            'selection_note': \
+                _('0 of %(cnt)s selected') % {'cnt': len(cl.result_list)},
+            'selection_note_all': \
+                selection_note_all % {'total_count': cl.result_count},
             'cl': cl,
             'form': form,
             'opts': opts,

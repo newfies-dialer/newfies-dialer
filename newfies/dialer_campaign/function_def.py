@@ -108,7 +108,7 @@ def check_dialer_setting(request, check_for, field_value=''):
                         # Total active contacts matched with
                         # max_number_subscriber_campaign
                         if contact_count >= \
-                        dialer_set_obj.max_number_subscriber_campaign:
+                            dialer_set_obj.max_number_subscriber_campaign:
                             # Limit matched or exceeded
                             return True
                     # Limit not matched

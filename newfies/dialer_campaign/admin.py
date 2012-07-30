@@ -136,7 +136,8 @@ class ContactAdmin(admin.ModelAdmin):
             # check Max Number of subscribers per campaign
             if check_dialer_setting(request, check_for="contact"):
                 msg = _("You have too many contacts per campaign. You are allowed a maximum of %(limit)s") \
-                % {'limit': dialer_setting_limit(request, limit_for="contact")}
+                    % {'limit': dialer_setting_limit(request,
+                                                     limit_for="contact")}
                 messages.error(request, msg)
 
                 # campaign limit reached
@@ -175,7 +176,8 @@ class ContactAdmin(admin.ModelAdmin):
             # check Max Number of subscribers per campaign
             if check_dialer_setting(request, check_for="contact"):
                 msg = _("You have too many contacts per campaign. You are allowed a maximum of %(limit)s") \
-                % {'limit': dialer_setting_limit(request, limit_for="contact")}
+                    % {'limit': dialer_setting_limit(request,
+                                                     limit_for="contact")}
                 messages.error(request, msg)
 
                 # campaign limit reached
@@ -218,7 +220,8 @@ class ContactAdmin(admin.ModelAdmin):
                             int(row[5])
 
                             phonebook = \
-                            Phonebook.objects.get(pk=request.POST['phonebook'])
+                                Phonebook.objects\
+                                    .get(pk=request.POST['phonebook'])
                             try:
                                 # check if prefix is already
                                 # existing in the retail plan or not

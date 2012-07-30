@@ -336,8 +336,8 @@ def phonebook_del(request, object_id):
         # 2) delete phonebook
         phonebook_list = Phonebook.objects.extra(where=['id IN (%s)' % values])
         request.session["msg"] =\
-        _('%(count)s phonebook(s) are deleted.') \
-        % {'count': phonebook_list.count()}
+            _('%(count)s phonebook(s) are deleted.') \
+                % {'count': phonebook_list.count()}
         phonebook_list.delete()
         return HttpResponseRedirect('/phonebook/')
 
@@ -774,7 +774,7 @@ def contact_import(request):
 def count_contact_of_campaign(campaign_id):
     """Count no of Contacts from phonebook belonging to the campaign"""
     count_contact = \
-    Contact.objects.filter(phonebook__campaign=campaign_id).count()
+        Contact.objects.filter(phonebook__campaign=campaign_id).count()
     if not count_contact:
         return str("Phonebook Empty")
     return count_contact

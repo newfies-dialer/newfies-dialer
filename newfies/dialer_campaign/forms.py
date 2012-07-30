@@ -27,8 +27,9 @@ from dialer_campaign.function_def import field_list, user_dialer_setting
 
 class SearchForm(forms.Form):
     """General Search Form with From & To date para."""
-    from_date = forms.CharField(label=_('From'), required=False, max_length=10,
-    help_text=_("Date Format") + ": <em>YYYY-MM-DD</em>.")
+    from_date = forms.CharField(label=_('From'), required=False,
+        max_length=10,
+        help_text=_("Date Format") + ": <em>YYYY-MM-DD</em>.")
     to_date = forms.CharField(label=_('To'), required=False, max_length=10,
     help_text=_("Date Format") + ": <em>YYYY-MM-DD</em>.")
 
@@ -45,7 +46,7 @@ class FileImport(forms.Form):
         file_exts = (".csv", )
         if not str(filename).split(".")[1].lower() in file_exts:
             raise forms.ValidationError(_(u'Document types accepted: %s' % \
-            ' '.join(file_exts)))
+                ' '.join(file_exts)))
         else:
             return filename
 
@@ -68,7 +69,8 @@ class Contact_fileImport(FileImport):
 
 class LoginForm(forms.Form):
     """Client Login Form"""
-    user = forms.CharField(max_length=30, label=_('Username:'), required=True)
+    user = forms.CharField(max_length=30,
+                           label=_('Username:'), required=True)
     user.widget.attrs['class'] = 'input-small'
     user.widget.attrs['placeholder'] = 'Username'
     password = forms.CharField(max_length=30, label=_('Password:'),
@@ -182,7 +184,7 @@ class CampaignForm(ModelForm):
         if dialer_set:
             if frequency > dialer_set.max_frequency:
                 msg = _('Maximum Frequency limit of %d exceeded.'\
-                % dialer_set.max_frequency)
+                    % dialer_set.max_frequency)
                 self._errors['frequency'] = ErrorList([msg])
                 del self.cleaned_data['frequency']
 
@@ -194,13 +196,13 @@ class CampaignForm(ModelForm):
 
             if maxretry > dialer_set.maxretry:
                 msg = _('Maximum Retries limit of %d exceeded.' \
-                % dialer_set.maxretry)
+                    % dialer_set.maxretry)
                 self._errors['maxretry'] = ErrorList([msg])
                 del self.cleaned_data['maxretry']
 
             if calltimeout > dialer_set.max_calltimeout:
                 msg = _('Maximum Timeout limit of %d exceeded.'\
-                % dialer_set.max_calltimeout)
+                    % dialer_set.max_calltimeout)
                 self._errors['calltimeout'] = ErrorList([msg])
                 del self.cleaned_data['calltimeout']
 

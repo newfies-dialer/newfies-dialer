@@ -10,7 +10,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding field 'SurveyCampaignResult.callrequest'
         db.add_column('survey_surveycampaignresult', 'callrequest',
-                      self.gf('django.db.models.fields.related.ForeignKey')(default=None, related_name='Callrequest', to=orm['dialer_cdr.Callrequest']),
+                      self.gf('django.db.models.fields.related.ForeignKey')(default=0, related_name='Callrequest', to=orm['dialer_cdr.Callrequest']),
                       keep_default=False)
 
 

@@ -1,37 +1,49 @@
+#!/usr/bin/env python
+import sys
+import logging
+from optparse import OptionParser
+from coverage import coverage
 
-#Run testing suit
-cd newfies
+from tests.config import configure
 
-#Run Full Test Suit
-#./manage.py test --verbosity=2
+logging.disable(logging.CRITICAL)
 
-#Run NewfiesApiTestCase
-echo "manage.py test dialer_cdr.NewfiesTastypieApiTestCase --verbosity=2"
-./manage.py test dialer_cdr.NewfiesTastypieApiTestCase --verbosity=2
-echo ""
-echo "Press any key to continue..."
-read TEMP
 
-#Run NewfiesAdminInterfaceTestCase
-echo "manage.py test dialer_cdr.NewfiesAdminInterfaceTestCase --verbosity=2"
-./manage.py test dialer_cdr.NewfiesAdminInterfaceTestCase --verbosity=2
-echo ""
-echo "Press any key to continue..."
-read TEMP
+def run_tests(options, *test_args):
+    from django_nose import NoseTestSuiteRunner
+    test_runner = NoseTestSuiteRunner(verbosity=options.verbosity,
+                                      pdb=options.pdb,
+                                      )
+    if not test_args:
+        test_args = ['tests']
+    num_failures = test_runner.run_tests(test_args)
+    if num_failures:
+        sys.exit(num_failures)
 
-#Run NewfiesCustomerInterfaceTestCase
-echo "manage.py test dialer_cdr.NewfiesCustomerInterfaceTestCase --verbosity=2"
-./manage.py test dialer_cdr.NewfiesCustomerInterfaceTestCase --verbosity=2
-echo ""
-echo "Press any key to continue..."
-read TEMP
 
-#Run NewfiesTastypieApiTestCase
-echo "manage.py test dialer_cdr.NewfiesTastypieApiTestCase.test_create_campaign --verbosity=2"
-./manage.py test dialer_cdr.NewfiesTastypieApiTestCase.test_create_campaign --verbosity=2
-echo ""
-echo "Press any key to continue..."
-read TEMP
+if __name__ == '__main__':
+    parser = OptionParser()
+    parser.add_option('-c', '--coverage', dest='use_coverage', default=False,
+                      action='store_true', help="Generate coverage report")
+    parser.add_option('-v', '--verbosity', dest='verbosity', default=1,
+                      type='int', help="Verbosity of output")
+    parser.add_option('-d', '--pdb', dest='pdb', default=False,
+                      action='store_true', help="Whether to drop into PDB on failure/error")
+    (options, args) = parser.parse_args()
 
-cd -
+    # If no args, then use 'progressive' plugin to keep the screen real estate
+    # used down to a minimum.  Otherwise, use the spec plugin
+    nose_args = ['-s', '-x',
+                 '--with-progressive' if not args else '--with-spec']
+    configure(nose_args)
 
+    if options.use_coverage:
+        print 'Running tests with coverage'
+        c = coverage(source=['newfies'])
+        c.start()
+        run_tests(options, *args)
+        c.stop()
+        print 'Generate HTML reports'
+        c.html_report()
+    else:
+        run_tests(options, *args)

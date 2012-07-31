@@ -14,8 +14,7 @@
 
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
-from dialer_campaign.models import Phonebook, Contact, Campaign, \
-                            CampaignSubscriber
+from dialer_campaign.models import Campaign, CampaignSubscriber
 from common.utils import BaseAuthenticatedClient
 import nose.tools as nt
 
@@ -81,12 +80,11 @@ class DialerCampaignModel(object):
     """Test Campaign, CampaignSubscriber models"""
 
     fixtures = ['gateway.json', 'voiceapp.json', 'auth_user.json',
-                'contenttype', 'phonebook', 'contact', 'campaign',
-                'campaign_subscriber']
+                'contenttype.json', 'phonebook.json', 'contact.json',
+                'campaign.json', 'campaign_subscriber.json']
 
     def setup(self):
         self.user = User.objects.get(username='admin')
-
         # Campaign model
         try:
             content_type_id = ContentType.objects.get(model='voiceapp').id

@@ -31,43 +31,12 @@ from dialer_campaign.function_def import check_dialer_setting,\
                                          contact_search_common_fun,\
                                          user_dialer_setting_msg
 from dialer_campaign.views import common_send_notification
-from common.common_functions import variable_value, striplist, current_view
+from common.common_functions import striplist, current_view
+from utils.helper import grid_common_function, update_style, delete_style
 import urllib
 import csv
 import ast
 
-
-update_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
-delete_style = 'style="text-decoration:none;background-image:url(' + \
-                settings.STATIC_URL + 'newfies/icons/delete.png);"'
-
-
-def grid_common_function(request):
-    """To get common flexigrid variable"""
-    grid_data = {}
-
-    grid_data['page'] = variable_value(request, 'page')
-    grid_data['rp'] = variable_value(request, 'rp')
-    grid_data['sortname'] = variable_value(request, 'sortname')
-    grid_data['sortorder'] = variable_value(request, 'sortorder')
-    grid_data['query'] = variable_value(request, 'query')
-    grid_data['qtype'] = variable_value(request, 'qtype')
-
-    # page index
-    if int(grid_data['page']) > 1:
-        grid_data['start_page'] = (int(grid_data['page']) - 1) * \
-                                    int(grid_data['rp'])
-        grid_data['end_page'] = grid_data['start_page'] + int(grid_data['rp'])
-    else:
-        grid_data['start_page'] = int(0)
-        grid_data['end_page'] = int(grid_data['rp'])
-
-    grid_data['sortorder_sign'] = ''
-    if grid_data['sortorder'] == 'desc':
-        grid_data['sortorder_sign'] = '-'
-
-    return grid_data
 
 
 # Phonebook

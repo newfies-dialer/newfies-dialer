@@ -14,7 +14,6 @@
 
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.contrib.sites.models import Site
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
@@ -25,8 +24,6 @@ from django.utils import simplejson
 from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
 from dialer_campaign.models import Campaign
-from dialer_contact.views import update_style, delete_style, \
-                                 grid_common_function
 from dialer_campaign.views import notice_count
 from survey.models import SurveyApp, SurveyQuestion, \
                         SurveyResponse, SurveyCampaignResult
@@ -35,6 +32,7 @@ from survey.forms import SurveyForm, \
                         SurveyResponseForm, \
                         SurveyDetailReportForm
 from survey.function_def import export_question_result
+from utils.helper import grid_common_function, update_style, delete_style
 from dialer_cdr.models import Callrequest, VoIPCall
 from common.common_functions import variable_value, current_view
 from datetime import datetime

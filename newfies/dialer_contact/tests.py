@@ -13,7 +13,7 @@
 #
 
 from django.contrib.auth.models import User
-from dialer_campaign.models import Phonebook, Contact
+from dialer_contact.models import Phonebook, Contact
 from common.utils import BaseAuthenticatedClient
 import nose.tools as nt
 
@@ -25,28 +25,28 @@ class DialerContactView(BaseAuthenticatedClient):
 
     def test_admin_phonebook_view_list(self):
         """Test Function to check admin phonebook list"""
-        response = self.client.get("/admin/dialer_campaign/phonebook/")
+        response = self.client.get("/admin/dialer_contact/phonebook/")
         self.failUnlessEqual(response.status_code, 200)
 
     def test_admin_phonebook_view_add(self):
         """Test Function to check admin phonebook add"""
-        response = self.client.get("/admin/dialer_campaign/phonebook/add/")
+        response = self.client.get("/admin/dialer_contact/phonebook/add/")
         self.assertEqual(response.status_code, 200)
 
     def test_admin_contact_view_list(self):
         """Test Function to check admin contact list"""
-        response = self.client.get("/admin/dialer_campaign/contact/")
+        response = self.client.get("/admin/dialer_contact/contact/")
         self.failUnlessEqual(response.status_code, 200)
 
     def test_admin_contact_view_add(self):
         """Test Function to check admin contact add"""
-        response = self.client.get("/admin/dialer_campaign/contact/add/")
+        response = self.client.get("/admin/dialer_contact/contact/add/")
         self.assertEqual(response.status_code, 200)
 
     def test_admin_contact_view_import(self):
         """Test Function to check admin import contact"""
         response =\
-            self.client.get('/admin/dialer_campaign/contact/import_contact/')
+            self.client.get('/admin/dialer_contact/contact/import_contact/')
         self.failUnlessEqual(response.status_code, 200)
 
 

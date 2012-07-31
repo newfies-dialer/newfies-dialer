@@ -191,35 +191,34 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.markup',
     'django_countries',
-    'country_dialcode',
-    'dialer_gateway',
-    'dialer_contact',
-    'dialer_campaign',
-    'dialer_cdr',
-    'dialer_settings',
-    'user_profile',
-    'common',
-    'djcelery',
-    'dateutil',
-    #'pagination',
-    'linaro_django_pagination',
-    'memcache_status',
-    'notification',
-    'voice_app',
-    'survey',
-    'dialer_audio',
-    'common',
-    #'raven.contrib.django',
     'admin_tools_stats',
-    'chart_tools',
+    'genericadmin',
     'south',
+    'djcelery',
     'tastypie',
     'audiofield',
     'tagging',
     'adminsortable',
     'dajaxice',
     'dajax',
-    'genericadmin',
+    'dateutil',
+    #'pagination',
+    'linaro_django_pagination',
+    'memcache_status',
+    'chart_tools',
+    'country_dialcode',
+    'common',
+    'dialer_gateway',
+    'dialer_contact',
+    'dialer_campaign',
+    'dialer_cdr',
+    'dialer_settings',
+    'user_profile',
+    'notification',
+    'voice_app',
+    'survey',
+    'dialer_audio',
+    #'raven.contrib.django',
 )
 
 # Django extensions
@@ -267,7 +266,6 @@ except ImportError:
 else:
     INSTALLED_APPS = INSTALLED_APPS + ('django_nose',)
     TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
 
 # Dilla
 try:

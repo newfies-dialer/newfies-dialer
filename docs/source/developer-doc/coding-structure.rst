@@ -18,6 +18,8 @@ The newfies directory::
     
     |-- custom_admin_tools - The code for admin dashboard/menu
     |-- api                - The code for APIs
+    |-- dialer_contact     - The code for phonebook, contact
+    |   `-- fixtures
     |-- dialer_campaign    - The code for dialer campaign
     |   `-- fixtures
     |-- dialer_cdr         - This defines the call request & its information
@@ -27,8 +29,9 @@ The newfies directory::
     |-- dialer_settings    - This defines sets of settings to apply on user
     |-- voice_app          - This defines application that are defined on the platform
     |   `-- fixtures
-    |-- survey
+    |-- survey             - The code for survey module
     |   `-- fixtures
+    |-- frontend           - The code for dashboard, forgot password
     |-- static
     |   |-- newfies
     |   |    |-- css
@@ -40,7 +43,7 @@ The newfies directory::
     |-- usermedia          - This folder is used to upload audio files
     `-- templates          - This area is used to override templates
         |-- admin
-        |   |-- dialer_campaign
+        |   |-- dialer_contact
         |   `-- dialer_cdr
         |-- admin_tools
         |-- registration

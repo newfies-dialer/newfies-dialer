@@ -22,8 +22,6 @@ from django.conf import settings
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
-from django.db.models import Q
-from django.db.models import Count
 from django.contrib.contenttypes.models import ContentType
 from notification import models as notification
 from frontend.views import notice_count

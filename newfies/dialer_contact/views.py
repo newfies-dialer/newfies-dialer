@@ -30,12 +30,10 @@ from frontend.views import notice_count
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.forms import ContactSearchForm, Contact_fileImport, \
                             PhonebookForm, ContactForm
-from dialer_campaign.models import Campaign
-from dialer_campaign.function_def import user_attached_with_dialer_settings, \
-                        check_dialer_setting, dialer_setting_limit, \
-                        contact_search_common_fun,\
-                        get_campaign_status_name, user_dialer_setting_msg
-from dialer_campaign.tasks import collect_subscriber
+from dialer_campaign.function_def import check_dialer_setting,\
+                                         dialer_setting_limit, \
+                                         contact_search_common_fun,\
+                                         user_dialer_setting_msg
 from common.common_functions import variable_value, striplist, current_view
 import urllib
 import csv

@@ -4,6 +4,14 @@
 Model Test Case
 ---------------
 
+.. automodule:: dialer_contact.tests
+
+.. _DialerContactModel:
+
+.. autoclass:: DialerContactModel
+    :members:
+
+
 .. automodule:: dialer_campaign.tests
 
 .. _DialerCampaignModel:

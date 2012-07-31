@@ -110,3 +110,32 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
                 'frontend/contact/import_contact.html')
 
 
+class DialerContactModel(object):
+    """Test Phonebook, Contact models"""
+
+    fixtures = ['auth_user.json', 'phonebook', 'contact']
+
+    def setup(self):
+        self.user = User.objects.get(username='admin')
+
+        # Phonebook model
+        self.phonebook = Phonebook(
+            name='test_phonebook',
+            user=self.user,
+        )
+        self.phonebook.save()
+
+        # Contact model
+        self.contact = Contact(
+            phonebook=self.phonebook,
+            contact=123456789,
+        )
+        self.contact.save()
+
+    def test_name(self):
+        nt.assert_equal(self.phonebook.name, 'test_phonebook')
+        nt.assert_equal(self.contact.phonebook, self.phonebook)
+
+    def teardown(self):
+        self.phonebook.delete()
+        self.contact.delete()

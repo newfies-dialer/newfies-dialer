@@ -12,6 +12,15 @@ Admin Interface Test Case
     :members:
 
 
+.. automodule:: dialer_contact.tests
+
+
+.. _DialerContactView-admin:
+
+.. autoclass:: DialerContactView
+    :members:
+
+
 .. automodule:: dialer_campaign.tests
 
 

@@ -35,13 +35,13 @@ class DialerCampaignView(BaseAuthenticatedClient):
         response = self.client.get('/admin/dialer_campaign/campaign/add/')
         self.failUnlessEqual(response.status_code, 200)
 
-    def test_admin_ampaignsubscriber_view_list(self):
+    def test_admin_campaignsubscriber_view_list(self):
         """Test Function to check admin campaignsubscriber list"""
         response =\
             self.client.get('/admin/dialer_campaign/campaignsubscriber/')
         self.failUnlessEqual(response.status_code, 200)
 
-    def test_admin_ampaignsubscriber_view_add(self):
+    def test_admin_campaignsubscriber_view_add(self):
         """Test Function to check admin campaignsubscriber add"""
         response =\
             self.client.get('/admin/dialer_campaign/campaignsubscriber/add/')
@@ -82,7 +82,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
 
 
 class DialerCampaignModel(object):
-    """Test Phonebook, Contact, Campaign, CampaignSubscriber models"""
+    """Test Campaign, CampaignSubscriber models"""
 
     fixtures = ['gateway.json', 'voiceapp.json', 'auth_user.json',
                 'contenttype', 'phonebook', 'contact', 'campaign',
@@ -91,19 +91,6 @@ class DialerCampaignModel(object):
     def setup(self):
         self.user = User.objects.get(username='admin')
 
-        # Phonebook model
-        self.phonebook = Phonebook(
-            name='test_phonebook',
-            user=self.user,
-            )
-        self.phonebook.save()
-
-        # Contact model
-        self.contact = Contact(
-            phonebook=self.phonebook,
-            contact=123456789,
-        )
-        self.contact.save()
         # Campaign model
         try:
             content_type_id = ContentType.objects.get(model='voiceapp').id
@@ -120,7 +107,7 @@ class DialerCampaignModel(object):
         self.campaign.save()
         # CampaignSubscriber model
         self.campaignsubscriber = CampaignSubscriber(
-            contact=self.contact,
+            contact=1,
             campaign=self.campaign,
             count_attempt=0,
             status=1,
@@ -128,13 +115,9 @@ class DialerCampaignModel(object):
         self.campaignsubscriber.save()
 
     def test_name(self):
-        nt.assert_equal(self.phonebook.name, 'test_phonebook')
-        nt.assert_equal(self.contact.phonebook, self.phonebook)
         nt.assert_equal(self.campaign.name, "sample_campaign")
-        nt.assert_equal(self.campaignsubscriber.contact, self.contact)
+        nt.assert_equal(self.campaignsubscriber.campaign, self.campaign)
 
     def teardown(self):
-        self.phonebook.delete()
-        self.contact.delete()
         self.campaign.delete()
         self.campaignsubscriber.delete()

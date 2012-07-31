@@ -12,6 +12,15 @@ Customer Interface Test Case
     :members:
 
 
+.. automodule:: dialer_contact.tests
+
+
+.. _DialerContactCustomerView-customer:
+
+.. autoclass:: DialerContactCustomerView
+    :members:
+
+
 .. automodule:: dialer_campaign.tests
 
 .. _DialerCampaignCustomerView-customer:

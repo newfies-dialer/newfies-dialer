@@ -11,6 +11,7 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
+
 from django.contrib import admin
 from django.contrib import messages
 from django.conf.urls.defaults import patterns

@@ -16,8 +16,6 @@ from django import forms
 from django.forms.util import ErrorList
 from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.contenttypes.models import ContentType
-
 from dialer_contact.models import Phonebook, Contact
 from dialer_campaign.function_def import field_list, user_dialer_setting
 

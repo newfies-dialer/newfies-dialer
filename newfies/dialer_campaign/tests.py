@@ -21,9 +21,7 @@ import nose.tools as nt
 
 
 class DialerCampaignView(BaseAuthenticatedClient):
-    """Test cases for Phonebook, Contact, Campaign, CampaignSubscriber
-       Admin Interface.
-    """
+    """Test cases for Campaign, CampaignSubscriber Admin Interface."""
 
     def test_admin_campaign_view_list(self):
         """Test Function to check admin campaign list"""
@@ -49,9 +47,7 @@ class DialerCampaignView(BaseAuthenticatedClient):
 
 
 class DialerCampaignCustomerView(BaseAuthenticatedClient):
-    """Test cases for Phonebook, Contact, Campaign, CampaignSubscriber
-       Customer Interface.
-    """
+    """Test cases for Campaign, CampaignSubscriber Customer Interface."""
 
     fixtures = ['dialer_setting.json', 'auth_user.json', 'gateway.json',
                 'voiceapp.json', 'phonebook.json', 'contact.json',
@@ -105,6 +101,7 @@ class DialerCampaignModel(object):
             object_id=1,
         )
         self.campaign.save()
+
         # CampaignSubscriber model
         self.campaignsubscriber = CampaignSubscriber(
             contact=1,

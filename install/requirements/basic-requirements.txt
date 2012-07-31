@@ -19,6 +19,5 @@ python-memcached
 coverage
 feedparser
 git+git://github.com/areski/python-acapela.git
-Django==1.4
+Django==1.4.1
 South==0.7.5
-

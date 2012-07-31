@@ -293,8 +293,8 @@ class Campaign(Model):
     #General Starting & Stopping date
     startingdate = models.DateTimeField(default=(lambda: datetime.now()),
                     verbose_name=_('Start'),
-                    help_text=_("Date Format: YYYY-mm-DD HH:MM:SS"))
-
+                    help_text=_("Date Format: YYYY-mm-DD HH:MM:SS"),
+                    db_index=True)
     expirationdate = models.DateTimeField(
                 default=(lambda: datetime.now() + relativedelta(months=+1)),
                 verbose_name=_('Finish'),

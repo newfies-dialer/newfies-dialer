@@ -193,6 +193,7 @@ INSTALLED_APPS = (
     'django_countries',
     'country_dialcode',
     'dialer_gateway',
+    'dialer_contact',
     'dialer_campaign',
     'dialer_cdr',
     'dialer_settings',

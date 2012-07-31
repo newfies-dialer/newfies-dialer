@@ -14,20 +14,8 @@
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.core.urlresolvers import reverse
-from django.core.cache import cache
-from django.db.models.signals import post_save
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
-from dateutil.relativedelta import relativedelta
 from django_countries import CountryField
-from dialer_gateway.models import Gateway
-from user_profile.models import UserProfile
-from datetime import datetime
 from common.intermediate_model_base_class import Model
-from random import choice, seed
-
-seed()
 
 
 CONTACT_STATUS = (
@@ -131,5 +119,3 @@ class Contact(Model):
         return u"%s %s" % (self.first_name, self.last_name)
     contact_name.allow_tags = True
     contact_name.short_description = _('Name')
-
-

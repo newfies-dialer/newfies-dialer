@@ -13,11 +13,10 @@
 #
 
 from django import forms
-from django.forms.util import ErrorList
 from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
 from dialer_contact.models import Phonebook, Contact
-from dialer_campaign.function_def import field_list, user_dialer_setting
+from dialer_campaign.function_def import field_list
 
 
 class SearchForm(forms.Form):
@@ -60,6 +59,7 @@ class Contact_fileImport(FileImport):
         if user:  # and not user.is_superuser
             self.fields['phonebook'].choices = field_list(name="phonebook",
                                                           user=user)
+
 
 class PhonebookForm(ModelForm):
     """Phonebook ModelForm"""

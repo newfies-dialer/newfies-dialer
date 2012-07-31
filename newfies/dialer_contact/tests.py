@@ -13,9 +13,7 @@
 #
 
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.models import ContentType
-from dialer_campaign.models import Phonebook, Contact, Campaign, \
-                            CampaignSubscriber
+from dialer_campaign.models import Phonebook, Contact
 from common.utils import BaseAuthenticatedClient
 import nose.tools as nt
 
@@ -29,7 +27,8 @@ class DialerContactView(BaseAuthenticatedClient):
         """Test Function to check admin phonebook list"""
         response = self.client.get("/admin/dialer_campaign/phonebook/")
         self.failUnlessEqual(response.status_code, 200)
-    def test_admin_phonebook_view_list(self):
+
+    def test_admin_phonebook_view_add(self):
         """Test Function to check admin phonebook add"""
         response = self.client.get("/admin/dialer_campaign/phonebook/add/")
         self.assertEqual(response.status_code, 200)

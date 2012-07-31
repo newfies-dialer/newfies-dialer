@@ -13,19 +13,11 @@
 #
 
 from celery.task import PeriodicTask
-from dialer_campaign.models import Campaign, CampaignSubscriber
-from dialer_campaign.function_def import user_dialer_setting
-from dialer_cdr.models import Callrequest
-from dialer_cdr.tasks import init_callrequest
-from common.only_one_task import only_one
+from dialer_campaign.models import Campaign
 from celery.decorators import task
-from django.db import IntegrityError
-from datetime import datetime, timedelta
-from django.conf import settings
-from math import ceil
+
 #from celery.task.http import HttpDispatchTask
 #from common_functions import isint
-
 
 
 @task()
@@ -97,5 +89,3 @@ def import_phonebook(campaign_id, phonebook_id):
     obj_campaign.imported_phonebook = obj_campaign.imported_phonebook + \
             '%s%d' % (sep, phonebook_id)
     obj_campaign.save()
-
-

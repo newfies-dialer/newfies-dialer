@@ -16,6 +16,7 @@ from django.contrib import admin
 from django.contrib import messages
 from django.conf.urls.defaults import patterns
 from django.utils.translation import ugettext as _
+from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -108,7 +109,7 @@ class ContactAdmin(admin.ModelAdmin):
             # check Max Number of subscribers per campaign
             if check_dialer_setting(request, check_for="contact"):
                 msg = _("You have too many contacts per campaign. You are allowed a maximum of %(limit)s")\
-                % {'limit': dialer_setting_limit(request, limit_for="contact")}
+                        % {'limit': dialer_setting_limit(request, limit_for="contact")}
                 messages.error(request, msg)
 
                 # campaign limit reached
@@ -155,7 +156,7 @@ class ContactAdmin(admin.ModelAdmin):
                             try:
                                 # check if prefix is already
                                 # existing in the retail plan or not
-                                contact = Contact.objects.get(
+                                Contact.objects.get(
                                     phonebook_id=phonebook.id,
                                     contact=row[0])
                                 msg = _('Contact already exists !!')

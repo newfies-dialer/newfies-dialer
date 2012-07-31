@@ -16,15 +16,12 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
-from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.db.models import Q
 from django.db.models import Count
-from django.contrib.contenttypes.models import ContentType
-from notification import models as notification
 from frontend.views import notice_count
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.forms import ContactSearchForm, Contact_fileImport, \
@@ -33,6 +30,7 @@ from dialer_campaign.function_def import check_dialer_setting,\
                                          dialer_setting_limit, \
                                          contact_search_common_fun,\
                                          user_dialer_setting_msg
+from dialer_campaign.views import common_send_notification
 from common.common_functions import variable_value, striplist, current_view
 import urllib
 import csv
@@ -639,8 +637,8 @@ def contact_import(request):
                             contact_record_count = \
                                 contact_record_count + 1
                             msg = _('%(contact_record_count)s Contact(s) are uploaded successfully out of %(total_rows)s row(s) !!') \
-                                % {'contact_record_count': contact_record_count,
-                                   'total_rows': total_rows}
+                                    % {'contact_record_count': contact_record_count,
+                                       'total_rows': total_rows}
 
                             success_import_list.append(row)
                     except:
@@ -769,5 +767,3 @@ def get_url_campaign_status(id, status):
             "' " + control_stop_style + ">&nbsp;</a>"
 
     return url_str
-
-

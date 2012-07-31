@@ -17,7 +17,6 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
-from django.core.mail import mail_admins
 from django.conf import settings
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _

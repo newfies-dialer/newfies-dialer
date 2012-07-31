@@ -22,9 +22,9 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
-
-from dialer_campaign.views import notice_count, update_style, \
-                        delete_style, grid_common_function
+from dialer_contact.views import update_style, delete_style, \
+                                 grid_common_function
+from dialer_campaign.views import notice_count
 from dialer_audio.forms import SurveyCustomerAudioFileForm
 from audiofield.models import AudioFile
 from common.common_functions import current_view

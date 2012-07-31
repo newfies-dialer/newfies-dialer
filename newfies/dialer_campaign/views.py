@@ -26,7 +26,7 @@ from django.contrib.contenttypes.models import ContentType
 from notification import models as notification
 from frontend.views import notice_count
 from dialer_contact.models import Phonebook, Contact
-from dialer_contact.views import grid_common_function
+from dialer_contact.views import grid_common_function, update_style, delete_style
 from dialer_campaign.models import Campaign
 from dialer_campaign.forms import CampaignForm
 from dialer_campaign.function_def import user_attached_with_dialer_settings, \
@@ -39,12 +39,6 @@ import urllib
 import csv
 import ast
 import re
-
-
-update_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
-delete_style = 'style="text-decoration:none;background-image:url(' + \
-                settings.STATIC_URL + 'newfies/icons/delete.png);"'
 
 
 def common_send_notification(request, status, recipient=None):

@@ -25,8 +25,9 @@ from django.utils import simplejson
 from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
 from dialer_campaign.models import Campaign
-from dialer_campaign.views import notice_count, update_style, \
-                        delete_style, grid_common_function
+from dialer_contact.views import update_style, delete_style, \
+                                 grid_common_function
+from dialer_campaign.views import notice_count
 from survey.models import SurveyApp, SurveyQuestion, \
                         SurveyResponse, SurveyCampaignResult
 from survey.forms import SurveyForm, \

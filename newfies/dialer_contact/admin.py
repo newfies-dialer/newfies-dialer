@@ -188,7 +188,7 @@ class ContactAdmin(admin.ModelAdmin):
             'form': form,
             'opts': opts,
             'model_name': opts.object_name.lower(),
-            'app_label': _('Dialer_campaign'),
+            'app_label': _('Dialer_contact'),
             'rdr': rdr,
             'msg': msg,
             'success_import_list': success_import_list,

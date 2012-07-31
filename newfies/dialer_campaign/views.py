@@ -23,21 +23,19 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import get_model
 from notification import models as notification
 from frontend.views import notice_count
-from dialer_contact.models import Phonebook, Contact
-from dialer_contact.views import grid_common_function, update_style, delete_style
+from dialer_contact.models import Contact
+from dialer_contact.views import grid_common_function, update_style, \
+                                delete_style
 from dialer_campaign.models import Campaign
 from dialer_campaign.forms import CampaignForm
 from dialer_campaign.function_def import user_attached_with_dialer_settings, \
                         check_dialer_setting, dialer_setting_limit, \
-                        contact_search_common_fun,\
                         get_campaign_status_name, user_dialer_setting_msg
 from dialer_campaign.tasks import collect_subscriber
-from common.common_functions import variable_value, striplist, current_view
-import urllib
-import csv
-import ast
+from common.common_functions import current_view
 import re
 
 
@@ -251,7 +249,6 @@ def get_url_campaign_status(id, status):
 
 
 def get_app_name(app_label, model_name, object_id):
-    from django.db.models import get_model
     try:
         return get_model(app_label, model_name).objects.get(pk=object_id)
     except:

@@ -2,12 +2,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -16,20 +16,19 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
-from django.db.models import *
 from django.template.context import RequestContext
-from django.utils.translation import ugettext_lazy as _
+from django.db.models import Sum, Avg, Count
 from django.utils import simplejson
-from dialer_campaign.views import notice_count, grid_common_function
+from dialer_contact.views import notice_count, grid_common_function
 from dialer_campaign.function_def import user_dialer_setting_msg
-from dialer_cdr.models import Callrequest, VoIPCall
+from dialer_cdr.models import VoIPCall
 from dialer_cdr.forms import VoipSearchForm
-from dialer_cdr.function_def import voipcall_record_common_fun, get_disposition_name
+from dialer_cdr.function_def import voipcall_record_common_fun, \
+                                    get_disposition_name
 from common.common_functions import variable_value, current_view
 from datetime import datetime
 import csv
 import urllib
-import ast
 
 
 @login_required
@@ -53,7 +52,6 @@ def voipcall_report_grid(request):
     sortorder_sign = grid_data['sortorder_sign']
     sortname = grid_data['sortname']
 
-
     # Search vars
     kwargs = {}
     from_date = ''
@@ -64,7 +62,7 @@ def voipcall_report_grid(request):
 
     if not sortorder_sign == '':
         sortorder_sign = '-'
-    
+
     # get querystring from URL
     q_arr = list(request.get_full_path().split('?'))
     j = 0
@@ -125,25 +123,28 @@ def voipcall_report_grid(request):
     count = voipcall_list.count()
     voipcall_list = \
         voipcall_list.order_by(sortorder_sign + sortname)[start_page:end_page]
-    
+
     rows = []
     for row in voipcall_list:
         gateway_used = row.used_gateway.name if row.used_gateway else ''
-        rows.append({'id': row.id,
-                     'cell': [ row.starting_date.strftime('%Y-%m-%d %H:%M:%S'),
-                               row.callid,
-                               row.get_leg_type_display(),
-                               row.callerid,
-                               row.phone_number,
-                               gateway_used,
-                               #str(timedelta(seconds=row.duration)), # original
-                               row.duration, # dilla test
-                               row.billsec,
-                               row.get_disposition_display(),
-                               #row.hangup_cause,
-                               #row.hangup_cause_q850,
-                               ]})
-        
+        rows.append({
+                'id': row.id,
+                'cell': [
+                    row.starting_date.strftime('%Y-%m-%d %H:%M:%S'),
+                    row.callid,
+                    row.get_leg_type_display(),
+                    row.callerid,
+                    row.phone_number,
+                    gateway_used,
+                    #str(timedelta(seconds=row.duration)), # original
+                    row.duration,
+                    row.billsec,
+                    row.get_disposition_display(),
+                    #row.hangup_cause,
+                    #row.hangup_cause_q850,
+                    ]
+                })
+
     data = {'rows': rows,
             'page': page,
             'total': count}

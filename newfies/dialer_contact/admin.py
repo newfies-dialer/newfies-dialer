@@ -175,7 +175,7 @@ class ContactAdmin(admin.ModelAdmin):
                                 contact_record_count =\
                                 contact_record_count + 1
                                 msg = _('%(contact_record_count)s Contact(s) are uploaded, out of %(total_rows)s row(s) !!')\
-                                % {'contact_record_count': contact_record_count,
+                                        % {'contact_record_count': contact_record_count,
                                    'total_rows': total_rows}
                                 success_import_list.append(row)
                         except:

@@ -18,9 +18,7 @@ from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 
-from dialer_campaign.models import Phonebook, \
-                                   Contact, \
-                                   Campaign, \
+from dialer_campaign.models import Campaign, \
                                    get_unique_code
 from dialer_campaign.function_def import field_list, user_dialer_setting
 
@@ -34,39 +32,7 @@ class SearchForm(forms.Form):
     help_text=_("Date Format") + ": <em>YYYY-MM-DD</em>.")
 
 
-class FileImport(forms.Form):
-    """General Form : CSV file upload"""
-    csv_file = forms.FileField(label=_("Upload CSV File "), required=True,
-                            error_messages={'required': 'Please upload File'},
-                            help_text=_("Browse CSV file"))
-
-    def clean_file(self):
-        """Form Validation :  File extension Check"""
-        filename = self.cleaned_data["csv_file"]
-        file_exts = (".csv", )
-        if not str(filename).split(".")[1].lower() in file_exts:
-            raise forms.ValidationError(_(u'Document types accepted: %s' % \
-                ' '.join(file_exts)))
-        else:
-            return filename
-
-
-class Contact_fileImport(FileImport):
-    """Admin Form : Import CSV file with phonebook"""
-    phonebook = forms.ChoiceField(label=_("Phonebook"),
-                                choices=field_list("phonebook"),
-                                required=False,
-                                help_text=_("Select Phonebook"))
-
-    def __init__(self, user, *args, **kwargs):
-        super(Contact_fileImport, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = ['phonebook', 'csv_file']
-        # To get user's phonebook list
-        if user:  # and not user.is_superuser
-            self.fields['phonebook'].choices = field_list(name="phonebook",
-                                                          user=user)
-
-
+#TODO: This might need to move to frontend
 class LoginForm(forms.Form):
     """Client Login Form"""
     user = forms.CharField(max_length=30,
@@ -77,38 +43,6 @@ class LoginForm(forms.Form):
                required=True, widget=forms.PasswordInput())
     password.widget.attrs['class'] = 'input-small'
     password.widget.attrs['placeholder'] = 'Password'
-
-
-class PhonebookForm(ModelForm):
-    """Phonebook ModelForm"""
-
-    class Meta:
-        model = Phonebook
-        fields = ['name', 'description']
-        exclude = ('user',)
-        widgets = {
-            'description': Textarea(attrs={'cols': 26, 'rows': 3}),
-        }
-
-
-class ContactForm(ModelForm):
-    """Contact ModelForm"""
-
-    class Meta:
-        model = Contact
-        fields = ['phonebook', 'contact', 'last_name', 'first_name', 'email',
-                  'country', 'city', 'description', 'status',
-                  'additional_vars']
-        widgets = {
-            'description': Textarea(attrs={'cols': 23, 'rows': 3}),
-        }
-
-    def __init__(self, user, *args, **kwargs):
-        super(ContactForm, self).__init__(*args, **kwargs)
-        # To get user's phonebook list
-        if user:
-            self.fields['phonebook'].choices = field_list(name="phonebook",
-                                                          user=user)
 
 
 class CampaignForm(ModelForm):
@@ -226,57 +160,6 @@ class CampaignAdminForm(ModelForm):
         self.fields['campaign_code'].widget.attrs['readonly'] = True
         self.fields['campaign_code'].initial = get_unique_code(length=5)
 
-
-NAME_TYPE = (
-    (1, _('Last Name')),
-    (2, _('First Name')),
-)
-
-CHOICE_TYPE = (
-    (1, _('Contains')),
-    (2, _('Equals')),
-    (3, _('Begins with')),
-    (4, _('Ends with')),
-)
-
-SEARCH_TYPE = (
-    (1, _('Last 30 days')),
-    (2, _('Last 7 days')),
-    (3, _('Yesterday')),
-    (4, _('Last 24 hours')),
-    (5, _('Last 12 hours')),
-    (6, _('Last 6 hours')),
-    (7, _('Last hour')),
-)
-
-
-class ContactSearchForm(forms.Form):
-    """Search Form on Contact List"""
-    contact_no = forms.CharField(label=_('Contact Number:'), required=False,
-                           widget=forms.TextInput(attrs={'size': 15}))
-    contact_no_type = forms.ChoiceField(label='', required=False, initial=1,
-                      choices=CHOICE_TYPE, widget=forms.RadioSelect)
-    name = forms.CharField(label=_('Contact Name:'), required=False,
-                           widget=forms.TextInput(attrs={'size': 15}))
-    phonebook = forms.ChoiceField(label=_('Phonebook:'), required=False)
-    status = forms.TypedChoiceField(label=_('Status:'), required=False,
-                choices=(
-                    ('0', _('Inactive')),
-                    ('1', _('Active ')),
-                    ('2', _('All'))),
-                widget=forms.RadioSelect,
-                initial='2')
-
-    def __init__(self, user, *args, **kwargs):
-        super(ContactSearchForm, self).__init__(*args, **kwargs)
-         # To get user's phonebook list
-        if user:
-            list = []
-            list.append((0, '---'))
-            pb_list = field_list("phonebook", user)
-            for i in pb_list:
-                list.append((i[0], i[1]))
-            self.fields['phonebook'].choices = list
 
 
 class DashboardForm(forms.Form):

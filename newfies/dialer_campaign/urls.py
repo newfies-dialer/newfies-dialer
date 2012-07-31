@@ -16,22 +16,6 @@ from django.conf.urls.defaults import patterns
 
 urlpatterns = patterns('dialer_campaign.views',
 
-    # Phonebook urls
-    (r'^phonebook/$', 'phonebook_list'),
-    (r'^phonebook_grid/$', 'phonebook_grid'),
-    (r'^phonebook/add/$', 'phonebook_add'),
-    (r'^phonebook/contact_count/$', 'get_contact_count'),
-    (r'^phonebook/del/(.+)/$', 'phonebook_del'),
-    (r'^phonebook/(.+)/$', 'phonebook_change'),
-
-    # Contacts urls
-    (r'^contact/$', 'contact_list'),
-    (r'^contact_grid/$', 'contact_grid'),
-    (r'^contact/add/$', 'contact_add'),
-    (r'^contact/import/$', 'contact_import'),
-    (r'^contact/del/(.+)/$', 'contact_del'),
-    (r'^contact/(.+)/$', 'contact_change'),
-
     # Campaign urls
     (r'^campaign/$', 'campaign_list'),
     (r'^campaign_grid/$', 'campaign_grid'),

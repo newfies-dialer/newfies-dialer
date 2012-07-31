@@ -18,10 +18,10 @@ import simplejson
 
 class ApiTestCase(BaseAuthenticatedClient):
     """Test cases for Newfies-Dialer API."""
-    fixtures = ['gateway.json', 'auth_user.json', 'voiceapp.json',
-            'phonebook.json', 'dialer_setting.json', 'campaign.json',
-            'campaign_subscriber.json', 'callrequest.json', 'survey.json',
-            'survey_question.json', 'survey_response.json']
+    fixtures = ['auth_user.json', 'gateway.json', 'voiceapp.json',
+            'dialer_setting.json', 'phonebook.json', 'contact.json',
+            'campaign.json', 'campaign_subscriber.json', 'callrequest.json',
+            'survey.json', 'survey_question.json', 'survey_response.json']
 
     def test_create_campaign(self):
         """Test Function to create a campaign"""

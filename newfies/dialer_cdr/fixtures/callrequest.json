@@ -4,7 +4,7 @@
       "model":"dialer_cdr.callrequest",
       "fields":{
          "status":8,
-         "campaign":6,
+         "campaign":1,
          "extra_dial_string":"",
          "aleg_uuid":"e8fee8f6-40dd-11e1-964f-000c296bd875",
          "call_time":"2012-01-17 03:41:12",

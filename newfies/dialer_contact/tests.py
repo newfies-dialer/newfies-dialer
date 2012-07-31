@@ -56,9 +56,7 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
        Customer Interface.
     """
 
-    fixtures = ['dialer_setting.json', 'auth_user.json', 'gateway.json',
-                'voiceapp.json', 'phonebook.json', 'contact.json',
-                'campaign.json', 'campaign_subscriber.json']
+    fixtures = ['auth_user.json', 'phonebook.json', 'contact.json']
 
     def test_phonebook_view_list(self):
         """Test Function to check phonebook list"""

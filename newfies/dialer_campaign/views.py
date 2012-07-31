@@ -27,9 +27,10 @@ from django.db.models import Count
 from django.contrib.contenttypes.models import ContentType
 from notification import models as notification
 from frontend.views import notice_count
-from dialer_campaign.models import Phonebook, Contact, Campaign
-from dialer_campaign.forms import ContactSearchForm, Contact_fileImport, \
-                            PhonebookForm, ContactForm, CampaignForm
+from dialer_contact.models import Phonebook, Contact
+from dialer_contact.views import grid_common_function
+from dialer_campaign.models import Campaign
+from dialer_campaign.forms import CampaignForm
 from dialer_campaign.function_def import user_attached_with_dialer_settings, \
                         check_dialer_setting, dialer_setting_limit, \
                         contact_search_common_fun,\
@@ -149,34 +150,6 @@ def notify_admin(request):
         request.session['has_notified'] = True
 
     return HttpResponseRedirect('/dashboard/')
-
-
-def grid_common_function(request):
-    """To get common flexigrid variable"""
-    grid_data = {}
-
-    grid_data['page'] = variable_value(request, 'page')
-    grid_data['rp'] = variable_value(request, 'rp')
-    grid_data['sortname'] = variable_value(request, 'sortname')
-    grid_data['sortorder'] = variable_value(request, 'sortorder')
-    grid_data['query'] = variable_value(request, 'query')
-    grid_data['qtype'] = variable_value(request, 'qtype')
-
-    # page index
-    if int(grid_data['page']) > 1:
-        grid_data['start_page'] = (int(grid_data['page']) - 1) * \
-                                    int(grid_data['rp'])
-        grid_data['end_page'] = grid_data['start_page'] + int(grid_data['rp'])
-    else:
-        grid_data['start_page'] = int(0)
-        grid_data['end_page'] = int(grid_data['rp'])
-
-    grid_data['sortorder_sign'] = ''
-    if grid_data['sortorder'] == 'desc':
-        grid_data['sortorder_sign'] = '-'
-
-    return grid_data
-
 
 
 def count_contact_of_campaign(campaign_id):

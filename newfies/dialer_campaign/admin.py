@@ -18,8 +18,7 @@ from django.utils.translation import ugettext as _
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
-from dialer_campaign.models import Phonebook, Contact, Campaign, CampaignSubscriber
-from dialer_campaign.forms import Contact_fileImport
+from dialer_campaign.models import Campaign, CampaignSubscriber
 from dialer_campaign.function_def import check_dialer_setting
 from dialer_campaign.views import common_send_notification
 from genericadmin.admin import GenericAdminModelAdmin

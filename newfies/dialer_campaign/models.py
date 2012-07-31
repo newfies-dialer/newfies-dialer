@@ -21,6 +21,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from dateutil.relativedelta import relativedelta
 from django_countries import CountryField
+from dialer_contact.models import Phonebook, Contact
 from dialer_gateway.models import Gateway
 from user_profile.models import UserProfile
 from datetime import datetime
@@ -58,6 +59,11 @@ DAY_STATUS = (
     (1, _('YES')),
     (0, _('NO')),
 )
+
+def get_unique_code(length):
+    """Get unique code"""
+    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    return ''.join([choice(chars) for i in range(length)])
 
 
 class CampaignManager(models.Manager):

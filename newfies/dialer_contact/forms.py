@@ -18,10 +18,7 @@ from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 
-from dialer_contact.models import Phonebook, \
-                                   Contact, \
-                                   Campaign, \
-                                   get_unique_code
+from dialer_contact.models import Phonebook, Contact
 from dialer_campaign.function_def import field_list, user_dialer_setting
 
 
@@ -107,16 +104,6 @@ CHOICE_TYPE = (
     (2, _('Equals')),
     (3, _('Begins with')),
     (4, _('Ends with')),
-)
-
-SEARCH_TYPE = (
-    (1, _('Last 30 days')),
-    (2, _('Last 7 days')),
-    (3, _('Yesterday')),
-    (4, _('Last 24 hours')),
-    (5, _('Last 12 hours')),
-    (6, _('Last 6 hours')),
-    (7, _('Last hour')),
 )
 
 

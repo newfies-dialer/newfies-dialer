@@ -27,9 +27,10 @@ from django.db.models import Count
 from django.contrib.contenttypes.models import ContentType
 from notification import models as notification
 from frontend.views import notice_count
-from dialer_campaign.models import Phonebook, Contact, Campaign
-from dialer_campaign.forms import ContactSearchForm, Contact_fileImport, \
-                            PhonebookForm, ContactForm, CampaignForm
+from dialer_contact.models import Phonebook, Contact
+from dialer_contact.forms import ContactSearchForm, Contact_fileImport, \
+                            PhonebookForm, ContactForm
+from dialer_campaign.models import Campaign
 from dialer_campaign.function_def import user_attached_with_dialer_settings, \
                         check_dialer_setting, dialer_setting_limit, \
                         contact_search_common_fun,\
@@ -39,7 +40,6 @@ from common.common_functions import variable_value, striplist, current_view
 import urllib
 import csv
 import ast
-import re
 
 
 update_style = 'style="text-decoration:none;background-image:url(' + \

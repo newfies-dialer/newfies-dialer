@@ -2,3 +2,5 @@ static/*
 .idea
 celerybeat-schedule
 usermedia/upload
+*coverage
+cover

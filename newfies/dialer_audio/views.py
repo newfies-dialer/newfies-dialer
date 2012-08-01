@@ -113,7 +113,6 @@ def audio_list(request):
         'module': current_view(request),
         'msg': request.session.get('msg'),
         'notice_count': notice_count(request),
-        'audio_list': audio_list,
         'AUDIO_DEBUG': settings.AUDIO_DEBUG,
     }
     request.session['msg'] = ''

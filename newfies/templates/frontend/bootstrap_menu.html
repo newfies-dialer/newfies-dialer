@@ -20,36 +20,36 @@
             <ul class="nav">
 
               <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Dashboard" %} <b class="caret"></b></a>
+                  <a href="#" class="dropdown-toggle {% if 'dashboard' in module %}active{% endif %}" data-toggle="dropdown">{% trans "Dashboard" %} <b class="caret"></b></a>
                   <ul class="dropdown-menu">
-                      <li {% ifequal module 'customer_dashboard' %}class="active"{% endifequal %}><a href="/dashboard/">{% trans "Voice Dashboard" %}</a></li>
+                      <li {% if 'dashboard' in module %}class="active"{% endif %}><a href="/dashboard/">{% trans "Voice Dashboard" %}</a></li>
                   </ul>
               </li>
 
               <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Campaign" %} <b class="caret"></b></a>
                   <ul class="dropdown-menu">
-                      <li {% ifequal module 'campaign' %}class="active"{% endifequal %}><a href="/campaign/">{% trans "Voice Campaign" %}</a></li>
+                      <li {% if 'campaign' in module %}class="active"{% endif %}><a href="/campaign/">{% trans "Voice Campaign" %}</a></li>
                   </ul>
               </li>
 
-              <li {% ifequal module 'phonebook' %}class="active"{% endifequal %}><a href="/phonebook/">{% trans "Phonebooks" %}</a></li>
-              <li {% ifequal module 'contact' %}class="active"{% endifequal %}><a href="/contact/">{% trans "Contacts" %}</a></li>
-              <li {% ifequal module 'audio' %}class="active"{% endifequal %}><a href="/audio/">{% trans "Audio files" %}</a></li>
+              <li {% if 'phonebook' in module %}class="active"{% endif %}><a href="/phonebook/">{% trans "Phonebooks" %}</a></li>
+              <li {% if 'contact' in module  %}class="active"{% endif %}><a href="/contact/">{% trans "Contacts" %}</a></li>
+              <li {% if 'audio' in module  %}class="active"{% endif %}><a href="/audio/">{% trans "Audio files" %}</a></li>
 
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Reporting" %} <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li {% ifequal module 'voipcall_report' %}class="active"{% endifequal %}><a href="/voipcall_report/">{% trans "Call Detail Report" %}</a></li>
-                  <li {% ifequal module 'survey_campaign_report' %}class="active"{% endifequal %}><a href="/survey_report/">{% trans "Survey Reports" %}</a></li>
+                  <li {% if 'voipcall_report' in module %}class="active"{% endif %}><a href="/voipcall_report/">{% trans "Call Detail Report" %}</a></li>
+                  <li {% if 'survey_report' in module %}class="active"{% endif %}><a href="/survey_report/">{% trans "Survey Reports" %}</a></li>
                 </ul>
               </li>
 
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Modules" %} <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li {% ifequal module 'voiceapp' %}class="active"{% endifequal %}><a href="/voiceapp/">{% trans "Voice Apps" %}</a></li>
-                  <li {% ifequal module 'survey' %}class="active"{% endifequal %}><a href="/survey/">{% trans "Surveys" %}</a></li>
+                  <li {% if 'voiceapp' in module %}class="active"{% endif %}><a href="/voiceapp/">{% trans "Voice Apps" %}</a></li>
+                  <li {% if 'survey' in module %}class="active"{% endif %}><a href="/survey/">{% trans "Surveys" %}</a></li>
                   <li class="divider"></li>
                   <li><a href="http://www.newfies-dialer.org/add-ons" target="_blank">{% trans "Add-ons" %}</a></li>
                 </ul>

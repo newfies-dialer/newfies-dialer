@@ -39,6 +39,9 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
     def test_audiofile_view_list(self):
         response = self.client.get('/audio/')
         self.assertEqual(response.status_code, 200)
+        audio_list = AudioFile.objects.filter(user=self.user)
+        self.assertEqual(response.context['module'], 'audio_list')
+
         self.assertTemplateUsed(response, 'frontend/audio/audio_list.html')
 
     def test_audiofile_view_add(self):
@@ -67,7 +70,7 @@ class AudioFileModel(object):
 
     def test_init(self):
         form = DialerAudioFileForm(instance=self.audiofile)
-        
+
         self.assertRaises(KeyError, DialerAudioFileForm)
         self.assertRaises(KeyError, DialerAudioFileForm, {})
 

@@ -25,7 +25,7 @@ from django.utils import simplejson
 from dialer_contact.views import update_style, delete_style, \
                                  grid_common_function
 from dialer_campaign.views import notice_count
-from dialer_audio.forms import SurveyCustomerAudioFileForm
+from dialer_audio.forms import DialerAudioFileForm
 from audiofield.models import AudioFile
 from common.common_functions import current_view
 import os.path
@@ -135,9 +135,9 @@ def audio_add(request):
         * Add a new audio which will belong to the logged in user
           via the CustomerAudioFileForm & get redirected to the audio list
     """
-    form = SurveyCustomerAudioFileForm()
+    form = DialerAudioFileForm()
     if request.method == 'POST':
-        form = SurveyCustomerAudioFileForm(request.POST, request.FILES)
+        form = DialerAudioFileForm(request.POST, request.FILES)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.user = User.objects.get(username=request.user)
@@ -208,7 +208,7 @@ def audio_change(request, object_id):
           via the CustomerAudioFileForm & get redirected to the audio list
     """
     obj = AudioFile.objects.get(pk=object_id)
-    form = SurveyCustomerAudioFileForm(instance=obj)
+    form = DialerAudioFileForm(instance=obj)
 
     if request.GET.get('delete'):
         # perform delete
@@ -219,9 +219,9 @@ def audio_change(request, object_id):
         return HttpResponseRedirect('/audio/')
 
     if request.method == 'POST':
-        form = SurveyCustomerAudioFileForm(request.POST,
-                                           request.FILES,
-                                           instance=obj)
+        form = DialerAudioFileForm(request.POST,
+                                   request.FILES,
+                                   instance=obj)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/audio/')

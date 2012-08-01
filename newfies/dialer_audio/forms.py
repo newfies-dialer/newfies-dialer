@@ -17,8 +17,8 @@ from django.forms import ModelForm
 from audiofield.forms import CustomerAudioFileForm
 
 
-class SurveyCustomerAudioFileForm(CustomerAudioFileForm):
+class DialerAudioFileForm(CustomerAudioFileForm):
 
     def __init__(self, *args, **kwargs):
-        super(SurveyCustomerAudioFileForm, self).__init__(*args, **kwargs)
+        super(DialerAudioFileForm, self).__init__(*args, **kwargs)
         self.fields['audio_file'].widget.attrs['class'] = "input-file"

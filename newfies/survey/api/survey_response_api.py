@@ -197,3 +197,4 @@ class SurveyResponseResource(ModelResource):
         validation = SurveyResponseValidation()
         # default 1000 calls / hour
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
+        pass_request_user_to_django = True

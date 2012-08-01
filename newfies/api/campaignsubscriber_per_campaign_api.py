@@ -25,7 +25,8 @@ from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import BadRequest, ImmediateHttpResponse
 from tastypie import http
 
-from dialer_campaign.models import Contact, Campaign
+from dialer_contact.models import Contact
+from dialer_campaign.models import Campaign
 
 import logging
 

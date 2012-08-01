@@ -151,5 +151,9 @@ class SurveyAppResource(ModelResource):
         authorization = Authorization()
         authentication = BasicAuthentication()
         validation = SurveyAppValidation()
+        list_allowed_methods = ['post', 'get', 'put', 'delete']
+        detail_allowed_methods = ['post', 'get', 'put', 'delete']
         # default 1000 calls / hour
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
+
+

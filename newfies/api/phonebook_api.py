@@ -23,7 +23,8 @@ from tastypie.throttle import BaseThrottle
 from tastypie import fields
 
 from api.user_api import UserResource
-from dialer_campaign.models import Campaign, Phonebook
+from dialer_contact.models import Phonebook
+from dialer_campaign.models import Campaign
 
 
 class PhonebookValidation(Validation):

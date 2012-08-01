@@ -30,7 +30,8 @@ from api.gateway_api import GatewayResource
 from api.content_type_api import ContentTypeResource
 from api.phonebook_api import PhonebookResource
 from api.resources import get_value_if_none
-from dialer_campaign.models import Campaign, Phonebook
+from dialer_contact.models import Phonebook
+from dialer_campaign.models import Campaign
 from dialer_gateway.models import Gateway
 from dialer_campaign.function_def import \
             user_attached_with_dialer_settings, \

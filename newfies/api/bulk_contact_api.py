@@ -21,7 +21,7 @@ from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import BadRequest
 
-from dialer_campaign.models import Contact, Phonebook
+from dialer_contact.models import Contact, Phonebook
 from dialer_campaign.function_def import check_dialer_setting, \
                                     dialer_setting_limit
 

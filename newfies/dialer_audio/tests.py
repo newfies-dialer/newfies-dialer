@@ -39,15 +39,22 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
     def test_audiofile_view_list(self):
         response = self.client.get('/audio/')
         self.assertEqual(response.status_code, 200)
-        audio_list = AudioFile.objects.filter(user=self.user)
         self.assertEqual(response.context['module'], 'audio_list')
-
         self.assertTemplateUsed(response, 'frontend/audio/audio_list.html')
 
     def test_audiofile_view_add(self):
         response = self.client.get('/audio/add/')
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['action'], 'add')
         self.assertTemplateUsed(response, 'frontend/audio/audio_change.html')
+
+        response = self.client.post('/audio/add/', {'name': '', 'audio_file': 'xyz.ttf'},
+                                    **self.extra)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['form']['name'].errors,
+                         [u'This field is required.'])
+        self.assertEqual(response.context['form']['audio_file'].errors,
+                         [u'This field is required.'])
 
 
 class AudioFileModel(object):
@@ -70,9 +77,7 @@ class AudioFileModel(object):
 
     def test_init(self):
         form = DialerAudioFileForm(instance=self.audiofile)
-
         self.assertRaises(KeyError, DialerAudioFileForm)
-        self.assertRaises(KeyError, DialerAudioFileForm, {})
 
         self.assertTrue(isinstance(form.instance, AudioFile))
         self.assertEqual(form.instance.pk, self.audiofile.pk)

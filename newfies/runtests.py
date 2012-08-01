@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+
+#
+# Run on shell test coverage : python manage.py test --progressive-with-bar --with-coverage --cover-html --cover-package=newfies
+#
+
 import sys
 import logging
 from optparse import OptionParser

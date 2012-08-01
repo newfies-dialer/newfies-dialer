@@ -51,7 +51,7 @@
             <input type="submit" value="{% trans "Search" %}" class="btn btn-primary"/>&nbsp;
             <input type="reset" name="reset" value="{% trans "Reset" %}" class="btn btn-danger">
         </div>
-      
+
     </form>
     {% endblock %}
 
@@ -83,7 +83,7 @@ $("#flex1").flexigrid({
         {display: '{% trans "Duration" %}', name: 'duration', width: 80, sortable: true, align: 'center'},
         {display: '{% trans "Bill Sec" %}', name: 'billsec', width: 80, sortable: true, align: 'center'},
         {display: '{% trans "Disposition" %}', name: 'disposition', width: 100, sortable: true, align: 'center'},
-		],    
+		],
     sortname: "id",
 	sortorder: "asc",
 	usepager: true,
@@ -135,7 +135,7 @@ $("#flex1").flexigrid({
                 {% endif %}
             </td>
             <td>{{ td.starting_date__count }}</td>
-            
+
             <td>{{ td.duration__avg|conv_min }}</td>
         </tr>
         {% endfor %}

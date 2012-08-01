@@ -2,3 +2,5 @@ static/*
 .idea
 celerybeat-schedule
 usermedia/upload
+newfies/.coverage
+newfies/cover

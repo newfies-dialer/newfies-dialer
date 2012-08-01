@@ -127,6 +127,6 @@ setup(
     install_requires=parse_requirements('install/requirements/django-requirements.txt'),
     dependency_links=parse_dependency_links('install/requirements/basic-requirements.txt',
         install_flag),
-    setup_requires=['Django >= 1.3.0', 'Sphinx >= 0.4.2'],
+    setup_requires=['Django >= 1.4.1', 'Sphinx >= 0.4.2'],
     cmdclass=COMMANDS,
     )

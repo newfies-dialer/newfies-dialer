@@ -4,17 +4,17 @@ python:
 env:
   - DJANGO=1.4.1
 install:
+  - pip install -q Django==$DJANGO --use-mirrors
   - pip install -r install/requirements/basic-requirements.txt --use-mirrors
   - pip install -r install/requirements/django-requirements.txt --use-mirrors
   - pip install -r install/requirements/test-requirements.txt --use-mirrors
-  - pip install -q Django==$DJANGO --use-mirrors
   - pip install pep8 --use-mirrors
   - pip install https://github.com/dcramer/pyflakes/tarball/master
 before_script:
   - "pep8 --exclude=migrations --ignore=E501,E225 newfies"
   - pyflakes -x W newfies
 script:
-  - python setup.py test
+  - python manage.py test
 
 # whitelist
 branches:

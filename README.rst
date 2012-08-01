@@ -1,5 +1,7 @@
 .. image:: https://github.com/Star2Billing/newfies-dialer/raw/master/newfies/resources/images/newfies.png
 
+.. image:: https://secure.travis-ci.org/Star2Billing/newfies-dialer.png?branch=develop
+
 
 Newfies-Dialer is a free and open source voice broadcast application, which
 can fulfil a variety of roles for a range of industries and organisations who
@@ -190,9 +192,6 @@ Additional information
 * `Continuous integration homepage`_ on `travis-ci.org`_
 
 * `Twitter account for news and updates`_
-
-.. image:: https://secure.travis-ci.org/Star2Billing/newfies-dialer.png?branch=develop
-
 
 .. _`Continuous integration homepage`: http://travis-ci.org/#!/Star2Billing/newfies-dialer
 .. _`travis-ci.org`: http://travis-ci.org/

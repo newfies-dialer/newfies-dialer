@@ -185,6 +185,8 @@ Additional information
 
 * `Google Group`_ - the mailing list is newfies-dialer@googlegroups.com
 
+* `Forum`_
+
 * `Continuous integration homepage`_ on `travis-ci.org`_
 
 * `Twitter account for news and updates`_
@@ -195,6 +197,9 @@ Additional information
 .. _`Continuous integration homepage`: http://travis-ci.org/#!/Star2Billing/newfies-dialer
 .. _`travis-ci.org`: http://travis-ci.org/
 .. _`Twitter account for news and updates`: https://twitter.com/newfies_dialer
+.. _`Google Group`: https://groups.google.com/forum/?fromgroups#!forum/newfies-dialer
+.. _`Forum`: http://forum.newfies-dialer.org/
+
 
 Support
 -------

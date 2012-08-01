@@ -29,7 +29,7 @@ from dialer_cdr.function_def import voipcall_record_common_fun, \
                                     voipcall_search_admin_form_fun, \
                                     get_disposition_name
 from common.common_functions import variable_value
-from genericadmin.admin import GenericAdminModelAdmin, GenericTabularInline
+from genericadmin.admin import GenericAdminModelAdmin
 from datetime import datetime
 import csv
 
@@ -117,7 +117,8 @@ class VoIPCallAdmin(admin.ModelAdmin):
         return my_urls + urls
 
     def changelist_view(self, request, extra_context=None):
-        """Override changelist_view method of django-admin for search parameters
+        """
+        Override changelist_view method of django-admin for search parameters
 
         **Attributes**:
 
@@ -152,14 +153,13 @@ class VoIPCallAdmin(admin.ModelAdmin):
                                            'from_date': from_date,
                                            'to_date': to_date})
 
-
         ChangeList = self.get_changelist(request)
         try:
             cl = ChangeList(request, self.model, self.list_display,
-                 self.list_display_links, self.list_filter, self.date_hierarchy,
-                 self.search_fields, self.list_select_related,
-                 self.list_per_page, self.list_max_show_all, self.list_editable,
-                 self)
+                self.list_display_links, self.list_filter, self.date_hierarchy,
+                self.search_fields, self.list_select_related,
+                self.list_per_page, self.list_max_show_all, self.list_editable,
+                self)
         except IncorrectLookupParameters:
             if ERROR_FLAG in request.GET.keys():
                 return render_to_response('admin/invalid_setup.html',
@@ -174,9 +174,8 @@ class VoIPCallAdmin(admin.ModelAdmin):
                                                     tday.day, 0, 0, 0, 0)
             cl.root_query_set.filter(**kwargs)
 
-        formset = cl.formset = None
-
-        # Session variable is used to get record set with searched option into export file
+        cl.formset = None
+        # Session variable get record set with searched option into export file
         request.session['admin_voipcall_record_qs'] = cl.root_query_set
 
         selection_note_all = ungettext('%(total_count)s selected',
@@ -197,9 +196,9 @@ class VoIPCallAdmin(admin.ModelAdmin):
         return super(VoIPCallAdmin, self)\
                .changelist_view(request, extra_context=ctx)
 
-
     def voip_report(self, request):
         opts = VoIPCall._meta
+        #TODO: Do we need app_label ?
         app_label = opts.app_label
 
         kwargs = {}
@@ -269,7 +268,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
         **Important variable**:
 
-            * request.session['admin_voipcall_record_qs'] - stores voipcall query set
+            * request.session['admin_voipcall_record_qs'] - stores voipcall
 
         **Exported fields**: [user, callid, callerid, phone_number,
                               starting_date, duration, disposition,

@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
 #
+# Usage : python manage.py test --with-xtraceback --with-color
 # Run on shell test coverage : python manage.py test --progressive-with-bar --with-coverage --cover-html --cover-package=newfies
+#
 #
 
 import sys

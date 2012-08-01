@@ -16,3 +16,9 @@ before_script:
   - pyflakes -x W newfies
 script:
   - python setup.py test
+
+# whitelist
+branches:
+  only:
+    - master
+    - develop

@@ -15,14 +15,13 @@ from django.contrib import admin
 from django.contrib import messages
 from django.conf.urls.defaults import patterns
 from django.utils.translation import ugettext as _
-from django.template import RequestContext
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
 from dialer_campaign.models import Campaign, CampaignSubscriber
-from dialer_campaign.function_def import check_dialer_setting
+from dialer_campaign.function_def import check_dialer_setting, \
+                                        dialer_setting_limit
 from dialer_campaign.views import common_send_notification
 from genericadmin.admin import GenericAdminModelAdmin
-import csv
 
 
 class CampaignAdmin(GenericAdminModelAdmin):
@@ -85,13 +84,13 @@ class CampaignAdmin(GenericAdminModelAdmin):
             messages.error(request, msg)
 
             # campaign limit reached
+            #TODO: Still need this ?
             #common_send_notification(request, '3')
             return HttpResponseRedirect(reverse(
                         "admin:dialer_campaign_campaign_changelist"))
         ctx = {}
         return super(CampaignAdmin, self).add_view(request, extra_context=ctx)
 admin.site.register(Campaign, CampaignAdmin)
-
 
 
 class CampaignSubscriberAdmin(admin.ModelAdmin):

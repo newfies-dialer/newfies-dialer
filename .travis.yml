@@ -4,19 +4,19 @@ python:
 env:
   - DJANGO=1.4.1
 install:
-  - pip install -q Django==$DJANGO --use-mirrors
+  # - pip install -q Django==$DJANGO --use-mirrors
   - bash install/requirements/install-requirements.sh
-  - pip install pep8 --use-mirrors
-  - pip install https://github.com/dcramer/pyflakes/tarball/master
+  # - pip install pep8 --use-mirrors
+  # - pip install https://github.com/dcramer/pyflakes/tarball/master
 before_script:
   - cp install/conf/settings_local.py newfies/settings_local.py
   - cp install/conf/settings_travis.py newfies/settings_travis.py
   - "mysql -e 'create database newfies;'"
   - "mysql -e 'create database newfies_test;'"
-#   - "pep8 --exclude=migrations --ignore=E501,E225 newfies"
-#   - pyflakes -x W newfies
+  # - "pep8 --exclude=migrations --ignore=E501,E225 newfies"
+  # - pyflakes -x W newfies
 script:
-  - python newfies/manage.py test --settings=settings_travis
+  - python newfies/manage.py test --settings=settings_travis -s --with-progressive
 # whitelist
 branches:
   only:

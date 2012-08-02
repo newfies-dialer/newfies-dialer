@@ -26,11 +26,11 @@ do
     pip install $line --use-mirrors
 done
 
-# echo "Install Dev requirements..."
-# for line in $(cat install/requirements/dev-requirements.txt | grep -v \#)
-# do
-#     pip install $line
-# done
+echo "Install Dev requirements..."
+for line in $(cat install/requirements/dev-requirements.txt | grep -v \#)
+do
+    pip install $line
+done
 
 echo "Install test requirements..."
 for line in $(cat install/requirements/test-requirements.txt | grep -v \#)

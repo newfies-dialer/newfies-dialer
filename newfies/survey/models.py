@@ -229,7 +229,9 @@ class SurveyCampaignResult(models.Model):
     recording_duration = models.IntegerField(max_length=20,
                     blank=True, default=0,
                     null=True, verbose_name=_('Recording Duration'))
-    callrequest = models.ForeignKey(Callrequest, related_name='Callrequest')
+    callrequest = models.ForeignKey(Callrequest,
+                    blank=True, null=True,
+                    related_name='Callrequest')
 
     created_date = models.DateTimeField(auto_now_add=True)
 

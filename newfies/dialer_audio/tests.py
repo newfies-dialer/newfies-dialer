@@ -13,14 +13,27 @@
 #
 
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.test import TestCase, Client
 from common.utils import BaseAuthenticatedClient
 from audiofield.models import AudioFile
 from dialer_audio.forms import DialerAudioFileForm
+import base64
 
 
-class AudioFileAdminView(BaseAuthenticatedClient):
+class AudioFileAdminView(TestCase):
     """Test cases for AudioFile Admin Interface."""
+    fixtures = ['auth_user.json']
+
+    def setUp(self):
+        """To create admin user"""
+        self.client = Client()
+        self.user = User.objects.get(username='admin')
+        auth = '%s:%s' % ('admin', 'admin')
+        auth = 'Basic %s' % base64.encodestring(auth)
+        auth = auth.strip()
+        self.extra = {
+            'HTTP_AUTHORIZATION': auth,
+            }
 
     def test_admin_audiofile_view_list(self):
         """Test Function to check admin audiofile list"""

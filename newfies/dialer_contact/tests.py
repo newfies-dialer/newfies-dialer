@@ -20,6 +20,7 @@ from dialer_contact.forms import Contact_fileImport, \
                                  ContactForm, \
                                  ContactSearchForm
 from common.utils import BaseAuthenticatedClient
+from datetime import datetime
 
 
 
@@ -78,9 +79,18 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
             data={
                 'name': 'My Phonebook',
                 'description': 'phonebook',
-                'user': self.user
             })
         self.assertEqual(response.status_code, 302)
+
+        resp = self.client.post('/phonebook/add/',
+            data={
+                'name': '',
+                'description': 'phonebook',
+            })
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.context['form']['name'].errors,
+                         [u'This field is required.'])
+
 
     def test_phonebook_view_update(self):
         response = self.client.get('/phonebook/1/')
@@ -92,8 +102,15 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         """Test Function to check Contact list"""
         response = self.client.get('/contact/')
         self.assertEqual(response.context['module'], 'contact_list')
+        self.assertTrue(response.context['form'], ContactSearchForm(self.user))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/contact/list.html')
+
+        response = self.client.post('/contact/',
+            data={'from_date': datetime.now(),
+                  'to_date': datetime.now(),
+                  'name': '123'})
+        self.assertEqual(response.status_code, 200)
 
     def test_contact_view_add(self):
         """Test Function to check add Contact"""
@@ -107,18 +124,30 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.context['action'], 'add')
         self.assertEqual(response.status_code, 200)
 
+        response = self.client.post('/contact/add/',
+                                    data={'contact': '1234'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['form']['phonebook'].errors,
+                         [u'This field is required.'])
+
     def test_contact_view_update(self):
         """Test Function to check update Contact"""
         response = self.client.get('/contact/1/')
+        self.assertTrue(response.context['form'], ContactForm(self.user))
         self.assertEqual(response.context['action'], 'update')
         self.assertTemplateUsed(response, 'frontend/contact/change.html')
 
     def test_contact_view_import(self):
         """Test Function to check import Contact"""
         response = self.client.get('/contact/import/')
+        self.assertTrue(response.context['form'], Contact_fileImport(self.user))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
                 'frontend/contact/import_contact.html')
+
+        response = self.client.post('/contact/import/',
+            data={'phonebook_id': '1'})
+        self.assertEqual(response.status_code, 200)
 
 
 class DialerContactModel(TestCase):

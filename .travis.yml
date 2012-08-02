@@ -15,7 +15,7 @@ before_script:
 #   - "pep8 --exclude=migrations --ignore=E501,E225 newfies"
 #   - pyflakes -x W newfies
 script:
-  - python newfies/manage.py --settings=settings_travis test
+  - python newfies/manage.py test --settings=settings_travis
 # whitelist
 branches:
   only:

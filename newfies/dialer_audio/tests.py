@@ -17,7 +17,6 @@ from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
 from audiofield.models import AudioFile
 from dialer_audio.forms import DialerAudioFileForm
-import nose.tools as nt
 
 
 class AudioFileAdminView(BaseAuthenticatedClient):

@@ -20,7 +20,7 @@ from dialer_contact.forms import Contact_fileImport, \
                                  ContactForm, \
                                  ContactSearchForm
 from common.utils import BaseAuthenticatedClient
-import nose.tools as nt
+
 
 
 class DialerContactView(BaseAuthenticatedClient):
@@ -144,9 +144,7 @@ class DialerContactModel(TestCase):
         self.contact.save()
 
     def test_phonebook_form(self):
-        nt.assert_equal(self.phonebook.name, 'test_phonebook')
-        nt.assert_equal(self.contact.phonebook, self.phonebook)
-
+        self.assertEqual(self.phonebook.name, 'test_phonebook')
         form = PhonebookForm({'name': 'sample_phonebook'})
         obj = form.save(commit=False)
         obj.user = self.user
@@ -156,6 +154,7 @@ class DialerContactModel(TestCase):
         self.assertTrue(isinstance(form.instance, Phonebook))
 
     def test_contact_form(self):
+        self.assertEqual(self.contact.phonebook, self.phonebook)
         form = ContactForm(self.user)
         form.contact = '123456'
         obj = form.save(commit=False)

@@ -12,9 +12,9 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
+from django.test import TestCase
 from dialer_settings.models import DialerSetting
 from common.utils import BaseAuthenticatedClient
-import nose.tools as nt
 
 
 class DialerSettingView(BaseAuthenticatedClient):
@@ -31,12 +31,12 @@ class DialerSettingView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
 
-class DialerSettingModel(object):
+class DialerSettingModel(TestCase):
     """Test DialerSetting model"""
 
     fixtures = ['auth_user.json']
 
-    def setup(self):
+    def setUp(self):
         self.dialer_setting = DialerSetting(
             name='test_setting',
             max_frequency=100,
@@ -49,7 +49,7 @@ class DialerSettingModel(object):
         self.dialer_setting.save()
 
     def test_name(self):
-        nt.assert_equal(self.dialer_setting.name, "test_setting")
+        self.assertEqual(self.dialer_setting.name, "test_setting")
 
     def teardown(self):
         self.dialer_setting.delete()

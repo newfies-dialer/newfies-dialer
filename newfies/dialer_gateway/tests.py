@@ -12,9 +12,9 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
+from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
 from dialer_gateway.models import Gateway
-import nose.tools as nt
 
 
 class GatewayView(BaseAuthenticatedClient):
@@ -31,10 +31,10 @@ class GatewayView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
 
-class GatewayModel(object):
+class GatewayModel(TestCase):
     """Test Gateway model"""
 
-    def setup(self):
+    def setUp(self):
         self.gateway = Gateway(
             name='test gateway',
             status=1,
@@ -43,7 +43,7 @@ class GatewayModel(object):
         self.gateway.save()
 
     def test_name(self):
-        nt.assert_equal(self.gateway.name, "MyGateway")
+        self.assertEqual(self.gateway.name, "MyGateway")
 
     def teardown(self):
         self.gateway.delete()

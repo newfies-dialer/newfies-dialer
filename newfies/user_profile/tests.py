@@ -13,9 +13,9 @@
 #
 
 from django.contrib.auth.models import User
+from django.test import TestCase
 from user_profile.models import Staff, Customer
 from common.utils import BaseAuthenticatedClient
-import nose.tools as nt
 
 from django.contrib import admin
 admin.site.register(User)
@@ -56,23 +56,22 @@ class UserProfileCustomerView(BaseAuthenticatedClient):
             'frontend/registration/user_detail_change.html')
 
 
-class UserProfileModel(object):
+class UserProfileModel(TestCase):
     """Test UserProfile Model"""
 
     fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting']
 
-    def setup(self):
+    def setUp(self):
         self.user = User.objects.get(username='admin')
         self.user_profile = Staff(
             user=self.user,
             userprofile_gateway_id=1,
             dialersetting_id=1,
-            phone_no='123456',
             )
         self.user_profile.save()
 
     def test_name(self):
-        nt.assert_equal(self.user_profile.user, self.user)
+        self.assertEqual(self.user_profile.user, self.user)
 
     def teardown(self):
         self.user_profile.delete()

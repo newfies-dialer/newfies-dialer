@@ -13,7 +13,12 @@
 #
 
 from django.contrib.auth.models import User
+from django.test import TestCase
 from dialer_contact.models import Phonebook, Contact
+from dialer_contact.forms import Contact_fileImport, \
+                                 PhonebookForm, \
+                                 ContactForm, \
+                                 ContactSearchForm
 from common.utils import BaseAuthenticatedClient
 import nose.tools as nt
 

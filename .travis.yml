@@ -16,7 +16,6 @@ install:
 #   - pyflakes -x W newfies
 script:
   - python newfies/manage.py --settings=settings_travis test
-
 # whitelist
 branches:
   only:

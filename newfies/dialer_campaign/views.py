@@ -107,8 +107,8 @@ def update_campaign_status_admin(request, pk, status):
     admin interface (via campaign list)"""
     recipient = common_campaign_status(pk, status)
     common_send_notification(request, status, recipient)
-    return HttpResponseRedirect(reverse(
-                                "admin:dialer_campaign_campaign_changelist"))
+    return HttpResponseRedirect(
+                reverse("admin:dialer_campaign_campaign_changelist"))
 
 
 @login_required

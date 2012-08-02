@@ -82,8 +82,8 @@ class CampaignAdmin(GenericAdminModelAdmin):
                     dialer_setting_limit(request, limit_for="campaign")}
             messages.error(request, msg)
 
-            return HttpResponseRedirect(reverse(
-                        "admin:dialer_campaign_campaign_changelist"))
+            return HttpResponseRedirect(
+                    reverse("admin:dialer_campaign_campaign_changelist"))
         ctx = {}
         return super(CampaignAdmin, self).add_view(request, extra_context=ctx)
 admin.site.register(Campaign, CampaignAdmin)

@@ -11,7 +11,7 @@ install:
 before_script:
   - cp install/conf/settings_local.py newfies/settings_local.py
   - cp install/conf/settings_travis.py newfies/settings_travis.py
-  - mysql -e 'create database newfies_test;'
+  - "mysql -e 'create database newfies_test;'"
 #   - "pep8 --exclude=migrations --ignore=E501,E225 newfies"
 #   - pyflakes -x W newfies
 script:

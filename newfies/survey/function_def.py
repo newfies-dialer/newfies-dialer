@@ -12,10 +12,10 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.utils.translation import ugettext as _
 from audiofield.models import AudioFile
 
 
+#TODO: Write indenpendant test for that function
 def field_list(name, user=None):
     """Return List of audio file names"""
     if name == "audiofile" and user is None:
@@ -27,8 +27,17 @@ def field_list(name, user=None):
     return ((l.id, l.name) for l in list)
 
 
+#TODO: Write indenpendant test for that function
 def export_question_result(val, column_question):
-    """Modify survey result string for export"""
+    """Modify survey result string for export
+
+    @val : contains the result of the survey question
+    @column_question : contains the list of question
+
+    This is how we build our val :
+    SELECT group_concat(CONCAT_WS("*|*", question, response, record_file)
+            SEPARATOR "-|-") '
+    """
     if not val:
         return ''
     val_list = val.split("-|-")
@@ -36,22 +45,20 @@ def export_question_result(val, column_question):
     for i in val_list:
         if not i:
             continue
-
         if i.find("*|**|*") > 0:
-            que_audio = i.split("*|**|*")
+            qst_audio = i.split("*|**|*")
             try:
-                # check audio que
-                if str(column_question) == str(que_audio[0]):
-                    return str(que_audio[1].replace(',', ' '))
+                # check audio qst
+                if str(column_question) == str(qst_audio[0]):
+                    return str(qst_audio[1].replace(',', ' '))
             except:
                 pass
         else:
-            que_res = i.split("*|*")
+            qst_res = i.split("*|*")
             try:
-                # check normal que
-                if str(column_question) == str(que_res[0]):
-                    return str(que_res[1].replace(',', ' '))
+                # check normal qst
+                if str(column_question) == str(qst_res[0]):
+                    return str(qst_res[1].replace(',', ' '))
             except:
                 pass
-
     return ''

@@ -992,24 +992,25 @@ def export_surveycall_report(request):
     column_list = ['starting_date', 'destination', 'duration',
                    'disposition']
 
+    survey_qst = False
     if str(campaign_obj.content_type) == 'Survey':
-        survey_que = SurveyQuestion.objects\
+        survey_qst = SurveyQuestion.objects\
                 .filter(surveyapp_id=int(campaign_obj.object_id))
-        for i in survey_que:
+        for i in survey_qst:
             column_list.append(str(i.question.replace(',', ' ')))
-
     writer.writerow(column_list)
+
     for i in qs:
         result_row_list = [
                             i.starting_date,
                             i.phone_number,
                             i.duration,
                             i.disposition,
-                          ]
-
-        for que in survey_que:
-            result_row_list.append(
-                export_question_result(str(i.question_response),
-                                       str(que.question)))
+                        ]
+        if survey_qst:
+            for qst in survey_qst:
+                result_row_list.append(
+                    export_question_result(i.question_response,
+                                           qst.question))
         writer.writerow(result_row_list)
     return response

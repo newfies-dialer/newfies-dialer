@@ -18,8 +18,6 @@
 from settings import *
 
 
-# make tests faster
-# False : test will make the test database be created using syncdb
 SOUTH_TESTS_MIGRATE = False
 
 DATABASES = {
@@ -27,13 +25,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'newfies',
         'USER': 'root',
-        'PASSWORD': 'password',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306',
-    },
-    'sqlite_memory': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',
     }
 }
 

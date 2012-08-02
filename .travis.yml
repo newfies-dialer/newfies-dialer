@@ -12,7 +12,7 @@ install:
 #   - "pep8 --exclude=migrations --ignore=E501,E225 newfies"
 #   - pyflakes -x W newfies
 script:
-  - python manage.py test
+  - python newfies/manage.py test
 
 # whitelist
 branches:

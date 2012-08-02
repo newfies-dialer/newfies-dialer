@@ -150,19 +150,20 @@ class DialerContactModel(TestCase):
 
         form = PhonebookForm({'name': 'sample_phonebook'})
         obj = form.save(commit=False)
-        obj.user = User.objects.get(username=self.user)
+        obj.user = self.user
         obj.save()
 
         form = PhonebookForm(instance=self.phonebook)
         self.assertTrue(isinstance(form.instance, Phonebook))
 
     def test_contact_form(self):
-        # TODO : Please review
-        #form = ContactForm(initial={'contact': '123456', 'phonebook': 1})
-        form = ContactForm(initial={'contact': '123456', 'phonebook': self.phonebook})
-        form.save()
+        form = ContactForm(self.user)
+        form.contact = '123456'
+        obj = form.save(commit=False)
+        obj.phonebook = self.phonebook
+        obj.save()
 
-        form = ContactForm(instance=self.contact)
+        form = ContactForm(self.user, instance=self.contact)
         self.assertTrue(isinstance(form.instance, Contact))
 
 

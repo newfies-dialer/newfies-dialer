@@ -9,7 +9,7 @@ uuid==1.30
 wsgiref==0.1.2
 redis
 celery==2.5.5
-kombu
+kombu==2.3.2
 mimeparse
 MySQL-python==1.2.3
 Werkzeug

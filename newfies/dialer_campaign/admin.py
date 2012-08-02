@@ -20,7 +20,6 @@ from django.http import HttpResponseRedirect
 from dialer_campaign.models import Campaign, CampaignSubscriber
 from dialer_campaign.function_def import check_dialer_setting, \
                                         dialer_setting_limit
-from dialer_campaign.views import common_send_notification
 from genericadmin.admin import GenericAdminModelAdmin
 
 
@@ -83,9 +82,6 @@ class CampaignAdmin(GenericAdminModelAdmin):
                     dialer_setting_limit(request, limit_for="campaign")}
             messages.error(request, msg)
 
-            # campaign limit reached
-            #TODO: Still need this ?
-            #common_send_notification(request, '3')
             return HttpResponseRedirect(reverse(
                         "admin:dialer_campaign_campaign_changelist"))
         ctx = {}

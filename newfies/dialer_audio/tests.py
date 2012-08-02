@@ -13,6 +13,7 @@
 #
 
 from django.contrib.auth.models import User
+from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
 from audiofield.models import AudioFile
 from dialer_audio.forms import DialerAudioFileForm
@@ -57,32 +58,28 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
                          [u'This field is required.'])
 
 
-class AudioFileModel(object):
+class AudioFileModel(TestCase):
     """Test AudioFile model"""
 
     fixtures = ['auth_user.json']
 
-    def setup(self):
+    def setUp(self):
         self.user = User.objects.get(username='admin')
-
         self.audiofile = AudioFile(
             name='MyAudio',
             user=self.user,
-            )
+        )
         self.audiofile.save()
-        super(DialerAudioFileForm, self).setUp()
 
     def test_name(self):
-        nt.assert_equal(self.audiofile.name, "MyAudio")
+        self.assertEqual(self.audiofile.name, "MyAudio")
 
     def test_init(self):
         form = DialerAudioFileForm(instance=self.audiofile)
-        self.assertRaises(KeyError, DialerAudioFileForm)
 
         self.assertTrue(isinstance(form.instance, AudioFile))
         self.assertEqual(form.instance.pk, self.audiofile.pk)
-        self.assertEqual(form.instance.name, "Sample Audio")
-        form.save()
 
     def teardown(self):
         self.audiofile.delete()
+

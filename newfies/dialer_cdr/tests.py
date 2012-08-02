@@ -13,10 +13,10 @@
 #
 
 from django.contrib.auth.models import User
-from common.utils import BaseAuthenticatedClient
 from django.contrib.contenttypes.models import ContentType
+from django.test import TestCase
+from common.utils import BaseAuthenticatedClient
 from dialer_cdr.models import Callrequest, VoIPCall
-import nose.tools as nt
 
 
 class DialerCdrView(BaseAuthenticatedClient):
@@ -49,13 +49,13 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
         'frontend/report/voipcall_report.html')
 
 
-class DialerCdrModel(object):
+class DialerCdrModel(TestCase):
     """Test Callrequest, VoIPCall models"""
 
     fixtures = ['gateway.json', 'auth_user.json', 'contenttype',
                 'campaign', 'campaign_subscriber']
 
-    def setup(self):
+    def setUp(self):
         self.user = User.objects.get(username='admin')
 
         try:
@@ -89,8 +89,8 @@ class DialerCdrModel(object):
         self.voipcall.save()
 
     def test_name(self):
-        nt.assert_equal(self.callrequest.phone_number, "123456")
-        nt.assert_equal(self.voipcall.phone_number, "123456")
+        self.assertEqual(self.callrequest.phone_number, "123456")
+        self.assertEqual(self.voipcall.phone_number, "123456")
 
     def teardown(self):
         self.callrequest.delete()

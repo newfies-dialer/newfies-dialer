@@ -13,10 +13,10 @@
 #
 
 from django.contrib.auth.models import User
+from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
 from survey.models import SurveyApp, SurveyQuestion,\
     SurveyResponse, SurveyCampaignResult
-import nose.tools as nt
 
 
 class SurveyAdminView(BaseAuthenticatedClient):
@@ -102,12 +102,12 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         self.assertTemplateUsed(response, 'frontend/survey/survey_report.html')
 
 
-class SurveyModel(object):
+class SurveyModel(TestCase):
     """Test Survey, SurveyQuestion, SurveyResponse Model"""
 
     fixtures = ['auth_user.json', 'callrequest']
 
-    def setup(self):
+    def setUp(self):
         self.user = User.objects.get(username='admin')
 
         # SurveyApp model
@@ -143,10 +143,10 @@ class SurveyModel(object):
         self.survey_result.save()
 
     def test_name(self):
-        nt.assert_equal(self.survey.name, "test_survey")
-        nt.assert_equal(self.survey_question.question, "test_question")
-        nt.assert_equal(self.survey_response.key, "5")
-        nt.assert_equal(self.survey_result.surveyapp, self.survey)
+        self.assertEqual(self.survey.name, "test_survey")
+        self.assertEqual(self.survey_question.question, "test_question")
+        self.assertEqual(self.survey_response.key, "5")
+        self.assertEqual(self.survey_result.surveyapp, self.survey)
 
     def teardown(self):
         self.survey.delete()

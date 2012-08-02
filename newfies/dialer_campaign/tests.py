@@ -132,7 +132,6 @@ class DialerCampaignModel(TestCase):
         self.assertTrue(isinstance(form.instance, Campaign))
 
 
-
     def teardown(self):
         self.campaign.delete()
         self.campaignsubscriber.delete()

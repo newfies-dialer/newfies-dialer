@@ -13,9 +13,9 @@
 #
 
 from django.contrib.auth.models import User
+from django.test import TestCase
 from voice_app.models import VoiceApp
 from common.utils import BaseAuthenticatedClient
-import nose.tools as nt
 
 
 class VoiceAppAdminView(BaseAuthenticatedClient):
@@ -48,12 +48,12 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
 
-class VoiceAppModel(object):
+class VoiceAppModel(TestCase):
     """Test Voice app Model"""
 
     fixtures = ['auth_user.json', 'gateway.json', 'voiceapp.json']
 
-    def setup(self):
+    def setUp(self):
         self.user = User.objects.get(username='admin')
         self.voiceapp = VoiceApp(
             name='test voiceapp',
@@ -65,7 +65,7 @@ class VoiceAppModel(object):
         self.voiceapp.save()
 
     def test_name(self):
-        nt.assert_equal(self.voiceapp.name, "MyVoiceapp")
+        self.assertEqual(self.voiceapp.name, "MyVoiceapp")
 
     def teardown(self):
         self.voiceapp.delete()

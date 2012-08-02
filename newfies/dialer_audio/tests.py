@@ -17,6 +17,7 @@ from django.test import TestCase, Client
 from common.utils import BaseAuthenticatedClient
 from audiofield.models import AudioFile
 from dialer_audio.forms import DialerAudioFileForm
+from django.core.urlresolvers import reverse
 import base64
 
 
@@ -37,12 +38,14 @@ class AudioFileAdminView(TestCase):
 
     def test_admin_audiofile_view_list(self):
         """Test Function to check admin audiofile list"""
-        response = self.client.get("/admin/audiofield/audiofile/")
+        url = reverse('admin_audio', kwargs=self.kwargs)
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_admin_audiofile_view_add(self):
         """Test Function to check admin audiofile add"""
-        response = self.client.get("/admin/audiofield/audiofile/add/")
+        url = reverse('admin_audio_add', kwargs=self.kwargs)
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
 

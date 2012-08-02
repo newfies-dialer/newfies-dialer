@@ -23,4 +23,7 @@ urlpatterns = patterns('dialer_audio.views',
     (r'^audio/add/$', 'audio_add'),
     (r'^audio/del/(.+)/$', 'audio_del'),
     (r'^audio/(.+)/$', 'audio_change'),
+    #Add this for test in order to fix Travis
+    (r'^admin/audiofield/audiofile/$', 'admin_audio'),
+    (r'^admin/audiofield/audiofile/add/$', 'admin_audio_add'),
 )

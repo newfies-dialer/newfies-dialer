@@ -113,7 +113,6 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.context['action'], 'update')
         self.assertTemplateUsed(response, 'frontend/contact/change.html')
 
-
     def test_contact_view_import(self):
         """Test Function to check import Contact"""
         response = self.client.get('/contact/import/')
@@ -125,7 +124,7 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
 class DialerContactModel(TestCase):
     """Test Phonebook, Contact models"""
 
-    fixtures = ['auth_user.json', 'phonebook', 'contact']
+    fixtures = ['auth_user.json', 'phonebook.json', 'contact.json']
 
     def setUp(self):
         self.user = User.objects.get(username='admin')

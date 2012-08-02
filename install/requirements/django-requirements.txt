@@ -10,6 +10,8 @@ django-picklefield
 django-jsonfield==0.8.0
 django-countries==1.1.2
 django-tastypie==0.9.11
+hg+https://bitbucket.org/izi/django-admin-tools
+git+git://github.com/Star2Billing/django-admin-tools-stats.git
 git+git://github.com/Star2Billing/django-notification
 #git+git://github.com/jtauber/django-notification.git
 #raven==1.4.4

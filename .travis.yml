@@ -8,9 +8,9 @@ install:
   - bash install/requirements/install-requirements.sh
   - pip install pep8 --use-mirrors
   - pip install https://github.com/dcramer/pyflakes/tarball/master
-before_script:
-  - "pep8 --exclude=migrations --ignore=E501,E225 newfies"
-  - pyflakes -x W newfies
+# before_script:
+#   - "pep8 --exclude=migrations --ignore=E501,E225 newfies"
+#   - pyflakes -x W newfies
 script:
   - python manage.py test
 

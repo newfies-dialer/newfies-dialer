@@ -31,6 +31,12 @@ DATABASES = {
     }
 }
 
+#LOGGING
+#=======
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+}
 
 INSTALLED_APPS += ('django_nose', )
 TEST_RUNNER = 'django_nose.run_tests'

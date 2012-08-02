@@ -561,4 +561,7 @@ DIALERDEBUG_PHONENUMBER = 1000
 
 #IMPORT LOCAL SETTINGS
 #=====================
-from settings_local import *
+try:
+    from settings_local import *
+except ImportError:
+    pass

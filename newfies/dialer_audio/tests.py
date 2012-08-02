@@ -44,11 +44,14 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
 
     def test_audiofile_view_add(self):
         response = self.client.get('/audio/add/')
-        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context['form'], DialerAudioFileForm())
         self.assertEqual(response.context['action'], 'add')
+        self.assertEqual(response.status_code, 200)
+
         self.assertTemplateUsed(response, 'frontend/audio/audio_change.html')
 
-        response = self.client.post('/audio/add/', {'name': '', 'audio_file': 'xyz.ttf'},
+        response = self.client.post('/audio/add/', {'name': '',
+                                                    'audio_file': ''},
                                     **self.extra)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['form']['name'].errors,
@@ -73,7 +76,7 @@ class AudioFileModel(TestCase):
     def test_name(self):
         self.assertEqual(self.audiofile.name, "MyAudio")
 
-    def test_init(self):
+    def test_audio_form(self):
         form = DialerAudioFileForm(instance=self.audiofile)
 
         self.assertTrue(isinstance(form.instance, AudioFile))

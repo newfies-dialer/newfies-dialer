@@ -14,9 +14,10 @@
 
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
+from django.test import TestCase
 from dialer_campaign.models import Campaign, CampaignSubscriber
+from dialer_campaign.forms import CampaignForm
 from common.utils import BaseAuthenticatedClient
-import nose.tools as nt
 
 
 class DialerCampaignView(BaseAuthenticatedClient):
@@ -76,42 +77,61 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 302)
 
 
-class DialerCampaignModel(object):
+class DialerCampaignModel(TestCase):
     """Test Campaign, CampaignSubscriber models"""
 
     fixtures = ['gateway.json', 'voiceapp.json', 'auth_user.json',
-                'contenttype.json', 'phonebook.json', 'contact.json',
-                'campaign.json', 'campaign_subscriber.json']
+                'dialer_setting.json', 'contenttype.json',
+                'phonebook.json', 'contact.json',
+                'campaign.json', 'campaign_subscriber.json',
+                'user_profile.json']
 
-    def setup(self):
+    def setUp(self):
         self.user = User.objects.get(username='admin')
+
         # Campaign model
         try:
-            content_type_id = ContentType.objects.get(model='voiceapp').id
+            self.content_type_id = ContentType.objects.get(model='voiceapp').id
         except:
-            content_type_id = 1
+            self.content_type_id = 1
 
         self.campaign = Campaign(
             name="sample_campaign",
             user=self.user,
             aleg_gateway_id=1,
-            content_type_id=content_type_id,
+            content_type_id=self.content_type_id,
             object_id=1,
         )
         self.campaign.save()
 
         # CampaignSubscriber model
         self.campaignsubscriber = CampaignSubscriber(
-            contact=1,
+            contact_id=1,
             campaign=self.campaign,
             count_attempt=0,
             status=1,
         )
         self.campaignsubscriber.save()
 
-    def test_name(self):
-        nt.assert_equal(self.campaign.name, "sample_campaign")
-        nt.assert_equal(self.campaignsubscriber.campaign, self.campaign)
+    def test_campaign_form(self):
+        self.assertEqual(self.campaign.name, "sample_campaign")
+        self.assertEqual(self.campaignsubscriber.campaign, self.campaign)
+
+        form = CampaignForm(self.user)
+
+        obj = form.save(commit=False)
+        obj.name="new_campaign"
+        obj.user = self.user
+        obj.phonebook_id = 1
+        obj.aleg_gateway_id=1
+        obj.content_type_id=self.content_type_id
+        obj.object_id=1
+        obj.save()
+
+        form = CampaignForm(self.user, instance=self.campaign)
+        self.assertTrue(isinstance(form.instance, Campaign))
+
+
 
     def teardown(self):
         self.campaign.delete()

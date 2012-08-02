@@ -21,15 +21,6 @@ from dialer_campaign.models import Campaign, get_unique_code
 from dialer_campaign.function_def import field_list, user_dialer_setting
 
 
-class SearchForm(forms.Form):
-    """General Search Form with From & To date para."""
-    from_date = forms.CharField(label=_('From'), required=False,
-        max_length=10,
-        help_text=_("Date Format") + ": <em>YYYY-MM-DD</em>.")
-    to_date = forms.CharField(label=_('To'), required=False, max_length=10,
-    help_text=_("Date Format") + ": <em>YYYY-MM-DD</em>.")
-
-
 class CampaignForm(ModelForm):
     """Campaign ModelForm"""
     campaign_code = forms.CharField(widget=forms.HiddenInput)

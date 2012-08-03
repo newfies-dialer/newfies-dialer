@@ -166,7 +166,14 @@ def customer_detail_change(request):
 
 
 def call_style(val):
-    """Notification icon style"""
+    """Notification icon style
+
+    >>> call_style('val')
+    'style="text-decoration:none;background-image:url(/static/newfies/icons/new.png);"'
+
+    >>> call_style('')
+    'style="text-decoration:none;background-image:url(/static/newfies/icons/tick.png);"'
+    """
     unseen_style = \
         'style="text-decoration:none;' + \
         'background-image:url(%snewfies/icons/new.png);"' \

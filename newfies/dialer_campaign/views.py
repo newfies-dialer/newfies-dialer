@@ -142,7 +142,11 @@ def notify_admin(request):
 
 
 def count_contact_of_campaign(campaign_id):
-    """Count no of Contacts from phonebook belonging to the campaign"""
+    """Count no of Contacts from phonebook belonging to the campaign
+
+    >>> count_contact_of_campaign(1)
+    'Phonebook Empty'
+    """
     count_contact = \
         Contact.objects.filter(phonebook__campaign=campaign_id).count()
     if not count_contact:

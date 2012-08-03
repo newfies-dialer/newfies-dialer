@@ -27,7 +27,11 @@ def check_celeryd_process():
 def search_tag_string(mstring, tag):
     """
     Search in string tag with their value
-    mstring = needledtag1=143432,needledtag2=143432
+
+    >>> mstring = 'needledtag1=143432,needledtag2=143432'
+
+    >>> search_tag_string(mstring, 'needledtag1')
+    '143432'
     """
     if not mstring or len(mstring) < 2:
         return False

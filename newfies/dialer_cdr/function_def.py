@@ -88,6 +88,10 @@ def voipcall_record_common_fun(request):
 
 
 def return_query_string(query_string, para):
+    """
+    >>> return_query_string('key=1', 'key_val=apple')
+    'key=1&key_val=apple'
+    """
     if query_string:
         query_string += '&' + para
     else:

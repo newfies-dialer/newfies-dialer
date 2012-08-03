@@ -56,7 +56,7 @@ def user_attached_with_dialer_settings(request):
         # DialerSettings link to the User
         if user_obj:
             dialer_set_obj = \
-            DialerSetting.objects.get(pk=user_obj.dialersetting_id)
+                DialerSetting.objects.get(pk=user_obj.dialersetting_id)
             # DialerSettings is exists
             if dialer_set_obj:
                 # attached with dialer setting
@@ -182,7 +182,21 @@ def dialer_setting_limit(request, limit_for):
 
 def type_field_chk(base_field, base_field_type, field_name):
     """Type fields (e.g. equal to, begins with, ends with, contains)
-    are checked."""
+    are checked.
+
+    >>> type_field_chk('1234', '1', 'contact')
+    {'contact__contains': '1234'}
+
+    >>> type_field_chk('1234', '2', 'contact')
+    {'contact__exact': '1234'}
+
+    >>> type_field_chk('1234', '3', 'contact')
+    {'contact__startswith': '1234'}
+
+    >>> type_field_chk('1234', '4', 'contact')
+    {'contact__endswith': '1234'}
+
+    """
     kwargs = {}
     if base_field != '':
         if base_field_type == '1':
@@ -252,7 +266,16 @@ def calculate_date(search_type):
 
 
 def date_range(start, end, q):
-    """Date  Range"""
+    """Date  Range
+
+    >>> s_date = datetime(2012, 07, 11, 0, 0, 0, 0)
+
+    >>> e_date = datetime(2012, 07, 12, 23, 59, 59, 99999)
+
+    >>> date_range(s_date, e_date, 2)
+    [datetime.datetime(2012, 7, 11, 0, 0), datetime.datetime(2012, 7, 12, 0, 0)]
+
+    """
     r = (end + timedelta(days=1) - start).days
     if int(q) <= 2:
         return list(rrule(DAILY,
@@ -267,7 +290,20 @@ def date_range(start, end, q):
 
 
 def get_campaign_status_name(id):
-    """To get status name from CAMPAIGN_STATUS"""
+    """To get status name from CAMPAIGN_STATUS
+
+    >>> get_campaign_status_name(1)
+    '<font color="green">STARTED</font>'
+
+    >>> get_campaign_status_name(2)
+    '<font color="blue">PAUSED</font>'
+
+    >>> get_campaign_status_name(3)
+    '<font color="orange">ABORTED</font>'
+
+    >>> get_campaign_status_name(4)
+    '<font color="red">STOPPED</font>'
+    """
     for i in CAMPAIGN_STATUS:
         if i[0] == id:
             #return i[1]

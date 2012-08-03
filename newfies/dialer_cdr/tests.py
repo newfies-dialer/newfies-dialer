@@ -17,6 +17,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
 from dialer_cdr.models import Callrequest, VoIPCall
+from dialer_cdr.forms import VoipSearchForm
+from datetime import datetime
 
 
 class DialerCdrView(BaseAuthenticatedClient):
@@ -45,8 +47,14 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
         """Test Function to check VoIP call report"""
         response = self.client.get('/voipcall_report/')
         self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context['form'], VoipSearchForm())
         self.assertTemplateUsed(response,
-        'frontend/report/voipcall_report.html')
+            'frontend/report/voipcall_report.html')
+
+        response = self.client.post('/voipcall_report/',
+                                    data={'from_date': datetime.now(),
+                                          'to_date': datetime.now()})
+        self.assertEqual(response.status_code, 200)
 
 
 class DialerCdrModel(TestCase):

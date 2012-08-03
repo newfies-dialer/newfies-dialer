@@ -18,7 +18,6 @@ from django.test import TestCase
 from dialer_contact.models import Phonebook
 from dialer_campaign.models import Campaign, CampaignSubscriber
 from dialer_campaign.forms import CampaignForm
-from dialer_campaign.function_def import field_list
 from common.utils import BaseAuthenticatedClient
 
 
@@ -131,13 +130,6 @@ class DialerCampaignModel(TestCase):
 
         form = CampaignForm(self.user, instance=self.campaign)
         self.assertTrue(isinstance(form.instance, Campaign))
-
-    def test_dialer_campaign_functions(self):
-        list = Phonebook.objects.filter(user= self.user)
-        result = ((l.id, l.name) for l in list)
-        self.assertTrue(field_list('phonebook', self.user), result)
-
-
 
     def teardown(self):
         self.campaign.delete()

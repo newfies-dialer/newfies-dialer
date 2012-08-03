@@ -19,7 +19,12 @@ from datetime import datetime
 
 
 def rate_range():
-    """Filter range symbol"""
+    """Filter range symbol
+
+    >>> rate_range()
+    (('', 'All'), ('gte', '>='), ('gt', '>'), ('eq', '='), ('lt', '<'), ('lte', '<='))
+
+    """
     LIST = (('', 'All'),
             ('gte', '>='),
             ('gt', '>'),
@@ -127,7 +132,12 @@ def voipcall_search_admin_form_fun(request):
 
 
 def get_disposition_id(name):
-    """To get id from voip_call_disposition_list"""
+    """To get id from voip_call_disposition_list
+
+    >>> get_disposition_id(u'ANSWER')
+    'ANSWER'
+
+    """
     for i in VOIPCALL_DISPOSITION:
         if i[1] == name:
             return i[0]

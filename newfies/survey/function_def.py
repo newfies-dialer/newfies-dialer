@@ -27,7 +27,6 @@ def field_list(name, user=None):
     return ((l.id, l.name) for l in list)
 
 
-#TODO: Write indenpendant test for that function
 def export_question_result(val, column_question):
     """Modify survey result string for export
 
@@ -37,6 +36,18 @@ def export_question_result(val, column_question):
     This is how we build our val :
     SELECT group_concat(CONCAT_WS("*|*", question, response, record_file)
             SEPARATOR "-|-") '
+
+    >>> val = "test_question_1?*|*ans1-|-test_question_2?*|**|*audio_file"
+
+    >>> column_question = "test_question_2?"
+
+    >>> export_question_result(val, column_question)
+    'audio_file'
+
+    >>> val = "test_question_1?*|*ans1-|-test_question_2?*|*ans2"
+
+    >>> export_question_result(val, column_question)
+    'ans2'
     """
     if not val:
         return ''

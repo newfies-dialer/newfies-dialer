@@ -14,7 +14,12 @@
 
 from django.contrib.auth.models import User
 from django.test import TestCase
+from django.contrib.auth.forms import PasswordChangeForm
 from user_profile.models import UserProfile
+from user_profile.forms import UserChangeDetailForm, \
+                               UserChangeDetailExtendForm, \
+                               CheckPhoneNumberForm, \
+                               UserProfileForm
 from dialer_settings.models import DialerSetting
 from common.utils import BaseAuthenticatedClient
 
@@ -52,6 +57,14 @@ class UserProfileCustomerView(BaseAuthenticatedClient):
     def test_user_settings(self):
         """Test Function to check User settings"""
         response = self.client.get('/user_detail_change/')
+        self.assertTrue(response.context['user_detail_form'],
+                        UserChangeDetailForm(self.user))
+        self.assertTrue(response.context['user_detail_extened_form'],
+                        UserChangeDetailExtendForm(self.user))
+        self.assertTrue(response.context['user_password_form'],
+                        PasswordChangeForm(self.user))
+        self.assertTrue(response.context['check_phone_no_form'],
+                        CheckPhoneNumberForm())
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
             'frontend/registration/user_detail_change.html')
@@ -72,8 +85,17 @@ class UserProfileModel(TestCase):
         )
         self.user_profile.save()
 
-    def test_name(self):
+    def test_user_profile_forms(self):
         self.assertEqual(self.user_profile.user, self.user)
+
+        form = UserChangeDetailForm(self.user)
+        form.user.last_name = "Test"
+        form.user.first_name = "Test"
+        form.user.save()
+
+        form = UserChangeDetailExtendForm(self.user)
+        form.user.address="test address"
+        form.user.save()
 
     def teardown(self):
         self.user_profile.delete()

@@ -14,7 +14,9 @@
 
 from django.contrib.auth.models import User
 from django.test import TestCase
+from dialer_gateway.models import Gateway
 from voice_app.models import VoiceApp
+from voice_app.forms import VoiceAppForm
 from common.utils import BaseAuthenticatedClient
 
 
@@ -43,7 +45,11 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
 
     def test_voiceapp_view_add(self):
         response = self.client.get('/voiceapp/add/')
+        self.assertEqual(response.context['action'], 'add')
+        self.assertTrue(response.context['form'], VoiceAppForm())
         self.assertTemplateUsed(response, 'frontend/voiceapp/change.html')
+
+    def test_voiceapp_view_update(self):
         response = self.client.get('/voiceapp/1/')
         self.assertEqual(response.status_code, 200)
 
@@ -55,17 +61,26 @@ class VoiceAppModel(TestCase):
 
     def setUp(self):
         self.user = User.objects.get(username='admin')
+        self.gateway = Gateway.objects.get(pk=1)
         self.voiceapp = VoiceApp(
             name='test voiceapp',
             type=1,
-            gateway_id=1,
+            gateway=self.gateway,
             user=self.user,
             )
         self.voiceapp.set_name("MyVoiceapp")
         self.voiceapp.save()
 
-    def test_name(self):
+    def test_voice_app_form(self):
         self.assertEqual(self.voiceapp.name, "MyVoiceapp")
+
+        form = VoiceAppForm()
+        obj = form.save(commit=False)
+        obj.name="new_voice_app"
+        obj.user = self.user
+        obj.description = ""
+        obj.gateway = self.gateway
+        obj.save()
 
     def teardown(self):
         self.voiceapp.delete()

@@ -118,7 +118,6 @@ class DialerCampaignModel(TestCase):
         self.assertEqual(self.campaignsubscriber.campaign, self.campaign)
 
         form = CampaignForm(self.user)
-
         obj = form.save(commit=False)
         obj.name="new_campaign"
         obj.user = self.user

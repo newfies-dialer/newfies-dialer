@@ -105,7 +105,10 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 class SurveyModel(TestCase):
     """Test Survey, SurveyQuestion, SurveyResponse Model"""
 
-    fixtures = ['auth_user.json', 'callrequest.json']
+    fixtures = ['gateway.json', 'auth_user.json', 'contenttype.json',
+                'phonebook.json', 'contact.json',
+                'campaign.json', 'campaign_subscriber.json',
+                'callrequest.json']
 
     def setUp(self):
         self.user = User.objects.get(username='admin')

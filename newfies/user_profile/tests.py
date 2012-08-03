@@ -14,10 +14,10 @@
 
 from django.contrib.auth.models import User
 from django.test import TestCase
-from user_profile.models import Staff, Customer
+from user_profile.models import UserProfile
+from dialer_settings.models import DialerSetting
 from common.utils import BaseAuthenticatedClient
 
-#TODO : Is that needed ?
 from django.contrib import admin
 admin.site.register(User)
 
@@ -57,23 +57,23 @@ class UserProfileCustomerView(BaseAuthenticatedClient):
             'frontend/registration/user_detail_change.html')
 
 
-#commented because failing at the moment
-# class UserProfileModel(TestCase):
-#     """Test UserProfile Model"""
 
-#     fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json']
+class UserProfileModel(TestCase):
+    """Test UserProfile Model"""
+    fixtures = ['auth_user.json', 'dialer_setting.json']
 
-#     def setUp(self):
-#         self.user = User.objects.get(username='admin')
-#         self.user_profile = Staff(
-#             user=self.user,
-#             userprofile_gateway_id=1,
-#             dialersetting_id=1
-#             )
-#         self.user_profile.save()
+    def setUp(self):
+        self.user = User.objects.get(username='admin')
+        self.dialersetting = DialerSetting.objects.get(pk=1)
 
-#     def test_name(self):
-#         self.assertEqual(self.user_profile.user, self.user)
+        self.user_profile = UserProfile(
+        user=self.user,
+        dialersetting=self.dialersetting
+        )
+        self.user_profile.save()
 
-#     def teardown(self):
-#         self.user_profile.delete()
+    def test_name(self):
+        self.assertEqual(self.user_profile.user, self.user)
+
+    def teardown(self):
+        self.user_profile.delete()

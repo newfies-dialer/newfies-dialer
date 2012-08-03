@@ -1,32 +1,32 @@
 [
-   {
-      "pk":1,
-      "model":"dialer_cdr.callrequest",
-      "fields":{
-         "status":8,
-         "campaign":1,
-         "extra_dial_string":"",
-         "aleg_uuid":"e8fee8f6-40dd-11e1-964f-000c296bd875",
-         "call_time":"2012-01-17 03:41:12",
-         "result":"",
-         "parent_callrequest":null,
-         "callerid":"",
-         "request_uuid":"e8fee8f6-40dd-11e1-964f-000c296bd875",
-         "object_id":1,
-         "extra_data":"",
-         "phone_number":"1234567",
-         "updated_date":"2012-01-17 03:42:25",
-         "num_attempt":0,
-         "created_date":"2012-01-17 03:41:48",
-         "aleg_gateway":null,
-         "user":1,
-         "content_type":28,
-         "call_type":1,
-         "hangup_cause":"",
-         "campaign_subscriber":1,
-         "timelimit":3600,
-         "timeout":30,
-         "last_attempt_time":null
-      }
-   }
+    {
+        "pk":1,
+        "model":"dialer_cdr.callrequest",
+        "fields":{
+            "status":1,
+            "campaign":1,
+            "extra_dial_string":"",
+            "aleg_uuid":"e8fee8f6-40dd-11e1-964f-000c296bd875",
+            "call_time":"2012-08-03T01:09:39",
+            "result":"",
+            "parent_callrequest":null,
+            "callerid":"",
+            "request_uuid":"e8fee8f6-40dd-11e1-964f-000c296bd875",
+            "object_id":1,
+            "extra_data":"",
+            "phone_number":"123456789",
+            "updated_date":"2012-08-03T01:10:13",
+            "num_attempt":0,
+            "created_date":"2012-08-03T01:10:13",
+            "aleg_gateway":1,
+            "user":1,
+            "content_type":49,
+            "call_type":1,
+            "hangup_cause":"",
+            "campaign_subscriber":null,
+            "timelimit":3600,
+            "timeout":30,
+            "last_attempt_time":null
+        }
+    }
 ]

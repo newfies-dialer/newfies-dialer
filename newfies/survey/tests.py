@@ -17,6 +17,8 @@ from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
 from survey.models import SurveyApp, SurveyQuestion,\
     SurveyResponse, SurveyCampaignResult
+from survey.forms import SurveyForm, SurveyQuestionForm, \
+    SurveyResponseForm, SurveyDetailReportForm
 
 
 class SurveyAdminView(BaseAuthenticatedClient):
@@ -86,10 +88,11 @@ class SurveyCustomerView(BaseAuthenticatedClient):
     def test_survey_view_add(self):
         """Test Function survey view add"""
         response = self.client.get('/survey/add/')
+        self.assertTrue(response.context['form'], SurveyForm())
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/survey/survey_change.html')
 
-    def test_survey_view_get(self):
+    def test_survey_view_update(self):
         """Test Function survey view get"""
         response = self.client.get('/survey/1/')
         self.assertEqual(response.status_code, 200)
@@ -98,6 +101,8 @@ class SurveyCustomerView(BaseAuthenticatedClient):
     def test_survey_view_report(self):
         """Test Function survey view report"""
         response = self.client.get('/survey_report/')
+        self.assertTrue(response.context['form'],
+                        SurveyDetailReportForm(self.user))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/survey/survey_report.html')
 
@@ -145,11 +150,25 @@ class SurveyModel(TestCase):
         )
         self.survey_result.save()
 
-    def test_name(self):
+    def test_survey_forms(self):
         self.assertEqual(self.survey.name, "test_survey")
         self.assertEqual(self.survey_question.question, "test_question")
         self.assertEqual(self.survey_response.key, "5")
         self.assertEqual(self.survey_result.surveyapp, self.survey)
+
+        form = SurveyQuestionForm(self.user)
+        obj = form.save(commit=False)
+        obj.question="test question"
+        obj.user = self.user
+        obj.surveyapp = self.survey
+        obj.save()
+
+        form = SurveyResponseForm(self.user, self.survey.pk)
+        obj = form.save(commit=False)
+        obj.key="1"
+        obj.keyvalue="apple"
+        obj.surveyquestion = self.survey_question
+        obj.save()
 
     def teardown(self):
         self.survey.delete()

@@ -19,6 +19,9 @@ from survey.models import SurveyApp, SurveyQuestion,\
     SurveyResponse, SurveyCampaignResult
 from survey.forms import SurveyForm, SurveyQuestionForm, \
     SurveyResponseForm, SurveyDetailReportForm
+from survey.views import survey_list, survey_grid, survey_add, \
+    survey_change, survey_del, survey_question_add, survey_question_change,\
+    survey_response_add, survey_response_change
 
 
 class SurveyAdminView(BaseAuthenticatedClient):
@@ -80,6 +83,12 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         response = self.client.get('/survey/')
         self.assertEqual(response.status_code, 200)
 
+        request = self.factory.get('/survey/')
+        request.user = self.user
+        request.session = {}
+        response = survey_list(request)
+        self.assertEqual(response.status_code, 200)
+
     def test_survey_view_list(self):
         """Test Function survey view list"""
         response = self.client.get('/survey/')
@@ -92,11 +101,54 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/survey/survey_change.html')
 
+        request = self.factory.get('/survey/add/')
+        request.user = self.user
+        request.session = {}
+        response = survey_add(request)
+        self.assertEqual(response.status_code, 200)
+
     def test_survey_view_update(self):
         """Test Function survey view get"""
         response = self.client.get('/survey/1/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/survey/survey_change.html')
+
+        request = self.factory.get('/survey/1/')
+        request.user = self.user
+        request.session = {}
+        response = survey_change(request, 1)
+        self.assertEqual(response.status_code, 200)
+
+        response = survey_del(request, 1)
+        self.assertEqual(response.status_code, 302)
+
+    def test_survey_question_view_add(self):
+        request = self.factory.get('/survey_question/add/?surveyapp_id=1')
+        request.user = self.user
+        request.session = {}
+        response = survey_question_add(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_survey_question_view_update(self):
+        request = self.factory.get('/survey_question/1/')
+        request.user = self.user
+        request.session = {}
+        response = survey_question_change(request, 1)
+        self.assertEqual(response.status_code, 200)
+
+    def test_survey_question_response_view_add(self):
+        request = self.factory.get('/survey_response/add/?surveyquestion_id=1')
+        request.user = self.user
+        request.session = {}
+        response = survey_response_add(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_survey_question_response_view_update(self):
+        request = self.factory.get('/survey_response/1/')
+        request.user = self.user
+        request.session = {}
+        response = survey_response_change(request, 1)
+        self.assertEqual(response.status_code, 200)
 
     def test_survey_view_report(self):
         """Test Function survey view report"""

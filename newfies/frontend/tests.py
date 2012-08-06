@@ -12,9 +12,10 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from frontend.forms import LoginForm, DashboardForm
-from common.utils import BaseAuthenticatedClient
 from django.test import TestCase
+from common.utils import BaseAuthenticatedClient
+from frontend.forms import LoginForm, DashboardForm
+from frontend.views import customer_dashboard, index, login_view
 
 
 class FrontendView(BaseAuthenticatedClient):
@@ -44,6 +45,18 @@ class FrontendCustomerView(BaseAuthenticatedClient):
                                      'password': 'admin'})
         self.assertEqual(response.status_code, 200)
 
+        request = self.factory.get('/')
+        request.user = self.user
+        request.session = {}
+        response = index(request)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.get('/login/')
+        request.user = self.user
+        request.session = {}
+        response = login_view(request)
+        self.assertEqual(response.status_code, 200)
+
     def test_dashboard(self):
         """Test Function to check customer dashboard"""
         response = self.client.get('/dashboard/')
@@ -53,6 +66,12 @@ class FrontendCustomerView(BaseAuthenticatedClient):
         response = self.client.post('/dashboard/',
                                     {'campaign': '1',
                                      'search_type': '1'})
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.get('/dashboard/')
+        request.user = self.user
+        request.session = {}
+        response = customer_dashboard(request)
         self.assertEqual(response.status_code, 200)
 
 

@@ -18,6 +18,8 @@ from django.test import TestCase
 from dialer_contact.models import Phonebook
 from dialer_campaign.models import Campaign, CampaignSubscriber
 from dialer_campaign.forms import CampaignForm
+from dialer_campaign.views import campaign_list, campaign_add, \
+                                  campaign_change, campaign_del
 from common.utils import BaseAuthenticatedClient
 
 
@@ -60,6 +62,12 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/campaign/list.html')
 
+        request = self.factory.get('/campaign/')
+        request.user = self.user
+        request.session = {}
+        response = campaign_list(request)
+        self.assertEqual(response.status_code, 200)
+
     def test_campaign_view_add(self):
         """Test Function to check add campaign"""
         response = self.client.post('/campaign/add/', data={
@@ -75,6 +83,26 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "aleg_gateway": "1",
             "content_object": "type:30-id:1",
             "extra_data": "2000"})
+        self.assertEqual(response.status_code, 302)
+
+        request = self.factory.get('/campaign/add/')
+        request.user = self.user
+        request.session = {}
+        response = campaign_add(request)
+        self.assertEqual(response.status_code, 302)
+
+    def test_campaign_view_update_delete(self):
+        """Test Function to check update campaign"""
+        response = self.client.get('/campaign/1/')
+        self.assertEqual(response.status_code, 302)
+
+        request = self.factory.get('/campaign/1/')
+        request.user = self.user
+        request.session = {}
+        response = campaign_change(request, 1)
+        self.assertEqual(response.status_code, 302)
+
+        response = campaign_del(request, 1)
         self.assertEqual(response.status_code, 302)
 
 

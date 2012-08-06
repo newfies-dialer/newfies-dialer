@@ -19,9 +19,11 @@ from dialer_contact.forms import Contact_fileImport, \
                                  PhonebookForm, \
                                  ContactForm, \
                                  ContactSearchForm
-from dialer_contact.views import phonebook_list, phonebook_add, \
-                                 phonebook_change, contact_list, \
-                                 contact_add, contact_change
+from dialer_contact.views import phonebook_grid, phonebook_list, \
+                         phonebook_add, phonebook_change, phonebook_del,\
+                         contact_grid, contact_list, contact_add,\
+                         contact_change, contact_del, contact_import
+
 from common.utils import BaseAuthenticatedClient
 from datetime import datetime
 
@@ -73,6 +75,13 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/phonebook/list.html')
 
+
+        request = self.factory.get('/phonebook_grid/')
+        request.user = self.user
+        request.session = {}
+        response = phonebook_list(request)
+        self.assertEqual(response.status_code, 200)
+
         request = self.factory.get('/phonebook/')
         request.user = self.user
         request.session = {}
@@ -119,6 +128,13 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         response = phonebook_change(request, 1)
         self.assertEqual(response.status_code, 200)
 
+    def test_phonebook_view_delete(self):
+        request = self.factory.get('/phonebook/del/1/')
+        request.user = self.user
+        request.session = {}
+        response = phonebook_del(request, 1)
+        self.assertEqual(response.status_code, 302)
+
     def test_contact_view_list(self):
         """Test Function to check Contact list"""
         response = self.client.get('/contact/')
@@ -131,6 +147,12 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
             data={'from_date': datetime.now(),
                   'to_date': datetime.now(),
                   'name': '123'})
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.get('/contact_grid/')
+        request.user = self.user
+        request.session = {}
+        response = phonebook_list(request)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.get('/contact/')
@@ -176,6 +198,13 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         response = contact_change(request, 1)
         self.assertEqual(response.status_code, 200)
 
+    def test_contact_view_delete(self):
+        request = self.factory.get('/contact/del/1/')
+        request.user = self.user
+        request.session = {}
+        response = contact_del(request, 1)
+        self.assertEqual(response.status_code, 302)
+
     def test_contact_view_import(self):
         """Test Function to check import Contact"""
         response = self.client.get('/contact/import/')
@@ -186,6 +215,12 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
 
         response = self.client.post('/contact/import/',
             data={'phonebook_id': '1'})
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.get('/contact/import/')
+        request.user = self.user
+        request.session = {}
+        response = contact_import(request)
         self.assertEqual(response.status_code, 200)
 
 

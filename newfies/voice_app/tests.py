@@ -17,6 +17,8 @@ from django.test import TestCase
 from dialer_gateway.models import Gateway
 from voice_app.models import VoiceApp
 from voice_app.forms import VoiceAppForm
+from voice_app.views import voiceapp_list, voiceapp_grid, voiceapp_add,\
+                            voiceapp_del, voiceapp_change
 from common.utils import BaseAuthenticatedClient
 
 
@@ -43,15 +45,36 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/voiceapp/list.html')
 
+        request = self.factory.get('/voiceapp/')
+        request.user = self.user
+        request.session = {}
+        response = voiceapp_list(request)
+        self.assertEqual(response.status_code, 200)
+
     def test_voiceapp_view_add(self):
         response = self.client.get('/voiceapp/add/')
         self.assertEqual(response.context['action'], 'add')
         self.assertTrue(response.context['form'], VoiceAppForm())
         self.assertTemplateUsed(response, 'frontend/voiceapp/change.html')
 
+        request = self.factory.get('/voiceapp/add/')
+        request.user = self.user
+        request.session = {}
+        response = voiceapp_add(request)
+        self.assertEqual(response.status_code, 200)
+
     def test_voiceapp_view_update(self):
         response = self.client.get('/voiceapp/1/')
         self.assertEqual(response.status_code, 200)
+
+        request = self.factory.get('/voiceapp/1/')
+        request.user = self.user
+        request.session = {}
+        response = voiceapp_change(request, 1)
+        self.assertEqual(response.status_code, 200)
+
+        response = voiceapp_del(request, 1)
+        self.assertEqual(response.status_code, 302)
 
 
 class VoiceAppModel(TestCase):

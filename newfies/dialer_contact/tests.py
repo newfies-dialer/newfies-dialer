@@ -19,6 +19,9 @@ from dialer_contact.forms import Contact_fileImport, \
                                  PhonebookForm, \
                                  ContactForm, \
                                  ContactSearchForm
+from dialer_contact.views import phonebook_list, phonebook_add, \
+                                 phonebook_change, contact_list, \
+                                 contact_add, contact_change
 from common.utils import BaseAuthenticatedClient
 from datetime import datetime
 
@@ -70,6 +73,12 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/phonebook/list.html')
 
+        request = self.factory.get('/phonebook/')
+        request.user = self.user
+        request.session = {}
+        response = phonebook_list(request)
+        self.assertEqual(response.status_code, 200)
+
     def test_phonebook_view_add(self):
         """Test Function to check add phonebook"""
         response = self.client.get('/phonebook/add/')
@@ -81,6 +90,12 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
                 'description': 'phonebook',
             })
         self.assertEqual(response.status_code, 302)
+
+        request = self.factory.get('/phonebook/add/')
+        request.user = self.user
+        request.session = {}
+        response = phonebook_add(request)
+        self.assertEqual(response.status_code, 200)
 
         resp = self.client.post('/phonebook/add/',
             data={
@@ -98,6 +113,12 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/phonebook/change.html')
 
+        request = self.factory.get('/phonebook/1/')
+        request.user = self.user
+        request.session = {}
+        response = phonebook_change(request, 1)
+        self.assertEqual(response.status_code, 200)
+
     def test_contact_view_list(self):
         """Test Function to check Contact list"""
         response = self.client.get('/contact/')
@@ -112,6 +133,12 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
                   'name': '123'})
         self.assertEqual(response.status_code, 200)
 
+        request = self.factory.get('/contact/')
+        request.user = self.user
+        request.session = {}
+        response = contact_list(request)
+        self.assertEqual(response.status_code, 200)
+
     def test_contact_view_add(self):
         """Test Function to check add Contact"""
         response = self.client.get('/contact/add/')
@@ -122,6 +149,12 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
                   'last_name': 'xyz', 'first_name': 'abc',
                   'status': '1'})
         self.assertEqual(response.context['action'], 'add')
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.get('/contact/add/')
+        request.user = self.user
+        request.session = {}
+        response = contact_add(request)
         self.assertEqual(response.status_code, 200)
 
         response = self.client.post('/contact/add/',
@@ -136,6 +169,12 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         self.assertTrue(response.context['form'], ContactForm(self.user))
         self.assertEqual(response.context['action'], 'update')
         self.assertTemplateUsed(response, 'frontend/contact/change.html')
+
+        request = self.factory.get('/contact/1/')
+        request.user = self.user
+        request.session = {}
+        response = contact_change(request, 1)
+        self.assertEqual(response.status_code, 200)
 
     def test_contact_view_import(self):
         """Test Function to check import Contact"""

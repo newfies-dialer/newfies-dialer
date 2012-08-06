@@ -75,7 +75,6 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/phonebook/list.html')
 
-
         request = self.factory.get('/phonebook_grid/')
         request.user = self.user
         request.session = {}

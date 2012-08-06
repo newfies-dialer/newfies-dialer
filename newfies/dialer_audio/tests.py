@@ -17,6 +17,7 @@ from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
 from audiofield.models import AudioFile
 from dialer_audio.forms import DialerAudioFileForm
+from dialer_audio.views import audio_list, audio_add
 
 
 class AudioFileAdminView(BaseAuthenticatedClient):
@@ -42,6 +43,12 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.context['module'], 'audio_list')
         self.assertTemplateUsed(response, 'frontend/audio/audio_list.html')
 
+        request = self.factory.get('/audio/')
+        request.user = self.user
+        request.session = {}
+        response = audio_list(request)
+        self.assertEqual(response.status_code, 200)
+
     def test_audiofile_view_add(self):
         response = self.client.get('/audio/add/')
         self.assertTrue(response.context['form'], DialerAudioFileForm())
@@ -58,6 +65,12 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
                          [u'This field is required.'])
         self.assertEqual(response.context['form']['audio_file'].errors,
                          [u'This field is required.'])
+
+        request = self.factory.get('/audio/add/')
+        request.user = self.user
+        request.session = {}
+        response = audio_add(request)
+        self.assertEqual(response.status_code, 200)
 
 
 class AudioFileModel(TestCase):

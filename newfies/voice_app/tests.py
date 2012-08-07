@@ -13,7 +13,9 @@
 #
 
 from django.contrib.auth.models import User
+from django.template import Template, Context, TemplateSyntaxError
 from django.test import TestCase
+
 from dialer_gateway.models import Gateway
 from voice_app.models import VoiceApp
 from voice_app.forms import VoiceAppForm
@@ -52,12 +54,39 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
         response = voiceapp_list(request)
         self.assertEqual(response.status_code, 200)
 
+        out = Template(
+            '{% load i18n %}'
+            '{% block content_header %}'
+            '<h1>Voice Applications '
+            '<small>List, add and edit voice applications</small>'
+            '</h1>'
+            '{% endblock %}'
+        ).render(Context())
+        self.assertEqual(out,
+            '<h1>Voice Applications <small>List, add and edit voice applications</small></h1>')
+
     def test_voiceapp_view_add(self):
         """Test Function to check voice app view to add"""
         response = self.client.get('/voiceapp/add/')
         self.assertEqual(response.context['action'], 'add')
         self.assertTrue(response.context['form'], VoiceAppForm())
         self.assertTemplateUsed(response, 'frontend/voiceapp/change.html')
+
+        out = Template(
+            '{% load i18n %}'
+            '{% block content_header %}'
+            '<h1>{% if action == "add" %}'
+                    'Add'
+                '{% endif %} '
+                'Voice Applications '
+            '<small>Configure voice application</small>'
+            '</h1>{% endblock %}'
+        ).render(Context({
+            'action': 'add'
+        }))
+        self.assertEqual(out,
+            '<h1>Add Voice Applications <small>Configure voice application</small></h1>')
+
 
         request = self.factory.get('/voiceapp/add/')
         request.user = self.user

@@ -19,7 +19,7 @@ from django.test import TestCase
 from dialer_gateway.models import Gateway
 from voice_app.models import VoiceApp
 from voice_app.forms import VoiceAppForm
-from voice_app.views import voiceapp_list, voiceapp_grid, voiceapp_add,\
+from voice_app.views import voiceapp_list, voiceapp_add,\
                             voiceapp_del, voiceapp_change
 from common.utils import BaseAuthenticatedClient
 
@@ -63,16 +63,15 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
         self.assertTemplateUsed(response, 'frontend/voiceapp/change.html')
 
         out = Template(
-            '{% load i18n %}'
-            '{% block content_header %}'
-            '{% if action == "add" %}'
-                    'Add'
-            '{% endif %} '
-            'Voice Applications Configure voice application'
-            '{% endblock %}'
-        ).render(Context({
-            'action': 'add'
-        }))
+                '{% block content_header %}'
+                '{% if action == "add" %}'
+                        'Add'
+                '{% endif %} '
+                'Voice Applications Configure voice application'
+                '{% endblock %}'
+            ).render(Context({
+                'action': 'add'
+            }))
         self.assertEqual(out,
             'Add Voice Applications Configure voice application')
 
@@ -85,15 +84,14 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response['Location'], '/voiceapp/')
 
         out = Template(
-            '{% load i18n %}'
-            '{% block content %}'
-            '{% if msg %}'
-                '{{ msg|safe }}'
-            '{% endif %}'
-            '{% endblock %}'
-        ).render(Context({
-            'msg': request.session.get('msg'),
-        }))
+                '{% block content %}'
+                '{% if msg %}'
+                    '{{ msg|safe }}'
+                '{% endif %}'
+                '{% endblock %}'
+            ).render(Context({
+                'msg': request.session.get('msg'),
+            }))
         self.assertEqual(out, '"vocie_app" is added.')
         self.assertEqual(response.status_code, 302)
 
@@ -103,11 +101,37 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
         response = self.client.get('/voiceapp/1/')
         self.assertEqual(response.status_code, 200)
 
-        request = self.factory.get('/voiceapp/1/')
+        out = Template(
+                '{% block content_header %}'
+                '{% if action == "update" %}'
+                'Update'
+                '{% endif %} '
+                'Voice Applications Configure voice application'
+                '{% endblock %}'
+            ).render(Context({
+                'action': 'update'
+            }))
+        self.assertEqual(out,
+            'Update Voice Applications Configure voice application')
+
+        request = self.factory.post('/voiceapp/1/',
+                {'name': 'vocie_app'}, follow=True)
         request.user = self.user
         request.session = {}
         response = voiceapp_change(request, 1)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Location'], '/voiceapp/')
+
+        out = Template(
+                '{% block content %}'
+                '{% if msg %}'
+                '{{ msg|safe }}'
+                '{% endif %}'
+                '{% endblock %}'
+            ).render(Context({
+                'msg': request.session.get('msg'),
+            }))
+        self.assertEqual(out, '"vocie_app" is updated.')
+        self.assertEqual(response.status_code, 302)
 
         response = voiceapp_del(request, 1)
         self.assertEqual(response.status_code, 302)

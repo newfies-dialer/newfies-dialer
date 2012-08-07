@@ -180,7 +180,7 @@
                         <td>{{ td.starting_date }}</td>
                         <td>{{ td.duration__sum|conv_min }}</td>
                         <td>{% if max_duration > 0 %}
-                            <img src="{{STATIC_URL}}newfies/images/spacer.png" width="{{td.duration__sum|cal_width:max_duration}}" style="vertical-align:center; height:15px"/>
+                            <img src="{{STATIC_URL}}newfies/images/spacer.png" width="{{ td.duration__sum|cal_width:max_duration }}" style="vertical-align:center; height:15px"/>
                         {% endif %}
                         </td>
                         <td>{{ td.starting_date__count }}</td>

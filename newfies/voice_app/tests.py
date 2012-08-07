@@ -62,20 +62,6 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
         self.assertTrue(response.context['form'], VoiceAppForm())
         self.assertTemplateUsed(response, 'frontend/voiceapp/change.html')
 
-        out = Template(
-                '{% block content_header %}'
-                '{% if action == "add" %}'
-                        'Add'
-                '{% endif %} '
-                'Voice Applications Configure voice application'
-                '{% endblock %}'
-            ).render(Context({
-                'action': 'add'
-            }))
-        self.assertEqual(out,
-            'Add Voice Applications Configure voice application')
-
-
         request = self.factory.post('/voiceapp/add/',
                 {'name': 'vocie_app'}, follow=True)
         request.user = self.user
@@ -85,9 +71,9 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
 
         out = Template(
                 '{% block content %}'
-                '{% if msg %}'
-                    '{{ msg|safe }}'
-                '{% endif %}'
+                    '{% if msg %}'
+                        '{{ msg|safe }}'
+                    '{% endif %}'
                 '{% endblock %}'
             ).render(Context({
                 'msg': request.session.get('msg'),
@@ -101,19 +87,6 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
         response = self.client.get('/voiceapp/1/')
         self.assertEqual(response.status_code, 200)
 
-        out = Template(
-                '{% block content_header %}'
-                '{% if action == "update" %}'
-                'Update'
-                '{% endif %} '
-                'Voice Applications Configure voice application'
-                '{% endblock %}'
-            ).render(Context({
-                'action': 'update'
-            }))
-        self.assertEqual(out,
-            'Update Voice Applications Configure voice application')
-
         request = self.factory.post('/voiceapp/1/',
                 {'name': 'vocie_app'}, follow=True)
         request.user = self.user
@@ -123,9 +96,9 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
 
         out = Template(
                 '{% block content %}'
-                '{% if msg %}'
-                '{{ msg|safe }}'
-                '{% endif %}'
+                    '{% if msg %}'
+                        '{{ msg|safe }}'
+                    '{% endif %}'
                 '{% endblock %}'
             ).render(Context({
                 'msg': request.session.get('msg'),

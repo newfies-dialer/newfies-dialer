@@ -13,6 +13,7 @@
 #
 
 from django.contrib.auth.models import User
+from django.template import Template, Context, TemplateSyntaxError
 from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
 from survey.models import SurveyApp, SurveyQuestion,\
@@ -187,6 +188,26 @@ class SurveyCustomerView(BaseAuthenticatedClient):
                         SurveyDetailReportForm(self.user))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/survey/survey_report.html')
+
+        # Test template tags
+        out = Template(
+                '{% load dialer_cdr_extras common_tags %}'
+                '{% block content %}'
+                    '{{ duration|conv_min }}'
+                    '{{ question_response|que_res_string|safe }}'
+                    '{{ duration|cal_width:max_duration }}'
+                '{% endblock %}'
+            ).render(Context({
+                'duration': 60,
+                'question_response': 'qst_1*|*ans_1',
+                'max_duration': 100
+            }))
+        self.assertEqual(out,
+            '01:00'
+            '<table class="table table-striped table-bordered table-condensed">'
+            '<tr><td>qst_1</td><td class="survey_result_key">ans_1</td></tr>'
+            '</table>'
+            '120.0')
 
 
 class SurveyModel(TestCase):

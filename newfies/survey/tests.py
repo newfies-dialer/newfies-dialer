@@ -21,7 +21,8 @@ from survey.forms import SurveyForm, SurveyQuestionForm, \
     SurveyResponseForm, SurveyDetailReportForm
 from survey.views import survey_list, survey_grid, survey_add, \
     survey_change, survey_del, survey_question_add, survey_question_change,\
-    survey_response_add, survey_response_change
+    survey_response_add, survey_response_change, survey_report
+from datetime import datetime
 
 
 class SurveyAdminView(BaseAuthenticatedClient):
@@ -123,36 +124,60 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 302)
 
     def test_survey_question_view_add(self):
-        request = self.factory.get('/survey_question/add/?surveyapp_id=1')
+        request = self.factory.post('/survey_question/add/?surveyapp_id=1',
+                {'question': 'test_question', 'type': 1})
         request.user = self.user
         request.session = {}
         response = survey_question_add(request)
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+            'frontend/survey/survey_question_change.html')
 
     def test_survey_question_view_update(self):
-        request = self.factory.get('/survey_question/1/')
+        request = self.factory.post('/survey_question/1/',
+                {'question': 'test_question', 'type': 1})
         request.user = self.user
         request.session = {}
         response = survey_question_change(request, 1)
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+            'frontend/survey/survey_question_change.html')
 
     def test_survey_question_response_view_add(self):
-        request = self.factory.get('/survey_response/add/?surveyquestion_id=1')
+        request = self.factory.post('/survey_response/add/?surveyquestion_id=1',
+                {'key': '1', 'keyvalue': 'apple'})
         request.user = self.user
         request.session = {}
         response = survey_response_add(request)
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+            'frontend/survey/survey_response_change.html')
 
     def test_survey_question_response_view_update(self):
-        request = self.factory.get('/survey_response/1/')
+        request = self.factory.post('/survey_response/1/',
+                {'key': '1', 'keyvalue': 'apple'})
         request.user = self.user
         request.session = {}
         response = survey_response_change(request, 1)
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+            'frontend/survey/survey_response_change.html')
 
     def test_survey_view_report(self):
         """Test Function survey view report"""
-        response = self.client.get('/survey_report/')
+        request = self.factory.post('/survey_report/', {'campaign': 1,
+                                                       'from_date': datetime.now(),
+                                                       'to_date': datetime.now()})
+        request.user = self.user
+        request.session = {}
+        response = survey_report(request)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'frontend/survey/survey_report.html')
+
+        response = self.client.post('/survey_report/',
+                                    {'campaign': 1,
+                                     'from_date': datetime.now(),
+                                     'to_date': datetime.now()})
         self.assertTrue(response.context['form'],
                         SurveyDetailReportForm(self.user))
         self.assertEqual(response.status_code, 200)

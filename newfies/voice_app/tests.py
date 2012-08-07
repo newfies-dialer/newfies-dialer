@@ -54,16 +54,6 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
         response = voiceapp_list(request)
         self.assertEqual(response.status_code, 200)
 
-        out = Template(
-            '{% load i18n %}'
-            '{% block content_header %}'
-            '<h1>Voice Applications '
-            '<small>List, add and edit voice applications</small>'
-            '</h1>'
-            '{% endblock %}'
-        ).render(Context())
-        self.assertEqual(out,
-            '<h1>Voice Applications <small>List, add and edit voice applications</small></h1>')
 
     def test_voiceapp_view_add(self):
         """Test Function to check voice app view to add"""
@@ -75,24 +65,38 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
         out = Template(
             '{% load i18n %}'
             '{% block content_header %}'
-            '<h1>{% if action == "add" %}'
+            '{% if action == "add" %}'
                     'Add'
-                '{% endif %} '
-                'Voice Applications '
-            '<small>Configure voice application</small>'
-            '</h1>{% endblock %}'
+            '{% endif %} '
+            'Voice Applications Configure voice application'
+            '{% endblock %}'
         ).render(Context({
             'action': 'add'
         }))
         self.assertEqual(out,
-            '<h1>Add Voice Applications <small>Configure voice application</small></h1>')
+            'Add Voice Applications Configure voice application')
 
 
-        request = self.factory.get('/voiceapp/add/')
+        request = self.factory.post('/voiceapp/add/',
+                {'name': 'vocie_app'}, follow=True)
         request.user = self.user
         request.session = {}
         response = voiceapp_add(request)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Location'], '/voiceapp/')
+
+        out = Template(
+            '{% load i18n %}'
+            '{% block content %}'
+            '{% if msg %}'
+                '{{ msg|safe }}'
+            '{% endif %}'
+            '{% endblock %}'
+        ).render(Context({
+            'msg': request.session.get('msg'),
+        }))
+        self.assertEqual(out, '"vocie_app" is added.')
+        self.assertEqual(response.status_code, 302)
+
 
     def test_voiceapp_view_update(self):
         """Test Function to check voice app view to update"""

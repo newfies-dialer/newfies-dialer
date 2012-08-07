@@ -36,7 +36,7 @@ def grid_common_function(request):
     # page index
     if int(grid_data['page']) > 1:
         grid_data['start_page'] = (int(grid_data['page']) - 1) * \
-                                    int(grid_data['rp'])
+                                   int(grid_data['rp'])
         grid_data['end_page'] = grid_data['start_page'] + int(grid_data['rp'])
     else:
         grid_data['start_page'] = int(0)

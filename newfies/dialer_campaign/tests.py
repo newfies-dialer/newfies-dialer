@@ -14,10 +14,13 @@
 
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
+from django.template import Template, Context, TemplateSyntaxError
 from django.test import TestCase
 from dialer_contact.models import Phonebook
 from dialer_campaign.models import Campaign, CampaignSubscriber
 from dialer_campaign.forms import CampaignForm
+from dialer_campaign.views import campaign_list, campaign_add, \
+                                  campaign_change, campaign_del
 from common.utils import BaseAuthenticatedClient
 
 
@@ -60,6 +63,12 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/campaign/list.html')
 
+        request = self.factory.get('/campaign/')
+        request.user = self.user
+        request.session = {}
+        response = campaign_list(request)
+        self.assertEqual(response.status_code, 200)
+
     def test_campaign_view_add(self):
         """Test Function to check add campaign"""
         response = self.client.post('/campaign/add/', data={
@@ -74,8 +83,71 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "calltimeout": "60",
             "aleg_gateway": "1",
             "content_object": "type:30-id:1",
-            "extra_data": "2000"})
+            "extra_data": "2000"}, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/campaign/add/', {
+            "name": "mycampaign",
+            "description": "xyz",
+            "startingdate": "1301392136.0",
+            "expirationdate": "1301332136.0",
+            "frequency": "20",
+            "callmaxduration": "50",
+            "maxretry": "3",
+            "intervalretry": "3000",
+            "calltimeout": "60",
+            "aleg_gateway": "1",
+            "content_object": "type:30-id:1",
+            "extra_data": "2000"}, follow=True)
+
+        request.user = self.user
+        request.session = {}
+        response = campaign_add(request)
+        self.assertEqual(response['Location'], '/campaign/')
         self.assertEqual(response.status_code, 302)
+
+        out = Template(
+                '{% block content %}'
+                    '{% if msg %}'
+                        '{{ msg|safe }}'
+                    '{% endif %}'
+                    '{% if error_msg %}'
+                        '{{ error_msg|safe }}'
+                    '{% endif %}'
+                '{% endblock %}'
+            ).render(Context({
+                'msg': request.session.get('msg'),
+                'error_msg': request.session.get('error_msg'),
+            }))
+        self.assertEqual(out,
+            'In order to add a campaign, '
+            'you need to have your settings configured properly, '
+            'please contact the admin.')
+
+    def test_campaign_view_update_delete(self):
+        """Test Function to check update/delete campaign"""
+        request = self.factory.post('/campaign/1/', {
+            "name": "Sample campaign",
+            }, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = campaign_change(request, 1)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['Location'], '/campaign/')
+       
+        response = campaign_del(request, 1)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['Location'], '/campaign/')
+        out = Template(
+                '{% block content %}'
+                    '{% if msg %}'
+                        '{{ msg|safe }}'
+                    '{% endif %}'
+                '{% endblock %}'
+            ).render(Context({
+                'msg': request.session.get('msg'),
+            }))
+        self.assertEqual(out, '"Sample campaign" is deleted.')
 
 
 class DialerCampaignModel(TestCase):

@@ -18,6 +18,7 @@ from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.forms import VoipSearchForm
+from dialer_cdr.views import export_voipcall_report, voipcall_report
 from datetime import datetime
 
 
@@ -54,6 +55,12 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
         response = self.client.post('/voipcall_report/',
                                     data={'from_date': datetime.now(),
                                           'to_date': datetime.now()})
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.get('/voipcall_report/')
+        request.user = self.user
+        request.session = {}
+        response = voipcall_report(request)
         self.assertEqual(response.status_code, 200)
 
 

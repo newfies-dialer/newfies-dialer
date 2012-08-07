@@ -20,6 +20,7 @@ from user_profile.forms import UserChangeDetailForm, \
                                UserChangeDetailExtendForm, \
                                CheckPhoneNumberForm, \
                                UserProfileForm
+from user_profile.views import customer_detail_change
 from dialer_settings.models import DialerSetting
 from common.utils import BaseAuthenticatedClient
 
@@ -69,6 +70,11 @@ class UserProfileCustomerView(BaseAuthenticatedClient):
         self.assertTemplateUsed(response,
             'frontend/registration/user_detail_change.html')
 
+        request = self.factory.get('/user_detail_change/')
+        request.user = self.user
+        request.session = {}
+        response = customer_detail_change(request)
+        self.assertEqual(response.status_code, 200)
 
 
 class UserProfileModel(TestCase):

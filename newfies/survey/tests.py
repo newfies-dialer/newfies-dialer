@@ -124,6 +124,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 302)
 
     def test_survey_question_view_add(self):
+        """Test Function survey question view add"""
         request = self.factory.post('/survey_question/add/?surveyapp_id=1',
                 {'question': 'test_question', 'type': 1})
         request.user = self.user
@@ -134,6 +135,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
             'frontend/survey/survey_question_change.html')
 
     def test_survey_question_view_update(self):
+        """Test Function survey question view update"""
         request = self.factory.post('/survey_question/1/',
                 {'question': 'test_question', 'type': 1})
         request.user = self.user
@@ -144,6 +146,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
             'frontend/survey/survey_question_change.html')
 
     def test_survey_question_response_view_add(self):
+        """Test Function survey response view add"""
         request = self.factory.post('/survey_response/add/?surveyquestion_id=1',
                 {'key': '1', 'keyvalue': 'apple'})
         request.user = self.user
@@ -154,6 +157,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
             'frontend/survey/survey_response_change.html')
 
     def test_survey_question_response_view_update(self):
+        """Test Function survey response view update"""
         request = self.factory.post('/survey_response/1/',
                 {'key': '1', 'keyvalue': 'apple'})
         request.user = self.user
@@ -165,9 +169,10 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
     def test_survey_view_report(self):
         """Test Function survey view report"""
-        request = self.factory.post('/survey_report/', {'campaign': 1,
-                                                       'from_date': datetime.now(),
-                                                       'to_date': datetime.now()})
+        request = self.factory.post('/survey_report/',
+                                    {'campaign': 1,
+                                     'from_date': datetime.now(),
+                                     'to_date': datetime.now()})
         request.user = self.user
         request.session = {}
         response = survey_report(request)

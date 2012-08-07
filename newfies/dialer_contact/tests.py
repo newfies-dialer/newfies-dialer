@@ -116,6 +116,7 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
 
 
     def test_phonebook_view_update(self):
+        """Test Function to check update phonebook"""
         response = self.client.get('/phonebook/1/')
         self.assertEqual(response.context['action'], 'update')
         self.assertEqual(response.status_code, 200)
@@ -128,6 +129,7 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
     def test_phonebook_view_delete(self):
+        """Test Function to check delete phonebook"""
         request = self.factory.get('/phonebook/del/1/')
         request.user = self.user
         request.session = {}
@@ -198,6 +200,7 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
     def test_contact_view_delete(self):
+        """Test Function to check delete contact"""
         request = self.factory.get('/contact/del/1/')
         request.user = self.user
         request.session = {}

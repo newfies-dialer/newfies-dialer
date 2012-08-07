@@ -41,6 +41,7 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
     fixtures = ['auth_user.json', 'gateway.json', 'voiceapp.json']
 
     def test_voiceapp_view_list(self):
+        """Test Function to check voice app list view"""
         response = self.client.get('/voiceapp/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/voiceapp/list.html')
@@ -52,6 +53,7 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
     def test_voiceapp_view_add(self):
+        """Test Function to check voice app view to add"""
         response = self.client.get('/voiceapp/add/')
         self.assertEqual(response.context['action'], 'add')
         self.assertTrue(response.context['form'], VoiceAppForm())
@@ -64,6 +66,7 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
     def test_voiceapp_view_update(self):
+        """Test Function to check voice app view to update"""
         response = self.client.get('/voiceapp/1/')
         self.assertEqual(response.status_code, 200)
 

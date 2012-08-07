@@ -63,12 +63,14 @@ class FrontendCustomerView(BaseAuthenticatedClient):
         self.assertTrue(response.context['form'], DashboardForm(self.user))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/dashboard.html')
+
         response = self.client.post('/dashboard/',
                                     {'campaign': '1',
                                      'search_type': '1'})
         self.assertEqual(response.status_code, 200)
 
-        request = self.factory.get('/dashboard/')
+        request = self.factory.post('/dashboard/', {'campaign': '1',
+                                                    'search_type': '1'})
         request.user = self.user
         request.session = {}
         response = customer_dashboard(request)

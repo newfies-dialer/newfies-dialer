@@ -92,10 +92,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 302)
 
     def test_campaign_view_update_delete(self):
-        """Test Function to check update campaign"""
-        response = self.client.get('/campaign/1/')
-        self.assertEqual(response.status_code, 302)
-
+        """Test Function to check update/delete campaign"""
         request = self.factory.get('/campaign/1/')
         request.user = self.user
         request.session = {}

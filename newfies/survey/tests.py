@@ -80,21 +80,17 @@ class SurveyCustomerView(BaseAuthenticatedClient):
     fixtures = ['auth_user.json', 'survey.json', 'survey_question.json',
                 'survey_response.json']
 
-    def test_survey_view(self):
-        """Test Function survey view"""
+    def test_survey_view_list(self):
+        """Test Function survey view list"""
         response = self.client.get('/survey/')
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'frontend/survey/survey_list.html')
 
         request = self.factory.get('/survey/')
         request.user = self.user
         request.session = {}
         response = survey_list(request)
         self.assertEqual(response.status_code, 200)
-
-    def test_survey_view_list(self):
-        """Test Function survey view list"""
-        response = self.client.get('/survey/')
-        self.assertTemplateUsed(response, 'frontend/survey/survey_list.html')
 
     def test_survey_view_add(self):
         """Test Function survey view add"""
@@ -103,11 +99,24 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/survey/survey_change.html')
 
-        request = self.factory.get('/survey/add/')
+        request = self.factory.post('/survey/add/',
+                {'name': 'test_survey'}, follow=True)
         request.user = self.user
         request.session = {}
         response = survey_add(request)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['Location'], '/survey/2/')
+        out = Template(
+                '{% block content %}'
+                    '{% if msg %}'
+                        '{{ msg|safe }}'
+                    '{% endif %}'
+                '{% endblock %}'
+            ).render(Context({
+                'msg': request.session.get('msg'),
+            }))
+        self.assertEqual(out, '"test_survey" is added.')
+        self.assertEqual(response.status_code, 302)
 
     def test_survey_view_update(self):
         """Test Function survey view get"""
@@ -115,11 +124,25 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/survey/survey_change.html')
 
-        request = self.factory.get('/survey/1/')
+        request = self.factory.post('/survey/1/',
+                {'name': 'test_survey'}, follow=True)
         request.user = self.user
         request.session = {}
         response = survey_change(request, 1)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['Location'], '/survey/')
+
+        out = Template(
+                '{% block content %}'
+                    '{% if msg %}'
+                        '{{ msg|safe }}'
+                    '{% endif %}'
+                '{% endblock %}'
+            ).render(Context({
+                'msg': request.session.get('msg'),
+            }))
+        self.assertEqual(out, '"test_survey" is updated.')
+        self.assertEqual(response.status_code, 302)
 
         response = survey_del(request, 1)
         self.assertEqual(response.status_code, 302)

@@ -46,6 +46,8 @@ NEWFIES_ENV="newfies-dialer"
 HTTP_PORT="8008"
 
 
+#Django bug https://code.djangoproject.com/ticket/16017
+export LANG="en_US.UTF-8"
 
 # Identify Linux Distribution type
 func_identify_os() {

@@ -13,6 +13,7 @@
 #
 
 from django.contrib.auth.models import User
+from django.template import Template, Context, TemplateSyntaxError
 from django.test import TestCase
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.forms import Contact_fileImport, \
@@ -72,7 +73,6 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         """Test Function to check phonebook list"""
         response = self.client.get('/phonebook/')
         self.assertEqual(response.context['module'], 'phonebook_list')
-        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/phonebook/list.html')
 
         request = self.factory.get('/phonebook_grid/')
@@ -89,21 +89,26 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
 
     def test_phonebook_view_add(self):
         """Test Function to check add phonebook"""
-        response = self.client.get('/phonebook/add/')
-        self.assertEqual(response.context['action'], 'add')
-        self.assertEqual(response.status_code, 200)
-        response = self.client.post('/phonebook/add/',
-            data={
-                'name': 'My Phonebook',
-                'description': 'phonebook',
-            })
-        self.assertEqual(response.status_code, 302)
-
-        request = self.factory.get('/phonebook/add/')
+        request = self.factory.post('/phonebook/add/', data={
+            'name': 'My Phonebook',
+            'description': 'phonebook',
+            }, follow=True)
         request.user = self.user
         request.session = {}
         response = phonebook_add(request)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Location'], '/phonebook/')
+        self.assertEqual(response.status_code, 302)
+
+        out = Template(
+                '{% block content %}'
+                    '{% if msg %}'
+                        '{{ msg|safe }}'
+                    '{% endif %}'
+                '{% endblock %}'
+            ).render(Context({
+                'msg': request.session.get('msg'),
+            }))
+        self.assertEqual(out, '"My Phonebook" is added.')
 
         resp = self.client.post('/phonebook/add/',
             data={
@@ -122,19 +127,45 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/phonebook/change.html')
 
-        request = self.factory.get('/phonebook/1/')
+        request = self.factory.post('/phonebook/1/', data={
+            'name': 'Default_Phonebook',
+            }, follow=True)
         request.user = self.user
         request.session = {}
         response = phonebook_change(request, 1)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Location'], '/phonebook/')
+        self.assertEqual(response.status_code, 302)
+
+        out = Template(
+            '{% block content %}'
+                '{% if msg %}'
+                    '{{ msg|safe }}'
+                '{% endif %}'
+            '{% endblock %}'
+        ).render(Context({
+            'msg': request.session.get('msg'),
+            }))
+        self.assertEqual(out, '"Default_Phonebook" is updated.')
 
     def test_phonebook_view_delete(self):
         """Test Function to check delete phonebook"""
-        request = self.factory.get('/phonebook/del/1/')
+        request = self.factory.post('/phonebook/del/1/')
         request.user = self.user
         request.session = {}
         response = phonebook_del(request, 1)
+        self.assertEqual(response['Location'], '/phonebook/')
         self.assertEqual(response.status_code, 302)
+
+        out = Template(
+                '{% block content %}'
+                    '{% if msg %}'
+                        '{{ msg|safe }}'
+                    '{% endif %}'
+                '{% endblock %}'
+            ).render(Context({
+                'msg': request.session.get('msg'),
+            }))
+        self.assertEqual(out, '"Default_Phonebook" is deleted.')
 
     def test_contact_view_list(self):
         """Test Function to check Contact list"""
@@ -144,19 +175,16 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/contact/list.html')
 
-        response = self.client.post('/contact/',
-            data={'from_date': datetime.now(),
-                  'to_date': datetime.now(),
-                  'name': '123'})
-        self.assertEqual(response.status_code, 200)
-
         request = self.factory.get('/contact_grid/')
         request.user = self.user
         request.session = {}
         response = phonebook_list(request)
         self.assertEqual(response.status_code, 200)
 
-        request = self.factory.get('/contact/')
+        request = self.factory.post('/contact/',
+            data={'from_date': datetime.now(),
+                  'to_date': datetime.now(),
+                  'name': '123'})
         request.user = self.user
         request.session = {}
         response = contact_list(request)

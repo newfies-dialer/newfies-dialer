@@ -24,7 +24,7 @@ from tastypie.exceptions import ImmediateHttpResponse
 from tastypie import http
 
 from dialer_cdr.models import VoIPCall
-from settings_local import API_ALLOWED_IP
+from django.conf import settings
 from random import seed
 from cStringIO import StringIO
 import urllib
@@ -153,7 +153,7 @@ def save_if_set(record, fproperty, value):
 
 class IpAddressAuthorization(Authorization):
     def is_authorized(self, request, object=None):
-        if request.META['REMOTE_ADDR'] in API_ALLOWED_IP:
+        if request.META['REMOTE_ADDR'] in settings.API_ALLOWED_IP:
             return True
         else:
             raise ImmediateHttpResponse(response=http.HttpUnauthorized())
@@ -162,7 +162,7 @@ class IpAddressAuthorization(Authorization):
 
 class IpAddressAuthentication(Authentication):
     def is_authorized(self, request, object=None):
-        if request.META['REMOTE_ADDR'] in API_ALLOWED_IP:
+        if request.META['REMOTE_ADDR'] in settings.API_ALLOWED_IP:
             return True
         else:
             raise ImmediateHttpResponse(response=http.HttpUnauthorized())

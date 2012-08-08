@@ -39,9 +39,9 @@ DATABASES = {
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Not used with sqlite3.
         'PORT': '',                      # Not used with sqlite3.
-        'OPTIONS': {
-           'init_command': 'SET storage_engine=INNODB',
-        }
+        # 'OPTIONS': {
+        #    'init_command': 'SET storage_engine=INNODB',
+        # }
     }
 }
 

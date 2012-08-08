@@ -24,7 +24,7 @@ from tastypie.exceptions import ImmediateHttpResponse
 from tastypie import http
 
 from dialer_cdr.models import Callrequest
-from settings_local import PLIVO_DEFAULT_DIALCALLBACK_URL
+from django.conf import settings
 from api.resources import CustomXmlEmitter, \
                           IpAddressAuthorization, \
                           IpAddressAuthentication
@@ -172,7 +172,7 @@ class AnswercallResource(ModelResource):
                                    'callbackUrl="%s"' % \
                                    (timelimit,
                                     callerid,
-                                    PLIVO_DEFAULT_DIALCALLBACK_URL)
+                                    settings.PLIVO_DEFAULT_DIALCALLBACK_URL)
                     number_command = 'Number gateways="%s" ' \
                                      'gatewayTimeouts="%s"' % \
                                      (gateways, gatewaytimeouts)

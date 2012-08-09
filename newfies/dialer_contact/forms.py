@@ -46,16 +46,10 @@ class FileImport(forms.Form):
 
 class Contact_fileImport(FileImport):
     """Admin Form : Import CSV file with phonebook"""
-    #list = Phonebook.objects.all()
-    #pb_list = ((l.id, l.name) for l in list)
-    pb_list = ()
-    #TODO: This is producing an error testing with SQLite Memory
-    #Need to investigate more
 
     phonebook = forms.ChoiceField(label=_("Phonebook"),
-                                choices=pb_list,
                                 required=False,
-                                help_text=_("Select Phonebook"))
+                                help_text=_("Select Phonebook2"))
 
     def __init__(self, user, *args, **kwargs):
         super(Contact_fileImport, self).__init__(*args, **kwargs)

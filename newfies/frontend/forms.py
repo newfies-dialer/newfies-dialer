@@ -39,8 +39,8 @@ class DashboardForm(forms.Form):
         if user:
             list = []
             #list.append((0, '---'))
-            list = Campaign.objects.filter(user=user)
-            cp_list = ((l.id, l.name) for l in list)
+            listc = Campaign.objects.filter(user=user)
+            cp_list = ((l.id, l.name) for l in listc)
 
             for i in cp_list:
                 list.append((i[0], i[1]))

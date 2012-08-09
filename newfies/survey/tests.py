@@ -105,7 +105,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         request.session = {}
         response = survey_add(request)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['Location'], '/survey/2/')
+        self.assertEqual(response['Location'], '/survey/3/')
         out = Template(
                 '{% block content %}'
                     '{% if msg %}'
@@ -116,7 +116,6 @@ class SurveyCustomerView(BaseAuthenticatedClient):
                 'msg': request.session.get('msg'),
             }))
         self.assertEqual(out, '"test_survey" is added.')
-        self.assertEqual(response.status_code, 302)
 
     def test_survey_view_update(self):
         """Test Function survey view get"""

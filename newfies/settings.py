@@ -266,6 +266,8 @@ except ImportError:
 else:
     INSTALLED_APPS = INSTALLED_APPS + ('django_nose',)
     TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+    #TEST_RUNNER = 'djcelery.contrib.test_runner.CeleryTestSuiteRunner'
+
 
 # Dilla
 try:

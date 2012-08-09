@@ -21,12 +21,24 @@ Customer Interface Test Case
     :members:
 
 
+.. DialerContactCeleryTaskTestCase-customer:
+
+.. autoclass:: DialerContactCeleryTaskTestCase
+    :members:
+
+
 .. automodule:: dialer_campaign.tests
 
 .. _DialerCampaignCustomerView-customer:
 
 .. autoclass:: DialerCampaignCustomerView
     :members:
+
+.. _DialerCampaignCeleryTaskTestCase-customer:
+
+.. autoclass::DialerCampaignCeleryTaskTestCase
+    :members:
+
 
 .. _DialerCampaignModel:
 
@@ -42,10 +54,16 @@ Customer Interface Test Case
     :members:
 
 
+.. _DialerCdrCeleryTaskTestCase-customer:
+
+.. autoclass::DialerCdrCeleryTaskTestCase
+    :members:
+
+
 .. automodule:: dialer_audio.tests
 
 
-.. _AudioFileCustomerView-admin:
+.. _AudioFileCustomerView-customer:
 
 .. autoclass:: AudioFileCustomerView
     :members:
@@ -54,7 +72,7 @@ Customer Interface Test Case
 .. automodule:: survey.tests
 
 
-.. _SurveyCustomerView-admin:
+.. _SurveyCustomerView-customer:
 
 .. autoclass:: SurveyCustomerView
     :members:
@@ -64,7 +82,7 @@ Customer Interface Test Case
 .. automodule:: voice_app.tests
 
 
-.. _VoiceAppCustomerView-admin:
+.. _VoiceAppCustomerView-customer:
 
 .. autoclass:: VoiceAppCustomerView
     :members:

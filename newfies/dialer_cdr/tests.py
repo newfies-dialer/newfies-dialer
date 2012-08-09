@@ -19,6 +19,10 @@ from common.utils import BaseAuthenticatedClient
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.forms import VoipSearchForm
 from dialer_cdr.views import export_voipcall_report, voipcall_report
+from dialer_cdr.tasks import init_callrequest, \
+                             dummy_testcall, \
+                             dummy_test_answerurl, \
+                             dummy_test_hangupurl
 from datetime import datetime
 
 
@@ -38,6 +42,11 @@ class DialerCdrView(BaseAuthenticatedClient):
     def test_admin_voipcall_view_list(self):
         """Test Function to check admin voipcall list"""
         response = self.client.get('/admin/dialer_cdr/voipcall/')
+        self.failUnlessEqual(response.status_code, 200)
+
+    def test_admin_voipcall_view_report(self):
+        """Test Function to check admin voipcall list"""
+        response = self.client.get('/admin/dialer_cdr/voipcall/voip_report/')
         self.failUnlessEqual(response.status_code, 200)
 
 
@@ -62,6 +71,40 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
         request.session = {}
         response = voipcall_report(request)
         self.assertEqual(response.status_code, 200)
+
+
+class DialerCdrCeleryTaskTestCase(TestCase):
+    """Test cases for celery task"""
+
+    fixtures = ['gateway.json', 'voiceapp.json', 'auth_user.json',
+                'dialer_setting.json', 'contenttype.json',
+                'phonebook.json', 'contact.json',
+                'campaign.json', 'campaign_subscriber.json',
+                'callrequest.json', 'user_profile.json']
+
+    def test_init_callrequest(self):
+        """Test that the ``init_callrequest``
+        task runs with no errors, and returns the correct result."""
+        result = init_callrequest.delay(1, 1)
+        self.assertEqual(result.successful(), True)
+
+    def test_dummy_testcall(self):
+        """Test that the ``dummy_testcall``
+        periodic task runs with no errors, and returns the correct result."""
+        result = dummy_testcall.delay(1, '123456789', 1)
+        self.assertEqual(result.successful(), True)
+
+    def test_dummy_test_answerurl(self):
+        """Test that the ``dummy_test_answerurl``
+        task runs with no errors, and returns the correct result."""
+        result = dummy_test_answerurl.delay('e8fee8f6-40dd-11e1-964f-000c296bd875')
+        self.assertEqual(result.successful(), True)
+
+    def test_dummy_test_hangupurl(self):
+        """Test that the ``dummy_test_hangupurl``
+        periodic task runs with no errors, and returns the correct result."""
+        result = dummy_test_hangupurl.delay('e8fee8f6-40dd-11e1-964f-000c296bd875')
+        self.assertEqual(result.successful(), True)
 
 
 class DialerCdrModel(TestCase):

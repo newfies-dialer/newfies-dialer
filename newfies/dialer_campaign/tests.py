@@ -167,25 +167,25 @@ class DialerCampaignCeleryTaskTestCase(TestCase):
         """Test that the ``check_campaign_pendingcall``
         task runs with no errors, and returns the correct result."""
         result = check_campaign_pendingcall.delay(1)
-        self.assertEqual(result.successful(), False)
+        self.assertEqual(result.successful(), True)
 
     def test_campaign_running(self):
         """Test that the ``campaign_running``
         periodic task runs with no errors, and returns the correct result."""
         result = campaign_running.delay()
-        self.assertEqual(result.successful(), False)
+        self.assertEqual(result.successful(), True)
 
     def test_collect_subscriber(self):
         """Test that the ``collect_subscriber``
         task runs with no errors, and returns the correct result."""
         result = collect_subscriber.delay(1)
-        self.assertEqual(result.successful(), False)
+        self.assertEqual(result.successful(), True)
 
     def test_campaign_expire_check(self):
         """Test that the ``campaign_expire_check``
         periodic task runs with no errors, and returns the correct result."""
         result = campaign_expire_check.delay()
-        self.assertEqual(result.successful(), False)
+        self.assertEqual(result.successful(), True)
 
 
 class DialerCampaignModel(TestCase):

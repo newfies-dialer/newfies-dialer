@@ -81,25 +81,25 @@ class DialerCdrCeleryTaskTestCase(TestCase):
         """Test that the ``init_callrequest``
         task runs with no errors, and returns the correct result."""
         result = init_callrequest.delay(1, 1)
-        self.assertEqual(result.successful(), False)
+        self.assertEqual(result.successful(), True)
 
     def test_dummy_testcall(self):
         """Test that the ``dummy_testcall``
         periodic task runs with no errors, and returns the correct result."""
-        result = dummy_testcall.delay(1, '1234567890', 1)
-        self.assertEqual(result.successful(), False)
+        result = dummy_testcall.delay(1, '123456789', 1)
+        self.assertEqual(result.successful(), True)
 
     def test_dummy_test_answerurl(self):
         """Test that the ``dummy_test_answerurl``
         task runs with no errors, and returns the correct result."""
         result = dummy_test_answerurl.delay('e8fee8f6-40dd-11e1-964f-000c296bd875')
-        self.assertEqual(result.successful(), False)
+        self.assertEqual(result.successful(), True)
 
     def test_dummy_test_hangupurl(self):
         """Test that the ``dummy_test_hangupurl``
         periodic task runs with no errors, and returns the correct result."""
         result = dummy_test_hangupurl.delay('e8fee8f6-40dd-11e1-964f-000c296bd875')
-        self.assertEqual(result.successful(), False)
+        self.assertEqual(result.successful(), True)
 
 
 class DialerCdrModel(TestCase):

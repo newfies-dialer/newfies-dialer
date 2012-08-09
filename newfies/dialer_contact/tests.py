@@ -269,13 +269,13 @@ class DialerContactCeleryTaskTestCase(TestCase):
         """Test that the ``collect_subscriber_optimized``
         task runs with no errors, and returns the correct result."""
         result = collect_subscriber_optimized.delay(1)
-        self.assertEqual(result.successful(), False)
+        self.assertEqual(result.successful(), True)
 
     def test_import_phonebook(self):
         """Test that the ``import_phonebook``
         task runs with no errors, and returns the correct result."""
         result = import_phonebook.delay(1, 1)
-        self.assertEqual(result.successful(), False)
+        self.assertEqual(result.successful(), True)
 
 
 class DialerContactModel(TestCase):

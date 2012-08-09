@@ -21,6 +21,12 @@ Customer Interface Test Case
     :members:
 
 
+.. DialerContactCeleryTaskTestCase-customer:
+
+.. autoclass:: DialerContactCeleryTaskTestCase
+    :members:
+
+
 .. automodule:: dialer_campaign.tests
 
 .. _DialerCampaignCustomerView-customer:

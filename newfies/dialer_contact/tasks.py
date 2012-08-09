@@ -45,6 +45,8 @@ def collect_subscriber_optimized(campaign_id):
             #Run import
             import_phonebook.delay(obj_campaign.id, phonebook_id)
 
+    return True
+
 
 def importcontact_custom_sql(campaign_id, phonebook_id):
     from django.db import connection, transaction
@@ -89,3 +91,5 @@ def import_phonebook(campaign_id, phonebook_id):
     obj_campaign.imported_phonebook = obj_campaign.imported_phonebook + \
             '%s%d' % (sep, phonebook_id)
     obj_campaign.save()
+
+    return True

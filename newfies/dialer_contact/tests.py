@@ -24,7 +24,8 @@ from dialer_contact.views import phonebook_grid, phonebook_list, \
                          phonebook_add, phonebook_change, phonebook_del,\
                          contact_grid, contact_list, contact_add,\
                          contact_change, contact_del, contact_import
-
+from dialer_contact.tasks import collect_subscriber_optimized, \
+                                 import_phonebook
 from common.utils import BaseAuthenticatedClient
 from datetime import datetime
 
@@ -252,6 +253,29 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         request.session = {}
         response = contact_import(request)
         self.assertEqual(response.status_code, 200)
+
+
+
+class DialerContactCeleryTaskTestCase(TestCase):
+    """Test cases for celery task"""
+
+    fixtures = ['gateway.json', 'voiceapp.json', 'auth_user.json',
+                'dialer_setting.json', 'contenttype.json',
+                'phonebook.json', 'contact.json',
+                'campaign.json', 'campaign_subscriber.json',
+                'user_profile.json']
+
+    def test_collect_subscriber_optimized(self):
+        """Test that the ``collect_subscriber_optimized``
+        task runs with no errors, and returns the correct result."""
+        result = collect_subscriber_optimized.delay(1)
+        self.assertEqual(result.successful(), False)
+
+    def test_import_phonebook(self):
+        """Test that the ``import_phonebook``
+        task runs with no errors, and returns the correct result."""
+        result = import_phonebook.delay(1, 1)
+        self.assertEqual(result.successful(), False)
 
 
 class DialerContactModel(TestCase):

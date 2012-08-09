@@ -44,6 +44,11 @@ class DialerCdrView(BaseAuthenticatedClient):
         response = self.client.get('/admin/dialer_cdr/voipcall/')
         self.failUnlessEqual(response.status_code, 200)
 
+    def test_admin_voipcall_view_report(self):
+        """Test Function to check admin voipcall list"""
+        response = self.client.get('/admin/dialer_cdr/voipcall/voip_report/')
+        self.failUnlessEqual(response.status_code, 200)
+
 
 class DialerCdrCustomerView(BaseAuthenticatedClient):
     """Test cases for Callrequest, VoIPCall Customer Interface."""

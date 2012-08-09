@@ -13,22 +13,21 @@
 #
 
 from django.contrib.auth.models import User
-from django.template import Template, Context, TemplateSyntaxError
+from django.template import Template, Context
 from django.test import TestCase
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.forms import Contact_fileImport, \
-                                 PhonebookForm, \
-                                 ContactForm, \
-                                 ContactSearchForm
-from dialer_contact.views import phonebook_grid, phonebook_list, \
-                         phonebook_add, phonebook_change, phonebook_del,\
-                         contact_grid, contact_list, contact_add,\
-                         contact_change, contact_del, contact_import
+                        PhonebookForm, \
+                        ContactForm, \
+                        ContactSearchForm
+from dialer_contact.views import phonebook_add, phonebook_change, \
+                        phonebook_list, phonebook_del,\
+                        contact_list, contact_add,\
+                        contact_change, contact_del, contact_import
 from dialer_contact.tasks import collect_subscriber_optimized, \
-                                 import_phonebook
+                        import_phonebook
 from common.utils import BaseAuthenticatedClient
 from datetime import datetime
-
 
 
 class DialerContactView(BaseAuthenticatedClient):
@@ -123,7 +122,6 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.context['form']['name'].errors,
                          [u'This field is required.'])
-
 
     def test_phonebook_view_update(self):
         """Test Function to check update phonebook"""
@@ -243,7 +241,8 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
     def test_contact_view_import(self):
         """Test Function to check import Contact"""
         response = self.client.get('/contact/import/')
-        self.assertTrue(response.context['form'], Contact_fileImport(self.user))
+        self.assertTrue(response.context['form'], \
+                Contact_fileImport(self.user))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
                 'frontend/contact/import_contact.html')
@@ -257,7 +256,6 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         request.session = {}
         response = contact_import(request)
         self.assertEqual(response.status_code, 200)
-
 
 
 class DialerContactCeleryTaskTestCase(TestCase):

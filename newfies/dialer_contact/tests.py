@@ -37,6 +37,10 @@ class DialerContactView(BaseAuthenticatedClient):
 
     def test_admin_phonebook_view_list(self):
         """Test Function to check admin phonebook list"""
+        # the breakpoint will be here
+        # import pdb
+        # pdb.set_trace()
+
         response = self.client.get("/admin/dialer_contact/phonebook/")
         self.failUnlessEqual(response.status_code, 200)
 

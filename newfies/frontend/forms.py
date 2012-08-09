@@ -1,6 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from dialer_campaign.function_def import field_list
+from dialer_campaign.models import Campaign
+
 
 SEARCH_TYPE = (
     (1, _('Last 30 days')),
@@ -38,7 +39,9 @@ class DashboardForm(forms.Form):
         if user:
             list = []
             #list.append((0, '---'))
-            pb_list = field_list("campaign", user)
-            for i in pb_list:
+            list = Campaign.objects.filter(user=user)
+            cp_list = ((l.id, l.name) for l in list)
+
+            for i in cp_list:
                 list.append((i[0], i[1]))
             self.fields['campaign'].choices = list

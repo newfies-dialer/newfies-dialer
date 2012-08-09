@@ -16,7 +16,6 @@ from django import forms
 from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
 from dialer_contact.models import Phonebook, Contact
-from dialer_campaign.function_def import field_list
 
 
 class SearchForm(forms.Form):
@@ -47,8 +46,14 @@ class FileImport(forms.Form):
 
 class Contact_fileImport(FileImport):
     """Admin Form : Import CSV file with phonebook"""
+    #list = Phonebook.objects.all()
+    #pb_list = ((l.id, l.name) for l in list)
+    pb_list = ()
+    #TODO: This is producing an error testing with SQLite Memory
+    #Need to investigate more
+
     phonebook = forms.ChoiceField(label=_("Phonebook"),
-                                choices=field_list("phonebook"),
+                                choices=pb_list,
                                 required=False,
                                 help_text=_("Select Phonebook"))
 
@@ -57,8 +62,9 @@ class Contact_fileImport(FileImport):
         self.fields.keyOrder = ['phonebook', 'csv_file']
         # To get user's phonebook list
         if user:  # and not user.is_superuser
-            self.fields['phonebook'].choices = field_list(name="phonebook",
-                                                          user=user)
+            list = Phonebook.objects.filter(user=user)
+            pb_list_user = ((l.id, l.name) for l in list)
+            self.fields['phonebook'].choices = pb_list_user
 
 
 class PhonebookForm(ModelForm):
@@ -89,8 +95,9 @@ class ContactForm(ModelForm):
         super(ContactForm, self).__init__(*args, **kwargs)
         # To get user's phonebook list
         if user:
-            self.fields['phonebook'].choices = field_list(name="phonebook",
-                                                          user=user)
+            list = Phonebook.objects.filter(user=user)
+            pb_list_user = ((l.id, l.name) for l in list)
+            self.fields['phonebook'].choices = pb_list_user
 
 NAME_TYPE = (
     (1, _('Last Name')),
@@ -128,9 +135,9 @@ class ContactSearchForm(forms.Form):
         if user:
             list = []
             list.append((0, '---'))
-            pb_list = field_list("phonebook", user)
-            for i in pb_list:
+
+            listp = Phonebook.objects.filter(user=user)
+            pb_list_user = ((l.id, l.name) for l in listp)
+            for i in pb_list_user:
                 list.append((i[0], i[1]))
             self.fields['phonebook'].choices = list
-
-

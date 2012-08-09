@@ -12,20 +12,6 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from audiofield.models import AudioFile
-
-
-#TODO: Write indenpendant test for that function
-def field_list(name, user=None):
-    """Return List of audio file names"""
-    if name == "audiofile" and user is None:
-        list = AudioFile.objects.all()
-
-    if name == "audiofile" and user is not None:
-        list = AudioFile.objects.filter(user=user)
-
-    return ((l.id, l.name) for l in list)
-
 
 def export_question_result(val, column_question):
     """Modify survey result string for export

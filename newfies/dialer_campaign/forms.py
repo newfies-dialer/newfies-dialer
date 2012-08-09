@@ -17,8 +17,10 @@ from django.forms.util import ErrorList
 from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
-from dialer_campaign.models import Campaign, get_unique_code
-from dialer_campaign.function_def import field_list, user_dialer_setting
+from dialer_campaign.models import Phonebook, Campaign, \
+                                    get_unique_code
+from dialer_campaign.function_def import user_dialer_setting
+from user_profile.models import UserProfile
 
 
 class CampaignForm(ModelForm):
@@ -56,13 +58,18 @@ class CampaignForm(ModelForm):
             list_gw = []
 
             list_pb.append((0, '---'))
-            pb_list = field_list("phonebook", user)
+            list = Phonebook.objects.filter(user=user)
+            pb_list = ((l.id, l.name) for l in list)
+
             for i in pb_list:
                 list_pb.append((i[0], i[1]))
             self.fields['phonebook'].choices = list_pb
 
             list_gw.append((0, '---'))
-            gw_list = field_list("gateway", user)
+            list = UserProfile.objects.get(user=user)
+            list = list.userprofile_gateway.all()
+            gw_list = ((l.id, l.name) for l in list)
+
             for i in gw_list:
                 list_gw.append((i[0], i[1]))
             self.fields['aleg_gateway'].choices = list_gw

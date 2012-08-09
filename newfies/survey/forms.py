@@ -18,9 +18,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from survey.models import SurveyApp, SurveyQuestion, \
                           SurveyResponse, APP_TYPE
-from survey.function_def import field_list
 from dialer_campaign.models import Campaign
 from dialer_cdr.forms import VoipSearchForm
+from audiofield.models import AudioFile
 
 
 def get_audiofile_list(user):
@@ -28,7 +28,8 @@ def get_audiofile_list(user):
     with default none option"""
     list_af = []
     list_af.append(('', '---'))
-    af_list = field_list(name="audiofile", user=user)
+    list = AudioFile.objects.filter(user=user)
+    af_list = ((l.id, l.name) for l in list)
     for i in af_list:
         list_af.append((i[0], i[1]))
     return list_af

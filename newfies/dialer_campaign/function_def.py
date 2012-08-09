@@ -14,38 +14,15 @@
 
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from dialer_campaign.models import Phonebook, Campaign, \
-                                Contact, CAMPAIGN_STATUS, \
+from dialer_campaign.models import Contact, CAMPAIGN_STATUS, \
                                 CAMPAIGN_STATUS_COLOR
 from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting
-from voice_app.models import VoiceApp
 from common.common_functions import variable_value
 from dateutil.relativedelta import relativedelta
 from dateutil.rrule import rrule, DAILY, HOURLY
 from dateutil.parser import parse
 from datetime import datetime, timedelta
-
-
-def field_list(name, user=None):
-    """Return List of phonebook, campaign, country"""
-    if name == "phonebook" and user is None:
-        list = Phonebook.objects.all()
-
-    if name == "phonebook" and user is not None:
-        list = Phonebook.objects.filter(user=user)
-
-    if name == "campaign" and user is not None:
-        list = Campaign.objects.filter(user=user)
-
-    if name == "voiceapp" and user is not None:
-        list = VoiceApp.objects.filter(user=user)
-
-    if name == "gateway" and user is not None:
-        list = UserProfile.objects.get(user=user)
-        list = list.userprofile_gateway.all()
-
-    return ((l.id, l.name) for l in list)
 
 
 def user_attached_with_dialer_settings(request):

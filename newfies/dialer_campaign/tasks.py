@@ -147,6 +147,8 @@ def check_campaign_pendingcall(campaign_id):
         # launch_date = datetime.now()
         # init_callrequest.apply_async(args=[new_callrequest_id, obj_campaign_id], eta=launch_date)
 
+    return True
+
 
 class campaign_running(PeriodicTask):
     """A periodic task that checks the campaign, create and tasks the calls
@@ -173,6 +175,8 @@ class campaign_running(PeriodicTask):
                                                          campaign.id))
 
             check_campaign_pendingcall.delay(campaign.id)
+
+        return True
 
 
 @task()
@@ -233,3 +237,5 @@ class campaign_expire_check(PeriodicTask):
             logger.debug("=> Campaign name %s (id:%s)" % (campaign.name,
                                                          campaign.id))
             common_campaign_status(campaign.id, 4)
+
+        return True

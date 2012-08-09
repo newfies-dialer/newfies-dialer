@@ -21,6 +21,10 @@ from dialer_campaign.models import Campaign, CampaignSubscriber
 from dialer_campaign.forms import CampaignForm
 from dialer_campaign.views import campaign_list, campaign_add, \
                                   campaign_change, campaign_del
+from dialer_campaign.tasks import check_campaign_pendingcall,\
+                                  campaign_running,\
+                                  collect_subscriber,\
+                                  campaign_expire_check
 from common.utils import BaseAuthenticatedClient
 
 
@@ -148,6 +152,40 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
                 'msg': request.session.get('msg'),
             }))
         self.assertEqual(out, '"Sample campaign" is deleted.')
+
+
+class DialerCampaignCeleryTaskTestCase(TestCase):
+    """Test cases for celery task"""
+
+    fixtures = ['gateway.json', 'voiceapp.json', 'auth_user.json',
+                'dialer_setting.json', 'contenttype.json',
+                'phonebook.json', 'contact.json',
+                'campaign.json', 'campaign_subscriber.json',
+                'user_profile.json']
+
+    def test_check_campaign_pendingcall(self):
+        """Test that the ``check_campaign_pendingcall``
+        task runs with no errors, and returns the correct result."""
+        result = check_campaign_pendingcall.delay(1)
+        self.assertEqual(result.successful(), False)
+
+    def test_campaign_running(self):
+        """Test that the ``campaign_running``
+        periodic task runs with no errors, and returns the correct result."""
+        result = campaign_running.delay()
+        self.assertEqual(result.successful(), False)
+
+    def test_collect_subscriber(self):
+        """Test that the ``collect_subscriber``
+        task runs with no errors, and returns the correct result."""
+        result = collect_subscriber.delay(1)
+        self.assertEqual(result.successful(), False)
+
+    def test_campaign_expire_check(self):
+        """Test that the ``campaign_expire_check``
+        periodic task runs with no errors, and returns the correct result."""
+        result = campaign_expire_check.delay()
+        self.assertEqual(result.successful(), False)
 
 
 class DialerCampaignModel(TestCase):

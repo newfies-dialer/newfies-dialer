@@ -34,6 +34,12 @@ Customer Interface Test Case
 .. autoclass:: DialerCampaignCustomerView
     :members:
 
+.. _DialerCampaignCeleryTaskTestCase-customer:
+
+.. autoclass::DialerCampaignCeleryTaskTestCase
+    :members:
+
+
 .. _DialerCampaignModel:
 
 .. autoclass::DialerCampaignModel

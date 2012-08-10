@@ -13,12 +13,16 @@
 #
 
 from django.contrib.auth.models import User
+from django.conf import settings
 from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
 from audiofield.models import AudioFile
 from dialer_audio.forms import DialerAudioFileForm
 from dialer_audio.views import audio_list, audio_add
 
+audio_file = open(
+    settings.APPLICATION_DIR + '/dialer_audio/fixtures/sample_audio_file.mp3', 'r'
+)
 
 class AudioFileAdminView(BaseAuthenticatedClient):
     """Test cases for AudioFile Admin Interface."""
@@ -31,6 +35,14 @@ class AudioFileAdminView(BaseAuthenticatedClient):
     def test_admin_audiofile_view_add(self):
         """Test Function to check admin audiofile add"""
         response = self.client.get("/admin/audiofield/audiofile/add/")
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/admin/audiofield/audiofile/add/',
+            data={'name': 'sample_audio_file',
+                  'audio_file': audio_file,
+                  'convert_type': 2,
+                  'channel_type': 1,
+                  'freq_type': 8000})
         self.assertEqual(response.status_code, 200)
 
 
@@ -73,6 +85,14 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
         request.user = self.user
         request.session = {}
         response = audio_add(request)
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/audio/add/',
+            data={'name': 'sample_audio_file',
+                  'audio_file': audio_file,
+                  'convert_type': 2,
+                  'channel_type': 1,
+                  'freq_type': 8000})
         self.assertEqual(response.status_code, 200)
 
 

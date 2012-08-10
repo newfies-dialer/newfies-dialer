@@ -31,6 +31,9 @@ from common.utils import BaseAuthenticatedClient
 from datetime import datetime
 
 
+csv_file = open(
+        settings.APPLICATION_DIR + '/dialer_contact/fixtures/import_contacts.txt', 'r'
+    )
 
 class DialerContactView(BaseAuthenticatedClient):
     """Test cases for Phonebook, Contact, Campaign, CampaignSubscriber
@@ -66,6 +69,11 @@ class DialerContactView(BaseAuthenticatedClient):
         response =\
             self.client.get('/admin/dialer_contact/contact/import_contact/')
         self.failUnlessEqual(response.status_code, 200)
+
+        response = self.client.post('/admin/dialer_contact/contact/import_contact/',
+            data={'phonebook_id': '1',
+                  'csv_file': csv_file})
+        self.assertEqual(response.status_code, 200)
 
 
 class DialerContactCustomerView(BaseAuthenticatedClient):
@@ -249,9 +257,6 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         self.assertTemplateUsed(response,
                 'frontend/contact/import_contact.html')
 
-        csv_file = open(
-            settings.APPLICATION_DIR + '/dialer_contact/fixtures/import_contacts.txt','r'
-        )
         response = self.client.post('/contact/import/',
             data={'phonebook_id': '1',
                   'csv_file': csv_file})

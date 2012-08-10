@@ -15,6 +15,7 @@
 from django.contrib.auth.models import User
 from django.template import Template, Context, TemplateSyntaxError
 from django.test import TestCase
+from django.conf import settings
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.forms import Contact_fileImport, \
                                  PhonebookForm, \
@@ -248,8 +249,12 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         self.assertTemplateUsed(response,
                 'frontend/contact/import_contact.html')
 
+        csv_file = open(
+            settings.APPLICATION_DIR + '/dialer_contact/fixtures/import_contacts.txt','r'
+        )
         response = self.client.post('/contact/import/',
-            data={'phonebook_id': '1'})
+            data={'phonebook_id': '1',
+                  'csv_file': csv_file})
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.get('/contact/import/')

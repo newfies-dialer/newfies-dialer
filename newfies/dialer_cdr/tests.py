@@ -14,6 +14,7 @@
 
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
+from django.core.management import call_command
 from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
 from dialer_cdr.models import Callrequest, VoIPCall
@@ -147,6 +148,9 @@ class DialerCdrModel(TestCase):
             leg_type=1
         )
         self.voipcall.save()
+
+        # Test mgt command
+        call_command("create_callrequest_cdr", "'1|10")
 
     def test_name(self):
         self.assertEqual(self.callrequest.phone_number, "123456")

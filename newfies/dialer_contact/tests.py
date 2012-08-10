@@ -16,6 +16,7 @@ from django.contrib.auth.models import User
 from django.template import Template, Context, TemplateSyntaxError
 from django.test import TestCase
 from django.conf import settings
+from django.core.management import call_command
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.forms import Contact_fileImport, \
                                  PhonebookForm, \
@@ -313,6 +314,9 @@ class DialerContactModel(TestCase):
             contact=123456789,
         )
         self.contact.save()
+
+        # Test mgt command
+        call_command("create_contact", "'1|10")
 
     def test_phonebook_form(self):
         self.assertEqual(self.phonebook.name, 'test_phonebook')

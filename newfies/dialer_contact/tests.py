@@ -15,6 +15,8 @@
 from django.contrib.auth.models import User
 from django.template import Template, Context
 from django.test import TestCase
+from django.conf import settings
+from django.core.management import call_command
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.forms import Contact_fileImport, \
                         PhonebookForm, \
@@ -29,6 +31,10 @@ from dialer_contact.tasks import collect_subscriber_optimized, \
 from common.utils import BaseAuthenticatedClient
 from datetime import datetime
 
+
+csv_file = open(
+        settings.APPLICATION_DIR + '/dialer_contact/fixtures/import_contacts.txt', 'r'
+    )
 
 class DialerContactView(BaseAuthenticatedClient):
     """Test cases for Phonebook, Contact, Campaign, CampaignSubscriber
@@ -64,6 +70,11 @@ class DialerContactView(BaseAuthenticatedClient):
         response =\
             self.client.get('/admin/dialer_contact/contact/import_contact/')
         self.failUnlessEqual(response.status_code, 200)
+
+        response = self.client.post('/admin/dialer_contact/contact/import_contact/',
+            data={'phonebook_id': '1',
+                  'csv_file': csv_file})
+        self.assertEqual(response.status_code, 200)
 
 
 class DialerContactCustomerView(BaseAuthenticatedClient):
@@ -248,7 +259,8 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
                 'frontend/contact/import_contact.html')
 
         response = self.client.post('/contact/import/',
-            data={'phonebook_id': '1'})
+            data={'phonebook_id': '1',
+                  'csv_file': csv_file})
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.get('/contact/import/')
@@ -301,6 +313,9 @@ class DialerContactModel(TestCase):
             contact=123456789,
         )
         self.contact.save()
+
+        # Test mgt command
+        call_command("create_contact", "'1|10")
 
     def test_phonebook_form(self):
         self.assertEqual(self.phonebook.name, 'test_phonebook')

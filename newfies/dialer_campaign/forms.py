@@ -23,6 +23,22 @@ from dialer_campaign.function_def import user_dialer_setting
 from user_profile.models import UserProfile
 
 
+def get_object_choices(available_objects):
+    """Function is used to get object_choices for
+    ``content_object`` field in campaign form"""
+    object_choices = []
+    for obj in available_objects:
+        type_id = ContentType.objects.get_for_model(obj.__class__).id
+        obj_id = obj.id
+        # form_value - e.g."type:12-id:3"
+        form_value = "type:%s-id:%s" % (type_id, obj_id)
+        display_text = str(ContentType.objects\
+        .get_for_model(obj.__class__)) + ' : ' + str(obj)
+        object_choices.append([form_value, display_text])
+
+    return object_choices
+
+
 class CampaignForm(ModelForm):
     """Campaign ModelForm"""
     campaign_code = forms.CharField(widget=forms.HiddenInput)
@@ -75,18 +91,13 @@ class CampaignForm(ModelForm):
             self.fields['aleg_gateway'].choices = list_gw
 
             from voice_app.models import VoiceApp
+            available_objects = VoiceApp.objects.filter(user=user)
+            object_choices = get_object_choices(available_objects)
+
             from survey.models import SurveyApp
-            available_objects = list(VoiceApp.objects.filter(user=user))
-            available_objects += list(SurveyApp.objects.filter(user=user))
-            object_choices = []
-            for obj in available_objects:
-                type_id = ContentType.objects.get_for_model(obj.__class__).id
-                obj_id = obj.id
-                # form_value - e.g."type:12-id:3"
-                form_value = "type:%s-id:%s" % (type_id, obj_id)
-                display_text = str(ContentType.objects\
-                            .get_for_model(obj.__class__)) + ' : ' + str(obj)
-                object_choices.append([form_value, display_text])
+            available_objects = SurveyApp.objects.filter(user=user)
+            object_choices += get_object_choices(available_objects)
+
             self.fields['content_object'].choices = object_choices
 
     def clean(self):

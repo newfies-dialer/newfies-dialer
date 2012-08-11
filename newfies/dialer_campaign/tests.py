@@ -15,6 +15,7 @@
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.template import Template, Context, TemplateSyntaxError
+from django.core.management import call_command
 from django.test import TestCase
 from dialer_contact.models import Phonebook
 from dialer_campaign.models import Campaign, CampaignSubscriber
@@ -223,6 +224,9 @@ class DialerCampaignModel(TestCase):
             status=1,
         )
         self.campaignsubscriber.save()
+
+        # Test mgt command
+        call_command("create_subscriber", "'123456|1, 546234|1")
 
     def test_campaign_form(self):
         self.assertEqual(self.campaign.name, "sample_campaign")

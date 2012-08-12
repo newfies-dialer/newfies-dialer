@@ -33,8 +33,10 @@ from datetime import datetime
 
 
 csv_file = open(
-        settings.APPLICATION_DIR + '/dialer_contact/fixtures/import_contacts.txt', 'r'
-    )
+    settings.APPLICATION_DIR + \
+        '/dialer_contact/fixtures/import_contacts.txt', 'r'
+)
+
 
 class DialerContactView(BaseAuthenticatedClient):
     """Test cases for Phonebook, Contact, Campaign, CampaignSubscriber
@@ -71,9 +73,9 @@ class DialerContactView(BaseAuthenticatedClient):
             self.client.get('/admin/dialer_contact/contact/import_contact/')
         self.failUnlessEqual(response.status_code, 200)
 
-        response = self.client.post('/admin/dialer_contact/contact/import_contact/',
-            data={'phonebook_id': '1',
-                  'csv_file': csv_file})
+        response = self.client.post(
+            '/admin/dialer_contact/contact/import_contact/',
+            data={'phonebook_id': '1', 'csv_file': csv_file})
         self.assertEqual(response.status_code, 200)
 
 
@@ -337,7 +339,6 @@ class DialerContactModel(TestCase):
 
         form = ContactForm(self.user, instance=self.contact)
         self.assertTrue(isinstance(form.instance, Contact))
-
 
     def teardown(self):
         self.phonebook.delete()

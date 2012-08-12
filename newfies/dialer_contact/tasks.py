@@ -15,6 +15,7 @@
 from celery.task import PeriodicTask
 from dialer_campaign.models import Campaign
 from celery.decorators import task
+from django.conf import settings
 
 #from celery.task.http import HttpDispatchTask
 #from common_functions import isint
@@ -48,12 +49,17 @@ def collect_subscriber_optimized(campaign_id):
     return True
 
 
-def importcontact_custom_sql(campaign_id, phonebook_id):
-    from django.db import connection, transaction
-    cursor = connection.cursor()
-
+def importcontact_custom_sql(logger, campaign_id, phonebook_id):
     # Call PL-SQL stored procedure
     #CampaignSubscriber.importcontact_pl_sql(campaign_id, phonebook_id)
+
+    #TODO Support PostgreSQL
+    if settings.DATABASES['default']['ENGINE'] != 'django.db.backends.mysql':
+        logger.info("Mysql is only supported at the moment")
+        return True
+
+    from django.db import connection, transaction
+    cursor = connection.cursor()
 
     # Data insert operation - commit required
     sqlimport = "INSERT IGNORE INTO dialer_campaign_subscriber (contact_id, "\
@@ -81,7 +87,7 @@ def import_phonebook(campaign_id, phonebook_id):
     obj_campaign = Campaign.objects.get(id=campaign_id)
 
     #Faster method, ask the Database to do the job
-    importcontact_custom_sql(campaign_id, phonebook_id)
+    importcontact_custom_sql(logger, campaign_id, phonebook_id)
 
     #Add the phonebook id to the imported list
     if obj_campaign.imported_phonebook == '':

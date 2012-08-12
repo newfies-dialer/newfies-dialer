@@ -38,6 +38,10 @@ DATABASES = {
     }
 }
 
+#Celery test
+BROKER_BACKEND = "memory"
+CELERY_ALWAYS_EAGER = True
+
 
 #LOGGING
 #=======

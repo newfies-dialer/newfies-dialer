@@ -81,30 +81,33 @@ class DialerCdrCeleryTaskTestCase(TestCase):
                 'dialer_setting.json', 'contenttype.json',
                 'phonebook.json', 'contact.json',
                 'campaign.json', 'campaign_subscriber.json',
-                'callrequest.json', 'user_profile.json']
+                'callrequest.json', 'voipcall.json', 'user_profile.json']
+
+    def setUp(self):
+        self.callrequest = Callrequest.objects.get(pk=1)
 
     def test_init_callrequest(self):
         """Test that the ``init_callrequest``
         task runs with no errors, and returns the correct result."""
-        result = init_callrequest.delay(1, 1)
+        result = init_callrequest.delay(self.callrequest.pk, 1)
         self.assertEqual(result.successful(), True)
 
     def test_dummy_testcall(self):
         """Test that the ``dummy_testcall``
         periodic task runs with no errors, and returns the correct result."""
-        result = dummy_testcall.delay(1, '123456789', 1)
+        result = dummy_testcall.delay(self.callrequest.pk, '123456789', 1)
         self.assertEqual(result.successful(), True)
 
     def test_dummy_test_answerurl(self):
         """Test that the ``dummy_test_answerurl``
         task runs with no errors, and returns the correct result."""
-        result = dummy_test_answerurl.delay('e8fee8f6-40dd-11e1-964f-000c296bd875')
+        result = dummy_test_answerurl.delay(self.callrequest.request_uuid)
         self.assertEqual(result.successful(), True)
 
     def test_dummy_test_hangupurl(self):
         """Test that the ``dummy_test_hangupurl``
         periodic task runs with no errors, and returns the correct result."""
-        result = dummy_test_hangupurl.delay('e8fee8f6-40dd-11e1-964f-000c296bd875')
+        result = dummy_test_hangupurl.delay(self.callrequest.request_uuid)
         self.assertEqual(result.successful(), True)
 
 

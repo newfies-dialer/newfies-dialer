@@ -1,0 +1,26 @@
+[
+   {
+      "pk":1,
+      "model":"dialer_cdr.voipcall",
+      "fields":{
+         "phone_number":"123456789",
+         "answersec":null,
+         "callerid":"",
+         "progresssec":null,
+         "callid":"",
+         "request_uuid":"e8fee8f6-40dd-11e1-964f-000c296bd875",
+         "used_gateway":null,
+         "waitsec":null,
+         "hangup_cause_q850":null,
+         "callrequest":1,
+         "leg_type":1,
+         "user":1,
+         "disposition":"ANSWER",
+         "duration":5,
+         "billsec":null,
+         "starting_date":"2012-08-13T02:28:59",
+         "hangup_cause":null,
+         "dialcode":null
+      }
+   }
+]

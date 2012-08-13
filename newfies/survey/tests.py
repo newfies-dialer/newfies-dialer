@@ -105,7 +105,6 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         request.session = {}
         response = survey_add(request)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['Location'], '/survey/2/')
         out = Template(
                 '{% block content %}'
                     '{% if msg %}'

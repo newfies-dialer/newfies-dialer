@@ -168,7 +168,7 @@ class campaign_running(PeriodicTask):
     @only_one(key="campaign_running", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
-        logger.warning("TASK :: campaign_running")
+        logger.debug("TASK :: campaign_running")
 
         for campaign in Campaign.objects.get_running_campaign():
             logger.debug("=> Campaign name %s (id:%s)" % (campaign.name,

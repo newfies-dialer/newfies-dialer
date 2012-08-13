@@ -30,6 +30,19 @@ class DialerSettingView(BaseAuthenticatedClient):
         response = self.client.get("/admin/dialer_settings/dialersetting/add/")
         self.assertEqual(response.status_code, 200)
 
+        response = self.client.post(
+            '/admin/dialer_settings/dialersetting/add/',
+            data={
+                "max_number_campaign": "10",
+                "name": "default_dialer_setting",
+                "max_number_subscriber_campaign": "10000",
+                "callmaxduration": "1800",
+                "maxretry": "3",
+                "max_frequency": "100",
+                "max_calltimeout": "45"
+                }, follow=True)
+        self.assertEqual(response.status_code, 200)
+
 
 class DialerSettingModel(TestCase):
     """Test DialerSetting model"""

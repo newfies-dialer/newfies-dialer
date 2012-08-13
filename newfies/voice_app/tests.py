@@ -37,6 +37,14 @@ class VoiceAppAdminView(BaseAuthenticatedClient):
         response = self.client.get("/admin/voice_app/voiceapp/add/")
         self.assertEqual(response.status_code, 200)
 
+        response = self.client.post(
+            '/admin/voice_app/voiceapp/add/',
+            data={'name': 'Default_Voice_App',
+                  'user': '1',
+                  'gateway': '1'
+                 })
+        self.assertEqual(response.status_code, 200)
+
 
 class VoiceAppCustomerView(BaseAuthenticatedClient):
     """Test Function to check Voice App Customer pages"""

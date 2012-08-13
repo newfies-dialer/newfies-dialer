@@ -61,6 +61,15 @@ class SurveyAdminView(BaseAuthenticatedClient):
         response = self.client.get('/admin/survey/surveyresponse/add/')
         self.failUnlessEqual(response.status_code, 200)
 
+        response = self.client.post(
+            '/admin/survey/surveyresponse/add/',
+            data={
+                "keyvalue": "Apple",
+                "key": "1",
+                "surveyquestion": "1",
+                }, follow=True)
+        self.assertEqual(response.status_code, 200)
+
     def test_admin_surveycampaignresult_view_list(self):
         """Test Function to check admin surveycampaignresult list"""
         response = self.client.get('/admin/survey/surveycampaignresult/')
@@ -70,6 +79,17 @@ class SurveyAdminView(BaseAuthenticatedClient):
         """Test Function to check admin surveycampaignresult add"""
         response = self.client.get('/admin/survey/surveycampaignresult/add/')
         self.failUnlessEqual(response.status_code, 200)
+
+        response = self.client.post(
+            '/admin/survey/surveycampaignresult/add/',
+            data={
+                "question": "What is your prefered fruit?",
+                "response": "Apple",
+                "campaign": "1",
+                "surveyapp": "1",
+                "callrequest": "1"
+                }, follow=True)
+        self.assertEqual(response.status_code, 200)
 
 
 class SurveyCustomerView(BaseAuthenticatedClient):

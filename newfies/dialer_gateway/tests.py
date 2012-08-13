@@ -30,6 +30,18 @@ class GatewayView(BaseAuthenticatedClient):
         response = self.client.get("/admin/dialer_gateway/gateway/add/")
         self.assertEqual(response.status_code, 200)
 
+        response = self.client.post(
+            '/admin/dialer_gateway/gateway/add/',
+            data={
+                "status": "1",
+                "name": "Default_Gateway",
+                "gateway_codecs": "PCMA,PCMU",
+                "gateway_timeouts": "10,10",
+                "gateway_retries": "2,1",
+                "gateways": "user/,user",
+                }, follow=True)
+        self.assertEqual(response.status_code, 200)
+
 
 class GatewayModel(TestCase):
     """Test Gateway model"""

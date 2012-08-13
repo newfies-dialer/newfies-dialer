@@ -57,6 +57,12 @@ class DialerContactView(BaseAuthenticatedClient):
         response = self.client.get("/admin/dialer_contact/phonebook/add/")
         self.assertEqual(response.status_code, 200)
 
+        response = self.client.post(
+            '/admin/dialer_contact/phonebook/add/',
+            data={'name': 'test_phonebook', 'user': '1'},
+            follow=True)
+        self.assertEqual(response.status_code, 200)
+
     def test_admin_contact_view_list(self):
         """Test Function to check admin contact list"""
         response = self.client.get("/admin/dialer_contact/contact/")
@@ -65,6 +71,13 @@ class DialerContactView(BaseAuthenticatedClient):
     def test_admin_contact_view_add(self):
         """Test Function to check admin contact add"""
         response = self.client.get("/admin/dialer_contact/contact/add/")
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(
+            '/admin/dialer_contact/contact/add/',
+            data={'phonebook_id': '1', 'contact': '1234',
+                  'last_name': 'xyz', 'first_name': 'abc',
+                  'status': '1'})
         self.assertEqual(response.status_code, 200)
 
     def test_admin_contact_view_import(self):

@@ -40,6 +40,17 @@ class DialerCdrView(BaseAuthenticatedClient):
         response = self.client.get('/admin/dialer_cdr/callrequest/add/')
         self.failUnlessEqual(response.status_code, 200)
 
+        response = self.client.post(
+            '/admin/dialer_cdr/callrequest/add/',
+            data={'status': '1', 'campaign': '1',
+                  'aleg_uuid': 'e8fee8f6-40dd-11e1-964f-000c296bd875',
+                  'callerid': '12345',
+                  'request_uuid': 'e8fee8f6-40dd-11e1-964f-000c296bd875',
+                  'phone_number': '123456789',
+                  'aleg_gateway': '1',
+                  'user': '1'})
+        self.assertEqual(response.status_code, 200)
+
     def test_admin_voipcall_view_list(self):
         """Test Function to check admin voipcall list"""
         response = self.client.get('/admin/dialer_cdr/voipcall/')

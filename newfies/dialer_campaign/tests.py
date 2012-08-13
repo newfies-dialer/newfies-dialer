@@ -42,6 +42,24 @@ class DialerCampaignView(BaseAuthenticatedClient):
         response = self.client.get('/admin/dialer_campaign/campaign/add/')
         self.failUnlessEqual(response.status_code, 200)
 
+        response = self.client.post(
+            '/admin/dialer_campaign/campaign/add/',
+            data={
+                "name": "mycampaign_admin",
+                "description": "xyz",
+                "startingdate": "1301392136.0",
+                "expirationdate": "1301332136.0",
+                "frequency": "20",
+                "callmaxduration": "50",
+                "maxretry": "3",
+                "intervalretry": "3000",
+                "calltimeout": "60",
+                "aleg_gateway": "1",
+                "user": "1",
+                "content_object": "type:30-id:1",
+                "extra_data": "2000"})
+        self.assertEqual(response.status_code, 200)
+
     def test_admin_campaignsubscriber_view_list(self):
         """Test Function to check admin campaignsubscriber list"""
         response =\
@@ -53,6 +71,16 @@ class DialerCampaignView(BaseAuthenticatedClient):
         response =\
             self.client.get('/admin/dialer_campaign/campaignsubscriber/add/')
         self.failUnlessEqual(response.status_code, 200)
+
+        response = self.client.post(
+            '/admin/dialer_campaign/campaignsubscriber/add/',
+            data={
+                "status": "1",
+                "campaign": "1",
+                "duplicate_contact": "1234567",
+                "count_attempt": "1",
+                })
+        self.assertEqual(response.status_code, 200)
 
 
 class DialerCampaignCustomerView(BaseAuthenticatedClient):
@@ -164,11 +192,11 @@ class DialerCampaignCeleryTaskTestCase(TestCase):
                 'campaign.json', 'campaign_subscriber.json',
                 'user_profile.json']
 
-    def test_check_campaign_pendingcall(self):
-        """Test that the ``check_campaign_pendingcall``
-        task runs with no errors, and returns the correct result."""
-        result = check_campaign_pendingcall.delay(1)
-        self.assertEqual(result.successful(), True)
+    #def test_check_campaign_pendingcall(self):
+    #    """Test that the ``check_campaign_pendingcall``
+    #    task runs with no errors, and returns the correct result."""
+    #    result = check_campaign_pendingcall.delay(1)
+    #    self.assertEqual(result.successful(), True)
 
     def test_campaign_running(self):
         """Test that the ``campaign_running``

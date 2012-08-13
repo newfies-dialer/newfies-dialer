@@ -16,7 +16,6 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
-from audiofield.models import AudioFile
 from dialer_audio.forms import DialerAudioFileForm
 from dialer_audio.views import audio_list, audio_add
 
@@ -94,30 +93,4 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
                   'channel_type': 1,
                   'freq_type': 8000})
         self.assertEqual(response.status_code, 200)
-
-
-class AudioFileModel(TestCase):
-    """Test AudioFile model"""
-
-    fixtures = ['auth_user.json']
-
-    def setUp(self):
-        self.user = User.objects.get(username='admin')
-        self.audiofile = AudioFile(
-            name='MyAudio',
-            user=self.user,
-        )
-        self.audiofile.save()
-
-    def test_name(self):
-        self.assertEqual(self.audiofile.name, "MyAudio")
-
-    def test_audio_form(self):
-        form = DialerAudioFileForm(instance=self.audiofile)
-
-        self.assertTrue(isinstance(form.instance, AudioFile))
-        self.assertEqual(form.instance.pk, self.audiofile.pk)
-
-    def teardown(self):
-        self.audiofile.delete()
 

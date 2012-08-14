@@ -21,7 +21,14 @@ from survey.models import APP_TYPE
 
 @register.filter()
 def contact_status(value):
-    """Contact status"""
+    """Contact status
+
+    >>> contact_status(1)
+    'ACTIVE'
+
+    >>> contact_status(2)
+    'INACTIVE'
+    """
     if value == 1:
         return str('ACTIVE')
     else:
@@ -30,7 +37,20 @@ def contact_status(value):
 
 @register.filter()
 def campaign_status(value):
-    """Campaign Status"""
+    """Campaign Status
+
+    >>> campaign_status(1)
+    'START'
+
+    >>> campaign_status(2)
+    'PAUSE'
+
+    >>> campaign_status(3)
+    'ABORT'
+
+    >>> campaign_status(4)
+    'END'
+    """
     if not value:
         return ''
     STATUS = dict(CAMPAIGN_STATUS)
@@ -43,7 +63,14 @@ def campaign_status(value):
 
 @register.filter()
 def leg_type_name(value):
-    """leg type"""
+    """leg type
+
+    >>> leg_type_name(1)
+    u'A-Leg'
+
+    >>> leg_type_name(2)
+    u'B-Leg'
+    """
     if not value:
         return ''
     TYPE = dict(LEG_TYPE)
@@ -51,12 +78,19 @@ def leg_type_name(value):
         status = TYPE[value]
     except:
         status = ''
-    return str(status)
+    return unicode(status)
 
 
 @register.filter()
 def action_type_name(value):
-    """action type name"""
+    """action type name
+
+    >>> action_type_name(1)
+    'MENU'
+
+    >>> action_type_name(2)
+    'HANGUP'
+    """
     if not value:
         return ''
     TYPE = dict(APP_TYPE)
@@ -64,12 +98,18 @@ def action_type_name(value):
         status = TYPE[value]
     except:
         status = ''
-    return str(status)
+    return unicode(status)
 
 
 @register.filter()
 def que_res_string(val):
-    """Modify survey result string for display"""
+    """Modify survey result string for display
+
+    >>> val = 'qst_1*|*ans_1'
+
+    >>> que_res_string(val)
+    '<table class="table table-striped table-bordered table-condensed"><tr><td>qst_1</td><td class="survey_result_key">ans_1</td></tr></table>'
+    """
     if not val:
         return ''
 

@@ -98,7 +98,7 @@ def action_type_name(value):
         status = TYPE[value]
     except:
         status = ''
-    return unicode(status)
+    return str(status)
 
 
 @register.filter()

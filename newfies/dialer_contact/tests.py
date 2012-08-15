@@ -330,7 +330,7 @@ class DialerContactModel(TestCase):
         self.contact.save()
 
         # Test mgt command
-        call_command("create_contact", "'1|10")
+        call_command("create_contact", "'1|10'")
 
     def test_phonebook_form(self):
         self.assertEqual(self.phonebook.name, 'test_phonebook')

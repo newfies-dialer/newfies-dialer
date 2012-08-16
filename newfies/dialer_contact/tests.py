@@ -223,7 +223,8 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
 
     def test_contact_view_list(self):
         """Test Function to check Contact list"""
-        request = self.factory.post('/contact_grid/', grid_test_data)
+        request = self.factory.post('/contact_grid/?kwargs={}&name=xyz',
+            grid_test_data)
         request.user = self.user
         request.session = {}
         response = contact_grid(request)
@@ -234,12 +235,6 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         self.assertTrue(response.context['form'], ContactSearchForm(self.user))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/contact/list.html')
-
-        request = self.factory.get('/contact_grid/')
-        request.user = self.user
-        request.session = {}
-        response = phonebook_list(request)
-        self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/contact/',
             data={'from_date': datetime.now(),

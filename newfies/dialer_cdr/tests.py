@@ -75,6 +75,14 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
         response = voipcall_report_grid(request)
         self.assertEqual(response.status_code, 200)
 
+        request = self.factory.post(
+            '/voipcall_report_grid/?from_date=&disposition=1',
+            grid_test_data)
+        request.user = self.user
+        request.session = {}
+        response = voipcall_report_grid(request)
+        self.assertEqual(response.status_code, 200)
+
         response = self.client.get('/voipcall_report/')
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.context['form'], VoipSearchForm())

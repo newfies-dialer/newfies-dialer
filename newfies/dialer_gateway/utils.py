@@ -16,9 +16,8 @@ from dialer_gateway.models import Gateway
 
 
 def phonenumber_change_prefix(phone_number, gateway_id):
-    """apply prefix modification for a given phone_number and gateway"""
+    """apply prefix modification for a given phone_number and gateway
 
-    """
     **Attributes**:
 
         * ``name`` - Gateway name.

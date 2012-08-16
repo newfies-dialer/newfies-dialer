@@ -15,6 +15,7 @@
 from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
 from dialer_gateway.models import Gateway
+from dialer_gateway.utils import phonenumber_change_prefix
 
 
 class GatewayView(BaseAuthenticatedClient):
@@ -49,10 +50,25 @@ class GatewayModel(TestCase):
     def setUp(self):
         self.gateway = Gateway(
             name='test gateway',
-            status=1,
+            status=2,
+            removeprefix='94'
             )
         self.gateway.set_name("MyGateway")
         self.gateway.save()
+
+        response = phonenumber_change_prefix('9897525414', 3)
+        self.assertEqual(response, False)
+
+        response = phonenumber_change_prefix('', self.gateway.id)
+        self.assertEqual(response, False)
+
+        response = phonenumber_change_prefix('9897525414', self.gateway.id)
+        self.assertEqual(response, False)
+
+        self.gateway.status = 1
+        self.gateway.save()
+        response = phonenumber_change_prefix('9897525414', self.gateway.id)
+        self.assertEqual(response, u'9897525414')
 
     def test_name(self):
         self.assertEqual(self.gateway.name, "MyGateway")

@@ -64,13 +64,20 @@ class UserProfileCustomerView(BaseAuthenticatedClient):
         response = notification_grid(request)
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.get('/user_detail_change/')
+        response = self.client.get('/user_detail_change/?action=tabs-1')
         self.assertTrue(response.context['user_detail_form'],
                         UserChangeDetailForm(self.user))
         self.assertTrue(response.context['user_detail_extened_form'],
                         UserChangeDetailExtendForm(self.user))
+        response = self.client.get('/user_detail_change/?action=tabs-2')
         self.assertTrue(response.context['user_password_form'],
                         PasswordChangeForm(self.user))
+
+        response = self.client.get(
+            '/user_detail_change/?action=tabs-3&notification=mark_read_all', {})
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.get('/user_detail_change/?action=tabs-5')
         self.assertTrue(response.context['check_phone_no_form'],
                         CheckPhoneNumberForm())
         self.assertEqual(response.status_code, 200)

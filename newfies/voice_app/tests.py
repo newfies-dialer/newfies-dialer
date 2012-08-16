@@ -122,8 +122,29 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
         self.assertEqual(out, '"vocie_app" is updated.')
         self.assertEqual(response.status_code, 302)
 
+        # delete voiceapp through voiceapp_change
+        request = self.factory.post('/voiceapp/1/',
+                {'delete': True}, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = voiceapp_change(request, 1)
+        self.assertEqual(response['Location'], '/voiceapp/')
+
+    def test_voiceapp_view_delete(self):
+        """Test Function to check delete contact"""
+        request = self.factory.get('/voiceapp/del/1/')
+        request.user = self.user
+        request.session = {}
         response = voiceapp_del(request, 1)
         self.assertEqual(response.status_code, 302)
+
+        request = self.factory.post('/voiceapp/del/', {'select': '1'})
+        request.user = self.user
+        request.session = {}
+        response = voiceapp_del(request, 0)
+        self.assertEqual(response['Location'], '/voiceapp/')
+        self.assertEqual(response.status_code, 302)
+
 
 
 class VoiceAppModel(TestCase):
@@ -145,6 +166,7 @@ class VoiceAppModel(TestCase):
 
     def test_voice_app_form(self):
         self.assertEqual(self.voiceapp.name, "MyVoiceapp")
+        self.voiceapp.__unicode__
 
         form = VoiceAppForm()
         obj = form.save(commit=False)

@@ -26,7 +26,8 @@ from dialer_contact.views import phonebook_grid, phonebook_add, \
                         phonebook_change, contact_grid,\
                         phonebook_list, phonebook_del,\
                         contact_list, contact_add,\
-                        contact_change, contact_del, contact_import
+                        contact_change, contact_del, contact_import,\
+                        get_contact_count
 from dialer_contact.tasks import collect_subscriber_optimized, \
                         import_phonebook
 from utils.helper import grid_test_data
@@ -184,6 +185,15 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
             }))
         self.assertEqual(out, '"Default_Phonebook" is updated.')
 
+        # delete phonebook through phonebook_change
+        request = self.factory.post('/phonebook/1/',
+            data={'delete': True}, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = phonebook_change(request, 1)
+        self.assertEqual(response['Location'], '/phonebook/')
+        self.assertEqual(response.status_code, 302)
+
     def test_phonebook_view_delete(self):
         """Test Function to check delete phonebook"""
         request = self.factory.post('/phonebook/del/1/')
@@ -203,6 +213,13 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
                 'msg': request.session.get('msg'),
             }))
         self.assertEqual(out, '"Default_Phonebook" is deleted.')
+
+        request = self.factory.post('/phonebook/del/', {'select': '1'})
+        request.user = self.user
+        request.session = {}
+        response = phonebook_del(request, 0)
+        self.assertEqual(response['Location'], '/phonebook/')
+        self.assertEqual(response.status_code, 302)
 
     def test_contact_view_list(self):
         """Test Function to check Contact list"""
@@ -264,11 +281,20 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.context['action'], 'update')
         self.assertTemplateUsed(response, 'frontend/contact/change.html')
 
-        request = self.factory.get('/contact/1/')
+        request = self.factory.post('/contact/1/', {'phonebook': '1'})
         request.user = self.user
         request.session = {}
         response = contact_change(request, 1)
         self.assertEqual(response.status_code, 200)
+
+        # delete contact through contact_change
+        request = self.factory.post('/contact/1/',
+            data={'delete': True}, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = contact_change(request, 1)
+        self.assertEqual(response['Location'], '/contact/')
+        self.assertEqual(response.status_code, 302)
 
     def test_contact_view_delete(self):
         """Test Function to check delete contact"""
@@ -276,6 +302,13 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         request.user = self.user
         request.session = {}
         response = contact_del(request, 1)
+        self.assertEqual(response.status_code, 302)
+
+        request = self.factory.post('/contact/del/', {'select': '1'})
+        request.user = self.user
+        request.session = {}
+        response = contact_del(request, 0)
+        self.assertEqual(response['Location'], '/contact/')
         self.assertEqual(response.status_code, 302)
 
     def test_contact_view_import(self):
@@ -296,6 +329,13 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         request.user = self.user
         request.session = {}
         response = contact_import(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_contact_count(self):
+        request = self.factory.get('/contact/', {'pb_ids': '1'})
+        request.user = self.user
+        request.session = {}
+        response = get_contact_count(request)
         self.assertEqual(response.status_code, 200)
 
 

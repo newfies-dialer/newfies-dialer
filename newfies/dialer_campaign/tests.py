@@ -22,7 +22,7 @@ from dialer_campaign.models import Campaign, CampaignSubscriber
 from dialer_campaign.forms import CampaignForm
 from dialer_campaign.views import campaign_list, campaign_add, \
                                   campaign_change, campaign_del, \
-                                  campaign_grid
+                                  campaign_grid, notify_admin
 from dialer_campaign.tasks import check_campaign_pendingcall,\
                                   campaign_running,\
                                   collect_subscriber,\
@@ -165,8 +165,8 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             'you need to have your settings configured properly, '
             'please contact the admin.')
 
-    def test_campaign_view_update_delete(self):
-        """Test Function to check update/delete campaign"""
+    def test_campaign_view_update(self):
+        """Test Function to check update campaign"""
         request = self.factory.post('/campaign/1/', {
             "name": "Sample campaign",
             }, follow=True)
@@ -175,10 +175,27 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         response = campaign_change(request, 1)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['Location'], '/campaign/')
-       
-        response = campaign_del(request, 1)
+
+        request = self.factory.post('/campaign/1/', {
+            'delete': True
+        }, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = campaign_change(request, 1)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['Location'], '/campaign/')
+
+
+    def test_campaign_view_delete(self):
+        """Test Function to check delete campaign"""
+        # delete campaign through campaign_change
+        request = self.factory.post('/campaign/del/1/', follow=True)
+        request.user = self.user
+        request.session = {}
+        response = campaign_del(request, 1)
+        self.assertEqual(response['Location'], '/campaign/')
+        self.assertEqual(response.status_code, 302)
+
         out = Template(
                 '{% block content %}'
                     '{% if msg %}'
@@ -190,6 +207,22 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             }))
         self.assertEqual(out, '"Sample campaign" is deleted.')
 
+        request = self.factory.post('/campaign/del/', {'select': '1'})
+        request.user = self.user
+        request.session = {}
+        response = campaign_del(request, 0)
+        self.assertEqual(response['Location'], '/campaign/')
+        self.assertEqual(response.status_code, 302)
+
+    def test_notify_admin(self):
+        """Test Function to check notify_admin"""
+        request = self.factory.post('/notify/admin/', follow=True)
+        request.user = self.user
+        request.session = {}
+        request.session['has_notified'] = True
+        response = notify_admin(request)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['Location'], '/dashboard/')
 
 class DialerCampaignCeleryTaskTestCase(TestCase):
     """Test cases for celery task"""

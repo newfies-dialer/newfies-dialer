@@ -341,6 +341,9 @@ def campaign_list(request):
 def get_content_type(object_string):
     """
     It is used by campaign_add & campaign_change to get ContentType object
+
+    >>> get_content_type("type:31-id:1")
+    {'object_type': <ContentType: observed item>, 'object_id': '1'}
     """
     result_array = {}
     matches = re.match("type:(\d+)-id:(\d+)", object_string).groups()
@@ -486,6 +489,8 @@ def campaign_change(request, object_id):
         # Delete campaign
         if request.POST.get('delete'):
             campaign_del(request, object_id)
+            request.session["msg"] = _('"%(name)s" is deleted.')\
+                % {'name': request.POST['name']}
             return HttpResponseRedirect('/campaign/')
         else:
             # Update campaign

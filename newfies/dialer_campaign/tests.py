@@ -21,11 +21,13 @@ from dialer_contact.models import Phonebook
 from dialer_campaign.models import Campaign, CampaignSubscriber
 from dialer_campaign.forms import CampaignForm
 from dialer_campaign.views import campaign_list, campaign_add, \
-                                  campaign_change, campaign_del
+                                  campaign_change, campaign_del, \
+                                  campaign_grid
 from dialer_campaign.tasks import check_campaign_pendingcall,\
                                   campaign_running,\
                                   collect_subscriber,\
                                   campaign_expire_check
+from utils.helper import grid_test_data
 from common.utils import BaseAuthenticatedClient
 
 
@@ -92,6 +94,12 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
 
     def test_campaign_view_list(self):
         """Test Function to check campaign list"""
+        request = self.factory.post('/campaign_grid/', grid_test_data)
+        request.user = self.user
+        request.session = {}
+        response = campaign_grid(request)
+        self.assertEqual(response.status_code, 200)
+
         response = self.client.get('/campaign/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/campaign/list.html')

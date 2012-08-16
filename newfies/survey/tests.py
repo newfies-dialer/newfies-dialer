@@ -23,6 +23,7 @@ from survey.forms import SurveyForm, SurveyQuestionForm, \
 from survey.views import survey_list, survey_grid, survey_add, \
     survey_change, survey_del, survey_question_add, survey_question_change,\
     survey_response_add, survey_response_change, survey_report
+from utils.helper import grid_test_data
 from datetime import datetime
 
 
@@ -102,6 +103,12 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
     def test_survey_view_list(self):
         """Test Function survey view list"""
+        request = self.factory.post('/survey_grid/', grid_test_data)
+        request.user = self.user
+        request.session = {}
+        response = survey_grid(request)
+        self.assertEqual(response.status_code, 200)
+
         response = self.client.get('/survey/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/survey/survey_list.html')

@@ -17,11 +17,13 @@ from django.conf import settings
 from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
 from dialer_audio.forms import DialerAudioFileForm
-from dialer_audio.views import audio_list, audio_add
+from dialer_audio.views import audio_list, audio_add, audio_grid
+from utils.helper import grid_test_data
 
 audio_file = open(
     settings.APPLICATION_DIR + '/dialer_audio/fixtures/sample_audio_file.mp3', 'r'
 )
+
 
 class AudioFileAdminView(BaseAuthenticatedClient):
     """Test cases for AudioFile Admin Interface."""
@@ -50,6 +52,12 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
 
     def test_audiofile_view_list(self):
         """Test Function to check aidio list"""
+        request = self.factory.post('/audio_grid/', grid_test_data)
+        request.user = self.user
+        request.session = {}
+        response = audio_grid(request)
+        self.assertEqual(response.status_code, 200)
+
         response = self.client.get('/audio/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['module'], 'audio_list')

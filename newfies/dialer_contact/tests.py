@@ -22,12 +22,14 @@ from dialer_contact.forms import Contact_fileImport, \
                         PhonebookForm, \
                         ContactForm, \
                         ContactSearchForm
-from dialer_contact.views import phonebook_add, phonebook_change, \
+from dialer_contact.views import phonebook_grid, phonebook_add, \
+                        phonebook_change, contact_grid,\
                         phonebook_list, phonebook_del,\
                         contact_list, contact_add,\
                         contact_change, contact_del, contact_import
 from dialer_contact.tasks import collect_subscriber_optimized, \
                         import_phonebook
+from utils.helper import grid_test_data
 from common.utils import BaseAuthenticatedClient
 from datetime import datetime
 
@@ -101,6 +103,12 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
 
     def test_phonebook_view_list(self):
         """Test Function to check phonebook list"""
+        request = self.factory.post('/phonebook_grid/', grid_test_data)
+        request.user = self.user
+        request.session = {}
+        response = phonebook_grid(request)
+        self.assertEqual(response.status_code, 200)
+
         response = self.client.get('/phonebook/')
         self.assertEqual(response.context['module'], 'phonebook_list')
         self.assertTemplateUsed(response, 'frontend/phonebook/list.html')
@@ -198,6 +206,12 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
 
     def test_contact_view_list(self):
         """Test Function to check Contact list"""
+        request = self.factory.post('/contact_grid/', grid_test_data)
+        request.user = self.user
+        request.session = {}
+        response = contact_grid(request)
+        self.assertEqual(response.status_code, 200)
+
         response = self.client.get('/contact/')
         self.assertEqual(response.context['module'], 'contact_list')
         self.assertTrue(response.context['form'], ContactSearchForm(self.user))

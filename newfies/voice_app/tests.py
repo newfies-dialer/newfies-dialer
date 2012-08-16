@@ -20,7 +20,9 @@ from dialer_gateway.models import Gateway
 from voice_app.models import VoiceApp
 from voice_app.forms import VoiceAppForm
 from voice_app.views import voiceapp_list, voiceapp_add,\
-                            voiceapp_del, voiceapp_change
+                            voiceapp_del, voiceapp_change,\
+                            voiceapp_grid
+from utils.helper import grid_test_data
 from common.utils import BaseAuthenticatedClient
 
 
@@ -52,6 +54,12 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
 
     def test_voiceapp_view_list(self):
         """Test Function to check voice app list view"""
+        request = self.factory.post('/voiceapp_grid/', grid_test_data)
+        request.user = self.user
+        request.session = {}
+        response = voiceapp_grid(request)
+        self.assertEqual(response.status_code, 200)
+
         response = self.client.get('/voiceapp/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/voiceapp/list.html')

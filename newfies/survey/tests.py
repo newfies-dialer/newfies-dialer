@@ -22,7 +22,8 @@ from survey.forms import SurveyForm, SurveyQuestionForm, \
     SurveyResponseForm, SurveyDetailReportForm
 from survey.views import survey_list, survey_grid, survey_add, \
     survey_change, survey_del, survey_question_add, survey_question_change,\
-    survey_response_add, survey_response_change, survey_report
+    survey_response_add, survey_response_change, survey_report,\
+    survey_finestatemachine, survey_question_list
 from utils.helper import grid_test_data
 from datetime import datetime
 
@@ -98,8 +99,12 @@ class SurveyCustomerView(BaseAuthenticatedClient):
        SurveyResponse Customer pages
     """
 
-    fixtures = ['auth_user.json', 'survey.json', 'survey_question.json',
-                'survey_response.json']
+    fixtures = ['auth_user.json', 'gateway.json', 'voiceapp.json',
+                'dialer_setting.json', 'phonebook.json', 'contact.json',
+                'campaign.json', 'campaign_subscriber.json',
+                'callrequest.json',
+                'survey.json', 'survey_question.json',
+                'survey_response.json', 'survey_campaign_result.json']
 
     def test_survey_view_list(self):
         """Test Function survey view list"""
@@ -172,6 +177,21 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         response = survey_del(request, 1)
         self.assertEqual(response.status_code, 302)
 
+    def test_survey_view_delete(self):
+        """Test Function to check delete survey"""
+        request = self.factory.get('/survey/del/1/')
+        request.user = self.user
+        request.session = {}
+        response = survey_del(request, 1)
+        self.assertEqual(response.status_code, 302)
+
+        request = self.factory.post('/survey/del/', {'select': '1'})
+        request.user = self.user
+        request.session = {}
+        response = survey_del(request, 0)
+        self.assertEqual(response['Location'], '/survey/')
+        self.assertEqual(response.status_code, 302)
+
     def test_survey_question_view_add(self):
         """Test Function survey question view add"""
         request = self.factory.post('/survey_question/add/?surveyapp_id=1',
@@ -193,6 +213,12 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
             'frontend/survey/survey_question_change.html')
+
+        request = self.factory.get('/survey_question/1/?delete=true')
+        request.user = self.user
+        request.session = {}
+        response = survey_question_change(request, 1)
+        self.assertEqual(response.status_code, 302)
 
     def test_survey_question_response_view_add(self):
         """Test Function survey response view add"""
@@ -216,12 +242,18 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         self.assertTemplateUsed(response,
             'frontend/survey/survey_response_change.html')
 
+        request = self.factory.get('/survey_response/1/?delete=true')
+        request.user = self.user
+        request.session = {}
+        response = survey_response_change(request, 1)
+        self.assertEqual(response.status_code, 302)
+
     def test_survey_view_report(self):
         """Test Function survey view report"""
         request = self.factory.post('/survey_report/',
-                                    {'campaign': 1,
-                                     'from_date': datetime.now(),
-                                     'to_date': datetime.now()})
+                        {'campaign': '1',
+                         'from_date': datetime.now().strftime("%Y-%m-%d"),
+                         'to_date': datetime.now().strftime("%Y-%m-%d")})
         request.user = self.user
         request.session = {}
         response = survey_report(request)
@@ -229,9 +261,9 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         self.assertTemplateUsed(response, 'frontend/survey/survey_report.html')
 
         response = self.client.post('/survey_report/',
-                                    {'campaign': 1,
-                                     'from_date': datetime.now(),
-                                     'to_date': datetime.now()})
+                {'campaign': '1',
+                 'from_date': datetime.now().strftime("%Y-%m-%d"),
+                 'to_date': datetime.now().strftime("%Y-%m-%d")})
         self.assertTrue(response.context['form'],
                         SurveyDetailReportForm(self.user))
         self.assertEqual(response.status_code, 200)
@@ -256,6 +288,36 @@ class SurveyCustomerView(BaseAuthenticatedClient):
             '<tr><td>qst_1</td><td class="survey_result_key">ans_1</td></tr>'
             '</table>'
             '120.0')
+
+    def test_survey_finestatemachine(self):
+        request = self.factory.post('/survey_finestatemachine/',
+            {'ALegRequestUUID': 'e8fee8f6-40dd-11e1-964f-000c296bd875',
+             'CallUUID': 'e8fee8f6-40dd-11e1-964f-000c296bd875',
+             'Digits': '1',
+             'delcache': '12',
+             })
+        request.user = self.user
+        request.session = {}
+        response = survey_finestatemachine(request)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/survey_finestatemachine/',
+                {'ALegRequestUUID': '',
+                 'CallUUID': 'e8fee8f6-40dd-11e1-964f-000c296bd875',
+                 'Digits': '1',
+                 'delcache': '12',
+                 })
+        request.user = self.user
+        request.session = {}
+        response = survey_finestatemachine(request)
+        self.assertEqual(response.status_code, 400)
+
+    def test_survey_question_list(self):
+        request = self.factory.get('/survey/question_list/?surveyapp_id=1')
+        request.user = self.user
+        request.session = {}
+        response = survey_question_list(request)
+        self.assertEqual(response.status_code, 200)
 
 
 class SurveyModel(TestCase):

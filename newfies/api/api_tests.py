@@ -25,6 +25,10 @@ class ApiTestCase(BaseAuthenticatedClient):
 
     def test_create_campaign(self):
         """Test Function to create a campaign"""
+        response = self.client.post('/api/v1/campaign/',
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
+
         data = simplejson.dumps({
                 "name": "mycampaign",
                 "description": "",
@@ -44,6 +48,7 @@ class ApiTestCase(BaseAuthenticatedClient):
         response = self.client.post('/api/v1/campaign/',
             data, content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)
+
 
     def test_read_campaign(self):
         """Test Function to get all campaigns"""
@@ -86,12 +91,13 @@ class ApiTestCase(BaseAuthenticatedClient):
                    content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)
 
+        response = self.client.post('/api/v1/phonebook/',
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
+
     def test_read_phonebook(self):
         """Test Function to get all phonebooks"""
         response = self.client.get('/api/v1/phonebook/',
-            **self.extra)
-        self.assertEqual(response.status_code, 200)
-        response = self.client.get('/api/v1/phonebook/1/',
             **self.extra)
         self.assertEqual(response.status_code, 200)
 
@@ -105,6 +111,10 @@ class ApiTestCase(BaseAuthenticatedClient):
 
     def test_create_campaign_subscriber(self):
         """Test Function to create a campaign subscriber"""
+        response = self.client.post('/api/v1/campaignsubscriber/',
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
+
         data = simplejson.dumps({
                 "contact": "650784355",
                 "last_name": "belaid",
@@ -157,10 +167,41 @@ class ApiTestCase(BaseAuthenticatedClient):
         response = self.client.post('/api/v1/answercall/', data, **self.extra)
         self.assertEqual(response.status_code, 200)
 
+        data = {"ALegRequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd876",
+                "CallUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875"}
+        response = self.client.post('/api/v1/answercall/', data, **self.extra)
+        self.assertEqual(response.status_code, 400)
+
+        data = {"ALegRequestUUID": "",
+                "CallUUID": ""}
+        response = self.client.post('/api/v1/answercall/', data, **self.extra)
+        self.assertEqual(response.status_code, 400)
+
     def test_create_hangupcall(self):
         """Test Function to create a hangupcall"""
         data = {"RequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875",
                 "HangupCause": "SUBSCRIBER_ABSENT",
+                "From": "800124545",
+                "To": "34650111222"}
+        response = self.client.post('/api/v1/hangupcall/', data, **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+        data = {"RequestUUID": "",
+                "HangupCause": "",
+                "From": "800124545",
+                "To": "34650111222"}
+        response = self.client.post('/api/v1/hangupcall/', data, **self.extra)
+        self.assertEqual(response.status_code, 400)
+
+        data = {"RequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd886",
+                "HangupCause": "SUBSCRIBER_ABSENT",
+                "From": "800124545",
+                "To": "34650111222"}
+        response = self.client.post('/api/v1/hangupcall/', data, **self.extra)
+        self.assertEqual(response.status_code, 400)
+
+        data = {"RequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875",
+                "HangupCause": "NORMAL_CLEARING",
                 "From": "800124545",
                 "To": "34650111222"}
         response = self.client.post('/api/v1/hangupcall/', data, **self.extra)
@@ -176,10 +217,15 @@ class ApiTestCase(BaseAuthenticatedClient):
     def test_create_survey(self):
         """Test Function to create a survey"""
         data = simplejson.dumps({"name": "mysurvey",
-                "description": "Test"})
+                                 "description": "Test"})
         response = self.client.post('/api/v1/survey/', data,
                    content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)
+
+        data = simplejson.dumps({"name": "", "description": ""})
+        response = self.client.post('/api/v1/survey/',
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
 
     def test_read_survey(self):
         """Test Function to get all surveys"""
@@ -209,6 +255,10 @@ class ApiTestCase(BaseAuthenticatedClient):
                    content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)
 
+        response = self.client.post('/api/v1/survey_question/',
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
+
     def test_read_survey_question(self):
         """Test Function to get all survey questions"""
         response = self.client.get('/api/v1/survey_question/?format=json',
@@ -234,6 +284,10 @@ class ApiTestCase(BaseAuthenticatedClient):
         response = self.client.post('/api/v1/survey_response/', data,
                    content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)
+
+        response = self.client.post('/api/v1/survey_response/',
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
 
     def test_read_survey_response(self):
         """Test Function to get all survey response"""

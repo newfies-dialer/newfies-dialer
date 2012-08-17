@@ -123,8 +123,9 @@ def customer_detail_change(request):
             action = 'tabs-5'
             check_phone_no_form = CheckPhoneNumberForm(data=request.POST)
             if check_phone_no_form.is_valid():
-                if not common_contact_authorization(request.user,
-                                                request.POST['phone_number']):
+                if not common_contact_authorization(
+                    request.user,
+                    request.POST['phone_number']):
                     error_number = _('This phone number is not authorized.')
                 else:
                     msg_number = _('This phone number is authorized.')

@@ -23,8 +23,7 @@ def rate_range():
     """Filter range symbol
 
     >>> rate_range()
-    (('', 'All'), ('gte', '>='), ('gt', '>'), ('eq', '='),
-    ('lt', '<'), ('lte', '<='))
+    (('', 'All'), ('gte', '>='), ('gt', '>'), ('eq', '='), ('lt', '<'), ('lte', '<='))
 
     """
     LIST = (('', 'All'),

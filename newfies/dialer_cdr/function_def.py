@@ -88,6 +88,7 @@ def voipcall_record_common_fun(request):
     return kwargs
 
 
+#TODO return_query_string is this issued ?
 def return_query_string(query_string, para):
     """
     >>> return_query_string('key=1', 'key_val=apple')

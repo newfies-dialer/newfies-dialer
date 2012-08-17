@@ -18,23 +18,6 @@ from dialer_cdr.models import VOIPCALL_DISPOSITION
 from datetime import datetime
 
 
-#TODO: Rate_range doesn't seem used ?
-def rate_range():
-    """Filter range symbol
-
-    >>> rate_range()
-    (('', 'All'), ('gte', '>='), ('gt', '>'), ('eq', '='), ('lt', '<'), ('lte', '<='))
-
-    """
-    LIST = (('', 'All'),
-            ('gte', '>='),
-            ('gt', '>'),
-            ('eq', '='),
-            ('lt', '<'),
-            ('lte', '<='))
-    return LIST
-
-
 def voipcall_record_common_fun(request):
     """Return Form with Initial data or Array (kwargs) for Voipcall_Report
     Changelist_view"""
@@ -87,9 +70,10 @@ def voipcall_record_common_fun(request):
     return kwargs
 
 
-#TODO return_query_string is this issued ?
 def return_query_string(query_string, para):
     """
+    Function is used in voipcall_search_admin_form_fun
+
     >>> return_query_string('key=1', 'key_val=apple')
     'key=1&key_val=apple'
     >>> return_query_string(False, 'key_val=apple')

@@ -59,6 +59,8 @@ class UserProfileAdminView(BaseAuthenticatedClient):
 class UserProfileCustomerView(BaseAuthenticatedClient):
     """Test Function to check UserProfile Customer pages"""
 
+    fixtures = ['auth_user.json', 'notification.json']
+
     def test_user_settings(self):
         """Test Function to check User settings"""
         request = self.factory.post('/notification_grid/', grid_test_data)
@@ -103,10 +105,28 @@ class UserProfileCustomerView(BaseAuthenticatedClient):
 
     def test_notification_del_read(self):
         """Test Function to check delete notification"""
-        request = self.factory.post('user_detail_change/del/0/')
+        request = self.factory.post('/user_detail_change/del/',
+                {'mark_read': 'false'})
+        request.user = self.user
+        request.session = {}
+        response = notification_del_read(request, 1)
+        self.assertEqual(response.status_code, 302)
+
+        request = self.factory.post('/user_detail_change/del/',
+                {'select': '1',
+                 'mark_read': 'true'})
         request.user = self.user
         request.session = {}
         response = notification_del_read(request, 0)
+        self.assertEqual(response.status_code, 302)
+
+    def test_update_notice_status_cust(self):
+        """Test Function to check update notice status"""
+        request = self.factory.post('/update_notice_status_cust/1/',
+                {'select': '1'})
+        request.user = self.user
+        request.session = {}
+        response = update_notice_status_cust(request, 1)
         self.assertEqual(response.status_code, 302)
 
 

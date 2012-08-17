@@ -18,6 +18,7 @@ from dialer_cdr.models import VOIPCALL_DISPOSITION
 from datetime import datetime
 
 
+#TODO: Rate_range doesn't seem used ?
 def rate_range():
     """Filter range symbol
 

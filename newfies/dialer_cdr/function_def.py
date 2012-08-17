@@ -23,7 +23,8 @@ def rate_range():
     """Filter range symbol
 
     >>> rate_range()
-    (('', 'All'), ('gte', '>='), ('gt', '>'), ('eq', '='), ('lt', '<'), ('lte', '<='))
+    (('', 'All'), ('gte', '>='), ('gt', '>'), ('eq', '='),
+    ('lt', '<'), ('lte', '<='))
 
     """
     LIST = (('', 'All'),
@@ -76,9 +77,8 @@ def voipcall_record_common_fun(request):
     if start_date == '' and end_date:
         kwargs['starting_date__lte'] = end_date
 
-    if disposition:
-        if disposition != 'all':
-            kwargs['disposition__exact'] = disposition
+    if disposition and disposition != 'all':
+        kwargs['disposition__exact'] = disposition
 
     if len(kwargs) == 0:
         tday = datetime.today()
@@ -93,6 +93,8 @@ def return_query_string(query_string, para):
     """
     >>> return_query_string('key=1', 'key_val=apple')
     'key=1&key_val=apple'
+    >>> return_query_string(False, 'key_val=apple')
+    'key_val=apple'
     """
     if query_string:
         query_string += '&' + para
@@ -134,22 +136,3 @@ def voipcall_search_admin_form_fun(request):
                                         disposition_string)
 
     return query_string
-
-
-def get_disposition_id(name):
-    """To get id from voip_call_disposition_list
-
-    >>> get_disposition_id(u'ANSWER')
-    'ANSWER'
-
-    """
-    for i in VOIPCALL_DISPOSITION:
-        if i[1] == name:
-            return i[0]
-
-
-def get_disposition_name(id):
-    """To get name from voip_call_disposition_list"""
-    for i in VOIPCALL_DISPOSITION:
-        if i[0] == id:
-            return i[1]

@@ -26,8 +26,7 @@ from django.db.models import Sum, Avg, Count
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.forms import VoipSearchForm
 from dialer_cdr.function_def import voipcall_record_common_fun, \
-                                    voipcall_search_admin_form_fun, \
-                                    get_disposition_name
+                                    voipcall_search_admin_form_fun
 from common.common_functions import variable_value
 from genericadmin.admin import GenericAdminModelAdmin
 from datetime import datetime
@@ -294,7 +293,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
                              i.phone_number,
                              i.starting_date,
                              i.duration,
-                             get_disposition_name(i.disposition),
+                             i.disposition,
                              gateway_used,
                              ])
         return response

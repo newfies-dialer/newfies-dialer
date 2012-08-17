@@ -23,8 +23,7 @@ from dialer_contact.views import notice_count, grid_common_function
 from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.forms import VoipSearchForm
-from dialer_cdr.function_def import voipcall_record_common_fun, \
-                                    get_disposition_name
+from dialer_cdr.function_def import voipcall_record_common_fun
 from common.common_functions import variable_value, current_view
 from datetime import datetime
 import csv
@@ -279,7 +278,7 @@ def export_voipcall_report(request):
                          i.starting_date,
                          i.duration,
                          i.billsec,
-                         get_disposition_name(i.disposition),
+                         i.disposition,
                          i.hangup_cause,
                          i.hangup_cause_q850,
                          gateway_used,

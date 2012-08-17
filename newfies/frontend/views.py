@@ -35,20 +35,7 @@ from datetime import datetime
 from dateutil import parser
 from dateutil.relativedelta import relativedelta
 import time
-
-
-# Define disposition color
-ANSWER_COLOR = '#8BEA00'
-BUSY_COLOR = '#F40C27'
-NOANSWER_COLOR = '#F40CD5'
-CANCEL_COLOR = '#3216B0'
-CONGESTION_COLOR = '#F9AA26'
-CHANUNAVAIL_COLOR = '#7E8179'
-DONTCALL_COLOR = '#5DD0C0'
-TORTURE_COLOR = '#FFCE00'
-INVALIDARGS_COLOR = '#9B5C00'
-NOROUTE_COLOR = '#057D9F'
-FORBIDDEN_COLOR = '#A61700'
+from frontend.constants import COLOR_DISPOSITION
 
 
 def logout_view(request):
@@ -123,9 +110,11 @@ def login_view(request):
 def notice_count(request):
     """Get count of logged in user's notifications"""
     try:
-        notice_count = \
-            notification.Notice.objects.filter(recipient=request.user,
-                                               unseen=1).count()
+        notice_count = notification.Notice.objects\
+                            .filter(
+                                recipient=request.user,
+                                unseen=1)\
+                            .count()
     except:
         notice_count = ''
     return notice_count
@@ -734,17 +723,17 @@ def customer_dashboard(request, on_index=None):
         'total_invalidargs': total_invalidargs,
         'total_noroute': total_noroute,
         'total_forbidden': total_forbidden,
-        'answered_color': ANSWER_COLOR,
-        'busy_color': BUSY_COLOR,
-        'not_answered_color': NOANSWER_COLOR,
-        'cancel_color': CANCEL_COLOR,
-        'congestion_color': CONGESTION_COLOR,
-        'chanunavail_color': CHANUNAVAIL_COLOR,
-        'dontcall_color': DONTCALL_COLOR,
-        'torture_color': TORTURE_COLOR,
-        'invalidargs_color': INVALIDARGS_COLOR,
-        'noroute_color': NOROUTE_COLOR,
-        'forbidden_color': FORBIDDEN_COLOR,
+        'answered_color': COLOR_DISPOSITION['ANSWER'],
+        'busy_color': COLOR_DISPOSITION['BUSY'],
+        'not_answered_color': COLOR_DISPOSITION['NOANSWER'],
+        'cancel_color': COLOR_DISPOSITION['CANCEL'],
+        'congestion_color': COLOR_DISPOSITION['CONGESTION'],
+        'chanunavail_color': COLOR_DISPOSITION['CHANUNAVAIL'],
+        'dontcall_color': COLOR_DISPOSITION['DONTCALL'],
+        'torture_color': COLOR_DISPOSITION['TORTURE'],
+        'invalidargs_color': COLOR_DISPOSITION['INVALIDARGS'],
+        'noroute_color': COLOR_DISPOSITION['NOROUTE'],
+        'forbidden_color': COLOR_DISPOSITION['FORBIDDEN'],
     }
     if on_index == 'yes':
         return data

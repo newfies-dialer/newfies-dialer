@@ -126,11 +126,10 @@ def voipcall_search_admin_form_fun(request):
         date_string = 'starting_date__lte=' + end_date
         query_string = return_query_string(query_string, date_string)
 
-    if disposition:
-        if disposition != 'all':
-            disposition_string = 'disposition__exact=' + disposition
-            query_string = return_query_string(query_string,
-                                            disposition_string)
+    if disposition and disposition != 'all':
+        disposition_string = 'disposition__exact=' + disposition
+        query_string = return_query_string(query_string,
+                                        disposition_string)
 
     return query_string
 

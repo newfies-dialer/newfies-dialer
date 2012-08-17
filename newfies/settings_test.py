@@ -23,20 +23,22 @@ from settings import *
 SOUTH_TESTS_MIGRATE = False
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'newfies',
+    #     'USER': 'root',
+    #     'PASSWORD': 'password',
+    #     'HOST': 'localhost',
+    #     'PORT': '3306',
+    # },
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'newfies',
-        'USER': 'root',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    },
-    'sqlite_memory': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': ':memory:',
     }
 }
 
+BROKER_BACKEND = "memory"
+CELERY_ALWAYS_EAGER = True
 
 INSTALLED_APPS += ('django_nose', )
 TEST_RUNNER = 'django_nose.run_tests'

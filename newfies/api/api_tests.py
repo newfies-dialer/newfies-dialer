@@ -157,10 +157,41 @@ class ApiTestCase(BaseAuthenticatedClient):
         response = self.client.post('/api/v1/answercall/', data, **self.extra)
         self.assertEqual(response.status_code, 200)
 
+        data = {"ALegRequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd876",
+                "CallUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875"}
+        response = self.client.post('/api/v1/answercall/', data, **self.extra)
+        self.assertEqual(response.status_code, 400)
+
+        data = {"ALegRequestUUID": "",
+                "CallUUID": ""}
+        response = self.client.post('/api/v1/answercall/', data, **self.extra)
+        self.assertEqual(response.status_code, 400)
+
     def test_create_hangupcall(self):
         """Test Function to create a hangupcall"""
         data = {"RequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875",
                 "HangupCause": "SUBSCRIBER_ABSENT",
+                "From": "800124545",
+                "To": "34650111222"}
+        response = self.client.post('/api/v1/hangupcall/', data, **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+        data = {"RequestUUID": "",
+                "HangupCause": "",
+                "From": "800124545",
+                "To": "34650111222"}
+        response = self.client.post('/api/v1/hangupcall/', data, **self.extra)
+        self.assertEqual(response.status_code, 400)
+
+        data = {"RequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd886",
+                "HangupCause": "SUBSCRIBER_ABSENT",
+                "From": "800124545",
+                "To": "34650111222"}
+        response = self.client.post('/api/v1/hangupcall/', data, **self.extra)
+        self.assertEqual(response.status_code, 400)
+
+        data = {"RequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875",
+                "HangupCause": "NORMAL_CLEARING",
                 "From": "800124545",
                 "To": "34650111222"}
         response = self.client.post('/api/v1/hangupcall/', data, **self.extra)
@@ -176,7 +207,7 @@ class ApiTestCase(BaseAuthenticatedClient):
     def test_create_survey(self):
         """Test Function to create a survey"""
         data = simplejson.dumps({"name": "mysurvey",
-                "description": "Test"})
+                                 "description": "Test"})
         response = self.client.post('/api/v1/survey/', data,
                    content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)

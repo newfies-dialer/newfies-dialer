@@ -1,0 +1,17 @@
+[
+   {
+      "pk":1,
+      "model":"survey.surveycampaignresult",
+      "fields":{
+         "campaign":1,
+         "surveyapp":1,
+         "callid":"123456789",
+         "question":"What is your prefered fruit?",
+         "callrequest":1,
+         "record_file":"",
+         "created_date":"2012-08-17T04:48:28",
+         "response":"Apple",
+         "recording_duration":1
+      }
+   }
+]

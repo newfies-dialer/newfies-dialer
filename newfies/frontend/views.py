@@ -94,8 +94,7 @@ def login_view(request):
                     login(request, user)
                     request.session['has_notified'] = False
                     # Redirect to a success page (dashboard).
-                    return \
-                    HttpResponseRedirect('/dashboard/')
+                    return HttpResponseRedirect('/dashboard/')
                 else:
                     # Return a 'disabled account' error message
                     errorlogin = _('Disabled Account')
@@ -762,11 +761,11 @@ def cust_password_reset(request):
     if not request.user.is_authenticated():
         data = {'loginform': LoginForm()}
         return password_reset(request,
-        template_name='frontend/registration/password_reset_form.html',
-        email_template_name='frontend/registration/password_reset_email.html',
-        post_reset_redirect='/password_reset/done/',
-        from_email='newfies_admin@localhost.com',
-        extra_context=data)
+            template_name='frontend/registration/password_reset_form.html',
+            email_template_name='frontend/registration/password_reset_email.html',
+            post_reset_redirect='/password_reset/done/',
+            from_email='newfies_admin@localhost.com',
+            extra_context=data)
     else:
         return HttpResponseRedirect("/")
 
@@ -781,8 +780,8 @@ def cust_password_reset_done(request):
     if not request.user.is_authenticated():
         data = {'loginform': LoginForm()}
         return password_reset_done(request,
-        template_name='frontend/registration/password_reset_done.html',
-        extra_context=data)
+            template_name='frontend/registration/password_reset_done.html',
+            extra_context=data)
     else:
         return HttpResponseRedirect("/")
 

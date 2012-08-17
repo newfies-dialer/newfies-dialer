@@ -14,3 +14,4 @@ newfies/usermedia/tts/*.*
 newfies/usermedia/recording/*.*
 build/
 dist/
+coverage_info

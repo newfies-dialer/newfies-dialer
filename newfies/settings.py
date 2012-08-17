@@ -364,6 +364,17 @@ REDIS_PORT = 6379
 REDIS_DB = 0
 #REDIS_CONNECT_RETRY = True
 
+CELERY_DEFAULT_QUEUE = 'newfies'
+CELERY_DEFAULT_EXCHANGE = "newfies_tasks"
+CELERY_DEFAULT_EXCHANGE_TYPE = "topic"
+CELERY_DEFAULT_ROUTING_KEY = "task.newfies"
+CELERY_QUEUES = {
+    'newfies': {
+        'binding_key': '#',
+    },
+}
+
+
 """
 from datetime import timedelta
 from celery.schedules import crontab

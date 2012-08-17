@@ -17,7 +17,8 @@ from django.conf import settings
 from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
 from dialer_audio.forms import DialerAudioFileForm
-from dialer_audio.views import audio_list, audio_add, audio_grid
+from dialer_audio.views import audio_list, audio_add, audio_grid, \
+                               audio_change, audio_del
 from utils.helper import grid_test_data
 
 audio_file = open(
@@ -49,6 +50,8 @@ class AudioFileAdminView(BaseAuthenticatedClient):
 
 class AudioFileCustomerView(BaseAuthenticatedClient):
     """Test cases for AudioFile Customer Interface."""
+
+    fixtures = ['auth_user.json', 'dialer_audio.json']
 
     def test_audiofile_view_list(self):
         """Test Function to check aidio list"""
@@ -87,18 +90,13 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.context['form']['audio_file'].errors,
                          [u'This field is required.'])
 
-        request = self.factory.post('/audio/add/', {'name': '',
-                                                    'audio_file': ''})
+        request = self.factory.post('/audio/add/',
+                {'name': 'sample_audio_file',
+                 'audio_file': audio_file,
+                 'convert_type': 2,
+                 'channel_type': 1,
+                 'freq_type': 8000}, follow=True)
         request.user = self.user
         request.session = {}
         response = audio_add(request)
         self.assertEqual(response.status_code, 200)
-
-        response = self.client.post('/audio/add/',
-            data={'name': 'sample_audio_file',
-                  'audio_file': audio_file,
-                  'convert_type': 2,
-                  'channel_type': 1,
-                  'freq_type': 8000})
-        self.assertEqual(response.status_code, 200)
-

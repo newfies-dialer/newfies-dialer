@@ -23,9 +23,9 @@ delete_style = 'style="text-decoration:none;background-image:url(' + \
 
 # grid_test_data used in test-cases
 grid_test_data = {'page': 1,
-             'rp': 10,
-             'sortname': 'id',
-             'sortorder': 'asc'}
+                  'rp': 10,
+                  'sortname': 'id',
+                  'sortorder': 'asc'}
 
 def grid_common_function(request):
     """To get common flexigrid variable"""

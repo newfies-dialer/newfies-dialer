@@ -642,7 +642,6 @@ def count_contact_of_campaign(campaign_id):
 
 
 def get_url_campaign_status(id, status):
-
     control_play_style = \
         'style="text-decoration:none;background-image:url(' \
         + settings.STATIC_URL \

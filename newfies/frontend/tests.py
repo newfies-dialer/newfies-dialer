@@ -15,7 +15,8 @@
 from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
 from frontend.forms import LoginForm, DashboardForm
-from frontend.views import customer_dashboard, index, login_view
+from frontend.views import customer_dashboard, index, \
+                           login_view, logout_view, pleaselog
 
 
 class FrontendView(BaseAuthenticatedClient):
@@ -34,29 +35,57 @@ class FrontendView(BaseAuthenticatedClient):
 class FrontendCustomerView(BaseAuthenticatedClient):
     """Test cases for Newfies-Dialer Customer Interface."""
 
+    fixtures = ['dialer_setting.json', 'auth_user.json', 'gateway.json',
+                'voiceapp.json', 'phonebook.json', 'contact.json',
+                'campaign.json', 'campaign_subscriber.json',
+                'callrequest.json', 'voipcall.json']
+
+
+    def test_login_view(self):
+        response = self.client.post('/login/',
+                {'user': 'admin',
+                 'password': 'admin'}, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/login/',
+                {'user': 'admin',
+                 'password': 'admin'}, follow=True)
+        request.user = self.user
+        request.session = self.client.session
+        response = login_view(request)
+        self.assertEqual(response.status_code, 302)
+
+        request = self.factory.post('/login/',
+                {'user': '', 'password': ''}, follow=True)
+        request.user = self.user
+        request.session = self.client.session
+        response = login_view(request)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/login/',
+                {'user': 'admin', 'password': 'admin123'}, follow=True)
+        request.user = self.user
+        request.session = self.client.session
+        response = login_view(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_pleaselog(self):
+        response = self.client.get('/pleaselog/')
+        self.assertTemplateUsed(response, 'frontend/index.html')
+        self.assertEqual(response.status_code, 200)
+
     def test_index(self):
         """Test Function to check customer index page"""
         response = self.client.get('/')
         self.assertTrue(response.context['loginform'], LoginForm())
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/index.html')
-        response = self.client.post('/login/',
-                                    {'username': 'admin',
-                                     'password': 'admin'})
-        self.assertEqual(response.status_code, 200)
+
 
         request = self.factory.get('/')
         request.user = self.user
         request.session = {}
         response = index(request)
-        self.assertEqual(response.status_code, 200)
-
-        request = self.factory.post('/login/',
-                                    {'username': 'admin',
-                                     'password': 'admin'})
-        request.user = self.user
-        request.session = {}
-        response = login_view(request)
         self.assertEqual(response.status_code, 200)
 
     def test_dashboard(self):
@@ -66,12 +95,97 @@ class FrontendCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/dashboard.html')
 
-        request = self.factory.post('/dashboard/', {'campaign': '1',
-                                                    'search_type': '1'})
+        request = self.factory.post('/dashboard/',
+                {'campaign': '1',
+                 'search_type': '1',
+                 'call_count_button': 'true',
+                 'duration_button': 'true'})
+
         request.user = self.user
         request.session = {}
         response = customer_dashboard(request)
         self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/dashboard/',
+                {'campaign': '1',
+                 'search_type': '2',
+                 'call_count_button': 'true',
+                 'duration_button': 'true'})
+
+        request.user = self.user
+        request.session = {}
+        response = customer_dashboard(request)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/dashboard/',
+                {'campaign': '1',
+                 'search_type': '3',
+                 'call_count_button': 'true',
+                 'duration_button': 'true'})
+
+        request.user = self.user
+        request.session = {}
+        response = customer_dashboard(request)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/dashboard/',
+                {'campaign': '1',
+                 'search_type': '4',
+                 'call_count_button': 'true',
+                 'duration_button': 'true'})
+
+        request.user = self.user
+        request.session = {}
+        response = customer_dashboard(request)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/dashboard/',
+                {'campaign': '1',
+                 'search_type': '5',
+                 'call_count_button': 'true',
+                 'duration_button': 'true'})
+
+        request.user = self.user
+        request.session = {}
+        response = customer_dashboard(request)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/dashboard/',
+                {'campaign': '1',
+                 'search_type': '6',
+                 'call_count_button': 'true',
+                 'duration_button': 'true'})
+
+        request.user = self.user
+        request.session = {}
+        response = customer_dashboard(request)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/dashboard/',
+                {'campaign': '1',
+                 'search_type': '7',
+                 'call_count_button': 'true',
+                 'duration_button': 'true'})
+
+        request.user = self.user
+        request.session = {}
+        response = customer_dashboard(request)
+        self.assertEqual(response.status_code, 200)
+        response = customer_dashboard(request, on_index='yes')
+
+
+    def test_logout_view(self):
+        response = self.client.post('/logout/', follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/logout/', follow=True)
+        request.user = self.user
+        request.session = self.client.session
+        request.LANGUAGE_CODE = 'en'
+        response = logout_view(request)
+        self.assertEqual(response.status_code, 302)
+
+
 
 
 class FrontendForgotPassword(TestCase):
@@ -85,7 +199,8 @@ class FrontendForgotPassword(TestCase):
             response,
             'frontend/registration/password_reset_form.html')
         response = self.client.post('/password_reset/',
-                                    {'email': 'admin@localhost.com'})
+                                    {'email': 'admin@localhost.com'},
+                                    follow=True)
         self.assertEqual(response.status_code, 200)
 
         response = self.client.get('/password_reset/done/')
@@ -101,7 +216,8 @@ class FrontendForgotPassword(TestCase):
             'frontend/registration/password_reset_confirm.html')
         response = self.client.post('/reset/1-2xc-5791af4cc6b67e88ce8e/',
                                     {'new_password1': 'admin',
-                                     'new_password2': 'admin' })
+                                     'new_password2': 'admin' },
+                                    follow=True)
         self.assertEqual(response.status_code, 200)
 
         response = self.client.get('/reset/done/')

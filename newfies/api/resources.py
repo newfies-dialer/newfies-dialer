@@ -130,7 +130,13 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='',
 
 
 def get_attribute(attrs, attr_name):
-    """this is a helper to retrieve an attribute if it exists"""
+    """this is a helper to retrieve an attribute if it exists
+
+    >>> x = {'a': 'apple'}
+
+    >>> get_attribute(x, 'a')
+    'apple'
+    """
     if attr_name in attrs:
         attr_value = attrs[attr_name]
     else:
@@ -139,7 +145,16 @@ def get_attribute(attrs, attr_name):
 
 
 def get_value_if_none(x, value):
-    """return value if x is None"""
+    """return value if x is None
+
+    >>> x = None
+
+    >>> get_value_if_none(x, 'abc')
+    'abc'
+
+    >>> get_value_if_none('a', 'abc')
+    'a'
+    """
     if x is None:
         return value
     return x

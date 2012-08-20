@@ -14,7 +14,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.conf.urls.defaults import url
+from django.conf.urls import url
 from django.http import HttpResponse
 from django.db import connection
 
@@ -25,7 +25,7 @@ from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import BadRequest, ImmediateHttpResponse
 from tastypie import http
 
-from dialer_contact.models import Contact
+from dialer_contact.models import Phonebook, Contact
 from dialer_campaign.models import Campaign
 
 import logging
@@ -34,6 +34,10 @@ logger = logging.getLogger('newfies.filelog')
 
 
 def get_contact(id):
+    """
+    >>> get_contact(1)
+    ''
+    """
     try:
         con_obj = Contact.objects.get(pk=id)
         return con_obj.contact
@@ -55,7 +59,9 @@ class CampaignSubscriberPerCampaignResource(ModelResource):
         CURL Usage::
 
             curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber_per_campaign/%campaign_id%/?format=json
-            or
+
+                or
+
             curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber_per_campaign/%campaign_id%/%contact%/?format=json
 
         Response::

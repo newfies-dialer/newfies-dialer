@@ -46,7 +46,26 @@ class ApiTestCase(BaseAuthenticatedClient):
             data, content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)
 
-        response = self.client.post('/api/v1/campaign/', {}, **self.extra)
+        response = self.client.post('/api/v1/campaign/', {},
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
+
+        data = simplejson.dumps({
+            "name": "mycampaign",
+            "description": "",
+            "callerid": "1239876",
+            "frequency": "120",
+            "callmaxduration": "2550",
+            "maxretry": "3",
+            "intervalretry": "3000",
+            "calltimeout": "45",
+            "aleg_gateway": "1",
+            "content_type": "voice_app",
+            "object_id": "1",
+            "extra_data": "2000",
+            "phonebook": "1"})
+        response = self.client.post('/api/v1/campaign/',
+            data, content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 400)
 
     def test_read_campaign(self):
@@ -76,10 +95,13 @@ class ApiTestCase(BaseAuthenticatedClient):
 
     def test_delete_cascade_campaign(self):
         """Test Function to cascade delete a campaign"""
-        response = \
-        self.client.delete('/api/v1/campaign_delete_cascade/1/',
+        response = self.client.delete('/api/v1/campaign_delete_cascade/1/',
             **self.extra)
         self.assertEqual(response.status_code, 204)
+
+        response = self.client.delete('/api/v1/campaign_delete_cascade/1/',
+            **self.extra)
+        self.assertEqual(response.status_code, 404)
 
     def test_create_phonebook(self):
         """Test Function to create a phonebook"""
@@ -96,7 +118,7 @@ class ApiTestCase(BaseAuthenticatedClient):
         response = self.client.post('/api/v1/phonebook/', data,
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 400)
-       
+
         response = self.client.post('/api/v1/phonebook/', {},
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 400)
@@ -135,10 +157,17 @@ class ApiTestCase(BaseAuthenticatedClient):
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 400)
 
+        data = simplejson.dumps({
+            "contact": "650784355",
+            })
+        response = self.client.post('/api/v1/campaignsubscriber/', data,
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
+
     def test_read_campaign_subscriber(self):
         """Test Function to get all campaign subscriber"""
         response = self.client.get('/api/v1/campaignsubscriber/1/?format=json',
-                   **self.extra)
+            **self.extra)
         self.assertEqual(response.status_code, 200)
 
     def test_update_campaign_subscriber(self):
@@ -231,4 +260,26 @@ class ApiTestCase(BaseAuthenticatedClient):
 
         response = self.client.post('/api/v1/store_cdr/', {}, **self.extra)
         self.assertEqual(response.status_code, 400)
+
+    def test_dialcallback(self):
+        """Test Function to create a dialcallback"""
+        data = ('DialALegUUID=e4fc2188-0af5-11e1-b64d-00231470a30c&DialBLegUUID=e4fc2188-0af5-11e1-b64d-00231470a30c&DialBLegHangupCause=SUBSCRIBER_ABSENT')
+        response = self.client.post('/api/v1/dialcallback/', data,
+            content_type='application/json',  **self.extra)
+        self.assertEqual(response.status_code, 400)
+
+        response = self.client.post('/api/v1/dialcallback/', {}, **self.extra)
+        self.assertEqual(response.status_code, 400)
+
+    def test_campaignsubscriber_per_campaign(self):
+        """Test Function campaignsubscriber per campaign"""
+        response = self.client.get(
+            '/api/v1/campaignsubscriber_per_campaign/1/?format=json',
+            **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.get(
+            '/api/v1/campaignsubscriber_per_campaign/1/640234000/?format=json',
+            **self.extra)
+        self.assertEqual(response.status_code, 200)
 

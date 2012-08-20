@@ -34,6 +34,13 @@ def export_question_result(val, column_question):
 
     >>> export_question_result(val, column_question)
     'ans2'
+
+    >>> val = "test_question_1?*|ans1-|-test_question_2?*|**|*audio_file"
+
+    >>> column_question = "test"
+
+    >>> export_question_result(val, column_question)
+    ''
     """
     if not val:
         return ''

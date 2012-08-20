@@ -26,6 +26,7 @@ from survey.views import survey_list, survey_grid, survey_add, \
     survey_finestatemachine, survey_question_list
 from utils.helper import grid_test_data
 from datetime import datetime
+import simplejson
 
 
 class SurveyAdminView(BaseAuthenticatedClient):
@@ -92,6 +93,110 @@ class SurveyAdminView(BaseAuthenticatedClient):
                 "callrequest": "1"
                 }, follow=True)
         self.assertEqual(response.status_code, 200)
+
+
+class SurveyApiTestCase(BaseAuthenticatedClient):
+    """Test Function to check Survey, SurveyQuestion,
+       SurveyResponse APIs
+    """
+
+    fixtures = ['auth_user.json', 'gateway.json', 'voiceapp.json',
+                'dialer_setting.json', 'phonebook.json', 'contact.json',
+                'campaign.json', 'campaign_subscriber.json', 'callrequest.json',
+                'survey.json', 'survey_question.json', 'survey_response.json']
+
+    def test_create_survey(self):
+        """Test Function to create a survey"""
+        data = simplejson.dumps({"name": "mysurvey",
+                                 "description": "Test"})
+        response = self.client.post('/api/v1/survey/', data,
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 201)
+
+        data = simplejson.dumps({'': ''})
+        response = self.client.post('/api/v1/survey/', data,
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 201)
+
+    def test_read_survey(self):
+        """Test Function to get all surveys"""
+        response = self.client.get('/api/v1/survey/?format=json',
+            **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_survey(self):
+        """Test Function to update a survey"""
+        data = simplejson.dumps({
+            "name": "mysurvey",
+            "description": "test",
+            "user": "1"})
+        response = self.client.put('/api/v1/survey/1/',
+            data, content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 204)
+
+    def test_create_survey_question(self):
+        """Test Function to create a survey question"""
+        data = simplejson.dumps({
+            "question": "survey que",
+            "tags": "",
+            "user": "1",
+            "surveyapp": "1",
+            "message_type": "1"})
+        response = self.client.post('/api/v1/survey_question/', data,
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 201)
+
+        data = simplejson.dumps({"": ""})
+        response = self.client.post('/api/v1/survey_question/', data,
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 404)
+
+    def test_read_survey_question(self):
+        """Test Function to get all survey questions"""
+        response = self.client.get('/api/v1/survey_question/?format=json',
+            **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_survey_question(self):
+        """Test Function to update a survey question"""
+        data = simplejson.dumps({
+            "question": "survey que",
+            "tags": "",
+            "surveyapp": "1",
+            "message_type": "1"})
+        response = self.client.put('/api/v1/survey_question/1/',
+            data, content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 204)
+
+    def test_create_survey_response(self):
+        """Test Function to create a survey response"""
+        data = simplejson.dumps({"key": "orange",
+                                 "keyvalue": "1",
+                                 "surveyquestion": "1"})
+        response = self.client.post('/api/v1/survey_response/', data,
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 201)
+
+        data = simplejson.dumps({"": ""})
+        response = self.client.post('/api/v1/survey_response/', data,
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 404)
+
+    def test_read_survey_response(self):
+        """Test Function to get all survey response"""
+        response = self.client.get('/api/v1/survey_response/?format=json',
+            **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_survey_response(self):
+        """Test Function to update a survey response"""
+        data = simplejson.dumps({"key": "Apple",
+                                 "keyvalue": "1",
+                                 "surveyquestion": "1"})
+        response = self.client.put('/api/v1/survey_response/1/',
+            data, content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 204)
+
 
 
 class SurveyCustomerView(BaseAuthenticatedClient):

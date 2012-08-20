@@ -91,7 +91,7 @@ class ApiTestCase(BaseAuthenticatedClient):
                    content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)
 
-        response = self.client.post('/api/v1/phonebook/',
+        response = self.client.post('/api/v1/phonebook/', {},
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 400)
 
@@ -109,12 +109,12 @@ class ApiTestCase(BaseAuthenticatedClient):
             data, content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)
 
-    def test_create_campaign_subscriber(self):
-        """Test Function to create a campaign subscriber"""
-        response = self.client.post('/api/v1/campaignsubscriber/',
+        response = self.client.post('/api/v1/bulkcontact/', {},
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 400)
 
+    def test_create_campaign_subscriber(self):
+        """Test Function to create a campaign subscriber"""
         data = simplejson.dumps({
                 "contact": "650784355",
                 "last_name": "belaid",
@@ -124,6 +124,10 @@ class ApiTestCase(BaseAuthenticatedClient):
         response = self.client.post('/api/v1/campaignsubscriber/',
             data, content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)
+
+        response = self.client.post('/api/v1/campaignsubscriber/', {},
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
 
     def test_read_campaign_subscriber(self):
         """Test Function to get all campaign subscriber"""
@@ -154,6 +158,10 @@ class ApiTestCase(BaseAuthenticatedClient):
             data, content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)
 
+        #response = self.client.post('/api/v1/callrequest/', {},
+        #    data, content_type='application/json', **self.extra)
+        #self.assertEqual(response.status_code, 400)
+
     def test_read_callrequest(self):
         """Test Function to get all callrequests"""
         response = self.client.get('/api/v1/callrequest/?format=json',
@@ -174,7 +182,7 @@ class ApiTestCase(BaseAuthenticatedClient):
 
         data = {"ALegRequestUUID": "",
                 "CallUUID": ""}
-        response = self.client.post('/api/v1/answercall/', data, **self.extra)
+        response = self.client.post('/api/v1/answercall/', {}, **self.extra)
         self.assertEqual(response.status_code, 400)
 
     def test_create_hangupcall(self):

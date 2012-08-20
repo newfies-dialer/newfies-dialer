@@ -113,10 +113,9 @@ class SurveyApiTestCase(BaseAuthenticatedClient):
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)
 
-        data = simplejson.dumps({'': ''})
-        response = self.client.post('/api/v1/survey/', data,
+        response = self.client.post('/api/v1/survey/', {},
             content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 400)
 
     def test_read_survey(self):
         """Test Function to get all surveys"""
@@ -146,10 +145,9 @@ class SurveyApiTestCase(BaseAuthenticatedClient):
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)
 
-        data = simplejson.dumps({"": ""})
-        response = self.client.post('/api/v1/survey_question/', data,
+        response = self.client.post('/api/v1/survey_question/', {},
             content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 400)
 
     def test_read_survey_question(self):
         """Test Function to get all survey questions"""
@@ -170,17 +168,24 @@ class SurveyApiTestCase(BaseAuthenticatedClient):
 
     def test_create_survey_response(self):
         """Test Function to create a survey response"""
-        data = simplejson.dumps({"key": "orange",
-                                 "keyvalue": "1",
+        data = simplejson.dumps({"key": "4",
+                                 "keyvalue": "Mango",
                                  "surveyquestion": "1"})
         response = self.client.post('/api/v1/survey_response/', data,
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)
 
-        data = simplejson.dumps({"": ""})
+        # check duplication of key
+        data = simplejson.dumps({"key": "2",
+                                 "keyvalue": "orange",
+                                 "surveyquestion": "1"})
         response = self.client.post('/api/v1/survey_response/', data,
             content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 400)
+
+        response = self.client.post('/api/v1/survey_response/', {},
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
 
     def test_read_survey_response(self):
         """Test Function to get all survey response"""
@@ -190,13 +195,12 @@ class SurveyApiTestCase(BaseAuthenticatedClient):
 
     def test_update_survey_response(self):
         """Test Function to update a survey response"""
-        data = simplejson.dumps({"key": "Apple",
-                                 "keyvalue": "1",
+        data = simplejson.dumps({"key": "1",
+                                 "keyvalue": "Banana",
                                  "surveyquestion": "1"})
         response = self.client.put('/api/v1/survey_response/1/',
             data, content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 204)
-
 
 
 class SurveyCustomerView(BaseAuthenticatedClient):

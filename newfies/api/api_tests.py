@@ -12,7 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.test import Client
+from django.test import TestCase, Client
 from common.utils import BaseAuthenticatedClient
 import simplejson
 
@@ -112,14 +112,14 @@ class ApiTestCase(BaseAuthenticatedClient):
                    content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)
 
+        response = self.client.post('/api/v1/phonebook/', {},
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
+
         data = simplejson.dumps({"name": "mylittlephonebook",
                                  "description": "Test",
                                  "campaign_id": "5"})
         response = self.client.post('/api/v1/phonebook/', data,
-            content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 400)
-
-        response = self.client.post('/api/v1/phonebook/', {},
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 400)
 

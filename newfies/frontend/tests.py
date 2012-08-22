@@ -190,12 +190,12 @@ class FrontendCustomerView(BaseAuthenticatedClient):
         response = logout_view(request)
         self.assertEqual(response.status_code, 302)
 
-    #def test_custom_404_view(self):
-    #    request = self.factory.post('/')
-    #    request.user = self.user
-    #    request.session = {}
-    #    response = custom_404_view(request,'404.html')
-    #    self.assertEqual(response.status_code, 404)
+    def test_custom_404_view(self):
+        request = self.factory.post('/logout/')
+        request.user = self.user
+        request.session = {}
+        response = custom_404_view(request)
+        self.assertEqual(response.status_code, 500)
 
     def test_custom_500_view(self):
         """Test Function to check 500_view"""

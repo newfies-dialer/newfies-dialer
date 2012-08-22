@@ -128,11 +128,10 @@ class HangupcallResource(ModelResource):
         if not errors:
             opt_request_uuid = request.POST.get('RequestUUID')
             opt_hangup_cause = request.POST.get('HangupCause')
-            try:
-                callrequest = Callrequest.objects.get(
-                    request_uuid=opt_request_uuid)
-            except:
-                logger.debug('Hangupcall Error cannot find the Callrequest!')
+
+            callrequest = Callrequest.objects.get(
+                request_uuid=opt_request_uuid)
+
             try:
                 obj_subscriber = CampaignSubscriber.objects.get(
                     id=callrequest.campaign_subscriber.id)

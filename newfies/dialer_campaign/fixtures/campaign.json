@@ -29,6 +29,7 @@
          "phonebook":[
                  1
          ],
+         "imported_phonebook": "1",
          "expirationdate":"2011-12-28 14:35:46",
          "campaign_code":"BXTWJ",
          "aleg_gateway":1,

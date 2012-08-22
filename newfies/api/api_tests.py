@@ -151,6 +151,12 @@ class ApiTestCase(BaseAuthenticatedClient):
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 400)
 
+        self.client.logout()
+        login = self.client.login(username='admin', password='admin1')
+        response = self.client.post('/api/v1/phonebook/', data,
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
+
     def test_read_phonebook(self):
         """Test Function to get all phonebooks"""
         response = self.client.get('/api/v1/phonebook/',
@@ -181,12 +187,13 @@ class ApiTestCase(BaseAuthenticatedClient):
             data, content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)
 
-        response = self.client.post('/api/v1/campaignsubscriber/', {},
+        response = self.client.post('/api/v1/campaignsubscriber/', dict(),
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 400)
 
         data = simplejson.dumps({
             "contact": "650784355",
+            "phonebook_id": "3"
             })
         response = self.client.post('/api/v1/campaignsubscriber/', data,
             content_type='application/json', **self.extra)
@@ -201,10 +208,20 @@ class ApiTestCase(BaseAuthenticatedClient):
     def test_update_campaign_subscriber(self):
         """Test Function to update a campaign subscriber"""
         data = simplejson.dumps({"status": "1",
-                "contact": "640234000"})
+                                 "contact": "640234000"})
         response = self.client.put('/api/v1/campaignsubscriber/1/',
                    data, content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 204)
+
+        response = self.client.put('/api/v1/campaignsubscriber/3/',
+            data, content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
+
+        data = simplejson.dumps({"status": "1",
+                                 "contact": "640234001"})
+        response = self.client.put('/api/v1/campaignsubscriber/1/',
+            data, content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
 
     def test_create_callrequest(self):
         """Test Function to create a callrequest"""
@@ -249,6 +266,13 @@ class ApiTestCase(BaseAuthenticatedClient):
     def test_create_hangupcall(self):
         """Test Function to create a hangupcall"""
         data = {"RequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875",
+                "HangupCause": "NORMAL_CLEARING",
+                "From": "800124545",
+                "To": "34650111222"}
+        response = self.client.post('/api/v1/hangupcall/', data, **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+        data = {"RequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875",
                 "HangupCause": "SUBSCRIBER_ABSENT",
                 "From": "800124545",
                 "To": "34650111222"}
@@ -269,14 +293,7 @@ class ApiTestCase(BaseAuthenticatedClient):
         response = self.client.post('/api/v1/hangupcall/', data, **self.extra)
         self.assertEqual(response.status_code, 400)
 
-        data = {"RequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875",
-                "HangupCause": "NORMAL_CLEARING",
-                "From": "800124545",
-                "To": "34650111222"}
-        response = self.client.post('/api/v1/hangupcall/', data, **self.extra)
-        self.assertEqual(response.status_code, 200)
-
-        response = self.client.post('/api/v1/hangupcall/', {}, **self.extra)
+        response = self.client.post('/api/v1/hangupcall/', dict(), **self.extra)
         self.assertEqual(response.status_code, 400)
 
     def test_create_cdr(self):
@@ -310,4 +327,20 @@ class ApiTestCase(BaseAuthenticatedClient):
             '/api/v1/campaignsubscriber_per_campaign/1/640234000/?format=json',
             **self.extra)
         self.assertEqual(response.status_code, 200)
+
+        response = self.client.get(
+            '/api/v1/campaignsubscriber_per_campaign/3/?format=json',
+            **self.extra)
+        self.assertEqual(response.status_code, 400)
+
+        response = self.client.get(
+            '/api/v1/campaignsubscriber_per_campaign/3/640234001/?format=json',
+            **self.extra)
+        self.assertEqual(response.status_code, 400)
+
+        response = self.client.get(
+            '/api/v1/campaignsubscriber_per_campaign/3/640234000/?format=json',
+            **self.extra)
+        self.assertEqual(response.status_code, 400)
+
 

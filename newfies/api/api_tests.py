@@ -22,51 +22,36 @@ class ApiTestCase(BaseAuthenticatedClient):
     fixtures = ['auth_user.json', 'gateway.json', 'voiceapp.json',
             'dialer_setting.json', 'phonebook.json', 'contact.json',
             'campaign.json', 'campaign_subscriber.json', 'callrequest.json',
-            'survey.json', 'survey_question.json', 'survey_response.json']
+            'survey.json', 'survey_question.json', 'survey_response.json',
+            'user_profile.json']
 
     def test_create_campaign(self):
         """Test Function to create a campaign"""
-        data = simplejson.dumps({
-                "name": "mycampaign",
-                "description": "",
-                "callerid": "1239876",
-                "startingdate": "1301392136.0",
-                "expirationdate": "1301332136.0",
-                "frequency": "20",
-                "callmaxduration": "50",
-                "maxretry": "3",
-                "intervalretry": "3000",
-                "calltimeout": "45",
-                "aleg_gateway": "1",
-                "content_type": "voice_app",
-                "object_id": "1",
-                "extra_data": "2000",
-                "phonebook": "1"})
-        response = self.client.post('/api/v1/campaign/',
-            data, content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 201)
-
-        response = self.client.post('/api/v1/campaign/', {},
+        response = self.client.post('/api/v1/campaign/', dict(),
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 400)
 
         data = simplejson.dumps({
-            "name": "mycampaign",
-            "description": "",
-            "callerid": "1239876",
-            "frequency": "120",
-            "callmaxduration": "2550",
-            "maxretry": "3",
-            "intervalretry": "3000",
-            "calltimeout": "45",
-            "aleg_gateway": "1",
-            "content_type": "voice_app",
-            "object_id": "1",
-            "extra_data": "2000",
-            "phonebook": "1"})
+            "name":"test_campaign",
+            "description":"",
+            "callerid":"1239876",
+            "startingdate":"1301392136.0",
+            "expirationdate":"1301332136.0",
+            "frequency":"20",
+            "callmaxduration":"50",
+            "maxretry":"3",
+            "intervalretry":"3000",
+            "calltimeout":"45",
+            "aleg_gateway":"1",
+            "content_type":"voice_app",
+            "object_id":"1",
+            "extra_data":"2000",
+            "phonebook_id":"1"
+        })
         response = self.client.post('/api/v1/campaign/',
             data, content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 201)
+
 
     def test_read_campaign(self):
         """Test Function to get all campaigns"""
@@ -80,11 +65,11 @@ class ApiTestCase(BaseAuthenticatedClient):
     def test_update_campaign(self):
         """Test Function to update a campaign"""
         response = self.client.put('/api/v1/campaign/1/',
-                   simplejson.dumps({
-                        "status": "2",
-                        "content_type": "voice_app",
-                        "object_id": "1"}),
-                   content_type='application/json', **self.extra)
+            simplejson.dumps({
+                "status": "2",
+                "content_type": "voice_app",
+                "object_id": "1"}),
+            content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 204)
 
     def test_delete_campaign(self):

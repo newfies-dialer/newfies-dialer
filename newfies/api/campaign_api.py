@@ -128,7 +128,7 @@ class CampaignValidation(Validation):
         if content_type == 'voice_app' or content_type == 'survey':
             try:
                 content_type_id = ContentType.objects\
-                .get(app_label=str(content_type)).id
+                    .get(app_label=str(content_type)).id
                 bundle.data['content_type'] = '/api/v1/contenttype/%s/' %\
                                               content_type_id
             except:
@@ -139,10 +139,9 @@ class CampaignValidation(Validation):
 
         object_id = bundle.data.get('object_id')
         if object_id:
-            try:
                 bundle.data['object_id'] = object_id
-            except:
-                errors['chk_object_id'] = ["App Object ID doesn't exist!"]
+        else:
+            errors['chk_object_id'] = ["App Object ID doesn't exist!"]
 
         try:
             user_id = User.objects.get(username=request.user).id

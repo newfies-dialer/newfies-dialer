@@ -54,7 +54,7 @@ class ApiTestCase(BaseAuthenticatedClient):
 
         # To test dialer settings with campaign data
         data = simplejson.dumps({
-            "name":"test campaign",
+            "name":"test_campaign",
             "description":"",
             "callerid":"1239876",
             "startingdate":"1301392136.0",
@@ -65,7 +65,7 @@ class ApiTestCase(BaseAuthenticatedClient):
             "intervalretry":"3000",
             "calltimeout":"90",
             "aleg_gateway":"5",
-            "content_type":"voice_app",
+            "content_type":"sms",
             "object_id":"",
             "extra_data":"2000",
             "phonebook_id":"5"
@@ -111,7 +111,9 @@ class ApiTestCase(BaseAuthenticatedClient):
             simplejson.dumps({
                 "status": "2",
                 "content_type": "voice_app",
-                "object_id": "1"}),
+                "object_id": "1",
+                "startingdate":"1301392136.0",
+                "expirationdate":"1301332136.0",}),
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 204)
 

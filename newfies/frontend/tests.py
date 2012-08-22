@@ -18,6 +18,8 @@ from frontend.forms import LoginForm, DashboardForm
 from frontend.views import customer_dashboard, index, \
                            login_view, logout_view, pleaselog
 
+from newfies.urls import custom_404_view, custom_500_view
+
 
 class FrontendView(BaseAuthenticatedClient):
     """Test cases for Newfies-Dialer Admin Interface."""
@@ -42,6 +44,7 @@ class FrontendCustomerView(BaseAuthenticatedClient):
 
 
     def test_login_view(self):
+        """Test Function to check login view"""
         response = self.client.post('/login/',
                 {'user': 'admin',
                  'password': 'admin'}, follow=True)
@@ -70,6 +73,7 @@ class FrontendCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
     def test_pleaselog(self):
+        """Test Function to check pleaselog view"""
         response = self.client.get('/pleaselog/')
         self.assertTemplateUsed(response, 'frontend/index.html')
         self.assertEqual(response.status_code, 200)
@@ -175,6 +179,7 @@ class FrontendCustomerView(BaseAuthenticatedClient):
 
 
     def test_logout_view(self):
+        """Test Function to check logout view"""
         response = self.client.post('/logout/', follow=True)
         self.assertEqual(response.status_code, 200)
 
@@ -185,7 +190,20 @@ class FrontendCustomerView(BaseAuthenticatedClient):
         response = logout_view(request)
         self.assertEqual(response.status_code, 302)
 
+    #def test_custom_404_view(self):
+    #    request = self.factory.post('/')
+    #    request.user = self.user
+    #    request.session = {}
+    #    response = custom_404_view(request,'404.html')
+    #    self.assertEqual(response.status_code, 404)
 
+    def test_custom_500_view(self):
+        """Test Function to check 500_view"""
+        request = self.factory.post('/xyz/')
+        request.user = self.user
+        request.session = {}
+        response = custom_500_view(request)
+        self.assertEqual(response.status_code, 500)
 
 
 class FrontendForgotPassword(TestCase):

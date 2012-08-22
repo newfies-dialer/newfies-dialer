@@ -11,8 +11,8 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-from django.conf.urls.defaults import handler404, handler500, \
-                                    include, patterns
+from django.conf.urls import handler404, handler500, \
+                             include, patterns
 from django.conf import settings
 from django.conf.urls.i18n import *
 from frontend.urls import urlpatterns as urlpatterns_frontend

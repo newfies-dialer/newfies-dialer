@@ -168,12 +168,25 @@ class ApiTestCase(BaseAuthenticatedClient):
     def test_create_bulk_contact(self):
         """Test Function to bulk create contacts"""
         data = simplejson.dumps({"phoneno_list": "12345,54344",
-                "phonebook_id": "1"})
+                                 "phonebook_id": "1"})
         response = self.client.post('/api/v1/bulkcontact/',
             data, content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)
 
         response = self.client.post('/api/v1/bulkcontact/', {},
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
+
+        data = simplejson.dumps({"phoneno_list": "12345,54344",
+                                 "phonebook_id": "3"})
+        response = self.client.post('/api/v1/bulkcontact/', data,
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
+
+        # Check duplication
+        data = simplejson.dumps({"phoneno_list": "12345,54344",
+                                 "phonebook_id": "1"})
+        response = self.client.post('/api/v1/bulkcontact/', data,
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 400)
 
@@ -244,6 +257,19 @@ class ApiTestCase(BaseAuthenticatedClient):
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 400)
 
+        data = simplejson.dumps({
+            "request_uuid": "df8a8478-cc57-11e1-aa17-00231470a30c",
+            "call_time": "2011-05-01 11:22:33",
+            "phone_number": "8792749823",
+            "content_type": "sms",
+            "object_id": "",
+            "timeout": "30000",
+            "callerid": "650784355",
+            "call_type": "1"})
+        response = self.client.post('/api/v1/callrequest/', data,
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
+
     def test_read_callrequest(self):
         """Test Function to get all callrequests"""
         response = self.client.get('/api/v1/callrequest/?format=json',
@@ -257,7 +283,7 @@ class ApiTestCase(BaseAuthenticatedClient):
         response = self.client.post('/api/v1/answercall/', data, **self.extra)
         self.assertEqual(response.status_code, 200)
 
-        data = {"ALegRequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd876",
+        data = {"ALegRequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd877",
                 "CallUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875"}
         response = self.client.post('/api/v1/answercall/', data, **self.extra)
         self.assertEqual(response.status_code, 400)

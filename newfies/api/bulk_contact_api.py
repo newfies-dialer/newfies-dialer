@@ -103,19 +103,23 @@ class BulkContactResource(ModelResource):
         phonebook_id = bundle.data.get('phonebook_id')
         phonenolist = list(phoneno_list.split(","))
 
-        try:
-            obj_phonebook = Phonebook.objects.get(id=phonebook_id)
-            new_contact_count = 0
-            for phoneno in phonenolist:
+        obj_phonebook = Phonebook.objects.get(id=phonebook_id)
+        new_contact_count = 0
+        for phoneno in phonenolist:
+            # check phoneno in Contact
+            dup_count = Contact.objects.filter(contact=phoneno).count()
+
+            # If dup_count is zero, create new contact
+            if dup_count == 0:
                 new_contact = Contact.objects.create(
                     phonebook=obj_phonebook,
                     contact=phoneno,)
                 new_contact_count = new_contact_count + 1
                 new_contact.save()
-        except:
-            error_msg = "The contact duplicated (%s)!\n" % phoneno
-            logger.error(error_msg)
-            raise BadRequest(error_msg)
+            else:
+                error_msg = "The contact duplicated (%s)!\n" % phoneno
+                logger.error(error_msg)
+                raise BadRequest(error_msg)
 
         logger.debug('BulkContact API : result ok 200')
         return bundle

@@ -213,7 +213,8 @@ class SurveyCustomerView(BaseAuthenticatedClient):
                 'campaign.json', 'campaign_subscriber.json',
                 'callrequest.json',
                 'survey.json', 'survey_question.json',
-                'survey_response.json', 'survey_campaign_result.json']
+                'survey_response.json', 'survey_campaign_result.json',
+                'user_profile.json']
 
     def test_survey_view_list(self):
         """Test Function survey view list"""
@@ -360,7 +361,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
     def test_survey_view_report(self):
         """Test Function survey view report"""
         request = self.factory.post('/survey_report/',
-                        {'campaign': '1',
+                        {'campaign': 2,
                          'from_date': datetime.now().strftime("%Y-%m-%d"),
                          'to_date': datetime.now().strftime("%Y-%m-%d")})
         request.user = self.user
@@ -370,7 +371,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         self.assertTemplateUsed(response, 'frontend/survey/survey_report.html')
 
         response = self.client.post('/survey_report/',
-                {'campaign': '1',
+                {'campaign': 2,
                  'from_date': datetime.now().strftime("%Y-%m-%d"),
                  'to_date': datetime.now().strftime("%Y-%m-%d")})
         self.assertTrue(response.context['form'],

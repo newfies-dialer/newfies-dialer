@@ -43,9 +43,9 @@ class CallrequestValidation(Validation):
         if content_type == 'voice_app' or content_type == 'survey':
             try:
                 content_type_id = ContentType.objects\
-                .get(app_label=str(content_type)).id
+                    .get(app_label=str(content_type)).id
                 bundle.data['content_type'] = '/api/v1/contenttype/%s/'\
-                % content_type_id
+                    % content_type_id
             except:
                 errors['chk_content_type'] = ["The ContentType doesn't exist!"]
         else:
@@ -54,10 +54,9 @@ class CallrequestValidation(Validation):
 
         object_id = bundle.data.get('object_id')
         if object_id:
-            try:
-                bundle.data['object_id'] = object_id
-            except:
-                errors['chk_object_id'] = ["App object Id doesn't exist!"]
+            bundle.data['object_id'] = object_id
+        else:
+            errors['chk_object_id'] = ["App object Id doesn't exist!"]
 
         try:
             user_id = User.objects.get(username=request.user).id
@@ -123,7 +122,7 @@ class CallrequestResource(ModelResource):
             Server: WSGIServer/0.1 Python/2.7.1+
             Vary: Accept-Language, Cookie
             Content-Type: text/html; charset=utf-8
-            Location: http://localhost:8000/api/app/campaign/1/
+            Location: http://localhost:8000/api/app/callrequest/1/
             Content-Language: en-us
 
 

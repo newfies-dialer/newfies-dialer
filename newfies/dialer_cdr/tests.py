@@ -90,8 +90,8 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
             'frontend/report/voipcall_report.html')
 
         response = self.client.post('/voipcall_report/',
-                                    data={'from_date': datetime.now().strftime("%Y-%m-%d"),
-                                          'to_date': datetime.now().strftime("%Y-%m-%d")})
+                        data={'from_date': datetime.now().strftime("%Y-%m-%d"),
+                              'to_date': datetime.now().strftime("%Y-%m-%d")})
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.get('/voipcall_report/')
@@ -159,7 +159,6 @@ class DialerCdrModel(TestCase):
             aleg_gateway_id=1,
             content_type_id=content_type_id,
             object_id=1,
-
         )
         self.callrequest.save()
 
@@ -174,7 +173,8 @@ class DialerCdrModel(TestCase):
         self.voipcall.save()
 
         # Test mgt command
-        call_command("create_callrequest_cdr", "'1|10")
+        #TODO: strange to find the use of command here
+        call_command("create_callrequest_cdr", "'1|10'")
 
     def test_name(self):
         self.assertEqual(self.callrequest.phone_number, "123456")

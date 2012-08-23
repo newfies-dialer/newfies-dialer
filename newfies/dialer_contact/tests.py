@@ -380,10 +380,12 @@ class DialerContactModel(TestCase):
         self.contact = Contact(
             phonebook=self.phonebook,
             contact=123456789,
+            first_name='Tom',
+            last_name='Gun',
         )
         self.contact.save()
-
-
+        self.assertEqual(self.contact.__unicode__(), u'123456789 (Gun)')
+        self.assertEqual(self.contact.contact_name(), 'Tom Gun')
 
     def test_phonebook_form(self):
         self.assertEqual(self.phonebook.name, 'test_phonebook')

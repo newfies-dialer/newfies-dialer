@@ -309,6 +309,7 @@ class DialerCampaignModel(TestCase):
             status=1
         )
         self.campaign.save()
+        self.assertEqual(self.campaign.__unicode__(), u'sample_campaign')
 
         # CampaignSubscriber model
         self.campaignsubscriber = CampaignSubscriber(
@@ -318,6 +319,7 @@ class DialerCampaignModel(TestCase):
             status=1,
         )
         self.campaignsubscriber.save()
+        self.assertTrue(self.campaignsubscriber.__unicode__())
 
         # Test mgt command
         call_command("create_subscriber", "123456|1")

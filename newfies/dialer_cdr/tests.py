@@ -167,10 +167,13 @@ class DialerCdrModel(TestCase):
             user=self.user,
             used_gateway_id=1,
             callrequest=self.callrequest,
+            callid='Top Gun',
             phone_number='123456',
-            leg_type=1
+            leg_type=1,
+            duration=20,
         )
         self.voipcall.save()
+        self.assertEqual(self.voipcall.__unicode__(), u'Top Gun')
 
         # Test mgt command
         call_command("create_callrequest_cdr", "1|10")
@@ -179,13 +182,15 @@ class DialerCdrModel(TestCase):
 
     def test_name(self):
         self.assertEqual(self.callrequest.phone_number, "123456")
+        #self.assertEqual(self.callrequest.__unicode__(), u'Top Gun')
         self.assertEqual(self.voipcall.phone_number, "123456")
 
         Callrequest.objects.get_pending_callrequest()
 
         self.voipcall.destination_name()
-        self.voipcall.min_duration()
         self.voipcall.duration = ''
+        self.voipcall.min_duration()
+        self.voipcall.duration = 12
         self.voipcall.min_duration()
 
     def teardown(self):

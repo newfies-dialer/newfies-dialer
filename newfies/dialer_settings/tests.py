@@ -61,6 +61,8 @@ class DialerSettingModel(TestCase):
             )
         self.dialer_setting.save()
 
+        self.assertTrue(self.dialer_setting.__unicode__())
+
     def test_name(self):
         self.assertEqual(self.dialer_setting.name, "test_setting")
 

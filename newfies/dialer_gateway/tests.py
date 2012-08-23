@@ -55,6 +55,7 @@ class GatewayModel(TestCase):
             )
         self.gateway.set_name("MyGateway")
         self.gateway.save()
+        self.assertEqual(self.gateway.__unicode__(), u'MyGateway')
 
         response = phonenumber_change_prefix('9897525414', 3)
         self.assertEqual(response, False)

@@ -166,7 +166,7 @@ class VoiceAppModel(TestCase):
 
     def test_voice_app_form(self):
         self.assertEqual(self.voiceapp.name, "MyVoiceapp")
-        self.voiceapp.__unicode__
+        self.assertEqual(self.voiceapp.__unicode__(), u'MyVoiceapp')
 
         form = VoiceAppForm()
         obj = form.save(commit=False)

@@ -362,7 +362,7 @@ class Campaign(Model):
     def get_active_contact(self):
         """Get all the active Contacts from the phonebook"""
         list_contact =\
-        Contact.objects.filter(phonebook__campaign=self.id, status=1).all()
+            Contact.objects.filter(phonebook__campaign=self.id, status=1).all()
         if not list_contact:
             return False
         return list_contact
@@ -397,12 +397,12 @@ class Campaign(Model):
         """Progress bar generated based on no of contacts"""
         # Cache campaignsubscriber_count
         count_contact = \
-        Contact.objects.filter(phonebook__campaign=self.id).count()
+            Contact.objects.filter(phonebook__campaign=self.id).count()
 
         # Cache need to be set per campaign
         # campaignsubscriber_count_key_campaign_id_1
         campaignsubscriber_count = \
-        cache.get('campaignsubscriber_count_key_campaign_id_' + str(self.id))
+            cache.get('campaignsubscriber_count_key_campaign_id_' + str(self.id))
         #campaignsubscriber_count = None
         if campaignsubscriber_count is None:
             list_contact = Contact.objects.values_list('id', flat=True)\
@@ -426,12 +426,12 @@ class Campaign(Model):
 
         if count_contact > 0:
             percentage_pixel = \
-            (float(campaignsubscriber_count) / count_contact) * 100
+                (float(campaignsubscriber_count) / count_contact) * 100
             percentage_pixel = int(percentage_pixel)
         else:
             percentage_pixel = 0
         campaignsubscriber_count_string = \
-        "campaign-subscribers (" + str(campaignsubscriber_count) + ")"
+            "campaign-subscribers (" + str(campaignsubscriber_count) + ")"
         return "<div title='%s' style='width: 100px; border: 1px solid #ccc;'>\
                 <div style='height: 4px; width: %dpx; background: #555; '>\
                 </div></div>" % \
@@ -455,8 +455,8 @@ class Campaign(Model):
     def get_pending_subscriber(self, limit=1000):
         """Get all the pending subscribers from the campaign"""
         list_subscriber = \
-        CampaignSubscriber.objects.filter(campaign=self.id, status=1)\
-        .all()[:limit]
+            CampaignSubscriber.objects.filter(campaign=self.id, status=1)\
+                .all()[:limit]
         if not list_subscriber:
             return False
         return list_subscriber

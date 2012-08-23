@@ -18,7 +18,7 @@ from django.template import Template, Context, TemplateSyntaxError
 from django.core.management import call_command
 from django.test import TestCase
 from dialer_contact.models import Phonebook
-from dialer_campaign.models import Campaign, CampaignSubscriber
+from dialer_campaign.models import Campaign, CampaignSubscriber, common_contact_authorization
 from dialer_campaign.forms import CampaignForm
 from dialer_campaign.views import campaign_list, campaign_add, \
                                   campaign_change, campaign_del, \
@@ -306,6 +306,7 @@ class DialerCampaignModel(TestCase):
             aleg_gateway_id=1,
             content_type_id=self.content_type_id,
             object_id=1,
+            status=1
         )
         self.campaign.save()
 
@@ -325,6 +326,41 @@ class DialerCampaignModel(TestCase):
 
     def test_campaign_form(self):
         self.assertEqual(self.campaign.name, "sample_campaign")
+
+        #self.campaign.get_running_campaign()
+        Campaign.objects.get_running_campaign()
+        Campaign.objects.get_expired_campaign()
+
+        common_contact_authorization(self.user, '1234567890')
+
+        # status = 1
+        self.campaign.update_campaign_status()
+        self.campaign.count_contact_of_phonebook(self.campaign.status)
+
+        self.campaign.status = 2
+        self.campaign.save()
+        self.campaign.update_campaign_status()
+
+        self.campaign.status = 3
+        self.campaign.save()
+        self.campaign.update_campaign_status()
+
+        self.campaign.status = 4
+        self.campaign.save()
+        self.campaign.update_campaign_status()
+        self.campaign.count_contact_of_phonebook(self.campaign.status)
+
+        self.campaign.is_authorized_contact('123456789')
+
+        self.campaign.get_active_max_frequency()
+        self.campaign.get_active_callmaxduration()
+        self.campaign.get_active_contact()
+        self.campaign.get_active_contact_no_subscriber()
+        self.campaign.progress_bar()
+        self.campaign.campaignsubscriber_detail()
+        self.campaign.get_pending_subscriber()
+        self.campaign.get_pending_subscriber_update()
+
         self.assertEqual(self.campaignsubscriber.campaign, self.campaign)
 
         form = CampaignForm(self.user)

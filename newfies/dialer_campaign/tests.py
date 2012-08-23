@@ -319,7 +319,9 @@ class DialerCampaignModel(TestCase):
         self.campaignsubscriber.save()
 
         # Test mgt command
-        call_command("create_subscriber", "'123456|1, 546234|1")
+        call_command("create_subscriber", "123456|1")
+
+        call_command("create_subscriber", "123456|3")
 
     def test_campaign_form(self):
         self.assertEqual(self.campaign.name, "sample_campaign")

@@ -173,8 +173,9 @@ class DialerCdrModel(TestCase):
         self.voipcall.save()
 
         # Test mgt command
-        #TODO: strange to find the use of command here
-        call_command("create_callrequest_cdr", "'1|10'")
+        call_command("create_callrequest_cdr", "1|10")
+
+        call_command("create_callrequest_cdr", "3|10")
 
     def test_name(self):
         self.assertEqual(self.callrequest.phone_number, "123456")

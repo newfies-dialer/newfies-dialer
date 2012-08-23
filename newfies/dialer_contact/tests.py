@@ -355,6 +355,11 @@ class DialerContactCeleryTaskTestCase(TestCase):
         result = import_phonebook.delay(1, 1)
         self.assertEqual(result.successful(), True)
 
+        # Test mgt command
+        call_command("create_contact", "1|10")
+
+        call_command("create_contact", "3|10")
+
 
 class DialerContactModel(TestCase):
     """Test Phonebook, Contact models"""
@@ -378,8 +383,7 @@ class DialerContactModel(TestCase):
         )
         self.contact.save()
 
-        # Test mgt command
-        call_command("create_contact", "'1|10'")
+
 
     def test_phonebook_form(self):
         self.assertEqual(self.phonebook.name, 'test_phonebook')

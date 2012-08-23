@@ -90,8 +90,8 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
             'frontend/report/voipcall_report.html')
 
         response = self.client.post('/voipcall_report/',
-                                    data={'from_date': datetime.now().strftime("%Y-%m-%d"),
-                                          'to_date': datetime.now().strftime("%Y-%m-%d")})
+                        data={'from_date': datetime.now().strftime("%Y-%m-%d"),
+                              'to_date': datetime.now().strftime("%Y-%m-%d")})
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.get('/voipcall_report/')

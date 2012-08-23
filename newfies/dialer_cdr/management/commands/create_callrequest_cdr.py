@@ -12,8 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from optparse import make_option
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.utils.translation import gettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
@@ -25,22 +24,92 @@ from random import choice
 from uuid import uuid1
 import random
 
-VOIPCALL_DISPOSITION = ['ANSWER','BUSY', 'NOANSWER', 'CANCEL', 'CONGESTION',
+VOIPCALL_DISPOSITION = ['ANSWER', 'BUSY', 'NOANSWER', 'CANCEL', 'CONGESTION',
                         'CHANUNAVAIL', 'DONTCALL', 'TORTURE', 'INVALIDARGS',
                         'NOROUTE', 'FORBIDDEN']
 VOIPCALL_DISPOSITION = ['ANSWER']
 
-SURVEY_RESULT_QUE = ['Please rank our support from 1 to 9, 1 being low and 9 being high',
-                     'Were you satisfy by the technical expertise of our agent, press 1 for yes press 2 for no and 3 to go back',
-                     'lease record a message to comment on our agent after the beep'
-                    ]
+SURVEY_RESULT_QUE = [
+    'Please rank our support from 1 to 9, 1 being low and 9 being high',
+    'Were you satisfy by the technical expertise of our agent, '
+    'press 1 for yes press 2 for no and 3 to go back',
+    'lease record a message to comment on our agent after the beep'
+]
+
+
+def create_callrequest(campaign_id, quantity):
+    try:
+        admin_user = User.objects.get(pk=1)
+        try:
+            obj_campaign = Campaign.objects.get(id=campaign_id)
+        except:
+            print _('Can\'t find this Campaign : %(id)s' % {'id': campaign_id})
+            return False
+
+        try:
+            length = 5
+            chars = "1234567890"
+
+            #'surveyapp' | 'voiceapp'
+            try:
+                content_type_id = ContentType.objects.get(model='voiceapp').id
+            except:
+                content_type_id = 1
+
+            for i in range(1, int(quantity) + 1):
+                phonenumber = '' . join([choice(chars) for i in range(length)])
+                new_callrequest = Callrequest.objects.create(
+                                    request_uuid=uuid1(),
+                                    user=admin_user,
+                                    phone_number=phonenumber,
+                                    campaign=obj_campaign,
+                                    aleg_gateway_id=1,
+                                    status=choice("12345678"),
+                                    call_type=1,
+                                    content_type_id=content_type_id,
+                                    object_id=1)
+
+                new_cdr = VoIPCall.objects.create(
+                                    request_uuid=uuid1(),
+                                    user=admin_user,
+                                    callrequest=new_callrequest,
+                                    phone_number=phonenumber,
+                                    duration=random.randint(1, 100),
+                                    disposition=choice(VOIPCALL_DISPOSITION))
+
+                for question in SURVEY_RESULT_QUE:
+                    # for survey campaign result
+                    if question == 'record a message after the beep':
+                        response = ''
+                        record_file = 'xyz.mp3'
+                    else:
+                        response = choice("12345678")
+                        record_file = ''
+
+                    survey_cpg_result = SurveyCampaignResult.objects\
+                                            .create(
+                                                 campaign=obj_campaign,
+                                                 surveyapp_id=1,
+                                                 question=question,
+                                                 response=response,
+                                                 record_file=record_file,
+                                                 callrequest=new_callrequest)
+
+            print _("No of Callrequest & CDR created :%(count)s" % \
+                        {'count': quantity})
+        except IntegrityError:
+            print _("Callrequest & CDR are not created!")
+            return False
+    except:
+        print _("No admin user")
+        return False
 
 
 class Command(BaseCommand):
     # Use : create_callrequest_cdr '1|1324242' '3|124242'
-    #                              'campaign_id|no_of_record'
-    args = _('"campaign_id|no_of_record" "campaign_id|no_of_record"')
-    help = _("Creates no of new call requests and CDRs for a given campaign_id & no of records")
+    #                              'campaign_id|quantity'
+    args = _('"campaign_id|quantity" "campaign_id|quantity"')
+    help = _("Create new call requests and CDRs for a given campaign_id")
 
     def handle(self, *args, **options):
         """Note that subscriber created this way are only for devel purposes"""
@@ -48,72 +117,6 @@ class Command(BaseCommand):
         for newinst in args:
             res = newinst.split('|')
             campaign_id = res[0]
-            no_of_record = res[1]
+            quantity = res[1]
 
-            try:
-                admin_user = User.objects.get(pk=1)
-                try:
-                    obj_campaign = Campaign.objects.get(id=campaign_id)
-                except:
-                    print _('Can\'t find this Campaign : %(id)s' % {'id': campaign_id})
-                    return False
-
-                try:
-                    length=5
-                    chars="1234567890"
-
-                    #'surveyapp' | 'voiceapp'
-                    try:
-                        content_type_id = ContentType.objects.get(model='voiceapp').id
-                    except:
-                        content_type_id = 1
-
-                    for i in range(1, int(no_of_record) + 1):
-                        phonenumber = '' . join([choice(chars) for i in range(length)])
-                        new_callrequest = Callrequest.objects.create(
-                                            request_uuid=uuid1(),
-                                            user=admin_user,
-                                            phone_number=phonenumber,
-                                            campaign=obj_campaign,
-                                            aleg_gateway_id=1,
-                                            status=choice("12345678"),
-                                            call_type=1,
-                                            content_type_id=content_type_id,
-                                            object_id=1)
-
-                        new_cdr = VoIPCall.objects.create(
-                                            request_uuid=uuid1(),
-                                            user=admin_user,
-                                            callrequest=new_callrequest,
-                                            phone_number=phonenumber,
-                                            duration=random.randint(1, 100),
-                                            disposition=choice(VOIPCALL_DISPOSITION))
-                        
-                        for question in SURVEY_RESULT_QUE:
-                            # for survey campaign result
-                            if question == \
-                               'lease record a message to comment on our agent after the beep':
-                                response = ''
-                                record_file = 'xyz.mp3'
-                            else:
-                                response = choice("12345678")
-                                record_file = ''
-
-
-                            survey_campaign_result = \
-                                SurveyCampaignResult.objects.create(
-                                                     campaign=obj_campaign,
-                                                     surveyapp_id=1,
-                                                     question=question,
-                                                     response=response,
-                                                     record_file=record_file,
-                                                     callrequest=new_callrequest)
-
-
-                    print _("No of Callrequest & CDR created :%(count)s" % {'count': no_of_record})
-                except IntegrityError:
-                    print _("Callrequest & CDR are not created!")
-                    return False
-            except:
-                print _("No admin user")
-                return False
+            create_callrequest(campaign_id, quantity)

@@ -159,7 +159,6 @@ class DialerCdrModel(TestCase):
             aleg_gateway_id=1,
             content_type_id=content_type_id,
             object_id=1,
-
         )
         self.callrequest.save()
 
@@ -174,7 +173,7 @@ class DialerCdrModel(TestCase):
         self.voipcall.save()
 
         # Test mgt command
-        call_command("create_callrequest_cdr", "'1|10")
+        call_command("create_callrequest_cdr", "'1|10'")
 
     def test_name(self):
         self.assertEqual(self.callrequest.phone_number, "123456")

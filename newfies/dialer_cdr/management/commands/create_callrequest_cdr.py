@@ -88,12 +88,12 @@ def create_callrequest(campaign_id, quantity):
 
                     survey_cpg_result = SurveyCampaignResult.objects\
                                             .create(
-                                                 campaign=obj_campaign,
-                                                 surveyapp_id=1,
-                                                 question=question,
-                                                 response=response,
-                                                 record_file=record_file,
-                                                 callrequest=new_callrequest)
+                                                campaign=obj_campaign,
+                                                surveyapp_id=1,
+                                                question=question,
+                                                response=response,
+                                                record_file=record_file,
+                                                callrequest=new_callrequest)
 
             print _("No of Callrequest & CDR created :%(count)s" % \
                         {'count': quantity})

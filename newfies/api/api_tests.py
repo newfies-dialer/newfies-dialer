@@ -129,9 +129,14 @@ class ApiTestCase(BaseAuthenticatedClient):
             **self.extra)
         self.assertEqual(response.status_code, 204)
 
+        response = self.client.delete('/api/v1/campaign_delete_cascade/2/',
+            **self.extra)
+        self.assertEqual(response.status_code, 204)
+
         response = self.client.delete('/api/v1/campaign_delete_cascade/1/',
             **self.extra)
         self.assertEqual(response.status_code, 404)
+
 
     def test_create_phonebook(self):
         """Test Function to create a phonebook"""

@@ -87,21 +87,21 @@ class CampaignDeleteCascadeResource(ModelResource):
             else:
                 # phonebook_count > 0
                 other_campaing_count =\
-                Campaign.objects.filter(user=request.user,
-                    phonebook__in=del_campaign.phonebook.all())\
-                .exclude(id=campaign_id).count()
+                    Campaign.objects.filter(user=request.user,
+                        phonebook__in=del_campaign.phonebook.all())\
+                        .exclude(id=campaign_id).count()
 
                 if other_campaing_count == 0:
                     # delete phonebooks as well as contacts belong to it
 
                     # 1) delete all contacts which are belong to phonebook
                     contact_list = Contact.objects\
-                    .filter(phonebook__in=del_campaign.phonebook.all())
+                        .filter(phonebook__in=del_campaign.phonebook.all())
                     contact_list.delete()
 
                     # 2) delete phonebook
                     phonebook_list = Phonebook.objects\
-                    .filter(id__in=del_campaign.phonebook.all())
+                        .filter(id__in=del_campaign.phonebook.all())
                     phonebook_list.delete()
 
                     # 3) delete campaign

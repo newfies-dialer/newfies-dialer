@@ -372,8 +372,10 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
         response = self.client.post('/survey_report/',
                 {'campaign': 2,
-                 'from_date': datetime.now().strftime("%Y-%m-%d"),
-                 'to_date': datetime.now().strftime("%Y-%m-%d")})
+                 'page': 1,
+                 #'from_date': datetime.now().strftime("%Y-%m-%d"),
+                 #'to_date': datetime.now().strftime("%Y-%m-%d")
+                })
         self.assertTrue(response.context['form'],
                         SurveyDetailReportForm(self.user))
         self.assertEqual(response.status_code, 200)

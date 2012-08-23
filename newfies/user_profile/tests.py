@@ -105,11 +105,18 @@ class UserProfileCustomerView(BaseAuthenticatedClient):
 
     def test_notification_del_read(self):
         """Test Function to check delete notification"""
-        request = self.factory.post('/user_detail_change/del/',
+        request = self.factory.post('/user_detail_change/del/1/',
                 {'mark_read': 'false'})
         request.user = self.user
         request.session = {}
         response = notification_del_read(request, 1)
+        self.assertEqual(response.status_code, 302)
+
+        request = self.factory.post('/user_detail_change/del/2/',
+                {'select': '1'})
+        request.user = self.user
+        request.session = {}
+        response = notification_del_read(request, 2)
         self.assertEqual(response.status_code, 302)
 
         request = self.factory.post('/user_detail_change/del/',

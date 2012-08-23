@@ -327,7 +327,6 @@ class DialerCampaignModel(TestCase):
     def test_campaign_form(self):
         self.assertEqual(self.campaign.name, "sample_campaign")
 
-        #self.campaign.get_running_campaign()
         Campaign.objects.get_running_campaign()
         Campaign.objects.get_expired_campaign()
 

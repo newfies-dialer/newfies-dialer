@@ -181,6 +181,13 @@ class DialerCdrModel(TestCase):
         self.assertEqual(self.callrequest.phone_number, "123456")
         self.assertEqual(self.voipcall.phone_number, "123456")
 
+        Callrequest.objects.get_pending_callrequest()
+
+        self.voipcall.destination_name()
+        self.voipcall.min_duration()
+        self.voipcall.duration = ''
+        self.voipcall.min_duration()
+
     def teardown(self):
         self.callrequest.delete()
         self.voipcall.delete()

@@ -86,24 +86,24 @@ class Contact(Model):
     **Name of DB table**: dialer_contact
     """
     phonebook = models.ForeignKey(Phonebook, verbose_name=_('Phonebook'),
-                                help_text=_("Select Phonebook"))
+                        help_text=_("Select Phonebook"))
     contact = models.CharField(max_length=90, verbose_name=_('Contact Number'))
     last_name = models.CharField(max_length=120, blank=True, null=True,
-                                 verbose_name=_('Last Name'))
+                        verbose_name=_('Last Name'))
     first_name = models.CharField(max_length=120, blank=True, null=True,
-                                  verbose_name=_('First Name'))
+                        verbose_name=_('First Name'))
     email = models.EmailField(blank=True, null=True, verbose_name=_('Email'))
     country = CountryField(blank=True, null=True, verbose_name=_('Country'))
     city = models.CharField(max_length=120, blank=True, null=True,
-                            verbose_name=_('City'))
+                        verbose_name=_('City'))
     description = models.TextField(null=True, blank=True,
-                  help_text=_("Contact Notes"))
+                        help_text=_("Contact Notes"))
     status = models.IntegerField(choices=CONTACT_STATUS, default='1',
-                verbose_name=_("Status"), blank=True, null=True)
+                        verbose_name=_("Status"), blank=True, null=True)
     additional_vars = models.CharField(max_length=100, blank=True,
-                      verbose_name=_('Additional parameters'))
+                        verbose_name=_('Additional parameters'))
     created_date = models.DateTimeField(auto_now_add=True,
-                   verbose_name=_('Date'))
+                        verbose_name=_('Date'))
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:

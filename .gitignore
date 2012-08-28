@@ -15,3 +15,4 @@ newfies/usermedia/recording/*.*
 build/
 dist/
 coverage_info
+output.html

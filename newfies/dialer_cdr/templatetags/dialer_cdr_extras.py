@@ -50,6 +50,9 @@ def campaign_status(value):
 
     >>> campaign_status(4)
     'END'
+
+    >>> campaign_status(0)
+    ''
     """
     if not value:
         return ''
@@ -70,6 +73,9 @@ def leg_type_name(value):
 
     >>> leg_type_name(2)
     u'B-Leg'
+
+    >>> leg_type_name(0)
+    ''
     """
     if not value:
         return ''
@@ -90,6 +96,9 @@ def action_type_name(value):
 
     >>> action_type_name(2)
     'HANGUP'
+
+    >>> action_type_name(0)
+    ''
     """
     if not value:
         return ''

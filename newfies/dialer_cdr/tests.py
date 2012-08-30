@@ -21,6 +21,7 @@ from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.forms import VoipSearchForm
 from dialer_cdr.views import export_voipcall_report, voipcall_report,\
                              voipcall_report_grid
+from dialer_cdr.function_def import voipcall_search_admin_form_fun
 from dialer_cdr.tasks import init_callrequest, \
                              dummy_testcall, \
                              dummy_test_answerurl, \
@@ -63,6 +64,20 @@ class DialerCdrView(BaseAuthenticatedClient):
         response = self.client.get('/admin/dialer_cdr/voipcall/voip_report/')
         self.failUnlessEqual(response.status_code, 200)
 
+        response = self.client.post('/admin/dialer_cdr/voipcall/voip_report/',
+            data={'from_date': datetime.now().strftime("%Y-%m-%d"),
+                  'to_date': datetime.now().strftime("%Y-%m-%d")})
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post(
+            '/admin/dialer_cdr/voipcall/voip_report/',
+            data={'from_date': datetime.now().strftime("%Y-%m-%d"),
+                  'to_date': datetime.now().strftime("%Y-%m-%d")})
+        request.user = self.user
+        request.session = {}
+        response = voipcall_search_admin_form_fun(request)
+        self.assertTrue(response)
+
 
 class DialerCdrCustomerView(BaseAuthenticatedClient):
     """Test cases for Callrequest, VoIPCall Customer Interface."""
@@ -98,6 +113,15 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
         request.user = self.user
         request.session = {}
         response = voipcall_report(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_export_voipcall_report(self):
+        """Test Function to check VoIP call export report"""
+        request = self.factory.get('/export_voipcall_report/')
+        request.user = self.user
+        request.session = {}
+        request.session['voipcall_record_qs'] = {}
+        response = export_voipcall_report(request)
         self.assertEqual(response.status_code, 200)
 
 

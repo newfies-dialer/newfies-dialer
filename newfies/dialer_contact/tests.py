@@ -27,7 +27,8 @@ from dialer_contact.views import phonebook_grid, phonebook_add, \
                         phonebook_list, phonebook_del,\
                         contact_list, contact_add,\
                         contact_change, contact_del, contact_import,\
-                        get_contact_count
+                        get_contact_count, count_contact_of_campaign,\
+                        get_url_campaign_status
 from dialer_contact.tasks import collect_subscriber_optimized, \
                         import_phonebook
 from utils.helper import grid_test_data
@@ -36,7 +37,7 @@ from datetime import datetime
 
 
 csv_file = open(
-    settings.APPLICATION_DIR + 
+    settings.APPLICATION_DIR +
     '/dialer_contact/fixtures/import_contacts.txt', 'r'
 )
 
@@ -395,6 +396,13 @@ class DialerContactModel(TestCase):
         self.contact.save()
         self.assertEqual(self.contact.__unicode__(), u'123456789 (Gun)')
         self.assertEqual(self.contact.contact_name(), 'Tom Gun')
+
+        self.assertTrue(count_contact_of_campaign(1))
+        self.assertTrue(get_url_campaign_status(1, 1))
+        self.assertTrue(get_url_campaign_status(1, 2))
+        self.assertTrue(get_url_campaign_status(1, 3))
+        self.assertTrue(get_url_campaign_status(1, 4))
+
 
     def test_phonebook_form(self):
         self.assertEqual(self.phonebook.name, 'test_phonebook')

@@ -583,7 +583,7 @@ def contact_import(request):
                         int(row[5])
                         phonebook = \
                             Phonebook.objects\
-                            .get(pk=request.POST['phonebook'])
+                                .get(pk=request.POST['phonebook'])
                         try:
                             # check if prefix is already
                             # exist with retail plan or not

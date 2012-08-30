@@ -100,3 +100,12 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
         request.session = {}
         response = audio_add(request)
         self.assertEqual(response.status_code, 200)
+
+    def test_audiofile_view_del(self):
+        request = self.factory.post('/audio/del/',
+                {'select': True},
+                follow=True)
+        request.user = self.user
+        request.session = {}
+        response = audio_del(request, 0)
+        self.assertEqual(response.status_code, 302)

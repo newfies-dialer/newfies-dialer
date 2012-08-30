@@ -24,7 +24,8 @@ from dialer_campaign.views import campaign_list, campaign_add, \
                                   campaign_change, campaign_del, \
                                   campaign_grid, notify_admin,\
                                   update_campaign_status_admin,\
-                                  update_campaign_status_cust
+                                  update_campaign_status_cust,\
+                                  get_url_campaign_status
 from dialer_campaign.tasks import check_campaign_pendingcall,\
                                   campaign_running,\
                                   collect_subscriber,\
@@ -128,6 +129,25 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "content_object": "type:30-id:1",
             "extra_data": "2000"}, follow=True)
         self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/campaign/add/', {
+            "name": "mylittlecampaign",
+            "description": "xyz",
+            "startingdate": "1301392136.0",
+            "expirationdate": "1301332136.0",
+            "frequency": "20",
+            "callmaxduration": "50",
+            "maxretry": "3",
+            "intervalretry": "3000",
+            "calltimeout": "60",
+            "aleg_gateway": "1",
+            "content_object": "type:30-id:1",
+            "extra_data": "2000"}, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = campaign_add(request)
+        self.assertEqual(response['Location'], '/campaign/')
+        self.assertEqual(response.status_code, 302)
 
         request = self.factory.post('/campaign/add/', {
             "name": "mycampaign",
@@ -337,19 +357,23 @@ class DialerCampaignModel(TestCase):
         # status = 1
         self.campaign.update_campaign_status()
         self.campaign.count_contact_of_phonebook(self.campaign.status)
+        get_url_campaign_status(self.campaign.pk, self.campaign.status)
 
         self.campaign.status = 2
         self.campaign.save()
         self.campaign.update_campaign_status()
+        get_url_campaign_status(self.campaign.pk, self.campaign.status)
 
         self.campaign.status = 3
         self.campaign.save()
         self.campaign.update_campaign_status()
+        get_url_campaign_status(self.campaign.pk, self.campaign.status)
 
         self.campaign.status = 4
         self.campaign.save()
         self.campaign.update_campaign_status()
         self.campaign.count_contact_of_phonebook(self.campaign.status)
+        get_url_campaign_status(self.campaign.pk, self.campaign.status)
 
         self.campaign.is_authorized_contact('123456789')
 

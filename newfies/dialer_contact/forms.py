@@ -33,7 +33,7 @@ class FileImport(forms.Form):
                             error_messages={'required': 'Please upload File'},
                             help_text=_("Browse CSV file"))
 
-    def clean_file(self):
+    def clean_csv_file(self):
         """Form Validation :  File extension Check"""
         filename = self.cleaned_data["csv_file"]
         file_exts = (".csv", )

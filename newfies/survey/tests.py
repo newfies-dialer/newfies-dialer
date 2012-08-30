@@ -23,7 +23,7 @@ from survey.forms import SurveyForm, SurveyQuestionForm, \
 from survey.views import survey_list, survey_grid, survey_add, \
     survey_change, survey_del, survey_question_add, survey_question_change,\
     survey_response_add, survey_response_change, survey_report,\
-    survey_finestatemachine, survey_question_list
+    survey_finestatemachine, survey_question_list, export_surveycall_report
 from utils.helper import grid_test_data
 from datetime import datetime
 import simplejson
@@ -400,6 +400,16 @@ class SurveyCustomerView(BaseAuthenticatedClient):
             '<tr><td>qst_1</td><td class="survey_result_key">ans_1</td></tr>'
             '</table>'
             '120.0')
+
+    def test_export_surveycall_report(self):
+        """Test Function to check survey call export report"""
+        request = self.factory.get('/export_surveycall_report/')
+        request.user = self.user
+        request.session = {}
+        request.session['session_surveycalls'] = {}
+        request.session['session_campaign_id'] = 2
+        response = export_surveycall_report(request)
+        self.assertEqual(response.status_code, 200)
 
     def test_survey_finestatemachine(self):
         request = self.factory.post('/survey_finestatemachine/',

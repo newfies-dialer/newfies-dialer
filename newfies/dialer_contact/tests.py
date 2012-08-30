@@ -36,8 +36,8 @@ from datetime import datetime
 
 
 csv_file = open(
-    settings.APPLICATION_DIR + \
-        '/dialer_contact/fixtures/import_contacts.txt', 'r'
+    settings.APPLICATION_DIR + 
+    '/dialer_contact/fixtures/import_contacts.txt', 'r'
 )
 
 
@@ -317,7 +317,16 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
 
         response = self.client.post('/contact/import/',
             data={'phonebook_id': '1',
-                  'csv_file': csv_file})
+                  'csv_file': csv_file })
+        self.assertEqual(response.status_code, 200)
+
+        new_file = open(
+            settings.APPLICATION_DIR +
+            '/dialer_audio/fixtures/sample_audio_file.mp3', 'r'
+        )
+        response = self.client.post('/contact/import/',
+            data={'phonebook_id': '1',
+                  'csv_file': new_file })
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.get('/contact/import/')

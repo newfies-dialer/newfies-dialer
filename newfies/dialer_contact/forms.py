@@ -36,12 +36,13 @@ class FileImport(forms.Form):
     def clean_csv_file(self):
         """Form Validation :  File extension Check"""
         filename = self.cleaned_data["csv_file"]
-        file_exts = (".csv", )
-        if not str(filename).split(".")[1].lower() in file_exts:
-            raise forms.ValidationError(_(u'Document types accepted: %s' % \
-                ' '.join(file_exts)))
-        else:
+        file_exts = ["csv", "txt"]
+        if str(filename).split(".")[1].lower() in file_exts:
             return filename
+        else:
+            raise forms.ValidationError(_(u'Document types accepted: %s' %\
+                                          ' '.join(file_exts)))
+
 
 
 class Contact_fileImport(FileImport):

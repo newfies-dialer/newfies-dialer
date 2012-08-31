@@ -24,6 +24,7 @@ from survey.views import survey_list, survey_grid, survey_add, \
     survey_change, survey_del, survey_question_add, survey_question_change,\
     survey_response_add, survey_response_change, survey_report,\
     survey_finestatemachine, survey_question_list, export_surveycall_report
+from survey.ajax import survey_question_sort
 from utils.helper import grid_test_data
 from datetime import datetime
 import simplejson
@@ -286,6 +287,13 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
         response = survey_del(request, 1)
         self.assertEqual(response.status_code, 302)
+
+        request = self.factory.post('/survey/1/', follow=True)
+        request.user = self.user
+        request.session = {}
+        response = survey_question_sort(request, 1, 1)
+        self.assertTrue(response)
+
 
     def test_survey_view_delete(self):
         """Test Function to check delete survey"""

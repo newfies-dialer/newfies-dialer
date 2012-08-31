@@ -33,7 +33,8 @@ def survey_question_sort(request, id, sort_order):
         # dajax.alert("(%s) has been successfully sorted !!" % \
         #    (survey_question.question))
     except:
+        pass
         #dajax.alert("%s is not exist !!" % (id))
-        for error in form.errors:
-            dajax.add_css_class('#id_%s' % error, 'error')
+        #for error in form.errors:
+        #    dajax.add_css_class('#id_%s' % error, 'error')
     return dajax.json()

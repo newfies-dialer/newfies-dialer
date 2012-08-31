@@ -20,6 +20,8 @@ from common.utils import BaseAuthenticatedClient
 class DialerSettingView(BaseAuthenticatedClient):
     """Test Function to check DialerSetting Admin pages"""
 
+    fixtures = ['auth_user.json', 'dialer_setting.json']
+
     def test_admin_dialersetting_view_list(self):
         """Test Function to check admin dialersetting list"""
         response = self.client.get('/admin/dialer_settings/dialersetting/')
@@ -41,6 +43,11 @@ class DialerSettingView(BaseAuthenticatedClient):
                 "max_frequency": "100",
                 "max_calltimeout": "45"
                 }, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_admin_dialersetting_view_update(self):
+        """Test Function to check admin dialersetting add"""
+        response = self.client.get("/admin/dialer_settings/dialersetting/1/")
         self.assertEqual(response.status_code, 200)
 
 

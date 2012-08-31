@@ -197,9 +197,6 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
     def voip_report(self, request):
         opts = VoIPCall._meta
-        #TODO: Do we need app_label ?
-        app_label = opts.app_label
-
         kwargs = {}
 
         form = VoipSearchForm()

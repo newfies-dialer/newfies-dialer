@@ -13,7 +13,8 @@
 #
 
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, \
+                                            permission_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
@@ -312,6 +313,7 @@ def campaign_grid(request):
                         content_type="application/json")
 
 
+@permission_required('dialer_campaign.view_campaign', login_url='/')
 @login_required
 def campaign_list(request):
     """List all campaigns for the logged in user

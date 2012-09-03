@@ -260,6 +260,9 @@ class Campaign(Model):
         return u"%s" % (self.name)
 
     class Meta:
+        permissions = (
+            ("view_campaign", _('Can see Campaign')),
+        )
         db_table = u'dialer_campaign'
         verbose_name = _("Campaign")
         verbose_name_plural = _("Campaigns")

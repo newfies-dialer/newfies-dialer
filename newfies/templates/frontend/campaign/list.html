@@ -46,10 +46,14 @@ $("#flex1").flexigrid({
         {display: '{% trans "Action" %}', name: '', width : 200, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
 		],
     buttons : [
-		{name: '{% trans "Add" %}', bclass: 'add', onpress : add_button},
+        {% if perms.dialer_campaign.add_campaign %}
+		    {name: '{% trans "Add" %}', bclass: 'add', onpress : add_button},
+        {% endif %}
         {separator: true},
-        {name: '{% trans "Delete Selected" %}', bclass: 'delete', onpress : delete_button},
-		],
+        {% if perms.dialer_campaign.delete_campaign %}
+            {name: '{% trans "Delete Selected" %}', bclass: 'delete', onpress : delete_button},
+        {% endif %}
+    ],
     sortname: "id",
 	sortorder: "asc",
 	usepager: true,

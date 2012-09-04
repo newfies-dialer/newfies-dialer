@@ -45,6 +45,29 @@ def audio_file_player(audio_file):
         return player_string
 
 
+def get_audio_link(request, row_id, link_style, title, action):
+    """Function to check user permission to change or delete voice app
+
+        ``request`` - to check request.user.has_perm() attribute
+        ``row_id`` - to pass record id in link
+        ``link_style`` - update / delete link style
+        ``title`` - alternate name of link
+        ``action`` - link to update or delete
+    """
+    link = ''
+    if action=='update'\
+    and request.user.has_perm('dialer_audio.change_audio'):
+        link = '<a href="' + str(row_id) + '/" class="icon" '\
+               + link_style + ' title="' + title + '">&nbsp;</a>'
+
+    if action=='delete'\
+    and request.user.has_perm('dialer_audio.delete_audio'):
+        link = '<a href="del/' + str(row_id) + '/" class="icon" ' +\
+               link_style + ' onClick="return get_alert_msg('\
+               + str(row_id) + ');" title="' + title + '">&nbsp;</a>'
+    return link
+
+
 @login_required
 def audio_grid(request):
     """Audio list in json format for flexigrid.
@@ -84,14 +107,11 @@ def audio_grid(request):
                 str(row['audio_file']) + '" class="icon" ' \
                 + link_style + ' title="' + _('Download audio') + \
                 '">&nbsp;</a>' +
-                '<a href="' + str(row['id']) + '/" class="icon" ' \
-                + update_style + ' title="' + _('Update audio') + \
-                '">&nbsp;</a>' +
-                '<a href="del/' + str(row['id']) + '/" class="icon" ' \
-                + delete_style + ' onClick="return get_alert_msg(' +
-                str(row['id']) +
-                ');"  title="' + _('Delete audio') + '">&nbsp;</a>']}\
-                for row in audio_list]
+                get_audio_link(request, row['id'], update_style,
+                               _('Update audio'), 'update')+\
+                get_audio_link(request, row['id'], delete_style,
+                               _('Delete audio'), 'delete'),
+                ]} for row in audio_list]
 
     data = {'rows': rows,
             'page': page,

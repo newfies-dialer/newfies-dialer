@@ -153,7 +153,18 @@ def pleaselog(request):
            context_instance=RequestContext(request))
 
 
-@permission_required('dialer_campaign.view_dashboard', login_url='/')
+@login_required
+def permission_denied(request):
+    """Notify user about their access permission"""
+    template = 'frontend/permission_denied.html'
+    data = {
+        'error': _('You don`t have permission to view'),
+    }
+    return render_to_response(template, data,
+        context_instance=RequestContext(request))
+
+
+@permission_required('dialer_campaign.view_dashboard', login_url='/permission_denied/')
 @login_required
 def customer_dashboard(request, on_index=None):
     """Customer dashboard gives the following information

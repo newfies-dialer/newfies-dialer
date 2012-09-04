@@ -15,7 +15,8 @@
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, \
+                                           permission_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 
@@ -99,6 +100,7 @@ def audio_grid(request):
                         content_type="application/json")
 
 
+@permission_required('dialer_audio.view_audio', login_url='/')
 @login_required
 def audio_list(request):
     """AudioFile list for the logged in user
@@ -123,6 +125,7 @@ def audio_list(request):
            context_instance=RequestContext(request))
 
 
+@permission_required('dialer_audio.add_audio', login_url='/')
 @login_required
 def audio_add(request):
     """Add new Audio for the logged in user
@@ -159,6 +162,7 @@ def audio_add(request):
            context_instance=RequestContext(request))
 
 
+@permission_required('dialer_audio.delete_audio', login_url='/')
 @login_required
 def audio_del(request, object_id):
     """Delete a audio for a logged in user
@@ -195,6 +199,7 @@ def audio_del(request, object_id):
         return HttpResponseRedirect('/audio/')
 
 
+@permission_required('dialer_audio.change_audio', login_url='/')
 @login_required
 def audio_change(request, object_id):
     """Update Audio for the logged in user

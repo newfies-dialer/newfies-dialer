@@ -112,7 +112,7 @@ class Contact(Model):
     class Meta:
         permissions = (
             ("view_contact", _('Can see Contact')),
-            )
+        )
         db_table = u'dialer_contact'
         verbose_name = _("Contact")
         verbose_name_plural = _("Contacts")

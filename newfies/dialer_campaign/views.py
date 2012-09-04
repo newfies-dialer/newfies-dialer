@@ -14,7 +14,7 @@
 
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, \
-                                            permission_required
+                                           permission_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
@@ -464,7 +464,7 @@ def campaign_del(request, object_id):
         return HttpResponseRedirect('/campaign/')
 
 
-@permission_required('dialer_campaign.edit_campaign', login_url='/')
+@permission_required('dialer_campaign.change_campaign', login_url='/')
 @login_required
 def campaign_change(request, object_id):
     """Update/Delete campaign for the logged in user

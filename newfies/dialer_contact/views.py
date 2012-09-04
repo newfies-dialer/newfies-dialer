@@ -207,7 +207,7 @@ def phonebook_del(request, object_id):
         return HttpResponseRedirect('/phonebook/')
 
 
-@permission_required('dialer_contact.edit_phonebook', login_url='/')
+@permission_required('dialer_contact.change_phonebook', login_url='/')
 @login_required
 def phonebook_change(request, object_id):
     """Update/Delete Phonebook for the logged in user
@@ -477,7 +477,7 @@ def contact_del(request, object_id):
         return HttpResponseRedirect('/contact/')
 
 
-@permission_required('dialer_contact.edit_contact', login_url='/')
+@permission_required('dialer_contact.change_contact', login_url='/')
 @login_required
 def contact_change(request, object_id):
     """Update/Delete contact for the logged in user

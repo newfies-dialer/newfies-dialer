@@ -39,6 +39,28 @@ import csv
 import ast
 
 
+def get_phonebook_link(request, row_id, link_style, title, action):
+    """Function to check user permission to change or delete phonebook
+
+        ``request`` - to check request.user.has_perm() attribute
+        ``row_id`` - to pass record id in link
+        ``link_style`` - update / delete link style
+        ``title`` - alternate name of link
+        ``action`` - link to update or delete
+    """
+    link = ''
+    if action=='update'\
+        and request.user.has_perm('dialer_contact.change_phonebook'):
+        link = '<a href="' + str(row_id) + '/" class="icon" '\
+               + link_style + ' title="' + title + '">&nbsp;</a>'
+
+    if action=='delete'\
+        and request.user.has_perm('dialer_contact.delete_phonebook'):
+        link = '<a href="del/' + str(row_id) + '/" class="icon" ' + \
+               link_style + ' onClick="return get_alert_msg_for_phonebook('\
+               + str(row_id) + ');" title="' + title + '">&nbsp;</a>'
+    return link
+
 
 # Phonebook
 @login_required
@@ -74,13 +96,11 @@ def phonebook_grid(request):
         row['description'],
         row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
         row['contact_count'],
-        '<a href="' + str(row['id']) + '/" class="icon" ' \
-        + update_style + ' title="' + _('Update phonebook') + '">&nbsp;</a>' +
-        '<a href="del/' + str(row['id']) + '/" class="icon" ' \
-        + delete_style + ' onClick="return get_alert_msg_for_phonebook(' +
-        str(row['id']) +
-        ');"  title="' + _('Delete phonebook') + '">&nbsp;</a>']}\
-        for row in phonebook_list]
+        get_phonebook_link(request, row['id'], update_style,
+            _('Update phonebook'), 'update') +\
+        get_phonebook_link(request, row['id'], delete_style,
+            _('Delete phonebook'), 'delete'),
+        ]} for row in phonebook_list]
 
     data = {'rows': rows,
             'page': page,

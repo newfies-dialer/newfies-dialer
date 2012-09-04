@@ -52,3 +52,24 @@ def grid_common_function(request):
         grid_data['sortorder_sign'] = '-'
 
     return grid_data
+
+
+def get_grid_update_delete_link(request, row_id, perm_name, title, action):
+    """Function to check user permission to change or delete campaign
+
+        ``request`` - to check request.user.has_perm() attribute
+        ``row_id`` - to pass record id in link
+        ``link_style`` - update / delete link style
+        ``title`` - alternate name of link
+        ``action`` - link to update or delete
+    """
+    link = ''
+    if action=='update' and request.user.has_perm(perm_name):
+        link = '<a href="' + str(row_id) + '/" class="icon" '\
+               + update_style + ' title="' + title + '">&nbsp;</a>'
+
+    if action=='delete' and request.user.has_perm(perm_name):
+        link = '<a href="del/' + str(row_id) + '/" class="icon" '\
+               + delete_style + ' onClick="return get_alert_msg('\
+               + str(row_id) + ');" title="' + title + '">&nbsp;</a>'
+    return link

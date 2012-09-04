@@ -23,7 +23,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
-from utils.helper import grid_common_function, update_style, delete_style
+from utils.helper import grid_common_function, get_grid_update_delete_link
 from dialer_campaign.views import notice_count
 from dialer_audio.forms import DialerAudioFileForm
 from audiofield.models import AudioFile
@@ -43,29 +43,6 @@ def audio_file_player(audio_file):
             '<ul class="playlist"><li style="width:220px;"><a href="%s">%s</a></li></ul>'\
                 % (file_url, os.path.basename(file_url))
         return player_string
-
-
-def get_audio_link(request, row_id, link_style, title, action):
-    """Function to check user permission to change or delete voice app
-
-        ``request`` - to check request.user.has_perm() attribute
-        ``row_id`` - to pass record id in link
-        ``link_style`` - update / delete link style
-        ``title`` - alternate name of link
-        ``action`` - link to update or delete
-    """
-    link = ''
-    if action=='update'\
-    and request.user.has_perm('dialer_audio.change_audio'):
-        link = '<a href="' + str(row_id) + '/" class="icon" '\
-               + link_style + ' title="' + title + '">&nbsp;</a>'
-
-    if action=='delete'\
-    and request.user.has_perm('dialer_audio.delete_audio'):
-        link = '<a href="del/' + str(row_id) + '/" class="icon" ' +\
-               link_style + ' onClick="return get_alert_msg('\
-               + str(row_id) + ');" title="' + title + '">&nbsp;</a>'
-    return link
 
 
 @login_required
@@ -107,10 +84,10 @@ def audio_grid(request):
                 str(row['audio_file']) + '" class="icon" ' \
                 + link_style + ' title="' + _('Download audio') + \
                 '">&nbsp;</a>' +
-                get_audio_link(request, row['id'], update_style,
-                               _('Update audio'), 'update')+\
-                get_audio_link(request, row['id'], delete_style,
-                               _('Delete audio'), 'delete'),
+                get_grid_update_delete_link(request, row['id'],
+                    'dialer_audio.change_audio', _('Update audio'), 'update')+\
+                get_grid_update_delete_link(request, row['id'],
+                    'dialer_audio.delete_audio', _('Delete audio'), 'delete'),
                 ]} for row in audio_list]
 
     data = {'rows': rows,

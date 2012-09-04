@@ -33,8 +33,8 @@ from survey.forms import SurveyForm, \
                         SurveyResponseForm, \
                         SurveyDetailReportForm
 from survey.function_def import export_question_result
-from utils.helper import grid_common_function, update_style, delete_style
 from dialer_cdr.models import Callrequest, VoIPCall
+from utils.helper import grid_common_function, get_grid_update_delete_link
 from common.common_functions import variable_value, current_view
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -268,29 +268,6 @@ def survey_finestatemachine(request):
     return HttpResponse(html)
 
 
-def get_survey_link(request, row_id, link_style, title, action):
-    """Function to check user permission to change or delete survey
-
-        ``request`` - to check request.user.has_perm() attribute
-        ``row_id`` - to pass record id in link
-        ``link_style`` - update / delete link style
-        ``title`` - alternate name of link
-        ``action`` - link to update or delete
-    """
-    link = ''
-    if action=='update'\
-    and request.user.has_perm('survey.change_surveyapp'):
-        link = '<a href="' + str(row_id) + '/" class="icon" '\
-               + link_style + ' title="' + title + '">&nbsp;</a>'
-
-    if action=='delete'\
-    and request.user.has_perm('survey.delete_surveyapp'):
-        link = '<a href="del/' + str(row_id) + '/" class="icon" ' +\
-               link_style + ' onClick="return get_alert_msg('\
-               + str(row_id) + ');" title="' + title + '">&nbsp;</a>'
-    return link
-
-
 @login_required
 def survey_grid(request):
     """Survey list in json format for flexigrid.
@@ -320,10 +297,10 @@ def survey_grid(request):
                 row['name'],
                 row['description'],
                 row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
-                get_survey_link(request, row['id'], update_style,
-                    _('Update survey'), 'update')+\
-                get_survey_link(request, row['id'], delete_style,
-                    _('Delete survey'), 'delete'),
+                get_grid_update_delete_link(request, row['id'],
+                    'survey.change_surveyapp',  _('Update survey'), 'update')+\
+                get_grid_update_delete_link(request, row['id'],
+                    'survey.delete_surveyapp', _('Delete survey'), 'delete'),
                 ]} for row in survey_list]
     data = {'rows': rows,
             'page': page,

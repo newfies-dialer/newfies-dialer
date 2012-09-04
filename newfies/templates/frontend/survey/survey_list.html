@@ -37,9 +37,13 @@ $("#flex1").flexigrid({
         {display: '{% trans "Action" %}', name: '', width : 160, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
 		],
     buttons : [
-		{name: '{% trans "Add" %}', bclass: 'add', onpress : add_button},
-        {separator: true},        
-        {name: '{% trans "Delete Selected" %}', bclass: 'delete', onpress : delete_button},
+        {% if perms.survey.add_surveyapp %}
+		    {name: '{% trans "Add" %}', bclass: 'add', onpress : add_button},
+        {% endif %}
+        {separator: true},
+        {% if perms.survey.delete_surveyapp %}
+            {name: '{% trans "Delete Selected" %}', bclass: 'delete', onpress : delete_button},
+        {% endif %}
 		],
     sortname: "id",
 	sortorder: "asc",

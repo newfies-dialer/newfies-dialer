@@ -14,7 +14,8 @@
 
 # Create your views here.
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,\
+                                           permission_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
@@ -81,6 +82,7 @@ def voiceapp_grid(request):
                         content_type="application/json")
 
 
+@permission_required('voice_app.view_voiceapp', login_url='/')
 @login_required
 def voiceapp_list(request):
     """Voce App list for logged in user
@@ -105,6 +107,7 @@ def voiceapp_list(request):
            context_instance=RequestContext(request))
 
 
+@permission_required('voice_app.add_voiceapp', login_url='/')
 @login_required
 def voiceapp_add(request):
     """Add new Voice App for logged in user
@@ -141,6 +144,7 @@ def voiceapp_add(request):
            context_instance=RequestContext(request))
 
 
+@permission_required('voice_app.delete_voiceapp', login_url='/')
 @login_required
 def voiceapp_del(request, object_id):
     """Delete voiceapp for logged in user
@@ -176,6 +180,7 @@ def voiceapp_del(request, object_id):
         return HttpResponseRedirect('/voiceapp/')
 
 
+@permission_required('voice_app.change_voiceapp', login_url='/')
 @login_required
 def voiceapp_change(request, object_id):
     """Update/Delete Voice app for logged in user

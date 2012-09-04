@@ -89,6 +89,9 @@ class VoiceApp(Model):
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:
+        permissions = (
+            ("view_voiceapp", _('Can see Voice App')),
+        )
         db_table = u'voice_app'
         verbose_name = _("Voice Application")
         verbose_name_plural = _("Voice Applications")

@@ -14,7 +14,8 @@
 
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,\
+                                           permission_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.db.models import Sum, Avg, Count
@@ -311,6 +312,7 @@ def survey_grid(request):
                         content_type="application/json")
 
 
+@permission_required('survey.view_survey', login_url='/')
 @login_required
 def survey_list(request):
     """SurveyApp list for the logged in user
@@ -334,6 +336,7 @@ def survey_list(request):
            context_instance=RequestContext(request))
 
 
+@permission_required('survey.add_survey', login_url='/')
 @login_required
 def survey_add(request):
     """Add new Survey for the logged in user
@@ -368,6 +371,7 @@ def survey_add(request):
            context_instance=RequestContext(request))
 
 
+@permission_required('survey.delete_survey', login_url='/')
 @login_required
 def survey_del(request, object_id):
     """Delete a survey for a logged in user
@@ -626,6 +630,7 @@ def survey_response_change(request, id):
         context_instance=RequestContext(request))
 
 
+@permission_required('survey.change_survey', login_url='/')
 @login_required
 def survey_change(request, object_id):
     """Update/Delete Survey for the logged in user

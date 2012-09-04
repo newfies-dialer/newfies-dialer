@@ -259,6 +259,29 @@ def get_app_name(app_label, model_name, object_id):
         return '-'
 
 
+def get_campaign_link(request, row_id, link_style, title, action):
+    """Function to check user permission to change or delete campaign
+
+        ``request`` - to check request.user.has_perm() attribute
+        ``row_id`` - to pass record id in link
+        ``link_style`` - update / delete link style
+        ``title`` - alternate name of link
+        ``action`` - link to update or delete
+    """
+    link = ''
+    if action=='update' \
+        and request.user.has_perm('dialer_campaign.change_campaign'):
+        link = '<a href="' + str(row_id) + '/" class="icon" '\
+               + link_style + ' title="' + title + '">&nbsp;</a>'
+
+    if action=='delete'\
+        and request.user.has_perm('dialer_campaign.delete_campaign'):
+        link = '<a href="del/' + str(row_id) + '/" class="icon" ' \
+               + link_style + ' onClick="return get_alert_msg(' \
+               + str(row_id) + ');" title="' + title + '">&nbsp;</a>'
+    return link
+
+
 # Campaign
 @login_required
 def campaign_grid(request):
@@ -293,17 +316,15 @@ def campaign_grid(request):
         row['startingdate'].strftime('%Y-%m-%d %H:%M:%S'),
         row['content_type__name'],
         str(get_app_name(row['content_type__app_label'],
-                        row['content_type__model'],
-                        row['object_id'])),
+                         row['content_type__model'],
+                         row['object_id'])),
         count_contact_of_campaign(row['id']),
         get_campaign_status_name(row['status']),
-        '<a href="' + str(row['id']) + '/" class="icon" ' \
-        + update_style + ' title="' + _('Update campaign') + '">&nbsp;</a>' \
-        + '<a href="del/' + str(row['id']) \
-        + '/" class="icon" ' + delete_style \
-        + ' onClick="return get_alert_msg(' + str(row['id']) + ');" title="' \
-        + _('Delete campaign') + '">&nbsp;</a>' \
-        + get_url_campaign_status(row['id'], row['status']),
+        get_campaign_link(request, row['id'], update_style,
+                          _('Update campaign'), 'update') +\
+        get_campaign_link(request, row['id'], delete_style,
+                          _('Delete campaign'), 'delete') +\
+        get_url_campaign_status(row['id'], row['status']),
         ]} for row in campaign_list]
 
     data = {'rows': rows,

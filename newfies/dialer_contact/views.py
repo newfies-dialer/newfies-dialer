@@ -269,6 +269,29 @@ def phonebook_change(request, object_id):
            context_instance=RequestContext(request))
 
 
+def get_contact_link(request, row_id, link_style, title, action):
+    """Function to check user permission to change or delete contacts
+
+        ``request`` - to check request.user.has_perm() attribute
+        ``row_id`` - to pass record id in link
+        ``link_style`` - update / delete link style
+        ``title`` - alternate name of link
+        ``action`` - link to update or delete
+    """
+    link = ''
+    if action=='update'\
+        and request.user.has_perm('dialer_contact.change_contact'):
+        link = '<a href="' + str(row_id) + '/" class="icon" '\
+               + link_style + ' title="' + title + '">&nbsp;</a>'
+
+    if action=='delete'\
+        and request.user.has_perm('dialer_contact.delete_contact'):
+        link = '<a href="del/' + str(row_id) + '/" class="icon" ' +\
+               link_style + ' onClick="return get_alert_msg('\
+               + str(row_id) + ');" title="' + title + '">&nbsp;</a>'
+    return link
+
+
 @login_required
 def contact_grid(request):
     """Contact list in json format for flexigrid
@@ -348,13 +371,11 @@ def contact_grid(request):
         row['id'], row['phonebook__name'], row['contact'],
         row['last_name'], row['first_name'], row['status'],
         row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
-        '<a href="' + str(row['id']) + '/" class="icon" ' \
-        + update_style + ' title="' + _('Update contact') + '">&nbsp;</a>' +
-        '<a href="del/' + str(row['id']) + '/" class="icon" ' \
-        + delete_style + ' onClick="return get_alert_msg(' +
-        str(row['id']) +
-        ');" title="' + _('Delete contact') + '">&nbsp;</a>']
-        } for row in contact_list]
+        get_contact_link(request, row['id'], update_style,
+                         _('Update contact'), 'update')+\
+        get_contact_link(request, row['id'], delete_style,
+                         _('Delete contact'), 'delete'),
+        ]} for row in contact_list]
 
     data = {'rows': rows,
             'page': page,

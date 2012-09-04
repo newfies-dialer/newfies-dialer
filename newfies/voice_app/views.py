@@ -30,6 +30,29 @@ from dialer_campaign.function_def import user_dialer_setting_msg
 from common.common_functions import current_view
 
 
+def get_voiceapp_link(request, row_id, link_style, title, action):
+    """Function to check user permission to change or delete voice app
+
+        ``request`` - to check request.user.has_perm() attribute
+        ``row_id`` - to pass record id in link
+        ``link_style`` - update / delete link style
+        ``title`` - alternate name of link
+        ``action`` - link to update or delete
+    """
+    link = ''
+    if action=='update'\
+        and request.user.has_perm('voice_app.change_voiceapp'):
+        link = '<a href="' + str(row_id) + '/" class="icon" '\
+               + link_style + ' title="' + title + '">&nbsp;</a>'
+
+    if action=='delete'\
+        and request.user.has_perm('voice_app.delete_voiceapp'):
+        link = '<a href="del/' + str(row_id) + '/" class="icon" ' +\
+               link_style + ' onClick="return get_alert_msg('\
+               + str(row_id) + ');" title="' + title + '">&nbsp;</a>'
+    return link
+
+
 # voice_app
 @login_required
 def voiceapp_grid(request):
@@ -66,13 +89,10 @@ def voiceapp_grid(request):
                       row['data'],
                       row['tts_language'],
                       row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
-                      '<a href="' + str(row['id']) + '/" class="icon" ' \
-                      + update_style + ' title="' + _('Update Voice App') +\
-                      '">&nbsp;</a>' +\
-                      '<a href="del/' + str(row['id']) + '/" class="icon" ' \
-                      + delete_style + ' onClick="return get_alert_msg(' +\
-                      str(row['id']) +\
-                      ');"  title="' + _('Delete Voice App') + '">&nbsp;</a>'
+                      get_voiceapp_link(request, row['id'], update_style,
+                                        _('Update Voice App'), 'update')+\
+                      get_voiceapp_link(request, row['id'], delete_style,
+                                        _('Delete Voice App'), 'delete'),
                       ]} for row in voiceapp_list]
 
     data = {'rows': rows,

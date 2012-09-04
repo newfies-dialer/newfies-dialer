@@ -262,6 +262,7 @@ class Campaign(Model):
     class Meta:
         permissions = (
             ("view_campaign", _('Can see Campaign')),
+            ("view_dashboard", _('Can see Campaign Dashboard'))
         )
         db_table = u'dialer_campaign'
         verbose_name = _("Campaign")

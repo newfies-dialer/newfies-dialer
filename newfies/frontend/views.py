@@ -13,7 +13,8 @@
 #
 
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,\
+                                           permission_required
 from django.contrib.auth.views import password_reset, password_reset_done,\
                         password_reset_confirm, password_reset_complete
 from django.http import HttpResponseRedirect
@@ -152,6 +153,7 @@ def pleaselog(request):
            context_instance=RequestContext(request))
 
 
+@permission_required('dialer_campaign.view_dashboard', login_url='/')
 @login_required
 def customer_dashboard(request, on_index=None):
     """Customer dashboard gives the following information

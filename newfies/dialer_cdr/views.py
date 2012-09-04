@@ -12,7 +12,8 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,\
+                                           permission_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
@@ -151,6 +152,7 @@ def voipcall_report_grid(request):
                         content_type="application/json")
 
 
+@permission_required('dialer_cdr.view_call_detail_report', login_url='/')
 @login_required
 def voipcall_report(request):
     """VoIP Call Report

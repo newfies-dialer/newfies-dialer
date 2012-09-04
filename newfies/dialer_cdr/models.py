@@ -280,6 +280,9 @@ class VoIPCall(models.Model):
         return "%02d" % min + ":" + "%02d" % sec
 
     class Meta:
+        permissions = (
+            ("view_call_detail_report", _('Can see Call Detail Report')),
+        )
         db_table = 'dialer_cdr'
         verbose_name = _("VoIP Call")
         verbose_name_plural = _("VoIP Call")

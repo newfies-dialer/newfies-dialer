@@ -90,6 +90,7 @@ class SurveyApp(Sortable):
     class Meta:
         permissions = (
             ("view_survey", _('Can see Survey')),
+            ("view_survey_report", _('Can see Survey Report'))
         )
         verbose_name = _("Survey")
         verbose_name_plural = _("Surveys")

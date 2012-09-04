@@ -19,39 +19,59 @@
           {% if user.is_authenticated %}
             <ul class="nav">
 
+              {% if perms.dialer_campaign.view_dashboard %}
               <li class="dropdown">
                   <a href="#" class="dropdown-toggle {% if 'dashboard' in module %}active{% endif %}" data-toggle="dropdown">{% trans "Dashboard" %} <b class="caret"></b></a>
                   <ul class="dropdown-menu">
                       <li {% if 'dashboard' in module %}class="active"{% endif %}><a href="/dashboard/">{% trans "Voice Dashboard" %}</a></li>
                   </ul>
               </li>
+              {% endif %}
 
               <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Campaign" %} <b class="caret"></b></a>
-                  <ul class="dropdown-menu">
-                      <li {% if 'campaign' in module %}class="active"{% endif %}><a href="/campaign/">{% trans "Voice Campaign" %}</a></li>
-                  </ul>
+                  {% if perms.dialer_campaign.view_campaign %}
+                      <ul class="dropdown-menu">
+                          <li {% if 'campaign' in module %}class="active"{% endif %}><a href="/campaign/">{% trans "Voice Campaign" %}</a></li>
+                      </ul>
+                  {% endif %}
               </li>
 
+              {% if perms.dialer_contact.view_phonebook %}
               <li {% if 'phonebook' in module %}class="active"{% endif %}><a href="/phonebook/">{% trans "Phonebooks" %}</a></li>
+              {% endif %}
+
+              {% if perms.dialer_contact.view_contact %}
               <li {% if 'contact' in module  %}class="active"{% endif %}><a href="/contact/">{% trans "Contacts" %}</a></li>
+              {% endif %}
+
+              {% if perms.dialer_audio.view_audio %}
               <li {% if 'audio' in module  %}class="active"{% endif %}><a href="/audio/">{% trans "Audio files" %}</a></li>
+              {% endif %}
 
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Reporting" %} <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li {% if 'voipcall_report' in module %}class="active"{% endif %}><a href="/voipcall_report/">{% trans "Call Detail Report" %}</a></li>
-                  <li {% if 'survey_report' in module %}class="active"{% endif %}><a href="/survey_report/">{% trans "Survey Reports" %}</a></li>
+                    {% if perms.dialer_cdr.view_call_detail_report %}
+                        <li {% if 'voipcall_report' in module %}class="active"{% endif %}><a href="/voipcall_report/">{% trans "Call Detail Report" %}</a></li>
+                    {% endif %}
+                    {% if perms.survey.view_survey_report %}
+                        <li {% if 'survey_report' in module %}class="active"{% endif %}><a href="/survey_report/">{% trans "Survey Reports" %}</a></li>
+                    {% endif %}
                 </ul>
               </li>
 
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Modules" %} <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li {% if 'voiceapp' in module %}class="active"{% endif %}><a href="/voiceapp/">{% trans "Voice Apps" %}</a></li>
-                  <li {% if 'survey' in module %}class="active"{% endif %}><a href="/survey/">{% trans "Surveys" %}</a></li>
-                  <li class="divider"></li>
-                  <li><a href="http://www.newfies-dialer.org/add-ons" target="_blank">{% trans "Add-ons" %}</a></li>
+                    {% if perms.voice_app.view_voiceapp %}
+                        <li {% if 'voiceapp' in module %}class="active"{% endif %}><a href="/voiceapp/">{% trans "Voice Apps" %}</a></li>
+                    {% endif %}
+                    {% if perms.survey.view_survey %}
+                        <li {% if 'survey' in module %}class="active"{% endif %}><a href="/survey/">{% trans "Surveys" %}</a></li>
+                    {% endif %}
+                    <li class="divider"></li>
+                    <li><a href="http://www.newfies-dialer.org/add-ons" target="_blank">{% trans "Add-ons" %}</a></li>
                 </ul>
               </li>
             </ul>

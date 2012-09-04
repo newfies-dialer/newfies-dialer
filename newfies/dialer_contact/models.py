@@ -48,6 +48,9 @@ class Phonebook(Model):
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:
+        permissions = (
+            ("view_phonebook", _('Can see Phonebook')),
+        )
         db_table = u'dialer_phonebook'
         verbose_name = _("Phonebook")
         verbose_name_plural = _("Phonebooks")
@@ -107,6 +110,9 @@ class Contact(Model):
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:
+        permissions = (
+            ("view_contact", _('Can see Contact')),
+            )
         db_table = u'dialer_contact'
         verbose_name = _("Contact")
         verbose_name_plural = _("Contacts")

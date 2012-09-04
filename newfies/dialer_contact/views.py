@@ -13,7 +13,8 @@
 #
 
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, \
+                                           permission_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.conf import settings
@@ -88,6 +89,7 @@ def phonebook_grid(request):
                         content_type="application/json")
 
 
+@permission_required('dialer_contact.view_phonebook', login_url='/')
 @login_required
 def phonebook_list(request):
     """Phonebook list for the logged in user
@@ -112,6 +114,7 @@ def phonebook_list(request):
            context_instance=RequestContext(request))
 
 
+@permission_required('dialer_contact.add_phonebook', login_url='/')
 @login_required
 def phonebook_add(request):
     """Add new Phonebook for the logged in user
@@ -157,6 +160,7 @@ def get_contact_count(request):
     return HttpResponse(data)
 
 
+@permission_required('dialer_contact.delete_phonebook', login_url='/')
 @login_required
 def phonebook_del(request, object_id):
     """Delete a phonebook for a logged in user
@@ -203,6 +207,7 @@ def phonebook_del(request, object_id):
         return HttpResponseRedirect('/phonebook/')
 
 
+@permission_required('dialer_contact.edit_phonebook', login_url='/')
 @login_required
 def phonebook_change(request, object_id):
     """Update/Delete Phonebook for the logged in user
@@ -338,7 +343,7 @@ def contact_grid(request):
                         content_type="application/json")
 
 
-# Subscriber
+@permission_required('dialer_contact.view_contact', login_url='/')
 @login_required
 def contact_list(request):
     """Contact list for the logged in user
@@ -378,6 +383,7 @@ def contact_list(request):
            context_instance=RequestContext(request))
 
 
+@permission_required('dialer_contact.add_contact', login_url='/')
 @login_required
 def contact_add(request):
     """Add a new contact into the selected phonebook for the logged in user
@@ -436,6 +442,7 @@ def contact_add(request):
            context_instance=RequestContext(request))
 
 
+@permission_required('dialer_contact.delete_contact', login_url='/')
 @login_required
 def contact_del(request, object_id):
     """Delete contact for the logged in user
@@ -470,6 +477,7 @@ def contact_del(request, object_id):
         return HttpResponseRedirect('/contact/')
 
 
+@permission_required('dialer_contact.edit_contact', login_url='/')
 @login_required
 def contact_change(request, object_id):
     """Update/Delete contact for the logged in user

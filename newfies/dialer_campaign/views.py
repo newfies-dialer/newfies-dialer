@@ -333,6 +333,7 @@ def campaign_list(request):
         'error_msg': request.session.get('error_msg'),
         'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
+
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -359,6 +360,7 @@ def get_content_type(object_string):
     return result_array
 
 
+@permission_required('dialer_campaign.add_campaign', login_url='/')
 @login_required
 def campaign_add(request):
     """Add a new campaign for the logged in user
@@ -428,6 +430,7 @@ def campaign_add(request):
            context_instance=RequestContext(request))
 
 
+@permission_required('dialer_campaign.delete_campaign', login_url='/')
 @login_required
 def campaign_del(request, object_id):
     """Delete campaign for the logged in user
@@ -461,6 +464,7 @@ def campaign_del(request, object_id):
         return HttpResponseRedirect('/campaign/')
 
 
+@permission_required('dialer_campaign.edit_campaign', login_url='/')
 @login_required
 def campaign_change(request, object_id):
     """Update/Delete campaign for the logged in user

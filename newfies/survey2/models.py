@@ -42,6 +42,14 @@ APP_TYPE = (
     (3, u'RECORDING'),
 )
 
+SECTION_TYPE = (
+    (1, u'Voice section'),
+    (2, u'Multiple choice question'),
+    (3, u'Rating question'),
+    (4, u'Enter a number'),
+    (5, u'Record message'),
+    (6, u'Patch-through'),
+)
 
 """
 class Text2speechMessage(models.Model):
@@ -63,7 +71,7 @@ class Text2speechMessage(models.Model):
 """
 
 
-class SurveyApp(Sortable):
+class Survey(Sortable):
     """This defines the Survey
 
     **Attributes**:
@@ -76,7 +84,7 @@ class SurveyApp(Sortable):
         * ``user`` - Foreign key relationship to the User model.\
         Each survey is assigned to a User
 
-    **Name of DB table**: surveyapp
+    **Name of DB table**: survey
     """
     name = models.CharField(max_length=90, verbose_name=_('Name'))
     description = models.TextField(null=True, blank=True,
@@ -95,7 +103,7 @@ class SurveyApp(Sortable):
             return u"%s" % self.name
 
 
-class SurveyQuestion(Sortable):
+class Section(Sortable):
     """This defines the question for survey
 
     **Attributes**:
@@ -117,29 +125,80 @@ class SurveyQuestion(Sortable):
     class Meta(Sortable.Meta):
         ordering = Sortable.Meta.ordering + ['surveyapp']
 
+    # select section
+    type = models.IntegerField(max_length=20, choices=SECTION_TYPE,
+            default='1', blank=True, null=True,
+            verbose_name=_('section type'))
+
+    # for voice section, record message, patch-through
+    respondent_to_hears = models.CharField(max_length=500,
+        verbose_name=_("Respondent hears"))
+
+    # multiple choice question, rating question, enter a number
     question = models.CharField(max_length=500,
                     verbose_name=_("Question"),
                     help_text=_('Enter your question'))
-    tags = TagField(blank=True, max_length=1000)
-    user = models.ForeignKey('auth.User', related_name='Survey owner')
+
+    # multiple choice question,
+    key_0 = models.CharField(max_length=9, null=True, blank=True,
+        verbose_name=_("Press 0"))
+    key_1 = models.CharField(max_length=9, null=True, blank=True,
+        verbose_name=_("Press 1"))
+    key_2 = models.CharField(max_length=9, null=True, blank=True,
+        verbose_name=_("Press 2"))
+    key_3 = models.CharField(max_length=9, null=True, blank=True,
+        verbose_name=_("Press 3"))
+    key_4 = models.CharField(max_length=9, null=True, blank=True,
+        verbose_name=_("Press 4"))
+    key_5 = models.CharField(max_length=9, null=True, blank=True,
+        verbose_name=_("Press 5"))
+    key_6 = models.CharField(max_length=9, null=True, blank=True,
+        verbose_name=_("Press 6"))
+    key_7 = models.CharField(max_length=9, null=True, blank=True,
+        verbose_name=_("Press 7"))
+    key_8 = models.CharField(max_length=9, null=True, blank=True,
+        verbose_name=_("Press 8"))
+    key_9 = models.CharField(max_length=9, null=True, blank=True,
+        verbose_name=_("Press 9"))
+
+    # rating question
+    from_1_to = models.CharField(max_length=9, null=True, blank=True,
+        verbose_name=_("From 1 to"))
+
+    # enter a number
+    validate_number = models.BooleanField(default=True,
+        verbose_name=_('Check for valid number'))
+
+    minimum = models.CharField(max_length=9, null=True, blank=True,
+        verbose_name=_("Minimum"))
+    maximum = models.CharField(max_length=9, null=True, blank=True,
+        verbose_name=_("Maximum"))
+
+    # record message
+    voice_to_text_transcription = models.BooleanField(default=False,
+        verbose_name=_('Voice-to-text transcription'),
+        help_text=_('Automated transcription is only available for outbound calls'))
+
+    # record message, patch-through
+    continue_poll_when_done = models.BooleanField(default=True,
+        verbose_name=_('Continue poll when done'),
+        help_text=_('Otherwise, we will hang up when done.'))
+
+    # patch-through 
+    patch_through_to_phonenumber = models.CharField(max_length=50,
+        null=True, blank=True,
+        verbose_name=_("Patch-through to phone number"))
+
+    permitted_to_route_calls = models.BooleanField(default=False,
+        verbose_name=_('Continue poll when done'),
+        help_text=_('I am permitted to route calls to this number.'))
+
+
+    user = models.ForeignKey('auth.User', related_name='survey_owner')
     surveyapp = models.ForeignKey(SurveyApp, verbose_name=_("SurveyApp"))
-    audio_message = models.ForeignKey(AudioFile, null=True, blank=True,
-                    verbose_name=_("Audio File"))
-    message_type = models.IntegerField(max_length=20,
-                    choices=MESSAGE_TYPE,
-                    default='1', blank=True, null=True,
-                    verbose_name=_('Message type'))
-
-    type = models.IntegerField(max_length=20, choices=APP_TYPE,
-           blank=True, null=True, verbose_name=_('Action type'))
-    gateway = models.ForeignKey(Gateway, null=True, blank=True,
-                    verbose_name=_('B-Leg'),
-                    help_text=_("Gateway used if we redirect the call"))
-    data = models.CharField(max_length=500, blank=True,
-                    help_text=_("The value of 'data' depends on the type of voice application :<br/>"\
-                    "- Dial : The phone number to dial<br/>"\
-                    "- Conference : Conference room name or number<br/>"))
-
+    #gateway = models.ForeignKey(Gateway, null=True, blank=True,
+    #                verbose_name=_('B-Leg'),
+    #                help_text=_("Gateway used if we redirect the call"))
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -149,41 +208,7 @@ class SurveyQuestion(Sortable):
         return self.question
 
 
-class SurveyResponse(models.Model):
-    """This defines the response for survey question
-
-    **Attributes**:
-
-        * ``key`` - Key digit.
-        * ``keyvalue`` - Key Value
-
-    **Relationships**:
-
-        * ``surveyquestion`` - Foreign key relationship to the SurveyQuestion.\
-        Each survey response is assigned to a SurveyQuestion
-
-    **Name of DB table**: survey_response
-    """
-    key = models.CharField(max_length=9, blank=False,
-                    verbose_name=_("Key Digit"),
-                    help_text=_('Define the key link to the response'))  # 1;2
-    keyvalue = models.CharField(max_length=150, blank=True,
-                    verbose_name=_("Key Value"))  # Orange ; Kiwi
-    created_date = models.DateTimeField(auto_now_add=True)
-    updated_date = models.DateTimeField(auto_now=True)
-    surveyquestion = models.ForeignKey(SurveyQuestion,
-                    related_name='SurveyQuestion')
-    goto_surveyquestion = models.ForeignKey(SurveyQuestion, null=True,
-                    blank=True, related_name='Goto SurveyQuestion')
-
-    class Meta:
-        unique_together = ("key", "surveyquestion")
-
-    def __unicode__(self):
-        return '[%s] %s' % (self.id, self.keyvalue)
-
-
-class SurveyCampaignResult(models.Model):
+class Result(models.Model):
     """This gives survey result
 
     That will be difficult to scale for reporting
@@ -212,7 +237,7 @@ class SurveyCampaignResult(models.Model):
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
                     verbose_name=_("Campaign"))
 
-    surveyapp = models.ForeignKey(SurveyApp, related_name='SurveyApp')
+    surveyapp = models.ForeignKey(SurveyApp, related_name='Survey App')
     callid = models.CharField(max_length=120, help_text=_("VoIP Call-ID"),
                     verbose_name=_("Call-ID"))
 
@@ -227,7 +252,7 @@ class SurveyCampaignResult(models.Model):
                     null=True, verbose_name=_('Recording Duration'))
     callrequest = models.ForeignKey(Callrequest,
                     blank=True, null=True,
-                    related_name='Callrequest')
+                    related_name='survey_callrequest')
 
     created_date = models.DateTimeField(auto_now_add=True)
 

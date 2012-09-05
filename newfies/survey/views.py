@@ -406,10 +406,10 @@ def survey_del(request, object_id):
 
 
 @login_required
-def survey_question_list(request):
+def section_list(request):
     """Get survey question list from AJAX request"""
-    que_list = SurveyQuestion.objects\
-                .filter(surveyapp_id=request.GET['surveyapp_id'],
+    que_list = Section.objects\
+                .filter(survey_id=request.GET['survey_id'],
                         user=request.user).order_by('order')
     result_string = ''
     rec_count = 1
@@ -425,7 +425,7 @@ def survey_question_list(request):
 
 
 @login_required
-def survey_question_add(request):
+def section_add(request):
     """Add new Survey for the logged in user
 
     **Attributes**:
@@ -438,10 +438,10 @@ def survey_question_add(request):
         * Add a new survey which will belong to the logged in user
           via the SurveyForm & get redirected to the survey list
     """
-    surveyapp_id = request.GET.get('surveyapp_id')
-    survey = SurveyApp.objects.get(pk=surveyapp_id)
+    survey_id = request.GET.get('survey_id')
+    survey = Survey.objects.get(pk=survey_id)
 
-    form = SurveyQuestionForm(request.user, initial={'surveyapp': survey})
+    form = SurveyQuestionForm(request.user, initial={'survey': survey})
     request.session['err_msg'] = ''
     if request.method == 'POST':
         form = SurveyQuestionForm(request.user, request.POST)
@@ -457,11 +457,11 @@ def survey_question_add(request):
             request.session["err_msg"] = _('Question is not added.')
             #surveyapp_id = request.POST['surveyapp']
 
-    template = 'frontend/survey/survey_question_change.html'
+    template = 'frontend/survey2/section_change.html'
 
     data = {
         'form': form,
-        'surveyapp_id': surveyapp_id,
+        'survey_id': survey_id,
         'err_msg': request.session.get('err_msg'),
         'action': 'add'
         }
@@ -471,7 +471,7 @@ def survey_question_add(request):
 
 
 @login_required
-def survey_question_change(request, id):
+def section_change(request, id):
     """Update survey question for the logged in user
 
     **Attributes**:
@@ -483,19 +483,14 @@ def survey_question_change(request, id):
 
         *
     """
-    survey_que = SurveyQuestion.objects.get(pk=int(id))
+    survey_que = Section.objects.get(pk=int(id))
     form = SurveyQuestionForm(request.user, instance=survey_que)
     request.session['err_msg'] = ''
     if request.GET.get('delete'):
         # perform delete
         surveyapp_id = survey_que.surveyapp_id
-        survey_response_list = SurveyResponse.objects\
-                                .filter(surveyquestion=survey_que)
-        for survey_resp in survey_response_list:
-            survey_resp.delete()
-
         survey_que.delete()
-        return HttpResponseRedirect('/survey/%s/' % (surveyapp_id))
+        return HttpResponseRedirect('/survey2/%s/' % (surveyapp_id))
 
     if request.method == 'POST':
         form = SurveyQuestionForm(request.user,
@@ -503,124 +498,19 @@ def survey_question_change(request, id):
                                   instance=survey_que)
         if form.is_valid():
             obj = form.save()
-            return HttpResponseRedirect('/survey/%s/#row%s'  \
-                % (obj.surveyapp_id, obj.id))
+            return HttpResponseRedirect('/survey2/%s/#row%s'  \
+                % (obj.survey_id, obj.id))
         else:
             request.session["err_msg"] = _('Question is not added.')
 
-    template = 'frontend/survey/survey_question_change.html'
+    template = 'frontend/survey2/section_change.html'
     data = {
         'form': form,
-        'surveyapp_id': survey_que.surveyapp_id,
+        'survey_id': survey_que.survey_id,
         'survey_question_id': id,
         'module': current_view(request),
         'err_msg': request.session.get('err_msg'),
         'action': 'update',
-        }
-    request.session['err_msg'] = ''
-    return render_to_response(template, data,
-        context_instance=RequestContext(request))
-
-
-@login_required
-def survey_response_add(request):
-    """Add new Survey for the logged in user
-
-    **Attributes**:
-
-        * ``form`` - SurveyResponseForm
-        * ``template`` - frontend/survey/survey_response_change.html
-
-    **Logic Description**:
-
-        * Add a new survey response which will belong to the logged in user
-          via the SurveyResponseForm & get redirected to the selected survey
-    """
-    surveyquestion_id = request.GET.get('surveyquestion_id')
-    survey_que = SurveyQuestion.objects.get(pk=int(surveyquestion_id))
-    form = SurveyResponseForm(request.user, survey_que.surveyapp_id,
-                              initial={'surveyquestion': survey_que})
-    request.session['err_msg'] = ''
-    if request.method == 'POST':
-        form = SurveyResponseForm(request.user,
-                                  survey_que.surveyapp_id,
-                                  request.POST)
-        if form.is_valid():
-            obj = form.save()
-            request.session["msg"] = _('"%(key)s" is added.') %\
-                                     {'key': request.POST['key']}
-            return HttpResponseRedirect('/survey/%s/#row%s'\
-                % (obj.surveyquestion.surveyapp_id,
-                   obj.surveyquestion.id))
-        else:
-            form._errors["key"] = _("duplicate record key !")
-            request.session["err_msg"] = _('Response is not added.')
-
-    template = 'frontend/survey/survey_response_change.html'
-    data = {
-        'form': form,
-        'surveyquestion_id': surveyquestion_id,
-        'surveyapp_id': survey_que.surveyapp_id,
-        'err_msg': request.session.get('err_msg'),
-        'action': 'add'
-    }
-    request.session['err_msg'] = ''
-    return render_to_response(template, data,
-        context_instance=RequestContext(request))
-
-
-@login_required
-def survey_response_change(request, id):
-    """Update survey question for the logged in user
-
-    **Attributes**:
-
-        * ``form`` - SurveyQuestionForm
-        * ``template`` - frontend/survey/survey_question.html
-
-    **Logic Description**:
-
-        *
-    """
-    survey_resp = SurveyResponse.objects.get(pk=int(id))
-    form = SurveyResponseForm(request.user,
-        survey_resp.surveyquestion.surveyapp_id,
-        instance=survey_resp)
-    request.session['err_msg'] = ''
-    if request.GET.get('delete'):
-        # perform delete
-        surveyapp_id = survey_resp.surveyquestion.surveyapp_id
-        survey_resp.delete()
-        return HttpResponseRedirect('/survey/%s/' % str(surveyapp_id))
-
-    if request.method == 'POST':
-        form = SurveyResponseForm(request.user,
-                    survey_resp.surveyquestion.surveyapp_id,
-                    request.POST,
-                    instance=survey_resp)
-        if form.is_valid():
-            obj = form.save()
-            return HttpResponseRedirect('/survey/%s/#row%s'\
-                % (obj.surveyquestion.surveyapp_id,
-                   obj.surveyquestion.id))
-        else:
-            duplicate_count =\
-                SurveyResponse.objects.filter(key=request.POST['key'],
-                    surveyquestion=survey_resp.surveyquestion).count()
-            if request.POST['key'] == survey_resp.key:
-                if duplicate_count >= 1:
-                    form._errors["key"] = _("duplicate record key !")
-            request.session["err_msg"] = _('Response is not added.')
-
-    template = 'frontend/survey/survey_response_change.html'
-    data = {
-        'form': form,
-        'surveyquestion_id': survey_resp.surveyquestion_id,
-        'surveyapp_id': survey_resp.surveyquestion.surveyapp_id,
-        'survey_response_id': id,
-        'module': current_view(request),
-        'action': 'update',
-        'err_msg': request.session.get('err_msg'),
         }
     request.session['err_msg'] = ''
     return render_to_response(template, data,

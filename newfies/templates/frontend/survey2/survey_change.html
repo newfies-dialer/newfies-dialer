@@ -254,39 +254,39 @@
 
     </script>
     <!-- updaet survey question modal content-->
-    <div id="survey-question-update-edit" class="modal hide fade" >
+    <div id="section-update-edit" class="modal hide fade" >
 
-        <div class="modal-body" id="survey-question-update-content-edit">
+        <div class="modal-body" id="section-update-content-edit">
         </div>
         <div class="modal-footer">
             <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
         </div>
     </div>
     {% if action == 'update' %}
-        <button data-toggle="modal" href="#survey-question-create-add" class="survey-question-add btn btn-info" url='/survey_question/add/' data-controls-modal='survey-question-create-content-add'>
-            {% trans "Add Question" %}
+        <button data-toggle="modal" href="#section-create-add" class="section-add btn btn-info" url='/section/add/' data-controls-modal='section-create-content-add'>
+            {% trans "Add Section" %}
         </button>
     {% endif %}
 
     <script type="text/javascript" charset="utf-8">
 
-        $(".survey-question-add").live('click', function() {
+        $(".section-add").live('click', function() {
 
             var url = $(this).attr('url');
             var modal_id = $(this).attr('data-controls-modal');
-            url = url + "?surveyapp_id=" + {{ survey_obj_id }};
+            url = url + "?survey_id=" + {{ survey_obj_id }};
             $("#" + modal_id).load(url);
         })
 
     </script>
     <!-- modal content-->
-    <div id="survey-question-create-add" class="modal hide fade">
+    <div id="section-create-add" class="modal hide fade">
         <a class="close" data-dismiss="modal" >&times;</a>
         <h3>
-            {% trans "Add" %} {% trans "Survey Question" %}
+            {% trans "Add" %} {% trans "Section" %}
             <small></small>
         </h3>
-        <div class="modal-body" id="survey-question-create-content-add">
+        <div class="modal-body" id="section-create-content-add">
         </div>
         <div class="modal-footer">
             <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>

@@ -70,7 +70,7 @@ class Survey(Sortable):
     description = models.TextField(null=True, blank=True,
                         verbose_name=_('Description'),
                         help_text=_("Survey Description"))
-    user = models.ForeignKey('auth.User', related_name='owner')
+    user = models.ForeignKey('auth.User', related_name='survey_user')
     created_date = models.DateTimeField(auto_now_add=True,
                         verbose_name=_('Date'))
     updated_date = models.DateTimeField(auto_now=True)
@@ -107,7 +107,7 @@ class Section(Sortable):
     **Name of DB table**: survey_question
     """
     class Meta(Sortable.Meta):
-        ordering = Sortable.Meta.ordering + ['surveyapp']
+        ordering = Sortable.Meta.ordering + ['survey']
 
     # select section
     type = models.IntegerField(max_length=20, choices=SECTION_TYPE,
@@ -179,14 +179,14 @@ class Section(Sortable):
 
 
     user = models.ForeignKey('auth.User', related_name='survey_owner')
-    surveyapp = models.ForeignKey(SurveyApp, verbose_name=_("SurveyApp"))
+    survey = models.ForeignKey(Survey, verbose_name=_("Survey"))
     #gateway = models.ForeignKey(Gateway, null=True, blank=True,
     #                verbose_name=_('B-Leg'),
     #                help_text=_("Gateway used if we redirect the call"))
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
-    sortable_by = SurveyApp
+    sortable_by = Survey
 
     def __unicode__(self):
         return self.question
@@ -221,7 +221,7 @@ class Result(models.Model):
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
                     verbose_name=_("Campaign"))
 
-    surveyapp = models.ForeignKey(SurveyApp, related_name='Survey App')
+    survey = models.ForeignKey(Survey, related_name='Survey App')
     callid = models.CharField(max_length=120, help_text=_("VoIP Call-ID"),
                     verbose_name=_("Call-ID"))
 

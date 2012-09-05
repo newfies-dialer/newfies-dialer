@@ -16,8 +16,7 @@ from django import forms
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
-from survey2.models import SurveyApp, SurveyQuestion, \
-                           SurveyResponse, APP_TYPE
+from survey2.models import Survey, Section
 from dialer_campaign.models import Campaign
 from dialer_cdr.forms import VoipSearchForm
 from audiofield.models import AudioFile
@@ -35,14 +34,14 @@ def get_audiofile_list(user):
     return list_af
 
 
-def get_question_list(user, surveyapp_id):
+def get_question_list(user, survey_id):
     """Get survey question list for logged in user
     with default none option"""
     list_sq = []
     list_sq.append(('', '---'))
 
-    list = SurveyQuestion.objects.filter(user=user,
-        surveyapp_id=surveyapp_id)
+    list = Section.objects.filter(user=user,
+        survey_id=survey_id)
     for i in list:
         list_sq.append((i.id, i.question))
 
@@ -53,7 +52,7 @@ class SurveyForm(ModelForm):
     """SurveyApp ModelForm"""
 
     class Meta:
-        model = SurveyApp
+        model = Survey
         exclude = ('user',)
 
     def __init__(self, *args, **kwargs):
@@ -65,40 +64,18 @@ class SurveyForm(ModelForm):
         self.fields['description'].widget.attrs['class'] = 'span4'
 
 
-class SurveyQuestionForm(ModelForm):
+class SectionForm(ModelForm):
     """SurveyQuestion ModelForm"""
 
     class Meta:
-        model = SurveyQuestion
-        fields = ['question', 'surveyapp', 'audio_message', 'type']
+        model = Section
+        fields = ['question', 'survey']
         # remove those fields for now 'data', 'gateway'
 
     def __init__(self, user, *args, **kwargs):
         super(SurveyQuestionForm, self).__init__(*args, **kwargs)
         self.fields['question'].widget.attrs['class'] = 'span5'
-        self.fields['surveyapp'].widget = forms.HiddenInput()
-        self.fields['audio_message'].choices = get_audiofile_list(user)
-        self.fields['audio_message'].widget.attrs['class'] = 'span2'
-        self.fields['type'].choices = APP_TYPE
-        self.fields['type'].widget.attrs['class'] = 'span2'
-        #self.fields['gateway'].widget.attrs['class'] = 'span2'
-
-
-class SurveyResponseForm(ModelForm):
-    """SurveyResponse ModelForm"""
-
-    class Meta:
-        model = SurveyResponse
-        fields = ['key', 'keyvalue', 'surveyquestion', 'goto_surveyquestion']
-
-    def __init__(self, user, surveyapp_id, *args, **kwargs):
-        super(SurveyResponseForm, self).__init__(*args, **kwargs)
-        self.fields['surveyquestion'].widget = forms.HiddenInput()
-        self.fields['key'].widget.attrs['class'] = "input-small"
-        self.fields['keyvalue'].widget.attrs['class'] = "input-small"
-        self.fields['goto_surveyquestion'].choices = get_question_list(user,
-                                                            surveyapp_id)
-        self.fields['goto_surveyquestion'].label = _('Goto')
+        self.fields['survey'].widget = forms.HiddenInput()
 
 
 class SurveyReportForm(forms.Form):

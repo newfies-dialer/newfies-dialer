@@ -108,6 +108,11 @@ class CustomIndexDashboard(Dashboard):
             models=('survey.*', ),
         ))
 
+        self.children.append(modules.AppList(
+            _('Survey2'),
+            models=('survey2.*', ),
+        ))
+
         # append a link list module for "quick links"
         """
         site_name = get_admin_site_name(context)

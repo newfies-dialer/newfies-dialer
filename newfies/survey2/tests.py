@@ -16,15 +16,15 @@ from django.contrib.auth.models import User
 from django.template import Template, Context, TemplateSyntaxError
 from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
-from survey.models import SurveyApp, SurveyQuestion,\
+from survey2.models import SurveyApp, SurveyQuestion,\
     SurveyResponse, SurveyCampaignResult
-from survey.forms import SurveyForm, SurveyQuestionForm, \
+from survey2.forms import SurveyForm, SurveyQuestionForm, \
     SurveyResponseForm, SurveyDetailReportForm
-from survey.views import survey_list, survey_grid, survey_add, \
+from survey2.views import survey_list, survey_grid, survey_add, \
     survey_change, survey_del, survey_question_add, survey_question_change,\
     survey_response_add, survey_response_change, survey_report,\
     survey_finestatemachine, survey_question_list, export_surveycall_report
-from survey.ajax import survey_question_sort
+from survey2.ajax import survey_question_sort
 from utils.helper import grid_test_data
 from datetime import datetime
 import simplejson

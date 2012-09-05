@@ -323,7 +323,7 @@ def survey_list(request):
 
         * List all surveys which belong to the logged in user.
     """
-    template = 'frontend/survey/survey_list.html'
+    template = 'frontend/survey2/survey_list.html'
     data = {
         'module': current_view(request),
         'msg': request.session.get('msg'),
@@ -357,8 +357,8 @@ def survey_add(request):
             obj.save()
             request.session["msg"] = _('"%(name)s" is added.') %\
             {'name': request.POST['name']}
-            return HttpResponseRedirect('/survey/%s/' % (obj.id))
-    template = 'frontend/survey/survey_change.html'
+            return HttpResponseRedirect('/survey2/%s/' % (obj.id))
+    template = 'frontend/survey2/survey_change.html'
     data = {
        'module': current_view(request),
        'form': form,
@@ -389,7 +389,7 @@ def survey_del(request, object_id):
             request.session["msg"] = _('"%(name)s" is deleted.') \
                                         % {'name': survey.name}
             survey.delete()
-            return HttpResponseRedirect('/survey/')
+            return HttpResponseRedirect('/survey2/')
     except:
         # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
@@ -401,7 +401,7 @@ def survey_del(request, object_id):
             _('%(count)s survey(s) are deleted.') \
                 % {'count': survey_list.count()}
         survey_list.delete()
-        return HttpResponseRedirect('/survey/')
+        return HttpResponseRedirect('/survey2/')
 
 
 @login_required
@@ -450,13 +450,13 @@ def survey_question_add(request):
             obj.save()
             request.session["msg"] = _('"%(question)s" is added.') %\
                                        {'question': request.POST['question']}
-            return HttpResponseRedirect('/survey/%s/#row%s' \
+            return HttpResponseRedirect('/survey2/%s/#row%s' \
                         % (obj.surveyapp_id, obj.id))
         else:
             request.session["err_msg"] = _('Question is not added.')
             #surveyapp_id = request.POST['surveyapp']
 
-    template = 'frontend/survey/survey_question_change.html'
+    template = 'frontend/survey2/survey_question_change.html'
 
     data = {
         'form': form,
@@ -494,7 +494,7 @@ def survey_question_change(request, id):
             survey_resp.delete()
 
         survey_que.delete()
-        return HttpResponseRedirect('/survey/%s/' % (surveyapp_id))
+        return HttpResponseRedirect('/survey2/%s/' % (surveyapp_id))
 
     if request.method == 'POST':
         form = SurveyQuestionForm(request.user,
@@ -502,12 +502,12 @@ def survey_question_change(request, id):
                                   instance=survey_que)
         if form.is_valid():
             obj = form.save()
-            return HttpResponseRedirect('/survey/%s/#row%s'  \
+            return HttpResponseRedirect('/survey2/%s/#row%s'  \
                 % (obj.surveyapp_id, obj.id))
         else:
             request.session["err_msg"] = _('Question is not added.')
 
-    template = 'frontend/survey/survey_question_change.html'
+    template = 'frontend/survey2/survey_question_change.html'
     data = {
         'form': form,
         'surveyapp_id': survey_que.surveyapp_id,
@@ -548,14 +548,14 @@ def survey_response_add(request):
             obj = form.save()
             request.session["msg"] = _('"%(key)s" is added.') %\
                                      {'key': request.POST['key']}
-            return HttpResponseRedirect('/survey/%s/#row%s'\
+            return HttpResponseRedirect('/survey2/%s/#row%s'\
                 % (obj.surveyquestion.surveyapp_id,
                    obj.surveyquestion.id))
         else:
             form._errors["key"] = _("duplicate record key !")
             request.session["err_msg"] = _('Response is not added.')
 
-    template = 'frontend/survey/survey_response_change.html'
+    template = 'frontend/survey2/survey_response_change.html'
     data = {
         'form': form,
         'surveyquestion_id': surveyquestion_id,
@@ -590,7 +590,7 @@ def survey_response_change(request, id):
         # perform delete
         surveyapp_id = survey_resp.surveyquestion.surveyapp_id
         survey_resp.delete()
-        return HttpResponseRedirect('/survey/%s/' % str(surveyapp_id))
+        return HttpResponseRedirect('/survey2/%s/' % str(surveyapp_id))
 
     if request.method == 'POST':
         form = SurveyResponseForm(request.user,
@@ -599,7 +599,7 @@ def survey_response_change(request, id):
                     instance=survey_resp)
         if form.is_valid():
             obj = form.save()
-            return HttpResponseRedirect('/survey/%s/#row%s'\
+            return HttpResponseRedirect('/survey2/%s/#row%s'\
                 % (obj.surveyquestion.surveyapp_id,
                    obj.surveyquestion.id))
         else:
@@ -611,7 +611,7 @@ def survey_response_change(request, id):
                     form._errors["key"] = _("duplicate record key !")
             request.session["err_msg"] = _('Response is not added.')
 
-    template = 'frontend/survey/survey_response_change.html'
+    template = 'frontend/survey2/survey_response_change.html'
     data = {
         'form': form,
         'surveyquestion_id': survey_resp.surveyquestion_id,
@@ -658,16 +658,16 @@ def survey_change(request, object_id):
     if request.method == 'POST':
         if request.POST.get('delete'):
             survey_del(request, object_id)
-            return HttpResponseRedirect('/survey/')
+            return HttpResponseRedirect('/survey2/')
         else:
             form = SurveyForm(request.POST, request.user, instance=survey)
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('"%(name)s" is updated.')\
                     % {'name': request.POST['name']}
-                return HttpResponseRedirect('/survey/')
+                return HttpResponseRedirect('/survey2/')
 
-    template = 'frontend/survey/survey_change.html'
+    template = 'frontend/survey2/survey_change.html'
 
     data = {
         'survey_obj_id': object_id,
@@ -941,7 +941,7 @@ def survey_report(request):
             request.session["err_msg"] = \
                 _('No campaign attached with survey.')
 
-    template = 'frontend/survey/survey_report.html'
+    template = 'frontend/survey2/survey_report.html'
 
     data = {
         'rows': rows,

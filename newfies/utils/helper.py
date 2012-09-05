@@ -55,7 +55,7 @@ def grid_common_function(request):
 
 
 def get_grid_update_delete_link(request, row_id, perm_name, title, action):
-    """Function to check user permission to change or delete campaign
+    """Function to check user permission to change or delete
 
         ``request`` - to check request.user.has_perm() attribute
         ``row_id`` - to pass record id in link

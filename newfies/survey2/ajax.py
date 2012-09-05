@@ -18,7 +18,7 @@ from django.contrib.auth.decorators import login_required
 from dajaxice.decorators import dajaxice_register
 from dajax.core import Dajax
 
-from survey.models import SurveyQuestion
+from survey2.models import SurveyQuestion
 
 
 @login_required

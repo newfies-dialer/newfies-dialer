@@ -15,24 +15,24 @@
 from django.conf.urls import patterns
 
 
-urlpatterns = patterns('survey.views',
+urlpatterns = patterns('survey2.views',
     # Survey urls
-    (r'^survey/$', 'survey_list'),
-    (r'^survey_grid/$', 'survey_grid'),
-    (r'^survey/add/$', 'survey_add'),
-    (r'^survey/del/(.+)/$', 'survey_del'),
-    (r'^survey/question_list/$', 'survey_question_list'),
-    (r'^survey/(.+)/$', 'survey_change'),
+    (r'^survey2/$', 'survey_list'),
+    (r'^survey2_grid/$', 'survey_grid'),
+    (r'^survey2/add/$', 'survey_add'),
+    (r'^survey2/del/(.+)/$', 'survey_del'),
+    (r'^survey2/question_list/$', 'survey_question_list'),
+    (r'^survey2/(.+)/$', 'survey_change'),
 
-    (r'^survey_question/add/$', 'survey_question_add'),
-    (r'^survey_question/(?P<id>\w+)/$', 'survey_question_change'),
+    (r'^survey2_question/add/$', 'survey_question_add'),
+    (r'^survey2_question/(?P<id>\w+)/$', 'survey_question_change'),
 
-    (r'^survey_response/add/$', 'survey_response_add'),
-    (r'^survey_response/(?P<id>\w+)/$', 'survey_response_change'),
+    (r'^survey2_response/add/$', 'survey_response_add'),
+    (r'^survey2_response/(?P<id>\w+)/$', 'survey_response_change'),
 
-    (r'^survey_finestatemachine/$', 'survey_finestatemachine'),
+    (r'^survey2_finestatemachine/$', 'survey_finestatemachine'),
 
-    (r'^survey_report/$', 'survey_report'),
-    (r'^export_surveycall_report/$', 'export_surveycall_report'),
+    (r'^survey2_report/$', 'survey_report'),
+    (r'^export2_surveycall_report/$', 'export_surveycall_report'),
 
 )

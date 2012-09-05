@@ -70,6 +70,9 @@
                     {% if perms.survey.view_survey %}
                         <li {% if 'survey' in module %}class="active"{% endif %}><a href="/survey/">{% trans "Surveys" %}</a></li>
                     {% endif %}
+                    {% if perms.survey.view_survey %}
+                        <li {% if 'survey2' in module %}class="active"{% endif %}><a href="/survey2/">{% trans "Surveys2" %}</a></li>
+                    {% endif %}
                     <li class="divider"></li>
                     <li><a href="http://www.newfies-dialer.org/add-ons" target="_blank">{% trans "Add-ons" %}</a></li>
                 </ul>

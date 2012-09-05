@@ -18,7 +18,7 @@ from django.contrib.auth.decorators import login_required
 from dajaxice.decorators import dajaxice_register
 from dajax.core import Dajax
 
-from survey2.models import SurveyQuestion
+from survey2.models import Section
 
 
 @login_required
@@ -27,9 +27,9 @@ def survey_question_sort(request, id, sort_order):
     dajax = Dajax()
 
     try:
-        survey_question = SurveyQuestion.objects.get(pk=int(id))
-        survey_question.order = sort_order
-        survey_question.save()
+        section = Section.objects.get(pk=int(id))
+        section.order = sort_order
+        section.save()
         # dajax.alert("(%s) has been successfully sorted !!" % \
         #    (survey_question.question))
     except:

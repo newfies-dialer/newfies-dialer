@@ -14,71 +14,47 @@
 #
 
 from django.contrib import admin
-from survey2.models import SurveyApp, SurveyQuestion, \
-                           SurveyResponse, SurveyCampaignResult
+from survey2.models import Survey, Section, Result
 from adminsortable.admin import SortableAdmin, SortableTabularInline
 
 
-class SurveyQuestionInline(SortableTabularInline):
+class SectionInline(SortableTabularInline):
 
-    model = SurveyQuestion
+    model = Section
 
 
-class SurveyAppAdmin(SortableAdmin):
+class SurveyAdmin(SortableAdmin):
 
     """Allows the administrator to view and modify survey."""
 
-    inlines = [SurveyQuestionInline]
+    inlines = [SectionInline]
     list_display = ('id', 'name', 'created_date')
     list_display_links = ('id', 'name')
 
-admin.site.register(SurveyApp, SurveyAppAdmin)
+admin.site.register(Survey, SurveyAdmin)
 
 
-class SurveyResponseAdmin(admin.ModelAdmin):
-
-    """
-    Allows the administrator to view and modify attributes
-    of a survey response.
-    """
-
-    list_display = ('key', 'keyvalue', 'created_date')
-    search_fields = ['key', 'keyvalue']
-
-admin.site.register(SurveyResponse, SurveyResponseAdmin)
-
-
-class SurveyResponseInline(admin.TabularInline):
-
-    model = SurveyResponse
-    fk_name = 'surveyquestion'
-    extra = 1
-
-
-class SurveyQuestionAdmin(SortableAdmin):
+class SectionAdmin(SortableAdmin):
 
     """Allows the administrator to view and modify survey question."""
 
-    inlines = [SurveyResponseInline]
-    list_display = ('id', 'user', 'surveyapp', 'question', 'audio_message',
-                    'type', 'gateway', 'created_date')
+    #inlines = [SurveyResponseInline]
+    list_display = ('id', 'user', 'survey', 'created_date')
     search_fields = ['question']
-    list_display_links = ('question', )
-    list_filter = ['created_date', 'surveyapp']
+    #list_display_links = ('question', )
+    list_filter = ['created_date', 'survey']
 
-admin.site.register(SurveyQuestion, SurveyQuestionAdmin)
+admin.site.register(Section, SectionAdmin)
 
 
-class SurveyCampaignResultAdmin(admin.ModelAdmin):
+class ResultAdmin(admin.ModelAdmin):
 
     """Allows the administrator to view and modify survey campaign result."""
 
-    list_display = ('id', 'campaign', 'surveyapp', 'callid', 'question',
-                    'response', 'record_file', 'recording_duration',
-                    'created_date')
-    search_fields = ['campaign', 'surveyapp', 'question']
-    list_filter = ['created_date', 'surveyapp']
-    list_display_links = ('id', 'question', )
+    list_display = ('id', 'campaign', 'survey', 'callid', 'created_date')
+    search_fields = ['campaign', 'survey', 'question']
+    list_filter = ['created_date', 'survey']
+    list_display_links = ('id',)
     ordering = ('id', )
 
-admin.site.register(SurveyCampaignResult, SurveyCampaignResultAdmin)
+admin.site.register(Result, ResultAdmin)

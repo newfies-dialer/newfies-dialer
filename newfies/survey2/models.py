@@ -14,33 +14,13 @@
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from tagging.fields import TagField
 from dialer_campaign.models import Campaign
 from dialer_gateway.models import Gateway
 from dialer_cdr.models import Callrequest
-from audiofield.models import AudioFile
+
 from adminsortable.models import Sortable
-
-from south.modelsinspector import add_introspection_rules
-add_introspection_rules([], ["^tagging.fields.TagField"])
-add_introspection_rules([], ["^audiofield.fields.AudioField"])
-
-
-TTS_CHOICES = (
-    ('us-Callie-8Hz',   u'us-Callie-8Hz'),
-    ('us-Allison-8Hz',   u'us-Allison-8Hz'),
-)
-
-MESSAGE_TYPE = (
-    (1, u'Audio File'),
-    (2, u'Text2Speech'),
-)
-
-APP_TYPE = (
-    (1, u'MENU'),
-    (2, u'HANGUP'),
-    (3, u'RECORDING'),
-)
+#from audiofield.models import AudioFile
+#from tagging.fields import TagField
 
 SECTION_TYPE = (
     (1, u'Voice section'),
@@ -96,6 +76,10 @@ class Survey(Sortable):
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:
+        permissions = (
+            ("view_survey", _('Can see Survey')),
+            ("view_survey_report", _('Can see Survey Report'))
+        )
         verbose_name = _("Survey")
         verbose_name_plural = _("Surveys")
 
@@ -184,7 +168,7 @@ class Section(Sortable):
         verbose_name=_('Continue poll when done'),
         help_text=_('Otherwise, we will hang up when done.'))
 
-    # patch-through 
+    # patch-through
     patch_through_to_phonenumber = models.CharField(max_length=50,
         null=True, blank=True,
         verbose_name=_("Patch-through to phone number"))
@@ -232,7 +216,7 @@ class Result(models.Model):
         * ``surveyapp`` - Foreign key relationship to the SurveyApp model.\
         Each survey question is assigned to a SurveyApp
 
-    **Name of DB table**: survey_campaign_result
+    **Name of DB table**: result
     """
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
                     verbose_name=_("Campaign"))
@@ -247,12 +231,15 @@ class Result(models.Model):
                     verbose_name=_("Response"))  # Orange ; Kiwi
     record_file = models.CharField(max_length=200, blank=True, default='',
                     verbose_name=_("Record File"))
-    recording_duration = models.IntegerField(max_length=20,
-                    blank=True, default=0,
-                    null=True, verbose_name=_('Recording Duration'))
+    #recording_duration = models.IntegerField(max_length=20,
+    #                blank=True, default=0,
+    #                null=True, verbose_name=_('Recording Duration'))
     callrequest = models.ForeignKey(Callrequest,
                     blank=True, null=True,
                     related_name='survey_callrequest')
+    section_type = models.IntegerField(max_length=20, choices=SECTION_TYPE,
+        blank=True, null=True,
+        verbose_name=_('section type'))
 
     created_date = models.DateTimeField(auto_now_add=True)
 

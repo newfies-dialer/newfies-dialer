@@ -100,7 +100,8 @@ class Section(Sortable):
                     'press pound key when done'))
     # audio file
     audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
-                    verbose_name=_("Audio File"))
+                    verbose_name=_("Audio File"),
+                    related_name='survey_audiofile')
     # use audio file
     use_audiofile = models.BooleanField(default=False,
                 verbose_name=_('Use audio file'),

@@ -15,11 +15,10 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from dialer_campaign.models import Campaign
-from dialer_gateway.models import Gateway
 from dialer_cdr.models import Callrequest
 
 from adminsortable.models import Sortable
-#from audiofield.models import AudioFile
+from audiofield.models import AudioFile
 #from tagging.fields import TagField
 
 SECTION_TYPE = (
@@ -30,25 +29,6 @@ SECTION_TYPE = (
     (5, u'Record message'),
     (6, u'Patch-through'),
 )
-
-"""
-class Text2speechMessage(models.Model):
-    name = models.CharField(max_length=150, blank=False, verbose_name="Name")
-    tts_message = models.TextField(max_length=1500, blank=True,
-                        verbose_name="Text2Speech Message",
-                        help_text = 'Define the text2speech message')
-    tts_engine = models.CharField(choices=TTS_CHOICES, max_length=120,
-                        blank=True, verbose_name="TTS Engine")
-    created_date = models.DateTimeField(auto_now_add=True)
-    updated_date = models.DateTimeField(auto_now=True)
-    #code_language = models.ForeignKey(Language, verbose_name="Language")
-
-    #link to user
-    user = models.ForeignKey('auth.User', related_name='TTS Message owner')
-
-    def __unicode__(self):
-        return '[%s] %s' %(self.id, self.name)
-"""
 
 
 class Survey(Sortable):
@@ -111,78 +91,83 @@ class Section(Sortable):
 
     # select section
     type = models.IntegerField(max_length=20, choices=SECTION_TYPE,
-            default='1', blank=True, null=True,
-            verbose_name=_('section type'))
+                default='1', blank=True, null=True,
+                verbose_name=_('section type'))
 
     # for voice section, record message, patch-through
-    respondent_to_hears = models.CharField(max_length=500,
-        verbose_name=_("Respondent hears"))
+    phrasing = models.CharField(max_length=1000,
+                verbose_name=_('Example : Enter a number between 1 to 5, '
+                    'press pound key when done'))
+    # audio file
+    audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
+                    verbose_name=_("Audio File"))
+    # use audio file
+    use_audiofile = models.BooleanField(default=False,
+                verbose_name=_('Use audio file'),
+                help_text=_('Use audio file instead of phrasing'))
+
+    # audio File
+    invalid_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
+                    verbose_name=_("Invalid Audio File digits"))
+
+    retries = models.IntegerField(max_length=1, null=True, blank=True,
+                verbose_name=_("retries"),
+                help_text=_('Retries this section until it\'s valid'))
+
+    timeout = models.IntegerField(max_length=2, null=True, blank=True,
+                verbose_name=_("timeout"),
+                help_text=_('Timeout in seconds to press the key(s)'))
 
     # multiple choice question, rating question, enter a number
     question = models.CharField(max_length=500,
-                    verbose_name=_("Question"),
-                    help_text=_('Enter your question'))
+                verbose_name=_("Question"),
+                help_text=_('Enter your question'))
 
     # multiple choice question,
-    key_0 = models.CharField(max_length=9, null=True, blank=True,
-        verbose_name=_("Press 0"))
-    key_1 = models.CharField(max_length=9, null=True, blank=True,
-        verbose_name=_("Press 1"))
-    key_2 = models.CharField(max_length=9, null=True, blank=True,
-        verbose_name=_("Press 2"))
-    key_3 = models.CharField(max_length=9, null=True, blank=True,
-        verbose_name=_("Press 3"))
-    key_4 = models.CharField(max_length=9, null=True, blank=True,
-        verbose_name=_("Press 4"))
-    key_5 = models.CharField(max_length=9, null=True, blank=True,
-        verbose_name=_("Press 5"))
-    key_6 = models.CharField(max_length=9, null=True, blank=True,
-        verbose_name=_("Press 6"))
-    key_7 = models.CharField(max_length=9, null=True, blank=True,
-        verbose_name=_("Press 7"))
-    key_8 = models.CharField(max_length=9, null=True, blank=True,
-        verbose_name=_("Press 8"))
-    key_9 = models.CharField(max_length=9, null=True, blank=True,
-        verbose_name=_("Press 9"))
+    key_0 = models.IntegerField(max_length=1, null=True, blank=True,
+                verbose_name=_("Result if the user press") + "0")
+    key_1 = models.IntegerField(max_length=1, null=True, blank=True,
+                verbose_name=_("Result if the user press") + "1")
+    key_2 = models.IntegerField(max_length=1, null=True, blank=True,
+                verbose_name=_("Result if the user press") + "2")
+    key_3 = models.IntegerField(max_length=1, null=True, blank=True,
+                verbose_name=_("Result if the user press") + "3")
+    key_4 = models.IntegerField(max_length=1, null=True, blank=True,
+                verbose_name=_("Result if the user press") + "4")
+    key_5 = models.IntegerField(max_length=1, null=True, blank=True,
+                verbose_name=_("Result if the user press") + "5")
+    key_6 = models.IntegerField(max_length=1, null=True, blank=True,
+                verbose_name=_("Result if the user press") + "6")
+    key_7 = models.IntegerField(max_length=1, null=True, blank=True,
+                verbose_name=_("Result if the user press") + "7")
+    key_8 = models.IntegerField(max_length=1, null=True, blank=True,
+                verbose_name=_("Result if the user press") + "8")
+    key_9 = models.IntegerField(max_length=1, null=True, blank=True,
+                verbose_name=_("Result if the user press") + "9")
 
     # rating question
-    from_1_to = models.CharField(max_length=9, null=True, blank=True,
-        verbose_name=_("From 1 to"))
+    rating_laps = models.IntegerField(max_length=1, null=True, blank=True,
+                verbose_name=_("From 1 to X"))
 
     # enter a number
     validate_number = models.BooleanField(default=True,
-        verbose_name=_('Check for valid number'))
+                verbose_name=_('Check for valid number'))
+    min_number = models.IntegerField(max_length=1, null=True, blank=True,
+                verbose_name=_("Minimum"))
+    max_number = models.IntegerField(max_length=1, null=True, blank=True,
+                verbose_name=_("Maximum"))
 
-    minimum = models.CharField(max_length=9, null=True, blank=True,
-        verbose_name=_("Minimum"))
-    maximum = models.CharField(max_length=9, null=True, blank=True,
-        verbose_name=_("Maximum"))
+    # dial a phone number
+    dial_phonenumber = models.CharField(max_length=50,
+                null=True, blank=True,
+                verbose_name=_("Dial phone number"))
 
-    # record message
-    voice_to_text_transcription = models.BooleanField(default=False,
-        verbose_name=_('Voice-to-text transcription'),
-        help_text=_('Automated transcription is only available for outbound calls'))
-
-    # record message, patch-through
-    continue_poll_when_done = models.BooleanField(default=True,
-        verbose_name=_('Continue poll when done'),
-        help_text=_('Otherwise, we will hang up when done.'))
-
-    # patch-through
-    patch_through_to_phonenumber = models.CharField(max_length=50,
-        null=True, blank=True,
-        verbose_name=_("Patch-through to phone number"))
-
-    permitted_to_route_calls = models.BooleanField(default=False,
-        verbose_name=_('Continue poll when done'),
-        help_text=_('I am permitted to route calls to this number.'))
-
+    # set if we continue or just hangup after this section
+    continue_survey = models.BooleanField(default=False,
+                verbose_name=_('Continue survey when done'))
 
     user = models.ForeignKey('auth.User', related_name='survey_owner')
     survey = models.ForeignKey(Survey, verbose_name=_("Survey"))
-    #gateway = models.ForeignKey(Gateway, null=True, blank=True,
-    #                verbose_name=_('B-Leg'),
-    #                help_text=_("Gateway used if we redirect the call"))
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -219,24 +204,24 @@ class Result(models.Model):
     **Name of DB table**: result
     """
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
-                    verbose_name=_("Campaign"))
+                verbose_name=_("Campaign"))
 
     survey = models.ForeignKey(Survey, related_name='Survey App')
     callid = models.CharField(max_length=120, help_text=_("VoIP Call-ID"),
-                    verbose_name=_("Call-ID"))
+                verbose_name=_("Call-ID"))
 
     question = models.CharField(max_length=500, blank=False,
-                    verbose_name=_("Question"))  # What is your prefered fruit?
+                verbose_name=_("Question"))  # What is your prefered fruit?
     response = models.CharField(max_length=150, blank=False,
-                    verbose_name=_("Response"))  # Orange ; Kiwi
+                verbose_name=_("Response"))  # Orange ; Kiwi
     record_file = models.CharField(max_length=200, blank=True, default='',
-                    verbose_name=_("Record File"))
+                verbose_name=_("Record File"))
     #recording_duration = models.IntegerField(max_length=20,
     #                blank=True, default=0,
     #                null=True, verbose_name=_('Recording Duration'))
     callrequest = models.ForeignKey(Callrequest,
-                    blank=True, null=True,
-                    related_name='survey_callrequest')
+                blank=True, null=True,
+                related_name='survey_callrequest')
     section_type = models.IntegerField(max_length=20, choices=SECTION_TYPE,
         blank=True, null=True,
         verbose_name=_('section type'))

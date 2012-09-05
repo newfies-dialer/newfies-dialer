@@ -25,14 +25,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
 from dialer_campaign.models import Campaign
 from dialer_campaign.views import notice_count
-from survey.models import SurveyApp, SurveyQuestion, \
-                        SurveyResponse, SurveyCampaignResult
-from survey.forms import SurveyForm, \
-                        SurveyQuestionForm, \
-                        SurveyResponseForm, \
+from survey2.models import Survey, Section, Result
+from survey2.forms import SurveyForm, \
+                        SectionForm, \
                         SurveyDetailReportForm
-from survey.function_def import export_question_result
-from utils.helper import grid_common_function, update_style, delete_style
+
+from utils.helper import grid_common_function, get_grid_update_delete_link
 from dialer_cdr.models import Callrequest, VoIPCall
 from common.common_functions import variable_value, current_view
 from datetime import datetime
@@ -282,7 +280,7 @@ def survey_grid(request):
     sortorder_sign = grid_data['sortorder_sign']
     sortname = grid_data['sortname']
 
-    survey_list = SurveyApp.objects\
+    survey_list = Survey.objects\
                      .values('id', 'name', 'description', 'updated_date')\
                      .filter(user=request.user)
 
@@ -296,14 +294,11 @@ def survey_grid(request):
                 row['name'],
                 row['description'],
                 row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
-                '<a href="' + str(row['id']) + '/" class="icon" ' \
-                + update_style + ' title="' + \
-                _('Update survey') + '">&nbsp;</a>' +
-                '<a href="del/' + str(row['id']) + '/" class="icon" ' \
-                + delete_style + ' onClick="return get_alert_msg(' +
-                str(row['id']) +
-                ');"  title="' + _('Delete survey') + '">&nbsp;</a>']}\
-                for row in survey_list]
+                get_grid_update_delete_link(request, row['id'],
+                    'survey2.change_survey',  _('Update survey'), 'update')+\
+                get_grid_update_delete_link(request, row['id'],
+                    'survey2.delete_survey', _('Delete survey'), 'delete'),
+                ]} for row in survey_list]
     data = {'rows': rows,
             'page': page,
             'total': count}
@@ -340,7 +335,7 @@ def survey_add(request):
 
     **Attributes**:
 
-        * ``form`` - SurveyAppForm
+        * ``form`` - SurveyForm
         * ``template`` - frontend/survey/change.html
 
     **Logic Description**:
@@ -356,7 +351,7 @@ def survey_add(request):
             obj.user = User.objects.get(username=request.user)
             obj.save()
             request.session["msg"] = _('"%(name)s" is added.') %\
-            {'name': request.POST['name']}
+                {'name': request.POST['name']}
             return HttpResponseRedirect('/survey2/%s/' % (obj.id))
     template = 'frontend/survey2/survey_change.html'
     data = {
@@ -383,7 +378,7 @@ def survey_del(request, object_id):
     """
     try:
         # When object_id is not 0
-        survey = SurveyApp.objects.get(pk=object_id)
+        survey = Survey.objects.get(pk=object_id)
         if object_id:
             # 1) delete survey
             request.session["msg"] = _('"%(name)s" is deleted.') \
@@ -396,7 +391,7 @@ def survey_del(request, object_id):
         values = ", ".join(["%s" % el for el in values])
 
         # 1) delete survey
-        survey_list = SurveyApp.objects.extra(where=['id IN (%s)' % values])
+        survey_list = Survey.objects.extra(where=['id IN (%s)' % values])
         request.session["msg"] =\
             _('%(count)s survey(s) are deleted.') \
                 % {'count': survey_list.count()}
@@ -408,7 +403,7 @@ def survey_del(request, object_id):
 def survey_question_list(request):
     """Get survey question list from AJAX request"""
     que_list = SurveyQuestion.objects\
-                .filter(surveyapp_id=request.GET['surveyapp_id'],
+                .filter(surveyapp_id=request.GET['survey_id'],
                         user=request.user).order_by('order')
     result_string = ''
     rec_count = 1
@@ -641,9 +636,9 @@ def survey_change(request, object_id):
         * Update/delete selected survey from the survey list
           via SurveyForm & get redirected to survey list
     """
-    survey = SurveyApp.objects.get(pk=object_id)
-    survey_que_list = SurveyQuestion.objects\
-        .filter(surveyapp=survey).order_by('order')
+    survey = Survey.objects.get(pk=object_id)
+    survey_que_list = Section.objects\
+        .filter(survey=survey).order_by('order')
 
     survey_response_list = {}
     for survey_que in survey_que_list:

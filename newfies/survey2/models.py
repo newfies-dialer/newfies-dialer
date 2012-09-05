@@ -27,28 +27,8 @@ SECTION_TYPE = (
     (2, u'Multiple choice question'),
     (3, u'Rating question'),
     (4, u'Enter a number'),
-    (5, u'Record message'),
-    (6, u'Patch-through'),
+    (5, u'Patch-through'),
 )
-
-"""
-class Text2speechMessage(models.Model):
-    name = models.CharField(max_length=150, blank=False, verbose_name="Name")
-    tts_message = models.TextField(max_length=1500, blank=True,
-                        verbose_name="Text2Speech Message",
-                        help_text = 'Define the text2speech message')
-    tts_engine = models.CharField(choices=TTS_CHOICES, max_length=120,
-                        blank=True, verbose_name="TTS Engine")
-    created_date = models.DateTimeField(auto_now_add=True)
-    updated_date = models.DateTimeField(auto_now=True)
-    #code_language = models.ForeignKey(Language, verbose_name="Language")
-
-    #link to user
-    user = models.ForeignKey('auth.User', related_name='TTS Message owner')
-
-    def __unicode__(self):
-        return '[%s] %s' %(self.id, self.name)
-"""
 
 
 class Survey(Sortable):
@@ -114,7 +94,7 @@ class Section(Sortable):
             default='1', blank=True, null=True,
             verbose_name=_('section type'))
 
-    # for voice section, record message, patch-through
+    # for voice section, patch-through
     respondent_to_hears = models.CharField(max_length=500,
         verbose_name=_("Respondent hears"))
 
@@ -158,12 +138,7 @@ class Section(Sortable):
     maximum = models.CharField(max_length=9, null=True, blank=True,
         verbose_name=_("Maximum"))
 
-    # record message
-    voice_to_text_transcription = models.BooleanField(default=False,
-        verbose_name=_('Voice-to-text transcription'),
-        help_text=_('Automated transcription is only available for outbound calls'))
-
-    # record message, patch-through
+    # patch-through
     continue_poll_when_done = models.BooleanField(default=True,
         verbose_name=_('Continue poll when done'),
         help_text=_('Otherwise, we will hang up when done.'))
@@ -172,11 +147,6 @@ class Section(Sortable):
     patch_through_to_phonenumber = models.CharField(max_length=50,
         null=True, blank=True,
         verbose_name=_("Patch-through to phone number"))
-
-    permitted_to_route_calls = models.BooleanField(default=False,
-        verbose_name=_('Continue poll when done'),
-        help_text=_('I am permitted to route calls to this number.'))
-
 
     user = models.ForeignKey('auth.User', related_name='survey_owner')
     survey = models.ForeignKey(Survey, verbose_name=_("Survey"))

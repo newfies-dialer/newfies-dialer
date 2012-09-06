@@ -128,17 +128,51 @@
                 {% if section_list %}
                     {% for section in section_list %}
                     <div id="row{{ section.id }}" class="portlet">
-                        <div class="portlet-header">{{ section.type|section_type_name }}</div>
+                        <div class="portlet-header">
+                            {% if section.type == 1 %}
+                                {{ section.phrasing }}
+                            {% else %}
+                                {% if section.type == 2 %}
+                                    {{ section.question }}
+                                {% endif %}
+                            {% endif %}
+                        </div>
                         <div class="portlet-content">
                             <div class="row">
                                 <div class="span12">
                                     <div class="row">
                                         <div class="span9">
-                                        {% if section.type == 1 %}
-                                            {{ section.phrasing }}
-                                        {% endif %}
+                                        {{ section.type|section_type_name }}
+                                        
                                         {% if section.type == 2 %}
-                                            {{ section.question }}
+                                            <div class="row">
+                                                <div class="span8">
+                                                    <div class="row">
+                                                        <div class="span4">
+                                                            {% trans "Result if the user press 0" %} : {{ section.key_0 }}
+                                                            <br/>
+                                                            {% trans "Result if the user press 1" %} : {{ section.key_1 }}
+                                                            <br>
+                                                            {% trans "Result if the user press 2" %} : {{ section.key_2 }}
+                                                            <br/>
+                                                            {% trans "Result if the user press 3" %} : {{ section.key_3 }}
+                                                            <br/>
+                                                            {% trans "Result if the user press 4" %} : {{ section.key_4 }}
+                                                        </div>
+                                                        <div class="span4">
+                                                            {% trans "Result if the user press 5" %} : {{ section.key_5 }}
+                                                            <br/>
+                                                            {% trans "Result if the user press 6" %} : {{ section.key_6 }}
+                                                            <br>
+                                                            {% trans "Result if the user press 7" %} : {{ section.key_7 }}
+                                                            <br/>
+                                                            {% trans "Result if the user press 8" %} : {{ section.key_8 }}
+                                                            <br/>
+                                                            {% trans "Result if the user press 9" %} : {{ section.key_9 }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         {% endif %}
                                         </div>
                                         <!--<div class="span2"><b>{% trans "Audio message" %}</b><br/>{{ que.audio_message.name }}</div>

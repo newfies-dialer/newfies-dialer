@@ -423,10 +423,9 @@ def section_add(request):
 
     request.session['err_msg'] = ''
     if request.method == 'POST':
-
-        if request.POST.get('type') and int(request.POST.get('type')) == 1:
+        if request.POST.get('type') and str(request.POST.get('type')) == '1':
             form = VoiceSectionForm(request.user)
-            if request.POST.get('submit'):
+            if request.POST.get('add'):
                 form = VoiceSectionForm(request.user, request.POST)
                 if form.is_valid():
                     obj = form.save(commit=False)
@@ -438,13 +437,15 @@ def section_add(request):
                 else:
                     request.session["err_msg"] = _('Voice Section is not added.')
                     form = VoiceSectionForm(request.user, request.POST)
-            else:
+            if request.POST.get('add') is None:
                 request.session["err_msg"] = _('Voice Section is not added.')
-                form = VoiceSectionForm(request.user, request.POST)
+                form = VoiceSectionForm(request.user,
+                                        initial={'survey': survey,
+                                                 'type': '1'})
 
-        if request.POST.get('type') and int(request.POST.get('type')) == 2:
+        if request.POST.get('type') and str(request.POST.get('type')) == '2':
             form = MultipleChoiceSectionForm(request.user)
-            if request.POST.get('submit'):
+            if request.POST.get('add'):
                 form = MultipleChoiceSectionForm(request.user, request.POST)
                 if form.is_valid():
                     obj = form.save(commit=False)
@@ -456,14 +457,11 @@ def section_add(request):
                 else:
                     request.session["err_msg"] = _('Multiple Choice Section is not added.')
                     form = MultipleChoiceSectionForm(request.user, request.POST)
-            else:
+            if request.POST.get('add') is None:
                 request.session["err_msg"] = _('Multiple Choice Section is not added.')
-                form = MultipleChoiceSectionForm(request.user, request.POST)
-
-        else:
-            request.session["err_msg"] = _('Section is not added.')
-            form = VoiceSectionForm(request.user, request.POST)
-
+                form = MultipleChoiceSectionForm(request.user,
+                                                 initial={'survey': survey,
+                                                          'type': '2'})
 
     template = 'frontend/survey2/section_change.html'
 

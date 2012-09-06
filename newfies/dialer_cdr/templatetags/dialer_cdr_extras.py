@@ -17,6 +17,7 @@ from survey.views import survey_audio_recording
 from dialer_campaign.models import CAMPAIGN_STATUS
 from dialer_cdr.models import LEG_TYPE
 from survey.models import APP_TYPE
+from survey2.models import SECTION_TYPE
 
 
 @register.filter()
@@ -111,6 +112,31 @@ def action_type_name(value):
 
 
 @register.filter()
+def section_type_name(value):
+    """survey section type name
+
+    >>> section_type_name(1)
+    u'Voice section'
+
+    >>> section_type_name(2)
+    u'Multiple choice question'
+
+    >>> section_type_name(0)
+    ''
+    """
+    if not value:
+        return ''
+    TYPE = dict(SECTION_TYPE)
+    try:
+        status = TYPE[value]
+    except:
+        status = ''
+    return str(status)
+
+
+
+
+@register.filter()
 def que_res_string(val):
     """Modify survey result string for display
 
@@ -149,3 +175,5 @@ register.filter('campaign_status', campaign_status)
 register.filter('leg_type_name', leg_type_name)
 register.filter('que_res_string', que_res_string)
 register.filter('action_type_name', action_type_name)
+register.filter('section_type_name', section_type_name)
+

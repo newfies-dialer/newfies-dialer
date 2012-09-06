@@ -26,7 +26,12 @@
             </h3>
         {% endblock %}
     {% endif %}
-
+    <script type="text/javascript" charset="utf-8">
+        /*$('#id_type').change(function() {
+            $('#update_form').submit();
+        }
+        );*/
+    </script>
     {% if err_msg %}
         <script type="text/javascript" charset="utf-8">
 
@@ -263,9 +268,9 @@
 
             <div class="actions">
                 {% if action == 'update' %}
-                    <input id="update" name="submit" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
+                    <input id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
                 {% else %}
-                    <input id="add" name="submit" type="submit" class="btn btn-primary" value="{% trans "Submit" %}" />
+                    <input id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans "Submit" %}" />
                 {% endif %}
             </div>
 

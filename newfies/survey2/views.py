@@ -28,7 +28,8 @@ from dialer_campaign.models import Campaign
 from dialer_campaign.views import notice_count
 from survey2.models import Survey, Section, Result
 from survey2.forms import SurveyForm,\
-                          SectionForm,\
+                          VoiceSectionForm,\
+                          MultipleChoiceSectionForm,\
                           SurveyDetailReportForm
 from dialer_cdr.models import Callrequest, VoIPCall
 from utils.helper import grid_common_function, get_grid_update_delete_link
@@ -403,25 +404,6 @@ def survey_del(request, object_id):
 
 
 @login_required
-def section_list(request):
-    """Get survey question list from AJAX request"""
-    que_list = Section.objects\
-                    .filter(survey_id=request.GET['survey_id'],
-                            user=request.user).order_by('order')
-    result_string = ''
-    rec_count = 1
-    for i in que_list:
-        if len(que_list) == rec_count:
-            result_string += str(i.id) + '-|-' + str(i.question)
-        else:
-            result_string += str(i.id) + '-|-' + str(i.question) + '-|-'
-
-        rec_count += 1
-
-    return HttpResponse(result_string)
-
-
-@login_required
 def section_add(request):
     """Add new Survey for the logged in user
 
@@ -437,25 +419,50 @@ def section_add(request):
     """
     survey_id = request.GET.get('survey_id')
     survey = Survey.objects.get(pk=survey_id)
+    form = VoiceSectionForm(request.user, initial={'survey': survey})
 
-    form = SectionForm(request.user, initial={'survey': survey})
     request.session['err_msg'] = ''
     if request.method == 'POST':
-        if request.POST.get('submit'):
-            form = SectionForm(request.user, request.POST)
-            if form.is_valid():
-                obj = form.save(commit=False)
-                obj.user = User.objects.get(username=request.user)
-                obj.save()
-                request.session["msg"] = _('Section is added successfully.')
-                return HttpResponseRedirect('/survey2/%s/#row%s'\
-                    % (obj.survey_id, obj.id))
+
+        if request.POST.get('type') and int(request.POST.get('type')) == 1:
+            form = VoiceSectionForm(request.user)
+            if request.POST.get('submit'):
+                form = VoiceSectionForm(request.user, request.POST)
+                if form.is_valid():
+                    obj = form.save(commit=False)
+                    obj.user = User.objects.get(username=request.user)
+                    obj.save()
+                    request.session["msg"] = _('Voice Section is added successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'\
+                        % (obj.survey_id, obj.id))
+                else:
+                    request.session["err_msg"] = _('Voice Section is not added.')
+                    form = VoiceSectionForm(request.user, request.POST)
             else:
-                request.session["err_msg"] = _('Section is not added.')
-                #survey_id = request.POST['survey']
+                request.session["err_msg"] = _('Voice Section is not added.')
+                form = VoiceSectionForm(request.user, request.POST)
+
+        if request.POST.get('type') and int(request.POST.get('type')) == 2:
+            form = MultipleChoiceSectionForm(request.user)
+            if request.POST.get('submit'):
+                form = MultipleChoiceSectionForm(request.user, request.POST)
+                if form.is_valid():
+                    obj = form.save(commit=False)
+                    obj.user = User.objects.get(username=request.user)
+                    obj.save()
+                    request.session["msg"] = _('Multiple Choice Section is added successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'\
+                        % (obj.survey_id, obj.id))
+                else:
+                    request.session["err_msg"] = _('Multiple Choice Section is not added.')
+                    form = MultipleChoiceSectionForm(request.user, request.POST)
+            else:
+                request.session["err_msg"] = _('Multiple Choice Section is not added.')
+                form = MultipleChoiceSectionForm(request.user, request.POST)
+
         else:
             request.session["err_msg"] = _('Section is not added.')
-            form = SectionForm(request.user, request.POST)
+            form = VoiceSectionForm(request.user, request.POST)
 
 
     template = 'frontend/survey2/section_change.html'
@@ -555,7 +562,6 @@ def survey_change(request, object_id):
     data = {
         'survey_obj_id': object_id,
         'section_list': section_list,
-        'survey_response_list': [],
         'module': current_view(request),
         'action': 'update',
         'form': form,

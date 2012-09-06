@@ -64,24 +64,36 @@ class SurveyForm(ModelForm):
         self.fields['description'].widget.attrs['class'] = 'span4'
 
 
-class SectionForm(ModelForm):
-    """SurveyQuestion ModelForm"""
+class VoiceSectionForm(ModelForm):
+    """VoiceSectionForm ModelForm"""
 
     class Meta:
         model = Section
-        fields = ['type', 'phrasing', 'question', 'survey',
-                  'audiofile', 'key_0', 'key_1', 'key_2', 'key_3',
-                  'key_4', 'key_5', 'key_6', 'key_7', 'key_8',
-                  'key_9']
+        fields = ['type', 'survey', 'phrasing']
 
     def __init__(self, user, *args, **kwargs):
-        super(SectionForm, self).__init__(*args, **kwargs)
-        self.fields['question'].widget.attrs['class'] = 'span5'
+        super(VoiceSectionForm, self).__init__(*args, **kwargs)
+        self.fields['survey'].widget = forms.HiddenInput()
+        self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
         self.fields['phrasing'].widget = forms.Textarea()
         self.fields['phrasing'].widget.attrs['class'] = 'span5'
 
+
+class MultipleChoiceSectionForm(ModelForm):
+    """MultipleChoiceSectionForm ModelForm"""
+
+    class Meta:
+        model = Section
+        fields = ['type', 'survey', 'question',
+                  'key_0', 'key_1', 'key_2', 'key_3', 'key_4',
+                  'key_5', 'key_6', 'key_7', 'key_8', 'key_9',
+                  'audiofile']
+
+    def __init__(self, user, *args, **kwargs):
+        super(MultipleChoiceSectionForm, self).__init__(*args, **kwargs)
         self.fields['survey'].widget = forms.HiddenInput()
-        self.fields['type'].widget.attrs['onChange'] = 'this.form.submit();'
+        self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
+        self.fields['question'].widget.attrs['class'] = 'span5'
 
 
 class SurveyReportForm(forms.Form):

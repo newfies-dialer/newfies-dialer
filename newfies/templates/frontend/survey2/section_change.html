@@ -263,9 +263,9 @@
 
             <div class="actions">
                 {% if action == 'update' %}
-                    <input id="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
+                    <input id="update" name="submit" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
                 {% else %}
-                    <input id="add" type="submit" class="btn btn-primary" value="{% trans "Submit" %}" />
+                    <input id="add" name="submit" type="submit" class="btn btn-primary" value="{% trans "Submit" %}" />
                 {% endif %}
             </div>
 

@@ -77,6 +77,9 @@ class SectionForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(SectionForm, self).__init__(*args, **kwargs)
         self.fields['question'].widget.attrs['class'] = 'span5'
+        self.fields['phrasing'].widget = forms.Textarea()
+        self.fields['phrasing'].widget.attrs['class'] = 'span5'
+
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onChange'] = 'this.form.submit();'
 

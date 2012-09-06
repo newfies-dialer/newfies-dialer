@@ -441,19 +441,18 @@ def section_add(request):
     form = SectionForm(request.user, initial={'survey': survey})
     request.session['err_msg'] = ''
     if request.method == 'POST':
-        if 'submit' in request.POST:
+        if request.POST.get('submit'):
             form = SectionForm(request.user, request.POST)
             if form.is_valid():
                 obj = form.save(commit=False)
                 obj.user = User.objects.get(username=request.user)
                 obj.save()
-                request.session["msg"] = _('"%(question)s" is added.') %\
-                                         {'question': request.POST['question']}
+                request.session["msg"] = _('Section is added successfully.')
                 return HttpResponseRedirect('/survey2/%s/#row%s'\
-                    % (obj.surveyapp_id, obj.id))
+                    % (obj.survey_id, obj.id))
             else:
                 request.session["err_msg"] = _('Section is not added.')
-                #surveyapp_id = request.POST['surveyapp']
+                #survey_id = request.POST['survey']
         else:
             request.session["err_msg"] = _('Section is not added.')
             form = SectionForm(request.user, request.POST)
@@ -536,9 +535,7 @@ def survey_change(request, object_id):
           via SurveyForm & get redirected to survey list
     """
     survey = Survey.objects.get(pk=object_id)
-    survey_que_list = Section.objects\
-                        .filter(survey=survey).order_by('order')
-
+    section_list = Section.objects.filter(survey=survey).order_by('order')
     form = SurveyForm(instance=survey)
 
     if request.method == 'POST':
@@ -551,13 +548,13 @@ def survey_change(request, object_id):
                 form.save()
                 request.session["msg"] = _('"%(name)s" is updated.')\
                     % {'name': request.POST['name']}
-                return HttpResponseRedirect('/survey/')
+                return HttpResponseRedirect('/survey2/')
 
     template = 'frontend/survey2/survey_change.html'
 
     data = {
         'survey_obj_id': object_id,
-        'survey_que_list': [],
+        'section_list': section_list,
         'survey_response_list': [],
         'module': current_view(request),
         'action': 'update',

@@ -96,8 +96,9 @@ class Section(Sortable):
 
     # for voice section, record message, patch-through
     phrasing = models.CharField(max_length=1000,
-                verbose_name=_('Example : Enter a number between 1 to 5, '
-                    'press pound key when done'))
+        verbose_name=_('Example : Enter a number between 1 to 5, \
+        press pound key when done'))
+
     # audio file
     audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
                     verbose_name=_("Audio File"),

@@ -438,21 +438,26 @@ def section_add(request):
     survey_id = request.GET.get('survey_id')
     survey = Survey.objects.get(pk=survey_id)
 
-    form = SurveyQuestionForm(request.user, initial={'survey': survey})
+    form = SectionForm(request.user, initial={'survey': survey})
     request.session['err_msg'] = ''
     if request.method == 'POST':
-        form = SurveyQuestionForm(request.user, request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.user = User.objects.get(username=request.user)
-            obj.save()
-            request.session["msg"] = _('"%(question)s" is added.') %\
-                                     {'question': request.POST['question']}
-            return HttpResponseRedirect('/survey2/%s/#row%s'\
-                % (obj.surveyapp_id, obj.id))
+        if 'submit' in request.POST:
+            form = SectionForm(request.user, request.POST)
+            if form.is_valid():
+                obj = form.save(commit=False)
+                obj.user = User.objects.get(username=request.user)
+                obj.save()
+                request.session["msg"] = _('"%(question)s" is added.') %\
+                                         {'question': request.POST['question']}
+                return HttpResponseRedirect('/survey2/%s/#row%s'\
+                    % (obj.surveyapp_id, obj.id))
+            else:
+                request.session["err_msg"] = _('Section is not added.')
+                #surveyapp_id = request.POST['surveyapp']
         else:
-            request.session["err_msg"] = _('Question is not added.')
-            #surveyapp_id = request.POST['surveyapp']
+            request.session["err_msg"] = _('Section is not added.')
+            form = SectionForm(request.user, request.POST)
+
 
     template = 'frontend/survey2/section_change.html'
 

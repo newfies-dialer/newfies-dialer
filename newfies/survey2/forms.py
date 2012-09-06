@@ -69,13 +69,16 @@ class SectionForm(ModelForm):
 
     class Meta:
         model = Section
-        fields = ['question', 'survey']
-        # remove those fields for now 'data', 'gateway'
+        fields = ['type', 'phrasing', 'question', 'survey',
+                  'audiofile', 'key_0', 'key_1', 'key_2', 'key_3',
+                  'key_4', 'key_5', 'key_6', 'key_7', 'key_8',
+                  'key_9']
 
     def __init__(self, user, *args, **kwargs):
-        super(SurveyQuestionForm, self).__init__(*args, **kwargs)
+        super(SectionForm, self).__init__(*args, **kwargs)
         self.fields['question'].widget.attrs['class'] = 'span5'
         self.fields['survey'].widget = forms.HiddenInput()
+        self.fields['type'].widget.attrs['onChange'] = 'this.form.submit();'
 
 
 class SurveyReportForm(forms.Form):

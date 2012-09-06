@@ -100,8 +100,7 @@ class Section(Sortable):
                     'press pound key when done'))
     # audio file
     audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
-                    verbose_name=_("Audio File"),
-                    related_name='survey_audiofile')
+                    verbose_name=_("Audio File"))
     # use audio file
     use_audiofile = models.BooleanField(default=False,
                 verbose_name=_('Use audio file'),
@@ -153,6 +152,9 @@ class Section(Sortable):
     # enter a number
     validate_number = models.BooleanField(default=True,
                 verbose_name=_('Check for valid number'))
+    number_digits = models.IntegerField(max_length=2, null=True, blank=True,
+                verbose_name=_("Minimum"))
+
     min_number = models.IntegerField(max_length=1, null=True, blank=True,
                 verbose_name=_("Minimum"))
     max_number = models.IntegerField(max_length=1, null=True, blank=True,

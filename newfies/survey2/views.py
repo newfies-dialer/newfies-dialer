@@ -283,7 +283,7 @@ def survey_grid(request):
     sortorder_sign = grid_data['sortorder_sign']
     sortname = grid_data['sortname']
 
-    survey_list = SurveyApp.objects\
+    survey_list = Survey.objects\
         .values('id', 'name', 'description', 'updated_date')\
         .filter(user=request.user)
 
@@ -322,7 +322,7 @@ def survey_list(request):
 
         * List all surveys which belong to the logged in user.
     """
-    template = 'frontend/survey/survey_list.html'
+    template = 'frontend/survey2/survey_list.html'
     data = {
         'module': current_view(request),
         'msg': request.session.get('msg'),

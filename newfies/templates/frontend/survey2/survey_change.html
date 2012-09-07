@@ -12,31 +12,25 @@
          /* style for question box for jquery UI sort*/
         .column { width: 95%; float: left; padding-bottom: 0px; }
         .portlet { margin: 0 1em 1em 0; }
-        .portlet-header { margin: 0.3em; padding-bottom: 4px; padding-left: 0.2em; }
-        .portlet-header .ui-icon { float: right; }
+        .portlet-header { margin: 0.3em; padding-bottom: 10px; padding-left: 0.2em; }
+        .portlet-header .btn { float: right; padding: 5px 3px 1px 4px; margin: 0 0 0.5em 0.2em; }
         .portlet-content { padding: 0.4em; }
         .ui-sortable-placeholder { border: 1px dotted black; visibility: visible !important; height: 50px !important; }
         .ui-sortable-placeholder * { visibility: hidden; }
          /* change span width for response inputs */
         .span5 {width: 160px;}
-
-        /*.portlet div:hover {
-            cursor: url("{{ STATIC_URL }}newfies/icons/arrow-move.png") , pointer;
-        }*/
     </style>
 
     <script type="text/javascript">
 
         // To sort question
-        function section_sort(id, sort_order)
-        {
+        function section_sort(id, sort_order) {
             Dajaxice.survey2.section_sort(Dajax.process, {'id': id, 'sort_order': sort_order});
         }
 
         $(function() {
             $(".column").sortable({
                 update: function(event, ui) {
-
                     // survey question sorting logic
                     var result = $('.column').sortable('toArray');
                     j=1; // sort order
@@ -47,24 +41,31 @@
                 }
             });
 
+            //Add toggle button
             $(".portlet").addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
                     .find(".portlet-header")
                     .addClass("ui-widget-header ui-corner-all")
-                    .prepend("<span class='ui-icon ui-icon-minusthick'></span>")
+                    .prepend('<a class="btn btn-small" href="#"><i class="icon-circle-arrow-up"></i></a>')
                     .end()
                     .find(".portlet-content");
 
-            $(".portlet-header .ui-icon").click(function() {
-                $(this).toggleClass("ui-icon-minusthick").toggleClass("ui-icon-plusthick");
+            //Add move button
+            $(".portlet").addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
+                    .find(".portlet-header")
+                    .addClass("ui-widget-header ui-corner-all")
+                    .prepend('<a class="btn btn-small" href="#"><i class="icon-move"></i></a>')
+                    .end()
+                    .find(".portlet-content");
+
+            //Handle toggle click to show and hide section details
+            $(".portlet-header .btn-small .icon-circle-arrow-up").click(function() {
+                $(this).toggleClass("icon-circle-arrow-up").toggleClass("icon-circle-arrow-down");
                 $(this).parents(".portlet:first").find(".portlet-content").toggle();
             });
 
             //$(".column").disableSelection();
         });
-
     </script>
-
-
 {% endblock %}
 
 {% block content_header %}

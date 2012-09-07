@@ -157,9 +157,9 @@ class Section(Sortable):
                 verbose_name=_("Minimum"))
 
     min_number = models.IntegerField(max_length=1, null=True, blank=True,
-                verbose_name=_("Minimum"))
+                default=1, verbose_name=_("Minimum"))
     max_number = models.IntegerField(max_length=1, null=True, blank=True,
-                verbose_name=_("Maximum"))
+                default=100, verbose_name=_("Maximum"))
 
     # dial a phone number
     dial_phonenumber = models.CharField(max_length=50,

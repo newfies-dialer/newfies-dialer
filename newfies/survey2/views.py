@@ -31,6 +31,7 @@ from survey2.forms import SurveyForm,\
                           VoiceSectionForm,\
                           MultipleChoiceSectionForm,\
                           RatingSectionForm,\
+                          EnterNumberSectionForm,\
                           SurveyDetailReportForm
 from dialer_cdr.models import Callrequest, VoIPCall
 from utils.helper import grid_common_function, get_grid_update_delete_link
@@ -498,6 +499,30 @@ def section_add(request):
                                          initial={'survey': survey,
                                                   'type': '3'})
 
+        # Enter Number Section
+        if request.POST.get('type') and str(request.POST.get('type')) == '4':
+            form = EnterNumberSectionForm(request.user)
+            if request.POST.get('add'):
+                form = EnterNumberSectionForm(request.user, request.POST)
+                if form.is_valid():
+                    obj = form.save(commit=False)
+                    obj.user = User.objects.get(username=request.user)
+                    obj.save()
+                    request.session["msg"] =\
+                        _('Enter Number Section is added successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'\
+                        % (obj.survey_id, obj.id))
+                else:
+                    request.session["err_msg"] =\
+                        _('Enter Number Section is not added.')
+                    form = EnterNumberSectionForm(request.user, request.POST)
+
+            if request.POST.get('add') is None:
+                request.session["err_msg"] =\
+                    _('Enter Number Section is not added.')
+                form = EnterNumberSectionForm(request.user,
+                                              initial={'survey': survey,
+                                                       'type': '4'})
     template = 'frontend/survey2/section_change.html'
 
     data = {
@@ -531,6 +556,8 @@ def section_change(request, id):
         form = MultipleChoiceSectionForm(request.user, instance=section)
     if section.type == 3:
         form = RatingSectionForm(request.user, instance=section)
+    if section.type == 4:
+        form = EnterNumberSectionForm(request.user, instance=section)
 
     request.session['err_msg'] = ''
     if request.GET.get('delete'):
@@ -615,6 +642,32 @@ def section_change(request, id):
                 form = RatingSectionForm(request.user,
                                          instance=section,
                                          initial={'type': '3'})
+
+        # Enter Number Section
+        if request.POST.get('type') and str(request.POST.get('type')) == '4':
+            form = EnterNumberSectionForm(request.user, instance=section)
+            if request.POST.get('update'):
+                form = EnterNumberSectionForm(request.user,
+                                              request.POST,
+                                              instance=section)
+                if form.is_valid():
+                    obj = form.save()
+                    request.session["msg"] =\
+                        _('Enter Number Section is updated successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'\
+                        % (obj.survey_id, obj.id))
+                else:
+                    request.session["err_msg"] =\
+                        _('Enter Number Section is not updated.')
+                    form = EnterNumberSectionForm(request.user,
+                                                  request.POST,
+                                                  instance=section)
+            if request.POST.get('update') is None:
+                request.session["err_msg"] =\
+                    _('Enter Number Section is not updated.')
+                form = EnterNumberSectionForm(request.user,
+                                              instance=section,
+                                              initial={'type': '4'})
 
     template = 'frontend/survey2/section_change.html'
     data = {

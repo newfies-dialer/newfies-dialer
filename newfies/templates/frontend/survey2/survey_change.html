@@ -187,6 +187,18 @@
                                                 </div>
                                             </div>
                                         {% endif %}
+
+                                        {% if section.type == 4 %}
+                                            <div class="row">
+                                                <div class="span8">
+                                                    {{ section.question }}<br/>
+                                                    {% if section.validate_number %}
+                                                        {% trans "Minimum" %} : {{ section.min_number }} <br/>
+                                                        {% trans "Maximum" %} : {{ section.max_number }}
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        {% endif %}
                                         </div>
                                         <!--<div class="span2"><b>{% trans "Audio message" %}</b><br/>{{ que.audio_message.name }}</div>
                                         <div class="span2"><b>{% trans "Action type" %}</b><br/>{{ que.type|action_type_name }}</div>

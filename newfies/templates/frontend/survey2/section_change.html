@@ -245,6 +245,55 @@
 
             {% endif %}
 
+
+            {% if form.type.value|slugify == '4' %}
+
+                <div class="row">
+                    <div class="span5 clearfix{% if form.question.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ form.question.name }}">{{ form.question.label }}</label>
+                        <div class="input">
+                            {{ form.question }}
+                            {% if form.question.errors %}
+                                <span class="help-inline">{{ form.question.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.question.help_text|safe }} </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="span2 clearfix{% if form.validate_number.errors %} control-group error{% endif %}">
+                        <div class="input">
+                            {{ form.validate_number.label }} : {{ form.validate_number }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="span2 clearfix{% if form.min_number.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ form.min_number.name }}">{{ form.min_number.label }}</label>
+                        <div class="input">
+                            {{ form.min_number }}
+                            {% if form.min_number.errors %}
+                                <span class="help-inline">{{ form.min_number.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.min_number.help_text|safe }} </span>
+                        </div>
+                    </div>
+                    <div class="span2 clearfix{% if form.max_number.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ form.max_number.name }}">{{ form.max_number.label }}</label>
+                        <div class="input">
+                            {{ form.max_number }}
+                            {% if form.max_number.errors %}
+                                <span class="help-inline">{{ form.max_number.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.max_number.help_text|safe }} </span>
+                        </div>
+                    </div>
+                </div>
+
+            {% endif %}
+
             <div class="actions">
                 {% if action == 'update' %}
                     <input id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />

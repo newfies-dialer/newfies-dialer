@@ -94,6 +94,42 @@ class MultipleChoiceSectionForm(ModelForm):
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
         self.fields['question'].widget.attrs['class'] = 'span5'
+        for i in range(0, 10):
+            self.fields['key_' + str(i)].widget.attrs['class'] = 'span1'
+
+
+class RatingSectionForm(ModelForm):
+    """RatingSectionForm ModelForm"""
+
+    class Meta:
+        model = Section
+        fields = ['type', 'survey', 'question', 'rating_laps']
+
+    def __init__(self, user, *args, **kwargs):
+        super(RatingSectionForm, self).__init__(*args, **kwargs)
+        self.fields['survey'].widget = forms.HiddenInput()
+        self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
+        self.fields['question'].widget = forms.Textarea()
+        self.fields['question'].widget.attrs['class'] = 'span5'
+
+
+class EnterNumberSectionForm(ModelForm):
+    """EnterNumberSectionForm ModelForm"""
+
+    class Meta:
+        model = Section
+        fields = ['type', 'survey', 'question', 'validate_number',
+                  'min_number', 'max_number']
+
+    def __init__(self, user, *args, **kwargs):
+        super(EnterNumberSectionForm, self).__init__(*args, **kwargs)
+        self.fields['survey'].widget = forms.HiddenInput()
+        self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
+        self.fields['question'].widget = forms.Textarea()
+        self.fields['question'].widget.attrs['class'] = 'span5'
+        self.fields['min_number'].widget.attrs['validate_number'] = 'span2'
+        self.fields['min_number'].widget.attrs['class'] = 'span1'
+        self.fields['max_number'].widget.attrs['class'] = 'span1'
 
 
 class SurveyReportForm(forms.Form):

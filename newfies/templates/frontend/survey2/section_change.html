@@ -26,12 +26,7 @@
             </h3>
         {% endblock %}
     {% endif %}
-    <script type="text/javascript" charset="utf-8">
-        /*$('#id_type').change(function() {
-            $('#update_form').submit();
-        }
-        );*/
-    </script>
+
     {% if err_msg %}
         <script type="text/javascript" charset="utf-8">
 
@@ -82,7 +77,7 @@
                 </div>
             </div>
 
-            {% if form.type.value == '1' %}
+            {% if form.type.value|slugify == '1' %}
             <div class="row">
                 <div class="span5 clearfix{% if form.phrasing.errors %} control-group error{% endif %}">
                     <label class="control-label" for="id_{{ form.phrasing.name }}">{{ form.phrasing.label }}</label>
@@ -97,7 +92,7 @@
             </div>
             {% endif %}
 
-            {% if form.type.value == '2' %}
+            {% if form.type.value|slugify == '2' %}
             <div class="row">
                 <div class="span5 clearfix{% if form.question.errors %} control-group error{% endif %}">
                     <label class="control-label" for="id_{{ form.question.name }}">{{ form.question.label }}</label>
@@ -112,158 +107,191 @@
             </div>
 
             <div class="row">
-                <div class="span4 clearfix{% if form.key_0.errors %} control-group error{% endif %}">
-                    <label class="control-label" for="id_{{ form.key_0.name }}">{{ form.key_0.label }}</label>
-                    <div class="input">
-                        {{ form.key_0 }}
-                        {% if form.key_0.errors %}
-                            <span class="help-inline">{{ form.key_0.errors|removetags:"ul li"|safe }}</span>
-                        {% endif %}
-                        <span class="help-block">{{ form.key_0.help_text|safe }} </span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="span4 clearfix{% if form.key_1.errors %} control-group error{% endif %}">
-                    <label class="control-label" for="id_{{ form.key_1.name }}">{{ form.key_1.label }}</label>
-                    <div class="input">
-                        {{ form.key_1 }}
-                        {% if form.key_1.errors %}
-                            <span class="help-inline">{{ form.key_1.errors|removetags:"ul li"|safe }}</span>
-                        {% endif %}
-                        <span class="help-block">{{ form.key_1.help_text|safe }} </span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="span4 clearfix{% if form.key_2.errors %} control-group error{% endif %}">
-                    <label class="control-label" for="id_{{ form.key_2.name }}">{{ form.key_2.label }}</label>
-                    <div class="input">
-                        {{ form.key_2 }}
-                        {% if form.key_2.errors %}
-                            <span class="help-inline">{{ form.key_2.errors|removetags:"ul li"|safe }}</span>
-                        {% endif %}
-                        <span class="help-block">{{ form.key_2.help_text|safe }} </span>
+                <div class="span6">
+                    <div class="row">
+                        <div class="span2 clearfix{% if form.key_0.errors %} control-group error{% endif %}">
+                            <div class="input">
+                                {{ form.key_0.label }}&nbsp;{{ form.key_0 }}
+                                {% if form.key_0.errors %}
+                                    <span class="help-inline">{{ form.key_0.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="span2 clearfix{% if form.key_1.errors %} control-group error{% endif %}">
+                            <div class="input">
+                                {{ form.key_1.label }}&nbsp;{{ form.key_1 }}
+                                {% if form.key_1.errors %}
+                                    <span class="help-inline">{{ form.key_1.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="span2 clearfix{% if form.key_2.errors %} control-group error{% endif %}">
+                            <div class="input">
+                                {{ form.key_2.label }}&nbsp;{{ form.key_2 }}
+                                {% if form.key_2.errors %}
+                                    <span class="help-inline">{{ form.key_2.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="row">
-                <div class="span4 clearfix{% if form.key_3.errors %} control-group error{% endif %}">
-                    <label class="control-label" for="id_{{ form.key_3.name }}">{{ form.key_3.label }}</label>
-                    <div class="input">
-                        {{ form.key_3 }}
-                        {% if form.key_3.errors %}
-                            <span class="help-inline">{{ form.key_3.errors|removetags:"ul li"|safe }}</span>
-                        {% endif %}
-                        <span class="help-block">{{ form.key_3.help_text|safe }} </span>
+                <div class="span6">
+                    <div class="row">
+                        <div class="span2 clearfix{% if form.key_3.errors %} control-group error{% endif %}">
+                            <div class="input">
+                                {{ form.key_3.label }}&nbsp;{{ form.key_3 }}
+                                {% if form.key_3.errors %}
+                                    <span class="help-inline">{{ form.key_3.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="span2 clearfix{% if form.key_4.errors %} control-group error{% endif %}">
+                            <div class="input">
+                                {{ form.key_4.label }}&nbsp;{{ form.key_4 }}
+                                {% if form.key_4.errors %}
+                                    <span class="help-inline">{{ form.key_4.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="span2 clearfix{% if form.key_5.errors %} control-group error{% endif %}">
+                            <div class="input">
+                                {{ form.key_5.label }}&nbsp;{{ form.key_5 }}
+                                {% if form.key_5.errors %}
+                                    <span class="help-inline">{{ form.key_5.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
 
             <div class="row">
-                <div class="span4 clearfix{% if form.key_4.errors %} control-group error{% endif %}">
-                    <label class="control-label" for="id_{{ form.key_4.name }}">{{ form.key_4.label }}</label>
-                    <div class="input">
-                        {{ form.key_4 }}
-                        {% if form.key_4.errors %}
-                            <span class="help-inline">{{ form.key_4.errors|removetags:"ul li"|safe }}</span>
-                        {% endif %}
-                        <span class="help-block">{{ form.key_4.help_text|safe }} </span>
+                <div class="span6">
+                    <div class="row">
+                        <div class="span2 clearfix{% if form.key_6.errors %} control-group error{% endif %}">
+                            <div class="input">
+                                {{ form.key_6.label }}&nbsp;{{ form.key_6 }}
+                                {% if form.key_6.errors %}
+                                    <span class="help-inline">{{ form.key_6.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="span2 clearfix{% if form.key_7.errors %} control-group error{% endif %}">
+                            <div class="input">
+                                {{ form.key_7.label }}&nbsp;{{ form.key_7 }}
+                                {% if form.key_7.errors %}
+                                    <span class="help-inline">{{ form.key_7.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="span2 clearfix{% if form.key_8.errors %} control-group error{% endif %}">
+                            <div class="input">
+                                {{ form.key_8.label }}&nbsp;{{ form.key_8 }}
+                                {% if form.key_8.errors %}
+                                    <span class="help-inline">{{ form.key_8.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="row">
-                <div class="span4 clearfix{% if form.key_5.errors %} control-group error{% endif %}">
-                    <label class="control-label" for="id_{{ form.key_5.name }}">{{ form.key_5.label }}</label>
+                <div class="span2 clearfix{% if form.key_9.errors %} control-group error{% endif %}">
                     <div class="input">
-                        {{ form.key_5 }}
-                        {% if form.key_5.errors %}
-                            <span class="help-inline">{{ form.key_5.errors|removetags:"ul li"|safe }}</span>
-                        {% endif %}
-                        <span class="help-block">{{ form.key_5.help_text|safe }} </span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="span4 clearfix{% if form.key_6.errors %} control-group error{% endif %}">
-                    <label class="control-label" for="id_{{ form.key_6.name }}">{{ form.key_6.label }}</label>
-                    <div class="input">
-                        {{ form.key_6 }}
-                        {% if form.key_6.errors %}
-                            <span class="help-inline">{{ form.key_6.errors|removetags:"ul li"|safe }}</span>
-                        {% endif %}
-                        <span class="help-block">{{ form.key_6.help_text|safe }} </span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="span4 clearfix{% if form.key_7.errors %} control-group error{% endif %}">
-                    <label class="control-label" for="id_{{ form.key_7.name }}">{{ form.key_7.label }}</label>
-                    <div class="input">
-                        {{ form.key_7 }}
-                        {% if form.key_7.errors %}
-                            <span class="help-inline">{{ form.key_7.errors|removetags:"ul li"|safe }}</span>
-                        {% endif %}
-                        <span class="help-block">{{ form.key_7.help_text|safe }} </span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="span4 clearfix{% if form.key_8.errors %} control-group error{% endif %}">
-                    <label class="control-label" for="id_{{ form.key_8.name }}">{{ form.key_8.label }}</label>
-                    <div class="input">
-                        {{ form.key_8 }}
-                        {% if form.key_8.errors %}
-                            <span class="help-inline">{{ form.key_8.errors|removetags:"ul li"|safe }}</span>
-                        {% endif %}
-                        <span class="help-block">{{ form.key_8.help_text|safe }} </span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="span4 clearfix{% if form.key_9.errors %} control-group error{% endif %}">
-                    <label class="control-label" for="id_{{ form.key_9.name }}">{{ form.key_9.label }}</label>
-                    <div class="input">
-                        {{ form.key_9 }}
+                        {{ form.key_9.label }}&nbsp;{{ form.key_9 }}
                         {% if form.key_4.errors %}
                             <span class="help-inline">{{ form.key_9.errors|removetags:"ul li"|safe }}</span>
                         {% endif %}
-                        <span class="help-block">{{ form.key_9.help_text|safe }} </span>
                     </div>
                 </div>
             </div>
 
             {% endif %}
 
-            {% if form.type.value == '3' %}
-            <div class="row">
-                <div class="span2 clearfix{% if form.audio_message.errors %} control-group error{% endif %}">
-                    <label class="control-label" for="id_{{ form.audio_message.name }}">{{ form.audio_message.label }}</label>
-                    <div class="input">
-                        {{ form.audio_message }}
-                        {% if form.audio_message.errors %}
-                            <span class="help-inline">{{ form.audio_message.errors|removetags:"ul li"|safe }}</span>
-                        {% endif %}
-                        <span class="help-block">{{ form.audio_message.help_text|safe }} </span>
-                    </div>
-                </div>
-                <div class="span2 clearfix control-group error">
-                    <label class="control-label" for=""></label>
-                    <div class="input">
+            {% if form.type.value|slugify == '3' %}
 
-                        {% if form.type.errors %}
-                            <span class="help-inline"></span>
+            <div class="row">
+                <div class="span5 clearfix{% if form.question.errors %} control-group error{% endif %}">
+                    <label class="control-label" for="id_{{ form.question.name }}">{{ form.question.label }}</label>
+                    <div class="input">
+                        {{ form.question }}
+                        {% if form.question.errors %}
+                            <span class="help-inline">{{ form.question.errors|removetags:"ul li"|safe }}</span>
                         {% endif %}
-                        <span class="help-block"></span>
+                        <span class="help-block">{{ form.question.help_text|safe }} </span>
                     </div>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="span2 clearfix{% if form.rating_laps.errors %} control-group error{% endif %}">
+                    <label class="control-label" for="id_{{ form.rating_laps.name }}">{{ form.rating_laps.label }}</label>
+                    <div class="input">
+                        {{ form.rating_laps }}
+                        {% if form.rating_laps.errors %}
+                            <span class="help-inline">{{ form.rating_laps.errors|removetags:"ul li"|safe }}</span>
+                        {% endif %}
+                        <span class="help-block">{{ form.rating_laps.help_text|safe }} </span>
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+
+
+            {% if form.type.value|slugify == '4' %}
+
+                <div class="row">
+                    <div class="span5 clearfix{% if form.question.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ form.question.name }}">{{ form.question.label }}</label>
+                        <div class="input">
+                            {{ form.question }}
+                            {% if form.question.errors %}
+                                <span class="help-inline">{{ form.question.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.question.help_text|safe }} </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="span2 clearfix{% if form.validate_number.errors %} control-group error{% endif %}">
+                        <div class="input">
+                            {{ form.validate_number.label }} : {{ form.validate_number }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="span2 clearfix{% if form.min_number.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ form.min_number.name }}">{{ form.min_number.label }}</label>
+                        <div class="input">
+                            {{ form.min_number }}
+                            {% if form.min_number.errors %}
+                                <span class="help-inline">{{ form.min_number.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.min_number.help_text|safe }} </span>
+                        </div>
+                    </div>
+                    <div class="span2 clearfix{% if form.max_number.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ form.max_number.name }}">{{ form.max_number.label }}</label>
+                        <div class="input">
+                            {{ form.max_number }}
+                            {% if form.max_number.errors %}
+                                <span class="help-inline">{{ form.max_number.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.max_number.help_text|safe }} </span>
+                        </div>
+                    </div>
+                </div>
+
             {% endif %}
 
             <div class="actions">

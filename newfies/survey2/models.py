@@ -109,7 +109,8 @@ class Section(Sortable):
 
     # audio File
     invalid_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
-                    verbose_name=_("Invalid Audio File digits"))
+                    verbose_name=_("Invalid Audio File digits"),
+                    related_name='survey_invalid_audiofile')
 
     retries = models.IntegerField(max_length=1, null=True, blank=True,
                 verbose_name=_("retries"),
@@ -121,8 +122,7 @@ class Section(Sortable):
 
     # multiple choice question, rating question, enter a number
     question = models.CharField(max_length=500,     
-                verbose_name=_("Question"),
-                help_text=_('Enter your question'))
+                verbose_name=_("Question"))
 
     # multiple choice question,
     key_0 = models.IntegerField(max_length=1, null=True, blank=True,
@@ -157,9 +157,9 @@ class Section(Sortable):
                 verbose_name=_("Minimum"))
 
     min_number = models.IntegerField(max_length=1, null=True, blank=True,
-                verbose_name=_("Minimum"))
+                default=1, verbose_name=_("Minimum"))
     max_number = models.IntegerField(max_length=1, null=True, blank=True,
-                verbose_name=_("Maximum"))
+                default=100, verbose_name=_("Maximum"))
 
     # dial a phone number
     dial_phonenumber = models.CharField(max_length=50,
@@ -178,7 +178,7 @@ class Section(Sortable):
     sortable_by = Survey
 
     def __unicode__(self):
-        return self.question
+        return '[%s] %s' % (self.id, self.question)
 
 
 class Result(models.Model):

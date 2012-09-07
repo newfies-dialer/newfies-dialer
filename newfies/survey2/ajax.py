@@ -23,7 +23,7 @@ from survey2.models import Section
 
 @login_required
 @dajaxice_register
-def survey_question_sort(request, id, sort_order):
+def section_sort(request, id, sort_order):
     dajax = Dajax()
 
     try:

@@ -28,9 +28,9 @@
     <script type="text/javascript">
 
         // To sort question
-        function question_sort_order(id, sort_order)
+        function section_sort(id, sort_order)
         {
-            Dajaxice.survey.survey_question_sort(Dajax.process, {'id': id, 'sort_order': sort_order});
+            Dajaxice.survey2.section_sort(Dajax.process, {'id': id, 'sort_order': sort_order});
         }
 
         $(function() {
@@ -41,7 +41,7 @@
                     var result = $('.column').sortable('toArray');
                     j=1; // sort order
                     for(i=0; i < (result.length); i++) {
-                        question_sort_order(result[i].split('row')[1], j);
+                        section_sort(result[i].split('row')[1], j);
                         j++;
                     }
                 }

@@ -524,9 +524,8 @@ def section_change(request, id):
             if request.POST.get('update') is None:
                 request.session["err_msg"] = _('Voice Section is not updated.')
                 form = VoiceSectionForm(request.user,
-                                        request.POST,
-                                        initial={'survey': section.survey,
-                                                 'type': '1'})
+                                        instance=section,
+                                        initial={'type': '1'})
 
         if request.POST.get('type') and str(request.POST.get('type')) == '2':
             form = MultipleChoiceSectionForm(request.user, instance=section)
@@ -550,9 +549,8 @@ def section_change(request, id):
                 request.session["err_msg"] = \
                     _('Multiple Choice Section is not updated.')
                 form = MultipleChoiceSectionForm(request.user,
-                                                 request.POST,
-                                                 initial={'survey': section.survey,
-                                                          'type': '2'})
+                                                 instance=section,
+                                                 initial={'type': '2'})
 
     template = 'frontend/survey2/section_change.html'
     data = {

@@ -94,6 +94,8 @@ class MultipleChoiceSectionForm(ModelForm):
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
         self.fields['question'].widget.attrs['class'] = 'span5'
+        for i in range(0, 10):
+            self.fields['key_' + str(i)].widget.attrs['class'] = 'span1'
 
 
 class SurveyReportForm(forms.Form):

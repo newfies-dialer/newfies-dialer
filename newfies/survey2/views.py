@@ -489,19 +489,23 @@ def section_change(request, id):
 
         *
     """
-    survey_que = Section.objects.get(pk=int(id))
-    form = SurveyQuestionForm(request.user, instance=survey_que)
+    section = Section.objects.get(pk=int(id))
+    if section.type == 1:
+        form = VoiceSectionForm(request.user, instance=section)
+    if section.type == 2:
+        form = MultipleChoiceSectionForm(request.user, instance=section)
+
     request.session['err_msg'] = ''
     if request.GET.get('delete'):
         # perform delete
-        surveyapp_id = survey_que.surveyapp_id
-        survey_que.delete()
-        return HttpResponseRedirect('/survey2/%s/' % (surveyapp_id))
+        survey_id = section.survey_id
+        section.delete()
+        return HttpResponseRedirect('/survey2/%s/' % (survey_id))
 
     if request.method == 'POST':
-        form = SurveyQuestionForm(request.user,
-                                  request.POST,
-                                  instance=survey_que)
+        form = VoiceSectionForm(request.user,
+                                request.POST,
+                                instance=section)
         if form.is_valid():
             obj = form.save()
             return HttpResponseRedirect('/survey2/%s/#row%s'\

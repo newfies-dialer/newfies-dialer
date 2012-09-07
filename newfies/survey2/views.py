@@ -30,6 +30,7 @@ from survey2.models import Survey, Section, Result
 from survey2.forms import SurveyForm,\
                           VoiceSectionForm,\
                           MultipleChoiceSectionForm,\
+                          RatingSectionForm,\
                           SurveyDetailReportForm
 from dialer_cdr.models import Callrequest, VoIPCall
 from utils.helper import grid_common_function, get_grid_update_delete_link
@@ -423,6 +424,7 @@ def section_add(request):
 
     request.session['err_msg'] = ''
     if request.method == 'POST':
+        # Voice Section
         if request.POST.get('type') and str(request.POST.get('type')) == '1':
             form = VoiceSectionForm(request.user)
             if request.POST.get('add'):
@@ -431,18 +433,23 @@ def section_add(request):
                     obj = form.save(commit=False)
                     obj.user = User.objects.get(username=request.user)
                     obj.save()
-                    request.session["msg"] = _('Voice Section is added successfully.')
+                    request.session["msg"] = \
+                        _('Voice Section is added successfully.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'\
                         % (obj.survey_id, obj.id))
                 else:
-                    request.session["err_msg"] = _('Voice Section is not added.')
+                    request.session["err_msg"] = \
+                        _('Voice Section is not added.')
                     form = VoiceSectionForm(request.user, request.POST)
+
             if request.POST.get('add') is None:
-                request.session["err_msg"] = _('Voice Section is not added.')
+                request.session["err_msg"] = \
+                    _('Voice Section is not added.')
                 form = VoiceSectionForm(request.user,
                                         initial={'survey': survey,
                                                  'type': '1'})
 
+        # Multiple Choice Section
         if request.POST.get('type') and str(request.POST.get('type')) == '2':
             form = MultipleChoiceSectionForm(request.user)
             if request.POST.get('add'):
@@ -451,17 +458,45 @@ def section_add(request):
                     obj = form.save(commit=False)
                     obj.user = User.objects.get(username=request.user)
                     obj.save()
-                    request.session["msg"] = _('Multiple Choice Section is added successfully.')
+                    request.session["msg"] = \
+                        _('Multiple Choice Section is added successfully.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'\
                         % (obj.survey_id, obj.id))
                 else:
-                    request.session["err_msg"] = _('Multiple Choice Section is not added.')
+                    request.session["err_msg"] = \
+                        _('Multiple Choice Section is not added.')
                     form = MultipleChoiceSectionForm(request.user, request.POST)
+
             if request.POST.get('add') is None:
                 request.session["err_msg"] = _('Multiple Choice Section is not added.')
                 form = MultipleChoiceSectionForm(request.user,
                                                  initial={'survey': survey,
                                                           'type': '2'})
+
+        # Rating Section
+        if request.POST.get('type') and str(request.POST.get('type')) == '3':
+            form = RatingSectionForm(request.user)
+            if request.POST.get('add'):
+                form = RatingSectionForm(request.user, request.POST)
+                if form.is_valid():
+                    obj = form.save(commit=False)
+                    obj.user = User.objects.get(username=request.user)
+                    obj.save()
+                    request.session["msg"] = \
+                        _('Rating Section is added successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'\
+                        % (obj.survey_id, obj.id))
+                else:
+                    request.session["err_msg"] = \
+                        _('Rating Section is not added.')
+                    form = RatingSectionForm(request.user, request.POST)
+
+            if request.POST.get('add') is None:
+                request.session["err_msg"] = \
+                    _('Rating Section is not added.')
+                form = RatingSectionForm(request.user,
+                                         initial={'survey': survey,
+                                                  'type': '3'})
 
     template = 'frontend/survey2/section_change.html'
 
@@ -494,6 +529,8 @@ def section_change(request, id):
         form = VoiceSectionForm(request.user, instance=section)
     if section.type == 2:
         form = MultipleChoiceSectionForm(request.user, instance=section)
+    if section.type == 3:
+        form = RatingSectionForm(request.user, instance=section)
 
     request.session['err_msg'] = ''
     if request.GET.get('delete'):
@@ -503,7 +540,7 @@ def section_change(request, id):
         return HttpResponseRedirect('/survey2/%s/' % (survey_id))
 
     if request.method == 'POST':
-
+        # Voice Section
         if request.POST.get('type') and str(request.POST.get('type')) == '1':
             form = VoiceSectionForm(request.user, instance=section)
             if request.POST.get('update'):
@@ -527,6 +564,7 @@ def section_change(request, id):
                                         instance=section,
                                         initial={'type': '1'})
 
+        # Multiple Choice Section
         if request.POST.get('type') and str(request.POST.get('type')) == '2':
             form = MultipleChoiceSectionForm(request.user, instance=section)
             if request.POST.get('update'):
@@ -551,6 +589,32 @@ def section_change(request, id):
                 form = MultipleChoiceSectionForm(request.user,
                                                  instance=section,
                                                  initial={'type': '2'})
+
+        # Rating Section
+        if request.POST.get('type') and str(request.POST.get('type')) == '3':
+            form = RatingSectionForm(request.user, instance=section)
+            if request.POST.get('update'):
+                form = RatingSectionForm(request.user,
+                                         request.POST,
+                                         instance=section)
+                if form.is_valid():
+                    obj = form.save()
+                    request.session["msg"] =\
+                        _('Rating Section is updated successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'\
+                        % (obj.survey_id, obj.id))
+                else:
+                    request.session["err_msg"] =\
+                        _('Rating Section is not updated.')
+                    form = RatingSectionForm(request.user,
+                                             request.POST,
+                                             instance=section)
+            if request.POST.get('update') is None:
+                request.session["err_msg"] =\
+                    _('Rating Section is not updated.')
+                form = RatingSectionForm(request.user,
+                                         instance=section,
+                                         initial={'type': '3'})
 
     template = 'frontend/survey2/section_change.html'
     data = {

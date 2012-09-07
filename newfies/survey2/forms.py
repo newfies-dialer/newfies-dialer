@@ -98,6 +98,21 @@ class MultipleChoiceSectionForm(ModelForm):
             self.fields['key_' + str(i)].widget.attrs['class'] = 'span1'
 
 
+class RatingSectionForm(ModelForm):
+    """RatingSectionForm ModelForm"""
+
+    class Meta:
+        model = Section
+        fields = ['type', 'survey', 'question', 'rating_laps']
+
+    def __init__(self, user, *args, **kwargs):
+        super(RatingSectionForm, self).__init__(*args, **kwargs)
+        self.fields['survey'].widget = forms.HiddenInput()
+        self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
+        self.fields['question'].widget = forms.Textarea()
+        self.fields['question'].widget.attrs['class'] = 'span5'
+
+
 class SurveyReportForm(forms.Form):
     """Survey Report Form"""
     campaign = forms.ChoiceField(label=_('Campaign'), required=False)

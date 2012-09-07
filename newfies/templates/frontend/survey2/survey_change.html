@@ -147,6 +147,11 @@
                                         {% if section.type == 2 %}
                                             <div class="row">
                                                 <div class="span8">
+                                                    {{ section.question }}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="span8">
                                                     <div class="row">
                                                         <div class="span4">
                                                             {% trans "Result if the user press" %} 0 : {{ section.key_0 }}
@@ -171,6 +176,14 @@
                                                             {% trans "Result if the user press" %} 9 : {{ section.key_9 }}
                                                         </div>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+
+                                        {% if section.type == 3 %}
+                                            <div class="row">
+                                                <div class="span8">
+                                                    {{ section.question }} - {% trans "From 1 to" %} {{ section.rating_laps }}
                                                 </div>
                                             </div>
                                         {% endif %}

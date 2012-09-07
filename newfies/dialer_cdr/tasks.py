@@ -150,8 +150,8 @@ def init_callrequest(callrequest_id, campaign_id):
     if settings.NEWFIES_DIALER_ENGINE.lower() == 'dummy':
         #Use Dummy TestCall
         res = dummy_testcall.delay(callerid=obj_callrequest.callerid,
-                                   phone_number=dialout_phone_number,
-                                   gateway=gateways)
+                                    phone_number=dialout_phone_number,
+                                    gateway=gateways)
         result = res.get()
         logger.info(result)
         logger.error('Received RequestUUID :> ' + str(result['RequestUUID']))

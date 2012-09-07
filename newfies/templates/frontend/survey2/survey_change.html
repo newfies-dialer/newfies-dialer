@@ -181,7 +181,7 @@
                                         <div class="span3"><b>{% trans "Gateway" %}</b><br/>{% if que.gateway %}{{ que.gateway }}{% else %} {% trans "None" %} {% endif %}</div>
                                         -->
                                         <div class="span3">
-                                            <button data-toggle="modal" href="#section-update-edit" class="sextion-edit btn btn-info" url='/section/{{ section.id }}/' data-controls-modal='section-update-content-edit'>
+                                            <button data-toggle="modal" href="#section-update-edit" class="section-edit btn btn-info" url='/section/{{ section.id }}/' data-controls-modal='section-update-content-edit'>
                                                 {% trans "Edit" %}
                                             </button>
                                             <input value="{% trans "Delete" %}" onclick="document.location.href='/section/{{ section.id }}/?delete=true';" class="btn btn-danger" type="button" />

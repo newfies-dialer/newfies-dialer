@@ -178,7 +178,7 @@ class Section(Sortable):
     sortable_by = Survey
 
     def __unicode__(self):
-        return self.question
+        return '[%s] %s' % (self.id, self.question)
 
 
 class Result(models.Model):

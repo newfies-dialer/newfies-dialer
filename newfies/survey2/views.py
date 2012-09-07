@@ -503,21 +503,62 @@ def section_change(request, id):
         return HttpResponseRedirect('/survey2/%s/' % (survey_id))
 
     if request.method == 'POST':
-        form = VoiceSectionForm(request.user,
-                                request.POST,
-                                instance=section)
-        if form.is_valid():
-            obj = form.save()
-            return HttpResponseRedirect('/survey2/%s/#row%s'\
-                                        % (obj.survey_id, obj.id))
-        else:
-            request.session["err_msg"] = _('Question is not added.')
+
+        if request.POST.get('type') and str(request.POST.get('type')) == '1':
+            form = VoiceSectionForm(request.user, instance=section)
+            if request.POST.get('update'):
+                form = VoiceSectionForm(request.user,
+                                        request.POST,
+                                        instance=section)
+                if form.is_valid():
+                    obj = form.save()
+                    request.session["msg"] = \
+                        _('Voice Section is updated successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'\
+                        % (obj.survey_id, obj.id))
+                else:
+                    request.session["err_msg"] = _('Voice Section is not updated.')
+                    form = VoiceSectionForm(request.user,
+                                            request.POST,
+                                            instance=section)
+            if request.POST.get('update') is None:
+                request.session["err_msg"] = _('Voice Section is not updated.')
+                form = VoiceSectionForm(request.user,
+                                        request.POST,
+                                        initial={'survey': section.survey,
+                                                 'type': '1'})
+
+        if request.POST.get('type') and str(request.POST.get('type')) == '2':
+            form = MultipleChoiceSectionForm(request.user, instance=section)
+            if request.POST.get('update'):
+                form = MultipleChoiceSectionForm(request.user,
+                                                 request.POST,
+                                                 instance=section)
+                if form.is_valid():
+                    obj = form.save()
+                    request.session["msg"] = \
+                        _('Multiple Choice Section is updated successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'\
+                        % (obj.survey_id, obj.id))
+                else:
+                    request.session["err_msg"] = \
+                        _('Multiple Choice Section is not updated.')
+                    form = MultipleChoiceSectionForm(request.user,
+                                                     request.POST,
+                                                     instance=section)
+            if request.POST.get('update') is None:
+                request.session["err_msg"] = \
+                    _('Multiple Choice Section is not updated.')
+                form = MultipleChoiceSectionForm(request.user,
+                                                 request.POST,
+                                                 initial={'survey': section.survey,
+                                                          'type': '2'})
 
     template = 'frontend/survey2/section_change.html'
     data = {
         'form': form,
-        'survey_id': survey_que.survey_id,
-        'survey_question_id': id,
+        'survey_id': section.survey_id,
+        'section_id': section.id,
         'module': current_view(request),
         'err_msg': request.session.get('err_msg'),
         'action': 'update',

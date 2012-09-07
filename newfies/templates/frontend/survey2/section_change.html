@@ -26,12 +26,7 @@
             </h3>
         {% endblock %}
     {% endif %}
-    <script type="text/javascript" charset="utf-8">
-        /*$('#id_type').change(function() {
-            $('#update_form').submit();
-        }
-        );*/
-    </script>
+
     {% if err_msg %}
         <script type="text/javascript" charset="utf-8">
 
@@ -82,7 +77,7 @@
                 </div>
             </div>
 
-            {% if form.type.value == '1' %}
+            {% if form.type.value|slugify == '1' %}
             <div class="row">
                 <div class="span5 clearfix{% if form.phrasing.errors %} control-group error{% endif %}">
                     <label class="control-label" for="id_{{ form.phrasing.name }}">{{ form.phrasing.label }}</label>
@@ -97,7 +92,7 @@
             </div>
             {% endif %}
 
-            {% if form.type.value == '2' %}
+            {% if form.type.value|slugify == '2' %}
             <div class="row">
                 <div class="span5 clearfix{% if form.question.errors %} control-group error{% endif %}">
                     <label class="control-label" for="id_{{ form.question.name }}">{{ form.question.label }}</label>

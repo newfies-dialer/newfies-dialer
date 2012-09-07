@@ -20,9 +20,9 @@
          /* change span width for response inputs */
         .span5 {width: 160px;}
 
-        .portlet div:hover {
+        /*.portlet div:hover {
             cursor: url("{{ STATIC_URL }}newfies/icons/arrow-move.png") , pointer;
-        }
+        }*/
     </style>
 
     <script type="text/javascript">
@@ -34,7 +34,7 @@
         }
 
         $(function() {
-            $( ".column" ).sortable({
+            $(".column").sortable({
                 update: function(event, ui) {
 
                     // survey question sorting logic
@@ -47,19 +47,19 @@
                 }
             });
 
-            $( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
-                    .find( ".portlet-header" )
-                    .addClass( "ui-widget-header ui-corner-all" )
-                    .prepend( "<span class='ui-icon ui-icon-minusthick'></span>")
+            $(".portlet").addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
+                    .find(".portlet-header")
+                    .addClass("ui-widget-header ui-corner-all")
+                    .prepend("<span class='ui-icon ui-icon-minusthick'></span>")
                     .end()
-                    .find( ".portlet-content" );
+                    .find(".portlet-content");
 
-            $( ".portlet-header .ui-icon" ).click(function() {
-                $( this ).toggleClass( "ui-icon-minusthick" ).toggleClass( "ui-icon-plusthick" );
-                $( this ).parents( ".portlet:first" ).find( ".portlet-content" ).toggle();
+            $(".portlet-header .ui-icon").click(function() {
+                $(this).toggleClass("ui-icon-minusthick").toggleClass("ui-icon-plusthick");
+                $(this).parents(".portlet:first").find(".portlet-content").toggle();
             });
 
-            //$( ".column" ).disableSelection();
+            //$(".column").disableSelection();
         });
 
     </script>
@@ -132,7 +132,7 @@
                 {% if section_list %}
                     {% for section in section_list %}
                     <div id="row{{ section.id }}" class="portlet">
-                        <div class="portlet-header ">
+                        <div class="portlet-header">
                             {{ section.order }}. {{ section.type|section_type_name }}
                         </div>
                         <div class="portlet-content">

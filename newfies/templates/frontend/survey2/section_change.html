@@ -222,6 +222,17 @@
                     </div>
                 </div>
 
+                <div class="span4 clearfix{% if form.invalid_audiofile.errors %} control-group error{% endif %}">
+                    <label class="control-label" for="id_{{ form.invalid_audiofile.name }}">{{ form.invalid_audiofile.label }}</label>
+                    <div class="input">
+                        {{ form.invalid_audiofile }}
+                        {% if form.invalid_audiofile.errors %}
+                            <span class="help-inline">{{ form.invalid_audiofile.errors|removetags:"ul li"|safe }}</span>
+                        {% endif %}
+                        <span class="help-block">{{ form.invalid_audiofile.help_text|safe }} </span>
+                    </div>
+                </div>
+
             </div>
             {% if action == 'update' %}
                 <div class="row">
@@ -236,6 +247,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="span2 clearfix{% if form.audiofile.errors %} control-group error{% endif %}">
                         <label class="control-label" for="id_{{ form.audiofile.name }}">{{ form.audiofile.label }}</label>
@@ -286,6 +298,18 @@
                         {% if form.timeout.errors %}
                             <span class="help-inline">{{ form.timeout.errors|removetags:"ul li"|safe }}</span>
                         {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span4 clearfix{% if form.invalid_audiofile.errors %} control-group error{% endif %}">
+                    <label class="control-label" for="id_{{ form.invalid_audiofile.name }}">{{ form.invalid_audiofile.label }}</label>
+                    <div class="input">
+                        {{ form.invalid_audiofile }}
+                        {% if form.invalid_audiofile.errors %}
+                            <span class="help-inline">{{ form.invalid_audiofile.errors|removetags:"ul li"|safe }}</span>
+                        {% endif %}
+                        <span class="help-block">{{ form.invalid_audiofile.help_text|safe }} </span>
                     </div>
                 </div>
             </div>
@@ -374,6 +398,16 @@
                             {% if form.timeout.errors %}
                                 <span class="help-inline">{{ form.timeout.errors|removetags:"ul li"|safe }}</span>
                             {% endif %}
+                        </div>
+                    </div>
+                    <div class="span2 clearfix{% if form.invalid_audiofile.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ form.invalid_audiofile.name }}">{{ form.invalid_audiofile.label }}</label>
+                        <div class="input">
+                            {{ form.invalid_audiofile }}
+                            {% if form.invalid_audiofile.errors %}
+                                <span class="help-inline">{{ form.invalid_audiofile.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.invalid_audiofile.help_text|safe }} </span>
                         </div>
                     </div>
                 </div>

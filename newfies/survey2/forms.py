@@ -149,7 +149,7 @@ class EnterNumberSectionForm(ModelForm):
     class Meta:
         model = Section
         fields = ['type', 'survey', 'question', 'validate_number',
-                  'min_number', 'max_number', 'phrasing',
+                  'number_digits', 'min_number', 'max_number', 'phrasing',
                   'retries', 'timeout', 'audiofile', 'invalid_audiofile']
 
     def __init__(self, user, *args, **kwargs):
@@ -167,7 +167,8 @@ class EnterNumberSectionForm(ModelForm):
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
         self.fields['question'].widget = forms.Textarea()
         self.fields['question'].widget.attrs['class'] = 'span5'
-        self.fields['min_number'].widget.attrs['validate_number'] = 'span2'
+        self.fields['validate_number'].widget.attrs['class'] = 'span2'
+        self.fields['number_digits'].widget.attrs['class'] = 'span1'
         self.fields['min_number'].widget.attrs['class'] = 'span1'
         self.fields['max_number'].widget.attrs['class'] = 'span1'
         self.fields['retries'].widget.attrs['class'] = 'span1'

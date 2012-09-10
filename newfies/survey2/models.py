@@ -152,7 +152,7 @@ class Section(Sortable):
     validate_number = models.BooleanField(default=True,
                 verbose_name=_('Check for valid number'))
     number_digits = models.IntegerField(max_length=2, null=True, blank=True,
-                verbose_name=_("Minimum"))
+                verbose_name=_("Number limit"))
 
     min_number = models.IntegerField(max_length=1, null=True, blank=True,
                 default=1, verbose_name=_("Minimum"))

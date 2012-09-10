@@ -125,25 +125,25 @@ class Section(Sortable):
                 verbose_name=_("Question"))
 
     # multiple choice question,
-    key_0 = models.IntegerField(max_length=1, null=True, blank=True,
+    key_0 = models.CharField(max_length=100, null=True, blank=True,
                 verbose_name=_("Result if the user press") + "0")
-    key_1 = models.IntegerField(max_length=1, null=True, blank=True,
+    key_1 = models.CharField(max_length=100, null=True, blank=True,
                 verbose_name=_("Result if the user press") + "1")
-    key_2 = models.IntegerField(max_length=1, null=True, blank=True,
+    key_2 = models.CharField(max_length=100, null=True, blank=True,
                 verbose_name=_("Result if the user press") + "2")
-    key_3 = models.IntegerField(max_length=1, null=True, blank=True,
+    key_3 = models.CharField(max_length=100, null=True, blank=True,
                 verbose_name=_("Result if the user press") + "3")
-    key_4 = models.IntegerField(max_length=1, null=True, blank=True,
+    key_4 = models.CharField(max_length=100, null=True, blank=True,
                 verbose_name=_("Result if the user press") + "4")
-    key_5 = models.IntegerField(max_length=1, null=True, blank=True,
+    key_5 = models.CharField(max_length=100, null=True, blank=True,
                 verbose_name=_("Result if the user press") + "5")
-    key_6 = models.IntegerField(max_length=1, null=True, blank=True,
+    key_6 = models.CharField(max_length=100, null=True, blank=True,
                 verbose_name=_("Result if the user press") + "6")
-    key_7 = models.IntegerField(max_length=1, null=True, blank=True,
+    key_7 = models.CharField(max_length=100, null=True, blank=True,
                 verbose_name=_("Result if the user press") + "7")
-    key_8 = models.IntegerField(max_length=1, null=True, blank=True,
+    key_8 = models.CharField(max_length=100, null=True, blank=True,
                 verbose_name=_("Result if the user press") + "8")
-    key_9 = models.IntegerField(max_length=1, null=True, blank=True,
+    key_9 = models.CharField(max_length=100, null=True, blank=True,
                 verbose_name=_("Result if the user press") + "9")
 
     # rating question

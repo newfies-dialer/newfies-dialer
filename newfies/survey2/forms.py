@@ -174,6 +174,23 @@ class EnterNumberSectionForm(ModelForm):
         self.fields['timeout'].widget.attrs['class'] = 'span1'
 
 
+class RecordMessageSectionForm(ModelForm):
+    """RecordMessageSectionForm ModelForm"""
+
+    class Meta:
+        model = Section
+        fields = ['type', 'survey', 'phrasing', 'continue_survey']
+
+    def __init__(self, user, *args, **kwargs):
+        super(RecordMessageSectionForm, self).__init__(*args, **kwargs)
+        #instance = getattr(self, 'instance', None)
+
+        self.fields['phrasing'].widget = forms.Textarea()
+        self.fields['phrasing'].widget.attrs['class'] = 'span5'
+        self.fields['survey'].widget = forms.HiddenInput()
+        self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
+
+
 class PatchThroughSectionForm(ModelForm):
     """PatchThroughSectionForm ModelForm"""
 

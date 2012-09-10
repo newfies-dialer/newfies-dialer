@@ -38,7 +38,8 @@
                         section_sort(result[i].split('row')[1], j);
                         j++;
                     }
-                }
+                },
+                handle: '.icon-move'
             });
 
             //Add toggle button
@@ -219,6 +220,15 @@
                                             </div>
                                         {% endif %}
 
+                                        <!--Record Message Section form-->
+                                        {% if section.type == 5 %}
+                                            <div class="row">
+                                                <div class="span8">
+                                                    {{ section.phrasing }}<br/>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+
                                         <!--Patch-Through Section form-->
                                         {% if section.type == 6 %}
                                             <div class="row">
@@ -232,9 +242,6 @@
                                         {% endif %}
                                         </div>
                                         <!--<div class="span2"><b>{% trans "Audio message" %}</b><br/>{{ que.audio_message.name }}</div>
-                                        <div class="span2"><b>{% trans "Action type" %}</b><br/>{{ que.type|action_type_name }}</div>
-                                        <div class="span2"><b>{% trans "Data" %}</b><br/>{% if que.data %}{{ que.data }}{% else %} {% trans "None" %} {% endif %}</div>
-                                        <div class="span3"><b>{% trans "Gateway" %}</b><br/>{% if que.gateway %}{{ que.gateway }}{% else %} {% trans "None" %} {% endif %}</div>
                                         -->
                                         <div class="span3">
                                             <button data-toggle="modal" href="#section-update-edit" class="section-edit btn btn-info" url='/section/{{ section.id }}/' data-controls-modal='section-update-content-edit'>
@@ -263,6 +270,11 @@
             var url = $(this).attr('url');
             var modal_id = $(this).attr('data-controls-modal');
             $("#" + modal_id).load(url);
+            /*.css({
+             'width': function () {
+             return '570px';
+             }
+             });*/
         })
 
     </script>

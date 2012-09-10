@@ -32,6 +32,7 @@ from survey2.forms import SurveyForm,\
                           MultipleChoiceSectionForm,\
                           RatingSectionForm,\
                           EnterNumberSectionForm,\
+                          RecordMessageSectionForm,\
                           PatchThroughSectionForm,\
                           SurveyDetailReportForm
 from dialer_cdr.models import Callrequest, VoIPCall
@@ -526,7 +527,32 @@ def section_add(request):
                                               initial={'survey': survey,
                                                        'type': '4'})
 
-        # Patch-Through Section PatchThroughSectionForm
+        # Record Message Section
+        if request.POST.get('type') and str(request.POST.get('type')) == '5':
+            form = RecordMessageSectionForm(request.user)
+            if request.POST.get('add'):
+                form = RecordMessageSectionForm(request.user, request.POST)
+                if form.is_valid():
+                    obj = form.save(commit=False)
+                    obj.user = User.objects.get(username=request.user)
+                    obj.save()
+                    request.session["msg"] =\
+                        _('Record Message Section is added successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'\
+                        % (obj.survey_id, obj.id))
+                else:
+                    request.session["err_msg"] =\
+                        _('Record Message Section is not added.')
+                    form = RecordMessageSectionForm(request.user, request.POST)
+
+            if request.POST.get('add') is None:
+                request.session["err_msg"] =\
+                    _('Record Message Section is not added.')
+                form = RecordMessageSectionForm(request.user,
+                                                initial={'survey': survey,
+                                                         'type': '5'})
+
+        # Patch-Through Section
         if request.POST.get('type') and str(request.POST.get('type')) == '6':
             form = PatchThroughSectionForm(request.user)
             if request.POST.get('add'):
@@ -586,6 +612,8 @@ def section_change(request, id):
         form = RatingSectionForm(request.user, instance=section)
     if section.type == 4:
         form = EnterNumberSectionForm(request.user, instance=section)
+    if section.type == 5:
+        form = RecordMessageSectionForm(request.user, instance=section)
     if section.type == 6:
         form = PatchThroughSectionForm(request.user, instance=section)
 
@@ -699,6 +727,31 @@ def section_change(request, id):
                                               instance=section,
                                               initial={'type': '4'})
 
+        # Record Message Section Section
+        if request.POST.get('type') and str(request.POST.get('type')) == '5':
+            form = RecordMessageSectionForm(request.user, instance=section)
+            if request.POST.get('update'):
+                form = RecordMessageSectionForm(request.user,
+                                                request.POST,
+                                                instance=section)
+                if form.is_valid():
+                    obj = form.save()
+                    request.session["msg"] =\
+                        _('Record Message Section is updated successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'\
+                        % (obj.survey_id, obj.id))
+                else:
+                    request.session["err_msg"] =\
+                        _('Record Message Section is not updated.')
+                    form = RecordMessageSectionForm(request.user,
+                                                    request.POST,
+                                                    instance=section)
+            if request.POST.get('update') is None:
+                request.session["err_msg"] =\
+                    _('Record Message Section is not updated.')
+                form = RecordMessageSectionForm(request.user,
+                                                instance=section,
+                                                initial={'type': '5'})
 
         # Patch Through Section Section
         if request.POST.get('type') and str(request.POST.get('type')) == '6':

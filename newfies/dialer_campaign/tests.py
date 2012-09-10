@@ -14,22 +14,20 @@
 
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
-from django.template import Template, Context, TemplateSyntaxError
+from django.template import Template, Context
 from django.core.management import call_command
 from django.test import TestCase
-from dialer_contact.models import Phonebook
 from dialer_campaign.models import Campaign, CampaignSubscriber, common_contact_authorization
 from dialer_campaign.forms import CampaignForm
 from dialer_campaign.views import campaign_list, campaign_add, \
-                                  campaign_change, campaign_del, \
-                                  campaign_grid, notify_admin,\
-                                  update_campaign_status_admin,\
-                                  update_campaign_status_cust,\
-                                  get_url_campaign_status
-from dialer_campaign.tasks import check_campaign_pendingcall,\
-                                  campaign_running,\
-                                  collect_subscriber,\
-                                  campaign_expire_check
+    campaign_change, campaign_del, \
+    campaign_grid, notify_admin,\
+    update_campaign_status_admin,\
+    update_campaign_status_cust,\
+    get_url_campaign_status
+from dialer_campaign.tasks import campaign_running,\
+    collect_subscriber,\
+    campaign_expire_check
 from utils.helper import grid_test_data
 from common.utils import BaseAuthenticatedClient
 
@@ -84,7 +82,7 @@ class DialerCampaignView(BaseAuthenticatedClient):
                 "campaign": "1",
                 "duplicate_contact": "1234567",
                 "count_attempt": "1",
-                })
+            })
         self.assertEqual(response.status_code, 200)
 
 
@@ -170,29 +168,29 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 302)
 
         out = Template(
-                '{% block content %}'
-                    '{% if msg %}'
-                        '{{ msg|safe }}'
-                    '{% endif %}'
-                    '{% if error_msg %}'
-                        '{{ error_msg|safe }}'
-                    '{% endif %}'
-                '{% endblock %}'
-            ).render(Context({
-                'msg': request.session.get('msg'),
-                'error_msg': request.session.get('error_msg'),
-            }))
+            '{% block content %}'
+            '{% if msg %}'
+            '{{ msg|safe }}'
+            '{% endif %}'
+            '{% if error_msg %}'
+            '{{ error_msg|safe }}'
+            '{% endif %}'
+            '{% endblock %}'
+        ).render(Context({
+                         'msg': request.session.get('msg'),
+                         'error_msg': request.session.get('error_msg'),
+                         }))
         self.assertEqual(out,
-            'In order to add a campaign, '
-            'you need to have your settings configured properly, '
-            'please contact the admin.')
+                         'In order to add a campaign, '
+                         'you need to have your settings configured properly, '
+                         'please contact the admin.')
 
     def test_campaign_view_update(self):
         """Test Function to check update campaign"""
         request = self.factory.post('/campaign/1/', {
             "name": "Sample campaign",
             "content_object": "type:30-id:1",
-            }, follow=True)
+        }, follow=True)
         request.user = self.user
         request.session = {}
         response = campaign_change(request, 1)
@@ -208,7 +206,6 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['Location'], '/campaign/')
 
-
     def test_campaign_view_delete(self):
         """Test Function to check delete campaign"""
         # delete campaign through campaign_change
@@ -220,14 +217,14 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 302)
 
         out = Template(
-                '{% block content %}'
-                    '{% if msg %}'
-                        '{{ msg|safe }}'
-                    '{% endif %}'
-                '{% endblock %}'
-            ).render(Context({
-                'msg': request.session.get('msg'),
-            }))
+            '{% block content %}'
+            '{% if msg %}'
+            '{{ msg|safe }}'
+            '{% endif %}'
+            '{% endblock %}'
+        ).render(Context({
+                         'msg': request.session.get('msg'),
+                         }))
         self.assertEqual(out, '"Sample campaign" is deleted.')
 
         request = self.factory.post('/campaign/del/', {'select': '1'})
@@ -249,15 +246,15 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
 
     def test_update_campaign_status_admin(self):
         request = self.factory.post('update_campaign_status_admin/1/1/',
-            follow=True)
+                                    follow=True)
         request.user = self.user
         request.session = {}
         response = update_campaign_status_admin(request, 1, 1)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['Location'],
-            '/admin/dialer_campaign/campaign/')
+                         '/admin/dialer_campaign/campaign/')
 
-    def test_update_campaign_status_admin(self):
+    def test_update_campaign_status_cust(self):
         request = self.factory.post(
             'campaign/update_campaign_status_cust/1/1/',
             follow=True)
@@ -266,7 +263,8 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         response = update_campaign_status_cust(request, 1, 1)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['Location'],
-            '/campaign/')
+                         '/campaign/')
+
 
 class DialerCampaignCeleryTaskTestCase(TestCase):
     """Test cases for celery task"""
@@ -390,12 +388,12 @@ class DialerCampaignModel(TestCase):
 
         form = CampaignForm(self.user)
         obj = form.save(commit=False)
-        obj.name="new_campaign"
+        obj.name = "new_campaign"
         obj.user = self.user
         obj.phonebook_id = 1
-        obj.aleg_gateway_id=1
-        obj.content_type_id=self.content_type_id
-        obj.object_id=1
+        obj.aleg_gateway_id = 1
+        obj.content_type_id = self.content_type_id
+        obj.object_id = 1
         obj.save()
 
         form = CampaignForm(self.user, instance=self.campaign)

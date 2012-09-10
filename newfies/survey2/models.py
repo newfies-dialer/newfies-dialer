@@ -179,6 +179,34 @@ class Section(Sortable):
         return '[%s] %s' % (self.id, self.question)
 
 
+class Branching(models.Model):
+    """This defines the response of the survey section
+
+    **Attributes**:
+
+        * ``keyresult`` - Key digit.
+
+    **Relationships**:
+
+        * ``section`` - Foreign key relationship to the Section.\
+        Each response is assigned to a Section
+    """
+    keyresult = models.CharField(max_length=150, blank=True,
+                    verbose_name=_("Keys result"))  # 1, 2, 1000
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+    section = models.ForeignKey(Section,
+                    related_name='Section')
+    goto = models.ForeignKey(Section, null=True,
+                    blank=True, related_name='Goto Section')
+
+    class Meta:
+        unique_together = ("keyresult", "section")
+
+    def __unicode__(self):
+        return '[%s] %s' % (self.id, self.keyresult)
+
+
 class Result(models.Model):
     """This gives survey result
 

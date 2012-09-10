@@ -82,7 +82,7 @@ class CampaignManager(models.Manager):
                                                  tday.hour, tday.minute,
                                                  tday.second, tday.microsecond)
 
-        s_time = str(tday.hour) + ":" + str(tday.minute) + 1 + ":" + \
+        s_time = str(tday.hour) + ":" + str(tday.minute + 1) + ":" + \
                     str(tday.second)
         kwargs['daily_start_time__lte'] = datetime.strptime(s_time, '%H:%M:%S')
         kwargs['daily_stop_time__gte'] = datetime.strptime(s_time, '%H:%M:%S')

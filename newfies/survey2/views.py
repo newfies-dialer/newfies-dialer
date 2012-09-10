@@ -793,6 +793,25 @@ def section_change(request, id):
         context_instance=RequestContext(request))
 
 
+@login_required
+def section_branch_change(request, id):
+    """"""
+    section = Section.objects.get(pk=int(id))
+
+    template = 'frontend/survey2/section_branch_change.html'
+    data = {
+        'form': '',#form,
+        'survey_id': section.survey_id,
+        'section_id': section.id,
+        'module': current_view(request),
+        'err_msg': request.session.get('err_msg'),
+        'action': 'update',
+        }
+    request.session['err_msg'] = ''
+    return render_to_response(template, data,
+        context_instance=RequestContext(request))
+
+
 @permission_required('survey2.change_survey', login_url='/')
 @login_required
 def survey_change(request, object_id):

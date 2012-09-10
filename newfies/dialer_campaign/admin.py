@@ -18,8 +18,7 @@ from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from dialer_campaign.models import Campaign, CampaignSubscriber
-from dialer_campaign.function_def import check_dialer_setting, \
-                                        dialer_setting_limit
+from dialer_campaign.function_def import check_dialer_setting, dialer_setting_limit
 from genericadmin.admin import GenericAdminModelAdmin
 
 
@@ -59,9 +58,11 @@ class CampaignAdmin(GenericAdminModelAdmin):
     def get_urls(self):
         urls = super(CampaignAdmin, self).get_urls()
         my_urls = patterns('',
-            (r'^$', self.admin_site.admin_view(self.changelist_view)),
-            (r'^add/$', self.admin_site.admin_view(self.add_view)),
-        )
+                           (r'^$',
+                            self.admin_site.admin_view(self.changelist_view)),
+                           (r'^add/$',
+                            self.admin_site.admin_view(self.add_view)),
+                           )
         return my_urls + urls
 
     def add_view(self, request, extra_context=None):
@@ -83,7 +84,7 @@ class CampaignAdmin(GenericAdminModelAdmin):
             messages.error(request, msg)
 
             return HttpResponseRedirect(
-                    reverse("admin:dialer_campaign_campaign_changelist"))
+                reverse("admin:dialer_campaign_campaign_changelist"))
         ctx = {}
         return super(CampaignAdmin, self).add_view(request, extra_context=ctx)
 admin.site.register(Campaign, CampaignAdmin)

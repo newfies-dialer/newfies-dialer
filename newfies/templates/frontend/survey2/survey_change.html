@@ -45,7 +45,15 @@
             $(".portlet").addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
                     .find(".portlet-header")
                     .addClass("ui-widget-header ui-corner-all")
-                    .prepend('<a class="btn btn-small" href="#"><i class="icon-circle-arrow-up"></i></a>')
+                    .prepend('<a class="btn btn-small square" href="#"><i class="icon-circle-arrow-up"></i></a>')
+                    .end()
+                    .find(".portlet-content");
+
+            //Add Goto button
+            $(".portlet").addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
+                    .find(".portlet-header")
+                    .addClass("ui-widget-header ui-corner-all")
+                    .prepend('<a class="btn btn-small" href="#"><i class="icon-random"></i></a>')
                     .end()
                     .find(".portlet-content");
 
@@ -53,7 +61,7 @@
             $(".portlet").addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
                     .find(".portlet-header")
                     .addClass("ui-widget-header ui-corner-all")
-                    .prepend('<a class="btn btn-small" href="#"><i class="icon-move"></i></a>')
+                    .prepend('<a class="btn btn-small square" href="#"><i class="icon-move"></i></a>')
                     .end()
                     .find(".portlet-content");
 
@@ -153,30 +161,36 @@
                                             </div>
                                             <div class="row">
                                                 <div class="span8">
-                                                    <div class="row">
-                                                        <div class="span4">
-                                                            {% trans "Result if the user press" %} 0 : {{ section.key_0 }}
-                                                            <br/>
-                                                            {% trans "Result if the user press" %} 1 : {{ section.key_1 }}
-                                                            <br>
-                                                            {% trans "Result if the user press" %} 2 : {{ section.key_2 }}
-                                                            <br/>
-                                                            {% trans "Result if the user press" %} 3 : {{ section.key_3 }}
-                                                            <br/>
-                                                            {% trans "Result if the user press" %} 4 : {{ section.key_4 }}
-                                                        </div>
-                                                        <div class="span4">
-                                                            {% trans "Result if the user press" %} 5 : {{ section.key_5 }}
-                                                            <br/>
-                                                            {% trans "Result if the user press" %} 6 : {{ section.key_6 }}
-                                                            <br>
-                                                            {% trans "Result if the user press" %} 7 : {{ section.key_7 }}
-                                                            <br/>
-                                                            {% trans "Result if the user press" %} 8 : {{ section.key_8 }}
-                                                            <br/>
-                                                            {% trans "Result if the user press" %} 9 : {{ section.key_9 }}
-                                                        </div>
-                                                    </div>
+                                                    {% if section.key_0 != None %}
+                                                        {% trans "Result if the user press" %} 0 : {{ section.key_0 }} <br/>
+                                                    {% endif %}
+                                                    {% if section.key_1 != None %}
+                                                        {% trans "Result if the user press" %} 1 : {{ section.key_1 }} <br>
+                                                    {% endif %}
+                                                    {% if section.key_2 != None %}
+                                                        {% trans "Result if the user press" %} 2 : {{ section.key_2 }} <br/>
+                                                    {% endif %}
+                                                    {% if section.key_3 != None %}
+                                                        {% trans "Result if the user press" %} 3 : {{ section.key_3 }} <br/>
+                                                    {% endif %}
+                                                    {% if section.key_4 != None %}
+                                                        {% trans "Result if the user press" %} 4 : {{ section.key_4 }} <br/>
+                                                    {% endif %}
+                                                    {% if section.key_5 != None %}
+                                                        {% trans "Result if the user press" %} 5 : {{ section.key_5 }} <br/>
+                                                    {% endif %}
+                                                    {% if section.key_6 != None %}
+                                                        {% trans "Result if the user press" %} 6 : {{ section.key_6 }} <br>
+                                                    {% endif %}
+                                                    {% if section.key_7 != None %}
+                                                        {% trans "Result if the user press" %} 7 : {{ section.key_7 }} <br/>
+                                                    {% endif %}
+                                                    {% if section.key_8 != None %}
+                                                        {% trans "Result if the user press" %} 8 : {{ section.key_8 }} <br/>
+                                                    {% endif %}
+                                                    {% if section.key_9 != None %}
+                                                        {% trans "Result if the user press" %} 9 : {{ section.key_9 }}
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                         {% endif %}

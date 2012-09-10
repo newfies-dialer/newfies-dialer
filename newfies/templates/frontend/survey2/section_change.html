@@ -441,6 +441,50 @@
 
             {% endif %}
 
+
+            <!--Patch-Through Section form-->
+            {% if form.type.value|slugify == '6' %}
+
+                <div class="row">
+                    <div class="span5 clearfix{% if form.phrasing.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ form.phrasing.name }}">{{ form.phrasing.label }}</label>
+                        <div class="input">
+                            {{ form.phrasing }}
+                            {% if form.phrasing.errors %}
+                                <span class="help-inline">{{ form.phrasing.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.phrasing.help_text|safe }} </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="span2 clearfix{% if form.dial_phonenumber.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ form.dial_phonenumber.name }}">{{ form.dial_phonenumber.label }}</label>
+                        <div class="input">
+                            {{ form.dial_phonenumber }}
+                            {% if form.dial_phonenumber.errors %}
+                                <span class="help-inline">{{ form.dial_phonenumber.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.dial_phonenumber.help_text|safe }} </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="span3 clearfix{% if form.continue_survey.errors %} control-group error{% endif %}">
+                        <div class="input">
+                            {{ form.continue_survey.label }}&nbsp;{{ form.continue_survey }}
+                            {% if form.continue_survey.errors %}
+                                <span class="help-inline">{{ form.continue_survey.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.continue_survey.help_text|safe }} </span>
+                        </div>
+                    </div>
+                </div>
+
+            {% endif %}
+
             <div class="actions">
                 {% if action == 'update' %}
                     <input id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />

@@ -65,7 +65,7 @@
             {{ form.survey }}
 
             <div class="row">
-                <div class="span5 clearfix{% if form.type.errors %} control-group error{% endif %}">
+                <div class="span3 clearfix{% if form.type.errors %} control-group error{% endif %}">
                     <label class="control-label" for="id_{{ form.type.name }}">{{ form.type.label }}</label>
                     <div class="input">
                         {{ form.type }}
@@ -75,6 +75,17 @@
                         <span class="help-block">{{ form.type.help_text|safe }} </span>
                     </div>
                 </div>
+                {% if form.type.value|slugify == '1' or  form.type.value|slugify == '2' or form.type.value|slugify == '3' or form.type.value|slugify == '4' %}
+                    <div class="span2 clearfix{% if form.retries.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ form.retries.name }}">{{ form.retries.label }}</label>
+                        <div class="input">
+                            {{ form.retries }}
+                            {% if form.retries.errors %}
+                                <span class="help-inline">{{ form.retries.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
             </div>
 
             {% if form.type.value|slugify == '1' %}
@@ -89,6 +100,7 @@
                         <span class="help-block">{{ form.phrasing.help_text|safe }} </span>
                     </div>
                 </div>
+
             </div>
             {% endif %}
 
@@ -206,12 +218,35 @@
                 <div class="span2 clearfix{% if form.key_9.errors %} control-group error{% endif %}">
                     <div class="input">
                         {{ form.key_9.label }}&nbsp;{{ form.key_9 }}
-                        {% if form.key_4.errors %}
+                        {% if form.key_9.errors %}
                             <span class="help-inline">{{ form.key_9.errors|removetags:"ul li"|safe }}</span>
                         {% endif %}
                     </div>
                 </div>
+                <div class="span2 clearfix{% if form.timeout.errors %} control-group error{% endif %}">
+                    <div class="input">
+                        {{ form.timeout.label }}<br/>{{ form.timeout }}
+                        {% if form.timeout.errors %}
+                            <span class="help-inline">{{ form.timeout.errors|removetags:"ul li"|safe }}</span>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
+            {% if action == 'update' %}
+                <div class="row">
+                    <div class="span5 clearfix{% if form.phrasing.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ form.phrasing.name }}">{{ form.phrasing.label }}</label>
+                        <div class="input">
+                            {{ form.phrasing }}
+                            {% if form.phrasing.errors %}
+                                <span class="help-inline">{{ form.phrasing.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.phrasing.help_text|safe }} </span>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
 
             {% endif %}
 
@@ -231,7 +266,7 @@
             </div>
 
             <div class="row">
-                <div class="span2 clearfix{% if form.rating_laps.errors %} control-group error{% endif %}">
+                <div class="span3 clearfix{% if form.rating_laps.errors %} control-group error{% endif %}">
                     <label class="control-label" for="id_{{ form.rating_laps.name }}">{{ form.rating_laps.label }}</label>
                     <div class="input">
                         {{ form.rating_laps }}
@@ -241,7 +276,31 @@
                         <span class="help-block">{{ form.rating_laps.help_text|safe }} </span>
                     </div>
                 </div>
+                <div class="span2 clearfix{% if form.timeout.errors %} control-group error{% endif %}">
+                    <label class="control-label" for="id_{{ form.timeout.name }}">{{ form.timeout.label }}</label>
+                    <div class="input">
+                        {{ form.timeout }}
+                        {% if form.timeout.errors %}
+                            <span class="help-inline">{{ form.timeout.errors|removetags:"ul li"|safe }}</span>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
+
+            {% if action == 'update' %}
+                <div class="row">
+                    <div class="span5 clearfix{% if form.phrasing.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ form.phrasing.name }}">{{ form.phrasing.label }}</label>
+                        <div class="input">
+                            {{ form.phrasing }}
+                            {% if form.phrasing.errors %}
+                                <span class="help-inline">{{ form.phrasing.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.phrasing.help_text|safe }} </span>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
 
             {% endif %}
 
@@ -291,6 +350,33 @@
                         </div>
                     </div>
                 </div>
+                
+                <div class="row">
+                    <div class="span2 clearfix{% if form.timeout.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ form.timeout.name }}">{{ form.timeout.label }}</label>
+                        <div class="input">
+                            {{ form.timeout }}
+                            {% if form.timeout.errors %}
+                                <span class="help-inline">{{ form.timeout.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                {% if action == 'update' %}
+                    <div class="row">
+                        <div class="span5 clearfix{% if form.phrasing.errors %} control-group error{% endif %}">
+                            <label class="control-label" for="id_{{ form.phrasing.name }}">{{ form.phrasing.label }}</label>
+                            <div class="input">
+                                {{ form.phrasing }}
+                                {% if form.phrasing.errors %}
+                                    <span class="help-inline">{{ form.phrasing.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                                <span class="help-block">{{ form.phrasing.help_text|safe }} </span>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
 
             {% endif %}
 

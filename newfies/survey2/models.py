@@ -95,7 +95,7 @@ class Section(Sortable):
                 verbose_name=_('section type'))
 
     # for voice section, record message, patch-through
-    phrasing = models.CharField(max_length=1000,
+    phrasing = models.CharField(max_length=1000, null=True, blank=True,
         verbose_name=_('Example : Enter a number between 1 to 5, \
         press pound key when done'))
 

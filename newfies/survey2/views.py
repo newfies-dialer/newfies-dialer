@@ -479,6 +479,7 @@ def section_add(request):
             form = RatingSectionForm(request.user)
             if request.POST.get('add'):
                 form = RatingSectionForm(request.user, request.POST)
+
                 if form.is_valid():
                     obj = form.save(commit=False)
                     obj.user = User.objects.get(username=request.user)

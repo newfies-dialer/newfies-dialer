@@ -20,7 +20,6 @@ from django.db.models.signals import post_save
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from dateutil.relativedelta import relativedelta
-from django_countries import CountryField
 from dialer_contact.models import Phonebook, Contact
 from dialer_gateway.models import Gateway
 from user_profile.models import UserProfile
@@ -76,12 +75,14 @@ class CampaignManager(models.Manager):
         kwargs = {}
         kwargs['status'] = 1
         tday = datetime.now()
-        kwargs['startingdate__lte'] = datetime(tday.year, tday.month,
-                                               tday.day, tday.hour, tday.minute, tday.second, tday.microsecond)
-        kwargs['expirationdate__gte'] = datetime(tday.year, tday.month,
-                                                 tday.day, tday.hour, tday.minute, tday.second, tday.microsecond)
+        kwargs['startingdate__lte'] = datetime(tday.year, tday.month, tday.day,
+                                               tday.hour, tday.minute,
+                                               tday.second, tday.microsecond)
+        kwargs['expirationdate__gte'] = datetime(tday.year, tday.month, tday.day,
+                                                 tday.hour, tday.minute,
+                                                 tday.second, tday.microsecond)
 
-        s_time = str(tday.hour) + ":" + str(tday.minute) + ":" + \
+        s_time = str(tday.hour) + ":" + str(tday.minute) + 1 + ":" + \
                     str(tday.second)
         kwargs['daily_start_time__lte'] = datetime.strptime(s_time, '%H:%M:%S')
         kwargs['daily_stop_time__gte'] = datetime.strptime(s_time, '%H:%M:%S')

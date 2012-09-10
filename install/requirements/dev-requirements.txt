@@ -1,5 +1,6 @@
 sphinx
 django-extensions
+Werkzeug
 git+git://github.com/aerosol/identicon.git
 git+git://github.com/aerosol/django-dilla.git
 django-debug-toolbar

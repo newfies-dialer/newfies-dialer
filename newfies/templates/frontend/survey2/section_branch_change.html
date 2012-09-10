@@ -1,0 +1,92 @@
+{% extends "frontend/master.html" %}
+{% load i18n %}
+
+{% block extra_files %}
+{% endblock %}
+
+{% block row_fluid %}
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block container %}
+
+    {% block content %}
+
+        {% if action == 'update' %}
+            {% block content_header %}
+                <a class="close" data-dismiss="modal" >&times;</a>
+                <h3>
+                    {% trans "Update" %} {% trans "Section Branch" %}
+                    <small></small>
+                </h3>
+            {% endblock %}
+        {% endif %}
+
+        {% if err_msg %}
+            <script type="text/javascript" charset="utf-8">
+
+                $(window).load(function(){
+                    $('#section_modal').modal('show');
+                });
+
+                var url = '/survey2/' + '{{ survey_id }}'  + '/#row{{ section_id }}';
+                $(".close").live('click', function() {
+                    $(location).attr('href', url);
+                });
+
+                var KEYCODE_ESC = 27;
+                $(document).keyup(function(e) {
+                    if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
+                });
+            </script>
+            <!-- modal content-->
+            <div class="modal hide fade" id="section_modal">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal" >&times;</a>
+                <h3>{% if action == 'update' %}
+                    {% trans "Update" %}
+                {% else %}
+                    {% trans "Add" %}
+                {% endif %} {% trans "Section Branch" %}
+                    <small></small>
+                </h3>
+            </div>
+            <div class="modal-body">
+        {% endif %}
+
+    <form class="well" method="POST" action="{% if action == 'update' %}/section/{{ section_id }}/{% else %}/section/add/?survey_id={{ survey_id }}{% endif %}" enctype="multipart/form-data" id="update_form">
+    {% csrf_token %}
+    {{ form.survey }}
+
+    <div class="row">
+
+    </div>
+
+    <div class="actions">
+        {% if action == 'update' %}
+            <input id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
+        {% else %}
+            <input id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans "Submit" %}" />
+        {% endif %}
+    </div>
+
+    </form>
+
+    {% if err_msg %}
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
+        </div>
+        </div>
+    {% endif %}
+    {% endblock %}
+
+    {% block footer %}
+    {% endblock %}
+
+{% endblock %}

@@ -54,7 +54,7 @@
             $(".portlet").addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
                     .find(".portlet-header")
                     .addClass("ui-widget-header ui-corner-all")
-                    .prepend('<a class="btn btn-small" href="#"><i class="icon-random"></i></a>')
+                    .prepend('<a class="section-branch btn btn-small" href="#"><i class="icon-random"></i></a>')
                     .end()
                     .find(".portlet-content");
 
@@ -144,6 +144,18 @@
                     <div id="row{{ section.id }}" class="portlet">
                         <div class="portlet-header">
                             {{ section.order }}. {{ section.type|section_type_name }}
+
+                            <script type="text/javascript">
+
+                            $(function() {
+                                $("#row"+{{ section.id }}).find(".section-branch")
+                                    .attr("url", "/section/branch/{{ section.id }}/")
+                                    .attr("data-toggle", "modal")
+                                    .attr("href", "#section-branch")
+                                    .attr("data-controls-modal", "section-branch-content");
+
+                            });
+                            </script>
                         </div>
                         <div class="portlet-content">
                             <div class="row">
@@ -318,6 +330,24 @@
         </div>
     </div>
 
+
+    <script type="text/javascript" charset="utf-8">
+
+        $(".section-branch").live('click', function() {
+
+            var url = $(this).attr('url');
+            var modal_id = $(this).attr('data-controls-modal');
+            $("#" + modal_id).load(url);
+        })
+
+    </script>
+    <!-- modal content-->
+    <div id="section-branch" class="modal hide fade">
+        <div class="modal-body" id="section-branch-content"></div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+        </div>
+    </div>
 </form>
 
 {% endblock %}

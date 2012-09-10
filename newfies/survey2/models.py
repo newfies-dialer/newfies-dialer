@@ -95,7 +95,7 @@ class Section(Sortable):
                 verbose_name=_('section type'))
 
     # for voice section, record message, patch-through
-    phrasing = models.CharField(max_length=1000,
+    phrasing = models.CharField(max_length=1000, null=True, blank=True,
         verbose_name=_('Example : Enter a number between 1 to 5, \
         press pound key when done'))
 
@@ -123,26 +123,26 @@ class Section(Sortable):
                 verbose_name=_("Question"))
 
     # multiple choice question,
-    key_0 = models.IntegerField(max_length=1, null=True, blank=True,
-                verbose_name=_("Result if the user press") + " 0")
-    key_1 = models.IntegerField(max_length=1, null=True, blank=True,
-                verbose_name=_("Result if the user press") + " 1")
-    key_2 = models.IntegerField(max_length=1, null=True, blank=True,
-                verbose_name=_("Result if the user press") + " 2")
-    key_3 = models.IntegerField(max_length=1, null=True, blank=True,
-                verbose_name=_("Result if the user press") + " 3")
-    key_4 = models.IntegerField(max_length=1, null=True, blank=True,
-                verbose_name=_("Result if the user press") + " 4")
-    key_5 = models.IntegerField(max_length=1, null=True, blank=True,
-                verbose_name=_("Result if the user press") + " 5")
-    key_6 = models.IntegerField(max_length=1, null=True, blank=True,
-                verbose_name=_("Result if the user press") + " 6")
-    key_7 = models.IntegerField(max_length=1, null=True, blank=True,
-                verbose_name=_("Result if the user press") + " 7")
-    key_8 = models.IntegerField(max_length=1, null=True, blank=True,
-                verbose_name=_("Result if the user press") + " 8")
-    key_9 = models.IntegerField(max_length=1, null=True, blank=True,
-                verbose_name=_("Result if the user press") + " 9")
+    key_0 = models.CharField(max_length=100, null=True, blank=True,
+                verbose_name=_("Result if the user press") + "0")
+    key_1 = models.CharField(max_length=100, null=True, blank=True,
+                verbose_name=_("Result if the user press") + "1")
+    key_2 = models.CharField(max_length=100, null=True, blank=True,
+                verbose_name=_("Result if the user press") + "2")
+    key_3 = models.CharField(max_length=100, null=True, blank=True,
+                verbose_name=_("Result if the user press") + "3")
+    key_4 = models.CharField(max_length=100, null=True, blank=True,
+                verbose_name=_("Result if the user press") + "4")
+    key_5 = models.CharField(max_length=100, null=True, blank=True,
+                verbose_name=_("Result if the user press") + "5")
+    key_6 = models.CharField(max_length=100, null=True, blank=True,
+                verbose_name=_("Result if the user press") + "6")
+    key_7 = models.CharField(max_length=100, null=True, blank=True,
+                verbose_name=_("Result if the user press") + "7")
+    key_8 = models.CharField(max_length=100, null=True, blank=True,
+                verbose_name=_("Result if the user press") + "8")
+    key_9 = models.CharField(max_length=100, null=True, blank=True,
+                verbose_name=_("Result if the user press") + "9")
 
     # rating question
     rating_laps = models.IntegerField(max_length=1, null=True, blank=True,

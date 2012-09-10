@@ -65,7 +65,7 @@
             {{ form.survey }}
 
             <div class="row">
-                <div class="span5 clearfix{% if form.type.errors %} control-group error{% endif %}">
+                <div class="span3 clearfix{% if form.type.errors %} control-group error{% endif %}">
                     <label class="control-label" for="id_{{ form.type.name }}">{{ form.type.label }}</label>
                     <div class="input">
                         {{ form.type }}
@@ -75,8 +75,20 @@
                         <span class="help-block">{{ form.type.help_text|safe }} </span>
                     </div>
                 </div>
+                {% if form.type.value|slugify == '1' or  form.type.value|slugify == '2' or form.type.value|slugify == '3' or form.type.value|slugify == '4' %}
+                    <div class="span2 clearfix{% if form.retries.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ form.retries.name }}">{{ form.retries.label }}</label>
+                        <div class="input">
+                            {{ form.retries }}
+                            {% if form.retries.errors %}
+                                <span class="help-inline">{{ form.retries.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
             </div>
 
+            <!--Voice Section form-->
             {% if form.type.value|slugify == '1' %}
             <div class="row">
                 <div class="span5 clearfix{% if form.phrasing.errors %} control-group error{% endif %}">
@@ -89,9 +101,26 @@
                         <span class="help-block">{{ form.phrasing.help_text|safe }} </span>
                     </div>
                 </div>
+
             </div>
+            {% if action == 'update' %}
+                <div class="row">
+                    <div class="span2 clearfix{% if form.audiofile.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ form.audiofile.name }}">{{ form.audiofile.label }}</label>
+                        <div class="input">
+                            {{ form.audiofile }}
+                            {% if form.audiofile.errors %}
+                                <span class="help-inline">{{ form.audiofile.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.audiofile.help_text|safe }} </span>
+                        </div>
+                    </div>
+                </div>
             {% endif %}
 
+            {% endif %}
+
+            <!--Multiple choice Section form-->
             {% if form.type.value|slugify == '2' %}
             <div class="row">
                 <div class="span5 clearfix{% if form.question.errors %} control-group error{% endif %}">
@@ -194,9 +223,36 @@
                 </div>
 
             </div>
+            {% if action == 'update' %}
+                <div class="row">
+                    <div class="span5 clearfix{% if form.phrasing.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ form.phrasing.name }}">{{ form.phrasing.label }}</label>
+                        <div class="input">
+                            {{ form.phrasing }}
+                            {% if form.phrasing.errors %}
+                                <span class="help-inline">{{ form.phrasing.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.phrasing.help_text|safe }} </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span2 clearfix{% if form.audiofile.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ form.audiofile.name }}">{{ form.audiofile.label }}</label>
+                        <div class="input">
+                            {{ form.audiofile }}
+                            {% if form.audiofile.errors %}
+                                <span class="help-inline">{{ form.audiofile.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.audiofile.help_text|safe }} </span>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
 
             {% endif %}
 
+            <!--Rating Section form-->
             {% if form.type.value|slugify == '3' %}
 
             <div class="row">
@@ -213,7 +269,7 @@
             </div>
 
             <div class="row">
-                <div class="span2 clearfix{% if form.rating_laps.errors %} control-group error{% endif %}">
+                <div class="span3 clearfix{% if form.rating_laps.errors %} control-group error{% endif %}">
                     <label class="control-label" for="id_{{ form.rating_laps.name }}">{{ form.rating_laps.label }}</label>
                     <div class="input">
                         {{ form.rating_laps }}
@@ -223,11 +279,47 @@
                         <span class="help-block">{{ form.rating_laps.help_text|safe }} </span>
                     </div>
                 </div>
+                <div class="span2 clearfix{% if form.timeout.errors %} control-group error{% endif %}">
+                    <label class="control-label" for="id_{{ form.timeout.name }}">{{ form.timeout.label }}</label>
+                    <div class="input">
+                        {{ form.timeout }}
+                        {% if form.timeout.errors %}
+                            <span class="help-inline">{{ form.timeout.errors|removetags:"ul li"|safe }}</span>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
+
+            {% if action == 'update' %}
+                <div class="row">
+                    <div class="span5 clearfix{% if form.phrasing.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ form.phrasing.name }}">{{ form.phrasing.label }}</label>
+                        <div class="input">
+                            {{ form.phrasing }}
+                            {% if form.phrasing.errors %}
+                                <span class="help-inline">{{ form.phrasing.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.phrasing.help_text|safe }} </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span2 clearfix{% if form.audiofile.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ form.audiofile.name }}">{{ form.audiofile.label }}</label>
+                        <div class="input">
+                            {{ form.audiofile }}
+                            {% if form.audiofile.errors %}
+                                <span class="help-inline">{{ form.audiofile.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.audiofile.help_text|safe }} </span>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
 
             {% endif %}
 
-
+            <!--Enter number Section form-->
             {% if form.type.value|slugify == '4' %}
 
                 <div class="row">
@@ -273,6 +365,45 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="span2 clearfix{% if form.timeout.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ form.timeout.name }}">{{ form.timeout.label }}</label>
+                        <div class="input">
+                            {{ form.timeout }}
+                            {% if form.timeout.errors %}
+                                <span class="help-inline">{{ form.timeout.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                {% if action == 'update' %}
+                    <div class="row">
+                        <div class="span5 clearfix{% if form.phrasing.errors %} control-group error{% endif %}">
+                            <label class="control-label" for="id_{{ form.phrasing.name }}">{{ form.phrasing.label }}</label>
+                            <div class="input">
+                                {{ form.phrasing }}
+                                {% if form.phrasing.errors %}
+                                    <span class="help-inline">{{ form.phrasing.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                                <span class="help-block">{{ form.phrasing.help_text|safe }} </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="span2 clearfix{% if form.audiofile.errors %} control-group error{% endif %}">
+                            <label class="control-label" for="id_{{ form.audiofile.name }}">{{ form.audiofile.label }}</label>
+                            <div class="input">
+                                {{ form.audiofile }}
+                                {% if form.audiofile.errors %}
+                                    <span class="help-inline">{{ form.audiofile.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                                <span class="help-block">{{ form.audiofile.help_text|safe }} </span>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
 
             {% endif %}
 

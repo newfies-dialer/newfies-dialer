@@ -7,7 +7,7 @@ django-chart-tools==0.2.1
 django-memcache-status==1.1
 django-cache-utils==0.7.2
 django-picklefield==0.2.1
-django-jsonfield==0.8.0
+django-jsonfield==0.8.11
 django-countries==1.3
 django-tastypie==0.9.11
 hg+https://bitbucket.org/izi/django-admin-tools

@@ -32,6 +32,7 @@ from survey2.forms import SurveyForm,\
                           MultipleChoiceSectionForm,\
                           RatingSectionForm,\
                           EnterNumberSectionForm,\
+                          PatchThroughSectionForm,\
                           SurveyDetailReportForm
 from dialer_cdr.models import Callrequest, VoIPCall
 from utils.helper import grid_common_function, get_grid_update_delete_link
@@ -524,6 +525,32 @@ def section_add(request):
                 form = EnterNumberSectionForm(request.user,
                                               initial={'survey': survey,
                                                        'type': '4'})
+
+        # Patch-Through Section PatchThroughSectionForm
+        if request.POST.get('type') and str(request.POST.get('type')) == '6':
+            form = PatchThroughSectionForm(request.user)
+            if request.POST.get('add'):
+                form = PatchThroughSectionForm(request.user, request.POST)
+                if form.is_valid():
+                    obj = form.save(commit=False)
+                    obj.user = User.objects.get(username=request.user)
+                    obj.save()
+                    request.session["msg"] =\
+                        _('Patch-Through Section is added successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'\
+                        % (obj.survey_id, obj.id))
+                else:
+                    request.session["err_msg"] =\
+                        _('Patch-Through Section is not added.')
+                    form = PatchThroughSectionForm(request.user, request.POST)
+
+            if request.POST.get('add') is None:
+                request.session["err_msg"] =\
+                    _('Patch-Through Section is not added.')
+                form = PatchThroughSectionForm(request.user,
+                                               initial={'survey': survey,
+                                                        'type': '6'})
+
     template = 'frontend/survey2/section_change.html'
 
     data = {
@@ -559,6 +586,8 @@ def section_change(request, id):
         form = RatingSectionForm(request.user, instance=section)
     if section.type == 4:
         form = EnterNumberSectionForm(request.user, instance=section)
+    if section.type == 6:
+        form = PatchThroughSectionForm(request.user, instance=section)
 
     request.session['err_msg'] = ''
     if request.GET.get('delete'):
@@ -669,6 +698,33 @@ def section_change(request, id):
                 form = EnterNumberSectionForm(request.user,
                                               instance=section,
                                               initial={'type': '4'})
+
+
+        # Patch Through Section Section
+        if request.POST.get('type') and str(request.POST.get('type')) == '6':
+            form = PatchThroughSectionForm(request.user, instance=section)
+            if request.POST.get('update'):
+                form = PatchThroughSectionForm(request.user,
+                                               request.POST,
+                                               instance=section)
+                if form.is_valid():
+                    obj = form.save()
+                    request.session["msg"] =\
+                        _('Patch Through Section is updated successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'\
+                        % (obj.survey_id, obj.id))
+                else:
+                    request.session["err_msg"] =\
+                        _('Patch Through Section is not updated.')
+                    form = PatchThroughSectionForm(request.user,
+                                                   request.POST,
+                                                   instance=section)
+            if request.POST.get('update') is None:
+                request.session["err_msg"] =\
+                    _('Patch Through Section is not updated.')
+                form = PatchThroughSectionForm(request.user,
+                                               instance=section,
+                                               initial={'type': '6'})
 
     template = 'frontend/survey2/section_change.html'
     data = {

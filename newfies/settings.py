@@ -20,7 +20,7 @@ DEBUG = False
 TEMPLATE_DEBUG = False
 
 ADMINS = (
-     ('Your Name', 'your_email@domain.com'),
+    ('Your Name', 'your_email@domain.com'),
 )
 MANAGERS = ADMINS
 
@@ -310,17 +310,17 @@ LOGIN_URL = '/pleaselog/'
 DICTIONARY = "/usr/share/dict/words"
 DILLA_USE_LOREM_IPSUM = False  # set to True ignores dictionary
 DILLA_APPS = [
-                'auth',
-                #'dialer_gateway',
-                'voip_app',
-                'dialer_campaign',
-                'dialer_cdr',
-             ]
+    'auth',
+    #'dialer_gateway',
+    'voip_app',
+    'dialer_campaign',
+    'dialer_cdr',
+]
 DILLA_SPAMLIBS = [
-                #'voip_app.voip_app_custom_spamlib',
-                #'dialer_campaign.dialer_campaign_custom_spamlib',
-                 'dialer_cdr.dialer_cdr_custom_spamlib',
-                ]
+    #'voip_app.voip_app_custom_spamlib',
+    #'dialer_campaign.dialer_campaign_custom_spamlib',
+    'dialer_cdr.dialer_cdr_custom_spamlib',
+]
 # To use Dilla
 # > python manage.py run_dilla --cycles=100
 
@@ -464,7 +464,7 @@ LOGGING = {
         'mail_admins': {
             'class': 'django.utils.log.AdminEmailHandler',
             'level': 'ERROR',
-             # But the emails are plain text by default - HTML is nicer
+            # But the emails are plain text by default - HTML is nicer
             'include_html': True,
         },
         'default': {

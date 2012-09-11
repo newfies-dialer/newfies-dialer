@@ -38,7 +38,7 @@ def get_section_question_list(user, survey_id):
     """Get survey question list for logged in user
     with default none option"""
     list_sq = []
-    list_sq.append(('', '---'))
+    list_sq.append(('', _('Hang up')))
 
     list = Section.objects.filter(user=user,
                                   survey_id=survey_id)

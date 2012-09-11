@@ -26,7 +26,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
 from dialer_campaign.models import Campaign
 from dialer_campaign.views import notice_count
-from survey2.models import Survey, Section, Result
+from survey2.models import Survey, Section, Result, Branching
 from survey2.forms import SurveyForm,\
                           VoiceSectionForm,\
                           MultipleChoiceSectionForm,\
@@ -796,11 +796,36 @@ def section_change(request, id):
 
 @login_required
 def section_branch_change(request, id):
-    """"""
+    """Add branching on section for the logged in user
+
+    **Attributes**:
+
+        * ``form`` - BranchingForm
+        * ``template`` - frontend/survey2/section_branch_change.html
+
+    **Logic Description**:
+
+        *
+
+    """
+    request.session['msg'] = ''
+    if request.GET.get('delete'):
+        # perform delete
+        branching_obj = Branching.objects.get(id=int(id))
+        survey_id = branching_obj.section.survey_id
+        section_id = branching_obj.section_id
+        branching_obj.delete()
+        return HttpResponseRedirect('/survey2/%s/' % (survey_id))
+        request.session["msg"] =\
+            _('Branching is deleted successfully.')
+        return HttpResponseRedirect('/survey2/%s/#row%s'\
+            % (survey_id, section_id))
+
+
     section = Section.objects.get(pk=int(id))
     form = BranchingForm(initial={'section': id})
     if request.method == 'POST':
-        form = BranchingForm(request.POST, instance=section)
+        form = BranchingForm(request.POST)
         if form.is_valid():
             obj = form.save()
             request.session["msg"] =\
@@ -841,6 +866,10 @@ def survey_change(request, object_id):
     survey = Survey.objects.get(pk=object_id)
     section_list = Section.objects.filter(survey=survey).order_by('order')
     form = SurveyForm(instance=survey)
+    branching_list = Branching.objects.filter(section__survey=survey).order_by('id')
+    branching_section_list = []
+    branching_section_list = \
+        branching_list.values_list('section_id', flat=True).distinct()
 
     if request.method == 'POST':
         if request.POST.get('delete'):
@@ -859,6 +888,8 @@ def survey_change(request, object_id):
     data = {
         'survey_obj_id': object_id,
         'section_list': section_list,
+        'branching_list': branching_list,
+        'branching_section_list': branching_section_list,
         'module': current_view(request),
         'action': 'update',
         'form': form,

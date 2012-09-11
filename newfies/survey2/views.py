@@ -815,7 +815,6 @@ def section_branch_change(request, id):
         survey_id = branching_obj.section.survey_id
         section_id = branching_obj.section_id
         branching_obj.delete()
-        return HttpResponseRedirect('/survey2/%s/' % (survey_id))
         request.session["msg"] =\
             _('Branching is deleted successfully.')
         return HttpResponseRedirect('/survey2/%s/#row%s'\
@@ -823,9 +822,9 @@ def section_branch_change(request, id):
 
 
     section = Section.objects.get(pk=int(id))
-    form = BranchingForm(initial={'section': id})
+    form = BranchingForm(request.user, section.survey_id, initial={'section': id})
     if request.method == 'POST':
-        form = BranchingForm(request.POST)
+        form = BranchingForm(request.user, section.survey_id, request.POST)
         if form.is_valid():
             obj = form.save()
             request.session["msg"] =\

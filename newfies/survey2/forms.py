@@ -40,11 +40,11 @@ def get_section_question_list(user, survey_id, section_id):
     section_branch_list = \
         Branching.objects.values_list('section_id', flat=True)\
                          .filter(section_id=section_id)
-
     list_sq = []
     list_sq.append(('', _('Hang up')))
 
     list = Section.objects.filter(user=user, survey_id=survey_id)\
+            .exclude(pk=section_id)\
             .exclude(id__in=section_branch_list)
     for i in list:
         if i.question:

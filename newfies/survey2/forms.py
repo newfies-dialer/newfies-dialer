@@ -59,9 +59,9 @@ def get_section_question_list(user, survey_id, section_id):
 def get_question_choice_list(section_id):
     """Get survey question list for logged in user
     with default none option"""
-    keyresult_list =\
-        Branching.objects.values_list('keyresult', flat=True)\
-            .filter(section_id=int(section_id))
+    keyresult_list = Branching.objects\
+                        .values_list('keyresult', flat=True)\
+                        .filter(section_id=int(section_id))
     list_sq = []
     obj_section = Section.objects.get(id=int(section_id))
 

@@ -192,7 +192,7 @@ class Branching(models.Model):
         Each response is assigned to a Section
     """
     keyresult = models.CharField(max_length=150, blank=True,
-                    verbose_name=_("Keys result"))  # 1, 2, 1000
+                    verbose_name=_("Entered value"))  # 1, 2, 1000
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     section = models.ForeignKey(Section,
@@ -236,13 +236,11 @@ class Result(models.Model):
     """
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
                 verbose_name=_("Campaign"))
-
     survey = models.ForeignKey(Survey, related_name='Survey App')
-    callid = models.CharField(max_length=120, help_text=_("VoIP Call-ID"),
-                verbose_name=_("Call-ID"))
-
-    question = models.CharField(max_length=500, blank=False,
-                verbose_name=_("Question"))  # What is your prefered fruit?
+    section = models.ForeignKey(Section, related_name='Section')
+    callrequest = models.ForeignKey(Callrequest,
+                blank=True, null=True,
+                related_name='survey_callrequest')
     response = models.CharField(max_length=150, blank=False,
                 verbose_name=_("Response"))  # Orange ; Kiwi
     record_file = models.CharField(max_length=200, blank=True, default='',
@@ -250,12 +248,27 @@ class Result(models.Model):
     #recording_duration = models.IntegerField(max_length=20,
     #                blank=True, default=0,
     #                null=True, verbose_name=_('Recording Duration'))
-    callrequest = models.ForeignKey(Callrequest,
-                blank=True, null=True,
-                related_name='survey_callrequest')
-    section_type = models.IntegerField(max_length=20, choices=SECTION_TYPE,
-        blank=True, null=True,
-        verbose_name=_('section type'))
+
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return '[%s] %s = %s' % (self.id, self.question, self.response)
+
+
+class ResultSum(models.Model):
+    """This gives survey result summary, used to display survey
+    in a more efficient way
+
+    **Name of DB table**: result_sum
+    """
+    campaign = models.ForeignKey(Campaign, null=True, blank=True,
+                verbose_name=_("Campaign"))
+    survey = models.ForeignKey(Survey, related_name='Survey App')
+    section = models.ForeignKey(Section, related_name='Section')
+    response = models.CharField(max_length=150, blank=False, db_index=True,
+                verbose_name=_("Response"))  # Orange ; Kiwi
+    count = models.IntegerField(max_length=20, null=True, blank=True,
+                verbose_name=_("Result count"))
 
     created_date = models.DateTimeField(auto_now_add=True)
 

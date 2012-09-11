@@ -39,14 +39,14 @@ class CallrequestAdmin(GenericAdminModelAdmin):
     content_type_whitelist = ('voice_app/voiceapp', 'survey/surveyapp', )
     fieldsets = (
         (_('Standard options'), {
-            'fields': ('user', 'request_uuid',  'call_time', 'campaign',
+            'fields': ('user', 'request_uuid', 'call_time', 'campaign',
                        'status', 'hangup_cause', 'callerid', 'phone_number',
                        'timeout', 'timelimit', 'call_type', 'aleg_gateway',
                        'content_type', 'object_id', ),
         }),
         (_('Advanced options'), {
             'classes': ('collapse',),
-            'fields': ('extra_data',  'extra_dial_string',
+            'fields': ('extra_data', 'extra_dial_string',
                        'campaign_subscriber'),
         }),
     )
@@ -130,6 +130,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
               search Parameters: by date, by status and by billed.
         """
         opts = VoIPCall._meta
+        #TODO: app_label is not used ?
         app_label = opts.app_label
 
         query_string = ''

@@ -40,11 +40,11 @@ def get_section_question_list(user, survey_id, section_id):
     section_branch_list = \
         Branching.objects.values_list('section_id', flat=True)\
                          .filter(section_id=section_id)
-
     list_sq = []
     list_sq.append(('', _('Hang up')))
 
     list = Section.objects.filter(user=user, survey_id=survey_id)\
+            .exclude(pk=section_id)\
             .exclude(id__in=section_branch_list)
     for i in list:
         if i.question:
@@ -53,6 +53,39 @@ def get_section_question_list(user, survey_id, section_id):
             q_string = i.phrasing
         list_sq.append((i.id, "Goto# " + q_string))
 
+    return list_sq
+
+
+def get_question_choice_list(section_id):
+    """Get survey question list for logged in user
+    with default none option"""
+    keyresult_list =\
+        Branching.objects.values_list('keyresult', flat=True)\
+            .filter(section_id=int(section_id))
+    list_sq = []
+    obj_section = Section.objects.get(id=int(section_id))
+
+    if obj_section.key_0 and str(obj_section.key_0) not in keyresult_list:
+        list_sq.append((obj_section.key_0, obj_section.key_0))
+    if obj_section.key_1 and str(obj_section.key_1) not in keyresult_list:
+        list_sq.append((obj_section.key_1, obj_section.key_1))
+    if obj_section.key_2 and str(obj_section.key_2) not in keyresult_list:
+        list_sq.append((obj_section.key_2, obj_section.key_2))
+    if obj_section.key_3 and str(obj_section.key_3) not in keyresult_list:
+        list_sq.append((obj_section.key_3, obj_section.key_3))
+    if obj_section.key_4 and str(obj_section.key_4) not in keyresult_list:
+        list_sq.append((obj_section.key_4, obj_section.key_4))
+    if obj_section.key_5 and str(obj_section.key_5) not in keyresult_list:
+        list_sq.append((obj_section.key_5, obj_section.key_5))
+    if obj_section.key_6 and str(obj_section.key_6) not in keyresult_list:
+        list_sq.append((obj_section.key_6, obj_section.key_6))
+    if obj_section.key_7 and str(obj_section.key_7) not in keyresult_list:
+        list_sq.append((obj_section.key_7, obj_section.key_7))
+    if obj_section.key_8 and str(obj_section.key_8) not in keyresult_list:
+        list_sq.append((obj_section.key_8, obj_section.key_8))
+    if obj_section.key_9 and str(obj_section.key_9) not in keyresult_list:
+        list_sq.append((obj_section.key_9, obj_section.key_9))
+    list_sq.append(('', _('Anything')))
     return list_sq
 
 
@@ -229,6 +262,13 @@ class BranchingForm(ModelForm):
         super(BranchingForm, self).__init__(*args, **kwargs)
         self.fields['keyresult'].widget.attrs['class'] = 'span2'
         self.fields['section'].widget = forms.HiddenInput()
+
+        # multiple choice section
+        obj_section = Section.objects.get(id=section_id)
+        if obj_section.type == 2:
+            self.fields['keyresult'] = \
+                forms.ChoiceField(choices=get_question_choice_list(section_id))
+
         self.fields['goto'].choices = \
             get_section_question_list(user, survey_id, section_id)
 

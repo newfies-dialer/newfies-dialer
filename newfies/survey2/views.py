@@ -820,7 +820,6 @@ def section_branch_change(request, id):
         return HttpResponseRedirect('/survey2/%s/#row%s'\
             % (survey_id, section_id))
 
-
     section = Section.objects.get(pk=int(id))
     form = BranchingForm(request.user,
                          section.survey_id,
@@ -837,6 +836,10 @@ def section_branch_change(request, id):
                 _('Branching is added successfully.')
             return HttpResponseRedirect('/survey2/%s/#row%s'\
                 % (section.survey_id, id))
+        else:
+            form._errors["keyresult"] = \
+                _("duplicate record keyresult with goto.")
+            request.session["err_msg"] = _('Keyresult is not added.')
 
     template = 'frontend/survey2/section_branch_change.html'
     data = {

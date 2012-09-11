@@ -687,7 +687,9 @@ td.survey_result_key {
 }
 
 td.survey_edit_key {
-    width: 70px;
+    width: 10px;
+    text-align: center;
+    padding: 4px 4px 0px 8px;
 }
 
 /* customize the survey edition, this is for the sortable question header */

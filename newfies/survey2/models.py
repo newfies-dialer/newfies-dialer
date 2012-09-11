@@ -195,8 +195,7 @@ class Branching(models.Model):
                     verbose_name=_("Entered value"))  # 1, 2, 1000
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
-    section = models.ForeignKey(Section,
-                    related_name='Section')
+    section = models.ForeignKey(Section, related_name='Branching Section')
     #0 to goto hangup
     goto = models.ForeignKey(Section, null=True,
                     blank=True, related_name='Goto Section')
@@ -237,7 +236,7 @@ class Result(models.Model):
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
                 verbose_name=_("Campaign"))
     survey = models.ForeignKey(Survey, related_name='Survey App')
-    section = models.ForeignKey(Section, related_name='Section')
+    section = models.ForeignKey(Section, related_name='Result Section')
     callrequest = models.ForeignKey(Callrequest,
                 blank=True, null=True,
                 related_name='survey_callrequest')
@@ -263,8 +262,8 @@ class ResultSum(models.Model):
     """
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
                 verbose_name=_("Campaign"))
-    survey = models.ForeignKey(Survey, related_name='Survey App')
-    section = models.ForeignKey(Section, related_name='Section')
+    survey = models.ForeignKey(Survey, related_name='ResultSum Survey')
+    section = models.ForeignKey(Section, related_name='ResultSum Section')
     response = models.CharField(max_length=150, blank=False, db_index=True,
                 verbose_name=_("Response"))  # Orange ; Kiwi
     count = models.IntegerField(max_length=20, null=True, blank=True,

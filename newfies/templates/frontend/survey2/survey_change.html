@@ -273,7 +273,12 @@
                                                                 <tr>
                                                                     {% if branch.section_id == section.id %}
                                                                         <td class="survey_edit_key">{{ branch.keyresult }}</td>
-                                                                        <td>{{ branch.goto }}</td>
+                                                                        <td>{% if branch.goto.question %}
+                                                                                {{ branch.goto.question }}
+                                                                            {% else %}
+                                                                                {{ branch.goto.phrasing }}
+                                                                            {% endif %}
+                                                                            </td>
                                                                         <td class="survey_edit_key"><a {% icon_style 'delete' %} href="/section/branch/{{ branch.id }}/?delete=true" class="icon" title="{% trans "Delete" %}">&nbsp;</a></td>
                                                                     {% endif %}
                                                                 </tr>

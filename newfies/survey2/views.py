@@ -822,9 +822,15 @@ def section_branch_change(request, id):
 
 
     section = Section.objects.get(pk=int(id))
-    form = BranchingForm(request.user, section.survey_id, initial={'section': id})
+    form = BranchingForm(request.user,
+                         section.survey_id,
+                         section.id,
+                         initial={'section': id})
     if request.method == 'POST':
-        form = BranchingForm(request.user, section.survey_id, request.POST)
+        form = BranchingForm(request.user,
+                             section.survey_id,
+                             section.id,
+                             request.POST)
         if form.is_valid():
             obj = form.save()
             request.session["msg"] =\

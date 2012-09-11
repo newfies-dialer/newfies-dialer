@@ -34,14 +34,18 @@ def get_audiofile_list(user):
     return list_af
 
 
-def get_section_question_list(user, survey_id):
+def get_section_question_list(user, survey_id, section_id):
     """Get survey question list for logged in user
     with default none option"""
+    section_branch_list = \
+        Branching.objects.values_list('section_id', flat=True)\
+                         .filter(section_id=section_id)
+
     list_sq = []
     list_sq.append(('', _('Hang up')))
 
-    list = Section.objects.filter(user=user,
-                                  survey_id=survey_id)
+    list = Section.objects.filter(user=user, survey_id=survey_id)\
+            .exclude(id__in=section_branch_list)
     for i in list:
         if i.question:
             q_string = i.question
@@ -221,12 +225,12 @@ class BranchingForm(ModelForm):
         model = Branching
         fields = ['keyresult', 'section', 'goto']
 
-    def __init__(self, user, survey_id, *args, **kwargs):
+    def __init__(self, user, survey_id, section_id, *args, **kwargs):
         super(BranchingForm, self).__init__(*args, **kwargs)
         self.fields['keyresult'].widget.attrs['class'] = 'span2'
         self.fields['section'].widget = forms.HiddenInput()
         self.fields['goto'].choices = \
-            get_section_question_list(user, survey_id)
+            get_section_question_list(user, survey_id, section_id)
 
 
 class SurveyReportForm(forms.Form):

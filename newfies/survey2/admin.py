@@ -51,7 +51,7 @@ class ResultAdmin(admin.ModelAdmin):
 
     """Allows the administrator to view and modify survey campaign result."""
 
-    list_display = ('id', 'campaign', 'survey', 'callid', 'created_date')
+    list_display = ('id', 'campaign', 'survey', 'created_date')
     search_fields = ['campaign', 'survey', 'question']
     list_filter = ['created_date', 'survey']
     list_display_links = ('id',)

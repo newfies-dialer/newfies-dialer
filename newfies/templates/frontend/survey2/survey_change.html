@@ -166,7 +166,8 @@
                                         {% if section.type == 1 %}
                                             <div class="row">
                                                 <div class="span8">
-                                                    {{ section.phrasing }}
+                                                    <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}<br/>
+                                                    <b>{% trans "question"|title %} :</b> {{ section.question }}<br/>
                                                 </div>
                                             </div>
                                         {% endif %}
@@ -175,7 +176,8 @@
                                         {% if section.type == 2 %}
                                             <div class="row">
                                                 <div class="span8">
-                                                    {{ section.question }}
+                                                    <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}<br/>
+                                                    <b>{% trans "question"|title %} :</b> {{ section.question }}<br/>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -218,7 +220,9 @@
                                         {% if section.type == 3 %}
                                             <div class="row">
                                                 <div class="span8">
-                                                    {{ section.question }} - {% trans "From 1 to" %} {{ section.rating_laps }}
+                                                    <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}<br/>
+                                                    <b>{% trans "question"|title %} :</b> {{ section.question }}<br/>
+                                                    {% trans "From 1 to" %} {{ section.rating_laps }}
                                                 </div>
                                             </div>
                                         {% endif %}
@@ -227,7 +231,8 @@
                                         {% if section.type == 4 %}
                                             <div class="row">
                                                 <div class="span8">
-                                                    {{ section.question }}<br/>
+                                                    <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}<br/>
+                                                    <b>{% trans "question"|title %} :</b> {{ section.question }}<br/>
                                                     {% if section.validate_number %}
                                                         {% trans "Minimum" %} : {{ section.min_number }} <br/>
                                                         {% trans "Maximum" %} : {{ section.max_number }}
@@ -240,7 +245,8 @@
                                         {% if section.type == 5 %}
                                             <div class="row">
                                                 <div class="span8">
-                                                    {{ section.phrasing }}<br/>
+                                                    <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}<br/>
+                                                    <b>{% trans "question"|title %} :</b> {{ section.question }}<br/>
                                                 </div>
                                             </div>
                                         {% endif %}
@@ -257,54 +263,54 @@
                                             </div>
                                         {% endif %}
 
-                                            <!--branching-->
-                                            {% if branching_list %}
+                                        <!--branching-->
+                                        {% if branching_list %}
 
-                                                {% if section.id in branching_section_list %}
-                                                <div class="row">
-                                                    <div class="span8">
-                                                        <b>{% trans "Branching" %}</b><br/>
-                                                        <table class="table table-striped table-bordered table-condensed">
-                                                            <thead>
+                                            {% if section.id in branching_section_list %}
+                                            <div class="row">
+                                                <div class="span8">
+                                                    <b>{% trans "Branching" %}</b><br/>
+                                                    <table class="table table-striped table-bordered table-condensed">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>{% trans "Keys" %}</th>
+                                                            <th class="survey_edit_key">&nbsp;</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for branch in branching_list %}
                                                             <tr>
-                                                                <th>{% trans "Keys result" %}</th>
-                                                                <th class="survey_edit_key">&nbsp;</th>
+                                                                {% if branch.section_id == section.id %}
+                                                                    <td>
+                                                                        {% trans "If the respondent picks " %}
+                                                                        {% if branch.keyresult %}
+                                                                            {{ branch.keyresult }}
+                                                                        {% else %}
+                                                                            {% trans "None" %}
+                                                                        {% endif %}
+                                                                        &nbsp;
+                                                                        {% trans "then go to #" %}
+                                                                        {% if branch.goto.id %}
+                                                                            {{ branch.goto.id }}&nbsp;
+                                                                            {% if branch.goto.question %}
+                                                                                {{ branch.goto.question }}
+                                                                            {% else %}
+                                                                                {{ branch.goto.phrasing }}
+                                                                            {% endif %}
+                                                                        {% else %}
+                                                                            &nbsp;{% trans "Hang up" %}
+                                                                        {% endif %}
+                                                                    </td>
+                                                                    <td class="survey_edit_key"><a {% icon_style 'delete' %} href="/section/branch/{{ branch.id }}/?delete=true" class="icon" title="{% trans "Delete" %}">&nbsp;</a></td>
+                                                                {% endif %}
                                                             </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            {% for branch in branching_list %}
-                                                                <tr>
-                                                                    {% if branch.section_id == section.id %}
-                                                                        <td>
-                                                                            {% trans "If the respondent picks " %}
-                                                                            {% if branch.keyresult %}
-                                                                                {{ branch.keyresult }}
-                                                                            {% else %}
-                                                                                {% trans "None" %}
-                                                                            {% endif %}
-                                                                            &nbsp;
-                                                                            {% trans "then go to #" %}
-                                                                            {% if branch.goto.id %}
-                                                                                {{ branch.goto.id }}&nbsp;
-                                                                                {% if branch.goto.question %}
-                                                                                    {{ branch.goto.question }}
-                                                                                {% else %}
-                                                                                    {{ branch.goto.phrasing }}
-                                                                                {% endif %}
-                                                                            {% else %}
-                                                                                &nbsp;{% trans "Hang up" %}
-                                                                            {% endif %}
-                                                                        </td>
-                                                                        <td class="survey_edit_key"><a {% icon_style 'delete' %} href="/section/branch/{{ branch.id }}/?delete=true" class="icon" title="{% trans "Delete" %}">&nbsp;</a></td>
-                                                                    {% endif %}
-                                                                </tr>
-                                                            {% endfor %}
-                                                            </tbody>
+                                                        {% endfor %}
+                                                        </tbody>
                                                         </table>
-                                                    </div>
                                                 </div>
-                                                {% endif %}
+                                            </div>
                                             {% endif %}
+                                        {% endif %}
 
                                         </div>
 

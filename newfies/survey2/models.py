@@ -197,6 +197,7 @@ class Branching(models.Model):
     updated_date = models.DateTimeField(auto_now=True)
     section = models.ForeignKey(Section,
                     related_name='Section')
+    #0 to goto hangup
     goto = models.ForeignKey(Section, null=True,
                     blank=True, related_name='Goto Section')
 

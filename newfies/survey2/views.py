@@ -34,6 +34,7 @@ from survey2.forms import SurveyForm,\
                           EnterNumberSectionForm,\
                           RecordMessageSectionForm,\
                           PatchThroughSectionForm,\
+                          BranchingForm,\
                           SurveyDetailReportForm
 from dialer_cdr.models import Callrequest, VoIPCall
 from utils.helper import grid_common_function, get_grid_update_delete_link
@@ -797,15 +798,24 @@ def section_change(request, id):
 def section_branch_change(request, id):
     """"""
     section = Section.objects.get(pk=int(id))
+    form = BranchingForm(initial={'section': id})
+    if request.method == 'POST':
+        form = BranchingForm(request.POST, instance=section)
+        if form.is_valid():
+            obj = form.save()
+            request.session["msg"] =\
+                _('Branching is added successfully.')
+            return HttpResponseRedirect('/survey2/%s/#row%s'\
+                % (section.survey_id, id))
 
     template = 'frontend/survey2/section_branch_change.html'
     data = {
-        'form': '',#form,
+        'form': form,
         'survey_id': section.survey_id,
         'section_id': section.id,
         'module': current_view(request),
         'err_msg': request.session.get('err_msg'),
-        'action': 'update',
+        'action': 'add',
         }
     request.session['err_msg'] = ''
     return render_to_response(template, data,

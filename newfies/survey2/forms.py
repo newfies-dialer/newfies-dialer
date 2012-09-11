@@ -16,7 +16,7 @@ from django import forms
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
-from survey2.models import Survey, Section
+from survey2.models import Survey, Section, Branching
 from dialer_campaign.models import Campaign
 from dialer_cdr.forms import VoipSearchForm
 from audiofield.models import AudioFile
@@ -208,6 +208,22 @@ class PatchThroughSectionForm(ModelForm):
         self.fields['phrasing'].widget.attrs['class'] = 'span5'
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
+
+
+class BranchingForm(ModelForm):
+    """BranchingForm ModelForm"""
+
+    class Meta:
+        model = Branching
+        fields = ['keyresult', 'section', 'goto']
+
+    def __init__(self, *args, **kwargs):
+        super(BranchingForm, self).__init__(*args, **kwargs)
+        #instance = getattr(self, 'instance', None)
+
+        self.fields['keyresult'].widget.attrs['class'] = 'span2'
+        self.fields['section'].widget = forms.HiddenInput()
+        #self.fields['goto'].widget.attrs['onchange'] = 'this.form.submit();'
 
 
 class SurveyReportForm(forms.Form):

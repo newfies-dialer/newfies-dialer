@@ -17,11 +17,11 @@
 
     {% block content %}
 
-        {% if action == 'update' %}
+        {% if action == 'add' %}
             {% block content_header %}
                 <a class="close" data-dismiss="modal" >&times;</a>
                 <h3>
-                    {% trans "Update" %} {% trans "Section Branch" %}
+                    {% trans "Add" %} {% trans "Section Branch" %}
                     <small></small>
                 </h3>
             {% endblock %}
@@ -59,12 +59,31 @@
             <div class="modal-body">
         {% endif %}
 
-    <form class="well" method="POST" action="{% if action == 'update' %}/section/{{ section_id }}/{% else %}/section/add/?survey_id={{ survey_id }}{% endif %}" enctype="multipart/form-data" id="update_form">
+    <form class="well" method="POST" action="/section/branch/{{ section_id }}/" enctype="multipart/form-data" id="update_form">
     {% csrf_token %}
-    {{ form.survey }}
+    {{ form.section }}
 
     <div class="row">
-
+        <div class="span2 clearfix{% if form.keyresult.errors %} control-group error{% endif %}">
+            <label class="control-label" for="id_{{ form.keyresult.name }}">{{ form.keyresult.label }}</label>
+            <div class="input">
+                {{ form.keyresult }}
+                {% if form.keyresult.errors %}
+                    <span class="help-inline">{{ form.keyresult.errors|removetags:"ul li"|safe }}</span>
+                {% endif %}
+                <span class="help-block">{{ form.keyresult.help_text|safe }} </span>
+            </div>
+        </div>
+        <div class="span2 clearfix{% if form.goto.errors %} control-group error{% endif %}">
+            <label class="control-label" for="id_{{ form.goto.name }}">{{ form.goto.label }}</label>
+            <div class="input">
+                {{ form.goto }}
+                {% if form.goto.errors %}
+                    <span class="help-inline">{{ form.goto.errors|removetags:"ul li"|safe }}</span>
+                {% endif %}
+                <span class="help-block">{{ form.goto.help_text|safe }} </span>
+            </div>
+        </div>
     </div>
 
     <div class="actions">

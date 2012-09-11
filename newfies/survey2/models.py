@@ -251,7 +251,7 @@ class Result(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return '[%s] %s = %s' % (self.id, self.question, self.response)
+        return '[%s] %s = %s' % (self.id, self.section, self.response)
 
 
 class ResultSum(models.Model):
@@ -266,10 +266,10 @@ class ResultSum(models.Model):
     section = models.ForeignKey(Section, related_name='ResultSum Section')
     response = models.CharField(max_length=150, blank=False, db_index=True,
                 verbose_name=_("Response"))  # Orange ; Kiwi
-    count = models.IntegerField(max_length=20, null=True, blank=True,
+    count = models.IntegerField(max_length=20, default=0,
                 verbose_name=_("Result count"))
 
     created_date = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return '[%s] %s = %s' % (self.id, self.question, self.response)
+        return '[%s] %s = %s' % (self.id, self.section, self.response)

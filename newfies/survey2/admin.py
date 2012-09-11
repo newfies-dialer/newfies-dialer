@@ -14,7 +14,7 @@
 #
 
 from django.contrib import admin
-from survey2.models import Survey, Section, Result
+from survey2.models import Survey, Section, Result, ResultSum
 from adminsortable.admin import SortableAdmin, SortableTabularInline
 
 
@@ -51,10 +51,25 @@ class ResultAdmin(admin.ModelAdmin):
 
     """Allows the administrator to view and modify survey campaign result."""
 
-    list_display = ('id', 'campaign', 'survey', 'created_date')
-    search_fields = ['campaign', 'survey', 'question']
+    list_display = ('id', 'callrequest', 'campaign', 'survey', 'section',
+                    'response', 'record_file', 'created_date')
+    search_fields = ['campaign', 'survey']
     list_filter = ['created_date', 'survey']
     list_display_links = ('id',)
     ordering = ('id', )
 
 admin.site.register(Result, ResultAdmin)
+
+
+class ResultSumAdmin(admin.ModelAdmin):
+
+    """Allows the administrator to view and modify survey campaign result."""
+
+    list_display = ('id', 'campaign', 'survey', 'section', 'response',
+                    'count', 'created_date')
+    search_fields = ['campaign', 'survey']
+    list_filter = ['created_date', 'survey']
+    list_display_links = ('id',)
+    ordering = ('id', )
+
+admin.site.register(ResultSum, ResultSumAdmin)

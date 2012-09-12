@@ -16,21 +16,22 @@ from django.conf.urls import patterns
 
 
 urlpatterns = patterns('survey2.views',
-    # Survey urls
-    (r'^survey2/$', 'survey_list'),
-    (r'^survey2_grid/$', 'survey_grid'),
-    (r'^survey2/add/$', 'survey_add'),
-    (r'^survey2/del/(.+)/$', 'survey_del'),
-    #(r'^survey2/question_list/$', 'survey_question_list'),
-    (r'^survey2/(.+)/$', 'survey_change'),
-
-    (r'^section/add/$', 'section_add'),
-    (r'^section/(?P<id>\w+)/$', 'section_change'),
-    (r'^section/branch/(?P<id>\w+)/$', 'section_branch_change'),
-
-    (r'^survey2_finestatemachine/$', 'survey_finestatemachine'),
-
-    (r'^survey2_report/$', 'survey_report'),
-    (r'^export2_surveycall_report/$', 'export_surveycall_report'),
-
-)
+                       # Survey urls
+                       (r'^survey2/$', 'survey_list'),
+                       (r'^survey2_grid/$', 'survey_grid'),
+                       (r'^survey2/add/$', 'survey_add'),
+                       (r'^survey2/del/(.+)/$', 'survey_del'),
+                       (r'^survey2/(.+)/$', 'survey_change'),
+                       # Section urls
+                       (r'^section/add/$', 'section_add'),
+                       (r'^section/(?P<id>\w+)/$', 'section_change'),
+                       (r'^section/branch/(?P<id>\w+)/$',
+                        'section_branch_change'),
+                        # Survey FSM urls
+                       (r'^survey2_finestatemachine/$',
+                        'survey_finestatemachine'),
+                       # Survey Report urls
+                       (r'^survey2_report/$', 'survey_report'),
+                       (r'^export2_surveycall_report/$',
+                        'export_surveycall_report'),
+                       )

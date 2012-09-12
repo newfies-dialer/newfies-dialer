@@ -15,7 +15,7 @@
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required,\
-                                           permission_required
+    permission_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.db.models import Sum, Avg, Count
@@ -26,16 +26,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
 from dialer_campaign.models import Campaign
 from dialer_campaign.views import notice_count
-from survey2.models import Survey, Section, Result, Branching
-from survey2.forms import SurveyForm,\
-                          VoiceSectionForm,\
-                          MultipleChoiceSectionForm,\
-                          RatingSectionForm,\
-                          EnterNumberSectionForm,\
-                          RecordMessageSectionForm,\
-                          PatchThroughSectionForm,\
-                          BranchingForm,\
-                          SurveyDetailReportForm
+from survey2.models import Survey, Section, Branching
+from survey2.forms import SurveyForm, VoiceSectionForm,\
+    MultipleChoiceSectionForm, RatingSectionForm,\
+    EnterNumberSectionForm, RecordMessageSectionForm,\
+    PatchThroughSectionForm, BranchingForm,\
+    SurveyDetailReportForm
 from dialer_cdr.models import Callrequest, VoIPCall
 from utils.helper import grid_common_function, get_grid_update_delete_link
 from common.common_functions import variable_value, current_view
@@ -80,8 +76,8 @@ def survey_finestatemachine(request):
 
     if not opt_ALegRequestUUID:
         return HttpResponse(
-                content="Error : missing parameter ALegRequestUUID",
-                status=400)
+            content="Error : missing parameter ALegRequestUUID",
+            status=400)
 
     #Create the keys to store the cache
     key_state = "%s_state" % opt_CallUUID
@@ -115,8 +111,8 @@ def survey_finestatemachine(request):
             .get(request_uuid=opt_ALegRequestUUID)
     except:
         return HttpResponse(
-                content="Error : retrieving Callrequest with the ALegRequestUUID",
-                status=400)
+            content="Error : retrieving Callrequest with the ALegRequestUUID",
+            status=400)
 
     surveyapp_id = obj_callrequest.object_id
     cache.set(key_surveyapp, surveyapp_id, 21600)  # 21600 seconds = 6 hours
@@ -146,13 +142,13 @@ def survey_finestatemachine(request):
         except:
             RecordFile = ''
         new_surveycampaignresult = SurveyCampaignResult(
-                campaign=obj_callrequest.campaign,
-                surveyapp_id=surveyapp_id,
-                callid=opt_CallUUID,
-                question=obj_prev_qt,
-                record_file=RecordFile,
-                recording_duration=RecordingDuration,
-                callrequest=obj_callrequest)
+            campaign=obj_callrequest.campaign,
+            surveyapp_id=surveyapp_id,
+            callid=opt_CallUUID,
+            question=obj_prev_qt,
+            record_file=RecordFile,
+            recording_duration=RecordingDuration,
+            callrequest=obj_callrequest)
         new_surveycampaignresult.save()
     #Check if we receive a DTMF for the previous question then store the result
     elif DTMF and len(DTMF) > 0 and current_state > 0:
@@ -160,8 +156,8 @@ def survey_finestatemachine(request):
         try:
             #Get list of responses of the previous Question
             surveyresponse = SurveyResponse.objects.get(
-                            key=DTMF,
-                            surveyquestion=obj_prev_qt)
+                key=DTMF,
+                surveyquestion=obj_prev_qt)
             if not surveyresponse or not surveyresponse.keyvalue:
                 response_value = DTMF
             else:
@@ -181,12 +177,12 @@ def survey_finestatemachine(request):
             response_value = DTMF
         try:
             new_surveycampaignresult = SurveyCampaignResult(
-                    campaign=obj_callrequest.campaign,
-                    surveyapp_id=surveyapp_id,
-                    callid=opt_CallUUID,
-                    question=obj_prev_qt,
-                    response=response_value,
-                    callrequest=obj_callrequest)
+                campaign=obj_callrequest.campaign,
+                surveyapp_id=surveyapp_id,
+                callid=opt_CallUUID,
+                question=obj_prev_qt,
+                response=response_value,
+                callrequest=obj_callrequest)
             new_surveycampaignresult.save()
 
         except IndexError:
@@ -292,19 +288,19 @@ def survey_grid(request):
 
     count = survey_list.count()
     survey_list =\
-    survey_list.order_by(sortorder_sign + sortname)[start_page:end_page]
+        survey_list.order_by(sortorder_sign + sortname)[start_page:end_page]
 
     rows = [{'id': row['id'],
              'cell': ['<input type="checkbox" name="select" class="checkbox"\
                 value="' + str(row['id']) + '" />',
-                row['name'],
-                row['description'],
-                row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
-                get_grid_update_delete_link(request, row['id'],
-                    'survey.change_surveyapp',  _('Update survey'), 'update')+\
-                get_grid_update_delete_link(request, row['id'],
-                    'survey.delete_surveyapp', _('Delete survey'), 'delete'),
-           ]} for row in survey_list]
+                      row['name'],
+                      row['description'],
+                      row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
+                      get_grid_update_delete_link(request, row['id'],
+                                                  'survey.change_surveyapp', _('Update survey'), 'update') +
+                      get_grid_update_delete_link(request, row['id'],
+                                                  'survey.delete_surveyapp', _('Delete survey'), 'delete'),
+                      ]} for row in survey_list]
     data = {'rows': rows,
             'page': page,
             'total': count}
@@ -333,7 +329,7 @@ def survey_list(request):
     }
     request.session['msg'] = ''
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @permission_required('survey2.add_survey', login_url='/')
@@ -359,7 +355,7 @@ def survey_add(request):
             obj.user = User.objects.get(username=request.user)
             obj.save()
             request.session["msg"] = _('"%(name)s" is added.') %\
-                                     {'name': request.POST['name']}
+                {'name': request.POST['name']}
             return HttpResponseRedirect('/survey2/%s/' % (obj.id))
     template = 'frontend/survey2/survey_change.html'
     data = {
@@ -368,7 +364,7 @@ def survey_add(request):
         'action': 'add',
     }
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @permission_required('survey2.delete_survey', login_url='/')
@@ -403,7 +399,7 @@ def survey_del(request, object_id):
         survey_list = Survey.objects.extra(where=['id IN (%s)' % values])
         request.session["msg"] =\
             _('%(count)s survey(s) are deleted.')\
-                % {'count': survey_list.count()}
+            % {'count': survey_list.count()}
         survey_list.delete()
         return HttpResponseRedirect('/survey2/')
 
@@ -439,8 +435,8 @@ def section_add(request):
                     obj.save()
                     request.session["msg"] = \
                         _('Voice Section is added successfully.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'\
-                        % (obj.survey_id, obj.id))
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = \
                         _('Voice Section is not added.')
@@ -464,15 +460,17 @@ def section_add(request):
                     obj.save()
                     request.session["msg"] = \
                         _('Multiple Choice Section is added successfully.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'\
-                        % (obj.survey_id, obj.id))
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = \
                         _('Multiple Choice Section is not added.')
-                    form = MultipleChoiceSectionForm(request.user, request.POST)
+                    form = MultipleChoiceSectionForm(
+                        request.user, request.POST)
 
             if request.POST.get('add') is None:
-                request.session["err_msg"] = _('Multiple Choice Section is not added.')
+                request.session["err_msg"] = _(
+                    'Multiple Choice Section is not added.')
                 form = MultipleChoiceSectionForm(request.user,
                                                  initial={'survey': survey,
                                                           'type': '2'})
@@ -489,8 +487,8 @@ def section_add(request):
                     obj.save()
                     request.session["msg"] = \
                         _('Rating Section is added successfully.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'\
-                        % (obj.survey_id, obj.id))
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = \
                         _('Rating Section is not added.')
@@ -514,8 +512,8 @@ def section_add(request):
                     obj.save()
                     request.session["msg"] =\
                         _('Enter Number Section is added successfully.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'\
-                        % (obj.survey_id, obj.id))
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] =\
                         _('Enter Number Section is not added.')
@@ -539,8 +537,8 @@ def section_add(request):
                     obj.save()
                     request.session["msg"] =\
                         _('Record Message Section is added successfully.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'\
-                        % (obj.survey_id, obj.id))
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] =\
                         _('Record Message Section is not added.')
@@ -564,8 +562,8 @@ def section_add(request):
                     obj.save()
                     request.session["msg"] =\
                         _('Patch-Through Section is added successfully.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'\
-                        % (obj.survey_id, obj.id))
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] =\
                         _('Patch-Through Section is not added.')
@@ -588,7 +586,7 @@ def section_add(request):
     }
     request.session['err_msg'] = ''
     return render_to_response(template, data,
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @login_required
@@ -637,10 +635,11 @@ def section_change(request, id):
                     obj = form.save()
                     request.session["msg"] = \
                         _('Voice Section is updated successfully.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'\
-                        % (obj.survey_id, obj.id))
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
                 else:
-                    request.session["err_msg"] = _('Voice Section is not updated.')
+                    request.session["err_msg"] = _(
+                        'Voice Section is not updated.')
                     form = VoiceSectionForm(request.user,
                                             request.POST,
                                             instance=section)
@@ -661,8 +660,8 @@ def section_change(request, id):
                     obj = form.save()
                     request.session["msg"] = \
                         _('Multiple Choice Section is updated successfully.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'\
-                        % (obj.survey_id, obj.id))
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = \
                         _('Multiple Choice Section is not updated.')
@@ -687,8 +686,8 @@ def section_change(request, id):
                     obj = form.save()
                     request.session["msg"] =\
                         _('Rating Section is updated successfully.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'\
-                        % (obj.survey_id, obj.id))
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] =\
                         _('Rating Section is not updated.')
@@ -713,8 +712,8 @@ def section_change(request, id):
                     obj = form.save()
                     request.session["msg"] =\
                         _('Enter Number Section is updated successfully.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'\
-                        % (obj.survey_id, obj.id))
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] =\
                         _('Enter Number Section is not updated.')
@@ -739,8 +738,8 @@ def section_change(request, id):
                     obj = form.save()
                     request.session["msg"] =\
                         _('Record Message Section is updated successfully.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'\
-                        % (obj.survey_id, obj.id))
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] =\
                         _('Record Message Section is not updated.')
@@ -765,8 +764,8 @@ def section_change(request, id):
                     obj = form.save()
                     request.session["msg"] =\
                         _('Patch Through Section is updated successfully.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'\
-                        % (obj.survey_id, obj.id))
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] =\
                         _('Patch Through Section is not updated.')
@@ -791,7 +790,7 @@ def section_change(request, id):
     }
     request.session['err_msg'] = ''
     return render_to_response(template, data,
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @login_required
@@ -817,8 +816,8 @@ def section_branch_change(request, id):
         branching_obj.delete()
         request.session["msg"] =\
             _('Branching is deleted successfully.')
-        return HttpResponseRedirect('/survey2/%s/#row%s'\
-            % (survey_id, section_id))
+        return HttpResponseRedirect('/survey2/%s/#row%s'
+                                    % (survey_id, section_id))
 
     section = Section.objects.get(pk=int(id))
     form = BranchingForm(request.user,
@@ -831,11 +830,11 @@ def section_branch_change(request, id):
                              section.id,
                              request.POST)
         if form.is_valid():
-            obj = form.save()
+            form.save()
             request.session["msg"] =\
                 _('Branching is added successfully.')
-            return HttpResponseRedirect('/survey2/%s/#row%s'\
-                % (section.survey_id, id))
+            return HttpResponseRedirect('/survey2/%s/#row%s'
+                                        % (section.survey_id, id))
         else:
             form._errors["keyresult"] = \
                 _("duplicate record keyresult with goto.")
@@ -849,10 +848,10 @@ def section_branch_change(request, id):
         'module': current_view(request),
         'err_msg': request.session.get('err_msg'),
         'action': 'add',
-        }
+    }
     request.session['err_msg'] = ''
     return render_to_response(template, data,
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @permission_required('survey2.change_survey', login_url='/')
@@ -879,7 +878,8 @@ def survey_change(request, object_id):
         },
     ).order_by('order')
     form = SurveyForm(instance=survey)
-    branching_list = Branching.objects.filter(section__survey=survey).order_by('id')
+    branching_list = Branching.objects.filter(
+        section__survey=survey).order_by('id')
     branching_section_list = []
     branching_section_list = \
         branching_list.values_list('section_id', flat=True).distinct()
@@ -911,7 +911,7 @@ def survey_change(request, object_id):
     }
     request.session['msg'] = ''
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 def survey_cdr_daily_report(kwargs, from_query, select_group_query):
@@ -935,7 +935,7 @@ def survey_cdr_daily_report(kwargs, from_query, select_group_query):
         .extra(
             select={
                 'question_response': select_group_query + from_query,
-                },
+            },
         )
 
     # Following code will count total voip calls, duration
@@ -947,8 +947,8 @@ def survey_cdr_daily_report(kwargs, from_query, select_group_query):
         total_calls =\
             sum([x['starting_date__count'] for x in total_data])
         total_avg_duration =\
-            (sum([x['duration__avg']\
-                for x in total_data])) / total_data.count()
+            (sum([x['duration__avg']
+                  for x in total_data])) / total_data.count()
 
     survey_cdr_daily_data = {
         'total_data': total_data,
@@ -1008,8 +1008,8 @@ def survey_report(request):
     from_date = tday.strftime("%Y-%m-%d")
     to_date = tday.strftime("%Y-%m-%d")
     form = SurveyDetailReportForm(request.user,
-        initial={'from_date': from_date,
-                 'to_date': to_date})
+                                  initial={'from_date': from_date,
+                                           'to_date': to_date})
     search_tag = 1
     survey_result = ''
     col_name_with_order = []
@@ -1039,18 +1039,18 @@ def survey_report(request):
                 # From
                 from_date = request.POST['from_date']
                 start_date = datetime(int(from_date[0:4]),
-                    int(from_date[5:7]),
-                    int(from_date[8:10]),
-                    0, 0, 0, 0)
+                                      int(from_date[5:7]),
+                                      int(from_date[8:10]),
+                                      0, 0, 0, 0)
                 request.session['session_from_date'] = from_date
 
             if "to_date" in request.POST:
                 # To
                 to_date = request.POST['to_date']
                 end_date = datetime(int(to_date[0:4]),
-                    int(to_date[5:7]),
-                    int(to_date[8:10]),
-                    23, 59, 59, 999999)
+                                    int(to_date[5:7]),
+                                    int(to_date[8:10]),
+                                    23, 59, 59, 999999)
                 request.session['session_to_date'] = to_date
 
             campaign_id = variable_value(request, 'campaign')
@@ -1071,8 +1071,8 @@ def survey_report(request):
     except NameError:
         tday = datetime.today()
         from_date = tday.strftime('%Y-%m-01')
-        last_day = ((datetime(tday.year, tday.month, 1, 23, 59, 59, 999999) +\
-                     relativedelta(months=1)) -\
+        last_day = ((datetime(tday.year, tday.month, 1, 23, 59, 59, 999999) +
+                     relativedelta(months=1)) -
                     relativedelta(days=1)).strftime('%d')
         to_date = tday.strftime('%Y-%m-' + last_day)
         search_tag = 0
@@ -1086,13 +1086,13 @@ def survey_report(request):
         request.session['session_search_tag'] = search_tag
 
     start_date = datetime(int(from_date[0:4]),
-        int(from_date[5:7]),
-        int(from_date[8:10]),
-        0, 0, 0, 0)
+                          int(from_date[5:7]),
+                          int(from_date[8:10]),
+                          0, 0, 0, 0)
     end_date = datetime(int(to_date[0:4]),
-        int(to_date[5:7]),
-        int(to_date[8:10]),
-        23, 59, 59, 999999)
+                        int(to_date[5:7]),
+                        int(to_date[8:10]),
+                        23, 59, 59, 999999)
 
     kwargs = {}
     kwargs['user'] = request.user
@@ -1159,18 +1159,18 @@ def survey_report(request):
         # Get daily report from session while using pagination & sorting
         if request.GET.get('page') or request.GET.get('sort_by'):
             survey_cdr_daily_data =\
-            request.session['session_survey_cdr_daily_data']
+                request.session['session_survey_cdr_daily_data']
         else:
             survey_cdr_daily_data = survey_cdr_daily_report(kwargs,
-                from_query,
-                select_group_query)
+                                                            from_query,
+                                                            select_group_query)
             request.session['session_survey_cdr_daily_data'] =\
-            survey_cdr_daily_data
+                survey_cdr_daily_data
     except:
         rows = []
         if request.method == 'POST':
             request.session["err_msg"] =\
-            _('No campaign attached with survey.')
+                _('No campaign attached with survey.')
 
     template = 'frontend/survey2/survey_report.html'
 
@@ -1193,11 +1193,11 @@ def survey_report(request):
         'search_tag': search_tag,
         'start_date': start_date,
         'end_date': end_date,
-        }
+    }
     request.session['msg'] = ''
     request.session['err_msg'] = ''
     return render_to_response(template, data,
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @login_required
@@ -1230,7 +1230,7 @@ def export_surveycall_report(request):
     survey_qst = False
     if str(campaign_obj.content_type) == 'Survey':
         survey_qst = SurveyQuestion.objects\
-        .filter(surveyapp_id=int(campaign_obj.object_id))
+            .filter(surveyapp_id=int(campaign_obj.object_id))
         for i in survey_qst:
             column_list.append(str(i.question.replace(',', ' ')))
     writer.writerow(column_list)
@@ -1241,11 +1241,11 @@ def export_surveycall_report(request):
             i.phone_number,
             i.duration,
             i.disposition,
-            ]
+        ]
         if survey_qst:
             for qst in survey_qst:
                 result_row_list.append(
                     export_question_result(i.question_response,
-                        qst.question))
+                                           qst.question))
         writer.writerow(result_row_list)
     return response

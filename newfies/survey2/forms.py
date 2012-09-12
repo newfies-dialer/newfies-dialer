@@ -44,8 +44,8 @@ def get_section_question_list(user, survey_id, section_id):
     list_sq.append(('', _('Hang up')))
 
     list = Section.objects.filter(user=user, survey_id=survey_id)\
-            .exclude(pk=section_id)\
-            .exclude(id__in=section_branch_list)
+        .exclude(pk=section_id)\
+        .exclude(id__in=section_branch_list)
     for i in list:
         if i.question:
             q_string = i.question
@@ -60,8 +60,8 @@ def get_question_choice_list(section_id):
     """Get survey question list for logged in user
     with default none option"""
     keys_list = Branching.objects\
-                        .values_list('keys', flat=True)\
-                        .filter(section_id=int(section_id))
+        .values_list('keys', flat=True)\
+        .filter(section_id=int(section_id))
     list_sq = []
     obj_section = Section.objects.get(id=int(section_id))
 
@@ -96,8 +96,8 @@ def get_rating_choice_list(section_id):
     """Get survey rating laps for logged in user
     with default anything option"""
     keys_list = Branching.objects\
-                .values_list('keys', flat=True)\
-                .filter(section_id=int(section_id))
+        .values_list('keys', flat=True)\
+        .filter(section_id=int(section_id))
 
     obj_section = Section.objects.get(id=int(section_id))
 
@@ -300,7 +300,7 @@ class BranchingForm(ModelForm):
                 forms.ChoiceField(choices=get_rating_choice_list(section_id))
 
         # voice & record section
-        if obj_section.type == 1 or  obj_section.type == 5:
+        if obj_section.type == 1 or obj_section.type == 5:
             self.fields['keys'].initial = 0
             self.fields['keys'].widget = forms.HiddenInput()
 
@@ -320,7 +320,7 @@ class SurveyReportForm(forms.Form):
             list = []
             try:
                 camp_list = Campaign.objects.filter(user=user,
-                        content_type=ContentType.objects.get(name='survey'))
+                                                    content_type=ContentType.objects.get(name='survey'))
                 pb_list = ((l.id, l.name) for l in camp_list)
                 for i in pb_list:
                     list.append((i[0], i[1]))
@@ -333,4 +333,4 @@ class SurveyDetailReportForm(VoipSearchForm, SurveyReportForm):
 
     def __init__(self, user, *args, **kwargs):
         super(SurveyDetailReportForm, self).__init__(user, *args, **kwargs)
-        self.fields.keyOrder = [ 'campaign', 'from_date', 'to_date']
+        self.fields.keyOrder = ['campaign', 'from_date', 'to_date']

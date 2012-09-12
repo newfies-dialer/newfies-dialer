@@ -51,7 +51,7 @@ def get_section_question_list(survey_id, section_id):
             q_string = i.question
         else:
             q_string = i.phrasing
-        list_sq.append((i.id, "Goto# " + q_string))
+        list_sq.append((i.id, "Goto " + str(i.id) + " # " + q_string))
 
     return list_sq
 

@@ -112,7 +112,7 @@ class Section(Sortable):
                                           related_name='survey_invalid_audiofile')
 
     retries = models.IntegerField(max_length=1, null=True, blank=True,
-                                  verbose_name=_("retries"),
+                                  verbose_name=_("retries"), default=0,
                                   help_text=_('Retries this section until it\'s valid'))
 
     timeout = models.IntegerField(max_length=2, null=True, blank=True,

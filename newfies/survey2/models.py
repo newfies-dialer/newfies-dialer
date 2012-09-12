@@ -86,43 +86,32 @@ class Section(Sortable):
 
     **Name of DB table**: survey_question
     """
-    class Meta(Sortable.Meta):
-        ordering = Sortable.Meta.ordering + ['survey']
-
     # select section
     type = models.IntegerField(max_length=20, choices=SECTION_TYPE,
                                default='1', blank=True, null=True,
                                verbose_name=_('section type'))
-
-    # for voice section, record message, patch-through
+    # Question is the section label, this is used in the reporting
+    question = models.CharField(max_length=500, blank=False,
+                                verbose_name=_("Question"),
+                                help_text=_('Example : Hotel Service Rating'))
+    # Phrasing is used
     phrasing = models.CharField(max_length=1000, null=True, blank=True,
-                                verbose_name=_('Example : Enter a number between 1 to 5, \
-        press pound key when done'))
-
+                                help_text=_('Example : Enter a number between 1 to 5, press pound key when done'))
     audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
                                   verbose_name=_("Audio File"))
     # use audio file
     use_audiofile = models.BooleanField(default=False,
                                         verbose_name=_('Use audio file'),
                                         help_text=_('Use audio file instead of phrasing'))
-
     invalid_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
-                                          verbose_name=_(
-                                              "Invalid Audio File digits"),
+                                          verbose_name=_("Invalid Audio File digits"),
                                           related_name='survey_invalid_audiofile')
-
     retries = models.IntegerField(max_length=1, null=True, blank=True,
                                   verbose_name=_("retries"), default=0,
                                   help_text=_('Retries this section until it\'s valid'))
-
     timeout = models.IntegerField(max_length=2, null=True, blank=True,
                                   verbose_name=_("timeout"),
                                   help_text=_('Timeout in seconds to press the key(s)'))
-
-    # multiple choice question, rating question, enter a number
-    question = models.CharField(max_length=500,
-                                verbose_name=_("Question"))
-
     # multiple choice question,
     key_0 = models.CharField(max_length=100, null=True, blank=True,
                              verbose_name=_("Result if the user press") + " 0")
@@ -174,6 +163,9 @@ class Section(Sortable):
     updated_date = models.DateTimeField(auto_now=True)
 
     sortable_by = Survey
+
+    class Meta(Sortable.Meta):
+        ordering = Sortable.Meta.ordering + ['survey']
 
     def __unicode__(self):
         return '[%s] %s' % (self.id, self.question)

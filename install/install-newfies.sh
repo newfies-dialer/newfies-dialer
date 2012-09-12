@@ -376,6 +376,7 @@ func_install_frontend(){
         echo "Press Enter to continue or CTRL-C to exit"
         read TEMP
 
+        #TODO: Check if MYSQL
         mkdir /tmp/old-newfies-dialer_$DATETIME
         mv $INSTALL_DIR /tmp/old-newfies-dialer_$DATETIME
         echo "Files from $INSTALL_DIR has been moved to /tmp/old-newfies-dialer_$DATETIME"
@@ -476,7 +477,7 @@ func_install_frontend(){
 
     else
         # Setup settings_local.py for POSTGRESQL
-        sed -i "s/'django.db.backends.sqlite3'/'django.db.backends.mysql'/"  $INSTALL_DIR/settings_local.py
+        sed -i "s/'django.db.backends.sqlite3'/'django.db.backends.postgresql_psycopg2'/"  $INSTALL_DIR/settings_local.py
         sed -i "s/.*'NAME'/       'NAME': '$DATABASENAME',#/"  $INSTALL_DIR/settings_local.py
         sed -i "/'USER'/s/''/'$DB_USERNAME'/" $INSTALL_DIR/settings_local.py
         sed -i "/'PASSWORD'/s/''/'$DB_PASSWORD'/" $INSTALL_DIR/settings_local.py
@@ -485,7 +486,25 @@ func_install_frontend(){
 
         # Create the Database
         echo "Remove Existing Database if exists..."
-        if [ -d "/var/lib/mysql/$DATABASENAME" ]; then
+        if [ `sudo -u postgres psql -qAt --list | egrep '^$DATABASENAME\|' | wc -l` -eq 1 ]; then
+
+            ?????????
+
+
+sudo apt-get install postgresql
+
+#CREATE ROLE
+sudo -u postgres createuser --no-createdb --no-createrole --no-superuser --pwprompt newfiesuser
+
+#CREATE DB
+sudo -u postgres createdb newfies
+
+#sudo -u postgres psql --command="alter user newfiesuser with encrypted password 'password';"
+sudo -u postgres psql --command="grant all privileges on database newfies to newfiesuser;"
+
+psql -h localhost newfies newfiesuser
+
+
             echo "mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e 'DROP DATABASE $DATABASENAME;'"
             mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e "DROP DATABASE $DATABASENAME;"
         fi

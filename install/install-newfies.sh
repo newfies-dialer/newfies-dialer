@@ -34,10 +34,10 @@ KERNELARCH=$(uname -p)
 INSTALL_DIR='/usr/share/newfies'
 INSTALL_DIR_WELCOME='/var/www/newfies'
 DATABASENAME=$INSTALL_DIR'/database/newfies.db'
-MYSQLUSER=
-MYSQLPASSWORD=
-MYHOST=
-MYHOSTPORT=
+DB_USERNAME=
+DB_PASSWORD=
+DB_HOSTNAME=
+DB_PORT=
 #Freeswitch update vars
 FS_INSTALLED_PATH=/usr/local/freeswitch
 CELERYD_USER="celery"
@@ -208,24 +208,24 @@ func_mysql_database_setting() {
     echo ""
 
     echo "Enter Mysql hostname (default:localhost)"
-    read MYHOST
-    if [ -z "$MYHOST" ]; then
-        MYHOST="localhost"
+    read DB_HOSTNAME
+    if [ -z "$DB_HOSTNAME" ]; then
+        DB_HOSTNAME="localhost"
     fi
     echo "Enter Mysql port (default:3306)"
-    read MYHOSTPORT
-    if [ -z "$MYHOSTPORT" ]; then
-        MYHOSTPORT="3306"
+    read DB_PORT
+    if [ -z "$DB_PORT" ]; then
+        DB_PORT="3306"
     fi
     echo "Enter Mysql Username (default:root)"
-    read MYSQLUSER
-    if [ -z "$MYSQLUSER" ]; then
-        MYSQLUSER="root"
+    read DB_USERNAME
+    if [ -z "$DB_USERNAME" ]; then
+        DB_USERNAME="root"
     fi
     echo "Enter Mysql Password (default:password)"
-    read MYSQLPASSWORD
-    if [ -z "$MYSQLPASSWORD" ]; then
-        MYSQLPASSWORD="password"
+    read DB_PASSWORD
+    if [ -z "$DB_PASSWORD" ]; then
+        DB_PASSWORD="password"
     fi
     echo "Enter Database name (default:newfies)"
     read DATABASENAME
@@ -304,7 +304,7 @@ func_install_frontend(){
                 /etc/init.d/mysql start
                 #Configure MySQL
                 /usr/bin/mysql_secure_installation
-				until mysql -u$MYSQLUSER -p$MYSQLPASSWORD -P$MYHOSTPORT -h$MYHOST -e ";" ; do
+				until mysql -u$DB_USERNAME -p$DB_PASSWORD -P$DB_PORT -h$DB_HOSTNAME -e ";" ; do
 					clear
                 	echo "Enter correct database settings"
                 	func_mysql_database_setting
@@ -349,7 +349,7 @@ func_install_frontend(){
                 /etc/init.d/mysqld start
                 #Configure MySQL
                 /usr/bin/mysql_secure_installation
-				until mysql -u$MYSQLUSER -p$MYSQLPASSWORD -P$MYHOSTPORT -h$MYHOST -e ";" ; do
+				until mysql -u$DB_USERNAME -p$DB_PASSWORD -P$DB_PORT -h$DB_HOSTNAME -e ";" ; do
 					clear
                 	echo "Enter correct database settings"
                 	func_mysql_database_setting
@@ -372,7 +372,7 @@ func_install_frontend(){
         mv $INSTALL_DIR /tmp/old-newfies-dialer_$DATETIME
         echo "Files from $INSTALL_DIR has been moved to /tmp/old-newfies-dialer_$DATETIME"
         echo "Run backup with mysqldump..."
-        mysqldump -u $MYSQLUSER --password=$MYSQLPASSWORD $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql
+        mysqldump -u $DB_USERNAME --password=$DB_PASSWORD $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql
         echo "Mysql Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql"
         echo "Press Enter to continue"
         read TEMP
@@ -451,20 +451,20 @@ func_install_frontend(){
         # Setup settings_local.py for MySQL
         sed -i "s/'django.db.backends.sqlite3'/'django.db.backends.mysql'/"  $INSTALL_DIR/settings_local.py
         sed -i "s/.*'NAME'/       'NAME': '$DATABASENAME',#/"  $INSTALL_DIR/settings_local.py
-        sed -i "/'USER'/s/''/'$MYSQLUSER'/" $INSTALL_DIR/settings_local.py
-        sed -i "/'PASSWORD'/s/''/'$MYSQLPASSWORD'/" $INSTALL_DIR/settings_local.py
-        sed -i "/'HOST'/s/''/'$MYHOST'/" $INSTALL_DIR/settings_local.py
-        sed -i "/'PORT'/s/''/'$MYHOSTPORT'/" $INSTALL_DIR/settings_local.py
+        sed -i "/'USER'/s/''/'$DB_USERNAME'/" $INSTALL_DIR/settings_local.py
+        sed -i "/'PASSWORD'/s/''/'$DB_PASSWORD'/" $INSTALL_DIR/settings_local.py
+        sed -i "/'HOST'/s/''/'$DB_HOSTNAME'/" $INSTALL_DIR/settings_local.py
+        sed -i "/'PORT'/s/''/'$DB_PORT'/" $INSTALL_DIR/settings_local.py
 
         # Create the Database
         echo "Remove Existing Database if exists..."
   		if [ -d "/var/lib/mysql/$DATABASENAME" ]; then
-	        echo "mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e 'DROP DATABASE $DATABASENAME;'"
-    	    mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e "DROP DATABASE $DATABASENAME;"
+	        echo "mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e 'DROP DATABASE $DATABASENAME;'"
+    	    mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e "DROP DATABASE $DATABASENAME;"
 		fi
         echo "Create Database..."
-        echo "mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e 'CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;'"
-        mysql --user=$MYSQLUSER --password=$MYSQLPASSWORD -e "CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;"
+        echo "mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e 'CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;'"
+        mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e "CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;"
     fi
 
     cd $INSTALL_DIR/

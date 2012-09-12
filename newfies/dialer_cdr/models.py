@@ -231,7 +231,7 @@ class VoIPCall(models.Model):
                     verbose_name=_("Callrequest"))
     callid = models.CharField(max_length=120, help_text=_("VoIP Call-ID"))
     callerid = models.CharField(max_length=120, verbose_name='CallerID')
-    phone_number = models.CharField(max_length=120,  null=True, blank=True,
+    phone_number = models.CharField(max_length=120, null=True, blank=True,
                     verbose_name=_("Phone number"),
                     help_text=_(u'The international number of the recipient, without the leading +'))
 

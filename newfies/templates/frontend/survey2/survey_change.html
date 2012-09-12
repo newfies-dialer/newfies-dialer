@@ -151,8 +151,7 @@
                                 var flag = 0;
                             </script>
                             {% if section.type == 1 or section.type == 5 or section.type == 6 %}
-                                {% if section.branch_count > 0 or section.type == 6 %}
-                                    <!--{{ section.branch_count }}-->
+                                {% if section.get_branching_count_per_section > 0 or section.type == 6 %}
                                     <script type="text/javascript">
                                         $(function() {
                                             $("#row"+{{ section.id }}).find(".section-branch").contents().unwrap();

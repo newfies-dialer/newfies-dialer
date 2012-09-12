@@ -14,7 +14,7 @@
 #
 
 from django.contrib import admin
-from survey2.models import Survey, Section, Branching, Result, ResultSum
+from survey2.models import Survey, Section, Branching, Result, ResultAggregate
 from adminsortable.admin import SortableAdmin, SortableTabularInline
 
 
@@ -61,7 +61,7 @@ admin.site.register(Branching, BranchingAdmin)
 
 class ResultAdmin(admin.ModelAdmin):
 
-    """Allows the administrator to view and modify survey campaign result."""
+    """Allows the administrator to view and modify survey results."""
 
     list_display = ('id', 'callrequest', 'campaign', 'survey', 'section',
                     'response', 'record_file', 'created_date')
@@ -73,9 +73,9 @@ class ResultAdmin(admin.ModelAdmin):
 admin.site.register(Result, ResultAdmin)
 
 
-class ResultSumAdmin(admin.ModelAdmin):
+class ResultAggregateAdmin(admin.ModelAdmin):
 
-    """Allows the administrator to view and modify survey campaign result."""
+    """Allows the administrator to view and modify survey aggregated result."""
 
     list_display = ('id', 'campaign', 'survey', 'section', 'response',
                     'count', 'created_date')
@@ -84,4 +84,4 @@ class ResultSumAdmin(admin.ModelAdmin):
     list_display_links = ('id',)
     ordering = ('id', )
 
-admin.site.register(ResultSum, ResultSumAdmin)
+admin.site.register(ResultAggregate, ResultAggregateAdmin)

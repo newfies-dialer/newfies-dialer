@@ -254,11 +254,11 @@ class Result(models.Model):
         return '[%s] %s = %s' % (self.id, self.section, self.response)
 
 
-class ResultSum(models.Model):
-    """This gives survey result summary, used to display survey
-    in a more efficient way
+class ResultAggregate(models.Model):
+    """This gives survey result aggregate, used to display survey
+    result in a more efficient way
 
-    **Name of DB table**: result_sum
+    **Name of DB table**: result_aggregate
     """
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
                 verbose_name=_("Campaign"))

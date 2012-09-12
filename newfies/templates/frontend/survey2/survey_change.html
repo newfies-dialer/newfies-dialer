@@ -252,8 +252,7 @@
                                                     <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}<br/>
                                                     <b>{% trans "question"|title %} :</b> {{ section.question }}<br/>
                                                     {% if section.validate_number %}
-                                                        {% trans "Minimum" %} : {{ section.min_number }} <br/>
-                                                        {% trans "Maximum" %} : {{ section.max_number }}
+                                                        {% trans "Number is between" %}&nbsp;{{ section.min_number }}&nbsp;{% trans "and" %}&nbsp;{{ section.max_number }}
                                                     {% endif %}
                                                 </div>
                                             </div>
@@ -265,6 +264,9 @@
                                                 <div class="span8">
                                                     <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}<br/>
                                                     <b>{% trans "question"|title %} :</b> {{ section.question }}<br/>
+                                                    {% if section.continue_survey %}
+                                                        {% trans "When done, continue survey" %}
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                         {% endif %}
@@ -276,9 +278,13 @@
                                                     <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}<br/>
                                                     <b>{% trans "question"|title %} :</b> {{ section.question }}<br/>
                                                     {% if section.dial_phonenumber %}
-                                                        {% trans "Dial phone number" %} : {{ section.dial_phonenumber }}
+                                                        {% trans "Dial phone number" %} : {{ section.dial_phonenumber }} <br/>
+                                                    {% endif %}
+                                                    {% if section.continue_survey %}
+                                                        {% trans "When done, continue survey" %}
                                                     {% endif %}
                                                 </div>
+
                                             </div>
                                         {% endif %}
 

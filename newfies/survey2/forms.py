@@ -92,6 +92,28 @@ def get_question_choice_list(section_id):
     return list_sq
 
 
+def get_rating_choice_list(section_id):
+    """Get survey rating laps for logged in user
+    with default anything option"""
+    keys_list = Branching.objects\
+                .values_list('keys', flat=True)\
+                .filter(section_id=int(section_id))
+
+    obj_section = Section.objects.get(id=int(section_id))
+
+    if keys_list:
+        keys_list = [int(integral) for integral in keys_list]
+
+    list_sq = []
+    for i in range(1, int(obj_section.rating_laps) + 1):
+        if i not in keys_list:
+            list_sq.append((i, i))
+
+    list_sq.append(('', _('Anything')))
+
+    return list_sq
+
+
 class SurveyForm(ModelForm):
     """SurveyApp ModelForm"""
 
@@ -271,6 +293,11 @@ class BranchingForm(ModelForm):
         if obj_section.type == 2:
             self.fields['keys'] = \
                 forms.ChoiceField(choices=get_question_choice_list(section_id))
+
+        # rating section
+        if obj_section.type == 3:
+            self.fields['keys'] =\
+                forms.ChoiceField(choices=get_rating_choice_list(section_id))
 
         self.fields['goto'].choices = \
             get_section_question_list(user, survey_id, section_id)

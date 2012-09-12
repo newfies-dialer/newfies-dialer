@@ -39,7 +39,7 @@ class SectionAdmin(SortableAdmin):
     """Allows the administrator to view and modify survey question."""
 
     #inlines = [SurveyResponseInline]
-    list_display = ('id', 'user', 'survey', 'created_date')
+    list_display = ('id', 'survey', 'created_date')
     search_fields = ['question']
     #list_display_links = ('question', )
     list_filter = ['created_date', 'survey']

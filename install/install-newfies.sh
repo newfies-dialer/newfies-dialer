@@ -201,33 +201,33 @@ func_check_dependencies() {
     echo ""
 }
 
-#Function mysql db setting
-func_mysql_database_setting() {
+#Function database setting
+func_database_setting() {
     echo ""
-    echo "Configure Mysql Settings..."
+    echo "Configure Database Settings..."
     echo ""
 
-    echo "Enter Mysql hostname (default:localhost)"
+    echo "Enter Database hostname (default:localhost)"
     read DB_HOSTNAME
     if [ -z "$DB_HOSTNAME" ]; then
         DB_HOSTNAME="localhost"
     fi
-    echo "Enter Mysql port (default:3306)"
+    echo "Enter Database port (default:5432)"
     read DB_PORT
     if [ -z "$DB_PORT" ]; then
-        DB_PORT="3306"
+        DB_PORT="5432"
     fi
-    echo "Enter Mysql Username (default:root)"
+    echo "Enter Database Username (default:root)"
     read DB_USERNAME
     if [ -z "$DB_USERNAME" ]; then
         DB_USERNAME="root"
     fi
-    echo "Enter Mysql Password (default:password)"
+    echo "Enter Database Password (default:password)"
     read DB_PASSWORD
     if [ -z "$DB_PASSWORD" ]; then
         DB_PASSWORD="password"
     fi
-    echo "Enter Database name (default:newfies)"
+    echo "Enter Database Name (default:newfies)"
     read DATABASENAME
     if [ -z "$DATABASENAME" ]; then
         DATABASENAME="newfies"
@@ -307,7 +307,7 @@ func_install_frontend(){
 				until mysql -u$DB_USERNAME -p$DB_PASSWORD -P$DB_PORT -h$DB_HOSTNAME -e ";" ; do
 					clear
                 	echo "Enter correct database settings"
-                	func_mysql_database_setting
+                	func_database_setting
                 done
             fi
 
@@ -341,8 +341,11 @@ func_install_frontend(){
             chkconfig --levels 235 httpd on
 
             if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
+                #INSTALL SQLITE
                 yum -y install sqlite
-            else
+
+            elif echo $db_backend | grep -i "^MYSQL" > /dev/null ; then
+                #INSTALL MYSQL
                 yum -y install mysql-server mysql-devel
                 chkconfig --levels 235 mysqld on
                 #Start Mysql
@@ -352,8 +355,13 @@ func_install_frontend(){
 				until mysql -u$DB_USERNAME -p$DB_PASSWORD -P$DB_PORT -h$DB_HOSTNAME -e ";" ; do
 					clear
                 	echo "Enter correct database settings"
-                	func_mysql_database_setting
+                	func_database_setting
                 done
+            else
+                #INSTALL POSTGRESQL
+
+                #TODO
+
             fi
         ;;
     esac
@@ -446,9 +454,28 @@ func_install_frontend(){
     if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
         # Setup settings_local.py for SQLite
         sed -i "s/'init_command/#'init_command/g"  $INSTALL_DIR/settings_local.py
-    else
 
-        # Setup settings_local.py for MySQL
+    elif echo $db_backend | grep -i "^MYSQL" > /dev/null ; then
+        # Setup settings_local.py for MYSQL
+        sed -i "s/'django.db.backends.sqlite3'/'django.db.backends.postgresql_psycopg2'/"  $INSTALL_DIR/settings_local.py
+        sed -i "s/.*'NAME'/       'NAME': '$DATABASENAME',#/"  $INSTALL_DIR/settings_local.py
+        sed -i "/'USER'/s/''/'$DB_USERNAME'/" $INSTALL_DIR/settings_local.py
+        sed -i "/'PASSWORD'/s/''/'$DB_PASSWORD'/" $INSTALL_DIR/settings_local.py
+        sed -i "/'HOST'/s/''/'$DB_HOSTNAME'/" $INSTALL_DIR/settings_local.py
+        sed -i "/'PORT'/s/''/'$DB_PORT'/" $INSTALL_DIR/settings_local.py
+
+        # Create the Database
+        echo "Remove Existing Database if exists..."
+        if [ -d "/var/lib/mysql/$DATABASENAME" ]; then
+            echo "mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e 'DROP DATABASE $DATABASENAME;'"
+            mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e "DROP DATABASE $DATABASENAME;"
+        fi
+        echo "Create Database..."
+        echo "mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e 'CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;'"
+        mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e "CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;"
+
+    else
+        # Setup settings_local.py for POSTGRESQL
         sed -i "s/'django.db.backends.sqlite3'/'django.db.backends.mysql'/"  $INSTALL_DIR/settings_local.py
         sed -i "s/.*'NAME'/       'NAME': '$DATABASENAME',#/"  $INSTALL_DIR/settings_local.py
         sed -i "/'USER'/s/''/'$DB_USERNAME'/" $INSTALL_DIR/settings_local.py
@@ -458,13 +485,14 @@ func_install_frontend(){
 
         # Create the Database
         echo "Remove Existing Database if exists..."
-  		if [ -d "/var/lib/mysql/$DATABASENAME" ]; then
-	        echo "mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e 'DROP DATABASE $DATABASENAME;'"
-    	    mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e "DROP DATABASE $DATABASENAME;"
-		fi
+        if [ -d "/var/lib/mysql/$DATABASENAME" ]; then
+            echo "mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e 'DROP DATABASE $DATABASENAME;'"
+            mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e "DROP DATABASE $DATABASENAME;"
+        fi
         echo "Create Database..."
         echo "mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e 'CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;'"
         mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e "CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;"
+
     fi
 
     cd $INSTALL_DIR/

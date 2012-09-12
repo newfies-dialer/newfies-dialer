@@ -27,6 +27,10 @@
 # - Memcached
 
 
+#Set branch to install DEVEL/STABLE
+BRANCH=DEVEL
+#TODO: update before release
+
 #Install mode can me either CLONE or DOWNLOAD
 INSTALL_MODE='CLONE'
 DATETIME=$(date +"%Y%m%d%H%M%S")
@@ -279,13 +283,12 @@ func_install_frontend(){
     echo "This script will install Newfies-Dialer on your server"
 	echo "======================================================"
     echo ""
-    branch=STABLE
-    echo "Which version do you want to install ? DEVEL or STABLE [DEVEL/STABLE] (default:STABLE)"
-    read branch
+    #echo "Which version do you want to install ? DEVEL or STABLE [] (default:STABLE)"
+    #read BRANCH
 
-    db_backend=MySQL
-    echo "Do you want to install Newfies with SQLite or MySQL? [SQLite/MySQL] (default:MySQL)"
-    read db_backend
+    db_backend=PostgreSQL
+    #echo "Do you want to install Newfies-Dialer with SQLite or MySQL? [SQLite/MySQL/PostgreSQL] (default:PostgreSQL)"
+    #read db_backend
 
     #python setup tools
     echo "Install Dependencies and python modules..."
@@ -314,14 +317,15 @@ func_install_frontend(){
             else
                 #POSTGRESQL
                 apt-get -y install postgresql libpq-dev
-                #Start POSTGRESQL
+                #Start PostgreSQL
                 /etc/init.d/postgresql start
 
-                until mysql -u$DB_USERNAME -p$DB_PASSWORD -P$DB_PORT -h$DB_HOSTNAME -e ";" ; do
-                    clear
-                    echo "Enter correct database settings"
-                    func_database_setting
-                done
+                #the following doesn't work with postgresql unless you create a local file
+                #or set to "trust" in pg_hba.conf
+                #until psql -h $DB_HOSTNAME -p $DB_PORT $DB_USERNAME $DB_USERNAME -c ";" ; do
+                clear
+                echo "Enter correct database settings"
+                func_database_setting
             fi
 
             #for audiofile convertion
@@ -354,11 +358,11 @@ func_install_frontend(){
             chkconfig --levels 235 httpd on
 
             if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
-                #INSTALL SQLITE
+                #Install SQLite
                 yum -y install sqlite
 
             elif echo $db_backend | grep -i "^MYSQL" > /dev/null ; then
-                #INSTALL MYSQL
+                #Install Mysql
                 yum -y install mysql-server mysql-devel
                 chkconfig --levels 235 mysqld on
                 #Start Mysql
@@ -371,10 +375,18 @@ func_install_frontend(){
                 	func_database_setting
                 done
             else
-                #INSTALL POSTGRESQL
+                #Install PostgreSQL
+                yum install postgresql-server
+                chkconfig --levels 235 postgresq on
+                #Start PostgreSQL
+                /etc/init.d/postgresql start
 
-                #TODO
-
+                #the following doesn't work with postgresql unless you create a local file
+                #or set to "trust" in pg_hba.conf
+                #until psql -h $DB_HOSTNAME -p $DB_PORT $DB_USERNAME $DB_USERNAME -c ";" ; do
+                clear
+                echo "Enter correct database settings"
+                func_database_setting
             fi
         ;;
     esac
@@ -388,6 +400,7 @@ func_install_frontend(){
         echo ""
         echo "Press Enter to continue or CTRL-C to exit"
         read TEMP
+
 
         #TODO: Check if MYSQL
         mkdir /tmp/old-newfies-dialer_$DATETIME
@@ -403,8 +416,8 @@ func_install_frontend(){
     #Create and enable virtualenv
     func_setup_virtualenv
 
-    #get Newfies
-    echo "Install Newfies..."
+    #get Newfies-Dialer
+    echo "Install Newfies-Dialer..."
     cd /usr/src/
     rm -rf newfies-dialer
     mkdir /var/log/newfies
@@ -412,9 +425,8 @@ func_install_frontend(){
     case $INSTALL_MODE in
         'CLONE')
             git clone git://github.com/Star2Billing/newfies-dialer.git
-
             #Install Develop / Master
-            if echo $branch | grep -i "^DEVEL" > /dev/null ; then
+            if echo $BRANCH | grep -i "^DEVEL" > /dev/null ; then
                 cd newfies-dialer
                 git checkout -b develop --track origin/develop
             fi
@@ -433,7 +445,7 @@ func_install_frontend(){
     # Copy files
     cp -r /usr/src/newfies-dialer/newfies $INSTALL_DIR
 
-    #Install Newfies depencencies
+    #Install Newfies-Dialer depencencies
     easy_install -U distribute
     #For python 2.6 only
     pip install importlib
@@ -652,14 +664,14 @@ func_install_frontend(){
     echo ""
     echo ""
     echo "**************************************************************"
-    echo "Congratulations, Newfies Web Application is now installed!"
+    echo "Congratulations, Newfies-Dialer Web Application is now installed!"
     echo "**************************************************************"
     echo ""
-    echo "Please log on to Newfies at "
+    echo "Please log on to Newfies-Dialer at "
     echo "http://$IPADDR:$HTTP_PORT"
     echo "the username and password are the ones you entered during this installation."
     echo ""
-    echo "Thank you for installing Newfies"
+    echo "Thank you for installing Newfies-Dialer"
     echo "Yours"
     echo "The Star2Billing Team"
     echo "http://www.star2billing.com and http://www.newfies-dialer.org/"
@@ -674,7 +686,7 @@ func_install_frontend(){
 func_install_backend() {
     echo ""
     echo ""
-    echo "This will install Newfies Backend, Celery & Redis on your server"
+    echo "This will install Newfies-Dialer Backend, Celery & Redis on your server"
     echo "Press Enter to continue or CTRL-C to exit"
     read TEMP
 
@@ -779,11 +791,11 @@ func_install_backend() {
     echo ""
     echo ""
     echo "**************************************************************"
-    echo "Congratulations, Newfies Backend is now installed!"
+    echo "Congratulations, Newfies-Dialer Backend is now installed!"
     echo "**************************************************************"
     echo ""
     echo ""
-    echo "Thank you for installing Newfies"
+    echo "Thank you for installing Newfies-Dialer"
     echo "Yours"
     echo "The Star2Billing Team"
     echo "http://www.star2billing.com and http://www.newfies-dialer.org/"
@@ -849,7 +861,7 @@ show_menu_newfies() {
 	echo "====================================="
 	echo "	1)  Install All"
 	echo "	2)  Install Newfies-Dialer Web Frontend"
-	echo "	3)  Install Newfies-Dialer Backend / Newfies-Celery"
+	echo "	3)  Install Newfies-Dialer Backend / Celery"
 	echo "	0)  Quit"
 	echo -n "(0-3) : "
 	read OPTION < /dev/tty

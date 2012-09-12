@@ -14,7 +14,7 @@
 #
 
 from django.contrib import admin
-from survey2.models import Survey, Section, Result, ResultSum
+from survey2.models import Survey, Section, Branching, Result, ResultSum
 from adminsortable.admin import SortableAdmin, SortableTabularInline
 
 
@@ -45,6 +45,18 @@ class SectionAdmin(SortableAdmin):
     list_filter = ['created_date', 'survey']
 
 admin.site.register(Section, SectionAdmin)
+
+
+class BranchingAdmin(admin.ModelAdmin):
+
+    """Allows the administrator to view and modify branching."""
+
+    list_display = ('id', 'keys', 'section', 'goto', 'created_date')
+    search_fields = ['keys']
+    #list_display_links = ('keys', )
+    list_filter = ['created_date', 'section']
+
+admin.site.register(Branching, BranchingAdmin)
 
 
 class ResultAdmin(admin.ModelAdmin):

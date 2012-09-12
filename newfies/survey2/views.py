@@ -844,6 +844,7 @@ def section_branch_change(request, id):
     data = {
         'form': form,
         'survey_id': section.survey_id,
+        'section_type': section.type,
         'section_id': section.id,
         'module': current_view(request),
         'err_msg': request.session.get('err_msg'),

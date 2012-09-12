@@ -22,9 +22,6 @@
 # >> Install with develop script :
 # cd /usr/src/ ; rm install-newfies.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/develop/install/install-newfies.sh ; chmod +x install-newfies.sh ; ./install-newfies.sh
 #
-#
-#TODO:
-# - Memcached
 
 
 #Set branch to install DEVEL/STABLE
@@ -401,16 +398,23 @@ func_install_frontend(){
         echo "Press Enter to continue or CTRL-C to exit"
         read TEMP
 
-
-        #TODO: Check if MYSQL
         mkdir /tmp/old-newfies-dialer_$DATETIME
         mv $INSTALL_DIR /tmp/old-newfies-dialer_$DATETIME
         echo "Files from $INSTALL_DIR has been moved to /tmp/old-newfies-dialer_$DATETIME"
-        echo "Run backup with mysqldump..."
-        mysqldump -u $DB_USERNAME --password=$DB_PASSWORD $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql
-        echo "Mysql Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql"
-        echo "Press Enter to continue"
-        read TEMP
+
+        if echo $db_backend | grep -i "^MYSQL" > /dev/null ; then
+            echo "Run backup with mysqldump..."
+            mysqldump -u $DB_USERNAME --password=$DB_PASSWORD $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql
+            echo "Mysql Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql"
+            echo "Press Enter to continue"
+            read TEMP
+        elif echo $db_backend | grep -i "^POSTGRESQL" > /dev/null ; then
+            echo "Run backup with postgresql..."
+            sudo -u postgres pg_dump $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.pgsqldump.sql
+            echo "PostgreSQL Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.pgsqldump.sql"
+            echo "Press Enter to continue"
+            read TEMP
+        fi
     fi
 
     #Create and enable virtualenv

@@ -871,12 +871,7 @@ def survey_change(request, object_id):
           via SurveyForm & get redirected to survey list
     """
     survey = Survey.objects.get(pk=object_id)
-    section_list = Section.objects.filter(survey=survey).extra(
-        select={
-            'branch_count': 'SELECT count(*) FROM survey2_branching  WHERE\
-                            survey2_branching.section_id = survey2_section.id'
-        },
-    ).order_by('order')
+    section_list = Section.objects.filter(survey=survey).order_by('order')
     form = SurveyForm(instance=survey)
     branching_list = Branching.objects.filter(
         section__survey=survey).order_by('id')

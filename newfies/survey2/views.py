@@ -430,9 +430,7 @@ def section_add(request):
             if request.POST.get('add'):
                 form = VoiceSectionForm(request.user, request.POST)
                 if form.is_valid():
-                    obj = form.save(commit=False)
-                    obj.user = User.objects.get(username=request.user)
-                    obj.save()
+                    obj = form.save()
                     request.session["msg"] = \
                         _('Voice Section is added successfully.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
@@ -455,9 +453,7 @@ def section_add(request):
             if request.POST.get('add'):
                 form = MultipleChoiceSectionForm(request.user, request.POST)
                 if form.is_valid():
-                    obj = form.save(commit=False)
-                    obj.user = User.objects.get(username=request.user)
-                    obj.save()
+                    obj = form.save()
                     request.session["msg"] = \
                         _('Multiple Choice Section is added successfully.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
@@ -482,9 +478,7 @@ def section_add(request):
                 form = RatingSectionForm(request.user, request.POST)
 
                 if form.is_valid():
-                    obj = form.save(commit=False)
-                    obj.user = User.objects.get(username=request.user)
-                    obj.save()
+                    obj = form.save()
                     request.session["msg"] = \
                         _('Rating Section is added successfully.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
@@ -507,9 +501,7 @@ def section_add(request):
             if request.POST.get('add'):
                 form = EnterNumberSectionForm(request.user, request.POST)
                 if form.is_valid():
-                    obj = form.save(commit=False)
-                    obj.user = User.objects.get(username=request.user)
-                    obj.save()
+                    obj = form.save()
                     request.session["msg"] =\
                         _('Enter Number Section is added successfully.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
@@ -532,9 +524,7 @@ def section_add(request):
             if request.POST.get('add'):
                 form = RecordMessageSectionForm(request.user, request.POST)
                 if form.is_valid():
-                    obj = form.save(commit=False)
-                    obj.user = User.objects.get(username=request.user)
-                    obj.save()
+                    obj = form.save()
                     request.session["msg"] =\
                         _('Record Message Section is added successfully.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
@@ -557,9 +547,7 @@ def section_add(request):
             if request.POST.get('add'):
                 form = PatchThroughSectionForm(request.user, request.POST)
                 if form.is_valid():
-                    obj = form.save(commit=False)
-                    obj.user = User.objects.get(username=request.user)
-                    obj.save()
+                    obj = form.save()
                     request.session["msg"] =\
                         _('Patch-Through Section is added successfully.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
@@ -820,13 +808,11 @@ def section_branch_change(request, id):
                                     % (survey_id, section_id))
 
     section = Section.objects.get(pk=int(id))
-    form = BranchingForm(request.user,
-                         section.survey_id,
+    form = BranchingForm(section.survey_id,
                          section.id,
                          initial={'section': id})
     if request.method == 'POST':
-        form = BranchingForm(request.user,
-                             section.survey_id,
+        form = BranchingForm(section.survey_id,
                              section.id,
                              request.POST)
         if form.is_valid():

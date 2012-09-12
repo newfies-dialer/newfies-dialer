@@ -169,7 +169,6 @@ class Section(Sortable):
     continue_survey = models.BooleanField(default=False,
                                           verbose_name=_('Continue survey when done'))
 
-    user = models.ForeignKey('auth.User', related_name='survey_owner')
     survey = models.ForeignKey(Survey, verbose_name=_("Survey"))
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)

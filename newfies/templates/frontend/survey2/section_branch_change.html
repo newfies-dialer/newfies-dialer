@@ -64,27 +64,23 @@
     {{ form.section }}
 
     <!--keys-->
-    {% for hidden in form.hidden_fields %}
-        {% if hidden.name == 'keys' %}
-            {{ hidden }}
-        {% endif %}
-    {% endfor %}
-    {% for visible in form.visible_fields %}
-        {% if visible.name == 'keys' %}
-            <div class="row">
-                <div class="span2 clearfix{% if form.keys.errors %} control-group error{% endif %}">
-                    <label class="control-label" for="id_{{ form.keys.name }}">{{ form.keys.label }}</label>
-                    <div class="input">
-                        {{ form.keys }}
-                        {% if form.keys.errors %}
-                            <span class="help-inline">{{ form.keys.errors|removetags:"ul li"|safe }}</span>
-                        {% endif %}
-                        <span class="help-block">{{ form.keys.help_text|safe }} </span>
-                    </div>
+    {% if form.keys.as_hidden %}
+        {{ form.keys }}
+    {% else %}
+        <div class="row">
+            <div class="span2 clearfix{% if form.keys.errors %} control-group error{% endif %}">
+                <label class="control-label" for="id_{{ form.keys.name }}">{{ form.keys.label }}</label>
+                <div class="input">
+                    {{ form.keys }}
+                    {% if form.keys.errors %}
+                        <span class="help-inline">{{ form.keys.errors|removetags:"ul li"|safe }}</span>
+                    {% endif %}
+                    <span class="help-block">{{ form.keys.help_text|safe }} </span>
                 </div>
             </div>
-        {% endif %}
-    {% endfor %}
+        </div>
+    {% endif %}
+
 
     <div class="row">
         <div class="span2 clearfix{% if form.goto.errors %} control-group error{% endif %}">

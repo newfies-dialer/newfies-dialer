@@ -299,6 +299,10 @@ class BranchingForm(ModelForm):
             self.fields['keys'] =\
                 forms.ChoiceField(choices=get_rating_choice_list(section_id))
 
+        # voice & record section
+        if obj_section.type == 1 or  obj_section.type == 5:
+            self.fields['keys'].widget = forms.HiddenInput()
+
         self.fields['goto'].choices = \
             get_section_question_list(user, survey_id, section_id)
 

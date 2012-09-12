@@ -145,17 +145,37 @@
                         <div class="portlet-header">
                             {{ section.order }}. {{ section.type|section_type_name }}
 
+                            <!--To remove section-branch for voice & record section-->
                             <script type="text/javascript">
-
-                            $(function() {
-                                $("#row"+{{ section.id }}).find(".section-branch")
-                                    .attr("url", "/section/branch/{{ section.id }}/")
-                                    .attr("data-toggle", "modal")
-                                    .attr("href", "#section-branch")
-                                    .attr("data-controls-modal", "section-branch-content");
-
-                            });
+                                var flag = 0;
                             </script>
+                            {% if section.type == 1 or section.type == 5 %}
+                                {% if section.branch_count > 0 %}
+                                    <!--{{ section.branch_count }}-->
+                                    <script type="text/javascript">
+                                        $(function() {
+                                            $("#row"+{{ section.id }}).find(".section-branch").contents().unwrap();
+                                            $("#row"+{{ section.id }}).find(".icon-random").remove();
+                                        });
+                                        flag = 1;
+                                    </script>
+                                {% endif %}
+                            {% endif %}
+
+                            <script type="text/javascript">
+                                if(flag == 0)
+                                {
+                                    $(function() {
+                                        $("#row"+{{ section.id }}).find(".section-branch")
+                                                .attr("url", "/section/branch/{{ section.id }}/")
+                                                .attr("data-toggle", "modal")
+                                                .attr("href", "#section-branch")
+                                                .attr("data-controls-modal", "section-branch-content");
+
+                                    });
+                                }
+                            </script>
+
                         </div>
                         <div class="portlet-content">
                             <div class="row">

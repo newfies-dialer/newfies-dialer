@@ -297,17 +297,30 @@ func_install_frontend(){
             easy_install pip
 
             if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
+                #SQLITE
                 apt-get install sqlite3 libsqlite3-dev
-            else
+            elif echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
+                #MYSQL
                 apt-get -y install mysql-server libmysqlclient-dev
                 #Start MySQL
                 /etc/init.d/mysql start
                 #Configure MySQL
                 /usr/bin/mysql_secure_installation
-				until mysql -u$DB_USERNAME -p$DB_PASSWORD -P$DB_PORT -h$DB_HOSTNAME -e ";" ; do
-					clear
-                	echo "Enter correct database settings"
-                	func_database_setting
+                until mysql -u$DB_USERNAME -p$DB_PASSWORD -P$DB_PORT -h$DB_HOSTNAME -e ";" ; do
+                    clear
+                    echo "Enter correct database settings"
+                    func_database_setting
+                done
+            else
+                #POSTGRESQL
+                apt-get -y install postgresql libpq-dev
+                #Start POSTGRESQL
+                /etc/init.d/postgresql start
+
+                until mysql -u$DB_USERNAME -p$DB_PASSWORD -P$DB_PORT -h$DB_HOSTNAME -e ";" ; do
+                    clear
+                    echo "Enter correct database settings"
+                    func_database_setting
                 done
             fi
 
@@ -367,10 +380,10 @@ func_install_frontend(){
     esac
 
     if [ -d "$INSTALL_DIR" ]; then
-        # Newfies is already installed
+        # Newfies-Dialer is already installed
         echo ""
         echo ""
-        echo "We detect an existing Newfies Installation"
+        echo "We detect an existing Newfies-Dialer Installation"
         echo "if you continue the existing installation will be removed!"
         echo ""
         echo "Press Enter to continue or CTRL-C to exit"
@@ -487,31 +500,19 @@ func_install_frontend(){
         # Create the Database
         echo "Remove Existing Database if exists..."
         if [ `sudo -u postgres psql -qAt --list | egrep '^$DATABASENAME\|' | wc -l` -eq 1 ]; then
-
-            ?????????
-
-
-sudo apt-get install postgresql
-
-#CREATE ROLE
-sudo -u postgres createuser --no-createdb --no-createrole --no-superuser --pwprompt newfiesuser
-
-#CREATE DB
-sudo -u postgres createdb newfies
-
-#sudo -u postgres psql --command="alter user newfiesuser with encrypted password 'password';"
-sudo -u postgres psql --command="grant all privileges on database newfies to newfiesuser;"
-
-psql -h localhost newfies newfiesuser
-
-
-            echo "mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e 'DROP DATABASE $DATABASENAME;'"
-            mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e "DROP DATABASE $DATABASENAME;"
+            echo "sudo -u postgres dropdb $DATABASENAME"
+            sudo -u postgres dropdb $DATABASENAME
         fi
         echo "Create Database..."
-        echo "mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e 'CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;'"
-        mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e "CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;"
+        echo "sudo -u postgres createdb $DATABASENAME"
+        sudo -u postgres createdb $DATABASENAME
 
+        #CREATE ROLE / USER
+        echo "Create Postgresql user $DB_USERNAME, you will be prompted for password..."
+        echo "sudo -u postgres createuser --no-createdb --no-createrole --no-superuser --pwprompt $DB_USERNAME"
+        sudo -u postgres createuser --no-createdb --no-createrole --no-superuser --pwprompt $DB_USERNAME
+        echo "Grant all privileges to user..."
+        sudo -u postgres psql --command="grant all privileges on database DATABASENAME to DB_USERNAME;"
     fi
 
     cd $INSTALL_DIR/

@@ -69,25 +69,25 @@ def get_question_choice_list(section_id):
         keys_list = [int(integral) for integral in keys_list]
 
     if obj_section.key_0 and 0 not in keys_list:
-        list_sq.append((0, obj_section.key_0))
+        list_sq.append((0, str('0. ') + obj_section.key_0))
     if obj_section.key_1 and 1 not in keys_list:
-        list_sq.append((1, obj_section.key_1))
+        list_sq.append((1, str('1. ') + obj_section.key_1))
     if obj_section.key_2 and 2 not in keys_list:
-        list_sq.append((2, obj_section.key_2))
+        list_sq.append((2, str('2. ') + obj_section.key_2))
     if obj_section.key_3 and 3 not in keys_list:
-        list_sq.append((3, obj_section.key_3))
+        list_sq.append((3, str('3. ') + obj_section.key_3))
     if obj_section.key_4 and 4 not in keys_list:
-        list_sq.append((4, obj_section.key_4))
+        list_sq.append((4, str('4. ') + obj_section.key_4))
     if obj_section.key_5 and 5 not in keys_list:
-        list_sq.append((5, obj_section.key_5))
+        list_sq.append((5, str('5. ') + obj_section.key_5))
     if obj_section.key_6 and 6 not in keys_list:
-        list_sq.append((6, obj_section.key_6))
+        list_sq.append((6, str('6. ') + obj_section.key_6))
     if obj_section.key_7 and 7 not in keys_list:
-        list_sq.append((7, obj_section.key_7))
+        list_sq.append((7, str('7. ') + obj_section.key_7))
     if obj_section.key_8 and 8 not in keys_list:
-        list_sq.append((8, obj_section.key_8))
+        list_sq.append((8, str('8. ') + obj_section.key_8))
     if obj_section.key_9 and 9 not in keys_list:
-        list_sq.append((9, obj_section.key_9))
+        list_sq.append((9, str('9. ') + obj_section.key_9))
     list_sq.append(('', _('Anything')))
     return list_sq
 

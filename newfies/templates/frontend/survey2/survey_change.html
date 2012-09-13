@@ -281,9 +281,12 @@
 
                                                 <div class="span8">
                                                     <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}
-                                                    <a data-toggle="modal" href="#phrasing-update-edit" class="phrasing-edit" url='/section/phrasing/{{ section.id }}/' data-controls-modal='phrasing-update-edit'>
-                                                        <i title="{% trans "Edit" %}" class="icon-edit"></i>
-                                                    </a>
+
+                                                    {% if perms.survey2.change_section %}
+                                                        <a data-toggle="modal" href="#phrasing-update-edit" class="phrasing-edit" url='/section/phrasing/{{ section.id }}/' data-controls-modal='phrasing-update-edit'>
+                                                            <i title="{% trans "Edit" %}" class="icon-edit"></i>
+                                                        </a>
+                                                    {% endif %}
 
                                                 </div>
                                             </div>
@@ -336,7 +339,9 @@
                                                                         {% endif %}
                                                                     </td>
                                                                     <td class="survey_edit_key">
-                                                                        <a {% icon_style 'delete' %} href="/section/branch/{{ branch.id }}/?delete=true" class="icon" title="{% trans "Delete" %}">&nbsp;</a>
+                                                                        {% if perms.survey2.delete_branching %}
+                                                                            <a {% icon_style 'delete' %} href="/section/branch/{{ branch.id }}/?delete=true" class="icon" title="{% trans "Delete" %}">&nbsp;</a>
+                                                                        {% endif %}
                                                                     </td>
                                                                 {% endif %}
                                                             </tr>
@@ -351,10 +356,14 @@
                                         </div>
 
                                         <div class="span3">
-                                            <button title="{% trans "Edit" %}" data-toggle="modal" href="#section-update-edit" class="section-edit btn btn-info" url='/section/{{ section.id }}/' data-controls-modal='section-update-edit'>
-                                                {% trans "Edit" %}
-                                            </button>
-                                            <input title="{% trans "Delete" %}" value="{% trans "Delete" %}" onclick="return get_alert({{ section.id }});" class="btn btn-danger" type="button" />
+                                            {% if perms.survey2.change_section %}
+                                                <button title="{% trans "Edit" %}" data-toggle="modal" href="#section-update-edit" class="section-edit btn btn-info" url='/section/{{ section.id }}/' data-controls-modal='section-update-edit'>
+                                                    {% trans "Edit" %}
+                                                </button>
+                                            {% endif %}
+                                            {% if perms.survey2.delete_section %}
+                                                <input title="{% trans "Delete" %}" value="{% trans "Delete" %}" onclick="return get_alert({{ section.id }});" class="btn btn-danger" type="button" />
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -385,9 +394,11 @@
     </div>
 
     {% if action == 'update' %}
-        <button data-toggle="modal" href="#section-create-add" class="section-add btn btn-info" url='/section/add/' data-controls-modal='section-create-add'>
-            {% trans "Add Section" %}
-        </button>
+        {% if perms.survey2.add_section %}
+            <button data-toggle="modal" href="#section-create-add" class="section-add btn btn-info" url='/section/add/' data-controls-modal='section-create-add'>
+                {% trans "Add Section" %}
+            </button>
+        {% endif %}
     {% endif %}
 
     <script type="text/javascript" charset="utf-8">

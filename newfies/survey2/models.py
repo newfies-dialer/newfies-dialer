@@ -74,16 +74,36 @@ class Section(Sortable):
 
     **Attributes**:
 
-        * ``question`` - survey name.
-        * ``tags`` -
-        * ``message_type`` -
+        * ``type`` - survey name.
+        * ``question`` -
+        * ``phrasing`` -
+        * ``audiofile`` -
+        * ``use_audiofile`` -
+        * ``invalid_audiofile`` -
+        * ``retries`` -
+        * ``timeout`` -
+        * ``key_0`` -
+        * ``key_1`` -
+        * ``key_2`` -
+        * ``key_3`` -
+        * ``key_4`` -
+        * ``key_5`` -
+        * ``key_6`` -
+        * ``key_7`` -
+        * ``key_8`` -
+        * ``key_9`` -
+        * ``rating_laps`` -
+        * ``validate_number`` -
+        * ``number_digits`` -
+        * ``min_number`` -
+        * ``max_number`` -
+        * ``dial_phonenumber`` -
+        * ``continue_survey`` -
 
     **Relationships**:
 
-        * ``user`` - Foreign key relationship to the User model.\
-        Each survey question is assigned to a User
-        * ``surveyapp`` - Foreign key relationship to the SurveyApp model.\
-        Each survey question is assigned to a SurveyApp
+        * ``survey`` - Foreign key relationship to the Survey model.\
+        Each survey question is assigned to a Survey
         * ``audio_message`` - Foreign key relationship to the AudioFile model.
 
     **Name of DB table**: survey_question
@@ -196,7 +216,7 @@ class Branching(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     section = models.ForeignKey(Section, related_name='Branching Section')
-    #0 to goto hangup
+    # '' to goto hangup
     goto = models.ForeignKey(Section, null=True,
                              blank=True, related_name='Goto Section')
 
@@ -228,8 +248,8 @@ class Result(models.Model):
 
         * ``campaign`` - Foreign key relationship to the Campaign model.\
         Each survey result is belonged to a Campaign
-        * ``surveyapp`` - Foreign key relationship to the SurveyApp model.\
-        Each survey question is assigned to a SurveyApp
+        * ``survey`` - Foreign key relationship to the Survey model.\
+        Each survey question is assigned to a Survey
 
     **Name of DB table**: result
     """

@@ -404,6 +404,7 @@ def survey_del(request, object_id):
         return HttpResponseRedirect('/survey2/')
 
 
+@permission_required('survey2.add_section', login_url='/')
 @login_required
 def section_add(request):
     """Add new Survey for the logged in user
@@ -577,6 +578,7 @@ def section_add(request):
                               context_instance=RequestContext(request))
 
 
+@permission_required('survey2.change_section', login_url='/')
 @login_required
 def section_change(request, id):
     """Update survey question for the logged in user
@@ -788,6 +790,7 @@ def section_change(request, id):
                               context_instance=RequestContext(request))
 
 
+@permission_required('survey2.change_section', login_url='/')
 @login_required
 def section_phrasing_change(request, id):
     """Update survey question for the logged in user
@@ -832,6 +835,7 @@ def section_phrasing_change(request, id):
         context_instance=RequestContext(request))
 
 
+@permission_required('survey2.add_branching', login_url='/')
 @login_required
 def section_branch_change(request, id):
     """Add branching on section for the logged in user

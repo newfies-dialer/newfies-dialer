@@ -13,7 +13,7 @@
 #
 
 from django.db import models
-from django.db.models.signals import pre_save
+from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
 
 from dialer_campaign.models import Campaign
@@ -275,7 +275,7 @@ class ResultAggregate(models.Model):
         return '[%s] %s = %s' % (self.id, self.section, self.response)
 
 
-def pre_save_add_phrasing(sender, **kwargs):
+def post_save_add_phrasing(sender, **kwargs):
     """A ``post_save`` signal is sent by the Contact model instance whenever
     it is going to save.
 
@@ -284,6 +284,9 @@ def pre_save_add_phrasing(sender, **kwargs):
         * When new section is added into ``Section`` model, save the
           question & phrasing field.
     """
-    kwargs['instance'].phrasing = kwargs['instance'].question
+    if kwargs['created']:
+        obj = kwargs['instance']
+        obj.phrasing = kwargs['instance'].question
+        obj.save()
 
-pre_save.connect(pre_save_add_phrasing, sender=Section)
+post_save.connect(post_save_add_phrasing, sender=Section)

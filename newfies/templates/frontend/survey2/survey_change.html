@@ -180,113 +180,94 @@
                                 <div class="span12">
                                     <div class="row">
                                         <div class="span9">
-                                        <!--Voice Section form-->
-                                        {% if section.type == 1 %}
+
                                             <div class="row">
                                                 <div class="span8">
-                                                    <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}<br/>
+                                                    <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}
+                                                    <button data-toggle="modal" href="#phrasing-update-edit" class="phrasing-edit btn btn-info" url='/section/phrasing/{{ section.id }}/' data-controls-modal='phrasing-update-content-edit'>
+                                                        {% trans "Edit" %}
+                                                    </button>
+                                                    <br/>
                                                     <b>{% trans "question"|title %} :</b> {{ section.question }}<br/>
                                                 </div>
-                                            </div>
-                                        {% endif %}
+                                                <!--Voice Section form-->
+                                                {% if section.type == 1 %}
+                                                {% endif %}
 
-                                        <!--Multiple choice Section form-->
-                                        {% if section.type == 2 %}
-                                            <div class="row">
-                                                <div class="span8">
-                                                    <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}<br/>
-                                                    <b>{% trans "question"|title %} :</b> {{ section.question }}<br/>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="span8">
-                                                    {% if section.key_0|length > 0 %}
-                                                        {% trans "Result if the user press" %} 0 : {{ section.key_0 }} <br/>
-                                                    {% endif %}
-                                                    {% if section.key_1|length > 0 %}
-                                                        {% trans "Result if the user press" %} 1 : {{ section.key_1 }} <br>
-                                                    {% endif %}
-                                                    {% if section.key_2|length > 0 %}
-                                                        {% trans "Result if the user press" %} 2 : {{ section.key_2 }} <br/>
-                                                    {% endif %}
-                                                    {% if section.key_3|length > 0 %}
-                                                        {% trans "Result if the user press" %} 3 : {{ section.key_3 }} <br/>
-                                                    {% endif %}
-                                                    {% if section.key_4|length > 0 %}
-                                                        {% trans "Result if the user press" %} 4 : {{ section.key_4 }} <br/>
-                                                    {% endif %}
-                                                    {% if section.key_5|length > 0 %}
-                                                        {% trans "Result if the user press" %} 5 : {{ section.key_5 }} <br/>
-                                                    {% endif %}
-                                                    {% if section.key_6|length > 0 %}
-                                                        {% trans "Result if the user press" %} 6 : {{ section.key_6 }} <br>
-                                                    {% endif %}
-                                                    {% if section.key_7|length > 0 %}
-                                                        {% trans "Result if the user press" %} 7 : {{ section.key_7 }} <br/>
-                                                    {% endif %}
-                                                    {% if section.key_8|length > 0 %}
-                                                        {% trans "Result if the user press" %} 8 : {{ section.key_8 }} <br/>
-                                                    {% endif %}
-                                                    {% if section.key_9|length > 0 %}
-                                                        {% trans "Result if the user press" %} 9 : {{ section.key_9 }}
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        {% endif %}
+                                                <!--Multiple choice Section form-->
+                                                {% if section.type == 2 %}
 
-                                        <!--Rating Section form-->
-                                        {% if section.type == 3 %}
-                                            <div class="row">
-                                                <div class="span8">
-                                                    <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}<br/>
-                                                    <b>{% trans "question"|title %} :</b> {{ section.question }}<br/>
-                                                    {% trans "From 1 to" %} {{ section.rating_laps }}
-                                                </div>
-                                            </div>
-                                        {% endif %}
+                                                    <div class="span8">
+                                                        {% if section.key_0|length > 0 %}
+                                                            {% trans "Result if the user press" %} 0 : {{ section.key_0 }} <br/>
+                                                        {% endif %}
+                                                        {% if section.key_1|length > 0 %}
+                                                            {% trans "Result if the user press" %} 1 : {{ section.key_1 }} <br>
+                                                        {% endif %}
+                                                        {% if section.key_2|length > 0 %}
+                                                            {% trans "Result if the user press" %} 2 : {{ section.key_2 }} <br/>
+                                                        {% endif %}
+                                                        {% if section.key_3|length > 0 %}
+                                                            {% trans "Result if the user press" %} 3 : {{ section.key_3 }} <br/>
+                                                        {% endif %}
+                                                        {% if section.key_4|length > 0 %}
+                                                            {% trans "Result if the user press" %} 4 : {{ section.key_4 }} <br/>
+                                                        {% endif %}
+                                                        {% if section.key_5|length > 0 %}
+                                                            {% trans "Result if the user press" %} 5 : {{ section.key_5 }} <br/>
+                                                        {% endif %}
+                                                        {% if section.key_6|length > 0 %}
+                                                            {% trans "Result if the user press" %} 6 : {{ section.key_6 }} <br>
+                                                        {% endif %}
+                                                        {% if section.key_7|length > 0 %}
+                                                            {% trans "Result if the user press" %} 7 : {{ section.key_7 }} <br/>
+                                                        {% endif %}
+                                                        {% if section.key_8|length > 0 %}
+                                                            {% trans "Result if the user press" %} 8 : {{ section.key_8 }} <br/>
+                                                        {% endif %}
+                                                        {% if section.key_9|length > 0 %}
+                                                            {% trans "Result if the user press" %} 9 : {{ section.key_9 }}
+                                                        {% endif %}
+                                                    </div>
+                                                {% endif %}
 
-                                        <!--Enter number Section form-->
-                                        {% if section.type == 4 %}
-                                            <div class="row">
-                                                <div class="span8">
-                                                    <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}<br/>
-                                                    <b>{% trans "question"|title %} :</b> {{ section.question }}<br/>
-                                                    {% if section.validate_number %}
-                                                        {% trans "Number is between" %}&nbsp;{{ section.min_number }}&nbsp;{% trans "and" %}&nbsp;{{ section.max_number }}
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        {% endif %}
+                                                <!--Rating Section form-->
+                                                {% if section.type == 3 %}
+                                                    <div class="span8">
+                                                        {% trans "From 1 to" %} {{ section.rating_laps }}
+                                                    </div>
+                                                {% endif %}
 
-                                        <!--Record Message Section form-->
-                                        {% if section.type == 5 %}
-                                            <div class="row">
-                                                <div class="span8">
-                                                    <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}<br/>
-                                                    <b>{% trans "question"|title %} :</b> {{ section.question }}<br/>
-                                                    {% if section.continue_survey %}
-                                                        {% trans "When done, continue survey" %}
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        {% endif %}
+                                                <!--Enter number Section form-->
+                                                {% if section.type == 4 %}
+                                                    <div class="span8">
+                                                        {% if section.validate_number %}
+                                                            {% trans "Number is between" %}&nbsp;{{ section.min_number }}&nbsp;{% trans "and" %}&nbsp;{{ section.max_number }}
+                                                        {% endif %}
+                                                    </div>
+                                                {% endif %}
 
-                                        <!--Patch-Through Section form-->
-                                        {% if section.type == 6 %}
-                                            <div class="row">
-                                                <div class="span8">
-                                                    <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}<br/>
-                                                    <b>{% trans "question"|title %} :</b> {{ section.question }}<br/>
-                                                    {% if section.dial_phonenumber %}
-                                                        {% trans "Dial phone number" %} : {{ section.dial_phonenumber }} <br/>
-                                                    {% endif %}
-                                                    {% if section.continue_survey %}
-                                                        {% trans "When done, continue survey" %}
-                                                    {% endif %}
-                                                </div>
+                                                <!--Record Message Section form-->
+                                                {% if section.type == 5 %}
+                                                    <div class="span8">
+                                                        {% if section.continue_survey %}
+                                                            {% trans "When done, continue survey" %}
+                                                        {% endif %}
+                                                    </div>
+                                                {% endif %}
 
+                                                <!--Patch-Through Section form-->
+                                                {% if section.type == 6 %}
+                                                    <div class="span8">
+                                                        {% if section.dial_phonenumber %}
+                                                            {% trans "Dial phone number" %} : {{ section.dial_phonenumber }} <br/>
+                                                        {% endif %}
+                                                        {% if section.continue_survey %}
+                                                            {% trans "When done, continue survey" %}
+                                                        {% endif %}
+                                                    </div>
+                                                {% endif %}
                                             </div>
-                                        {% endif %}
 
                                         <!--branching-->
                                         {% if branching_list %}
@@ -378,7 +359,7 @@
         })
 
     </script>
-    <!-- updaet survey question modal content-->
+    <!-- update survey question modal content-->
     <div id="section-update-edit" class="modal hide fade" >
 
         <div class="modal-body" id="section-update-content-edit">
@@ -432,6 +413,26 @@
     <!-- modal content-->
     <div id="section-branch" class="modal hide fade">
         <div class="modal-body" id="section-branch-content"></div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+        </div>
+    </div>
+
+    <!--update phrasing in modal-->
+    <script type="text/javascript" charset="utf-8">
+
+        $(".phrasing-edit").live('click', function() {
+            var url = $(this).attr('url');
+            var modal_id = $(this).attr('data-controls-modal');
+            $("#" + modal_id).load(url);
+        })
+
+    </script>
+    <!-- update phrasing modal content-->
+    <div id="phrasing-update-edit" class="modal hide fade" >
+
+        <div class="modal-body" id="phrasing-update-content-edit">
+        </div>
         <div class="modal-footer">
             <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
         </div>

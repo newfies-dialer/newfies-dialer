@@ -30,7 +30,7 @@ from survey2.models import Survey, Section, Branching
 from survey2.forms import SurveyForm, VoiceSectionForm,\
     MultipleChoiceSectionForm, RatingSectionForm,\
     EnterNumberSectionForm, RecordMessageSectionForm,\
-    PatchThroughSectionForm, BranchingForm,\
+    PatchThroughSectionForm, BranchingForm, PhrasingForm,\
     SurveyDetailReportForm
 from dialer_cdr.models import Callrequest, VoIPCall
 from utils.helper import grid_common_function, get_grid_update_delete_link
@@ -779,6 +779,50 @@ def section_change(request, id):
     request.session['err_msg'] = ''
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
+
+
+@login_required
+def section_phrasing_change(request, id):
+    """Update survey question for the logged in user
+
+    **Attributes**:
+
+        * ``form`` - PhrasingForm
+        * ``template`` - frontend/survey2/section_phrasing_change.html
+
+    **Logic Description**:
+
+        *
+    """
+    section = Section.objects.get(pk=int(id))
+    form = PhrasingForm(instance=section)
+    if request.method == 'POST':
+        form = PhrasingForm(request.POST,
+                            instance=section)
+        if form.is_valid():
+            obj = form.save()
+            request.session["msg"] =\
+                _('Phrasing is updated successfully.')
+            return HttpResponseRedirect('/survey2/%s/#row%s'
+                % (obj.survey_id, obj.id))
+        else:
+            request.session["err_msg"] =\
+                _('Phrasing is not updated.')
+            form = PhrasingForm(request.POST,
+                                instance=section)
+
+    template = 'frontend/survey2/section_phrasing_change.html'
+    data = {
+        'form': form,
+        'survey_id': section.survey_id,
+        'section_id': section.id,
+        'module': current_view(request),
+        'err_msg': request.session.get('err_msg'),
+        'action': 'update',
+        }
+    request.session['err_msg'] = ''
+    return render_to_response(template, data,
+        context_instance=RequestContext(request))
 
 
 @login_required

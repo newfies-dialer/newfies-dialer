@@ -608,6 +608,13 @@ def section_change(request, id):
     if request.GET.get('delete'):
         # perform delete
         survey_id = section.survey_id
+
+        # 1) delete branch belonging to a section
+        branching_list = Branching.objects.filter(section=section)
+        if branching_list:
+            branching_list.delete()
+
+        # 2) delete section
         section.delete()
         return HttpResponseRedirect('/survey2/%s/' % (survey_id))
 

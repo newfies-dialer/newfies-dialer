@@ -265,7 +265,7 @@
 
                                                 <div class="span8">
                                                     <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}
-                                                    <a data-toggle="modal" href="#phrasing-update-edit" class="phrasing-edit" url='/section/phrasing/{{ section.id }}/' data-controls-modal='phrasing-update-content-edit'>
+                                                    <a data-toggle="modal" href="#phrasing-update-edit" class="phrasing-edit" url='/section/phrasing/{{ section.id }}/' data-controls-modal='phrasing-update-edit'>
                                                         <i class="icon-edit"></i>
                                                     </a>
 
@@ -410,12 +410,6 @@
     </script>
     <!-- update phrasing modal content-->
     <div id="phrasing-update-edit" class="modal hide fade" >
-
-        <div class="modal-body" id="phrasing-update-content-edit">
-        </div>
-        <div class="modal-footer">
-            <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
-        </div>
     </div>
 </form>
 

@@ -107,22 +107,6 @@
 
             <!--Voice Section form-->
             {% if form.type.value|slugify == '1' %}
-
-                {% if action == 'update' %}
-                    <div class="row">
-                        <div class="span2 clearfix{% if form.audiofile.errors %} control-group error{% endif %}">
-                            <label class="control-label" for="id_{{ form.audiofile.name }}">{{ form.audiofile.label }}</label>
-                            <div class="input">
-                                {{ form.audiofile }}
-                                {% if form.audiofile.errors %}
-                                    <span class="help-inline">{{ form.audiofile.errors|removetags:"ul li"|safe }}</span>
-                                {% endif %}
-                                <span class="help-block">{{ form.audiofile.help_text|safe }} </span>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-
             {% endif %}
 
             <!--Multiple choice Section form-->
@@ -227,20 +211,6 @@
                 </div>
 
             </div>
-            {% if action == 'update' %}
-                <div class="row">
-                    <div class="span2 clearfix{% if form.audiofile.errors %} control-group error{% endif %}">
-                        <label class="control-label" for="id_{{ form.audiofile.name }}">{{ form.audiofile.label }}</label>
-                        <div class="input">
-                            {{ form.audiofile }}
-                            {% if form.audiofile.errors %}
-                                <span class="help-inline">{{ form.audiofile.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                            <span class="help-block">{{ form.audiofile.help_text|safe }} </span>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
 
             {% endif %}
 
@@ -280,21 +250,6 @@
                     </div>
                 </div>
             </div>
-
-            {% if action == 'update' %}
-                <div class="row">
-                    <div class="span2 clearfix{% if form.audiofile.errors %} control-group error{% endif %}">
-                        <label class="control-label" for="id_{{ form.audiofile.name }}">{{ form.audiofile.label }}</label>
-                        <div class="input">
-                            {{ form.audiofile }}
-                            {% if form.audiofile.errors %}
-                                <span class="help-inline">{{ form.audiofile.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                            <span class="help-block">{{ form.audiofile.help_text|safe }} </span>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
 
             {% endif %}
 
@@ -363,13 +318,19 @@
                         </div>
                     </div>
                 </div>
+            {% endif %}
 
+            <!--Audio field while updating section-->
+            {% if form.type.value|slugify == '1' or form.type.value|slugify == '2' or form.type.value|slugify == '3' or form.type.value|slugify == '4' %}
                 {% if action == 'update' %}
                     <div class="row">
-                        <div class="span2 clearfix{% if form.audiofile.errors %} control-group error{% endif %}">
+                        <div class="span3 clearfix{% if form.audiofile.errors %} control-group error{% endif %}">
                             <label class="control-label" for="id_{{ form.audiofile.name }}">{{ form.audiofile.label }}</label>
                             <div class="input">
-                                {{ form.audiofile }}
+                                {{ form.audiofile }}&nbsp;
+                                <a href="/audio/add/">
+                                    <i class="icon-plus"></i>
+                                </a>
                                 {% if form.audiofile.errors %}
                                     <span class="help-inline">{{ form.audiofile.errors|removetags:"ul li"|safe }}</span>
                                 {% endif %}
@@ -378,7 +339,6 @@
                         </div>
                     </div>
                 {% endif %}
-
             {% endif %}
 
             <!--Record Message Section form-->

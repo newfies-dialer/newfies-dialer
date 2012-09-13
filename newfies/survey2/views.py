@@ -367,6 +367,19 @@ def survey_add(request):
                               context_instance=RequestContext(request))
 
 
+def delete_section_branching(survey):
+    """delete sections as well as branching
+    which are belong to survey"""
+    section_list = Section.objects.filter(survey=survey)
+    if section_list:
+        for section in section_list:
+            branching_list = Branching.objects.filter(section=section)
+            if branching_list:
+                branching_list.delete()
+    section_list.delete()
+    return True
+
+
 @permission_required('survey2.delete_survey', login_url='/')
 @login_required
 def survey_del(request, object_id):
@@ -388,6 +401,8 @@ def survey_del(request, object_id):
             # 1) delete survey
             request.session["msg"] = _('"%(name)s" is deleted.')\
                 % {'name': survey.name}
+            # delete sections as well as branching which are belong to survey
+            delete_section_branching(survey)
             survey.delete()
             return HttpResponseRedirect('/survey2/')
     except:
@@ -397,9 +412,13 @@ def survey_del(request, object_id):
 
         # 1) delete survey
         survey_list = Survey.objects.extra(where=['id IN (%s)' % values])
+        if survey_list:
+            for survey in survey_list:
+                delete_section_branching(survey)
+
         request.session["msg"] =\
             _('%(count)s survey(s) are deleted.')\
-            % {'count': survey_list.count()}
+                % {'count': survey_list.count()}
         survey_list.delete()
         return HttpResponseRedirect('/survey2/')
 

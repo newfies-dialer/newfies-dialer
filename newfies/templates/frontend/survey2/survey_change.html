@@ -183,11 +183,6 @@
 
                                             <div class="row">
                                                 <div class="span8">
-                                                    <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}
-                                                    <button data-toggle="modal" href="#phrasing-update-edit" class="phrasing-edit btn btn-info" url='/section/phrasing/{{ section.id }}/' data-controls-modal='phrasing-update-content-edit'>
-                                                        {% trans "Edit" %}
-                                                    </button>
-                                                    <br/>
                                                     <b>{% trans "question"|title %} :</b> {{ section.question }}<br/>
                                                 </div>
                                                 <!--Voice Section form-->
@@ -267,6 +262,14 @@
                                                         {% endif %}
                                                     </div>
                                                 {% endif %}
+
+                                                <div class="span8">
+                                                    <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}
+                                                    <a data-toggle="modal" href="#phrasing-update-edit" class="phrasing-edit" url='/section/phrasing/{{ section.id }}/' data-controls-modal='phrasing-update-content-edit'>
+                                                        <i class="icon-edit"></i>
+                                                    </a>
+
+                                                </div>
                                             </div>
 
                                         <!--branching-->

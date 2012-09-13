@@ -64,8 +64,92 @@ class SurveyAdminView(BaseAuthenticatedClient):
         self.failUnlessEqual(response.status_code, 200)
 
 
+class SurveyCustomerView(BaseAuthenticatedClient):
+    """Test Function to check Survey, SurveyQuestion,
+       SurveyResponse Customer pages
+    """
+
+    fixtures = ['auth_user.json', 'gateway.json', 'voiceapp.json',
+                'dialer_setting.json', 'phonebook.json', 'contact.json',
+                'campaign.json', 'campaign_subscriber.json',
+                'callrequest.json',
+                'survey.json',
+                'user_profile.json']
+
+    def test_survey_view_list(self):
+        """Test Function survey view list"""
+        request = self.factory.post('/survey2_grid/', grid_test_data)
+        request.user = self.user
+        request.session = {}
+        response = survey_grid(request)
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.get('/survey2/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'frontend/survey2/survey_list.html')
+
+        request = self.factory.get('/survey2/')
+        request.user = self.user
+        request.session = {}
+        response = survey_list(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_survey_view_add(self):
+        """Test Function survey view add"""
+        response = self.client.get('/survey2/add/')
+        self.assertTrue(response.context['form'], SurveyForm())
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'frontend/survey2/survey_change.html')
+
+        request = self.factory.post('/survey2/add/',
+                {'name': 'test_survey'}, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = survey_add(request)
+        self.assertEqual(response.status_code, 302)
+
+    def test_survey_view_update(self):
+        """Test Function survey view get"""
+        response = self.client.get('/survey2/1/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'frontend/survey2/survey_change.html')
+
+        request = self.factory.post('/survey2/1/',
+                {'name': 'test_survey'}, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = survey_change(request, 1)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['Location'], '/survey2/')
+
+        response = survey_del(request, 1)
+        self.assertEqual(response.status_code, 302)
+
+        request = self.factory.post('/survey2/1/', follow=True)
+        request.user = self.user
+        request.session = {}
+        response = section_sort(request, 1, 1)
+        self.assertTrue(response)
+
+
+    def test_survey_view_delete(self):
+        """Test Function to check delete survey"""
+        request = self.factory.get('/survey2/del/1/')
+        request.user = self.user
+        request.session = {}
+        response = survey_del(request, 1)
+        self.assertEqual(response.status_code, 302)
+
+        request = self.factory.post('/survey2/del/', {'select': '1'})
+        request.user = self.user
+        request.session = {}
+        response = survey_del(request, 0)
+        self.assertEqual(response['Location'], '/survey2/')
+        self.assertEqual(response.status_code, 302)
+
+
 class SurveyModel(TestCase):
-    """Test Survey, SurveyQuestion, SurveyResponse Model"""
+    """Test Survey, Section, Branching, Result, ResultAggregate Model"""
 
     fixtures = ['gateway.json', 'auth_user.json', 'contenttype.json',
                 'phonebook.json', 'contact.json',
@@ -114,7 +198,7 @@ class SurveyModel(TestCase):
         self.assertEqual(
             self.result.__unicode__(), u'[1] [1] test_question = xyz')
 
-        # Result model
+        # ResultAggregate model
         self.result_aggregate = ResultAggregate(
             survey=self.survey,
             campaign_id=1,

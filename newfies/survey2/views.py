@@ -297,9 +297,13 @@ def survey_grid(request):
                       row['description'],
                       row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
                       get_grid_update_delete_link(request, row['id'],
-                                                  'survey.change_surveyapp', _('Update survey'), 'update') +
+                                                  'survey.change_surveyapp',
+                                                  _('Update survey'),
+                                                  'update') +
                       get_grid_update_delete_link(request, row['id'],
-                                                  'survey.delete_surveyapp', _('Delete survey'), 'delete'),
+                                                  'survey.delete_surveyapp',
+                                                  _('Delete survey'),
+                                                 'delete'),
                       ]} for row in survey_list]
     data = {'rows': rows,
             'page': page,

@@ -626,8 +626,8 @@ def section_change(request, id):
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
-                    request.session["err_msg"] = _(
-                        'Voice Section is not updated.')
+                    request.session["err_msg"] = \
+                        _('Voice Section is not updated.')
                     form = VoiceSectionForm(request.user,
                                             request.POST,
                                             instance=section)

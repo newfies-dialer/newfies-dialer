@@ -135,15 +135,14 @@ class VoiceSectionForm(ModelForm):
 
     class Meta:
         model = Section
-        fields = ['type', 'survey', 'phrasing', 'retries', 'audiofile']
+        fields = ['type', 'survey', 'question', 'retries', 'audiofile']
 
     def __init__(self, user, *args, **kwargs):
         super(VoiceSectionForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
-        self.fields['phrasing'].widget = forms.Textarea()
-        self.fields['phrasing'].widget.attrs['class'] = 'span5'
+        self.fields['question'].widget.attrs['class'] = 'span5'
         self.fields['retries'].widget.attrs['class'] = 'span1'
         if instance.id and user:
             self.fields['audiofile'].choices = get_audiofile_list(user)
@@ -158,7 +157,7 @@ class MultipleChoiceSectionForm(ModelForm):
         fields = ['type', 'survey', 'question', 'retries',
                   'key_0', 'key_1', 'key_2', 'key_3', 'key_4',
                   'key_5', 'key_6', 'key_7', 'key_8', 'key_9',
-                  'phrasing', 'timeout', 'audiofile', 'invalid_audiofile']
+                  'timeout', 'audiofile', 'invalid_audiofile']
 
     def __init__(self, user, *args, **kwargs):
         super(MultipleChoiceSectionForm, self).__init__(*args, **kwargs)
@@ -166,8 +165,6 @@ class MultipleChoiceSectionForm(ModelForm):
         if user:
             self.fields['invalid_audiofile'].choices = get_audiofile_list(user)
         if instance.id:
-            self.fields['phrasing'].widget = forms.Textarea()
-            self.fields['phrasing'].widget.attrs['class'] = 'span5'
             self.fields['audiofile'].choices = get_audiofile_list(user)
             self.fields['audiofile'].widget.attrs['class'] = 'span2'
 
@@ -186,7 +183,7 @@ class RatingSectionForm(ModelForm):
 
     class Meta:
         model = Section
-        fields = ['type', 'survey', 'question', 'rating_laps', 'phrasing',
+        fields = ['type', 'survey', 'question', 'rating_laps',
                   'retries', 'timeout', 'audiofile', 'invalid_audiofile']
 
     def __init__(self, user, *args, **kwargs):
@@ -196,14 +193,11 @@ class RatingSectionForm(ModelForm):
             self.fields['invalid_audiofile'].choices = get_audiofile_list(user)
 
         if instance.id:
-            self.fields['phrasing'].widget = forms.Textarea()
-            self.fields['phrasing'].widget.attrs['class'] = 'span5'
             self.fields['audiofile'].choices = get_audiofile_list(user)
             self.fields['audiofile'].widget.attrs['class'] = 'span2'
 
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
-        self.fields['question'].widget = forms.Textarea()
         self.fields['question'].widget.attrs['class'] = 'span5'
         self.fields['retries'].widget.attrs['class'] = 'span1'
         self.fields['timeout'].widget.attrs['class'] = 'span1'
@@ -215,7 +209,7 @@ class EnterNumberSectionForm(ModelForm):
     class Meta:
         model = Section
         fields = ['type', 'survey', 'question', 'validate_number',
-                  'number_digits', 'min_number', 'max_number', 'phrasing',
+                  'number_digits', 'min_number', 'max_number',
                   'retries', 'timeout', 'audiofile', 'invalid_audiofile']
 
     def __init__(self, user, *args, **kwargs):
@@ -225,13 +219,10 @@ class EnterNumberSectionForm(ModelForm):
             self.fields['invalid_audiofile'].choices = get_audiofile_list(user)
 
         if instance.id:
-            self.fields['phrasing'].widget = forms.Textarea()
-            self.fields['phrasing'].widget.attrs['class'] = 'span5'
             self.fields['audiofile'].choices = get_audiofile_list(user)
             self.fields['audiofile'].widget.attrs['class'] = 'span2'
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
-        self.fields['question'].widget = forms.Textarea()
         self.fields['question'].widget.attrs['class'] = 'span5'
         self.fields['validate_number'].widget.attrs['class'] = 'span2'
         self.fields['number_digits'].widget.attrs['class'] = 'span1'
@@ -246,14 +237,13 @@ class RecordMessageSectionForm(ModelForm):
 
     class Meta:
         model = Section
-        fields = ['type', 'survey', 'phrasing', 'continue_survey']
+        fields = ['type', 'survey', 'question', 'continue_survey']
 
     def __init__(self, user, *args, **kwargs):
         super(RecordMessageSectionForm, self).__init__(*args, **kwargs)
         #instance = getattr(self, 'instance', None)
 
-        self.fields['phrasing'].widget = forms.Textarea()
-        self.fields['phrasing'].widget.attrs['class'] = 'span5'
+        self.fields['question'].widget.attrs['class'] = 'span5'
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
 
@@ -263,15 +253,14 @@ class PatchThroughSectionForm(ModelForm):
 
     class Meta:
         model = Section
-        fields = ['type', 'survey', 'phrasing', 'dial_phonenumber',
+        fields = ['type', 'survey', 'question', 'dial_phonenumber',
                   'continue_survey']
 
     def __init__(self, user, *args, **kwargs):
         super(PatchThroughSectionForm, self).__init__(*args, **kwargs)
         #instance = getattr(self, 'instance', None)
 
-        self.fields['phrasing'].widget = forms.Textarea()
-        self.fields['phrasing'].widget.attrs['class'] = 'span5'
+        self.fields['question'].widget.attrs['class'] = 'span5'
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
 

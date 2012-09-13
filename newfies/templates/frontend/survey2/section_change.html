@@ -92,41 +92,6 @@
                     </div>
                 {% endif %}
             </div>
-
-            <!--Voice Section form-->
-            {% if form.type.value|slugify == '1' %}
-            <div class="row">
-                <div class="span5 clearfix{% if form.phrasing.errors %} control-group error{% endif %}">
-                    <label class="control-label" for="id_{{ form.phrasing.name }}">{{ form.phrasing.label }}</label>
-                    <div class="input">
-                        {{ form.phrasing }}
-                        {% if form.phrasing.errors %}
-                            <span class="help-inline">{{ form.phrasing.errors|removetags:"ul li"|safe }}</span>
-                        {% endif %}
-                        <span class="help-block">{{ form.phrasing.help_text|safe }} </span>
-                    </div>
-                </div>
-
-            </div>
-            {% if action == 'update' %}
-                <div class="row">
-                    <div class="span2 clearfix{% if form.audiofile.errors %} control-group error{% endif %}">
-                        <label class="control-label" for="id_{{ form.audiofile.name }}">{{ form.audiofile.label }}</label>
-                        <div class="input">
-                            {{ form.audiofile }}
-                            {% if form.audiofile.errors %}
-                                <span class="help-inline">{{ form.audiofile.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                            <span class="help-block">{{ form.audiofile.help_text|safe }} </span>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
-
-            {% endif %}
-
-            <!--Multiple choice Section form-->
-            {% if form.type.value|slugify == '2' %}
             <div class="row">
                 <div class="span5 clearfix{% if form.question.errors %} control-group error{% endif %}">
                     <label class="control-label" for="id_{{ form.question.name }}">{{ form.question.label }}</label>
@@ -139,6 +104,29 @@
                     </div>
                 </div>
             </div>
+
+            <!--Voice Section form-->
+            {% if form.type.value|slugify == '1' %}
+
+                {% if action == 'update' %}
+                    <div class="row">
+                        <div class="span2 clearfix{% if form.audiofile.errors %} control-group error{% endif %}">
+                            <label class="control-label" for="id_{{ form.audiofile.name }}">{{ form.audiofile.label }}</label>
+                            <div class="input">
+                                {{ form.audiofile }}
+                                {% if form.audiofile.errors %}
+                                    <span class="help-inline">{{ form.audiofile.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                                <span class="help-block">{{ form.audiofile.help_text|safe }} </span>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+            {% endif %}
+
+            <!--Multiple choice Section form-->
+            {% if form.type.value|slugify == '2' %}
 
             <div class="row">
                 <div class="span4 clearfix{% if form.key_0.errors %} control-group error{% endif %}">
@@ -241,19 +229,6 @@
             </div>
             {% if action == 'update' %}
                 <div class="row">
-                    <div class="span5 clearfix{% if form.phrasing.errors %} control-group error{% endif %}">
-                        <label class="control-label" for="id_{{ form.phrasing.name }}">{{ form.phrasing.label }}</label>
-                        <div class="input">
-                            {{ form.phrasing }}
-                            {% if form.phrasing.errors %}
-                                <span class="help-inline">{{ form.phrasing.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                            <span class="help-block">{{ form.phrasing.help_text|safe }} </span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
                     <div class="span2 clearfix{% if form.audiofile.errors %} control-group error{% endif %}">
                         <label class="control-label" for="id_{{ form.audiofile.name }}">{{ form.audiofile.label }}</label>
                         <div class="input">
@@ -271,19 +246,6 @@
 
             <!--Rating Section form-->
             {% if form.type.value|slugify == '3' %}
-
-            <div class="row">
-                <div class="span5 clearfix{% if form.question.errors %} control-group error{% endif %}">
-                    <label class="control-label" for="id_{{ form.question.name }}">{{ form.question.label }}</label>
-                    <div class="input">
-                        {{ form.question }}
-                        {% if form.question.errors %}
-                            <span class="help-inline">{{ form.question.errors|removetags:"ul li"|safe }}</span>
-                        {% endif %}
-                        <span class="help-block">{{ form.question.help_text|safe }} </span>
-                    </div>
-                </div>
-            </div>
 
             <div class="row">
                 <div class="span3 clearfix{% if form.rating_laps.errors %} control-group error{% endif %}">
@@ -321,18 +283,6 @@
 
             {% if action == 'update' %}
                 <div class="row">
-                    <div class="span5 clearfix{% if form.phrasing.errors %} control-group error{% endif %}">
-                        <label class="control-label" for="id_{{ form.phrasing.name }}">{{ form.phrasing.label }}</label>
-                        <div class="input">
-                            {{ form.phrasing }}
-                            {% if form.phrasing.errors %}
-                                <span class="help-inline">{{ form.phrasing.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                            <span class="help-block">{{ form.phrasing.help_text|safe }} </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
                     <div class="span2 clearfix{% if form.audiofile.errors %} control-group error{% endif %}">
                         <label class="control-label" for="id_{{ form.audiofile.name }}">{{ form.audiofile.label }}</label>
                         <div class="input">
@@ -350,19 +300,6 @@
 
             <!--Enter number Section form-->
             {% if form.type.value|slugify == '4' %}
-
-                <div class="row">
-                    <div class="span5 clearfix{% if form.question.errors %} control-group error{% endif %}">
-                        <label class="control-label" for="id_{{ form.question.name }}">{{ form.question.label }}</label>
-                        <div class="input">
-                            {{ form.question }}
-                            {% if form.question.errors %}
-                                <span class="help-inline">{{ form.question.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                            <span class="help-block">{{ form.question.help_text|safe }} </span>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="row">
                     <div class="span2 clearfix{% if form.validate_number.errors %} control-group error{% endif %}">
@@ -429,18 +366,6 @@
 
                 {% if action == 'update' %}
                     <div class="row">
-                        <div class="span5 clearfix{% if form.phrasing.errors %} control-group error{% endif %}">
-                            <label class="control-label" for="id_{{ form.phrasing.name }}">{{ form.phrasing.label }}</label>
-                            <div class="input">
-                                {{ form.phrasing }}
-                                {% if form.phrasing.errors %}
-                                    <span class="help-inline">{{ form.phrasing.errors|removetags:"ul li"|safe }}</span>
-                                {% endif %}
-                                <span class="help-block">{{ form.phrasing.help_text|safe }} </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
                         <div class="span2 clearfix{% if form.audiofile.errors %} control-group error{% endif %}">
                             <label class="control-label" for="id_{{ form.audiofile.name }}">{{ form.audiofile.label }}</label>
                             <div class="input">
@@ -460,19 +385,6 @@
             {% if form.type.value|slugify == '5' %}
 
                 <div class="row">
-                    <div class="span5 clearfix{% if form.phrasing.errors %} control-group error{% endif %}">
-                        <label class="control-label" for="id_{{ form.phrasing.name }}">{{ form.phrasing.label }}</label>
-                        <div class="input">
-                            {{ form.phrasing }}
-                            {% if form.phrasing.errors %}
-                                <span class="help-inline">{{ form.phrasing.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                            <span class="help-block">{{ form.phrasing.help_text|safe }} </span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
                     <div class="span3 clearfix{% if form.continue_survey.errors %} control-group error{% endif %}">
                         <div class="input">
                             {{ form.continue_survey.label }}&nbsp;{{ form.continue_survey }}
@@ -488,19 +400,6 @@
 
             <!--Patch-Through Section form-->
             {% if form.type.value|slugify == '6' %}
-
-                <div class="row">
-                    <div class="span5 clearfix{% if form.phrasing.errors %} control-group error{% endif %}">
-                        <label class="control-label" for="id_{{ form.phrasing.name }}">{{ form.phrasing.label }}</label>
-                        <div class="input">
-                            {{ form.phrasing }}
-                            {% if form.phrasing.errors %}
-                                <span class="help-inline">{{ form.phrasing.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                            <span class="help-block">{{ form.phrasing.help_text|safe }} </span>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="row">
                     <div class="span2 clearfix{% if form.dial_phonenumber.errors %} control-group error{% endif %}">

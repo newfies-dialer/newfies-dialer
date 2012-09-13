@@ -170,7 +170,7 @@
                                             .attr("url", "/section/branch/{{ section.id }}/")
                                             .attr("data-toggle", "modal")
                                             .attr("href", "#section-branch")
-                                            .attr("data-controls-modal", "section-branch-content");
+                                            .attr("data-controls-modal", "section-branch");
                                     });
                                 }
                             </script>
@@ -391,12 +391,7 @@
 
     </script>
     <!-- modal content-->
-    <div id="section-branch" class="modal hide fade">
-        <div class="modal-body" id="section-branch-content"></div>
-        <div class="modal-footer">
-            <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
-        </div>
-    </div>
+    <div id="section-branch" class="modal hide fade"></div>
 
     <!--update phrasing in modal-->
     <script type="text/javascript" charset="utf-8">

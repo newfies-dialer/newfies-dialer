@@ -17,16 +17,6 @@
 
     {% block content %}
 
-        {% if action == 'add' %}
-            {% block content_header %}
-                <a class="close" data-dismiss="modal" >&times;</a>
-                <h3>
-                    {% trans "Add" %} {% trans "Section Branch" %}
-                    <small></small>
-                </h3>
-            {% endblock %}
-        {% endif %}
-
         {% if err_msg %}
             <script type="text/javascript" charset="utf-8">
 
@@ -44,72 +34,74 @@
                     if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
                 });
             </script>
-            <!-- modal content-->
-            <div class="modal hide fade" id="section_modal">
-            <div class="modal-header">
-                <a class="close" data-dismiss="modal" >&times;</a>
-                <h3>{% if action == 'update' %}
-                    {% trans "Update" %}
-                {% else %}
-                    {% trans "Add" %}
-                {% endif %} {% trans "Section Branch" %}
-                    <small></small>
-                </h3>
-            </div>
-            <div class="modal-body">
+        <!-- modal content-->
+        <div class="modal hide fade" id="section_modal">
+
         {% endif %}
 
-    <form class="well" method="POST" action="/section/branch/{{ section_id }}/" enctype="multipart/form-data" id="update_form">
-    {% csrf_token %}
-    {{ form.section }}
-    <!--"keys" is hidden for section_type 1 (voice) & 5(record message)-->
-    {% if section_type == 1 or section_type == 5 %}
-        {{ form.keys }}
-    {% else %}
-    <div class="row">
-        <div class="span2 clearfix{% if form.keys.errors %} control-group error{% endif %}">
-            <label class="control-label" for="id_{{ form.keys.name }}">{{ form.keys.label }}</label>
-            <div class="input">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal" >&times;</a>
+            <h3>{% if action == 'update' %}
+                {% trans "Update" %}
+            {% else %}
+                {% trans "Add" %}
+            {% endif %} {% trans "Section Branch" %}
+                <small></small>
+            </h3>
+        </div>
+        <div class="modal-body">
+
+            <form class="well" method="POST" action="/section/branch/{{ section_id }}/" enctype="multipart/form-data" id="update_form">
+            {% csrf_token %}
+            {{ form.section }}
+            <!--"keys" is hidden for section_type 1 (voice) & 5(record message)-->
+            {% if section_type == 1 or section_type == 5 %}
                 {{ form.keys }}
-                {% if form.keys.errors %}
-                    <span class="help-inline">{{ form.keys.errors|removetags:"ul li"|safe }}</span>
-                {% endif %}
-                <span class="help-block">{{ form.keys.help_text|safe }} </span>
+            {% else %}
+            <div class="row">
+                <div class="span2 clearfix{% if form.keys.errors %} control-group error{% endif %}">
+                    <label class="control-label" for="id_{{ form.keys.name }}">{{ form.keys.label }}</label>
+                    <div class="input">
+                        {{ form.keys }}
+                        {% if form.keys.errors %}
+                            <span class="help-inline">{{ form.keys.errors|removetags:"ul li"|safe }}</span>
+                        {% endif %}
+                        <span class="help-block">{{ form.keys.help_text|safe }} </span>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    {% endif %}
+            {% endif %}
 
-    <div class="row">
-        <div class="span2 clearfix{% if form.goto.errors %} control-group error{% endif %}">
-            <label class="control-label" for="id_{{ form.goto.name }}">{{ form.goto.label }}</label>
-            <div class="input">
-                {{ form.goto }}
-                {% if form.goto.errors %}
-                    <span class="help-inline">{{ form.goto.errors|removetags:"ul li"|safe }}</span>
-                {% endif %}
-                <span class="help-block">{{ form.goto.help_text|safe }} </span>
+            <div class="row">
+                <div class="span2 clearfix{% if form.goto.errors %} control-group error{% endif %}">
+                    <label class="control-label" for="id_{{ form.goto.name }}">{{ form.goto.label }}</label>
+                    <div class="input">
+                        {{ form.goto }}
+                        {% if form.goto.errors %}
+                            <span class="help-inline">{{ form.goto.errors|removetags:"ul li"|safe }}</span>
+                        {% endif %}
+                        <span class="help-block">{{ form.goto.help_text|safe }} </span>
+                    </div>
+                </div>
             </div>
+
+            <div class="actions" align="right">
+                {% if action == 'update' %}
+                    <input id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
+                {% else %}
+                    <input id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans "Submit" %}" />
+                {% endif %}
+                &nbsp;
+                <a href="#" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
+            </div>
+
+            </form>
         </div>
-    </div>
-
-    <div class="actions">
-        {% if action == 'update' %}
-            <input id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
-        {% else %}
-            <input id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans "Submit" %}" />
-        {% endif %}
-    </div>
-
-    </form>
 
     {% if err_msg %}
-        </div>
-        <div class="modal-footer">
-            <a href="#" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
-        </div>
-        </div>
+    </div>
     {% endif %}
+
     {% endblock %}
 
     {% block footer %}

@@ -170,6 +170,7 @@
                                             .attr("url", "/section/branch/{{ section.id }}/")
                                             .attr("data-toggle", "modal")
                                             .attr("href", "#section-branch")
+                                            .attr("title", "{% trans "Branching" %}")
                                             .attr("data-controls-modal", "section-branch");
                                     });
                                 }
@@ -327,10 +328,10 @@
                                         </div>
 
                                         <div class="span3">
-                                            <button data-toggle="modal" href="#section-update-edit" class="section-edit btn btn-info" url='/section/{{ section.id }}/' data-controls-modal='section-update-edit'>
+                                            <button title="{% trans "Edit" %}" data-toggle="modal" href="#section-update-edit" class="section-edit btn btn-info" url='/section/{{ section.id }}/' data-controls-modal='section-update-edit'>
                                                 {% trans "Edit" %}
                                             </button>
-                                            <input value="{% trans "Delete" %}" onclick="document.location.href='/section/{{ section.id }}/?delete=true';" class="btn btn-danger" type="button" />
+                                            <input title="{% trans "Delete" %}" value="{% trans "Delete" %}" onclick="document.location.href='/section/{{ section.id }}/?delete=true';" class="btn btn-danger" type="button" />
                                         </div>
                                     </div>
                                 </div>

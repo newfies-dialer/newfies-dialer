@@ -68,12 +68,12 @@
 
             <div class="actions" align="right">
                 {% if action == 'update' %}
-                    <input id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
+                    <input title="{% trans "Update" %}" id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
                 {% else %}
-                    <input id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans "Submit" %}" />
+                    <input title="{% trans "Save" %}" id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans "Save" %}" />
                 {% endif %}
                 &nbsp;
-                <a href="#" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
+                <a href="#" title="{% trans "Close" %}" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
             </div>
 
             </form>

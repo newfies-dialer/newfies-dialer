@@ -267,7 +267,7 @@
                                                 <div class="span8">
                                                     <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}
                                                     <a data-toggle="modal" href="#phrasing-update-edit" class="phrasing-edit" url='/section/phrasing/{{ section.id }}/' data-controls-modal='phrasing-update-edit'>
-                                                        <i class="icon-edit"></i>
+                                                        <i title="{% trans "Edit" %}" class="icon-edit"></i>
                                                     </a>
 
                                                 </div>
@@ -283,7 +283,9 @@
                                                     <table class="table table-striped table-bordered table-condensed">
                                                         <thead>
                                                         <tr>
+                                                            {% if section.type != 1 or section.type != 5 %}
                                                             <th>{% trans "keys"|title %}</th>
+                                                            {% endif %}
                                                             <th>{% trans "goto"|title %}</th>
                                                             <th class="survey_edit_key">&nbsp;</th>
                                                         </tr>
@@ -292,6 +294,7 @@
                                                         {% for branch in branching_list %}
                                                             <tr>
                                                                 {% if branch.section_id == section.id %}
+                                                                    {% if section.type != 1 or section.type != 5 %}
                                                                     <td>
                                                                         {% trans "If the user press" %}&nbsp;
                                                                         {% if branch.keys %}
@@ -300,6 +303,7 @@
                                                                             {% trans "None" %}
                                                                         {% endif %}
                                                                     </td>
+                                                                    {% endif %}
                                                                     <td>
                                                                         #{% if branch.goto.id %}
                                                                             {{ branch.goto.id }}&nbsp;

@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n %}
+{% load i18n common_tags %}
 
 {% block extra_files %}
 {% endblock %}
@@ -96,94 +96,18 @@
 
                 <!--Multiple choice Section form-->
                 {% if form.type.value|slugify == '2' %}
-
                 <div class="row">
-                    <div class="span4 clearfix{% if form.key_0.errors %} control-group error{% endif %}">
-                        <div class="input">
-                            {{ form.key_0.label }}&nbsp;{{ form.key_0 }}
-                            {% if form.key_0.errors %}
-                                <span class="help-inline">{{ form.key_0.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
+                    {% get_fieldset key_0,key_1,key_2,key_3,key_4,key_5,key_6,key_7,key_8,key_9 as key_fields from form %}
+                    {% for field in key_fields.visible_fields %}
+                        <div class="span4 clearfix{% if field.errors %} control-group error{% endif %}">
+                            <div class="input">
+                                {{ field.label }}&nbsp;{{ field }}
+                                {% if field.errors %}
+                                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="span4 clearfix{% if form.key_1.errors %} control-group error{% endif %}">
-                        <div class="input">
-                            {{ form.key_1.label }}&nbsp;{{ form.key_1 }}
-                            {% if form.key_1.errors %}
-                                <span class="help-inline">{{ form.key_1.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <div class="span4 clearfix{% if form.key_2.errors %} control-group error{% endif %}">
-                        <div class="input">
-                            {{ form.key_2.label }}&nbsp;{{ form.key_2 }}
-                            {% if form.key_2.errors %}
-                                <span class="help-inline">{{ form.key_2.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <div class="span4 clearfix{% if form.key_3.errors %} control-group error{% endif %}">
-                        <div class="input">
-                            {{ form.key_3.label }}&nbsp;{{ form.key_3 }}
-                            {% if form.key_3.errors %}
-                                <span class="help-inline">{{ form.key_3.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="span4 clearfix{% if form.key_4.errors %} control-group error{% endif %}">
-                        <div class="input">
-                            {{ form.key_4.label }}&nbsp;{{ form.key_4 }}
-                            {% if form.key_4.errors %}
-                                <span class="help-inline">{{ form.key_4.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="span4 clearfix{% if form.key_5.errors %} control-group error{% endif %}">
-                        <div class="input">
-                            {{ form.key_5.label }}&nbsp;{{ form.key_5 }}
-                            {% if form.key_5.errors %}
-                                <span class="help-inline">{{ form.key_5.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <div class="span4 clearfix{% if form.key_6.errors %} control-group error{% endif %}">
-                        <div class="input">
-                            {{ form.key_6.label }}&nbsp;{{ form.key_6 }}
-                            {% if form.key_6.errors %}
-                                <span class="help-inline">{{ form.key_6.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="span4 clearfix{% if form.key_7.errors %} control-group error{% endif %}">
-                        <div class="input">
-                            {{ form.key_7.label }}&nbsp;{{ form.key_7 }}
-                            {% if form.key_7.errors %}
-                                <span class="help-inline">{{ form.key_7.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="span4 clearfix{% if form.key_8.errors %} control-group error{% endif %}">
-                        <div class="input">
-                            {{ form.key_8.label }}&nbsp;{{ form.key_8 }}
-                            {% if form.key_8.errors %}
-                                <span class="help-inline">{{ form.key_8.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <div class="span4 clearfix{% if form.key_9.errors %} control-group error{% endif %}">
-                        <div class="input">
-                            {{ form.key_9.label }}&nbsp;{{ form.key_9 }}
-                            {% if form.key_9.errors %}
-                                <span class="help-inline">{{ form.key_9.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                        </div>
-                    </div>
-
+                    {% endfor %}
                     <div class="span4 clearfix{% if form.invalid_audiofile.errors %} control-group error{% endif %}">
                         <label class="control-label" for="id_{{ form.invalid_audiofile.name }}">{{ form.invalid_audiofile.label }}</label>
                         <div class="input">
@@ -194,9 +118,7 @@
                             <span class="help-block">{{ form.invalid_audiofile.help_text|safe }} </span>
                         </div>
                     </div>
-
-                </div>
-
+                </div>                
                 {% endif %}
 
                 <!--Rating Section form-->

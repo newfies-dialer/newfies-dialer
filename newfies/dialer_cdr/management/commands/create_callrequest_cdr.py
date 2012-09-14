@@ -19,7 +19,8 @@ from django.contrib.auth.models import User
 from dialer_campaign.models import Campaign
 from django.db import IntegrityError
 from dialer_cdr.models import Callrequest, VoIPCall
-from survey.models import SurveyCampaignResult
+#from survey.models import SurveyCampaignResult
+from survey2.models import Result
 from random import choice
 from uuid import uuid1
 import random
@@ -50,11 +51,12 @@ def create_callrequest(campaign_id, quantity):
             length = 5
             chars = "1234567890"
 
-            #'surveyapp' | 'voiceapp'
+            #'survey' | 'voiceapp'
             try:
-                content_type_id = ContentType.objects.get(model='voiceapp').id
+                content_type_id = ContentType.objects.get(model='survey').id
             except:
                 content_type_id = 1
+
 
             for i in range(1, int(quantity) + 1):
                 phonenumber = '' . join([choice(chars) for i in range(length)])
@@ -69,6 +71,7 @@ def create_callrequest(campaign_id, quantity):
                                     content_type_id=content_type_id,
                                     object_id=1)
 
+
                 new_cdr = VoIPCall.objects.create(
                                     request_uuid=uuid1(),
                                     user=admin_user,
@@ -77,23 +80,14 @@ def create_callrequest(campaign_id, quantity):
                                     duration=random.randint(1, 100),
                                     disposition=choice(VOIPCALL_DISPOSITION))
 
-                for question in SURVEY_RESULT_QUE:
-                    # for survey campaign result
-                    if question == 'record a message after the beep':
-                        response = ''
-                        record_file = 'xyz.mp3'
-                    else:
-                        response = choice("12345678")
-                        record_file = ''
+                response = choice("12345678")
 
-                    survey_cpg_result = SurveyCampaignResult.objects\
-                                            .create(
-                                                campaign=obj_campaign,
-                                                surveyapp_id=1,
-                                                question=question,
-                                                response=response,
-                                                record_file=record_file,
-                                                callrequest=new_callrequest)
+                survey_cpg_result = Result.objects.create(
+                                            campaign=obj_campaign,
+                                            survey_id=1,
+                                            section_id=1,
+                                            response=response,
+                                            callrequest=new_callrequest)
 
             print _("No of Callrequest & CDR created :%(count)s" % \
                         {'count': quantity})

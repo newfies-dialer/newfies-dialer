@@ -255,7 +255,7 @@ class Result(models.Model):
     """
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
                                  verbose_name=_("Campaign"))
-    survey = models.ForeignKey(Survey, related_name='Survey App')
+    survey = models.ForeignKey(Survey, related_name='Survey')
     section = models.ForeignKey(Section, related_name='Result Section')
     callrequest = models.ForeignKey(Callrequest,
                                     blank=True, null=True,

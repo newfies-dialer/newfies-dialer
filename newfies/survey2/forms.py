@@ -101,7 +101,7 @@ def get_rating_choice_list(section_id):
 
 
 class SurveyForm(ModelForm):
-    """SurveyApp ModelForm"""
+    """Survey ModelForm"""
 
     class Meta:
         model = Survey

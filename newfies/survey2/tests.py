@@ -154,6 +154,7 @@ class SurveyModel(TestCase):
     fixtures = ['gateway.json', 'auth_user.json', 'contenttype.json',
                 'phonebook.json', 'contact.json',
                 'campaign.json', 'campaign_subscriber.json',
+                'survey.json', 'section.json', 'branching.json',
                 'callrequest.json']
 
     def setUp(self):
@@ -178,7 +179,7 @@ class SurveyModel(TestCase):
 
         # Branching model
         self.branching = Branching(
-            keys='5',
+            keys=5,
             section=self.section,
         )
         self.branching.save()
@@ -215,6 +216,94 @@ class SurveyModel(TestCase):
         self.assertEqual(self.section.survey, self.survey)
         self.assertEqual(self.branching.section, self.section)
         self.assertEqual(self.result.survey, self.survey)
+
+        form = VoiceSectionForm(self.user, instance=self.section)
+        obj = form.save(commit=False)
+        obj.question = "test question"
+        obj.type = 1
+        obj.survey = self.survey
+        obj.save()
+
+        form = BranchingForm(self.survey.id, self.section.id)
+        obj = form.save(commit=False)
+        obj.keys = 0
+        obj.section = self.section
+        obj.goto = self.section
+        obj.save()
+
+        form = MultipleChoiceSectionForm(self.user, instance=self.section)
+        obj = form.save(commit=False)
+        obj.type = 2
+        obj.question = "test question"
+        obj.key_0 = "apple"
+        obj.survey = self.survey
+        obj.save()
+
+        form = BranchingForm(self.survey.id, self.section.id)
+        obj = form.save(commit=False)
+        obj.keys = 1
+        obj.section = self.section
+        obj.goto = self.section
+        obj.save()
+
+        form = RatingSectionForm(self.user,
+                                 instance= self.section)
+        obj = form.save(commit=False)
+        obj.type = 3
+        obj.question = "test question"
+        obj.rating_laps = 5
+        obj.survey = self.survey
+        obj.save()
+
+        form = BranchingForm(self.survey.id, self.section.id)
+        obj = form.save(commit=False)
+        obj.keys = 2
+        obj.section = self.section
+        obj.goto = self.section
+        obj.save()
+
+        form = EnterNumberSectionForm(self.user,
+                                      instance=self.section)
+        obj = form.save(commit=False)
+        obj.type = 4
+        obj.question = "test question"
+        obj.number_digits = 2
+        obj.min_number = 1
+        obj.max_number = 100
+        obj.survey = self.survey
+        obj.save()
+
+        form = BranchingForm(2, 2)
+        obj = form.save(commit=False)
+        obj.keys = 3
+        obj.section = self.section
+        obj.goto = self.section
+        obj.save()
+
+        form = RecordMessageSectionForm(self.user)
+        obj = form.save(commit=False)
+        obj.type = 5
+        obj.question = "test question"
+        obj.continue_survey = 1
+        obj.survey = self.survey
+        obj.save()
+
+        form = PatchThroughSectionForm(self.user)
+        obj = form.save(commit=False)
+        obj.type = 6
+        obj.question = "test question"
+        obj.dial_phonenumber = 1234567890
+        obj.survey = self.survey
+        obj.save()
+
+        form = PhrasingForm()
+        obj = form.save(commit=False)
+        obj.phrasing = 'xyz'
+        obj.survey = self.survey
+        obj.save()
+
+        form = SurveyDetailReportForm(self.user,
+                                      initial={'campaign': 1})
 
     def teardown(self):
         self.survey.delete()

@@ -26,14 +26,18 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
 from dialer_campaign.models import Campaign
 from dialer_campaign.views import notice_count
-from survey2.models import Survey, Section, Branching
+from dialer_cdr.models import Callrequest, VoIPCall
+
+from survey2.models import Survey, Section, Branching,\
+    Result, ResultAggregate
 from survey2.forms import SurveyForm, VoiceSectionForm,\
     MultipleChoiceSectionForm, RatingSectionForm,\
     EnterNumberSectionForm, RecordMessageSectionForm,\
     PatchThroughSectionForm, BranchingForm, PhrasingForm,\
     SurveyDetailReportForm
-from dialer_cdr.models import Callrequest, VoIPCall
+from survey2.function_def import export_question_result
 from utils.helper import grid_common_function, get_grid_update_delete_link
+
 from common.common_functions import variable_value, current_view
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -103,7 +107,7 @@ def survey_finestatemachine(request):
             #print "\nPREVIOUS QUESTION ::> %d" % prev_qt
             #Get previous Question
             try:
-                obj_prev_qt = SurveyQuestion.objects.get(id=prev_qt)
+                obj_prev_qt = Section.objects.get(id=prev_qt)
             except:
                 obj_prev_qt = False
     try:
@@ -114,7 +118,7 @@ def survey_finestatemachine(request):
             content="Error : retrieving Callrequest with the ALegRequestUUID",
             status=400)
 
-    surveyapp_id = obj_callrequest.object_id
+    survey_id = obj_callrequest.object_id
     cache.set(key_surveyapp, surveyapp_id, 21600)  # 21600 seconds = 6 hours
 
     if current_state == 0:
@@ -126,8 +130,8 @@ def survey_finestatemachine(request):
     #print "current_state = %s" % str(current_state)
 
     #Load the questions
-    list_question = SurveyQuestion.objects\
-        .filter(surveyapp=surveyapp_id).order_by('order')
+    list_question = Section.objects\
+        .filter(survey=survey_id).order_by('order')
 
     if obj_prev_qt and obj_prev_qt.type == 3:
         #Previous Recording
@@ -141,7 +145,7 @@ def survey_finestatemachine(request):
             RecordFile = os.path.split(RecordFile)[1]
         except:
             RecordFile = ''
-        new_surveycampaignresult = SurveyCampaignResult(
+        new_surveycampaignresult = Result(
             campaign=obj_callrequest.campaign,
             surveyapp_id=surveyapp_id,
             callid=opt_CallUUID,
@@ -155,7 +159,7 @@ def survey_finestatemachine(request):
         #find the response for this key pressed
         try:
             #Get list of responses of the previous Question
-            surveyresponse = SurveyResponse.objects.get(
+            surveyresponse = Branching.objects.get(
                 key=DTMF,
                 surveyquestion=obj_prev_qt)
             if not surveyresponse or not surveyresponse.keyvalue:
@@ -176,7 +180,7 @@ def survey_finestatemachine(request):
             #It's possible that this response is not accepted
             response_value = DTMF
         try:
-            new_surveycampaignresult = SurveyCampaignResult(
+            new_surveycampaignresult = Result(
                 campaign=obj_callrequest.campaign,
                 surveyapp_id=surveyapp_id,
                 callid=opt_CallUUID,
@@ -1023,7 +1027,7 @@ def survey_cdr_daily_report(kwargs, from_query, select_group_query):
 
 def get_survey_result(survey_result_kwargs):
     """Get survey result report from selected survey campaign"""
-    survey_result = SurveyCampaignResult.objects\
+    survey_result = Result.objects\
         .filter(**survey_result_kwargs)\
         .values('question', 'response', 'record_file')\
         .annotate(Count('response'))\
@@ -1289,8 +1293,8 @@ def export_surveycall_report(request):
 
     survey_qst = False
     if str(campaign_obj.content_type) == 'Survey':
-        survey_qst = SurveyQuestion.objects\
-            .filter(surveyapp_id=int(campaign_obj.object_id))
+        survey_qst = Section.objects\
+            .filter(survey_id=int(campaign_obj.object_id))
         for i in survey_qst:
             column_list.append(str(i.question.replace(',', ' ')))
     writer.writerow(column_list)

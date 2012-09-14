@@ -45,6 +45,10 @@ from survey.api.survey_api import SurveyAppResource
 from survey.api.survey_question_api import SurveyQuestionResource
 from survey.api.survey_response_api import SurveyResponseResource
 
+from survey2.api.survey_api import SurveyResource
+from survey2.api.survey_section_api import SectionResource
+from survey2.api.survey_branching_api import BranchingResource
+
 import os
 from django.contrib import admin
 from dajaxice.core import dajaxice_autodiscover
@@ -77,6 +81,9 @@ tastypie_api.register(CdrResource())
 tastypie_api.register(SurveyAppResource())
 tastypie_api.register(SurveyQuestionResource())
 tastypie_api.register(SurveyResponseResource())
+tastypie_api.register(SurveyResource())
+tastypie_api.register(SectionResource())
+tastypie_api.register(BranchingResource())
 
 js_info_dict = {
     'domain': 'djangojs',

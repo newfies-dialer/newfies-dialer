@@ -23,10 +23,10 @@ from tastypie.throttle import BaseThrottle
 from tastypie import fields
 
 from api.user_api import UserResource
-from survey.models import SurveyApp
+from survey2.models import Survey
 
 
-class SurveyAppValidation(Validation):
+class SurveyValidation(Validation):
     """SurveyApp Validation Class"""
     def is_valid(self, bundle, request=None):
         errors = {}
@@ -41,7 +41,7 @@ class SurveyAppValidation(Validation):
         return errors
 
 
-class SurveyAppResource(ModelResource):
+class SurveyResource(ModelResource):
     """
     **Attributes**:
 
@@ -51,7 +51,7 @@ class SurveyAppResource(ModelResource):
 
     **Validation**:
 
-        * SurveyAppValidation()
+        * SurveyValidation()
 
     **Create**:
 
@@ -146,11 +146,11 @@ class SurveyAppResource(ModelResource):
     user = fields.ForeignKey(UserResource, 'user', full=True)
 
     class Meta:
-        queryset = SurveyApp.objects.all()
+        queryset = Survey.objects.all()
         resource_name = 'survey'
         authorization = Authorization()
         authentication = BasicAuthentication()
-        validation = SurveyAppValidation()
+        validation = SurveyValidation()
         list_allowed_methods = ['post', 'get', 'put', 'delete']
         detail_allowed_methods = ['post', 'get', 'put', 'delete']
         # default 1000 calls / hour

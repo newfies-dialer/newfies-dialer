@@ -21,13 +21,13 @@ from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie import fields
 
-from survey.api.survey_question_api import SurveyQuestionResource
-from survey.models import SurveyQuestion, SurveyResponse
+from survey2.api.survey_section_api import SectionResource
+from survey2.models import Section, Branching
 
 
-class SurveyResponseValidation(Validation):
+class BranchingValidation(Validation):
     """
-    SurveyResponse Validation Class
+    BranchingValidation Validation Class
     """
     def is_valid(self, bundle, request=None):
         errors = {}
@@ -35,7 +35,7 @@ class SurveyResponseValidation(Validation):
             errors['Data'] = ['Data set is empty']
         key = bundle.data.get('key')
         if key:
-            dup_count = SurveyResponse.objects.filter(key=str(key)).count()
+            dup_count = Branching.objects.filter(key=str(key)).count()
             if request.method == 'POST':
                 if dup_count >= 1:
                     errors['duplicate_key'] = ["Key is already exist!"]
@@ -43,37 +43,35 @@ class SurveyResponseValidation(Validation):
                 if dup_count > 1:
                     errors['duplicate_key'] = ["Key is already exist!"]
 
-        surveyquestion_id = bundle.data.get('surveyquestion')
-        if surveyquestion_id:
+        section_id = bundle.data.get('section')
+        if section_id:
             try:
-                surveyquestion_id = SurveyQuestion.objects\
-                      .get(id=surveyquestion_id).id
-                bundle.data['surveyquestion'] = \
-                      '/api/v1/survey_question/%s/' % surveyquestion_id
+                section_id = Section.objects.get(id=section_id).id
+                bundle.data['section_id'] = \
+                      '/api/v1/section_id/%s/' % section_id
             except:
-                errors['surveyquestion'] = \
-                      ["The Survey question ID doesn't exist!"]
+                errors['section_id'] = \
+                      ["The Section ID doesn't exist!"]
 
         return errors
 
 
-class SurveyResponseResource(ModelResource):
+class BranchingResource(ModelResource):
     """
     **Attributes**:
 
-        * ``key`` - survey question's response key
-        * ``key value`` - response key value
-        * ``surveyquestion`` - survey question ID
+        * ``keys`` - section's response key
+        * ``section`` - survey question ID
 
     **Validation**:
 
-        * SurveyResponseValidation()
+        * BranchingValidation()
 
     **Create**:
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"key": "Apple", "keyvalue": "1", "surveyquestion": "1"}' http://localhost:8000/api/v1/survey_response/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"keys": "1", "section": "1"}' http://localhost:8000/api/v1/branching/
 
         Response::
 
@@ -82,7 +80,7 @@ class SurveyResponseResource(ModelResource):
             Server: WSGIServer/0.1 Python/2.7.1+
             Vary: Accept-Language, Cookie
             Content-Type: text/html; charset=utf-8
-            Location: http://localhost:8000/api/v1/survey_response/1/
+            Location: http://localhost:8000/api/v1/branching/1/
             Content-Language: en-us
 
 
@@ -90,7 +88,7 @@ class SurveyResponseResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/survey_response/?format=json
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/branching/?format=json
 
         Response::
 
@@ -108,14 +106,14 @@ class SurveyResponseResource(ModelResource):
                      "id":"3",
                      "key":"YES",
                      "keyvalue":"1",
-                     "resource_uri":"/api/v1/survey_response/3/",
+                     "resource_uri":"/api/v1/branching/3/",
                      "surveyquestion":{
                         "created_date":"2011-12-15T13:10:49",
                         "id":"17",
                         "message_type":1,
                         "order":1,
                         "question":"Servey Qus",
-                        "resource_uri":"/api/v1/survey_question/17/",
+                        "resource_uri":"/api/v1/section/17/",
                         "surveyapp":{
                            "created_date":"2011-12-15T09:55:25",
                            "description":"",
@@ -154,7 +152,7 @@ class SurveyResponseResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"key": "Apple", "keyvalue": "1", "surveyquestion": "1"}' http://localhost:8000/api/v1/survey_response/%survey_response_id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"keys": "1", "section": "1"}' http://localhost:8000/api/v1/branching/%branching_id%/
 
         Response::
 
@@ -171,9 +169,9 @@ class SurveyResponseResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/survey_response/%survey_response_id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/branching/%branching_id%/
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/survey_response/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/branching/
 
         Response::
 
@@ -186,15 +184,15 @@ class SurveyResponseResource(ModelResource):
             Content-Language: en-us
 
     """
-    surveyquestion = fields.ForeignKey(SurveyQuestionResource,
-                                'surveyquestion', full=True)
+    section = fields.ForeignKey(SectionResource,
+                                'section', full=True)
 
     class Meta:
-        queryset = SurveyResponse.objects.all()
-        resource_name = 'survey_response'
+        queryset = Branching.objects.all()
+        resource_name = 'branching'
         authorization = Authorization()
         authentication = BasicAuthentication()
-        validation = SurveyResponseValidation()
+        validation = BranchingValidation()
         # default 1000 calls / hour
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
         pass_request_user_to_django = True

@@ -412,7 +412,6 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 302)
 
 
-
 class SurveyModel(TestCase):
     """Test Survey, Section, Branching, Result, ResultAggregate Model"""
 

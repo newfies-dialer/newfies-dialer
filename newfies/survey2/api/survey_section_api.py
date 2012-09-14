@@ -23,13 +23,13 @@ from tastypie.throttle import BaseThrottle
 from tastypie import fields
 
 from api.user_api import UserResource
-from survey.api.survey_api import SurveyAppResource
-from survey.models import SurveyApp, SurveyQuestion
+from survey2.api.survey_api import SurveyResource
+from survey2.models import Survey, Section
 
 
-class SurveyQuestionValidation(Validation):
+class SectionValidation(Validation):
     """
-    SurveyQuestion Validation Class
+    Section Validation Class
     """
     def is_valid(self, bundle, request=None):
         errors = {}
@@ -37,42 +37,34 @@ class SurveyQuestionValidation(Validation):
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
 
-        surveyapp_id = bundle.data.get('surveyapp')
-        if surveyapp_id:
+        survey_id = bundle.data.get('survey')
+        if survey_id:
             try:
-                surveyapp_id = SurveyApp.objects.get(id=surveyapp_id).id
-                bundle.data['surveyapp'] = '/api/v1/survey/%s/' % surveyapp_id
+                survey_id = Survey.objects.get(id=survey_id).id
+                bundle.data['survey'] = '/api/v1/survey/%s/' % survey_id
             except:
-                errors['survey'] = ["The Survey app ID doesn't exist!"]
-
-        try:
-            user_id = User.objects.get(username=request.user).id
-            bundle.data['user'] = '/api/v1/user/%s/' % user_id
-        except:
-            errors['chk_user'] = ["The User doesn't exist!"]
-
+                errors['survey'] = ["The Survey ID doesn't exist!"]
         return errors
 
 
-class SurveyQuestionResource(ModelResource):
+class SectionResource(ModelResource):
     """
     **Attributes**:
 
         * ``question`` - survey question
-        * ``user`` - User ID
-        * ``surveyapp`` - surveyapp ID
+        * ``survey`` - survey ID
         * ``audio_message`` - audio file
         * ``message_type`` - Audio / Text2Speech
 
     **Validation**:
 
-        * SurveyQuestionValidation()
+        * SectionValidation()
 
     **Create**:
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"question": "survey que", "tags": "", "user": "1", "surveyapp": "1", "message_type": "1"}' http://localhost:8000/api/v1/survey_question/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"question": "survey que", "tags": "", "user": "1", "survey": "1", "message_type": "1"}' http://localhost:8000/api/v1/section/
 
         Response::
 
@@ -81,7 +73,7 @@ class SurveyQuestionResource(ModelResource):
             Server: WSGIServer/0.1 Python/2.7.1+
             Vary: Accept-Language, Cookie
             Content-Type: text/html; charset=utf-8
-            Location: http://localhost:8000/api/v1/survey_question/1/
+            Location: http://localhost:8000/api/v1/section/1/
             Content-Language: en-us
 
 
@@ -89,7 +81,7 @@ class SurveyQuestionResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/survey_question/?format=json
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/section/?format=json
 
         Response::
 
@@ -108,7 +100,7 @@ class SurveyQuestionResource(ModelResource):
                       "message_type":1,
                       "order":1,
                       "question":"Test Servey Qus",
-                      "resource_uri":"/api/v1/survey_question/1/",
+                      "resource_uri":"/api/v1/section/1/",
                       "surveyapp":{
                          "created_date":"2011-12-15T09:55:25",
                          "description":"",
@@ -144,7 +136,7 @@ class SurveyQuestionResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"question": "survey que", "tags": "", "user": "1", "surveyapp": "1", "message_type": "1"}' http://localhost:8000/api/v1/survey_question/%survey_question_id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"question": "survey que", "tags": "", "user": "1", "surveyapp": "1", "message_type": "1"}' http://localhost:8000/api/v1/section/%section_id%/
 
         Response::
 
@@ -161,9 +153,9 @@ class SurveyQuestionResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/survey_question/%survey_question_id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/section/%section_id%/
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/survey_question/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/api/v1/section/
 
         Response::
 
@@ -175,14 +167,13 @@ class SurveyQuestionResource(ModelResource):
             Content-Type: text/html; charset=utf-8
             Content-Language: en-us
     """
-    user = fields.ForeignKey(UserResource, 'user', full=True)
-    surveyapp = fields.ForeignKey(SurveyAppResource, 'surveyapp', full=True)
+    survey = fields.ForeignKey(SurveyResource, 'survey', full=True)
 
     class Meta:
-        queryset = SurveyQuestion.objects.all()
-        resource_name = 'survey_question'
+        queryset = Section.objects.all()
+        resource_name = 'section'
         authorization = Authorization()
         authentication = BasicAuthentication()
-        validation = SurveyQuestionValidation()
+        validation = SectionValidation()
         # default 1000 calls / hour
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600)

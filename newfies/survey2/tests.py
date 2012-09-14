@@ -63,10 +63,15 @@ class SurveyAdminView(BaseAuthenticatedClient):
         response = self.client.get('/admin/survey2/branching/')
         self.failUnlessEqual(response.status_code, 200)
 
+    def test_admin_survey_branching_view_add(self):
+        """Test Function to check admin surveyresponse list"""
+        response = self.client.get('/admin/survey2/branching/add/')
+        self.failUnlessEqual(response.status_code, 200)
+
 
 class SurveyCustomerView(BaseAuthenticatedClient):
-    """Test Function to check Survey, SurveyQuestion,
-       SurveyResponse Customer pages
+    """Test Function to check Survey, Section, Branching, Result,
+       ResultAggregate Customer pages
     """
 
     fixtures = ['auth_user.json', 'gateway.json', 'voiceapp.json',
@@ -109,7 +114,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 302)
 
     def test_survey_view_update(self):
-        """Test Function survey view get"""
+        """Test Function survey view update"""
         response = self.client.get('/survey2/1/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/survey2/survey_change.html')
@@ -249,7 +254,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
     def test_survey_section_view_update(self):
-        """Test Function survey section add"""
+        """Test Function survey section update"""
         #self.survey = Survey.objects.get(pk=1)
         request = self.factory.get('/section/1/')
         request.user = self.user
@@ -349,7 +354,17 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         response = section_change(request, 1)
         self.assertEqual(response.status_code, 200)
 
+    def test_survey_section_view_delete(self):
+        """Test Function survey section delete"""
+        request = self.factory.post('/section/1/?delete=true',
+            {}, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = section_change(request, 1)
+        self.assertEqual(response.status_code, 302)
+
     def test_section_phrasing_change(self):
+        """Test Function section phrasing update"""
         request = self.factory.get('/section/phrasing/1/')
         request.user = self.user
         request.session = {}
@@ -364,6 +379,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 302)
 
     def test_section_branch_change(self):
+        """Test Function section branching update"""
         self.section = Section.objects.get(pk=1)
         self.goto = Section.objects.get(pk=2)
         request = self.factory.get('/section/branch/1/')

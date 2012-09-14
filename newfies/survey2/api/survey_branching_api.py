@@ -33,15 +33,15 @@ class BranchingValidation(Validation):
         errors = {}
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
-        key = bundle.data.get('key')
-        if key:
-            dup_count = Branching.objects.filter(key=str(key)).count()
+        keys = bundle.data.get('keys')
+        if keys:
+            dup_count = Branching.objects.filter(key=str(keys)).count()
             if request.method == 'POST':
                 if dup_count >= 1:
-                    errors['duplicate_key'] = ["Key is already exist!"]
+                    errors['duplicate_key'] = ["Keys is already exist!"]
             if request.method == 'PUT':
                 if dup_count > 1:
-                    errors['duplicate_key'] = ["Key is already exist!"]
+                    errors['duplicate_key'] = ["Keys is already exist!"]
 
         section_id = bundle.data.get('section')
         if section_id:
@@ -62,6 +62,7 @@ class BranchingResource(ModelResource):
 
         * ``keys`` - section's response key
         * ``section`` - survey question ID
+        * ``goto`` - survey question ID
 
     **Validation**:
 
@@ -83,7 +84,6 @@ class BranchingResource(ModelResource):
             Location: http://localhost:8000/api/v1/branching/1/
             Content-Language: en-us
 
-
     **Read**:
 
         CURL Usage::
@@ -98,55 +98,65 @@ class BranchingResource(ModelResource):
                   "next":null,
                   "offset":0,
                   "previous":null,
-                  "total_count":1
+                  "total_count":2
                },
                "objects":[
                   {
-                     "created_date":"2011-12-15T14:54:50",
-                     "id":"3",
-                     "key":"YES",
-                     "keyvalue":"1",
-                     "resource_uri":"/api/v1/branching/3/",
-                     "surveyquestion":{
-                        "created_date":"2011-12-15T13:10:49",
-                        "id":"17",
-                        "message_type":1,
+                     "created_date":"2012-09-13T08:06:24.357530",
+                     "id":"10",
+                     "keys":"0",
+                     "resource_uri":"/api/v1/branching/10/",
+                     "section":{
+                        "continue_survey":false,
+                        "created_date":"2012-09-13T08:06:05.344297",
+                        "dial_phonenumber":null,
+                        "id":"15",
+                        "key_0":null,
+                        "key_1":null,
+                        "key_2":null,
+                        "key_3":null,
+                        "key_4":null,
+                        "key_5":null,
+                        "key_6":null,
+                        "key_7":null,
+                        "key_8":null,
+                        "key_9":null,
+                        "max_number":100,
+                        "min_number":1,
+                        "number_digits":null,
                         "order":1,
-                        "question":"Servey Qus",
-                        "resource_uri":"/api/v1/section/17/",
-                        "surveyapp":{
-                           "created_date":"2011-12-15T09:55:25",
+                        "phrasing":"this is test question hello",
+                        "question":"this is test question",
+                        "rating_laps":null,
+                        "resource_uri":"/api/v1/section/15/",
+                        "retries":0,
+                        "survey":{
+                           "created_date":"2012-09-13T08:05:51.458779",
                            "description":"",
-                           "id":"5",
-                           "name":"new test",
-                           "order":2,
-                           "resource_uri":"/api/v1/survey/5/",
-                           "updated_date":"2011-12-15T14:45:46",
+                           "id":"2",
+                           "name":"sample survey",
+                           "order":1,
+                           "resource_uri":"/api/v1/survey/2/",
+                           "updated_date":"2012-09-14T07:56:30.304371",
                            "user":{
                               "first_name":"",
                               "id":"1",
-                              "last_login":"2011-12-14T07:26:00",
+                              "last_login":"2012-09-11T09:14:16.986223",
                               "last_name":"",
                               "resource_uri":"/api/v1/user/1/",
                               "username":"areski"
                            }
                         },
-                        "tags":"",
-                        "updated_date":"2011-12-15T13:10:49",
-                        "user":{
-                           "first_name":"",
-                           "id":"1",
-                           "last_login":"2011-12-14T07:26:00",
-                           "last_name":"",
-                           "resource_uri":"/api/v1/user/1/",
-                           "username":"areski"
-                        }
+                        "timeout":null,
+                        "type":1,
+                        "updated_date":"2012-09-13T08:06:14.565249",
+                        "use_audiofile":false,
+                        "validate_number":true
                      },
-                     "updated_date":"2011-12-15T14:54:50"
+                     "updated_date":"2012-09-13T08:06:24.357563"
                   }
                ]
             }
-
 
     **Update**:
 
@@ -163,7 +173,6 @@ class BranchingResource(ModelResource):
             Content-Length: 0
             Content-Type: text/html; charset=utf-8
             Content-Language: en-us
-
 
     **Delete**:
 

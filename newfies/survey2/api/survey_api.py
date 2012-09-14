@@ -89,7 +89,7 @@ class SurveyResource(ModelResource):
                "objects":[
                   {
                      "created_date":"2011-04-08T07:55:05",
-                     "description":"This is default phone book",
+                     "description":"This is default survey",
                      "id":"1",
                      "name":"survey name",
                      "resource_uri":"/api/v1/survey/1/",

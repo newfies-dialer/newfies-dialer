@@ -44,6 +44,21 @@ class SectionValidation(Validation):
                 bundle.data['survey'] = '/api/v1/survey/%s/' % survey_id
             except:
                 errors['survey'] = ["The Survey ID doesn't exist!"]
+
+        type = bundle.data.get('type')
+        if not bundle.data.get('question'):
+            errors['question'] = ["Please add question field"]
+
+        """
+        if type == 2:
+            if not bundle.data.get('key_0'):
+                errors['key_0'] = ["Please add key field"]
+
+        if type == 3:
+            if not bundle.data.get('rating_laps'):
+                errors['key_0'] = ["Please add rating_laps field"]
+        """
+
         return errors
 
 
@@ -51,10 +66,31 @@ class SectionResource(ModelResource):
     """
     **Attributes**:
 
-        * ``question`` - survey question
-        * ``survey`` - survey ID
-        * ``audio_message`` - audio file
-        * ``message_type`` - Audio / Text2Speech
+        * ``type`` - survey name.
+        * ``question`` -
+        * ``phrasing`` -
+        * ``audiofile`` -
+        * ``use_audiofile`` -
+        * ``invalid_audiofile`` -
+        * ``retries`` -
+        * ``timeout`` -
+        * ``key_0`` -
+        * ``key_1`` -
+        * ``key_2`` -
+        * ``key_3`` -
+        * ``key_4`` -
+        * ``key_5`` -
+        * ``key_6`` -
+        * ``key_7`` -
+        * ``key_8`` -
+        * ``key_9`` -
+        * ``rating_laps`` -
+        * ``validate_number`` -
+        * ``number_digits`` -
+        * ``min_number`` -
+        * ``max_number`` -
+        * ``dial_phonenumber`` -
+        * ``continue_survey`` -
 
     **Validation**:
 
@@ -64,7 +100,7 @@ class SectionResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"question": "survey que", "tags": "", "user": "1", "survey": "1", "message_type": "1"}' http://localhost:8000/api/v1/section/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"type": 1, "question": "survey que", "survey": 1}' http://localhost:8000/api/v1/section/
 
         Response::
 
@@ -86,57 +122,69 @@ class SectionResource(ModelResource):
         Response::
 
             {
-                "meta":{
+               "meta":{
                   "limit":20,
                   "next":null,
                   "offset":0,
                   "previous":null,
-                  "total_count":2
-                },
-                "objects":[
-                   {
-                      "created_date":"2011-12-15T13:10:49",
-                      "id":"1",
-                      "message_type":1,
-                      "order":1,
-                      "question":"Test Servey Qus",
-                      "resource_uri":"/api/v1/section/1/",
-                      "surveyapp":{
-                         "created_date":"2011-12-15T09:55:25",
-                         "description":"",
-                         "id":"5",
-                         "name":"new test",
-                         "order":2,
-                         "resource_uri":"/api/v1/survey/5/",
-                         "updated_date":"2011-12-15T09:55:25",
-                         "user":{
-                            "first_name":"",
-                            "id":"1",
-                            "last_login":"2011-12-14T07:26:00",
-                            "last_name":"",
-                            "resource_uri":"/api/v1/user/1/",
-                            "username":"areski"
-                         }
-                      },
-                      "tags":"",
-                      "updated_date":"2011-12-15T13:10:49",
-                      "user":{
-                         "first_name":"",
-                         "id":"1",
-                         "last_login":"2011-12-14T07:26:00",
-                         "last_name":"",
-                         "resource_uri":"/api/v1/user/1/",
-                         "username":"areski"
-                      }
-                   },
-                ]
+                  "total_count":4
+               },
+               "objects":[
+                  {
+                     "continue_survey":false,
+                     "created_date":"2012-09-13T08:06:05.344297",
+                     "dial_phonenumber":null,
+                     "id":"15",
+                     "key_0":null,
+                     "key_1":null,
+                     "key_2":null,
+                     "key_3":null,
+                     "key_4":null,
+                     "key_5":null,
+                     "key_6":null,
+                     "key_7":null,
+                     "key_8":null,
+                     "key_9":null,
+                     "max_number":100,
+                     "min_number":1,
+                     "number_digits":null,
+                     "order":1,
+                     "phrasing":"this is test question hello",
+                     "question":"this is test question",
+                     "rating_laps":null,
+                     "resource_uri":"/api/v1/section/15/",
+                     "retries":0,
+                     "survey":{
+                        "created_date":"2012-09-13T08:05:51.458779",
+                        "description":"",
+                        "id":"2",
+                        "name":"sample survey",
+                        "order":1,
+                        "resource_uri":"/api/v1/survey/2/",
+                        "updated_date":"2012-09-14T07:56:30.304371",
+                        "user":{
+                           "first_name":"",
+                           "id":"1",
+                           "last_login":"2012-09-11T09:14:16.986223",
+                           "last_name":"",
+                           "resource_uri":"/api/v1/user/1/",
+                           "username":"areski"
+                        }
+                     },
+                     "timeout":null,
+                     "type":1,
+                     "updated_date":"2012-09-13T08:06:14.565249",
+                     "use_audiofile":false,
+                     "validate_number":true
+                  }
+               ]
             }
 
     **Update**:
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"question": "survey que", "tags": "", "user": "1", "surveyapp": "1", "message_type": "1"}' http://localhost:8000/api/v1/section/%section_id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"question": "survey que", "type": "1", "survey": 1}' http://localhost:8000/api/v1/section/%section_id%/
 
         Response::
 

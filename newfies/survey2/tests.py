@@ -73,7 +73,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
                 'dialer_setting.json', 'phonebook.json', 'contact.json',
                 'campaign.json', 'campaign_subscriber.json',
                 'callrequest.json',
-                'survey.json',
+                'survey.json', 'section.json', 'branching.json',
                 'user_profile.json']
 
     def test_survey_view_list(self):
@@ -128,7 +128,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         request = self.factory.post('/survey2/1/', follow=True)
         request.user = self.user
         request.session = {}
-        response = section_sort(request, 1, 1)
+        response = section_sort(request, 1, 2)
         self.assertTrue(response)
 
 
@@ -173,7 +173,7 @@ class SurveyModel(TestCase):
             survey=self.survey,
         )
         self.section.save()
-        self.assertEqual(self.section.__unicode__(), u'[1] test_question')
+        self.assertEqual(self.section.__unicode__(), u'[4] test_question')
 
 
         # Branching model
@@ -182,7 +182,7 @@ class SurveyModel(TestCase):
             section=self.section,
         )
         self.branching.save()
-        self.assertEqual(self.branching.__unicode__(), u'[1] 5')
+        self.assertEqual(self.branching.__unicode__(), u'[3] 5')
 
         self.section.get_branching_count_per_section()
 
@@ -196,7 +196,7 @@ class SurveyModel(TestCase):
         )
         self.result.save()
         self.assertEqual(
-            self.result.__unicode__(), u'[1] [1] test_question = xyz')
+            self.result.__unicode__(), u'[1] [4] test_question = xyz')
 
         # ResultAggregate model
         self.result_aggregate = ResultAggregate(
@@ -208,7 +208,7 @@ class SurveyModel(TestCase):
         )
         self.result_aggregate.save()
         self.assertEqual(
-            self.result_aggregate.__unicode__(), u'[1] [1] test_question = xyz')
+            self.result_aggregate.__unicode__(), u'[1] [4] test_question = xyz')
 
     def test_survey_forms(self):
         self.assertEqual(self.survey.name, "test_survey")

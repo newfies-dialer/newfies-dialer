@@ -87,6 +87,7 @@ def create_callrequest(campaign_id, quantity):
                                             survey_id=1,
                                             section_id=3,
                                             response=response,
+                                            record_file='xyz.mp3',
                                             callrequest=new_callrequest)
 
             print _("No of Callrequest & CDR created :%(count)s" % \

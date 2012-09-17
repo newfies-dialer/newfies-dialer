@@ -1039,7 +1039,7 @@ def get_survey_result(survey_result_kwargs):
     """Get survey result report from selected survey campaign"""
     survey_result = Result.objects\
         .filter(**survey_result_kwargs)\
-        .values('response', 'section__question')\
+        .values('response', 'section__question', 'record_file', 'section__phrasing')\
         .annotate(Count('response'))\
         .annotate(Count('record_file'))\
         .distinct()\

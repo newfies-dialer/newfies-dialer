@@ -216,24 +216,34 @@
                 </tr>
 
                 {% for item in i.list %}
-                    <tr>
-                        <td align="right"><b>{{ item.response }}:</b></td>
-                        <td align="left">{{ item.response__count }}</td>
-                        <td align="right">
-                            {% percentage_tag item.response__count i.list|running_total:'response__count' %}
-                        </td>
-                        <td align="left">
-                            <div class="progress progress-striped">
-                                <div class="bar" style="width: {% percentage_tag item.response__count i.list|running_total:'response__count' %};"></div>
-                            </div>
-                        </td>
-                    </tr>
+
+                        <tr>
+                            <td align="right"><b>{{ item.response }}:</b></td>
+                            <td align="left">{{ item.response__count }}</td>
+                            <td align="right">
+                                {% percentage_tag item.response__count i.list|running_total:'response__count' %}
+                            </td>
+                            <td align="left">
+                                <div class="progress progress-striped">
+                                    <div class="bar" style="width: {% percentage_tag item.response__count i.list|running_total:'response__count' %};"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% if forloop.last %}
+                            <tr>
+                                <td align="right"><b>{% trans "Total" %}:</b></td>
+                                <td align="left">{{ i.list|running_total:'response__count' }}</td>
+                                <td colspan="2">&nbsp;</td>
+                            </tr>
+                        {% endif %}
                 {% endfor %}
-                <tr>
-                    <td align="right"><b>{% trans "Total" %}:</b></td>
-                    <td align="left">{{ i.list|running_total:'response__count' }}</td>
-                    <td colspan="2">&nbsp;</td>
-                </tr>
+                <!--{% if not item.record_file %}
+                    {% else %}
+                        <tr>
+                            <td>{% trans "Recording" %}: {{ section__phrasing }}</td>
+                        </tr>
+                    {% endif %}-->
+
 
                 <!--<table class="table table-striped table-bordered table-condensed">
                 {# survey result will be managed in 5 columns #}

@@ -134,7 +134,7 @@
                         <td>{{ row.phone_number }}</td>
                         <td>{{ row.duration|conv_min }}</td>
                         <td>{{ row.disposition }}</td>
-                        <td>{{ row.question_response|que_res_string|safe }}</td>
+                        <td><!--{{ row.section }}--></td>
                     </tr>
                 {% endfor %}
 
@@ -205,7 +205,7 @@
     <div id="tabs-3" class="tab-pane {% if action == "tabs-3" %}active{% endif %}">
         {% if survey_result %}
             {# grouping of survey result #}
-            {% regroup survey_result by question as result %}
+            {% regroup survey_result by section as result %}
 
             {% for i in result %}
             <table align="center" class="bordered-table">

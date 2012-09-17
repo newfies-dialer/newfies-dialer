@@ -638,7 +638,7 @@ def section_change(request, id):
         # perform delete
         survey_id = section.survey_id
 
-        # Re-order section while deleting one section 
+        # Re-order section while deleting one section
         section_list_reorder = Section.objects\
             .filter(survey=section.survey).exclude(pk=int(id))
         for reordered in section_list_reorder:
@@ -1003,12 +1003,14 @@ def survey_cdr_daily_report(kwargs, from_query, select_group_query):
         .filter(**kwargs).annotate(Count('starting_date'))\
         .annotate(Sum('duration'))\
         .annotate(Avg('duration'))\
-        .order_by('-starting_date')\
-        .extra(
-            select={
-                'question_response': select_group_query + from_query,
-            },
-        )
+        .order_by('-starting_date')
+    """
+    .extra(
+        select={
+            'question_response': select_group_query + from_query,
+        },
+    )
+    """
 
     # Following code will count total voip calls, duration
     if total_data.count() != 0:
@@ -1037,11 +1039,10 @@ def get_survey_result(survey_result_kwargs):
     """Get survey result report from selected survey campaign"""
     survey_result = Result.objects\
         .filter(**survey_result_kwargs)\
-        .values('question', 'response', 'record_file')\
         .annotate(Count('response'))\
         .annotate(Count('record_file'))\
         .distinct()\
-        .order_by('question')
+        .order_by('id')
 
     return survey_result
 
@@ -1219,12 +1220,14 @@ def survey_report(request):
 
         rows = VoIPCall.objects\
             .only('starting_date', 'phone_number', 'duration', 'disposition')\
-            .filter(**kwargs)\
+            .filter(**kwargs).order_by(sort_field)
+        """
             .extra(
                 select={
                     'question_response': select_group_query + from_query
                 },
-            ).order_by(sort_field)
+            )
+        """
 
         request.session['session_surveycalls'] = rows
 

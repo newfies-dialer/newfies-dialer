@@ -58,6 +58,9 @@
                     {% if perms.survey.view_survey_report %}
                         <li {% if 'survey_report' in module %}class="active"{% endif %}><a href="/survey_report/">{% trans "Survey Reports" %}</a></li>
                     {% endif %}
+                    {% if perms.survey2.view_survey2_report %}
+                        <li {% if 'survey2_report' in module %}class="active"{% endif %}><a href="/survey2_report/">{% trans "Survey2 Reports" %}</a></li>
+                    {% endif %}
                 </ul>
               </li>
 

@@ -638,6 +638,14 @@ def section_change(request, id):
         # perform delete
         survey_id = section.survey_id
 
+        # Re-order section while deleting one section 
+        section_list_reorder = Section.objects\
+            .filter(survey=section.survey).exclude(pk=int(id))
+        for reordered in section_list_reorder:
+            if section.order < reordered.order:
+                reordered.order = reordered.order - 1
+                reordered.save()
+
         # 1) delete branch belonging to a section
         branching_list = Branching.objects.filter(section=section)
         if branching_list:

@@ -1039,6 +1039,7 @@ def get_survey_result(survey_result_kwargs):
     """Get survey result report from selected survey campaign"""
     survey_result = Result.objects\
         .filter(**survey_result_kwargs)\
+        .values('response', 'section__question')\
         .annotate(Count('response'))\
         .annotate(Count('record_file'))\
         .distinct()\
@@ -1064,7 +1065,7 @@ def survey_audio_recording(audio_file):
                _('No recording')
 
 
-@permission_required('survey2.view_survey_report', login_url='/')
+#@permission_required('survey2.view_survey2_report', login_url='/')
 @login_required
 def survey_report(request):
     """Survey detail report for the logged in user

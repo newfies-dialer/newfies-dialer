@@ -85,7 +85,7 @@ def create_callrequest(campaign_id, quantity):
                 survey_cpg_result = Result.objects.create(
                                             campaign=obj_campaign,
                                             survey_id=1,
-                                            section_id=1,
+                                            section_id=3,
                                             response=response,
                                             callrequest=new_callrequest)
 

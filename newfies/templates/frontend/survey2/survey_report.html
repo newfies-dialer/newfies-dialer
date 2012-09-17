@@ -205,38 +205,55 @@
     <div id="tabs-3" class="tab-pane {% if action == "tabs-3" %}active{% endif %}">
         {% if survey_result %}
             {# grouping of survey result #}
-            {% regroup survey_result by section as result %}
+            {% regroup survey_result by section__question as result %}
 
             {% for i in result %}
-            <table align="center" class="bordered-table">
+            <table align="center" class="table table-striped table-bordered table-condensed">
                 <tr>
                     <thead>
-                        <th colspan=5>{{ i.grouper }}</th>
+                        <th colspan=4>{% trans "Question" %}: {{ i.grouper }}</th>
                     </thead>
                 </tr>
-                <tr>
-                    <td colspan=5>
-                    <!--{% for item in i.list %}<td>{{ item.response__count }} contact(s) pressed {{ item.response }}</td>{% endfor %}-->
-                    <table class="table table-striped table-bordered table-condensed">
-                    {# survey result will be managed in 5 columns #}
-                    {% for item in i.list|groupby_columns:5 %}
+
+                {% for item in i.list %}
                     <tr>
-                        {% for obj in item %}
-                            {% if obj %}
-                                {% if not obj.record_file %}
-                                    <td>{{ obj.response__count }} {% trans "contact(s) pressed" %} {{ obj.response }}</td>
-                                {% else %}
-                                    <td>{{ obj.record_file__count }} {% trans "contact(s) left a recorded message" %}</td>
-                                {% endif %}
-                            {% else %}
-                                <td>&nbsp;</td>
-                            {% endif %}
-                        {% endfor %}
+                        <td align="right"><b>{{ item.response }}:</b></td>
+                        <td align="left">{{ item.response__count }}</td>
+                        <td align="right">
+                            {% percentage_tag item.response__count i.list|running_total:'response__count' %}
+                        </td>
+                        <td align="left">
+                            <div class="progress progress-striped">
+                                <div class="bar" style="width: {% percentage_tag item.response__count i.list|running_total:'response__count' %};"></div>
+                            </div>
+                        </td>
                     </tr>
-                    {% endfor %}
-                    </table>
-                    </td>
+                {% endfor %}
+                <tr>
+                    <td align="right"><b>{% trans "Total" %}:</b></td>
+                    <td align="left">{{ i.list|running_total:'response__count' }}</td>
+                    <td colspan="2">&nbsp;</td>
                 </tr>
+
+                <!--<table class="table table-striped table-bordered table-condensed">
+                {# survey result will be managed in 5 columns #}
+                {% for item in i.list|groupby_columns:5 %}
+                <tr>
+                    {% for obj in item %}
+                        {% if obj %}
+                            {% if not obj.record_file %}
+                                <td>{{ obj.response__count }} {% trans "contact(s) pressed" %} {{ obj.response }}</td>
+                            {% else %}
+                                <td>{{ obj.record_file__count }} {% trans "contact(s) left a recorded message" %}</td>
+                            {% endif %}
+                        {% else %}
+                            <td>&nbsp;</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+                </table>-->
+
             </table>
             {% endfor %}
         {% else %}

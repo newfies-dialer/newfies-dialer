@@ -44,13 +44,11 @@ class FileImport(forms.Form):
                                           ' '.join(file_exts)))
 
 
-
 class Contact_fileImport(FileImport):
     """Admin Form : Import CSV file with phonebook"""
-
     phonebook = forms.ChoiceField(label=_("Phonebook"),
-                                required=False,
-                                help_text=_("Select Phonebook"))
+                                  required=False,
+                                  help_text=_("Select Phonebook"))
 
     def __init__(self, user, *args, **kwargs):
         super(Contact_fileImport, self).__init__(*args, **kwargs)

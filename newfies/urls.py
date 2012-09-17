@@ -81,9 +81,9 @@ tastypie_api.register(CdrResource())
 tastypie_api.register(SurveyAppResource())
 tastypie_api.register(SurveyQuestionResource())
 tastypie_api.register(SurveyResponseResource())
-tastypie_api.register(SurveyResource())
-tastypie_api.register(SectionResource())
-tastypie_api.register(BranchingResource())
+#tastypie_api.register(SurveyResource())
+#tastypie_api.register(SectionResource())
+#tastypie_api.register(BranchingResource())
 
 js_info_dict = {
     'domain': 'djangojs',

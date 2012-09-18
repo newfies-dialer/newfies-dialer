@@ -46,7 +46,7 @@
             $(".portlet").addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
                     .find(".portlet-header")
                     .addClass("ui-widget-header ui-corner-all")
-                    .prepend('<a class="btn btn-small square" href="#"><i class="icon-circle-arrow-up"></i></a>')
+                    .prepend('<a class="btn btn-small square" href="#" title="{% trans "Collapse" %}"><i class="icon-circle-arrow-up"></i></a>')
                     .end()
                     .find(".portlet-content");
 
@@ -54,7 +54,7 @@
             $(".portlet").addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
                     .find(".portlet-header")
                     .addClass("ui-widget-header ui-corner-all")
-                    .prepend('<a class="section-branch btn btn-small" href="#"><i class="icon-random"></i></a>')
+                    .prepend('<a class="section-branch btn btn-small" href="#" title="{% trans "Branch" %}"><i class="icon-random"></i></a>')
                     .end()
                     .find(".portlet-content");
 
@@ -62,7 +62,7 @@
             $(".portlet").addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
                     .find(".portlet-header")
                     .addClass("ui-widget-header ui-corner-all")
-                    .prepend('<a class="btn btn-small square" href="#"><i class="icon-move"></i></a>')
+                    .prepend('<a class="btn btn-small square" href="#" title="{% trans "Move" %}"><i class="icon-move"></i></a>')
                     .end()
                     .find(".portlet-content");
 
@@ -93,11 +93,13 @@
 {% endblock %}
 
 {% block content_header %}
-    <h1>{% if action == 'update' %}
-        {% trans "Update" %}
-    {% else %}
-        {% trans "Add" %}
-    {% endif %} {% trans "Survey" %}
+    <h1>
+        {% if action == 'update' %}
+            {% trans "Update" %}
+        {% else %}
+            {% trans "Add" %}
+        {% endif %}
+        {% trans "Survey" %}
         <small>{% trans "Survey configuration" %}</small>
     </h1>
 {% endblock %}
@@ -185,7 +187,6 @@
                                             .attr("url", "/section/branch/{{ section.id }}/")
                                             .attr("data-toggle", "modal")
                                             .attr("href", "#section-branch")
-                                            .attr("title", "{% trans "Branching" %}")
                                             .attr("data-controls-modal", "section-branch");
                                     });
                                 }
@@ -201,6 +202,17 @@
                                                 <div class="span8">
                                                     <b>{% trans "question"|title %} :</b> {{ section.question }}<br/>
                                                 </div>
+
+                                                <div class="span8">
+                                                    <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}
+
+                                                    {% if perms.survey2.change_section %}
+                                                        <a data-toggle="modal" href="#phrasing-update-edit" class="phrasing-edit" url='/section/phrasing/{{ section.id }}/' data-controls-modal='phrasing-update-edit'>
+                                                            <i title="{% trans "Edit" %}" class="icon-edit"></i>
+                                                        </a>
+                                                    {% endif %}
+                                                </div>
+
                                                 <!--Voice Section form-->
                                                 {% if section.type == 1 %}
                                                 {% endif %}
@@ -278,17 +290,6 @@
                                                         {% endif %}
                                                     </div>
                                                 {% endif %}
-
-                                                <div class="span8">
-                                                    <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}
-
-                                                    {% if perms.survey2.change_section %}
-                                                        <a data-toggle="modal" href="#phrasing-update-edit" class="phrasing-edit" url='/section/phrasing/{{ section.id }}/' data-controls-modal='phrasing-update-edit'>
-                                                            <i title="{% trans "Edit" %}" class="icon-edit"></i>
-                                                        </a>
-                                                    {% endif %}
-
-                                                </div>
                                             </div>
 
                                         <!--branching-->
@@ -381,13 +382,11 @@
 
     <!--update question in modal-->
     <script type="text/javascript" charset="utf-8">
-
         $(".section-edit").live('click', function() {
             var url = $(this).attr('url');
             var modal_id = $(this).attr('data-controls-modal');
             $("#" + modal_id).load(url);
         });
-
     </script>
     <!-- update survey question modal content-->
     <div id="section-update-edit" class="modal hide fade">

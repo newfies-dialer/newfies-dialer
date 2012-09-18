@@ -39,6 +39,7 @@ SURVEY_RESULT_QUE = [
 
 RESPONSE = ['apple', 'orange', 'banana']
 
+
 def create_callrequest(campaign_id, quantity):
     try:
         admin_user = User.objects.get(pk=1)
@@ -58,7 +59,6 @@ def create_callrequest(campaign_id, quantity):
             except:
                 content_type_id = 1
 
-
             for i in range(1, int(quantity) + 1):
                 phonenumber = '' . join([choice(chars) for i in range(length)])
                 new_callrequest = Callrequest.objects.create(
@@ -72,8 +72,7 @@ def create_callrequest(campaign_id, quantity):
                                     content_type_id=content_type_id,
                                     object_id=1)
 
-
-                new_cdr = VoIPCall.objects.create(
+                VoIPCall.objects.create(
                                     request_uuid=uuid1(),
                                     user=admin_user,
                                     callrequest=new_callrequest,
@@ -84,20 +83,20 @@ def create_callrequest(campaign_id, quantity):
                 response_count = choice("1234567890")
                 section_id = choice("1234")
 
-                #survey_cpg_result = Result.objects.create(
-                #                            campaign=obj_campaign,
-                #                            survey_id=1,
-                #                            section_id=int(section_id),
-                #                            response=response,
-                #                            record_file='xyz.mp3',
-                #                            callrequest=new_callrequest)
+                # cpg_result = Result.objects.create(
+                #                     campaign=obj_campaign,
+                #                     survey_id=1,
+                #                     section_id=int(section_id),
+                #                     response=response,
+                #                     record_file='xyz.mp3',
+                #                     callrequest=new_callrequest)
 
                 ResultAggregate.objects.create(
-                    campaign=obj_campaign,
-                    survey_id=1,
-                    section_id=int(section_id),
-                    response=choice(RESPONSE),
-                    count=response_count)
+                                    campaign=obj_campaign,
+                                    survey_id=1,
+                                    section_id=int(section_id),
+                                    response=choice(RESPONSE),
+                                    count=response_count)
 
             print _("No of Callrequest & CDR created :%(count)s" % \
                         {'count': quantity})

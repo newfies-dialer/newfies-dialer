@@ -75,7 +75,7 @@
                     {% for section in section_list %}
                     <div id="row{{ section.id }}" class="portlet">
                         <div class="portlet-header">
-                            {{ section.order }}. {{ section.type|section_type_name }}
+                            {{ forloop.counter }}. {{ section.type|section_type_name }}
 
                             <!--To remove section branching for voice, record &
                                 patch-through section-->

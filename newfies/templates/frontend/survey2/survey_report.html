@@ -203,27 +203,31 @@
     </div>
 
     <div id="tabs-3" class="tab-pane {% if action == "tabs-3" %}active{% endif %}">
+        <p>&nbsp;</p>
         {% if survey_result %}
             {# grouping of survey result #}
             {% regroup survey_result by section__question as result %}
 
             {% for i in result %}
             <table align="center" class="table table-striped table-bordered table-condensed">
+                <thead>
                 <tr>
-                    <thead>
-                        <th colspan=4>{% trans "Question" %}: {{ i.grouper }}</th>
-                    </thead>
+                    <th colspan=4>
+                        <center>
+                            <h4><em>{% trans "Question" %}: {{ i.grouper }}</em></h4>
+                        </center>
+                    </th>
                 </tr>
-
+                </thead>
+                <tbody>
                 {% for item in i.list %}
-
                         <tr>
-                            <td align="right"><b>{{ item.response }}:</b></td>
-                            <td align="left">{{ item.count }}</td>
-                            <td align="right">
+                            <td class="survey_edit_key"><b>{{ item.response }}</b></td>
+                            <td class="survey_edit_key">{{ item.count }}</td>
+                            <td class="survey_edit_key">
                                 {% percentage_tag item.count i.list|running_total:'count' %}
                             </td>
-                            <td align="left">
+                            <td>
                                 <div class="progress progress-striped">
                                     <div class="bar" style="width: {% percentage_tag item.response__count i.list|running_total:'response__count' %};"></div>
                                 </div>
@@ -231,40 +235,15 @@
                         </tr>
                         {% if forloop.last %}
                             <tr>
-                                <td align="right"><b>{% trans "Total" %}:</b></td>
-                                <td align="left">{{ i.list|running_total:'response__count' }}</td>
+                                <td class="survey_edit_key"><b>{% trans "Total" %}:</b></td>
+                                <td class="survey_edit_key">{{ i.list|running_total:'response__count' }}</td>
                                 <td colspan="2">&nbsp;</td>
                             </tr>
                         {% endif %}
                 {% endfor %}
-                <!--{% if not item.record_file %}
-                    {% else %}
-                        <tr>
-                            <td>{% trans "Recording" %}: {{ section__phrasing }}</td>
-                        </tr>
-                    {% endif %}-->
-
-
-                <!--<table class="table table-striped table-bordered table-condensed">
-                {# survey result will be managed in 5 columns #}
-                {% for item in i.list|groupby_columns:5 %}
-                <tr>
-                    {% for obj in item %}
-                        {% if obj %}
-                            {% if not obj.record_file %}
-                                <td>{{ obj.response__count }} {% trans "contact(s) pressed" %} {{ obj.response }}</td>
-                            {% else %}
-                                <td>{{ obj.record_file__count }} {% trans "contact(s) left a recorded message" %}</td>
-                            {% endif %}
-                        {% else %}
-                            <td>&nbsp;</td>
-                        {% endif %}
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-                </table>-->
-
+                </tbody>
             </table>
+
             {% endfor %}
         {% else %}
             <p>&nbsp;</p>

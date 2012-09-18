@@ -45,6 +45,232 @@ import csv
 import os.path
 
 
+@csrf_exempt
+def survey_finestatemachine(request):
+    """Survey Fine State Machine
+
+    **Model**: SurveyQuestion
+
+    """
+    current_state = None
+    next_state = None
+    testdebug = False
+    delcache = False
+
+    #Load Plivo Post parameters
+    opt_ALegRequestUUID = request.POST.get('ALegRequestUUID')
+    opt_CallUUID = request.POST.get('CallUUID')
+    DTMF = request.POST.get('Digits')
+    #print "DTMF=%s - opt_CallUUID=%s" % (DTMF, opt_CallUUID)
+
+    if testdebug:
+        #implemented to test in browser
+        #usage :
+        #http://127.0.0.1:8000/survey_finestatemachine/?ALegRequestUUID=df8a8478-cc57-11e1-aa17-00231470a30c&Digits=1&RecordFile=tesfilename.mp3
+        if not opt_ALegRequestUUID:
+            opt_ALegRequestUUID = request.GET.get('ALegRequestUUID')
+        if not opt_CallUUID:
+            opt_CallUUID = request.GET.get('CallUUID')
+        if not opt_CallUUID:
+            opt_CallUUID = opt_ALegRequestUUID
+        if not DTMF:
+            DTMF = request.GET.get('Digits')
+        delcache = request.GET.get('delcache')
+        #print "DTMF=%s - opt_CallUUID=%s" % (DTMF, opt_CallUUID)
+
+    if not opt_ALegRequestUUID:
+        return HttpResponse(
+            content="Error : missing parameter ALegRequestUUID",
+            status=400)
+
+    #Create the keys to store the cache
+    key_state = "%s_state" % opt_CallUUID
+    key_prev_qt = "%s_prev_qt" % opt_CallUUID  # Previous question
+    key_surveyapp = "%s_surveyapp_id" % opt_CallUUID
+
+    if testdebug and delcache:
+        cache.delete(key_state)
+        cache.delete(key_surveyapp)
+
+    #Retrieve the values of the keys
+    current_state = cache.get(key_state)
+    surveyapp_id = cache.get(key_surveyapp)
+    obj_prev_qt = False
+
+    if not current_state:
+        cache.set(key_state, 0, 21600)  # 21600 seconds = 6 hours
+        cache.set(key_prev_qt, 0, 21600)  # 21600 seconds = 6 hours
+        current_state = 0
+    else:
+        prev_qt = cache.get(key_prev_qt)
+        if prev_qt:
+            #print "\nPREVIOUS QUESTION ::> %d" % prev_qt
+            #Get previous Question
+            try:
+                obj_prev_qt = SurveyQuestion.objects.get(id=prev_qt)
+            except:
+                obj_prev_qt = False
+    try:
+        obj_callrequest = Callrequest.objects\
+        .get(request_uuid=opt_ALegRequestUUID)
+    except:
+        return HttpResponse(
+            content="Error : retrieving Callrequest with the ALegRequestUUID",
+            status=400)
+
+    surveyapp_id = obj_callrequest.object_id
+    cache.set(key_surveyapp, surveyapp_id, 21600)  # 21600 seconds = 6 hours
+
+    if current_state == 0:
+        #TODO : use constant
+        obj_callrequest.status = 8  # IN-PROGRESS
+        obj_callrequest.aleg_uuid = opt_CallUUID
+        obj_callrequest.save()
+
+    #print "current_state = %s" % str(current_state)
+
+    #Load the questions
+    list_question = SurveyQuestion.objects\
+    .filter(surveyapp=surveyapp_id).order_by('order')
+
+    if obj_prev_qt and obj_prev_qt.type == 3:
+        #Previous Recording
+        if testdebug:
+            RecordFile = request.GET.get('RecordFile')
+            RecordingDuration = request.GET.get('RecordingDuration')
+        else:
+            RecordFile = request.POST.get('RecordFile')
+            RecordingDuration = request.POST.get('RecordingDuration')
+        try:
+            RecordFile = os.path.split(RecordFile)[1]
+        except:
+            RecordFile = ''
+        new_surveycampaignresult = SurveyCampaignResult(
+            campaign=obj_callrequest.campaign,
+            surveyapp_id=surveyapp_id,
+            callid=opt_CallUUID,
+            question=obj_prev_qt,
+            record_file=RecordFile,
+            recording_duration=RecordingDuration,
+            callrequest=obj_callrequest)
+        new_surveycampaignresult.save()
+    #Check if we receive a DTMF for the previous question then store the result
+    elif DTMF and len(DTMF) > 0 and current_state > 0:
+        #find the response for this key pressed
+        try:
+            #Get list of responses of the previous Question
+            surveyresponse = SurveyResponse.objects.get(
+                key=DTMF,
+                surveyquestion=obj_prev_qt)
+            if not surveyresponse or not surveyresponse.keyvalue:
+                response_value = DTMF
+            else:
+                response_value = surveyresponse.keyvalue
+
+            #if there is a response for this DTMF then reset the current_state
+            if surveyresponse and surveyresponse.goto_surveyquestion:
+                l = 0
+                for question in list_question:
+                    if question.id == surveyresponse.goto_surveyquestion.id:
+                        current_state = l
+                        #print "Found it (%d) (l=%d)!" % (question.id, l)
+                        break
+                    l = l + 1
+        except:
+            #It's possible that this response is not accepted
+            response_value = DTMF
+        try:
+            new_surveycampaignresult = SurveyCampaignResult(
+                campaign=obj_callrequest.campaign,
+                surveyapp_id=surveyapp_id,
+                callid=opt_CallUUID,
+                question=obj_prev_qt,
+                response=response_value,
+                callrequest=obj_callrequest)
+            new_surveycampaignresult.save()
+
+        except IndexError:
+            # error index
+            html = '<Response><Hangup/></Response>'
+            return HttpResponse(html)
+
+    #Transition go to next state
+    next_state = current_state + 1
+
+    cache.set(key_state, next_state, 21600)
+    #print "Saved state in Cache (%s = %s)" % (key_state, next_state)
+
+    try:
+        list_question[current_state]
+        #set previous question
+        prev_qt = list_question[current_state].id
+        cache.set(key_prev_qt, prev_qt, 21600)
+    except IndexError:
+        html = '<Response><Hangup/></Response>'
+        return HttpResponse(html)
+
+    #retrieve the basename of the url
+    url = settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL
+    slashparts = url.split('/')
+    url_basename = '/'.join(slashparts[:3])
+
+    audio_file_url = False
+    if list_question[current_state].message_type == 1:
+        try:
+            audio_file_url = list_question[current_state]\
+            .audio_message.audio_file.url
+        except:
+            audio_file_url = False
+
+    if audio_file_url:
+        #Audio file
+        question = "<Play>%s%s</Play>" % (
+            url_basename,
+            list_question[current_state].audio_message.audio_file.url)
+    else:
+        #Text2Speech
+        question = "<Speak>%s</Speak>" % list_question[current_state].question
+
+    #Menu
+    if list_question[current_state].type == 1:
+        html =\
+        '<Response>\n'\
+        '   <GetDigits action="%s" method="GET" numDigits="1" '\
+        'retries="1" validDigits="0123456789" timeout="%s" '\
+        'finishOnKey="#">\n'\
+        '       %s\n'\
+        '   </GetDigits>\n'\
+        '   <Redirect>%s</Redirect>\n'\
+        '</Response>' % (
+            settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
+            settings.MENU_TIMEOUT,
+            question,
+            settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
+    #Recording
+    elif list_question[current_state].type == 3:
+        html =\
+        '<Response>\n'\
+        '   %s\n'\
+        '   <Record maxLength="120" finishOnKey="*#" action="%s" '\
+        'method="GET" filePath="%s" timeout="%s"/>'\
+        '</Response>' % (
+            question,
+            settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
+            settings.FS_RECORDING_PATH,
+            settings.MENU_TIMEOUT)
+    # Hangup
+    else:
+        html =\
+        '<Response>\n'\
+        '   %s\n'\
+        '   <Hangup />'\
+        '</Response>' % (question)
+        next_state = current_state
+        cache.set(key_state, next_state, 21600)
+
+    return HttpResponse(html)
+
+
 @login_required
 def survey_grid(request):
     """Survey list in json format for flexigrid.
@@ -836,7 +1062,7 @@ def survey_audio_recording(audio_file):
                _('No recording')
 
 
-#@permission_required('survey.view_survey_report', login_url='/')
+@permission_required('survey.view_survey_report', login_url='/')
 @login_required
 def survey_report(request):
     """
@@ -850,7 +1076,6 @@ def survey_report(request):
 
         * List all survey_report which belong to the logged in user.
     """
-    print request.user
     tday = datetime.today()
     from_date = tday.strftime("%Y-%m-%d")
     to_date = tday.strftime("%Y-%m-%d")
@@ -1021,7 +1246,7 @@ def survey_report(request):
                 _('No campaign attached with survey.')
 
     template = 'frontend/survey2/survey_report.html'
-    print request.user
+
     data = {
         'rows': rows,
         'PAGE_SIZE': PAGE_SIZE,
@@ -1046,6 +1271,7 @@ def survey_report(request):
     request.session['err_msg'] = ''
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
+
 
 @login_required
 def export_surveycall_report(request):

@@ -52,43 +52,43 @@
                 <small></small>
             </h3>
         </div>
-        <div class="modal-body">
 
-            <form class="well" method="POST" action="/section/branch/{{ section_id }}/" enctype="multipart/form-data" id="update_form">
+        <form method="POST" action="/section/branch/{{ section_id }}/" enctype="multipart/form-data" id="update_form">
             {% csrf_token %}
+
             {{ form.section }}
             <!--"keys" is hidden for section_type 1 (voice) & 5(record message)-->
+            <div class="modal-body">
             {% if section_type == 1 or section_type == 5 %}
                 {{ form.keys }}
             {% else %}
-            <div class="row">
-                <div class="span2 clearfix{% if form.keys.errors %} control-group error{% endif %}">
-                    <label class="control-label" for="id_{{ form.keys.name }}">{{ form.keys.label }}</label>
-                    <div class="input">
-                        {{ form.keys }}
-                        {% if form.keys.errors %}
-                            <span class="help-inline">{{ form.keys.errors|removetags:"ul li"|safe }}</span>
-                        {% endif %}
-                        <span class="help-block">{{ form.keys.help_text|safe }} </span>
+                <div class="row">
+                    <div class="span2 clearfix{% if form.keys.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ form.keys.name }}">{{ form.keys.label }}</label>
+                        <div class="input">
+                            {{ form.keys }}
+                            {% if form.keys.errors %}
+                                <span class="help-inline">{{ form.keys.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.keys.help_text|safe }} </span>
+                        </div>
                     </div>
                 </div>
-            </div>
             {% endif %}
-
-            <div class="row">
-                <div class="span2 clearfix{% if form.goto.errors %} control-group error{% endif %}">
-                    <label class="control-label" for="id_{{ form.goto.name }}">{{ form.goto.label }}</label>
-                    <div class="input">
-                        {{ form.goto }}
-                        {% if form.goto.errors %}
-                            <span class="help-inline">{{ form.goto.errors|removetags:"ul li"|safe }}</span>
-                        {% endif %}
-                        <span class="help-block">{{ form.goto.help_text|safe }} </span>
+                <div class="row">
+                    <div class="span2 clearfix{% if form.goto.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="id_{{ form.goto.name }}">{{ form.goto.label }}</label>
+                        <div class="input">
+                            {{ form.goto }}
+                            {% if form.goto.errors %}
+                                <span class="help-inline">{{ form.goto.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.goto.help_text|safe }} </span>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="actions" align="right">
+            <div class="modal-footer">
                 {% if action == 'update' %}
                     <input id="id_update" title="{% trans "Update" %}" name="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
                 {% else %}
@@ -97,9 +97,7 @@
                 &nbsp;
                 <a href="#" title="{% trans "Close" %}" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
             </div>
-
-            </form>
-        </div>
+        </form>
 
     {% if err_msg %}
     </div>

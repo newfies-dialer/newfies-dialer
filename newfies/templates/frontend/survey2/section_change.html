@@ -39,20 +39,19 @@
         <!-- modal content-->
         <div class="modal hide fade" id="section_modal">
     {% endif %}
-
-        <form class="well" method="POST" action="{% if action == 'update' %}/section/{{ section_id }}/{% else %}/section/add/?survey_id={{ survey_id }}{% endif %}" enctype="multipart/form-data" id="update_form">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal" >&times;</a>
+            <h3>{% if action == 'update' %}
+                {% trans "Update" %}
+            {% else %}
+                {% trans "Add" %}
+            {% endif %} {% trans "Section" %}
+                <small></small>
+            </h3>
+        </div>
+        <form method="POST" action="{% if action == 'update' %}/section/{{ section_id }}/{% else %}/section/add/?survey_id={{ survey_id }}{% endif %}" enctype="multipart/form-data" id="update_form">
             {% csrf_token %}
             {{ form.survey }}
-            <div class="modal-header">
-                <a class="close" data-dismiss="modal" >&times;</a>
-                <h3>{% if action == 'update' %}
-                    {% trans "Update" %}
-                {% else %}
-                    {% trans "Add" %}
-                {% endif %} {% trans "Section" %}
-                    <small></small>
-                </h3>
-            </div>
             <div class="modal-body">
 
                 <div class="row">
@@ -295,15 +294,15 @@
                     </div>
 
                 {% endif %}
-                <div class="actions" align="right">
-                    {% if action == 'update' %}
-                        <input id="id_update" title="{% trans "Update" %}" name="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
-                    {% else %}
-                        <input id="id_add" title="{% trans "Save" %}" name="add" type="submit" class="btn btn-primary" value="{% trans "Save" %}" />
-                    {% endif %}
-                    &nbsp;
-                    <a href="#" title="{% trans "Close" %}" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
-                </div>
+            </div>
+            <div class="modal-footer" align="right">
+                {% if action == 'update' %}
+                    <input id="id_update" title="{% trans "Update" %}" name="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
+                {% else %}
+                    <input id="id_add" title="{% trans "Save" %}" name="add" type="submit" class="btn btn-primary" value="{% trans "Save" %}" />
+                {% endif %}
+                &nbsp;
+                <a href="#" title="{% trans "Close" %}" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
             </div>
         </form>
 

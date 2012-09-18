@@ -130,12 +130,18 @@
                             </div>
 
                             <div class="span8">
-                                <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}
 
-                                {% if perms.survey2.change_section %}
-                                    <a data-toggle="modal" href="#phrasing-update-edit" class="phrasing-edit" url='/section/phrasing/{{ section.id }}/' data-controls-modal='phrasing-update-edit'>
-                                        <i title="{% trans "Edit" %}" class="icon-edit"></i>
-                                    </a>
+                                {% if section.audiofile %}
+                                    <b>{% trans "Audio file"|title %} :</b> {{ section.audiofile.name }}
+                                    <span class="label label-info">ADD PLAY AUDIO HERE</span>
+                                {% else %}
+                                    <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}
+
+                                    {% if perms.survey2.change_section %}
+                                        <a data-toggle="modal" href="#phrasing-update-edit" class="phrasing-edit" url='/section/phrasing/{{ section.id }}/' data-controls-modal='phrasing-update-edit'>
+                                            <i title="{% trans "Edit" %}" class="icon-edit"></i>
+                                        </a>
+                                    {% endif %}
                                 {% endif %}
                             </div>
 

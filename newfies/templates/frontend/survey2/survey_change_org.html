@@ -2,7 +2,7 @@
 {% load i18n dialer_cdr_extras dajaxice_templatetags %}
 
 {% block extra_files %}
-    
+
 {% dajaxice_js_import %}
 
 <script src="{{ STATIC_URL }}newfies/js/jquery.dajax.core.js" type="text/javascript"></script>
@@ -71,7 +71,7 @@
        else
        {
            //data = $('#my_form').serialize(true);
-           data = $('#que_form_' + id).serializeObject();           
+           data = $('#que_form_' + id).serializeObject();
            form_type = 'old_form'
        }
 
@@ -87,7 +87,7 @@
        // https://github.com/cowboy/jquery-misc/blob/master/jquery.ba-serializeobject.js
        // form_type - 0 - new_form / 1 - old_form
        // is_que_id_set 0 - false / 1 - true
-       
+
        //alert($('#response_form_' + id).serializeObject());
        var new_saved_que_id = 0 ;
        if(is_que_id_set==0)
@@ -159,7 +159,7 @@
             //Show the Div
         }
    }
-    
+
    Dajaxice.setup({'default_exception_callback': my_js_callback});
 
 </script>
@@ -273,11 +273,11 @@ function addFormField() {
     '</div><div id="divTxt"></div>');
 
     res_div_count = res_div_count + 1;
-    id = (id - 1) + 2;    
+    id = (id - 1) + 2;
     document.getElementById("id").value = id;
 
     var id_new_que_form  = document.getElementById("id_new_que_form").value  ;
-    id_new_que_form = (id_new_que_form - 1) + 2;    
+    id_new_que_form = (id_new_que_form - 1) + 2;
     document.getElementById("id_new_que_form").value = id_new_que_form;
 }
 
@@ -288,7 +288,7 @@ function removeFormField(id) {
 
 // To add new response form
 function addResFormField(que_id, is_que_id_set) {
-    
+
     var id = ( document.getElementById("id_res") ? document.getElementById("id_res").value : 1);
     //alert(que_id);
 	$("#divTxtRes_"+que_id).append('<div id="row_res' + id + '">' +
@@ -312,7 +312,7 @@ function addResFormField(que_id, is_que_id_set) {
                     '<b>{% trans "Key Value" %}</b><br/><input type="text" id="id_key" class="input-small" name="key" maxlength="150" onblur="response_form(' + id + ','+que_id+', 0, '+is_que_id_set+')">'+
                 {% else %}
                     '{{ field|escapejs }}'+
-                {% endif %}                              
+                {% endif %}
               {% endif %}
           '</div>'+
           {% if forloop.last %}
@@ -414,7 +414,7 @@ function removeResFormField(id) {
                         <form id="que_form_{{ que.id }}" action="." method="post" enctype="multipart/form-data">
                         {% csrf_token %}
 
-                            {% for key, form in survey_que_forms.items %}                                                       
+                            {% for key, form in survey_que_forms.items %}
 
                             {% if key|stringformat:"s" == que.id|stringformat:"s" %}
 

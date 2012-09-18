@@ -76,6 +76,13 @@
             <div class="portlet-header">
                 {{ forloop.counter }}. {{ section.type|section_type_name }}
 
+                {% if section.timeout %}
+                    <span class="label label-info">T-{{ section.timeout }}ms</span>
+                {% endif %}
+                {% if section.retries %}
+                    <span class="label label-info">R-{{ section.retries }}</span>
+                {% endif %}
+
                 {% if perms.survey2.change_section %}
                     <button title="{% trans "Edit" %}" data-toggle="modal" href="#section-update-edit" class="section-edit btn btn-small btn-info" url='/section/{{ section.id }}/' data-controls-modal='section-update-edit'> {% trans "Edit" %} </button>
                 {% endif %}

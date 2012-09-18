@@ -20,7 +20,7 @@ from dialer_campaign.models import Campaign
 from django.db import IntegrityError
 from dialer_cdr.models import Callrequest, VoIPCall
 #from survey.models import SurveyCampaignResult
-from survey2.models import Result
+from survey2.models import Result, ResultAggregate
 from random import choice
 from uuid import uuid1
 import random
@@ -37,6 +37,7 @@ SURVEY_RESULT_QUE = [
     'lease record a message to comment on our agent after the beep'
 ]
 
+RESPONSE = ['apple', 'orange', 'banana']
 
 def create_callrequest(campaign_id, quantity):
     try:
@@ -80,14 +81,23 @@ def create_callrequest(campaign_id, quantity):
                                     duration=random.randint(1, 100),
                                     disposition=choice(VOIPCALL_DISPOSITION))
 
-                response = choice("12345678")
+                response_count = choice("1234567890")
+                section_id = choice("1234")
 
-                survey_cpg_result = Result.objects.create(
-                                            campaign=obj_campaign,
-                                            survey_id=1,
-                                            section_id=1,
-                                            response=response,
-                                            callrequest=new_callrequest)
+                #survey_cpg_result = Result.objects.create(
+                #                            campaign=obj_campaign,
+                #                            survey_id=1,
+                #                            section_id=int(section_id),
+                #                            response=response,
+                #                            record_file='xyz.mp3',
+                #                            callrequest=new_callrequest)
+
+                ResultAggregate.objects.create(
+                    campaign=obj_campaign,
+                    survey_id=1,
+                    section_id=int(section_id),
+                    response=choice(RESPONSE),
+                    count=response_count)
 
             print _("No of Callrequest & CDR created :%(count)s" % \
                         {'count': quantity})

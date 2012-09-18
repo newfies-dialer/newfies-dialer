@@ -98,6 +98,10 @@ class CampaignForm(ModelForm):
             available_objects = SurveyApp.objects.filter(user=user)
             object_choices += get_object_choices(available_objects)
 
+            from survey2.models import Survey
+            available_objects = Survey.objects.filter(user=user)
+            object_choices += get_object_choices(available_objects)
+
             self.fields['content_object'].choices = object_choices
 
     def clean(self):

@@ -170,10 +170,27 @@ def que_res_string(val):
     return result_string
 
 
+@register.filter()
+def running_total(running_list, field_name):
+    return sum(d[field_name] for d in running_list)
+
+
+def percentage_tag(fraction, population):
+    """Usage: {% percentage_tag fraction population %}"""
+    try:
+        return "%.2f%%" % ((float(fraction) / float(population)) * 100)
+    except:
+        return "0.00%"
+
+
 register.filter('contact_status', contact_status)
 register.filter('campaign_status', campaign_status)
 register.filter('leg_type_name', leg_type_name)
 register.filter('que_res_string', que_res_string)
 register.filter('action_type_name', action_type_name)
 register.filter('section_type_name', section_type_name)
+register.filter('running_total', running_total)
+
+register.simple_tag(percentage_tag)
+
 

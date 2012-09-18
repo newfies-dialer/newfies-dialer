@@ -300,12 +300,12 @@ class SurveyReportForm(forms.Form):
     def __init__(self, user, *args, **kwargs):
         super(SurveyReportForm, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['campaign']
-        # To get user's campaign list which are attached with survey app
+        # To get user's campaign list which are attached with survey
         if user:
             list = []
             try:
                 camp_list = Campaign.objects.filter(user=user,
-                                                    content_type=ContentType.objects.get(name='survey'))
+                                                    content_type=ContentType.objects.get(model='survey'))
                 pb_list = ((l.id, l.name) for l in camp_list)
                 for i in pb_list:
                     list.append((i[0], i[1]))

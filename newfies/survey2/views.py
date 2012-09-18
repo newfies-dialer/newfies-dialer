@@ -638,7 +638,7 @@ def section_change(request, id):
         # perform delete
         survey_id = section.survey_id
 
-        # Re-order section while deleting one section 
+        # Re-order section while deleting one section
         section_list_reorder = Section.objects\
             .filter(survey=section.survey).exclude(pk=int(id))
         for reordered in section_list_reorder:
@@ -1003,12 +1003,14 @@ def survey_cdr_daily_report(kwargs, from_query, select_group_query):
         .filter(**kwargs).annotate(Count('starting_date'))\
         .annotate(Sum('duration'))\
         .annotate(Avg('duration'))\
-        .order_by('-starting_date')\
-        .extra(
-            select={
-                'question_response': select_group_query + from_query,
-            },
-        )
+        .order_by('-starting_date')
+    """
+    .extra(
+        select={
+            'question_response': select_group_query + from_query,
+        },
+    )
+    """
 
     # Following code will count total voip calls, duration
     if total_data.count() != 0:
@@ -1035,13 +1037,10 @@ def survey_cdr_daily_report(kwargs, from_query, select_group_query):
 
 def get_survey_result(survey_result_kwargs):
     """Get survey result report from selected survey campaign"""
-    survey_result = Result.objects\
+    survey_result = ResultAggregate.objects\
         .filter(**survey_result_kwargs)\
-        .values('question', 'response', 'record_file')\
-        .annotate(Count('response'))\
-        .annotate(Count('record_file'))\
-        .distinct()\
-        .order_by('question')
+        .values('section__question', 'response', 'count')\
+        .order_by('section')
 
     return survey_result
 
@@ -1063,7 +1062,7 @@ def survey_audio_recording(audio_file):
                _('No recording')
 
 
-@permission_required('survey2.view_survey_report', login_url='/')
+#@permission_required('survey2.view_survey2_report', login_url='/')
 @login_required
 def survey_report(request):
     """Survey detail report for the logged in user
@@ -1171,7 +1170,7 @@ def survey_report(request):
     kwargs['disposition__exact'] = 'ANSWER'
 
     survey_result_kwargs = {}
-    survey_result_kwargs['callrequest__user'] = request.user
+    #survey_result_kwargs['callrequest__user'] = request.user
 
     if start_date and end_date:
         kwargs['starting_date__range'] = (start_date, end_date)
@@ -1187,7 +1186,7 @@ def survey_report(request):
         campaign_id = int(campaign_id)
         campaign_obj = Campaign.objects.get(id=campaign_id)
         survey_result_kwargs['campaign'] = campaign_obj
-        survey_result_kwargs['callrequest__status'] = 4
+        #survey_result_kwargs['callrequest__status'] = 4
 
         # Get survey result report from session
         # while using pagination & sorting
@@ -1219,12 +1218,14 @@ def survey_report(request):
 
         rows = VoIPCall.objects\
             .only('starting_date', 'phone_number', 'duration', 'disposition')\
-            .filter(**kwargs)\
+            .filter(**kwargs).order_by(sort_field)
+        """
             .extra(
                 select={
                     'question_response': select_group_query + from_query
                 },
-            ).order_by(sort_field)
+            )
+        """
 
         request.session['session_surveycalls'] = rows
 

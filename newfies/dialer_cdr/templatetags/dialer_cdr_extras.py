@@ -179,8 +179,8 @@ def percentage_tag(fraction, population):
     """Usage: {% percentage_tag fraction population %}"""
     try:
         return "%.2f%%" % ((float(fraction) / float(population)) * 100)
-    except ValueError:
-        return ''
+    except:
+        return "0.00%"
 
 
 register.filter('contact_status', contact_status)

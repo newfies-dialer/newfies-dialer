@@ -82,7 +82,7 @@ def create_callrequest(campaign_id, quantity):
                                     disposition=choice(VOIPCALL_DISPOSITION))
 
                 response_count = choice("1234567890")
-                section_id = choice("123456")
+                section_id = choice("1234")
 
                 #survey_cpg_result = Result.objects.create(
                 #                            campaign=obj_campaign,

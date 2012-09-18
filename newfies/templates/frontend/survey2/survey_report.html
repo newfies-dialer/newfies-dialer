@@ -229,14 +229,14 @@
                             </td>
                             <td>
                                 <div class="progress progress-striped">
-                                    <div class="bar" style="width: {% percentage_tag item.response__count i.list|running_total:'response__count' %};"></div>
+                                    <div class="bar" style="width: {% percentage_tag item.count i.list|running_total:'count' %};"></div>
                                 </div>
                             </td>
                         </tr>
                         {% if forloop.last %}
                             <tr>
                                 <td class="survey_edit_key"><b>{% trans "Total" %}:</b></td>
-                                <td class="survey_edit_key">{{ i.list|running_total:'response__count' }}</td>
+                                <td class="survey_edit_key">{{ i.list|running_total:'count' }}</td>
                                 <td colspan="2">&nbsp;</td>
                             </tr>
                         {% endif %}

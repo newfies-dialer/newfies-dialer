@@ -1039,10 +1039,8 @@ def get_survey_result(survey_result_kwargs):
     """Get survey result report from selected survey campaign"""
     survey_result = ResultAggregate.objects\
         .filter(**survey_result_kwargs)\
-        .values('response', 'section__question', 'count')\
-        .annotate(Count('response'))\
-        .distinct()\
-        .order_by('id')
+        .values('section__question', 'response', 'count')\
+        .order_by('section')
 
     return survey_result
 

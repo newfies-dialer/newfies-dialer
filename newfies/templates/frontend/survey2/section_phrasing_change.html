@@ -38,49 +38,49 @@
                 });
             </script>
         <!-- modal content-->
-        <div class="modal hide fade" id="section_modal">
+        <div class="modal hide fade" id="section_phrasing_modal">
         {% endif %}
 
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal" >&times;</a>
-            <h3>{% if action == 'update' %}
-                {% trans "Update" %}
-            {% else %}
-                {% trans "Add" %}
-            {% endif %} {% trans "Section phrasing" %}
-                <small></small>
-            </h3>
-        </div>
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal" >&times;</a>
+                <h3>{% if action == 'update' %}
+                    {% trans "Update" %}
+                {% else %}
+                    {% trans "Add" %}
+                {% endif %} {% trans "Section phrasing" %}
+                    <small></small>
+                </h3>
+            </div>
 
-        <div class="modal-body">
-            <form class="well" method="POST" action="/section/phrasing/{{ section_id }}/" enctype="multipart/form-data" id="update_form">
+
+            <form method="POST" action="/section/phrasing/{{ section_id }}/" enctype="multipart/form-data" id="update_form">
             {% csrf_token %}
-
-            <div class="row">
-                <div class="span5 clearfix{% if form.phrasing.errors %} control-group error{% endif %}">
-                    <label class="control-label" for="id_{{ form.phrasing.name }}">{{ form.phrasing.label }}</label>
-                    <div class="input">
-                        {{ form.phrasing }}
-                        {% if form.phrasing.errors %}
-                            <span class="help-inline">{{ form.phrasing.errors|removetags:"ul li"|safe }}</span>
-                        {% endif %}
-                        <span class="help-block">{{ form.phrasing.help_text|safe }} </span>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="span5 clearfix{% if form.phrasing.errors %} control-group error{% endif %}">
+                            <label class="control-label" for="id_{{ form.phrasing.name }}">{{ form.phrasing.label }}</label>
+                            <div class="input">
+                                {{ form.phrasing }}
+                                {% if form.phrasing.errors %}
+                                    <span class="help-inline">{{ form.phrasing.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                                <span class="help-block">{{ form.phrasing.help_text|safe }} </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="actions" align="right">
-                {% if action == 'update' %}
-                    <input title="{% trans "Update" %}" id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
-                {% else %}
-                    <input title="{% trans "Save" %}" id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans "Save" %}" />
-                {% endif %}
-                &nbsp;
-                <a href="#" title="{% trans "Close" %}" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
-            </div>
+                <div class="modal-footer" align="right">
+                    {% if action == 'update' %}
+                        <input title="{% trans "Update" %}" id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
+                    {% else %}
+                        <input title="{% trans "Save" %}" id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans "Save" %}" />
+                    {% endif %}
+                    &nbsp;
+                    <a href="#" title="{% trans "Close" %}" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
+                </div>
 
             </form>
-        </div>
+
         {% if err_msg %}
             </div>
         {% endif %}

@@ -107,18 +107,18 @@ def survey_finestatemachine(request):
             #print "\nPREVIOUS QUESTION ::> %d" % prev_qt
             #Get previous Question
             try:
-                obj_prev_qt = Section.objects.get(id=prev_qt)
+                obj_prev_qt = SurveyQuestion.objects.get(id=prev_qt)
             except:
                 obj_prev_qt = False
     try:
         obj_callrequest = Callrequest.objects\
-            .get(request_uuid=opt_ALegRequestUUID)
+        .get(request_uuid=opt_ALegRequestUUID)
     except:
         return HttpResponse(
             content="Error : retrieving Callrequest with the ALegRequestUUID",
             status=400)
 
-    survey_id = obj_callrequest.object_id
+    surveyapp_id = obj_callrequest.object_id
     cache.set(key_surveyapp, surveyapp_id, 21600)  # 21600 seconds = 6 hours
 
     if current_state == 0:
@@ -130,8 +130,8 @@ def survey_finestatemachine(request):
     #print "current_state = %s" % str(current_state)
 
     #Load the questions
-    list_question = Section.objects\
-        .filter(survey=survey_id).order_by('order')
+    list_question = SurveyQuestion.objects\
+    .filter(surveyapp=surveyapp_id).order_by('order')
 
     if obj_prev_qt and obj_prev_qt.type == 3:
         #Previous Recording
@@ -145,7 +145,7 @@ def survey_finestatemachine(request):
             RecordFile = os.path.split(RecordFile)[1]
         except:
             RecordFile = ''
-        new_surveycampaignresult = Result(
+        new_surveycampaignresult = SurveyCampaignResult(
             campaign=obj_callrequest.campaign,
             surveyapp_id=surveyapp_id,
             callid=opt_CallUUID,
@@ -159,7 +159,7 @@ def survey_finestatemachine(request):
         #find the response for this key pressed
         try:
             #Get list of responses of the previous Question
-            surveyresponse = Branching.objects.get(
+            surveyresponse = SurveyResponse.objects.get(
                 key=DTMF,
                 surveyquestion=obj_prev_qt)
             if not surveyresponse or not surveyresponse.keyvalue:
@@ -180,7 +180,7 @@ def survey_finestatemachine(request):
             #It's possible that this response is not accepted
             response_value = DTMF
         try:
-            new_surveycampaignresult = Result(
+            new_surveycampaignresult = SurveyCampaignResult(
                 campaign=obj_callrequest.campaign,
                 surveyapp_id=surveyapp_id,
                 callid=opt_CallUUID,
@@ -218,7 +218,7 @@ def survey_finestatemachine(request):
     if list_question[current_state].message_type == 1:
         try:
             audio_file_url = list_question[current_state]\
-                .audio_message.audio_file.url
+            .audio_message.audio_file.url
         except:
             audio_file_url = False
 
@@ -234,26 +234,26 @@ def survey_finestatemachine(request):
     #Menu
     if list_question[current_state].type == 1:
         html =\
-            '<Response>\n'\
-            '   <GetDigits action="%s" method="GET" numDigits="1" '\
-            'retries="1" validDigits="0123456789" timeout="%s" '\
-            'finishOnKey="#">\n'\
-            '       %s\n'\
-            '   </GetDigits>\n'\
-            '   <Redirect>%s</Redirect>\n'\
-            '</Response>' % (
-                settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
-                settings.MENU_TIMEOUT,
-                question,
-                settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
+        '<Response>\n'\
+        '   <GetDigits action="%s" method="GET" numDigits="1" '\
+        'retries="1" validDigits="0123456789" timeout="%s" '\
+        'finishOnKey="#">\n'\
+        '       %s\n'\
+        '   </GetDigits>\n'\
+        '   <Redirect>%s</Redirect>\n'\
+        '</Response>' % (
+            settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
+            settings.MENU_TIMEOUT,
+            question,
+            settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
     #Recording
     elif list_question[current_state].type == 3:
         html =\
-            '<Response>\n'\
-            '   %s\n'\
-            '   <Record maxLength="120" finishOnKey="*#" action="%s" '\
-            'method="GET" filePath="%s" timeout="%s"/>'\
-            '</Response>' % (
+        '<Response>\n'\
+        '   %s\n'\
+        '   <Record maxLength="120" finishOnKey="*#" action="%s" '\
+        'method="GET" filePath="%s" timeout="%s"/>'\
+        '</Response>' % (
             question,
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
             settings.FS_RECORDING_PATH,
@@ -261,10 +261,10 @@ def survey_finestatemachine(request):
     # Hangup
     else:
         html =\
-            '<Response>\n'\
-            '   %s\n'\
-            '   <Hangup />'\
-            '</Response>' % (question)
+        '<Response>\n'\
+        '   %s\n'\
+        '   <Hangup />'\
+        '</Response>' % (question)
         next_state = current_state
         cache.set(key_state, next_state, 21600)
 
@@ -1062,10 +1062,11 @@ def survey_audio_recording(audio_file):
                _('No recording')
 
 
-#@permission_required('survey2.view_survey2_report', login_url='/')
+@permission_required('survey.view_survey_report', login_url='/')
 @login_required
 def survey_report(request):
-    """Survey detail report for the logged in user
+    """
+    Survey detail report for the logged in user
 
     **Attributes**:
 
@@ -1170,7 +1171,6 @@ def survey_report(request):
     kwargs['disposition__exact'] = 'ANSWER'
 
     survey_result_kwargs = {}
-    #survey_result_kwargs['callrequest__user'] = request.user
 
     if start_date and end_date:
         kwargs['starting_date__range'] = (start_date, end_date)
@@ -1186,7 +1186,6 @@ def survey_report(request):
         campaign_id = int(campaign_id)
         campaign_obj = Campaign.objects.get(id=campaign_id)
         survey_result_kwargs['campaign'] = campaign_obj
-        #survey_result_kwargs['callrequest__status'] = 4
 
         # Get survey result report from session
         # while using pagination & sorting
@@ -1216,16 +1215,16 @@ def survey_report(request):
             'dialer_callrequest.id '
         select_group_query = 'SELECT group_concat(CONCAT_WS("*|*", question, response, record_file) SEPARATOR "-|-") '
 
-        rows = VoIPCall.objects\
-            .only('starting_date', 'phone_number', 'duration', 'disposition')\
-            .filter(**kwargs).order_by(sort_field)
-        """
-            .extra(
-                select={
-                    'question_response': select_group_query + from_query
-                },
-            )
-        """
+        #rows = VoIPCall.objects\
+        #    .only('starting_date', 'phone_number', 'duration', 'disposition')\
+        #    .filter(**kwargs).order_by(sort_field)
+        rows = []
+
+        #    .extra(
+        #        select={
+        #            'question_response': select_group_query + from_query
+        #        },
+        #    )
 
         request.session['session_surveycalls'] = rows
 
@@ -1234,11 +1233,12 @@ def survey_report(request):
             survey_cdr_daily_data =\
                 request.session['session_survey_cdr_daily_data']
         else:
-            survey_cdr_daily_data = survey_cdr_daily_report(kwargs,
-                                                            from_query,
-                                                            select_group_query)
-            request.session['session_survey_cdr_daily_data'] =\
-                survey_cdr_daily_data
+            #survey_cdr_daily_data = survey_cdr_daily_report(kwargs,
+            #                                                from_query,
+            #                                                select_group_query)
+            #request.session['session_survey_cdr_daily_data'] =\
+            #    survey_cdr_daily_data
+            request.session['session_survey_cdr_daily_data'] = []
     except:
         rows = []
         if request.method == 'POST':

@@ -663,6 +663,19 @@ func_install_frontend(){
     #Set Timezone in settings_local.py
     sed -i "s@Europe/Madrid@$ZONE@g" $INSTALL_DIR/settings_local.py
 
+    echo "Install Logrotate..."
+    #Setup log rotation
+    touch /etc/logrotate.d/newfies_dialer
+    echo '
+    /var/log/newfies/*.log {
+        daily
+        rotate 10
+        size = 20M
+        missingok
+        compress
+    }
+    '  >> /etc/logrotate.d/newfies_dialer
+
 
     echo ""
     echo ""
@@ -790,6 +803,7 @@ func_install_backend() {
             #chkconfig --level 2345 newfies-celerybeat on
         ;;
     esac
+
 
     echo ""
     echo ""

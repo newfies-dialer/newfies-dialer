@@ -3,12 +3,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -21,7 +21,7 @@
 
 # Identify Linux Distribution type
 func_identify_os() {
-    
+
     if [ -f /etc/debian_version ] ; then
         DIST='DEBIAN'
         if [ "$(lsb_release -cs)" != "lucid" ] && [ "$(lsb_release -cs)" != "precise" ]; then
@@ -56,7 +56,7 @@ read TEMP
 
 
 case $DIST in
-    'DEBIAN') 
+    'DEBIAN')
         apt-get -y update
         apt-get -y install vim git-core
     ;;
@@ -115,7 +115,18 @@ mv /tmp/default.conf /usr/share/plivo/etc/plivo/default.conf
 /etc/init.d/plivo start
 /etc/init.d/plivocache start
 
-
+echo "Install Logrotate..."
+#Setup log rotation
+touch /etc/logrotate.d/plivo
+echo '
+/usr/share/plivo/tmp/*.log {
+    daily
+    rotate 10
+    size = 20M
+    missingok
+    compress
+}
+'  >> /etc/logrotate.d/plivo
 
 #Install Newfies
 cd /usr/src/

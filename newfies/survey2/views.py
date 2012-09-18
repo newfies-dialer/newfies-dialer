@@ -1037,11 +1037,10 @@ def survey_cdr_daily_report(kwargs, from_query, select_group_query):
 
 def get_survey_result(survey_result_kwargs):
     """Get survey result report from selected survey campaign"""
-    survey_result = Result.objects\
+    survey_result = ResultAggregate.objects\
         .filter(**survey_result_kwargs)\
-        .values('response', 'section__question', 'record_file', 'section__phrasing')\
+        .values('response', 'section__question', 'count')\
         .annotate(Count('response'))\
-        .annotate(Count('record_file'))\
         .distinct()\
         .order_by('id')
 
@@ -1173,7 +1172,7 @@ def survey_report(request):
     kwargs['disposition__exact'] = 'ANSWER'
 
     survey_result_kwargs = {}
-    survey_result_kwargs['callrequest__user'] = request.user
+    #survey_result_kwargs['callrequest__user'] = request.user
 
     if start_date and end_date:
         kwargs['starting_date__range'] = (start_date, end_date)
@@ -1189,7 +1188,7 @@ def survey_report(request):
         campaign_id = int(campaign_id)
         campaign_obj = Campaign.objects.get(id=campaign_id)
         survey_result_kwargs['campaign'] = campaign_obj
-        survey_result_kwargs['callrequest__status'] = 4
+        #survey_result_kwargs['callrequest__status'] = 4
 
         # Get survey result report from session
         # while using pagination & sorting

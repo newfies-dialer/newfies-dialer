@@ -219,9 +219,9 @@
 
                         <tr>
                             <td align="right"><b>{{ item.response }}:</b></td>
-                            <td align="left">{{ item.response__count }}</td>
+                            <td align="left">{{ item.count }}</td>
                             <td align="right">
-                                {% percentage_tag item.response__count i.list|running_total:'response__count' %}
+                                {% percentage_tag item.count i.list|running_total:'count' %}
                             </td>
                             <td align="left">
                                 <div class="progress progress-striped">

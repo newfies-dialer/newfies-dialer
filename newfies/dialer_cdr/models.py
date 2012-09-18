@@ -288,4 +288,4 @@ class VoIPCall(models.Model):
         verbose_name_plural = _("VoIP Call")
 
     def __unicode__(self):
-            return u"%s" % self.callid
+            return u"%d - %s" % (self.id, self.callid)

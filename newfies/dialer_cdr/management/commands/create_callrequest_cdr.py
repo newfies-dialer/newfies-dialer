@@ -17,10 +17,9 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
 from dialer_campaign.models import Campaign
-from django.db import IntegrityError
 from dialer_cdr.models import Callrequest, VoIPCall
 #from survey.models import SurveyCampaignResult
-from survey2.models import Result, ResultAggregate
+from survey2.models import Result, ResultAggregate, Section
 from random import choice
 from uuid import uuid1
 import random
@@ -41,71 +40,81 @@ RESPONSE = ['apple', 'orange', 'banana']
 
 
 def create_callrequest(campaign_id, quantity):
+    """
+    Create Callrequest
+    """
+
+    admin_user = User.objects.get(pk=1)
     try:
-        admin_user = User.objects.get(pk=1)
-        try:
-            obj_campaign = Campaign.objects.get(id=campaign_id)
-        except:
-            print _('Can\'t find this Campaign : %(id)s' % {'id': campaign_id})
-            return False
-
-        try:
-            length = 5
-            chars = "1234567890"
-
-            #'survey' | 'voiceapp'
-            try:
-                content_type_id = ContentType.objects.get(model='survey').id
-            except:
-                content_type_id = 1
-
-            for i in range(1, int(quantity) + 1):
-                phonenumber = '' . join([choice(chars) for i in range(length)])
-                new_callrequest = Callrequest.objects.create(
-                                    request_uuid=uuid1(),
-                                    user=admin_user,
-                                    phone_number=phonenumber,
-                                    campaign=obj_campaign,
-                                    aleg_gateway_id=1,
-                                    status=choice("12345678"),
-                                    call_type=1,
-                                    content_type_id=content_type_id,
-                                    object_id=1)
-
-                VoIPCall.objects.create(
-                                    request_uuid=uuid1(),
-                                    user=admin_user,
-                                    callrequest=new_callrequest,
-                                    phone_number=phonenumber,
-                                    duration=random.randint(1, 100),
-                                    disposition=choice(VOIPCALL_DISPOSITION))
-
-                response_count = choice("1234567890")
-                section_id = choice("1234")
-
-                # cpg_result = Result.objects.create(
-                #                     campaign=obj_campaign,
-                #                     survey_id=1,
-                #                     section_id=int(section_id),
-                #                     response=response,
-                #                     record_file='xyz.mp3',
-                #                     callrequest=new_callrequest)
-
-                ResultAggregate.objects.create(
-                                    campaign=obj_campaign,
-                                    survey_id=1,
-                                    section_id=int(section_id),
-                                    response=choice(RESPONSE),
-                                    count=response_count)
-
-            print _("No of Callrequest & CDR created :%(count)s" % \
-                        {'count': quantity})
-        except IntegrityError:
-            print _("Callrequest & CDR are not created!")
-            return False
+        obj_campaign = Campaign.objects.get(id=campaign_id)
     except:
-        print _("No admin user")
+        print _('Can\'t find this Campaign : %(id)s' % {'id': campaign_id})
         return False
+
+    length = 5
+    chars = "1234567890"
+
+    #'survey' | 'voiceapp'
+    try:
+        content_type_id = ContentType.objects.get(model='survey').id
+    except:
+        content_type_id = 1
+
+    for i in range(1, int(quantity) + 1):
+        phonenumber = '' . join([choice(chars) for i in range(length)])
+        new_callrequest = Callrequest.objects.create(
+                            request_uuid=uuid1(),
+                            user=admin_user,
+                            phone_number=phonenumber,
+                            campaign=obj_campaign,
+                            aleg_gateway_id=1,
+                            status=choice("12345678"),
+                            call_type=1,
+                            content_type_id=content_type_id,
+                            object_id=1)
+        print "new_callrequest:"
+        print new_callrequest
+
+        voipcall = VoIPCall.objects.create(
+                            request_uuid=uuid1(),
+                            user=admin_user,
+                            callrequest=new_callrequest,
+                            phone_number=phonenumber,
+                            duration=random.randint(1, 100),
+                            disposition=choice(VOIPCALL_DISPOSITION))
+        print "voipcall:"
+        print voipcall.id
+
+        response_count = choice("1234567890")
+
+        print "Get list section:"
+        list_section = Section.objects.filter(survey=obj_campaign.object_id)
+        section_id = random.randint(0, len(list_section) - 1)
+        print section_id
+        print list_section[section_id]
+        print "-----------------"
+        # for elem in list_section:
+        #     print elem[1]
+
+        cpg_result = Result.objects.create(
+                            campaign=obj_campaign,
+                            survey_id=obj_campaign.object_id,
+                            section=list_section[section_id],
+                            response=choice(RESPONSE),
+                            record_file='xyz.mp3',
+                            callrequest=new_callrequest)
+        print "cpg_result:"
+        print cpg_result
+
+        ResultAggregate.objects.create(
+                            campaign=obj_campaign,
+                            survey_id=obj_campaign.object_id,
+                            section=list_section[section_id],
+                            response=choice(RESPONSE),
+                            count=response_count)
+
+    print _("No of Callrequest & CDR created :%(count)s" % \
+                {'count': quantity})
 
 
 class Command(BaseCommand):

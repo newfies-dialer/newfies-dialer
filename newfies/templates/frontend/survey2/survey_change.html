@@ -67,233 +67,224 @@
 </div>
 </div>
 
-    <p>
-        {% if action == 'update' %}
-        <fieldset>
-            <div class="column">
-                {% if section_list %}
-                    {% for section in section_list %}
-                    <div id="row{{ section.id }}" class="portlet">
-                        <div class="portlet-header">
-                            {{ forloop.counter }}. {{ section.type|section_type_name }}
+{% if action == 'update' %}
+<div class="column">
+    {% if section_list %}
 
-                            <!--To remove section branching for voice, record &
-                                patch-through section-->
-                            <script type="text/javascript">
-                                var flag = 0;
-                            </script>
-                            {% if section.type == 1 or section.type == 5 or section.type == 6 %}
-                                {% if section.get_branching_count_per_section > 0 or section.type == 6 %}
-                                    <script type="text/javascript">
-                                        $(function() {
-                                            $("#row"+{{ section.id }}).find(".section-branch").contents().unwrap();
-                                            $("#row"+{{ section.id }}).find(".icon-random").remove();
-                                        });
-                                        flag = 1;
-                                    </script>
+        {% for section in section_list %}
+        <div id="row{{ section.id }}" class="portlet">
+            <div class="portlet-header">
+                {{ forloop.counter }}. {{ section.type|section_type_name }}
+
+                {% if perms.survey2.change_section %}
+                    <button title="{% trans "Edit" %}" data-toggle="modal" href="#section-update-edit" class="section-edit btn btn-small btn-info" url='/section/{{ section.id }}/' data-controls-modal='section-update-edit'> {% trans "Edit" %} </button>
+                {% endif %}
+                {% if perms.survey2.delete_section %}
+                    <input title="{% trans "Delete" %}" value="{% trans "Delete" %}" onclick="return get_alert({{ section.id }});" class="btn btn-small btn-danger" type="button" />
+                {% endif %}
+
+                <!--To remove section branching for voice, record &
+                    patch-through section-->
+                <script type="text/javascript">
+                    var flag = 0;
+                </script>
+                {% if section.type == 1 or section.type == 5 or section.type == 6 %}
+                    {% if section.get_branching_count_per_section > 0 or section.type == 6 %}
+                        <script type="text/javascript">
+                            $(function() {
+                                $("#row"+{{ section.id }}).find(".section-branch").contents().unwrap();
+                                $("#row"+{{ section.id }}).find(".icon-random").remove();
+                            });
+                            flag = 1;
+                        </script>
+                    {% endif %}
+                {% endif %}
+
+                <script type="text/javascript">
+                    if(flag == 0)
+                    {
+                        $(function() {
+                            $("#row"+{{ section.id }}).find(".section-branch")
+                                .attr("url", "/section/branch/{{ section.id }}/")
+                                .attr("data-toggle", "modal")
+                                .attr("href", "#section-branch")
+                                .attr("data-controls-modal", "section-branch");
+                        });
+                    }
+                </script>
+            </div>
+            <div class="portlet-content">
+                <div class="row">
+                    <div class="span12">
+
+
+                                <div class="row">
+                                    <div class="span8">
+                                        <b>{% trans "question"|title %} :</b> {{ section.question }}<br/>
+                                    </div>
+
+                                    <div class="span8">
+                                        <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}
+
+                                        {% if perms.survey2.change_section %}
+                                            <a data-toggle="modal" href="#phrasing-update-edit" class="phrasing-edit" url='/section/phrasing/{{ section.id }}/' data-controls-modal='phrasing-update-edit'>
+                                                <i title="{% trans "Edit" %}" class="icon-edit"></i>
+                                            </a>
+                                        {% endif %}
+                                    </div>
+
+                                    <!--Voice Section form-->
+                                    {% if section.type == 1 %}
+                                    {% endif %}
+
+                                    <!--Multiple choice Section form-->
+                                    {% if section.type == 2 %}
+
+                                        <div class="span8">
+                                            {% if section.key_0|length > 0 %}
+                                                {% trans "Result if the user press" %} 0 : {{ section.key_0 }} <br/>
+                                            {% endif %}
+                                            {% if section.key_1|length > 0 %}
+                                                {% trans "Result if the user press" %} 1 : {{ section.key_1 }} <br>
+                                            {% endif %}
+                                            {% if section.key_2|length > 0 %}
+                                                {% trans "Result if the user press" %} 2 : {{ section.key_2 }} <br/>
+                                            {% endif %}
+                                            {% if section.key_3|length > 0 %}
+                                                {% trans "Result if the user press" %} 3 : {{ section.key_3 }} <br/>
+                                            {% endif %}
+                                            {% if section.key_4|length > 0 %}
+                                                {% trans "Result if the user press" %} 4 : {{ section.key_4 }} <br/>
+                                            {% endif %}
+                                            {% if section.key_5|length > 0 %}
+                                                {% trans "Result if the user press" %} 5 : {{ section.key_5 }} <br/>
+                                            {% endif %}
+                                            {% if section.key_6|length > 0 %}
+                                                {% trans "Result if the user press" %} 6 : {{ section.key_6 }} <br>
+                                            {% endif %}
+                                            {% if section.key_7|length > 0 %}
+                                                {% trans "Result if the user press" %} 7 : {{ section.key_7 }} <br/>
+                                            {% endif %}
+                                            {% if section.key_8|length > 0 %}
+                                                {% trans "Result if the user press" %} 8 : {{ section.key_8 }} <br/>
+                                            {% endif %}
+                                            {% if section.key_9|length > 0 %}
+                                                {% trans "Result if the user press" %} 9 : {{ section.key_9 }}
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+
+                                    <!--Rating Section form-->
+                                    {% if section.type == 3 %}
+                                        <div class="span8">
+                                            {% trans "From 1 to" %} {{ section.rating_laps }}
+                                        </div>
+                                    {% endif %}
+
+                                    <!--Enter number Section form-->
+                                    {% if section.type == 4 %}
+                                        <div class="span8">
+                                            {% if section.validate_number %}
+                                                {% trans "Number is between" %}&nbsp;{{ section.min_number }}&nbsp;{% trans "and" %}&nbsp;{{ section.max_number }}
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+
+                                    <!--Record Message Section form-->
+                                    {% if section.type == 5 %}
+                                        <div class="span8">
+                                            {% if section.continue_survey %}
+                                                {% trans "When done, continue survey" %}
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+
+                                    <!--Patch-Through Section form-->
+                                    {% if section.type == 6 %}
+                                        <div class="span8">
+                                            {% if section.dial_phonenumber %}
+                                                {% trans "Dial phone number" %} : {{ section.dial_phonenumber }} <br/>
+                                            {% endif %}
+                                            {% if section.continue_survey %}
+                                                {% trans "When done, continue survey" %}
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                            <!--branching-->
+                            {% if branching_list %}
+
+                                {% if section.id in branching_section_list %}
+                                <div class="row">
+                                    <div class="span8">
+                                        <b>{% trans "Branching" %}</b><br/>
+                                        <table class="table table-striped table-bordered table-condensed">
+                                            <thead>
+                                            <tr>
+                                                {% if section.type != 1 %}
+                                                    {% if section.type != 5 %}
+                                                        <th>{% trans "keys"|title %}</th>
+                                                    {% endif %}
+                                                {% endif %}
+                                                <th>{% trans "goto"|title %}</th>
+                                                <th class="survey_edit_key">&nbsp;</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for branch in branching_list %}
+                                                <tr>
+                                                    {% if branch.section_id == section.id %}
+                                                        {% if section.type != 1 %}
+                                                            {% if section.type != 5 %}
+                                                            <td>
+                                                                {% trans "If the user press" %}&nbsp;
+                                                                {% if branch.keys %}
+                                                                    {{ branch.keys }}
+                                                                {% else %}
+                                                                    {% trans "None" %}
+                                                                {% endif %}
+                                                            </td>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                        <td>
+                                                            #{% if branch.goto.id %}
+                                                                {{ branch.goto.order }}&nbsp;
+                                                                {% if branch.goto.question %}
+                                                                    {{ branch.goto.question }}
+                                                                {% else %}
+                                                                    {{ branch.goto.phrasing }}
+                                                                {% endif %}
+                                                            {% else %}
+                                                                &nbsp;{% trans "Hang up" %}
+                                                            {% endif %}
+                                                        </td>
+                                                        <td class="survey_edit_key">
+                                                            {% if perms.survey2.delete_branching %}
+                                                                <a {% icon_style 'delete' %} href="/section/branch/{{ branch.id }}/?delete=true" class="icon" title="{% trans "Delete" %}">&nbsp;</a>
+                                                            {% endif %}
+                                                        </td>
+                                                    {% endif %}
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                                 {% endif %}
                             {% endif %}
 
-                            <script type="text/javascript">
-                                if(flag == 0)
-                                {
-                                    $(function() {
-                                        $("#row"+{{ section.id }}).find(".section-branch")
-                                            .attr("url", "/section/branch/{{ section.id }}/")
-                                            .attr("data-toggle", "modal")
-                                            .attr("href", "#section-branch")
-                                            .attr("data-controls-modal", "section-branch");
-                                    });
-                                }
-                            </script>
-                        </div>
-                        <div class="portlet-content">
-                            <div class="row">
-                                <div class="span12">
-                                    <div class="row">
-                                        <div class="span9">
-
-                                            <div class="row">
-                                                <div class="span8">
-                                                    <b>{% trans "question"|title %} :</b> {{ section.question }}<br/>
-                                                </div>
-
-                                                <div class="span8">
-                                                    <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}
-
-                                                    {% if perms.survey2.change_section %}
-                                                        <a data-toggle="modal" href="#phrasing-update-edit" class="phrasing-edit" url='/section/phrasing/{{ section.id }}/' data-controls-modal='phrasing-update-edit'>
-                                                            <i title="{% trans "Edit" %}" class="icon-edit"></i>
-                                                        </a>
-                                                    {% endif %}
-                                                </div>
-
-                                                <!--Voice Section form-->
-                                                {% if section.type == 1 %}
-                                                {% endif %}
-
-                                                <!--Multiple choice Section form-->
-                                                {% if section.type == 2 %}
-
-                                                    <div class="span8">
-                                                        {% if section.key_0|length > 0 %}
-                                                            {% trans "Result if the user press" %} 0 : {{ section.key_0 }} <br/>
-                                                        {% endif %}
-                                                        {% if section.key_1|length > 0 %}
-                                                            {% trans "Result if the user press" %} 1 : {{ section.key_1 }} <br>
-                                                        {% endif %}
-                                                        {% if section.key_2|length > 0 %}
-                                                            {% trans "Result if the user press" %} 2 : {{ section.key_2 }} <br/>
-                                                        {% endif %}
-                                                        {% if section.key_3|length > 0 %}
-                                                            {% trans "Result if the user press" %} 3 : {{ section.key_3 }} <br/>
-                                                        {% endif %}
-                                                        {% if section.key_4|length > 0 %}
-                                                            {% trans "Result if the user press" %} 4 : {{ section.key_4 }} <br/>
-                                                        {% endif %}
-                                                        {% if section.key_5|length > 0 %}
-                                                            {% trans "Result if the user press" %} 5 : {{ section.key_5 }} <br/>
-                                                        {% endif %}
-                                                        {% if section.key_6|length > 0 %}
-                                                            {% trans "Result if the user press" %} 6 : {{ section.key_6 }} <br>
-                                                        {% endif %}
-                                                        {% if section.key_7|length > 0 %}
-                                                            {% trans "Result if the user press" %} 7 : {{ section.key_7 }} <br/>
-                                                        {% endif %}
-                                                        {% if section.key_8|length > 0 %}
-                                                            {% trans "Result if the user press" %} 8 : {{ section.key_8 }} <br/>
-                                                        {% endif %}
-                                                        {% if section.key_9|length > 0 %}
-                                                            {% trans "Result if the user press" %} 9 : {{ section.key_9 }}
-                                                        {% endif %}
-                                                    </div>
-                                                {% endif %}
-
-                                                <!--Rating Section form-->
-                                                {% if section.type == 3 %}
-                                                    <div class="span8">
-                                                        {% trans "From 1 to" %} {{ section.rating_laps }}
-                                                    </div>
-                                                {% endif %}
-
-                                                <!--Enter number Section form-->
-                                                {% if section.type == 4 %}
-                                                    <div class="span8">
-                                                        {% if section.validate_number %}
-                                                            {% trans "Number is between" %}&nbsp;{{ section.min_number }}&nbsp;{% trans "and" %}&nbsp;{{ section.max_number }}
-                                                        {% endif %}
-                                                    </div>
-                                                {% endif %}
-
-                                                <!--Record Message Section form-->
-                                                {% if section.type == 5 %}
-                                                    <div class="span8">
-                                                        {% if section.continue_survey %}
-                                                            {% trans "When done, continue survey" %}
-                                                        {% endif %}
-                                                    </div>
-                                                {% endif %}
-
-                                                <!--Patch-Through Section form-->
-                                                {% if section.type == 6 %}
-                                                    <div class="span8">
-                                                        {% if section.dial_phonenumber %}
-                                                            {% trans "Dial phone number" %} : {{ section.dial_phonenumber }} <br/>
-                                                        {% endif %}
-                                                        {% if section.continue_survey %}
-                                                            {% trans "When done, continue survey" %}
-                                                        {% endif %}
-                                                    </div>
-                                                {% endif %}
-                                            </div>
-
-                                        <!--branching-->
-                                        {% if branching_list %}
-
-                                            {% if section.id in branching_section_list %}
-                                            <div class="row">
-                                                <div class="span8">
-                                                    <b>{% trans "Branching" %}</b><br/>
-                                                    <table class="table table-striped table-bordered table-condensed">
-                                                        <thead>
-                                                        <tr>
-                                                            {% if section.type != 1 %}
-                                                                {% if section.type != 5 %}
-                                                                    <th>{% trans "keys"|title %}</th>
-                                                                {% endif %}
-                                                            {% endif %}
-                                                            <th>{% trans "goto"|title %}</th>
-                                                            <th class="survey_edit_key">&nbsp;</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        {% for branch in branching_list %}
-                                                            <tr>
-                                                                {% if branch.section_id == section.id %}
-                                                                    {% if section.type != 1 %}
-                                                                        {% if section.type != 5 %}
-                                                                        <td>
-                                                                            {% trans "If the user press" %}&nbsp;
-                                                                            {% if branch.keys %}
-                                                                                {{ branch.keys }}
-                                                                            {% else %}
-                                                                                {% trans "None" %}
-                                                                            {% endif %}
-                                                                        </td>
-                                                                        {% endif %}
-                                                                    {% endif %}
-                                                                    <td>
-                                                                        #{% if branch.goto.id %}
-                                                                            {{ branch.goto.order }}&nbsp;
-                                                                            {% if branch.goto.question %}
-                                                                                {{ branch.goto.question }}
-                                                                            {% else %}
-                                                                                {{ branch.goto.phrasing }}
-                                                                            {% endif %}
-                                                                        {% else %}
-                                                                            &nbsp;{% trans "Hang up" %}
-                                                                        {% endif %}
-                                                                    </td>
-                                                                    <td class="survey_edit_key">
-                                                                        {% if perms.survey2.delete_branching %}
-                                                                            <a {% icon_style 'delete' %} href="/section/branch/{{ branch.id }}/?delete=true" class="icon" title="{% trans "Delete" %}">&nbsp;</a>
-                                                                        {% endif %}
-                                                                    </td>
-                                                                {% endif %}
-                                                            </tr>
-                                                        {% endfor %}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                            {% endif %}
-                                        {% endif %}
-
-                                        </div>
-
-                                        <div class="span3">
-                                            {% if perms.survey2.change_section %}
-                                                <button title="{% trans "Edit" %}" data-toggle="modal" href="#section-update-edit" class="section-edit btn btn-info" url='/section/{{ section.id }}/' data-controls-modal='section-update-edit'>
-                                                    {% trans "Edit" %}
-                                                </button>
-                                            {% endif %}
-                                            {% if perms.survey2.delete_section %}
-                                                <input title="{% trans "Delete" %}" value="{% trans "Delete" %}" onclick="return get_alert({{ section.id }});" class="btn btn-danger" type="button" />
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
 
-                        </div>
-                    </div>
-                    {% endfor %}
-                {% endif %}
-            </div>
-        </fieldset>
-        {% endif %}
 
-    </p>
+                        </div>
+
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endif %}
 
     <!--update question in modal-->
     <script type="text/javascript" charset="utf-8">

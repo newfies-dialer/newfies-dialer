@@ -872,6 +872,58 @@ def section_phrasing_change(request, id):
 
 @permission_required('survey2.add_branching', login_url='/')
 @login_required
+def section_branch_add(request):
+    """Add branching on section for the logged in user
+
+    **Attributes**:
+
+        * ``form`` - BranchingForm
+        * ``template`` - frontend/survey2/section_branch_change.html
+
+    **Logic Description**:
+
+        *
+
+    """
+    request.session['msg'] = ''
+    if request.GET.get('section_id'):
+        section_id = request.GET.get('section_id')
+        section = Section.objects.get(pk=int(section_id))
+        form = BranchingForm(section.survey_id,
+                             section.id,
+                             initial={'section': section_id})
+        if request.method == 'POST':
+            form = BranchingForm(section.survey_id,
+                                 section.id,
+                                 request.POST)
+            if form.is_valid():
+                form.save()
+                request.session["msg"] =\
+                    _('Branching is added successfully.')
+                return HttpResponseRedirect('/survey2/%s/#row%s'
+                                        % (section.survey_id, section_id))
+            else:
+                form._errors["keyresult"] = \
+                    _("duplicate record keyresult with goto.")
+                request.session["err_msg"] = _('Keyresult is not added.')
+
+    template = 'frontend/survey2/section_branch_change.html'
+    data = {
+        'form': form,
+        'survey_id': section.survey_id,
+        'section_type': section.type,
+        'section_id': section.id,
+        'module': current_view(request),
+        'err_msg': request.session.get('err_msg'),
+        'action': 'add',
+    }
+    request.session['err_msg'] = ''
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+
+
+@permission_required('survey2.change_branching', login_url='/')
+@login_required
 def section_branch_change(request, id):
     """Add branching on section for the logged in user
 
@@ -897,38 +949,40 @@ def section_branch_change(request, id):
         return HttpResponseRedirect('/survey2/%s/#row%s'
                                     % (survey_id, section_id))
 
-    section = Section.objects.get(pk=int(id))
-    form = BranchingForm(section.survey_id,
-                         section.id,
-                         initial={'section': id})
+    branching = Branching.objects.get(pk=int(id))
+    form = BranchingForm(branching.section.survey_id,
+                         branching.section_id,
+                         instance=branching)
     if request.method == 'POST':
-        form = BranchingForm(section.survey_id,
-                             section.id,
-                             request.POST)
+        form = BranchingForm(branching.section.survey_id,
+                             branching.section_id,
+                             request.POST,
+                             instance=branching)
         if form.is_valid():
             form.save()
             request.session["msg"] =\
-                _('Branching is added successfully.')
+                _('Branching is updaetd successfully.')
             return HttpResponseRedirect('/survey2/%s/#row%s'
-                                        % (section.survey_id, id))
+                                        % (branching.section.survey_id, id))
         else:
-            form._errors["keyresult"] = \
+            form._errors["keyresult"] =\
                 _("duplicate record keyresult with goto.")
             request.session["err_msg"] = _('Keyresult is not added.')
 
     template = 'frontend/survey2/section_branch_change.html'
     data = {
         'form': form,
-        'survey_id': section.survey_id,
-        'section_type': section.type,
-        'section_id': section.id,
+        'survey_id': branching.section.survey_id,
+        'section_type': branching.section.type,
+        'section_id': branching.section.id,
+        'branching_id': branching.id,
         'module': current_view(request),
         'err_msg': request.session.get('err_msg'),
-        'action': 'add',
-    }
+        'action': 'update',
+        }
     request.session['err_msg'] = ''
     return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+        context_instance=RequestContext(request))
 
 
 @permission_required('survey2.change_survey', login_url='/')

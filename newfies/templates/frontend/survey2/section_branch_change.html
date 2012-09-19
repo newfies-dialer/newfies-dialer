@@ -53,7 +53,7 @@
             </h3>
         </div>
 
-        <form method="POST" action="/section/branch/{{ section_id }}/" enctype="multipart/form-data" id="update_form">
+        <form method="POST" action="{% if action == 'update' %}/section/branch/{{ branching_id }}/{% else %}/section/branch/add/?section_id={{ section_id }}{% endif %}" enctype="multipart/form-data" id="update_form">
             {% csrf_token %}
 
             {{ form.section }}

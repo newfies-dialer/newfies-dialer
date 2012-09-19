@@ -25,11 +25,12 @@ urlpatterns = patterns('survey2.views',
 
                        # Section urls
                        (r'^section/add/$', 'section_add'),
+                       (r'^section/branch/add/$', 'section_branch_add'),
                        (r'^section/(?P<id>\w+)/$', 'section_change'),
                        (r'^section/phrasing/(?P<id>\w+)/$',
-                         'section_phrasing_change'),
+                            'section_phrasing_change'),
                        (r'^section/branch/(?P<id>\w+)/$',
-                        'section_branch_change'),
+                            'section_branch_change'),
 
                        # Survey FSM urls
                        #(r'^survey2_finestatemachine/$',

@@ -235,7 +235,7 @@
                                 <label class="control-label" for="id_{{ form.audiofile.name }}">{{ form.audiofile.label }}</label>
                                 <div class="input">
                                     {{ form.audiofile }}&nbsp;
-                                    <a href="/audio/add/">
+                                    <a href="/audio/add/" target="_blank">
                                         <i class="icon-plus"></i>
                                     </a>
                                     {% if form.audiofile.errors %}
@@ -297,12 +297,12 @@
             </div>
             <div class="modal-footer" align="right">
                 {% if action == 'update' %}
-                    <input id="id_update" title="{% trans "Update" %}" name="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
+                    <input id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
                 {% else %}
-                    <input id="id_add" title="{% trans "Save" %}" name="add" type="submit" class="btn btn-primary" value="{% trans "Save" %}" />
+                    <input id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans "Save" %}" />
                 {% endif %}
                 &nbsp;
-                <a href="#" title="{% trans "Close" %}" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
+                <a href="#" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
             </div>
         </form>
 

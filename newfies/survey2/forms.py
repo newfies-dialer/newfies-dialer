@@ -277,12 +277,14 @@ class BranchingForm(ModelForm):
         obj_section = Section.objects.get(id=section_id)
         if obj_section.type == 2:
             self.fields['keys'] = \
-                forms.ChoiceField(choices=get_question_choice_list(section_id))
+                forms.ChoiceField(choices=get_question_choice_list(section_id),
+                                  required=False)
 
         # rating section
         if obj_section.type == 3:
             self.fields['keys'] =\
-                forms.ChoiceField(choices=get_rating_choice_list(section_id))
+                forms.ChoiceField(choices=get_rating_choice_list(section_id),
+                                  required=False)
 
         # voice & record section
         if obj_section.type == 1 or obj_section.type == 5:

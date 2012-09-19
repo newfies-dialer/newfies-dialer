@@ -170,13 +170,13 @@ func_check_dependencies() {
         exit 1
     fi
 
-    #Check MySQL-python
+    #Check MySQL-python - this is no longer a requirement.
     grep_pip=`pip freeze| grep MySQL-python`
     if echo $grep_pip | grep -i "MySQL-python" > /dev/null ; then
         echo "OK : MySQL-python installed..."
     else
         echo "Error : MySQL-python not installed..."
-        exit 1
+   #     exit 1
     fi
 
     #Check celery
@@ -528,7 +528,7 @@ func_install_frontend(){
         echo "sudo -u postgres createuser --no-createdb --no-createrole --no-superuser --pwprompt $DB_USERNAME"
         sudo -u postgres createuser --no-createdb --no-createrole --no-superuser --pwprompt $DB_USERNAME
         echo "Grant all privileges to user..."
-        sudo -u postgres psql --command="grant all privileges on database DATABASENAME to DB_USERNAME;"
+        sudo -u postgres psql --command="grant all privileges on database $DATABASENAME to $DB_USERNAME;"
     fi
 
     cd $INSTALL_DIR/

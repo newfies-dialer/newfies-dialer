@@ -17,9 +17,6 @@ from dialer_campaign.models import Campaign
 from celery.decorators import task
 from django.conf import settings
 
-#from celery.task.http import HttpDispatchTask
-#from common_functions import isint
-
 
 @task()
 def collect_subscriber_optimized(campaign_id):

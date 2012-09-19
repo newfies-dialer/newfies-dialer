@@ -39,8 +39,9 @@ class CampaignAdmin(GenericAdminModelAdmin):
         (_('Advanced options'), {
             'classes': ('collapse',),
             'fields': ('frequency', 'callmaxduration', 'maxretry',
-                       'intervalretry', 'calltimeout', 'daily_start_time',
-                       'daily_stop_time', 'monday', 'tuesday', 'wednesday',
+                       'intervalretry', 'calltimeout', 'imported_phonebook',
+                       'daily_start_time', 'daily_stop_time',
+                       'monday', 'tuesday', 'wednesday',
                        'thursday', 'friday', 'saturday', 'sunday')
         }),
     )

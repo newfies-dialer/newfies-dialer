@@ -603,6 +603,7 @@ def contact_import(request):
             rdr = csv.reader(request.FILES['csv_file'],
                              delimiter=',', quotechar='"')
             contact_record_count = 0
+            err_contact_cnt = 0
             # Read each Row
             for row in rdr:
                 row = striplist(row)
@@ -619,9 +620,13 @@ def contact_import(request):
                             Contact.objects.get(
                                  phonebook_id=phonebook.id,
                                  contact=row[0])
+                            err_contact_cnt = err_contact_cnt + 1
                             error_msg = _('Contact already exists!')
+                            error_msg = _('%(err_contact_cnt)s Contact(s) already exists!') \
+                                    % {'err_contact_cnt': err_contact_cnt}
                             error_import_list.append(row)
                         except:
+                            #TODO: lost of performance checking element before inserting it
                             # if not, insert record
                             Contact.objects.create(
                                   phonebook=phonebook,
@@ -632,8 +637,8 @@ def contact_import(request):
                                   description=row[4],
                                   status=int(row[5]),
                                   additional_vars=row[6])
-                            contact_record_count = \
-                                contact_record_count + 1
+                            #TODO: Rename contact_record_count to contact_cnt
+                            contact_record_count = contact_record_count + 1
                             msg = _('%(contact_record_count)s Contact(s) are uploaded successfully out of %(total_rows)s row(s) !!') \
                                     % {'contact_record_count': contact_record_count,
                                        'total_rows': total_rows}

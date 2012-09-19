@@ -95,7 +95,7 @@ def check_campaign_pendingcall(campaign_id):
         logger.info("No Subscriber to proceed on this campaign")
         return False
 
-    #find how to dispatch them in the current minutes
+    #Set time to wait for balanced dispatching of calls
     time_to_wait = 60.0 / no_subscriber
     count = 0
 

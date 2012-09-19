@@ -64,10 +64,14 @@ def importcontact_custom_sql(logger, campaign_id, phonebook_id):
     elif settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql_psycopg2':
 
         # Data insert operation - http://stackoverflow.com/questions/12451053/django-bulk-create-with-ignore-rows-that-cause-integrityerror
-        sqlimport = "INSERT IGNORE INTO dialer_campaign_subscriber (contact_id, "\
+        sqlimport = "LOCK TABLE dialer_campaign_subscriber IN EXCLUSIVE MODE;" \
+            "INSERT INTO dialer_campaign_subscriber (contact_id, "\
             "campaign_id, duplicate_contact, status, created_date, updated_date) "\
             "SELECT id, %d, contact, 1, NOW(), NOW() FROM dialer_contact "\
-            "WHERE phonebook_id=%d AND dialer_contact.status=1" % \
+            "WHERE phonebook_id=%d AND dialer_contact.status=1 AND NOT EXISTS (" % \
+            "SELECT 1 FROM dialer_campaign_subscriber WHERE "\
+            "dialer_campaign_subscriber.campaign_id=1 "\
+            "AND dialer_contact.id = dialer_campaign_subscriber.contact_id );"\
             (campaign_id, phonebook_id)
 
 # LOCK TABLE dialer_campaign_subscriber IN EXCLUSIVE MODE;
@@ -78,8 +82,9 @@ def importcontact_custom_sql(logger, campaign_id, phonebook_id):
 #     SELECT 1 FROM dialer_campaign_subscriber WHERE dialer_campaign_subscriber.campaign_id=1 AND
 #      dialer_contact.id = dialer_campaign_subscriber.contact_id
 # );
-
+    print(sqlimport)
     cursor.execute(sqlimport)
+    #TODO: check if commit_unless_managed appropriate for Postgresql
     transaction.commit_unless_managed()
 
     return True

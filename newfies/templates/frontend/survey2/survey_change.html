@@ -88,7 +88,7 @@
                     <button title="{% trans "Edit" %}" data-toggle="modal" href="#section-update-edit" class="section-edit btn btn-small btn-info" url='/section/{{ section.id }}/' data-controls-modal='section-update-edit'> {% trans "Edit" %} </button>
                 {% endif %}
                 {% if perms.survey2.delete_section %}
-                    <input title="{% trans "Delete" %}" value="{% trans "Delete" %}" onclick="return get_alert({{ section.id }});" class="btn btn-small btn-danger" type="button" />
+                    <button title="{% trans "Delete" %}" data-toggle="modal" href="#section-del" class="section-delete btn btn-small btn-danger" url='/section/delete/{{ section.id }}/' data-controls-modal='section-del'> {% trans "Delete" %} </button>
                 {% endif %}
 
                 <!--To remove section branching for voice, record &
@@ -413,6 +413,21 @@
     <!-- update phrasing modal content-->
     <div id="phrasing-update-edit" class="modal hide fade" >
     </div>
+
+    <!--Section delete modal-->
+    <script type="text/javascript" charset="utf-8">
+
+        $(".section-delete").live('click', function() {
+            var url = $(this).attr('url');
+            var modal_id = $(this).attr('data-controls-modal');
+            $("#" + modal_id).load(url);
+        })
+
+    </script>
+    <!-- section delete modal content-->
+    <div id="section-del" class="modal hide fade" >
+    </div>
+
 </form>
 
 {% endblock %}

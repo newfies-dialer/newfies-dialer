@@ -17,6 +17,7 @@ from dialer_campaign.models import Campaign, CampaignSubscriber
 from dialer_campaign.function_def import user_dialer_setting
 from dialer_cdr.models import Callrequest
 from dialer_cdr.tasks import init_callrequest
+from dialer_contact.tasks import collect_subscriber
 from common.only_one_task import only_one
 from celery.decorators import task
 from django.db import IntegrityError
@@ -33,6 +34,31 @@ else:
     Timelaps = 60
 
 LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
+
+
+class campaign_spool_contact(PeriodicTask):
+    """A periodic task that checks the campaign, add subscribers
+
+    **Usage**:
+
+        campaign_spool_contact.delay()
+    """
+
+    run_every = timedelta(seconds=15)
+    #The campaign have to run every minutes in order to control the number
+    # of calls per minute. Cons : new calls might delay 60seconds
+    #run_every = timedelta(seconds=60)
+
+    def run(self, **kwargs):
+        logger = self.get_logger(**kwargs)
+        logger.info("TASK :: campaign_spool_contact")
+
+        for campaign in Campaign.objects.get_running_campaign():
+            logger.debug("=> Spool Contact : Campaign name %s (id:%s)" % \
+                (campaign.name, str(campaign.id)))
+
+            collect_subscriber.delay(campaign.id)
+            #collect_subscriber_slow.delay(campaign.id)
 
 
 #TODO: Put a priority on this task
@@ -180,14 +206,14 @@ class campaign_running(PeriodicTask):
 
 
 @task()
-def collect_subscriber(campaign_id):
+def collect_subscriber_slow(campaign_id):
     """This task will collect all the subscribers
 
     **Attributes**:
 
         * ``campaign_id`` - Campaign ID
     """
-    logger = collect_subscriber.get_logger()
+    logger = collect_subscriber_slow.get_logger()
     logger.debug("Collect subscribers for the campaign = %s" % \
                         str(campaign_id))
 

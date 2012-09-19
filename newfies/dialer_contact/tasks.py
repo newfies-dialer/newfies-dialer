@@ -19,14 +19,14 @@ from django.conf import settings
 
 
 @task()
-def collect_subscriber_optimized(campaign_id):
+def collect_subscriber(campaign_id):
     """This task will collect all the subscribers
 
     **Attributes**:
 
         * ``campaign_id`` - Campaign ID
     """
-    logger = collect_subscriber_optimized.get_logger()
+    logger = collect_subscriber.get_logger()
     logger.debug("Collect subscribers for the campaign = %s" % \
                 str(campaign_id))
 

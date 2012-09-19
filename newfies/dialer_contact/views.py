@@ -610,8 +610,8 @@ def contact_import(request):
                     try:
                         # check field type
                         int(row[5])
-                        phonebook = \
-                            Phonebook.objects\
+                        #TODO: Check the phonebook belong to the user
+                        phonebook = Phonebook.objects\
                                 .get(pk=request.POST['phonebook'])
                         try:
                             # check if prefix is already
@@ -619,7 +619,7 @@ def contact_import(request):
                             Contact.objects.get(
                                  phonebook_id=phonebook.id,
                                  contact=row[0])
-                            error_msg = _('Subscriber already exists!')
+                            error_msg = _('Contact already exists!')
                             error_import_list.append(row)
                         except:
                             # if not, insert record

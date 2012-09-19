@@ -963,7 +963,8 @@ def section_branch_change(request, id):
             request.session["msg"] =\
                 _('Branching is updaetd successfully.')
             return HttpResponseRedirect('/survey2/%s/#row%s'
-                                        % (branching.section.survey_id, id))
+                                        % (branching.section.survey_id,
+                                           branching.section_id))
         else:
             form._errors["keyresult"] =\
                 _("duplicate record keyresult with goto.")

@@ -94,31 +94,27 @@
                 <!--To remove section branching for voice, record &
                     patch-through section-->
                 <script type="text/javascript">
-                    var flag = 0;
-                </script>
-                {% if section.type == 1 or section.type == 5 or section.type == 6 %}
-                    {% if section.get_branching_count_per_section > 0 or section.type == 6 %}
-                        <script type="text/javascript">
-                            $(function() {
-                                $("#row"+{{ section.id }}).find(".section-branch").contents().unwrap();
-                                $("#row"+{{ section.id }}).find(".icon-random").remove();
-                            });
-                            flag = 1;
-                        </script>
-                    {% endif %}
-                {% endif %}
 
-                <script type="text/javascript">
-                    if(flag == 0)
-                    {
-                        $(function() {
-                            $("#row"+{{ section.id }}).find(".section-branch")
-                                .attr("url", "/section/branch/add/?section_id={{ section.id }}")
-                                .attr("data-toggle", "modal")
-                                .attr("href", "#section-branch")
-                                .attr("data-controls-modal", "section-branch");
-                        });
-                    }
+                    $(function() {
+                        $("#row"+{{ section.id }}).find(".section-branch")
+                            .attr("url", "/section/branch/add/?section_id={{ section.id }}")
+                            .attr("data-toggle", "modal")
+                            .attr("href", "#section-branch")
+                            .attr("data-controls-modal", "section-branch");
+                    });
+
+                    {% if section.type == 1 or section.type == 5 or section.type == 6 %}
+                        {% if section.get_branching_count_per_section > 0 %}
+                            {% for branch in branching_list %}
+                                {% if branch.section_id == section.id %}
+                                    $(function() {
+                                        $("#row"+{{ section.id }}).find(".section-branch")
+                                            .attr("url", "/section/branch/{{ branch.id }}/");
+                                    });
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
                 </script>
             </div>
             <div class="portlet-content">
@@ -324,11 +320,6 @@
                                                     {% endif %}
                                                 </td>
                                                 <td class="survey_edit_key">
-                                                    {% if perms.survey2.change_branching %}
-                                                        <a data-toggle="modal" href="#section-branch-edit" class="section-branch-edit" url='/section/branch/{{ branch.id }}/' data-controls-modal='section-branch-edit'>
-                                                            <i title="{% trans "Edit" %}" class="icon-edit"></i>
-                                                        </a>
-                                                    {% endif %}
                                                     {% if perms.survey2.delete_branching %}
                                                         <a {% icon_style 'delete' %} href="/section/branch/{{ branch.id }}/?delete=true" class="icon" title="{% trans "Delete" %}">&nbsp;</a>
                                                     {% endif %}
@@ -389,7 +380,7 @@
     <div id="section-create-add" class="modal hide fade">
     </div>
 
-    <!--Section branching add modal-->
+    <!--Section branching change modal-->
     <script type="text/javascript" charset="utf-8">
 
         $(".section-branch").live('click', function() {
@@ -401,19 +392,6 @@
     </script>
     <!-- modal content-->
     <div id="section-branch" class="modal hide fade"></div>
-
-    <!--Section branching change modal-->
-    <script type="text/javascript" charset="utf-8">
-
-        $(".section-branch-edit").live('click', function() {
-            var url = $(this).attr('url');
-            var modal_id = $(this).attr('data-controls-modal');
-            $("#" + modal_id).load(url);
-        });
-
-    </script>
-    <!-- modal content-->
-    <div id="section-branch-edit" class="modal hide fade"></div>
 
     <!--Section phrasing update modal-->
     <script type="text/javascript" charset="utf-8">

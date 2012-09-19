@@ -170,15 +170,6 @@ func_check_dependencies() {
         exit 1
     fi
 
-    #Check MySQL-python - this is no longer a requirement.
-    grep_pip=`pip freeze| grep MySQL-python`
-    if echo $grep_pip | grep -i "MySQL-python" > /dev/null ; then
-        echo "OK : MySQL-python installed..."
-    else
-        echo "Error : MySQL-python not installed..."
-   #     exit 1
-    fi
-
     #Check celery
     grep_pip=`pip freeze| grep celery`
     if echo $grep_pip | grep -i "celery" > /dev/null ; then

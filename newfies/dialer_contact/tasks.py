@@ -50,20 +50,34 @@ def importcontact_custom_sql(logger, campaign_id, phonebook_id):
     # Call PL-SQL stored procedure
     #CampaignSubscriber.importcontact_pl_sql(campaign_id, phonebook_id)
 
-    #TODO Support PostgreSQL
-    if settings.DATABASES['default']['ENGINE'] != 'django.db.backends.mysql':
-        logger.info("Mysql is only supported at the moment")
-        return True
-
     from django.db import connection, transaction
     cursor = connection.cursor()
 
-    # Data insert operation - commit required
-    sqlimport = "INSERT IGNORE INTO dialer_campaign_subscriber (contact_id, "\
-        "campaign_id, duplicate_contact, status, created_date, updated_date) "\
-        "SELECT id, %d, contact, 1, NOW(), NOW() FROM dialer_contact "\
-        "WHERE phonebook_id=%d AND dialer_contact.status=1" % \
-        (campaign_id, phonebook_id)
+    if settings.DATABASES['default']['ENGINE'] == 'django.db.backends.mysql':
+        # Data insert operation - commit required
+        sqlimport = "INSERT IGNORE INTO dialer_campaign_subscriber (contact_id, "\
+            "campaign_id, duplicate_contact, status, created_date, updated_date) "\
+            "SELECT id, %d, contact, 1, NOW(), NOW() FROM dialer_contact "\
+            "WHERE phonebook_id=%d AND dialer_contact.status=1" % \
+            (campaign_id, phonebook_id)
+
+    elif settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql_psycopg2':
+
+        # Data insert operation - http://stackoverflow.com/questions/12451053/django-bulk-create-with-ignore-rows-that-cause-integrityerror
+        sqlimport = "INSERT IGNORE INTO dialer_campaign_subscriber (contact_id, "\
+            "campaign_id, duplicate_contact, status, created_date, updated_date) "\
+            "SELECT id, %d, contact, 1, NOW(), NOW() FROM dialer_contact "\
+            "WHERE phonebook_id=%d AND dialer_contact.status=1" % \
+            (campaign_id, phonebook_id)
+
+# LOCK TABLE dialer_campaign_subscriber IN EXCLUSIVE MODE;
+
+# INSERT INTO dialer_campaign_subscriber (contact_id, campaign_id, duplicate_contact, status, created_date, updated_date)
+# SELECT id, 1, contact, 1, NOW(), NOW() FROM dialer_contact
+# WHERE phonebook_id=3 AND dialer_contact.status=1 AND NOT EXISTS (
+#     SELECT 1 FROM dialer_campaign_subscriber WHERE dialer_campaign_subscriber.campaign_id=1 AND
+#      dialer_contact.id = dialer_campaign_subscriber.contact_id
+# );
 
     cursor.execute(sqlimport)
     transaction.commit_unless_managed()

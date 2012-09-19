@@ -103,7 +103,14 @@
                             .attr("data-controls-modal", "section-branch");
                     });
 
-                    {% if section.type == 1 or section.type == 5 or section.type == 6 %}
+                    {% if section.type == 6  %}
+                        $(function() {
+                            $("#row"+{{ section.id }}).find(".section-branch").contents().unwrap();
+                            $("#row"+{{ section.id }}).find(".icon-random").remove();
+                        });
+                    {% endif %}
+
+                    {% if section.type == 1 or section.type == 5 %}
                         {% if section.get_branching_count_per_section > 0 %}
                             {% for branch in branching_list %}
                                 {% if branch.section_id == section.id %}

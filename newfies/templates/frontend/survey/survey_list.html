@@ -10,14 +10,6 @@
 {% endblock %}
 
 {% block content %}
-    
-{% if msg %}
-    <div class="alert alert-success">
-        <strong>{% trans "Alert" %} : </strong>  {{ msg }}
-    </div>
-{% endif %}
-
-<br/>
 
 <form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">{% csrf_token %}
     <table id="flex1" align="left" style="display:none;"></table>

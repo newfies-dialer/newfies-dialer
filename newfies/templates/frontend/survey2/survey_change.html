@@ -22,18 +22,6 @@
 
 {% block content %}
 
-{% if msg %}
-    <div class="alert alert-success">
-        <strong>{% trans "Alert" %} : </strong>  {{ msg }}
-    </div>
-{% endif %}
-
-{% if error_msg %}
-    <div class="alert alert-error">
-        <strong>{% trans "Alert" %} : </strong>  {{ error_msg }}
-    </div>
-{% endif %}
-
 <form class="well" method="POST" action="." enctype="multipart/form-data" id="update_form">{% csrf_token %}
 <div class="row">
 <div class="span12">

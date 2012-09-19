@@ -27,17 +27,6 @@
 
 {% block content %}
 
-{% if msg %}
-    <div class="alert alert-success">
-        <strong>{% trans "Alert" %} : </strong>  {{ msg }}
-    </div>
-{% endif %}
-
-{% if err_msg %}
-    <div class="alert alert-error">
-        <strong>{% trans "Alert" %} : </strong>  {{ err_msg }}
-    </div>
-{% endif %}
 <div class="tabbable">
 <ul class="nav nav-tabs">
     <li {% if action == "tabs-1" %}class="active"{% endif %}><a href="#tabs-1" data-toggle="tab">{% trans "Survey calls"|title %}</a></li>

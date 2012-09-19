@@ -91,9 +91,10 @@ def get_rating_choice_list(section_id):
         keys_list = [int(integral) for integral in keys_list]
 
     list_sq = []
-    for i in range(1, int(obj_section.rating_laps) + 1):
-        if i not in keys_list:
-            list_sq.append((i, i))
+    if obj_section.rating_laps:
+        for i in range(1, int(obj_section.rating_laps) + 1):
+            if i not in keys_list:
+                list_sq.append((i, i))
 
     list_sq.append(('', _('Anything')))
 

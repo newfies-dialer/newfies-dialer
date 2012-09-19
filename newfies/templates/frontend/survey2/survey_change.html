@@ -3,6 +3,7 @@
 
 {% block extra_files %}
     {% include "frontend/survey2/survey_change_header.html" %}
+    {% include "common_audiofield.html" %}
 {% endblock %}
 
 
@@ -133,7 +134,14 @@
 
                                 {% if section.audiofile %}
                                     <b>{% trans "Audio file"|title %} :</b> {{ section.audiofile.name }}
-                                    <span class="label label-info">ADD PLAY AUDIO HERE</span>
+                                    <span>
+                                    <ul class="playlist">
+                                        <li style="width:220px;">
+                                            <a href="{{ settings.MEDIA_URL }}/{{ section.audiofile.audio_file }}">{{ section.audiofile.name }}</a>
+                                        </li>
+                                    </ul>
+                                    </span><br/>
+
                                 {% else %}
                                     <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}
 

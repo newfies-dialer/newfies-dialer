@@ -12,10 +12,14 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from celery.task import PeriodicTask
-from dialer_campaign.models import Campaign
-from celery.decorators import task
 from django.conf import settings
+from celery.task import PeriodicTask
+from celery.decorators import task
+from celery.utils.log import get_task_logger
+from dialer_campaign.models import Campaign
+
+
+logger = get_task_logger(__name__)
 
 
 @task()
@@ -26,7 +30,6 @@ def collect_subscriber(campaign_id):
 
         * ``campaign_id`` - Campaign ID
     """
-    logger = collect_subscriber.get_logger()
     logger.debug("Collect subscribers for the campaign = %s" % \
                 str(campaign_id))
 
@@ -46,7 +49,7 @@ def collect_subscriber(campaign_id):
     return True
 
 
-def importcontact_custom_sql(logger, campaign_id, phonebook_id):
+def importcontact_custom_sql(campaign_id, phonebook_id):
     # Call PL-SQL stored procedure
     #CampaignSubscriber.importcontact_pl_sql(campaign_id, phonebook_id)
 
@@ -70,9 +73,9 @@ def importcontact_custom_sql(logger, campaign_id, phonebook_id):
             "SELECT id, %d, contact, 1, NOW(), NOW() FROM dialer_contact "\
             "WHERE phonebook_id=%d AND dialer_contact.status=1 AND NOT EXISTS (" % \
             "SELECT 1 FROM dialer_campaign_subscriber WHERE "\
-            "dialer_campaign_subscriber.campaign_id=1 "\
+            "dialer_campaign_subscriber.campaign_id=%d "\
             "AND dialer_contact.id = dialer_campaign_subscriber.contact_id );"\
-            (campaign_id, phonebook_id)
+            (campaign_id, phonebook_id, campaign_id)
 
 # LOCK TABLE dialer_campaign_subscriber IN EXCLUSIVE MODE;
 
@@ -95,7 +98,6 @@ def import_phonebook(campaign_id, phonebook_id):
     """
     Read all the contact from phonebook_id and insert into campaignsubscriber
     """
-    logger = import_phonebook.get_logger()
     logger.info("\nTASK :: import_phonebook")
 
     #TODO: Add a semafore
@@ -103,7 +105,7 @@ def import_phonebook(campaign_id, phonebook_id):
     obj_campaign = Campaign.objects.get(id=campaign_id)
 
     #Faster method, ask the Database to do the job
-    importcontact_custom_sql(logger, campaign_id, phonebook_id)
+    importcontact_custom_sql(campaign_id, phonebook_id)
 
     #Add the phonebook id to the imported list
     if obj_campaign.imported_phonebook == '':

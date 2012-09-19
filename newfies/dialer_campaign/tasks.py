@@ -12,17 +12,18 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
+from django.db import IntegrityError
+from django.conf import settings
 from celery.task import PeriodicTask
+from celery.decorators import task
+from celery.utils.log import get_task_logger
 from dialer_campaign.models import Campaign, CampaignSubscriber
 from dialer_campaign.function_def import user_dialer_setting
 from dialer_cdr.models import Callrequest
 from dialer_cdr.tasks import init_callrequest
 from dialer_contact.tasks import collect_subscriber
 from common.only_one_task import only_one
-from celery.decorators import task
-from django.db import IntegrityError
 from datetime import datetime, timedelta
-from django.conf import settings
 from math import ceil
 #from celery.task.http import HttpDispatchTask
 #from common_functions import isint
@@ -34,6 +35,8 @@ else:
     Timelaps = 60
 
 LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
+
+logger = get_task_logger(__name__)
 
 
 class campaign_spool_contact(PeriodicTask):
@@ -50,7 +53,6 @@ class campaign_spool_contact(PeriodicTask):
     #run_every = timedelta(seconds=60)
 
     def run(self, **kwargs):
-        logger = self.get_logger(**kwargs)
         logger.info("TASK :: campaign_spool_contact")
 
         for campaign in Campaign.objects.get_running_campaign():
@@ -70,7 +72,6 @@ def check_campaign_pendingcall(campaign_id):
 
         * ``campaign_id`` - Campaign ID
     """
-    logger = check_campaign_pendingcall.get_logger()
     logger.info("TASK :: check_campaign_pendingcall = %s" % str(campaign_id))
 
     try:
@@ -193,7 +194,6 @@ class campaign_running(PeriodicTask):
 
     @only_one(key="campaign_running", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
-        logger = self.get_logger(**kwargs)
         logger.debug("TASK :: campaign_running")
 
         for campaign in Campaign.objects.get_running_campaign():
@@ -213,7 +213,6 @@ def collect_subscriber_slow(campaign_id):
 
         * ``campaign_id`` - Campaign ID
     """
-    logger = collect_subscriber_slow.get_logger()
     logger.debug("Collect subscribers for the campaign = %s" % \
                         str(campaign_id))
 
@@ -256,7 +255,6 @@ class campaign_expire_check(PeriodicTask):
 
     @only_one(key="campaign_expire_check", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
-        logger = self.get_logger(**kwargs)
         logger.info("TASK :: campaign_expire_check")
         from dialer_campaign.views import common_campaign_status
         for campaign in Campaign.objects.get_expired_campaign():

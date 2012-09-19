@@ -13,6 +13,7 @@
 #
 
 from celery.task import Task, PeriodicTask
+from celery.utils.log import get_task_logger
 from celery.decorators import task, periodic_task
 from django.conf import settings
 from django.core.cache import cache
@@ -23,6 +24,9 @@ from dialer_gateway.utils import phonenumber_change_prefix
 from datetime import datetime, timedelta
 from time import sleep
 from uuid import uuid1
+
+
+logger = get_task_logger(__name__)
 
 
 LOCK_EXPIRE = 60 * 1  # Lock expires in 1 minute
@@ -51,7 +55,6 @@ def callrequest_pending(*args, **kwargs):
     #**Usage**:
     #    callrequest_pending.delay()
     #
-    logger = callrequest_pending.get_logger()
     logger.info("TASK :: callrequest_pending")
 
     #TODO: Django 1.4 select_for_update
@@ -81,7 +84,6 @@ def init_callrequest(callrequest_id, campaign_id):
 
         * ``callrequest_id`` - Callrequest ID
     """
-    logger = init_callrequest.get_logger()
     obj_callrequest = Callrequest.objects.get(id=callrequest_id)
     obj_callrequest.status = 7  # Update to Process
     obj_callrequest.save()
@@ -236,9 +238,7 @@ def dummy_testcall(callerid, phone_number, gateway):
     **Return**:
 
         * ``RequestUUID`` - A unique identifier for API request."""
-    logger = dummy_testcall.get_logger()
     logger.info("TASK :: dummy_testcall")
-    logger = dummy_testcall.get_logger()
     logger.debug("Executing task id %r, args: %r kwargs: %r" % \
                 (dummy_testcall.request.id,
                  dummy_testcall.request.args,
@@ -264,9 +264,7 @@ def dummy_test_answerurl(request_uuid):
     **Attributes**:
 
         * ``RequestUUID`` - A unique identifier for API request."""
-    logger = dummy_test_answerurl.get_logger()
     logger.info("TASK :: dummy_testcall")
-    logger = dummy_test_answerurl.get_logger()
     logger.debug("Executing task id %r, args: %r kwargs: %r" % \
                 (dummy_test_answerurl.request.id,
                  dummy_test_answerurl.request.args,
@@ -312,9 +310,7 @@ def dummy_test_hangupurl(request_uuid):
         * ``RequestUUID`` - A unique identifier for API request.
 
     """
-    logger = dummy_test_hangupurl.get_logger()
     logger.info("TASK :: dummy_test_hangupurl")
-    logger = dummy_test_hangupurl.get_logger()
     logger.debug("Executing task id %r, args: %r kwargs: %r" % \
                 (dummy_test_hangupurl.request.id,
                  dummy_test_hangupurl.request.args,
@@ -353,7 +349,6 @@ class init_call_retry(PeriodicTask):
     #    init_call_retry.delay()
     run_every = timedelta(seconds=60)
     def run(self, **kwargs):
-        logger = init_call_retry.get_logger()
         logger.info("TASK :: init_call_retry")
         try:
             # get callrequest which are failed

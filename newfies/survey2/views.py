@@ -634,26 +634,6 @@ def section_change(request, id):
         form = PatchThroughSectionForm(request.user, instance=section)
 
     request.session['err_msg'] = ''
-    if request.GET.get('delete'):
-        # perform delete
-        survey_id = section.survey_id
-
-        # Re-order section while deleting one section
-        section_list_reorder = Section.objects\
-            .filter(survey=section.survey).exclude(pk=int(id))
-        for reordered in section_list_reorder:
-            if section.order < reordered.order:
-                reordered.order = reordered.order - 1
-                reordered.save()
-
-        # 1) delete branch belonging to a section
-        branching_list = Branching.objects.filter(section=section)
-        if branching_list:
-            branching_list.delete()
-
-        # 2) delete section
-        section.delete()
-        return HttpResponseRedirect('/survey2/%s/' % (survey_id))
 
     if request.method == 'POST':
         # Voice Section
@@ -823,6 +803,43 @@ def section_change(request, id):
     request.session['err_msg'] = ''
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
+
+
+@permission_required('survey2.delete_section', login_url='/')
+@login_required
+def section_delete(request, id):
+    section = Section.objects.get(pk=int(id))
+    if request.GET.get('delete'):
+        # perform delete
+        survey_id = section.survey_id
+
+        # Re-order section while deleting one section
+        section_list_reorder = Section.objects\
+        .filter(survey=section.survey).exclude(pk=int(id))
+        for reordered in section_list_reorder:
+            if section.order < reordered.order:
+                reordered.order = reordered.order - 1
+                reordered.save()
+
+        # 1) delete branch belonging to a section
+        branching_list = Branching.objects.filter(section=section)
+        if branching_list:
+            branching_list.delete()
+
+        # 2) delete section
+        section.delete()
+        request.session["msg"] =\
+            _('Section is deleted successfully.')
+        return HttpResponseRedirect('/survey2/%s/' % (survey_id))
+
+    template = 'frontend/survey2/section_delete_confirmation.html'
+    data = {
+        'section_type': section.type,
+        'section_id': section.id,
+        'module': current_view(request),
+    }
+    return render_to_response(template, data,
+        context_instance=RequestContext(request))
 
 
 @permission_required('survey2.change_section', login_url='/')

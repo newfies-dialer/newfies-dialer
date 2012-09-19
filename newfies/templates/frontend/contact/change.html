@@ -23,12 +23,6 @@
 
 {% block content %}
 
-{% if error_msg %}
-    <div class="alert alert-error">
-        <strong>{% trans "Alert"  %} : </strong>  {{ error_msg }}
-    </div>
-{% endif %}
-
 <form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
     {% for field in form %}
     <div class="clearfix{% if field.errors %} control-group error{% endif %}">

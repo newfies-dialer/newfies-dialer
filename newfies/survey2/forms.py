@@ -61,7 +61,9 @@ def get_question_choice_list(section_id):
     with default none option"""
     keys_list = Branching.objects\
         .values_list('keys', flat=True)\
-        .filter(section_id=int(section_id))
+        .filter(section_id=int(section_id))\
+        .exclude(keys='')
+
     list_sq = []
     obj_section = Section.objects.get(id=int(section_id))
 
@@ -71,7 +73,7 @@ def get_question_choice_list(section_id):
     for i in range(0, 10):
         if obj_section.__dict__['key_' + str(i)] \
             and i not in keys_list:
-            list_sq.append((i, str(i) + '. ' + \
+            list_sq.append((i, str(section_id) + '.' + str(i) + ' ' + \
                                obj_section.__dict__['key_' + str(i)]))
 
     list_sq.append(('', _('Anything')))
@@ -83,7 +85,8 @@ def get_rating_choice_list(section_id):
     with default anything option"""
     keys_list = Branching.objects\
         .values_list('keys', flat=True)\
-        .filter(section_id=int(section_id))
+        .filter(section_id=int(section_id))\
+        .exclude(keys='')
 
     obj_section = Section.objects.get(id=int(section_id))
 
@@ -94,10 +97,9 @@ def get_rating_choice_list(section_id):
     if obj_section.rating_laps:
         for i in range(1, int(obj_section.rating_laps) + 1):
             if i not in keys_list:
-                list_sq.append((i, i))
+                list_sq.append((i, str(section_id) + '.' + str(i)))
 
     list_sq.append(('', _('Anything')))
-
     return list_sq
 
 

@@ -298,21 +298,22 @@ def campaign_list(request):
 
 def get_content_type(object_string):
     """
-    It is used by campaign_add & campaign_change to get ContentType object
+    Retrieve ContentType and Object ID from a string
+    It is used by campaign_add & campaign_change
 
     >>> get_content_type("type:31-id:1")
     {'object_type': <ContentType: observed item>, 'object_id': '1'}
     """
-    result_array = {}
+    contenttype = {}
     matches = re.match("type:(\d+)-id:(\d+)", object_string).groups()
     object_type_id = matches[0]  # get 45 from "type:45-id:38"
-    result_array['object_id'] = matches[1]  # get 38 from "type:45-id:38"
+    contenttype['object_id'] = matches[1]  # get 38 from "type:45-id:38"
     try:
-        result_array['object_type'] = ContentType.objects\
+        contenttype['object_type'] = ContentType.objects\
                                         .get(id=object_type_id)
     except:
         pass
-    return result_array
+    return contenttype
 
 
 @permission_required('dialer_campaign.add_campaign', login_url='/')
@@ -357,10 +358,9 @@ def campaign_add(request):
         form = CampaignForm(request.user, request.POST)
         if form.is_valid():
             obj = form.save(commit=False)
-            result_array = \
-                get_content_type(form.cleaned_data['content_object'])
-            obj.content_type = result_array['object_type']
-            obj.object_id = result_array['object_id']
+            contenttype = get_content_type(form.cleaned_data['content_object'])
+            obj.content_type = contenttype['object_type']
+            obj.object_id = contenttype['object_id']
             obj.user = User.objects.get(username=request.user)
             obj.save()
 
@@ -472,10 +472,9 @@ def campaign_change(request, object_id):
                 if form.is_valid():
                     form.save()
                     obj = form.save(commit=False)
-                    result_array = \
-                        get_content_type(form.cleaned_data['content_object'])
-                    obj.content_type = result_array['object_type']
-                    obj.object_id = result_array['object_id']
+                    contenttype = get_content_type(form.cleaned_data['content_object'])
+                    obj.content_type = contenttype['object_type']
+                    obj.object_id = contenttype['object_id']
                     obj.save()
 
                     # Start tasks to import subscriber

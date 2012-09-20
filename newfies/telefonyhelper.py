@@ -64,9 +64,6 @@ def call_plivo(callerid=None, phone_number=None, Gateways=None,
         'GatewayTimeouts': GatewayTimeouts,  # Seconds to timeout in string for each gateway separated by comma
         'GatewayRetries': GatewayRetries,  # Retry String for Gateways separated by comma, on how many times each gateway should be retried
         'ExtraDialString': extra_dial_string,
-        #TODO : Remove this
-        #'AnswerUrl': 'http://localhost/~areski/django/MyProjects/plivohelper-php/examples/test.php',
-        #'AnswerUrl': 'http://192.168.1.11:8000/api/dialer_cdr/answercall/',
         'AnswerUrl': AnswerUrl,
         'HangupUrl': HangupUrl,
         #TODO : Fix TimeLimit on Plivo

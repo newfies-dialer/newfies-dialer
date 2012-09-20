@@ -59,8 +59,8 @@ class campaign_spool_contact(PeriodicTask):
             logger.debug("=> Spool Contact : Campaign name %s (id:%s)" % \
                 (campaign.name, str(campaign.id)))
 
+            #Start collecting the contacts for this campaign
             collect_subscriber.delay(campaign.id)
-            #collect_subscriber_slow.delay(campaign.id)
 
 
 #TODO: Put a priority on this task
@@ -203,42 +203,6 @@ class campaign_running(PeriodicTask):
             check_campaign_pendingcall.delay(campaign.id)
 
         return True
-
-
-@task()
-def collect_subscriber_slow(campaign_id):
-    """This task will collect all the subscribers
-
-    **Attributes**:
-
-        * ``campaign_id`` - Campaign ID
-    """
-    logger.debug("Collect subscribers for the campaign = %s" % \
-                        str(campaign_id))
-
-    #Retrieve the list of active contact
-    obj_campaign = Campaign.objects.get(id=campaign_id)
-    list_contact = obj_campaign.get_active_contact_no_subscriber()
-
-    if not list_contact:
-        logger.debug("No new contact or phonebook to import into \
-            this campaign.")
-        return True
-    else:
-        #Create CampaignSubscribers for each new active contact
-        for elem_contact in list_contact:
-            try:
-                CampaignSubscriber.objects.create(
-                            contact=elem_contact,
-                            status=1,  # START
-                            duplicate_contact=elem_contact.contact,
-                            campaign=obj_campaign)
-            except IntegrityError, e:
-                #We don't stop if it fails to add a subscriber to one campaign
-                logger.error("IntegrityError to create CampaignSubscriber "\
-                    "contact_id=%s - Error:%s" % (elem_contact.id, e))
-
-    return True
 
 
 class campaign_expire_check(PeriodicTask):

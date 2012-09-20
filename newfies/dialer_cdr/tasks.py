@@ -12,13 +12,11 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from celery.task import Task, PeriodicTask
 from celery.utils.log import get_task_logger
 from celery.decorators import task, periodic_task
 from django.conf import settings
 from django.core.cache import cache
 from dialer_campaign.models import Campaign, CampaignSubscriber
-from dialer_campaign.function_def import user_dialer_setting
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_gateway.utils import phonenumber_change_prefix
 from datetime import datetime, timedelta
@@ -280,7 +278,7 @@ def dummy_test_answerurl(request_uuid):
         obj_callrequest = Callrequest.objects.get(request_uuid=request_uuid)
 
     #Update CallRequest
-    obj_callrequest.status = 4 # SUCCESS
+    obj_callrequest.status = 4  # SUCCESS
     obj_callrequest.save()
     #Create CDR
     new_voipcall = VoIPCall(user=obj_callrequest.user,
@@ -336,67 +334,3 @@ def dummy_test_hangupurl(request_uuid):
     obj_callrequest.save()
 
     return True
-
-
-"""
-#reimplemented on the hangup url
-
-class init_call_retry(PeriodicTask):
-    #A periodic task that checks the failed callrequest & perform retry
-    #
-    #**Usage**:
-    #
-    #    init_call_retry.delay()
-    run_every = timedelta(seconds=60)
-    def run(self, **kwargs):
-        logger.info("TASK :: init_call_retry")
-        try:
-            # get callrequest which are failed
-            callreq_retry_list = Callrequest.objects\
-                                    .filter(status=2, call_type=1)
-            for callreq in callreq_retry_list:
-                try:
-                    # Call type => Retry Done = 3
-                    callreq.call_type = 3
-                    callreq.save()
-
-                    campaign_obj = Campaign.objects.get(id=callreq.campaign_id)
-                    if campaign_obj:
-                        if callreq.num_attempt >= campaign_obj.maxretry:
-                            logger.error("Not allowed retry")
-                            break
-
-                    dialer_set = user_dialer_setting(callreq.user)
-                    if dialer_set:
-                        if callreq.num_attempt >= dialer_set.maxretry:
-                            logger.error("Not allowed retry")
-                            break
-                except:
-                    # Call type =>  Can Not Retry = 2
-                    callreq.call_type = 2
-                    callreq.save()
-                    logger.error("Can't find dialer setting on campaign : %s" \
-                                 % callreq.campaign_id)
-                    break
-
-                # TODO : Review Logic
-                # Create new callrequest, Assign parent_callrequest
-                # Change callrequest_type & num_attempt
-                obj = Callrequest(request_uuid=uuid1(),
-                                    parent_callrequest_id=callreq.id,
-                                    call_type=1,
-                                    num_attempt=callreq.num_attempt+1,
-                                    user=callreq.user,
-                                    campaign_id=callreq.campaign_id,
-                                    aleg_gateway_id=callreq.aleg_gateway_id,
-                                    content_type=callreq.content_type,
-                                    object_id=callreq.object_id,
-                                    phone_number=callreq.phone_number)
-                obj.save()
-                # TODO : perform retry
-                init_callrequest.delay(obj.id, obj.campaign_id)
-        except:
-            logger.error("Can't find failed callrequest")
-            return False
-        return True
-"""

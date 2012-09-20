@@ -155,33 +155,6 @@ def count_contact_of_campaign(campaign_id):
     return count_contact
 
 
-def tpl_control_icon(icon):
-    """
-    function to produce control html icon
-    """
-    return 'style="text-decoration:none;background-image:url(' \
-        + settings.STATIC_URL \
-        + 'newfies/icons/%s);"' % icon
-
-def tpl_control_status(id, ):
-    """
-    function to produce control html icon
-    """
-
-
-def get_url_campaign_status(id, status):
-
-    control_play_style = tpl_control_icon('control_play.png')
-    control_pause_style = tpl_control_icon('control_pause.png')
-    control_abort_style = tpl_control_icon('abort_grey.png')
-    control_stop_style = tpl_control_icon('control_stop.png')
-
-    control_play_blue_style = tpl_control_icon('control_play_blue.png')
-    control_pause_blue_style = tpl_control_icon('control_pause_blue.png')
-    control_abort_blue_style = tpl_control_icon('abort_grey.png')
-    control_stop_blue_style = tpl_control_icon('control_stop_blue.png')
-
-
 def get_url_campaign_status(id, status):
 
     control_play_style = \

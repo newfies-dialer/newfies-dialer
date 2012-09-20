@@ -135,7 +135,7 @@ Documentation
 
 Complete documentation :
 
-    - http://newfies-dialer.readthedocs.org/
+    - http://www.newfies-dialer.org/docs/
 
 Beginner's Guide :
 

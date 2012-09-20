@@ -74,6 +74,10 @@ $(document).ready(function() {
                     confirm_string = $fields.length + '{% trans " notification(s) are going to be marked as read?" %}';
                 }
             }
+            if(document.location.href.search("/survey2/") != -1)
+            {
+                confirm_string = $fields.length + '{% trans " survey(s) are going to be deleted?" %}';
+            }
 
             var answer = confirm(confirm_string);
             return answer; // answer is a boolean

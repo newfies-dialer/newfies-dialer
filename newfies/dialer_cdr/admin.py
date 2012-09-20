@@ -131,9 +131,6 @@ class VoIPCallAdmin(admin.ModelAdmin):
               search Parameters: by date, by status and by billed.
         """
         opts = VoIPCall._meta
-        #TODO: app_label is not used ?
-        app_label = opts.app_label
-
         query_string = ''
         form = VoipSearchForm()
         if request.method == 'POST':
@@ -223,7 +220,8 @@ class VoIPCallAdmin(admin.ModelAdmin):
         # Get Total Records from VoIPCall Report table for Daily Call Report
         total_data = VoIPCall.objects.extra(select=select_data)\
                      .values('starting_date')\
-                     .filter(**kwargs).annotate(Count('starting_date'))\
+                     .filter(**kwargs)\
+                     .annotate(Count('starting_date'))\
                      .annotate(Sum('duration'))\
                      .annotate(Avg('duration'))\
                      .order_by('-starting_date')
@@ -238,7 +236,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
                 sum([x['starting_date__count'] for x in total_data])
             total_avg_duration = \
                 (sum([x['duration__avg']\
-                for x in total_data])) / total_data.count()
+                    for x in total_data])) / total_data.count()
         else:
             max_duration = 0
             total_duration = 0

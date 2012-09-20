@@ -14,8 +14,9 @@
 
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from dialer_campaign.models import Contact, CAMPAIGN_STATUS, \
-                                CAMPAIGN_STATUS_COLOR
+from dialer_contact.models import Contact
+from dialer_campaign.models import Campaign, CAMPAIGN_STATUS, \
+    CAMPAIGN_STATUS_COLOR
 from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting
 from common.common_functions import variable_value
@@ -59,7 +60,7 @@ def check_dialer_setting(request, check_for, field_value=''):
         # DialerSettings link to the User
         if user_obj:
             dialer_set_obj = \
-            DialerSetting.objects.get(pk=user_obj.dialersetting_id)
+                DialerSetting.objects.get(pk=user_obj.dialersetting_id)
             if dialer_set_obj:
                 # check running campaign for User
                 if check_for == "campaign":
@@ -81,7 +82,9 @@ def check_dialer_setting(request, check_for, field_value=''):
                     for i in campaign_list:
                         # Total contacts per campaign
                         contact_count = Contact.objects\
-                                    .filter(phonebook__campaign=i.id).count()
+                                    .filter(phonebook__campaign=i.id,
+                                            phonebook__user=request.user)\
+                                    .count()
                         # Total active contacts matched with
                         # max_number_subscriber_campaign
                         if contact_count >= \
@@ -142,7 +145,7 @@ def dialer_setting_limit(request, limit_for):
     # DialerSettings link to the User
     if user_obj:
         dialer_set_obj = \
-        DialerSetting.objects.get(pk=user_obj.dialersetting_id)
+            DialerSetting.objects.get(pk=user_obj.dialersetting_id)
         if limit_for == "contact":
             return str(dialer_set_obj.max_number_subscriber_campaign)
         if limit_for == "campaign":

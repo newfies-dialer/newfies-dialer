@@ -173,16 +173,18 @@ def audio_del(request, object_id):
 
         * Delete selected the audio from the audio list
     """
-    try:
-        # When object_id is not 0
-        audio = AudioFile.objects.get(pk=object_id, user=request.user)
-        if object_id:
+    if int(object_id) != 0:
+        try:
+            audio = AudioFile.objects.get(pk=int(object_id), user=request.user)
+
             # 1) delete survey
-            request.session["msg"] = _('"%(name)s" is deleted.') \
-                                        % {'name': audio.name}
+            request.session["msg"] = _('"%(name)s" is deleted.')\
+                                     % {'name': audio.name}
             audio.delete()
-            return HttpResponseRedirect('/audio/')
-    except:
+        except:
+            request.session["error_msg"] =\
+                _('audio doesn`t belong to user.')
+    else:
         try:
             # When object_id is 0 (Multiple records delete)
             values = request.POST.getlist('select')
@@ -193,14 +195,14 @@ def audio_del(request, object_id):
                             .filter(user=request.user)\
                             .extra(where=['id IN (%s)' % values])
             request.session["msg"] =\
-                _('%(count)s audio(s) are deleted.') \
+                _('%(count)s audio(s) are deleted.')\
                     % {'count': audio_list.count()}
             audio_list.delete()
         except:
             request.session["error_msg"] =\
-                _('audio(s) are not deleted due to invalid user.')
+                _('audio(s) do not belong to user.')
 
-        return HttpResponseRedirect('/audio/')
+    return HttpResponseRedirect('/audio/')
 
 
 @permission_required('dialer_audio.change_audio', login_url='/')
@@ -218,24 +220,29 @@ def audio_change(request, object_id):
         * Update audio which is belong to the logged in user
           via the CustomerAudioFileForm & get redirected to the audio list
     """
-    obj = AudioFile.objects.get(pk=object_id)
-    form = DialerAudioFileForm(instance=obj)
+    try:
+        obj = AudioFile.objects.get(pk=object_id, user=request.user)
+        form = DialerAudioFileForm(instance=obj)
 
-    if request.GET.get('delete'):
-        # perform delete
-        if obj.audio_file:
-            if os.path.exists(obj.audio_file.path):
-                os.remove(obj.audio_file.path)
-        obj.delete()
+        if request.GET.get('delete'):
+            # perform delete
+            if obj.audio_file:
+                if os.path.exists(obj.audio_file.path):
+                    os.remove(obj.audio_file.path)
+            obj.delete()
+            return HttpResponseRedirect('/audio/')
+
+        if request.method == 'POST':
+            form = DialerAudioFileForm(request.POST,
+                                       request.FILES,
+                                       instance=obj)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect('/audio/')
+    except:
+        request.session["error_msg"] = _('audio doesn`t not belong to user.')
         return HttpResponseRedirect('/audio/')
 
-    if request.method == 'POST':
-        form = DialerAudioFileForm(request.POST,
-                                   request.FILES,
-                                   instance=obj)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/audio/')
 
     template = 'frontend/audio/audio_change.html'
     data = {

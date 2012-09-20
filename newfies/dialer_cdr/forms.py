@@ -28,4 +28,4 @@ class VoipSearchForm(SearchForm):
     """VoIP call Report Search Parameters"""
     status = forms.ChoiceField(label=_('Disposition :'),
                                choices=voip_call_disposition_list,
-                               required=False, )
+                               required=False)

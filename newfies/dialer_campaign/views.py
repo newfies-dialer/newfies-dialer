@@ -444,24 +444,34 @@ def campaign_del(request, object_id):
 
         * Delete the selected campaign from the campaign list
     """
-    try:
-        # When object_id is not 0
-        campaign = Campaign.objects.get(pk=object_id)
-        # Delete campaign
-        if object_id:
-            request.session["msg"] = _('"%(name)s" is deleted.') \
-                % {'name': campaign.name}
+    if int(object_id) != 0:
+        try:
+            # When object_id is not 0
+            campaign = Campaign.objects.get(pk=object_id, user=request.user)
+
+            request.session["msg"] = _('"%(name)s" is deleted.')\
+                                     % {'name': campaign.name}
             campaign.delete()
-            return HttpResponseRedirect('/campaign/')
-    except:
+        except:
+            request.session["error_msg"] = \
+                _('campaign doesn`t belong to user')
+    else:
         # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
-        campaign_list = Campaign.objects.extra(where=['id IN (%s)' % values])
-        request.session["msg"] = _('%(count)s campaign(s) are deleted.')\
-            % {'count': campaign_list.count()}
-        campaign_list.delete()
-        return HttpResponseRedirect('/campaign/')
+        try:
+            campaign_list = Campaign.objects\
+                                .filter(user=request.user)\
+                                .extra(where=['id IN (%s)' % values])
+            if campaign_list:
+                request.session["msg"] = _('%(count)s campaign(s) are deleted.')\
+                    % {'count': campaign_list.count()}
+                campaign_list.delete()
+        except:
+            request.session["error_msg"] =\
+                _('campaign(s) do not belong to user')
+
+    return HttpResponseRedirect('/campaign/')
 
 
 @permission_required('dialer_campaign.change_campaign', login_url='/')
@@ -484,40 +494,45 @@ def campaign_change(request, object_id):
     if user_attached_with_dialer_settings(request):
         return HttpResponseRedirect("/campaign/")
 
-    campaign = Campaign.objects.get(pk=object_id)
+    try:
+        campaign = Campaign.objects.get(pk=object_id, user=request.user)
 
-    content_object = "type:%s-id:%s" % \
-                        (campaign.content_type_id, campaign.object_id)
-    form = CampaignForm(request.user,
-                        instance=campaign,
-                        initial={'content_object': content_object})
-    if request.method == 'POST':
-        # Delete campaign
-        if request.POST.get('delete'):
-            campaign_del(request, object_id)
-            request.session["msg"] = _('"%(name)s" is deleted.')\
-                % {'name': request.POST['name']}
-            return HttpResponseRedirect('/campaign/')
-        else:
-            # Update campaign
-            form = CampaignForm(request.user, request.POST, instance=campaign)
-            previous_status = campaign.status
-            if form.is_valid():
-                form.save()
-                obj = form.save(commit=False)
-                result_array = \
-                    get_content_type(form.cleaned_data['content_object'])
-                obj.content_type = result_array['object_type']
-                obj.object_id = result_array['object_id']
-                obj.save()
+        content_object = "type:%s-id:%s" % \
+                            (campaign.content_type_id, campaign.object_id)
+        form = CampaignForm(request.user,
+                            instance=campaign,
+                            initial={'content_object': content_object})
 
-                # Start tasks to import subscriber
-                if obj.status == 1 and previous_status != 1:
-                    collect_subscriber.delay(obj.id)
-
-                request.session["msg"] = _('"%(name)s" is updated.') \
+        if request.method == 'POST':
+            # Delete campaign
+            if request.POST.get('delete'):
+                campaign_del(request, object_id)
+                request.session["msg"] = _('"%(name)s" is deleted.')\
                     % {'name': request.POST['name']}
                 return HttpResponseRedirect('/campaign/')
+            else:
+                # Update campaign
+                form = CampaignForm(request.user, request.POST, instance=campaign)
+                previous_status = campaign.status
+                if form.is_valid():
+                    form.save()
+                    obj = form.save(commit=False)
+                    result_array = \
+                        get_content_type(form.cleaned_data['content_object'])
+                    obj.content_type = result_array['object_type']
+                    obj.object_id = result_array['object_id']
+                    obj.save()
+
+                    # Start tasks to import subscriber
+                    if obj.status == 1 and previous_status != 1:
+                        collect_subscriber.delay(obj.id)
+
+                    request.session["msg"] = _('"%(name)s" is updated.') \
+                        % {'name': request.POST['name']}
+                    return HttpResponseRedirect('/campaign/')
+    except:
+        request.session["error_msg"] = _('Campaign doesn`t belong to user')
+        return HttpResponseRedirect('/campaign/')
 
     template = 'frontend/campaign/change.html'
     data = {

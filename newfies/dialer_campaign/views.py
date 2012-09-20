@@ -168,38 +168,42 @@ def get_url_campaign_status(id, status):
     """
     Helper to display campaign status button on the grid
     """
+    #Store html for campaign control button
     control_play_style = tpl_control_icon('control_play.png')
     control_pause_style = tpl_control_icon('control_pause.png')
     control_abort_style = tpl_control_icon('abort_grey.png')
     control_stop_style = tpl_control_icon('control_stop.png')
 
-    link_cpg_status = 'update_campaign_status_cust/' + str(id)
-    link_start = link_cpg_status + '/1/'
-    link_pause = link_cpg_status + '/2/'
-    link_abort = link_cpg_status + '/3/'
-    link_stop = link_cpg_status + '/4/'
+    #set different url for the campaign status
+    url_cpg_status = 'update_campaign_status_cust/' + str(id)
+    url_cpg_start = url_cpg_status + '/1/'
+    url_cpg_pause = url_cpg_status + '/2/'
+    url_cpg_abort = url_cpg_status + '/3/'
+    url_cpg_stop = url_cpg_status + '/4/'
 
+    #according to the current status, disable link and change the button color
     if status == 1:
-        link_start = '#'
+        url_cpg_start = '#'
         control_play_style = tpl_control_icon('control_play_blue.png')
     elif status == 2:
-        link_pause = '#'
+        url_cpg_pause = '#'
         control_pause_style = tpl_control_icon('control_pause_blue.png')
     elif status == 3:
-        link_abort = '#'
+        url_cpg_abort = '#'
         control_abort_style = tpl_control_icon('abort.png')
     elif status == 4:
-        link_stop = '#'
+        url_cpg_stop = '#'
         control_stop_style = tpl_control_icon('control_stop_blue.png')
 
+    #return all the html button for campaign status management
     return "<a href='%s' class='icon' title='%s' %s>&nbsp;</a>\
         <a href='%s' class='icon' title='%s' %s>&nbsp;</a>\
         <a href='%s' class='icon' title='%s' %s>&nbsp;</a>\
         <a href='%s' class='icon' title='%s' %s>&nbsp;</a>" % \
-        (link_start, _("Start"), control_play_style,
-        link_pause, _("Pause"), control_pause_style,
-        link_abort, _("Abort"), control_abort_style,
-        link_stop, _("Stop"), control_stop_style)
+        (url_cpg_start, _("Start"), control_play_style,
+        url_cpg_pause, _("Pause"), control_pause_style,
+        url_cpg_abort, _("Abort"), control_abort_style,
+        url_cpg_stop, _("Stop"), control_stop_style)
 
 
 #TODO: Add comments / docs

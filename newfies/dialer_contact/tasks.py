@@ -13,7 +13,6 @@
 #
 
 from django.conf import settings
-from celery.task import PeriodicTask
 from celery.decorators import task
 from celery.utils.log import get_task_logger
 from dialer_campaign.models import Campaign

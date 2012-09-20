@@ -21,7 +21,6 @@ ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
 )
 
-#TODO : Installation script should ask the timezone
 TIME_ZONE = 'Europe/Madrid'
 
 APPLICATION_DIR = os.path.dirname(globals()['__file__'])

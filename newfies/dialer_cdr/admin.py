@@ -56,7 +56,7 @@ class CallrequestAdmin(GenericAdminModelAdmin):
                     'num_attempt', 'last_attempt_time',)
     list_display_links = ('id', 'request_uuid', )
     list_filter = ['callerid', 'call_time', 'status', 'call_type', 'campaign']
-    ordering = ('id', )
+    ordering = ('-id', )
     search_fields = ('request_uuid', )
 
 admin.site.register(Callrequest, CallrequestAdmin)
@@ -71,6 +71,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
                     'callid', 'callerid', 'phone_number', 'starting_date',
                     'min_duration', 'billsec', 'disposition', 'hangup_cause',
                     'hangup_cause_q850')
+    ordering = ('-id', )
 
     def user_link(self, obj):
         """User link to user profile"""

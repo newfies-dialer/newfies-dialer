@@ -26,6 +26,7 @@ from user_profile.models import UserProfile
 from datetime import datetime
 from common.intermediate_model_base_class import Model
 from random import choice, seed
+import re
 
 seed()
 
@@ -120,8 +121,6 @@ def common_contact_authorization(user, str_contact):
         whitelist = ''
     if blacklist == '*':
         blacklist = ''
-
-    import re
 
     if whitelist and len(whitelist) > 0:
         try:
@@ -254,8 +253,8 @@ class Campaign(Model):
 
     phonebook = models.ManyToManyField(Phonebook, blank=True, null=True)
 
-    imported_phonebook = models.CharField(max_length=500, default='',
-                                          verbose_name=_('List of Imported Phonebook'))
+    imported_phonebook = models.CharField(max_length=500, default='', blank=True,
+                                          verbose_name=_('Imported Phonebook'))
 
     objects = CampaignManager()
 

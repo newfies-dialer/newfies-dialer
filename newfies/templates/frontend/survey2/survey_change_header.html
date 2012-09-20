@@ -40,19 +40,19 @@
             handle: '.icon-move'
         });
 
+        //Add Branch button
+        $(".portlet").addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
+                .find(".portlet-header")
+                .addClass("ui-widget-header ui-corner-all")
+                .prepend('<a class="section-branch btn btn-small" href="#" title="{% trans "Branch" %}"><i class="icon-random"></i></a>')
+                .end()
+                .find(".portlet-content");
+
         //Add toggle button
         $(".portlet").addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
                 .find(".portlet-header")
                 .addClass("ui-widget-header ui-corner-all")
                 .prepend('<a class="btn btn-small square" href="#" title="{% trans "Collapse" %}"><i class="icon-circle-arrow-up"></i></a>')
-                .end()
-                .find(".portlet-content");
-
-        //Add Goto button
-        $(".portlet").addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
-                .find(".portlet-header")
-                .addClass("ui-widget-header ui-corner-all")
-                .prepend('<a class="section-branch btn btn-small" href="#" title="{% trans "Branch" %}"><i class="icon-random"></i></a>')
                 .end()
                 .find(".portlet-content");
 

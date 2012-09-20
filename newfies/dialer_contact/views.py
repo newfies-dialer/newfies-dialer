@@ -602,7 +602,7 @@ def contact_import(request):
 
             rdr = csv.reader(request.FILES['csv_file'],
                              delimiter=',', quotechar='"')
-            contact_record_count = 0
+            contact_cnt = 0
             err_contact_cnt = 0
             # Read each Row
             for row in rdr:
@@ -611,10 +611,9 @@ def contact_import(request):
                     try:
                         # check field type
                         int(row[5])
-                        #TODO: Check the phonebook belong to the user
                         phonebook = Phonebook.objects\
-                                .get(pk=request.POST['phonebook'],
-                                     user=request.user)
+                                    .get(pk=request.POST['phonebook'],
+                                         user=request.user)
                         try:
                             # check if prefix is already
                             # exist with retail plan or not
@@ -638,16 +637,17 @@ def contact_import(request):
                                   description=row[4],
                                   status=int(row[5]),
                                   additional_vars=row[6])
-                            #TODO: Rename contact_record_count to contact_cnt
-                            contact_record_count = contact_record_count + 1
-                            msg = _('%(contact_record_count)s Contact(s) are uploaded successfully out of %(total_rows)s row(s) !!') \
-                                    % {'contact_record_count': contact_record_count,
+
+                            contact_cnt = contact_cnt + 1
+                            msg = _('%(contact_cnt)s Contact(s) are uploaded successfully out of %(total_rows)s row(s) !!') \
+                                    % {'contact_cnt': contact_cnt,
                                        'total_rows': total_rows}
 
                             success_import_list.append(row)
                     except:
                         error_msg = \
-                            _("Invalid value for import! Please check the import samples.")
+                            _("Invalid value for import! Please check the import samples \
+                              or phonebook is not valid")
                         type_error_import_list.append(row)
 
     data = RequestContext(request, {

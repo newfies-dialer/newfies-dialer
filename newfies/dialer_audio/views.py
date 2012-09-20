@@ -175,7 +175,7 @@ def audio_del(request, object_id):
     """
     try:
         # When object_id is not 0
-        audio = AudioFile.objects.get(pk=object_id)
+        audio = AudioFile.objects.get(pk=object_id, user=request.user)
         if object_id:
             # 1) delete survey
             request.session["msg"] = _('"%(name)s" is deleted.') \
@@ -183,16 +183,23 @@ def audio_del(request, object_id):
             audio.delete()
             return HttpResponseRedirect('/audio/')
     except:
-        # When object_id is 0 (Multiple records delete)
-        values = request.POST.getlist('select')
-        values = ", ".join(["%s" % el for el in values])
+        try:
+            # When object_id is 0 (Multiple records delete)
+            values = request.POST.getlist('select')
+            values = ", ".join(["%s" % el for el in values])
 
-        # 1) delete audio
-        audio_list = AudioFile.objects.extra(where=['id IN (%s)' % values])
-        request.session["msg"] =\
-            _('%(count)s audio(s) are deleted.') \
-                % {'count': audio_list.count()}
-        audio_list.delete()
+            # 1) delete audio
+            audio_list = AudioFile.objects\
+                            .filter(user=request.user)\
+                            .extra(where=['id IN (%s)' % values])
+            request.session["msg"] =\
+                _('%(count)s audio(s) are deleted.') \
+                    % {'count': audio_list.count()}
+            audio_list.delete()
+        except:
+            request.session["error_msg"] =\
+                _('audio(s) are not deleted due to invalid user.')
+
         return HttpResponseRedirect('/audio/')
 
 

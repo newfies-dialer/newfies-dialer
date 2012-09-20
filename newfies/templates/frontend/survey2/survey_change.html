@@ -44,9 +44,7 @@
             <label class="control-label">&nbsp;</label>
             <div class="input">
                 <div align="center">
-                {% if action == 'update' %}
-                    <input id="update" type="submit" class="btn btn-primary" onclick="javascript:document.getElementById('update_form').submit();" value="{% trans "Update Survey" %}" />
-                {% else %}
+                {% if action == 'add' %}
                     <input id="add" type="submit" class="btn btn-primary" value="{% trans "Submit" %}" />
                 {% endif %}
                 </div>
@@ -72,12 +70,6 @@
                     <span class="label label-info">R-{{ section.retries }}</span>
                 {% endif %}
 
-                {% if perms.survey2.change_section %}
-                    <!--<button title="{% trans "Edit" %}" data-toggle="modal" href="#section-update-edit" class="section-edit btn btn-mini btn-info" url='/section/{{ section.id }}/' data-controls-modal='section-update-edit'> {% trans "Edit" %} </button>-->
-                {% endif %}
-                {% if perms.survey2.delete_section %}
-                    <!--<button title="{% trans "Delete" %}" data-toggle="modal" href="#section-del" class="section-delete btn btn-mini btn-danger" url='/section/delete/{{ section.id }}/' data-controls-modal='section-del'> {% trans "Delete" %} </button>-->
-                {% endif %}
 
                 <!--To remove section branching for voice, record &
                     patch-through section-->
@@ -373,12 +365,20 @@
     </div>
 
     {% if action == 'update' %}
-        {% if perms.survey2.add_section %}
-            <button data-toggle="modal" href="#section-create-add" class="section-add btn btn-info" url='/section/add/' data-controls-modal='section-create-add'>
-                {% trans "Add Section" %}
-            </button>
-        {% endif %}
+        <div class="row">
+            <div class="span10">
+            {% if perms.survey2.add_section %}
+                <button data-toggle="modal" href="#section-create-add" class="section-add btn btn-info" url='/section/add/' data-controls-modal='section-create-add'>
+                    {% trans "Add Section" %}
+                </button>
+            {% endif %}
+            </div>
+            <div class="span1">
+                <input id="update" type="submit" class="btn btn-primary" onclick="javascript:document.getElementById('update_form').submit();" value="{% trans "Update Survey" %}" />
+            </div>
+        </div>
     {% endif %}
+
 
     <!--Section add modal-->
     <script type="text/javascript" charset="utf-8">

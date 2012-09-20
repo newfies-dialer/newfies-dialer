@@ -1134,7 +1134,7 @@ def survey_audio_recording(audio_file):
                _('No recording')
 
 
-@permission_required('survey.view_survey_report', login_url='/')
+@permission_required('survey2.view_survey_report', login_url='/')
 @login_required
 def survey_report(request):
     """
@@ -1261,12 +1261,12 @@ def survey_report(request):
 
         # Get survey result report from session
         # while using pagination & sorting
-        if request.GET.get('page') or request.GET.get('sort_by'):
-            survey_result = request.session['session_survey_result']
-        else:
-            survey_result = get_survey_result(survey_result_kwargs)
-            request.session['session_survey_result'] = survey_result
-
+        #if request.GET.get('page') or request.GET.get('sort_by'):
+        #    survey_result = request.session['session_survey_result']
+        #else:
+        #    survey_result = get_survey_result(survey_result_kwargs)
+        #    request.session['session_survey_result'] = survey_result
+        survey_result = get_survey_result(survey_result_kwargs)
         kwargs['callrequest__campaign'] = campaign_obj
 
         # sorting on column

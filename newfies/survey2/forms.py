@@ -16,9 +16,9 @@ from django import forms
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
-from survey2.models import Survey, Section, Branching
 from dialer_campaign.models import Campaign
 from dialer_cdr.forms import VoipSearchForm
+from survey2.models import Survey, Section, Branching
 from audiofield.models import AudioFile
 
 

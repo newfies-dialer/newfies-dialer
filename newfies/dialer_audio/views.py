@@ -183,7 +183,7 @@ def audio_del(request, object_id):
             audio.delete()
         except:
             request.session["error_msg"] =\
-                _('audio is not belong to user.')
+                _('audio doesn`t belong to user.')
     else:
         try:
             # When object_id is 0 (Multiple records delete)
@@ -200,7 +200,7 @@ def audio_del(request, object_id):
             audio_list.delete()
         except:
             request.session["error_msg"] =\
-                _('audio(s) are not belong to user.')
+                _('audio(s) do not belong to user.')
 
     return HttpResponseRedirect('/audio/')
 
@@ -240,7 +240,7 @@ def audio_change(request, object_id):
                 form.save()
                 return HttpResponseRedirect('/audio/')
     except:
-        request.session["error_msg"] = _('Record is not belong to user!')
+        request.session["error_msg"] = _('audio doesn`t not belong to user.')
         return HttpResponseRedirect('/audio/')
 
 

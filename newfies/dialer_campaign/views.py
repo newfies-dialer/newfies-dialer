@@ -454,7 +454,7 @@ def campaign_del(request, object_id):
             campaign.delete()
         except:
             request.session["error_msg"] = \
-                _('campaign is not belong to user')
+                _('campaign doesn`t belong to user')
     else:
         # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
@@ -469,7 +469,7 @@ def campaign_del(request, object_id):
                 campaign_list.delete()
         except:
             request.session["error_msg"] =\
-                _('campaign(s) are not belong to user')
+                _('campaign(s) do not belong to user')
 
     return HttpResponseRedirect('/campaign/')
 
@@ -531,7 +531,7 @@ def campaign_change(request, object_id):
                         % {'name': request.POST['name']}
                     return HttpResponseRedirect('/campaign/')
     except:
-        request.session["error_msg"] = _('Campaign is not belong to user')
+        request.session["error_msg"] = _('Campaign doesn`t belong to user')
         return HttpResponseRedirect('/campaign/')
 
     template = 'frontend/campaign/change.html'

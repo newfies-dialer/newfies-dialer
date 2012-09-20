@@ -95,13 +95,15 @@
                         });
                     {% endif %}
 
-                    $(function() {
-                        $("#row"+{{ section.id }}).find(".section-branch")
-                            .attr("url", "/section/branch/add/?section_id={{ section.id }}")
-                            .attr("data-toggle", "modal")
-                            .attr("href", "#section-branch")
-                            .attr("data-controls-modal", "section-branch");
-                    });
+                    {% if perms.survey2.add_branching %}
+                        $(function() {
+                            $("#row"+{{ section.id }}).find(".section-branch")
+                                .attr("url", "/section/branch/add/?section_id={{ section.id }}")
+                                .attr("data-toggle", "modal")
+                                .attr("href", "#section-branch")
+                                .attr("data-controls-modal", "section-branch");
+                        });
+                    {% endif %}
 
                     {% if section.type == 6  %}
                         $(function() {
@@ -114,10 +116,14 @@
                         {% if section.get_branching_count_per_section > 0 %}
                             {% for branch in branching_list %}
                                 {% if branch.section_id == section.id %}
-                                    $(function() {
-                                        $("#row"+{{ section.id }}).find(".section-branch")
-                                            .attr("url", "/section/branch/{{ branch.id }}/");
-                                    });
+
+                                    {% if perms.survey2.change_branching %}
+                                        $(function() {
+                                            $("#row"+{{ section.id }}).find(".section-branch")
+                                                .attr("url", "/section/branch/{{ branch.id }}/");
+                                        });
+                                    {% endif %}
+                                    
                                 {% endif %}
                             {% endfor %}
                         {% endif %}

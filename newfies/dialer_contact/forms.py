@@ -21,17 +21,18 @@ from dialer_contact.models import Phonebook, Contact
 class SearchForm(forms.Form):
     """General Search Form with From & To date para."""
     from_date = forms.CharField(label=_('From'), required=False,
-        max_length=10,
-        help_text=_("Date Format") + ": <em>YYYY-MM-DD</em>.")
+                                max_length=10,
+                                help_text=_("Date Format") + ": <em>YYYY-MM-DD</em>.")
     to_date = forms.CharField(label=_('To'), required=False, max_length=10,
-    help_text=_("Date Format") + ": <em>YYYY-MM-DD</em>.")
+                              help_text=_("Date Format") + ": <em>YYYY-MM-DD</em>.")
 
 
 class FileImport(forms.Form):
     """General Form : CSV file upload"""
     csv_file = forms.FileField(label=_("Upload CSV File "), required=True,
-                            error_messages={'required': 'Please upload File'},
-                            help_text=_("Browse CSV file"))
+                               error_messages={
+                                   'required': 'Please upload File'},
+                               help_text=_("Browse CSV file"))
 
     def clean_csv_file(self):
         """Form Validation :  File extension Check"""
@@ -40,7 +41,7 @@ class FileImport(forms.Form):
         if str(filename).split(".")[1].lower() in file_exts:
             return filename
         else:
-            raise forms.ValidationError(_(u'Document types accepted: %s' %\
+            raise forms.ValidationError(_(u'Document types accepted: %s' %
                                           ' '.join(file_exts)))
 
 
@@ -108,19 +109,19 @@ CHOICE_TYPE = (
 class ContactSearchForm(forms.Form):
     """Search Form on Contact List"""
     contact_no = forms.CharField(label=_('Contact Number:'), required=False,
-                           widget=forms.TextInput(attrs={'size': 15}))
+                                 widget=forms.TextInput(attrs={'size': 15}))
     contact_no_type = forms.ChoiceField(label='', required=False, initial=1,
-                      choices=CHOICE_TYPE, widget=forms.RadioSelect)
+                                        choices=CHOICE_TYPE, widget=forms.RadioSelect)
     name = forms.CharField(label=_('Contact Name:'), required=False,
                            widget=forms.TextInput(attrs={'size': 15}))
     phonebook = forms.ChoiceField(label=_('Phonebook:'), required=False)
     status = forms.TypedChoiceField(label=_('Status:'), required=False,
-                choices=(
-                    ('0', _('Inactive')),
-                    ('1', _('Active ')),
-                    ('2', _('All'))),
-                widget=forms.RadioSelect,
-                initial='2')
+                                    choices=(
+                                    ('0', _('Inactive')),
+                                    ('1', _('Active ')),
+                                    ('2', _('All'))),
+                                    widget=forms.RadioSelect,
+                                    initial='2')
 
     def __init__(self, user, *args, **kwargs):
         super(ContactSearchForm, self).__init__(*args, **kwargs)

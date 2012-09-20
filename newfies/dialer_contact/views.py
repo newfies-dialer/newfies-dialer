@@ -14,7 +14,7 @@
 
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, \
-                                           permission_required
+    permission_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.conf import settings
@@ -26,15 +26,15 @@ from django.db.models import Count
 from frontend.views import notice_count
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.forms import ContactSearchForm, Contact_fileImport, \
-                            PhonebookForm, ContactForm
+    PhonebookForm, ContactForm
 from dialer_campaign.function_def import check_dialer_setting,\
-                                         dialer_setting_limit, \
-                                         contact_search_common_fun,\
-                                         user_dialer_setting_msg
+    dialer_setting_limit, \
+    contact_search_common_fun,\
+    user_dialer_setting_msg
 from dialer_campaign.views import common_send_notification
 from common.common_functions import striplist, current_view
 from utils.helper import grid_common_function, get_grid_update_delete_link,\
-                         update_style, delete_style
+    update_style, delete_style
 import urllib
 import csv
 import ast
@@ -50,13 +50,13 @@ def get_phonebook_link(request, row_id, link_style, title, action):
         ``action`` - link to update or delete
     """
     link = ''
-    if action=='update'\
-        and request.user.has_perm('dialer_contact.change_phonebook'):
+    if action == 'update'\
+            and request.user.has_perm('dialer_contact.change_phonebook'):
         link = '<a href="' + str(row_id) + '/" class="icon" '\
                + link_style + ' title="' + title + '">&nbsp;</a>'
 
-    if action=='delete'\
-        and request.user.has_perm('dialer_contact.delete_phonebook'):
+    if action == 'delete'\
+            and request.user.has_perm('dialer_contact.delete_phonebook'):
         link = '<a href="del/' + str(row_id) + '/" class="icon" ' + \
                link_style + ' onClick="return get_alert_msg_for_phonebook('\
                + str(row_id) + ');" title="' + title + '">&nbsp;</a>'
@@ -80,28 +80,28 @@ def phonebook_grid(request):
     sortname = grid_data['sortname']
 
     phonebook_list = Phonebook.objects\
-                     .values('id', 'name', 'description', 'updated_date')\
-                     .annotate(contact_count=Count('contact'))\
-                     .filter(user=request.user)
+        .values('id', 'name', 'description', 'updated_date')\
+        .annotate(contact_count=Count('contact'))\
+        .filter(user=request.user)
 
     count = phonebook_list.count()
     phonebook_list = phonebook_list\
-                .order_by(sortorder_sign + sortname)[start_page:end_page]
+        .order_by(sortorder_sign + sortname)[start_page:end_page]
 
     rows = [
         {'id': row['id'],
-        'cell': ['<input type="checkbox" name="select" class="checkbox"\
+         'cell': ['<input type="checkbox" name="select" class="checkbox"\
         value="' + str(row['id']) + '" />',
-        row['id'],
-        row['name'],
-        row['description'],
-        row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
-        row['contact_count'],
-        get_phonebook_link(request, row['id'], update_style,
-            _('Update phonebook'), 'update') +\
-        get_phonebook_link(request, row['id'], delete_style,
-            _('Delete phonebook'), 'delete'),
-        ]} for row in phonebook_list]
+                  row['id'],
+                  row['name'],
+                  row['description'],
+                  row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
+                  row['contact_count'],
+                  get_phonebook_link(request, row['id'], update_style,
+                                     _('Update phonebook'), 'update') +
+                  get_phonebook_link(request, row['id'], delete_style,
+                                     _('Delete phonebook'), 'delete'),
+                  ]} for row in phonebook_list]
 
     data = {'rows': rows,
             'page': page,
@@ -133,7 +133,7 @@ def phonebook_list(request):
     request.session['msg'] = ''
     request.session['error_msg'] = ''
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @permission_required('dialer_contact.add_phonebook', login_url='/')
@@ -163,22 +163,22 @@ def phonebook_add(request):
             return HttpResponseRedirect('/phonebook/')
     template = 'frontend/phonebook/change.html'
     data = {
-       'module': current_view(request),
-       'form': form,
-       'action': 'add',
-       'notice_count': notice_count(request),
-       'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'module': current_view(request),
+        'form': form,
+        'action': 'add',
+        'notice_count': notice_count(request),
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @login_required
 def get_contact_count(request):
     """To get total no of contacts belonging to a phonebook list"""
     contact_list = Contact.objects.filter(user=request.user)\
-                        .extra(where=['phonebook_id IN (%s)'\
-                            % request.GET['pb_ids']])
+        .extra(where=['phonebook_id IN (%s)'
+                      % request.GET['pb_ids']])
     data = contact_list.count()
     return HttpResponse(data)
 
@@ -209,7 +209,7 @@ def phonebook_del(request, object_id):
 
             # 2) delete phonebook
             request.session["msg"] = _('"%(name)s" is deleted.')\
-                                     % {'name': phonebook.name}
+                % {'name': phonebook.name}
             phonebook.delete()
         except:
             request.session["error_msg"] = \
@@ -221,20 +221,20 @@ def phonebook_del(request, object_id):
         try:
             # 1) delete all contacts belonging to a phonebook
             contact_list = Contact.objects\
-                                .filter(phonebook__user=request.user)\
-                                .extra(where=['phonebook_id IN (%s)'\
-                                                        % values])
+                .filter(phonebook__user=request.user)\
+                .extra(where=['phonebook_id IN (%s)'
+                              % values])
             if contact_list:
                 contact_list.delete()
 
             # 2) delete phonebook
             phonebook_list = Phonebook.objects\
-                                .filter(user=request.user)\
-                                .extra(where=['id IN (%s)' % values])
+                .filter(user=request.user)\
+                .extra(where=['id IN (%s)' % values])
             if phonebook_list:
                 request.session["msg"] =\
                     _('%(count)s phonebook(s) are deleted.')\
-                        % {'count': phonebook_list.count()}
+                    % {'count': phonebook_list.count()}
                 phonebook_list.delete()
         except:
             request.session["error_msg"] = \
@@ -279,14 +279,14 @@ def phonebook_change(request, object_id):
 
     template = 'frontend/phonebook/change.html'
     data = {
-       'module': current_view(request),
-       'form': form,
-       'action': 'update',
-       'notice_count': notice_count(request),
-       'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'module': current_view(request),
+        'form': form,
+        'action': 'update',
+        'notice_count': notice_count(request),
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @login_required
@@ -333,18 +333,18 @@ def contact_grid(request):
 
     phonebook_id_list = ''
     phonebook_id_list = Phonebook.objects\
-                            .values_list('id', flat=True)\
-                            .filter(user=request.user)
+        .values_list('id', flat=True)\
+        .filter(user=request.user)
     contact_list = []
 
     if phonebook_id_list:
         select_data = {"status":
-                    "(CASE status WHEN 1 THEN 'ACTIVE' ELSE 'INACTIVE' END)"}
+                       "(CASE status WHEN 1 THEN 'ACTIVE' ELSE 'INACTIVE' END)"}
         contact_list = Contact.objects\
             .extra(select=select_data)\
             .values('id', 'phonebook__name', 'contact', 'last_name',
-                'first_name', 'description', 'status', 'additional_vars',
-                'updated_date').filter(phonebook__in=phonebook_id_list)
+                    'first_name', 'description', 'status', 'additional_vars',
+                    'updated_date').filter(phonebook__in=phonebook_id_list)
 
         if kwargs:
             kwargs = ast.literal_eval(kwargs)
@@ -363,18 +363,18 @@ def contact_grid(request):
 
     rows = [
         {'id': row['id'],
-        'cell': ['<input type="checkbox" name="select" class="checkbox"\
+         'cell': ['<input type="checkbox" name="select" class="checkbox"\
         value="' + str(row['id']) + '" />',
-        row['id'], row['phonebook__name'], row['contact'],
-        row['last_name'], row['first_name'], row['status'],
-        row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
-        get_grid_update_delete_link(request, row['id'],
-            'dialer_contact.change_contact',
-            _('Update contact'), 'update')+\
-        get_grid_update_delete_link(request, row['id'],
-            'dialer_contact.delete_contact',
-            _('Delete contact'), 'delete'),
-        ]} for row in contact_list]
+                  row['id'], row['phonebook__name'], row['contact'],
+                  row['last_name'], row['first_name'], row['status'],
+                  row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
+                  get_grid_update_delete_link(request, row['id'],
+                                              'dialer_contact.change_contact',
+                                              _('Update contact'), 'update') +
+                  get_grid_update_delete_link(request, row['id'],
+                                              'dialer_contact.delete_contact',
+                                              _('Delete contact'), 'delete'),
+                  ]} for row in contact_list]
 
     data = {'rows': rows,
             'page': page,
@@ -421,7 +421,7 @@ def contact_list(request):
     request.session['msg'] = ''
     request.session['error_msg'] = ''
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @permission_required('dialer_contact.add_contact', login_url='/')
@@ -480,7 +480,7 @@ def contact_add(request):
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @permission_required('dialer_contact.delete_contact', login_url='/')
@@ -504,7 +504,7 @@ def contact_del(request, object_id):
                                           phonebook__user=request.user)
             # Delete phonebook
             request.session["msg"] = _('"%(name)s" is deleted.')\
-                                     % {'name': contact.first_name}
+                % {'name': contact.first_name}
             contact.delete()
         except:
             request.session["error_msg"] = \
@@ -520,7 +520,7 @@ def contact_del(request, object_id):
             if contact_list:
                 request.session["msg"] =\
                     _('%(count)s contact(s) are deleted.')\
-                        % {'count': contact_list.count()}
+                    % {'count': contact_list.count()}
                 contact_list.delete()
         except:
             request.session["error_msg"] =\
@@ -568,14 +568,14 @@ def contact_change(request, object_id):
 
     template = 'frontend/contact/change.html'
     data = {
-       'module': current_view(request),
-       'form': form,
-       'action': 'update',
-       'notice_count': notice_count(request),
-       'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'module': current_view(request),
+        'form': form,
+        'action': 'update',
+        'notice_count': notice_count(request),
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @login_required
@@ -632,7 +632,7 @@ def contact_import(request):
             #  6     - additional_vars
             # To count total rows of CSV file
             records = csv.reader(request.FILES['csv_file'],
-                             delimiter=',', quotechar='"')
+                                 delimiter=',', quotechar='"')
             total_rows = len(list(records))
 
             rdr = csv.reader(request.FILES['csv_file'],
@@ -647,36 +647,36 @@ def contact_import(request):
                         # check field type
                         int(row[5])
                         phonebook = Phonebook.objects\
-                                    .get(pk=request.POST['phonebook'],
-                                         user=request.user)
+                            .get(pk=request.POST['phonebook'],
+                                 user=request.user)
                         try:
                             # check if prefix is already
                             # exist with retail plan or not
                             Contact.objects.get(
-                                 phonebook_id=phonebook.id,
-                                 contact=row[0])
+                                phonebook_id=phonebook.id,
+                                contact=row[0])
                             err_contact_cnt = err_contact_cnt + 1
                             error_msg = _('Contact already exists!')
                             error_msg = _('%(err_contact_cnt)s Contact(s) already exists!') \
-                                    % {'err_contact_cnt': err_contact_cnt}
+                                % {'err_contact_cnt': err_contact_cnt}
                             error_import_list.append(row)
                         except:
                             #TODO: lost of performance checking element before inserting it
                             # if not, insert record
                             Contact.objects.create(
-                                  phonebook=phonebook,
-                                  contact=row[0],
-                                  last_name=row[1],
-                                  first_name=row[2],
-                                  email=row[3],
-                                  description=row[4],
-                                  status=int(row[5]),
-                                  additional_vars=row[6])
+                                phonebook=phonebook,
+                                contact=row[0],
+                                last_name=row[1],
+                                first_name=row[2],
+                                email=row[3],
+                                description=row[4],
+                                status=int(row[5]),
+                                additional_vars=row[6])
 
                             contact_cnt = contact_cnt + 1
                             msg = _('%(contact_cnt)s Contact(s) are uploaded successfully out of %(total_rows)s row(s) !!') \
-                                    % {'contact_cnt': contact_cnt,
-                                       'total_rows': total_rows}
+                                % {'contact_cnt': contact_cnt,
+                                   'total_rows': total_rows}
 
                             success_import_list.append(row)
                     except:
@@ -686,20 +686,20 @@ def contact_import(request):
                         type_error_import_list.append(row)
 
     data = RequestContext(request, {
-    'form': form,
-    'rdr': rdr,
-    'msg': msg,
-    'error_msg': error_msg,
-    'success_import_list': success_import_list,
-    'error_import_list': error_import_list,
-    'type_error_import_list': type_error_import_list,
-    'module': current_view(request),
-    'notice_count': notice_count(request),
-    'dialer_setting_msg': user_dialer_setting_msg(request.user),
-    })
+                          'form': form,
+                          'rdr': rdr,
+                          'msg': msg,
+                          'error_msg': error_msg,
+                          'success_import_list': success_import_list,
+                          'error_import_list': error_import_list,
+                          'type_error_import_list': type_error_import_list,
+                          'module': current_view(request),
+                          'notice_count': notice_count(request),
+                          'dialer_setting_msg': user_dialer_setting_msg(request.user),
+                          })
     template = 'frontend/contact/import_contact.html'
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 def count_contact_of_campaign(campaign_id):

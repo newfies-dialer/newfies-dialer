@@ -29,8 +29,8 @@ def collect_subscriber(campaign_id):
 
         * ``campaign_id`` - Campaign ID
     """
-    logger.debug("Collect subscribers for the campaign = %s" % \
-                str(campaign_id))
+    logger.debug("Collect subscribers for the campaign = %s" %
+                 str(campaign_id))
 
     #Retrieve the list of active contact
     obj_campaign = Campaign.objects.get(id=campaign_id)
@@ -76,7 +76,8 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
             (campaign_id, phonebook_id, campaign_id)
     else:
         # Other DB
-        logger.error("Database not supported (%s)" % settings.DATABASES['default']['ENGINE'])
+        logger.error("Database not supported (%s)" %
+                     settings.DATABASES['default']['ENGINE'])
         return False
 
     cursor.execute(sqlimport)
@@ -104,7 +105,7 @@ def import_phonebook(campaign_id, phonebook_id):
     else:
         sep = ','
     obj_campaign.imported_phonebook = obj_campaign.imported_phonebook + \
-            '%s%d' % (sep, phonebook_id)
+        '%s%d' % (sep, phonebook_id)
     obj_campaign.save()
 
     return True

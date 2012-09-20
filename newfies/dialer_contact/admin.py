@@ -50,10 +50,11 @@ class ContactAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super(ContactAdmin, self).get_urls()
         my_urls = patterns('',
-            (r'^add/$', self.admin_site.admin_view(self.add_view)),
-            (r'^import_contact/$',
-             self.admin_site.admin_view(self.import_contact)),
-        )
+                           (r'^add/$',
+                            self.admin_site.admin_view(self.add_view)),
+                           (r'^import_contact/$',
+                            self.admin_site.admin_view(self.import_contact)),
+                           )
         return my_urls + urls
 
     def add_view(self, request, extra_context=None):
@@ -110,7 +111,7 @@ class ContactAdmin(admin.ModelAdmin):
             # check Max Number of subscribers per campaign
             if check_dialer_setting(request, check_for="contact"):
                 msg = _("You have too many contacts per campaign. You are allowed a maximum of %(limit)s")\
-                        % {'limit': dialer_setting_limit(request, limit_for="contact")}
+                    % {'limit': dialer_setting_limit(request, limit_for="contact")}
                 messages.error(request, msg)
 
                 # campaign limit reached
@@ -126,7 +127,7 @@ class ContactAdmin(admin.ModelAdmin):
         type_error_import_list = []
         if request.method == 'POST':
             form = Contact_fileImport(request.user, request.POST,
-                request.FILES)
+                                      request.FILES)
             if form.is_valid():
                 # col_no - field name
                 #  0     - contact
@@ -138,11 +139,11 @@ class ContactAdmin(admin.ModelAdmin):
                 #  6     - additional_vars
                 # To count total rows of CSV file
                 records = csv.reader(request.FILES['csv_file'],
-                    delimiter=',', quotechar='"')
+                                     delimiter=',', quotechar='"')
                 total_rows = len(list(records))
 
                 rdr = csv.reader(request.FILES['csv_file'],
-                    delimiter=',', quotechar='"')
+                                 delimiter=',', quotechar='"')
                 contact_cnt = 0
                 # Read each Row
                 for row in rdr:
@@ -153,7 +154,8 @@ class ContactAdmin(admin.ModelAdmin):
                             int(row[5])
 
                             phonebook =\
-                                Phonebook.objects.get(pk=request.POST['phonebook'])
+                                Phonebook.objects.get(
+                                    pk=request.POST['phonebook'])
                             try:
                                 # check if prefix is already
                                 # existing in the retail plan or not
@@ -175,8 +177,8 @@ class ContactAdmin(admin.ModelAdmin):
                                     additional_vars=row[6])
                                 contact_cnt = contact_cnt + 1
                                 msg = _('%(contact_cnt)s Contact(s) are uploaded, out of %(total_rows)s row(s) !!')\
-                                        % {'contact_cnt': contact_cnt,
-                                           'total_rows': total_rows}
+                                    % {'contact_cnt': contact_cnt,
+                                       'total_rows': total_rows}
                                 success_import_list.append(row)
                         except:
                             msg = _("Error : invalid value for import! Check import samples.")
@@ -195,7 +197,7 @@ class ContactAdmin(admin.ModelAdmin):
             'success_import_list': success_import_list,
             'error_import_list': error_import_list,
             'type_error_import_list': type_error_import_list,
-            })
+        })
         return render_to_response(
             'admin/dialer_contact/contact/import_contact.html',
             context_instance=ctx)

@@ -155,6 +155,33 @@ def count_contact_of_campaign(campaign_id):
     return count_contact
 
 
+def tpl_control_icon(icon):
+    """
+    function to produce control html icon
+    """
+    return 'style="text-decoration:none;background-image:url(' \
+        + settings.STATIC_URL \
+        + 'newfies/icons/%s);"' % icon
+
+def tpl_control_status(id, ):
+    """
+    function to produce control html icon
+    """
+
+
+def get_url_campaign_status(id, status):
+
+    control_play_style = tpl_control_icon('control_play.png')
+    control_pause_style = tpl_control_icon('control_pause.png')
+    control_abort_style = tpl_control_icon('abort_grey.png')
+    control_stop_style = tpl_control_icon('control_stop.png')
+
+    control_play_blue_style = tpl_control_icon('control_play_blue.png')
+    control_pause_blue_style = tpl_control_icon('control_pause_blue.png')
+    control_abort_blue_style = tpl_control_icon('abort_grey.png')
+    control_stop_blue_style = tpl_control_icon('control_stop_blue.png')
+
+
 def get_url_campaign_status(id, status):
 
     control_play_style = \
@@ -168,7 +195,7 @@ def get_url_campaign_status(id, status):
     control_abort_style = \
         'style="text-decoration:none;background-image:url(' \
         + settings.STATIC_URL\
-        + 'newfies/icons/abort.png);"'
+        + 'newfies/icons/abort_grey.png);"'
     control_stop_style = \
         'style="text-decoration:none;background-image:url(' \
         + settings.STATIC_URL\
@@ -204,6 +231,7 @@ def get_url_campaign_status(id, status):
             ">&nbsp;</a><a href='update_campaign_status_cust/"\
             + str(id) + "/4/' class='icon' title='" + _("Stop") + "' " +\
             str(control_stop_blue_style) + ">&nbsp;</a>"
+        print url_str
 
     if status == 2:
         url_str = "<a href='update_campaign_status_cust/" + str(id) +\
@@ -219,6 +247,7 @@ def get_url_campaign_status(id, status):
             "/4/' class='icon' title='" + _("Stop") + "' " +\
             control_stop_blue_style +\
             ">&nbsp;</a>"
+        print url_str
 
     if status == 3:
         url_str = "<a href='update_campaign_status_cust/" + str(id) +\
@@ -233,6 +262,8 @@ def get_url_campaign_status(id, status):
             "<a href='update_campaign_status_cust/" + str(id) +\
             "/4/' class='icon' title='" + _("Stop") + "' " +\
             control_stop_blue_style + ">&nbsp;</a>"
+        print url_str
+
     if status == 4:
         url_str = "<a href='update_campaign_status_cust/" + str(id) +\
             "/1/' class='icon' title='" + _("Start") + "' " +\
@@ -281,8 +312,8 @@ def campaign_grid(request):
                             'content_type__model', 'status')\
                     .filter(user=request.user)
     count = campaign_list.count()
-    campaign_list = \
-        campaign_list.order_by(sortorder_sign + sortname)[start_page:end_page]
+    campaign_list = campaign_list\
+        .order_by(sortorder_sign + sortname)[start_page:end_page]
 
     rows = [
         {'id': row['id'],

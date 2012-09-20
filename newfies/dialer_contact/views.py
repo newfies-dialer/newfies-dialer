@@ -15,7 +15,8 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, \
     permission_required
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, \
+    Http404
 from django.shortcuts import render_to_response, get_list_or_404
 from django.conf import settings
 from django.template.context import RequestContext
@@ -269,7 +270,7 @@ def phonebook_change(request, object_id):
                         % {'name': request.POST['name']}
                     return HttpResponseRedirect('/phonebook/')
     except:
-        request.session["error_msg"] = _('phonebook doesn't belong to user.')
+        request.session["error_msg"] = _('phonebook doesn\'t belong to user.')
         return HttpResponseRedirect('/phonebook/')
 
     template = 'frontend/phonebook/change.html'
@@ -704,99 +705,3 @@ def count_contact_of_campaign(campaign_id):
     if not count_contact:
         return str("Phonebook Empty")
     return count_contact
-
-
-def get_url_campaign_status(id, status):
-    control_play_style = \
-        'style="text-decoration:none;background-image:url(' \
-        + settings.STATIC_URL \
-        + 'newfies/icons/control_play.png);"'
-    control_pause_style = \
-        'style="text-decoration:none;background-image:url(' \
-        + settings.STATIC_URL \
-        + 'newfies/icons/control_pause.png);"'
-    control_abort_style = \
-        'style="text-decoration:none;background-image:url(' \
-        + settings.STATIC_URL\
-        + 'newfies/icons/abort.png);"'
-    control_stop_style = \
-        'style="text-decoration:none;background-image:url(' \
-        + settings.STATIC_URL\
-        + 'newfies/icons/control_stop.png);"'
-
-    control_play_blue_style = \
-        'style="text-decoration:none;background-image:url(' \
-        + settings.STATIC_URL \
-        + 'newfies/icons/control_play_blue.png);"'
-    control_pause_blue_style = \
-        'style="text-decoration:none;background-image:url(' \
-        + settings.STATIC_URL \
-        + 'newfies/icons/control_pause_blue.png);"'
-    control_abort_blue_style = \
-        'style="text-decoration:none;background-image:url(' \
-        + settings.STATIC_URL \
-        + 'newfies/icons/abort.png);"'
-    control_stop_blue_style = \
-        'style="text-decoration:none;background-image:url(' \
-        + settings.STATIC_URL \
-        + 'newfies/icons/control_stop_blue.png);"'
-
-    if status == 1:
-        url_str = "<a href='#' class='icon' title='" + \
-            _("campaign is running") + "' " +\
-            control_play_style + ">&nbsp;</a>\
-            <a href='update_campaign_status_cust/" + str(id) +\
-            "/2/' class='icon' title='" + _("Pause") + "' " +\
-            str(control_pause_blue_style) +\
-            ">&nbsp;</a><a href='update_campaign_status_cust/" + str(id) +\
-            "/3/' class='icon' title='" + _("Abort") + "' " +\
-            str(control_abort_blue_style) +\
-            ">&nbsp;</a><a href='update_campaign_status_cust/"\
-            + str(id) + "/4/' class='icon' title='" + _("Stop") + "' " +\
-            str(control_stop_blue_style) + ">&nbsp;</a>"
-
-    if status == 2:
-        url_str = "<a href='update_campaign_status_cust/" + str(id) +\
-            "/1/' class='icon' title='" + _("Start") + "' " +\
-            control_play_blue_style + ">&nbsp;</a><a href='#' \
-            class='icon' title='" + _("campaign is paused") + "' " +\
-            control_pause_style + ">&nbsp;</a>" +\
-            "<a href='update_campaign_status_cust/" + str(id) +\
-            "/3/' class='icon' title='" + _("Abort") + "' " +\
-            control_abort_blue_style +\
-            ">&nbsp;</a>" +\
-            "<a href='update_campaign_status_cust/" + str(id) +\
-            "/4/' class='icon' title='" + _("Stop") + "' " +\
-            control_stop_blue_style +\
-            ">&nbsp;</a>"
-
-    if status == 3:
-        url_str = "<a href='update_campaign_status_cust/" + str(id) +\
-            "/1/' class='icon' title='" + _("Start") + "' " +\
-            control_play_blue_style +\
-            ">&nbsp;</a>" + "<a href='update_campaign_status_cust/" +\
-            str(id) + "/2/' class='icon' \
-            title='" + _("Pause") + "' " + control_pause_blue_style +\
-            ">&nbsp;</a>" +\
-            "<a href='#' class='icon' title='" + _("campaign is aborted") +\
-            "' " + control_abort_style + " >&nbsp;</a>" +\
-            "<a href='update_campaign_status_cust/" + str(id) +\
-            "/4/' class='icon' title='" + _("Stop") + "' " +\
-            control_stop_blue_style + ">&nbsp;</a>"
-    if status == 4:
-        url_str = "<a href='update_campaign_status_cust/" + str(id) +\
-            "/1/' class='icon' title='" + _("Start") + "' " +\
-            control_play_blue_style +\
-            ">&nbsp;</a>" +\
-            "<a href='update_campaign_status_cust/" + str(id) +\
-            "/2/' class='icon' title='" + _("Pause") + "' " +\
-            control_pause_blue_style +\
-            ">&nbsp;</a>" +\
-            "<a href='update_campaign_status_cust/" + str(id) +\
-            "/3/' class='icon' title='" + _("Abort") + "' " +\
-            control_abort_blue_style +\
-            ">&nbsp;</a>" + \
-            "<a href='#' class='icon' title='" + _("campaign is stopped") + \
-            "' " + control_stop_style + ">&nbsp;</a>"
-
-    return url_str

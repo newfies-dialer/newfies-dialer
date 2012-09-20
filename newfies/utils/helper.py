@@ -17,15 +17,16 @@ from common.common_functions import variable_value
 
 
 update_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
+    settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
 delete_style = 'style="text-decoration:none;background-image:url(' + \
-                settings.STATIC_URL + 'newfies/icons/delete.png);"'
+    settings.STATIC_URL + 'newfies/icons/delete.png);"'
 
 # grid_test_data used in test-cases
 grid_test_data = {'page': 1,
                   'rp': 10,
                   'sortname': 'id',
                   'sortorder': 'asc'}
+
 
 def grid_common_function(request):
     """To get common flexigrid variable"""
@@ -41,7 +42,7 @@ def grid_common_function(request):
     # page index
     if int(grid_data['page']) > 1:
         grid_data['start_page'] = (int(grid_data['page']) - 1) * \
-                                   int(grid_data['rp'])
+            int(grid_data['rp'])
         grid_data['end_page'] = grid_data['start_page'] + int(grid_data['rp'])
     else:
         grid_data['start_page'] = int(0)
@@ -64,16 +65,15 @@ def get_grid_update_delete_link(request, row_id, perm_name, title, action):
         ``action`` - link to update or delete
     """
     link = ''
-    if action=='update' and request.user.has_perm(perm_name):
+    if action == 'update' and request.user.has_perm(perm_name):
         link = '<a href="' + str(row_id) + '/" class="icon" '\
                + update_style + ' title="' + title + '">&nbsp;</a>'
 
-    if action=='delete' and request.user.has_perm(perm_name):
+    if action == 'delete' and request.user.has_perm(perm_name):
         link = '<a href="del/' + str(row_id) + '/" class="icon" '\
                + delete_style + ' onClick="return get_alert_msg('\
                + str(row_id) + ');" title="' + title + '">&nbsp;</a>'
     return link
-
 
 
 import inspect
@@ -90,7 +90,8 @@ class Choice(object):
                     if isinstance(value, tuple) and len(value) > 1:
                         data = value
                     else:
-                        data = (value, " ".join([x.capitalize() for x in name.split("_")]),)
+                        data = (value, " ".join(
+                            [x.capitalize() for x in name.split("_")]),)
                     self._data.append(data)
                     setattr(self, name, data[0])
 

@@ -101,6 +101,7 @@ def voiceapp_list(request):
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
+    request.session['error_msg'] = ''
     return render_to_response(template, data,
            context_instance=RequestContext(request))
 
@@ -156,26 +157,34 @@ def voiceapp_del(request, object_id):
 
         * Delete voiceapp from voiceapp list
     """
-    try:
-        # When object_id is not 0
-        voiceapp_list = VoiceApp.objects.get(pk=object_id)
-        if object_id:
+    if int(object_id) != 0:
+        try:
+            # When object_id is not 0
+            voiceapp_list = VoiceApp.objects.get(pk=object_id, user=request.user)
             # 1) delete voiceapp
-            request.session["msg"] = _('"%(name)s" is deleted.' \
-                % {'name': voiceapp_list.name})
+            request.session["msg"] = _('"%(name)s" is deleted.'\
+                                       % {'name': voiceapp_list.name})
             voiceapp_list.delete()
-            return HttpResponseRedirect('/voiceapp/')
-    except:
-        # When object_id is 0 (Multiple records delete)
-        values = request.POST.getlist('select')
-        values = ", ".join(["%s" % el for el in values])
+        except:
+            request.session["error_msg"] = _('Voiceapp doesn`t belong to user')
+    else:
+        try:
+            # When object_id is 0 (Multiple records delete)
+            values = request.POST.getlist('select')
+            values = ", ".join(["%s" % el for el in values])
 
-        # 1) delete voiceapp
-        voiceapp_list = VoiceApp.objects.extra(where=['id IN (%s)' % values])
-        request.session["msg"] = _('%(count)s voiceapp(s) are deleted.' \
-            % {'count': voiceapp_list.count()})
-        voiceapp_list.delete()
-        return HttpResponseRedirect('/voiceapp/')
+            # 1) delete voiceapp
+            voiceapp_list = VoiceApp.objects\
+                                .filter(user=request.user)\
+                                .extra(where=['id IN (%s)' % values])
+            if voiceapp_list:
+                request.session["msg"] = _('%(count)s voiceapp(s) are deleted.'\
+                                           % {'count': voiceapp_list.count()})
+                voiceapp_list.delete()
+        except:
+            request.session["error_msg"] = _('Voiceapp(s) do not belong to user')
+
+    return HttpResponseRedirect('/voiceapp/')
 
 
 @permission_required('voice_app.change_voiceapp', login_url='/')
@@ -194,19 +203,23 @@ def voiceapp_change(request, object_id):
         * Update/delete selected voiceapp from voiceapp list
           via VoiceAppForm form & get redirect to voice list
     """
-    voiceapp = VoiceApp.objects.get(pk=object_id)
-    form = VoiceAppForm(instance=voiceapp)
-    if request.method == 'POST':
-        if request.POST.get('delete'):
-            voiceapp_del(request, object_id)
-            return HttpResponseRedirect('/voiceapp/')
-        else:
-            form = VoiceAppForm(request.POST, instance=voiceapp)
-            if form.is_valid():
-                form.save()
-                request.session["msg"] = _('"%(name)s" is updated.' \
-                    % {'name': request.POST['name']})
+    try:
+        voiceapp = VoiceApp.objects.get(pk=object_id, user=request.user)
+        form = VoiceAppForm(instance=voiceapp)
+        if request.method == 'POST':
+            if request.POST.get('delete'):
+                voiceapp_del(request, object_id)
                 return HttpResponseRedirect('/voiceapp/')
+            else:
+                form = VoiceAppForm(request.POST, instance=voiceapp)
+                if form.is_valid():
+                    form.save()
+                    request.session["msg"] = _('"%(name)s" is updated.' \
+                        % {'name': request.POST['name']})
+                    return HttpResponseRedirect('/voiceapp/')
+    except:
+        request.session["error_msg"] = _('Voiceapp doesn`t belong to user')
+        return HttpResponseRedirect('/voiceapp/')
 
     template = 'frontend/voiceapp/change.html'
     data = {

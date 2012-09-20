@@ -64,31 +64,23 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
             (campaign_id, phonebook_id)
 
     elif settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql_psycopg2':
-
         # Data insert operation - http://stackoverflow.com/questions/12451053/django-bulk-create-with-ignore-rows-that-cause-integrityerror
         sqlimport = "LOCK TABLE dialer_campaign_subscriber IN EXCLUSIVE MODE;" \
             "INSERT INTO dialer_campaign_subscriber (contact_id, "\
             "campaign_id, duplicate_contact, status, created_date, updated_date) "\
             "SELECT id, %d, contact, 1, NOW(), NOW() FROM dialer_contact "\
-            "WHERE phonebook_id=%d AND dialer_contact.status=1 AND NOT EXISTS (" % \
+            "WHERE phonebook_id=%d AND dialer_contact.status=1 AND NOT EXISTS (" \
             "SELECT 1 FROM dialer_campaign_subscriber WHERE "\
             "dialer_campaign_subscriber.campaign_id=%d "\
-            "AND dialer_contact.id = dialer_campaign_subscriber.contact_id );"\
+            "AND dialer_contact.id = dialer_campaign_subscriber.contact_id );" % \
             (campaign_id, phonebook_id, campaign_id)
+    else:
+        # Other DB
+        logger.error("Database not supported (%s)" % settings.DATABASES['default']['ENGINE'])
+        return False
 
-# LOCK TABLE dialer_campaign_subscriber IN EXCLUSIVE MODE;
-
-# INSERT INTO dialer_campaign_subscriber (contact_id, campaign_id, duplicate_contact, status, created_date, updated_date)
-# SELECT id, 1, contact, 1, NOW(), NOW() FROM dialer_contact
-# WHERE phonebook_id=3 AND dialer_contact.status=1 AND NOT EXISTS (
-#     SELECT 1 FROM dialer_campaign_subscriber WHERE dialer_campaign_subscriber.campaign_id=1 AND
-#      dialer_contact.id = dialer_campaign_subscriber.contact_id
-# );
-    print(sqlimport)
     cursor.execute(sqlimport)
-    #TODO: check if commit_unless_managed appropriate for Postgresql
     transaction.commit_unless_managed()
-
     return True
 
 
@@ -97,7 +89,7 @@ def import_phonebook(campaign_id, phonebook_id):
     """
     Read all the contact from phonebook_id and insert into campaignsubscriber
     """
-    logger.info("\nTASK :: import_phonebook")
+    logger.info("TASK :: import_phonebook")
 
     #TODO: Add a semafore
 

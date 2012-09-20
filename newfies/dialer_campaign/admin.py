@@ -98,5 +98,5 @@ class CampaignSubscriberAdmin(admin.ModelAdmin):
                     'last_attempt', 'count_attempt', 'duplicate_contact',
                     'contact_name', 'status', 'created_date')
     list_filter = ['campaign', 'status', 'created_date', 'last_attempt']
-    ordering = ('id', )
+    ordering = ('-id', )
 admin.site.register(CampaignSubscriber, CampaignSubscriberAdmin)

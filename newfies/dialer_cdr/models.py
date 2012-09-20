@@ -23,18 +23,19 @@ from django.contrib.contenttypes import generic
 from country_dialcode.models import Prefix
 from uuid import uuid1
 from datetime import datetime
+from utils.helper import Choice
 
 
-CALLREQUEST_STATUS = (
-    (1, u'PENDING'),
-    (2, u'FAILURE'),
-    (3, u'RETRY'),  # spawn for retry
-    (4, u'SUCCESS'),
-    (5, u'ABORT'),
-    (6, u'PAUSE'),
-    (7, u'PROCESS'),
-    (8, u'IN-PROGRESS'),
-)
+class CALLREQUEST_STATUS(Choice):
+    PENDING = 1, _("Pending")
+    FAILURE = 2, _("Failure")
+    RETRY = 3, _("Retry")
+    SUCCESS = 4, _("Success")
+    ABORT = 5, _("Abort")
+    PAUSE = 6, _("Pause")
+    PROCESS = 7, _("Processing")
+    IN_PROGRESS = 8, _("In Progress")
+
 
 CALLREQUEST_TYPE = (
     (1, _('ALLOW RETRY')),
@@ -140,7 +141,7 @@ class Callrequest(Model):
     updated_date = models.DateTimeField(auto_now=True)
     call_type = models.IntegerField(choices=CALLREQUEST_TYPE, default='1',
                 verbose_name=_("Call Request Type"), blank=True, null=True)
-    status = models.IntegerField(choices=CALLREQUEST_STATUS, default='1',
+    status = models.IntegerField(choices=list(CALLREQUEST_STATUS), default='1',
                 blank=True, null=True, db_index=True,
                 verbose_name=_('Status'))
     callerid = models.CharField(max_length=80, blank=True,

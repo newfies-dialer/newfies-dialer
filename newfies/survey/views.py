@@ -34,7 +34,7 @@ from survey.forms import SurveyForm,\
                          SurveyDetailReportForm
 from survey.function_def import export_question_result
 from utils.helper import grid_common_function, get_grid_update_delete_link
-from dialer_cdr.models import Callrequest, VoIPCall
+from dialer_cdr.models import Callrequest, VoIPCall, CALLREQUEST_STATUS
 from common.common_functions import variable_value, current_view
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -120,7 +120,7 @@ def survey_finestatemachine(request):
 
     if current_state == 0:
         #TODO : use constant
-        obj_callrequest.status = 8  # IN-PROGRESS
+        obj_callrequest.status = CALLREQUEST_STATUS.IN_PROGRESS
         obj_callrequest.aleg_uuid = opt_CallUUID
         obj_callrequest.save()
 

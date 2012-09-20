@@ -131,6 +131,7 @@ def phonebook_list(request):
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
+    request.session['error_msg'] = ''
     return render_to_response(template, data,
            context_instance=RequestContext(request))
 
@@ -175,8 +176,9 @@ def phonebook_add(request):
 @login_required
 def get_contact_count(request):
     """To get total no of contacts belonging to a phonebook list"""
-    contact_list = Contact.objects.extra(where=['phonebook_id IN (%s)'\
-                       % request.GET['pb_ids']])
+    contact_list = Contact.objects.filter(user=request.user)\
+                        .extra(where=['phonebook_id IN (%s)'\
+                            % request.GET['pb_ids']])
     data = contact_list.count()
     return HttpResponse(data)
 
@@ -196,36 +198,49 @@ def phonebook_del(request, object_id):
         * Delete contacts from a contact list belonging to a phonebook list.
         * Delete selected the phonebook from the phonebook list
     """
-    try:
-        # When object_id is not 0
-        phonebook = Phonebook.objects.get(pk=object_id)
-        if object_id:
+    if int(object_id) != 0:
+        try:
+            # When object_id is not 0
+            phonebook = Phonebook.objects.get(pk=object_id, user=request.user)
+
             # 1) delete all contacts belonging to a phonebook
-            contact_list = Contact.objects.filter(phonebook=object_id)
+            contact_list = Contact.objects.filter(phonebook=phonebook)
             contact_list.delete()
 
             # 2) delete phonebook
-            request.session["msg"] = _('"%(name)s" is deleted.') \
-                                        % {'name': phonebook.name}
+            request.session["msg"] = _('"%(name)s" is deleted.')\
+                                     % {'name': phonebook.name}
             phonebook.delete()
-            return HttpResponseRedirect('/phonebook/')
-    except:
+        except:
+            request.session["error_msg"] = \
+                _('phonebook dosen`t belong to user.')
+    else:
         # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
+        try:
+            # 1) delete all contacts belonging to a phonebook
+            contact_list = Contact.objects\
+                                .filter(phonebook__user=request.user)\
+                                .extra(where=['phonebook_id IN (%s)'\
+                                                        % values])
+            if contact_list:
+                contact_list.delete()
 
-        # 1) delete all contacts belonging to a phonebook
-        contact_list = Contact.objects.extra(where=['phonebook_id IN (%s)'\
-                       % values])
-        contact_list.delete()
+            # 2) delete phonebook
+            phonebook_list = Phonebook.objects\
+                                .filter(user=request.user)\
+                                .extra(where=['id IN (%s)' % values])
+            if phonebook_list:
+                request.session["msg"] =\
+                    _('%(count)s phonebook(s) are deleted.')\
+                        % {'count': phonebook_list.count()}
+                phonebook_list.delete()
+        except:
+            request.session["error_msg"] = \
+                _('phonebook(s) do not belong to user.')
 
-        # 2) delete phonebook
-        phonebook_list = Phonebook.objects.extra(where=['id IN (%s)' % values])
-        request.session["msg"] =\
-            _('%(count)s phonebook(s) are deleted.') \
-                % {'count': phonebook_list.count()}
-        phonebook_list.delete()
-        return HttpResponseRedirect('/phonebook/')
+    return HttpResponseRedirect('/phonebook/')
 
 
 @permission_required('dialer_contact.change_phonebook', login_url='/')
@@ -244,19 +259,23 @@ def phonebook_change(request, object_id):
         * Update/delete selected phonebook from the phonebook list
           via PhonebookForm & get redirected to phonebook list
     """
-    phonebook = Phonebook.objects.get(pk=object_id)
-    form = PhonebookForm(instance=phonebook)
-    if request.method == 'POST':
-        if request.POST.get('delete'):
-            phonebook_del(request, object_id)
-            return HttpResponseRedirect('/phonebook/')
-        else:
-            form = PhonebookForm(request.POST, instance=phonebook)
-            if form.is_valid():
-                form.save()
-                request.session["msg"] = _('"%(name)s" is updated.') \
-                    % {'name': request.POST['name']}
+    try:
+        phonebook = Phonebook.objects.get(pk=object_id, user=request.user)
+        form = PhonebookForm(instance=phonebook)
+        if request.method == 'POST':
+            if request.POST.get('delete'):
+                phonebook_del(request, object_id)
                 return HttpResponseRedirect('/phonebook/')
+            else:
+                form = PhonebookForm(request.POST, instance=phonebook)
+                if form.is_valid():
+                    form.save()
+                    request.session["msg"] = _('"%(name)s" is updated.') \
+                        % {'name': request.POST['name']}
+                    return HttpResponseRedirect('/phonebook/')
+    except:
+        request.session["error_msg"] = _('phonebook dosen`t belong to user.')
+        return HttpResponseRedirect('/phonebook/')
 
     template = 'frontend/phonebook/change.html'
     data = {
@@ -400,6 +419,7 @@ def contact_list(request):
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
+    request.session['error_msg'] = ''
     return render_to_response(template, data,
            context_instance=RequestContext(request))
 
@@ -477,25 +497,35 @@ def contact_del(request, object_id):
 
         * Delete selected contact from the contact list
     """
-    try:
-        # When object_id is not 0
-        contact = Contact.objects.get(pk=object_id)
-        # Delete phonebook
-        if object_id:
-            request.session["msg"] = _('"%(name)s" is deleted.') \
-                % {'name': contact.first_name}
+    if int(object_id) != 0:
+        try:
+            # When object_id is not 0
+            contact = Contact.objects.get(pk=object_id,
+                                          phonebook__user=request.user)
+            # Delete phonebook
+            request.session["msg"] = _('"%(name)s" is deleted.')\
+                                     % {'name': contact.first_name}
             contact.delete()
-            return HttpResponseRedirect('/contact/')
-    except:
+        except:
+            request.session["error_msg"] = \
+                _('Contact doesn`t belong to user.')
+    else:
         # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
-        contact_list = Contact.objects.extra(where=['id IN (%s)' % values])
-        request.session["msg"] =\
-            _('%(count)s contact(s) are deleted.') \
-                % {'count': contact_list.count()}
-        contact_list.delete()
-        return HttpResponseRedirect('/contact/')
+
+        try:
+            #TODO : checked with filter(phonebook__user=request.user) but not working
+            contact_list = Contact.objects.extra(where=['id IN (%s)' % values])
+            if contact_list:
+                request.session["msg"] =\
+                    _('%(count)s contact(s) are deleted.')\
+                        % {'count': contact_list.count()}
+                contact_list.delete()
+        except:
+            request.session["error_msg"] =\
+                _('Contact(s) do not belong to user.')
+    return HttpResponseRedirect('/contact/')
 
 
 @permission_required('dialer_contact.change_contact', login_url='/')
@@ -514,22 +544,27 @@ def contact_change(request, object_id):
         * Update/delete selected contact from the contact list
           via ContactForm & get redirected to the contact list
     """
-    contact = Contact.objects.get(pk=object_id)
-    form = ContactForm(request.user, instance=contact)
-    if request.method == 'POST':
-        # Delete contact
-        if request.POST.get('delete'):
-            contact_del(request, object_id)
-            return HttpResponseRedirect('/contact/')
-        else:
-            # Update contact
-            form = ContactForm(request.user, request.POST,
-                               instance=contact)
-            if form.is_valid():
-                form.save()
-                request.session["msg"] = _('"%(name)s" is updated.') \
-                    % {'name': request.POST['contact']}
+    try:
+        contact = Contact.objects.get(pk=object_id,
+                                      phonebook__user=request.user)
+        form = ContactForm(request.user, instance=contact)
+        if request.method == 'POST':
+            # Delete contact
+            if request.POST.get('delete'):
+                contact_del(request, object_id)
                 return HttpResponseRedirect('/contact/')
+            else:
+                # Update contact
+                form = ContactForm(request.user, request.POST,
+                                   instance=contact)
+                if form.is_valid():
+                    form.save()
+                    request.session["msg"] = _('"%(name)s" is updated.') \
+                        % {'name': request.POST['contact']}
+                    return HttpResponseRedirect('/contact/')
+    except:
+        request.session["error_msg"] = _('Contact doesn`t belong to user.')
+        return HttpResponseRedirect('/contact/')
 
     template = 'frontend/contact/change.html'
     data = {

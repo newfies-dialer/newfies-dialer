@@ -118,6 +118,7 @@ def audio_list(request):
         'AUDIO_DEBUG': settings.AUDIO_DEBUG,
     }
     request.session['msg'] = ''
+    request.session['error_msg'] = ''
     return render_to_response(template, data,
            context_instance=RequestContext(request))
 

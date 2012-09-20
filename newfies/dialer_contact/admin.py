@@ -71,7 +71,7 @@ class ContactAdmin(admin.ModelAdmin):
             # check Max Number of subscribers per campaign
             if check_dialer_setting(request, check_for="contact"):
                 msg = _("You have too many contacts per campaign. You are allowed a maximum of %(limit)s")\
-                % {'limit': dialer_setting_limit(request, limit_for="contact")}
+                    % {'limit': dialer_setting_limit(request, limit_for="contact")}
                 messages.error(request, msg)
 
                 # campaign limit reached
@@ -153,7 +153,7 @@ class ContactAdmin(admin.ModelAdmin):
                             int(row[5])
 
                             phonebook =\
-                            Phonebook.objects.get(pk=request.POST['phonebook'])
+                                Phonebook.objects.get(pk=request.POST['phonebook'])
                             try:
                                 # check if prefix is already
                                 # existing in the retail plan or not
@@ -176,7 +176,7 @@ class ContactAdmin(admin.ModelAdmin):
                                 contact_cnt = contact_cnt + 1
                                 msg = _('%(contact_cnt)s Contact(s) are uploaded, out of %(total_rows)s row(s) !!')\
                                         % {'contact_cnt': contact_cnt,
-                                   'total_rows': total_rows}
+                                           'total_rows': total_rows}
                                 success_import_list.append(row)
                         except:
                             msg = _("Error : invalid value for import! Check import samples.")

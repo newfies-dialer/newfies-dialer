@@ -76,23 +76,23 @@
                 <script type="text/javascript">
 
                     {% if perms.survey2.change_section %}
-                    //Add Section edit button
-                    $("#row"+{{ section.id }}).addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
-                            .find(".portlet-header")
-                            .addClass("ui-widget-header ui-corner-all")
-                            .prepend('<a class="section-edit btn btn-small" data-toggle="modal" href="#section-update-edit" url="/section/{{ section.id }}/" title="{% trans "Edit section" %}" data-controls-modal="section-update-edit"><i class="icon-pencil"></i></a>')
-                            .end()
-                            .find(".portlet-content");
+                        $(function() {
+                            $("#row"+{{ section.id }}).find(".section-edit")
+                                    .attr("url", "/section/{{ section.id }}/")
+                                    .attr("data-toggle", "modal")
+                                    .attr("href", "#section-update-edit")
+                                    .attr("data-controls-modal", "section-update-edit");
+                        });
                     {% endif %}
 
                     {% if perms.survey2.delete_section %}
-                    //Add Section delete button
-                    $("#row"+{{ section.id }}).addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
-                            .find(".portlet-header")
-                            .addClass("ui-widget-header ui-corner-all")
-                            .prepend('<a class="section-delete btn btn-small" data-toggle="modal" href="#section-del" url="/section/delete/{{ section.id }}/" title="{% trans "Delete section" %}" data-controls-modal="section-del"><i class="icon-remove"></i></a>')
-                            .end()
-                            .find(".portlet-content");
+                        $(function() {
+                            $("#row"+{{ section.id }}).find(".section-delete")
+                                    .attr("url", "/section/delete/{{ section.id }}/")
+                                    .attr("data-toggle", "modal")
+                                    .attr("href", "#section-del")
+                                    .attr("data-controls-modal", "section-del");
+                        });
                     {% endif %}
 
                     $(function() {

@@ -163,10 +163,10 @@ msgstr "צור קשר כבר קיים!"
 #: dialer_campaign/admin.py:243
 #, python-format
 msgid ""
-"%(contact_record_count)s Contact(s) are uploaded, out of %(total_rows)s row"
+"%(contact_cnt)s Contact(s) are uploaded, out of %(total_rows)s row"
 "(s) !!"
 msgstr ""
-"(Contact_record_count)%s צור (ים) נטען, מתוך% (TOTAL_ROWS) של השורה (ים)!"
+"(contact_cnt)%s צור (ים) נטען, מתוך% (TOTAL_ROWS) של השורה (ים)!"
 
 #: dialer_campaign/admin.py:248
 msgid "Error : invalid value for import! Check import samples."
@@ -720,10 +720,10 @@ msgstr "המנוי כבר קיים!"
 #: dialer_campaign/views.py:1552
 #, python-format
 msgid ""
-"%(contact_record_count)s Contact(s) are uploaded successfully out of "
+"%(contact_cnt)s Contact(s) are uploaded successfully out of "
 "%(total_rows)s row(s) !!"
 msgstr ""
-"% (Contact_record_count) של צור (ים) הועלה בהצלחה מתוך% (TOTAL_ROWS) בשורה "
+"% (contact_cnt) של צור (ים) הועלה בהצלחה מתוך% (TOTAL_ROWS) בשורה "
 "של (ים)!"
 
 #: dialer_campaign/views.py:1559

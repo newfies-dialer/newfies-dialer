@@ -163,7 +163,7 @@ msgstr ""
 #: dialer_campaign/admin.py:243
 #, python-format
 msgid ""
-"%(contact_record_count)s Contact(s) are uploaded, out of %(total_rows)s row"
+"%(contact_cnt)s Contact(s) are uploaded, out of %(total_rows)s row"
 "(s) !!"
 msgstr ""
 
@@ -716,7 +716,7 @@ msgstr ""
 #: dialer_campaign/views.py:1552
 #, python-format
 msgid ""
-"%(contact_record_count)s Contact(s) are uploaded successfully out of "
+"%(contact_cnt)s Contact(s) are uploaded successfully out of "
 "%(total_rows)s row(s) !!"
 msgstr ""
 

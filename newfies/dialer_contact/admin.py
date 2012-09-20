@@ -142,7 +142,7 @@ class ContactAdmin(admin.ModelAdmin):
 
                 rdr = csv.reader(request.FILES['csv_file'],
                     delimiter=',', quotechar='"')
-                contact_record_count = 0
+                contact_cnt = 0
                 # Read each Row
                 for row in rdr:
                     if (row and str(row[0]) > 0):
@@ -172,10 +172,9 @@ class ContactAdmin(admin.ModelAdmin):
                                     description=row[4],
                                     status=int(row[5]),
                                     additional_vars=row[6])
-                                contact_record_count =\
-                                contact_record_count + 1
-                                msg = _('%(contact_record_count)s Contact(s) are uploaded, out of %(total_rows)s row(s) !!')\
-                                        % {'contact_record_count': contact_record_count,
+                                contact_cnt = contact_cnt + 1
+                                msg = _('%(contact_cnt)s Contact(s) are uploaded, out of %(total_rows)s row(s) !!')\
+                                        % {'contact_cnt': contact_cnt,
                                    'total_rows': total_rows}
                                 success_import_list.append(row)
                         except:

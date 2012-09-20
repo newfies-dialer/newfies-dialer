@@ -164,10 +164,10 @@ msgstr "O contato já existe !!"
 #: dialer_campaign/admin.py:243
 #, python-format
 msgid ""
-"%(contact_record_count)s Contact(s) are uploaded, out of %(total_rows)s row"
+"%(contact_cnt)s Contact(s) are uploaded, out of %(total_rows)s row"
 "(s) !!"
 msgstr ""
-"%(contact_record_count)s Contato(s) foram carregados com sucesso "
+"%(contact_cnt)s Contato(s) foram carregados com sucesso "
 "%(total_rows)s coluna(s) !!"
 
 #: dialer_campaign/admin.py:248
@@ -727,10 +727,10 @@ msgstr "Assinate já existe!"
 #: dialer_campaign/views.py:1552
 #, python-format
 msgid ""
-"%(contact_record_count)s Contact(s) are uploaded successfully out of "
+"%(contact_cnt)s Contact(s) are uploaded successfully out of "
 "%(total_rows)s row(s) !!"
 msgstr ""
-"%(contact_record_count)s Contato(s) foram carregados com sucesso "
+"%(contact_cnt)s Contato(s) foram carregados com sucesso "
 "%(total_rows)s coluna(s) !!"
 
 #: dialer_campaign/views.py:1559

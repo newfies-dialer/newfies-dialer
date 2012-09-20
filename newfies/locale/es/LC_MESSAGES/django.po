@@ -165,10 +165,10 @@ msgstr "Contacto ya existe!"
 #: dialer_campaign/admin.py:243
 #, python-format
 msgid ""
-"%(contact_record_count)s Contact(s) are uploaded, out of %(total_rows)s row"
+"%(contact_cnt)s Contact(s) are uploaded, out of %(total_rows)s row"
 "(s) !!"
 msgstr ""
-"%(contact_record_count)s Contact(s) son subido con éxito de %(total_rows)s"
+"%(contact_cnt)s Contact(s) son subido con éxito de %(total_rows)s"
 "(s)!"
 
 #: dialer_campaign/admin.py:248
@@ -731,10 +731,10 @@ msgstr "El suscriptor ya existen!"
 #: dialer_campaign/views.py:1552
 #, python-format
 msgid ""
-"%(contact_record_count)s Contact(s) are uploaded successfully out of "
+"%(contact_cnt)s Contact(s) are uploaded successfully out of "
 "%(total_rows)s row(s) !!"
 msgstr ""
-"%(contact_record_count)s Contact(s) son uploaded éxito de %(total_rows)s fila"
+"%(contact_cnt)s Contact(s) son uploaded éxito de %(total_rows)s fila"
 "(s)!"
 
 #: dialer_campaign/views.py:1559

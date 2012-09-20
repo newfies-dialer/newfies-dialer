@@ -22,7 +22,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.forms import Contact_fileImport
-from dialer_campaign.function_def import check_dialer_setting
+from dialer_campaign.function_def import check_dialer_setting, \
+    dialer_setting_limit
 from dialer_campaign.views import common_send_notification
 from common.common_functions import striplist
 import csv

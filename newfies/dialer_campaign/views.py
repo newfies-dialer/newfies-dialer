@@ -148,114 +148,61 @@ def count_contact_of_campaign(campaign_id):
     >>> count_contact_of_campaign(1)
     'Phonebook Empty'
     """
-    count_contact = \
-        Contact.objects.filter(phonebook__campaign=campaign_id).count()
+    count_contact = Contact.objects\
+        .filter(phonebook__campaign=campaign_id).count()
     if not count_contact:
         return str("Phonebook Empty")
     return count_contact
 
 
+def tpl_control_icon(icon):
+    """
+    function to produce control html icon
+    """
+    return 'style="text-decoration:none;background-image:url(' \
+        + settings.STATIC_URL \
+        + 'newfies/icons/%s);"' % icon
+
+
 def get_url_campaign_status(id, status):
+    """
+    Helper to display campaign status button on the grid
+    """
+    control_play_style = tpl_control_icon('control_play.png')
+    control_pause_style = tpl_control_icon('control_pause.png')
+    control_abort_style = tpl_control_icon('abort_grey.png')
+    control_stop_style = tpl_control_icon('control_stop.png')
 
-    control_play_style = \
-        'style="text-decoration:none;background-image:url(' \
-        + settings.STATIC_URL \
-        + 'newfies/icons/control_play.png);"'
-    control_pause_style = \
-        'style="text-decoration:none;background-image:url(' \
-        + settings.STATIC_URL \
-        + 'newfies/icons/control_pause.png);"'
-    control_abort_style = \
-        'style="text-decoration:none;background-image:url(' \
-        + settings.STATIC_URL\
-        + 'newfies/icons/abort_grey.png);"'
-    control_stop_style = \
-        'style="text-decoration:none;background-image:url(' \
-        + settings.STATIC_URL\
-        + 'newfies/icons/control_stop.png);"'
-
-    control_play_blue_style = \
-        'style="text-decoration:none;background-image:url(' \
-        + settings.STATIC_URL \
-        + 'newfies/icons/control_play_blue.png);"'
-    control_pause_blue_style = \
-        'style="text-decoration:none;background-image:url(' \
-        + settings.STATIC_URL \
-        + 'newfies/icons/control_pause_blue.png);"'
-    control_abort_blue_style = \
-        'style="text-decoration:none;background-image:url(' \
-        + settings.STATIC_URL \
-        + 'newfies/icons/abort.png);"'
-    control_stop_blue_style = \
-        'style="text-decoration:none;background-image:url(' \
-        + settings.STATIC_URL \
-        + 'newfies/icons/control_stop_blue.png);"'
+    link_cpg_status = 'update_campaign_status_cust/' + str(id)
+    link_start = link_cpg_status + '/1/'
+    link_pause = link_cpg_status + '/2/'
+    link_abort = link_cpg_status + '/3/'
+    link_stop = link_cpg_status + '/4/'
 
     if status == 1:
-        url_str = "<a href='#' class='icon' title='" + \
-            _("campaign is running") + "' " +\
-            control_play_style + ">&nbsp;</a>\
-            <a href='update_campaign_status_cust/" + str(id) +\
-            "/2/' class='icon' title='" + _("Pause") + "' " +\
-            str(control_pause_blue_style) +\
-            ">&nbsp;</a><a href='update_campaign_status_cust/" + str(id) +\
-            "/3/' class='icon' title='" + _("Abort") + "' " +\
-            str(control_abort_blue_style) +\
-            ">&nbsp;</a><a href='update_campaign_status_cust/"\
-            + str(id) + "/4/' class='icon' title='" + _("Stop") + "' " +\
-            str(control_stop_blue_style) + ">&nbsp;</a>"
-        print url_str
+        link_start = '#'
+        control_play_style = tpl_control_icon('control_play_blue.png')
+    elif status == 2:
+        link_pause = '#'
+        control_pause_style = tpl_control_icon('control_pause_blue.png')
+    elif status == 3:
+        link_abort = '#'
+        control_abort_style = tpl_control_icon('abort.png')
+    elif status == 4:
+        link_stop = '#'
+        control_stop_style = tpl_control_icon('control_stop_blue.png')
 
-    if status == 2:
-        url_str = "<a href='update_campaign_status_cust/" + str(id) +\
-            "/1/' class='icon' title='" + _("Start") + "' " +\
-            control_play_blue_style + ">&nbsp;</a><a href='#' \
-            class='icon' title='" + _("campaign is paused") + "' " +\
-            control_pause_style + ">&nbsp;</a>" +\
-            "<a href='update_campaign_status_cust/" + str(id) +\
-            "/3/' class='icon' title='" + _("Abort") + "' " +\
-            control_abort_blue_style +\
-            ">&nbsp;</a>" +\
-            "<a href='update_campaign_status_cust/" + str(id) +\
-            "/4/' class='icon' title='" + _("Stop") + "' " +\
-            control_stop_blue_style +\
-            ">&nbsp;</a>"
-        print url_str
-
-    if status == 3:
-        url_str = "<a href='update_campaign_status_cust/" + str(id) +\
-            "/1/' class='icon' title='" + _("Start") + "' " +\
-            control_play_blue_style +\
-            ">&nbsp;</a>" + "<a href='update_campaign_status_cust/" +\
-            str(id) + "/2/' class='icon' \
-            title='" + _("Pause") + "' " + control_pause_blue_style +\
-            ">&nbsp;</a>" +\
-            "<a href='#' class='icon' title='" + _("campaign is aborted") +\
-            "' " + control_abort_style + " >&nbsp;</a>" +\
-            "<a href='update_campaign_status_cust/" + str(id) +\
-            "/4/' class='icon' title='" + _("Stop") + "' " +\
-            control_stop_blue_style + ">&nbsp;</a>"
-        print url_str
-
-    if status == 4:
-        url_str = "<a href='update_campaign_status_cust/" + str(id) +\
-            "/1/' class='icon' title='" + _("Start") + "' " +\
-            control_play_blue_style +\
-            ">&nbsp;</a>" +\
-            "<a href='update_campaign_status_cust/" + str(id) +\
-            "/2/' class='icon' title='" + _("Pause") + "' " +\
-            control_pause_blue_style +\
-            ">&nbsp;</a>" +\
-            "<a href='update_campaign_status_cust/" + str(id) +\
-            "/3/' class='icon' title='" + _("Abort") + "' " +\
-            control_abort_blue_style +\
-            ">&nbsp;</a>" + \
-            "<a href='#' class='icon' title='" + _("campaign is stopped") + \
-            "' " + control_stop_style + ">&nbsp;</a>"
-
-    return url_str
+    return "<a href='%s' class='icon' title='%s' %s>&nbsp;</a>\
+        <a href='%s' class='icon' title='%s' %s>&nbsp;</a>\
+        <a href='%s' class='icon' title='%s' %s>&nbsp;</a>\
+        <a href='%s' class='icon' title='%s' %s>&nbsp;</a>" % \
+        (link_start, _("Start"), control_play_style,
+        link_pause, _("Pause"), control_pause_style,
+        link_abort, _("Abort"), control_abort_style,
+        link_stop, _("Stop"), control_stop_style)
 
 
+#TODO: Add comments / docs
 def get_app_name(app_label, model_name, object_id):
     try:
         return get_model(app_label, model_name).objects.get(pk=object_id)

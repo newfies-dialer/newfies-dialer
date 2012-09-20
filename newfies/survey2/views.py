@@ -336,6 +336,7 @@ def survey_list(request):
         'notice_count': notice_count(request),
     }
     request.session['msg'] = ''
+    request.session['error_msg'] = ''
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
 
@@ -402,33 +403,41 @@ def survey_del(request, object_id):
 
         * Delete selected the survey from the survey list
     """
-    try:
-        # When object_id is not 0
-        survey = Survey.objects.get(pk=object_id)
-        if object_id:
+    if int(object_id) != 0:
+        try:
+            # When object_id is not 0
+            survey = Survey.objects.get(pk=object_id, user=request.user)
+
             # 1) delete survey
             request.session["msg"] = _('"%(name)s" is deleted.')\
-                % {'name': survey.name}
+                                     % {'name': survey.name}
             # delete sections as well as branching which are belong to survey
             delete_section_branching(survey)
             survey.delete()
-            return HttpResponseRedirect('/survey2/')
-    except:
+
+        except:
+            request.session["error_msg"] = _('Survey doesn`t belong to user.')
+    else:
         # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
+        try:
+            # 1) delete survey
+            survey_list = Survey.objects\
+                .filter(user=request.user)\
+                .extra(where=['id IN (%s)' % values])
+            if survey_list:
+                for survey in survey_list:
+                    delete_section_branching(survey)
 
-        # 1) delete survey
-        survey_list = Survey.objects.extra(where=['id IN (%s)' % values])
-        if survey_list:
-            for survey in survey_list:
-                delete_section_branching(survey)
+            request.session["msg"] =\
+                _('%(count)s survey(s) are deleted.')\
+                    % {'count': survey_list.count()}
+            survey_list.delete()
+        except:
+            request.session["error_msg"] = _('Survey(s) do not belong to user.')
 
-        request.session["msg"] =\
-            _('%(count)s survey(s) are deleted.')\
-                % {'count': survey_list.count()}
-        survey_list.delete()
-        return HttpResponseRedirect('/survey2/')
+    return HttpResponseRedirect('/survey2/')
 
 
 @permission_required('survey2.add_section', login_url='/')
@@ -1019,26 +1028,31 @@ def survey_change(request, object_id):
         * Update/delete selected survey from the survey list
           via SurveyForm & get redirected to survey list
     """
-    survey = Survey.objects.get(pk=object_id)
-    section_list = Section.objects.filter(survey=survey).order_by('order')
-    form = SurveyForm(instance=survey)
-    branching_list = Branching.objects.filter(
-        section__survey=survey).order_by('id')
-    branching_section_list = []
-    branching_section_list = \
-        branching_list.values_list('section_id', flat=True).distinct()
+    try:
+        survey = Survey.objects.get(pk=object_id, user=request.user)
+        section_list = Section.objects.filter(survey=survey).order_by('order')
+        form = SurveyForm(instance=survey)
+        branching_list = Branching.objects.filter(
+            section__survey=survey).order_by('id')
+        branching_section_list = []
+        branching_section_list = \
+            branching_list.values_list('section_id', flat=True).distinct()
 
-    if request.method == 'POST':
-        if request.POST.get('delete'):
-            survey_del(request, object_id)
-            return HttpResponseRedirect('/survey2/')
-        else:
-            form = SurveyForm(request.POST, request.user, instance=survey)
-            if form.is_valid():
-                form.save()
-                request.session["msg"] = _('"%(name)s" is updated.')\
-                    % {'name': request.POST['name']}
+        if request.method == 'POST':
+            if request.POST.get('delete'):
+                survey_del(request, object_id)
                 return HttpResponseRedirect('/survey2/')
+            else:
+                form = SurveyForm(request.POST, request.user, instance=survey)
+                if form.is_valid():
+                    form.save()
+                    request.session["msg"] = _('"%(name)s" is updated.')\
+                        % {'name': request.POST['name']}
+                    return HttpResponseRedirect('/survey2/')
+
+    except:
+        request.session["error_msg"] = _('survey doesn`t belong to user.')
+        return HttpResponseRedirect('/survey2/')
 
     template = 'frontend/survey2/survey_change.html'
 

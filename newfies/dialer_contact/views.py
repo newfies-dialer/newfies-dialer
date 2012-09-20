@@ -613,7 +613,8 @@ def contact_import(request):
                         int(row[5])
                         #TODO: Check the phonebook belong to the user
                         phonebook = Phonebook.objects\
-                                .get(pk=request.POST['phonebook'])
+                                .get(pk=request.POST['phonebook'],
+                                     user=request.user)
                         try:
                             # check if prefix is already
                             # exist with retail plan or not

@@ -16,7 +16,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, \
     permission_required
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_list_or_404
 from django.conf import settings
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
@@ -199,21 +199,17 @@ def phonebook_del(request, object_id):
         * Delete selected the phonebook from the phonebook list
     """
     if int(object_id) != 0:
-        try:
-            # When object_id is not 0
-            phonebook = Phonebook.objects.get(pk=object_id, user=request.user)
+        # When object_id is not 0
+        phonebook = get_list_or_404(Phonebook, pk=object_id, user=request.user)
 
-            # 1) delete all contacts belonging to a phonebook
-            contact_list = Contact.objects.filter(phonebook=phonebook)
-            contact_list.delete()
+        # 1) delete all contacts belonging to a phonebook
+        contact_list = Contact.objects.filter(phonebook=phonebook)
+        contact_list.delete()
 
-            # 2) delete phonebook
-            request.session["msg"] = _('"%(name)s" is deleted.')\
-                % {'name': phonebook.name}
-            phonebook.delete()
-        except:
-            request.session["error_msg"] = \
-                _('phonebook dosen`t belong to user.')
+        # 2) delete phonebook
+        request.session["msg"] = _('"%(name)s" is deleted.')\
+            % {'name': phonebook.name}
+        phonebook.delete()
     else:
         # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
@@ -237,8 +233,7 @@ def phonebook_del(request, object_id):
                     % {'count': phonebook_list.count()}
                 phonebook_list.delete()
         except:
-            request.session["error_msg"] = \
-                _('phonebook(s) do not belong to user.')
+            raise Http404
 
     return HttpResponseRedirect('/phonebook/')
 
@@ -274,7 +269,7 @@ def phonebook_change(request, object_id):
                         % {'name': request.POST['name']}
                     return HttpResponseRedirect('/phonebook/')
     except:
-        request.session["error_msg"] = _('phonebook dosen`t belong to user.')
+        request.session["error_msg"] = _('phonebook doesn't belong to user.')
         return HttpResponseRedirect('/phonebook/')
 
     template = 'frontend/phonebook/change.html'

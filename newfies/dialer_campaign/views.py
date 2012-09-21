@@ -171,7 +171,7 @@ def get_url_campaign_status(id, status):
     #Store html for campaign control button
     control_play_style = tpl_control_icon('control_play.png')
     control_pause_style = tpl_control_icon('control_pause.png')
-    control_abort_style = tpl_control_icon('abort_grey.png')
+    control_abort_style = tpl_control_icon('control_abort.png')
     control_stop_style = tpl_control_icon('control_stop.png')
 
     #set different url for the campaign status

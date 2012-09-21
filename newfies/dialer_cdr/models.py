@@ -14,16 +14,15 @@
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes import generic
 from dialer_gateway.models import Gateway
 from dialer_campaign.models import Campaign, CampaignSubscriber
 from common.intermediate_model_base_class import Model
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
+from common.utils import Choice
 from country_dialcode.models import Prefix
 from uuid import uuid1
 from datetime import datetime
-from utils.helper import Choice
 
 
 class CALLREQUEST_STATUS(Choice):

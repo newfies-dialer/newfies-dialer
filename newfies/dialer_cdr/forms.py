@@ -14,7 +14,7 @@
 
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from dialer_cdr.models import VOIPCALL_DISPOSITION
+from dialer_cdr.constants import VOIPCALL_DISPOSITION
 from dialer_contact.forms import SearchForm
 
 

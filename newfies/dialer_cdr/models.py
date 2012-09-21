@@ -18,47 +18,13 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from dialer_gateway.models import Gateway
 from dialer_campaign.models import Campaign, CampaignSubscriber
+from dialer_cdr.constants import CALLREQUEST_STATUS, \
+    CALLREQUEST_TYPE, LEG_TYPE, VOIPCALL_DISPOSITION
 from common.intermediate_model_base_class import Model
 from common.utils import Choice
 from country_dialcode.models import Prefix
 from uuid import uuid1
 from datetime import datetime
-
-
-class CALLREQUEST_STATUS(Choice):
-    PENDING = 1, _("Pending")
-    FAILURE = 2, _("Failure")
-    RETRY = 3, _("Retry")
-    SUCCESS = 4, _("Success")
-    ABORT = 5, _("Abort")
-    PAUSE = 6, _("Pause")
-    PROCESS = 7, _("Processing")
-    IN_PROGRESS = 8, _("In Progress")
-
-
-class CALLREQUEST_TYPE(Choice):
-    ALLOW_RETRY = 1, _('ALLOW RETRY')
-    CANNOT_RETRY = 2, _('CANNOT RETRY')
-    RETRY_DONE = 3, _('RETRY DONE')
-
-
-class LEG_TYPE(Choice):
-    A_LEG = 1, _('A-Leg')
-    B_LEG = 2, _('B-Leg')
-
-
-class VOIPCALL_DISPOSITION(Choice):
-    ANSWER = 'ANSWER', u'ANSWER'
-    BUSY = 'BUSY', u'BUSY'
-    NOANSWER = 'NOANSWER', u'NOANSWER'
-    CANCEL = 'CANCEL', u'CANCEL'
-    CONGESTION = 'CONGESTION', u'CONGESTION'
-    CHANUNAVAIL = 'CHANUNAVAIL', u'CHANUNAVAIL'
-    DONTCALL = 'DONTCALL', u'DONTCALL'
-    TORTURE = 'TORTURE', u'TORTURE'
-    INVALIDARGS = 'INVALIDARGS', u'INVALIDARGS'
-    NOROUTE = 'NOROUTE', u'NOROUTE'
-    FORBIDDEN = 'FORBIDDEN', u'FORBIDDEN'
 
 
 class CallRequestManager(models.Manager):

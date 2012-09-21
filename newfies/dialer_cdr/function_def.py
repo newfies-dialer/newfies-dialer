@@ -14,7 +14,7 @@
 
 #from dialer_cdr.models import Callrequest, VoIPCall
 from common.common_functions import variable_value
-from dialer_cdr.models import VOIPCALL_DISPOSITION
+from dialer_cdr.constants import VOIPCALL_DISPOSITION
 from datetime import datetime
 
 

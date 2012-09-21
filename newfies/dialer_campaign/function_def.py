@@ -15,12 +15,13 @@
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from dialer_contact.models import Contact
-from dialer_campaign.models import Campaign, CAMPAIGN_STATUS, \
+from dialer_contact.forms import STATUS_CHOICE
+from dialer_campaign.models import Campaign
+from dialer_campaign.constants import CAMPAIGN_STATUS,\
     CAMPAIGN_STATUS_COLOR
 from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting
 from common.common_functions import variable_value
-from dateutil.relativedelta import relativedelta
 from dateutil.rrule import rrule, DAILY, HOURLY
 from dateutil.parser import parse
 from datetime import datetime, timedelta
@@ -203,7 +204,7 @@ def contact_search_common_fun(request):
     if phonebook != '0':
         kwargs['phonebook'] = phonebook
 
-    if status != '2':
+    if int(status) != STATUS_CHOICE.ALL:
         kwargs['status'] = status
 
     contact_no = type_field_chk(contact_no, contact_no_type, 'contact')
@@ -211,38 +212,6 @@ def contact_search_common_fun(request):
         kwargs[i] = contact_no[i]
 
     return kwargs
-
-
-def calculate_date(search_type):
-    """calculate date"""
-    end_date = datetime.today()
-    search_type = int(search_type)
-    # Last 30 days
-    if search_type == 1:
-        start_date = end_date + relativedelta(days=-int(30))
-    # Last 7 days
-    if search_type == 2:
-        start_date = end_date + relativedelta(days=-int(7))
-    # Yesterday
-    if search_type == 3:
-        start_date = end_date + relativedelta(days=-int(1),
-                                            hour=0,
-                                            minute=0,
-                                            second=0)
-    # Last 24 hours
-    if search_type == 4:
-        start_date = end_date + relativedelta(hours=-int(24))
-    # Last 12 hours
-    if search_type == 5:
-        start_date = end_date + relativedelta(hours=-int(12))
-    # Last 6 hours
-    if search_type == 6:
-        start_date = end_date + relativedelta(hours=-int(6))
-    # Last hour
-    if search_type == 7:
-        start_date = end_date + relativedelta(hours=-int(1))
-
-    return start_date
 
 
 def date_range(start, end, q):

@@ -15,8 +15,8 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, \
                                            permission_required
-from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.core.mail import mail_admins
 from django.conf import settings
@@ -171,7 +171,7 @@ def get_url_campaign_status(id, status):
     #Store html for campaign control button
     control_play_style = tpl_control_icon('control_play.png')
     control_pause_style = tpl_control_icon('control_pause.png')
-    control_abort_style = tpl_control_icon('abort_grey.png')
+    control_abort_style = tpl_control_icon('control_abort.png')
     control_stop_style = tpl_control_icon('control_stop.png')
 
     #set different url for the campaign status
@@ -206,8 +206,8 @@ def get_url_campaign_status(id, status):
         url_cpg_stop, _("Stop"), control_stop_style)
 
 
-#TODO: Add comments / docs
 def get_app_name(app_label, model_name, object_id):
+    """To get app name from app_label, model_name & object_id"""
     try:
         return get_model(app_label, model_name).objects.get(pk=object_id)
     except:
@@ -400,16 +400,11 @@ def campaign_del(request, object_id):
         * Delete the selected campaign from the campaign list
     """
     if int(object_id) != 0:
-        try:
-            # When object_id is not 0
-            campaign = Campaign.objects.get(pk=object_id, user=request.user)
-
-            request.session["msg"] = _('"%(name)s" is deleted.')\
-                                     % {'name': campaign.name}
-            campaign.delete()
-        except:
-            request.session["error_msg"] = \
-                _('campaign doesn`t belong to user')
+        # When object_id is not 0
+        campaign = get_object_or_404(Campaign, pk=object_id, user=request.user)
+        request.session["msg"] = _('"%(name)s" is deleted.')\
+                                 % {'name': campaign.name}
+        campaign.delete()
     else:
         # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
@@ -423,8 +418,7 @@ def campaign_del(request, object_id):
                     % {'count': campaign_list.count()}
                 campaign_list.delete()
         except:
-            request.session["error_msg"] =\
-                _('campaign(s) do not belong to user')
+            raise Http404
 
     return HttpResponseRedirect('/campaign/')
 
@@ -449,44 +443,40 @@ def campaign_change(request, object_id):
     if user_attached_with_dialer_settings(request):
         return HttpResponseRedirect("/campaign/")
 
-    try:
-        campaign = Campaign.objects.get(pk=object_id, user=request.user)
+    campaign = get_object_or_404(Campaign, pk=object_id, user=request.user)
 
-        content_object = "type:%s-id:%s" % \
-                            (campaign.content_type_id, campaign.object_id)
-        form = CampaignForm(request.user,
-                            instance=campaign,
-                            initial={'content_object': content_object})
+    content_object = "type:%s-id:%s" % \
+                        (campaign.content_type_id, campaign.object_id)
+    form = CampaignForm(request.user,
+                        instance=campaign,
+                        initial={'content_object': content_object})
 
-        if request.method == 'POST':
-            # Delete campaign
-            if request.POST.get('delete'):
-                campaign_del(request, object_id)
-                request.session["msg"] = _('"%(name)s" is deleted.')\
+    if request.method == 'POST':
+        # Delete campaign
+        if request.POST.get('delete'):
+            campaign_del(request, object_id)
+            request.session["msg"] = _('"%(name)s" is deleted.')\
+                % {'name': request.POST['name']}
+            return HttpResponseRedirect('/campaign/')
+        else:
+            # Update campaign
+            form = CampaignForm(request.user, request.POST, instance=campaign)
+            previous_status = campaign.status
+            if form.is_valid():
+                form.save()
+                obj = form.save(commit=False)
+                contenttype = get_content_type(form.cleaned_data['content_object'])
+                obj.content_type = contenttype['object_type']
+                obj.object_id = contenttype['object_id']
+                obj.save()
+
+                # Start tasks to import subscriber
+                if obj.status == 1 and previous_status != 1:
+                    collect_subscriber.delay(obj.id)
+
+                request.session["msg"] = _('"%(name)s" is updated.') \
                     % {'name': request.POST['name']}
                 return HttpResponseRedirect('/campaign/')
-            else:
-                # Update campaign
-                form = CampaignForm(request.user, request.POST, instance=campaign)
-                previous_status = campaign.status
-                if form.is_valid():
-                    form.save()
-                    obj = form.save(commit=False)
-                    contenttype = get_content_type(form.cleaned_data['content_object'])
-                    obj.content_type = contenttype['object_type']
-                    obj.object_id = contenttype['object_id']
-                    obj.save()
-
-                    # Start tasks to import subscriber
-                    if obj.status == 1 and previous_status != 1:
-                        collect_subscriber.delay(obj.id)
-
-                    request.session["msg"] = _('"%(name)s" is updated.') \
-                        % {'name': request.POST['name']}
-                    return HttpResponseRedirect('/campaign/')
-    except:
-        request.session["error_msg"] = _('Campaign doesn`t belong to user')
-        return HttpResponseRedirect('/campaign/')
 
     template = 'frontend/campaign/change.html'
     data = {

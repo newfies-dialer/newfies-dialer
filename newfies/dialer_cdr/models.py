@@ -14,53 +14,16 @@
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
-from dialer_gateway.models import Gateway
-from dialer_campaign.models import Campaign, CampaignSubscriber
-from common.intermediate_model_base_class import Model
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
+from dialer_gateway.models import Gateway
+from dialer_campaign.models import Campaign, CampaignSubscriber
+from dialer_cdr.constants import CALLREQUEST_STATUS, \
+    CALLREQUEST_TYPE, LEG_TYPE, VOIPCALL_DISPOSITION
+from common.intermediate_model_base_class import Model
 from country_dialcode.models import Prefix
 from uuid import uuid1
 from datetime import datetime
-from utils.helper import Choice
-
-
-class CALLREQUEST_STATUS(Choice):
-    PENDING = 1, _("Pending")
-    FAILURE = 2, _("Failure")
-    RETRY = 3, _("Retry")
-    SUCCESS = 4, _("Success")
-    ABORT = 5, _("Abort")
-    PAUSE = 6, _("Pause")
-    PROCESS = 7, _("Processing")
-    IN_PROGRESS = 8, _("In Progress")
-
-
-CALLREQUEST_TYPE = (
-    (1, _('ALLOW RETRY')),
-    (2, _('CANNOT RETRY')),
-    (3, _('RETRY DONE')),
-)
-
-LEG_TYPE = (
-    (1, _('A-Leg')),
-    (2, _('B-Leg')),
-)
-
-VOIPCALL_DISPOSITION = (
-    ('ANSWER', u'ANSWER'),
-    ('BUSY', u'BUSY'),
-    ('NOANSWER', u'NOANSWER'),
-    ('CANCEL', u'CANCEL'),
-    ('CONGESTION', u'CONGESTION'),
-    ('CHANUNAVAIL', u'CHANUNAVAIL'),
-    ('DONTCALL', u'DONTCALL'),
-    ('TORTURE', u'TORTURE'),
-    ('INVALIDARGS', u'INVALIDARGS'),
-    ('NOROUTE', u'NOROUTE'),
-    ('FORBIDDEN', u'FORBIDDEN'),
-)
 
 
 class CallRequestManager(models.Manager):
@@ -139,9 +102,9 @@ class Callrequest(Model):
     created_date = models.DateTimeField(auto_now_add=True,
                                         verbose_name='Date')
     updated_date = models.DateTimeField(auto_now=True)
-    call_type = models.IntegerField(choices=CALLREQUEST_TYPE, default='1',
+    call_type = models.IntegerField(choices=list(CALLREQUEST_TYPE), default=1,
                 verbose_name=_("Call Request Type"), blank=True, null=True)
-    status = models.IntegerField(choices=list(CALLREQUEST_STATUS), default='1',
+    status = models.IntegerField(choices=list(CALLREQUEST_STATUS), default=1,
                 blank=True, null=True, db_index=True,
                 verbose_name=_('Status'))
     callerid = models.CharField(max_length=80, blank=True,
@@ -258,7 +221,7 @@ class VoIPCall(models.Model):
     hangup_cause = models.CharField(max_length=40, null=True, blank=True,
                     verbose_name=_("Hangup cause"))
     hangup_cause_q850 = models.CharField(max_length=10, null=True, blank=True)
-    leg_type = models.SmallIntegerField(choices=LEG_TYPE, default=1,
+    leg_type = models.SmallIntegerField(choices=list(LEG_TYPE), default=1,
                     verbose_name=_("Leg"),
                     null=True, blank=True)
 

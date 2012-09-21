@@ -15,7 +15,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template.context import RequestContext
 from django.utils.translation import ugettext_lazy as _
@@ -48,7 +48,7 @@ def customer_detail_change(request):
 
         * User is able to change his/her detail.
     """
-    user_detail = User.objects.get(username=request.user)
+    user_detail = get_object_or_404(User, username=request.user)
     try:
         user_detail_extened = UserProfile.objects.get(user=user_detail)
     except UserProfile.DoesNotExist:

@@ -20,6 +20,8 @@ from django.db.models.signals import post_save
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from dateutil.relativedelta import relativedelta
+from dialer_campaign.constants import CAMPAIGN_SUBSCRIBER_STATUS, \
+    CAMPAIGN_STATUS, CAMPAIGN_STATUS_COLOR
 from dialer_contact.models import Phonebook, Contact
 from dialer_gateway.models import Gateway
 from user_profile.models import UserProfile
@@ -29,37 +31,6 @@ from random import choice, seed
 import re
 
 seed()
-
-
-CONTACT_STATUS = (
-    (1, _('ACTIVE')),
-    (0, _('INACTIVE')),
-)
-
-CAMPAIGN_SUBSCRIBER_STATUS = (
-    (1, u'PENDING'),
-    (2, u'PAUSE'),
-    (3, u'ABORT'),
-    (4, u'FAIL'),
-    (5, u'COMPLETE'),
-    (6, u'IN PROCESS'),
-    (7, u'NOT AUTHORIZED'),
-)
-
-CAMPAIGN_STATUS = (
-    (1, u'START'),
-    (2, u'PAUSE'),
-    (3, u'ABORT'),
-    (4, u'END'),
-)
-
-CAMPAIGN_STATUS_COLOR = {1: "green", 2: "blue", 3: "orange", 4: "red"}
-
-DAY_STATUS = (
-    (1, _('YES')),
-    (0, _('NO')),
-)
-
 
 def get_unique_code(length):
     """Get unique code"""
@@ -189,7 +160,7 @@ class Campaign(Model):
     description = models.TextField(verbose_name=_('Description'), blank=True,
                                    null=True, help_text=_("Campaign description"))
     user = models.ForeignKey('auth.User', related_name='Campaign owner')
-    status = models.IntegerField(choices=CAMPAIGN_STATUS, default='2',
+    status = models.IntegerField(choices=list(CAMPAIGN_STATUS), default='2',
                                  verbose_name=_("Status"), blank=True, null=True)
     callerid = models.CharField(max_length=80, blank=True,
                                 verbose_name=_("CallerID"),
@@ -485,7 +456,7 @@ class CampaignSubscriber(Model):
     #We duplicate contact to create a unique constraint
     duplicate_contact = models.CharField(max_length=90,
                                          verbose_name=_("Contact"))
-    status = models.IntegerField(choices=CAMPAIGN_SUBSCRIBER_STATUS,
+    status = models.IntegerField(choices=list(CAMPAIGN_SUBSCRIBER_STATUS),
                                  default='1', verbose_name=_("Status"), blank=True, null=True)
 
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')

@@ -16,8 +16,8 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required,\
                                            permission_required
-from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
@@ -158,15 +158,13 @@ def voiceapp_del(request, object_id):
         * Delete voiceapp from voiceapp list
     """
     if int(object_id) != 0:
-        try:
-            # When object_id is not 0
-            voiceapp_list = VoiceApp.objects.get(pk=object_id, user=request.user)
-            # 1) delete voiceapp
-            request.session["msg"] = _('"%(name)s" is deleted.'\
-                                       % {'name': voiceapp_list.name})
-            voiceapp_list.delete()
-        except:
-            request.session["error_msg"] = _('Voiceapp doesn`t belong to user')
+        # When object_id is not 0
+        voiceapp = get_object_or_404(VoiceApp, pk=object_id, user=request.user)
+
+        # 1) delete voiceapp
+        request.session["msg"] = _('"%(name)s" is deleted.'\
+                                   % {'name': voiceapp.name})
+        voiceapp.delete()
     else:
         try:
             # When object_id is 0 (Multiple records delete)
@@ -182,7 +180,7 @@ def voiceapp_del(request, object_id):
                                            % {'count': voiceapp_list.count()})
                 voiceapp_list.delete()
         except:
-            request.session["error_msg"] = _('Voiceapp(s) do not belong to user')
+            raise Http404
 
     return HttpResponseRedirect('/voiceapp/')
 
@@ -203,23 +201,19 @@ def voiceapp_change(request, object_id):
         * Update/delete selected voiceapp from voiceapp list
           via VoiceAppForm form & get redirect to voice list
     """
-    try:
-        voiceapp = VoiceApp.objects.get(pk=object_id, user=request.user)
-        form = VoiceAppForm(instance=voiceapp)
-        if request.method == 'POST':
-            if request.POST.get('delete'):
-                voiceapp_del(request, object_id)
+    voiceapp = get_object_or_404(VoiceApp, pk=object_id, user=request.user)
+    form = VoiceAppForm(instance=voiceapp)
+    if request.method == 'POST':
+        if request.POST.get('delete'):
+            voiceapp_del(request, object_id)
+            return HttpResponseRedirect('/voiceapp/')
+        else:
+            form = VoiceAppForm(request.POST, instance=voiceapp)
+            if form.is_valid():
+                form.save()
+                request.session["msg"] = _('"%(name)s" is updated.' \
+                    % {'name': request.POST['name']})
                 return HttpResponseRedirect('/voiceapp/')
-            else:
-                form = VoiceAppForm(request.POST, instance=voiceapp)
-                if form.is_valid():
-                    form.save()
-                    request.session["msg"] = _('"%(name)s" is updated.' \
-                        % {'name': request.POST['name']})
-                    return HttpResponseRedirect('/voiceapp/')
-    except:
-        request.session["error_msg"] = _('Voiceapp doesn`t belong to user')
-        return HttpResponseRedirect('/voiceapp/')
 
     template = 'frontend/voiceapp/change.html'
     data = {

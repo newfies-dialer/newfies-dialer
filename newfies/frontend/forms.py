@@ -1,17 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from dialer_campaign.models import Campaign
-
-
-SEARCH_TYPE = (
-    (1, _('Last 30 days')),
-    (2, _('Last 7 days')),
-    (3, _('Yesterday')),
-    (4, _('Last 24 hours')),
-    (5, _('Last 12 hours')),
-    (6, _('Last 6 hours')),
-    (7, _('Last hour')),
-    )
+from frontend.constants import SEARCH_TYPE
 
 
 class LoginForm(forms.Form):
@@ -30,7 +20,7 @@ class DashboardForm(forms.Form):
     """Dashboard Form"""
     campaign = forms.ChoiceField(label=_('Campaign'), required=False)
     search_type = forms.ChoiceField(label=_('Type'), required=False, initial=4,
-        choices=SEARCH_TYPE)
+        choices=list(SEARCH_TYPE))
 
     def __init__(self, user, *args, **kwargs):
         super(DashboardForm, self).__init__(*args, **kwargs)

@@ -74,27 +74,3 @@ def get_grid_update_delete_link(request, row_id, perm_name, title, action):
                + delete_style + ' onClick="return get_alert_msg('\
                + str(row_id) + ');" title="' + title + '">&nbsp;</a>'
     return link
-
-
-import inspect
-
-
-#TODO: Move this to common libs
-class Choice(object):
-
-    class __metaclass__(type):
-        def __init__(self, name, type, other):
-            self._data = []
-            for name, value in inspect.getmembers(self):
-                if not name.startswith("_") and not inspect.isfunction(value):
-                    if isinstance(value, tuple) and len(value) > 1:
-                        data = value
-                    else:
-                        data = (value, " ".join(
-                            [x.capitalize() for x in name.split("_")]),)
-                    self._data.append(data)
-                    setattr(self, name, data[0])
-
-        def __iter__(self):
-            for value, data in self._data:
-                yield value, data

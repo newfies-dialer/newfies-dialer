@@ -17,8 +17,8 @@ from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.contrib.auth.decorators import login_required, \
                                            permission_required
-from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.shortcuts import render_to_response, get_object_or_404
 
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
@@ -175,16 +175,12 @@ def audio_del(request, object_id):
         * Delete selected the audio from the audio list
     """
     if int(object_id) != 0:
-        try:
-            audio = AudioFile.objects.get(pk=int(object_id), user=request.user)
+        audio = get_object_or_404(AudioFile, pk=int(object_id), user=request.user)
 
-            # 1) delete survey
-            request.session["msg"] = _('"%(name)s" is deleted.')\
-                                     % {'name': audio.name}
-            audio.delete()
-        except:
-            request.session["error_msg"] =\
-                _('audio doesn`t belong to user.')
+        # 1) delete survey
+        request.session["msg"] = _('"%(name)s" is deleted.')\
+                                 % {'name': audio.name}
+        audio.delete()
     else:
         try:
             # When object_id is 0 (Multiple records delete)
@@ -200,8 +196,7 @@ def audio_del(request, object_id):
                     % {'count': audio_list.count()}
             audio_list.delete()
         except:
-            request.session["error_msg"] =\
-                _('audio(s) do not belong to user.')
+            raise Http404
 
     return HttpResponseRedirect('/audio/')
 
@@ -221,29 +216,24 @@ def audio_change(request, object_id):
         * Update audio which is belong to the logged in user
           via the CustomerAudioFileForm & get redirected to the audio list
     """
-    try:
-        obj = AudioFile.objects.get(pk=object_id, user=request.user)
-        form = DialerAudioFileForm(instance=obj)
+    obj = get_object_or_404(AudioFile, pk=object_id, user=request.user)
+    form = DialerAudioFileForm(instance=obj)
 
-        if request.GET.get('delete'):
-            # perform delete
-            if obj.audio_file:
-                if os.path.exists(obj.audio_file.path):
-                    os.remove(obj.audio_file.path)
-            obj.delete()
-            return HttpResponseRedirect('/audio/')
-
-        if request.method == 'POST':
-            form = DialerAudioFileForm(request.POST,
-                                       request.FILES,
-                                       instance=obj)
-            if form.is_valid():
-                form.save()
-                return HttpResponseRedirect('/audio/')
-    except:
-        request.session["error_msg"] = _('audio doesn`t not belong to user.')
+    if request.GET.get('delete'):
+        # perform delete
+        if obj.audio_file:
+            if os.path.exists(obj.audio_file.path):
+                os.remove(obj.audio_file.path)
+        obj.delete()
         return HttpResponseRedirect('/audio/')
 
+    if request.method == 'POST':
+        form = DialerAudioFileForm(request.POST,
+                                   request.FILES,
+                                   instance=obj)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/audio/')
 
     template = 'frontend/audio/audio_change.html'
     data = {

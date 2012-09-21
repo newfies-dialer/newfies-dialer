@@ -16,12 +16,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django_countries import CountryField
 from common.intermediate_model_base_class import Model
-
-
-CONTACT_STATUS = (
-    (1, _('ACTIVE')),
-    (0, _('INACTIVE')),
-)
+from dialer_contact.constants import CONTACT_STATUS
 
 
 class Phonebook(Model):
@@ -101,7 +96,7 @@ class Contact(Model):
                             verbose_name=_('City'))
     description = models.TextField(null=True, blank=True,
                                    help_text=_("Contact Notes"))
-    status = models.IntegerField(choices=CONTACT_STATUS, default='1',
+    status = models.IntegerField(choices=list(CONTACT_STATUS), default='1',
                                  verbose_name=_("Status"), blank=True, null=True)
     additional_vars = models.CharField(max_length=100, blank=True,
                                        verbose_name=_('Additional parameters'))

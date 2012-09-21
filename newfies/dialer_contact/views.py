@@ -640,6 +640,8 @@ def contact_import(request):
                     break
                 #Create new Contact if errors add into a list to display to the user
                 try:
+                    #TODO: Improve the speed, it's quite slow if you import a huge phonebook, implement bulk create
+                    #https://docs.djangoproject.com/en/dev/ref/models/querysets/#django.db.models.query.QuerySet.bulk_create
                     Contact.objects.create(
                         phonebook=phonebook,
                         contact=row[0],

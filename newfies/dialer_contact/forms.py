@@ -16,7 +16,7 @@ from django import forms
 from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
 from dialer_contact.models import Phonebook, Contact
-from common.utils import Choice
+from dialer_contact.constants import CHOICE_TYPE, STATUS_CHOICE
 
 
 class SearchForm(forms.Form):
@@ -93,19 +93,6 @@ class ContactForm(ModelForm):
             list = Phonebook.objects.filter(user=user)
             pb_list_user = ((l.id, l.name) for l in list)
             self.fields['phonebook'].choices = pb_list_user
-
-
-class CHOICE_TYPE(Choice):
-    CONTAINS = 1, _('Contains')
-    EQUALS = 2, _('Equals')
-    BEGINS_WITH = 3, _('Begins with')
-    ENDS_WITH = 4, _('Ends with')
-
-
-class STATUS_CHOICE(Choice):
-    INACTIVE = 0, _('Inactive')
-    ACTIVE = 1, _('Active')
-    ALL = 2, _('All')
 
 
 class ContactSearchForm(forms.Form):

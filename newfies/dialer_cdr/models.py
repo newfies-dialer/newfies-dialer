@@ -21,7 +21,6 @@ from dialer_campaign.models import Campaign, CampaignSubscriber
 from dialer_cdr.constants import CALLREQUEST_STATUS, \
     CALLREQUEST_TYPE, LEG_TYPE, VOIPCALL_DISPOSITION
 from common.intermediate_model_base_class import Model
-from common.utils import Choice
 from country_dialcode.models import Prefix
 from uuid import uuid1
 from datetime import datetime

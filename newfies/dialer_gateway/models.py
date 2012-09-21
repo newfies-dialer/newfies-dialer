@@ -15,20 +15,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from common.intermediate_model_base_class import Model
-from common.utils import Choice
-
-
-class GATEWAY_STATUS(Choice):
-    ACTIVE = 1, _('ACTIVE')
-    INACTIVE = 0, _('INACTIVE')
-
-
-class GATEWAY_PROTOCOL(Choice):
-    SIP = 'SIP', _('SIP')
-    LOCAL = 'LOCAL', _('LOCAL')
-    GSM = 'GSM', _('GSM')
-    SKINNY = 'SKINNY', _('SKINNY')
-    JINGLE = 'JINGLE', _('JINGLE')
+from dialer_gateway.constants import GATEWAY_STATUS, GATEWAY_PROTOCOL
 
 
 """

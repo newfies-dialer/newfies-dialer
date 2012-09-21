@@ -25,7 +25,6 @@ from dialer_campaign.constants import CAMPAIGN_SUBSCRIBER_STATUS, \
 from dialer_contact.models import Phonebook, Contact
 from dialer_gateway.models import Gateway
 from user_profile.models import UserProfile
-from common.utils import Choice
 from datetime import datetime
 from common.intermediate_model_base_class import Model
 from random import choice, seed

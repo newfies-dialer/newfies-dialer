@@ -16,12 +16,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django_countries import CountryField
 from common.intermediate_model_base_class import Model
-from common.utils import Choice
-
-
-class CONTACT_STATUS(Choice):
-    ACTIVE = 1, _('ACTIVE')
-    INACTIVE = 0, _('INACTIVE')
+from dialer_contact.constants import CONTACT_STATUS
 
 
 class Phonebook(Model):

@@ -15,16 +15,8 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from dialer_gateway.models import Gateway
 from common.intermediate_model_base_class import Model
-from common.utils import Choice
+from voice_app.constants import APP_TYPE
 from user_profile.fields import LanguageField
-
-
-class APP_TYPE(Choice):
-    DIAL = 1, u'DIAL'
-    PLAYAUDIO = 2, u'PLAYAUDIO'
-    CONFERENCE = 3, u'CONFERENCE'
-    SPEAK = 4, u'SPEAK'
-
 
 from south.modelsinspector import add_introspection_rules
 add_introspection_rules([], ["^user_profile.fields.LanguageField"])

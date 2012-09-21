@@ -21,17 +21,8 @@ from dialer_cdr.models import Callrequest
 
 from adminsortable.models import Sortable
 from audiofield.models import AudioFile
-from common.utils import Choice
+from survey2.constants import SECTION_TYPE
 #from tagging.fields import TagField
-
-
-class SECTION_TYPE(Choice):
-    VOICE_SECTION = 1, u'Voice section'
-    MULTIPLE_CHOICE_SECTION = 2, u'Multiple choice question'
-    RATING_SECTION = 3, u'Rating question'
-    ENTER_NUMBER_SECTION = 4, u'Enter a number'
-    RECORD_MSG_SECTION = 5, u'Record message'
-    PATCH_THROUGH_SECTION = 6, u'Patch-through'
 
 
 class Survey(Sortable):

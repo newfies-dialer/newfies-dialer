@@ -16,7 +16,8 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from dialer_contact.models import Contact
 from dialer_contact.forms import STATUS_CHOICE
-from dialer_campaign.models import Campaign, CAMPAIGN_STATUS, \
+from dialer_campaign.models import Campaign
+from dialer_campaign.constants import CAMPAIGN_STATUS,\
     CAMPAIGN_STATUS_COLOR
 from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting

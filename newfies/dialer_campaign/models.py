@@ -20,6 +20,8 @@ from django.db.models.signals import post_save
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from dateutil.relativedelta import relativedelta
+from dialer_campaign.constants import CAMPAIGN_SUBSCRIBER_STATUS, \
+    CAMPAIGN_STATUS, CAMPAIGN_STATUS_COLOR
 from dialer_contact.models import Phonebook, Contact
 from dialer_gateway.models import Gateway
 from user_profile.models import UserProfile
@@ -30,26 +32,6 @@ from random import choice, seed
 import re
 
 seed()
-
-
-class CAMPAIGN_SUBSCRIBER_STATUS(Choice):
-    PENDING = 1, u'PENDING'
-    PAUSE = 2, u'PAUSE'
-    ABORT = 3, u'ABORT'
-    FAIL = 4, u'FAIL'
-    COMPLETE = 5, u'COMPLETE'
-    IN_PROCESS = 6, u'IN PROCESS'
-    NOT_AUTHORIZED = 7, u'NOT AUTHORIZED'
-
-
-class CAMPAIGN_STATUS(Choice):
-    START = 1, u'START'
-    PAUSE = 2, u'PAUSE'
-    ABORT = 3, u'ABORT'
-    END = 4, u'END'
-
-CAMPAIGN_STATUS_COLOR = {1: "green", 2: "blue", 3: "orange", 4: "red"}
-
 
 def get_unique_code(length):
     """Get unique code"""

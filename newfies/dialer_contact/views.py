@@ -605,6 +605,8 @@ def contact_import(request):
     success_import_list = []
     error_import_list = []
     type_error_import_list = []
+    contact_cnt = 0
+    err_contact_cnt = 0
     if request.method == 'POST':
         form = Contact_fileImport(request.user, request.POST, request.FILES)
         if form.is_valid():
@@ -617,63 +619,55 @@ def contact_import(request):
             #  5     - status
             #  6     - additional_vars
             # To count total rows of CSV file
-            print "form is valid"
             records = csv.reader(request.FILES['csv_file'],
                                  delimiter=',', quotechar='"')
             total_rows = len(list(records))
-            print "total_rows=%d" % total_rows
-
             rdr = csv.reader(request.FILES['csv_file'],
                              delimiter=',', quotechar='"')
-            contact_cnt = 0
-            err_contact_cnt = 0
+            #Get Phonebook Obj
+            phonebook = get_object_or_404(
+                Phonebook, pk=request.POST['phonebook'],
+                user=request.user)
             # Read each Row
             for row in rdr:
                 row = striplist(row)
-                print contact_cnt
-                if (row and str(row[0]) > 0):
-                    try:
-                        # check field type
-                        int(row[5])
-                        phonebook = get_object_or_404(
-                            Phonebook, pk=request.POST['phonebook'],
-                            user=request.user)
+                if not row or str(row[0]) == 0:
+                    continue
+                # check field type
+                if not int(row[5]):
+                    error_msg = _("Invalid value for import! Please check the import samples or phonebook is not valid")
+                    type_error_import_list.append(row)
+                    break
+                #Create new Contact if errors add into a list to display to the user
+                try:
+                    Contact.objects.create(
+                        phonebook=phonebook,
+                        contact=row[0],
+                        last_name=row[1],
+                        first_name=row[2],
+                        email=row[3],
+                        description=row[4],
+                        status=int(row[5]),
+                        additional_vars=row[6])
 
-                        try:
-                            # check if prefix is already
-                            # exist with retail plan or not
-                            Contact.objects.get(
-                                phonebook_id=phonebook.id,
-                                contact=row[0])
-                            err_contact_cnt = err_contact_cnt + 1
-                            error_msg = _('Contact already exists!')
-                            error_msg = _('%(err_contact_cnt)s Contact(s) already exists!') \
-                                % {'err_contact_cnt': err_contact_cnt}
-                            error_import_list.append(row)
-                        except:
-                            #TODO: lost of performance checking element before inserting it
-                            # if not, insert record
-                            Contact.objects.create(
-                                phonebook=phonebook,
-                                contact=row[0],
-                                last_name=row[1],
-                                first_name=row[2],
-                                email=row[3],
-                                description=row[4],
-                                status=int(row[5]),
-                                additional_vars=row[6])
+                    contact_cnt = contact_cnt + 1
+                    if contact_cnt < 100:
+                        success_import_list.append(row)
+                except:
+                    err_contact_cnt = err_contact_cnt + 1
+                    if err_contact_cnt < 100:
+                        error_import_list.append(row)
 
-                            contact_cnt = contact_cnt + 1
-                            msg = _('%(contact_cnt)s Contact(s) are uploaded successfully out of %(total_rows)s row(s) !!') \
-                                % {'contact_cnt': contact_cnt,
-                                   'total_rows': total_rows}
+    #check if get any errors during the import
+    if err_contact_cnt > 0:
+        error_msg = _('%(err_contact_cnt)s Contact(s) already exists!') \
+            % {'err_contact_cnt': err_contact_cnt}
 
-                            success_import_list.append(row)
-                    except:
-                        error_msg = \
-                            _("Invalid value for import! Please check the import samples \
-                              or phonebook is not valid")
-                        type_error_import_list.append(row)
+    #check if there is contact imported
+    if contact_cnt > 0:
+        msg = _('%(contact_cnt)s Contact(s) are uploaded successfully out of %(total_rows)s row(s) !!') \
+            % {'contact_cnt': contact_cnt,
+               'total_rows': total_rows}
 
     data = RequestContext(request, {
                           'form': form,

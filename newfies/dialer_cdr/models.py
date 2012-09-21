@@ -36,30 +36,29 @@ class CALLREQUEST_STATUS(Choice):
     IN_PROGRESS = 8, _("In Progress")
 
 
-CALLREQUEST_TYPE = (
-    (1, _('ALLOW RETRY')),
-    (2, _('CANNOT RETRY')),
-    (3, _('RETRY DONE')),
-)
+class CALLREQUEST_TYPE(Choice):
+    ALLOW_RETRY = 1, _('ALLOW RETRY')
+    CANNOT_RETRY = 2, _('CANNOT RETRY')
+    RETRY_DONE = 3, _('RETRY DONE')
 
-LEG_TYPE = (
-    (1, _('A-Leg')),
-    (2, _('B-Leg')),
-)
 
-VOIPCALL_DISPOSITION = (
-    ('ANSWER', u'ANSWER'),
-    ('BUSY', u'BUSY'),
-    ('NOANSWER', u'NOANSWER'),
-    ('CANCEL', u'CANCEL'),
-    ('CONGESTION', u'CONGESTION'),
-    ('CHANUNAVAIL', u'CHANUNAVAIL'),
-    ('DONTCALL', u'DONTCALL'),
-    ('TORTURE', u'TORTURE'),
-    ('INVALIDARGS', u'INVALIDARGS'),
-    ('NOROUTE', u'NOROUTE'),
-    ('FORBIDDEN', u'FORBIDDEN'),
-)
+class LEG_TYPE(Choice):
+    A_LEG = 1, _('A-Leg')
+    B_LEG = 2, _('B-Leg')
+
+
+class VOIPCALL_DISPOSITION(Choice):
+    ANSWER = 'ANSWER', u'ANSWER'
+    BUSY = 'BUSY', u'BUSY'
+    NOANSWER = 'NOANSWER', u'NOANSWER'
+    CANCEL = 'CANCEL', u'CANCEL'
+    CONGESTION = 'CONGESTION', u'CONGESTION'
+    CHANUNAVAIL = 'CHANUNAVAIL', u'CHANUNAVAIL'
+    DONTCALL = 'DONTCALL', u'DONTCALL'
+    TORTURE = 'TORTURE', u'TORTURE'
+    INVALIDARGS = 'INVALIDARGS', u'INVALIDARGS'
+    NOROUTE = 'NOROUTE', u'NOROUTE'
+    FORBIDDEN = 'FORBIDDEN', u'FORBIDDEN'
 
 
 class CallRequestManager(models.Manager):
@@ -138,7 +137,7 @@ class Callrequest(Model):
     created_date = models.DateTimeField(auto_now_add=True,
                                         verbose_name='Date')
     updated_date = models.DateTimeField(auto_now=True)
-    call_type = models.IntegerField(choices=CALLREQUEST_TYPE, default='1',
+    call_type = models.IntegerField(choices=list(CALLREQUEST_TYPE), default='1',
                 verbose_name=_("Call Request Type"), blank=True, null=True)
     status = models.IntegerField(choices=list(CALLREQUEST_STATUS), default='1',
                 blank=True, null=True, db_index=True,
@@ -257,7 +256,7 @@ class VoIPCall(models.Model):
     hangup_cause = models.CharField(max_length=40, null=True, blank=True,
                     verbose_name=_("Hangup cause"))
     hangup_cause_q850 = models.CharField(max_length=10, null=True, blank=True)
-    leg_type = models.SmallIntegerField(choices=LEG_TYPE, default=1,
+    leg_type = models.SmallIntegerField(choices=list(LEG_TYPE), default=1,
                     verbose_name=_("Leg"),
                     null=True, blank=True)
 

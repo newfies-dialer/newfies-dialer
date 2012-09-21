@@ -16,6 +16,7 @@ from django import forms
 from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
 from dialer_contact.models import Phonebook, Contact
+from common.utils import Choice
 
 
 class SearchForm(forms.Form):
@@ -93,17 +94,18 @@ class ContactForm(ModelForm):
             pb_list_user = ((l.id, l.name) for l in list)
             self.fields['phonebook'].choices = pb_list_user
 
-NAME_TYPE = (
-    (1, _('Last Name')),
-    (2, _('First Name')),
-)
 
-CHOICE_TYPE = (
-    (1, _('Contains')),
-    (2, _('Equals')),
-    (3, _('Begins with')),
-    (4, _('Ends with')),
-)
+class CHOICE_TYPE(Choice):
+    CONTAINS = 1, _('Contains')
+    EQUALS = 2, _('Equals')
+    BEGINS_WITH = 3, _('Begins with')
+    ENDS_WITH = 4, _('Ends with')
+
+
+class STATUS_CHOICE(Choice):
+    INACTIVE = 0, _('Inactive')
+    ACTIVE = 1, _('Active')
+    ALL = 2, _('All')
 
 
 class ContactSearchForm(forms.Form):
@@ -111,17 +113,14 @@ class ContactSearchForm(forms.Form):
     contact_no = forms.CharField(label=_('Contact Number:'), required=False,
                                  widget=forms.TextInput(attrs={'size': 15}))
     contact_no_type = forms.ChoiceField(label='', required=False, initial=1,
-                                        choices=CHOICE_TYPE, widget=forms.RadioSelect)
+                                        choices=list(CHOICE_TYPE), widget=forms.RadioSelect)
     name = forms.CharField(label=_('Contact Name:'), required=False,
                            widget=forms.TextInput(attrs={'size': 15}))
     phonebook = forms.ChoiceField(label=_('Phonebook:'), required=False)
     status = forms.TypedChoiceField(label=_('Status:'), required=False,
-                                    choices=(
-                                    ('0', _('Inactive')),
-                                    ('1', _('Active ')),
-                                    ('2', _('All'))),
+                                    choices=list(STATUS_CHOICE),
                                     widget=forms.RadioSelect,
-                                    initial='2')
+                                    initial=2)
 
     def __init__(self, user, *args, **kwargs):
         super(ContactSearchForm, self).__init__(*args, **kwargs)

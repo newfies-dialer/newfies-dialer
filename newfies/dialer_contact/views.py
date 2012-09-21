@@ -17,7 +17,7 @@ from django.contrib.auth.decorators import login_required, \
     permission_required
 from django.http import HttpResponseRedirect, HttpResponse, \
     Http404
-from django.shortcuts import render_to_response, get_list_or_404
+from django.shortcuts import render_to_response, get_object_or_404
 from django.conf import settings
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
@@ -201,7 +201,7 @@ def phonebook_del(request, object_id):
     """
     if int(object_id) != 0:
         # When object_id is not 0
-        phonebook = get_list_or_404(Phonebook, pk=object_id, user=request.user)
+        phonebook = get_object_or_404(Phonebook, pk=object_id, user=request.user)
 
         # 1) delete all contacts belonging to a phonebook
         contact_list = Contact.objects.filter(phonebook=phonebook)
@@ -255,23 +255,19 @@ def phonebook_change(request, object_id):
         * Update/delete selected phonebook from the phonebook list
           via PhonebookForm & get redirected to phonebook list
     """
-    try:
-        phonebook = Phonebook.objects.get(pk=object_id, user=request.user)
-        form = PhonebookForm(instance=phonebook)
-        if request.method == 'POST':
-            if request.POST.get('delete'):
-                phonebook_del(request, object_id)
+    phonebook = get_object_or_404(Phonebook, pk=object_id, user=request.user)
+    form = PhonebookForm(instance=phonebook)
+    if request.method == 'POST':
+        if request.POST.get('delete'):
+            phonebook_del(request, object_id)
+            return HttpResponseRedirect('/phonebook/')
+        else:
+            form = PhonebookForm(request.POST, instance=phonebook)
+            if form.is_valid():
+                form.save()
+                request.session["msg"] = _('"%(name)s" is updated.') \
+                    % {'name': request.POST['name']}
                 return HttpResponseRedirect('/phonebook/')
-            else:
-                form = PhonebookForm(request.POST, instance=phonebook)
-                if form.is_valid():
-                    form.save()
-                    request.session["msg"] = _('"%(name)s" is updated.') \
-                        % {'name': request.POST['name']}
-                    return HttpResponseRedirect('/phonebook/')
-    except:
-        request.session["error_msg"] = _('phonebook doesn\'t belong to user.')
-        return HttpResponseRedirect('/phonebook/')
 
     template = 'frontend/phonebook/change.html'
     data = {
@@ -494,17 +490,15 @@ def contact_del(request, object_id):
         * Delete selected contact from the contact list
     """
     if int(object_id) != 0:
-        try:
-            # When object_id is not 0
-            contact = Contact.objects.get(pk=object_id,
-                                          phonebook__user=request.user)
-            # Delete phonebook
-            request.session["msg"] = _('"%(name)s" is deleted.')\
-                % {'name': contact.first_name}
-            contact.delete()
-        except:
-            request.session["error_msg"] = \
-                _('Contact doesn`t belong to user.')
+        # When object_id is not 0
+        contact = get_object_or_404(Contact,
+                                    pk=object_id,
+                                    phonebook__user=request.user)
+
+        # Delete contact
+        request.session["msg"] = _('"%(name)s" is deleted.')\
+            % {'name': contact.first_name}
+        contact.delete()
     else:
         # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
@@ -540,27 +534,23 @@ def contact_change(request, object_id):
         * Update/delete selected contact from the contact list
           via ContactForm & get redirected to the contact list
     """
-    try:
-        contact = Contact.objects.get(pk=object_id,
-                                      phonebook__user=request.user)
-        form = ContactForm(request.user, instance=contact)
-        if request.method == 'POST':
-            # Delete contact
-            if request.POST.get('delete'):
-                contact_del(request, object_id)
+    contact = get_object_or_404(Contact, pk=object_id,
+                                phonebook__user=request.user)
+    form = ContactForm(request.user, instance=contact)
+    if request.method == 'POST':
+        # Delete contact
+        if request.POST.get('delete'):
+            contact_del(request, object_id)
+            return HttpResponseRedirect('/contact/')
+        else:
+            # Update contact
+            form = ContactForm(request.user, request.POST,
+                               instance=contact)
+            if form.is_valid():
+                form.save()
+                request.session["msg"] = _('"%(name)s" is updated.') \
+                    % {'name': request.POST['contact']}
                 return HttpResponseRedirect('/contact/')
-            else:
-                # Update contact
-                form = ContactForm(request.user, request.POST,
-                                   instance=contact)
-                if form.is_valid():
-                    form.save()
-                    request.session["msg"] = _('"%(name)s" is updated.') \
-                        % {'name': request.POST['contact']}
-                    return HttpResponseRedirect('/contact/')
-    except:
-        request.session["error_msg"] = _('Contact doesn`t belong to user.')
-        return HttpResponseRedirect('/contact/')
 
     template = 'frontend/contact/change.html'
     data = {
@@ -642,9 +632,10 @@ def contact_import(request):
                     try:
                         # check field type
                         int(row[5])
-                        phonebook = Phonebook.objects\
-                            .get(pk=request.POST['phonebook'],
-                                 user=request.user)
+                        phonebook = get_object_or_404(
+                            Phonebook, pk=request.POST['phonebook'],
+                            user=request.user)
+
                         try:
                             # check if prefix is already
                             # exist with retail plan or not

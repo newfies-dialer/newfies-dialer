@@ -513,8 +513,7 @@ def contact_del(request, object_id):
                     % {'count': contact_list.count()}
                 contact_list.delete()
         except:
-            request.session["error_msg"] =\
-                _('Contact(s) do not belong to user.')
+            raise Http404
     return HttpResponseRedirect('/contact/')
 
 

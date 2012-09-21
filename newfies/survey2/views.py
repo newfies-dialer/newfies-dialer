@@ -16,7 +16,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required,\
     permission_required
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.db.models import Sum, Avg, Count
 from django.template.context import RequestContext
@@ -431,7 +431,7 @@ def survey_del(request, object_id):
                     % {'count': survey_list.count()}
             survey_list.delete()
         except:
-            request.session["error_msg"] = _('Survey(s) do not belong to user.')
+            raise Http404
 
     return HttpResponseRedirect('/survey2/')
 

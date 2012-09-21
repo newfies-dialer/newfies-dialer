@@ -16,7 +16,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required,\
                                            permission_required
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
@@ -180,7 +180,7 @@ def voiceapp_del(request, object_id):
                                            % {'count': voiceapp_list.count()})
                 voiceapp_list.delete()
         except:
-            request.session["error_msg"] = _('Voiceapp(s) do not belong to user')
+            raise Http404
 
     return HttpResponseRedirect('/voiceapp/')
 

@@ -15,7 +15,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, \
                                            permission_required
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.core.mail import mail_admins
@@ -418,8 +418,7 @@ def campaign_del(request, object_id):
                     % {'count': campaign_list.count()}
                 campaign_list.delete()
         except:
-            request.session["error_msg"] =\
-                _('campaign(s) do not belong to user')
+            raise Http404
 
     return HttpResponseRedirect('/campaign/')
 

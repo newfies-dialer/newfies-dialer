@@ -17,7 +17,7 @@ from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.contrib.auth.decorators import login_required, \
                                            permission_required
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 
 from django.template.context import RequestContext
@@ -196,8 +196,7 @@ def audio_del(request, object_id):
                     % {'count': audio_list.count()}
             audio_list.delete()
         except:
-            request.session["error_msg"] =\
-                _('audio(s) do not belong to user.')
+            raise Http404
 
     return HttpResponseRedirect('/audio/')
 

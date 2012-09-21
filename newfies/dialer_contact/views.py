@@ -627,9 +627,11 @@ def contact_import(request):
             #  5     - status
             #  6     - additional_vars
             # To count total rows of CSV file
+            print "form is valid"
             records = csv.reader(request.FILES['csv_file'],
                                  delimiter=',', quotechar='"')
             total_rows = len(list(records))
+            print "total_rows=%d" % total_rows
 
             rdr = csv.reader(request.FILES['csv_file'],
                              delimiter=',', quotechar='"')
@@ -638,6 +640,7 @@ def contact_import(request):
             # Read each Row
             for row in rdr:
                 row = striplist(row)
+                print contact_cnt
                 if (row and str(row[0]) > 0):
                     try:
                         # check field type

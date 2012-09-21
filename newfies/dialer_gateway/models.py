@@ -15,19 +15,21 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from common.intermediate_model_base_class import Model
+from common.utils import Choice
 
-GATEWAY_STATUS = (
-    (1, _('ACTIVE')),
-    (0, _('INACTIVE')),
-)
 
-GATEWAY_PROTOCOL = (
-    ('SIP', _('SIP')),
-    ('LOCAL', _('LOCAL')),
-    ('GSM', _('GSM')),
-    ('SKINNY', _('SKINNY')),
-    ('JINGLE', _('JINGLE')),
-)
+class GATEWAY_STATUS(Choice):
+    ACTIVE = 1, _('ACTIVE')
+    INACTIVE = 0, _('INACTIVE')
+
+
+class GATEWAY_PROTOCOL(Choice):
+    SIP = 'SIP', _('SIP')
+    LOCAL = 'LOCAL', _('LOCAL')
+    GSM = 'GSM', _('GSM')
+    SKINNY = 'SKINNY', _('SKINNY')
+    JINGLE = 'JINGLE', _('JINGLE')
+
 
 """
 class GatewayGroup(Model):
@@ -82,7 +84,7 @@ class Gateway(Model):
     """
     name = models.CharField(unique=True, max_length=255,
                 verbose_name=_('Name'), help_text=_("Gateway name"))
-    status = models.IntegerField(choices=GATEWAY_STATUS, default='1',
+    status = models.IntegerField(choices=list(GATEWAY_STATUS), default='1',
                 verbose_name=_("Gateway Status"), blank=True, null=True)
     description = models.TextField(verbose_name=_('Description'), blank=True,
                                help_text=_("Gateway provider notes"))

@@ -21,16 +21,17 @@ from dialer_cdr.models import Callrequest
 
 from adminsortable.models import Sortable
 from audiofield.models import AudioFile
+from common.utils import Choice
 #from tagging.fields import TagField
 
-SECTION_TYPE = (
-    (1, u'Voice section'),
-    (2, u'Multiple choice question'),
-    (3, u'Rating question'),
-    (4, u'Enter a number'),
-    (5, u'Record message'),
-    (6, u'Patch-through'),
-)
+
+class SECTION_TYPE(Choice):
+    VOICE_SECTION = 1, u'Voice section'
+    MULTIPLE_CHOICE_SECTION = 2, u'Multiple choice question'
+    RATING_SECTION = 3, u'Rating question'
+    ENTER_NUMBER_SECTION = 4, u'Enter a number'
+    RECORD_MSG_SECTION = 5, u'Record message'
+    PATCH_THROUGH_SECTION = 6, u'Patch-through'
 
 
 class Survey(Sortable):
@@ -109,7 +110,7 @@ class Section(Sortable):
     **Name of DB table**: survey_question
     """
     # select section
-    type = models.IntegerField(max_length=20, choices=SECTION_TYPE,
+    type = models.IntegerField(max_length=20, choices=list(SECTION_TYPE),
                                default='1', blank=True, null=True,
                                verbose_name=_('section type'))
     # Question is the section label, this is used in the reporting

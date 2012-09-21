@@ -15,19 +15,15 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from dialer_gateway.models import Gateway
 from common.intermediate_model_base_class import Model
+from common.utils import Choice
 from user_profile.fields import LanguageField
 
-APP_STATUS = (
-    (1, _('ACTIVE')),
-    (0, _('INACTIVE')),
-)
 
-APP_TYPE = (
-    (1, u'DIAL'),
-    (2, u'PLAYAUDIO'),
-    (3, u'CONFERENCE'),
-    (4, u'SPEAK'),
-)
+class APP_TYPE(Choice):
+    DIAL = 1, u'DIAL'
+    PLAYAUDIO = 2, u'PLAYAUDIO'
+    CONFERENCE = 3, u'CONFERENCE'
+    SPEAK = 4, u'SPEAK'
 
 
 from south.modelsinspector import add_introspection_rules
@@ -60,7 +56,7 @@ class VoiceApp(Model):
     description = models.TextField(null=True, blank=True,
                     verbose_name=_("Description"),
                     help_text=_("Voice Application Description"))
-    type = models.IntegerField(max_length=20, choices=APP_TYPE, default='1',
+    type = models.IntegerField(max_length=20, choices=list(APP_TYPE), default=1,
            blank=True, null=True, verbose_name=_('Type'))
     gateway = models.ForeignKey(Gateway, null=True, blank=True,
                     verbose_name=_('B-Leg'),

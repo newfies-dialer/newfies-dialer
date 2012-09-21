@@ -92,7 +92,7 @@ def phonebook_grid(request):
     rows = [
         {'id': row['id'],
          'cell': ['<input type="checkbox" name="select" class="checkbox"\
-        value="' + str(row['id']) + '" />',
+                  value="' + str(row['id']) + '" />',
                   row['id'],
                   row['name'],
                   row['description'],
@@ -201,7 +201,8 @@ def phonebook_del(request, object_id):
     """
     if int(object_id) != 0:
         # When object_id is not 0
-        phonebook = get_object_or_404(Phonebook, pk=object_id, user=request.user)
+        phonebook = get_object_or_404(
+            Phonebook, pk=object_id, user=request.user)
 
         # 1) delete all contacts belonging to a phonebook
         contact_list = Contact.objects.filter(phonebook=phonebook)

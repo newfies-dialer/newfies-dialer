@@ -28,15 +28,16 @@ from notification import models as notification
 from dialer_contact.models import Phonebook, Contact
 from dialer_campaign.models import Campaign, CampaignSubscriber
 from frontend.forms import LoginForm, DashboardForm
-from dialer_campaign.function_def import calculate_date, date_range, \
+from dialer_campaign.function_def import date_range, \
                         user_dialer_setting_msg
 from dialer_cdr.models import VoIPCall
+from frontend.function_def import calculate_date
+from frontend.constants import COLOR_DISPOSITION
 from common.common_functions import current_view
 from datetime import datetime
 from dateutil import parser
 from dateutil.relativedelta import relativedelta
 import time
-from frontend.constants import COLOR_DISPOSITION
 
 
 def logout_view(request):

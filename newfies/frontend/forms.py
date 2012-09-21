@@ -3,14 +3,15 @@ from django.utils.translation import ugettext_lazy as _
 from dialer_campaign.models import Campaign
 from common.utils import Choice
 
+
 class SEARCH_TYPE(Choice):
-    Last_30_days = 1, _('Last 30 days')
-    Last_7_days = 2, _('Last 7 days')
-    Yesterday = 3, _('Yesterday')
-    Last_24_hours = 4, _('Last 24 hours')
-    Last_12_hours = 5, _('Last 12 hours')
-    Last_6_hours = 6, _('Last 6 hours')
-    Last_hour = 7, _('Last hour')
+    A_Last_30_days = 1, _('Last 30 days')
+    B_Last_7_days = 2, _('Last 7 days')
+    C_Yesterday = 3, _('Yesterday')
+    D_Last_24_hours = 4, _('Last 24 hours')
+    E_Last_12_hours = 5, _('Last 12 hours')
+    F_Last_6_hours = 6, _('Last 6 hours')
+    G_Last_hour = 7, _('Last hour')
 
 
 class LoginForm(forms.Form):

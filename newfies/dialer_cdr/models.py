@@ -137,9 +137,9 @@ class Callrequest(Model):
     created_date = models.DateTimeField(auto_now_add=True,
                                         verbose_name='Date')
     updated_date = models.DateTimeField(auto_now=True)
-    call_type = models.IntegerField(choices=list(CALLREQUEST_TYPE), default='1',
+    call_type = models.IntegerField(choices=list(CALLREQUEST_TYPE), default=1,
                 verbose_name=_("Call Request Type"), blank=True, null=True)
-    status = models.IntegerField(choices=list(CALLREQUEST_STATUS), default='1',
+    status = models.IntegerField(choices=list(CALLREQUEST_STATUS), default=1,
                 blank=True, null=True, db_index=True,
                 verbose_name=_('Status'))
     callerid = models.CharField(max_length=80, blank=True,

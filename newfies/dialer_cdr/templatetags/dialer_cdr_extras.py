@@ -14,10 +14,10 @@
 
 from django.template.defaultfilters import *
 from survey.views import survey_audio_recording
-from dialer_campaign.models import CAMPAIGN_STATUS
-from dialer_cdr.models import LEG_TYPE
+from dialer_campaign.constants import CAMPAIGN_STATUS
+from dialer_cdr.constants import LEG_TYPE
 from survey.models import APP_TYPE
-from survey2.models import SECTION_TYPE
+from survey2.constants import SECTION_TYPE
 
 
 @register.filter()
@@ -62,6 +62,7 @@ def campaign_status(value):
         status = STATUS[value]
     except:
         status = ''
+
     return str(status)
 
 
@@ -85,6 +86,7 @@ def leg_type_name(value):
         status = TYPE[value]
     except:
         status = ''
+
     return unicode(status)
 
 
@@ -108,6 +110,7 @@ def action_type_name(value):
         status = TYPE[value]
     except:
         status = ''
+
     return str(status)
 
 
@@ -131,9 +134,8 @@ def section_type_name(value):
         status = TYPE[value]
     except:
         status = ''
+
     return str(status)
-
-
 
 
 @register.filter()

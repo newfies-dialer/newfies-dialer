@@ -16,6 +16,7 @@
 
 from django.utils.encoding import smart_unicode
 from django.utils.xmlutils import SimplerXMLGenerator
+from django.conf import settings
 
 from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
@@ -24,7 +25,7 @@ from tastypie.exceptions import ImmediateHttpResponse
 from tastypie import http
 
 from dialer_cdr.models import VoIPCall
-from django.conf import settings
+
 from random import seed
 from cStringIO import StringIO
 import urllib

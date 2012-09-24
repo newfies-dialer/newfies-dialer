@@ -13,7 +13,7 @@
 #
 from django.contrib import admin
 from django.contrib import messages
-from django.conf.urls.defaults import patterns
+from django.conf.urls import patterns
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect

@@ -22,6 +22,7 @@ from django.utils.translation import ugettext_lazy as _
 from admin_tools.menu import items, Menu
 import newfies
 
+
 class CustomMenu(Menu):
     """Custom Menu for admin site."""
 

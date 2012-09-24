@@ -671,6 +671,7 @@ def contact_import(request):
                 if contact_cnt in bulk_insert_list:
                     # Bulk insert
                     Contact.objects.bulk_create(bulk_record)
+                    bulk_record = []
 
 
     #check if there is contact imported

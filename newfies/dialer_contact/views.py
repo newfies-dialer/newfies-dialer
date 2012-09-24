@@ -53,14 +53,14 @@ def get_phonebook_link(request, row_id, link_style, title, action):
     link = ''
     if action == 'update'\
             and request.user.has_perm('dialer_contact.change_phonebook'):
-        link = '<a href="' + str(row_id) + '/" class="icon" '\
-               + link_style + ' title="' + title + '">&nbsp;</a>'
+        link = '<a href="%s/" class="icon" %s title="%s">&nbsp;</a>' % \
+               (str(row_id), link_style, title)
 
     if action == 'delete'\
             and request.user.has_perm('dialer_contact.delete_phonebook'):
-        link = '<a href="del/' + str(row_id) + '/" class="icon" ' + \
-               link_style + ' onClick="return get_alert_msg_for_phonebook('\
-               + str(row_id) + ');" title="' + title + '">&nbsp;</a>'
+        link = '<a href="del/%s/" class="icon" %s \
+            onClick="return get_alert_msg_for_phonebook(%s);" title="%s">&nbsp;</a>'\
+                % (str(row_id), link_style, str(row_id), title)
     return link
 
 

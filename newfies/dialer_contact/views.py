@@ -607,6 +607,7 @@ def contact_import(request):
     type_error_import_list = []
     contact_cnt = 0
     err_contact_cnt = 0
+    bulk_record = []
     if request.method == 'POST':
         form = Contact_fileImport(request.user, request.POST, request.FILES)
         if form.is_valid():
@@ -633,15 +634,35 @@ def contact_import(request):
                 row = striplist(row)
                 if not row or str(row[0]) == 0:
                     continue
+
                 # check field type
                 if not int(row[5]):
                     error_msg = _("Invalid value for import! Please check the import samples or phonebook is not valid")
                     type_error_import_list.append(row)
                     break
+
+                bulk_record.append(
+                    Contact(
+                        phonebook=phonebook,
+                        contact=row[0],
+                        last_name=row[1],
+                        first_name=row[2],
+                        email=row[3],
+                        description=row[4],
+                        status=int(row[5]),
+                        additional_vars=row[6])
+                )
+
+                contact_cnt = contact_cnt + 1
+                if contact_cnt < 100:
+                    success_import_list.append(row)
+
+                """
                 #Create new Contact if errors add into a list to display to the user
                 try:
                     #TODO: Improve the speed, it's quite slow if you import a huge phonebook, implement bulk create
                     #https://docs.djangoproject.com/en/dev/ref/models/querysets/#django.db.models.query.QuerySet.bulk_create
+
                     Contact.objects.create(
                         phonebook=phonebook,
                         contact=row[0],
@@ -659,6 +680,11 @@ def contact_import(request):
                     err_contact_cnt = err_contact_cnt + 1
                     if err_contact_cnt < 100:
                         error_import_list.append(row)
+                """
+
+            # Bulk insert
+            Contact.objects.bulk_create(bulk_record)
+
 
     #check if get any errors during the import
     if err_contact_cnt > 0:

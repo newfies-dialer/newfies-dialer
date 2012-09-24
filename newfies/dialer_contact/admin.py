@@ -125,6 +125,9 @@ class ContactAdmin(admin.ModelAdmin):
         success_import_list = []
         error_import_list = []
         type_error_import_list = []
+        contact_cnt = 0
+        err_contact_cnt = 0
+        bulk_record = []
         if request.method == 'POST':
             form = Contact_fileImport(request.user, request.POST,
                                       request.FILES)
@@ -144,45 +147,73 @@ class ContactAdmin(admin.ModelAdmin):
 
                 rdr = csv.reader(request.FILES['csv_file'],
                                  delimiter=',', quotechar='"')
+                #Get Phonebook Obj
+                phonebook = Phonebook.objects.get(pk=request.POST['phonebook'])
+
                 contact_cnt = 0
                 # Read each Row
                 for row in rdr:
-                    if (row and str(row[0]) > 0):
-                        row = striplist(row)
-                        try:
-                            # check field type
-                            int(row[5])
+                    row = striplist(row)
+                    if not row or str(row[0]) == 0:
+                        continue
 
-                            phonebook =\
-                                Phonebook.objects.get(
-                                    pk=request.POST['phonebook'])
-                            try:
-                                # check if prefix is already
-                                # existing in the retail plan or not
-                                Contact.objects.get(
-                                    phonebook_id=phonebook.id,
-                                    contact=row[0])
-                                msg = _('Contact already exists !!')
-                                error_import_list.append(row)
-                            except:
-                                # if not, insert record
-                                Contact.objects.create(
-                                    phonebook=phonebook,
-                                    contact=row[0],
-                                    last_name=row[1],
-                                    first_name=row[2],
-                                    email=row[3],
-                                    description=row[4],
-                                    status=int(row[5]),
-                                    additional_vars=row[6])
-                                contact_cnt = contact_cnt + 1
-                                msg = _('%(contact_cnt)s Contact(s) are uploaded, out of %(total_rows)s row(s) !!')\
-                                    % {'contact_cnt': contact_cnt,
-                                       'total_rows': total_rows}
-                                success_import_list.append(row)
-                        except:
-                            msg = _("Error : invalid value for import! Check import samples.")
-                            type_error_import_list.append(row)
+                    # check field type
+                    if not int(row[5]):
+                        error_msg = _("Invalid value for import! Please check the import samples or phonebook is not valid")
+                        type_error_import_list.append(row)
+                        break
+
+                    bulk_record.append(
+                        Contact(
+                            phonebook=phonebook,
+                            contact=row[0],
+                            last_name=row[1],
+                            first_name=row[2],
+                            email=row[3],
+                            description=row[4],
+                            status=int(row[5]),
+                            additional_vars=row[6])
+                    )
+
+                    contact_cnt = contact_cnt + 1
+                    if contact_cnt < 100:
+                        success_import_list.append(row)
+
+                    """
+                    #Create new Contact if errors add into a list to display to the user
+                    try:
+                        Contact.objects.create(
+                            phonebook=phonebook,
+                            contact=row[0],
+                            last_name=row[1],
+                            first_name=row[2],
+                            email=row[3],
+                            description=row[4],
+                            status=int(row[5]),
+                            additional_vars=row[6])
+
+                        contact_cnt = contact_cnt + 1
+                        if contact_cnt < 100:
+                            success_import_list.append(row)
+                    except:
+                        err_contact_cnt = err_contact_cnt + 1
+                        if err_contact_cnt < 100:
+                            error_import_list.append(row)
+                    """
+
+                # Bulk insert
+                Contact.objects.bulk_create(bulk_record)
+
+                #check if get any errors during the import
+                if err_contact_cnt > 0:
+                    error_msg = _('%(err_contact_cnt)s Contact(s) already exists!')\
+                                % {'err_contact_cnt': err_contact_cnt}
+
+                #check if there is contact imported
+                if contact_cnt > 0:
+                    msg = _('%(contact_cnt)s Contact(s) are uploaded successfully out of %(total_rows)s row(s) !!')\
+                          % {'contact_cnt': contact_cnt,
+                             'total_rows': total_rows}
         else:
             form = Contact_fileImport(request.user)
 

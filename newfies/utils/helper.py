@@ -16,10 +16,12 @@ from django.conf import settings
 from common.common_functions import variable_value
 
 
-update_style = 'style="text-decoration:none;background-image:url(' + \
-    settings.STATIC_URL + 'newfies/icons/page_edit.png);"'
-delete_style = 'style="text-decoration:none;background-image:url(' + \
-    settings.STATIC_URL + 'newfies/icons/delete.png);"'
+update_style = \
+    'style="text-decoration:none;background-image:url(%snewfies/icons/page_edit.png);"' %\
+    settings.STATIC_URL
+delete_style = \
+    'style="text-decoration:none;background-image:url(%snewfies/icons/delete.png);"' %\
+    settings.STATIC_URL
 
 # grid_test_data used in test-cases
 grid_test_data = {'page': 1,

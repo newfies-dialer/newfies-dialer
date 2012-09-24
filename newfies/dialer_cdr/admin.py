@@ -135,8 +135,8 @@ class VoIPCallAdmin(admin.ModelAdmin):
         form = VoipSearchForm()
         if request.method == 'POST':
             query_string = voipcall_search_admin_form_fun(request)
-            return HttpResponseRedirect("/admin/" + opts.app_label + "/" + \
-                opts.object_name.lower() + "/?" + query_string)
+            return HttpResponseRedirect("/admin/%s/%s/?%s" \
+                % (opts.app_label, opts.object_name.lower(), query_string))
         else:
             status = ''
             from_date = ''
@@ -162,7 +162,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             if ERROR_FLAG in request.GET.keys():
                 return render_to_response('admin/invalid_setup.html',
                         {'title': _('Database error')})
-            return HttpResponseRedirect(request.path + '?' + ERROR_FLAG + '=1')
+            return HttpResponseRedirect('%s?%s=1' % (request.path, ERROR_FLAG))
 
         kwargs = {}
         if request.META['QUERY_STRING'] == '':

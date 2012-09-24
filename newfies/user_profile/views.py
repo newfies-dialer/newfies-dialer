@@ -217,14 +217,13 @@ def notification_grid(request):
 
     rows = [{'id': row.id,
              'cell': ['<input type="checkbox" name="select" class="checkbox"\
-                      value="' + str(row.id) + '" />',
+                      value="%s" />' % (str(row.id)),
                       str(row.message),
                       str(row.notice_type),
                       str(row.sender),
                       str(row.added),
-                      str('<a href="../update_notice_status_cust/' \
-                      + str(row.id) + '/" class="icon" ' \
-                      + call_style(row.unseen) + '>&nbsp;</a>'),
+                      str('<a href="../update_notice_status_cust/%s/" \
+                      class="icon" %s>&nbsp;</a>' % (str(row.id), call_style(row.unseen))),
              ]}for row in user_notification_list]
 
     data = {'rows': rows,
@@ -268,7 +267,8 @@ def notification_del_read(request, object_id):
         # When object_id is 0 (Multiple records delete/mark as read)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
-        notification_list = notification.Notice.objects.extra(where=['id IN (%s)' % values])
+        notification_list = \
+            notification.Notice.objects.extra(where=['id IN (%s)' % values])
         if request.POST.get('mark_read') == 'false':
             request.session["msg_note"] = \
                 _('%(count)s notification(s) are deleted.')\

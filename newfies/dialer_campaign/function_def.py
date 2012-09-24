@@ -257,17 +257,17 @@ def get_campaign_status_name(id):
         if i[0] == id:
             #return i[1]
             if i[1] == 'START':
-                return '<font color="' + CAMPAIGN_STATUS_COLOR[id] + '">' \
-                    + 'STARTED' + '</font>'
+                return '<font color="%s">STARTED</font>' \
+                       % (CAMPAIGN_STATUS_COLOR[id])
             if i[1] == 'PAUSE':
-                return '<font color="' + CAMPAIGN_STATUS_COLOR[id] + '">' \
-                    + 'PAUSED' + '</font>'
+                return '<font color="%s">PAUSED</font>' \
+                       % (CAMPAIGN_STATUS_COLOR[id])
             if i[1] == 'ABORT':
-                return '<font color="' + CAMPAIGN_STATUS_COLOR[id] + '">' \
-                    + 'ABORTED' + '</font>'
+                return '<font color="%s">ABORTED</font>' \
+                       % (CAMPAIGN_STATUS_COLOR[id])
             if i[1] == 'END':
-                return '<font color="' + CAMPAIGN_STATUS_COLOR[id] + '">' \
-                    + 'STOPPED' + '</font>'
+                return '<font color="%s">STOPPED</font>' \
+                       % (CAMPAIGN_STATUS_COLOR[id])
 
 
 def user_dialer_setting(user):

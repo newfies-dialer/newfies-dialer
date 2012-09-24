@@ -51,7 +51,7 @@ def get_section_question_list(survey_id, section_id):
             q_string = i.question
         else:
             q_string = i.phrasing
-        list_sq.append((i.id, "Goto " + str(i.order) + " # " + q_string))
+        list_sq.append((i.id, "Goto %s # %s" % (str(i.order), q_string)))
 
     return list_sq
 
@@ -73,8 +73,9 @@ def get_question_choice_list(section_id):
     for i in range(0, 10):
         if obj_section.__dict__['key_' + str(i)] \
             and i not in keys_list:
-            list_sq.append((i, str(section_id) + '.' + str(i) + ' ' + \
-                               obj_section.__dict__['key_' + str(i)]))
+            list_sq.append((i, '%s.%s %s' % (str(section_id),
+                                             str(i),
+                                             obj_section.__dict__['key_' + str(i)] )))
 
     list_sq.append(('', _('Anything')))
     return list_sq
@@ -280,8 +281,9 @@ class BranchingForm(ModelForm):
         obj_section = Section.objects.get(id=section_id)
         if obj_section.type == 2:
             self.fields['keys'] = \
-                forms.ChoiceField(choices=get_question_choice_list(section_id),
-                                  required=False)
+                forms.ChoiceField(
+                    choices=get_question_choice_list(section_id),
+                    required=False)
 
         # rating section
         if obj_section.type == 3:
@@ -309,8 +311,9 @@ class SurveyReportForm(forms.Form):
         if user:
             list = []
             try:
-                camp_list = Campaign.objects.filter(user=user,
-                                                    content_type=ContentType.objects.get(model='survey'))
+                camp_list = Campaign.objects.filter(
+                    user=user,
+                    content_type=ContentType.objects.get(model='survey'))
                 pb_list = ((l.id, l.name) for l in camp_list)
                 for i in pb_list:
                     list.append((i[0], i[1]))

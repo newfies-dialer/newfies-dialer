@@ -59,8 +59,9 @@ def get_phonebook_link(request, row_id, link_style, title, action):
     if action == 'delete'\
             and request.user.has_perm('dialer_contact.delete_phonebook'):
         link = '<a href="del/%s/" class="icon" %s \
-            onClick="return get_alert_msg_for_phonebook(%s);" title="%s">&nbsp;</a>'\
-                % (str(row_id), link_style, str(row_id), title)
+            onClick="return get_alert_msg_for_phonebook(%s);" \
+            title="%s">&nbsp;</a>' % \
+               (str(row_id), link_style, str(row_id), title)
     return link
 
 
@@ -92,7 +93,7 @@ def phonebook_grid(request):
     rows = [
         {'id': row['id'],
          'cell': ['<input type="checkbox" name="select" class="checkbox"\
-                  value="' + str(row['id']) + '" />',
+                  value="%s" />' % (str(row['id'])),
                   row['id'],
                   row['name'],
                   row['description'],
@@ -220,8 +221,7 @@ def phonebook_del(request, object_id):
             # 1) delete all contacts belonging to a phonebook
             contact_list = Contact.objects\
                 .filter(phonebook__user=request.user)\
-                .extra(where=['phonebook_id IN (%s)'
-                              % values])
+                .extra(where=['phonebook_id IN (%s)' % values])
             if contact_list:
                 contact_list.delete()
 
@@ -232,7 +232,7 @@ def phonebook_del(request, object_id):
             if phonebook_list:
                 request.session["msg"] =\
                     _('%(count)s phonebook(s) are deleted.')\
-                    % {'count': phonebook_list.count()}
+                        % {'count': phonebook_list.count()}
                 phonebook_list.delete()
         except:
             raise Http404
@@ -357,7 +357,7 @@ def contact_grid(request):
     rows = [
         {'id': row['id'],
          'cell': ['<input type="checkbox" name="select" class="checkbox"\
-        value="' + str(row['id']) + '" />',
+                  value="%s" />' % (str(row['id'])),
                   row['id'], row['phonebook__name'], row['contact'],
                   row['last_name'], row['first_name'], row['status'],
                   row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),

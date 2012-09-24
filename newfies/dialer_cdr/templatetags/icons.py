@@ -25,8 +25,9 @@ def icon(icon_name):
     >>> icon('test')
     'class="icon" style="text-decoration:none;background-image:url(/static/newfies/icons/test.png);"'
     """
-    return 'class="icon" style="text-decoration:none;background-image:url(' \
-           + settings.STATIC_URL + 'newfies/icons/' + icon_name + '.png);"'
+    return 'class="icon" style="text-decoration:none;\
+        background-image:url(%snewfies/icons/' + icon_name + '.png);"'\
+           % (settings.STATIC_URL)
 register.simple_tag(icon)
 
 
@@ -37,8 +38,9 @@ def listicon(icon_name):
     >>> listicon('test')
     'style="text-decoration:none;list-style-image:url(/static/newfies/icons/test.png);"'
     """
-    return 'style="text-decoration:none;list-style-image:url(' \
-           + settings.STATIC_URL + 'newfies/icons/' + icon_name + '.png);"'
+    return 'style="text-decoration:none;\
+        list-style-image:url(%snewfies/icons/%s.png);"' \
+           % (settings.STATIC_URL, icon_name)
 register.simple_tag(listicon)
 
 
@@ -49,6 +51,7 @@ def icon_style(icon_name):
     >>> icon_style('test')
     'style="text-decoration:none;background-image:url(/static/newfies/icons/test.png);"'
     """
-    return 'style="text-decoration:none;background-image:url(' +\
-           settings.STATIC_URL + 'newfies/icons/' + icon_name + '.png);"'
+    return 'style="text-decoration:none;\
+        background-image:url(%snewfies/icons/%s.png);"'\
+           % (settings.STATIC_URL, icon_name)
 register.simple_tag(icon_style)

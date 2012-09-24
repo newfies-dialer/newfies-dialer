@@ -241,7 +241,7 @@ class VoIPCall(models.Model):
             min = 0
             sec = 0
 
-        return "%02d" % min + ":" + "%02d" % sec
+        return "%02d:%02d" % (min, sec)
 
     class Meta:
         permissions = (

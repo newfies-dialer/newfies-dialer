@@ -264,8 +264,8 @@ def customer_dashboard(request, on_index=None):
             date_length = 10  # Last 30 days option
 
         select_data = \
-            {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1," + \
-                              str(date_length) + ")"}
+            {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,%s)" % \
+                              str(date_length)}
 
         # This calls list is used by pie chart
         calls = VoIPCall.objects\

@@ -80,7 +80,7 @@ def return_query_string(query_string, para):
     'key_val=apple'
     """
     if query_string:
-        query_string += '&' + para
+        query_string += '&%s' % (para)
     else:
         query_string = para
     return query_string

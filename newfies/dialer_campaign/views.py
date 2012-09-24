@@ -159,9 +159,8 @@ def tpl_control_icon(icon):
     """
     function to produce control html icon
     """
-    return 'style="text-decoration:none;background-image:url(' \
-        + settings.STATIC_URL \
-        + 'newfies/icons/%s);"' % icon
+    return 'style="text-decoration:none;\
+        background-image:url(%snewfies/icons/%s);"' % (settings.STATIC_URL, icon)
 
 
 def get_url_campaign_status(id, status):
@@ -175,11 +174,11 @@ def get_url_campaign_status(id, status):
     control_stop_style = tpl_control_icon('control_stop.png')
 
     #set different url for the campaign status
-    url_cpg_status = 'update_campaign_status_cust/' + str(id)
-    url_cpg_start = url_cpg_status + '/1/'
-    url_cpg_pause = url_cpg_status + '/2/'
-    url_cpg_abort = url_cpg_status + '/3/'
-    url_cpg_stop = url_cpg_status + '/4/'
+    url_cpg_status = 'update_campaign_status_cust/%s' % str(id)
+    url_cpg_start = '%s/1/' % url_cpg_status
+    url_cpg_pause = '%s/2/' % url_cpg_status
+    url_cpg_abort = '%s/3/' % url_cpg_status
+    url_cpg_stop = '%s/4/' % url_cpg_status
 
     #according to the current status, disable link and change the button color
     if status == 1:
@@ -242,7 +241,7 @@ def campaign_grid(request):
     rows = [
         {'id': row['id'],
         'cell': ['<input type="checkbox" name="select" class="checkbox"\
-        value="' + str(row['id']) + '" />',
+                  value="%s" />' % (str(row['id'])),
         row['campaign_code'],
         row['name'],
         row['startingdate'].strftime('%Y-%m-%d %H:%M:%S'),

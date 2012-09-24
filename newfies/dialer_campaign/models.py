@@ -21,16 +21,20 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from dateutil.relativedelta import relativedelta
 from dialer_campaign.constants import CAMPAIGN_SUBSCRIBER_STATUS, \
-    CAMPAIGN_STATUS, CAMPAIGN_STATUS_COLOR
+    CAMPAIGN_STATUS
 from dialer_contact.models import Phonebook, Contact
 from dialer_gateway.models import Gateway
 from user_profile.models import UserProfile
 from datetime import datetime
 from common.intermediate_model_base_class import Model
 from random import choice, seed
+import logging
 import re
 
 seed()
+
+logger = logging.getLogger('newfies.filelog')
+
 
 def get_unique_code(length):
     """Get unique code"""
@@ -99,7 +103,7 @@ def common_contact_authorization(user, str_contact):
             if result:
                 return True
         except ValueError:
-            print _("Error to identify the whitelist")
+            logger.error('Error to identify the whitelist')
 
     if blacklist and len(blacklist) > 0:
         try:
@@ -107,7 +111,7 @@ def common_contact_authorization(user, str_contact):
             if result:
                 return False
         except ValueError:
-            print _("Error to identify the blacklist")
+            logger.error('Error to identify the blacklist')
 
     return True
 

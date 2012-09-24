@@ -12,12 +12,11 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.db import IntegrityError
 from django.conf import settings
 from celery.task import PeriodicTask
 from celery.decorators import task
 from celery.utils.log import get_task_logger
-from dialer_campaign.models import Campaign, CampaignSubscriber
+from dialer_campaign.models import Campaign
 from dialer_campaign.function_def import user_dialer_setting
 from dialer_cdr.models import Callrequest
 from dialer_cdr.tasks import init_callrequest
@@ -122,10 +121,14 @@ def check_campaign_pendingcall(campaign_id):
         logger.info("No Subscriber to proceed on this campaign")
         return False
 
-    #Set time to wait for balanced dispatching of calls
-    time_to_wait = 60.0 / no_subscriber
-    count = 0
+    if no_subscriber < 10:
+        #if not many subscriber, don't wait too long n create a faster dialing feeling
+        time_to_wait = 6.0
+    else:
+        #Set time to wait for balanced dispatching of calls
+        time_to_wait = 60.0 / no_subscriber
 
+    count = 0
     for elem_camp_subscriber in list_subscriber:
         """Loop on Subscriber and start the initcall task"""
         count = count + 1
@@ -159,20 +162,17 @@ def check_campaign_pendingcall(campaign_id):
 
         #Todo Check if it's a good practice / implement a PID algorithm
         second_towait = ceil(count * time_to_wait)
-        launch_date = datetime.now() + timedelta(seconds=second_towait)
-
-        logger.info("Init CallRequest at %s" % \
-                        (launch_date.strftime("%b %d %Y %I:%M:%S")))
+        logger.info("Init CallRequest in  %d seconds" % second_towait)
         init_callrequest.apply_async(
                     args=[new_callrequest.id, obj_campaign.id],
-                    eta=launch_date)
+                    countdown=second_towait)
         #Shell_plus
         # from dialer_cdr.tasks import init_callrequest
         # from datetime import datetime
         # new_callrequest_id = 112
         # obj_campaign_id = 3
-        # launch_date = datetime.now()
-        # init_callrequest.apply_async(args=[new_callrequest_id, obj_campaign_id], eta=launch_date)
+        # countdown = 1
+        # init_callrequest.apply_async(args=[new_callrequest_id, obj_campaign_id], countdown=1)
 
     return True
 

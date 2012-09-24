@@ -91,22 +91,6 @@
 {% endif %}
 
 
-{% if error_import_list %}
-<br>
-    <table class="table table-striped table-bordered table-condensed">
-        <tr>
-            <th>{% trans "Subscriber(s) not imported" %} :</th>
-        </tr>
-        {% for row in error_import_list %}
-        <tr>
-            <td>
-                {{ row }}
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-{% endif %}
-
 {% if type_error_import_list %}
 <br>
     <table class="table table-striped table-bordered table-condensed">

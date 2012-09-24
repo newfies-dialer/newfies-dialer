@@ -123,10 +123,8 @@ class ContactAdmin(admin.ModelAdmin):
         rdr = ''  # will contain CSV data
         msg = ''
         success_import_list = []
-        error_import_list = []
         type_error_import_list = []
         contact_cnt = 0
-        err_contact_cnt = 0
         bulk_record = []
         if request.method == 'POST':
             form = Contact_fileImport(request.user, request.POST,
@@ -192,33 +190,6 @@ class ContactAdmin(admin.ModelAdmin):
                         # Bulk insert
                         Contact.objects.bulk_create(bulk_record)
 
-                    """
-                    #Create new Contact if errors add into a list to display to the user
-                    try:
-                        Contact.objects.create(
-                            phonebook=phonebook,
-                            contact=row[0],
-                            last_name=row[1],
-                            first_name=row[2],
-                            email=row[3],
-                            description=row[4],
-                            status=int(row[5]),
-                            additional_vars=row[6])
-
-                        contact_cnt = contact_cnt + 1
-                        if contact_cnt < 100:
-                            success_import_list.append(row)
-                    except:
-                        err_contact_cnt = err_contact_cnt + 1
-                        if err_contact_cnt < 100:
-                            error_import_list.append(row)
-                    """
-
-                #check if get any errors during the import
-                if err_contact_cnt > 0:
-                    error_msg = _('%(err_contact_cnt)s Contact(s) already exists!')\
-                                % {'err_contact_cnt': err_contact_cnt}
-
                 #check if there is contact imported
                 if contact_cnt > 0:
                     msg = _('%(contact_cnt)s Contact(s) are uploaded successfully out of %(total_rows)s row(s) !!')\
@@ -236,7 +207,6 @@ class ContactAdmin(admin.ModelAdmin):
             'rdr': rdr,
             'msg': msg,
             'success_import_list': success_import_list,
-            'error_import_list': error_import_list,
             'type_error_import_list': type_error_import_list,
         })
         return render_to_response(

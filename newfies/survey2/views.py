@@ -36,6 +36,7 @@ from survey2.forms import SurveyForm, VoiceSectionForm,\
     PatchThroughSectionForm, BranchingForm, PhrasingForm,\
     SurveyDetailReportForm
 from survey2.function_def import export_question_result
+from survey2.constants import SECTION_TYPE
 from utils.helper import grid_common_function, get_grid_update_delete_link
 
 from common.common_functions import variable_value, current_view
@@ -296,7 +297,7 @@ def survey_grid(request):
 
     rows = [{'id': row['id'],
              'cell': ['<input type="checkbox" name="select" class="checkbox"\
-                value="' + str(row['id']) + '" />',
+                      value="%s" />' % (str(row['id'])),
                       row['name'],
                       row['description'],
                       row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
@@ -307,7 +308,7 @@ def survey_grid(request):
                       get_grid_update_delete_link(request, row['id'],
                                                   'survey.delete_surveyapp',
                                                   _('Delete survey'),
-                                                 'delete'),
+                                                  'delete'),
                       ]} for row in survey_list]
     data = {'rows': rows,
             'page': page,
@@ -627,24 +628,25 @@ def section_change(request, id):
     section = get_object_or_404(
         Section, pk=int(id), survey__user=request.user)
 
-    if section.type == 1:
+    if section.type == SECTION_TYPE.VOICE_SECTION:
         form = VoiceSectionForm(request.user, instance=section)
-    if section.type == 2:
+    if section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
         form = MultipleChoiceSectionForm(request.user, instance=section)
-    if section.type == 3:
+    if section.type == SECTION_TYPE.RATING_SECTION:
         form = RatingSectionForm(request.user, instance=section)
-    if section.type == 4:
+    if section.type == SECTION_TYPE.ENTER_NUMBER_SECTION:
         form = EnterNumberSectionForm(request.user, instance=section)
-    if section.type == 5:
+    if section.type == SECTION_TYPE.RECORD_MSG_SECTION:
         form = RecordMessageSectionForm(request.user, instance=section)
-    if section.type == 6:
+    if section.type == SECTION_TYPE.PATCH_THROUGH_SECTION:
         form = PatchThroughSectionForm(request.user, instance=section)
 
     request.session['err_msg'] = ''
 
     if request.method == 'POST':
         # Voice Section
-        if request.POST.get('type') and str(request.POST.get('type')) == '1':
+        if request.POST.get('type') \
+            and int(request.POST.get('type')) == SECTION_TYPE.VOICE_SECTION:
             form = VoiceSectionForm(request.user, instance=section)
             if request.POST.get('update'):
                 form = VoiceSectionForm(request.user,
@@ -664,12 +666,14 @@ def section_change(request, id):
                                             instance=section)
             if request.POST.get('update') is None:
                 request.session["err_msg"] = _('Voice Section is not updated.')
-                form = VoiceSectionForm(request.user,
-                                        instance=section,
-                                        initial={'type': '1'})
+                form = VoiceSectionForm(
+                    request.user,
+                    instance=section,
+                    initial={'type': SECTION_TYPE.VOICE_SECTION})
 
         # Multiple Choice Section
-        if request.POST.get('type') and str(request.POST.get('type')) == '2':
+        if request.POST.get('type') \
+            and int(request.POST.get('type')) == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
             form = MultipleChoiceSectionForm(request.user, instance=section)
             if request.POST.get('update'):
                 form = MultipleChoiceSectionForm(request.user,
@@ -690,12 +694,14 @@ def section_change(request, id):
             if request.POST.get('update') is None:
                 request.session["err_msg"] = \
                     _('Multiple Choice Section is not updated.')
-                form = MultipleChoiceSectionForm(request.user,
-                                                 instance=section,
-                                                 initial={'type': '2'})
+                form = MultipleChoiceSectionForm(
+                    request.user,
+                    instance=section,
+                    initial={'type': SECTION_TYPE.MULTIPLE_CHOICE_SECTION})
 
         # Rating Section
-        if request.POST.get('type') and str(request.POST.get('type')) == '3':
+        if request.POST.get('type') \
+            and int(request.POST.get('type')) == SECTION_TYPE.RATING_SECTION:
             form = RatingSectionForm(request.user, instance=section)
             if request.POST.get('update'):
                 form = RatingSectionForm(request.user,
@@ -716,12 +722,14 @@ def section_change(request, id):
             if request.POST.get('update') is None:
                 request.session["err_msg"] =\
                     _('Rating Section is not updated.')
-                form = RatingSectionForm(request.user,
-                                         instance=section,
-                                         initial={'type': '3'})
+                form = RatingSectionForm(
+                    request.user,
+                    instance=section,
+                    initial={'type': SECTION_TYPE.RATING_SECTION})
 
         # Enter Number Section
-        if request.POST.get('type') and str(request.POST.get('type')) == '4':
+        if request.POST.get('type') \
+            and int(request.POST.get('type')) == SECTION_TYPE.ENTER_NUMBER_SECTION:
             form = EnterNumberSectionForm(request.user, instance=section)
             if request.POST.get('update'):
                 form = EnterNumberSectionForm(request.user,
@@ -742,12 +750,14 @@ def section_change(request, id):
             if request.POST.get('update') is None:
                 request.session["err_msg"] =\
                     _('Enter Number Section is not updated.')
-                form = EnterNumberSectionForm(request.user,
-                                              instance=section,
-                                              initial={'type': '4'})
+                form = EnterNumberSectionForm(
+                    request.user,
+                    instance=section,
+                    initial={'type': SECTION_TYPE.ENTER_NUMBER_SECTION})
 
         # Record Message Section Section
-        if request.POST.get('type') and str(request.POST.get('type')) == '5':
+        if request.POST.get('type') \
+            and int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG_SECTION:
             form = RecordMessageSectionForm(request.user, instance=section)
             if request.POST.get('update'):
                 form = RecordMessageSectionForm(request.user,
@@ -768,12 +778,14 @@ def section_change(request, id):
             if request.POST.get('update') is None:
                 request.session["err_msg"] =\
                     _('Record Message Section is not updated.')
-                form = RecordMessageSectionForm(request.user,
-                                                instance=section,
-                                                initial={'type': '5'})
+                form = RecordMessageSectionForm(
+                    request.user,
+                    instance=section,
+                    initial={'type': SECTION_TYPE.RECORD_MSG_SECTION})
 
         # Patch Through Section Section
-        if request.POST.get('type') and str(request.POST.get('type')) == '6':
+        if request.POST.get('type') \
+            and int(request.POST.get('type')) == SECTION_TYPE.PATCH_THROUGH_SECTION:
             form = PatchThroughSectionForm(request.user, instance=section)
             if request.POST.get('update'):
                 form = PatchThroughSectionForm(request.user,
@@ -794,9 +806,10 @@ def section_change(request, id):
             if request.POST.get('update') is None:
                 request.session["err_msg"] =\
                     _('Patch Through Section is not updated.')
-                form = PatchThroughSectionForm(request.user,
-                                               instance=section,
-                                               initial={'type': '6'})
+                form = PatchThroughSectionForm(
+                    request.user,
+                    instance=section,
+                    initial={'type': SECTION_TYPE.PATCH_THROUGH_SECTION})
 
     template = 'frontend/survey2/section_change.html'
     data = {
@@ -1139,7 +1152,7 @@ def survey_audio_recording(audio_file):
     u'<br/><span class="label label-important">No recording</span>'
     """
     if audio_file:
-        file_url = settings.MEDIA_URL + 'recording/' + str(audio_file)
+        file_url = '%srecording/%s'  % (settings.MEDIA_URL, str(audio_file))
         player_string = '<ul class="playlist"><li style="width:auto;">\
             <a href="%s">%s</a></li></ul>' % (file_url,
                                               os.path.basename(file_url))

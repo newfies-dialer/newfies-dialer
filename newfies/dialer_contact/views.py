@@ -53,14 +53,15 @@ def get_phonebook_link(request, row_id, link_style, title, action):
     link = ''
     if action == 'update'\
             and request.user.has_perm('dialer_contact.change_phonebook'):
-        link = '<a href="' + str(row_id) + '/" class="icon" '\
-               + link_style + ' title="' + title + '">&nbsp;</a>'
+        link = '<a href="%s/" class="icon" %s title="%s">&nbsp;</a>' % \
+               (str(row_id), link_style, title)
 
     if action == 'delete'\
             and request.user.has_perm('dialer_contact.delete_phonebook'):
-        link = '<a href="del/' + str(row_id) + '/" class="icon" ' + \
-               link_style + ' onClick="return get_alert_msg_for_phonebook('\
-               + str(row_id) + ');" title="' + title + '">&nbsp;</a>'
+        link = '<a href="del/%s/" class="icon" %s \
+            onClick="return get_alert_msg_for_phonebook(%s);" \
+            title="%s">&nbsp;</a>' % \
+               (str(row_id), link_style, str(row_id), title)
     return link
 
 
@@ -92,7 +93,7 @@ def phonebook_grid(request):
     rows = [
         {'id': row['id'],
          'cell': ['<input type="checkbox" name="select" class="checkbox"\
-                  value="' + str(row['id']) + '" />',
+                  value="%s" />' % (str(row['id'])),
                   row['id'],
                   row['name'],
                   row['description'],
@@ -220,8 +221,7 @@ def phonebook_del(request, object_id):
             # 1) delete all contacts belonging to a phonebook
             contact_list = Contact.objects\
                 .filter(phonebook__user=request.user)\
-                .extra(where=['phonebook_id IN (%s)'
-                              % values])
+                .extra(where=['phonebook_id IN (%s)' % values])
             if contact_list:
                 contact_list.delete()
 
@@ -232,7 +232,7 @@ def phonebook_del(request, object_id):
             if phonebook_list:
                 request.session["msg"] =\
                     _('%(count)s phonebook(s) are deleted.')\
-                    % {'count': phonebook_list.count()}
+                        % {'count': phonebook_list.count()}
                 phonebook_list.delete()
         except:
             raise Http404
@@ -357,7 +357,7 @@ def contact_grid(request):
     rows = [
         {'id': row['id'],
          'cell': ['<input type="checkbox" name="select" class="checkbox"\
-        value="' + str(row['id']) + '" />',
+                  value="%s" />' % (str(row['id'])),
                   row['id'], row['phonebook__name'], row['contact'],
                   row['last_name'], row['first_name'], row['status'],
                   row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
@@ -603,7 +603,6 @@ def contact_import(request):
     msg = ''
     error_msg = ''
     success_import_list = []
-    error_import_list = []
     type_error_import_list = []
     contact_cnt = 0
     err_contact_cnt = 0
@@ -672,38 +671,6 @@ def contact_import(request):
                     # Bulk insert
                     Contact.objects.bulk_create(bulk_record)
 
-                """
-                #Create new Contact if errors add into a list to display to the user
-                try:
-                    #TODO: Improve the speed, it's quite slow if you import a huge phonebook, implement bulk create
-                    #https://docs.djangoproject.com/en/dev/ref/models/querysets/#django.db.models.query.QuerySet.bulk_create
-
-                    Contact.objects.create(
-                        phonebook=phonebook,
-                        contact=row[0],
-                        last_name=row[1],
-                        first_name=row[2],
-                        email=row[3],
-                        description=row[4],
-                        status=int(row[5]),
-                        additional_vars=row[6])
-
-                    contact_cnt = contact_cnt + 1
-                    if contact_cnt < 100:
-                        success_import_list.append(row)
-                except:
-                    err_contact_cnt = err_contact_cnt + 1
-                    if err_contact_cnt < 100:
-                        error_import_list.append(row)
-                """
-
-
-
-
-    #check if get any errors during the import
-    if err_contact_cnt > 0:
-        error_msg = _('%(err_contact_cnt)s Contact(s) already exists!') \
-            % {'err_contact_cnt': err_contact_cnt}
 
     #check if there is contact imported
     if contact_cnt > 0:
@@ -717,7 +684,6 @@ def contact_import(request):
                           'msg': msg,
                           'error_msg': error_msg,
                           'success_import_list': success_import_list,
-                          'error_import_list': error_import_list,
                           'type_error_import_list': type_error_import_list,
                           'module': current_view(request),
                           'notice_count': notice_count(request),

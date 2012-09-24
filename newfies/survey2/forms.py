@@ -19,6 +19,7 @@ from django.contrib.contenttypes.models import ContentType
 from dialer_campaign.models import Campaign
 from dialer_cdr.forms import VoipSearchForm
 from survey2.models import Survey, Section, Branching
+from survey2.constants import SECTION_TYPE
 from audiofield.models import AudioFile
 
 
@@ -279,20 +280,21 @@ class BranchingForm(ModelForm):
 
         # multiple choice section
         obj_section = Section.objects.get(id=section_id)
-        if obj_section.type == 2:
+        if obj_section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
             self.fields['keys'] = \
                 forms.ChoiceField(
                     choices=get_question_choice_list(section_id),
                     required=False)
 
         # rating section
-        if obj_section.type == 3:
+        if obj_section.type == SECTION_TYPE.RATING_SECTION:
             self.fields['keys'] =\
                 forms.ChoiceField(choices=get_rating_choice_list(section_id),
                                   required=False)
 
         # voice & record section
-        if obj_section.type == 1 or obj_section.type == 5:
+        if obj_section.type == SECTION_TYPE.VOICE_SECTION \
+            or obj_section.type == SECTION_TYPE.RECORD_MSG_SECTION:
             self.fields['keys'].initial = 0
             self.fields['keys'].widget = forms.HiddenInput()
 

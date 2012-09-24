@@ -176,12 +176,12 @@ def call_style(val):
     'style="text-decoration:none;background-image:url(/static/newfies/icons/tick.png);"'
     """
     unseen_style = \
-        'style="text-decoration:none;' + \
-        'background-image:url(%snewfies/icons/new.png);"' \
+        'style="text-decoration:none;\
+        background-image:url(%snewfies/icons/new.png);"' \
             % settings.STATIC_URL
     seen_style = \
-        'style="text-decoration:none;' + \
-        'background-image:url(%snewfies/icons/tick.png);"' \
+        'style="text-decoration:none;\
+        background-image:url(%snewfies/icons/tick.png);"' \
             % settings.STATIC_URL
 
     if val:

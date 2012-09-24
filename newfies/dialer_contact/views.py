@@ -622,7 +622,6 @@ def contact_import(request):
                                  delimiter=',', quotechar='"')
             total_rows = len(list(records))
 
-            bulk_insert_list = []
             BULK_SIZE = 1000
             if total_rows >= BULK_SIZE:
                 for i in range(1, (total_rows / BULK_SIZE) + 1):
@@ -667,10 +666,14 @@ def contact_import(request):
                 if contact_cnt < 100:
                     success_import_list.append(row)
 
-                if contact_cnt in bulk_insert_list:
+                if contact_cnt % BULK_SIZE == 0:
                     # Bulk insert
                     Contact.objects.bulk_create(bulk_record)
                     bulk_record = []
+
+            # remaining record
+            Contact.objects.bulk_create(bulk_record)
+            bulk_record = []
 
     #check if there is contact imported
     if contact_cnt > 0:

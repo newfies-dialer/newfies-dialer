@@ -50,6 +50,16 @@ import os.path
 testdebug = True # TODO: Change later
 
 
+def HttpResponse_pre(html):
+    """
+    return html response encapsulated by <pre> tag if debug mode
+    """
+    if testdebug:
+        return HttpResponse("<html></html><body><pre>%s</pre>" % html)
+    else:
+        return HttpResponse(html)
+
+
 def find_branching(p_section, DTMF):
     """
     function help to find the next branching of a section based on the key pressed
@@ -229,19 +239,17 @@ def survey_finestatemachine(request):
         cache.set(key_p_section, p_section, 21600)
     except IndexError:
         html = '<Response><Hangup/></Response>'
-        return HttpResponse(html)
+        return HttpResponse_pre(html)
 
     #retrieve the basename of the url
     url = settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL
     slashparts = url.split('/')
     url_basename = '/'.join(slashparts[:3])
 
-    if list_section[current_state].audiofile and list_section[current_state].audiofile.url:
+    if list_section[current_state].audiofile and list_section[current_state].audiofile.audio_file.url:
         #Audio file
-        audio_file_url = list_section[current_state].audiofile.url
-        question = "<Play>%s%s</Play>" % (
-            url_basename,
-            audio_file_url)
+        audio_file_url = url_basename + list_section[current_state].audiofile.audio_file.url
+        question = "<Play>%s</Play>" % audio_file_url
     else:
         #Text2Speech
         question = "<Speak>%s</Speak>" % list_section[current_state].phrasing
@@ -283,7 +291,7 @@ def survey_finestatemachine(request):
         next_state = current_state
         cache.set(key_state, next_state, 21600)
 
-    return HttpResponse(html)
+    return HttpResponse_pre(html)
 
 
 @login_required

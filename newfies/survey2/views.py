@@ -19,6 +19,7 @@ from django.contrib.auth.decorators import login_required,\
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.db.models import Sum, Avg, Count
+from django.db import IntegrityError
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
@@ -46,6 +47,64 @@ import csv
 import os.path
 
 
+testdebug = True # TODO: Change later
+
+
+def find_branching(p_section, DTMF):
+    """
+    function help to find the next branching of a section based on the key pressed
+    or result entered
+    """
+    print "find branching"
+
+
+def save_section_result(request, obj_callrequest, obj_p_section):
+    """
+    save the result of a section
+    """
+    if obj_p_section.type == SECTION_TYPE.RECORD_MSG_SECTION:
+        #RECORD_MSG_SECTION
+        if testdebug:
+            RecordFile = request.GET.get('RecordFile')
+            RecordingDuration = request.GET.get('RecordingDuration')
+        else:
+            RecordFile = request.POST.get('RecordFile')
+            RecordingDuration = request.POST.get('RecordingDuration')
+        try:
+            RecordFile = os.path.split(RecordFile)[1]
+        except:
+            RecordFile = ''
+        try:
+            #Insert Result
+            result = Result(
+                callrequest=obj_callrequest,
+                section=obj_p_section,
+                record_file=RecordFile,
+                recording_duration=RecordingDuration,
+                )
+            result.save()
+        except IntegrityError:
+            #Update Result
+            result = Result.objects.get(
+                callrequest=obj_callrequest,
+                section=obj_p_section
+                )
+            result.record_file = RecordFile
+            result.recording_duration = RecordingDuration
+            result.save()
+        #TODO : Add ResultAggregate
+        # recording duration 0 - 20 seconds ; 20 - 40 seconds ; 40 - 60 seconds
+        # Up to 60 seconds
+    elif obj_p_section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
+        #Save result
+        DTMF = request.POST.get('Digits')
+        result = Result(
+            callrequest=obj_callrequest,
+            section=obj_p_section,
+            response=DTMF)
+        result.save()
+
+
 @csrf_exempt
 def survey_finestatemachine(request):
     """Survey Fine State Machine
@@ -55,7 +114,6 @@ def survey_finestatemachine(request):
     """
     current_state = None
     next_state = None
-    testdebug = False
     delcache = False
 
     #Load Plivo Post parameters
@@ -86,41 +144,40 @@ def survey_finestatemachine(request):
 
     #Create the keys to store the cache
     key_state = "%s_state" % opt_CallUUID
-    key_prev_qt = "%s_prev_qt" % opt_CallUUID  # Previous question
-    key_surveyapp = "%s_surveyapp_id" % opt_CallUUID
+    key_p_section = "%s_p_section" % opt_CallUUID  # Previous section
+    key_survey = "%s_survey_id" % opt_CallUUID
 
     if testdebug and delcache:
         cache.delete(key_state)
-        cache.delete(key_surveyapp)
+        cache.delete(key_survey)
 
     #Retrieve the values of the keys
     current_state = cache.get(key_state)
-    surveyapp_id = cache.get(key_surveyapp)
-    obj_prev_qt = False
+    survey_id = cache.get(key_survey)
+    obj_p_section = False
 
     if not current_state:
         cache.set(key_state, 0, 21600)  # 21600 seconds = 6 hours
-        cache.set(key_prev_qt, 0, 21600)  # 21600 seconds = 6 hours
+        cache.set(key_p_section, 0, 21600)  # 21600 seconds = 6 hours
         current_state = 0
     else:
-        prev_qt = cache.get(key_prev_qt)
-        if prev_qt:
-            #print "\nPREVIOUS QUESTION ::> %d" % prev_qt
+        p_section = cache.get(key_p_section)
+        if p_section:
+            #print "\nPREVIOUS QUESTION ::> %d" % p_section
             #Get previous Question
             try:
-                obj_prev_qt = SurveyQuestion.objects.get(id=prev_qt)
+                obj_p_section = Section.objects.get(id=p_section)
             except:
-                obj_prev_qt = False
+                obj_p_section = False
     try:
-        obj_callrequest = Callrequest.objects\
-        .get(request_uuid=opt_ALegRequestUUID)
+        obj_callrequest = Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
     except:
         return HttpResponse(
             content="Error : retrieving Callrequest with the ALegRequestUUID",
             status=400)
 
-    surveyapp_id = obj_callrequest.object_id
-    cache.set(key_surveyapp, surveyapp_id, 21600)  # 21600 seconds = 6 hours
+    survey_id = obj_callrequest.object_id
+    cache.set(key_survey, survey_id, 21600)  # 21600 seconds = 6 hours
 
     if current_state == 0:
         #TODO : use constant
@@ -131,69 +188,33 @@ def survey_finestatemachine(request):
     #print "current_state = %s" % str(current_state)
 
     #Load the questions
-    list_question = SurveyQuestion.objects\
-    .filter(surveyapp=surveyapp_id).order_by('order')
+    list_section = Section.objects.filter(survey=survey_id).order_by('order')
 
-    if obj_prev_qt and obj_prev_qt.type == 3:
-        #Previous Recording
-        if testdebug:
-            RecordFile = request.GET.get('RecordFile')
-            RecordingDuration = request.GET.get('RecordingDuration')
-        else:
-            RecordFile = request.POST.get('RecordFile')
-            RecordingDuration = request.POST.get('RecordingDuration')
-        try:
-            RecordFile = os.path.split(RecordFile)[1]
-        except:
-            RecordFile = ''
-        new_surveycampaignresult = SurveyCampaignResult(
-            campaign=obj_callrequest.campaign,
-            surveyapp_id=surveyapp_id,
-            callid=opt_CallUUID,
-            question=obj_prev_qt,
-            record_file=RecordFile,
-            recording_duration=RecordingDuration,
-            callrequest=obj_callrequest)
-        new_surveycampaignresult.save()
-    #Check if we receive a DTMF for the previous question then store the result
-    elif DTMF and len(DTMF) > 0 and current_state > 0:
+    if obj_p_section and obj_p_section.type == SECTION_TYPE.RECORD_MSG_SECTION:
+        #Recording - save result
+        save_section_result(request, obj_callrequest, obj_p_section)
+
+    #Check if we receive a DTMF for the previous section then store the result
+    elif DTMF and len(DTMF) > 0 and current_state > 0 \
+        and obj_p_section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
         #find the response for this key pressed
-        try:
-            #Get list of responses of the previous Question
-            surveyresponse = SurveyResponse.objects.get(
-                key=DTMF,
-                surveyquestion=obj_prev_qt)
-            if not surveyresponse or not surveyresponse.keyvalue:
-                response_value = DTMF
-            else:
-                response_value = surveyresponse.keyvalue
 
-            #if there is a response for this DTMF then reset the current_state
-            if surveyresponse and surveyresponse.goto_surveyquestion:
-                l = 0
-                for question in list_question:
-                    if question.id == surveyresponse.goto_surveyquestion.id:
-                        current_state = l
-                        #print "Found it (%d) (l=%d)!" % (question.id, l)
-                        break
-                    l = l + 1
-        except:
-            #It's possible that this response is not accepted
-            response_value = DTMF
-        try:
-            new_surveycampaignresult = SurveyCampaignResult(
-                campaign=obj_callrequest.campaign,
-                surveyapp_id=surveyapp_id,
-                callid=opt_CallUUID,
-                question=obj_prev_qt,
-                response=response_value,
-                callrequest=obj_callrequest)
-            new_surveycampaignresult.save()
-
-        except IndexError:
-            # error index
-            html = '<Response><Hangup/></Response>'
-            return HttpResponse(html)
+        #Get list of responses of the previous Question
+        branching = Branching.objects.get(
+            key=DTMF,
+            section=obj_p_section)
+        #if there is a response for this DTMF then reset the current_state
+        if branching and branching.goto:
+            l = 0
+            for section in list_section:
+                #this is not very elegant mechanism, it allows us to know where we are
+                #in the section list (order) and what should be the current state based
+                #on what the user entered
+                if section.id == branching.goto.id:
+                    current_state = l
+                    #print "Found it (%d) (l=%d)!" % (section.id, l)
+                    break
+                l = l + 1
 
     #Transition go to next state
     next_state = current_state + 1
@@ -202,10 +223,10 @@ def survey_finestatemachine(request):
     #print "Saved state in Cache (%s = %s)" % (key_state, next_state)
 
     try:
-        list_question[current_state]
-        #set previous question
-        prev_qt = list_question[current_state].id
-        cache.set(key_prev_qt, prev_qt, 21600)
+        list_section[current_state]
+        #set previous section
+        p_section = list_section[current_state].id
+        cache.set(key_p_section, p_section, 21600)
     except IndexError:
         html = '<Response><Hangup/></Response>'
         return HttpResponse(html)
@@ -215,25 +236,18 @@ def survey_finestatemachine(request):
     slashparts = url.split('/')
     url_basename = '/'.join(slashparts[:3])
 
-    audio_file_url = False
-    if list_question[current_state].message_type == 1:
-        try:
-            audio_file_url = list_question[current_state]\
-            .audio_message.audio_file.url
-        except:
-            audio_file_url = False
-
-    if audio_file_url:
+    if list_section[current_state].audiofile and list_section[current_state].audiofile.url:
         #Audio file
+        audio_file_url = list_section[current_state].audiofile.url
         question = "<Play>%s%s</Play>" % (
             url_basename,
-            list_question[current_state].audio_message.audio_file.url)
+            audio_file_url)
     else:
         #Text2Speech
-        question = "<Speak>%s</Speak>" % list_question[current_state].question
+        question = "<Speak>%s</Speak>" % list_section[current_state].phrasing
 
     #Menu
-    if list_question[current_state].type == 1:
+    if list_section[current_state].type == 1:
         html =\
         '<Response>\n'\
         '   <GetDigits action="%s" method="GET" numDigits="1" '\
@@ -248,7 +262,7 @@ def survey_finestatemachine(request):
             question,
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
     #Recording
-    elif list_question[current_state].type == 3:
+    elif list_section[current_state].type == 3:
         html =\
         '<Response>\n'\
         '   %s\n'\

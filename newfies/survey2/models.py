@@ -113,10 +113,6 @@ class Section(Sortable):
                                 help_text=_('Example : Enter a number between 1 to 5, press pound key when done'))
     audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
                                   verbose_name=_("Audio File"))
-    # use audio file
-    use_audiofile = models.BooleanField(default=False,
-                                        verbose_name=_('Use audio file'),
-                                        help_text=_('Use audio file instead of phrasing'))
     invalid_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
                                           verbose_name=_("Invalid Audio File digits"),
                                           related_name='survey_invalid_audiofile')
@@ -232,8 +228,8 @@ class Result(models.Model):
 
     **Attributes**:
 
-        * ``callid`` - VoIP Call-ID
-        * ``question`` - survey question
+        * ``callrequest`` - Call Request
+        * ``section`` - survey question
         * ``response`` - survey question's response
 
     **Relationships**:
@@ -242,25 +238,26 @@ class Result(models.Model):
         Each survey result is belonged to a Campaign
         * ``survey`` - Foreign key relationship to the Survey model.\
         Each survey question is assigned to a Survey
+        * ``section`` - Foreign key relationship to the Section model.\
+        Each result is assigned to a Section
 
     **Name of DB table**: result
     """
-    campaign = models.ForeignKey(Campaign, null=True, blank=True,
-                                 verbose_name=_("Campaign"))
-    survey = models.ForeignKey(Survey, related_name='Survey')
-    section = models.ForeignKey(Section, related_name='Result Section')
     callrequest = models.ForeignKey(Callrequest,
                                     blank=True, null=True,
                                     related_name='survey_callrequest')
+    section = models.ForeignKey(Section, related_name='Result Section')
     response = models.CharField(max_length=150, blank=False,
-                                verbose_name=_("Response"))  # Orange ; Kiwi
+                                verbose_name=_("Response"))
     record_file = models.CharField(max_length=200, blank=True, default='',
                                    verbose_name=_("Record File"))
-    #recording_duration = models.IntegerField(max_length=20,
-    #                blank=True, default=0,
-    #                null=True, verbose_name=_('Recording Duration'))
-
+    recording_duration = models.IntegerField(max_length=10, blank=True,
+                                             default=0, null=True,
+                                             verbose_name=_('Recording Duration'))
     created_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("callrequest", "section")
 
     def __unicode__(self):
         return '[%s] %s = %s' % (self.id, self.section, self.response)

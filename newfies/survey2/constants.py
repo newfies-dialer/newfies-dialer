@@ -17,10 +17,9 @@ from common.utils import Choice
 
 
 class SECTION_TYPE(Choice):
-    VOICE_SECTION = 1, u'Voice section'
-    MULTIPLE_CHOICE_SECTION = 2, u'Multiple choice question'
-    RATING_SECTION = 3, u'Rating question'
-    ENTER_NUMBER_SECTION = 4, u'Enter a number'
-    RECORD_MSG_SECTION = 5, u'Record message'
-    PATCH_THROUGH_SECTION = 6, u'Patch-through'
-
+    VOICE_SECTION = 1, _('Voice section')
+    MULTIPLE_CHOICE_SECTION = 2, _('Multiple choice question')
+    RATING_SECTION = 3, _('Rating question')
+    ENTER_NUMBER_SECTION = 4, _('Enter a number')
+    RECORD_MSG_SECTION = 5, _('Record message')
+    PATCH_THROUGH_SECTION = 6, _('Patch-through')

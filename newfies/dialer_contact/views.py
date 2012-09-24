@@ -232,7 +232,7 @@ def phonebook_del(request, object_id):
             if phonebook_list:
                 request.session["msg"] =\
                     _('%(count)s phonebook(s) are deleted.')\
-                        % {'count': phonebook_list.count()}
+                    % {'count': phonebook_list.count()}
                 phonebook_list.delete()
         except:
             raise Http404
@@ -605,7 +605,6 @@ def contact_import(request):
     success_import_list = []
     type_error_import_list = []
     contact_cnt = 0
-    err_contact_cnt = 0
     bulk_record = []
     if request.method == 'POST':
         form = Contact_fileImport(request.user, request.POST, request.FILES)
@@ -626,8 +625,8 @@ def contact_import(request):
             bulk_insert_list = []
             BULK_SIZE = 1000
             if total_rows >= BULK_SIZE:
-                for i in range(1, (total_rows/BULK_SIZE) + 1):
-                    bulk_insert_list.append(i*BULK_SIZE)
+                for i in range(1, (total_rows / BULK_SIZE) + 1):
+                    bulk_insert_list.append(i * BULK_SIZE)
 
             # last value will be total_rows
             if total_rows not in bulk_insert_list:
@@ -672,7 +671,6 @@ def contact_import(request):
                     # Bulk insert
                     Contact.objects.bulk_create(bulk_record)
                     bulk_record = []
-
 
     #check if there is contact imported
     if contact_cnt > 0:

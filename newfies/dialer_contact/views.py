@@ -630,7 +630,8 @@ def contact_import(request):
                     bulk_insert_list.append(i*BULK_SIZE)
 
             # last value will be total_rows
-            bulk_insert_list.append(total_rows)
+            if total_rows not in bulk_insert_list:
+                bulk_insert_list.append(total_rows)
 
             rdr = csv.reader(request.FILES['csv_file'],
                              delimiter=',', quotechar='"')

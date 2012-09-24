@@ -90,22 +90,6 @@
     </table>
 {% endif %}
 
-{% if error_import_list %}
-<br>
-    <table border=1>
-    <tr>
-        <th>{% trans "Contact(s) not imported" %} :</th>
-    </tr>
-    {% for row in error_import_list %}
-    <tr class="{% cycle 'row1' 'row2' %}">
-        <td>
-            {{ row }}
-        </td>
-    </tr>
-    {% endfor %}
-    </table>
-{% endif %}
-
 {% if type_error_import_list %}
 <br>
     <table border=1>

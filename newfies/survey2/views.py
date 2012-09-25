@@ -50,16 +50,6 @@ import os.path
 testdebug = True # TODO: Change later
 
 
-def HttpResponse_pre(html):
-    """
-    return html response encapsulated by <pre> tag if debug mode
-    """
-    if testdebug:
-        return HttpResponse("<html></html><body><pre>%s</pre>" % html)
-    else:
-        return HttpResponse(html)
-
-
 def find_branching(p_section, DTMF):
     """
     function help to find the next branching of a section based on the key pressed
@@ -239,7 +229,7 @@ def survey_finestatemachine(request):
         cache.set(key_p_section, p_section, 21600)
     except IndexError:
         html = '<Response><Hangup/></Response>'
-        return HttpResponse_pre(html)
+        return HttpResponse(html)
 
     #retrieve the basename of the url
     url = settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL
@@ -291,7 +281,7 @@ def survey_finestatemachine(request):
         next_state = current_state
         cache.set(key_state, next_state, 21600)
 
-    return HttpResponse_pre(html)
+    return HttpResponse(html)
 
 
 @login_required

@@ -1039,7 +1039,7 @@ def survey_change(request, object_id):
     form = SurveyForm(instance=survey)
     branching_list = Branching.objects\
         .filter(section__survey=survey).order_by('id')
-    branching_section_list = []
+
     branching_section_list = \
         branching_list.values_list('section_id', flat=True).distinct()
 

@@ -665,13 +665,12 @@ def section_change(request, id):
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
-                    request.session["err_msg"] = \
-                        _('Voice Section is not updated.')
+                    request.session["err_msg"] = True
                     form = VoiceSectionForm(request.user,
                                             request.POST,
                                             instance=section)
             if request.POST.get('update') is None:
-                request.session["err_msg"] = _('Voice Section is not updated.')
+                request.session["err_msg"] = True
                 form = VoiceSectionForm(
                     request.user,
                     instance=section,
@@ -692,14 +691,12 @@ def section_change(request, id):
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
-                    request.session["err_msg"] = \
-                        _('Multiple Choice Section is not updated.')
+                    request.session["err_msg"] = True
                     form = MultipleChoiceSectionForm(request.user,
                                                      request.POST,
                                                      instance=section)
             if request.POST.get('update') is None:
-                request.session["err_msg"] = \
-                    _('Multiple Choice Section is not updated.')
+                request.session["err_msg"] = True
                 form = MultipleChoiceSectionForm(
                     request.user,
                     instance=section,
@@ -720,14 +717,12 @@ def section_change(request, id):
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
-                    request.session["err_msg"] =\
-                        _('Rating Section is not updated.')
+                    request.session["err_msg"] = True
                     form = RatingSectionForm(request.user,
                                              request.POST,
                                              instance=section)
             if request.POST.get('update') is None:
-                request.session["err_msg"] =\
-                    _('Rating Section is not updated.')
+                request.session["err_msg"] = True
                 form = RatingSectionForm(
                     request.user,
                     instance=section,
@@ -748,14 +743,12 @@ def section_change(request, id):
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
-                    request.session["err_msg"] =\
-                        _('Enter Number Section is not updated.')
+                    request.session["err_msg"] = True
                     form = EnterNumberSectionForm(request.user,
                                                   request.POST,
                                                   instance=section)
             if request.POST.get('update') is None:
-                request.session["err_msg"] =\
-                    _('Enter Number Section is not updated.')
+                request.session["err_msg"] = True
                 form = EnterNumberSectionForm(
                     request.user,
                     instance=section,
@@ -776,14 +769,12 @@ def section_change(request, id):
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
-                    request.session["err_msg"] =\
-                        _('Record Message Section is not updated.')
+                    request.session["err_msg"] = True
                     form = RecordMessageSectionForm(request.user,
                                                     request.POST,
                                                     instance=section)
             if request.POST.get('update') is None:
-                request.session["err_msg"] =\
-                    _('Record Message Section is not updated.')
+                request.session["err_msg"] = True
                 form = RecordMessageSectionForm(
                     request.user,
                     instance=section,
@@ -804,14 +795,12 @@ def section_change(request, id):
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
-                    request.session["err_msg"] =\
-                        _('Patch Through Section is not updated.')
+                    request.session["err_msg"] = True
                     form = PatchThroughSectionForm(request.user,
                                                    request.POST,
                                                    instance=section)
             if request.POST.get('update') is None:
-                request.session["err_msg"] =\
-                    _('Patch Through Section is not updated.')
+                request.session["err_msg"] = True
                 form = PatchThroughSectionForm(
                     request.user,
                     instance=section,

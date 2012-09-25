@@ -484,7 +484,6 @@ def section_add(request):
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
-                    form = VoiceSectionForm(request.user, request.POST)
 
             if request.POST.get('add') is None:
                 request.session["err_msg"] = True
@@ -506,8 +505,6 @@ def section_add(request):
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
-                    form = MultipleChoiceSectionForm(
-                        request.user, request.POST)
 
             if request.POST.get('add') is None:
                 request.session["err_msg"] = True
@@ -530,7 +527,6 @@ def section_add(request):
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
-                    form = RatingSectionForm(request.user, request.POST)
 
             if request.POST.get('add') is None:
                 request.session["err_msg"] = True
@@ -552,7 +548,6 @@ def section_add(request):
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
-                    form = EnterNumberSectionForm(request.user, request.POST)
 
             if request.POST.get('add') is None:
                 request.session["err_msg"] = True
@@ -574,7 +569,6 @@ def section_add(request):
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
-                    form = RecordMessageSectionForm(request.user, request.POST)
 
             if request.POST.get('add') is None:
                 request.session["err_msg"] = True
@@ -596,7 +590,6 @@ def section_add(request):
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
-                    form = PatchThroughSectionForm(request.user, request.POST)
 
             if request.POST.get('add') is None:
                 request.session["err_msg"] = True
@@ -666,9 +659,7 @@ def section_change(request, id):
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
-                    form = VoiceSectionForm(request.user,
-                                            request.POST,
-                                            instance=section)
+
             if request.POST.get('update') is None:
                 request.session["err_msg"] = True
                 form = VoiceSectionForm(
@@ -692,9 +683,7 @@ def section_change(request, id):
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
-                    form = MultipleChoiceSectionForm(request.user,
-                                                     request.POST,
-                                                     instance=section)
+
             if request.POST.get('update') is None:
                 request.session["err_msg"] = True
                 form = MultipleChoiceSectionForm(
@@ -718,9 +707,7 @@ def section_change(request, id):
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
-                    form = RatingSectionForm(request.user,
-                                             request.POST,
-                                             instance=section)
+
             if request.POST.get('update') is None:
                 request.session["err_msg"] = True
                 form = RatingSectionForm(
@@ -744,9 +731,7 @@ def section_change(request, id):
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
-                    form = EnterNumberSectionForm(request.user,
-                                                  request.POST,
-                                                  instance=section)
+
             if request.POST.get('update') is None:
                 request.session["err_msg"] = True
                 form = EnterNumberSectionForm(
@@ -770,9 +755,7 @@ def section_change(request, id):
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
-                    form = RecordMessageSectionForm(request.user,
-                                                    request.POST,
-                                                    instance=section)
+
             if request.POST.get('update') is None:
                 request.session["err_msg"] = True
                 form = RecordMessageSectionForm(
@@ -796,9 +779,7 @@ def section_change(request, id):
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
-                    form = PatchThroughSectionForm(request.user,
-                                                   request.POST,
-                                                   instance=section)
+
             if request.POST.get('update') is None:
                 request.session["err_msg"] = True
                 form = PatchThroughSectionForm(

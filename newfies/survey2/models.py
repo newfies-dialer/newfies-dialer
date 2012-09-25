@@ -70,7 +70,6 @@ class Section(Sortable):
         * ``question`` -
         * ``phrasing`` -
         * ``audiofile`` -
-        * ``use_audiofile`` -
         * ``invalid_audiofile`` -
         * ``retries`` -
         * ``timeout`` -

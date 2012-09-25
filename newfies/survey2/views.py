@@ -471,7 +471,8 @@ def section_add(request):
     request.session['err_msg'] = ''
     if request.method == 'POST':
         # Voice Section
-        if request.POST.get('type') and str(request.POST.get('type')) == '1':
+        if request.POST.get('type') \
+            and int(request.POST.get('type')) == SECTION_TYPE.VOICE_SECTION:
             form = VoiceSectionForm(request.user)
             if request.POST.get('add'):
                 form = VoiceSectionForm(request.user, request.POST)
@@ -482,19 +483,18 @@ def section_add(request):
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
-                    request.session["err_msg"] = \
-                        _('Voice Section is not added.')
+                    request.session["err_msg"] = True
                     form = VoiceSectionForm(request.user, request.POST)
 
             if request.POST.get('add') is None:
-                request.session["err_msg"] = \
-                    _('Voice Section is not added.')
-                form = VoiceSectionForm(request.user,
-                                        initial={'survey': survey,
-                                                 'type': '1'})
+                request.session["err_msg"] = True
+                form = VoiceSectionForm(
+                    request.user, initial={'survey': survey,
+                                           'type': SECTION_TYPE.VOICE_SECTION})
 
         # Multiple Choice Section
-        if request.POST.get('type') and str(request.POST.get('type')) == '2':
+        if request.POST.get('type') \
+            and int(request.POST.get('type')) == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
             form = MultipleChoiceSectionForm(request.user)
             if request.POST.get('add'):
                 form = MultipleChoiceSectionForm(request.user, request.POST)
@@ -505,20 +505,19 @@ def section_add(request):
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
-                    request.session["err_msg"] = \
-                        _('Multiple Choice Section is not added.')
+                    request.session["err_msg"] = True
                     form = MultipleChoiceSectionForm(
                         request.user, request.POST)
 
             if request.POST.get('add') is None:
-                request.session["err_msg"] = _(
-                    'Multiple Choice Section is not added.')
-                form = MultipleChoiceSectionForm(request.user,
-                                                 initial={'survey': survey,
-                                                          'type': '2'})
+                request.session["err_msg"] = True
+                form = MultipleChoiceSectionForm(
+                    request.user, initial={'survey': survey,
+                                           'type': SECTION_TYPE.MULTIPLE_CHOICE_SECTION})
 
         # Rating Section
-        if request.POST.get('type') and str(request.POST.get('type')) == '3':
+        if request.POST.get('type') \
+            and int(request.POST.get('type')) == SECTION_TYPE.RATING_SECTION:
             form = RatingSectionForm(request.user)
             if request.POST.get('add'):
                 form = RatingSectionForm(request.user, request.POST)
@@ -530,19 +529,18 @@ def section_add(request):
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
-                    request.session["err_msg"] = \
-                        _('Rating Section is not added.')
+                    request.session["err_msg"] = True
                     form = RatingSectionForm(request.user, request.POST)
 
             if request.POST.get('add') is None:
-                request.session["err_msg"] = \
-                    _('Rating Section is not added.')
-                form = RatingSectionForm(request.user,
-                                         initial={'survey': survey,
-                                                  'type': '3'})
+                request.session["err_msg"] = True
+                form = RatingSectionForm(
+                    request.user, initial={'survey': survey,
+                                           'type': SECTION_TYPE.RATING_SECTION})
 
         # Enter Number Section
-        if request.POST.get('type') and str(request.POST.get('type')) == '4':
+        if request.POST.get('type') \
+            and int(request.POST.get('type')) == SECTION_TYPE.ENTER_NUMBER_SECTION:
             form = EnterNumberSectionForm(request.user)
             if request.POST.get('add'):
                 form = EnterNumberSectionForm(request.user, request.POST)
@@ -553,19 +551,18 @@ def section_add(request):
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
-                    request.session["err_msg"] =\
-                        _('Enter Number Section is not added.')
+                    request.session["err_msg"] = True
                     form = EnterNumberSectionForm(request.user, request.POST)
 
             if request.POST.get('add') is None:
-                request.session["err_msg"] =\
-                    _('Enter Number Section is not added.')
-                form = EnterNumberSectionForm(request.user,
-                                              initial={'survey': survey,
-                                                       'type': '4'})
+                request.session["err_msg"] = True
+                form = EnterNumberSectionForm(
+                    request.user, initial={'survey': survey,
+                                           'type': SECTION_TYPE.ENTER_NUMBER_SECTION})
 
         # Record Message Section
-        if request.POST.get('type') and str(request.POST.get('type')) == '5':
+        if request.POST.get('type') \
+            and int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG_SECTION:
             form = RecordMessageSectionForm(request.user)
             if request.POST.get('add'):
                 form = RecordMessageSectionForm(request.user, request.POST)
@@ -576,19 +573,18 @@ def section_add(request):
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
-                    request.session["err_msg"] =\
-                        _('Record Message Section is not added.')
+                    request.session["err_msg"] = True
                     form = RecordMessageSectionForm(request.user, request.POST)
 
             if request.POST.get('add') is None:
-                request.session["err_msg"] =\
-                    _('Record Message Section is not added.')
-                form = RecordMessageSectionForm(request.user,
-                                                initial={'survey': survey,
-                                                         'type': '5'})
+                request.session["err_msg"] = True
+                form = RecordMessageSectionForm(
+                    request.user, initial={'survey': survey,
+                                           'type': SECTION_TYPE.RECORD_MSG_SECTION})
 
         # Patch-Through Section
-        if request.POST.get('type') and str(request.POST.get('type')) == '6':
+        if request.POST.get('type') \
+            and int(request.POST.get('type')) == SECTION_TYPE.PATCH_THROUGH_SECTION:
             form = PatchThroughSectionForm(request.user)
             if request.POST.get('add'):
                 form = PatchThroughSectionForm(request.user, request.POST)
@@ -599,16 +595,14 @@ def section_add(request):
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
-                    request.session["err_msg"] =\
-                        _('Patch-Through Section is not added.')
+                    request.session["err_msg"] = True
                     form = PatchThroughSectionForm(request.user, request.POST)
 
             if request.POST.get('add') is None:
-                request.session["err_msg"] =\
-                    _('Patch-Through Section is not added.')
-                form = PatchThroughSectionForm(request.user,
-                                               initial={'survey': survey,
-                                                        'type': '6'})
+                request.session["err_msg"] = True
+                form = PatchThroughSectionForm(
+                    request.user, initial={'survey': survey,
+                                           'type': SECTION_TYPE.PATCH_THROUGH_SECTION})
 
     template = 'frontend/survey2/section_change.html'
 

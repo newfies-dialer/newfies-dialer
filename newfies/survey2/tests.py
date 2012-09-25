@@ -26,7 +26,8 @@ from survey2.forms import SurveyForm, VoiceSectionForm,\
 from survey2.views import survey_list, survey_grid, survey_add, \
     survey_change, survey_del, section_add, section_change,\
     section_phrasing_change, section_branch_change, survey_report,\
-    survey_finestatemachine, export_surveycall_report
+    survey_finestatemachine, export_surveycall_report, section_branch_add,\
+    section_delete
 from survey2.ajax import section_sort
 from utils.helper import grid_test_data
 from datetime import datetime
@@ -130,11 +131,11 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         response = survey_del(request, 1)
         self.assertEqual(response.status_code, 302)
 
-        request = self.factory.post('/survey2/1/', follow=True)
-        request.user = self.user
-        request.session = {}
-        response = section_sort(request, 1, 2)
-        self.assertTrue(response)
+        #request = self.factory.post('/survey2/1/')
+        #request.user = self.user
+        #request.session = {}
+        #response = section_sort(request, 1, 1)
+        #self.assertTrue(response)
 
 
     def test_survey_view_delete(self):
@@ -361,6 +362,15 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         request.user = self.user
         request.session = {}
         response = section_change(request, 1)
+        self.assertEqual(response.status_code, 200)
+
+    def test_survey_section_delete(self):
+        """Test Function survey section delete"""
+        request = self.factory.post('/section/1/?delete=true',
+            {}, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = section_delete(request, 1)
         self.assertEqual(response.status_code, 302)
 
     def test_section_phrasing_change(self):
@@ -378,10 +388,30 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         response = section_phrasing_change(request, 1)
         self.assertEqual(response.status_code, 302)
 
+    def test_section_branch_add(self):
+        """Test Function section branching add"""
+        self.section = Section.objects.get(pk=1)
+        self.goto = Section.objects.get(pk=1)
+
+        request = self.factory.get('/section/branch/add/?section_id=1')
+        request.user = self.user
+        request.session = {}
+        response = section_branch_add(request)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.get('/section/branch/add/?section_id=1',
+            {'keys': 1, 'section': 1,
+             'goto': 1})
+        request.user = self.user
+        request.session = {}
+        response = section_branch_add(request)
+        self.assertEqual(response.status_code, 200)
+
     def test_section_branch_change(self):
         """Test Function section branching update"""
         self.section = Section.objects.get(pk=1)
         self.goto = Section.objects.get(pk=2)
+
         request = self.factory.get('/section/branch/1/')
         request.user = self.user
         request.session = {}
@@ -438,7 +468,7 @@ class SurveyModel(TestCase):
             survey=self.survey,
         )
         self.section.save()
-        self.assertEqual(self.section.__unicode__(), u'[4] test_question')
+        self.assertEqual(self.section.__unicode__(), u'[7] test_question')
 
 
         # Branching model
@@ -453,15 +483,13 @@ class SurveyModel(TestCase):
 
         # Result model
         self.result = Result(
-            survey=self.survey,
-            campaign_id=1,
             section=self.section,
-            callrequest_id=None,
-            response='xyz'
+            callrequest_id=1,
+            response='apple'
         )
         self.result.save()
         self.assertEqual(
-            self.result.__unicode__(), u'[1] [4] test_question = xyz')
+            self.result.__unicode__(), u'[1] [7] test_question = apple')
 
         # ResultAggregate model
         self.result_aggregate = ResultAggregate(
@@ -469,17 +497,17 @@ class SurveyModel(TestCase):
             campaign_id=1,
             section=self.section,
             count=1,
-            response='xyz'
+            response='apple'
         )
         self.result_aggregate.save()
         self.assertEqual(
-            self.result_aggregate.__unicode__(), u'[1] [4] test_question = xyz')
+            self.result_aggregate.__unicode__(), u'[1] [7] test_question = apple')
 
     def test_survey_forms(self):
         self.assertEqual(self.survey.name, "test_survey")
         self.assertEqual(self.section.survey, self.survey)
         self.assertEqual(self.branching.section, self.section)
-        self.assertEqual(self.result.survey, self.survey)
+        self.assertEqual(self.result.section, self.section)
 
         form = VoiceSectionForm(self.user, instance=self.section)
         obj = form.save(commit=False)

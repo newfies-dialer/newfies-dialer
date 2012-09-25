@@ -750,8 +750,7 @@ def section_change(request, id):
                 if request.POST.get('update') is None:
                     request.session["err_msg"] = True
                     form = EnterNumberSectionForm(
-                        request.user,
-                        instance=section,
+                        request.user, instance=section,
                         initial={'type': SECTION_TYPE.ENTER_NUMBER_SECTION})
         except:
             pass
@@ -916,9 +915,15 @@ def section_branch_add(request):
 
     """
     request.session['msg'] = ''
+    form = ''
+    section_survey_id = ''
+    section_type = ''
+    section_id = ''
     if request.GET.get('section_id'):
         section_id = request.GET.get('section_id')
         section = Section.objects.get(pk=int(section_id))
+        section_survey_id = section.survey_id
+        section_type = section.type
         form = BranchingForm(
             section.survey_id, section.id, initial={'section': section_id})
         if request.method == 'POST':
@@ -937,9 +942,9 @@ def section_branch_add(request):
     template = 'frontend/survey2/section_branch_change.html'
     data = {
         'form': form,
-        'survey_id': section.survey_id,
-        'section_type': section.type,
-        'section_id': section.id,
+        'survey_id': section_survey_id,
+        'section_type': section_type,
+        'section_id': section_id,
         'module': current_view(request),
         'err_msg': request.session.get('err_msg'),
         'action': 'add',

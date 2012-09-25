@@ -621,16 +621,7 @@ def contact_import(request):
             records = csv.reader(request.FILES['csv_file'],
                                  delimiter=',', quotechar='"')
             total_rows = len(list(records))
-
             BULK_SIZE = 1000
-            if total_rows >= BULK_SIZE:
-                for i in range(1, (total_rows / BULK_SIZE) + 1):
-                    bulk_insert_list.append(i * BULK_SIZE)
-
-            # last value will be total_rows
-            if total_rows not in bulk_insert_list:
-                bulk_insert_list.append(total_rows)
-
             rdr = csv.reader(request.FILES['csv_file'],
                              delimiter=',', quotechar='"')
             #Get Phonebook Obj

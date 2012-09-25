@@ -159,6 +159,14 @@ def audio_add(request):
            context_instance=RequestContext(request))
 
 
+def delete_audio_file(obj):
+    """Delete audio file from computer drive"""
+    if obj.audio_file:
+        if os.path.exists(obj.audio_file.path):
+            os.remove(obj.audio_file.path)
+    return True
+
+
 @permission_required('dialer_audio.delete_audio', login_url='/')
 @login_required
 def audio_del(request, object_id):
@@ -174,11 +182,14 @@ def audio_del(request, object_id):
         * Delete selected the audio from the audio list
     """
     if int(object_id) != 0:
-        audio = get_object_or_404(AudioFile, pk=int(object_id), user=request.user)
+        audio = get_object_or_404(
+            AudioFile, pk=int(object_id), user=request.user)
+        request.session["msg"] = \
+            _('"%(name)s" is deleted.') % {'name': audio.name}
 
-        # 1) delete survey
-        request.session["msg"] = _('"%(name)s" is deleted.')\
-                                 % {'name': audio.name}
+        # 1) remove audio file from drive
+        delete_audio_file(audio)
+        # 2) delete audio
         audio.delete()
     else:
         try:
@@ -186,13 +197,18 @@ def audio_del(request, object_id):
             values = request.POST.getlist('select')
             values = ", ".join(["%s" % el for el in values])
 
-            # 1) delete audio
             audio_list = AudioFile.objects\
                             .filter(user=request.user)\
                             .extra(where=['id IN (%s)' % values])
-            request.session["msg"] =\
-                _('%(count)s audio(s) are deleted.')\
-                    % {'count': audio_list.count()}
+
+            request.session["msg"] = _('%(count)s audio(s) are deleted.')\
+                % {'count': audio_list.count()}
+
+            # 1) remove audio file from drive
+            for audio in audio_list:
+                delete_audio_file(audio)
+
+            # 2) delete audio
             audio_list.delete()
         except:
             raise Http404
@@ -219,17 +235,15 @@ def audio_change(request, object_id):
     form = DialerAudioFileForm(instance=obj)
 
     if request.GET.get('delete'):
-        # perform delete
-        if obj.audio_file:
-            if os.path.exists(obj.audio_file.path):
-                os.remove(obj.audio_file.path)
+        # 1) remove audio file from drive
+        delete_audio_file(obj)
+        # 2) delete audio
         obj.delete()
         return HttpResponseRedirect('/audio/')
 
     if request.method == 'POST':
-        form = DialerAudioFileForm(request.POST,
-                                   request.FILES,
-                                   instance=obj)
+        form = DialerAudioFileForm(
+            request.POST, request.FILES, instance=obj)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/audio/')

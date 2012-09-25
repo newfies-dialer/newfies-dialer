@@ -605,6 +605,7 @@ def section_add(request):
         'err_msg': request.session.get('err_msg'),
         'action': 'add'
     }
+    request.session["msg"] = ''
     request.session['err_msg'] = ''
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -796,6 +797,7 @@ def section_change(request, id):
         'err_msg': request.session.get('err_msg'),
         'action': 'update',
     }
+    request.session["msg"] = ''
     request.session['err_msg'] = ''
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -826,8 +828,7 @@ def section_delete(request, id):
 
         # 2) delete section
         section.delete()
-        request.session["msg"] =\
-            _('Section is deleted successfully.')
+        request.session["msg"] = _('Section is deleted successfully.')
         return HttpResponseRedirect('/survey2/%s/' % (survey_id))
 
     template = 'frontend/survey2/section_delete_confirmation.html'
@@ -859,19 +860,14 @@ def section_phrasing_change(request, id):
 
     form = PhrasingForm(instance=section)
     if request.method == 'POST':
-        form = PhrasingForm(request.POST,
-                            instance=section)
+        form = PhrasingForm(request.POST, instance=section)
         if form.is_valid():
             obj = form.save()
-            request.session["msg"] =\
-                _('Phrasing is updated successfully.')
+            request.session["msg"] = _('Phrasing is updated successfully.')
             return HttpResponseRedirect('/survey2/%s/#row%s'
                 % (obj.survey_id, obj.id))
         else:
-            request.session["err_msg"] =\
-                _('Phrasing is not updated.')
-            form = PhrasingForm(request.POST,
-                                instance=section)
+            request.session["err_msg"] = True
 
     template = 'frontend/survey2/section_phrasing_change.html'
     data = {
@@ -881,7 +877,8 @@ def section_phrasing_change(request, id):
         'module': current_view(request),
         'err_msg': request.session.get('err_msg'),
         'action': 'update',
-        }
+    }
+    request.session["msg"] = ''
     request.session['err_msg'] = ''
     return render_to_response(template, data,
         context_instance=RequestContext(request))
@@ -906,23 +903,20 @@ def section_branch_add(request):
     if request.GET.get('section_id'):
         section_id = request.GET.get('section_id')
         section = Section.objects.get(pk=int(section_id))
-        form = BranchingForm(section.survey_id,
-                             section.id,
-                             initial={'section': section_id})
+        form = BranchingForm(
+            section.survey_id, section.id, initial={'section': section_id})
         if request.method == 'POST':
-            form = BranchingForm(section.survey_id,
-                                 section.id,
-                                 request.POST)
+            form = BranchingForm(
+                section.survey_id, section.id, request.POST)
             if form.is_valid():
                 form.save()
-                request.session["msg"] =\
-                    _('Branching is added successfully.')
+                request.session["msg"] = _('Branching is added successfully.')
                 return HttpResponseRedirect('/survey2/%s/#row%s'
                                         % (section.survey_id, section_id))
             else:
                 form._errors["keyresult"] = \
                     _("duplicate record keyresult with goto.")
-                request.session["err_msg"] = _('Keyresult is not added.')
+                request.session["err_msg"] = True
 
     template = 'frontend/survey2/section_branch_change.html'
     data = {
@@ -934,6 +928,7 @@ def section_branch_add(request):
         'err_msg': request.session.get('err_msg'),
         'action': 'add',
     }
+    request.session["msg"] = ''
     request.session['err_msg'] = ''
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -962,8 +957,7 @@ def section_branch_change(request, id):
         survey_id = branching_obj.section.survey_id
         section_id = branching_obj.section_id
         branching_obj.delete()
-        request.session["msg"] =\
-            _('Branching is deleted successfully.')
+        request.session["msg"] = _('Branching is deleted successfully.')
         return HttpResponseRedirect('/survey2/%s/#row%s'
                                     % (survey_id, section_id))
 
@@ -987,7 +981,7 @@ def section_branch_change(request, id):
         else:
             form._errors["keyresult"] =\
                 _("duplicate record keyresult with goto.")
-            request.session["err_msg"] = _('Keyresult is not added.')
+            request.session["err_msg"] = True
 
     template = 'frontend/survey2/section_branch_change.html'
     data = {
@@ -999,7 +993,8 @@ def section_branch_change(request, id):
         'module': current_view(request),
         'err_msg': request.session.get('err_msg'),
         'action': 'update',
-        }
+    }
+    request.session["msg"] = ''
     request.session['err_msg'] = ''
     return render_to_response(template, data,
         context_instance=RequestContext(request))

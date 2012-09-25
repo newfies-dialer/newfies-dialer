@@ -28,9 +28,9 @@ def get_audiofile_list(user):
     with default none option"""
     list_af = []
     list_af.append(('', '---'))
-    list = AudioFile.objects.filter(user=user)
-    af_list = ((l.id, l.name) for l in list)
-    for i in af_list:
+    list = AudioFile.objects.values_list('id', 'name').filter(user=user)\
+            .order_by('id')
+    for i in list:
         list_af.append((i[0], i[1]))
     return list_af
 
@@ -99,7 +99,7 @@ def get_rating_choice_list(section_id):
     if obj_section.rating_laps:
         for i in range(1, int(obj_section.rating_laps) + 1):
             if i not in keys_list:
-                list_sq.append((i, str(section_id) + '.' + str(i)))
+                list_sq.append((i, '%s.%s' % (str(section_id), str(i))))
 
     list_sq.append(('', _('Anything')))
     return list_sq
@@ -313,11 +313,10 @@ class SurveyReportForm(forms.Form):
         if user:
             list = []
             try:
-                camp_list = Campaign.objects.filter(
-                    user=user,
-                    content_type=ContentType.objects.get(model='survey'))
-                pb_list = ((l.id, l.name) for l in camp_list)
-                for i in pb_list:
+                camp_list = Campaign.objects.values_list('id', 'name')\
+                    .filter(user=user,
+                            content_type=ContentType.objects.get(model='survey'))
+                for i in camp_list:
                     list.append((i[0], i[1]))
             except:
                 list.append((0, ''))

@@ -416,8 +416,8 @@ def customer_dashboard(request, on_index=None):
             else:  # Last 30 days
                 inttime = int(date.strftime("%Y%m%d"))
 
-            name_date = _(date.strftime("%B")) + " " + str(date.day) + \
-                        ", " + str(date.year)
+            name_date = "%s %s, %s" % (
+                _(date.strftime("%B")), str(date.day), str(date.year))
 
             if inttime in calls_dict.keys():
                 total_data.append({
@@ -486,9 +486,11 @@ def customer_dashboard(request, on_index=None):
                                                       temp_date[6:8] + ' ' +
                                                       str(option).zfill(2)),
                                                       '%Y-%m-%d %H')
-                                name_date = _(date.strftime("%B")) + " " + \
-                                                str(date.day) + \
-                                                ", " + str(date.year)
+
+                                name_date = "%s %s, %s" % (_(date.strftime("%B")),
+                                                           str(date.day),
+                                                           str(date.year))
+
                                 seven_days_result_set.append(
                                     {
                                     'count': j,
@@ -508,12 +510,13 @@ def customer_dashboard(request, on_index=None):
 
                         # only add seven_days_option_list record
                         name_date = \
-                        datetime.strptime(str(icalls['starting_date']),
+                            datetime.strptime(str(icalls['starting_date']),
                                         '%Y-%m-%d %H')
 
-                        name_date = _(name_date.strftime("%B")) + " " + \
-                                    str(name_date.day) + \
-                                     ", " + str(date.year)
+                        name_date = "%s %s, %s" % (_(name_date.strftime("%B")),
+                                                   str(name_date.day),
+                                                   str(date.year))
+
                         seven_days_result_set.append(
                             {
                             'count': j,
@@ -536,14 +539,15 @@ def customer_dashboard(request, on_index=None):
                                     str(inttime)[5:7] + \
                                     str(inttime)[8:10]
                     name_date = \
-                    datetime.strptime(str(temp_date[0:4] + '-' +
-                                          temp_date[4:6] + '-' +
-                                          temp_date[6:8] + ' ' +
-                                          str(option).zfill(2)),
-                                          '%Y-%m-%d %H')
-                    name_date = _(date.strftime("%B")) + " " + \
-                                    str(date.day) + \
-                                    ", " + str(date.year)
+                        datetime.strptime(str(temp_date[0:4] + '-' +
+                                              temp_date[4:6] + '-' +
+                                              temp_date[6:8] + ' ' +
+                                              str(option).zfill(2)),
+                                              '%Y-%m-%d %H')
+
+                    name_date = "%s %s, %s" % (_(date.strftime("%B")),
+                                               str(date.day),
+                                               str(date.year))
                     seven_days_result_set.append(
                         {
                         'count': j,
@@ -603,9 +607,12 @@ def customer_dashboard(request, on_index=None):
                                                       temp_date[9:11] + ':' +
                                                       str(option).zfill(2)),
                                                       '%Y-%m-%d %H:%M')
-                                name_date = \
-                                _(date.strftime("%B")) + " " +\
-                                str(date.day) + ", " + str(date.year)
+
+                                name_date = "%s %s, %s" % (
+                                    _(date.strftime("%B")),
+                                    str(date.day),
+                                    str(date.year))
+
                                 common_hour_result_set.append({'count': m,
                                                     'day': temp_date[6:8],
                                                     'month': temp_date[4:6],
@@ -623,12 +630,12 @@ def customer_dashboard(request, on_index=None):
 
                         # only add data records
                         name_date = \
-                        datetime.strptime(str(icalls['starting_date']),
+                            datetime.strptime(str(icalls['starting_date']),
                                             '%Y-%m-%d %H:%M')
 
-                        name_date = _(name_date.strftime("%B")) + " " + \
-                                    str(name_date.day) + \
-                                    ", " + str(date.year)
+                        name_date = "%s %s, %s" % (_(name_date.strftime("%B")),
+                                                   str(name_date.day),
+                                                   str(date.year))
                         common_hour_result_set.append({'count': m,
                                 'day': temp_date[6:8],
                                 'month': temp_date[4:6],
@@ -660,8 +667,9 @@ def customer_dashboard(request, on_index=None):
                                     temp_date[6:8] + ' ' +
                                     temp_date[9:11] + ':' +
                                     str(option).zfill(2)), '%Y-%m-%d %H:%M')
-                    name_date = _(date.strftime("%B")) + " " + \
-                                str(date.day) + ", " + str(date.year)
+
+                    name_date = "%s %s, %s" % (
+                        _(date.strftime("%B")), str(date.day), str(date.year))
                     common_hour_result_set.append({'count': m,
                                                    'day': temp_date[6:8],
                                                    'month': temp_date[4:6],

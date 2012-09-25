@@ -58,8 +58,8 @@ class CampaignManager(models.Manager):
                                                  tday.hour, tday.minute,
                                                  tday.second, tday.microsecond)
 
-        s_time = str(tday.hour) + ":" + str(tday.minute + 1) + ":" + \
-                    str(tday.second)
+        s_time = "%s:%s:%s" % (
+            str(tday.hour), str(tday.minute + 1), str(tday.second))
         kwargs['daily_start_time__lte'] = datetime.strptime(s_time, '%H:%M:%S')
         kwargs['daily_stop_time__gte'] = datetime.strptime(s_time, '%H:%M:%S')
 
@@ -373,8 +373,8 @@ class Campaign(Model):
             except:
                 pass
 
-            cache.set("campaignsubscriber_count_key_campaign_id_"
-                      + str(self.id), campaignsubscriber_count, 5)
+            cache.set("campaignsubscriber_count_key_campaign_id_%s"
+                      % str(self.id), campaignsubscriber_count, 5)
 
         campaignsubscriber_count = int(campaignsubscriber_count)
         count_contact = int(count_contact)

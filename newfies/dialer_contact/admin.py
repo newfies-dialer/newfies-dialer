@@ -127,8 +127,8 @@ class ContactAdmin(admin.ModelAdmin):
         contact_cnt = 0
         bulk_record = []
         if request.method == 'POST':
-            form = Contact_fileImport(request.user, request.POST,
-                                      request.FILES)
+            form = Contact_fileImport(
+                request.user, request.POST, request.FILES)
             if form.is_valid():
                 # col_no - field name
                 #  0     - contact
@@ -139,12 +139,13 @@ class ContactAdmin(admin.ModelAdmin):
                 #  5     - status
                 #  6     - additional_vars
                 # To count total rows of CSV file
-                records = csv.reader(request.FILES['csv_file'],
-                                     delimiter=',', quotechar='"')
+                records = csv.reader(
+                    request.FILES['csv_file'], delimiter=',', quotechar='"')
                 total_rows = len(list(records))
                 BULK_SIZE = 1000
-                rdr = csv.reader(request.FILES['csv_file'],
-                                 delimiter=',', quotechar='"')
+                rdr = csv.reader(
+                    request.FILES['csv_file'], delimiter=',', quotechar='"')
+
                 #Get Phonebook Obj
                 phonebook = Phonebook.objects.get(pk=request.POST['phonebook'])
 

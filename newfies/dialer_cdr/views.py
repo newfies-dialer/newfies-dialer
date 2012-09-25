@@ -87,15 +87,15 @@ def voipcall_report_grid(request):
                     if kwargs_list[1]:
                         from_date = kwargs_list[1]
                         start_date = \
-                        datetime(int(from_date[0:4]), int(from_date[5:7]),
-                                 int(from_date[8:10]), 0, 0, 0, 0)
+                            datetime(int(from_date[0:4]), int(from_date[5:7]),
+                                     int(from_date[8:10]), 0, 0, 0, 0)
 
                 if kwargs_list[0] == 'to_date':
                     if kwargs_list[1]:
                         to_date = kwargs_list[1]
                         end_date = \
-                        datetime(int(to_date[0:4]), int(to_date[5:7]),
-                                 int(to_date[8:10]), 23, 59, 59, 999999)
+                            datetime(int(to_date[0:4]), int(to_date[5:7]),
+                                     int(to_date[8:10]), 23, 59, 59, 999999)
 
                 if kwargs_list[0] == 'disposition':
                     if kwargs_list[1]:

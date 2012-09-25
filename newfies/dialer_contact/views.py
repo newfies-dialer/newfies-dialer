@@ -179,8 +179,7 @@ def phonebook_add(request):
 def get_contact_count(request):
     """To get total no of contacts belonging to a phonebook list"""
     contact_list = Contact.objects.filter(user=request.user)\
-        .extra(where=['phonebook_id IN (%s)'
-                      % request.GET['pb_ids']])
+        .extra(where=['phonebook_id IN (%s)' % request.GET['pb_ids']])
     data = contact_list.count()
     return HttpResponse(data)
 
@@ -358,8 +357,12 @@ def contact_grid(request):
         {'id': row['id'],
          'cell': ['<input type="checkbox" name="select" class="checkbox"\
                   value="%s" />' % (str(row['id'])),
-                  row['id'], row['phonebook__name'], row['contact'],
-                  row['last_name'], row['first_name'], row['status'],
+                  row['id'],
+                  row['phonebook__name'],
+                  row['contact'],
+                  row['last_name'],
+                  row['first_name'],
+                  row['status'],
                   row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
                   get_grid_update_delete_link(request, row['id'],
                                               'dialer_contact.change_contact',
@@ -492,9 +495,8 @@ def contact_del(request, object_id):
     """
     if int(object_id) != 0:
         # When object_id is not 0
-        contact = get_object_or_404(Contact,
-                                    pk=object_id,
-                                    phonebook__user=request.user)
+        contact = get_object_or_404(
+            Contact, pk=object_id, phonebook__user=request.user)
 
         # Delete contact
         request.session["msg"] = _('"%(name)s" is deleted.')\
@@ -534,8 +536,8 @@ def contact_change(request, object_id):
         * Update/delete selected contact from the contact list
           via ContactForm & get redirected to the contact list
     """
-    contact = get_object_or_404(Contact, pk=object_id,
-                                phonebook__user=request.user)
+    contact = get_object_or_404(
+        Contact, pk=object_id, phonebook__user=request.user)
     form = ContactForm(request.user, instance=contact)
     if request.method == 'POST':
         # Delete contact

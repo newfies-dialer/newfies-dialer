@@ -57,9 +57,9 @@ class Contact_fileImport(FileImport):
         self.fields.keyOrder = ['phonebook', 'csv_file']
         # To get user's phonebook list
         if user:  # and not user.is_superuser
-            list = Phonebook.objects.filter(user=user)
-            pb_list_user = ((l.id, l.name) for l in list)
-            self.fields['phonebook'].choices = pb_list_user
+            self.fields['phonebook'].choices = \
+                Phonebook.objects.values_list('id', 'name')\
+                    .filter(user=user).order_by('id')
 
 
 class PhonebookForm(ModelForm):
@@ -90,9 +90,9 @@ class ContactForm(ModelForm):
         super(ContactForm, self).__init__(*args, **kwargs)
         # To get user's phonebook list
         if user:
-            list = Phonebook.objects.filter(user=user)
-            pb_list_user = ((l.id, l.name) for l in list)
-            self.fields['phonebook'].choices = pb_list_user
+            self.fields['phonebook'].choices = \
+                Phonebook.objects.values_list('id', 'name')\
+                    .filter(user=user).order_by('id')
 
 
 class ContactSearchForm(forms.Form):
@@ -113,11 +113,11 @@ class ContactSearchForm(forms.Form):
         super(ContactSearchForm, self).__init__(*args, **kwargs)
          # To get user's phonebook list
         if user:
-            list = []
-            list.append((0, '---'))
+            pb_list_user = []
+            pb_list_user.append((0, '---'))
+            phonebook_list = Phonebook.objects.values_list('id', 'name')\
+                                .filter(user=user).order_by('id')
+            for i in phonebook_list:
+                pb_list_user.append((i[0], i[1]))
 
-            listp = Phonebook.objects.filter(user=user)
-            pb_list_user = ((l.id, l.name) for l in listp)
-            for i in pb_list_user:
-                list.append((i[0], i[1]))
-            self.fields['phonebook'].choices = list
+            self.fields['phonebook'].choices = pb_list_user

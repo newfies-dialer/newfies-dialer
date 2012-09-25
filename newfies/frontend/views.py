@@ -27,10 +27,12 @@ from django.utils.translation import ugettext as _
 from notification import models as notification
 from dialer_contact.models import Phonebook, Contact
 from dialer_campaign.models import Campaign, CampaignSubscriber
-from frontend.forms import LoginForm, DashboardForm
+
 from dialer_campaign.function_def import date_range, \
                         user_dialer_setting_msg
 from dialer_cdr.models import VoIPCall
+from dialer_cdr.constants import VOIPCALL_DISPOSITION
+from frontend.forms import LoginForm, DashboardForm
 from frontend.function_def import calculate_date
 from frontend.constants import COLOR_DISPOSITION
 from common.common_functions import current_view
@@ -112,9 +114,7 @@ def notice_count(request):
     """Get count of logged in user's notifications"""
     try:
         notice_count = notification.Notice.objects\
-                            .filter(
-                                recipient=request.user,
-                                unseen=1)\
+                            .filter(recipient=request.user, unseen=1)\
                             .count()
     except:
         notice_count = ''
@@ -183,7 +183,7 @@ def customer_dashboard(request, on_index=None):
     for i in campaign:
         pb_active_contact_count +=\
             Contact.objects.filter(phonebook__campaign=i.id, status=1).count()
-        campaign_id_list += str(i.id) + ","
+        campaign_id_list +=  "%s," %  str(i.id)
     campaign_id_list = campaign_id_list[:-1]
 
     # Phonebook list for logged in user
@@ -295,26 +295,27 @@ def customer_dashboard(request, on_index=None):
                     'disposition': i['disposition']
                     })
 
-            if i['disposition'] == 'ANSWER':
+            if i['disposition'] == VOIPCALL_DISPOSITION.ANSWER:
                 total_answered += i['starting_date__count']
-            elif i['disposition'] == 'BUSY' or i['disposition'] == 'USER_BUSY':
+            elif i['disposition'] == VOIPCALL_DISPOSITION.BUSY \
+                or i['disposition'] == 'USER_BUSY':
                 total_busy += i['starting_date__count']
-            elif i['disposition'] == 'NOANSWER' \
+            elif i['disposition'] == VOIPCALL_DISPOSITION.NOANSWER \
                 or i['disposition'] == 'NO_ANSWER':
                 total_not_answered += i['starting_date__count']
-            elif i['disposition'] == 'CANCEL':
+            elif i['disposition'] == VOIPCALL_DISPOSITION.CANCEL:
                 total_cancel += i['starting_date__count']
-            elif i['disposition'] == 'CONGESTION':
+            elif i['disposition'] == VOIPCALL_DISPOSITION.CONGESTION:
                 total_congestion += i['starting_date__count']
-            elif i['disposition'] == 'CHANUNAVAIL':
+            elif i['disposition'] == VOIPCALL_DISPOSITION.CHANUNAVAIL:
                 total_chanunavail += i['starting_date__count']
-            elif i['disposition'] == 'DONTCALL':
+            elif i['disposition'] == VOIPCALL_DISPOSITION.DONTCALL:
                 total_dontcall += i['starting_date__count']
-            elif i['disposition'] == 'TORTURE':
+            elif i['disposition'] == VOIPCALL_DISPOSITION.TORTURE:
                 total_torture += i['starting_date__count']
-            elif i['disposition'] == 'INVALIDARGS':
+            elif i['disposition'] == VOIPCALL_DISPOSITION.INVALIDARGS:
                 total_invalidargs += i['starting_date__count']
-            elif i['disposition'] == 'NOROUTE' \
+            elif i['disposition'] == VOIPCALL_DISPOSITION.NOROUTE \
                 or i['disposition'] == 'NO_ROUTE':
                 total_noroute += i['starting_date__count']
             else:

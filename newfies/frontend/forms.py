@@ -27,11 +27,6 @@ class DashboardForm(forms.Form):
         self.fields.keyOrder = ['campaign', 'search_type']
         # To get user's running campaign list
         if user:
-            list = []
-            #list.append((0, '---'))
-            listc = Campaign.objects.filter(user=user)
-            cp_list = ((l.id, l.name) for l in listc)
-
-            for i in cp_list:
-                list.append((i[0], i[1]))
-            self.fields['campaign'].choices = list
+            campaign_list = Campaign.objects.values_list('id', 'name')\
+                .filter(user=user).order_by('id')
+            self.fields['campaign'].choices = campaign_list

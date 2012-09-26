@@ -178,7 +178,7 @@ def phonebook_add(request):
 @login_required
 def get_contact_count(request):
     """To get total no of contacts belonging to a phonebook list"""
-    contact_list = Contact.objects.filter(phonebook__user=request.user)\
+    contact_list = Contact.objects.filter(user=request.user)\
         .extra(where=['phonebook_id IN (%s)' % request.GET['pb_ids']])
     data = contact_list.count()
     return HttpResponse(data)
@@ -301,19 +301,11 @@ def contact_grid(request):
     name = ''
 
     # get querystring from URL
-    q_arr = list(request.get_full_path().split('?'))
-    j = 0
-    q_para = ''
+    query_para = list(request.get_full_path().split('?'))[1]
 
-    # get para from querystring
-    for i in q_arr:
-        if j == 1:
-            q_para = i
-        j = j + 1
-
-    if "kwargs" in q_para:
+    if "kwargs" in query_para:
         # decode query string
-        decoded_string = urllib.unquote(q_para.decode("utf8"))
+        decoded_string = urllib.unquote(query_para.decode("utf8"))
         temp_list = list(decoded_string.split('&'))
         for i in range(0, len(temp_list)):
             if temp_list[i].find('='):
@@ -323,7 +315,6 @@ def contact_grid(request):
                 if kwargs_list[0] == 'name':
                     name = kwargs_list[1]
 
-    phonebook_id_list = ''
     phonebook_id_list = Phonebook.objects\
         .values_list('id', flat=True)\
         .filter(user=request.user)

@@ -204,7 +204,7 @@ def contact_search_common_fun(request):
     if phonebook != '0':
         kwargs['phonebook'] = phonebook
 
-    if status != STATUS_CHOICE.ALL:
+    if int(status) != STATUS_CHOICE.ALL:
         kwargs['status'] = status
 
     contact_no = type_field_chk(contact_no, contact_no_type, 'contact')

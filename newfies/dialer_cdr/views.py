@@ -65,7 +65,7 @@ def voipcall_report_grid(request):
 
     # get querystring from URL
     query_para = list(request.get_full_path().split('?'))[1]
-    
+
     if "from_date" in query_para:
         # decode query string
         decoded_string = urllib.unquote(query_para.decode("utf8"))
@@ -180,8 +180,8 @@ def voipcall_report(request):
     else:
         tday = datetime.today()
         kwargs['starting_date__gte'] = datetime(tday.year,
-                                               tday.month,
-                                               tday.day, 0, 0, 0, 0)
+                                                tday.month,
+                                                tday.day, 0, 0, 0, 0)
 
     voipcall_list = \
         VoIPCall.objects.filter(**kwargs).order_by('-starting_date')

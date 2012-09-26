@@ -15,7 +15,6 @@
 from django.contrib.auth.models import User
 from django.template import Template, Context
 from django.test import TestCase
-from django.conf import settings
 from django.core.management import call_command
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.forms import Contact_fileImport, \
@@ -27,10 +26,9 @@ from dialer_contact.views import phonebook_grid, phonebook_add, \
     phonebook_list, phonebook_del,\
     contact_list, contact_add,\
     contact_change, contact_del, contact_import,\
-    get_contact_count, count_contact_of_campaign,\
-    get_url_campaign_status
-from dialer_contact.tasks import collect_subscriber_optimized, \
-    import_phonebook
+    get_contact_count, count_contact_of_campaign
+from dialer_campaign.views import get_url_campaign_status
+from dialer_contact.tasks import import_phonebook
 from utils.helper import grid_test_data
 from common.utils import BaseAuthenticatedClient
 from datetime import datetime
@@ -317,7 +315,7 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
                                 'frontend/contact/import_contact.html')
 
         response = self.client.post('/contact/import/',
-                                    data={'phonebook_id': '1',
+                                    data={'phonebook': '1',
                                           'csv_file': csv_file})
         self.assertEqual(response.status_code, 200)
 
@@ -352,12 +350,6 @@ class DialerContactCeleryTaskTestCase(TestCase):
                 'phonebook.json', 'contact.json',
                 'campaign.json', 'campaign_subscriber.json',
                 'user_profile.json']
-
-    def test_collect_subscriber_optimized(self):
-        """Test that the ``collect_subscriber_optimized``
-        task runs with no errors, and returns the correct result."""
-        result = collect_subscriber_optimized.delay(1)
-        self.assertEqual(result.successful(), True)
 
     def test_import_phonebook(self):
         """Test that the ``import_phonebook``

@@ -178,7 +178,7 @@ def phonebook_add(request):
 @login_required
 def get_contact_count(request):
     """To get total no of contacts belonging to a phonebook list"""
-    contact_list = Contact.objects.filter(user=request.user)\
+    contact_list = Contact.objects.filter(phonebook__user=request.user)\
         .extra(where=['phonebook_id IN (%s)' % request.GET['pb_ids']])
     data = contact_list.count()
     return HttpResponse(data)

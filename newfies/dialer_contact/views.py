@@ -175,15 +175,6 @@ def phonebook_add(request):
                               context_instance=RequestContext(request))
 
 
-@login_required
-def get_contact_count(request):
-    """To get total no of contacts belonging to a phonebook list"""
-    contact_list = Contact.objects.filter(user=request.user)\
-        .extra(where=['phonebook_id IN (%s)' % request.GET['pb_ids']])
-    data = contact_list.count()
-    return HttpResponse(data)
-
-
 @permission_required('dialer_contact.delete_phonebook', login_url='/')
 @login_required
 def phonebook_del(request, object_id):

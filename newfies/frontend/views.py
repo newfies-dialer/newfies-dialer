@@ -195,7 +195,7 @@ def customer_dashboard(request, on_index=None):
     if phonebook_id_list:
         total_of_phonebook_contacts = \
             Contact.objects.filter(phonebook__in=phonebook_id_list).count()
-
+    
     form = DashboardForm(request.user)
     total_data = []  # for humblefinance chart
     final_calls = []  # for pie chart

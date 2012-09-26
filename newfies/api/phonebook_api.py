@@ -169,5 +169,5 @@ class PhonebookResource(ModelResource):
         validation = PhonebookValidation()
         filtering = {
             'name': ALL,
-            }
+        }
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600)

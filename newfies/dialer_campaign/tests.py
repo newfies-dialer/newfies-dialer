@@ -60,7 +60,7 @@ class DialerCampaignView(BaseAuthenticatedClient):
                 "calltimeout": "60",
                 "aleg_gateway": "1",
                 "user": "1",
-                "content_object": "type:30-id:1",
+                "content_object": "type:32-id:1",
                 "extra_data": "2000"})
         self.assertEqual(response.status_code, 200)
 
@@ -114,6 +114,12 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
 
     def test_campaign_view_add(self):
         """Test Function to check add campaign"""
+        request = self.factory.get('/campaign/add/')
+        request.user = self.user
+        request.session = {}
+        response = campaign_add(request)
+        self.assertEqual(response.status_code, 302)
+
         response = self.client.post('/campaign/add/', data={
             "name": "mylittlecampaign",
             "description": "xyz",
@@ -125,7 +131,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "intervalretry": "3000",
             "calltimeout": "60",
             "aleg_gateway": "1",
-            "content_object": "type:30-id:1",
+            "content_object": "type:32-id:1",
             "extra_data": "2000"}, follow=True)
         self.assertEqual(response.status_code, 200)
 
@@ -140,7 +146,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "intervalretry": "3000",
             "calltimeout": "60",
             "aleg_gateway": "1",
-            "content_object": "type:30-id:1",
+            "content_object": "type:32-id:1",
             "extra_data": "2000"}, follow=True)
         request.user = self.user
         request.session = {}
@@ -159,7 +165,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "intervalretry": "3000",
             "calltimeout": "60",
             "aleg_gateway": "1",
-            "content_object": "type:30-id:1",
+            "content_object": "type:32-id:1",
             "extra_data": "2000"}, follow=True)
 
         request.user = self.user
@@ -196,16 +202,12 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         request.session = {}
         response = campaign_change(request, 1)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['Location'], '/campaign/')
 
-        request = self.factory.post('/campaign/1/', {
-            'delete': True
-        }, follow=True)
+        request = self.factory.post('/campaign/1/?delete=true', {}, follow=True)
         request.user = self.user
         request.session = {}
         response = campaign_change(request, 1)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['Location'], '/campaign/')
 
     def test_campaign_view_delete(self):
         """Test Function to check delete campaign"""
@@ -305,7 +307,7 @@ class DialerCampaignModel(TestCase):
     """Test Campaign, CampaignSubscriber models"""
 
     fixtures = ['gateway.json', 'voiceapp.json', 'auth_user.json',
-                'dialer_setting.json', 'contenttype.json',
+                'dialer_setting.json',
                 'phonebook.json', 'contact.json',
                 'campaign.json', 'campaign_subscriber.json',
                 'user_profile.json']
@@ -379,7 +381,6 @@ class DialerCampaignModel(TestCase):
         self.campaign.get_active_max_frequency()
         self.campaign.get_active_callmaxduration()
         self.campaign.get_active_contact()
-        self.campaign.get_active_contact_no_subscriber()
         self.campaign.progress_bar()
         self.campaign.campaignsubscriber_detail()
         self.campaign.get_pending_subscriber()
@@ -399,6 +400,22 @@ class DialerCampaignModel(TestCase):
 
         form = CampaignForm(self.user, instance=self.campaign)
         self.assertTrue(isinstance(form.instance, Campaign))
+
+        form = CampaignForm(self.user, data={
+            "name": "mylittle_campaign",
+            "description": "xyz",
+            "startingdate": "1301392136.0",
+            "expirationdate": "1301332136.0",
+            "frequency": "120",
+            "callmaxduration": "50",
+            "maxretry": "3",
+            "intervalretry": "2000",
+            "calltimeout": "60",
+            "aleg_gateway": "1",
+            "content_object": "type:32-id:1",
+            "extra_data": "2000"})
+        self.assertEquals(form.is_valid(), False)
+
 
     def teardown(self):
         self.campaign.delete()

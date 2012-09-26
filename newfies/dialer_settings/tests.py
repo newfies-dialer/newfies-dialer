@@ -14,41 +14,6 @@
 
 from django.test import TestCase
 from dialer_settings.models import DialerSetting
-from common.utils import BaseAuthenticatedClient
-
-
-class DialerSettingView(BaseAuthenticatedClient):
-    """Test Function to check DialerSetting Admin pages"""
-
-    fixtures = ['auth_user.json', 'dialer_setting.json']
-
-    def test_admin_dialersetting_view_list(self):
-        """Test Function to check admin dialersetting list"""
-        response = self.client.get('/admin/dialer_settings/dialersetting/')
-        self.failUnlessEqual(response.status_code, 200)
-
-    def test_admin_dialersetting_view_add(self):
-        """Test Function to check admin dialersetting add"""
-        response = self.client.get("/admin/dialer_settings/dialersetting/add/")
-        self.assertEqual(response.status_code, 200)
-
-        response = self.client.post(
-            '/admin/dialer_settings/dialersetting/add/',
-            data={
-                "max_number_campaign": "10",
-                "name": "default_dialer_setting",
-                "max_number_subscriber_campaign": "10000",
-                "callmaxduration": "1800",
-                "maxretry": "3",
-                "max_frequency": "100",
-                "max_calltimeout": "45"
-                }, follow=True)
-        self.assertEqual(response.status_code, 200)
-
-    def test_admin_dialersetting_view_update(self):
-        """Test Function to check admin dialersetting add"""
-        response = self.client.get("/admin/dialer_settings/dialersetting/1/")
-        self.assertEqual(response.status_code, 200)
 
 
 class DialerSettingModel(TestCase):

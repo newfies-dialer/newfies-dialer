@@ -935,8 +935,7 @@ def section_branch_add(request):
                 return HttpResponseRedirect('/survey2/%s/#row%s'
                                         % (section.survey_id, section_id))
             else:
-                form._errors["keyresult"] = \
-                    _("duplicate record keyresult with goto.")
+                form._errors["keys"] = _("duplicate record keys with goto.")
                 request.session["err_msg"] = True
 
     template = 'frontend/survey2/section_branch_change.html'
@@ -994,14 +993,12 @@ def section_branch_change(request, id):
                              instance=branching)
         if form.is_valid():
             form.save()
-            request.session["msg"] =\
-                _('Branching is updaetd successfully.')
+            request.session["msg"] = _('Branching is updated successfully.')
             return HttpResponseRedirect('/survey2/%s/#row%s'
                                         % (branching.section.survey_id,
                                            branching.section_id))
         else:
-            form._errors["keyresult"] =\
-                _("duplicate record keyresult with goto.")
+            form._errors["keys"] = _("duplicate record keys with goto.")
             request.session["err_msg"] = True
 
     template = 'frontend/survey2/section_branch_change.html'

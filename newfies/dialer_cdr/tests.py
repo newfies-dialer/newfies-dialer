@@ -162,7 +162,7 @@ class DialerCdrModel(TestCase):
     fixtures = ['gateway.json', 'auth_user.json', 'contenttype.json',
                 'phonebook.json', 'contact.json',
                 'campaign.json', 'campaign_subscriber.json',
-                'callrequest.json']
+                'callrequest.json', 'survey.json', 'section.json']
 
     def setUp(self):
         self.user = User.objects.get(username='admin')
@@ -197,12 +197,12 @@ class DialerCdrModel(TestCase):
             duration=20,
         )
         self.voipcall.save()
-        self.assertEqual(self.voipcall.__unicode__(), u'Top Gun')
+        self.assertEqual(self.voipcall.__unicode__(), u'2 - Top Gun')
 
         # Test mgt command
-        call_command("create_callrequest_cdr", "1|10")
+        call_command("create_callrequest_cdr", "1|1")
 
-        call_command("create_callrequest_cdr", "3|10")
+        call_command("create_callrequest_cdr", "3|1")
 
     def test_name(self):
         self.assertEqual(self.callrequest.phone_number, "123456")

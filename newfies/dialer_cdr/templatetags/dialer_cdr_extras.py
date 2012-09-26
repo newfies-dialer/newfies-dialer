@@ -119,10 +119,10 @@ def section_type_name(value):
     """survey section type name
 
     >>> section_type_name(1)
-    u'Voice section'
+    'Voice section'
 
     >>> section_type_name(2)
-    u'Multiple choice question'
+    'Multiple choice question'
 
     >>> section_type_name(0)
     ''

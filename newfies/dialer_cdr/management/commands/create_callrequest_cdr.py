@@ -97,11 +97,10 @@ def create_callrequest(campaign_id, quantity):
         #     print elem[1]
 
         cpg_result = Result.objects.create(
-                            campaign=obj_campaign,
-                            survey_id=obj_campaign.object_id,
                             section=list_section[section_id],
                             response=choice(RESPONSE),
                             record_file='xyz.mp3',
+                            recording_duration=10,
                             callrequest=new_callrequest)
         print "cpg_result:"
         print cpg_result

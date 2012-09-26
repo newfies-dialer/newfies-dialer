@@ -16,6 +16,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
+from audiofield.models import AudioFile
 from dialer_audio.forms import DialerAudioFileForm
 from dialer_audio.views import audio_list, audio_add, audio_grid, \
                                audio_change, audio_del
@@ -51,10 +52,10 @@ class AudioFileAdminView(BaseAuthenticatedClient):
 class AudioFileCustomerView(BaseAuthenticatedClient):
     """Test cases for AudioFile Customer Interface."""
 
-    fixtures = ['auth_user.json', 'dialer_audio.json']
+    fixtures = ['auth_user.json']
 
     def test_audiofile_view_list(self):
-        """Test Function to check aidio list"""
+        """Test Function to check audio list"""
         request = self.factory.post('/audio_grid/', grid_test_data)
         request.user = self.user
         request.session = {}
@@ -73,39 +74,53 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
     def test_audiofile_view_add(self):
-        """Test Function to check view to add audio"""
-        response = self.client.get('/audio/add/')
-        self.assertTrue(response.context['form'], DialerAudioFileForm())
-        self.assertEqual(response.context['action'], 'add')
-        self.assertEqual(response.status_code, 200)
-
-        self.assertTemplateUsed(response, 'frontend/audio/audio_change.html')
-
-        response = self.client.post('/audio/add/', {'name': '',
-                                                    'audio_file': ''},
-                                    **self.extra)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context['form']['name'].errors,
-                         [u'This field is required.'])
-        self.assertEqual(response.context['form']['audio_file'].errors,
-                         [u'This field is required.'])
-
         request = self.factory.post('/audio/add/',
-                {'name': 'sample_audio_file',
-                 'audio_file': audio_file,
-                 'convert_type': 2,
-                 'channel_type': 1,
-                 'freq_type': 8000}, follow=True)
+            {'name': 'sample_audio_file',
+             'audio_file': audio_file,
+             'convert_type': 2,
+             'channel_type': 1,
+             'freq_type': 8000}, follow=True)
         request.user = self.user
         request.session = {}
         response = audio_add(request)
         self.assertEqual(response.status_code, 200)
 
-    def test_audiofile_view_del(self):
-        request = self.factory.post('/audio/del/',
-                {'select': True},
-                follow=True)
+    def test_audiofile_view_change(self):
+        """Test Function to check audio add/change"""
+        self.user = User.objects.get(pk=1)
+        obj = AudioFile(name='sample_audio', user=self.user)
+        obj.save()
+        request = self.factory.post('/audio/%s/' % str(obj.id),
+            {'name': 'sample_audio'},
+            follow=True)
+        request.user = self.user
+        request.session = {}
+        response = audio_change(request, obj.id)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/audio/%s/?delete=true' % str(obj.id),
+            {}, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = audio_change(request, obj.id)
+        self.assertEqual(response.status_code, 302)
+
+    def test_audiofile_view_bulk_del(self):
+        """Test Function to check audio delete"""
+        request = self.factory.post('/audio/del/', {'select': '1'},
+            follow=True)
         request.user = self.user
         request.session = {}
         response = audio_del(request, 0)
+        self.assertEqual(response.status_code, 302)
+
+    def test_audiofile_view_del(self):
+        self.user = User.objects.get(pk=1)
+        obj = AudioFile(name='sample_audio', user=self.user)
+        obj.save()
+        request = self.factory.post('/audio/del/%s/' % str(obj.id), {},
+            follow=True)
+        request.user = self.user
+        request.session = {}
+        response = audio_del(request, obj.id)
         self.assertEqual(response.status_code, 302)

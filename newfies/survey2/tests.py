@@ -146,7 +146,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         response = survey_del(request, 1)
         self.assertEqual(response.status_code, 302)
 
-        request = self.factory.post('/survey2/del/', {'select': 1})
+        request = self.factory.post('/survey2/del/', {'select': '1'})
         request.user = self.user
         request.session = {}
         response = survey_del(request, 0)

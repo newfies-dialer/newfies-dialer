@@ -64,19 +64,11 @@ def voipcall_report_grid(request):
         sortorder_sign = '-'
 
     # get querystring from URL
-    q_arr = list(request.get_full_path().split('?'))
-    j = 0
-    q_para = ''
-
-    # get para from querystring
-    for i in q_arr:
-        if j == 1:
-            q_para = i
-        j = j + 1
-
-    if "from_date" in q_para:
+    query_para = list(request.get_full_path().split('?'))[1]
+    
+    if "from_date" in query_para:
         # decode query string
-        decoded_string = urllib.unquote(q_para.decode("utf8"))
+        decoded_string = urllib.unquote(query_para.decode("utf8"))
 
         temp_list = list(decoded_string.split('&'))
         for i in range(0, len(temp_list)):

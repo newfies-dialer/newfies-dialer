@@ -677,22 +677,20 @@ def customer_dashboard(request, on_index=None):
             total_data = seven_days_result_set
 
         # total_data = (Last 12 hrs / Last 6 hrs/ Last hour)
-        if int(search_type) == 5 \
-            or int(search_type) == 6 \
+        if int(search_type) == 5 or int(search_type) == 6 \
             or int(search_type) == 7:
             total_data = common_hour_result_set
 
     # Contacts which are successfully called for running campaign
     reached_contact = 0
-    for i in campaign_id_list:
+    if campaign_id_list:
         now = datetime.now()
         start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
         end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999)
-        campaign_subscriber = CampaignSubscriber.objects\
-                .filter(campaign=i,  # status=5,
+        reached_contact = CampaignSubscriber.objects\
+                .filter(campaign_id__in=campaign_id_list,  # status=5,
                         updated_date__range=(start_date, end_date))\
                 .count()
-        reached_contact += campaign_subscriber
 
     template = 'frontend/dashboard.html'
 

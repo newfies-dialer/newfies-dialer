@@ -220,26 +220,27 @@ def campaign_grid(request):
         .order_by(sortorder_sign + sortname)[start_page:end_page]
 
     rows = [
-    {'id': row.id,
-     'cell': ['<input type="checkbox" name="select" class="checkbox"\
-                  value="%s" />' % (str(row.id)),
-              row.campaign_code,
-              row.name,
-              row.startingdate.strftime('%Y-%m-%d %H:%M:%S'),
-              row.content_type.name,
-              str(get_app_name(
-                  row.content_type.app_label, row.content_type.model,
-                  row.object_id)),
-              row.count_contact_of_phonebook(),
-              get_campaign_status_name(row.status),
-              get_grid_update_delete_link(request, row.id,
-                  'dialer_campaign.change_campaign',
-                  _('Update campaign'), 'update') +\
-              get_grid_update_delete_link(request, row.id,
-                  'dialer_campaign.delete_campaign',
-                  _('Delete campaign'), 'delete') +\
-              get_url_campaign_status(row.id, row.status),
-              ]} for row in campaign_list]
+            {'id': row.id,
+             'cell': ['<input type="checkbox" name="select" class="checkbox"\
+                          value="%s" />' % (str(row.id)),
+                      row.campaign_code,
+                      row.name,
+                      row.startingdate.strftime('%Y-%m-%d %H:%M:%S'),
+                      row.content_type.name,
+                      str(get_app_name(
+                          row.content_type.app_label, row.content_type.model,
+                          row.object_id)),
+                      row.count_contact_of_phonebook(),
+                      get_campaign_status_name(row.status),
+                      get_grid_update_delete_link(request, row.id,
+                          'dialer_campaign.change_campaign',
+                          _('Update campaign'), 'update') +\
+                      get_grid_update_delete_link(request, row.id,
+                          'dialer_campaign.delete_campaign',
+                          _('Delete campaign'), 'delete') +\
+                      get_url_campaign_status(row.id, row.status),
+                      ]} for row in campaign_list
+           ]
 
     data = {'rows': rows,
             'page': page,

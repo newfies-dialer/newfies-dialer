@@ -43,7 +43,7 @@ $(document).ready(function() {
                 var allVals = [];                
                 $fields.each(function() {
                    allVals.push($(this).val());                   
-                });                                 
+                });
                 $.ajax({
                     url: "http://127.0.0.1:8000/phonebook/contact_count/",
                     type: "GET",

@@ -175,6 +175,17 @@ def phonebook_add(request):
                               context_instance=RequestContext(request))
 
 
+@login_required
+def get_contact_count(request):
+    """To get total no of contacts belonging to a phonebook list"""
+    values = request.GET.getlist('pb_ids')
+    values = ", ".join(["%s" % el for el in values])
+    contact_count = Contact.objects.filter(phonebook__user=request.user)\
+    .extra(where=['phonebook_id IN (%s)' % values]).count()
+
+    return HttpResponse(contact_count)
+
+
 @permission_required('dialer_contact.delete_phonebook', login_url='/')
 @login_required
 def phonebook_del(request, object_id):
@@ -668,3 +679,4 @@ def contact_import(request):
     template = 'frontend/contact/import_contact.html'
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
+

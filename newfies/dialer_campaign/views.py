@@ -142,19 +142,6 @@ def notify_admin(request):
     return HttpResponseRedirect('/dashboard/')
 
 
-def count_contact_of_campaign(campaign_id):
-    """Count no of Contacts from phonebook belonging to the campaign
-
-    >>> count_contact_of_campaign(1)
-    'Phonebook Empty'
-    """
-    count_contact = Contact.objects\
-        .filter(phonebook__campaign=campaign_id).count()
-    if not count_contact:
-        return str("Phonebook Empty")
-    return count_contact
-
-
 def tpl_control_icon(icon):
     """
     function to produce control html icon
@@ -227,38 +214,32 @@ def campaign_grid(request):
     sortorder_sign = grid_data['sortorder_sign']
     sortname = grid_data['sortname']
 
-    campaign_list = Campaign.objects\
-                    .values('id', 'campaign_code', 'name', 'startingdate',
-                            'expirationdate', 'aleg_gateway',
-                            'aleg_gateway__name', 'content_type__name',
-                            'content_type__app_label', 'object_id',
-                            'content_type__model', 'status')\
-                    .filter(user=request.user)
+    campaign_list = Campaign.objects.filter(user=request.user)
     count = campaign_list.count()
     campaign_list = campaign_list\
         .order_by(sortorder_sign + sortname)[start_page:end_page]
 
     rows = [
-        {'id': row['id'],
-        'cell': ['<input type="checkbox" name="select" class="checkbox"\
-                  value="%s" />' % (str(row['id'])),
-        row['campaign_code'],
-        row['name'],
-        row['startingdate'].strftime('%Y-%m-%d %H:%M:%S'),
-        row['content_type__name'],
-        str(get_app_name(row['content_type__app_label'],
-                         row['content_type__model'],
-                         row['object_id'])),
-        count_contact_of_campaign(row['id']),
-        get_campaign_status_name(row['status']),
-        get_grid_update_delete_link(request, row['id'],
-            'dialer_campaign.change_campaign',
-            _('Update campaign'), 'update') +\
-        get_grid_update_delete_link(request, row['id'],
-            'dialer_campaign.delete_campaign',
-            _('Delete campaign'), 'delete') +\
-        get_url_campaign_status(row['id'], row['status']),
-        ]} for row in campaign_list]
+    {'id': row.id,
+     'cell': ['<input type="checkbox" name="select" class="checkbox"\
+                  value="%s" />' % (str(row.id)),
+              row.campaign_code,
+              row.name,
+              row.startingdate.strftime('%Y-%m-%d %H:%M:%S'),
+              row.content_type.name,
+              str(get_app_name(
+                  row.content_type.app_label, row.content_type.model,
+                  row.object_id)),
+              row.count_contact_of_phonebook(),
+              get_campaign_status_name(row.status),
+              get_grid_update_delete_link(request, row.id,
+                  'dialer_campaign.change_campaign',
+                  _('Update campaign'), 'update') +\
+              get_grid_update_delete_link(request, row.id,
+                  'dialer_campaign.delete_campaign',
+                  _('Delete campaign'), 'delete') +\
+              get_url_campaign_status(row.id, row.status),
+              ]} for row in campaign_list]
 
     data = {'rows': rows,
             'page': page,

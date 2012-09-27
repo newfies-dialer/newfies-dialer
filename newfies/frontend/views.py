@@ -173,19 +173,16 @@ def customer_dashboard(request, on_index=None):
     """
 
     # All campaign for logged in User
-    campaign = Campaign.objects.filter(user=request.user)
-    campaign_count = campaign.count()
+    campaign_id_list = Campaign.objects.values_list('id', flat=True)\
+        .filter(user=request.user).order_by('id')
+    campaign_count = campaign_id_list.count()
 
     # Contacts count which are active and belong to those phonebook(s) which is
     # associated with all campaign
-    campaign_id_list = ''
-    pb_active_contact_count = 0
-    for i in campaign:
-        pb_active_contact_count +=\
-            Contact.objects.filter(phonebook__campaign=i.id, status=1).count()
-        campaign_id_list +=  "%s," %  str(i.id)
-    campaign_id_list = campaign_id_list[:-1]
-    
+    pb_active_contact_count = Contact.objects\
+        .filter(phonebook__campaign__in=campaign_id_list, status=1)\
+        .count()
+
     total_of_phonebook_contacts = \
         Contact.objects.filter(phonebook__user=request.user).count()
 
@@ -687,12 +684,12 @@ def customer_dashboard(request, on_index=None):
 
     # Contacts which are successfully called for running campaign
     reached_contact = 0
-    for i in campaign:
+    for i in campaign_id_list:
         now = datetime.now()
         start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
         end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999)
         campaign_subscriber = CampaignSubscriber.objects\
-                .filter(campaign=i.id,  # status=5,
+                .filter(campaign=i,  # status=5,
                         updated_date__range=(start_date, end_date))\
                 .count()
         reached_contact += campaign_subscriber

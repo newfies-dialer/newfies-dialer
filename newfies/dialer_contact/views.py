@@ -181,7 +181,7 @@ def get_contact_count(request):
     values = request.GET.getlist('pb_ids')
     values = ", ".join(["%s" % el for el in values])
     contact_count = Contact.objects.filter(phonebook__user=request.user)\
-    .extra(where=['phonebook_id IN (%s)' % values]).count()
+        .extra(where=['phonebook_id IN (%s)' % values]).count()
 
     return HttpResponse(contact_count)
 

@@ -49,6 +49,7 @@
                 {% else %}
                     {{ model.title }}
                 {% endif %}
+
                 {% if model.add_url or model.change_url %}
                 <ul>
                     {% if model.add_url %}<li><a class="addlink" href="{{ model.add_url }}"><span class="icon">{% trans "Add" %}</span></a></li>{% endif %}
@@ -56,6 +57,16 @@
                 </ul>
                 {% endif %}
             </li>
+
+            <li>
+                {% if model.change_url %}
+                    {% if model.title == "VoIP Call" %}
+                        <a class="" href="/admin/dialer_cdr/voipcall/voip_report/">{% trans "VoIP call report" %}</a>
+                    {% endif %}
+                {% endif %}
+            </li>
+
+
             {% endspaceless %}
             {% endfor %}
         </ul>

@@ -34,10 +34,8 @@ def user_attached_with_dialer_settings(request):
                                            dialersetting__isnull=False)
         # DialerSettings link to the User
         if user_obj:
-            dialer_set_obj = \
-                DialerSetting.objects.get(pk=user_obj.dialersetting_id)
             # DialerSettings is exists
-            if dialer_set_obj:
+            if DialerSetting.objects.get(pk=user_obj.dialersetting_id):
                 # attached with dialer setting
                 return False
             else:

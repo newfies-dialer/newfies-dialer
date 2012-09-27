@@ -68,8 +68,8 @@ def audio_grid(request):
     audio_list = audio_list\
             .order_by(sortorder_sign + sortname)[start_page:end_page]
 
-    link_style = 'style="text-decoration:none;background-image:url(' + \
-                    settings.STATIC_URL + 'newfies/icons/link.png);"'
+    link_style = 'style="text-decoration:none;\
+        background-image:url(%snewfies/icons/link.png);"' % settings.STATIC_URL
     domain = Site.objects.get_current().domain
 
     rows = [{'id': row['id'],

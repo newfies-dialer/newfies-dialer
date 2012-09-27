@@ -306,8 +306,7 @@ def contact_grid(request):
                 if kwargs_list[0] == 'name':
                     name = kwargs_list[1]
 
-    phonebook_id_list = Phonebook.objects\
-        .values_list('id', flat=True)\
+    phonebook_id_list = Phonebook.objects.values_list('id', flat=True)\
         .filter(user=request.user)
     contact_list = []
 
@@ -528,8 +527,7 @@ def contact_change(request, object_id):
             return HttpResponseRedirect('/contact/')
         else:
             # Update contact
-            form = ContactForm(request.user, request.POST,
-                               instance=contact)
+            form = ContactForm(request.user, request.POST, instance=contact)
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('"%(name)s" is updated.') \
@@ -670,12 +668,3 @@ def contact_import(request):
     template = 'frontend/contact/import_contact.html'
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
-
-
-def count_contact_of_campaign(campaign_id):
-    """Count no of Contacts from phonebook belonging to the campaign"""
-    count_contact = \
-        Contact.objects.filter(phonebook__campaign=campaign_id).count()
-    if not count_contact:
-        return str("Phonebook Empty")
-    return count_contact

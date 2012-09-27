@@ -27,7 +27,7 @@ from dialer_contact.views import phonebook_grid, phonebook_add, \
     phonebook_list, phonebook_del,\
     contact_list, contact_add,\
     contact_change, contact_del, contact_import,\
-    get_contact_count, count_contact_of_campaign
+    get_contact_count
 from dialer_campaign.views import get_url_campaign_status
 from dialer_contact.tasks import import_phonebook
 from utils.helper import grid_test_data
@@ -390,7 +390,6 @@ class DialerContactModel(TestCase):
         self.assertEqual(self.contact.__unicode__(), u'123456789 (Gun)')
         self.assertEqual(self.contact.contact_name(), 'Tom Gun')
 
-        self.assertTrue(count_contact_of_campaign(1))
         self.assertTrue(get_url_campaign_status(1, 1))
         self.assertTrue(get_url_campaign_status(1, 2))
         self.assertTrue(get_url_campaign_status(1, 3))

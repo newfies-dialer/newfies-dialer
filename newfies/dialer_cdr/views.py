@@ -196,7 +196,8 @@ def voipcall_report(request):
     # Get Total Rrecords from VoIPCall Report table for Daily Call Report
     total_data = VoIPCall.objects.extra(select=select_data)\
                  .values('starting_date')\
-                 .filter(**kwargs).annotate(Count('starting_date'))\
+                 .filter(**kwargs)\
+                 .annotate(Count('starting_date'))\
                  .annotate(Sum('duration'))\
                  .annotate(Avg('duration'))\
                  .order_by('-starting_date')

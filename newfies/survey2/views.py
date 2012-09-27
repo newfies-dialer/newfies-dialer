@@ -432,15 +432,13 @@ def survey_del(request, object_id):
         values = ", ".join(["%s" % el for el in values])
         try:
             # 1) delete survey
-            survey_list = Survey.objects\
-                .filter(user=request.user)\
+            survey_list = Survey.objects.filter(user=request.user)\
                 .extra(where=['id IN (%s)' % values])
             if survey_list:
                 for survey in survey_list:
                     delete_section_branching(survey)
 
-            request.session["msg"] =\
-                _('%(count)s survey(s) are deleted.')\
+            request.session["msg"] = _('%(count)s survey(s) are deleted.')\
                     % {'count': survey_list.count()}
             survey_list.delete()
         except:

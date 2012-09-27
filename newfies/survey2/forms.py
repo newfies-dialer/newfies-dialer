@@ -74,9 +74,9 @@ def get_question_choice_list(section_id):
     for i in range(0, 10):
         if obj_section.__dict__['key_' + str(i)] \
             and i not in keys_list:
-            list_sq.append((i, '%s.%s %s' % (str(section_id),
-                                             str(i),
-                                             obj_section.__dict__['key_' + str(i)] )))
+            list_sq.append((i, '%s.%s %s' % \
+                               (str(section_id), str(i),
+                                obj_section.__dict__['key_' + str(i)] )))
 
     list_sq.append(('', _('Anything')))
     return list_sq

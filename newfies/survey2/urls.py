@@ -29,6 +29,7 @@ urlpatterns = patterns('survey2.views',
     (r'^section/delete/(?P<id>\w+)/$', 'section_delete'),
     (r'^section/(?P<id>\w+)/$', 'section_change'),
     (r'^section/phrasing/(?P<id>\w+)/$', 'section_phrasing_change'),
+    (r'^section/phrasing_play/(?P<id>\w+)/$', 'section_phrasing_play'),
     (r'^section/branch/(?P<id>\w+)/$', 'section_branch_change'),
 
     # Survey FSM urls

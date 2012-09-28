@@ -43,8 +43,9 @@ from utils.helper import grid_common_function, get_grid_update_delete_link
 from common.common_functions import variable_value, current_view
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+import commands
 import csv
-import os.path
+import os
 
 
 testdebug = True # TODO: Change later
@@ -895,6 +896,43 @@ def section_phrasing_change(request, id):
     request.session['err_msg'] = ''
     return render_to_response(template, data,
         context_instance=RequestContext(request))
+
+
+@login_required
+def section_phrasing_play(request, id):
+    """Section  phrasing
+
+    **Attributes**:
+
+
+    **Logic Description**:
+
+        *
+    """
+    section = get_object_or_404(
+        Section, pk=int(id), survey__user=request.user)
+    text = section.phrasing
+
+    text_file = 'phrasing.txt'
+    text_file_path = '%s/recording/%s' % (settings.MEDIA_ROOT, text_file)
+    conv = 'echo "%s" > %s' % (text, text_file_path)
+    response = commands.getoutput(conv)
+
+    audio_file_name = 'phrasing.wav'
+    audio_file_path = '%s/recording/%s' % (settings.MEDIA_ROOT, audio_file_name)
+    conv = 'text2wave "%s" -o "%s"' % (text_file_path, audio_file_path)
+    response = commands.getoutput(conv)
+
+    if os.path.isfile(audio_file_path):
+        response = HttpResponse()
+        f = open(audio_file_path, 'rb')
+        response['Content-Type'] = 'audio/x-wav'
+        response.write(f.read())
+        f.close()
+        os.unlink(text_file_path)
+        os.unlink(audio_file_path)
+        return response
+    raise Http404
 
 
 @permission_required('survey2.add_branching', login_url='/')

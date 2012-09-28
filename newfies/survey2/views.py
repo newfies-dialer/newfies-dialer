@@ -914,12 +914,12 @@ def section_phrasing_play(request, id):
     text = section.phrasing
 
     text_file = 'phrasing.txt'
-    text_file_path = '%s/recording/%s' % (settings.MEDIA_ROOT, text_file)
+    text_file_path = '%s/tts/%s' % (settings.MEDIA_ROOT, text_file)
     conv = 'echo "%s" > %s' % (text, text_file_path)
     response = commands.getoutput(conv)
 
     audio_file_name = 'phrasing.wav'
-    audio_file_path = '%s/recording/%s' % (settings.MEDIA_ROOT, audio_file_name)
+    audio_file_path = '%s/tts/%s' % (settings.MEDIA_ROOT, audio_file_name)
     conv = 'text2wave "%s" -o "%s"' % (text_file_path, audio_file_path)
     response = commands.getoutput(conv)
 

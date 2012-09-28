@@ -25,7 +25,7 @@ from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
-from dialer_campaign.models import Campaign
+from dialer_campaign.models import get_unique_code, Campaign
 from dialer_campaign.views import notice_count
 from dialer_cdr.models import Callrequest, VoIPCall
 
@@ -900,26 +900,30 @@ def section_phrasing_change(request, id):
 
 @login_required
 def section_phrasing_play(request, id):
-    """Section  phrasing
+    """Play section  phrasing
 
     **Attributes**:
 
 
     **Logic Description**:
 
-        *
+        * Create text file from section phrasing
+        * Convert text file into wav file
     """
     section = get_object_or_404(
         Section, pk=int(id), survey__user=request.user)
-    text = section.phrasing
+    phrasing_text = section.phrasing
+    unique_code = get_unique_code(length=5)
 
-    text_file = 'phrasing.txt'
-    text_file_path = '%s/tts/%s' % (settings.MEDIA_ROOT, text_file)
-    conv = 'echo "%s" > %s' % (text, text_file_path)
+    # Create text file from phrasing_text
+    text_file_path = '%s/tts/phrasing_%s.txt' % \
+                     (settings.MEDIA_ROOT, unique_code)
+    conv = 'echo "%s" > %s' % (phrasing_text, text_file_path)
     response = commands.getoutput(conv)
 
-    audio_file_name = 'phrasing.wav'
-    audio_file_path = '%s/tts/%s' % (settings.MEDIA_ROOT, audio_file_name)
+    # Create wav file from text_file
+    audio_file_path = '%s/tts/phrasing_%s.wav' \
+                      % (settings.MEDIA_ROOT, unique_code)
     conv = 'text2wave "%s" -o "%s"' % (text_file_path, audio_file_path)
     response = commands.getoutput(conv)
 

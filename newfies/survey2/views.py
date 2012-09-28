@@ -44,6 +44,7 @@ from common.common_functions import variable_value, current_view
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import commands
+import hashlib
 import csv
 import os
 
@@ -898,6 +899,19 @@ def section_phrasing_change(request, id):
         context_instance=RequestContext(request))
 
 
+def find_duplicate_hexdigest(rootdir, phrasing_hexdigest):
+    """Find duplicate files in directory tree."""
+    for path, dirs, files in os.walk( rootdir ):
+        for filename in files:
+            filepath = os.path.join(path, filename)
+            filehash = hashlib.md5(open(filepath).read()).hexdigest()
+            #print filehash
+            if filehash == phrasing_hexdigest:
+                return filepath
+
+    return False
+
+
 @login_required
 def section_phrasing_play(request, id):
     """Play section  phrasing
@@ -915,17 +929,30 @@ def section_phrasing_play(request, id):
     phrasing_text = section.phrasing
     unique_code = get_unique_code(length=5)
 
-    # Create text file from phrasing_text
-    text_file_path = '%s/tts/phrasing_%s.txt' % \
-                     (settings.MEDIA_ROOT, unique_code)
-    conv = 'echo "%s" > %s' % (phrasing_text, text_file_path)
-    response = commands.getoutput(conv)
+    phrasing_hexdigest = hashlib.md5(phrasing_text).hexdigest()
+    #print phrasing_hexdigest
+    hexdigest_matched =\
+        find_duplicate_hexdigest(settings.MEDIA_ROOT + '/tts/',
+                                 phrasing_hexdigest)
 
-    # Create wav file from text_file
-    audio_file_path = '%s/tts/phrasing_%s.wav' \
-                      % (settings.MEDIA_ROOT, unique_code)
-    conv = 'text2wave "%s" -o "%s"' % (text_file_path, audio_file_path)
-    response = commands.getoutput(conv)
+    if not hexdigest_matched:
+        # Create text file from phrasing_text
+        text_file_path = '%s/tts/phrasing_%s.txt' % \
+                         (settings.MEDIA_ROOT, unique_code)
+        if not os.path.isfile(text_file_path):
+            conv = 'echo %s > %s' % (phrasing_text, text_file_path)
+            response = commands.getoutput(conv)
+
+        # Create wav file from text_file
+        audio_file_path = '%s/tts/phrasing_%s.wav' \
+                          % (settings.MEDIA_ROOT, unique_code)
+        if not os.path.isfile(audio_file_path):
+            conv = 'text2wave "%s" -o "%s"' % (text_file_path, audio_file_path)
+            response = commands.getoutput(conv)
+    else:
+        audio_file_path = hexdigest_matched
+        print audio_file_path
+
 
     if os.path.isfile(audio_file_path):
         response = HttpResponse()
@@ -933,8 +960,6 @@ def section_phrasing_play(request, id):
         response['Content-Type'] = 'audio/x-wav'
         response.write(f.read())
         f.close()
-        os.unlink(text_file_path)
-        os.unlink(audio_file_path)
         return response
     raise Http404
 

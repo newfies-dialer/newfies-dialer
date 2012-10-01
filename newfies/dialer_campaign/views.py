@@ -449,9 +449,6 @@ def campaign_change(request, object_id):
             # Update campaign
             form = CampaignForm(request.user, request.POST, instance=campaign)
             previous_status = campaign.status
-            print request.POST.get('content_object')
-            print request.POST.get('status')
-            print form.errors
             if form.is_valid():
                 form.save()
                 obj = form.save(commit=False)

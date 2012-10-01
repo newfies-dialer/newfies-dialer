@@ -111,14 +111,23 @@ class CampaignForm(ModelForm):
             self.fields['name'].widget.attrs['readonly'] = True
             self.fields['callerid'].widget.attrs['readonly'] = True
             self.fields['extra_data'].widget.attrs['readonly'] = True
-            self.fields['status'].editable = False
-            self.fields['status'].widget.attrs['disabled'] = 'disabled'
 
-        #    self.fields['phonebook'].widget.attrs['disabled'] = 'disabled'
+            self.fields['status'].widget.attrs['disabled'] = 'disabled'
+        #   self.fields['phonebook'].widget.attrs['disabled'] = 'disabled'
+
         #    self.fields['content_object'].widget.attrs['disabled'] = 'disabled'
         #    self.fields['content_object'].initial = "type:%s-id:%s" \
         #                                                          % (instance.content_type.id,
         #                                                             instance.object_id)
+
+    def clean_status(self):
+        # As shown in the above answer.
+        instance = getattr(self, 'instance', None)
+        if instance:
+            return instance.status
+        else:
+            return self.cleaned_data.get('status', None)
+
 
     def clean(self):
         cleaned_data = self.cleaned_data

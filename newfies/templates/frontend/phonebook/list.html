@@ -16,9 +16,8 @@
 </form>
 
 <script type="text/javascript">
-
 $("#flex1").flexigrid({
-    url: "/phonebook_grid/", 
+    url: "/phonebook_grid/",
     method: 'GET',
     dataType: 'json',
 	colModel : [
@@ -63,11 +62,11 @@ $("#flex1").flexigrid({
     }
 });
 
-
 function add_button()
 {
     window.location = 'add/';
 }
+
 function delete_button()
 {
     $('#ListForm').submit();

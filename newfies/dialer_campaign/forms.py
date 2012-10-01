@@ -19,6 +19,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from dialer_campaign.models import Phonebook, Campaign, \
                                     get_unique_code
+from dialer_campaign.constants import CAMPAIGN_STATUS
 from dialer_campaign.function_def import user_dialer_setting
 from user_profile.models import UserProfile
 
@@ -65,6 +66,7 @@ class CampaignForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(CampaignForm, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
         self.fields['description'].widget.attrs['class'] = "input-xlarge"
 
@@ -89,6 +91,7 @@ class CampaignForm(ModelForm):
                 list_gw.append((i[0], i[1]))
             self.fields['aleg_gateway'].choices = list_gw
 
+
             from voice_app.models import VoiceApp
             available_objects = VoiceApp.objects.filter(user=user)
             object_choices = get_object_choices(available_objects)
@@ -102,6 +105,29 @@ class CampaignForm(ModelForm):
             object_choices += get_object_choices(available_objects)
 
             self.fields['content_object'].choices = object_choices
+
+        # if campaign is running
+        if instance.status == CAMPAIGN_STATUS.START:
+            self.fields['name'].widget.attrs['readonly'] = True
+            self.fields['callerid'].widget.attrs['readonly'] = True
+            self.fields['extra_data'].widget.attrs['readonly'] = True
+
+            self.fields['status'].widget.attrs['disabled'] = 'disabled'
+        #   self.fields['phonebook'].widget.attrs['disabled'] = 'disabled'
+
+        #    self.fields['content_object'].widget.attrs['disabled'] = 'disabled'
+        #    self.fields['content_object'].initial = "type:%s-id:%s" \
+        #                                                          % (instance.content_type.id,
+        #                                                             instance.object_id)
+
+    def clean_status(self):
+        # As shown in the above answer.
+        instance = getattr(self, 'instance', None)
+        if instance:
+            return instance.status
+        else:
+            return self.cleaned_data.get('status', None)
+
 
     def clean(self):
         cleaned_data = self.cleaned_data

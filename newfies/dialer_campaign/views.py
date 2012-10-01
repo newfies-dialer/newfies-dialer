@@ -118,6 +118,12 @@ def update_campaign_status_cust(request, pk, status):
     customer interface (via dialer_campaign/campaign list)"""
     recipient = common_campaign_status(pk, status)
     common_send_notification(request, status, recipient)
+
+    # Notify user while campaign Start
+    if int(status) == 1:
+        request.session['error_msg'] = \
+            _('The campaign global settings cannot be edited when the campaign Start')
+
     return HttpResponseRedirect('/campaign/')
 
 

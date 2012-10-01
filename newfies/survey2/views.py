@@ -901,13 +901,13 @@ def section_phrasing_change(request, id):
 
 def find_duplicate_hexdigest(rootdir, phrasing_hexdigest):
     """Find duplicate files in directory tree."""
-    for path, dirs, files in os.walk( rootdir ):
+    for path, dirs, files in os.walk(rootdir):
         for filename in files:
             filepath = os.path.join(path, filename)
             filehash = hashlib.md5(open(filepath).read()).hexdigest()
             # if hexdigest match, return file path
             if filehash == phrasing_hexdigest:
-                return filepath
+                return str(filepath.split('.txt')[0]) + '.wav'
     return False
 
 
@@ -926,7 +926,7 @@ def section_phrasing_play(request, id):
     section = get_object_or_404(
         Section, pk=int(id), survey__user=request.user)
     phrasing_text = section.phrasing
-    unique_code = get_unique_code(length=5)
+    unique_code = get_unique_code(length=10)
 
     # have to put phrasing string into file & then get hexdigest value which
     # can be compared with other files' hexdigest of tts direcotry

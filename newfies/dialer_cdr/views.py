@@ -63,8 +63,10 @@ def voipcall_report_grid(request):
     if not sortorder_sign == '':
         sortorder_sign = '-'
 
-    # get querystring from URL
-    query_para = list(request.get_full_path().split('?'))[1]
+    query_para = []
+    if request.get_full_path():
+        # get querystring from URL
+        query_para = list(request.get_full_path().split('?'))[1]
 
     if "from_date" in query_para:
         # decode query string

@@ -36,7 +36,7 @@ from survey2.forms import SurveyForm, VoiceSectionForm,\
     EnterNumberSectionForm, RecordMessageSectionForm,\
     PatchThroughSectionForm, BranchingForm, PhrasingForm,\
     SurveyDetailReportForm
-from survey2.function_def import export_question_result
+
 from survey2.constants import SECTION_TYPE
 from utils.helper import grid_common_function, get_grid_update_delete_link
 
@@ -1477,10 +1477,10 @@ def export_surveycall_report(request):
             i.duration,
             i.disposition,
         ]
-        if survey_qst:
-            for qst in survey_qst:
-                result_row_list.append(
-                    export_question_result(i.question_response,
-                                           qst.question))
+        #if survey_qst:
+        #    for qst in survey_qst:
+        #        result_row_list.append(
+        #            export_question_result(i.question_response,
+        #                                   qst.question))
         writer.writerow(result_row_list)
     return response

@@ -27,7 +27,7 @@ from survey2.views import survey_list, survey_grid, survey_add, \
     survey_change, survey_del, section_add, section_change,\
     section_phrasing_change, section_branch_change, survey_report,\
     survey_finestatemachine, export_surveycall_report, section_branch_add,\
-    section_delete
+    section_delete, section_phrasing_play
 from survey2.ajax import section_sort
 from utils.helper import grid_test_data
 from datetime import datetime
@@ -355,6 +355,14 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         response = section_change(request, 1)
         self.assertEqual(response.status_code, 200)
 
+    def test_section_phrasing_play(self):
+        """Test Function survey section phrasing play"""
+        request = self.factory.get('/section/phrasing_play/1/')
+        request.user = self.user
+        request.session = {}
+        response = section_phrasing_play(request, 1)
+        self.assertEqual(response.status_code, 200)
+
     def test_survey_section_view_delete(self):
         """Test Function survey section delete"""
         request = self.factory.post('/section/1/?delete=true',
@@ -489,7 +497,7 @@ class SurveyModel(TestCase):
         )
         self.result.save()
         self.assertEqual(
-            self.result.__unicode__(), u'[1] [7] test_question = apple')
+            self.result.__unicode__(), '[1] [7] test_question = apple')
 
         # ResultAggregate model
         self.result_aggregate = ResultAggregate(
@@ -501,7 +509,7 @@ class SurveyModel(TestCase):
         )
         self.result_aggregate.save()
         self.assertEqual(
-            self.result_aggregate.__unicode__(), u'[1] [7] test_question = apple')
+            self.result_aggregate.__unicode__(), '[1] [7] test_question = apple')
 
     def test_survey_forms(self):
         self.assertEqual(self.survey.name, "test_survey")

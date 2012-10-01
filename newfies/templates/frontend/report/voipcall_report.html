@@ -111,51 +111,52 @@ $("#flex1").flexigrid({
 {% endblock %}
 
 <br/><br/>
-{% block extra_data %}
 
-<div align=center>
-<h3><center>{% trans "Call Detail Report Summary" %}</center></h3>
-<table class="table table-striped table-bordered table-condensed">
-    <thead>
-        <tr>
-            <th>{% trans "Date" %}</th>
-            <th>{% trans "Duration" %}</th>
-            <th>{% trans "Graphic" %}</th>
-            <th>{% trans "Calls" %}</th>
-            <th><acronym title="{% trans "Average Connection Time" %}">{% trans "ACT"  %}</acronym></th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for td in total_data %}
-        <tr>
-            <td>{{ td.starting_date }}</td>
-            <td>{{ td.duration__sum|conv_min }}</td>
-            <td>{% if max_duration > 0 %}
-                <img src="{{STATIC_URL}}newfies/images/spacer.png" width="{{td.duration__sum|cal_width:max_duration}}" style="vertical-align:center; height:15px"/>
-                {% endif %}
-            </td>
-            <td>{{ td.starting_date__count }}</td>
+    {% block extra_data %}
+        <div align=center>
+            <h3><center>{% trans "Call Detail Report Summary" %}</center></h3>
+            <table class="table table-striped table-bordered table-condensed">
+                <thead>
+                    <tr>
+                        <th>{% trans "Date" %}</th>
+                        <th>{% trans "Duration" %}</th>
+                        <th>{% trans "Graphic" %}</th>
+                        <th>{% trans "Calls" %}</th>
+                        <th><acronym title="{% trans "Average Connection Time" %}">{% trans "ACT"  %}</acronym></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for td in total_data %}
+                    <tr>
+                        <td>{{ td.starting_date }}</td>
+                        <td>{{ td.duration__sum|conv_min }}</td>
+                        <td>{% if max_duration > 0 %}
+                            <img src="{{STATIC_URL}}newfies/images/spacer.png" width="{{td.duration__sum|cal_width:max_duration}}" style="vertical-align:center; height:15px"/>
+                            {% endif %}
+                        </td>
+                        <td>{{ td.starting_date__count }}</td>
 
-            <td>{{ td.duration__avg|conv_min }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-    <tfoot>
-        <tr>
-            <td>{% trans "Total"  %}</td>
-            <td>{{ total_duration|conv_min }}</td>
-            <td></td>
-            <td>{{ total_calls }}</td>
-            <td>{{ total_avg_duration|conv_min }}</td>
-        </tr>
-    </tfoot>
-</table>
+                        <td>{{ td.duration__avg|conv_min }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>{% trans "Total"  %}</td>
+                        <td>{{ total_duration|conv_min }}</td>
+                        <td></td>
+                        <td>{{ total_calls }}</td>
+                        <td>{{ total_avg_duration|conv_min }}</td>
+                    </tr>
+                </tfoot>
+            </table>
 
-<br/>
+            <br/>
 
-<h3>{% trans "Export CSV file"  %}</h3> <br/>
-<a href="/export_voipcall_report/"><img src='{{STATIC_URL}}newfies/icons/x-office-spreadsheet.png' width="75"/></a>
-</div>
-{% endblock %}
+            <h3>{% trans "Export CSV file"  %}</h3> <br/>
+            <a href="/export_voipcall_report/"><img src='{{STATIC_URL}}newfies/icons/x-office-spreadsheet.png' width="75"/></a>
+
+        </div>
+    {% endblock %}
 
 {% endblock %}

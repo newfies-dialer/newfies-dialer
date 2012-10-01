@@ -32,15 +32,6 @@
     <input type="submit" class="btn primary" name="submit" value="{% trans "Submit" %}">
 </p>
 
-<p align="center">
-    {% for j in total_data %}
-       <!--{{ j }}<br/>-->
-    {% endfor %}
-    {% for i in final_calls %}
-        <!--{{ i }}<br/>-->
-    {% endfor %}
-</p>
-
 <table align="center" class="table table-striped table-bordered table-condensed">
     <thead>
     <tr>
@@ -144,7 +135,7 @@
     function pieHover(event, pos, obj)
     {
         if (!obj)
-                    return;
+            return;
         percent = parseFloat(obj.series.percent).toFixed(2);
         (function($){
             $("#hover").html('<span style="font-weight: bold; color: '+obj.series.color+'">'+obj.series.label+' ('+percent+'%)</span>');
@@ -154,19 +145,13 @@
     function pieClick(event, pos, obj)
     {
         if (!obj)
-                    return;
+            return;
         percent = parseFloat(obj.series.percent).toFixed(2);
         alert(''+obj.series.label+': '+percent+'%');
     }
     (function($){
         $(function () {
 
-            /*var data = [
-            {% for td in total_data %}
-                { label: 'Calls' , data: [[1, {{td.starting_date__count}}]]},
-               // { label: 'Duration' , data: [[1, {{td.duration__sum}}]]},
-            {% endfor %}
-            ];*/
             var data = [
                 { label: 'ANSWER' , data: [[1, {{ total_answered }}]], color: '{{ answered_color }}' },
                 { label: 'BUSY' , data: [[1, {{ total_busy }}]], color: '{{ busy_color }}' },
@@ -211,11 +196,6 @@
 
     })(jQuery);
 </script>
-
-<!--
-{% for td in final_calls %}
-        [{{ td.starting_date }},(new Date({{ td.starting_datetime }} * 1000)), {{ td.starting_date__count }}]<br/>
-{% endfor %}-->
 
 <div class="row">
     <div class="span12">

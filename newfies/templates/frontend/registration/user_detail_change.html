@@ -44,23 +44,20 @@
 	</div>
 
     <div id="tabs-6" align="left" class="tab-pane {% if action == "tabs-6" %}active{% endif %}">
-
-    <div class="row-fluid">
-
-        <div class="span12">
-            <form class="well" action="/i18n/setlang/" method="post" class="pull-right">
-                {% csrf_token %}
-                {% trans "Select language" %} : <select name="language" id="language-container" class="input-small" >
-                {% for lang in LANGUAGES %}
-                <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected{% endifequal %}>{{ lang.1 }}</option>
-                {% endfor %}
-                </select>
-            </form>
+        <div class="row-fluid">
+            <div class="span12">
+                <form class="well" action="/i18n/setlang/" method="post" class="pull-right">
+                    {% csrf_token %}
+                    {% trans "Select language" %} : <select name="language" id="language-container" class="input-small" >
+                    {% for lang in LANGUAGES %}
+                    <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected{% endifequal %}>{{ lang.1 }}</option>
+                    {% endfor %}
+                    </select>
+                </form>
+            </div>
         </div>
-        
-
     </div>
-</div>
+
 </div>
 
 

@@ -926,40 +926,21 @@ def section_phrasing_play(request, id):
     section = get_object_or_404(
         Section, pk=int(id), survey__user=request.user)
     phrasing_text = section.phrasing
-    unique_code = get_unique_code(length=10)
+    phrasing_hexdigest = hashlib.md5(phrasing_text).hexdigest()
+    file_path = '%s/tts/phrasing_%s' % \
+                         (settings.MEDIA_ROOT, phrasing_hexdigest)
+    audio_file_path = file_path + '.wav'
+    text_file_path = file_path + '.txt'
 
-    # have to put phrasing string into file & then get hexdigest value which
-    # can be compared with other files' hexdigest of tts direcotry
-    temp_phrasing = settings.MEDIA_ROOT + '/tts/temp_phrasing.txt'
-    conv = 'echo %s > %s' % (phrasing_text,
-                             temp_phrasing)
-    response = commands.getoutput(conv)
+    if not os.path.isfile(audio_file_path):
+        #Write text to file
+        text_file = open(text_file_path, "w")
+        text_file.write(phrasing_text)
+        text_file.close()
 
-    #phrasing_hexdigest = hashlib.md5(phrasing_text).hexdigest()
-    phrasing_hexdigest = hashlib.md5(open(temp_phrasing).read()).hexdigest()
-    # delete temp phrasing file
-    os.unlink(temp_phrasing)
-
-    hexdigest_matched =\
-        find_duplicate_hexdigest(settings.MEDIA_ROOT + '/tts/',
-                                 phrasing_hexdigest)
-
-    if not hexdigest_matched:
-        # Create text file from phrasing_text
-        text_file_path = '%s/tts/phrasing_%s.txt' % \
-                         (settings.MEDIA_ROOT, unique_code)
-        if not os.path.isfile(text_file_path):
-            conv = 'echo %s > %s' % (phrasing_text, text_file_path)
-            response = commands.getoutput(conv)
-
-        # Create wav file from text_file
-        audio_file_path = '%s/tts/phrasing_%s.wav' \
-                          % (settings.MEDIA_ROOT, unique_code)
-        if not os.path.isfile(audio_file_path):
-            conv = 'text2wave "%s" -o "%s"' % (text_file_path, audio_file_path)
-            response = commands.getoutput(conv)
-    else:
-        audio_file_path = hexdigest_matched
+        #Convert file
+        conv = 'flite -f "%s" -o "%s"' % (text_file_path, audio_file_path)
+        response = commands.getoutput(conv)
 
     if os.path.isfile(audio_file_path):
         response = HttpResponse()
@@ -969,7 +950,7 @@ def section_phrasing_play(request, id):
         f.close()
         return response
 
-    raise Http404
+    return Http404
 
 
 @permission_required('survey2.add_branching', login_url='/')
@@ -1477,10 +1458,5 @@ def export_surveycall_report(request):
             i.duration,
             i.disposition,
         ]
-        #if survey_qst:
-        #    for qst in survey_qst:
-        #        result_row_list.append(
-        #            export_question_result(i.question_response,
-        #                                   qst.question))
         writer.writerow(result_row_list)
     return response

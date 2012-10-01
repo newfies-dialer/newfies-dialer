@@ -72,70 +72,49 @@
             <legend>{% trans "Campaign schedule" %}</legend>
             <div class="span12">
                 <div class="row">
-                    <div class="span6">
-                        <div class="clearfix{% if form.startingdate.errors %} control-group error{% endif %}">
-                            <label class="control-label" for="id_{{ form.startingdate.name }}">{{ form.startingdate.label }}</label>
-                            <div class="input">
-                                {{ form.startingdate }}
-                                {% if form.startingdate.errors %}
-                                    <span class="help-inline">{{ form.startingdate.errors|removetags:"ul li"|safe }}</span>
-                                {% endif %}
-                                <span class="help-block">{{ form.startingdate.help_text }} </span>
+                    {% get_fieldset startingdate,daily_start_time as date_fields from form %}
+                    {% for field in date_fields %}
+                        <div class="span6">
+                            <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                                <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                                <div class="input">
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                                    {% endif %}
+                                    <span class="help-block">{{ field.help_text }} </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="span6">
-                        <div class="clearfix{% if form.daily_start_time.errors %} control-group error{% endif %}">
-                            <label class="control-label" for="id_{{ form.daily_start_time.name }}">{{ form.daily_start_time.label }}</label>
-                            <div class="input">
-                                {{ form.daily_start_time }}
-                                {% if form.daily_start_time.errors %}
-                                    <span class="help-inline">{{ form.daily_start_time.errors|removetags:"ul li"|safe }}</span>
-                                {% endif %}
-                                <span class="help-block">{{ form.daily_start_time.help_text }} </span>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
 
             <div class="span12">
                 <div class="row">
-                    <div class="span6">
-                        <div class="clearfix{% if form.expirationdate.errors %} control-group error{% endif %}">
-                            <label class="control-label" for="id_{{ form.expirationdate.name }}">{{ form.expirationdate.label }}</label>
-                            <div class="input">
-                                {{ form.expirationdate }}
-                                {% if form.expirationdate.errors %}
-                                    <span class="help-inline">{{ form.expirationdate.errors|removetags:"ul li"|safe }}</span>
-                                {% endif %}
-                                <span class="help-block">{{ form.expirationdate.help_text }} </span>
+                    {% get_fieldset expirationdate,daily_stop_time as date_fields from form %}
+                    {% for field in date_fields %}
+                        <div class="span6">
+                            <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                                <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                                <div class="input">
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                                    {% endif %}
+                                    <span class="help-block">{{ field.help_text }} </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="span6">
-                        <div class="clearfix{% if form.daily_stop_time.errors %} control-group error{% endif %}">
-                            <label class="control-label" for="id_{{ form.daily_stop_time.name }}">{{ form.daily_stop_time.label }}</label>
-                            <div class="input">
-                                {{ form.daily_stop_time }}
-                                {% if form.daily_stop_time.errors %}
-                                    <span class="help-inline">{{ form.daily_stop_time.errors|removetags:"ul li"|safe }}</span>
-                                {% endif %}
-                                <span class="help-block">{{ form.daily_stop_time.help_text }} </span>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
 
                     <div class="span12">
                         <label class="control-label" for="id_{{ form.monday.name }}">{% trans "Week Days" %}</label>
                         <div class="input">
-                            {{ form.monday }}&nbsp;{{ form.monday.label }}
-                            {{ form.tuesday }}&nbsp;{{ form.tuesday.label }}
-                            {{ form.wednesday }}&nbsp;{{ form.wednesday.label }}
-                            {{ form.thursday }}&nbsp;{{ form.thursday.label }}
-                            {{ form.friday }}&nbsp;{{ form.friday.label }}
-                            {{ form.saturday }}&nbsp;{{ form.saturday.label }}
-                            {{ form.sunday }}&nbsp;{{ form.sunday.label }}
+                            {% get_fieldset monday,tuesday,wednesday,thursday,friday,saturday,sunday as settings_fields from form %}
+                            {% for field in settings_fields %}
+                                {{ field }}&nbsp;{{ field.label }}
+                            {% endfor %}
                         </div>
                     </div>
 

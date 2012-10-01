@@ -1,0 +1,34 @@
+{% load i18n %}
+{% if msg_number %}
+    <div class="alert alert-success">
+        <strong>{% trans "Alert" %} : </strong>  {{ msg_number }}
+    </div>
+{% endif %}
+{% if error_number %}
+    <div class="alert alert-error">
+        <strong>{% trans "Alert" %} : </strong>  {{ error_number }}
+    </div>
+{% endif %}
+
+<br/>
+
+<form class="well" action="" method="post">{% csrf_token %}
+    {% for field in check_phone_no_form %}
+        <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+            <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+            <div class="input">
+                {{ field }}
+                {% if field.errors %}
+                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                {% endif %}
+                <span class="help-block">{{ field.help_text }} </span>
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="actions">
+        <input type="hidden" name="action" value="tabs-5" />
+        <input type="hidden" name="form-type" value="check-number" />
+        <input type="submit" class="btn btn-primary" value="{% trans 'Check' %}" />
+    </div>
+</form>

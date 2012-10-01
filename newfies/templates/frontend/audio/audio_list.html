@@ -1,11 +1,6 @@
 {% extends "frontend/master.html" %}
 {% load i18n %}
 
-{% block title %}
-{{ block.super }}
-{% trans "Audio Files" %}
-{% endblock %}
-
 {% block extra_files %}
     {% include "common_audiofield.html" %}
     {% include "frontend/custom_jquery_select_all.html" %}

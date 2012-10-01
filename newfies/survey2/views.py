@@ -899,18 +899,6 @@ def section_phrasing_change(request, id):
         context_instance=RequestContext(request))
 
 
-def find_duplicate_hexdigest(rootdir, phrasing_hexdigest):
-    """Find duplicate files in directory tree."""
-    for path, dirs, files in os.walk(rootdir):
-        for filename in files:
-            filepath = os.path.join(path, filename)
-            filehash = hashlib.md5(open(filepath).read()).hexdigest()
-            # if hexdigest match, return file path
-            if filehash == phrasing_hexdigest:
-                return str(filepath.split('.txt')[0]) + '.wav'
-    return False
-
-
 @login_required
 def section_phrasing_play(request, id):
     """Play section  phrasing

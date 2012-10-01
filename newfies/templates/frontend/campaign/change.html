@@ -21,7 +21,7 @@
             <legend>{% trans "General settings" %}</legend>
             <div class="span12">
                 <div class="row">
-                    {% get_fieldset name,callerid,status,content_object,extra_data,phonebook as campaign_fields from form %}
+                    {% get_fieldset campaign_code,ds_user,name,callerid,status,content_object,extra_data,phonebook as campaign_fields from form %}
                     {% for field in campaign_fields.hidden_fields %}
                         {{ field }}
                     {% endfor %}

@@ -905,10 +905,9 @@ def find_duplicate_hexdigest(rootdir, phrasing_hexdigest):
         for filename in files:
             filepath = os.path.join(path, filename)
             filehash = hashlib.md5(open(filepath).read()).hexdigest()
-            #print filehash
+            # if hexdigest match, return file path
             if filehash == phrasing_hexdigest:
                 return filepath
-
     return False
 
 
@@ -929,8 +928,18 @@ def section_phrasing_play(request, id):
     phrasing_text = section.phrasing
     unique_code = get_unique_code(length=5)
 
-    phrasing_hexdigest = hashlib.md5(phrasing_text).hexdigest()
-    #print phrasing_hexdigest
+    # have to put phrasing string into file & then get hexdigest value which
+    # can be compared with other files' hexdigest of tts direcotry
+    temp_phrasing = settings.MEDIA_ROOT + '/tts/temp_phrasing.txt'
+    conv = 'echo %s > %s' % (phrasing_text,
+                             temp_phrasing)
+    response = commands.getoutput(conv)
+
+    #phrasing_hexdigest = hashlib.md5(phrasing_text).hexdigest()
+    phrasing_hexdigest = hashlib.md5(open(temp_phrasing).read()).hexdigest()
+    # delete temp phrasing file
+    os.unlink(temp_phrasing)
+
     hexdigest_matched =\
         find_duplicate_hexdigest(settings.MEDIA_ROOT + '/tts/',
                                  phrasing_hexdigest)
@@ -951,8 +960,6 @@ def section_phrasing_play(request, id):
             response = commands.getoutput(conv)
     else:
         audio_file_path = hexdigest_matched
-        print audio_file_path
-
 
     if os.path.isfile(audio_file_path):
         response = HttpResponse()
@@ -961,6 +968,7 @@ def section_phrasing_play(request, id):
         response.write(f.read())
         f.close()
         return response
+
     raise Http404
 
 

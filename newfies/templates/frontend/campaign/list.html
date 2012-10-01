@@ -16,7 +16,6 @@
 </form>
 
 <script type="text/javascript">
-
 $("#flex1").flexigrid({
     url: "/campaign_grid/",
     method: 'GET',
@@ -48,7 +47,6 @@ $("#flex1").flexigrid({
 	useRp: true,
 	rp: 10,
 	showTableToggleBtn: true,
-	//width: 910,
 	height: 265,
     pagetext: '{% trans "Page" %}',
     outof: '{% trans "of" %}',
@@ -56,14 +54,13 @@ $("#flex1").flexigrid({
     procmsg: '{% trans "Processing, please wait ..." %}',
     pagestat: '{% trans "Displaying" %} {from} {% trans "to" %} {to} {% trans "of" %} {total} {% trans "items" %}',
     //preProcess: formatContactResults,
-    onSuccess: function(data){
-        //alert(data);        
-    },
-    onError: function(){
-        //alert("Request failed");
-    },
+    // onSuccess: function(data){
+    //     alert(data);
+    // },
+    // onError: function(){
+    //     alert("Request failed");
+    // },
 });
-
 
 function add_button()
 {
@@ -73,6 +70,5 @@ function delete_button()
 {
     $('#ListForm').submit();
 }
-
 </script>
 {% endblock %}

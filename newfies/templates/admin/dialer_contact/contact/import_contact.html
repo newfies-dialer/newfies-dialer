@@ -14,7 +14,7 @@
 <div id="content-main">
 <br/>
 
-<table border=1>
+<table border="1">
 <caption>{% trans "Sample File" %}</caption>
 <tr>
     <th>{% trans "contact" %}</th>
@@ -46,8 +46,7 @@
 </table>
 <br/>
 {% trans "CONTACT STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')" %}
-<br/>
-<br/>
+<br/><br/>
 
 
 <form method="post" action="" enctype="multipart/form-data" >{% csrf_token %}
@@ -62,8 +61,7 @@
     </table>
 </form>
 
-<br/>
-<br/>
+<br/><br/>
 
 {% block msg %}
     {% if msg %}
@@ -71,12 +69,10 @@
     {% endif %}
 {% endblock %}
 
-<br/>
-<br/>
-
+<br/><br/>
 
 {% if success_import_list %}
-    <table border=1>
+<table border="1">
     <tr>
         <th>{% trans "Contact(s) imported" %} :</th>
     </tr>
@@ -87,12 +83,12 @@
         </td>
     </tr>
     {% endfor %}
-    </table>
+</table>
 {% endif %}
 
 {% if type_error_import_list %}
-<br>
-    <table border=1>
+<br/>
+<table border="1">
     <tr>
         <th>{% trans "Type mismatch" %} :</th>
     </tr>
@@ -103,9 +99,8 @@
         </td>
     </tr>
     {% endfor %}
-    </table>
+</table>
 {% endif %}
-
 
 </div>
 {% endblock %}

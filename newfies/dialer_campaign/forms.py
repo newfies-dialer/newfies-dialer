@@ -47,6 +47,11 @@ class CampaignForm(ModelForm):
 
     content_object = forms.ChoiceField(label=_("Application"),)
 
+    selected_phonebook = forms.CharField(widget=forms.HiddenInput,
+                                         required=False)
+    selected_content_object = forms.CharField(widget=forms.HiddenInput,
+                                              required=False)
+
     class Meta:
         model = Campaign
         fields = ['campaign_code', 'name', 'description',
@@ -59,6 +64,7 @@ class CampaignForm(ModelForm):
                   'daily_start_time', 'daily_stop_time',
                   'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
                   'saturday', 'sunday', 'ds_user',
+                  'selected_phonebook', 'selected_content_object'
                   ]
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
@@ -72,12 +78,12 @@ class CampaignForm(ModelForm):
 
         if user:
             self.fields['ds_user'].initial = user
-            list_pb = []
             list_gw = []
+            list_pb = []
 
             list_pb.append((0, '---'))
             list = Phonebook.objects.values_list('id', 'name')\
-                    .filter(user=user).order_by('id')
+            .filter(user=user).order_by('id')
             for l in list:
                 list_pb.append((l[0], l[1]))
             self.fields['phonebook'].choices = list_pb
@@ -113,13 +119,16 @@ class CampaignForm(ModelForm):
             self.fields['extra_data'].widget.attrs['readonly'] = True
 
             self.fields['status'].widget.attrs['disabled'] = 'disabled'
-        #   self.fields['phonebook'].widget.attrs['disabled'] = 'disabled'
+            self.fields['phonebook'].widget.attrs['disabled'] = 'disabled'
+            selected_phonebook = \
+                ",".join(["%s" % (i.id) for i in instance.phonebook.all()])
+            self.fields['selected_phonebook'].initial = selected_phonebook
 
-        #    self.fields['content_object'].widget.attrs['disabled'] = 'disabled'
-        #    self.fields['content_object'].initial = "type:%s-id:%s" \
-        #                                                          % (instance.content_type.id,
-        #                                                             instance.object_id)
-
+            self.fields['content_object'].widget.attrs['disabled'] = 'disabled'
+            self.fields['content_object'].required = False
+            self.fields['selected_content_object'].initial = "type:%s-id:%s" \
+                                                              % (instance.content_type.id,
+                                                                 instance.object_id)
     def clean_status(self):
         # As shown in the above answer.
         instance = getattr(self, 'instance', None)

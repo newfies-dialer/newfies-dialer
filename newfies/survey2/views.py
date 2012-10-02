@@ -31,7 +31,8 @@ from dialer_cdr.models import Callrequest, VoIPCall
 
 #from survey2.models import Survey, Section, Branching,\
 #    Result, ResultAggregate
-from survey2.models import Survey_template, Section_template, Branching_template,\
+from survey2.models import Survey_template, Survey, Section_template, Section,\
+    Branching_template,\
     Result, ResultAggregate
 
 from survey2.forms import SurveyForm, VoiceSectionForm,\
@@ -304,7 +305,7 @@ def survey_grid(request):
     sortorder_sign = grid_data['sortorder_sign']
     sortname = grid_data['sortname']
 
-    survey_list = Survey.objects\
+    survey_list = Survey_template.objects\
         .values('id', 'name', 'description', 'updated_date')\
         .filter(user=request.user)
 
@@ -397,10 +398,10 @@ def survey_add(request):
 def delete_section_branching(survey):
     """delete sections as well as branching
     which are belong to survey"""
-    section_list = Section.objects.filter(survey=survey)
+    section_list = Section_template.objects.filter(survey=survey)
     if section_list:
         for section in section_list:
-            branching_list = Branching.objects.filter(section=section)
+            branching_list = Branching_template.objects.filter(section=section)
             if branching_list:
                 branching_list.delete()
     section_list.delete()
@@ -424,7 +425,7 @@ def survey_del(request, object_id):
     if int(object_id) != 0:
         # When object_id is not 0
         survey = get_object_or_404(
-            Survey, pk=object_id, user=request.user)
+            Survey_template, pk=object_id, user=request.user)
         # 1) delete survey
         request.session["msg"] = _('"%(name)s" is deleted.')\
                                  % {'name': survey.name}
@@ -437,7 +438,7 @@ def survey_del(request, object_id):
         values = ", ".join(["%s" % el for el in values])
         try:
             # 1) delete survey
-            survey_list = Survey.objects.filter(user=request.user)\
+            survey_list = Survey_template.objects.filter(user=request.user)\
                 .extra(where=['id IN (%s)' % values])
             if survey_list:
                 for survey in survey_list:
@@ -468,7 +469,7 @@ def section_add(request):
           via the SurveyForm & get redirected to the survey list
     """
     survey_id = request.GET.get('survey_id')
-    survey = Survey.objects.get(pk=survey_id)
+    survey = Survey_template.objects.get(pk=survey_id)
     form = VoiceSectionForm(request.user, initial={'survey': survey})
 
     request.session['err_msg'] = ''
@@ -644,7 +645,7 @@ def section_change(request, id):
         *
     """
     section = get_object_or_404(
-        Section, pk=int(id), survey__user=request.user)
+        Section_template, pk=int(id), survey__user=request.user)
 
     if section.type == SECTION_TYPE.VOICE_SECTION:
         form = VoiceSectionForm(request.user, instance=section)
@@ -825,13 +826,13 @@ def section_change(request, id):
 @login_required
 def section_delete(request, id):
     section = get_object_or_404(
-        Section, pk=int(id), survey__user=request.user)
+        Section_template, pk=int(id), survey__user=request.user)
     if request.GET.get('delete'):
         # perform delete
         survey_id = section.survey_id
 
         # Re-order section while deleting one section
-        section_list_reorder = Section.objects\
+        section_list_reorder = Section_template.objects\
             .filter(survey=section.survey)\
             .exclude(pk=int(id))
         for reordered in section_list_reorder:
@@ -840,7 +841,7 @@ def section_delete(request, id):
                 reordered.save()
 
         # 1) delete branch belonging to a section
-        branching_list = Branching.objects.filter(section=section)
+        branching_list = Branching_template.objects.filter(section=section)
         if branching_list:
             branching_list.delete()
 
@@ -874,7 +875,7 @@ def section_phrasing_change(request, id):
         *
     """
     section = get_object_or_404(
-        Section, pk=int(id), survey__user=request.user)
+        Section_template, pk=int(id), survey__user=request.user)
 
     form = PhrasingForm(instance=section)
     if request.method == 'POST':
@@ -915,7 +916,7 @@ def section_phrasing_play(request, id):
         * Convert text file into wav file
     """
     section = get_object_or_404(
-        Section, pk=int(id), survey__user=request.user)
+        Section_template, pk=int(id), survey__user=request.user)
     phrasing_text = section.phrasing
     phrasing_hexdigest = hashlib.md5(phrasing_text).hexdigest()
     file_path = '%s/tts/phrasing_%s' % \
@@ -966,7 +967,7 @@ def section_branch_add(request):
     section_id = ''
     if request.GET.get('section_id'):
         section_id = request.GET.get('section_id')
-        section = Section.objects.get(pk=int(section_id))
+        section = Section_template.objects.get(pk=int(section_id))
         section_survey_id = section.survey_id
         section_type = section.type
         form = BranchingForm(
@@ -1018,7 +1019,7 @@ def section_branch_change(request, id):
     if request.GET.get('delete'):
         # perform delete
         branching_obj = get_object_or_404(
-            Branching, id=int(id), section__survey__user=request.user)
+            Branching_template, id=int(id), section__survey__user=request.user)
         survey_id = branching_obj.section.survey_id
         section_id = branching_obj.section_id
         branching_obj.delete()
@@ -1027,7 +1028,7 @@ def section_branch_change(request, id):
                                     % (survey_id, section_id))
 
     branching = get_object_or_404(
-        Branching, id=int(id), section__survey__user=request.user)
+        Branching_template, id=int(id), section__survey__user=request.user)
     form = BranchingForm(branching.section.survey_id,
                          branching.section_id,
                          instance=branching)
@@ -1080,11 +1081,11 @@ def survey_change(request, object_id):
           via SurveyForm & get redirected to survey list
     """
     survey = get_object_or_404(
-        Survey, pk=object_id, user=request.user)
+        Survey_template, pk=object_id, user=request.user)
 
-    section_list = Section.objects.filter(survey=survey).order_by('order')
+    section_list = Section_template.objects.filter(survey=survey).order_by('order')
     form = SurveyForm(instance=survey)
-    branching_list = Branching.objects\
+    branching_list = Branching_template.objects\
         .filter(section__survey=survey).order_by('id')
 
     branching_section_list = \

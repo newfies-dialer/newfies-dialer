@@ -18,7 +18,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from dialer_campaign.models import Campaign
 from dialer_cdr.forms import VoipSearchForm
-from survey2.models import Survey, Section, Branching
+from survey2.models import Survey_template, Survey, Section_template, \
+    Section, Branching, Branching_template
 from survey2.constants import SECTION_TYPE
 from audiofield.models import AudioFile
 
@@ -38,15 +39,15 @@ def get_audiofile_list(user):
 def get_section_question_list(survey_id, section_id):
     """Get survey question list for logged in user
     with default none option"""
-    section_branch_list = \
-        Branching.objects.values_list('section_id', flat=True)\
+    section_branch_list =\
+        Branching_template.objects.values_list('section_id', flat=True)\
                          .filter(section_id=section_id)
     list_sq = []
     list_sq.append(('', _('Hang up')))
 
-    list = Section.objects.filter(survey_id=survey_id)\
-        .exclude(pk=section_id)\
-        .exclude(id__in=section_branch_list)
+    list = Section_template.objects.filter(survey_id=survey_id)\
+            .exclude(pk=section_id)\
+            .exclude(id__in=section_branch_list)
     for i in list:
         if i.question:
             q_string = i.question
@@ -60,13 +61,13 @@ def get_section_question_list(survey_id, section_id):
 def get_question_choice_list(section_id):
     """Get survey question list for logged in user
     with default none option"""
-    keys_list = Branching.objects\
-        .values_list('keys', flat=True)\
-        .filter(section_id=int(section_id))\
-        .exclude(keys='')
+    keys_list = Branching_template.objects\
+                .values_list('keys', flat=True)\
+                .filter(section_id=int(section_id))\
+                .exclude(keys='')
 
     list_sq = []
-    obj_section = Section.objects.get(id=int(section_id))
+    obj_section = Section_template.objects.get(id=int(section_id))
 
     if keys_list:
         keys_list = [int(integral) for integral in keys_list]
@@ -85,12 +86,12 @@ def get_question_choice_list(section_id):
 def get_rating_choice_list(section_id):
     """Get survey rating laps for logged in user
     with default anything option"""
-    keys_list = Branching.objects\
-        .values_list('keys', flat=True)\
-        .filter(section_id=int(section_id))\
-        .exclude(keys='')
+    keys_list = Branching_template.objects\
+                .values_list('keys', flat=True)\
+                .filter(section_id=int(section_id))\
+                .exclude(keys='')
 
-    obj_section = Section.objects.get(id=int(section_id))
+    obj_section = Section_template.objects.get(id=int(section_id))
 
     if keys_list:
         keys_list = [int(integral) for integral in keys_list]
@@ -109,7 +110,7 @@ class SurveyForm(ModelForm):
     """Survey ModelForm"""
 
     class Meta:
-        model = Survey
+        model = Survey_template
         exclude = ('user',)
 
     def __init__(self, *args, **kwargs):
@@ -125,7 +126,7 @@ class VoiceSectionForm(ModelForm):
     """VoiceSectionForm ModelForm"""
 
     class Meta:
-        model = Section
+        model = Section_template
         fields = ['type', 'survey', 'question', 'retries', 'audiofile']
 
     def __init__(self, user, *args, **kwargs):
@@ -144,7 +145,7 @@ class MultipleChoiceSectionForm(ModelForm):
     """MultipleChoiceSectionForm ModelForm"""
 
     class Meta:
-        model = Section
+        model = Section_template
         fields = ['type', 'survey', 'question', 'retries',
                   'key_0', 'key_1', 'key_2', 'key_3', 'key_4',
                   'key_5', 'key_6', 'key_7', 'key_8', 'key_9',
@@ -173,7 +174,7 @@ class RatingSectionForm(ModelForm):
     """RatingSectionForm ModelForm"""
 
     class Meta:
-        model = Section
+        model = Section_template
         fields = ['type', 'survey', 'question', 'rating_laps',
                   'retries', 'timeout', 'audiofile', 'invalid_audiofile']
 
@@ -198,7 +199,7 @@ class EnterNumberSectionForm(ModelForm):
     """EnterNumberSectionForm ModelForm"""
 
     class Meta:
-        model = Section
+        model = Section_template
         fields = ['type', 'survey', 'question', 'validate_number',
                   'number_digits', 'min_number', 'max_number',
                   'retries', 'timeout', 'audiofile', 'invalid_audiofile']
@@ -227,7 +228,7 @@ class RecordMessageSectionForm(ModelForm):
     """RecordMessageSectionForm ModelForm"""
 
     class Meta:
-        model = Section
+        model = Section_template
         fields = ['type', 'survey', 'question', 'continue_survey']
 
     def __init__(self, user, *args, **kwargs):
@@ -241,7 +242,7 @@ class PatchThroughSectionForm(ModelForm):
     """PatchThroughSectionForm ModelForm"""
 
     class Meta:
-        model = Section
+        model = Section_template
         fields = ['type', 'survey', 'question', 'dial_phonenumber',
                   'continue_survey']
 
@@ -256,7 +257,7 @@ class PhrasingForm(ModelForm):
     """PhrasingForm ModelForm"""
 
     class Meta:
-        model = Section
+        model = Section_template
         fields = ['phrasing']
 
     def __init__(self, *args, **kwargs):
@@ -270,7 +271,7 @@ class BranchingForm(ModelForm):
     """BranchingForm ModelForm"""
 
     class Meta:
-        model = Branching
+        model = Branching_template
         fields = ['keys', 'section', 'goto']
 
     def __init__(self, survey_id, section_id, *args, **kwargs):
@@ -279,7 +280,7 @@ class BranchingForm(ModelForm):
         self.fields['section'].widget = forms.HiddenInput()
 
         # multiple choice section
-        obj_section = Section.objects.get(id=section_id)
+        obj_section = Section_template.objects.get(id=section_id)
         if obj_section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
             self.fields['keys'] = \
                 forms.ChoiceField(
@@ -314,8 +315,7 @@ class SurveyReportForm(forms.Form):
             list = []
             try:
                 camp_list = Campaign.objects.values_list('id', 'name')\
-                    .filter(user=user,
-                            content_type=ContentType.objects.get(model='survey'))
+                            .filter(user=user, content_type__model='survey')
                 for i in camp_list:
                     list.append((i[0], i[1]))
             except:

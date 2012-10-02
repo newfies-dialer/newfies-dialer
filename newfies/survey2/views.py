@@ -29,8 +29,11 @@ from dialer_campaign.models import get_unique_code, Campaign
 from dialer_campaign.views import notice_count
 from dialer_cdr.models import Callrequest, VoIPCall
 
-from survey2.models import Survey, Section, Branching,\
+#from survey2.models import Survey, Section, Branching,\
+#    Result, ResultAggregate
+from survey2.models import Survey_template, Section_template, Branching_template,\
     Result, ResultAggregate
+
 from survey2.forms import SurveyForm, VoiceSectionForm,\
     MultipleChoiceSectionForm, RatingSectionForm,\
     EnterNumberSectionForm, RecordMessageSectionForm,\

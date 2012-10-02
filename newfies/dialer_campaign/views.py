@@ -125,6 +125,9 @@ def update_campaign_status_cust(request, pk, status):
         request.session['error_msg'] = \
             _('The campaign global settings cannot be edited when the campaign Start')
 
+        from survey2.function_def import check_survey_campaign
+        check_survey_campaign(request, pk)
+
     return HttpResponseRedirect('/campaign/')
 
 

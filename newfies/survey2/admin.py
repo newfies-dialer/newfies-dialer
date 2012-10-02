@@ -14,13 +14,14 @@
 #
 
 from django.contrib import admin
-from survey2.models import Survey, Section, Branching, Result, ResultAggregate
+from survey2.models import Survey_template, Section_template, Branching_template, \
+    Result, ResultAggregate
 from adminsortable.admin import SortableAdmin, SortableTabularInline
 
 
 class SectionInline(SortableTabularInline):
 
-    model = Section
+    model = Section_template
 
 
 class SurveyAdmin(SortableAdmin):
@@ -31,20 +32,19 @@ class SurveyAdmin(SortableAdmin):
     list_display = ('id', 'name', 'created_date')
     list_display_links = ('id', 'name')
 
-admin.site.register(Survey, SurveyAdmin)
+admin.site.register(Survey_template, SurveyAdmin)
 
 
 class SectionAdmin(SortableAdmin):
 
     """Allows the administrator to view and modify survey question."""
 
-    #inlines = [SurveyResponseInline]
     list_display = ('id', 'survey', 'created_date')
     search_fields = ['question']
     #list_display_links = ('question', )
     list_filter = ['created_date', 'survey']
 
-admin.site.register(Section, SectionAdmin)
+admin.site.register(Section_template, SectionAdmin)
 
 
 class BranchingAdmin(admin.ModelAdmin):
@@ -56,7 +56,7 @@ class BranchingAdmin(admin.ModelAdmin):
     #list_display_links = ('keys', )
     list_filter = ['created_date', 'section']
 
-admin.site.register(Branching, BranchingAdmin)
+admin.site.register(Branching_template, BranchingAdmin)
 
 
 class ResultAdmin(admin.ModelAdmin):

@@ -20,13 +20,28 @@ from survey2.models import Survey_template, Survey, Section_template, Section, \
 
 def check_survey_campaign(request, pk):
     """Running Survey Campaign"""
-    obj_campaign = Campaign.objects.get(id=pk,
-                                        status=CAMPAIGN_STATUS.START,
-                                        content_type__model='survey')
-    if obj_campaign:
-        # Copy survey
-        obj = Survey.objects.create(user=request.user, campaign=obj_campaign)
-        print obj
-        # Copy Section
-        # Copy Branching
+    try:
+        obj_campaign = Campaign.objects.get(id=pk,
+                                            status=CAMPAIGN_STATUS.START,
+                                            content_type__model='survey')
+        if obj_campaign:
+            # Copy survey
+            survey_template = Survey_template.objects.filter(user=request.user)
+            for survey_temp in survey_template:
+                survey_obj = Survey.objects.create(**survey_temp)
+                survey_obj.campaign = obj_campaign
+                survey_obj.save() # new survey object
+
+                # Copy Section
+                section_template = Section_template.objects.filter(survey=survey_temp)
+                for section_temp in section_template:
+                    Section.objects.create(**section_temp)
+
+                    # Copy Branching
+                    branching_template = \
+                        Branching_template.objects.filter(section=section_temp)
+                    for branching_temp in branching_template:
+                        Branching.objects.create(**branching_temp)
+    except:
+        pass
     return True

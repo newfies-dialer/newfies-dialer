@@ -25,8 +25,8 @@ from survey2.constants import SECTION_TYPE
 #from tagging.fields import TagField
 
 
-class Survey(Sortable):
-    """This defines the Survey
+class Survey_abstract(Sortable):
+    """This defines the Survey template
 
     **Attributes**:
 
@@ -44,10 +44,38 @@ class Survey(Sortable):
     description = models.TextField(null=True, blank=True,
                                    verbose_name=_('Description'),
                                    help_text=_("Survey Description"))
-    user = models.ForeignKey('auth.User', related_name='survey_user')
     created_date = models.DateTimeField(auto_now_add=True,
                                         verbose_name=_('Date'))
     updated_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+    def __unicode__(self):
+            return u"%s" % self.name
+
+
+class Survey_template(Survey_abstract):
+    """
+    This defines the Survey template
+    """
+    user = models.ForeignKey('auth.User', related_name='survey_template_user')
+
+    class Meta:
+        permissions = (
+            ("view_survey_template", _('Can see Survey Template')),
+        )
+        verbose_name = _("Survey template")
+        verbose_name_plural = _("Survey templates")
+
+
+class Survey(Survey_abstract):
+    """
+    This defines the Survey
+    """
+    user = models.ForeignKey('auth.User', related_name='survey_user')
+    campaign = models.ForeignKey(Campaign, null=True, blank=True,
+                                 verbose_name=_("Campaign"))
 
     class Meta:
         permissions = (
@@ -57,11 +85,8 @@ class Survey(Sortable):
         verbose_name = _("Survey")
         verbose_name_plural = _("Surveys")
 
-    def __unicode__(self):
-            return u"%s" % self.name
 
-
-class Section(Sortable):
+class Section_abstract(Sortable):
     """This defines the question for survey
 
     **Attributes**:
@@ -112,9 +137,6 @@ class Section(Sortable):
                                 help_text=_('Example : Enter a number between 1 to 5, press pound key when done'))
     audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
                                   verbose_name=_("Audio File"))
-    invalid_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
-                                          verbose_name=_("Invalid Audio File digits"),
-                                          related_name='survey_invalid_audiofile')
     retries = models.IntegerField(max_length=1, null=True, blank=True,
                                   verbose_name=_("retries"), default=0,
                                   help_text=_('Retries this section until it\'s valid'))
@@ -167,7 +189,6 @@ class Section(Sortable):
     continue_survey = models.BooleanField(default=False,
                                           verbose_name=_('Continue survey when done'))
 
-    survey = models.ForeignKey(Survey, verbose_name=_("Survey"))
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -175,6 +196,7 @@ class Section(Sortable):
 
     class Meta(Sortable.Meta):
         ordering = Sortable.Meta.ordering + ['survey']
+        abstract = True
 
     def __unicode__(self):
         return '[%s] %s' % (self.id, self.question)
@@ -186,7 +208,33 @@ class Section(Sortable):
         return branching_count
 
 
-class Branching(models.Model):
+class Section_template(Section_abstract):
+    """
+    This defines the question for survey section template
+    """
+    survey = models.ForeignKey(Survey_template, verbose_name=_("Survey"))
+    invalid_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
+                                          verbose_name=_("Invalid Audio File digits"),
+                                          related_name='survey_template_invalid_audiofile')
+
+    class Meta(Sortable.Meta):
+        ordering = Sortable.Meta.ordering + ['survey']
+
+
+class Section(Section_abstract):
+    """
+    This defines the question for survey section
+    """
+    survey = models.ForeignKey(Survey, verbose_name=_("Survey"))
+    invalid_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
+                                          verbose_name=_("Invalid Audio File digits"),
+                                          related_name='survey_invalid_audiofile')
+
+    class Meta(Sortable.Meta):
+        ordering = Sortable.Meta.ordering + ['survey']
+
+
+class Branching_abstract(models.Model):
     """This defines the response of the survey section
 
     **Attributes**:
@@ -202,16 +250,33 @@ class Branching(models.Model):
                             verbose_name=_("Entered value"))  # 1, 2, 1000
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ("keys", "section")
+        abstract = True
+
+    def __unicode__(self):
+        return '[%s] %s' % (self.id, self.keys)
+
+
+class Branching_template(Branching_abstract):
+    """
+    This defines the response of the survey section
+    """
+    section = models.ForeignKey(Section_template, related_name='Branching Section')
+    # '' to goto hangup
+    goto = models.ForeignKey(Section_template, null=True,
+                             blank=True, related_name='Goto Section')
+
+
+class Branching(Branching_abstract):
+    """
+    This defines the response of the survey section
+    """
     section = models.ForeignKey(Section, related_name='Branching Section')
     # '' to goto hangup
     goto = models.ForeignKey(Section, null=True,
                              blank=True, related_name='Goto Section')
-
-    class Meta:
-        unique_together = ("keys", "section")
-
-    def __unicode__(self):
-        return '[%s] %s' % (self.id, self.keys)
 
 
 class Result(models.Model):

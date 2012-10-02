@@ -13,7 +13,6 @@
 #
 
 from django.contrib.auth.models import User
-from django.template import Template, Context, TemplateSyntaxError
 from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
 from survey2.models import Survey, Section, Branching, Result, \
@@ -30,8 +29,6 @@ from survey2.views import survey_list, survey_grid, survey_add, \
     section_delete, section_phrasing_play
 from survey2.ajax import section_sort
 from utils.helper import grid_test_data
-from datetime import datetime
-import simplejson
 
 
 class SurveyAdminView(BaseAuthenticatedClient):
@@ -136,7 +133,6 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         #request.session = {}
         #response = section_sort(request, 1, 1)
         #self.assertTrue(response)
-
 
     def test_survey_view_delete(self):
         """Test Function to check delete survey"""

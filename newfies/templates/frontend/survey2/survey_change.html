@@ -70,7 +70,6 @@
                     <span class="label label-info">R-{{ section.retries }}</span>
                 {% endif %}
 
-
                 <!--To remove section branching for voice, record &
                     patch-through section-->
                 <script type="text/javascript">
@@ -361,89 +360,88 @@
 </div>
 {% endif %}
 
-    <!--update section in modal-->
-    <script type="text/javascript" charset="utf-8">
-        $(".section-edit").live('click', function() {
-            var url = $(this).attr('url');
-            var modal_id = $(this).attr('data-controls-modal');
-            $("#" + modal_id).load(url);
-        });
-    </script>
-    <!-- update survey section modal content-->
-    <div id="section-update-edit" class="modal hide fade">
-    </div>
+<!--update section in modal-->
+<script type="text/javascript" charset="utf-8">
+    $(".section-edit").live('click', function() {
+        var url = $(this).attr('url');
+        var modal_id = $(this).attr('data-controls-modal');
+        $("#" + modal_id).load(url);
+    });
+</script>
+<!-- update survey section modal content-->
+<div id="section-update-edit" class="modal hide fade">
+</div>
 
-    {% if action == 'update' %}
-        <div class="row">
-            <div class="span10">
-            {% if perms.survey2.add_section %}
-                <button data-toggle="modal" href="#section-create-add" class="section-add btn btn-info" url='/section/add/' data-controls-modal='section-create-add'>
-                    {% trans "Add Section" %}
-                </button>
-            {% endif %}
-            </div>
-            <div class="span1">
-                <input id="update" type="submit" class="btn btn-primary" onclick="javascript:document.getElementById('update_form').submit();" value="{% trans "Update Survey" %}" />
-            </div>
+{% if action == 'update' %}
+    <div class="row">
+        <div class="span10">
+        {% if perms.survey2.add_section %}
+            <button data-toggle="modal" href="#section-create-add" class="section-add btn btn-info" url='/section/add/' data-controls-modal='section-create-add'>
+                {% trans "Add Section" %}
+            </button>
+        {% endif %}
         </div>
-    {% endif %}
-
-
-    <!--Section add modal-->
-    <script type="text/javascript" charset="utf-8">
-
-        $(".section-add").live('click', function() {
-            var url = $(this).attr('url');
-            var modal_id = $(this).attr('data-controls-modal');
-            url = url + "?survey_id=" + {{ survey_obj_id }};
-            $("#" + modal_id).load(url);
-        });
-
-    </script>
-    <!--Section add modal content-->
-    <div id="section-create-add" class="modal hide fade">
+        <div class="span1">
+            <input id="update" type="submit" class="btn btn-primary" onclick="javascript:document.getElementById('update_form').submit();" value="{% trans "Update Survey" %}" />
+        </div>
     </div>
+{% endif %}
 
-    <!--Section branching change modal-->
-    <script type="text/javascript" charset="utf-8">
+<!--Section add modal-->
+<script type="text/javascript" charset="utf-8">
 
-        $(".section-branch").live('click', function() {
-            var url = $(this).attr('url');
-            var modal_id = $(this).attr('data-controls-modal');
-            $("#" + modal_id).load(url);
-        });
+    $(".section-add").live('click', function() {
+        var url = $(this).attr('url');
+        var modal_id = $(this).attr('data-controls-modal');
+        url = url + "?survey_id=" + {{ survey_obj_id }};
+        $("#" + modal_id).load(url);
+    });
 
-    </script>
-    <!-- modal content-->
-    <div id="section-branch" class="modal hide fade"></div>
+</script>
+<!--Section add modal content-->
+<div id="section-create-add" class="modal hide fade">
+</div>
 
-    <!--Section phrasing update modal-->
-    <script type="text/javascript" charset="utf-8">
+<!--Section branching change modal-->
+<script type="text/javascript" charset="utf-8">
 
-        $(".phrasing-edit").live('click', function() {
-            var url = $(this).attr('url');
-            var modal_id = $(this).attr('data-controls-modal');
-            $("#" + modal_id).load(url);
-        })
+    $(".section-branch").live('click', function() {
+        var url = $(this).attr('url');
+        var modal_id = $(this).attr('data-controls-modal');
+        $("#" + modal_id).load(url);
+    });
 
-    </script>
-    <!-- update phrasing modal content-->
-    <div id="phrasing-update-edit" class="modal hide fade" >
-    </div>
+</script>
+<!-- modal content-->
+<div id="section-branch" class="modal hide fade"></div>
 
-    <!--Section delete modal-->
-    <script type="text/javascript" charset="utf-8">
+<!--Section phrasing update modal-->
+<script type="text/javascript" charset="utf-8">
 
-        $(".section-delete").live('click', function() {
-            var url = $(this).attr('url');
-            var modal_id = $(this).attr('data-controls-modal');
-            $("#" + modal_id).load(url);
-        })
+    $(".phrasing-edit").live('click', function() {
+        var url = $(this).attr('url');
+        var modal_id = $(this).attr('data-controls-modal');
+        $("#" + modal_id).load(url);
+    })
 
-    </script>
-    <!-- section delete modal content-->
-    <div id="section-del" class="modal hide fade" >
-    </div>
+</script>
+<!-- update phrasing modal content-->
+<div id="phrasing-update-edit" class="modal hide fade" >
+</div>
+
+<!--Section delete modal-->
+<script type="text/javascript" charset="utf-8">
+
+    $(".section-delete").live('click', function() {
+        var url = $(this).attr('url');
+        var modal_id = $(this).attr('data-controls-modal');
+        $("#" + modal_id).load(url);
+    })
+
+</script>
+<!-- section delete modal content-->
+<div id="section-del" class="modal hide fade" >
+</div>
 
 </form>
 

@@ -10,15 +10,12 @@
     <h1>{% trans "Audio Files" %} <small>{% trans "List, upload and edit audio files" %}</small></h1>
 {% endblock %}
 
-
 {% block content %}
-
 <form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">{% csrf_token %}
     <table id="flex1" align="left" style="display:none;"></table>
 </form>
 
 <script type="text/javascript">
-
 $("#flex1").flexigrid({
     url: "/audio_grid/",
     method: 'GET',
@@ -47,7 +44,6 @@ $("#flex1").flexigrid({
 	useRp: true,
 	rp: 10,
 	showTableToggleBtn: true,
-	//width: 870,
 	height: 265,
     pagetext: '{% trans "Page" %}',
     outof: '{% trans "of" %}',
@@ -55,13 +51,13 @@ $("#flex1").flexigrid({
     procmsg: '{% trans "Processing, please wait ..." %}',
     pagestat: '{% trans "Displaying" %} {from} {% trans "to" %} {to} {% trans "of" %} {total} {% trans "items" %}',
     //preProcess: formatContactResults,
-    onSuccess: function(data){
-        //alert(data);
-        //alert("Request not failed");
-    },
-    onError: function(){
-        alert("Request failed");
-    },
+    // onSuccess: function(data){
+    //     alert(data);
+    //     alert("Request not failed");
+    // },
+    // onError: function(){
+    //     alert("Request failed");
+    // },
 });
 
 function add_button()

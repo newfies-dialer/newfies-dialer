@@ -27,7 +27,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import get_model
 from notification import models as notification
 from frontend.views import notice_count
-from dialer_contact.models import Contact
 from utils.helper import grid_common_function, get_grid_update_delete_link
 from dialer_campaign.models import Campaign
 from dialer_campaign.forms import CampaignForm

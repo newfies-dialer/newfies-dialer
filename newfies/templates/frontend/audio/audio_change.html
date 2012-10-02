@@ -20,7 +20,6 @@
 {% block content %}
 
 <form class="well" method="POST" action="." enctype="multipart/form-data" id="update_form">{% csrf_token %}
-
     {# audiofield form #}
     {% for field in form %}
     <div class="clearfix{% if field.errors %} control-group error{% endif %}">
@@ -42,7 +41,6 @@
             <input id="add" type="submit" class="btn btn-primary" value="{% trans "Submit" %}" />
          {% endif %}
     </div>
-
 </form>
 
 {% endblock %}

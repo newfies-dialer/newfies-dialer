@@ -27,6 +27,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import get_model
 from notification import models as notification
 from frontend.views import notice_count
+from dialer_contact.models import Phonebook, Contact
 from utils.helper import grid_common_function, get_grid_update_delete_link
 from dialer_campaign.models import Campaign
 from dialer_campaign.forms import CampaignForm
@@ -448,10 +449,21 @@ def campaign_change(request, object_id):
             # Update campaign
             form = CampaignForm(request.user, request.POST, instance=campaign)
             previous_status = campaign.status
+
             if form.is_valid():
                 form.save()
                 obj = form.save(commit=False)
-                contenttype = get_content_type(form.cleaned_data['content_object'])
+                selected_content_object = form.cleaned_data['content_object']
+                # while campaign status is running
+                if campaign.status == 1:
+                    if request.POST.get('selected_phonebook'):
+                        selected_phonebook =\
+                            str(request.POST.get('selected_phonebook')).split(',')
+                        obj.phonebook = Phonebook.objects.filter(id__in=selected_phonebook)
+
+                    selected_content_object = form.cleaned_data['selected_content_object']
+
+                contenttype = get_content_type(selected_content_object)
                 obj.content_type = contenttype['object_type']
                 obj.object_id = contenttype['object_id']
                 obj.save()

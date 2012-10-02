@@ -83,7 +83,7 @@ class CampaignForm(ModelForm):
 
             list_pb.append((0, '---'))
             list = Phonebook.objects.values_list('id', 'name')\
-            .filter(user=user).order_by('id')
+                .filter(user=user).order_by('id')
             for l in list:
                 list_pb.append((l[0], l[1]))
             self.fields['phonebook'].choices = list_pb
@@ -96,7 +96,6 @@ class CampaignForm(ModelForm):
             for i in gw_list:
                 list_gw.append((i[0], i[1]))
             self.fields['aleg_gateway'].choices = list_gw
-
 
             from voice_app.models import VoiceApp
             available_objects = VoiceApp.objects.filter(user=user)
@@ -120,15 +119,18 @@ class CampaignForm(ModelForm):
 
             self.fields['status'].widget.attrs['disabled'] = 'disabled'
             self.fields['phonebook'].widget.attrs['disabled'] = 'disabled'
-            selected_phonebook = \
-                ",".join(["%s" % (i.id) for i in instance.phonebook.all()])
+
+            selected_phonebook = ''
+            if instance.phonebook.all():
+                selected_phonebook = \
+                    ",".join(["%s" % (i.id) for i in instance.phonebook.all()])
             self.fields['selected_phonebook'].initial = selected_phonebook
 
             self.fields['content_object'].widget.attrs['disabled'] = 'disabled'
             self.fields['content_object'].required = False
             self.fields['selected_content_object'].initial = "type:%s-id:%s" \
-                                                              % (instance.content_type.id,
-                                                                 instance.object_id)
+                                                  % (instance.content_type.id,
+                                                     instance.object_id)
     def clean_status(self):
         # As shown in the above answer.
         instance = getattr(self, 'instance', None)

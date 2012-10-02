@@ -31,6 +31,7 @@ from dialer_contact.models import Phonebook, Contact
 from utils.helper import grid_common_function, get_grid_update_delete_link
 from dialer_campaign.models import Campaign
 from dialer_campaign.forms import CampaignForm
+from dialer_campaign.constants import CAMPAIGN_STATUS
 from dialer_campaign.function_def import user_attached_with_dialer_settings, \
                         check_dialer_setting, dialer_setting_limit, \
                         get_campaign_status_name, user_dialer_setting_msg
@@ -120,7 +121,7 @@ def update_campaign_status_cust(request, pk, status):
     common_send_notification(request, status, recipient)
 
     # Notify user while campaign Start
-    if int(status) == 1:
+    if int(status) == CAMPAIGN_STATUS.START:
         request.session['error_msg'] = \
             _('The campaign global settings cannot be edited when the campaign Start')
 
@@ -438,12 +439,17 @@ def campaign_change(request, object_id):
                         instance=campaign,
                         initial={'content_object': content_object})
 
+    if campaign.status == CAMPAIGN_STATUS.START:
+        request.session['error_msg'] =\
+            _('The campaign is started, you can only edit Dialer settings and Campaign schedule')
+
     if request.method == 'POST':
         # Delete campaign
         if request.POST.get('delete'):
             campaign_del(request, object_id)
             request.session["msg"] = _('"%(name)s" is deleted.')\
                 % {'name': request.POST['name']}
+            request.session['error_msg'] = ''
             return HttpResponseRedirect('/campaign/')
         else:
             # Update campaign
@@ -474,6 +480,7 @@ def campaign_change(request, object_id):
 
                 request.session["msg"] = _('"%(name)s" is updated.') \
                     % {'name': request.POST['name']}
+                request.session['error_msg'] = ''
                 return HttpResponseRedirect('/campaign/')
 
     template = 'frontend/campaign/change.html'
@@ -483,6 +490,8 @@ def campaign_change(request, object_id):
        'action': 'update',
        'notice_count': notice_count(request),
        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+       'error_msg': request.session.get('error_msg'),
     }
+    request.session['error_msg'] = ''
     return render_to_response(template, data,
            context_instance=RequestContext(request))

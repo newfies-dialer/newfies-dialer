@@ -25,6 +25,7 @@ from survey2.constants import SECTION_TYPE
 #from tagging.fields import TagField
 
 
+
 class Survey_abstract(models.Model):
     """This defines the Survey template
 
@@ -69,14 +70,11 @@ class Survey_template(Survey_abstract):
         verbose_name_plural = _("Survey templates")
 
     def copy_survey_template(self, campaign_obj):
-        print type(self.__dict__)
-        print self.__dict__
         try:
             print "before2"
-            survey_obj = Survey.objects.create(**self.__dict__)
+            survey_obj = Survey.objects.create(name=self.name, description=self.description, user=self.user, campaign=campaign_obj)
             print survey_obj
             print "after2"
-            survey_obj.campaign = campaign_obj
             survey_obj.save()  # new survey object
 
             # Copy Section
@@ -97,8 +95,6 @@ class Survey(Survey_abstract):
     user = models.ForeignKey('auth.User', related_name='survey_user')
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
                                  verbose_name=_("Campaign"))
-    order = models.IntegerField(max_length=5, null=True, blank=True,
-                                  verbose_name=_("ordrr"), default=0)
 
     class Meta:
         permissions = (

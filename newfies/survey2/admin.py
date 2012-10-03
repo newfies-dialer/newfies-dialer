@@ -24,7 +24,7 @@ class SectionInline(SortableTabularInline):
     model = Section_template
 
 
-class SurveyAdmin(SortableAdmin):
+class SurveyAdmin(admin.ModelAdmin):
 
     """Allows the administrator to view and modify survey."""
 

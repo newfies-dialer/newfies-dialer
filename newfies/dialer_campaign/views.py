@@ -213,9 +213,11 @@ def get_app_name(app_label, model_name, object_id):
 def get_campaign_survey_view(campaign_object):
     link = ''
     if int(campaign_object.status) == CAMPAIGN_STATUS.START:
-        link = '<a href="/survey2_view/%s/" title="%s"><icon class=" icon-eye-open"></icon></a>&nbsp;' \
+
+        link = '<a href="/survey2_view/%s/" class="icon" title="%s" %s></a>&nbsp;' \
                % (campaign_object.object_id,
-                  _('survey'))
+                  _('survey'),
+                  tpl_control_icon('eye.png'))
         return link
     return link
 

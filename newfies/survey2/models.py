@@ -71,20 +71,18 @@ class Survey_template(Survey_abstract):
 
     def copy_survey_template(self, campaign_obj):
         try:
-            print "before2"
-            survey_obj = Survey.objects.create(name=self.name, description=self.description, user=self.user, campaign=campaign_obj)
-            print survey_obj
-            print "after2"
-            survey_obj.save()  # new survey object
+            #survey_obj = Survey.objects.create(**self.__dict__)
+            survey_obj = Survey.objects.create(name=self.name,
+                description=self.description,
+                user=self.user,
+                campaign=campaign_obj)
 
             # Copy Section
-            #section_template = Section_template.objects.filter(survey=self)
-            #for section_temp in section_template:
-            #    section_temp.copy_section_template()
+            section_template = Section_template.objects.filter(survey=self)
+            for section_temp in section_template:
+                section_temp.copy_section_template()
         except:
             raise
-            print "except"
-
         return True
 
 
@@ -240,13 +238,43 @@ class Section_template(Section_abstract):
         ordering = Sortable.Meta.ordering + ['survey']
 
     def copy_section_template(self):
-        Section.objects.create(**self.__dict__)
+        try:
+            Section.objects.create(
+                type=self.type,
+                question=self.question,
+                phrasing=self.phrasing,
+                audiofile_id=self.audiofile_id,
+                retries=self.retries,
+                timeout=self.timeout,
+                key_0=self.key_0,
+                key_1=self.key_1,
+                key_2=self.key_2,
+                key_3=self.key_3,
+                key_4=self.key_4,
+                key_5=self.key_5,
+                key_6=self.key_6,
+                key_7=self.key_7,
+                key_8=self.key_8,
+                key_9=self.key_9,
+                rating_laps=self.rating_laps,
+                validate_number=self.validate_number,
+                number_digits=self.number_digits,
+                min_number=self.min_number,
+                max_number=self.max_number,
+                dial_phonenumber=self.dial_phonenumber,
+                continue_survey=self.continue_survey,
+                order=self.order,
+                survey_id=self.survey_id,
+                invalid_audiofile_id=self.invalid_audiofile_id
+            )
 
-        # Copy Branching
-        branching_template =\
-            Branching_template.objects.filter(section=self)
-        for branching_temp in branching_template:
-            branching_temp.copy_branching_template()
+            # Copy Branching
+            branching_template =\
+                Branching_template.objects.filter(section=self)
+            for branching_temp in branching_template:
+                branching_temp.copy_branching_template()
+        except:
+            raise
         return True
 
 class Section(Section_abstract):
@@ -297,7 +325,14 @@ class Branching_template(Branching_abstract):
                              blank=True, related_name='Goto Section')
 
     def copy_branching_template(self):
-        Branching.objects.create(**self.__dict__)
+        try:
+            Branching.objects.create(
+                keys=self.keys,
+                section_id=self.section_id,
+                goto_id=self.goto_id
+            )
+        except:
+            raise
         return True
 
 

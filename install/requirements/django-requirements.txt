@@ -19,7 +19,7 @@ linaro-django-pagination==2.0.2
 django-admin-tools==0.4.1
 django-country-dialcode
 django-audiofield
-git+git://github.com/Star2Billing/django-admin-tools-stats.git
+django-admin-tools-stats==0.3.0
 git+git://github.com/Star2Billing/django-notification
 git+git://github.com/Star2Billing/switch2bill-common.git
 git+git://github.com/jschrewe/django-genericadmin.git

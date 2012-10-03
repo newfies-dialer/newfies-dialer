@@ -68,6 +68,25 @@ class Survey_template(Survey_abstract):
         verbose_name = _("Survey template")
         verbose_name_plural = _("Survey templates")
 
+    def copy_survey_template(self, campaign_obj):
+        print type(self.__dict__)
+        print self.__dict__
+        try:
+            print "before"
+            survey_obj = Survey.objects.create(**self.__dict__)
+            print "after"
+            survey_obj.campaign = campaign_obj
+            survey_obj.save() # new survey object
+
+            # Copy Section
+            #section_template = Section_template.objects.filter(survey=self)
+            #for section_temp in section_template:
+            #    section_temp.copy_section_template()
+        except:
+            print "except"
+
+        return True
+
 
 class Survey(Survey_abstract):
     """
@@ -220,6 +239,15 @@ class Section_template(Section_abstract):
     class Meta(Sortable.Meta):
         ordering = Sortable.Meta.ordering + ['survey']
 
+    def copy_section_template(self):
+        Section.objects.create(**self.__dict__)
+
+        # Copy Branching
+        branching_template =\
+            Branching_template.objects.filter(section=self)
+        for branching_temp in branching_template:
+            branching_temp.copy_branching_template()
+        return True
 
 class Section(Section_abstract):
     """
@@ -267,6 +295,10 @@ class Branching_template(Branching_abstract):
     # '' to goto hangup
     goto = models.ForeignKey(Section_template, null=True,
                              blank=True, related_name='Goto Section')
+
+    def copy_branching_template(self):
+        Branching.objects.create(**self.__dict__)
+        return True
 
 
 class Branching(Branching_abstract):

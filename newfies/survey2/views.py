@@ -32,7 +32,7 @@ from dialer_cdr.models import Callrequest, VoIPCall
 #from survey2.models import Survey, Section, Branching,\
 #    Result, ResultAggregate
 from survey2.models import Survey_template, Survey, Section_template, Section,\
-    Branching_template,\
+    Branching_template, Branching,\
     Result, ResultAggregate
 
 from survey2.forms import SurveyForm, VoiceSectionForm,\
@@ -1119,6 +1119,43 @@ def survey_change(request, object_id):
     request.session['msg'] = ''
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
+
+@login_required
+def survey_lock(request, object_id):
+    """View locked survey
+
+    **Logic Description**:
+
+        * Update/delete selected survey from the survey list
+          via SurveyForm & get redirected to survey list
+    """
+    survey = get_object_or_404(
+        Survey, pk=object_id, user=request.user)
+
+    section_list = Section.objects.filter(survey=survey).order_by('order')
+
+    branching_list = Branching.objects\
+        .filter(section__survey=survey).order_by('id')
+
+    branching_section_list =\
+        branching_list.values_list('section_id', flat=True).distinct()
+
+    template = 'frontend/survey2/survey_lock.html'
+
+    data = {
+        'survey_obj_id': object_id,
+        'survey': survey,
+        'section_list': section_list,
+        'branching_list': branching_list,
+        'branching_section_list': branching_section_list,
+        'module': current_view(request),
+        'action': 'update',
+        #'form': form,
+        'msg': request.session.get('msg'),
+        'notice_count': notice_count(request),
+    }
+    return render_to_response(template, data,
+        context_instance=RequestContext(request))
 
 
 def survey_cdr_daily_report(kwargs, from_query, select_group_query):

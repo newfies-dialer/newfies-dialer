@@ -210,10 +210,14 @@ def get_app_name(app_label, model_name, object_id):
         return '-'
 
 
-def get_campaign_status_lock(status):
-    if int(status) == CAMPAIGN_STATUS.START:
-        return '<icon class="icon-lock"></icon>'
-    return ''
+def get_campaign_status_lock(campaign_object):
+    link = ''
+    if int(campaign_object.status) == CAMPAIGN_STATUS.START:
+        link = '<a href="/survey2/lock/%s/" title="%s"><icon class="icon-lock"></icon></a>&nbsp;' \
+               % (campaign_object.object_id,
+                  _('survey'))
+        return link
+    return link
 
 
 # Campaign
@@ -254,8 +258,8 @@ def campaign_grid(request):
                       get_grid_update_delete_link(request, row.id,
                           'dialer_campaign.delete_campaign',
                           _('Delete campaign'), 'delete') +\
-                      get_url_campaign_status(row.id, row.status) + \
-                      get_campaign_status_lock(row.status),
+                      get_campaign_status_lock(row) +\
+                      get_url_campaign_status(row.id, row.status),
                       ]} for row in campaign_list
            ]
 

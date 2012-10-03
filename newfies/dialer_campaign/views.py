@@ -210,6 +210,12 @@ def get_app_name(app_label, model_name, object_id):
         return '-'
 
 
+def get_campaign_status_lock(status):
+    if int(status) == CAMPAIGN_STATUS.START:
+        return '<icon class="icon-lock"></icon>'
+    return ''
+
+
 # Campaign
 @login_required
 def campaign_grid(request):
@@ -248,7 +254,8 @@ def campaign_grid(request):
                       get_grid_update_delete_link(request, row.id,
                           'dialer_campaign.delete_campaign',
                           _('Delete campaign'), 'delete') +\
-                      get_url_campaign_status(row.id, row.status),
+                      get_url_campaign_status(row.id, row.status) + \
+                      get_campaign_status_lock(row.status),
                       ]} for row in campaign_list
            ]
 

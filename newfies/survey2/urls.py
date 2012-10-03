@@ -20,7 +20,7 @@ urlpatterns = patterns('survey2.views',
     (r'^survey2/$', 'survey_list'),
     (r'^survey2_grid/$', 'survey_grid'),
     (r'^survey2/add/$', 'survey_add'),
-    (r'^survey2/lock/(.+)/$', 'survey_lock'),
+    (r'^survey2_view/(.+)/$', 'survey_view'),
     (r'^survey2/del/(.+)/$', 'survey_del'),
     (r'^survey2/(.+)/$', 'survey_change'),
 

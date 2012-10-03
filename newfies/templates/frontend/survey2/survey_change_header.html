@@ -40,6 +40,8 @@
             handle: '.icon-move'
         });
 
+        {% if action != 'view' %}
+
         //Add Section edit button
         $(".portlet").addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
                 .find(".portlet-header")
@@ -85,6 +87,8 @@
             $(this).toggleClass("icon-circle-arrow-up").toggleClass("icon-circle-arrow-down");
             $(this).parents(".portlet:first").find(".portlet-content").toggle();
         });
+
+        {% endif %}
 
         //$(".column").disableSelection();
     });

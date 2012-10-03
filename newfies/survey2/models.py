@@ -25,7 +25,7 @@ from survey2.constants import SECTION_TYPE
 #from tagging.fields import TagField
 
 
-class Survey_abstract(Sortable):
+class Survey_abstract(models.Model):
     """This defines the Survey template
 
     **Attributes**:
@@ -72,17 +72,19 @@ class Survey_template(Survey_abstract):
         print type(self.__dict__)
         print self.__dict__
         try:
-            print "before"
+            print "before2"
             survey_obj = Survey.objects.create(**self.__dict__)
-            print "after"
+            print survey_obj
+            print "after2"
             survey_obj.campaign = campaign_obj
-            survey_obj.save() # new survey object
+            survey_obj.save()  # new survey object
 
             # Copy Section
             #section_template = Section_template.objects.filter(survey=self)
             #for section_temp in section_template:
             #    section_temp.copy_section_template()
         except:
+            raise
             print "except"
 
         return True
@@ -95,6 +97,8 @@ class Survey(Survey_abstract):
     user = models.ForeignKey('auth.User', related_name='survey_user')
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
                                  verbose_name=_("Campaign"))
+    order = models.IntegerField(max_length=5, null=True, blank=True,
+                                  verbose_name=_("ordrr"), default=0)
 
     class Meta:
         permissions = (

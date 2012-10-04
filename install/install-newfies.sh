@@ -264,7 +264,7 @@ func_install_frontend(){
     case $DIST in
         'DEBIAN')
             apt-get -y install python-setuptools python-dev build-essential
-            apt-get -y install libapache2-mod-python libapache2-mod-wsgi
+            apt-get -y install nginx supervisor
             apt-get -y install git-core mercurial gawk
             easy_install pip
 

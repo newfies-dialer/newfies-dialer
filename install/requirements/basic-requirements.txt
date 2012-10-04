@@ -19,4 +19,5 @@ python-memcached==1.48
 feedparser==5.1.2
 python-acapela==0.2.1
 Django==1.4.1
+gunicorn==0.14.6
 South==0.7.6

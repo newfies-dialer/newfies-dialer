@@ -17,9 +17,9 @@ django-tagging==0.3.1
 django-dajax==0.9.2
 linaro-django-pagination==2.0.2
 django-admin-tools==0.4.3
-django-country-dialcode
-django-audiofield==0.3.1
+django-country-dialcode==0.4.4
+django-audiofield==0.5.0
 django-admin-tools-stats==0.3.0
+switch2bill-common==2.1.2
 git+git://github.com/Star2Billing/django-notification
-git+git://github.com/Star2Billing/switch2bill-common.git
 git+git://github.com/jschrewe/django-genericadmin.git

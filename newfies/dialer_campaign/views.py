@@ -30,13 +30,14 @@ from frontend.views import notice_count
 from dialer_contact.models import Phonebook, Contact
 from utils.helper import grid_common_function, get_grid_update_delete_link
 from dialer_campaign.models import Campaign
-from dialer_campaign.forms import CampaignForm
+from dialer_campaign.forms import CampaignForm, DuplicateCampaignForm
 from dialer_campaign.constants import CAMPAIGN_STATUS
 from dialer_campaign.function_def import user_attached_with_dialer_settings, \
                         check_dialer_setting, dialer_setting_limit, \
                         get_campaign_status_name, user_dialer_setting_msg
 from dialer_campaign.tasks import collect_subscriber
 from common.common_functions import current_view
+from copy import deepcopy
 import re
 
 
@@ -213,12 +214,24 @@ def get_app_name(app_label, model_name, object_id):
 def get_campaign_survey_view(campaign_object):
     link = ''
     if int(campaign_object.status) == CAMPAIGN_STATUS.START:
-
         link = '<a href="/survey2_view/%s/" class="icon" title="%s" %s></a>&nbsp;' \
                % (campaign_object.object_id,
                   _('survey'),
                   tpl_control_icon('eye.png'))
+
         return link
+    return link
+
+
+def make_duplicate_campaign(campaign_object):
+    link = ''
+    if int(campaign_object.status) == CAMPAIGN_STATUS.PAUSE and\
+        campaign_object.phonebook.all().count() == 0:
+        link = '<a href="#" onclick="return campaign_duplicate(%s);"\
+         class="icon" title="%s" %s></a>&nbsp;'\
+               % (campaign_object.id,
+                  _('Duplicate campaign'),
+                  tpl_control_icon('eye.png'))
     return link
 
 
@@ -261,6 +274,7 @@ def campaign_grid(request):
                           'dialer_campaign.delete_campaign',
                           _('Delete campaign'), 'delete') +\
                       get_campaign_survey_view(row) +\
+                      make_duplicate_campaign(row) +\
                       get_url_campaign_status(row.id, row.status),
                       ]} for row in campaign_list
            ]
@@ -511,3 +525,60 @@ def campaign_change(request, object_id):
     request.session['error_msg'] = ''
     return render_to_response(template, data,
            context_instance=RequestContext(request))
+
+
+@login_required
+def campaign_duplicate(request, id):
+    form = DuplicateCampaignForm()
+    if request.method == 'POST':
+        form = DuplicateCampaignForm(request.POST)
+
+        if form.is_valid():
+            # TODO: Did not get better way
+            campaign_obj = Campaign.objects.get(pk=id)
+            Campaign.objects.create(
+                campaign_code=request.POST.get('campaign_code'),
+                name=request.POST.get('name'),
+                description=campaign_obj.description,
+                user=campaign_obj.user,
+                status=campaign_obj.status,
+                callerid=campaign_obj.callerid,
+                startingdate=campaign_obj.startingdate,
+                expirationdate=campaign_obj.expirationdate,
+                daily_start_time=campaign_obj.daily_start_time,
+                daily_stop_time=campaign_obj.daily_stop_time,
+                monday=campaign_obj.monday,
+                tuesday=campaign_obj.tuesday,
+                wednesday=campaign_obj.wednesday,
+                thursday=campaign_obj.thursday,
+                friday=campaign_obj.friday,
+                saturday=campaign_obj.saturday,
+                sunday=campaign_obj.sunday,
+                frequency=campaign_obj.frequency,
+                callmaxduration=campaign_obj.callmaxduration,
+                maxretry=campaign_obj.maxretry,
+                intervalretry=campaign_obj.intervalretry,
+                aleg_gateway_id=campaign_obj.aleg_gateway_id,
+                content_type=campaign_obj.content_type,
+                object_id=campaign_obj.object_id,
+                content_object=campaign_obj.content_object,
+                extra_data=campaign_obj.extra_data,
+            )
+
+            return HttpResponseRedirect('/campaign/')
+    else:
+        request.session['error_msg'] = ''
+
+
+    template = 'frontend/campaign/campaign_duplicate.html'
+    data = {
+        'module': current_view(request),
+        'form': form,
+        #'action': 'update',
+        'notice_count': notice_count(request),
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'error_msg': request.session.get('error_msg'),
+        }
+    request.session['error_msg'] = ''
+    return render_to_response(template, data,
+        context_instance=RequestContext(request))

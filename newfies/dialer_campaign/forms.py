@@ -177,6 +177,18 @@ class CampaignForm(ModelForm):
         return cleaned_data
 
 
+class DuplicateCampaignForm(ModelForm):
+    """DuplicateCampaignForm ModelForm"""
+    campaign_code = forms.CharField(widget=forms.HiddenInput)
+    class Meta:
+        model = Campaign
+        fields = ['campaign_code', 'name']
+
+    def __init__(self, *args, **kwargs):
+        super(DuplicateCampaignForm, self).__init__(*args, **kwargs)
+        self.fields['campaign_code'].initial = get_unique_code(length=5)
+
+
 class CampaignAdminForm(ModelForm):
     """Admin Campaign ModelForm"""
     class Meta:

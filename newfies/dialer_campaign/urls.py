@@ -20,6 +20,7 @@ urlpatterns = patterns('dialer_campaign.views',
         (r'^campaign_grid/$', 'campaign_grid'),
         (r'^campaign/add/$', 'campaign_add'),
         (r'^campaign/del/(.+)/$', 'campaign_del'),
+        (r'^campaign_duplicate/(.+)/$', 'campaign_duplicate'),
         # Campaign Actions (start|stop|pause|abort)
         (r'^campaign/update_campaign_status_cust/(\d*)/(\d*)/$',
         'update_campaign_status_cust'),

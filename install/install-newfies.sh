@@ -117,31 +117,11 @@ func_install_landing_page() {
 
     echo ""
     echo "Add Nginx configuration for Welcome page..."
-    echo '
+    cp -rf /usr/src/newfies-dialer/install/nginx/global /etc/nginx/
 
-    <VirtualHost *:80>
-        DocumentRoot '$INSTALL_DIR_WELCOME'/
-        DirectoryIndex index.html index.htm index.php index.php4 index.php5
+    cp /usr/src/newfies-dialer/install/nginx/sites-available/newfies_dialer /etc/nginx/sites-available/
 
-        <Directory '$INSTALL_DIR_WELCOME'>
-            Options Indexes IncludesNOEXEC FollowSymLinks
-            allow from all
-            AllowOverride All
-            allow from all
-        </Directory>
-
-    </VirtualHost>
-
-    ' > $APACHE_CONF_DIR/welcome-newfies.conf
-
-    case $DIST in
-        'DEBIAN')
-            mv /etc/apache2/sites-enabled/000-default /tmp/
-        ;;
-        'CENTOS')
-        ;;
-    esac
-
+    #Restart Nginx
     service nginx restart
 
     #Update Welcome page IP

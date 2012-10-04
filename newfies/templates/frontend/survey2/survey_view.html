@@ -9,7 +9,7 @@
 
 {% block content_header %}
     <h1>
-        <small>{% trans "Survey" %}</small>
+        {{ survey.name }} <!--<small>{% trans "Survey" %}</small>-->
     </h1>
 {% endblock %}
 
@@ -19,9 +19,6 @@
     <div class="row">
         <div class="span12">
             <div class="row">
-                <div class="span4">
-                    {% trans "Name" %}: {{ survey.name }}
-                </div>
                 {% if survey.description %}
                 <div class="span4">
                     {% trans "Description" %}: {{ survey.description }}
@@ -46,6 +43,28 @@
                 {% if section.retries %}
                     <span class="label label-info">R-{{ section.retries }}</span>
                 {% endif %}
+                <!--To remove section branching for voice, record &
+               patch-through section-->
+                <script type="text/javascript">
+
+                    $(function() {
+                        $("#row"+{{ section.id }}).find(".section-edit").contents().unwrap();
+                        $("#row"+{{ section.id }}).find(".icon-pencil").remove();
+
+                        $("#row"+{{ section.id }}).find(".section-delete").contents().unwrap();
+                        $("#row"+{{ section.id }}).find(".icon-remove").remove();
+
+                        $("#row"+{{ section.id }}).find(".btn").contents().unwrap();
+                        $("#row"+{{ section.id }}).find(".icon-circle-arrow-up").remove();
+
+                        $("#row"+{{ section.id }}).find(".btn").contents().unwrap();
+                        $("#row"+{{ section.id }}).find(".icon-move").remove();
+
+                        $("#row"+{{ section.id }}).find(".section-branch").contents().unwrap();
+                        $("#row"+{{ section.id }}).find(".icon-random").remove();
+                    });
+
+                </script>
             </div>
             <div class="portlet-content">
                 <div class="row">
@@ -213,7 +232,6 @@
                                             <th>{% trans "keys"|title %}</th>
                                         {% endif %}
                                         <th>{% trans "goto"|title %}</th>
-                                        <th class="survey_edit_key">&nbsp;</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -243,9 +261,6 @@
                                                 {% else %}
                                                     &nbsp;{% trans "Hang up" %}
                                                 {% endif %}
-                                                </td>
-                                                <td class="survey_edit_key">
-
                                                 </td>
                                             {% endif %}
                                         </tr>

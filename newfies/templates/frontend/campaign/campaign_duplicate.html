@@ -1,0 +1,83 @@
+{% extends "frontend/master.html" %}
+{% load i18n common_tags %}
+
+{% block extra_files %}
+{% endblock %}
+
+{% block row_fluid %}
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block container %}
+
+    {% block content %}
+
+    <script type="text/javascript" charset="utf-8">
+
+        $(window).load(function(){
+            $('#duplicate-campaign').modal('show');
+        });
+
+        var url = '/campaign/';
+        $(".close").live('click', function() {
+            $(location).attr('href', url);
+        });
+
+        var KEYCODE_ESC = 27;
+        $(document).keyup(function(e) {
+            if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
+        });
+    </script>
+    <!-- modal content-->
+    <div class="modal hide fade" id="duplicate-campaign">
+
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal" >&times;</a>
+            <h3>{% trans "Campaign" %}
+                <small></small>
+            </h3>
+        </div>
+        <form method="POST" action="." enctype="multipart/form-data" id="update_form">
+        {% csrf_token %}
+            <div class="modal-body">
+                <div class="row">
+                    {% get_fieldset campaign_code,name as campaign_fields from form %}
+                    {% for field in campaign_fields.hidden_fields %}
+                        {{ field }}
+                    {% endfor %}
+                    {% for field in campaign_fields.visible_fields %}
+                        <div class="span2">
+                            <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                                <label for="id_{{ field.name }}">{{ field.label }}</label>
+                                <div class="input">
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                                    {% endif %}
+                                    <span class="help-block">{{ field.help_text }} </span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="modal-footer" align="right">
+                <input id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans "Save" %}" />
+                &nbsp;
+                <a href="#" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
+            </div>
+        </form>
+
+    </div>
+    {% endblock %}
+
+    {% block footer %}
+    {% endblock %}
+
+{% endblock %}

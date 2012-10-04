@@ -1121,7 +1121,7 @@ def survey_change(request, object_id):
                               context_instance=RequestContext(request))
 
 @login_required
-def survey_lock(request, object_id):
+def survey_view(request, object_id):
     """View locked survey
 
     **Logic Description**:
@@ -1140,7 +1140,7 @@ def survey_lock(request, object_id):
     branching_section_list =\
         branching_list.values_list('section_id', flat=True).distinct()
 
-    template = 'frontend/survey2/survey_lock.html'
+    template = 'frontend/survey2/survey_view.html'
 
     data = {
         'survey_obj_id': object_id,
@@ -1149,7 +1149,7 @@ def survey_lock(request, object_id):
         'branching_list': branching_list,
         'branching_section_list': branching_section_list,
         'module': current_view(request),
-        'action': 'update',
+        'action': 'view',
         #'form': form,
         'msg': request.session.get('msg'),
         'notice_count': notice_count(request),

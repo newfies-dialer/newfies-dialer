@@ -116,8 +116,9 @@ func_install_landing_page() {
     cp -r /usr/src/newfies-dialer/install/landing-page/* $INSTALL_DIR_WELCOME
 
     echo ""
-    echo "Add Apache configuration for Welcome page..."
+    echo "Add Nginx configuration for Welcome page..."
     echo '
+
     <VirtualHost *:80>
         DocumentRoot '$INSTALL_DIR_WELCOME'/
         DirectoryIndex index.html index.htm index.php index.php4 index.php5
@@ -136,12 +137,12 @@ func_install_landing_page() {
     case $DIST in
         'DEBIAN')
             mv /etc/apache2/sites-enabled/000-default /tmp/
-            service apache2 restart
         ;;
         'CENTOS')
-            service httpd restart
         ;;
     esac
+
+    service nginx restart
 
     #Update Welcome page IP
     sed -i "s/LOCALHOST/$IPADDR:$HTTP_PORT/g" $INSTALL_DIR_WELCOME/index.html

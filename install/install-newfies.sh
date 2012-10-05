@@ -32,7 +32,7 @@ BRANCH=DEVEL
 INSTALL_MODE='CLONE'
 DB_BACKEND=PostgreSQL
 DATETIME=$(date +"%Y%m%d%H%M%S")
-KERNELARCH=$(uname -p)
+KERNEL_ARCH=$(uname -p)
 INSTALL_DIR='/usr/share/newfies'
 INSTALL_DIR_WELCOME='/var/www/newfies'
 DATABASENAME=$INSTALL_DIR'/database/newfies.db'
@@ -273,24 +273,13 @@ func_install_frontend(){
             apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
         ;;
         'CENTOS')
-			if [ ! -f /etc/yum.repos.d/rpmforge.repo ];
-            	then
-                	# Install RPMFORGE Repo
-                	#Check architecture
-        			KERNELARCH=$(uname -p)
-        			if [ $KERNELARCH = "x86_64" ]; then
-						rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.x86_64.rpm
-					else
-						rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.i686.rpm
-					fi
+			if [ ! -f /etc/yum.repos.d/rpmforge.repo ]; then
+            	# Install RPMFORGE Repo
+            	rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.$KERNEL_ARCH.rpm
         	fi
 
             #Install epel repo for pip and mod_python
-            if [ $KERNELARCH = "x86_64" ]; then
-				rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-7.noarch.rpm
-			else
-				rpm -ivh http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-7.noarch.rpm
-			fi
+			rpm -ivh http://dl.fedoraproject.org/pub/epel/6/$KERNEL_ARCH/epel-release-6-7.noarch.rpm
 
             # disable epel repository since by default it is enabled.
             sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo
@@ -398,11 +387,11 @@ func_install_frontend(){
     sed -i "s/TEMPLATE_DEBUG = DEBUG/TEMPLATE_DEBUG = False/g"  $INSTALL_DIR/settings_local.py
 
     # Setup settings_local.py for POSTGRESQL
-    sed -i "s/.*'NAME'/       'NAME': '$DATABASENAME',#/"  $INSTALL_DIR/settings_local.py
-    sed -i "/'USER'/s/''/'$DB_USERNAME'/" $INSTALL_DIR/settings_local.py
-    sed -i "/'PASSWORD'/s/''/'$DB_PASSWORD'/" $INSTALL_DIR/settings_local.py
-    sed -i "/'HOST'/s/''/'$DB_HOSTNAME'/" $INSTALL_DIR/settings_local.py
-    sed -i "/'PORT'/s/''/'$DB_PORT'/" $INSTALL_DIR/settings_local.py
+    sed -i "s/DATABASENAME/$DATABASENAME/"  $INSTALL_DIR/settings_local.py
+    sed -i "s/DB_USERNAME/$DB_USERNAME/" $INSTALL_DIR/settings_local.py
+    sed -i "s/DB_PASSWORD/$DB_PASSWORD/" $INSTALL_DIR/settings_local.py
+    sed -i "s/DB_HOSTNAME/$DB_HOSTNAME/" $INSTALL_DIR/settings_local.py
+    sed -i "s/DB_PORT/$DB_PORT/" $INSTALL_DIR/settings_local.py
 
     # Create the Database
     echo "Remove Existing Database if exists..."

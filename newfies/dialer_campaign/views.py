@@ -179,16 +179,16 @@ def get_url_campaign_status(id, status):
     url_cpg_stop = '%s/4/' % url_cpg_status
 
     #according to the current status, disable link and change the button color
-    if status == 1:
+    if status == CAMPAIGN_STATUS.START:
         url_cpg_start = '#'
         control_play_style = tpl_control_icon('control_play_blue.png')
-    elif status == 2:
+    elif status == CAMPAIGN_STATUS.PAUSE:
         url_cpg_pause = '#'
         control_pause_style = tpl_control_icon('control_pause_blue.png')
-    elif status == 3:
+    elif status == CAMPAIGN_STATUS.ABORT:
         url_cpg_abort = '#'
         control_abort_style = tpl_control_icon('abort.png')
-    elif status == 4:
+    elif status == CAMPAIGN_STATUS.END:
         url_cpg_stop = '#'
         control_stop_style = tpl_control_icon('control_stop_blue.png')
 
@@ -224,15 +224,12 @@ def get_campaign_survey_view(campaign_object):
 
 
 def make_duplicate_campaign(campaign_object):
-    link = ''
-    if int(campaign_object.status) == CAMPAIGN_STATUS.PAUSE and\
-        campaign_object.phonebook.all().count() == 0:
-        link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" \
-                class="campaign-duplicate icon" data-toggle="modal"\
-                data-controls-modal="campaign-duplicate" title="%s" %s>&nbsp;</a>'\
-               % (campaign_object.id,
-                  _('Duplicate campaign'),
-                  tpl_control_icon('page_copy.png'))
+    link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" \
+            class="campaign-duplicate icon" data-toggle="modal"\
+            data-controls-modal="campaign-duplicate" title="%s" %s>&nbsp;</a>'\
+           % (campaign_object.id,
+              _('Copy campaign'),
+              tpl_control_icon('page_copy.png'))
     return link
 
 
@@ -543,6 +540,7 @@ def campaign_duplicate(request, id):
             dup_campaign = Campaign(**campaign_obj.__dict__)
             dup_campaign.campaign_code = request.POST.get('campaign_code')
             dup_campaign.name = request.POST.get('name')
+            dup_campaign.status = CAMPAIGN_STATUS.PAUSE
             dup_campaign.save()
 
             return HttpResponseRedirect('/campaign/')

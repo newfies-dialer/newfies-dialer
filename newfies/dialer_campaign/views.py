@@ -214,7 +214,7 @@ def get_app_name(app_label, model_name, object_id):
 def get_campaign_survey_view(campaign_object):
     link = ''
     if int(campaign_object.status) == CAMPAIGN_STATUS.START:
-        link = '<a href="/survey2_view/%s/" class="icon" title="%s" %s></a>&nbsp;' \
+        link = '<a href="/survey2_view/%s/" class="icon" title="%s" %s>&nbsp;</a>' \
                % (campaign_object.object_id,
                   _('survey'),
                   tpl_control_icon('eye.png'))
@@ -229,7 +229,7 @@ def make_duplicate_campaign(campaign_object):
         campaign_object.phonebook.all().count() == 0:
         link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" \
                 class="campaign-duplicate icon" data-toggle="modal"\
-                data-controls-modal="campaign-duplicate" title="%s" %s></a>&nbsp;'\
+                data-controls-modal="campaign-duplicate" title="%s" %s>&nbsp;</a>'\
                % (campaign_object.id,
                   _('Duplicate campaign'),
                   tpl_control_icon('page_copy.png'))

@@ -211,7 +211,14 @@
     <!--Error Message of view-->
     {% if error_msg %}
         <div class="alert alert-error">
-            <strong>{% trans "Alert" %} : </strong>  {{ error_msg }}
+            <strong>{% trans "Error" %} : </strong>  {{ error_msg }}
+        </div>
+    {% endif %}
+
+    <!--Alert Message of view-->
+    {% if info_msg %}
+        <div class="alert alert-info">
+            <strong>{% trans "Info" %} : </strong>  {{ info_msg }}
         </div>
     {% endif %}
 

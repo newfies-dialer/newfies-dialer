@@ -37,12 +37,17 @@ DATABASES = {
         'PASSWORD': 'DB_PASSWORD',
         'HOST': 'DB_HOSTNAME',
         'PORT': 'DB_PORT',
-        # 'OPTIONS': {
-        #    'init_command': 'SET storage_engine=INNODB',
-        # }
+        'OPTIONS': {
+            #Needed on Mysql
+            # 'init_command': 'SET storage_engine=INNODB',
+            #Postgresql Autocommit
+            'autocommit': True,
+        }
     }
 }
-
+DATABASE_OPTIONS = {
+    "autocommit": True,
+}
 
 #CELERY SETTINGS
 #===============

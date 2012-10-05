@@ -123,8 +123,8 @@ def update_campaign_status_cust(request, pk, status):
 
     # Notify user while campaign Start
     if int(status) == CAMPAIGN_STATUS.START:
-        request.session['error_msg'] = \
-            _('The campaign global settings cannot be edited when the campaign Start')
+        request.session['info_msg'] = \
+            _('The campaign global settings cannot be edited when the campaign is started')
 
         from survey2.function_def import check_survey_campaign
         check_survey_campaign(request, pk)
@@ -302,6 +302,7 @@ def campaign_list(request):
         'module': current_view(request),
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
+        'info_msg': request.session.get('info_msg'),
         'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
 

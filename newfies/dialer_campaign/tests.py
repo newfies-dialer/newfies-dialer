@@ -25,7 +25,7 @@ from dialer_campaign.views import campaign_list, campaign_add, \
     campaign_grid, notify_admin,\
     update_campaign_status_admin,\
     update_campaign_status_cust,\
-    get_url_campaign_status
+    get_url_campaign_status, campaign_duplicate
 from dialer_campaign.tasks import campaign_running,\
     collect_subscriber,\
     campaign_expire_check
@@ -267,6 +267,22 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['Location'],
                          '/campaign/')
+
+    def test_campaign_duplicate(self):
+        """test duplicate campaign"""
+        request = self.factory.get('campaign_duplicate/1/')
+        request.user = self.user
+        request.session = {}
+        response = campaign_duplicate(request, 1)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('campaign_duplicate/1/',
+            {'name': 'duplicate', 'campaign_code': 'ZUXSA'},
+            follow=True)
+        request.user = self.user
+        request.session = {}
+        response = campaign_duplicate(request, 1)
+        self.assertEqual(response.status_code, 302)
 
 
 class DialerCampaignCeleryTaskTestCase(TestCase):

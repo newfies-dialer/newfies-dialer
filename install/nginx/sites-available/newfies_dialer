@@ -26,3 +26,33 @@ server {
     }
 }
 
+server {
+    listen 8000;
+    #server_name yourhostname.com;
+
+    access_log /var/log/nginx/newfies_dialer_access.log;
+    error_log /var/log/nginx/newfies_dialer_error.log;
+
+    # Set the location to whatever your ADMIN_MEDIA_PREFIX is
+    # and the alias to STATIC_ROOT/admin/
+    # unless you're on Django 1.4
+    # location /static/admin/ {
+    #     alias /usr/share/newfies/;
+    #     expires 48h;
+    # }
+
+    # Set the location to whatever your STATIC_URL is
+    # and the alias to STATIC_ROOT/
+    location /static/ {
+        alias /usr/share/newfies/static/;
+        expires 48h;
+    }
+
+    set $home /usr/share/newfies;
+    location / {
+        # the socket an port your wsgi daemon listens on
+        uwsgi_pass 127.0.0.1:8123;
+        include uwsgi_params;
+        root $home;
+    }
+}

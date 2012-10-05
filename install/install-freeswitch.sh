@@ -3,12 +3,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -58,24 +58,24 @@ read INPUT
 func_install_fs_source() {
     #install fs from source
    	echo "installing from source"
-   	
-   	#Add Freeswitch group and user
-	grep -c "^freeswitch:" /etc/group &> /dev/null
-	if [ $? = 1 ]; then
-       /usr/sbin/groupadd -r -f freeswitch
-	else
-       echo "group freeswitch already present"
-	fi
 
-	grep -c "^freeswitch:" /etc/passwd &> /dev/null
-	if [ $? = 1 ]; then
-       echo "adding user freeswitch..."
-       /usr/sbin/useradd -r -c "freeswitch" -g freeswitch freeswitch
-	else
-       echo "user freeswitch already present"
-	fi
+    #Add Freeswitch group and user
+    grep -c "^freeswitch:" /etc/group &> /dev/null
+    if [ $? = 1 ]; then
+        /usr/sbin/groupadd -r -f freeswitch
+    else
+        echo "group freeswitch already present"
+    fi
 
-	    	
+    grep -c "^freeswitch:" /etc/passwd &> /dev/null
+    if [ $? = 1 ]; then
+        echo "adding user freeswitch..."
+        /usr/sbin/useradd -r -c "freeswitch" -g freeswitch freeswitch
+    else
+        echo "user freeswitch already present"
+    fi
+
+
 	# Install FreeSWITCH
 	cd $FS_BASE_PATH
 #	git clone $FS_GIT_REPO
@@ -112,8 +112,8 @@ func_install_fs_source() {
 
 	#Set permissions
 	chown -R freeswitch:freeswitch /usr/local/freeswitch /etc/freeswitch
-	
-#installed fs from source 
+
+#installed fs from source
 }
 
 
@@ -130,7 +130,7 @@ case $DIST in
         ;;
     'CENTOS')
     	echo ""
-    	echo "Do you want to install Freeswitch via the yum repository instead of from source [y/n]" 
+    	echo "Do you want to install Freeswitch via the yum repository instead of from source [y/n]"
 		read YUMSOURCE
         yum -y update
         yum -y install autoconf automake bzip2 cpio curl curl-devel curl-devel expat-devel fileutils gcc-c++ gettext-devel gnutls-devel libjpeg-devel libogg-devel libtiff-devel libtool libvorbis-devel make ncurses-devel nmap openssl openssl-devel openssl-devel perl patch unixODBC unixODBC-devel unzip wget zip zlib zlib-devel
@@ -148,26 +148,26 @@ case $DIST in
 					rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.i686.rpm
 				fi
         fi
-        
+
         yum -y --enablerepo=rpmforge install git-core
-        
+
 		if [ "$YUMSOURCE" = "y" ] || [ "$YUMSOURCE" = "Y" ]; then
 	    	echo "Installing via yum repository"
-	    	
+
 	    	# install the Freeswitch Repo
 			rpm -Uvh http://files.freeswitch.org/yum/freeswitch-release-1-0.noarch.rpm
 
 			# install the freeswitch files
 			yum -y install freeswitch-config-vanilla freeswitch-codec-siren freeswitch-codec-passthru-amr freeswitch-application-conference freeswitch-application-db freeswitch-endpoint-dingaling freeswitch-application-enum freeswitch-application-esf freeswitch-application-expr freeswitch-application-fifo freeswitch-asrtts-flite freeswitch-application-fsv freeswitch-codec-passthru-g723_1 freeswitch-codec-passthru-g729 freeswitch-codec-h26x freeswitch-application-hash freeswitch-application-httapi freeswitch-codec-ilbc freeswitch-format-local-stream freeswitch-lua freeswitch-format-native-file freeswitch-lang-de freeswitch-lang-en freeswitch-lang-fr freeswitch-lang-ru freeswitch-format-mod-shout freeswitch-codec-speex freeswitch-spidermonkey freeswitch-format-tone-stream freeswitch-asrtts-tts-commandline freeswitch-application-valet_parking freeswitch-application-voicemail freeswitch-format-shell-stream
-	    		    	
+
     	else
         	echo "installing from source"
         	func_install_fs_source
     	fi
-     
+
     ;;
 esac
-    
+
 
 # Enable FreeSWITCH modules
 cd $FS_CONFIG_PATH/autoload_configs/
@@ -234,7 +234,7 @@ esac
 #replace with our own working init script as per http://jira.freeswitch.org/browse/FS-4042
 if [ "$YUMSOURCE" = "y" ] || [ "$YUMSOURCE" = "Y" ]; then
     	echo "Installed via yum repository"
-    	
+
 		#replace with our own working init script as per http://jira.freeswitch.org/browse/FS-4042
     	rm -f /etc/init.d/freeswitch
     	#Install init.d script
@@ -246,7 +246,7 @@ if [ "$YUMSOURCE" = "y" ] || [ "$YUMSOURCE" = "Y" ]; then
 		sed -i "s@/usr/local/freeswitch/run@/var/run/freeswitch@g" /etc/init.d/freeswitch
 		/etc/init.d/freeswitch start
 		#We will remove this when the bug is fixed.
-		    	
+
 else
        	echo "installing from source"
 		#Add alias fs_cli

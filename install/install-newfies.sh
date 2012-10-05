@@ -43,6 +43,7 @@ DB_PORT=
 FS_INSTALLED_PATH=/usr/local/freeswitch
 CELERYD_USER="celery"
 CELERYD_GROUP="celery"
+INSTALL_USER="newfies"
 NEWFIES_ENV="newfies-dialer"
 HTTP_PORT="8008"
 
@@ -56,18 +57,18 @@ func_identify_os() {
     if [ -f /etc/debian_version ] ; then
         DIST='DEBIAN'
         if [ "$(lsb_release -cs)" != "lucid" ] && [ "$(lsb_release -cs)" != "precise" ]; then
-		    echo "This script is only intended to run on Ubuntu LTS 10.04 / 12.04 or CentOS 6.2 / 6.3"
+		    echo "This script is only intended to run on Ubuntu 12.04 TLS or CentOS 6.2 / 6.3"
 		    exit 255
 	    fi
     elif [ -f /etc/redhat-release ] ; then
         DIST='CENTOS'
         if [ "$(awk '{print $3}' /etc/redhat-release)" != "6.2" ] && [ "$(awk '{print $3}' /etc/redhat-release)" != "6.3" ] ; then
-        	echo "This script is only intended to run on Ubuntu LTS 10.04 / 12.04 or CentOS 6.2 / 6.3"
+        	echo "This script is only intended to run on Ubuntu 12.04 TLS or CentOS 6.2 / 6.3"
         	exit 255
         fi
     else
         echo ""
-        echo "This script is only intended to run on Ubuntu LTS 10.04 / 12.04 or CentOS 6.2 / 6.3"
+        echo "This script is only intended to run on Ubuntu 12.04 TLS or CentOS 6.2 / 6.3"
         echo ""
         exit 1
     fi
@@ -76,10 +77,7 @@ func_identify_os() {
 
 #Function accept_license
 func_accept_license() {
-    echo ""
-    wget --no-check-certificate -q -O  MPL-V2.0.txt https://raw.github.com/Star2Billing/newfies-dialer/develop/COPYING
-    more MPL-V2.0.txt
-    echo ""
+    clear
     echo ""
     echo "Newfies-Dialer License MPL V2.0"
     echo "Further information at http://www.newfies-dialer.org/support/licensing/"
@@ -99,12 +97,9 @@ func_accept_license() {
         echo "I agree to be bound by the terms of the license - [YES/NO]"
         read ACCEPT
     done
-
     if [ "$ACCEPT" != "yes" ]  && [ "$ACCEPT" != "Yes" ] && [ "$ACCEPT" != "YES" ]; then
         echo "License rejected !"
         exit 0
-    else
-        echo "Licence accepted !"
     fi
 }
 
@@ -114,13 +109,10 @@ func_install_landing_page() {
     mkdir -p $INSTALL_DIR_WELCOME
     # Copy files
     cp -r /usr/src/newfies-dialer/install/landing-page/* $INSTALL_DIR_WELCOME
-
     echo ""
     echo "Add Nginx configuration for Welcome page..."
     cp -rf /usr/src/newfies-dialer/install/nginx/global /etc/nginx/
-
     cp /usr/src/newfies-dialer/install/nginx/sites-available/newfies_dialer /etc/nginx/sites-available/
-
     #Restart Nginx
     service nginx restart
 
@@ -507,18 +499,18 @@ func_install_frontend(){
 
     #Fix permission on python-egg
     mkdir /usr/share/newfies/.python-eggs
-    chown $APACHE_USER:$APACHE_USER /usr/share/newfies/.python-eggs
+    chown $INSTALL_USER:$INSTALL_USER /usr/share/newfies/.python-eggs
     mkdir database
 
     #upload audio files
     mkdir -p /usr/share/newfies/usermedia/upload/audiofiles
-    chown -R $APACHE_USER:$APACHE_USER /usr/share/newfies/usermedia
+    chown -R $INSTALL_USER:$INSTALL_USER /usr/share/newfies/usermedia
 
     #following lines is for apache logs
     touch /var/log/newfies/newfies-django.log
     touch /var/log/newfies/newfies-django-db.log
     touch /var/log/newfies/err-apache-newfies.log
-    chown -R $APACHE_USER:$APACHE_USER /var/log/newfies
+    chown -R $INSTALL_USER:$INSTALL_USER /var/log/newfies
 
     python manage.py syncdb --noinput
     python manage.py migrate
@@ -527,16 +519,6 @@ func_install_frontend(){
     echo "Create a super admin user..."
     python manage.py createsuperuser
 
-    #echo ""
-    #echo "Create a super user for API, use a different username..."
-    #python manage.py createsuperuser
-    #echo ""
-    #echo "Enter the Username you enteded for the API"
-    #read APIUSERNAME
-    #echo ""
-    #echo "Enter the Password for the API "
-    #read APIPASSWORD
-
     #Collect static files from apps and other locations in a single location.
     python manage.py collectstatic -l --noinput
 
@@ -544,49 +526,20 @@ func_install_frontend(){
     #python manage.py load_country_dialcode
 
     #Permission on database folder if we use SQLite
-    chown -R $APACHE_USER:$APACHE_USER $INSTALL_DIR/database/
+    chown -R $INSTALL_USER:$INSTALL_USER $INSTALL_DIR/database/
 
-    # prepare Apache
-    echo "Prepare Apache configuration..."
-    echo '
-    '$WSGI_ADDITIONAL'
-
-    Listen *:'$HTTP_PORT'
-
-    <VirtualHost *:'$HTTP_PORT'>
-        DocumentRoot '$INSTALL_DIR'/
-        ErrorLog /var/log/newfies/err-apache-newfies.log
-        LogLevel warn
-
-        Alias /static/ "'$INSTALL_DIR'/static/"
-
-        <Location "/static/">
-            SetHandler None
-        </Location>
-
-        WSGIPassAuthorization On
-        WSGIDaemonProcess newfies user='$APACHE_USER' user='$APACHE_USER' threads=25
-        WSGIProcessGroup newfies
-        WSGIScriptAlias / '$INSTALL_DIR'/django.wsgi
-
-        <Directory '$INSTALL_DIR'>
-            AllowOverride all
-            Order deny,allow
-            Allow from all
-            '$WSGIApplicationGroup'
-        </Directory>
-
-    </VirtualHost>
-
-    ' > $APACHE_CONF_DIR/newfies.conf
-    #correct the above file
-    sed -i "s/@/'/g"  $APACHE_CONF_DIR/newfies.conf
+    # prepare Nginx
+    echo "Prepare Nginx configuration..."
+    cp -rf /usr/src/newfies-dialer/install/nginx/global /etc/nginx/
+    cp /usr/src/newfies-dialer/install/nginx/sites-available/newfies_dialer /etc/nginx/sites-available/
+    #Restart Nginx
+    service nginx restart
 
     IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
     IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
     if [ -z "$IPADDR" ]; then
         clear
-        echo "we have not detected your IP address automatically, please enter it manually"
+        echo "We have not detected your IP address automatically, please enter it manually"
         read IPADDR
 	fi
 
@@ -651,7 +604,6 @@ func_install_frontend(){
 
     echo ""
     echo ""
-    echo ""
     echo "**************************************************************"
     echo "Congratulations, Newfies-Dialer Web Application is now installed!"
     echo "**************************************************************"
@@ -691,49 +643,30 @@ func_install_backend() {
     mkdir -p /var/run/celery
 
     #Install Celery & redis-server
-    echo "Install Redis-server ..."
     func_install_redis_server
 
     #Memcache installation
     #pip install python-memcached
 
-    echo ""
     echo "Configure Celery..."
-
-
     case $DIST in
         'DEBIAN')
             # Add init-scripts
             cp /usr/src/newfies-dialer/install/celery-init/debian/etc/default/newfies-celeryd /etc/default/
             cp /usr/src/newfies-dialer/install/celery-init/debian/etc/init.d/newfies-celeryd /etc/init.d/
-            #celerybeat script disabled
-            #cp /usr/src/newfies-dialer/install/celery-init/debian/etc/init.d/newfies-celerybeat /etc/init.d/
-
             # Configure init-scripts
             sed -i "s/CELERYD_USER='celery'/CELERYD_USER='$CELERYD_USER'/g"  /etc/default/newfies-celeryd
             sed -i "s/CELERYD_GROUP='celery'/CELERYD_GROUP='$CELERYD_GROUP'/g"  /etc/default/newfies-celeryd
-
             chmod +x /etc/default/newfies-celeryd
             chmod +x /etc/init.d/newfies-celeryd
-            #celerybeat script disabled
-            #chmod +x /etc/init.d/newfies-celerybeat
-
-            #Debug
-            #python $INSTALL_DIR/manage.py celeryd -E -B -l debug
 
             /etc/init.d/newfies-celeryd restart
-            #celerybeat script disabled
-            #/etc/init.d/newfies-celerybeat restart
-
             cd /etc/init.d; update-rc.d newfies-celeryd defaults 99
-            #celerybeat script disabled
-            #cd /etc/init.d; update-rc.d newfies-celerybeat defaults 99
 
             #Check permissions on /dev/shm to ensure that celery can start and run for openVZ.
 			DIR="/dev/shm"
 			echo "Checking the permissions for $dir"
 			stat $DIR
-			echo "##############################################"
 			if [ `stat -c "%a" $DIR` -ge 777 ] ; then
      			echo "$DIR has Read Write permissions."
 			else
@@ -749,41 +682,23 @@ func_install_backend() {
             # Add init-scripts
             cp /usr/src/newfies-dialer/install/celery-init/centos/etc/default/newfies-celeryd /etc/default/
             cp /usr/src/newfies-dialer/install/celery-init/centos/etc/init.d/newfies-celeryd /etc/init.d/
-            #celerybeat script disabled
-            #cp /usr/src/newfies-dialer/install/celery-init/centos/etc/init.d/newfies-celerybeat /etc/init.d/
-
             # Configure init-scripts
             sed -i "s/CELERYD_USER='celery'/CELERYD_USER='$CELERYD_USER'/g"  /etc/default/newfies-celeryd
             sed -i "s/CELERYD_GROUP='celery'/CELERYD_GROUP='$CELERYD_GROUP'/g"  /etc/default/newfies-celeryd
 
             chmod +x /etc/init.d/newfies-celeryd
-            #celerybeat script disabled
-            #chmod +x /etc/init.d/newfies-celerybeat
-
-            #Debug
-            #python $INSTALL_DIR/manage.py celeryd -E -B -l debug
-
             /etc/init.d/newfies-celeryd restart
-            #celerybeat script disabled
-            #/etc/init.d/newfies-celerybeat restart
 
             chkconfig --add newfies-celeryd
             chkconfig --level 2345 newfies-celeryd on
-
-            #celerybeat script disabled
-            #chkconfig --add newfies-celerybeat
-            #chkconfig --level 2345 newfies-celerybeat on
         ;;
     esac
 
-
-    echo ""
     echo ""
     echo ""
     echo "**************************************************************"
     echo "Congratulations, Newfies-Dialer Backend is now installed!"
     echo "**************************************************************"
-    echo ""
     echo ""
     echo "Thank you for installing Newfies-Dialer"
     echo "Yours"
@@ -798,48 +713,17 @@ func_install_backend() {
 
 #Install recent version of redis-server
 func_install_redis_server() {
+    echo "Install Redis-server ..."
     case $DIST in
         'DEBIAN')
-            if [ "$(lsb_release -cs)" == "precise" ]; then
-                #Ubuntu 12.04 TLS
-                apt-get -y install redis-server
-                /etc/init.d/redis-server restart
-            else
-                #Ubuntu 10.04 TLS
-                cd /usr/src
-                wget http://redis.googlecode.com/files/redis-2.4.14.tar.gz
-                tar -zxf redis-2.4.14.tar.gz
-                cd redis-2.4.14
-                make
-                make install
-
-                cp /usr/src/newfies-dialer/install/redis/debian/etc/redis.conf /etc/redis.conf
-                cp /usr/src/newfies-dialer/install/redis/debian/etc/init.d/redis-server /etc/init.d/redis-server
-                chmod +x /etc/init.d/redis-server
-                useradd redis
-                mkdir -p /var/lib/redis
-                mkdir -p /var/log/redis
-                chown redis.redis /var/lib/redis
-                chown redis.redis /var/log/redis
-
-                cd /etc/init.d/
-                update-rc.d -f redis-server defaults
-
-                #Start redis-server
-                /etc/init.d/redis-server start
-            fi
+            apt-get -y install redis-server
+            /etc/init.d/redis-server restart
         ;;
         'CENTOS')
-            #install redis
             yum -y --enablerepo=epel install redis
-
             chkconfig --add redis
             chkconfig --level 2345 redis on
-
             /etc/init.d/redis start
-            #Fixme : /etc/init.d/redis
-            # pid seems to point at wrong place
-            # not critical but /etc/init.d/redis status won't work
         ;;
     esac
 }
@@ -858,9 +742,7 @@ show_menu_newfies() {
 }
 
 
-
 # * * * * * * * * * * * * Start Script * * * * * * * * * * * *
-
 
 #Identify the OS
 func_identify_os
@@ -869,24 +751,14 @@ func_identify_os
 case $DIST in
     'DEBIAN')
         SCRIPT_VIRTUALENVWRAPPER="/usr/local/bin/virtualenvwrapper.sh"
-        APACHE_CONF_DIR="/etc/apache2/sites-enabled/"
-        APACHE_USER="www-data"
-        WSGI_ADDITIONAL=""
-        WSGIApplicationGroup=""
     ;;
     'CENTOS')
         SCRIPT_VIRTUALENVWRAPPER="/usr/bin/virtualenvwrapper.sh"
-        APACHE_CONF_DIR="/etc/httpd/conf.d/"
-        APACHE_USER="apache"
-        WSGI_ADDITIONAL="WSGISocketPrefix run/wsgi"
-        WSGIApplicationGroup="WSGIApplicationGroup %{GLOBAL}"
     ;;
 esac
 
 #Request the user to accept the license
 func_accept_license
-
-
 
 ExitFinish=0
 
@@ -917,8 +789,6 @@ while [ $ExitFinish -eq 0 ]; do
 
 done
 
-
-
 # Clean the system on MySQL
 #==========================
 # deactivate ; rm -rf /usr/share/newfies ; rm -rf /var/log/newfies ; rmvirtualenv newfies-dialer ; rm -rf /etc/init.d/newfies-celer* ; rm -rf /etc/default/newfies-celeryd ; rm /etc/apache2/sites-enabled/newfies.conf ; mysqladmin drop newfies --password=password
@@ -927,5 +797,3 @@ done
 #=========================
 # mysqladmin drop newfies --password=password
 # mysqladmin create newfies --password=password
-
-

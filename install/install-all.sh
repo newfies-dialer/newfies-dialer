@@ -132,7 +132,3 @@ echo '
 cd /usr/src/
 wget https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-newfies.sh -O install-newfies.sh
 bash install-newfies.sh
-
-
-
-

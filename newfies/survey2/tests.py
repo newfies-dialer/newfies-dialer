@@ -405,8 +405,8 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
     def test_section_branch_add(self):
         """Test Function section branching add"""
-        self.section = Section.objects.get(pk=1)
-        self.goto = Section.objects.get(pk=1)
+        self.section_template = Section_template.objects.get(pk=1)
+        self.goto = Section_template.objects.get(pk=1)
 
         request = self.factory.get('/section/branch/add/?section_id=1')
         request.user = self.user
@@ -550,13 +550,13 @@ class SurveyModel(TestCase):
         obj = form.save(commit=False)
         obj.question = "test question"
         obj.type = 1
-        obj.survey_template = self.survey_template
+        obj.survey = self.survey_template
         obj.save()
 
         form = BranchingForm(self.survey_template.id, self.section_template.id)
         obj = form.save(commit=False)
         obj.keys = 0
-        obj.section_template = self.section_template
+        obj.section = self.section_template
         obj.goto = self.section_template
         obj.save()
 
@@ -565,13 +565,13 @@ class SurveyModel(TestCase):
         obj.type = 2
         obj.question = "test question"
         obj.key_0 = "apple"
-        obj.survey_template = self.survey_template
+        obj.survey = self.survey_template
         obj.save()
 
         form = BranchingForm(self.survey_template.id, self.section_template.id)
         obj = form.save(commit=False)
         obj.keys = 1
-        obj.section_template = self.section_template
+        obj.section = self.section_template
         obj.goto = self.section_template
         obj.save()
 
@@ -587,7 +587,7 @@ class SurveyModel(TestCase):
         form = BranchingForm(self.survey_template.id, self.section_template.id)
         obj = form.save(commit=False)
         obj.keys = 2
-        obj.section_template = self.section_template
+        obj.section = self.section_template
         obj.goto = self.section_template
         obj.save()
 
@@ -599,13 +599,13 @@ class SurveyModel(TestCase):
         obj.number_digits = 2
         obj.min_number = 1
         obj.max_number = 100
-        obj.survey_template = self.survey_template
+        obj.survey = self.survey_template
         obj.save()
 
         form = BranchingForm(2, 2)
         obj = form.save(commit=False)
         obj.keys = 3
-        obj.section_template = self.section_template
+        obj.section = self.section_template
         obj.goto = self.section_template
         obj.save()
 
@@ -614,7 +614,7 @@ class SurveyModel(TestCase):
         obj.type = 5
         obj.question = "test question"
         obj.continue_survey = 1
-        obj.survey_template = self.survey_template
+        obj.survey = self.survey_template
         obj.save()
 
         form = PatchThroughSectionForm(self.user)
@@ -622,13 +622,13 @@ class SurveyModel(TestCase):
         obj.type = 6
         obj.question = "test question"
         obj.dial_phonenumber = 1234567890
-        obj.survey_template = self.survey_template
+        obj.survey = self.survey_template
         obj.save()
 
         form = PhrasingForm()
         obj = form.save(commit=False)
         obj.phrasing = 'xyz'
-        obj.survey_template = self.survey_template
+        obj.survey = self.survey_template
         obj.save()
 
         form = SurveyDetailReportForm(self.user,

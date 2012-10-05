@@ -1,7 +1,7 @@
 [
     {
         "pk":1,
-        "model":"survey2.branching",
+        "model":"survey2.branching_template",
         "fields":{
             "keys":"0",
             "updated_date":"2012-09-13T08:06:24.357",
@@ -12,7 +12,7 @@
     },
     {
         "pk":2,
-        "model":"survey2.branching",
+        "model":"survey2.branching_template",
         "fields":{
             "keys":"0",
             "updated_date":"2012-09-13T08:34:01.775",

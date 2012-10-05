@@ -228,7 +228,7 @@ def make_duplicate_campaign(campaign_object):
             class="campaign-duplicate icon" data-toggle="modal"\
             data-controls-modal="campaign-duplicate" title="%s" %s>&nbsp;</a>'\
            % (campaign_object.id,
-              _('Copy campaign'),
+              _('Duplicate this campaign'),
               tpl_control_icon('page_copy.png'))
     return link
 

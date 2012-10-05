@@ -227,8 +227,9 @@ def make_duplicate_campaign(campaign_object):
     link = ''
     if int(campaign_object.status) == CAMPAIGN_STATUS.PAUSE and\
         campaign_object.phonebook.all().count() == 0:
-        link = '<a href="#" onclick="return campaign_duplicate(%s);"\
-         class="icon" title="%s" %s></a>&nbsp;'\
+        link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" \
+                class="campaign-duplicate icon" data-toggle="modal"\
+                data-controls-modal="campaign-duplicate" title="%s" %s></a>&nbsp;'\
                % (campaign_object.id,
                   _('Duplicate campaign'),
                   tpl_control_icon('page_copy.png'))
@@ -532,7 +533,6 @@ def campaign_duplicate(request, id):
     form = DuplicateCampaignForm()
     if request.method == 'POST':
         form = DuplicateCampaignForm(request.POST)
-
         if form.is_valid():
             # TODO: Did not get better way
             campaign_obj = Campaign.objects.get(pk=id)
@@ -564,8 +564,9 @@ def campaign_duplicate(request, id):
                 content_object=campaign_obj.content_object,
                 extra_data=campaign_obj.extra_data,
             )
-
             return HttpResponseRedirect('/campaign/')
+        else:
+            request.session['error_msg'] = True
     else:
         request.session['error_msg'] = ''
 
@@ -573,11 +574,11 @@ def campaign_duplicate(request, id):
     template = 'frontend/campaign/campaign_duplicate.html'
     data = {
         'module': current_view(request),
+        'campaign_id': id,
         'form': form,
-        #'action': 'update',
         'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
-        'error_msg': request.session.get('error_msg'),
+        'err_msg': request.session.get('error_msg'),
         }
     request.session['error_msg'] = ''
     return render_to_response(template, data,

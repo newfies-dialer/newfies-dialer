@@ -17,24 +17,26 @@
 
     {% block content %}
 
-    <script type="text/javascript" charset="utf-8">
+    {% if err_msg %}
+        <script type="text/javascript" charset="utf-8">
 
-        $(window).load(function(){
-            $('#duplicate-campaign').modal('show');
-        });
+            $(window).load(function(){
+                $('#duplicate-campaign').modal('show');
+            });
 
-        var url = '/campaign/';
-        $(".close").live('click', function() {
-            $(location).attr('href', url);
-        });
+            var url = '/campaign/';
+            $(".close").live('click', function() {
+                $(location).attr('href', url);
+            });
 
-        var KEYCODE_ESC = 27;
-        $(document).keyup(function(e) {
-            if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
-        });
-    </script>
+            var KEYCODE_ESC = 27;
+            $(document).keyup(function(e) {
+                if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
+            });
+        </script>
     <!-- modal content-->
     <div class="modal hide fade" id="duplicate-campaign">
+    {% endif %}
 
         <div class="modal-header">
             <a class="close" data-dismiss="modal" >&times;</a>
@@ -42,7 +44,7 @@
                 <small></small>
             </h3>
         </div>
-        <form method="POST" action="." enctype="multipart/form-data" id="update_form">
+        <form method="POST" action="/campaign_duplicate/{{ campaign_id }}/" enctype="multipart/form-data" id="update_form">
         {% csrf_token %}
             <div class="modal-body">
                 <div class="row">
@@ -74,7 +76,10 @@
             </div>
         </form>
 
+    {% if err_msg %}
     </div>
+    {% endif %}
+
     {% endblock %}
 
     {% block footer %}

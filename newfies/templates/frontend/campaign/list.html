@@ -71,10 +71,19 @@ function delete_button()
     $('#ListForm').submit();
 }
 
-function campaign_duplicate(id)
-{
-    window.location = '/campaign_duplicate/' + id + '/';
-}
 </script>
 
+<!--Section branching change modal-->
+<script type="text/javascript" charset="utf-8">
+
+    $(".campaign-duplicate").live('click', function() {
+
+        var url = $(this).attr('url');
+        var modal_id = $(this).attr('data-controls-modal');
+        $("#" + modal_id).load(url);
+    });
+
+</script>
+<!-- modal content-->
+<div id="campaign-duplicate" class="modal hide fade"></div>
 {% endblock %}

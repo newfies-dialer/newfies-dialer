@@ -231,7 +231,7 @@ def make_duplicate_campaign(campaign_object):
          class="icon" title="%s" %s></a>&nbsp;'\
                % (campaign_object.id,
                   _('Duplicate campaign'),
-                  tpl_control_icon('eye.png'))
+                  tpl_control_icon('page_copy.png'))
     return link
 
 

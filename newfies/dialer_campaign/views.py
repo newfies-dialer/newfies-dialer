@@ -534,36 +534,17 @@ def campaign_duplicate(request, id):
     if request.method == 'POST':
         form = DuplicateCampaignForm(request.POST)
         if form.is_valid():
-            # TODO: Did not get better way
+
             campaign_obj = Campaign.objects.get(pk=id)
-            Campaign.objects.create(
-                campaign_code=request.POST.get('campaign_code'),
-                name=request.POST.get('name'),
-                description=campaign_obj.description,
-                user=campaign_obj.user,
-                status=campaign_obj.status,
-                callerid=campaign_obj.callerid,
-                startingdate=campaign_obj.startingdate,
-                expirationdate=campaign_obj.expirationdate,
-                daily_start_time=campaign_obj.daily_start_time,
-                daily_stop_time=campaign_obj.daily_stop_time,
-                monday=campaign_obj.monday,
-                tuesday=campaign_obj.tuesday,
-                wednesday=campaign_obj.wednesday,
-                thursday=campaign_obj.thursday,
-                friday=campaign_obj.friday,
-                saturday=campaign_obj.saturday,
-                sunday=campaign_obj.sunday,
-                frequency=campaign_obj.frequency,
-                callmaxduration=campaign_obj.callmaxduration,
-                maxretry=campaign_obj.maxretry,
-                intervalretry=campaign_obj.intervalretry,
-                aleg_gateway_id=campaign_obj.aleg_gateway_id,
-                content_type=campaign_obj.content_type,
-                object_id=campaign_obj.object_id,
-                content_object=campaign_obj.content_object,
-                extra_data=campaign_obj.extra_data,
-            )
+            del campaign_obj.__dict__['_state']
+            del campaign_obj.__dict__['id']
+            del campaign_obj.__dict__['campaign_code']
+
+            dup_campaign = Campaign(**campaign_obj.__dict__)
+            dup_campaign.campaign_code = request.POST.get('campaign_code')
+            dup_campaign.name = request.POST.get('name')
+            dup_campaign.save()
+
             return HttpResponseRedirect('/campaign/')
         else:
             request.session['error_msg'] = True

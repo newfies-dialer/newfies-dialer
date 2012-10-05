@@ -30,15 +30,12 @@ APPLICATION_DIR = os.path.dirname(globals()['__file__'])
 DATABASES = {
     'default': {
         # Add 'postgresql_psycopg2','postgresql','mysql','sqlite3','oracle'
-        'ENGINE': 'django.db.backends.sqlite3',
-        # Or path to database file if using sqlite3.
-        'NAME': APPLICATION_DIR + '/database/newfies-dialer.db',
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost.
-                                         # Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default.
-                                         # Not used with sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'newfies-dialer',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '',
         # 'OPTIONS': {
         #    'init_command': 'SET storage_engine=INNODB',
         # }

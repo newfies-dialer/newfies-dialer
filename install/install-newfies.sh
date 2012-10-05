@@ -30,6 +30,7 @@ BRANCH=DEVEL
 
 #Install mode can me either CLONE or DOWNLOAD
 INSTALL_MODE='CLONE'
+DB_BACKEND=PostgreSQL
 DATETIME=$(date +"%Y%m%d%H%M%S")
 KERNELARCH=$(uname -p)
 INSTALL_DIR='/usr/share/newfies'
@@ -247,10 +248,6 @@ func_install_frontend(){
     #echo "Which version do you want to install ? DEVEL or STABLE [] (default:STABLE)"
     #read BRANCH
 
-    db_backend=PostgreSQL
-    #echo "Do you want to install Newfies-Dialer with SQLite or MySQL? [SQLite/MySQL/PostgreSQL] (default:PostgreSQL)"
-    #read db_backend
-
     #python setup tools
     echo "Install Dependencies and python modules..."
     case $DIST in
@@ -260,34 +257,17 @@ func_install_frontend(){
             apt-get -y install git-core mercurial gawk
             easy_install pip
 
-            if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
-                #SQLITE
-                apt-get install sqlite3 libsqlite3-dev
-            elif echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
-                #MYSQL
-                apt-get -y install mysql-server libmysqlclient-dev
-                #Start MySQL
-                /etc/init.d/mysql start
-                #Configure MySQL
-                /usr/bin/mysql_secure_installation
-                until mysql -u$DB_USERNAME -p$DB_PASSWORD -P$DB_PORT -h$DB_HOSTNAME -e ";" ; do
-                    clear
-                    echo "Enter correct database settings"
-                    func_database_setting
-                done
-            else
-                #POSTGRESQL
-                apt-get -y install postgresql libpq-dev
-                #Start PostgreSQL
-                /etc/init.d/postgresql start
+            #PostgreSQL
+            apt-get -y install postgresql libpq-dev
+            #Start PostgreSQL
+            /etc/init.d/postgresql start
 
-                #the following doesn't work with postgresql unless you create a local file
-                #or set to "trust" in pg_hba.conf
-                #until psql -h $DB_HOSTNAME -p $DB_PORT $DB_USERNAME $DB_USERNAME -c ";" ; do
-                clear
-                echo "Enter correct database settings"
-                func_database_setting
-            fi
+            #the following doesn't work with postgresql unless you create a local file
+            #or set to "trust" in pg_hba.conf
+            #until psql -h $DB_HOSTNAME -p $DB_PORT $DB_USERNAME $DB_USERNAME -c ";" ; do
+            clear
+            echo "Enter correct database settings"
+            func_database_setting
 
             #for audiofile convertion
             apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
@@ -318,37 +298,17 @@ func_install_frontend(){
             #start http after reboot
             chkconfig --levels 235 httpd on
 
-            if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
-                #Install SQLite
-                yum -y install sqlite
+            #Install & Start PostgreSQL
+            yum install postgresql-server
+            chkconfig --levels 235 postgresq on
+            /etc/init.d/postgresql start
 
-            elif echo $db_backend | grep -i "^MYSQL" > /dev/null ; then
-                #Install Mysql
-                yum -y install mysql-server mysql-devel
-                chkconfig --levels 235 mysqld on
-                #Start Mysql
-                /etc/init.d/mysqld start
-                #Configure MySQL
-                /usr/bin/mysql_secure_installation
-				until mysql -u$DB_USERNAME -p$DB_PASSWORD -P$DB_PORT -h$DB_HOSTNAME -e ";" ; do
-					clear
-                	echo "Enter correct database settings"
-                	func_database_setting
-                done
-            else
-                #Install PostgreSQL
-                yum install postgresql-server
-                chkconfig --levels 235 postgresq on
-                #Start PostgreSQL
-                /etc/init.d/postgresql start
-
-                #the following doesn't work with postgresql unless you create a local file
-                #or set to "trust" in pg_hba.conf
-                #until psql -h $DB_HOSTNAME -p $DB_PORT $DB_USERNAME $DB_USERNAME -c ";" ; do
-                clear
-                echo "Enter correct database settings"
-                func_database_setting
-            fi
+            #the following doesn't work with postgresql unless you create a local file
+            #or set to "trust" in pg_hba.conf
+            #until psql -h $DB_HOSTNAME -p $DB_PORT $DB_USERNAME $DB_USERNAME -c ";" ; do
+            clear
+            echo "Enter correct database settings"
+            func_database_setting
         ;;
     esac
 
@@ -366,19 +326,11 @@ func_install_frontend(){
         mv $INSTALL_DIR /tmp/old-newfies-dialer_$DATETIME
         echo "Files from $INSTALL_DIR has been moved to /tmp/old-newfies-dialer_$DATETIME"
 
-        if echo $db_backend | grep -i "^MYSQL" > /dev/null ; then
-            echo "Run backup with mysqldump..."
-            mysqldump -u $DB_USERNAME --password=$DB_PASSWORD $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql
-            echo "Mysql Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.mysqldump.sql"
-            echo "Press Enter to continue"
-            read TEMP
-        elif echo $db_backend | grep -i "^POSTGRESQL" > /dev/null ; then
-            echo "Run backup with postgresql..."
-            sudo -u postgres pg_dump $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.pgsqldump.sql
-            echo "PostgreSQL Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.pgsqldump.sql"
-            echo "Press Enter to continue"
-            read TEMP
-        fi
+        echo "Run backup with postgresql..."
+        sudo -u postgres pg_dump $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.pgsqldump.sql
+        echo "PostgreSQL Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.pgsqldump.sql"
+        echo "Press Enter to continue"
+        read TEMP
     fi
 
     #Create and enable virtualenv
@@ -445,55 +397,29 @@ func_install_frontend(){
     sed -i "s/DEBUG = True/DEBUG = False/g"  $INSTALL_DIR/settings_local.py
     sed -i "s/TEMPLATE_DEBUG = DEBUG/TEMPLATE_DEBUG = False/g"  $INSTALL_DIR/settings_local.py
 
-    if echo $db_backend | grep -i "^SQLITE" > /dev/null ; then
-        # Setup settings_local.py for SQLite
-        sed -i "s/'init_command/#'init_command/g"  $INSTALL_DIR/settings_local.py
+    # Setup settings_local.py for POSTGRESQL
+    sed -i "s/.*'NAME'/       'NAME': '$DATABASENAME',#/"  $INSTALL_DIR/settings_local.py
+    sed -i "/'USER'/s/''/'$DB_USERNAME'/" $INSTALL_DIR/settings_local.py
+    sed -i "/'PASSWORD'/s/''/'$DB_PASSWORD'/" $INSTALL_DIR/settings_local.py
+    sed -i "/'HOST'/s/''/'$DB_HOSTNAME'/" $INSTALL_DIR/settings_local.py
+    sed -i "/'PORT'/s/''/'$DB_PORT'/" $INSTALL_DIR/settings_local.py
 
-    elif echo $db_backend | grep -i "^MYSQL" > /dev/null ; then
-        # Setup settings_local.py for MYSQL
-        sed -i "s/'django.db.backends.sqlite3'/'django.db.backends.postgresql_psycopg2'/"  $INSTALL_DIR/settings_local.py
-        sed -i "s/.*'NAME'/       'NAME': '$DATABASENAME',#/"  $INSTALL_DIR/settings_local.py
-        sed -i "/'USER'/s/''/'$DB_USERNAME'/" $INSTALL_DIR/settings_local.py
-        sed -i "/'PASSWORD'/s/''/'$DB_PASSWORD'/" $INSTALL_DIR/settings_local.py
-        sed -i "/'HOST'/s/''/'$DB_HOSTNAME'/" $INSTALL_DIR/settings_local.py
-        sed -i "/'PORT'/s/''/'$DB_PORT'/" $INSTALL_DIR/settings_local.py
-
-        # Create the Database
-        echo "Remove Existing Database if exists..."
-        if [ -d "/var/lib/mysql/$DATABASENAME" ]; then
-            echo "mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e 'DROP DATABASE $DATABASENAME;'"
-            mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e "DROP DATABASE $DATABASENAME;"
-        fi
-        echo "Create Database..."
-        echo "mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e 'CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;'"
-        mysql --user=$DB_USERNAME --password=$DB_PASSWORD -e "CREATE DATABASE $DATABASENAME CHARACTER SET UTF8;"
-
-    else
-        # Setup settings_local.py for POSTGRESQL
-        sed -i "s/'django.db.backends.sqlite3'/'django.db.backends.postgresql_psycopg2'/"  $INSTALL_DIR/settings_local.py
-        sed -i "s/.*'NAME'/       'NAME': '$DATABASENAME',#/"  $INSTALL_DIR/settings_local.py
-        sed -i "/'USER'/s/''/'$DB_USERNAME'/" $INSTALL_DIR/settings_local.py
-        sed -i "/'PASSWORD'/s/''/'$DB_PASSWORD'/" $INSTALL_DIR/settings_local.py
-        sed -i "/'HOST'/s/''/'$DB_HOSTNAME'/" $INSTALL_DIR/settings_local.py
-        sed -i "/'PORT'/s/''/'$DB_PORT'/" $INSTALL_DIR/settings_local.py
-
-        # Create the Database
-        echo "Remove Existing Database if exists..."
-        if [ `sudo -u postgres psql -qAt --list | egrep '^$DATABASENAME\|' | wc -l` -eq 1 ]; then
-            echo "sudo -u postgres dropdb $DATABASENAME"
-            sudo -u postgres dropdb $DATABASENAME
-        fi
-        echo "Create Database..."
-        echo "sudo -u postgres createdb $DATABASENAME"
-        sudo -u postgres createdb $DATABASENAME
-
-        #CREATE ROLE / USER
-        echo "Create Postgresql user $DB_USERNAME, you will be prompted for password..."
-        echo "sudo -u postgres createuser --no-createdb --no-createrole --no-superuser --pwprompt $DB_USERNAME"
-        sudo -u postgres createuser --no-createdb --no-createrole --no-superuser --pwprompt $DB_USERNAME
-        echo "Grant all privileges to user..."
-        sudo -u postgres psql --command="grant all privileges on database $DATABASENAME to $DB_USERNAME;"
+    # Create the Database
+    echo "Remove Existing Database if exists..."
+    if [ `sudo -u postgres psql -qAt --list | egrep '^$DATABASENAME\|' | wc -l` -eq 1 ]; then
+        echo "sudo -u postgres dropdb $DATABASENAME"
+        sudo -u postgres dropdb $DATABASENAME
     fi
+    echo "Create Database..."
+    echo "sudo -u postgres createdb $DATABASENAME"
+    sudo -u postgres createdb $DATABASENAME
+
+    #CREATE ROLE / USER
+    echo "Create Postgresql user $DB_USERNAME, you will be prompted for password..."
+    echo "sudo -u postgres createuser --no-createdb --no-createrole --no-superuser --pwprompt $DB_USERNAME"
+    sudo -u postgres createuser --no-createdb --no-createrole --no-superuser --pwprompt $DB_USERNAME
+    echo "Grant all privileges to user..."
+    sudo -u postgres psql --command="grant all privileges on database $DATABASENAME to $DB_USERNAME;"
 
     cd $INSTALL_DIR/
 
@@ -524,9 +450,6 @@ func_install_frontend(){
 
     #Load Countries Dialcode
     #python manage.py load_country_dialcode
-
-    #Permission on database folder if we use SQLite
-    chown -R $INSTALL_USER:$INSTALL_USER $INSTALL_DIR/database/
 
     # prepare Nginx
     echo "Prepare Nginx configuration..."
@@ -789,11 +712,6 @@ while [ $ExitFinish -eq 0 ]; do
 
 done
 
-# Clean the system on MySQL
-#==========================
-# deactivate ; rm -rf /usr/share/newfies ; rm -rf /var/log/newfies ; rmvirtualenv newfies-dialer ; rm -rf /etc/init.d/newfies-celer* ; rm -rf /etc/default/newfies-celeryd ; rm /etc/apache2/sites-enabled/newfies.conf ; mysqladmin drop newfies --password=password
-
-# Create Database on MySQL
-#=========================
-# mysqladmin drop newfies --password=password
-# mysqladmin create newfies --password=password
+# Clean the system
+#=================
+# deactivate ; rm -rf /usr/share/newfies ; rm -rf /var/log/newfies ; rmvirtualenv newfies-dialer ; rm -rf /etc/init.d/newfies-celer* ; rm -rf /etc/default/newfies-celeryd ; rm /etc/apache2/sites-enabled/newfies.conf

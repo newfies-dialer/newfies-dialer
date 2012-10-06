@@ -315,7 +315,7 @@ class SurveyReportForm(forms.Form):
             list = []
             try:
                 camp_list = Campaign.objects.values_list('id', 'name')\
-                            .filter(user=user, content_type__model='survey')
+                            .filter(user=user, content_type__model='survey_template')
                 for i in camp_list:
                     list.append((i[0], i[1]))
             except:

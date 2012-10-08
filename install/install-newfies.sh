@@ -371,9 +371,12 @@ func_install_frontend(){
     sudo -u postgres createdb $DATABASENAME
 
     #CREATE ROLE / USER
-    echo "Create Postgresql user $DB_USERNAME, you will be prompted for password..."
-    echo "sudo -u postgres createuser --no-createdb --no-createrole --no-superuser --pwprompt $DB_USERNAME"
-    sudo -u postgres createuser --no-createdb --no-createrole --no-superuser --pwprompt $DB_USERNAME
+    echo "Create Postgresql user $DB_USERNAME"
+    #echo "sudo -u postgres createuser --no-createdb --no-createrole --no-superuser $DB_USERNAME"
+    #sudo -u postgres createuser --no-createdb --no-createrole --no-superuser $DB_USERNAME
+    echo "sudo -u postgres psql --command="create user $DB_USERNAME with password '$DB_PASSWORD';""
+    sudo -u postgres psql --command="create user $DB_USERNAME with password '$DB_PASSWORD';"
+
     echo "Grant all privileges to user..."
     sudo -u postgres psql --command="grant all privileges on database $DATABASENAME to $DB_USERNAME;"
 
@@ -406,17 +409,6 @@ func_install_frontend(){
     #Load Countries Dialcode
     #python manage.py load_country_dialcode
 
-    #Install supervisor
-    cp /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf /etc/supervisor/conf.d/
-    /etc/init.d/supervisor restart
-
-    # prepare Nginx
-    echo "Prepare Nginx configuration..."
-    cp -rf /usr/src/newfies-dialer/install/nginx/global /etc/nginx/
-    cp /usr/src/newfies-dialer/install/nginx/sites-available/newfies_dialer /etc/nginx/sites-available/
-    #Restart Nginx
-    service nginx restart
-
     IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
     IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
     if [ -z "$IPADDR" ]; then
@@ -442,7 +434,6 @@ func_install_frontend(){
 
     case $DIST in
         'DEBIAN')
-            service apache2 restart
             #Get TZ
 			ZONE=$(head -1 /etc/timezone)
         ;;
@@ -462,16 +453,27 @@ func_install_frontend(){
             semanage port -a -t http_port_t -p tcp $HTTP_PORT
             #Allowing Apache to access Redis port
             semanage port -a -t http_port_t -p tcp 6379
-
-            service httpd restart
         ;;
     esac
 
     #Set Timezone in settings_local.py
     sed -i "s@Europe/Madrid@$ZONE@g" $INSTALL_DIR/settings_local.py
 
+    # * * NGINX / SUPERVISOR * *
+
+    #Install supervisor
+    cp /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf /etc/supervisor/conf.d/
+    /etc/init.d/supervisor restart
+
+    #Prepare and Start Nginx
+    echo "Prepare Nginx configuration..."
+    cp -rf /usr/src/newfies-dialer/install/nginx/global /etc/nginx/
+    cp /usr/src/newfies-dialer/install/nginx/sites-available/newfies_dialer /etc/nginx/sites-available/
+    service nginx restart
+
+    # * * LOGROTATE * *
+
     echo "Install Logrotate..."
-    #Setup log rotation
     touch /etc/logrotate.d/newfies_dialer
     echo '
     /var/log/newfies/*.log {

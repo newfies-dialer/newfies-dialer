@@ -71,16 +71,22 @@ class Survey_template(Survey_abstract):
 
     def copy_survey_template(self, campaign_obj):
         try:
-            #survey_obj = Survey.objects.create(**self.__dict__)
-            survey_obj = Survey.objects.create(name=self.name,
+            record_count = Survey.objects.filter(
+                name=self.name,
                 description=self.description,
                 user=self.user,
-                campaign=campaign_obj)
+                campaign=campaign_obj).count()
 
-            # Copy Section
-            section_template = Section_template.objects.filter(survey=self)
-            for section_temp in section_template:
-                section_temp.copy_section_template()
+            if record_count == 0:
+                survey_obj = Survey.objects.create(name=self.name,
+                    description=self.description,
+                    user=self.user,
+                    campaign=campaign_obj)
+
+                # Copy Section
+                section_template = Section_template.objects.filter(survey=self)
+                for section_temp in section_template:
+                    section_temp.copy_section_template()
         except:
             raise
         return True
@@ -239,7 +245,7 @@ class Section_template(Section_abstract):
 
     def copy_section_template(self):
         try:
-            Section.objects.create(
+            record_count = Section.objects.filter(
                 type=self.type,
                 question=self.question,
                 phrasing=self.phrasing,
@@ -266,13 +272,43 @@ class Section_template(Section_abstract):
                 order=self.order,
                 survey_id=self.survey_id,
                 invalid_audiofile_id=self.invalid_audiofile_id
-            )
+            ).count()
 
-            # Copy Branching
-            branching_template =\
-                Branching_template.objects.filter(section=self)
-            for branching_temp in branching_template:
-                branching_temp.copy_branching_template()
+            if record_count == 0:
+                Section.objects.create(
+                    type=self.type,
+                    question=self.question,
+                    phrasing=self.phrasing,
+                    audiofile_id=self.audiofile_id,
+                    retries=self.retries,
+                    timeout=self.timeout,
+                    key_0=self.key_0,
+                    key_1=self.key_1,
+                    key_2=self.key_2,
+                    key_3=self.key_3,
+                    key_4=self.key_4,
+                    key_5=self.key_5,
+                    key_6=self.key_6,
+                    key_7=self.key_7,
+                    key_8=self.key_8,
+                    key_9=self.key_9,
+                    rating_laps=self.rating_laps,
+                    validate_number=self.validate_number,
+                    number_digits=self.number_digits,
+                    min_number=self.min_number,
+                    max_number=self.max_number,
+                    dial_phonenumber=self.dial_phonenumber,
+                    continue_survey=self.continue_survey,
+                    order=self.order,
+                    survey_id=self.survey_id,
+                    invalid_audiofile_id=self.invalid_audiofile_id
+                )
+
+                # Copy Branching
+                branching_template =\
+                    Branching_template.objects.filter(section=self)
+                for branching_temp in branching_template:
+                    branching_temp.copy_branching_template()
         except:
             raise
         return True

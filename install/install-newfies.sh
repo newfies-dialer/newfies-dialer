@@ -35,20 +35,18 @@ DATETIME=$(date +"%Y%m%d%H%M%S")
 KERNEL_ARCH=$(uname -p)
 INSTALL_DIR='/usr/share/newfies'
 INSTALL_DIR_WELCOME='/var/www/newfies'
-DATABASENAME=$INSTALL_DIR'/database/newfies.db'
-DB_USERNAME=
-DB_PASSWORD=
-DB_HOSTNAME=
-DB_PORT=
-#Freeswitch update vars
-FS_INSTALLED_PATH=/usr/local/freeswitch
-NEWFIES_USER="newfies_dialer"
-CELERYD_USER="celery"
-CELERYD_GROUP="celery"
-INSTALL_USER="newfies"
-NEWFIES_ENV="newfies-dialer"
-HTTP_PORT="8008"
-
+DATABASENAME='newfies_dialer'
+DB_USERNAME='newfies_dialer'
+DB_PASSWORD=`</dev/urandom tr -dc A-Za-z0-9| (head -c $1 > /dev/null 2>&1 || head -c 20)`
+DB_HOSTNAME='localhost'
+DB_PORT='5432'
+FS_INSTALLED_PATH='/usr/local/freeswitch'
+NEWFIES_USER='newfies_dialer'
+CELERYD_USER='celery'
+CELERYD_GROUP='celery'
+INSTALL_USER='newfies'
+NEWFIES_ENV='newfies-dialer'
+HTTP_PORT='8008'
 
 #Django bug https://code.djangoproject.com/ticket/16017
 export LANG="en_US.UTF-8"
@@ -168,39 +166,7 @@ func_check_dependencies() {
     echo ""
 }
 
-#Function database setting
-func_database_setting() {
-    echo ""
-    echo "Configure Database Settings..."
-    echo ""
-
-    echo "Enter Database hostname (default:localhost)"
-    read DB_HOSTNAME
-    if [ -z "$DB_HOSTNAME" ]; then
-        DB_HOSTNAME="localhost"
-    fi
-    echo "Enter Database port (default:5432)"
-    read DB_PORT
-    if [ -z "$DB_PORT" ]; then
-        DB_PORT="5432"
-    fi
-    echo "Enter Database Username (default:root)"
-    read DB_USERNAME
-    if [ -z "$DB_USERNAME" ]; then
-        DB_USERNAME="root"
-    fi
-    echo "Enter Database Password (default:password)"
-    read DB_PASSWORD
-    if [ -z "$DB_PASSWORD" ]; then
-        DB_PASSWORD="password"
-    fi
-    echo "Enter Database Name (default:newfies)"
-    read DATABASENAME
-    if [ -z "$DATABASENAME" ]; then
-        DATABASENAME="newfies"
-    fi
-}
-
+#Configure Firewall
 func_iptables_configuration() {
     #add http port
     iptables -I INPUT 2 -p tcp -m state --state NEW -m tcp --dport $HTTP_PORT -j ACCEPT
@@ -211,9 +177,6 @@ func_iptables_configuration() {
 
 #Fuction to create the virtual env
 func_setup_virtualenv() {
-
-    echo ""
-    echo ""
     echo "This will install virtualenv & virtualenvwrapper"
     echo "and create a new virtualenv : $NEWFIES_ENV"
 
@@ -268,8 +231,6 @@ func_install_frontend(){
             #or set to "trust" in pg_hba.conf
             #until psql -h $DB_HOSTNAME -p $DB_PORT $DB_USERNAME $DB_USERNAME -c ";" ; do
             clear
-            echo "Enter correct database settings"
-            func_database_setting
 
             #for audiofile convertion
             apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
@@ -298,8 +259,6 @@ func_install_frontend(){
             #or set to "trust" in pg_hba.conf
             #until psql -h $DB_HOSTNAME -p $DB_PORT $DB_USERNAME $DB_USERNAME -c ";" ; do
             clear
-            echo "Enter correct database settings"
-            func_database_setting
         ;;
     esac
 
@@ -524,8 +483,6 @@ func_install_frontend(){
     }
     '  >> /etc/logrotate.d/newfies_dialer
 
-
-    echo ""
     echo ""
     echo "*****************************************************************"
     echo "Congratulations, Newfies-Dialer Web Application is now installed!"
@@ -541,7 +498,6 @@ func_install_frontend(){
     echo "http://www.star2billing.com and http://www.newfies-dialer.org/"
     echo
     echo "**************************************************************"
-    echo ""
     echo ""
 }
 
@@ -618,7 +574,6 @@ func_install_backend() {
     esac
 
     echo ""
-    echo ""
     echo "**************************************************************"
     echo "Congratulations, Newfies-Dialer Backend is now installed!"
     echo "**************************************************************"
@@ -629,7 +584,6 @@ func_install_backend() {
     echo "http://www.star2billing.com and http://www.newfies-dialer.org/"
     echo
     echo "**************************************************************"
-    echo ""
     echo ""
 }
 

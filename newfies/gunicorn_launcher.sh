@@ -10,12 +10,12 @@ LOGDIR=$(dirname $LOGFILE)
 NUM_WORKERS=3
 
 # user/group to run as
-#TODO: CHANGE
-USER=root
-GROUP=root
+USER=newfies_dialer
+GROUP=newfies_dialer
 
-cd /usr/share/newfies/
-workon newfies-dialer
+cd /usr/share/virtualenvs/newfies-dialer
+source bin/activate
+
 test -d $LOGDIR || mkdir -p $LOGDIR
 exec gunicorn_django -b 127.0.0.1:8123 -w $NUM_WORKERS \
     --user=$USER --group=$GROUP --log-level=debug \

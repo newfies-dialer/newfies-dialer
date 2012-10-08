@@ -42,6 +42,7 @@ DB_HOSTNAME=
 DB_PORT=
 #Freeswitch update vars
 FS_INSTALLED_PATH=/usr/local/freeswitch
+NEWFIES_USER="newfies_dialer"
 CELERYD_USER="celery"
 CELERYD_GROUP="celery"
 INSTALL_USER="newfies"
@@ -301,6 +302,10 @@ func_install_frontend(){
         ;;
     esac
 
+    #Create Newfies User
+    echo "Create Newfies user : $NEWFIES_USER"
+    adduser --system --no-create-home --disabled-login --disabled-password --group $NEWFIES_USER
+
     if [ -d "$INSTALL_DIR" ]; then
         # Newfies-Dialer is already installed
         echo ""
@@ -430,7 +435,6 @@ func_install_frontend(){
     python manage.py syncdb --noinput
     python manage.py migrate
     echo ""
-    echo ""
     echo "Create a super admin user..."
     python manage.py createsuperuser
 
@@ -439,6 +443,10 @@ func_install_frontend(){
 
     #Load Countries Dialcode
     #python manage.py load_country_dialcode
+
+    #Install supervisor
+    cp /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf /etc/supervisor/conf.d/
+    /etc/init.d/supervisor restart
 
     # prepare Nginx
     echo "Prepare Nginx configuration..."
@@ -516,9 +524,9 @@ func_install_frontend(){
 
     echo ""
     echo ""
-    echo "**************************************************************"
+    echo "*****************************************************************"
     echo "Congratulations, Newfies-Dialer Web Application is now installed!"
-    echo "**************************************************************"
+    echo "*****************************************************************"
     echo ""
     echo "Please log on to Newfies-Dialer at "
     echo "http://$IPADDR:$HTTP_PORT"

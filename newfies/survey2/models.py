@@ -78,7 +78,8 @@ class Survey_template(Survey_abstract):
                 campaign=campaign_obj).count()
 
             if record_count == 0:
-                survey_obj = Survey.objects.create(name=self.name,
+                survey_obj = Survey.objects.create(
+                    name=self.name,
                     description=self.description,
                     user=self.user,
                     campaign=campaign_obj)

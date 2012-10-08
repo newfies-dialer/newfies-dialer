@@ -28,6 +28,7 @@ from django.core.cache import cache
 from dialer_campaign.models import get_unique_code, Campaign
 from dialer_campaign.views import notice_count
 from dialer_cdr.models import Callrequest, VoIPCall
+from dialer_cdr.constants import VOIPCALL_DISPOSITION
 
 #from survey2.models import Survey, Section, Branching,\
 #    Result, ResultAggregate
@@ -1172,7 +1173,8 @@ def survey_cdr_daily_report(kwargs, from_query, select_group_query):
     # Get Total from VoIPCall table for Daily Call Report
     total_data = VoIPCall.objects.extra(select=select_data)\
         .values('starting_date')\
-        .filter(**kwargs).annotate(Count('starting_date'))\
+        .filter(**kwargs)\
+        .annotate(Count('starting_date'))\
         .annotate(Sum('duration'))\
         .annotate(Avg('duration'))\
         .order_by('-starting_date')
@@ -1213,6 +1215,7 @@ def get_survey_result(survey_result_kwargs):
         .filter(**survey_result_kwargs)\
         .values('section__question', 'response', 'count')\
         .order_by('section')
+    #.annotate(Count('response'))\
 
     return survey_result
 
@@ -1340,7 +1343,7 @@ def survey_report(request):
 
     kwargs = {}
     kwargs['user'] = request.user
-    kwargs['disposition__exact'] = 'ANSWER'
+    kwargs['disposition__exact'] = VOIPCALL_DISPOSITION.ANSWER
 
     survey_result_kwargs = {}
 

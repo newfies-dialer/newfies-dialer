@@ -21,7 +21,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
-from voice_app.models import VoiceApp, get_voiceapp_type_name
+from voice_app.models import VoiceApp, VoiceApp_template, get_voiceapp_type_name
 from voice_app.forms import VoiceAppForm
 from dialer_campaign.views import notice_count
 from utils.helper import grid_common_function, get_grid_update_delete_link
@@ -46,7 +46,7 @@ def voiceapp_grid(request):
     sortorder_sign = grid_data['sortorder_sign']
     sortname = grid_data['sortname']
 
-    voiceapp_list = VoiceApp.objects\
+    voiceapp_list = VoiceApp_template.objects\
                    .values('id', 'name', 'user', 'description', 'type',
                            'data', 'tts_language', 'gateway__name',
                            'updated_date').filter(user=request.user)
@@ -80,7 +80,7 @@ def voiceapp_grid(request):
                         content_type="application/json")
 
 
-@permission_required('voice_app.view_voiceapp', login_url='/')
+@permission_required('voice_app.view_voiceapp_template', login_url='/')
 @login_required
 def voiceapp_list(request):
     """Voce App list for logged in user
@@ -106,7 +106,7 @@ def voiceapp_list(request):
            context_instance=RequestContext(request))
 
 
-@permission_required('voice_app.add_voiceapp', login_url='/')
+@permission_required('voice_app.add_voiceapp_template', login_url='/')
 @login_required
 def voiceapp_add(request):
     """Add new Voice App for logged in user
@@ -143,7 +143,7 @@ def voiceapp_add(request):
            context_instance=RequestContext(request))
 
 
-@permission_required('voice_app.delete_voiceapp', login_url='/')
+@permission_required('voice_app.delete_voiceapp_template', login_url='/')
 @login_required
 def voiceapp_del(request, object_id):
     """Delete voiceapp for logged in user
@@ -159,7 +159,7 @@ def voiceapp_del(request, object_id):
     """
     if int(object_id) != 0:
         # When object_id is not 0
-        voiceapp = get_object_or_404(VoiceApp, pk=object_id, user=request.user)
+        voiceapp = get_object_or_404(VoiceApp_template, pk=object_id, user=request.user)
 
         # 1) delete voiceapp
         request.session["msg"] = _('"%(name)s" is deleted.'\
@@ -172,7 +172,7 @@ def voiceapp_del(request, object_id):
             values = ", ".join(["%s" % el for el in values])
 
             # 1) delete voiceapp
-            voiceapp_list = VoiceApp.objects\
+            voiceapp_list = VoiceApp_template.objects\
                                 .filter(user=request.user)\
                                 .extra(where=['id IN (%s)' % values])
             if voiceapp_list:
@@ -185,7 +185,7 @@ def voiceapp_del(request, object_id):
     return HttpResponseRedirect('/voiceapp/')
 
 
-@permission_required('voice_app.change_voiceapp', login_url='/')
+@permission_required('voice_app.change_voiceapp_template', login_url='/')
 @login_required
 def voiceapp_change(request, object_id):
     """Update/Delete Voice app for logged in user
@@ -201,7 +201,7 @@ def voiceapp_change(request, object_id):
         * Update/delete selected voiceapp from voiceapp list
           via VoiceAppForm form & get redirect to voice list
     """
-    voiceapp = get_object_or_404(VoiceApp, pk=object_id, user=request.user)
+    voiceapp = get_object_or_404(VoiceApp_template, pk=object_id, user=request.user)
     form = VoiceAppForm(instance=voiceapp)
     if request.method == 'POST':
         if request.POST.get('delete'):

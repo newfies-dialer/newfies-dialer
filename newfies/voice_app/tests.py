@@ -17,7 +17,7 @@ from django.template import Template, Context, TemplateSyntaxError
 from django.test import TestCase
 
 from dialer_gateway.models import Gateway
-from voice_app.models import VoiceApp
+from voice_app.models import VoiceApp, VoiceApp_template
 from voice_app.forms import VoiceAppForm
 from voice_app.views import voiceapp_list, voiceapp_add,\
                             voiceapp_del, voiceapp_change,\
@@ -31,16 +31,16 @@ class VoiceAppAdminView(BaseAuthenticatedClient):
 
     def test_admin_voiceapp_view_list(self):
         """Test Function to check admin voiceapp list"""
-        response = self.client.get("/admin/voice_app/voiceapp/")
+        response = self.client.get("/admin/voice_app/voiceapp_template/")
         self.assertEqual(response.status_code, 200)
 
     def test_admin_voiceapp_view_add(self):
         """Test Function to check admin voiceapp add"""
-        response = self.client.get("/admin/voice_app/voiceapp/add/")
+        response = self.client.get("/admin/voice_app/voiceapp_template/add/")
         self.assertEqual(response.status_code, 200)
 
         response = self.client.post(
-            '/admin/voice_app/voiceapp/add/',
+            '/admin/voice_app/voiceapp_template/add/',
             data={'name': 'Default_Voice_App',
                   'user': '1',
                   'gateway': '1'
@@ -150,7 +150,8 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
 class VoiceAppModel(TestCase):
     """Test Voice app Model"""
 
-    fixtures = ['auth_user.json', 'gateway.json', 'voiceapp.json']
+    fixtures = ['auth_user.json', 'gateway.json', 'voiceapp.json',
+                'voiceapp_template.json']
 
     def setUp(self):
         self.user = User.objects.get(username='admin')

@@ -13,17 +13,17 @@
 #
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from dialer_campaign.models import Campaign
 from dialer_gateway.models import Gateway
-from common.intermediate_model_base_class import Model
 from voice_app.constants import APP_TYPE
 from user_profile.fields import LanguageField
-
+#from common.intermediate_model_base_class import Model
 from south.modelsinspector import add_introspection_rules
 add_introspection_rules([], ["^user_profile.fields.LanguageField"])
 
 
-class VoiceApp(Model):
-    """VoiceApp are VoIP application that are defined on the platform, you can
+class VoiceApp_abstract(models.Model):
+    """VoiceApp_abstract are VoIP application that are defined on the platform, you can
     have different type of application, some as simple as redirecting a call
     and some as complex as starting a complex application call flow.
 
@@ -63,7 +63,6 @@ class VoiceApp(Model):
                     verbose_name=_('Text-to-Speech Language'),
                     help_text=_("Set the Text-to-Speech Engine"))
 
-    user = models.ForeignKey('auth.User', related_name='VoIP App owner')
     #extension = models.CharField(max_length=40,
     #               help_text=_("Extension to call when redirection the call"))
 
@@ -73,13 +72,74 @@ class VoiceApp(Model):
     #                help_text=_("If CONFERENCE, define here the room number"))
 
     created_date = models.DateTimeField(auto_now_add=True,
-                    verbose_name=_('Date'))
+        verbose_name=_('Date'))
     updated_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+    def __unicode__(self):
+        return u"%s" % self.name
+
+    def set_name(self, name):
+        self.name = name
+
+
+class VoiceApp_template(VoiceApp_abstract):
+    """
+    This defines the Survey template
+    """
+    user = models.ForeignKey('auth.User', related_name='voiceapp_template_user')
+
+    class Meta:
+        permissions = (
+            ("view_voiceapp_template", _('Can see Voiceapp Template')),
+            )
+        verbose_name = _("Voiceapp template")
+        verbose_name_plural = _("Voiceapp templates")
+
+    def copy_survey_template(self):
+        try:
+            print self.name
+            record_count = Voiceapp.objects.filter(
+                name=self.name,
+                description=self.description,
+                type=self.type,
+                gateway=self.gateway,
+                data=self.data,
+                tts_language=self.tts_language,
+                user=self.user,
+                campaign=campaign_obj
+            ).count()
+
+            if record_count == 0:
+                survey_obj = Voiceapp.objects.create(
+                    name=self.name,
+                    description=self.description,
+                    type=self.type,
+                    gateway=self.gateway,
+                    data=self.data,
+                    tts_language=self.tts_language,
+                    user=self.user,
+                    campaign=campaign_obj)
+
+        except:
+            raise
+        return True
+
+
+class VoiceApp(VoiceApp_abstract):
+    """
+    This defines the Survey
+    """
+    user = models.ForeignKey('auth.User', related_name='VoIP App owner')
+    campaign = models.ForeignKey(Campaign, null=True, blank=True,
+        verbose_name=_("Campaign"))
 
     class Meta:
         permissions = (
             ("view_voiceapp", _('Can see Voice App')),
-        )
+            )
         db_table = u'voice_app'
         verbose_name = _("Voice Application")
         verbose_name_plural = _("Voice Applications")
@@ -88,7 +148,7 @@ class VoiceApp(Model):
         self.name = name
 
     def __unicode__(self):
-            return u"%s" % self.name
+        return u"%s" % self.name
 
 
 def get_voiceapp_type_name(id):

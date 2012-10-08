@@ -129,6 +129,9 @@ def update_campaign_status_cust(request, pk, status):
         from survey2.function_def import check_survey_campaign
         check_survey_campaign(request, pk)
 
+        from voice_app.function_def import check_voiceapp_campaign
+        check_voiceapp_campaign(request, pk)
+
     return HttpResponseRedirect('/campaign/')
 
 
@@ -220,7 +223,8 @@ def get_campaign_survey_view(campaign_object):
                    % (campaign_object.object_id,
                       _('survey'),
                       tpl_control_icon('eye.png'))
-        if campaign_object.content_type.model == 'voiceapp':
+
+        if campaign_object.content_type.model == 'voiceapp_template':
             link = '<a href="/voiceapp/%s/" target="_blank" class="icon"\
                    title="%s" %s>&nbsp;</a>'\
                    % (campaign_object.object_id,

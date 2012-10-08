@@ -13,14 +13,14 @@
 #
 from django import forms
 from django.forms import ModelForm, Textarea
-from voice_app.models import VoiceApp
+from voice_app.models import VoiceApp_template
 
 
 class VoiceAppForm(ModelForm):
     """VoiceApp ModelForm"""
 
     class Meta:
-        model = VoiceApp
+        model = VoiceApp_template
         fields = ['name', 'description', 'type', 'data',
                   'tts_language', 'gateway']
         exclude = ('user', )

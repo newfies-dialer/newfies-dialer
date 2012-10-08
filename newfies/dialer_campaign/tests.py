@@ -203,7 +203,8 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         response = campaign_change(request, 1)
         self.assertEqual(response.status_code, 302)
 
-        request = self.factory.post('/campaign/1/?delete=true', {}, follow=True)
+        request = self.factory.post('/campaign/1/',
+            {'delete': 'true'}, follow=True)
         request.user = self.user
         request.session = {}
         response = campaign_change(request, 1)

@@ -259,7 +259,8 @@ func_install_frontend(){
             easy_install pip
 
             #PostgreSQL
-            apt-get -y install postgresql libpq-dev
+            apt-get -y install postgresql
+            apt-get -y install libpq-dev
             #Start PostgreSQL
             /etc/init.d/postgresql start
 
@@ -320,11 +321,13 @@ func_install_frontend(){
         mv $INSTALL_DIR /tmp/old-newfies-dialer_$DATETIME
         echo "Files from $INSTALL_DIR has been moved to /tmp/old-newfies-dialer_$DATETIME"
 
-        echo "Run backup with postgresql..."
-        sudo -u postgres pg_dump $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.pgsqldump.sql
-        echo "PostgreSQL Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.pgsqldump.sql"
-        echo "Press Enter to continue"
-        read TEMP
+        if [ `sudo -u postgres psql -qAt --list | egrep '^$DATABASENAME\|' | wc -l` -eq 1 ]; then
+            echo "Run backup with postgresql..."
+            sudo -u postgres pg_dump $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.pgsqldump.sql
+            echo "PostgreSQL Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.pgsqldump.sql"
+            echo "Press Enter to continue"
+            read TEMP
+        fi
     fi
 
     #Create and enable virtualenv

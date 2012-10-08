@@ -98,22 +98,21 @@ class VoiceApp_template(VoiceApp_abstract):
         verbose_name = _("Voiceapp template")
         verbose_name_plural = _("Voiceapp templates")
 
-    def copy_survey_template(self):
+    def copy_voiceapp_template(self, campaign_obj):
         try:
-            print self.name
-            record_count = Voiceapp.objects.filter(
+            record_count = VoiceApp.objects.filter(
                 name=self.name,
                 description=self.description,
                 type=self.type,
-                gateway=self.gateway,
+                gateway_id=self.gateway_id,
                 data=self.data,
                 tts_language=self.tts_language,
-                user=self.user,
-                campaign=campaign_obj
+                user_id=self.user.id,
+                campaign_id=campaign_obj.id,
             ).count()
 
             if record_count == 0:
-                survey_obj = Voiceapp.objects.create(
+                survey_obj = VoiceApp.objects.create(
                     name=self.name,
                     description=self.description,
                     type=self.type,
@@ -122,9 +121,9 @@ class VoiceApp_template(VoiceApp_abstract):
                     tts_language=self.tts_language,
                     user=self.user,
                     campaign=campaign_obj)
-
         except:
             raise
+
         return True
 
 
@@ -132,7 +131,7 @@ class VoiceApp(VoiceApp_abstract):
     """
     This defines the Survey
     """
-    user = models.ForeignKey('auth.User', related_name='VoIP App owner')
+    user = models.ForeignKey('auth.User', related_name='voiceapp_user')
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
         verbose_name=_("Campaign"))
 

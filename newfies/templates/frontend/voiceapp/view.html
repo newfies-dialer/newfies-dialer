@@ -1,0 +1,53 @@
+{% extends "frontend/master.html" %}
+{% load i18n dialer_cdr_extras %}
+
+{% block content_header %}
+    <h1>
+        {{ voiceapp.name }}
+    </h1>
+{% endblock %}
+
+{% block content %}
+
+    {% if voiceapp.description %}
+    <div class="clearfix">
+        <label class="control-label">{% trans "Description" %}</label>
+        <div class="input">
+            {{ voiceapp.description }}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="clearfix">
+        <label class="control-label">{% trans "Type" %}</label>
+        <div class="input">
+            {{ voiceapp.type|voiceapp_type }}
+        </div>
+    </div>
+
+    <div class="clearfix">
+        <label class="control-label">{% trans "Gateway" %}</label>
+        <div class="input">
+            {{ voiceapp.gateway }}
+        </div>
+    </div>
+
+    {% if voiceapp.data %}
+    <div class="clearfix">
+        <label class="control-label">{% trans "Data" %}</label>
+        <div class="input">
+            {{ voiceapp.data }}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if voiceapp.tts_language %}
+    <div class="clearfix">
+        <label class="control-label">{% trans "TTS language" %}</label>
+        <div class="input">
+            {{ voiceapp.tts_language }}
+        </div>
+    </div>
+    {% endif %}
+
+{% endblock %}

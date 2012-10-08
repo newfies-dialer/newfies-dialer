@@ -15,7 +15,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from dialer_campaign.models import Campaign
 from dialer_gateway.models import Gateway
-from voice_app.constants import APP_TYPE
+from voice_app.constants import VOICEAPP_TYPE
 from user_profile.fields import LanguageField
 #from common.intermediate_model_base_class import Model
 from south.modelsinspector import add_introspection_rules
@@ -48,7 +48,7 @@ class VoiceApp_abstract(models.Model):
     description = models.TextField(null=True, blank=True,
                     verbose_name=_("Description"),
                     help_text=_("Voice Application Description"))
-    type = models.IntegerField(max_length=20, choices=list(APP_TYPE), default=1,
+    type = models.IntegerField(max_length=20, choices=list(VOICEAPP_TYPE), default=1,
            blank=True, null=True, verbose_name=_('Type'))
     gateway = models.ForeignKey(Gateway, null=True, blank=True,
                     verbose_name=_('B-Leg'),
@@ -152,6 +152,6 @@ class VoiceApp(VoiceApp_abstract):
 
 def get_voiceapp_type_name(id):
     """To get name from voice APP_TYPE"""
-    for i in APP_TYPE:
+    for i in VOICEAPP_TYPE:
         if i[0] == id:
             return i[1]

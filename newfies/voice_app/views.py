@@ -225,3 +225,33 @@ def voiceapp_change(request, object_id):
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))
+
+
+@permission_required('voice_app.view_voiceapp_template', login_url='/')
+@login_required
+def voiceapp_view(request, object_id):
+    """Update/Delete Voice app for logged in user
+
+    **Attributes**:
+
+        * ``object_id`` - Selected voiceapp object
+        * ``form`` - VoiceAppForm
+        * ``template`` - frontend/voiceapp/change.html
+
+    **Logic Description**:
+
+        * Update/delete selected voiceapp from voiceapp list
+          via VoiceAppForm form & get redirect to voice list
+    """
+    voiceapp = get_object_or_404(VoiceApp_template, pk=object_id, user=request.user)
+
+    template = 'frontend/voiceapp/view.html'
+    data = {
+        'voiceapp': voiceapp,
+        'module': current_view(request),
+        'notice_count': notice_count(request),
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
+    return render_to_response(template, data,
+        context_instance=RequestContext(request))
+

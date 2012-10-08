@@ -13,17 +13,42 @@
 #
 from django import forms
 from django.forms import ModelForm, Textarea
-from voice_app.models import VoiceApp
+from voice_app.models import VoiceApp_template
 
 
 class VoiceAppForm(ModelForm):
     """VoiceApp ModelForm"""
 
     class Meta:
-        model = VoiceApp
+        model = VoiceApp_template
         fields = ['name', 'description', 'type', 'data',
                   'tts_language', 'gateway']
         exclude = ('user', )
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
         }
+
+
+class VoiceAppViewForm(ModelForm):
+    """VoiceAppViewForm ModelForm"""
+
+    class Meta:
+        model = VoiceApp_template
+        fields = ['name', 'description', 'type', 'data',
+                  'tts_language', 'gateway']
+        exclude = ('user', )
+        widgets = {
+            'description': Textarea(attrs={'cols': 23, 'rows': 3}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(VoiceAppViewForm, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        if instance:
+            self.fields['name'].widget.attrs['readonly'] = True
+            self.fields['description'].widget.attrs['readonly'] = True
+            self.fields['data'].widget.attrs['readonly'] = True
+
+            self.fields['type'].widget.attrs['disabled'] = 'disabled'
+            self.fields['tts_language'].widget.attrs['disabled'] = 'disabled'
+            self.fields['gateway'].widget.attrs['disabled'] = 'disabled'

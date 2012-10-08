@@ -13,7 +13,7 @@
 #
 from django.contrib import admin
 #from django.utils.translation import ugettext_lazy as _
-from voice_app.models import VoiceApp
+from voice_app.models import VoiceApp_template
 
 
 class VoiceAppAdmin(admin.ModelAdmin):
@@ -24,4 +24,4 @@ class VoiceAppAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'name', )
     list_filter = ['created_date', ]
     ordering = ('id', )
-admin.site.register(VoiceApp, VoiceAppAdmin)
+admin.site.register(VoiceApp_template, VoiceAppAdmin)

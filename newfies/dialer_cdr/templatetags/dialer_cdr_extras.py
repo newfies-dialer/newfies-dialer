@@ -18,6 +18,7 @@ from dialer_campaign.constants import CAMPAIGN_STATUS
 from dialer_cdr.constants import LEG_TYPE
 from survey.models import APP_TYPE
 from survey2.constants import SECTION_TYPE
+from voice_app.constants import VOICEAPP_TYPE
 
 
 @register.filter()
@@ -138,6 +139,22 @@ def section_type_name(value):
     return str(status)
 
 
+def voiceapp_type(value):
+    """
+    >>> voiceapp_type(1)
+    'Voice section'
+    """
+    if not value:
+        return ''
+    TYPE = dict(VOICEAPP_TYPE)
+    try:
+        status = TYPE[value]
+    except:
+        status = ''
+
+    return str(status)
+
+
 @register.filter()
 def que_res_string(val):
     """Modify survey result string for display
@@ -190,6 +207,7 @@ register.filter('campaign_status', campaign_status)
 register.filter('leg_type_name', leg_type_name)
 register.filter('que_res_string', que_res_string)
 register.filter('action_type_name', action_type_name)
+register.filter('voiceapp_type', voiceapp_type)
 register.filter('section_type_name', section_type_name)
 register.filter('running_total', running_total)
 

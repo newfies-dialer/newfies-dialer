@@ -16,7 +16,7 @@ from django.utils.translation import ugettext_lazy as _
 from common.utils import Choice
 
 
-class APP_TYPE(Choice):
+class VOICEAPP_TYPE(Choice):
     DIAL = 1, u'DIAL'
     PLAYAUDIO = 2, u'PLAYAUDIO'
     CONFERENCE = 3, u'CONFERENCE'

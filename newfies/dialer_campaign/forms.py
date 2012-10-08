@@ -97,8 +97,8 @@ class CampaignForm(ModelForm):
                 list_gw.append((i[0], i[1]))
             self.fields['aleg_gateway'].choices = list_gw
 
-            from voice_app.models import VoiceApp
-            available_objects = VoiceApp.objects.filter(user=user)
+            from voice_app.models import VoiceApp_template
+            available_objects = VoiceApp_template.objects.filter(user=user)
             object_choices = get_object_choices(available_objects)
 
             from survey.models import SurveyApp

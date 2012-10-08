@@ -507,7 +507,7 @@ func_install_frontend(){
     /var/log/newfies/*.log {
         daily
         rotate 10
-        size = 20M
+        size = 50M
         missingok
         compress
     }

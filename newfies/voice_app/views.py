@@ -243,7 +243,7 @@ def voiceapp_view(request, object_id):
         * Update/delete selected voiceapp from voiceapp list
           via VoiceAppForm form & get redirect to voice list
     """
-    voiceapp = get_object_or_404(VoiceApp_template, pk=object_id, user=request.user)
+    voiceapp = get_object_or_404(VoiceApp, pk=object_id, user=request.user)
     form = VoiceAppForm(instance=voiceapp, voiceapp_view=True)
 
     template = 'frontend/voiceapp/change.html'

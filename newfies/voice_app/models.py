@@ -17,7 +17,6 @@ from dialer_campaign.models import Campaign
 from dialer_gateway.models import Gateway
 from voice_app.constants import VOICEAPP_TYPE
 from user_profile.fields import LanguageField
-#from common.intermediate_model_base_class import Model
 from south.modelsinspector import add_introspection_rules
 add_introspection_rules([], ["^user_profile.fields.LanguageField"])
 
@@ -87,7 +86,7 @@ class VoiceApp_abstract(models.Model):
 
 class VoiceApp_template(VoiceApp_abstract):
     """
-    This defines the Survey template
+    This defines the VoiceApp template
     """
     user = models.ForeignKey('auth.User', related_name='voiceapp_template_user')
 
@@ -112,7 +111,7 @@ class VoiceApp_template(VoiceApp_abstract):
             ).count()
 
             if record_count == 0:
-                survey_obj = VoiceApp.objects.create(
+                VoiceApp.objects.create(
                     name=self.name,
                     description=self.description,
                     type=self.type,
@@ -129,7 +128,7 @@ class VoiceApp_template(VoiceApp_abstract):
 
 class VoiceApp(VoiceApp_abstract):
     """
-    This defines the Survey
+    This defines the VoiceApp
     """
     user = models.ForeignKey('auth.User', related_name='voiceapp_user')
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
@@ -138,7 +137,7 @@ class VoiceApp(VoiceApp_abstract):
     class Meta:
         permissions = (
             ("view_voiceapp", _('Can see Voice App')),
-            )
+        )
         db_table = u'voice_app'
         verbose_name = _("Voice Application")
         verbose_name_plural = _("Voice Applications")

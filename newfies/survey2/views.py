@@ -1151,7 +1151,6 @@ def survey_view(request, object_id):
         'branching_section_list': branching_section_list,
         'module': current_view(request),
         'action': 'view',
-        #'form': form,
         'msg': request.session.get('msg'),
         'notice_count': notice_count(request),
     }

@@ -332,7 +332,7 @@ def get_content_type(object_string):
     It is used by campaign_add & campaign_change
 
     >>> get_content_type("type:31-id:1")
-    {'object_type': <ContentType: observed item>, 'object_id': '1'}
+    {'object_type': <ContentType: Phonebook>, 'object_id': '1'}
     """
     contenttype = {}
     matches = re.match("type:(\d+)-id:(\d+)", object_string).groups()

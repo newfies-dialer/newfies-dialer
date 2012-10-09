@@ -14,7 +14,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.conf.urls.defaults import url
+from django.conf.urls import url
 from django.http import HttpResponse
 from tastypie.resources import ModelResource
 from tastypie.validation import Validation

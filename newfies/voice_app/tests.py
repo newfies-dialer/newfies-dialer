@@ -51,7 +51,8 @@ class VoiceAppAdminView(BaseAuthenticatedClient):
 
 class VoiceAppCustomerView(BaseAuthenticatedClient):
     """Test Function to check Voice App Customer pages"""
-    fixtures = ['auth_user.json', 'gateway.json', 'voiceapp.json']
+    fixtures = ['auth_user.json', 'gateway.json', 'voiceapp_template.json',
+                'voiceapp.json']
 
     def test_voiceapp_view_list(self):
         """Test Function to check voice app list view"""
@@ -152,18 +153,19 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
         request.user = self.user
         request.session = {}
         response = voiceapp_view(request, 1)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
 
 
 class VoiceAppModel(TestCase):
     """Test Voice app Model"""
 
-    fixtures = ['auth_user.json', 'gateway.json', 'voiceapp.json',
-                'voiceapp_template.json', 'campaign.json']
+    fixtures = ['auth_user.json', 'gateway.json', 'voiceapp_template.json',
+                'dialer_setting.json', 'phonebook.json', 'contact.json',
+                'campaign.json', 'voiceapp.json', ]
 
     def setUp(self):
-        self.user = User.objects.get(username='admin')
+        self.user = User.objects.get(pk=1)
         self.gateway = Gateway.objects.get(pk=1)
         self.campaign = Campaign.objects.get(pk=1)
 
@@ -174,6 +176,9 @@ class VoiceAppModel(TestCase):
             user=self.user,
         )
         self.voiceapp_template.save()
+        self.voiceapp_template.__unicode__()
+        self.voiceapp_template.set_name('test voiceapp')
+        self.voiceapp_template.copy_voiceapp_template(self.campaign)
 
         self.voiceapp = VoiceApp(
             name='test voiceapp',
@@ -184,6 +189,7 @@ class VoiceAppModel(TestCase):
             )
         self.voiceapp.set_name("MyVoiceapp")
         self.voiceapp.save()
+        self.voiceapp.__unicode__()
 
     def test_voice_app_form(self):
         self.assertEqual(self.voiceapp.name, "MyVoiceapp")

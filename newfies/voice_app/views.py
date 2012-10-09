@@ -22,7 +22,7 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from voice_app.models import VoiceApp, VoiceApp_template, get_voiceapp_type_name
-from voice_app.forms import VoiceAppForm, VoiceAppViewForm
+from voice_app.forms import VoiceAppForm
 from dialer_campaign.views import notice_count
 from utils.helper import grid_common_function, get_grid_update_delete_link
 from dialer_campaign.function_def import user_dialer_setting_msg
@@ -159,7 +159,8 @@ def voiceapp_del(request, object_id):
     """
     if int(object_id) != 0:
         # When object_id is not 0
-        voiceapp = get_object_or_404(VoiceApp_template, pk=object_id, user=request.user)
+        voiceapp = get_object_or_404(
+            VoiceApp_template, pk=object_id, user=request.user)
 
         # 1) delete voiceapp
         request.session["msg"] = _('"%(name)s" is deleted.'\
@@ -227,10 +228,10 @@ def voiceapp_change(request, object_id):
            context_instance=RequestContext(request))
 
 
-@permission_required('voice_app.view_voiceapp_template', login_url='/')
+@permission_required('voice_app.view_voiceapp', login_url='/')
 @login_required
 def voiceapp_view(request, object_id):
-    """Update/Delete Voice app for logged in user
+    """View Voice app for logged in user
 
     **Attributes**:
 
@@ -240,16 +241,16 @@ def voiceapp_view(request, object_id):
 
     **Logic Description**:
 
-        * Update/delete selected voiceapp from voiceapp list
-          via VoiceAppForm form & get redirect to voice list
+        * display selected voiceapp from voiceapp list
+          via VoiceAppForm form without editing field
     """
-    voiceapp = get_object_or_404(VoiceApp_template, pk=object_id, user=request.user)
-    form = VoiceAppViewForm(instance=voiceapp)
+    voiceapp = get_object_or_404(VoiceApp, pk=object_id, user=request.user)
+    form = VoiceAppForm(instance=voiceapp, voiceapp_view=True)
 
-    template = 'frontend/voiceapp/view.html'
+    template = 'frontend/voiceapp/change.html'
     data = {
-        'voiceapp': voiceapp,
         'form': form,
+        'action': 'view',
         'module': current_view(request),
         'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),

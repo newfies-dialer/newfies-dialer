@@ -40,7 +40,7 @@ class CallrequestValidation(Validation):
             errors['Data'] = ['Data set is empty']
 
         content_type = bundle.data.get('content_type')
-        if content_type == 'voice_app' or content_type == 'survey':
+        if content_type == 'voiceapp_template' or content_type == 'survey_template':
             try:
                 content_type_id = ContentType.objects\
                     .get(app_label=str(content_type)).id
@@ -113,7 +113,7 @@ class CallrequestResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"request_uuid": "2342jtdsf-00123", "call_time": "2011-10-20 12:21:22", "phone_number": "8792749823", "content_type":"voice_app", "object_id":1, "timeout": "30000", "callerid": "650784355", "call_type": "1"}' http://localhost:8000/api/v1/callrequest/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"request_uuid": "2342jtdsf-00123", "call_time": "2011-10-20 12:21:22", "phone_number": "8792749823", "content_type":"voiceapp_template", "object_id":1, "timeout": "30000", "callerid": "650784355", "call_type": "1"}' http://localhost:8000/api/v1/callrequest/
 
         Response::
 

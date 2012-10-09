@@ -197,7 +197,7 @@ class DialerCdrModel(TestCase):
             duration=20,
         )
         self.voipcall.save()
-        self.assertEqual(self.voipcall.__unicode__(), u'2 - Top Gun')
+        self.assertEqual(self.voipcall.__unicode__(), u'1 - Top Gun')
 
         # Test mgt command
         call_command("create_callrequest_cdr", "1|1")

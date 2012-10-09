@@ -64,7 +64,7 @@ def voipcall_report_grid(request):
         sortorder_sign = '-'
 
     query_para = []
-    if request.get_full_path():
+    if request.get_full_path().find('?') != -1: # Found
         # get querystring from URL
         query_para = list(request.get_full_path().split('?'))[1]
 

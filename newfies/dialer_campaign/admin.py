@@ -27,7 +27,7 @@ class CampaignAdmin(GenericAdminModelAdmin):
     Allows the administrator to view and modify certain attributes
     of a Campaign.
     """
-    content_type_whitelist = ('voice_app/voiceapp', 'survey/surveyapp', )
+    content_type_whitelist = ('voice_app/voiceapp_template', 'survey2/survey_template', )
     fieldsets = (
         (_('Standard options'), {
             'fields': ('campaign_code', 'name', 'description', 'callerid',

@@ -142,7 +142,7 @@ def section_type_name(value):
 def voiceapp_type(value):
     """
     >>> voiceapp_type(1)
-    'Voice section'
+    'DIAL'
     """
     if not value:
         return ''

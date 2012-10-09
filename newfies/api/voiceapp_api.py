@@ -15,10 +15,10 @@
 #
 
 from tastypie.resources import ModelResource
-from voice_app.models import VoiceApp
+from voice_app.models import VoiceApp_template
 
 
 class VoiceAppResource(ModelResource):
     class Meta:
-        queryset = VoiceApp.objects.all()
+        queryset = VoiceApp_template.objects.all()
         resource_name = 'voiceapp'

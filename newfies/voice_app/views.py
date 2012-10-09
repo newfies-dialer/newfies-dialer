@@ -159,7 +159,8 @@ def voiceapp_del(request, object_id):
     """
     if int(object_id) != 0:
         # When object_id is not 0
-        voiceapp = get_object_or_404(VoiceApp_template, pk=object_id, user=request.user)
+        voiceapp = get_object_or_404(
+            VoiceApp_template, pk=object_id, user=request.user)
 
         # 1) delete voiceapp
         request.session["msg"] = _('"%(name)s" is deleted.'\
@@ -227,10 +228,10 @@ def voiceapp_change(request, object_id):
            context_instance=RequestContext(request))
 
 
-@permission_required('voice_app.view_voiceapp_template', login_url='/')
+@permission_required('voice_app.view_voiceapp', login_url='/')
 @login_required
 def voiceapp_view(request, object_id):
-    """Update/Delete Voice app for logged in user
+    """View Voice app for logged in user
 
     **Attributes**:
 
@@ -240,8 +241,8 @@ def voiceapp_view(request, object_id):
 
     **Logic Description**:
 
-        * Update/delete selected voiceapp from voiceapp list
-          via VoiceAppForm form & get redirect to voice list
+        * display selected voiceapp from voiceapp list
+          via VoiceAppForm form without editing field
     """
     voiceapp = get_object_or_404(VoiceApp, pk=object_id, user=request.user)
     form = VoiceAppForm(instance=voiceapp, voiceapp_view=True)

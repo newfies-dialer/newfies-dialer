@@ -93,7 +93,7 @@ class VoiceApp_template(VoiceApp_abstract):
     class Meta:
         permissions = (
             ("view_voiceapp_template", _('Can see Voiceapp Template')),
-            )
+        )
         verbose_name = _("Voiceapp template")
         verbose_name_plural = _("Voiceapp templates")
 

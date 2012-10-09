@@ -334,7 +334,8 @@ class DialerCampaignModel(TestCase):
 
         # Campaign model
         try:
-            self.content_type_id = ContentType.objects.get(model='voiceapp').id
+            self.content_type_id = \
+                ContentType.objects.get(model='voiceapp_template').id
         except:
             self.content_type_id = 1
 

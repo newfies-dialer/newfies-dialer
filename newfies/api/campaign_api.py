@@ -125,7 +125,7 @@ class CampaignValidation(Validation):
                 errors['chk_gateway'] = ["The Gateway ID doesn't exist!"]
 
         content_type = bundle.data.get('content_type')
-        if content_type == 'voice_app' or content_type == 'survey':
+        if content_type == 'voiceapp_template' or content_type == 'survey_template':
             try:
                 content_type_id = ContentType.objects\
                     .get(app_label=str(content_type)).id
@@ -214,7 +214,7 @@ class CampaignResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "content_type": "voice_app", "object_id" : "1", "extra_data": "2000", "phonebook_id": "1"}' http://localhost:8000/api/v1/campaign/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "content_type": "voiceapp_template", "object_id" : "1", "extra_data": "2000", "phonebook_id": "1"}' http://localhost:8000/api/v1/campaign/
 
         Response::
 
@@ -392,7 +392,7 @@ class CampaignResource(ModelResource):
         filtering = {
             'name': ALL,
             'status': ALL,
-            }
+        }
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
 
     def obj_create(self, bundle, request=None, **kwargs):

@@ -176,6 +176,8 @@ class VoiceAppModel(TestCase):
             user=self.user,
         )
         self.voiceapp_template.save()
+        self.voiceapp_template.__unicode__()
+        self.voiceapp_template.set_name('test voiceapp')
         self.voiceapp_template.copy_voiceapp_template(self.campaign)
 
         self.voiceapp = VoiceApp(
@@ -187,6 +189,7 @@ class VoiceAppModel(TestCase):
             )
         self.voiceapp.set_name("MyVoiceapp")
         self.voiceapp.save()
+        self.voiceapp.__unicode__()
 
     def test_voice_app_form(self):
         self.assertEqual(self.voiceapp.name, "MyVoiceapp")

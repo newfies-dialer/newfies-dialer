@@ -22,7 +22,7 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from voice_app.models import VoiceApp, VoiceApp_template, get_voiceapp_type_name
-from voice_app.forms import VoiceAppForm, VoiceAppViewForm
+from voice_app.forms import VoiceAppForm
 from dialer_campaign.views import notice_count
 from utils.helper import grid_common_function, get_grid_update_delete_link
 from dialer_campaign.function_def import user_dialer_setting_msg
@@ -244,12 +244,12 @@ def voiceapp_view(request, object_id):
           via VoiceAppForm form & get redirect to voice list
     """
     voiceapp = get_object_or_404(VoiceApp_template, pk=object_id, user=request.user)
-    form = VoiceAppViewForm(instance=voiceapp)
+    form = VoiceAppForm(instance=voiceapp, voiceapp_view=True)
 
-    template = 'frontend/voiceapp/view.html'
+    template = 'frontend/voiceapp/change.html'
     data = {
-        'voiceapp': voiceapp,
         'form': form,
+        'action': 'view',
         'module': current_view(request),
         'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),

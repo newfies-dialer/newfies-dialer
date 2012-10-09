@@ -28,23 +28,14 @@ class VoiceAppForm(ModelForm):
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
         }
 
-
-class VoiceAppViewForm(ModelForm):
-    """VoiceAppViewForm ModelForm"""
-
-    class Meta:
-        model = VoiceApp_template
-        fields = ['name', 'description', 'type', 'data',
-                  'tts_language', 'gateway']
-        exclude = ('user', )
-        widgets = {
-            'description': Textarea(attrs={'cols': 23, 'rows': 3}),
-        }
-
     def __init__(self, *args, **kwargs):
-        super(VoiceAppViewForm, self).__init__(*args, **kwargs)
+        voiceapp_view = ''
+        if kwargs.has_key('voiceapp_view'):
+            voiceapp_view = kwargs.pop('voiceapp_view')
+        super(VoiceAppForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
-        if instance:
+
+        if instance and voiceapp_view:
             self.fields['name'].widget.attrs['readonly'] = True
             self.fields['description'].widget.attrs['readonly'] = True
             self.fields['data'].widget.attrs['readonly'] = True

@@ -15,6 +15,7 @@ GROUP=newfies_dialer
 
 cd /usr/share/virtualenvs/newfies-dialer
 source bin/activate
+cd /usr/share/newfies
 
 test -d $LOGDIR || mkdir -p $LOGDIR
 exec gunicorn_django -b 127.0.0.1:8123 -w $NUM_WORKERS \

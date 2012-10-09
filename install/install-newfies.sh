@@ -44,7 +44,6 @@ FS_INSTALLED_PATH='/usr/local/freeswitch'
 NEWFIES_USER='newfies_dialer'
 CELERYD_USER='celery'
 CELERYD_GROUP='celery'
-INSTALL_USER='newfies'
 NEWFIES_ENV='newfies-dialer'
 HTTP_PORT='8008'
 
@@ -113,6 +112,7 @@ func_install_landing_page() {
     echo "Add Nginx configuration for Welcome page..."
     cp -rf /usr/src/newfies-dialer/install/nginx/global /etc/nginx/
     cp /usr/src/newfies-dialer/install/nginx/sites-available/newfies_dialer /etc/nginx/sites-available/
+    ln -s /etc/nginx/sites-available/newfies_dialer /etc/nginx/sites-enabled/newfies_dialer
     #Restart Nginx
     service nginx restart
 
@@ -384,18 +384,18 @@ func_install_frontend(){
 
     #Fix permission on python-egg
     mkdir /usr/share/newfies/.python-eggs
-    chown $INSTALL_USER:$INSTALL_USER /usr/share/newfies/.python-eggs
+    chown $NEWFIES_USER:$NEWFIES_USER /usr/share/newfies/.python-eggs
     mkdir database
 
     #upload audio files
     mkdir -p /usr/share/newfies/usermedia/upload/audiofiles
-    chown -R $INSTALL_USER:$INSTALL_USER /usr/share/newfies/usermedia
+    chown -R $NEWFIES_USER:$NEWFIES_USER /usr/share/newfies/usermedia
 
     #following lines is for apache logs
     touch /var/log/newfies/newfies-django.log
     touch /var/log/newfies/newfies-django-db.log
     touch /var/log/newfies/err-apache-newfies.log
-    chown -R $INSTALL_USER:$INSTALL_USER /var/log/newfies
+    chown -R $NEWFIES_USER:$NEWFIES_USER /var/log/newfies
 
     python manage.py syncdb --noinput
     python manage.py migrate
@@ -463,7 +463,8 @@ func_install_frontend(){
 
     #Install supervisor
     cp /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf /etc/supervisor/conf.d/
-    /etc/init.d/supervisor restart
+    /etc/init.d/supervisor force-stop
+    /etc/init.d/supervisor start
 
     #Prepare and Start Nginx
     echo "Prepare Nginx configuration..."

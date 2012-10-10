@@ -173,7 +173,7 @@
                         <td>{{ row.phone_number }}</td>
                         <td>{{ row.duration|conv_min }}</td>
                         <td>{{ row.disposition }}</td>
-                        <td><!--{{ row.section }}--></td>
+                        <td>{{ row.section_response|que_res_string|safe }}</td>
                     </tr>
                 {% endfor %}
 

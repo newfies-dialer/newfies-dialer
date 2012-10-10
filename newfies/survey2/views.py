@@ -1383,22 +1383,27 @@ def survey_report(request):
                 col_name_with_order['sort_field'] = sort_field
 
         # List of Survey VoIP call report
-        from_query =\
-            'FROM survey_surveycampaignresult '\
-            'WHERE survey_surveycampaignresult.callrequest_id = '\
-            'dialer_callrequest.id '
-        select_group_query = 'SELECT group_concat(CONCAT_WS("*|*", question, response, record_file) SEPARATOR "-|-") '
+        #from_query =\
+        #    'FROM survey2_result '\
+        #    'WHERE survey2_result.callrequest_id = '\
+        #    'dialer_callrequest.id '
+        #select_group_query = 'SELECT group_concat(CONCAT_WS("*|*", section__question, response, record_file) SEPARATOR "-|-") '
+        select_group_query = \
+            "SELECT string_agg(ARRAY_TO_STRING(ARRAY[question, response, record_file] , '*|*'), '-|-') "
+        from_query = \
+            'FROM survey2_result, survey2_section, dialer_callrequest ' \
+            'WHERE survey2_result.callrequest_id = dialer_callrequest.id '\
+            'AND  survey2_result.section_id = survey2_section.id'
 
-        #rows = VoIPCall.objects\
-        #    .only('starting_date', 'phone_number', 'duration', 'disposition')\
-        #    .filter(**kwargs).order_by(sort_field)
-        rows = []
 
-        #    .extra(
-        #        select={
-        #            'question_response': select_group_query + from_query
-        #        },
-        #    )
+        rows = VoIPCall.objects\
+            .only('starting_date', 'phone_number', 'duration', 'disposition')\
+            .filter(**kwargs).order_by(sort_field)\
+            .extra(
+                select={
+                    'section_response': select_group_query + from_query
+                },
+            )
 
         request.session['session_surveycalls'] = rows
 
@@ -1406,13 +1411,12 @@ def survey_report(request):
         if request.GET.get('page') or request.GET.get('sort_by'):
             survey_cdr_daily_data =\
                 request.session['session_survey_cdr_daily_data']
+            action = 'tabs-2'
         else:
-            #survey_cdr_daily_data = survey_cdr_daily_report(kwargs,
-            #                                                from_query,
-            #                                                select_group_query)
-            #request.session['session_survey_cdr_daily_data'] =\
-            #    survey_cdr_daily_data
-            request.session['session_survey_cdr_daily_data'] = []
+            survey_cdr_daily_data = survey_cdr_daily_report(
+                kwargs, from_query, select_group_query)
+            request.session['session_survey_cdr_daily_data'] =\
+                survey_cdr_daily_data
     except:
         rows = []
         if request.method == 'POST':

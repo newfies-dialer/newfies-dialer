@@ -1393,7 +1393,21 @@ def survey_report(request):
         from_query = \
             'FROM survey2_result, survey2_section, dialer_callrequest ' \
             'WHERE survey2_result.callrequest_id = dialer_callrequest.id '\
-            'AND  survey2_result.section_id = survey2_section.id'
+            'AND survey2_result.section_id = survey2_section.id '
+            #'GROUP BY survey2_result.section_id'
+        """
+        SELECT string_agg(ARRAY_TO_STRING(ARRAY[question, response, record_file], '*|*'), '-|-')
+        FROM survey2_result, survey2_section, dialer_callrequest
+        WHERE survey2_result.callrequest_id = dialer_callrequest.id
+        AND survey2_result.section_id = survey2_section.id
+
+        # TODO : Need to do GROUP BY on following query
+        SELECT survey2_result.callrequest_id,
+        ARRAY_TO_STRING(ARRAY[survey2_section.question, response, record_file], '*|*') AS result
+        FROM survey2_result, survey2_section, dialer_callrequest
+        WHERE survey2_result.callrequest_id = dialer_callrequest.id
+        AND survey2_result.section_id = survey2_section.id;
+        """
 
 
         rows = VoIPCall.objects\

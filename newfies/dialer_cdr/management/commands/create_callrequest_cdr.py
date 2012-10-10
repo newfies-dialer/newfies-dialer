@@ -89,21 +89,26 @@ def create_callrequest(campaign_id, quantity):
 
         print "Get list section:"
         list_section = Section.objects.filter(survey=obj_campaign.object_id)
-        section_id = random.randint(0, len(list_section) - 1)
-        print section_id
-        print list_section[section_id]
-        print "-----------------"
+
+
         # for elem in list_section:
         #     print elem[1]
-
-        cpg_result = Result.objects.create(
-                            section=list_section[section_id],
-                            response=choice(RESPONSE),
-                            record_file='xyz.mp3',
-                            recording_duration=10,
-                            callrequest=new_callrequest)
-        print "cpg_result:"
-        print cpg_result
+        for j in range(1, 3):
+            section_id = random.randint(0, len(list_section) - 1)
+            print section_id
+            print list_section[section_id]
+            print "-----------------"
+            try:
+                cpg_result = Result.objects.create(
+                                    section=list_section[section_id],
+                                    response=choice(RESPONSE),
+                                    record_file='xyz.mp3',
+                                    recording_duration=10,
+                                    callrequest=new_callrequest)
+            except:
+                pass
+        #print "cpg_result:"
+        #print cpg_result
 
         ResultAggregate.objects.create(
                             campaign=obj_campaign,

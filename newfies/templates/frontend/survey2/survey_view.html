@@ -28,7 +28,6 @@
         </div>
     </div>
 
-
     <div class="column">
     {% if section_list %}
 
@@ -46,7 +45,6 @@
                 <!--To remove section branching for voice, record &
                patch-through section-->
                 <script type="text/javascript">
-
                     $(function() {
                         $("#row"+{{ section.id }}).find(".section-edit").contents().unwrap();
                         $("#row"+{{ section.id }}).find(".icon-pencil").remove();
@@ -63,7 +61,6 @@
                         $("#row"+{{ section.id }}).find(".section-branch").contents().unwrap();
                         $("#row"+{{ section.id }}).find(".icon-random").remove();
                     });
-
                 </script>
             </div>
             <div class="portlet-content">
@@ -89,7 +86,6 @@
 
                             {% else %}
                                 <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}
-
                             {% endif %}
                         </div>
 

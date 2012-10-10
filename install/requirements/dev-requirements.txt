@@ -1,6 +1,6 @@
-sphinx
-django-extensions
-Werkzeug
-django-debug-toolbar
-ipython
-pip-tools
+Sphinx==1.1.3
+django-extensions==0.9
+Werkzeug==0.8.3
+django-debug-toolbar==0.9.4
+ipython==0.13
+pip-tools==0.2

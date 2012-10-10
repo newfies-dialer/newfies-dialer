@@ -36,7 +36,8 @@ KERNEL_ARCH=$(uname -p)
 INSTALL_DIR='/usr/share/newfies'
 INSTALL_DIR_WELCOME='/var/www/newfies'
 DATABASENAME='newfies_dialer'
-DB_USERNAME='newfies_dialer'
+DB_USERSALT=`</dev/urandom tr -dc 0-9| (head -c $1 > /dev/null 2>&1 || head -c 5)`
+DB_USERNAME="newfies_dialer_$DB_USERSALT"
 DB_PASSWORD=`</dev/urandom tr -dc A-Za-z0-9| (head -c $1 > /dev/null 2>&1 || head -c 20)`
 DB_HOSTNAME='localhost'
 DB_PORT='5432'
@@ -221,6 +222,8 @@ func_install_frontend(){
             apt-get -y install nginx supervisor
             apt-get -y install git-core mercurial gawk
             apt-get -y install python-pip
+            #for audiofile convertion
+            apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
 
             #PostgreSQL
             apt-get -y install postgresql
@@ -228,13 +231,7 @@ func_install_frontend(){
             #Start PostgreSQL
             /etc/init.d/postgresql start
 
-            #the following doesn't work with postgresql unless you create a local file
-            #or set to "trust" in pg_hba.conf
-            #until psql -h $DB_HOSTNAME -p $DB_PORT $DB_USERNAME $DB_USERNAME -c ";" ; do
             clear
-
-            #for audiofile convertion
-            apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
         ;;
         'CENTOS')
             if [ ! -f /etc/yum.repos.d/rpmforge.repo ]; then
@@ -245,7 +242,7 @@ func_install_frontend(){
             #Install epel repo for pip and mod_python
             rpm -ivh http://dl.fedoraproject.org/pub/epel/6/$KERNEL_ARCH/epel-release-6-7.noarch.rpm
 
-            # disable epel repository since by default it is enabled.
+            #Disable epel repository since by default it is enabled.
             sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo
             yum -y groupinstall "Development Tools"
             yum -y install git sudo
@@ -259,9 +256,6 @@ func_install_frontend(){
             service postgresql initdb
             service postgresql start
 
-            #the following doesn't work with postgresql unless you create a local file
-            #or set to "trust" in pg_hba.conf
-            #until psql -h $DB_HOSTNAME -p $DB_PORT $DB_USERNAME $DB_USERNAME -c ";" ; do
             clear
         ;;
     esac

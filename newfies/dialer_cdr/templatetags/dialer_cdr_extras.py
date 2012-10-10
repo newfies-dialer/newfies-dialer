@@ -173,17 +173,17 @@ def que_res_string(val):
 
     for i in val_list:
         if "*|**|*" in i:
-            que_audio = i.split("*|**|*")
+            que_audio = i.encode('utf-8').split("*|**|*")
             if que_audio:
                 new_string = '<tr><td colspan="2">%s%s</td></tr>' % \
                              (str(que_audio[0]),
                               survey_audio_recording(str(que_audio[1])))
                 result_string += new_string.encode('utf-8')
         else:
-            que_res = i.split("*|*")
+            que_res = i.encode('utf-8').split("*|*")
             result_string += \
                 '<tr><td>%s</td><td class="survey_result_key">%s</td></tr>' % \
-                    (que_res[0].encode('utf-8'), que_res[1].encode('utf-8'))
+                    (que_res[0], que_res[1])
 
     result_string += '</table>'
     return result_string

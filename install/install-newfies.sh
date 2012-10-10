@@ -230,8 +230,6 @@ func_install_frontend(){
             apt-get -y install libpq-dev
             #Start PostgreSQL
             /etc/init.d/postgresql start
-
-            clear
         ;;
         'CENTOS')
             if [ ! -f /etc/yum.repos.d/rpmforge.repo ]; then
@@ -255,18 +253,17 @@ func_install_frontend(){
             chkconfig --levels 235 postgresql on
             service postgresql initdb
             service postgresql start
-
-            clear
         ;;
     esac
 
     #Create Newfies User
+    echo ""
     echo "Create Newfies User/Group : $NEWFIES_USER"
     useradd $NEWFIES_USER --user-group --system --no-create-home
 
     if [ -d "$INSTALL_DIR" ]; then
         # Newfies-Dialer is already installed
-        echo ""
+        clear
         echo ""
         echo "We detect an existing Newfies-Dialer Installation"
         echo "if you continue the existing installation will be removed!"
@@ -279,6 +276,7 @@ func_install_frontend(){
         echo "Files from $INSTALL_DIR has been moved to /tmp/old-newfies-dialer_$DATETIME"
 
         if [ `sudo -u postgres psql -qAt --list | egrep '^$DATABASENAME\|' | wc -l` -eq 1 ]; then
+            echo ""
             echo "Run backup with postgresql..."
             sudo -u postgres pg_dump $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.pgsqldump.sql
             echo "PostgreSQL Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.pgsqldump.sql"

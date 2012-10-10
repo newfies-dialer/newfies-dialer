@@ -25,14 +25,14 @@ func_identify_os() {
     if [ -f /etc/debian_version ] ; then
         DIST='DEBIAN'
         if [ "$(lsb_release -cs)" != "lucid" ] && [ "$(lsb_release -cs)" != "precise" ]; then
-		    echo "This script is only intended to run on Ubuntu LTS 10.04 / 12.04 or CentOS 6.2 / 6.3"
-		    exit 255
-	    fi
+            echo "This script is only intended to run on Ubuntu LTS 10.04 / 12.04 or CentOS 6.2 / 6.3"
+            exit 255
+        fi
     elif [ -f /etc/redhat-release ] ; then
         DIST='CENTOS'
         if [ "$(awk '{print $3}' /etc/redhat-release)" != "6.2" ] && [ "$(awk '{print $3}' /etc/redhat-release)" != "6.3" ] ; then
-        	echo "This script is only intended to run on Ubuntu LTS 10.04 / 12.04 or CentOS 6.2 / 6.3"
-        	exit 255
+            echo "This script is only intended to run on Ubuntu LTS 10.04 / 12.04 or CentOS 6.2 / 6.3"
+            exit 255
         fi
     else
         echo ""
@@ -62,15 +62,15 @@ case $DIST in
     ;;
     'CENTOS')
         if [ ! -f /etc/yum.repos.d/rpmforge.repo ];
-       	then
-			# Install RPMFORGE Repo
+        then
+            # Install RPMFORGE Repo
             #Check architecture
-        	KERNELARCH=$(uname -p)
-        	if [ $KERNELARCH = "x86_64" ]; then
-				rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.x86_64.rpm
-			else
-				rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.i686.rpm
-			fi
+            KERNELARCH=$(uname -p)
+            if [ $KERNELARCH = "x86_64" ]; then
+                rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.x86_64.rpm
+            else
+                rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.i686.rpm
+            fi
         fi
         yum -y update
         yum -y install mlocate vim git-core

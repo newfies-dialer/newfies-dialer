@@ -56,14 +56,14 @@ func_identify_os() {
     if [ -f /etc/debian_version ] ; then
         DIST='DEBIAN'
         if [ "$(lsb_release -cs)" != "lucid" ] && [ "$(lsb_release -cs)" != "precise" ]; then
-		    echo "This script is only intended to run on Ubuntu 12.04 TLS or CentOS 6.2 / 6.3"
-		    exit 255
-	    fi
+            echo "This script is only intended to run on Ubuntu 12.04 TLS or CentOS 6.2 / 6.3"
+            exit 255
+        fi
     elif [ -f /etc/redhat-release ] ; then
         DIST='CENTOS'
         if [ "$(awk '{print $3}' /etc/redhat-release)" != "6.2" ] && [ "$(awk '{print $3}' /etc/redhat-release)" != "6.3" ] ; then
-        	echo "This script is only intended to run on Ubuntu 12.04 TLS or CentOS 6.2 / 6.3"
-        	exit 255
+            echo "This script is only intended to run on Ubuntu 12.04 TLS or CentOS 6.2 / 6.3"
+            exit 255
         fi
     else
         echo ""
@@ -207,7 +207,7 @@ func_install_frontend(){
     echo ""
     echo ""
     echo "This script will install Newfies-Dialer on your server"
-	echo "======================================================"
+    echo "======================================================"
     echo ""
     #echo "Which version do you want to install ? DEVEL or STABLE [] (default:STABLE)"
     #read BRANCH
@@ -237,18 +237,18 @@ func_install_frontend(){
             apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
         ;;
         'CENTOS')
-			if [ ! -f /etc/yum.repos.d/rpmforge.repo ]; then
-            	# Install RPMFORGE Repo
-            	rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.$KERNEL_ARCH.rpm
-        	fi
+            if [ ! -f /etc/yum.repos.d/rpmforge.repo ]; then
+                # Install RPMFORGE Repo
+                rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.$KERNEL_ARCH.rpm
+            fi
 
             #Install epel repo for pip and mod_python
-			rpm -ivh http://dl.fedoraproject.org/pub/epel/6/$KERNEL_ARCH/epel-release-6-7.noarch.rpm
+            rpm -ivh http://dl.fedoraproject.org/pub/epel/6/$KERNEL_ARCH/epel-release-6-7.noarch.rpm
 
             # disable epel repository since by default it is enabled.
             sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo
             yum -y groupinstall "Development Tools"
-            yum -y install git sudo 
+            yum -y install git sudo
             yum -y --enablerepo=epel install python-pip mod_python python-setuptools python-tools python-devel mercurial mod_wsgi
             #start http after reboot
             chkconfig --levels 235 httpd on
@@ -257,8 +257,8 @@ func_install_frontend(){
             yum -y install postgresql-server postgresql-devel
             chkconfig --levels 235 postgresql on
             service postgresql initdb
-			service postgresql start
-			
+            service postgresql start
+
             #the following doesn't work with postgresql unless you create a local file
             #or set to "trust" in pg_hba.conf
             #until psql -h $DB_HOSTNAME -p $DB_PORT $DB_USERNAME $DB_USERNAME -c ";" ; do
@@ -419,7 +419,7 @@ func_install_frontend(){
         clear
         echo "We have not detected your IP address automatically, please enter it manually"
         read IPADDR
-	fi
+    fi
 
     ##Update Freeswitch XML CDR
     #NEWFIES_CDR_API='api\/v1\/store_cdr\/'
@@ -439,11 +439,11 @@ func_install_frontend(){
     case $DIST in
         'DEBIAN')
             #Get TZ
-			ZONE=$(head -1 /etc/timezone)
+            ZONE=$(head -1 /etc/timezone)
         ;;
         'CENTOS')
-        	#Get TZ
-			. /etc/sysconfig/clock
+            #Get TZ
+            . /etc/sysconfig/clock
             echo ""
             echo "We will now add port $HTTP_PORT  and port 80 to your Firewall"
             echo "Press Enter to continue or CTRL-C to exit"
@@ -523,7 +523,7 @@ func_install_backend() {
         clear
         echo "we have not detected your IP address automatically, please enter it manually"
         read IPADDR
-	fi
+    fi
 
     #Create directory for pid file
     mkdir -p /var/run/celery
@@ -550,19 +550,19 @@ func_install_backend() {
             cd /etc/init.d; update-rc.d newfies-celeryd defaults 99
 
             #Check permissions on /dev/shm to ensure that celery can start and run for openVZ.
-			DIR="/dev/shm"
-			echo "Checking the permissions for $dir"
-			stat $DIR
-			if [ `stat -c "%a" $DIR` -ge 777 ] ; then
-     			echo "$DIR has Read Write permissions."
-			else
-     			echo "$DIR has no read write permissions."
-        		chmod -R 777 /dev/shm
-        		if [ `grep -i /dev/shm /etc/fstab | wc -l` -eq 0 ]; then
-                	echo "Adding fstab entry to set permissions /dev/shm"
-                	echo "none /dev/shm tmpfs rw,nosuid,nodev,noexec 0 0" >> /etc/fstab
-        		fi
-			fi
+            DIR="/dev/shm"
+            echo "Checking the permissions for $dir"
+            stat $DIR
+            if [ `stat -c "%a" $DIR` -ge 777 ] ; then
+                echo "$DIR has Read Write permissions."
+            else
+                echo "$DIR has no read write permissions."
+                chmod -R 777 /dev/shm
+                if [ `grep -i /dev/shm /etc/fstab | wc -l` -eq 0 ]; then
+                    echo "Adding fstab entry to set permissions /dev/shm"
+                    echo "none /dev/shm tmpfs rw,nosuid,nodev,noexec 0 0" >> /etc/fstab
+                fi
+            fi
         ;;
         'CENTOS')
             # Add init-scripts
@@ -614,15 +614,15 @@ func_install_redis_server() {
 
 #Menu Section for Script
 show_menu_newfies() {
-	clear
-	echo " > Newfies-Dialer Installation Menu"
-	echo "====================================="
-	echo "	1)  Install All"
-	echo "	2)  Install Newfies-Dialer Web Frontend"
-	echo "	3)  Install Newfies-Dialer Backend / Celery"
-	echo "	0)  Quit"
-	echo -n "(0-3) : "
-	read OPTION < /dev/tty
+    clear
+    echo " > Newfies-Dialer Installation Menu"
+    echo "====================================="
+    echo "  1)  Install All"
+    echo "  2)  Install Newfies-Dialer Web Frontend"
+    echo "  3)  Install Newfies-Dialer Backend / Celery"
+    echo "  0)  Quit"
+    echo -n "(0-3) : "
+    read OPTION < /dev/tty
 }
 
 
@@ -648,28 +648,28 @@ ExitFinish=0
 
 while [ $ExitFinish -eq 0 ]; do
 
-	# Show menu with Installation items
-	show_menu_newfies
+    # Show menu with Installation items
+    show_menu_newfies
 
-	case $OPTION in
-		1)
-			func_install_frontend
-			func_install_landing_page
-			func_install_backend
-			echo done
-		;;
-		2)
-			func_install_frontend
-			func_install_landing_page
-		;;
-		3)
-			func_install_backend
-		;;
-		0)
-		ExitFinish=1
-		;;
-		*)
-	esac
+    case $OPTION in
+        1)
+            func_install_frontend
+            func_install_landing_page
+            func_install_backend
+            echo done
+        ;;
+        2)
+            func_install_frontend
+            func_install_landing_page
+        ;;
+        3)
+            func_install_backend
+        ;;
+        0)
+        ExitFinish=1
+        ;;
+        *)
+    esac
 
 done
 

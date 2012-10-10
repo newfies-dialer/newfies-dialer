@@ -247,15 +247,18 @@ func_install_frontend(){
 
             # disable epel repository since by default it is enabled.
             sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo
+            yum -y groupinstall "Development Tools"
+            yum -y install git sudo 
             yum -y --enablerepo=epel install python-pip mod_python python-setuptools python-tools python-devel mercurial mod_wsgi
             #start http after reboot
             chkconfig --levels 235 httpd on
 
             #Install & Start PostgreSQL
-            yum install postgresql-server
-            chkconfig --levels 235 postgresq on
-            /etc/init.d/postgresql start
-
+            yum -y install postgresql-server postgresql-devel
+            chkconfig --levels 235 postgresql on
+            service postgresql initdb
+			service postgresql start
+			
             #the following doesn't work with postgresql unless you create a local file
             #or set to "trust" in pg_hba.conf
             #until psql -h $DB_HOSTNAME -p $DB_PORT $DB_USERNAME $DB_USERNAME -c ";" ; do
@@ -264,8 +267,8 @@ func_install_frontend(){
     esac
 
     #Create Newfies User
-    echo "Create Newfies user : $NEWFIES_USER"
-    adduser --system --no-create-home --disabled-login --disabled-password --group $NEWFIES_USER
+    echo "Create Newfies User/Group : $NEWFIES_USER"
+    useradd $NEWFIES_USER --user-group --system --no-create-home
 
     if [ -d "$INSTALL_DIR" ]; then
         # Newfies-Dialer is already installed

@@ -250,7 +250,6 @@ func_install_frontend(){
             yum -y groupinstall "Development Tools"
             yum -y install git sudo 
             yum -y --enablerepo=epel install python-pip mod_python python-setuptools python-tools python-devel mercurial mod_wsgi
-            easy_install pip
             #start http after reboot
             chkconfig --levels 235 httpd on
 

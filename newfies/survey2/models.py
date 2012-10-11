@@ -209,7 +209,7 @@ class Section_abstract(Sortable):
                                         verbose_name=_("Dial phone number"))
 
     # set if we continue or just hangup after this section
-    continue_survey = models.BooleanField(default=False,
+    continue_survey = models.BooleanField(default=True,
                                           verbose_name=_('Continue survey when done'))
 
     created_date = models.DateTimeField(auto_now_add=True)

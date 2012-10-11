@@ -25,7 +25,6 @@ from survey2.constants import SECTION_TYPE
 #from tagging.fields import TagField
 
 
-
 class Survey_abstract(models.Model):
     """This defines the Survey template
 
@@ -78,7 +77,7 @@ class Survey_template(Survey_abstract):
                 campaign=campaign_obj).count()
 
             if record_count == 0:
-                survey_obj = Survey.objects.create(
+                Survey.objects.create(
                     name=self.name,
                     description=self.description,
                     user=self.user,
@@ -313,6 +312,7 @@ class Section_template(Section_abstract):
         except:
             raise
         return True
+
 
 class Section(Section_abstract):
     """

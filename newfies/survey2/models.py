@@ -164,29 +164,29 @@ class Section_abstract(Sortable):
                                   verbose_name=_("retries"), default=0,
                                   help_text=_('Retries this section until it\'s valid'))
     timeout = models.IntegerField(max_length=2, null=True, blank=True,
-                                  verbose_name=_("timeout"),
+                                  verbose_name=_("timeout"), default=1000,
                                   help_text=_('Timeout in seconds to press the key(s)'))
     # multiple choice question,
     key_0 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Result if the user press") + " 0")
+                             verbose_name=_("Press") + " 0")
     key_1 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Result if the user press") + " 1")
+                             verbose_name=_("Press") + " 1")
     key_2 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Result if the user press") + " 2")
+                             verbose_name=_("Press") + " 2")
     key_3 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Result if the user press") + " 3")
+                             verbose_name=_("Press") + " 3")
     key_4 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Result if the user press") + " 4")
+                             verbose_name=_("Press") + " 4")
     key_5 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Result if the user press") + " 5")
+                             verbose_name=_("Press") + " 5")
     key_6 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Result if the user press") + " 6")
+                             verbose_name=_("Press") + " 6")
     key_7 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Result if the user press") + " 7")
+                             verbose_name=_("Press") + " 7")
     key_8 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Result if the user press") + " 8")
+                             verbose_name=_("Press") + " 8")
     key_9 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Result if the user press") + " 9")
+                             verbose_name=_("Press") + " 9")
 
     # rating question
     rating_laps = models.IntegerField(max_length=1, null=True, blank=True,
@@ -196,7 +196,7 @@ class Section_abstract(Sortable):
     validate_number = models.BooleanField(default=True,
                                           verbose_name=_('Check for valid number'))
     number_digits = models.IntegerField(max_length=2, null=True, blank=True,
-                                        verbose_name=_("Number limit"))
+                                        verbose_name=_("Number of digits"))
 
     min_number = models.IntegerField(max_length=1, null=True, blank=True,
                                      default=1, verbose_name=_("Minimum"))

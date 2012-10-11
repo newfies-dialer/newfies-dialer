@@ -133,7 +133,7 @@ class VoiceSectionForm(ModelForm):
         instance = getattr(self, 'instance', None)
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
-        self.fields['question'].widget.attrs['class'] = 'span5'
+        self.fields['question'].widget.attrs['class'] = 'span3'
         self.fields['retries'].widget.attrs['class'] = 'span1'
         if instance.id and user:
             self.fields['audiofile'].choices = get_audiofile_list(user)
@@ -161,7 +161,7 @@ class MultipleChoiceSectionForm(ModelForm):
 
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
-        self.fields['question'].widget.attrs['class'] = 'span5'
+        self.fields['question'].widget.attrs['class'] = 'span3'
         self.fields['retries'].widget.attrs['class'] = 'span1'
         self.fields['timeout'].widget.attrs['class'] = 'span1'
 
@@ -189,9 +189,10 @@ class RatingSectionForm(ModelForm):
 
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
-        self.fields['question'].widget.attrs['class'] = 'span5'
+        self.fields['question'].widget.attrs['class'] = 'span3'
         self.fields['retries'].widget.attrs['class'] = 'span1'
         self.fields['timeout'].widget.attrs['class'] = 'span1'
+        self.fields['rating_laps'].widget.attrs['class'] = 'span1'
 
 
 class EnterNumberSectionForm(ModelForm):
@@ -214,7 +215,7 @@ class EnterNumberSectionForm(ModelForm):
             self.fields['audiofile'].widget.attrs['class'] = 'span2'
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
-        self.fields['question'].widget.attrs['class'] = 'span5'
+        self.fields['question'].widget.attrs['class'] = 'span3'
         self.fields['validate_number'].widget.attrs['class'] = 'span2'
         self.fields['number_digits'].widget.attrs['class'] = 'span1'
         self.fields['min_number'].widget.attrs['class'] = 'span1'
@@ -232,7 +233,7 @@ class RecordMessageSectionForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(RecordMessageSectionForm, self).__init__(*args, **kwargs)
-        self.fields['question'].widget.attrs['class'] = 'span5'
+        self.fields['question'].widget.attrs['class'] = 'span3'
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
 
@@ -247,7 +248,7 @@ class PatchThroughSectionForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(PatchThroughSectionForm, self).__init__(*args, **kwargs)
-        self.fields['question'].widget.attrs['class'] = 'span5'
+        self.fields['question'].widget.attrs['class'] = 'span3'
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
 
@@ -263,7 +264,7 @@ class PhrasingForm(ModelForm):
         super(PhrasingForm, self).__init__(*args, **kwargs)
         #instance = getattr(self, 'instance', None)
         self.fields['phrasing'].widget = forms.Textarea()
-        self.fields['phrasing'].widget.attrs['class'] = 'span5'
+        self.fields['phrasing'].widget.attrs['class'] = 'span4'
 
 
 class BranchingForm(ModelForm):

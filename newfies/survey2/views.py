@@ -1116,6 +1116,7 @@ def survey_change(request, object_id):
         'form': form,
         'msg': request.session.get('msg'),
         'notice_count': notice_count(request),
+        'SECTION_TYPE': SECTION_TYPE,
     }
     request.session['msg'] = ''
     return render_to_response(template, data,
@@ -1153,6 +1154,7 @@ def survey_view(request, object_id):
         'action': 'view',
         'msg': request.session.get('msg'),
         'notice_count': notice_count(request),
+        'SECTION_TYPE': SECTION_TYPE,
     }
     return render_to_response(template, data,
         context_instance=RequestContext(request))

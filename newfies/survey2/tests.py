@@ -27,7 +27,7 @@ from survey2.views import survey_list, survey_grid, survey_add, \
     survey_change, survey_del, section_add, section_change,\
     section_phrasing_change, section_branch_change, survey_report,\
     survey_finestatemachine, export_surveycall_report, section_branch_add,\
-    section_delete, section_phrasing_play, survey_view
+    section_delete, section_phrasing_play, survey_view, survey_campaign_result
 from survey2.ajax import section_sort
 from utils.helper import grid_test_data
 
@@ -76,7 +76,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
     fixtures = ['auth_user.json', 'gateway.json', 'voiceapp.json',
                 'dialer_setting.json', 'phonebook.json', 'contact.json',
                 'campaign.json', 'campaign_subscriber.json',
-                'callrequest.json',
+                'callrequest.json', 'voipcall.json',
                 'survey_template.json', 'survey.json',
                 'section_template.json', 'section.json',
                 'branching_template.json', 'branching.json',
@@ -455,6 +455,13 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         request.session = {}
         response = section_branch_change(request, 1)
         self.assertEqual(response.status_code, 302)
+
+    def test_survey_campaign_result(self):
+        request = self.factory.get('/survey2_campaign_result/1/')
+        request.user = self.user
+        request.session = {}
+        response = survey_campaign_result(request, 1)
+        self.assertEqual(response.status_code, 200)
 
 
 class SurveyModel(TestCase):

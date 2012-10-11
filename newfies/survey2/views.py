@@ -1019,8 +1019,8 @@ def section_branch_change(request, id):
     request.session['msg'] = ''
     if request.GET.get('delete'):
         # perform delete
-        branching_obj = get_object_or_404(
-            Branching_template, id=int(id), section__survey__user=request.user)
+        branching_obj = get_object_or_404(Branching_template, id=int(id),
+                                          section__survey__user=request.user)
         survey_id = branching_obj.section.survey_id
         section_id = branching_obj.section_id
         branching_obj.delete()
@@ -1028,8 +1028,8 @@ def section_branch_change(request, id):
         return HttpResponseRedirect('/survey2/%s/#row%s'
                                     % (survey_id, section_id))
 
-    branching = get_object_or_404(
-        Branching_template, id=int(id), section__survey__user=request.user)
+    branching = get_object_or_404(Branching_template, id=int(id),
+                                  section__survey__user=request.user)
     form = BranchingForm(branching.section.survey_id,
                          branching.section_id,
                          instance=branching)

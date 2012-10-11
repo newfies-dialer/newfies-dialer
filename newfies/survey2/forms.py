@@ -15,11 +15,10 @@
 from django import forms
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.contenttypes.models import ContentType
 from dialer_campaign.models import Campaign
 from dialer_cdr.forms import VoipSearchForm
-from survey2.models import Survey_template, Survey, Section_template, \
-    Section, Branching, Branching_template
+from survey2.models import Survey_template, Section_template, \
+    Branching_template
 from survey2.constants import SECTION_TYPE
 from audiofield.models import AudioFile
 
@@ -77,7 +76,7 @@ def get_question_choice_list(section_id):
             and i not in keys_list:
             list_sq.append((i, '%s.%s %s' % \
                                (str(section_id), str(i),
-                                obj_section.__dict__['key_' + str(i)] )))
+                                obj_section.__dict__['key_' + str(i)])))
 
     list_sq.append(('', _('Anything')))
     return list_sq
@@ -281,17 +280,17 @@ class BranchingForm(ModelForm):
 
         # multiple choice section
         obj_section = Section_template.objects.get(id=section_id)
+
         if obj_section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
-            self.fields['keys'] = \
-                forms.ChoiceField(
-                    choices=get_question_choice_list(section_id),
-                    required=False)
+            self.fields['keys'] = forms.ChoiceField(
+                choices=get_question_choice_list(section_id),
+                required=False)
 
         # rating section
         if obj_section.type == SECTION_TYPE.RATING_SECTION:
-            self.fields['keys'] =\
-                forms.ChoiceField(choices=get_rating_choice_list(section_id),
-                                  required=False)
+            self.fields['keys'] = forms.ChoiceField(
+                choices=get_rating_choice_list(section_id),
+                required=False)
 
         # voice & record section
         if obj_section.type == SECTION_TYPE.VOICE_SECTION \

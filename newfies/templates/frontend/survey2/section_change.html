@@ -50,6 +50,7 @@
             </h3>
         </div>
 
+        <!-- Form to update or add new section -->
         <form method="POST" action="{% if action == 'update' %}/section/{{ section_id }}/{% else %}/section/add/?survey_id={{ survey_id }}{% endif %}" enctype="multipart/form-data" id="update_form">
             {% csrf_token %}
             {{ form.survey }}

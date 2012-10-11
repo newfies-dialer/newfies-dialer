@@ -99,7 +99,7 @@ def get_rating_choice_list(section_id):
     if obj_section.rating_laps:
         for i in range(1, int(obj_section.rating_laps) + 1):
             if i not in keys_list:
-                list_sq.append((i, '%s.%s' % (str(section_id), str(i))))
+                list_sq.append((i, '%s' % (str(i))))
 
     list_sq.append(('', _('Anything')))
     return list_sq

@@ -1208,7 +1208,6 @@ def get_survey_result(survey_result_kwargs):
         .filter(**survey_result_kwargs)\
         .values('section__question', 'response', 'count')\
         .order_by('section')
-    #.annotate(Count('response'))\
 
     return survey_result
 
@@ -1489,10 +1488,13 @@ def survey_campaign_result(request, id):
             callrequest=VoIPCall.objects.get(pk=id).callrequest_id)\
             .order_by('section')
 
+    #file_path = '%s/tts/phrasing_%s' %\
+    #            (settings.MEDIA_ROOT, phrasing_hexdigest)
     template = 'frontend/survey2/survey_campaign_result.html'
 
     data = {
         'result': result,
+        'MEDIA_ROOT': settings.MEDIA_ROOT,
     }
     request.session['msg'] = ''
     request.session['err_msg'] = ''

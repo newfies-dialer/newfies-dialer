@@ -227,7 +227,7 @@ class Section_abstract(Sortable):
     def get_branching_count_per_section(self):
         """Get branching count per section"""
         branching_count =\
-            Branching.objects.filter(section_id=self.id).count()
+            Branching_template.objects.filter(section_id=self.id).count()
         return branching_count
 
 

@@ -104,7 +104,7 @@
                         });
                     {% endif %}
 
-                    {% if section.type == 6  %}
+                    {% if section.type == SECTION_TYPE.PATCH_THROUGH_SECTION  %}
                         $(function() {
                             $("#row"+{{ section.id }}).find(".section-branch").contents().unwrap();
                             $("#row"+{{ section.id }}).find(".icon-random").remove();

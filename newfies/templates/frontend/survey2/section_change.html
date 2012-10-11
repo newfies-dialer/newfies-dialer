@@ -72,7 +72,7 @@
 
                 <div class="row">
                     {% if form.type.value|slugify == '1' or form.type.value|slugify == '2' or form.type.value|slugify == '3' or form.type.value|slugify == '4' %}
-                        <div class="span2 clearfix{% if form.retries.errors %} control-group error{% endif %}">
+                        <div class="span3 clearfix{% if form.retries.errors %} control-group error{% endif %}">
                             <label class="control-label" for="id_{{ form.retries.name }}">{{ form.retries.label }}</label>
                             <div class="input">
                                 {{ form.retries }}

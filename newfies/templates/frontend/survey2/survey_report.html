@@ -162,7 +162,7 @@
                     {% endifequal %}
                 </th>
                 <th>{% trans "Disposition" %}</th>
-                <th width="60%">{% trans "Survey Result" %}</th>
+                <th>{% trans "Survey Result" %}</th>
             </tr>
             </thead>
             {% if rows %}
@@ -173,7 +173,11 @@
                         <td>{{ row.phone_number }}</td>
                         <td>{{ row.duration|conv_min }}</td>
                         <td>{{ row.disposition }}</td>
-                        <td>{{ row.section_response|que_res_string|safe }}</td>
+                        <td>
+                            <a href="#survey-campaign-result"  url="/survey2_campaign_result/{{ row.id }}/" class="survey-campaign-result icon" data-toggle="modal" data-controls-modal="survey-campaign-result" {% icon_style 'eye' %} title="{% trans "Result" %}" >
+                                &nbsp;
+                            </a>
+                        </td>
                     </tr>
                 {% endfor %}
 
@@ -197,6 +201,19 @@
             <h3>{% trans "Export CSV file"  %}</h3> <br/>
             <a href="/export_surveycall_report/"><img src='{{STATIC_URL}}newfies/icons/x-office-spreadsheet.png' width="75"/></a>
         </div>
+
+        <!--Section branching change modal-->
+        <script type="text/javascript" charset="utf-8">
+
+            $(".survey-campaign-result").live('click', function() {
+                var url = $(this).attr('url');
+                var modal_id = $(this).attr('data-controls-modal');
+                $("#" + modal_id).load(url);
+            });
+
+        </script>
+        <!-- modal content-->
+        <div id="survey-campaign-result" class="modal hide fade"></div>
 
     </div>
 

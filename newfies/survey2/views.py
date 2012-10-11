@@ -1158,7 +1158,7 @@ def survey_view(request, object_id):
         context_instance=RequestContext(request))
 
 
-def survey_cdr_daily_report(kwargs, from_query, select_group_query):
+def survey_cdr_daily_report(kwargs):
     """Get survey voip call daily report"""
     max_duration = 0
     total_duration = 0
@@ -1177,13 +1177,7 @@ def survey_cdr_daily_report(kwargs, from_query, select_group_query):
         .annotate(Sum('duration'))\
         .annotate(Avg('duration'))\
         .order_by('-starting_date')
-    """
-    .extra(
-        select={
-            'question_response': select_group_query + from_query,
-        },
-    )
-    """
+
 
     # Following code will count total voip calls, duration
     if total_data.count() != 0:
@@ -1382,42 +1376,10 @@ def survey_report(request):
             else:
                 col_name_with_order['sort_field'] = sort_field
 
-        # List of Survey VoIP call report
-        #from_query =\
-        #    'FROM survey2_result '\
-        #    'WHERE survey2_result.callrequest_id = '\
-        #    'dialer_callrequest.id '
-        #select_group_query = 'SELECT group_concat(CONCAT_WS("*|*", section__question, response, record_file) SEPARATOR "-|-") '
-        select_group_query = \
-            "SELECT string_agg(ARRAY_TO_STRING(ARRAY[question, response, record_file] , '*|*'), '-|-') "
-        from_query = \
-            'FROM survey2_result, survey2_section, dialer_callrequest ' \
-            'WHERE survey2_result.callrequest_id = dialer_callrequest.id '\
-            'AND survey2_result.section_id = survey2_section.id '
-            #'GROUP BY survey2_result.section_id'
-        """
-        SELECT string_agg(ARRAY_TO_STRING(ARRAY[question, response, record_file], '*|*'), '-|-')
-        FROM survey2_result, survey2_section, dialer_callrequest
-        WHERE survey2_result.callrequest_id = dialer_callrequest.id
-        AND survey2_result.section_id = survey2_section.id
-
-        # TODO : Need to do GROUP BY on following query
-        SELECT survey2_result.callrequest_id,
-        ARRAY_TO_STRING(ARRAY[survey2_section.question, response, record_file], '*|*') AS result
-        FROM survey2_result, survey2_section, dialer_callrequest
-        WHERE survey2_result.callrequest_id = dialer_callrequest.id
-        AND survey2_result.section_id = survey2_section.id;
-        """
-
-
+        # List of Survey VoIP call report        
         rows = VoIPCall.objects\
-            .only('starting_date', 'phone_number', 'duration', 'disposition')\
-            .filter(**kwargs).order_by(sort_field)\
-            .extra(
-                select={
-                    'section_response': select_group_query + from_query
-                },
-            )
+            .only('starting_date', 'phone_number', 'duration', 'disposition', 'id')\
+            .filter(**kwargs).order_by(sort_field)
 
         request.session['session_surveycalls'] = rows
 
@@ -1427,8 +1389,7 @@ def survey_report(request):
                 request.session['session_survey_cdr_daily_data']
             action = 'tabs-2'
         else:
-            survey_cdr_daily_data = survey_cdr_daily_report(
-                kwargs, from_query, select_group_query)
+            survey_cdr_daily_data = survey_cdr_daily_report(kwargs)
             request.session['session_survey_cdr_daily_data'] =\
                 survey_cdr_daily_data
     except:
@@ -1509,3 +1470,21 @@ def export_surveycall_report(request):
         ]
         writer.writerow(result_row_list)
     return response
+
+
+@login_required
+def survey_campaign_result(request, id):
+    voipcall = VoIPCall.objects.get(pk=id)
+    result = ''
+    result = \
+        Result.objects.filter(callrequest=voipcall.callrequest_id).order_by('section')
+
+    template = 'frontend/survey2/survey_campaign_result.html'
+
+    data = {
+        'result': result,
+    }
+    request.session['msg'] = ''
+    request.session['err_msg'] = ''
+    return render_to_response(template, data,
+        context_instance=RequestContext(request))

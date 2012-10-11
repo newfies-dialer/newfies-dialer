@@ -623,7 +623,8 @@ def section_add(request):
         'form': form,
         'survey_id': survey_id,
         'err_msg': request.session.get('err_msg'),
-        'action': 'add'
+        'action': 'add',
+        'SECTION_TYPE': SECTION_TYPE,
     }
     request.session["msg"] = ''
     request.session['err_msg'] = ''
@@ -816,6 +817,7 @@ def section_change(request, id):
         'module': current_view(request),
         'err_msg': request.session.get('err_msg'),
         'action': 'update',
+        'SECTION_TYPE': SECTION_TYPE,
     }
     request.session["msg"] = ''
     request.session['err_msg'] = ''
@@ -994,6 +996,7 @@ def section_branch_add(request):
         'module': current_view(request),
         'err_msg': request.session.get('err_msg'),
         'action': 'add',
+        'SECTION_TYPE': SECTION_TYPE,
     }
     request.session["msg"] = ''
     request.session['err_msg'] = ''
@@ -1058,6 +1061,7 @@ def section_branch_change(request, id):
         'module': current_view(request),
         'err_msg': request.session.get('err_msg'),
         'action': 'update',
+        'SECTION_TYPE': SECTION_TYPE,
     }
     request.session["msg"] = ''
     request.session['err_msg'] = ''

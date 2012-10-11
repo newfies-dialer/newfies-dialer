@@ -93,11 +93,11 @@
                 </div>
 
                 <!--Voice Section form-->
-                {% if form.type.value|slugify == '1' %}
+                {% if form.type.value == SECTION_TYPE.VOICE_SECTION %}
                 {% endif %}
 
                 <!--Multiple choice Section form-->
-                {% if form.type.value|slugify == '2' %}
+                {% if form.type.value == SECTION_TYPE.MULTIPLE_CHOICE_SECTION %}
                     <div class="row">
                         {% get_fieldset key_0,key_1,key_2,key_3,key_4,key_5,key_6,key_7,key_8,key_9 as key_fields from form %}
                         {% for field in key_fields.visible_fields %}
@@ -124,7 +124,7 @@
                 {% endif %}
 
                 <!--Rating Section form-->
-                {% if form.type.value|slugify == '3' %}
+                {% if form.type.value == SECTION_TYPE.RATING_SECTION %}
                     <div class="row">
                         <div class="span3 clearfix{% if form.rating_laps.errors %} control-group error{% endif %}">
                             <label class="control-label" for="id_{{ form.rating_laps.name }}">{{ form.rating_laps.label }}</label>
@@ -161,7 +161,7 @@
                 {% endif %}
 
                 <!--Enter number Section form-->
-                {% if form.type.value|slugify == '4' %}
+                {% if form.type.value == SECTION_TYPE.ENTER_NUMBER_SECTION %}
                     <div class="row">
                         <div class="span2 clearfix{% if form.validate_number.errors %} control-group error{% endif %}">
                             <div class="input">
@@ -227,7 +227,7 @@
                 {% endif %}
 
                 <!--Audio field while updating section-->
-                {% if form.type.value|slugify == '1' or form.type.value|slugify == '2' or form.type.value|slugify == '3' or form.type.value|slugify == '4' %}
+                {% if form.type.value == SECTION_TYPE.VOICE_SECTION or form.type.value == SECTION_TYPE.MULTIPLE_CHOICE_SECTION or form.type.value == SECTION_TYPE.RATING_SECTION or form.type.value == SECTION_TYPE.ENTER_NUMBER_SECTION %}
                     {% if action == 'update' %}
                         <div class="row">
                             <div class="span3 clearfix{% if form.audiofile.errors %} control-group error{% endif %}">
@@ -248,7 +248,7 @@
                 {% endif %}
 
                 <!--Record Message Section form-->
-                {% if form.type.value|slugify == '5' %}
+                {% if form.type.value == SECTION_TYPE.RECORD_MSG_SECTION %}
                     <div class="row">
                         <div class="span3 clearfix{% if form.continue_survey.errors %} control-group error{% endif %}">
                             <div class="input">
@@ -263,7 +263,7 @@
                 {% endif %}
 
                 <!--Patch-Through Section form-->
-                {% if form.type.value|slugify == '6' %}
+                {% if form.type.value == SECTION_TYPE.PATCH_THROUGH_SECTION %}
                     <div class="row">
                         <div class="span2 clearfix{% if form.dial_phonenumber.errors %} control-group error{% endif %}">
                             <label class="control-label" for="id_{{ form.dial_phonenumber.name }}">{{ form.dial_phonenumber.label }}</label>

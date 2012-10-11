@@ -1376,7 +1376,7 @@ def survey_report(request):
             else:
                 col_name_with_order['sort_field'] = sort_field
 
-        # List of Survey VoIP call report        
+        # List of Survey VoIP call report
         rows = VoIPCall.objects\
             .only('starting_date', 'phone_number', 'duration', 'disposition', 'id')\
             .filter(**kwargs).order_by(sort_field)
@@ -1474,10 +1474,20 @@ def export_surveycall_report(request):
 
 @login_required
 def survey_campaign_result(request, id):
-    voipcall = VoIPCall.objects.get(pk=id)
-    result = ''
+    """Survey Campaign Result
+
+    **Attributes**:
+
+        * ``template`` - frontend/survey2/survey_campaign_result.html
+
+    **Logic Description**:
+
+        * List all survey result which belong to callrequest.
+    """
     result = \
-        Result.objects.filter(callrequest=voipcall.callrequest_id).order_by('section')
+        Result.objects.filter(
+            callrequest=VoIPCall.objects.get(pk=id).callrequest_id)\
+            .order_by('section')
 
     template = 'frontend/survey2/survey_campaign_result.html'
 

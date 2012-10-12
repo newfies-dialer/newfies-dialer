@@ -712,3 +712,18 @@ td.survey_edit_key {
     line-height: 38px;
 }
 
+body .modal-section {
+    /*new custom width
+    width: 560px;*/
+    width: 610px;
+    /*width: 750px;*/
+
+    /*must be half of the width, minus scrollbar on the left (30px)
+    margin: -250px 0 0 -280px;*/
+    margin: -300px 0 0 -345px;
+    /*margin: -345px 0 0 -375px;*/
+}
+
+.navbar-fixed-top .logo_name {
+    padding: 15px 20px;
+}

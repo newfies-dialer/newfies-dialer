@@ -39,12 +39,17 @@
                     <td>{{ record.section.question }}</td>
                     <td>{{ record.response }}</td>
                     <td>
-                        <ul class="playlist">
-                            <li style="width:110px;"><a href="{{ MEDIA_ROOT }}/recording/{{ record.record_file }}">{{ record.record_file }}</a></li>
-                        </ul>
-
+                        {% if record.record_file %}
+                            <ul class="playlist">
+                                <li style="width:110px;"><a href="{{ MEDIA_ROOT }}/recording/{{ record.record_file }}">{{ record.record_file }}</a></li>
+                            </ul>
+                        {% endif %}
                     </td>
-                    <td>{{ record.recording_duration }}</td>
+                    <td>
+                        {% if record.record_file %}
+                            {{ record.recording_duration }}
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

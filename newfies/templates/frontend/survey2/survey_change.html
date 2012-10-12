@@ -69,6 +69,9 @@
                 {% if section.retries %}
                     <span class="label label-info">R-{{ section.retries }}</span>
                 {% endif %}
+                {% if section.completed %}
+                    <span class="badge badge-success">{% trans "Completed" %}</span>
+                {% endif %}
 
                 <!--To remove section branching for voice, record &
                     patch-through section-->
@@ -164,13 +167,6 @@
                                     {% endif %}
                                 {% endif %}
                             </div>
-
-                            <!--survey completed-->
-                            {% if section.completed %}
-                                <div class="span8">
-                                    <b>{% trans "Survey completed"|title %} :</b> {{ section.completed }}
-                                </div>
-                            {% endif %}
 
                             <!--Voice Section form-->
                             {% if section.type == SECTION_TYPE.VOICE_SECTION %}

@@ -205,7 +205,7 @@
                         <div class="span2">
                             <label class="control-label" for="id_{{ form.number_digits.name }}">{{ form.number_digits.label }}</label>
                         </div>
-                        <div class="span3 clearfix{% if form.number_digits.errors %} control-group error{% endif %}">
+                        <div class="span1 clearfix{% if form.number_digits.errors %} control-group error{% endif %}">
                             <div class="input">
                                 {{ form.number_digits }}
                                 {% if form.number_digits.errors %}
@@ -214,13 +214,8 @@
                                 <span class="help-block">{{ form.number_digits.help_text|safe }} </span>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row">
                         <div class="span2">
                             {{ form.validate_number.label }}
-                        </div>
-                        <div class="span3">
                             <label class="checkbox">
                                 {{ form.validate_number }}
                             </label>

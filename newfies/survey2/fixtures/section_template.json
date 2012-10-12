@@ -30,7 +30,8 @@
             "timeout":null,
             "created_date":"2012-09-13T08:06:05.344",
             "audiofile":null,
-            "key_0":null
+            "key_0":null,
+            "completed":false
         }
     },
     {
@@ -64,7 +65,9 @@
             "timeout":null,
             "created_date":"2012-09-13T08:33:47.744",
             "audiofile":null,
-            "key_0":"apple"
+            "key_0":"apple",
+            "completed":false
+
         }
     },
     {
@@ -98,7 +101,8 @@
             "timeout":null,
             "created_date":"2012-09-13T08:37:25.158",
             "audiofile":null,
-            "key_0":"xada"
+            "key_0":"xada",
+            "completed":false
         }
     },
     {
@@ -132,7 +136,8 @@
             "timeout":null,
             "created_date":"2012-09-13T08:37:25.158",
             "audiofile":null,
-            "key_0":""
+            "key_0":"",
+            "completed":false
         }
     },
     {
@@ -166,7 +171,8 @@
             "timeout":null,
             "created_date":"2012-09-13T08:37:25.158",
             "audiofile":null,
-            "key_0":""
+            "key_0":"",
+            "completed":false
         }
     },
     {
@@ -200,7 +206,8 @@
             "timeout":null,
             "created_date":"2012-09-13T08:37:25.158",
             "audiofile":null,
-            "key_0":""
+            "key_0":"",
+            "completed":false
         }
     }
 ]

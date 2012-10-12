@@ -293,6 +293,22 @@
                         </div>
                     </div>
                 {% endif %}
+
+                <!--survey completed field -->
+                <div class="row">
+                    <div class="span2 clearfix{% if form.completed.errors %} control-group error{% endif %}">
+                        {{ form.completed.label }}
+                    </div>
+                    <div class="span3 clearfix{% if form.completed.errors %} control-group error{% endif %}">
+                        <div class="input">
+                            {{ form.completed }}
+                            {% if form.completed.errors %}
+                                <span class="help-inline">{{ form.completed.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.completed.help_text|safe }} </span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="modal-footer" align="right">

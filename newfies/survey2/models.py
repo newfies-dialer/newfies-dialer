@@ -138,6 +138,7 @@ class Section_abstract(Sortable):
         * ``max_number`` -
         * ``dial_phonenumber`` -
         * ``continue_survey`` -
+        * ``completed`` -
 
     **Relationships**:
 
@@ -276,7 +277,8 @@ class Section_template(Section_abstract):
                 continue_survey=self.continue_survey,
                 order=self.order,
                 survey_id=self.survey_id,
-                invalid_audiofile_id=self.invalid_audiofile_id
+                invalid_audiofile_id=self.invalid_audiofile_id,
+                completed=self.completed,
             ).count()
 
             if record_count == 0:

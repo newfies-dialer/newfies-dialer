@@ -33,10 +33,10 @@
             $(document).keyup(function(e) {
                 if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
             });
-        </script>
 
+        </script>
         <!-- modal content-->
-        <div class="modal hide fade" id="section_modal">
+        <div class="modal hide fade modal-section" id="section_modal">
     {% endif %}
 
         <div class="modal-header">
@@ -269,8 +269,10 @@
                 <!--Patch-Through Section form-->
                 {% if form.type.value == SECTION_TYPE.PATCH_THROUGH_SECTION %}
                     <div class="row">
-                        <div class="span2 clearfix{% if form.dial_phonenumber.errors %} control-group error{% endif %}">
+                        <div class="span2">
                             <label class="control-label" for="id_{{ form.dial_phonenumber.name }}">{{ form.dial_phonenumber.label }}</label>
+                        </div>
+                        <div class="span3 clearfix{% if form.dial_phonenumber.errors %} control-group error{% endif %}">
                             <div class="input">
                                 {{ form.dial_phonenumber }}
                                 {% if form.dial_phonenumber.errors %}

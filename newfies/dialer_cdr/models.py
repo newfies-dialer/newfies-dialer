@@ -134,6 +134,10 @@ class Callrequest(Model):
     object_id = models.PositiveIntegerField(verbose_name=_("Application"))
     content_object = generic.GenericForeignKey('content_type', 'object_id')
 
+    #used to flag if the call is completed
+    completed = models.BooleanField(default=False,
+                                    verbose_name=_('Survey completed'))
+
     extra_data = models.CharField(max_length=120, blank=True,
         verbose_name=_("Extra Data"),
         help_text=_("Define the additional data to pass to the application"))

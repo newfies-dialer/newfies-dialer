@@ -212,6 +212,11 @@ class Section_abstract(Sortable):
     continue_survey = models.BooleanField(default=True,
                                           verbose_name=_('Continue survey when done'))
 
+    # If we reach this node it means the survey is completed and we will mark it as such
+    #TODO : Add this to the copy / duplicate option
+    completed = models.BooleanField(default=False,
+                                    verbose_name=_('Survey completed'))
+
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 

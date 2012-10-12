@@ -58,6 +58,7 @@ def call_plivo(callerid=None, phone_number=None, Gateways=None,
     # Initiate a new outbound call to user/1000 using a HTTP POST
     call_params = {
         'From': callerid,  # Caller Id
+        #'CallerName': callername, # CallerName
         'To': phone_number,  # User Number to Call
         'Gateways': Gateways,  # Gateway string to try dialing separated by comma. First in list will be tried first
         'GatewayCodecs': GatewayCodecs,  # Codec string as needed by FS for each gateway separated by comma

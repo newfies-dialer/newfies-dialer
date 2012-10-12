@@ -55,8 +55,8 @@ class CampaignForm(ModelForm):
     class Meta:
         model = Campaign
         fields = ['campaign_code', 'name', 'description',
-                  'callerid', 'status', 'aleg_gateway',
-                  'content_object',  # 'content_type', 'object_id'
+                  'callerid', 'caller_name', 'status', 'aleg_gateway',
+                  'content_object',   # 'content_type', 'object_id'
                   'extra_data', 'phonebook',
                   'frequency', 'callmaxduration', 'maxretry',
                   'intervalretry', 'calltimeout',
@@ -64,7 +64,8 @@ class CampaignForm(ModelForm):
                   'daily_start_time', 'daily_stop_time',
                   'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
                   'saturday', 'sunday', 'ds_user',
-                  'selected_phonebook', 'selected_content_object'
+                  'selected_phonebook', 'selected_content_object',
+
                   ]
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
@@ -114,6 +115,7 @@ class CampaignForm(ModelForm):
         # if campaign is running
         if instance.status == CAMPAIGN_STATUS.START:
             self.fields['name'].widget.attrs['readonly'] = True
+            self.fields['caller_name'].widget.attrs['readonly'] = True
             self.fields['callerid'].widget.attrs['readonly'] = True
             self.fields['extra_data'].widget.attrs['readonly'] = True
 
@@ -194,12 +196,12 @@ class CampaignAdminForm(ModelForm):
     class Meta:
         model = Campaign
         fields = ['campaign_code', 'name', 'description', 'user', 'status',
-                  'callerid', 'startingdate', 'expirationdate', 'aleg_gateway',
-                  'content_type', 'object_id', 'extra_data', 'phonebook',
-                  'frequency', 'callmaxduration', 'maxretry', 'intervalretry',
-                  'calltimeout', 'daily_start_time', 'daily_stop_time',
-                  'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
-                  'saturday', 'sunday']
+                  'callerid', 'caller_name', 'startingdate', 'expirationdate',
+                  'aleg_gateway', 'content_type', 'object_id', 'extra_data',
+                  'phonebook', 'frequency', 'callmaxduration', 'maxretry',
+                  'intervalretry', 'calltimeout', 'daily_start_time',
+                  'daily_stop_time', 'monday', 'tuesday', 'wednesday',
+                  'thursday', 'friday', 'saturday', 'sunday']
 
     def __init__(self, *args, **kwargs):
         super(CampaignAdminForm, self).__init__(*args, **kwargs)

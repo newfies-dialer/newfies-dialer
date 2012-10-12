@@ -21,7 +21,7 @@
             <legend>{% trans "General settings" %}</legend>
             <div class="span12">
                 <div class="row">
-                    {% get_fieldset campaign_code,ds_user,name,callerid,status,content_object,extra_data,phonebook,selected_phonebook,selected_content_object as campaign_fields from form %}
+                    {% get_fieldset campaign_code,ds_user,name,callerid,caller_name,status,selected_phonebook,selected_content_object as campaign_fields from form %}
                     {% for field in campaign_fields.hidden_fields %}
                         {{ field }}
                     {% endfor %}
@@ -29,6 +29,25 @@
                         <div class="span6">
                             <div class="clearfix{% if field.errors %} control-group error{% endif %}">
                                 <label for="id_{{ field.name }}">{{ field.label }}</label>
+                                <div class="input">
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                                    {% endif %}
+                                    <span class="help-block">{{ field.help_text }} </span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="span12">
+                <div class="row">
+                    {% get_fieldset content_object,extra_data,phonebook as campaign_fields from form %}
+                    {% for field in campaign_fields %}
+                        <div class="span6">
+                            <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                                <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
                                 <div class="input">
                                     {{ field }}
                                     {% if field.errors %}

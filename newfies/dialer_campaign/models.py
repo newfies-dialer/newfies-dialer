@@ -169,6 +169,9 @@ class Campaign(Model):
     callerid = models.CharField(max_length=80, blank=True,
                                 verbose_name=_("CallerID"),
                                 help_text=_("Outbound caller-ID"))
+    caller_name = models.CharField(max_length=80, blank=True,
+                                   verbose_name=_("Caller name"),
+                                   help_text=_("Outbound caller-Name"))
     #General Starting & Stopping date
     startingdate = models.DateTimeField(default=(lambda: datetime.now()),
                                         verbose_name=_('Start'),

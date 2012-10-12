@@ -44,7 +44,6 @@ $("#flex1").flexigrid({
 	useRp: true,
 	rp: 10,
 	showTableToggleBtn: true,
-	//width: 900,
 	height: 265,
     pagetext: '{% trans "Page" %}',
     outof: '{% trans "of" %}',
@@ -52,21 +51,19 @@ $("#flex1").flexigrid({
     procmsg: '{% trans "Processing, please wait ..." %}',
     pagestat: '{% trans "Displaying" %} {from} {% trans "to" %} {to} {% trans "of" %} {total} {% trans "items" %}',
     //preProcess: formatContactResults,
-    onSuccess: function(data){
-        //alert(data);
-        //alert("Request not failed");
-    },
+    // onSuccess: function(data){
+    //     alert(data);
+    //     alert("Request not failed");
+    // },
     onError: function(){
         alert("Request failed");
     },
 });
 
-function add_button()
-{
+function add_button(){
     window.location = 'add/';
 }
-function delete_button()
-{
+function delete_button(){
     $('#ListForm').submit();
 }
 </script>

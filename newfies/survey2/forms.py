@@ -57,9 +57,10 @@ def get_section_question_list(survey_id, section_id):
     return list_sq
 
 
-def get_question_choice_list(section_id):
-    """Get survey question list for logged in user
-    with default none option"""
+def get_multi_question_choice_list(section_id):
+    """
+    Get survey question list for the user with a default none option
+    """
     keys_list = Branching_template.objects\
                 .values_list('keys', flat=True)\
                 .filter(section_id=int(section_id))\
@@ -74,9 +75,8 @@ def get_question_choice_list(section_id):
     for i in range(0, 10):
         if obj_section.__dict__['key_' + str(i)] \
             and i not in keys_list:
-            list_sq.append((i, '%s.%s %s' % \
-                               (str(section_id), str(i),
-                                obj_section.__dict__['key_' + str(i)])))
+            list_sq.append((i, '%s' % \
+                               (obj_section.__dict__['key_' + str(i)])))
 
     list_sq.append(('', _('Anything')))
     return list_sq
@@ -289,7 +289,7 @@ class BranchingForm(ModelForm):
 
         if obj_section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
             self.fields['keys'] = forms.ChoiceField(
-                choices=get_question_choice_list(section_id),
+                choices=get_multi_question_choice_list(section_id),
                 required=False)
 
         # rating section

@@ -340,7 +340,7 @@
                                                 </td>
                                                 <td class="survey_edit_key">
                                                     {% if perms.survey2.delete_branching %}
-                                                        <a {% icon_style 'delete' %} href="/section/branch/{{ branch.id }}/?delete=true" class="icon" title="{% trans "Delete" %}">&nbsp;</a>
+                                                        <a class="section-delete btn btn-small" href="/section/branch/{{ branch.id }}/?delete=true" title="{% trans "delete branching"|title %}"><i class="icon-remove-circle"></i></a>
                                                     {% endif %}
                                                 </td>
                                             {% endif %}

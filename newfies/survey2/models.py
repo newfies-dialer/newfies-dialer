@@ -197,12 +197,13 @@ class Section_abstract(Sortable):
     validate_number = models.BooleanField(default=True,
                                           verbose_name=_('Check for valid number'))
     number_digits = models.IntegerField(max_length=2, null=True, blank=True,
+                                        default="2",
                                         verbose_name=_("Number of digits"))
 
     min_number = models.IntegerField(max_length=1, null=True, blank=True,
-                                     default=1, verbose_name=_("Minimum"))
+                                     default=0, verbose_name=_("Minimum"))
     max_number = models.IntegerField(max_length=1, null=True, blank=True,
-                                     default=100, verbose_name=_("Maximum"))
+                                     default=99, verbose_name=_("Maximum"))
 
     # dial a phone number
     dial_phonenumber = models.CharField(max_length=50,

@@ -258,21 +258,6 @@
                     </div>
                 {% endif %}
 
-                <!--Record Message Section form-->
-                {% if form.type.value == SECTION_TYPE.RECORD_MSG_SECTION %}
-                    <div class="row">
-                        <div class="span3 clearfix{% if form.continue_survey.errors %} control-group error{% endif %}">
-                            <div class="input">
-                                {{ form.continue_survey.label }}&nbsp;{{ form.continue_survey }}
-                                {% if form.continue_survey.errors %}
-                                    <span class="help-inline">{{ form.continue_survey.errors|removetags:"ul li"|safe }}</span>
-                                {% endif %}
-                                <span class="help-block">{{ form.continue_survey.help_text|safe }} </span>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-
                 <!--Patch-Through Section form-->
                 {% if form.type.value == SECTION_TYPE.PATCH_THROUGH_SECTION %}
                     <div class="row">
@@ -289,11 +274,17 @@
                             </div>
                         </div>
                     </div>
+                {% endif %}
 
+                <!--Record Message Section form-->
+                {% if form.type.value == SECTION_TYPE.RECORD_MSG_SECTION or form.type.value == SECTION_TYPE.PATCH_THROUGH_SECTION %}
                     <div class="row">
+                        <div class="span2 clearfix{% if form.continue_survey.errors %} control-group error{% endif %}">
+                            {{ form.continue_survey.label }}
+                        </div>
                         <div class="span3 clearfix{% if form.continue_survey.errors %} control-group error{% endif %}">
                             <div class="input">
-                                {{ form.continue_survey.label }}&nbsp;{{ form.continue_survey }}
+                                {{ form.continue_survey }}
                                 {% if form.continue_survey.errors %}
                                     <span class="help-inline">{{ form.continue_survey.errors|removetags:"ul li"|safe }}</span>
                                 {% endif %}

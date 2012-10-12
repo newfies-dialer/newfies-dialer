@@ -920,32 +920,33 @@ def section_phrasing_play(request, id):
     """
     section = get_object_or_404(
         Section_template, pk=int(id), survey__user=request.user)
-    phrasing_text = section.phrasing
-    phrasing_hexdigest = hashlib.md5(phrasing_text).hexdigest()
-    file_path = '%s/tts/phrasing_%s' % \
-                         (settings.MEDIA_ROOT, phrasing_hexdigest)
-    audio_file_path = file_path + '.wav'
-    text_file_path = file_path + '.txt'
+    if section.phrasing:
+        phrasing_text = section.phrasing
+        phrasing_hexdigest = hashlib.md5(phrasing_text).hexdigest()
+        file_path = '%s/tts/phrasing_%s' % \
+                             (settings.MEDIA_ROOT, phrasing_hexdigest)
+        audio_file_path = file_path + '.wav'
+        text_file_path = file_path + '.txt'
 
-    if not os.path.isfile(audio_file_path):
-        #Write text to file
-        text_file = open(text_file_path, "w")
-        text_file.write(phrasing_text)
-        text_file.close()
+        if not os.path.isfile(audio_file_path):
+            #Write text to file
+            text_file = open(text_file_path, "w")
+            text_file.write(phrasing_text)
+            text_file.close()
 
-        #Convert file
-        conv = 'flite -f "%s" -o "%s"' % (text_file_path, audio_file_path)
-        response = commands.getoutput(conv)
+            #Convert file
+            conv = 'flite -f "%s" -o "%s"' % (text_file_path, audio_file_path)
+            response = commands.getoutput(conv)
 
-    if os.path.isfile(audio_file_path):
-        response = HttpResponse()
-        f = open(audio_file_path, 'rb')
-        response['Content-Type'] = 'audio/x-wav'
-        response.write(f.read())
-        f.close()
-        return response
+        if os.path.isfile(audio_file_path):
+            response = HttpResponse()
+            f = open(audio_file_path, 'rb')
+            response['Content-Type'] = 'audio/x-wav'
+            response.write(f.read())
+            f.close()
+            return response
 
-    return Http404
+    raise Http404
 
 
 @permission_required('survey2.add_branching', login_url='/')

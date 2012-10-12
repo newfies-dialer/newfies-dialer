@@ -157,9 +157,11 @@
                                             <i title="{% trans "Edit" %}" class="icon-edit"></i>
                                         </a>
                                     {% endif %}
-                                    <a class="" target="_blank" href='/section/phrasing_play/{{ section.id }}/'>
-                                        <i title="{% trans "Play" %}" class="icon-play"></i>
-                                    </a>
+                                    {% if section.phrasing %}
+                                        <a class="" target="_blank" href='/section/phrasing_play/{{ section.id }}/'>
+                                            <i title="{% trans "Play" %}" class="icon-play"></i>
+                                        </a>
+                                    {% endif %}
                                 {% endif %}
                             </div>
 

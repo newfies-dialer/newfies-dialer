@@ -276,7 +276,7 @@
                     </div>
                 {% endif %}
 
-                <!--Record Message Section form-->
+                <!--continue_survey for Record Message Section and Dial out -->
                 {% if form.type.value == SECTION_TYPE.RECORD_MSG_SECTION or form.type.value == SECTION_TYPE.PATCH_THROUGH_SECTION %}
                     <div class="row">
                         <div class="span2 clearfix{% if form.continue_survey.errors %} control-group error{% endif %}">

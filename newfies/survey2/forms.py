@@ -216,7 +216,6 @@ class EnterNumberSectionForm(ModelForm):
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
         self.fields['question'].widget.attrs['class'] = 'span3'
-        self.fields['validate_number'].widget.attrs['class'] = 'span2'
         self.fields['number_digits'].widget.attrs['class'] = 'span1'
         self.fields['min_number'].widget.attrs['class'] = 'span1'
         self.fields['max_number'].widget.attrs['class'] = 'span1'

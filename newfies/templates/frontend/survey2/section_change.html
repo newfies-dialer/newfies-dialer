@@ -261,9 +261,12 @@
                 <!--Record Message Section form-->
                 {% if form.type.value == SECTION_TYPE.RECORD_MSG_SECTION %}
                     <div class="row">
+                        <div class="span2">
+                            <label class="control-label" for="id_{{ form.continue_survey.name }}">{{ form.continue_survey.label }}</label>
+                        </div>
                         <div class="span3 clearfix{% if form.continue_survey.errors %} control-group error{% endif %}">
                             <div class="input">
-                                {{ form.continue_survey.label }}&nbsp;{{ form.continue_survey }}
+                                {{ form.continue_survey }}
                                 {% if form.continue_survey.errors %}
                                     <span class="help-inline">{{ form.continue_survey.errors|removetags:"ul li"|safe }}</span>
                                 {% endif %}
@@ -291,9 +294,12 @@
                     </div>
 
                     <div class="row">
+                        <div class="span2">
+                            <label class="control-label" for="id_{{ form.continue_survey.name }}">{{ form.continue_survey.label }}</label>
+                        </div>
                         <div class="span3 clearfix{% if form.continue_survey.errors %} control-group error{% endif %}">
                             <div class="input">
-                                {{ form.continue_survey.label }}&nbsp;{{ form.continue_survey }}
+                                {{ form.continue_survey }}
                                 {% if form.continue_survey.errors %}
                                     <span class="help-inline">{{ form.continue_survey.errors|removetags:"ul li"|safe }}</span>
                                 {% endif %}

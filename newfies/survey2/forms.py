@@ -126,7 +126,8 @@ class VoiceSectionForm(ModelForm):
 
     class Meta:
         model = Section_template
-        fields = ['type', 'survey', 'question', 'retries', 'audiofile']
+        fields = ['type', 'survey', 'question', 'retries',
+                  'audiofile', 'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(VoiceSectionForm, self).__init__(*args, **kwargs)
@@ -148,7 +149,8 @@ class MultipleChoiceSectionForm(ModelForm):
         fields = ['type', 'survey', 'question', 'retries',
                   'key_0', 'key_1', 'key_2', 'key_3', 'key_4',
                   'key_5', 'key_6', 'key_7', 'key_8', 'key_9',
-                  'timeout', 'audiofile', 'invalid_audiofile']
+                  'timeout', 'audiofile', 'invalid_audiofile',
+                  'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(MultipleChoiceSectionForm, self).__init__(*args, **kwargs)
@@ -175,7 +177,8 @@ class RatingSectionForm(ModelForm):
     class Meta:
         model = Section_template
         fields = ['type', 'survey', 'question', 'rating_laps',
-                  'retries', 'timeout', 'audiofile', 'invalid_audiofile']
+                  'retries', 'timeout', 'audiofile', 'invalid_audiofile',
+                  'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(RatingSectionForm, self).__init__(*args, **kwargs)
@@ -202,7 +205,8 @@ class EnterNumberSectionForm(ModelForm):
         model = Section_template
         fields = ['type', 'survey', 'question', 'validate_number',
                   'number_digits', 'min_number', 'max_number',
-                  'retries', 'timeout', 'audiofile', 'invalid_audiofile']
+                  'retries', 'timeout', 'audiofile', 'invalid_audiofile',
+                  'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(EnterNumberSectionForm, self).__init__(*args, **kwargs)
@@ -228,7 +232,8 @@ class RecordMessageSectionForm(ModelForm):
 
     class Meta:
         model = Section_template
-        fields = ['type', 'survey', 'question', 'continue_survey']
+        fields = ['type', 'survey', 'question', 'continue_survey',
+                  'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(RecordMessageSectionForm, self).__init__(*args, **kwargs)
@@ -243,7 +248,7 @@ class PatchThroughSectionForm(ModelForm):
     class Meta:
         model = Section_template
         fields = ['type', 'survey', 'question', 'dial_phonenumber',
-                  'continue_survey']
+                  'continue_survey', 'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(PatchThroughSectionForm, self).__init__(*args, **kwargs)

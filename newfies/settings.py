@@ -252,6 +252,16 @@ else:
         'INTERCEPT_REDIRECTS': False,
     }
 
+# apiplayground... in process
+# try:
+#     import apiplayground
+# except ImportError:
+#     pass
+# else:
+#     INSTALLED_APPS = INSTALLED_APPS + ('apiplayground',)
+
+
+
 # Django extensions
 try:
     import django_extensions

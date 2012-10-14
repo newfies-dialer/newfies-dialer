@@ -40,6 +40,7 @@ $(document).ready(function() {
                    allVals.push($(this).val());
                 });
                 $.ajax({
+                    //TODO: 127.0.0.1 is hardcoded
                     url: "http://127.0.0.1:8000/phonebook/contact_count/",
                     type: "GET",
                     async: false,
@@ -88,12 +89,13 @@ function get_alert_msg(id)
 {
     confirm_string = '{% trans "Confirm deletion?" %}';
     var answer = confirm(confirm_string);
-    return answer // answer is a boolean
+    return answer
 }
 
 function get_alert_msg_for_phonebook(id)
 {
     $.ajax({
+        //TODO: 127.0.0.1 is hardcoded
         url: "http://127.0.0.1:8000/phonebook/contact_count/",
         type: "GET",
         async: false,
@@ -103,12 +105,12 @@ function get_alert_msg_for_phonebook(id)
         success: function(data) {
             contact_count = data;
         },
-        error: function() {
-            //alert("Request failed");
-        }
+        // error: function() {
+        //     alert("Request failed");
+        // }
     });
     confirm_string = '{% trans "Please confirm to delete this phonebook with" %} ' + contact_count + ' {% trans "contact(s)" %}'
     var answer = confirm(confirm_string);
-    return answer // answer is a boolean
+    return answer
 }
 </script>

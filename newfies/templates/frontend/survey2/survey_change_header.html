@@ -41,44 +41,49 @@
         });
 
         //Add Section edit button
-        $(".portlet").addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
-                .find(".portlet-header")
-                .addClass("ui-widget-header ui-corner-all")
-                .prepend('<a class="section-edit btn btn-small" href="#" title="{% trans "Edit section" %}"><i class="icon-pencil"></i></a>')
-                .end()
-                .find(".portlet-content");
+        $(".portlet")
+            .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
+            .find(".portlet-header")
+            .addClass("ui-widget-header ui-corner-all")
+            .prepend('<a class="section-edit btn btn-small" href="#" title="{% trans "Edit section" %}"><i class="icon-pencil"></i></a>')
+            .end()
+            .find(".portlet-content");
 
         //Add Section delete button
-        $(".portlet").addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
-                .find(".portlet-header")
-                .addClass("ui-widget-header ui-corner-all")
-                .prepend('<a class="section-delete btn btn-small" href="#" title="{% trans "Delete section" %}"><i class="icon-remove-circle"></i></a>')
-                .end()
-                .find(".portlet-content");
+        $(".portlet")
+            .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
+            .find(".portlet-header")
+            .addClass("ui-widget-header ui-corner-all")
+            .prepend('<a class="section-delete btn btn-small" href="#" title="{% trans "Delete section" %}"><i class="icon-remove-circle"></i></a>')
+            .end()
+            .find(".portlet-content");
 
         //Add Branch button
-        $(".portlet").addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
-                .find(".portlet-header")
-                .addClass("ui-widget-header ui-corner-all")
-                .prepend('<a class="section-branch btn btn-small" href="#" title="{% trans "Branch" %}"><i class="icon-random"></i></a>')
-                .end()
-                .find(".portlet-content");
+        $(".portlet")
+            .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
+            .find(".portlet-header")
+            .addClass("ui-widget-header ui-corner-all")
+            .prepend('<a class="section-branch btn btn-small" href="#" title="{% trans "Branch" %}"><i class="icon-random"></i></a>')
+            .end()
+            .find(".portlet-content");
 
         //Add toggle button
-        $(".portlet").addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
-                .find(".portlet-header")
-                .addClass("ui-widget-header ui-corner-all")
-                .prepend('<a class="btn btn-small square" href="#" title="{% trans "Collapse" %}"><i class="icon-circle-arrow-up"></i></a>')
-                .end()
-                .find(".portlet-content");
+        $(".portlet")
+            .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
+            .find(".portlet-header")
+            .addClass("ui-widget-header ui-corner-all")
+            .prepend('<a class="btn btn-small square" href="#" title="{% trans "Collapse" %}"><i class="icon-circle-arrow-up"></i></a>')
+            .end()
+            .find(".portlet-content");
 
         //Add move button
-        $(".portlet").addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
-                .find(".portlet-header")
-                .addClass("ui-widget-header ui-corner-all")
-                .prepend('<a class="btn btn-small square" href="#" title="{% trans "Move" %}"><i class="icon-move"></i></a>')
-                .end()
-                .find(".portlet-content");
+        $(".portlet")
+            .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
+            .find(".portlet-header")
+            .addClass("ui-widget-header ui-corner-all")
+            .prepend('<a class="btn btn-small square" href="#" title="{% trans "Move" %}"><i class="icon-move"></i></a>')
+            .end()
+            .find(".portlet-content");
 
         //Handle toggle click to show and hide section details
         $(".portlet-header .btn-small .icon-circle-arrow-up").click(function() {

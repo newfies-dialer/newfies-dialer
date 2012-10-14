@@ -51,27 +51,27 @@
 
 <script type="text/javascript">
     var jsonData = [
-    {% for td in total_data %}
-       {date:'{{ td.date }}', year:{{ td.year }},day:{{ td.day }}, month:{{ td.month }}, calls:{{ td.starting_date__count }}, duration:'{{ td.duration__sum|conv_min }}', act:'{{ td.duration__avg|conv_min }}'},
-    {% endfor %}
+        {% for td in total_data %}
+           {date:'{{ td.date }}', year:{{ td.year }},day:{{ td.day }}, month:{{ td.month }}, calls:{{ td.starting_date__count }}, duration:'{{ td.duration__sum|conv_min }}', act:'{{ td.duration__avg|conv_min }}'},
+        {% endfor %}
     ];
 
     var callData = [
-    {% for td in total_data %}
-        [{{ td.count }} , {{ td.starting_date__count }}],
-    {% endfor %}
+        {% for td in total_data %}
+            [{{ td.count }} , {{ td.starting_date__count }}],
+        {% endfor %}
     ];
 
     var durationData = [
-    {% for td in total_data %}
-        [{{ td.count }} , {{ td.duration__sum }}],
-    {% endfor %}
+        {% for td in total_data %}
+            [{{ td.count }} , {{ td.duration__sum }}],
+        {% endfor %}
     ];
 
     var summaryData = [
-    {% for td in total_data %}
-        [{{ td.count }} , {{ td.starting_date__count }}],
-    {% endfor %}
+        {% for td in total_data %}
+            [{{ td.count }} , {{ td.starting_date__count }}],
+        {% endfor %}
     ];
 </script>
 

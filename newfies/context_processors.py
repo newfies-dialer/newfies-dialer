@@ -12,7 +12,8 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 import newfies
+from django.conf import settings
 
 
 def newfies_version(request):
-    return {'newfies_version': newfies.__version__}
+    return {'newfies_version': newfies.__version__, 'SURVEYDEV': settings.SURVEYDEV}

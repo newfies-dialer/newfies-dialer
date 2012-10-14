@@ -1185,7 +1185,6 @@ def survey_cdr_daily_report(kwargs):
         .annotate(Avg('duration'))\
         .order_by('-starting_date')
 
-
     # Following code will count total voip calls, duration
     if total_data.count() != 0:
         max_duration =\
@@ -1226,7 +1225,7 @@ def survey_audio_recording(audio_file):
     u'<br/><span class="label label-important">No recording</span>'
     """
     if audio_file:
-        file_url = '%srecording/%s'  % (settings.MEDIA_URL, str(audio_file))
+        file_url = '%srecording/%s' % (settings.MEDIA_URL, str(audio_file))
         player_string = '<ul class="playlist"><li style="width:auto;">\
             <a href="%s">%s</a></li></ul>' % (file_url,
                                               os.path.basename(file_url))

@@ -40,8 +40,7 @@ $(document).ready(function() {
                    allVals.push($(this).val());
                 });
                 $.ajax({
-                    //TODO: 127.0.0.1 is hardcoded
-                    url: "http://127.0.0.1:8000/phonebook/contact_count/",
+                    url: "/phonebook/contact_count/",
                     type: "GET",
                     async: false,
                     cache: false,
@@ -95,8 +94,7 @@ function get_alert_msg(id)
 function get_alert_msg_for_phonebook(id)
 {
     $.ajax({
-        //TODO: 127.0.0.1 is hardcoded
-        url: "http://127.0.0.1:8000/phonebook/contact_count/",
+        url: "/phonebook/contact_count/",
         type: "GET",
         async: false,
         cache: false,

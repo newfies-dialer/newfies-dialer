@@ -29,5 +29,6 @@ urlpatterns = patterns('',
     (r'explorer/voiceapp/', include(VoiceAppAPIPlayground().urls)),
     (r'explorer/bulk-contact/', include(BulkContactAPIPlayground().urls)),
     (r'explorer/campaign-delete-cascade/', include(CampaignDelCascadeAPIPlayground().urls)),
+    (r'explorer/campaign-subscriber/', include(CampaignSubscriberAPIPlayground().urls)),
     (r'explorer/dialcallback/', include(DialCallbackAPIPlayground().urls)),
 )

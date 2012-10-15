@@ -21,6 +21,7 @@ from api.api_playgrounds.campaign_delete_cascade_playground import CampaignDelCa
 from api.api_playgrounds.campaign_subscriber_playground import CampaignSubscriberAPIPlayground
 from api.api_playgrounds.dialcallback_playground import DialCallbackAPIPlayground
 from api.api_playgrounds.store_cdr_playground import StoreCdrAPIPlayground
+from api.api_playgrounds.hangupcall_playground import HangupCallAPIPlayground
 
 
 urlpatterns = patterns('',
@@ -33,4 +34,5 @@ urlpatterns = patterns('',
     (r'explorer/campaign-subscriber/', include(CampaignSubscriberAPIPlayground().urls)),
     (r'explorer/dialcallback/', include(DialCallbackAPIPlayground().urls)),
     (r'explorer/store_cdr/', include(StoreCdrAPIPlayground().urls)),
+    (r'explorer/hangupcall/', include(HangupCallAPIPlayground().urls)),
 )

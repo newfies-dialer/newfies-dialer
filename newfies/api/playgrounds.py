@@ -13,6 +13,7 @@
 #
 from apiplayground import APIPlayground
 
+
 class PhonebookAPIPlayground(APIPlayground):
 
     schema = {

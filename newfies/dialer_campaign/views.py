@@ -176,10 +176,10 @@ def get_url_campaign_status(id, status):
 
     #set different url for the campaign status
     url_cpg_status = 'update_campaign_status_cust/%s' % str(id)
-    url_cpg_start = '%s/1/' % url_cpg_status
-    url_cpg_pause = '%s/2/' % url_cpg_status
-    url_cpg_abort = '%s/3/' % url_cpg_status
-    url_cpg_stop = '%s/4/' % url_cpg_status
+    url_cpg_start = '%s/%s/' % (url_cpg_status, CAMPAIGN_STATUS.START)
+    url_cpg_pause = '%s/%s/' % (url_cpg_status, CAMPAIGN_STATUS.PAUSE)
+    url_cpg_abort = '%s/%s/' % (url_cpg_status, CAMPAIGN_STATUS.ABORT)
+    url_cpg_stop = '%s/%s/' % (url_cpg_status, CAMPAIGN_STATUS.END)
 
     #according to the current status, disable link and change the button color
     if status == CAMPAIGN_STATUS.START:

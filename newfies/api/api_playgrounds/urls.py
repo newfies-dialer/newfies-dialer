@@ -18,6 +18,7 @@ from api.api_playgrounds.callrequest_playground import CallrequestAPIPlayground
 from api.api_playgrounds.voiceapp_playground import VoiceAppAPIPlayground
 from api.api_playgrounds.bulk_contact_playground import BulkContactAPIPlayground
 from api.api_playgrounds.campaign_delete_cascade_playground import CampaignDelCascadeAPIPlayground
+from api.api_playgrounds.campaign_subscriber_playground import CampaignSubscriberAPIPlayground
 
 
 urlpatterns = patterns('',
@@ -27,4 +28,5 @@ urlpatterns = patterns('',
     (r'explorer/voiceapp/', include(VoiceAppAPIPlayground().urls)),
     (r'explorer/bulk-contact/', include(BulkContactAPIPlayground().urls)),
     (r'explorer/campaign-delete-cascade/', include(CampaignDelCascadeAPIPlayground().urls)),
+    (r'explorer/campaign-subscriber/', include(CampaignSubscriberAPIPlayground().urls)),
 )

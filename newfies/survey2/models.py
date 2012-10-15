@@ -276,10 +276,10 @@ class Section_template(Section_abstract):
                 max_number=self.max_number,
                 dial_phonenumber=self.dial_phonenumber,
                 continue_survey=self.continue_survey,
+                completed=self.completed,
                 order=self.order,
                 survey_id=self.survey_id,
                 invalid_audiofile_id=self.invalid_audiofile_id,
-                completed=self.completed,
             ).count()
 
             if record_count == 0:
@@ -307,9 +307,10 @@ class Section_template(Section_abstract):
                     max_number=self.max_number,
                     dial_phonenumber=self.dial_phonenumber,
                     continue_survey=self.continue_survey,
+                    completed=self.completed,
                     order=self.order,
                     survey_id=self.survey_id,
-                    invalid_audiofile_id=self.invalid_audiofile_id
+                    invalid_audiofile_id=self.invalid_audiofile_id,
                 )
 
                 # Copy Branching
@@ -319,6 +320,7 @@ class Section_template(Section_abstract):
                     branching_temp.copy_branching_template()
         except:
             raise
+
         return True
 
 

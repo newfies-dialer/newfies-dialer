@@ -42,6 +42,10 @@
                 {% if section.retries %}
                     <span class="label label-info">R-{{ section.retries }}</span>
                 {% endif %}
+                {% if section.completed %}
+                    <span class="badge badge-success">{% trans "Completed" %}</span>
+                {% endif %}
+
                 <!--To remove section branching for voice, record &
                patch-through section-->
                 <script type="text/javascript">
@@ -50,7 +54,7 @@
                         $("#row"+{{ section.id }}).find(".icon-pencil").remove();
 
                         $("#row"+{{ section.id }}).find(".section-delete").contents().unwrap();
-                        $("#row"+{{ section.id }}).find(".icon-remove").remove();
+                        $("#row"+{{ section.id }}).find(".icon-remove-circle").remove();
 
                         $("#row"+{{ section.id }}).find(".btn").contents().unwrap();
                         $("#row"+{{ section.id }}).find(".icon-circle-arrow-up").remove();

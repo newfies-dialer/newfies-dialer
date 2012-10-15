@@ -18,6 +18,8 @@ from dialer_gateway.models import Gateway
 from voice_app.constants import VOICEAPP_TYPE
 from user_profile.fields import LanguageField
 from south.modelsinspector import add_introspection_rules
+
+#add introspection rules
 add_introspection_rules([], ["^user_profile.fields.LanguageField"])
 
 
@@ -61,14 +63,6 @@ class VoiceApp_abstract(models.Model):
     tts_language = LanguageField(blank=True, null=True,
                     verbose_name=_('Text-to-Speech Language'),
                     help_text=_("Set the Text-to-Speech Engine"))
-
-    #extension = models.CharField(max_length=40,
-    #               help_text=_("Extension to call when redirection the call"))
-
-    #audiofile = models.CharField(max_length=200,
-    #                help_text=_("If PLAYAUDIO, define the audio to play"))
-    #room = models.CharField(max_length=200,
-    #                help_text=_("If CONFERENCE, define here the room number"))
 
     created_date = models.DateTimeField(auto_now_add=True,
         verbose_name=_('Date'))

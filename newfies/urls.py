@@ -24,8 +24,8 @@ from voice_app.urls import urlpatterns as urlpatterns_voice_app
 from survey.urls import urlpatterns as urlpatterns_survey
 from survey2.urls import urlpatterns as urlpatterns_survey2
 from dialer_audio.urls import urlpatterns as urlpatterns_dialer_audio
+from api.api_playgrounds.urls import urlpatterns as urlpatterns_api_playgrounds
 from tastypie.api import Api
-from api.playgrounds import PhonebookAPIPlayground
 
 from api.user_api import UserResource
 from api.voiceapp_api import VoiceAppResource
@@ -43,6 +43,7 @@ from api.answercall_api import AnswercallResource
 from api.dialcallback_api import DialCallbackResource
 from api.hangupcall_api import HangupcallResource
 from api.store_cdr_api import CdrResource
+
 from survey.api.survey_api import SurveyAppResource
 from survey.api.survey_question_api import SurveyQuestionResource
 from survey.api.survey_response_api import SurveyResponseResource
@@ -100,7 +101,7 @@ urlpatterns = patterns('',
     (r'^logout/$', 'frontend.views.logout_view'),
     (r'^admin/', include(admin.site.urls)),
     (r'^api/', include(tastypie_api.urls)),
-    (r'api-explorer/', include(PhonebookAPIPlayground().urls)),
+
     (r'^i18n/', include('django.conf.urls.i18n')),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
     (r'^admin_tools/', include('admin_tools.urls')),
@@ -121,6 +122,7 @@ urlpatterns += urlpatterns_voice_app
 urlpatterns += urlpatterns_survey
 urlpatterns += urlpatterns_survey2
 urlpatterns += urlpatterns_dialer_audio
+urlpatterns += urlpatterns_api_playgrounds
 
 urlpatterns += patterns('',
     (r'^%s/(?P<path>.*)$' % settings.MEDIA_URL.strip(os.sep),

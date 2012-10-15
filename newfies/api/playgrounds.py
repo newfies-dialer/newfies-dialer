@@ -25,13 +25,18 @@ class PhonebookAPIPlayground(APIPlayground):
                 "endpoints": [
                     {
                         "method": "GET",
-                        "url": "/api/v1/phonebook/{phonebook-id}",
+                        "url": "/api/v1/phonebook/",
+                        "description": "Returns all phonebooks"
+                    },
+                    {
+                        "method": "GET",
+                        "url": "/api/v1/phonebook/{phonebook-id}/",
                         "description": "Returns a specific phonebook"
                     },
                     {
                         "method": "POST",
                         "url": "/api/v1/phonebook/",
-                        "description": "Creates new phonebook item",
+                        "description": "Creates new phonebook",
                         "parameters": [{
                                            "name": "title",
                                            "type": "string"
@@ -40,6 +45,24 @@ class PhonebookAPIPlayground(APIPlayground):
                                            "name": "description",
                                            "type": "string"
                                        }]
+                    },
+                    {
+                        "method": "PUT",
+                        "url": "/api/v1/phonebook/{phonebook-id}/",
+                        "description": "Update phonebook",
+                        "parameters": [{
+                                           "name": "title",
+                                           "type": "string"
+                                       },
+                                       {
+                                           "name": "description",
+                                           "type": "string"
+                                       }]
+                    },
+                    {
+                        "method": "DELETE",
+                        "url": "/api/v1/phonebook/{phonebook-id}/",
+                        "description": "Delete phonebook",
                     }
                 ]
             },

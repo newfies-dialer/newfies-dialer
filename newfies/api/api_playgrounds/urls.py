@@ -21,13 +21,10 @@ from api.api_playgrounds.campaign_delete_cascade_playground import CampaignDelCa
 
 
 urlpatterns = patterns('',
-
-    (r'phonebook-api/', include(PhonebookAPIPlayground().urls)),
-    (r'campaign-api/', include(CampaignAPIPlayground().urls)),
-    (r'callrequest-api/', include(CallrequestAPIPlayground().urls)),
-    (r'voiceapp-api/', include(VoiceAppAPIPlayground().urls)),
-    (r'bulk-contact-api/', include(BulkContactAPIPlayground().urls)),
-    (r'campaign-delete-cascade-api/', include(CampaignDelCascadeAPIPlayground().urls)),
-
-
+    (r'explorer/phonebook/', include(PhonebookAPIPlayground().urls)),
+    (r'explorer/campaign/', include(CampaignAPIPlayground().urls)),
+    (r'explorer/callrequest/', include(CallrequestAPIPlayground().urls)),
+    (r'explorer/voiceapp/', include(VoiceAppAPIPlayground().urls)),
+    (r'explorer/bulk-contact/', include(BulkContactAPIPlayground().urls)),
+    (r'explorer/campaign-delete-cascade/', include(CampaignDelCascadeAPIPlayground().urls)),
 )

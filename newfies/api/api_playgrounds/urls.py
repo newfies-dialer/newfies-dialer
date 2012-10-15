@@ -13,9 +13,11 @@
 #
 from django.conf.urls import include, patterns
 from api.api_playgrounds.phonebook_playground import PhonebookAPIPlayground
+from api.api_playgrounds.campaign_playground import CampaignAPIPlayground
 
 
 urlpatterns = patterns('',
 
-    (r'api-explorer/', include(PhonebookAPIPlayground().urls)),
+    (r'phonebook-api/', include(PhonebookAPIPlayground().urls)),
+    (r'campaign-api/', include(CampaignAPIPlayground().urls)),
 )

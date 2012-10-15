@@ -128,7 +128,7 @@ class CampaignValidation(Validation):
         if content_type == 'voiceapp_template' or content_type == 'survey_template':
             try:
                 content_type_id = ContentType.objects\
-                    .get(app_label=str(content_type)).id
+                    .get(model=str(content_type)).id
                 bundle.data['content_type'] = '/api/v1/contenttype/%s/' %\
                                               content_type_id
             except:

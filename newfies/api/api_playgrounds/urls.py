@@ -16,6 +16,7 @@ from api.api_playgrounds.phonebook_playground import PhonebookAPIPlayground
 from api.api_playgrounds.campaign_playground import CampaignAPIPlayground
 from api.api_playgrounds.callrequest_playground import CallrequestAPIPlayground
 from api.api_playgrounds.voiceapp_playground import VoiceAppAPIPlayground
+from api.api_playgrounds.bulk_contact_playground import BulkContactAPIPlayground
 
 
 urlpatterns = patterns('',
@@ -24,4 +25,5 @@ urlpatterns = patterns('',
     (r'campaign-api/', include(CampaignAPIPlayground().urls)),
     (r'callrequest-api/', include(CallrequestAPIPlayground().urls)),
     (r'voiceapp-api/', include(VoiceAppAPIPlayground().urls)),
+    (r'bulk-contact-api/', include(BulkContactAPIPlayground().urls)),
 )

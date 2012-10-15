@@ -39,8 +39,10 @@ class PhonebookAPIPlayground(APIPlayground):
                         "url": "/api/v1/phonebook/",
                         "description": "Creates new phonebook",
                         "parameters": [{
-                                           "name": "title",
-                                           "type": "string"
+                                           "name": "name",
+                                           "type": "string",
+                                           "is_required": True,
+                                           "default": "Sample Phonebook"
                                        },
                                        {
                                            "name": "description",
@@ -52,7 +54,7 @@ class PhonebookAPIPlayground(APIPlayground):
                         "url": "/api/v1/phonebook/{phonebook-id}/",
                         "description": "Update phonebook",
                         "parameters": [{
-                                           "name": "title",
+                                           "name": "name",
                                            "type": "string"
                                        },
                                        {

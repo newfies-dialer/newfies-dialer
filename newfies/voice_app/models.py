@@ -88,8 +88,8 @@ class VoiceApp_template(VoiceApp_abstract):
         permissions = (
             ("view_voiceapp_template", _('Can see Voiceapp Template')),
         )
-        verbose_name = _("Voiceapp template")
-        verbose_name_plural = _("Voiceapp templates")
+        verbose_name = _("Voice Application Template")
+        verbose_name_plural = _("Voice Applications Templates")
 
     def copy_voiceapp_template(self, campaign_obj):
         try:

@@ -94,25 +94,14 @@ class CustomIndexDashboard(Dashboard):
 
         # append an app list module for "Dialer"
         self.children.append(modules.AppList(
-            _('Voip Server'),
-            models=('voice_app.*', ),
+            _('Voice Applications'),
+            models=('voice_app.*', 'survey2.*', ),
         ))
 
         # append an app list module for "Dialer"
         self.children.append(modules.AppList(
             _('Audio Files'),
             models=('audiofield.*', ),
-        ))
-
-        # append an app list module for "Country_prefix"
-        self.children.append(modules.AppList(
-            _('Survey'),
-            models=('survey.*', ),
-        ))
-
-        self.children.append(modules.AppList(
-            _('Survey2'),
-            models=('survey2.*', ),
         ))
 
         # append a link list module for "quick links"

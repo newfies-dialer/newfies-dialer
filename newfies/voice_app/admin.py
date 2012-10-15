@@ -12,13 +12,13 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from django.contrib import admin
-from voice_app.models import VoiceApp_template
+from voice_app.models import VoiceApp, VoiceApp_template
 
 
-class VoiceAppAdmin(admin.ModelAdmin):
+class VoiceAppTemplateAdmin(admin.ModelAdmin):
     """
     Allows the administrator to view and modify certain attributes
-    of a VoiceApp
+    of a VoiceApp Template
     """
     list_display = ('id', 'name', 'type', 'data', 'tts_language', 'user',
                     'gateway', 'created_date')
@@ -26,4 +26,17 @@ class VoiceAppAdmin(admin.ModelAdmin):
     list_filter = ['created_date', ]
     ordering = ('id', )
 
-admin.site.register(VoiceApp_template, VoiceAppAdmin)
+admin.site.register(VoiceApp_template, VoiceAppTemplateAdmin)
+
+
+class VoiceAppAdmin(admin.ModelAdmin):
+    """
+    Allows the administrator to view VoiceApp
+    """
+    list_display = ('id', 'name', 'type', 'data', 'tts_language', 'user',
+                    'gateway', 'created_date')
+    list_display_links = ('id', 'name', )
+    list_filter = ['created_date', ]
+    ordering = ('id', )
+
+admin.site.register(VoiceApp, VoiceAppAdmin)

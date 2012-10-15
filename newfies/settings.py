@@ -221,6 +221,7 @@ INSTALLED_APPS = (
     'survey2',
     'dialer_audio',
     #'raven.contrib.django',
+    'apiplayground',
 )
 
 # Django extensions

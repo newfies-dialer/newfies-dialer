@@ -25,6 +25,8 @@ from survey.urls import urlpatterns as urlpatterns_survey
 from survey2.urls import urlpatterns as urlpatterns_survey2
 from dialer_audio.urls import urlpatterns as urlpatterns_dialer_audio
 from tastypie.api import Api
+from api.playgrounds import PhonebookAPIPlayground
+
 from api.user_api import UserResource
 from api.voiceapp_api import VoiceAppResource
 from api.gateway_api import GatewayResource
@@ -98,6 +100,7 @@ urlpatterns = patterns('',
     (r'^logout/$', 'frontend.views.logout_view'),
     (r'^admin/', include(admin.site.urls)),
     (r'^api/', include(tastypie_api.urls)),
+    (r'api-explorer/', include(PhonebookAPIPlayground().urls)),
     (r'^i18n/', include('django.conf.urls.i18n')),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
     (r'^admin_tools/', include('admin_tools.urls')),

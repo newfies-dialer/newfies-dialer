@@ -354,13 +354,13 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         response = section_change(request, 1)
         self.assertEqual(response.status_code, 200)
 
-    def test_section_phrasing_play(self):
-        """Test Function survey section phrasing play"""
-        request = self.factory.get('/section/phrasing_play/1/')
-        request.user = self.user
-        request.session = {}
-        response = section_phrasing_play(request, 1)
-        self.assertEqual(response.status_code, 200)
+    #def test_section_phrasing_play(self):
+    #    """Test Function survey section phrasing play"""
+    #    request = self.factory.get('/section/phrasing_play/1/')
+    #    request.user = self.user
+    #    request.session = {}
+    #    response = section_phrasing_play(request, 1)
+    #    self.assertEqual(response.status_code, 200)
 
     def test_survey_section_view_delete(self):
         """Test Function survey section delete"""

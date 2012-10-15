@@ -287,13 +287,13 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
         response = survey_del(request, 1)
         self.assertEqual(response.status_code, 302)
-
+        """
         request = self.factory.post('/survey/1/', follow=True)
         request.user = self.user
         request.session = {}
         response = survey_question_sort(request, 1, 1)
         self.assertTrue(response)
-
+        """
 
     def test_survey_view_delete(self):
         """Test Function to check delete survey"""

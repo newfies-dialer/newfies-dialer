@@ -21,18 +21,20 @@ from api.api_playgrounds.campaign_delete_cascade_playground import CampaignDelCa
 from api.api_playgrounds.campaign_subscriber_playground import CampaignSubscriberAPIPlayground
 from api.api_playgrounds.dialcallback_playground import DialCallbackAPIPlayground
 from api.api_playgrounds.store_cdr_playground import StoreCdrAPIPlayground
+from api.api_playgrounds.answercall_playground import AnswerCallAPIPlayground
 from api.api_playgrounds.hangupcall_playground import HangupCallAPIPlayground
 
 
 urlpatterns = patterns('',
-    (r'explorer/phonebook/', include(PhonebookAPIPlayground().urls)),
-    (r'explorer/campaign/', include(CampaignAPIPlayground().urls)),
-    (r'explorer/callrequest/', include(CallrequestAPIPlayground().urls)),
     (r'explorer/voiceapp/', include(VoiceAppAPIPlayground().urls)),
+    (r'explorer/phonebook/', include(PhonebookAPIPlayground().urls)),
     (r'explorer/bulk-contact/', include(BulkContactAPIPlayground().urls)),
+    (r'explorer/campaign/', include(CampaignAPIPlayground().urls)),
     (r'explorer/campaign-delete-cascade/', include(CampaignDelCascadeAPIPlayground().urls)),
     (r'explorer/campaign-subscriber/', include(CampaignSubscriberAPIPlayground().urls)),
+    (r'explorer/callrequest/', include(CallrequestAPIPlayground().urls)),
     (r'explorer/dialcallback/', include(DialCallbackAPIPlayground().urls)),
     (r'explorer/store_cdr/', include(StoreCdrAPIPlayground().urls)),
+    (r'explorer/answercall/', include(AnswerCallAPIPlayground().urls)),
     (r'explorer/hangupcall/', include(HangupCallAPIPlayground().urls)),
 )

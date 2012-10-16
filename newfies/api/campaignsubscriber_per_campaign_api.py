@@ -152,30 +152,30 @@ class CampaignSubscriberPerCampaignResource(ModelResource):
                 logger.error(error_msg)
                 raise BadRequest(error_msg)
 
-            sql_statement = 'SELECT DISTINCT contact_id, last_attempt, '\
-                'count_attempt, dialer_campaign_subscriber.status,'\
-                'dialer_campaign_subscriber.id '\
-                'FROM dialer_campaign_subscriber '\
-                'LEFT JOIN dialer_callrequest ON '\
-                'campaign_subscriber_id=dialer_campaign_subscriber.id '\
-                'LEFT JOIN dialer_campaign ON '\
-                'dialer_callrequest.campaign_id=dialer_campaign.id '\
-                'WHERE dialer_campaign_subscriber.campaign_id = %s '\
-                'AND dialer_campaign_subscriber.duplicate_contact = "%s"'\
+            sql_statement = "SELECT DISTINCT contact_id, last_attempt, "\
+                "count_attempt, dialer_campaign_subscriber.status,"\
+                "dialer_campaign_subscriber.id "\
+                "FROM dialer_campaign_subscriber "\
+                "LEFT JOIN dialer_callrequest ON "\
+                "campaign_subscriber_id=dialer_campaign_subscriber.id "\
+                "LEFT JOIN dialer_campaign ON "\
+                "dialer_callrequest.campaign_id=dialer_campaign.id "\
+                "WHERE dialer_campaign_subscriber.campaign_id = %s "\
+                "AND dialer_campaign_subscriber.duplicate_contact = '%s'"\
                 % (str(campaign_id), str(contact))
 
         else:
-            sql_statement = 'SELECT DISTINCT contact_id, last_attempt, '\
-                'count_attempt, dialer_campaign_subscriber.status, '\
-                'dialer_campaign_subscriber.id '\
-                'FROM dialer_campaign_subscriber '\
-                'LEFT JOIN dialer_callrequest ON '\
-                'campaign_subscriber_id='\
-                'dialer_campaign_subscriber.id '\
-                'LEFT JOIN dialer_campaign ON '\
-                'dialer_callrequest.campaign_id=dialer_campaign.id '\
-                'WHERE dialer_campaign_subscriber.campaign_id'\
-                '= %s' % (str(campaign_id))
+            sql_statement = "SELECT DISTINCT contact_id, last_attempt, "\
+                "count_attempt, dialer_campaign_subscriber.status, "\
+                "dialer_campaign_subscriber.id "\
+                "FROM dialer_campaign_subscriber "\
+                "LEFT JOIN dialer_callrequest ON "\
+                "campaign_subscriber_id="\
+                "dialer_campaign_subscriber.id "\
+                "LEFT JOIN dialer_campaign ON "\
+                "dialer_callrequest.campaign_id=dialer_campaign.id "\
+                "WHERE dialer_campaign_subscriber.campaign_id"\
+                "= %s" % (str(campaign_id))
 
         cursor.execute(sql_statement)
         row = cursor.fetchall()

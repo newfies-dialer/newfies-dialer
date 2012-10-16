@@ -37,9 +37,7 @@
                     <tr>
                         <td>{{ forloop.counter }}</td>
                         <td>
-                            <a href="{{ api.api_link }}" target="_blank">
-                                {{ api.api_name|title }}
-                            </a>
+                            <a href="{{ api.api_link }}"> {{ api.api_name|title }} </a>
                         </td>
                     </tr>
                 {% endfor %}

@@ -28,7 +28,4 @@ urlpatterns = patterns('frontend.views',
     (r'^reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
                     'cust_password_reset_confirm'),
     (r'^reset/done/$', 'cust_password_reset_complete'),
-
-    # API list view for browser
-    (r'explorer/$', 'api_list_view'),
 )

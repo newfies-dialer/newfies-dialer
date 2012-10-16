@@ -46,4 +46,7 @@ urlpatterns = patterns('',
     (r'explorer/store_cdr/', include(StoreCdrAPIPlayground().urls)),
     (r'explorer/answercall/', include(AnswerCallAPIPlayground().urls)),
     (r'explorer/hangupcall/', include(HangupCallAPIPlayground().urls)),
+
+    # API list view
+    (r'explorer/$', 'api.api_playgrounds.views.api_list_view'),
 )

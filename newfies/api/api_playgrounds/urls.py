@@ -17,8 +17,12 @@ from api.api_playgrounds.campaign_playground import CampaignAPIPlayground
 from api.api_playgrounds.callrequest_playground import CallrequestAPIPlayground
 from api.api_playgrounds.voiceapp_playground import VoiceAppAPIPlayground
 from api.api_playgrounds.bulk_contact_playground import BulkContactAPIPlayground
-from api.api_playgrounds.campaign_delete_cascade_playground import CampaignDelCascadeAPIPlayground
-from api.api_playgrounds.campaign_subscriber_playground import CampaignSubscriberAPIPlayground
+from api.api_playgrounds.campaign_delete_cascade_playground import \
+    CampaignDelCascadeAPIPlayground
+from api.api_playgrounds.campaign_subscriber_playground import \
+    CampaignSubscriberAPIPlayground
+from api.api_playgrounds.campaign_subscriber_per_campaign_playground import \
+    CampaignSubscriberPerCampaignAPIPlayground
 from api.api_playgrounds.dialcallback_playground import DialCallbackAPIPlayground
 from api.api_playgrounds.store_cdr_playground import StoreCdrAPIPlayground
 from api.api_playgrounds.answercall_playground import AnswerCallAPIPlayground
@@ -30,8 +34,12 @@ urlpatterns = patterns('',
     (r'explorer/phonebook/', include(PhonebookAPIPlayground().urls)),
     (r'explorer/bulk-contact/', include(BulkContactAPIPlayground().urls)),
     (r'explorer/campaign/', include(CampaignAPIPlayground().urls)),
-    (r'explorer/campaign-delete-cascade/', include(CampaignDelCascadeAPIPlayground().urls)),
-    (r'explorer/campaign-subscriber/', include(CampaignSubscriberAPIPlayground().urls)),
+    (r'explorer/campaign-delete-cascade/',
+        include(CampaignDelCascadeAPIPlayground().urls)),
+    (r'explorer/campaign-subscriber/',
+        include(CampaignSubscriberAPIPlayground().urls)),
+    (r'explorer/campaign-subscriber-per-campaign/',
+        include(CampaignSubscriberPerCampaignAPIPlayground().urls)),
     (r'explorer/callrequest/', include(CallrequestAPIPlayground().urls)),
     (r'explorer/dialcallback/', include(DialCallbackAPIPlayground().urls)),
     (r'explorer/store_cdr/', include(StoreCdrAPIPlayground().urls)),

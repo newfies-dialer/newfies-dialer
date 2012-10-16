@@ -35,7 +35,7 @@ class BranchingValidation(Validation):
             errors['Data'] = ['Data set is empty']
         keys = bundle.data.get('keys')
         if keys:
-            dup_count = Branching.objects.filter(key=str(keys)).count()
+            dup_count = Branching.objects.filter(keys=str(keys)).count()
             if request.method == 'POST':
                 if dup_count >= 1:
                     errors['duplicate_key'] = ["Keys is already exist!"]
@@ -47,10 +47,10 @@ class BranchingValidation(Validation):
         if section_id:
             try:
                 section_id = Section.objects.get(id=section_id).id
-                bundle.data['section_id'] = \
-                      '/api/v1/section_id/%s/' % section_id
+                bundle.data['section'] = \
+                      '/api/v1/section/%s/' % section_id
             except:
-                errors['section_id'] = \
+                errors['section'] = \
                       ["The Section ID doesn't exist!"]
 
         return errors

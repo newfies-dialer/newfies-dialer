@@ -28,6 +28,8 @@ from api.api_playgrounds.store_cdr_playground import StoreCdrAPIPlayground
 from api.api_playgrounds.answercall_playground import AnswerCallAPIPlayground
 from api.api_playgrounds.hangupcall_playground import HangupCallAPIPlayground
 from api.api_playgrounds.survey_playground import SurveyAPIPlayground
+from api.api_playgrounds.section_playground import SectionAPIPlayground
+from api.api_playgrounds.branching_playground import BranchingAPIPlayground
 
 
 urlpatterns = patterns('',
@@ -48,6 +50,8 @@ urlpatterns = patterns('',
     (r'explorer/answercall/', include(AnswerCallAPIPlayground().urls)),
     (r'explorer/hangupcall/', include(HangupCallAPIPlayground().urls)),
     (r'explorer/survey/', include(SurveyAPIPlayground().urls)),
+    (r'explorer/section/', include(SectionAPIPlayground().urls)),
+    (r'explorer/branching/', include(BranchingAPIPlayground().urls)),
 
     # API list view
     (r'explorer/$', 'api.api_playgrounds.views.api_list_view'),

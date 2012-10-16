@@ -40,6 +40,7 @@ from datetime import datetime
 from dateutil import parser
 from dateutil.relativedelta import relativedelta
 import time
+import os
 
 
 def logout_view(request):
@@ -740,6 +741,30 @@ def customer_dashboard(request, on_index=None):
            context_instance=RequestContext(request))
 
 
+@login_required
+def api_list_view(request):
+    """
+    Get List of API names & its link
+    """
+    exclude_file = ['__init__.py', 'urls.py']
+    list_of_api = []
+    os.chdir(settings.APPLICATION_DIR + "/api/api_playgrounds/")
+    for files in os.listdir("."):
+        if files.endswith(".py") and files.endswith(".py"):
+            if str(files) not in exclude_file:
+                api_arr = str(files).split('_playground.py')
+                api_link = '/explorer/' + api_arr[0].replace("_", "-")
+                list_of_api.append({'api_name': api_arr[0],
+                                    'api_link': api_link})
+
+    template = 'frontend/api/api_list.html'
+    data = {
+        'list_of_api': list_of_api,
+    }
+    return render_to_response(template, data,
+        context_instance=RequestContext(request))
+
+
 def cust_password_reset(request):
     """Use ``django.contrib.auth.views.password_reset`` view method for
     forgotten password on the Customer UI
@@ -805,3 +830,4 @@ def cust_password_reset_complete(request):
         extra_context=data)
     else:
         return HttpResponseRedirect("/")
+

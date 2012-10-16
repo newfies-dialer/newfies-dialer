@@ -5,6 +5,7 @@ env:
   - DJANGO=1.4.1
 install:
   # - pip install -q Django==$DJANGO --use-mirrors
+  - sudo apt-get install flite
   - bash install/requirements/install-requirements.sh
   # - pip install pep8 --use-mirrors
   # - pip install https://github.com/dcramer/pyflakes/tarball/master

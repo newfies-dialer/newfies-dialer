@@ -483,6 +483,8 @@ func_install_frontend(){
     }
     '  >> /etc/logrotate.d/newfies_dialer
 
+    logrotate /etc/logrotate.d/newfies_dialer
+
     echo ""
     echo "*****************************************************************"
     echo "Congratulations, Newfies-Dialer Web Application is now installed!"

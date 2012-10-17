@@ -45,9 +45,6 @@ DATABASES = {
         }
     }
 }
-DATABASE_OPTIONS = {
-    "autocommit": True,
-}
 
 #CELERY SETTINGS
 #===============

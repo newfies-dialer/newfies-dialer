@@ -454,6 +454,7 @@ func_install_frontend(){
 
     #Set Timezone in settings_local.py
     sed -i "s@Europe/Madrid@$ZONE@g" $INSTALL_DIR/settings_local.py
+    sed -i "s@Europe/Madrid@$ZONE@g" $INSTALL_DIR/celeryconfig.py
 
     # * * NGINX / SUPERVISOR * *
 

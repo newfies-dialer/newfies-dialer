@@ -14,6 +14,7 @@
 from django.conf.urls import handler404, handler500, \
                              include, patterns
 from django.conf import settings
+#TODO: Remove wildcard *
 from django.conf.urls.i18n import *
 from frontend.urls import urlpatterns as urlpatterns_frontend
 from dialer_contact.urls import urlpatterns as urlpatterns_dialer_contact

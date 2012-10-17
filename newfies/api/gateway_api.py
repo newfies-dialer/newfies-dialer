@@ -15,6 +15,8 @@
 #
 
 from tastypie.resources import ModelResource
+from tastypie.authentication import BasicAuthentication
+from tastypie.authorization import Authorization
 from dialer_gateway.models import Gateway
 
 
@@ -23,3 +25,5 @@ class GatewayResource(ModelResource):
     class Meta:
         queryset = Gateway.objects.all()
         resource_name = 'gateway'
+        authorization = Authorization()
+        authentication = BasicAuthentication()

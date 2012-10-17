@@ -22,7 +22,7 @@ import os
 @login_required
 def api_list_view(request):
     """
-    Get List of API names & its link
+    Get List of API names & their links
     """
     exclude_file = ['__init__.py', 'urls.py', 'views.py']
     list_of_api = []

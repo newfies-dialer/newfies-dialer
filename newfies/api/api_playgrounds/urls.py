@@ -12,6 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from django.conf.urls import include, patterns
+from api.api_playgrounds.gateway_playground import GatewayAPIPlayground
 from api.api_playgrounds.phonebook_playground import PhonebookAPIPlayground
 from api.api_playgrounds.campaign_playground import CampaignAPIPlayground
 from api.api_playgrounds.callrequest_playground import CallrequestAPIPlayground
@@ -34,6 +35,7 @@ from api.api_playgrounds.branching_playground import BranchingAPIPlayground
 
 urlpatterns = patterns('',
 
+    (r'explorer/gateway/', include(GatewayAPIPlayground().urls)),
     (r'explorer/voiceapp/', include(VoiceAppAPIPlayground().urls)),
     (r'explorer/phonebook/', include(PhonebookAPIPlayground().urls)),
     (r'explorer/bulk-contact/', include(BulkContactAPIPlayground().urls)),

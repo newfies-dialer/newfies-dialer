@@ -498,7 +498,7 @@ func_install_frontend(){
     echo "Yours"
     echo "The Star2Billing Team"
     echo "http://www.star2billing.com and http://www.newfies-dialer.org/"
-    echo
+    echo ""
     echo "**************************************************************"
     echo ""
 }
@@ -584,7 +584,7 @@ func_install_backend() {
     echo "Yours"
     echo "The Star2Billing Team"
     echo "http://www.star2billing.com and http://www.newfies-dialer.org/"
-    echo
+    echo ""
     echo "**************************************************************"
     echo ""
 }

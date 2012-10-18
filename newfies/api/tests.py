@@ -12,7 +12,6 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.test import TestCase, Client
 from common.utils import BaseAuthenticatedClient
 import simplejson
 
@@ -32,21 +31,21 @@ class ApiTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 400)
 
         data = simplejson.dumps({
-            "name":"test_campaign",
-            "description":"",
-            "callerid":"1239876",
-            "startingdate":"1301392136.0",
-            "expirationdate":"1301332136.0",
-            "frequency":"20",
-            "callmaxduration":"50",
-            "maxretry":"3",
-            "intervalretry":"3000",
-            "calltimeout":"45",
-            "aleg_gateway":"1",
-            "content_type":"voiceapp_template",
-            "object_id":"1",
-            "extra_data":"2000",
-            "phonebook_id":"1"
+            "name": "test_campaign",
+            "description": "",
+            "callerid": "1239876",
+            "startingdate": "1301392136.0",
+            "expirationdate": "1301332136.0",
+            "frequency": "20",
+            "callmaxduration": "50",
+            "maxretry": "3",
+            "intervalretry": "3000",
+            "calltimeout": "45",
+            "aleg_gateway": "1",
+            "content_type": "voiceapp_template",
+            "object_id": "1",
+            "extra_data": "2000",
+            "phonebook_id": "1"
         })
         response = self.client.post('/api/v1/campaign/',
             data, content_type='application/json', **self.extra)
@@ -54,21 +53,21 @@ class ApiTestCase(BaseAuthenticatedClient):
 
         # To test dialer settings with campaign data
         data = simplejson.dumps({
-            "name":"test_campaign",
-            "description":"",
-            "callerid":"1239876",
-            "startingdate":"1301392136.0",
-            "expirationdate":"1301332136.0",
-            "frequency":"120",
-            "callmaxduration":"2550",
-            "maxretry":"5",
-            "intervalretry":"3000",
-            "calltimeout":"90",
-            "aleg_gateway":"5",
-            "content_type":"sms",
-            "object_id":"",
-            "extra_data":"2000",
-            "phonebook_id":"5"
+            "name": "test_campaign",
+            "description": "",
+            "callerid": "1239876",
+            "startingdate": "1301392136.0",
+            "expirationdate": "1301332136.0",
+            "frequency": "120",
+            "callmaxduration": "2550",
+            "maxretry": "5",
+            "intervalretry": "3000",
+            "calltimeout": "90",
+            "aleg_gateway": "5",
+            "content_type": "sms",
+            "object_id": "",
+            "extra_data": "2000",
+            "phonebook_id": "5"
         })
         response = self.client.post('/api/v1/campaign/',
             data, content_type='application/json', **self.extra)
@@ -76,21 +75,21 @@ class ApiTestCase(BaseAuthenticatedClient):
 
         # To test new phonebook dynamically
         data = simplejson.dumps({
-            "name":"new test campaign",
-            "description":"",
-            "callerid":"1239876",
-            "startingdate":"1301392136.0",
-            "expirationdate":"1301332136.0",
-            "frequency":"20",
-            "callmaxduration":"50",
-            "maxretry":"3",
-            "intervalretry":"3000",
-            "calltimeout":"45",
-            "aleg_gateway":"1",
-            "content_type":"voiceapp_template",
-            "object_id":"1",
-            "extra_data":"2000",
-            "phonebook_id":"5"
+            "name": "new test campaign",
+            "description": "",
+            "callerid": "1239876",
+            "startingdate": "1301392136.0",
+            "expirationdate": "1301332136.0",
+            "frequency": "20",
+            "callmaxduration": "50",
+            "maxretry": "3",
+            "intervalretry": "3000",
+            "calltimeout": "45",
+            "aleg_gateway": "1",
+            "content_type": "voiceapp_template",
+            "object_id": "1",
+            "extra_data": "2000",
+            "phonebook_id": "5"
         })
         response = self.client.post('/api/v1/campaign/',
             data, content_type='application/json', **self.extra)
@@ -112,8 +111,8 @@ class ApiTestCase(BaseAuthenticatedClient):
                 "status": "2",
                 "content_type": "voiceapp_template",
                 "object_id": "1",
-                "startingdate":"1301392136.0",
-                "expirationdate":"1301332136.0",}),
+                "startingdate": "1301392136.0",
+                "expirationdate": "1301332136.0"}),
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 204)
 
@@ -137,7 +136,6 @@ class ApiTestCase(BaseAuthenticatedClient):
             **self.extra)
         self.assertEqual(response.status_code, 404)
 
-
     def test_create_phonebook(self):
         """Test Function to create a phonebook"""
         data = simplejson.dumps({"name": "mylittlephonebook",
@@ -159,7 +157,7 @@ class ApiTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 400)
 
         self.client.logout()
-        login = self.client.login(username='admin', password='admin1')
+        self.client.login(username='admin', password='admin1')
         response = self.client.post('/api/v1/phonebook/', data,
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 400)
@@ -344,7 +342,7 @@ class ApiTestCase(BaseAuthenticatedClient):
         """Test Function to create a dialcallback"""
         data = ('DialALegUUID=e4fc2188-0af5-11e1-b64d-00231470a30c&DialBLegUUID=e4fc2188-0af5-11e1-b64d-00231470a30c&DialBLegHangupCause=SUBSCRIBER_ABSENT')
         response = self.client.post('/api/v1/dialcallback/', data,
-            content_type='application/json',  **self.extra)
+            content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 400)
 
         response = self.client.post('/api/v1/dialcallback/', {}, **self.extra)
@@ -379,7 +377,5 @@ class ApiTestCase(BaseAuthenticatedClient):
 
     def test_playground_view(self):
         """Test Function to create a api list view"""
-        response = self.client.get("/explorer/")
+        response = self.client.get("/api-explorer/")
         self.assertEqual(response.status_code, 200)
-
-

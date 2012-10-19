@@ -19,16 +19,13 @@
 
         {% if err_msg %}
             <script type="text/javascript" charset="utf-8">
-
                 $(window).load(function(){
                     $('#section_modal').modal('show');
                 });
-
                 var url = '/survey2/' + '{{ survey_id }}'  + '/#row{{ section_id }}';
                 $(".close").live('click', function() {
                     $(location).attr('href', url);
                 });
-
                 var KEYCODE_ESC = 27;
                 $(document).keyup(function(e) {
                     if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
@@ -58,6 +55,22 @@
                 {% if section_type == SECTION_TYPE.VOICE_SECTION or section_type == SECTION_TYPE.RECORD_MSG_SECTION %}
                     {{ form.keys }}
                 {% else %}
+                    <div class="row">
+                        <script type="text/javascript" charset="utf-8">
+                            $("#button-timeout").live('click', function() {
+                                $("#id_keys").attr('value', 'timeout');
+                            });
+                            $("#button-anything").live('click', function() {
+                                $("#id_keys").attr('value', 'any');
+                            });
+                        </script>
+                        <div class="span2">
+                            <div class="btn-group" data-toggle="buttons-radio">
+                              <button type="button" class="btn" id="button-timeout">Timeout</button>
+                              <button type="button" class="btn" id="button-anything">Anything</button>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="span2 clearfix{% if form.keys.errors %} control-group error{% endif %}">
                             <label class="control-label" for="id_{{ form.keys.name }}">{{ form.keys.label }}</label>

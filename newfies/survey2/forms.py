@@ -70,7 +70,7 @@ def get_multi_question_choice_list(section_id):
     obj_section = Section_template.objects.get(id=int(section_id))
 
     if keys_list:
-        keys_list = [int(integral) for integral in keys_list]
+        keys_list = [integral for integral in keys_list]
 
     for i in range(0, 10):
         if obj_section.__dict__['key_' + str(i)] \
@@ -78,7 +78,8 @@ def get_multi_question_choice_list(section_id):
             list_sq.append((i, '%s' % \
                                (obj_section.__dict__['key_' + str(i)])))
 
-    list_sq.append(('', _('Anything')))
+    list_sq.append(('timeout', _('Timeout')))
+    list_sq.append(('any', _('Anything')))
     return list_sq
 
 
@@ -93,7 +94,7 @@ def get_rating_choice_list(section_id):
     obj_section = Section_template.objects.get(id=int(section_id))
 
     if keys_list:
-        keys_list = [int(integral) for integral in keys_list]
+        keys_list = [integral for integral in keys_list]
 
     list_sq = []
     if obj_section.rating_laps:
@@ -101,7 +102,8 @@ def get_rating_choice_list(section_id):
             if i not in keys_list:
                 list_sq.append((i, '%s' % (str(i))))
 
-    list_sq.append(('', _('Anything')))
+    list_sq.append(('timeout', _('Timeout')))
+    list_sq.append(('any', _('Anything')))
     return list_sq
 
 

@@ -317,8 +317,13 @@
                                                 {% if section.type != SECTION_TYPE.VOICE_SECTION %}
                                                     {% if section.type != SECTION_TYPE.RECORD_MSG_SECTION %}
                                                     <td>
-                                                        {% trans "If the user press" %}&nbsp;
-                                                        {% if branch.keys %}
+                                                        {% if branch.keys == 'any' %}
+                                                            {% trans "If the user press" %}&nbsp;
+                                                            {% trans "anything else" %}
+                                                        {% elif branch.keys == 'timeout' %}
+                                                            {% trans "Timeout" %} (no input within {{ section.timeout }}ms)
+                                                        {% elif branch.keys %}
+                                                            {% trans "If the user press" %}&nbsp;
                                                             {{ branch.keys }}
                                                         {% else %}
                                                             {% trans "None" %}
@@ -340,7 +345,7 @@
                                                 </td>
                                                 <td class="survey_edit_key">
                                                     {% if perms.survey2.delete_branching %}
-                                                        <a class="section-delete btn btn-small" href="/section/branch/{{ branch.id }}/?delete=true" title="{% trans "delete branching"|title %}"><i class="icon-remove-circle"></i></a>
+                                                        <a {% icon_style 'cross' %} href="/section/branch/{{ branch.id }}/?delete=true" class="icon" title="{% trans "Delete" %}">&nbsp;</a>
                                                     {% endif %}
                                                 </td>
                                             {% endif %}

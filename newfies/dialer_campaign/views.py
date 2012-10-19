@@ -27,7 +27,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import get_model
 from notification import models as notification
 from frontend.views import notice_count
-from dialer_contact.models import Phonebook, Contact
+from dialer_contact.models import Phonebook
 from utils.helper import grid_common_function, get_grid_update_delete_link
 from dialer_campaign.models import Campaign
 from dialer_campaign.forms import CampaignForm, DuplicateCampaignForm
@@ -37,7 +37,6 @@ from dialer_campaign.function_def import user_attached_with_dialer_settings, \
                         get_campaign_status_name, user_dialer_setting_msg
 from dialer_campaign.tasks import collect_subscriber
 from common.common_functions import current_view
-from copy import deepcopy
 import re
 
 
@@ -564,7 +563,6 @@ def campaign_duplicate(request, id):
             request.session['error_msg'] = True
     else:
         request.session['error_msg'] = ''
-
 
     template = 'frontend/campaign/campaign_duplicate.html'
     data = {

@@ -25,26 +25,22 @@ from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
-from dialer_campaign.models import get_unique_code, Campaign
+from dialer_campaign.models import Campaign
 from dialer_campaign.views import notice_count
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.constants import VOIPCALL_DISPOSITION
-
 #from survey2.models import Survey, Section, Branching,\
 #    Result, ResultAggregate
 from survey2.models import Survey_template, Survey, Section_template, Section,\
     Branching_template, Branching,\
     Result, ResultAggregate
-
 from survey2.forms import SurveyForm, VoiceSectionForm,\
     MultipleChoiceSectionForm, RatingSectionForm,\
     EnterNumberSectionForm, RecordMessageSectionForm,\
     PatchThroughSectionForm, BranchingForm, PhrasingForm,\
     SurveyDetailReportForm
-
 from survey2.constants import SECTION_TYPE
 from utils.helper import grid_common_function, get_grid_update_delete_link
-
 from common.common_functions import variable_value, current_view
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -54,7 +50,7 @@ import csv
 import os
 
 
-testdebug = True # TODO: Change later
+testdebug = True  # TODO: Change later
 
 
 def find_branching(p_section, DTMF):
@@ -484,8 +480,7 @@ def section_add(request):
                     form = VoiceSectionForm(request.user, request.POST)
                     if form.is_valid():
                         obj = form.save()
-                        request.session["msg"] =\
-                            _('Voice Section is added successfully.')
+                        request.session["msg"] = _('Voice Section is added successfully.')
                         return HttpResponseRedirect('/survey2/%s/#row%s'
                                                     % (obj.survey_id, obj.id))
                     else:
@@ -498,7 +493,6 @@ def section_add(request):
                                                'type': SECTION_TYPE.VOICE_SECTION})
         except:
             pass
-
 
         # Multiple Choice Section
         try:
@@ -569,7 +563,6 @@ def section_add(request):
                                                'type': SECTION_TYPE.ENTER_NUMBER_SECTION})
         except:
             pass
-
 
         # Record Message Section
         try:
@@ -1127,6 +1120,7 @@ def survey_change(request, object_id):
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
 
+
 @login_required
 def survey_view(request, object_id):
     """View locked survey
@@ -1360,6 +1354,7 @@ def survey_report(request):
         campaign_obj = Campaign.objects.get(id=campaign_id)
         survey_result_kwargs['campaign'] = campaign_obj
 
+        #TODO: Should we keep this
         # Get survey result report from session
         # while using pagination & sorting
         #if request.GET.get('page') or request.GET.get('sort_by'):
@@ -1443,20 +1438,16 @@ def export_surveycall_report(request):
     **Exported fields**: ['starting_date', 'phone_number', 'duration',
                           'disposition', 'survey results']
     """
-
     # get the response object, this can be used as a stream.
     response = HttpResponse(mimetype='text/csv')
     # force download.
     response['Content-Disposition'] = 'attachment;filename=export.csv'
-    # the csv writer
     writer = csv.writer(response)
 
     qs = request.session['session_surveycalls']
-
     campaign_id = request.session['session_campaign_id']
     campaign_obj = Campaign.objects.get(pk=campaign_id)
-    column_list = ['starting_date', 'destination', 'duration',
-                   'disposition']
+    column_list = ['starting_date', 'destination', 'duration', 'disposition']
 
     survey_qst = False
     if str(campaign_obj.content_type) == 'Survey':
@@ -1489,15 +1480,10 @@ def survey_campaign_result(request, id):
 
         * List all survey result which belong to callrequest.
     """
-    result = \
-        Result.objects.filter(
-            callrequest=VoIPCall.objects.get(pk=id).callrequest_id)\
-            .order_by('section')
-
-    #file_path = '%s/tts/phrasing_%s' %\
-    #            (settings.MEDIA_ROOT, phrasing_hexdigest)
+    result = Result.objects\
+                .filter(callrequest=VoIPCall.objects.get(pk=id).callrequest_id)\
+                .order_by('section')
     template = 'frontend/survey2/survey_campaign_result.html'
-
     data = {
         'result': result,
         'MEDIA_ROOT': settings.MEDIA_ROOT,

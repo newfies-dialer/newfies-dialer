@@ -21,8 +21,9 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.db.models import Sum, Avg, Count
 from django.db import IntegrityError
 from django.template.context import RequestContext
-from django.utils.translation import ugettext as _
 from django.utils import simplejson
+from django.utils.translation import ugettext as _
+from django.utils.html import escape
 from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
 from dialer_campaign.models import Campaign
@@ -128,7 +129,7 @@ def survey_finestatemachine(request):
     if testdebug:
         #implemented to test in browser
         #usage :
-        #http://127.0.0.1:8000/survey_finestatemachine/?ALegRequestUUID=df8a8478-cc57-11e1-aa17-00231470a30c&Digits=1&RecordFile=tesfilename.mp3
+        #http://127.0.0.1:8000/survey_finestatemachine/?ALegRequestUUID=1be691e0-1a47-11e2-b556-00231470a30c&Digits=1&RecordFile=tesfilename.mp3
         if not opt_ALegRequestUUID:
             opt_ALegRequestUUID = request.GET.get('ALegRequestUUID')
         if not opt_CallUUID:
@@ -141,9 +142,8 @@ def survey_finestatemachine(request):
         #print "DTMF=%s - opt_CallUUID=%s" % (DTMF, opt_CallUUID)
 
     if not opt_ALegRequestUUID:
-        return HttpResponse(
-            content="Error : missing parameter ALegRequestUUID",
-            status=400)
+        return HttpResponse(content="Error: missing parameter ALegRequestUUID",
+                            status=400)
 
     #Create the keys to store the cache
     key_state = "%s_state" % opt_CallUUID
@@ -175,9 +175,8 @@ def survey_finestatemachine(request):
     try:
         obj_callrequest = Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
     except:
-        return HttpResponse(
-            content="Error : retrieving Callrequest with the ALegRequestUUID",
-            status=400)
+        return HttpResponse(content="Error: No Callrequest for this ALegRequestUUID",
+                            status=400)
 
     survey_id = obj_callrequest.object_id
     cache.set(key_survey, survey_id, 21600)  # 21600 seconds = 6 hours
@@ -231,8 +230,12 @@ def survey_finestatemachine(request):
         p_section = list_section[current_state].id
         cache.set(key_p_section, p_section, 21600)
     except IndexError:
+        raise
         html = '<Response><Hangup/></Response>'
-        return HttpResponse(html)
+        if testdebug:
+            return HttpResponse(escape(html))
+        else:
+            return HttpResponse(html)
 
     #retrieve the basename of the url
     url = settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL
@@ -284,7 +287,10 @@ def survey_finestatemachine(request):
         next_state = current_state
         cache.set(key_state, next_state, 21600)
 
-    return HttpResponse(html)
+    if testdebug:
+        return HttpResponse(escape(html))
+    else:
+        return HttpResponse(html)
 
 
 def ceil_strdate(str_date, start):

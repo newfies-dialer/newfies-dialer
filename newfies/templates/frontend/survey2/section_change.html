@@ -19,21 +19,17 @@
 
     {% if err_msg %}
         <script type="text/javascript" charset="utf-8">
-
             $(window).load(function(){
                 $('#section_modal').modal('show');
             });
-
             var url = '/survey2/' + '{{ survey_id }}'  + '/#row{{ section_id }}';
             $(".close").live('click', function() {
                 $(location).attr('href', url);
             });
-
             var KEYCODE_ESC = 27;
             $(document).keyup(function(e) {
                 if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
             });
-
         </script>
         <!-- modal content-->
         <div class="modal hide fade modal-section" id="section_modal">
@@ -46,7 +42,6 @@
             {% else %}
                 {% trans "Add" %}
             {% endif %} {% trans "Section" %}
-                <small></small>
             </h3>
         </div>
 
@@ -54,6 +49,7 @@
         <form method="POST" action="{% if action == 'update' %}/section/{{ section_id }}/{% else %}/section/add/?survey_id={{ survey_id }}{% endif %}" enctype="multipart/form-data" id="update_form">
             {% csrf_token %}
             {{ form.survey }}
+
             <div class="modal-body">
             <!-- modal content-->
 
@@ -71,7 +67,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 {% if form.type.value == SECTION_TYPE.VOICE_SECTION or form.type.value == SECTION_TYPE.MULTIPLE_CHOICE_SECTION or form.type.value == SECTION_TYPE.RATING_SECTION  or form.type.value == SECTION_TYPE.ENTER_NUMBER_SECTION %}
                     <div class="row">

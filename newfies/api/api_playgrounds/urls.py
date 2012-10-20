@@ -34,27 +34,22 @@ from api.api_playgrounds.branching_playground import BranchingAPIPlayground
 
 
 urlpatterns = patterns('',
-
     (r'api-explorer/gateway/', include(GatewayAPIPlayground().urls)),
     (r'api-explorer/voiceapp/', include(VoiceAppAPIPlayground().urls)),
     (r'api-explorer/phonebook/', include(PhonebookAPIPlayground().urls)),
     (r'api-explorer/bulk-contact/', include(BulkContactAPIPlayground().urls)),
     (r'api-explorer/campaign/', include(CampaignAPIPlayground().urls)),
-    (r'api-explorer/campaign-delete-cascade/',
-        include(CampaignDelCascadeAPIPlayground().urls)),
-    (r'api-explorer/campaign-subscriber/',
-        include(CampaignSubscriberAPIPlayground().urls)),
-    (r'api-explorer/campaign-subscriber-per-campaign/',
-        include(CampaignSubscriberPerCampaignAPIPlayground().urls)),
+    (r'api-explorer/campaign-delete-cascade/', include(CampaignDelCascadeAPIPlayground().urls)),
+    (r'api-explorer/campaign-subscriber/', include(CampaignSubscriberAPIPlayground().urls)),
+    (r'api-explorer/campaign-subscriber-per-campaign/', include(CampaignSubscriberPerCampaignAPIPlayground().urls)),
     (r'api-explorer/callrequest/', include(CallrequestAPIPlayground().urls)),
     (r'api-explorer/dialcallback/', include(DialCallbackAPIPlayground().urls)),
-    (r'api-explorer/store_cdr/', include(StoreCdrAPIPlayground().urls)),
+    (r'api-explorer/store-cdr/', include(StoreCdrAPIPlayground().urls)),
     (r'api-explorer/answercall/', include(AnswerCallAPIPlayground().urls)),
     (r'api-explorer/hangupcall/', include(HangupCallAPIPlayground().urls)),
     (r'api-explorer/survey/', include(SurveyAPIPlayground().urls)),
     (r'api-explorer/section/', include(SectionAPIPlayground().urls)),
     (r'api-explorer/branching/', include(BranchingAPIPlayground().urls)),
-
     # API list view
     (r'api-explorer/$', 'api.api_playgrounds.views.api_list_view'),
 )

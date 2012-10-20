@@ -241,8 +241,13 @@
                                                 {% if section.type != SECTION_TYPE.RATING_SECTION %}
                                                     {% if section.type != SECTION_TYPE.RECORD_MSG_SECTION %}
                                                         <td>
-                                                            {% trans "If the user press" %}&nbsp;
-                                                            {% if branch.keys %}
+                                                            {% if branch.keys == 'any' %}
+                                                                {% trans "If the user press" %}&nbsp;
+                                                                {% trans "anything else" %}
+                                                            {% elif branch.keys == 'timeout' %}
+                                                                {% trans "Timeout" %} (no input within {{ section.timeout }}ms)
+                                                            {% elif branch.keys %}
+                                                                {% trans "If the user press" %}&nbsp;
                                                                 {{ branch.keys }}
                                                             {% else %}
                                                                 {% trans "None" %}

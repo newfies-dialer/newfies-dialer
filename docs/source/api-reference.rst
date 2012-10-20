@@ -24,3 +24,20 @@ Contents:
     ./api-doc/survey_question_resource
     ./api-doc/survey_response_resource
 
+Testing console of APIs:
+
+    **URL** : http://127.0.0.1:8000/api-explorer/
+
+
+.. image:: /_static/images/api-playground/list_of_api.png
+
+
+To test individual api, click on one api from above api list and you will get like
+following screen.
+
+
+    **URL** : http://127.0.0.1:8000/api-explorer/switch/
+
+
+.. image:: /_static/images/api-playground/phonebook_playground.png
+    :width: 700

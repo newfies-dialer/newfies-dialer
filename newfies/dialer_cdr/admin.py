@@ -36,7 +36,7 @@ import csv
 class CallrequestAdmin(GenericAdminModelAdmin):
     """Allows the administrator to view and modify certain attributes
     of a Callrequest."""
-    content_type_whitelist = ('voice_app/voiceapp_template', 'survey2/survey_template', )
+    content_type_whitelist = ('voice_app/voiceapp', 'survey2/survey', )
     fieldsets = (
         (_('Standard options'), {
             'fields': ('user', 'request_uuid', 'call_time', 'campaign',

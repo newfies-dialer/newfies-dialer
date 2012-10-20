@@ -249,6 +249,8 @@ class Section_template(Section_abstract):
 
     class Meta(Sortable.Meta):
         ordering = Sortable.Meta.ordering + ['survey']
+        verbose_name = _("Section template")
+        verbose_name_plural = _("Section templates")
 
     def copy_section_template(self):
         try:
@@ -370,6 +372,10 @@ class Branching_template(Branching_abstract):
     # '' to goto hangup
     goto = models.ForeignKey(Section_template, null=True,
                              blank=True, related_name='Goto Section')
+
+    class Meta():
+        verbose_name = _("Branching template")
+        verbose_name_plural = _("Branching templates")
 
     def copy_branching_template(self):
         try:

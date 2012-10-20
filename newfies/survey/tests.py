@@ -23,7 +23,7 @@ from survey.forms import SurveyForm, SurveyQuestionForm, \
 from survey.views import survey_list, survey_grid, survey_add, \
     survey_change, survey_del, survey_question_add, survey_question_change,\
     survey_response_add, survey_response_change, survey_report,\
-    survey_finestatemachine, survey_question_list, export_surveycall_report
+    survey_finitestatemachine, survey_question_list, export_surveycall_report
 from survey.ajax import survey_question_sort
 from utils.helper import grid_test_data
 from datetime import datetime
@@ -311,8 +311,8 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         response = export_surveycall_report(request)
         self.assertEqual(response.status_code, 200)
 
-    def test_survey_finestatemachine(self):
-        request = self.factory.post('/survey_finestatemachine/',
+    def test_survey_finitestatemachine(self):
+        request = self.factory.post('/survey_finitestatemachine/',
             {'ALegRequestUUID': 'e8fee8f6-40dd-11e1-964f-000c296bd875',
              'CallUUID': 'e8fee8f6-40dd-11e1-964f-000c296bd875',
              'Digits': '1',
@@ -320,10 +320,10 @@ class SurveyCustomerView(BaseAuthenticatedClient):
              })
         request.user = self.user
         request.session = {}
-        response = survey_finestatemachine(request)
+        response = survey_finitestatemachine(request)
         self.assertEqual(response.status_code, 200)
 
-        request = self.factory.post('/survey_finestatemachine/',
+        request = self.factory.post('/survey_finitestatemachine/',
                 {'ALegRequestUUID': '',
                  'CallUUID': 'e8fee8f6-40dd-11e1-964f-000c296bd875',
                  'Digits': '1',
@@ -331,7 +331,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
                  })
         request.user = self.user
         request.session = {}
-        response = survey_finestatemachine(request)
+        response = survey_finitestatemachine(request)
         self.assertEqual(response.status_code, 400)
 
     def test_survey_question_list(self):

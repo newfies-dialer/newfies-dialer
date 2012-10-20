@@ -35,7 +35,7 @@ urlpatterns = patterns('survey2.views',
     (r'^section/branch/(?P<id>\w+)/$', 'section_branch_change'),
 
     # Survey FSM urls
-    (r'^survey_finestatemachine/$', 'survey_finestatemachine'),
+    (r'^survey_finitestatemachine/$', 'survey_finitestatemachine'),
     # Survey Report urls
     (r'^survey2_report/$', 'survey_report'),
     (r'^export2_surveycall_report/$', 'export_surveycall_report'),

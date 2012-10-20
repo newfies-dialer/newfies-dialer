@@ -110,7 +110,7 @@ def save_section_result(request, obj_callrequest, obj_p_section):
 
 
 @csrf_exempt
-def survey_finestatemachine(request):
+def survey_finitestatemachine(request):
     """Survey Fine State Machine
 
     **Model**: SurveyQuestion
@@ -129,7 +129,7 @@ def survey_finestatemachine(request):
     if testdebug:
         #implemented to test in browser
         #usage :
-        #http://127.0.0.1:8000/survey_finestatemachine/?ALegRequestUUID=1be691e0-1a47-11e2-b556-00231470a30c&Digits=1&RecordFile=tesfilename.mp3
+        #http://127.0.0.1:8000/survey_finitestatemachine/?ALegRequestUUID=1be691e0-1a47-11e2-b556-00231470a30c&Digits=1&RecordFile=tesfilename.mp3
         if not opt_ALegRequestUUID:
             opt_ALegRequestUUID = request.GET.get('ALegRequestUUID')
         if not opt_CallUUID:

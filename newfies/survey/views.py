@@ -43,7 +43,7 @@ import os.path
 
 
 @csrf_exempt
-def survey_finestatemachine(request):
+def survey_finitestatemachine(request):
     """Survey Fine State Machine
 
     **Model**: SurveyQuestion
@@ -63,7 +63,7 @@ def survey_finestatemachine(request):
     if testdebug:
         #implemented to test in browser
         #usage :
-        #http://127.0.0.1:8000/survey_finestatemachine/?ALegRequestUUID=df8a8478-cc57-11e1-aa17-00231470a30c&Digits=1&RecordFile=tesfilename.mp3
+        #http://127.0.0.1:8000/survey_finitestatemachine/?ALegRequestUUID=df8a8478-cc57-11e1-aa17-00231470a30c&Digits=1&RecordFile=tesfilename.mp3
         if not opt_ALegRequestUUID:
             opt_ALegRequestUUID = request.GET.get('ALegRequestUUID')
         if not opt_CallUUID:

@@ -71,7 +71,7 @@ REDIS_DB = 0
 PLIVO_DEFAULT_ANSWER_URL = 'http://SERVER_IP_PORT/api/v1/answercall/'
 PLIVO_DEFAULT_HANGUP_URL = 'http://SERVER_IP_PORT/api/v1/hangupcall/'
 PLIVO_DEFAULT_DIALCALLBACK_URL = 'http://SERVER_IP_PORT/api/v1/dialcallback/'
-PLIVO_DEFAULT_SURVEY_ANSWER_URL = 'http://SERVER_IP_PORT/survey_finestatemachine/'
+PLIVO_DEFAULT_SURVEY_ANSWER_URL = 'http://SERVER_IP_PORT/survey_finitestatemachine/'
 
 FS_RECORDING_PATH = '/usr/share/newfies/usermedia/recording/'
 

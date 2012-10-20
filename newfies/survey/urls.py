@@ -30,7 +30,7 @@ urlpatterns = patterns('survey.views',
     (r'^survey_response/add/$', 'survey_response_add'),
     (r'^survey_response/(?P<id>\w+)/$', 'survey_response_change'),
 
-    (r'^survey_finestatemachineold/$', 'survey_finestatemachine'),
+    (r'^survey_finitestatemachineold/$', 'survey_finitestatemachine'),
 
     (r'^survey_report/$', 'survey_report'),
     (r'^export_surveycall_report/$', 'export_surveycall_report'),

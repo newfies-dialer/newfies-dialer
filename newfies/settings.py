@@ -429,9 +429,9 @@ PLIVO_DEFAULT_ANSWER_URL = 'http://127.0.0.1:8000/api/v1/answercall/'
 PLIVO_DEFAULT_HANGUP_URL = 'http://127.0.0.1:8000/api/v1/hangupcall/'
 PLIVO_DEFAULT_DIALCALLBACK_URL = 'http://127.0.0.1:8000/api/v1/dialcallback/'
 
-#TODO add consistancy between answercall api and survey_finestatemachine
+#TODO add consistancy between answercall api and survey_finitestatemachine
 PLIVO_DEFAULT_SURVEY_ANSWER_URL = 'http://127.0.0.1:8000/' \
-                                  'survey_finestatemachine/'
+                                  'survey_finitestatemachine/'
 
 FS_RECORDING_PATH = '/usr/share/newfies/usermedia/recording/'
 

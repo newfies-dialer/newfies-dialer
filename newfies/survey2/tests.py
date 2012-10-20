@@ -27,7 +27,7 @@ from survey2.forms import SurveyForm, VoiceSectionForm,\
 from survey2.views import survey_list, survey_grid, survey_add, \
     survey_change, survey_del, section_add, section_change,\
     section_phrasing_change, section_branch_change, survey_report,\
-    survey_finestatemachine, export_surveycall_report, section_branch_add,\
+    survey_finitestatemachine, export_surveycall_report, section_branch_add,\
     section_delete, section_phrasing_play, survey_view, survey_campaign_result
 from survey2.ajax import section_sort
 from utils.helper import grid_test_data

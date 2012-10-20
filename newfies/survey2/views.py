@@ -287,6 +287,16 @@ def survey_finestatemachine(request):
     return HttpResponse(html)
 
 
+def ceil_strdate(str_date, start):
+    """convert a string date to either a start or end day date"""
+    if start == 'start':
+        return datetime(int(str_date[0:4]), int(str_date[5:7]),
+                        int(str_date[8:10]), 0, 0, 0, 0)
+    else:
+        return datetime(int(str_date[0:4]), int(str_date[5:7]),
+                        int(str_date[8:10]), 23, 59, 59, 999999)
+
+
 @login_required
 def survey_grid(request):
     """Survey list in json format for flexigrid.
@@ -535,9 +545,8 @@ def section_add(request):
 
                 if request.POST.get('add') is None:
                     request.session["err_msg"] = True
-                    form = RatingSectionForm(
-                        request.user, initial={'survey': survey,
-                                               'type': SECTION_TYPE.RATING_SECTION})
+                    form = RatingSectionForm(request.user, initial={'survey': survey,
+                                             'type': SECTION_TYPE.RATING_SECTION})
         except:
             pass
 
@@ -558,9 +567,8 @@ def section_add(request):
 
                 if request.POST.get('add') is None:
                     request.session["err_msg"] = True
-                    form = EnterNumberSectionForm(
-                        request.user, initial={'survey': survey,
-                                               'type': SECTION_TYPE.ENTER_NUMBER_SECTION})
+                    form = EnterNumberSectionForm(request.user, initial={'survey': survey,
+                                                  'type': SECTION_TYPE.ENTER_NUMBER_SECTION})
         except:
             pass
 
@@ -581,9 +589,8 @@ def section_add(request):
 
                 if request.POST.get('add') is None:
                     request.session["err_msg"] = True
-                    form = RecordMessageSectionForm(
-                        request.user, initial={'survey': survey,
-                                               'type': SECTION_TYPE.RECORD_MSG_SECTION})
+                    form = RecordMessageSectionForm(request.user, initial={'survey': survey,
+                                                    'type': SECTION_TYPE.RECORD_MSG_SECTION})
         except:
             pass
 
@@ -604,9 +611,8 @@ def section_add(request):
 
                 if request.POST.get('add') is None:
                     request.session["err_msg"] = True
-                    form = PatchThroughSectionForm(
-                        request.user, initial={'survey': survey,
-                                               'type': SECTION_TYPE.PATCH_THROUGH_SECTION})
+                    form = PatchThroughSectionForm(request.user, initial={'survey': survey,
+                                                   'type': SECTION_TYPE.PATCH_THROUGH_SECTION})
         except:
             pass
 
@@ -639,20 +645,26 @@ def section_change(request, id):
 
         *
     """
-    section = get_object_or_404(
-        Section_template, pk=int(id), survey__user=request.user)
-
+    section = get_object_or_404(Section_template,
+                                pk=int(id),
+                                survey__user=request.user)
     if section.type == SECTION_TYPE.VOICE_SECTION:
+        #VOICE_SECTION
         form = VoiceSectionForm(request.user, instance=section)
-    if section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
+    elif section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
+        #MULTIPLE_CHOICE_SECTION
         form = MultipleChoiceSectionForm(request.user, instance=section)
-    if section.type == SECTION_TYPE.RATING_SECTION:
+    elif section.type == SECTION_TYPE.RATING_SECTION:
+        #RATING_SECTION
         form = RatingSectionForm(request.user, instance=section)
-    if section.type == SECTION_TYPE.ENTER_NUMBER_SECTION:
+    elif section.type == SECTION_TYPE.ENTER_NUMBER_SECTION:
+        #ENTER_NUMBER_SECTION
         form = EnterNumberSectionForm(request.user, instance=section)
-    if section.type == SECTION_TYPE.RECORD_MSG_SECTION:
+    elif section.type == SECTION_TYPE.RECORD_MSG_SECTION:
+        #RECORD_MSG_SECTION
         form = RecordMessageSectionForm(request.user, instance=section)
-    if section.type == SECTION_TYPE.PATCH_THROUGH_SECTION:
+    elif section.type == SECTION_TYPE.PATCH_THROUGH_SECTION:
+        #PATCH_THROUGH_SECTION
         form = PatchThroughSectionForm(request.user, instance=section)
 
     request.session['err_msg'] = ''
@@ -663,8 +675,9 @@ def section_change(request, id):
             if int(request.POST.get('type')) == SECTION_TYPE.VOICE_SECTION:
                 form = VoiceSectionForm(request.user, instance=section)
                 if request.POST.get('update'):
-                    form = VoiceSectionForm(
-                        request.user, request.POST, instance=section)
+                    form = VoiceSectionForm(request.user,
+                                            request.POST,
+                                            instance=section)
                     if form.is_valid():
                         obj = form.save()
                         request.session["msg"] =\
@@ -1277,19 +1290,13 @@ def survey_report(request):
             if "from_date" in request.POST:
                 # From
                 from_date = request.POST['from_date']
-                start_date = datetime(int(from_date[0:4]),
-                                      int(from_date[5:7]),
-                                      int(from_date[8:10]),
-                                      0, 0, 0, 0)
+                start_date = ceil_strdate(from_date, 'start')
                 request.session['session_from_date'] = from_date
 
             if "to_date" in request.POST:
                 # To
                 to_date = request.POST['to_date']
-                end_date = datetime(int(to_date[0:4]),
-                                    int(to_date[5:7]),
-                                    int(to_date[8:10]),
-                                    23, 59, 59, 999999)
+                end_date = ceil_strdate(to_date, 'end')
                 request.session['session_to_date'] = to_date
 
             campaign_id = variable_value(request, 'campaign')
@@ -1312,7 +1319,7 @@ def survey_report(request):
         from_date = tday.strftime('%Y-%m-01')
         last_day = ((datetime(tday.year, tday.month, 1, 23, 59, 59, 999999) +
                      relativedelta(months=1)) -
-                    relativedelta(days=1)).strftime('%d')
+                     relativedelta(days=1)).strftime('%d')
         to_date = tday.strftime('%Y-%m-' + last_day)
         search_tag = 0
 
@@ -1324,14 +1331,8 @@ def survey_report(request):
         request.session['session_survey_result'] = ''
         request.session['session_search_tag'] = search_tag
 
-    start_date = datetime(int(from_date[0:4]),
-                          int(from_date[5:7]),
-                          int(from_date[8:10]),
-                          0, 0, 0, 0)
-    end_date = datetime(int(to_date[0:4]),
-                        int(to_date[5:7]),
-                        int(to_date[8:10]),
-                        23, 59, 59, 999999)
+    start_date = ceil_strdate(from_date, 'start')
+    end_date = ceil_strdate(to_date, 'end')
 
     kwargs = {}
     kwargs['user'] = request.user

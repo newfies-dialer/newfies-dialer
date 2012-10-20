@@ -28,7 +28,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
 from dialer_campaign.models import Campaign
 from dialer_campaign.views import notice_count
-from dialer_cdr.models import Callrequest, VoIPCall
+from dialer_cdr.models import Callrequest, VoIPCall, CALLREQUEST_STATUS
 from dialer_cdr.constants import VOIPCALL_DISPOSITION
 #from survey2.models import Survey, Section, Branching,\
 #    Result, ResultAggregate
@@ -128,7 +128,6 @@ def survey_finitestatemachine(request):
 
     if testdebug:
         #implemented to test in browser
-        #usage :
         #http://127.0.0.1:8000/survey_finitestatemachine/?ALegRequestUUID=1be691e0-1a47-11e2-b556-00231470a30c&Digits=1&RecordFile=tesfilename.mp3
         if not opt_ALegRequestUUID:
             opt_ALegRequestUUID = request.GET.get('ALegRequestUUID')
@@ -166,24 +165,20 @@ def survey_finitestatemachine(request):
     else:
         p_section = cache.get(key_p_section)
         if p_section:
-            #print "\nPREVIOUS QUESTION ::> %d" % p_section
-            #Get previous Question
-            try:
-                obj_p_section = Section.objects.get(id=p_section)
-            except:
-                obj_p_section = False
+            #print "\nPREVIOUS Section ::> %d" % p_section
+            #Get previous Section
+            obj_p_section = Section.objects.get(id=p_section)
+
     try:
         obj_callrequest = Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
     except:
-        return HttpResponse(content="Error: No Callrequest for this ALegRequestUUID",
-                            status=400)
+        return HttpResponse(content="Error: No Callrequest", status=400)
 
     survey_id = obj_callrequest.object_id
     cache.set(key_survey, survey_id, 21600)  # 21600 seconds = 6 hours
 
     if current_state == 0:
-        #TODO : use constant
-        obj_callrequest.status = 8  # IN-PROGRESS
+        obj_callrequest.status = CALLREQUEST_STATUS.IN_PROGRESS
         obj_callrequest.aleg_uuid = opt_CallUUID
         obj_callrequest.save()
 

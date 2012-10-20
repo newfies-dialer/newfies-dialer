@@ -17,6 +17,9 @@ from common.utils import Choice
 
 
 class CALLREQUEST_STATUS(Choice):
+    """
+    Store the Call Request Status
+    """
     PENDING = 1, _("Pending")
     FAILURE = 2, _("Failure")
     RETRY = 3, _("Retry")
@@ -28,17 +31,26 @@ class CALLREQUEST_STATUS(Choice):
 
 
 class CALLREQUEST_TYPE(Choice):
+    """
+    Store the Call Request Type
+    """
     ALLOW_RETRY = 1, _('ALLOW RETRY')
     CANNOT_RETRY = 2, _('CANNOT RETRY')
     RETRY_DONE = 3, _('RETRY DONE')
 
 
 class LEG_TYPE(Choice):
+    """
+    Store the Leg Type
+    """
     A_LEG = 1, _('A-Leg')
     B_LEG = 2, _('B-Leg')
 
 
 class VOIPCALL_DISPOSITION(Choice):
+    """
+    Store the Call Disposition
+    """
     ANSWER = 'ANSWER', u'ANSWER'
     BUSY = 'BUSY', u'BUSY'
     NOANSWER = 'NOANSWER', u'NOANSWER'

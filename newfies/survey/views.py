@@ -119,7 +119,6 @@ def survey_finitestatemachine(request):
     cache.set(key_surveyapp, surveyapp_id, 21600)  # 21600 seconds = 6 hours
 
     if current_state == 0:
-        #TODO : use constant
         obj_callrequest.status = CALLREQUEST_STATUS.IN_PROGRESS
         obj_callrequest.aleg_uuid = opt_CallUUID
         obj_callrequest.save()

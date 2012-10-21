@@ -33,8 +33,8 @@ from dialer_campaign.models import Campaign
 from dialer_campaign.forms import CampaignForm, DuplicateCampaignForm
 from dialer_campaign.constants import CAMPAIGN_STATUS
 from dialer_campaign.function_def import user_attached_with_dialer_settings, \
-                        check_dialer_setting, dialer_setting_limit, \
-                        get_campaign_status_name, user_dialer_setting_msg
+    check_dialer_setting, dialer_setting_limit, \
+    get_campaign_status_name, user_dialer_setting_msg
 from dialer_campaign.tasks import collect_subscriber
 from common.common_functions import current_view
 import re

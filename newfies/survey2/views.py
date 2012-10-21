@@ -119,6 +119,7 @@ def survey_finitestatemachine(request):
     current_state = None
     next_state = None
     delcache = False
+    debug_outp = ''
 
     #Load Plivo Post parameters
     opt_ALegRequestUUID = request.POST.get('ALegRequestUUID')
@@ -149,7 +150,9 @@ def survey_finitestatemachine(request):
     key_p_section = "%s_p_section" % opt_CallUUID  # Previous section
     key_survey = "%s_survey_id" % opt_CallUUID
 
+    #remove the current key state in debug mode by passing delcache setting
     if testdebug and delcache:
+        debug_outp += "delete state and key_survey = %s <br/>" % str(key_survey)
         cache.delete(key_state)
         cache.delete(key_survey)
 
@@ -158,7 +161,11 @@ def survey_finitestatemachine(request):
     survey_id = cache.get(key_survey)
     obj_p_section = False
 
+    #If there is no current state, it means we are starting the we set key_state and key_p_section to 0
+    #key_p_section is the previous key question
     if not current_state:
+        debug_outp += "** STARTING CALL **<br/>"
+        debug_outp += "[INFO] - No current_state (%s) <br/>" % str(key_state)
         cache.set(key_state, 0, 21600)  # 21600 seconds = 6 hours
         cache.set(key_p_section, 0, 21600)  # 21600 seconds = 6 hours
         current_state = 0
@@ -181,11 +188,15 @@ def survey_finitestatemachine(request):
         obj_callrequest.status = CALLREQUEST_STATUS.IN_PROGRESS
         obj_callrequest.aleg_uuid = opt_CallUUID
         obj_callrequest.save()
+        debug_outp += "Callrequest Saves (IN_PROGRESS) <br/>"
 
-    #print "current_state = %s" % str(current_state)
+    debug_outp += "current_state = %s <br/>" % str(current_state)
+    debug_outp += "Previous Section = %s <br/>" % str(obj_p_section)
 
-    #Load the questions
+    #Get list of Section
     list_section = Section.objects.filter(survey=survey_id).order_by('order')
+    print "-------------"
+    print survey_id
 
     if obj_p_section and obj_p_section.type == SECTION_TYPE.RECORD_MSG_SECTION:
         #Recording - save result
@@ -217,7 +228,7 @@ def survey_finitestatemachine(request):
     next_state = current_state + 1
 
     cache.set(key_state, next_state, 21600)
-    #print "Saved state in Cache (%s = %s)" % (key_state, next_state)
+    debug_outp += "Saved state in Cache (%s = %s) <br/>" % (key_state, next_state)
 
     try:
         list_section[current_state]
@@ -245,8 +256,12 @@ def survey_finitestatemachine(request):
         #Text2Speech
         question = "<Speak>%s</Speak>" % list_section[current_state].phrasing
 
-    #Menu
-    if list_section[current_state].type == 1:
+    list_section[current_state].type
+
+    debug_outp += "Check section state (%d) <br/>" % (list_section[current_state].type)
+    #Voice Section
+    if list_section[current_state].type == SECTION_TYPE.VOICE_SECTION:
+        debug_outp += "VOICE_SECTION<br/>------------------<br/>"
         html =\
         '<Response>\n'\
         '   <GetDigits action="%s" method="GET" numDigits="1" '\
@@ -261,7 +276,7 @@ def survey_finitestatemachine(request):
             question,
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
     #Recording
-    elif list_section[current_state].type == 3:
+    elif list_section[current_state].type == SECTION_TYPE.RECORD_MSG_SECTION:
         html =\
         '<Response>\n'\
         '   %s\n'\
@@ -283,7 +298,7 @@ def survey_finitestatemachine(request):
         cache.set(key_state, next_state, 21600)
 
     if testdebug:
-        return HttpResponse(escape(html))
+        return HttpResponse(debug_outp + escape(html))
     else:
         return HttpResponse(html)
 

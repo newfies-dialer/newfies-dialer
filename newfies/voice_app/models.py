@@ -13,6 +13,7 @@
 #
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.contenttypes.models import ContentType
 from dialer_campaign.models import Campaign
 from dialer_gateway.models import Gateway
 from voice_app.constants import VOICEAPP_TYPE
@@ -105,7 +106,7 @@ class VoiceApp_template(VoiceApp_abstract):
             ).count()
 
             if record_count == 0:
-                VoiceApp.objects.create(
+                new_voiceapp_obj = VoiceApp.objects.create(
                     name=self.name,
                     description=self.description,
                     type=self.type,
@@ -114,6 +115,12 @@ class VoiceApp_template(VoiceApp_abstract):
                     tts_language=self.tts_language,
                     user=self.user,
                     campaign=campaign_obj)
+
+                # updated campaign content_type & object_id with new survey object
+                campaign_obj.content_type_id =\
+                    ContentType.objects.get(model='voiceapp').id
+                campaign_obj.object_id = new_voiceapp_obj.id
+                campaign_obj.save()
         except:
             raise
 

@@ -223,7 +223,7 @@ def get_campaign_survey_view(campaign_object):
                       _('survey'),
                       tpl_control_icon('eye.png'))
 
-        if campaign_object.content_type.model == 'voiceapp_template':
+        if campaign_object.content_type.model == 'voiceapp':
             link = '<a href="/voiceapp_view/%s/" target="_blank" class="icon"\
                    title="%s" %s>&nbsp;</a>'\
                    % (campaign_object.object_id,

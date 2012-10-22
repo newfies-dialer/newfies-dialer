@@ -378,8 +378,7 @@ def survey_grid(request):
         survey_list.order_by(sortorder_sign + sortname)[start_page:end_page]
 
     rows = [{'id': row['id'],
-             'cell': ['<input type="checkbox" name="select" class="checkbox"\
-                      value="%s" />' % (str(row['id'])),
+             'cell': ['<input type="checkbox" name="select" class="checkbox" value="%s" />' % (str(row['id'])),
                       row['name'],
                       row['description'],
                       row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
@@ -1290,9 +1289,8 @@ def survey_audio_recording(audio_file):
     """
     if audio_file:
         file_url = '%srecording/%s' % (settings.MEDIA_URL, str(audio_file))
-        player_string = '<ul class="playlist"><li style="width:auto;">\
-            <a href="%s">%s</a></li></ul>' % (file_url,
-                                              os.path.basename(file_url))
+        player_string = '<ul class="playlist"><li style="width:auto;"> <a href="%s">%s</a></li></ul>' % \
+            (file_url, os.path.basename(file_url))
         return player_string
     else:
         return '<br/><span class="label label-important">%s</span>' %\

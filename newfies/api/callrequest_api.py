@@ -49,8 +49,7 @@ class CallrequestValidation(Validation):
             except:
                 errors['chk_content_type'] = ["The ContentType doesn't exist!"]
         else:
-            errors['chk_content_type'] = ["Wrong option. \
-                                            Enter 'voice_app' or 'survey' !"]
+            errors['chk_content_type'] = ["Wrong option. Enter 'voice_app' or 'survey' !"]
 
         object_id = bundle.data.get('object_id')
         if object_id:

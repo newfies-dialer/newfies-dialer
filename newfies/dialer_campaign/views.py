@@ -157,8 +157,7 @@ def tpl_control_icon(icon):
     """
     function to produce control html icon
     """
-    return 'style="text-decoration:none;\
-        background-image:url(%snewfies/icons/%s);"' % (settings.STATIC_URL, icon)
+    return 'style="text-decoration:none;background-image:url(%snewfies/icons/%s);"' % (settings.STATIC_URL, icon)
 
 
 def get_url_campaign_status(id, status):
@@ -193,10 +192,10 @@ def get_url_campaign_status(id, status):
         control_stop_style = tpl_control_icon('control_stop_blue.png')
 
     #return all the html button for campaign status management
-    return "<a href='%s' class='icon' title='%s' %s>&nbsp;</a>\
-        <a href='%s' class='icon' title='%s' %s>&nbsp;</a>\
-        <a href='%s' class='icon' title='%s' %s>&nbsp;</a>\
-        <a href='%s' class='icon' title='%s' %s>&nbsp;</a>" % \
+    return "<a href='%s' class='icon' title='%s' %s>&nbsp;</a>" + \
+        "<a href='%s' class='icon' title='%s' %s>&nbsp;</a>" + \
+        "<a href='%s' class='icon' title='%s' %s>&nbsp;</a>" + \
+        "<a href='%s' class='icon' title='%s' %s>&nbsp;</a>" % \
         (url_cpg_start, _("Start"), control_play_style,
         url_cpg_pause, _("Pause"), control_pause_style,
         url_cpg_abort, _("Abort"), control_abort_style,
@@ -216,15 +215,13 @@ def get_campaign_survey_view(campaign_object):
     link = ''
     if int(campaign_object.status) == CAMPAIGN_STATUS.START:
         if campaign_object.content_type.model == 'survey':
-            link = '<a href="/survey2_view/%s/" target="_blank" class="icon"\
-                   title="%s" %s>&nbsp;</a>' % \
+            link = '<a href="/survey2_view/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' % \
                    (campaign_object.object_id,
                     _('survey'),
                     tpl_control_icon('eye.png'))
 
         if campaign_object.content_type.model == 'voiceapp':
-            link = '<a href="/voiceapp_view/%s/" target="_blank" class="icon"\
-                   title="%s" %s>&nbsp;</a>' % \
+            link = '<a href="/voiceapp_view/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' % \
                    (campaign_object.object_id,
                     _('Voice app'),
                     tpl_control_icon('eye.png'))
@@ -233,9 +230,7 @@ def get_campaign_survey_view(campaign_object):
 
 
 def make_duplicate_campaign(campaign_object):
-    link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" \
-            class="campaign-duplicate icon" data-toggle="modal"\
-            data-controls-modal="campaign-duplicate" title="%s" %s>&nbsp;</a>'\
+    link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate icon" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s" %s>&nbsp;</a>'\
            % (campaign_object.id,
               _('Duplicate this campaign'),
               tpl_control_icon('page_copy.png'))
@@ -263,8 +258,7 @@ def campaign_grid(request):
 
     rows = [
             {'id': row.id,
-             'cell': ['<input type="checkbox" name="select" class="checkbox"\
-                          value="%s" />' % (str(row.id)),
+             'cell': ['<input type="checkbox" name="select" class="checkbox" value="%s" />' % (str(row.id)),
                       row.campaign_code,
                       row.name,
                       row.startingdate.strftime('%Y-%m-%d %H:%M:%S'),

@@ -56,8 +56,7 @@ def voiceapp_grid(request):
         voiceapp_list.order_by(sortorder_sign + sortname)[start_page:end_page]
 
     rows = [{'id': row['id'],
-             'cell': ['<input type="checkbox" name="select" class="checkbox"\
-                      value="%s" />' % (str(row['id']) ),
+             'cell': ['<input type="checkbox" name="select" class="checkbox" value="%s" />' % (str(row['id'])),
                       row['name'],
                       row['description'],
                       get_voiceapp_type_name(row['type']),
@@ -67,7 +66,7 @@ def voiceapp_grid(request):
                       row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
                       get_grid_update_delete_link(request, row['id'],
                           'voice_app.change_voiceapp',
-                          _('Update Voice App'), 'update')+\
+                          _('Update Voice App'), 'update') + \
                       get_grid_update_delete_link(request, row['id'],
                           'voice_app.delete_voiceapp',
                                         _('Delete Voice App'), 'delete'),

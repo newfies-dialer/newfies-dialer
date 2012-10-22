@@ -257,8 +257,7 @@ class Campaign(Model):
         """
         # active - 1 | pause - 2 | abort - 3 | stop - 4
         if self.status == 1:
-            return "<a href='%s'>Pause</a> | <a href='%s'>Abort</a> \
-            | <a href='%s'>Stop</a>" % \
+            return "<a href='%s'>Pause</a> | <a href='%s'>Abort</a> | <a href='%s'>Stop</a>" % \
                 (reverse('dialer_campaign.views.update_campaign_status_admin',
                          args=[self.pk, 2]),
                  reverse('dialer_campaign.views.update_campaign_status_admin',
@@ -267,8 +266,7 @@ class Campaign(Model):
                          args=[self.pk, 4]))
 
         if self.status == 2:
-            return "<a href='%s'>Start</a> | <a href='%s'>Abort</a> |\
-             <a href='%s'>Stop</a>" % \
+            return "<a href='%s'>Start</a> | <a href='%s'>Abort</a> | <a href='%s'>Stop</a>" % \
                 (reverse('dialer_campaign.views.update_campaign_status_admin',
                          args=[self.pk, 1]),
                  reverse('dialer_campaign.views.update_campaign_status_admin',
@@ -277,8 +275,7 @@ class Campaign(Model):
                          args=[self.pk, 4]))
 
         if self.status == 3:
-            return "<a href='%s'>Start</a> | <a href='%s'>Pause</a> |\
-             <a href='%s'>Stop</a>" % \
+            return "<a href='%s'>Start</a> | <a href='%s'>Pause</a> | <a href='%s'>Stop</a>" % \
                 (reverse('dialer_campaign.views.update_campaign_status_admin',
                          args=[self.pk, 1]),
                  reverse('dialer_campaign.views.update_campaign_status_admin',
@@ -287,8 +284,7 @@ class Campaign(Model):
                          args=[self.pk, 4]))
 
         if self.status == 4:
-            return "<a href='%s'>Start</a> | <a href='%s'>Pause</a> \
-            | <a href='%s'>Abort</a>" % \
+            return "<a href='%s'>Start</a> | <a href='%s'>Pause</a> | <a href='%s'>Abort</a>" % \
                 (reverse('dialer_campaign.views.update_campaign_status_admin',
                          args=[self.pk, 1]),
                  reverse('dialer_campaign.views.update_campaign_status_admin',
@@ -389,11 +385,8 @@ class Campaign(Model):
             percentage_pixel = int(percentage_pixel)
         else:
             percentage_pixel = 0
-        campaignsubscriber_count_string = \
-            "campaign-subscribers (" + str(campaignsubscriber_count) + ")"
-        return "<div title='%s' style='width: 100px; border: 1px solid #ccc;'>\
-                <div style='height: 4px; width: %dpx; background: #555; '>\
-                </div></div>" % \
+        campaignsubscriber_count_string = "campaign-subscribers (" + str(campaignsubscriber_count) + ")"
+        return "<div title='%s' style='width: 100px; border: 1px solid #ccc;'><div style='height: 4px; width: %dpx; background: #555; '></div></div>" % \
             (campaignsubscriber_count_string, percentage_pixel)
     progress_bar.allow_tags = True
     progress_bar.short_description = _('Progress')

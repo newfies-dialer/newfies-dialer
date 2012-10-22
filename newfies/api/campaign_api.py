@@ -77,8 +77,7 @@ class CampaignValidation(Validation):
                     '%Y-%m-%d %H:%M:%S', time.gmtime(float(expirationdate)))
 
         if user_attached_with_dialer_settings(request):
-            errors['user_dialer_setting'] = ['Your settings are not \
-                    configured properly, Please contact the administrator.']
+            errors['user_dialer_setting'] = ['Your settings are not configured properly, Please contact the administrator.']
 
         if check_dialer_setting(request, check_for="campaign"):
             errors['chk_campaign'] = ["Too many campaigns. Max allowed %s"\
@@ -134,8 +133,7 @@ class CampaignValidation(Validation):
             except:
                 errors['chk_content_type'] = ["The ContentType doesn't exist!"]
         else:
-            errors['chk_content_type'] = ["Entered wrong option. Please enter \
-                                            'voice_app' or 'survey' !"]
+            errors['chk_content_type'] = ["Entered wrong option. Please enter 'voice_app' or 'survey' !"]
 
         object_id = bundle.data.get('object_id')
         if object_id:

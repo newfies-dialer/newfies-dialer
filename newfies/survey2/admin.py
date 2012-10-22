@@ -65,6 +65,17 @@ class SurveyAdmin(admin.ModelAdmin):
 admin.site.register(Survey, SurveyAdmin)
 
 
+class SectionTemplateAdmin(SortableAdmin):
+
+    """Allows the administrator to view and modify survey question."""
+
+    list_display = ('id', 'survey', 'created_date')
+    search_fields = ['question']
+    list_filter = ['created_date', 'survey']
+
+admin.site.register(Section_template, SectionTemplateAdmin)
+
+
 class SectionAdmin(SortableAdmin):
 
     """Allows the administrator to view and modify survey question."""
@@ -73,7 +84,7 @@ class SectionAdmin(SortableAdmin):
     search_fields = ['question']
     list_filter = ['created_date', 'survey']
 
-admin.site.register(Section_template, SectionAdmin)
+admin.site.register(Section, SectionAdmin)
 
 
 class BranchingAdmin(admin.ModelAdmin):

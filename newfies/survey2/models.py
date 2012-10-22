@@ -413,7 +413,9 @@ class Branching(Branching_abstract):
                              blank=True, related_name='Goto Section')
 
     class Meta():
-        unique_together = ("keys", "section")
+        #unique_together = ("keys", "section")
+        verbose_name = _("Branching")
+        verbose_name_plural = _("Branching")
 
 
 class Result(models.Model):

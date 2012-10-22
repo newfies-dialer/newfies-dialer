@@ -351,7 +351,7 @@ class Branching_abstract(models.Model):
 
     **Attributes**:
 
-        * ``keys`` - Key digit.
+        * ``keys`` - Key digit (DTMF entered by the calling party)
 
     **Relationships**:
 
@@ -359,7 +359,7 @@ class Branching_abstract(models.Model):
         Each response is assigned to a Section
     """
     keys = models.CharField(max_length=150, blank=True,
-                            verbose_name=_("Entered value"))  # 1, 2, 1000
+                            verbose_name=_("Entered value"))
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -375,7 +375,6 @@ class Branching_template(Branching_abstract):
     This defines the response of the survey section
     """
     section = models.ForeignKey(Section_template, related_name='Branching Section')
-    # '' to goto hangup
     goto = models.ForeignKey(Section_template, null=True,
                              blank=True, related_name='Goto Section')
 
@@ -401,7 +400,6 @@ class Branching(Branching_abstract):
     This defines the response of the survey section
     """
     section = models.ForeignKey(Section, related_name='Branching Section')
-    # '' to goto hangup
     goto = models.ForeignKey(Section, null=True,
                              blank=True, related_name='Goto Section')
 

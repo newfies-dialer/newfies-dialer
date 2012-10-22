@@ -195,22 +195,42 @@ def survey_finitestatemachine(request):
 
     #Get list of Section
     list_section = Section.objects.filter(survey=survey_id).order_by('order')
-    print "-------------"
-    print survey_id
+
+    #Set default exist action
+    exit_action = False
 
     if obj_p_section and obj_p_section.type == SECTION_TYPE.RECORD_MSG_SECTION:
         #Recording - save result
         save_section_result(request, obj_callrequest, obj_p_section)
 
-    #Check if we receive a DTMF for the previous section then store the result
-    elif DTMF and len(DTMF) > 0 and current_state > 0 \
-        and obj_p_section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
-        #find the response for this key pressed
+    elif DTMF and len(DTMF) > 0 and current_state > 0 and \
+        (obj_p_section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION or \
+        obj_p_section.type == SECTION_TYPE.RATING_SECTION or \
+        obj_p_section.type == SECTION_TYPE.ENTER_NUMBER_SECTION):
+        #
+        #HANDLE DTMF RECEIVED, SET THE CURRENT STATE
+        #Check if we receive a DTMF for the previous section then store the result
 
+        exit_action = 'DTMF'
         #Get list of responses of the previous Question
         branching = Branching.objects.get(
             key=DTMF,
             section=obj_p_section)
+
+        #DTMF doesn't have any branching so let's check for any
+        if not branching:
+            branching = Branching.objects.get(
+                key='any',
+                section=obj_p_section)
+            exit_action = 'ANY'
+
+        #DTMF doesn't have any branching so let's check for timeout
+        if not branching:
+            branching = Branching.objects.get(
+                key='timeout',
+                section=obj_p_section)
+            exit_action = 'TIMEOUT'
+
         #if there is a response for this DTMF then reset the current_state
         if branching and branching.goto:
             l = 0
@@ -224,11 +244,12 @@ def survey_finitestatemachine(request):
                     break
                 l = l + 1
 
+    debug_outp += "EXIT ACTION ::> %s <br/>" % str(exit_action)
     #Transition go to next state
     next_state = current_state + 1
 
     cache.set(key_state, next_state, 21600)
-    debug_outp += "Saved state in Cache (%s = %s) <br/>" % (key_state, next_state)
+    debug_outp += "Saved state in Cache - next_state (%s = %s) <br/>" % (key_state, next_state)
 
     try:
         list_section[current_state]
@@ -256,10 +277,14 @@ def survey_finitestatemachine(request):
         #Text2Speech
         question = "<Speak>%s</Speak>" % list_section[current_state].phrasing
 
-    list_section[current_state].type
-
     debug_outp += "Check section state (%d) <br/>" % (list_section[current_state].type)
-    #Voice Section
+
+    #
+    #We will now produce the restXML to power the IVR
+    #for instance if it's a RECORD_MSG_SECTION, we will render an XML command output.
+    #
+
+    #VOICE_SECTION
     if list_section[current_state].type == SECTION_TYPE.VOICE_SECTION:
         debug_outp += "VOICE_SECTION<br/>------------------<br/>"
         html =\
@@ -275,7 +300,23 @@ def survey_finitestatemachine(request):
             settings.MENU_TIMEOUT,
             question,
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
-    #Recording
+    #MULTIPLE_CHOICE_SECTION
+    if list_section[current_state].type == SECTION_TYPE.VOICE_SECTION:
+        debug_outp += "VOICE_SECTION<br/>------------------<br/>"
+        html =\
+        '<Response>\n'\
+        '   <GetDigits action="%s" method="GET" numDigits="1" '\
+        'retries="1" validDigits="0123456789" timeout="%s" '\
+        'finishOnKey="#">\n'\
+        '       %s\n'\
+        '   </GetDigits>\n'\
+        '   <Redirect>%s</Redirect>\n'\
+        '</Response>' % (
+            settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
+            settings.MENU_TIMEOUT,
+            question,
+            settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
+    #RECORD_MSG_SECTION
     elif list_section[current_state].type == SECTION_TYPE.RECORD_MSG_SECTION:
         html =\
         '<Response>\n'\

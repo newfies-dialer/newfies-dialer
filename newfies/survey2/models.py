@@ -494,4 +494,4 @@ def post_save_add_phrasing(sender, **kwargs):
         obj.phrasing = kwargs['instance'].question
         obj.save()
 
-post_save.connect(post_save_add_phrasing, sender=Section)
+post_save.connect(post_save_add_phrasing, sender=Section_template)

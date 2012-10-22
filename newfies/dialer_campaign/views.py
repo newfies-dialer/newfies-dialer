@@ -214,22 +214,22 @@ def get_app_name(app_label, model_name, object_id):
 
 
 def get_campaign_survey_view(campaign_object):
+    """display view button on campaign list"""
     link = ''
     if int(campaign_object.status) == CAMPAIGN_STATUS.START:
         if campaign_object.content_type.model == 'survey':
             link = '<a href="/survey2_view/%s/" target="_blank" class="icon"\
-                   title="%s" %s>&nbsp;</a>' \
-                   % (campaign_object.object_id,
-                      _('survey'),
-                      tpl_control_icon('eye.png'))
+                   title="%s" %s>&nbsp;</a>' % \
+                   (campaign_object.object_id,
+                    _('survey'),
+                    tpl_control_icon('eye.png'))
 
         if campaign_object.content_type.model == 'voiceapp':
             link = '<a href="/voiceapp_view/%s/" target="_blank" class="icon"\
-                   title="%s" %s>&nbsp;</a>'\
-                   % (campaign_object.object_id,
-                      _('Voice app'),
-                      tpl_control_icon('eye.png'))
-
+                   title="%s" %s>&nbsp;</a>' % \
+                   (campaign_object.object_id,
+                    _('Voice app'),
+                    tpl_control_icon('eye.png'))
         return link
     return link
 

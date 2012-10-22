@@ -36,6 +36,8 @@ from dialer_campaign.function_def import user_attached_with_dialer_settings, \
     check_dialer_setting, dialer_setting_limit, \
     get_campaign_status_name, user_dialer_setting_msg
 from dialer_campaign.tasks import collect_subscriber
+from survey2.function_def import check_survey_campaign
+from voice_app.function_def import check_voiceapp_campaign
 from common.common_functions import current_view
 import re
 
@@ -124,11 +126,7 @@ def update_campaign_status_cust(request, pk, status):
     if int(status) == CAMPAIGN_STATUS.START:
         request.session['info_msg'] = \
             _('The campaign global settings cannot be edited when the campaign is started')
-
-        from survey2.function_def import check_survey_campaign
         check_survey_campaign(request, pk)
-
-        from voice_app.function_def import check_voiceapp_campaign
         check_voiceapp_campaign(request, pk)
 
     return HttpResponseRedirect('/campaign/')

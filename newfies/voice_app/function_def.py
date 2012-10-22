@@ -18,7 +18,7 @@ from voice_app.models import VoiceApp_template
 
 
 def check_voiceapp_campaign(request, pk):
-    """Running Voice app Campaign"""
+    """Start Voice app Campaign"""
     try:
         obj_campaign = Campaign.objects.get(id=pk,
                                             status=CAMPAIGN_STATUS.START,

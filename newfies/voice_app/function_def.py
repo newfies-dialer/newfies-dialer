@@ -27,7 +27,7 @@ def check_voiceapp_campaign(request, pk):
             # Copy voiceapp
             voiceapp_template = VoiceApp_template.objects\
                 .get(user=request.user,
-                pk=obj_campaign.object_id)
+                     pk=obj_campaign.object_id)
             voiceapp_template.copy_voiceapp_template(obj_campaign)
     except:
         pass

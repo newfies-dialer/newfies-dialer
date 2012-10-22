@@ -357,7 +357,6 @@ class Branching_abstract(models.Model):
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ("keys", "section")
         abstract = True
 
     def __unicode__(self):
@@ -374,6 +373,7 @@ class Branching_template(Branching_abstract):
                              blank=True, related_name='Goto Section')
 
     class Meta():
+        unique_together = ("keys", "section")
         verbose_name = _("Branching template")
         verbose_name_plural = _("Branching templates")
 
@@ -397,6 +397,9 @@ class Branching(Branching_abstract):
     # '' to goto hangup
     goto = models.ForeignKey(Section, null=True,
                              blank=True, related_name='Goto Section')
+
+    class Meta():
+        unique_together = ("keys", "section")
 
 
 class Result(models.Model):

@@ -26,8 +26,9 @@ def check_survey_campaign(request, pk):
         if obj_campaign:
             # Copy survey
             survey_template = Survey_template.objects\
-                .get(user=request.user)
-            survey_template.copy_survey_template(obj_campaign)
+                .filter(user=request.user)
+            for survey_temp in survey_template:
+                survey_temp.copy_survey_template(obj_campaign)
     except:
         pass
 

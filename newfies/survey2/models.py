@@ -386,18 +386,11 @@ class Branching_template(Branching_abstract):
 
     def copy_branching_template(self, new_section_obj):
         try:
-            record_count = Branching.objects.filter(
+            Branching.objects.create(
                 keys=self.keys,
                 section_id=new_section_obj.id,
                 goto_id=self.goto_id
-            ).count()
-
-            if record_count == 0:
-                Branching.objects.create(
-                    keys=self.keys,
-                    section_id=new_section_obj.id,
-                    goto_id=self.goto_id
-                )
+            )
         except:
             raise
         return True
@@ -413,7 +406,7 @@ class Branching(Branching_abstract):
                              blank=True, related_name='Goto Section')
 
     class Meta():
-        #unique_together = ("keys", "section")
+        unique_together = ("keys", "section")
         verbose_name = _("Branching")
         verbose_name_plural = _("Branching")
 

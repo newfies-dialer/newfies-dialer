@@ -157,7 +157,7 @@ def check_campaign_pendingcall(campaign_id):
                             user=obj_campaign.user,
                             extra_data=obj_campaign.extra_data,
                             timelimit=obj_campaign.callmaxduration,
-                            campaign_subscriber=elem_camp_subscriber)
+                            subscriber=elem_camp_subscriber)
         new_callrequest.save()
 
         #Todo Check if it's a good practice / implement a PID algorithm

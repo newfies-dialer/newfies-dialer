@@ -16,22 +16,18 @@
 
 from django.conf.urls.defaults import url
 from django.http import HttpResponse
-
 from tastypie.resources import ModelResource
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie import http
-
 from dialer_cdr.models import Callrequest
 from dialer_cdr.tasks import init_callrequest
-from dialer_campaign.models import CampaignSubscriber
+from dialer_campaign.models import Subscriber
 from dialer_campaign.function_def import user_dialer_setting
 from api.resources import CustomXmlEmitter, \
-                          IpAddressAuthorization, \
-                          IpAddressAuthentication,\
-                          create_voipcall,\
-                          CDR_VARIABLES
+    IpAddressAuthorization, IpAddressAuthentication, \
+    create_voipcall, CDR_VARIABLES
 from datetime import datetime, timedelta
 import logging
 from uuid import uuid1
@@ -133,8 +129,8 @@ class HangupcallResource(ModelResource):
                 request_uuid=opt_request_uuid)
 
             try:
-                obj_subscriber = CampaignSubscriber.objects.get(
-                    id=callrequest.campaign_subscriber.id)
+                obj_subscriber = Subscriber.objects.get(
+                    id=callrequest.subscriber.id)
                 if opt_hangup_cause == 'NORMAL_CLEARING':
                     obj_subscriber.status = 5  # Complete
                 else:
@@ -150,7 +146,7 @@ class HangupcallResource(ModelResource):
             else:
                 callrequest.status = 2  # Failure
             callrequest.hangup_cause = opt_hangup_cause
-            #save callrequest & campaignsubscriber
+            #save callrequest & subscriber
             callrequest.save()
             data = {}
             for element in CDR_VARIABLES:

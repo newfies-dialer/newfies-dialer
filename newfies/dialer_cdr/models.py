@@ -17,7 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from dialer_gateway.models import Gateway
-from dialer_campaign.models import Campaign, CampaignSubscriber
+from dialer_campaign.models import Campaign, Subscriber
 from dialer_cdr.constants import CALLREQUEST_STATUS, \
     CALLREQUEST_TYPE, LEG_TYPE, VOIPCALL_DISPOSITION
 from common.intermediate_model_base_class import Model
@@ -85,8 +85,8 @@ class Callrequest(Model):
         * ``aleg_gateway`` - Foreign key relationship to the Gateway model.\
         Gateway to use to call the subscriber
 
-        * ``campaign_subscriber`` - Foreign key relationship to\
-        the CampaignSubscriber Model.
+        * ``subscriber`` - Foreign key relationship to\
+        the Subscriber Model.
 
         * ``campaign`` - Foreign key relationship to the Campaign model.
 
@@ -119,7 +119,7 @@ class Callrequest(Model):
     extra_dial_string = models.CharField(max_length=500, blank=True,
                 verbose_name=_('Extra dial string'))
 
-    campaign_subscriber = models.ForeignKey(CampaignSubscriber,
+    subscriber = models.ForeignKey(Subscriber,
             null=True, blank=True,
             help_text=_("Campaign Subscriber related to this call request"))
 

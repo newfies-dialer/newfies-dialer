@@ -17,17 +17,14 @@
 from django.conf.urls import url
 from django.http import HttpResponse
 from django.db import connection
-
 from tastypie.resources import ModelResource
 from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import Authorization
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import BadRequest, ImmediateHttpResponse
 from tastypie import http
-
-from dialer_contact.models import Phonebook, Contact
+from dialer_contact.models import Contact
 from dialer_campaign.models import Campaign
-
 import logging
 
 logger = logging.getLogger('newfies.filelog')
@@ -45,7 +42,7 @@ def get_contact(id):
         return ''
 
 
-class CampaignSubscriberPerCampaignResource(ModelResource):
+class SubscriberPerCampaignResource(ModelResource):
     """
     **Attributes Details**:
 
@@ -58,11 +55,11 @@ class CampaignSubscriberPerCampaignResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber_per_campaign/%campaign_id%/?format=json
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/subscriber_per_campaign/%campaign_id%/?format=json
 
                 or
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber_per_campaign/%campaign_id%/%contact%/?format=json
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/subscriber_per_campaign/%campaign_id%/%contact%/?format=json
 
         Response::
 
@@ -72,7 +69,7 @@ class CampaignSubscriberPerCampaignResource(ModelResource):
                   "count_attempt":1,
                   "last_attempt":"2012-01-17T15:28:37",
                   "status":2,
-                  "campaign_subscriber_id": 1,
+                  "subscriber_id": 1,
                   "contact": "640234123"
                },
                {
@@ -80,14 +77,14 @@ class CampaignSubscriberPerCampaignResource(ModelResource):
                   "count_attempt":1,
                   "last_attempt":"2012-02-06T17:00:38",
                   "status":1,
-                  "campaign_subscriber_id": 2,
+                  "subscriber_id": 2,
                   "contact": "640234000"
                }
             ]
 
     """
     class Meta:
-        resource_name = 'campaignsubscriber_per_campaign'
+        resource_name = 'subscriber_per_campaign'
         authorization = Authorization()
         authentication = BasicAuthentication()
         list_allowed_methods = ['get']
@@ -111,17 +108,17 @@ class CampaignSubscriberPerCampaignResource(ModelResource):
             content_type=desired_format, **response_kwargs)
 
     def read(self, request=None, **kwargs):
-        """GET method of CampaignSubscriber API"""
-        logger.debug('CampaignSubscriber GET API get called')
+        """GET method of Subscriber API"""
+        logger.debug('Subscriber GET API get called')
         auth_result = self._meta.authentication.is_authenticated(request)
         if not auth_result is True:
             raise ImmediateHttpResponse(response=http.HttpUnauthorized())
 
-        logger.debug('CampaignSubscriber GET API authorization called!')
+        logger.debug('Subscriber GET API authorization called!')
         auth_result = self._meta.authorization.is_authorized(request, object)
 
         temp_url = request.META['PATH_INFO']
-        temp_id = temp_url.split('/api/v1/campaignsubscriber_per_campaign/')[1]
+        temp_id = temp_url.split('/api/v1/subscriber_per_campaign/')[1]
         camp_id = temp_id.split('/')[0]
         try:
             contact = temp_id.split('/')[1]
@@ -153,28 +150,28 @@ class CampaignSubscriberPerCampaignResource(ModelResource):
                 raise BadRequest(error_msg)
 
             sql_statement = "SELECT DISTINCT contact_id, last_attempt, "\
-                "count_attempt, dialer_campaign_subscriber.status,"\
-                "dialer_campaign_subscriber.id "\
-                "FROM dialer_campaign_subscriber "\
+                "count_attempt, dialer_subscriber.status,"\
+                "dialer_subscriber.id "\
+                "FROM dialer_subscriber "\
                 "LEFT JOIN dialer_callrequest ON "\
-                "campaign_subscriber_id=dialer_campaign_subscriber.id "\
+                "subscriber_id=dialer_subscriber.id "\
                 "LEFT JOIN dialer_campaign ON "\
                 "dialer_callrequest.campaign_id=dialer_campaign.id "\
-                "WHERE dialer_campaign_subscriber.campaign_id = %s "\
-                "AND dialer_campaign_subscriber.duplicate_contact = '%s'"\
+                "WHERE dialer_subscriber.campaign_id = %s "\
+                "AND dialer_subscriber.duplicate_contact = '%s'"\
                 % (str(campaign_id), str(contact))
 
         else:
             sql_statement = "SELECT DISTINCT contact_id, last_attempt, "\
-                "count_attempt, dialer_campaign_subscriber.status, "\
-                "dialer_campaign_subscriber.id "\
-                "FROM dialer_campaign_subscriber "\
+                "count_attempt, dialer_subscriber.status, "\
+                "dialer_subscriber.id "\
+                "FROM dialer_subscriber "\
                 "LEFT JOIN dialer_callrequest ON "\
-                "campaign_subscriber_id="\
-                "dialer_campaign_subscriber.id "\
+                "subscriber_id="\
+                "dialer_subscriber.id "\
                 "LEFT JOIN dialer_campaign ON "\
                 "dialer_callrequest.campaign_id=dialer_campaign.id "\
-                "WHERE dialer_campaign_subscriber.campaign_id"\
+                "WHERE dialer_subscriber.campaign_id"\
                 "= %s" % (str(campaign_id))
 
         cursor.execute(sql_statement)
@@ -187,9 +184,9 @@ class CampaignSubscriberPerCampaignResource(ModelResource):
             modrecord['last_attempt'] = record[1]
             modrecord['count_attempt'] = record[2]
             modrecord['status'] = record[3]
-            modrecord['campaign_subscriber_id'] = record[4]
+            modrecord['subscriber_id'] = record[4]
             modrecord['contact'] = get_contact(record[0])
             result.append(modrecord)
 
-        logger.debug('CampaignSubscriber GET API : result ok 200')
+        logger.debug('Subscriber GET API : result ok 200')
         return self.read_response(request, result)

@@ -350,22 +350,22 @@ class Campaign(Model):
 
     def progress_bar(self):
         """Progress bar generated based on no of contacts"""
-        # Cache campaignsubscriber_count
+        # Cache subscriber_count
         count_contact = \
             Contact.objects.filter(phonebook__campaign=self.id).count()
 
         # Cache need to be set per campaign
-        # campaignsubscriber_count_key_campaign_id_1
-        campaignsubscriber_count = cache.get(
-                'campaignsubscriber_count_key_campaign_id_' + str(self.id))
+        # subscriber_count_key_campaign_id_1
+        subscriber_count = cache.get(
+                'subscriber_count_key_campaign_id_' + str(self.id))
 
-        if campaignsubscriber_count is None:
+        if subscriber_count is None:
             list_contact = Contact.objects.values_list('id', flat=True)\
                 .filter(phonebook__campaign=self.id)
 
-            campaignsubscriber_count = 0
+            subscriber_count = 0
             try:
-                campaignsubscriber_count += CampaignSubscriber.objects\
+                subscriber_count += Subscriber.objects\
                     .filter(contact__in=list_contact,
                             campaign=self.id,
                             status=5)\
@@ -373,41 +373,41 @@ class Campaign(Model):
             except:
                 pass
 
-            cache.set("campaignsubscriber_count_key_campaign_id_%s"
-                      % str(self.id), campaignsubscriber_count, 5)
+            cache.set("subscriber_count_key_campaign_id_%s"
+                      % str(self.id), subscriber_count, 5)
 
-        campaignsubscriber_count = int(campaignsubscriber_count)
+        subscriber_count = int(subscriber_count)
         count_contact = int(count_contact)
 
         if count_contact > 0:
             percentage_pixel = \
-                (float(campaignsubscriber_count) / count_contact) * 100
+                (float(subscriber_count) / count_contact) * 100
             percentage_pixel = int(percentage_pixel)
         else:
             percentage_pixel = 0
-        campaignsubscriber_count_string = "campaign-subscribers (" + str(campaignsubscriber_count) + ")"
+        subscriber_count_string = "subscribers (" + str(subscriber_count) + ")"
         return "<div title='%s' style='width: 100px; border: 1px solid #ccc;'><div style='height: 4px; width: %dpx; background: #555; '></div></div>" % \
-            (campaignsubscriber_count_string, percentage_pixel)
+            (subscriber_count_string, percentage_pixel)
     progress_bar.allow_tags = True
     progress_bar.short_description = _('Progress')
 
-    def campaignsubscriber_detail(self):
+    def subscriber_detail(self):
         """This will link to campaign subscribers who are associated with
         the campaign"""
-        model_name = CampaignSubscriber._meta.object_name.lower()
+        model_name = Subscriber._meta.object_name.lower()
         app_label = self._meta.app_label
         link = '/admin/%s/%s/' % (app_label, model_name)
         link += '?campaign__id=%d' % self.id
         display_link = _("<a href='%(link)s'>%(name)s</a>") % \
             {'link': link, 'name': _('Details')}
         return display_link
-    campaignsubscriber_detail.allow_tags = True
-    campaignsubscriber_detail.short_description = _('Campaign Subscriber')
+    subscriber_detail.allow_tags = True
+    subscriber_detail.short_description = _('Campaign Subscriber')
 
     def get_pending_subscriber(self, limit=1000):
         """Get all the pending subscribers from the campaign"""
         list_subscriber = \
-            CampaignSubscriber.objects.filter(campaign=self.id, status=1)\
+            Subscriber.objects.filter(campaign=self.id, status=1)\
             .all()[:limit]
         if not list_subscriber:
             return False
@@ -416,7 +416,7 @@ class Campaign(Model):
     def get_pending_subscriber_update(self, limit=1000, status=6):
         """Get all the pending subscribers from the campaign"""
         #TODO in django 1.4 : replace by SELECT FOR UPDATE
-        list_subscriber = CampaignSubscriber.objects\
+        list_subscriber = Subscriber.objects\
             .filter(campaign=self.id, status=1)\
             .all()[:limit]
 
@@ -429,7 +429,7 @@ class Campaign(Model):
         return list_subscriber
 
 
-class CampaignSubscriber(Model):
+class Subscriber(Model):
     """This defines the Contact imported to a Campaign
 
     **Attributes**:
@@ -444,7 +444,7 @@ class CampaignSubscriber(Model):
         * ``contact`` - Foreign key relationship to the Contact model.
         * ``campaign`` - Foreign key relationship to the Campaign model.
 
-    **Name of DB table**: dialer_campaign_subscriber
+    **Name of DB table**: dialer_subscriber
     """
     contact = models.ForeignKey(Contact, null=True, blank=True,
                                 help_text=_("Select Contact"))
@@ -464,7 +464,7 @@ class CampaignSubscriber(Model):
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:
-        db_table = u'dialer_campaign_subscriber'
+        db_table = u'dialer_subscriber'
         verbose_name = _("Campaign Subscriber")
         verbose_name_plural = _("Campaign Subscribers")
         unique_together = ['contact', 'campaign']
@@ -502,7 +502,7 @@ def post_save_add_contact(sender, **kwargs):
         * When new contact is added into ``Contact`` model, active the
           campaign list will be checked with the contact status.
         * If the active campaign list count is more than one & the contact
-          is active, the contact will be added into ``CampaignSubscriber``
+          is active, the contact will be added into ``Subscriber``
           model.
     """
     obj = kwargs['instance']
@@ -513,7 +513,7 @@ def post_save_add_contact(sender, **kwargs):
             and active_campaign_list.count() >= 1:
         for elem_campaign in active_campaign_list:
             try:
-                CampaignSubscriber.objects.create(
+                Subscriber.objects.create(
                     contact=obj,
                     duplicate_contact=obj.contact,
                     status=1,  # START

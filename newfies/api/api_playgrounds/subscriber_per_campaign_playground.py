@@ -14,24 +14,24 @@
 from apiplayground import APIPlayground
 
 
-class CampaignSubscriberPerCampaignAPIPlayground(APIPlayground):
+class SubscriberPerCampaignAPIPlayground(APIPlayground):
 
     schema = {
         "title": "Campaign API Playground",
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
-                "name": "/campaignsubscriber_per_campaign/",
+                "name": "/subscriber_per_campaign/",
                 "description": "This resource allows you to manage campaign subscriber per campaign.",
                 "endpoints": [
                     {
                         "method": "GET",
-                        "url": "/api/v1/campaignsubscriber_per_campaign/{campaign-id}/",
+                        "url": "/api/v1/subscriber_per_campaign/{campaign-id}/",
                         "description": "Returns campaign subscribers per campaign"
                     },
                     {
                         "method": "GET",
-                        "url": "/api/v1/campaignsubscriber_per_campaign/{campaign-id}/{contact}/",
+                        "url": "/api/v1/subscriber_per_campaign/{campaign-id}/{contact}/",
                         "description": "Returns specific campaign subscribers per campaign"
                     },
                 ]

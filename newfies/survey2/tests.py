@@ -76,7 +76,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
     fixtures = ['auth_user.json', 'gateway.json', 'voiceapp.json',
                 'dialer_setting.json', 'phonebook.json', 'contact.json',
-                'campaign.json', 'campaign_subscriber.json',
+                'campaign.json', 'subscriber.json',
                 'callrequest.json', 'voipcall.json',
                 'survey_template.json', 'survey.json',
                 'section_template.json', 'section.json',
@@ -473,7 +473,7 @@ class SurveyModel(TestCase):
 
     fixtures = ['gateway.json', 'auth_user.json', 'contenttype.json',
                 'phonebook.json', 'contact.json',
-                'campaign.json', 'campaign_subscriber.json',
+                'campaign.json', 'subscriber.json',
                 'survey_template.json', 'survey.json',
                 'section_template.json', 'section.json',
                 'branching_template.json', 'branching.json',

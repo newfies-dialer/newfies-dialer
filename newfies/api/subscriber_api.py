@@ -20,9 +20,8 @@ from tastypie.authorization import Authorization
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import BadRequest
-
 from dialer_contact.models import Contact, Phonebook
-from dialer_campaign.models import Campaign, CampaignSubscriber
+from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.function_def import check_dialer_setting, \
                             dialer_setting_limit
 
@@ -31,9 +30,9 @@ import logging
 logger = logging.getLogger('newfies.filelog')
 
 
-class CampaignSubscriberValidation(Validation):
+class SubscriberValidation(Validation):
     """
-    CampaignSubscriber Validation Class
+    Subscriber Validation Class
     """
     def is_valid(self, bundle, request=None):
         errors = {}
@@ -58,7 +57,7 @@ class CampaignSubscriberValidation(Validation):
         return errors
 
 
-class CampaignSubscriberResource(ModelResource):
+class SubscriberResource(ModelResource):
     """
     **Attributes Details**:
 
@@ -73,13 +72,13 @@ class CampaignSubscriberResource(ModelResource):
 
     **Validation**:
 
-        * CampaignSubscriberValidation()
+        * SubscriberValidation()
 
     **Create**:
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"contact": "650784355", "last_name": "belaid", "first_name": "areski", "email": "areski@gmail.com", "phonebook_id" : "1"}' http://localhost:8000/api/v1/campaignsubscriber/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"contact": "650784355", "last_name": "belaid", "first_name": "areski", "email": "areski@gmail.com", "phonebook_id" : "1"}' http://localhost:8000/api/v1/subscriber/
 
         Response::
 
@@ -88,14 +87,14 @@ class CampaignSubscriberResource(ModelResource):
             Server: WSGIServer/0.1 Python/2.6.2
             Vary: Authorization
             Content-Length: 0
-            Location: http://localhost:8000/api/v1/campaignsubscriber/1/
+            Location: http://localhost:8000/api/v1/subscriber/1/
             Content-Type: text/plain
 
     **Read**:
 
         CURL Usage::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/campaignsubscriber/?format=json
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/subscriber/?format=json
 
         Response::
 
@@ -114,7 +113,7 @@ class CampaignSubscriberResource(ModelResource):
                      "duplicate_contact":"123456789",
                      "id":"1",
                      "last_attempt":"2012-01-17T15:28:37",
-                     "resource_uri":"/api/v1/campaignsubscriber/1/",
+                     "resource_uri":"/api/v1/subscriber/1/",
                      "status":2,
                      "updated_date":"2012-02-07T02:22:19"
                   }
@@ -125,7 +124,7 @@ class CampaignSubscriberResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"status": "2", "contact": "123546"}' http://localhost:8000/api/v1/campaignsubscriber/%campaign_id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"status": "2", "contact": "123546"}' http://localhost:8000/api/v1/subscriber/%campaign_id%/
 
         Response::
 
@@ -138,13 +137,13 @@ class CampaignSubscriberResource(ModelResource):
             Content-Language: en-us
     """
     class Meta:
-        queryset = CampaignSubscriber.objects.all()
-        resource_name = 'campaignsubscriber'
+        queryset = Subscriber.objects.all()
+        resource_name = 'subscriber'
         authorization = Authorization()
         authentication = BasicAuthentication()
         list_allowed_methods = ['get', 'post', 'put']
         detail_allowed_methods = ['get', 'post', 'put']
-        validation = CampaignSubscriberValidation()
+        validation = SubscriberValidation()
         filtering = {
             'contact': 'exact',
         }
@@ -154,12 +153,12 @@ class CampaignSubscriberResource(ModelResource):
         """
         TODO: Add doc
         """
-        logger.debug('CampaignSubscriber POST API get called')
+        logger.debug('Subscriber POST API get called')
 
         phonebook_id = bundle.data.get('phonebook_id')
         obj_phonebook = Phonebook.objects.get(id=phonebook_id)
 
-        #this method will also create a record into CampaignSubscriber
+        #this method will also create a record into Subscriber
         #this is defined in signal post_save_add_contact
         new_contact = Contact.objects.create(
             contact=bundle.data.get('contact'),
@@ -172,7 +171,7 @@ class CampaignSubscriberResource(ModelResource):
         # Assign new contact object
         bundle.obj = new_contact
 
-        # Insert the contact to the campaignsubscriber also for
+        # Insert the contact to the subscriber also for
         # each campaign using this phonebook
 
         campaign_obj = Campaign.objects.filter(
@@ -201,7 +200,7 @@ class CampaignSubscriberResource(ModelResource):
                                     status=1)
                     for con_obj in contact_list:
                         try:
-                            CampaignSubscriber.objects.create(
+                            Subscriber.objects.create(
                                 contact=con_obj,
                                 duplicate_contact=con_obj.contact,
                                 status=1,  # START
@@ -210,17 +209,17 @@ class CampaignSubscriberResource(ModelResource):
                             #TODO Catching duplicate error
                             pass
 
-        logger.debug('CampaignSubscriber POST API : result ok 200')
+        logger.debug('Subscriber POST API : result ok 200')
         return bundle
 
     def obj_update(self, bundle, request=None, **kwargs):
         """
         A ORM-specific implementation of ``obj_update``.
         """
-        logger.debug('CampaignSubscriber PUT API get called')
+        logger.debug('Subscriber PUT API get called')
 
         temp_url = request.META['PATH_INFO']
-        temp_id = temp_url.split('/api/v1/campaignsubscriber/')[1]
+        temp_id = temp_url.split('/api/v1/subscriber/')[1]
         campaign_id = temp_id.split('/')[0]
 
         try:
@@ -231,15 +230,15 @@ class CampaignSubscriberResource(ModelResource):
             raise BadRequest(error_msg)
 
         try:
-            campaignsubscriber = CampaignSubscriber.objects\
+            subscriber = Subscriber.objects\
                 .get(duplicate_contact=bundle.data.get('contact'),
                     campaign=campaign_obj)
-            campaignsubscriber.status = bundle.data.get('status')
-            campaignsubscriber.save()
+            subscriber.status = bundle.data.get('status')
+            subscriber.save()
         except:
             error_msg = "A model matching arguments could not be found."
             logger.error(error_msg)
             raise BadRequest(error_msg)
 
-        logger.debug('CampaignSubscriber PUT API : result ok 200')
+        logger.debug('Subscriber PUT API : result ok 200')
         return bundle

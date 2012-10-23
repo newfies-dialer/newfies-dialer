@@ -17,23 +17,20 @@ from django.contrib.contenttypes.models import ContentType
 from django.template import Template, Context
 from django.core.management import call_command
 from django.test import TestCase
-from dialer_campaign.models import Campaign, CampaignSubscriber, \
+from dialer_campaign.models import Campaign, Subscriber, \
     common_contact_authorization
 from dialer_campaign.forms import CampaignForm
 from dialer_campaign.views import campaign_list, campaign_add, \
-    campaign_change, campaign_del, \
-    campaign_grid, notify_admin,\
-    update_campaign_status_admin,\
-    update_campaign_status_cust,\
+    campaign_change, campaign_del, notify_admin, \
+    update_campaign_status_admin, \
     get_url_campaign_status, campaign_duplicate
-from dialer_campaign.tasks import campaign_running,\
-    collect_subscriber,\
-    campaign_expire_check
+from dialer_campaign.tasks import campaign_running, \
+    collect_subscriber, campaign_expire_check
 from common.utils import BaseAuthenticatedClient
 
 
 class DialerCampaignView(BaseAuthenticatedClient):
-    """Test cases for Campaign, CampaignSubscriber Admin Interface."""
+    """Test cases for Campaign, Subscriber Admin Interface."""
 
     def test_admin_campaign_view_list(self):
         """Test Function to check admin campaign list"""
@@ -63,20 +60,20 @@ class DialerCampaignView(BaseAuthenticatedClient):
                 "extra_data": "2000"})
         self.assertEqual(response.status_code, 200)
 
-    def test_admin_campaignsubscriber_view_list(self):
-        """Test Function to check admin campaignsubscriber list"""
+    def test_admin_subscriber_view_list(self):
+        """Test Function to check admin subscriber list"""
         response =\
-            self.client.get('/admin/dialer_campaign/campaignsubscriber/')
+            self.client.get('/admin/dialer_campaign/subscriber/')
         self.failUnlessEqual(response.status_code, 200)
 
-    def test_admin_campaignsubscriber_view_add(self):
-        """Test Function to check admin campaignsubscriber add"""
+    def test_admin_subscriber_view_add(self):
+        """Test Function to check admin subscriber add"""
         response =\
-            self.client.get('/admin/dialer_campaign/campaignsubscriber/add/')
+            self.client.get('/admin/dialer_campaign/subscriber/add/')
         self.failUnlessEqual(response.status_code, 200)
 
         response = self.client.post(
-            '/admin/dialer_campaign/campaignsubscriber/add/',
+            '/admin/dialer_campaign/subscriber/add/',
             data={
                 "status": "1",
                 "campaign": "1",
@@ -87,14 +84,14 @@ class DialerCampaignView(BaseAuthenticatedClient):
 
 
 class DialerCampaignCustomerView(BaseAuthenticatedClient):
-    """Test cases for Campaign, CampaignSubscriber Customer Interface."""
+    """Test cases for Campaign, Subscriber Customer Interface."""
 
     fixtures = ['dialer_setting.json', 'auth_user.json', 'gateway.json',
                 'voiceapp.json', 'phonebook.json', 'contact.json',
-                'campaign.json', 'campaign_subscriber.json']
+                'campaign.json', 'subscriber.json']
 
     def test_campaign_view_list(self):
-        """Test Function to check campaign list"""        
+        """Test Function to check campaign list"""
         response = self.client.get('/campaign/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/campaign/list.html')
@@ -251,18 +248,6 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response['Location'],
                          '/admin/dialer_campaign/campaign/')
 
-    """
-    def test_update_campaign_status_cust(self):
-        request = self.factory.post(
-            'campaign/update_campaign_status_cust/1/1/',
-            follow=True)
-        request.user = self.user
-        request.session = {}
-        response = update_campaign_status_cust(request, 1, 1)
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['Location'],
-                         '/campaign/')
-    """
     def test_campaign_duplicate(self):
         """test duplicate campaign"""
         request = self.factory.get('campaign_duplicate/1/')
@@ -286,7 +271,7 @@ class DialerCampaignCeleryTaskTestCase(TestCase):
     fixtures = ['gateway.json', 'voiceapp.json', 'auth_user.json',
                 'dialer_setting.json', 'contenttype.json',
                 'phonebook.json', 'contact.json',
-                'campaign.json', 'campaign_subscriber.json',
+                'campaign.json', 'subscriber.json',
                 'user_profile.json']
 
     #def test_check_campaign_pendingcall(self):
@@ -315,12 +300,12 @@ class DialerCampaignCeleryTaskTestCase(TestCase):
 
 
 class DialerCampaignModel(TestCase):
-    """Test Campaign, CampaignSubscriber models"""
+    """Test Campaign, Subscriber models"""
 
     fixtures = ['gateway.json', 'voiceapp.json', 'auth_user.json',
                 'dialer_setting.json',
                 'phonebook.json', 'contact.json',
-                'campaign.json', 'campaign_subscriber.json',
+                'campaign.json', 'subscriber.json',
                 'user_profile.json']
 
     def setUp(self):
@@ -344,15 +329,15 @@ class DialerCampaignModel(TestCase):
         self.campaign.save()
         self.assertEqual(self.campaign.__unicode__(), u'sample_campaign')
 
-        # CampaignSubscriber model
-        self.campaignsubscriber = CampaignSubscriber(
+        # Subscriber model
+        self.subscriber = Subscriber(
             contact_id=1,
             campaign=self.campaign,
             count_attempt=0,
             status=1,
         )
-        self.campaignsubscriber.save()
-        self.assertTrue(self.campaignsubscriber.__unicode__())
+        self.subscriber.save()
+        self.assertTrue(self.subscriber.__unicode__())
 
         # Test mgt command
         call_command("create_subscriber", "123456|1")
@@ -394,11 +379,11 @@ class DialerCampaignModel(TestCase):
         self.campaign.get_active_callmaxduration()
         self.campaign.get_active_contact()
         self.campaign.progress_bar()
-        self.campaign.campaignsubscriber_detail()
+        self.campaign.subscriber_detail()
         self.campaign.get_pending_subscriber()
         self.campaign.get_pending_subscriber_update()
 
-        self.assertEqual(self.campaignsubscriber.campaign, self.campaign)
+        self.assertEqual(self.subscriber.campaign, self.campaign)
 
         form = CampaignForm(self.user)
         obj = form.save(commit=False)
@@ -431,4 +416,4 @@ class DialerCampaignModel(TestCase):
 
     def teardown(self):
         self.campaign.delete()
-        self.campaignsubscriber.delete()
+        self.subscriber.delete()

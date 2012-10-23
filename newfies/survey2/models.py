@@ -16,10 +16,8 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
-
 from dialer_campaign.models import Campaign
 from dialer_cdr.models import Callrequest
-
 from adminsortable.models import Sortable
 from audiofield.models import AudioFile
 from survey2.constants import SECTION_TYPE
@@ -73,30 +71,30 @@ class Survey_template(Survey_abstract):
         """
         copy survey template to survey when starting campaign
         """
-        record_count = Survey.objects.filter(
-                            name=self.name,
-                            description=self.description,
-                            user=self.user,
-                            campaign_id=campaign_obj.id).count()
-
-        if record_count == 0:
-            new_survey_obj = Survey.objects.create(
+        new_survey_obj = Survey.objects.create(
                             name=self.name,
                             description=self.description,
                             user=self.user,
                             campaign_id=campaign_obj.id)
 
-            # updated campaign content_type & object_id with new survey object
-            campaign_obj.content_type_id = ContentType.objects\
-                .get(model='survey').id
-            campaign_obj.object_id = new_survey_obj.id
-            campaign_obj.save()
+        # updated campaign content_type & object_id with new survey object
+        survey_id = ContentType.objects.get(model='survey').id
+        campaign_obj.content_type_id = survey_id
+        campaign_obj.object_id = new_survey_obj.id
+        campaign_obj.save()
 
-            # Copy Section
-            section_template = Section_template.objects\
-                .filter(survey=self).order_by('order')
-            for section_temp in section_template:
-                section_temp.copy_section_template(new_survey_obj)
+        # Copy Sections
+        section_template = Section_template.objects.filter(survey=self)
+        for section_temp in section_template:
+            section_temp.copy_section_template(new_survey_obj)
+
+        # Copy Sections Branching
+        for section_temp in section_template:
+            #get the new created section
+            section = Section.objects.get(section_template=section_temp.id, survey=new_survey_obj)
+            #Now add the branching for this section
+            section_temp.copy_section_branching_template(section, new_survey_obj)
+
         return True
 
 
@@ -241,8 +239,8 @@ class Section_abstract(Sortable):
 
     def get_branching_count_per_section(self):
         """Get branching count per section"""
-        branching_count =\
-            Branching_template.objects.filter(section_id=self.id).count()
+        branching_count = Branching_template.objects\
+            .filter(section_id=self.id).count()
         return branching_count
 
 
@@ -264,72 +262,48 @@ class Section_template(Section_abstract):
         """
         copy section template to section when starting campaign
         """
-        record_count = Section.objects.filter(
-                        type=self.type,
-                        question=self.question,
-                        phrasing=self.phrasing,
-                        audiofile_id=self.audiofile_id,
-                        retries=self.retries,
-                        timeout=self.timeout,
-                        key_0=self.key_0,
-                        key_1=self.key_1,
-                        key_2=self.key_2,
-                        key_3=self.key_3,
-                        key_4=self.key_4,
-                        key_5=self.key_5,
-                        key_6=self.key_6,
-                        key_7=self.key_7,
-                        key_8=self.key_8,
-                        key_9=self.key_9,
-                        rating_laps=self.rating_laps,
-                        validate_number=self.validate_number,
-                        number_digits=self.number_digits,
-                        min_number=self.min_number,
-                        max_number=self.max_number,
-                        dial_phonenumber=self.dial_phonenumber,
-                        continue_survey=self.continue_survey,
-                        completed=self.completed,
-                        order=self.order,
-                        survey_id=new_survey_obj.id,
-                        invalid_audiofile_id=self.invalid_audiofile_id
-                    ).count()
+        Section.objects.create(
+            survey_id=new_survey_obj.id,  # Survey
+            section_template=self.id,
+            type=self.type,
+            question=self.question,
+            phrasing=self.phrasing,
+            audiofile_id=self.audiofile_id,
+            retries=self.retries,
+            timeout=self.timeout,
+            key_0=self.key_0,
+            key_1=self.key_1,
+            key_2=self.key_2,
+            key_3=self.key_3,
+            key_4=self.key_4,
+            key_5=self.key_5,
+            key_6=self.key_6,
+            key_7=self.key_7,
+            key_8=self.key_8,
+            key_9=self.key_9,
+            rating_laps=self.rating_laps,
+            validate_number=self.validate_number,
+            number_digits=self.number_digits,
+            min_number=self.min_number,
+            max_number=self.max_number,
+            dial_phonenumber=self.dial_phonenumber,
+            continue_survey=self.continue_survey,
+            completed=self.completed,
+            order=self.order,
+            invalid_audiofile_id=self.invalid_audiofile_id,
+        )
+        return True
 
-        if record_count == 0:
-            new_section_obj = Section.objects.create(
-                                type=self.type,
-                                question=self.question,
-                                phrasing=self.phrasing,
-                                audiofile_id=self.audiofile_id,
-                                retries=self.retries,
-                                timeout=self.timeout,
-                                key_0=self.key_0,
-                                key_1=self.key_1,
-                                key_2=self.key_2,
-                                key_3=self.key_3,
-                                key_4=self.key_4,
-                                key_5=self.key_5,
-                                key_6=self.key_6,
-                                key_7=self.key_7,
-                                key_8=self.key_8,
-                                key_9=self.key_9,
-                                rating_laps=self.rating_laps,
-                                validate_number=self.validate_number,
-                                number_digits=self.number_digits,
-                                min_number=self.min_number,
-                                max_number=self.max_number,
-                                dial_phonenumber=self.dial_phonenumber,
-                                continue_survey=self.continue_survey,
-                                completed=self.completed,
-                                order=self.order,
-                                survey_id=new_survey_obj.id,
-                                invalid_audiofile_id=self.invalid_audiofile_id,
-                            )
-
-            # Copy Branching
-            branching_template = Branching_template.objects\
-                .filter(section=self)
-            for branching_temp in branching_template:
-                branching_temp.copy_branching_template(new_section_obj)
+    def copy_section_branching_template(self, section, new_survey_obj):
+        """
+        copy section template to section when starting campaign
+        """
+        # Get all the Branching for this section
+        branching_template = Branching_template.objects\
+            .filter(section=self)
+        for branching_temp in branching_template:
+            #copy the brancing
+            branching_temp.copy_branching_template(section, new_survey_obj)
         return True
 
 
@@ -341,6 +315,10 @@ class Section(Section_abstract):
     invalid_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
                                           verbose_name=_("Invalid Audio File digits"),
                                           related_name='survey_invalid_audiofile')
+    #section_template_id is used to easy duplication
+    section_template = models.IntegerField(max_length=10, blank=True,
+                                             default=0, null=True,
+                                             verbose_name=_('Section Template ID'))
 
     class Meta(Sortable.Meta):
         ordering = Sortable.Meta.ordering + ['survey']
@@ -385,19 +363,20 @@ class Branching_template(Branching_abstract):
         verbose_name = _("Branching template")
         verbose_name_plural = _("Branching templates")
 
-    def copy_branching_template(self, new_section_obj):
+    def copy_branching_template(self, new_section, new_survey_obj):
         """
         copy branching template to branching when starting campaign
         """
-        print "+++++++++++++++++++"
-        print "copy branching"
-        print new_section_obj
+        #
+        goto_section = None
+        if self.goto:
+            goto_section = Section.objects.get(section_template=self.goto_id, survey=new_survey_obj)
+
         Branching.objects.create(
             keys=self.keys,
-            section_id=new_section_obj,
-            goto_id=self.goto_id
+            section=new_section,
+            goto=goto_section
         )
-        print "--------------------"
         return True
 
 

@@ -33,7 +33,7 @@ def get_object_choices(available_objects):
         obj_id = obj.id
         # form_value - e.g."type:12-id:3"
         form_value = "type:%s-id:%s" % (type_id, obj_id)
-        display_text =  '%s : %s' \
+        display_text = '%s : %s' \
             % (str(ContentType.objects.get_for_model(obj.__class__)), str(obj))
         object_choices.append([form_value, display_text])
 
@@ -89,7 +89,6 @@ class CampaignForm(ModelForm):
                 list_pb.append((l[0], l[1]))
             self.fields['phonebook'].choices = list_pb
 
-            list_gw.append((0, '---'))
             user_profile = UserProfile.objects.get(user=user)
             list = user_profile.userprofile_gateway.all()
             gw_list = ((l.id, l.name) for l in list)
@@ -133,6 +132,7 @@ class CampaignForm(ModelForm):
             self.fields['selected_content_object'].initial = "type:%s-id:%s" \
                                                   % (instance.content_type.id,
                                                      instance.object_id)
+
     def clean_status(self):
         # As shown in the above answer.
         instance = getattr(self, 'instance', None)
@@ -140,7 +140,6 @@ class CampaignForm(ModelForm):
             return instance.status
         else:
             return self.cleaned_data.get('status', None)
-
 
     def clean(self):
         cleaned_data = self.cleaned_data
@@ -182,6 +181,7 @@ class CampaignForm(ModelForm):
 class DuplicateCampaignForm(ModelForm):
     """DuplicateCampaignForm ModelForm"""
     campaign_code = forms.CharField(widget=forms.HiddenInput)
+
     class Meta:
         model = Campaign
         fields = ['campaign_code', 'name']

@@ -36,6 +36,7 @@ seed()
 logger = logging.getLogger('newfies.filelog')
 
 
+#TODO: Move to common
 def get_unique_code(length):
     """Get unique code"""
     chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"

@@ -126,8 +126,11 @@ def update_campaign_status_cust(request, pk, status):
     if int(status) == CAMPAIGN_STATUS.START:
         request.session['info_msg'] = \
             _('The campaign global settings cannot be edited when the campaign is started')
-        check_survey_campaign(request, pk)
-        check_voiceapp_campaign(request, pk)
+        obj_campaign = Campaign.objects.get(id=pk)
+        if obj_campaign.content_type.model == 'survey_template':
+            check_survey_campaign(request, pk)
+        elif obj_campaign.content_type.model == 'voiceapp_template':
+            check_voiceapp_campaign(request, pk)
 
     return HttpResponseRedirect('/campaign/')
 

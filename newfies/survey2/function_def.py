@@ -19,18 +19,15 @@ from survey2.models import Survey_template
 
 def check_survey_campaign(request, pk):
     """Start Survey Campaign"""
-    try:
-        obj_campaign = Campaign.objects\
-            .get(id=pk,
-                 status=CAMPAIGN_STATUS.START,
-                 content_type__model='survey_template')
-        if obj_campaign:
-            # Copy survey
-            survey_template = Survey_template.objects\
-                .get(user=request.user,
-                     pk=obj_campaign.object_id)
-            survey_template.copy_survey_template(obj_campaign)
-    except:
-        pass
+    obj_campaign = Campaign.objects\
+        .get(id=pk,
+             status=CAMPAIGN_STATUS.START,
+             content_type__model='survey_template')
+    if obj_campaign:
+        # Copy survey
+        survey_template = Survey_template.objects\
+            .get(user=request.user,
+                 pk=obj_campaign.object_id)
+        survey_template.copy_survey_template(obj_campaign)
 
     return True

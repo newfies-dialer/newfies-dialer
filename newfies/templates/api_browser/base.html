@@ -46,12 +46,17 @@
         {% include "frontend/bootstrap_menu.html" %}
     {% endblock %}
 
+    <ul class="breadcrumb">
+        <li><a href="/api-explorer/"> {% trans "API Explorer" %}</a> /</li>
+        <li class="active">{{ schema.title }}</li>
+    </ul>
+
     {% block container %}
         <div class="container">
 
-            <div class="page-header">
+            <!--<div class="page-header">
                 <h1>{{ schema.title }}</h1>
-            </div>
+            </div>-->
 
             {% block content %}
             {% endblock %}

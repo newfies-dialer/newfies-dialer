@@ -3,7 +3,7 @@ DROP PROCEDURE IF EXISTS importcontact_pl_sql;
 DELIMITER //
 
 CREATE PROCEDURE `importcontact_pl_sql` (IN var_campaign_id INT(10), IN var_phonebook_id INT(10))
-LANGUAGE SQL  
+LANGUAGE SQL
 BEGIN
 
     DECLARE no_more_rows BOOLEAN;
@@ -30,7 +30,7 @@ BEGIN
 
 
     OPEN cur;
-    
+
     the_loop: LOOP
 
         FETCH cur INTO prd_id, prd_contact;
@@ -44,8 +44,8 @@ BEGIN
         END IF;
 
         INSERT INTO infologs (Msg) VALUES (CONCAT('Log Message : Insert contact id=',prd_id,' ; contact=',prd_contact,' ; var_campaign_id=',var_campaign_id,' ; var_phonebook_id=',var_phonebook_id));
-        INSERT IGNORE INTO `dialer_campaign_subscriber` (`contact_id`, `campaign_id`, `duplicate_contact`, `status`, `created_date`, `updated_date`) VALUES (prd_id, var_campaign_id, prd_contact, 1, NOW(), NOW());
-        
+        INSERT IGNORE INTO `dialer_subscriber` (`contact_id`, `campaign_id`, `duplicate_contact`, `status`, `created_date`, `updated_date`) VALUES (prd_id, var_campaign_id, prd_contact, 1, NOW(), NOW());
+
         -- the equivalent of a 'print statement' in a stored procedure
         -- it simply displays output for each loop
         select prd_id, prd_contact,var_campaign_id, var_phonebook_id;

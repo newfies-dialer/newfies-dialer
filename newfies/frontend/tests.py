@@ -39,7 +39,7 @@ class FrontendCustomerView(BaseAuthenticatedClient):
 
     fixtures = ['dialer_setting.json', 'auth_user.json', 'gateway.json',
                 'voiceapp.json', 'phonebook.json', 'contact.json',
-                'campaign.json', 'campaign_subscriber.json',
+                'campaign.json', 'subscriber.json',
                 'callrequest.json', 'voipcall.json']
 
 

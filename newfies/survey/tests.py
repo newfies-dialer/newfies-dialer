@@ -103,7 +103,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
     fixtures = ['auth_user.json', 'gateway.json', 'voiceapp.json',
                 'dialer_setting.json', 'phonebook.json', 'contact.json',
-                'campaign.json', 'campaign_subscriber.json',
+                'campaign.json', 'subscriber.json',
                 'callrequest.json',
                 'survey.json', 'survey_question.json',
                 'survey_response.json', 'survey_campaign_result.json',
@@ -347,7 +347,7 @@ class SurveyModel(TestCase):
 
     fixtures = ['gateway.json', 'auth_user.json', 'contenttype.json',
                 'phonebook.json', 'contact.json',
-                'campaign.json', 'campaign_subscriber.json',
+                'campaign.json', 'subscriber.json',
                 'callrequest.json']
 
     def setUp(self):

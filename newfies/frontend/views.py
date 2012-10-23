@@ -25,8 +25,8 @@ from django.conf import settings
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from notification import models as notification
-from dialer_contact.models import Phonebook, Contact
-from dialer_campaign.models import Campaign, CampaignSubscriber
+from dialer_contact.models import Contact
+from dialer_campaign.models import Campaign, Subscriber
 
 from dialer_campaign.function_def import date_range, \
                         user_dialer_setting_msg
@@ -688,7 +688,7 @@ def customer_dashboard(request, on_index=None):
         now = datetime.now()
         start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
         end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999)
-        reached_contact = CampaignSubscriber.objects\
+        reached_contact = Subscriber.objects\
                 .filter(campaign_id__in=campaign_id_list,  # status=5,
                         updated_date__range=(start_date, end_date))\
                 .count()

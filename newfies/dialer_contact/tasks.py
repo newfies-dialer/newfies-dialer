@@ -50,14 +50,14 @@ def collect_subscriber(campaign_id):
 
 def importcontact_custom_sql(campaign_id, phonebook_id):
     # Call PL-SQL stored procedure
-    #CampaignSubscriber.importcontact_pl_sql(campaign_id, phonebook_id)
+    #Subscriber.importcontact_pl_sql(campaign_id, phonebook_id)
 
     from django.db import connection, transaction
     cursor = connection.cursor()
 
     if settings.DATABASES['default']['ENGINE'] == 'django.db.backends.mysql':
         # Data insert operation - commit required
-        sqlimport = "INSERT IGNORE INTO dialer_campaign_subscriber (contact_id, "\
+        sqlimport = "INSERT IGNORE INTO dialer_subscriber (contact_id, "\
             "campaign_id, duplicate_contact, status, created_date, updated_date) "\
             "SELECT id, %d, contact, 1, NOW(), NOW() FROM dialer_contact "\
             "WHERE phonebook_id=%d AND dialer_contact.status=1" % \
@@ -65,14 +65,14 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
 
     elif settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql_psycopg2':
         # Data insert operation - http://stackoverflow.com/questions/12451053/django-bulk-create-with-ignore-rows-that-cause-integrityerror
-        sqlimport = "LOCK TABLE dialer_campaign_subscriber IN EXCLUSIVE MODE;" \
-            "INSERT INTO dialer_campaign_subscriber (contact_id, "\
+        sqlimport = "LOCK TABLE dialer_subscriber IN EXCLUSIVE MODE;" \
+            "INSERT INTO dialer_subscriber (contact_id, "\
             "campaign_id, duplicate_contact, status, created_date, updated_date) "\
             "SELECT id, %d, contact, 1, NOW(), NOW() FROM dialer_contact "\
             "WHERE phonebook_id=%d AND dialer_contact.status=1 AND NOT EXISTS (" \
-            "SELECT 1 FROM dialer_campaign_subscriber WHERE "\
-            "dialer_campaign_subscriber.campaign_id=%d "\
-            "AND dialer_contact.id = dialer_campaign_subscriber.contact_id );" % \
+            "SELECT 1 FROM dialer_subscriber WHERE "\
+            "dialer_subscriber.campaign_id=%d "\
+            "AND dialer_contact.id = dialer_subscriber.contact_id );" % \
             (campaign_id, phonebook_id, campaign_id)
     else:
         # Other DB
@@ -88,7 +88,7 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
 @task()
 def import_phonebook(campaign_id, phonebook_id):
     """
-    Read all the contact from phonebook_id and insert into campaignsubscriber
+    Read all the contact from phonebook_id and insert into subscriber
     """
     logger.info("TASK :: import_phonebook")
 

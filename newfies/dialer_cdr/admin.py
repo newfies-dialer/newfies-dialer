@@ -47,7 +47,7 @@ class CallrequestAdmin(GenericAdminModelAdmin):
         (_('Advanced options'), {
             'classes': ('collapse',),
             'fields': ('extra_data', 'extra_dial_string',
-                       'campaign_subscriber'),
+                       'subscriber'),
         }),
     )
     #NOTE : display user / content_type low the performance

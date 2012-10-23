@@ -16,7 +16,7 @@ from celery.utils.log import get_task_logger
 from celery.decorators import task, periodic_task
 from django.conf import settings
 from django.core.cache import cache
-from dialer_campaign.models import Campaign, CampaignSubscriber
+from dialer_campaign.models import Campaign, Subscriber
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_gateway.utils import phonenumber_change_prefix
 from datetime import datetime, timedelta
@@ -175,10 +175,10 @@ def init_callrequest(callrequest_id, campaign_id):
             logger.error('error : call_plivo')
             obj_callrequest.status = 2  # Update to Failure
             obj_callrequest.save()
-            if obj_callrequest.campaign_subscriber \
-                and obj_callrequest.campaign_subscriber.id:
-                obj_subscriber = CampaignSubscriber.objects.get(
-                            id=obj_callrequest.campaign_subscriber.id)
+            if obj_callrequest.subscriber \
+                and obj_callrequest.subscriber.id:
+                obj_subscriber = Subscriber.objects.get(
+                            id=obj_callrequest.subscriber.id)
                 obj_subscriber.status = 4  # Fail
 
                 obj_subscriber.save()
@@ -191,11 +191,11 @@ def init_callrequest(callrequest_id, campaign_id):
                      'dummy ; plivo')
         return False
 
-    #Update CampaignSubscriber
-    if obj_callrequest.campaign_subscriber \
-        and obj_callrequest.campaign_subscriber.id:
-        obj_subscriber = CampaignSubscriber.objects.get(
-                    id=obj_callrequest.campaign_subscriber.id)
+    #Update Subscriber
+    if obj_callrequest.subscriber \
+        and obj_callrequest.subscriber.id:
+        obj_subscriber = Subscriber.objects.get(
+                    id=obj_callrequest.subscriber.id)
         if obj_subscriber.count_attempt == None \
             or not obj_subscriber.count_attempt >= 0:
             obj_subscriber.count_attempt = 1

@@ -192,10 +192,7 @@ def get_url_campaign_status(id, status):
         control_stop_style = tpl_control_icon('control_stop_blue.png')
 
     #return all the html button for campaign status management
-    return "<a href='%s' class='icon' title='%s' %s>&nbsp;</a>" + \
-        "<a href='%s' class='icon' title='%s' %s>&nbsp;</a>" + \
-        "<a href='%s' class='icon' title='%s' %s>&nbsp;</a>" + \
-        "<a href='%s' class='icon' title='%s' %s>&nbsp;</a>" % \
+    return "<a href='%s' class='icon' title='%s' %s>&nbsp;</a> <a href='%s' class='icon' title='%s' %s>&nbsp;</a> <a href='%s' class='icon' title='%s' %s>&nbsp;</a> <a href='%s' class='icon' title='%s' %s>&nbsp;</a>" % \
         (url_cpg_start, _("Start"), control_play_style,
         url_cpg_pause, _("Pause"), control_pause_style,
         url_cpg_abort, _("Abort"), control_abort_style,

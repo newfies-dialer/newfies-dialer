@@ -19,9 +19,7 @@ from django.conf import settings
 from django.core.management import call_command
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.forms import Contact_fileImport, \
-    PhonebookForm, \
-    ContactForm, \
-    ContactSearchForm
+    PhonebookForm, ContactForm, ContactSearchForm
 from dialer_contact.views import phonebook_grid, phonebook_add, \
     phonebook_change, contact_grid,\
     phonebook_list, phonebook_del,\
@@ -42,7 +40,7 @@ csv_file = open(
 
 
 class DialerContactView(BaseAuthenticatedClient):
-    """Test cases for Phonebook, Contact, Campaign, CampaignSubscriber
+    """Test cases for Phonebook, Contact, Campaign, Subscriber
        Admin Interface.
     """
 
@@ -96,7 +94,7 @@ class DialerContactView(BaseAuthenticatedClient):
 
 
 class DialerContactCustomerView(BaseAuthenticatedClient):
-    """Test cases for Phonebook, Contact, Campaign, CampaignSubscriber
+    """Test cases for Phonebook, Contact, Campaign, Subscriber
        Customer Interface.
     """
 
@@ -349,7 +347,7 @@ class DialerContactCeleryTaskTestCase(TestCase):
     fixtures = ['gateway.json', 'voiceapp.json', 'auth_user.json',
                 'dialer_setting.json', 'contenttype.json',
                 'phonebook.json', 'contact.json',
-                'campaign.json', 'campaign_subscriber.json',
+                'campaign.json', 'subscriber.json',
                 'user_profile.json']
 
     def test_import_phonebook(self):

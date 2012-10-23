@@ -14,24 +14,24 @@
 from apiplayground import APIPlayground
 
 
-class CampaignSubscriberAPIPlayground(APIPlayground):
+class SubscriberAPIPlayground(APIPlayground):
 
     schema = {
         "title": "Campaign API Playground",
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
-                "name": "/campaignsubscriber/",
+                "name": "/subscriber/",
                 "description": "This resource allows you to manage campaign subscriber.",
                 "endpoints": [
                     {
                         "method": "GET",
-                        "url": "/api/v1/campaignsubscriber/",
+                        "url": "/api/v1/subscriber/",
                         "description": "Returns all campaign subscribers"
                     },
                     {
                         "method": "POST",
-                        "url": "/api/v1/campaignsubscriber/",
+                        "url": "/api/v1/subscriber/",
                         "description": "Creates new campaign subscriber",
                         "parameters": [{
                                            "name": "contact",
@@ -63,7 +63,7 @@ class CampaignSubscriberAPIPlayground(APIPlayground):
                     },
                     {
                         "method": "PUT",
-                        "url": "/api/v1/campaignsubscriber/{campaign-id}/",
+                        "url": "/api/v1/subscriber/{campaign-id}/",
                         "description": "Update campaign subscriber",
                         "parameters": [{
                                            "name": "contact",

@@ -17,7 +17,7 @@ from django.conf.urls import patterns
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from dialer_campaign.models import Campaign, CampaignSubscriber
+from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.function_def import check_dialer_setting, dialer_setting_limit
 from genericadmin.admin import GenericAdminModelAdmin
 
@@ -49,7 +49,7 @@ class CampaignAdmin(GenericAdminModelAdmin):
                     'startingdate', 'expirationdate', 'frequency',
                     'callmaxduration', 'maxretry', 'aleg_gateway', 'status',
                     'update_campaign_status', 'count_contact_of_phonebook',
-                    'campaignsubscriber_detail', 'progress_bar')
+                    'subscriber_detail', 'progress_bar')
 
     list_display_links = ('id', 'name', )
     #list_filter = ['user', 'status', 'startingdate', 'created_date']
@@ -91,12 +91,12 @@ class CampaignAdmin(GenericAdminModelAdmin):
 admin.site.register(Campaign, CampaignAdmin)
 
 
-class CampaignSubscriberAdmin(admin.ModelAdmin):
+class SubscriberAdmin(admin.ModelAdmin):
     """Allows the administrator to view and modify certain attributes
-    of a CampaignSubscriber."""
+    of a Subscriber."""
     list_display = ('id', 'contact', 'campaign',
                     'last_attempt', 'count_attempt', 'duplicate_contact',
                     'contact_name', 'status', 'created_date')
     list_filter = ['campaign', 'status', 'created_date', 'last_attempt']
     ordering = ('-id', )
-admin.site.register(CampaignSubscriber, CampaignSubscriberAdmin)
+admin.site.register(Subscriber, SubscriberAdmin)

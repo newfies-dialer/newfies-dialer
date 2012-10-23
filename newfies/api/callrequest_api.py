@@ -16,14 +16,12 @@
 
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
-
 from tastypie.resources import ModelResource
 from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import Authorization
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie import fields
-
 from api.user_api import UserResource
 from api.content_type_api import ContentTypeResource
 from dialer_cdr.models import Callrequest
@@ -86,7 +84,7 @@ class CallrequestResource(ModelResource):
         * ``timeout`` -
         * ``timelimit`` -
         * ``status`` -
-        * ``campaign_subscriber`` -
+        * ``subscriber`` -
         * ``campaign`` -
         * ``phone_number`` -
         * ``extra_dial_string`` -

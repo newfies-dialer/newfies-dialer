@@ -131,7 +131,7 @@ class DialerCdrCeleryTaskTestCase(TestCase):
     fixtures = ['gateway.json', 'voiceapp.json', 'auth_user.json',
                 'dialer_setting.json', 'contenttype.json',
                 'phonebook.json', 'contact.json',
-                'campaign.json', 'campaign_subscriber.json',
+                'campaign.json', 'subscriber.json',
                 'callrequest.json', 'voipcall.json', 'user_profile.json']
 
     def setUp(self):
@@ -161,7 +161,7 @@ class DialerCdrModel(TestCase):
 
     fixtures = ['gateway.json', 'auth_user.json', 'contenttype.json',
                 'phonebook.json', 'contact.json',
-                'campaign.json', 'campaign_subscriber.json',
+                'campaign.json', 'subscriber.json',
                 'callrequest.json', 'survey.json', 'section.json']
 
     def setUp(self):
@@ -178,7 +178,7 @@ class DialerCdrModel(TestCase):
             status=1,
             user=self.user,
             phone_number='123456',
-            campaign_subscriber_id=1,
+            subscriber_id=1,
             campaign_id=1,
             aleg_gateway_id=1,
             content_type_id=content_type_id,

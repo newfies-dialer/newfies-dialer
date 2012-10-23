@@ -327,6 +327,7 @@ class Section_template(Section_abstract):
                 branching_template =\
                         Branching_template.objects\
                             .filter(section=self)
+
                 for branching_temp in branching_template:
                     branching_temp.copy_branching_template(new_section_obj)
         except:
@@ -375,9 +376,11 @@ class Branching_template(Branching_abstract):
     """
     This defines the response of the survey section
     """
-    section = models.ForeignKey(Section_template, related_name='Branching Section')
+    section = models.ForeignKey(Section_template,
+                                related_name='Branching Template Section')
     goto = models.ForeignKey(Section_template, null=True,
-                             blank=True, related_name='Goto Section')
+                             blank=True,
+                             related_name='Goto Template Section')
 
     class Meta():
         unique_together = ("keys", "section")
@@ -388,7 +391,7 @@ class Branching_template(Branching_abstract):
         try:
             Branching.objects.create(
                 keys=self.keys,
-                section_id=new_section_obj.id,
+                section=new_section_obj,
                 goto_id=self.goto_id
             )
         except:

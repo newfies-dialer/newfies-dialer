@@ -92,11 +92,11 @@ class Survey_template(Survey_abstract):
 
                 # Copy Section
                 section_template = Section_template.objects\
-                    .filter(survey=self)
+                    .filter(survey=self).order_by('order')
                 for section_temp in section_template:
                     section_temp.copy_section_template(new_survey_obj)
         except:
-            raise
+            pass
         return True
 
 
@@ -330,7 +330,8 @@ class Section_template(Section_abstract):
                 for branching_temp in branching_template:
                     branching_temp.copy_branching_template(new_section_obj)
         except:
-            raise
+            pass
+        return True
 
 
 class Section(Section_abstract):
@@ -391,7 +392,7 @@ class Branching_template(Branching_abstract):
                 goto_id=self.goto_id
             )
         except:
-            raise
+            pass
         return True
 
 

@@ -70,33 +70,33 @@ class Survey_template(Survey_abstract):
         verbose_name_plural = _("Survey templates")
 
     def copy_survey_template(self, campaign_obj):
-        try:
-            record_count = Survey.objects.filter(
-                                name=self.name,
-                                description=self.description,
-                                user=self.user,
-                                campaign_id=campaign_obj.id).count()
+        """
+        copy survey template to survey when starting campaign
+        """
+        record_count = Survey.objects.filter(
+                            name=self.name,
+                            description=self.description,
+                            user=self.user,
+                            campaign_id=campaign_obj.id).count()
 
-            if record_count == 0:
-                new_survey_obj = Survey.objects.create(
-                                name=self.name,
-                                description=self.description,
-                                user=self.user,
-                                campaign_id=campaign_obj.id)
+        if record_count == 0:
+            new_survey_obj = Survey.objects.create(
+                            name=self.name,
+                            description=self.description,
+                            user=self.user,
+                            campaign_id=campaign_obj.id)
 
-                # updated campaign content_type & object_id with new survey object
-                campaign_obj.content_type_id =\
-                    ContentType.objects.get(model='survey').id
-                campaign_obj.object_id = new_survey_obj.id
-                campaign_obj.save()
+            # updated campaign content_type & object_id with new survey object
+            campaign_obj.content_type_id = ContentType.objects\
+                .get(model='survey').id
+            campaign_obj.object_id = new_survey_obj.id
+            campaign_obj.save()
 
-                # Copy Section
-                section_template = Section_template.objects\
-                    .filter(survey=self).order_by('order')
-                for section_temp in section_template:
-                    section_temp.copy_section_template(new_survey_obj)
-        except:
-            pass
+            # Copy Section
+            section_template = Section_template.objects\
+                .filter(survey=self).order_by('order')
+            for section_temp in section_template:
+                section_temp.copy_section_template(new_survey_obj)
         return True
 
 
@@ -261,76 +261,75 @@ class Section_template(Section_abstract):
         verbose_name_plural = _("Section templates")
 
     def copy_section_template(self, new_survey_obj):
-        try:
-            record_count = Section.objects.filter(
-                            type=self.type,
-                            question=self.question,
-                            phrasing=self.phrasing,
-                            audiofile_id=self.audiofile_id,
-                            retries=self.retries,
-                            timeout=self.timeout,
-                            key_0=self.key_0,
-                            key_1=self.key_1,
-                            key_2=self.key_2,
-                            key_3=self.key_3,
-                            key_4=self.key_4,
-                            key_5=self.key_5,
-                            key_6=self.key_6,
-                            key_7=self.key_7,
-                            key_8=self.key_8,
-                            key_9=self.key_9,
-                            rating_laps=self.rating_laps,
-                            validate_number=self.validate_number,
-                            number_digits=self.number_digits,
-                            min_number=self.min_number,
-                            max_number=self.max_number,
-                            dial_phonenumber=self.dial_phonenumber,
-                            continue_survey=self.continue_survey,
-                            completed=self.completed,
-                            order=self.order,
-                            survey_id=new_survey_obj.id,
-                            invalid_audiofile_id=self.invalid_audiofile_id
-                        ).count()
+        """
+        copy section template to section when starting campaign
+        """
+        record_count = Section.objects.filter(
+                        type=self.type,
+                        question=self.question,
+                        phrasing=self.phrasing,
+                        audiofile_id=self.audiofile_id,
+                        retries=self.retries,
+                        timeout=self.timeout,
+                        key_0=self.key_0,
+                        key_1=self.key_1,
+                        key_2=self.key_2,
+                        key_3=self.key_3,
+                        key_4=self.key_4,
+                        key_5=self.key_5,
+                        key_6=self.key_6,
+                        key_7=self.key_7,
+                        key_8=self.key_8,
+                        key_9=self.key_9,
+                        rating_laps=self.rating_laps,
+                        validate_number=self.validate_number,
+                        number_digits=self.number_digits,
+                        min_number=self.min_number,
+                        max_number=self.max_number,
+                        dial_phonenumber=self.dial_phonenumber,
+                        continue_survey=self.continue_survey,
+                        completed=self.completed,
+                        order=self.order,
+                        survey_id=new_survey_obj.id,
+                        invalid_audiofile_id=self.invalid_audiofile_id
+                    ).count()
 
-            if record_count == 0:
-                new_section_obj = Section.objects.create(
-                                    type=self.type,
-                                    question=self.question,
-                                    phrasing=self.phrasing,
-                                    audiofile_id=self.audiofile_id,
-                                    retries=self.retries,
-                                    timeout=self.timeout,
-                                    key_0=self.key_0,
-                                    key_1=self.key_1,
-                                    key_2=self.key_2,
-                                    key_3=self.key_3,
-                                    key_4=self.key_4,
-                                    key_5=self.key_5,
-                                    key_6=self.key_6,
-                                    key_7=self.key_7,
-                                    key_8=self.key_8,
-                                    key_9=self.key_9,
-                                    rating_laps=self.rating_laps,
-                                    validate_number=self.validate_number,
-                                    number_digits=self.number_digits,
-                                    min_number=self.min_number,
-                                    max_number=self.max_number,
-                                    dial_phonenumber=self.dial_phonenumber,
-                                    continue_survey=self.continue_survey,
-                                    completed=self.completed,
-                                    order=self.order,
-                                    survey_id=new_survey_obj.id,
-                                    invalid_audiofile_id=self.invalid_audiofile_id,
-                                )
+        if record_count == 0:
+            new_section_obj = Section.objects.create(
+                                type=self.type,
+                                question=self.question,
+                                phrasing=self.phrasing,
+                                audiofile_id=self.audiofile_id,
+                                retries=self.retries,
+                                timeout=self.timeout,
+                                key_0=self.key_0,
+                                key_1=self.key_1,
+                                key_2=self.key_2,
+                                key_3=self.key_3,
+                                key_4=self.key_4,
+                                key_5=self.key_5,
+                                key_6=self.key_6,
+                                key_7=self.key_7,
+                                key_8=self.key_8,
+                                key_9=self.key_9,
+                                rating_laps=self.rating_laps,
+                                validate_number=self.validate_number,
+                                number_digits=self.number_digits,
+                                min_number=self.min_number,
+                                max_number=self.max_number,
+                                dial_phonenumber=self.dial_phonenumber,
+                                continue_survey=self.continue_survey,
+                                completed=self.completed,
+                                order=self.order,
+                                survey_id=new_survey_obj.id,
+                                invalid_audiofile_id=self.invalid_audiofile_id,
+                            )
 
-                # Copy Branching
-                branching_template =\
-                        Branching_template.objects\
-                            .filter(section=self)
-                for branching_temp in branching_template:
-                    branching_temp.copy_branching_template(new_section_obj)
-        except:
-            pass
+            # Copy Branching
+            branching_template = Branching_template.objects\
+                .filter(section=self)
+            for branching_temp in branching_template:
+                branching_temp.copy_branching_template(new_section_obj)
         return True
 
 
@@ -385,14 +384,18 @@ class Branching_template(Branching_abstract):
         verbose_name_plural = _("Branching templates")
 
     def copy_branching_template(self, new_section_obj):
-        try:
-            Branching.objects.create(
-                keys=self.keys,
-                section_id=new_section_obj.id,
-                goto_id=self.goto_id
-            )
-        except:
-            pass
+        """
+        copy branching template to branching when starting campaign
+        """
+        print "+++++++++++++++++++"
+        print "copy branching"
+        print new_section_obj
+        Branching.objects.create(
+            keys=self.keys,
+            section_id=new_section_obj.id,
+            goto_id=self.goto_id
+        )
+        print "--------------------"
         return True
 
 

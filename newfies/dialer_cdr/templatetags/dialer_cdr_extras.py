@@ -204,6 +204,7 @@ def percentage_tag(fraction, population):
 
 
 def get_notice_count(request):
+    """tag to display notice count"""
     return notice_count(request)
 
 register.filter('contact_status', contact_status)
@@ -215,8 +216,5 @@ register.filter('voiceapp_type', voiceapp_type)
 register.filter('section_type_name', section_type_name)
 register.filter('running_total', running_total)
 
-
 register.simple_tag(percentage_tag)
 register.simple_tag(get_notice_count)
-
-

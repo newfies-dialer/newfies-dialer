@@ -99,7 +99,8 @@ def common_campaign_status(pk, status):
     campaign.save()
 
     #Start tasks to import subscriber
-    if status == "1" and previous_status != "1":
+    if int(status) == CAMPAIGN_STATUS.START \
+        and int(previous_status) != CAMPAIGN_STATUS.START:
         collect_subscriber.delay(pk)
 
     return campaign.user
@@ -495,7 +496,8 @@ def campaign_change(request, object_id):
                     if request.POST.get('selected_phonebook'):
                         selected_phonebook =\
                             str(request.POST.get('selected_phonebook')).split(',')
-                        obj.phonebook = Phonebook.objects.filter(id__in=selected_phonebook)
+                        obj.phonebook = \
+                            Phonebook.objects.filter(id__in=selected_phonebook)
 
                     selected_content_object = form.cleaned_data['selected_content_object']
 

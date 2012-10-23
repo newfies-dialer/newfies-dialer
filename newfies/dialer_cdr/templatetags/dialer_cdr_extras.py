@@ -19,6 +19,7 @@ from dialer_cdr.constants import LEG_TYPE
 from survey.models import APP_TYPE
 from survey2.constants import SECTION_TYPE
 from voice_app.constants import VOICEAPP_TYPE
+from frontend.views import notice_count
 
 
 @register.filter()
@@ -202,6 +203,9 @@ def percentage_tag(fraction, population):
         return "0.00%"
 
 
+def get_notice_count(request):
+    return notice_count(request)
+
 register.filter('contact_status', contact_status)
 register.filter('campaign_status', campaign_status)
 register.filter('leg_type_name', leg_type_name)
@@ -211,6 +215,8 @@ register.filter('voiceapp_type', voiceapp_type)
 register.filter('section_type_name', section_type_name)
 register.filter('running_total', running_total)
 
+
 register.simple_tag(percentage_tag)
+register.simple_tag(get_notice_count)
 
 

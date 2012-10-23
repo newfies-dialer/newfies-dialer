@@ -374,9 +374,11 @@ class Branching_template(Branching_abstract):
     """
     This defines the response of the survey section
     """
-    section = models.ForeignKey(Section_template, related_name='Branching Section')
+    section = models.ForeignKey(Section_template,
+                                related_name='Branching Template Section')
     goto = models.ForeignKey(Section_template, null=True,
-                             blank=True, related_name='Goto Section')
+                             blank=True,
+                             related_name='Goto Template Section')
 
     class Meta():
         unique_together = ("keys", "section")
@@ -392,7 +394,7 @@ class Branching_template(Branching_abstract):
         print new_section_obj
         Branching.objects.create(
             keys=self.keys,
-            section_id=new_section_obj.id,
+            section_id=new_section_obj,
             goto_id=self.goto_id
         )
         print "--------------------"

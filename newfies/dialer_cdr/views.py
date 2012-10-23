@@ -25,8 +25,8 @@ from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.forms import VoipSearchForm
 from dialer_cdr.function_def import voipcall_record_common_fun
-from survey2.views import ceil_strdate
-from common.common_functions import variable_value, current_view
+from common.common_functions import variable_value, current_view,\
+                                    ceil_strdate
 from datetime import datetime
 import csv
 import urllib

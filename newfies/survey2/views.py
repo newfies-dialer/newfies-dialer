@@ -42,7 +42,7 @@ from survey2.forms import SurveyForm, VoiceSectionForm,\
     SurveyDetailReportForm
 from survey2.constants import SECTION_TYPE
 from utils.helper import grid_common_function, get_grid_update_delete_link
-from common.common_functions import variable_value, current_view
+from common.common_functions import variable_value, current_view, ceil_strdate
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import commands
@@ -342,16 +342,6 @@ def survey_finitestatemachine(request):
         return HttpResponse(debug_outp + escape(html))
     else:
         return HttpResponse(html)
-
-
-def ceil_strdate(str_date, start):
-    """convert a string date to either a start or end day date"""
-    if start == 'start':
-        return datetime(int(str_date[0:4]), int(str_date[5:7]),
-                        int(str_date[8:10]), 0, 0, 0, 0)
-    else:
-        return datetime(int(str_date[0:4]), int(str_date[5:7]),
-                        int(str_date[8:10]), 23, 59, 59, 999999)
 
 
 @login_required

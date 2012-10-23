@@ -29,7 +29,6 @@ from dialer_campaign.views import campaign_list, campaign_add, \
 from dialer_campaign.tasks import campaign_running,\
     collect_subscriber,\
     campaign_expire_check
-from utils.helper import grid_test_data
 from common.utils import BaseAuthenticatedClient
 
 
@@ -95,13 +94,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
                 'campaign.json', 'campaign_subscriber.json']
 
     def test_campaign_view_list(self):
-        """Test Function to check campaign list"""
-        request = self.factory.post('/campaign_grid/', grid_test_data)
-        request.user = self.user
-        request.session = {}
-        response = campaign_grid(request)
-        self.assertEqual(response.status_code, 200)
-
+        """Test Function to check campaign list"""        
         response = self.client.get('/campaign/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/campaign/list.html')

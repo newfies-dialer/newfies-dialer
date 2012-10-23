@@ -485,11 +485,12 @@ def campaign_change(request, object_id):
         else:
             # Update campaign
             form = CampaignForm(request.user, request.POST, instance=campaign)
-            previous_status = campaign.status
+            previous_status = int(campaign.status)
 
             if form.is_valid():
                 form.save()
                 obj = form.save(commit=False)
+
                 selected_content_object = form.cleaned_data['content_object']
                 # while campaign status is running
                 if campaign.status == 1:
@@ -507,7 +508,8 @@ def campaign_change(request, object_id):
                 obj.save()
 
                 # Start tasks to import subscriber
-                if obj.status == 1 and previous_status != 1:
+                if int(obj.status) == CAMPAIGN_STATUS.START \
+                    and previous_status != CAMPAIGN_STATUS.START:
                     collect_subscriber.delay(obj.id)
 
                 request.session["msg"] = _('"%(name)s" is updated.') \

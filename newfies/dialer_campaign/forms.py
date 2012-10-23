@@ -65,7 +65,6 @@ class CampaignForm(ModelForm):
                   'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
                   'saturday', 'sunday', 'ds_user',
                   'selected_phonebook', 'selected_content_object',
-
                   ]
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),

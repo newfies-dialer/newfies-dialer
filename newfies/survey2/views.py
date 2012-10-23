@@ -1410,14 +1410,6 @@ def survey_report(request):
         campaign_obj = Campaign.objects.get(id=campaign_id)
         survey_result_kwargs['campaign'] = campaign_obj
 
-        #TODO: Should we keep this
-        # Get survey result report from session
-        # while using pagination & sorting
-        #if request.GET.get('page') or request.GET.get('sort_by'):
-        #    survey_result = request.session['session_survey_result']
-        #else:
-        #    survey_result = get_survey_result(survey_result_kwargs)
-        #    request.session['session_survey_result'] = survey_result
         survey_result = get_survey_result(survey_result_kwargs)
         kwargs['callrequest__campaign'] = campaign_obj
 

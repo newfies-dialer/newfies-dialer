@@ -68,7 +68,7 @@
                     </div>
                 </div>
 
-                {% if form.type.value == SECTION_TYPE.VOICE_SECTION or form.type.value == SECTION_TYPE.MULTIPLE_CHOICE_SECTION or form.type.value == SECTION_TYPE.RATING_SECTION  or form.type.value == SECTION_TYPE.ENTER_NUMBER_SECTION %}
+                {% if form.type.value == SECTION_TYPE.MULTIPLE_CHOICE_SECTION or form.type.value == SECTION_TYPE.RATING_SECTION  or form.type.value == SECTION_TYPE.ENTER_NUMBER_SECTION %}
                     <div class="row">
                         <div class="span2">
                             <label class="control-label" for="id_{{ form.retries.name }}">{{ form.retries.label }}</label>

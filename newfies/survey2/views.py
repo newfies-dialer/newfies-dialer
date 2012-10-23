@@ -30,8 +30,6 @@ from dialer_campaign.models import Campaign
 from dialer_campaign.views import notice_count
 from dialer_cdr.models import Callrequest, VoIPCall, CALLREQUEST_STATUS
 from dialer_cdr.constants import VOIPCALL_DISPOSITION
-#from survey2.models import Survey, Section, Branching,\
-#    Result, ResultAggregate
 from survey2.models import Survey_template, Survey, Section_template, Section,\
     Branching_template, Branching,\
     Result, ResultAggregate
@@ -54,6 +52,7 @@ import os
 testdebug = True  # TODO: Change later
 
 
+#TODO: Use find_branching
 def find_branching(p_section, DTMF):
     """
     function help to find the next branching of a section based on the key pressed
@@ -111,10 +110,8 @@ def save_section_result(request, obj_callrequest, obj_p_section):
 
 @csrf_exempt
 def survey_finitestatemachine(request):
-    """Survey Fine State Machine
-
-    **Model**: SurveyQuestion
-
+    """
+    Survey Fine State Machine
     """
     current_state = None
     next_state = None
@@ -162,7 +159,7 @@ def survey_finitestatemachine(request):
     obj_p_section = False
 
     #If there is no current state, it means we are starting the we set key_state and key_p_section to 0
-    #key_p_section is the previous key question
+    #key_p_section is the previous key section
     if not current_state:
         debug_outp += "** STARTING CALL **<br/>"
         debug_outp += "[INFO] - No current_state (%s) <br/>" % str(key_state)
@@ -212,7 +209,7 @@ def survey_finitestatemachine(request):
         #Check if we receive a DTMF for the previous section then store the result
 
         exit_action = 'DTMF'
-        #Get list of responses of the previous Question
+        #Get list of responses of the previous Section
         branching = Branching.objects.get(
             key=DTMF,
             section=obj_p_section)
@@ -272,11 +269,15 @@ def survey_finitestatemachine(request):
     if list_section[current_state].audiofile and list_section[current_state].audiofile.audio_file.url:
         #Audio file
         audio_file_url = url_basename + list_section[current_state].audiofile.audio_file.url
-        question = "<Play>%s</Play>" % audio_file_url
+        html_play = "<Play>%s</Play>" % audio_file_url
     else:
         #Text2Speech
-        question = "<Speak>%s</Speak>" % list_section[current_state].phrasing
+        html_play = "<Speak>%s</Speak>" % list_section[current_state].phrasing
 
+    try:
+        timeout = int(list_section[current_state].timeout / 1000)
+    except:
+        timeout = settings.MENU_TIMEOUT
     debug_outp += "Check section state (%d) <br/>" % (list_section[current_state].type)
 
     #
@@ -284,9 +285,9 @@ def survey_finitestatemachine(request):
     #for instance if it's a RECORD_MSG_SECTION, we will render an XML command output.
     #
 
-    #VOICE_SECTION
     if list_section[current_state].type == SECTION_TYPE.VOICE_SECTION:
-        debug_outp += "VOICE_SECTION<br/>------------------<br/>"
+        #VOICE_SECTION
+        debug_outp += "VOICE_SECTION2<br/>------------------<br/>"
         html =\
         '<Response>\n'\
         '   <GetDigits action="%s" method="GET" numDigits="1" '\
@@ -297,12 +298,13 @@ def survey_finitestatemachine(request):
         '   <Redirect>%s</Redirect>\n'\
         '</Response>' % (
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
-            settings.MENU_TIMEOUT,
-            question,
+            timeout,
+            html_play,
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
-    #MULTIPLE_CHOICE_SECTION
-    if list_section[current_state].type == SECTION_TYPE.VOICE_SECTION:
-        debug_outp += "VOICE_SECTION<br/>------------------<br/>"
+
+    elif list_section[current_state].type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
+        #MULTIPLE_CHOICE_SECTION
+        debug_outp += "MULTIPLE_CHOICE_SECTION<br/>------------------<br/>"
         html =\
         '<Response>\n'\
         '   <GetDigits action="%s" method="GET" numDigits="1" '\
@@ -313,28 +315,85 @@ def survey_finitestatemachine(request):
         '   <Redirect>%s</Redirect>\n'\
         '</Response>' % (
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
-            settings.MENU_TIMEOUT,
-            question,
+            timeout,
+            html_play,
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
-    #RECORD_MSG_SECTION
+
+    elif list_section[current_state].type == SECTION_TYPE.RATING_SECTION:
+        #RATING_SECTION
+        debug_outp += "RATING_SECTION<br/>------------------<br/>"
+        html =\
+        '<Response>\n'\
+        '   <GetDigits action="%s" method="GET" numDigits="1" '\
+        'retries="1" validDigits="0123456789" timeout="%s" '\
+        'finishOnKey="#">\n'\
+        '       %s\n'\
+        '   </GetDigits>\n'\
+        '   <Redirect>%s</Redirect>\n'\
+        '</Response>' % (
+            settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
+            timeout,
+            html_play,
+            settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
+
+    elif list_section[current_state].type == SECTION_TYPE.ENTER_NUMBER_SECTION:
+        #ENTER_NUMBER_SECTION
+        debug_outp += "ENTER_NUMBER_SECTION<br/>------------------<br/>"
+        html =\
+        '<Response>\n'\
+        '   <GetDigits action="%s" method="GET" numDigits="1" '\
+        'retries="1" validDigits="0123456789" timeout="%s" '\
+        'finishOnKey="#">\n'\
+        '       %s\n'\
+        '   </GetDigits>\n'\
+        '   <Redirect>%s</Redirect>\n'\
+        '</Response>' % (
+            settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
+            timeout,
+            html_play,
+            settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
+
     elif list_section[current_state].type == SECTION_TYPE.RECORD_MSG_SECTION:
+        #RECORD_MSG_SECTION
         html =\
         '<Response>\n'\
         '   %s\n'\
         '   <Record maxLength="120" finishOnKey="*#" action="%s" '\
         'method="GET" filePath="%s" timeout="%s"/>'\
         '</Response>' % (
-            question,
+            html_play,
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
             settings.FS_RECORDING_PATH,
-            settings.MENU_TIMEOUT)
-    # Hangup
+            timeout)
+
+    elif list_section[current_state].type == SECTION_TYPE.PATCH_THROUGH_SECTION:
+        #PATCH_THROUGH_SECTION
+        timelimit = obj_callrequest.timelimit
+        callerid = obj_callrequest.callerid
+        gatewaytimeouts = obj_callrequest.timeout
+        gateways = obj_callrequest.content_object.gateway.gateways
+        phonenumber = list_section[current_state].dial_phonenumber
+        html =\
+        '<Response>\n'\
+        '   <Dial timeLimit="%s" callerId="%s" callbackUrl="%s">\n'\
+        '   <Number gateways="%s" gatewayTimeouts="%s">'\
+        '   %s </Number> '\
+        '   </Dial>'\
+        '</Response>' % (
+            timelimit,
+            callerid,
+            settings.PLIVO_DEFAULT_DIALCALLBACK_URL,
+            gateways,
+            gatewaytimeouts,
+            phonenumber)
+
     else:
+        # Hangup
         html =\
         '<Response>\n'\
         '   %s\n'\
         '   <Hangup />'\
-        '</Response>' % (question)
+        '</Response>' % (html_play)
         next_state = current_state
         cache.set(key_state, next_state, 21600)
 

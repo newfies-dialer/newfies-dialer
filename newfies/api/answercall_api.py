@@ -16,20 +16,15 @@ from django.conf.urls.defaults import url
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.http import HttpResponse
-
 from tastypie.resources import ModelResource
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie import http
-
 from dialer_cdr.models import Callrequest
-from django.conf import settings
 from api.resources import CustomXmlEmitter, \
-                          IpAddressAuthorization, \
-                          IpAddressAuthentication
+    IpAddressAuthorization, IpAddressAuthentication
 from common_functions import search_tag_string
-
 import logging
 
 logger = logging.getLogger('newfies.filelog')

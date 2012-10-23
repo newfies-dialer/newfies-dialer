@@ -197,7 +197,12 @@ class HangupcallResource(ModelResource):
                         aleg_gateway_id=callrequest.aleg_gateway_id,
                         content_type=callrequest.content_type,
                         object_id=callrequest.object_id,
-                        phone_number=callrequest.phone_number)
+                        phone_number=callrequest.phone_number,
+                        timelimit=callrequest.timelimit,
+                        callerid=callrequest.callerid,
+                        timeout=callrequest.timeout,
+                        content_object=callrequest.content_object
+                        )
                     new_callrequest.save()
                     #Todo Check if it's a good practice
                     #implement a PID algorithm

@@ -90,8 +90,10 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username|capfirst }}
                     {% if notice_count %}
                         <span class="label label-warning">{{ notice_count }}</span>
-                    {% elif "/api-explorer/" in request.get_full_path %}
-                        <span class="label label-warning">{% get_notice_count request %}</span>
+                    {% else  %}
+                        {% if "/api-explorer/" in request.get_full_path %}
+                            <span class="label label-warning">{% get_notice_count request %}</span>
+                        {% endif %}
                     {% endif %}
                     <b class="caret"></b>
                 </a>
@@ -103,8 +105,10 @@
                         {% trans "Notifications" %}
                         {% if notice_count %}
                             <span class="label label-warning">{{ notice_count }}</span>
-                        {% elif "/api-explorer/" in request.get_full_path %}
-                            <span class="label label-warning">{% get_notice_count request %}</span>
+                        {% else  %}
+                            {% if "/api-explorer/" in request.get_full_path %}
+                                <span class="label label-warning">{% get_notice_count request %}</span>
+                            {% endif %}
                         {% endif %}
                         </a>
                     </li>

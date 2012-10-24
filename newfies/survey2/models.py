@@ -317,8 +317,8 @@ class Section(Section_abstract):
                                           related_name='survey_invalid_audiofile')
     #section_template_id is used to easy duplication
     section_template = models.IntegerField(max_length=10, blank=True,
-                                             default=0, null=True,
-                                             verbose_name=_('Section Template ID'))
+                                           default=0, null=True,
+                                           verbose_name=_('Section Template ID'))
 
     class Meta(Sortable.Meta):
         ordering = Sortable.Meta.ordering + ['survey']

@@ -387,7 +387,7 @@ def campaign_add(request):
             obj.save()
 
             # Start tasks to import subscriber
-            if obj.status == 1:
+            if obj.status == CAMPAIGN_STATUS.START:
                 collect_subscriber.delay(obj.pk)
             form.save_m2m()
 
@@ -496,7 +496,7 @@ def campaign_change(request, object_id):
 
                 selected_content_object = form.cleaned_data['content_object']
                 # while campaign status is running
-                if campaign.status == 1:
+                if campaign.status == CAMPAIGN_STATUS.START:
                     if request.POST.get('selected_phonebook'):
                         selected_phonebook =\
                             str(request.POST.get('selected_phonebook')).split(',')

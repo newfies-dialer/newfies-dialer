@@ -46,14 +46,13 @@ class Survey_abstract(models.Model):
     **Name of DB table**: survey
     """
     name = models.CharField(max_length=90, verbose_name=_('Name'))
+    tts_language = LanguageField(blank=True, null=True, default='en',
+                                 verbose_name=_('Text-to-Speech Language'))
     description = models.TextField(null=True, blank=True,
                                    verbose_name=_('Description'))
     created_date = models.DateTimeField(auto_now_add=True,
                                         verbose_name=_('Date'))
     updated_date = models.DateTimeField(auto_now=True)
-
-    tts_language = LanguageField(blank=True, null=True, default='en',
-                                 verbose_name=_('Text-to-Speech Language'))
 
     class Meta:
         abstract = True
@@ -81,6 +80,7 @@ class Survey_template(Survey_abstract):
         """
         new_survey_obj = Survey.objects.create(
                             name=self.name,
+                            tts_language=self.tts_language,
                             description=self.description,
                             user=self.user,
                             campaign_id=campaign_obj.id)

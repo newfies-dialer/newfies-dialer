@@ -841,7 +841,7 @@ def section_change(request, id):
 
     request.session['err_msg'] = ''
 
-    if request.method == 'POST':
+    if request.method == 'POST' and request.POST.get('type'):
         # Voice Section
         if int(request.POST.get('type')) == SECTION_TYPE.VOICE_SECTION:
             form = VoiceSectionForm(request.user, instance=section)

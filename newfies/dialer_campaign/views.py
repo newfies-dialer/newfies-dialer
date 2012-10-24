@@ -330,11 +330,7 @@ def get_content_type(object_string):
     matches = re.match("type:(\d+)-id:(\d+)", object_string).groups()
     object_type_id = matches[0]  # get 45 from "type:45-id:38"
     contenttype['object_id'] = matches[1]  # get 38 from "type:45-id:38"
-    try:
-        contenttype['object_type'] = ContentType.objects\
-                                        .get(id=object_type_id)
-    except:
-        pass
+    contenttype['object_type'] = ContentType.objects.get(id=object_type_id)
     return contenttype
 
 
@@ -501,15 +497,15 @@ def campaign_change(request, object_id):
                 obj = form.save(commit=False)
 
                 selected_content_object = form.cleaned_data['content_object']
+                if not selected_content_object:
+                    selected_content_object = form.cleaned_data['selected_content_object']
                 # while campaign status is running
                 if campaign.status == CAMPAIGN_STATUS.START:
                     if request.POST.get('selected_phonebook'):
-                        selected_phonebook =\
-                            str(request.POST.get('selected_phonebook')).split(',')
-                        obj.phonebook = \
-                            Phonebook.objects.filter(id__in=selected_phonebook)
-
-                    selected_content_object = form.cleaned_data['selected_content_object']
+                        selected_phonebook = str(request.POST\
+                            .get('selected_phonebook')).split(',')
+                        obj.phonebook = Phonebook.objects\
+                            .filter(id__in=selected_phonebook)
 
                 contenttype = get_content_type(selected_content_object)
                 obj.content_type = contenttype['object_type']
@@ -517,7 +513,8 @@ def campaign_change(request, object_id):
                 obj.save()
 
                 # Start tasks to import subscriber
-                if int(obj.status) == CAMPAIGN_STATUS.START \
+                if obj.status \
+                    and int(obj.status) == CAMPAIGN_STATUS.START \
                     and previous_status != CAMPAIGN_STATUS.START:
                     collect_subscriber.delay(obj.id)
 

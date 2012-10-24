@@ -55,7 +55,7 @@ class CampaignForm(ModelForm):
     class Meta:
         model = Campaign
         fields = ['campaign_code', 'name', 'description',
-                  'callerid', 'caller_name', 'status', 'aleg_gateway',
+                  'callerid', 'caller_name', 'aleg_gateway',
                   'content_object',   # 'content_type', 'object_id'
                   'extra_data', 'phonebook',
                   'frequency', 'callmaxduration', 'maxretry',
@@ -116,8 +116,7 @@ class CampaignForm(ModelForm):
             self.fields['caller_name'].widget.attrs['readonly'] = True
             self.fields['callerid'].widget.attrs['readonly'] = True
             self.fields['extra_data'].widget.attrs['readonly'] = True
-
-            self.fields['status'].widget.attrs['disabled'] = 'disabled'
+            #self.fields['status'].widget.attrs['readonly'] = True
             self.fields['phonebook'].widget.attrs['disabled'] = 'disabled'
 
             selected_phonebook = ''

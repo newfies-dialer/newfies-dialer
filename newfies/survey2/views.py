@@ -595,138 +595,125 @@ def section_add(request):
     if request.method == 'POST':
 
         # Voice Section
-        try:
-            if int(request.POST.get('type')) == SECTION_TYPE.VOICE_SECTION:
-                form = VoiceSectionForm(request.user)
-                if request.POST.get('add'):
-                    form = VoiceSectionForm(request.user, request.POST)
-                    if form.is_valid():
-                        obj = form.save()
-                        request.session["msg"] = _('Voice Section is added successfully.')
-                        return HttpResponseRedirect('/survey2/%s/#row%s'
-                                                    % (obj.survey_id, obj.id))
-                    else:
-                        request.session["err_msg"] = True
-
-                if request.POST.get('add') is None:
+        if int(request.POST.get('type')) == SECTION_TYPE.VOICE_SECTION:
+            form = VoiceSectionForm(request.user)
+            if request.POST.get('add'):
+                form = VoiceSectionForm(request.user, request.POST)
+                if form.is_valid():
+                    obj = form.save()
+                    request.session["msg"] = _('Voice Section is added successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
+                else:
                     request.session["err_msg"] = True
-                    form = VoiceSectionForm(
-                        request.user, initial={'survey': survey,
-                                               'type': SECTION_TYPE.VOICE_SECTION})
-        except:
-            pass
+
+            if request.POST.get('add') is None:
+                request.session["err_msg"] = True
+                form = VoiceSectionForm(
+                    request.user, initial={'survey': survey,
+                                           'type': SECTION_TYPE.VOICE_SECTION})
+
 
         # Multiple Choice Section
-        try:
-            if int(request.POST.get('type')) == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
-                form = MultipleChoiceSectionForm(request.user)
-                if request.POST.get('add'):
-                    form = MultipleChoiceSectionForm(request.user, request.POST)
-                    if form.is_valid():
-                        obj = form.save()
-                        request.session["msg"] =\
-                            _('Multiple Choice Section is added successfully.')
-                        return HttpResponseRedirect('/survey2/%s/#row%s'
-                                                    % (obj.survey_id, obj.id))
-                    else:
-                        request.session["err_msg"] = True
-
-                if request.POST.get('add') is None:
+        if int(request.POST.get('type')) == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
+            form = MultipleChoiceSectionForm(request.user)
+            if request.POST.get('add'):
+                form = MultipleChoiceSectionForm(request.user, request.POST)
+                if form.is_valid():
+                    obj = form.save()
+                    request.session["msg"] =\
+                        _('Multiple Choice Section is added successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
+                else:
                     request.session["err_msg"] = True
-                    form = MultipleChoiceSectionForm(
-                        request.user, initial={'survey': survey,
-                                               'type': SECTION_TYPE.MULTIPLE_CHOICE_SECTION})
-        except:
-            pass
+
+            if request.POST.get('add') is None:
+                request.session["err_msg"] = True
+                form = MultipleChoiceSectionForm(
+                    request.user, initial={'survey': survey,
+                                           'type': SECTION_TYPE.MULTIPLE_CHOICE_SECTION})
 
         # Rating Section
-        try:
-            if int(request.POST.get('type')) == SECTION_TYPE.RATING_SECTION:
-                form = RatingSectionForm(request.user)
-                if request.POST.get('add'):
-                    form = RatingSectionForm(request.user, request.POST)
-
-                    if form.is_valid():
-                        obj = form.save()
-                        request.session["msg"] =\
-                            _('Rating Section is added successfully.')
-                        return HttpResponseRedirect('/survey2/%s/#row%s'
-                                                    % (obj.survey_id, obj.id))
-                    else:
-                        request.session["err_msg"] = True
-
-                if request.POST.get('add') is None:
+        if int(request.POST.get('type')) == SECTION_TYPE.RATING_SECTION:
+            form = RatingSectionForm(request.user)
+            if request.POST.get('add'):
+                form = RatingSectionForm(request.user, request.POST)
+                print form.errors
+                if form.is_valid():
+                    obj = form.save()
+                    request.session["msg"] =\
+                        _('Rating Section is added successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
+                else:
                     request.session["err_msg"] = True
-                    form = RatingSectionForm(request.user, initial={'survey': survey,
-                                             'type': SECTION_TYPE.RATING_SECTION})
-        except:
-            pass
+
+            if request.POST.get('add') is None:
+                request.session["err_msg"] = True
+                form = RatingSectionForm(request.user, initial={'survey': survey,
+                                         'type': SECTION_TYPE.RATING_SECTION})
+
 
         # Enter Number Section
-        try:
-            if int(request.POST.get('type')) == SECTION_TYPE.ENTER_NUMBER_SECTION:
-                form = EnterNumberSectionForm(request.user)
-                if request.POST.get('add'):
-                    form = EnterNumberSectionForm(request.user, request.POST)
-                    if form.is_valid():
-                        obj = form.save()
-                        request.session["msg"] =\
-                            _('Enter Number Section is added successfully.')
-                        return HttpResponseRedirect('/survey2/%s/#row%s'
-                                                    % (obj.survey_id, obj.id))
-                    else:
-                        request.session["err_msg"] = True
-
-                if request.POST.get('add') is None:
+        if int(request.POST.get('type')) == SECTION_TYPE.ENTER_NUMBER_SECTION:
+            form = EnterNumberSectionForm(request.user)
+            if request.POST.get('add'):
+                form = EnterNumberSectionForm(request.user, request.POST)
+                if form.is_valid():
+                    obj = form.save()
+                    request.session["msg"] =\
+                        _('Enter Number Section is added successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
+                else:
                     request.session["err_msg"] = True
-                    form = EnterNumberSectionForm(request.user, initial={'survey': survey,
-                                                  'type': SECTION_TYPE.ENTER_NUMBER_SECTION})
-        except:
-            pass
+
+            if request.POST.get('add') is None:
+                request.session["err_msg"] = True
+                form = EnterNumberSectionForm(request.user, initial={'survey': survey,
+                                              'type': SECTION_TYPE.ENTER_NUMBER_SECTION})
+
 
         # Record Message Section
-        try:
-            if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG_SECTION:
-                form = RecordMessageSectionForm(request.user)
-                if request.POST.get('add'):
-                    form = RecordMessageSectionForm(request.user, request.POST)
-                    if form.is_valid():
-                        obj = form.save()
-                        request.session["msg"] =\
-                            _('Record Message Section is added successfully.')
-                        return HttpResponseRedirect('/survey2/%s/#row%s'
-                                                    % (obj.survey_id, obj.id))
-                    else:
-                        request.session["err_msg"] = True
-
-                if request.POST.get('add') is None:
+        if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG_SECTION:
+            form = RecordMessageSectionForm(request.user)
+            if request.POST.get('add'):
+                form = RecordMessageSectionForm(request.user, request.POST)
+                if form.is_valid():
+                    obj = form.save()
+                    request.session["msg"] =\
+                        _('Record Message Section is added successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
+                else:
                     request.session["err_msg"] = True
-                    form = RecordMessageSectionForm(request.user, initial={'survey': survey,
-                                                    'type': SECTION_TYPE.RECORD_MSG_SECTION})
-        except:
-            pass
+
+            if request.POST.get('add') is None:
+                request.session["err_msg"] = True
+                form = RecordMessageSectionForm(request.user, initial={'survey': survey,
+                                                'type': SECTION_TYPE.RECORD_MSG_SECTION})
+
 
         # Patch-Through Section
-        try:
-            if int(request.POST.get('type')) == SECTION_TYPE.PATCH_THROUGH_SECTION:
-                form = PatchThroughSectionForm(request.user)
-                if request.POST.get('add'):
-                    form = PatchThroughSectionForm(request.user, request.POST)
-                    if form.is_valid():
-                        obj = form.save()
-                        request.session["msg"] =\
-                            _('Patch-Through Section is added successfully.')
-                        return HttpResponseRedirect('/survey2/%s/#row%s'
-                                                    % (obj.survey_id, obj.id))
-                    else:
-                        request.session["err_msg"] = True
-
-                if request.POST.get('add') is None:
+        if int(request.POST.get('type')) == SECTION_TYPE.PATCH_THROUGH_SECTION:
+            form = PatchThroughSectionForm(request.user)
+            if request.POST.get('add'):
+                form = PatchThroughSectionForm(request.user, request.POST)
+                if form.is_valid():
+                    obj = form.save()
+                    request.session["msg"] =\
+                        _('Patch-Through Section is added successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
+                else:
                     request.session["err_msg"] = True
-                    form = PatchThroughSectionForm(request.user, initial={'survey': survey,
-                                                   'type': SECTION_TYPE.PATCH_THROUGH_SECTION})
-        except:
-            pass
+
+            if request.POST.get('add') is None:
+                request.session["err_msg"] = True
+                form = PatchThroughSectionForm(request.user, initial={'survey': survey,
+                                               'type': SECTION_TYPE.PATCH_THROUGH_SECTION})
+
 
     template = 'frontend/survey2/section_change.html'
 
@@ -783,149 +770,136 @@ def section_change(request, id):
 
     if request.method == 'POST':
         # Voice Section
-        try:
-            if int(request.POST.get('type')) == SECTION_TYPE.VOICE_SECTION:
-                form = VoiceSectionForm(request.user, instance=section)
-                if request.POST.get('update'):
-                    form = VoiceSectionForm(request.user,
-                                            request.POST,
-                                            instance=section)
-                    if form.is_valid():
-                        obj = form.save()
-                        request.session["msg"] =\
-                            _('Voice Section is updated successfully.')
-                        return HttpResponseRedirect('/survey2/%s/#row%s'
-                                                    % (obj.survey_id, obj.id))
-                    else:
-                        request.session["err_msg"] = True
-
-                if request.POST.get('update') is None:
+        if int(request.POST.get('type')) == SECTION_TYPE.VOICE_SECTION:
+            form = VoiceSectionForm(request.user, instance=section)
+            if request.POST.get('update'):
+                form = VoiceSectionForm(request.user,
+                                        request.POST,
+                                        instance=section)
+                if form.is_valid():
+                    obj = form.save()
+                    request.session["msg"] =\
+                        _('Voice Section is updated successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
+                else:
                     request.session["err_msg"] = True
-                    form = VoiceSectionForm(
-                        request.user, instance=section,
-                        initial={'type': SECTION_TYPE.VOICE_SECTION})
-        except:
-            pass
+
+            if request.POST.get('update') is None:
+                request.session["err_msg"] = True
+                form = VoiceSectionForm(
+                    request.user, instance=section,
+                    initial={'type': SECTION_TYPE.VOICE_SECTION})
+
 
         # Multiple Choice Section
-        try:
-            if int(request.POST.get('type')) == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
-                form = MultipleChoiceSectionForm(request.user, instance=section)
-                if request.POST.get('update'):
-                    form = MultipleChoiceSectionForm(
-                        request.user, request.POST, instance=section)
-                    if form.is_valid():
-                        obj = form.save()
-                        request.session["msg"] =\
-                            _('Multiple Choice Section is updated successfully.')
-                        return HttpResponseRedirect('/survey2/%s/#row%s'
-                                                    % (obj.survey_id, obj.id))
-                    else:
-                        request.session["err_msg"] = True
-
-                if request.POST.get('update') is None:
+        if int(request.POST.get('type')) == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
+            form = MultipleChoiceSectionForm(request.user, instance=section)
+            if request.POST.get('update'):
+                form = MultipleChoiceSectionForm(
+                    request.user, request.POST, instance=section)
+                if form.is_valid():
+                    obj = form.save()
+                    request.session["msg"] =\
+                        _('Multiple Choice Section is updated successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
+                else:
                     request.session["err_msg"] = True
-                    form = MultipleChoiceSectionForm(
-                        request.user, instance=section,
-                        initial={'type': SECTION_TYPE.MULTIPLE_CHOICE_SECTION})
-        except:
-            pass
+
+            if request.POST.get('update') is None:
+                request.session["err_msg"] = True
+                form = MultipleChoiceSectionForm(
+                    request.user, instance=section,
+                    initial={'type': SECTION_TYPE.MULTIPLE_CHOICE_SECTION})
+
 
         # Rating Section
-        try:
-            if int(request.POST.get('type')) == SECTION_TYPE.RATING_SECTION:
-                form = RatingSectionForm(request.user, instance=section)
-                if request.POST.get('update'):
-                    form = RatingSectionForm(
-                        request.user, request.POST, instance=section)
-                    if form.is_valid():
-                        obj = form.save()
-                        request.session["msg"] =\
-                            _('Rating Section is updated successfully.')
-                        return HttpResponseRedirect('/survey2/%s/#row%s'
-                                                    % (obj.survey_id, obj.id))
-                    else:
-                        request.session["err_msg"] = True
-
-                if request.POST.get('update') is None:
+        if int(request.POST.get('type')) == SECTION_TYPE.RATING_SECTION:
+            form = RatingSectionForm(request.user, instance=section)
+            if request.POST.get('update'):
+                form = RatingSectionForm(
+                    request.user, request.POST, instance=section)
+                if form.is_valid():
+                    obj = form.save()
+                    request.session["msg"] =\
+                        _('Rating Section is updated successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
+                else:
                     request.session["err_msg"] = True
-                    form = RatingSectionForm(
-                        request.user, instance=section,
-                        initial={'type': SECTION_TYPE.RATING_SECTION})
-        except:
-            pass
+
+            if request.POST.get('update') is None:
+                request.session["err_msg"] = True
+                form = RatingSectionForm(
+                    request.user, instance=section,
+                    initial={'type': SECTION_TYPE.RATING_SECTION})
 
         # Enter Number Section
-        try:
-            if int(request.POST.get('type')) == SECTION_TYPE.ENTER_NUMBER_SECTION:
-                form = EnterNumberSectionForm(request.user, instance=section)
-                if request.POST.get('update'):
-                    form = EnterNumberSectionForm(
-                        request.user, request.POST, instance=section)
-                    if form.is_valid():
-                        obj = form.save()
-                        request.session["msg"] =\
-                            _('Enter Number Section is updated successfully.')
-                        return HttpResponseRedirect('/survey2/%s/#row%s'
-                                                    % (obj.survey_id, obj.id))
-                    else:
-                        request.session["err_msg"] = True
-
-                if request.POST.get('update') is None:
+        if int(request.POST.get('type')) == SECTION_TYPE.ENTER_NUMBER_SECTION:
+            form = EnterNumberSectionForm(request.user, instance=section)
+            if request.POST.get('update'):
+                form = EnterNumberSectionForm(
+                    request.user, request.POST, instance=section)
+                if form.is_valid():
+                    obj = form.save()
+                    request.session["msg"] =\
+                        _('Enter Number Section is updated successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
+                else:
                     request.session["err_msg"] = True
-                    form = EnterNumberSectionForm(
-                        request.user, instance=section,
-                        initial={'type': SECTION_TYPE.ENTER_NUMBER_SECTION})
-        except:
-            pass
+
+            if request.POST.get('update') is None:
+                request.session["err_msg"] = True
+                form = EnterNumberSectionForm(
+                    request.user, instance=section,
+                    initial={'type': SECTION_TYPE.ENTER_NUMBER_SECTION})
+
 
         # Record Message Section Section
-        try:
-            if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG_SECTION:
-                form = RecordMessageSectionForm(request.user, instance=section)
-                if request.POST.get('update'):
-                    form = RecordMessageSectionForm(
-                        request.user, request.POST, instance=section)
-                    if form.is_valid():
-                        obj = form.save()
-                        request.session["msg"] =\
-                            _('Record Message Section is updated successfully.')
-                        return HttpResponseRedirect('/survey2/%s/#row%s'
-                                                    % (obj.survey_id, obj.id))
-                    else:
-                        request.session["err_msg"] = True
-
-                if request.POST.get('update') is None:
+        if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG_SECTION:
+            form = RecordMessageSectionForm(request.user, instance=section)
+            if request.POST.get('update'):
+                form = RecordMessageSectionForm(
+                    request.user, request.POST, instance=section)
+                if form.is_valid():
+                    obj = form.save()
+                    request.session["msg"] =\
+                        _('Record Message Section is updated successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
+                else:
                     request.session["err_msg"] = True
-                    form = RecordMessageSectionForm(
-                        request.user, instance=section,
-                        initial={'type': SECTION_TYPE.RECORD_MSG_SECTION})
-        except:
-            pass
+
+            if request.POST.get('update') is None:
+                request.session["err_msg"] = True
+                form = RecordMessageSectionForm(
+                    request.user, instance=section,
+                    initial={'type': SECTION_TYPE.RECORD_MSG_SECTION})
+
 
         # Patch Through Section Section
-        try:
-            if int(request.POST.get('type')) == SECTION_TYPE.PATCH_THROUGH_SECTION:
-                form = PatchThroughSectionForm(request.user, instance=section)
-                if request.POST.get('update'):
-                    form = PatchThroughSectionForm(
-                        request.user, request.POST, instance=section)
-                    if form.is_valid():
-                        obj = form.save()
-                        request.session["msg"] =\
-                            _('Patch Through Section is updated successfully.')
-                        return HttpResponseRedirect('/survey2/%s/#row%s'
-                                                    % (obj.survey_id, obj.id))
-                    else:
-                        request.session["err_msg"] = True
-
-                if request.POST.get('update') is None:
+        if int(request.POST.get('type')) == SECTION_TYPE.PATCH_THROUGH_SECTION:
+            form = PatchThroughSectionForm(request.user, instance=section)
+            if request.POST.get('update'):
+                form = PatchThroughSectionForm(
+                    request.user, request.POST, instance=section)
+                if form.is_valid():
+                    obj = form.save()
+                    request.session["msg"] =\
+                        _('Patch Through Section is updated successfully.')
+                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                                                % (obj.survey_id, obj.id))
+                else:
                     request.session["err_msg"] = True
-                    form = PatchThroughSectionForm(
-                        request.user, instance=section,
-                        initial={'type': SECTION_TYPE.PATCH_THROUGH_SECTION})
-        except:
-            pass
+
+            if request.POST.get('update') is None:
+                request.session["err_msg"] = True
+                form = PatchThroughSectionForm(
+                    request.user, instance=section,
+                    initial={'type': SECTION_TYPE.PATCH_THROUGH_SECTION})
+
 
     template = 'frontend/survey2/section_change.html'
     data = {

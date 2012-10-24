@@ -14,6 +14,7 @@
 
 from django import forms
 from django.forms import ModelForm
+from django.forms.util import ErrorList
 from django.utils.translation import ugettext_lazy as _
 from dialer_campaign.models import Campaign
 from dialer_cdr.forms import VoipSearchForm
@@ -199,6 +200,16 @@ class RatingSectionForm(ModelForm):
         self.fields['retries'].widget.attrs['class'] = 'span1'
         self.fields['timeout'].widget.attrs['class'] = 'span1'
         self.fields['rating_laps'].widget.attrs['class'] = 'span1'
+
+    def clean_rating_laps(self):
+        rating_laps = self.cleaned_data.get('rating_laps')
+
+        if len(str(rating_laps)) > 1:
+            msg = _('%s is not a valid number' % rating_laps)
+            self._errors['rating_laps'] = ErrorList([msg])
+            del self.cleaned_data['rating_laps']
+
+        return rating_laps
 
 
 class EnterNumberSectionForm(ModelForm):

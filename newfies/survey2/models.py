@@ -14,8 +14,6 @@
 
 from django.db import models
 from django.db.models.signals import post_save
-from django.core.exceptions import ValidationError
-from django.core.validators import MaxLengthValidator
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 
@@ -25,11 +23,6 @@ from adminsortable.models import Sortable
 from audiofield.models import AudioFile
 from survey2.constants import SECTION_TYPE
 #from tagging.fields import TagField
-
-
-def validate_length(value):
-    if len(str(value)) > 1:
-        raise ValidationError(u'%s is not a valid number' % value)
 
 
 class Survey_abstract(models.Model):
@@ -204,7 +197,7 @@ class Section_abstract(Sortable):
                              verbose_name=_("Press") + " 9")
 
     # rating question
-    rating_laps = models.IntegerField(validators=[validate_length],
+    rating_laps = models.IntegerField(max_length=1,
                                       null=True, blank=True,
                                       verbose_name=_("From 1 to X"),)
 

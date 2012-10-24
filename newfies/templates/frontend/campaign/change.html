@@ -21,7 +21,7 @@
             <legend>{% trans "General settings" %}</legend>
             <div class="span12">
                 <div class="row">
-                    {% get_fieldset campaign_code,ds_user,name,callerid,caller_name,selected_phonebook,selected_content_object as campaign_fields from form %}
+                    {% get_fieldset campaign_code,ds_user,name,callerid,caller_name,content_object,selected_phonebook,selected_content_object as campaign_fields from form %}
                     {% for field in campaign_fields.hidden_fields %}
                         {{ field }}
                     {% endfor %}
@@ -43,7 +43,7 @@
             </div>
             <div class="span12">
                 <div class="row">
-                    {% get_fieldset content_object,extra_data,phonebook as campaign_fields from form %}
+                    {% get_fieldset extra_data,phonebook as campaign_fields from form %}
                     {% for field in campaign_fields %}
                         <div class="span6">
                             <div class="clearfix{% if field.errors %} control-group error{% endif %}">

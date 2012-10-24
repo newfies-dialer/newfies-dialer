@@ -185,6 +185,7 @@ class RatingSectionForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(RatingSectionForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
+
         if user:
             self.fields['invalid_audiofile'].choices = get_audiofile_list(user)
 

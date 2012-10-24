@@ -496,7 +496,7 @@ def campaign_change(request, object_id):
 
                 selected_content_object = form.cleaned_data['content_object']
                 # while campaign status is running
-                if campaign.status == 1:
+                if campaign.status == CAMPAIGN_STATUS.START:
                     if request.POST.get('selected_phonebook'):
                         selected_phonebook =\
                             str(request.POST.get('selected_phonebook')).split(',')

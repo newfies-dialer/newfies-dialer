@@ -40,7 +40,7 @@ FS_INIT_PATH=https://raw.github.com/Star2Billing/newfies-dialer/master/install/f
 FS_GIT_REPO=git://git.freeswitch.org/freeswitch.git
 FS_INSTALLED_PATH=/usr/local/freeswitch
 FS_CONFIG_PATH=/etc/freeswitch
-FS_DOWNLOAD=http://files.freeswitch.org/freeswitch-1.2.rc2.tar.bz2
+FS_DOWNLOAD=http://files.freeswitch.org/freeswitch-1.2.3.tar.bz2
 
 #####################################################
 FS_BASE_PATH=/usr/src/
@@ -155,7 +155,7 @@ case $DIST in
 	    	echo "Installing via yum repository"
 	    	
 	    	# install the Freeswitch Repo
-			rpm -Uvh http://files.freeswitch.org/yum/freeswitch-release-1-0.noarch.rpm
+			rpm -Uvh http://files.freeswitch.org/freeswitch-release-1-0.noarch.rpm
 
 			# install the freeswitch files
 			yum -y install freeswitch-config-vanilla freeswitch-codec-siren freeswitch-codec-passthru-amr freeswitch-application-conference freeswitch-application-db freeswitch-endpoint-dingaling freeswitch-application-enum freeswitch-application-esf freeswitch-application-expr freeswitch-application-fifo freeswitch-asrtts-flite freeswitch-application-fsv freeswitch-codec-passthru-g723_1 freeswitch-codec-passthru-g729 freeswitch-codec-h26x freeswitch-application-hash freeswitch-application-httapi freeswitch-codec-ilbc freeswitch-format-local-stream freeswitch-lua freeswitch-format-native-file freeswitch-lang-de freeswitch-lang-en freeswitch-lang-fr freeswitch-lang-ru freeswitch-format-mod-shout freeswitch-codec-speex freeswitch-spidermonkey freeswitch-format-tone-stream freeswitch-asrtts-tts-commandline freeswitch-application-valet_parking freeswitch-application-voicemail freeswitch-format-shell-stream

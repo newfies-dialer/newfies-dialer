@@ -78,6 +78,7 @@ def save_section_result(request, obj_callrequest, obj_p_section, DTMF):
             RecordFile = os.path.split(RecordFile)[1]
         except:
             RecordFile = ''
+        #TODO: Find more elegant way to do an UPSERT
         try:
             #Insert Result
             result = Result(
@@ -99,25 +100,31 @@ def save_section_result(request, obj_callrequest, obj_p_section, DTMF):
         #TODO : Add ResultAggregate
         # recording duration 0 - 20 seconds ; 20 - 40 seconds ; 40 - 60 seconds
         # Up to 60 seconds
-    elif obj_p_section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
-        #TODO: Get value from Previous section for the key
-        #check in obj_p_section
 
-        #Save result
-        result = Result(
-            callrequest=obj_callrequest,
-            section=obj_p_section,
-            response=DTMF)
-        result.save()
-
-    elif obj_p_section.type == SECTION_TYPE.RATING_SECTION or \
+    elif obj_p_section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION or \
+        obj_p_section.type == SECTION_TYPE.RATING_SECTION or \
         obj_p_section.type == SECTION_TYPE.ENTER_NUMBER_SECTION:
-        #Save result
-        result = Result(
-            callrequest=obj_callrequest,
-            section=obj_p_section,
-            response=DTMF)
-        result.save()
+
+        if obj_p_section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
+            #TODO: Get value from Previous section for the key
+            #check in obj_p_section
+            DTMF = DTMF
+
+        try:
+            #Save result
+            result = Result(
+                callrequest=obj_callrequest,
+                section=obj_p_section,
+                response=DTMF)
+            result.save()
+        except IntegrityError:
+            #Update Result
+            result = Result.objects.get(
+                callrequest=obj_callrequest,
+                section=obj_p_section
+                )
+            result.response = DTMF
+            result.save()
 
 
 @csrf_exempt
@@ -138,7 +145,7 @@ def survey_finitestatemachine(request):
 
     if testdebug:
         #implemented to test in browser
-        #http://127.0.0.1:8000/survey_finitestatemachine/?ALegRequestUUID=1be691e0-1a47-11e2-b556-00231470a30c&Digits=1&RecordFile=tesfilename.mp3
+        #http://127.0.0.1:8000/survey_finitestatemachine/?ALegRequestUUID=1be691e0-1a47-11e2-b556-00231470a30c&Digits=1&RecordFile=tesfilename.mp3&RecordingDuration=20
         if not opt_ALegRequestUUID:
             opt_ALegRequestUUID = request.GET.get('ALegRequestUUID')
         if not opt_CallUUID:
@@ -228,7 +235,7 @@ def survey_finitestatemachine(request):
         obj_p_section.type == SECTION_TYPE.ENTER_NUMBER_SECTION):
 
         #Save the result
-        save_section_result(request, obj_callrequest, obj_p_section)
+        save_section_result(request, obj_callrequest, obj_p_section, DTMF)
 
         #
         #HANDLE DTMF RECEIVED, SET THE CURRENT STATE
@@ -236,23 +243,26 @@ def survey_finitestatemachine(request):
 
         exit_action = 'DTMF'
         #Get list of responses of the previous Section
-        branching = Branching.objects.get(
-            key=DTMF,
-            section=obj_p_section)
-
-        #DTMF doesn't have any branching so let's check for any
-        if not branching:
+        try:
             branching = Branching.objects.get(
-                key='any',
+                keys=DTMF,
                 section=obj_p_section)
-            exit_action = 'ANY'
-
-        #DTMF doesn't have any branching so let's check for timeout
-        if not branching:
-            branching = Branching.objects.get(
-                key='timeout',
-                section=obj_p_section)
-            exit_action = 'TIMEOUT'
+        except Branching.DoesNotExist:
+            try:
+                #DTMF doesn't have any branching so let's check for any
+                branching = Branching.objects.get(
+                    keys='any',
+                    section=obj_p_section)
+                exit_action = 'ANY'
+            except Branching.DoesNotExist:
+                try:
+                    #DTMF doesn't have any branching so let's check for timeout
+                    branching = Branching.objects.get(
+                        keys='timeout',
+                        section=obj_p_section)
+                    exit_action = 'TIMEOUT'
+                except Branching.DoesNotExist:
+                    branching = False
 
         #if there is a response for this DTMF then reset the current_state
         if branching and branching.goto:
@@ -347,7 +357,7 @@ def survey_finitestatemachine(request):
 
     if list_section[current_state].type == SECTION_TYPE.VOICE_SECTION:
         #VOICE_SECTION
-        debug_outp += "VOICE_SECTION2<br/>------------------<br/>"
+        debug_outp += "VOICE_SECTION<br/>------------------<br/>"
         html =\
         '<Response>\n'\
         '   <GetDigits action="%s" method="GET" numDigits="1" '\
@@ -427,6 +437,7 @@ def survey_finitestatemachine(request):
 
     elif list_section[current_state].type == SECTION_TYPE.RECORD_MSG_SECTION:
         #RECORD_MSG_SECTION
+        debug_outp += "RECORD_MSG_SECTION<br/>------------------<br/>"
         html =\
         '<Response>\n'\
         '   %s\n'\
@@ -440,6 +451,7 @@ def survey_finitestatemachine(request):
 
     elif list_section[current_state].type == SECTION_TYPE.PATCH_THROUGH_SECTION:
         #PATCH_THROUGH_SECTION
+        debug_outp += "PATCH_THROUGH_SECTION<br/>------------------<br/>"
         timelimit = obj_callrequest.timelimit
         callerid = obj_callrequest.callerid
         gatewaytimeouts = obj_callrequest.timeout
@@ -461,6 +473,7 @@ def survey_finitestatemachine(request):
 
     else:
         # Hangup
+        debug_outp += "Hangup<br/>------------------<br/>"
         html =\
         '<Response>\n'\
         '   %s\n'\
@@ -718,7 +731,6 @@ def section_add(request):
                 form = RatingSectionForm(request.user, initial={'survey': survey,
                                          'type': SECTION_TYPE.RATING_SECTION})
 
-
         # Enter Number Section
         if int(request.POST.get('type')) == SECTION_TYPE.ENTER_NUMBER_SECTION:
             form = EnterNumberSectionForm(request.user)
@@ -737,7 +749,6 @@ def section_add(request):
                 request.session["err_msg"] = True
                 form = EnterNumberSectionForm(request.user, initial={'survey': survey,
                                               'type': SECTION_TYPE.ENTER_NUMBER_SECTION})
-
 
         # Record Message Section
         if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG_SECTION:
@@ -758,7 +769,6 @@ def section_add(request):
                 form = RecordMessageSectionForm(request.user, initial={'survey': survey,
                                                 'type': SECTION_TYPE.RECORD_MSG_SECTION})
 
-
         # Patch-Through Section
         if int(request.POST.get('type')) == SECTION_TYPE.PATCH_THROUGH_SECTION:
             form = PatchThroughSectionForm(request.user)
@@ -777,7 +787,6 @@ def section_add(request):
                 request.session["err_msg"] = True
                 form = PatchThroughSectionForm(request.user, initial={'survey': survey,
                                                'type': SECTION_TYPE.PATCH_THROUGH_SECTION})
-
 
     template = 'frontend/survey2/section_change.html'
 
@@ -855,7 +864,6 @@ def section_change(request, id):
                     request.user, instance=section,
                     initial={'type': SECTION_TYPE.VOICE_SECTION})
 
-
         # Multiple Choice Section
         if int(request.POST.get('type')) == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
             form = MultipleChoiceSectionForm(request.user, instance=section)
@@ -876,7 +884,6 @@ def section_change(request, id):
                 form = MultipleChoiceSectionForm(
                     request.user, instance=section,
                     initial={'type': SECTION_TYPE.MULTIPLE_CHOICE_SECTION})
-
 
         # Rating Section
         if int(request.POST.get('type')) == SECTION_TYPE.RATING_SECTION:
@@ -920,7 +927,6 @@ def section_change(request, id):
                     request.user, instance=section,
                     initial={'type': SECTION_TYPE.ENTER_NUMBER_SECTION})
 
-
         # Record Message Section Section
         if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG_SECTION:
             form = RecordMessageSectionForm(request.user, instance=section)
@@ -942,7 +948,6 @@ def section_change(request, id):
                     request.user, instance=section,
                     initial={'type': SECTION_TYPE.RECORD_MSG_SECTION})
 
-
         # Patch Through Section Section
         if int(request.POST.get('type')) == SECTION_TYPE.PATCH_THROUGH_SECTION:
             form = PatchThroughSectionForm(request.user, instance=section)
@@ -963,7 +968,6 @@ def section_change(request, id):
                 form = PatchThroughSectionForm(
                     request.user, instance=section,
                     initial={'type': SECTION_TYPE.PATCH_THROUGH_SECTION})
-
 
     template = 'frontend/survey2/section_change.html'
     data = {

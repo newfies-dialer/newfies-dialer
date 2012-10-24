@@ -387,7 +387,7 @@ def campaign_add(request):
             obj.save()
 
             # Start tasks to import subscriber
-            if obj.status == 1:
+            if obj.status == CAMPAIGN_STATUS.START:
                 collect_subscriber.delay(obj.pk)
             form.save_m2m()
 

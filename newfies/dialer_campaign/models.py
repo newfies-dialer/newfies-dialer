@@ -193,9 +193,8 @@ class Campaign(Model):
                                     verbose_name=_('Frequency'),
                                     help_text=_("Calls per Minute"))
 
-    callmaxduration = models.IntegerField(default='1800', blank=True,
-                                          null=True, verbose_name=_(
-                                              'Max Call Duration'),
+    callmaxduration = models.IntegerField(default='1800', blank=True, null=True,
+                                          verbose_name=_('Max Call Duration'),
                                           help_text=_("Maximum call duration in seconds"))
 
     maxretry = models.IntegerField(default='0', blank=True, null=True,

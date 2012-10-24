@@ -27,6 +27,7 @@ from dialer_gateway.models import Gateway
 from user_profile.models import UserProfile
 from datetime import datetime
 from common.intermediate_model_base_class import Model
+from common.common_functions import get_unique_code
 from random import choice, seed
 import logging
 import re
@@ -34,13 +35,6 @@ import re
 seed()
 
 logger = logging.getLogger('newfies.filelog')
-
-
-#TODO: Move to common
-def get_unique_code(length):
-    """Get unique code"""
-    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    return ''.join([choice(chars) for i in range(length)])
 
 
 class CampaignManager(models.Manager):

@@ -132,14 +132,6 @@ class CampaignForm(ModelForm):
                                                   % (instance.content_type.id,
                                                      instance.object_id)
 
-    def clean_status(self):
-        # As shown in the above answer.
-        instance = getattr(self, 'instance', None)
-        if instance:
-            return instance.status
-        else:
-            return self.cleaned_data.get('status', None)
-
     def clean(self):
         cleaned_data = self.cleaned_data
         ds_user = cleaned_data.get("ds_user")

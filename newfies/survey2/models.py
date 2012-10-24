@@ -21,8 +21,13 @@ from dialer_campaign.models import Campaign
 from dialer_cdr.models import Callrequest
 from adminsortable.models import Sortable
 from audiofield.models import AudioFile
+from user_profile.fields import LanguageField
 from survey2.constants import SECTION_TYPE
+from south.modelsinspector import add_introspection_rules
 #from tagging.fields import TagField
+
+#add introspection rules
+add_introspection_rules([], ["^user_profile.fields.LanguageField"])
 
 
 class Survey_abstract(models.Model):
@@ -42,11 +47,13 @@ class Survey_abstract(models.Model):
     """
     name = models.CharField(max_length=90, verbose_name=_('Name'))
     description = models.TextField(null=True, blank=True,
-                                   verbose_name=_('Description'),
-                                   help_text=_("Survey Description"))
+                                   verbose_name=_('Description'))
     created_date = models.DateTimeField(auto_now_add=True,
                                         verbose_name=_('Date'))
     updated_date = models.DateTimeField(auto_now=True)
+
+    tts_language = LanguageField(blank=True, null=True, default='en',
+                                 verbose_name=_('Text-to-Speech Language'))
 
     class Meta:
         abstract = True

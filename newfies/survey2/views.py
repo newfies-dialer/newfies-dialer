@@ -19,6 +19,7 @@ from django.contrib.auth.decorators import login_required,\
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.db.models import Sum, Avg, Count
+from django.contrib.sites.models import Site
 from django.db import IntegrityError
 from django.template.context import RequestContext
 from django.utils import simplejson
@@ -136,6 +137,7 @@ def survey_finitestatemachine(request):
         if not DTMF:
             DTMF = request.GET.get('Digits')
         delcache = request.GET.get('delcache')
+        overstate = request.GET.get('overstate')
         #print "DTMF=%s - opt_CallUUID=%s" % (DTMF, opt_CallUUID)
 
     if not opt_ALegRequestUUID:
@@ -155,6 +157,9 @@ def survey_finitestatemachine(request):
 
     #Retrieve the values of the keys
     current_state = cache.get(key_state)
+    #check if we defined an debug setting to overwrite current_state
+    if overstate and len(overstate) > 0:
+        current_state = int(overstate)
     survey_id = cache.get(key_survey)
     obj_p_section = False
 
@@ -169,7 +174,6 @@ def survey_finitestatemachine(request):
     else:
         p_section = cache.get(key_p_section)
         if p_section:
-            #print "\nPREVIOUS Section ::> %d" % p_section
             #Get previous Section
             try:
                 obj_p_section = Section.objects.get(id=p_section)
@@ -279,12 +283,45 @@ def survey_finitestatemachine(request):
         html_play = "<Play>%s</Play>" % audio_file_url
     else:
         #Text2Speech
-        html_play = "<Speak>%s</Speak>" % list_section[current_state].phrasing
+        if settings.TTS_ENGINE != 'ACAPELA':
+            html_play = "<Speak>%s</Speak>" % list_section[current_state].phrasing
+        else:
+            import acapela
+            DIRECTORY = settings.MEDIA_ROOT + '/tts/'
+            tts_language = obj_callrequest.content_object.tts_language
+            domain = Site.objects.get_current().domain
+            tts_acapela = acapela.Acapela(
+                settings.TTS_ENGINE,
+                settings.ACCOUNT_LOGIN,
+                settings.APPLICATION_LOGIN,
+                settings.APPLICATION_PASSWORD,
+                settings.SERVICE_URL,
+                settings.QUALITY,
+                DIRECTORY)
+            tts_acapela.prepare(
+                list_section[current_state].phrasing,
+                tts_language,
+                settings.ACAPELA_GENDER,
+                settings.ACAPELA_INTONATION)
+            output_filename = tts_acapela.run()
+            audiofile_url = domain + settings.MEDIA_URL +\
+                            'tts/' + output_filename
+            html_play = "<Play>%s</Play>" % audiofile_url
 
+    #Get timeout
     try:
         timeout = int(list_section[current_state].timeout / 1000)
     except:
         timeout = settings.MENU_TIMEOUT
+    #Get number of retries
+    retries = list_section[current_state].retries
+    if not retries:
+        retries = 1
+    #Get number of digits
+    number_digits = list_section[current_state].number_digits
+    if not number_digits:
+        number_digits = 1
+
     debug_outp += "Check section state (%d) <br/>" % (list_section[current_state].type)
 
     #
@@ -315,30 +352,40 @@ def survey_finitestatemachine(request):
         html =\
         '<Response>\n'\
         '   <GetDigits action="%s" method="GET" numDigits="1" '\
-        'retries="1" validDigits="0123456789" timeout="%s" '\
+        'retries="%d" validDigits="0123456789" timeout="%s" '\
         'finishOnKey="#">\n'\
         '       %s\n'\
         '   </GetDigits>\n'\
         '   <Redirect>%s</Redirect>\n'\
         '</Response>' % (
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
+            retries,
             timeout,
             html_play,
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
 
     elif list_section[current_state].type == SECTION_TYPE.RATING_SECTION:
         #RATING_SECTION
+        print list_section[current_state].__dict__
+        print retries
+        try:
+            rating_digit = len(str(list_section[current_state].rating_laps))
+        except:
+            raise
+            rating_digit = 1
         debug_outp += "RATING_SECTION<br/>------------------<br/>"
         html =\
         '<Response>\n'\
-        '   <GetDigits action="%s" method="GET" numDigits="1" '\
-        'retries="1" validDigits="0123456789" timeout="%s" '\
+        '   <GetDigits action="%s" method="GET" numDigits="%d" '\
+        'retries="%d" validDigits="0123456789" timeout="%s" '\
         'finishOnKey="#">\n'\
         '       %s\n'\
         '   </GetDigits>\n'\
         '   <Redirect>%s</Redirect>\n'\
         '</Response>' % (
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
+            rating_digit,
+            retries,
             timeout,
             html_play,
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
@@ -348,14 +395,16 @@ def survey_finitestatemachine(request):
         debug_outp += "ENTER_NUMBER_SECTION<br/>------------------<br/>"
         html =\
         '<Response>\n'\
-        '   <GetDigits action="%s" method="GET" numDigits="1" '\
-        'retries="1" validDigits="0123456789" timeout="%s" '\
+        '   <GetDigits action="%s" method="GET" numDigits="%d" '\
+        'retries="%d" validDigits="0123456789" timeout="%s" '\
         'finishOnKey="#">\n'\
         '       %s\n'\
         '   </GetDigits>\n'\
         '   <Redirect>%s</Redirect>\n'\
         '</Response>' % (
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
+            number_digits,
+            retries,
             timeout,
             html_play,
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)

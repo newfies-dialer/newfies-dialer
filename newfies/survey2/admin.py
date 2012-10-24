@@ -31,7 +31,7 @@ class SurveyTemplateAdmin(admin.ModelAdmin):
     """Allows the administrator to view and modify survey."""
 
     inlines = [SectionTemplateInline]
-    list_display = ('id', 'name', 'created_date')
+    list_display = ('id', 'name', 'created_date', 'tts_language')
     list_display_links = ('id', 'name')
 
 admin.site.register(Survey_template, SurveyTemplateAdmin)
@@ -59,7 +59,7 @@ class SurveyAdmin(admin.ModelAdmin):
     """Allows the administrator to view and modify survey."""
 
     inlines = [SectionInline]
-    list_display = ('id', 'name', 'created_date')
+    list_display = ('id', 'name', 'created_date', 'tts_language')
     list_display_links = ('id', 'name')
 
 admin.site.register(Survey, SurveyAdmin)

@@ -116,11 +116,9 @@ class SurveyForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(SurveyForm, self).__init__(*args, **kwargs)
-        instance = getattr(self, 'instance', None)
-        if instance.id:
-            self.fields.keyOrder = ['name', 'description']
+        self.fields.keyOrder = ['name', 'tts_language', 'description']
         self.fields['description'].widget = forms.TextInput()
-        self.fields['description'].widget.attrs['class'] = 'span4'
+        self.fields['description'].widget.attrs['class'] = 'span3'
 
 
 class VoiceSectionForm(ModelForm):

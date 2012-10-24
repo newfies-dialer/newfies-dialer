@@ -47,6 +47,8 @@ class VoiceApp_abstract(models.Model):
     **Name of DB table**: voip_app
     """
     name = models.CharField(max_length=90, verbose_name=_("Name"))
+    tts_language = LanguageField(blank=True, null=True, default='en',
+                    verbose_name=_('Text-to-Speech Language'))
     description = models.TextField(null=True, blank=True,
                     verbose_name=_("Description"),
                     help_text=_("Voice Application Description"))
@@ -61,9 +63,6 @@ class VoiceApp_abstract(models.Model):
                     "- Conference : Conference room name or number<br/>"\
                     "- Playaudio : Audio file URL<br/>"\
                     "- Speak : The text to speak using TTS"))
-    tts_language = LanguageField(blank=True, null=True,
-                    verbose_name=_('Text-to-Speech Language'),
-                    help_text=_("Set the Text-to-Speech Engine"))
 
     created_date = models.DateTimeField(auto_now_add=True,
         verbose_name=_('Date'))

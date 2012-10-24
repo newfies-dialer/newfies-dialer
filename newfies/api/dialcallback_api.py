@@ -130,7 +130,7 @@ class DialCallbackResource(ModelResource):
         if not errors:
             logger.debug('DialCallback API get called!')
             opt_aleg_uuid = request.POST.get('DialALegUUID')
-            opt_dial_bleg_uuid = request.POST.get('DialBLegUUID')
+            #opt_dial_bleg_uuid = request.POST.get('DialBLegUUID')
             opt_dial_bleg_status = request.POST.get('DialBLegStatus')
             #We are just analyzing the hangup
             if opt_dial_bleg_status != 'hangup':

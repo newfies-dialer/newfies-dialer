@@ -147,6 +147,8 @@ class AnswercallResource(ModelResource):
             else:
                 data = obj_callrequest.content_object.data
                 tts_language = obj_callrequest.content_object.tts_language
+                if not tts_language:
+                    tts_language = 'en'
 
                 extra_data = obj_callrequest.campaign.extra_data
                 if extra_data and len(extra_data) > 1:
@@ -195,7 +197,6 @@ class AnswercallResource(ModelResource):
                         DIRECTORY = settings.MEDIA_ROOT + '/tts/'
                         domain = Site.objects.get_current().domain
                         tts_acapela = acapela.Acapela(
-                            settings.TTS_ENGINE,
                             settings.ACCOUNT_LOGIN,
                             settings.APPLICATION_LOGIN,
                             settings.APPLICATION_PASSWORD,
@@ -232,4 +233,3 @@ class AnswercallResource(ModelResource):
                 response = http.HttpBadRequest(content=serialized,
                     content_type=desired_format)
                 raise ImmediateHttpResponse(response=response)
-

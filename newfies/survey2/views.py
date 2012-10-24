@@ -62,7 +62,7 @@ def find_branching(p_section, DTMF):
     print "find branching"
 
 
-def save_section_result(request, obj_callrequest, obj_p_section):
+def save_section_result(request, obj_callrequest, obj_p_section, DTMF):
     """
     save the result of a section
     """
@@ -100,8 +100,19 @@ def save_section_result(request, obj_callrequest, obj_p_section):
         # recording duration 0 - 20 seconds ; 20 - 40 seconds ; 40 - 60 seconds
         # Up to 60 seconds
     elif obj_p_section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
+        #TODO: Get value from Previous section for the key
+        #check in obj_p_section
+
         #Save result
-        DTMF = request.POST.get('Digits')
+        result = Result(
+            callrequest=obj_callrequest,
+            section=obj_p_section,
+            response=DTMF)
+        result.save()
+
+    elif obj_p_section.type == SECTION_TYPE.RATING_SECTION or \
+        obj_p_section.type == SECTION_TYPE.ENTER_NUMBER_SECTION:
+        #Save result
         result = Result(
             callrequest=obj_callrequest,
             section=obj_p_section,
@@ -209,12 +220,16 @@ def survey_finitestatemachine(request):
 
     if obj_p_section and obj_p_section.type == SECTION_TYPE.RECORD_MSG_SECTION:
         #Recording - save result
-        save_section_result(request, obj_callrequest, obj_p_section)
+        save_section_result(request, obj_callrequest, obj_p_section, DTMF)
 
     elif DTMF and len(DTMF) > 0 and current_state > 0 and \
         (obj_p_section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION or \
         obj_p_section.type == SECTION_TYPE.RATING_SECTION or \
         obj_p_section.type == SECTION_TYPE.ENTER_NUMBER_SECTION):
+
+        #Save the result
+        save_section_result(request, obj_callrequest, obj_p_section)
+
         #
         #HANDLE DTMF RECEIVED, SET THE CURRENT STATE
         #Check if we receive a DTMF for the previous section then store the result
@@ -265,7 +280,6 @@ def survey_finitestatemachine(request):
         p_section = list_section[current_state].id
         cache.set(key_p_section, p_section, 21600)
     except IndexError:
-        raise  #TODO: Remove this later
         html = '<Response><Hangup/></Response>'
         if testdebug:
             return HttpResponse(escape(html))
@@ -286,12 +300,14 @@ def survey_finitestatemachine(request):
         if settings.TTS_ENGINE != 'ACAPELA':
             html_play = "<Speak>%s</Speak>" % list_section[current_state].phrasing
         else:
+            #TODO: Create function for this / duplicate code in answercall_api.py
             import acapela
             DIRECTORY = settings.MEDIA_ROOT + '/tts/'
             tts_language = obj_callrequest.content_object.tts_language
+            if not tts_language:
+                tts_language = 'en'
             domain = Site.objects.get_current().domain
             tts_acapela = acapela.Acapela(
-                settings.TTS_ENGINE,
                 settings.ACCOUNT_LOGIN,
                 settings.APPLICATION_LOGIN,
                 settings.APPLICATION_PASSWORD,
@@ -427,7 +443,7 @@ def survey_finitestatemachine(request):
         timelimit = obj_callrequest.timelimit
         callerid = obj_callrequest.callerid
         gatewaytimeouts = obj_callrequest.timeout
-        gateways = obj_callrequest.content_object.gateway.gateways
+        gateways = obj_callrequest.aleg_gateway.gateways
         phonenumber = list_section[current_state].dial_phonenumber
         html =\
         '<Response>\n'\
@@ -661,7 +677,6 @@ def section_add(request):
                 form = VoiceSectionForm(
                     request.user, initial={'survey': survey,
                                            'type': SECTION_TYPE.VOICE_SECTION})
-
 
         # Multiple Choice Section
         if int(request.POST.get('type')) == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:

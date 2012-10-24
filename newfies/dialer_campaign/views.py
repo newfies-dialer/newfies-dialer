@@ -388,7 +388,13 @@ def campaign_add(request):
 
             # Start tasks to import subscriber
             if obj.status == CAMPAIGN_STATUS.START:
+                if obj.content_type.model == 'survey_template':
+                    check_survey_campaign(request, obj.id)
+                elif obj.content_type.model == 'voiceapp_template':
+                    check_voiceapp_campaign(request, obj.id)
+
                 collect_subscriber.delay(obj.pk)
+
             form.save_m2m()
 
             request.session["msg"] = _('"%(name)s" is added.') %\

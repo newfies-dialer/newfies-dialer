@@ -148,7 +148,7 @@ def survey_finitestatemachine(request):
     key_survey = "%s_survey_id" % opt_CallUUID
 
     #remove the current key state in debug mode by passing delcache setting
-    if testdebug and delcache:
+    if testdebug and delcache and delcache == '1':
         debug_outp += "delete state and key_survey = %s <br/>" % str(key_survey)
         cache.delete(key_state)
         cache.delete(key_survey)

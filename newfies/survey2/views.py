@@ -171,7 +171,14 @@ def survey_finitestatemachine(request):
         if p_section:
             #print "\nPREVIOUS Section ::> %d" % p_section
             #Get previous Section
-            obj_p_section = Section.objects.get(id=p_section)
+            try:
+                obj_p_section = Section.objects.get(id=p_section)
+            except Section.DoesNotExist:
+                html = '<Response><Hangup/></Response>'
+                if testdebug:
+                    return HttpResponse(escape(html))
+                else:
+                    return HttpResponse(html)
 
     try:
         obj_callrequest = Callrequest.objects.get(request_uuid=opt_ALegRequestUUID)
@@ -254,7 +261,7 @@ def survey_finitestatemachine(request):
         p_section = list_section[current_state].id
         cache.set(key_p_section, p_section, 21600)
     except IndexError:
-        raise
+        raise  #TODO: Remove this later
         html = '<Response><Hangup/></Response>'
         if testdebug:
             return HttpResponse(escape(html))

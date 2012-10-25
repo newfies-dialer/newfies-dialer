@@ -22,7 +22,22 @@ from voice_app.constants import VOICEAPP_TYPE
 from frontend.views import notice_count
 
 
-@register.filter()
+@register.simple_tag(name='percentage_tag')
+def percentage_tag(fraction, population):
+    """Usage: {% percentage_tag fraction population %}"""
+    try:
+        return "%.2f%%" % ((float(fraction) / float(population)) * 100)
+    except:
+        return "0.00%"
+
+
+@register.simple_tag(name='get_notice_count')
+def get_notice_count(request):
+    """tag to display notice count"""
+    return notice_count(request)
+
+
+@register.filter(name='contact_status')
 def contact_status(value):
     """Contact status
 
@@ -38,7 +53,7 @@ def contact_status(value):
         return str('INACTIVE')
 
 
-@register.filter()
+@register.filter(name='campaign_status')
 def campaign_status(value):
     """Campaign Status
 
@@ -68,7 +83,7 @@ def campaign_status(value):
     return str(status)
 
 
-@register.filter()
+@register.filter(name='leg_type_name')
 def leg_type_name(value):
     """leg type
 
@@ -92,7 +107,7 @@ def leg_type_name(value):
     return unicode(status)
 
 
-@register.filter()
+@register.filter(name='action_type_name')
 def action_type_name(value):
     """action type name
 
@@ -116,7 +131,7 @@ def action_type_name(value):
     return str(status)
 
 
-@register.filter()
+@register.filter(name='section_type_name')
 def section_type_name(value):
     """survey section type name
 
@@ -140,6 +155,7 @@ def section_type_name(value):
     return str(status)
 
 
+@register.filter(name='voiceapp_type')
 def voiceapp_type(value):
     """
     >>> voiceapp_type(1)
@@ -156,7 +172,7 @@ def voiceapp_type(value):
     return str(status)
 
 
-@register.filter()
+@register.filter(name='que_res_string')
 def que_res_string(val):
     """Modify survey result string for display
 
@@ -190,31 +206,7 @@ def que_res_string(val):
     return result_string
 
 
-@register.filter()
+@register.filter(name='running_total')
 def running_total(running_list, field_name):
     return sum(d[field_name] for d in running_list)
 
-
-def percentage_tag(fraction, population):
-    """Usage: {% percentage_tag fraction population %}"""
-    try:
-        return "%.2f%%" % ((float(fraction) / float(population)) * 100)
-    except:
-        return "0.00%"
-
-
-def get_notice_count(request):
-    """tag to display notice count"""
-    return notice_count(request)
-
-register.filter('contact_status', contact_status)
-register.filter('campaign_status', campaign_status)
-register.filter('leg_type_name', leg_type_name)
-register.filter('que_res_string', que_res_string)
-register.filter('action_type_name', action_type_name)
-register.filter('voiceapp_type', voiceapp_type)
-register.filter('section_type_name', section_type_name)
-register.filter('running_total', running_total)
-
-register.simple_tag(percentage_tag)
-register.simple_tag(get_notice_count)

@@ -408,7 +408,7 @@ msgid "Details"
 msgstr "詳細內容"
 
 #: dialer_campaign/models.py:405 dialer_campaign/models.py:468
-msgid "Campaign Subscriber"
+msgid "Subscriber"
 msgstr "競選活動電話用戶"
 
 #: dialer_campaign/models.py:450
@@ -428,7 +428,7 @@ msgid "Count attempts"
 msgstr "嘗試次數"
 
 #: dialer_campaign/models.py:469
-msgid "Campaign Subscribers"
+msgid "Subscribers"
 msgstr "競選活動電話用戶"
 
 #: dialer_campaign/views.py:128
@@ -664,7 +664,7 @@ msgid "Extra dial string"
 msgstr "額外撥號字串"
 
 #: dialer_cdr/models.py:124
-msgid "Campaign Subscriber related to this call request"
+msgid "Subscriber related to this call request"
 msgstr "競選活動訂戶關聯至此撥號需求"
 
 #: dialer_cdr/models.py:130

@@ -415,7 +415,7 @@ msgid "Details"
 msgstr "Detalles"
 
 #: dialer_campaign/models.py:405 dialer_campaign/models.py:468
-msgid "Campaign Subscriber"
+msgid "Subscriber"
 msgstr "Campaña de abonado"
 
 #: dialer_campaign/models.py:450
@@ -435,7 +435,7 @@ msgid "Count attempts"
 msgstr "Número de intentos"
 
 #: dialer_campaign/models.py:469
-msgid "Campaign Subscribers"
+msgid "Subscribers"
 msgstr "Suscriptores de campaña"
 
 #: dialer_campaign/views.py:128
@@ -675,7 +675,7 @@ msgid "Extra dial string"
 msgstr "Extra dial string"
 
 #: dialer_cdr/models.py:124
-msgid "Campaign Subscriber related to this call request"
+msgid "Subscriber related to this call request"
 msgstr "Campaña de suscriptor en relación con este callrequest"
 
 #: dialer_cdr/models.py:130

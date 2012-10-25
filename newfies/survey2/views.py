@@ -27,8 +27,9 @@ from django.utils.translation import ugettext as _
 from django.utils.html import escape
 from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
-from dialer_campaign.models import Campaign
+from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.views import notice_count
+from dialer_campaign.constants import SUBSCRIBER_STATUS
 from dialer_cdr.models import Callrequest, VoIPCall, CALLREQUEST_STATUS
 from dialer_cdr.constants import VOIPCALL_DISPOSITION
 from survey2.models import Survey_template, Survey, Section_template, Section,\
@@ -471,6 +472,23 @@ def survey_finitestatemachine(request):
     #We will now produce the restXML to power the IVR
     #for instance if it's a RECORD_MSG_SECTION, we will render an XML command output.
     #
+
+    #Check if it's a completed section
+    if list_section[current_state].completed:
+        #Flag subscriber
+        subscriber = Subscriber.objects.get(pk=obj_callrequest.subscriber.id)
+        subscriber.status = SUBSCRIBER_STATUS.COMPLETED
+        subscriber.save()
+        #Flag Callrequest
+        obj_callrequest.completed = True
+        obj_callrequest.save()
+        #Increment Campaign completed call
+        campaign = Campaign.objects.get(pk=obj_callrequest.campaign.id)
+        if not campaign.completed:
+            campaign.completed = 1
+        else:
+            campaign.completed = campaign.completed + 1
+        campaign.save()
 
     if list_section[current_state].type == SECTION_TYPE.VOICE_SECTION:
         #VOICE_SECTION

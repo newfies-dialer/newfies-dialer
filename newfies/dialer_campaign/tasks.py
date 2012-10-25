@@ -139,6 +139,7 @@ def check_campaign_pendingcall(campaign_id):
         if not obj_campaign.is_authorized_contact(
                         elem_camp_subscriber.contact.contact):
             logger.error("Error : Contact not authorized")
+            #TODO: Change by constant
             elem_camp_subscriber.status = 7  # Update to Not Authorized
             elem_camp_subscriber.save()
             return True

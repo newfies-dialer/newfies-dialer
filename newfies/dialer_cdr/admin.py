@@ -46,14 +46,14 @@ class CallrequestAdmin(GenericAdminModelAdmin):
         }),
         (_('Advanced options'), {
             'classes': ('collapse',),
-            'fields': ('extra_data', 'extra_dial_string',
-                       'subscriber'),
+            'fields': ('extra_data', 'extra_dial_string', 'subscriber',
+                        'completed'),
         }),
     )
     #NOTE : display user / content_type low the performance
     list_display = ('id', 'request_uuid', 'aleg_uuid', 'call_time',
                     'status', 'callerid', 'phone_number', 'call_type',
-                    'num_attempt', 'last_attempt_time',)
+                    'completed', 'num_attempt', 'last_attempt_time',)
     list_display_links = ('id', 'request_uuid', )
     list_filter = ['callerid', 'call_time', 'status', 'call_type', 'campaign']
     ordering = ('-id', )

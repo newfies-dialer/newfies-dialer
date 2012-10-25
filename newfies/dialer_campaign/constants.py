@@ -15,7 +15,7 @@
 from common.utils import Choice
 
 
-class CAMPAIGN_SUBSCRIBER_STATUS(Choice):
+class SUBSCRIBER_STATUS(Choice):
     PENDING = 1, u'PENDING'
     PAUSE = 2, u'PAUSE'
     ABORT = 3, u'ABORT'

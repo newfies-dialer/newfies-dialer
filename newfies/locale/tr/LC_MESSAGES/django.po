@@ -417,7 +417,7 @@ msgid "Details"
 msgstr "Detaylar"
 
 #: dialer_campaign/models.py:405 dialer_campaign/models.py:468
-msgid "Campaign Subscriber"
+msgid "Subscriber"
 msgstr "Kampanya Aboneleri"
 
 #: dialer_campaign/models.py:450
@@ -437,7 +437,7 @@ msgid "Count attempts"
 msgstr "Deneme sayısı"
 
 #: dialer_campaign/models.py:469
-msgid "Campaign Subscribers"
+msgid "Subscribers"
 msgstr "Kampanya Aboneleri"
 
 #: dialer_campaign/views.py:128
@@ -677,7 +677,7 @@ msgid "Extra dial string"
 msgstr "Ekstra arama dizesini"
 
 #: dialer_cdr/models.py:124
-msgid "Campaign Subscriber related to this call request"
+msgid "Subscriber related to this call request"
 msgstr "Bu çağrı isteği ile ilgili Kampanya Abonesi"
 
 #: dialer_cdr/models.py:130

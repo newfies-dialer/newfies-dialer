@@ -229,8 +229,7 @@ class Section_abstract(Sortable):
     continue_survey = models.BooleanField(default=True,
                                           verbose_name=_('Continue survey when done'))
 
-    # If we reach this node it means the survey is completed and we will mark it as such
-    #TODO: Add completed to the copy / duplicate mechanism
+    # if the current section means that the survey is completed
     completed = models.BooleanField(default=False,
                                     verbose_name=_('Survey completed'))
 

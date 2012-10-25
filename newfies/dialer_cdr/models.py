@@ -121,7 +121,7 @@ class Callrequest(Model):
 
     subscriber = models.ForeignKey(Subscriber,
             null=True, blank=True,
-            help_text=_("Campaign Subscriber related to this call request"))
+            help_text=_("Subscriber related to this call request"))
 
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
                 help_text=_("Select Campaign"))
@@ -136,7 +136,7 @@ class Callrequest(Model):
 
     #used to flag if the call is completed
     completed = models.BooleanField(default=False,
-                                    verbose_name=_('Survey completed'))
+                                    verbose_name=_('Call completed'))
 
     extra_data = models.CharField(max_length=120, blank=True,
         verbose_name=_("Extra Data"),

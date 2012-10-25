@@ -20,7 +20,7 @@ from django.db.models.signals import post_save
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from dateutil.relativedelta import relativedelta
-from dialer_campaign.constants import CAMPAIGN_SUBSCRIBER_STATUS, \
+from dialer_campaign.constants import SUBSCRIBER_STATUS, \
     CAMPAIGN_STATUS
 from dialer_contact.models import Phonebook, Contact
 from dialer_gateway.models import Gateway
@@ -230,6 +230,14 @@ class Campaign(Model):
     imported_phonebook = models.CharField(max_length=500, default='', blank=True,
                                           verbose_name=_('Imported Phonebook'))
 
+    #TODO: After import of phonebooks, provision the field totalcontact with the amount of contact imported in Subscriber
+    totalcontact = models.IntegerField(default='0', blank=True, null=True,
+                                      verbose_name=_('Total Contact'),
+                                      help_text=_("Total Contact for this campaign"))
+    completed = models.IntegerField(default='0', blank=True, null=True,
+                                      verbose_name=_('Completed'),
+                                      help_text=_("Total Contact that completed Call / Survey"))
+
     objects = CampaignManager()
 
     def __unicode__(self):
@@ -397,7 +405,7 @@ class Campaign(Model):
             {'link': link, 'name': _('Details')}
         return display_link
     subscriber_detail.allow_tags = True
-    subscriber_detail.short_description = _('Campaign Subscriber')
+    subscriber_detail.short_description = _('Subscriber')
 
     def get_pending_subscriber(self, limit=1000):
         """Get all the pending subscribers from the campaign"""
@@ -452,7 +460,7 @@ class Subscriber(Model):
     #We duplicate contact to create a unique constraint
     duplicate_contact = models.CharField(max_length=90,
                                          verbose_name=_("Contact"))
-    status = models.IntegerField(choices=list(CAMPAIGN_SUBSCRIBER_STATUS),
+    status = models.IntegerField(choices=list(SUBSCRIBER_STATUS),
                                  default='1', verbose_name=_("Status"), blank=True, null=True)
 
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')
@@ -460,8 +468,8 @@ class Subscriber(Model):
 
     class Meta:
         db_table = u'dialer_subscriber'
-        verbose_name = _("Campaign Subscriber")
-        verbose_name_plural = _("Campaign Subscribers")
+        verbose_name = _("Subscriber")
+        verbose_name_plural = _("Subscribers")
         unique_together = ['contact', 'campaign']
 
     def __unicode__(self):

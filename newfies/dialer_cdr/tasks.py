@@ -179,6 +179,7 @@ def init_callrequest(callrequest_id, campaign_id):
                 and obj_callrequest.subscriber.id:
                 obj_subscriber = Subscriber.objects.get(
                             id=obj_callrequest.subscriber.id)
+                #TODO: Change by constant
                 obj_subscriber.status = 4  # Fail
 
                 obj_subscriber.save()

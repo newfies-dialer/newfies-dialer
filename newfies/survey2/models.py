@@ -181,7 +181,7 @@ class Section_abstract(Sortable):
     timeout = models.IntegerField(max_length=2, null=True, blank=True,
                                   verbose_name=_("timeout"), default=1000,
                                   help_text=_('Timeout in seconds to press the key(s)'))
-    # multiple choice question,
+    # Multiple choice question
     key_0 = models.CharField(max_length=100, null=True, blank=True,
                              verbose_name=_("Press") + " 0")
     key_1 = models.CharField(max_length=100, null=True, blank=True,
@@ -467,6 +467,9 @@ class ResultAggregate(models.Model):
                                 verbose_name=_("Result count"))
 
     created_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("campaign", "survey", "section", "response")
 
     def __unicode__(self):
         return '[%s] %s = %s' % (self.id, self.section, self.response)

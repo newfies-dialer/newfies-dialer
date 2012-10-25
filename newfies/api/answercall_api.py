@@ -14,7 +14,6 @@
 
 from django.conf.urls.defaults import url
 from django.conf import settings
-from django.contrib.sites.models import Site
 from django.http import HttpResponse
 from tastypie.resources import ModelResource
 from tastypie.validation import Validation
@@ -193,26 +192,10 @@ class AnswercallResource(ModelResource):
                         object_list = [{'Speak': data}]
                         logger.debug('Speak')
                     else:
-                        import acapela
-                        DIRECTORY = settings.MEDIA_ROOT + '/tts/'
-                        domain = Site.objects.get_current().domain
-                        tts_acapela = acapela.Acapela(
-                            settings.ACCOUNT_LOGIN,
-                            settings.APPLICATION_LOGIN,
-                            settings.APPLICATION_PASSWORD,
-                            settings.SERVICE_URL,
-                            settings.QUALITY,
-                            DIRECTORY)
-                        tts_acapela.prepare(
-                            data,
-                            tts_language,
-                            settings.ACAPELA_GENDER,
-                            settings.ACAPELA_INTONATION)
-                        output_filename = tts_acapela.run()
+                        from survey2.views import getaudio_acapela
+                        audio_url = getaudio_acapela(data, tts_language)
 
-                        audiofile_url = domain + settings.MEDIA_URL +\
-                                        'tts/' + output_filename
-                        object_list = [{'Play': audiofile_url}]
+                        object_list = [{'Play': audio_url}]
                         logger.debug('PlayAudio-TTS')
                 else:
                     logger.error('Error with Voice App type!')

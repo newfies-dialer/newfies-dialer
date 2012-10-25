@@ -53,6 +53,28 @@ import os
 testdebug = True  # TODO: Change later
 
 
+def getaudio_acapela(text, tts_language='en'):
+    """
+    Run Acapela Text2Speech and return audio url
+    """
+    import acapela
+    DIRECTORY = settings.MEDIA_ROOT + '/tts/'
+    if not tts_language:
+        tts_language = 'en'
+    domain = Site.objects.get_current().domain
+    tts_acapela = acapela.Acapela(
+        settings.ACCOUNT_LOGIN, settings.APPLICATION_LOGIN,
+        settings.APPLICATION_PASSWORD, settings.SERVICE_URL,
+        settings.QUALITY, DIRECTORY)
+    tts_acapela.prepare(
+        text, tts_language, settings.ACAPELA_GENDER,
+        settings.ACAPELA_INTONATION)
+    output_filename = tts_acapela.run()
+    audiofile_url = domain + settings.MEDIA_URL +\
+                    'tts/' + output_filename
+    return audiofile_url
+
+
 #TODO: Use find_branching
 def find_branching(p_section, DTMF):
     """
@@ -62,10 +84,77 @@ def find_branching(p_section, DTMF):
     print "find branching"
 
 
+def get_number_digits(section):
+    """
+    Get number of digits to wait for for a section
+    """
+    if section.type == SECTION_TYPE.VOICE_SECTION:
+        number_digits = 1
+    elif section.type == SECTION_TYPE.RATING_SECTION:
+        try:
+            number_digits = len(str(section.rating_laps))
+        except:
+            number_digits = 1
+    elif section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION \
+        or section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
+        number_digits = 1
+    elif section.type == SECTION_TYPE.ENTER_NUMBER_SECTION:
+        #Get number of digits
+        number_digits = section.number_digits
+        if not number_digits:
+            number_digits = 1
+    return number_digits
+
+
+def set_aggregate_result(obj_callrequest, obj_p_section, response, RecordingDuration):
+    """
+    save the aggregate result for the campaign / survey
+    """
+    if RecordingDuration:
+        try:
+            # recording duration 0 - 20 seconds ; 20 - 40 seconds ; 40 - 60 seconds
+            if int(RecordingDuration) > 0 and int(RecordingDuration) <= 20:
+                response = 'recording 0 - 20 seconds'
+            elif int(RecordingDuration) > 20 and int(RecordingDuration) <= 40:
+                response = 'recording 21 - 40 seconds'
+            elif int(RecordingDuration) > 40 and int(RecordingDuration) <= 60:
+                response = 'recording 41 - 60 seconds'
+            elif int(RecordingDuration) > 60 and int(RecordingDuration) <= 90:
+                response = 'recording 61 - 90 seconds'
+            elif int(RecordingDuration) > 90:
+                response = 'recording > 90 seconds'
+        except:
+            response = 'error to detect recording duration'
+
+    try:
+        #Insert ResultAggregate
+        result = ResultAggregate(
+            campaign=obj_callrequest.campaign,
+            survey_id=obj_callrequest.object_id,
+            section=obj_p_section,
+            response=response,
+            count=1
+            )
+        result.save()
+    except IntegrityError:
+        #Update ResultAggregate
+        result = ResultAggregate.objects.get(
+            campaign=obj_callrequest.campaign,
+            survey_id=obj_callrequest.object_id,
+            section=obj_p_section,
+            response=response,
+            )
+        result.count = result.count + 1
+        result.save()
+
+
 def save_section_result(request, obj_callrequest, obj_p_section, DTMF):
     """
     save the result of a section
     """
+    if not obj_p_section:
+        return False
+
     if obj_p_section.type == SECTION_TYPE.RECORD_MSG_SECTION:
         #RECORD_MSG_SECTION
         if testdebug:
@@ -88,6 +177,11 @@ def save_section_result(request, obj_callrequest, obj_p_section, DTMF):
                 recording_duration=RecordingDuration,
                 )
             result.save()
+            #Save aggregated result
+            set_aggregate_result(obj_callrequest, obj_p_section, DTMF, RecordingDuration)
+
+            return "Save new result RecordFile (section:%d - record_file:%s)\n" % \
+                (obj_p_section.id, RecordFile)
         except IntegrityError:
             #Update Result
             result = Result.objects.get(
@@ -97,19 +191,49 @@ def save_section_result(request, obj_callrequest, obj_p_section, DTMF):
             result.record_file = RecordFile
             result.recording_duration = RecordingDuration
             result.save()
-        #TODO : Add ResultAggregate
-        # recording duration 0 - 20 seconds ; 20 - 40 seconds ; 40 - 60 seconds
-        # Up to 60 seconds
+            #Save aggregated result
+            set_aggregate_result(obj_callrequest, obj_p_section, DTMF, RecordingDuration)
 
-    elif obj_p_section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION or \
+            return "Update result RecordFile (section:%d - response:%s)\n" % \
+                (obj_p_section.id, RecordFile)
+
+    elif DTMF and len(DTMF) > 0 and \
+        (obj_p_section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION or \
         obj_p_section.type == SECTION_TYPE.RATING_SECTION or \
-        obj_p_section.type == SECTION_TYPE.ENTER_NUMBER_SECTION:
+        obj_p_section.type == SECTION_TYPE.ENTER_NUMBER_SECTION):
 
         if obj_p_section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
-            #TODO: Get value from Previous section for the key
-            #check in obj_p_section
-            DTMF = DTMF
-
+            #Get value for the DTMF from obj_p_section.key_X
+            if DTMF == '0':
+                if obj_p_section.key_0:
+                    DTMF = obj_p_section.key_0
+            elif DTMF == '1':
+                if obj_p_section.key_1:
+                    DTMF = obj_p_section.key_1
+            elif DTMF == '2':
+                if obj_p_section.key_2:
+                    DTMF = obj_p_section.key_2
+            elif DTMF == '3':
+                if obj_p_section.key_3:
+                    DTMF = obj_p_section.key_3
+            elif DTMF == '4':
+                if obj_p_section.key_4:
+                    DTMF = obj_p_section.key_4
+            elif DTMF == '5':
+                if obj_p_section.key_5:
+                    DTMF = obj_p_section.key_5
+            elif DTMF == '6':
+                if obj_p_section.key_6:
+                    DTMF = obj_p_section.key_6
+            elif DTMF == '7':
+                if obj_p_section.key_7:
+                    DTMF = obj_p_section.key_7
+            elif DTMF == '8':
+                if obj_p_section.key_8:
+                    DTMF = obj_p_section.key_8
+            elif DTMF == '9':
+                if obj_p_section.key_9:
+                    DTMF = obj_p_section.key_9
         try:
             #Save result
             result = Result(
@@ -117,6 +241,11 @@ def save_section_result(request, obj_callrequest, obj_p_section, DTMF):
                 section=obj_p_section,
                 response=DTMF)
             result.save()
+            #Save aggregated result
+            set_aggregate_result(obj_callrequest, obj_p_section, DTMF, False)
+
+            return "Save new result (section:%d - response:%s)\n" % \
+                (obj_p_section.id, DTMF)
         except IntegrityError:
             #Update Result
             result = Result.objects.get(
@@ -125,6 +254,11 @@ def save_section_result(request, obj_callrequest, obj_p_section, DTMF):
                 )
             result.response = DTMF
             result.save()
+            #Save aggregated result
+            set_aggregate_result(obj_callrequest, obj_p_section, DTMF, False)
+
+            return "Update result (section:%d - response:%s)\n" % \
+                (obj_p_section.id, DTMF)
 
 
 @csrf_exempt
@@ -175,8 +309,11 @@ def survey_finitestatemachine(request):
 
     #Retrieve the values of the keys
     current_state = cache.get(key_state)
+    debug_outp += "Get key_state:%s value current_state:%s \n" % \
+        (key_state, str(current_state))
     #check if we defined an debug setting to overwrite current_state
     if overstate and len(overstate) > 0:
+        debug_outp += "OVERSTATE ACTIVATED<br/>------------------<br/>\n"
         current_state = int(overstate)
     survey_id = cache.get(key_survey)
     obj_p_section = False
@@ -184,12 +321,13 @@ def survey_finitestatemachine(request):
     #If there is no current state, it means we are starting the we set key_state and key_p_section to 0
     #key_p_section is the previous key section
     if not current_state:
+        current_state = 0
         debug_outp += "** STARTING CALL **<br/>"
-        debug_outp += "[INFO] - No current_state (%s) <br/>" % str(key_state)
+        debug_outp += "[INFO] - No current_state (%s) <br/>" % str(current_state)
         cache.set(key_state, 0, 21600)  # 21600 seconds = 6 hours
         cache.set(key_p_section, 0, 21600)  # 21600 seconds = 6 hours
-        current_state = 0
     else:
+        debug_outp += "** CALL IN PROCESS ** current_state (%s) <br/>" % str(current_state)
         p_section = cache.get(key_p_section)
         if p_section:
             #Get previous Section
@@ -225,17 +363,15 @@ def survey_finitestatemachine(request):
     #Set default exist action
     exit_action = False
 
-    if obj_p_section and obj_p_section.type == SECTION_TYPE.RECORD_MSG_SECTION:
-        #Recording - save result
-        save_section_result(request, obj_callrequest, obj_p_section, DTMF)
+    #Save Result
+    outp_result = save_section_result(request, obj_callrequest, obj_p_section, DTMF)
+    if outp_result:
+        debug_outp += outp_result
 
-    elif DTMF and len(DTMF) > 0 and current_state > 0 and \
+    if obj_p_section and \
         (obj_p_section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION or \
         obj_p_section.type == SECTION_TYPE.RATING_SECTION or \
         obj_p_section.type == SECTION_TYPE.ENTER_NUMBER_SECTION):
-
-        #Save the result
-        save_section_result(request, obj_callrequest, obj_p_section, DTMF)
 
         #
         #HANDLE DTMF RECEIVED, SET THE CURRENT STATE
@@ -248,13 +384,18 @@ def survey_finitestatemachine(request):
                 keys=DTMF,
                 section=obj_p_section)
         except Branching.DoesNotExist:
-            try:
-                #DTMF doesn't have any branching so let's check for any
-                branching = Branching.objects.get(
-                    keys='any',
-                    section=obj_p_section)
-                exit_action = 'ANY'
-            except Branching.DoesNotExist:
+            if len(DTMF) > 0:
+                #There is a DTMF so we can check if there is any
+                try:
+                    #DTMF doesn't have any branching so let's check for any
+                    branching = Branching.objects.get(
+                        keys='any',
+                        section=obj_p_section)
+                    exit_action = 'ANY'
+                except Branching.DoesNotExist:
+                    branching = False
+            else:
+                #No DTMF so it can be a timeout branching
                 try:
                     #DTMF doesn't have any branching so let's check for timeout
                     branching = Branching.objects.get(
@@ -310,29 +451,9 @@ def survey_finitestatemachine(request):
         if settings.TTS_ENGINE != 'ACAPELA':
             html_play = "<Speak>%s</Speak>" % list_section[current_state].phrasing
         else:
-            #TODO: Create function for this / duplicate code in answercall_api.py
-            import acapela
-            DIRECTORY = settings.MEDIA_ROOT + '/tts/'
-            tts_language = obj_callrequest.content_object.tts_language
-            if not tts_language:
-                tts_language = 'en'
-            domain = Site.objects.get_current().domain
-            tts_acapela = acapela.Acapela(
-                settings.ACCOUNT_LOGIN,
-                settings.APPLICATION_LOGIN,
-                settings.APPLICATION_PASSWORD,
-                settings.SERVICE_URL,
-                settings.QUALITY,
-                DIRECTORY)
-            tts_acapela.prepare(
-                list_section[current_state].phrasing,
-                tts_language,
-                settings.ACAPELA_GENDER,
-                settings.ACAPELA_INTONATION)
-            output_filename = tts_acapela.run()
-            audiofile_url = domain + settings.MEDIA_URL +\
-                            'tts/' + output_filename
-            html_play = "<Play>%s</Play>" % audiofile_url
+            audio_url = getaudio_acapela(list_section[current_state].phrasing,
+                                         obj_callrequest.content_object.tts_language)
+            html_play = "<Play>%s</Play>" % audio_url
 
     #Get timeout
     try:
@@ -343,10 +464,6 @@ def survey_finitestatemachine(request):
     retries = list_section[current_state].retries
     if not retries:
         retries = 1
-    #Get number of digits
-    number_digits = list_section[current_state].number_digits
-    if not number_digits:
-        number_digits = 1
 
     debug_outp += "Check section state (%d) <br/>" % (list_section[current_state].type)
 
@@ -357,10 +474,11 @@ def survey_finitestatemachine(request):
 
     if list_section[current_state].type == SECTION_TYPE.VOICE_SECTION:
         #VOICE_SECTION
+        number_digits = get_number_digits(list_section[current_state])
         debug_outp += "VOICE_SECTION<br/>------------------<br/>"
         html =\
         '<Response>\n'\
-        '   <GetDigits action="%s" method="GET" numDigits="1" '\
+        '   <GetDigits action="%s" method="GET" numDigits="%d" '\
         'retries="1" validDigits="0123456789" timeout="%s" '\
         'finishOnKey="#">\n'\
         '       %s\n'\
@@ -368,16 +486,18 @@ def survey_finitestatemachine(request):
         '   <Redirect>%s</Redirect>\n'\
         '</Response>' % (
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
+            number_digits,
             timeout,
             html_play,
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
 
     elif list_section[current_state].type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
         #MULTIPLE_CHOICE_SECTION
+        number_digits = get_number_digits(list_section[current_state])
         debug_outp += "MULTIPLE_CHOICE_SECTION<br/>------------------<br/>"
         html =\
         '<Response>\n'\
-        '   <GetDigits action="%s" method="GET" numDigits="1" '\
+        '   <GetDigits action="%s" method="GET" numDigits="%d" '\
         'retries="%d" validDigits="0123456789" timeout="%s" '\
         'finishOnKey="#">\n'\
         '       %s\n'\
@@ -385,6 +505,7 @@ def survey_finitestatemachine(request):
         '   <Redirect>%s</Redirect>\n'\
         '</Response>' % (
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
+            number_digits,
             retries,
             timeout,
             html_play,
@@ -392,13 +513,7 @@ def survey_finitestatemachine(request):
 
     elif list_section[current_state].type == SECTION_TYPE.RATING_SECTION:
         #RATING_SECTION
-        print list_section[current_state].__dict__
-        print retries
-        try:
-            rating_digit = len(str(list_section[current_state].rating_laps))
-        except:
-            raise
-            rating_digit = 1
+        number_digits = get_number_digits(list_section[current_state])
         debug_outp += "RATING_SECTION<br/>------------------<br/>"
         html =\
         '<Response>\n'\
@@ -410,7 +525,7 @@ def survey_finitestatemachine(request):
         '   <Redirect>%s</Redirect>\n'\
         '</Response>' % (
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
-            rating_digit,
+            number_digits,
             retries,
             timeout,
             html_play,
@@ -418,6 +533,7 @@ def survey_finitestatemachine(request):
 
     elif list_section[current_state].type == SECTION_TYPE.ENTER_NUMBER_SECTION:
         #ENTER_NUMBER_SECTION
+        number_digits = get_number_digits(list_section[current_state])
         debug_outp += "ENTER_NUMBER_SECTION<br/>------------------<br/>"
         html =\
         '<Response>\n'\
@@ -716,7 +832,6 @@ def section_add(request):
             form = RatingSectionForm(request.user)
             if request.POST.get('add'):
                 form = RatingSectionForm(request.user, request.POST)
-                print form.errors
                 if form.is_valid():
                     obj = form.save()
                     request.session["msg"] =\

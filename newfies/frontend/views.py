@@ -40,7 +40,6 @@ from datetime import datetime
 from dateutil import parser
 from dateutil.relativedelta import relativedelta
 import time
-import os
 
 
 def logout_view(request):
@@ -711,7 +710,7 @@ def customer_dashboard(request, on_index=None):
         'select_graph_for': select_graph_for,
         'total_duration_sum': total_duration_sum,
         'total_call_count': total_call_count,
-        'total_answered':  total_answered,
+        'total_answered': total_answered,
         'total_not_answered': total_not_answered,
         'total_busy': total_busy,
         #'total_others': total_others,

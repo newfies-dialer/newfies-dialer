@@ -587,7 +587,7 @@ class SurveyModel(TestCase):
         obj.save()
 
         form = RatingSectionForm(self.user,
-                                 instance= self.section_template)
+                                 instance=self.section_template)
         obj = form.save(commit=False)
         obj.type = 3
         obj.question = "test question"

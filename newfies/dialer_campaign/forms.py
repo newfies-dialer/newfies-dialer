@@ -116,7 +116,6 @@ class CampaignForm(ModelForm):
             self.fields['caller_name'].widget.attrs['readonly'] = True
             self.fields['callerid'].widget.attrs['readonly'] = True
             self.fields['extra_data'].widget.attrs['readonly'] = True
-            #self.fields['status'].widget.attrs['readonly'] = True
             self.fields['phonebook'].widget.attrs['disabled'] = 'disabled'
 
             selected_phonebook = ''

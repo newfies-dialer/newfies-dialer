@@ -68,7 +68,7 @@
                     </div>
                 </div>
 
-                {% if form.type.value == SECTION_TYPE.MULTIPLE_CHOICE_SECTION or form.type.value == SECTION_TYPE.RATING_SECTION  or form.type.value == SECTION_TYPE.ENTER_NUMBER_SECTION %}
+                {% if form.type.value|convert_to_int == SECTION_TYPE.MULTIPLE_CHOICE_SECTION or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION  or form.type.value|convert_to_int == SECTION_TYPE.ENTER_NUMBER_SECTION %}
                     <div class="row">
                         <div class="span2">
                             <label class="control-label" for="id_{{ form.retries.name }}">{{ form.retries.label }}</label>
@@ -110,7 +110,7 @@
                     </div>
                 </div>
 
-                {% if form.type.value == SECTION_TYPE.MULTIPLE_CHOICE_SECTION or form.type.value == SECTION_TYPE.RATING_SECTION or form.type.value == SECTION_TYPE.ENTER_NUMBER_SECTION %}
+                {% if form.type.value|convert_to_int == SECTION_TYPE.MULTIPLE_CHOICE_SECTION or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION or form.type.value|convert_to_int == SECTION_TYPE.ENTER_NUMBER_SECTION %}
                     <div class="row">
                         <div class="span2">
                             <label class="control-label" for="id_{{ form.invalid_audiofile.name }}">{{ form.invalid_audiofile.label }}</label>
@@ -128,7 +128,7 @@
                 {% endif %}
 
                 <!--Audio field while updating section-->
-                {% if form.type.value == SECTION_TYPE.VOICE_SECTION or form.type.value == SECTION_TYPE.MULTIPLE_CHOICE_SECTION or form.type.value == SECTION_TYPE.RATING_SECTION or form.type.value == SECTION_TYPE.ENTER_NUMBER_SECTION %}
+                {% if form.type.value|convert_to_int == SECTION_TYPE.VOICE_SECTION or form.type.value|convert_to_int == SECTION_TYPE.MULTIPLE_CHOICE_SECTION or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION or form.type.value|convert_to_int == SECTION_TYPE.ENTER_NUMBER_SECTION %}
                     {% if action == 'update' %}
                         <div class="row">
                             <div class="span2">
@@ -151,11 +151,11 @@
                 {% endif %}
 
                 <!--Voice Section form-->
-                {% if form.type.value == SECTION_TYPE.VOICE_SECTION %}
+                {% if form.type.value|convert_to_int == SECTION_TYPE.VOICE_SECTION %}
                 {% endif %}
 
                 <!--Multiple choice Section form-->
-                {% if form.type.value == SECTION_TYPE.MULTIPLE_CHOICE_SECTION %}
+                {% if form.type.value|convert_to_int == SECTION_TYPE.MULTIPLE_CHOICE_SECTION %}
                     <div class="row">
                         <div class="span5">
                             <label class="control-label" for="id_if_press_result">{% trans "Result if the user" %}</label>
@@ -177,7 +177,7 @@
                 {% endif %}
 
                 <!--Rating Section form-->
-                {% if form.type.value == SECTION_TYPE.RATING_SECTION %}
+                {% if form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION %}
                     <div class="row">
                         <div class="span2">
                             <label class="control-label" for="id_{{ form.rating_laps.name }}">{{ form.rating_laps.label }}</label>
@@ -195,7 +195,7 @@
                 {% endif %}
 
                 <!--Enter number Section form-->
-                {% if form.type.value == SECTION_TYPE.ENTER_NUMBER_SECTION %}
+                {% if form.type.value|convert_to_int == SECTION_TYPE.ENTER_NUMBER_SECTION %}
                     <div class="row">
                         <div class="span2">
                             <label class="control-label" for="id_{{ form.number_digits.name }}">{{ form.number_digits.label }}</label>
@@ -254,7 +254,7 @@
                 {% endif %}
 
                 <!--Patch-Through Section form-->
-                {% if form.type.value == SECTION_TYPE.PATCH_THROUGH_SECTION %}
+                {% if form.type.value|convert_to_int == SECTION_TYPE.PATCH_THROUGH_SECTION %}
                     <div class="row">
                         <div class="span2">
                             <label class="control-label" for="id_{{ form.dial_phonenumber.name }}">{{ form.dial_phonenumber.label }}</label>
@@ -272,7 +272,7 @@
                 {% endif %}
 
                 <!--continue_survey for Record Message Section and Dial out -->
-                {% if form.type.value == SECTION_TYPE.RECORD_MSG_SECTION or form.type.value == SECTION_TYPE.PATCH_THROUGH_SECTION %}
+                {% if form.type.value|convert_to_int == SECTION_TYPE.RECORD_MSG_SECTION or form.type.value|convert_to_int == SECTION_TYPE.PATCH_THROUGH_SECTION %}
                     <div class="row">
                         <div class="span2 clearfix{% if form.continue_survey.errors %} control-group error{% endif %}">
                             {{ form.continue_survey.label }}

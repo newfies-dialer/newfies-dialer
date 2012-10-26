@@ -257,7 +257,7 @@ func_install_frontend(){
             service postgresql restart
 
             #Install Supervisor
-            yum install supervisor
+            yum -y install supervisor
         ;;
     esac
 

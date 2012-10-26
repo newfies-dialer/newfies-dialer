@@ -250,9 +250,10 @@ func_install_frontend(){
 
             #Install & Start PostgreSQL
             yum -y install postgresql-server postgresql-devel
+            sed -i "s/ident/md5/g" /var/lib/pgsql/data/pg_hba.conf
             chkconfig --levels 235 postgresql on
             service postgresql initdb
-            service postgresql start
+            service postgresql restart
 
             #Install Supervisor
             yum install supervisor

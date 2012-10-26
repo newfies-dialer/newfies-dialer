@@ -134,6 +134,8 @@ class Campaign(Model):
         * ``calltimeout`` - Number of seconds to timeout on calls
         * ``aleg_gateway`` - Gateway to use to reach the contact
         * ``extra_data`` - Additional data to pass to the application
+        * ``totalcontact`` - Total Contact for this campaign
+        * ``completed`` - Total Contact that completed Call / Survey
 
     **Relationships**:
 
@@ -231,12 +233,12 @@ class Campaign(Model):
                                           verbose_name=_('Imported Phonebook'))
 
     #TODO: After import of phonebooks, provision the field totalcontact with the amount of contact imported in Subscriber
-    totalcontact = models.IntegerField(default='0', blank=True, null=True,
-                                      verbose_name=_('Total Contact'),
-                                      help_text=_("Total Contact for this campaign"))
-    completed = models.IntegerField(default='0', blank=True, null=True,
-                                      verbose_name=_('Completed'),
-                                      help_text=_("Total Contact that completed Call / Survey"))
+    totalcontact = models.IntegerField(default=0, blank=True, null=True,
+                                       verbose_name=_('Total Contact'),
+                                       help_text=_("Total Contact for this campaign"))
+    completed = models.IntegerField(default=0, blank=True, null=True,
+                                    verbose_name=_('Completed'),
+                                    help_text=_("Total Contact that completed Call / Survey"))
 
     objects = CampaignManager()
 

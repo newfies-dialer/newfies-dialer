@@ -1559,6 +1559,7 @@ def survey_report(request):
         'max_duration': '',
     }
     PAGE_SIZE = settings.PAGE_SIZE
+    campaign_obj = ''
     action = 'tabs-1'
 
     if request.method == 'POST':
@@ -1636,9 +1637,9 @@ def survey_report(request):
         kwargs['starting_date__lte'] = end_date
         survey_result_kwargs['created_date__lte'] = end_date
 
+
     try:
-        campaign_id = int(campaign_id)
-        campaign_obj = Campaign.objects.get(id=campaign_id)
+        campaign_obj = Campaign.objects.get(id=int(campaign_id))
         survey_result_kwargs['campaign'] = campaign_obj
 
         survey_result = get_survey_result(survey_result_kwargs)
@@ -1698,6 +1699,7 @@ def survey_report(request):
         'search_tag': search_tag,
         'start_date': start_date,
         'end_date': end_date,
+        'campaign_obj': campaign_obj,
     }
     request.session['msg'] = ''
     request.session['err_msg'] = ''

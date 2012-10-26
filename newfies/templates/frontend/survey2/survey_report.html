@@ -71,6 +71,22 @@
 
     <div id="tabs-1" class="tab-pane {% if action == "tabs-1" %}active{% endif %}">
         <p>&nbsp;</p>
+
+        {% if campaign_obj %}
+            <table align="center" class="table table-striped table-bordered table-condensed">
+                <thead>
+                    <th>{% trans "Total Contact" %}</th>
+                    <th>{% trans "Total Contact that completed Call / Survey" %}</th>
+                </thead>
+                <tbody>
+                    <td>{{ campaign_obj.totalcontact }}</td>
+                    <td>{{ campaign_obj.completed }}</td>
+                </tbody>
+            </table>
+        {% endif %}
+    
+        <p>&nbsp;</p>
+
         {% if survey_result %}
             {# grouping of survey result #}
             {% regroup survey_result by section__question as result %}

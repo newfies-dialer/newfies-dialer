@@ -49,7 +49,7 @@ class CampaignAdmin(GenericAdminModelAdmin):
                     'startingdate', 'expirationdate', 'frequency',
                     'callmaxduration', 'maxretry', 'aleg_gateway', 'status',
                     'update_campaign_status', 'count_contact_of_phonebook',
-                    'completed', 'subscriber_detail', 'progress_bar',
+                    'subscriber_detail', 'progress_bar',
                     'totalcontact', 'completed')
 
     list_display_links = ('id', 'name', )

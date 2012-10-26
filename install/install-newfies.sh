@@ -112,8 +112,16 @@ func_install_landing_page() {
     echo ""
     echo "Add Nginx configuration for Welcome page..."
     cp -rf /usr/src/newfies-dialer/install/nginx/global /etc/nginx/
-    cp /usr/src/newfies-dialer/install/nginx/sites-available/newfies_dialer /etc/nginx/sites-available/
-    ln -s /etc/nginx/sites-available/newfies_dialer /etc/nginx/sites-enabled/newfies_dialer
+    
+    case $DIST in
+        'DEBIAN')
+            cp /usr/src/newfies-dialer/install/nginx/sites-available/newfies_dialer.conf /etc/nginx/sites-available/
+            ln -s /etc/nginx/sites-available/newfies_dialer /etc/nginx/sites-enabled/newfies_dialer
+        ;;
+        'CENTOS')
+            cp /usr/src/newfies-dialer/install/nginx/sites-available/newfies_dialer.conf /etc/nginx/conf.d/
+        ;;
+    esac
     #Restart Nginx
     service nginx restart
 

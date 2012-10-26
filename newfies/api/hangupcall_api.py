@@ -134,7 +134,8 @@ class HangupcallResource(ModelResource):
                 obj_subscriber = Subscriber.objects.get(
                     id=callrequest.subscriber.id)
                 if opt_hangup_cause == 'NORMAL_CLEARING':
-                    obj_subscriber.status = SUBSCRIBER_STATUS.COMPLETED
+                    if obj_subscriber.status != SUBSCRIBER_STATUS.COMPLETED:
+                        obj_subscriber.status = SUBSCRIBER_STATUS.SENT
                 else:
                     obj_subscriber.status = SUBSCRIBER_STATUS.FAIL
                 obj_subscriber.save()

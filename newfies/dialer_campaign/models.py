@@ -28,11 +28,8 @@ from user_profile.models import UserProfile
 from datetime import datetime
 from common.intermediate_model_base_class import Model
 from common.common_functions import get_unique_code
-from random import choice, seed
 import logging
 import re
-
-seed()
 
 logger = logging.getLogger('newfies.filelog')
 
@@ -54,7 +51,7 @@ class CampaignManager(models.Manager):
                                                  tday.second, tday.microsecond)
 
         s_time = "%s:%s:%s" % (
-            str(tday.hour), str(tday.minute + 1), str(tday.second))
+            str(tday.hour), str(tday.minute), str(tday.second))
         kwargs['daily_start_time__lte'] = datetime.strptime(s_time, '%H:%M:%S')
         kwargs['daily_stop_time__gte'] = datetime.strptime(s_time, '%H:%M:%S')
 

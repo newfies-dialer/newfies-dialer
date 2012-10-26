@@ -119,7 +119,7 @@ def init_callrequest(callrequest_id, campaign_id):
     if gateways[-1] != '/':
         gateways = gateways + '/'
 
-    if obj_campaign.content_type.app_label == 'survey':
+    if obj_campaign.content_type.app_label == 'survey2':
         #Use Survey Statemachine
         answer_url = settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL
     else:
@@ -162,6 +162,7 @@ def init_callrequest(callrequest_id, campaign_id):
             from telefonyhelper import call_plivo
             result = call_plivo(
                         callerid=obj_callrequest.callerid,
+                        callername=obj_callrequest.campaign.caller_name,
                         phone_number=dialout_phone_number,
                         Gateways=gateways,
                         GatewayCodecs=gateway_codecs,

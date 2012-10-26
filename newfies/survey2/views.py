@@ -51,7 +51,7 @@ import csv
 import os
 
 
-testdebug = True  # TODO: Change later
+testdebug = False  # TODO: Change later
 
 
 def placeholder_replace(text, contact):
@@ -295,6 +295,7 @@ def survey_finitestatemachine(request):
     current_state = None
     next_state = None
     delcache = False
+    overstate = False
     debug_outp = ''
 
     #Load Plivo Post parameters
@@ -410,7 +411,7 @@ def survey_finitestatemachine(request):
                 keys=DTMF,
                 section=obj_p_section)
         except Branching.DoesNotExist:
-            if len(DTMF) > 0:
+            if DTMF and len(DTMF) > 0:
                 #There is a DTMF so we can check if there is any
                 try:
                     #DTMF doesn't have any branching so let's check for any
@@ -600,16 +601,16 @@ def survey_finitestatemachine(request):
     elif list_section[current_state].type == SECTION_TYPE.RECORD_MSG_SECTION:
         #RECORD_MSG_SECTION
         debug_outp += "RECORD_MSG_SECTION<br/>------------------<br/>"
+        #timeout : Seconds of silence before considering the recording complete
         html =\
         '<Response>\n'\
         '   %s\n'\
         '   <Record maxLength="120" finishOnKey="*#" action="%s" '\
-        'method="GET" filePath="%s" timeout="%s"/>'\
+        'method="GET" filePath="%s" timeout="10"/>'\
         '</Response>' % (
             html_play,
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
-            settings.FS_RECORDING_PATH,
-            timeout)
+            settings.FS_RECORDING_PATH)
 
     elif list_section[current_state].type == SECTION_TYPE.PATCH_THROUGH_SECTION:
         #PATCH_THROUGH_SECTION
@@ -624,14 +625,16 @@ def survey_finitestatemachine(request):
         '   <Dial timeLimit="%s" callerId="%s" callbackUrl="%s">\n'\
         '   <Number gateways="%s" gatewayTimeouts="%s">'\
         '   %s </Number> '\
-        '   </Dial>'\
+        '   </Dial>\n'\
+        '   <Redirect>%s</Redirect>\n'\
         '</Response>' % (
             timelimit,
             callerid,
             settings.PLIVO_DEFAULT_DIALCALLBACK_URL,
             gateways,
             gatewaytimeouts,
-            phonenumber)
+            phonenumber,
+            settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
 
     else:
         # Hangup

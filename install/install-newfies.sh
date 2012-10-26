@@ -245,7 +245,7 @@ func_install_frontend(){
             yum -y groupinstall "Development Tools"
             yum -y install git sudo
             yum -y --enablerepo=epel install nginx python-pip python-setuptools python-tools python-devel mercurial
-            #start http after reboot
+            #configure and start nginx
             chkconfig --levels 235 nginx on
             service nginx start
 

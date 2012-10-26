@@ -253,6 +253,9 @@ func_install_frontend(){
             chkconfig --levels 235 postgresql on
             service postgresql initdb
             service postgresql start
+
+            #Install Supervisor
+            yum install supervisor
         ;;
     esac
 
@@ -458,10 +461,20 @@ func_install_frontend(){
 
     # * * NGINX / SUPERVISOR * *
 
-    #Install supervisor
+    #Configure and Start supervisor
     cp /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf /etc/supervisor/conf.d/
-    /etc/init.d/supervisor force-stop
-    /etc/init.d/supervisor start
+
+    case $DIST in
+        'DEBIAN')
+            cp /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf /etc/supervisor/conf.d/
+            /etc/init.d/supervisor force-stop
+            /etc/init.d/supervisor start
+        ;;
+        'CENTOS')
+            cat /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf >> /etc/supervisord.conf
+            /etc/init.d/supervisord force-reload
+        ;;
+    esac
 
     #Prepare and Start Nginx
     echo "Prepare Nginx configuration..."

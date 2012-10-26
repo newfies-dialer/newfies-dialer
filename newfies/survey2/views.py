@@ -54,6 +54,15 @@ import os
 testdebug = False  # TODO: Change later
 
 
+def templateformat(s, *args, **kwargs):
+    while True:
+        try:
+            return s.format(*args, **kwargs)
+        except KeyError as e:
+            e = e.args[0]
+            kwargs[e] = "{%s}" % e
+
+
 def placeholder_replace(text, contact):
     """
     Replace place holders by tag value.
@@ -66,7 +75,7 @@ def placeholder_replace(text, contact):
         {phone_number}
     as well as, get additional_vars, and replace json tags
     """
-    template = str(text).lower()
+    text = str(text).lower()
     context = {'last_name': contact.last_name,
                'first_name': contact.first_name,
                'email': contact.email,
@@ -76,7 +85,8 @@ def placeholder_replace(text, contact):
                 }
     for index in contact.additional_vars:
         context[index] = contact.additional_vars[index]
-    return template.format(**context)
+
+    return templateformat(text, **context)
 
 
 def getaudio_acapela(text, tts_language='en'):

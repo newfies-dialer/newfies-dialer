@@ -18,6 +18,8 @@ from celery.decorators import task
 from celery.utils.log import get_task_logger
 from dialer_campaign.models import Campaign
 from dialer_campaign.function_def import user_dialer_setting
+from dialer_campaign.constants import SUBSCRIBER_STATUS, \
+    CAMPAIGN_STATUS
 from dialer_cdr.models import Callrequest
 from dialer_cdr.tasks import init_callrequest
 from dialer_contact.tasks import collect_subscriber
@@ -107,7 +109,7 @@ def check_campaign_pendingcall(campaign_id):
     # get_pending_subscriber get Max 1000 records
     list_subscriber = obj_campaign.get_pending_subscriber_update(
                             frequency,
-                            6  # Update to In Process
+                            SUBSCRIBER_STATUS.IN_PROCESS
                             )
     if list_subscriber:
         logger.debug("Number of subscriber found : %d" % len(list_subscriber))
@@ -139,8 +141,7 @@ def check_campaign_pendingcall(campaign_id):
         if not obj_campaign.is_authorized_contact(
                         elem_camp_subscriber.contact.contact):
             logger.error("Error : Contact not authorized")
-            #TODO: Change by constant
-            elem_camp_subscriber.status = 7  # Update to Not Authorized
+            elem_camp_subscriber.status = SUBSCRIBER_STATUS.NOT_AUTHORIZED
             elem_camp_subscriber.save()
             return True
 
@@ -200,9 +201,7 @@ class campaign_running(PeriodicTask):
         for campaign in Campaign.objects.get_running_campaign():
             logger.debug("=> Campaign name %s (id:%s)" % (campaign.name,
                                                          campaign.id))
-
             check_campaign_pendingcall.delay(campaign.id)
-
         return True
 
 
@@ -214,9 +213,6 @@ class campaign_expire_check(PeriodicTask):
         campaign_expire_check.delay()
     """
     run_every = timedelta(seconds=300)
-    #The campaign have to run every minutes in order to control the number
-    # of calls per minute. Cons : new calls might delay 60seconds
-    #run_every = timedelta(seconds=60)
 
     @only_one(key="campaign_expire_check", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
@@ -225,6 +221,6 @@ class campaign_expire_check(PeriodicTask):
         for campaign in Campaign.objects.get_expired_campaign():
             logger.debug("=> Campaign name %s (id:%s)" % (campaign.name,
                                                          campaign.id))
-            common_campaign_status(campaign.id, 4)
+            common_campaign_status(campaign.id, CAMPAIGN_STATUS.END)
 
         return True

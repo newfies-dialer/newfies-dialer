@@ -17,7 +17,9 @@ from celery.decorators import task, periodic_task
 from django.conf import settings
 from django.core.cache import cache
 from dialer_campaign.models import Campaign, Subscriber
+from dialer_campaign.constants import SUBSCRIBER_STATUS
 from dialer_cdr.models import Callrequest, VoIPCall
+from dialer_cdr.constants import CALLREQUEST_STATUS
 from dialer_gateway.utils import phonenumber_change_prefix
 from datetime import datetime, timedelta
 from time import sleep
@@ -82,12 +84,12 @@ def init_callrequest(callrequest_id, campaign_id):
 
         * ``callrequest_id`` - Callrequest ID
     """
+    #Update callrequest to Process
     obj_callrequest = Callrequest.objects.get(id=callrequest_id)
-    obj_callrequest.status = 7  # Update to Process
+    obj_callrequest.status = CALLREQUEST_STATUS.PROCESS
     obj_callrequest.save()
     logger.info("TASK :: init_callrequest - status = %s" %
                                         str(obj_callrequest.status))
-
     try:
         obj_campaign = Campaign.objects.get(id=campaign_id)
     except:
@@ -97,8 +99,8 @@ def init_callrequest(callrequest_id, campaign_id):
     if obj_callrequest.aleg_gateway:
         id_aleg_gateway = obj_callrequest.aleg_gateway.id
         dialout_phone_number = phonenumber_change_prefix(
-                                                obj_callrequest.phone_number,
-                                                id_aleg_gateway)
+                                    obj_callrequest.phone_number,
+                                    id_aleg_gateway)
     else:
         dialout_phone_number = obj_callrequest.phone_number
     logger.info("dialout_phone_number : %s" % dialout_phone_number)
@@ -176,13 +178,10 @@ def init_callrequest(callrequest_id, campaign_id):
             logger.error('error : call_plivo')
             obj_callrequest.status = 2  # Update to Failure
             obj_callrequest.save()
-            if obj_callrequest.subscriber \
-                and obj_callrequest.subscriber.id:
-                obj_subscriber = Subscriber.objects.get(
-                            id=obj_callrequest.subscriber.id)
-                #TODO: Change by constant
-                obj_subscriber.status = 4  # Fail
-
+            if obj_callrequest.subscriber and obj_callrequest.subscriber.id:
+                obj_subscriber = Subscriber.objects\
+                    .get(id=obj_callrequest.subscriber.id)
+                obj_subscriber.status = SUBSCRIBER_STATUS.FAIL
                 obj_subscriber.save()
             return False
         logger.info(result)

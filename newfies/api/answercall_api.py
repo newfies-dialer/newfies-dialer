@@ -20,6 +20,7 @@ from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie import http
+from dialer_cdr.constants import CALLREQUEST_STATUS
 from dialer_cdr.models import Callrequest
 from api.resources import CustomXmlEmitter, \
     IpAddressAuthorization, IpAddressAuthentication
@@ -135,7 +136,7 @@ class AnswercallResource(ModelResource):
                 .get(request_uuid=opt_ALegRequestUUID)
 
             #TODO : use constant
-            obj_callrequest.status = 8  # IN-PROGRESS
+            obj_callrequest.status = CALLREQUEST_STATUS.IN_PROGRESS  # IN-PROGRESS
             obj_callrequest.aleg_uuid = opt_CallUUID
             obj_callrequest.save()
 

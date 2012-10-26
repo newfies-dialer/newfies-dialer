@@ -244,9 +244,10 @@ func_install_frontend(){
             sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo
             yum -y groupinstall "Development Tools"
             yum -y install git sudo
-            yum -y --enablerepo=epel install python-pip mod_python python-setuptools python-tools python-devel mercurial mod_wsgi
+            yum -y --enablerepo=epel install nginx python-pip python-setuptools python-tools python-devel mercurial
             #start http after reboot
-            chkconfig --levels 235 httpd on
+            chkconfig --levels 235 nginx on
+            service nginx start
 
             #Install & Start PostgreSQL
             yum -y install postgresql-server postgresql-devel

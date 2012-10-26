@@ -189,13 +189,16 @@ class AnswercallResource(ModelResource):
 
                 elif obj_callrequest.content_object.type == 4:
                     #Speak
+                    from survey2.views import getaudio_acapela, placeholder_replace
+                    #Replace place holders by tag value
+                    phrasing = placeholder_replace(data, obj_callrequest.subscriber.contact)
+
                     if settings.TTS_ENGINE != 'ACAPELA':
-                        object_list = [{'Speak': data}]
+                        object_list = [{'Speak': phrasing}]
                         logger.debug('Speak')
                     else:
-                        from survey2.views import getaudio_acapela
-                        audio_url = getaudio_acapela(data, tts_language)
-
+                        #Acapela TTS
+                        audio_url = getaudio_acapela(phrasing, tts_language)
                         object_list = [{'Play': audio_url}]
                         logger.debug('PlayAudio-TTS')
                 else:

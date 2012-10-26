@@ -94,53 +94,51 @@ class Callrequest(Model):
     """
     user = models.ForeignKey('auth.User')
     request_uuid = models.CharField(verbose_name=_("RequestUUID"),
-                        default=str_uuid1(), db_index=True,
-                        max_length=120, null=True, blank=True)
+                                    default=str_uuid1(), db_index=True,
+                                    max_length=120, null=True, blank=True)
     aleg_uuid = models.CharField(max_length=120, help_text=_("A-Leg Call-ID"),
-                        db_index=True, null=True, blank=True)
+                                 db_index=True, null=True, blank=True)
     call_time = models.DateTimeField(default=(lambda: datetime.now()))
     created_date = models.DateTimeField(auto_now_add=True,
                                         verbose_name='Date')
     updated_date = models.DateTimeField(auto_now=True)
     call_type = models.IntegerField(choices=list(CALLREQUEST_TYPE), default=1,
-                verbose_name=_("Call Request Type"), blank=True, null=True)
+                                    verbose_name=_("Call Request Type"),
+                                    blank=True, null=True)
     status = models.IntegerField(choices=list(CALLREQUEST_STATUS), default=1,
-                blank=True, null=True, db_index=True,
-                verbose_name=_('Status'))
+                                 blank=True, null=True, db_index=True,
+                                 verbose_name=_('Status'))
     callerid = models.CharField(max_length=80, blank=True,
-                verbose_name=_("CallerID"),
-                help_text=_("CallerID used to call the A-Leg"))
+                                verbose_name=_("CallerID"),
+                                help_text=_("CallerID used to call the A-Leg"))
     phone_number = models.CharField(max_length=80,
-                verbose_name=_('Phone number'))
+                                    verbose_name=_('Phone number'))
     timeout = models.IntegerField(blank=True, default=30,
-                verbose_name=_('Time out'))
+                                  verbose_name=_('Time out'))
     timelimit = models.IntegerField(blank=True, default=3600,
-                verbose_name=_('Time limit'))
+                                    verbose_name=_('Time limit'))
     extra_dial_string = models.CharField(max_length=500, blank=True,
-                verbose_name=_('Extra dial string'))
+                                         verbose_name=_('Extra dial string'))
 
-    subscriber = models.ForeignKey(Subscriber,
-            null=True, blank=True,
-            help_text=_("Subscriber related to this call request"))
+    subscriber = models.ForeignKey(Subscriber, null=True, blank=True,
+                                   help_text=_("Subscriber related to this call request"))
 
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
-                help_text=_("Select Campaign"))
+                                 help_text=_("Select Campaign"))
     aleg_gateway = models.ForeignKey(Gateway, null=True, blank=True,
-                verbose_name="A-Leg Gateway",
-                help_text=_("Select gateway to use to call the subscriber"))
-
+                                     verbose_name="A-Leg Gateway",
+                                     help_text=_("Select gateway to use to call the subscriber"))
     #used to define the Voice App or the Survey
     content_type = models.ForeignKey(ContentType, verbose_name=_("Type"))
     object_id = models.PositiveIntegerField(verbose_name=_("Application"))
     content_object = generic.GenericForeignKey('content_type', 'object_id')
-
     #used to flag if the call is completed
     completed = models.BooleanField(default=False,
                                     verbose_name=_('Call completed'))
 
     extra_data = models.CharField(max_length=120, blank=True,
-        verbose_name=_("Extra Data"),
-        help_text=_("Define the additional data to pass to the application"))
+                                  verbose_name=_("Extra Data"),
+                                  help_text=_("Define the additional data to pass to the application"))
 
     num_attempt = models.IntegerField(default=0)
     last_attempt_time = models.DateTimeField(null=True, blank=True)

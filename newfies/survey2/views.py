@@ -54,6 +54,31 @@ import os
 testdebug = True  # TODO: Change later
 
 
+def placeholder_replace(text, contact):
+    """
+    Replace place holders by tag value.
+    This function will replace all the following tags :
+        {last_name}
+        {first_name}
+        {email}
+        {country}
+        {city}
+        {phone_number}
+    as well as, get additional_vars, and replace json tags
+    """
+    template = str(text).lower()
+    context = {'last_name': contact.last_name,
+               'first_name': contact.first_name,
+               'email': contact.email,
+               'country': contact.country,
+               'city': contact.city,
+               'phone_number': contact.contact,
+                }
+    for index in contact.additional_vars:
+        context[index] = contact.additional_vars[index]
+    return template.format(**context)
+
+
 def getaudio_acapela(text, tts_language='en'):
     """
     Run Acapela Text2Speech and return audio url
@@ -448,11 +473,14 @@ def survey_finitestatemachine(request):
         audio_file_url = url_basename + list_section[current_state].audiofile.audio_file.url
         html_play = "<Play>%s</Play>" % audio_file_url
     else:
+        #Replace place holders by tag value
+        phrasing = placeholder_replace(list_section[current_state].phrasing,
+                                       obj_callrequest.subscriber.contact)
         #Text2Speech
         if settings.TTS_ENGINE != 'ACAPELA':
-            html_play = "<Speak>%s</Speak>" % list_section[current_state].phrasing
+            html_play = "<Speak>%s</Speak>" % phrasing
         else:
-            audio_url = getaudio_acapela(list_section[current_state].phrasing,
+            audio_url = getaudio_acapela(phrasing,
                                          obj_callrequest.content_object.tts_language)
             html_play = "<Play>%s</Play>" % audio_url
 

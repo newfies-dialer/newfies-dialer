@@ -21,6 +21,8 @@ from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie import http
+from dialer_campaign.constants import SUBSCRIBER_STATUS
+from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE
 from dialer_cdr.models import Callrequest
 from dialer_cdr.tasks import init_callrequest
 from dialer_campaign.models import Subscriber
@@ -132,11 +134,9 @@ class HangupcallResource(ModelResource):
                 obj_subscriber = Subscriber.objects.get(
                     id=callrequest.subscriber.id)
                 if opt_hangup_cause == 'NORMAL_CLEARING':
-                    #TODO: Change by constant
-                    obj_subscriber.status = 5  # Complete
+                    obj_subscriber.status = SUBSCRIBER_STATUS.COMPLETED
                 else:
-                    #TODO: Change by constant
-                    obj_subscriber.status = 4  # Fail
+                    obj_subscriber.status = SUBSCRIBER_STATUS.FAIL
                 obj_subscriber.save()
             except:
                 logger.debug('Hangupcall Error cannot find the '
@@ -144,9 +144,9 @@ class HangupcallResource(ModelResource):
 
             # 2 / FAILURE ; 3 / RETRY ; 4 / SUCCESS
             if opt_hangup_cause == 'NORMAL_CLEARING':
-                callrequest.status = 4  # Success
+                callrequest.status = CALLREQUEST_STATUS.SUCCESS
             else:
-                callrequest.status = 2  # Failure
+                callrequest.status = CALLREQUEST_STATUS.FAILURE
             callrequest.hangup_cause = opt_hangup_cause
             #save callrequest & subscriber
             callrequest.save()
@@ -173,9 +173,9 @@ class HangupcallResource(ModelResource):
 
             #We will manage the retry directly from the API
             if opt_hangup_cause != 'NORMAL_CLEARING'\
-            and callrequest.call_type == 1:  # Allow retry
+            and callrequest.call_type == CALLREQUEST_TYPE.ALLOW_RETRY:  # Allow retry
                 #Update to Retry Done
-                callrequest.call_type = 3
+                callrequest.call_type = CALLREQUEST_TYPE.RETRY_DONE
                 callrequest.save()
 
                 dialer_set = user_dialer_setting(callrequest.user)

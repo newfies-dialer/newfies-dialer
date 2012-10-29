@@ -57,7 +57,6 @@ def call_plivo(callerid=None, callername=None, phone_number=None, Gateways=None,
     call_params = {
         'From': callerid,  # Caller Id
         'CallerName': callername,  # CallerName
-        'To': phone_number,  # User Number to Call
         'Gateways': Gateways,  # Gateway string to try dialing separated by comma. First in list will be tried first
         'GatewayCodecs': GatewayCodecs,  # Codec string as needed by FS for each gateway separated by comma
         'GatewayTimeouts': GatewayTimeouts,  # Seconds to timeout in string for each gateway separated by comma
@@ -68,6 +67,15 @@ def call_plivo(callerid=None, callername=None, phone_number=None, Gateways=None,
         #TODO: Fix TimeLimit on Plivo
         #'TimeLimit': TimeLimit,
     }
+
+    #Check to send digit
+    check_senddigit = phone_number.partition('w')
+    if check_senddigit[1] == 'w':
+        call_params['SendDigits'] = check_senddigit[1] + check_senddigit[2]
+        call_params['To'] = check_senddigit[0]
+    else:
+        call_params['To'] = phone_number
+
 
     print call_params
 

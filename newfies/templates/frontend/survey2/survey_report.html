@@ -190,8 +190,8 @@
                         <td>{{ row.duration|conv_min }}</td>
                         <td>{{ row.disposition }}</td>
                         <td>
-                            <a href="#survey-campaign-result"  url="/survey2_campaign_result/{{ row.id }}/" class="survey-campaign-result icon" data-toggle="modal" data-controls-modal="survey-campaign-result" {% icon_style 'eye' %} title="{% trans "Result" %}" >
-                                &nbsp;
+                            <a href="#survey-campaign-result"  url="/survey2_campaign_result/{{ row.id }}/" class="survey-campaign-result icon" data-toggle="modal" data-controls-modal="survey-campaign-result" title="{% trans "Result" %}" >
+                                {% trans "view details"|title %}
                             </a>
                         </td>
                     </tr>

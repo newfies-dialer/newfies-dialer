@@ -31,6 +31,7 @@ from api.api_playgrounds.hangupcall_playground import HangupCallAPIPlayground
 from api.api_playgrounds.survey_playground import SurveyAPIPlayground
 from api.api_playgrounds.section_playground import SectionAPIPlayground
 from api.api_playgrounds.branching_playground import BranchingAPIPlayground
+from api.api_playgrounds.survey_aggregate_result_playground import ResultAggregateResourceAPIPlayground
 
 
 urlpatterns = patterns('',
@@ -50,6 +51,7 @@ urlpatterns = patterns('',
     (r'api-explorer/survey/', include(SurveyAPIPlayground().urls)),
     (r'api-explorer/section/', include(SectionAPIPlayground().urls)),
     (r'api-explorer/branching/', include(BranchingAPIPlayground().urls)),
+    (r'api-explorer/survey-aggregate-result/', include(ResultAggregateResourceAPIPlayground().urls)),
     # API list view
     (r'api-explorer/$', 'api.api_playgrounds.views.api_list_view'),
 )

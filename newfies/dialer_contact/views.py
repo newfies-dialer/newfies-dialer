@@ -41,6 +41,7 @@ import csv
 import ast
 
 
+
 def get_phonebook_link(request, row_id, link_style, title, action):
     """Function to check user permission to change or delete phonebook
 
@@ -530,6 +531,7 @@ def contact_change(request, object_id):
     """
     contact = get_object_or_404(
         Contact, pk=object_id, phonebook__user=request.user)
+    print dict(contact.additional_vars)
     form = ContactForm(request.user, instance=contact)
     if request.method == 'POST':
         # Delete contact
@@ -612,11 +614,11 @@ def contact_import(request):
             #  6     - additional_vars
             # To count total rows of CSV file
             records = csv.reader(request.FILES['csv_file'],
-                                 delimiter=',', quotechar='"')
+                                 delimiter='|', quotechar='"')
             total_rows = len(list(records))
             BULK_SIZE = 1000
             rdr = csv.reader(request.FILES['csv_file'],
-                             delimiter=',', quotechar='"')
+                             delimiter='|', quotechar='"')
             #Get Phonebook Obj
             phonebook = get_object_or_404(
                 Phonebook, pk=request.POST['phonebook'],
@@ -633,6 +635,10 @@ def contact_import(request):
                     type_error_import_list.append(row)
                     break
 
+                row_6 = ''
+                if row[6]:
+                    row_6 = simplejson.loads(row[6])
+
                 bulk_record.append(
                     Contact(
                         phonebook=phonebook,
@@ -642,7 +648,7 @@ def contact_import(request):
                         email=row[3],
                         description=row[4],
                         status=int(row[5]),
-                        additional_vars=row[6])
+                        additional_vars=row_6)
                 )
 
                 contact_cnt = contact_cnt + 1

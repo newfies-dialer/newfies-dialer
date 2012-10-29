@@ -15,7 +15,7 @@
 from django.conf import settings
 from celery.decorators import task
 from celery.utils.log import get_task_logger
-from dialer_campaign.models import Campaign
+from dialer_campaign.models import Campaign, Subscriber
 
 
 logger = get_task_logger(__name__)
@@ -97,6 +97,8 @@ def import_phonebook(campaign_id, phonebook_id):
 
     #Faster method, ask the Database to do the job
     importcontact_custom_sql(campaign_id, phonebook_id)
+    #Count contact imported
+    count_contact = Subscriber.objects.filter(campaign=campaign_id).count()
 
     #Add the phonebook id to the imported list
     if obj_campaign.imported_phonebook == '':
@@ -105,6 +107,6 @@ def import_phonebook(campaign_id, phonebook_id):
         sep = ','
     obj_campaign.imported_phonebook = obj_campaign.imported_phonebook + \
         '%s%d' % (sep, phonebook_id)
+    obj_campaign.totalcontact = count_contact
     obj_campaign.save()
-
     return True

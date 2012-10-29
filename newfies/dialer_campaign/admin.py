@@ -48,9 +48,8 @@ class CampaignAdmin(GenericAdminModelAdmin):
     list_display = ('id', 'name', 'content_type', 'campaign_code', 'user',
                     'startingdate', 'expirationdate', 'frequency',
                     'callmaxduration', 'maxretry', 'aleg_gateway', 'status',
-                    'update_campaign_status', 'count_contact_of_phonebook',
-                    'subscriber_detail', 'progress_bar',
-                    'totalcontact', 'completed')
+                    'update_campaign_status', 'totalcontact', 'completed',
+                    'subscriber_detail', 'progress_bar')
 
     list_display_links = ('id', 'name', )
     #list_filter = ['user', 'status', 'startingdate', 'created_date']

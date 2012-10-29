@@ -192,22 +192,18 @@ class Campaign(Model):
     frequency = models.IntegerField(default='10', blank=True, null=True,
                                     verbose_name=_('Frequency'),
                                     help_text=_("Calls per Minute"))
-
     callmaxduration = models.IntegerField(default='1800', blank=True, null=True,
                                           verbose_name=_('Max Call Duration'),
                                           help_text=_("Maximum call duration in seconds"))
-
     maxretry = models.IntegerField(default='0', blank=True, null=True,
                                    verbose_name=_('Max Retries'),
                                    help_text=_("Maximum retries per contact"))
     intervalretry = models.IntegerField(default='300', blank=True, null=True,
                                         verbose_name=_('Time between Retries'),
                                         help_text=_("Time delay in seconds before retrying contact"))
-
     calltimeout = models.IntegerField(default='45', blank=True, null=True,
                                       verbose_name=_('Timeout on Call'),
                                       help_text=_("Connection timeout in seconds"))
-    #Gateways
     aleg_gateway = models.ForeignKey(Gateway, verbose_name=_("A-Leg Gateway"),
                                      related_name="A-Leg Gateway",
                                      help_text=_("Select outbound gateway"))
@@ -216,26 +212,20 @@ class Campaign(Model):
                                                                      "voiceapp_template")})
     object_id = models.PositiveIntegerField(verbose_name=_("Application"))
     content_object = generic.GenericForeignKey('content_type', 'object_id')
-
     extra_data = models.CharField(max_length=120, blank=True,
                                   verbose_name=_("Extra Parameters"),
                                   help_text=_("Additional application parameters."))
-
-    created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')
-    updated_date = models.DateTimeField(auto_now=True)
-
     phonebook = models.ManyToManyField(Phonebook, blank=True, null=True)
-
     imported_phonebook = models.CharField(max_length=500, default='', blank=True,
                                           verbose_name=_('Imported Phonebook'))
-
-    #TODO: After import of phonebooks, provision the field totalcontact with the amount of contact imported in Subscriber
     totalcontact = models.IntegerField(default=0, blank=True, null=True,
                                        verbose_name=_('Total Contact'),
                                        help_text=_("Total Contact for this campaign"))
     completed = models.IntegerField(default=0, blank=True, null=True,
                                     verbose_name=_('Completed'),
                                     help_text=_("Total Contact that completed Call / Survey"))
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')
+    updated_date = models.DateTimeField(auto_now=True)
 
     objects = CampaignManager()
 
@@ -294,21 +284,6 @@ class Campaign(Model):
                          args=[self.pk, CAMPAIGN_STATUS.ABORT]))
     update_campaign_status.allow_tags = True
     update_campaign_status.short_description = _('Action')
-
-    def count_contact_of_phonebook(self, status=None):
-        """Count the no. of Contacts in a phonebook"""
-        if status and status == 1:
-            count_contact = Contact.objects\
-                .filter(status=1, phonebook__campaign=self.id).count()
-        else:
-            count_contact = Contact.objects\
-                .filter(phonebook__campaign=self.id).count()
-        if not count_contact:
-            return _("Phonebook Empty")
-
-        return count_contact
-    count_contact_of_phonebook.allow_tags = True
-    count_contact_of_phonebook.short_description = _('Contact')
 
     def is_authorized_contact(self, str_contact):
         """Check if a contact is authorized"""

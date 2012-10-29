@@ -239,7 +239,7 @@ def campaign_grid(request):
                       str(get_app_name(
                           row.content_type.app_label, row.content_type.model,
                           row.object_id)),
-                      row.count_contact_of_phonebook(),
+                      row.totalcontact,
                       get_campaign_status_name(row.status),
                       get_grid_update_delete_link(request, row.id,
                           'dialer_campaign.change_campaign',

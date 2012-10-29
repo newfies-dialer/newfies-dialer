@@ -34,7 +34,6 @@ def collect_subscriber(campaign_id):
 
     #Retrieve the list of active contact
     obj_campaign = Campaign.objects.get(id=campaign_id)
-
     list_phonebook = obj_campaign.phonebook.all()
 
     for item_phonebook in list_phonebook:

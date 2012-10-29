@@ -298,12 +298,11 @@ class Campaign(Model):
     def count_contact_of_phonebook(self, status=None):
         """Count the no. of Contacts in a phonebook"""
         if status and status == 1:
-            count_contact = \
-                Contact.objects.filter(status=1,
-                                       phonebook__campaign=self.id).count()
+            count_contact = Contact.objects\
+                .filter(status=1, phonebook__campaign=self.id).count()
         else:
-            count_contact = \
-                Contact.objects.filter(phonebook__campaign=self.id).count()
+            count_contact = Contact.objects\
+                .filter(phonebook__campaign=self.id).count()
         if not count_contact:
             return _("Phonebook Empty")
 
@@ -426,8 +425,27 @@ class Campaign(Model):
         for elem_subscriber in list_subscriber:
             elem_subscriber.status = status
             elem_subscriber.save()
-
         return list_subscriber
+
+    def update_status(self, status):
+        """Campaign Status (e.g. start | stop | abort | pause) needs to be changed.
+        It is a common function for the admin and customer UI's
+
+        **Attributes**:
+
+            * ``status`` - selected status for the campaign record
+
+        """
+        previous_status = self.status
+        self.status = status
+        self.save()
+        #Start tasks to import subscriber
+        if int(status) == CAMPAIGN_STATUS.START \
+           and int(previous_status) != CAMPAIGN_STATUS.START:
+            #TODO: Move to signal
+            from dialer_campaign.tasks import collect_subscriber
+            collect_subscriber.delay(self.id)
+        return self.user
 
 
 class Subscriber(Model):

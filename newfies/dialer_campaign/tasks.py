@@ -47,7 +47,6 @@ class campaign_spool_contact(PeriodicTask):
 
         campaign_spool_contact.delay()
     """
-
     run_every = timedelta(seconds=15)
     #The campaign have to run every minutes in order to control the number
     # of calls per minute. Cons : new calls might delay 60seconds
@@ -59,7 +58,6 @@ class campaign_spool_contact(PeriodicTask):
         for campaign in Campaign.objects.get_running_campaign():
             logger.debug("=> Spool Contact : Campaign name %s (id:%s)" % \
                 (campaign.name, str(campaign.id)))
-
             #Start collecting the contacts for this campaign
             collect_subscriber.delay(campaign.id)
 
@@ -97,7 +95,6 @@ def check_campaign_pendingcall(campaign_id):
     if dialer_set:
         if dialer_set.maxretry == 0:
             call_type = 2
-
         # check frequency to control the Speed
         #if dialer_set.frequency:
         #    frequency = 20
@@ -199,8 +196,8 @@ class campaign_running(PeriodicTask):
         logger.debug("TASK :: campaign_running")
 
         for campaign in Campaign.objects.get_running_campaign():
-            logger.debug("=> Campaign name %s (id:%s)" % (campaign.name,
-                                                         campaign.id))
+            logger.debug("=> Campaign name %s (id:%s)" % \
+                (campaign.name, campaign.id))
             check_campaign_pendingcall.delay(campaign.id)
         return True
 
@@ -217,10 +214,9 @@ class campaign_expire_check(PeriodicTask):
     @only_one(key="campaign_expire_check", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
         logger.info("TASK :: campaign_expire_check")
-        from dialer_campaign.views import common_campaign_status
-        for campaign in Campaign.objects.get_expired_campaign():
-            logger.debug("=> Campaign name %s (id:%s)" % (campaign.name,
-                                                         campaign.id))
-            common_campaign_status(campaign.id, CAMPAIGN_STATUS.END)
 
+        for obj_campaign in Campaign.objects.get_expired_campaign():
+            logger.debug("=> Campaign name %s (id:%s)" % \
+                (obj_campaign.name, obj_campaign.id))
+            obj_campaign.update_status(CAMPAIGN_STATUS.END)
         return True

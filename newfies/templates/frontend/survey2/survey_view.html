@@ -197,23 +197,11 @@
                             </div>
                         {% endif %}
 
-                        <!--Record Message Section form-->
-                        {% if section.type == SECTION_TYPE.RECORD_MSG_SECTION %}
-                            <div class="span8">
-                                {% if section.continue_survey %}
-                                    {% trans "When done, continue survey" %}
-                                {% endif %}
-                            </div>
-                        {% endif %}
-
                         <!--Patch-Through Section form-->
                         {% if section.type == SECTION_TYPE.PATCH_THROUGH_SECTION %}
                             <div class="span8">
                                 {% if section.dial_phonenumber %}
                                     {% trans "Dial phone number" %} : {{ section.dial_phonenumber }} <br/>
-                                {% endif %}
-                                {% if section.continue_survey %}
-                                    {% trans "When done, continue survey" %}
                                 {% endif %}
                             </div>
                         {% endif %}

@@ -234,8 +234,7 @@ class RecordMessageSectionForm(ModelForm):
 
     class Meta:
         model = Section_template
-        fields = ['type', 'survey', 'question', 'continue_survey',
-                  'completed']
+        fields = ['type', 'survey', 'question', 'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(RecordMessageSectionForm, self).__init__(*args, **kwargs)
@@ -249,8 +248,7 @@ class PatchThroughSectionForm(ModelForm):
 
     class Meta:
         model = Section_template
-        fields = ['type', 'survey', 'question', 'dial_phonenumber',
-                  'continue_survey', 'completed']
+        fields = ['type', 'survey', 'question', 'dial_phonenumber', 'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(PatchThroughSectionForm, self).__init__(*args, **kwargs)

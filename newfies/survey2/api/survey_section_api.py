@@ -14,15 +14,12 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.contrib.auth.models import User
 from tastypie.resources import ModelResource
 from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import Authorization
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie import fields
-
-from api.user_api import UserResource
 from survey2.api.survey_api import SurveyResource
 from survey2.models import Survey, Section
 
@@ -45,11 +42,11 @@ class SectionValidation(Validation):
             except:
                 errors['survey'] = ["The Survey ID doesn't exist!"]
 
-        type = bundle.data.get('type')
         if not bundle.data.get('question'):
             errors['question'] = ["Please add question field"]
 
         """
+        type = bundle.data.get('type')
         if type == 2:
             if not bundle.data.get('key_0'):
                 errors['key_0'] = ["Please add key field"]
@@ -66,31 +63,30 @@ class SectionResource(ModelResource):
     """
     **Attributes**:
 
-        * ``type`` - survey name.
-        * ``question`` -
-        * ``phrasing`` -
-        * ``audiofile`` -
-        * ``use_audiofile`` -
-        * ``invalid_audiofile`` -
-        * ``retries`` -
-        * ``timeout`` -
-        * ``key_0`` -
-        * ``key_1`` -
-        * ``key_2`` -
-        * ``key_3`` -
-        * ``key_4`` -
-        * ``key_5`` -
-        * ``key_6`` -
-        * ``key_7`` -
-        * ``key_8`` -
-        * ``key_9`` -
-        * ``rating_laps`` -
-        * ``validate_number`` -
-        * ``number_digits`` -
-        * ``min_number`` -
-        * ``max_number`` -
-        * ``dial_phonenumber`` -
-        * ``continue_survey`` -
+        * ``type`` - section type
+        * ``question`` - question
+        * ``phrasing`` - text that will be used in TTS
+        * ``audiofile`` - audio file to be use instead of TTS
+        * ``invalid_audiofile`` - audio to play when input is invalid
+        * ``retries`` - amount of time to retry to get a valid input
+        * ``timeout`` - time to wait for user input
+        * ``key_0`` - on multi choice section, text for result on key 0
+        * ``key_1`` - on multi choice section, text for result on key 1
+        * ``key_2`` - on multi choice section, text for result on key 2
+        * ``key_3`` - on multi choice section, text for result on key 3
+        * ``key_4`` - on multi choice section, text for result on key 4
+        * ``key_5`` - on multi choice section, text for result on key 5
+        * ``key_6`` - on multi choice section, text for result on key 6
+        * ``key_7`` - on multi choice section, text for result on key 7
+        * ``key_8`` - on multi choice section, text for result on key 8
+        * ``key_9`` - on multi choice section, text for result on key 9
+        * ``rating_laps`` - From 1 to X, value to accept rating input
+        * ``validate_number`` - check if we want to valid the input on Enter Number section
+        * ``number_digits`` - Number of digits to wait for on Enter Number section
+        * ``min_number`` - if validate_number the minimum number accepted
+        * ``max_number`` - if validate_number the maximum number accepted
+        * ``dial_phonenumber`` - phonenumber to dialout
+        * ``completed`` - reaching this section will mark the subscriber as completed
 
     **Validation**:
 
@@ -131,7 +127,6 @@ class SectionResource(ModelResource):
                },
                "objects":[
                   {
-                     "continue_survey":false,
                      "created_date":"2012-09-13T08:06:05.344297",
                      "dial_phonenumber":null,
                      "id":"15",

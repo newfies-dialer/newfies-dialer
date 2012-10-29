@@ -624,7 +624,6 @@ class SurveyModel(TestCase):
         obj = form.save(commit=False)
         obj.type = 5
         obj.question = "test question"
-        obj.continue_survey = 1
         obj.survey = self.survey_template
         obj.save()
 

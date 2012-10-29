@@ -122,31 +122,30 @@ class Section_abstract(Sortable):
 
     **Attributes**:
 
-        * ``type`` - survey name.
-        * ``question`` -
-        * ``phrasing`` -
-        * ``audiofile`` -
-        * ``invalid_audiofile`` -
-        * ``retries`` -
-        * ``timeout`` -
-        * ``key_0`` -
-        * ``key_1`` -
-        * ``key_2`` -
-        * ``key_3`` -
-        * ``key_4`` -
-        * ``key_5`` -
-        * ``key_6`` -
-        * ``key_7`` -
-        * ``key_8`` -
-        * ``key_9`` -
-        * ``rating_laps`` -
-        * ``validate_number`` -
-        * ``number_digits`` -
-        * ``min_number`` -
-        * ``max_number`` -
-        * ``dial_phonenumber`` -
-        * ``continue_survey`` -
-        * ``completed`` -
+        * ``type`` - section type
+        * ``question`` - question
+        * ``phrasing`` - text that will be used in TTS
+        * ``audiofile`` - audio file to be use instead of TTS
+        * ``invalid_audiofile`` - audio to play when input is invalid
+        * ``retries`` - amount of time to retry to get a valid input
+        * ``timeout`` - time to wait for user input
+        * ``key_0`` - on multi choice section, text for result on key 0
+        * ``key_1`` - on multi choice section, text for result on key 1
+        * ``key_2`` - on multi choice section, text for result on key 2
+        * ``key_3`` - on multi choice section, text for result on key 3
+        * ``key_4`` - on multi choice section, text for result on key 4
+        * ``key_5`` - on multi choice section, text for result on key 5
+        * ``key_6`` - on multi choice section, text for result on key 6
+        * ``key_7`` - on multi choice section, text for result on key 7
+        * ``key_8`` - on multi choice section, text for result on key 8
+        * ``key_9`` - on multi choice section, text for result on key 9
+        * ``rating_laps`` - From 1 to X, value to accept rating input
+        * ``validate_number`` - check if we want to valid the input on Enter Number section
+        * ``number_digits`` - Number of digits to wait for on Enter Number section
+        * ``min_number`` - if validate_number the minimum number accepted
+        * ``max_number`` - if validate_number the maximum number accepted
+        * ``dial_phonenumber`` - phonenumber to dialout
+        * ``completed`` - reaching this section will mark the subscriber as completed
 
     **Relationships**:
 
@@ -177,30 +176,30 @@ class Section_abstract(Sortable):
                                   help_text=_('Timeout in seconds to press the key(s)'))
     # Multiple choice question
     key_0 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Press") + " 0")
+                             verbose_name=_("Key") + " 0")
     key_1 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Press") + " 1")
+                             verbose_name=_("Key") + " 1")
     key_2 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Press") + " 2")
+                             verbose_name=_("Key") + " 2")
     key_3 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Press") + " 3")
+                             verbose_name=_("Key") + " 3")
     key_4 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Press") + " 4")
+                             verbose_name=_("Key") + " 4")
     key_5 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Press") + " 5")
+                             verbose_name=_("Key") + " 5")
     key_6 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Press") + " 6")
+                             verbose_name=_("Key") + " 6")
     key_7 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Press") + " 7")
+                             verbose_name=_("Key") + " 7")
     key_8 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Press") + " 8")
+                             verbose_name=_("Key") + " 8")
     key_9 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Press") + " 9")
+                             verbose_name=_("Key") + " 9")
 
     # rating question
     rating_laps = models.IntegerField(max_length=1,
                                       null=True, blank=True,
-                                      verbose_name=_("From 1 to X"),)
+                                      verbose_name=_("From 1 to X"))
 
     # enter a number
     validate_number = models.BooleanField(default=True,
@@ -218,10 +217,6 @@ class Section_abstract(Sortable):
     dial_phonenumber = models.CharField(max_length=50,
                                         null=True, blank=True,
                                         verbose_name=_("Dial phone number"))
-
-    # set if we continue or just hangup after this section
-    continue_survey = models.BooleanField(default=True,
-                                          verbose_name=_('Continue survey when done'))
 
     # if the current section means that the survey is completed
     completed = models.BooleanField(default=False,
@@ -289,7 +284,6 @@ class Section_template(Section_abstract):
             min_number=self.min_number,
             max_number=self.max_number,
             dial_phonenumber=self.dial_phonenumber,
-            continue_survey=self.continue_survey,
             completed=self.completed,
             order=self.order,
             invalid_audiofile_id=self.invalid_audiofile_id,

@@ -548,6 +548,11 @@ def survey_finitestatemachine(request):
             html_play,
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
 
+    elif list_section[current_state].type == SECTION_TYPE.HANGUP_SECTION:
+        #HANGUP_SECTION
+        debug_outp += "HANGUP_SECTION<br/>------------------<br/>"
+        html = '<Response> %s <Hangup/> </Response>' % html_play
+
     elif list_section[current_state].type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
         #MULTIPLE_CHOICE_SECTION
         number_digits = get_number_digits(list_section[current_state])
@@ -848,13 +853,14 @@ def section_add(request):
     if request.method == 'POST':
 
         # Voice Section
-        if int(request.POST.get('type')) == SECTION_TYPE.VOICE_SECTION:
+        if int(request.POST.get('type')) == SECTION_TYPE.VOICE_SECTION\
+            or int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION:
             form = VoiceSectionForm(request.user)
             if request.POST.get('add'):
                 form = VoiceSectionForm(request.user, request.POST)
                 if form.is_valid():
                     obj = form.save()
-                    request.session["msg"] = _('Voice Section is added successfully.')
+                    request.session["msg"] = _('Section is added successfully.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
@@ -862,9 +868,14 @@ def section_add(request):
 
             if request.POST.get('add') is None:
                 request.session["err_msg"] = True
-                form = VoiceSectionForm(
-                    request.user, initial={'survey': survey,
-                                           'type': SECTION_TYPE.VOICE_SECTION})
+                if int(request.POST.get('type')) == SECTION_TYPE.VOICE_SECTION:
+                    form = VoiceSectionForm(request.user,
+                        initial={'survey': survey,
+                                 'type': SECTION_TYPE.VOICE_SECTION})
+                else:
+                    form = VoiceSectionForm(request.user,
+                        initial={'survey': survey,
+                                 'type': SECTION_TYPE.HANGUP_SECTION})
 
         # Multiple Choice Section
         if int(request.POST.get('type')) == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
@@ -874,7 +885,7 @@ def section_add(request):
                 if form.is_valid():
                     obj = form.save()
                     request.session["msg"] =\
-                        _('Multiple Choice Section is added successfully.')
+                        _('Section is added successfully.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
@@ -894,7 +905,7 @@ def section_add(request):
                 if form.is_valid():
                     obj = form.save()
                     request.session["msg"] =\
-                        _('Rating Section is added successfully.')
+                        _('Section is added successfully.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
@@ -913,7 +924,7 @@ def section_add(request):
                 if form.is_valid():
                     obj = form.save()
                     request.session["msg"] =\
-                        _('Enter Number Section is added successfully.')
+                        _('Section is added successfully.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
@@ -932,7 +943,7 @@ def section_add(request):
                 if form.is_valid():
                     obj = form.save()
                     request.session["msg"] =\
-                        _('Record Message Section is added successfully.')
+                        _('Section is added successfully.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
@@ -951,7 +962,7 @@ def section_add(request):
                 if form.is_valid():
                     obj = form.save()
                     request.session["msg"] =\
-                        _('Patch-Through Section is added successfully.')
+                        _('Section is added successfully.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
@@ -994,8 +1005,9 @@ def section_change(request, id):
     section = get_object_or_404(Section_template,
                                 pk=int(id),
                                 survey__user=request.user)
-    if section.type == SECTION_TYPE.VOICE_SECTION:
-        #VOICE_SECTION
+    if section.type == SECTION_TYPE.VOICE_SECTION \
+        or section.type == SECTION_TYPE.HANGUP_SECTION:
+        #VOICE_SECTION & HANGUP_SECTION
         form = VoiceSectionForm(request.user, instance=section)
     elif section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
         #MULTIPLE_CHOICE_SECTION
@@ -1015,9 +1027,11 @@ def section_change(request, id):
 
     request.session['err_msg'] = ''
 
+    #TODO: See how to refactor this section
     if request.method == 'POST' and request.POST.get('type'):
-        # Voice Section
-        if int(request.POST.get('type')) == SECTION_TYPE.VOICE_SECTION:
+        # Voice Section or Hangup Section
+        if int(request.POST.get('type')) == SECTION_TYPE.VOICE_SECTION\
+            or int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION:
             form = VoiceSectionForm(request.user, instance=section)
             if request.POST.get('update'):
                 form = VoiceSectionForm(request.user,
@@ -1026,7 +1040,7 @@ def section_change(request, id):
                 if form.is_valid():
                     obj = form.save()
                     request.session["msg"] =\
-                        _('Voice Section is updated successfully.')
+                        _('Section is updated successfully.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
@@ -1034,9 +1048,14 @@ def section_change(request, id):
 
             if request.POST.get('update') is None:
                 request.session["err_msg"] = True
-                form = VoiceSectionForm(
-                    request.user, instance=section,
-                    initial={'type': SECTION_TYPE.VOICE_SECTION})
+                if int(request.POST.get('type')) == SECTION_TYPE.VOICE_SECTION:
+                    form = VoiceSectionForm(
+                        request.user, instance=section,
+                        initial={'type': SECTION_TYPE.VOICE_SECTION})
+                else:
+                    form = VoiceSectionForm(
+                        request.user, instance=section,
+                        initial={'type': SECTION_TYPE.HANGUP_SECTION})
 
         # Multiple Choice Section
         if int(request.POST.get('type')) == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
@@ -1047,7 +1066,7 @@ def section_change(request, id):
                 if form.is_valid():
                     obj = form.save()
                     request.session["msg"] =\
-                        _('Multiple Choice Section is updated successfully.')
+                        _('Section is updated successfully.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
@@ -1068,7 +1087,7 @@ def section_change(request, id):
                 if form.is_valid():
                     obj = form.save()
                     request.session["msg"] =\
-                        _('Rating Section is updated successfully.')
+                        _('Section is updated successfully.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
@@ -1089,7 +1108,7 @@ def section_change(request, id):
                 if form.is_valid():
                     obj = form.save()
                     request.session["msg"] =\
-                        _('Enter Number Section is updated successfully.')
+                        _('Section is updated successfully.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
@@ -1110,7 +1129,7 @@ def section_change(request, id):
                 if form.is_valid():
                     obj = form.save()
                     request.session["msg"] =\
-                        _('Record Message Section is updated successfully.')
+                        _('Section is updated successfully.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
@@ -1131,7 +1150,7 @@ def section_change(request, id):
                 if form.is_valid():
                     obj = form.save()
                     request.session["msg"] =\
-                        _('Patch Through Section is updated successfully.')
+                        _('Section is updated successfully.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:

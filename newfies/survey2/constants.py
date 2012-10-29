@@ -23,4 +23,4 @@ class SECTION_TYPE(Choice):
     ENTER_NUMBER_SECTION = 4, _('Enter a number')
     RECORD_MSG_SECTION = 5, _('Record message')
     PATCH_THROUGH_SECTION = 6, _('Patch-through')
-    #HANGUP_SECTION = 7, _('Hangup')
+    HANGUP_SECTION = 7, _('Hangup')

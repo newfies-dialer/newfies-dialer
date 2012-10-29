@@ -128,7 +128,7 @@
                 {% endif %}
 
                 <!--Audio field while updating section-->
-                {% if form.type.value|convert_to_int == SECTION_TYPE.VOICE_SECTION or form.type.value|convert_to_int == SECTION_TYPE.MULTIPLE_CHOICE_SECTION or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION or form.type.value|convert_to_int == SECTION_TYPE.ENTER_NUMBER_SECTION %}
+                {% if form.type.value|convert_to_int == SECTION_TYPE.VOICE_SECTION or form.type.value|convert_to_int == SECTION_TYPE.HANGUP_SECTION or form.type.value|convert_to_int == SECTION_TYPE.MULTIPLE_CHOICE_SECTION or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION or form.type.value|convert_to_int == SECTION_TYPE.ENTER_NUMBER_SECTION %}
                     {% if action == 'update' %}
                         <div class="row">
                             <div class="span2">
@@ -148,10 +148,6 @@
                             </div>
                         </div>
                     {% endif %}
-                {% endif %}
-
-                <!--Voice Section form-->
-                {% if form.type.value|convert_to_int == SECTION_TYPE.VOICE_SECTION %}
                 {% endif %}
 
                 <!--Multiple choice Section form-->

@@ -354,7 +354,6 @@ class DialerCampaignModel(TestCase):
 
         # status = 1
         self.campaign.update_campaign_status()
-        self.campaign.count_contact_of_phonebook(self.campaign.status)
         get_url_campaign_status(self.campaign.pk, self.campaign.status)
 
         self.campaign.status = 2
@@ -370,7 +369,6 @@ class DialerCampaignModel(TestCase):
         self.campaign.status = 4
         self.campaign.save()
         self.campaign.update_campaign_status()
-        self.campaign.count_contact_of_phonebook(self.campaign.status)
         get_url_campaign_status(self.campaign.pk, self.campaign.status)
 
         self.campaign.is_authorized_contact('123456789')

@@ -42,6 +42,7 @@ from common.common_functions import current_view
 import re
 
 
+#TODO: Move to model User Profile
 def common_send_notification(request, status, recipient=None):
     """User Notification (e.g. start | stop | pause | abort |
     contact/camapign limit) needs to be saved.
@@ -76,41 +77,12 @@ def common_send_notification(request, status, recipient=None):
     return True
 
 
-def common_campaign_status(pk, status):
-    """Campaign Status (e.g. start | stop | abort | pause) needs to be changed.
-    It is a common function for the admin and customer UI's
-
-    **Attributes**:
-
-        * ``pk`` - primary key of the campaign record
-        * ``status`` - selected status for the campaign record
-
-    **Logic Description**:
-
-        * Selected Campaign's status needs to be changed.
-          Changed status can be start, stop or pause.
-
-        * This function is used by ``update_campaign_status_admin()`` &
-          ``update_campaign_status_cust()``
-    """
-    campaign = Campaign.objects.get(pk=pk)
-    previous_status = campaign.status
-    campaign.status = status
-    campaign.save()
-
-    #Start tasks to import subscriber
-    if int(status) == CAMPAIGN_STATUS.START \
-        and int(previous_status) != CAMPAIGN_STATUS.START:
-        collect_subscriber.delay(pk)
-
-    return campaign.user
-
-
 @login_required
 def update_campaign_status_admin(request, pk, status):
     """Campaign Status (e.g. start|stop|pause|abort) can be changed from
     admin interface (via campaign list)"""
-    recipient = common_campaign_status(pk, status)
+    obj_campaign = Campaign.objects.get(id=pk)
+    recipient = obj_campaign.update_status(status)
     common_send_notification(request, status, recipient)
     return HttpResponseRedirect(
                 reverse("admin:dialer_campaign_campaign_changelist"))
@@ -120,14 +92,14 @@ def update_campaign_status_admin(request, pk, status):
 def update_campaign_status_cust(request, pk, status):
     """Campaign Status (e.g. start|stop|pause|abort) can be changed from
     customer interface (via dialer_campaign/campaign list)"""
-    recipient = common_campaign_status(pk, status)
+    obj_campaign = Campaign.objects.get(id=pk)
+    recipient = obj_campaign.update_status(status)
     common_send_notification(request, status, recipient)
 
     # Notify user while campaign Start
     if int(status) == CAMPAIGN_STATUS.START:
         request.session['info_msg'] = \
             _('The campaign global settings cannot be edited when the campaign is started')
-        obj_campaign = Campaign.objects.get(id=pk)
         if obj_campaign.content_type.model == 'survey_template':
             check_survey_campaign(request, pk)
         elif obj_campaign.content_type.model == 'voiceapp_template':
@@ -267,7 +239,7 @@ def campaign_grid(request):
                       str(get_app_name(
                           row.content_type.app_label, row.content_type.model,
                           row.object_id)),
-                      row.count_contact_of_phonebook(),
+                      row.totalcontact,
                       get_campaign_status_name(row.status),
                       get_grid_update_delete_link(request, row.id,
                           'dialer_campaign.change_campaign',

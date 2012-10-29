@@ -14,12 +14,14 @@
 
 from django.contrib import admin
 from django.contrib import messages
-from django.conf.urls.defaults import patterns
+from django.conf.urls import patterns
 from django.utils.translation import ugettext as _
+from django.utils import simplejson
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
+
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.forms import Contact_fileImport
 from dialer_campaign.function_def import check_dialer_setting, \
@@ -140,11 +142,11 @@ class ContactAdmin(admin.ModelAdmin):
                 #  6     - additional_vars
                 # To count total rows of CSV file
                 records = csv.reader(
-                    request.FILES['csv_file'], delimiter=',', quotechar='"')
+                    request.FILES['csv_file'], delimiter='|', quotechar='"')
                 total_rows = len(list(records))
                 BULK_SIZE = 1000
                 rdr = csv.reader(
-                    request.FILES['csv_file'], delimiter=',', quotechar='"')
+                    request.FILES['csv_file'], delimiter='|', quotechar='"')
 
                 #Get Phonebook Obj
                 phonebook = Phonebook.objects.get(pk=request.POST['phonebook'])
@@ -162,6 +164,10 @@ class ContactAdmin(admin.ModelAdmin):
                         type_error_import_list.append(row)
                         break
 
+                    row_6 = ''
+                    if row[6]:
+                        row_6 = simplejson.loads(row[6])
+
                     bulk_record.append(
                         Contact(
                             phonebook=phonebook,
@@ -171,7 +177,7 @@ class ContactAdmin(admin.ModelAdmin):
                             email=row[3],
                             description=row[4],
                             status=int(row[5]),
-                            additional_vars=row[6])
+                            additional_vars=row_6)
                     )
 
                     contact_cnt = contact_cnt + 1

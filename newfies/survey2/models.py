@@ -16,18 +16,12 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
-
 from dialer_campaign.models import Campaign
 from dialer_cdr.models import Callrequest
 from adminsortable.models import Sortable
 from audiofield.models import AudioFile
-from user_profile.fields import LanguageField
+from common.language_field import LanguageField
 from survey2.constants import SECTION_TYPE
-from south.modelsinspector import add_introspection_rules
-#from tagging.fields import TagField
-
-#add introspection rules
-add_introspection_rules([], ["^user_profile.fields.LanguageField"])
 
 
 class Survey_abstract(models.Model):

@@ -17,11 +17,7 @@ from django.contrib.contenttypes.models import ContentType
 from dialer_campaign.models import Campaign
 from dialer_gateway.models import Gateway
 from voice_app.constants import VOICEAPP_TYPE
-from user_profile.fields import LanguageField
-from south.modelsinspector import add_introspection_rules
-
-#add introspection rules
-add_introspection_rules([], ["^user_profile.fields.LanguageField"])
+from common.language_field import LanguageField
 
 
 class VoiceApp_abstract(models.Model):

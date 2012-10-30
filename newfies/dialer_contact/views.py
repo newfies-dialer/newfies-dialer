@@ -531,7 +531,7 @@ def contact_change(request, object_id):
     """
     contact = get_object_or_404(
         Contact, pk=object_id, phonebook__user=request.user)
-    print dict(contact.additional_vars)
+    
     form = ContactForm(request.user, instance=contact)
     if request.method == 'POST':
         # Delete contact

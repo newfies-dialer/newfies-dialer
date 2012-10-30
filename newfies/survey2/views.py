@@ -313,6 +313,7 @@ def survey_finitestatemachine(request):
 
     #Create the keys to store the cache
     key_state = "%s_state" % opt_CallUUID
+    key_complete = "%s_complete" % opt_CallUUID
     key_p_section = "%s_p_section" % opt_CallUUID  # Previous section
     key_survey = "%s_survey_id" % opt_CallUUID
 
@@ -321,9 +322,11 @@ def survey_finitestatemachine(request):
         debug_outp += "delete state and key_survey = %s <br/>" % str(key_survey)
         cache.delete(key_state)
         cache.delete(key_survey)
+        cache.delete(key_complete)
 
     #Retrieve the values of the keys
     current_state = cache.get(key_state)
+    current_completion = cache.get(key_complete)
     debug_outp += "Get key_state:%s value current_state:%s \n" % \
         (key_state, str(current_state))
     #check if we defined an debug setting to overwrite current_state
@@ -387,9 +390,7 @@ def survey_finitestatemachine(request):
         (obj_p_section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION or \
         obj_p_section.type == SECTION_TYPE.RATING_SECTION or \
         obj_p_section.type == SECTION_TYPE.ENTER_NUMBER_SECTION):
-
-        #
-        #HANDLE DTMF RECEIVED, SET THE CURRENT STATE
+        #Handle dtmf received, set the current state
         #Check if we receive a DTMF for the previous section then store the result
 
         exit_action = 'DTMF'
@@ -500,7 +501,9 @@ def survey_finitestatemachine(request):
     #
 
     #Check if it's a completed section
-    if list_section[current_state].completed:
+    if list_section[current_state].completed \
+        and (not current_completion or current_completion == 0):
+        cache.set(key_complete, 1, 21600)  # 21600 seconds = 6 hours
         #Flag subscriber
         subscriber = Subscriber.objects.get(pk=obj_callrequest.subscriber.id)
         subscriber.status = SUBSCRIBER_STATUS.COMPLETED

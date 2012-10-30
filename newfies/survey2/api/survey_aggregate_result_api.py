@@ -121,6 +121,3 @@ class ResultAggregateResource(ModelResource):
 
         logger.debug('Subscriber GET API : result ok 200')
         return self.read_response(request, survey_result)
-
-
-

@@ -30,6 +30,6 @@ class ResultAggregateResourceAPIPlayground(APIPlayground):
                         "description": "Returns a result belong to campaign"
                     }
                 ]
-            },
-            ]
+            }
+        ]
     }

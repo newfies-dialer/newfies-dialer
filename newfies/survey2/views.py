@@ -1699,7 +1699,6 @@ def survey_report(request):
         kwargs['starting_date__lte'] = end_date
         survey_result_kwargs['created_date__lte'] = end_date
 
-
     try:
         campaign_obj = Campaign.objects.get(id=int(campaign_id))
         survey_result_kwargs['campaign'] = campaign_obj

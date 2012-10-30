@@ -66,27 +66,25 @@ def audio_grid(request):
 
     count = audio_list.count()
     audio_list = audio_list\
-            .order_by(sortorder_sign + sortname)[start_page:end_page]
+                    .order_by(sortorder_sign + sortname)[start_page:end_page]
 
     link_style = 'style="text-decoration:none;\
         background-image:url(%snewfies/icons/link.png);"' % settings.STATIC_URL
     domain = Site.objects.get_current().domain
 
     rows = [{'id': row['id'],
-             'cell': ['<input type="checkbox" name="select" \
-                 class="checkbox" value="%s" />' % (str(row['id'])),
-                 row['name'],
-                 audio_file_player(row['audio_file']),
-                 '<input type="text" value="%s%s%s">' \
-                     % (domain, settings.MEDIA_URL, str(row['audio_file'])),
-                 row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
-                 '<a href="%s" class="icon" %s title="%s">&nbsp;</a>' \
-                      % ( (settings.MEDIA_URL + str(row['audio_file'])),
-                             link_style, _('Download audio')) +
-                 get_grid_update_delete_link(request, row['id'],
-                     'dialer_audio.change_audio', _('Update audio'), 'update')+\
-                 get_grid_update_delete_link(request, row['id'],
-                     'dialer_audio.delete_audio', _('Delete audio'), 'delete') ,
+             'cell': [
+                '<input type="checkbox" name="select" class="checkbox" value="%s" />' % (str(row['id'])),
+                row['name'],
+                audio_file_player(row['audio_file']),
+                '<input type="text" value="%s%s%s">' % (domain, settings.MEDIA_URL, str(row['audio_file'])),
+                row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
+                '<a href="%s" class="icon" %s title="%s">&nbsp;</a>' % \
+                ((settings.MEDIA_URL + str(row['audio_file'])),
+                link_style, _('Download audio')) + get_grid_update_delete_link(request, row['id'],
+                'dialer_audio.change_audio', _('Update audio'), 'update') + \
+                get_grid_update_delete_link(request, row['id'],
+                'dialer_audio.delete_audio', _('Delete audio'), 'delete'),
             ]} for row in audio_list]
 
     data = {'rows': rows,

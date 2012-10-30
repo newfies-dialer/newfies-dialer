@@ -41,7 +41,7 @@
                     <td>
                         {% if record.record_file %}
                             <ul class="playlist">
-                                <li style="width:110px;"><a href="{{ MEDIA_ROOT }}/recording/{{ record.record_file }}">{{ record.record_file }}</a></li>
+                                <li style="width:110px;"><a href="{{ settings.MEDIA_URL }}/recording/{{ record.record_file }}">{{ record.record_file }}</a></li>
                             </ul>
                         {% endif %}
                     </td>

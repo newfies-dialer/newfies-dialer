@@ -42,7 +42,8 @@ class CampaignAdmin(GenericAdminModelAdmin):
                        'intervalretry', 'calltimeout', 'imported_phonebook',
                        'daily_start_time', 'daily_stop_time',
                        'monday', 'tuesday', 'wednesday',
-                       'thursday', 'friday', 'saturday', 'sunday')
+                       'thursday', 'friday', 'saturday', 'sunday',
+                       'completion_maxretry', 'completion_intervalretry')
         }),
     )
     list_display = ('id', 'name', 'content_type', 'campaign_code', 'user',

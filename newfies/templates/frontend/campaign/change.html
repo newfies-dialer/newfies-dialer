@@ -86,6 +86,29 @@
         </fieldset>
 
         <fieldset>
+            <legend>{% trans "Dialer Completion settings" %}</legend>
+            <div class="span12">
+                <div class="row">
+                {% get_fieldset completion_maxretry,completion_intervalretry as campaign_settings_fields from form %}
+                {% for field in campaign_settings_fields %}
+                    <div class="span6">
+                        <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                            <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                            <div class="input">
+                                {{ field }}
+                                {% if field.errors %}
+                                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                                <span class="help-block">{{ field.help_text }} </span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
             <legend>{% trans "Campaign schedule" %}</legend>
             <div class="span12">
                 <div class="row">

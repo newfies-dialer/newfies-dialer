@@ -191,6 +191,8 @@ class CampaignResource(ModelResource):
             * ``maxretry`` - Defines the max retries allowed per user.
             * ``intervalretry`` - Defines the time to wait between retries\
                                   in seconds
+            * ``completion_maxretry`` - Amount of retries until a contact is completed. Completed means that it reachs a point in the phone application marked as completed
+            * ``intervalretry`` - Time delay in seconds before retrying contact for completion
             * ``calltimeout`` - Set seconds of call timeout
 
         **Gateways**:
@@ -257,6 +259,8 @@ class CampaignResource(ModelResource):
                      "id":"1",
                      "intervalretry":3,
                      "maxretry":3,
+                     "completion_intervalretry":0,
+                     "completion_maxretry":0,
                      "monday":true,
                      "name":"Default_Campaign",
                      "resource_uri":"/api/app/campaign/1/",

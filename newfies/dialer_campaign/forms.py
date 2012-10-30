@@ -60,6 +60,7 @@ class CampaignForm(ModelForm):
                   'extra_data', 'phonebook',
                   'frequency', 'callmaxduration', 'maxretry',
                   'intervalretry', 'calltimeout',
+                  'completion_maxretry', 'completion_intervalretry',
                   'startingdate', 'expirationdate',
                   'daily_start_time', 'daily_stop_time',
                   'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
@@ -190,7 +191,8 @@ class CampaignAdminForm(ModelForm):
                   'phonebook', 'frequency', 'callmaxduration', 'maxretry',
                   'intervalretry', 'calltimeout', 'daily_start_time',
                   'daily_stop_time', 'monday', 'tuesday', 'wednesday',
-                  'thursday', 'friday', 'saturday', 'sunday']
+                  'thursday', 'friday', 'saturday', 'sunday',
+                  'completion_maxretry', 'completion_intervalretry']
 
     def __init__(self, *args, **kwargs):
         super(CampaignAdminForm, self).__init__(*args, **kwargs)

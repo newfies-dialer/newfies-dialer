@@ -128,6 +128,9 @@ class Campaign(Model):
         * ``callmaxduration`` - Max retry allowed per user
         * ``maxretry`` - Max retry allowed per user
         * ``intervalretry`` - Time to wait between retries in seconds
+        * ``completion_maxretry`` - Amount of retries until a contact is completed
+        * ``completion_intervalretry`` - Time delay in seconds before retrying \
+        contact for completion
         * ``calltimeout`` - Number of seconds to timeout on calls
         * ``aleg_gateway`` - Gateway to use to reach the contact
         * ``extra_data`` - Additional data to pass to the application
@@ -201,6 +204,12 @@ class Campaign(Model):
     intervalretry = models.IntegerField(default='300', blank=True, null=True,
                                         verbose_name=_('Time between Retries'),
                                         help_text=_("Time delay in seconds before retrying contact"))
+    completion_maxretry = models.IntegerField(default='0', blank=True, null=True,
+                                              verbose_name=_('Completion Max Retries'),
+                                              help_text=_("Amount of retries until a contact is completed"))
+    completion_intervalretry = models.IntegerField(default='900', blank=True, null=True,
+                                                   verbose_name=_('Completion Time between Retries'),
+                                                   help_text=_("Time delay in seconds before retrying contact for completion"))
     calltimeout = models.IntegerField(default='45', blank=True, null=True,
                                       verbose_name=_('Timeout on Call'),
                                       help_text=_("Connection timeout in seconds"))

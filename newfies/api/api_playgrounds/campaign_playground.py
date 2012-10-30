@@ -81,7 +81,17 @@ class CampaignAPIPlayground(APIPlayground):
                             {
                                 "name": "intervalretry",
                                 "type": "string",
-                                "default": "3000"
+                                "default": "300"
+                            },
+                            {
+                                "name": "completion_maxretry",
+                                "type": "string",
+                                "default": "0"
+                            },
+                            {
+                                "name": "completion_intervalretry",
+                                "type": "string",
+                                "default": "900"
                             },
                             {
                                 "name": "calltimeout",

@@ -28,11 +28,6 @@ class ResultAggregateResourceAPIPlayground(APIPlayground):
                         "method": "GET",
                         "url": "/api/v1/survey_aggregate_result/{campaign-id}/",
                         "description": "Returns a result belong to campaign"
-                    },
-                    {
-                        "method": "GET",
-                        "url": "/api/v1/survey_aggregate_result/{campaign-id}/{survey-id}",
-                        "description": "Returns a specific result"
                     }
                 ]
             },

@@ -44,10 +44,6 @@ class ResultAggregateResource(ModelResource):
 
             curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/survey_aggregate_result/%campaign_id%/?format=json
 
-                or
-
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/survey_aggregate_result/%campaign_id%/%survey_id%/?format=json
-
         Response::
 
             [
@@ -64,7 +60,6 @@ class ResultAggregateResource(ModelResource):
             ]
 
     """
-
     class Meta:
         resource_name = 'survey_aggregate_result'
         authorization = Authorization()
@@ -102,10 +97,6 @@ class ResultAggregateResource(ModelResource):
         temp_url = request.META['PATH_INFO']
         temp_id = temp_url.split('/api/v1/survey_aggregate_result/')[1]
         camp_id = temp_id.split('/')[0]
-        try:
-            survey_id = temp_id.split('/')[1]
-        except:
-            survey_id = False
 
         try:
             campaign_id = int(camp_id)
@@ -122,14 +113,6 @@ class ResultAggregateResource(ModelResource):
             error_msg = "Campaign ID does not exists!"
             logger.error(error_msg)
             raise BadRequest(error_msg)
-
-        if survey_id:
-            try:
-                survey_result_kwargs['survey_id'] = int(survey_id)
-            except ValueError:
-                error_msg = "Wrong value for survey_id !"
-                logger.error(error_msg)
-                raise BadRequest(error_msg)
 
         survey_result = ResultAggregate.objects\
             .filter(**survey_result_kwargs)\

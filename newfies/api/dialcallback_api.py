@@ -21,13 +21,10 @@ from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie import http
-
 from dialer_cdr.models import Callrequest
 from api.resources import CustomXmlEmitter, \
-                          IpAddressAuthorization, \
-                          IpAddressAuthentication, \
-                          create_voipcall, \
-                          CDR_VARIABLES
+    IpAddressAuthorization, IpAddressAuthentication, \
+    create_voipcall, CDR_VARIABLES
 
 import logging
 

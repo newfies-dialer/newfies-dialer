@@ -88,7 +88,14 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='',
     else:
         #B-Leg
         leg_type = 2
-        used_gateway = obj_callrequest.content_object.gateway
+        if obj_callrequest.content_object.__class__.__name__ == 'VoiceApp':
+            used_gateway = obj_callrequest.content_object.gateway
+        else:
+            #Survey
+            used_gateway = obj_callrequest.aleg_gateway
+
+        #On B-leg issue to get the right CallerID and Phonenumber
+        #TODO: Add behavior here
 
     #check the right variable for hangup cause
     data_hangup_cause = data["%s%s" % (data_prefix, 'hangup_cause')]
@@ -102,6 +109,8 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='',
     else:
         disposition = data["%s%s" % \
                         (data_prefix, 'endpoint_disposition')] or ''
+    if not from_plivo:
+        from_plivo = ''
 
     logger.debug('Create CDR - request_uuid=%s ; leg=%d ; hangup_cause= %s' % \
                     (plivo_request_uuid, leg_type, cdr_hangup_cause))

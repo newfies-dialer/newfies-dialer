@@ -42,7 +42,7 @@ class ResultAggregateResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/survey_aggregate_result/%campaign_id%/?format=json
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/survey_aggregate_result/%campaign_id%/
 
         Response::
 

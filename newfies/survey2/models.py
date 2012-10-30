@@ -197,7 +197,7 @@ class Section_abstract(Sortable):
                              verbose_name=_("Key") + " 9")
 
     # rating question
-    rating_laps = models.IntegerField(max_length=1,
+    rating_laps = models.IntegerField(max_length=1, default=9,
                                       null=True, blank=True,
                                       verbose_name=_("From 1 to X"))
 

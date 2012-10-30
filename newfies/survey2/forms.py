@@ -197,7 +197,7 @@ class RatingSectionForm(ModelForm):
         self.fields['retries'].widget.attrs['class'] = 'span1'
         self.fields['timeout'].widget.attrs['class'] = 'span1'
         self.fields['rating_laps'].widget.attrs['class'] = 'span1'
-        self.fields['rating_laps'].widget.attrs['maxlength'] = 1
+        self.fields['rating_laps'].widget.attrs['maxlength'] = 3
 
 
 class EnterNumberSectionForm(ModelForm):

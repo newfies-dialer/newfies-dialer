@@ -95,7 +95,8 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='',
             used_gateway = obj_callrequest.aleg_gateway
 
         #On B-leg issue to get the right CallerID and Phonenumber
-        #TODO: Add behavior here
+        if not to_plivo or len(to_plivo) == 0:
+            to_plivo = data["%s%s" % (data_prefix, 'caller_id')]
 
     #check the right variable for hangup cause
     data_hangup_cause = data["%s%s" % (data_prefix, 'hangup_cause')]

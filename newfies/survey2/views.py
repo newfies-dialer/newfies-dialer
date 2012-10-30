@@ -637,12 +637,14 @@ def survey_finitestatemachine(request):
         phonenumber = list_section[current_state].dial_phonenumber
         html =\
         '<Response>\n'\
+        '   %s\n'\
         '   <Dial timeLimit="%s" callerId="%s" callbackUrl="%s">\n'\
         '   <Number gateways="%s" gatewayTimeouts="%s">'\
         '   %s </Number> '\
         '   </Dial>\n'\
         '   <Redirect>%s</Redirect>\n'\
         '</Response>' % (
+            html_play,
             timelimit,
             callerid,
             settings.PLIVO_DEFAULT_DIALCALLBACK_URL,

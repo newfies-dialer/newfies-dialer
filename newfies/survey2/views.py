@@ -120,28 +120,6 @@ def find_branching(p_section, DTMF):
     print "find branching"
 
 
-def get_number_digits(section):
-    """
-    Get number of digits to wait for for a section
-    """
-    if section.type == SECTION_TYPE.VOICE_SECTION:
-        number_digits = 1
-    elif section.type == SECTION_TYPE.RATING_SECTION:
-        try:
-            number_digits = len(str(section.rating_laps))
-        except:
-            number_digits = 1
-    elif section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION \
-        or section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
-        number_digits = 1
-    elif section.type == SECTION_TYPE.ENTER_NUMBER_SECTION:
-        #Get number of digits
-        number_digits = section.number_digits
-        if not number_digits:
-            number_digits = 1
-    return number_digits
-
-
 def set_aggregate_result(obj_callrequest, obj_p_section, response, RecordingDuration):
     """
     save the aggregate result for the campaign / survey
@@ -495,6 +473,15 @@ def survey_finitestatemachine(request):
                                          obj_callrequest.content_object.tts_language)
             html_play = "<Play>%s</Play>" % audio_url
 
+    #Invalid Audio URL
+    if list_section[current_state].invalid_audiofile \
+        and list_section[current_state].invalid_audiofile.audio_file.url:
+        #Audio file
+        invalid_audiourl = url_basename + list_section[current_state].invalid_audiofile.audio_file.url
+        invalid_input = ' invalidDigitsSound="%s"' % invalid_audiourl
+    else:
+        invalid_input = ''
+
     #Get timeout
     try:
         timeout = int(list_section[current_state].timeout / 1000)
@@ -531,7 +518,7 @@ def survey_finitestatemachine(request):
 
     if list_section[current_state].type == SECTION_TYPE.VOICE_SECTION:
         #VOICE_SECTION
-        number_digits = get_number_digits(list_section[current_state])
+        number_digits = 1
         debug_outp += "VOICE_SECTION<br/>------------------<br/>"
         html =\
         '<Response>\n'\
@@ -555,13 +542,13 @@ def survey_finitestatemachine(request):
 
     elif list_section[current_state].type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
         #MULTIPLE_CHOICE_SECTION
-        number_digits = get_number_digits(list_section[current_state])
+        number_digits = 1
         debug_outp += "MULTIPLE_CHOICE_SECTION<br/>------------------<br/>"
         html =\
         '<Response>\n'\
         '   <GetDigits action="%s" method="GET" numDigits="%d" '\
         'retries="%d" validDigits="0123456789" timeout="%s" '\
-        'finishOnKey="#">\n'\
+        'finishOnKey="#" %s>\n'\
         '       %s\n'\
         '   </GetDigits>\n'\
         '   <Redirect>%s</Redirect>\n'\
@@ -570,18 +557,22 @@ def survey_finitestatemachine(request):
             number_digits,
             retries,
             timeout,
+            invalid_input,
             html_play,
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
 
     elif list_section[current_state].type == SECTION_TYPE.RATING_SECTION:
         #RATING_SECTION
-        number_digits = get_number_digits(list_section[current_state])
+        try:
+            number_digits = len(str(list_section[current_state].rating_laps))
+        except:
+            number_digits = 1
         debug_outp += "RATING_SECTION<br/>------------------<br/>"
         html =\
         '<Response>\n'\
         '   <GetDigits action="%s" method="GET" numDigits="%d" '\
         'retries="%d" validDigits="0123456789" timeout="%s" '\
-        'finishOnKey="#">\n'\
+        'finishOnKey="#" %s>\n'\
         '       %s\n'\
         '   </GetDigits>\n'\
         '   <Redirect>%s</Redirect>\n'\
@@ -590,18 +581,21 @@ def survey_finitestatemachine(request):
             number_digits,
             retries,
             timeout,
+            invalid_input,
             html_play,
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
 
     elif list_section[current_state].type == SECTION_TYPE.ENTER_NUMBER_SECTION:
         #ENTER_NUMBER_SECTION
-        number_digits = get_number_digits(list_section[current_state])
+        number_digits = list_section[current_state].number_digits
+        if not number_digits:
+            number_digits = 1
         debug_outp += "ENTER_NUMBER_SECTION<br/>------------------<br/>"
         html =\
         '<Response>\n'\
         '   <GetDigits action="%s" method="GET" numDigits="%d" '\
         'retries="%d" validDigits="0123456789" timeout="%s" '\
-        'finishOnKey="#">\n'\
+        'finishOnKey="#" %s>\n'\
         '       %s\n'\
         '   </GetDigits>\n'\
         '   <Redirect>%s</Redirect>\n'\
@@ -610,6 +604,7 @@ def survey_finitestatemachine(request):
             number_digits,
             retries,
             timeout,
+            invalid_input,
             html_play,
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
 

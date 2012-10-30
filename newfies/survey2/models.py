@@ -124,7 +124,7 @@ class Section_abstract(Sortable):
 
         * ``type`` - section type
         * ``question`` - question
-        * ``phrasing`` - text that will be used in TTS
+        * ``phrasing`` - text that will be used for TTS
         * ``audiofile`` - audio file to be use instead of TTS
         * ``invalid_audiofile`` - audio to play when input is invalid
         * ``retries`` - amount of time to retry to get a valid input
@@ -163,7 +163,7 @@ class Section_abstract(Sortable):
     question = models.CharField(max_length=500, blank=False,
                                 verbose_name=_("Question"),
                                 help_text=_('Example : Hotel Service Rating'))
-    # Phrasing is used
+    # Phrasing will be used by TTS
     phrasing = models.CharField(max_length=1000, null=True, blank=True,
                                 help_text=_('Example : Enter a number between 1 to 5, press pound key when done'))
     audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
@@ -195,33 +195,27 @@ class Section_abstract(Sortable):
                              verbose_name=_("Key") + " 8")
     key_9 = models.CharField(max_length=100, null=True, blank=True,
                              verbose_name=_("Key") + " 9")
-
     # rating question
     rating_laps = models.IntegerField(max_length=1, default=9,
                                       null=True, blank=True,
                                       verbose_name=_("From 1 to X"))
-
     # enter a number
     validate_number = models.BooleanField(default=True,
                                           verbose_name=_('Check for valid number'))
     number_digits = models.IntegerField(max_length=2, null=True, blank=True,
                                         default="2",
                                         verbose_name=_("Number of digits"))
-
     min_number = models.IntegerField(max_length=1, null=True, blank=True,
                                      default=0, verbose_name=_("Minimum"))
     max_number = models.IntegerField(max_length=1, null=True, blank=True,
                                      default=99, verbose_name=_("Maximum"))
-
     # dial a phone number
     dial_phonenumber = models.CharField(max_length=50,
                                         null=True, blank=True,
                                         verbose_name=_("Dial phone number"))
-
     # if the current section means that the survey is completed
     completed = models.BooleanField(default=False,
                                     verbose_name=_('Survey completed'))
-
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 

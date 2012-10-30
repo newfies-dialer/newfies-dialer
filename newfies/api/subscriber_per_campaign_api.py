@@ -48,6 +48,7 @@ class SubscriberPerCampaignResource(ModelResource):
 
         * ``contact_id`` - contact id
         * ``count_attempt`` - no of call attempt
+        * ``completion_count_attempt`` - no of call attempt for completion
         * ``last_attempt`` - last call attempt
         * ``status`` - call status
 
@@ -67,6 +68,7 @@ class SubscriberPerCampaignResource(ModelResource):
                {
                   "contact_id":1,
                   "count_attempt":1,
+                  "completion_count_attempt":1,
                   "last_attempt":"2012-01-17T15:28:37",
                   "status":2,
                   "subscriber_id": 1,
@@ -75,6 +77,7 @@ class SubscriberPerCampaignResource(ModelResource):
                {
                   "contact_id":2,
                   "count_attempt":1,
+                  "completion_count_attempt":1,
                   "last_attempt":"2012-02-06T17:00:38",
                   "status":1,
                   "subscriber_id": 2,
@@ -150,7 +153,7 @@ class SubscriberPerCampaignResource(ModelResource):
                 raise BadRequest(error_msg)
 
             sql_statement = "SELECT DISTINCT contact_id, last_attempt, "\
-                "count_attempt, dialer_subscriber.status,"\
+                "count_attempt, completion_count_attempt, dialer_subscriber.status,"\
                 "dialer_subscriber.id "\
                 "FROM dialer_subscriber "\
                 "LEFT JOIN dialer_callrequest ON "\
@@ -163,7 +166,7 @@ class SubscriberPerCampaignResource(ModelResource):
 
         else:
             sql_statement = "SELECT DISTINCT contact_id, last_attempt, "\
-                "count_attempt, dialer_subscriber.status, "\
+                "count_attempt, completion_count_attempt, dialer_subscriber.status, "\
                 "dialer_subscriber.id "\
                 "FROM dialer_subscriber "\
                 "LEFT JOIN dialer_callrequest ON "\
@@ -183,6 +186,7 @@ class SubscriberPerCampaignResource(ModelResource):
             modrecord['contact_id'] = record[0]
             modrecord['last_attempt'] = record[1]
             modrecord['count_attempt'] = record[2]
+            modrecord['completion_count_attempt'] = record[3]
             modrecord['status'] = record[3]
             modrecord['subscriber_id'] = record[4]
             modrecord['contact'] = get_contact(record[0])

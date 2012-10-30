@@ -175,10 +175,9 @@ class Campaign(Model):
                                         verbose_name=_('Start'),
                                         help_text=_("Date Format: YYYY-mm-DD HH:MM:SS"),
                                         db_index=True)
-    expirationdate = models.DateTimeField(
-        default=(lambda: datetime.now() + relativedelta(months=+1)),
-        verbose_name=_('Finish'),
-        help_text=_("Date Format: YYYY-mm-DD HH:MM:SS"))
+    expirationdate = models.DateTimeField(default=(lambda: datetime.now() + relativedelta(months=+1)),
+                                          verbose_name=_('Finish'),
+                                          help_text=_("Date Format: YYYY-mm-DD HH:MM:SS"))
     #Per Day Starting & Stopping Time
     daily_start_time = models.TimeField(default='00:00:00',
                                         help_text=_("Time Format: HH:MM:SS"))
@@ -198,6 +197,7 @@ class Campaign(Model):
     callmaxduration = models.IntegerField(default='1800', blank=True, null=True,
                                           verbose_name=_('Max Call Duration'),
                                           help_text=_("Maximum call duration in seconds"))
+    #max retry on failure - Note that the answered call not completed are counted
     maxretry = models.IntegerField(default='0', blank=True, null=True,
                                    verbose_name=_('Max Retries'),
                                    help_text=_("Maximum retries per contact"))
@@ -437,10 +437,11 @@ class Subscriber(Model):
 
     **Attributes**:
 
-        * ``last_attempt`` -
-        * ``count_attempt`` -
-        * ``duplicate_contact`` -
-        * ``status`` -
+        * ``last_attempt`` - last call attempt date
+        * ``count_attempt`` - Count the amount of call attempt
+        * ``completion_count_attempt`` - Count the amount of attempt to call in order to achieve completion
+        * ``duplicate_contact`` - copy of the contact phonenumber
+        * ``status`` - subscriber status
 
     **Relationships**:
 
@@ -455,8 +456,11 @@ class Subscriber(Model):
                                  help_text=_("Select Campaign"))
     last_attempt = models.DateTimeField(null=True, blank=True,
                                         verbose_name=_("Last attempt"))
-    count_attempt = models.IntegerField(null=True, blank=True,
-                                        verbose_name=_("Count attempts"), default='0')
+    count_attempt = models.IntegerField(default=0, null=True, blank=True,
+                                        verbose_name=_("Count attempts"))
+    #Count the amount of attempt to call in order to achieve completion
+    completion_count_attempt = models.IntegerField(default=0, null=True, blank=True,
+                                                   verbose_name=_("Completion Count attempts"))
     #We duplicate contact to create a unique constraint
     duplicate_contact = models.CharField(max_length=90,
                                          verbose_name=_("Contact"))

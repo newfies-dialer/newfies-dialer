@@ -109,6 +109,7 @@ class SubscriberResource(ModelResource):
                "objects":[
                   {
                      "count_attempt":1,
+                     "completion_count_attempt":1,
                      "created_date":"2012-01-17T03:58:49",
                      "duplicate_contact":"123456789",
                      "id":"1",

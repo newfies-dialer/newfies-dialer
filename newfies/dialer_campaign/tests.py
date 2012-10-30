@@ -79,6 +79,7 @@ class DialerCampaignView(BaseAuthenticatedClient):
                 "campaign": "1",
                 "duplicate_contact": "1234567",
                 "count_attempt": "1",
+                "completion_count_attempt": "1",
             })
         self.assertEqual(response.status_code, 200)
 
@@ -334,6 +335,7 @@ class DialerCampaignModel(TestCase):
             contact_id=1,
             campaign=self.campaign,
             count_attempt=0,
+            completion_count_attempt=0,
             status=1,
         )
         self.subscriber.save()

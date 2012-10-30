@@ -26,12 +26,12 @@ class SubscriberPerCampaignAPIPlayground(APIPlayground):
                 "endpoints": [
                     {
                         "method": "GET",
-                        "url": "/api/v1/subscriber_per_campaign/{campaign-id}/",
+                        "url": "/api/v1/subscriber_per_campaign/{campaign-id}/?format=json",
                         "description": "Returns campaign subscribers per campaign"
                     },
                     {
                         "method": "GET",
-                        "url": "/api/v1/subscriber_per_campaign/{campaign-id}/{contact}/",
+                        "url": "/api/v1/subscriber_per_campaign/{campaign-id}/{contact}/?format=json",
                         "description": "Returns specific campaign subscribers per campaign"
                     },
                 ]

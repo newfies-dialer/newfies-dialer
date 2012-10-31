@@ -30,7 +30,6 @@ from dialer_campaign.function_def import user_dialer_setting
 from api.resources import CustomXmlEmitter, \
     IpAddressAuthorization, IpAddressAuthentication, \
     create_voipcall, CDR_VARIABLES
-from datetime import datetime, timedelta
 import logging
 from uuid import uuid1
 
@@ -189,6 +188,7 @@ class HangupcallResource(ModelResource):
                 obj_subscriber.save()
             except:
                 logger.debug('Hangupcall Error cannot find the Subscriber!')
+                return False
 
             # 2 / FAILURE ; 3 / RETRY ; 4 / SUCCESS
             if opt_hangup_cause == 'NORMAL_CLEARING':

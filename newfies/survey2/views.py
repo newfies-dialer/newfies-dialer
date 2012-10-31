@@ -632,7 +632,7 @@ def survey_finitestatemachine(request):
         callerid = obj_callrequest.callerid
         gatewaytimeouts = obj_callrequest.timeout
         gateways = obj_callrequest.aleg_gateway.gateways
-        phonenumber = list_section[current_state].dial_phonenumber
+        phonenumber = list_section[current_state].phonenumber
         html =\
         '<Response>\n'\
         '   %s\n'\

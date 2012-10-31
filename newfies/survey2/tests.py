@@ -631,7 +631,7 @@ class SurveyModel(TestCase):
         obj = form.save(commit=False)
         obj.type = 6
         obj.question = "test question"
-        obj.dial_phonenumber = 1234567890
+        obj.phonenumber = 1234567890
         obj.survey = self.survey_template
         obj.save()
 

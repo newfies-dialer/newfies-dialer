@@ -2975,7 +2975,7 @@ msgstr ""
 
 #: templates/frontend/survey2/survey_change.html:185
 #: templates/frontend/survey2/survey_view.html:109
-msgid "Accepted keys and associated results"
+msgid "Key Associations"
 msgstr ""
 
 #: templates/frontend/survey2/survey_change.html:193
@@ -3039,7 +3039,7 @@ msgstr ""
 #: templates/frontend/survey2/survey_change.html:327
 #: templates/frontend/survey2/survey_view.html:245
 #: templates/frontend/survey2/survey_view.html:250
-msgid "If the user press"
+msgid "Key"
 msgstr ""
 
 #: templates/frontend/survey2/survey_change.html:323

@@ -144,7 +144,7 @@ class Section_abstract(Sortable):
         * ``number_digits`` - Number of digits to wait for on Enter Number section
         * ``min_number`` - if validate_number the minimum number accepted
         * ``max_number`` - if validate_number the maximum number accepted
-        * ``dial_phonenumber`` - phonenumber to dialout
+        * ``phonenumber`` - phonenumber to dialout
         * ``completed`` - reaching this section will mark the subscriber as completed
 
     **Relationships**:
@@ -165,7 +165,7 @@ class Section_abstract(Sortable):
                                 help_text=_('Example : Hotel Service Rating'))
     # Script will be used by TTS
     script = models.CharField(max_length=1000, null=True, blank=True,
-                                help_text=_('Example : Capture digits between 1 to 5, press pound key when done'))
+                              help_text=_('Example : Capture digits between 1 to 5, press pound key when done'))
     audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
                                   verbose_name=_("Audio File"))
     retries = models.IntegerField(max_length=1, null=True, blank=True,
@@ -210,7 +210,7 @@ class Section_abstract(Sortable):
     max_number = models.IntegerField(max_length=1, null=True, blank=True,
                                      default=99, verbose_name=_("Maximum"))
     #Call Transfer
-    dial_phonenumber = models.CharField(max_length=50,
+    phonenumber = models.CharField(max_length=50,
                                         null=True, blank=True,
                                         verbose_name=_("Dial phone number"))
     # if the current section means that the survey is completed
@@ -277,7 +277,7 @@ class Section_template(Section_abstract):
             number_digits=self.number_digits,
             min_number=self.min_number,
             max_number=self.max_number,
-            dial_phonenumber=self.dial_phonenumber,
+            phonenumber=self.phonenumber,
             completed=self.completed,
             order=self.order,
             invalid_audiofile_id=self.invalid_audiofile_id,

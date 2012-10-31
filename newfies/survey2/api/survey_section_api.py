@@ -85,7 +85,7 @@ class SectionResource(ModelResource):
         * ``number_digits`` - Number of digits to wait for on Enter Number section
         * ``min_number`` - if validate_number the minimum number accepted
         * ``max_number`` - if validate_number the maximum number accepted
-        * ``dial_phonenumber`` - phonenumber to dialout
+        * ``phonenumber`` - phonenumber to dialout
         * ``completed`` - reaching this section will mark the subscriber as completed
 
     **Validation**:
@@ -128,7 +128,7 @@ class SectionResource(ModelResource):
                "objects":[
                   {
                      "created_date":"2012-09-13T08:06:05.344297",
-                     "dial_phonenumber":null,
+                     "phonenumber":null,
                      "id":"15",
                      "key_0":null,
                      "key_1":null,

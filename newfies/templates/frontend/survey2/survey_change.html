@@ -177,7 +177,7 @@
                                     <tr>
                                         <th colspan="2">
                                             <center>
-                                                <h4><em>{% trans "Accepted keys and associated results" %}</em></h4>
+                                                <h4><em>{% trans "Key Associations" %}</em></h4>
                                             </center>
                                         </th>
                                     </tr>
@@ -271,8 +271,8 @@
                             <!--Call transfer Section form-->
                             {% if section.type == SECTION_TYPE.CALL_TRANSFER %}
                                 <div class="span8">
-                                    {% if section.dial_phonenumber %}
-                                        {% trans "Dial phone number" %} : {{ section.dial_phonenumber }} <br/>
+                                    {% if section.phonenumber %}
+                                        {% trans "Dial phone number" %} : {{ section.phonenumber }} <br/>
                                     {% endif %}
                                 </div>
                             {% endif %}
@@ -304,12 +304,12 @@
                                                         {% if section.type != SECTION_TYPE.RECORD_MSG %}
                                                         <td>
                                                             {% if branch.keys == 'any' %}
-                                                                {% trans "If the user press" %}&nbsp;
+                                                                {% trans "Key" %}&nbsp;
                                                                 {% trans "anything" %}
                                                             {% elif branch.keys == 'timeout' %}
                                                                 {% trans "Timeout" %} (no input within {{ section.timeout }}ms)
                                                             {% elif branch.keys %}
-                                                                {% trans "If the user press" %}&nbsp;
+                                                                {% trans "Key" %}&nbsp;
                                                                 {{ branch.keys }}
                                                             {% else %}
                                                                 {% trans "None" %}

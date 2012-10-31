@@ -108,7 +108,7 @@ class BranchingResource(ModelResource):
                      "resource_uri":"/api/v1/branching/10/",
                      "section":{
                         "created_date":"2012-09-13T08:06:05.344297",
-                        "dial_phonenumber":null,
+                        "phonenumber":null,
                         "id":"15",
                         "key_0":null,
                         "key_1":null,

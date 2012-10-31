@@ -248,7 +248,7 @@ class PatchThroughSectionForm(ModelForm):
 
     class Meta:
         model = Section_template
-        fields = ['type', 'survey', 'question', 'dial_phonenumber', 'completed']
+        fields = ['type', 'survey', 'question', 'phonenumber', 'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(PatchThroughSectionForm, self).__init__(*args, **kwargs)

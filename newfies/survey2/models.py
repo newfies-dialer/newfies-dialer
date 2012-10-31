@@ -163,7 +163,7 @@ class Section_abstract(Sortable):
     question = models.CharField(max_length=500, blank=False,
                                 verbose_name=_("Question"),
                                 help_text=_('Example : Hotel Service Rating'))
-    # Phrasing will be used by TTS
+    # Script will be used by TTS
     script = models.CharField(max_length=1000, null=True, blank=True,
                                 help_text=_('Example : Capture digits between 1 to 5, press pound key when done'))
     audiofile = models.ForeignKey(AudioFile, null=True, blank=True,

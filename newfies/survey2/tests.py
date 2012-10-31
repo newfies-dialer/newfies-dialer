@@ -22,7 +22,7 @@ from survey2.models import Survey, Survey_template, Section,\
 from survey2.forms import SurveyForm, VoiceSectionForm,\
     MultipleChoiceSectionForm, RatingSectionForm,\
     EnterNumberSectionForm, RecordMessageSectionForm,\
-    PatchThroughSectionForm, BranchingForm, PhrasingForm,\
+    PatchThroughSectionForm, BranchingForm, ScriptForm,\
     SurveyDetailReportForm
 from survey2.views import survey_list, survey_grid, survey_add, \
     survey_change, survey_del, section_add, section_change,\
@@ -635,7 +635,7 @@ class SurveyModel(TestCase):
         obj.survey = self.survey_template
         obj.save()
 
-        form = PhrasingForm()
+        form = ScriptForm()
         obj = form.save(commit=False)
         obj.script = 'xyz'
         obj.survey = self.survey_template

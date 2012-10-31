@@ -1597,7 +1597,7 @@ msgid "Section is deleted successfully."
 msgstr ""
 
 #: survey2/views.py:950
-msgid "Phrasing is updated successfully."
+msgid "Script is updated successfully."
 msgstr ""
 
 #: survey2/views.py:1046

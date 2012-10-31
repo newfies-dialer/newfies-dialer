@@ -38,7 +38,7 @@ from survey2.models import Survey_template, Survey, Section_template, Section,\
 from survey2.forms import SurveyForm, VoiceSectionForm,\
     MultipleChoiceSectionForm, RatingSectionForm,\
     EnterNumberSectionForm, RecordMessageSectionForm,\
-    PatchThroughSectionForm, BranchingForm, PhrasingForm,\
+    PatchThroughSectionForm, BranchingForm, ScriptForm,\
     SurveyDetailReportForm
 from survey2.constants import SECTION_TYPE
 from utils.helper import grid_common_function, get_grid_update_delete_link
@@ -1223,7 +1223,7 @@ def section_script_change(request, id):
 
     **Attributes**:
 
-        * ``form`` - PhrasingForm
+        * ``form`` - ScriptForm
         * ``template`` - frontend/survey2/section_script_change.html
 
     **Logic Description**:
@@ -1233,12 +1233,12 @@ def section_script_change(request, id):
     section = get_object_or_404(
         Section_template, pk=int(id), survey__user=request.user)
 
-    form = PhrasingForm(instance=section)
+    form = ScriptForm(instance=section)
     if request.method == 'POST':
-        form = PhrasingForm(request.POST, instance=section)
+        form = ScriptForm(request.POST, instance=section)
         if form.is_valid():
             obj = form.save()
-            request.session["msg"] = _('Phrasing is updated successfully.')
+            request.session["msg"] = _('Script is updated successfully.')
             return HttpResponseRedirect('/survey2/%s/#row%s'
                 % (obj.survey_id, obj.id))
         else:

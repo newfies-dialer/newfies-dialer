@@ -1456,7 +1456,7 @@ msgid "Record message"
 msgstr "語音檔"
 
 #: survey2/constants.py:25
-msgid "Patch-through"
+msgid "Call transfer"
 msgstr ""
 
 #: survey2/forms.py:45 templates/frontend/survey2/survey_change.html:344
@@ -1619,7 +1619,7 @@ msgid "Record Message Section is added successfully."
 msgstr ""
 
 #: survey2/views.py:662
-msgid "Patch-Through Section is added successfully."
+msgid "Call transfer Section is added successfully."
 msgstr ""
 
 #: survey2/views.py:740
@@ -1927,7 +1927,7 @@ msgstr "語音應用程式"
 #: templates/frontend/survey/survey_response_change.html:56
 #: templates/frontend/survey2/section_branch_change.html:44
 #: templates/frontend/survey2/section_change.html:43
-#: templates/frontend/survey2/section_phrasing_change.html:46
+#: templates/frontend/survey2/section_script_change.html:46
 #: templates/frontend/survey2/survey_change.html:15
 #: templates/frontend/survey2/survey_list.html:33
 #: templates/frontend/voiceapp/change.html:9
@@ -2297,8 +2297,8 @@ msgstr "註記"
 #: templates/frontend/survey2/section_branch_change.html:104
 #: templates/frontend/survey2/section_change.html:41
 #: templates/frontend/survey2/section_change.html:311
-#: templates/frontend/survey2/section_phrasing_change.html:44
-#: templates/frontend/survey2/section_phrasing_change.html:71
+#: templates/frontend/survey2/section_script_change.html:44
+#: templates/frontend/survey2/section_script_change.html:71
 #: templates/frontend/survey2/survey_change.html:13
 #: templates/frontend/voiceapp/change.html:7
 #: templates/frontend/voiceapp/change.html:35
@@ -2421,7 +2421,7 @@ msgstr "項目"
 #: templates/frontend/campaign/campaign_duplicate.html:73
 #: templates/frontend/survey2/section_branch_change.html:106
 #: templates/frontend/survey2/section_change.html:313
-#: templates/frontend/survey2/section_phrasing_change.html:73
+#: templates/frontend/survey2/section_script_change.html:73
 msgid "Save"
 msgstr ""
 
@@ -2434,7 +2434,7 @@ msgstr ""
 #: templates/frontend/survey/survey_response_change.html:95
 #: templates/frontend/survey2/section_branch_change.html:109
 #: templates/frontend/survey2/section_change.html:316
-#: templates/frontend/survey2/section_phrasing_change.html:76
+#: templates/frontend/survey2/section_script_change.html:76
 #: templates/frontend/survey2/survey_campaign_result.html:60
 msgid "Close"
 msgstr ""
@@ -2923,8 +2923,8 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: templates/frontend/survey2/section_phrasing_change.html:47
-msgid "Section phrasing"
+#: templates/frontend/survey2/section_script_change.html:47
+msgid "Section script"
 msgstr ""
 
 #: templates/frontend/survey2/survey_campaign_result.html:23
@@ -2957,7 +2957,7 @@ msgstr "語音檔案"
 
 #: templates/frontend/survey2/survey_change.html:157
 #: templates/frontend/survey2/survey_view.html:92
-msgid "phrasing"
+msgid "script"
 msgstr ""
 
 #: templates/frontend/survey2/survey_change.html:166

@@ -63,7 +63,7 @@
             <div class="portlet-header">
                 {{ forloop.counter }}. {{ section.type|section_type_name }}
 
-                {% if section.timeout and section.type != SECTION_TYPE.PLAY_MESSAGE and section.type != SECTION_TYPE.HANGUP_SECTION and section.type != SECTION_TYPE.RECORD_MSG_SECTION and section.type != SECTION_TYPE.PATCH_THROUGH_SECTION %}
+                {% if section.timeout and section.type != SECTION_TYPE.PLAY_MESSAGE and section.type != SECTION_TYPE.HANGUP_SECTION and section.type != SECTION_TYPE.RECORD_MSG_SECTION and section.type != SECTION_TYPE.CALL_TRANSFER %}
                     <span class="label label-info">T-{{ section.timeout }}ms</span>
                 {% endif %}
                 {% if section.retries %}
@@ -74,7 +74,7 @@
                 {% endif %}
 
                 <!--To remove section branching for voice, record &
-                    patch-through section-->
+                    Call transfer section-->
                 <script type="text/javascript">
 
                     {% if perms.survey2.change_section %}
@@ -107,7 +107,7 @@
                         });
                     {% endif %}
 
-                    {% if section.type == SECTION_TYPE.PATCH_THROUGH_SECTION  %}
+                    {% if section.type == SECTION_TYPE.CALL_TRANSFER  %}
                         $(function() {
                             $("#row"+{{ section.id }}).find(".section-branch").contents().unwrap();
                             $("#row"+{{ section.id }}).find(".icon-random").remove();
@@ -153,15 +153,15 @@
                                     </ul>
                                     </span><br/>
                                 {% else %}
-                                    <b>{% trans "phrasing"|title %} :</b> {{ section.phrasing }}
+                                    <b>{% trans "script"|title %} :</b> {{ section.script }}
 
                                     {% if perms.survey2.change_section %}
-                                        <a data-toggle="modal" href="#phrasing-update-edit" class="phrasing-edit" url='/section/phrasing/{{ section.id }}/' data-controls-modal='phrasing-update-edit'>
+                                        <a data-toggle="modal" href="#script-update-edit" class="script-edit" url='/section/script/{{ section.id }}/' data-controls-modal='script-update-edit'>
                                             <i title="{% trans "Edit" %}" class="icon-edit"></i>
                                         </a>
                                     {% endif %}
-                                    {% if section.phrasing %}
-                                        <a class="" target="_blank" href='/section/phrasing_play/{{ section.id }}/'>
+                                    {% if section.script %}
+                                        <a class="" target="_blank" href='/section/script_play/{{ section.id }}/'>
                                             <i title="{% trans "Play" %}" class="icon-play"></i>
                                         </a>
                                     {% endif %}
@@ -268,8 +268,8 @@
                                 </div>
                             {% endif %}
 
-                            <!--Patch-Through Section form-->
-                            {% if section.type == SECTION_TYPE.PATCH_THROUGH_SECTION %}
+                            <!--Call transfer Section form-->
+                            {% if section.type == SECTION_TYPE.CALL_TRANSFER %}
                                 <div class="span8">
                                     {% if section.dial_phonenumber %}
                                         {% trans "Dial phone number" %} : {{ section.dial_phonenumber }} <br/>
@@ -324,7 +324,7 @@
                                                         {% if branch.goto.question %}
                                                             {{ branch.goto.question }}
                                                         {% else %}
-                                                            {{ branch.goto.phrasing }}
+                                                            {{ branch.goto.script }}
                                                         {% endif %}
                                                     {% else %}
                                                         &nbsp;{% trans "Hang up" %}
@@ -410,18 +410,18 @@
 <!-- modal content-->
 <div id="section-branch" class="modal hide fade"></div>
 
-<!--Section phrasing update modal-->
+<!--Section script update modal-->
 <script type="text/javascript" charset="utf-8">
 
-    $(".phrasing-edit").live('click', function() {
+    $(".script-edit").live('click', function() {
         var url = $(this).attr('url');
         var modal_id = $(this).attr('data-controls-modal');
         $("#" + modal_id).load(url);
     })
 
 </script>
-<!-- update phrasing modal content-->
-<div id="phrasing-update-edit" class="modal hide fade" >
+<!-- update script modal content-->
+<div id="script-update-edit" class="modal hide fade" >
 </div>
 
 <!--Section delete modal-->

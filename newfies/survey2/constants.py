@@ -22,5 +22,5 @@ class SECTION_TYPE(Choice):
     RATING_SECTION = 3, _('Rating question')
     CAPTURE_DIGITS = 4, _('Capture digits')
     RECORD_MSG_SECTION = 5, _('Record message')
-    PATCH_THROUGH_SECTION = 6, _('Patch-through')
+    CALL_TRANSFER = 6, _('Call transfer')
     HANGUP_SECTION = 7, _('Hangup')

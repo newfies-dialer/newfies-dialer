@@ -51,7 +51,7 @@ def get_section_question_list(survey_id, section_id):
         if i.question:
             q_string = i.question
         else:
-            q_string = i.phrasing
+            q_string = i.script
         list_sq.append((i.id, "Goto %s # %s" % (str(i.order), q_string)))
 
     return list_sq
@@ -262,13 +262,13 @@ class PhrasingForm(ModelForm):
 
     class Meta:
         model = Section_template
-        fields = ['phrasing']
+        fields = ['script']
 
     def __init__(self, *args, **kwargs):
         super(PhrasingForm, self).__init__(*args, **kwargs)
         #instance = getattr(self, 'instance', None)
-        self.fields['phrasing'].widget = forms.Textarea()
-        self.fields['phrasing'].widget.attrs['class'] = 'span4'
+        self.fields['script'].widget = forms.Textarea()
+        self.fields['script'].widget.attrs['class'] = 'span4'
 
 
 class BranchingForm(ModelForm):

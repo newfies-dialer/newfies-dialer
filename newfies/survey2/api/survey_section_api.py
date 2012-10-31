@@ -65,7 +65,7 @@ class SectionResource(ModelResource):
 
         * ``type`` - section type
         * ``question`` - question
-        * ``phrasing`` - text that will be used in TTS
+        * ``script`` - text that will be used in TTS
         * ``audiofile`` - audio file to be use instead of TTS
         * ``invalid_audiofile`` - audio to play when input is invalid
         * ``retries`` - amount of time to retry to get a valid input
@@ -144,7 +144,7 @@ class SectionResource(ModelResource):
                      "min_number":1,
                      "number_digits":null,
                      "order":1,
-                     "phrasing":"this is test question hello",
+                     "script":"this is test question hello",
                      "question":"this is test question",
                      "rating_laps":null,
                      "resource_uri":"/api/v1/section/15/",

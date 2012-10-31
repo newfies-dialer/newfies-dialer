@@ -50,7 +50,7 @@ class SectionAPIPlayground(APIPlayground):
                                            "default": "this is test question"
                                        },
                                        {
-                                           "name": "phrasing",
+                                           "name": "script",
                                            "type": "string",
                                            "default": "this is test question"
                                        },
@@ -77,7 +77,7 @@ class SectionAPIPlayground(APIPlayground):
                                            "default": "this is test question"
                                        },
                                        {
-                                           "name": "phrasing",
+                                           "name": "script",
                                            "type": "string",
                                            "default": "this is test question"
                                        },

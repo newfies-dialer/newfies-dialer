@@ -464,13 +464,13 @@ def survey_finitestatemachine(request):
         html_play = "<Play>%s</Play>" % audio_file_url
     else:
         #Replace place holders by tag value
-        phrasing = placeholder_replace(list_section[current_state].phrasing,
+        script = placeholder_replace(list_section[current_state].script,
                                        obj_callrequest.subscriber.contact)
         #Text2Speech
         if settings.TTS_ENGINE != 'ACAPELA':
-            html_play = "<Speak>%s</Speak>" % phrasing
+            html_play = "<Speak>%s</Speak>" % script
         else:
-            audio_url = getaudio_acapela(phrasing,
+            audio_url = getaudio_acapela(script,
                                          obj_callrequest.content_object.tts_language)
             html_play = "<Play>%s</Play>" % audio_url
 
@@ -625,9 +625,9 @@ def survey_finitestatemachine(request):
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
             settings.FS_RECORDING_PATH)
 
-    elif list_section[current_state].type == SECTION_TYPE.PATCH_THROUGH_SECTION:
-        #PATCH_THROUGH_SECTION
-        debug_outp += "PATCH_THROUGH_SECTION<br/>------------------<br/>"
+    elif list_section[current_state].type == SECTION_TYPE.CALL_TRANSFER:
+        #CALL_TRANSFER
+        debug_outp += "CALL_TRANSFER<br/>------------------<br/>"
         timelimit = obj_callrequest.timelimit
         callerid = obj_callrequest.callerid
         gatewaytimeouts = obj_callrequest.timeout
@@ -954,8 +954,8 @@ def section_add(request):
                 form = RecordMessageSectionForm(request.user, initial={'survey': survey,
                                                 'type': SECTION_TYPE.RECORD_MSG_SECTION})
 
-        # Patch-Through Section
-        if int(request.POST.get('type')) == SECTION_TYPE.PATCH_THROUGH_SECTION:
+        # Call transfer Section
+        if int(request.POST.get('type')) == SECTION_TYPE.CALL_TRANSFER:
             form = PatchThroughSectionForm(request.user)
             if request.POST.get('add'):
                 form = PatchThroughSectionForm(request.user, request.POST)
@@ -971,7 +971,7 @@ def section_add(request):
             if request.POST.get('add') is None:
                 request.session["err_msg"] = True
                 form = PatchThroughSectionForm(request.user, initial={'survey': survey,
-                                               'type': SECTION_TYPE.PATCH_THROUGH_SECTION})
+                                               'type': SECTION_TYPE.CALL_TRANSFER})
 
     template = 'frontend/survey2/section_change.html'
 
@@ -1021,8 +1021,8 @@ def section_change(request, id):
     elif section.type == SECTION_TYPE.RECORD_MSG_SECTION:
         #RECORD_MSG_SECTION
         form = RecordMessageSectionForm(request.user, instance=section)
-    elif section.type == SECTION_TYPE.PATCH_THROUGH_SECTION:
-        #PATCH_THROUGH_SECTION
+    elif section.type == SECTION_TYPE.CALL_TRANSFER:
+        #CALL_TRANSFER
         form = PatchThroughSectionForm(request.user, instance=section)
 
     request.session['err_msg'] = ''
@@ -1142,7 +1142,7 @@ def section_change(request, id):
                     initial={'type': SECTION_TYPE.RECORD_MSG_SECTION})
 
         # Patch Through Section Section
-        if int(request.POST.get('type')) == SECTION_TYPE.PATCH_THROUGH_SECTION:
+        if int(request.POST.get('type')) == SECTION_TYPE.CALL_TRANSFER:
             form = PatchThroughSectionForm(request.user, instance=section)
             if request.POST.get('update'):
                 form = PatchThroughSectionForm(
@@ -1160,7 +1160,7 @@ def section_change(request, id):
                 request.session["err_msg"] = True
                 form = PatchThroughSectionForm(
                     request.user, instance=section,
-                    initial={'type': SECTION_TYPE.PATCH_THROUGH_SECTION})
+                    initial={'type': SECTION_TYPE.CALL_TRANSFER})
 
     template = 'frontend/survey2/section_change.html'
     data = {
@@ -1218,13 +1218,13 @@ def section_delete(request, id):
 
 @permission_required('survey2.change_section', login_url='/')
 @login_required
-def section_phrasing_change(request, id):
+def section_script_change(request, id):
     """Update survey question for the logged in user
 
     **Attributes**:
 
         * ``form`` - PhrasingForm
-        * ``template`` - frontend/survey2/section_phrasing_change.html
+        * ``template`` - frontend/survey2/section_script_change.html
 
     **Logic Description**:
 
@@ -1244,7 +1244,7 @@ def section_phrasing_change(request, id):
         else:
             request.session["err_msg"] = True
 
-    template = 'frontend/survey2/section_phrasing_change.html'
+    template = 'frontend/survey2/section_script_change.html'
     data = {
         'form': form,
         'survey_id': section.survey_id,
@@ -1260,31 +1260,31 @@ def section_phrasing_change(request, id):
 
 
 @login_required
-def section_phrasing_play(request, id):
-    """Play section  phrasing
+def section_script_play(request, id):
+    """Play section  script
 
     **Attributes**:
 
 
     **Logic Description**:
 
-        * Create text file from section phrasing
+        * Create text file from section script
         * Convert text file into wav file
     """
     section = get_object_or_404(
         Section_template, pk=int(id), survey__user=request.user)
-    if section.phrasing:
-        phrasing_text = section.phrasing
-        phrasing_hexdigest = hashlib.md5(phrasing_text).hexdigest()
-        file_path = '%s/tts/phrasing_%s' % \
-                             (settings.MEDIA_ROOT, phrasing_hexdigest)
+    if section.script:
+        script_text = section.script
+        script_hexdigest = hashlib.md5(script_text).hexdigest()
+        file_path = '%s/tts/script_%s' % \
+                             (settings.MEDIA_ROOT, script_hexdigest)
         audio_file_path = file_path + '.wav'
         text_file_path = file_path + '.txt'
 
         if not os.path.isfile(audio_file_path):
             #Write text to file
             text_file = open(text_file_path, "w")
-            text_file.write(phrasing_text)
+            text_file.write(script_text)
             text_file.close()
 
             #Convert file

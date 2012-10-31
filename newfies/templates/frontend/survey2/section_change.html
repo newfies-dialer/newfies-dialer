@@ -249,8 +249,8 @@
                     </div>
                 {% endif %}
 
-                <!--Patch-Through Section form-->
-                {% if form.type.value|convert_to_int == SECTION_TYPE.PATCH_THROUGH_SECTION %}
+                <!--Call transfer Section form-->
+                {% if form.type.value|convert_to_int == SECTION_TYPE.CALL_TRANSFER %}
                     <div class="row">
                         <div class="span2">
                             <label class="control-label" for="id_{{ form.dial_phonenumber.name }}">{{ form.dial_phonenumber.label }}</label>

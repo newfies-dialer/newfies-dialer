@@ -124,7 +124,7 @@ class Section_abstract(Sortable):
 
         * ``type`` - section type
         * ``question`` - question
-        * ``phrasing`` - text that will be used for TTS
+        * ``script`` - text that will be used for TTS
         * ``audiofile`` - audio file to be use instead of TTS
         * ``invalid_audiofile`` - audio to play when input is invalid
         * ``retries`` - amount of time to retry to get a valid input
@@ -164,7 +164,7 @@ class Section_abstract(Sortable):
                                 verbose_name=_("Question"),
                                 help_text=_('Example : Hotel Service Rating'))
     # Phrasing will be used by TTS
-    phrasing = models.CharField(max_length=1000, null=True, blank=True,
+    script = models.CharField(max_length=1000, null=True, blank=True,
                                 help_text=_('Example : Capture digits between 1 to 5, press pound key when done'))
     audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
                                   verbose_name=_("Audio File"))
@@ -195,11 +195,11 @@ class Section_abstract(Sortable):
                              verbose_name=_("Key") + " 8")
     key_9 = models.CharField(max_length=100, null=True, blank=True,
                              verbose_name=_("Key") + " 9")
-    # rating question
+    #Rating question
     rating_laps = models.IntegerField(max_length=1, default=9,
                                       null=True, blank=True,
                                       verbose_name=_("From 1 to X"))
-    # enter a number
+    #Capture Digits
     validate_number = models.BooleanField(default=True,
                                           verbose_name=_('Check for valid number'))
     number_digits = models.IntegerField(max_length=2, null=True, blank=True,
@@ -209,7 +209,7 @@ class Section_abstract(Sortable):
                                      default=0, verbose_name=_("Minimum"))
     max_number = models.IntegerField(max_length=1, null=True, blank=True,
                                      default=99, verbose_name=_("Maximum"))
-    # dial a phone number
+    #Call Transfer
     dial_phonenumber = models.CharField(max_length=50,
                                         null=True, blank=True,
                                         verbose_name=_("Dial phone number"))
@@ -258,7 +258,7 @@ class Section_template(Section_abstract):
             section_template=self.id,
             type=self.type,
             question=self.question,
-            phrasing=self.phrasing,
+            script=self.script,
             audiofile_id=self.audiofile_id,
             retries=self.retries,
             timeout=self.timeout,
@@ -456,18 +456,18 @@ class ResultAggregate(models.Model):
         return '[%s] %s = %s' % (self.id, self.section, self.response)
 
 
-def post_save_add_phrasing(sender, **kwargs):
+def post_save_add_script(sender, **kwargs):
     """A ``post_save`` signal is sent by the Contact model instance whenever
     it is going to save.
 
     **Logic Description**:
 
         * When new section is added into ``Section`` model, save the
-          question & phrasing field.
+          question & script field.
     """
     if kwargs['created']:
         obj = kwargs['instance']
-        obj.phrasing = kwargs['instance'].question
+        obj.script = kwargs['instance'].question
         obj.save()
 
-post_save.connect(post_save_add_phrasing, sender=Section_template)
+post_save.connect(post_save_add_script, sender=Section_template)

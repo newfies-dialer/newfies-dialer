@@ -26,9 +26,9 @@ from survey2.forms import SurveyForm, VoiceSectionForm,\
     SurveyDetailReportForm
 from survey2.views import survey_list, survey_grid, survey_add, \
     survey_change, survey_del, section_add, section_change,\
-    section_phrasing_change, section_branch_change, survey_report,\
+    section_script_change, section_branch_change, survey_report,\
     survey_finitestatemachine, export_surveycall_report, section_branch_add,\
-    section_delete, section_phrasing_play, survey_view, survey_campaign_result
+    section_delete, section_script_play, survey_view, survey_campaign_result
 from survey2.ajax import section_sort
 from utils.helper import grid_test_data
 
@@ -355,15 +355,15 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         response = section_change(request, 1)
         self.assertEqual(response.status_code, 200)
 
-    def test_section_phrasing_play(self):
-        """Test Function survey section phrasing play"""
-        request = self.factory.get('/section/phrasing_play/1/')
+    def test_section_script_play(self):
+        """Test Function survey section script play"""
+        request = self.factory.get('/section/script_play/1/')
         request.user = self.user
         request.session = {}
-        response = section_phrasing_play(request, 1)
+        response = section_script_play(request, 1)
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.get('/section/phrasing_play/10/')
+        response = self.client.get('/section/script_play/10/')
         self.assertRaises(Http404)
 
     def test_survey_section_view_delete(self):
@@ -392,19 +392,19 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         response = survey_view(request, 1)
         self.assertEqual(response.status_code, 200)
 
-    def test_section_phrasing_change(self):
-        """Test Function section phrasing update"""
-        request = self.factory.get('/section/phrasing/1/')
+    def test_section_script_change(self):
+        """Test Function section script update"""
+        request = self.factory.get('/section/script/1/')
         request.user = self.user
         request.session = {}
-        response = section_phrasing_change(request, 1)
+        response = section_script_change(request, 1)
         self.assertEqual(response.status_code, 200)
 
-        request = self.factory.post('/section/phrasing/1/',
-            {'phrasing': 'xyz', 'section': 1}, follow=True)
+        request = self.factory.post('/section/script/1/',
+            {'script': 'xyz', 'section': 1}, follow=True)
         request.user = self.user
         request.session = {}
-        response = section_phrasing_change(request, 1)
+        response = section_script_change(request, 1)
         self.assertEqual(response.status_code, 302)
 
     def test_section_branch_add(self):
@@ -637,7 +637,7 @@ class SurveyModel(TestCase):
 
         form = PhrasingForm()
         obj = form.save(commit=False)
-        obj.phrasing = 'xyz'
+        obj.script = 'xyz'
         obj.survey = self.survey_template
         obj.save()
 

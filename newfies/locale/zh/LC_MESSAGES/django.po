@@ -1447,7 +1447,7 @@ msgstr "刪除問題"
 
 #: survey2/constants.py:23
 #, fuzzy
-msgid "Enter a number"
+msgid "Capture digits"
 msgstr "連絡電話"
 
 #: survey2/constants.py:24
@@ -1500,7 +1500,7 @@ msgid "Example : Hotel Service Rating"
 msgstr ""
 
 #: survey2/models.py:169
-msgid "Example : Enter a number between 1 to 5, press pound key when done"
+msgid "Example : Capture digits between 1 to 5, press pound key when done"
 msgstr ""
 
 #: survey2/models.py:173

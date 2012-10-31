@@ -117,7 +117,7 @@
             "key_9":"",
             "key_8":"",
             "invalid_audiofile":null,
-            "question":"Enter a number",
+            "question":"Capture digits",
             "dial_phonenumber":null,
             "type":4,
             "updated_date":"2012-09-13T08:37:25.227",

@@ -20,7 +20,7 @@ class SECTION_TYPE(Choice):
     PLAY_MESSAGE = 1, _('Play message')
     MULTI_CHOICE = 2, _('Multi-choice')
     RATING_SECTION = 3, _('Rating question')
-    ENTER_NUMBER_SECTION = 4, _('Enter a number')
+    CAPTURE_DIGITS = 4, _('Capture digits')
     RECORD_MSG_SECTION = 5, _('Record message')
     PATCH_THROUGH_SECTION = 6, _('Patch-through')
     HANGUP_SECTION = 7, _('Hangup')

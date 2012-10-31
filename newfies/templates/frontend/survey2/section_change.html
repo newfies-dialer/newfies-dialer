@@ -68,7 +68,7 @@
                     </div>
                 </div>
 
-                {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION  or form.type.value|convert_to_int == SECTION_TYPE.ENTER_NUMBER_SECTION %}
+                {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION  or form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS %}
                     <div class="row">
                         <div class="span2">
                             <label class="control-label" for="id_{{ form.retries.name }}">{{ form.retries.label }}</label>
@@ -110,7 +110,7 @@
                     </div>
                 </div>
 
-                {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION or form.type.value|convert_to_int == SECTION_TYPE.ENTER_NUMBER_SECTION %}
+                {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION or form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS %}
                     <div class="row">
                         <div class="span2">
                             <label class="control-label" for="id_{{ form.invalid_audiofile.name }}">{{ form.invalid_audiofile.label }}</label>
@@ -128,7 +128,7 @@
                 {% endif %}
 
                 <!--Audio field while updating section-->
-                {% if form.type.value|convert_to_int == SECTION_TYPE.PLAY_MESSAGE or form.type.value|convert_to_int == SECTION_TYPE.HANGUP_SECTION or form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION or form.type.value|convert_to_int == SECTION_TYPE.ENTER_NUMBER_SECTION %}
+                {% if form.type.value|convert_to_int == SECTION_TYPE.PLAY_MESSAGE or form.type.value|convert_to_int == SECTION_TYPE.HANGUP_SECTION or form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION or form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS %}
                     {% if action == 'update' %}
                         <div class="row">
                             <div class="span2">
@@ -191,7 +191,7 @@
                 {% endif %}
 
                 <!--Enter number Section form-->
-                {% if form.type.value|convert_to_int == SECTION_TYPE.ENTER_NUMBER_SECTION %}
+                {% if form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS %}
                     <div class="row">
                         <div class="span2">
                             <label class="control-label" for="id_{{ form.number_digits.name }}">{{ form.number_digits.label }}</label>

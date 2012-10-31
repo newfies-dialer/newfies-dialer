@@ -184,7 +184,7 @@
                         {% endif %}
 
                         <!--Enter number Section form-->
-                        {% if section.type == SECTION_TYPE.ENTER_NUMBER_SECTION %}
+                        {% if section.type == SECTION_TYPE.CAPTURE_DIGITS %}
                             <div class="span8">
                                 {% if section.validate_number %}
                                     {% trans "Number is between" %}&nbsp;{{ section.min_number }}&nbsp;{% trans "and" %}&nbsp;{{ section.max_number }}

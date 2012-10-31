@@ -214,7 +214,7 @@ def save_section_result(request, obj_callrequest, obj_p_section, DTMF):
     elif DTMF and len(DTMF) > 0 and \
         (obj_p_section.type == SECTION_TYPE.MULTI_CHOICE or \
         obj_p_section.type == SECTION_TYPE.RATING_SECTION or \
-        obj_p_section.type == SECTION_TYPE.ENTER_NUMBER_SECTION):
+        obj_p_section.type == SECTION_TYPE.CAPTURE_DIGITS):
 
         if obj_p_section.type == SECTION_TYPE.MULTI_CHOICE:
             #Get value for the DTMF from obj_p_section.key_X
@@ -389,7 +389,7 @@ def survey_finitestatemachine(request):
     if obj_p_section and \
         (obj_p_section.type == SECTION_TYPE.MULTI_CHOICE or \
         obj_p_section.type == SECTION_TYPE.RATING_SECTION or \
-        obj_p_section.type == SECTION_TYPE.ENTER_NUMBER_SECTION):
+        obj_p_section.type == SECTION_TYPE.CAPTURE_DIGITS):
         #Handle dtmf received, set the current state
         #Check if we receive a DTMF for the previous section then store the result
 
@@ -588,12 +588,12 @@ def survey_finitestatemachine(request):
             html_play,
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
 
-    elif list_section[current_state].type == SECTION_TYPE.ENTER_NUMBER_SECTION:
-        #ENTER_NUMBER_SECTION
+    elif list_section[current_state].type == SECTION_TYPE.CAPTURE_DIGITS:
+        #CAPTURE_DIGITS
         number_digits = list_section[current_state].number_digits
         if not number_digits:
             number_digits = 1
-        debug_outp += "ENTER_NUMBER_SECTION<br/>------------------<br/>"
+        debug_outp += "CAPTURE_DIGITS<br/>------------------<br/>"
         html =\
         '<Response>\n'\
         '   <GetDigits action="%s" method="GET" numDigits="%d" '\
@@ -917,7 +917,7 @@ def section_add(request):
                                          'type': SECTION_TYPE.RATING_SECTION})
 
         # Enter Number Section
-        if int(request.POST.get('type')) == SECTION_TYPE.ENTER_NUMBER_SECTION:
+        if int(request.POST.get('type')) == SECTION_TYPE.CAPTURE_DIGITS:
             form = EnterNumberSectionForm(request.user)
             if request.POST.get('add'):
                 form = EnterNumberSectionForm(request.user, request.POST)
@@ -933,7 +933,7 @@ def section_add(request):
             if request.POST.get('add') is None:
                 request.session["err_msg"] = True
                 form = EnterNumberSectionForm(request.user, initial={'survey': survey,
-                                              'type': SECTION_TYPE.ENTER_NUMBER_SECTION})
+                                              'type': SECTION_TYPE.CAPTURE_DIGITS})
 
         # Record Message Section
         if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG_SECTION:
@@ -1015,8 +1015,8 @@ def section_change(request, id):
     elif section.type == SECTION_TYPE.RATING_SECTION:
         #RATING_SECTION
         form = RatingSectionForm(request.user, instance=section)
-    elif section.type == SECTION_TYPE.ENTER_NUMBER_SECTION:
-        #ENTER_NUMBER_SECTION
+    elif section.type == SECTION_TYPE.CAPTURE_DIGITS:
+        #CAPTURE_DIGITS
         form = EnterNumberSectionForm(request.user, instance=section)
     elif section.type == SECTION_TYPE.RECORD_MSG_SECTION:
         #RECORD_MSG_SECTION
@@ -1100,7 +1100,7 @@ def section_change(request, id):
                     initial={'type': SECTION_TYPE.RATING_SECTION})
 
         # Enter Number Section
-        if int(request.POST.get('type')) == SECTION_TYPE.ENTER_NUMBER_SECTION:
+        if int(request.POST.get('type')) == SECTION_TYPE.CAPTURE_DIGITS:
             form = EnterNumberSectionForm(request.user, instance=section)
             if request.POST.get('update'):
                 form = EnterNumberSectionForm(
@@ -1118,7 +1118,7 @@ def section_change(request, id):
                 request.session["err_msg"] = True
                 form = EnterNumberSectionForm(
                     request.user, instance=section,
-                    initial={'type': SECTION_TYPE.ENTER_NUMBER_SECTION})
+                    initial={'type': SECTION_TYPE.CAPTURE_DIGITS})
 
         # Record Message Section Section
         if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG_SECTION:

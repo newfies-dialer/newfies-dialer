@@ -165,7 +165,7 @@ class Section_abstract(Sortable):
                                 help_text=_('Example : Hotel Service Rating'))
     # Phrasing will be used by TTS
     phrasing = models.CharField(max_length=1000, null=True, blank=True,
-                                help_text=_('Example : Enter a number between 1 to 5, press pound key when done'))
+                                help_text=_('Example : Capture digits between 1 to 5, press pound key when done'))
     audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
                                   verbose_name=_("Audio File"))
     retries = models.IntegerField(max_length=1, null=True, blank=True,

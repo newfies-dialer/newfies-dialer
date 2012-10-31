@@ -336,7 +336,7 @@ class DialerCampaignModel(TestCase):
             campaign=self.campaign,
             count_attempt=0,
             completion_count_attempt=0,
-            status=1,
+            status=1
         )
         self.subscriber.save()
         self.assertTrue(self.subscriber.__unicode__())

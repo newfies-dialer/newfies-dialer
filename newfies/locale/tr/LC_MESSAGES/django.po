@@ -1466,7 +1466,7 @@ msgstr "Ses Uygulaması"
 
 #: survey2/constants.py:21
 #, fuzzy
-msgid "Multiple choice question"
+msgid "Multi-choice"
 msgstr "Sorunuzu girin"
 
 #: survey2/constants.py:22

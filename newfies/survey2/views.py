@@ -212,11 +212,11 @@ def save_section_result(request, obj_callrequest, obj_p_section, DTMF):
                 (obj_p_section.id, RecordFile)
 
     elif DTMF and len(DTMF) > 0 and \
-        (obj_p_section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION or \
+        (obj_p_section.type == SECTION_TYPE.MULTI_CHOICE or \
         obj_p_section.type == SECTION_TYPE.RATING_SECTION or \
         obj_p_section.type == SECTION_TYPE.ENTER_NUMBER_SECTION):
 
-        if obj_p_section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
+        if obj_p_section.type == SECTION_TYPE.MULTI_CHOICE:
             #Get value for the DTMF from obj_p_section.key_X
             if DTMF == '0':
                 if obj_p_section.key_0:
@@ -387,7 +387,7 @@ def survey_finitestatemachine(request):
         debug_outp += outp_result
 
     if obj_p_section and \
-        (obj_p_section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION or \
+        (obj_p_section.type == SECTION_TYPE.MULTI_CHOICE or \
         obj_p_section.type == SECTION_TYPE.RATING_SECTION or \
         obj_p_section.type == SECTION_TYPE.ENTER_NUMBER_SECTION):
         #Handle dtmf received, set the current state
@@ -543,10 +543,10 @@ def survey_finitestatemachine(request):
         debug_outp += "HANGUP_SECTION<br/>------------------<br/>"
         html = '<Response> %s <Hangup/> </Response>' % html_play
 
-    elif list_section[current_state].type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
-        #MULTIPLE_CHOICE_SECTION
+    elif list_section[current_state].type == SECTION_TYPE.MULTI_CHOICE:
+        #MULTI_CHOICE
         number_digits = 1
-        debug_outp += "MULTIPLE_CHOICE_SECTION<br/>------------------<br/>"
+        debug_outp += "MULTI_CHOICE<br/>------------------<br/>"
         html =\
         '<Response>\n'\
         '   <GetDigits action="%s" method="GET" numDigits="%d" '\
@@ -878,7 +878,7 @@ def section_add(request):
                                  'type': SECTION_TYPE.HANGUP_SECTION})
 
         # Multiple Choice Section
-        if int(request.POST.get('type')) == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
+        if int(request.POST.get('type')) == SECTION_TYPE.MULTI_CHOICE:
             form = MultipleChoiceSectionForm(request.user)
             if request.POST.get('add'):
                 form = MultipleChoiceSectionForm(request.user, request.POST)
@@ -895,7 +895,7 @@ def section_add(request):
                 request.session["err_msg"] = True
                 form = MultipleChoiceSectionForm(
                     request.user, initial={'survey': survey,
-                                           'type': SECTION_TYPE.MULTIPLE_CHOICE_SECTION})
+                                           'type': SECTION_TYPE.MULTI_CHOICE})
 
         # Rating Section
         if int(request.POST.get('type')) == SECTION_TYPE.RATING_SECTION:
@@ -1009,8 +1009,8 @@ def section_change(request, id):
         or section.type == SECTION_TYPE.HANGUP_SECTION:
         #PLAY_MESSAGE & HANGUP_SECTION
         form = VoiceSectionForm(request.user, instance=section)
-    elif section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
-        #MULTIPLE_CHOICE_SECTION
+    elif section.type == SECTION_TYPE.MULTI_CHOICE:
+        #MULTI_CHOICE
         form = MultipleChoiceSectionForm(request.user, instance=section)
     elif section.type == SECTION_TYPE.RATING_SECTION:
         #RATING_SECTION
@@ -1058,7 +1058,7 @@ def section_change(request, id):
                         initial={'type': SECTION_TYPE.HANGUP_SECTION})
 
         # Multiple Choice Section
-        if int(request.POST.get('type')) == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
+        if int(request.POST.get('type')) == SECTION_TYPE.MULTI_CHOICE:
             form = MultipleChoiceSectionForm(request.user, instance=section)
             if request.POST.get('update'):
                 form = MultipleChoiceSectionForm(
@@ -1076,7 +1076,7 @@ def section_change(request, id):
                 request.session["err_msg"] = True
                 form = MultipleChoiceSectionForm(
                     request.user, instance=section,
-                    initial={'type': SECTION_TYPE.MULTIPLE_CHOICE_SECTION})
+                    initial={'type': SECTION_TYPE.MULTI_CHOICE})
 
         # Rating Section
         if int(request.POST.get('type')) == SECTION_TYPE.RATING_SECTION:

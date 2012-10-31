@@ -174,7 +174,7 @@ class Section_abstract(Sortable):
     timeout = models.IntegerField(max_length=2, null=True, blank=True,
                                   verbose_name=_("timeout"), default=1000,
                                   help_text=_('Timeout in seconds to press the key(s)'))
-    # Multiple choice question
+    # Multi-choice
     key_0 = models.CharField(max_length=100, null=True, blank=True,
                              verbose_name=_("Key") + " 0")
     key_1 = models.CharField(max_length=100, null=True, blank=True,

@@ -18,7 +18,7 @@ from common.utils import Choice
 
 class SECTION_TYPE(Choice):
     PLAY_MESSAGE = 1, _('Play message')
-    MULTIPLE_CHOICE_SECTION = 2, _('Multiple choice question')
+    MULTI_CHOICE = 2, _('Multi-choice')
     RATING_SECTION = 3, _('Rating question')
     ENTER_NUMBER_SECTION = 4, _('Enter a number')
     RECORD_MSG_SECTION = 5, _('Record message')

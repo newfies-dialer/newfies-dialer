@@ -139,7 +139,7 @@ def section_type_name(value):
     'Play message'
 
     >>> section_type_name(2)
-    'Multiple choice question'
+    'Multi-choice'
 
     >>> section_type_name(0)
     ''
@@ -209,4 +209,3 @@ def que_res_string(val):
 @register.filter(name='running_total')
 def running_total(running_list, field_name):
     return sum(d[field_name] for d in running_list)
-

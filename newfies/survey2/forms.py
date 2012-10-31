@@ -287,7 +287,7 @@ class BranchingForm(ModelForm):
         # multiple choice section
         obj_section = Section_template.objects.get(id=section_id)
 
-        if obj_section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
+        if obj_section.type == SECTION_TYPE.MULTI_CHOICE:
             self.fields['keys'] = forms.ChoiceField(
                 choices=get_multi_question_choice_list(section_id),
                 required=False)

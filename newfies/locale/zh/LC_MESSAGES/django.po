@@ -1437,7 +1437,7 @@ msgstr "語音應用程式"
 
 #: survey2/constants.py:21
 #, fuzzy
-msgid "Multiple choice question"
+msgid "Multi-choice"
 msgstr "輸入您的問題"
 
 #: survey2/constants.py:22

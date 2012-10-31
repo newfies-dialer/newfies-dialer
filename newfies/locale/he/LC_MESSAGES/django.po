@@ -1447,7 +1447,7 @@ msgstr "קול יישום"
 
 #: survey2/constants.py:21
 #, fuzzy
-msgid "Multiple choice question"
+msgid "Multi-choice"
 msgstr "הזן את שאלתך"
 
 #: survey2/constants.py:22

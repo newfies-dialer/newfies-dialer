@@ -1399,7 +1399,7 @@ msgid "Play message"
 msgstr ""
 
 #: survey2/constants.py:21
-msgid "Multiple choice question"
+msgid "Multi-choice"
 msgstr ""
 
 #: survey2/constants.py:22

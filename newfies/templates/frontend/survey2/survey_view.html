@@ -225,20 +225,24 @@
                                     {% for branch in branching_list %}
                                         <tr>
                                             {% if branch.section_id == section.id %}
-                                                {% if section.type != SECTION_TYPE.RATING_SECTION %}
-                                                    {% if section.type != SECTION_TYPE.RECORD_MSG %}
-                                                        <td>
-                                                            {% if branch.keys == 'any' %}
-                                                                {% trans "any other key"|title %}
-                                                            {% elif branch.keys == 'timeout' %}
-                                                                {% trans "timeout"|title %} (no input within {{ section.timeout }}ms)
-                                                            {% elif branch.keys %}
-                                                                {% trans "Key" %}&nbsp;
-                                                                {{ branch.keys }}
-                                                            {% else %}
-                                                                {% trans "None" %}
-                                                            {% endif %}
-                                                        </td>
+                                                {% if section.type != SECTION_TYPE.PLAY_MESSAGE %}
+                                                    {% if section.type != SECTION_TYPE.RATING_SECTION %}
+                                                        {% if section.type != SECTION_TYPE.RECORD_MSG %}
+                                                            <td>
+                                                                {% if branch.keys == 'any' %}
+                                                                    {% trans "any other key"|title %}
+                                                                {% elif branch.keys == 'invalid' %}
+                                                                    {% trans "invalid"|title %}
+                                                                {% elif branch.keys == 'timeout' %}
+                                                                    {% trans "timeout"|title %} (no input within {{ section.timeout }}ms)
+                                                                {% elif branch.keys %}
+                                                                    {% trans "Key" %}&nbsp;
+                                                                    {{ branch.keys }}
+                                                                {% else %}
+                                                                    {% trans "None" %}
+                                                                {% endif %}
+                                                            </td>
+                                                        {% endif %}
                                                     {% endif %}
                                                 {% endif %}
                                                 <td>

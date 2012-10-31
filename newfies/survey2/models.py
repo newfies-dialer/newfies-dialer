@@ -215,7 +215,7 @@ class Section_abstract(Sortable):
                                         verbose_name=_("Dial phone number"))
     # if the current section means that the survey is completed
     completed = models.BooleanField(default=False,
-                                    verbose_name=_('Survey completed'))
+                                    verbose_name=_('Survey complete'))
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 

@@ -1040,7 +1040,7 @@ def section_change(request, id):
                 if form.is_valid():
                     obj = form.save()
                     request.session["msg"] =\
-                        _('Section is updated successfully.')
+                        _('Section updated.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
@@ -1066,7 +1066,7 @@ def section_change(request, id):
                 if form.is_valid():
                     obj = form.save()
                     request.session["msg"] =\
-                        _('Section is updated successfully.')
+                        _('Section updated.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
@@ -1087,7 +1087,7 @@ def section_change(request, id):
                 if form.is_valid():
                     obj = form.save()
                     request.session["msg"] =\
-                        _('Section is updated successfully.')
+                        _('Section updated.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
@@ -1108,7 +1108,7 @@ def section_change(request, id):
                 if form.is_valid():
                     obj = form.save()
                     request.session["msg"] =\
-                        _('Section is updated successfully.')
+                        _('Section updated.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
@@ -1129,7 +1129,7 @@ def section_change(request, id):
                 if form.is_valid():
                     obj = form.save()
                     request.session["msg"] =\
-                        _('Section is updated successfully.')
+                        _('Section updated.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
@@ -1150,7 +1150,7 @@ def section_change(request, id):
                 if form.is_valid():
                     obj = form.save()
                     request.session["msg"] =\
-                        _('Section is updated successfully.')
+                        _('Section updated.')
                     return HttpResponseRedirect('/survey2/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
@@ -1238,7 +1238,7 @@ def section_script_change(request, id):
         form = ScriptForm(request.POST, instance=section)
         if form.is_valid():
             obj = form.save()
-            request.session["msg"] = _('Script is updated successfully.')
+            request.session["msg"] = _('Script updated.')
             return HttpResponseRedirect('/survey2/%s/#row%s'
                 % (obj.survey_id, obj.id))
         else:
@@ -1397,7 +1397,7 @@ def section_branch_change(request, id):
                              instance=branching)
         if form.is_valid():
             form.save()
-            request.session["msg"] = _('Branching is updated successfully.')
+            request.session["msg"] = _('Branching updated.')
             return HttpResponseRedirect('/survey2/%s/#row%s'
                                         % (branching.section.survey_id,
                                            branching.section_id))

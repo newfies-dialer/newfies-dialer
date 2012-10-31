@@ -684,7 +684,7 @@ msgstr "Selecione o gateway usado para chamar o assinante"
 
 #: dialer_cdr/models.py:139 survey2/models.py:228
 #, fuzzy
-msgid "Survey completed"
+msgid "Survey complete"
 msgstr "Ligações da enquete"
 
 #: dialer_cdr/models.py:142
@@ -1641,27 +1641,27 @@ msgid "Call transfer Section is added successfully."
 msgstr ""
 
 #: survey2/views.py:740
-msgid "Play message is updated successfully."
+msgid "Play message updated."
 msgstr ""
 
 #: survey2/views.py:764
-msgid "Multiple Choice Section is updated successfully."
+msgid "Multiple Choice Section updated."
 msgstr ""
 
 #: survey2/views.py:788
-msgid "Rating Section is updated successfully."
+msgid "Rating Section updated."
 msgstr ""
 
 #: survey2/views.py:812
-msgid "Enter Number Section is updated successfully."
+msgid "Enter Number Section updated."
 msgstr ""
 
 #: survey2/views.py:836
-msgid "Record Message Section is updated successfully."
+msgid "Record Message Section updated."
 msgstr ""
 
 #: survey2/views.py:860
-msgid "Patch Through Section is updated successfully."
+msgid "Patch Through Section updated."
 msgstr ""
 
 #: survey2/views.py:915
@@ -1669,7 +1669,7 @@ msgid "Section is deleted successfully."
 msgstr ""
 
 #: survey2/views.py:950
-msgid "Script is updated successfully."
+msgid "Script updated."
 msgstr ""
 
 #: survey2/views.py:1046
@@ -1686,7 +1686,7 @@ msgid "Branching is deleted successfully."
 msgstr ""
 
 #: survey2/views.py:1109
-msgid "Branching is updated successfully."
+msgid "Branching updated."
 msgstr ""
 
 #: templates/404.html:20

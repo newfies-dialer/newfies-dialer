@@ -38,11 +38,7 @@
 
         <div class="modal-header">
             <a class="close" data-dismiss="modal" >&times;</a>
-            <h3>{% if action == 'update' %}
-                {% trans "Update" %}
-            {% else %}
-                {% trans "Add" %}
-            {% endif %} {% trans "Section Branch" %}
+            {% trans "branch to section"|title %}
             </h3>
         </div>
 

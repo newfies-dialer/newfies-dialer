@@ -190,14 +190,14 @@ class HangupcallResource(ModelResource):
                 logger.debug('Hangupcall Error cannot find the Subscriber!')
                 return False
 
-            # 2 / FAILURE ; 3 / RETRY ; 4 / SUCCESS
+            #Update Callrequest Status
             if opt_hangup_cause == 'NORMAL_CLEARING':
                 callrequest.status = CALLREQUEST_STATUS.SUCCESS
             else:
                 callrequest.status = CALLREQUEST_STATUS.FAILURE
             callrequest.hangup_cause = opt_hangup_cause
-            #save callrequest & subscriber
             callrequest.save()
+
             data = {}
             for element in CDR_VARIABLES:
                 if not request.POST.get('variable_%s' % element):
@@ -219,7 +219,7 @@ class HangupcallResource(ModelResource):
             logger.debug('Hangupcall API : Result 200!')
             obj = CustomXmlEmitter()
 
-            #We will manage the retry directly from the API
+            #If the call failed we will check if we want to make a retry call
             if opt_hangup_cause != 'NORMAL_CLEARING'\
                 and callrequest.call_type == CALLREQUEST_TYPE.ALLOW_RETRY:
                 #Update to Retry Done

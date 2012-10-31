@@ -172,7 +172,7 @@ class Section_abstract(Sortable):
                                   verbose_name=_("retries"), default=0,
                                   help_text=_('Retries this section until it\'s valid'))
     timeout = models.IntegerField(max_length=2, null=True, blank=True,
-                                  verbose_name=_("timeout"), default=1000,
+                                  verbose_name=_("timeout"), default=5,
                                   help_text=_('Timeout in seconds to press the key(s)'))
     # Multi-choice
     key_0 = models.CharField(max_length=100, null=True, blank=True,

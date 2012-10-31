@@ -37,7 +37,7 @@
                 {{ forloop.counter }}. {{ section.type|section_type_name }}
 
                 {% if section.timeout and section.type != SECTION_TYPE.PLAY_MESSAGE and section.type != SECTION_TYPE.HANGUP_SECTION and section.type != SECTION_TYPE.RECORD_MSG and section.type != SECTION_TYPE.CALL_TRANSFER %}
-                    <span class="label label-info">T-{{ section.timeout }}ms</span>
+                    <span class="label label-info">T-{{ section.timeout }}s</span>
                 {% endif %}
                 {% if section.retries %}
                     <span class="label label-info">R-{{ section.retries }}</span>

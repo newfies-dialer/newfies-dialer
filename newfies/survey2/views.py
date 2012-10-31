@@ -507,10 +507,8 @@ def survey_finitestatemachine(request):
         invalid_input = ''
 
     #Get timeout
-    try:
-        timeout = int(list_section[current_state].timeout / 1000)
-    except:
-        timeout = settings.MENU_TIMEOUT
+    timeout = list_section[current_state].timeout
+
     #Get number of retries
     retries = list_section[current_state].retries
     if not retries:

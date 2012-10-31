@@ -83,8 +83,9 @@ def placeholder_replace(text, contact):
                'city': contact.city,
                'phone_number': contact.contact,
                 }
-    for index in contact.additional_vars:
-        context[index] = contact.additional_vars[index]
+    if contact.additional_vars:
+        for index in contact.additional_vars:
+            context[index] = contact.additional_vars[index]
 
     return templateformat(text, **context)
 

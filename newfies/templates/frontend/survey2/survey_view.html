@@ -36,7 +36,7 @@
             <div class="portlet-header">
                 {{ forloop.counter }}. {{ section.type|section_type_name }}
 
-                {% if section.timeout and section.type != SECTION_TYPE.VOICE_SECTION and section.type != SECTION_TYPE.HANGUP_SECTION and section.type != SECTION_TYPE.RECORD_MSG_SECTION and section.type != SECTION_TYPE.PATCH_THROUGH_SECTION %}
+                {% if section.timeout and section.type != SECTION_TYPE.PLAY_MESSAGE and section.type != SECTION_TYPE.HANGUP_SECTION and section.type != SECTION_TYPE.RECORD_MSG_SECTION and section.type != SECTION_TYPE.PATCH_THROUGH_SECTION %}
                     <span class="label label-info">T-{{ section.timeout }}ms</span>
                 {% endif %}
                 {% if section.retries %}

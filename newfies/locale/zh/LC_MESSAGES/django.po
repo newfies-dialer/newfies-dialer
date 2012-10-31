@@ -1432,7 +1432,7 @@ msgstr "無競選活動附加到民意調查"
 
 #: survey2/constants.py:20
 #, fuzzy
-msgid "Voice section"
+msgid "Play message"
 msgstr "語音應用程式"
 
 #: survey2/constants.py:21
@@ -1599,7 +1599,7 @@ msgid "Result count"
 msgstr "撥號計數"
 
 #: survey2/views.py:549
-msgid "Voice Section is added successfully."
+msgid "Play message is added successfully."
 msgstr ""
 
 #: survey2/views.py:572
@@ -1623,7 +1623,7 @@ msgid "Patch-Through Section is added successfully."
 msgstr ""
 
 #: survey2/views.py:740
-msgid "Voice Section is updated successfully."
+msgid "Play message is updated successfully."
 msgstr ""
 
 #: survey2/views.py:764

@@ -519,10 +519,10 @@ def survey_finitestatemachine(request):
             campaign.completed = campaign.completed + 1
         campaign.save()
 
-    if list_section[current_state].type == SECTION_TYPE.VOICE_SECTION:
-        #VOICE_SECTION
+    if list_section[current_state].type == SECTION_TYPE.PLAY_MESSAGE:
+        #PLAY_MESSAGE
         number_digits = 1
-        debug_outp += "VOICE_SECTION<br/>------------------<br/>"
+        debug_outp += "PLAY_MESSAGE<br/>------------------<br/>"
         html =\
         '<Response>\n'\
         '   <GetDigits action="%s" method="GET" numDigits="%d" '\
@@ -852,8 +852,8 @@ def section_add(request):
     request.session['err_msg'] = ''
     if request.method == 'POST':
 
-        # Voice Section
-        if int(request.POST.get('type')) == SECTION_TYPE.VOICE_SECTION\
+        # Play message
+        if int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE\
             or int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION:
             form = VoiceSectionForm(request.user)
             if request.POST.get('add'):
@@ -868,10 +868,10 @@ def section_add(request):
 
             if request.POST.get('add') is None:
                 request.session["err_msg"] = True
-                if int(request.POST.get('type')) == SECTION_TYPE.VOICE_SECTION:
+                if int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE:
                     form = VoiceSectionForm(request.user,
                         initial={'survey': survey,
-                                 'type': SECTION_TYPE.VOICE_SECTION})
+                                 'type': SECTION_TYPE.PLAY_MESSAGE})
                 else:
                     form = VoiceSectionForm(request.user,
                         initial={'survey': survey,
@@ -1005,9 +1005,9 @@ def section_change(request, id):
     section = get_object_or_404(Section_template,
                                 pk=int(id),
                                 survey__user=request.user)
-    if section.type == SECTION_TYPE.VOICE_SECTION \
+    if section.type == SECTION_TYPE.PLAY_MESSAGE \
         or section.type == SECTION_TYPE.HANGUP_SECTION:
-        #VOICE_SECTION & HANGUP_SECTION
+        #PLAY_MESSAGE & HANGUP_SECTION
         form = VoiceSectionForm(request.user, instance=section)
     elif section.type == SECTION_TYPE.MULTIPLE_CHOICE_SECTION:
         #MULTIPLE_CHOICE_SECTION
@@ -1029,8 +1029,8 @@ def section_change(request, id):
 
     #TODO: See how to refactor this section
     if request.method == 'POST' and request.POST.get('type'):
-        # Voice Section or Hangup Section
-        if int(request.POST.get('type')) == SECTION_TYPE.VOICE_SECTION\
+        # Play message or Hangup Section
+        if int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE\
             or int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION:
             form = VoiceSectionForm(request.user, instance=section)
             if request.POST.get('update'):
@@ -1048,10 +1048,10 @@ def section_change(request, id):
 
             if request.POST.get('update') is None:
                 request.session["err_msg"] = True
-                if int(request.POST.get('type')) == SECTION_TYPE.VOICE_SECTION:
+                if int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE:
                     form = VoiceSectionForm(
                         request.user, instance=section,
-                        initial={'type': SECTION_TYPE.VOICE_SECTION})
+                        initial={'type': SECTION_TYPE.PLAY_MESSAGE})
                 else:
                     form = VoiceSectionForm(
                         request.user, instance=section,

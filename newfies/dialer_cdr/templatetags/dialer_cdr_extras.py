@@ -136,7 +136,7 @@ def section_type_name(value):
     """survey section type name
 
     >>> section_type_name(1)
-    'Voice section'
+    'Play message'
 
     >>> section_type_name(2)
     'Multiple choice question'

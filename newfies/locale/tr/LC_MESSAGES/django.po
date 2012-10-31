@@ -1461,7 +1461,7 @@ msgstr "Hiçbir kampanya anket ile ilişkilendirilmedi."
 
 #: survey2/constants.py:20
 #, fuzzy
-msgid "Voice section"
+msgid "Play message"
 msgstr "Ses Uygulaması"
 
 #: survey2/constants.py:21
@@ -1628,7 +1628,7 @@ msgid "Result count"
 msgstr "Çağrı sayısı"
 
 #: survey2/views.py:549
-msgid "Voice Section is added successfully."
+msgid "Play message is added successfully."
 msgstr ""
 
 #: survey2/views.py:572
@@ -1652,7 +1652,7 @@ msgid "Patch-Through Section is added successfully."
 msgstr ""
 
 #: survey2/views.py:740
-msgid "Voice Section is updated successfully."
+msgid "Play message is updated successfully."
 msgstr ""
 
 #: survey2/views.py:764

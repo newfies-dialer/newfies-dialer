@@ -394,32 +394,54 @@ def survey_finitestatemachine(request):
         #Check if we receive a DTMF for the previous section then store the result
 
         exit_action = 'DTMF'
-        #Get list of responses of the previous Section
-        try:
-            branching = Branching.objects.get(
-                keys=DTMF,
-                section=obj_p_section)
-        except Branching.DoesNotExist:
-            if DTMF and len(DTMF) > 0:
-                #There is a DTMF so we can check if there is any
+        if obj_p_section.type == SECTION_TYPE.CAPTURE_DIGITS \
+            and obj_p_section.validate_number:
+            #check if number is valid
+            try:
+                int_dtmf = int(DTMF)
+            except:
+                #No correct input from user
+                int_dtmf = False
+
+            if int_dtmf and (int_dtmf < obj_p_section.min_number \
+                or int_dtmf > obj_p_section.max_number):
+                #Invalid input
                 try:
                     #DTMF doesn't have any branching so let's check for any
                     branching = Branching.objects.get(
-                        keys='any',
+                        keys='invalid',
                         section=obj_p_section)
-                    exit_action = 'ANY'
+                    exit_action = 'INVALID'
                 except Branching.DoesNotExist:
                     branching = False
-            else:
-                #No DTMF so it can be a timeout branching
-                try:
-                    #DTMF doesn't have any branching so let's check for timeout
-                    branching = Branching.objects.get(
-                        keys='timeout',
-                        section=obj_p_section)
-                    exit_action = 'TIMEOUT'
-                except Branching.DoesNotExist:
-                    branching = False
+
+        if exit_action == 'DTMF':
+            #Get list of responses of the previous Section
+            try:
+                branching = Branching.objects.get(
+                    keys=DTMF,
+                    section=obj_p_section)
+            except Branching.DoesNotExist:
+                if DTMF and len(DTMF) > 0:
+                    #There is a DTMF so we can check if there is any
+                    try:
+                        #DTMF doesn't have any branching so let's check for any
+                        branching = Branching.objects.get(
+                            keys='any',
+                            section=obj_p_section)
+                        exit_action = 'ANY'
+                    except Branching.DoesNotExist:
+                        branching = False
+                else:
+                    #No DTMF so it can be a timeout branching
+                    try:
+                        #DTMF doesn't have any branching so let's check for timeout
+                        branching = Branching.objects.get(
+                            keys='timeout',
+                            section=obj_p_section)
+                        exit_action = 'TIMEOUT'
+                    except Branching.DoesNotExist:
+                        branching = False
 
         #if there is a response for this DTMF then reset the current_state
         if branching and branching.goto:

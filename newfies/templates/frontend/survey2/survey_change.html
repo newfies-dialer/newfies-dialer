@@ -310,6 +310,8 @@
                                                         <td>
                                                             {% if branch.keys == 'any' %}
                                                                 {% trans "any other key"|title %}
+                                                            {% elif branch.keys == 'invalid' %}
+                                                                {% trans "invalid"|title %}
                                                             {% elif branch.keys == 'timeout' %}
                                                                 {% trans "timeout"|title %} (no input within {{ section.timeout }}ms)
                                                             {% elif branch.keys %}

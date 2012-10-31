@@ -1552,7 +1552,7 @@ msgid "From 1 to X"
 msgstr ""
 
 #: survey2/models.py:206
-msgid "Check for valid number"
+msgid "Check validity"
 msgstr ""
 
 #: survey2/models.py:209
@@ -1580,7 +1580,7 @@ msgstr ""
 
 #: survey2/models.py:255 survey2/models.py:342
 #, fuzzy
-msgid "Invalid Audio File digits"
+msgid "Invalid Input"
 msgstr "Arquivos de áudio"
 
 #: survey2/models.py:260
@@ -2908,7 +2908,7 @@ msgid "Section"
 msgstr "Ação"
 
 #: templates/frontend/survey2/section_change.html:161
-msgid "Result if the user"
+msgid "Configure valid multi-choice options. The value of each field will be shown in the survey report"
 msgstr ""
 
 #: templates/frontend/survey2/section_delete_confirmation.html:5

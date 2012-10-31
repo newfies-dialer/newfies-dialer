@@ -97,7 +97,13 @@
 
                 <div class="row">
                     <div class="span2">
-                        <label class="control-label" for="id_{{ form.question.name }}">{{ form.question.label }}</label>
+                        <label class="control-label" for="id_{{ form.question.name }}">
+                            {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION or form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS %}
+                                {% trans "question"|title %}
+                            {% else %}
+                                {% trans "section title"|title %}
+                            {% endif %}
+                        </label>
                     </div>
                     <div class="span3 clearfix{% if form.question.errors %} control-group error{% endif %}">
                         <div class="input">
@@ -154,7 +160,7 @@
                 {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE %}
                     <div class="row">
                         <div class="span5">
-                            <label class="control-label" for="id_if_press_result">{% trans "Result if the user" %}</label>
+                            <label class="control-label" for="id_if_press_result">{% trans "Configure valid multi-choice options. The value of each field will be shown in the survey report" %}</label>
                         </div>
                     </div>
                     <div class="row">

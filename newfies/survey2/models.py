@@ -201,7 +201,7 @@ class Section_abstract(Sortable):
                                       verbose_name=_("From 1 to X"))
     #Capture Digits
     validate_number = models.BooleanField(default=True,
-                                          verbose_name=_('Check for valid number'))
+                                          verbose_name=_('Check validity'))
     number_digits = models.IntegerField(max_length=2, null=True, blank=True,
                                         default="2",
                                         verbose_name=_("Number of digits"))
@@ -241,7 +241,7 @@ class Section_template(Section_abstract):
     """
     survey = models.ForeignKey(Survey_template, verbose_name=_("Survey"))
     invalid_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
-                                          verbose_name=_("Invalid Audio File digits"),
+                                          verbose_name=_("Invalid Input"),
                                           related_name='survey_template_invalid_audiofile')
 
     class Meta(Sortable.Meta):
@@ -303,7 +303,7 @@ class Section(Section_abstract):
     """
     survey = models.ForeignKey(Survey, verbose_name=_("Survey"))
     invalid_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
-                                          verbose_name=_("Invalid Audio File digits"),
+                                          verbose_name=_("Invalid Input"),
                                           related_name='survey_invalid_audiofile')
     #section_template_id is used to easy duplication
     section_template = models.IntegerField(max_length=10, blank=True,

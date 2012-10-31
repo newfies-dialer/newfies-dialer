@@ -70,7 +70,7 @@
                     <span class="label label-info">R-{{ section.retries }}</span>
                 {% endif %}
                 {% if section.completed %}
-                    <span class="badge badge-success">{% trans "Completed" %}</span>
+                    <span class="badge badge-success">{% trans "complete"|title %}</span>
                 {% endif %}
 
                 <!--To remove section branching for voice, record &
@@ -139,7 +139,12 @@
 
                         <div class="row">
                             <div class="span8">
-                                <b>{% trans "question"|title %} :</b> {{ section.question }}<br/>
+                                {% if section.type == SECTION_TYPE.MULTI_CHOICE or section.type == SECTION_TYPE.RATING_SECTION or section.type == SECTION_TYPE.CAPTURE_DIGITS %}
+                                    <b>{% trans "question"|title %} :</b>
+                                {% else %}
+                                    <b>{% trans "section title"|title %} :</b>
+                                {% endif %}
+                                {{ section.question }}<br/>
                             </div>
 
                             <div class="span8">
@@ -304,10 +309,9 @@
                                                         {% if section.type != SECTION_TYPE.RECORD_MSG %}
                                                         <td>
                                                             {% if branch.keys == 'any' %}
-                                                                {% trans "Key" %}&nbsp;
-                                                                {% trans "anything" %}
+                                                                {% trans "any other key"|title %}
                                                             {% elif branch.keys == 'timeout' %}
-                                                                {% trans "Timeout" %} (no input within {{ section.timeout }}ms)
+                                                                {% trans "timeout"|title %} (no input within {{ section.timeout }}ms)
                                                             {% elif branch.keys %}
                                                                 {% trans "Key" %}&nbsp;
                                                                 {{ branch.keys }}

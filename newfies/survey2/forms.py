@@ -79,13 +79,15 @@ def get_multi_question_choice_list(section_id):
                                (obj_section.__dict__['key_' + str(i)])))
 
     list_sq.append(('timeout', _('Timeout')))
-    list_sq.append(('any', _('Anything')))
+    list_sq.append(('any', _('Any Other Key')))
     return list_sq
 
 
 def get_rating_choice_list(section_id):
-    """Get survey rating laps for logged in user
-    with default anything option"""
+    """
+    Get survey rating laps for logged in user
+    with default any other key option
+    """
     keys_list = Branching_template.objects\
                 .values_list('keys', flat=True)\
                 .filter(section_id=int(section_id))\
@@ -103,7 +105,7 @@ def get_rating_choice_list(section_id):
                 list_sq.append((i, '%s' % (str(i))))
 
     list_sq.append(('timeout', _('Timeout')))
-    list_sq.append(('any', _('Anything')))
+    list_sq.append(('any', _('Any Other Key')))
     return list_sq
 
 

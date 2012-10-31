@@ -169,8 +169,8 @@ def save_section_result(request, obj_callrequest, obj_p_section, DTMF):
     if not obj_p_section:
         return False
 
-    if obj_p_section.type == SECTION_TYPE.RECORD_MSG_SECTION:
-        #RECORD_MSG_SECTION
+    if obj_p_section.type == SECTION_TYPE.RECORD_MSG:
+        #RECORD_MSG
         if testdebug:
             RecordFile = request.GET.get('RecordFile')
             RecordingDuration = request.GET.get('RecordingDuration')
@@ -497,7 +497,7 @@ def survey_finitestatemachine(request):
 
     #
     #We will now produce the restXML to power the IVR
-    #for instance if it's a RECORD_MSG_SECTION, we will render an XML command output.
+    #for instance if it's a RECORD_MSG, we will render an XML command output.
     #
 
     #Check if it's a completed section
@@ -611,9 +611,9 @@ def survey_finitestatemachine(request):
             html_play,
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
 
-    elif list_section[current_state].type == SECTION_TYPE.RECORD_MSG_SECTION:
-        #RECORD_MSG_SECTION
-        debug_outp += "RECORD_MSG_SECTION<br/>------------------<br/>"
+    elif list_section[current_state].type == SECTION_TYPE.RECORD_MSG:
+        #RECORD_MSG
+        debug_outp += "RECORD_MSG<br/>------------------<br/>"
         #timeout : Seconds of silence before considering the recording complete
         html =\
         '<Response>\n'\
@@ -936,7 +936,7 @@ def section_add(request):
                                               'type': SECTION_TYPE.CAPTURE_DIGITS})
 
         # Record Message Section
-        if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG_SECTION:
+        if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG:
             form = RecordMessageSectionForm(request.user)
             if request.POST.get('add'):
                 form = RecordMessageSectionForm(request.user, request.POST)
@@ -952,7 +952,7 @@ def section_add(request):
             if request.POST.get('add') is None:
                 request.session["err_msg"] = True
                 form = RecordMessageSectionForm(request.user, initial={'survey': survey,
-                                                'type': SECTION_TYPE.RECORD_MSG_SECTION})
+                                                'type': SECTION_TYPE.RECORD_MSG})
 
         # Call transfer Section
         if int(request.POST.get('type')) == SECTION_TYPE.CALL_TRANSFER:
@@ -1018,8 +1018,8 @@ def section_change(request, id):
     elif section.type == SECTION_TYPE.CAPTURE_DIGITS:
         #CAPTURE_DIGITS
         form = EnterNumberSectionForm(request.user, instance=section)
-    elif section.type == SECTION_TYPE.RECORD_MSG_SECTION:
-        #RECORD_MSG_SECTION
+    elif section.type == SECTION_TYPE.RECORD_MSG:
+        #RECORD_MSG
         form = RecordMessageSectionForm(request.user, instance=section)
     elif section.type == SECTION_TYPE.CALL_TRANSFER:
         #CALL_TRANSFER
@@ -1121,7 +1121,7 @@ def section_change(request, id):
                     initial={'type': SECTION_TYPE.CAPTURE_DIGITS})
 
         # Record Message Section Section
-        if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG_SECTION:
+        if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG:
             form = RecordMessageSectionForm(request.user, instance=section)
             if request.POST.get('update'):
                 form = RecordMessageSectionForm(
@@ -1139,7 +1139,7 @@ def section_change(request, id):
                 request.session["err_msg"] = True
                 form = RecordMessageSectionForm(
                     request.user, instance=section,
-                    initial={'type': SECTION_TYPE.RECORD_MSG_SECTION})
+                    initial={'type': SECTION_TYPE.RECORD_MSG})
 
         # Patch Through Section Section
         if int(request.POST.get('type')) == SECTION_TYPE.CALL_TRANSFER:

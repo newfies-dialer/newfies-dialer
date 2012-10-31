@@ -300,7 +300,7 @@ class BranchingForm(ModelForm):
 
         # voice & record section
         if obj_section.type == SECTION_TYPE.PLAY_MESSAGE \
-            or obj_section.type == SECTION_TYPE.RECORD_MSG_SECTION:
+            or obj_section.type == SECTION_TYPE.RECORD_MSG:
             self.fields['keys'].initial = 0
             self.fields['keys'].widget = forms.HiddenInput()
 

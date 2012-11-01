@@ -244,6 +244,31 @@ class Section_abstract(Sortable):
             .filter(section_id=self.id).count()
         return branching_count
 
+    def build_dtmf_filter(self):
+        """Build the dtmf filter to capture digits"""
+        dtmffilter = ''
+        if self.key_0 and len(self.key_0) > 0:
+            dtmffilter = dtmffilter + '0'
+        if self.key_1 and len(self.key_1) > 0:
+            dtmffilter = dtmffilter + '1'
+        if self.key_2 and len(self.key_2) > 0:
+            dtmffilter = dtmffilter + '2'
+        if self.key_3 and len(self.key_3) > 0:
+            dtmffilter = dtmffilter + '3'
+        if self.key_4 and len(self.key_4) > 0:
+            dtmffilter = dtmffilter + '4'
+        if self.key_5 and len(self.key_5) > 0:
+            dtmffilter = dtmffilter + '5'
+        if self.key_6 and len(self.key_6) > 0:
+            dtmffilter = dtmffilter + '6'
+        if self.key_7 and len(self.key_7) > 0:
+            dtmffilter = dtmffilter + '7'
+        if self.key_8 and len(self.key_8) > 0:
+            dtmffilter = dtmffilter + '8'
+        if self.key_9 and len(self.key_9) > 0:
+            dtmffilter = dtmffilter + '9'
+        return dtmffilter
+
 
 class Section_template(Section_abstract):
     """

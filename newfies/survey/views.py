@@ -567,11 +567,12 @@ def survey_finitestatemachine(request):
     elif list_section[current_state].type == SECTION_TYPE.MULTI_CHOICE:
         #MULTI_CHOICE
         number_digits = 1
+        dtmf_filter = list_section[current_state].build_dtmf_filter()
         debug_outp += "MULTI_CHOICE<br/>------------------<br/>"
         html =\
         '<Response>\n'\
         '   <GetDigits action="%s" method="GET" numDigits="%d" '\
-        'retries="%d" validDigits="0123456789" timeout="%s" '\
+        'retries="%d" validDigits="%s" timeout="%s" '\
         'finishOnKey="#" %s>\n'\
         '       %s\n'\
         '   </GetDigits>\n'\
@@ -580,6 +581,7 @@ def survey_finitestatemachine(request):
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
             number_digits,
             retries,
+            dtmf_filter,
             timeout,
             invalid_input,
             html_play,

@@ -1563,7 +1563,7 @@ msgstr "מקסימום נסיונות"
 #: survey/models.py:219 templates/frontend/survey/survey_change.html:289
 #: templates/frontend/survey/survey_view.html:213
 #, fuzzy
-msgid "Dial phone number"
+msgid "phone number"
 msgstr "מספר טלפון"
 
 #: survey/models.py:223

@@ -298,6 +298,12 @@ class Campaign(Model):
         """Check if a contact is authorized"""
         return common_contact_authorization(self.user, str_contact)
 
+    def get_campaign_type(self):
+        """Get campaign type"""
+        if self.content_type.name[0:6] == 'Survey':
+            return _('Survey')
+        return _('Voice App')
+
     def get_active_max_frequency(self):
         """Get the active max frequency"""
         try:

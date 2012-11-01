@@ -21,7 +21,17 @@ from dialer_cdr.models import Callrequest
 from adminsortable.models import Sortable
 from audiofield.models import AudioFile
 from common.language_field import LanguageField
-from survey.constants import SECTION_TYPE
+
+
+SECTION_TYPE_CHOICES = (
+    (1, 'Play message'),
+    (2, 'Multi-choice'),
+    (3, 'Rating question'),
+    (4, 'Capture digits'),
+    (5, 'Record message'),
+    (6, 'Call transfer'),
+    (7, 'Hangup'),
+)
 
 
 class Survey_abstract(models.Model):
@@ -156,7 +166,7 @@ class Section_abstract(Sortable):
     **Name of DB table**: survey_question
     """
     # select section
-    type = models.IntegerField(max_length=20, choices=list(SECTION_TYPE),
+    type = models.IntegerField(max_length=20, choices=list(SECTION_TYPE_CHOICES),
                                default='1', blank=True, null=True,
                                verbose_name=_('section type'))
     # Question is the section label, this is used in the reporting
@@ -212,7 +222,7 @@ class Section_abstract(Sortable):
     #Call Transfer
     phonenumber = models.CharField(max_length=50,
                                         null=True, blank=True,
-                                        verbose_name=_("Dial phone number"))
+                                        verbose_name=_("phone number"))
     # if the current section means that the survey is completed
     completed = models.BooleanField(default=False,
                                     verbose_name=_('Survey complete'))

@@ -204,7 +204,7 @@ def campaign_grid(request):
                 row.campaign_code,
                 row.name,
                 row.startingdate.strftime('%Y-%m-%d %H:%M:%S'),
-                row.content_type.name,
+                row.get_campaign_type(),
                 str(get_app_name(row.content_type.app_label, row.content_type.model, row.object_id)),
                 row.totalcontact,
                 get_campaign_status_name(row.status),

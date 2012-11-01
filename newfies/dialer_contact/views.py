@@ -32,7 +32,8 @@ from dialer_campaign.function_def import check_dialer_setting,\
     dialer_setting_limit, \
     contact_search_common_fun,\
     user_dialer_setting_msg
-from dialer_campaign.views import common_send_notification
+from user_profile.constants import NOTIFICATION_NAME
+from user_profile.function_def import common_send_notification
 from common.common_functions import striplist, current_view
 from utils.helper import grid_common_function, get_grid_update_delete_link,\
     update_style, delete_style
@@ -439,7 +440,7 @@ def contact_add(request):
                 {'limit': dialer_setting_limit(request, limit_for="contact")}
 
             # contact limit reached
-            common_send_notification(request, '6')
+            common_send_notification(request, NOTIFICATION_NAME.contact_limit_reached)
             return HttpResponseRedirect("/contact/")
 
     form = ContactForm(request.user)
@@ -590,7 +591,7 @@ def contact_import(request):
                 {'limit': dialer_setting_limit(request, limit_for="contact")}
 
             # contact limit reached
-            common_send_notification(request, '6')
+            common_send_notification(request, NOTIFICATION_NAME.contact_limit_reached)
             return HttpResponseRedirect("/contact/")
 
     form = Contact_fileImport(request.user)

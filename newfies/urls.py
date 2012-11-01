@@ -22,7 +22,7 @@ from dialer_campaign.urls import urlpatterns as urlpatterns_dialer_campaign
 from dialer_cdr.urls import urlpatterns as urlpatterns_dialer_cdr
 from user_profile.urls import urlpatterns as urlpatterns_user_profile
 from voice_app.urls import urlpatterns as urlpatterns_voice_app
-from survey2.urls import urlpatterns as urlpatterns_survey2
+from survey.urls import urlpatterns as urlpatterns_survey
 from dialer_audio.urls import urlpatterns as urlpatterns_dialer_audio
 from api.api_playgrounds.urls import urlpatterns as urlpatterns_api_playgrounds
 from tastypie.api import Api
@@ -44,10 +44,10 @@ from api.dialcallback_api import DialCallbackResource
 from api.hangupcall_api import HangupcallResource
 from api.store_cdr_api import CdrResource
 
-from survey2.api.survey_api import SurveyResource
-from survey2.api.survey_section_api import SectionResource
-from survey2.api.survey_branching_api import BranchingResource
-from survey2.api.survey_aggregate_result_api import ResultAggregateResource
+from survey.api.survey_api import SurveyResource
+from survey.api.survey_section_api import SectionResource
+from survey.api.survey_branching_api import BranchingResource
+from survey.api.survey_aggregate_result_api import ResultAggregateResource
 
 import os
 from django.contrib import admin
@@ -117,7 +117,7 @@ urlpatterns += urlpatterns_dialer_campaign
 urlpatterns += urlpatterns_dialer_cdr
 urlpatterns += urlpatterns_user_profile
 urlpatterns += urlpatterns_voice_app
-urlpatterns += urlpatterns_survey2
+urlpatterns += urlpatterns_survey
 urlpatterns += urlpatterns_dialer_audio
 urlpatterns += urlpatterns_api_playgrounds
 

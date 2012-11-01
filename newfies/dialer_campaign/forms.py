@@ -101,7 +101,7 @@ class CampaignForm(ModelForm):
             available_objects = VoiceApp_template.objects.filter(user=user)
             object_choices = get_object_choices(available_objects)
 
-            from survey2.models import Survey_template
+            from survey.models import Survey_template
             available_objects = Survey_template.objects.filter(user=user)
             object_choices += get_object_choices(available_objects)
 

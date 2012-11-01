@@ -18,7 +18,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
 from dialer_campaign.models import Campaign
 from dialer_cdr.models import Callrequest, VoIPCall
-from survey2.models import Result, ResultAggregate, Section
+from survey.models import Result, ResultAggregate, Section
 from random import choice
 from uuid import uuid1
 import random

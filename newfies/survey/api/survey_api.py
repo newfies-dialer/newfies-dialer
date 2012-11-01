@@ -22,7 +22,7 @@ from tastypie.throttle import BaseThrottle
 from tastypie import fields
 
 from api.user_api import UserResource
-from survey2.models import Survey
+from survey.models import Survey
 
 
 class SurveyValidation(Validation):

@@ -22,10 +22,8 @@ from dialer_contact.constants import CHOICE_TYPE, STATUS_CHOICE
 class SearchForm(forms.Form):
     """General Search Form with From & To date para."""
     from_date = forms.CharField(label=_('From'), required=False,
-                                max_length=10,
-                                help_text=_("Date Format") + ": <em>YYYY-MM-DD</em>.")
-    to_date = forms.CharField(label=_('To'), required=False, max_length=10,
-                              help_text=_("Date Format") + ": <em>YYYY-MM-DD</em>.")
+                                max_length=10)
+    to_date = forms.CharField(label=_('To'), required=False, max_length=10)
 
 
 class FileImport(forms.Form):

@@ -15,14 +15,14 @@
 from django.conf.urls import patterns
 
 
-urlpatterns = patterns('survey2.views',
+urlpatterns = patterns('survey.views',
     # Survey urls
-    (r'^survey2/$', 'survey_list'),
-    (r'^survey2_grid/$', 'survey_grid'),
-    (r'^survey2/add/$', 'survey_add'),
-    (r'^survey2_view/(.+)/$', 'survey_view'),
-    (r'^survey2/del/(.+)/$', 'survey_del'),
-    (r'^survey2/(.+)/$', 'survey_change'),
+    (r'^survey/$', 'survey_list'),
+    (r'^survey_grid/$', 'survey_grid'),
+    (r'^survey/add/$', 'survey_add'),
+    (r'^survey_view/(.+)/$', 'survey_view'),
+    (r'^survey/del/(.+)/$', 'survey_del'),
+    (r'^survey/(.+)/$', 'survey_change'),
 
 
     # Section urls
@@ -37,7 +37,7 @@ urlpatterns = patterns('survey2.views',
     # Survey FSM urls
     (r'^survey_finitestatemachine/$', 'survey_finitestatemachine'),
     # Survey Report urls
-    (r'^survey2_report/$', 'survey_report'),
+    (r'^survey_report/$', 'survey_report'),
     (r'^export2_surveycall_report/$', 'export_surveycall_report'),
-    (r'^survey2_campaign_result/(?P<id>\w+)/$', 'survey_campaign_result'),
+    (r'^survey_campaign_result/(?P<id>\w+)/$', 'survey_campaign_result'),
 )

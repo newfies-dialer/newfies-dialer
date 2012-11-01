@@ -1,7 +1,7 @@
 [
     {
         "pk":1,
-        "model":"survey2.section",
+        "model":"survey.section",
         "fields":{
             "rating_laps":null,
             "key_5":null,
@@ -35,7 +35,7 @@
     },
     {
         "pk":2,
-        "model":"survey2.section",
+        "model":"survey.section",
         "fields":{
             "rating_laps":null,
             "key_5":"",
@@ -69,7 +69,7 @@
     },
     {
         "pk":3,
-        "model":"survey2.section",
+        "model":"survey.section",
         "fields":{
             "rating_laps":null,
             "key_5":"",
@@ -103,7 +103,7 @@
     },
     {
         "pk":4,
-        "model":"survey2.section",
+        "model":"survey.section",
         "fields":{
             "rating_laps":null,
             "key_5":"",
@@ -137,7 +137,7 @@
     },
     {
         "pk":5,
-        "model":"survey2.section",
+        "model":"survey.section",
         "fields":{
             "rating_laps":null,
             "key_5":"",
@@ -171,7 +171,7 @@
     },
     {
         "pk":6,
-        "model":"survey2.section",
+        "model":"survey.section",
         "fields":{
             "rating_laps":null,
             "key_5":"",

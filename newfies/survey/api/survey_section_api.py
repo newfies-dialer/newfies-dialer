@@ -20,8 +20,8 @@ from tastypie.authorization import Authorization
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie import fields
-from survey2.api.survey_api import SurveyResource
-from survey2.models import Survey, Section
+from survey.api.survey_api import SurveyResource
+from survey.models import Survey, Section
 
 
 class SectionValidation(Validation):

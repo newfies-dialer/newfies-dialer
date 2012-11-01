@@ -14,7 +14,7 @@
 
 from dialer_campaign.models import Campaign
 from dialer_campaign.constants import CAMPAIGN_STATUS
-from survey2.models import Survey_template
+from survey.models import Survey_template
 
 
 def check_survey_campaign(request, pk):

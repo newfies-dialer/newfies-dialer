@@ -16,20 +16,20 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.http import Http404
 from common.utils import BaseAuthenticatedClient
-from survey2.models import Survey, Survey_template, Section,\
+from survey.models import Survey, Survey_template, Section,\
     Section_template, Branching, Branching_template, Result, \
     ResultAggregate
-from survey2.forms import SurveyForm, VoiceSectionForm,\
+from survey.forms import SurveyForm, VoiceSectionForm,\
     MultipleChoiceSectionForm, RatingSectionForm,\
     EnterNumberSectionForm, RecordMessageSectionForm,\
     PatchThroughSectionForm, BranchingForm, ScriptForm,\
     SurveyDetailReportForm
-from survey2.views import survey_list, survey_grid, survey_add, \
+from survey.views import survey_list, survey_grid, survey_add, \
     survey_change, survey_del, section_add, section_change,\
     section_script_change, section_branch_change, survey_report,\
     survey_finitestatemachine, export_surveycall_report, section_branch_add,\
     section_delete, section_script_play, survey_view, survey_campaign_result
-from survey2.ajax import section_sort
+from survey.ajax import section_sort
 from utils.helper import grid_test_data
 
 
@@ -40,32 +40,32 @@ class SurveyAdminView(BaseAuthenticatedClient):
 
     def test_admin_survey_view_list(self):
         """Test Function to check admin surveyapp list"""
-        response = self.client.get('/admin/survey2/survey_template/')
+        response = self.client.get('/admin/survey/survey_template/')
         self.failUnlessEqual(response.status_code, 200)
 
     def test_admin_survey_view_add(self):
         """Test Function to check admin surveyapp add"""
-        response = self.client.get('/admin/survey2/survey_template/add/')
+        response = self.client.get('/admin/survey/survey_template/add/')
         self.failUnlessEqual(response.status_code, 200)
 
     def test_admin_survey_section_view_list(self):
         """Test Function to check admin surveyquestion list"""
-        response = self.client.get('/admin/survey2/section_template/')
+        response = self.client.get('/admin/survey/section_template/')
         self.failUnlessEqual(response.status_code, 200)
 
     def test_admin_survey_section_view_add(self):
         """Test Function to check admin surveyquestion add"""
-        response = self.client.get('/admin/survey2/section_template/add/')
+        response = self.client.get('/admin/survey/section_template/add/')
         self.failUnlessEqual(response.status_code, 200)
 
     def test_admin_survey_branching_view_list(self):
         """Test Function to check admin surveyresponse list"""
-        response = self.client.get('/admin/survey2/branching_template/')
+        response = self.client.get('/admin/survey/branching_template/')
         self.failUnlessEqual(response.status_code, 200)
 
     def test_admin_survey_branching_view_add(self):
         """Test Function to check admin surveyresponse list"""
-        response = self.client.get('/admin/survey2/branching_template/add/')
+        response = self.client.get('/admin/survey/branching_template/add/')
         self.failUnlessEqual(response.status_code, 200)
 
 
@@ -85,17 +85,17 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
     def test_survey_view_list(self):
         """Test Function survey view list"""
-        request = self.factory.post('/survey2_grid/', grid_test_data)
+        request = self.factory.post('/survey_grid/', grid_test_data)
         request.user = self.user
         request.session = {}
         response = survey_grid(request)
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.get('/survey2/')
+        response = self.client.get('/survey/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/survey2/survey_list.html')
+        self.assertTemplateUsed(response, 'frontend/survey/survey_list.html')
 
-        request = self.factory.get('/survey2/')
+        request = self.factory.get('/survey/')
         request.user = self.user
         request.session = {}
         response = survey_list(request)
@@ -103,12 +103,12 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
     def test_survey_view_add(self):
         """Test Function survey view add"""
-        response = self.client.get('/survey2/add/')
+        response = self.client.get('/survey/add/')
         self.assertTrue(response.context['form'], SurveyForm())
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/survey2/survey_change.html')
+        self.assertTemplateUsed(response, 'frontend/survey/survey_change.html')
 
-        request = self.factory.post('/survey2/add/',
+        request = self.factory.post('/survey/add/',
                 {'name': 'test_survey'}, follow=True)
         request.user = self.user
         request.session = {}
@@ -117,22 +117,22 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
     def test_survey_view_update(self):
         """Test Function survey view update"""
-        response = self.client.get('/survey2/1/')
+        response = self.client.get('/survey/1/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/survey2/survey_change.html')
+        self.assertTemplateUsed(response, 'frontend/survey/survey_change.html')
 
-        request = self.factory.post('/survey2/1/',
+        request = self.factory.post('/survey/1/',
                 {'name': 'test_survey'}, follow=True)
         request.user = self.user
         request.session = {}
         response = survey_change(request, 1)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['Location'], '/survey2/')
+        self.assertEqual(response['Location'], '/survey/')
 
         response = survey_del(request, 1)
         self.assertEqual(response.status_code, 302)
 
-        #request = self.factory.post('/survey2/1/')
+        #request = self.factory.post('/survey/1/')
         #request.user = self.user
         #request.session = {}
         #response = section_sort(request, 1, 1)
@@ -140,17 +140,17 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
     def test_survey_view_delete(self):
         """Test Function to check delete survey"""
-        request = self.factory.get('/survey2/del/1/')
+        request = self.factory.get('/survey/del/1/')
         request.user = self.user
         request.session = {}
         response = survey_del(request, 1)
         self.assertEqual(response.status_code, 302)
 
-        request = self.factory.post('/survey2/del/', {'select': '1'})
+        request = self.factory.post('/survey/del/', {'select': '1'})
         request.user = self.user
         request.session = {}
         response = survey_del(request, 0)
-        self.assertEqual(response['Location'], '/survey2/')
+        self.assertEqual(response['Location'], '/survey/')
         self.assertEqual(response.status_code, 302)
 
     def test_survey_section_view_add(self):
@@ -386,7 +386,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
     def test_survey_view(self):
         """Test Function survey view"""
-        request = self.factory.get('/survey2_view/1/')
+        request = self.factory.get('/survey_view/1/')
         request.user = self.user
         request.session = {}
         response = survey_view(request, 1)
@@ -461,7 +461,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 302)
 
     def test_survey_campaign_result(self):
-        request = self.factory.get('/survey2_campaign_result/1/')
+        request = self.factory.get('/survey_campaign_result/1/')
         request.user = self.user
         request.session = {}
         response = survey_campaign_result(request, 1)

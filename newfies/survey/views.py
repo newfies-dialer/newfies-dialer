@@ -32,15 +32,15 @@ from dialer_campaign.views import notice_count
 from dialer_campaign.constants import SUBSCRIBER_STATUS
 from dialer_cdr.models import Callrequest, VoIPCall, CALLREQUEST_STATUS
 from dialer_cdr.constants import VOIPCALL_DISPOSITION
-from survey2.models import Survey_template, Survey, Section_template, Section,\
+from survey.models import Survey_template, Survey, Section_template, Section,\
     Branching_template, Branching,\
     Result, ResultAggregate
-from survey2.forms import SurveyForm, VoiceSectionForm,\
+from survey.forms import SurveyForm, VoiceSectionForm,\
     MultipleChoiceSectionForm, RatingSectionForm,\
     EnterNumberSectionForm, RecordMessageSectionForm,\
     PatchThroughSectionForm, BranchingForm, ScriptForm,\
     SurveyDetailReportForm
-from survey2.constants import SECTION_TYPE
+from survey.constants import SECTION_TYPE
 from utils.helper import grid_common_function, get_grid_update_delete_link
 from common.common_functions import variable_value, current_view, ceil_strdate
 from datetime import datetime
@@ -746,7 +746,7 @@ def survey_list(request):
 
         * List all surveys which belong to the logged in user.
     """
-    template = 'frontend/survey2/survey_list.html'
+    template = 'frontend/survey/survey_list.html'
     data = {
         'module': current_view(request),
         'msg': request.session.get('msg'),
@@ -758,7 +758,7 @@ def survey_list(request):
                               context_instance=RequestContext(request))
 
 
-@permission_required('survey2.add_survey', login_url='/')
+@permission_required('survey.add_survey', login_url='/')
 @login_required
 def survey_add(request):
     """Add new Survey for the logged in user
@@ -782,8 +782,8 @@ def survey_add(request):
             obj.save()
             request.session["msg"] = _('"%(name)s" is added.') %\
                 {'name': request.POST['name']}
-            return HttpResponseRedirect('/survey2/%s/' % (obj.id))
-    template = 'frontend/survey2/survey_change.html'
+            return HttpResponseRedirect('/survey/%s/' % (obj.id))
+    template = 'frontend/survey/survey_change.html'
     data = {
         'module': current_view(request),
         'form': form,
@@ -806,7 +806,7 @@ def delete_section_branching(survey):
     return True
 
 
-@permission_required('survey2.delete_survey', login_url='/')
+@permission_required('survey.delete_survey', login_url='/')
 @login_required
 def survey_del(request, object_id):
     """Delete a survey for a logged in user
@@ -848,10 +848,10 @@ def survey_del(request, object_id):
         except:
             raise Http404
 
-    return HttpResponseRedirect('/survey2/')
+    return HttpResponseRedirect('/survey/')
 
 
-@permission_required('survey2.add_section', login_url='/')
+@permission_required('survey.add_section', login_url='/')
 @login_required
 def section_add(request):
     """Add new Survey for the logged in user
@@ -882,7 +882,7 @@ def section_add(request):
                 if form.is_valid():
                     obj = form.save()
                     request.session["msg"] = _('Section is added successfully.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                    return HttpResponseRedirect('/survey/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
@@ -907,7 +907,7 @@ def section_add(request):
                     obj = form.save()
                     request.session["msg"] =\
                         _('Section is added successfully.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                    return HttpResponseRedirect('/survey/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
@@ -927,7 +927,7 @@ def section_add(request):
                     obj = form.save()
                     request.session["msg"] =\
                         _('Section is added successfully.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                    return HttpResponseRedirect('/survey/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
@@ -946,7 +946,7 @@ def section_add(request):
                     obj = form.save()
                     request.session["msg"] =\
                         _('Section is added successfully.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                    return HttpResponseRedirect('/survey/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
@@ -965,7 +965,7 @@ def section_add(request):
                     obj = form.save()
                     request.session["msg"] =\
                         _('Section is added successfully.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                    return HttpResponseRedirect('/survey/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
@@ -984,7 +984,7 @@ def section_add(request):
                     obj = form.save()
                     request.session["msg"] =\
                         _('Section is added successfully.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                    return HttpResponseRedirect('/survey/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
@@ -994,7 +994,7 @@ def section_add(request):
                 form = PatchThroughSectionForm(request.user, initial={'survey': survey,
                                                'type': SECTION_TYPE.CALL_TRANSFER})
 
-    template = 'frontend/survey2/section_change.html'
+    template = 'frontend/survey/section_change.html'
 
     data = {
         'form': form,
@@ -1009,7 +1009,7 @@ def section_add(request):
                               context_instance=RequestContext(request))
 
 
-@permission_required('survey2.change_section', login_url='/')
+@permission_required('survey.change_section', login_url='/')
 @login_required
 def section_change(request, id):
     """Update survey question for the logged in user
@@ -1062,7 +1062,7 @@ def section_change(request, id):
                     obj = form.save()
                     request.session["msg"] =\
                         _('Section updated.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                    return HttpResponseRedirect('/survey/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
@@ -1088,7 +1088,7 @@ def section_change(request, id):
                     obj = form.save()
                     request.session["msg"] =\
                         _('Section updated.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                    return HttpResponseRedirect('/survey/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
@@ -1109,7 +1109,7 @@ def section_change(request, id):
                     obj = form.save()
                     request.session["msg"] =\
                         _('Section updated.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                    return HttpResponseRedirect('/survey/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
@@ -1130,7 +1130,7 @@ def section_change(request, id):
                     obj = form.save()
                     request.session["msg"] =\
                         _('Section updated.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                    return HttpResponseRedirect('/survey/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
@@ -1151,7 +1151,7 @@ def section_change(request, id):
                     obj = form.save()
                     request.session["msg"] =\
                         _('Section updated.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                    return HttpResponseRedirect('/survey/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
@@ -1172,7 +1172,7 @@ def section_change(request, id):
                     obj = form.save()
                     request.session["msg"] =\
                         _('Section updated.')
-                    return HttpResponseRedirect('/survey2/%s/#row%s'
+                    return HttpResponseRedirect('/survey/%s/#row%s'
                                                 % (obj.survey_id, obj.id))
                 else:
                     request.session["err_msg"] = True
@@ -1183,7 +1183,7 @@ def section_change(request, id):
                     request.user, instance=section,
                     initial={'type': SECTION_TYPE.CALL_TRANSFER})
 
-    template = 'frontend/survey2/section_change.html'
+    template = 'frontend/survey/section_change.html'
     data = {
         'form': form,
         'survey_id': section.survey_id,
@@ -1199,7 +1199,7 @@ def section_change(request, id):
                               context_instance=RequestContext(request))
 
 
-@permission_required('survey2.delete_section', login_url='/')
+@permission_required('survey.delete_section', login_url='/')
 @login_required
 def section_delete(request, id):
     section = get_object_or_404(
@@ -1225,9 +1225,9 @@ def section_delete(request, id):
         # 2) delete section
         section.delete()
         request.session["msg"] = _('Section is deleted successfully.')
-        return HttpResponseRedirect('/survey2/%s/' % (survey_id))
+        return HttpResponseRedirect('/survey/%s/' % (survey_id))
 
-    template = 'frontend/survey2/section_delete_confirmation.html'
+    template = 'frontend/survey/section_delete_confirmation.html'
     data = {
         'section_type': section.type,
         'section_id': section.id,
@@ -1237,7 +1237,7 @@ def section_delete(request, id):
         context_instance=RequestContext(request))
 
 
-@permission_required('survey2.change_section', login_url='/')
+@permission_required('survey.change_section', login_url='/')
 @login_required
 def section_script_change(request, id):
     """Update survey question for the logged in user
@@ -1245,7 +1245,7 @@ def section_script_change(request, id):
     **Attributes**:
 
         * ``form`` - ScriptForm
-        * ``template`` - frontend/survey2/section_script_change.html
+        * ``template`` - frontend/survey/section_script_change.html
 
     **Logic Description**:
 
@@ -1260,12 +1260,12 @@ def section_script_change(request, id):
         if form.is_valid():
             obj = form.save()
             request.session["msg"] = _('Script updated.')
-            return HttpResponseRedirect('/survey2/%s/#row%s'
+            return HttpResponseRedirect('/survey/%s/#row%s'
                 % (obj.survey_id, obj.id))
         else:
             request.session["err_msg"] = True
 
-    template = 'frontend/survey2/section_script_change.html'
+    template = 'frontend/survey/section_script_change.html'
     data = {
         'form': form,
         'survey_id': section.survey_id,
@@ -1323,7 +1323,7 @@ def section_script_play(request, id):
     raise Http404
 
 
-@permission_required('survey2.add_branching', login_url='/')
+@permission_required('survey.add_branching', login_url='/')
 @login_required
 def section_branch_add(request):
     """Add branching on section for the logged in user
@@ -1331,7 +1331,7 @@ def section_branch_add(request):
     **Attributes**:
 
         * ``form`` - BranchingForm
-        * ``template`` - frontend/survey2/section_branch_change.html
+        * ``template`` - frontend/survey/section_branch_change.html
 
     **Logic Description**:
 
@@ -1356,13 +1356,13 @@ def section_branch_add(request):
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('Branching is added successfully.')
-                return HttpResponseRedirect('/survey2/%s/#row%s'
+                return HttpResponseRedirect('/survey/%s/#row%s'
                                         % (section.survey_id, section_id))
             else:
                 form._errors["keys"] = _("duplicate record keys with goto.")
                 request.session["err_msg"] = True
 
-    template = 'frontend/survey2/section_branch_change.html'
+    template = 'frontend/survey/section_branch_change.html'
     data = {
         'form': form,
         'survey_id': section_survey_id,
@@ -1379,7 +1379,7 @@ def section_branch_add(request):
                               context_instance=RequestContext(request))
 
 
-@permission_required('survey2.change_branching', login_url='/')
+@permission_required('survey.change_branching', login_url='/')
 @login_required
 def section_branch_change(request, id):
     """Add branching on section for the logged in user
@@ -1387,7 +1387,7 @@ def section_branch_change(request, id):
     **Attributes**:
 
         * ``form`` - BranchingForm
-        * ``template`` - frontend/survey2/section_branch_change.html
+        * ``template`` - frontend/survey/section_branch_change.html
 
     **Logic Description**:
 
@@ -1403,7 +1403,7 @@ def section_branch_change(request, id):
         section_id = branching_obj.section_id
         branching_obj.delete()
         request.session["msg"] = _('Branching is deleted successfully.')
-        return HttpResponseRedirect('/survey2/%s/#row%s'
+        return HttpResponseRedirect('/survey/%s/#row%s'
                                     % (survey_id, section_id))
 
     branching = get_object_or_404(Branching_template, id=int(id),
@@ -1419,14 +1419,14 @@ def section_branch_change(request, id):
         if form.is_valid():
             form.save()
             request.session["msg"] = _('Branching updated.')
-            return HttpResponseRedirect('/survey2/%s/#row%s'
+            return HttpResponseRedirect('/survey/%s/#row%s'
                                         % (branching.section.survey_id,
                                            branching.section_id))
         else:
             form._errors["keys"] = _("duplicate record keys with goto.")
             request.session["err_msg"] = True
 
-    template = 'frontend/survey2/section_branch_change.html'
+    template = 'frontend/survey/section_branch_change.html'
     data = {
         'form': form,
         'survey_id': branching.section.survey_id,
@@ -1444,7 +1444,7 @@ def section_branch_change(request, id):
         context_instance=RequestContext(request))
 
 
-@permission_required('survey2.change_survey', login_url='/')
+@permission_required('survey.change_survey', login_url='/')
 @login_required
 def survey_change(request, object_id):
     """Update/Delete Survey for the logged in user
@@ -1474,16 +1474,16 @@ def survey_change(request, object_id):
     if request.method == 'POST':
         if request.POST.get('delete'):
             survey_del(request, object_id)
-            return HttpResponseRedirect('/survey2/')
+            return HttpResponseRedirect('/survey/')
         else:
             form = SurveyForm(request.POST, request.user, instance=survey)
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('"%(name)s" is updated.')\
                     % {'name': request.POST['name']}
-                return HttpResponseRedirect('/survey2/')
+                return HttpResponseRedirect('/survey/')
 
-    template = 'frontend/survey2/survey_change.html'
+    template = 'frontend/survey/survey_change.html'
 
     data = {
         'survey_obj_id': object_id,
@@ -1522,7 +1522,7 @@ def survey_view(request, object_id):
     branching_section_list =\
         branching_list.values_list('section_id', flat=True).distinct()
 
-    template = 'frontend/survey2/survey_view.html'
+    template = 'frontend/survey/survey_view.html'
 
     data = {
         'survey_obj_id': object_id,
@@ -1609,7 +1609,7 @@ def survey_audio_recording(audio_file):
                _('No recording')
 
 
-@permission_required('survey2.view_survey_report', login_url='/')
+@permission_required('survey.view_survey_report', login_url='/')
 @login_required
 def survey_report(request):
     """
@@ -1758,7 +1758,7 @@ def survey_report(request):
             request.session["err_msg"] =\
                 _('No campaign attached with survey.')
 
-    template = 'frontend/survey2/survey_report.html'
+    template = 'frontend/survey/survey_report.html'
 
     data = {
         'rows': rows,
@@ -1835,7 +1835,7 @@ def survey_campaign_result(request, id):
 
     **Attributes**:
 
-        * ``template`` - frontend/survey2/survey_campaign_result.html
+        * ``template`` - frontend/survey/survey_campaign_result.html
 
     **Logic Description**:
 
@@ -1844,7 +1844,7 @@ def survey_campaign_result(request, id):
     result = Result.objects\
                 .filter(callrequest=VoIPCall.objects.get(pk=id).callrequest_id)\
                 .order_by('section')
-    template = 'frontend/survey2/survey_campaign_result.html'
+    template = 'frontend/survey/survey_campaign_result.html'
     data = {
         'result': result,
         'MEDIA_ROOT': settings.MEDIA_ROOT,

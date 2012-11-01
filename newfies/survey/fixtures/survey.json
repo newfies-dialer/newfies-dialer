@@ -1,7 +1,7 @@
 [
    {
       "pk":1,
-      "model":"survey2.survey_template",
+      "model":"survey.survey",
       "fields":{
          "updated_date":"2012-01-16 05:39:05",
          "description":"",

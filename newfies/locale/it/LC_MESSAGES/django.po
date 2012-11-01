@@ -114,14 +114,14 @@ msgstr "Eliminare audio"
 
 #: dialer_audio/views.py:147 dialer_campaign/views.py:393
 #: dialer_contact/views.py:163 dialer_contact/views.py:451 survey/views.py:359
-#: survey2/views.py:448 voice_app/views.py:130
+#: survey/views.py:448 voice_app/views.py:130
 #, python-format
 msgid "\"%(name)s\" is added."
 msgstr "\"%(name)s\" si aggiunge."
 
 #: dialer_audio/views.py:188 dialer_campaign/views.py:426
 #: dialer_campaign/views.py:483 dialer_contact/views.py:214
-#: dialer_contact/views.py:494 survey/views.py:391 survey2/views.py:493
+#: dialer_contact/views.py:494 survey/views.py:391 survey/views.py:493
 #: user_profile/views.py:253 voice_app/views.py:165
 #, python-format
 msgid "\"%(name)s\" is deleted."
@@ -193,24 +193,24 @@ msgstr ""
 
 #: dialer_campaign/models.py:163 dialer_contact/models.py:37
 #: dialer_contact/models.py:122 dialer_gateway/models.py:73
-#: dialer_settings/models.py:38 survey/models.py:81 survey2/models.py:44
+#: dialer_settings/models.py:38 survey/models.py:81 survey/models.py:44
 #: templates/frontend/api/api_list.html:32
 #: templates/frontend/audio/audio_list.html:25
 #: templates/frontend/campaign/list.html:26
 #: templates/frontend/phonebook/list.html:26
 #: templates/frontend/survey/survey_list.html:26
-#: templates/frontend/survey2/survey_list.html:26
+#: templates/frontend/survey/survey_list.html:26
 #: templates/frontend/voiceapp/list.html:26 voice_app/models.py:49
 msgid "Name"
 msgstr "Nome"
 
 #: dialer_campaign/models.py:164 dialer_gateway/models.py:76
-#: survey/models.py:83 survey2/models.py:46
+#: survey/models.py:83 survey/models.py:46
 #: templates/frontend/contact/import_contact.html:26
 #: templates/frontend/phonebook/list.html:27
 #: templates/frontend/survey/survey_list.html:27
-#: templates/frontend/survey2/survey_list.html:27
-#: templates/frontend/survey2/survey_view.html:24
+#: templates/frontend/survey/survey_list.html:27
+#: templates/frontend/survey/survey_view.html:24
 #: templates/frontend/voiceapp/list.html:27 voice_app/models.py:51
 msgid "Description"
 msgstr "Descrizione"
@@ -366,8 +366,8 @@ msgid "Can see Campaign Dashboard"
 msgstr ""
 
 #: dialer_campaign/models.py:249 frontend/forms.py:21 survey/forms.py:106
-#: survey/models.py:217 survey2/forms.py:315 survey2/models.py:109
-#: survey2/models.py:467 templates/frontend/bootstrap_menu.html:32
+#: survey/models.py:217 survey/forms.py:315 survey/models.py:109
+#: survey/models.py:467 templates/frontend/bootstrap_menu.html:32
 #: templates/frontend/dashboard.html:38
 #: templates/frontend/campaign/campaign_duplicate.html:43
 #: templates/frontend/campaign/change.html:12
@@ -385,7 +385,7 @@ msgstr "Campagne"
 #: templates/frontend/phonebook/list.html:30
 #: templates/frontend/registration/user_notification_grid.html:28
 #: templates/frontend/survey/survey_list.html:29
-#: templates/frontend/survey2/survey_list.html:29
+#: templates/frontend/survey/survey_list.html:29
 #: templates/frontend/voiceapp/list.html:33
 msgid "Action"
 msgstr "Azione"
@@ -511,7 +511,7 @@ msgid ""
 msgstr ""
 
 #: dialer_campaign/views.py:514 dialer_contact/views.py:270
-#: dialer_contact/views.py:544 survey/views.py:669 survey2/views.py:1170
+#: dialer_contact/views.py:544 survey/views.py:669 survey/views.py:1170
 #: voice_app/views.py:214
 #, python-format
 msgid "\"%(name)s\" is updated."
@@ -679,7 +679,7 @@ msgstr "Campagna di sottoscrizione relative a questo richiesta di chiamata"
 msgid "Select gateway to use to call the subscriber"
 msgstr "Selezionare il gateway da utilizzare per chiamare l&#39;abbonato"
 
-#: dialer_cdr/models.py:139 survey2/models.py:228
+#: dialer_cdr/models.py:139 survey/models.py:228
 #, fuzzy
 msgid "Survey complete"
 msgstr "Sondaggi"
@@ -717,7 +717,7 @@ msgid "The international number of the recipient, without the leading +"
 msgstr "Il numero internazionale del destinatario, senza il + leader"
 
 #: dialer_cdr/models.py:206 templates/frontend/survey/survey_report.html:99
-#: templates/frontend/survey2/survey_report.html:149
+#: templates/frontend/survey/survey_report.html:149
 msgid "Destination"
 msgstr "Destinazione"
 
@@ -736,9 +736,9 @@ msgstr "Data di inizio"
 #: templates/frontend/report/voipcall_report.html:118
 #: templates/frontend/survey/survey_report.html:108
 #: templates/frontend/survey/survey_report.html:160
-#: templates/frontend/survey2/survey_campaign_result.html:33
-#: templates/frontend/survey2/survey_report.html:158
-#: templates/frontend/survey2/survey_report.html:227
+#: templates/frontend/survey/survey_campaign_result.html:33
+#: templates/frontend/survey/survey_report.html:158
+#: templates/frontend/survey/survey_report.html:227
 msgid "Duration"
 msgstr "Durata"
 
@@ -760,7 +760,7 @@ msgstr "Attendere sec"
 
 #: dialer_cdr/models.py:224 templates/frontend/report/voipcall_report.html:82
 #: templates/frontend/survey/survey_report.html:114
-#: templates/frontend/survey2/survey_report.html:164
+#: templates/frontend/survey/survey_report.html:164
 msgid "Disposition"
 msgstr "Disposizione"
 
@@ -934,7 +934,7 @@ msgid "Phonebook Notes"
 msgstr "Rubrica Note"
 
 #: dialer_contact/models.py:42 dialer_contact/models.py:104
-#: dialer_gateway/models.py:105 survey/models.py:87 survey2/models.py:49
+#: dialer_gateway/models.py:105 survey/models.py:87 survey/models.py:49
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:75
 #: templates/frontend/audio/audio_list.html:28
 #: templates/frontend/contact/list.html:108
@@ -943,8 +943,8 @@ msgstr "Rubrica Note"
 #: templates/frontend/report/voipcall_report.html:117
 #: templates/frontend/survey/survey_list.html:28
 #: templates/frontend/survey/survey_report.html:159
-#: templates/frontend/survey2/survey_list.html:28
-#: templates/frontend/survey2/survey_report.html:226
+#: templates/frontend/survey/survey_list.html:28
+#: templates/frontend/survey/survey_report.html:226
 #: templates/frontend/voiceapp/list.html:32 voice_app/models.py:69
 msgid "Date"
 msgstr "Data"
@@ -1307,39 +1307,39 @@ msgstr "Immettere le credenziali utente valide."
 msgid "Goto"
 msgstr ""
 
-#: survey/models.py:84 survey2/models.py:47
+#: survey/models.py:84 survey/models.py:47
 msgid "Survey Description"
 msgstr "Indagine Descrizione"
 
-#: survey/models.py:92 survey2/models.py:113
+#: survey/models.py:92 survey/models.py:113
 #, fuzzy
 msgid "Can see Survey"
 msgstr "Sondaggio"
 
-#: survey/models.py:93 survey2/models.py:114
+#: survey/models.py:93 survey/models.py:114
 #, fuzzy
 msgid "Can see Survey Report"
 msgstr "Indagine Descrizione"
 
-#: survey/models.py:95 survey2/models.py:116 survey2/models.py:253
-#: survey2/models.py:340 templates/frontend/survey/survey_change.html:71
+#: survey/models.py:95 survey/models.py:116 survey/models.py:253
+#: survey/models.py:340 templates/frontend/survey/survey_change.html:71
 #: templates/frontend/survey/survey_list.html:9
 #: templates/frontend/survey/survey_list.html:43
-#: templates/frontend/survey2/survey_change.html:17
-#: templates/frontend/survey2/survey_list.html:9
-#: templates/frontend/survey2/survey_list.html:43
-#: templates/frontend/survey2/survey_view.html:12
+#: templates/frontend/survey/survey_change.html:17
+#: templates/frontend/survey/survey_list.html:9
+#: templates/frontend/survey/survey_list.html:43
+#: templates/frontend/survey/survey_view.html:12
 msgid "Survey"
 msgstr "Sondaggio"
 
-#: survey/models.py:96 survey2/models.py:117
+#: survey/models.py:96 survey/models.py:117
 #: templates/frontend/bootstrap_menu.html:75
 msgid "Surveys"
 msgstr "Sondaggi"
 
-#: survey/models.py:125 survey/models.py:224 survey2/models.py:165
-#: templates/frontend/survey2/survey_campaign_result.html:30
-#: templates/frontend/survey2/survey_report.html:84
+#: survey/models.py:125 survey/models.py:224 survey/models.py:165
+#: templates/frontend/survey/survey_campaign_result.html:30
+#: templates/frontend/survey/survey_report.html:84
 msgid "Question"
 msgstr "Domanda"
 
@@ -1351,7 +1351,7 @@ msgstr "Inserisci la tua domanda"
 msgid "SurveyApp"
 msgstr "SurveyApp"
 
-#: survey/models.py:131 survey2/models.py:171
+#: survey/models.py:131 survey/models.py:171
 msgid "Audio File"
 msgstr "File Audio"
 
@@ -1391,29 +1391,29 @@ msgstr "Valore della chiave"
 msgid "Call-ID"
 msgstr "Call-ID"
 
-#: survey/models.py:226 survey2/models.py:445 survey2/models.py:471
-#: templates/frontend/survey2/survey_campaign_result.html:31
+#: survey/models.py:226 survey/models.py:445 survey/models.py:471
+#: templates/frontend/survey/survey_campaign_result.html:31
 msgid "Response"
 msgstr "Risposta"
 
-#: survey/models.py:228 survey2/models.py:447
+#: survey/models.py:228 survey/models.py:447
 msgid "Record File"
 msgstr ""
 
-#: survey/models.py:231 survey2/models.py:450
+#: survey/models.py:231 survey/models.py:450
 #, fuzzy
 msgid "Recording Duration"
 msgstr "Durata"
 
-#: survey/views.py:301 survey2/views.py:387
+#: survey/views.py:301 survey/views.py:387
 msgid "Update survey"
 msgstr "Aggiornamento sondaggio"
 
-#: survey/views.py:304 survey2/views.py:391
+#: survey/views.py:304 survey/views.py:391
 msgid "Delete survey"
 msgstr "Elimina sondaggio"
 
-#: survey/views.py:403 survey2/views.py:510
+#: survey/views.py:403 survey/views.py:510
 #, python-format
 msgid "%(count)s survey(s) are deleted."
 msgstr "%(count)s sondaggio(s) sono soppresse."
@@ -1441,251 +1441,251 @@ msgstr "Duplicate Contact!"
 msgid "Response is not added."
 msgstr ""
 
-#: survey/views.py:764 survey2/views.py:1297
+#: survey/views.py:764 survey/views.py:1297
 #, fuzzy
 msgid "No recording"
 msgstr "Nessun record trovato!."
 
-#: survey/views.py:946 survey2/views.py:1455
+#: survey/views.py:946 survey/views.py:1455
 msgid "No campaign attached with survey."
 msgstr "No campagna fissato con sondaggio."
 
-#: survey2/constants.py:20
+#: survey/constants.py:20
 msgid "Play message"
 msgstr ""
 
-#: survey2/constants.py:21
+#: survey/constants.py:21
 #, fuzzy
 msgid "Multi-choice"
 msgstr "Inserisci la tua domanda"
 
-#: survey2/constants.py:22
+#: survey/constants.py:22
 #, fuzzy
 msgid "Rating question"
 msgstr "Inserisci la tua domanda"
 
-#: survey2/constants.py:23
+#: survey/constants.py:23
 #, fuzzy
 msgid "Capture digits"
 msgstr "Numero di telefono"
 
-#: survey2/constants.py:24
+#: survey/constants.py:24
 #, fuzzy
 msgid "Record message"
 msgstr "File audio"
 
-#: survey2/constants.py:25
+#: survey/constants.py:25
 msgid "Call transfer"
 msgstr ""
 
-#: survey2/forms.py:45 templates/frontend/survey2/survey_change.html:344
-#: templates/frontend/survey2/survey_view.html:267
+#: survey/forms.py:45 templates/frontend/survey/survey_change.html:344
+#: templates/frontend/survey/survey_view.html:267
 #, fuzzy
 msgid "Hang up"
 msgstr "Hangup causa"
 
-#: survey2/forms.py:81 survey2/forms.py:105
+#: survey/forms.py:81 survey/forms.py:105
 #: templates/frontend/registration/user_dialer_settings.html:17
-#: templates/frontend/survey2/survey_change.html:325
-#: templates/frontend/survey2/survey_view.html:248
+#: templates/frontend/survey/survey_change.html:325
+#: templates/frontend/survey/survey_view.html:248
 msgid "Timeout"
 msgstr ""
 
-#: survey2/forms.py:82 survey2/forms.py:106
+#: survey/forms.py:82 survey/forms.py:106
 msgid "Anything"
 msgstr ""
 
-#: survey2/models.py:67
+#: survey/models.py:67
 msgid "Can see Survey Template"
 msgstr ""
 
-#: survey2/models.py:69
+#: survey/models.py:69
 #, fuzzy
 msgid "Survey template"
 msgstr "Sondaggi"
 
-#: survey2/models.py:70
+#: survey/models.py:70
 #, fuzzy
 msgid "Survey templates"
 msgstr "Sondaggi"
 
-#: survey2/models.py:162
+#: survey/models.py:162
 #, fuzzy
 msgid "section type"
 msgstr "Azione"
 
-#: survey2/models.py:166
+#: survey/models.py:166
 msgid "Example : Hotel Service Rating"
 msgstr ""
 
-#: survey2/models.py:169
+#: survey/models.py:169
 msgid "Example : Capture digits between 1 to 5, press pound key when done"
 msgstr ""
 
-#: survey2/models.py:173
+#: survey/models.py:173
 #, fuzzy
 msgid "retries"
 msgstr "Max Tentativi"
 
-#: survey2/models.py:174
+#: survey/models.py:174
 msgid "Retries this section until it's valid"
 msgstr ""
 
-#: survey2/models.py:176
+#: survey/models.py:176
 #, fuzzy
 msgid "timeout"
 msgstr "Gateway timeout"
 
-#: survey2/models.py:177
+#: survey/models.py:177
 msgid "Timeout in seconds to press the key(s)"
 msgstr ""
 
-#: survey2/models.py:180 survey2/models.py:182 survey2/models.py:184
-#: survey2/models.py:186 survey2/models.py:188 survey2/models.py:190
-#: survey2/models.py:192 survey2/models.py:194 survey2/models.py:196
-#: survey2/models.py:198
+#: survey/models.py:180 survey/models.py:182 survey/models.py:184
+#: survey/models.py:186 survey/models.py:188 survey/models.py:190
+#: survey/models.py:192 survey/models.py:194 survey/models.py:196
+#: survey/models.py:198
 #, fuzzy
 msgid "Press"
 msgstr "Progresso"
 
-#: survey2/models.py:202
+#: survey/models.py:202
 msgid "From 1 to X"
 msgstr ""
 
-#: survey2/models.py:206
+#: survey/models.py:206
 msgid "Check validity"
 msgstr ""
 
-#: survey2/models.py:209
+#: survey/models.py:209
 msgid "Number of digits"
 msgstr ""
 
-#: survey2/models.py:212
+#: survey/models.py:212
 msgid "Minimum"
 msgstr ""
 
-#: survey2/models.py:214
+#: survey/models.py:214
 msgid "Maximum"
 msgstr ""
 
-#: survey2/models.py:219 templates/frontend/survey2/survey_change.html:289
-#: templates/frontend/survey2/survey_view.html:213
+#: survey/models.py:219 templates/frontend/survey/survey_change.html:289
+#: templates/frontend/survey/survey_view.html:213
 #, fuzzy
 msgid "Dial phone number"
 msgstr "Numero di telefono"
 
-#: survey2/models.py:223
+#: survey/models.py:223
 msgid "Continue survey when done"
 msgstr ""
 
-#: survey2/models.py:255 survey2/models.py:342
+#: survey/models.py:255 survey/models.py:342
 #, fuzzy
 msgid "Invalid Input"
 msgstr "File audio"
 
-#: survey2/models.py:260
+#: survey/models.py:260
 #, fuzzy
 msgid "Section template"
 msgstr "Azione"
 
-#: survey2/models.py:261
+#: survey/models.py:261
 #, fuzzy
 msgid "Section templates"
 msgstr "Azione"
 
-#: survey2/models.py:362
+#: survey/models.py:362
 msgid "Entered value"
 msgstr ""
 
-#: survey2/models.py:383
+#: survey/models.py:383
 msgid "Branching template"
 msgstr ""
 
-#: survey2/models.py:384
+#: survey/models.py:384
 msgid "Branching templates"
 msgstr ""
 
-#: survey2/models.py:408 survey2/models.py:409
-#: templates/frontend/survey2/survey_change.html:303
-#: templates/frontend/survey2/survey_view.html:227
+#: survey/models.py:408 survey/models.py:409
+#: templates/frontend/survey/survey_change.html:303
+#: templates/frontend/survey/survey_view.html:227
 msgid "Branching"
 msgstr ""
 
-#: survey2/models.py:473
+#: survey/models.py:473
 #, fuzzy
 msgid "Result count"
 msgstr "Chiama contano"
 
-#: survey2/views.py:549
+#: survey/views.py:549
 msgid "Play message is added successfully."
 msgstr ""
 
-#: survey2/views.py:572
+#: survey/views.py:572
 msgid "Multiple Choice Section is added successfully."
 msgstr ""
 
-#: survey2/views.py:596
+#: survey/views.py:596
 msgid "Rating Section is added successfully."
 msgstr ""
 
-#: survey2/views.py:618
+#: survey/views.py:618
 msgid "Enter Number Section is added successfully."
 msgstr ""
 
-#: survey2/views.py:640
+#: survey/views.py:640
 msgid "Record Message Section is added successfully."
 msgstr ""
 
-#: survey2/views.py:662
+#: survey/views.py:662
 msgid "Call transfer Section is added successfully."
 msgstr ""
 
-#: survey2/views.py:740
+#: survey/views.py:740
 msgid "Play message updated."
 msgstr ""
 
-#: survey2/views.py:764
+#: survey/views.py:764
 msgid "Multiple Choice Section updated."
 msgstr ""
 
-#: survey2/views.py:788
+#: survey/views.py:788
 msgid "Rating Section updated."
 msgstr ""
 
-#: survey2/views.py:812
+#: survey/views.py:812
 msgid "Enter Number Section updated."
 msgstr ""
 
-#: survey2/views.py:836
+#: survey/views.py:836
 msgid "Record Message Section updated."
 msgstr ""
 
-#: survey2/views.py:860
+#: survey/views.py:860
 msgid "Patch Through Section updated."
 msgstr ""
 
-#: survey2/views.py:915
+#: survey/views.py:915
 msgid "Section is deleted successfully."
 msgstr ""
 
-#: survey2/views.py:950
+#: survey/views.py:950
 msgid "Script updated."
 msgstr ""
 
-#: survey2/views.py:1046
+#: survey/views.py:1046
 msgid "Branching is added successfully."
 msgstr ""
 
-#: survey2/views.py:1050 survey2/views.py:1114
+#: survey/views.py:1050 survey/views.py:1114
 #, fuzzy
 msgid "duplicate record keys with goto."
 msgstr "Duplicate Contact!"
 
-#: survey2/views.py:1093
+#: survey/views.py:1093
 msgid "Branching is deleted successfully."
 msgstr ""
 
-#: survey2/views.py:1109
+#: survey/views.py:1109
 msgid "Branching updated."
 msgstr ""
 
@@ -1750,7 +1750,7 @@ msgstr ""
 #: templates/frontend/contact/list.html:75
 #: templates/frontend/report/voipcall_report.html:51
 #: templates/frontend/survey/survey_report.html:67
-#: templates/frontend/survey2/survey_report.html:67
+#: templates/frontend/survey/survey_report.html:67
 msgid "Search"
 msgstr ""
 
@@ -1775,7 +1775,7 @@ msgstr ""
 #: templates/admin/dialer_cdr/voipcall/change_list.html:110
 #: templates/frontend/report/voipcall_report.html:152
 #: templates/frontend/survey/survey_report.html:147
-#: templates/frontend/survey2/survey_report.html:201
+#: templates/frontend/survey/survey_report.html:201
 msgid "Export CSV file"
 msgstr ""
 
@@ -1789,43 +1789,43 @@ msgstr "Rapporto chiamate"
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:72
 #: templates/frontend/report/voipcall_report.html:113
 #: templates/frontend/survey/survey_report.html:155
-#: templates/frontend/survey2/survey_report.html:222
+#: templates/frontend/survey/survey_report.html:222
 msgid "Call Detail Report Summary"
 msgstr ""
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:77
 #: templates/frontend/report/voipcall_report.html:119
 #: templates/frontend/survey/survey_report.html:161
-#: templates/frontend/survey2/survey_report.html:228
+#: templates/frontend/survey/survey_report.html:228
 msgid "Graphic"
 msgstr ""
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:78
 #: templates/frontend/report/voipcall_report.html:120
 #: templates/frontend/survey/survey_report.html:162
-#: templates/frontend/survey2/survey_report.html:229
+#: templates/frontend/survey/survey_report.html:229
 msgid "Calls"
 msgstr ""
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:79
 #: templates/frontend/report/voipcall_report.html:121
 #: templates/frontend/survey/survey_report.html:163
-#: templates/frontend/survey2/survey_report.html:230
+#: templates/frontend/survey/survey_report.html:230
 msgid "Average Connection Time"
 msgstr ""
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:79
 #: templates/frontend/report/voipcall_report.html:121
 #: templates/frontend/survey/survey_report.html:163
-#: templates/frontend/survey2/survey_report.html:230
+#: templates/frontend/survey/survey_report.html:230
 msgid "ACT"
 msgstr ""
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:98
 #: templates/frontend/report/voipcall_report.html:141
 #: templates/frontend/survey/survey_report.html:183
-#: templates/frontend/survey2/survey_report.html:105
-#: templates/frontend/survey2/survey_report.html:250
+#: templates/frontend/survey/survey_report.html:105
+#: templates/frontend/survey/survey_report.html:250
 msgid "Total"
 msgstr ""
 
@@ -1881,8 +1881,8 @@ msgstr ""
 #: templates/frontend/survey/survey_question_change.html:138
 #: templates/frontend/survey/survey_report.html:61
 #: templates/frontend/survey/survey_response_change.html:86
-#: templates/frontend/survey2/survey_change.html:48
-#: templates/frontend/survey2/survey_report.html:61
+#: templates/frontend/survey/survey_change.html:48
+#: templates/frontend/survey/survey_report.html:61
 #: templates/frontend/voiceapp/change.html:37
 msgid "Submit"
 msgstr ""
@@ -1944,11 +1944,11 @@ msgstr ""
 #: templates/frontend/survey/survey_list.html:33
 #: templates/frontend/survey/survey_question_change.html:55
 #: templates/frontend/survey/survey_response_change.html:56
-#: templates/frontend/survey2/section_branch_change.html:44
-#: templates/frontend/survey2/section_change.html:43
-#: templates/frontend/survey2/section_script_change.html:46
-#: templates/frontend/survey2/survey_change.html:15
-#: templates/frontend/survey2/survey_list.html:33
+#: templates/frontend/survey/section_branch_change.html:44
+#: templates/frontend/survey/section_change.html:43
+#: templates/frontend/survey/section_script_change.html:46
+#: templates/frontend/survey/survey_change.html:15
+#: templates/frontend/survey/survey_list.html:33
 #: templates/frontend/voiceapp/change.html:9
 #: templates/frontend/voiceapp/list.html:37
 msgid "Add"
@@ -1992,7 +1992,7 @@ msgstr ""
 
 #: templates/frontend/bootstrap_menu.html:62
 #, fuzzy
-msgid "Survey2 Reports"
+msgid "Survey Reports"
 msgstr "Indagine Descrizione"
 
 #: templates/frontend/bootstrap_menu.html:69
@@ -2006,7 +2006,7 @@ msgstr ""
 
 #: templates/frontend/bootstrap_menu.html:78
 #, fuzzy
-msgid "Surveys2"
+msgid "Surveys"
 msgstr "Sondaggi"
 
 #: templates/frontend/bootstrap_menu.html:81
@@ -2289,7 +2289,7 @@ msgid "Browser playground"
 msgstr ""
 
 #: templates/frontend/api/api_list.html:31
-#: templates/frontend/survey2/section_delete_confirmation.html:15
+#: templates/frontend/survey/section_delete_confirmation.html:15
 msgid "No"
 msgstr ""
 
@@ -2308,13 +2308,13 @@ msgstr ""
 #: templates/frontend/survey/survey_response_change.html:25
 #: templates/frontend/survey/survey_response_change.html:54
 #: templates/frontend/survey/survey_response_change.html:84
-#: templates/frontend/survey2/section_branch_change.html:42
-#: templates/frontend/survey2/section_branch_change.html:104
-#: templates/frontend/survey2/section_change.html:41
-#: templates/frontend/survey2/section_change.html:311
-#: templates/frontend/survey2/section_script_change.html:44
-#: templates/frontend/survey2/section_script_change.html:71
-#: templates/frontend/survey2/survey_change.html:13
+#: templates/frontend/survey/section_branch_change.html:42
+#: templates/frontend/survey/section_branch_change.html:104
+#: templates/frontend/survey/section_change.html:41
+#: templates/frontend/survey/section_change.html:311
+#: templates/frontend/survey/section_script_change.html:44
+#: templates/frontend/survey/section_script_change.html:71
+#: templates/frontend/survey/survey_change.html:13
 #: templates/frontend/voiceapp/change.html:7
 #: templates/frontend/voiceapp/change.html:35
 msgid "Update"
@@ -2341,7 +2341,7 @@ msgstr ""
 #: templates/frontend/contact/list.html:119
 #: templates/frontend/phonebook/list.html:38
 #: templates/frontend/survey/survey_list.html:37
-#: templates/frontend/survey2/survey_list.html:37
+#: templates/frontend/survey/survey_list.html:37
 #: templates/frontend/voiceapp/list.html:41
 msgid "Delete Selected"
 msgstr ""
@@ -2353,7 +2353,7 @@ msgstr ""
 #: templates/frontend/registration/user_notification_grid.html:46
 #: templates/frontend/report/voipcall_report.html:92
 #: templates/frontend/survey/survey_list.html:49
-#: templates/frontend/survey2/survey_list.html:48
+#: templates/frontend/survey/survey_list.html:48
 msgid "Page"
 msgstr ""
 
@@ -2371,8 +2371,8 @@ msgstr ""
 #: templates/frontend/report/voipcall_report.html:96
 #: templates/frontend/survey/survey_list.html:50
 #: templates/frontend/survey/survey_list.html:53
-#: templates/frontend/survey2/survey_list.html:49
-#: templates/frontend/survey2/survey_list.html:52
+#: templates/frontend/survey/survey_list.html:49
+#: templates/frontend/survey/survey_list.html:52
 msgid "of"
 msgstr ""
 
@@ -2383,7 +2383,7 @@ msgstr ""
 #: templates/frontend/registration/user_notification_grid.html:48
 #: templates/frontend/report/voipcall_report.html:94
 #: templates/frontend/survey/survey_list.html:51
-#: templates/frontend/survey2/survey_list.html:50
+#: templates/frontend/survey/survey_list.html:50
 msgid "No items"
 msgstr ""
 
@@ -2394,7 +2394,7 @@ msgstr ""
 #: templates/frontend/registration/user_notification_grid.html:49
 #: templates/frontend/report/voipcall_report.html:95
 #: templates/frontend/survey/survey_list.html:52
-#: templates/frontend/survey2/survey_list.html:51
+#: templates/frontend/survey/survey_list.html:51
 msgid "Processing, please wait ..."
 msgstr ""
 
@@ -2405,7 +2405,7 @@ msgstr ""
 #: templates/frontend/registration/user_notification_grid.html:50
 #: templates/frontend/report/voipcall_report.html:96
 #: templates/frontend/survey/survey_list.html:53
-#: templates/frontend/survey2/survey_list.html:52
+#: templates/frontend/survey/survey_list.html:52
 msgid "Displaying"
 msgstr ""
 
@@ -2417,8 +2417,8 @@ msgstr ""
 #: templates/frontend/report/voipcall_report.html:96
 #: templates/frontend/survey/survey_list.html:53
 #: templates/frontend/survey/survey_report.html:79
-#: templates/frontend/survey2/survey_list.html:52
-#: templates/frontend/survey2/survey_report.html:129
+#: templates/frontend/survey/survey_list.html:52
+#: templates/frontend/survey/survey_report.html:129
 msgid "to"
 msgstr ""
 
@@ -2429,14 +2429,14 @@ msgstr ""
 #: templates/frontend/registration/user_notification_grid.html:50
 #: templates/frontend/report/voipcall_report.html:96
 #: templates/frontend/survey/survey_list.html:53
-#: templates/frontend/survey2/survey_list.html:52
+#: templates/frontend/survey/survey_list.html:52
 msgid "items"
 msgstr ""
 
 #: templates/frontend/campaign/campaign_duplicate.html:73
-#: templates/frontend/survey2/section_branch_change.html:106
-#: templates/frontend/survey2/section_change.html:313
-#: templates/frontend/survey2/section_script_change.html:73
+#: templates/frontend/survey/section_branch_change.html:106
+#: templates/frontend/survey/section_change.html:313
+#: templates/frontend/survey/section_script_change.html:73
 msgid "Save"
 msgstr ""
 
@@ -2447,10 +2447,10 @@ msgstr ""
 #: templates/frontend/survey/survey_change.html:280
 #: templates/frontend/survey/survey_question_change.html:147
 #: templates/frontend/survey/survey_response_change.html:95
-#: templates/frontend/survey2/section_branch_change.html:109
-#: templates/frontend/survey2/section_change.html:316
-#: templates/frontend/survey2/section_script_change.html:76
-#: templates/frontend/survey2/survey_campaign_result.html:60
+#: templates/frontend/survey/section_branch_change.html:109
+#: templates/frontend/survey/section_change.html:316
+#: templates/frontend/survey/section_script_change.html:76
+#: templates/frontend/survey/survey_campaign_result.html:60
 msgid "Close"
 msgstr ""
 
@@ -2478,7 +2478,7 @@ msgstr ""
 #: templates/frontend/contact/change.html:48
 #: templates/frontend/phonebook/change.html:39
 #: templates/frontend/survey/survey_change.html:133
-#: templates/frontend/survey2/survey_change.html:349
+#: templates/frontend/survey/survey_change.html:349
 #: templates/frontend/voiceapp/change.html:41
 msgid "Delete"
 msgstr ""
@@ -2754,12 +2754,12 @@ msgid "Call Records"
 msgstr ""
 
 #: templates/frontend/survey/survey_change.html:72
-#: templates/frontend/survey2/survey_change.html:18
+#: templates/frontend/survey/survey_change.html:18
 msgid "Survey configuration"
 msgstr ""
 
 #: templates/frontend/survey/survey_change.html:101
-#: templates/frontend/survey2/survey_change.html:394
+#: templates/frontend/survey/survey_change.html:394
 msgid "Update Survey"
 msgstr ""
 
@@ -2775,13 +2775,13 @@ msgstr ""
 
 #: templates/frontend/survey/survey_change.html:126
 #: templates/frontend/survey/survey_change.html:127
-#: templates/frontend/survey2/survey_change.html:330
-#: templates/frontend/survey2/survey_view.html:253
+#: templates/frontend/survey/survey_change.html:330
+#: templates/frontend/survey/survey_view.html:253
 msgid "None"
 msgstr ""
 
 #: templates/frontend/survey/survey_change.html:131
-#: templates/frontend/survey2/survey_change.html:161
+#: templates/frontend/survey/survey_change.html:161
 msgid "Edit"
 msgstr ""
 
@@ -2827,65 +2827,65 @@ msgid "Survey Question"
 msgstr "Indagine Descrizione"
 
 #: templates/frontend/survey/survey_list.html:9
-#: templates/frontend/survey2/survey_list.html:9
+#: templates/frontend/survey/survey_list.html:9
 msgid "List, add and edit surveys"
 msgstr ""
 
 #: templates/frontend/survey/survey_report.html:25
-#: templates/frontend/survey2/survey_report.html:25
+#: templates/frontend/survey/survey_report.html:25
 #, fuzzy
 msgid "Survey Detail Report"
 msgstr "Indagine Descrizione"
 
 #: templates/frontend/survey/survey_report.html:25
-#: templates/frontend/survey2/survey_report.html:25
+#: templates/frontend/survey/survey_report.html:25
 msgid "Monitor survey reports"
 msgstr ""
 
 #: templates/frontend/survey/survey_report.html:32
-#: templates/frontend/survey2/survey_report.html:33
+#: templates/frontend/survey/survey_report.html:33
 #, fuzzy
 msgid "Survey calls"
 msgstr "Sondaggi"
 
 #: templates/frontend/survey/survey_report.html:33
-#: templates/frontend/survey2/survey_report.html:34
+#: templates/frontend/survey/survey_report.html:34
 msgid "Survey daily call report"
 msgstr ""
 
 #: templates/frontend/survey/survey_report.html:34
-#: templates/frontend/survey2/survey_report.html:32
+#: templates/frontend/survey/survey_report.html:32
 #, fuzzy
 msgid "Survey result"
 msgstr "Sondaggi"
 
 #: templates/frontend/survey/survey_report.html:73
-#: templates/frontend/survey2/survey_report.html:123
+#: templates/frontend/survey/survey_report.html:123
 msgid "Survey call detail records"
 msgstr ""
 
 #: templates/frontend/survey/survey_report.html:90
-#: templates/frontend/survey2/survey_report.html:140
+#: templates/frontend/survey/survey_report.html:140
 #, fuzzy
 msgid "Call-date"
 msgstr "Call-ID"
 
 #: templates/frontend/survey/survey_report.html:115
-#: templates/frontend/survey2/survey_report.html:165
+#: templates/frontend/survey/survey_report.html:165
 #, fuzzy
 msgid "Survey Result"
 msgstr "Sondaggi"
 
 #: templates/frontend/survey/survey_report.html:133
 #: templates/frontend/survey/survey_report.html:233
-#: templates/frontend/survey2/survey_report.html:117
-#: templates/frontend/survey2/survey_report.html:187
+#: templates/frontend/survey/survey_report.html:117
+#: templates/frontend/survey/survey_report.html:187
 #, fuzzy
 msgid "no record found"
 msgstr "Nessun record trovato!."
 
 #: templates/frontend/survey/survey_report.html:139
-#: templates/frontend/survey2/survey_report.html:193
+#: templates/frontend/survey/survey_report.html:193
 msgid "total calls"
 msgstr ""
 
@@ -2897,177 +2897,177 @@ msgstr ""
 msgid "contact(s) left a recorded message"
 msgstr ""
 
-#: templates/frontend/survey2/section_branch_change.html:45
+#: templates/frontend/survey/section_branch_change.html:45
 msgid "Section Branch"
 msgstr ""
 
-#: templates/frontend/survey2/section_change.html:44
+#: templates/frontend/survey/section_change.html:44
 #, fuzzy
 msgid "Section"
 msgstr "Azione"
 
-#: templates/frontend/survey2/section_change.html:161
+#: templates/frontend/survey/section_change.html:161
 msgid "Configure valid multi-choice options. The value of each field will be shown in the survey report"
 msgstr ""
 
-#: templates/frontend/survey2/section_delete_confirmation.html:5
+#: templates/frontend/survey/section_delete_confirmation.html:5
 #, fuzzy
 msgid "Delete Section"
 msgstr "Elimina contatto"
 
-#: templates/frontend/survey2/section_delete_confirmation.html:9
+#: templates/frontend/survey/section_delete_confirmation.html:9
 msgid "You are about to delete"
 msgstr ""
 
-#: templates/frontend/survey2/section_delete_confirmation.html:9
+#: templates/frontend/survey/section_delete_confirmation.html:9
 msgid "this procedure is irreversible."
 msgstr ""
 
-#: templates/frontend/survey2/section_delete_confirmation.html:10
+#: templates/frontend/survey/section_delete_confirmation.html:10
 msgid "Do you want to proceed?"
 msgstr ""
 
-#: templates/frontend/survey2/section_delete_confirmation.html:14
+#: templates/frontend/survey/section_delete_confirmation.html:14
 msgid "Yes"
 msgstr ""
 
-#: templates/frontend/survey2/section_script_change.html:47
+#: templates/frontend/survey/section_script_change.html:47
 msgid "Section script"
 msgstr ""
 
-#: templates/frontend/survey2/survey_campaign_result.html:23
-#: templates/frontend/survey2/survey_report.html:177
+#: templates/frontend/survey/survey_campaign_result.html:23
+#: templates/frontend/survey/survey_report.html:177
 #, fuzzy
 msgid "Result"
 msgstr "Sondaggi"
 
-#: templates/frontend/survey2/survey_campaign_result.html:32
+#: templates/frontend/survey/survey_campaign_result.html:32
 msgid "Record file"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:73
-#: templates/frontend/survey2/survey_view.html:46
+#: templates/frontend/survey/survey_change.html:73
+#: templates/frontend/survey/survey_view.html:46
 msgid "Completed"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:142
-#: templates/frontend/survey2/survey_view.html:76
+#: templates/frontend/survey/survey_change.html:142
+#: templates/frontend/survey/survey_view.html:76
 #, fuzzy
 msgid "question"
 msgstr "Domanda"
 
-#: templates/frontend/survey2/survey_change.html:147
-#: templates/frontend/survey2/survey_view.html:82
+#: templates/frontend/survey/survey_change.html:147
+#: templates/frontend/survey/survey_view.html:82
 #, fuzzy
 msgid "Audio file"
 msgstr "File Audio"
 
-#: templates/frontend/survey2/survey_change.html:157
-#: templates/frontend/survey2/survey_view.html:92
+#: templates/frontend/survey/survey_change.html:157
+#: templates/frontend/survey/survey_view.html:92
 msgid "script"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:166
+#: templates/frontend/survey/survey_change.html:166
 msgid "Play"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:185
-#: templates/frontend/survey2/survey_view.html:109
+#: templates/frontend/survey/survey_change.html:185
+#: templates/frontend/survey/survey_view.html:109
 msgid "Key Associations"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:193
-#: templates/frontend/survey2/survey_change.html:199
-#: templates/frontend/survey2/survey_change.html:205
-#: templates/frontend/survey2/survey_change.html:211
-#: templates/frontend/survey2/survey_change.html:217
-#: templates/frontend/survey2/survey_change.html:223
-#: templates/frontend/survey2/survey_change.html:229
-#: templates/frontend/survey2/survey_change.html:235
-#: templates/frontend/survey2/survey_change.html:241
-#: templates/frontend/survey2/survey_change.html:247
-#: templates/frontend/survey2/survey_view.html:117
-#: templates/frontend/survey2/survey_view.html:123
-#: templates/frontend/survey2/survey_view.html:129
-#: templates/frontend/survey2/survey_view.html:135
-#: templates/frontend/survey2/survey_view.html:141
-#: templates/frontend/survey2/survey_view.html:147
-#: templates/frontend/survey2/survey_view.html:153
-#: templates/frontend/survey2/survey_view.html:159
-#: templates/frontend/survey2/survey_view.html:165
-#: templates/frontend/survey2/survey_view.html:171
+#: templates/frontend/survey/survey_change.html:193
+#: templates/frontend/survey/survey_change.html:199
+#: templates/frontend/survey/survey_change.html:205
+#: templates/frontend/survey/survey_change.html:211
+#: templates/frontend/survey/survey_change.html:217
+#: templates/frontend/survey/survey_change.html:223
+#: templates/frontend/survey/survey_change.html:229
+#: templates/frontend/survey/survey_change.html:235
+#: templates/frontend/survey/survey_change.html:241
+#: templates/frontend/survey/survey_change.html:247
+#: templates/frontend/survey/survey_view.html:117
+#: templates/frontend/survey/survey_view.html:123
+#: templates/frontend/survey/survey_view.html:129
+#: templates/frontend/survey/survey_view.html:135
+#: templates/frontend/survey/survey_view.html:141
+#: templates/frontend/survey/survey_view.html:147
+#: templates/frontend/survey/survey_view.html:153
+#: templates/frontend/survey/survey_view.html:159
+#: templates/frontend/survey/survey_view.html:165
+#: templates/frontend/survey/survey_view.html:171
 msgid "User press"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:263
-#: templates/frontend/survey2/survey_view.html:187
+#: templates/frontend/survey/survey_change.html:263
+#: templates/frontend/survey/survey_view.html:187
 #, fuzzy
 msgid "From 1 to"
 msgstr "Da"
 
-#: templates/frontend/survey2/survey_change.html:271
-#: templates/frontend/survey2/survey_view.html:195
+#: templates/frontend/survey/survey_change.html:271
+#: templates/frontend/survey/survey_view.html:195
 msgid "Number is between"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:271
-#: templates/frontend/survey2/survey_view.html:195
+#: templates/frontend/survey/survey_change.html:271
+#: templates/frontend/survey/survey_view.html:195
 msgid "and"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:280
-#: templates/frontend/survey2/survey_change.html:292
-#: templates/frontend/survey2/survey_view.html:204
-#: templates/frontend/survey2/survey_view.html:216
+#: templates/frontend/survey/survey_change.html:280
+#: templates/frontend/survey/survey_change.html:292
+#: templates/frontend/survey/survey_view.html:204
+#: templates/frontend/survey/survey_view.html:216
 msgid "When done, continue survey"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:308
-#: templates/frontend/survey2/survey_view.html:232
+#: templates/frontend/survey/survey_change.html:308
+#: templates/frontend/survey/survey_view.html:232
 msgid "keys"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:310
-#: templates/frontend/survey2/survey_view.html:234
+#: templates/frontend/survey/survey_change.html:310
+#: templates/frontend/survey/survey_view.html:234
 msgid "goto"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:322
-#: templates/frontend/survey2/survey_change.html:327
-#: templates/frontend/survey2/survey_view.html:245
-#: templates/frontend/survey2/survey_view.html:250
+#: templates/frontend/survey/survey_change.html:322
+#: templates/frontend/survey/survey_change.html:327
+#: templates/frontend/survey/survey_view.html:245
+#: templates/frontend/survey/survey_view.html:250
 msgid "Key"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:323
-#: templates/frontend/survey2/survey_view.html:246
+#: templates/frontend/survey/survey_change.html:323
+#: templates/frontend/survey/survey_view.html:246
 msgid "anything else"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:389
+#: templates/frontend/survey/survey_change.html:389
 #, fuzzy
 msgid "Add Section"
 msgstr "Azione"
 
-#: templates/frontend/survey2/survey_change_header.html:48
+#: templates/frontend/survey/survey_change_header.html:48
 #, fuzzy
 msgid "Edit section"
 msgstr "Risposta"
 
-#: templates/frontend/survey2/survey_change_header.html:57
+#: templates/frontend/survey/survey_change_header.html:57
 #, fuzzy
 msgid "Delete section"
 msgstr "Elimina contatto"
 
-#: templates/frontend/survey2/survey_change_header.html:66
+#: templates/frontend/survey/survey_change_header.html:66
 msgid "Branch"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change_header.html:75
+#: templates/frontend/survey/survey_change_header.html:75
 msgid "Collapse"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change_header.html:84
+#: templates/frontend/survey/survey_change_header.html:84
 msgid "Move"
 msgstr ""
 

@@ -14,7 +14,7 @@
 #
 
 from django.contrib import admin
-from survey2.models import Survey, Section, Branching, \
+from survey.models import Survey, Section, Branching, \
     Survey_template, Section_template, Branching_template, \
     Result, ResultAggregate
 from adminsortable.admin import SortableAdmin, SortableTabularInline

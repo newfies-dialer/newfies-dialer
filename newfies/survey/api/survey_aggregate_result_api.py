@@ -24,7 +24,7 @@ from tastypie.exceptions import BadRequest, ImmediateHttpResponse
 from tastypie import http
 
 from dialer_campaign.models import Campaign
-from survey2.models import ResultAggregate
+from survey.models import ResultAggregate
 import logging
 
 logger = logging.getLogger('newfies.filelog')

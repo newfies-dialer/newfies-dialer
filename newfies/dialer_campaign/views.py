@@ -25,7 +25,6 @@ from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import get_model
-from notification import models as notification
 from frontend.views import notice_count
 from dialer_contact.models import Phonebook
 from utils.helper import grid_common_function, get_grid_update_delete_link
@@ -36,7 +35,7 @@ from dialer_campaign.function_def import user_attached_with_dialer_settings, \
     check_dialer_setting, dialer_setting_limit, \
     get_campaign_status_name, user_dialer_setting_msg
 from dialer_campaign.tasks import collect_subscriber
-from survey2.function_def import check_survey_campaign
+from survey.function_def import check_survey_campaign
 from voice_app.function_def import check_voiceapp_campaign
 from user_profile.constants import NOTIFICATION_NAME
 from user_profile.function_def import common_send_notification
@@ -156,7 +155,7 @@ def get_campaign_survey_view(campaign_object):
     link = ''
     if campaign_object.status and int(campaign_object.status) == CAMPAIGN_STATUS.START:
         if campaign_object.content_type.model == 'survey':
-            link = '<a href="/survey2_view/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' % \
+            link = '<a href="/survey_view/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' % \
                    (campaign_object.object_id,
                     _('survey'),
                     tpl_control_icon('eye.png'))

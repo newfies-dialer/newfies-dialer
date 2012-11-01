@@ -22,7 +22,7 @@
                 $(window).load(function(){
                     $('#section_modal').modal('show');
                 });
-                var url = '/survey2/' + '{{ survey_id }}'  + '/#row{{ section_id }}';
+                var url = '/survey/' + '{{ survey_id }}'  + '/#row{{ section_id }}';
                 $(".close").live('click', function() {
                     $(location).attr('href', url);
                 });

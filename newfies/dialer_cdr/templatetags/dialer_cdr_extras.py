@@ -13,10 +13,10 @@
 #
 
 from django.template.defaultfilters import *
-from survey2.views import survey_audio_recording
+from survey.views import survey_audio_recording
 from dialer_campaign.constants import CAMPAIGN_STATUS
 from dialer_cdr.constants import LEG_TYPE
-from survey2.constants import SECTION_TYPE
+from survey.constants import SECTION_TYPE
 from voice_app.constants import VOICEAPP_TYPE
 from frontend.views import notice_count
 

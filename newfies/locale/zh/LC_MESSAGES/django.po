@@ -112,14 +112,14 @@ msgstr "刪除語音檔"
 
 #: dialer_audio/views.py:147 dialer_campaign/views.py:393
 #: dialer_contact/views.py:163 dialer_contact/views.py:451 survey/views.py:359
-#: survey2/views.py:448 voice_app/views.py:130
+#: survey/views.py:448 voice_app/views.py:130
 #, python-format
 msgid "\"%(name)s\" is added."
 msgstr "\"%(name)s\" 已經新增."
 
 #: dialer_audio/views.py:188 dialer_campaign/views.py:426
 #: dialer_campaign/views.py:483 dialer_contact/views.py:214
-#: dialer_contact/views.py:494 survey/views.py:391 survey2/views.py:493
+#: dialer_contact/views.py:494 survey/views.py:391 survey/views.py:493
 #: user_profile/views.py:253 voice_app/views.py:165
 #, python-format
 msgid "\"%(name)s\" is deleted."
@@ -187,24 +187,24 @@ msgstr "此代碼為此平台自動產生, 用來識別競選活動."
 
 #: dialer_campaign/models.py:163 dialer_contact/models.py:37
 #: dialer_contact/models.py:122 dialer_gateway/models.py:73
-#: dialer_settings/models.py:38 survey/models.py:81 survey2/models.py:44
+#: dialer_settings/models.py:38 survey/models.py:81 survey/models.py:44
 #: templates/frontend/api/api_list.html:32
 #: templates/frontend/audio/audio_list.html:25
 #: templates/frontend/campaign/list.html:26
 #: templates/frontend/phonebook/list.html:26
 #: templates/frontend/survey/survey_list.html:26
-#: templates/frontend/survey2/survey_list.html:26
+#: templates/frontend/survey/survey_list.html:26
 #: templates/frontend/voiceapp/list.html:26 voice_app/models.py:49
 msgid "Name"
 msgstr "姓名"
 
 #: dialer_campaign/models.py:164 dialer_gateway/models.py:76
-#: survey/models.py:83 survey2/models.py:46
+#: survey/models.py:83 survey/models.py:46
 #: templates/frontend/contact/import_contact.html:26
 #: templates/frontend/phonebook/list.html:27
 #: templates/frontend/survey/survey_list.html:27
-#: templates/frontend/survey2/survey_list.html:27
-#: templates/frontend/survey2/survey_view.html:24
+#: templates/frontend/survey/survey_list.html:27
+#: templates/frontend/survey/survey_view.html:24
 #: templates/frontend/voiceapp/list.html:27 voice_app/models.py:51
 msgid "Description"
 msgstr "內容"
@@ -361,8 +361,8 @@ msgid "Can see Campaign Dashboard"
 msgstr "競選活動中斷"
 
 #: dialer_campaign/models.py:249 frontend/forms.py:21 survey/forms.py:106
-#: survey/models.py:217 survey2/forms.py:315 survey2/models.py:109
-#: survey2/models.py:467 templates/frontend/bootstrap_menu.html:32
+#: survey/models.py:217 survey/forms.py:315 survey/models.py:109
+#: survey/models.py:467 templates/frontend/bootstrap_menu.html:32
 #: templates/frontend/dashboard.html:38
 #: templates/frontend/campaign/campaign_duplicate.html:43
 #: templates/frontend/campaign/change.html:12
@@ -380,7 +380,7 @@ msgstr "競選活動"
 #: templates/frontend/phonebook/list.html:30
 #: templates/frontend/registration/user_notification_grid.html:28
 #: templates/frontend/survey/survey_list.html:29
-#: templates/frontend/survey2/survey_list.html:29
+#: templates/frontend/survey/survey_list.html:29
 #: templates/frontend/voiceapp/list.html:33
 msgid "Action"
 msgstr "動作"
@@ -503,7 +503,7 @@ msgid ""
 msgstr ""
 
 #: dialer_campaign/views.py:514 dialer_contact/views.py:270
-#: dialer_contact/views.py:544 survey/views.py:669 survey2/views.py:1170
+#: dialer_contact/views.py:544 survey/views.py:669 survey/views.py:1170
 #: voice_app/views.py:214
 #, python-format
 msgid "\"%(name)s\" is updated."
@@ -671,7 +671,7 @@ msgstr "競選活動訂戶關聯至此撥號需求"
 msgid "Select gateway to use to call the subscriber"
 msgstr "選擇語音閘道撥打到電話訂戶"
 
-#: dialer_cdr/models.py:139 survey2/models.py:228
+#: dialer_cdr/models.py:139 survey/models.py:228
 #, fuzzy
 msgid "Survey complete"
 msgstr "民意調查"
@@ -709,7 +709,7 @@ msgid "The international number of the recipient, without the leading +"
 msgstr "國際電話號碼不需要加上前置號"
 
 #: dialer_cdr/models.py:206 templates/frontend/survey/survey_report.html:99
-#: templates/frontend/survey2/survey_report.html:149
+#: templates/frontend/survey/survey_report.html:149
 msgid "Destination"
 msgstr "對方號碼"
 
@@ -728,9 +728,9 @@ msgstr "開始日期"
 #: templates/frontend/report/voipcall_report.html:118
 #: templates/frontend/survey/survey_report.html:108
 #: templates/frontend/survey/survey_report.html:160
-#: templates/frontend/survey2/survey_campaign_result.html:33
-#: templates/frontend/survey2/survey_report.html:158
-#: templates/frontend/survey2/survey_report.html:227
+#: templates/frontend/survey/survey_campaign_result.html:33
+#: templates/frontend/survey/survey_report.html:158
+#: templates/frontend/survey/survey_report.html:227
 msgid "Duration"
 msgstr "間隔"
 
@@ -752,7 +752,7 @@ msgstr "等待秒數"
 
 #: dialer_cdr/models.py:224 templates/frontend/report/voipcall_report.html:82
 #: templates/frontend/survey/survey_report.html:114
-#: templates/frontend/survey2/survey_report.html:164
+#: templates/frontend/survey/survey_report.html:164
 msgid "Disposition"
 msgstr "清除："
 
@@ -919,7 +919,7 @@ msgid "Phonebook Notes"
 msgstr "電話簿註記"
 
 #: dialer_contact/models.py:42 dialer_contact/models.py:104
-#: dialer_gateway/models.py:105 survey/models.py:87 survey2/models.py:49
+#: dialer_gateway/models.py:105 survey/models.py:87 survey/models.py:49
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:75
 #: templates/frontend/audio/audio_list.html:28
 #: templates/frontend/contact/list.html:108
@@ -928,8 +928,8 @@ msgstr "電話簿註記"
 #: templates/frontend/report/voipcall_report.html:117
 #: templates/frontend/survey/survey_list.html:28
 #: templates/frontend/survey/survey_report.html:159
-#: templates/frontend/survey2/survey_list.html:28
-#: templates/frontend/survey2/survey_report.html:226
+#: templates/frontend/survey/survey_list.html:28
+#: templates/frontend/survey/survey_report.html:226
 #: templates/frontend/voiceapp/list.html:32 voice_app/models.py:69
 msgid "Date"
 msgstr "日期"
@@ -1283,39 +1283,39 @@ msgstr "輸入合法使用者證件."
 msgid "Goto"
 msgstr ""
 
-#: survey/models.py:84 survey2/models.py:47
+#: survey/models.py:84 survey/models.py:47
 msgid "Survey Description"
 msgstr "民意調查內容"
 
-#: survey/models.py:92 survey2/models.py:113
+#: survey/models.py:92 survey/models.py:113
 #, fuzzy
 msgid "Can see Survey"
 msgstr "更新民意調查"
 
-#: survey/models.py:93 survey2/models.py:114
+#: survey/models.py:93 survey/models.py:114
 #, fuzzy
 msgid "Can see Survey Report"
 msgstr "民意調查報表"
 
-#: survey/models.py:95 survey2/models.py:116 survey2/models.py:253
-#: survey2/models.py:340 templates/frontend/survey/survey_change.html:71
+#: survey/models.py:95 survey/models.py:116 survey/models.py:253
+#: survey/models.py:340 templates/frontend/survey/survey_change.html:71
 #: templates/frontend/survey/survey_list.html:9
 #: templates/frontend/survey/survey_list.html:43
-#: templates/frontend/survey2/survey_change.html:17
-#: templates/frontend/survey2/survey_list.html:9
-#: templates/frontend/survey2/survey_list.html:43
-#: templates/frontend/survey2/survey_view.html:12
+#: templates/frontend/survey/survey_change.html:17
+#: templates/frontend/survey/survey_list.html:9
+#: templates/frontend/survey/survey_list.html:43
+#: templates/frontend/survey/survey_view.html:12
 msgid "Survey"
 msgstr "民意調查"
 
-#: survey/models.py:96 survey2/models.py:117
+#: survey/models.py:96 survey/models.py:117
 #: templates/frontend/bootstrap_menu.html:75
 msgid "Surveys"
 msgstr "民意調查"
 
-#: survey/models.py:125 survey/models.py:224 survey2/models.py:165
-#: templates/frontend/survey2/survey_campaign_result.html:30
-#: templates/frontend/survey2/survey_report.html:84
+#: survey/models.py:125 survey/models.py:224 survey/models.py:165
+#: templates/frontend/survey/survey_campaign_result.html:30
+#: templates/frontend/survey/survey_report.html:84
 msgid "Question"
 msgstr "問題"
 
@@ -1327,7 +1327,7 @@ msgstr "輸入您的問題"
 msgid "SurveyApp"
 msgstr "民意調查App"
 
-#: survey/models.py:131 survey2/models.py:171
+#: survey/models.py:131 survey/models.py:171
 msgid "Audio File"
 msgstr "語音檔案"
 
@@ -1371,29 +1371,29 @@ msgstr "數值"
 msgid "Call-ID"
 msgstr "Call-ID"
 
-#: survey/models.py:226 survey2/models.py:445 survey2/models.py:471
-#: templates/frontend/survey2/survey_campaign_result.html:31
+#: survey/models.py:226 survey/models.py:445 survey/models.py:471
+#: templates/frontend/survey/survey_campaign_result.html:31
 msgid "Response"
 msgstr "回應"
 
-#: survey/models.py:228 survey2/models.py:447
+#: survey/models.py:228 survey/models.py:447
 msgid "Record File"
 msgstr ""
 
-#: survey/models.py:231 survey2/models.py:450
+#: survey/models.py:231 survey/models.py:450
 #, fuzzy
 msgid "Recording Duration"
 msgstr "民意調查設定"
 
-#: survey/views.py:301 survey2/views.py:387
+#: survey/views.py:301 survey/views.py:387
 msgid "Update survey"
 msgstr "更新民意調查"
 
-#: survey/views.py:304 survey2/views.py:391
+#: survey/views.py:304 survey/views.py:391
 msgid "Delete survey"
 msgstr "刪除民意調查"
 
-#: survey/views.py:403 survey2/views.py:510
+#: survey/views.py:403 survey/views.py:510
 #, python-format
 msgid "%(count)s survey(s) are deleted."
 msgstr "%(count)s 民意調查已經刪除."
@@ -1421,253 +1421,253 @@ msgstr "重複"
 msgid "Response is not added."
 msgstr ""
 
-#: survey/views.py:764 survey2/views.py:1297
+#: survey/views.py:764 survey/views.py:1297
 #, fuzzy
 msgid "No recording"
 msgstr "找不到紀錄!."
 
-#: survey/views.py:946 survey2/views.py:1455
+#: survey/views.py:946 survey/views.py:1455
 msgid "No campaign attached with survey."
 msgstr "無競選活動附加到民意調查"
 
-#: survey2/constants.py:20
+#: survey/constants.py:20
 #, fuzzy
 msgid "Play message"
 msgstr "語音應用程式"
 
-#: survey2/constants.py:21
+#: survey/constants.py:21
 #, fuzzy
 msgid "Multi-choice"
 msgstr "輸入您的問題"
 
-#: survey2/constants.py:22
+#: survey/constants.py:22
 #, fuzzy
 msgid "Rating question"
 msgstr "刪除問題"
 
-#: survey2/constants.py:23
+#: survey/constants.py:23
 #, fuzzy
 msgid "Capture digits"
 msgstr "連絡電話"
 
-#: survey2/constants.py:24
+#: survey/constants.py:24
 #, fuzzy
 msgid "Record message"
 msgstr "語音檔"
 
-#: survey2/constants.py:25
+#: survey/constants.py:25
 msgid "Call transfer"
 msgstr ""
 
-#: survey2/forms.py:45 templates/frontend/survey2/survey_change.html:344
-#: templates/frontend/survey2/survey_view.html:267
+#: survey/forms.py:45 templates/frontend/survey/survey_change.html:344
+#: templates/frontend/survey/survey_view.html:267
 #, fuzzy
 msgid "Hang up"
 msgstr "掛斷原因"
 
-#: survey2/forms.py:81 survey2/forms.py:105
+#: survey/forms.py:81 survey/forms.py:105
 #: templates/frontend/registration/user_dialer_settings.html:17
-#: templates/frontend/survey2/survey_change.html:325
-#: templates/frontend/survey2/survey_view.html:248
+#: templates/frontend/survey/survey_change.html:325
+#: templates/frontend/survey/survey_view.html:248
 msgid "Timeout"
 msgstr "時間到"
 
-#: survey2/forms.py:82 survey2/forms.py:106
+#: survey/forms.py:82 survey/forms.py:106
 msgid "Anything"
 msgstr ""
 
-#: survey2/models.py:67
+#: survey/models.py:67
 msgid "Can see Survey Template"
 msgstr ""
 
-#: survey2/models.py:69
+#: survey/models.py:69
 #, fuzzy
 msgid "Survey template"
 msgstr "民意調查"
 
-#: survey2/models.py:70
+#: survey/models.py:70
 #, fuzzy
 msgid "Survey templates"
 msgstr "民意調查報表"
 
-#: survey2/models.py:162
+#: survey/models.py:162
 #, fuzzy
 msgid "section type"
 msgstr "通知型態"
 
-#: survey2/models.py:166
+#: survey/models.py:166
 msgid "Example : Hotel Service Rating"
 msgstr ""
 
-#: survey2/models.py:169
+#: survey/models.py:169
 msgid "Example : Capture digits between 1 to 5, press pound key when done"
 msgstr ""
 
-#: survey2/models.py:173
+#: survey/models.py:173
 #, fuzzy
 msgid "retries"
 msgstr "重試最大值"
 
-#: survey2/models.py:174
+#: survey/models.py:174
 msgid "Retries this section until it's valid"
 msgstr ""
 
-#: survey2/models.py:176
+#: survey/models.py:176
 #, fuzzy
 msgid "timeout"
 msgstr "時間到"
 
-#: survey2/models.py:177
+#: survey/models.py:177
 msgid "Timeout in seconds to press the key(s)"
 msgstr ""
 
-#: survey2/models.py:180 survey2/models.py:182 survey2/models.py:184
-#: survey2/models.py:186 survey2/models.py:188 survey2/models.py:190
-#: survey2/models.py:192 survey2/models.py:194 survey2/models.py:196
-#: survey2/models.py:198
+#: survey/models.py:180 survey/models.py:182 survey/models.py:184
+#: survey/models.py:186 survey/models.py:188 survey/models.py:190
+#: survey/models.py:192 survey/models.py:194 survey/models.py:196
+#: survey/models.py:198
 #, fuzzy
 msgid "Press"
 msgstr "進度"
 
-#: survey2/models.py:202
+#: survey/models.py:202
 msgid "From 1 to X"
 msgstr ""
 
-#: survey2/models.py:206
+#: survey/models.py:206
 msgid "Check validity"
 msgstr ""
 
-#: survey2/models.py:209
+#: survey/models.py:209
 msgid "Number of digits"
 msgstr ""
 
-#: survey2/models.py:212
+#: survey/models.py:212
 msgid "Minimum"
 msgstr ""
 
-#: survey2/models.py:214
+#: survey/models.py:214
 #, fuzzy
 msgid "Maximum"
 msgstr "重試最大值"
 
-#: survey2/models.py:219 templates/frontend/survey2/survey_change.html:289
-#: templates/frontend/survey2/survey_view.html:213
+#: survey/models.py:219 templates/frontend/survey/survey_change.html:289
+#: templates/frontend/survey/survey_view.html:213
 #, fuzzy
 msgid "Dial phone number"
 msgstr "電話號碼"
 
-#: survey2/models.py:223
+#: survey/models.py:223
 msgid "Continue survey when done"
 msgstr ""
 
-#: survey2/models.py:255 survey2/models.py:342
+#: survey/models.py:255 survey/models.py:342
 #, fuzzy
 msgid "Invalid Input"
 msgstr "語音檔"
 
-#: survey2/models.py:260
+#: survey/models.py:260
 #, fuzzy
 msgid "Section template"
 msgstr "通知型態"
 
-#: survey2/models.py:261
+#: survey/models.py:261
 #, fuzzy
 msgid "Section templates"
 msgstr "通知型態"
 
-#: survey2/models.py:362
+#: survey/models.py:362
 msgid "Entered value"
 msgstr ""
 
-#: survey2/models.py:383
+#: survey/models.py:383
 msgid "Branching template"
 msgstr ""
 
-#: survey2/models.py:384
+#: survey/models.py:384
 msgid "Branching templates"
 msgstr ""
 
-#: survey2/models.py:408 survey2/models.py:409
-#: templates/frontend/survey2/survey_change.html:303
-#: templates/frontend/survey2/survey_view.html:227
+#: survey/models.py:408 survey/models.py:409
+#: templates/frontend/survey/survey_change.html:303
+#: templates/frontend/survey/survey_view.html:227
 msgid "Branching"
 msgstr ""
 
-#: survey2/models.py:473
+#: survey/models.py:473
 #, fuzzy
 msgid "Result count"
 msgstr "撥號計數"
 
-#: survey2/views.py:549
+#: survey/views.py:549
 msgid "Play message is added successfully."
 msgstr ""
 
-#: survey2/views.py:572
+#: survey/views.py:572
 msgid "Multiple Choice Section is added successfully."
 msgstr ""
 
-#: survey2/views.py:596
+#: survey/views.py:596
 msgid "Rating Section is added successfully."
 msgstr ""
 
-#: survey2/views.py:618
+#: survey/views.py:618
 msgid "Enter Number Section is added successfully."
 msgstr ""
 
-#: survey2/views.py:640
+#: survey/views.py:640
 msgid "Record Message Section is added successfully."
 msgstr ""
 
-#: survey2/views.py:662
+#: survey/views.py:662
 msgid "Call transfer Section is added successfully."
 msgstr ""
 
-#: survey2/views.py:740
+#: survey/views.py:740
 msgid "Play message updated."
 msgstr ""
 
-#: survey2/views.py:764
+#: survey/views.py:764
 msgid "Multiple Choice Section updated."
 msgstr ""
 
-#: survey2/views.py:788
+#: survey/views.py:788
 msgid "Rating Section updated."
 msgstr ""
 
-#: survey2/views.py:812
+#: survey/views.py:812
 msgid "Enter Number Section updated."
 msgstr ""
 
-#: survey2/views.py:836
+#: survey/views.py:836
 msgid "Record Message Section updated."
 msgstr ""
 
-#: survey2/views.py:860
+#: survey/views.py:860
 msgid "Patch Through Section updated."
 msgstr ""
 
-#: survey2/views.py:915
+#: survey/views.py:915
 msgid "Section is deleted successfully."
 msgstr ""
 
-#: survey2/views.py:950
+#: survey/views.py:950
 msgid "Script updated."
 msgstr ""
 
-#: survey2/views.py:1046
+#: survey/views.py:1046
 msgid "Branching is added successfully."
 msgstr ""
 
-#: survey2/views.py:1050 survey2/views.py:1114
+#: survey/views.py:1050 survey/views.py:1114
 #, fuzzy
 msgid "duplicate record keys with goto."
 msgstr "重複"
 
-#: survey2/views.py:1093
+#: survey/views.py:1093
 msgid "Branching is deleted successfully."
 msgstr ""
 
-#: survey2/views.py:1109
+#: survey/views.py:1109
 msgid "Branching updated."
 msgstr ""
 
@@ -1731,7 +1731,7 @@ msgstr "搜尋項目"
 #: templates/frontend/contact/list.html:75
 #: templates/frontend/report/voipcall_report.html:51
 #: templates/frontend/survey/survey_report.html:67
-#: templates/frontend/survey2/survey_report.html:67
+#: templates/frontend/survey/survey_report.html:67
 msgid "Search"
 msgstr "搜尋"
 
@@ -1756,7 +1756,7 @@ msgstr "過濾器"
 #: templates/admin/dialer_cdr/voipcall/change_list.html:110
 #: templates/frontend/report/voipcall_report.html:152
 #: templates/frontend/survey/survey_report.html:147
-#: templates/frontend/survey2/survey_report.html:201
+#: templates/frontend/survey/survey_report.html:201
 msgid "Export CSV file"
 msgstr "匯出 CSV 檔案"
 
@@ -1770,43 +1770,43 @@ msgstr "撥號詳細報表"
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:72
 #: templates/frontend/report/voipcall_report.html:113
 #: templates/frontend/survey/survey_report.html:155
-#: templates/frontend/survey2/survey_report.html:222
+#: templates/frontend/survey/survey_report.html:222
 msgid "Call Detail Report Summary"
 msgstr "撥號詳細報表一覽"
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:77
 #: templates/frontend/report/voipcall_report.html:119
 #: templates/frontend/survey/survey_report.html:161
-#: templates/frontend/survey2/survey_report.html:228
+#: templates/frontend/survey/survey_report.html:228
 msgid "Graphic"
 msgstr "圖形"
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:78
 #: templates/frontend/report/voipcall_report.html:120
 #: templates/frontend/survey/survey_report.html:162
-#: templates/frontend/survey2/survey_report.html:229
+#: templates/frontend/survey/survey_report.html:229
 msgid "Calls"
 msgstr "撥號"
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:79
 #: templates/frontend/report/voipcall_report.html:121
 #: templates/frontend/survey/survey_report.html:163
-#: templates/frontend/survey2/survey_report.html:230
+#: templates/frontend/survey/survey_report.html:230
 msgid "Average Connection Time"
 msgstr "平均連線時間"
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:79
 #: templates/frontend/report/voipcall_report.html:121
 #: templates/frontend/survey/survey_report.html:163
-#: templates/frontend/survey2/survey_report.html:230
+#: templates/frontend/survey/survey_report.html:230
 msgid "ACT"
 msgstr "ACT"
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:98
 #: templates/frontend/report/voipcall_report.html:141
 #: templates/frontend/survey/survey_report.html:183
-#: templates/frontend/survey2/survey_report.html:105
-#: templates/frontend/survey2/survey_report.html:250
+#: templates/frontend/survey/survey_report.html:105
+#: templates/frontend/survey/survey_report.html:250
 msgid "Total"
 msgstr "總計"
 
@@ -1862,8 +1862,8 @@ msgstr "聯絡人狀態 = ('1'-'ACTIVE') ('0'-'INACTIVE')"
 #: templates/frontend/survey/survey_question_change.html:138
 #: templates/frontend/survey/survey_report.html:61
 #: templates/frontend/survey/survey_response_change.html:86
-#: templates/frontend/survey2/survey_change.html:48
-#: templates/frontend/survey2/survey_report.html:61
+#: templates/frontend/survey/survey_change.html:48
+#: templates/frontend/survey/survey_report.html:61
 #: templates/frontend/voiceapp/change.html:37
 msgid "Submit"
 msgstr "確定"
@@ -1925,11 +1925,11 @@ msgstr "語音應用程式"
 #: templates/frontend/survey/survey_list.html:33
 #: templates/frontend/survey/survey_question_change.html:55
 #: templates/frontend/survey/survey_response_change.html:56
-#: templates/frontend/survey2/section_branch_change.html:44
-#: templates/frontend/survey2/section_change.html:43
-#: templates/frontend/survey2/section_script_change.html:46
-#: templates/frontend/survey2/survey_change.html:15
-#: templates/frontend/survey2/survey_list.html:33
+#: templates/frontend/survey/section_branch_change.html:44
+#: templates/frontend/survey/section_change.html:43
+#: templates/frontend/survey/section_script_change.html:46
+#: templates/frontend/survey/survey_change.html:15
+#: templates/frontend/survey/survey_list.html:33
 #: templates/frontend/voiceapp/change.html:9
 #: templates/frontend/voiceapp/list.html:37
 msgid "Add"
@@ -1973,7 +1973,7 @@ msgstr "民意調查報表"
 
 #: templates/frontend/bootstrap_menu.html:62
 #, fuzzy
-msgid "Survey2 Reports"
+msgid "Survey Reports"
 msgstr "民意調查報表"
 
 #: templates/frontend/bootstrap_menu.html:69
@@ -1987,7 +1987,7 @@ msgstr "語音應用程式"
 
 #: templates/frontend/bootstrap_menu.html:78
 #, fuzzy
-msgid "Surveys2"
+msgid "Surveys"
 msgstr "民意調查"
 
 #: templates/frontend/bootstrap_menu.html:81
@@ -2273,7 +2273,7 @@ msgid "Browser playground"
 msgstr ""
 
 #: templates/frontend/api/api_list.html:31
-#: templates/frontend/survey2/section_delete_confirmation.html:15
+#: templates/frontend/survey/section_delete_confirmation.html:15
 #, fuzzy
 msgid "No"
 msgstr "註記"
@@ -2293,13 +2293,13 @@ msgstr "註記"
 #: templates/frontend/survey/survey_response_change.html:25
 #: templates/frontend/survey/survey_response_change.html:54
 #: templates/frontend/survey/survey_response_change.html:84
-#: templates/frontend/survey2/section_branch_change.html:42
-#: templates/frontend/survey2/section_branch_change.html:104
-#: templates/frontend/survey2/section_change.html:41
-#: templates/frontend/survey2/section_change.html:311
-#: templates/frontend/survey2/section_script_change.html:44
-#: templates/frontend/survey2/section_script_change.html:71
-#: templates/frontend/survey2/survey_change.html:13
+#: templates/frontend/survey/section_branch_change.html:42
+#: templates/frontend/survey/section_branch_change.html:104
+#: templates/frontend/survey/section_change.html:41
+#: templates/frontend/survey/section_change.html:311
+#: templates/frontend/survey/section_script_change.html:44
+#: templates/frontend/survey/section_script_change.html:71
+#: templates/frontend/survey/survey_change.html:13
 #: templates/frontend/voiceapp/change.html:7
 #: templates/frontend/voiceapp/change.html:35
 msgid "Update"
@@ -2326,7 +2326,7 @@ msgstr "語音檔案網址"
 #: templates/frontend/contact/list.html:119
 #: templates/frontend/phonebook/list.html:38
 #: templates/frontend/survey/survey_list.html:37
-#: templates/frontend/survey2/survey_list.html:37
+#: templates/frontend/survey/survey_list.html:37
 #: templates/frontend/voiceapp/list.html:41
 msgid "Delete Selected"
 msgstr "刪除所選者"
@@ -2338,7 +2338,7 @@ msgstr "刪除所選者"
 #: templates/frontend/registration/user_notification_grid.html:46
 #: templates/frontend/report/voipcall_report.html:92
 #: templates/frontend/survey/survey_list.html:49
-#: templates/frontend/survey2/survey_list.html:48
+#: templates/frontend/survey/survey_list.html:48
 msgid "Page"
 msgstr "頁"
 
@@ -2356,8 +2356,8 @@ msgstr "頁"
 #: templates/frontend/report/voipcall_report.html:96
 #: templates/frontend/survey/survey_list.html:50
 #: templates/frontend/survey/survey_list.html:53
-#: templates/frontend/survey2/survey_list.html:49
-#: templates/frontend/survey2/survey_list.html:52
+#: templates/frontend/survey/survey_list.html:49
+#: templates/frontend/survey/survey_list.html:52
 msgid "of"
 msgstr "的"
 
@@ -2368,7 +2368,7 @@ msgstr "的"
 #: templates/frontend/registration/user_notification_grid.html:48
 #: templates/frontend/report/voipcall_report.html:94
 #: templates/frontend/survey/survey_list.html:51
-#: templates/frontend/survey2/survey_list.html:50
+#: templates/frontend/survey/survey_list.html:50
 msgid "No items"
 msgstr "無此項目"
 
@@ -2379,7 +2379,7 @@ msgstr "無此項目"
 #: templates/frontend/registration/user_notification_grid.html:49
 #: templates/frontend/report/voipcall_report.html:95
 #: templates/frontend/survey/survey_list.html:52
-#: templates/frontend/survey2/survey_list.html:51
+#: templates/frontend/survey/survey_list.html:51
 msgid "Processing, please wait ..."
 msgstr "處理中, 請稍後..."
 
@@ -2390,7 +2390,7 @@ msgstr "處理中, 請稍後..."
 #: templates/frontend/registration/user_notification_grid.html:50
 #: templates/frontend/report/voipcall_report.html:96
 #: templates/frontend/survey/survey_list.html:53
-#: templates/frontend/survey2/survey_list.html:52
+#: templates/frontend/survey/survey_list.html:52
 msgid "Displaying"
 msgstr "顯示"
 
@@ -2402,8 +2402,8 @@ msgstr "顯示"
 #: templates/frontend/report/voipcall_report.html:96
 #: templates/frontend/survey/survey_list.html:53
 #: templates/frontend/survey/survey_report.html:79
-#: templates/frontend/survey2/survey_list.html:52
-#: templates/frontend/survey2/survey_report.html:129
+#: templates/frontend/survey/survey_list.html:52
+#: templates/frontend/survey/survey_report.html:129
 msgid "to"
 msgstr "到"
 
@@ -2414,14 +2414,14 @@ msgstr "到"
 #: templates/frontend/registration/user_notification_grid.html:50
 #: templates/frontend/report/voipcall_report.html:96
 #: templates/frontend/survey/survey_list.html:53
-#: templates/frontend/survey2/survey_list.html:52
+#: templates/frontend/survey/survey_list.html:52
 msgid "items"
 msgstr "項目"
 
 #: templates/frontend/campaign/campaign_duplicate.html:73
-#: templates/frontend/survey2/section_branch_change.html:106
-#: templates/frontend/survey2/section_change.html:313
-#: templates/frontend/survey2/section_script_change.html:73
+#: templates/frontend/survey/section_branch_change.html:106
+#: templates/frontend/survey/section_change.html:313
+#: templates/frontend/survey/section_script_change.html:73
 msgid "Save"
 msgstr ""
 
@@ -2432,10 +2432,10 @@ msgstr ""
 #: templates/frontend/survey/survey_change.html:280
 #: templates/frontend/survey/survey_question_change.html:147
 #: templates/frontend/survey/survey_response_change.html:95
-#: templates/frontend/survey2/section_branch_change.html:109
-#: templates/frontend/survey2/section_change.html:316
-#: templates/frontend/survey2/section_script_change.html:76
-#: templates/frontend/survey2/survey_campaign_result.html:60
+#: templates/frontend/survey/section_branch_change.html:109
+#: templates/frontend/survey/section_change.html:316
+#: templates/frontend/survey/section_script_change.html:76
+#: templates/frontend/survey/survey_campaign_result.html:60
 msgid "Close"
 msgstr ""
 
@@ -2463,7 +2463,7 @@ msgstr "星期天"
 #: templates/frontend/contact/change.html:48
 #: templates/frontend/phonebook/change.html:39
 #: templates/frontend/survey/survey_change.html:133
-#: templates/frontend/survey2/survey_change.html:349
+#: templates/frontend/survey/survey_change.html:349
 #: templates/frontend/voiceapp/change.html:41
 msgid "Delete"
 msgstr "刪除"
@@ -2742,12 +2742,12 @@ msgid "Call Records"
 msgstr "撥號紀錄"
 
 #: templates/frontend/survey/survey_change.html:72
-#: templates/frontend/survey2/survey_change.html:18
+#: templates/frontend/survey/survey_change.html:18
 msgid "Survey configuration"
 msgstr "民意調查設定"
 
 #: templates/frontend/survey/survey_change.html:101
-#: templates/frontend/survey2/survey_change.html:394
+#: templates/frontend/survey/survey_change.html:394
 msgid "Update Survey"
 msgstr "更新民意調查"
 
@@ -2763,13 +2763,13 @@ msgstr "資料"
 
 #: templates/frontend/survey/survey_change.html:126
 #: templates/frontend/survey/survey_change.html:127
-#: templates/frontend/survey2/survey_change.html:330
-#: templates/frontend/survey2/survey_view.html:253
+#: templates/frontend/survey/survey_change.html:330
+#: templates/frontend/survey/survey_view.html:253
 msgid "None"
 msgstr ""
 
 #: templates/frontend/survey/survey_change.html:131
-#: templates/frontend/survey2/survey_change.html:161
+#: templates/frontend/survey/survey_change.html:161
 msgid "Edit"
 msgstr ""
 
@@ -2815,67 +2815,67 @@ msgid "Survey Question"
 msgstr "民意調查內容"
 
 #: templates/frontend/survey/survey_list.html:9
-#: templates/frontend/survey2/survey_list.html:9
+#: templates/frontend/survey/survey_list.html:9
 msgid "List, add and edit surveys"
 msgstr "列出,新增以及編輯民意調查"
 
 #: templates/frontend/survey/survey_report.html:25
-#: templates/frontend/survey2/survey_report.html:25
+#: templates/frontend/survey/survey_report.html:25
 #, fuzzy
 msgid "Survey Detail Report"
 msgstr "民意調查報表"
 
 #: templates/frontend/survey/survey_report.html:25
-#: templates/frontend/survey2/survey_report.html:25
+#: templates/frontend/survey/survey_report.html:25
 #, fuzzy
 msgid "Monitor survey reports"
 msgstr "監控民意調查結果"
 
 #: templates/frontend/survey/survey_report.html:32
-#: templates/frontend/survey2/survey_report.html:33
+#: templates/frontend/survey/survey_report.html:33
 #, fuzzy
 msgid "Survey calls"
 msgstr "民意調查"
 
 #: templates/frontend/survey/survey_report.html:33
-#: templates/frontend/survey2/survey_report.html:34
+#: templates/frontend/survey/survey_report.html:34
 #, fuzzy
 msgid "Survey daily call report"
 msgstr "民意調查報表"
 
 #: templates/frontend/survey/survey_report.html:34
-#: templates/frontend/survey2/survey_report.html:32
+#: templates/frontend/survey/survey_report.html:32
 #, fuzzy
 msgid "Survey result"
 msgstr "民意調查"
 
 #: templates/frontend/survey/survey_report.html:73
-#: templates/frontend/survey2/survey_report.html:123
+#: templates/frontend/survey/survey_report.html:123
 msgid "Survey call detail records"
 msgstr ""
 
 #: templates/frontend/survey/survey_report.html:90
-#: templates/frontend/survey2/survey_report.html:140
+#: templates/frontend/survey/survey_report.html:140
 #, fuzzy
 msgid "Call-date"
 msgstr "Call-ID"
 
 #: templates/frontend/survey/survey_report.html:115
-#: templates/frontend/survey2/survey_report.html:165
+#: templates/frontend/survey/survey_report.html:165
 #, fuzzy
 msgid "Survey Result"
 msgstr "民意調查報表"
 
 #: templates/frontend/survey/survey_report.html:133
 #: templates/frontend/survey/survey_report.html:233
-#: templates/frontend/survey2/survey_report.html:117
-#: templates/frontend/survey2/survey_report.html:187
+#: templates/frontend/survey/survey_report.html:117
+#: templates/frontend/survey/survey_report.html:187
 #, fuzzy
 msgid "no record found"
 msgstr "找不到紀錄!."
 
 #: templates/frontend/survey/survey_report.html:139
-#: templates/frontend/survey2/survey_report.html:193
+#: templates/frontend/survey/survey_report.html:193
 #, fuzzy
 msgid "total calls"
 msgstr "全部撥號數:"
@@ -2889,179 +2889,179 @@ msgstr "聯絡人已匯入"
 msgid "contact(s) left a recorded message"
 msgstr ""
 
-#: templates/frontend/survey2/section_branch_change.html:45
+#: templates/frontend/survey/section_branch_change.html:45
 msgid "Section Branch"
 msgstr ""
 
-#: templates/frontend/survey2/section_change.html:44
+#: templates/frontend/survey/section_change.html:44
 #, fuzzy
 msgid "Section"
 msgstr "動作"
 
-#: templates/frontend/survey2/section_change.html:161
+#: templates/frontend/survey/section_change.html:161
 msgid "Configure valid multi-choice options. The value of each field will be shown in the survey report"
 msgstr ""
 
-#: templates/frontend/survey2/section_delete_confirmation.html:5
+#: templates/frontend/survey/section_delete_confirmation.html:5
 #, fuzzy
 msgid "Delete Section"
 msgstr "刪除所選者"
 
-#: templates/frontend/survey2/section_delete_confirmation.html:9
+#: templates/frontend/survey/section_delete_confirmation.html:9
 msgid "You are about to delete"
 msgstr ""
 
-#: templates/frontend/survey2/section_delete_confirmation.html:9
+#: templates/frontend/survey/section_delete_confirmation.html:9
 msgid "this procedure is irreversible."
 msgstr ""
 
-#: templates/frontend/survey2/section_delete_confirmation.html:10
+#: templates/frontend/survey/section_delete_confirmation.html:10
 msgid "Do you want to proceed?"
 msgstr ""
 
-#: templates/frontend/survey2/section_delete_confirmation.html:14
+#: templates/frontend/survey/section_delete_confirmation.html:14
 msgid "Yes"
 msgstr ""
 
-#: templates/frontend/survey2/section_script_change.html:47
+#: templates/frontend/survey/section_script_change.html:47
 msgid "Section script"
 msgstr ""
 
-#: templates/frontend/survey2/survey_campaign_result.html:23
-#: templates/frontend/survey2/survey_report.html:177
+#: templates/frontend/survey/survey_campaign_result.html:23
+#: templates/frontend/survey/survey_report.html:177
 #, fuzzy
 msgid "Result"
 msgstr "民意調查報表"
 
-#: templates/frontend/survey2/survey_campaign_result.html:32
+#: templates/frontend/survey/survey_campaign_result.html:32
 #, fuzzy
 msgid "Record file"
 msgstr "使用者資料"
 
-#: templates/frontend/survey2/survey_change.html:73
-#: templates/frontend/survey2/survey_view.html:46
+#: templates/frontend/survey/survey_change.html:73
+#: templates/frontend/survey/survey_view.html:46
 msgid "Completed"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:142
-#: templates/frontend/survey2/survey_view.html:76
+#: templates/frontend/survey/survey_change.html:142
+#: templates/frontend/survey/survey_view.html:76
 #, fuzzy
 msgid "question"
 msgstr "問題"
 
-#: templates/frontend/survey2/survey_change.html:147
-#: templates/frontend/survey2/survey_view.html:82
+#: templates/frontend/survey/survey_change.html:147
+#: templates/frontend/survey/survey_view.html:82
 #, fuzzy
 msgid "Audio file"
 msgstr "語音檔案"
 
-#: templates/frontend/survey2/survey_change.html:157
-#: templates/frontend/survey2/survey_view.html:92
+#: templates/frontend/survey/survey_change.html:157
+#: templates/frontend/survey/survey_view.html:92
 msgid "script"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:166
+#: templates/frontend/survey/survey_change.html:166
 msgid "Play"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:185
-#: templates/frontend/survey2/survey_view.html:109
+#: templates/frontend/survey/survey_change.html:185
+#: templates/frontend/survey/survey_view.html:109
 msgid "Key Associations"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:193
-#: templates/frontend/survey2/survey_change.html:199
-#: templates/frontend/survey2/survey_change.html:205
-#: templates/frontend/survey2/survey_change.html:211
-#: templates/frontend/survey2/survey_change.html:217
-#: templates/frontend/survey2/survey_change.html:223
-#: templates/frontend/survey2/survey_change.html:229
-#: templates/frontend/survey2/survey_change.html:235
-#: templates/frontend/survey2/survey_change.html:241
-#: templates/frontend/survey2/survey_change.html:247
-#: templates/frontend/survey2/survey_view.html:117
-#: templates/frontend/survey2/survey_view.html:123
-#: templates/frontend/survey2/survey_view.html:129
-#: templates/frontend/survey2/survey_view.html:135
-#: templates/frontend/survey2/survey_view.html:141
-#: templates/frontend/survey2/survey_view.html:147
-#: templates/frontend/survey2/survey_view.html:153
-#: templates/frontend/survey2/survey_view.html:159
-#: templates/frontend/survey2/survey_view.html:165
-#: templates/frontend/survey2/survey_view.html:171
+#: templates/frontend/survey/survey_change.html:193
+#: templates/frontend/survey/survey_change.html:199
+#: templates/frontend/survey/survey_change.html:205
+#: templates/frontend/survey/survey_change.html:211
+#: templates/frontend/survey/survey_change.html:217
+#: templates/frontend/survey/survey_change.html:223
+#: templates/frontend/survey/survey_change.html:229
+#: templates/frontend/survey/survey_change.html:235
+#: templates/frontend/survey/survey_change.html:241
+#: templates/frontend/survey/survey_change.html:247
+#: templates/frontend/survey/survey_view.html:117
+#: templates/frontend/survey/survey_view.html:123
+#: templates/frontend/survey/survey_view.html:129
+#: templates/frontend/survey/survey_view.html:135
+#: templates/frontend/survey/survey_view.html:141
+#: templates/frontend/survey/survey_view.html:147
+#: templates/frontend/survey/survey_view.html:153
+#: templates/frontend/survey/survey_view.html:159
+#: templates/frontend/survey/survey_view.html:165
+#: templates/frontend/survey/survey_view.html:171
 #, fuzzy
 msgid "User press"
 msgstr "使用者資料"
 
-#: templates/frontend/survey2/survey_change.html:263
-#: templates/frontend/survey2/survey_view.html:187
+#: templates/frontend/survey/survey_change.html:263
+#: templates/frontend/survey/survey_view.html:187
 #, fuzzy
 msgid "From 1 to"
 msgstr "從"
 
-#: templates/frontend/survey2/survey_change.html:271
-#: templates/frontend/survey2/survey_view.html:195
+#: templates/frontend/survey/survey_change.html:271
+#: templates/frontend/survey/survey_view.html:195
 msgid "Number is between"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:271
-#: templates/frontend/survey2/survey_view.html:195
+#: templates/frontend/survey/survey_change.html:271
+#: templates/frontend/survey/survey_view.html:195
 msgid "and"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:280
-#: templates/frontend/survey2/survey_change.html:292
-#: templates/frontend/survey2/survey_view.html:204
-#: templates/frontend/survey2/survey_view.html:216
+#: templates/frontend/survey/survey_change.html:280
+#: templates/frontend/survey/survey_change.html:292
+#: templates/frontend/survey/survey_view.html:204
+#: templates/frontend/survey/survey_view.html:216
 msgid "When done, continue survey"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:308
-#: templates/frontend/survey2/survey_view.html:232
+#: templates/frontend/survey/survey_change.html:308
+#: templates/frontend/survey/survey_view.html:232
 msgid "keys"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:310
-#: templates/frontend/survey2/survey_view.html:234
+#: templates/frontend/survey/survey_change.html:310
+#: templates/frontend/survey/survey_view.html:234
 msgid "goto"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:322
-#: templates/frontend/survey2/survey_change.html:327
-#: templates/frontend/survey2/survey_view.html:245
-#: templates/frontend/survey2/survey_view.html:250
+#: templates/frontend/survey/survey_change.html:322
+#: templates/frontend/survey/survey_change.html:327
+#: templates/frontend/survey/survey_view.html:245
+#: templates/frontend/survey/survey_view.html:250
 msgid "Key"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:323
-#: templates/frontend/survey2/survey_view.html:246
+#: templates/frontend/survey/survey_change.html:323
+#: templates/frontend/survey/survey_view.html:246
 msgid "anything else"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change.html:389
+#: templates/frontend/survey/survey_change.html:389
 #, fuzzy
 msgid "Add Section"
 msgstr "新增問題"
 
-#: templates/frontend/survey2/survey_change_header.html:48
+#: templates/frontend/survey/survey_change_header.html:48
 #, fuzzy
 msgid "Edit section"
 msgstr "新增回應"
 
-#: templates/frontend/survey2/survey_change_header.html:57
+#: templates/frontend/survey/survey_change_header.html:57
 #, fuzzy
 msgid "Delete section"
 msgstr "刪除聯絡人"
 
-#: templates/frontend/survey2/survey_change_header.html:66
+#: templates/frontend/survey/survey_change_header.html:66
 msgid "Branch"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change_header.html:75
+#: templates/frontend/survey/survey_change_header.html:75
 msgid "Collapse"
 msgstr ""
 
-#: templates/frontend/survey2/survey_change_header.html:84
+#: templates/frontend/survey/survey_change_header.html:84
 msgid "Move"
 msgstr ""
 

@@ -21,7 +21,7 @@ from dialer_cdr.models import Callrequest
 from adminsortable.models import Sortable
 from audiofield.models import AudioFile
 from common.language_field import LanguageField
-from survey2.constants import SECTION_TYPE
+from survey.constants import SECTION_TYPE
 
 
 class Survey_abstract(models.Model):

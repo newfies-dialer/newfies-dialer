@@ -216,7 +216,7 @@ INSTALLED_APPS = (
     'user_profile',
     'notification',
     'voice_app',
-    'survey2',
+    'survey',
     'dialer_audio',
     #'raven.contrib.django',
     'apiplayground',

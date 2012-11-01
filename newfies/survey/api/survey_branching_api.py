@@ -21,8 +21,8 @@ from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie import fields
 
-from survey2.api.survey_section_api import SectionResource
-from survey2.models import Section, Branching
+from survey.api.survey_section_api import SectionResource
+from survey.models import Section, Branching
 
 
 class BranchingValidation(Validation):

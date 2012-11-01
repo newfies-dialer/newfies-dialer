@@ -189,7 +189,7 @@ class AnswercallResource(ModelResource):
 
                 elif obj_callrequest.content_object.type == 4:
                     #Speak
-                    from survey2.views import getaudio_acapela, placeholder_replace
+                    from survey.views import getaudio_acapela, placeholder_replace
                     #Replace place holders by tag value
                     script = placeholder_replace(data, obj_callrequest.subscriber.contact)
 

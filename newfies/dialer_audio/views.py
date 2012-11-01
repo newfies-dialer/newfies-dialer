@@ -142,7 +142,7 @@ def audio_add(request):
             obj = form.save(commit=False)
             obj.user = User.objects.get(username=request.user)
             obj.save()
-            request.session["msg"] = _('"%(name)s" is added.') %\
+            request.session["msg"] = _('"%(name)s" added.') %\
                 {'name': request.POST['name']}
             return HttpResponseRedirect('/audio/')
 

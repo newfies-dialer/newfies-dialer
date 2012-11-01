@@ -13,7 +13,7 @@
 #
 
 from django.contrib.auth.models import User
-from django.template import Template, Context, TemplateSyntaxError
+from django.template import Template, Context
 from django.test import TestCase
 
 from dialer_campaign.models import Campaign
@@ -72,7 +72,6 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
         response = voiceapp_list(request)
         self.assertEqual(response.status_code, 200)
 
-
     def test_voiceapp_view_add(self):
         """Test Function to check voice app view to add"""
         response = self.client.get('/voiceapp/add/')
@@ -81,7 +80,7 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
         self.assertTemplateUsed(response, 'frontend/voiceapp/change.html')
 
         request = self.factory.post('/voiceapp/add/',
-                {'name': 'vocie_app'}, follow=True)
+                {'name': 'voice_app'}, follow=True)
         request.user = self.user
         request.session = {}
         response = voiceapp_add(request)
@@ -96,9 +95,8 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
             ).render(Context({
                 'msg': request.session.get('msg'),
             }))
-        self.assertEqual(out, '"vocie_app" is added.')
+        self.assertEqual(out, '"voice_app" added.')
         self.assertEqual(response.status_code, 302)
-
 
     def test_voiceapp_view_update(self):
         """Test Function to check voice app view to update"""
@@ -106,7 +104,7 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/voiceapp/1/',
-                {'name': 'vocie_app'}, follow=True)
+                {'name': 'voice_app'}, follow=True)
         request.user = self.user
         request.session = {}
         response = voiceapp_change(request, 1)
@@ -121,7 +119,7 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
             ).render(Context({
                 'msg': request.session.get('msg'),
             }))
-        self.assertEqual(out, '"vocie_app" is updated.')
+        self.assertEqual(out, '"voice_app" is updated.')
         self.assertEqual(response.status_code, 302)
 
         # delete voiceapp through voiceapp_change
@@ -154,7 +152,6 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
         request.session = {}
         response = voiceapp_view(request, 1)
         self.assertEqual(response.status_code, 200)
-
 
 
 class VoiceAppModel(TestCase):
@@ -197,7 +194,7 @@ class VoiceAppModel(TestCase):
 
         form = VoiceAppForm()
         obj = form.save(commit=False)
-        obj.name="new_voice_app"
+        obj.name = "new_voice_app"
         obj.user = self.user
         obj.description = ""
         obj.gateway = self.gateway

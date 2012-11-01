@@ -330,7 +330,7 @@ def campaign_add(request):
 
             form.save_m2m()
 
-            request.session["msg"] = _('"%(name)s" is added.') %\
+            request.session["msg"] = _('"%(name)s" added.') %\
                 {'name': request.POST['name']}
             return HttpResponseRedirect('/campaign/')
 

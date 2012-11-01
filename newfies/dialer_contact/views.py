@@ -162,7 +162,7 @@ def phonebook_add(request):
             obj = form.save(commit=False)
             obj.user = User.objects.get(username=request.user)
             obj.save()
-            request.session["msg"] = _('"%(name)s" is added.') %\
+            request.session["msg"] = _('"%(name)s" added.') %\
                 {'name': request.POST['name']}
             return HttpResponseRedirect('/phonebook/')
     template = 'frontend/phonebook/change.html'
@@ -450,7 +450,7 @@ def contact_add(request):
         form = ContactForm(request.user, request.POST)
         if form.is_valid():
             form.save()
-            request.session["msg"] = _('"%(name)s" is added.') %\
+            request.session["msg"] = _('"%(name)s" added.') %\
                 {'name': request.POST['contact']}
             return HttpResponseRedirect('/contact/')
         else:
@@ -532,7 +532,7 @@ def contact_change(request, object_id):
     """
     contact = get_object_or_404(
         Contact, pk=object_id, phonebook__user=request.user)
-    
+
     form = ContactForm(request.user, instance=contact)
     if request.method == 'POST':
         # Delete contact

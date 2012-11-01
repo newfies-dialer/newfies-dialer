@@ -145,7 +145,7 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         ).render(Context({
                          'msg': request.session.get('msg'),
                          }))
-        self.assertEqual(out, '"My Phonebook" is added.')
+        self.assertEqual(out, '"My Phonebook" added.')
 
         resp = self.client.post('/phonebook/add/',
                                 data={

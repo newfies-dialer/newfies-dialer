@@ -115,7 +115,7 @@ msgstr ""
 #: dialer_contact/views.py:163 dialer_contact/views.py:451 survey/views.py:359
 #: survey/views.py:448 voice_app/views.py:130
 #, python-format
-msgid "\"%(name)s\" is added."
+msgid "\"%(name)s\" added."
 msgstr ""
 
 #: dialer_audio/views.py:188 dialer_campaign/views.py:426
@@ -1366,7 +1366,7 @@ msgstr ""
 
 #: survey/views.py:453
 #, python-format
-msgid "\"%(question)s\" is added."
+msgid "\"%(question)s\" added."
 msgstr ""
 
 #: survey/views.py:458 survey/views.py:510
@@ -1375,7 +1375,7 @@ msgstr ""
 
 #: survey/views.py:551
 #, python-format
-msgid "\"%(key)s\" is added."
+msgid "\"%(key)s\" added."
 msgstr ""
 
 #: survey/views.py:557 survey/views.py:613

@@ -116,7 +116,7 @@ msgstr "מחק אודיו"
 #: dialer_contact/views.py:163 dialer_contact/views.py:451 survey/views.py:359
 #: survey/views.py:448 voice_app/views.py:130
 #, python-format
-msgid "\"%(name)s\" is added."
+msgid "\"%(name)s\" added."
 msgstr "\"(שם) s%\" הוא הוסיף."
 
 #: dialer_audio/views.py:188 dialer_campaign/views.py:426
@@ -1410,7 +1410,7 @@ msgstr "(Count) s% בסקר (ים) יימחקו."
 
 #: survey/views.py:453
 #, fuzzy, python-format
-msgid "\"%(question)s\" is added."
+msgid "\"%(question)s\" added."
 msgstr "\"(שם) s%\" הוא הוסיף."
 
 #: survey/views.py:458 survey/views.py:510
@@ -1419,7 +1419,7 @@ msgstr ""
 
 #: survey/views.py:551
 #, fuzzy, python-format
-msgid "\"%(key)s\" is added."
+msgid "\"%(key)s\" added."
 msgstr "\"(שם) s%\" הוא הוסיף."
 
 #: survey/views.py:557 survey/views.py:613

@@ -21,7 +21,6 @@ class ApiTestCase(BaseAuthenticatedClient):
     fixtures = ['auth_user.json', 'gateway.json', 'voiceapp_template.json',
             'dialer_setting.json', 'phonebook.json', 'contact.json',
             'campaign.json', 'subscriber.json', 'callrequest.json',
-            'survey.json', 'survey_question.json', 'survey_response.json',
             'user_profile.json']
 
     def test_create_campaign(self):

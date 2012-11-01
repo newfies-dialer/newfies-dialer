@@ -55,10 +55,7 @@
                     {% if perms.dialer_cdr.view_call_detail_report %}
                         <li {% if 'voipcall_report' in module %}class="active"{% endif %}><a href="/voipcall_report/">{% trans "Call Detail Report" %}</a></li>
                     {% endif %}
-                    {% if perms.survey.view_survey_report %}
-                        <li {% if 'survey_report' in module %}class="active"{% endif %}><a href="/survey_report/">{% trans "Survey Reports" %}</a></li>
-                    {% endif %}
-                    {% if perms.survey2.view_survey_report and SURVEYDEV %}
+                    {% if perms.survey2.view_survey_report %}
                         <li {% if 'survey2_report' in module %}class="active"{% endif %}><a href="/survey2_report/">{% trans "Survey2 Reports" %}</a></li>
                     {% endif %}
 
@@ -71,10 +68,7 @@
                     {% if perms.voice_app.view_voiceapp %}
                         <li {% if 'voiceapp' in module %}class="active"{% endif %}><a href="/voiceapp/">{% trans "Voice Apps" %}</a></li>
                     {% endif %}
-                    {% if perms.survey.view_survey %}
-                        <li {% if 'survey' in module %}class="active"{% endif %}><a href="/survey/">{% trans "Surveys" %}</a></li>
-                    {% endif %}
-                    {% if perms.survey2.view_survey and SURVEYDEV %}
+                    {% if perms.survey2.view_survey %}
                         <li {% if 'survey2' in module %}class="active"{% endif %}><a href="/survey2/">{% trans "Surveys2" %}</a></li>
                     {% endif %}
                     <li class="divider"></li>

@@ -13,10 +13,9 @@
 #
 
 from django.template.defaultfilters import *
-from survey.views import survey_audio_recording
+from survey2.views import survey_audio_recording
 from dialer_campaign.constants import CAMPAIGN_STATUS
 from dialer_cdr.constants import LEG_TYPE
-from survey.models import APP_TYPE
 from survey2.constants import SECTION_TYPE
 from voice_app.constants import VOICEAPP_TYPE
 from frontend.views import notice_count
@@ -105,30 +104,6 @@ def leg_type_name(value):
         status = ''
 
     return unicode(status)
-
-
-@register.filter(name='action_type_name')
-def action_type_name(value):
-    """action type name
-
-    >>> action_type_name(1)
-    'MENU'
-
-    >>> action_type_name(2)
-    'HANGUP'
-
-    >>> action_type_name(0)
-    ''
-    """
-    if not value:
-        return ''
-    TYPE = dict(APP_TYPE)
-    try:
-        status = TYPE[value]
-    except:
-        status = ''
-
-    return str(status)
 
 
 @register.filter(name='section_type_name')

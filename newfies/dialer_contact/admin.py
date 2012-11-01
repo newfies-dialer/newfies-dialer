@@ -26,7 +26,8 @@ from dialer_contact.models import Phonebook, Contact
 from dialer_contact.forms import Contact_fileImport
 from dialer_campaign.function_def import check_dialer_setting, \
     dialer_setting_limit
-from dialer_campaign.views import common_send_notification
+from user_profile.constants import NOTIFICATION_NAME
+from user_profile.function_def import common_send_notification
 from common.common_functions import striplist
 import csv
 
@@ -78,7 +79,7 @@ class ContactAdmin(admin.ModelAdmin):
                 messages.error(request, msg)
 
                 # campaign limit reached
-                common_send_notification(request, '3')
+                common_send_notification(request, NOTIFICATION_NAME.campaign_limit_reached)
                 return HttpResponseRedirect(reverse(
                     "admin:dialer_campaign_contact_changelist"))
 
@@ -117,7 +118,7 @@ class ContactAdmin(admin.ModelAdmin):
                 messages.error(request, msg)
 
                 # campaign limit reached
-                common_send_notification(request, '3')
+                common_send_notification(request, NOTIFICATION_NAME.campaign_limit_reached)
                 return HttpResponseRedirect(reverse(
                     "admin:dialer_campaign_contact_changelist"))
 

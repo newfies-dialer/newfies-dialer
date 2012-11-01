@@ -42,21 +42,20 @@ $("#flex1").flexigrid({
         {% endif %}
 		],
     sortname: "id",
-	sortorder: "asc",
+	sortorder: "desc",
 	usepager: true,
 	title: '{% trans "Voice Apps" %}',
 	useRp: true,
 	rp: 10,
 	showTableToggleBtn: true,
-	//width: 900,
 	height: 265,
     //preProcess: formatContactResults,
-    onSuccess: function(data){
-        //alert(data);        
-    },
-    onError: function(){
-        alert("Request failed");
-    },
+    // onSuccess: function(data){
+    //     alert(data);
+    // },
+    // onError: function(){
+    //     alert("Request failed");
+    // },
 });
 
 function add_button()

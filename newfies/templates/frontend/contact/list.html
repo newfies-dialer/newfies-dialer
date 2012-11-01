@@ -9,7 +9,6 @@
             });
         });
     </script>
-    
     {% include "frontend/custom_jquery_select_all.html" %}
 
     <style type="text/css">
@@ -29,8 +28,8 @@
 
 {% block content %}
 
-<form class="well form-search" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
-
+<form class="well form-search" method="POST" action="." enctype="multipart/form-data">
+    {% csrf_token %}
     <div class="row">
         <div class="span6">
             <div class="clearfix{% if form.contact_no.errors %} error{% endif %}">
@@ -48,7 +47,6 @@
             {{ form.contact_no_type|removetags:"ul li"|safe }}
         </div>
     </div>
-
 
     {% get_fieldset name,phonebook as search_contact from form %}
     {% for field in search_contact %}
@@ -93,10 +91,10 @@ arr[1]=name;
 //alert("kwargs="+kwargs+"&name="+name);
 //data: encodeURIComponent("kwargs="+kwargs+"&name="+name),
 
-$("#flex1").flexigrid({    
+$("#flex1").flexigrid({
     url: "/contact_grid/?" + encodeURIComponent("kwargs="+kwargs+"&name="+name),
-    method: 'GET',      
-    dataType: 'json',              
+    method: 'GET',
+    dataType: 'json',
 	colModel : [
         {display: '<input type="checkbox" onclick="toggleChecked(this.checked)">', name: '', width: 40, align: 'center'},
 		{display: '{% trans "Id" %}', name: 'id', width: 40, sortable: true, align: 'center'},
@@ -118,29 +116,27 @@ $("#flex1").flexigrid({
         {% if perms.dialer_contact.delete_contact %}
             {name: '{% trans "Delete Selected" %}', bclass: 'delete', onpress : delete_button},
         {% endif %}
-		],    
+		],
     sortname: "id",
-	sortorder: "asc",
+	sortorder: "desc",
 	usepager: true,
 	title: '{% trans "Contacts" %}',
 	useRp: true,
 	rp: 10,
 	showTableToggleBtn: true,
-	//width: 900,
 	height: 265,
     pagetext: '{% trans "Page" %}',
     outof: '{% trans "of" %}',
     nomsg: '{% trans "No items" %}',
     procmsg: '{% trans "Processing, please wait ..." %}',
     pagestat: '{% trans "Displaying" %} {from} {% trans "to" %} {to} {% trans "of" %} {total} {% trans "items" %}',
-    //preProcess: formatContactResults,
-    onSuccess: function(data){
-        //alert(data);
-        //alert("Request not failed");
-    },
-    onError: function(){
-        //alert("Request failed");
-    },
+    // onSuccess: function(data){
+    //     alert(data);
+    //     alert("Request not failed");
+    // },
+    // onError: function(){
+    //     alert("Request failed");
+    // },
 });
 
 function add_button()

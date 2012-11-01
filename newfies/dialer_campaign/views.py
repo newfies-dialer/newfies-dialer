@@ -38,43 +38,10 @@ from dialer_campaign.function_def import user_attached_with_dialer_settings, \
 from dialer_campaign.tasks import collect_subscriber
 from survey2.function_def import check_survey_campaign
 from voice_app.function_def import check_voiceapp_campaign
+from user_profile.constants import NOTIFICATION_NAME
+from user_profile.function_def import common_send_notification
 from common.common_functions import current_view
 import re
-
-
-#TODO: Move to model User Profile
-def common_send_notification(request, status, recipient=None):
-    """User Notification (e.g. start | stop | pause | abort |
-    contact/camapign limit) needs to be saved.
-    It is a common function for the admin and customer UI's
-
-    **Attributes**:
-
-        * ``pk`` - primary key of the campaign record
-        * ``status`` - get label for notifications
-
-    **Logic Description**:
-
-        * This function is used by ``update_campaign_status_admin()`` &
-          ``update_campaign_status_cust()``
-
-    """
-    if not recipient:
-        recipient = request.user
-        sender = User.objects.get(is_superuser=1, username=recipient)
-    else:
-        if request.user.is_anonymous():
-            sender = User.objects.get(is_superuser=1, username=recipient)
-        else:
-            sender = request.user
-
-    if notification:
-        note_label = notification.NoticeType.objects.get(default=status)
-        notification.send([recipient],
-                          note_label.label,
-                          {"from_user": request.user},
-                          sender=sender)
-    return True
 
 
 @login_required
@@ -116,7 +83,8 @@ def notify_admin(request):
     # TODO : get recipient = admin user
     recipient = User.objects.get(pk=request.user.pk)
     if request.session['has_notified'] == False:
-        common_send_notification(request, 7, recipient)
+        common_send_notification(
+            request, NOTIFICATION_NAME.dialer_setting_configuration, recipient)
         # Send mail to ADMINS
         subject = _('Dialer setting configuration')
         message = _('Notification - User Dialer Setting The user "%(user)s" - "%(user_id)s" is not properly configured to use the system, please configure their dialer settings.') %\
@@ -339,7 +307,7 @@ def campaign_add(request):
             request.session['msg'] = msg
 
             # campaign limit reached
-            common_send_notification(request, '5')
+            common_send_notification(request, NOTIFICATION_NAME.campaign_limit_reached)
             return HttpResponseRedirect("/campaign/")
 
     form = CampaignForm(request.user)

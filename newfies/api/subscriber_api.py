@@ -152,7 +152,7 @@ class SubscriberResource(ModelResource):
 
     def obj_create(self, bundle, request=None, **kwargs):
         """
-        TODO: Add doc
+        A ORM-specific implementation of ``obj_create``.
         """
         logger.debug('Subscriber POST API get called')
 
@@ -194,11 +194,11 @@ class SubscriberResource(ModelResource):
             common_phonebook_list = []
             if phonebook_list:
                 common_phonebook_list = list(set(imported_phonebook) &\
-                                            set(phonebook_list))
+                                             set(phonebook_list))
                 if common_phonebook_list:
                     contact_list = Contact.objects\
                                 .filter(phonebook__in=common_phonebook_list,
-                                    status=1)
+                                        status=1)
                     for con_obj in contact_list:
                         try:
                             Subscriber.objects.create(
@@ -233,7 +233,7 @@ class SubscriberResource(ModelResource):
         try:
             subscriber = Subscriber.objects\
                 .get(duplicate_contact=bundle.data.get('contact'),
-                    campaign=campaign_obj)
+                     campaign=campaign_obj)
             subscriber.status = bundle.data.get('status')
             subscriber.save()
         except:

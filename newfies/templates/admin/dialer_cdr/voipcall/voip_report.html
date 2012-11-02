@@ -69,14 +69,14 @@ $(function() {
 <p>&nbsp;</p>
 <div>
     <table  class="module" align=left>
-    <caption>{% trans "Call Detail Report Summary"  %}</caption>
+    <caption>{% trans "Call Detail Report Summary" %}</caption>
     <thead>
         <tr>
-            <th scope="col">{% trans "Date"  %}</th>
-            <th scope="col">{% trans "Duration"  %}</th>
-            <th scope="col">{% trans "Graphic"  %}</th>
-            <th scope="col">{% trans "Calls"  %}</th>
-            <th scope="col"><acronym title="{% trans "Average Connection Time"  %}">{% trans "ACT"  %}</acronym></th>
+            <th scope="col">{% trans "Date" %}</th>
+            <th scope="col">{% trans "Duration" %}</th>
+            <th scope="col">{% trans "Graphic" %}</th>
+            <th scope="col">{% trans "Calls" %}</th>
+            <th scope="col"><acronym title="{% trans "Average Connection Time" %}">{% trans "ACT" %}</acronym></th>
         </tr>
     </thead>
     <tbody>
@@ -95,7 +95,7 @@ $(function() {
     </tbody>
     <tfoot>
         <tr>
-            <td>{% trans "Total"  %}</td>
+            <td>{% trans "Total" %}</td>
             <td>{{ total_duration|conv_min }}</td>
             <td></td>
             <td>{{ total_calls }}</td>

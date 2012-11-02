@@ -152,29 +152,29 @@
             <tr>
                 <th>
                     {% ifequal col_name_with_order.sort_field 'starting_date' %}
-                        {% sort_link "<i class='icon-chevron-up'></i>" "starting_date"  %}
+                        {% sort_link "<i class='icon-chevron-up'></i>" "starting_date" %}
                         {% trans "Call-date" %}
-                        {% sort_link "<i class='icon-chevron-down'></i>" "-starting_date"  %}
+                        {% sort_link "<i class='icon-chevron-down'></i>" "-starting_date" %}
                     {% else %}
-                        {% sort_link "Call-date" "-starting_date"  %}
+                        {% sort_link "Call-date" "-starting_date" %}
                     {% endifequal %}
                 </th>
                 <th>
                     {% ifequal col_name_with_order.sort_field 'phone_number' %}
-                        {% sort_link "<i class='icon-chevron-up'></i>" "phone_number"  %}
+                        {% sort_link "<i class='icon-chevron-up'></i>" "phone_number" %}
                         {% trans "Destination" %}
-                        {% sort_link "<i class='icon-chevron-down'></i>" "-phone_number"  %}
+                        {% sort_link "<i class='icon-chevron-down'></i>" "-phone_number" %}
                     {% else %}
-                        {% sort_link "Destination" "-phone_number"  %}
+                        {% sort_link "Destination" "-phone_number" %}
                     {% endifequal %}
                 </th>
                 <th>
                     {% ifequal col_name_with_order.sort_field 'duration' %}
-                        {% sort_link "<i class='icon-chevron-up'></i>" "duration"  %}
+                        {% sort_link "<i class='icon-chevron-up'></i>" "duration" %}
                         {% trans "Duration" %}
-                        {% sort_link "<i class='icon-chevron-down'></i>" "-duration"  %}
+                        {% sort_link "<i class='icon-chevron-down'></i>" "-duration" %}
                     {% else %}
-                        {% sort_link "Duration" "-duration"  %}
+                        {% sort_link "Duration" "-duration" %}
                     {% endifequal %}
                 </th>
                 <th>{% trans "Disposition" %}</th>
@@ -214,7 +214,7 @@
         {% endif %}
 
         <div class="show_export_file" id='export-container'>
-            <h3>{% trans "Export CSV file"  %}</h3> <br/>
+            <h3>{% trans "Export CSV file" %}</h3> <br/>
             <a href="/export_surveycall_report/"><img src='{{STATIC_URL}}newfies/icons/x-office-spreadsheet.png' width="75"/></a>
         </div>
 
@@ -243,7 +243,7 @@
                     <th>{% trans "Duration" %}</th>
                     <th>{% trans "Graphic" %}</th>
                     <th>{% trans "Calls" %}</th>
-                    <th><acronym title="{% trans "Average Connection Time" %}">{% trans "ACT"  %}</acronym></th>
+                    <th><acronym title="{% trans "Average Connection Time" %}">{% trans "ACT" %}</acronym></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -263,7 +263,7 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                    <td>{% trans "Total"  %}</td>
+                    <td>{% trans "Total" %}</td>
                     <td>{{ total_duration|conv_min }}</td>
                     <td></td>
                     <td>{{ total_calls }}</td>

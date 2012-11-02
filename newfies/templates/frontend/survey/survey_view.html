@@ -234,7 +234,7 @@
                                                                 {% elif branch.keys == 'invalid' %}
                                                                     {% trans "invalid"|title %}
                                                                 {% elif branch.keys == 'timeout' %}
-                                                                    {% trans "timeout"|title %} (no input within {{ section.timeout }}ms)
+                                                                    {% trans "timeout"|title %} (no input within {{ section.timeout }}s)
                                                                 {% elif branch.keys %}
                                                                     {% trans "Key" %}&nbsp;
                                                                     {{ branch.keys }}

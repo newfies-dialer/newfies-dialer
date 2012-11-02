@@ -24,7 +24,7 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from utils.helper import grid_common_function, get_grid_update_delete_link
-from dialer_campaign.views import notice_count
+from frontend.views import notice_count
 from dialer_audio.forms import DialerAudioFileForm
 from audiofield.models import AudioFile
 from common.common_functions import current_view

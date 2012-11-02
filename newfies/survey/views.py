@@ -28,7 +28,6 @@ from django.utils.html import escape
 from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
 from dialer_campaign.models import Campaign, Subscriber
-from dialer_campaign.views import notice_count
 from dialer_campaign.constants import SUBSCRIBER_STATUS
 from dialer_cdr.models import Callrequest, VoIPCall, CALLREQUEST_STATUS
 from dialer_cdr.constants import VOIPCALL_DISPOSITION
@@ -42,6 +41,7 @@ from survey.forms import SurveyForm, VoiceSectionForm,\
     SurveyDetailReportForm
 from survey.constants import SECTION_TYPE
 from utils.helper import grid_common_function, get_grid_update_delete_link
+from frontend.views import notice_count
 from common.common_functions import variable_value, current_view, ceil_strdate
 from datetime import datetime
 from dateutil.relativedelta import relativedelta

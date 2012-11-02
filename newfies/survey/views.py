@@ -129,15 +129,15 @@ def set_aggregate_result(obj_callrequest, obj_p_section, response, RecordingDura
         try:
             # recording duration 0 - 20 seconds ; 20 - 40 seconds ; 40 - 60 seconds
             if int(RecordingDuration) > 0 and int(RecordingDuration) <= 20:
-                response = 'recording 0 - 20 seconds'
+                response = '0 - 20 seconds'
             elif int(RecordingDuration) > 20 and int(RecordingDuration) <= 40:
-                response = 'recording 21 - 40 seconds'
+                response = '21 - 40 seconds'
             elif int(RecordingDuration) > 40 and int(RecordingDuration) <= 60:
-                response = 'recording 41 - 60 seconds'
+                response = '41 - 60 seconds'
             elif int(RecordingDuration) > 60 and int(RecordingDuration) <= 90:
-                response = 'recording 61 - 90 seconds'
+                response = '61 - 90 seconds'
             elif int(RecordingDuration) > 90:
-                response = 'recording > 90 seconds'
+                response = '> 90 seconds'
         except:
             response = 'error to detect recording duration'
 
@@ -178,6 +178,10 @@ def save_section_result(request, obj_callrequest, obj_p_section, DTMF):
         else:
             RecordFile = request.POST.get('RecordFile')
             RecordingDuration = request.POST.get('RecordingDuration')
+            try:
+                RecordingDuration = int(int(RecordingDuration) / 1000)
+            except:
+                RecordingDuration = 0
         try:
             RecordFile = os.path.split(RecordFile)[1]
         except:

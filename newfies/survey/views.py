@@ -285,6 +285,7 @@ def survey_finitestatemachine(request):
     next_state = None
     delcache = False
     overstate = False
+    branching = False
     debug_outp = ''
 
     #Load Plivo Post parameters
@@ -388,6 +389,20 @@ def survey_finitestatemachine(request):
         debug_outp += outp_result
 
     if obj_p_section and \
+        (obj_p_section.type == SECTION_TYPE.PLAY_MESSAGE or \
+        obj_p_section.type == SECTION_TYPE.RECORD_MSG or \
+        obj_p_section.type == SECTION_TYPE.CALL_TRANSFER):
+
+        #Get list of responses of the previous Section
+        try:
+            branching = Branching.objects.get(
+                keys='0',
+                section=obj_p_section)
+        except Branching.DoesNotExist:
+            #No branching
+            exit_action = 'NOBRANCH'
+
+    if obj_p_section and \
         (obj_p_section.type == SECTION_TYPE.MULTI_CHOICE or \
         obj_p_section.type == SECTION_TYPE.RATING_SECTION or \
         obj_p_section.type == SECTION_TYPE.CAPTURE_DIGITS):
@@ -444,18 +459,18 @@ def survey_finitestatemachine(request):
                     except Branching.DoesNotExist:
                         branching = False
 
-        #if there is a response for this DTMF then reset the current_state
-        if branching and branching.goto:
-            l = 0
-            for section in list_section:
-                #this is not very elegant mechanism, it allows us to know where we are
-                #in the section list (order) and what should be the current state based
-                #on what the user entered
-                if section.id == branching.goto.id:
-                    current_state = l
-                    #print "Found it (%d) (l=%d)!" % (section.id, l)
-                    break
-                l = l + 1
+    #If there is a Branching then reset the current_state
+    if branching and branching.goto:
+        l = 0
+        for section in list_section:
+            #this is not very elegant mechanism, it allows us to know where we are
+            #in the section list (order) and what should be the current state based
+            #on what the user entered
+            if section.id == branching.goto.id:
+                current_state = l
+                #print "Found it (%d) (l=%d)!" % (section.id, l)
+                break
+            l = l + 1
 
     debug_outp += "EXIT ACTION ::> %s <br/>" % str(exit_action)
     #Transition go to next state

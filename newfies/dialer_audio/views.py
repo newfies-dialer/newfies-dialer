@@ -82,9 +82,9 @@ def audio_grid(request):
                 '<a href="%s" class="icon" %s title="%s">&nbsp;</a>' % \
                 ((settings.MEDIA_URL + str(row['audio_file'])),
                 link_style, _('Download audio')) + get_grid_update_delete_link(request, row['id'],
-                'dialer_audio.change_audio', _('Update audio'), 'update') + \
+                'audiofield.change_audiofile', _('Update audio'), 'update') + \
                 get_grid_update_delete_link(request, row['id'],
-                'dialer_audio.delete_audio', _('Delete audio'), 'delete'),
+                'audiofield.delete_audiofile', _('Delete audio'), 'delete'),
             ]} for row in audio_list]
 
     data = {'rows': rows,

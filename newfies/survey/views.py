@@ -726,8 +726,8 @@ def survey_grid(request):
         .filter(user=request.user)
 
     count = survey_list.count()
-    survey_list =\
-        survey_list.order_by(sortorder_sign + sortname)[start_page:end_page]
+    survey_list = survey_list\
+        .order_by(sortorder_sign + sortname)[start_page:end_page]
 
     rows = [{'id': row['id'],
              'cell': ['<input type="checkbox" name="select" class="checkbox" value="%s" />' % (str(row['id'])),
@@ -735,11 +735,11 @@ def survey_grid(request):
                       row['description'],
                       row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
                       get_grid_update_delete_link(request, row['id'],
-                                                  'survey.change_surveyapp',
+                                                  'survey.change_survey',
                                                   _('Update survey'),
                                                   'update') +
                       get_grid_update_delete_link(request, row['id'],
-                                                  'survey.delete_surveyapp',
+                                                  'survey.delete_survey',
                                                   _('Delete survey'),
                                                   'delete'),
                       ]} for row in survey_list]

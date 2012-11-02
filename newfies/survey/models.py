@@ -276,7 +276,7 @@ class Section_template(Section_abstract):
     """
     survey = models.ForeignKey(Survey_template, verbose_name=_("Survey"))
     invalid_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
-                                          verbose_name=_("Invalid Input"),
+                                          verbose_name=_("Audio Invalid Input"),
                                           related_name='survey_template_invalid_audiofile')
 
     class Meta(Sortable.Meta):
@@ -338,7 +338,7 @@ class Section(Section_abstract):
     """
     survey = models.ForeignKey(Survey, verbose_name=_("Survey"))
     invalid_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
-                                          verbose_name=_("Invalid Input"),
+                                          verbose_name=_("Audio Invalid Input"),
                                           related_name='survey_invalid_audiofile')
     #section_template_id is used to easy duplication
     section_template = models.IntegerField(max_length=10, blank=True,

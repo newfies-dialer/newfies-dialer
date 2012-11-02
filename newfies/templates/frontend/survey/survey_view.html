@@ -246,16 +246,15 @@
                                                     {% endif %}
                                                 {% endif %}
                                                 <td>
-                                                    #{% if branch.goto.id %}
-                                                    {{ branch.goto.order }}&nbsp;
-                                                    {% if branch.goto.question %}
-                                                        {{ branch.goto.question }}
+                                                    {% if branch.goto.id %}
+                                                        {% if branch.goto.question %}
+                                                            {{ branch.goto.question }}
+                                                        {% else %}
+                                                            {{ branch.goto.script }}
+                                                        {% endif %}
                                                     {% else %}
-                                                        {{ branch.goto.script }}
+                                                        &nbsp;{% trans "Hang up" %}
                                                     {% endif %}
-                                                {% else %}
-                                                    &nbsp;{% trans "Hang up" %}
-                                                {% endif %}
                                                 </td>
                                             {% endif %}
                                         </tr>

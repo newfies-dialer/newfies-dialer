@@ -302,46 +302,45 @@
                                     <tbody>
                                     {% for branch in branching_list %}
                                         <tr>
-                                            <!--TODO : Remove If nested-->
-                                            {% if branch.section_id == section.id %}
-                                                {% if section.type != SECTION_TYPE.PLAY_MESSAGE %}
-                                                    {% if section.type != SECTION_TYPE.HANGUP_SECTION %}
-                                                        {% if section.type != SECTION_TYPE.RECORD_MSG %}
-                                                        <td>
-                                                            {% if branch.keys == 'any' %}
-                                                                {% trans "any other key"|title %}
-                                                            {% elif branch.keys == 'invalid' %}
-                                                                {% trans "invalid"|title %}
-                                                            {% elif branch.keys == 'timeout' %}
-                                                                {% trans "timeout"|title %} (no input within {{ section.timeout }}ms)
-                                                            {% elif branch.keys %}
-                                                                {% trans "Key" %}&nbsp;
-                                                                {{ branch.keys }}
-                                                            {% else %}
-                                                                {% trans "None" %}
-                                                            {% endif %}
-                                                        </td>
+                                        <!--TODO : Remove If nested-->
+                                        {% if branch.section_id == section.id %}
+                                            {% if section.type != SECTION_TYPE.PLAY_MESSAGE %}
+                                                {% if section.type != SECTION_TYPE.HANGUP_SECTION %}
+                                                    {% if section.type != SECTION_TYPE.RECORD_MSG %}
+                                                    <td>
+                                                        {% if branch.keys == 'any' %}
+                                                            {% trans "any other key"|title %}
+                                                        {% elif branch.keys == 'invalid' %}
+                                                            {% trans "invalid"|title %}
+                                                        {% elif branch.keys == 'timeout' %}
+                                                            {% trans "timeout"|title %} (no input within {{ section.timeout }}ms)
+                                                        {% elif branch.keys %}
+                                                            {% trans "Key" %}&nbsp;
+                                                            {{ branch.keys }}
+                                                        {% else %}
+                                                            {% trans "None" %}
                                                         {% endif %}
+                                                    </td>
                                                     {% endif %}
                                                 {% endif %}
-                                                <td>
-                                                    #{% if branch.goto.id %}
-                                                        {{ branch.goto.order }}&nbsp;
-                                                        {% if branch.goto.question %}
-                                                            {{ branch.goto.question }}
-                                                        {% else %}
-                                                            {{ branch.goto.script }}
-                                                        {% endif %}
-                                                    {% else %}
-                                                        &nbsp;{% trans "Hang up" %}
-                                                    {% endif %}
-                                                </td>
-                                                <td class="survey_edit_key">
-                                                    {% if perms.survey.delete_branching %}
-                                                        <a {% icon_style 'cross' %} href="/section/branch/{{ branch.id }}/?delete=true" class="icon" title="{% trans "Delete" %}">&nbsp;</a>
-                                                    {% endif %}
-                                                </td>
                                             {% endif %}
+                                            <td>
+                                                {% if branch.goto.id %}
+                                                    {% if branch.goto.question %}
+                                                        {{ branch.goto.question }}
+                                                    {% else %}
+                                                        {{ branch.goto.script }}
+                                                    {% endif %}
+                                                {% else %}
+                                                    {% trans "Hang up" %}
+                                                {% endif %}
+                                            </td>
+                                            <td class="survey_edit_key">
+                                                {% if perms.survey.delete_branching %}
+                                                    <a {% icon_style 'cross' %} href="/section/branch/{{ branch.id }}/?delete=true" class="icon" title="{% trans "Delete" %}">&nbsp;</a>
+                                                {% endif %}
+                                            </td>
+                                        {% endif %}
                                         </tr>
                                     {% endfor %}
                                     </tbody>

@@ -38,9 +38,9 @@ def get_audiofile_list(user):
 def get_section_question_list(survey_id, section_id):
     """Get survey question list for logged in user
     with default none option"""
-    section_branch_list =\
-        Branching_template.objects.values_list('section_id', flat=True)\
-                         .filter(section_id=section_id)
+    section_branch_list = Branching_template\
+        .objects.values_list('section_id', flat=True)\
+        .filter(section_id=section_id)
     list_sq = []
     list_sq.append(('', _('Hang up')))
 
@@ -52,7 +52,7 @@ def get_section_question_list(survey_id, section_id):
             q_string = i.question
         else:
             q_string = i.script
-        list_sq.append((i.id, "Goto %s # %s" % (str(i.order), q_string)))
+        list_sq.append((i.id, "Goto: %s" % (q_string)))
 
     return list_sq
 

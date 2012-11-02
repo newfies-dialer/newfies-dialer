@@ -194,7 +194,9 @@ def contact_search_common_fun(request):
 
     # Assign form field value to local variable
     contact_no = variable_value(request, 'contact_no')
-    contact_no_type = variable_value(request, 'contact_no_type')
+    #contact_no_type = variable_value(request, 'contact_no_type')
+    #We simplify the form and use contains by default
+    contact_no_type = '1'  # contains
     phonebook = variable_value(request, 'phonebook')
     status = variable_value(request, 'status')
 

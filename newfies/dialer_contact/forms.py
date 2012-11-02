@@ -16,7 +16,8 @@ from django import forms
 from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
 from dialer_contact.models import Phonebook, Contact
-from dialer_contact.constants import CHOICE_TYPE, STATUS_CHOICE
+from dialer_contact.constants import STATUS_CHOICE
+#from dialer_contact.constants import CHOICE_TYPE
 
 
 class SearchForm(forms.Form):
@@ -98,15 +99,14 @@ class ContactSearchForm(forms.Form):
     """Search Form on Contact List"""
     contact_no = forms.CharField(label=_('Contact Number:'), required=False,
                                  widget=forms.TextInput(attrs={'size': 15}))
-    contact_no_type = forms.ChoiceField(label='', required=False, initial=1,
-                                        choices=list(CHOICE_TYPE), widget=forms.RadioSelect)
+    # contact_no_type = forms.ChoiceField(label='', required=False, initial=1,
+    #                                     choices=list(CHOICE_TYPE), widget=forms.RadioSelect)
     name = forms.CharField(label=_('Contact Name:'), required=False,
                            widget=forms.TextInput(attrs={'size': 15}))
     phonebook = forms.ChoiceField(label=_('Phonebook:'), required=False)
     status = forms.TypedChoiceField(label=_('Status:'), required=False,
                                     choices=list(STATUS_CHOICE),
-                                    widget=forms.RadioSelect,
-                                    initial=2)
+                                    initial=STATUS_CHOICE.ALL)
 
     def __init__(self, user, *args, **kwargs):
         super(ContactSearchForm, self).__init__(*args, **kwargs)

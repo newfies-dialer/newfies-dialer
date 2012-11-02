@@ -228,9 +228,9 @@ class HangupcallResource(ModelResource):
 
                 dialer_set = user_dialer_setting(callrequest.user)
                 #check if we are allowed to retry on failure
-                if obj_subscriber.count_attempt >= callrequest.campaign.maxretry\
-                    or obj_subscriber.count_attempt >= dialer_set.maxretry\
-                    or not callrequest.campaign.maxretry:
+                if not callrequest.campaign.maxretry \
+                    or (obj_subscriber.count_attempt + 1) >= callrequest.campaign.maxretry\
+                    or (obj_subscriber.count_attempt + 1) >= dialer_set.maxretry:
                     logger.error("Not allowed retry - Maxretry (%d)" %\
                                  callrequest.campaign.maxretry)
                     #Check here if we should try for completion

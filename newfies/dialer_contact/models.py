@@ -99,7 +99,7 @@ class Contact(Model):
                             verbose_name=_('City'))
     additional_vars = jsonfield.JSONField(null=True, blank=True,
                                           verbose_name=_('Additional parameters (JSON)'),
-                                          help_text=_("Enter the list of parameters in Json format, ie. {'age': '32'}"))
+                                          help_text=_("Enter the list of parameters in Json format, ie. {\"age\": \"32\"}"))
     description = models.TextField(null=True, blank=True,
                                    verbose_name=_("Notes"))
     created_date = models.DateTimeField(auto_now_add=True,

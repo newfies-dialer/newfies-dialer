@@ -109,7 +109,7 @@ def login_view(request):
     return render_to_response(template, data,
            context_instance=RequestContext(request))
 
-
+@login_required
 def notice_count(request):
     """Get count of logged in user's notifications"""
     notice_count = notification.Notice.objects\

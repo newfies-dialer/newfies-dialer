@@ -45,7 +45,7 @@
               <li {% if 'contact' in module  %}class="active"{% endif %}><a href="/contact/">{% trans "Contacts" %}</a></li>
               {% endif %}
 
-              {% if perms.dialer_audio.view_audio %}
+              {% if perms.audiofield.view_audio %}
               <li {% if 'audio' in module  %}class="active"{% endif %}><a href="/audio/">{% trans "Audio files" %}</a></li>
               {% endif %}
 

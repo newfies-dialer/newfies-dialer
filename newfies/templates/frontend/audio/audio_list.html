@@ -29,11 +29,11 @@ $("#flex1").flexigrid({
         {display: '{% trans "Action" %}', name: '', width : 150, align: 'center', formatter:'showlink', formatoptions:{baseLinkUrl:'', }, },
 		],
     buttons : [
-        {% if perms.dialer_audio.add_audio %}
+        {% if perms.audiofield.add_audiofile %}
 		    {name: '{% trans "Add" %}', bclass: 'add', onpress : add_button},
         {% endif %}
         {separator: true},
-        {% if perms.dialer_audio.delete_audio %}
+        {% if perms.audiofield.delete_audiofile %}
             {name: '{% trans "Delete Selected" %}', bclass: 'delete', onpress : delete_button},
         {% endif %}
 		],

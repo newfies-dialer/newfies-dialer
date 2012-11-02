@@ -109,15 +109,12 @@ def login_view(request):
     return render_to_response(template, data,
            context_instance=RequestContext(request))
 
-
+@login_required
 def notice_count(request):
     """Get count of logged in user's notifications"""
-    try:
-        notice_count = notification.Notice.objects\
-                            .filter(recipient=request.user, unseen=1)\
-                            .count()
-    except:
-        notice_count = ''
+    notice_count = notification.Notice.objects\
+                        .filter(recipient=request.user, unseen=1)\
+                        .count()
     return notice_count
 
 

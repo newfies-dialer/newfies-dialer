@@ -24,13 +24,14 @@ from django.db.models import Q
 from django.conf import settings
 from notification import models as notification
 from dialer_campaign.models import common_contact_authorization
-from dialer_campaign.views import notice_count, grid_common_function
 from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_settings.models import DialerSetting
 from user_profile.models import UserProfile
 from user_profile.forms import UserChangeDetailForm, \
                                UserChangeDetailExtendForm, \
                                CheckPhoneNumberForm
+from utils.helper import grid_common_function
+from frontend.views import notice_count
 from common.common_functions import current_view
 
 

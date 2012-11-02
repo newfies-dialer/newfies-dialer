@@ -42,7 +42,6 @@ import csv
 import ast
 
 
-
 def get_phonebook_link(request, row_id, link_style, title, action):
     """Function to check user permission to change or delete phonebook
 

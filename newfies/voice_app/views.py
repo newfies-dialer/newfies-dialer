@@ -23,7 +23,7 @@ from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from voice_app.models import VoiceApp, VoiceApp_template, get_voiceapp_type_name
 from voice_app.forms import VoiceAppForm
-from dialer_campaign.views import notice_count
+from frontend.views import notice_count
 from utils.helper import grid_common_function, get_grid_update_delete_link
 from dialer_campaign.function_def import user_dialer_setting_msg
 from common.common_functions import current_view

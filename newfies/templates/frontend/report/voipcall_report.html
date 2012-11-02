@@ -31,9 +31,7 @@
     <h1>{% trans "Call Reports" %} <small>{% trans "Detailed call data" %}</small></h1>
 {% endblock %}
 
-
 {% block content %}
-    <p>&nbsp;</p>
     {% block custom-search %}
         <form class="well" method="POST" action="." enctype="multipart/form-data">
             {% csrf_token %}
@@ -116,8 +114,7 @@
         </script>
     {% endblock %}
 
-    <br/><br/>
-
+    <br/>
     {% block extra_data %}
         <div align=center>
             <h3><center>{% trans "Call Detail Report Summary" %}</center></h3>
@@ -158,8 +155,7 @@
             </table>
 
             <br/>
-
-            <h3>{% trans "Export CSV file"  %}</h3> <br/>
+            <h3>{% trans "Export CSV file" %}</h3>
             <a href="/export_voipcall_report/"><img src='{{STATIC_URL}}newfies/icons/x-office-spreadsheet.png' width="75"/></a>
 
         </div>

@@ -302,6 +302,10 @@ func_install_frontend(){
     #Check Python dependencies
     func_check_dependencies
 
+    echo "PIP Freeze"
+    echo "----------"
+    pip freeze
+
     # copy settings_local.py into newfies dir
     cp /usr/src/newfies-dialer/install/conf/settings_local.py $INSTALL_DIR
 

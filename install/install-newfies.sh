@@ -302,8 +302,9 @@ func_install_frontend(){
     #Check Python dependencies
     func_check_dependencies
 
+    echo "**********"
     echo "PIP Freeze"
-    echo "----------"
+    echo "**********"
     pip freeze
 
     # copy settings_local.py into newfies dir

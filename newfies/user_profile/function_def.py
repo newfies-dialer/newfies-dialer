@@ -34,7 +34,7 @@ def common_send_notification(request, status, recipient=None):
     """
     if not recipient:
         recipient = request.user
-        sender = User.objects.get(is_superuser=1, username=recipient)
+        sender = User.objects.get(username=recipient)
     else:
         if request.user.is_anonymous():
             sender = User.objects.get(is_superuser=1, username=recipient)

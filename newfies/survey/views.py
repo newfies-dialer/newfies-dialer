@@ -54,15 +54,6 @@ import os
 testdebug = False  # TODO: Change later
 
 
-def templateformat(s, *args, **kwargs):
-    while True:
-        try:
-            return s.format(*args, **kwargs)
-        except KeyError as e:
-            e = e.args[0]
-            kwargs[e] = "{%s}" % e
-
-
 def placeholder_replace(text, contact):
     """
     Replace place holders by tag value.
@@ -87,7 +78,9 @@ def placeholder_replace(text, contact):
         for index in contact.additional_vars:
             context[index] = contact.additional_vars[index]
 
-    return templateformat(text, **context)
+    for ind in context:
+        text = text.replace('{' + ind + '}', str(context[ind]))
+    return text
 
 
 def getaudio_acapela(text, tts_language='en'):

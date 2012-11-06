@@ -321,6 +321,7 @@ def contact_grid(request):
     phonebook_id_list = Phonebook.objects.values_list('id', flat=True)\
         .filter(user=request.user)
     contact_list = []
+    count = 0
 
     if phonebook_id_list:
         select_data = {"status":
@@ -342,10 +343,10 @@ def contact_grid(request):
             if q:
                 contact_list = contact_list.filter(q)
 
-    count = contact_list.count()
-    contact_list = \
-        contact_list.order_by(sortorder_sign + sortname)[start_page:end_page]
+        count = contact_list.count()
 
+    contact_list = contact_list\
+        .order_by(sortorder_sign + sortname)[start_page:end_page]
     rows = [
         {'id': row['id'],
          'cell': ['<input type="checkbox" name="select" class="checkbox"\

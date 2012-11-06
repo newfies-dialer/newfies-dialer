@@ -41,11 +41,11 @@
                     <td>
                         {% if record.record_file %}
                             <ul class="playlist">
-                                <li style="width:110px;"><a href="{{ MEDIA_URL }}/recording/{{ record.record_file }}">{{ record.record_file }}</a></li>
+                                <li style="width:300px;"><a href="{{ MEDIA_URL }}/recording/{{ record.record_file }}">{{ record.record_file }}</a></li>
                             </ul>
                         {% endif %}
                     </td>
-                    <td>
+                    <td class="survey_edit_key">
                         {% if record.record_file %}
                             {{ record.recording_duration }}
                         {% endif %}

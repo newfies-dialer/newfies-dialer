@@ -77,3 +77,16 @@ label {
     }
 
 }
+
+/*Survey campaign result modal width changed*/
+.modal-big {
+    width: 800px;
+    margin-left: -350px;
+}
+
+@media (max-width: 900px) {
+    .modal-big {
+        width: auto;
+        margin-left: auto;
+    }
+}

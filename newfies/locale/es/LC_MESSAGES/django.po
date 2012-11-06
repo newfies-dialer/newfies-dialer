@@ -613,7 +613,7 @@ msgstr "Base de datos de error"
 #: dialer_cdr/admin.py:184
 #, python-format
 msgid "%(total_count)s selected"
-msgstr "0 de %(cnt)s seleccionados"
+msgstr "%(total_count)s seleccionados"
 
 #: dialer_cdr/admin.py:191 dialer_cdr/admin.py:255
 msgid "VoIP Report"

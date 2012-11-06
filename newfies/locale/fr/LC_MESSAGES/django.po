@@ -118,7 +118,7 @@ msgstr "Suppression d&#39;audio"
 #: voice_app/views.py:130
 #, python-format
 msgid "\"%(name)s\" added."
-msgstr "\"% (Name) s», a ajouté."
+msgstr "\"%(name)s\", a ajouté."
 
 #: dialer_audio/views.py:185 dialer_campaign/views.py:366
 #: dialer_campaign/views.py:423 dialer_contact/views.py:211
@@ -126,12 +126,12 @@ msgstr "\"% (Name) s», a ajouté."
 #: voice_app/views.py:165
 #, python-format
 msgid "\"%(name)s\" is deleted."
-msgstr "\"% (Name) s\" est supprimé."
+msgstr "\"%(name)s\" est supprimé."
 
 #: dialer_audio/views.py:201
 #, python-format
 msgid "%(count)s audio(s) are deleted."
-msgstr "% (Count) s audio (s) sont supprimés."
+msgstr "%(count)s audio (s) sont supprimés."
 
 #: dialer_campaign/admin.py:32 dialer_cdr/admin.py:41
 #: dialer_gateway/admin.py:35
@@ -146,7 +146,7 @@ msgstr "Options avancées"
 #: dialer_campaign/admin.py:83 dialer_campaign/views.py:301
 #, python-format
 msgid "you have too many campaigns. Max allowed %(limit)s"
-msgstr "vous avez trop de campagnes. Max permis% (limite) s"
+msgstr "vous avez trop de campagnes. Max permis %(limit)s"
 
 #: dialer_campaign/forms.py:48 dialer_campaign/models.py:222
 #: dialer_cdr/models.py:133
@@ -156,22 +156,22 @@ msgstr "Application"
 #: dialer_campaign/forms.py:141
 #, python-format
 msgid "Maximum Frequency limit of %d exceeded."
-msgstr "Fréquence limite maximale de% d dépassé."
+msgstr "Fréquence limite maximale de %d dépassé."
 
 #: dialer_campaign/forms.py:147
 #, python-format
 msgid "Maximum Duration limit of %d exceeded."
-msgstr "Durée limite maximale de% d dépassé."
+msgstr "Durée limite maximale de %d dépassé."
 
 #: dialer_campaign/forms.py:153
 #, python-format
 msgid "Maximum Retries limit of %d exceeded."
-msgstr "Limite maximale de% d tentatives dépassé."
+msgstr "Limite maximale de %d tentatives dépassé."
 
 #: dialer_campaign/forms.py:159
 #, python-format
 msgid "Maximum Timeout limit of %d exceeded."
-msgstr "Délai limite maximale de% d dépassée."
+msgstr "Délai limite maximale de %d dépassée."
 
 #: dialer_campaign/function_def.py:286
 msgid ""
@@ -432,7 +432,7 @@ msgstr "Progrès"
 #: dialer_campaign/models.py:391
 #, python-format
 msgid "<a href='%(link)s'>%(name)s</a>"
-msgstr "<a href='%(link)s'>% (Name) s</a>"
+msgstr "<a href='%(link)s'>%(name)s</a>"
 
 #: dialer_campaign/models.py:392
 msgid "Details"
@@ -486,7 +486,7 @@ msgid ""
 "Notification - User Dialer Setting The user \"%(user)s\" - \"%(user_id)s\" "
 "is not properly configured to use the system, please configure their dialer "
 "settings."
-msgstr "Notification - Dialer utilisateur Configuration L&#39;utilisateur \"% (user) s\" - \"% (user_id) s\" n&#39;est pas correctement configuré pour utiliser le système, s&#39;il vous plaît configurer leurs paramètres dialer."
+msgstr "Notification - Dialer utilisateur Configuration L&#39;utilisateur \"%(user)s\" - \"%(user_id)s\" n&#39;est pas correctement configuré pour utiliser le système, s&#39;il vous plaît configurer leurs paramètres dialer."
 
 #: dialer_campaign/views.py:140 dialer_cdr/constants.py:28
 msgid "Pause"
@@ -529,7 +529,7 @@ msgstr "Afin d&#39;ajouter une campagne, vous devez avoir configuré correctemen
 #: dialer_campaign/views.py:378
 #, python-format
 msgid "%(count)s campaign(s) are deleted."
-msgstr "% (Count) s campagne (s) sont supprimés."
+msgstr "%(count)s campagne (s) sont supprimés."
 
 #: dialer_campaign/views.py:417
 msgid ""
@@ -541,7 +541,7 @@ msgstr "La campagne est lancée, vous ne pouvez modifier les paramètres et le c
 #: dialer_contact/views.py:542 survey/views.py:1499 voice_app/views.py:214
 #, python-format
 msgid "\"%(name)s\" is updated."
-msgstr "\"% (Name) s\" est mis à jour."
+msgstr "\"%(name)s\" est mis à jour."
 
 #: dialer_campaign/management/commands/create_subscriber.py:23
 msgid "<phonenumber|phonebook_id, phonenumber|phonebook_id,...>"
@@ -555,7 +555,7 @@ msgstr "Crée un nouveau contact à un numéro de téléphone donné et réperto
 #: dialer_contact/management/commands/create_contact.py:39
 #, python-format
 msgid "Can't find this Phonebook : %(id)s"
-msgstr "Vous ne trouvez pas ce répertoire:% (id) s"
+msgstr "Vous ne trouvez pas ce répertoire: %(id)s"
 
 #: dialer_campaign/management/commands/create_subscriber.py:47
 #: dialer_contact/management/commands/create_contact.py:54
@@ -565,7 +565,7 @@ msgstr "Dupliquer contact!"
 #: dialer_campaign/management/commands/create_subscriber.py:50
 #, python-format
 msgid "Contact created id:%(id)s"
-msgstr "Contactez-id créé:% (id) s"
+msgstr "Contact créé id:%(id)s"
 
 #: dialer_campaign/management/commands/create_subscriber.py:55
 msgid "Can't find a Campaign with this phonebook"
@@ -574,7 +574,7 @@ msgstr "Vous ne trouvez pas une campagne avec ce répertoire"
 #: dialer_campaign/management/commands/create_subscriber.py:58
 #, python-format
 msgid "Launch Task : collect_subscriber(%(id)s)"
-msgstr "Lancement de travail: collect_subscriber (% (id) s)"
+msgstr "Lancement de tache: collect_subscriber(%(id)s)"
 
 #: dialer_cdr/admin.py:69 dialer_cdr/admin.py:192
 #: templates/admin/dialer_cdr/voipcall/change_list.html:14
@@ -601,7 +601,7 @@ msgstr "Erreur de base de données"
 #: dialer_cdr/admin.py:184
 #, python-format
 msgid "%(total_count)s selected"
-msgstr "% (TOTAL_COUNT) s sélectionné"
+msgstr "%(total_count)s sélectionné"
 
 #: dialer_cdr/admin.py:191 dialer_cdr/admin.py:255
 msgid "VoIP Report"
@@ -795,12 +795,12 @@ msgstr "Appel VoIP"
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:50
 #, python-format
 msgid "Can't find this Campaign : %(id)s"
-msgstr "Vous ne trouvez pas cette campagne:% (id) s"
+msgstr "Vous ne trouvez pas cette campagne: %(id)s"
 
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:119
 #, python-format
 msgid "No of Callrequest & CDR created :%(count)s"
-msgstr "Pas de Callrequest & CDR créé:% (count) s"
+msgstr "Pas de Callrequest & CDR créé: %(count)s"
 
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:126
 msgid "\"campaign_id|quantity\" \"campaign_id|quantity\""
@@ -816,7 +816,7 @@ msgstr "Créez nouvelles demandes d&#39;appel et des CDR pour un campaign_id don
 msgid ""
 "You have too many contacts per campaign. You are allowed a maximum of "
 "%(limit)s"
-msgstr "Vous avez trop de contacts par campagne. Vous êtes autorisé un maximum de% (limite) s"
+msgstr "Vous avez trop de contacts par campagne. Vous êtes autorisé a un maximum de %(limit)s"
 
 #: dialer_contact/admin.py:164 dialer_contact/views.py:630
 msgid ""
@@ -829,7 +829,7 @@ msgstr "Valeur non valide pour l&#39;importation! S&#39;il vous plaît vérifier
 msgid ""
 "%(contact_cnt)s Contact(s) are uploaded successfully out of %(total_rows)s "
 "row(s) !!"
-msgstr "% (Contact_cnt) s Contact (s) sont téléchargés avec succès sur% (total_rows) s rangée (s)!"
+msgstr "%(contact_cnt)s Contact(s) sont téléchargés avec succès sur %(total_rows)s rangée (s)!"
 
 #: dialer_contact/admin.py:206
 #: templates/frontend/contact/import_contact.html:13
@@ -895,7 +895,7 @@ msgstr "Parcourir les fichiers CSV"
 #: dialer_contact/forms.py:44
 #, python-format
 msgid "Document types accepted: %s"
-msgstr "Les types de documents acceptés:%s"
+msgstr "Les types de documents acceptés: %s"
 
 #: dialer_contact/forms.py:50 dialer_contact/models.py:51
 #: dialer_contact/models.py:87 templates/frontend/contact/list.html:90
@@ -1012,7 +1012,7 @@ msgstr "Supprimer le répertoire"
 #: dialer_contact/views.py:232
 #, python-format
 msgid "%(count)s phonebook(s) are deleted."
-msgstr "% (Count) s du répertoire (s) sont supprimés."
+msgstr "%(count)s du répertoire (s) sont supprimés."
 
 #: dialer_contact/views.py:358
 msgid "Update contact"
@@ -1025,12 +1025,12 @@ msgstr "Supprimer le contact"
 #: dialer_contact/views.py:453
 #, python-format
 msgid "\"%(name)s\" cannot be added."
-msgstr "\"% (Name) s» ne peut pas être ajouté."
+msgstr "\"%(name)s\" ne peut pas être ajouté."
 
 #: dialer_contact/views.py:504
 #, python-format
 msgid "%(count)s contact(s) are deleted."
-msgstr "% (Count) s contact (s) sont supprimés."
+msgstr "%(count)s contact(s) sont supprimés."
 
 #: dialer_contact/management/commands/create_contact.py:24
 msgid "\"phonebook_id|no_of_record\" \"phonebook_id|no_of_record\""
@@ -1043,7 +1043,7 @@ msgstr "Crée de nouveaux contacts pour un répertoire donné et aucun des dossi
 #: dialer_contact/management/commands/create_contact.py:51
 #, python-format
 msgid "No of Contact created : %(count)s"
-msgstr "Pas de contact créé:% (count) s"
+msgstr "Pas de contact créé: %(count)s"
 
 #: dialer_gateway/constants.py:25
 msgid "SIP"
@@ -1494,7 +1494,7 @@ msgstr "Supprimer l&#39;enquête"
 #: survey/views.py:862
 #, python-format
 msgid "%(count)s survey(s) are deleted."
-msgstr "% (Count) s sondage (s) sont supprimés."
+msgstr "%(count)s sondage (s) sont supprimés."
 
 #: survey/views.py:901 survey/views.py:926 survey/views.py:946
 #: survey/views.py:965 survey/views.py:984 survey/views.py:1003
@@ -1569,7 +1569,7 @@ msgstr "Newfies-Dialer admin"
 #: templates/admin/filter.html:2
 #, python-format
 msgid " By %(filter_title)s "
-msgstr "En% (filter_title) s"
+msgstr "En %(filter_title)s"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:8
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:8
@@ -1608,7 +1608,7 @@ msgstr "Remettre"
 #: templates/admin/dialer_contact/contact/change_list.html:28
 #, python-format
 msgid "Add %(name)s"
-msgstr "Ajouter% (name) s"
+msgstr "Ajouter %(name)s"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:86
 #: templates/admin/dialer_contact/contact/change_list.html:49
@@ -2419,7 +2419,7 @@ msgstr "Nous avons envoyé par courrier électronique des instructions sur la co
 msgid ""
 "You're receiving this e-mail because you requested a password reset for your "
 "user account at %(site_name)s."
-msgstr "Vous recevez cet e-mail parce que vous avez demandé un nouveau mot de passe pour votre compte d&#39;utilisateur à% (site_name) s."
+msgstr "Vous recevez cet e-mail parce que vous avez demandé un nouveau mot de passe pour votre compte d&#39;utilisateur à %(site_name)s."
 
 #: templates/frontend/registration/password_reset_email.html:7
 msgid "Please go to the following page and choose a new password:"
@@ -2432,7 +2432,7 @@ msgstr "Votre nom d&#39;utilisateur, au cas où vous auriez oublié:"
 #: templates/frontend/registration/password_reset_email.html:13
 #, python-format
 msgid "The %(site_name)s team"
-msgstr "L&#39;% (site_name) s d&#39;équipe"
+msgstr "L&#39; %(site_name)s d&#39;équipe"
 
 #: templates/frontend/registration/password_reset_form.html:10
 msgid "Forgotten your password?"
@@ -2952,17 +2952,17 @@ msgstr "Votre mot de passe a été changé."
 #: user_profile/views.py:257
 #, python-format
 msgid "\"%(name)s\" is marked as read."
-msgstr "\"% (Name) s\" est marqué comme lu."
+msgstr "\"%(name)s\" est marqué comme lu."
 
 #: user_profile/views.py:271
 #, python-format
 msgid "%(count)s notification(s) are deleted."
-msgstr "% (Count) s notification (s) sont supprimés."
+msgstr "%(count)s notification (s) sont supprimés."
 
 #: user_profile/views.py:276
 #, python-format
 msgid "%(count)s notification(s) are marked as read."
-msgstr "% (Count) s de notification (s) sont marqués comme lus."
+msgstr "%(count)s de notification (s) sont marqués comme lus."
 
 #: voice_app/models.py:50
 msgid "Voice Application Description"
@@ -3003,4 +3003,4 @@ msgstr "Supprimer App Voix"
 #: voice_app/views.py:179
 #, python-format
 msgid "%(count)s voiceapp(s) are deleted."
-msgstr "% (Count) s voiceapp (s) sont supprimés."
+msgstr "%(count)s voiceapp (s) sont supprimés."

@@ -126,7 +126,7 @@ msgstr "\"(שם) s%\" הוא הוסיף."
 #: voice_app/views.py:165
 #, python-format
 msgid "\"%(name)s\" is deleted."
-msgstr "\"% (Name) s\" נמחק."
+msgstr "\"%(name)s\" נמחק."
 
 #: dialer_audio/views.py:201
 #, python-format
@@ -230,14 +230,12 @@ msgid "Outbound caller-ID"
 msgstr "יוצאת שיחה מזוהה"
 
 #: dialer_campaign/models.py:171
-#, fuzzy
 msgid "Caller name"
-msgstr "שיחה מזוהה"
+msgstr ""
 
 #: dialer_campaign/models.py:172
-#, fuzzy
 msgid "Outbound caller-Name"
-msgstr "יוצאת שיחה מזוהה"
+msgstr ""
 
 #: dialer_campaign/models.py:175 dialer_campaign/views.py:139
 msgid "Start"
@@ -316,9 +314,8 @@ msgid "Time delay in seconds before retrying contact"
 msgstr "זמן העיכוב שניות לפני שתנסה שוב קשר"
 
 #: dialer_campaign/models.py:208
-#, fuzzy
 msgid "Completion Max Retries"
-msgstr "מקס נסיונות"
+msgstr ""
 
 #: dialer_campaign/models.py:209
 msgid "Amount of retries until a contact is completed"
@@ -560,7 +557,7 @@ msgstr ""
 #: dialer_contact/views.py:542 survey/views.py:1499 voice_app/views.py:214
 #, python-format
 msgid "\"%(name)s\" is updated."
-msgstr "\"% (Name) s\" מעודכן."
+msgstr "\"%(name)s\" מעודכן."
 
 #: dialer_campaign/management/commands/create_subscriber.py:23
 msgid "<phonenumber|phonebook_id, phonenumber|phonebook_id,...>"
@@ -1688,7 +1685,7 @@ msgstr "לאתחל"
 #: templates/admin/dialer_contact/contact/change_list.html:28
 #, python-format
 msgid "Add %(name)s"
-msgstr "הוסף% (name) s"
+msgstr "הוסף%(name)s"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:86
 #: templates/admin/dialer_contact/contact/change_list.html:49
@@ -3084,7 +3081,7 @@ msgstr "סיסמתך שונתה."
 #: user_profile/views.py:257
 #, python-format
 msgid "\"%(name)s\" is marked as read."
-msgstr "\"% (Name) s\" מסומן לקרוא."
+msgstr "\"%(name)s\" מסומן לקרוא."
 
 #: user_profile/views.py:271
 #, python-format

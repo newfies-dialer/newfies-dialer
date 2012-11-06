@@ -520,6 +520,8 @@ def survey_finitestatemachine(request):
 
     #Get timeout
     timeout = list_section[current_state].timeout
+    if timeout <= 0:
+        timeout = 1  # GetDigits 'timeout' must be a positive integer
 
     #Get number of retries
     retries = list_section[current_state].retries
@@ -555,7 +557,7 @@ def survey_finitestatemachine(request):
     if list_section[current_state].type == SECTION_TYPE.PLAY_MESSAGE:
         #PLAY_MESSAGE
         number_digits = 1
-        timeout = 0
+        timeout = 1
         debug_outp += "PLAY_MESSAGE<br/>------------------<br/>"
         html =\
         '<Response>\n'\

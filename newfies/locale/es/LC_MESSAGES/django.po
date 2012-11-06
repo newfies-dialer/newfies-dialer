@@ -95,7 +95,7 @@ msgstr "Administración"
 #: custom_admin_tools/menu.py:42 templates/api_browser/base.html:50
 #: templates/frontend/bootstrap_menu.html:112
 msgid "API Explorer"
-msgstr ""
+msgstr "Programas Explorador"
 
 #: custom_admin_tools/menu.py:43
 msgid "Customer Panel"
@@ -327,7 +327,7 @@ msgstr "Max reintentos"
 
 #: dialer_campaign/models.py:209
 msgid "Amount of retries until a contact is completed"
-msgstr ""
+msgstr "Cantidad de reintentos hasta que un contacto se ha completado"
 
 #: dialer_campaign/models.py:211
 #, fuzzy
@@ -388,12 +388,12 @@ msgstr "Actualización de la campaña"
 
 #: dialer_campaign/models.py:234
 msgid "Completed"
-msgstr ""
+msgstr "Terminado"
 
 #: dialer_campaign/models.py:235
 #: templates/frontend/survey/survey_report.html:79
 msgid "Total Contact that completed Call / Survey"
-msgstr ""
+msgstr "Total Contact Call que completó / Encuesta"
 
 #: dialer_campaign/models.py:246
 #, fuzzy
@@ -492,7 +492,7 @@ msgstr "Suscriptores de campaña"
 #: dialer_campaign/views.py:68
 msgid ""
 "The campaign global settings cannot be edited when the campaign is started"
-msgstr ""
+msgstr "La configuración de la campaña a nivel mundial no se puede editar cuando la campaña se inicia"
 
 #: dialer_campaign/views.py:88 user_profile/management.py:57
 msgid "Dialer setting configuration"
@@ -562,7 +562,7 @@ msgstr "%(count)s la campaña(s) se ha eliminado."
 msgid ""
 "The campaign is started, you can only edit Dialer settings and Campaign "
 "schedule"
-msgstr ""
+msgstr "La campaña se ha iniciado, sólo se puede editar la configuración del sintonizador y el calendario Campaña"
 
 #: dialer_campaign/views.py:458 dialer_contact/views.py:267
 #: dialer_contact/views.py:542 survey/views.py:1499 voice_app/views.py:214
@@ -624,14 +624,10 @@ msgstr "Base de datos de error"
 
 #: dialer_cdr/admin.py:179
 #, python-format
-msgid "%(total_count)s selected"
-msgid_plural "All %(total_count)s selected"
-msgstr[0] "%(total_count)s seleccionados"
-msgstr[1] "%(total_count)s seleccionados"
 
 #: dialer_cdr/admin.py:184
 #, python-format
-msgid "0 of %(cnt)s selected"
+msgid "%(total_count)s selected"
 msgstr "0 de %(cnt)s seleccionados"
 
 #: dialer_cdr/admin.py:191 dialer_cdr/admin.py:255
@@ -645,23 +641,23 @@ msgstr "Informe Detalle de llamadas"
 
 #: dialer_cdr/constants.py:23
 msgid "Pending"
-msgstr ""
+msgstr "Pendiente"
 
 #: dialer_cdr/constants.py:24
 msgid "Failure"
-msgstr ""
+msgstr "Fracaso"
 
 #: dialer_cdr/constants.py:25
 msgid "Retry"
-msgstr ""
+msgstr "Reintentar"
 
 #: dialer_cdr/constants.py:26
 msgid "Success"
-msgstr ""
+msgstr "Éxito"
 
 #: dialer_cdr/constants.py:29
 msgid "Processing"
-msgstr ""
+msgstr "Transformación"
 
 #: dialer_cdr/constants.py:30
 #, fuzzy
@@ -1040,7 +1036,7 @@ msgstr "Parámetros adicionales"
 
 #: dialer_contact/models.py:102
 msgid "Enter the list of parameters in Json format, e.g. {\"age\": \"32\"}"
-msgstr ""
+msgstr "Introduzca la lista de parámetros en formato JSON, por ejemplo, {\"edad\": \"32\"}"
 
 #: dialer_contact/models.py:104
 #, fuzzy
@@ -1377,7 +1373,7 @@ msgstr "Archivos de audio"
 
 #: survey/constants.py:25
 msgid "Call transfer"
-msgstr ""
+msgstr "Transferencia de llamadas"
 
 #: survey/constants.py:26
 #, fuzzy
@@ -1397,7 +1393,7 @@ msgstr "Tiempo de espera"
 
 #: survey/forms.py:82 survey/forms.py:108
 msgid "Any Other Key"
-msgstr ""
+msgstr "Cualquier otra tecla"
 
 #: survey/models.py:54 voice_app/models.py:47
 #, fuzzy
@@ -1406,7 +1402,7 @@ msgstr "Seleccione la campaña"
 
 #: survey/models.py:76
 msgid "Can see Survey Template"
-msgstr ""
+msgstr "Puede ver plantilla Encuesta"
 
 #: survey/models.py:78
 #, fuzzy
@@ -1445,11 +1441,11 @@ msgstr "Pregunta"
 
 #: survey/models.py:175
 msgid "Example : Hotel Service Rating"
-msgstr ""
+msgstr "Ejemplo: Hotel Calificación del Servicio"
 
 #: survey/models.py:178
 msgid "Example : Capture digits between 1 to 5, press pound key when done"
-msgstr ""
+msgstr "Ejemplo: cifras de captura de entre 1 y 5, presione la tecla numeral cuando se hace"
 
 #: survey/models.py:180
 msgid "Audio File"
@@ -1462,7 +1458,7 @@ msgstr "Max reintentos"
 
 #: survey/models.py:183
 msgid "Retries this section until it's valid"
-msgstr ""
+msgstr "Reintentos esta sección hasta que es válido"
 
 #: survey/models.py:185
 #: templates/frontend/survey/section_branch_change.html:70
@@ -1474,7 +1470,7 @@ msgstr "Tiempo de espera"
 
 #: survey/models.py:186
 msgid "Timeout in seconds to press the key(s)"
-msgstr ""
+msgstr "Tiempo de espera en segundos para pulsar la tecla (s)"
 
 #: survey/models.py:189 survey/models.py:191 survey/models.py:193
 #: survey/models.py:195 survey/models.py:197 survey/models.py:199
@@ -1487,19 +1483,19 @@ msgstr "Clave"
 
 #: survey/models.py:211
 msgid "From 1 to X"
-msgstr ""
+msgstr "De 1 a X"
 
 #: survey/models.py:214
 msgid "Check validity"
-msgstr ""
+msgstr "Control de la validez"
 
 #: survey/models.py:217
 msgid "Number of digits"
-msgstr ""
+msgstr "Número de dígitos"
 
 #: survey/models.py:219
 msgid "Minimum"
-msgstr ""
+msgstr "Mínimo"
 
 #: survey/models.py:221
 #, fuzzy
@@ -1539,21 +1535,21 @@ msgstr "Notificación de tipo"
 
 #: survey/models.py:365
 msgid "Entered value"
-msgstr ""
+msgstr "El valor introducido"
 
 #: survey/models.py:388
 msgid "Branching template"
-msgstr ""
+msgstr "Bifurcación plantilla"
 
 #: survey/models.py:389
 msgid "Branching templates"
-msgstr ""
+msgstr "Plantillas de ramificación"
 
 #: survey/models.py:418 survey/models.py:419
 #: templates/frontend/survey/survey_change.html:291
 #: templates/frontend/survey/survey_view.html:214
 msgid "Branching"
-msgstr ""
+msgstr "Derivación"
 
 #: survey/models.py:455 survey/models.py:481
 #: templates/frontend/survey/survey_campaign_result.html:31
@@ -1562,7 +1558,7 @@ msgstr "Respuesta"
 
 #: survey/models.py:457
 msgid "Record File"
-msgstr ""
+msgstr "Record Archivo"
 
 #: survey/models.py:460
 #, fuzzy
@@ -1590,7 +1586,7 @@ msgstr "%(count)s encuesta(s) se ha eliminado."
 #: survey/views.py:901 survey/views.py:926 survey/views.py:946
 #: survey/views.py:965 survey/views.py:984 survey/views.py:1003
 msgid "Section is added successfully."
-msgstr ""
+msgstr "La sección se ha añadido correctamente."
 
 #: survey/views.py:1081 survey/views.py:1107 survey/views.py:1128
 #: survey/views.py:1149 survey/views.py:1170 survey/views.py:1191
@@ -1600,15 +1596,15 @@ msgstr "Notificación de tipo"
 
 #: survey/views.py:1244
 msgid "Section is deleted successfully."
-msgstr ""
+msgstr "La sección se ha eliminado correctamente."
 
 #: survey/views.py:1279
 msgid "Script updated."
-msgstr ""
+msgstr "Guión actualizada."
 
 #: survey/views.py:1375
 msgid "Branching is added successfully."
-msgstr ""
+msgstr "La ramificación se ha añadido correctamente."
 
 #: survey/views.py:1379 survey/views.py:1443
 #, fuzzy
@@ -1617,11 +1613,11 @@ msgstr "Contacto duplicado!"
 
 #: survey/views.py:1422
 msgid "Branching is deleted successfully."
-msgstr ""
+msgstr "La ramificación se eliminó con éxito."
 
 #: survey/views.py:1438
 msgid "Branching updated."
-msgstr ""
+msgstr "Bifurcación actualizada."
 
 #: survey/views.py:1626
 #, fuzzy
@@ -1676,14 +1672,10 @@ msgstr "Casa"
 #: templates/admin/dialer_cdr/voipcall/change_list.html:48
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:48
 #: templates/admin/dialer_contact/contact/change_list.html:38
-msgid "Please correct the error below."
-msgid_plural "Please correct the errors below."
-msgstr[0] ""
-msgstr[1] ""
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:56
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:56
-msgid "Search Option"
+msgid "Please correct the error below."
 msgstr "Opción de búsqueda"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:60
@@ -1884,7 +1876,7 @@ msgstr "Cambio"
 
 #: templates/api_browser/base.html:5
 msgid "API Browser"
-msgstr ""
+msgstr "API Browser"
 
 #: templates/frontend/bootstrap_menu.html:24
 #: templates/frontend/dashboard.html:5 templates/frontend/dashboard.html:23
@@ -1933,15 +1925,15 @@ msgstr "Complementos"
 
 #: templates/frontend/bootstrap_menu.html:76
 msgid "SMS (Text Messaging)"
-msgstr ""
+msgstr "SMS (mensajes de texto)"
 
 #: templates/frontend/bootstrap_menu.html:77
 msgid "Voicemail Detection (AMD)"
-msgstr ""
+msgstr "Correo de voz Detección (AMD)"
 
 #: templates/frontend/bootstrap_menu.html:78
 msgid "Rebranding"
-msgstr ""
+msgstr "Personalizando"
 
 #: templates/frontend/bootstrap_menu.html:97
 msgid "Account settings"
@@ -2113,7 +2105,7 @@ msgstr ""
 
 #: templates/frontend/index.html:14
 msgid "Learn more"
-msgstr ""
+msgstr "Más información"
 
 #: templates/frontend/index.html:19
 #, fuzzy
@@ -2138,11 +2130,11 @@ msgstr "para más información"
 
 #: templates/frontend/index.html:22
 msgid "Get Support"
-msgstr ""
+msgstr "Obtenga apoyo"
 
 #: templates/frontend/index.html:26
 msgid "Licensing"
-msgstr ""
+msgstr "Licencias"
 
 #: templates/frontend/index.html:27
 msgid "Newfies-Dialer is licensed under"
@@ -2158,7 +2150,7 @@ msgstr ""
 
 #: templates/frontend/index.html:29
 msgid "View Licensing details"
-msgstr ""
+msgstr "Ver detalles de licencia:"
 
 #: templates/frontend/master.html:21
 msgid "Customer Interface"
@@ -2166,7 +2158,7 @@ msgstr "Interfaz del cliente"
 
 #: templates/frontend/master.html:109 templates/frontend/master.html.py:115
 msgid "Hide search"
-msgstr ""
+msgstr "Ocultar búsqueda"
 
 #: templates/frontend/master.html:144
 msgid "Login"
@@ -2215,19 +2207,19 @@ msgstr "(Notificación enviada)"
 
 #: templates/frontend/master.html:215
 msgid "Error"
-msgstr ""
+msgstr "Error"
 
 #: templates/frontend/master.html:222
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 #: templates/frontend/api/api_list.html:19
 msgid "Newfies APIs"
-msgstr ""
+msgstr "Newfies APIs"
 
 #: templates/frontend/api/api_list.html:20
 msgid "Browser playground"
-msgstr ""
+msgstr "Navegador patio"
 
 #: templates/frontend/api/api_list.html:31
 #: templates/frontend/survey/section_delete_confirmation.html:15
@@ -2362,7 +2354,7 @@ msgstr "elementos"
 #: templates/frontend/survey/section_change.html:298
 #: templates/frontend/survey/section_script_change.html:73
 msgid "Save"
-msgstr ""
+msgstr "Ahorrar"
 
 #: templates/frontend/campaign/campaign_duplicate.html:75
 #: templates/frontend/survey/section_branch_change.html:123
@@ -2370,7 +2362,7 @@ msgstr ""
 #: templates/frontend/survey/section_script_change.html:76
 #: templates/frontend/survey/survey_campaign_result.html:60
 msgid "Close"
-msgstr ""
+msgstr "Cerrar"
 
 #: templates/frontend/campaign/change.html:13
 msgid "Set campaign parameters"
@@ -2688,13 +2680,13 @@ msgstr "Informe Llamadas"
 
 #: templates/frontend/survey/section_branch_change.html:41
 msgid "branch to section"
-msgstr ""
+msgstr "pasar a la sección"
 
 #: templates/frontend/survey/section_branch_change.html:71
 #: templates/frontend/survey/survey_change.html:312
 #: templates/frontend/survey/survey_view.html:233
 msgid "any other key"
-msgstr ""
+msgstr "cualquier otra tecla"
 
 #: templates/frontend/survey/section_branch_change.html:73
 #: templates/frontend/survey/survey_change.html:314
@@ -2705,7 +2697,7 @@ msgstr "Archivos de audio"
 
 #: templates/frontend/survey/section_branch_change.html:108
 msgid "No branching on hangup, this will terminate the call"
-msgstr ""
+msgstr "No ramificación en colgar, esto terminará la llamada"
 
 #: templates/frontend/survey/section_change.html:44
 #, fuzzy
@@ -2730,7 +2722,7 @@ msgstr "Notificación de tipo"
 msgid ""
 "Configure valid multi-choice options. The value of each field will be shown "
 "in the survey report"
-msgstr ""
+msgstr "Configurar válidos múltiples opciones de selección. El valor de cada campo se muestra en el informe del estudio"
 
 #: templates/frontend/survey/section_delete_confirmation.html:5
 #, fuzzy
@@ -2739,23 +2731,23 @@ msgstr "Borrar"
 
 #: templates/frontend/survey/section_delete_confirmation.html:9
 msgid "You are about to delete"
-msgstr ""
+msgstr "Estás a punto de borrar"
 
 #: templates/frontend/survey/section_delete_confirmation.html:9
 msgid "this procedure is irreversible."
-msgstr ""
+msgstr "este procedimiento es irreversible."
 
 #: templates/frontend/survey/section_delete_confirmation.html:10
 msgid "Do you want to proceed?"
-msgstr ""
+msgstr "¿Desea continuar?"
 
 #: templates/frontend/survey/section_delete_confirmation.html:14
 msgid "Yes"
-msgstr ""
+msgstr "Sí"
 
 #: templates/frontend/survey/section_script_change.html:47
 msgid "Section script"
-msgstr ""
+msgstr "Sección guión"
 
 #: templates/frontend/survey/survey_campaign_result.html:23
 #: templates/frontend/survey/survey_report.html:193
@@ -2787,20 +2779,20 @@ msgstr "Archivos audio"
 #: templates/frontend/survey/survey_change.html:161
 #: templates/frontend/survey/survey_view.html:95
 msgid "script"
-msgstr ""
+msgstr "guión"
 
 #: templates/frontend/survey/survey_change.html:165
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: templates/frontend/survey/survey_change.html:170
 msgid "Play"
-msgstr ""
+msgstr "Jugar"
 
 #: templates/frontend/survey/survey_change.html:185
 #: templates/frontend/survey/survey_view.html:108
 msgid "Key Associations"
-msgstr ""
+msgstr "Asociaciones clave"
 
 #: templates/frontend/survey/survey_change.html:193
 #: templates/frontend/survey/survey_change.html:199
@@ -2835,7 +2827,7 @@ msgstr "De"
 #: templates/frontend/survey/survey_change.html:271
 #: templates/frontend/survey/survey_view.html:194
 msgid "Number is between"
-msgstr ""
+msgstr "El número es entre"
 
 #: templates/frontend/survey/survey_change.html:271
 #: templates/frontend/survey/survey_view.html:194
@@ -2846,17 +2838,17 @@ msgstr "Ganda"
 #: templates/frontend/survey/survey_change.html:296
 #: templates/frontend/survey/survey_view.html:219
 msgid "keys"
-msgstr ""
+msgstr "teclas"
 
 #: templates/frontend/survey/survey_change.html:298
 #: templates/frontend/survey/survey_view.html:221
 msgid "goto"
-msgstr ""
+msgstr "Goto"
 
 #: templates/frontend/survey/survey_change.html:321
 #: templates/frontend/survey/survey_view.html:242
 msgid "None"
-msgstr ""
+msgstr "Ninguno"
 
 #: templates/frontend/survey/survey_change.html:380
 #, fuzzy
@@ -2880,15 +2872,15 @@ msgstr "Borrar"
 
 #: templates/frontend/survey/survey_change_header.html:66
 msgid "Branch"
-msgstr ""
+msgstr "Rama"
 
 #: templates/frontend/survey/survey_change_header.html:75
 msgid "Collapse"
-msgstr ""
+msgstr "Colapso"
 
 #: templates/frontend/survey/survey_change_header.html:84
 msgid "Move"
-msgstr ""
+msgstr "Mover"
 
 #: templates/frontend/survey/survey_list.html:9
 msgid "List, add and edit surveys"
@@ -2927,7 +2919,7 @@ msgstr "No Registro(s)."
 
 #: templates/frontend/survey/survey_report.html:139
 msgid "Survey call detail records"
-msgstr ""
+msgstr "Encuesta registros detallados de llamadas"
 
 #: templates/frontend/survey/survey_report.html:156
 #, fuzzy
@@ -2946,7 +2938,7 @@ msgstr "Cambiar los detalles"
 
 #: templates/frontend/survey/survey_report.html:209
 msgid "total calls"
-msgstr ""
+msgstr "total de llamadas"
 
 #: templates/frontend/voiceapp/change.html:12
 msgid "Configure voice application"
@@ -2968,12 +2960,12 @@ msgstr "Lenguaje"
 #: templates/pagination/pagination.html:11
 #: templates/pagination/pagination.html:14
 msgid "Previous"
-msgstr ""
+msgstr "Anterior"
 
 #: templates/pagination/pagination.html:37
 #: templates/pagination/pagination.html:40
 msgid "Next"
-msgstr ""
+msgstr "Próximo"
 
 #: templates/registration/logged_out.html:8
 #, fuzzy
@@ -3062,7 +3054,7 @@ msgstr "Nota"
 
 #: user_profile/models.py:88
 msgid "Can see API-Explorer"
-msgstr ""
+msgstr "Se puede ver el Explorador de API-"
 
 #: user_profile/models.py:91 user_profile/models.py:92
 msgid "User Profile"
@@ -3143,7 +3135,7 @@ msgstr ""
 
 #: voice_app/models.py:85
 msgid "Can see Voiceapp Template"
-msgstr ""
+msgstr "Puede ver Plantilla Voiceapp"
 
 #: voice_app/models.py:87
 #, fuzzy

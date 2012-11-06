@@ -562,6 +562,7 @@ def survey_finitestatemachine(request):
     if list_section[current_state].type == SECTION_TYPE.PLAY_MESSAGE:
         #PLAY_MESSAGE
         number_digits = 1
+        timeout = 0
         debug_outp += "PLAY_MESSAGE<br/>------------------<br/>"
         html =\
         '<Response>\n'\

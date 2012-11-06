@@ -40,10 +40,8 @@ class SubscriberValidation(Validation):
             errors['Data'] = ['Data set is empty']
 
         if check_dialer_setting(request, check_for="contact"):
-            errors['contact_dialer_setting'] = ["You have too many contacts \
-                per campaign. You are allowed a maximum of %s" % \
+            errors['contact_dialer_setting'] = ["You have too many contacts per campaign. You are allowed a maximum of %s" % \
                         dialer_setting_limit(request, limit_for="contact")]
-
         if request.method == 'POST':
             phonebook_id = bundle.data.get('phonebook_id')
             if phonebook_id:
@@ -53,7 +51,6 @@ class SubscriberValidation(Validation):
                     errors['phonebook_error'] = ["Phonebook is not selected!"]
             else:
                 errors['phonebook_error'] = ["Phonebook is not selected!"]
-
         return errors
 
 

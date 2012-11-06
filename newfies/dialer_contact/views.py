@@ -18,7 +18,6 @@ from django.contrib.auth.decorators import login_required, \
 from django.http import HttpResponseRedirect, HttpResponse, \
     Http404
 from django.shortcuts import render_to_response, get_object_or_404
-from django.conf import settings
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
@@ -59,9 +58,7 @@ def get_phonebook_link(request, row_id, link_style, title, action):
 
     if action == 'delete'\
             and request.user.has_perm('dialer_contact.delete_phonebook'):
-        link = '<a href="del/%s/" class="icon" %s \
-            onClick="return get_alert_msg_for_phonebook(%s);" \
-            title="%s">&nbsp;</a>' % \
+        link = '<a href="del/%s/" class="icon" %s onClick="return get_alert_msg_for_phonebook(%s);" title="%s">&nbsp;</a>' % \
                (str(row_id), link_style, str(row_id), title)
     return link
 
@@ -93,8 +90,7 @@ def phonebook_grid(request):
 
     rows = [
         {'id': row['id'],
-         'cell': ['<input type="checkbox" name="select" class="checkbox"\
-                  value="%s" />' % (str(row['id'])),
+         'cell': ['<input type="checkbox" name="select" class="checkbox" value="%s" />' % (str(row['id'])),
                   row['id'],
                   row['name'],
                   row['description'],
@@ -349,8 +345,7 @@ def contact_grid(request):
         .order_by(sortorder_sign + sortname)[start_page:end_page]
     rows = [
         {'id': row['id'],
-         'cell': ['<input type="checkbox" name="select" class="checkbox"\
-                  value="%s" />' % (str(row['id'])),
+         'cell': ['<input type="checkbox" name="select" class="checkbox" value="%s" />' % (str(row['id'])),
                   row['id'],
                   row['phonebook__name'],
                   row['contact'],

@@ -97,9 +97,8 @@ def customer_detail_change(request):
 
     # Mark all notification as read
     if request.GET.get('notification') == 'mark_read_all':
-        notification_list = \
-            notification.Notice.objects.filter(unseen=1,
-                                               recipient=request.user)
+        notification_list = notification.Notice.objects\
+            .filter(unseen=1, recipient=request.user)
         notification_list.update(unseen=0)
         msg_note = _('All notifications are marked as read.')
 
@@ -214,14 +213,14 @@ def notification_grid(request):
                      .order_by(sortorder_sign + sortname)[start_page:end_page]
 
     rows = [{'id': row.id,
-             'cell': ['<input type="checkbox" name="select" class="checkbox"\
-                      value="%s" />' % (str(row.id)),
-                      str(row.message),
-                      str(row.notice_type),
-                      str(row.sender),
-                      str(row.added),
-                      str('<a href="../update_notice_status_cust/%s/" \
-                      class="icon" %s>&nbsp;</a>' % (str(row.id), call_style(row.unseen))),
+             'cell': [
+                    '<input type="checkbox" name="select" class="checkbox" value="%s" />' % (str(row.id)),
+                    str(row.message),
+                    str(row.notice_type),
+                    str(row.sender),
+                    str(row.added),
+                    str('<a href="../update_notice_status_cust/%s/"  class="icon" %s>&nbsp;</a>' % \
+                        (str(row.id), call_style(row.unseen))),
              ]}for row in user_notification_list]
 
     data = {'rows': rows,

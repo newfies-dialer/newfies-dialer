@@ -20,10 +20,9 @@ from tastypie.authorization import Authorization
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import BadRequest
-
 from dialer_contact.models import Contact, Phonebook
 from dialer_campaign.function_def import check_dialer_setting, \
-                                    dialer_setting_limit
+    dialer_setting_limit
 
 import logging
 
@@ -31,17 +30,17 @@ logger = logging.getLogger('newfies.filelog')
 
 
 class BulkContactValidation(Validation):
-    """BulkContact Validation Class"""
+    """
+    BulkContact Validation Class
+    """
+
     def is_valid(self, bundle, request=None):
         errors = {}
-
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
         if check_dialer_setting(request, check_for="contact"):
-            errors['contact_dialer_setting'] = ["You have too many contacts \
-                per campaign. You are allowed a maximum of %s" %\
-                            dialer_setting_limit(request, limit_for="contact")]
-
+            errors['contact_dialer_setting'] = ["You have too many contacts per campaign. You are allowed a maximum of %s" %\
+                        dialer_setting_limit(request, limit_for="contact")]
         phonebook_id = bundle.data.get('phonebook_id')
         if phonebook_id:
             try:
@@ -50,12 +49,12 @@ class BulkContactValidation(Validation):
                 errors['phonebook_error'] = ["Phonebook is not selected!"]
         else:
             errors['phonebook_error'] = ["Phonebook is not selected!"]
-
         return errors
 
 
 class BulkContactResource(ModelResource):
-    """API to bulk create contacts
+    """
+    API to bulk create contacts
 
     **Attributes**
 

@@ -38,6 +38,6 @@ urlpatterns = patterns('survey.views',
     (r'^survey_finitestatemachine/$', 'survey_finitestatemachine'),
     # Survey Report urls
     (r'^survey_report/$', 'survey_report'),
-    (r'^export2_surveycall_report/$', 'export_surveycall_report'),
+    (r'^export_surveycall_report/$', 'export_surveycall_report'),
     (r'^survey_campaign_result/(?P<id>\w+)/$', 'survey_campaign_result'),
 )

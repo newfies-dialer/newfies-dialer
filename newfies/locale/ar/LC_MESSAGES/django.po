@@ -1910,14 +1910,6 @@ msgstr ""
 msgid "Call Detail Report"
 msgstr ""
 
-#: templates/frontend/bootstrap_menu.html:59
-msgid "Survey Reports"
-msgstr ""
-
-#: templates/frontend/bootstrap_menu.html:62
-msgid "Survey Reports"
-msgstr ""
-
 #: templates/frontend/bootstrap_menu.html:69
 msgid "Modules"
 msgstr ""
@@ -1925,10 +1917,6 @@ msgstr ""
 #: templates/frontend/bootstrap_menu.html:72
 #: templates/frontend/voiceapp/list.html:47
 msgid "Voice Apps"
-msgstr ""
-
-#: templates/frontend/bootstrap_menu.html:78
-msgid "Surveys"
 msgstr ""
 
 #: templates/frontend/bootstrap_menu.html:81
@@ -2934,13 +2922,6 @@ msgstr ""
 #: templates/frontend/survey/survey_change.html:310
 #: templates/frontend/survey/survey_view.html:234
 msgid "goto"
-msgstr ""
-
-#: templates/frontend/survey/survey_change.html:322
-#: templates/frontend/survey/survey_change.html:327
-#: templates/frontend/survey/survey_view.html:245
-#: templates/frontend/survey/survey_view.html:250
-msgid "Key"
 msgstr ""
 
 #: templates/frontend/survey/survey_change.html:323

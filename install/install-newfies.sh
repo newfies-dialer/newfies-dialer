@@ -105,7 +105,7 @@ func_install_landing_page() {
     cp -rf /usr/src/newfies-dialer/install/nginx/global /etc/nginx/
     cp /usr/src/newfies-dialer/install/nginx/sites-available/newfies_dialer.conf /etc/nginx/sites-available/
     ln -s /etc/nginx/sites-available/newfies_dialer.conf /etc/nginx/sites-enabled/newfies_dialer.conf
-    
+
     #Remove default NGINX landing page
     rm /etc/nginx/sites-enabled/default
 

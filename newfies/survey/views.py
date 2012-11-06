@@ -1330,7 +1330,7 @@ def section_script_play(request, id):
             text_file.close()
 
             #Convert file
-            conv = 'flite -f "%s" -o "%s"' % (text_file_path, audio_file_path)
+            conv = 'flite -voice slt -f "%s" -o "%s"' % (text_file_path, audio_file_path)
             response = commands.getoutput(conv)
 
         if os.path.isfile(audio_file_path):

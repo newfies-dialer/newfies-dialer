@@ -193,12 +193,9 @@ def init_callrequest(callrequest_id, campaign_id):
         return False
 
     #Update Subscriber
-    if obj_callrequest.subscriber \
-        and obj_callrequest.subscriber.id:
-        obj_subscriber = Subscriber.objects.get(
-                    id=obj_callrequest.subscriber.id)
-        if obj_subscriber.count_attempt == None \
-            or not obj_subscriber.count_attempt >= 0:
+    if obj_callrequest.subscriber and obj_callrequest.subscriber.id:
+        obj_subscriber = Subscriber.objects.get(id=obj_callrequest.subscriber.id)
+        if not obj_subscriber.count_attempt:
             obj_subscriber.count_attempt = 1
         else:
             obj_subscriber.count_attempt = obj_subscriber.count_attempt + 1

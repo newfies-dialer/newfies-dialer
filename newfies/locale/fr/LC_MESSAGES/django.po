@@ -303,7 +303,7 @@ msgstr "Max Retries"
 
 #: dialer_campaign/models.py:203
 msgid "Maximum retries per contact"
-msgstr "Nombre maximal de tentatives de contact par"
+msgstr "Nombre maximal de tentatives par contact"
 
 #: dialer_campaign/models.py:205
 msgid "Time between Retries"
@@ -1162,7 +1162,7 @@ msgstr "Appels simultanés max"
 #: dialer_gateway/models.py:122 templates/admin_tools/dashboard/module.html:16
 #: templates/admin_tools/dashboard/modules/app_list.html:16
 msgid "Dialer Gateway"
-msgstr "Dialer passerelle"
+msgstr "Dialer Passerelle"
 
 #: dialer_gateway/models.py:123
 msgid "Dialer Gateways"
@@ -1556,7 +1556,7 @@ msgstr "Newfies-Dialer Documentation"
 
 #: templates/documentation.html:19
 msgid "Newfies-Dialer : API Documentation"
-msgstr "Newfies-Dialer: API Documentation"
+msgstr "Newfies-Dialer : API Documentation"
 
 #: templates/documentation.html:34
 msgid "Accepted methods"
@@ -1602,7 +1602,7 @@ msgstr "Rechercher"
 #: templates/admin/dialer_contact/contact/import_contact.html:58
 #: templates/frontend/report/voipcall_report.html:60
 msgid "Reset"
-msgstr "Remettre"
+msgstr "Réinitialiser"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:72
 #: templates/admin/dialer_contact/contact/change_list.html:28
@@ -2735,7 +2735,7 @@ msgstr "Branche"
 
 #: templates/frontend/survey/survey_change_header.html:75
 msgid "Collapse"
-msgstr "Effondrement"
+msgstr "Rétrecir"
 
 #: templates/frontend/survey/survey_change_header.html:84
 msgid "Move"
@@ -2776,7 +2776,7 @@ msgstr "Dossiers d&#39;enquête détaillé de l&#39;appel"
 
 #: templates/frontend/survey/survey_report.html:156
 msgid "Call-date"
-msgstr "Appel à jour"
+msgstr "Appel-jour"
 
 #: templates/frontend/survey/survey_report.html:181
 msgid "Survey Result"
@@ -2898,7 +2898,7 @@ msgstr "Langue"
 
 #: user_profile/models.py:75
 msgid "Note"
-msgstr "Noter"
+msgstr "Note"
 
 #: user_profile/models.py:88
 msgid "Can see API-Explorer"
@@ -2962,7 +2962,7 @@ msgstr "%(count)s notification (s) sont supprimés."
 #: user_profile/views.py:276
 #, python-format
 msgid "%(count)s notification(s) are marked as read."
-msgstr "%(count)s de notification (s) sont marqués comme lus."
+msgstr "%(count)s de notification(s) sont marqués comme lus."
 
 #: voice_app/models.py:50
 msgid "Voice Application Description"
@@ -2978,7 +2978,7 @@ msgstr "La valeur de «données» dépend du type d&#39;application vocale: <br/
 
 #: voice_app/models.py:85
 msgid "Can see Voiceapp Template"
-msgstr "Peut voir le modèle Voiceapp"
+msgstr "Peut voir le modèle AppVocal"
 
 #: voice_app/models.py:87
 msgid "Voice Application Template"
@@ -2990,17 +2990,17 @@ msgstr "Applications vocales Modèles"
 
 #: voice_app/models.py:135
 msgid "Can see Voice App"
-msgstr "Peux voir App Voix"
+msgstr "Peux voir App Vocal"
 
 #: voice_app/views.py:69
 msgid "Update Voice App"
-msgstr "Mise à jour vocale App"
+msgstr "Mise à jour App Vocal"
 
 #: voice_app/views.py:72
 msgid "Delete Voice App"
-msgstr "Supprimer App Voix"
+msgstr "Supprimer App Vocal"
 
 #: voice_app/views.py:179
 #, python-format
 msgid "%(count)s voiceapp(s) are deleted."
-msgstr "%(count)s voiceapp (s) sont supprimés."
+msgstr "%(count)s appvocal(s) sont supprimés."

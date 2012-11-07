@@ -1479,9 +1479,8 @@ msgid "Section templates"
 msgstr ""
 
 #: survey/models.py:346
-#, fuzzy
 msgid "Section Template ID"
-msgstr "Notificación de tipo"
+msgstr ""
 
 #: survey/models.py:365
 msgid "Entered value"
@@ -1511,14 +1510,12 @@ msgid "Record File"
 msgstr "Record Archivo"
 
 #: survey/models.py:460
-#, fuzzy
 msgid "Recording Duration"
-msgstr "Encuesta configuración"
+msgstr ""
 
 #: survey/models.py:483
-#, fuzzy
 msgid "Result count"
-msgstr "Numero de Llamadas"
+msgstr "Numero de resultados"
 
 #: survey/views.py:739
 msgid "Update survey"
@@ -1540,9 +1537,8 @@ msgstr "La sección se ha añadido correctamente."
 
 #: survey/views.py:1081 survey/views.py:1107 survey/views.py:1128
 #: survey/views.py:1149 survey/views.py:1170 survey/views.py:1191
-#, fuzzy
 msgid "Section updated."
-msgstr "Notificación de tipo"
+msgstr ""
 
 #: survey/views.py:1244
 msgid "Section is deleted successfully."
@@ -1557,9 +1553,8 @@ msgid "Branching is added successfully."
 msgstr "La ramificación se ha añadido correctamente."
 
 #: survey/views.py:1379 survey/views.py:1443
-#, fuzzy
 msgid "duplicate record keys with goto."
-msgstr "Contacto duplicado!"
+msgstr ""
 
 #: survey/views.py:1422
 msgid "Branching is deleted successfully."
@@ -1570,9 +1565,8 @@ msgid "Branching updated."
 msgstr "Bifurcación actualizada."
 
 #: survey/views.py:1626
-#, fuzzy
 msgid "No recording"
-msgstr "No Registro(s)."
+msgstr "No registro"
 
 #: survey/views.py:1776
 msgid "No campaign attached with survey."
@@ -1664,9 +1658,8 @@ msgstr "De exportación de archivo CSV"
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:15
 #: templates/admin_tools/dashboard/modules/app_list.html:72
 #: templates/admin_tools/dashboard/modules/model_list.html:22
-#, fuzzy
 msgid "Call aggregate report"
-msgstr "Informe Detalle de llamadas"
+msgstr "Informe aggregado de llamadas"
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:72
 #: templates/frontend/report/voipcall_report.html:120
@@ -1775,9 +1768,8 @@ msgstr "Marcador de la campaña"
 
 #: templates/admin_tools/dashboard/module.html:10
 #: templates/admin_tools/dashboard/modules/app_list.html:10
-#, fuzzy
 msgid "Dialer Contact"
-msgstr "Seleccione un contacto"
+msgstr ""
 
 #: templates/admin_tools/dashboard/module.html:13
 #: templates/admin_tools/dashboard/modules/app_list.html:13
@@ -1834,14 +1826,12 @@ msgid "Dashboard"
 msgstr "Escritorio"
 
 #: templates/frontend/bootstrap_menu.html:26
-#, fuzzy
 msgid "Voice Dashboard"
-msgstr "Escritorio"
+msgstr "Voz Escritorio"
 
 #: templates/frontend/bootstrap_menu.html:35
-#, fuzzy
 msgid "Voice Campaign"
-msgstr "Marcador de la campaña"
+msgstr ""
 
 #: templates/frontend/bootstrap_menu.html:49
 msgid "Audio files"
@@ -1856,7 +1846,6 @@ msgid "Call Detail Report"
 msgstr "Informe Detalle de llamadas"
 
 #: templates/frontend/bootstrap_menu.html:59
-#, fuzzy
 msgid "Survey Reports"
 msgstr "Encuesta Informes"
 
@@ -2058,9 +2047,8 @@ msgid "Learn more"
 msgstr "Más información"
 
 #: templates/frontend/index.html:19
-#, fuzzy
 msgid "Support"
-msgstr "importación"
+msgstr ""
 
 #: templates/frontend/index.html:20
 msgid ""
@@ -2119,9 +2107,8 @@ msgid "Forgot password?"
 msgstr "¿Olvidó su contraseña?"
 
 #: templates/frontend/master.html:151
-#, fuzzy
 msgid "Display language"
-msgstr "Mostrando"
+msgstr ""
 
 #: templates/frontend/master.html:166 templates/frontend/master.html.py:172
 #: templates/frontend/master.html:194 templates/frontend/master.html.py:208
@@ -2173,9 +2160,8 @@ msgstr "Navegador patio"
 
 #: templates/frontend/api/api_list.html:31
 #: templates/frontend/survey/section_delete_confirmation.html:15
-#, fuzzy
 msgid "No"
-msgstr "Nota"
+msgstr "No"
 
 #: templates/frontend/audio/audio_change.html:11
 #: templates/frontend/audio/audio_change.html:39
@@ -2327,9 +2313,8 @@ msgid "Dialer settings"
 msgstr "Marcador de configuración"
 
 #: templates/frontend/campaign/change.html:89
-#, fuzzy
 msgid "Dialer Completion settings"
-msgstr "Marcador de configuración"
+msgstr "Marcador de configuración por completion"
 
 #: templates/frontend/campaign/change.html:112
 msgid "Campaign schedule"
@@ -2427,7 +2412,6 @@ msgid "Password reset complete"
 msgstr "Contraseña completo restablecimiento"
 
 #: templates/frontend/registration/password_reset_complete.html:12
-#, fuzzy
 msgid "Your password has been set. You may go ahead and log in now."
 msgstr ""
 "Su contraseña se ha establecido. Usted puede seguir adelante e iniciar "
@@ -2545,14 +2529,12 @@ msgid "Number Check"
 msgstr "Verificación de Número"
 
 #: templates/frontend/registration/user_detail_change.html:21
-#, fuzzy
 msgid "Change language "
-msgstr "Bihari idiomas"
+msgstr ""
 
 #: templates/frontend/registration/user_detail_change.html:49
-#, fuzzy
 msgid "Select language"
-msgstr "Seleccione la campaña"
+msgstr "Seleccione idioma"
 
 #: templates/frontend/registration/user_dialer_settings.html:9
 msgid "Maximum call duration"
@@ -2579,9 +2561,8 @@ msgid "Sender"
 msgstr "Remitente"
 
 #: templates/frontend/registration/user_notification_grid.html:31
-#, fuzzy
 msgid "Delete notifications"
-msgstr "Eliminar todas las notificaciones"
+msgstr "Eliminar notificaciones"
 
 #: templates/frontend/registration/user_notification_grid.html:33
 msgid "Mark as read"
@@ -2641,32 +2622,28 @@ msgstr "cualquier otra tecla"
 #: templates/frontend/survey/section_branch_change.html:73
 #: templates/frontend/survey/survey_change.html:314
 #: templates/frontend/survey/survey_view.html:235
-#, fuzzy
 msgid "invalid"
-msgstr "Archivos de audio"
+msgstr ""
 
 #: templates/frontend/survey/section_branch_change.html:108
 msgid "No branching on hangup, this will terminate the call"
 msgstr "No ramificación en colgar, esto terminará la llamada"
 
 #: templates/frontend/survey/section_change.html:44
-#, fuzzy
 msgid "Section"
-msgstr "Acción"
+msgstr ""
 
 #: templates/frontend/survey/section_change.html:102
 #: templates/frontend/survey/survey_change.html:143
 #: templates/frontend/survey/survey_view.html:77
-#, fuzzy
 msgid "question"
-msgstr "Pregunta"
+msgstr "pregunta"
 
 #: templates/frontend/survey/section_change.html:104
 #: templates/frontend/survey/survey_change.html:145
 #: templates/frontend/survey/survey_view.html:79
-#, fuzzy
 msgid "section title"
-msgstr "Notificación de tipo"
+msgstr ""
 
 #: templates/frontend/survey/section_change.html:146
 msgid ""
@@ -2675,9 +2652,8 @@ msgid ""
 msgstr "Configurar válidos múltiples opciones de selección. El valor de cada campo se muestra en el informe del estudio"
 
 #: templates/frontend/survey/section_delete_confirmation.html:5
-#, fuzzy
 msgid "Delete Section"
-msgstr "Borrar"
+msgstr ""
 
 #: templates/frontend/survey/section_delete_confirmation.html:9
 msgid "You are about to delete"
@@ -2701,14 +2677,12 @@ msgstr "Sección guión"
 
 #: templates/frontend/survey/survey_campaign_result.html:23
 #: templates/frontend/survey/survey_report.html:193
-#, fuzzy
 msgid "Result"
-msgstr "Informe sobre la encuesta"
+msgstr "Informe"
 
 #: templates/frontend/survey/survey_campaign_result.html:32
-#, fuzzy
 msgid "Record file"
-msgstr "Perfil de usuario"
+msgstr ""
 
 #: templates/frontend/survey/survey_change.html:18
 msgid "Survey configuration"
@@ -2716,15 +2690,13 @@ msgstr "Encuesta configuración"
 
 #: templates/frontend/survey/survey_change.html:73
 #: templates/frontend/survey/survey_view.html:46
-#, fuzzy
 msgid "complete"
-msgstr "Encuestas"
+msgstr ""
 
 #: templates/frontend/survey/survey_change.html:152
 #: templates/frontend/survey/survey_view.html:85
-#, fuzzy
 msgid "audio file"
-msgstr "Archivos audio"
+msgstr "archivos audio"
 
 #: templates/frontend/survey/survey_change.html:161
 #: templates/frontend/survey/survey_view.html:95
@@ -2764,15 +2736,13 @@ msgstr "Asociaciones clave"
 #: templates/frontend/survey/survey_view.html:158
 #: templates/frontend/survey/survey_view.html:164
 #: templates/frontend/survey/survey_view.html:170
-#, fuzzy
 msgid "key"
-msgstr "Clave"
+msgstr "tecla"
 
 #: templates/frontend/survey/survey_change.html:263
 #: templates/frontend/survey/survey_view.html:186
-#, fuzzy
 msgid "From 1 to"
-msgstr "De"
+msgstr "De 1 a"
 
 #: templates/frontend/survey/survey_change.html:271
 #: templates/frontend/survey/survey_view.html:194
@@ -2781,9 +2751,8 @@ msgstr "El número es entre"
 
 #: templates/frontend/survey/survey_change.html:271
 #: templates/frontend/survey/survey_view.html:194
-#, fuzzy
 msgid "and"
-msgstr "Ganda"
+msgstr "y"
 
 #: templates/frontend/survey/survey_change.html:296
 #: templates/frontend/survey/survey_view.html:219
@@ -2801,24 +2770,20 @@ msgid "None"
 msgstr "Ninguno"
 
 #: templates/frontend/survey/survey_change.html:380
-#, fuzzy
 msgid "Add Section"
-msgstr "Añadir pregunta"
+msgstr ""
 
 #: templates/frontend/survey/survey_change.html:385
-#, fuzzy
 msgid "Close Survey"
-msgstr "Editar la encuesta"
+msgstr "Cerrar la encuesta"
 
 #: templates/frontend/survey/survey_change_header.html:48
-#, fuzzy
 msgid "Edit section"
-msgstr "Añadir respuesta"
+msgstr ""
 
 #: templates/frontend/survey/survey_change_header.html:57
-#, fuzzy
 msgid "Delete section"
-msgstr "Borrar"
+msgstr ""
 
 #: templates/frontend/survey/survey_change_header.html:66
 msgid "Branch"
@@ -2837,54 +2802,45 @@ msgid "List, add and edit surveys"
 msgstr "Lista, agregar y editar las encuestas"
 
 #: templates/frontend/survey/survey_report.html:25
-#, fuzzy
 msgid "Survey Detail Report"
-msgstr "Informe sobre la encuesta"
+msgstr "Informe detallado sobre la encuesta"
 
 #: templates/frontend/survey/survey_report.html:25
-#, fuzzy
 msgid "Monitor survey reports"
 msgstr "Monitor de resultados de la encuesta"
 
 #: templates/frontend/survey/survey_report.html:32
-#, fuzzy
 msgid "Survey result"
-msgstr "Encuestas"
+msgstr "Encuesta resultado"
 
 #: templates/frontend/survey/survey_report.html:33
-#, fuzzy
 msgid "Survey calls"
-msgstr "Encuestas"
+msgstr "Llamadas de Encuesta"
 
 #: templates/frontend/survey/survey_report.html:34
-#, fuzzy
 msgid "Survey daily call report"
-msgstr "Informe sobre la encuesta"
+msgstr "Informe diario sobre la encuesta"
 
 #: templates/frontend/survey/survey_report.html:133
 #: templates/frontend/survey/survey_report.html:203
-#, fuzzy
 msgid "no record found"
-msgstr "No Registro(s)."
+msgstr ""
 
 #: templates/frontend/survey/survey_report.html:139
 msgid "Survey call detail records"
 msgstr "Encuesta registros detallados de llamadas"
 
 #: templates/frontend/survey/survey_report.html:156
-#, fuzzy
 msgid "Call-date"
-msgstr "Call-ID"
+msgstr "Call-Fecha"
 
 #: templates/frontend/survey/survey_report.html:181
-#, fuzzy
 msgid "Survey Result"
 msgstr "Informe sobre la encuesta"
 
 #: templates/frontend/survey/survey_report.html:194
-#, fuzzy
 msgid "view details"
-msgstr "Cambiar los detalles"
+msgstr "ver detalles"
 
 #: templates/frontend/survey/survey_report.html:209
 msgid "total calls"
@@ -2903,9 +2859,8 @@ msgid "Data"
 msgstr "Datos"
 
 #: templates/frontend/voiceapp/list.html:31
-#, fuzzy
 msgid "TTS Language"
-msgstr "Lenguaje"
+msgstr "TTS Lenguaje"
 
 #: templates/pagination/pagination.html:11
 #: templates/pagination/pagination.html:14
@@ -2918,9 +2873,8 @@ msgid "Next"
 msgstr "Próximo"
 
 #: templates/registration/logged_out.html:8
-#, fuzzy
 msgid "Thank you for using Newfies-Dialer."
-msgstr "Gracias por utilizar Newfies."
+msgstr "Gracias por utilizar Newfies-Dialer."
 
 #: templates/registration/logged_out.html:10
 msgid "Log in again"
@@ -3075,13 +3029,9 @@ msgid "Gateway used if we redirect the call"
 msgstr "Pasarela utilizada si redirigir la llamada"
 
 #: voice_app/models.py:57
-#, fuzzy
 msgid "The value of 'data' depends on the type of voice application :<br/>"
 msgstr ""
-"El valor de \"datos\" depende del tipo de aplicación de voz: <br/> - Dial: "
-"El número de teléfono para marcar <br/> - Conferencia: El nombre de sesión o "
-"el número de <br/> - Playaudio: URL del archivo de audio <br/> - Hablar: El "
-"texto a hablar con el TTS"
+"El valor de \"datos\" depende del tipo de aplicación de voz :<br/>"
 
 #: voice_app/models.py:85
 msgid "Can see Voiceapp Template"

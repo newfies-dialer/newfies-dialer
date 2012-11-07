@@ -398,7 +398,7 @@ CELERYBEAT_SCHEDULE = {
 gettext = lambda s: s
 LANGUAGES = (
     ('en', gettext('English')),
-    #('fr', gettext('French')),
+    ('fr', gettext('French')),
     ('es', gettext('Spanish')),
     ('pt', gettext('Portuguese')),
     ('zh', gettext('Chinese')),

@@ -76,13 +76,13 @@
                             {% if section.type == SECTION_TYPE.MULTI_CHOICE or section.type == SECTION_TYPE.RATING_SECTION or section.type == SECTION_TYPE.CAPTURE_DIGITS %}
                                 <b>{% trans "question"|title %} :</b>
                             {% else %}
-                                <b>{% trans "section title"|title %} :</b>
+                                <b>{% trans "section title"|capfirst %} :</b>
                             {% endif %}
                         </div>
 
                         <div class="span8">
                             {% if section.audiofile %}
-                                <b>{% trans "audio file"|title %} :</b> {{ section.audiofile.name }}
+                                <b>{% trans "audio file"|capfirst %} :</b> {{ section.audiofile.name }}
                                 <span>
                                     <ul class="playlist">
                                         <li style="width:220px;">

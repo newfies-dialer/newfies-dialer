@@ -101,7 +101,7 @@
                             {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION or form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS %}
                                 {% trans "question"|title %}
                             {% else %}
-                                {% trans "section title"|title %}
+                                {% trans "section title"|capfirst %}
                             {% endif %}
                         </label>
                     </div>

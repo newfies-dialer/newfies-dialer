@@ -21,6 +21,32 @@ from dialer_cdr.models import Callrequest
 from adminsortable.models import Sortable
 from audiofield.models import AudioFile
 from common.language_field import LanguageField
+from django.db.models import fields
+from django.conf import settings
+from django.core import exceptions
+
+
+class BigIntegerField(fields.IntegerField):
+
+    def db_type(self):
+        if settings.DATABASE_ENGINE == 'mysql':
+            return "bigint"
+        elif settings.DATABASE_ENGINE[:8] == 'postgres':
+            return "bigint"
+        else:
+            raise NotImplemented
+
+    def get_internal_type(self):
+        return "BigIntegerField"
+
+    def to_python(self, value):
+        if value is None:
+            return value
+        try:
+            return long(value)
+        except (TypeError, ValueError):
+            raise exceptions.ValidationError(
+                _("This value must be a long integer."))
 
 
 SECTION_TYPE_CHOICES = (
@@ -215,10 +241,10 @@ class Section_abstract(Sortable):
     number_digits = models.IntegerField(max_length=2, null=True, blank=True,
                                         default="2",
                                         verbose_name=_("Number of digits"))
-    min_number = models.IntegerField(max_length=1, null=True, blank=True,
-                                     default=0, verbose_name=_("Minimum"))
-    max_number = models.IntegerField(max_length=1, null=True, blank=True,
-                                     default=99, verbose_name=_("Maximum"))
+    min_number = models.BigIntegerField(max_length=50, null=True, blank=True,
+                                  default=0, verbose_name=_("Minimum"))
+    max_number = models.BigIntegerField(max_length=50, null=True, blank=True,
+                                  default=99, verbose_name=_("Maximum"))
     #Call Transfer
     phonenumber = models.CharField(max_length=50,
                                         null=True, blank=True,

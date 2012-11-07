@@ -416,8 +416,15 @@ def survey_finitestatemachine(request):
                 #No correct input from user
                 int_dtmf = False
 
-            if int_dtmf and (int_dtmf < obj_p_section.min_number \
-                or int_dtmf > obj_p_section.max_number):
+            try:
+                int_min = int(obj_p_section.min_number)
+                int_max = int(obj_p_section.max_number)
+            except:
+                int_min = 0
+                int_max = 999999999999999
+
+            if int_dtmf and (int_dtmf < int_min \
+                or int_dtmf > int_max):
                 #Invalid input
                 try:
                     #DTMF doesn't have any branching so let's check for any

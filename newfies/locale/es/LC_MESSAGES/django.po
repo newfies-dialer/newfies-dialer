@@ -235,7 +235,7 @@ msgstr "Salientes de identificación de llamada"
 
 #: dialer_campaign/models.py:171
 msgid "Caller name"
-msgstr ""
+msgstr "Nombre del remitente"
 
 #: dialer_campaign/models.py:172
 msgid "Outbound caller-Name"
@@ -389,11 +389,11 @@ msgstr "Total Contact Call que completó / Encuesta"
 
 #: dialer_campaign/models.py:246
 msgid "Can see Campaign"
-msgstr ""
+msgstr "Se puede ver la campaña"
 
 #: dialer_campaign/models.py:247
 msgid "Can see Campaign Dashboard"
-msgstr ""
+msgstr "Puede ver Dashboard Campaña"
 
 #: dialer_campaign/models.py:250 frontend/forms.py:21 survey/forms.py:315
 #: survey/models.py:119 survey/models.py:477
@@ -511,7 +511,7 @@ msgstr "Parar"
 
 #: dialer_campaign/views.py:160
 msgid "survey"
-msgstr ""
+msgstr "estudio"
 
 #: dialer_campaign/views.py:166
 msgid "Voice app"
@@ -561,13 +561,13 @@ msgstr "<phonenumber|phonebook_id, phonenumber|phonebook_id,...>"
 
 #: dialer_campaign/management/commands/create_subscriber.py:24
 msgid "Creates a new contact for a given phonenumber and phonebook"
-msgstr "Crea un nuevo contacto para un número del telefóno dada y la agenda"
+msgstr "Crea un nuevo contacto para un número del telefóno dada y la directorio telefónico"
 
 #: dialer_campaign/management/commands/create_subscriber.py:38
 #: dialer_contact/management/commands/create_contact.py:39
 #, python-format
 msgid "Can't find this Phonebook : %(id)s"
-msgstr "No se puede encontrar esta agenda : %(id)s"
+msgstr "No se puede encontrar esta directorio telefónico : %(id)s"
 
 #: dialer_campaign/management/commands/create_subscriber.py:47
 #: dialer_contact/management/commands/create_contact.py:54
@@ -581,7 +581,7 @@ msgstr "Contacto Identificación de creación:%(id)s"
 
 #: dialer_campaign/management/commands/create_subscriber.py:55
 msgid "Can't find a Campaign with this phonebook"
-msgstr "No se puede encontrar una campaña con esta agenda"
+msgstr "No se puede encontrar una campaña con esta directorio telefónico"
 
 #: dialer_campaign/management/commands/create_subscriber.py:58
 #, python-format
@@ -621,7 +621,7 @@ msgstr "VoIP Informe"
 
 #: dialer_cdr/admin.py:256
 msgid "Call Aggregate Report"
-msgstr ""
+msgstr "Llame al Informe Global"
 
 #: dialer_cdr/constants.py:23
 msgid "Pending"
@@ -798,7 +798,7 @@ msgstr "Leg"
 
 #: dialer_cdr/models.py:250
 msgid "Can see Call Detail Report"
-msgstr ""
+msgstr "Se puede ver el Informe detallado de llamada"
 
 #: dialer_cdr/models.py:253 dialer_cdr/models.py:254
 msgid "VoIP Call"
@@ -857,7 +857,7 @@ msgstr "Importación de contacto"
 
 #: dialer_contact/admin.py:210
 msgid "Dialer_contact"
-msgstr ""
+msgstr "Dialer_contact"
 
 #: dialer_contact/constants.py:20 dialer_gateway/constants.py:20
 msgid "ACTIVE"
@@ -921,11 +921,11 @@ msgstr "Los tipos de documentos aceptados: %s"
 #: templates/frontend/phonebook/change.html:11
 #: templates/frontend/phonebook/list.html:9
 msgid "Phonebook"
-msgstr "Agenda"
+msgstr "Directorio Telefónico"
 
 #: dialer_contact/forms.py:52 dialer_contact/models.py:88
 msgid "Select Phonebook"
-msgstr "Seleccione Agenda"
+msgstr "Seleccione Directorio Telefónico"
 
 #: dialer_contact/forms.py:100
 msgid "Contact Number:"
@@ -937,7 +937,7 @@ msgstr "Nombre del contacto:"
 
 #: dialer_contact/forms.py:106
 msgid "Phonebook:"
-msgstr "Agenda:"
+msgstr "Directorio Telefónico:"
 
 #: dialer_contact/forms.py:107
 msgid "Status:"
@@ -945,7 +945,7 @@ msgstr "Estado:"
 
 #: dialer_contact/models.py:40
 msgid "Phonebook Notes"
-msgstr "Notas de la agenda"
+msgstr "Notas de la directorio telefónico"
 
 #: dialer_contact/models.py:43 dialer_contact/models.py:106
 #: dialer_gateway/models.py:105 survey/models.py:58
@@ -963,12 +963,12 @@ msgstr "Fecha"
 
 #: dialer_contact/models.py:48
 msgid "Can see Phonebook"
-msgstr ""
+msgstr "Puede ver Directorio Telefónico"
 
 #: dialer_contact/models.py:52 templates/frontend/bootstrap_menu.html:41
 #: templates/frontend/phonebook/list.html:44
 msgid "Phonebooks"
-msgstr "Agendas"
+msgstr "Directorio Telefónicos"
 
 #: dialer_contact/models.py:61 dialer_contact/models.py:115
 #: templates/frontend/bootstrap_menu.html:45
@@ -1018,20 +1018,20 @@ msgstr "Notas"
 
 #: dialer_contact/models.py:111
 msgid "Can see Contact"
-msgstr ""
+msgstr "Se puede ver Contacto"
 
 #: dialer_contact/views.py:100
 msgid "Update phonebook"
-msgstr "Actualización de la agenda"
+msgstr "Actualización de la directorio telefónico"
 
 #: dialer_contact/views.py:102
 msgid "Delete phonebook"
-msgstr "Eliminar la agenda"
+msgstr "Eliminar la directorio telefónico"
 
 #: dialer_contact/views.py:232
 #, python-format
 msgid "%(count)s phonebook(s) are deleted."
-msgstr "%(count)s Agenda(s) se ha eliminado."
+msgstr "%(count)s Directorio Telefónico(s) se ha eliminado."
 
 #: dialer_contact/views.py:358
 msgid "Update contact"
@@ -1057,7 +1057,7 @@ msgstr "\"phonebook_id|no_of_record\" \"phonebook_id|no_of_record\""
 #: dialer_contact/management/commands/create_contact.py:25
 msgid "Creates new contacts for a given phonebook and no of records"
 msgstr ""
-"Crea nuevos contactos para una agenda determinada y no de los registros"
+"Crea nuevos contactos para una directorio telefónico determinada y no de los registros"
 
 #: dialer_contact/management/commands/create_contact.py:51
 #, python-format
@@ -1319,23 +1319,23 @@ msgstr "Introduzca las credenciales de usuario válidas."
 
 #: survey/constants.py:20
 msgid "Play message"
-msgstr ""
+msgstr "Reproducir mensaje"
 
 #: survey/constants.py:21
 msgid "Multi-choice"
-msgstr ""
+msgstr "Multi-opción"
 
 #: survey/constants.py:22
 msgid "Rating question"
-msgstr ""
+msgstr "Puntuación pregunta"
 
 #: survey/constants.py:23
 msgid "Capture digits"
-msgstr ""
+msgstr "Captura dígitos"
 
 #: survey/constants.py:24
 msgid "Record message"
-msgstr ""
+msgstr "Grabar mensaje"
 
 #: survey/constants.py:25
 msgid "Call transfer"
@@ -1361,7 +1361,7 @@ msgstr "Cualquier otra tecla"
 
 #: survey/models.py:54 voice_app/models.py:47
 msgid "Text-to-Speech Language"
-msgstr ""
+msgstr "Text-to-Speech Language"
 
 #: survey/models.py:76
 msgid "Can see Survey Template"
@@ -1377,11 +1377,11 @@ msgstr "Plantillas Encuesta"
 
 #: survey/models.py:123
 msgid "Can see Survey"
-msgstr ""
+msgstr "Puede véase Estudio"
 
 #: survey/models.py:124
 msgid "Can see Survey Report"
-msgstr ""
+msgstr "Puede ver Informe de la Encuesta"
 
 #: survey/models.py:127 templates/frontend/bootstrap_menu.html:72
 msgid "Surveys"
@@ -1389,7 +1389,7 @@ msgstr "Encuestas"
 
 #: survey/models.py:171
 msgid "section type"
-msgstr ""
+msgstr "sección tipo"
 
 #: survey/models.py:174
 #: templates/frontend/survey/survey_campaign_result.html:30
@@ -1468,19 +1468,19 @@ msgstr "Encuesta completa"
 
 #: survey/models.py:279 survey/models.py:341
 msgid "Audio Invalid Input"
-msgstr ""
+msgstr "Invalid Input Audio"
 
 #: survey/models.py:284
 msgid "Section template"
-msgstr ""
+msgstr "Sección plantilla"
 
 #: survey/models.py:285
 msgid "Section templates"
-msgstr ""
+msgstr "Sección plantillas"
 
 #: survey/models.py:346
 msgid "Section Template ID"
-msgstr ""
+msgstr "Sección de Plantillas ID"
 
 #: survey/models.py:365
 msgid "Entered value"
@@ -1511,7 +1511,7 @@ msgstr "Record Archivo"
 
 #: survey/models.py:460
 msgid "Recording Duration"
-msgstr ""
+msgstr "Duración de grabación"
 
 #: survey/models.py:483
 msgid "Result count"
@@ -1538,7 +1538,7 @@ msgstr "La sección se ha añadido correctamente."
 #: survey/views.py:1081 survey/views.py:1107 survey/views.py:1128
 #: survey/views.py:1149 survey/views.py:1170 survey/views.py:1191
 msgid "Section updated."
-msgstr ""
+msgstr "Sección actualizada."
 
 #: survey/views.py:1244
 msgid "Section is deleted successfully."
@@ -1554,7 +1554,7 @@ msgstr "La ramificación se ha añadido correctamente."
 
 #: survey/views.py:1379 survey/views.py:1443
 msgid "duplicate record keys with goto."
-msgstr ""
+msgstr "duplicados de las llaves de registro con goto."
 
 #: survey/views.py:1422
 msgid "Branching is deleted successfully."
@@ -1769,7 +1769,7 @@ msgstr "Marcador de la campaña"
 #: templates/admin_tools/dashboard/module.html:10
 #: templates/admin_tools/dashboard/modules/app_list.html:10
 msgid "Dialer Contact"
-msgstr ""
+msgstr "Dialer Contacto"
 
 #: templates/admin_tools/dashboard/module.html:13
 #: templates/admin_tools/dashboard/modules/app_list.html:13
@@ -1831,7 +1831,7 @@ msgstr "Voz Escritorio"
 
 #: templates/frontend/bootstrap_menu.html:35
 msgid "Voice Campaign"
-msgstr ""
+msgstr "Voice Campaign"
 
 #: templates/frontend/bootstrap_menu.html:49
 msgid "Audio files"
@@ -1902,7 +1902,7 @@ msgstr " aplicación(s) de voz van a ser eliminados?"
 
 #: templates/frontend/custom_jquery_select_all.html:29
 msgid " phonebook(s) are going to be deleted?"
-msgstr " agenda(s) van a ser eliminados?"
+msgstr " directorio telefónico(s) van a ser eliminados?"
 
 #: templates/frontend/custom_jquery_select_all.html:32
 #: templates/frontend/custom_jquery_select_all.html:70
@@ -1915,7 +1915,7 @@ msgstr " audio(s) van a ser eliminados?"
 
 #: templates/frontend/custom_jquery_select_all.html:57
 msgid " phonebook(s) are going to be deleted with "
-msgstr " agenda(s) van a ser eliminados con "
+msgstr " directorio telefónico(s) van a ser eliminados con "
 
 #: templates/frontend/custom_jquery_select_all.html:57
 msgid " contact(s)?"
@@ -1939,7 +1939,7 @@ msgstr "Confirmar la eliminación?"
 
 #: templates/frontend/custom_jquery_select_all.html:110
 msgid "Please confirm to delete this phonebook with"
-msgstr "Por favor, confirme que quieres borrar esta agenda con"
+msgstr "Por favor, confirme que quieres borrar esta directorio telefónico con"
 
 #: templates/frontend/custom_jquery_select_all.html:110
 msgid "contact(s)"
@@ -1951,7 +1951,7 @@ msgstr "Campaña de control del rendimiento en tiempo real"
 
 #: templates/frontend/dashboard.html:39
 msgid "Total Phonebook Contacts"
-msgstr "Contactos total de Agenda"
+msgstr "Contactos total de Directorio Telefónico"
 
 #: templates/frontend/dashboard.html:40
 msgid "Total Campaign Contacts"
@@ -2048,7 +2048,7 @@ msgstr "Más información"
 
 #: templates/frontend/index.html:19
 msgid "Support"
-msgstr ""
+msgstr "Apoyar"
 
 #: templates/frontend/index.html:20
 msgid ""
@@ -2108,7 +2108,7 @@ msgstr "¿Olvidó su contraseña?"
 
 #: templates/frontend/master.html:151
 msgid "Display language"
-msgstr ""
+msgstr "Idioma de la pantalla"
 
 #: templates/frontend/master.html:166 templates/frontend/master.html.py:172
 #: templates/frontend/master.html:194 templates/frontend/master.html.py:208
@@ -2530,7 +2530,7 @@ msgstr "Verificación de Número"
 
 #: templates/frontend/registration/user_detail_change.html:21
 msgid "Change language "
-msgstr ""
+msgstr "Cambiar el idioma"
 
 #: templates/frontend/registration/user_detail_change.html:49
 msgid "Select language"
@@ -2623,7 +2623,7 @@ msgstr "cualquier otra tecla"
 #: templates/frontend/survey/survey_change.html:314
 #: templates/frontend/survey/survey_view.html:235
 msgid "invalid"
-msgstr ""
+msgstr "inválido"
 
 #: templates/frontend/survey/section_branch_change.html:108
 msgid "No branching on hangup, this will terminate the call"
@@ -2631,7 +2631,7 @@ msgstr "No ramificación en colgar, esto terminará la llamada"
 
 #: templates/frontend/survey/section_change.html:44
 msgid "Section"
-msgstr ""
+msgstr "Sección"
 
 #: templates/frontend/survey/section_change.html:102
 #: templates/frontend/survey/survey_change.html:143
@@ -2643,7 +2643,7 @@ msgstr "pregunta"
 #: templates/frontend/survey/survey_change.html:145
 #: templates/frontend/survey/survey_view.html:79
 msgid "section title"
-msgstr ""
+msgstr "sección de título"
 
 #: templates/frontend/survey/section_change.html:146
 msgid ""
@@ -2653,7 +2653,7 @@ msgstr "Configurar válidos múltiples opciones de selección. El valor de cada 
 
 #: templates/frontend/survey/section_delete_confirmation.html:5
 msgid "Delete Section"
-msgstr ""
+msgstr "Suprímase la Sección"
 
 #: templates/frontend/survey/section_delete_confirmation.html:9
 msgid "You are about to delete"
@@ -2682,7 +2682,7 @@ msgstr "Informe"
 
 #: templates/frontend/survey/survey_campaign_result.html:32
 msgid "Record file"
-msgstr ""
+msgstr "Record archivo"
 
 #: templates/frontend/survey/survey_change.html:18
 msgid "Survey configuration"
@@ -2691,7 +2691,7 @@ msgstr "Encuesta configuración"
 #: templates/frontend/survey/survey_change.html:73
 #: templates/frontend/survey/survey_view.html:46
 msgid "complete"
-msgstr ""
+msgstr "completar"
 
 #: templates/frontend/survey/survey_change.html:152
 #: templates/frontend/survey/survey_view.html:85
@@ -2771,7 +2771,7 @@ msgstr "Ninguno"
 
 #: templates/frontend/survey/survey_change.html:380
 msgid "Add Section"
-msgstr ""
+msgstr "Agregar sección"
 
 #: templates/frontend/survey/survey_change.html:385
 msgid "Close Survey"
@@ -2779,11 +2779,11 @@ msgstr "Cerrar la encuesta"
 
 #: templates/frontend/survey/survey_change_header.html:48
 msgid "Edit section"
-msgstr ""
+msgstr "Editar sección"
 
 #: templates/frontend/survey/survey_change_header.html:57
 msgid "Delete section"
-msgstr ""
+msgstr "Suprimir sección"
 
 #: templates/frontend/survey/survey_change_header.html:66
 msgid "Branch"
@@ -2824,7 +2824,7 @@ msgstr "Informe diario sobre la encuesta"
 #: templates/frontend/survey/survey_report.html:133
 #: templates/frontend/survey/survey_report.html:203
 msgid "no record found"
-msgstr ""
+msgstr "datos no encuentrado"
 
 #: templates/frontend/survey/survey_report.html:139
 msgid "Survey call detail records"

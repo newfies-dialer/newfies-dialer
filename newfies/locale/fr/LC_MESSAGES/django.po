@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-08 19:42+0100\n"
+"POT-Creation-Date: 2012-11-08 19:59+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -275,7 +275,7 @@ msgstr "CallerID"
 
 #: dialer_campaign/models.py:169
 msgid "Outbound caller-ID"
-msgstr "Sortant identification de l'appelant"
+msgstr "Appelant-ID Sortant "
 
 #: dialer_campaign/models.py:171
 msgid "Caller name"
@@ -654,9 +654,15 @@ msgid "Database error"
 msgstr "Erreur de base de données"
 
 #: dialer_cdr/admin.py:178
+#, fuzzy, python-format
+msgid "%(total_count)s selected"
+msgid_plural "All %(total_count)s selected"
+msgstr[0] "0 of %(total_count)s sélectionné"
+msgstr[1] "0 of %(total_count)s sélectionné"
 
 #: dialer_cdr/admin.py:183
-msgid "%(total_count)s selected"
+#, fuzzy, python-format
+msgid "0 of %(cnt)s selected"
 msgstr "0 of %(total_count)s sélectionné"
 
 #: dialer_cdr/admin.py:190 dialer_cdr/admin.py:254
@@ -882,7 +888,7 @@ msgstr "Raccrocher la cause"
 
 #: dialer_cdr/models.py:230 templates/frontend/report/voipcall_report.html:84
 msgid "Leg"
-msgstr "Jambe"
+msgstr "Leg"
 
 #: dialer_cdr/models.py:253
 msgid "Can see Call Detail Report"
@@ -1714,11 +1720,17 @@ msgstr "Maison"
 #: templates/admin/dialer_cdr/voipcall/change_list.html:48
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:48
 #: templates/admin/dialer_contact/contact/change_list.html:38
+#, fuzzy
+msgid "Please correct the error below."
+msgid_plural "Please correct the errors below."
+msgstr[0] "S&#39;il vous plaît corriger l&#39;erreur ci-dessous."
+msgstr[1] "S&#39;il vous plaît corriger l&#39;erreur ci-dessous."
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:56
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:56
-msgid "Please correct the error below."
-msgstr "S&#39;il vous plaît corriger l&#39;erreur ci-dessous."
+#, fuzzy
+msgid "Search Option"
+msgstr "Section"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:60
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:60
@@ -1819,7 +1831,7 @@ msgstr "prénom"
 
 #: templates/admin/dialer_contact/contact/import_contact.html:23
 msgid "email-id"
-msgstr "e-id"
+msgstr "email-id"
 
 #: templates/admin/dialer_contact/contact/import_contact.html:24
 msgid "description"
@@ -1852,7 +1864,7 @@ msgstr "Soumettre"
 
 #: templates/admin/dialer_contact/contact/import_contact.html:77
 msgid "Contact(s) imported"
-msgstr "Contact (s) importé"
+msgstr "Contact(s) importé"
 
 #: templates/admin/dialer_contact/contact/import_contact.html:93
 #: templates/frontend/contact/import_contact.html:92
@@ -2648,7 +2660,7 @@ msgstr "Données d&#39;appels détaillées"
 
 #: templates/frontend/report/voipcall_report.html:83
 msgid "Call ID"
-msgstr "Appelez-ID"
+msgstr "Appel ID"
 
 #: templates/frontend/report/voipcall_report.html:85
 msgid "Caller ID"
@@ -2665,7 +2677,7 @@ msgstr "Porte"
 
 #: templates/frontend/report/voipcall_report.html:89
 msgid "Bill Sec"
-msgstr "Le projet de loi Sec"
+msgstr "Facturable Sec"
 
 #: templates/frontend/report/voipcall_report.html:95
 msgid "Call Records"

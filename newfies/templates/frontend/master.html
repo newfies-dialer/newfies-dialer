@@ -22,20 +22,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="{{STATIC_URL}}newfies/images/favicon.png">
 
+<!-- Le fav and touch icons -->
+<link rel="shortcut icon" href="{{STATIC_URL}}newfies/images/favicon.png">
+<link rel="apple-touch-icon" href="{{STATIC_URL}}newfies/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="{{STATIC_URL}}newfies/images/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="{{STATIC_URL}}newfies/images/apple-touch-icon-114x114.png">
+
 <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 
+<!-- Le javascript -->
+<script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}newfies/js/custom.validation.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-ui-1.9.1.custom.min.js"></script>
+
+<script src="{{STATIC_URL}}newfies/bootstrap/js/bootstrap.js"></script>
+
+<script src="{{STATIC_URL}}newfies/js/bootstrap-datepicker.js" type="text/javascript"></script>
+
+<!--flot-->
+<script src="{{STATIC_URL}}newfies/js/jquery.flot.min.js" type="text/javascript"></script>
+<script src="{{STATIC_URL}}newfies/js/jquery.flot.pie.js" type="text/javascript"></script>
+
+
 <!-- Le styles -->
 <link href="{{STATIC_URL}}newfies/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="{{STATIC_URL}}newfies/css/datepicker.css" rel="stylesheet">
 <!-- RTL -->
 <!-- <link href="{{STATIC_URL}}newfies/bootstrap-2.0.4/css/rtl/bootstrap-rtl.min.css" rel="stylesheet"> -->
 <style type="text/css">
-  body {
-    padding-top: 60px;
-    padding-bottom: 40px;
-  }
+    body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+    }
 </style>
 <link href="{{STATIC_URL}}newfies/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 <!-- <link href="{{STATIC_URL}}newfies/bootstrap/css/rtl/bootstrap-responsive-rtl.min.css" rel="stylesheet">
@@ -44,81 +65,59 @@
 <!--Override bootstrap-->
 <link href="{{STATIC_URL}}newfies/css/override_bootstrap.css" rel="stylesheet">
 
-
-<!-- Le javascript -->
-<script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}newfies/js/custom.validation.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-ui-1.8.16.custom.min.js"></script>
-
-<script src="{{STATIC_URL}}newfies/bootstrap/js/bootstrap.js"></script>
-
-<!-- Le fav and touch icons -->
-<link rel="shortcut icon" href="{{STATIC_URL}}newfies/images/favicon.png">
-<link rel="apple-touch-icon" href="{{STATIC_URL}}newfies/images/apple-touch-icon.png">
-<link rel="apple-touch-icon" sizes="72x72" href="{{STATIC_URL}}newfies/images/apple-touch-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="114x114" href="{{STATIC_URL}}newfies/images/apple-touch-icon-114x114.png">
-
 <!-- jquery UI css -->
 <link type="text/css" href="{{STATIC_URL}}newfies/css/jquery-ui-bootstrap/jquery-ui-1.8.16.custom.css" rel="stylesheet">
 
 <!-- Newfies custom css -->
 <link type="text/css" media="screen" href="{{STATIC_URL}}newfies/css/newfies_custom.css" rel="stylesheet"/>
 
-<!--flot-->
-<script src="{{STATIC_URL}}newfies/js/jquery.flot.min.js" type="text/javascript"></script>
-<script src="{{STATIC_URL}}newfies/js/jquery.flot.pie.js" type="text/javascript"></script>
-
 {% block extra_header %}
     {{ extra_header }}
 {% endblock %}
 
 <script type="text/javascript">
-  $(document).ready(function() {
-    $(".fg-button").hover(
-        function(){
-            $(this).addClass("ui-state-hover");
-        },
-        function(){
-            $(this).removeClass("ui-state-hover");
-        }
-    );
-    $('#buttonlogin').click(function(){
-      $("#requestlogin").animate({ height: 'show', opacity: 'show' }, 'slow');
+    $(document).ready(function() {
+        $(".fg-button").hover(
+            function(){
+                $(this).addClass("ui-state-hover");
+            },
+            function(){
+                $(this).removeClass("ui-state-hover");
+            }
+        );
+        $('#buttonlogin').click(function(){
+          $("#requestlogin").animate({ height: 'show', opacity: 'show' }, 'slow');
+        });
+        $("#language-container").change(function() {
+            this.form.submit();
+        });
     });
-    $("#language-container").change(function() {
-        this.form.submit();
+    // toggle event for forms
+    $(function() {
+        {% if search_tag == 1 %}
+            $(".collapse").collapse();
+        {% endif %}
+
+        $(".collapse").on('hide', function () {
+            $('#toggle_btn span').text('{% trans "Search"|title %}');
+            $('#toggle_btn i').toggleClass('icon-search');
+            $('#toggle_btn i').toggleClass('icon-zoom-out');
+        });
+        $(".collapse").on('hidden', function() {
+            $('#toggle_btn span').text('{% trans "Search"|title %}');
+        });
+        $(".collapse").on('show', function() {
+            $('#toggle_btn span').text('{% trans "Hide search" %}');
+            $('#toggle_btn i').toggleClass('icon-search');
+            $('#toggle_btn i').toggleClass('icon-zoom-out');
+        });
+        $(".collapse").on('shown', function() {
+            $('#toggle_btn span').text('{% trans "Hide search" %}');
+        });
+        {% if search_tag == 0 %}
+            $(".collapse").collapse('hide');
+        {% endif %}
     });
-  });
-
-  // toggle event for forms
-  $(function() {
-
-      {% if search_tag == 1 %}
-          $(".collapse").collapse();
-      {% endif %}
-
-      $(".collapse").on('hide', function () {
-          $('#toggle_btn span').text('{% trans "Search"|title %}');
-          $('#toggle_btn i').toggleClass('icon-search');
-          $('#toggle_btn i').toggleClass('icon-zoom-out');
-      });
-      $(".collapse").on('hidden', function () {
-          $('#toggle_btn span').text('{% trans "Search"|title %}');
-      });
-      $(".collapse").on('show', function () {
-          $('#toggle_btn span').text('{% trans "Hide search" %}');
-          $('#toggle_btn i').toggleClass('icon-search');
-          $('#toggle_btn i').toggleClass('icon-zoom-out');
-      });
-
-      $(".collapse").on('shown', function () {
-          $('#toggle_btn span').text('{% trans "Hide search" %}');
-      });
-
-      {% if search_tag == 0 %}
-          $(".collapse").collapse('hide');
-      {% endif %}
-  });
 </script>
 
 </head>

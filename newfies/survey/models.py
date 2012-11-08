@@ -28,7 +28,7 @@ from common.language_field import LanguageField
 from adminsortable.models import Sortable
 
 
-
+#TODO: Move this to common
 class BigIntegerField(fields.IntegerField):
 
     def db_type(self):

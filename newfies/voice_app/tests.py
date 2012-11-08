@@ -23,6 +23,7 @@ from voice_app.forms import VoiceAppForm
 from voice_app.views import voiceapp_list, voiceapp_add,\
                             voiceapp_del, voiceapp_change,\
                             voiceapp_grid, voiceapp_view
+from voice_app.function_def import check_voiceapp_campaign
 from utils.helper import grid_test_data
 from common.utils import BaseAuthenticatedClient
 
@@ -52,7 +53,8 @@ class VoiceAppAdminView(BaseAuthenticatedClient):
 class VoiceAppCustomerView(BaseAuthenticatedClient):
     """Test Function to check Voice App Customer pages"""
     fixtures = ['auth_user.json', 'gateway.json', 'voiceapp_template.json',
-                'voiceapp.json']
+                'voiceapp.json', 'dialer_setting.json', 'phonebook.json',
+                'contact.json', 'campaign.json',]
 
     def test_voiceapp_view_list(self):
         """Test Function to check voice app list view"""
@@ -152,6 +154,8 @@ class VoiceAppCustomerView(BaseAuthenticatedClient):
         request.session = {}
         response = voiceapp_view(request, 1)
         self.assertEqual(response.status_code, 200)
+
+        check_voiceapp_campaign(request, 1)
 
 
 class VoiceAppModel(TestCase):

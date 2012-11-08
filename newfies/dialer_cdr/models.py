@@ -102,10 +102,12 @@ class Callrequest(Model):
     created_date = models.DateTimeField(auto_now_add=True,
                                         verbose_name='Date')
     updated_date = models.DateTimeField(auto_now=True)
-    call_type = models.IntegerField(choices=list(CALLREQUEST_TYPE), default=1,
+    call_type = models.IntegerField(choices=list(CALLREQUEST_TYPE),
+                                    default=CALLREQUEST_TYPE.ALLOW_RETRY,
                                     verbose_name=_("Call Request Type"),
                                     blank=True, null=True)
-    status = models.IntegerField(choices=list(CALLREQUEST_STATUS), default=1,
+    status = models.IntegerField(choices=list(CALLREQUEST_STATUS),
+                                 default=CALLREQUEST_STATUS.PENDING,
                                  blank=True, null=True, db_index=True,
                                  verbose_name=_('Status'))
     callerid = models.CharField(max_length=80, blank=True,
@@ -223,9 +225,10 @@ class VoIPCall(models.Model):
     hangup_cause = models.CharField(max_length=40, null=True, blank=True,
                     verbose_name=_("Hangup cause"))
     hangup_cause_q850 = models.CharField(max_length=10, null=True, blank=True)
-    leg_type = models.SmallIntegerField(choices=list(LEG_TYPE), default=1,
-                    verbose_name=_("Leg"),
-                    null=True, blank=True)
+    leg_type = models.SmallIntegerField(choices=list(LEG_TYPE),
+                                        default=LEG_TYPE.A_LEG,
+                                        verbose_name=_("Leg"),
+                                        null=True, blank=True)
 
     def destination_name(self):
         """Return Recipient dialcode"""

@@ -13,17 +13,20 @@
 #
 
 from django.db import models
-from django.db.models.signals import post_save
-from django.utils.translation import ugettext_lazy as _
-from django.contrib.contenttypes.models import ContentType
-from dialer_campaign.models import Campaign
-from dialer_cdr.models import Callrequest
-from adminsortable.models import Sortable
-from audiofield.models import AudioFile
-from common.language_field import LanguageField
 from django.db.models import fields
 from django.conf import settings
 from django.core import exceptions
+from django.db.models.signals import post_save
+from django.utils.translation import ugettext_lazy as _
+from django.contrib.contenttypes.models import ContentType
+
+from dialer_campaign.models import Campaign
+from dialer_cdr.models import Callrequest
+from survey.constants import SECTION_TYPE
+from audiofield.models import AudioFile
+from common.language_field import LanguageField
+from adminsortable.models import Sortable
+
 
 
 class BigIntegerField(fields.IntegerField):
@@ -47,17 +50,6 @@ class BigIntegerField(fields.IntegerField):
         except (TypeError, ValueError):
             raise exceptions.ValidationError(
                 _("This value must be a long integer."))
-
-
-SECTION_TYPE_CHOICES = (
-    (1, 'Play message'),
-    (2, 'Multi-choice'),
-    (3, 'Rating question'),
-    (4, 'Capture digits'),
-    (5, 'Record message'),
-    (6, 'Call transfer'),
-    (7, 'Hangup'),
-)
 
 
 class Survey_abstract(models.Model):
@@ -192,8 +184,9 @@ class Section_abstract(Sortable):
     **Name of DB table**: survey_question
     """
     # select section
-    type = models.IntegerField(max_length=20, choices=list(SECTION_TYPE_CHOICES),
-                               default='1', blank=True, null=True,
+    type = models.IntegerField(max_length=20, choices=list(SECTION_TYPE),
+                               default=SECTION_TYPE.PLAY_MESSAGE,
+                               blank=True, null=True,
                                verbose_name=_('section type'))
     # Question is the section label, this is used in the reporting
     question = models.CharField(max_length=500, blank=False,

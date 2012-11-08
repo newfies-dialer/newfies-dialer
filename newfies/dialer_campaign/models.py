@@ -358,7 +358,7 @@ class Campaign(Model):
                 subscriber_count += Subscriber.objects\
                     .filter(contact__in=list_contact,
                             campaign=self.id,
-                            status=5)\
+                            status=SUBSCRIBER_STATUS.SENT)\
                     .count()
             except:
                 pass
@@ -471,7 +471,8 @@ class Subscriber(Model):
     duplicate_contact = models.CharField(max_length=90,
                                          verbose_name=_("Contact"))
     status = models.IntegerField(choices=list(SUBSCRIBER_STATUS),
-                                 default='1', verbose_name=_("Status"), blank=True, null=True)
+                                 default=SUBSCRIBER_STATUS.PENDING,
+                                 verbose_name=_("Status"), blank=True, null=True)
 
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')
     updated_date = models.DateTimeField(auto_now=True)
@@ -529,7 +530,7 @@ def post_save_add_contact(sender, **kwargs):
                 Subscriber.objects.create(
                     contact=obj,
                     duplicate_contact=obj.contact,
-                    status=1,  # START
+                    status=CAMPAIGN_STATUS.START,
                     campaign=elem_campaign)
             except:
                 pass

@@ -246,7 +246,6 @@ def campaign_list(request):
         'info_msg': request.session.get('info_msg'),
         'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
-
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -300,7 +299,7 @@ def campaign_add(request):
         if check_dialer_setting(request, check_for="campaign"):
             msg = _("you have too many campaigns. Max allowed %(limit)s") \
                     % {'limit': \
-                        dialer_setting_limit(request, limit_for="campaign")}
+                       dialer_setting_limit(request, limit_for="campaign")}
             request.session['msg'] = msg
 
             # campaign limit reached
@@ -508,7 +507,7 @@ def campaign_duplicate(request, id):
         'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'err_msg': request.session.get('error_msg'),
-        }
+    }
     request.session['error_msg'] = ''
     return render_to_response(template, data,
         context_instance=RequestContext(request))

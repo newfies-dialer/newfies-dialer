@@ -87,7 +87,8 @@ class Contact(Model):
     phonebook = models.ForeignKey(Phonebook, verbose_name=_('Phonebook'),
                                   help_text=_("Select Phonebook"))
     contact = models.CharField(max_length=90, verbose_name=_('Contact Number'))
-    status = models.IntegerField(choices=list(CONTACT_STATUS), default='1',
+    status = models.IntegerField(choices=list(CONTACT_STATUS),
+                                 default=CONTACT_STATUS.ACTIVE,
                                  verbose_name=_("Status"), blank=True, null=True)
     last_name = models.CharField(max_length=120, blank=True, null=True,
                                  verbose_name=_('Last Name'))

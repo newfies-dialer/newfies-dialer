@@ -34,7 +34,7 @@ from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import VOIPCALL_DISPOSITION
 from frontend.forms import LoginForm, DashboardForm
 from frontend.function_def import calculate_date
-from frontend.constants import COLOR_DISPOSITION
+from frontend.constants import COLOR_DISPOSITION, SEARCH_TYPE
 from common.common_functions import current_view
 from datetime import datetime
 from dateutil import parser
@@ -202,7 +202,7 @@ def customer_dashboard(request, on_index=None):
     total_noroute = 0
     total_forbidden = 0
     select_graph_for = 'Call Count'  # default (or Duration)
-    search_type = 4  # default Last 24 hours
+    search_type = SEARCH_TYPE.D_Last_24_hours  # default Last 24 hours
     selected_campaign = ''
     seven_days_option_list = []
     seven_days_result_set = []
@@ -232,9 +232,9 @@ def customer_dashboard(request, on_index=None):
         max_limit = time.mktime(end_date.timetuple())
 
         # date_length is used to do group by starting_date
-        if int(search_type) >= 2:  # all options except 30 days
+        if int(search_type) >= SEARCH_TYPE.B_Last_7_days:  # all options except 30 days
             date_length = 13
-            if int(search_type) == 3:  # yesterday
+            if int(search_type) == SEARCH_TYPE.C_Yesterday:  # yesterday
                 now = datetime.now()
                 start_date = datetime(
                                 now.year,
@@ -245,7 +245,7 @@ def customer_dashboard(request, on_index=None):
                                     now.month,
                                     now.day,
                                     23, 59, 59, 999999) - relativedelta(days=1)
-            if int(search_type) >= 5:
+            if int(search_type) >= SEARCH_TYPE.E_Last_12_hours:
                 date_length = 16
         else:
             date_length = 10  # Last 30 days option
@@ -326,7 +326,7 @@ def customer_dashboard(request, on_index=None):
         calls_dict = {}
 
         for data in calls:
-            if int(search_type) >= 2:
+            if int(search_type) >= SEARCH_TYPE.B_Last_7_days:
                 ctime = datetime(int(data['starting_date'][0:4]),
                                  int(data['starting_date'][5:7]),
                                  int(data['starting_date'][8:10]),
@@ -334,7 +334,7 @@ def customer_dashboard(request, on_index=None):
                                  0,
                                  0,
                                  0)
-                if int(search_type) >= 5:
+                if int(search_type) >= SEARCH_TYPE.E_Last_12_hours:
                     ctime = datetime(int(data['starting_date'][0:4]),
                                  int(data['starting_date'][5:7]),
                                  int(data['starting_date'][8:10]),
@@ -356,7 +356,7 @@ def customer_dashboard(request, on_index=None):
                 mintime = ctime
 
             # all options except 30 days
-            if int(search_type) >= 2:
+            if int(search_type) >= SEARCH_TYPE.B_Last_7_days:
                 calls_dict[int(ctime.strftime("%Y%m%d%H"))] = \
                 {'starting_date__count': data['starting_date__count'],
                  'duration__sum': data['duration__sum'],
@@ -373,7 +373,7 @@ def customer_dashboard(request, on_index=None):
                  'starting_datetime': time.mktime(ctime.timetuple()),
                 })
                 only_data_date_list.append(ctime.strftime("%Y%m%d"))
-                if int(search_type) >= 5:
+                if int(search_type) >= SEARCH_TYPE.E_Last_12_hours:
                     twelve_hour_list.append({
                      'starting_date__count': data['starting_date__count'],
                      'starting_date': data['starting_date'],
@@ -398,7 +398,7 @@ def customer_dashboard(request, on_index=None):
         i = 0
         for date in dateList:
             # Yesterday & 24 hrs
-            if int(search_type) >= 2:
+            if int(search_type) >= SEARCH_TYPE.B_Last_7_days:
                 inttime = int(date.strftime("%Y%m%d%H"))
             else:  # Last 30 days
                 inttime = int(date.strftime("%Y%m%d"))
@@ -576,13 +576,13 @@ def customer_dashboard(request, on_index=None):
                             # count increment
                             current_previous_count = current_previous_count + 1
                             # per day option
-                            if int(search_type) == 5:
+                            if int(search_type) == SEARCH_TYPE.E_Last_12_hours:
                                 min_list = [0, 30]
 
-                            if int(search_type) == 6:
+                            if int(search_type) == SEARCH_TYPE.F_Last_6_hours:
                                 min_list = [0, 15, 30, 45]
 
-                            if int(search_type) == 7:
+                            if int(search_type) == SEARCH_TYPE.G_Last_hour:
                                 min_list = [i for i in range(60) if i % 5 == 0]
 
                             for option in min_list:
@@ -637,13 +637,13 @@ def customer_dashboard(request, on_index=None):
             except:
                 # add data for dates which are not in seven_days_option_list
                 inttime = datetime.strptime(str(inttime), '%Y%m%d%H')
-                if int(search_type) == 5:
+                if int(search_type) == SEARCH_TYPE.E_Last_12_hours:
                     min_list = [0, 30]
 
-                if int(search_type) == 6:
+                if int(search_type) == SEARCH_TYPE.F_Last_6_hours:
                     min_list = [0, 15, 30, 45]
 
-                if int(search_type) == 7:
+                if int(search_type) == SEARCH_TYPE.G_Last_hour:
                     min_list = [i for i in range(60) if i % 5 == 0]
 
                 for option in min_list:
@@ -670,12 +670,12 @@ def customer_dashboard(request, on_index=None):
                     m += 1
 
         # total_data = seven_days_result_set (for last 7 days option)
-        if int(search_type) == 2:
+        if int(search_type) == SEARCH_TYPE.B_Last_7_days:
             total_data = seven_days_result_set
 
         # total_data = (Last 12 hrs / Last 6 hrs/ Last hour)
-        if int(search_type) == 5 or int(search_type) == 6 \
-            or int(search_type) == 7:
+        if int(search_type) == SEARCH_TYPE.E_Last_12_hours or int(search_type) == SEARCH_TYPE.F_Last_6_hours \
+            or int(search_type) == SEARCH_TYPE.G_Last_hour:
             total_data = common_hour_result_set
 
     # Contacts which are successfully called for running campaign

@@ -71,7 +71,8 @@ class Gateway(Model):
     """
     name = models.CharField(unique=True, max_length=255,
                 verbose_name=_('Name'), help_text=_("Gateway name"))
-    status = models.IntegerField(choices=list(GATEWAY_STATUS), default='1',
+    status = models.IntegerField(choices=list(GATEWAY_STATUS),
+                default=GATEWAY_STATUS.ACTIVE,
                 verbose_name=_("Gateway Status"), blank=True, null=True)
     description = models.TextField(verbose_name=_('Description'), blank=True,
                                help_text=_("Gateway provider notes"))

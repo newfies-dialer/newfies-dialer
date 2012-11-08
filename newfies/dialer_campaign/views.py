@@ -157,14 +157,14 @@ def get_campaign_survey_view(campaign_object):
         if campaign_object.content_type.model == 'survey':
             link = '<a href="/survey_view/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' % \
                    (campaign_object.object_id,
-                    _('survey'),
-                    tpl_control_icon('eye.png'))
+                    _('Survey'),
+                    tpl_control_icon('zoom.png'))
 
         if campaign_object.content_type.model == 'voiceapp':
             link = '<a href="/voiceapp_view/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' % \
                    (campaign_object.object_id,
                     _('Voice app'),
-                    tpl_control_icon('eye.png'))
+                    tpl_control_icon('zoom.png'))
         return link
     return link
 
@@ -173,7 +173,7 @@ def make_duplicate_campaign(campaign_object):
     link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate icon" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s" %s>&nbsp;</a>'\
            % (campaign_object.id,
               _('Duplicate this campaign'),
-              tpl_control_icon('page_copy.png'))
+              tpl_control_icon('layers.png'))
     return link
 
 

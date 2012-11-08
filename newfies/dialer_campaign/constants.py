@@ -12,24 +12,25 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
+from django.utils.translation import ugettext_lazy as _
 from common.utils import Choice
 
 
 class SUBSCRIBER_STATUS(Choice):
-    PENDING = 1, u'PENDING'
-    PAUSE = 2, u'PAUSE'
-    ABORT = 3, u'ABORT'
-    FAIL = 4, u'FAIL'
-    SENT = 5, u'SENT'
-    IN_PROCESS = 6, u'IN PROCESS'
-    NOT_AUTHORIZED = 7, u'NOT AUTHORIZED'
-    COMPLETED = 8, u'COMPLETED'
+    PENDING = 1, _('PENDING')
+    PAUSE = 2, _('PAUSE')
+    ABORT = 3, _('ABORT')
+    FAIL = 4, _('FAIL')
+    SENT = 5, _('SENT')
+    IN_PROCESS = 6, _('IN PROCESS')
+    NOT_AUTHORIZED = 7, _('NOT AUTHORIZED')
+    COMPLETED = 8, _('COMPLETED')
 
 
 class CAMPAIGN_STATUS(Choice):
-    START = 1, u'START'
-    PAUSE = 2, u'PAUSE'
-    ABORT = 3, u'ABORT'
-    END = 4, u'END'
+    START = 1, _('START')
+    PAUSE = 2, _('PAUSE')
+    ABORT = 3, _('ABORT')
+    END = 4, _('END')
 
 CAMPAIGN_STATUS_COLOR = {1: "green", 2: "blue", 3: "orange", 4: "red"}

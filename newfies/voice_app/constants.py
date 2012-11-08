@@ -17,7 +17,7 @@ from common.utils import Choice
 
 
 class VOICEAPP_TYPE(Choice):
-    DIAL = 1, u'DIAL'
-    PLAYAUDIO = 2, u'PLAYAUDIO'
-    CONFERENCE = 3, u'CONFERENCE'
-    SPEAK = 4, u'SPEAK'
+    DIAL = 1, _('DIAL')
+    PLAYAUDIO = 2, _('PLAYAUDIO')
+    CONFERENCE = 3, _('CONFERENCE')
+    SPEAK = 4, _('SPEAK')

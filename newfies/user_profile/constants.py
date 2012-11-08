@@ -17,11 +17,11 @@ from common.utils import Choice
 
 
 class NOTIFICATION_NAME(Choice):
-    campaign_started = 1, u'campaign_started'
-    campaign_paused = 2, u'campaign_paused'
-    campaign_aborted = 3, u'campaign_aborted'
-    campaign_stopped = 4, u'campaign_stopped'
-    campaign_limit_reached = 5, u'campaign_limit_reached'
-    contact_limit_reached = 6, u'contact_limit_reached'
-    dialer_setting_configuration = 7, u'dialer_setting_configuration'
-    callrequest_not_found = 8, u'callrequest_not_found'
+    campaign_started = 1, _('campaign started')
+    campaign_paused = 2, _('campaign paused')
+    campaign_aborted = 3, _('campaign aborted')
+    campaign_stopped = 4, _('campaign stopped')
+    campaign_limit_reached = 5, _('campaign limit reached')
+    contact_limit_reached = 6, _('contact limit reached')
+    dialer_setting_configuration = 7, _('dialer setting configuration')
+    callrequest_not_found = 8, _('callrequest not found')

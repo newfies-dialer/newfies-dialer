@@ -12,7 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.utils.translation import gettext as _
+from django.utils.translation import ugettext_lazy as _
 from common.utils import Choice
 
 
@@ -51,14 +51,14 @@ class VOIPCALL_DISPOSITION(Choice):
     """
     Store the Call Disposition
     """
-    ANSWER = 'ANSWER', u'ANSWER'
-    BUSY = 'BUSY', u'BUSY'
-    NOANSWER = 'NOANSWER', u'NOANSWER'
-    CANCEL = 'CANCEL', u'CANCEL'
-    CONGESTION = 'CONGESTION', u'CONGESTION'
-    CHANUNAVAIL = 'CHANUNAVAIL', u'CHANUNAVAIL'
-    DONTCALL = 'DONTCALL', u'DONTCALL'
-    TORTURE = 'TORTURE', u'TORTURE'
-    INVALIDARGS = 'INVALIDARGS', u'INVALIDARGS'
-    NOROUTE = 'NOROUTE', u'NOROUTE'
-    FORBIDDEN = 'FORBIDDEN', u'FORBIDDEN'
+    ANSWER = 'ANSWER', _('ANSWER')
+    BUSY = 'BUSY', _('BUSY')
+    NOANSWER = 'NOANSWER', _('NOANSWER')
+    CANCEL = 'CANCEL', _('CANCEL')
+    CONGESTION = 'CONGESTION', _('CONGESTION')
+    CHANUNAVAIL = 'CHANUNAVAIL', _('CHANUNAVAIL')
+    DONTCALL = 'DONTCALL', _('DONTCALL')
+    TORTURE = 'TORTURE', _('TORTURE')
+    INVALIDARGS = 'INVALIDARGS', _('INVALIDARGS')
+    NOROUTE = 'NOROUTE', _('NOROUTE')
+    FORBIDDEN = 'FORBIDDEN', _('FORBIDDEN')

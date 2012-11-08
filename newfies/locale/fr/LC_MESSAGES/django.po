@@ -24,7 +24,7 @@ msgstr "Anglais"
 
 #: settings.py:401
 msgid "French"
-msgstr ""
+msgstr "Français"
 
 #: settings.py:402
 msgid "Spanish"
@@ -154,43 +154,43 @@ msgstr "vous avez trop de campagnes. Max permis %(limit)s"
 
 #: dialer_campaign/constants.py:20
 msgid "PENDING"
-msgstr ""
+msgstr "EN ATTENTE"
 
 #: dialer_campaign/constants.py:21 dialer_campaign/constants.py:32
 msgid "PAUSE"
-msgstr ""
+msgstr "PAUSE"
 
 #: dialer_campaign/constants.py:22 dialer_campaign/constants.py:33
 msgid "ABORT"
-msgstr ""
+msgstr "ABORT"
 
 #: dialer_campaign/constants.py:23
 msgid "FAIL"
-msgstr ""
+msgstr "FAIL"
 
 #: dialer_campaign/constants.py:24
 msgid "SENT"
-msgstr ""
+msgstr "ENVOYÉ"
 
 #: dialer_campaign/constants.py:25
 msgid "IN PROCESS"
-msgstr ""
+msgstr "EN COURS"
 
 #: dialer_campaign/constants.py:26
 msgid "NOT AUTHORIZED"
-msgstr ""
+msgstr "PAS AUTORISÉ"
 
 #: dialer_campaign/constants.py:27
 msgid "COMPLETED"
-msgstr ""
+msgstr "COMPLÉTÉ"
 
 #: dialer_campaign/constants.py:31
 msgid "START"
-msgstr ""
+msgstr "COMMENCER"
 
 #: dialer_campaign/constants.py:34
 msgid "END"
-msgstr ""
+msgstr "FIN"
 
 #: dialer_campaign/forms.py:48 dialer_campaign/models.py:222
 #: dialer_cdr/models.py:135
@@ -654,13 +654,9 @@ msgid "Database error"
 msgstr "Erreur de base de données"
 
 #: dialer_cdr/admin.py:178
-msgid "%(total_count)s selected"
-msgid_plural "All %(total_count)s selected"
-msgstr[0] "%(total_count)s sélectionné"
-msgstr[1] "Tout %(total_count)s sélectionné"
 
 #: dialer_cdr/admin.py:183
-msgid "0 of %(cnt)s selected"
+msgid "%(total_count)s selected"
 msgstr "0 of %(total_count)s sélectionné"
 
 #: dialer_cdr/admin.py:190 dialer_cdr/admin.py:254
@@ -1457,7 +1453,7 @@ msgstr "Autre touches"
 
 #: survey/models.py:52
 msgid "This value must be a long integer."
-msgstr ""
+msgstr "Cette valeur doit être un entier long."
 
 #: survey/models.py:72 voice_app/models.py:47
 msgid "Text-to-Speech Language"
@@ -1718,15 +1714,11 @@ msgstr "Maison"
 #: templates/admin/dialer_cdr/voipcall/change_list.html:48
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:48
 #: templates/admin/dialer_contact/contact/change_list.html:38
-msgid "Please correct the error below."
-msgid_plural "Please correct the errors below."
-msgstr[0] "S'il vous plaît corriger l'erreur ci-dessous."
-msgstr[1] "S'il vous plaît corriger les erreurs ci-dessous."
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:56
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:56
-msgid "Search Option"
-msgstr ""
+msgid "Please correct the error below."
+msgstr "S&#39;il vous plaît corriger l&#39;erreur ci-dessous."
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:60
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:60
@@ -3128,19 +3120,19 @@ msgstr "%(count)s de notification(s) sont marqués comme lus."
 
 #: voice_app/constants.py:20
 msgid "DIAL"
-msgstr ""
+msgstr "DIAL"
 
 #: voice_app/constants.py:21
 msgid "PLAYAUDIO"
-msgstr ""
+msgstr "PLAYAUDIO"
 
 #: voice_app/constants.py:22
 msgid "CONFERENCE"
-msgstr ""
+msgstr "CONFÉRENCE"
 
 #: voice_app/constants.py:23
 msgid "SPEAK"
-msgstr ""
+msgstr "PARLER"
 
 #: voice_app/models.py:50
 msgid "Voice Application Description"

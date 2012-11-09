@@ -8,9 +8,9 @@ python-dateutil==2.1
 uuid==1.30
 wsgiref==0.1.2
 redis==2.7.1
-celery==3.0.11
-pytz==2012f
-kombu==2.4.7
+celery==3.0.12
+pytz==2012h
+kombu==2.4.8
 mimeparse==0.1.3
 psycopg2==2.4.5
 BeautifulSoup==3.2.1
@@ -19,5 +19,5 @@ python-memcached==1.48
 feedparser==5.1.2
 python-acapela==0.2.1
 Django==1.4.2
-gunicorn==0.14.6
+gunicorn==0.15.0
 South==0.7.6

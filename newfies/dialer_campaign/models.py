@@ -13,7 +13,8 @@
 #
 
 from django.db import models
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext
 from django.core.urlresolvers import reverse
 from django.core.cache import cache
 from django.db.models.signals import post_save
@@ -301,8 +302,8 @@ class Campaign(Model):
     def get_campaign_type(self):
         """Get campaign type"""
         if self.content_type.name[0:6] == 'Survey':
-            return _('Survey')
-        return _('Voice App')
+            return ugettext('Survey')
+        return ugettext('Voice App')
 
     def get_active_max_frequency(self):
         """Get the active max frequency"""

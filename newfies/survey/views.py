@@ -670,31 +670,31 @@ def survey_finitestatemachine(request):
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
             settings.FS_RECORDING_PATH)
 
-    elif list_section[current_state].type == SECTION_TYPE.CALL_TRANSFER:
-        #CALL_TRANSFER
-        debug_outp += "CALL_TRANSFER<br/>------------------<br/>"
-        timelimit = obj_callrequest.timelimit
-        callerid = obj_callrequest.callerid
-        gatewaytimeouts = obj_callrequest.timeout
-        gateways = obj_callrequest.aleg_gateway.gateways
-        phonenumber = list_section[current_state].phonenumber
-        html =\
-        '<Response>\n'\
-        '   %s\n'\
-        '   <Dial timeLimit="%s" callerId="%s" callbackUrl="%s">\n'\
-        '   <Number gateways="%s" gatewayTimeouts="%s">'\
-        '   %s </Number> '\
-        '   </Dial>\n'\
-        '   <Redirect>%s</Redirect>\n'\
-        '</Response>' % (
-            html_play,
-            timelimit,
-            callerid,
-            settings.PLIVO_DEFAULT_DIALCALLBACK_URL,
-            gateways,
-            gatewaytimeouts,
-            phonenumber,
-            settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
+    # elif list_section[current_state].type == SECTION_TYPE.CALL_TRANSFER:
+    #     #CALL_TRANSFER
+    #     debug_outp += "CALL_TRANSFER<br/>------------------<br/>"
+    #     timelimit = obj_callrequest.timelimit
+    #     callerid = obj_callrequest.callerid
+    #     gatewaytimeouts = obj_callrequest.timeout
+    #     gateways = obj_callrequest.aleg_gateway.gateways
+    #     phonenumber = list_section[current_state].phonenumber
+    #     html =\
+    #     '<Response>\n'\
+    #     '   %s\n'\
+    #     '   <Dial timeLimit="%s" callerId="%s" callbackUrl="%s">\n'\
+    #     '   <Number gateways="%s" gatewayTimeouts="%s">'\
+    #     '   %s </Number> '\
+    #     '   </Dial>\n'\
+    #     '   <Redirect>%s</Redirect>\n'\
+    #     '</Response>' % (
+    #         html_play,
+    #         timelimit,
+    #         callerid,
+    #         settings.PLIVO_DEFAULT_DIALCALLBACK_URL,
+    #         gateways,
+    #         gatewaytimeouts,
+    #         phonenumber,
+    #         settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL)
 
     else:
         # Hangup

@@ -16,5 +16,4 @@ from django.conf.urls import patterns
 
 
 urlpatterns = patterns('dialer_settings.views',
-
 )

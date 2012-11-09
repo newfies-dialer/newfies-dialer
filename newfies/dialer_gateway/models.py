@@ -15,27 +15,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from common.intermediate_model_base_class import Model
-from dialer_gateway.constants import GATEWAY_STATUS, GATEWAY_PROTOCOL
-
-
-"""
-class GatewayGroup(Model):
-    name = models.CharField(max_length=90)
-    description = models.TextField(null=True, blank=True,
-                               help_text=_("Short description \
-                               about the Gateway Group"))
-
-    created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')
-    updated_date = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        db_table = u'dialer_gateway_group'
-        verbose_name = _("Dialer Gateway Group")
-        verbose_name_plural = _("Dialer Gateway Groups")
-
-    def __unicode__(self):
-            return u"%s" % self.name
-"""
+from dialer_gateway.constants import GATEWAY_STATUS
 
 
 class Gateway(Model):
@@ -128,3 +108,23 @@ class Gateway(Model):
 
     def __unicode__(self):
             return u"%s" % self.name
+
+
+"""
+class GatewayGroup(Model):
+    name = models.CharField(max_length=90)
+    description = models.TextField(null=True, blank=True,
+                               help_text=_("Short description \
+                               about the Gateway Group"))
+
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')
+    updated_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = u'dialer_gateway_group'
+        verbose_name = _("Dialer Gateway Group")
+        verbose_name_plural = _("Dialer Gateway Groups")
+
+    def __unicode__(self):
+            return u"%s" % self.name
+"""

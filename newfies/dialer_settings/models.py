@@ -35,26 +35,26 @@ class DialerSetting(models.Model):
     **Name of DB table**: dialer_setting
     """
     name = models.CharField(max_length=50, blank=False,
-                null=True, verbose_name=_("Name"),
-                help_text=_("Settings name"))
-
+                            null=True, verbose_name=_("Name"),
+                            help_text=_("Settings name"))
     #Campaign Settings
     max_frequency = models.IntegerField(default='100', blank=True,
-                null=True, verbose_name=_("Max frequency"),
-                help_text=_("Maximum calls per minute"))
+                                        null=True, verbose_name=_("Max frequency"),
+                                        help_text=_("Maximum calls per minute"))
     callmaxduration = models.IntegerField(default='1800', blank=True,
-                null=True, verbose_name=_('Max Call Duration'),
+                                          null=True,
+                                          verbose_name=_('Max Call Duration'),
     help_text=_("Maximum call duration in seconds (1800 = 30 Minutes)"))
 
     maxretry = models.IntegerField(default='3', blank=True, null=True,
-                verbose_name=_('Max Retries'),
-                help_text=_("Maximum retries per user."))
+                                   verbose_name=_('Max Retries'),
+                                   help_text=_("Maximum retries per user."))
     max_calltimeout = models.IntegerField(default='45', blank=True, null=True,
-                verbose_name=_('Timeout on Call'),
-                help_text=_("Maximum call timeout in seconds"))
+                                          verbose_name=_('Timeout on Call'),
+                                          help_text=_("Maximum call timeout in seconds"))
 
     max_number_campaign = models.IntegerField(default=10,
-                help_text=_("Maximum number of campaigns"))
+                                              help_text=_("Maximum number of campaigns"))
     max_number_subscriber_campaign = models.IntegerField(default=10000,
                 help_text=_("Maximum subscribers per campaign"))
 

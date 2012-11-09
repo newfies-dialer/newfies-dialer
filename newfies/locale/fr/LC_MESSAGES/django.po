@@ -371,7 +371,7 @@ msgstr "Montant de tentatives jusqu'à ce qu'un contact est terminé"
 
 #: dialer_campaign/models.py:211
 msgid "Completion Time between Retries"
-msgstr "Délai de traitement entre les tentatives"
+msgstr "Délai entre les tentatives pour complétion"
 
 #: dialer_campaign/models.py:212
 msgid "Time delay in seconds before retrying contact for completion"
@@ -2392,7 +2392,7 @@ msgstr "Calendrier de campagne"
 
 #: templates/frontend/campaign/change.html:152
 msgid "Week Days"
-msgstr "Jours par semaine"
+msgstr "Jours de la Semaine"
 
 #: templates/frontend/campaign/change.html:174
 #: templates/frontend/contact/change.html:48

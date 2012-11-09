@@ -22,24 +22,10 @@
 <link type="text/css" href="{{STATIC_URL}}newfies/css/jquery-ui-bootstrap/jquery-ui-1.8.16.custom.css" rel="stylesheet">
 
 <!-- Javascript -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-ui-1.9.1.custom.min.js"></script>
 
-<script type="text/javascript">
-$(function() {
-    var dates = $('#id_from_date, #id_to_date').datepicker({
-        defaultDate: "+1w",
-        changeMonth: true,
-        format: 'yyyy-mm-dd',
-        onSelect: function(selectedDate) {
-            var option = this.id == "id_from_date" ? "minDate" : "maxDate";
-            var instance = $(this).data("datepicker");
-            var date = $.datepicker.parseDate(instance.settings.format || $.datepicker._defaults.format, selectedDate, instance.settings);
-            dates.not(this).datepicker("option", option, date);
-        }
-    });
-});
-</script>
+{% include "frontend/common_datepicker.html" %}
 
 <div id="content-main">
 

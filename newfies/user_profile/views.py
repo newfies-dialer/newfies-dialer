@@ -30,9 +30,9 @@ from user_profile.models import UserProfile
 from user_profile.forms import UserChangeDetailForm, \
                                UserChangeDetailExtendForm, \
                                CheckPhoneNumberForm
-from utils.helper import grid_common_function
+from user_profile.constants import NOTICE_COLUMN_NAME
 from frontend.views import notice_count
-from common.common_functions import current_view
+from common.common_functions import variable_value, current_view
 
 
 @login_required
@@ -73,12 +73,40 @@ def customer_detail_change(request):
     except:
         dialer_set = ''
 
+    # Define no of records per page
+    PAGE_SIZE = settings.PAGE_SIZE
+    try:
+        PAGE_NUMBER = int(request.GET['page'])
+    except:
+        PAGE_NUMBER = 1
+
+    col_name_with_order = {}
+    # default
+    col_name_with_order['message'] = '-message'
+    col_name_with_order['notice_type'] = '-notice_type'
+    col_name_with_order['sender'] = '-sender'
+    col_name_with_order['added'] = '-added'
+
+    sort_field = variable_value(request, 'sort_by')
+    if not sort_field:
+        sort_field = 'message'  # default sort field
+        sort_order = '-' + sort_field  # desc
+    else:
+        if "-" in sort_field:
+            sort_order = sort_field
+            col_name_with_order[sort_field[1:]] = sort_field[1:]
+        else:
+            sort_order = sort_field
+            col_name_with_order[sort_field] = '-' + sort_field
+
     user_notification = \
         notification.Notice.objects.filter(recipient=request.user)
     # Search on sender name
     q = (Q(sender=request.user))
     if q:
         user_notification = user_notification.filter(q)
+
+    user_notification = user_notification.order_by(sort_order)
 
     msg_detail = ''
     msg_pass = ''
@@ -160,75 +188,12 @@ def customer_detail_change(request):
         'dialer_set': dialer_set,
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'action': action,
+        'col_name_with_order': col_name_with_order,
+        'PAGE_SIZE': PAGE_SIZE,
+        'NOTICE_COLUMN_NAME': NOTICE_COLUMN_NAME,
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))
-
-
-def call_style(val):
-    """Notification icon style
-
-    >>> call_style('val')
-    'style="text-decoration:none;background-image:url(/static/newfies/icons/new.png);"'
-
-    >>> call_style('')
-    'style="text-decoration:none;background-image:url(/static/newfies/icons/tick.png);"'
-    """
-    unseen_style = \
-        'style="text-decoration:none;background-image:url(%snewfies/icons/new.png);"'\
-            % settings.STATIC_URL
-    seen_style = \
-        'style="text-decoration:none;background-image:url(%snewfies/icons/tick.png);"'\
-            % settings.STATIC_URL
-
-    if val:
-        return unseen_style
-    else:
-        return seen_style
-
-
-# Notification
-@login_required
-def notification_grid(request):
-    """notification list in json format for flexigrid
-
-    **Model**: notification.Notice
-    """
-    grid_data = grid_common_function(request)
-    page = int(grid_data['page'])
-    start_page = int(grid_data['start_page'])
-    end_page = int(grid_data['end_page'])
-    sortorder_sign = grid_data['sortorder_sign']
-    sortname = grid_data['sortname']
-
-    user_notification = \
-        notification.Notice.objects.filter(recipient=request.user)
-    # Search on sender name
-    q = (Q(sender=request.user))
-    if q:
-        user_notification = user_notification.filter(q)
-
-    count = user_notification.count()
-    user_notification_list = user_notification\
-                     .order_by(sortorder_sign + sortname)[start_page:end_page]
-
-    rows = [{'id': row.id,
-             'cell': [
-                    '<input type="checkbox" name="select" class="checkbox" value="%s" />' % (str(row.id)),
-                    str(row.message),
-                    str(row.notice_type),
-                    str(row.sender),
-                    str(row.added),
-                    str('<a href="../update_notice_status_cust/%s/"  class="icon" %s>&nbsp;</a>' % \
-                        (str(row.id), call_style(row.unseen))),
-             ]}for row in user_notification_list]
-
-    data = {'rows': rows,
-            'page': page,
-            'total': count}
-
-    return HttpResponse(simplejson.dumps(data), mimetype='application/json',
-                        content_type="application/json")
 
 
 @login_required

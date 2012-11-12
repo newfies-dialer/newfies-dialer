@@ -12,7 +12,8 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.template.defaultfilters import *
+from django.template.defaultfilters import register
+from django.utils.translation import ugettext_lazy as _
 from survey.views import survey_audio_recording
 from dialer_campaign.constants import CAMPAIGN_STATUS
 from dialer_cdr.constants import LEG_TYPE
@@ -184,3 +185,11 @@ def que_res_string(val):
 @register.filter(name='running_total')
 def running_total(running_list, field_name):
     return sum(d[field_name] for d in running_list)
+
+
+@register.filter(name='icon_call_style')
+def icon_call_style(val):
+    if val:
+        return _('unseen')
+    else:
+        return _('seen')

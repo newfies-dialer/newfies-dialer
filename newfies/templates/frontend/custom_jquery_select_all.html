@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n dialer_cdr_extras %}
 
 <script type="text/javascript" language="javascript">
 function toggleChecked(status) {
@@ -70,8 +70,14 @@ $(document).ready(function() {
                 confirm_string = $fields.length + '{% trans " survey(s) are going to be deleted?" %}';
             }
 
-            var answer = confirm(confirm_string);
-            return answer; // answer is a boolean
+            //var answer = confirm(confirm_string);
+            //return answer; // answer is a boolean
+
+            var final_res = false;
+            bootbox.confirm(confirm_string, function(result) {
+                return result;
+            });
+            return final_res;
         }
     });
 });

@@ -227,7 +227,7 @@ func_install_frontend(){
 
     #Create Newfies User
     echo ""
-    echo "Create Newfies User/Group : $NEWFIES_USER"
+    echo "Create Newfies-Dialer User/Group : $NEWFIES_USER"
     useradd $NEWFIES_USER --user-group --system --no-create-home
 
     if [ -d "$INSTALL_DIR" ]; then

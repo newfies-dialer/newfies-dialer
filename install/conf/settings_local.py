@@ -27,7 +27,6 @@ APPLICATION_DIR = os.path.dirname(globals()['__file__'])
 
 #DATABASE SETTINGS
 #=================
-
 DATABASES = {
     'default': {
         # Add 'postgresql_psycopg2','postgresql','mysql','sqlite3','oracle'

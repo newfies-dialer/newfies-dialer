@@ -283,7 +283,7 @@ func_install_frontend(){
         #;;
     esac
 
-    # Copy files
+    #Copy files
     cp -r /usr/src/newfies-dialer/newfies $INSTALL_DIR
 
     #Install Newfies-Dialer depencencies
@@ -310,20 +310,20 @@ func_install_frontend(){
     echo "**********"
     pip freeze
 
-    # copy settings_local.py into newfies dir
+    #Copy settings_local.py into newfies dir
     cp /usr/src/newfies-dialer/install/conf/settings_local.py $INSTALL_DIR
 
-    # Update Secret Key
+    #Update Secret Key
     echo "Update Secret Key..."
     RANDPASSW=`</dev/urandom tr -dc A-Za-z0-9| (head -c $1 > /dev/null 2>&1 || head -c 50)`
     sed -i "s/^SECRET_KEY.*/SECRET_KEY = \'$RANDPASSW\'/g"  $INSTALL_DIR/settings.py
     echo ""
 
-    # Disable Debug
+    #Disable Debug
     sed -i "s/DEBUG = True/DEBUG = False/g"  $INSTALL_DIR/settings_local.py
     sed -i "s/TEMPLATE_DEBUG = DEBUG/TEMPLATE_DEBUG = False/g"  $INSTALL_DIR/settings_local.py
 
-    # Setup settings_local.py for POSTGRESQL
+    #Setup settings_local.py for POSTGRESQL
     sed -i "s/DATABASENAME/$DATABASENAME/"  $INSTALL_DIR/settings_local.py
     sed -i "s/DB_USERNAME/$DB_USERNAME/" $INSTALL_DIR/settings_local.py
     sed -i "s/DB_PASSWORD/$DB_PASSWORD/" $INSTALL_DIR/settings_local.py
@@ -345,10 +345,10 @@ func_install_frontend(){
     #echo "sudo -u postgres createuser --no-createdb --no-createrole --no-superuser $DB_USERNAME"
     #sudo -u postgres createuser --no-createdb --no-createrole --no-superuser $DB_USERNAME
     echo "sudo -u postgres psql --command=\"create user $DB_USERNAME with password '$DB_PASSWORD';\""
-    sudo -u postgres psql --command="create user $DB_USERNAME with password '$DB_PASSWORD';"
+    sudo -u postgres psql --command="CREATE USER $DB_USERNAME with password '$DB_PASSWORD';"
 
     echo "Grant all privileges to user..."
-    sudo -u postgres psql --command="grant all privileges on database $DATABASENAME to $DB_USERNAME;"
+    sudo -u postgres psql --command="GRANT ALL PRIVILEGES on database $DATABASENAME to $DB_USERNAME;"
 
     cd $INSTALL_DIR/
 
@@ -357,11 +357,11 @@ func_install_frontend(){
     chown $NEWFIES_USER:$NEWFIES_USER /usr/share/newfies/.python-eggs
     mkdir database
 
-    #upload audio files
+    #Upload audio files
     mkdir -p /usr/share/newfies/usermedia/upload/audiofiles
     chown -R $NEWFIES_USER:$NEWFIES_USER /usr/share/newfies/usermedia
 
-    #following lines is for apache logs
+    #Following lines is for apache logs
     touch /var/log/newfies/newfies-django.log
     touch /var/log/newfies/newfies-django-db.log
     touch /var/log/newfies/err-apache-newfies.log

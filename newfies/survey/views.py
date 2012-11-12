@@ -1066,9 +1066,9 @@ def section_change(request, id):
     elif section.type == SECTION_TYPE.RECORD_MSG:
         #RECORD_MSG
         form = RecordMessageSectionForm(request.user, instance=section)
-    # elif section.type == SECTION_TYPE.CALL_TRANSFER:
-    #     #CALL_TRANSFER
-    #     form = PatchThroughSectionForm(request.user, instance=section)
+    elif section.type == SECTION_TYPE.CALL_TRANSFER:
+        #CALL_TRANSFER
+        form = PatchThroughSectionForm(request.user, instance=section)
 
     request.session['err_msg'] = ''
 

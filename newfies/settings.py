@@ -97,11 +97,6 @@ MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'usermedia')
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = '/mediafiles/'
 
-# URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
-# trailing slash.
-# Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
-
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
@@ -414,7 +409,6 @@ ADMIN_TOOLS_INDEX_DASHBOARD = \
     'custom_admin_tools.dashboard.CustomIndexDashboard'
 ADMIN_TOOLS_APP_INDEX_DASHBOARD = \
     'custom_admin_tools.dashboard.CustomAppIndexDashboard'
-ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 #EMAIL BACKEND
 #=============

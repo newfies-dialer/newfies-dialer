@@ -21,11 +21,9 @@ from user_profile.forms import UserChangeDetailForm, \
                                CheckPhoneNumberForm, \
                                UserProfileForm
 from user_profile.views import customer_detail_change, \
-                               notification_grid, \
                                notification_del_read,\
                                update_notice_status_cust
 from dialer_settings.models import DialerSetting
-from utils.helper import grid_test_data
 from common.utils import BaseAuthenticatedClient
 
 from django.contrib import admin
@@ -63,12 +61,6 @@ class UserProfileCustomerView(BaseAuthenticatedClient):
 
     def test_user_settings(self):
         """Test Function to check User settings"""
-        request = self.factory.post('/notification_grid/', grid_test_data)
-        request.user = self.user
-        request.session = {}
-        response = notification_grid(request)
-        self.assertEqual(response.status_code, 200)
-
         response = self.client.post('/user_detail_change/?action=tabs-1',
                                     {'form-type': 'change-detail',
                                      'first_name': 'admin',

@@ -67,13 +67,14 @@ def placeholder_replace(text, contact):
     as well as, get additional_vars, and replace json tags
     """
     text = str(text).lower()
-    context = {'last_name': contact.last_name,
-               'first_name': contact.first_name,
-               'email': contact.email,
-               'country': contact.country,
-               'city': contact.city,
-               'phone_number': contact.contact,
-                }
+    context = {
+        'last_name': contact.last_name,
+        'first_name': contact.first_name,
+        'email': contact.email,
+        'country': contact.country,
+        'city': contact.city,
+        'phone_number': contact.contact,
+    }
     if contact.additional_vars:
         for index in contact.additional_vars:
             context[index] = contact.additional_vars[index]
@@ -100,8 +101,7 @@ def getaudio_acapela(text, tts_language='en'):
         text, tts_language, settings.ACAPELA_GENDER,
         settings.ACAPELA_INTONATION)
     output_filename = tts_acapela.run()
-    audiofile_url = domain + settings.MEDIA_URL +\
-                    'tts/' + output_filename
+    audiofile_url = domain + settings.MEDIA_URL + 'tts/' + output_filename
     return audiofile_url
 
 
@@ -142,7 +142,7 @@ def set_aggregate_result(obj_callrequest, obj_p_section, response, RecordingDura
             section=obj_p_section,
             response=response,
             count=1
-            )
+        )
         result.save()
     except IntegrityError:
         #Update ResultAggregate
@@ -151,7 +151,7 @@ def set_aggregate_result(obj_callrequest, obj_p_section, response, RecordingDura
             survey_id=obj_callrequest.object_id,
             section=obj_p_section,
             response=response,
-            )
+        )
         result.count = result.count + 1
         result.save()
 
@@ -187,7 +187,7 @@ def save_section_result(request, obj_callrequest, obj_p_section, DTMF):
                 section=obj_p_section,
                 record_file=RecordFile,
                 recording_duration=RecordingDuration,
-                )
+            )
             result.save()
             #Save aggregated result
             set_aggregate_result(obj_callrequest, obj_p_section, DTMF, RecordingDuration)
@@ -199,7 +199,7 @@ def save_section_result(request, obj_callrequest, obj_p_section, DTMF):
             result = Result.objects.get(
                 callrequest=obj_callrequest,
                 section=obj_p_section
-                )
+            )
             result.record_file = RecordFile
             result.recording_duration = RecordingDuration
             result.save()
@@ -209,10 +209,10 @@ def save_section_result(request, obj_callrequest, obj_p_section, DTMF):
             return "Update result RecordFile (section:%d - response:%s)\n" % \
                 (obj_p_section.id, RecordFile)
 
-    elif DTMF and len(DTMF) > 0 and \
-        (obj_p_section.type == SECTION_TYPE.MULTI_CHOICE or \
-        obj_p_section.type == SECTION_TYPE.RATING_SECTION or \
-        obj_p_section.type == SECTION_TYPE.CAPTURE_DIGITS):
+    elif (DTMF and len(DTMF) > 0 and
+         (obj_p_section.type == SECTION_TYPE.MULTI_CHOICE or
+         obj_p_section.type == SECTION_TYPE.RATING_SECTION or
+         obj_p_section.type == SECTION_TYPE.CAPTURE_DIGITS)):
 
         if obj_p_section.type == SECTION_TYPE.MULTI_CHOICE:
             #Get value for the DTMF from obj_p_section.key_X
@@ -263,7 +263,7 @@ def save_section_result(request, obj_callrequest, obj_p_section, DTMF):
             result = Result.objects.get(
                 callrequest=obj_callrequest,
                 section=obj_p_section
-                )
+            )
             result.response = DTMF
             result.save()
             #Save aggregated result
@@ -385,10 +385,10 @@ def survey_finitestatemachine(request):
     if outp_result:
         debug_outp += outp_result
 
-    if obj_p_section and \
-        (obj_p_section.type == SECTION_TYPE.PLAY_MESSAGE or \
-        obj_p_section.type == SECTION_TYPE.RECORD_MSG or \
-        obj_p_section.type == SECTION_TYPE.CALL_TRANSFER):
+    if (obj_p_section and
+       (obj_p_section.type == SECTION_TYPE.PLAY_MESSAGE or
+       obj_p_section.type == SECTION_TYPE.RECORD_MSG or
+       obj_p_section.type == SECTION_TYPE.CALL_TRANSFER)):
 
         #Get list of responses of the previous Section
         try:
@@ -399,16 +399,16 @@ def survey_finitestatemachine(request):
             #No branching
             exit_action = 'NOBRANCH'
 
-    if obj_p_section and \
-        (obj_p_section.type == SECTION_TYPE.MULTI_CHOICE or \
-        obj_p_section.type == SECTION_TYPE.RATING_SECTION or \
-        obj_p_section.type == SECTION_TYPE.CAPTURE_DIGITS):
+    if (obj_p_section and
+       (obj_p_section.type == SECTION_TYPE.MULTI_CHOICE or
+       obj_p_section.type == SECTION_TYPE.RATING_SECTION or
+       obj_p_section.type == SECTION_TYPE.CAPTURE_DIGITS)):
         #Handle dtmf received, set the current state
         #Check if we receive a DTMF for the previous section then store the result
 
         exit_action = 'DTMF'
-        if obj_p_section.type == SECTION_TYPE.CAPTURE_DIGITS \
-            and obj_p_section.validate_number:
+        if (obj_p_section.type == SECTION_TYPE.CAPTURE_DIGITS
+           and obj_p_section.validate_number):
             #check if number is valid
             try:
                 int_dtmf = int(DTMF)
@@ -423,8 +423,8 @@ def survey_finitestatemachine(request):
                 int_min = 0
                 int_max = 999999999999999
 
-            if int_dtmf and (int_dtmf < int_min \
-                or int_dtmf > int_max):
+            if (int_dtmf and (int_dtmf < int_min
+               or int_dtmf > int_max)):
                 #Invalid input
                 try:
                     #DTMF doesn't have any branching so let's check for any
@@ -507,7 +507,7 @@ def survey_finitestatemachine(request):
     else:
         #Replace place holders by tag value
         script = placeholder_replace(list_section[current_state].script,
-                                       obj_callrequest.subscriber.contact)
+                                     obj_callrequest.subscriber.contact)
         #Text2Speech
         if settings.TTS_ENGINE != 'ACAPELA':
             html_play = "<Speak>%s</Speak>" % script
@@ -517,8 +517,8 @@ def survey_finitestatemachine(request):
             html_play = "<Play>%s</Play>" % audio_url
 
     #Invalid Audio URL
-    if list_section[current_state].invalid_audiofile \
-        and list_section[current_state].invalid_audiofile.audio_file.url:
+    if (list_section[current_state].invalid_audiofile
+       and list_section[current_state].invalid_audiofile.audio_file.url):
         #Audio file
         invalid_audiourl = url_basename + list_section[current_state].invalid_audiofile.audio_file.url
         invalid_input = ' invalidDigitsSound="%s"' % invalid_audiourl
@@ -543,8 +543,8 @@ def survey_finitestatemachine(request):
     #
 
     #Check if it's a completed section
-    if list_section[current_state].completed \
-        and (not current_completion or current_completion == 0):
+    if (list_section[current_state].completed
+       and (not current_completion or current_completion == 0)):
         cache.set(key_complete, 1, 21600)  # 21600 seconds = 6 hours
         #Flag subscriber
         subscriber = Subscriber.objects.get(pk=obj_callrequest.subscriber.id)
@@ -567,14 +567,14 @@ def survey_finitestatemachine(request):
         timeout = 1
         debug_outp += "PLAY_MESSAGE<br/>------------------<br/>"
         html =\
-        '<Response>\n'\
-        '   <GetDigits action="%s" method="GET" numDigits="%d" '\
-        'retries="1" validDigits="0123456789" timeout="%s" '\
-        'finishOnKey="#">\n'\
-        '       %s\n'\
-        '   </GetDigits>\n'\
-        '   <Redirect>%s</Redirect>\n'\
-        '</Response>' % (
+            '<Response>\n'\
+            '   <GetDigits action="%s" method="GET" numDigits="%d" '\
+            'retries="1" validDigits="0123456789" timeout="%s" '\
+            'finishOnKey="#">\n'\
+            '       %s\n'\
+            '   </GetDigits>\n'\
+            '   <Redirect>%s</Redirect>\n'\
+            '</Response>' % (
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
             number_digits,
             timeout,
@@ -592,14 +592,14 @@ def survey_finitestatemachine(request):
         dtmf_filter = list_section[current_state].build_dtmf_filter()
         debug_outp += "MULTI_CHOICE<br/>------------------<br/>"
         html =\
-        '<Response>\n'\
-        '   <GetDigits action="%s" method="GET" numDigits="%d" '\
-        'retries="%d" validDigits="%s" timeout="%s" '\
-        'finishOnKey="#" %s>\n'\
-        '       %s\n'\
-        '   </GetDigits>\n'\
-        '   <Redirect>%s</Redirect>\n'\
-        '</Response>' % (
+            '<Response>\n'\
+            '   <GetDigits action="%s" method="GET" numDigits="%d" '\
+            'retries="%d" validDigits="%s" timeout="%s" '\
+            'finishOnKey="#" %s>\n'\
+            '       %s\n'\
+            '   </GetDigits>\n'\
+            '   <Redirect>%s</Redirect>\n'\
+            '</Response>' % (
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
             number_digits,
             retries,
@@ -617,14 +617,14 @@ def survey_finitestatemachine(request):
             number_digits = 1
         debug_outp += "RATING_SECTION<br/>------------------<br/>"
         html =\
-        '<Response>\n'\
-        '   <GetDigits action="%s" method="GET" numDigits="%d" '\
-        'retries="%d" validDigits="0123456789" timeout="%s" '\
-        'finishOnKey="#" %s>\n'\
-        '       %s\n'\
-        '   </GetDigits>\n'\
-        '   <Redirect>%s</Redirect>\n'\
-        '</Response>' % (
+            '<Response>\n'\
+            '   <GetDigits action="%s" method="GET" numDigits="%d" '\
+            'retries="%d" validDigits="0123456789" timeout="%s" '\
+            'finishOnKey="#" %s>\n'\
+            '       %s\n'\
+            '   </GetDigits>\n'\
+            '   <Redirect>%s</Redirect>\n'\
+            '</Response>' % (
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
             number_digits,
             retries,
@@ -640,14 +640,14 @@ def survey_finitestatemachine(request):
             number_digits = 1
         debug_outp += "CAPTURE_DIGITS<br/>------------------<br/>"
         html =\
-        '<Response>\n'\
-        '   <GetDigits action="%s" method="GET" numDigits="%d" '\
-        'retries="%d" validDigits="0123456789" timeout="%s" '\
-        'finishOnKey="#" %s>\n'\
-        '       %s\n'\
-        '   </GetDigits>\n'\
-        '   <Redirect>%s</Redirect>\n'\
-        '</Response>' % (
+            '<Response>\n'\
+            '   <GetDigits action="%s" method="GET" numDigits="%d" '\
+            'retries="%d" validDigits="0123456789" timeout="%s" '\
+            'finishOnKey="#" %s>\n'\
+            '       %s\n'\
+            '   </GetDigits>\n'\
+            '   <Redirect>%s</Redirect>\n'\
+            '</Response>' % (
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
             number_digits,
             retries,
@@ -661,11 +661,11 @@ def survey_finitestatemachine(request):
         debug_outp += "RECORD_MSG<br/>------------------<br/>"
         #timeout : Seconds of silence before considering the recording complete
         html =\
-        '<Response>\n'\
-        '   %s\n'\
-        '   <Record maxLength="120" finishOnKey="*#" action="%s" '\
-        'method="GET" filePath="%s" timeout="10"/>'\
-        '</Response>' % (
+            '<Response>\n'\
+            '   %s\n'\
+            '   <Record maxLength="120" finishOnKey="*#" action="%s" '\
+            'method="GET" filePath="%s" timeout="10"/>'\
+            '</Response>' % (
             html_play,
             settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL,
             settings.FS_RECORDING_PATH)
@@ -700,10 +700,10 @@ def survey_finitestatemachine(request):
         # Hangup
         debug_outp += "Hangup<br/>------------------<br/>"
         html =\
-        '<Response>\n'\
-        '   %s\n'\
-        '   <Hangup />'\
-        '</Response>' % (html_play)
+            '<Response>\n'\
+            '   %s\n'\
+            '   <Hangup />'\
+            '</Response>' % (html_play)
         next_state = current_state
         cache.set(key_state, next_state, 21600)
 
@@ -850,7 +850,7 @@ def survey_del(request, object_id):
             Survey_template, pk=object_id, user=request.user)
         # 1) delete survey
         request.session["msg"] = _('"%(name)s" is deleted.')\
-                                 % {'name': survey.name}
+            % {'name': survey.name}
         # delete sections as well as branching which are belong to survey
         delete_section_branching(survey)
         survey.delete()
@@ -867,7 +867,7 @@ def survey_del(request, object_id):
                     delete_section_branching(survey)
 
             request.session["msg"] = _('%(count)s survey(s) are deleted.')\
-                    % {'count': survey_list.count()}
+                % {'count': survey_list.count()}
             survey_list.delete()
         except:
             raise Http404
@@ -898,8 +898,8 @@ def section_add(request):
     if request.method == 'POST':
 
         # Play message
-        if int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE\
-            or int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION:
+        if (int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE
+           or int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION):
             form = VoiceSectionForm(request.user)
             if request.POST.get('add'):
                 form = VoiceSectionForm(request.user, request.POST)
@@ -1050,8 +1050,8 @@ def section_change(request, id):
     section = get_object_or_404(Section_template,
                                 pk=int(id),
                                 survey__user=request.user)
-    if section.type == SECTION_TYPE.PLAY_MESSAGE \
-        or section.type == SECTION_TYPE.HANGUP_SECTION:
+    if (section.type == SECTION_TYPE.PLAY_MESSAGE
+       or section.type == SECTION_TYPE.HANGUP_SECTION):
         #PLAY_MESSAGE & HANGUP_SECTION
         form = VoiceSectionForm(request.user, instance=section)
     elif section.type == SECTION_TYPE.MULTI_CHOICE:
@@ -1066,17 +1066,17 @@ def section_change(request, id):
     elif section.type == SECTION_TYPE.RECORD_MSG:
         #RECORD_MSG
         form = RecordMessageSectionForm(request.user, instance=section)
-    elif section.type == SECTION_TYPE.CALL_TRANSFER:
-        #CALL_TRANSFER
-        form = PatchThroughSectionForm(request.user, instance=section)
+    # elif section.type == SECTION_TYPE.CALL_TRANSFER:
+    #     #CALL_TRANSFER
+    #     form = PatchThroughSectionForm(request.user, instance=section)
 
     request.session['err_msg'] = ''
 
     #TODO: See how to refactor this section
     if request.method == 'POST' and request.POST.get('type'):
         # Play message or Hangup Section
-        if int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE\
-            or int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION:
+        if (int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE
+           or int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION):
             form = VoiceSectionForm(request.user, instance=section)
             if request.POST.get('update'):
                 form = VoiceSectionForm(request.user,
@@ -1322,7 +1322,7 @@ def section_script_play(request, id):
         script_text = section.script
         script_hexdigest = hashlib.md5(script_text).hexdigest()
         file_path = '%s/tts/script_%s' % \
-                             (settings.MEDIA_ROOT, script_hexdigest)
+            (settings.MEDIA_ROOT, script_hexdigest)
         audio_file_path = file_path + '.wav'
         text_file_path = file_path + '.txt'
 
@@ -1710,8 +1710,8 @@ def survey_report(request):
         tday = datetime.today()
         from_date = tday.strftime('%Y-%m-01')
         last_day = ((datetime(tday.year, tday.month, 1, 23, 59, 59, 999999) +
-                     relativedelta(months=1)) -
-                     relativedelta(days=1)).strftime('%d')
+                    relativedelta(months=1)) -
+                    relativedelta(days=1)).strftime('%d')
         to_date = tday.strftime('%Y-%m-' + last_day)
         search_tag = 0
 
@@ -1866,8 +1866,8 @@ def survey_campaign_result(request, id):
         * List all survey result which belong to callrequest.
     """
     result = Result.objects\
-                .filter(callrequest=VoIPCall.objects.get(pk=id).callrequest_id)\
-                .order_by('section')
+        .filter(callrequest=VoIPCall.objects.get(pk=id).callrequest_id)\
+        .order_by('section')
     template = 'frontend/survey/survey_campaign_result.html'
     data = {
         'result': result,

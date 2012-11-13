@@ -409,6 +409,7 @@ ADMIN_TOOLS_INDEX_DASHBOARD = \
     'custom_admin_tools.dashboard.CustomIndexDashboard'
 ADMIN_TOOLS_APP_INDEX_DASHBOARD = \
     'custom_admin_tools.dashboard.CustomAppIndexDashboard'
+ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 #EMAIL BACKEND
 #=============

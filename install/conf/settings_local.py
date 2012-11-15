@@ -78,10 +78,10 @@ FS_RECORDING_PATH = '/usr/share/newfies/usermedia/recording/'
 NEWFIES_DIALER_ENGINE = 'dummy'
 
 API_ALLOWED_IP = [
-            '127.0.0.1',
-            'localhost',
-            #'SERVER_IP',
-                ]
+    '127.0.0.1',
+    'localhost',
+    #'SERVER_IP',
+]
 
 #TEXT-TO-SPEECH
 #==============

@@ -8,13 +8,16 @@ function toggleChecked(status) {
 }
 
 $(document).ready(function() {
-    $('#ListForm').submit(function() {
+    $('#ListForm').submit(function(e) {
+
+        var currentForm = this;
+        e.preventDefault();
 
         var $fields = $(this).find('input[name="select"]:checked');
 
         if (!$fields.length) {
             msg = '{% trans "You must check at least one box!" %}';
-            alert(msg);
+            bootbox.alert(msg);
             return false; // The form will *not* submit
         }
         else
@@ -73,11 +76,11 @@ $(document).ready(function() {
             //var answer = confirm(confirm_string);
             //return answer; // answer is a boolean
 
-            var final_res = false;
             bootbox.confirm(confirm_string, function(result) {
-                return result;
+                if (result) {
+                    currentForm.submit();
+                }
             });
-            return final_res;
         }
     });
 });

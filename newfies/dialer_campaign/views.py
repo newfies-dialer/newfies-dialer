@@ -14,7 +14,7 @@
 
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, \
-                                           permission_required
+    permission_required
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
@@ -51,7 +51,7 @@ def update_campaign_status_admin(request, pk, status):
     recipient = obj_campaign.update_status(status)
     common_send_notification(request, status, recipient)
     return HttpResponseRedirect(
-                reverse("admin:dialer_campaign_campaign_changelist"))
+        reverse("admin:dialer_campaign_campaign_changelist"))
 
 
 @login_required
@@ -81,13 +81,13 @@ def notify_admin(request):
     """
     # TODO : get recipient = admin user
     recipient = User.objects.get(pk=request.user.pk)
-    if request.session['has_notified'] == False:
+    if not request.session['has_notified']:
         common_send_notification(
             request, NOTIFICATION_NAME.dialer_setting_configuration, recipient)
         # Send mail to ADMINS
         subject = _('Dialer setting configuration')
         message = _('Notification - User Dialer Setting The user "%(user)s" - "%(user_id)s" is not properly configured to use the system, please configure their dialer settings.') %\
-          {'user': request.user, 'user_id': request.user.id}
+            {'user': request.user, 'user_id': request.user.id}
         # mail_admins() is a shortcut for sending an email to the site admins,
         # as defined in the ADMINS setting
         mail_admins(subject, message)
@@ -197,7 +197,7 @@ def campaign_grid(request):
         .order_by(sortorder_sign + sortname)[start_page:end_page]
 
     rows = [
-            {
+        {
             'id': row.id,
             'cell': [
                 '<input type="checkbox" name="select" class="checkbox" value="%s" />' % (str(row.id)),
@@ -209,14 +209,15 @@ def campaign_grid(request):
                 row.totalcontact,
                 get_campaign_status_name(row.status),
                 get_grid_update_delete_link(request, row.id, 'dialer_campaign.change_campaign',
-                    _('Update campaign'), 'update') + \
+                    _('Update campaign'), 'update') +
                 get_grid_update_delete_link(request, row.id, 'dialer_campaign.delete_campaign',
-                    _('Delete campaign'), 'delete') +\
-                get_campaign_survey_view(row) +\
-                make_duplicate_campaign(row) +\
+                    _('Delete campaign'), 'delete') +
+                get_campaign_survey_view(row) +
+                make_duplicate_campaign(row) +
                 get_url_campaign_status(row.id, row.status),
-            ]} for row in campaign_list
-        ]
+            ]
+        } for row in campaign_list
+    ]
 
     data = {'rows': rows,
             'page': page,
@@ -298,8 +299,7 @@ def campaign_add(request):
         # check Max Number of running campaign
         if check_dialer_setting(request, check_for="campaign"):
             msg = _("you have too many campaigns. Max allowed %(limit)s") \
-                    % {'limit': \
-                       dialer_setting_limit(request, limit_for="campaign")}
+                % {'limit': dialer_setting_limit(request, limit_for="campaign")}
             request.session['msg'] = msg
 
             # campaign limit reached
@@ -335,11 +335,11 @@ def campaign_add(request):
 
     template = 'frontend/campaign/change.html'
     data = {
-       'module': current_view(request),
-       'form': form,
-       'action': 'add',
-       'notice_count': notice_count(request),
-       'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'module': current_view(request),
+        'form': form,
+        'action': 'add',
+        'notice_count': notice_count(request),
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))
@@ -363,7 +363,7 @@ def campaign_del(request, object_id):
         # When object_id is not 0
         campaign = get_object_or_404(Campaign, pk=object_id, user=request.user)
         request.session["msg"] = _('"%(name)s" is deleted.')\
-                                 % {'name': campaign.name}
+            % {'name': campaign.name}
         campaign.delete()
     else:
         # When object_id is 0 (Multiple records delete)
@@ -371,8 +371,8 @@ def campaign_del(request, object_id):
         values = ", ".join(["%s" % el for el in values])
         try:
             campaign_list = Campaign.objects\
-                                .filter(user=request.user)\
-                                .extra(where=['id IN (%s)' % values])
+                .filter(user=request.user)\
+                .extra(where=['id IN (%s)' % values])
             if campaign_list:
                 request.session["msg"] = _('%(count)s campaign(s) are deleted.')\
                     % {'count': campaign_list.count()}
@@ -406,7 +406,7 @@ def campaign_change(request, object_id):
     campaign = get_object_or_404(Campaign, pk=object_id, user=request.user)
 
     content_object = "type:%s-id:%s" % \
-                        (campaign.content_type_id, campaign.object_id)
+        (campaign.content_type_id, campaign.object_id)
     form = CampaignForm(request.user,
                         instance=campaign,
                         initial={'content_object': content_object})
@@ -438,7 +438,7 @@ def campaign_change(request, object_id):
                 # while campaign status is running
                 if campaign.status == CAMPAIGN_STATUS.START:
                     if request.POST.get('selected_phonebook'):
-                        selected_phonebook = str(request.POST\
+                        selected_phonebook = str(request.POST
                             .get('selected_phonebook')).split(',')
                         obj.phonebook = Phonebook.objects\
                             .filter(id__in=selected_phonebook)
@@ -449,9 +449,9 @@ def campaign_change(request, object_id):
                 obj.save()
 
                 # Start tasks to import subscriber
-                if obj.status \
-                    and int(obj.status) == CAMPAIGN_STATUS.START \
-                    and previous_status != CAMPAIGN_STATUS.START:
+                if (obj.status
+                   and int(obj.status) == CAMPAIGN_STATUS.START
+                   and previous_status != CAMPAIGN_STATUS.START):
                     collect_subscriber.delay(obj.id)
 
                 request.session["msg"] = _('"%(name)s" is updated.') \
@@ -461,13 +461,13 @@ def campaign_change(request, object_id):
 
     template = 'frontend/campaign/change.html'
     data = {
-       'module': current_view(request),
-       'form': form,
-       'action': 'update',
-       'notice_count': notice_count(request),
-       'dialer_setting_msg': user_dialer_setting_msg(request.user),
-       'error_msg': request.session.get('error_msg'),
-       'info_msg': request.session.get('info_msg'),
+        'module': current_view(request),
+        'form': form,
+        'action': 'update',
+        'notice_count': notice_count(request),
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'error_msg': request.session.get('error_msg'),
+        'info_msg': request.session.get('info_msg'),
     }
     request.session['error_msg'] = ''
     request.session['info_msg'] = ''
@@ -491,6 +491,8 @@ def campaign_duplicate(request, id):
             dup_campaign.campaign_code = request.POST.get('campaign_code')
             dup_campaign.name = request.POST.get('name')
             dup_campaign.status = CAMPAIGN_STATUS.PAUSE
+            dup_campaign.totalcontact = 0
+            dup_campaign.completed = 0
             dup_campaign.save()
 
             return HttpResponseRedirect('/campaign/')

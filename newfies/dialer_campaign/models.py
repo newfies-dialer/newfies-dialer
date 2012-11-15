@@ -350,7 +350,7 @@ class Campaign(Model):
         # Cache need to be set per campaign
         # subscriber_count_key_campaign_id_1
         subscriber_count = cache.get(
-                'subscriber_count_key_campaign_id_' + str(self.id))
+            'subscriber_count_key_campaign_id_' + str(self.id))
 
         if subscriber_count is None:
             list_contact = Contact.objects.values_list('id', flat=True)\
@@ -433,8 +433,8 @@ class Campaign(Model):
         self.status = status
         self.save()
         #Start tasks to import subscriber
-        if int(status) == CAMPAIGN_STATUS.START \
-           and int(previous_status) != CAMPAIGN_STATUS.START:
+        if (int(status) == CAMPAIGN_STATUS.START
+           and int(previous_status) != CAMPAIGN_STATUS.START):
             #TODO: Move to signal
             from dialer_campaign.tasks import collect_subscriber
             collect_subscriber.delay(self.id)

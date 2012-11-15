@@ -59,17 +59,22 @@ def update_campaign_status_cust(request, pk, status):
     """Campaign Status (e.g. start|stop|pause|abort) can be changed from
     customer interface (via dialer_campaign/campaign list)"""
     obj_campaign = Campaign.objects.get(id=pk)
-    recipient = obj_campaign.update_status(status)
-    common_send_notification(request, status, recipient)
 
-    # Notify user while campaign Start
-    if int(status) == CAMPAIGN_STATUS.START:
-        request.session['info_msg'] = \
-            _('The campaign global settings cannot be edited when the campaign is started')
-        if obj_campaign.content_type.model == 'survey_template':
-            check_survey_campaign(request, pk)
-        elif obj_campaign.content_type.model == 'voiceapp_template':
-            check_voiceapp_campaign(request, pk)
+    # Notify user while campaign Start & no phonebook attached
+    if int(status) == CAMPAIGN_STATUS.START and obj_campaign.phonebook.all().count() == 0:
+        request.session['error_msg'] = _('Error : You have to assign a phonebook to your campaign before starting it')
+    else:
+        recipient = obj_campaign.update_status(status)
+        common_send_notification(request, status, recipient)
+
+        # Notify user while campaign Start
+        if int(status) == CAMPAIGN_STATUS.START:
+            request.session['info_msg'] = \
+                _('The campaign global settings cannot be edited when the campaign is started')
+            if obj_campaign.content_type.model == 'survey_template':
+                check_survey_campaign(request, pk)
+            elif obj_campaign.content_type.model == 'voiceapp_template':
+                check_voiceapp_campaign(request, pk)
 
     return HttpResponseRedirect('/campaign/')
 

@@ -185,6 +185,7 @@ def customer_dashboard(request, on_index=None):
 
     form = DashboardForm(request.user)
     total_data = []  # for humblefinance chart
+    total_record = dict()
     final_calls = []  # for pie chart
     min_limit = ''
     max_limit = ''
@@ -268,7 +269,25 @@ def customer_dashboard(request, on_index=None):
                      .order_by('starting_date')
 
         final_calls = []
+
         for i in calls:
+            print i
+            graph_day = datetime(int(i['starting_date'][0:4]),
+                                 int(i['starting_date'][5:7]),
+                                 int(i['starting_date'][8:10]),
+                                 int(i['starting_date'][11:13]),
+                                 )#int(i['starting_date'][14:16])
+            dt = int(1000 * time.mktime(graph_day.timetuple()))
+
+            if dt in total_record:
+                total_record[dt]['duration_sum'] += i['duration__sum']
+                total_record[dt]['count_call'] += i['starting_date__count']
+            else:
+                total_record[dt] = {
+                    'duration_sum': i['duration__sum'],
+                    'count_call': i['starting_date__count']
+                }
+
             # convert unicode date string into date
             starting_datetime = parser.parse(str(i['starting_date']))
             final_calls.append(
@@ -307,7 +326,7 @@ def customer_dashboard(request, on_index=None):
                 total_noroute += i['starting_date__count']
             else:
                 total_forbidden += i['starting_date__count']  # FORBIDDEN
-
+        print total_record
         # This part got from cdr-stats 'global report' used by humblefinance
         # following calls list is without dispostion & group by call date
         calls = VoIPCall.objects\
@@ -418,6 +437,8 @@ def customer_dashboard(request, on_index=None):
                     #'disposition': calls_dict[inttime]['disposition'],
                     'starting_date': calls_dict[inttime]['starting_datetime'],
                 })
+
+
 
                 # Extra part: To count total no of calls & their duration
                 total_duration_sum = total_duration_sum + \
@@ -701,6 +722,7 @@ def customer_dashboard(request, on_index=None):
         'reached_contact': reached_contact,
         'notice_count': notice_count(request),
         'total_data': total_data,  # for humblefinanace graph
+        'total_record': total_record,
         'final_calls': final_calls,  # for flot graph
         'min_limit': min_limit,
         'max_limit': max_limit,

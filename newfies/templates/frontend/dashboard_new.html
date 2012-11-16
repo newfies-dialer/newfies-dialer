@@ -6,7 +6,6 @@
 {% endblock %}
 
 {% block extra_header %}
-    {% include "frontend/flotr_humble_header.html" %}
 {% endblock %}
 
 {% block content_header %}
@@ -39,84 +38,186 @@
     </tr>
 </table>
 
-<script type="text/javascript">
-    var jsonData = [
-        {% for td in total_data %}
-           {date:'{{ td.date }}', year:{{ td.year }},day:{{ td.day }}, month:{{ td.month }}, calls:{{ td.starting_date__count }}, duration:'{{ td.duration__sum|conv_min }}', act:'{{ td.duration__avg|conv_min }}'},
-        {% endfor %}
-    ];
 
-    var callData = [
-        {% for td in total_data %}
-            [{{ td.count }} , {{ td.starting_date__count }}],
-        {% endfor %}
-    ];
-
-    var durationData = [
-        {% for td in total_data %}
-            [{{ td.count }} , {{ td.duration__sum }}],
-        {% endfor %}
-    ];
-
-    var summaryData = [
-        {% for td in total_data %}
-            [{{ td.count }} , {{ td.starting_date__count }}],
-        {% endfor %}
-    ];
-</script>
-
-<script type="text/javascript">
-(function($){
-    Event.observe(document, 'dom:loaded', function() {
-        prettyPrint();
-        HumbleFinance.trackFormatter = function (obj) {
-            var x = Math.floor(obj.x);
-            var data = jsonData[x];
-            var text = data.date + " {% trans "Calls :" %} " + data.calls + " {% trans "Duration :" %} " + data.duration + " {% trans "ACT :" %} " + data.act;
-            return text;
-        };
-        HumbleFinance.yTickFormatter = function (n) {
-            if (n == this.axes.y.max) {
-                return false;
-            }
-            return n;
-        };
-        HumbleFinance.xTickFormatter = function (n) {
-            if (n == 0) {
-                return false;
-            }
-            x = Math.floor(n)
-            var data = jsonData[x].day;
-            return data;
-        };
-        {% if select_graph_for == 'Call Count' %}
-            HumbleFinance.init('finance', callData, durationData, summaryData);
-        {% else %}
-            HumbleFinance.init('finance', durationData, callData, summaryData);
-        {% endif %}
-      });
-})(jQuery);
-</script>
-
-<input type="submit" class="btn" value="{% trans "Call Count" %}" name="call_count_button"/> &nbsp; &nbsp;
-<input type="submit" class="btn btn-info" value="{% trans "Duration" %}" name="duration_button"/>
+<input type="button" class="btn" value="{% trans "Call Count" %}" id="id_call_count" name="call_count_button"/> &nbsp; &nbsp;
+<input type="button" class="btn btn-info" value="{% trans "Duration" %}" id="id_duration" name="duration_button"/>
+<!--default-->
+<input type="hidden" name="graph_view" id="id_graph_view" value="count" />
 </form>
 
 </div>
+<script type="text/javascript">
+    var previousPoint = null;
+    function showTooltip(x, y, contents) {
+        $('<div id="tooltip">' + contents + '</div>').css( {
+            position: 'absolute',
+            display: 'none',
+            top: y + 5,
+            left: x + 5,
+            border: '1px solid #fdd',
+            padding: '2px',
+            'background-color': '#fee',
+            opacity: 0.80
+        }).appendTo("body").fadeIn(200);
+    }
 
-{% if total_data %}
-<div class="row">
-    <div class="span12">
-    <div id="finance">
-        <div id="labels">
-            <div id="financeTitle"></div>
-            <div id="dateRange"></div>
+    $(function () {
+        var call_count_data = [
+            {% for data in total_record %}
+                [{{ data.0 }}, {{ data.1.count_call }}, {{ data.1.duration_sum }}],
+            {% endfor %}
+        ];
+
+        var call_duration_data = [
+            {% for data in total_record %}
+                [{{ data.0 }}, {{ data.1.duration_sum }}, {{ data.1.count_call }}],
+            {% endfor %}
+        ];
+
+        function Info(time, info){
+            for(var i in data){
+                if(data[i][0] == parseInt(time)){
+                    switch(info){
+                        case 0:
+                            return data[i][0];
+                            break;
+                        case 1:
+                            return data[i][1];
+                            break;
+                        case 2:
+                            return data[i][2];
+                            break;
+                        default:
+                            return data[i][0];
+                    }
+                }
+            }
+        }
+
+        function formTicks(val) {
+
+            var dt = new Date(parseInt(val));
+            var hour = dt.getHours();
+            var minute = dt.getMinutes();
+            var ampm = hour >= 12 ? 'pm' : 'am';
+            var hour = hour % 12;
+            hour = hour ? hour : 12; // the hour '0' should be '12'
+            minute = minute < 10 ? '0' + minute : minute;
+            strTime = hour + ':' + minute + ' ' + ampm;
+            return strTime
+        }
+
+        var options = {
+            xaxis: { mode: "time",
+                tickLength: 5,
+                tickFormatter: function(val) { return formTicks(val) }
+            },
+            series: {
+                lines: { show: true},
+                //points: { show: true }
+            },
+            yaxis: { min: 0, tickDecimals: false },
+            selection: { mode: "x" },
+            grid: {
+                hoverable: true,
+                xaxis: false
+            }
+        };
+
+        var plot = $.plot($("#graph_responsive"), [call_count_data], options);
+
+        function e(data_set) {
+            var overview_option = {
+                legend: {show: false},
+                series: {
+                    lines: { show: true, lineWidth: 1 },
+                    shadowSize: 0
+                },
+                xaxis: { ticks: [], mode: "time" },
+                yaxis: { ticks: [], min: 0, autoscaleMargin: 0.1 },
+                selection: { mode: "x" }
+            };
+
+            var overview = $.plot($("#overview"), [data_set], overview_option);
+
+            // now connect the two
+            $("#graph_responsive").bind("plotselected", function (event, ranges) {
+                // do the zooming
+                plot = $.plot($("#graph_responsive"), [data_set],
+                        $.extend(true, {}, options, {
+                            xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to }
+                        }));
+                // don't fire event on the overview to prevent eternal loop
+                overview.setSelection(ranges, true);
+            });
+
+            $("#overview").bind("plotselected", function (event, ranges) {
+                plot.setSelection(ranges);
+            });
+        }
+
+        //default data set
+        e(call_count_data);
+
+        $("#graph_responsive").bind("plothover", function (event, pos, item) {
+            if (item) {
+                if (previousPoint != item.dataIndex) {
+                    previousPoint = item.dataIndex;
+
+                    $("#tooltip").remove();
+                    var x = item.datapoint[0].toFixed(2),
+                            y = item.datapoint[1].toFixed(2);
+
+                    var time = x;
+                    var dt = new Date(parseInt(time));
+                    var hour = dt.getHours();//(time.toString().split("."))[0];
+                    var minute = dt.getMinutes();//Math.round(time * 60 - (hour * 60));
+                    var output = '';
+                    output += '<div class="graph_tooltip_header">';
+
+                    var ampm = hour >= 12 ? 'pm' : 'am';
+                    var hour = hour % 12;
+                    hour = hour ? hour : 12; // the hour '0' should be '12'
+                    minute = minute < 10 ? '0'+minute : minute;
+                    strTime = hour + ':' + minute + ' ' + ampm;
+
+                    output += strTime + '</div><div class="graph_tooltip_info">{% trans "Calls" %}: ' + Info(time,1) + '<br>{% trans "Duration" %}: ' + Info(time,2) + ' {% trans "secs" %}</div>';
+
+                    showTooltip(item.pageX, item.pageY, output);
+                }
+            }
+            else {
+                $("#tooltip").remove();
+                previousPoint = null;
+            }
+        });
+
+        $("#id_call_count").click(function () {
+            $('#id_graph_view').val('count');
+
+            $.plot($("#graph_responsive"), [call_count_data], options);
+            e(hour_call_count);
+
+        });
+
+        $("#id_duration").click(function () {
+            $('#id_graph_view').val('duration');
+
+            $.plot($("#graph_responsive"), [call_duration_data], options);
+            e(hour_call_duration);
+
+        });
+    });
+</script>
+    <div class="row">
+        <div class="span12">
+            {% if total_record %}
+                <div id="graph_responsive" class="span11" style="height:300px;"></div>
+                <div id="overview" style="margin-left:350px;margin-top:50px;width:400px;height:50px"></div>
+            {% endif %}
+
         </div>
     </div>
-    </div>
-</div>
-{% endif %}
-<br/><br/>
 
 {% if final_calls %}
 
@@ -126,9 +227,9 @@
         if (!obj)
             return;
         percent = parseFloat(obj.series.percent).toFixed(2);
-        (function($){
+        $(function(){
             $("#hover").html('<span style="font-weight: bold; color: '+obj.series.color+'">'+obj.series.label+' ('+percent+'%)</span>');
-        })(jQuery);
+        });
     }
 
     function pieClick(event, pos, obj)
@@ -138,9 +239,8 @@
         percent = parseFloat(obj.series.percent).toFixed(2);
         alert(''+obj.series.label+': '+percent+'%');
     }
-    (function($){
+    $(function(){
         $(function () {
-
             var data = [
                 { label: 'ANSWER' , data: [[1, {{ total_answered }}]], color: '{{ answered_color }}' },
                 { label: 'BUSY' , data: [[1, {{ total_busy }}]], color: '{{ busy_color }}' },
@@ -183,9 +283,9 @@
             var plot = $.plot($("#camp_pie"), data, options);
         });
 
-    })(jQuery);
+    });
 </script>
-
+<br/><br/>
 <div class="row">
     <div class="span12">
         <div class="row">

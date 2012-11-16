@@ -89,7 +89,7 @@ def create_callrequest(campaign_id, quantity):
         print "Get list section:"
         list_section = Section.objects.filter(survey=obj_campaign.object_id)
 
-
+        """
         # for elem in list_section:
         #     print elem[1]
         for j in range(1, 3):
@@ -115,7 +115,7 @@ def create_callrequest(campaign_id, quantity):
                             section=list_section[section_id],
                             response=choice(RESPONSE),
                             count=response_count)
-
+        """
     print _("No of Callrequest & CDR created :%(count)s" % \
                 {'count': quantity})
 

@@ -94,18 +94,41 @@
             return month[m-1];
     }
 
+
     $(function () {
         var call_count_data = [
             {% for data in total_record %}
-                [{{ data.0 }}, {{ data.1.count_call }}, {{ data.1.duration_sum }}],
+                [{{ data.0 }}, {{ data.1.call_count }}, {{ data.1.duration_avg }}],
             {% endfor %}
         ];
 
         var call_duration_data = [
             {% for data in total_record %}
-                [{{ data.0 }}, {{ data.1.duration_sum }}, {{ data.1.count_call }}],
+                [{{ data.0 }}, {{ data.1.duration_sum }}],
             {% endfor %}
         ];
+
+        var data = call_count_data;
+        function Info(time, info){
+            for(var i in data){
+                if(data[i][0] == parseInt(time)){
+                    switch(info){
+                        case 0:
+                            return data[i][0];
+                            break;
+                        case 1:
+                            return data[i][1];
+                            break;
+                        case 2:
+                            return data[i][2];
+                            break;
+                        default:
+                            return data[i][0];
+                    }
+                }
+            }
+        }
+
 
         function formTicks(val) {
 
@@ -195,6 +218,7 @@
                     var hour = dt.getHours();//(time.toString().split("."))[0];
                     var minute = dt.getMinutes();//Math.round(time * 60 - (hour * 60));
                     var output = '';
+                    var duration_avg = Info(time, 2);
                     output += '<div class="graph_tooltip_header">';
 
                     var ampm = hour >= 12 ? 'pm' : 'am';
@@ -206,10 +230,12 @@
                     var date_tag = '{% trans "Date" %}';
                     var call_tag = '{% trans "Calls" %}';
                     var duration_tag = '{% trans "Duration" %}';
+                    var avg_duration_tag = '{% trans "Avg. Duration" %}';
+                    var hour_tag = '{% trans "Hour" %}';
 
                     if(graph_view=='count' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.A_Last_30_days }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.B_Last_7_days }}))
                     {
-                        date_string = date_tag + ' - ' + Day + ', ' + month_name + ' ' + Year ;
+                        date_string = date_tag + ' - ' + Day + ', ' + month_name + ' ' + Year  ;
                         value_string = call_tag + ' - ' + parseInt(y) ;
                     }
 
@@ -242,7 +268,7 @@
                         date_string = date_tag + ' - ' + Day + ', ' + month_name + ' ' + Year + ' ' + strTime;
                         value_string = duration_tag + ' - ' + y ;
                     }
-
+                    value_string = value_string + '<br/>' + avg_duration_tag + ': ' + duration_avg;
                     output = '<div class="graph_tooltip_info">' + date_string + "<br/>"+ value_string + '</div>';
                     showTooltip(item.pageX, item.pageY, output);
                 }

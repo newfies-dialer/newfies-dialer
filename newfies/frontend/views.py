@@ -776,7 +776,7 @@ def customer_dashboard_new(request, on_index=None):
         Contact.objects.filter(phonebook__user=request.user).count()
 
     form = DashboardForm(request.user)
-    total_data = []  # for humblefinance chart
+
     total_record = dict()
     final_calls = []  # for pie chart
     min_limit = ''
@@ -794,7 +794,6 @@ def customer_dashboard_new(request, on_index=None):
     total_invalidargs = 0
     total_noroute = 0
     total_forbidden = 0
-    select_graph_for = 'Call Count'  # default (or Duration)
     search_type = SEARCH_TYPE.D_Last_24_hours  # default Last 24 hours
     selected_campaign = ''
 
@@ -807,11 +806,6 @@ def customer_dashboard_new(request, on_index=None):
             form = DashboardForm(request.user, request.POST)
             selected_campaign = request.POST['campaign']
             search_type = request.POST['search_type']
-
-            if request.POST.get('call_count_button'):
-                select_graph_for = request.POST['call_count_button']
-            if request.POST.get('duration_button'):
-                select_graph_for = request.POST['duration_button']
 
         end_date = datetime.today()
         start_date = calculate_date(search_type)
@@ -949,24 +943,24 @@ def customer_dashboard_new(request, on_index=None):
             if int(search_type) >= SEARCH_TYPE.B_Last_7_days:
                 calls_dict[int(ctime.strftime("%Y%m%d%H"))] =\
                     {
-                        'starting_date__count': data['starting_date__count'],
-                        'duration__sum': data['duration__sum'],
-                        'duration__avg': data['duration__avg'],
+                        'call_count': data['starting_date__count'],
+                        'duration_sum': data['duration__sum'],
+                        'duration_avg': data['duration__avg'],
                     }
 
                 calls_dict_with_min[int(ctime.strftime("%Y%m%d%H%M"))] =\
-                {
-                    'starting_date__count': data['starting_date__count'],
-                    'duration__sum': data['duration__sum'],
-                    'duration__avg': data['duration__avg'],
-                }
+                    {
+                        'call_count': data['starting_date__count'],
+                        'duration_sum': data['duration__sum'],
+                        'duration_avg': data['duration__avg'],
+                    }
             else:
                 # Last 30 days option
                 calls_dict[int(ctime.strftime("%Y%m%d"))] =\
                     {
-                        'starting_date__count': data['starting_date__count'],
-                        'duration__sum': data['duration__sum'],
-                        'duration__avg': data['duration__avg'],
+                        'call_count': data['starting_date__count'],
+                        'duration_sum': data['duration__sum'],
+                        'duration_avg': data['duration__avg'],
                     }
 
         dateList = date_range(mintime, maxtime, q=search_type)
@@ -987,15 +981,15 @@ def customer_dashboard_new(request, on_index=None):
 
                     dt = int(1000 * time.mktime(graph_day.timetuple()))
                     total_record[dt] = {
+                        'call_count': 0,
                         'duration_sum': 0,
-                        'count_call': 0,
                         'duration_avg': 0,
                     }
 
                     if last_seven_days_inttime in calls_dict.keys():
-                        total_record[dt]['duration_sum'] += calls_dict[last_seven_days_inttime]['duration__sum']
-                        total_record[dt]['count_call'] += calls_dict[last_seven_days_inttime]['starting_date__count']
-                        total_record[dt]['duration_avg'] += calls_dict[last_seven_days_inttime]['duration__avg']
+                        total_record[dt]['call_count'] += calls_dict[last_seven_days_inttime]['call_count']
+                        total_record[dt]['duration_sum'] += calls_dict[last_seven_days_inttime]['duration_sum']
+                        total_record[dt]['duration_avg'] += calls_dict[last_seven_days_inttime]['duration_avg']
 
             # last 12 hrs | last 6 hrs | last 1 hrs
             elif int(search_type) == SEARCH_TYPE.E_Last_12_hours or int(search_type) == SEARCH_TYPE.F_Last_6_hours or int(search_type) == SEARCH_TYPE.G_Last_hour:
@@ -1012,16 +1006,15 @@ def customer_dashboard_new(request, on_index=None):
 
                         dt = int(1000 * time.mktime(graph_day.timetuple()))
                         total_record[dt] = {
+                            'call_count': 0,
                             'duration_sum': 0,
-                            'count_call': 0,
                             'duration_avg': 0,
                         }
 
                         if yesterday_inttime in calls_dict_with_min.keys():
-                            total_record[dt]['duration_sum'] += calls_dict_with_min[yesterday_inttime]['duration__sum']
-                            total_record[dt]['count_call'] += calls_dict_with_min[yesterday_inttime]['starting_date__count']
-                            total_record[dt]['duration_avg'] += calls_dict_with_min[yesterday_inttime]['duration__avg']
-
+                            total_record[dt]['call_count'] += calls_dict_with_min[yesterday_inttime]['call_count']
+                            total_record[dt]['duration_sum'] += calls_dict_with_min[yesterday_inttime]['duration_sum']
+                            total_record[dt]['duration_avg'] += calls_dict_with_min[yesterday_inttime]['duration_avg']
             else:
                 # Last 30 days option
                 graph_day = datetime(int(date.strftime("%Y")),
@@ -1029,15 +1022,14 @@ def customer_dashboard_new(request, on_index=None):
                                      int(date.strftime("%d")))
                 dt = int(1000 * time.mktime(graph_day.timetuple()))
                 total_record[dt] = {
+                    'call_count': 0,
                     'duration_sum': 0,
-                    'count_call': 0,
                     'duration_avg': 0,
                 }
                 if inttime in calls_dict.keys():
-                    total_record[dt]['duration_sum'] += calls_dict[inttime]['duration__sum']
-                    total_record[dt]['count_call'] += calls_dict[inttime]['starting_date__count']
-                    total_record[dt]['duration_avg'] += calls_dict[inttime]['duration__avg']
-
+                    total_record[dt]['call_count'] += calls_dict[inttime]['call_count']
+                    total_record[dt]['duration_sum'] += calls_dict[inttime]['duration_sum']
+                    total_record[dt]['duration_avg'] += calls_dict[inttime]['duration_avg']
 
     # sorting on date col
     total_record = total_record.items()
@@ -1066,12 +1058,8 @@ def customer_dashboard_new(request, on_index=None):
         'pb_active_contact_count': pb_active_contact_count,
         'reached_contact': reached_contact,
         'notice_count': notice_count(request),
-        'total_data': total_data,  # for humblefinanace graph
         'total_record': total_record,
         'final_calls': final_calls,  # for flot graph
-        'min_limit': min_limit,
-        'max_limit': max_limit,
-        'select_graph_for': select_graph_for,
         'total_duration_sum': total_duration_sum,
         'total_call_count': total_call_count,
         'total_answered': total_answered,

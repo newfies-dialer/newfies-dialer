@@ -21,6 +21,7 @@ urlpatterns = patterns('frontend.views',
     (r'^index/$', 'index'),
     (r'^pleaselog/$', 'pleaselog'),
     (r'^dashboard/$', 'customer_dashboard'),
+    (r'^dashboard_new/$', 'customer_dashboard_new'),
 
     # Password reset for Customer UI
     (r'^password_reset/$', 'cust_password_reset'),

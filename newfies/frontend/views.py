@@ -271,23 +271,6 @@ def customer_dashboard(request, on_index=None):
         final_calls = []
 
         for i in calls:
-            print i
-            graph_day = datetime(int(i['starting_date'][0:4]),
-                                 int(i['starting_date'][5:7]),
-                                 int(i['starting_date'][8:10]),
-                                 int(i['starting_date'][11:13]),
-                                 )#int(i['starting_date'][14:16])
-            dt = int(1000 * time.mktime(graph_day.timetuple()))
-
-            if dt in total_record:
-                total_record[dt]['duration_sum'] += i['duration__sum']
-                total_record[dt]['count_call'] += i['starting_date__count']
-            else:
-                total_record[dt] = {
-                    'duration_sum': i['duration__sum'],
-                    'count_call': i['starting_date__count']
-                }
-
             # convert unicode date string into date
             starting_datetime = parser.parse(str(i['starting_date']))
             final_calls.append(
@@ -326,7 +309,8 @@ def customer_dashboard(request, on_index=None):
                 total_noroute += i['starting_date__count']
             else:
                 total_forbidden += i['starting_date__count']  # FORBIDDEN
-        print total_record
+
+
         # This part got from cdr-stats 'global report' used by humblefinance
         # following calls list is without dispostion & group by call date
         calls = VoIPCall.objects\
@@ -757,6 +741,356 @@ def customer_dashboard(request, on_index=None):
         return data
     return render_to_response(template, data,
            context_instance=RequestContext(request))
+
+
+@permission_required('dialer_campaign.view_dashboard', login_url='/')
+@login_required
+def customer_dashboard_new(request, on_index=None):
+    """Customer dashboard gives the following information
+
+        * No of Campaigns for logged in user
+        * Total phonebook contacts
+        * Total Campaigns contacts
+        * Amount of contact reached today
+        * Disposition of calls via pie chart
+        * Call records & Duration of calls are shown on graph by days/hours
+
+    **Attributes**:
+
+        * ``template`` - frontend/dashboard.html
+        * ``form`` - DashboardForm
+    """
+
+    # All campaign for logged in User
+    campaign_id_list = Campaign.objects.values_list('id', flat=True)\
+        .filter(user=request.user).order_by('id')
+    campaign_count = campaign_id_list.count()
+
+    # Contacts count which are active and belong to those phonebook(s) which is
+    # associated with all campaign
+    pb_active_contact_count = Contact.objects\
+        .filter(phonebook__campaign__in=campaign_id_list, status=1)\
+        .count()
+
+    total_of_phonebook_contacts =\
+        Contact.objects.filter(phonebook__user=request.user).count()
+
+    form = DashboardForm(request.user)
+
+    total_record = dict()
+    final_calls = []  # for pie chart
+    min_limit = ''
+    max_limit = ''
+    total_duration_sum = 0
+    total_call_count = 0
+    total_answered = 0
+    total_not_answered = 0
+    total_busy = 0
+    total_cancel = 0
+    total_congestion = 0
+    total_chanunavail = 0
+    total_dontcall = 0
+    total_torture = 0
+    total_invalidargs = 0
+    total_noroute = 0
+    total_forbidden = 0
+    search_type = SEARCH_TYPE.D_Last_24_hours  # default Last 24 hours
+    selected_campaign = ''
+
+    if campaign_id_list:
+        selected_campaign = campaign_id_list[0]  # default campaign id
+
+    # selected_campaign should not be empty
+    if selected_campaign:
+        if request.method == 'POST':
+            form = DashboardForm(request.user, request.POST)
+            selected_campaign = request.POST['campaign']
+            search_type = request.POST['search_type']
+
+        end_date = datetime.today()
+        start_date = calculate_date(search_type)
+
+        min_limit = time.mktime(start_date.timetuple())
+        max_limit = time.mktime(end_date.timetuple())
+
+        # date_length is used to do group by starting_date
+        if int(search_type) >= SEARCH_TYPE.B_Last_7_days:  # all options except 30 days
+            date_length = 13
+            if int(search_type) == SEARCH_TYPE.C_Yesterday:  # yesterday
+                now = datetime.now()
+                start_date = datetime(now.year,
+                                      now.month,
+                                      now.day,
+                                      0, 0, 0, 0) - relativedelta(days=1)
+                end_date = datetime(now.year,
+                                    now.month,
+                                    now.day,
+                                    23, 59, 59, 999999) - relativedelta(days=1)
+            if int(search_type) >= SEARCH_TYPE.E_Last_12_hours:
+                date_length = 16
+        else:
+            date_length = 10  # Last 30 days option
+
+        select_data =\
+            {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,%s)" %\
+                          str(date_length)}
+
+        # This calls list is used by pie chart
+        calls = VoIPCall.objects\
+            .filter(callrequest__campaign=selected_campaign,
+                duration__isnull=False,
+                user=request.user,
+                starting_date__range=(start_date, end_date))\
+            .extra(select=select_data)\
+            .values('starting_date', 'disposition')\
+            .annotate(Sum('duration'))\
+            .annotate(Avg('duration'))\
+            .annotate(Count('starting_date'))\
+            .order_by('starting_date')
+
+        final_calls = []
+
+        for i in calls:
+            # convert unicode date string into date
+            starting_datetime = parser.parse(str(i['starting_date']))
+            final_calls.append(
+                {
+                    'starting_date': i['starting_date'],
+                    'starting_datetime':\
+                        time.mktime(starting_datetime.timetuple()),
+                    'starting_date__count': i['starting_date__count'],
+                    'duration__sum': i['duration__sum'],
+                    'duration__avg': i['duration__avg'],
+                    'disposition': i['disposition']
+                })
+
+            if i['disposition'] == VOIPCALL_DISPOSITION.ANSWER:
+                total_answered += i['starting_date__count']
+            elif i['disposition'] == VOIPCALL_DISPOSITION.BUSY\
+                or i['disposition'] == 'USER_BUSY':
+                total_busy += i['starting_date__count']
+            elif i['disposition'] == VOIPCALL_DISPOSITION.NOANSWER\
+                or i['disposition'] == 'NO_ANSWER':
+                total_not_answered += i['starting_date__count']
+            elif i['disposition'] == VOIPCALL_DISPOSITION.CANCEL:
+                total_cancel += i['starting_date__count']
+            elif i['disposition'] == VOIPCALL_DISPOSITION.CONGESTION:
+                total_congestion += i['starting_date__count']
+            elif i['disposition'] == VOIPCALL_DISPOSITION.CHANUNAVAIL:
+                total_chanunavail += i['starting_date__count']
+            elif i['disposition'] == VOIPCALL_DISPOSITION.DONTCALL:
+                total_dontcall += i['starting_date__count']
+            elif i['disposition'] == VOIPCALL_DISPOSITION.TORTURE:
+                total_torture += i['starting_date__count']
+            elif i['disposition'] == VOIPCALL_DISPOSITION.INVALIDARGS:
+                total_invalidargs += i['starting_date__count']
+            elif i['disposition'] == VOIPCALL_DISPOSITION.NOROUTE\
+                or i['disposition'] == 'NO_ROUTE':
+                total_noroute += i['starting_date__count']
+            else:
+                total_forbidden += i['starting_date__count']  # FORBIDDEN
+
+
+        # This part got from cdr-stats 'global report' used by humblefinance
+        # following calls list is without disposition & group by call date
+        calls = VoIPCall.objects\
+            .filter(callrequest__campaign=selected_campaign,
+                duration__isnull=False,
+                user=request.user,
+                starting_date__range=(start_date, end_date))\
+            .extra(select=select_data)\
+            .values('starting_date').annotate(Sum('duration'))\
+            .annotate(Avg('duration'))\
+            .annotate(Count('starting_date'))\
+            .order_by('starting_date')
+
+        mintime = start_date
+        maxtime = end_date
+        calls_dict = {}
+        calls_dict_with_min = {}
+
+        for data in calls:
+            if int(search_type) >= SEARCH_TYPE.B_Last_7_days:
+                ctime = datetime(int(data['starting_date'][0:4]),
+                                 int(data['starting_date'][5:7]),
+                                 int(data['starting_date'][8:10]),
+                                 int(data['starting_date'][11:13]),
+                                 0,
+                                 0,
+                                 0)
+                if int(search_type) >= SEARCH_TYPE.E_Last_12_hours:
+                    ctime = datetime(int(data['starting_date'][0:4]),
+                                     int(data['starting_date'][5:7]),
+                                     int(data['starting_date'][8:10]),
+                                     int(data['starting_date'][11:13]),
+                                     int(data['starting_date'][14:16]),
+                                     0,
+                                     0)
+            else:
+                ctime = datetime(int(data['starting_date'][0:4]),
+                                 int(data['starting_date'][5:7]),
+                                 int(data['starting_date'][8:10]),
+                                 0,
+                                 0,
+                                 0,
+                                 0)
+            if ctime > maxtime:
+                maxtime = ctime
+            elif ctime < mintime:
+                mintime = ctime
+
+            # all options except 30 days
+            if int(search_type) >= SEARCH_TYPE.B_Last_7_days:
+                calls_dict[int(ctime.strftime("%Y%m%d%H"))] =\
+                    {
+                        'call_count': data['starting_date__count'],
+                        'duration_sum': data['duration__sum'],
+                        'duration_avg': data['duration__avg'],
+                    }
+
+                calls_dict_with_min[int(ctime.strftime("%Y%m%d%H%M"))] =\
+                    {
+                        'call_count': data['starting_date__count'],
+                        'duration_sum': data['duration__sum'],
+                        'duration_avg': data['duration__avg'],
+                    }
+            else:
+                # Last 30 days option
+                calls_dict[int(ctime.strftime("%Y%m%d"))] =\
+                    {
+                        'call_count': data['starting_date__count'],
+                        'duration_sum': data['duration__sum'],
+                        'duration_avg': data['duration__avg'],
+                    }
+
+        dateList = date_range(mintime, maxtime, q=search_type)
+
+        # new code
+        for date in dateList:
+            inttime = int(date.strftime("%Y%m%d"))
+
+            # last 7 days | yesterday | last 24 hrs
+            if int(search_type) == SEARCH_TYPE.B_Last_7_days or int(search_type) == SEARCH_TYPE.C_Yesterday or int(search_type) == SEARCH_TYPE.D_Last_24_hours:
+                for option in range(0, 24):
+                    last_seven_days_inttime = int(str(inttime) + str(option).zfill(2))
+
+                    graph_day = datetime(int(date.strftime("%Y")),
+                                         int(date.strftime("%m")),
+                                         int(date.strftime("%d")),
+                                         int(str(option).zfill(2)))
+
+                    dt = int(1000 * time.mktime(graph_day.timetuple()))
+                    total_record[dt] = {
+                        'call_count': 0,
+                        'duration_sum': 0,
+                        'duration_avg': 0,
+                    }
+
+                    if last_seven_days_inttime in calls_dict.keys():
+                        total_record[dt]['call_count'] += calls_dict[last_seven_days_inttime]['call_count']
+                        total_record[dt]['duration_sum'] += calls_dict[last_seven_days_inttime]['duration_sum']
+                        total_record[dt]['duration_avg'] += calls_dict[last_seven_days_inttime]['duration_avg']
+
+            # last 12 hrs | last 6 hrs | last 1 hrs
+            elif int(search_type) == SEARCH_TYPE.E_Last_12_hours or int(search_type) == SEARCH_TYPE.F_Last_6_hours or int(search_type) == SEARCH_TYPE.G_Last_hour:
+
+                for hour in range(0, 24):
+                    for minute in range(0, 60):
+                        yesterday_inttime = int(str(inttime) + str(hour).zfill(2) + str(minute).zfill(2))
+
+                        graph_day = datetime(int(date.strftime("%Y")),
+                            int(date.strftime("%m")),
+                            int(date.strftime("%d")),
+                            int(str(hour).zfill(2)),
+                            int(str(minute).zfill(2)))
+
+                        dt = int(1000 * time.mktime(graph_day.timetuple()))
+                        total_record[dt] = {
+                            'call_count': 0,
+                            'duration_sum': 0,
+                            'duration_avg': 0,
+                        }
+
+                        if yesterday_inttime in calls_dict_with_min.keys():
+                            total_record[dt]['call_count'] += calls_dict_with_min[yesterday_inttime]['call_count']
+                            total_record[dt]['duration_sum'] += calls_dict_with_min[yesterday_inttime]['duration_sum']
+                            total_record[dt]['duration_avg'] += calls_dict_with_min[yesterday_inttime]['duration_avg']
+            else:
+                # Last 30 days option
+                graph_day = datetime(int(date.strftime("%Y")),
+                                     int(date.strftime("%m")),
+                                     int(date.strftime("%d")))
+                dt = int(1000 * time.mktime(graph_day.timetuple()))
+                total_record[dt] = {
+                    'call_count': 0,
+                    'duration_sum': 0,
+                    'duration_avg': 0,
+                }
+                if inttime in calls_dict.keys():
+                    total_record[dt]['call_count'] += calls_dict[inttime]['call_count']
+                    total_record[dt]['duration_sum'] += calls_dict[inttime]['duration_sum']
+                    total_record[dt]['duration_avg'] += calls_dict[inttime]['duration_avg']
+
+    # sorting on date col
+    total_record = total_record.items()
+    total_record = sorted(total_record, key=lambda k: k[0])
+
+
+    # Contacts which are successfully called for running campaign
+    reached_contact = 0
+    if campaign_id_list:
+        now = datetime.now()
+        start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
+        end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999)
+        reached_contact = Subscriber.objects\
+            .filter(campaign_id__in=campaign_id_list,  # status=5,
+                updated_date__range=(start_date, end_date))\
+            .count()
+
+    template = 'frontend/dashboard_new.html'
+
+    data = {
+        'module': current_view(request),
+        'form': form,
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'campaign_count': campaign_count,
+        'total_of_phonebook_contacts': total_of_phonebook_contacts,
+        'pb_active_contact_count': pb_active_contact_count,
+        'reached_contact': reached_contact,
+        'notice_count': notice_count(request),
+        'total_record': total_record,
+        'final_calls': final_calls,  # for flot graph
+        'total_duration_sum': total_duration_sum,
+        'total_call_count': total_call_count,
+        'total_answered': total_answered,
+        'total_not_answered': total_not_answered,
+        'total_busy': total_busy,
+        #'total_others': total_others,
+        'total_cancel': total_cancel,
+        'total_congestion': total_congestion,
+        'total_chanunavail': total_chanunavail,
+        'total_dontcall': total_dontcall,
+        'total_torture': total_torture,
+        'total_invalidargs': total_invalidargs,
+        'total_noroute': total_noroute,
+        'total_forbidden': total_forbidden,
+        'answered_color': COLOR_DISPOSITION['ANSWER'],
+        'busy_color': COLOR_DISPOSITION['BUSY'],
+        'not_answered_color': COLOR_DISPOSITION['NOANSWER'],
+        'cancel_color': COLOR_DISPOSITION['CANCEL'],
+        'congestion_color': COLOR_DISPOSITION['CONGESTION'],
+        'chanunavail_color': COLOR_DISPOSITION['CHANUNAVAIL'],
+        'dontcall_color': COLOR_DISPOSITION['DONTCALL'],
+        'torture_color': COLOR_DISPOSITION['TORTURE'],
+        'invalidargs_color': COLOR_DISPOSITION['INVALIDARGS'],
+        'noroute_color': COLOR_DISPOSITION['NOROUTE'],
+        'forbidden_color': COLOR_DISPOSITION['FORBIDDEN'],
+        'SEARCH_TYPE': SEARCH_TYPE,
+        }
+    if on_index == 'yes':
+        return data
+    return render_to_response(template, data,
+        context_instance=RequestContext(request))
 
 
 def cust_password_reset(request):

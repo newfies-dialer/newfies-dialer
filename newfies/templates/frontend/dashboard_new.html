@@ -1,0 +1,418 @@
+{% extends "frontend/master.html" %}
+{% load i18n common_tags %}
+
+{% block title %}
+    {% trans 'Dashboard' %}
+{% endblock %}
+
+{% block extra_header %}
+{% endblock %}
+
+{% block content_header %}
+    <h1>{% trans "Dashboard" %} <small>{% trans "Realtime campaign performance monitoring" %}</small></h1>
+{% endblock %}
+
+{% block content %}
+<div id="label" align="center">
+
+<form class="well form-inline" method="POST" action="." id="id_searchform" name="searchform" enctype="multipart/form-data">{% csrf_token %}
+<p align="center">
+    {{ form.campaign }} {{ form.search_type }}
+    <input type="submit" class="btn primary" name="submit" value="{% trans "Submit" %}">
+</p>
+
+<table align="center" class="table table-striped table-bordered table-condensed">
+    <thead>
+    <tr>
+        <th>{% trans "Campaign" %}</th>
+        <th>{% trans "Total Phonebook Contacts" %}</th>
+        <th>{% trans "Total Campaign Contacts" %}</th>
+        <th>{% trans "Contacted Today" %}</th>
+    </tr>
+    </thead>
+    <tr>
+        <td class="rounded-foot-left">{{ campaign_count }}</td>
+        <td>{{ total_of_phonebook_contacts }}</td>
+        <td>{{ campaign_phonebbok_active_contact_count }}</td>
+        <td class="rounded-foot-right">{{ reached_contact }}</td>
+    </tr>
+</table>
+
+
+<input type="button" class="btn" value="{% trans "Call Count" %}" id="id_call_count" name="call_count_button"/> &nbsp; &nbsp;
+<input type="button" class="btn btn-info" value="{% trans "Duration" %}" id="id_duration" name="duration_button"/>
+<!--default-->
+<input type="hidden" name="graph_view" id="id_graph_view" value="count" />
+</form>
+
+</div>
+<script type="text/javascript">
+    var previousPoint = null;
+    function showTooltip(x, y, contents) {
+        $('<div id="tooltip">' + contents + '</div>').css( {
+            position: 'absolute',
+            display: 'none',
+            top: y + 5,
+            left: x + 5,
+            border: '1px solid #fdd',
+            padding: '2px',
+            'background-color': '#fee',
+            opacity: 0.80
+        }).appendTo("body").fadeIn(200);
+    }
+
+    function MonthName(m, type){
+        var short_month = new Array(
+                "{% trans "Jan" %}",
+                "{% trans "Feb" %}",
+                "{% trans "Mar" %}",
+                "{% trans "Apr" %}",
+                "{% trans "May" %}",
+                "{% trans "Jun" %}",
+                "{% trans "Jul" %}",
+                "{% trans "Aug" %}",
+                "{% trans "Sep" %}",
+                "{% trans "Oct" %}",
+                "{% trans "Nov" %}",
+                "{% trans "Dec" %}");
+        var month = new Array(
+                "{% trans "January" %}",
+                "{% trans "February" %}",
+                "{% trans "March" %}",
+                "{% trans "April" %}",
+                "{% trans "May" %}",
+                "{% trans "June" %}",
+                "{% trans "July" %}",
+                "{% trans "August" %}",
+                "{% trans "September" %}",
+                "{% trans "October" %}",
+                "{% trans "November" %}",
+                "{% trans "December" %}");
+        if (type == 0)
+            return short_month[m-1];
+        else
+            return month[m-1];
+    }
+
+
+    $(function () {
+        var call_count_data = [
+            {% for data in total_record %}
+                [{{ data.0 }}, {{ data.1.call_count }}, {{ data.1.duration_avg }}],
+            {% endfor %}
+        ];
+
+        var call_duration_data = [
+            {% for data in total_record %}
+                [{{ data.0 }}, {{ data.1.duration_sum }}],
+            {% endfor %}
+        ];
+
+        var data = call_count_data;
+        function Info(time, info){
+            for(var i in data){
+                if(data[i][0] == parseInt(time)){
+                    switch(info){
+                        case 0:
+                            return data[i][0];
+                            break;
+                        case 1:
+                            return data[i][1];
+                            break;
+                        case 2:
+                            return data[i][2];
+                            break;
+                        default:
+                            return data[i][0];
+                    }
+                }
+            }
+        }
+
+
+        function formTicks(val) {
+
+            var dt = new Date(parseInt(val));
+            var hour = dt.getHours();
+            var minute = dt.getMinutes();
+            var ampm = hour >= 12 ? 'pm' : 'am';
+            var hour = hour % 12;
+            hour = hour ? hour : 12; // the hour '0' should be '12'
+            minute = minute < 10 ? '0' + minute : minute;
+            strTime = hour + ':' + minute + ' ' + ampm;
+            return strTime
+        }
+
+        var options = {
+            xaxis: { mode: "time",
+                tickLength: 5,
+                tickFormatter: function(val) { return formTicks(val) }
+            },
+            series: {
+                lines: { show: true},
+                //points: { show: true }
+            },
+            yaxis: { min: 0, tickDecimals: false },
+            selection: { mode: "x" },
+            grid: {
+                hoverable: true,
+                xaxis: false
+            }
+        };
+
+        var plot = $.plot($("#graph_responsive"), [call_count_data], options);
+
+        function overview_graph(data_set) {
+
+            var overview_option = {
+                legend: {show: false},
+                series: {
+                    lines: { show: true, lineWidth: 1 },
+                    shadowSize: 0
+                },
+                xaxis: { ticks: [], mode: "time" },
+                yaxis: { ticks: [], min: 0, autoscaleMargin: 0.1 },
+                selection: { mode: "x" }
+            };
+
+            var overview = $.plot($("#overview"), [data_set], overview_option);
+
+            // now connect the two
+            $("#graph_responsive").bind("plotselected", function (event, ranges) {
+                // do the zooming
+                plot = $.plot($("#graph_responsive"), [data_set],
+                        $.extend(true, {}, options, {
+                            xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to }
+                        }));
+                // don't fire event on the overview to prevent eternal loop
+                overview.setSelection(ranges, true);
+            });
+
+            $("#overview").bind("plotselected", function (event, ranges) {
+                plot.setSelection(ranges);
+            });
+        }
+
+        //default data set
+        overview_graph(call_count_data);
+
+        $("#graph_responsive").bind("plothover", function (event, pos, item) {
+            if (item) {
+                if (previousPoint != item.dataIndex) {
+                    previousPoint = item.dataIndex;
+
+                    $("#tooltip").remove();
+                    var x = item.datapoint[0].toFixed(2),
+                        y = item.datapoint[1].toFixed(2);
+
+                    var d = new Date(parseInt(x));
+                    Year = d.getFullYear();
+                    Month = d.getMonth() + 1;
+                    Day = d.getDate();
+                    Hour = d.getHours();
+                    month_name = MonthName(Month, 0);
+                    var graph_view = $('#id_graph_view').val();
+
+                    var time = x;
+                    var dt = new Date(parseInt(time));
+                    var hour = dt.getHours();//(time.toString().split("."))[0];
+                    var minute = dt.getMinutes();//Math.round(time * 60 - (hour * 60));
+                    var output = '';
+                    var duration_avg = Info(time, 2);
+                    output += '<div class="graph_tooltip_header">';
+
+                    var ampm = hour >= 12 ? 'pm' : 'am';
+                    var hour = hour % 12;
+                    hour = hour ? hour : 12; // the hour '0' should be '12'
+                    minute = minute < 10 ? '0'+minute : minute;
+                    strTime = hour + ':' + minute + ' ' + ampm;
+
+                    var date_tag = '{% trans "Date" %}';
+                    var call_tag = '{% trans "Calls" %}';
+                    var duration_tag = '{% trans "Duration" %}';
+                    var avg_duration_tag = '{% trans "Avg. Duration" %}';
+                    var hour_tag = '{% trans "Hour" %}';
+
+                    if(graph_view=='count' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.A_Last_30_days }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.B_Last_7_days }}))
+                    {
+                        date_string = date_tag + ' - ' + Day + ', ' + month_name + ' ' + Year  ;
+                        value_string = call_tag + ' - ' + parseInt(y) ;
+                    }
+
+                    if(graph_view=='duration' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.A_Last_30_days }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.B_Last_7_days }}))
+                    {
+                        date_string = date_tag + ' - ' + Day + ', ' + month_name + ' ' + Year;
+                        value_string = duration_tag + ' - ' + y ;
+                    }
+
+                    if(graph_view=='count' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.C_Yesterday }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.D_Last_24_hours }}))
+                    {
+                        date_string = date_tag + ' - ' + Day + ', ' + month_name + ' ' + Year + '<br/> ' + hour_tag + ': ' + hour;
+                        value_string = call_tag + ' - ' + parseInt(y) ;
+                    }
+
+                    if(graph_view=='duration' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.C_Yesterday }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.D_Last_24_hours }}))
+                    {
+                        date_string = date_tag + ' - ' + Day + ', ' + month_name + ' ' + Year + '<br/> ' + hour_tag + ': ' + hour;
+                        value_string = duration_tag + ' - ' + y ;
+                    }
+
+                    if(graph_view=='count' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.E_Last_12_hours }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.F_Last_6_hours }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.G_Last_hour }}))
+                    {
+                        date_string = date_tag + ' - ' + Day + ', ' + month_name + ' ' + Year + ' ' + strTime;
+                        value_string = call_tag + ' - ' + parseInt(y) ;
+                    }
+
+                    if(graph_view=='duration' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.E_Last_12_hours }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.F_Last_6_hours }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.G_Last_hour }}))
+                    {
+                        date_string = date_tag + ' - ' + Day + ', ' + month_name + ' ' + Year + ' ' + strTime;
+                        value_string = duration_tag + ' - ' + y ;
+                    }
+                    value_string = value_string + '<br/>' + avg_duration_tag + ': ' + duration_avg;
+                    output = '<div class="graph_tooltip_info">' + date_string + "<br/>"+ value_string + '</div>';
+                    showTooltip(item.pageX, item.pageY, output);
+                }
+            }
+            else {
+                $("#tooltip").remove();
+                previousPoint = null;
+            }
+        });
+
+        $("#id_call_count").click(function () {
+            $('#id_graph_view').val('count');
+
+            $.plot($("#graph_responsive"), [call_count_data], options);
+            overview_graph(hour_call_count);
+
+        });
+
+        $("#id_duration").click(function () {
+            $('#id_graph_view').val('duration');
+
+            $.plot($("#graph_responsive"), [call_duration_data], options);
+            overview_graph(hour_call_duration);
+
+        });
+    });
+</script>
+    <div class="row">
+        <div class="span12">
+            {% if total_record %}
+                <div id="graph_responsive" class="span11" style="height:300px;"></div>
+                <div id="overview" style="margin-left:350px;margin-top:50px;width:400px;height:50px"></div>
+            {% endif %}
+
+        </div>
+    </div>
+
+{% if final_calls %}
+
+    <script type="text/javascript">
+    function pieHover(event, pos, obj)
+    {
+        if (!obj)
+            return;
+        percent = parseFloat(obj.series.percent).toFixed(2);
+        $(function(){
+            $("#hover").html('<span style="font-weight: bold; color: '+obj.series.color+'">'+obj.series.label+' ('+percent+'%)</span>');
+        });
+    }
+
+    function pieClick(event, pos, obj)
+    {
+        if (!obj)
+            return;
+        percent = parseFloat(obj.series.percent).toFixed(2);
+        alert(''+obj.series.label+': '+percent+'%');
+    }
+    $(function(){
+        $(function () {
+            var data = [
+                { label: 'ANSWER' , data: [[1, {{ total_answered }}]], color: '{{ answered_color }}' },
+                { label: 'BUSY' , data: [[1, {{ total_busy }}]], color: '{{ busy_color }}' },
+                { label: 'NOANSWER' , data: [[1, {{ total_not_answered }}]], color: '{{ not_answered_color }}' },
+                //{ label: 'OHTERS' , data: [[1, {{ total_others }}]]},
+                { label: 'CANCEL' , data: [[1, {{ total_cancel }}]], color: '{{ cancel_color }}' },
+                { label: 'CONGESTION' , data: [[1, {{ total_congestion }}]], color: '{{ congestion_color }}' },
+                { label: 'CHANUNAVAIL' , data: [[1, {{ total_chanunavail }}]], color: '{{ chanunavail_color }}' },
+                { label: 'DONTCALL' , data: [[1, {{ total_dontcall }}]], color: '{{ dontcall_color }}' },
+                { label: 'TORTURE' , data: [[1, {{ total_torture }}]], color: '{{ torture_color }}' },
+                { label: 'INVALIDARGS' , data: [[1, {{ total_invalidargs }}]], color: '{{ invalidargs_color }}' },
+                { label: 'NOROUTE' , data: [[1, {{ total_noroute }}]], color: '{{ noroute_color }}' },
+                { label: 'FORBIDDEN' , data: [[1, {{ total_forbidden }}]], color: '{{ forbidden_color }}' },
+            ];
+            var options = {
+                    series: {
+                        pie: {
+                            show: true,
+                            radius: 1,
+                            label: {
+                                show: true,
+                                radius: 3/4,
+                                formatter: function(label, series){
+                                    return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+                                    }
+                                },
+                            background: { opacity: 0.5 },
+                        }
+                    },
+                    legend: {
+                        show: false,
+                    },
+                    grid: {
+                        hoverable: true,
+                        clickable: true
+                    },
+            };
+            $("#camp_pie").bind("plothover", pieHover);
+            $("#camp_pie").bind("plotclick", pieClick);
+            var plot = $.plot($("#camp_pie"), data, options);
+        });
+
+    });
+</script>
+<br/><br/>
+<div class="row">
+    <div class="span12">
+        <div class="row">
+            <div class="span6">
+                <div id="camp_pie" style="width:300px;height:270px;float:left;margin: 0px 50px 50px 50px;"></div>
+            </div>
+
+            <div class="span6">
+                <table style="width: 400px; margin: 50px 0px 0px 0px; background-color: #e6f7fe;" class="bordered-table">
+                <tr>
+                    <th style="color: #111111; width: 120px;" colspan="3">{{ total_call_count }}  {% trans "TOTAL CALLS" %}</th>
+                </tr>
+                <tr>
+                    <th style="color: {{ answered_color }}">{{ total_answered }}  {% trans "ANSWERED" %}</th>
+                    <th style="color: {{ dontcall_color }}">{{ total_dontcall }}  {% trans "DONTCALL" %}</th>
+                    <th style="color: {{ busy_color }}">{{ total_busy }}  {% trans "BUSY" %}</th>
+                </tr>
+                <tr>
+                    <th style="color: {{ chanunavail_color }}">{{ total_chanunavail }}  {% trans "CHANUNAVAIL" %}</th>
+                    <th style="color: {{ torture_color }}">{{ total_torture }}  {% trans "TORTURE" %}</th>
+                    <th style="color: {{ not_answered_color }}">{{ total_not_answered }}  {% trans "NOANSWER" %}</th>
+                </tr>
+                <tr>
+                    <th style="color: {{ invalidargs_color }}">{{ total_invalidargs }}  {% trans "INVALIDARGS" %}</th>
+                    <th style="color: {{ cancel_color }}">{{ total_cancel }}  {% trans "CANCEL" %}</th>
+                    <th style="color: {{ noroute_color }}">{{ total_noroute }}  {% trans "NOROUTE" %}</th>
+                </tr>
+                <tr>
+                    <th style="color: {{ congestion_color }}">{{ total_congestion }}  {% trans "CONGESTION" %}</th>
+                    <th style="color: {{ forbidden_color }}">{{ total_forbidden }}  {% trans "FORBIDDEN" %}</th>
+                    <th>&nbsp;</th>
+                </tr>
+                </table>
+
+                <div id="hover" style="float: left;"><span style="font-weight: bold; color: rgb(148, 64, 237);"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+{% endblock %}

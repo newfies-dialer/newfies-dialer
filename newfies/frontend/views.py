@@ -1097,6 +1097,7 @@ def customer_dashboard_new(request, on_index=None):
         'invalidargs_color': COLOR_DISPOSITION['INVALIDARGS'],
         'noroute_color': COLOR_DISPOSITION['NOROUTE'],
         'forbidden_color': COLOR_DISPOSITION['FORBIDDEN'],
+        'SEARCH_TYPE': SEARCH_TYPE,
         }
     if on_index == 'yes':
         return data

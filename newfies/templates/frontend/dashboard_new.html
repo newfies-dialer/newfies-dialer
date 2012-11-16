@@ -61,6 +61,39 @@
         }).appendTo("body").fadeIn(200);
     }
 
+    function MonthName(m, type){
+        var short_month = new Array(
+                "{% trans "Jan" %}",
+                "{% trans "Feb" %}",
+                "{% trans "Mar" %}",
+                "{% trans "Apr" %}",
+                "{% trans "May" %}",
+                "{% trans "Jun" %}",
+                "{% trans "Jul" %}",
+                "{% trans "Aug" %}",
+                "{% trans "Sep" %}",
+                "{% trans "Oct" %}",
+                "{% trans "Nov" %}",
+                "{% trans "Dec" %}");
+        var month = new Array(
+                "{% trans "January" %}",
+                "{% trans "February" %}",
+                "{% trans "March" %}",
+                "{% trans "April" %}",
+                "{% trans "May" %}",
+                "{% trans "June" %}",
+                "{% trans "July" %}",
+                "{% trans "August" %}",
+                "{% trans "September" %}",
+                "{% trans "October" %}",
+                "{% trans "November" %}",
+                "{% trans "December" %}");
+        if (type == 0)
+            return short_month[m-1];
+        else
+            return month[m-1];
+    }
+
     $(function () {
         var call_count_data = [
             {% for data in total_record %}
@@ -73,26 +106,6 @@
                 [{{ data.0 }}, {{ data.1.duration_sum }}, {{ data.1.count_call }}],
             {% endfor %}
         ];
-
-        function Info(time, info){
-            for(var i in data){
-                if(data[i][0] == parseInt(time)){
-                    switch(info){
-                        case 0:
-                            return data[i][0];
-                            break;
-                        case 1:
-                            return data[i][1];
-                            break;
-                        case 2:
-                            return data[i][2];
-                            break;
-                        default:
-                            return data[i][0];
-                    }
-                }
-            }
-        }
 
         function formTicks(val) {
 
@@ -127,6 +140,7 @@
         var plot = $.plot($("#graph_responsive"), [call_count_data], options);
 
         function e(data_set) {
+
             var overview_option = {
                 legend: {show: false},
                 series: {
@@ -166,7 +180,15 @@
 
                     $("#tooltip").remove();
                     var x = item.datapoint[0].toFixed(2),
-                            y = item.datapoint[1].toFixed(2);
+                        y = item.datapoint[1].toFixed(2);
+
+                    var d = new Date(parseInt(x));
+                    Year = d.getFullYear();
+                    Month = d.getMonth() + 1;
+                    Day = d.getDate();
+                    Hour = d.getHours();
+                    month_name = MonthName(Month, 0);
+                    var graph_view = $('#id_graph_view').val();
 
                     var time = x;
                     var dt = new Date(parseInt(time));
@@ -181,8 +203,47 @@
                     minute = minute < 10 ? '0'+minute : minute;
                     strTime = hour + ':' + minute + ' ' + ampm;
 
-                    output += strTime + '</div><div class="graph_tooltip_info">{% trans "Calls" %}: ' + Info(time,1) + '<br>{% trans "Duration" %}: ' + Info(time,2) + ' {% trans "secs" %}</div>';
+                    var date_tag = '{% trans "Date" %}';
+                    var call_tag = '{% trans "Calls" %}';
+                    var duration_tag = '{% trans "Duration" %}';
 
+                    if(graph_view=='count' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.A_Last_30_days }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.B_Last_7_days }}))
+                    {
+                        date_string = date_tag + ' - ' + Day + ', ' + month_name + ' ' + Year ;
+                        value_string = call_tag + ' - ' + parseInt(y) ;
+                    }
+
+                    if(graph_view=='duration' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.A_Last_30_days }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.B_Last_7_days }}))
+                    {
+                        date_string = date_tag + ' - ' + Day + ', ' + month_name + ' ' + Year;
+                        value_string = duration_tag + ' - ' + y ;
+                    }
+
+                    if(graph_view=='count' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.C_Yesterday }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.D_Last_24_hours }}))
+                    {
+                        date_string = date_tag + ' - ' + Day + ', ' + month_name + ' ' + Year + '<br/> ' + hour_tag + ': ' + hour;
+                        value_string = call_tag + ' - ' + parseInt(y) ;
+                    }
+
+                    if(graph_view=='duration' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.C_Yesterday }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.D_Last_24_hours }}))
+                    {
+                        date_string = date_tag + ' - ' + Day + ', ' + month_name + ' ' + Year + '<br/> ' + hour_tag + ': ' + hour;
+                        value_string = duration_tag + ' - ' + y ;
+                    }
+
+                    if(graph_view=='count' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.E_Last_12_hours }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.F_Last_6_hours }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.G_Last_hour }}))
+                    {
+                        date_string = date_tag + ' - ' + Day + ', ' + month_name + ' ' + Year + ' ' + strTime;
+                        value_string = call_tag + ' - ' + parseInt(y) ;
+                    }
+
+                    if(graph_view=='duration' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.E_Last_12_hours }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.F_Last_6_hours }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.G_Last_hour }}))
+                    {
+                        date_string = date_tag + ' - ' + Day + ', ' + month_name + ' ' + Year + ' ' + strTime;
+                        value_string = duration_tag + ' - ' + y ;
+                    }
+
+                    output = '<div class="graph_tooltip_info">' + date_string + "<br/>"+ value_string + '</div>';
                     showTooltip(item.pageX, item.pageY, output);
                 }
             }

@@ -162,7 +162,7 @@
 
         var plot = $.plot($("#graph_responsive"), [call_count_data], options);
 
-        function e(data_set) {
+        function overview_graph(data_set) {
 
             var overview_option = {
                 legend: {show: false},
@@ -194,7 +194,7 @@
         }
 
         //default data set
-        e(call_count_data);
+        overview_graph(call_count_data);
 
         $("#graph_responsive").bind("plothover", function (event, pos, item) {
             if (item) {
@@ -283,7 +283,7 @@
             $('#id_graph_view').val('count');
 
             $.plot($("#graph_responsive"), [call_count_data], options);
-            e(hour_call_count);
+            overview_graph(hour_call_count);
 
         });
 
@@ -291,7 +291,7 @@
             $('#id_graph_view').val('duration');
 
             $.plot($("#graph_responsive"), [call_duration_data], options);
-            e(hour_call_duration);
+            overview_graph(hour_call_duration);
 
         });
     });

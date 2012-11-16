@@ -94,8 +94,8 @@
             return month[m-1];
     }
 
-
     $(function () {
+
         var call_count_data = [
             {% for data in total_record %}
                 [{{ data.0 }}, {{ data.1.call_count }}, {{ data.1.duration_avg }}],
@@ -146,7 +146,7 @@
         var options = {
             xaxis: { mode: "time",
                 tickLength: 5,
-                tickFormatter: function(val) { return formTicks(val) }
+                tickFormatter: function(val) { return formTicks(val); }
             },
             series: {
                 lines: { show: true},
@@ -281,7 +281,6 @@
 
         $("#id_call_count").click(function () {
             $('#id_graph_view').val('count');
-
             $.plot($("#graph_responsive"), [call_count_data], options);
             overview_graph(hour_call_count);
 
@@ -289,23 +288,25 @@
 
         $("#id_duration").click(function () {
             $('#id_graph_view').val('duration');
-
             $.plot($("#graph_responsive"), [call_duration_data], options);
             overview_graph(hour_call_duration);
-
         });
     });
 </script>
+
+{% if total_record %}
     <div class="row">
         <div class="span12">
-            {% if total_record %}
-                <div id="graph_responsive" class="span11" style="height:300px;"></div>
-                <div id="overview" style="margin-left:350px;margin-top:50px;width:400px;height:50px"></div>
-            {% endif %}
-
+            <div id="graph_responsive" style="height:300px;"></div>
         </div>
     </div>
-
+    <div class="row">
+        <div class="span12">
+            <div id="overview" style="margin-left:350px;margin-top:20px;width:400px;height:50px"></div>
+        </div>
+    </div>
+{% endif %}
+    
 {% if final_calls %}
 
     <script type="text/javascript">

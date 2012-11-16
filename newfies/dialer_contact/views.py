@@ -21,92 +21,26 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
+from django.conf import settings
 from django.db.models import Q
 from django.db.models import Count
 from frontend.views import notice_count
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.forms import ContactSearchForm, Contact_fileImport, \
     PhonebookForm, ContactForm
+from dialer_contact.constants import PHONEBOOK_COLUMN_NAME
 from dialer_campaign.function_def import check_dialer_setting,\
     dialer_setting_limit, \
     contact_search_common_fun,\
     user_dialer_setting_msg
 from user_profile.constants import NOTIFICATION_NAME
 from user_profile.function_def import common_send_notification
-from common.common_functions import striplist, current_view
+from common.common_functions import striplist, current_view, variable_value
 from utils.helper import grid_common_function, get_grid_update_delete_link,\
     update_style, delete_style
 import urllib
 import csv
 import ast
-
-
-def get_phonebook_link(request, row_id, link_style, title, action):
-    """Function to check user permission to change or delete phonebook
-
-        ``request`` - to check request.user.has_perm() attribute
-        ``row_id`` - to pass record id in link
-        ``link_style`` - update / delete link style
-        ``title`` - alternate name of link
-        ``action`` - link to update or delete
-    """
-    link = ''
-    if action == 'update'\
-            and request.user.has_perm('dialer_contact.change_phonebook'):
-        link = '<a href="%s/" class="icon" %s title="%s">&nbsp;</a>' % \
-               (str(row_id), link_style, title)
-
-    if action == 'delete'\
-            and request.user.has_perm('dialer_contact.delete_phonebook'):
-        link = '<a href="del/%s/" class="icon" %s onClick="return get_alert_msg_for_phonebook(%s);" title="%s">&nbsp;</a>' % \
-               (str(row_id), link_style, str(row_id), title)
-    return link
-
-
-# Phonebook
-@login_required
-def phonebook_grid(request):
-    """Phonebook list in json format for flexigrid.
-
-    **Model**: Phonebook
-
-    **Fields**: [id, name, description, updated_date]
-    """
-    grid_data = grid_common_function(request)
-    page = int(grid_data['page'])
-    start_page = int(grid_data['start_page'])
-    end_page = int(grid_data['end_page'])
-    sortorder_sign = grid_data['sortorder_sign']
-    sortname = grid_data['sortname']
-
-    phonebook_list = Phonebook.objects\
-        .values('id', 'name', 'description', 'updated_date')\
-        .annotate(contact_count=Count('contact'))\
-        .filter(user=request.user)
-
-    count = phonebook_list.count()
-    phonebook_list = phonebook_list\
-        .order_by(sortorder_sign + sortname)[start_page:end_page]
-
-    rows = [
-        {'id': row['id'],
-         'cell': ['<input type="checkbox" name="select" class="checkbox" value="%s" />' % (str(row['id'])),
-                  row['id'],
-                  row['name'],
-                  row['description'],
-                  row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
-                  row['contact_count'],
-                  get_phonebook_link(request, row['id'], update_style,
-                                     _('Update phonebook'), 'update') +
-                  get_phonebook_link(request, row['id'], delete_style,
-                                     _('Delete phonebook'), 'delete'),
-                  ]} for row in phonebook_list]
-
-    data = {'rows': rows,
-            'page': page,
-            'total': count}
-    return HttpResponse(simplejson.dumps(data), mimetype='application/json',
-                        content_type="application/json")
 
 
 @permission_required('dialer_contact.view_phonebook', login_url='/')
@@ -122,11 +56,47 @@ def phonebook_list(request):
 
         * List all phonebooks which belong to the logged in user.
     """
+    # Define no of records per page
+    PAGE_SIZE = settings.PAGE_SIZE
+    try:
+        PAGE_NUMBER = int(request.GET['page'])
+    except:
+        PAGE_NUMBER = 1
+
+    #Phonebook._meta.fields
+
+    col_name_with_order = {}
+    # default
+    col_name_with_order['id'] = '-id'
+    col_name_with_order['name'] = '-name'
+    col_name_with_order['updated_date'] = '-updated_date'
+
+    sort_field = variable_value(request, 'sort_by')
+    if not sort_field:
+        sort_field = 'id'  # default sort field
+        sort_order = '-' + sort_field  # desc
+    else:
+        if "-" in sort_field:
+            sort_order = sort_field
+            col_name_with_order[sort_field[1:]] = sort_field[1:]
+        else:
+            sort_order = sort_field
+            col_name_with_order[sort_field] = '-' + sort_field
+
+
+    phonebook_list = Phonebook.objects\
+            .annotate(contact_count=Count('contact'))\
+            .filter(user=request.user).order_by(sort_order)
+
     template = 'frontend/phonebook/list.html'
     data = {
         'module': current_view(request),
         'msg': request.session.get('msg'),
+        'phonebook_list': phonebook_list,
+        'PAGE_SIZE': PAGE_SIZE,
+        'PHONEBOOK_COLUMN_NAME': PHONEBOOK_COLUMN_NAME,
         'notice_count': notice_count(request),
+        'col_name_with_order': col_name_with_order,
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''

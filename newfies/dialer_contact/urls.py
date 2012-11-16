@@ -17,7 +17,6 @@ from django.conf.urls import patterns
 urlpatterns = patterns('dialer_contact.views',
                        # Phonebook urls
                        (r'^phonebook/$', 'phonebook_list'),
-                       (r'^phonebook_grid/$', 'phonebook_grid'),
                        (r'^phonebook/add/$', 'phonebook_add'),
                        (r'^phonebook/contact_count/$', 'get_contact_count'),
                        (r'^phonebook/del/(.+)/$', 'phonebook_del'),

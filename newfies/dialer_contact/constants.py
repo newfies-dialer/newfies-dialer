@@ -32,3 +32,11 @@ class STATUS_CHOICE(Choice):
     INACTIVE = 0, _('Inactive')
     ACTIVE = 1, _('Active')
     ALL = 2, _('All')
+
+
+class PHONEBOOK_COLUMN_NAME(Choice):
+    id = _('ID')
+    name = _('Name')
+    description = _('Description')
+    date = _('Date')
+    contacts = _('Contacts')

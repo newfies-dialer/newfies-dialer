@@ -20,7 +20,7 @@ from django.core.management import call_command
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.forms import Contact_fileImport, \
     PhonebookForm, ContactForm, ContactSearchForm
-from dialer_contact.views import phonebook_grid, phonebook_add, \
+from dialer_contact.views import phonebook_add, \
     phonebook_change, contact_grid,\
     phonebook_list, phonebook_del,\
     contact_list, contact_add,\
@@ -102,21 +102,9 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
 
     def test_phonebook_view_list(self):
         """Test Function to check phonebook list"""
-        request = self.factory.post('/phonebook_grid/', grid_test_data)
-        request.user = self.user
-        request.session = {}
-        response = phonebook_grid(request)
-        self.assertEqual(response.status_code, 200)
-
         response = self.client.get('/phonebook/')
         self.assertEqual(response.context['module'], 'phonebook_list')
         self.assertTemplateUsed(response, 'frontend/phonebook/list.html')
-
-        request = self.factory.get('/phonebook_grid/')
-        request.user = self.user
-        request.session = {}
-        response = phonebook_list(request)
-        self.assertEqual(response.status_code, 200)
 
         request = self.factory.get('/phonebook/')
         request.user = self.user

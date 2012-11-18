@@ -16,10 +16,9 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.contrib.auth.decorators import login_required, \
-                                           permission_required
+    permission_required
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
-
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
@@ -41,7 +40,7 @@ def audio_file_player(audio_file):
         file_url = settings.MEDIA_URL + str(audio_file)
         player_string = \
             '<ul class="playlist"><li style="width:220px;"><a href="%s">%s</a></li></ul>'\
-                % (file_url, os.path.basename(file_url))
+            % (file_url, os.path.basename(file_url))
         return player_string
 
 
@@ -61,30 +60,33 @@ def audio_grid(request):
     sortname = grid_data['sortname']
 
     audio_list = AudioFile.objects\
-                     .values('id', 'name', 'audio_file', 'updated_date')\
-                     .filter(user=request.user)
+        .values('id', 'name', 'audio_file', 'updated_date')\
+        .filter(user=request.user)
 
     count = audio_list.count()
     audio_list = audio_list\
-                    .order_by(sortorder_sign + sortname)[start_page:end_page]
+        .order_by(sortorder_sign + sortname)[start_page:end_page]
 
     link_style = 'style="text-decoration:none;background-image:url(%snewfies/icons/link.png);"' % settings.STATIC_URL
     domain = Site.objects.get_current().domain
 
-    rows = [{'id': row['id'],
-             'cell': [
+    rows = [
+        {
+            'id': row['id'],
+            'cell':
+            [
                 '<input type="checkbox" name="select" class="checkbox" value="%s" />' % (str(row['id'])),
                 row['name'],
                 audio_file_player(row['audio_file']),
                 '<input type="text" value="%s%s%s">' % (domain, settings.MEDIA_URL, str(row['audio_file'])),
                 row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
-                '<a href="%s" class="icon" %s title="%s">&nbsp;</a>' % \
-                ((settings.MEDIA_URL + str(row['audio_file'])),
+                '<a href="%s" class="icon" %s title="%s">&nbsp;</a>' % ((settings.MEDIA_URL + str(row['audio_file'])),
                 link_style, _('Download audio')) + get_grid_update_delete_link(request, row['id'],
-                'audiofield.change_audiofile', _('Update audio'), 'update') + \
+                'audiofield.change_audiofile', _('Update audio'), 'update') +
                 get_grid_update_delete_link(request, row['id'],
                 'audiofield.delete_audiofile', _('Delete audio'), 'delete'),
-            ]} for row in audio_list]
+            ]
+        } for row in audio_list]
 
     data = {'rows': rows,
             'page': page,
@@ -147,10 +149,10 @@ def audio_add(request):
 
     template = 'frontend/audio/audio_change.html'
     data = {
-       'module': current_view(request),
-       'form': form,
-       'action': 'add',
-       'AUDIO_DEBUG': settings.AUDIO_DEBUG,
+        'module': current_view(request),
+        'form': form,
+        'action': 'add',
+        'AUDIO_DEBUG': settings.AUDIO_DEBUG,
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))
@@ -195,8 +197,8 @@ def audio_del(request, object_id):
             values = ", ".join(["%s" % el for el in values])
 
             audio_list = AudioFile.objects\
-                            .filter(user=request.user)\
-                            .extra(where=['id IN (%s)' % values])
+                .filter(user=request.user)\
+                .extra(where=['id IN (%s)' % values])
 
             request.session["msg"] = _('%(count)s audio(s) are deleted.')\
                 % {'count': audio_list.count()}
@@ -247,10 +249,10 @@ def audio_change(request, object_id):
 
     template = 'frontend/audio/audio_change.html'
     data = {
-       'form': form,
-       'module': current_view(request),
-       'action': 'update',
-       'AUDIO_DEBUG': settings.AUDIO_DEBUG,
+        'form': form,
+        'module': current_view(request),
+        'action': 'update',
+        'AUDIO_DEBUG': settings.AUDIO_DEBUG,
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))

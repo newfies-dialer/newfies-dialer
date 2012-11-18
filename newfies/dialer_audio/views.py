@@ -80,11 +80,8 @@ def audio_grid(request):
                 audio_file_player(row['audio_file']),
                 '<input type="text" value="%s%s%s">' % (domain, settings.MEDIA_URL, str(row['audio_file'])),
                 row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
-                '<a href="%s" class="icon" %s title="%s">&nbsp;</a>' % ((settings.MEDIA_URL + str(row['audio_file'])),
-                link_style, _('Download audio')) + get_grid_update_delete_link(request, row['id'],
-                'audiofield.change_audiofile', _('Update audio'), 'update') +
-                get_grid_update_delete_link(request, row['id'],
-                'audiofield.delete_audiofile', _('Delete audio'), 'delete'),
+                get_grid_update_delete_link(request, row['id'], 'audiofield.change_audiofile', _('Update audio'), 'update') +
+                get_grid_update_delete_link(request, row['id'], 'audiofield.delete_audiofile', _('Delete audio'), 'delete'),
             ]
         } for row in audio_list]
 

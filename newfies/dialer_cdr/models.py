@@ -200,15 +200,15 @@ class VoIPCall(models.Model):
     callid = models.CharField(max_length=120, help_text=_("VoIP Call-ID"))
     callerid = models.CharField(max_length=120, verbose_name='CallerID')
     phone_number = models.CharField(max_length=120, null=True, blank=True,
-                    verbose_name=_("Phone number"),
-                    help_text=_(u'The international number of the recipient, without the leading +'))
+        verbose_name=_("Phone number"),
+        help_text=_(u'The international number of the recipient, without the leading +'))
 
     dialcode = models.ForeignKey(Prefix, verbose_name=_("Destination"),
                     null=True, blank=True,
                     help_text=_("Select Prefix"))
     starting_date = models.DateTimeField(auto_now_add=True,
-                    verbose_name=_("Starting date"),
-                    db_index=True)
+                                         verbose_name=_("Starting date"),
+                                         db_index=True)
     duration = models.IntegerField(null=True, blank=True,
                     verbose_name=_("Duration"))
     billsec = models.IntegerField(null=True, blank=True,

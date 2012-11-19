@@ -13,14 +13,13 @@
 #
 
 from django.contrib.auth.decorators import login_required,\
-                                           permission_required
+    permission_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.db.models import Sum, Avg, Count
 from django.utils import simplejson
-
 from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import CDR_REPORT_COLUMN_NAME
@@ -29,7 +28,7 @@ from dialer_cdr.function_def import voipcall_record_common_fun
 from utils.helper import grid_common_function, get_pagination_vars
 from frontend.views import notice_count
 from common.common_functions import variable_value, current_view,\
-                                    ceil_strdate
+    ceil_strdate
 from datetime import datetime
 import csv
 import urllib
@@ -68,7 +67,7 @@ def voipcall_report_grid(request):
         sortorder_sign = '-'
 
     query_para = []
-    if request.get_full_path().find('?') != -1: # Found
+    if request.get_full_path().find('?') != -1:  # Found
         # get querystring from URL
         query_para = list(request.get_full_path().split('?'))[1]
 
@@ -121,7 +120,8 @@ def voipcall_report_grid(request):
     rows = []
     for row in voipcall_list:
         gateway_used = row.used_gateway.name if row.used_gateway else ''
-        rows.append({
+        rows.append(
+            {
                 'id': row.id,
                 'cell': [
                     row.starting_date.strftime('%Y-%m-%d %H:%M:%S'),
@@ -136,8 +136,8 @@ def voipcall_report_grid(request):
                     row.get_disposition_display(),
                     #row.hangup_cause,
                     #row.hangup_cause_q850,
-                    ]
-                })
+                ]
+            })
 
     data = {'rows': rows,
             'page': page,
@@ -172,6 +172,7 @@ def voipcall_report(request):
         get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
+    #TOOD: sort_order not used
     sort_order = pagination_data['sort_order']
 
     kwargs = {}
@@ -207,12 +208,12 @@ def voipcall_report(request):
 
     # Get Total Rrecords from VoIPCall Report table for Daily Call Report
     total_data = VoIPCall.objects.extra(select=select_data)\
-                 .values('starting_date')\
-                 .filter(**kwargs)\
-                 .annotate(Count('starting_date'))\
-                 .annotate(Sum('duration'))\
-                 .annotate(Avg('duration'))\
-                 .order_by('-starting_date')
+        .values('starting_date')\
+        .filter(**kwargs)\
+        .annotate(Count('starting_date'))\
+        .annotate(Sum('duration'))\
+        .annotate(Avg('duration'))\
+        .order_by('-starting_date')
 
     # Following code will count total voip calls, duration
     if total_data.count() != 0:
@@ -222,9 +223,8 @@ def voipcall_report(request):
             sum([x['duration__sum'] for x in total_data])
         total_calls = \
             sum([x['starting_date__count'] for x in total_data])
-        total_avg_duration = \
-            (sum([x['duration__avg']\
-                for x in total_data])) / total_data.count()
+        total_avg_duration = (
+            sum([x['duration__avg'] for x in total_data])) / total_data.count()
     else:
         max_duration = 0
         total_duration = 0
@@ -284,16 +284,17 @@ def export_voipcall_report(request):
                      'used_gateway'])
     for i in qs:
         gateway_used = i.used_gateway.name if i.used_gateway else ''
-        writer.writerow([i.user,
-                         i.callid,
-                         i.callerid,
-                         i.phone_number,
-                         i.starting_date,
-                         i.duration,
-                         i.billsec,
-                         i.disposition,
-                         i.hangup_cause,
-                         i.hangup_cause_q850,
-                         gateway_used,
-                         ])
+        writer.writerow([
+            i.user,
+            i.callid,
+            i.callerid,
+            i.phone_number,
+            i.starting_date,
+            i.duration,
+            i.billsec,
+            i.disposition,
+            i.hangup_cause,
+            i.hangup_cause_q850,
+            gateway_used,
+        ])
     return response

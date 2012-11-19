@@ -15,14 +15,13 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, \
     permission_required
-from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.core.mail import mail_admins
 from django.conf import settings
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
-from django.utils import simplejson
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import get_model
 from frontend.views import notice_count
@@ -31,14 +30,13 @@ from dialer_campaign.models import Campaign
 from dialer_campaign.forms import CampaignForm, DuplicateCampaignForm
 from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_COLUMN_NAME
 from dialer_campaign.function_def import user_attached_with_dialer_settings, \
-    check_dialer_setting, dialer_setting_limit, \
-    get_campaign_status_name, user_dialer_setting_msg
+    check_dialer_setting, dialer_setting_limit, user_dialer_setting_msg
 from dialer_campaign.tasks import collect_subscriber
 from survey.function_def import check_survey_campaign
 from voice_app.function_def import check_voiceapp_campaign
 from user_profile.constants import NOTIFICATION_NAME
 from user_profile.function_def import common_send_notification
-from utils.helper import grid_common_function, get_grid_update_delete_link, get_pagination_vars
+from utils.helper import get_pagination_vars
 from common.common_functions import current_view
 import re
 
@@ -204,7 +202,6 @@ def campaign_list(request):
     sort_order = pagination_data['sort_order']
 
     campaign_list = Campaign.objects.filter(user=request.user).order_by(sort_order)
-
 
     template = 'frontend/campaign/list.html'
     data = {

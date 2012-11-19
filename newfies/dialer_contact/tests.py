@@ -27,7 +27,6 @@ from dialer_contact.views import phonebook_add, \
     get_contact_count
 from dialer_campaign.views import get_url_campaign_status
 from dialer_contact.tasks import import_phonebook
-from utils.helper import grid_test_data
 from common.utils import BaseAuthenticatedClient
 from datetime import datetime
 

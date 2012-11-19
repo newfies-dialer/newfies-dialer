@@ -21,7 +21,6 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
-from django.conf import settings
 from django.db.models import Q
 from django.db.models import Count
 from frontend.views import notice_count
@@ -35,7 +34,7 @@ from dialer_campaign.function_def import check_dialer_setting,\
     user_dialer_setting_msg
 from user_profile.constants import NOTIFICATION_NAME
 from user_profile.function_def import common_send_notification
-from common.common_functions import striplist, current_view, variable_value
+from common.common_functions import striplist, current_view
 from utils.helper import get_pagination_vars
 import csv
 
@@ -62,8 +61,8 @@ def phonebook_list(request):
     sort_order = pagination_data['sort_order']
 
     phonebook_list = Phonebook.objects\
-            .annotate(contact_count=Count('contact'))\
-            .filter(user=request.user).order_by(sort_order)
+        .annotate(contact_count=Count('contact'))\
+        .filter(user=request.user).order_by(sort_order)
 
     template = 'frontend/phonebook/list.html'
     data = {
@@ -265,13 +264,12 @@ def contact_list(request):
     contact_list = []
 
     if phonebook_id_list:
-        select_data = {"status":
-                           "(CASE status WHEN 1 THEN 'ACTIVE' ELSE 'INACTIVE' END)"}
+        select_data = {"status": "(CASE status WHEN 1 THEN 'ACTIVE' ELSE 'INACTIVE' END)"}
         contact_list = Contact.objects\
-        .extra(select=select_data)\
-        .values('id', 'phonebook__name', 'contact', 'last_name',
-            'first_name', 'description', 'status', 'additional_vars',
-            'updated_date').filter(phonebook__in=phonebook_id_list)
+            .extra(select=select_data)\
+            .values('id', 'phonebook__name', 'contact', 'last_name',
+                'first_name', 'description', 'status', 'additional_vars',
+                'updated_date').filter(phonebook__in=phonebook_id_list)
 
         if kwargs:
             contact_list = contact_list.filter(**kwargs)
@@ -283,6 +281,7 @@ def contact_list(request):
             if q:
                 contact_list = contact_list.filter(q)
 
+        #TODO: Count not used
         count = contact_list.count()
 
     #contact_list = contact_list.order_by(sortorder_sign + sortname)[start_page:end_page]
@@ -583,4 +582,3 @@ def contact_import(request):
     template = 'frontend/contact/import_contact.html'
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
-

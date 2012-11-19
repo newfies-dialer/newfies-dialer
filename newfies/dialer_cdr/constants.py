@@ -62,3 +62,15 @@ class VOIPCALL_DISPOSITION(Choice):
     INVALIDARGS = 'INVALIDARGS', _('INVALIDARGS')
     NOROUTE = 'NOROUTE', _('NOROUTE')
     FORBIDDEN = 'FORBIDDEN', _('FORBIDDEN')
+
+
+class CDR_REPORT_COLUMN_NAME(Choice):
+    date = _('Start date')
+    call_id = _('Call ID')
+    leg = _('Leg')
+    caller_id = _('Caller ID')
+    phone_no = _('Phone No')
+    gateway = _('Gateway')
+    duration = _('Duration')
+    bill_sec = _('Bill Sec')
+    disposition = _('Disposition')

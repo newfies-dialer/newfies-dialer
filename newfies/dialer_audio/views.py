@@ -21,75 +21,13 @@ from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
-from django.utils import simplejson
-from utils.helper import grid_common_function, get_grid_update_delete_link
+from utils.helper import get_pagination_vars
 from frontend.views import notice_count
+from dialer_audio.constants import AUDIO_COLUMN_NAME
 from dialer_audio.forms import DialerAudioFileForm
 from audiofield.models import AudioFile
 from common.common_functions import current_view
 import os.path
-
-
-def audio_file_player(audio_file):
-    """audio player tag for frontend
-
-    >>> audio_file_player('xyz.mp3')
-    '<ul class="playlist"><li style="width:220px;"><a href="/mediafiles/xyz.mp3">xyz.mp3</a></li></ul>'
-    """
-    if audio_file:
-        file_url = settings.MEDIA_URL + str(audio_file)
-        player_string = \
-            '<ul class="playlist"><li style="width:220px;"><a href="%s">%s</a></li></ul>'\
-            % (file_url, os.path.basename(file_url))
-        return player_string
-
-
-@login_required
-def audio_grid(request):
-    """Audio list in json format for flexigrid.
-
-    **Model**: AudioFile
-
-    **Fields**: [id, name, description, updated_date]
-    """
-    grid_data = grid_common_function(request)
-    page = int(grid_data['page'])
-    start_page = int(grid_data['start_page'])
-    end_page = int(grid_data['end_page'])
-    sortorder_sign = grid_data['sortorder_sign']
-    sortname = grid_data['sortname']
-
-    audio_list = AudioFile.objects\
-        .values('id', 'name', 'audio_file', 'updated_date')\
-        .filter(user=request.user)
-
-    count = audio_list.count()
-    audio_list = audio_list\
-        .order_by(sortorder_sign + sortname)[start_page:end_page]
-
-    link_style = 'style="text-decoration:none;background-image:url(%snewfies/icons/link.png);"' % settings.STATIC_URL
-    domain = Site.objects.get_current().domain
-
-    rows = [
-        {
-            'id': row['id'],
-            'cell':
-            [
-                '<input type="checkbox" name="select" class="checkbox" value="%s" />' % (str(row['id'])),
-                row['name'],
-                audio_file_player(row['audio_file']),
-                '<input type="text" value="%s%s%s">' % (domain, settings.MEDIA_URL, str(row['audio_file'])),
-                row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
-                get_grid_update_delete_link(request, row['id'], 'audiofield.change_audiofile', _('Update audio'), 'update') +
-                get_grid_update_delete_link(request, row['id'], 'audiofield.delete_audiofile', _('Delete audio'), 'delete'),
-            ]
-        } for row in audio_list]
-
-    data = {'rows': rows,
-            'page': page,
-            'total': count}
-    return HttpResponse(simplejson.dumps(data), mimetype='application/json',
-                        content_type="application/json")
 
 
 @permission_required('audiofield.view_audio', login_url='/')
@@ -105,9 +43,24 @@ def audio_list(request):
 
         * List all audios which belong to the logged in user.
     """
+    sort_col_field_list = ['name', 'updated_date']
+    default_sort_field = 'name'
+    pagination_data =\
+        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+
+    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    sort_order = pagination_data['sort_order']
+    audio_list = AudioFile.objects.filter(user=request.user).order_by(sort_order)
+    domain = Site.objects.get_current().domain
+
     template = 'frontend/audio/audio_list.html'
     data = {
         'module': current_view(request),
+        'audio_list': audio_list,
+        'PAGE_SIZE': PAGE_SIZE,
+        'AUDIO_COLUMN_NAME': AUDIO_COLUMN_NAME,
+        'col_name_with_order': pagination_data['col_name_with_order'],
+        'domain': domain,
         'msg': request.session.get('msg'),
         'notice_count': notice_count(request),
         'AUDIO_DEBUG': settings.AUDIO_DEBUG,

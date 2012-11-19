@@ -14,12 +14,14 @@
 
 from django.template.defaultfilters import register
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 from survey.views import survey_audio_recording
 from dialer_campaign.constants import CAMPAIGN_STATUS
 from dialer_cdr.constants import LEG_TYPE
 from survey.constants import SECTION_TYPE
 from voice_app.constants import VOICEAPP_TYPE
 from frontend.views import notice_count
+import os.path
 
 
 @register.simple_tag(name='percentage_tag')
@@ -193,3 +195,11 @@ def icon_call_style(val):
         return _('unseen')
     else:
         return _('seen')
+
+
+@register.filter(name='get_file_basename')
+def get_file_basename(val):
+    if val:
+        file_url = settings.MEDIA_URL + str(val)
+        return os.path.basename(file_url)
+    return ''

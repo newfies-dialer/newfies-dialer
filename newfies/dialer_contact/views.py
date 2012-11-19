@@ -61,7 +61,6 @@ def phonebook_list(request):
     pagination_data = \
         get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
-    #PAGE_NUMBER = pagination_data['PAGE_NUMBER']
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
 

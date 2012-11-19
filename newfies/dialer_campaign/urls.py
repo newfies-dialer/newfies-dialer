@@ -17,7 +17,6 @@ from django.conf.urls import patterns
 urlpatterns = patterns('dialer_campaign.views',
         # Campaign urls
         (r'^campaign/$', 'campaign_list'),
-        (r'^campaign_grid/$', 'campaign_grid'),
         (r'^campaign/add/$', 'campaign_add'),
         (r'^campaign/del/(.+)/$', 'campaign_del'),
         (r'^campaign_duplicate/(.+)/$', 'campaign_duplicate'),

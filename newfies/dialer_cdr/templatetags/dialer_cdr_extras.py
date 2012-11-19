@@ -12,15 +12,19 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
+from django.db.models import get_model
 from django.template.defaultfilters import register
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from survey.views import survey_audio_recording
 from dialer_campaign.constants import CAMPAIGN_STATUS
+from dialer_campaign.views import tpl_control_icon
 from dialer_cdr.constants import LEG_TYPE
 from survey.constants import SECTION_TYPE
 from voice_app.constants import VOICEAPP_TYPE
 from frontend.views import notice_count
+from dialer_campaign.function_def import get_campaign_status_name
+from dialer_campaign.views import get_campaign_survey_view, get_url_campaign_status
 import os.path
 
 
@@ -203,3 +207,37 @@ def get_file_basename(val):
         file_url = settings.MEDIA_URL + str(val)
         return os.path.basename(file_url)
     return ''
+
+
+@register.filter(name='get_campaign_status')
+def get_campaign_status(id):
+    return get_campaign_status_name(id)
+
+
+@register.simple_tag(name='get_app_name')
+def get_app_name(app_label, model_name, object_id):
+    """To get app name from app_label, model_name & object_id
+    Usage: {% get_app_name app_label model_name object_id %}
+    """
+    try:
+        return get_model(app_label, model_name).objects.get(pk=object_id)
+    except:
+        return '-'
+
+
+@register.filter(name='make_duplicate_campaign')
+def make_duplicate_campaign(camp_id):
+    link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate icon" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s" %s>&nbsp;</a>'\
+           % (camp_id, _('Duplicate this campaign'),
+              tpl_control_icon('layers.png'))
+    return link
+
+
+@register.simple_tag(name='get_campaign_app_view')
+def get_campaign_app_view(campaign_object):
+    return get_campaign_survey_view(campaign_object)
+
+
+@register.simple_tag(name='get_campaign_status_url')
+def get_campaign_status_url(id, status):
+    return get_url_campaign_status(id, status)

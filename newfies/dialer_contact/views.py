@@ -37,7 +37,7 @@ from user_profile.constants import NOTIFICATION_NAME
 from user_profile.function_def import common_send_notification
 from common.common_functions import striplist, current_view, variable_value
 from utils.helper import grid_common_function, get_grid_update_delete_link,\
-    update_style, delete_style
+    update_style, delete_style, get_pagination_vars
 import urllib
 import csv
 import ast
@@ -56,33 +56,14 @@ def phonebook_list(request):
 
         * List all phonebooks which belong to the logged in user.
     """
-    # Define no of records per page
-    PAGE_SIZE = settings.PAGE_SIZE
-    try:
-        PAGE_NUMBER = int(request.GET['page'])
-    except:
-        PAGE_NUMBER = 1
+    sort_col_field_list = ['id', 'name', 'updated_date']
+    default_sort_field = 'id'
+    pagination_data = \
+        get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
-    #Phonebook._meta.fields
-
-    col_name_with_order = {}
-    # default
-    col_name_with_order['id'] = '-id'
-    col_name_with_order['name'] = '-name'
-    col_name_with_order['updated_date'] = '-updated_date'
-
-    sort_field = variable_value(request, 'sort_by')
-    if not sort_field:
-        sort_field = 'id'  # default sort field
-        sort_order = '-' + sort_field  # desc
-    else:
-        if "-" in sort_field:
-            sort_order = sort_field
-            col_name_with_order[sort_field[1:]] = sort_field[1:]
-        else:
-            sort_order = sort_field
-            col_name_with_order[sort_field] = '-' + sort_field
-
+    #PAGE_NUMBER = pagination_data['PAGE_NUMBER']
+    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    sort_order = pagination_data['sort_order']
 
     phonebook_list = Phonebook.objects\
             .annotate(contact_count=Count('contact'))\
@@ -96,7 +77,7 @@ def phonebook_list(request):
         'PAGE_SIZE': PAGE_SIZE,
         'PHONEBOOK_COLUMN_NAME': PHONEBOOK_COLUMN_NAME,
         'notice_count': notice_count(request),
-        'col_name_with_order': col_name_with_order,
+        'col_name_with_order': pagination_data['col_name_with_order'],
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''

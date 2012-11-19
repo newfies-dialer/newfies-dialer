@@ -75,3 +75,38 @@ def get_grid_update_delete_link(request, row_id, perm_name, title, action):
         link = '<a href="del/%s/" class="icon" %s onClick="return get_alert_msg(%s);" title="%s">&nbsp;</a>' %\
                     (str(row_id), delete_style, str(row_id), title)
     return link
+
+
+def get_pagination_vars(request, col_field_list, default_sort_field):
+    """Return data for pagination"""
+    # Define no of records per page
+    PAGE_SIZE = settings.PAGE_SIZE
+    try:
+        PAGE_NUMBER = int(request.GET['page'])
+    except:
+        PAGE_NUMBER = 1
+
+    # default column order
+    col_name_with_order = {}
+    for field_name in col_field_list:
+        col_name_with_order[field_name] = '-' + field_name
+
+    sort_field = variable_value(request, 'sort_by')
+    if not sort_field:
+        sort_field = default_sort_field  # default sort field
+        sort_order = '-' + sort_field  # desc
+    else:
+        if "-" in sort_field:
+            sort_order = sort_field
+            col_name_with_order[sort_field[1:]] = sort_field[1:]
+        else:
+            sort_order = sort_field
+            col_name_with_order[sort_field] = '-' + sort_field
+
+    data = {
+        'PAGE_SIZE': PAGE_SIZE,
+        'PAGE_NUMBER': PAGE_NUMBER,
+        'col_name_with_order': col_name_with_order,
+        'sort_order': sort_order,
+    }
+    return data

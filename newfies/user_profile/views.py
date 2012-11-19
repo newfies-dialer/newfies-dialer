@@ -31,6 +31,7 @@ from user_profile.forms import UserChangeDetailForm, \
                                UserChangeDetailExtendForm, \
                                CheckPhoneNumberForm
 from user_profile.constants import NOTICE_COLUMN_NAME
+from utils.helper import get_pagination_vars
 from frontend.views import notice_count
 from common.common_functions import variable_value, current_view
 
@@ -73,31 +74,14 @@ def customer_detail_change(request):
     except:
         dialer_set = ''
 
-    # Define no of records per page
-    PAGE_SIZE = settings.PAGE_SIZE
-    try:
-        PAGE_NUMBER = int(request.GET['page'])
-    except:
-        PAGE_NUMBER = 1
+    sort_col_field_list = ['message', 'notice_type', 'sender', 'added']
+    default_sort_field = 'message'
+    pagination_data = \
+        get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
-    col_name_with_order = {}
-    # default
-    col_name_with_order['message'] = '-message'
-    col_name_with_order['notice_type'] = '-notice_type'
-    col_name_with_order['sender'] = '-sender'
-    col_name_with_order['added'] = '-added'
-
-    sort_field = variable_value(request, 'sort_by')
-    if not sort_field:
-        sort_field = 'message'  # default sort field
-        sort_order = '-' + sort_field  # desc
-    else:
-        if "-" in sort_field:
-            sort_order = sort_field
-            col_name_with_order[sort_field[1:]] = sort_field[1:]
-        else:
-            sort_order = sort_field
-            col_name_with_order[sort_field] = '-' + sort_field
+    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    sort_order = pagination_data['sort_order']
+    col_name_with_order = pagination_data['col_name_with_order']
 
     user_notification = \
         notification.Notice.objects.filter(recipient=request.user)

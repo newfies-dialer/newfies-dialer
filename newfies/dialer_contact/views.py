@@ -70,6 +70,7 @@ def phonebook_list(request):
         'module': current_view(request),
         'msg': request.session.get('msg'),
         'phonebook_list': phonebook_list,
+        'total_phonebook': phonebook_list.count(),
         'PAGE_SIZE': PAGE_SIZE,
         'PHONEBOOK_COLUMN_NAME': PHONEBOOK_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
@@ -291,6 +292,7 @@ def contact_list(request):
     data = {
         'module': current_view(request),
         'contact_list': contact_list,
+        'total_contacts': contact_list.count(),
         'PAGE_SIZE': PAGE_SIZE,
         'CONTACT_COLUMN_NAME': CONTACT_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],

@@ -742,6 +742,7 @@ def survey_list(request):
     data = {
         'module': current_view(request),
         'survey_list': survey_list,
+        'total_survey': survey_list.count(),
         'PAGE_SIZE': PAGE_SIZE,
         'SURVEY_COLUMN_NAME': SURVEY_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],

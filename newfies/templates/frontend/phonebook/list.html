@@ -37,8 +37,9 @@
         {% endif %}
     </ul>
 </div>
-
-<br/><br/>
+<div align="right">
+    {% trans "total"|title %} : {{ total_phonebook }}
+</div>
 
 <form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">{% csrf_token %}
     <table class="table table-striped table-bordered table-condensed">

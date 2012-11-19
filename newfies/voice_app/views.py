@@ -60,6 +60,7 @@ def voiceapp_list(request):
     data = {
         'module': current_view(request),
         'voiceapp_list': voiceapp_list,
+        'total_voiceapp': voiceapp_list.count(),
         'PAGE_SIZE': PAGE_SIZE,
         'VOICEAPP_COLUMN_NAME': VOICEAPP_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],

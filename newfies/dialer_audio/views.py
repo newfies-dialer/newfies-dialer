@@ -57,6 +57,7 @@ def audio_list(request):
     data = {
         'module': current_view(request),
         'audio_list': audio_list,
+        'total_audio': audio_list.count(),
         'PAGE_SIZE': PAGE_SIZE,
         'AUDIO_COLUMN_NAME': AUDIO_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],

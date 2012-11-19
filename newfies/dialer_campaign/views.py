@@ -210,6 +210,7 @@ def campaign_list(request):
     data = {
         'module': current_view(request),
         'campaign_list': campaign_list,
+        'total_campaign': campaign_list.count(),
         'PAGE_SIZE': PAGE_SIZE,
         'CAMPAIGN_COLUMN_NAME': CAMPAIGN_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],

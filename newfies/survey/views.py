@@ -39,7 +39,7 @@ from survey.forms import SurveyForm, VoiceSectionForm,\
     PatchThroughSectionForm, BranchingForm, ScriptForm,\
     SurveyDetailReportForm
 from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME
-from utils.helper import grid_common_function, get_grid_update_delete_link, get_pagination_vars
+from utils.helper import get_pagination_vars
 from frontend.views import notice_count
 from common.common_functions import variable_value, current_view, ceil_strdate
 from datetime import datetime

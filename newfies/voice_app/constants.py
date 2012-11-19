@@ -21,3 +21,13 @@ class VOICEAPP_TYPE(Choice):
     PLAYAUDIO = 2, _('PLAYAUDIO')
     CONFERENCE = 3, _('CONFERENCE')
     SPEAK = 4, _('SPEAK')
+
+
+class VOICEAPP_COLUMN_NAME(Choice):
+    name = _('Name')
+    description = _('Description')
+    type = _('Type')
+    gateway = _('Gateway')
+    data = _('Data')
+    tts_language = _('TTS Language')
+    date = _('Date')

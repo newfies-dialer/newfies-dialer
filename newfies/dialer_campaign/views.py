@@ -195,7 +195,7 @@ def campaign_list(request):
 
         * List all campaigns belonging to the logged in user
     """
-    sort_col_field_list = ['id', 'name', 'startingdate', 'status']
+    sort_col_field_list = ['id', 'name', 'startingdate', 'status', 'totalcontact']
     default_sort_field = 'id'
     pagination_data =\
         get_pagination_vars(request, sort_col_field_list, default_sort_field)

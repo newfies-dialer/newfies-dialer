@@ -23,9 +23,10 @@ from django.utils import simplejson
 
 from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_cdr.models import VoIPCall
+from dialer_cdr.constants import CDR_REPORT_COLUMN_NAME
 from dialer_cdr.forms import VoipSearchForm
 from dialer_cdr.function_def import voipcall_record_common_fun
-from utils.helper import grid_common_function
+from utils.helper import grid_common_function, get_pagination_vars
 from frontend.views import notice_count
 from common.common_functions import variable_value, current_view,\
                                     ceil_strdate
@@ -163,6 +164,16 @@ def voipcall_report(request):
 
         * ``request.session['voipcall_record_qs']`` - stores voipcall query set
     """
+    sort_col_field_list = ['starting_date', 'leg_type', 'disposition',
+                           'used_gateway', 'callerid', 'callid', 'phone_number',
+                           'duration', 'billsec']
+    default_sort_field = 'starting_date'
+    pagination_data =\
+        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+
+    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    sort_order = pagination_data['sort_order']
+
     kwargs = {}
     kwargs['user'] = User.objects.get(username=request.user)
     from_date = ''
@@ -234,6 +245,11 @@ def voipcall_report(request):
         'module': current_view(request),
         'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'voipcall_list': voipcall_list,
+        'total_voipcall': voipcall_list.count(),
+        'PAGE_SIZE': PAGE_SIZE,
+        'CDR_REPORT_COLUMN_NAME': CDR_REPORT_COLUMN_NAME,
+        'col_name_with_order': pagination_data['col_name_with_order'],
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''

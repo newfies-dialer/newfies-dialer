@@ -27,10 +27,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import get_model
 from frontend.views import notice_count
 from dialer_contact.models import Phonebook
-from utils.helper import grid_common_function, get_grid_update_delete_link
 from dialer_campaign.models import Campaign
 from dialer_campaign.forms import CampaignForm, DuplicateCampaignForm
-from dialer_campaign.constants import CAMPAIGN_STATUS
+from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_COLUMN_NAME
 from dialer_campaign.function_def import user_attached_with_dialer_settings, \
     check_dialer_setting, dialer_setting_limit, \
     get_campaign_status_name, user_dialer_setting_msg
@@ -39,6 +38,7 @@ from survey.function_def import check_survey_campaign
 from voice_app.function_def import check_voiceapp_campaign
 from user_profile.constants import NOTIFICATION_NAME
 from user_profile.function_def import common_send_notification
+from utils.helper import grid_common_function, get_grid_update_delete_link, get_pagination_vars
 from common.common_functions import current_view
 import re
 
@@ -174,61 +174,12 @@ def get_campaign_survey_view(campaign_object):
     return link
 
 
-def make_duplicate_campaign(campaign_object):
+def make_duplicate_campaign(campaign_object_id):
     link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate icon" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s" %s>&nbsp;</a>'\
-           % (campaign_object.id,
+           % (campaign_object_id,
               _('Duplicate this campaign'),
               tpl_control_icon('layers.png'))
     return link
-
-
-# Campaign
-@login_required
-def campaign_grid(request):
-    """Campaign list in json format for flexigrid
-
-    **Model**: Campaign
-    """
-    grid_data = grid_common_function(request)
-    page = int(grid_data['page'])
-    start_page = int(grid_data['start_page'])
-    end_page = int(grid_data['end_page'])
-    sortorder_sign = grid_data['sortorder_sign']
-    sortname = grid_data['sortname']
-
-    campaign_list = Campaign.objects.filter(user=request.user)
-    count = campaign_list.count()
-    campaign_list = campaign_list\
-        .order_by(sortorder_sign + sortname)[start_page:end_page]
-
-    rows = [
-        {
-            'id': row.id,
-            'cell': [
-                '<input type="checkbox" name="select" class="checkbox" value="%s" />' % (str(row.id)),
-                row.campaign_code,
-                row.name,
-                row.startingdate.strftime('%Y-%m-%d %H:%M:%S'),
-                row.get_campaign_type(),
-                str(get_app_name(row.content_type.app_label, row.content_type.model, row.object_id)),
-                row.totalcontact,
-                get_campaign_status_name(row.status),
-                get_grid_update_delete_link(request, row.id, 'dialer_campaign.change_campaign',
-                    _('Update campaign'), 'update') +
-                get_grid_update_delete_link(request, row.id, 'dialer_campaign.delete_campaign',
-                    _('Delete campaign'), 'delete') +
-                get_campaign_survey_view(row) +
-                make_duplicate_campaign(row) +
-                get_url_campaign_status(row.id, row.status),
-            ]
-        } for row in campaign_list
-    ]
-
-    data = {'rows': rows,
-            'page': page,
-            'total': count}
-    return HttpResponse(simplejson.dumps(data), mimetype='application/json',
-                        content_type="application/json")
 
 
 @permission_required('dialer_campaign.view_campaign', login_url='/')
@@ -244,9 +195,25 @@ def campaign_list(request):
 
         * List all campaigns belonging to the logged in user
     """
+    sort_col_field_list = ['id', 'name', 'startingdate', 'status', 'totalcontact']
+    default_sort_field = 'id'
+    pagination_data =\
+        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+
+    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    sort_order = pagination_data['sort_order']
+
+    campaign_list = Campaign.objects.filter(user=request.user).order_by(sort_order)
+
+
     template = 'frontend/campaign/list.html'
     data = {
         'module': current_view(request),
+        'campaign_list': campaign_list,
+        'total_campaign': campaign_list.count(),
+        'PAGE_SIZE': PAGE_SIZE,
+        'CAMPAIGN_COLUMN_NAME': CAMPAIGN_COLUMN_NAME,
+        'col_name_with_order': pagination_data['col_name_with_order'],
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
         'info_msg': request.session.get('info_msg'),

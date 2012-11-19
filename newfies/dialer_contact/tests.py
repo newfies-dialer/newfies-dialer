@@ -21,8 +21,7 @@ from dialer_contact.models import Phonebook, Contact
 from dialer_contact.forms import Contact_fileImport, \
     PhonebookForm, ContactForm, ContactSearchForm
 from dialer_contact.views import phonebook_add, \
-    phonebook_change, contact_grid,\
-    phonebook_list, phonebook_del,\
+    phonebook_change, phonebook_list, phonebook_del,\
     contact_list, contact_add,\
     contact_change, contact_del, contact_import,\
     get_contact_count
@@ -209,13 +208,6 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
 
     def test_contact_view_list(self):
         """Test Function to check Contact list"""
-        request = self.factory.post('/contact_grid/?kwargs={}&name=xyz',
-                                    grid_test_data)
-        request.user = self.user
-        request.session = {}
-        response = contact_grid(request)
-        self.assertEqual(response.status_code, 200)
-
         response = self.client.get('/contact/')
         self.assertEqual(response.context['module'], 'contact_list')
         self.assertTrue(response.context['form'], ContactSearchForm(self.user))

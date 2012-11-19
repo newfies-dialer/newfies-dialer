@@ -19,7 +19,6 @@ urlpatterns = patterns('dialer_audio.views',
 
     # Audio urls
     (r'^audio/$', 'audio_list'),
-    (r'^audio_grid/$', 'audio_grid'),
     (r'^audio/add/$', 'audio_add'),
     (r'^audio/del/(.+)/$', 'audio_del'),
     (r'^audio/(.+)/$', 'audio_change'),

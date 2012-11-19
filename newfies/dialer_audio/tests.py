@@ -18,7 +18,7 @@ from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
 from audiofield.models import AudioFile
 from dialer_audio.forms import DialerAudioFileForm
-from dialer_audio.views import audio_list, audio_add, audio_grid, \
+from dialer_audio.views import audio_list, audio_add,\
                                audio_change, audio_del
 from utils.helper import grid_test_data
 
@@ -56,12 +56,6 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
 
     def test_audiofile_view_list(self):
         """Test Function to check audio list"""
-        request = self.factory.post('/audio_grid/', grid_test_data)
-        request.user = self.user
-        request.session = {}
-        response = audio_grid(request)
-        self.assertEqual(response.status_code, 200)
-
         response = self.client.get('/audio/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['module'], 'audio_list')

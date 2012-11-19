@@ -18,7 +18,6 @@ from django.conf.urls import patterns
 urlpatterns = patterns('survey.views',
     # Survey urls
     (r'^survey/$', 'survey_list'),
-    (r'^survey_grid/$', 'survey_grid'),
     (r'^survey/add/$', 'survey_add'),
     (r'^survey_view/(.+)/$', 'survey_view'),
     (r'^survey/del/(.+)/$', 'survey_del'),

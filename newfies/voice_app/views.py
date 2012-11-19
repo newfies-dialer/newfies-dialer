@@ -20,63 +20,14 @@ from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
-from django.utils import simplejson
-from voice_app.models import VoiceApp, VoiceApp_template, get_voiceapp_type_name
+
+from voice_app.constants import VOICEAPP_COLUMN_NAME
+from voice_app.models import VoiceApp, VoiceApp_template
 from voice_app.forms import VoiceAppForm
 from frontend.views import notice_count
-from utils.helper import grid_common_function, get_grid_update_delete_link
+from utils.helper import get_pagination_vars
 from dialer_campaign.function_def import user_dialer_setting_msg
 from common.common_functions import current_view
-
-
-# voice_app
-@login_required
-def voiceapp_grid(request):
-    """Voce App list in json format for flexigrid
-
-    **Model**: VoiceApp
-
-    **Fields**: [id, name, user, description, type, gateway__name,
-                 updated_date]
-    """
-    grid_data = grid_common_function(request)
-    page = int(grid_data['page'])
-    start_page = int(grid_data['start_page'])
-    end_page = int(grid_data['end_page'])
-    sortorder_sign = grid_data['sortorder_sign']
-    sortname = grid_data['sortname']
-
-    voiceapp_list = VoiceApp_template.objects\
-                   .values('id', 'name', 'user', 'description', 'type',
-                           'data', 'tts_language', 'gateway__name',
-                           'updated_date').filter(user=request.user)
-
-    count = voiceapp_list.count()
-    voiceapp_list = \
-        voiceapp_list.order_by(sortorder_sign + sortname)[start_page:end_page]
-
-    rows = [{'id': row['id'],
-             'cell': ['<input type="checkbox" name="select" class="checkbox" value="%s" />' % (str(row['id'])),
-                      row['name'],
-                      row['description'],
-                      get_voiceapp_type_name(row['type']),
-                      row['gateway__name'],
-                      row['data'],
-                      row['tts_language'],
-                      row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
-                      get_grid_update_delete_link(request, row['id'],
-                          'voice_app.change_voiceapp',
-                          _('Update Voice App'), 'update') + \
-                      get_grid_update_delete_link(request, row['id'],
-                          'voice_app.delete_voiceapp',
-                                        _('Delete Voice App'), 'delete'),
-                      ]} for row in voiceapp_list]
-
-    data = {'rows': rows,
-            'page': page,
-            'total': count}
-    return HttpResponse(simplejson.dumps(data), mimetype='application/json',
-                        content_type="application/json")
 
 
 @permission_required('voice_app.view_voiceapp_template', login_url='/')
@@ -92,9 +43,27 @@ def voiceapp_list(request):
 
         * List all voice app which are belong to logged in user
     """
+    sort_col_field_list = ['name', 'type', 'gateway', 'updated_date']
+    default_sort_field = 'name'
+    pagination_data =\
+        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+
+    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    sort_order = pagination_data['sort_order']
+
+    voiceapp_list = \
+        VoiceApp_template.objects.values('id', 'name', 'description', 'type',
+            'data', 'tts_language', 'gateway__name',
+            'updated_date').filter(user=request.user).order_by(sort_order)
+
     template = 'frontend/voiceapp/list.html'
     data = {
         'module': current_view(request),
+        'voiceapp_list': voiceapp_list,
+        'total_voiceapp': voiceapp_list.count(),
+        'PAGE_SIZE': PAGE_SIZE,
+        'VOICEAPP_COLUMN_NAME': VOICEAPP_COLUMN_NAME,
+        'col_name_with_order': pagination_data['col_name_with_order'],
         'msg': request.session.get('msg'),
         'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),

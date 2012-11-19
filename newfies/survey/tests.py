@@ -24,7 +24,7 @@ from survey.forms import SurveyForm, VoiceSectionForm,\
     EnterNumberSectionForm, RecordMessageSectionForm,\
     PatchThroughSectionForm, BranchingForm, ScriptForm,\
     SurveyDetailReportForm
-from survey.views import survey_list, survey_grid, survey_add, \
+from survey.views import survey_list, survey_add, \
     survey_change, survey_del, section_add, section_change,\
     section_script_change, section_branch_change, survey_report,\
     survey_finitestatemachine, export_surveycall_report, section_branch_add,\
@@ -85,12 +85,6 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
     def test_survey_view_list(self):
         """Test Function survey view list"""
-        request = self.factory.post('/survey_grid/', grid_test_data)
-        request.user = self.user
-        request.session = {}
-        response = survey_grid(request)
-        self.assertEqual(response.status_code, 200)
-
         response = self.client.get('/survey/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/survey/survey_list.html')

@@ -22,7 +22,6 @@ from django.db.models import Sum, Avg, Count
 from django.contrib.sites.models import Site
 from django.db import IntegrityError
 from django.template.context import RequestContext
-from django.utils import simplejson
 from django.utils.translation import ugettext as _
 from django.utils.html import escape
 from django.views.decorators.csrf import csrf_exempt
@@ -39,8 +38,8 @@ from survey.forms import SurveyForm, VoiceSectionForm,\
     EnterNumberSectionForm, RecordMessageSectionForm,\
     PatchThroughSectionForm, BranchingForm, ScriptForm,\
     SurveyDetailReportForm
-from survey.constants import SECTION_TYPE
-from utils.helper import grid_common_function, get_grid_update_delete_link
+from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME
+from utils.helper import grid_common_function, get_grid_update_delete_link, get_pagination_vars
 from frontend.views import notice_count
 from common.common_functions import variable_value, current_view, ceil_strdate
 from datetime import datetime
@@ -713,50 +712,6 @@ def survey_finitestatemachine(request):
         return HttpResponse(html)
 
 
-@login_required
-def survey_grid(request):
-    """Survey list in json format for flexigrid.
-
-    **Model**: SurveyApp
-
-    **Fields**: [id, name, description, updated_date]
-    """
-    grid_data = grid_common_function(request)
-    page = int(grid_data['page'])
-    start_page = int(grid_data['start_page'])
-    end_page = int(grid_data['end_page'])
-    sortorder_sign = grid_data['sortorder_sign']
-    sortname = grid_data['sortname']
-
-    survey_list = Survey_template.objects\
-        .values('id', 'name', 'description', 'updated_date')\
-        .filter(user=request.user)
-
-    count = survey_list.count()
-    survey_list = survey_list\
-        .order_by(sortorder_sign + sortname)[start_page:end_page]
-
-    rows = [{'id': row['id'],
-             'cell': ['<input type="checkbox" name="select" class="checkbox" value="%s" />' % (str(row['id'])),
-                      row['name'],
-                      row['description'],
-                      row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
-                      get_grid_update_delete_link(request, row['id'],
-                                                  'survey.change_survey',
-                                                  _('Update survey'),
-                                                  'update') +
-                      get_grid_update_delete_link(request, row['id'],
-                                                  'survey.delete_survey',
-                                                  _('Delete survey'),
-                                                  'delete'),
-                      ]} for row in survey_list]
-    data = {'rows': rows,
-            'page': page,
-            'total': count}
-    return HttpResponse(simplejson.dumps(data), mimetype='application/json',
-                        content_type="application/json")
-
-
 @permission_required('survey.view_survey', login_url='/')
 @login_required
 def survey_list(request):
@@ -770,9 +725,27 @@ def survey_list(request):
 
         * List all surveys which belong to the logged in user.
     """
+    sort_col_field_list = ['name', 'updated_date']
+    default_sort_field = 'name'
+    pagination_data =\
+        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+
+    #PAGE_NUMBER = pagination_data['PAGE_NUMBER']
+    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    sort_order = pagination_data['sort_order']
+
+    survey_list = Survey_template.objects\
+        .values('id', 'name', 'description', 'updated_date')\
+        .filter(user=request.user).order_by(sort_order)
+
     template = 'frontend/survey/survey_list.html'
     data = {
         'module': current_view(request),
+        'survey_list': survey_list,
+        'total_survey': survey_list.count(),
+        'PAGE_SIZE': PAGE_SIZE,
+        'SURVEY_COLUMN_NAME': SURVEY_COLUMN_NAME,
+        'col_name_with_order': pagination_data['col_name_with_order'],
         'msg': request.session.get('msg'),
         'notice_count': notice_count(request),
     }

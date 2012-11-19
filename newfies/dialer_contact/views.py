@@ -28,7 +28,7 @@ from frontend.views import notice_count
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.forms import ContactSearchForm, Contact_fileImport, \
     PhonebookForm, ContactForm
-from dialer_contact.constants import PHONEBOOK_COLUMN_NAME
+from dialer_contact.constants import PHONEBOOK_COLUMN_NAME, CONTACT_COLUMN_NAME
 from dialer_campaign.function_def import check_dialer_setting,\
     dialer_setting_limit, \
     contact_search_common_fun,\
@@ -36,11 +36,8 @@ from dialer_campaign.function_def import check_dialer_setting,\
 from user_profile.constants import NOTIFICATION_NAME
 from user_profile.function_def import common_send_notification
 from common.common_functions import striplist, current_view, variable_value
-from utils.helper import grid_common_function, get_grid_update_delete_link,\
-    update_style, delete_style
-import urllib
+from utils.helper import get_pagination_vars
 import csv
-import ast
 
 
 @permission_required('dialer_contact.view_phonebook', login_url='/')
@@ -56,33 +53,13 @@ def phonebook_list(request):
 
         * List all phonebooks which belong to the logged in user.
     """
-    # Define no of records per page
-    PAGE_SIZE = settings.PAGE_SIZE
-    try:
-        PAGE_NUMBER = int(request.GET['page'])
-    except:
-        PAGE_NUMBER = 1
+    sort_col_field_list = ['id', 'name', 'updated_date']
+    default_sort_field = 'id'
+    pagination_data = \
+        get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
-    #Phonebook._meta.fields
-
-    col_name_with_order = {}
-    # default
-    col_name_with_order['id'] = '-id'
-    col_name_with_order['name'] = '-name'
-    col_name_with_order['updated_date'] = '-updated_date'
-
-    sort_field = variable_value(request, 'sort_by')
-    if not sort_field:
-        sort_field = 'id'  # default sort field
-        sort_order = '-' + sort_field  # desc
-    else:
-        if "-" in sort_field:
-            sort_order = sort_field
-            col_name_with_order[sort_field[1:]] = sort_field[1:]
-        else:
-            sort_order = sort_field
-            col_name_with_order[sort_field] = '-' + sort_field
-
+    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    sort_order = pagination_data['sort_order']
 
     phonebook_list = Phonebook.objects\
             .annotate(contact_count=Count('contact'))\
@@ -93,10 +70,11 @@ def phonebook_list(request):
         'module': current_view(request),
         'msg': request.session.get('msg'),
         'phonebook_list': phonebook_list,
+        'total_phonebook': phonebook_list.count(),
         'PAGE_SIZE': PAGE_SIZE,
         'PHONEBOOK_COLUMN_NAME': PHONEBOOK_COLUMN_NAME,
+        'col_name_with_order': pagination_data['col_name_with_order'],
         'notice_count': notice_count(request),
-        'col_name_with_order': col_name_with_order,
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
@@ -250,94 +228,6 @@ def phonebook_change(request, object_id):
                               context_instance=RequestContext(request))
 
 
-@login_required
-def contact_grid(request):
-    """Contact list in json format for flexigrid
-
-    **Model**: Contact
-
-    **Fields**: [id, phonebook__name, contact, last_name, first_name,
-                 description, status, additional_vars, updated_date]
-    """
-    grid_data = grid_common_function(request)
-    page = int(grid_data['page'])
-    start_page = int(grid_data['start_page'])
-    end_page = int(grid_data['end_page'])
-    sortorder_sign = grid_data['sortorder_sign']
-    sortname = grid_data['sortname']
-
-    kwargs = {}
-    name = ''
-
-    # get querystring from URL
-    query_para = list(request.get_full_path().split('?'))[1]
-
-    if "kwargs" in query_para:
-        # decode query string
-        decoded_string = urllib.unquote(query_para.decode("utf8"))
-        temp_list = list(decoded_string.split('&'))
-        for i in range(0, len(temp_list)):
-            if temp_list[i].find('='):
-                kwargs_list = list(temp_list[i].split('='))
-                if kwargs_list[0] == 'kwargs':
-                    kwargs = kwargs_list[1]
-                if kwargs_list[0] == 'name':
-                    name = kwargs_list[1]
-
-    phonebook_id_list = Phonebook.objects.values_list('id', flat=True)\
-        .filter(user=request.user)
-    contact_list = []
-    count = 0
-
-    if phonebook_id_list:
-        select_data = {"status":
-                       "(CASE status WHEN 1 THEN 'ACTIVE' ELSE 'INACTIVE' END)"}
-        contact_list = Contact.objects\
-            .extra(select=select_data)\
-            .values('id', 'phonebook__name', 'contact', 'last_name',
-                    'first_name', 'description', 'status', 'additional_vars',
-                    'updated_date').filter(phonebook__in=phonebook_id_list)
-
-        if kwargs:
-            kwargs = ast.literal_eval(kwargs)
-            contact_list = contact_list.filter(**kwargs)
-
-        if name:
-            # Search on contact name
-            q = (Q(last_name__icontains=name) |
-                 Q(first_name__icontains=name))
-            if q:
-                contact_list = contact_list.filter(q)
-
-        count = contact_list.count()
-
-    contact_list = contact_list\
-        .order_by(sortorder_sign + sortname)[start_page:end_page]
-    rows = [
-        {'id': row['id'],
-         'cell': ['<input type="checkbox" name="select" class="checkbox" value="%s" />' % (str(row['id'])),
-                  row['id'],
-                  row['phonebook__name'],
-                  row['contact'],
-                  row['last_name'],
-                  row['first_name'],
-                  row['status'],
-                  row['updated_date'].strftime('%Y-%m-%d %H:%M:%S'),
-                  get_grid_update_delete_link(request, row['id'],
-                                              'dialer_contact.change_contact',
-                                              _('Update contact'), 'update') +
-                  get_grid_update_delete_link(request, row['id'],
-                                              'dialer_contact.delete_contact',
-                                              _('Delete contact'), 'delete'),
-                  ]} for row in contact_list]
-
-    data = {'rows': rows,
-            'page': page,
-            'total': count}
-    return HttpResponse(simplejson.dumps(data), mimetype='application/json',
-                        content_type="application/json")
-
-
 @permission_required('dialer_contact.view_contact', login_url='/')
 @login_required
 def contact_list(request):
@@ -353,6 +243,9 @@ def contact_list(request):
         * List all contacts from phonebooks belonging to the logged in user
     """
     form = ContactSearchForm(request.user)
+    phonebook_id_list = Phonebook.objects.values_list('id', flat=True)\
+        .filter(user=request.user)
+
     kwargs = {}
     name = ''
     if request.method == 'POST':
@@ -361,9 +254,48 @@ def contact_list(request):
         if request.POST['name'] != '':
             name = request.POST['name']
 
+    sort_col_field_list = ['id', 'phonebook', 'contact', 'status', 'updated_date']
+    default_sort_field = 'id'
+    pagination_data =\
+        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+
+    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    sort_order = pagination_data['sort_order']
+
+    contact_list = []
+
+    if phonebook_id_list:
+        select_data = {"status":
+                           "(CASE status WHEN 1 THEN 'ACTIVE' ELSE 'INACTIVE' END)"}
+        contact_list = Contact.objects\
+        .extra(select=select_data)\
+        .values('id', 'phonebook__name', 'contact', 'last_name',
+            'first_name', 'description', 'status', 'additional_vars',
+            'updated_date').filter(phonebook__in=phonebook_id_list)
+
+        if kwargs:
+            contact_list = contact_list.filter(**kwargs)
+
+        if name:
+            # Search on contact name
+            q = (Q(last_name__icontains=name) |
+                 Q(first_name__icontains=name))
+            if q:
+                contact_list = contact_list.filter(q)
+
+        count = contact_list.count()
+
+    #contact_list = contact_list.order_by(sortorder_sign + sortname)[start_page:end_page]
+    contact_list = contact_list.order_by(sort_order)
+
     template = 'frontend/contact/list.html'
     data = {
         'module': current_view(request),
+        'contact_list': contact_list,
+        'total_contacts': contact_list.count(),
+        'PAGE_SIZE': PAGE_SIZE,
+        'CONTACT_COLUMN_NAME': CONTACT_COLUMN_NAME,
+        'col_name_with_order': pagination_data['col_name_with_order'],
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
         'form': form,

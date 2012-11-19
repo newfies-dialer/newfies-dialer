@@ -24,3 +24,9 @@ class SECTION_TYPE(Choice):
     RECORD_MSG = 5, _('Record message')
     #CALL_TRANSFER = 6, _('Call transfer')
     HANGUP_SECTION = 7, _('Hangup')
+
+
+class SURVEY_COLUMN_NAME(Choice):
+    name = _('Name')
+    description = _('Description')
+    date = _('Date')

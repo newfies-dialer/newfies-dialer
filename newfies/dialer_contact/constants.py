@@ -40,3 +40,13 @@ class PHONEBOOK_COLUMN_NAME(Choice):
     description = _('Description')
     date = _('Date')
     contacts = _('Contacts')
+
+
+class CONTACT_COLUMN_NAME(Choice):
+    id = _('ID')
+    phonebook = _('Phonebook')
+    contact = _('Contact')
+    last_name = _('Last name')
+    first_name = _('First name')
+    status = _('Status')
+    date = _('Date')

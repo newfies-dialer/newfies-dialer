@@ -28,10 +28,10 @@ from dialer_contact.models import Phonebook, Contact
 from dialer_contact.forms import ContactSearchForm, Contact_fileImport, \
     PhonebookForm, ContactForm
 from dialer_contact.constants import PHONEBOOK_COLUMN_NAME, CONTACT_COLUMN_NAME
+from dialer_contact.constants import STATUS_CHOICE
 from dialer_campaign.function_def import check_dialer_setting,\
     dialer_setting_limit, \
-    contact_search_common_fun,\
-    user_dialer_setting_msg
+    user_dialer_setting_msg, type_field_chk
 from user_profile.constants import NOTIFICATION_NAME
 from user_profile.function_def import common_send_notification
 from common.common_functions import striplist, current_view
@@ -241,19 +241,8 @@ def contact_list(request):
 
         * List all contacts from phonebooks belonging to the logged in user
     """
-    form = ContactSearchForm(request.user)
-    phonebook_id_list = Phonebook.objects.values_list('id', flat=True)\
-        .filter(user=request.user)
-
-    kwargs = {}
-    name = ''
-    if request.method == 'POST':
-        form = ContactSearchForm(request.user, request.POST)
-        kwargs = contact_search_common_fun(request)
-        if request.POST['name'] != '':
-            name = request.POST['name']
-
-    sort_col_field_list = ['id', 'phonebook', 'contact', 'status', 'updated_date']
+    sort_col_field_list = ['id', 'phonebook', 'contact', 'status',
+                           'first_name', 'last_name','updated_date']
     default_sort_field = 'id'
     pagination_data =\
         get_pagination_vars(request, sort_col_field_list, default_sort_field)
@@ -261,31 +250,95 @@ def contact_list(request):
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
 
+    form = ContactSearchForm(request.user)
+    phonebook_id_list = Phonebook.objects.values_list('id', flat=True)\
+        .filter(user=request.user)
+    search_tag = 1
+    contact_no = ''
+    contact_name = ''
+    phonebook = ''
+    contact_status = STATUS_CHOICE.ALL
+    if request.method == 'POST':
+        form = ContactSearchForm(request.user, request.POST)
+        if form.is_valid():
+            request.session['session_contact_no'] = ''
+            request.session['session_contact_name'] = ''
+            request.session['session_contact_status'] = ''
+            request.session['session_phonebook'] = ''
+
+            if request.POST.get('contact_no'):
+                contact_no = request.POST.get('contact_no')
+                request.session['session_contact_no'] = contact_no
+
+            if request.POST.get('name'):
+                contact_name = request.POST.get('name')
+                request.session['session_contact_name'] = contact_name
+
+            if request.POST.get('status'):
+                contact_status = request.POST.get('status')
+                request.session['session_contact_status'] = contact_status
+
+            if request.POST.get('phonebook'):
+                phonebook = request.POST.get('phonebook')
+                request.session['session_phonebook'] = phonebook
+
+    post_var_with_page = 0
+    try:
+        if request.GET.get('page') or request.GET.get('sort_by'):
+            post_var_with_page = 1
+            contact_no = request.session.get('session_contact_no')
+            contact_name = request.session.get('session_contact_name')
+            contact_status = request.session.get('session_contact_status')
+            phonebook = request.session.get('session_phonebook')
+            form = ContactSearchForm(request.user, initial={'contact_no': contact_no,
+                                                            'contact_name': contact_name,
+                                                            'status': contact_status,
+                                                            'phonebook': phonebook})
+        else:
+            post_var_with_page = 1
+            if request.method == 'GET':
+                post_var_with_page = 0
+    except:
+        pass
+
+    if post_var_with_page == 0:
+        # default
+        # unset session var
+        request.session['session_contact_no'] = ''
+        request.session['session_contact_name'] = ''
+        request.session['session_contact_status'] = ''
+        request.session['session_phonebook'] = ''
+
+    kwargs = {}
+    if phonebook and phonebook != '0':
+        kwargs['phonebook'] = phonebook
+
+    if contact_status and int(contact_status) != STATUS_CHOICE.ALL:
+        kwargs['status'] = contact_status
+
+    contact_no_type = '1'
+    contact_no = type_field_chk(contact_no, contact_no_type, 'contact')
+    for i in contact_no:
+        kwargs[i] = contact_no[i]
+
     contact_list = []
 
     if phonebook_id_list:
         select_data = {"status": "(CASE status WHEN 1 THEN 'ACTIVE' ELSE 'INACTIVE' END)"}
         contact_list = Contact.objects\
-            .extra(select=select_data)\
-            .values('id', 'phonebook__name', 'contact', 'last_name',
-                'first_name', 'description', 'status', 'additional_vars',
-                'updated_date').filter(phonebook__in=phonebook_id_list)
+            .extra(select=select_data).filter(phonebook__in=phonebook_id_list)
 
         if kwargs:
             contact_list = contact_list.filter(**kwargs)
 
-        if name:
+        if contact_name:
             # Search on contact name
-            q = (Q(last_name__icontains=name) |
-                 Q(first_name__icontains=name))
+            q = (Q(last_name__icontains=contact_name) |
+                 Q(first_name__icontains=contact_name))
             if q:
                 contact_list = contact_list.filter(q)
 
-        #TODO: Count not used
-        count = contact_list.count()
-
-    #contact_list = contact_list.order_by(sortorder_sign + sortname)[start_page:end_page]
-    contact_list = contact_list.order_by(sort_order)
+        contact_list = contact_list.order_by(sort_order)
 
     template = 'frontend/contact/list.html'
     data = {
@@ -298,11 +351,9 @@ def contact_list(request):
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
         'form': form,
-        'user': request.user,
-        'kwargs': kwargs,
-        'name': name,
         'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'search_tag': search_tag,
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''

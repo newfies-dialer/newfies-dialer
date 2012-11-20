@@ -189,31 +189,6 @@ def type_field_chk(base_field, base_field_type, field_name):
     return kwargs
 
 
-def contact_search_common_fun(request):
-    """Return Array (kwargs) for Contact list"""
-
-    # Assign form field value to local variable
-    contact_no = variable_value(request, 'contact_no')
-    #contact_no_type = variable_value(request, 'contact_no_type')
-    #We simplify the form and use contains by default
-    contact_no_type = '1'  # contains
-    phonebook = variable_value(request, 'phonebook')
-    status = variable_value(request, 'status')
-
-    kwargs = {}
-    if phonebook != '0':
-        kwargs['phonebook'] = phonebook
-
-    if status and int(status) != STATUS_CHOICE.ALL:
-        kwargs['status'] = status
-
-    contact_no = type_field_chk(contact_no, contact_no_type, 'contact')
-    for i in contact_no:
-        kwargs[i] = contact_no[i]
-
-    return kwargs
-
-
 def date_range(start, end, q):
     """Date  Range
 

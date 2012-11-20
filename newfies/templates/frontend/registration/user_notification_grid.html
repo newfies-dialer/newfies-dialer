@@ -18,8 +18,6 @@
     </ul>
 </div>
 
-<br/><br/>
-
 <form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">
     {% csrf_token %}
 
@@ -53,11 +51,6 @@
                     </td>
                 </tr>
             {% endfor %}
-            <tr>
-                <td colspan="9">
-                    {% paginate %}
-                </td>
-            </tr>
         {% else %}
             <tr>
                 <td colspan="8" align="center">
@@ -66,6 +59,9 @@
             </tr>
         {% endif %}
     </table>
+    {% if user_notification %}
+        {% paginate %}
+    {% endif %}
 </form>
 <script type="text/javascript">
     function make_read_button()

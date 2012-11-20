@@ -36,10 +36,6 @@ function delete_button()
     </ul>
 </div>
 
-<div align="right">
-    {% trans "total"|title %} : {{ total_voiceapp }}
-</div>
-
 <form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">{% csrf_token %}
     <table class="table table-striped table-bordered table-condensed">
         <thead>
@@ -77,11 +73,6 @@ function delete_button()
                     </td>
                 </tr>
             {% endfor %}
-            <tr>
-                <td colspan="9">
-                    {% paginate %}
-                </td>
-            </tr>
         {% else %}
             <tr>
                 <td colspan="9" align="center">
@@ -90,5 +81,11 @@ function delete_button()
             </tr>
         {% endif %}
     </table>
+    <div align="right">
+        {% trans "total"|title %} : {{ total_voiceapp }}
+    </div>
+    {% if voiceapp_list %}
+        {% paginate %}
+    {% endif %}
 </form>
 {% endblock %}

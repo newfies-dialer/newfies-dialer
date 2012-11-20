@@ -37,9 +37,6 @@
         {% endif %}
     </ul>
 </div>
-<div align="right">
-    {% trans "total"|title %} : {{ total_phonebook }}
-</div>
 
 <form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">{% csrf_token %}
     <table class="table table-striped table-bordered table-condensed">
@@ -74,11 +71,6 @@
                     </td>
                 </tr>
             {% endfor %}
-            <tr>
-                <td colspan="9">
-                    {% paginate %}
-                </td>
-            </tr>
         {% else %}
             <tr>
                 <td colspan="8" align="center">
@@ -87,5 +79,11 @@
             </tr>
         {% endif %}
     </table>
+    <div align="right">
+        {% trans "total"|title %} : {{ total_phonebook }}
+    </div>
+    {% if phonebook_list %}
+        {% paginate %}
+    {% endif %}
 </form>
 {% endblock %}

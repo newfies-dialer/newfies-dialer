@@ -253,7 +253,7 @@ def contact_list(request):
     form = ContactSearchForm(request.user)
     phonebook_id_list = Phonebook.objects.values_list('id', flat=True)\
         .filter(user=request.user)
-
+    search_tag = 1
     contact_no = ''
     contact_name = ''
     phonebook = ''
@@ -353,6 +353,7 @@ def contact_list(request):
         'form': form,
         'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'search_tag': search_tag,
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''

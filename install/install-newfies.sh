@@ -25,7 +25,7 @@
 
 
 #Set branch to install DEVEL/STABLE
-BRANCH=DEVEL
+BRANCH="DEVEL"
 #TODO: update before release
 
 #Install mode can me either CLONE or DOWNLOAD

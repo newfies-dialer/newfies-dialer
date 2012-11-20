@@ -61,7 +61,7 @@ def voipcall_report(request):
     sort_order = pagination_data['sort_order']
     #start_page = pagination_data['start_page']
     #end_page = pagination_data['end_page']
-
+    search_tag = 1
     form = VoipSearchForm()
     if request.method == 'POST':
         form = VoipSearchForm(request.POST)
@@ -182,6 +182,9 @@ def voipcall_report(request):
         'PAGE_SIZE': PAGE_SIZE,
         'CDR_REPORT_COLUMN_NAME': CDR_REPORT_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
+        'search_tag': search_tag,
+        'start_date': start_date,
+        'end_date': end_date,
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''

@@ -109,8 +109,8 @@ function delete_button()
             <th>{% sort_link CONTACT_COLUMN_NAME.id col_name_with_order.id %}</th>
             <th>{% sort_link CONTACT_COLUMN_NAME.phonebook col_name_with_order.phonebook %}</th>
             <th>{% sort_link CONTACT_COLUMN_NAME.contact col_name_with_order.contact %}</th>
-            <th>{% trans CONTACT_COLUMN_NAME.last_name %}</th>
-            <th>{% trans CONTACT_COLUMN_NAME.first_name %}</th>
+            <th>{% sort_link CONTACT_COLUMN_NAME.last_name col_name_with_order.last_name %}</th>
+            <th>{% sort_link CONTACT_COLUMN_NAME.first_name col_name_with_order.first_name %}</th>
             <th>{% sort_link CONTACT_COLUMN_NAME.status col_name_with_order.status %}</th>
             <th>{% sort_link CONTACT_COLUMN_NAME.date col_name_with_order.updated_date %}</th>
             <th>{% trans 'Action' %}</th>

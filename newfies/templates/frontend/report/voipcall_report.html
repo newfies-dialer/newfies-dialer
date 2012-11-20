@@ -49,54 +49,6 @@
     <br/>
 
     {% block record_list %}
-        <form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">{% csrf_token %}
-        <table id="flex1" align="left" style="display:none;"></table>
-        </form>
-
-        <script type="text/javascript">
-        var from_date = ('{{ from_date }}'.replace(/\&#39;/g, "'"));
-        var to_date = ('{{ to_date }}'.replace(/\&#39;/g, "'"));
-        var disposition = ('{{ disposition }}'.replace(/\&#39;/g, "'"));
-        //alert(encodeURIComponent("from_date="+from_date+"&to_date="+to_date+"&disposition="+disposition));
-
-        $("#flex1").flexigrid({
-            url: "/voipcall_report_grid/?" + encodeURIComponent("from_date="+from_date+"&to_date="+to_date+"&disposition="+disposition),
-            method: 'GET',
-            dataType: 'json',
-        	colModel : [
-                {display: '{% trans "Start date" %}', name: 'starting_date', width: 150, sortable: true, align: 'center', formatter:'datformatter:statusFmattere'},
-                {display: '{% trans "Call ID" %}', name: 'callid', width: 150, sortable: true, align: 'center'},
-                {display: '{% trans "Leg" %}', name: 'leg_type', width: 100, sortable: true, align: 'center'},
-                {display: '{% trans "Caller ID" %}', name: 'callerid', width: 100, sortable: true, align: 'center'},
-                {display: '{% trans "Phone No." %}', name: 'phone_number', width: 150, sortable: true, align: 'center'},
-                {display: '{% trans "Gateway" %}', name: 'used_gateway', width: 150, sortable: true, align: 'center'},
-                {display: '{% trans "Duration" %}', name: 'duration', width: 80, sortable: true, align: 'center'},
-                {display: '{% trans "Bill Sec" %}', name: 'billsec', width: 80, sortable: true, align: 'center'},
-                {display: '{% trans "Disposition" %}', name: 'disposition', width: 100, sortable: true, align: 'center'},
-        		],
-            sortname: "id",
-        	sortorder: "asc",
-        	usepager: true,
-        	title: '{% trans "Call Records" %}',
-        	useRp: true,
-        	rp: 10,
-        	showTableToggleBtn: true,
-        	height: 265,
-            pagetext: '{% trans "Page" %}',
-            outof: '{% trans "of" %}',
-            nomsg: '{% trans "No items" %}',
-            procmsg: '{% trans "Processing, please wait ..." %}',
-            pagestat: '{% trans "Displaying" %} {from} {% trans "to" %} {to} {% trans "of" %} {total} {% trans "items" %}',
-            //preProcess: formatContactResults,
-            // onSuccess: function(data){
-            //     alert(data);
-            //     alert("Request not failed");
-            // },
-            // onError: function(){
-            //     alert("Request failed");
-            // },
-        });
-        </script>
         <div align="right">
             {% trans "total"|title %} : {{ total_voipcall }}
         </div>

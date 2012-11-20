@@ -281,9 +281,6 @@ def contact_list(request):
             if q:
                 contact_list = contact_list.filter(q)
 
-        #TODO: Count not used
-        count = contact_list.count()
-
     #contact_list = contact_list.order_by(sortorder_sign + sortname)[start_page:end_page]
     contact_list = contact_list.order_by(sort_order)
 

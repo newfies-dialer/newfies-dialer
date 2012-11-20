@@ -19,8 +19,7 @@ from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.forms import VoipSearchForm
-from dialer_cdr.views import export_voipcall_report, voipcall_report,\
-                             voipcall_report_grid
+from dialer_cdr.views import export_voipcall_report, voipcall_report
 from dialer_cdr.function_def import voipcall_search_admin_form_fun
 from dialer_cdr.tasks import init_callrequest, \
                              dummy_testcall, \
@@ -84,20 +83,6 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
 
     def test_customer_voipcall(self):
         """Test Function to check VoIP call report"""
-        request = self.factory.post('/voipcall_report_grid/', grid_test_data)
-        request.user = self.user
-        request.session = {}
-        response = voipcall_report_grid(request)
-        self.assertEqual(response.status_code, 200)
-
-        request = self.factory.post(
-            '/voipcall_report_grid/?from_date=&disposition=1',
-            grid_test_data)
-        request.user = self.user
-        request.session = {}
-        response = voipcall_report_grid(request)
-        self.assertEqual(response.status_code, 200)
-
         response = self.client.get('/voipcall_report/')
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.context['form'], VoipSearchForm())

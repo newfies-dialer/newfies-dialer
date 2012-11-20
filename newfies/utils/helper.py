@@ -86,6 +86,14 @@ def get_pagination_vars(request, col_field_list, default_sort_field):
     except:
         PAGE_NUMBER = 1
 
+    # page index
+    if PAGE_NUMBER > 1:
+        start_page = (PAGE_NUMBER - 1) * int(PAGE_SIZE)
+        end_page = start_page + int(PAGE_SIZE)
+    else:
+        start_page = int(0)
+        end_page = int(PAGE_SIZE)
+
     # default column order
     col_name_with_order = {}
     for field_name in col_field_list:
@@ -106,6 +114,8 @@ def get_pagination_vars(request, col_field_list, default_sort_field):
     data = {
         'PAGE_SIZE': PAGE_SIZE,
         'PAGE_NUMBER': PAGE_NUMBER,
+        'start_page': start_page,
+        'end_page': end_page,
         'col_name_with_order': col_name_with_order,
         'sort_order': sort_order,
     }

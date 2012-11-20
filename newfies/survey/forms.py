@@ -19,7 +19,7 @@ from dialer_campaign.models import Campaign
 from dialer_cdr.forms import VoipSearchForm
 from survey.models import Survey_template, Section_template, \
     Branching_template
-from survey.constants import SECTION_TYPE
+from survey.constants import SECTION_TYPE_NOTRANSFER as SECTION_TYPE
 from audiofield.models import AudioFile
 
 
@@ -28,8 +28,9 @@ def get_audiofile_list(user):
     with default none option"""
     list_af = []
     list_af.append(('', '---'))
-    list = AudioFile.objects.values_list('id', 'name').filter(user=user)\
-            .order_by('id')
+    list = AudioFile.objects.values_list('id', 'name')\
+        .filter(user=user)\
+        .order_by('id')
     for i in list:
         list_af.append((i[0], i[1]))
     return list_af
@@ -45,8 +46,8 @@ def get_section_question_list(survey_id, section_id):
     list_sq.append(('', _('Hang up')))
 
     list = Section_template.objects.filter(survey_id=survey_id)\
-            .exclude(pk=section_id)\
-            .exclude(id__in=section_branch_list)
+        .exclude(pk=section_id)\
+        .exclude(id__in=section_branch_list)
     for i in list:
         if i.question:
             q_string = i.question
@@ -62,10 +63,9 @@ def get_multi_question_choice_list(section_id):
     Get survey question list for the user with a default none option
     """
     keys_list = Branching_template.objects\
-                .values_list('keys', flat=True)\
-                .filter(section_id=int(section_id))\
-                .exclude(keys='')
-
+        .values_list('keys', flat=True)\
+        .filter(section_id=int(section_id))\
+        .exclude(keys='')
     list_sq = []
     obj_section = Section_template.objects.get(id=int(section_id))
 
@@ -73,10 +73,9 @@ def get_multi_question_choice_list(section_id):
         keys_list = [integral for integral in keys_list]
 
     for i in range(0, 10):
-        if obj_section.__dict__['key_' + str(i)] \
-            and i not in keys_list:
-            list_sq.append((i, '%s' % \
-                               (obj_section.__dict__['key_' + str(i)])))
+        if (obj_section.__dict__['key_' + str(i)]
+           and i not in keys_list):
+            list_sq.append((i, '%s' % (obj_section.__dict__['key_' + str(i)])))
 
     list_sq.append(('timeout', _('Timeout')))
     list_sq.append(('any', _('Any Other Key')))
@@ -89,9 +88,9 @@ def get_rating_choice_list(section_id):
     with default any other key option
     """
     keys_list = Branching_template.objects\
-                .values_list('keys', flat=True)\
-                .filter(section_id=int(section_id))\
-                .exclude(keys='')
+        .values_list('keys', flat=True)\
+        .filter(section_id=int(section_id))\
+        .exclude(keys='')
 
     obj_section = Section_template.objects.get(id=int(section_id))
 
@@ -301,8 +300,8 @@ class BranchingForm(ModelForm):
                 required=False)
 
         # voice & record section
-        if obj_section.type == SECTION_TYPE.PLAY_MESSAGE \
-            or obj_section.type == SECTION_TYPE.RECORD_MSG:
+        if (obj_section.type == SECTION_TYPE.PLAY_MESSAGE
+           or obj_section.type == SECTION_TYPE.RECORD_MSG):
             self.fields['keys'].initial = 0
             self.fields['keys'].widget = forms.HiddenInput()
 
@@ -322,7 +321,7 @@ class SurveyReportForm(forms.Form):
             list = []
             try:
                 camp_list = Campaign.objects.values_list('id', 'name')\
-                            .filter(user=user, content_type__model='survey')
+                    .filter(user=user, content_type__model='survey')
                 for i in camp_list:
                     list.append((i[0], i[1]))
             except:

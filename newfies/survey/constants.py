@@ -22,6 +22,16 @@ class SECTION_TYPE(Choice):
     RATING_SECTION = 3, _('Rating question')
     CAPTURE_DIGITS = 4, _('Capture digits')
     RECORD_MSG = 5, _('Record message')
+    CALL_TRANSFER = 6, _('Call transfer')
+    HANGUP_SECTION = 7, _('Hangup')
+
+
+class SECTION_TYPE_NOTRANSFER(Choice):
+    PLAY_MESSAGE = 1, _('Play message')
+    MULTI_CHOICE = 2, _('Multi-choice')
+    RATING_SECTION = 3, _('Rating question')
+    CAPTURE_DIGITS = 4, _('Capture digits')
+    RECORD_MSG = 5, _('Record message')
     #CALL_TRANSFER = 6, _('Call transfer')
     HANGUP_SECTION = 7, _('Hangup')
 

@@ -36,19 +36,25 @@ function delete_button()
 <!-- modal content-->
 <div id="campaign-duplicate" class="modal hide fade"></div>
 
-<div class="btn-group">
-    <button class="btn btn-small">{% trans "Action" %}</button>
-    <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
-        <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu">
+
+<div class="span12">
+    <div class="row">
+        <div class="btn-group">
+            <button class="btn">{% trans "Action" %}</button>
+            <button class="btn dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                {% if perms.dialer_campaign.delete_campaign %}
+                    <li><a href="#" onclick="delete_button()">{% trans "Delete selected" %}</a></li>
+                {% endif %}
+            </ul>
+        </div>
+
         {% if perms.dialer_campaign.add_campaign %}
-            <li><a href="#" onclick="add_button()">{% trans "Add" %}</a></li>
+            <a class="btn btn-info" href="#" onclick="add_button()">{% trans "Add" %}</a>
         {% endif %}
-        {% if perms.dialer_campaign.delete_campaign %}
-            <li><a href="#" onclick="delete_button()">{% trans "Delete selected" %}</a></li>
-        {% endif %}
-    </ul>
+    </div>
 </div>
 
 <form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">{% csrf_token %}

@@ -25,7 +25,6 @@ from dialer_cdr.tasks import init_callrequest, \
                              dummy_testcall, \
                              dummy_test_answerurl, \
                              dummy_test_hangupurl
-from utils.helper import grid_test_data
 from datetime import datetime
 
 

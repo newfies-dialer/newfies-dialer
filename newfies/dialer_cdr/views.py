@@ -59,8 +59,7 @@ def voipcall_report(request):
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
-    #start_page = pagination_data['start_page']
-    #end_page = pagination_data['end_page']
+
     search_tag = 1
     form = VoipSearchForm()
     if request.method == 'POST':

@@ -98,6 +98,8 @@ def voipcall_report(request):
                                            'status': disposition})
         else:
             post_var_with_page = 1
+            if request.method == 'GET':
+                post_var_with_page = 0
     except:
         pass
 

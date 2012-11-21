@@ -13,10 +13,12 @@
 #
 
 from django.test import TestCase
+from django.core.management import call_command
 from common.utils import BaseAuthenticatedClient
 from frontend.forms import LoginForm, DashboardForm
 from frontend.views import customer_dashboard, index, \
                            login_view, logout_view, pleaselog
+from frontend.constants import SEARCH_TYPE
 
 from newfies.urls import custom_404_view, custom_500_view
 
@@ -42,6 +44,9 @@ class FrontendCustomerView(BaseAuthenticatedClient):
                 'campaign.json', 'subscriber.json',
                 'callrequest.json', 'voipcall.json']
 
+    def test_a_mgt_command(self):
+        # Test mgt command
+        call_command("create_callrequest_cdr", "1|100")
 
     def test_login_view(self):
         """Test Function to check login view"""
@@ -85,7 +90,6 @@ class FrontendCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/index.html')
 
-
         request = self.factory.get('/')
         request.user = self.user
         request.session = {}
@@ -101,9 +105,7 @@ class FrontendCustomerView(BaseAuthenticatedClient):
 
         request = self.factory.post('/dashboard/',
                 {'campaign': '1',
-                 'search_type': '1',
-                 'call_count_button': 'true',
-                 'duration_button': 'true'})
+                 'search_type': SEARCH_TYPE.A_Last_30_days})
 
         request.user = self.user
         request.session = {}
@@ -112,9 +114,7 @@ class FrontendCustomerView(BaseAuthenticatedClient):
 
         request = self.factory.post('/dashboard/',
                 {'campaign': '1',
-                 'search_type': '2',
-                 'call_count_button': 'true',
-                 'duration_button': 'true'})
+                 'search_type': SEARCH_TYPE.B_Last_7_days})
 
         request.user = self.user
         request.session = {}
@@ -123,9 +123,7 @@ class FrontendCustomerView(BaseAuthenticatedClient):
 
         request = self.factory.post('/dashboard/',
                 {'campaign': '1',
-                 'search_type': '3',
-                 'call_count_button': 'true',
-                 'duration_button': 'true'})
+                 'search_type': SEARCH_TYPE.C_Yesterday})
 
         request.user = self.user
         request.session = {}
@@ -134,9 +132,7 @@ class FrontendCustomerView(BaseAuthenticatedClient):
 
         request = self.factory.post('/dashboard/',
                 {'campaign': '1',
-                 'search_type': '4',
-                 'call_count_button': 'true',
-                 'duration_button': 'true'})
+                 'search_type': SEARCH_TYPE.D_Last_24_hours})
 
         request.user = self.user
         request.session = {}
@@ -145,9 +141,7 @@ class FrontendCustomerView(BaseAuthenticatedClient):
 
         request = self.factory.post('/dashboard/',
                 {'campaign': '1',
-                 'search_type': '5',
-                 'call_count_button': 'true',
-                 'duration_button': 'true'})
+                 'search_type': SEARCH_TYPE.E_Last_12_hours})
 
         request.user = self.user
         request.session = {}
@@ -156,9 +150,7 @@ class FrontendCustomerView(BaseAuthenticatedClient):
 
         request = self.factory.post('/dashboard/',
                 {'campaign': '1',
-                 'search_type': '6',
-                 'call_count_button': 'true',
-                 'duration_button': 'true'})
+                 'search_type': SEARCH_TYPE.F_Last_6_hours})
 
         request.user = self.user
         request.session = {}
@@ -167,9 +159,7 @@ class FrontendCustomerView(BaseAuthenticatedClient):
 
         request = self.factory.post('/dashboard/',
                 {'campaign': '1',
-                 'search_type': '7',
-                 'call_count_button': 'true',
-                 'duration_button': 'true'})
+                 'search_type': SEARCH_TYPE.G_Last_hour})
 
         request.user = self.user
         request.session = {}

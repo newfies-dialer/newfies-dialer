@@ -47,8 +47,8 @@ function delete_button()
             <tr>
                 <th><input type="checkbox" onclick="toggleChecked(this.checked)"></th>
                 <th>{% sort_link AUDIO_COLUMN_NAME.name col_name_with_order.name %}</th>
-                <th>{{ AUDIO_COLUMN_NAME.audio_name }}</th>
-                <th>{{ AUDIO_COLUMN_NAME.audio_url }}</th>
+                <th>{% trans AUDIO_COLUMN_NAME.audio_name %}</th>
+                <th>{% trans AUDIO_COLUMN_NAME.audio_url %}</th>
                 <th>{% sort_link AUDIO_COLUMN_NAME.date col_name_with_order.updated_date %}</th>
                 <th>{% trans 'Action' %}</th>
             </tr>
@@ -73,7 +73,7 @@ function delete_button()
                                 <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "Update audio" %}"></a>
                             {% endif %}
                             {% if perms.audiofield.delete_audiofile %}
-                                <a href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "Delete audio" %}"></a>
+                                <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "Delete audio" %}"></a>
                             {% endif %}
                         </td>
                     </tr>

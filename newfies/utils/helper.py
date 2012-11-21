@@ -16,67 +16,6 @@ from django.conf import settings
 from common.common_functions import variable_value
 
 
-update_style = \
-    'style="text-decoration:none;background-image:url(%snewfies/icons/page_edit.png);"' %\
-    settings.STATIC_URL
-delete_style = \
-    'style="text-decoration:none;background-image:url(%snewfies/icons/delete.png);"' %\
-    settings.STATIC_URL
-
-# grid_test_data used in test-cases
-grid_test_data = {'page': 1,
-                  'rp': 10,
-                  'sortname': 'id',
-                  'sortorder': 'asc'}
-
-
-def grid_common_function(request):
-    """To get common flexigrid variable"""
-    grid_data = {}
-
-    grid_data['page'] = variable_value(request, 'page')
-    grid_data['rp'] = variable_value(request, 'rp')
-    grid_data['sortname'] = variable_value(request, 'sortname')
-    grid_data['sortorder'] = variable_value(request, 'sortorder')
-    grid_data['query'] = variable_value(request, 'query')
-    grid_data['qtype'] = variable_value(request, 'qtype')
-
-    # page index
-    if int(grid_data['page']) > 1:
-        grid_data['start_page'] = (int(grid_data['page']) - 1) * \
-            int(grid_data['rp'])
-        grid_data['end_page'] = grid_data['start_page'] + int(grid_data['rp'])
-    else:
-        grid_data['start_page'] = int(0)
-        grid_data['end_page'] = int(grid_data['rp'])
-
-    grid_data['sortorder_sign'] = ''
-    if grid_data['sortorder'] == 'desc':
-        grid_data['sortorder_sign'] = '-'
-
-    return grid_data
-
-
-def get_grid_update_delete_link(request, row_id, perm_name, title, action):
-    """Function to check user permission to change or delete
-
-        ``request`` - to check request.user.has_perm() attribute
-        ``row_id`` - to pass record id in link
-        ``link_style`` - update / delete link style
-        ``title`` - alternate name of link
-        ``action`` - link to update or delete
-    """
-    link = ''
-    if action == 'update' and request.user.has_perm(perm_name):
-        link = '<a href="%s/" class="icon" %s title="%s">&nbsp;</a>' %\
-               (str(row_id), update_style, title)
-
-    if action == 'delete' and request.user.has_perm(perm_name):
-        link = '<a href="del/%s/" class="icon" %s onClick="return get_alert_msg(%s);" title="%s">&nbsp;</a>' %\
-                    (str(row_id), delete_style, str(row_id), title)
-    return link
-
-
 def get_pagination_vars(request, col_field_list, default_sort_field):
     """Return data for pagination"""
     # Define no of records per page

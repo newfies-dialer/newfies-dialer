@@ -73,7 +73,7 @@ function delete_button()
                                     <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "Update voiceapp" %}"></a>
                                 {% endif %}
                                 {% if perms.voice_app.delete_voiceapp %}
-                                    <a href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "Delete voiceapp" %}"></a>
+                                    <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "Delete voiceapp" %}"></a>
                                 {% endif %}
                             </td>
                         </tr>

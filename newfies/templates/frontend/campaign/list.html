@@ -90,7 +90,7 @@ function delete_button()
                                     <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "Update campaign" %}"></a>
                                 {% endif %}
                                 {% if perms.dialer_campaign.delete_campaign %}
-                                    <a href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "Delete campaign" %}"></a>
+                                    <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "Delete campaign" %}"></a>
                                 {% endif %}
 
                                 {{ row.id|make_duplicate_campaign|safe }}

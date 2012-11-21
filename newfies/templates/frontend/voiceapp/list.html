@@ -47,11 +47,11 @@ function delete_button()
                 <tr>
                     <th><input type="checkbox" onclick="toggleChecked(this.checked)"></th>
                     <th>{% sort_link VOICEAPP_COLUMN_NAME.name col_name_with_order.name %}</th>
-                    <th>{% trans VOICEAPP_COLUMN_NAME.description %}</th>
+                    <th>{{ VOICEAPP_COLUMN_NAME.description }}</th>
                     <th>{% sort_link VOICEAPP_COLUMN_NAME.type col_name_with_order.type %}</th>
                     <th>{% sort_link VOICEAPP_COLUMN_NAME.gateway col_name_with_order.gateway %}</th>
-                    <th>{% trans VOICEAPP_COLUMN_NAME.data %}</th>
-                    <th>{% trans VOICEAPP_COLUMN_NAME.tts_language %}</th>
+                    <th>{{ VOICEAPP_COLUMN_NAME.data }}</th>
+                    <th>{{ VOICEAPP_COLUMN_NAME.tts_language }}</th>
                     <th>{% sort_link VOICEAPP_COLUMN_NAME.date col_name_with_order.updated_date %}</th>
                     <th>{% trans 'Action' %}</th>
                 </tr>

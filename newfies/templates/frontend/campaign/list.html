@@ -66,8 +66,8 @@ function delete_button()
                     <th>{% sort_link CAMPAIGN_COLUMN_NAME.key col_name_with_order.id %}</th>
                     <th>{% sort_link CAMPAIGN_COLUMN_NAME.name col_name_with_order.name %}</th>
                     <th>{% sort_link CAMPAIGN_COLUMN_NAME.start_date col_name_with_order.startingdate %}</th>
-                    <th>{% trans CAMPAIGN_COLUMN_NAME.type %}</th>
-                    <th>{% trans CAMPAIGN_COLUMN_NAME.app %}</th>
+                    <th>{{ CAMPAIGN_COLUMN_NAME.type }}</th>
+                    <th>{{ CAMPAIGN_COLUMN_NAME.app }}</th>
                     <th>{% sort_link CAMPAIGN_COLUMN_NAME.contacts col_name_with_order.totalcontact %}</th>
                     <th>{% sort_link CAMPAIGN_COLUMN_NAME.status col_name_with_order.status %}</th>
                     <th>{% trans 'Action' %}</th>

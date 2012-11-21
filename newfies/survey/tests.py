@@ -30,7 +30,6 @@ from survey.views import survey_list, survey_add, \
     survey_finitestatemachine, export_surveycall_report, section_branch_add,\
     section_delete, section_script_play, survey_view, survey_campaign_result
 from survey.ajax import section_sort
-from utils.helper import grid_test_data
 
 
 class SurveyAdminView(BaseAuthenticatedClient):

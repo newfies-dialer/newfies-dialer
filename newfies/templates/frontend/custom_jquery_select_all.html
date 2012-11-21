@@ -95,7 +95,6 @@ $(document).ready(function() {
         });
         return false;
     });
-
 });
 
 function get_alert_msg_for_phonebook(id)
@@ -114,8 +113,14 @@ function get_alert_msg_for_phonebook(id)
         //     alert("Request failed");
         // }
     });
+    var href = $('#id_phonebook_delete_confirm').attr('href');
     confirm_string = '{% trans "Please confirm to delete this phonebook with" %} ' + contact_count + ' {% trans "contact(s)" %}'
-    var answer = confirm(confirm_string);
-    return answer
+
+    bootbox.confirm(confirm_string, function(result){
+        if (result) {
+            window.location = href;
+        }
+    });
+    return false;
 }
 </script>

@@ -71,7 +71,7 @@
                                     <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "Update phonebook" %}"></a>
                                 {% endif %}
                                 {% if perms.dialer_contact.delete_phonebook %}
-                                    <a onclick="return get_alert_msg_for_phonebook({{ row.id }});"  href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "Delete phonebook" %}"></a>
+                                    <a id="id_phonebook_delete_confirm" onclick="return get_alert_msg_for_phonebook({{ row.id }});"  href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "Delete phonebook" %}"></a>
                                 {% endif %}
                             </td>
                         </tr>

@@ -75,14 +75,6 @@ Newfies-Dialer Views
   .. autofunction:: phonebook_list
 
 
-.. _phonebook_grid:
-
-:class:`phonebook_grid`
------------------------
-
-  .. autofunction:: phonebook_grid
-
-
 .. _phonebook_add:
 
 :class:`phonebook_add`
@@ -105,14 +97,6 @@ Newfies-Dialer Views
 ---------------------
 
   .. autofunction:: contact_list
-
-
-.. _contact_grid:
-
-:class:`contact_grid`
----------------------
-
-  .. autofunction:: contact_grid
 
 
 .. _contact_add:
@@ -145,14 +129,6 @@ Newfies-Dialer Views
 ----------------------
 
   .. autofunction:: campaign_list
-
-
-.. _campaign_grid:
-
-:class:`campaign_grid`
-----------------------
-
-  .. autofunction:: campaign_grid
 
 
 .. _campaign_add:

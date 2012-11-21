@@ -73,14 +73,13 @@ $(document).ready(function() {
                 confirm_string = $fields.length + '{% trans " survey(s) are going to be deleted?" %}';
             }
 
-            //var answer = confirm(confirm_string);
-            //return answer; // answer is a boolean
-
             bootbox.confirm(confirm_string, function(result) {
                 if (result) {
                     currentForm.submit();
                 }
             });
+
+            return false;
         }
     });
 

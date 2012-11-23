@@ -31,7 +31,7 @@ from user_profile.forms import UserChangeDetailForm, \
                                UserChangeDetailExtendForm, \
                                CheckPhoneNumberForm
 from user_profile.constants import NOTICE_COLUMN_NAME
-from frontend.views import notice_count
+from utils.helper import notice_count, common_notification_status
 from common.common_functions import current_view, get_pagination_vars
 
 
@@ -226,28 +226,6 @@ def notification_del_read(request, object_id):
             notification_list.update(unseen=0)
         return HttpResponseRedirect(
             '/user_detail_change/?action=tabs-3&msg_note=true')
-
-
-def common_notification_status(request, id):
-    """Notification Status (e.g. seen/unseen) need to be change.
-    It is a common function for admin and customer UI
-
-    **Attributes**:
-
-        * ``pk`` - primary key of notice record
-
-    **Logic Description**:
-
-        * Selected Notification's status need to be changed.
-          Changed status can be seen or unseen.
-    """
-    notice = notification.Notice.objects.get(pk=id)
-    if notice.unseen == 1:
-        notice.unseen = 0
-    else:
-        notice.unseen = 1
-    notice.save()
-    return True
 
 
 @login_required

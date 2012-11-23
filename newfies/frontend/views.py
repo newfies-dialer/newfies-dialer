@@ -20,11 +20,10 @@ from django.contrib.auth.views import password_reset, password_reset_done,\
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.db.models import Sum, Avg, Count
-
 from django.conf import settings
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
-from notification import models as notification
+
 from dialer_contact.models import Contact
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.function_def import date_range, \
@@ -34,6 +33,8 @@ from dialer_cdr.constants import VOIPCALL_DISPOSITION
 from frontend.forms import LoginForm, DashboardForm
 from frontend.function_def import calculate_date
 from frontend.constants import COLOR_DISPOSITION, SEARCH_TYPE
+#from utils.helper import notice_count
+from user_profile.views import notice_count
 from common.common_functions import current_view
 from datetime import datetime
 from dateutil import parser
@@ -107,14 +108,6 @@ def login_view(request):
 
     return render_to_response(template, data,
            context_instance=RequestContext(request))
-
-@login_required
-def notice_count(request):
-    """Get count of logged in user's notifications"""
-    notice_count = notification.Notice.objects\
-                        .filter(recipient=request.user, unseen=1)\
-                        .count()
-    return notice_count
 
 
 def index(request):

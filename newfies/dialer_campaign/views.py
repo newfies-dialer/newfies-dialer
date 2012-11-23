@@ -24,7 +24,6 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import get_model
-from frontend.views import notice_count
 from dialer_contact.models import Phonebook
 from dialer_campaign.models import Campaign
 from dialer_campaign.forms import CampaignForm, DuplicateCampaignForm
@@ -36,6 +35,7 @@ from survey.function_def import check_survey_campaign
 from voice_app.function_def import check_voiceapp_campaign
 from user_profile.constants import NOTIFICATION_NAME
 from user_profile.function_def import common_send_notification
+from utils.helper import notice_count
 from common.common_functions import current_view, get_pagination_vars
 import re
 

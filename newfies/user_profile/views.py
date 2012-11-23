@@ -35,6 +35,27 @@ from utils.helper import notice_count, common_notification_status
 from common.common_functions import current_view, get_pagination_vars
 
 
+def get_notification_list_for_view(request):
+    sort_col_field_list = ['message', 'notice_type', 'sender', 'added']
+    default_sort_field = 'message'
+    pagination_data =\
+        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    sort_order = pagination_data['sort_order']
+
+    user_notification =\
+        notification.Notice.objects.filter(recipient=request.user)
+    # Search on sender name
+    q = (Q(sender=request.user))
+    if q:
+        user_notification = user_notification.filter(q)
+
+    user_notification = user_notification.order_by(sort_order)
+    data = {
+        'pagination_data': pagination_data,
+        'user_notification': user_notification,
+    }
+    return data
+
 @login_required
 def customer_detail_change(request):
     """User Detail change on Customer UI
@@ -73,23 +94,11 @@ def customer_detail_change(request):
     except:
         dialer_set = ''
 
-    sort_col_field_list = ['message', 'notice_type', 'sender', 'added']
-    default_sort_field = 'message'
-    pagination_data = \
-        get_pagination_vars(request, sort_col_field_list, default_sort_field)
-
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
-    sort_order = pagination_data['sort_order']
-    col_name_with_order = pagination_data['col_name_with_order']
-
-    user_notification = \
-        notification.Notice.objects.filter(recipient=request.user)
-    # Search on sender name
-    q = (Q(sender=request.user))
-    if q:
-        user_notification = user_notification.filter(q)
-
-    user_notification = user_notification.order_by(sort_order)
+    notification_data = get_notification_list_for_view(request)
+    PAGE_SIZE = notification_data['pagination_data']['PAGE_SIZE']
+    sort_order = notification_data['pagination_data']['sort_order']
+    col_name_with_order = notification_data['pagination_data']['col_name_with_order']
+    user_notification = notification_data['user_notification']
 
     msg_detail = ''
     msg_pass = ''
@@ -159,7 +168,6 @@ def customer_detail_change(request):
         'user_detail_extened_form': user_detail_extened_form,
         'user_password_form': user_password_form,
         'check_phone_no_form': check_phone_no_form,
-        'user_notification': user_notification,
         'msg_detail': msg_detail,
         'msg_pass': msg_pass,
         'msg_number': msg_number,
@@ -171,6 +179,7 @@ def customer_detail_change(request):
         'dialer_set': dialer_set,
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'action': action,
+        'user_notification': user_notification,
         'col_name_with_order': col_name_with_order,
         'PAGE_SIZE': PAGE_SIZE,
         'NOTICE_COLUMN_NAME': NOTICE_COLUMN_NAME,

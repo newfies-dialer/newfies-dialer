@@ -215,7 +215,7 @@ INSTALLED_APPS = (
     'dialer_audio',
     #'raven.contrib.django',
     'apiplayground',
-    #'utils',
+    'common_notification',
 )
 
 # Django extensions

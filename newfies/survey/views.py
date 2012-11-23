@@ -678,14 +678,14 @@ def survey_finitestatemachine(request):
         gateways = obj_callrequest.aleg_gateway.gateways
         phonenumber = list_section[current_state].phonenumber
         html =\
-        '<Response>\n'\
-        '   %s\n'\
-        '   <Dial timeLimit="%s" callerId="%s" callbackUrl="%s">\n'\
-        '   <Number gateways="%s" gatewayTimeouts="%s">'\
-        '   %s </Number> '\
-        '   </Dial>\n'\
-        '   <Redirect>%s</Redirect>\n'\
-        '</Response>' % (
+            '<Response>\n'\
+            '   %s\n'\
+            '   <Dial timeLimit="%s" callerId="%s" callbackUrl="%s">\n'\
+            '   <Number gateways="%s" gatewayTimeouts="%s">'\
+            '   %s </Number> '\
+            '   </Dial>\n'\
+            '   <Redirect>%s</Redirect>\n'\
+            '</Response>' % (
             html_play,
             timelimit,
             callerid,

@@ -22,9 +22,39 @@ from django.utils.translation import ugettext_lazy as _
 from django.db.models import Q
 from django.conf import settings
 from notification import models as notification
-from user_profile.constants import NOTICE_COLUMN_NAME
-from utils.helper import notice_count, common_notification_status
+from common_notification.constants import NOTICE_COLUMN_NAME
 from common.common_functions import current_view, get_pagination_vars
+
+
+@login_required
+def notice_count(request):
+    """Get count of logged in user's notifications"""
+    notice_count = notification.Notice.objects\
+        .filter(recipient=request.user, unseen=1)\
+        .count()
+    return notice_count
+
+
+def common_notification_status(request, id):
+    """Notification Status (e.g. seen/unseen) need to be change.
+    It is a common function for admin and customer UI
+
+    **Attributes**:
+
+        * ``pk`` - primary key of notice record
+
+    **Logic Description**:
+
+        * Selected Notification's status need to be changed.
+          Changed status can be seen or unseen.
+    """
+    notice = notification.Notice.objects.get(pk=id)
+    if notice.unseen == 1:
+        notice.unseen = 0
+    else:
+        notice.unseen = 1
+    notice.save()
+    return True
 
 
 def get_notification_list_for_view(request):

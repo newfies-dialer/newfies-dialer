@@ -24,7 +24,7 @@ from django.utils.translation import ugettext as _
 from voice_app.constants import VOICEAPP_COLUMN_NAME
 from voice_app.models import VoiceApp, VoiceApp_template
 from voice_app.forms import VoiceAppForm
-from utils.helper import notice_count
+from common_notification.views import notice_count
 from dialer_campaign.function_def import user_dialer_setting_msg
 from common.common_functions import current_view, get_pagination_vars
 

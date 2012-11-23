@@ -23,7 +23,7 @@ from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import CDR_REPORT_COLUMN_NAME
 from dialer_cdr.forms import VoipSearchForm
-from utils.helper import notice_count
+from common_notification.views import notice_count
 from common.common_functions import current_view, ceil_strdate,\
     get_pagination_vars
 from datetime import datetime

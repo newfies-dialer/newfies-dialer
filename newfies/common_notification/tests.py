@@ -24,10 +24,18 @@ class NotificationCustomerView(BaseAuthenticatedClient):
 
     fixtures = ['auth_user.json', 'notification.json']
 
-    def test_user_settings(self):
+    def test_user_notification(self):
         """Test Function to check User settings"""
         response = self.client.get(
             '/user_notification/?notification=mark_read_all', {})
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+            'frontend/common_notification/user_notification.html')
+
+        request = self.factory.get('/user_notification/')
+        request.user = self.user
+        request.session = {}
+        response = user_notification(request)
         self.assertEqual(response.status_code, 200)
 
     def test_notification_del_read(self):
@@ -40,7 +48,7 @@ class NotificationCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 302)
 
         request = self.factory.post('/user_notification/del/2/',
-            {'select': '1'})
+            {'select': '1,2'})
         request.user = self.user
         request.session = {}
         response = notification_del_read(request, 2)
@@ -54,7 +62,7 @@ class NotificationCustomerView(BaseAuthenticatedClient):
         response = notification_del_read(request, 0)
         self.assertEqual(response.status_code, 302)
 
-    def test_update_notice_status_cust(self):
+    def test_update_notification(self):
         """Test Function to check update notice status"""
         request = self.factory.post('/user_notification/1/',
             {'select': '1'})

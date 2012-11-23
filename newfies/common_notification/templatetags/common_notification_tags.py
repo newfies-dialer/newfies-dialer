@@ -20,6 +20,13 @@ from django.conf import settings
 
 @register.filter(name='notification_style')
 def notification_style(val):
+    """
+    >>> notification_style(1)
+    'label-inverse'
+
+    >>> notification_style('')
+    'label-success'
+    """
     if val:
         return 'label-inverse'
     else:

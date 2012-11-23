@@ -22,7 +22,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from dialer_campaign.models import Campaign
 from dialer_cdr.models import Callrequest
-from survey.constants import SECTION_TYPE
+from survey.constants import SECTION_TYPE_NOTRANSFER
 from audiofield.models import AudioFile
 from common.language_field import LanguageField
 from adminsortable.models import Sortable
@@ -184,8 +184,8 @@ class Section_abstract(Sortable):
     **Name of DB table**: survey_question
     """
     # select section
-    type = models.IntegerField(max_length=20, choices=list(SECTION_TYPE),
-                               default=SECTION_TYPE.PLAY_MESSAGE,
+    type = models.IntegerField(max_length=20, choices=list(SECTION_TYPE_NOTRANSFER),
+                               default=SECTION_TYPE_NOTRANSFER.PLAY_MESSAGE,
                                blank=True, null=True,
                                verbose_name=_('section type'))
     # Question is the section label, this is used in the reporting

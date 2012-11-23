@@ -19,7 +19,7 @@ from dialer_campaign.models import Campaign
 from dialer_cdr.forms import VoipSearchForm
 from survey.models import Survey_template, Section_template, \
     Branching_template
-from survey.constants import SECTION_TYPE_NOTRANSFER as SECTION_TYPE
+from survey.constants import SECTION_TYPE
 from audiofield.models import AudioFile
 
 

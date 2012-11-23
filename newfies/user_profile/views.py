@@ -31,9 +31,8 @@ from user_profile.forms import UserChangeDetailForm, \
                                UserChangeDetailExtendForm, \
                                CheckPhoneNumberForm
 from user_profile.constants import NOTICE_COLUMN_NAME
-from utils.helper import get_pagination_vars
 from frontend.views import notice_count
-from common.common_functions import variable_value, current_view
+from common.common_functions import current_view, get_pagination_vars
 
 
 @login_required

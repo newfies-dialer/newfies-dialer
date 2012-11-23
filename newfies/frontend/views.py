@@ -27,7 +27,6 @@ from django.utils.translation import ugettext as _
 from notification import models as notification
 from dialer_contact.models import Contact
 from dialer_campaign.models import Campaign, Subscriber
-
 from dialer_campaign.function_def import date_range, \
                         user_dialer_setting_msg
 from dialer_cdr.models import VoIPCall

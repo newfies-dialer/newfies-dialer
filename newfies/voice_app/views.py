@@ -25,9 +25,8 @@ from voice_app.constants import VOICEAPP_COLUMN_NAME
 from voice_app.models import VoiceApp, VoiceApp_template
 from voice_app.forms import VoiceAppForm
 from frontend.views import notice_count
-from utils.helper import get_pagination_vars
 from dialer_campaign.function_def import user_dialer_setting_msg
-from common.common_functions import current_view
+from common.common_functions import current_view, get_pagination_vars
 
 
 @permission_required('voice_app.view_voiceapp_template', login_url='/')

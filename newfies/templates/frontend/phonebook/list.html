@@ -50,9 +50,9 @@
                     <th><input type="checkbox" onclick="toggleChecked(this.checked)"></th>
                     <th>{% sort_link PHONEBOOK_COLUMN_NAME.id col_name_with_order.id %}</th>
                     <th>{% sort_link PHONEBOOK_COLUMN_NAME.name col_name_with_order.name %}</th>
-                    <th>{% trans PHONEBOOK_COLUMN_NAME.description %}</th>
+                    <th>{{ PHONEBOOK_COLUMN_NAME.description }}</th>
                     <th>{% sort_link PHONEBOOK_COLUMN_NAME.date col_name_with_order.updated_date %}</th>
-                    <th>{% trans PHONEBOOK_COLUMN_NAME.contacts %}</th>
+                    <th>{{ PHONEBOOK_COLUMN_NAME.contacts }}</th>
                     <th>{% trans 'Action' %}</th>
                 </tr>
                 </thead>
@@ -71,7 +71,7 @@
                                     <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "Update phonebook" %}"></a>
                                 {% endif %}
                                 {% if perms.dialer_contact.delete_phonebook %}
-                                    <a href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "Delete phonebook" %}"></a>
+                                    <a id="id_phonebook_delete_confirm" onclick="return get_alert_msg_for_phonebook({{ row.id }});"  href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "Delete phonebook" %}"></a>
                                 {% endif %}
                             </td>
                         </tr>

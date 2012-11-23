@@ -29,7 +29,7 @@ $(document).ready(function() {
                 confirm_string =  $fields.length + '{% trans " voice app(s) are going to be deleted?" %}';
             }
             if(document.location.href.search("/contact/") != -1) {
-                confirm_string = $fields.length +  '{% trans " phonebook(s) are going to be deleted?" %}' ;
+                confirm_string = $fields.length +  '{% trans " contact(s) are going to be deleted?" %}' ;
             }
             if(document.location.href.search("/survey/") != -1) {
                 confirm_string = $fields.length + '{% trans " survey(s) are going to be deleted?" %}';
@@ -73,32 +73,28 @@ $(document).ready(function() {
                 confirm_string = $fields.length + '{% trans " survey(s) are going to be deleted?" %}';
             }
 
-            //var answer = confirm(confirm_string);
-            //return answer; // answer is a boolean
-
             bootbox.confirm(confirm_string, function(result) {
                 if (result) {
                     currentForm.submit();
                 }
             });
+
+            return false;
         }
     });
+
+    $('#id_delete_confirm').click(function(e) {
+        e.preventDefault();
+        var href = this.href;
+        confirm_string = '{% trans "Confirm deletion?" %}';
+        bootbox.confirm(confirm_string, function(result){
+            if (result) {
+                window.location = href;
+            }
+        });
+        return false;
+    });
 });
-</script>
-
-
-<!--flexigrid css & js-->
-<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid.css" type="text/css" />
-<script type="text/javascript" src="{{STATIC_URL}}newfies/js/flexigrid.js"></script>
-<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid_custom.css" type="text/css" />
-
-<script type="text/javascript" language="javascript">
-function get_alert_msg(id)
-{
-    confirm_string = '{% trans "Confirm deletion?" %}';
-    var answer = confirm(confirm_string);
-    return answer
-}
 
 function get_alert_msg_for_phonebook(id)
 {
@@ -116,8 +112,14 @@ function get_alert_msg_for_phonebook(id)
         //     alert("Request failed");
         // }
     });
+    var href = $('#id_phonebook_delete_confirm').attr('href');
     confirm_string = '{% trans "Please confirm to delete this phonebook with" %} ' + contact_count + ' {% trans "contact(s)" %}'
-    var answer = confirm(confirm_string);
-    return answer
+
+    bootbox.confirm(confirm_string, function(result){
+        if (result) {
+            window.location = href;
+        }
+    });
+    return false;
 }
 </script>

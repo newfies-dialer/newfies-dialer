@@ -23,7 +23,6 @@ from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.db.models import Q
 from django.db.models import Count
-from frontend.views import notice_count
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.forms import ContactSearchForm, Contact_fileImport, \
     PhonebookForm, ContactForm
@@ -34,8 +33,9 @@ from dialer_campaign.function_def import check_dialer_setting,\
     user_dialer_setting_msg, type_field_chk
 from user_profile.constants import NOTIFICATION_NAME
 from user_profile.function_def import common_send_notification
-from common.common_functions import striplist, current_view
-from utils.helper import get_pagination_vars
+from utils.helper import notice_count
+from common.common_functions import striplist, current_view,\
+    get_pagination_vars
 import csv
 
 

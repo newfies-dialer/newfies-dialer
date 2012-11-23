@@ -22,7 +22,7 @@ from dialer_campaign.views import tpl_control_icon
 from dialer_cdr.constants import LEG_TYPE
 from survey.constants import SECTION_TYPE
 from voice_app.constants import VOICEAPP_TYPE
-from frontend.views import notice_count
+from utils.helper import notice_count
 from dialer_campaign.function_def import get_campaign_status_name
 from dialer_campaign.views import get_campaign_survey_view, get_url_campaign_status
 import os.path

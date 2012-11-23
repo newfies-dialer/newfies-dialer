@@ -19,15 +19,13 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.db.models import Sum, Avg, Count
-from django.utils import simplejson
 from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import CDR_REPORT_COLUMN_NAME
 from dialer_cdr.forms import VoipSearchForm
-from utils.helper import grid_common_function, get_pagination_vars
-from frontend.views import notice_count
-from common.common_functions import variable_value, current_view,\
-    ceil_strdate
+from utils.helper import notice_count
+from common.common_functions import current_view, ceil_strdate,\
+    get_pagination_vars
 from datetime import datetime
 import csv
 

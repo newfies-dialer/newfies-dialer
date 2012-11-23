@@ -12,111 +12,36 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.conf import settings
-from common.common_functions import variable_value
+from django.contrib.auth.decorators import login_required
+from notification import models as notification
 
 
-update_style = \
-    'style="text-decoration:none;background-image:url(%snewfies/icons/page_edit.png);"' %\
-    settings.STATIC_URL
-delete_style = \
-    'style="text-decoration:none;background-image:url(%snewfies/icons/delete.png);"' %\
-    settings.STATIC_URL
-
-# grid_test_data used in test-cases
-grid_test_data = {'page': 1,
-                  'rp': 10,
-                  'sortname': 'id',
-                  'sortorder': 'asc'}
+@login_required
+def notice_count(request):
+    """Get count of logged in user's notifications"""
+    notice_count = notification.Notice.objects\
+        .filter(recipient=request.user, unseen=1)\
+        .count()
+    return notice_count
 
 
-def grid_common_function(request):
-    """To get common flexigrid variable"""
-    grid_data = {}
+def common_notification_status(request, id):
+    """Notification Status (e.g. seen/unseen) need to be change.
+    It is a common function for admin and customer UI
 
-    grid_data['page'] = variable_value(request, 'page')
-    grid_data['rp'] = variable_value(request, 'rp')
-    grid_data['sortname'] = variable_value(request, 'sortname')
-    grid_data['sortorder'] = variable_value(request, 'sortorder')
-    grid_data['query'] = variable_value(request, 'query')
-    grid_data['qtype'] = variable_value(request, 'qtype')
+    **Attributes**:
 
-    # page index
-    if int(grid_data['page']) > 1:
-        grid_data['start_page'] = (int(grid_data['page']) - 1) * \
-            int(grid_data['rp'])
-        grid_data['end_page'] = grid_data['start_page'] + int(grid_data['rp'])
-    else:
-        grid_data['start_page'] = int(0)
-        grid_data['end_page'] = int(grid_data['rp'])
+        * ``pk`` - primary key of notice record
 
-    grid_data['sortorder_sign'] = ''
-    if grid_data['sortorder'] == 'desc':
-        grid_data['sortorder_sign'] = '-'
+    **Logic Description**:
 
-    return grid_data
-
-
-def get_grid_update_delete_link(request, row_id, perm_name, title, action):
-    """Function to check user permission to change or delete
-
-        ``request`` - to check request.user.has_perm() attribute
-        ``row_id`` - to pass record id in link
-        ``link_style`` - update / delete link style
-        ``title`` - alternate name of link
-        ``action`` - link to update or delete
+        * Selected Notification's status need to be changed.
+          Changed status can be seen or unseen.
     """
-    link = ''
-    if action == 'update' and request.user.has_perm(perm_name):
-        link = '<a href="%s/" class="icon" %s title="%s">&nbsp;</a>' %\
-               (str(row_id), update_style, title)
-
-    if action == 'delete' and request.user.has_perm(perm_name):
-        link = '<a href="del/%s/" class="icon" %s onClick="return get_alert_msg(%s);" title="%s">&nbsp;</a>' %\
-                    (str(row_id), delete_style, str(row_id), title)
-    return link
-
-
-def get_pagination_vars(request, col_field_list, default_sort_field):
-    """Return data for pagination"""
-    # Define no of records per page
-    PAGE_SIZE = settings.PAGE_SIZE
-    try:
-        PAGE_NUMBER = int(request.GET['page'])
-    except:
-        PAGE_NUMBER = 1
-
-    # page index
-    if PAGE_NUMBER > 1:
-        start_page = (PAGE_NUMBER - 1) * int(PAGE_SIZE)
-        end_page = start_page + int(PAGE_SIZE)
+    notice = notification.Notice.objects.get(pk=id)
+    if notice.unseen == 1:
+        notice.unseen = 0
     else:
-        start_page = int(0)
-        end_page = int(PAGE_SIZE)
-
-    # default column order
-    col_name_with_order = {}
-    for field_name in col_field_list:
-        col_name_with_order[field_name] = '-' + field_name
-
-    sort_field = variable_value(request, 'sort_by')
-    if not sort_field:
-        sort_field = default_sort_field  # default sort field
-        sort_order = '-' + sort_field  # desc
-    else:
-        if "-" in sort_field:
-            sort_order = sort_field
-            col_name_with_order[sort_field[1:]] = sort_field[1:]
-        else:
-            sort_order = sort_field
-            col_name_with_order[sort_field] = '-' + sort_field
-
-    data = {
-        'PAGE_SIZE': PAGE_SIZE,
-        'PAGE_NUMBER': PAGE_NUMBER,
-        'start_page': start_page,
-        'end_page': end_page,
-        'col_name_with_order': col_name_with_order,
-        'sort_order': sort_order,
-    }
-    return data
+        notice.unseen = 1
+    notice.save()
+    return True

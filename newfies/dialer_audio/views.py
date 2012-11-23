@@ -21,12 +21,11 @@ from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
-from utils.helper import get_pagination_vars
-from frontend.views import notice_count
+from utils.helper import notice_count
 from dialer_audio.constants import AUDIO_COLUMN_NAME
 from dialer_audio.forms import DialerAudioFileForm
 from audiofield.models import AudioFile
-from common.common_functions import current_view
+from common.common_functions import current_view, get_pagination_vars
 import os.path
 
 

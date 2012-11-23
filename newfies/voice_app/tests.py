@@ -24,7 +24,6 @@ from voice_app.views import voiceapp_list, voiceapp_add,\
                             voiceapp_del, voiceapp_change,\
                             voiceapp_view
 from voice_app.function_def import check_voiceapp_campaign
-from utils.helper import grid_test_data
 from common.utils import BaseAuthenticatedClient
 
 

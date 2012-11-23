@@ -20,7 +20,6 @@ from audiofield.models import AudioFile
 from dialer_audio.forms import DialerAudioFileForm
 from dialer_audio.views import audio_list, audio_add,\
                                audio_change, audio_del
-from utils.helper import grid_test_data
 
 audio_file = open(
     settings.APPLICATION_DIR + '/dialer_audio/fixtures/sample_audio_file.mp3', 'r'

@@ -34,7 +34,6 @@ from frontend.forms import LoginForm, DashboardForm
 from frontend.function_def import calculate_date
 from frontend.constants import COLOR_DISPOSITION, SEARCH_TYPE
 from common_notification.views import notice_count
-#from user_profile.views import notice_count
 from common.common_functions import current_view
 from datetime import datetime
 from dateutil import parser

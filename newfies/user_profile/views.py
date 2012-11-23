@@ -18,7 +18,6 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext_lazy as _
-
 from dialer_campaign.models import common_contact_authorization
 from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_settings.models import DialerSetting
@@ -26,7 +25,6 @@ from user_profile.models import UserProfile
 from user_profile.forms import UserChangeDetailForm, \
                                UserChangeDetailExtendForm, \
                                CheckPhoneNumberForm
-
 from common_notification.views import notice_count
 from common.common_functions import current_view
 

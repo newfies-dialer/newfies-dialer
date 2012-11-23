@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n pagination_tags common_tags dialer_cdr_extras %}
+{% load i18n pagination_tags common_tags common_notification_tags %}
 
 {% block extra_header %}
     <script type="text/javascript" language="javascript">
@@ -99,7 +99,7 @@
                             <td>{{ row.added }}</td>
                             <td>
                                 <a href="../update_notification/{{ row.id }}/">
-                                    <span class="label label-info">{{ row.unseen|icon_call_style }}</span>
+                                    <span class="label {{ row.unseen|notification_style }}">{{ row.unseen|notification_status }}</span>
                                 </a>
                             </td>
                         </tr>

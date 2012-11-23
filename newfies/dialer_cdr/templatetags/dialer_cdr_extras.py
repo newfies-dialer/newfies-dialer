@@ -193,14 +193,6 @@ def running_total(running_list, field_name):
     return sum(d[field_name] for d in running_list)
 
 
-@register.filter(name='icon_call_style')
-def icon_call_style(val):
-    if val:
-        return _('unseen')
-    else:
-        return _('seen')
-
-
 @register.filter(name='get_file_basename')
 def get_file_basename(val):
     if val:

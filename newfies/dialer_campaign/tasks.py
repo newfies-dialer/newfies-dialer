@@ -20,6 +20,7 @@ from dialer_campaign.models import Campaign
 from dialer_campaign.function_def import user_dialer_setting
 from dialer_campaign.constants import SUBSCRIBER_STATUS, \
     CAMPAIGN_STATUS
+from dialer_cdr.constants import CALLREQUEST_STATUS
 from dialer_cdr.models import Callrequest
 from dialer_cdr.tasks import init_callrequest
 from dialer_contact.tasks import collect_subscriber
@@ -56,7 +57,7 @@ class campaign_spool_contact(PeriodicTask):
         logger.info("TASK :: campaign_spool_contact")
 
         for campaign in Campaign.objects.get_running_campaign():
-            logger.debug("=> Spool Contact : Campaign name %s (id:%s)" % \
+            logger.debug("=> Spool Contact : Campaign name %s (id:%s)" %
                 (campaign.name, str(campaign.id)))
             #Start collecting the contacts for this campaign
             collect_subscriber.delay(campaign.id)
@@ -105,11 +106,11 @@ def check_campaign_pendingcall(campaign_id):
     #Get the subscriber of this campaign
     # get_pending_subscriber get Max 1000 records
     list_subscriber = obj_campaign.get_pending_subscriber_update(
-                            frequency,
-                            SUBSCRIBER_STATUS.IN_PROCESS
-                            )
+        frequency,
+        SUBSCRIBER_STATUS.IN_PROCESS
+    )
     if list_subscriber:
-        logger.debug("Number of subscriber found : %d" % len(list_subscriber))
+        logger.info("#Subscriber: %d" % len(list_subscriber))
 
     try:
         no_subscriber = list_subscriber.count()
@@ -132,39 +133,39 @@ def check_campaign_pendingcall(campaign_id):
         """Loop on Subscriber and start the initcall task"""
         count = count + 1
         logger.info("Add CallRequest for Subscriber (%s) & wait (%s) " %
-                        (str(elem_camp_subscriber.id), str(time_to_wait)))
+            (str(elem_camp_subscriber.id), str(time_to_wait)))
 
         #Check if the contact is authorized
-        if not obj_campaign.is_authorized_contact(
-                        elem_camp_subscriber.contact.contact):
+        if not obj_campaign.is_authorized_contact(elem_camp_subscriber.contact.contact):
             logger.error("Error : Contact not authorized")
             elem_camp_subscriber.status = SUBSCRIBER_STATUS.NOT_AUTHORIZED
             elem_camp_subscriber.save()
             return True
 
         #Create a Callrequest Instance to track the call task
-        new_callrequest = Callrequest(status=1,  # PENDING
-                            call_type=call_type,
-                            call_time=datetime.now(),
-                            timeout=obj_campaign.calltimeout,
-                            callerid=obj_campaign.callerid,
-                            phone_number=elem_camp_subscriber.contact.contact,
-                            campaign=obj_campaign,
-                            aleg_gateway=obj_campaign.aleg_gateway,
-                            content_type=obj_campaign.content_type,
-                            object_id=obj_campaign.object_id,
-                            user=obj_campaign.user,
-                            extra_data=obj_campaign.extra_data,
-                            timelimit=obj_campaign.callmaxduration,
-                            subscriber=elem_camp_subscriber)
+        new_callrequest = Callrequest(
+            status=CALLREQUEST_STATUS.PENDING,
+            call_type=call_type,
+            call_time=datetime.now(),
+            timeout=obj_campaign.calltimeout,
+            callerid=obj_campaign.callerid,
+            phone_number=elem_camp_subscriber.contact.contact,
+            campaign=obj_campaign,
+            aleg_gateway=obj_campaign.aleg_gateway,
+            content_type=obj_campaign.content_type,
+            object_id=obj_campaign.object_id,
+            user=obj_campaign.user,
+            extra_data=obj_campaign.extra_data,
+            timelimit=obj_campaign.callmaxduration,
+            subscriber=elem_camp_subscriber)
         new_callrequest.save()
 
         #Todo Check if it's a good practice / implement a PID algorithm
         second_towait = ceil(count * time_to_wait)
         logger.info("Init CallRequest in  %d seconds" % second_towait)
         init_callrequest.apply_async(
-                    args=[new_callrequest.id, obj_campaign.id],
-                    countdown=second_towait)
+            args=[new_callrequest.id, obj_campaign.id],
+            countdown=second_towait)
         #Shell_plus
         # from dialer_cdr.tasks import init_callrequest
         # from datetime import datetime
@@ -196,7 +197,7 @@ class campaign_running(PeriodicTask):
         logger.debug("TASK :: campaign_running")
 
         for campaign in Campaign.objects.get_running_campaign():
-            logger.debug("=> Campaign name %s (id:%s)" % \
+            logger.debug("=> Campaign name %s (id:%s)" %
                 (campaign.name, campaign.id))
             check_campaign_pendingcall.delay(campaign.id)
         return True
@@ -216,7 +217,7 @@ class campaign_expire_check(PeriodicTask):
         logger.info("TASK :: campaign_expire_check")
 
         for obj_campaign in Campaign.objects.get_expired_campaign():
-            logger.debug("=> Campaign name %s (id:%s)" % \
+            logger.debug("=> Campaign name %s (id:%s)" %
                 (obj_campaign.name, obj_campaign.id))
             obj_campaign.update_status(CAMPAIGN_STATUS.END)
         return True

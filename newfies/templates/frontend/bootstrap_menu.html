@@ -1,4 +1,4 @@
-{% load i18n dialer_cdr_extras %}
+{% load i18n dialer_cdr_extras common_notification_tags %}
 
 
 <div class="navbar navbar-inverse navbar-fixed-top">
@@ -96,17 +96,8 @@
                         <li  {% if action == "tabs-1" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-1">
                             {% trans "Account settings" %}</a>
                         </li>
-                        <li  {% if action == "tabs-3" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-3">
-                            {% trans "Notifications" %}
-                            {% if notice_count or notice_count == 0 %}
-                                <span class="label label-warning">{{ notice_count }}</span>
-                            {% elif "/api-explorer/" in request.get_full_path %}
-                                <span class="label label-warning">{% get_notice_count request %}</span>
-                            {% endif %}
-                            </a>
-                        </li>
                         <li>
-                            <a href="/user_notification/">{% trans "Notifications new" %}
+                            <a href="/user_notification/">{% trans "Notifications" %}
                                 {% if notice_count or notice_count == 0 %}
                                     <span class="label label-warning">{{ notice_count }}</span>
                                 {% elif "/api-explorer/" in request.get_full_path %}
@@ -114,9 +105,9 @@
                                 {% endif %}
                             </a>
                         </li>
-                        <li {% if action == "tabs-4" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-4">
+                        <li {% if action == "tabs-3" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-3">
                             {% trans "Account Limits" %}</a></li>
-                        <li {% if action == "tabs-6" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-6">
+                        <li {% if action == "tabs-5" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-5">
                             {% trans "Change language " %}</a>
                         </li>
                         <li class="divider"></li>

@@ -20,9 +20,7 @@ from user_profile.forms import UserChangeDetailForm, \
                                UserChangeDetailExtendForm, \
                                CheckPhoneNumberForm, \
                                UserProfileForm
-from user_profile.views import customer_detail_change, \
-                               notification_del_read,\
-                               update_notice_status_cust
+from user_profile.views import customer_detail_change
 from dialer_settings.models import DialerSetting
 from common.utils import BaseAuthenticatedClient
 
@@ -94,39 +92,6 @@ class UserProfileCustomerView(BaseAuthenticatedClient):
         request.session = {}
         response = customer_detail_change(request)
         self.assertEqual(response.status_code, 200)
-
-    def test_notification_del_read(self):
-        """Test Function to check delete notification"""
-        request = self.factory.post('/user_detail_change/del/1/',
-                {'mark_read': 'false'})
-        request.user = self.user
-        request.session = {}
-        response = notification_del_read(request, 1)
-        self.assertEqual(response.status_code, 302)
-
-        request = self.factory.post('/user_detail_change/del/2/',
-                {'select': '1'})
-        request.user = self.user
-        request.session = {}
-        response = notification_del_read(request, 2)
-        self.assertEqual(response.status_code, 302)
-
-        request = self.factory.post('/user_detail_change/del/',
-                {'select': '1',
-                 'mark_read': 'true'})
-        request.user = self.user
-        request.session = {}
-        response = notification_del_read(request, 0)
-        self.assertEqual(response.status_code, 302)
-
-    def test_update_notice_status_cust(self):
-        """Test Function to check update notice status"""
-        request = self.factory.post('/update_notice_status_cust/1/',
-                {'select': '1'})
-        request.user = self.user
-        request.session = {}
-        response = update_notice_status_cust(request, 1)
-        self.assertEqual(response.status_code, 302)
 
 
 class UserProfileModel(TestCase):

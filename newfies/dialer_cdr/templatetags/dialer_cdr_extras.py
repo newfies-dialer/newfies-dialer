@@ -22,7 +22,6 @@ from dialer_campaign.views import tpl_control_icon
 from dialer_cdr.constants import LEG_TYPE
 from survey.constants import SECTION_TYPE
 from voice_app.constants import VOICEAPP_TYPE
-from utils.helper import notice_count
 from dialer_campaign.function_def import get_campaign_status_name
 from dialer_campaign.views import get_campaign_survey_view, get_url_campaign_status
 import os.path
@@ -35,12 +34,6 @@ def percentage_tag(fraction, population):
         return "%.2f%%" % ((float(fraction) / float(population)) * 100)
     except:
         return "0.00%"
-
-
-@register.simple_tag(name='get_notice_count')
-def get_notice_count(request):
-    """tag to display notice count"""
-    return notice_count(request)
 
 
 @register.filter(name='contact_status')
@@ -191,14 +184,6 @@ def que_res_string(val):
 @register.filter(name='running_total')
 def running_total(running_list, field_name):
     return sum(d[field_name] for d in running_list)
-
-
-@register.filter(name='icon_call_style')
-def icon_call_style(val):
-    if val:
-        return _('unseen')
-    else:
-        return _('seen')
 
 
 @register.filter(name='get_file_basename')

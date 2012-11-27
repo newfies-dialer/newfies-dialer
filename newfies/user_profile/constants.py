@@ -25,10 +25,3 @@ class NOTIFICATION_NAME(Choice):
     contact_limit_reached = 6, _('contact limit reached')
     dialer_setting_configuration = 7, _('dialer setting configuration')
     callrequest_not_found = 8, _('callrequest not found')
-
-
-class NOTICE_COLUMN_NAME(Choice):
-    message = _('Message')
-    notice_type = _('Notice type')
-    sender = _('Sender')
-    date_field = _('Date')

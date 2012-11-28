@@ -25,7 +25,7 @@ from user_profile.models import UserProfile
 from user_profile.forms import UserChangeDetailForm, \
                                UserChangeDetailExtendForm, \
                                CheckPhoneNumberForm
-from common_notification.views import notice_count
+from frontend_notification.views import notice_count
 from common.common_functions import current_view
 
 

@@ -29,74 +29,69 @@
 
 <div id="content-main">
 
-{% if cl.formset.errors %}
-    <p class="errornote">
-    {% blocktrans count cl.formset.errors|length as counter %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
-    </p>
-    {{ cl.formset.non_form_errors }}
-{% endif %}
-
-{% block custom-search %}
-    <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
-    <table class="actions">
-    <caption>{% trans "Search Option" %}</caption>
-    {{ form.as_table }}
-    <tr>
-        <td>&nbsp;</td>
-        <td><input type="submit" value="{% trans "Search" %}" class="l-1" />&nbsp;
-        <input type="reset" class="j-2" name="reset" value="{% trans "Reset" %}"><td>
-    </tr>
-    </table>
-    </form>
-{% endblock %}
-
-{% block object-tools %}
-    <ul class="object-tools">
-    {% if has_add_permission %}
-    <li>
-        <a href="add/{% if is_popup %}?_popup=1{% endif %}" class="addlink">
-          {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
-        </a>
-    </li>
+    {% if cl.formset.errors %}
+        <p class="errornote">
+        {% blocktrans count cl.formset.errors|length as counter %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
+        </p>
+        {{ cl.formset.non_form_errors }}
     {% endif %}
-    </ul>
-{% endblock %}
 
-<div class="module{% if cl.has_filters %} filtered{% endif %}" id="changelist">
-  {% block search %}{% search_form cl %}{% endblock %}
-  {% block date_hierarchy %}{% date_hierarchy cl %}{% endblock %}
+    {% block custom-search %}
+        <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+        <table class="actions">
+        <caption>{% trans "Search Option" %}</caption>
+        {{ form.as_table }}
+        <tr>
+            <td>&nbsp;</td>
+            <td><input type="submit" value="{% trans "Search" %}" class="l-1" />&nbsp;
+            <input type="reset" class="j-2" name="reset" value="{% trans "Reset" %}"><td>
+        </tr>
+        </table>
+        </form>
+    {% endblock %}
 
-  {% block filters %}
-    {% if cl.has_filters %}
-      <div id="changelist-filter">
-        <h2>{% trans 'Filter' %}</h2>
-        {% for spec in cl.filter_specs %}{% admin_list_filter cl spec %}{% endfor %}
-      </div>
-    {% endif %}
-  {% endblock %}
+    {% block object-tools %}
+        <ul class="object-tools">
+        {% if has_add_permission %}
+        <li>
+            <a href="add/{% if is_popup %}?_popup=1{% endif %}" class="addlink">
+              {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
+            </a>
+        </li>
+        {% endif %}
+            <li>
+                <a href="export_voip_report/" class="addlink">
+                    {% trans "Export CSV file" %}
+                </a>
+            </li>
+        </ul>
+    {% endblock %}
 
-  <form id="changelist-form" action="" method="post"{% if cl.formset.is_multipart %} enctype="multipart/form-data"{% endif %}>{% csrf_token %}
-  {% if cl.formset %}
-    {{ cl.formset.management_form }}
-  {% endif %}
-  {% block result_list %}
-      {% if action_form and actions_on_top and cl.full_result_count %}{% admin_actions %}{% endif %}
-      {% result_list cl %}
-      {% if action_form and actions_on_bottom and cl.full_result_count %}{% admin_actions %}{% endif %}
-  {% endblock %}
-  {% block pagination %}{% pagination cl %}{% endblock %}
-  </form>
-</div>
+    <div class="module{% if cl.has_filters %} filtered{% endif %}" id="changelist">
+      {% block search %}{% search_form cl %}{% endblock %}
+      {% block date_hierarchy %}{% date_hierarchy cl %}{% endblock %}
 
-<br/>
+      {% block filters %}
+        {% if cl.has_filters %}
+          <div id="changelist-filter">
+            <h2>{% trans 'Filter' %}</h2>
+            {% for spec in cl.filter_specs %}{% admin_list_filter cl spec %}{% endfor %}
+          </div>
+        {% endif %}
+      {% endblock %}
 
-{% block extra_data %}
-
-<div align=center>
-    {% trans "Export CSV file" %} <br/>
-    <a href="export_voip_report/"><img src='{{STATIC_URL}}newfies/icons/x-office-spreadsheet.png' width="75"/></a>
-</div>
-{% endblock %}
+      <form id="changelist-form" action="" method="post"{% if cl.formset.is_multipart %} enctype="multipart/form-data"{% endif %}>{% csrf_token %}
+      {% if cl.formset %}
+        {{ cl.formset.management_form }}
+      {% endif %}
+      {% block result_list %}
+          {% if action_form and actions_on_top and cl.full_result_count %}{% admin_actions %}{% endif %}
+          {% result_list cl %}
+          {% if action_form and actions_on_bottom and cl.full_result_count %}{% admin_actions %}{% endif %}
+      {% endblock %}
+      {% block pagination %}{% pagination cl %}{% endblock %}
+      </form>
+    </div>
 
 </div>
 {% endblock %}

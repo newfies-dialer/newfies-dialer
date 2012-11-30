@@ -79,7 +79,7 @@ class ContactAdmin(admin.ModelAdmin):
                 messages.error(request, msg)
 
                 # campaign limit reached
-                common_send_notification(request, NOTIFICATION_NAME.campaign_limit_reached)
+                frontend_send_notification(request, NOTIFICATION_NAME.campaign_limit_reached)
                 return HttpResponseRedirect(reverse(
                     "admin:dialer_campaign_contact_changelist"))
 
@@ -118,7 +118,7 @@ class ContactAdmin(admin.ModelAdmin):
                 messages.error(request, msg)
 
                 # campaign limit reached
-                common_send_notification(request, NOTIFICATION_NAME.campaign_limit_reached)
+                frontend_send_notification(request, NOTIFICATION_NAME.campaign_limit_reached)
                 return HttpResponseRedirect(reverse(
                     "admin:dialer_campaign_contact_changelist"))
 

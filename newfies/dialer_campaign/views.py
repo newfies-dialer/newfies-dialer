@@ -34,8 +34,7 @@ from dialer_campaign.tasks import collect_subscriber
 from survey.function_def import check_survey_campaign
 from voice_app.function_def import check_voiceapp_campaign
 from user_profile.constants import NOTIFICATION_NAME
-from user_profile.function_def import common_send_notification
-from frontend_notification.views import notice_count
+from frontend_notification.views import notice_count, frontend_send_notification
 from common.common_functions import current_view, get_pagination_vars
 import re
 
@@ -46,7 +45,7 @@ def update_campaign_status_admin(request, pk, status):
     admin interface (via campaign list)"""
     obj_campaign = Campaign.objects.get(id=pk)
     recipient = obj_campaign.update_status(status)
-    common_send_notification(request, status, recipient)
+    frontend_send_notification(request, status, recipient)
     return HttpResponseRedirect(
         reverse("admin:dialer_campaign_campaign_changelist"))
 
@@ -62,7 +61,7 @@ def update_campaign_status_cust(request, pk, status):
         request.session['error_msg'] = _('Error : You have to assign a phonebook to your campaign before starting it')
     else:
         recipient = obj_campaign.update_status(status)
-        common_send_notification(request, status, recipient)
+        frontend_send_notification(request, status, recipient)
 
         # Notify user while campaign Start
         if int(status) == CAMPAIGN_STATUS.START:
@@ -84,7 +83,7 @@ def notify_admin(request):
     # TODO : get recipient = admin user
     recipient = User.objects.get(pk=request.user.pk)
     if not request.session['has_notified']:
-        common_send_notification(
+        frontend_send_notification(
             request, NOTIFICATION_NAME.dialer_setting_configuration, recipient)
         # Send mail to ADMINS
         subject = _('Dialer setting configuration')
@@ -271,7 +270,7 @@ def campaign_add(request):
             request.session['msg'] = msg
 
             # campaign limit reached
-            common_send_notification(request, NOTIFICATION_NAME.campaign_limit_reached)
+            frontend_send_notification(request, NOTIFICATION_NAME.campaign_limit_reached)
             return HttpResponseRedirect("/campaign/")
 
     form = CampaignForm(request.user)

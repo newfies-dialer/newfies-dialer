@@ -27,7 +27,7 @@ from dialer_contact.forms import Contact_fileImport
 from dialer_campaign.function_def import check_dialer_setting, \
     dialer_setting_limit
 from user_profile.constants import NOTIFICATION_NAME
-from user_profile.function_def import common_send_notification
+from frontend_notification.views import frontend_send_notification
 from common.common_functions import striplist
 import csv
 

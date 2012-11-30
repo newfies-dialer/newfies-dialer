@@ -13,9 +13,6 @@
 #
 
 from django.db import models
-from django.db.models import fields
-from django.conf import settings
-from django.core import exceptions
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
@@ -25,31 +22,8 @@ from dialer_cdr.models import Callrequest
 from survey.constants import SECTION_TYPE_NOTRANSFER
 from audiofield.models import AudioFile
 from common.language_field import LanguageField
+from common.big_integer_field import BigIntegerField
 from adminsortable.models import Sortable
-
-
-#TODO: Move this to common
-class BigIntegerField(fields.IntegerField):
-
-    def db_type(self):
-        if settings.DATABASE_ENGINE == 'mysql':
-            return "bigint"
-        elif settings.DATABASE_ENGINE[:8] == 'postgres':
-            return "bigint"
-        else:
-            raise NotImplemented
-
-    def get_internal_type(self):
-        return "BigIntegerField"
-
-    def to_python(self, value):
-        if value is None:
-            return value
-        try:
-            return long(value)
-        except (TypeError, ValueError):
-            raise exceptions.ValidationError(
-                _("This value must be a long integer."))
 
 
 class Survey_abstract(models.Model):

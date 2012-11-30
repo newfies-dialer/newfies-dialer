@@ -208,25 +208,26 @@ def export_voipcall_report(request):
     writer = csv.writer(response)
 
     # super(VoIPCall_ReportAdmin, self).queryset(request)
-    qs = request.session['voipcall_record_qs']
+    if request.session.get('voipcall_record_qs'):
+        qs = request.session['voipcall_record_qs']
 
-    writer.writerow(['user', 'callid', 'callerid', 'phone_number',
-                     'starting_date', 'duration', 'billsec',
-                     'disposition', 'hangup_cause', 'hangup_cause_q850',
-                     'used_gateway'])
-    for i in qs:
-        gateway_used = i.used_gateway.name if i.used_gateway else ''
-        writer.writerow([
-            i.user,
-            i.callid,
-            i.callerid,
-            i.phone_number,
-            i.starting_date,
-            i.duration,
-            i.billsec,
-            i.disposition,
-            i.hangup_cause,
-            i.hangup_cause_q850,
-            gateway_used,
-        ])
+        writer.writerow(['user', 'callid', 'callerid', 'phone_number',
+                         'starting_date', 'duration', 'billsec',
+                         'disposition', 'hangup_cause', 'hangup_cause_q850',
+                         'used_gateway'])
+        for i in qs:
+            gateway_used = i.used_gateway.name if i.used_gateway else ''
+            writer.writerow([
+                i.user,
+                i.callid,
+                i.callerid,
+                i.phone_number,
+                i.starting_date,
+                i.duration,
+                i.billsec,
+                i.disposition,
+                i.hangup_cause,
+                i.hangup_cause_q850,
+                gateway_used,
+            ])
     return response

@@ -12,8 +12,6 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.contrib.auth.models import User
-from notification import models as notification
 
 
 

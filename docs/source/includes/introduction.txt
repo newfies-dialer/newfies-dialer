@@ -19,7 +19,7 @@ Newfies-Dialer is written in Python, using the `Django`_ Framework. It also oper
 with message brokers such as `RabbitMQ`_, `Redis`_ but support for Beanstalk,
 MongoDB, CouchDB and DBMS is also available.
 
-Newfies-Dialer provides an extensive set of APIs to easily integrate with 
+Newfies-Dialer provides an extensive set of APIs to easily integrate with
 third-party applications.
 
 Using very simple steps, Newfies-Dialer will help you create campaigns, add
@@ -29,7 +29,6 @@ will be dispatched and delivered.
 
 .. _`Freeswitch`: http://www.freeswitch.org/
 .. _`Asterisk`: http://www.asterisk.org/
-.. _`FreedomeFone`: http://www.freedomefone.org/
 .. _`Django`: http://djangoproject.com/
 .. _`RabbitMQ`: http://www.rabbitmq.com/
 .. _`Redis`: http://code.google.com/p/redis/
@@ -57,7 +56,7 @@ provide bulk dialling facilities to their own customers.
 Utility
 =======
 Newfies-Dialer is loaded up with a list of telephone numbers that can be dialled
-sequentially at very high rates of calling depending on carrier capacity and 
+sequentially at very high rates of calling depending on carrier capacity and
 hardware, potentially delivering many millions of calls per day.
 
 When the called party answers the call, Newfies-Dialer passes the call to a telephony
@@ -105,7 +104,7 @@ Below are examples of some of the uses for Newfies-Dialer
 
 Features
 ========
- 
+
     +-----------------+----------------------------------------------------+
     | Telephony PBX   | Based on leading open source Freeswitch, Asterisk  |
     +-----------------+----------------------------------------------------+

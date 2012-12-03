@@ -34,9 +34,8 @@ from dialer_contact.models import Phonebook
 from dialer_campaign.models import Campaign
 from dialer_gateway.models import Gateway
 from dialer_campaign.function_def import \
-            user_attached_with_dialer_settings, \
-            check_dialer_setting, \
-            dialer_setting_limit
+    user_attached_with_dialer_settings, check_dialer_setting, \
+    dialer_setting_limit
 import time
 import logging
 
@@ -64,9 +63,9 @@ class CampaignValidation(Validation):
             expirationdate = float(expirationdate) - time.altzone
 
             bundle.data['startingdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
-                time.gmtime(float(startingdate)))
+                time.gmtime(startingdate))
             bundle.data['expirationdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
-                time.gmtime(float(expirationdate)))
+                time.gmtime(expirationdate))
 
         if request.method == 'PUT':
             if startingdate:
@@ -80,38 +79,31 @@ class CampaignValidation(Validation):
             errors['user_dialer_setting'] = ['Your settings are not configured properly, Please contact the administrator.']
 
         if check_dialer_setting(request, check_for="campaign"):
-            errors['chk_campaign'] = ["Too many campaigns. Max allowed %s"\
-                    % dialer_setting_limit(request, limit_for="campaign")]
+            errors['chk_campaign'] = ["Too many campaigns. Max allowed %s"
+                % dialer_setting_limit(request, limit_for="campaign")]
 
         frequency = bundle.data.get('frequency')
         if frequency:
-            if check_dialer_setting(request, check_for="frequency",
-                field_value=int(frequency)):
-                errors['chk_frequency'] = ["Frequency limit of %s exceeded."\
+            if check_dialer_setting(request, check_for="frequency", field_value=int(frequency)):
+                errors['chk_frequency'] = ["Frequency limit of %s exceeded."
                     % dialer_setting_limit(request, limit_for="frequency")]
 
         callmaxduration = bundle.data.get('callmaxduration')
         if callmaxduration:
-            if check_dialer_setting(request,
-                check_for="duration",
-                field_value=int(callmaxduration)):
-                errors['chk_duration'] = ["Duration limit of %s exceeded."\
+            if check_dialer_setting(request, check_for="duration", field_value=int(callmaxduration)):
+                errors['chk_duration'] = ["Duration limit of %s exceeded."
                     % dialer_setting_limit(request, limit_for="duration")]
 
         maxretry = bundle.data.get('maxretry')
         if maxretry:
-            if check_dialer_setting(request,
-                check_for="retry",
-                field_value=int(maxretry)):
-                errors['chk_duration'] = ["Retries limit of %s exceeded."\
+            if check_dialer_setting(request, check_for="retry", field_value=int(maxretry)):
+                errors['chk_duration'] = ["Retries limit of %s exceeded."
                     % dialer_setting_limit(request, limit_for="retry")]
 
         calltimeout = bundle.data.get('calltimeout')
         if calltimeout:
-            if check_dialer_setting(request,
-                check_for="timeout",
-                field_value=int(calltimeout)):
-                errors['chk_timeout'] = ["Timeout limit of %s exceeded."\
+            if check_dialer_setting(request, check_for="timeout", field_value=int(calltimeout)):
+                errors['chk_timeout'] = ["Timeout limit of %s exceeded."
                     % dialer_setting_limit(request, limit_for="timeout")]
 
         aleg_gateway_id = bundle.data.get('aleg_gateway')
@@ -199,8 +191,8 @@ class CampaignResource(ModelResource):
 
             * ``aleg_gateway`` - Defines the Gateway to use to call the\
                                  subscriber
-            * ``content_type`` - Defines the application (``voice_app`` \
-                                or ``survey``) to use when the \
+            * ``content_type`` - Defines the application (``voice_app_template`` \
+                                or ``survey_template``) to use when the \
                                 call is established on the A-Leg
             * ``object_id`` - Defines the object of content_type application
             * ``extra_data`` - Defines the additional data to pass to the\

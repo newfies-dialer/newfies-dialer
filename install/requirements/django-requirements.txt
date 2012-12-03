@@ -23,6 +23,6 @@ django-admin-tools-stats==0.4.0
 switch2bill-common==2.4.0
 django-extensions==1.0.1
 git+git://github.com/Star2Billing/django-notification
+django-frontend-notification==0.1.1
 git+git://github.com/jschrewe/django-genericadmin.git
 git+git://github.com/areski/Django-API-Playground.git
-git+git://github.com/areski/django-frontend-notification.git

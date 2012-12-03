@@ -23,7 +23,7 @@ from tastypie.exceptions import BadRequest
 from dialer_contact.models import Contact, Phonebook
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.function_def import check_dialer_setting, \
-                            dialer_setting_limit
+    dialer_setting_limit
 
 import logging
 
@@ -40,7 +40,7 @@ class SubscriberValidation(Validation):
             errors['Data'] = ['Data set is empty']
 
         if check_dialer_setting(request, check_for="contact"):
-            errors['contact_dialer_setting'] = ["You have too many contacts per campaign. You are allowed a maximum of %s" % \
+            errors['contact_dialer_setting'] = ["You have too many contacts per campaign. You are allowed a maximum of %s" %
                         dialer_setting_limit(request, limit_for="contact")]
         if request.method == 'POST':
             phonebook_id = bundle.data.get('phonebook_id')
@@ -184,18 +184,16 @@ class SubscriberResource(ModelResource):
                     c_campaign.imported_phonebook.split(','))
 
             phonebook_list = c_campaign.phonebook\
-                                .values_list('id', flat=True)\
-                                .all()
+                .values_list('id', flat=True)\
+                .all()
             phonebook_list = map(int, phonebook_list)
 
             common_phonebook_list = []
             if phonebook_list:
-                common_phonebook_list = list(set(imported_phonebook) &\
-                                             set(phonebook_list))
+                common_phonebook_list = list(set(imported_phonebook) & set(phonebook_list))
                 if common_phonebook_list:
                     contact_list = Contact.objects\
-                                .filter(phonebook__in=common_phonebook_list,
-                                        status=1)
+                        .filter(phonebook__in=common_phonebook_list, status=1)
                     for con_obj in contact_list:
                         try:
                             Subscriber.objects.create(

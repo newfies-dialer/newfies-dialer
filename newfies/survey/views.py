@@ -44,7 +44,7 @@ from common.common_functions import variable_value, current_view,\
     ceil_strdate, get_pagination_vars
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-import commands
+import subprocess
 import hashlib
 import csv
 import os
@@ -1307,7 +1307,7 @@ def section_script_play(request, id):
 
             #Convert file
             conv = 'flite -voice slt -f "%s" -o "%s"' % (text_file_path, audio_file_path)
-            response = commands.getoutput(conv)
+            response = subprocess.Popen(conv.split(' '), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         if os.path.isfile(audio_file_path):
             response = HttpResponse()

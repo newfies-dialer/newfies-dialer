@@ -1306,8 +1306,9 @@ def section_script_play(request, id):
             text_file.close()
 
             #Convert file
-            conv = 'flite -voice slt -f "%s" -o "%s"' % (text_file_path, audio_file_path)
+            conv = 'flite -voice slt -f %s -o %s' % (text_file_path, audio_file_path)
             response = subprocess.Popen(conv.split(' '), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            (filetype, error) = response.communicate()
 
         if os.path.isfile(audio_file_path):
             response = HttpResponse()

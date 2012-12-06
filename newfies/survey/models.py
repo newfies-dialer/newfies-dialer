@@ -18,7 +18,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from dialer_campaign.models import Campaign
 from dialer_cdr.models import Callrequest
-from survey.constants import SECTION_TYPE_NOTRANSFER
+from survey.constants import SECTION_TYPE_NOTRANSFER, SECTION_TYPE
 from audiofield.models import AudioFile
 from common.language_field import LanguageField
 from common.big_integer_field import BigIntegerField
@@ -497,4 +497,14 @@ def post_save_add_script(sender, **kwargs):
         obj.script = kwargs['instance'].question
         obj.save()
 
+        # Add default branching
+        if obj.type == SECTION_TYPE.PLAY_MESSAGE or obj.type == SECTION_TYPE.RECORD_MSG:
+            Branching_template.objects.create(keys=0, section_id=obj.id, goto_id='')
+
+        if obj.type == SECTION_TYPE.MULTI_CHOICE or \
+            obj.type == SECTION_TYPE.CAPTURE_DIGITS or \
+                obj.type == SECTION_TYPE.RATING_SECTION:
+            Branching_template.objects.create(keys='timeout', section_id=obj.id, goto_id='')
+
 post_save.connect(post_save_add_script, sender=Section_template)
+

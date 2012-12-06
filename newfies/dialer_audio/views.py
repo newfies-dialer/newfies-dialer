@@ -42,8 +42,8 @@ def audio_list(request):
 
         * List all audios which belong to the logged in user.
     """
-    sort_col_field_list = ['name', 'updated_date']
-    default_sort_field = 'name'
+    sort_col_field_list = ['id', 'name', 'updated_date']
+    default_sort_field = 'id'
     pagination_data =\
         get_pagination_vars(request, sort_col_field_list, default_sort_field)
 

@@ -19,7 +19,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from dialer_campaign.models import Campaign
 from dialer_cdr.models import Callrequest
-from survey.constants import SECTION_TYPE_NOTRANSFER
+from survey.constants import SECTION_TYPE_NOTRANSFER, SECTION_TYPE
 from audiofield.models import AudioFile
 from common.language_field import LanguageField
 from common.big_integer_field import BigIntegerField
@@ -498,4 +498,11 @@ def post_save_add_script(sender, **kwargs):
         obj.script = kwargs['instance'].question
         obj.save()
 
+        # Add default branching
+        #if obj.type == SECTION_TYPE.PLAY_MESSAGE:
+        #    #Branching_template.objects.create(section=obj, goto=obj)
+        #    #pass
+
+
 post_save.connect(post_save_add_script, sender=Section_template)
+

@@ -16,7 +16,6 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
-
 from dialer_campaign.models import Campaign
 from dialer_cdr.models import Callrequest
 from survey.constants import SECTION_TYPE_NOTRANSFER
@@ -75,11 +74,11 @@ class Survey_template(Survey_abstract):
         copy survey template to survey when starting campaign
         """
         new_survey_obj = Survey.objects.create(
-                            name=self.name,
-                            tts_language=self.tts_language,
-                            description=self.description,
-                            user=self.user,
-                            campaign_id=campaign_obj.id)
+            name=self.name,
+            tts_language=self.tts_language,
+            description=self.description,
+            user=self.user,
+            campaign_id=campaign_obj.id)
 
         # updated campaign content_type & object_id with new survey object
         survey_id = ContentType.objects.get(model='survey').id
@@ -214,8 +213,8 @@ class Section_abstract(Sortable):
                                   default=99, verbose_name=_("Maximum"))
     #Call Transfer
     phonenumber = models.CharField(max_length=50,
-                                        null=True, blank=True,
-                                        verbose_name=_("phone number"))
+                                   null=True, blank=True,
+                                   verbose_name=_("phone number"))
     # if the current section means that the survey is completed
     completed = models.BooleanField(default=False,
                                     verbose_name=_('Survey complete'))

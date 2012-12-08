@@ -854,24 +854,22 @@ def section_add_form_refactor(request, Form, survey, section_type):
     """
     save_tag = False
     new_obj = ''
-    form = ''
-    if int(request.POST.get('type')) == section_type:
-        form = Form(request.user)
-        if request.POST.get('add'):
-            form = Form(request.user, request.POST)
-            if form.is_valid():
-                new_obj = form.save()
-                request.session["msg"] = _('Section is added successfully.')
-                save_tag = True
-            else:
-                request.session["err_msg"] = True
-
-        if request.POST.get('add') is None:
+    form = Form(request.user)
+    if request.POST.get('add'):
+        form = Form(request.user, request.POST)
+        if form.is_valid():
+            new_obj = form.save()
+            request.session["msg"] = _('Section is added successfully.')
+            save_tag = True
+        else:
             request.session["err_msg"] = True
-            if int(request.POST.get('type')) == section_type:
-                form = Form(request.user,
-                    initial={'survey': survey,
-                             'type': section_type})
+
+    if request.POST.get('add') is None:
+        request.session["err_msg"] = True
+        if int(request.POST.get('type')) == section_type:
+            form = Form(request.user,
+                initial={'survey': survey,
+                         'type': section_type})
 
     data = {
         'form': form,
@@ -974,7 +972,6 @@ def section_add(request):
                                             % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
             else:
                 form = form_data['form']
-
 
     template = 'frontend/survey/section_change.html'
 

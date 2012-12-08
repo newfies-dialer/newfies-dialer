@@ -302,11 +302,8 @@
                                     <tbody>
                                     {% for branch in branching_list %}
                                         <tr>
-                                        <!--TODO : Remove If nested-->
                                         {% if branch.section_id == section.id %}
-                                            {% if section.type != SECTION_TYPE.PLAY_MESSAGE %}
-                                                {% if section.type != SECTION_TYPE.HANGUP_SECTION %}
-                                                    {% if section.type != SECTION_TYPE.RECORD_MSG %}
+                                            {% if section.type != SECTION_TYPE.PLAY_MESSAGE and section.type != SECTION_TYPE.HANGUP_SECTION and section.type != SECTION_TYPE.RECORD_MSG %}
                                                     <td>
                                                         {% if branch.keys == 'any' %}
                                                             {% trans "any other key"|title %}
@@ -321,8 +318,6 @@
                                                             {% trans "None" %}
                                                         {% endif %}
                                                     </td>
-                                                    {% endif %}
-                                                {% endif %}
                                             {% endif %}
                                             <td>
                                                 {% if branch.goto.id %}

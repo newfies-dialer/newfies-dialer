@@ -228,11 +228,11 @@ def get_campaign_status_url(id, status):
     return get_url_campaign_status(id, status)
 
 
+from survey.models import Section_template, Branching_template
+from django.utils.translation import gettext as __
 
 @register.filter(name='get_branching_goto_field')
 def get_branching_goto_field(section_id, selected_value):
-    from survey.models import Section_template, Branching_template
-    from django.utils.translation import gettext as __
     section_obj = Section_template.objects.get(id=section_id)
     section_branch_list = Branching_template\
         .objects.values_list('section_id', flat=True)\
@@ -252,3 +252,15 @@ def get_branching_goto_field(section_id, selected_value):
             option_list += '<option value="%s">Goto: %s</option>' % (str(i.id), (q_string))
 
     return option_list
+
+
+@register.filter(name='get_branching_count')
+def get_branching_count(section_id, branch_id):
+    branch_list = Branching_template\
+        .objects.values_list('id', flat=True).filter(section_id=section_id)\
+        .order_by('id')
+    branch_count = branch_list.count()
+    # for default branching option to remove delete option
+    if branch_list[0] == branch_id:
+        branch_count = 0
+    return branch_count

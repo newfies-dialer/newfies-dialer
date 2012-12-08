@@ -331,7 +331,7 @@
                                                     {% trans "Hang up" %}
                                                 {% endif %}
 
-                                                <!--default brnaching change-->
+                                                <!--default branching change-->
                                                 {% trans "Branching on timeout" %}
                                                 <form method="POST" action="." enctype="multipart/form-data" id="branching_form_{{ branch.id }}">
                                                     {% csrf_token %}
@@ -341,8 +341,10 @@
                                                 </form>
                                             </td>
                                             <td class="survey_edit_key">
-                                                {% if perms.survey.delete_branching %}
-                                                    <a {% icon_style 'cross' %} href="/section/branch/{{ branch.id }}/?delete=true" class="icon" title="{% trans "Delete" %}">&nbsp;</a>
+                                                {% if branch.section_id|get_branching_count:branch.id > 1 %}
+                                                    {% if perms.survey.delete_branching %}
+                                                        <a {% icon_style 'cross' %} href="/section/branch/{{ branch.id }}/?delete=true" class="icon" title="{% trans "Delete" %}">&nbsp;</a>
+                                                    {% endif %}
                                                 {% endif %}
                                             </td>
                                         {% endif %}

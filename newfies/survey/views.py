@@ -37,7 +37,7 @@ from survey.forms import SurveyForm, VoiceSectionForm,\
     MultipleChoiceSectionForm, RatingSectionForm,\
     EnterNumberSectionForm, RecordMessageSectionForm,\
     PatchThroughSectionForm, BranchingForm, ScriptForm,\
-    SurveyDetailReportForm
+    SurveyDetailReportForm, BranchingSelectForm
 from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME
 from frontend_notification.views import notice_count
 from common.common_functions import variable_value, current_view,\
@@ -1469,6 +1469,8 @@ def survey_change(request, object_id):
     branching_section_list = \
         branching_list.values_list('section_id', flat=True).distinct()
 
+    branching_select_form = BranchingSelectForm(survey_id=object_id)
+
     if request.method == 'POST':
         if request.POST.get('delete'):
             survey_del(request, object_id)
@@ -1488,6 +1490,7 @@ def survey_change(request, object_id):
         'section_list': section_list,
         'branching_list': branching_list,
         'branching_section_list': branching_section_list,
+        'branching_select_form': branching_select_form,
         'module': current_view(request),
         'action': 'update',
         'form': form,

@@ -848,7 +848,7 @@ def survey_del(request, object_id):
     return HttpResponseRedirect('/survey/')
 
 
-def section_add_form_refactor(request, Form, survey, section_type):
+def section_add_form(request, Form, survey, section_type):
     """
     To add section form
     """
@@ -867,9 +867,7 @@ def section_add_form_refactor(request, Form, survey, section_type):
     if request.POST.get('add') is None:
         request.session["err_msg"] = True
         if int(request.POST.get('type')) == section_type:
-            form = Form(request.user,
-                initial={'survey': survey,
-                         'type': section_type})
+            form = Form(request.user, initial={'survey': survey, 'type': section_type})
 
     data = {
         'form': form,
@@ -886,8 +884,8 @@ def section_add(request):
 
     **Attributes**:
 
-        * ``form`` - SurveyQuestionForm
-        * ``template`` - frontend/survey/survey_question_change.html
+        * ``form`` -
+        * ``template`` - frontend/survey/section_change.html
 
     **Logic Description**:
 
@@ -904,77 +902,74 @@ def section_add(request):
         # Play message
         if int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE:
             form_data = \
-                section_add_form_refactor(request, VoiceSectionForm, survey, SECTION_TYPE.PLAY_MESSAGE)
+                section_add_form(request, VoiceSectionForm, survey, SECTION_TYPE.PLAY_MESSAGE)
             if form_data['save_tag']:
                 return HttpResponseRedirect('/survey/%s/#row%s'
-                            % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
+                    % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
             else:
                 form = form_data['form']
 
         # hangup
         if int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION:
             form_data =\
-                section_add_form_refactor(request, VoiceSectionForm, survey, SECTION_TYPE.HANGUP_SECTION)
+                section_add_form(request, VoiceSectionForm, survey, SECTION_TYPE.HANGUP_SECTION)
             if form_data['save_tag']:
                 return HttpResponseRedirect('/survey/%s/#row%s'
-                                            % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
+                    % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
             else:
                 form = form_data['form']
 
         # Multiple Choice Section
         if int(request.POST.get('type')) == SECTION_TYPE.MULTI_CHOICE:
             form_data =\
-                section_add_form_refactor(request, MultipleChoiceSectionForm, survey, SECTION_TYPE.MULTI_CHOICE)
+                section_add_form(request, MultipleChoiceSectionForm, survey, SECTION_TYPE.MULTI_CHOICE)
             if form_data['save_tag']:
                 return HttpResponseRedirect('/survey/%s/#row%s'
-                                            % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
+                    % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
             else:
                 form = form_data['form']
 
         # Rating Section
         if int(request.POST.get('type')) == SECTION_TYPE.RATING_SECTION:
             form_data =\
-                section_add_form_refactor(request, RatingSectionForm, survey, SECTION_TYPE.RATING_SECTION)
+                section_add_form(request, RatingSectionForm, survey, SECTION_TYPE.RATING_SECTION)
             if form_data['save_tag']:
                 return HttpResponseRedirect('/survey/%s/#row%s'
-                                            % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
+                    % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
             else:
                 form = form_data['form']
-
 
         # Enter Number Section
         if int(request.POST.get('type')) == SECTION_TYPE.CAPTURE_DIGITS:
             form_data =\
-                section_add_form_refactor(request, EnterNumberSectionForm, survey, SECTION_TYPE.CAPTURE_DIGITS)
+                section_add_form(request, EnterNumberSectionForm, survey, SECTION_TYPE.CAPTURE_DIGITS)
             if form_data['save_tag']:
                 return HttpResponseRedirect('/survey/%s/#row%s'
-                                            % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
+                    % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
             else:
                 form = form_data['form']
-
 
         # Record Message Section
         if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG:
             form_data =\
-                section_add_form_refactor(request, RecordMessageSectionForm, survey, SECTION_TYPE.RECORD_MSG)
+                section_add_form(request, RecordMessageSectionForm, survey, SECTION_TYPE.RECORD_MSG)
             if form_data['save_tag']:
                 return HttpResponseRedirect('/survey/%s/#row%s'
-                                            % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
+                    % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
             else:
                 form = form_data['form']
 
         # Call transfer Section
         if int(request.POST.get('type')) == SECTION_TYPE.CALL_TRANSFER:
             form_data =\
-                section_add_form_refactor(request, PatchThroughSectionForm, survey, SECTION_TYPE.CALL_TRANSFER)
+                section_add_form(request, PatchThroughSectionForm, survey, SECTION_TYPE.CALL_TRANSFER)
             if form_data['save_tag']:
                 return HttpResponseRedirect('/survey/%s/#row%s'
-                                            % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
+                    % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
             else:
                 form = form_data['form']
 
     template = 'frontend/survey/section_change.html'
-
     data = {
         'form': form,
         'survey_id': survey_id,
@@ -988,28 +983,25 @@ def section_add(request):
                               context_instance=RequestContext(request))
 
 
-def section_update_form_refactor(request, Form, section_type, section_instance):
+def section_update_form(request, Form, section_type, section_instance):
     """
     To update section form
     """
     save_tag = False
-    form = Form(request.user, instance=section_instance)
+    form = Form
     if request.POST.get('update'):
-        form = Form(
-            request.user, request.POST, instance=section_instance)
+        form = Form(request.user, request.POST, instance=section_instance)
         if form.is_valid():
             obj = form.save()
-            request.session["msg"] =\
-                _('Section updated.')
+            request.session["msg"] = _('Section updated.')
             save_tag = True
         else:
             request.session["err_msg"] = True
 
     if request.POST.get('update') is None:
         request.session["err_msg"] = True
-        form = Form(
-            request.user, instance=section_instance,
-            initial={'type': section_type})
+        form = Form(request.user,
+            instance=section_instance, initial={'type': section_type})
 
     data = {
         'form': form,
@@ -1025,8 +1017,8 @@ def section_change(request, id):
 
     **Attributes**:
 
-        * ``form`` - SurveyQuestionForm
-        * ``template`` - frontend/survey/survey_question_change.html
+        * ``form`` -
+        * ``template`` - frontend/survey/section_change.html
 
     **Logic Description**:
 
@@ -1061,61 +1053,61 @@ def section_change(request, id):
         # Play message or Hangup Section
         if int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE or \
            int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION:
-            form_data = section_update_form_refactor(request,
+            form_data = section_update_form(request,
                 VoiceSectionForm, SECTION_TYPE.PLAY_MESSAGE, section)
             if form_data['save_tag']:
                 return HttpResponseRedirect('/survey/%s/#row%s'
-                                            % (section.survey_id, section.id))
+                    % (section.survey_id, section.id))
             else:
                 form = form_data['form']
 
         # Multiple Choice Section
         if int(request.POST.get('type')) == SECTION_TYPE.MULTI_CHOICE:
-            form_data = section_update_form_refactor(request,
+            form_data = section_update_form(request,
                 MultipleChoiceSectionForm, SECTION_TYPE.MULTI_CHOICE, section)
             if form_data['save_tag']:
                 return HttpResponseRedirect('/survey/%s/#row%s'
-                                            % (section.survey_id, section.id))
+                    % (section.survey_id, section.id))
             else:
                 form = form_data['form']
 
         # Rating Section
         if int(request.POST.get('type')) == SECTION_TYPE.RATING_SECTION:
-            form_data = section_update_form_refactor(request,
+            form_data = section_update_form(request,
                 RatingSectionForm, SECTION_TYPE.RATING_SECTION, section)
             if form_data['save_tag']:
                 return HttpResponseRedirect('/survey/%s/#row%s'
-                                            % (section.survey_id, section.id))
+                    % (section.survey_id, section.id))
             else:
                 form = form_data['form']
 
         # Enter Number Section
         if int(request.POST.get('type')) == SECTION_TYPE.CAPTURE_DIGITS:
-            form_data = section_update_form_refactor(request,
+            form_data = section_update_form(request,
                 EnterNumberSectionForm, SECTION_TYPE.CAPTURE_DIGITS, section)
             if form_data['save_tag']:
                 return HttpResponseRedirect('/survey/%s/#row%s'
-                                            % (section.survey_id, section.id))
+                    % (section.survey_id, section.id))
             else:
                 form = form_data['form']
 
         # Record Message Section Section
         if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG:
-            form_data = section_update_form_refactor(request,
+            form_data = section_update_form(request,
                 RecordMessageSectionForm, SECTION_TYPE.RECORD_MSG, section)
             if form_data['save_tag']:
                 return HttpResponseRedirect('/survey/%s/#row%s'
-                                            % (section.survey_id, section.id))
+                    % (section.survey_id, section.id))
             else:
                 form = form_data['form']
 
         # Patch Through Section Section
         if int(request.POST.get('type')) == SECTION_TYPE.CALL_TRANSFER:
-            form_data = section_update_form_refactor(request,
+            form_data = section_update_form(request,
                 PatchThroughSectionForm, SECTION_TYPE.CALL_TRANSFER, section)
             if form_data['save_tag']:
                 return HttpResponseRedirect('/survey/%s/#row%s'
-                                            % (section.survey_id, section.id))
+                    % (section.survey_id, section.id))
             else:
                 form = form_data['form']
 

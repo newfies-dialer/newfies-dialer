@@ -20,6 +20,10 @@
 </style>
 
 <script type="text/javascript">
+    function call_function(branch_id){
+        var goto_id = $('#id_branching_goto_' + String(branch_id) ).val();
+        Dajaxice.survey.default_branching_goto(Dajax.process, {'id': branch_id, 'goto_id': goto_id});
+    }
 
     // To sort question
     function section_sort(id, sort_order) {

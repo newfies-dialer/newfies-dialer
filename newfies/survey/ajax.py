@@ -18,7 +18,7 @@ from django.contrib.auth.decorators import login_required
 from dajaxice.decorators import dajaxice_register
 from dajax.core import Dajax
 
-from survey.models import Section_template
+from survey.models import Section_template, Branching_template
 
 
 @login_required
@@ -34,7 +34,20 @@ def section_sort(request, id, sort_order):
         #    (survey_question.question))
     except:
         pass
-        #dajax.alert("%s is not exist !!" % (id))
-        #for error in form.errors:
-        #    dajax.add_css_class('#id_%s' % error, 'error')
+    return dajax.json()
+
+
+@login_required
+@dajaxice_register
+def default_branching_goto(request, id, goto_id):
+    dajax = Dajax()
+    try:
+        if id:
+            branching_obj = Branching_template.objects.get(id=id)
+            branching_obj.goto_id = goto_id
+            branching_obj.save()
+            # dajax.alert("(%s) has been successfully sorted !!" % \
+            #    (survey_question.question))
+    except:
+        pass
     return dajax.json()

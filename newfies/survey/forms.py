@@ -58,26 +58,6 @@ def get_section_question_list(survey_id, section_id):
     return list_sq
 
 
-def get_section_question_list_for_branching(survey_id):
-    """Get survey question list for logged in user
-    with default none option"""
-    section_branch_list = Branching_template\
-        .objects.values_list('section_id', flat=True)\
-        .filter(section__survey_id=survey_id)
-    list_sq = []
-    list_sq.append(('', _('Hang up')))
-
-    list = Section_template.objects.filter(survey_id=survey_id)
-    for i in list:
-        if i.question:
-            q_string = i.question
-        else:
-            q_string = i.script
-        list_sq.append((i.id, "Goto: %s" % (q_string)))
-
-    return list_sq
-
-
 def get_multi_question_choice_list(section_id):
     """
     Get survey question list for the user with a default none option
@@ -327,22 +307,6 @@ class BranchingForm(ModelForm):
 
         self.fields['goto'].choices = \
             get_section_question_list(survey_id, section_id)
-
-
-class BranchingSelectForm(ModelForm):
-    """BranchingSelectForm ModelForm"""
-    section = forms.CharField(widget=forms.HiddenInput,
-        required=True)
-
-    class Meta:
-        model = Branching_template
-        fields = ['goto', 'section']
-
-    def __init__(self, survey_id, *args, **kwargs):
-        super(BranchingSelectForm, self).__init__(*args, **kwargs)
-
-        self.fields['goto'].choices =\
-            get_section_question_list_for_branching(survey_id)
 
 
 class SurveyReportForm(forms.Form):

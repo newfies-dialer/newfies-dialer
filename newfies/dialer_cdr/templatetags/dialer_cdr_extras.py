@@ -226,3 +226,29 @@ def get_campaign_app_view(campaign_object):
 @register.simple_tag(name='get_campaign_status_url')
 def get_campaign_status_url(id, status):
     return get_url_campaign_status(id, status)
+
+
+
+@register.filter(name='get_branching_goto_field')
+def get_branching_goto_field(section_id, selected_value):
+    from survey.models import Section_template, Branching_template
+    from django.utils.translation import gettext as __
+    section_obj = Section_template.objects.get(id=section_id)
+    section_branch_list = Branching_template\
+        .objects.values_list('section_id', flat=True)\
+        .filter(section__survey_id=section_obj.survey_id)
+
+    option_list = '<option value="">%s</option>' % __('Hang up')
+    list = Section_template.objects.filter(survey_id=section_obj.survey_id).order_by('id')
+    for i in list:
+        if i.question:
+            q_string = i.question
+        else:
+            q_string = i.script
+
+        if selected_value == i.id:
+            option_list += '<option value="%s" selected=selected>Goto: %s</option>' % (str(i.id), (q_string))
+        else:
+            option_list += '<option value="%s">Goto: %s</option>' % (str(i.id), (q_string))
+
+    return option_list

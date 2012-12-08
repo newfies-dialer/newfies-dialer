@@ -288,20 +288,8 @@
 
                         <div class="row">
                             <div class="span8">
-                                <b>{% trans "Branching" %}</b><br/>
 
-                                {% for branch in branching_list %}
-                                    {% if branch.section_id == section.id %}
-                                    <form method="POST" action="." enctype="multipart/form-data" id="branching_form">{% csrf_token %}
-                                        <input type="hidden" name="section" id="id_branching_section" value="{{ section.id }}" />
-                                        {% get_fieldset goto as fields from branching_select_form %}
-                                        {% for field in fields.visible_fields %}
-                                            {{ field }}
-                                        {% endfor %}
-                                    </form>
-                                    {% endif %}
-                                {% endfor %}
-
+                                <br/><b>{% trans "Branching" %}</b><br/>
                                 <table class="table table-striped table-bordered table-condensed">
                                     <thead>
                                     <tr>
@@ -335,13 +323,22 @@
                                             <td>
                                                 {% if branch.goto.id %}
                                                     {% if branch.goto.question %}
-                                                        {{ branch.goto.question }}
+                                                        <!--{{ branch.goto.question }}-->
                                                     {% else %}
                                                         {{ branch.goto.script }}
                                                     {% endif %}
                                                 {% else %}
                                                     {% trans "Hang up" %}
                                                 {% endif %}
+
+                                                <!--default brnaching change-->
+                                                {% trans "Branching on timeout" %}
+                                                <form method="POST" action="." enctype="multipart/form-data" id="branching_form_{{ branch.id }}">
+                                                    {% csrf_token %}
+                                                    <select name="branching_goto_{{ branch.id }}" id="id_branching_goto_{{ branch.id }}" onchange="call_function({{ branch.id }});">
+                                                        {{ section.id|get_branching_goto_field:branch.goto_id|safe }}
+                                                    </select>
+                                                </form>
                                             </td>
                                             <td class="survey_edit_key">
                                                 {% if perms.survey.delete_branching %}

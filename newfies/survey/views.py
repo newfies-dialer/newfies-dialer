@@ -849,8 +849,19 @@ def survey_del(request, object_id):
 
 
 def section_add_form(request, Form, survey, section_type):
-    """
-    To add section form
+    """ To add section object via form
+
+    **Attributes**:
+
+        * ``request`` - Request variable
+        * ``Form`` - VoiceSectionForm, MultipleChoiceSectionForm,
+                     EnterNumberSectionForm etc...
+        * ``section_type`` - value from SECTION_TYPE list
+        * ``survey`` - Survey object
+
+    **Logic Description**:
+
+        * Add section object via section form & section_type
     """
     save_tag = False
     new_obj = ''
@@ -884,7 +895,6 @@ def section_add(request):
 
     **Attributes**:
 
-        * ``form`` -
         * ``template`` - frontend/survey/section_change.html
 
     **Logic Description**:
@@ -984,8 +994,20 @@ def section_add(request):
 
 
 def section_update_form(request, Form, section_type, section_instance):
-    """
-    To update section form
+    """To update section instance via form
+
+    **Attributes**:
+
+        * ``request`` - Request variable
+        * ``Form`` - VoiceSectionForm, MultipleChoiceSectionForm,
+                     EnterNumberSectionForm etc...
+        * ``section_type`` - value from SECTION_TYPE list
+        * ``section_instance`` - section object
+
+    **Logic Description**:
+
+        * Update section object via section form & section_type
+
     """
     save_tag = False
     form = Form
@@ -1017,7 +1039,6 @@ def section_change(request, id):
 
     **Attributes**:
 
-        * ``form`` -
         * ``template`` - frontend/survey/section_change.html
 
     **Logic Description**:

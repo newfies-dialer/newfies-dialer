@@ -848,6 +848,39 @@ def survey_del(request, object_id):
     return HttpResponseRedirect('/survey/')
 
 
+def section_add_form_refactor(request, Form, survey, section_type):
+    """
+    To add section form
+    """
+    save_tag = False
+    new_obj = ''
+    form = ''
+    if int(request.POST.get('type')) == section_type:
+        form = Form(request.user)
+        if request.POST.get('add'):
+            form = Form(request.user, request.POST)
+            if form.is_valid():
+                new_obj = form.save()
+                request.session["msg"] = _('Section is added successfully.')
+                save_tag = True
+            else:
+                request.session["err_msg"] = True
+
+        if request.POST.get('add') is None:
+            request.session["err_msg"] = True
+            if int(request.POST.get('type')) == section_type:
+                form = Form(request.user,
+                    initial={'survey': survey,
+                             'type': section_type})
+
+    data = {
+        'form': form,
+        'save_tag': save_tag,
+        'new_obj': new_obj,
+    }
+    return data
+
+
 @permission_required('survey.add_section', login_url='/')
 @login_required
 def section_add(request):
@@ -871,125 +904,77 @@ def section_add(request):
     if request.method == 'POST':
 
         # Play message
-        if (int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE
-           or int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION):
-            form = VoiceSectionForm(request.user)
-            if request.POST.get('add'):
-                form = VoiceSectionForm(request.user, request.POST)
-                if form.is_valid():
-                    obj = form.save()
-                    request.session["msg"] = _('Section is added successfully.')
-                    return HttpResponseRedirect('/survey/%s/#row%s'
-                                                % (obj.survey_id, obj.id))
-                else:
-                    request.session["err_msg"] = True
+        if int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE:
+            form_data = \
+                section_add_form_refactor(request, VoiceSectionForm, survey, SECTION_TYPE.PLAY_MESSAGE)
+            if form_data['save_tag']:
+                return HttpResponseRedirect('/survey/%s/#row%s'
+                            % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
+            else:
+                form = form_data['form']
 
-            if request.POST.get('add') is None:
-                request.session["err_msg"] = True
-                if int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE:
-                    form = VoiceSectionForm(request.user,
-                        initial={'survey': survey,
-                                 'type': SECTION_TYPE.PLAY_MESSAGE})
-                else:
-                    form = VoiceSectionForm(request.user,
-                        initial={'survey': survey,
-                                 'type': SECTION_TYPE.HANGUP_SECTION})
+        # hangup
+        if int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION:
+            form_data =\
+                section_add_form_refactor(request, VoiceSectionForm, survey, SECTION_TYPE.HANGUP_SECTION)
+            if form_data['save_tag']:
+                return HttpResponseRedirect('/survey/%s/#row%s'
+                                            % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
+            else:
+                form = form_data['form']
 
         # Multiple Choice Section
         if int(request.POST.get('type')) == SECTION_TYPE.MULTI_CHOICE:
-            form = MultipleChoiceSectionForm(request.user)
-            if request.POST.get('add'):
-                form = MultipleChoiceSectionForm(request.user, request.POST)
-                if form.is_valid():
-                    obj = form.save()
-                    request.session["msg"] =\
-                        _('Section is added successfully.')
-                    return HttpResponseRedirect('/survey/%s/#row%s'
-                                                % (obj.survey_id, obj.id))
-                else:
-                    request.session["err_msg"] = True
-
-            if request.POST.get('add') is None:
-                request.session["err_msg"] = True
-                form = MultipleChoiceSectionForm(
-                    request.user, initial={'survey': survey,
-                                           'type': SECTION_TYPE.MULTI_CHOICE})
+            form_data =\
+                section_add_form_refactor(request, MultipleChoiceSectionForm, survey, SECTION_TYPE.MULTI_CHOICE)
+            if form_data['save_tag']:
+                return HttpResponseRedirect('/survey/%s/#row%s'
+                                            % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
+            else:
+                form = form_data['form']
 
         # Rating Section
         if int(request.POST.get('type')) == SECTION_TYPE.RATING_SECTION:
-            form = RatingSectionForm(request.user)
-            if request.POST.get('add'):
-                form = RatingSectionForm(request.user, request.POST)
-                if form.is_valid():
-                    obj = form.save()
-                    request.session["msg"] =\
-                        _('Section is added successfully.')
-                    return HttpResponseRedirect('/survey/%s/#row%s'
-                                                % (obj.survey_id, obj.id))
-                else:
-                    request.session["err_msg"] = True
+            form_data =\
+                section_add_form_refactor(request, RatingSectionForm, survey, SECTION_TYPE.RATING_SECTION)
+            if form_data['save_tag']:
+                return HttpResponseRedirect('/survey/%s/#row%s'
+                                            % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
+            else:
+                form = form_data['form']
 
-            if request.POST.get('add') is None:
-                request.session["err_msg"] = True
-                form = RatingSectionForm(request.user, initial={'survey': survey,
-                                         'type': SECTION_TYPE.RATING_SECTION})
 
         # Enter Number Section
         if int(request.POST.get('type')) == SECTION_TYPE.CAPTURE_DIGITS:
-            form = EnterNumberSectionForm(request.user)
-            if request.POST.get('add'):
-                form = EnterNumberSectionForm(request.user, request.POST)
-                if form.is_valid():
-                    obj = form.save()
-                    request.session["msg"] =\
-                        _('Section is added successfully.')
-                    return HttpResponseRedirect('/survey/%s/#row%s'
-                                                % (obj.survey_id, obj.id))
-                else:
-                    request.session["err_msg"] = True
+            form_data =\
+                section_add_form_refactor(request, EnterNumberSectionForm, survey, SECTION_TYPE.CAPTURE_DIGITS)
+            if form_data['save_tag']:
+                return HttpResponseRedirect('/survey/%s/#row%s'
+                                            % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
+            else:
+                form = form_data['form']
 
-            if request.POST.get('add') is None:
-                request.session["err_msg"] = True
-                form = EnterNumberSectionForm(request.user, initial={'survey': survey,
-                                              'type': SECTION_TYPE.CAPTURE_DIGITS})
 
         # Record Message Section
         if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG:
-            form = RecordMessageSectionForm(request.user)
-            if request.POST.get('add'):
-                form = RecordMessageSectionForm(request.user, request.POST)
-                if form.is_valid():
-                    obj = form.save()
-                    request.session["msg"] =\
-                        _('Section is added successfully.')
-                    return HttpResponseRedirect('/survey/%s/#row%s'
-                                                % (obj.survey_id, obj.id))
-                else:
-                    request.session["err_msg"] = True
-
-            if request.POST.get('add') is None:
-                request.session["err_msg"] = True
-                form = RecordMessageSectionForm(request.user, initial={'survey': survey,
-                                                'type': SECTION_TYPE.RECORD_MSG})
+            form_data =\
+                section_add_form_refactor(request, RecordMessageSectionForm, survey, SECTION_TYPE.RECORD_MSG)
+            if form_data['save_tag']:
+                return HttpResponseRedirect('/survey/%s/#row%s'
+                                            % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
+            else:
+                form = form_data['form']
 
         # Call transfer Section
         if int(request.POST.get('type')) == SECTION_TYPE.CALL_TRANSFER:
-            form = PatchThroughSectionForm(request.user)
-            if request.POST.get('add'):
-                form = PatchThroughSectionForm(request.user, request.POST)
-                if form.is_valid():
-                    obj = form.save()
-                    request.session["msg"] =\
-                        _('Section is added successfully.')
-                    return HttpResponseRedirect('/survey/%s/#row%s'
-                                                % (obj.survey_id, obj.id))
-                else:
-                    request.session["err_msg"] = True
+            form_data =\
+                section_add_form_refactor(request, PatchThroughSectionForm, survey, SECTION_TYPE.CALL_TRANSFER)
+            if form_data['save_tag']:
+                return HttpResponseRedirect('/survey/%s/#row%s'
+                                            % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
+            else:
+                form = form_data['form']
 
-            if request.POST.get('add') is None:
-                request.session["err_msg"] = True
-                form = PatchThroughSectionForm(request.user, initial={'survey': survey,
-                                               'type': SECTION_TYPE.CALL_TRANSFER})
 
     template = 'frontend/survey/section_change.html'
 
@@ -1004,6 +989,38 @@ def section_add(request):
     request.session['err_msg'] = ''
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
+
+
+def section_update_form_refactor(request, Form, section_type, section_instance):
+    """
+    To update section form
+    """
+    save_tag = False
+    form = ''
+    if int(request.POST.get('type')) == section_type:
+        form = Form(request.user, instance=section_instance)
+        if request.POST.get('update'):
+            form = Form(
+                request.user, request.POST, instance=section_instance)
+            if form.is_valid():
+                obj = form.save()
+                request.session["msg"] =\
+                    _('Section updated.')
+                save_tag = True
+            else:
+                request.session["err_msg"] = True
+
+        if request.POST.get('update') is None:
+            request.session["err_msg"] = True
+            form = Form(
+                request.user, instance=section_instance,
+                initial={'type': section_type})
+
+    data = {
+        'form': form,
+        'save_tag': save_tag,
+    }
+    return data
 
 
 @permission_required('survey.change_section', login_url='/')
@@ -1045,140 +1062,61 @@ def section_change(request, id):
 
     request.session['err_msg'] = ''
 
-    #TODO: See how to refactor this section
     if request.method == 'POST' and request.POST.get('type'):
         # Play message or Hangup Section
-        if (int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE
-           or int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION):
-            form = VoiceSectionForm(request.user, instance=section)
-            if request.POST.get('update'):
-                form = VoiceSectionForm(request.user,
-                                        request.POST,
-                                        instance=section)
-                if form.is_valid():
-                    obj = form.save()
-                    request.session["msg"] =\
-                        _('Section updated.')
-                    return HttpResponseRedirect('/survey/%s/#row%s'
-                                                % (obj.survey_id, obj.id))
-                else:
-                    request.session["err_msg"] = True
-
-            if request.POST.get('update') is None:
-                request.session["err_msg"] = True
-                if int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE:
-                    form = VoiceSectionForm(
-                        request.user, instance=section,
-                        initial={'type': SECTION_TYPE.PLAY_MESSAGE})
-                else:
-                    form = VoiceSectionForm(
-                        request.user, instance=section,
-                        initial={'type': SECTION_TYPE.HANGUP_SECTION})
+        form_data = section_update_form_refactor(request,
+            VoiceSectionForm, SECTION_TYPE.PLAY_MESSAGE, section)
+        if form_data['save_tag']:
+            return HttpResponseRedirect('/survey/%s/#row%s'
+                                        % (section.survey_id, section.id))
+        else:
+            form = form_data['form']
 
         # Multiple Choice Section
-        if int(request.POST.get('type')) == SECTION_TYPE.MULTI_CHOICE:
-            form = MultipleChoiceSectionForm(request.user, instance=section)
-            if request.POST.get('update'):
-                form = MultipleChoiceSectionForm(
-                    request.user, request.POST, instance=section)
-                if form.is_valid():
-                    obj = form.save()
-                    request.session["msg"] =\
-                        _('Section updated.')
-                    return HttpResponseRedirect('/survey/%s/#row%s'
-                                                % (obj.survey_id, obj.id))
-                else:
-                    request.session["err_msg"] = True
+        form_data = section_update_form_refactor(request,
+            MultipleChoiceSectionForm, SECTION_TYPE.MULTI_CHOICE, section)
+        if form_data['save_tag']:
+            return HttpResponseRedirect('/survey/%s/#row%s'
+                                        % (section.survey_id, section.id))
+        else:
+            form = form_data['form']
 
-            if request.POST.get('update') is None:
-                request.session["err_msg"] = True
-                form = MultipleChoiceSectionForm(
-                    request.user, instance=section,
-                    initial={'type': SECTION_TYPE.MULTI_CHOICE})
 
         # Rating Section
-        if int(request.POST.get('type')) == SECTION_TYPE.RATING_SECTION:
-            form = RatingSectionForm(request.user, instance=section)
-            if request.POST.get('update'):
-                form = RatingSectionForm(
-                    request.user, request.POST, instance=section)
-                if form.is_valid():
-                    obj = form.save()
-                    request.session["msg"] =\
-                        _('Section updated.')
-                    return HttpResponseRedirect('/survey/%s/#row%s'
-                                                % (obj.survey_id, obj.id))
-                else:
-                    request.session["err_msg"] = True
-
-            if request.POST.get('update') is None:
-                request.session["err_msg"] = True
-                form = RatingSectionForm(
-                    request.user, instance=section,
-                    initial={'type': SECTION_TYPE.RATING_SECTION})
+        form_data = section_update_form_refactor(request,
+            RatingSectionForm, SECTION_TYPE.RATING_SECTION, section)
+        if form_data['save_tag']:
+            return HttpResponseRedirect('/survey/%s/#row%s'
+                                        % (section.survey_id, section.id))
+        else:
+            form = form_data['form']
 
         # Enter Number Section
-        if int(request.POST.get('type')) == SECTION_TYPE.CAPTURE_DIGITS:
-            form = EnterNumberSectionForm(request.user, instance=section)
-            if request.POST.get('update'):
-                form = EnterNumberSectionForm(
-                    request.user, request.POST, instance=section)
-                if form.is_valid():
-                    obj = form.save()
-                    request.session["msg"] =\
-                        _('Section updated.')
-                    return HttpResponseRedirect('/survey/%s/#row%s'
-                                                % (obj.survey_id, obj.id))
-                else:
-                    request.session["err_msg"] = True
-
-            if request.POST.get('update') is None:
-                request.session["err_msg"] = True
-                form = EnterNumberSectionForm(
-                    request.user, instance=section,
-                    initial={'type': SECTION_TYPE.CAPTURE_DIGITS})
+        form_data = section_update_form_refactor(request,
+            EnterNumberSectionForm, SECTION_TYPE.CAPTURE_DIGITS, section)
+        if form_data['save_tag']:
+            return HttpResponseRedirect('/survey/%s/#row%s'
+                                        % (section.survey_id, section.id))
+        else:
+            form = form_data['form']
 
         # Record Message Section Section
-        if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG:
-            form = RecordMessageSectionForm(request.user, instance=section)
-            if request.POST.get('update'):
-                form = RecordMessageSectionForm(
-                    request.user, request.POST, instance=section)
-                if form.is_valid():
-                    obj = form.save()
-                    request.session["msg"] =\
-                        _('Section updated.')
-                    return HttpResponseRedirect('/survey/%s/#row%s'
-                                                % (obj.survey_id, obj.id))
-                else:
-                    request.session["err_msg"] = True
-
-            if request.POST.get('update') is None:
-                request.session["err_msg"] = True
-                form = RecordMessageSectionForm(
-                    request.user, instance=section,
-                    initial={'type': SECTION_TYPE.RECORD_MSG})
+        form_data = section_update_form_refactor(request,
+            RecordMessageSectionForm, SECTION_TYPE.RECORD_MSG, section)
+        if form_data['save_tag']:
+            return HttpResponseRedirect('/survey/%s/#row%s'
+                                        % (section.survey_id, section.id))
+        else:
+            form = form_data['form']
 
         # Patch Through Section Section
-        if int(request.POST.get('type')) == SECTION_TYPE.CALL_TRANSFER:
-            form = PatchThroughSectionForm(request.user, instance=section)
-            if request.POST.get('update'):
-                form = PatchThroughSectionForm(
-                    request.user, request.POST, instance=section)
-                if form.is_valid():
-                    obj = form.save()
-                    request.session["msg"] =\
-                        _('Section updated.')
-                    return HttpResponseRedirect('/survey/%s/#row%s'
-                                                % (obj.survey_id, obj.id))
-                else:
-                    request.session["err_msg"] = True
-
-            if request.POST.get('update') is None:
-                request.session["err_msg"] = True
-                form = PatchThroughSectionForm(
-                    request.user, instance=section,
-                    initial={'type': SECTION_TYPE.CALL_TRANSFER})
+        form_data = section_update_form_refactor(request,
+            PatchThroughSectionForm, SECTION_TYPE.CALL_TRANSFER, section)
+        if form_data['save_tag']:
+            return HttpResponseRedirect('/survey/%s/#row%s'
+                                        % (section.survey_id, section.id))
+        else:
+            form = form_data['form']
 
     template = 'frontend/survey/section_change.html'
     data = {

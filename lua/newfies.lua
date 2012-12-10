@@ -31,8 +31,10 @@ if not fs_env then
     session = Session()
 end
 
-
-local callflow = FSMCall(session, debug_mode)
+LOGDIR = '/home/areski/public_html/django/MyProjects/newfies-dialer/lua/'
+local logger = logging.file(LOGDIR .. "logs_%s.log", "%Y-%m-%d")
+logger:setLevel(logging.DEBUG)
+local callflow = FSMCall(session, debug_mode, logger)
 local db = Database(debug_mode)
 
 survey_id = 6
@@ -43,12 +45,11 @@ db:disconnect()
 
 --error(_die)
 
-DIRAUDIO = '/home/areski/public_html/django/MyProjects/newfies-dialer/newfies/usermedia/tts/'
-AUDIO_WELCOME = DIRAUDIO..'script_9805d01afeec350f36ff3fd908f0cbd5.wav'
-AUDIO_ENTERAGE = DIRAUDIO..'script_4ee73b76b5b4c5d596ed1cb3257861f0.wav'
-AUDIO_PRESSDIGIT = DIRAUDIO..'script_610e09c761c4b592aaa954259ce4ce1d.wav'
+AUDIODIR = '/home/areski/public_html/django/MyProjects/newfies-dialer/newfies/usermedia/tts/'
+AUDIO_WELCOME = AUDIODIR..'script_9805d01afeec350f36ff3fd908f0cbd5.wav'
+AUDIO_ENTERAGE = AUDIODIR..'script_4ee73b76b5b4c5d596ed1cb3257861f0.wav'
+AUDIO_PRESSDIGIT = AUDIODIR..'script_610e09c761c4b592aaa954259ce4ce1d.wav'
 
-local logger = logging.file("logs_%s.log", "%Y-%m-%d")
 
 -- This function simply tells us what function are available in Session
 --   It just prints a list of all functions.  We may be able to find functions
@@ -76,8 +77,7 @@ function debug(level, message)
     else
         print(message)
     end
-    logger:setLevel(logging.DEBUG)
-    logger:info("logging.file test")
+    logger:info(message)
 
 end
 
@@ -88,6 +88,10 @@ function myHangupHook(s, status, arg)
     debug("INFO", "session:hangupCause() = " .. obCause )
     -- local xmlcdr = session:getXMLCDR()
     -- debug("info", "session:getXMLCDR() = " .. xmlcdr )
+    if not callflow.hangup_trigger then
+        -- End call
+        callflow:end_call()
+    end
     error()
 end
 
@@ -113,22 +117,22 @@ if session:ready() then
     press_digit = session:playAndGetDigits(1, 1, 3, 4000, '#', AUDIO_PRESSDIGIT, '', '\\d+|#')
     debug("info", "press digit = " .. press_digit )
 
-    -- Capture Digits
-    entered_age = session:playAndGetDigits(1, 6, 3, 4000, '#', AUDIO_ENTERAGE, '', '\\d+|#')
-    debug("info", "entered_age = " .. entered_age )
+    -- -- Capture Digits
+    -- entered_age = session:playAndGetDigits(1, 6, 3, 4000, '#', AUDIO_ENTERAGE, '', '\\d+|#')
+    -- debug("info", "entered_age = " .. entered_age )
 
-    -- Recording
-    recording_dir = '/tmp/'
-    filename = 'myfile.wav'
-    recording_filename = string.format('%s%s', recording_dir, filename)
+    -- -- Recording
+    -- recording_dir = '/tmp/'
+    -- filename = 'myfile.wav'
+    -- recording_filename = string.format('%s%s', recording_dir, filename)
 
-    if session:ready() then
-        -- syntax is session:recordFile(file_name, max_len_secs, silence_threshold, silence_secs)
-        max_len_secs = 30
-        silence_threshold = 30
-        silence_secs = 5
-        test = session:recordFile(recording_filename, max_len_secs, silence_threshold, silence_secs)
-    end
+    -- if session:ready() then
+    --     -- syntax is session:recordFile(file_name, max_len_secs, silence_threshold, silence_secs)
+    --     max_len_secs = 30
+    --     silence_threshold = 30
+    --     silence_secs = 5
+    --     test = session:recordFile(recording_filename, max_len_secs, silence_threshold, silence_secs)
+    -- end
 
 
     -- max_attempts = 1
@@ -147,7 +151,7 @@ if session:ready() then
     --     max_attempts = max_attempts - 1
     -- end
 
-    session:sayPhrase("welcome")
+    -- session:sayPhrase("welcome")
 
     -- End call
     callflow:end_call()
@@ -167,5 +171,6 @@ else
        -- Log these issues
     end
 end
+
 
 error(_die);

@@ -28,13 +28,16 @@ FSMCall = oo.class{
     destination_number = nil,
     uuid = nil,
     call_duration = 0,
+    logger = nil,
+    hangup_trigger = false,
 }
 
-function FSMCall:__init(session, debug_mode)
+function FSMCall:__init(session, debug_mode, logger)
     -- self is the class
     return oo.rawnew(self, {
         session = session,
-        debug_mode = debug_mode
+        debug_mode = debug_mode,
+        logger = logger
     })
 end
 
@@ -50,14 +53,24 @@ end
 
 function FSMCall:end_call()
     print("FSMCall:end_call")
-    session:hangup()
-    self.call_duration = os.time() - self.call_start
+    self.logger:info("FSMCall:end_call")
     -- NOTE: Don't use this call time for Billing
     -- Use FS CDRs
+    self.call_duration = os.time() - self.call_start
     print("Estimated Call Duration : "..self.call_duration)
+    self.logger:info("Estimated Call Duration : "..self.call_duration)
+    self:hangupcall()
+end
+
+function FSMCall:hangupcall()
+    -- This will interrupt lua script
+    self.logger:info("FSMCall:hangupcall")
+    self.hangup_trigger = true
+    self.session:hangup()
 end
 
 function FSMCall:start_call()
     print("FSMCall:start_call")
+    self.logger:info("FSMCall:start_call...")
     self.call_start = os.time()
 end

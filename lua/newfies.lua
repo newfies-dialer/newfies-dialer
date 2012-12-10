@@ -22,6 +22,16 @@ require "logging.file"
 require "database"
 require "fsm_callflow"
 
+-- Set if the environment is FreeSWITCH
+fs_env = false
+
+if not fs_env then
+    require "session"
+    session = Session()
+    session:ready()
+    print "********"
+end
+
 
 local callflow = FSMCall()
 local db = Database()
@@ -32,7 +42,7 @@ db:load_all(survey_id)
 db:disconnect()
 --print(DataDumper(db.list_audio))
 
-error(_die);
+--error(_die)
 
 
 
@@ -67,16 +77,24 @@ end
 -- new_session = freeswitch.Session() -- create a blank session
 -- printSessionFunctions(new_session)
 
-
-function myHangupHook(s, status, arg)
-    freeswitch.consoleLog("NOTICE", "myHangupHook: status -> " .. status .. "\n")
-    local obCause = session:hangupCause()
-    freeswitch.consoleLog("info", "session:hangupCause() = " .. obCause )
-    -- local xmlcdr = session:getXMLCDR()
-    -- freeswitch.consoleLog("info", "session:getXMLCDR() = " .. xmlcdr )
-    error()
+function debug(level, message)
+    -- level : INFO, NOTICE, ...
+    if fs_env then
+        freeswitch.consoleLog(level, message)
+    else
+        print(message)
+    end
 end
 
+
+function myHangupHook(s, status, arg)
+    debug("NOTICE", "myHangupHook: status -> " .. status .. "\n")
+    local obCause = session:hangupCause()
+    debug("INFO", "session:hangupCause() = " .. obCause )
+    -- local xmlcdr = session:getXMLCDR()
+    -- debug("info", "session:getXMLCDR() = " .. xmlcdr )
+    error()
+end
 
 
 if session:ready() then
@@ -93,16 +111,13 @@ if session:ready() then
     --       digit_regex, variable_name, digit_timeout,
     --       transfer_on_failure)
 
-
-
-
     -- Multi Choice
     press_digit = session:playAndGetDigits(1, 1, 3, 4000, '#', AUDIO_PRESSDIGIT, '', '\\d+|#')
-    freeswitch.consoleLog("info", "press digit = " .. press_digit )
+    debug("info", "press digit = " .. press_digit )
 
     -- Capture Digits
     entered_age = session:playAndGetDigits(1, 6, 3, 4000, '#', AUDIO_ENTERAGE, '', '\\d+|#')
-    freeswitch.consoleLog("info", "entered_age = " .. entered_age )
+    debug("info", "entered_age = " .. entered_age )
 
     -- Recording
     recording_dir = '/tmp/'
@@ -136,17 +151,12 @@ if session:ready() then
 
     session:sayPhrase("welcome")
 
-    while session:ready() do
-        -- do something useful here
-    end
-
     session:hangup()
-
 
 else
     -- This means the call was not answered ... Check for the reason
     local obCause = session:hangupCause()
-    freeswitch.consoleLog("info", "obSession:hangupCause() = " .. obCause )
+    debug("info", "obSession:hangupCause() = " .. obCause )
 
     if ( obCause == "USER_BUSY" ) then              -- SIP 486
        -- For BUSY you may reschedule the call for later

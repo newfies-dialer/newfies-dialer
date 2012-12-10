@@ -16,3 +16,4 @@ build/
 dist/
 coverage_info
 output.html
+amd*.lua

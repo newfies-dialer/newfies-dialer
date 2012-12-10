@@ -14,7 +14,6 @@
 
 from django.contrib.auth.models import User
 from django.conf import settings
-from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
 from audiofield.models import AudioFile
 from dialer_audio.forms import DialerAudioFileForm

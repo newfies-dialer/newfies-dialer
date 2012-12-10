@@ -12,6 +12,4 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.db import models
-
 # Create your models here.

@@ -36,7 +36,6 @@ from frontend.constants import COLOR_DISPOSITION, SEARCH_TYPE
 from frontend_notification.views import notice_count
 from common.common_functions import current_view
 from datetime import datetime
-from dateutil import parser
 from dateutil.relativedelta import relativedelta
 import time
 

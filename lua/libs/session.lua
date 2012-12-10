@@ -58,6 +58,12 @@ function Session:hangupCause()
     return "ANSWER"
 end
 
+function Session:getVariable(varname)
+    valret = math.random(100000, 999999);
+    print("Session:getVariable -> "..varname.." = "..valret)
+    return valret
+end
+
 function Session:streamFile(data)
     print("Session:streamFile -> "..data)
     return true

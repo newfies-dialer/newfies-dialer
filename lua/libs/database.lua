@@ -41,10 +41,10 @@ Database = oo.class{
 	list_audio = nil
 }
 
-function Database:__init(timecache)
+function Database:__init(debug_mode)
 	-- self is the class
 	return oo.rawnew(self, {
-		timecache = timecache
+		debug_mode = debug_mode
 	})
 end
 
@@ -67,15 +67,18 @@ function Database:load_survey_section(survey_id)
 	QUERY = "SELECT * FROM "..self.TABLE_SECTION.." WHERE survey_id="..survey_id.." ORDER BY id"
 	cur = assert (self.con:execute(QUERY))
 
-	-- LOOP THROUGH THE CURSOR AND PRINT
-	print()
-	print(string.format("%15s  %-15s %-15s %-15s", "#", "QUESTION", "TYPE", "ORDER"))
-	print(string.format("%15s  %-15s %-15s %-15s", "-", "--------", "----", "-----"))
+	-- LOOP THROUGH THE CURSOR
+	if debug_mode then
+		print()
+		print(string.format("%15s  %-15s %-15s %-15s", "#", "QUESTION", "TYPE", "ORDER"))
+		print(string.format("%15s  %-15s %-15s %-15s", "-", "--------", "----", "-----"))
+	end
 	list = {}
 	row = cur:fetch ({}, "a")
 	while row do
-		print(string.format("%15d  %-15s %-15s %-15s",
-			row.id, row.question, row.type, row.order))
+		if debug_mode then
+			print(string.format("%15d  %-15s %-15s %-15s", row.id, row.question, row.type, row.order))
+		end
 		list[tonumber(row.id)] = row
 		row = cur:fetch ({}, "a")
 	end
@@ -90,18 +93,20 @@ function Database:load_survey_branching(survey_id)
 		"FROM "..self.TABLE_BRANCHING.." LEFT JOIN "..self.TABLE_SECTION..
 		" ON "..self.TABLE_SECTION..".id="..self.TABLE_BRANCHING..".section_id "..
 		"WHERE survey_id="..survey_id
-	print(QUERY)
 	cur = assert (self.con:execute(QUERY))
 
-	-- LOOP THROUGH THE CURSOR AND PRINT
-	print()
-	print(string.format("%15s  %-15s %-15s %-15s", "#", "KEYS", "SECTION_ID", "GOTO_ID"))
-	print(string.format("%15s  %-15s %-15s %-15s", "-", "----", "----------", "-------"))
+	-- LOOP THROUGH THE CURSOR
+	if debug_mode then
+		print()
+		print(string.format("%15s  %-15s %-15s %-15s", "#", "KEYS", "SECTION_ID", "GOTO_ID"))
+		print(string.format("%15s  %-15s %-15s %-15s", "-", "----", "----------", "-------"))
+	end
 	list = {}
 	row = cur:fetch ({}, "a")
 	while row do
-		print(string.format("%15d  %-15s %-15s %-15s",
-			row.id, tostring(row.keys), tostring(row.section_id), tostring(row.goto_id)))
+		if debug_mode then
+			print(string.format("%15d  %-15s %-15s %-15s", row.id, tostring(row.keys), tostring(row.section_id), tostring(row.goto_id)))
+		end
 		if not list[tonumber(row.section_id)] then
 			list[tonumber(row.section_id)] = {}
 		end
@@ -116,7 +121,6 @@ end
 function Database:load_audiofile()
 	print("Load audiofile branching")
 	-- id	name	audio_file	user_id
-	print(self.con)
 	QUERY = "SELECT * FROM audio_file"
 	cur = assert (self.con:execute(QUERY))
 

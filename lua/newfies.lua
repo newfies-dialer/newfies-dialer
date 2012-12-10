@@ -23,18 +23,17 @@ require "database"
 require "fsm_callflow"
 
 -- Set if the environment is FreeSWITCH
-fs_env = false
+fs_env = true
+debug_mode = false
 
 if not fs_env then
     require "session"
     session = Session()
-    session:ready()
-    print "********"
 end
 
 
-local callflow = FSMCall()
-local db = Database()
+local callflow = FSMCall(session, debug_mode)
+local db = Database(debug_mode)
 
 survey_id = 6
 db:connect()
@@ -44,19 +43,12 @@ db:disconnect()
 
 --error(_die)
 
-
-
-
-local logger = logging.file("logs_%s.log", "%Y-%m-%d")
-logger:setLevel(logging.DEBUG)
-logger:info("logging.file test")
-
 DIRAUDIO = '/home/areski/public_html/django/MyProjects/newfies-dialer/newfies/usermedia/tts/'
 AUDIO_WELCOME = DIRAUDIO..'script_9805d01afeec350f36ff3fd908f0cbd5.wav'
 AUDIO_ENTERAGE = DIRAUDIO..'script_4ee73b76b5b4c5d596ed1cb3257861f0.wav'
 AUDIO_PRESSDIGIT = DIRAUDIO..'script_610e09c761c4b592aaa954259ce4ce1d.wav'
 
-
+local logger = logging.file("logs_%s.log", "%Y-%m-%d")
 
 -- This function simply tells us what function are available in Session
 --   It just prints a list of all functions.  We may be able to find functions
@@ -84,6 +76,9 @@ function debug(level, message)
     else
         print(message)
     end
+    logger:setLevel(logging.DEBUG)
+    logger:info("logging.file test")
+
 end
 
 
@@ -101,6 +96,9 @@ if session:ready() then
 
     session:answer()
     session:setHangupHook("myHangupHook")
+
+    callflow:init()
+    callflow:start_call()
 
     -- Play Message
     -- session:streamFile(AUDIO_WELCOME);
@@ -133,25 +131,26 @@ if session:ready() then
     end
 
 
-    max_attempts = 3
-    audiofile = '/usr/local/freeswitch/sounds/en/us/callie/voicemail/8000/vm-enter_new_pin.wav'
+    -- max_attempts = 1
+    -- audiofile = '/usr/local/freeswitch/sounds/en/us/callie/voicemail/8000/vm-enter_new_pin.wav'
 
-    while max_attempts > 0 do
-        -- expect 1-6 digits, max_tries=3, timeout=4s, terminator=#
-        agent_id = session:playAndGetDigits(1, 6, 3, 4000, '#', audiofile, '', '\\d+|#')
+    -- while max_attempts > 0 do
+    --     -- expect 1-6 digits, max_tries=3, timeout=4s, terminator=#
+    --     agent_id = session:playAndGetDigits(1, 6, 3, 4000, '#', audiofile, '', '\\d+|#')
 
-        -- did we actually get an agent_id?
-        if agent_id == "" then
-            session:sayPhrase("voicemail_goodbye")
-            session:hangup()
-        end
+    --     -- did we actually get an agent_id?
+    --     if agent_id == "" then
+    --         session:sayPhrase("voicemail_goodbye")
+    --         session:hangup()
+    --     end
 
-        max_attempts = max_attempts - 1
-    end
+    --     max_attempts = max_attempts - 1
+    -- end
 
     session:sayPhrase("welcome")
 
-    session:hangup()
+    -- End call
+    callflow:end_call()
 
 else
     -- This means the call was not answered ... Check for the reason

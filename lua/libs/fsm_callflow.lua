@@ -22,30 +22,42 @@ local oo = require "loop.simple"
 
 FSMCall = oo.class{
     -- default field values
-    list_section = nil,
-    list_branch = nil,
+    extension_list = nil,
+    caller_id_name = nil,
+    caller_id_number = nil,
+    destination_number = nil,
+    uuid = nil,
+    call_duration = 0,
 }
 
-function FSMCall:__init(timecache)
+function FSMCall:__init(session, debug_mode)
     -- self is the class
     return oo.rawnew(self, {
-        timecache   = timecache
+        session = session,
+        debug_mode = debug_mode
     })
 end
 
 
-function FSMCall:init_call()
-    extension_list = session:getVariable("extension_list")
-    caller_id_name = session:getVariable("caller_id_name")
-    caller_id_number = session:getVariable("caller_id_number")
-    destination_number = session:getVariable("destination_number")
-    uuid = session:getVariable("uuid")
+function FSMCall:init()
+    print("FSMCall:init")
+    self.extension_list = self.session:getVariable("extension_list")
+    self.caller_id_name = self.session:getVariable("caller_id_name")
+    self.caller_id_number = self.session:getVariable("caller_id_number")
+    self.destination_number = self.session:getVariable("destination_number")
+    self.uuid = self.session:getVariable("uuid")
 end
 
 function FSMCall:end_call()
-
+    print("FSMCall:end_call")
+    session:hangup()
+    self.call_duration = os.time() - self.call_start
+    -- NOTE: Don't use this call time for Billing
+    -- Use FS CDRs
+    print("Estimated Call Duration : "..self.call_duration)
 end
 
 function FSMCall:start_call()
-
+    print("FSMCall:start_call")
+    self.call_start = os.time()
 end

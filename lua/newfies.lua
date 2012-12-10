@@ -22,8 +22,30 @@ require "logging.file"
 require "database"
 require "fsm_callflow"
 
+
+
+local OptionParser = require "pythonic.optparse" . OptionParser
+--TODO: parse version from __init__.py
+local opt = OptionParser{usage="%prog [options] [gzip-file...]",
+                           version="Newfies-Dialer Version 1.0", add_help_option=false}
+opt.add_option{"-h", "--help", action="store_true", dest="help",
+                 help="Newfies-Dialer Voice Application FSM"}
+opt.add_option{
+    "-n", "--nofs", action="store_true", dest="nofs",
+    help="select the environement to run the script, as command line, you might want to run this with --nofs"}
+
+local options, args = opt.parse_args()
+
+if options.help then opt.print_help(); os.exit(1) end
+--for _, name in ipairs(args) do print(name) end
+
 -- Set if the environment is FreeSWITCH
-fs_env = true
+if options.nofs then
+    fs_env = false
+else
+    fs_env = true
+end
+
 debug_mode = false
 
 if not fs_env then

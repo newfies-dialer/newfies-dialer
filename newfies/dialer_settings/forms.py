@@ -12,5 +12,4 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django import forms
 # place form definition here

@@ -21,10 +21,9 @@ from dialer_campaign.constants import CAMPAIGN_STATUS,\
     CAMPAIGN_STATUS_COLOR
 from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting
-from common.common_functions import variable_value
 from dateutil.rrule import rrule, DAILY, HOURLY
 from dateutil.parser import parse
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 
 def user_attached_with_dialer_settings(request):
@@ -191,6 +190,8 @@ def type_field_chk(base_field, base_field_type, field_name):
 
 def date_range(start, end, q):
     """Date  Range
+
+    >>> from datetime import datetime
 
     >>> s_date = datetime(2012, 07, 11, 0, 0, 0, 0)
 

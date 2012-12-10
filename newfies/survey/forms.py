@@ -77,7 +77,6 @@ def get_multi_question_choice_list(section_id):
            and i not in keys_list):
             list_sq.append((i, '%s' % (obj_section.__dict__['key_' + str(i)])))
 
-    list_sq.append(('timeout', _('Timeout')))
     list_sq.append(('any', _('Any Other Key')))
     return list_sq
 
@@ -103,7 +102,6 @@ def get_rating_choice_list(section_id):
             if i not in keys_list:
                 list_sq.append((i, '%s' % (str(i))))
 
-    list_sq.append(('timeout', _('Timeout')))
     list_sq.append(('any', _('Any Other Key')))
     return list_sq
 

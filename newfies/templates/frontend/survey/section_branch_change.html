@@ -55,9 +55,6 @@
                 {% else %}
                     <div class="row">
                         <script type="text/javascript" charset="utf-8">
-                            $("#button-timeout").live('click', function() {
-                                $("#id_keys").attr('value', 'timeout');
-                            });
                             $("#button-anything").live('click', function() {
                                 $("#id_keys").attr('value', 'any');
                             });
@@ -67,7 +64,6 @@
                         </script>
                         <div class="span2">
                             <div class="btn-group" data-toggle="buttons-radio">
-                                <button type="button" class="btn" id="button-timeout">{% trans "timeout"|title %}</button>
                                 <button type="button" class="btn" id="button-anything">{% trans "any other key"|title %}</button>
                                 {% if section_type == SECTION_TYPE.CAPTURE_DIGITS %}
                                     <button type="button" class="btn" id="button-invalid">{% trans "invalid"|title %}</button>

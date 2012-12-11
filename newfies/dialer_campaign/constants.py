@@ -45,3 +45,8 @@ class CAMPAIGN_COLUMN_NAME(Choice):
     contacts = _('Contacts')
     status = _('Status')
 
+
+class AMD_BEHAVIOR(Choice):
+    ALWAYS = 1, _('ALWAYS PLAY MESSAGE')
+    HUMAN_ONLY = 2, _('PLAY MESSAGE TO HUMAN ONLY')
+    VOICEMAIL_ONLY = 3, _('LEAVE MESSAGE TO VOICEMAIL ONLY')

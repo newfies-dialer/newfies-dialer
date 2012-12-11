@@ -22,9 +22,10 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from dateutil.relativedelta import relativedelta
 from dialer_campaign.constants import SUBSCRIBER_STATUS, \
-    CAMPAIGN_STATUS
+    CAMPAIGN_STATUS, AMD_BEHAVIOR
 from dialer_contact.models import Phonebook, Contact
 from dialer_gateway.models import Gateway
+from audiofield.models import AudioFile
 from user_profile.models import UserProfile
 from datetime import datetime
 from common.intermediate_model_base_class import Model
@@ -236,6 +237,13 @@ class Campaign(Model):
     completed = models.IntegerField(default=0, blank=True, null=True,
                                     verbose_name=_('Completed'),
                                     help_text=_("Total Contact that completed Call / Survey"))
+    #Voicemail
+    voicemail = models.BooleanField(default=False, verbose_name=_('Enable Voicemail Detection'))
+    amd_behavior = models.IntegerField(choices=list(AMD_BEHAVIOR),
+                                 default=AMD_BEHAVIOR.ALWAYS,
+                                 verbose_name=_("Detection Behaviour"), blank=True, null=True)
+    voicemail_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
+                                  verbose_name=_("Voicemail Audio File"))
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='Date')
     updated_date = models.DateTimeField(auto_now=True)
 

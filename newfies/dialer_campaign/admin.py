@@ -33,7 +33,8 @@ class CampaignAdmin(GenericAdminModelAdmin):
             'fields': ('campaign_code', 'name', 'description', 'callerid',
                        'user', 'status', 'startingdate', 'expirationdate',
                        'aleg_gateway', 'content_type', 'object_id',
-                       'extra_data', 'phonebook',
+                       'extra_data', 'phonebook', 'voicemail', 'amd_behavior',
+                       'voicemail_audiofile'
                        ),
         }),
         (_('Advanced options'), {

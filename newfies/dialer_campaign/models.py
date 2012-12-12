@@ -138,6 +138,8 @@ class Campaign(Model):
         * ``extra_data`` - Additional data to pass to the application
         * ``totalcontact`` - Total Contact for this campaign
         * ``completed`` - Total Contact that completed Call / Survey
+        * ``voicemail`` - Enable Voicemail Detection
+        * ``amd_behavior`` - Detection Behaviour
 
     **Relationships**:
 
@@ -152,6 +154,8 @@ class Campaign(Model):
 
         * ``user`` - Foreign key relationship to the a User model. \
         Each campaign assigned to a User
+
+        * ``voicemail_audiofile`` - Foreign key relationship to the a AudioFile model.
 
     **Name of DB table**: dialer_campaign
     """

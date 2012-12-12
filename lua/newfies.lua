@@ -23,7 +23,6 @@ require "database"
 require "fsm_callflow"
 
 
-
 local OptionParser = require "pythonic.optparse" . OptionParser
 --TODO: parse version from __init__.py
 local opt = OptionParser{usage="%prog [options] [gzip-file...]",
@@ -100,7 +99,6 @@ function debug(level, message)
         print(message)
     end
     logger:info(message)
-
 end
 
 

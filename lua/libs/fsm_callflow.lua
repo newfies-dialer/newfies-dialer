@@ -30,6 +30,7 @@ FSMCall = oo.class{
     call_duration = 0,
     logger = nil,
     hangup_trigger = false,
+    current_section = false,
 }
 
 function FSMCall:__init(session, debug_mode, logger)
@@ -73,4 +74,14 @@ function FSMCall:start_call()
     print("FSMCall:start_call")
     self.logger:info("FSMCall:start_call...")
     self.call_start = os.time()
+    self:next_node()
+end
+
+
+function FSMCall:next_node()
+    print("FSMCall:next_node")
+    self.logger:info("FSMCall:next_node...")
+    if not self.current_section then
+        print "OK"
+    end
 end

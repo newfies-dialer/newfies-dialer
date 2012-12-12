@@ -148,6 +148,7 @@ class CampaignValidation(Validation):
             if (name_count != 0):
                 errors['chk_campaign_name'] = ["The Campaign name duplicated!"]
 
+        # Voicemail setting is not enabled by default
         if settings.AMD:
             voicemail = bundle.data.get('voicemail')
             if voicemail:
@@ -193,6 +194,8 @@ class CampaignResource(ModelResource):
             default '1'
             * ``sunday`` - Set to 1 if you want to run this day of the week,\
             default '1'
+
+            # Voicemail setting is not enabled by default
             * ``voicemail`` - Enable Voicemail Detection
             * ``amd_behavior`` - Detection Behaviour
             * ``voicemail_audiofile`` - Foreign key relationship to the a AudioFile model.
@@ -396,6 +399,7 @@ class CampaignResource(ModelResource):
         'content_type')
     phonebook = fields.ToManyField(PhonebookResource,
         'phonebook', full=True, readonly=True)
+    # Voicemail setting is not enabled by default
     voicemail_audiofile = fields.ForeignKey(AudioFileResource,
         'voicemail_audiofile', full=True)
 

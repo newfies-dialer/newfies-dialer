@@ -575,7 +575,7 @@ SURVEYDEV = False
 
 #Voicemail setting
 #=================
-AMD = True
+AMD = False
 
 #IMPORT LOCAL SETTINGS
 #=====================

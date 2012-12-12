@@ -109,6 +109,7 @@ class CampaignForm(ModelForm):
 
             self.fields['content_object'].choices = object_choices
 
+            # Voicemail setting is not enabled by default
             if settings.AMD:
                 from survey.forms import get_audiofile_list
                 self.fields['voicemail_audiofile'].choices = get_audiofile_list(user)

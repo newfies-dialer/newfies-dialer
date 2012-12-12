@@ -13,6 +13,7 @@
 #
 
 from django import forms
+from django.conf import settings
 from django.forms.util import ErrorList
 from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
@@ -107,8 +108,10 @@ class CampaignForm(ModelForm):
             object_choices += get_object_choices(available_objects)
 
             self.fields['content_object'].choices = object_choices
-            from survey.forms import get_audiofile_list
-            self.fields['voicemail_audiofile'].choices = get_audiofile_list(user)
+
+            if settings.AMD:
+                from survey.forms import get_audiofile_list
+                self.fields['voicemail_audiofile'].choices = get_audiofile_list(user)
 
         # if campaign is running
         if instance.status == CAMPAIGN_STATUS.START:

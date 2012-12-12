@@ -108,6 +108,36 @@
             </div>
         </fieldset>
 
+        <legend>{% trans "Voicemail settings" %}</legend>
+        <div class="span12">
+            <div class="input">
+                {% get_fieldset voicemail as settings_fields from form %}
+                {% for field in settings_fields %}
+                    {{ field }}&nbsp;{{ field.label }}
+                {% endfor %}
+            </div>
+        </div>
+        <div>&nbsp;</div>
+        <div class="span12">
+            <div class="row">
+                {% get_fieldset amd_behavior,voicemail_audiofile as campaign_fields from form %}
+                {% for field in campaign_fields.visible_fields %}
+                    <div class="span6">
+                        <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                            <label for="id_{{ field.name }}">{{ field.label }}</label>
+                            <div class="input">
+                                {{ field }}
+                                {% if field.errors %}
+                                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                                <span class="help-block">{{ field.help_text }} </span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
         <fieldset>
             <legend>{% trans "Campaign schedule" %}</legend>
             <div class="span12">

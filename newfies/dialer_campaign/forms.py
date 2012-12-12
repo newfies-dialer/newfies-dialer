@@ -66,6 +66,7 @@ class CampaignForm(ModelForm):
                   'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
                   'saturday', 'sunday', 'ds_user',
                   'selected_phonebook', 'selected_content_object',
+                  'voicemail', 'amd_behavior', 'voicemail_audiofile'
                   ]
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
@@ -106,6 +107,8 @@ class CampaignForm(ModelForm):
             object_choices += get_object_choices(available_objects)
 
             self.fields['content_object'].choices = object_choices
+            from survey.forms import get_audiofile_list
+            self.fields['voicemail_audiofile'].choices = get_audiofile_list(user)
 
         # if campaign is running
         if instance.status == CAMPAIGN_STATUS.START:

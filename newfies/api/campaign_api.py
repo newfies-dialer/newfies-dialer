@@ -16,6 +16,7 @@
 
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
+from django.conf import settings
 
 from tastypie.resources import ModelResource, ALL
 from tastypie.authentication import BasicAuthentication
@@ -27,6 +28,7 @@ from tastypie import fields
 
 from api.user_api import UserResource
 from api.gateway_api import GatewayResource
+from api.audiofile_api import AudioFileResource
 from api.content_type_api import ContentTypeResource
 from api.phonebook_api import PhonebookResource
 from api.resources import get_value_if_none
@@ -36,6 +38,7 @@ from dialer_gateway.models import Gateway
 from dialer_campaign.function_def import \
     user_attached_with_dialer_settings, check_dialer_setting, \
     dialer_setting_limit
+from audiofield.models import AudioFile
 import time
 import logging
 
@@ -145,6 +148,22 @@ class CampaignValidation(Validation):
             if (name_count != 0):
                 errors['chk_campaign_name'] = ["The Campaign name duplicated!"]
 
+        if settings.AMD:
+            voicemail = bundle.data.get('voicemail')
+            if voicemail:
+                bundle.data['voicemail'] = voicemail
+                amd_behavior = bundle.data.get('amd_behavior')
+                audiofile_id = bundle.data.get('voicemail_audiofile')
+                if audiofile_id:
+                    try:
+                        audiofile_id = AudioFile.objects.get(id=audiofile_id).id
+                        bundle.data['voicemail_audiofile'] = '/api/v1/audiofile/%s/' %\
+                                                             audiofile_id
+                    except:
+                        errors['voicemail_audiofile'] = ["The audiofile ID doesn't exist!"]
+            else:
+                errors['voicemail'] = ["voicemail not enabled!"]
+
         return errors
 
 
@@ -174,6 +193,9 @@ class CampaignResource(ModelResource):
             default '1'
             * ``sunday`` - Set to 1 if you want to run this day of the week,\
             default '1'
+            * ``voicemail`` - Enable Voicemail Detection
+            * ``amd_behavior`` - Detection Behaviour
+            * ``voicemail_audiofile`` - Foreign key relationship to the a AudioFile model.
 
         **Campaign Settings**:
 
@@ -206,7 +228,7 @@ class CampaignResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "content_type": "voiceapp_template", "object_id" : "1", "extra_data": "2000", "phonebook_id": "1"}' http://localhost:8000/api/v1/campaign/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "content_type": "voiceapp_template", "object_id" : "1", "extra_data": "2000", "phonebook_id": "1", "voicemail": "True", "amd_behavior": "1", "voicemail_audiofile": "1"}' http://localhost:8000/api/v1/campaign/
 
         Response::
 
@@ -374,6 +396,8 @@ class CampaignResource(ModelResource):
         'content_type')
     phonebook = fields.ToManyField(PhonebookResource,
         'phonebook', full=True, readonly=True)
+    voicemail_audiofile = fields.ForeignKey(AudioFileResource,
+        'voicemail_audiofile', full=True)
 
     class Meta:
         queryset = Campaign.objects.all()

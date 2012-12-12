@@ -42,6 +42,7 @@ from api.answercall_api import AnswercallResource
 from api.dialcallback_api import DialCallbackResource
 from api.hangupcall_api import HangupcallResource
 from api.store_cdr_api import CdrResource
+from api.audiofile_api import AudioFileResource
 
 from survey.api.survey_api import SurveyResource
 from survey.api.survey_section_api import SectionResource
@@ -84,6 +85,8 @@ tastypie_api.register(SurveyResource())
 tastypie_api.register(SectionResource())
 tastypie_api.register(BranchingResource())
 tastypie_api.register(ResultAggregateResource())
+tastypie_api.register(AudioFileResource())
+
 
 js_info_dict = {
     'domain': 'djangojs',

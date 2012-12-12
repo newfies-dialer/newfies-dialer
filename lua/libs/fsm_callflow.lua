@@ -16,8 +16,10 @@
 package.path = package.path .. ";/home/areski/public_html/django/MyProjects/newfies-dialer/lua/?.lua";
 package.path = package.path .. ";/home/areski/public_html/django/MyProjects/newfies-dialer/lua/libs/?.lua";
 
-local dumper = require "dumper"
 local oo = require "loop.simple"
+local inspect = require 'inspect'
+local database = require "database"
+
 
 
 FSMCall = oo.class{
@@ -27,10 +29,12 @@ FSMCall = oo.class{
     caller_id_number = nil,
     destination_number = nil,
     uuid = nil,
+    survey_id = nil,
     call_duration = 0,
     logger = nil,
     hangup_trigger = false,
     current_section = false,
+    db = nil,
 }
 
 function FSMCall:__init(session, debug_mode, logger)
@@ -38,7 +42,8 @@ function FSMCall:__init(session, debug_mode, logger)
     return oo.rawnew(self, {
         session = session,
         debug_mode = debug_mode,
-        logger = logger
+        logger = logger,
+        db = Database(debug_mode)
     })
 end
 
@@ -50,6 +55,12 @@ function FSMCall:init()
     self.caller_id_number = self.session:getVariable("caller_id_number")
     self.destination_number = self.session:getVariable("destination_number")
     self.uuid = self.session:getVariable("uuid")
+
+    self.survey_id = 6
+    self.db:connect()
+    self.db:load_all(self.survey_id)
+    self.db:disconnect()
+    --print(inspect(self.db.list_audio))
 end
 
 function FSMCall:end_call()

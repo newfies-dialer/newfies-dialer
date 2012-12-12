@@ -16,17 +16,13 @@
 package.path = package.path .. ";/home/areski/public_html/django/MyProjects/newfies-dialer/lua/?.lua";
 package.path = package.path .. ";/home/areski/public_html/django/MyProjects/newfies-dialer/lua/libs/?.lua";
 
-local dumper = require "dumper"
 local luasql = require "luasql.postgres"
 -- local oo = require "loop.base"
 local oo = require "loop.simple"
-
+local inspect = require 'inspect'
 
 -- module("database.DataBase", oo.class)
 
-function dump(...)
- 	print(DataDumper(...), "\n---")
-end
 
 Database = oo.class{
 	-- default field values
@@ -133,6 +129,8 @@ function Database:load_audiofile()
 	end
 	cur:close()
 	self.list_audio = list
+
+	--print(inspect(self.list_audio))
 end
 
 function Database:load_all(survey_id)
@@ -155,12 +153,9 @@ end
 
 -- TEST
 -- Define a shortcut function for testing
--- function dump(...)
---   print(DataDumper(...), "\n---")
--- end
 
--- dump(Database.list_audio)
--- dump(Database.list_branch)
--- dump(Database.list_branch[11]["any"])
--- dump(Database.list_branch[11]["1"])
--- dump(Database.list_branch[11]["timeout"])
+-- print(inspect(Database.list_audio))
+-- print(inspect(Database.list_branch))
+-- print(inspect(Database.list_branch[11]["any"]))
+-- print(inspect(Database.list_branch[11]["1"]))
+-- print(inspect(Database.list_branch[11]["timeout"]))

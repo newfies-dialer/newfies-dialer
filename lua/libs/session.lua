@@ -73,7 +73,7 @@ function Session:playAndGetDigits(min_digits, max_digits, max_attempts, timeout,
     print("Session:playAndGetDigits -> "..prompt_audio_files)
     local digits
     repeat
-        io.write("Enter some digits and press Enter...")
+        io.write("Enter some digits and press Enter ==> ")
         io.flush()
         digits=io.read()
         print(string.len(digits))

@@ -17,9 +17,7 @@ package.path = package.path .. ";/home/areski/public_html/django/MyProjects/newf
 package.path = package.path .. ";/home/areski/public_html/django/MyProjects/newfies-dialer/lua/libs/?.lua";
 
 require "luasql.postgres"
-require "dumper"
 require "logging.file"
-require "database"
 require "fsm_callflow"
 
 
@@ -56,13 +54,6 @@ LOGDIR = '/home/areski/public_html/django/MyProjects/newfies-dialer/lua/'
 local logger = logging.file(LOGDIR .. "logs_%s.log", "%Y-%m-%d")
 logger:setLevel(logging.DEBUG)
 local callflow = FSMCall(session, debug_mode, logger)
-local db = Database(debug_mode)
-
-survey_id = 6
-db:connect()
-db:load_all(survey_id)
-db:disconnect()
---print(DataDumper(db.list_audio))
 
 --error(_die)
 

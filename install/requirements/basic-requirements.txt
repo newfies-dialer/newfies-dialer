@@ -18,6 +18,6 @@ Pygments==1.5
 python-memcached==1.48
 feedparser==5.1.2
 python-acapela==0.2.1
-Django==1.4.2
+Django==1.4.3
 gunicorn==0.15.0
 South==0.7.6

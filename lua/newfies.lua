@@ -125,8 +125,8 @@ if session:ready() then
     --       transfer_on_failure)
 
     -- Multi Choice
-    press_digit = session:playAndGetDigits(1, 1, 3, 4000, '#', AUDIO_PRESSDIGIT, '', '\\d+|#')
-    debug("info", "press digit = " .. press_digit )
+    -- press_digit = session:playAndGetDigits(1, 1, 3, 4000, '#', AUDIO_PRESSDIGIT, '', '\\d+|#')
+    -- debug("info", "press digit = " .. press_digit )
 
     -- -- Capture Digits
     -- entered_age = session:playAndGetDigits(1, 6, 3, 4000, '#', AUDIO_ENTERAGE, '', '\\d+|#')

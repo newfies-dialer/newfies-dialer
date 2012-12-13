@@ -571,10 +571,6 @@ DIALERDEBUG_PHONENUMBER = 1000
 #Survey in dev
 #=============
 SURVEYDEV = False
-
-
-#Voicemail setting
-#=================
 AMD = False
 
 #IMPORT LOCAL SETTINGS

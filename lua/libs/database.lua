@@ -34,7 +34,11 @@ Database = oo.class{
 	con = nil,
 	list_section = nil,
 	list_branch = nil,
-	list_audio = nil
+	list_audio = nil,
+	campaign_info = nil,
+	valid_data = true,
+	app_type = 'survey', -- survey or voice_app
+	start_node = false,
 }
 
 function Database:__init(debug_mode)
@@ -60,20 +64,21 @@ function Database:load_survey_section(survey_id)
 	-- key_0	key_1	key_2	key_3	key_4	key_5	key_6	key_7	key_8	key_9
 	-- rating_laps	validate_number	number_digits	phonenumber	completed	created_date
 	-- updated_date	survey_id	invalid_audiofile_id	min_number	max_number
-	QUERY = "SELECT * FROM "..self.TABLE_SECTION.." WHERE survey_id="..survey_id.." ORDER BY id"
+	QUERY = "SELECT * FROM "..self.TABLE_SECTION.." WHERE survey_id="..survey_id.." ORDER BY "..self.TABLE_SECTION..".order"
 	cur = assert (self.con:execute(QUERY))
 
 	-- LOOP THROUGH THE CURSOR
 	if debug_mode then
-		print()
 		print(string.format("%15s  %-15s %-15s %-15s", "#", "QUESTION", "TYPE", "ORDER"))
-		print(string.format("%15s  %-15s %-15s %-15s", "-", "--------", "----", "-----"))
 	end
 	list = {}
 	row = cur:fetch ({}, "a")
 	while row do
 		if debug_mode then
 			print(string.format("%15d  %-15s %-15s %-15s", row.id, row.question, row.type, row.order))
+		end
+		if not self.start_node then
+			self.start_node = row.id
 		end
 		list[tonumber(row.id)] = row
 		row = cur:fetch ({}, "a")
@@ -93,9 +98,7 @@ function Database:load_survey_branching(survey_id)
 
 	-- LOOP THROUGH THE CURSOR
 	if debug_mode then
-		print()
 		print(string.format("%15s  %-15s %-15s %-15s", "#", "KEYS", "SECTION_ID", "GOTO_ID"))
-		print(string.format("%15s  %-15s %-15s %-15s", "-", "----", "----------", "-------"))
 	end
 	list = {}
 	row = cur:fetch ({}, "a")
@@ -112,7 +115,6 @@ function Database:load_survey_branching(survey_id)
 	cur:close()
 	self.list_branch = list
 end
-
 
 function Database:load_audiofile()
 	print("Load audiofile branching")
@@ -133,22 +135,65 @@ function Database:load_audiofile()
 	--print(inspect(self.list_audio))
 end
 
-function Database:load_all(survey_id)
+function Database:get_list(query)
+	print("Load sql")
+	cur = assert (self.con:execute(query))
+	list = {}
+	row = cur:fetch ({}, "a")
+	while row do
+		list[tonumber(row.id)] = row
+		row = cur:fetch ({}, "a")
+	end
+	cur:close()
+	return list
+end
+
+function Database:get_object(query)
+	cur = assert (self.con:execute(query))
+	row = cur:fetch ({}, "a")
+	cur:close()
+	return row
+end
+
+function Database:load_campaign_info(campaign_id)
+	print("Load campaign info")
+	QUERY = "SELECT * FROM dialer_campaign WHERE id="..campaign_id
+	self.campaign_info = self:get_object(QUERY)
+	-- check campaign info
+end
+
+function Database:load_all(campaign_id)
+	self:load_campaign_info(campaign_id)
+	if not self.campaign_info then
+		return false
+	end
+	print(inspect(self.campaign_info))
+
+	--TODO: 34 should be flexible
+	if self.campaign_info.content_type_id == 34 then
+		self.app_type = 'survey'
+	else
+		self.app_type = 'voice_app'
+	end
+	survey_id = self.campaign_info.object_id
+	print(">> survey_id = "..survey_id)
+	--TODO: Support Voice App
 	self:load_survey_section(survey_id)
 	self:load_survey_branching(survey_id)
 	self:load_audiofile()
+	return true
 end
 
--- -- RECREATE PEOPLE TABLE
--- res = assert (con:execute[[
--- 	CREATE TABLE people(
--- 		id integer,
--- 		fname text,
--- 		lname text,
--- 		job text
--- 	)
--- ]])
-
+function Database:check_data()
+	--Check if we retrieve Campaign Info
+	if not self.campaign_info then
+		self.valid_data = false
+	end
+	--Check if we retrieve List Section
+	if not self.list_section then
+		self.valid_data = false
+	end
+end
 
 
 -- TEST

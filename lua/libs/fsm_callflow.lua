@@ -55,11 +55,27 @@ function FSMCall:init()
     self.caller_id_number = self.session:getVariable("caller_id_number")
     self.destination_number = self.session:getVariable("destination_number")
     self.uuid = self.session:getVariable("uuid")
+    self.campaign_id = self.session:getVariable("campaign_id")
+    self.campaign_id = 23
 
-    self.survey_id = 6
     self.db:connect()
-    self.db:load_all(self.survey_id)
+    if not self.db:load_all(self.campaign_id) then
+        self.logger:error("Error loading data")
+        print("Error loading data")
+        self:hangupcall()
+        return false
+    end
+    self.db:check_data()
     self.db:disconnect()
+    print(self.db.start_node)
+    print(inspect(self.db.list_section[tonumber(self.db.start_node)]))
+
+
+    if not self.db.valid_data then
+        self.logger:error("Error invalid data")
+        self:hangupcall()
+        return false
+    end
     --print(inspect(self.db.list_audio))
 end
 

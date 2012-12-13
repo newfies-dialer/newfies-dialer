@@ -26,9 +26,11 @@ function delete_button(){
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-
                 {% if perms.survey.delete_survey %}
                     <li><a href="#" onclick="delete_button()">{% trans "Delete survey" %}</a></li>
+                {% endif %}
+                {% if perms.survey.export_survey %}
+                    <li><a href="/export_survey/" target="_blank">{% trans "Export" %}</a></li>
                 {% endif %}
             </ul>
         </div>

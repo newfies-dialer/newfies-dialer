@@ -112,6 +112,7 @@ class Survey(Survey_abstract):
     class Meta:
         permissions = (
             ("view_survey", _('Can see Survey')),
+            ("export_survey", _('Can export Survey')),
             ("view_survey_report", _('Can see Survey Report'))
         )
         verbose_name = _("Survey")

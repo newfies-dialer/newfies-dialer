@@ -22,13 +22,13 @@ local database = require "database"
 
 
 -- Constant Value
-local PLAY_MESSAGE = 1
-local MULTI_CHOICE = 2
-local RATING_SECTION = 3
-local CAPTURE_DIGITS = 4
-local RECORD_MSG = 5
-local CALL_TRANSFER = 6
-local HANGUP_SECTION = 7
+local PLAY_MESSAGE = "1"
+local MULTI_CHOICE = "2"
+local RATING_SECTION = "3"
+local CAPTURE_DIGITS = "4"
+local RECORD_MSG = "5"
+local CALL_TRANSFER = "6"
+local HANGUP_SECTION = "7"
 
 local AUDIODIR = '/home/areski/public_html/django/MyProjects/newfies-dialer/newfies/usermedia/tts/'
 local AUDIO_WELCOME = AUDIODIR..'script_9805d01afeec350f36ff3fd908f0cbd5.wav'
@@ -38,6 +38,7 @@ local AUDIO_PRESSDIGIT = AUDIODIR..'script_610e09c761c4b592aaa954259ce4ce1d.wav'
 
 FSMCall = oo.class{
     -- default field values
+    call_ended = false,
     extension_list = nil,
     caller_id_name = nil,
     caller_id_number = nil,
@@ -96,9 +97,13 @@ function FSMCall:end_call()
     self.debugger:msg("ERROR", "FSMCall:end_call")
     -- NOTE: Don't use this call time for Billing
     -- Use FS CDRs
-    self.call_duration = os.time() - self.call_start
-    self.debugger:msg("DEBUG", "Estimated Call Duration : "..self.call_duration)
-    self:hangupcall()
+    if not self.call_ended then
+        self.call_ended = true
+        --Duration call
+        self.call_duration = os.time() - self.call_start
+        self.debugger:msg("DEBUG", "Estimated Call Duration : "..self.call_duration)
+        self:hangupcall()
+    end
 end
 
 function FSMCall:hangupcall()
@@ -117,19 +122,23 @@ end
 
 function FSMCall:next_node()
     self.debugger:msg("INFO", "FSMCall:next_node (current_node="..tonumber(self.current_node_id)..")")
-    current_node = self.db.list_section[tonumber(self.current_node_id)]
-    if not self.current_node then
+    local current_node = self.db.list_section[tonumber(self.current_node_id)]
+    current_branching = self.db.list_branching[tonumber(self.current_node_id)]
+    if not current_node then
+        print(type(current_node))
+        print ("Not current_node")
+        print(inspect(self.db.list_section[tonumber(self.current_node_id)]))
         return false
     end
 
     print(inspect(current_node))
     -- Get the node type and start playing it
-    timeout = current_node.timeout
+    timeout = tonumber(current_node.timeout)
     if timeout <= 0 then
         timeout = 1 -- GetDigits 'timeout' must be a positive integer
     end
     -- Get number of retries
-    retries = current_node.retries
+    retries = tonumber(current_node.retries)
     if not retries then
         retries = 1
     end
@@ -200,7 +209,7 @@ function FSMCall:next_node()
         debug_output = debug_output.."RATING_SECTION<br/>------------------<br/>"
         -- Multi Choice
         press_digit = session:playAndGetDigits(1, 1, 3, 4000, '#', AUDIO_PRESSDIGIT, invalid_input, '\\d+|#')
-        debug("info", "result digit => " .. press_digit )
+        self.debugger:msg("INFO", "result digit => " .. press_digit )
 
     elseif current_node.type == CAPTURE_DIGITS then
         number_digits = current_node.number_digits
@@ -209,7 +218,7 @@ function FSMCall:next_node()
         end
         debug_output = debug_output.."CAPTURE_DIGITS<br/>------------------<br/>"
         press_digit = session:playAndGetDigits(1, 1, 3, 4000, '#', AUDIO_PRESSDIGIT, invalid_input, '\\d+|#')
-        debug("info", "result digit => " .. press_digit )
+        self.debugger:msg("INFO", "result digit => " .. press_digit )
 
     elseif current_node.type == RECORD_MSG then
         debug_output = debug_output.."RECORD_MSG<br/>------------------<br/>"
@@ -222,10 +231,26 @@ function FSMCall:next_node()
         id_recordfile = math.random(10000000, 99999999);
         recording_filename = "/tmp/recording-".."-"..id_recordfile..".wav"
         result_rec = session:recordFile(recording_filename, max_len_secs, silence_threshold, silence_secs)
-
     else
         debug_output = debug_output.."EXCEPTIONH -> HANGUP"
         self:end_call()
     end
 
+    -- 2. Find next node
+    print("---------------------")
+    print(inspect(current_branching))
+    if current_node.type == PLAY_MESSAGE then
+        print(current_branching["0"].goto_id)
+        if not current_branching["0"].goto_id then
+            -- go to hangup
+            self.debugger:msg("INFO", "No more branching -> Goto Hangup")
+            self:end_call()
+        else
+            self.current_node_id = tonumber(current_branching["0"].goto_id)
+        end
+    end
+
+    -- 3. Record result / Aggregate result
+
+    return true
 end

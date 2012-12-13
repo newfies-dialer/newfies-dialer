@@ -107,9 +107,10 @@ if session:ready() then
     callflow:start_call()
 
     loop = 0
-    while session:ready() and loop < 1000 do
+    while session:ready() and not callflow.call_ended and loop < 1000 do
         loop = loop + 1
 
+        -- Loop on the State Machine to find the next node to proceed
         callflow:next_node()
         sleep(1)
     end

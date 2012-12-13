@@ -33,7 +33,7 @@ Database = oo.class{
 	env = nil,
 	con = nil,
 	list_section = nil,
-	list_branch = nil,
+	list_branching = nil,
 	list_audio = nil,
 	campaign_info = nil,
 	valid_data = true,
@@ -113,7 +113,7 @@ function Database:load_survey_branching(survey_id)
 		row = cur:fetch ({}, "a")
 	end
 	cur:close()
-	self.list_branch = list
+	self.list_branching = list
 end
 
 function Database:load_audiofile()
@@ -200,7 +200,7 @@ end
 -- Define a shortcut function for testing
 
 -- print(inspect(Database.list_audio))
--- print(inspect(Database.list_branch))
--- print(inspect(Database.list_branch[11]["any"]))
--- print(inspect(Database.list_branch[11]["1"]))
--- print(inspect(Database.list_branch[11]["timeout"]))
+-- print(inspect(Database.list_branching))
+-- print(inspect(Database.list_branching[11]["any"]))
+-- print(inspect(Database.list_branching[11]["1"]))
+-- print(inspect(Database.list_branching[11]["timeout"]))

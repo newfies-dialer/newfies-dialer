@@ -57,11 +57,6 @@ local callflow = FSMCall(session, debug_mode, logger)
 
 --error(_die)
 
-AUDIODIR = '/home/areski/public_html/django/MyProjects/newfies-dialer/newfies/usermedia/tts/'
-AUDIO_WELCOME = AUDIODIR..'script_9805d01afeec350f36ff3fd908f0cbd5.wav'
-AUDIO_ENTERAGE = AUDIODIR..'script_4ee73b76b5b4c5d596ed1cb3257861f0.wav'
-AUDIO_PRESSDIGIT = AUDIODIR..'script_610e09c761c4b592aaa954259ce4ce1d.wav'
-
 
 -- This function simply tells us what function are available in Session
 --   It just prints a list of all functions.  We may be able to find functions
@@ -107,6 +102,12 @@ function myHangupHook(s, status, arg)
 end
 
 
+function sleep(seconds)
+    time = os.clock()
+    while os.clock()-time < seconds do end
+end
+
+
 if session:ready() then
 
     session:answer()
@@ -114,6 +115,14 @@ if session:ready() then
 
     callflow:init()
     callflow:start_call()
+
+    loop = 0
+    while session:ready() and loop < 1000 do
+        loop = loop + 1
+
+        callflow:next_node()
+        sleep(1)
+    end
 
     -- Play Message
     -- session:streamFile(AUDIO_WELCOME);
@@ -137,13 +146,11 @@ if session:ready() then
     -- filename = 'myfile.wav'
     -- recording_filename = string.format('%s%s', recording_dir, filename)
 
-    -- if session:ready() then
-    --     -- syntax is session:recordFile(file_name, max_len_secs, silence_threshold, silence_secs)
-    --     max_len_secs = 30
-    --     silence_threshold = 30
-    --     silence_secs = 5
-    --     test = session:recordFile(recording_filename, max_len_secs, silence_threshold, silence_secs)
-    -- end
+    -- -- syntax is session:recordFile(file_name, max_len_secs, silence_threshold, silence_secs)
+    -- max_len_secs = 30
+    -- silence_threshold = 30
+    -- silence_secs = 5
+    -- test = session:recordFile(recording_filename, max_len_secs, silence_threshold, silence_secs)
 
 
     -- max_attempts = 1

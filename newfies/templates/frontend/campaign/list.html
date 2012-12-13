@@ -93,7 +93,7 @@ function delete_button()
                                     <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "Delete campaign" %}"></a>
                                 {% endif %}
 
-                                {{ row.id|make_duplicate_campaign|safe }}
+                                {{ row.id|create_duplicate_campaign|safe }}
 
                                 {% get_campaign_app_view row %}
 

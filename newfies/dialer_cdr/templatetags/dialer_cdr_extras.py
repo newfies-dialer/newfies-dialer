@@ -18,7 +18,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from survey.views import survey_audio_recording
 from dialer_campaign.constants import CAMPAIGN_STATUS
-from dialer_campaign.views import tpl_control_icon
+from dialer_campaign.views import tpl_control_icon, make_duplicate_campaign
 from dialer_cdr.constants import LEG_TYPE
 from survey.constants import SECTION_TYPE
 from voice_app.constants import VOICEAPP_TYPE
@@ -210,11 +210,9 @@ def get_app_name(app_label, model_name, object_id):
         return '-'
 
 
-@register.filter(name='make_duplicate_campaign')
-def make_duplicate_campaign(camp_id):
-    link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate icon" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s" %s>&nbsp;</a>'\
-           % (camp_id, _('Duplicate this campaign'),
-              tpl_control_icon('layers.png'))
+@register.filter(name='create_duplicate_campaign')
+def create_duplicate_campaign(camp_id):
+    link = make_duplicate_campaign(camp_id)
     return link
 
 

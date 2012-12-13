@@ -172,8 +172,7 @@ def get_campaign_survey_view(campaign_object):
 
 def make_duplicate_campaign(campaign_object_id):
     link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate icon" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s" %s>&nbsp;</a>'\
-           % (campaign_object_id,
-              _('Duplicate this campaign'),
+           % (campaign_object_id, _('Duplicate this campaign'),
               tpl_control_icon('layers.png'))
     return link
 

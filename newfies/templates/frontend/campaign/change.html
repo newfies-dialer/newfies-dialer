@@ -115,7 +115,8 @@
             <div class="input">
                 {% get_fieldset voicemail as settings_fields from form %}
                 {% for field in settings_fields %}
-                    {{ field }}&nbsp;{{ field.label }}
+                    {{ field }}&nbsp;
+                    <abbr onclick="$('#id_voicemail').attr('checked', $('#id_voicemail').attr('checked') == 'checked' ? false : true);">{{ field.label }}</abbr>
                 {% endfor %}
             </div>
         </div>

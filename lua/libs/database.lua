@@ -114,6 +114,8 @@ function Database:load_survey_branching(survey_id)
 	end
 	cur:close()
 	self.list_branching = list
+
+	--print(inspect(self.list_branching))
 end
 
 function Database:load_audiofile()

@@ -174,6 +174,13 @@ function FSMCall:next_node()
 
     debug_output = ''
     self.debugger:msg("INFO", "current_node.type >>>>> "..current_node.type)
+    self.debugger:msg("INFO", "TITLE :: ("..current_node.id..") "..current_node.question)
+    self.debugger:msg("INFO", "-------------------------------------------")
+
+
+    --
+    -- Run Action
+    --
 
     if current_node.type == PLAY_MESSAGE then
         number_digits = 1
@@ -182,8 +189,8 @@ function FSMCall:next_node()
         session:streamFile(AUDIO_WELCOME)
 
     elseif current_node.type == HANGUP_SECTION then
-        debug_output = debug_output.."HANGUP_SECTION<br/>------------------<br/>"
-        html = '<Response> %s <Hangup/> </Response>' % html_play
+        debug_output = debug_output.."EXCEPTION -> HANGUP"
+        self:end_call()
 
     elseif current_node.type == MULTI_CHOICE then
         number_digits = 1
@@ -197,8 +204,8 @@ function FSMCall:next_node()
         --       transfer_on_failure)
 
         -- Multi Choice
-        press_digit = session:playAndGetDigits(1, 1, 3, 4000, '#', AUDIO_PRESSDIGIT, invalid_input, '\\d+|#')
-        debug("info", "result digit => " .. press_digit )
+        cap_dtmf = session:playAndGetDigits(1, 1, 3, 4000, '#', AUDIO_PRESSDIGIT, invalid_input, '\\d+|#')
+        self.debugger:msg("info", "result digit => " .. cap_dtmf )
 
     elseif current_node.type == RATING_SECTION then
         if current_node.rating_laps and string.len(current_node.rating_laps) > 0 then
@@ -208,8 +215,8 @@ function FSMCall:next_node()
         end
         debug_output = debug_output.."RATING_SECTION<br/>------------------<br/>"
         -- Multi Choice
-        press_digit = session:playAndGetDigits(1, 1, 3, 4000, '#', AUDIO_PRESSDIGIT, invalid_input, '\\d+|#')
-        self.debugger:msg("INFO", "result digit => " .. press_digit )
+        cap_dtmf = session:playAndGetDigits(1, 1, 3, 4000, '#', AUDIO_PRESSDIGIT, invalid_input, '\\d+|#')
+        self.debugger:msg("INFO", "result digit => " .. cap_dtmf )
 
     elseif current_node.type == CAPTURE_DIGITS then
         number_digits = current_node.number_digits
@@ -217,8 +224,8 @@ function FSMCall:next_node()
             number_digits = 1
         end
         debug_output = debug_output.."CAPTURE_DIGITS<br/>------------------<br/>"
-        press_digit = session:playAndGetDigits(1, 1, 3, 4000, '#', AUDIO_PRESSDIGIT, invalid_input, '\\d+|#')
-        self.debugger:msg("INFO", "result digit => " .. press_digit )
+        cap_dtmf = session:playAndGetDigits(1, 1, 3, 4000, '#', AUDIO_PRESSDIGIT, invalid_input, '\\d+|#')
+        self.debugger:msg("INFO", "result digit => " .. cap_dtmf )
 
     elseif current_node.type == RECORD_MSG then
         debug_output = debug_output.."RECORD_MSG<br/>------------------<br/>"
@@ -232,15 +239,19 @@ function FSMCall:next_node()
         recording_filename = "/tmp/recording-".."-"..id_recordfile..".wav"
         result_rec = session:recordFile(recording_filename, max_len_secs, silence_threshold, silence_secs)
     else
-        debug_output = debug_output.."EXCEPTIONH -> HANGUP"
+        debug_output = debug_output.."EXCEPTION -> HANGUP"
         self:end_call()
     end
+
+    --
+    -- Check Branching
+    --
 
     -- 2. Find next node
     print("---------------------")
     print(inspect(current_branching))
+
     if current_node.type == PLAY_MESSAGE then
-        print(current_branching["0"].goto_id)
         if not current_branching["0"].goto_id then
             -- go to hangup
             self.debugger:msg("INFO", "No more branching -> Goto Hangup")
@@ -248,6 +259,76 @@ function FSMCall:next_node()
         else
             self.current_node_id = tonumber(current_branching["0"].goto_id)
         end
+    elseif current_node.type == MULTI_CHOICE then
+
+    elseif current_node.type == RATING_SECTION then
+
+    elseif current_node.type == MULTI_CHOICE
+        or current_node.type == RATING_SECTION
+        or current_node.type == CAPTURE_DIGITS then
+
+        --CAPTURE_DIGITS / Check Validity
+        --{PYTHON CODE}
+        -- if (obj_p_section.type == SECTION_TYPE.CAPTURE_DIGITS
+        --    and obj_p_section.validate_number):
+        --     #check if number is valid
+        --     try:
+        --         int_dtmf = int(DTMF)
+        --     except:
+        --         #No correct input from user
+        --         int_dtmf = False
+
+        --     try:
+        --         int_min = int(obj_p_section.min_number)
+        --         int_max = int(obj_p_section.max_number)
+        --     except:
+        --         int_min = 0
+        --         int_max = 999999999999999
+
+        --     if (int_dtmf and (int_dtmf < int_min
+        --        or int_dtmf > int_max)):
+        --         #Invalid input
+        --         try:
+        --             #DTMF doesn't have any branching so let's check for any
+        --             branching = Branching.objects.get(
+        --                 keys='invalid',
+        --                 section=obj_p_section)
+        --             exit_action = 'INVALID'
+        --         except Branching.DoesNotExist:
+        --             branching = False
+
+
+        self.debugger:msg("INFO", "Got -------------------------> : "..cap_dtmf)
+        cap_dtmf = tonumber(cap_dtmf)
+        -- check if we got a branching for this capture
+        if cap_dtmf or string.len(cap_dtmf) >= 0 then
+            if current_branching[cap_dtmf] and current_branching[cap_dtmf].goto_id then
+                self.current_node_id = tonumber(current_branching[cap_dtmf].goto_id)
+                return true
+            elseif current_branching["any"] and current_branching["any"].goto_id then
+                self.debugger:msg("INFO", "Got ANY Branching : "..current_branching["any"].goto_id)
+                self.current_node_id = tonumber(current_branching["any"].goto_id)
+                return true
+            else
+                --We got a capture but nothing accepted for this
+                --let's stay on the same node then
+                return true
+            end
+        end
+
+        -- check if we got a branching for this capture
+        if not cap_dtmf or string.len(cap_dtmf) == 0 then
+            -- check if there is a timeout / you should
+            if not current_branching["timeout"].goto_id then
+                -- go to hangup
+                self.debugger:msg("INFO", "No more branching -> Goto Hangup")
+                self:end_call()
+            else
+                self.current_node_id = tonumber(current_branching["timeout"].goto_id)
+            end
+        end
+
+
     end
 
     -- 3. Record result / Aggregate result

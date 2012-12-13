@@ -30,6 +30,15 @@ local RECORD_MSG = "5"
 local CALL_TRANSFER = "6"
 local HANGUP_SECTION = "7"
 
+local SECTION_TYPE = {}
+SECTION_TYPE["1"] = "PLAY_MESSAGE"
+SECTION_TYPE["2"] = "MULTI_CHOICE"
+SECTION_TYPE["3"] = "RATING_SECTION"
+SECTION_TYPE["4"] = "CAPTURE_DIGITS"
+SECTION_TYPE["5"] = "RECORD_MSG"
+SECTION_TYPE["6"] = "CALL_TRANSFER"
+SECTION_TYPE["7"] = "HANGUP_SECTION"
+
 local AUDIODIR = '/home/areski/public_html/django/MyProjects/newfies-dialer/newfies/usermedia/tts/'
 local AUDIO_WELCOME = AUDIODIR..'script_9805d01afeec350f36ff3fd908f0cbd5.wav'
 local AUDIO_ENTERAGE = AUDIODIR..'script_4ee73b76b5b4c5d596ed1cb3257861f0.wav'
@@ -243,15 +252,25 @@ function FSMCall:next_node()
         self:end_call()
     end
 
+
     --
-    -- Check Branching
+    -- 3. Record result / Aggregate result
     --
 
-    -- 2. Find next node
+    -- TODO: Record result / Aggregate result
+
+    --
+    -- Check Branching / Find the next node
+    --
+
     print("---------------------")
+    print(current_node.type)
+    print("NODE TYPE ==> "..SECTION_TYPE[current_node.type])
     print(inspect(current_branching))
 
-    if current_node.type == PLAY_MESSAGE then
+    if current_node.type == PLAY_MESSAGE
+        or current_node.type == RECORD_MSG
+        or current_node.type == CALL_TRANSFER then
         if not current_branching["0"].goto_id then
             -- go to hangup
             self.debugger:msg("INFO", "No more branching -> Goto Hangup")
@@ -259,9 +278,6 @@ function FSMCall:next_node()
         else
             self.current_node_id = tonumber(current_branching["0"].goto_id)
         end
-    elseif current_node.type == MULTI_CHOICE then
-
-    elseif current_node.type == RATING_SECTION then
 
     elseif current_node.type == MULTI_CHOICE
         or current_node.type == RATING_SECTION
@@ -299,19 +315,31 @@ function FSMCall:next_node()
 
 
         self.debugger:msg("INFO", "Got -------------------------> : "..cap_dtmf)
-        cap_dtmf = tonumber(cap_dtmf)
         -- check if we got a branching for this capture
         if cap_dtmf or string.len(cap_dtmf) >= 0 then
+
+            if current_branching[cap_dtmf] then
+                if current_branching[cap_dtmf].goto_id then
+                    print("2OK")
+                end
+                print("1OK")
+            end
             if current_branching[cap_dtmf] and current_branching[cap_dtmf].goto_id then
                 self.current_node_id = tonumber(current_branching[cap_dtmf].goto_id)
                 return true
             elseif current_branching["any"] and current_branching["any"].goto_id then
-                self.debugger:msg("INFO", "Got ANY Branching : "..current_branching["any"].goto_id)
+                self.debugger:msg("INFO", "Got 'any' Branching : "..current_branching["any"].goto_id)
                 self.current_node_id = tonumber(current_branching["any"].goto_id)
+                return true
+            elseif current_branching["any"] then
+                -- There is no goto_id -> then we got to hangup
+                self.debugger:msg("INFO", "Got 'any' Branching but no goto_id -> then we got to hangup")
+                self:end_call()
                 return true
             else
                 --We got a capture but nothing accepted for this
                 --let's stay on the same node then
+                self.debugger:msg("INFO", "let's stay on the same node then")
                 return true
             end
         end
@@ -330,8 +358,6 @@ function FSMCall:next_node()
 
 
     end
-
-    -- 3. Record result / Aggregate result
 
     return true
 end

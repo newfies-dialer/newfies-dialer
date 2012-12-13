@@ -78,7 +78,7 @@ function delete_button()
                     {% for row in campaign_list %}
                         <tr>
                             <td class="survey_edit_key"><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>
-                            <td>{{ row.campaign_code }}</td>
+                            <td class="survey_edit_key">{{ row.campaign_code }}</td>
                             <td>{{ row.name }}</td>
                             <td>{{ row.startingdate }}</td>
                             <td>{{ row.get_campaign_type }}</td>

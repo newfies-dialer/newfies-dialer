@@ -1803,3 +1803,36 @@ def survey_campaign_result(request, id):
     request.session['err_msg'] = ''
     return render_to_response(template, data,
         context_instance=RequestContext(request))
+
+
+@login_required
+def export_survey(request):
+    """Export CSV file of Survey
+
+    **Important variable**:
+
+        * 
+
+    **Exported fields**: ['name', 'tts_language', 'description', 'user', 'campaign',
+                         'created_date', 'updated_date']
+    """
+    # get the response object, this can be used as a stream.
+    response = HttpResponse(mimetype='text/txt')
+    # force download.
+    response['Content-Disposition'] = 'attachment;filename=survey.txt'
+    # the txt writer
+    writer = csv.writer(response)
+    survey_list = Survey.objects.filter(user=request.user).order_by('id')
+
+    if survey_list:
+        for i in survey_list:
+            writer.writerow([
+                i.name,
+                i.tts_language,
+                i.description,
+                i.user_id,
+                i.campaign_id,
+                i.created_date,
+                i.updated_date,
+            ])
+    return response

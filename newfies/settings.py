@@ -571,7 +571,7 @@ DIALERDEBUG_PHONENUMBER = 1000
 #Survey in dev
 #=============
 SURVEYDEV = False
-AMD = True
+AMD = False
 
 #IMPORT LOCAL SETTINGS
 #=====================

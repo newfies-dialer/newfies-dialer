@@ -19,7 +19,9 @@ package.path = package.path .. ";/home/areski/public_html/django/MyProjects/newf
 require "luasql.postgres"
 require "logging.file"
 require "fsm_callflow"
+require "debugger"
 
+local debugger = Debugger('INFO', nil)
 
 local OptionParser = require "pythonic.optparse" . OptionParser
 --TODO: parse version from __init__.py
@@ -50,10 +52,8 @@ if not fs_env then
     session = Session()
 end
 
-LOGDIR = '/home/areski/public_html/django/MyProjects/newfies-dialer/lua/'
-local logger = logging.file(LOGDIR .. "logs_%s.log", "%Y-%m-%d")
-logger:setLevel(logging.DEBUG)
-local callflow = FSMCall(session, debug_mode, logger)
+
+local callflow = FSMCall(session, debug_mode, debugger)
 
 --error(_die)
 
@@ -76,16 +76,6 @@ function printSessionFunctions( session )
 end
 -- new_session = freeswitch.Session() -- create a blank session
 -- printSessionFunctions(new_session)
-
-function debug(level, message)
-    -- level : INFO, NOTICE, ...
-    if fs_env then
-        freeswitch.consoleLog(level, message)
-    else
-        print(message)
-    end
-    logger:info(message)
-end
 
 
 function myHangupHook(s, status, arg)

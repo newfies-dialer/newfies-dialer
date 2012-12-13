@@ -20,6 +20,7 @@ local oo = require "loop.simple"
 local inspect = require 'inspect'
 local database = require "database"
 
+
 -- Constant Value
 local PLAY_MESSAGE = 1
 local MULTI_CHOICE = 2
@@ -44,25 +45,25 @@ FSMCall = oo.class{
     uuid = nil,
     survey_id = nil,
     call_duration = 0,
-    logger = nil,
+    debugger = nil,
     hangup_trigger = false,
     current_node_id = false,
     db = nil,
 }
 
-function FSMCall:__init(session, debug_mode, logger)
+function FSMCall:__init(session, debug_mode, debugger)
     -- self is the class
     return oo.rawnew(self, {
         session = session,
         debug_mode = debug_mode,
-        logger = logger,
-        db = Database(debug_mode)
+        debugger = debugger,
+        db = Database(debug_mode),
     })
 end
 
 
 function FSMCall:init()
-    print("FSMCall:init")
+    self.debugger:msg("INFO", "FSMCall:init")
     self.extension_list = self.session:getVariable("extension_list")
     self.caller_id_name = self.session:getVariable("caller_id_name")
     self.caller_id_number = self.session:getVariable("caller_id_number")
@@ -73,19 +74,18 @@ function FSMCall:init()
 
     self.db:connect()
     if not self.db:load_all(self.campaign_id) then
-        self.logger:error("Error loading data")
-        print("Error loading data")
+        self.debugger:msg("ERROR", "Error loading data")
         self:hangupcall()
         return false
     end
     self.db:check_data()
     self.db:disconnect()
-    print("start_node--->"..self.db.start_node)
+
+    self.debugger:msg("INFO", "start_node--->"..self.db.start_node)
     self.current_node_id = self.db.start_node
     --print(inspect(self.db.list_section[tonumber(self.db.start_node)]))
-    --print("****************************")
     if not self.db.valid_data then
-        self.logger:error("Error invalid data")
+        self.debugger:msg("ERROR", "Error invalid data")
         self:hangupcall()
         return false
     end
@@ -93,35 +93,30 @@ function FSMCall:init()
 end
 
 function FSMCall:end_call()
-    print("FSMCall:end_call")
-    self.logger:info("FSMCall:end_call")
+    self.debugger:msg("ERROR", "FSMCall:end_call")
     -- NOTE: Don't use this call time for Billing
     -- Use FS CDRs
     self.call_duration = os.time() - self.call_start
-    print("Estimated Call Duration : "..self.call_duration)
-    self.logger:info("Estimated Call Duration : "..self.call_duration)
+    self.debugger:msg("DEBUG", "Estimated Call Duration : "..self.call_duration)
     self:hangupcall()
 end
 
 function FSMCall:hangupcall()
     -- This will interrupt lua script
-    self.logger:info("FSMCall:hangupcall")
+    self.debugger:msg("ERROR", "FSMCall:hangupcall")
     self.hangup_trigger = true
     self.session:hangup()
 end
 
 function FSMCall:start_call()
-    print("FSMCall:start_call")
-    self.logger:info("FSMCall:start_call...")
+    self.debugger:msg("ERROR", "FSMCall:start_call...")
     self.call_start = os.time()
     self:next_node()
 end
 
 
 function FSMCall:next_node()
-    print("FSMCall:next_node")
-    --print(self.current_node_id)
-    self.logger:info("FSMCall:next_node (current_node="..tonumber(self.current_node_id)..")")
+    self.debugger:msg("INFO", "FSMCall:next_node (current_node="..tonumber(self.current_node_id)..")")
     current_node = self.db.list_section[tonumber(self.current_node_id)]
     if not self.current_node then
         return false
@@ -169,6 +164,8 @@ function FSMCall:next_node()
     --     campaign.save()
 
     debug_output = ''
+    self.debugger:msg("INFO", "current_node.type >>>>> "..current_node.type)
+
     if current_node.type == PLAY_MESSAGE then
         number_digits = 1
         timeout = 1

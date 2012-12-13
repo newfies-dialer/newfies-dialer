@@ -1811,7 +1811,7 @@ def export_survey(request):
 
     **Important variable**:
 
-        * 
+        *
 
     **Exported fields**: ['name', 'tts_language', 'description', 'user', 'campaign',
                          'created_date', 'updated_date']
@@ -1821,18 +1821,70 @@ def export_survey(request):
     # force download.
     response['Content-Disposition'] = 'attachment;filename=survey.txt'
     # the txt writer
-    writer = csv.writer(response)
+    writer = csv.writer(response, delimiter='|', lineterminator='\n',)
     survey_list = Survey.objects.filter(user=request.user).order_by('id')
 
     if survey_list:
-        for i in survey_list:
+        for survey in survey_list:
+            # write all survey 1st in text file
             writer.writerow([
-                i.name,
-                i.tts_language,
-                i.description,
-                i.user_id,
-                i.campaign_id,
-                i.created_date,
-                i.updated_date,
+                survey.id,
+                survey.name,
+                survey.tts_language,
+                survey.description,
+                survey.user_id,
+                survey.campaign_id,
+                survey.created_date,
+                survey.updated_date,
             ])
+
+        for survey in survey_list:
+            section_list = Section.objects.filter(survey=survey)
+            for section in section_list:
+                # write all section 2nd in text file
+                writer.writerow([
+                    section.id,
+                    section.order,
+                    section.type,
+                    section.question,
+                    section.script,
+                    section.audiofile_id,
+                    section.retries,
+                    section.timeout,
+                    section.key_0,
+                    section.key_1,
+                    section.key_2,
+                    section.key_3,
+                    section.key_4,
+                    section.key_5,
+                    section.key_6,
+                    section.key_7,
+                    section.key_8,
+                    section.key_9,
+                    section.rating_laps,
+                    section.validate_number,
+                    section.number_digits,
+                    section.min_number,
+                    section.max_number,
+                    section.phonenumber,
+                    section.completed,
+                    section.created_date,
+                    section.updated_date,
+                    section.survey_id,
+                    section.invalid_audiofile_id,
+                    section.section_template
+                ])
+
+            for section in section_list:
+                branching_list = Branching.objects.filter(section=section)
+                for branching in branching_list:
+                    # write all branching 3rd in text file
+                    writer.writerow([
+                        branching.keys,
+                        branching.section_id,
+                        branching.goto_id,
+                        branching.created_date,
+                        branching.updated_date,
+                    ])
+
     return response

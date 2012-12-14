@@ -1865,7 +1865,6 @@ def export_survey(request, id):
                 section.invalid_audiofile_id,
             ])
 
-        for section in section_list:
             branching_list = Branching_template.objects.filter(section=section)
             for branching in branching_list:
                 # write branching text file
@@ -1906,7 +1905,7 @@ def import_survey(request, id):
                 row = striplist(row)
                 if not row or str(row[0]) == 0:
                     continue
-                #print row
+
                 if  len(row) == 25:
                     # for section
                     section_template_obj = Section_template.objects.create(
@@ -1942,9 +1941,9 @@ def import_survey(request, id):
                     # for branching
                     Branching_template.objects.create(
                         keys=row[0],
+                        section=section_template_obj,
                         # TODO : This part how we will map with created sections
                         # and importing value
-                        section=row[1],
                         goto=row[2],
                     )
                     branching_row.append(row)

@@ -1863,8 +1863,10 @@ def export_survey(request, id):
                 section.phonenumber,
                 section.completed,
                 section.invalid_audiofile_id,
+                section.id
             ])
 
+        for section in section_list:
             branching_list = Branching_template.objects.filter(section=section)
             for branching in branching_list:
                 # write branching text file
@@ -1900,22 +1902,24 @@ def import_survey(request, id):
             rdr = csv.reader(request.FILES['survey_file'],
                 delimiter='|', quotechar='"')
 
+            new_old_section = {}
+
             # Read each Row
             for row in rdr:
                 row = striplist(row)
                 if not row or str(row[0]) == 0:
                     continue
 
-                if  len(row) == 25:
+                if  len(row) == 26:
                     # for section
                     section_template_obj = Section_template.objects.create(
-                        type=row[0],
-                        order=row[1],
+                        type=int(row[0]) if row[0] else 1,
+                        order=int(row[1]) if row[1] else 1,
                         question=row[2],
                         script=row[3],
-                        audiofile_id=row[4],
-                        retries=row[5],
-                        timeout=row[6],
+                        audiofile_id=int(row[4]) if row[4] else '',
+                        retries=int(row[5]) if row[5] else 0,
+                        timeout=int(row[6]) if row[6] else 0,
                         key_0=row[7],
                         key_1=row[8],
                         key_2=row[9],
@@ -1926,27 +1930,36 @@ def import_survey(request, id):
                         key_7=row[14],
                         key_8=row[15],
                         key_9=row[16],
-                        rating_laps=row[17],
+                        rating_laps=int(row[17]) if row[17] else 0,
                         validate_number=row[18],
-                        number_digits=row[19],
+                        number_digits=int(row[19]) if row[19] else 0,
                         min_number=row[20],
                         max_number=row[21],
                         phonenumber=row[22],
                         completed=row[23],
-                        survey_id=int(id)
+                        invalid_audiofile_id=int(row[24]) if row[24] else '',
+                        survey_id=Survey_template.objects.get(id=int(id)).id
                     )
+
+                    new_old_section[int(row[25])] = section_template_obj.id
                     section_row.append(row)
 
                 if  len(row) == 3:
-                    # for branching
-                    Branching_template.objects.create(
-                        keys=row[0],
-                        section=section_template_obj,
-                        # TODO : This part how we will map with created sections
-                        # and importing value
-                        goto=row[2],
-                    )
-                    branching_row.append(row)
+                    try:
+                        if row[1]:
+                            new_section_id = new_old_section[int(row[1])]
+                        new_goto_section_id = ''
+                        if row[2]:
+                            new_goto_section_id = new_old_section[int(row[2])]
+                        # for branching
+                        Branching_template.objects.create(
+                            keys=row[0],
+                            section_id=new_section_id,
+                            goto_id=new_goto_section_id,
+                        )
+                        branching_row.append(row)
+                    except:
+                        print 'import error on branching'
 
 
     template = 'frontend/survey/import_survey.html'

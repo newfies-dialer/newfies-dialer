@@ -52,7 +52,6 @@ if not fs_env then
     session = Session()
 end
 
-
 local callflow = FSMCall(session, debug_mode, debugger)
 
 --error(_die)

@@ -86,9 +86,10 @@ function FSMCall:init()
     self.campaign_id = self.session:getVariable("campaign_id")
     self.subscriber_id = self.session:getVariable("subscriber_id")
     self.campaign_id = 23
+    self.subscriber_id = 15
 
     self.db:connect()
-    if not self.db:load_all(self.campaign_id) then
+    if not self.db:load_all(self.campaign_id, self.subscriber_id) then
         self.debugger:msg("ERROR", "Error loading data")
         self:hangupcall()
         return false
@@ -230,13 +231,15 @@ function FSMCall:getdigitnode(current_node)
     --play the audiofile or play the audio TTS
     if current_node.audiofile_id then
         --Get audio path
-        current_audio = current_node.db.list_audio[tonumber(current_node.audiofile_id)]
+        current_audio = self.db.list_audio[tonumber(current_node.audiofile_id)]
         filetoplay = UPLOAD_DIR..current_audio.audio_file
         print("\nPlay the audiofile : "..filetoplay)
         digits = self.session:playAndGetDigits(1, number_digits, retries,
             timeout*1000, '#', filetoplay, invalid_input, dtmf_filter)
     else
         --Use TTS
+        script = self.db:placeholder_replace(current_node.script, self.db.contact)
+
         -- self.session:set_tts_parms("flite", "kal")
         -- say_str = "speak:'"..current_node.script.."'"
         -- print("\nPlay the audio TTS : "..say_str)

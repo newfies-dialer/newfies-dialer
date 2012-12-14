@@ -164,12 +164,28 @@ function Database:load_campaign_info(campaign_id)
 	-- check campaign info
 end
 
-function Database:load_all(campaign_id)
+function Database:load_contact(subscriber_id)
+	print("Load contact data")
+	QUERY = "SELECT * FROM dialer_subscriber "..
+		"LEFT JOIN dialer_contact ON dialer_contact.id=contact_id "..
+		"WHERE dialer_subscriber.id="..subscriber_id
+	print(QUERY)
+	self.contact = self:get_object(QUERY)
+	-- check campaign info
+end
+
+function Database:load_all(campaign_id, subscriber_id)
+	self:load_contact(subscriber_id)
+	if not self.contact then
+		return false
+	end
+	print(inspect(self.contact))
+
 	self:load_campaign_info(campaign_id)
 	if not self.campaign_info then
 		return false
 	end
-	print(inspect(self.campaign_info))
+	--print(inspect(self.campaign_info))
 
 	--TODO: 34 should be flexible
 	if self.campaign_info.content_type_id == 34 then
@@ -197,6 +213,37 @@ function Database:check_data()
 	end
 end
 
+-- TODO: Finish this later
+function Database:placeholder_replace(text, contact)
+    -- Replace place holders by tag value.
+    -- This function will replace all the following tags :
+    --     {last_name}
+    --     {first_name}
+    --     {email}
+    --     {country}
+    --     {city}
+    --     {phone_number}
+    -- as well as, get additional_vars, and replace json tags
+
+    --TODO Finish implementation of placeholder_replace
+    --{PYTHON CODE}
+    --text = str(text).lower()
+    -- context = {
+    --     'last_name': contact.last_name,
+    --     'first_name': contact.first_name,
+    --     'email': contact.email,
+    --     'country': contact.country,
+    --     'city': contact.city,
+    --     'phone_number': contact.contact,
+    -- }
+    -- if contact.additional_vars:
+    --     for index in contact.additional_vars:
+    --         context[index] = contact.additional_vars[index]
+
+    -- for ind in context:
+    --     text = text.replace('{' + ind + '}', str(context[ind]))
+    return text
+end
 
 -- TEST
 -- Define a shortcut function for testing

@@ -19,6 +19,7 @@ package.path = package.path .. ";/home/areski/public_html/django/MyProjects/newf
 local oo = require "loop.simple"
 local inspect = require 'inspect'
 local database = require "database"
+require "texttospeech"
 
 
 -- Constant Value
@@ -187,11 +188,6 @@ function FSMCall:build_dtmf_filter(current_node)
     return dtmffilter
 end
 
-
-function FSMCall:create_tts(text)
-    -- TTS_DIR
-end
-
 function FSMCall:getdigitnode(current_node)
     print("******** getdigitnode *********")
     number_digits = 1
@@ -244,11 +240,12 @@ function FSMCall:getdigitnode(current_node)
         cap_dtmf = self.session:playAndGetDigits(1, number_digits, retries, timeout*1000, '#', filetoplay, invalid_input, dtmf_filter)
     else
         --Use TTS
-        self.session:set_tts_parms("flite", "kal")
-        say_str = "speak:'"..current_node.script.."'"
-        print("\nPlay the audio TTS : "..say_str)
-        --session:speak(current_node.script)
-        cap_dtmf = self.session:playAndGetDigits(1, number_digits, retries, timeout*1000, '#', say_str, invalid_input, dtmf_filter)
+        -- self.session:set_tts_parms("flite", "kal")
+        -- say_str = "speak:'"..current_node.script.."'"
+        -- print("\nPlay the audio TTS : "..say_str)
+        -- session:speak(current_node.script)
+        tts_file = tts(current_node.script, TTS_DIR)
+        cap_dtmf = self.session:playAndGetDigits(1, number_digits, retries, timeout*1000, '#', tts_file, invalid_input, dtmf_filter)
     end
     return cap_dtmf
 end

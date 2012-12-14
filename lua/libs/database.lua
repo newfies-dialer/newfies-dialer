@@ -20,6 +20,7 @@ local luasql = require "luasql.postgres"
 -- local oo = require "loop.base"
 local oo = require "loop.simple"
 local inspect = require 'inspect'
+require "constant"
 
 -- module("database.DataBase", oo.class)
 
@@ -269,6 +270,120 @@ function Database:placeholder_replace(text)
     --     text = text.replace('{' + ind + '}', str(context[ind]))
     return text
 end
+
+-- function Database:save_section_result(obj_callrequest, current_node, DTMF):
+--     -- save the result of a section
+
+--     if current_node.type == SECTION_TYPE.RECORD_MSG:
+--         #RECORD_MSG
+--         if testdebug:
+--             RecordFile = request.GET.get('RecordFile')
+--             RecordingDuration = request.GET.get('RecordingDuration')
+--         else:
+--             RecordFile = request.POST.get('RecordFile')
+--             RecordingDuration = request.POST.get('RecordingDuration')
+--             try:
+--                 RecordingDuration = int(int(RecordingDuration) / 1000)
+--             except:
+--                 RecordingDuration = 0
+--         try:
+--             RecordFile = os.path.split(RecordFile)[1]
+--         except:
+--             RecordFile = ''
+--         #TODO: Find more elegant way to do an UPSERT
+--         try:
+--             #Insert Result
+--             result = Result(
+--                 callrequest=obj_callrequest,
+--                 section=current_node,
+--                 record_file=RecordFile,
+--                 recording_duration=RecordingDuration,
+--             )
+--             result.save()
+--             #Save aggregated result
+--             set_aggregate_result(obj_callrequest, current_node, DTMF, RecordingDuration)
+
+--             return "Save new result RecordFile (section:%d - record_file:%s)\n" % \
+--                 (current_node.id, RecordFile)
+--         except IntegrityError:
+--             #Update Result
+--             result = Result.objects.get(
+--                 callrequest=obj_callrequest,
+--                 section=current_node
+--             )
+--             result.record_file = RecordFile
+--             result.recording_duration = RecordingDuration
+--             result.save()
+--             #Save aggregated result
+--             set_aggregate_result(obj_callrequest, current_node, DTMF, RecordingDuration)
+
+--             return "Update result RecordFile (section:%d - response:%s)\n" % \
+--                 (current_node.id, RecordFile)
+
+--     elif (DTMF and len(DTMF) > 0 and
+--          (current_node.type == SECTION_TYPE.MULTI_CHOICE or
+--          current_node.type == SECTION_TYPE.RATING_SECTION or
+--          current_node.type == SECTION_TYPE.CAPTURE_DIGITS)):
+
+--         if current_node.type == SECTION_TYPE.MULTI_CHOICE:
+--             #Get value for the DTMF from current_node.key_X
+--             if DTMF == '0':
+--                 if current_node.key_0:
+--                     DTMF = current_node.key_0
+--             elif DTMF == '1':
+--                 if current_node.key_1:
+--                     DTMF = current_node.key_1
+--             elif DTMF == '2':
+--                 if current_node.key_2:
+--                     DTMF = current_node.key_2
+--             elif DTMF == '3':
+--                 if current_node.key_3:
+--                     DTMF = current_node.key_3
+--             elif DTMF == '4':
+--                 if current_node.key_4:
+--                     DTMF = current_node.key_4
+--             elif DTMF == '5':
+--                 if current_node.key_5:
+--                     DTMF = current_node.key_5
+--             elif DTMF == '6':
+--                 if current_node.key_6:
+--                     DTMF = current_node.key_6
+--             elif DTMF == '7':
+--                 if current_node.key_7:
+--                     DTMF = current_node.key_7
+--             elif DTMF == '8':
+--                 if current_node.key_8:
+--                     DTMF = current_node.key_8
+--             elif DTMF == '9':
+--                 if current_node.key_9:
+--                     DTMF = current_node.key_9
+--         try:
+--             #Save result
+--             result = Result(
+--                 callrequest=obj_callrequest,
+--                 section=current_node,
+--                 response=DTMF)
+--             result.save()
+--             #Save aggregated result
+--             set_aggregate_result(obj_callrequest, current_node, DTMF, False)
+
+--             return "Save new result (section:%d - response:%s)\n" % \
+--                 (current_node.id, DTMF)
+--         except IntegrityError:
+--             #Update Result
+--             result = Result.objects.get(
+--                 callrequest=obj_callrequest,
+--                 section=current_node
+--             )
+--             result.response = DTMF
+--             result.save()
+--             #Save aggregated result
+--             set_aggregate_result(obj_callrequest, current_node, DTMF, False)
+
+--             return "Update result (section:%d - response:%s)\n" % \
+--                 (current_node.id, DTMF)
+
+
 
 -- TEST
 -- Define a shortcut function for testing

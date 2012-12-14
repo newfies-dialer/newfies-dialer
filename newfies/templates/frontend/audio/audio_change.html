@@ -23,7 +23,7 @@
     {# audiofield form #}
     {% for field in form %}
     <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-        <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+        <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
         <div class="input">
             {{ field }}
             {% if field.errors %}

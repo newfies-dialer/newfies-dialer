@@ -27,7 +27,7 @@
                             {% get_fieldset from_date,to_date,status as campaign_fields from form %}
                             {% for field in campaign_fields.visible_fields %}
                                 <div class="span4 clearfix{% if field.errors %} control-group error{% endif %}">
-                                    <label for="id_{{ field.name }}">{{ field.label }}</label>
+                                    <label for="{{ field.auto_id }}">{{ field.label }}</label>
                                     <div class="input">
                                         {{ field }}
                                         {% if field.errors %}

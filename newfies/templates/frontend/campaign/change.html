@@ -28,7 +28,7 @@
                     {% for field in campaign_fields.visible_fields %}
                         <div class="span6">
                             <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-                                <label for="id_{{ field.name }}">{{ field.label }}</label>
+                                <label for="{{ field.auto_id }}">{{ field.label }}</label>
                                 <div class="input">
                                     {{ field }}
                                     {% if field.errors %}
@@ -47,7 +47,7 @@
                     {% for field in campaign_fields %}
                         <div class="span6">
                             <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-                                <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
                                 <div class="input">
                                     {{ field }}
                                     {% if field.errors %}
@@ -70,7 +70,7 @@
                 {% for field in campaign_settings_fields %}
                     <div class="span6">
                         <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-                            <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
                             <div class="input">
                                 {{ field }}
                                 {% if field.errors %}
@@ -93,7 +93,7 @@
                 {% for field in campaign_settings_fields %}
                     <div class="span6">
                         <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-                            <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
                             <div class="input">
                                 {{ field }}
                                 {% if field.errors %}
@@ -126,7 +126,7 @@
                 {% for field in campaign_fields.visible_fields %}
                     <div class="span6">
                         <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-                            <label for="id_{{ field.name }}">{{ field.label }}</label>
+                            <label for="{{ field.auto_id }}">{{ field.label }}</label>
                             <div class="input">
                                 {{ field }}
                                 {% if field.errors %}
@@ -149,7 +149,7 @@
                     {% for field in date_fields %}
                         <div class="span6">
                             <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-                                <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
                                 <div class="input">
                                     {{ field }}
                                     {% if field.errors %}
@@ -169,7 +169,7 @@
                     {% for field in date_fields %}
                         <div class="span6">
                             <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-                                <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
                                 <div class="input">
                                     {{ field }}
                                     {% if field.errors %}
@@ -182,11 +182,11 @@
                     {% endfor %}
 
                     <div class="span12">
-                        <label class="control-label" for="id_{{ form.monday.name }}">{% trans "Week Days" %}</label>
+                        <label class="control-label" for="{{ field.auto_id }}">{% trans "Week Days" %}</label>
                         <div class="input">
                             {% get_fieldset monday,tuesday,wednesday,thursday,friday,saturday,sunday as settings_fields from form %}
                             {% for field in settings_fields %}
-                                {{ field }}&nbsp;{{ field.label }}
+                                {{ field }}&nbsp;<label style="display: inline;" for="{{ field.auto_id }}">{{ field.label }}</label>
                             {% endfor %}
                         </div>
                     </div>

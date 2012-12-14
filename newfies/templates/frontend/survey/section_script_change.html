@@ -55,7 +55,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="span5 clearfix{% if form.script.errors %} control-group error{% endif %}">
-                            <label class="control-label" for="id_{{ form.script.name }}">{{ form.script.label }}</label>
+                            <label class="control-label" for="{{ form.script.auto_id }}">{{ form.script.label }}</label>
                             <div class="input">
                                 {{ form.script }}
                                 {% if form.script.errors %}

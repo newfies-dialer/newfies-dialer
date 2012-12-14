@@ -29,7 +29,7 @@
         {% get_fieldset name,tts_language,description as survey_fields from form %}
         {% for field in survey_fields.visible_fields %}
             <div class="span3 clearfix{% if field.errors %} control-group error{% endif %}">
-                <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
                 <div class="input">
                     {{ field }}
                     {% if field.errors %}

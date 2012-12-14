@@ -55,7 +55,7 @@
 
                 <div class="row">
                     <div class="span2">
-                        <label class="control-label" for="id_{{ form.type.name }}">{{ form.type.label }}</label>
+                        <label class="control-label" for="{{ form.type.auto_id }}">{{ form.type.label }}</label>
                     </div>
                     <div class="span3 clearfix{% if form.type.errors %} control-group error{% endif %}">
                         <div class="input">
@@ -71,7 +71,7 @@
                 {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION  or form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS %}
                     <div class="row">
                         <div class="span2">
-                            <label class="control-label" for="id_{{ form.retries.name }}">{{ form.retries.label }}</label>
+                            <label class="control-label" for="{{ form.retries.auto_id }}">{{ form.retries.label }}</label>
                         </div>
                         <div class="span clearfix{% if form.retries.errors %} control-group error{% endif %}">
                             <div class="input">
@@ -82,7 +82,7 @@
                             </div>
                         </div>
                         <div class="span1">
-                            <label class="control-label" for="id_{{ form.timeout.name }}">{{ form.timeout.label }}</label>
+                            <label class="control-label" for="{{ form.timeout.auto_id }}">{{ form.timeout.label }}</label>
                         </div>
                         <div class="span1 clearfix{% if form.timeout.errors %} control-group error{% endif %}">
                             <div class="input">
@@ -97,7 +97,7 @@
 
                 <div class="row">
                     <div class="span2">
-                        <label class="control-label" for="id_{{ form.question.name }}">
+                        <label class="control-label" for="{{ form.question.auto_id }}">
                             {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION or form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS %}
                                 {% trans "question"|title %}
                             {% else %}
@@ -121,7 +121,7 @@
                     {% if action == 'update' %}
                         <div class="row">
                             <div class="span2">
-                                <label class="control-label" for="id_{{ form.audiofile.name }}">{{ form.audiofile.label }}</label>
+                                <label class="control-label" for="{{ form.audiofile.auto_id }}">{{ form.audiofile.label }}</label>
                             </div>
                             <div class="span3 clearfix{% if form.audiofile.errors %} control-group error{% endif %}">
                                 <div class="input">
@@ -165,7 +165,7 @@
                 {% if form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION %}
                     <div class="row">
                         <div class="span2">
-                            <label class="control-label" for="id_{{ form.rating_laps.name }}">{{ form.rating_laps.label }}</label>
+                            <label class="control-label" for="{{ form.rating_laps.auto_id }}">{{ form.rating_laps.label }}</label>
                         </div>
                         <div class="span3 clearfix{% if form.rating_laps.errors %} control-group error{% endif %}">
                             <div class="input">
@@ -183,7 +183,7 @@
                 {% if form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS %}
                     <div class="row">
                         <div class="span2">
-                            <label class="control-label" for="id_{{ form.number_digits.name }}">{{ form.number_digits.label }}</label>
+                            <label class="control-label" for="{{ form.number_digits.auto_id }}">{{ form.number_digits.label }}</label>
                         </div>
                         <div class="span3 clearfix{% if form.number_digits.errors %} control-group error{% endif %}">
                             <div class="input">
@@ -198,7 +198,7 @@
 
                     <div class="row">
                         <div class="span2">
-                            <label class="control-label" for="id_{{ form.validate_number.name }}">{{ form.validate_number.label }}</label>
+                            <label class="control-label" for="{{ form.validate_number.auto_id }}">{{ form.validate_number.label }}</label>
                         </div>
                         <div class="span3">
                             {{ form.validate_number }}
@@ -211,7 +211,7 @@
 
                     <div class="row">
                         <div class="span2">
-                            <label class="control-label" for="id_{{ form.min_number.name }}">{{ form.min_number.label }}</label>
+                            <label class="control-label" for="{{ form.min_number.auto_id }}">{{ form.min_number.label }}</label>
                         </div>
                         <div class="span1 clearfix{% if form.min_number.errors %} control-group error{% endif %}">
                             <div class="input">
@@ -224,7 +224,7 @@
                         </div>
 
                         <div class="span1">
-                            <label class="control-label" for="id_{{ form.max_number.name }}">{{ form.max_number.label }}</label>
+                            <label class="control-label" for="{{ form.max_number.auto_id }}">{{ form.max_number.label }}</label>
                         </div>
                         <div class="span1 clearfix{% if form.max_number.errors %} control-group error{% endif %}">
                             <div class="input">
@@ -242,7 +242,7 @@
                 {% if form.type.value|convert_to_int == SECTION_TYPE.CALL_TRANSFER %}
                     <div class="row">
                         <div class="span2">
-                            <label class="control-label" for="id_{{ form.phonenumber.name }}">{{ form.phonenumber.label }}</label>
+                            <label class="control-label" for="{{ form.phonenumber.auto_id }}">{{ form.phonenumber.label }}</label>
                         </div>
                         <div class="span3 clearfix{% if form.phonenumber.errors %} control-group error{% endif %}">
                             <div class="input">
@@ -276,7 +276,7 @@
                 {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION %}
                     <div class="row">
                         <div class="span2">
-                            <label class="control-label" for="id_{{ form.invalid_audiofile.name }}">{{ form.invalid_audiofile.label }}</label>
+                            <label class="control-label" for="{{ form.invalid_audiofile.auto_id }}">{{ form.invalid_audiofile.label }}</label>
                         </div>
                         <div class="span3 clearfix{% if form.invalid_audiofile.errors %} control-group error{% endif %}">
                             <div class="input">

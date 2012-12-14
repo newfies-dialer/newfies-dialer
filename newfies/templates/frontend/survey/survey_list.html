@@ -32,6 +32,7 @@ function delete_button(){
                 {% if perms.survey.export_survey %}
                     <li><a href="/export_survey/" target="_blank">{% trans "Export" %}</a></li>
                 {% endif %}
+                    <li><a href="/import_survey/">{% trans "Import" %}</a></li>
             </ul>
         </div>
         {% if perms.survey.add_survey %}

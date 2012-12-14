@@ -23,6 +23,7 @@ urlpatterns = patterns('survey.views',
     (r'^survey/del/(.+)/$', 'survey_del'),
     (r'^survey/(.+)/$', 'survey_change'),
     (r'^export_survey/$', 'export_survey'),
+    (r'^import_survey/$', 'import_survey'),
 
 
     # Section urls

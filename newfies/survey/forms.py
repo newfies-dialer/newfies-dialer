@@ -332,3 +332,20 @@ class SurveyDetailReportForm(VoipSearchForm, SurveyReportForm):
     def __init__(self, user, *args, **kwargs):
         super(SurveyDetailReportForm, self).__init__(user, *args, **kwargs)
         self.fields.keyOrder = ['campaign', 'from_date', 'to_date']
+
+
+class SurveyFileImport(forms.Form):
+    """General Form : file upload"""
+    survey_file = forms.FileField(label=_("Upload File "), required=True,
+        error_messages={'required': 'Please upload File'},
+        help_text=_("Browse text file"))
+
+    def clean_csv_file(self):
+        """Form Validation :  File extension Check"""
+        filename = self.cleaned_data["survey_file"]
+        file_exts = ["txt"]
+        if str(filename).split(".")[1].lower() in file_exts:
+            return filename
+        else:
+            raise forms.ValidationError(_(u'Document types accepted: %s' %
+                                          ' '.join(file_exts)))

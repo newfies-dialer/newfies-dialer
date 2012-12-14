@@ -37,10 +37,10 @@ from survey.forms import SurveyForm, VoiceSectionForm,\
     MultipleChoiceSectionForm, RatingSectionForm,\
     EnterNumberSectionForm, RecordMessageSectionForm,\
     PatchThroughSectionForm, BranchingForm, ScriptForm,\
-    SurveyDetailReportForm
+    SurveyDetailReportForm, SurveyFileImport
 from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME
 from frontend_notification.views import notice_count
-from common.common_functions import variable_value, current_view,\
+from common.common_functions import striplist, variable_value, current_view,\
     ceil_strdate, get_pagination_vars
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -48,7 +48,6 @@ import subprocess
 import hashlib
 import csv
 import os
-
 
 testdebug = False  # TODO: Change later
 
@@ -1828,14 +1827,11 @@ def export_survey(request):
         for survey in survey_list:
             # write all survey 1st in text file
             writer.writerow([
-                survey.id,
                 survey.name,
                 survey.tts_language,
                 survey.description,
                 survey.user_id,
                 survey.campaign_id,
-                survey.created_date,
-                survey.updated_date,
             ])
 
         for survey in survey_list:
@@ -1843,7 +1839,6 @@ def export_survey(request):
             for section in section_list:
                 # write all section 2nd in text file
                 writer.writerow([
-                    section.id,
                     section.order,
                     section.type,
                     section.question,
@@ -1868,8 +1863,6 @@ def export_survey(request):
                     section.max_number,
                     section.phonenumber,
                     section.completed,
-                    section.created_date,
-                    section.updated_date,
                     section.survey_id,
                     section.invalid_audiofile_id,
                     section.section_template
@@ -1883,8 +1876,138 @@ def export_survey(request):
                         branching.keys,
                         branching.section_id,
                         branching.goto_id,
-                        branching.created_date,
-                        branching.updated_date,
                     ])
 
     return response
+
+
+@login_required
+def import_survey(request):
+    """Survey Import
+
+    **Attributes**:
+
+        * ``template`` - frontend/survey/import_survey.html
+
+    **Logic Description**:
+
+        * List all survey result which belong to callrequest.
+    """
+    form = SurveyFileImport()
+    if request.method == 'POST':
+        form = SurveyFileImport(request.POST, request.FILES)
+        if form.is_valid():
+            # col_no - field name
+            records = csv.reader(request.FILES['survey_file'],
+                delimiter='|', quotechar='"')
+            total_rows = len(list(records))
+            
+            rdr = csv.reader(request.FILES['survey_file'],
+                delimiter='|', quotechar='"')
+
+            # Read each Row
+            for row in rdr:
+                row = striplist(row)
+                if not row or str(row[0]) == 0:
+                    continue
+
+                if  len(row) == 5:
+                    # for survey
+                    Survey_template.objects.create(
+                        name=row[0],
+                        tts_language=row[1],
+                        description=row[2],
+                        user=User.objects.get(id=int(row[3])),
+                    )
+
+                    Survey.objects.create(
+                        name=row[0],
+                        tts_language=row[1],
+                        description=row[2],
+                        user=User.objects.get(id=int(row[3])),
+                        campaign=Campaign.objects.get(id=int(row[4]))
+                    )
+
+                if  len(row) == 27:
+                    # for section
+                    section_template = Section_template.objects.create(
+                        type=row[0],
+                        order=row[1],
+                        question=row[2],
+                        script=row[3],
+                        audiofile_id=row[4],
+                        retries=row[5],
+                        timeout=row[6],
+                        key_0=row[7],
+                        key_1=row[8],
+                        key_2=row[9],
+                        key_3=row[10],
+                        key_4=row[11],
+                        key_5=row[12],
+                        key_6=row[13],
+                        key_7=row[14],
+                        key_8=row[15],
+                        key_9=row[16],
+                        rating_laps=row[17],
+                        validate_number=row[18],
+                        number_digits=row[19],
+                        min_number=row[20],
+                        max_number=row[21],
+                        phonenumber=row[22],
+                        completed=row[23],
+                        survey_id=row[24],
+                    )
+
+                    Section.objects.create(
+                        type=row[0],
+                        order=row[1],
+                        question=row[2],
+                        script=row[3],
+                        audiofile_id=row[4],
+                        retries=row[5],
+                        timeout=row[6],
+                        key_0=row[7],
+                        key_1=row[8],
+                        key_2=row[9],
+                        key_3=row[10],
+                        key_4=row[11],
+                        key_5=row[12],
+                        key_6=row[13],
+                        key_7=row[14],
+                        key_8=row[15],
+                        key_9=row[16],
+                        rating_laps=row[17],
+                        validate_number=row[18],
+                        number_digits=row[19],
+                        min_number=row[20],
+                        max_number=row[21],
+                        phonenumber=row[22],
+                        completed=row[23],
+                        survey_id=row[24],
+                        invalid_audiofile=row[25],
+                        section_template=section_template,
+                    )
+
+                if  len(row) == 3:
+                    # for branching
+                    Branching_template.objects.create(
+                        keys=row[0],
+                        section=row[1],
+                        goto=row[2],
+                    )
+
+                    Branching.objects.create(
+                        keys=row[0],
+                        section=row[1],
+                        goto=row[2],
+                    )
+
+    template = 'frontend/survey/import_survey.html'
+    data = {
+        'form': form,
+        #'MEDIA_ROOT': settings.MEDIA_ROOT,
+    }
+    request.session['msg'] = ''
+    request.session['err_msg'] = ''
+    return render_to_response(template, data,
+        context_instance=RequestContext(request))

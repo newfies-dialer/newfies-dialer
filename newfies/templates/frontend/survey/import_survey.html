@@ -1,0 +1,104 @@
+{% extends "frontend/master.html" %}
+{% load i18n %}
+
+{% block extra_files %}
+    <style>
+    .help-inline {
+        padding-left: 55px;
+    }
+    </style>
+{% endblock %}
+
+{% block content_header %}
+    <h1>{% trans "Import Survey" %} <small>{% trans "Import list of survey by uploading Text files" %}</small></h1>
+{% endblock %}
+
+{% block content %}
+<!--<center>
+    <table class="table table-striped table-bordered table-condensed">
+    <caption><center><h3>{% trans "Sample File" %}</h3></center></caption>
+    <thead>
+    <tr>
+        <th>{% trans "Contact number" %}</th>
+        <th>{% trans "Last name" %}</th>
+        <th>{% trans "First name" %}</th>
+        <th>{% trans "Email" %}</th>
+        <th>{% trans "Description" %}</th>
+        <th>{% trans "Status" %}</th>
+        <th>{% trans "Additional variables" %}</th>
+    </tr>
+    </thead>
+    <tr>
+        <td>650784355</td>
+        <td>Belaid</td>
+        <td>Arezqui</td>
+        <td>areski@gmail.com</td>
+        <td>test subscriber</td>
+        <td>1</td>
+        <td>test</td>
+    </tr>
+    <tr>
+        <td>650723032</td>
+        <td>Fourth</td>
+        <td>John</td>
+        <td>john@gmail.com</td>
+        <td>test subscriber</td>
+        <td>0</td>
+        <td>test</td>
+    </tr>
+    </table>
+    <span class="label notice">{% trans "SUBSCRIBER STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')" %}</span>
+</center>-->
+<br/><br/>
+
+<form class="well" method="post" action="" enctype="multipart/form-data" >{% csrf_token %}
+     {% for field in form %}
+     <div class="clearfix{% if field.errors %} error{% endif %}">
+        <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+        <div class="input">
+            {{ field }}
+            {% if field.errors %}
+                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+            {% endif %}
+            <span class="help-block">{{ field.help_text }} </span>
+        </div>
+     </div>
+     {% endfor %}
+
+     <div class="actions">
+         <input type="submit" class="btn btn-primary" name="submit" value="{% trans "Submit" %}" />
+     </div>
+</form>
+
+{% if success_import_list %}
+    <table class="table table-striped table-bordered table-condensed">
+        <tr>
+            <th>{% trans "Survey(s) imported" %} :</th>
+        </tr>
+        {% for row in success_import_list %}
+        <tr>
+            <td>
+                {{ row }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+{% if type_error_import_list %}
+<br/>
+<table class="table table-striped table-bordered table-condensed">
+    <tr>
+        <th>{% trans "Type mismatch" %} :</th>
+    </tr>
+    {% for row in type_error_import_list %}
+    <tr>
+        <td>
+            {{ row }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+{% endblock %}

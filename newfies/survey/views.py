@@ -1830,7 +1830,6 @@ def export_survey(request):
                 survey.name,
                 survey.tts_language,
                 survey.description,
-                survey.user_id,
                 survey.campaign_id,
             ])
 
@@ -1863,9 +1862,7 @@ def export_survey(request):
                     section.max_number,
                     section.phonenumber,
                     section.completed,
-                    section.survey_id,
                     section.invalid_audiofile_id,
-                    section.section_template
                 ])
 
             for section in section_list:
@@ -1874,7 +1871,6 @@ def export_survey(request):
                     # write all branching 3rd in text file
                     writer.writerow([
                         branching.keys,
-                        branching.section_id,
                         branching.goto_id,
                     ])
 
@@ -1901,7 +1897,7 @@ def import_survey(request):
             records = csv.reader(request.FILES['survey_file'],
                 delimiter='|', quotechar='"')
             total_rows = len(list(records))
-            
+
             rdr = csv.reader(request.FILES['survey_file'],
                 delimiter='|', quotechar='"')
 
@@ -1911,26 +1907,26 @@ def import_survey(request):
                 if not row or str(row[0]) == 0:
                     continue
 
-                if  len(row) == 5:
+                if  len(row) == 4:
                     # for survey
-                    Survey_template.objects.create(
+                    survey_template_obj = Survey_template.objects.create(
                         name=row[0],
                         tts_language=row[1],
                         description=row[2],
-                        user=User.objects.get(id=int(row[3])),
+                        user=request.user,
                     )
 
-                    Survey.objects.create(
+                    survey_obj = Survey.objects.create(
                         name=row[0],
                         tts_language=row[1],
                         description=row[2],
-                        user=User.objects.get(id=int(row[3])),
-                        campaign=Campaign.objects.get(id=int(row[4]))
+                        user=request.user,
+                        campaign=Campaign.objects.get(id=int(row[3]))
                     )
 
-                if  len(row) == 27:
+                if  len(row) == 25:
                     # for section
-                    section_template = Section_template.objects.create(
+                    section_template_obj = Section_template.objects.create(
                         type=row[0],
                         order=row[1],
                         question=row[2],
@@ -1955,10 +1951,10 @@ def import_survey(request):
                         max_number=row[21],
                         phonenumber=row[22],
                         completed=row[23],
-                        survey_id=row[24],
+                        survey=survey_obj,
                     )
 
-                    Section.objects.create(
+                    section_obj = Section.objects.create(
                         type=row[0],
                         order=row[1],
                         question=row[2],
@@ -1983,23 +1979,23 @@ def import_survey(request):
                         max_number=row[21],
                         phonenumber=row[22],
                         completed=row[23],
-                        survey_id=row[24],
-                        invalid_audiofile=row[25],
-                        section_template=section_template,
+                        survey=survey_obj,
+                        invalid_audiofile=row[24],
+                        section_template=section_template_obj,
                     )
 
-                if  len(row) == 3:
+                if  len(row) == 2:
                     # for branching
                     Branching_template.objects.create(
                         keys=row[0],
-                        section=row[1],
-                        goto=row[2],
+                        section=section_obj,
+                        goto=row[1],
                     )
 
                     Branching.objects.create(
                         keys=row[0],
-                        section=row[1],
-                        goto=row[2],
+                        section=section_obj,
+                        goto=row[1],
                     )
 
     template = 'frontend/survey/import_survey.html'

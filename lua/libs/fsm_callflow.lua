@@ -39,6 +39,7 @@ SECTION_TYPE["5"] = "RECORD_MSG"
 SECTION_TYPE["6"] = "CALL_TRANSFER"
 SECTION_TYPE["7"] = "HANGUP_SECTION"
 
+local UPLOAD_DIR = '/home/areski/public_html/django/MyProjects/newfies-dialer/newfies/usermedia/upload/audiofiles/'
 local AUDIODIR = '/home/areski/public_html/django/MyProjects/newfies-dialer/newfies/usermedia/tts/'
 local AUDIO_WELCOME = AUDIODIR..'script_9805d01afeec350f36ff3fd908f0cbd5.wav'
 local AUDIO_ENTERAGE = AUDIODIR..'script_4ee73b76b5b4c5d596ed1cb3257861f0.wav'
@@ -129,6 +130,19 @@ function FSMCall:start_call()
     self:next_node()
 end
 
+function FSMCall:playnode(current_node)
+    --play the audiofile or play the audio TTS
+    if current_node.audiofile_id then
+        --Get audio path
+        current_audio = self.db.list_audio[tonumber(current_node.audiofile_id)]
+        filetoplay = UPLOAD_DIR..current_audio.audio_file
+        session:streamFile(filetoplay)
+    else
+        --Use TTS
+        session:set_tts_parms("flite", "kal")
+        session:speak(current_node.script)
+    end
+end
 
 function FSMCall:next_node()
     self.debugger:msg("INFO", "FSMCall:next_node (current_node="..tonumber(self.current_node_id)..")")
@@ -196,11 +210,12 @@ function FSMCall:next_node()
         number_digits = 1
         timeout = 1
         debug_output = debug_output.."PLAY_MESSAGE"
-        session:streamFile(AUDIO_WELCOME)
+
+        self:playnode(current_node)
 
     elseif current_node.type == HANGUP_SECTION then
         debug_output = debug_output.."EXCEPTION -> HANGUP"
-        session:streamFile(AUDIO_WELCOME)
+        self:playnode(current_node)
         self:end_call()
 
     elseif current_node.type == MULTI_CHOICE then

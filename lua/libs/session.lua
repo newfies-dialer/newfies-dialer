@@ -69,6 +69,16 @@ function Session:streamFile(data)
     return true
 end
 
+function Session:set_tts_parms(engine, voice)
+    print("Session:set_tts_parms -> "..engine.."-"..voice)
+    return true
+end
+
+function Session:speak(data)
+    print("Session:speak -> "..data)
+    return true
+end
+
 function Session:playAndGetDigits(min_digits, max_digits, max_attempts, timeout, terminators, prompt_audio_files, input_error_audio_files, digit_regex, variable_name, digit_timeout, transfer_on_failure)
     print("Session:playAndGetDigits -> "..prompt_audio_files)
     local digits

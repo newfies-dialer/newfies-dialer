@@ -252,12 +252,9 @@ function FSMCall:getdigitnode(current_node)
             timeout*1000, '#', filetoplay, invalid_input, dtmf_filter)
     else
         --Use TTS
-        script = self.db:placeholder_replace(current_node.script, self.db.contact)
+        --TODO: Build placeholder_replace
+        script = self.db:placeholder_replace(current_node.script)
 
-        -- self.session:set_tts_parms("flite", "kal")
-        -- say_str = "speak:'"..current_node.script.."'"
-        -- print("\nPlay the audio TTS : "..say_str)
-        -- session:speak(current_node.script)
         tts_file = tts(current_node.script, TTS_DIR)
         digits = self.session:playAndGetDigits(1, number_digits, retries,
             timeout*1000, '#', tts_file, invalid_input, dtmf_filter)

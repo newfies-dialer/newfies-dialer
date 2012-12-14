@@ -236,7 +236,10 @@ function Database:check_data()
 end
 
 -- TODO: Finish this later
-function Database:placeholder_replace(text, contact)
+function Database:placeholder_replace(text)
+	--use contact
+	print(self.contact)
+
     -- Replace place holders by tag value.
     -- This function will replace all the following tags :
     --     {last_name}

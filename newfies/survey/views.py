@@ -103,15 +103,6 @@ def getaudio_acapela(text, tts_language='en'):
     return audiofile_url
 
 
-#TODO: Use find_branching
-def find_branching(p_section, DTMF):
-    """
-    function help to find the next branching of a section based on the key pressed
-    or result entered
-    """
-    print "find branching"
-
-
 def set_aggregate_result(obj_callrequest, obj_p_section, response, RecordingDuration):
     """
     save the aggregate result for the campaign / survey
@@ -1934,7 +1925,7 @@ def import_survey(request, id):
                     try:
                         if row[1]:
                             new_section_id = new_old_section[int(row[1])]
-                        
+
                         if row[2]:
                             new_goto_section_id = new_old_section[int(row[2])]
 

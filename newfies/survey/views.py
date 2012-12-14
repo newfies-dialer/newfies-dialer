@@ -1804,17 +1804,10 @@ def survey_campaign_result(request, id):
         context_instance=RequestContext(request))
 
 
+@permission_required('survey.export_survey', login_url='/')
 @login_required
 def export_survey(request, id):
-    """Export CSV file of Survey
-
-    **Important variable**:
-
-        *
-
-    **Exported fields**: ['name', 'tts_language', 'description', 'user', 'campaign',
-                         'created_date', 'updated_date']
-    """
+    """Export sections and branching of survey into text file"""
     # get the response object, this can be used as a stream.
     response = HttpResponse(mimetype='text/txt')
     # force download.
@@ -1826,14 +1819,6 @@ def export_survey(request, id):
         Survey_template, pk=int(id), user=request.user)
 
     if survey:
-        # write all survey 1st in text file
-        #writer.writerow([
-        #    survey.name,
-        #    survey.tts_language,
-        #    survey.description,
-        #    survey.user,
-        #])
-
         section_list = Section_template.objects.filter(survey=survey)
         for section in section_list:
             # write section in text file
@@ -1879,9 +1864,10 @@ def export_survey(request, id):
     return response
 
 
+@permission_required('survey.import_survey', login_url='/')
 @login_required
 def import_survey(request, id):
-    """Survey Import
+    """Importing sections and branching of survey
 
     **Attributes**:
 
@@ -1891,58 +1877,58 @@ def import_survey(request, id):
     form = SurveyFileImport()
     section_row = []
     branching_row = []
+    type_error_import_list = []
     if request.method == 'POST':
         form = SurveyFileImport(request.POST, request.FILES)
         if form.is_valid():
-            # col_no - field name
             records = csv.reader(request.FILES['survey_file'],
-                delimiter='|', quotechar='"')
-            total_rows = len(list(records))
-
-            rdr = csv.reader(request.FILES['survey_file'],
                 delimiter='|', quotechar='"')
 
             new_old_section = {}
 
-            # Read each Row
-            for row in rdr:
+            # Read each row
+            for row in records:
                 row = striplist(row)
                 if not row or str(row[0]) == 0:
                     continue
 
                 if  len(row) == 26:
-                    # for section
-                    section_template_obj = Section_template.objects.create(
-                        type=int(row[0]) if row[0] else 1,
-                        order=int(row[1]) if row[1] else 1,
-                        question=row[2],
-                        script=row[3],
-                        audiofile_id=int(row[4]) if row[4] else '',
-                        retries=int(row[5]) if row[5] else 0,
-                        timeout=int(row[6]) if row[6] else 0,
-                        key_0=row[7],
-                        key_1=row[8],
-                        key_2=row[9],
-                        key_3=row[10],
-                        key_4=row[11],
-                        key_5=row[12],
-                        key_6=row[13],
-                        key_7=row[14],
-                        key_8=row[15],
-                        key_9=row[16],
-                        rating_laps=int(row[17]) if row[17] else 0,
-                        validate_number=row[18],
-                        number_digits=int(row[19]) if row[19] else 0,
-                        min_number=row[20],
-                        max_number=row[21],
-                        phonenumber=row[22],
-                        completed=row[23],
-                        invalid_audiofile_id=int(row[24]) if row[24] else '',
-                        survey_id=Survey_template.objects.get(id=int(id)).id
-                    )
+                    try:
+                        # for section
+                        section_template_obj = Section_template.objects.create(
+                            type=int(row[0]) if row[0] else 1,
+                            order=int(row[1]) if row[1] else 1,
+                            question=row[2],
+                            script=row[3],
+                            audiofile_id=int(row[4]) if row[4] else '',
+                            retries=int(row[5]) if row[5] else 0,
+                            timeout=int(row[6]) if row[6] else 0,
+                            key_0=row[7],
+                            key_1=row[8],
+                            key_2=row[9],
+                            key_3=row[10],
+                            key_4=row[11],
+                            key_5=row[12],
+                            key_6=row[13],
+                            key_7=row[14],
+                            key_8=row[15],
+                            key_9=row[16],
+                            rating_laps=int(row[17]) if row[17] else 0,
+                            validate_number=row[18],
+                            number_digits=int(row[19]) if row[19] else 0,
+                            min_number=row[20],
+                            max_number=row[21],
+                            phonenumber=row[22],
+                            completed=row[23],
+                            invalid_audiofile_id=int(row[24]) if row[24] else '',
+                            survey_id=Survey_template.objects.get(id=int(id)).id
+                        )
 
-                    new_old_section[int(row[25])] = section_template_obj.id
-                    section_row.append(row)
+                        new_old_section[int(row[25])] = section_template_obj.id
+                        section_row.append(row)
+                    except:
+                        type_error_import_list.append(row)
+
 
                 if  len(row) == 3:
                     try:
@@ -1959,7 +1945,7 @@ def import_survey(request, id):
                         )
                         branching_row.append(row)
                     except:
-                        print 'import error on branching'
+                        type_error_import_list.append(row)
 
 
     template = 'frontend/survey/import_survey.html'
@@ -1967,8 +1953,7 @@ def import_survey(request, id):
         'form': form,
         'section_row': section_row,
         'branching_row': branching_row,
+        'type_error_import_list': type_error_import_list,
     }
-    request.session['msg'] = ''
-    request.session['err_msg'] = ''
     return render_to_response(template, data,
         context_instance=RequestContext(request))

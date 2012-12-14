@@ -1805,7 +1805,7 @@ def survey_campaign_result(request, id):
 
 
 @login_required
-def export_survey(request):
+def export_survey(request, id):
     """Export CSV file of Survey
 
     **Important variable**:
@@ -1821,58 +1821,59 @@ def export_survey(request):
     response['Content-Disposition'] = 'attachment;filename=survey.txt'
     # the txt writer
     writer = csv.writer(response, delimiter='|', lineterminator='\n',)
-    survey_list = Survey.objects.filter(user=request.user).order_by('id')
 
-    if survey_list:
-        for survey in survey_list:
-            # write all survey 1st in text file
+    survey = get_object_or_404(
+        Survey_template, pk=int(id), user=request.user)
+
+    if survey:
+        # write all survey 1st in text file
+        #writer.writerow([
+        #    survey.name,
+        #    survey.tts_language,
+        #    survey.description,
+        #    survey.user,
+        #])
+
+        section_list = Section_template.objects.filter(survey=survey)
+        for section in section_list:
+            # write section in text file
             writer.writerow([
-                survey.name,
-                survey.tts_language,
-                survey.description,
-                survey.campaign_id,
+                section.order,
+                section.type,
+                section.question,
+                section.script,
+                section.audiofile_id,
+                section.retries,
+                section.timeout,
+                section.key_0,
+                section.key_1,
+                section.key_2,
+                section.key_3,
+                section.key_4,
+                section.key_5,
+                section.key_6,
+                section.key_7,
+                section.key_8,
+                section.key_9,
+                section.rating_laps,
+                section.validate_number,
+                section.number_digits,
+                section.min_number,
+                section.max_number,
+                section.phonenumber,
+                section.completed,
+                section.invalid_audiofile_id,
             ])
 
-        for survey in survey_list:
-            section_list = Section.objects.filter(survey=survey)
-            for section in section_list:
-                # write all section 2nd in text file
+        for section in section_list:
+            branching_list = Branching_template.objects.filter(section=section)
+            for branching in branching_list:
+                # write branching text file
                 writer.writerow([
-                    section.order,
-                    section.type,
-                    section.question,
-                    section.script,
-                    section.audiofile_id,
-                    section.retries,
-                    section.timeout,
-                    section.key_0,
-                    section.key_1,
-                    section.key_2,
-                    section.key_3,
-                    section.key_4,
-                    section.key_5,
-                    section.key_6,
-                    section.key_7,
-                    section.key_8,
-                    section.key_9,
-                    section.rating_laps,
-                    section.validate_number,
-                    section.number_digits,
-                    section.min_number,
-                    section.max_number,
-                    section.phonenumber,
-                    section.completed,
-                    section.invalid_audiofile_id,
+                    branching.keys,
+                    branching.section_id,
+                    branching.goto_id,
                 ])
-
-            for section in section_list:
-                branching_list = Branching.objects.filter(section=section)
-                for branching in branching_list:
-                    # write all branching 3rd in text file
-                    writer.writerow([
-                        branching.keys,
-                        branching.goto_id,
-                    ])
 
     return response
 
@@ -1916,14 +1917,6 @@ def import_survey(request):
                         user=request.user,
                     )
 
-                    survey_obj = Survey.objects.create(
-                        name=row[0],
-                        tts_language=row[1],
-                        description=row[2],
-                        user=request.user,
-                        campaign=Campaign.objects.get(id=int(row[3]))
-                    )
-
                 if  len(row) == 25:
                     # for section
                     section_template_obj = Section_template.objects.create(
@@ -1951,52 +1944,16 @@ def import_survey(request):
                         max_number=row[21],
                         phonenumber=row[22],
                         completed=row[23],
-                        survey=survey_obj,
-                    )
-
-                    section_obj = Section.objects.create(
-                        type=row[0],
-                        order=row[1],
-                        question=row[2],
-                        script=row[3],
-                        audiofile_id=row[4],
-                        retries=row[5],
-                        timeout=row[6],
-                        key_0=row[7],
-                        key_1=row[8],
-                        key_2=row[9],
-                        key_3=row[10],
-                        key_4=row[11],
-                        key_5=row[12],
-                        key_6=row[13],
-                        key_7=row[14],
-                        key_8=row[15],
-                        key_9=row[16],
-                        rating_laps=row[17],
-                        validate_number=row[18],
-                        number_digits=row[19],
-                        min_number=row[20],
-                        max_number=row[21],
-                        phonenumber=row[22],
-                        completed=row[23],
-                        survey=survey_obj,
-                        invalid_audiofile=row[24],
-                        section_template=section_template_obj,
                     )
 
                 if  len(row) == 2:
                     # for branching
                     Branching_template.objects.create(
                         keys=row[0],
-                        section=section_obj,
+                        section=section_template_obj,
                         goto=row[1],
                     )
 
-                    Branching.objects.create(
-                        keys=row[0],
-                        section=section_obj,
-                        goto=row[1],
-                    )
 
     template = 'frontend/survey/import_survey.html'
     data = {

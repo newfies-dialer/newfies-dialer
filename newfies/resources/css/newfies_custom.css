@@ -678,13 +678,15 @@ td {
 
 td.survey_result_key {
     width: 70px;
-    text-align: center;
     font-weight: bold;
 }
 
 td.survey_edit_key {
     width: 100px;
-    text-align: center;
+}
+
+td.camp_type {
+    width: 200px;
 }
 
 /* customize the survey edition, this is for the sortable question header */

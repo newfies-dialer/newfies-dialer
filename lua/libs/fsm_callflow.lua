@@ -233,7 +233,7 @@ function FSMCall:getdigitnode(current_node)
         current_audio = current_node.db.list_audio[tonumber(current_node.audiofile_id)]
         filetoplay = UPLOAD_DIR..current_audio.audio_file
         print("\nPlay the audiofile : "..filetoplay)
-        cap_dtmf = self.session:playAndGetDigits(1, number_digits, retries,
+        digits = self.session:playAndGetDigits(1, number_digits, retries,
             timeout*1000, '#', filetoplay, invalid_input, dtmf_filter)
     else
         --Use TTS
@@ -242,10 +242,10 @@ function FSMCall:getdigitnode(current_node)
         -- print("\nPlay the audio TTS : "..say_str)
         -- session:speak(current_node.script)
         tts_file = tts(current_node.script, TTS_DIR)
-        cap_dtmf = self.session:playAndGetDigits(1, number_digits, retries,
+        digits = self.session:playAndGetDigits(1, number_digits, retries,
             timeout*1000, '#', tts_file, invalid_input, dtmf_filter)
     end
-    return cap_dtmf
+    return digits
 end
 
 function FSMCall:next_node()
@@ -302,18 +302,18 @@ function FSMCall:next_node()
 
     elseif current_node.type == MULTI_CHOICE then
         print("MULTI_CHOICE\n------------------")
-        cap_dtmf = self:getdigitnode(current_node)
-        self.debugger:msg("info", "result digit => " .. cap_dtmf )
+        digits = self:getdigitnode(current_node)
+        self.debugger:msg("info", "result digit => " .. digits )
 
     elseif current_node.type == RATING_SECTION then
         print("RATING_SECTION\n------------------")
-        cap_dtmf = self:getdigitnode(current_node)
-        self.debugger:msg("INFO", "result digit => " .. cap_dtmf )
+        digits = self:getdigitnode(current_node)
+        self.debugger:msg("INFO", "result digit => " .. digits )
 
     elseif current_node.type == CAPTURE_DIGITS then
         print("CAPTURE_DIGITS\n------------------")
-        cap_dtmf = self:getdigitnode(current_node)
-        self.debugger:msg("INFO", "result digit => " .. cap_dtmf )
+        digits = self:getdigitnode(current_node)
+        self.debugger:msg("INFO", "result digit => " .. digits )
 
     elseif current_node.type == RECORD_MSG then
         print("RECORD_MSG\n------------------")
@@ -361,9 +361,9 @@ function FSMCall:next_node()
         -- CAPTURE_DIGITS / Check Validity
         if current_node.type == CAPTURE_DIGITS
             and current_node.validate_number == 't'
-            and cap_dtmf and string.len(cap_dtmf) >= 0 then
+            and digits and string.len(digits) >= 0 then
             -- we have DTMF now we check validity
-            int_dtmf = tonumber(cap_dtmf)
+            int_dtmf = tonumber(digits)
 
             int_min = tonumber(current_node.min_number)
             int_max = tonumber(current_node.max_number)
@@ -390,16 +390,16 @@ function FSMCall:next_node()
             end
         end
 
-        self.debugger:msg("INFO", "Got -------------------------> : "..cap_dtmf)
+        self.debugger:msg("INFO", "Got -------------------------> : "..digits)
         -- check if we got a branching for this capture
-        if cap_dtmf or string.len(cap_dtmf) >= 0 then
+        if digits or string.len(digits) >= 0 then
 
-            if current_branching[cap_dtmf] and current_branching[cap_dtmf].goto_id then
+            if current_branching[digits] and current_branching[digits].goto_id then
                 --We got a branching for this DTMF and a goto_id
-                self.current_node_id = tonumber(current_branching[cap_dtmf].goto_id)
+                self.current_node_id = tonumber(current_branching[digits].goto_id)
                 return true
 
-            elseif current_branching[cap_dtmf] then
+            elseif current_branching[digits] then
                 --We got a branching for this DTMF but no goto_id
                 self.debugger:msg("INFO", "We got a branching for this DTMF but no goto_id -> then we got to hangup")
                 self:end_call()
@@ -424,7 +424,7 @@ function FSMCall:next_node()
         end
 
         -- check if we got a branching for this capture
-        if not cap_dtmf or string.len(cap_dtmf) == 0 then
+        if not digits or string.len(digits) == 0 then
             -- check if there is a timeout / you should
             if not current_branching["timeout"].goto_id then
                 -- go to hangup

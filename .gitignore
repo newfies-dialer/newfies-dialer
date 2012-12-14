@@ -18,3 +18,5 @@ coverage_info
 output.html
 amd*.lua
 *.log
+lua/tts/*.wav
+lua/tts/*.txt

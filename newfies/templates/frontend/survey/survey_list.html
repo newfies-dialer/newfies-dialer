@@ -29,8 +29,6 @@ function delete_button(){
                 {% if perms.survey.delete_survey %}
                     <li><a href="#" onclick="delete_button()">{% trans "Delete survey" %}</a></li>
                 {% endif %}
-
-                    <li><a href="/import_survey/">{% trans "Import" %}</a></li>
             </ul>
         </div>
         {% if perms.survey.add_survey %}
@@ -64,12 +62,16 @@ function delete_button(){
                                 {% if perms.survey.change_survey %}
                                     <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "Update survey" %}"></a>
                                 {% endif %}
+
                                 {% if perms.survey.delete_survey %}
                                     <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "Delete survey" %}"></a>
                                 {% endif %}
+
                                 {% if perms.survey.export_survey %}
                                     <a href="/export_survey/{{ row.id }}/" target="_blank" {% icon "layers" %} title="{% trans "Export survey" %}"></a>
                                 {% endif %}
+
+                                &nbsp;<a href="/import_survey/{{ row.id }}/" {% icon "eye" %} title="{% trans "Import survey" %}"></a>
                             </td>
                         </tr>
                     {% endfor %}

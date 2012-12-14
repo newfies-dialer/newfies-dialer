@@ -1879,16 +1879,13 @@ def export_survey(request, id):
 
 
 @login_required
-def import_survey(request):
+def import_survey(request, id):
     """Survey Import
 
     **Attributes**:
 
         * ``template`` - frontend/survey/import_survey.html
-
-    **Logic Description**:
-
-        * List all survey result which belong to callrequest.
+        * ``form`` - SurveyFileImport
     """
     form = SurveyFileImport()
     if request.method == 'POST':
@@ -1902,20 +1899,14 @@ def import_survey(request):
             rdr = csv.reader(request.FILES['survey_file'],
                 delimiter='|', quotechar='"')
 
+            section_row = []
+            branching_row = []
+
             # Read each Row
             for row in rdr:
                 row = striplist(row)
                 if not row or str(row[0]) == 0:
                     continue
-
-                if  len(row) == 4:
-                    # for survey
-                    survey_template_obj = Survey_template.objects.create(
-                        name=row[0],
-                        tts_language=row[1],
-                        description=row[2],
-                        user=request.user,
-                    )
 
                 if  len(row) == 25:
                     # for section
@@ -1944,21 +1935,27 @@ def import_survey(request):
                         max_number=row[21],
                         phonenumber=row[22],
                         completed=row[23],
+                        survey_id=int(id)
                     )
+                    section_row.append(row)
 
                 if  len(row) == 2:
                     # for branching
                     Branching_template.objects.create(
                         keys=row[0],
-                        section=section_template_obj,
-                        goto=row[1],
+                        # TODO : This part how we will map with created sections
+                        # and importing value
+                        section=row[1],
+                        goto=row[2],
                     )
+                    branching_row.append(row)
 
 
     template = 'frontend/survey/import_survey.html'
     data = {
         'form': form,
-        #'MEDIA_ROOT': settings.MEDIA_ROOT,
+        'section_row': section_row,
+        'branching_row': branching_row,
     }
     request.session['msg'] = ''
     request.session['err_msg'] = ''

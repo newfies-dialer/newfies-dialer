@@ -70,17 +70,32 @@
      </div>
 </form>
 
-{% if success_import_list %}
+{% if section_row %}
     <table class="table table-striped table-bordered table-condensed">
         <tr>
-            <th>{% trans "Survey(s) imported" %} :</th>
+            <th>{% trans "Survey's sections imported" %} :</th>
         </tr>
-        {% for row in success_import_list %}
+        {% for row in section_row %}
         <tr>
             <td>
                 {{ row }}
             </td>
         </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+{% if branching_row %}
+    <table class="table table-striped table-bordered table-condensed">
+        <tr>
+            <th>{% trans "Survey's branching imported" %} :</th>
+        </tr>
+        {% for row in branching_row %}
+            <tr>
+                <td>
+                    {{ row }}
+                </td>
+            </tr>
         {% endfor %}
     </table>
 {% endif %}

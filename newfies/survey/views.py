@@ -1888,6 +1888,8 @@ def import_survey(request, id):
         * ``form`` - SurveyFileImport
     """
     form = SurveyFileImport()
+    section_row = []
+    branching_row = []
     if request.method == 'POST':
         form = SurveyFileImport(request.POST, request.FILES)
         if form.is_valid():
@@ -1899,15 +1901,12 @@ def import_survey(request, id):
             rdr = csv.reader(request.FILES['survey_file'],
                 delimiter='|', quotechar='"')
 
-            section_row = []
-            branching_row = []
-
             # Read each Row
             for row in rdr:
                 row = striplist(row)
                 if not row or str(row[0]) == 0:
                     continue
-
+                #print row
                 if  len(row) == 25:
                     # for section
                     section_template_obj = Section_template.objects.create(
@@ -1939,7 +1938,7 @@ def import_survey(request, id):
                     )
                     section_row.append(row)
 
-                if  len(row) == 2:
+                if  len(row) == 3:
                     # for branching
                     Branching_template.objects.create(
                         keys=row[0],

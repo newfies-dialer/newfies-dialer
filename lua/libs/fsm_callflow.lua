@@ -80,6 +80,7 @@ function FSMCall:init()
     self.destination_number = self.session:getVariable("destination_number")
     self.uuid = self.session:getVariable("uuid")
     self.campaign_id = self.session:getVariable("campaign_id")
+    self.subscriber_id = self.session:getVariable("subscriber_id")
     self.campaign_id = 23
 
     self.db:connect()
@@ -199,6 +200,7 @@ function FSMCall:next_node()
 
     elseif current_node.type == HANGUP_SECTION then
         debug_output = debug_output.."EXCEPTION -> HANGUP"
+        session:streamFile(AUDIO_WELCOME)
         self:end_call()
 
     elseif current_node.type == MULTI_CHOICE then
@@ -283,51 +285,55 @@ function FSMCall:next_node()
         or current_node.type == RATING_SECTION
         or current_node.type == CAPTURE_DIGITS then
 
-        --CAPTURE_DIGITS / Check Validity
-        --{PYTHON CODE}
-        -- if (obj_p_section.type == SECTION_TYPE.CAPTURE_DIGITS
-        --    and obj_p_section.validate_number):
-        --     #check if number is valid
-        --     try:
-        --         int_dtmf = int(DTMF)
-        --     except:
-        --         #No correct input from user
-        --         int_dtmf = False
+        -- CAPTURE_DIGITS / Check Validity
+        if current_node.type == CAPTURE_DIGITS
+            and current_node.validate_number == 't'
+            and cap_dtmf and string.len(cap_dtmf) >= 0 then
+            -- we have DTMF now we check validity
+            int_dtmf = tonumber(cap_dtmf)
 
-        --     try:
-        --         int_min = int(obj_p_section.min_number)
-        --         int_max = int(obj_p_section.max_number)
-        --     except:
-        --         int_min = 0
-        --         int_max = 999999999999999
+            int_min = tonumber(current_node.min_number)
+            int_max = tonumber(current_node.max_number)
+            if not int_min then
+                int_min = 0
+            end
+            if not int_max then
+                int_max = 999999999999999
+            end
 
-        --     if (int_dtmf and (int_dtmf < int_min
-        --        or int_dtmf > int_max)):
-        --         #Invalid input
-        --         try:
-        --             #DTMF doesn't have any branching so let's check for any
-        --             branching = Branching.objects.get(
-        --                 keys='invalid',
-        --                 section=obj_p_section)
-        --             exit_action = 'INVALID'
-        --         except Branching.DoesNotExist:
-        --             branching = False
-
+            if not int_dtmf or int_dtmf < int_min or int_dtmf > int_max then
+                -- Invalid input
+                if current_branching["invalid"] and current_branching["invalid"].goto_id then
+                    --We got an "invalid branching" and as we got a DTMF we shall go there
+                    self.debugger:msg("INFO", "Got 'invalid' Branching : "..current_branching["invalid"].goto_id)
+                    self.current_node_id = tonumber(current_branching["invalid"].goto_id)
+                    return true
+                elseif current_branching["invalid"] then
+                    -- There is no goto_id -> then we got to hangup
+                    self.debugger:msg("INFO", "Got 'invalid' Branching but no goto_id -> then we got to hangup")
+                    self:end_call()
+                    return true
+                end
+            end
+        end
 
         self.debugger:msg("INFO", "Got -------------------------> : "..cap_dtmf)
         -- check if we got a branching for this capture
         if cap_dtmf or string.len(cap_dtmf) >= 0 then
 
-            if current_branching[cap_dtmf] then
-                if current_branching[cap_dtmf].goto_id then
-                    print("2OK")
-                end
-                print("1OK")
-            end
             if current_branching[cap_dtmf] and current_branching[cap_dtmf].goto_id then
+                --We got a branching for this DTMF and a goto_id
                 self.current_node_id = tonumber(current_branching[cap_dtmf].goto_id)
                 return true
+
+            elseif current_branching[cap_dtmf] then
+                --We got a branching for this DTMF but no goto_id
+                self.debugger:msg("INFO", "We got a branching for this DTMF but no goto_id -> then we got to hangup")
+                self:end_call()
+                return true
+
             elseif current_branching["any"] and current_branching["any"].goto_id then
+                --We got an "any branching" and as we got a DTMF we shall go there
                 self.debugger:msg("INFO", "Got 'any' Branching : "..current_branching["any"].goto_id)
                 self.current_node_id = tonumber(current_branching["any"].goto_id)
                 return true
@@ -355,7 +361,6 @@ function FSMCall:next_node()
                 self.current_node_id = tonumber(current_branching["timeout"].goto_id)
             end
         end
-
 
     end
 

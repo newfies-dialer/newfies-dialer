@@ -203,16 +203,12 @@ function FSMCall:getdigitnode(current_node)
         retries = 1
     end
 
-    --Invalid Audio URL
-    invalid_input = ''
-    -- {PYTHON CODE}
-    -- if (list_section[current_state].invalid_audiofile
-    --    and list_section[current_state].invalid_audiofile.audio_file.url):
-    --     #Audio file
-    --     invalid_audiourl = url_basename..list_section[current_state].invalid_audiofile.audio_file.url
-    --     invalid_input = ' invalidDigitsSound="%s"' % invalid_audiourl
-    -- else:
-    --     invalid_input = ''
+    --Invalid Audio
+    if current_node.invalid_audiofile_id then
+        invalid_audiofile = current_node.db.list_audio[tonumber(current_node.invalid_audiofile_id)]
+    else
+        invalid_audiofile = ''
+    end
 
     if current_node.type == MULTI_CHOICE then
         dtmf_filter = self:build_dtmf_filter(current_node)
@@ -237,7 +233,8 @@ function FSMCall:getdigitnode(current_node)
         current_audio = current_node.db.list_audio[tonumber(current_node.audiofile_id)]
         filetoplay = UPLOAD_DIR..current_audio.audio_file
         print("\nPlay the audiofile : "..filetoplay)
-        cap_dtmf = self.session:playAndGetDigits(1, number_digits, retries, timeout*1000, '#', filetoplay, invalid_input, dtmf_filter)
+        cap_dtmf = self.session:playAndGetDigits(1, number_digits, retries,
+            timeout*1000, '#', filetoplay, invalid_input, dtmf_filter)
     else
         --Use TTS
         -- self.session:set_tts_parms("flite", "kal")
@@ -245,7 +242,8 @@ function FSMCall:getdigitnode(current_node)
         -- print("\nPlay the audio TTS : "..say_str)
         -- session:speak(current_node.script)
         tts_file = tts(current_node.script, TTS_DIR)
-        cap_dtmf = self.session:playAndGetDigits(1, number_digits, retries, timeout*1000, '#', tts_file, invalid_input, dtmf_filter)
+        cap_dtmf = self.session:playAndGetDigits(1, number_digits, retries,
+            timeout*1000, '#', tts_file, invalid_input, dtmf_filter)
     end
     return cap_dtmf
 end

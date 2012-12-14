@@ -1819,7 +1819,7 @@ def export_survey(request, id):
         Survey_template, pk=int(id), user=request.user)
 
     if survey:
-        section_list = Section_template.objects.filter(survey=survey)
+        section_list = Section_template.objects.filter(survey=survey).order_by('id')
         for section in section_list:
             # write section in text file
             writer.writerow([
@@ -1852,7 +1852,7 @@ def export_survey(request, id):
             ])
 
         for section in section_list:
-            branching_list = Branching_template.objects.filter(section=section)
+            branching_list = Branching_template.objects.filter(section=section).order_by('section')
             for branching in branching_list:
                 # write branching text file
                 writer.writerow([
@@ -1919,9 +1919,9 @@ def import_survey(request, id):
                             min_number=row[20],
                             max_number=row[21],
                             phonenumber=row[22],
-                            completed=row[23],
+                            completed=1 if row[23] == 'TRUE' else 0,
                             invalid_audiofile_id=int(row[24]) if row[24] else '',
-                            survey_id=Survey_template.objects.get(id=int(id)).id
+                            survey_id=int(id)
                         )
 
                         new_old_section[int(row[25])] = section_template_obj.id
@@ -1934,15 +1934,22 @@ def import_survey(request, id):
                     try:
                         if row[1]:
                             new_section_id = new_old_section[int(row[1])]
-                        new_goto_section_id = ''
+                        
                         if row[2]:
                             new_goto_section_id = new_old_section[int(row[2])]
-                        # for branching
-                        Branching_template.objects.create(
-                            keys=row[0],
-                            section_id=new_section_id,
-                            goto_id=new_goto_section_id,
-                        )
+
+                            # for branching
+                            Branching_template.objects.create(
+                                keys=row[0],
+                                section_id=new_section_id,
+                                goto_id=new_goto_section_id,
+                            )
+                        else:
+                            # for branching
+                            Branching_template.objects.create(
+                                keys=row[0],
+                                section_id=new_section_id,
+                            )
                         branching_row.append(row)
                     except:
                         type_error_import_list.append(row)

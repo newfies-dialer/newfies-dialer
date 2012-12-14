@@ -79,9 +79,9 @@ end
 
 
 function myHangupHook(s, status, arg)
-    debug("NOTICE", "myHangupHook: status -> " .. status .. "\n")
+    --debug("NOTICE", "myHangupHook: status -> " .. status .. "\n")
     local obCause = session:hangupCause()
-    debug("INFO", "session:hangupCause() = " .. obCause )
+    -- debug("INFO", "session:hangupCause() = " .. obCause )
     -- local xmlcdr = session:getXMLCDR()
     -- debug("info", "session:getXMLCDR() = " .. xmlcdr )
     if not callflow.hangup_trigger then
@@ -91,12 +91,10 @@ function myHangupHook(s, status, arg)
     error()
 end
 
-
 function sleep(seconds)
     time = os.clock()
     while os.clock()-time < seconds do end
 end
-
 
 if session:ready() then
 
@@ -112,7 +110,9 @@ if session:ready() then
 
         -- Loop on the State Machine to find the next node to proceed
         callflow:next_node()
-        sleep(1)
+        if not fs_env then
+            sleep(1)
+        end
     end
 
     -- Play Message

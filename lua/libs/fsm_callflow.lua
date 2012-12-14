@@ -22,7 +22,7 @@ local database = require "database"
 require "texttospeech"
 
 
--- Constant Value
+-- Constant Value SECTION_TYPE
 local PLAY_MESSAGE = "1"
 local MULTI_CHOICE = "2"
 local RATING_SECTION = "3"
@@ -39,6 +39,17 @@ SECTION_TYPE["4"] = "CAPTURE_DIGITS"
 SECTION_TYPE["5"] = "RECORD_MSG"
 SECTION_TYPE["6"] = "CALL_TRANSFER"
 SECTION_TYPE["7"] = "HANGUP_SECTION"
+
+-- Constant Value SUBSCRIBER_STATUS
+SUBSCRIBER_PENDING = "1"
+SUBSCRIBER_PAUSE = "2"
+SUBSCRIBER_ABORT = "3"
+SUBSCRIBER_FAIL = "4"
+SUBSCRIBER_SENT = "5"
+SUBSCRIBER_IN_PROCESS = "6"
+SUBSCRIBER_NOT_AUTHORIZED = "7"
+SUBSCRIBER_COMPLETED = "8"
+
 
 local ROOT_DIR = '/usr/share/newfies-lua/'
 local TTS_DIR = ROOT_DIR..'tts/'
@@ -57,6 +68,7 @@ FSMCall = oo.class{
     caller_id_number = nil,
     destination_number = nil,
     uuid = nil,
+    marked_completed = false,
     survey_id = nil,
     call_duration = 0,
     debugger = nil,
@@ -85,8 +97,10 @@ function FSMCall:init()
     self.uuid = self.session:getVariable("uuid")
     self.campaign_id = self.session:getVariable("campaign_id")
     self.subscriber_id = self.session:getVariable("subscriber_id")
+    self.callrequest_id = self.session:getVariable("callrequest_id")
     self.campaign_id = 23
     self.subscriber_id = 15
+    self.callrequest_id = 30
 
     self.db:connect()
     if not self.db:load_all(self.campaign_id, self.subscriber_id) then
@@ -206,7 +220,7 @@ function FSMCall:getdigitnode(current_node)
 
     --Invalid Audio
     if current_node.invalid_audiofile_id then
-        invalid_audiofile = current_node.db.list_audio[tonumber(current_node.invalid_audiofile_id)]
+        invalid_audiofile = self.db.list_audio[tonumber(current_node.invalid_audiofile_id)]
     else
         invalid_audiofile = ''
     end
@@ -264,25 +278,13 @@ function FSMCall:next_node()
 
     -- print(inspect(current_node))
 
-    --Check if it's a completed section
-    -- {PYTHON CODE}
-    -- if (list_section[current_state].completed and (not current_completion or current_completion == 0)):
-    --     #Flag subscriber
-    --     subscriber = Subscriber.objects.get(pk=obj_callrequest.subscriber.id)
-    --     subscriber.status = SUBSCRIBER_STATUS.COMPLETED
-    --     subscriber.save()
-    --     #Flag Callrequest
-    --     obj_callrequest.completed = True
-    --     obj_callrequest.save()
-    --     #Increment Campaign completed call
-    --     campaign = Campaign.objects.get(pk=obj_callrequest.campaign.id)
-    --     if not campaign.completed:
-    --         campaign.completed = 1
-    --     else:
-    --         campaign.completed = campaign.completed + 1
-    --     campaign.save()
+    if (current_node.completed == 't' and not self.marked_completed) then
+        -- Mark the subscriber as completed and increment campaign completed field
+        self.db:update_subscriber(self.subscriber_id, SUBSCRIBER_COMPLETED)
+        --Flag Callrequest
+        self.db:update_callrequest_cpt(self.callrequest_id)
+    end
 
-    debug_output = ''
     --self.debugger:msg("INFO", "current_node.type >>>>> "..current_node.type)
     self.debugger:msg("INFO", "-------------------------------------------")
     self.debugger:msg("INFO", "TITLE :: ("..current_node.id..") "..current_node.question)

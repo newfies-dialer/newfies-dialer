@@ -174,6 +174,28 @@ function Database:load_contact(subscriber_id)
 	-- check campaign info
 end
 
+function Database:update_subscriber(subscriber_id, status)
+	print("Update Subscriber")
+	QUERY = "UPDATE dialer_subscriber SET status='"..status.."' WHERE id="..subscriber_id
+	self.con:execute(QUERY)
+	-- TODO Check result
+	self:update_campaign_completed()
+end
+
+function Database:update_campaign_completed()
+	print("Update Campaign")
+	QUERY = "UPDATE dialer_campaign SET completed = completed + 1 WHERE id="..campaign_info.id
+	self.con:execute(QUERY)
+	-- TODO Check result
+end
+
+function Database:update_callrequest_cpt(callrequest_id)
+	print("Update CallRequest")
+	QUERY = "UPDATE dialer_callrequest SET completed = 't' WHERE id="..callrequest_id
+	self.con:execute(QUERY)
+	-- TODO Check result
+end
+
 function Database:load_all(campaign_id, subscriber_id)
 	self:load_contact(subscriber_id)
 	if not self.contact then

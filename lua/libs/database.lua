@@ -55,6 +55,7 @@ function Database:connect()
 end
 
 function Database:disconnect()
+	--TODO - DB connection closed before end of the call
 	self.con:close()
 	self.env:close()
 end
@@ -178,23 +179,21 @@ end
 function Database:update_subscriber(subscriber_id, status)
 	print("Update Subscriber")
 	QUERY = "UPDATE dialer_subscriber SET status='"..status.."' WHERE id="..subscriber_id
-	self.con:execute(QUERY)
-	-- TODO Check result
+	res = assert (self.con:execute(QUERY))
+	print(res)
 	self:update_campaign_completed()
 end
 
 function Database:update_campaign_completed()
 	print("Update Campaign")
 	QUERY = "UPDATE dialer_campaign SET completed = completed + 1 WHERE id="..campaign_info.id
-	self.con:execute(QUERY)
-	-- TODO Check result
+	res = assert (self.con:execute(QUERY))
 end
 
 function Database:update_callrequest_cpt(callrequest_id)
 	print("Update CallRequest")
 	QUERY = "UPDATE dialer_callrequest SET completed = 't' WHERE id="..callrequest_id
-	self.con:execute(QUERY)
-	-- TODO Check result
+	res = assert (self.con:execute(QUERY))
 end
 
 function Database:load_all(campaign_id, subscriber_id)
@@ -271,92 +270,92 @@ function Database:placeholder_replace(text)
     return text
 end
 
-function Database:save_section_result(obj_callrequest, current_node, DTMF, RecordFile):
-    -- save the result of a section
+-- function Database:save_section_result(obj_callrequest, current_node, DTMF, RecordFile):
+--     -- save the result of a section
 
-    if current_node.type == RECORD_MSG then
-        --RECORD_MSG
-        --TODO: Use sox to get file duration
-        RecordingDuration = 0
-        try:
-            --Insert Result
-            result = Result(
-                callrequest=obj_callrequest,
-                section=current_node,
-                record_file=RecordFile,
-                recording_duration=RecordingDuration,
-            )
-            result.save()
-            --TODO: Save aggregated result
-            --set_aggregate_result(obj_callrequest, current_node, DTMF, RecordingDuration)
-            return true
+--     if current_node.type == RECORD_MSG then
+--         --RECORD_MSG
+--         --TODO: Use sox to get file duration
+--         RecordingDuration = 0
+--         try:
+--             --Insert Result
+--             result = Result(
+--                 callrequest=obj_callrequest,
+--                 section=current_node,
+--                 record_file=RecordFile,
+--                 recording_duration=RecordingDuration,
+--             )
+--             result.save()
+--             --TODO: Save aggregated result
+--             --set_aggregate_result(obj_callrequest, current_node, DTMF, RecordingDuration)
+--             return true
 
-        except IntegrityError:
-            -- Update Result
-            result = Result.objects.get(
-                callrequest=obj_callrequest,
-                section=current_node
-            )
-            result.record_file = RecordFile
-            result.recording_duration = RecordingDuration
-            result.save()
-            --TODO: Save aggregated result
-            -- set_aggregate_result(obj_callrequest, current_node, DTMF, RecordingDuration)
-            return false
+--         except IntegrityError:
+--             -- Update Result
+--             result = Result.objects.get(
+--                 callrequest=obj_callrequest,
+--                 section=current_node
+--             )
+--             result.record_file = RecordFile
+--             result.recording_duration = RecordingDuration
+--             result.save()
+--             --TODO: Save aggregated result
+--             -- set_aggregate_result(obj_callrequest, current_node, DTMF, RecordingDuration)
+--             return false
 
-    elseif DTMF and string.len(DTMF) > 0 and
-    	(current_node.type == MULTI_CHOICE or
-    	 current_node.type == RATING_SECTION or
-         current_node.type == CAPTURE_DIGITS) then
+--     elseif DTMF and string.len(DTMF) > 0 and
+--     	(current_node.type == MULTI_CHOICE or
+--     	 current_node.type == RATING_SECTION or
+--          current_node.type == CAPTURE_DIGITS) then
 
-        if current_node.type == MULTI_CHOICE then
-            -- Get value for the DTMF from current_node.key_X
-            if DTMF == '0' and current_node.key_0 then
-                DTMF = current_node.key_0
-            elseif DTMF == '1' and current_node.key_1 then
-                DTMF = current_node.key_1
-            elseif DTMF == '2' and current_node.key_2 then
-                DTMF = current_node.key_2
-            elseif DTMF == '3' and current_node.key_3 then
-                DTMF = current_node.key_3
-            elseif DTMF == '4' and current_node.key_4 then
-                DTMF = current_node.key_4
-            elseif DTMF == '5' and current_node.key_5 then
-                DTMF = current_node.key_5
-            elseif DTMF == '6' and current_node.key_6 then
-                DTMF = current_node.key_6
-            elseif DTMF == '7' and current_node.key_7 then
-                DTMF = current_node.key_7
-            elseif DTMF == '8' and current_node.key_8 then
-                DTMF = current_node.key_8
-            elseif DTMF == '9' and current_node.key_8 then
-                DTMF = current_node.key_9
-            end
-        try:
-            --Save result
-            result = Result(
-                callrequest=obj_callrequest,
-                section=current_node,
-                response=DTMF)
-            result.save()
-            --Save aggregated result
-            set_aggregate_result(obj_callrequest, current_node, DTMF, False)
+--         if current_node.type == MULTI_CHOICE then
+--             -- Get value for the DTMF from current_node.key_X
+--             if DTMF == '0' and current_node.key_0 then
+--                 DTMF = current_node.key_0
+--             elseif DTMF == '1' and current_node.key_1 then
+--                 DTMF = current_node.key_1
+--             elseif DTMF == '2' and current_node.key_2 then
+--                 DTMF = current_node.key_2
+--             elseif DTMF == '3' and current_node.key_3 then
+--                 DTMF = current_node.key_3
+--             elseif DTMF == '4' and current_node.key_4 then
+--                 DTMF = current_node.key_4
+--             elseif DTMF == '5' and current_node.key_5 then
+--                 DTMF = current_node.key_5
+--             elseif DTMF == '6' and current_node.key_6 then
+--                 DTMF = current_node.key_6
+--             elseif DTMF == '7' and current_node.key_7 then
+--                 DTMF = current_node.key_7
+--             elseif DTMF == '8' and current_node.key_8 then
+--                 DTMF = current_node.key_8
+--             elseif DTMF == '9' and current_node.key_8 then
+--                 DTMF = current_node.key_9
+--             end
+--         try:
+--             --Save result
+--             result = Result(
+--                 callrequest=obj_callrequest,
+--                 section=current_node,
+--                 response=DTMF)
+--             result.save()
+--             --Save aggregated result
+--             set_aggregate_result(obj_callrequest, current_node, DTMF, False)
 
-            return "Save new result (section:%d - response:%s)\n" % \
-                (current_node.id, DTMF)
-        except IntegrityError:
-            --Update Result
-            result = Result.objects.get(
-                callrequest=obj_callrequest,
-                section=current_node
-            )
-            result.response = DTMF
-            result.save()
-            --Save aggregated result
-            set_aggregate_result(obj_callrequest, current_node, DTMF, False)
+--             return "Save new result (section:%d - response:%s)\n" % \
+--                 (current_node.id, DTMF)
+--         except IntegrityError:
+--             --Update Result
+--             result = Result.objects.get(
+--                 callrequest=obj_callrequest,
+--                 section=current_node
+--             )
+--             result.response = DTMF
+--             result.save()
+--             --Save aggregated result
+--             set_aggregate_result(obj_callrequest, current_node, DTMF, False)
 
-            return "Update result (section:%d - response:%s)\n" % \
-                (current_node.id, DTMF)
+--             return "Update result (section:%d - response:%s)\n" % \
+--                 (current_node.id, DTMF)
 
 
 
@@ -368,3 +367,20 @@ function Database:save_section_result(obj_callrequest, current_node, DTMF, Recor
 -- print(inspect(Database.list_branching[11]["any"]))
 -- print(inspect(Database.list_branching[11]["1"]))
 -- print(inspect(Database.list_branching[11]["timeout"]))
+
+--
+-- Test Code
+--
+if false then
+	campaign_id = 23
+    subscriber_id = 15
+    callrequest_id = 30
+    debug_mode = false
+
+    db = Database(debug_mode)
+    db:connect()
+    db:load_all(campaign_id, subscriber_id)
+    db:update_callrequest_cpt(callrequest_id)
+    db:check_data()
+    db:disconnect()
+end

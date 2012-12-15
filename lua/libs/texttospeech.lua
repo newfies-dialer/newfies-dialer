@@ -9,7 +9,7 @@
 
 require "luarocks.require"
 require "md5"
---require "lfs"
+require "lfs"
 
 function skip2(_,_, ...)
     --
@@ -26,10 +26,7 @@ end
 
 -- Check file exists and readable
 function file_exists(path)
-    -- TODO: Add LFS
-    -- comment next line
-    local attr = nil
-    --local attr = lfs.attributes(path)
+    local attr = lfs.attributes(path)
     if (attr ~= nil) then
         return true
     else
@@ -143,7 +140,7 @@ end
 if false then
     local ROOT_DIR = '/usr/share/newfies-lua/'
     local TTS_DIR = ROOT_DIR..'tts/'
-    text = "Let's see if this works for us"
+    text = "Let's see if this works for us. Give a try!"
     wav_file = tts(text, TTS_DIR)
     print("wav_file => "..wav_file)
 end

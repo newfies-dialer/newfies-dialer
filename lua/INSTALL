@@ -15,6 +15,7 @@ Install the following::
     luarocks install lualogging
     luarocks install loop
     luarocks install md5
+    luarocks install luafilesystem
 
 
 Configure FreeSWITCH

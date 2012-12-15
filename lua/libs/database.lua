@@ -50,8 +50,8 @@ function Database:__init(debug_mode)
 end
 
 function Database:connect()
-	self.env = assert (luasql.postgres())
-	self.con = assert (self.env:connect('newfies2', 'newfiesuser', 'password', "127.0.0.1", 5432))
+	self.env = assert(luasql.postgres())
+	self.con = assert(self.env:connect('newfies2', 'newfiesuser', 'password', "127.0.0.1", 5432))
 end
 
 function Database:disconnect()
@@ -67,7 +67,7 @@ function Database:load_survey_section(survey_id)
 	-- rating_laps	validate_number	number_digits	phonenumber	completed	created_date
 	-- updated_date	survey_id	invalid_audiofile_id	min_number	max_number
 	QUERY = "SELECT * FROM "..self.TABLE_SECTION.." WHERE survey_id="..survey_id.." ORDER BY "..self.TABLE_SECTION..".order"
-	cur = assert (self.con:execute(QUERY))
+	cur = self.con:execute(QUERY)
 
 	-- LOOP THROUGH THE CURSOR
 	if debug_mode then
@@ -96,7 +96,7 @@ function Database:load_survey_branching(survey_id)
 		"FROM "..self.TABLE_BRANCHING.." LEFT JOIN "..self.TABLE_SECTION..
 		" ON "..self.TABLE_SECTION..".id="..self.TABLE_BRANCHING..".section_id "..
 		"WHERE survey_id="..survey_id
-	cur = assert (self.con:execute(QUERY))
+	cur = self.con:execute(QUERY)
 
 	-- LOOP THROUGH THE CURSOR
 	if debug_mode then
@@ -124,7 +124,7 @@ function Database:load_audiofile()
 	print("Load audiofile branching")
 	-- id	name	audio_file	user_id
 	QUERY = "SELECT * FROM audio_file"
-	cur = assert (self.con:execute(QUERY))
+	cur = self.con:execute(QUERY)
 
 	-- LOOP THROUGH THE CURSOR
 	list = {}
@@ -141,7 +141,7 @@ end
 
 function Database:get_list(query)
 	print("Load sql")
-	cur = assert (self.con:execute(query))
+	cur = assert(self.con:execute(query))
 	list = {}
 	row = cur:fetch ({}, "a")
 	while row do
@@ -153,7 +153,7 @@ function Database:get_list(query)
 end
 
 function Database:get_object(query)
-	cur = assert (self.con:execute(query))
+	cur = assert(self.con:execute(query))
 	row = cur:fetch ({}, "a")
 	cur:close()
 	return row
@@ -179,7 +179,7 @@ end
 function Database:update_subscriber(subscriber_id, status)
 	print("Update Subscriber")
 	QUERY = "UPDATE dialer_subscriber SET status='"..status.."' WHERE id="..subscriber_id
-	res = assert (self.con:execute(QUERY))
+	res = self.con:execute(QUERY)
 	print(res)
 	self:update_campaign_completed()
 end
@@ -187,13 +187,13 @@ end
 function Database:update_campaign_completed()
 	print("Update Campaign")
 	QUERY = "UPDATE dialer_campaign SET completed = completed + 1 WHERE id="..campaign_info.id
-	res = assert (self.con:execute(QUERY))
+	res = self.con:execute(QUERY)
 end
 
 function Database:update_callrequest_cpt(callrequest_id)
 	print("Update CallRequest")
 	QUERY = "UPDATE dialer_callrequest SET completed = 't' WHERE id="..callrequest_id
-	res = assert (self.con:execute(QUERY))
+	res = self.con:execute(QUERY)
 end
 
 function Database:load_all(campaign_id, subscriber_id)
@@ -275,11 +275,11 @@ function Database:save_result_recording(callrequest_id, section_id, record_file,
 	QUERY = "INSERT INTO survey_result (callrequest_id, section_id, record_file, recording_duration, response, created_date) "..
 		"VALUES ("..callrequest_id..", "..section_id..", '"..record_file.."', '"..recording_duration.."', '', NOW())"
 	print(QUERY)
-	res = assert (self.con:execute(QUERY))
+	res = self.con:execute(QUERY)
 	if not res then
-		error("Error Insert Result Recording")
+		return false
 	else
-		return
+		return true
 	end
 end
 
@@ -287,23 +287,23 @@ function Database:update_result_recording(callrequest_id, section_id, record_fil
 	print("Save Result")
 	QUERY = "UPDATE survey_result SET record_file='"..record_file.."', recording_duration='"..recording_duration.."'"..
 		" WHERE callrequest_id="..callrequest_id.." AND section_id="..section_id
-	res = assert (self.con:execute(QUERY))
+	res = self.con:execute(QUERY)
 	if not res then
-		error("Error UPDATE Result Recording")
+		return false
 	else
-		return
+		return true
 	end
 end
 
 function Database:save_result_dtmf(callrequest_id, section_id, dtmf)
-	print("Save Result")
 	QUERY = "INSERT INTO survey_result (callrequest_id, section_id, response) "..
 		"VALUES ("..callrequest_id..", "..section_id..", "..dtmf..")"
-	res = assert (self.con:execute(QUERY))
+	print("Save Result : "..QUERY)
+	res = self.con:execute(QUERY)
 	if not res then
-		error("Error Insert Result DTMF")
+		return false
 	else
-		return
+		return true
 	end
 end
 
@@ -311,11 +311,11 @@ function Database:update_result_dtmf(callrequest_id, section_id, dtmf)
 	print("Save Result")
 	QUERY = "UPDATE survey_result SET response="..dtmf..
 		" WHERE callrequest_id="..callrequest_id.." AND section_id="..section_id
-	res = assert (self.con:execute(QUERY))
+	res = self.con:execute(QUERY)
 	if not res then
-		error("Error UPDATE Result DTMF")
+		return false
 	else
-		return
+		return true
 	end
 end
 
@@ -330,7 +330,7 @@ function Database:save_section_result(callrequest_id, current_node, DTMF, record
 		--TODO: Save aggregated result
         --set_aggregate_result(callrequest_id, current_node, DTMF, recording_duration)
 
-		if pcall(self:save_result_recording(callrequest_id, current_node.id, record_file, recording_duration)) then
+		if self:save_result_recording(callrequest_id, current_node.id, record_file, recording_duration) then
 			-- no errors in save_result
 			return true
 		else
@@ -406,7 +406,7 @@ if true then
     subscriber_id = 15
     callrequest_id = 30
     debug_mode = false
-    section_id = 4
+    section_id = 40
     record_file = '/tmp/recording-file.wav'
     recording_duration = '30'
     dtmf = '5'
@@ -416,7 +416,11 @@ if true then
     db:load_all(campaign_id, subscriber_id)
     db:update_callrequest_cpt(callrequest_id)
     db:check_data()
-    db:save_result_recording(callrequest_id, section_id, record_file, recording_duration)
+    if db:save_result_recording(callrequest_id, section_id, record_file, recording_duration) then
+    	print("OK save_result_recording")
+    else
+    	print("ERROR save_result_recording")
+    end
     db:update_result_recording(callrequest_id, section_id, record_file, recording_duration)
     db:save_result_dtmf(callrequest_id, section_id, dtmf)
     db:update_result_dtmf(callrequest_id, section_id, dtmf)

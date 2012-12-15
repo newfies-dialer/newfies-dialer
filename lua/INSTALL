@@ -1,0 +1,30 @@
+
+INSTALL
+=======
+
+Requirements
+------------
+
+Install the following::
+
+    apt-get install luarocks
+    apt-get install liblua5.1-sql-postgres-dev
+
+    apt-get install postgresql-server-dev-9.1
+    sudo luarocks install luasql-postgres
+    luarocks install lualogging
+    luarocks install loop
+    luarocks install md5
+
+
+Configure FreeSWITCH
+--------------------
+
+Edit autoload_configs/lua.conf.xml::
+
+    <param name="module-directory" value="/usr/lib/x86_64-linux-gnu/?.so"/>
+    <param name="module-directory" value="/usr/lib/x86_64-linux-gnu/lua/5.1/luasql/?.so"/>
+    <param name="module-directory" value="/usr/lib/x86_64-linux-gnu/lua/5.1/luasql/postgres.so"/>
+
+    <param name="script-directory" value="/home/areski/public_html/Lua/luaplay/FreeSWITCH/?lua"/>
+

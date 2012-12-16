@@ -6,12 +6,11 @@
 -- License, v. 2.0. If a copy of the MPL was not distributed with this file,
 -- You can obtain one at http://mozilla.org/MPL/2.0/.
 --
--- Copyright (C) 2011-2012 Star2Billing S.L.
+-- Copyright (C) 2011-2013 Star2Billing S.L.
 --
 -- The Initial Developer of the Original Code is
 -- Arezqui Belaid <info@star2billing.com>
 --
-
 
 package.path = package.path .. ";/home/areski/public_html/django/MyProjects/newfies-dialer/lua/?.lua";
 package.path = package.path .. ";/home/areski/public_html/django/MyProjects/newfies-dialer/lua/libs/?.lua";
@@ -226,6 +225,9 @@ function FSMCall:getdigitnode(current_node)
 end
 
 function FSMCall:next_node()
+    digits = false
+    recording_filename = false
+
     self.debugger:msg("INFO", "FSMCall:next_node (current_node="..tonumber(self.current_node_id)..")")
     local current_node = self.db.list_section[tonumber(self.current_node_id)]
     current_branching = self.db.list_branching[tonumber(self.current_node_id)]
@@ -289,8 +291,8 @@ function FSMCall:next_node()
         silence_secs = 5
         -- Python setting = FS_RECORDING_PATH
         id_recordfile = math.random(10000000, 99999999);
-        recording_filename = "/tmp/recording-".."-"..id_recordfile..".wav"
-        result_rec = self.session:recordFile(recording_filename, max_len_secs, silence_threshold, silence_secs)
+        record_file = "/tmp/recording-".."-"..id_recordfile..".wav"
+        result_rec = self.session:recordFile(record_file, max_len_secs, silence_threshold, silence_secs)
     else
         print("EXCEPTION -> HANGUP\n------------------")
         self:end_call()
@@ -298,10 +300,14 @@ function FSMCall:next_node()
 
 
     --
-    -- 3. Record result / Aggregate result
+    -- 3. Record result and Aggregate result
     --
 
-    -- TODO: Record result / Aggregate result
+    -- TODO: Finish Aggregate result
+    if digits or record_file then
+        print("Save results...")
+        self.db:save_section_result(callrequest_id, current_node, DTMF, record_file)
+    end
 
     --
     -- Check Branching / Find the next node

@@ -6,7 +6,7 @@
 -- License, v. 2.0. If a copy of the MPL was not distributed with this file,
 -- You can obtain one at http://mozilla.org/MPL/2.0/.
 --
--- Copyright (C) 2011-2012 Star2Billing S.L.
+-- Copyright (C) 2011-2013 Star2Billing S.L.
 --
 -- The Initial Developer of the Original Code is
 -- Arezqui Belaid <info@star2billing.com>
@@ -17,12 +17,9 @@ package.path = package.path .. ";/home/areski/public_html/django/MyProjects/newf
 package.path = package.path .. ";/home/areski/public_html/django/MyProjects/newfies-dialer/lua/libs/?.lua";
 
 local luasql = require "luasql.postgres"
--- local oo = require "loop.base"
 local oo = require "loop.simple"
 local inspect = require 'inspect'
 require "constant"
-
--- module("database.DataBase", oo.class)
 
 
 Database = oo.class{
@@ -271,10 +268,9 @@ function Database:placeholder_replace(text)
 end
 
 function Database:save_result_recording(callrequest_id, section_id, record_file, recording_duration)
-	print("Save Result")
 	QUERY = "INSERT INTO survey_result (callrequest_id, section_id, record_file, recording_duration, response, created_date) "..
 		"VALUES ("..callrequest_id..", "..section_id..", '"..record_file.."', '"..recording_duration.."', '', NOW())"
-	print(QUERY)
+	print("Save Result Recording:"..QUERY)
 	res = self.con:execute(QUERY)
 	if not res then
 		return false
@@ -284,9 +280,9 @@ function Database:save_result_recording(callrequest_id, section_id, record_file,
 end
 
 function Database:update_result_recording(callrequest_id, section_id, record_file, recording_duration)
-	print("Save Result")
 	QUERY = "UPDATE survey_result SET record_file='"..record_file.."', recording_duration='"..recording_duration.."'"..
 		" WHERE callrequest_id="..callrequest_id.." AND section_id="..section_id
+	print("Update Result Recording:"..QUERY)
 	res = self.con:execute(QUERY)
 	if not res then
 		return false
@@ -296,9 +292,9 @@ function Database:update_result_recording(callrequest_id, section_id, record_fil
 end
 
 function Database:save_result_dtmf(callrequest_id, section_id, dtmf)
-	QUERY = "INSERT INTO survey_result (callrequest_id, section_id, response) "..
-		"VALUES ("..callrequest_id..", "..section_id..", "..dtmf..")"
-	print("Save Result : "..QUERY)
+	QUERY = "INSERT INTO survey_result (callrequest_id, section_id, response, record_file, created_date) "..
+		"VALUES ("..callrequest_id..", "..section_id..", "..dtmf..", '', NOW())"
+	print("Save Result DTMF : "..QUERY)
 	res = self.con:execute(QUERY)
 	if not res then
 		return false
@@ -308,9 +304,9 @@ function Database:save_result_dtmf(callrequest_id, section_id, dtmf)
 end
 
 function Database:update_result_dtmf(callrequest_id, section_id, dtmf)
-	print("Save Result")
 	QUERY = "UPDATE survey_result SET response="..dtmf..
 		" WHERE callrequest_id="..callrequest_id.." AND section_id="..section_id
+	print("Update Result DTMF:"..QUERY)
 	res = self.con:execute(QUERY)
 	if not res then
 		return false
@@ -321,7 +317,6 @@ end
 
 function Database:save_section_result(callrequest_id, current_node, DTMF, record_file)
     -- save the result of a section
-
     if current_node.type == RECORD_MSG then
         --RECORD_MSG
         --TODO: Use sox to get file duration
@@ -388,20 +383,10 @@ function Database:save_section_result(callrequest_id, current_node, DTMF, record
 	end
 end
 
-
--- TEST
--- Define a shortcut function for testing
-
--- print(inspect(Database.list_audio))
--- print(inspect(Database.list_branching))
--- print(inspect(Database.list_branching[11]["any"]))
--- print(inspect(Database.list_branching[11]["1"]))
--- print(inspect(Database.list_branching[11]["timeout"]))
-
 --
 -- Test Code
 --
-if true then
+if false then
 	campaign_id = 23
     subscriber_id = 15
     callrequest_id = 30
@@ -414,15 +399,29 @@ if true then
     db = Database(debug_mode)
     db:connect()
     db:load_all(campaign_id, subscriber_id)
+
+	print(inspect(db.list_audio))
+	print(inspect(db.list_branching))
+	print(inspect(db.list_branching[11]["any"]))
+	print(inspect(db.list_branching[11]["1"]))
+	print(inspect(db.list_branching[11]["timeout"]))
+
     db:update_callrequest_cpt(callrequest_id)
     db:check_data()
     if db:save_result_recording(callrequest_id, section_id, record_file, recording_duration) then
     	print("OK save_result_recording")
     else
     	print("ERROR save_result_recording")
+    	res = db:update_result_recording(callrequest_id, section_id, record_file, recording_duration)
+    	print(res)
     end
-    db:update_result_recording(callrequest_id, section_id, record_file, recording_duration)
-    db:save_result_dtmf(callrequest_id, section_id, dtmf)
-    db:update_result_dtmf(callrequest_id, section_id, dtmf)
+
+    if db:save_result_dtmf(callrequest_id, section_id, dtmf) then
+		print("OK save_result_dtmf")
+    else
+    	print("ERROR save_result_dtmf")
+    	res = db:update_result_dtmf(callrequest_id, section_id, dtmf)
+    	print(res)
+    end
     db:disconnect()
 end

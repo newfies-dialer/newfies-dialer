@@ -53,8 +53,6 @@ end
 
 local callflow = FSMCall(session, debug_mode, debugger)
 
---error(_die)
-
 
 -- This function simply tells us what function are available in Session
 --   It just prints a list of all functions.  We may be able to find functions
@@ -70,7 +68,6 @@ function printSessionFunctions( session )
    print("\n***Session Functions***\n")
    for k,v in pairs(f) do print(k,v) end
    print("\n\n")
-
 end
 -- new_session = freeswitch.Session() -- create a blank session
 -- printSessionFunctions(new_session)
@@ -113,53 +110,6 @@ if session:ready() then
         end
     end
 
-    -- Play Message
-    -- session:streamFile(AUDIO_WELCOME);
-
-    -- digits = session:playAndGetDigits (
-    --       min_digits, max_digits, max_attempts, timeout, terminators,
-    --       prompt_audio_files, input_error_audio_files,
-    --       digit_regex, variable_name, digit_timeout,
-    --       transfer_on_failure)
-
-    -- Multi Choice
-    -- press_digit = session:playAndGetDigits(1, 1, 3, 4000, '#', AUDIO_PRESSDIGIT, '', '\\d+|#')
-    -- debug("info", "press digit = " .. press_digit )
-
-    -- -- Capture Digits
-    -- entered_age = session:playAndGetDigits(1, 6, 3, 4000, '#', AUDIO_ENTERAGE, '', '\\d+|#')
-    -- debug("info", "entered_age = " .. entered_age )
-
-    -- -- Recording
-    -- recording_dir = '/tmp/'
-    -- filename = 'myfile.wav'
-    -- recording_filename = string.format('%s%s', recording_dir, filename)
-
-    -- -- syntax is session:recordFile(file_name, max_len_secs, silence_threshold, silence_secs)
-    -- max_len_secs = 30
-    -- silence_threshold = 30
-    -- silence_secs = 5
-    -- test = session:recordFile(recording_filename, max_len_secs, silence_threshold, silence_secs)
-
-
-    -- max_attempts = 1
-    -- audiofile = '/usr/local/freeswitch/sounds/en/us/callie/voicemail/8000/vm-enter_new_pin.wav'
-
-    -- while max_attempts > 0 do
-    --     -- expect 1-6 digits, max_tries=3, timeout=4s, terminator=#
-    --     agent_id = session:playAndGetDigits(1, 6, 3, 4000, '#', audiofile, '', '\\d+|#')
-
-    --     -- did we actually get an agent_id?
-    --     if agent_id == "" then
-    --         session:sayPhrase("voicemail_goodbye")
-    --         session:hangup()
-    --     end
-
-    --     max_attempts = max_attempts - 1
-    -- end
-
-    -- session:sayPhrase("welcome")
-
     -- End call
     callflow:end_call()
 
@@ -178,6 +128,5 @@ else
        -- Log these issues
     end
 end
-
 
 error(_die);

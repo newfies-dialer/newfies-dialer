@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Newfies-Dialer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-12-10 09:19+0100\n"
-"PO-Revision-Date: 2012-12-10 15:02+0900\n"
+"PO-Revision-Date: 2012-12-13 19:22+0900\n"
 "Last-Translator: Chiaki Nakata <nakata@cba-japan.com>\n"
 "Language-Team: Japanese <dev@cba-japan.com>\n"
 "Language: ja_JP\n"
@@ -98,7 +98,7 @@ msgstr "管理"
 #: custom_admin_tools/menu.py:42 templates/api_browser/base.html:50
 #: templates/frontend/bootstrap_menu.html:115
 msgid "API Explorer"
-msgstr ""
+msgstr "API エクスプローラ"
 
 #: custom_admin_tools/menu.py:43
 msgid "Customer Panel"
@@ -137,9 +137,9 @@ msgstr "日付"
 #: dialer_audio/views.py:96 dialer_campaign/views.py:299
 #: dialer_contact/views.py:106 dialer_contact/views.py:399 survey/views.py:780
 #: voice_app/views.py:98
-#, fuzzy, python-format
+#, python-format
 msgid "\"%(name)s\" added."
-msgstr "\"%(name)s\" が追加されました."
+msgstr "\"%(name)s\" が追加されました"
 
 #: dialer_audio/views.py:137 dialer_campaign/views.py:332
 #: dialer_campaign/views.py:389 dialer_contact/views.py:157
@@ -170,43 +170,43 @@ msgstr "キャンペーンの数が最大値%(limit)sを超えています"
 
 #: dialer_campaign/constants.py:20
 msgid "PENDING"
-msgstr ""
+msgstr "保留"
 
 #: dialer_campaign/constants.py:21 dialer_campaign/constants.py:32
 msgid "PAUSE"
-msgstr ""
+msgstr "一時停止"
 
 #: dialer_campaign/constants.py:22 dialer_campaign/constants.py:33
 msgid "ABORT"
-msgstr ""
+msgstr "中止"
 
 #: dialer_campaign/constants.py:23
 msgid "FAIL"
-msgstr ""
+msgstr "失敗"
 
 #: dialer_campaign/constants.py:24
 msgid "SENT"
-msgstr ""
+msgstr "送信済み"
 
 #: dialer_campaign/constants.py:25
 msgid "IN PROCESS"
-msgstr ""
+msgstr "処理中"
 
 #: dialer_campaign/constants.py:26
 msgid "NOT AUTHORIZED"
-msgstr ""
+msgstr "未認証"
 
 #: dialer_campaign/constants.py:27
 msgid "COMPLETED"
-msgstr ""
+msgstr "完了"
 
 #: dialer_campaign/constants.py:31
 msgid "START"
-msgstr ""
+msgstr "開始"
 
 #: dialer_campaign/constants.py:34
 msgid "END"
-msgstr ""
+msgstr "終了"
 
 #: dialer_campaign/constants.py:40 survey/models.py:181 survey/models.py:183
 #: survey/models.py:185 survey/models.py:187 survey/models.py:189
@@ -236,7 +236,7 @@ msgstr "アプリケーション"
 #: templates/frontend/bootstrap_menu.html:45
 #: templates/frontend/contact/list.html:26
 msgid "Contacts"
-msgstr "顧客"
+msgstr "コンタクト"
 
 #: dialer_campaign/constants.py:46 dialer_campaign/models.py:167
 #: dialer_campaign/models.py:477 dialer_cdr/models.py:112
@@ -308,12 +308,10 @@ msgid "Outbound caller-ID"
 msgstr "アウトバウンド発信者ID"
 
 #: dialer_campaign/models.py:172
-#, fuzzy
 msgid "Caller name"
 msgstr "発信者番号"
 
 #: dialer_campaign/models.py:173
-#, fuzzy
 msgid "Outbound caller-Name"
 msgstr "アウトバウンド発信者ID"
 
@@ -331,7 +329,7 @@ msgstr "終了"
 
 #: dialer_campaign/models.py:184
 msgid "Daily start time"
-msgstr ""
+msgstr "一日の開始時間"
 
 #: dialer_campaign/models.py:185 dialer_campaign/models.py:188
 msgid "Time Format: HH:MM:SS"
@@ -339,7 +337,7 @@ msgstr "時間フォーマット: HH:MM:SS"
 
 #: dialer_campaign/models.py:187
 msgid "Daily stop time"
-msgstr ""
+msgstr "一日の終了時間"
 
 #: dialer_campaign/models.py:189
 msgid "Monday"
@@ -391,7 +389,7 @@ msgstr "最大再試行回数"
 
 #: dialer_campaign/models.py:206
 msgid "Maximum retries per contact"
-msgstr "顧客あたりの最大再試行回数"
+msgstr "コンタクトあたりの最大再試行回数"
 
 #: dialer_campaign/models.py:208
 msgid "Time between Retries"
@@ -402,23 +400,20 @@ msgid "Time delay in seconds before retrying contact"
 msgstr "秒単位での再試行前の遅延時間"
 
 #: dialer_campaign/models.py:211
-#, fuzzy
 msgid "Completion Max Retries"
 msgstr "最大再試行回数"
 
 #: dialer_campaign/models.py:212
 msgid "Amount of retries until a contact is completed"
-msgstr ""
+msgstr "コンタクトが取れるまでの再試行回数"
 
 #: dialer_campaign/models.py:214
-#, fuzzy
 msgid "Completion Time between Retries"
 msgstr "再試行するまでの時間"
 
 #: dialer_campaign/models.py:215
-#, fuzzy
 msgid "Time delay in seconds before retrying contact for completion"
-msgstr "秒単位での再試行前の遅延時間"
+msgstr "再試行前の遅延時間（秒）"
 
 #: dialer_campaign/models.py:217 dialer_settings/models.py:53
 msgid "Timeout on Call"
@@ -445,36 +440,32 @@ msgid "Additional application parameters."
 msgstr "追加のアプリケーションパラメータ"
 
 #: dialer_campaign/models.py:232
-#, fuzzy
 msgid "Imported Phonebook"
 msgstr "インポート済み電話帳リスト"
 
 #: dialer_campaign/models.py:234
 #: templates/frontend/survey/survey_report.html:64
-#, fuzzy
 msgid "Total Contact"
-msgstr "顧客のインポート"
+msgstr "総コンタクト数"
 
 #: dialer_campaign/models.py:235
 msgid "Total Contact for this campaign"
-msgstr ""
+msgstr "このキャンペーンの総コンタクト数"
 
 #: dialer_campaign/models.py:237
 msgid "Completed"
-msgstr ""
+msgstr "完了"
 
 #: dialer_campaign/models.py:238
 #: templates/frontend/survey/survey_report.html:65
 msgid "Total Contact that completed Call / Survey"
-msgstr ""
+msgstr "コール/アンケート調査を完了した総コンタクト数"
 
 #: dialer_campaign/models.py:249
-#, fuzzy
 msgid "Can see Campaign"
 msgstr "キャンペーンを選択"
 
 #: dialer_campaign/models.py:250
-#, fuzzy
 msgid "Can see Campaign Dashboard"
 msgstr "キャンペーンが中止されました"
 
@@ -518,7 +509,6 @@ msgid "Survey"
 msgstr "アンケート調査"
 
 #: dialer_campaign/models.py:308
-#, fuzzy
 msgid "Voice App"
 msgstr "ボイスアプリケーション"
 
@@ -536,13 +526,12 @@ msgid "Details"
 msgstr "詳細"
 
 #: dialer_campaign/models.py:398 dialer_campaign/models.py:484
-#, fuzzy
 msgid "Subscriber"
 msgstr "キャンペーン参加者"
 
 #: dialer_campaign/models.py:462
 msgid "Select Contact"
-msgstr "顧客を選択"
+msgstr "コンタクトを選択"
 
 #: dialer_campaign/models.py:464 dialer_cdr/models.py:129
 msgid "Select Campaign"
@@ -557,29 +546,27 @@ msgid "Count attempts"
 msgstr "試行回数"
 
 #: dialer_campaign/models.py:471
-#, fuzzy
 msgid "Completion Count attempts"
 msgstr "試行回数"
 
 #: dialer_campaign/models.py:474 dialer_contact/constants.py:48
 #: dialer_contact/models.py:115 templates/frontend/contact/change.html:19
 msgid "Contact"
-msgstr "顧客"
+msgstr "コンタクト"
 
 #: dialer_campaign/models.py:485
-#, fuzzy
 msgid "Subscribers"
 msgstr "キャンペーン参加者"
 
 #: dialer_campaign/views.py:61
 msgid ""
 "Error : You have to assign a phonebook to your campaign before starting it"
-msgstr ""
+msgstr "エラー：キャンペーンを開始する前に電話帳を割り当てる必要があります"
 
 #: dialer_campaign/views.py:69
 msgid ""
 "The campaign global settings cannot be edited when the campaign is started"
-msgstr ""
+msgstr "キャンペーンのグローバル設定はキャンペーンが開始されると編集できません"
 
 #: dialer_campaign/views.py:89 user_profile/management.py:57
 msgid "Dialer setting configuration"
@@ -608,13 +595,11 @@ msgid "Stop"
 msgstr "停止"
 
 #: dialer_campaign/views.py:167
-#, fuzzy
 msgid "Voice app"
 msgstr "ボイスアプリケーション"
 
 #: dialer_campaign/views.py:176
 #: dialer_cdr/templatetags/dialer_cdr_extras.py:216
-#, fuzzy
 msgid "Duplicate this campaign"
 msgstr "キャンペーンのアップデート"
 
@@ -636,6 +621,8 @@ msgid ""
 "The campaign is started, you can only edit Dialer settings and Campaign "
 "schedule"
 msgstr ""
+"キャンペーンが開始されました。ダイアラー設定とキャンペーンスケジュールのみ編"
+"集可になります"
 
 #: dialer_campaign/views.py:424 dialer_contact/views.py:213
 #: dialer_contact/views.py:493 survey/views.py:1432 voice_app/views.py:182
@@ -649,7 +636,7 @@ msgstr "<phonenumber|phonebook_id, phonenumber|phonebook_id,...>"
 
 #: dialer_campaign/management/commands/create_subscriber.py:24
 msgid "Creates a new contact for a given phonenumber and phonebook"
-msgstr "新しい顧客をこの電話番号と電話帳で作成します"
+msgstr "新しいコンタクトをこの電話番号と電話帳で作成します"
 
 #: dialer_campaign/management/commands/create_subscriber.py:38
 #: dialer_contact/management/commands/create_contact.py:39
@@ -660,12 +647,12 @@ msgstr "この電話帳を見つけることができません: %(id)s"
 #: dialer_campaign/management/commands/create_subscriber.py:47
 #: dialer_contact/management/commands/create_contact.py:54
 msgid "Duplicate contact!"
-msgstr "顧客が重複しています！"
+msgstr "コンタクトが重複しています！"
 
 #: dialer_campaign/management/commands/create_subscriber.py:50
 #, python-format
 msgid "Contact created id:%(id)s"
-msgstr "顧客が作成されました id:%(id)s"
+msgstr "コンタクトが作成されました id:%(id)s"
 
 #: dialer_campaign/management/commands/create_subscriber.py:55
 msgid "Can't find a Campaign with this phonebook"
@@ -697,11 +684,9 @@ msgstr "データベースのエラー"
 
 # msgid_plural "All %(total_count)s selected"
 #: dialer_cdr/admin.py:178
-#, fuzzy, python-format
+#, python-format
 msgid "%(total_count)s selected"
-msgid_plural "All %(total_count)s selected"
-msgstr[0] "%(total_count)s 選択されましたすべて%(total_count)s選択されました"
-msgstr[1] "%(total_count)s 選択されましたすべて%(total_count)s選択されました"
+msgstr "%(total_count)s 選択されました"
 
 #: dialer_cdr/admin.py:183
 #, python-format
@@ -718,27 +703,25 @@ msgstr "コール集計レポート"
 
 #: dialer_cdr/constants.py:23
 msgid "Pending"
-msgstr ""
+msgstr "保留"
 
 #: dialer_cdr/constants.py:24
 msgid "Failure"
-msgstr ""
+msgstr "失敗"
 
 #: dialer_cdr/constants.py:25
 msgid "Retry"
-msgstr ""
+msgstr "再試行"
 
 #: dialer_cdr/constants.py:26
 msgid "Success"
-msgstr ""
+msgstr "成功"
 
 #: dialer_cdr/constants.py:29
-#, fuzzy
 msgid "Processing"
 msgstr "使用許諾"
 
 #: dialer_cdr/constants.py:30
-#, fuzzy
 msgid "In Progress"
 msgstr "進捗状況"
 
@@ -763,7 +746,6 @@ msgid "B-Leg"
 msgstr "B-Leg"
 
 #: dialer_cdr/constants.py:54
-#, fuzzy
 msgid "ANSWER"
 msgstr "応答済み"
 
@@ -820,7 +802,6 @@ msgid "Caller ID"
 msgstr "発信者番号"
 
 #: dialer_cdr/constants.py:72
-#, fuzzy
 msgid "Phone No"
 msgstr "電話番号"
 
@@ -881,7 +862,6 @@ msgid "Extra dial string"
 msgstr "追加ダイヤル文字列"
 
 #: dialer_cdr/models.py:126
-#, fuzzy
 msgid "Subscriber related to this call request"
 msgstr "このコールリクエストに関係するキャンペーン参加者"
 
@@ -890,7 +870,6 @@ msgid "Select gateway to use to call the subscriber"
 msgstr "参加者に発信するために使うゲートウェイを選択"
 
 #: dialer_cdr/models.py:139
-#, fuzzy
 msgid "Call completed"
 msgstr "コール数カウント"
 
@@ -959,7 +938,6 @@ msgid "Hangup cause"
 msgstr "ハングアップ原因"
 
 #: dialer_cdr/models.py:253
-#, fuzzy
 msgid "Can see Call Detail Report"
 msgstr "コールレポート詳細"
 
@@ -978,12 +956,10 @@ msgid "No of Callrequest & CDR created :%(count)s"
 msgstr "作成されたコールリクエストとCDR :%(count)s"
 
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:126
-#, fuzzy
 msgid "\"campaign_id|quantity\" \"campaign_id|quantity\""
 msgstr "\"campaign_id|no_of_record\" \"campaign_id|no_of_record\""
 
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:127
-#, fuzzy
 msgid "Create new call requests and CDRs for a given campaign_id"
 msgstr "この campaign_id で新しいコールリクエストとCDRを作成する"
 
@@ -993,10 +969,9 @@ msgstr "この campaign_id で新しいコールリクエストとCDRを作成�
 msgid ""
 "You have too many contacts per campaign. You are allowed a maximum of "
 "%(limit)s"
-msgstr "キャンペーンにおける顧客の数が最大値%(limit)sを超えています"
+msgstr "キャンペーンにおけるコンタクトの数が最大値%(limit)sを超えています"
 
 #: dialer_contact/admin.py:164 dialer_contact/views.py:581
-#, fuzzy
 msgid ""
 "Invalid value for import! Please check the import samples or phonebook is "
 "not valid"
@@ -1004,22 +979,21 @@ msgstr ""
 "インポートファイルに不正な値が入っています。サンプルを参照してください。"
 
 #: dialer_contact/admin.py:199 dialer_contact/views.py:617
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "%(contact_cnt)s Contact(s) are uploaded successfully out of %(total_rows)s "
 "row(s) !!"
 msgstr ""
-"%(total_rows)s 行中 %(contact_record_count)s 顧客のアップロードが成功しました"
+"%(total_rows)s 行中 %(contact_cnt)s コンタクトのアップロードが成功しました"
 
 #: dialer_contact/admin.py:206
 #: templates/frontend/contact/import_contact.html:13
 msgid "Import Contact"
-msgstr "顧客のインポート"
+msgstr "コンタクトのインポート"
 
 #: dialer_contact/admin.py:210
-#, fuzzy
 msgid "Dialer_contact"
-msgstr "顧客の削除"
+msgstr "コンタクトの削除"
 
 #: dialer_contact/constants.py:20 dialer_gateway/constants.py:20
 msgid "ACTIVE"
@@ -1050,7 +1024,6 @@ msgid "Inactive"
 msgstr "非アクティブ"
 
 #: dialer_contact/constants.py:33
-#, fuzzy
 msgid "Active"
 msgstr "アクティブ"
 
@@ -1060,7 +1033,7 @@ msgstr "すべて"
 
 #: dialer_contact/constants.py:38 dialer_contact/constants.py:46
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: dialer_contact/constants.py:47 dialer_contact/forms.py:50
 #: dialer_contact/models.py:51 dialer_contact/models.py:87
@@ -1106,11 +1079,11 @@ msgstr "電話帳を選択"
 
 #: dialer_contact/forms.py:100
 msgid "Contact Number:"
-msgstr "顧客番号:"
+msgstr "コンタクト番号:"
 
 #: dialer_contact/forms.py:104
 msgid "Contact Name:"
-msgstr "顧客名:"
+msgstr "コンタクト名:"
 
 #: dialer_contact/forms.py:106
 msgid "Phonebook:"
@@ -1125,7 +1098,6 @@ msgid "Phonebook Notes"
 msgstr "電話帳　備考"
 
 #: dialer_contact/models.py:48
-#, fuzzy
 msgid "Can see Phonebook"
 msgstr "電話帳を選択"
 
@@ -1135,7 +1107,7 @@ msgstr "電話帳"
 
 #: dialer_contact/models.py:89
 msgid "Contact Number"
-msgstr "顧客番号"
+msgstr "コンタクト番号"
 
 #: dialer_contact/models.py:94
 msgid "Last Name"
@@ -1159,23 +1131,20 @@ msgid "City"
 msgstr "市区町村"
 
 #: dialer_contact/models.py:102
-#, fuzzy
 msgid "Additional parameters (JSON)"
 msgstr "追加パラメータ"
 
 #: dialer_contact/models.py:103
 msgid "Enter the list of parameters in Json format, e.g. {\"age\": \"32\"}"
-msgstr ""
+msgstr "Json形式でパラメータリストを入力してください。例： {\"age\": \"32\"}"
 
 #: dialer_contact/models.py:105
-#, fuzzy
 msgid "Notes"
 msgstr "メモ"
 
 #: dialer_contact/models.py:112
-#, fuzzy
 msgid "Can see Contact"
-msgstr "顧客を選択"
+msgstr "コンタクトを選択"
 
 #: dialer_contact/views.py:178
 #, python-format
@@ -1198,12 +1167,12 @@ msgstr "\"phonebook_id|no_of_record\" \"phonebook_id|no_of_record\""
 
 #: dialer_contact/management/commands/create_contact.py:25
 msgid "Creates new contacts for a given phonebook and no of records"
-msgstr "この電話帳に新しい顧客を作成する"
+msgstr "この電話帳に新しいコンタクトを作成する"
 
 #: dialer_contact/management/commands/create_contact.py:51
 #, python-format
 msgid "No of Contact created : %(count)s"
-msgstr "作成された顧客 : %(count)s"
+msgstr "作成されたコンタクト : %(count)s"
 
 #: dialer_gateway/constants.py:25
 msgid "SIP"
@@ -1455,46 +1424,41 @@ msgid "Enter Valid User Credentials."
 msgstr "有効なユーザー認証情報を入力してください"
 
 #: survey/constants.py:20 survey/constants.py:30
-#, fuzzy
 msgid "Play message"
-msgstr "音声メッセージ"
+msgstr "メッセージ再生"
 
 #: survey/constants.py:21 survey/constants.py:31
 msgid "Multi-choice"
-msgstr ""
+msgstr "複数選択"
 
 #: survey/constants.py:22 survey/constants.py:32
-#, fuzzy
 msgid "Rating question"
-msgstr "Goto質問"
+msgstr "評価の質問"
 
 #: survey/constants.py:23 survey/constants.py:33
 msgid "Capture digits"
-msgstr ""
+msgstr "数字を取得"
 
 #: survey/constants.py:24 survey/constants.py:34
-#, fuzzy
 msgid "Record message"
-msgstr "音声メッセージ"
+msgstr "メッセージを録音"
 
 #: survey/constants.py:25
 msgid "Call transfer"
-msgstr ""
+msgstr "コール転送"
 
 #: survey/constants.py:26 survey/constants.py:36
-#, fuzzy
 msgid "Hangup"
-msgstr "ハングアップ原因"
+msgstr "ハングアップ"
 
 #: survey/forms.py:46 templates/frontend/survey/survey_change.html:331
 #: templates/frontend/survey/survey_view.html:256
-#, fuzzy
 msgid "Hang up"
 msgstr "ハングアップ原因"
 
 #: survey/forms.py:80 survey/forms.py:105
 msgid "Any Other Key"
-msgstr ""
+msgstr "他キー"
 
 #: survey/models.py:45 voice_app/models.py:47
 msgid "Text-to-Speech Language"
@@ -1502,25 +1466,21 @@ msgstr "Text-to-Speech(TTS)の言語"
 
 #: survey/models.py:67
 msgid "Can see Survey Template"
-msgstr ""
+msgstr "アンケート調査テンプレート参照可"
 
 #: survey/models.py:69
-#, fuzzy
 msgid "Survey template"
-msgstr "アンケート調査結果"
+msgstr "アンケート調査テンプレート"
 
 #: survey/models.py:70
-#, fuzzy
 msgid "Survey templates"
-msgstr "アンケート調査レポート"
+msgstr "アンケート調査テンプレート"
 
 #: survey/models.py:114
-#, fuzzy
 msgid "Can see Survey"
 msgstr "アンケート調査のアップデート"
 
 #: survey/models.py:115
-#, fuzzy
 msgid "Can see Survey Report"
 msgstr "アンケート調査レポート"
 
@@ -1529,9 +1489,8 @@ msgid "Surveys"
 msgstr "アンケート調査"
 
 #: survey/models.py:163
-#, fuzzy
 msgid "section type"
-msgstr "アクションの種類"
+msgstr "セクションの種類"
 
 #: survey/models.py:166
 #: templates/frontend/survey/survey_campaign_result.html:30
@@ -1541,102 +1500,95 @@ msgstr "質問"
 
 #: survey/models.py:167
 msgid "Example : Hotel Service Rating"
-msgstr ""
+msgstr "例：ホテルのサービス評価"
 
 #: survey/models.py:170
 msgid "Example : Capture digits between 1 to 5, press pound key when done"
-msgstr ""
+msgstr "例：１から５の数字を選択し、終わったらシャープキーを押してください"
 
 #: survey/models.py:172
 msgid "Audio File"
 msgstr "音声ファイル"
 
 #: survey/models.py:174
-#, fuzzy
 msgid "retries"
-msgstr "最大再試行回数"
+msgstr "再試行回数"
 
 #: survey/models.py:175
 msgid "Retries this section until it's valid"
-msgstr ""
+msgstr "このセクションが有効になるまで再試行する"
 
 #: survey/models.py:177 templates/frontend/survey/survey_change.html:314
 #: templates/frontend/survey/survey_view.html:237
-#, fuzzy
 msgid "timeout"
 msgstr "タイムアウト"
 
 #: survey/models.py:178
 msgid "Timeout in seconds to press the key(s)"
-msgstr ""
+msgstr "キー押下のタイムアウト（秒）"
 
 #: survey/models.py:203
 msgid "From 1 to X"
-msgstr ""
+msgstr "1からX"
 
 #: survey/models.py:206
 msgid "Check validity"
-msgstr ""
+msgstr "有効性をチェック"
 
 #: survey/models.py:209
 msgid "Number of digits"
-msgstr ""
+msgstr "桁数"
 
 #: survey/models.py:211
 msgid "Minimum"
-msgstr ""
+msgstr "最小値"
 
 #: survey/models.py:213
-#, fuzzy
 msgid "Maximum"
-msgstr "最大再試行回数"
+msgstr "最大値"
 
 #: survey/models.py:217 templates/frontend/survey/survey_change.html:280
 #: templates/frontend/survey/survey_view.html:203
-#, fuzzy
 msgid "phone number"
 msgstr "電話番号"
 
 #: survey/models.py:220
-#, fuzzy
 msgid "Survey complete"
-msgstr "アンケート調査コール"
+msgstr "アンケート調査完了"
 
 #: survey/models.py:271 survey/models.py:333
 msgid "Audio Invalid Input"
-msgstr ""
+msgstr "入力が無効の場合の音声"
 
 #: survey/models.py:276
-#, fuzzy
 msgid "Section template"
-msgstr "アクションの種類"
+msgstr "セクションのテンプレート"
 
 #: survey/models.py:277
-#, fuzzy
 msgid "Section templates"
-msgstr "アクションの種類"
+msgstr "セクションのテンプレート"
 
 #: survey/models.py:338
 msgid "Section Template ID"
-msgstr ""
+msgstr "セクションテンプレートID"
 
 #: survey/models.py:357
 msgid "Entered value"
-msgstr ""
+msgstr "入力値"
 
 #: survey/models.py:380
 msgid "Branching template"
-msgstr ""
+msgstr "分岐のテンプレート"
 
 #: survey/models.py:381
 msgid "Branching templates"
-msgstr ""
+msgstr "分岐のテンプレート"
 
 #: survey/models.py:410 survey/models.py:411
 #: templates/frontend/survey/survey_change.html:292
 #: templates/frontend/survey/survey_view.html:214
 msgid "Branching"
-msgstr ""
+msgstr "分岐"
 
 #: survey/models.py:447 survey/models.py:473
 #: templates/frontend/survey/survey_campaign_result.html:31
@@ -1652,7 +1604,6 @@ msgid "Recording Duration"
 msgstr "録音時間"
 
 #: survey/models.py:475
-#, fuzzy
 msgid "Result count"
 msgstr "コール数カウント"
 
@@ -1663,38 +1614,35 @@ msgstr "%(count)sアンケート調査が削除されました"
 
 #: survey/views.py:873
 msgid "Section is added successfully."
-msgstr ""
+msgstr "正常にセクションが追加されました"
 
 #: survey/views.py:1018
-#, fuzzy
 msgid "Section updated."
-msgstr "開始日"
+msgstr "セクションが更新されました"
 
 #: survey/views.py:1176
 msgid "Section is deleted successfully."
-msgstr ""
+msgstr "正常にセクションが削除されました"
 
 #: survey/views.py:1211
-#, fuzzy
 msgid "Script updated."
-msgstr "開始日"
+msgstr "文章が更新されました"
 
 #: survey/views.py:1308
 msgid "Branching is added successfully."
-msgstr ""
+msgstr "分岐が正常に追加されました"
 
 #: survey/views.py:1312 survey/views.py:1376
-#, fuzzy
 msgid "duplicate record keys with goto."
 msgstr "記録キーが重複しています！"
 
 #: survey/views.py:1355
 msgid "Branching is deleted successfully."
-msgstr ""
+msgstr "分岐が正常に削除されました"
 
 #: survey/views.py:1371
 msgid "Branching updated."
-msgstr ""
+msgstr "分岐が更新されました"
 
 #: survey/views.py:1559
 msgid "No recording"
@@ -1749,11 +1697,8 @@ msgstr "ホーム"
 #: templates/admin/dialer_cdr/voipcall/change_list.html:34
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:34
 #: templates/admin/dialer_contact/contact/change_list.html:38
-#, fuzzy
 msgid "Please correct the error below."
-msgid_plural "Please correct the errors below."
-msgstr[0] "以下のエラーを修正してください"
-msgstr[1] "以下のエラーを修正してください"
+msgstr "以下のエラーを修正してください"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:42
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:42
@@ -1840,7 +1785,7 @@ msgstr "合計"
 
 #: templates/admin/dialer_contact/contact/change_list.html:31
 msgid "Import Contacts"
-msgstr "顧客のインポート"
+msgstr "コンタクトのインポート"
 
 #: templates/admin/dialer_contact/contact/import_contact.html:18
 #: templates/frontend/contact/import_contact.html:19
@@ -1849,7 +1794,7 @@ msgstr "サンプルファイル"
 
 #: templates/admin/dialer_contact/contact/import_contact.html:20
 msgid "contact"
-msgstr "顧客"
+msgstr "コンタクト"
 
 #: templates/admin/dialer_contact/contact/import_contact.html:21
 msgid "last name"
@@ -1877,7 +1822,7 @@ msgstr "additional_vars"
 
 #: templates/admin/dialer_contact/contact/import_contact.html:48
 msgid "CONTACT STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')"
-msgstr "顧客ステータス = ('1'-'ACTIVE') ('0'-'INACTIVE')"
+msgstr "コンタクトステータス = ('1'-'ACTIVE') ('0'-'INACTIVE')"
 
 #: templates/admin/dialer_contact/contact/import_contact.html:57
 #: templates/frontend/dashboard.html:21
@@ -1894,7 +1839,7 @@ msgstr "送信"
 
 #: templates/admin/dialer_contact/contact/import_contact.html:77
 msgid "Contact(s) imported"
-msgstr "顧客がインポートされました"
+msgstr "コンタクトがインポートされました"
 
 #: templates/admin/dialer_contact/contact/import_contact.html:93
 #: templates/frontend/contact/import_contact.html:92
@@ -1908,9 +1853,8 @@ msgstr "ダイアラーキャンペーン"
 
 #: templates/admin_tools/dashboard/module.html:10
 #: templates/admin_tools/dashboard/modules/app_list.html:10
-#, fuzzy
 msgid "Dialer Contact"
-msgstr "顧客を選択"
+msgstr "コンタクトを選択"
 
 #: templates/admin_tools/dashboard/module.html:13
 #: templates/admin_tools/dashboard/modules/app_list.html:13
@@ -1959,7 +1903,7 @@ msgstr "変更"
 
 #: templates/api_browser/base.html:5
 msgid "API Browser"
-msgstr ""
+msgstr "API ブラウザ"
 
 #: templates/frontend/bootstrap_menu.html:24
 #: templates/frontend/dashboard.html:5 templates/frontend/dashboard.html:12
@@ -2004,15 +1948,15 @@ msgstr "アドオン"
 
 #: templates/frontend/bootstrap_menu.html:76
 msgid "SMS (Text Messaging)"
-msgstr ""
+msgstr "SMS(テキストメッセージ)"
 
 #: templates/frontend/bootstrap_menu.html:77
 msgid "Voicemail Detection (AMD)"
-msgstr ""
+msgstr "ボイスメール検索(AMD)"
 
 #: templates/frontend/bootstrap_menu.html:78
 msgid "Rebranding"
-msgstr ""
+msgstr "リブランディング"
 
 #: templates/frontend/bootstrap_menu.html:97
 msgid "Account settings"
@@ -2045,7 +1989,6 @@ msgid " voice app(s) are going to be deleted?"
 msgstr "ボイスアプリケーションを削除しますか?"
 
 #: templates/frontend/custom_jquery_select_all.html:32
-#, fuzzy
 msgid " contact(s) are going to be deleted?"
 msgstr "音声を削除しますか?"
 
@@ -2064,7 +2007,7 @@ msgstr "電話帳を削除しますか？"
 
 #: templates/frontend/custom_jquery_select_all.html:60
 msgid " contact(s)?"
-msgstr "顧客"
+msgstr "コンタクト"
 
 #: templates/frontend/custom_jquery_select_all.html:63
 msgid " campaign(s) are going to be deleted?"
@@ -2080,7 +2023,7 @@ msgstr "この電話帳の削除を確定してください"
 
 #: templates/frontend/custom_jquery_select_all.html:109
 msgid "contact(s)"
-msgstr "顧客"
+msgstr "コンタクト"
 
 #: templates/frontend/dashboard.html:12
 msgid "Realtime campaign performance monitoring"
@@ -2092,7 +2035,7 @@ msgstr "電話帳の総数"
 
 #: templates/frontend/dashboard.html:29
 msgid "Total Campaign Contacts"
-msgstr "キャンペーン顧客総数"
+msgstr "キャンペーンコンタクト総数"
 
 #: templates/frontend/dashboard.html:30
 msgid "Contacted Today"
@@ -2104,109 +2047,103 @@ msgstr "コール数カウント"
 
 #: templates/frontend/dashboard.html:66
 msgid "Jan"
-msgstr ""
+msgstr "1月"
 
 #: templates/frontend/dashboard.html:67
 msgid "Feb"
-msgstr ""
+msgstr "2月"
 
 #: templates/frontend/dashboard.html:68
-#, fuzzy
 msgid "Mar"
 msgstr "マオリ語"
 
 #: templates/frontend/dashboard.html:69
-#, fuzzy
 msgid "Apr"
 msgstr "アプリケーション"
 
 #: templates/frontend/dashboard.html:70 templates/frontend/dashboard.html:83
-#, fuzzy
 msgid "May"
 msgstr "マレー語"
 
 #: templates/frontend/dashboard.html:71
 msgid "Jun"
-msgstr ""
+msgstr "6月"
 
 #: templates/frontend/dashboard.html:72
 msgid "Jul"
-msgstr ""
+msgstr "7月"
 
 #: templates/frontend/dashboard.html:73
 msgid "Aug"
-msgstr ""
+msgstr "8月"
 
 #: templates/frontend/dashboard.html:74
 msgid "Sep"
-msgstr ""
+msgstr "9月"
 
 #: templates/frontend/dashboard.html:75
 msgid "Oct"
-msgstr ""
+msgstr "10月"
 
 #: templates/frontend/dashboard.html:76
 msgid "Nov"
-msgstr ""
+msgstr "11月"
 
 #: templates/frontend/dashboard.html:77
 msgid "Dec"
-msgstr ""
+msgstr "12月"
 
 #: templates/frontend/dashboard.html:79
 msgid "January"
-msgstr ""
+msgstr "1月"
 
 #: templates/frontend/dashboard.html:80
 msgid "February"
-msgstr ""
+msgstr "2月"
 
 #: templates/frontend/dashboard.html:81
-#, fuzzy
 msgid "March"
 msgstr "検索"
 
 #: templates/frontend/dashboard.html:82
 msgid "April"
-msgstr ""
+msgstr "4月"
 
 #: templates/frontend/dashboard.html:84
 msgid "June"
-msgstr ""
+msgstr "6月"
 
 #: templates/frontend/dashboard.html:85
 msgid "July"
-msgstr ""
+msgstr "7月"
 
 #: templates/frontend/dashboard.html:86
 msgid "August"
-msgstr ""
+msgstr "8月"
 
 #: templates/frontend/dashboard.html:87
 msgid "September"
-msgstr ""
+msgstr "9月"
 
 #: templates/frontend/dashboard.html:88
 msgid "October"
-msgstr ""
+msgstr "10月"
 
 #: templates/frontend/dashboard.html:89
-#, fuzzy
 msgid "November"
-msgstr "電話番号"
+msgstr "11月"
 
 #: templates/frontend/dashboard.html:90
 msgid "December"
-msgstr ""
+msgstr "12月"
 
 #: templates/frontend/dashboard.html:233
-#, fuzzy
 msgid "Avg. Duration"
 msgstr "期限"
 
 #: templates/frontend/dashboard.html:234
 msgid "Hour"
-msgstr ""
+msgstr "時間"
 
 #: templates/frontend/dashboard.html:389
 msgid "TOTAL CALLS"
@@ -2332,23 +2269,22 @@ msgstr "(通知が送信されました)"
 
 #: templates/frontend/master.html:215
 msgid "Error"
-msgstr ""
+msgstr "エラー"
 
 #: templates/frontend/master.html:222
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 #: templates/frontend/api/api_list.html:19
 msgid "Newfies APIs"
-msgstr ""
+msgstr "Newfies APIs"
 
 #: templates/frontend/api/api_list.html:20
 msgid "Browser playground"
-msgstr ""
+msgstr "Browser playground"
 
 #: templates/frontend/api/api_list.html:31
 #: templates/frontend/survey/section_delete_confirmation.html:15
-#, fuzzy
 msgid "No"
 msgstr "なし"
 
@@ -2384,7 +2320,6 @@ msgstr "音声ファイルの一覧・アップロード・編集"
 #: templates/frontend/contact/list.html:96
 #: templates/frontend/phonebook/list.html:34
 #: templates/frontend/voiceapp/list.html:33
-#, fuzzy
 msgid "Delete selected"
 msgstr "選択された項目を削除"
 
@@ -2403,7 +2338,6 @@ msgstr "オーディオの削除"
 #: templates/frontend/report/voipcall_report.html:111
 #: templates/frontend/survey/survey_list.html:75
 #: templates/frontend/voiceapp/list.html:84
-#, fuzzy
 msgid "no records found"
 msgstr "記録が見つかりませんでした"
 
@@ -2414,7 +2348,6 @@ msgstr "記録が見つかりませんでした"
 #: templates/frontend/report/voipcall_report.html:117
 #: templates/frontend/survey/survey_list.html:81
 #: templates/frontend/voiceapp/list.html:90
-#, fuzzy
 msgid "total"
 msgstr "合計"
 
@@ -2423,7 +2356,7 @@ msgstr "合計"
 #: templates/frontend/survey/section_change.html:298
 #: templates/frontend/survey/section_script_change.html:73
 msgid "Save"
-msgstr ""
+msgstr "保存"
 
 #: templates/frontend/campaign/campaign_duplicate.html:75
 #: templates/frontend/survey/section_branch_change.html:119
@@ -2446,7 +2379,6 @@ msgid "Dialer settings"
 msgstr "ダイアラー設定"
 
 #: templates/frontend/campaign/change.html:89
-#, fuzzy
 msgid "Dialer Completion settings"
 msgstr "ダイアラー設定"
 
@@ -2480,15 +2412,15 @@ msgstr "キャンペーンの削除"
 
 #: templates/frontend/contact/change.html:20
 msgid "Add contact details"
-msgstr "顧客の詳細を追加"
+msgstr "コンタクトの詳細を追加"
 
 #: templates/frontend/contact/import_contact.html:13
 msgid "Import list of contact by uploading CSV files"
-msgstr "CSVアップロードにより顧客リストをインポート"
+msgstr "CSVアップロードによりコンタクトリストをインポート"
 
 #: templates/frontend/contact/import_contact.html:22
 msgid "Contact number"
-msgstr "顧客番号"
+msgstr "コンタクト番号"
 
 #: templates/frontend/contact/import_contact.html:28
 msgid "Additional variables"
@@ -2504,7 +2436,7 @@ msgstr "参加者がインポートされました"
 
 #: templates/frontend/contact/list.html:26
 msgid "List, add and edit contacts"
-msgstr "顧客の一覧・追加・削除"
+msgstr "コンタクトの一覧・追加・削除"
 
 #: templates/frontend/contact/list.html:94
 msgid "Import"
@@ -2512,15 +2444,15 @@ msgstr "インポート"
 
 #: templates/frontend/contact/list.html:137
 msgid "Update contact"
-msgstr "顧客のアップデート"
+msgstr "コンタクトのアップデート"
 
 #: templates/frontend/contact/list.html:140
 msgid "Delete contact"
-msgstr "顧客の削除"
+msgstr "コンタクトの削除"
 
 #: templates/frontend/phonebook/change.html:12
 msgid "Contacts are stored in phonebooks"
-msgstr "顧客は電話帳に保存されました"
+msgstr "コンタクトは電話帳に保存されました"
 
 #: templates/frontend/phonebook/list.html:9
 msgid "List, add and edit phonebooks"
@@ -2544,7 +2476,6 @@ msgid "Password reset complete"
 msgstr "パスワードのリセット完了"
 
 #: templates/frontend/registration/password_reset_complete.html:12
-#, fuzzy
 msgid "Your password has been set. You may go ahead and log in now."
 msgstr "パスワードが設定されました。ログインしてください。"
 
@@ -2683,9 +2614,8 @@ msgid "Detailed call data"
 msgstr "詳細コールデータ"
 
 #: templates/frontend/report/voipcall_report.html:57
-#, fuzzy
 msgid "Voip call detail records"
-msgstr "アンケート調査詳細コール記録"
+msgstr "詳細VOIPコール記録"
 
 #: templates/frontend/report/voipcall_report.html:63
 #: templates/frontend/survey/survey_report.html:131
@@ -2694,83 +2624,78 @@ msgstr "～"
 
 #: templates/frontend/survey/section_branch_change.html:41
 msgid "branch to section"
-msgstr ""
+msgstr "セクションへの分岐"
 
 #: templates/frontend/survey/section_branch_change.html:67
 #: templates/frontend/survey/survey_change.html:310
 #: templates/frontend/survey/survey_view.html:233
 msgid "any other key"
-msgstr ""
+msgstr "他キー"
 
 #: templates/frontend/survey/section_branch_change.html:69
 #: templates/frontend/survey/survey_change.html:312
 #: templates/frontend/survey/survey_view.html:235
 msgid "invalid"
-msgstr ""
+msgstr "無効"
 
 #: templates/frontend/survey/section_branch_change.html:104
 msgid "No branching on hangup, this will terminate the call"
-msgstr ""
+msgstr "ハングアップに分岐がないので、コールが終了されます"
 
 #: templates/frontend/survey/section_change.html:44
-#, fuzzy
 msgid "Section"
-msgstr "アクション"
+msgstr "セクション"
 
 #: templates/frontend/survey/section_change.html:102
 #: templates/frontend/survey/survey_change.html:143
 #: templates/frontend/survey/survey_view.html:77
-#, fuzzy
 msgid "question"
 msgstr "質問"
 
 #: templates/frontend/survey/section_change.html:104
 #: templates/frontend/survey/survey_change.html:145
 #: templates/frontend/survey/survey_view.html:79
-#, fuzzy
 msgid "section title"
-msgstr "アクションの種類"
+msgstr "セクションのタイトル"
 
 #: templates/frontend/survey/section_change.html:146
 msgid ""
 "Configure valid multi-choice options. The value of each field will be shown "
 "in the survey report"
 msgstr ""
+"有効な複数選択オプションを定義してください。各フィールドの値はアンケート調査"
+"レポートで参照できます"
 
 #: templates/frontend/survey/section_delete_confirmation.html:5
-#, fuzzy
 msgid "Delete Section"
 msgstr "選択された項目を削除"
 
 #: templates/frontend/survey/section_delete_confirmation.html:9
 msgid "You are about to delete"
-msgstr ""
+msgstr "削除しようとしています"
 
 #: templates/frontend/survey/section_delete_confirmation.html:9
 msgid "this procedure is irreversible."
-msgstr ""
+msgstr "このプロシージャは元に戻すことができません"
 
 #: templates/frontend/survey/section_delete_confirmation.html:10
 msgid "Do you want to proceed?"
-msgstr ""
+msgstr "継続しますか？"
 
 #: templates/frontend/survey/section_delete_confirmation.html:14
 msgid "Yes"
-msgstr ""
+msgstr "はい"
 
 #: templates/frontend/survey/section_script_change.html:47
-#, fuzzy
 msgid "Section script"
-msgstr "ボイスアプリケーションの説明"
+msgstr "セクションスクリプト"
 
 #: templates/frontend/survey/survey_campaign_result.html:23
 #: templates/frontend/survey/survey_report.html:188
-#, fuzzy
 msgid "Result"
 msgstr "アンケート調査結果"
 
 #: templates/frontend/survey/survey_campaign_result.html:32
-#, fuzzy
 msgid "Record file"
 msgstr "記録ファイル"
 
@@ -2781,19 +2706,17 @@ msgstr "アンケート調査の設定"
 #: templates/frontend/survey/survey_change.html:73
 #: templates/frontend/survey/survey_view.html:46
 msgid "complete"
-msgstr ""
+msgstr "完了"
 
 #: templates/frontend/survey/survey_change.html:152
 #: templates/frontend/survey/survey_view.html:85
-#, fuzzy
 msgid "audio file"
 msgstr "音声ファイル"
 
 #: templates/frontend/survey/survey_change.html:161
 #: templates/frontend/survey/survey_view.html:95
-#, fuzzy
 msgid "script"
-msgstr "説明"
+msgstr "文章"
 
 #: templates/frontend/survey/survey_change.html:165
 msgid "Edit"
@@ -2801,13 +2724,12 @@ msgstr "編集"
 
 #: templates/frontend/survey/survey_change.html:170
 msgid "Play"
-msgstr ""
+msgstr "再生"
 
 #: templates/frontend/survey/survey_change.html:185
 #: templates/frontend/survey/survey_view.html:108
-#, fuzzy
 msgid "Key Associations"
-msgstr "最近のアクション"
+msgstr "キー関連"
 
 #: templates/frontend/survey/survey_change.html:193
 #: templates/frontend/survey/survey_change.html:199
@@ -2829,36 +2751,33 @@ msgstr "最近のアクション"
 #: templates/frontend/survey/survey_view.html:158
 #: templates/frontend/survey/survey_view.html:164
 #: templates/frontend/survey/survey_view.html:170
-#, fuzzy
 msgid "key"
 msgstr "キー"
 
 #: templates/frontend/survey/survey_change.html:263
 #: templates/frontend/survey/survey_view.html:186
-#, fuzzy
 msgid "From 1 to"
 msgstr "開始"
 
 #: templates/frontend/survey/survey_change.html:271
 #: templates/frontend/survey/survey_view.html:194
 msgid "Number is between"
-msgstr ""
+msgstr "番号の範囲"
 
 #: templates/frontend/survey/survey_change.html:271
 #: templates/frontend/survey/survey_view.html:194
-#, fuzzy
 msgid "and"
-msgstr "ガンダ語"
+msgstr "～"
 
 #: templates/frontend/survey/survey_change.html:297
 #: templates/frontend/survey/survey_view.html:219
 msgid "keys"
-msgstr ""
+msgstr "キー"
 
 #: templates/frontend/survey/survey_change.html:299
 #: templates/frontend/survey/survey_view.html:221
 msgid "goto"
-msgstr ""
+msgstr "goto"
 
 #: templates/frontend/survey/survey_change.html:319
 #: templates/frontend/survey/survey_view.html:242
@@ -2867,39 +2786,35 @@ msgstr "なし"
 
 #: templates/frontend/survey/survey_change.html:335
 msgid "Branching on timeout"
-msgstr ""
+msgstr "タイムアウト時の分岐"
 
 #: templates/frontend/survey/survey_change.html:387
-#, fuzzy
 msgid "Add Section"
 msgstr "質問を追加"
 
 #: templates/frontend/survey/survey_change.html:392
-#, fuzzy
 msgid "Close Survey"
 msgstr "アンケート調査"
 
 #: templates/frontend/survey/survey_change_header.html:52
-#, fuzzy
 msgid "Edit section"
 msgstr "応答の編集"
 
 #: templates/frontend/survey/survey_change_header.html:61
-#, fuzzy
 msgid "Delete section"
-msgstr "顧客の削除"
+msgstr "コンタクトの削除"
 
 #: templates/frontend/survey/survey_change_header.html:70
 msgid "Branch"
-msgstr ""
+msgstr "分岐"
 
 #: templates/frontend/survey/survey_change_header.html:79
 msgid "Collapse"
-msgstr ""
+msgstr "折りたたむ"
 
 #: templates/frontend/survey/survey_change_header.html:88
 msgid "Move"
-msgstr ""
+msgstr "移動"
 
 #: templates/frontend/survey/survey_list.html:9
 msgid "List, add and edit surveys"
@@ -2952,9 +2867,8 @@ msgid "Survey Result"
 msgstr "アンケート調査結果"
 
 #: templates/frontend/survey/survey_report.html:189
-#, fuzzy
 msgid "view details"
-msgstr "ライセンス情報を見る"
+msgstr "詳細を見る"
 
 #: templates/frontend/survey/survey_report.html:204
 msgid "total calls"
@@ -2969,12 +2883,10 @@ msgid "List, add and edit voice applications"
 msgstr "ボイスアプリケーションの一覧・追加・編集"
 
 #: templates/frontend/voiceapp/list.html:73
-#, fuzzy
 msgid "Update voiceapp"
 msgstr "ボイスアプリケーションのアップデート"
 
 #: templates/frontend/voiceapp/list.html:76
-#, fuzzy
 msgid "Delete voiceapp"
 msgstr "ボイスアプリケーションを削除"
 
@@ -2997,42 +2909,34 @@ msgid "Log in again"
 msgstr "もう一度ログインしてください"
 
 #: user_profile/constants.py:20
-#, fuzzy
 msgid "campaign started"
 msgstr "キャンペーンが開始しました"
 
 #: user_profile/constants.py:21
-#, fuzzy
 msgid "campaign paused"
 msgstr "キャンペーンが一時停止しました"
 
 #: user_profile/constants.py:22
-#, fuzzy
 msgid "campaign aborted"
 msgstr "キャンペーンが中止されました"
 
 #: user_profile/constants.py:23
-#, fuzzy
 msgid "campaign stopped"
 msgstr "キャンペーンが停止しました"
 
 #: user_profile/constants.py:24
-#, fuzzy
 msgid "campaign limit reached"
 msgstr "キャンペーンは限界数に達しました"
 
 #: user_profile/constants.py:25
-#, fuzzy
 msgid "contact limit reached"
-msgstr "顧客は限界数に達しました"
+msgstr "コンタクトが限界数に達しました"
 
 #: user_profile/constants.py:26
-#, fuzzy
 msgid "dialer setting configuration"
 msgstr "Dialerの構成設定"
 
 #: user_profile/constants.py:27
-#, fuzzy
 msgid "callrequest not found"
 msgstr "コールリクエストが見つかりません"
 
@@ -3070,7 +2974,7 @@ msgstr "キャンペーンは限界数に達しました"
 
 #: user_profile/management.py:52 user_profile/management.py:53
 msgid "Contact limit reached"
-msgstr "顧客は限界数に達しました"
+msgstr "コンタクトは限界数に達しました"
 
 #: user_profile/management.py:58
 msgid "The user needs to be mapped with dialer settings by the administrator"
@@ -3114,7 +3018,7 @@ msgstr "メモ"
 
 #: user_profile/models.py:88
 msgid "Can see API-Explorer"
-msgstr ""
+msgstr "API エクスプローラ参照可"
 
 #: user_profile/models.py:91 user_profile/models.py:92
 msgid "User Profile"
@@ -3126,7 +3030,7 @@ msgstr "お客様"
 
 #: user_profile/models.py:101
 msgid "Customers"
-msgstr "顧客"
+msgstr "コンタクト"
 
 #: user_profile/models.py:109
 msgid "Admin"
@@ -3159,19 +3063,19 @@ msgstr "あなたのパスワードは変更されました"
 
 #: voice_app/constants.py:20
 msgid "DIAL"
-msgstr ""
+msgstr "ダイヤル"
 
 #: voice_app/constants.py:21
 msgid "PLAYAUDIO"
-msgstr ""
+msgstr "再生"
 
 #: voice_app/constants.py:22
 msgid "CONFERENCE"
-msgstr ""
+msgstr "会議"
 
 #: voice_app/constants.py:23
 msgid "SPEAK"
-msgstr ""
+msgstr "SPEAK"
 
 #: voice_app/constants.py:31
 msgid "Data"
@@ -3190,28 +3094,22 @@ msgid "Gateway used if we redirect the call"
 msgstr "着信転送する時に使用するゲートウェイ"
 
 #: voice_app/models.py:57
-#, fuzzy
 msgid "The value of 'data' depends on the type of voice application :<br/>"
-msgstr ""
-"データの内容はボイスアプリケーションの種類によります :<br/>- ダイヤル : ダイ"
-"ヤルする番号<br/>- 会議 : 会議室の名前または番号<br/>"
+msgstr "データの内容はボイスアプリケーションの種類によります :<br/>"
 
 #: voice_app/models.py:85
 msgid "Can see Voiceapp Template"
-msgstr ""
+msgstr "ボイスアプリケーションテンプレート参照可"
 
 #: voice_app/models.py:87
-#, fuzzy
 msgid "Voice Application Template"
-msgstr "ボイスアプリケーション"
+msgstr "ボイスアプリケーションテンプレート"
 
 #: voice_app/models.py:88
-#, fuzzy
 msgid "Voice Applications Templates"
-msgstr "ボイスアプリケーション"
+msgstr "ボイスアプリケーションテンプレート"
 
 #: voice_app/models.py:135
-#, fuzzy
 msgid "Can see Voice App"
 msgstr "ボイスアプリケーションのアップデート"
 

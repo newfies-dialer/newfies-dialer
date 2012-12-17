@@ -72,16 +72,14 @@ function FSMCall:init()
     end
     self.db:check_data()
     self.db:disconnect()
-
-    self.debugger:msg("INFO", "start_node--->"..self.db.start_node)
-    self.current_node_id = self.db.start_node
     --print(inspect(self.db.list_section[tonumber(self.db.start_node)]))
     if not self.db.valid_data then
         self.debugger:msg("ERROR", "Error invalid data")
         self:hangupcall()
         return false
     end
-    --print(inspect(self.db.list_audio))
+    self.debugger:msg("INFO", "start_node--->"..self.db.start_node)
+    self.current_node_id = self.db.start_node
 end
 
 function FSMCall:end_call()
@@ -306,7 +304,11 @@ function FSMCall:next_node()
     -- TODO: Finish Aggregate result
     if digits or record_file then
         print("Save results...")
+        self.db:connect()
         self.db:save_section_result(callrequest_id, current_node, DTMF, record_file)
+        self.db:disconnect()
+        --TODO: Improve by saving all the result at the end of the calls
+        --TODO: Bulk insert
     end
 
     --

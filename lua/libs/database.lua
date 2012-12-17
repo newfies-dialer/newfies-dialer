@@ -24,10 +24,10 @@ require "constant"
 
 Database = oo.class{
 	-- default field values
-	TABLE_SECTION   = 'survey_section_template',
-	TABLE_BRANCHING = 'survey_branching_template',
-	-- TABLE_SECTION   = 'survey_section',
-	-- TABLE_BRANCHING = 'survey_branching',
+	-- TABLE_SECTION   = 'survey_section_template',
+	-- TABLE_BRANCHING = 'survey_branching_template',
+	TABLE_SECTION   = 'survey_section',
+	TABLE_BRANCHING = 'survey_branching',
 	env = nil,
 	con = nil,
 	list_section = nil,
@@ -58,18 +58,13 @@ function Database:disconnect()
 end
 
 function Database:load_survey_section(survey_id)
-	print("Load survey section")
 	-- id	order	type	question	script	audiofile_id	retries	timeout
 	-- key_0	key_1	key_2	key_3	key_4	key_5	key_6	key_7	key_8	key_9
 	-- rating_laps	validate_number	number_digits	phonenumber	completed	created_date
 	-- updated_date	survey_id	invalid_audiofile_id	min_number	max_number
 	QUERY = "SELECT * FROM "..self.TABLE_SECTION.." WHERE survey_id="..survey_id.." ORDER BY "..self.TABLE_SECTION..".order"
+	print("Load survey section : "..QUERY)
 	cur = self.con:execute(QUERY)
-
-	-- LOOP THROUGH THE CURSOR
-	if debug_mode then
-		print(string.format("%15s  %-15s %-15s %-15s", "#", "QUESTION", "TYPE", "ORDER"))
-	end
 	list = {}
 	row = cur:fetch ({}, "a")
 	while row do
@@ -84,6 +79,9 @@ function Database:load_survey_section(survey_id)
 	end
 	cur:close()
 	self.list_section = list
+	if not self.start_node then
+		print("Error Loading Survey Section")
+	end
 end
 
 function Database:load_survey_branching(survey_id)
@@ -196,24 +194,25 @@ end
 function Database:load_all(campaign_id, subscriber_id)
 	self:load_contact(subscriber_id)
 	if not self.contact then
+		print("Error: No Contact")
 		return false
 	end
-	print(inspect(self.contact))
+	--print(inspect(self.contact))
 
 	self:load_campaign_info(campaign_id)
 	if not self.campaign_info then
+		print("Error: No Campaign")
 		return false
 	end
 	--print(inspect(self.campaign_info))
 
-	--TODO: 34 should be flexible
+	--TODO: Fix content_type_id = 34 should be flexible
 	if self.campaign_info.content_type_id == 34 then
 		self.app_type = 'survey'
 	else
 		self.app_type = 'voice_app'
 	end
 	survey_id = self.campaign_info.object_id
-	print(">> survey_id = "..survey_id)
 	--TODO: Support Voice App
 	self:load_survey_section(survey_id)
 	self:load_survey_branching(survey_id)
@@ -228,6 +227,10 @@ function Database:check_data()
 	end
 	--Check if we retrieve List Section
 	if not self.list_section then
+		self.valid_data = false
+	end
+	--Check we got a start_node
+	if not self.start_node then
 		self.valid_data = false
 	end
 end
@@ -319,7 +322,7 @@ function Database:save_section_result(callrequest_id, current_node, DTMF, record
     -- save the result of a section
     if current_node.type == RECORD_MSG then
         --RECORD_MSG
-        --TODO: Use sox to get file duration
+        --TODO: Use sox to get recording duration
         recording_duration = 0
 
 		--TODO: Save aggregated result

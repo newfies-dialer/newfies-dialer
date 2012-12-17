@@ -12,6 +12,9 @@
 -- Arezqui Belaid <info@star2billing.com>
 --
 
+package.path = package.path .. ";/home/areski/public_html/django/MyProjects/newfies-dialer/lua/?.lua";
+package.path = package.path .. ";/home/areski/public_html/django/MyProjects/newfies-dialer/lua/libs/?.lua";
+
 -- this file contain function to :
 --
 -- excecute_command
@@ -20,7 +23,6 @@
 -- acapela
 --
 
-require "luarocks.require"
 require "md5"
 require "lfs"
 

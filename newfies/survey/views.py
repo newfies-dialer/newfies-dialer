@@ -1843,7 +1843,7 @@ def export_survey(request, id):
             ])
 
         for section in section_list:
-            branching_list = Branching_template.objects.filter(section=section).order_by('section')
+            branching_list = Branching_template.objects.filter(section=section).order_by('id')
             for branching in branching_list:
                 # write branching text file
                 writer.writerow([
@@ -1931,19 +1931,12 @@ def import_survey(request, id):
                         if row[2] != '':
                             new_goto_section_id = new_old_section[int(row[2])]
 
-                        if new_section_id and new_goto_section_id:
-                            obj = Branching_template.objects.create(
-                                keys=row[0],
-                                section_id=new_section_id,
-                                goto_id=new_goto_section_id,
-                            )
-                        else:
-                            if new_section_id:
-                                # for branching
-                                obj = Branching_template.objects.create(
-                                    keys=row[0],
-                                    section_id=new_section_id,
-                                )
+                        obj = Branching_template.objects.create(
+                            keys=row[0],
+                            section_id=int(new_section_id) if new_section_id else None,
+                            goto_id=int(new_goto_section_id) if new_goto_section_id else None,
+                        )
+
                         branching_row.append(row)
                     except:
                         type_error_import_list.append(row)

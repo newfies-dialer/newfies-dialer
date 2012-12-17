@@ -1925,19 +1925,20 @@ def import_survey(request, id):
                     new_section_id = ''
                     new_goto_section_id = ''
 
-                    #try:
                     if row[1]:
                         new_section_id = new_old_section[int(row[1])]
 
                     if row[2]:
                         new_goto_section_id = new_old_section[int(row[2])]
 
-                    duplicate_count = Branching_template.objects.filter(keys=row[0], section_id=new_section_id).count()
+                    duplicate_count = \
+                        Branching_template.objects.filter(keys=row[0], section_id=new_section_id).count()
+
                     if duplicate_count == 0:
                         try:
                             obj = Branching_template.objects.create(
                                 keys=row[0],
-                                section_id=int(new_section_id) if new_section_id else None,
+                                section_id=new_section_id,
                                 goto_id=int(new_goto_section_id) if new_goto_section_id else None,
                             )
                             branching_row.append(row)

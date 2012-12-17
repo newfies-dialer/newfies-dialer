@@ -52,7 +52,6 @@ end
 
 function FSMCall:init()
     self.debugger:msg("INFO", "FSMCall:init")
-    self.extension_list = self.session:getVariable("extension_list")
     self.caller_id_name = self.session:getVariable("caller_id_name")
     self.caller_id_number = self.session:getVariable("caller_id_number")
     self.destination_number = self.session:getVariable("destination_number")
@@ -60,9 +59,12 @@ function FSMCall:init()
     self.campaign_id = self.session:getVariable("campaign_id")
     self.subscriber_id = self.session:getVariable("subscriber_id")
     self.callrequest_id = self.session:getVariable("callrequest_id")
-    self.campaign_id = 23
-    self.subscriber_id = 15
-    self.callrequest_id = 30
+    --Keep this for manual test
+    if not self.campaign_id or self.campaign_id == nil then
+        self.campaign_id = 23
+        self.subscriber_id = 15
+        self.callrequest_id = 30
+    end
 
     self.db:connect()
     if not self.db:load_all(self.campaign_id, self.subscriber_id) then

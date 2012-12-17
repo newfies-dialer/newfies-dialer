@@ -1924,23 +1924,25 @@ def import_survey(request, id):
                 if  len(row) == 3:
                     new_section_id = ''
                     new_goto_section_id = ''
-                    try:
-                        if row[1] != '':
-                            new_section_id = new_old_section[int(row[1])]
 
-                        if row[2] != '':
-                            new_goto_section_id = new_old_section[int(row[2])]
+                    #try:
+                    if row[1]:
+                        new_section_id = new_old_section[int(row[1])]
 
-                        obj = Branching_template.objects.create(
-                            keys=row[0],
-                            section_id=int(new_section_id) if new_section_id else None,
-                            goto_id=int(new_goto_section_id) if new_goto_section_id else None,
-                        )
+                    if row[2]:
+                        new_goto_section_id = new_old_section[int(row[2])]
 
-                        branching_row.append(row)
-                    except:
-                        type_error_import_list.append(row)
-
+                    duplicate_count = Branching_template.objects.filter(keys=row[0], section_id=new_section_id).count()
+                    if duplicate_count == 0:
+                        try:
+                            obj = Branching_template.objects.create(
+                                keys=row[0],
+                                section_id=int(new_section_id) if new_section_id else None,
+                                goto_id=int(new_goto_section_id) if new_goto_section_id else None,
+                            )
+                            branching_row.append(row)
+                        except:
+                            type_error_import_list.append(row)
 
     template = 'frontend/survey/import_survey.html'
     data = {

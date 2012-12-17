@@ -176,6 +176,8 @@ function FSMCall:getdigitnode(current_node)
     retries = tonumber(current_node.retries)
     if not retries then
         retries = 1
+    elseif retries <= 0 then
+        retries = 1
     end
 
     --Invalid Audio
@@ -217,9 +219,10 @@ function FSMCall:getdigitnode(current_node)
         script = self.db:placeholder_replace(current_node.script)
 
         tts_file = tts(current_node.script, TTS_DIR)
-        self.debugger:msg("INFO", "\nPlay TTS : "..tts_file)
+        self.debugger:msg("INFO", "\nPlay TTS (number_digits="..number_digits..", retries="..retries.."): "..tts_file)
+        --entered_age = session:playAndGetDigits(1, 6, 3, 4000, '#', tts_file, '', '\\d+|#')
         digits = self.session:playAndGetDigits(1, number_digits, retries,
-            timeout*1000, '#', tts_file, invalid_audiofile, dtmf_filter)
+            timeout*1000, '#', tts_file, invalid_audiofile, '['..dtmf_filter..']|#')
     end
     return digits
 end
@@ -238,10 +241,12 @@ function FSMCall:next_node()
     end
 
     if (current_node.completed == 't' and not self.marked_completed) then
+        self.db:connect()
         -- Mark the subscriber as completed and increment campaign completed field
         self.db:update_subscriber(self.subscriber_id, SUBSCRIBER_COMPLETED)
         --Flag Callrequest
         self.db:update_callrequest_cpt(self.callrequest_id)
+        self.db:disconnect()
     end
 
     --self.debugger:msg("INFO", "current_node.type >>>>> "..current_node.type)
@@ -263,15 +268,15 @@ function FSMCall:next_node()
 
     elseif current_node.type == MULTI_CHOICE then
         digits = self:getdigitnode(current_node)
-        self.debugger:msg("INFO", "result digit => " .. digits )
+        self.debugger:msg("INFO", "result digit => "..digits)
 
     elseif current_node.type == RATING_SECTION then
         digits = self:getdigitnode(current_node)
-        self.debugger:msg("INFO", "result digit => " .. digits )
+        self.debugger:msg("INFO", "result digit => "..digits)
 
     elseif current_node.type == CAPTURE_DIGITS then
         digits = self:getdigitnode(current_node)
-        self.debugger:msg("INFO", "result digit => " .. digits )
+        self.debugger:msg("INFO", "result digit => "..digits)
 
     elseif current_node.type == RECORD_MSG then
         --timeout : Seconds of silence before considering the recording complete
@@ -283,6 +288,7 @@ function FSMCall:next_node()
         id_recordfile = math.random(10000000, 99999999);
         record_file = "/tmp/recording-".."-"..id_recordfile..".wav"
         result_rec = self.session:recordFile(record_file, max_len_secs, silence_threshold, silence_secs)
+        self.debugger:msg("INFO", "RECORDING : "..record_file)
     else
         self.debugger:msg("INFO", "EXCEPTION -> HANGUP")
         self:end_call()
@@ -295,7 +301,7 @@ function FSMCall:next_node()
     -- TODO: Finish Aggregate result
     if digits or record_file then
         self.db:connect()
-        self.db:save_section_result(callrequest_id, current_node, DTMF, record_file)
+        self.db:save_section_result(self.callrequest_id, current_node, digits, record_file)
         self.db:disconnect()
         --TODO: Improve by saving all the result at the end of the calls
         --TODO: Bulk insert
@@ -355,7 +361,7 @@ function FSMCall:next_node()
 
         self.debugger:msg("INFO", "Got -------------------------> : "..digits)
         -- check if we got a branching for this capture
-        if digits or string.len(digits) >= 0 then
+        if digits and string.len(digits) > 0 then
 
             if current_branching[digits] and current_branching[digits].goto_id then
                 --We got a branching for this DTMF and a goto_id

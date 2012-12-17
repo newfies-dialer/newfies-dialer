@@ -44,7 +44,7 @@ function Debugger:msg(level, message)
     if not self.fs_env then
         print(message)
     else
-        --freeswitch.consoleLog(level, message)
+        freeswitch.consoleLog(level, message.."\n")
     end
     logger:info(message)
 end

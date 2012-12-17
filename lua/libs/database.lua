@@ -174,7 +174,7 @@ function Database:update_subscriber(subscriber_id, status)
 end
 
 function Database:update_campaign_completed()
-	sqlquery = "UPDATE dialer_campaign SET completed = completed + 1 WHERE id="..campaign_info.id
+	sqlquery = "UPDATE dialer_campaign SET completed = completed + 1 WHERE id="..self.campaign_info.id
 	self.debugger:msg("INFO", "Update Campaign : "..sqlquery)
 	res = self.con:execute(sqlquery)
 end

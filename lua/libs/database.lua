@@ -37,16 +37,18 @@ Database = oo.class{
 	valid_data = true,
 	app_type = 'survey', -- survey or voice_app
 	start_node = false,
+	debugger = nil,
 }
 
-function Database:__init(debug_mode)
+function Database:__init(debug_mode, debugger)
 	-- self is the class
 	return oo.rawnew(self, {
-		debug_mode = debug_mode
+		debug_mode = debug_mode,
+		debugger = debugger
 	})
 end
 
-function Database:connect()
+function Database:connect(debugger)
 	self.env = assert(luasql.postgres())
 	self.con = assert(self.env:connect('newfies2', 'newfiesuser', 'password', "127.0.0.1", 5432))
 end
@@ -62,15 +64,13 @@ function Database:load_survey_section(survey_id)
 	-- key_0	key_1	key_2	key_3	key_4	key_5	key_6	key_7	key_8	key_9
 	-- rating_laps	validate_number	number_digits	phonenumber	completed	created_date
 	-- updated_date	survey_id	invalid_audiofile_id	min_number	max_number
-	QUERY = "SELECT * FROM "..self.TABLE_SECTION.." WHERE survey_id="..survey_id.." ORDER BY "..self.TABLE_SECTION..".order"
-	print("Load survey section : "..QUERY)
-	cur = self.con:execute(QUERY)
+	sqlquery = "SELECT * FROM "..self.TABLE_SECTION.." WHERE survey_id="..survey_id.." ORDER BY "..self.TABLE_SECTION..".order"
+	self.debugger:msg("INFO", "Load survey section : "..sqlquery)
+	cur = self.con:execute(sqlquery)
 	list = {}
 	row = cur:fetch ({}, "a")
 	while row do
-		if debug_mode then
-			print(string.format("%15d  %-15s %-15s %-15s", row.id, row.question, row.type, row.order))
-		end
+		self.debugger:msg("DEBUG", string.format("%15d  %-15s %-15s %-15s", row.id, row.question, row.type, row.order))
 		if not self.start_node then
 			self.start_node = row.id
 		end
@@ -80,29 +80,25 @@ function Database:load_survey_section(survey_id)
 	cur:close()
 	self.list_section = list
 	if not self.start_node then
-		print("Error Loading Survey Section")
+		self.debugger:msg("INFO", "Error Loading Survey Section")
 	end
 end
 
 function Database:load_survey_branching(survey_id)
-	print("Load survey branching")
 	-- id	keys section_id	goto_id
-	QUERY = "SELECT "..self.TABLE_BRANCHING..".id, keys, section_id, goto_id "..
+	sqlquery = "SELECT "..self.TABLE_BRANCHING..".id, keys, section_id, goto_id "..
 		"FROM "..self.TABLE_BRANCHING.." LEFT JOIN "..self.TABLE_SECTION..
 		" ON "..self.TABLE_SECTION..".id="..self.TABLE_BRANCHING..".section_id "..
 		"WHERE survey_id="..survey_id
-	cur = self.con:execute(QUERY)
+	self.debugger:msg("INFO", "Load survey branching : "..sqlquery)
+	cur = self.con:execute(sqlquery)
 
 	-- LOOP THROUGH THE CURSOR
-	if debug_mode then
-		print(string.format("%15s  %-15s %-15s %-15s", "#", "KEYS", "SECTION_ID", "GOTO_ID"))
-	end
+	self.debugger:msg("DEBUG", string.format("%15s  %-15s %-15s %-15s", "#", "KEYS", "SECTION_ID", "GOTO_ID"))
 	list = {}
 	row = cur:fetch ({}, "a")
 	while row do
-		if debug_mode then
-			print(string.format("%15d  %-15s %-15s %-15s", row.id, tostring(row.keys), tostring(row.section_id), tostring(row.goto_id)))
-		end
+		self.debugger:msg("DEBUG", string.format("%15d  %-15s %-15s %-15s", row.id, tostring(row.keys), tostring(row.section_id), tostring(row.goto_id)))
 		if not list[tonumber(row.section_id)] then
 			list[tonumber(row.section_id)] = {}
 		end
@@ -111,15 +107,15 @@ function Database:load_survey_branching(survey_id)
 	end
 	cur:close()
 	self.list_branching = list
-
 	--print(inspect(self.list_branching))
 end
 
 function Database:load_audiofile()
-	print("Load audiofile branching")
 	-- id	name	audio_file	user_id
-	QUERY = "SELECT * FROM audio_file"
-	cur = self.con:execute(QUERY)
+	--TODO: Add user_id
+	sqlquery = "SELECT * FROM audio_file"
+	self.debugger:msg("INFO", "Load audiofile branching : "..sqlquery)
+	cur = self.con:execute(sqlquery)
 
 	-- LOOP THROUGH THE CURSOR
 	list = {}
@@ -130,13 +126,12 @@ function Database:load_audiofile()
 	end
 	cur:close()
 	self.list_audio = list
-
 	--print(inspect(self.list_audio))
 end
 
-function Database:get_list(query)
-	print("Load sql")
-	cur = assert(self.con:execute(query))
+function Database:get_list(sqlquery)
+	self.debugger:msg("INFO", "Load SQL : "..sqlquery)
+	cur = assert(self.con:execute(sqlquery))
 	list = {}
 	row = cur:fetch ({}, "a")
 	while row do
@@ -147,61 +142,60 @@ function Database:get_list(query)
 	return list
 end
 
-function Database:get_object(query)
-	cur = assert(self.con:execute(query))
+function Database:get_object(sqlquery)
+	self.debugger:msg("INFO", "Load SQL : "..sqlquery)
+	cur = assert(self.con:execute(sqlquery))
 	row = cur:fetch ({}, "a")
 	cur:close()
 	return row
 end
 
 function Database:load_campaign_info(campaign_id)
-	print("Load campaign info")
-	QUERY = "SELECT * FROM dialer_campaign WHERE id="..campaign_id
-	self.campaign_info = self:get_object(QUERY)
+	sqlquery = "SELECT * FROM dialer_campaign WHERE id="..campaign_id
+	self.debugger:msg("INFO", "Load campaign info : "..sqlquery)
+	self.campaign_info = self:get_object(sqlquery)
 	-- check campaign info
 end
 
 function Database:load_contact(subscriber_id)
-	print("Load contact data")
-	QUERY = "SELECT * FROM dialer_subscriber "..
+	sqlquery = "SELECT * FROM dialer_subscriber "..
 		"LEFT JOIN dialer_contact ON dialer_contact.id=contact_id "..
 		"WHERE dialer_subscriber.id="..subscriber_id
-	print(QUERY)
-	self.contact = self:get_object(QUERY)
+	self.debugger:msg("INFO", "Load contact data : "..sqlquery)
+	self.contact = self:get_object(sqlquery)
 	-- check campaign info
 end
 
 function Database:update_subscriber(subscriber_id, status)
-	print("Update Subscriber")
-	QUERY = "UPDATE dialer_subscriber SET status='"..status.."' WHERE id="..subscriber_id
-	res = self.con:execute(QUERY)
-	print(res)
+	sqlquery = "UPDATE dialer_subscriber SET status='"..status.."' WHERE id="..subscriber_id
+	self.debugger:msg("INFO", "Update Subscriber : "..sqlquery)
+	res = self.con:execute(sqlquery)
 	self:update_campaign_completed()
 end
 
 function Database:update_campaign_completed()
-	print("Update Campaign")
-	QUERY = "UPDATE dialer_campaign SET completed = completed + 1 WHERE id="..campaign_info.id
-	res = self.con:execute(QUERY)
+	sqlquery = "UPDATE dialer_campaign SET completed = completed + 1 WHERE id="..campaign_info.id
+	self.debugger:msg("INFO", "Update Campaign : "..sqlquery)
+	res = self.con:execute(sqlquery)
 end
 
 function Database:update_callrequest_cpt(callrequest_id)
-	print("Update CallRequest")
-	QUERY = "UPDATE dialer_callrequest SET completed = 't' WHERE id="..callrequest_id
-	res = self.con:execute(QUERY)
+	sqlquery = "UPDATE dialer_callrequest SET completed = 't' WHERE id="..callrequest_id
+	self.debugger:msg("INFO", "Update CallRequest : "..sqlquery)
+	res = self.con:execute(sqlquery)
 end
 
 function Database:load_all(campaign_id, subscriber_id)
 	self:load_contact(subscriber_id)
 	if not self.contact then
-		print("Error: No Contact")
+		self.debugger:msg("ERROR", "Error: No Contact")
 		return false
 	end
 	--print(inspect(self.contact))
 
 	self:load_campaign_info(campaign_id)
 	if not self.campaign_info then
-		print("Error: No Campaign")
+		self.debugger:msg("ERROR", "Error: No Campaign")
 		return false
 	end
 	--print(inspect(self.campaign_info))
@@ -237,8 +231,7 @@ end
 
 -- TODO: Finish this later
 function Database:placeholder_replace(text)
-	--use contact
-	print(self.contact)
+	--use contact self.contact
 
     -- Replace place holders by tag value.
     -- This function will replace all the following tags :
@@ -271,10 +264,10 @@ function Database:placeholder_replace(text)
 end
 
 function Database:save_result_recording(callrequest_id, section_id, record_file, recording_duration)
-	QUERY = "INSERT INTO survey_result (callrequest_id, section_id, record_file, recording_duration, response, created_date) "..
+	sqlquery = "INSERT INTO survey_result (callrequest_id, section_id, record_file, recording_duration, response, created_date) "..
 		"VALUES ("..callrequest_id..", "..section_id..", '"..record_file.."', '"..recording_duration.."', '', NOW())"
-	print("Save Result Recording:"..QUERY)
-	res = self.con:execute(QUERY)
+	self.debugger:msg("INFO", "Save Result Recording:"..sqlquery)
+	res = self.con:execute(sqlquery)
 	if not res then
 		return false
 	else
@@ -283,10 +276,10 @@ function Database:save_result_recording(callrequest_id, section_id, record_file,
 end
 
 function Database:update_result_recording(callrequest_id, section_id, record_file, recording_duration)
-	QUERY = "UPDATE survey_result SET record_file='"..record_file.."', recording_duration='"..recording_duration.."'"..
+	sqlquery = "UPDATE survey_result SET record_file='"..record_file.."', recording_duration='"..recording_duration.."'"..
 		" WHERE callrequest_id="..callrequest_id.." AND section_id="..section_id
-	print("Update Result Recording:"..QUERY)
-	res = self.con:execute(QUERY)
+	self.debugger:msg("INFO", "Update Result Recording:"..sqlquery)
+	res = self.con:execute(sqlquery)
 	if not res then
 		return false
 	else
@@ -295,10 +288,10 @@ function Database:update_result_recording(callrequest_id, section_id, record_fil
 end
 
 function Database:save_result_dtmf(callrequest_id, section_id, dtmf)
-	QUERY = "INSERT INTO survey_result (callrequest_id, section_id, response, record_file, created_date) "..
+	sqlquery = "INSERT INTO survey_result (callrequest_id, section_id, response, record_file, created_date) "..
 		"VALUES ("..callrequest_id..", "..section_id..", "..dtmf..", '', NOW())"
-	print("Save Result DTMF : "..QUERY)
-	res = self.con:execute(QUERY)
+	self.debugger:msg("INFO", "Save Result DTMF:"..sqlquery)
+	res = self.con:execute(sqlquery)
 	if not res then
 		return false
 	else
@@ -307,10 +300,10 @@ function Database:save_result_dtmf(callrequest_id, section_id, dtmf)
 end
 
 function Database:update_result_dtmf(callrequest_id, section_id, dtmf)
-	QUERY = "UPDATE survey_result SET response="..dtmf..
+	sqlquery = "UPDATE survey_result SET response="..dtmf..
 		" WHERE callrequest_id="..callrequest_id.." AND section_id="..section_id
-	print("Update Result DTMF:"..QUERY)
-	res = self.con:execute(QUERY)
+	self.debugger:msg("INFO", "Update Result DTMF:"..sqlquery)
+	res = self.con:execute(sqlquery)
 	if not res then
 		return false
 	else
@@ -335,7 +328,7 @@ function Database:save_section_result(callrequest_id, current_node, DTMF, record
 			-- threw an error
 			res = pcall(self:update_result_recording(callrequest_id, current_node.id, record_file, recording_duration))
 			if not res then
-				print "Error update_result_recording"
+				self.debugger:msg("ERROR", "Error update_result_recording")
 			end
 			return true
 		end
@@ -379,7 +372,7 @@ function Database:save_section_result(callrequest_id, current_node, DTMF, record
 			-- threw an error
 			res = pcall(self:update_result_dtmf(callrequest_id, current_node.id, DTMF))
 			if not res then
-				print "Error update_result_dtmf"
+				self.debugger:msg("ERROR", "Error update_result_dtmf")
 			end
 			return true
 		end

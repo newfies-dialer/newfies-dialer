@@ -26,7 +26,7 @@ logger:setLevel(logging.DEBUG)
 
 Debugger = oo.class{
     -- default field values
-    fs_env = nil,
+    fs_env = false,
     verbosity_level = 'INFO',
 }
 
@@ -34,17 +34,17 @@ function Debugger:__init(verbosity_level, fs_env)
     -- self is the class
     return oo.rawnew(self, {
         verbosity_level = verbosity_level,
-        fs_env = fs_env
+        fs_env = fs_env,
     })
 end
 
 
 function Debugger:msg(level, message)
     -- level : INFO, NOTICE, ...
-    if self.fs_env then
-        freeswitch.consoleLog(level, message)
-    else
+    if not self.fs_env then
         print(message)
+    else
+        --freeswitch.consoleLog(level, message)
     end
     logger:info(message)
 end

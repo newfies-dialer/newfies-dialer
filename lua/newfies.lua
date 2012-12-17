@@ -20,7 +20,6 @@ require "logging.file"
 require "fsm_callflow"
 require "debugger"
 
-local debugger = Debugger('INFO', nil)
 
 local OptionParser = require "pythonic.optparse" . OptionParser
 --TODO: parse version from __init__.py
@@ -43,6 +42,8 @@ if options.nofs then
 else
     fs_env = true
 end
+
+local debugger = Debugger('INFO', fs_env)
 
 debug_mode = false
 

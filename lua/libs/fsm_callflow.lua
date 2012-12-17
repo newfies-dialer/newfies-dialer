@@ -45,7 +45,7 @@ function FSMCall:__init(session, debug_mode, debugger)
         session = session,
         debug_mode = debug_mode,
         debugger = debugger,
-        db = Database(debug_mode),
+        db = Database(debug_mode, debugger),
     })
 end
 

@@ -13,7 +13,7 @@
 #
 
 from celery.utils.log import get_task_logger
-from celery.decorators import task, periodic_task
+from celery.decorators import task
 from django.conf import settings
 from django.core.cache import cache
 from dialer_campaign.models import Campaign, Subscriber
@@ -21,7 +21,7 @@ from dialer_campaign.constants import SUBSCRIBER_STATUS
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.constants import CALLREQUEST_STATUS
 from dialer_gateway.utils import phonenumber_change_prefix
-from datetime import datetime, timedelta
+from datetime import datetime
 from time import sleep
 from uuid import uuid1
 
@@ -48,6 +48,9 @@ def single_instance_task(timeout):
     return task_exc
 
 """
+from celery.decorators import periodic_task
+from datetime import timedelta
+
 @periodic_task(run_every=timedelta(seconds=1))
 @single_instance_task(LOCK_EXPIRE)
 def callrequest_pending(*args, **kwargs):
@@ -89,7 +92,7 @@ def init_callrequest(callrequest_id, campaign_id):
     obj_callrequest.status = CALLREQUEST_STATUS.PROCESS
     obj_callrequest.save()
     logger.info("TASK :: init_callrequest - status = %s" %
-                                        str(obj_callrequest.status))
+        str(obj_callrequest.status))
     try:
         obj_campaign = Campaign.objects.get(id=campaign_id)
     except:
@@ -99,8 +102,8 @@ def init_callrequest(callrequest_id, campaign_id):
     if obj_callrequest.aleg_gateway:
         id_aleg_gateway = obj_callrequest.aleg_gateway.id
         dialout_phone_number = phonenumber_change_prefix(
-                                    obj_callrequest.phone_number,
-                                    id_aleg_gateway)
+            obj_callrequest.phone_number,
+            id_aleg_gateway)
     else:
         dialout_phone_number = obj_callrequest.phone_number
     logger.info("dialout_phone_number : %s" % dialout_phone_number)
@@ -128,8 +131,8 @@ def init_callrequest(callrequest_id, campaign_id):
         answer_url = settings.PLIVO_DEFAULT_ANSWER_URL
 
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
-    if obj_callrequest.user.userprofile.accountcode and \
-        obj_callrequest.user.userprofile.accountcode > 0:
+    if (obj_callrequest.user.userprofile.accountcode and
+       obj_callrequest.user.userprofile.accountcode > 0):
         originate_dial_string = originate_dial_string + \
             ',accountcode=' + str(obj_callrequest.user.userprofile.accountcode)
 
@@ -152,8 +155,8 @@ def init_callrequest(callrequest_id, campaign_id):
     if settings.NEWFIES_DIALER_ENGINE.lower() == 'dummy':
         #Use Dummy TestCall
         res = dummy_testcall.delay(callerid=obj_callrequest.callerid,
-                                    phone_number=dialout_phone_number,
-                                    gateway=gateways)
+            phone_number=dialout_phone_number,
+            gateway=gateways)
         result = res.get()
         logger.info(result)
         logger.error('Received RequestUUID :> ' + str(result['RequestUUID']))
@@ -163,17 +166,17 @@ def init_callrequest(callrequest_id, campaign_id):
             #Request Call via Plivo
             from telefonyhelper import call_plivo
             result = call_plivo(
-                        callerid=obj_callrequest.callerid,
-                        callername=obj_callrequest.campaign.caller_name,
-                        phone_number=dialout_phone_number,
-                        Gateways=gateways,
-                        GatewayCodecs=gateway_codecs,
-                        GatewayTimeouts=gateway_timeouts,
-                        GatewayRetries=gateway_retries,
-                        ExtraDialString=originate_dial_string,
-                        AnswerUrl=answer_url,
-                        HangupUrl=settings.PLIVO_DEFAULT_HANGUP_URL,
-                        TimeLimit=str(callmaxduration))
+                callerid=obj_callrequest.callerid,
+                callername=obj_callrequest.campaign.caller_name,
+                phone_number=dialout_phone_number,
+                Gateways=gateways,
+                GatewayCodecs=gateway_codecs,
+                GatewayTimeouts=gateway_timeouts,
+                GatewayRetries=gateway_retries,
+                ExtraDialString=originate_dial_string,
+                AnswerUrl=answer_url,
+                HangupUrl=settings.PLIVO_DEFAULT_HANGUP_URL,
+                TimeLimit=str(callmaxduration))
         except:
             logger.error('error : call_plivo')
             obj_callrequest.status = 2  # Update to Failure
@@ -188,8 +191,7 @@ def init_callrequest(callrequest_id, campaign_id):
         logger.error('Received RequestUUID :> ' + str(result['RequestUUID']))
 
     else:
-        logger.error('No other method supported, use one of these options :'\
-                     'dummy ; plivo')
+        logger.error('No other method supported!')
         return False
 
     #Update Subscriber
@@ -235,10 +237,10 @@ def dummy_testcall(callerid, phone_number, gateway):
 
         * ``RequestUUID`` - A unique identifier for API request."""
     logger.info("TASK :: dummy_testcall")
-    logger.debug("Executing task id %r, args: %r kwargs: %r" % \
-                (dummy_testcall.request.id,
-                 dummy_testcall.request.args,
-                 dummy_testcall.request.kwargs))
+    logger.debug("Executing task id %r, args: %r kwargs: %r" %
+        (dummy_testcall.request.id,
+         dummy_testcall.request.args,
+         dummy_testcall.request.kwargs))
     sleep(1)
     logger.info("Waiting 1 seconds...")
 
@@ -261,10 +263,10 @@ def dummy_test_answerurl(request_uuid):
 
         * ``RequestUUID`` - A unique identifier for API request."""
     logger.info("TASK :: dummy_testcall")
-    logger.debug("Executing task id %r, args: %r kwargs: %r" % \
-                (dummy_test_answerurl.request.id,
-                 dummy_test_answerurl.request.args,
-                 dummy_test_answerurl.request.kwargs))
+    logger.debug("Executing task id %r, args: %r kwargs: %r" %
+        (dummy_test_answerurl.request.id,
+         dummy_test_answerurl.request.args,
+         dummy_test_answerurl.request.kwargs))
 
     logger.info("Waiting 1 seconds...")
     sleep(1)
@@ -307,10 +309,10 @@ def dummy_test_hangupurl(request_uuid):
 
     """
     logger.info("TASK :: dummy_test_hangupurl")
-    logger.debug("Executing task id %r, args: %r kwargs: %r" % \
-                (dummy_test_hangupurl.request.id,
-                 dummy_test_hangupurl.request.args,
-                 dummy_test_hangupurl.request.kwargs))
+    logger.debug("Executing task id %r, args: %r kwargs: %r" %
+        (dummy_test_hangupurl.request.id,
+         dummy_test_hangupurl.request.args,
+         dummy_test_hangupurl.request.kwargs))
     logger.info("Waiting 10 seconds...")
     sleep(10)
 

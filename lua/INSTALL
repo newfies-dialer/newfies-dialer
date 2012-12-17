@@ -29,3 +29,7 @@ Edit autoload_configs/lua.conf.xml::
 
     <param name="script-directory" value="/home/areski/public_html/Lua/luaplay/FreeSWITCH/?lua"/>
 
+
+Compile
+-------
+luac -o newfies.luac newfies.lua

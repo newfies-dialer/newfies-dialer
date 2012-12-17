@@ -36,7 +36,7 @@
 --        stops the running script
 --
 --      in lua.conf.xml:
--- 	 <param name="startup-script" value="scheduled_event.lua"/>
+--   <param name="startup-script" value="scheduled_event.lua"/>
 --
 --
 -- You need to get "mysql.so" for lua and install it in <freeswitch install>/luasql/mysql.so
@@ -68,132 +68,133 @@
 
     local luasql = require "luasql.postgres"
 
-   -- Database setup
-   DATABASE = "database"
-   USERNAME = "dbuser"
-   PASSWORD = "het is geheim"
-   DBHOST   = "localhost"
-   TABLENAME = "scheduler"
+    -- Database setup
+    DATABASE = "newfies2"
+    USERNAME = "newfiesuser"
+    PASSWORD = "password"
+    DBHOST   = "localhost"
+    TABLENAME = "scheduler"
 
-   -- LOGGING
-   LOGLEVEL = "info"
+    -- LOGGING
+    LOGLEVEL = "info"
 
-   -- PROGNAME
-   PROGNAME = "scheduled_event.lua"
+    -- PROGNAME
+    PROGNAME = "scheduled_event.lua"
 
-   function logger(message)
-      freeswitch.console_log(LOGLEVEL,"["..PROGNAME.."] "..message.."\n")
-   end
+    function logger(message)
+        freeswitch.console_log(LOGLEVEL,"["..PROGNAME.."] "..message.."\n")
+    end
 
 
-   if argv[1] then
-      i=1
-      while argv[i] do
-	 if argv[i] == "stop" then
-	    local event = freeswitch.Event("custom", "lua::scheduled_event")
-	    event:addHeader("Action", "stop")
-	    event:fire()
-	    logger("Sent stop message to lua script")
-	    return
-	 elseif (argv[i] == "dbuser") then
-	    i=i+1
-	    if argv[i] then
-	       logger("Setting DB Username to "..argv[i])
-	       USERNAME = argv[i]
-	    else
-	       logger("You must specify a username!")
-	    end
-	 elseif (argv[i] == "dbhost") then
-	    i=i+1
-	    if argv[i] then
-	       logger("Setting DB Hostname to "..argv[i])
-	       DBHOST = argv[i]
-	    else
-	       logger("You must specify a hostname!")
-	    end
-	 elseif (argv[i] == "dbpass") then
-	    i=i+1
-	    if argv[i] then
-	       logger("Setting DB Password to "..argv[i])
-	       PASSWORD = argv[i]
-	    else
-	       logger("You must specify a password!")
-	    end
-	 elseif (argv[i] == "dbname") then
-	    i=i+1
-	    if argv[i] then
-	       logger("Setting DB to "..argv[i])
-	       DATABASE = argv[i]
-	    else
-	       logger("You must specify a database name!")
-	    end
-	 end
-	 i=i+1
-      end
-      return
-   end
+    if argv[1] then
+    i=1
+    while argv[i] do
+        if argv[i] == "stop" then
+            local event = freeswitch.Event("custom", "lua::scheduled_event")
+            event:addHeader("Action", "stop")
+            event:fire()
+            logger("Sent stop message to lua script")
+            return
+        elseif (argv[i] == "dbuser") then
+            i=i+1
+            if argv[i] then
+                logger("Setting DB Username to "..argv[i])
+                USERNAME = argv[i]
+            else
+                logger("You must specify a username!")
+            end
+        elseif (argv[i] == "dbhost") then
+            i=i+1
+            if argv[i] then
+                logger("Setting DB Hostname to "..argv[i])
+                DBHOST = argv[i]
+            else
+                logger("You must specify a hostname!")
+            end
+        elseif (argv[i] == "dbpass") then
+            i=i+1
+            if argv[i] then
+                logger("Setting DB Password to "..argv[i])
+                PASSWORD = argv[i]
+            else
+                logger("You must specify a password!")
+            end
+        elseif (argv[i] == "dbname") then
+            i=i+1
+            if argv[i] then
+                logger("Setting DB to "..argv[i])
+                DATABASE = argv[i]
+            else
+                logger("You must specify a database name!")
+            end
+        end
+        i=i+1
+    end
+    return
+end
 
-   --Main function starts here
-   logger("Starting")
+--Main function starts here
+logger("Starting")
 
-   -- ensure DB works, create table if it doesnt exist
-   env = assert (luasql.mysql())
-   dbcon = assert (env:connect(DATABASE,USERNAME,PASSWORD,DBHOST))
-   blah = assert(dbcon:execute("CREATE TABLE if not exists "..TABLENAME.." ("..
-			       "acctid int(11) NOT NULL auto_increment,"..
-			       "action varchar(1024) NOT NULL,"..
-			       "timestamp timestamp NOT NULL,"..
-			       "server varchar(64) NOT NULL DEFAULT '*',"..
-			       "primary key (acctid)"..
-			       ")"))
-   dbcon:close()
-   env:close()
+-- ensure DB works, create table if it doesnt exist
+env = assert (luasql.mysql())
+dbcon = assert (env:connect(DATABASE,USERNAME,PASSWORD,DBHOST))
+blah = assert(dbcon:execute("CREATE TABLE if not exists "..TABLENAME.." ("..
+               "acctid int(11) NOT NULL auto_increment,"..
+               "action varchar(1024) NOT NULL,"..
+               "timestamp timestamp NOT NULL,"..
+               "server varchar(64) NOT NULL DEFAULT '*',"..
+               "primary key (acctid)"..
+               ")"))
+dbcon:close()
+env:close()
 
-   local event_name
-   local event_subclass
+local event_name
+local event_subclass
 
-   con = freeswitch.EventConsumer("all") -- too lazy to figure out why "heartbeat CUSTOM lua::scheduled_event"
-                                         -- does not work properly, that is really all we need
-   api = freeswitch.API()
+con = freeswitch.EventConsumer("all") -- too lazy to figure out why "heartbeat CUSTOM lua::scheduled_event"
+                                 -- does not work properly, that is really all we need
+api = freeswitch.API()
 
-   hostname = api:execute("hostname")
+hostname = api:execute("hostname")
 
-   if blah ~= 0 then
-      logger("Unable to connect to DB or create the table, something is broken.")
-   else
-      for e in (function() return con:pop(1) end) do
-	 event_name = e:getHeader("Event-Name") or ""
-	 event_subclass = e:getHeader("Event-Subclass") or ""
+if blah ~= 0 then
+    logger("Unable to connect to DB or create the table, something is broken.")
+else
+    for e in (function() return con:pop(1) end) do
+        event_name = e:getHeader("Event-Name") or ""
+        event_subclass = e:getHeader("Event-Subclass") or ""
 
-	 if(event_name == "HEARTBEAT") then
-	    -- check the system load
-	    load = api:execute("status")
-	    cur_sessions,rate_sessions,max_rate,max_sessions = string.match(load,"(%d+) session.s. (%d+)/(%d+)\n(%d+) session.s. max")
-	    if ((tonumber(cur_sessions) < tonumber(max_sessions)) and (tonumber(rate_sessions) < tonumber(max_rate))) then
-	       env = assert (luasql.mysql())
-	       dbcon = assert (env:connect(DATABASE,USERNAME,PASSWORD,DBHOST))
-	       while true do
-		  assert (dbcon:execute("LOCK TABLE "..TABLENAME.." WRITE"))
-		  cur = assert (dbcon:execute("select * from "..TABLENAME.." where timestamp < NOW() and (server = '"..hostname.."' or server = '*') order by timestamp limit 1"))
-		  row = cur:fetch({},"a")
-		  if not row then
-		     break
-		  end
-		  assert(dbcon:execute("delete from "..TABLENAME.." where acctid = "..row.acctid));
-		  assert (dbcon:execute("UNLOCK TABLES"))
-		  apicmd,apiarg = string.match(row.action,"(%w+) (.*)")
-		  api:execute(apicmd,apiarg)
-	       end -- while
-	       dbcon:close()
-	       env:close()
-	    end -- rate limiting
-	 else if (event_name == "CUSTOM" and event_subclass == "lua::scheduled_event") then
-	       action = e:getHeader("Action") or ""
-	       if (action == "stop") then
-		  logger("got stop message, Exiting")
-		  break
-	       end
-	    end -- not a custom message
-	 end -- not a processable event
-      end -- foreach event
-   end -- main loop, DB connection established
+        if(event_name == "HEARTBEAT") then
+            -- check the system load
+            load = api:execute("status")
+            cur_sessions,rate_sessions,max_rate,max_sessions = string.match(load,"(%d+) session.s. (%d+)/(%d+)\n(%d+) session.s. max")
+            if ((tonumber(cur_sessions) < tonumber(max_sessions)) and (tonumber(rate_sessions) < tonumber(max_rate))) then
+                env = assert (luasql.postgres())
+                dbcon = assert (env:connect(DATABASE,USERNAME,PASSWORD,DBHOST, 5432))
+                while true do
+                    assert (dbcon:execute("LOCK TABLE "..TABLENAME.." WRITE"))
+                    cur = assert (dbcon:execute("select * from "..TABLENAME.." where timestamp < NOW() and (server = '"..hostname.."' or server = '*') order by timestamp limit 1"))
+                    row = cur:fetch({},"a")
+                    if not row then
+                        break
+                    end
+                    assert (dbcon:execute("delete from "..TABLENAME.." where acctid = "..row.acctid));
+                    assert (dbcon:execute("UNLOCK TABLES"))
+                    apicmd,apiarg = string.match(row.action,"(%w+) (.*)")
+                    api:execute(apicmd,apiarg)
+                end -- while
+                dbcon:close()
+                env:close()
+            end -- rate limiting
+        else
+            if (event_name == "CUSTOM" and event_subclass == "lua::scheduled_event") then
+                action = e:getHeader("Action") or ""
+                if (action == "stop") then
+                    logger("got stop message, Exiting")
+                    break
+                end
+            end -- not a custom message
+        end -- not a processable event
+    end -- foreach event
+end -- main loop, DB connection established

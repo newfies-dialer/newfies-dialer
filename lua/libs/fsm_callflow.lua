@@ -115,12 +115,12 @@ function FSMCall:playnode(current_node)
         --Get audio path
         current_audio = self.db.list_audio[tonumber(current_node.audiofile_id)]
         filetoplay = UPLOAD_DIR..current_audio.audio_file
-        print("\n\n--->> streamFile : "..filetoplay)
+        self.debugger:msg("INFO", "\n--->> streamFile : "..filetoplay)
         self.session:streamFile(filetoplay)
     else
         --Use TTS
         self.session:set_tts_parms("flite", "kal")
-        print("\n\n--->> Speak : "..current_node.script)
+        self.debugger:msg("INFO", "\n--->> Speak : "..current_node.script)
         self.session:speak(current_node.script)
     end
 end
@@ -164,7 +164,7 @@ function FSMCall:build_dtmf_filter(current_node)
 end
 
 function FSMCall:getdigitnode(current_node)
-    print("******** getdigitnode *********")
+    self.debugger:msg("INFO", "*** getdigitnode ***")
     number_digits = 1
     dtmf_filter = '0123456789'
     -- Get the node type and start playing it
@@ -207,17 +207,19 @@ function FSMCall:getdigitnode(current_node)
         --Get audio path
         current_audio = self.db.list_audio[tonumber(current_node.audiofile_id)]
         filetoplay = UPLOAD_DIR..current_audio.audio_file
-        print("\nPlay the audiofile : "..filetoplay)
+        self.debugger:msg("INFO", "\nPlay the audiofile : "..filetoplay)
+
         digits = self.session:playAndGetDigits(1, number_digits, retries,
-            timeout*1000, '#', filetoplay, invalid_input, dtmf_filter)
+            timeout*1000, '#', filetoplay, invalid_audiofile, dtmf_filter)
     else
         --Use TTS
         --TODO: Build placeholder_replace
         script = self.db:placeholder_replace(current_node.script)
 
         tts_file = tts(current_node.script, TTS_DIR)
+        self.debugger:msg("INFO", "\nPlay TTS : "..tts_file)
         digits = self.session:playAndGetDigits(1, number_digits, retries,
-            timeout*1000, '#', tts_file, invalid_input, dtmf_filter)
+            timeout*1000, '#', tts_file, invalid_audiofile, dtmf_filter)
     end
     return digits
 end
@@ -230,13 +232,10 @@ function FSMCall:next_node()
     local current_node = self.db.list_section[tonumber(self.current_node_id)]
     current_branching = self.db.list_branching[tonumber(self.current_node_id)]
     if not current_node then
-        print(type(current_node))
-        print ("Not current_node")
-        print(inspect(self.db.list_section[tonumber(self.current_node_id)]))
+        self.debugger:msg("ERROR", "Not current_node : "..type(current_node))
+        self.debugger:msg("ERROR", inspect(self.db.list_section[tonumber(self.current_node_id)]))
         return false
     end
-
-    -- print(inspect(current_node))
 
     if (current_node.completed == 't' and not self.marked_completed) then
         -- Mark the subscriber as completed and increment campaign completed field
@@ -248,7 +247,7 @@ function FSMCall:next_node()
     --self.debugger:msg("INFO", "current_node.type >>>>> "..current_node.type)
     self.debugger:msg("INFO", "-------------------------------------------")
     self.debugger:msg("INFO", "TITLE :: ("..current_node.id..") "..current_node.question)
-    print("NODE TYPE ==> "..SECTION_TYPE[current_node.type])
+    self.debugger:msg("INFO", "NODE TYPE ==> "..SECTION_TYPE[current_node.type])
 
     --
     -- Run Action
@@ -256,32 +255,25 @@ function FSMCall:next_node()
     if current_node.type == PLAY_MESSAGE then
         number_digits = 1
         timeout = 1
-        print("PLAY_MESSAGE\n------------------")
-
         self:playnode(current_node)
 
     elseif current_node.type == HANGUP_SECTION then
-        print("EXCEPTION -> HANGUP\n------------------")
         self:playnode(current_node)
         self:end_call()
 
     elseif current_node.type == MULTI_CHOICE then
-        print("MULTI_CHOICE\n------------------")
         digits = self:getdigitnode(current_node)
-        self.debugger:msg("info", "result digit => " .. digits )
+        self.debugger:msg("INFO", "result digit => " .. digits )
 
     elseif current_node.type == RATING_SECTION then
-        print("RATING_SECTION\n------------------")
         digits = self:getdigitnode(current_node)
         self.debugger:msg("INFO", "result digit => " .. digits )
 
     elseif current_node.type == CAPTURE_DIGITS then
-        print("CAPTURE_DIGITS\n------------------")
         digits = self:getdigitnode(current_node)
         self.debugger:msg("INFO", "result digit => " .. digits )
 
     elseif current_node.type == RECORD_MSG then
-        print("RECORD_MSG\n------------------")
         --timeout : Seconds of silence before considering the recording complete
         -- syntax is session:recordFile(file_name, max_len_secs, silence_threshold, silence_secs)
         max_len_secs = 120
@@ -292,10 +284,9 @@ function FSMCall:next_node()
         record_file = "/tmp/recording-".."-"..id_recordfile..".wav"
         result_rec = self.session:recordFile(record_file, max_len_secs, silence_threshold, silence_secs)
     else
-        print("EXCEPTION -> HANGUP\n------------------")
+        self.debugger:msg("INFO", "EXCEPTION -> HANGUP")
         self:end_call()
     end
-
 
     --
     -- 3. Record result and Aggregate result
@@ -303,7 +294,6 @@ function FSMCall:next_node()
 
     -- TODO: Finish Aggregate result
     if digits or record_file then
-        print("Save results...")
         self.db:connect()
         self.db:save_section_result(callrequest_id, current_node, DTMF, record_file)
         self.db:disconnect()
@@ -314,7 +304,7 @@ function FSMCall:next_node()
     --
     -- Check Branching / Find the next node
     --
-    print(inspect(current_branching))
+    self.debugger:msg("DEBUG", inspect(current_branching))
 
     if current_node.type == PLAY_MESSAGE
         or current_node.type == RECORD_MSG

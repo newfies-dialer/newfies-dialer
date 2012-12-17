@@ -28,7 +28,8 @@ from survey.views import survey_list, survey_add, \
     survey_change, survey_del, section_add, section_change,\
     section_script_change, section_branch_change, survey_report,\
     survey_finitestatemachine, export_surveycall_report, section_branch_add,\
-    section_delete, section_script_play, survey_view, survey_campaign_result
+    section_delete, section_script_play, survey_view, survey_campaign_result,\
+    import_survey, export_survey
 from survey.ajax import section_sort
 
 
@@ -458,6 +459,24 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         request.user = self.user
         request.session = {}
         response = survey_campaign_result(request, 1)
+        self.assertEqual(response.status_code, 200)
+
+    def test_export_survey(self):
+        request = self.factory.get('/export_survey/1/')
+        request.user = self.user
+        request.session = {}
+        response = export_survey(request, 1)
+        self.assertEqual(response.status_code, 200)
+
+    def test_import_survey(self):
+        request = self.factory.get('/import_survey/1/')
+        request.user = self.user
+        request.session = {}
+        response = import_survey(request, 1)
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/import_survey/',
+            data={'survey_file': ''})
         self.assertEqual(response.status_code, 200)
 
 

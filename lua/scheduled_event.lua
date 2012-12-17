@@ -66,30 +66,31 @@
 
 -- currently this script requires http://jira.freeswitch.org/browse/MODAPP-357
 
-    local luasql = require "luasql.postgres"
+local luasql = require "luasql.postgres"
 
-    -- Database setup
-    DATABASE = "newfies2"
-    USERNAME = "newfiesuser"
-    PASSWORD = "password"
-    DBHOST   = "localhost"
-    TABLENAME = "scheduler"
+-- Database setup
+DATABASE = "newfies2"
+USERNAME = "newfiesuser"
+PASSWORD = "password"
+DBHOST   = "localhost"
+TABLENAME = "scheduler"
 
-    -- LOGGING
-    LOGLEVEL = "info"
+-- LOGGING
+LOGLEVEL = "info"
 
-    -- PROGNAME
-    PROGNAME = "scheduled_event.lua"
+-- PROGNAME
+PROGNAME = "scheduled_event.lua"
 
-    function logger(message)
-        freeswitch.console_log(LOGLEVEL,"["..PROGNAME.."] "..message.."\n")
-    end
+function logger(message)
+    freeswitch.console_log(LOGLEVEL,"["..PROGNAME.."] "..message.."\n")
+end
 
 
-    if argv[1] then
+if argv[1] then
     i=1
     while argv[i] do
         if argv[i] == "stop" then
+            --Send Stop message
             local event = freeswitch.Event("custom", "lua::scheduled_event")
             event:addHeader("Action", "stop")
             event:fire()
@@ -137,14 +138,13 @@ end
 logger("Starting")
 
 -- ensure DB works, create table if it doesnt exist
-env = assert (luasql.mysql())
-dbcon = assert (env:connect(DATABASE,USERNAME,PASSWORD,DBHOST))
+env = assert (luasql.postgres())
+dbcon = assert (env:connect(DATABASE,USERNAME,PASSWORD,DBHOST, 5432))
 blah = assert(dbcon:execute("CREATE TABLE if not exists "..TABLENAME.." ("..
-               "acctid int(11) NOT NULL auto_increment,"..
+               "acctid serial NOT NULL PRIMARY KEY,"..
                "action varchar(1024) NOT NULL,"..
-               "timestamp timestamp NOT NULL,"..
-               "server varchar(64) NOT NULL DEFAULT '*',"..
-               "primary key (acctid)"..
+               "timestamp timestamp with time zone NOT NULL,"..
+               "server varchar(64) NOT NULL DEFAULT '*'"..
                ")"))
 dbcon:close()
 env:close()
@@ -168,7 +168,12 @@ else
         if(event_name == "HEARTBEAT") then
             -- check the system load
             load = api:execute("status")
-            cur_sessions,rate_sessions,max_rate,max_sessions = string.match(load,"(%d+) session.s. (%d+)/(%d+)\n(%d+) session.s. max")
+            print(load)
+            --cur_sessions,rate_sessions,max_rate,max_sessions = string.match(load, "%d+ session.s. - %d+ out of max %d+ per sec\n%d+ session.s. max")
+            cur_sessions = "1"
+            rate_sessions = "1"
+            max_rate = "1"
+            max_sessions = "1"
             if ((tonumber(cur_sessions) < tonumber(max_sessions)) and (tonumber(rate_sessions) < tonumber(max_rate))) then
                 env = assert (luasql.postgres())
                 dbcon = assert (env:connect(DATABASE,USERNAME,PASSWORD,DBHOST, 5432))

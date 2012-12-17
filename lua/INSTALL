@@ -24,10 +24,9 @@ Configure FreeSWITCH
 Edit autoload_configs/lua.conf.xml::
 
     <param name="module-directory" value="/usr/lib/x86_64-linux-gnu/?.so"/>
+    <param name="module-directory" value="/usr/lib/x86_64-linux-gnu/lua/5.1/?.so"/>
     <param name="module-directory" value="/usr/lib/x86_64-linux-gnu/lua/5.1/luasql/?.so"/>
-    <param name="module-directory" value="/usr/lib/x86_64-linux-gnu/lua/5.1/luasql/postgres.so"/>
-
-    <param name="script-directory" value="/home/areski/public_html/Lua/luaplay/FreeSWITCH/?lua"/>
+    <param name="module-directory" value="/usr/local/lib/lua/5.1/?.so"/>
 
 
 Compile

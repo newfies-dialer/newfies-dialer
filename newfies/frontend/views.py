@@ -14,9 +14,9 @@
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required,\
-                                           permission_required
+    permission_required
 from django.contrib.auth.views import password_reset, password_reset_done,\
-                        password_reset_confirm, password_reset_complete
+    password_reset_confirm, password_reset_complete
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.db.models import Sum, Avg, Count
@@ -27,7 +27,7 @@ from django.utils.translation import ugettext as _
 from dialer_contact.models import Contact
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.function_def import date_range, \
-                        user_dialer_setting_msg
+    user_dialer_setting_msg
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import VOIPCALL_DISPOSITION
 from frontend.forms import LoginForm, DashboardForm
@@ -118,12 +118,13 @@ def index(request):
     """
     template = 'frontend/index.html'
     errorlogin = ''
-    data = {'module': current_view(request),
-            'user': request.user,
-            'notice_count': notice_count(request),
-            'loginform': LoginForm(),
-            'errorlogin': errorlogin,
-            'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    data = {
+        'module': current_view(request),
+        'user': request.user,
+        'notice_count': notice_count(request),
+        'loginform': LoginForm(),
+        'errorlogin': errorlogin,
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
 
     return render_to_response(template, data,
@@ -207,6 +208,7 @@ def customer_dashboard(request, on_index=None):
         end_date = datetime.today()
         start_date = calculate_date(search_type)
 
+        #TODO: Vars not used
         min_limit = time.mktime(start_date.timetuple())
         max_limit = time.mktime(end_date.timetuple())
 
@@ -228,9 +230,9 @@ def customer_dashboard(request, on_index=None):
         else:
             date_length = 10  # Last 30 days option
 
-        select_data =\
-            {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,%s)" %\
-                  str(date_length)}
+        select_data = {
+            "starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,%s)" % str(date_length)
+        }
 
         # This calls list is used by pie chart
         calls = VoIPCall.objects\
@@ -248,11 +250,11 @@ def customer_dashboard(request, on_index=None):
         for i in calls:
             if i['disposition'] == VOIPCALL_DISPOSITION.ANSWER:
                 total_answered += i['starting_date__count']
-            elif i['disposition'] == VOIPCALL_DISPOSITION.BUSY\
-                or i['disposition'] == 'USER_BUSY':
+            elif (i['disposition'] == VOIPCALL_DISPOSITION.BUSY
+               or i['disposition'] == 'USER_BUSY'):
                 total_busy += i['starting_date__count']
-            elif i['disposition'] == VOIPCALL_DISPOSITION.NOANSWER\
-                or i['disposition'] == 'NO_ANSWER':
+            elif (i['disposition'] == VOIPCALL_DISPOSITION.NOANSWER
+               or i['disposition'] == 'NO_ANSWER'):
                 total_not_answered += i['starting_date__count']
             elif i['disposition'] == VOIPCALL_DISPOSITION.CANCEL:
                 total_cancel += i['starting_date__count']
@@ -266,8 +268,8 @@ def customer_dashboard(request, on_index=None):
                 total_torture += i['starting_date__count']
             elif i['disposition'] == VOIPCALL_DISPOSITION.INVALIDARGS:
                 total_invalidargs += i['starting_date__count']
-            elif i['disposition'] == VOIPCALL_DISPOSITION.NOROUTE\
-                or i['disposition'] == 'NO_ROUTE':
+            elif (i['disposition'] == VOIPCALL_DISPOSITION.NOROUTE
+               or i['disposition'] == 'NO_ROUTE'):
                 total_noroute += i['starting_date__count']
             else:
                 total_forbidden += i['starting_date__count']  # FORBIDDEN
@@ -375,9 +377,9 @@ def customer_dashboard(request, on_index=None):
                         total_record[dt]['duration_avg'] += calls_dict[day_time]['duration_avg']
 
             # last 12 hrs | last 6 hrs | last 1 hrs
-            elif int(search_type) == SEARCH_TYPE.E_Last_12_hours \
-                 or int(search_type) == SEARCH_TYPE.F_Last_6_hours \
-                    or int(search_type) == SEARCH_TYPE.G_Last_hour:
+            elif (int(search_type) == SEARCH_TYPE.E_Last_12_hours
+                 or int(search_type) == SEARCH_TYPE.F_Last_6_hours
+                 or int(search_type) == SEARCH_TYPE.G_Last_hour):
 
                 for hour in range(0, 24):
                     for minute in range(0, 60):
@@ -541,4 +543,3 @@ def cust_password_reset_complete(request):
         extra_context=data)
     else:
         return HttpResponseRedirect("/")
-

@@ -13,16 +13,19 @@
 #
 
 from celery.utils.log import get_task_logger
+from django.db import connection
 from celery.decorators import task
+from celery.task import PeriodicTask
 from django.conf import settings
 from django.core.cache import cache
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.constants import SUBSCRIBER_STATUS
 from dialer_cdr.models import Callrequest, VoIPCall
-from dialer_cdr.constants import CALLREQUEST_STATUS
+from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE
 from dialer_gateway.utils import phonenumber_change_prefix
-from datetime import datetime
-from time import sleep
+from dialer_campaign.function_def import user_dialer_setting
+from datetime import datetime, timedelta
+
 from uuid import uuid1
 
 
@@ -32,11 +35,61 @@ logger = get_task_logger(__name__)
 LOCK_EXPIRE = 60 * 1  # Lock expires in 1 minute
 
 
+def check_retrycall_completion(obj_subscriber, callrequest):
+    """
+    We will check if the callrequest need to be restarted
+    in order to achieve completion
+    """
+
+    #Check if subscriber is not completed and check if
+    #subscriber.completion_count_attempt < campaign.completion_maxretry
+    if (obj_subscriber.status == SUBSCRIBER_STATUS.COMPLETED
+       or obj_subscriber.completion_count_attempt >= callrequest.campaign.completion_maxretry
+       or not callrequest.campaign.completion_maxretry
+       or callrequest.campaign.completion_maxretry == 0):
+        logger.info("Subscriber completed or limit reached!")
+    else:
+        #Let's Init a new callrequest
+
+        #Increment subscriber.completion_count_attempt
+        if obj_subscriber.completion_count_attempt:
+            obj_subscriber.completion_count_attempt = obj_subscriber.completion_count_attempt + 1
+        else:
+            obj_subscriber.completion_count_attempt = 1
+        obj_subscriber.save()
+
+        #init_callrequest -> delay at completion_intervalretry
+        new_callrequest = Callrequest(
+            request_uuid=uuid1(),
+            parent_callrequest_id=callrequest.id,
+            call_type=1,
+            num_attempt=callrequest.num_attempt + 1,
+            user=callrequest.user,
+            campaign_id=callrequest.campaign_id,
+            aleg_gateway_id=callrequest.aleg_gateway_id,
+            content_type=callrequest.content_type,
+            object_id=callrequest.object_id,
+            phone_number=callrequest.phone_number,
+            timelimit=callrequest.timelimit,
+            callerid=callrequest.callerid,
+            timeout=callrequest.timeout,
+            content_object=callrequest.content_object,
+            subscriber=callrequest.subscriber
+        )
+        new_callrequest.save()
+        #Todo Check if it's a good practice
+        #implement a PID algorithm
+        second_towait = callrequest.campaign.completion_intervalretry
+        logger.info("Init Completion Retry CallRequest in  %d seconds" % second_towait)
+        init_callrequest.apply_async(
+            args=[new_callrequest.id, callrequest.campaign.id],
+            countdown=second_towait)
+
+
 def single_instance_task(timeout):
     def task_exc(func):
         def wrapper(*args, **kwargs):
             lock_id = "celery-single-instance-" + func.__name__
-            print lock_id
             acquire_lock = lambda: cache.add(lock_id, "true", timeout)
             release_lock = lambda: cache.delete(lock_id)
             if acquire_lock():
@@ -46,6 +99,225 @@ def single_instance_task(timeout):
                     release_lock()
         return wrapper
     return task_exc
+
+
+def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
+                        hangup_cause_q850='', callerid='',
+                        phonenumber='', starting_date='',
+                        call_uuid='', duration=0, billsec=0):
+    """
+    Common function to create CDR / VoIP Call
+
+    **Attributes**:
+
+        * data : list with call details data
+        * obj_callrequest:  refer to the CallRequest object
+        * request_uuid : cdr uuid
+
+    """
+    if leg == 'a':
+        #A-Leg
+        leg_type = 1
+        used_gateway = obj_callrequest.aleg_gateway
+    else:
+        #B-Leg
+        leg_type = 2
+        if obj_callrequest.content_object.__class__.__name__ == 'VoiceApp':
+            used_gateway = obj_callrequest.content_object.gateway
+        else:
+            #Survey
+            used_gateway = obj_callrequest.aleg_gateway
+
+    logger.debug('Create CDR - request_uuid=%s ; leg=%d ; hangup_cause= %s' %
+        (request_uuid, leg_type, hangup_cause))
+
+    new_voipcall = VoIPCall(
+        user=obj_callrequest.user,
+        request_uuid=request_uuid,
+        leg_type=leg_type,
+        used_gateway=used_gateway,
+        callrequest=obj_callrequest,
+        callid=call_uuid,
+        callerid=callerid,
+        phone_number=phonenumber,
+        dialcode=None,  # TODO
+        starting_date=starting_date,
+        duration=duration,
+        billsec=billsec,
+        disposition=hangup_cause,
+        hangup_cause=hangup_cause,
+        hangup_cause_q850=hangup_cause_q850)
+    #Save CDR
+    new_voipcall.save()
+
+
+def check_callevent():
+    """
+    Check callevent
+    """
+    cursor = connection.cursor()
+
+    sql_statement = "SELECT id, event_name, body, job_uuid, call_uuid, used_gateway_id, "\
+        "callrequest_id, callerid, phonenumber, duration, billsec, hangup_cause, "\
+        "hangup_cause_q850, starting_date, status, created_date FROM call_event WHERE status=1 LIMIT 1000 OFFSET 0"
+
+    cursor.execute(sql_statement)
+    row = cursor.fetchall()
+
+    for record in row:
+        call_event_id = record[0]
+        event_name = record[1]
+        body = record[2]
+        job_uuid = record[3]
+        call_uuid = record[4]
+        #used_gateway_id = record[5]
+        callrequest_id = record[6]
+        callerid = record[7]
+        phonenumber = record[8]
+        duration = record[9]
+        billsec = record[10]
+        hangup_cause = record[11]
+        hangup_cause_q850 = record[12]
+        starting_date = record[13]
+
+        #Update Call Event
+        sql_statement = "UPDATE call_event SET status=2 WHERE id=%d" % call_event_id
+        cursor.execute(sql_statement)
+
+        if event_name == 'BACKGROUND_JOB':
+            #hangup cause come from body
+            hangup_cause = body[5:]
+
+        if event_name == 'CHANNEL_HANGUP_COMPLETE':
+            #hangup cause come from body
+            print(event_name)
+
+        if hangup_cause == '':
+            hangup_cause = body[5:]
+
+        opt_request_uuid = job_uuid
+        opt_hangup_cause = hangup_cause
+        if callrequest_id == 0:
+            callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid.strip(' \t\n\r'))
+        else:
+            callrequest = Callrequest.objects.get(id=callrequest_id)
+
+        try:
+            obj_subscriber = Subscriber.objects.get(id=callrequest.subscriber.id)
+            if opt_hangup_cause == 'NORMAL_CLEARING':
+                if obj_subscriber.status != SUBSCRIBER_STATUS.COMPLETED:
+                    obj_subscriber.status = SUBSCRIBER_STATUS.SENT
+            else:
+                obj_subscriber.status = SUBSCRIBER_STATUS.FAIL
+            obj_subscriber.save()
+        except:
+            logger.debug('Error cannot find the Subscriber!')
+            return False
+
+        #Update Callrequest Status
+        if opt_hangup_cause == 'NORMAL_CLEARING':
+            callrequest.status = CALLREQUEST_STATUS.SUCCESS
+        else:
+            callrequest.status = CALLREQUEST_STATUS.FAILURE
+        callrequest.hangup_cause = opt_hangup_cause
+        callrequest.save()
+
+        if call_uuid == '':
+            call_uuid = job_uuid
+        if callerid == '':
+            callerid = callrequest.callerid
+        if phonenumber == '':
+            phonenumber = callrequest.phone_number
+
+        create_voipcall_esl(obj_callrequest=callrequest,
+            request_uuid=opt_request_uuid,
+            leg='a',
+            hangup_cause=opt_hangup_cause,
+            hangup_cause_q850=hangup_cause_q850,
+            callerid=callerid,
+            phonenumber=phonenumber,
+            starting_date=starting_date,
+            call_uuid=call_uuid,
+            duration=duration,
+            billsec=billsec)
+
+
+        print('3.********************************')
+
+        #If the call failed we will check if we want to make a retry call
+        if (opt_hangup_cause != 'NORMAL_CLEARING'
+           and callrequest.call_type == CALLREQUEST_TYPE.ALLOW_RETRY):
+            #Update to Retry Done
+            callrequest.call_type = CALLREQUEST_TYPE.RETRY_DONE
+            callrequest.save()
+
+            dialer_set = user_dialer_setting(callrequest.user)
+            #check if we are allowed to retry on failure
+            if ((obj_subscriber.count_attempt - 1) >= callrequest.campaign.maxretry
+               or (obj_subscriber.count_attempt - 1) >= dialer_set.maxretry
+               or not callrequest.campaign.maxretry):
+                logger.error("Not allowed retry - Maxretry (%d)" %
+                             callrequest.campaign.maxretry)
+                #Check here if we should try for completion
+                check_retrycall_completion(obj_subscriber, callrequest)
+            else:
+                #Allowed Retry
+                logger.error("Allowed Retry - Maxretry (%d)" % callrequest.campaign.maxretry)
+
+                # TODO : Review Logic
+                # Create new callrequest, Assign parent_callrequest,
+                # Change callrequest_type & num_attempt
+                new_callrequest = Callrequest(
+                    request_uuid=uuid1(),
+                    parent_callrequest_id=callrequest.id,
+                    call_type=1,
+                    num_attempt=callrequest.num_attempt + 1,
+                    user=callrequest.user,
+                    campaign_id=callrequest.campaign_id,
+                    aleg_gateway_id=callrequest.aleg_gateway_id,
+                    content_type=callrequest.content_type,
+                    object_id=callrequest.object_id,
+                    phone_number=callrequest.phone_number,
+                    timelimit=callrequest.timelimit,
+                    callerid=callrequest.callerid,
+                    timeout=callrequest.timeout,
+                    content_object=callrequest.content_object,
+                    subscriber=callrequest.subscriber
+                )
+                new_callrequest.save()
+                #Todo Check if it's a good practice
+                #implement a PID algorithm
+                second_towait = callrequest.campaign.intervalretry
+                logger.info("Init Retry CallRequest in  %d seconds" % second_towait)
+                init_callrequest.apply_async(
+                    args=[new_callrequest.id, callrequest.campaign.id],
+                    countdown=second_towait)
+        else:
+            #The Call is Answered
+            logger.info("Check for completion call")
+
+            #Check if we should relaunch a new call to achieve completion
+            check_retrycall_completion(obj_subscriber, callrequest)
+
+    logger.debug('End Loop : check_callevent')
+
+
+class task_pending_callevent(PeriodicTask):
+    """A periodic task that checks the call events
+
+    **Usage**:
+
+        check_callevent.delay()
+    """
+    run_every = timedelta(seconds=10)
+    #The campaign have to run every minutes in order to control the number
+    # of calls per minute. Cons : new calls might delay 60seconds
+    #run_every = timedelta(seconds=60)
+
+    def run(self, **kwargs):
+        logger.info("ASK :: task_pending_callevent")
+        check_callevent()
+
 
 """
 from celery.decorators import periodic_task
@@ -155,10 +427,11 @@ def init_callrequest(callrequest_id, campaign_id):
     """
     if settings.NEWFIES_DIALER_ENGINE.lower() == 'dummy':
         #Use Dummy TestCall
-        res = dummy_testcall.delay(callerid=obj_callrequest.callerid,
-            phone_number=dialout_phone_number,
-            gateway=gateways)
-        result = res.get()
+        # res = dummy_testcall.delay(callerid=obj_callrequest.callerid,
+        #     phone_number=dialout_phone_number,
+        #     gateway=gateways)
+        # result = res.get()
+        result = ''
         logger.info(result)
         logger.error('Received RequestUUID :> ' + str(result['RequestUUID']))
 
@@ -256,127 +529,5 @@ def init_callrequest(callrequest_id, campaign_id):
 
     #lock to limit running process, do so per campaign
     #http://ask.github.com/celery/cookbook/tasks.html
-
-    return True
-
-
-"""
-The following tasks have been created for testing purpose.
-Tasks :
-    - dummy_testcall
-    - dummy_test_answerurl
-    - dummy_test_hangupurl
-"""
-
-
-@task()
-def dummy_testcall(callerid, phone_number, gateway):
-    """This is used for test purposes to simulate the behavior of Plivo
-
-    **Attributes**:
-
-        * ``callerid`` - CallerID
-        * ``phone_number`` - Phone Number to call
-        * ``gateway`` - Gateway to use for the call
-
-    **Return**:
-
-        * ``RequestUUID`` - A unique identifier for API request."""
-    logger.info("TASK :: dummy_testcall")
-    logger.debug("Executing task id %r, args: %r kwargs: %r" %
-        (dummy_testcall.request.id,
-         dummy_testcall.request.args,
-         dummy_testcall.request.kwargs))
-    sleep(1)
-    logger.info("Waiting 1 seconds...")
-
-    request_uuid = uuid1()
-
-    #Trigger AnswerURL
-    dummy_test_answerurl.delay(request_uuid)
-    #Trigger HangupURL
-    dummy_test_hangupurl.delay(request_uuid)
-
-    return {'RequestUUID': request_uuid}
-
-
-@task(default_retry_delay=2)  # retry in 2 seconds.
-def dummy_test_answerurl(request_uuid):
-    """This task triggers a call to local answer
-    This is used for test purposes to simulate the behavior of Plivo
-
-    **Attributes**:
-
-        * ``RequestUUID`` - A unique identifier for API request."""
-    logger.info("TASK :: dummy_testcall")
-    logger.debug("Executing task id %r, args: %r kwargs: %r" %
-        (dummy_test_answerurl.request.id,
-         dummy_test_answerurl.request.args,
-         dummy_test_answerurl.request.kwargs))
-
-    logger.info("Waiting 1 seconds...")
-    sleep(1)
-    #find Callrequest
-    try:
-        obj_callrequest = Callrequest.objects.get(request_uuid=request_uuid)
-    except:
-        sleep(1)
-        obj_callrequest = Callrequest.objects.get(request_uuid=request_uuid)
-
-    #Update CallRequest
-    obj_callrequest.status = 4  # SUCCESS
-    obj_callrequest.save()
-    #Create CDR
-    new_voipcall = VoIPCall(user=obj_callrequest.user,
-                            request_uuid=obj_callrequest.request_uuid,
-                            callrequest=obj_callrequest,
-                            callid='',
-                            callerid=obj_callrequest.callerid,
-                            phone_number=obj_callrequest.phone_number,
-                            duration=0,
-                            billsec=0,
-                            disposition=1)
-    new_voipcall.save()
-    #lock to limit running process, do so per campaign
-    #http://ask.github.com/celery/cookbook/tasks.html
-
-    return True
-
-
-@task(default_retry_delay=2)  # retry in 2 seconds.
-def dummy_test_hangupurl(request_uuid):
-    """
-    This task triggers a call to local answer
-    This is used for test purposes to simulate the behavior of Plivo
-
-    **Attributes**:
-
-        * ``RequestUUID`` - A unique identifier for API request.
-
-    """
-    logger.info("TASK :: dummy_test_hangupurl")
-    logger.debug("Executing task id %r, args: %r kwargs: %r" %
-        (dummy_test_hangupurl.request.id,
-         dummy_test_hangupurl.request.args,
-         dummy_test_hangupurl.request.kwargs))
-    logger.info("Waiting 10 seconds...")
-    sleep(10)
-
-    #find VoIPCall
-    try:
-        obj_voipcall = VoIPCall.objects.get(request_uuid=request_uuid)
-    except:
-        sleep(1)
-        obj_voipcall = VoIPCall.objects.get(request_uuid=request_uuid)
-
-    #Update VoIPCall
-    obj_voipcall.status = 'ANSWER'
-    obj_voipcall.duration = 55
-    obj_voipcall.billsec = 55
-    obj_voipcall.save()
-
-    obj_callrequest = Callrequest.objects.get(request_uuid=request_uuid)
-    obj_callrequest.hangup_cause = 'NORMAL_CLEARING'
-    obj_callrequest.save()
 
     return True

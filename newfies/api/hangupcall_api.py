@@ -24,7 +24,7 @@ from tastypie import http
 from dialer_campaign.constants import SUBSCRIBER_STATUS
 from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE
 from dialer_cdr.models import Callrequest
-from dialer_cdr.tasks import init_callrequest
+from dialer_cdr.tasks import init_callrequest, check_retrycall_completion
 from dialer_campaign.models import Subscriber
 from dialer_campaign.function_def import user_dialer_setting
 from api.resources import CustomXmlEmitter, \
@@ -34,57 +34,6 @@ import logging
 from uuid import uuid1
 
 logger = logging.getLogger('newfies.filelog')
-
-
-def check_retrycall_completion(obj_subscriber, callrequest):
-    """
-    We will check if the callrequest need to be restarted
-    in order to achieve completion
-    """
-
-    #Check if subscriber is not completed and check if
-    #subscriber.completion_count_attempt < campaign.completion_maxretry
-    if (obj_subscriber.status == SUBSCRIBER_STATUS.COMPLETED
-       or obj_subscriber.completion_count_attempt >= callrequest.campaign.completion_maxretry
-       or not callrequest.campaign.completion_maxretry
-       or callrequest.campaign.completion_maxretry == 0):
-        logger.info("Subscriber completed or limit reached!")
-    else:
-        #Let's Init a new callrequest
-
-        #Increment subscriber.completion_count_attempt
-        if obj_subscriber.completion_count_attempt:
-            obj_subscriber.completion_count_attempt = obj_subscriber.completion_count_attempt + 1
-        else:
-            obj_subscriber.completion_count_attempt = 1
-        obj_subscriber.save()
-
-        #init_callrequest -> delay at completion_intervalretry
-        new_callrequest = Callrequest(
-            request_uuid=uuid1(),
-            parent_callrequest_id=callrequest.id,
-            call_type=1,
-            num_attempt=callrequest.num_attempt + 1,
-            user=callrequest.user,
-            campaign_id=callrequest.campaign_id,
-            aleg_gateway_id=callrequest.aleg_gateway_id,
-            content_type=callrequest.content_type,
-            object_id=callrequest.object_id,
-            phone_number=callrequest.phone_number,
-            timelimit=callrequest.timelimit,
-            callerid=callrequest.callerid,
-            timeout=callrequest.timeout,
-            content_object=callrequest.content_object,
-            subscriber=callrequest.subscriber
-        )
-        new_callrequest.save()
-        #Todo Check if it's a good practice
-        #implement a PID algorithm
-        second_towait = callrequest.campaign.completion_intervalretry
-        logger.info("Init Completion Retry CallRequest in  %d seconds" % second_towait)
-        init_callrequest.apply_async(
-            args=[new_callrequest.id, callrequest.campaign.id],
-            countdown=second_towait)
 
 
 class HangupcallValidation(Validation):

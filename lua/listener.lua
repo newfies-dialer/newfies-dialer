@@ -123,21 +123,13 @@ i = 0
 while true do
     event_name = false
     event_subclass = false
-    if i > 200 then
-        break
-    end
+    -- if i > 200 then
+    --     break
+    -- end
     i = i + 1
     -- pop(1) blocks until there is an event
     -- pop(1,500) blocks for max half a second until there is an event
     e = con:pop(1)
-
-    -- 0. Check Background job -> assign uuid to callrequest
-    -- 1. Get Hangup even
-    -- 2. Check vars : if flag Newfies call
-    -- 3. Update Call Status if started
-    -- 4. Update Call Status when stop
-    -- 5. store CDR
-
 
     if e then
         --default status
@@ -211,14 +203,8 @@ while true do
 
             end
 
-            dat = e:serialize()
-            logger("Here's everything:\n" .. dat .. "\n")
-
-            data = e:getBody()
-            if data ~= nil then
-                logger("Here's getBody:\n" .. trim(data) .. "\n")
-            end
-            --logger("Here's everything:\n" .. data .. "\n")
+            -- dat = e:serialize()
+            -- logger("Here's everything:\n" .. dat .. "\n")
 
             -- Grab a specific channel variable
             uuid = e:getHeader("uuid")

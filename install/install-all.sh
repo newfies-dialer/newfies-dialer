@@ -57,33 +57,33 @@ bash install-freeswitch.sh
 /etc/init.d/freeswitch start
 
 
-#Install Plivo
-cd /usr/src/
-wget https://raw.github.com/plivo/plivoframework/master/scripts/plivo_install.sh -O plivo_install.sh
-bash plivo_install.sh /usr/share/plivo
+# #Install Plivo
+# cd /usr/src/
+# wget https://raw.github.com/plivo/plivoframework/master/scripts/plivo_install.sh -O plivo_install.sh
+# bash plivo_install.sh /usr/share/plivo
 
-#UPDATE Plivo configuration
-awk 'NR==12{print "EXTRA_FS_VARS = variable_user_context,Channel-Read-Codec-Bit-Rate,variable_plivo_answer_url,variable_plivo_app,variable_direction,variable_endpoint_disposition,variable_hangup_cause,variable_hangup_cause_q850,variable_duration,variable_billsec,variable_progresssec,variable_answersec,variable_waitsec,variable_mduration,variable_billmsec,variable_progressmsec,variable_answermsec,variable_waitmsec,variable_progress_mediamsec,variable_call_uuid,variable_origination_caller_id_number,variable_caller_id,variable_answer_epoch,variable_answer_uepoch"}1' /usr/share/plivo/etc/plivo/default.conf > /tmp/default.conf
-mv /tmp/default.conf /usr/share/plivo/etc/plivo/default.conf
+# #UPDATE Plivo configuration
+# awk 'NR==12{print "EXTRA_FS_VARS = variable_user_context,Channel-Read-Codec-Bit-Rate,variable_plivo_answer_url,variable_plivo_app,variable_direction,variable_endpoint_disposition,variable_hangup_cause,variable_hangup_cause_q850,variable_duration,variable_billsec,variable_progresssec,variable_answersec,variable_waitsec,variable_mduration,variable_billmsec,variable_progressmsec,variable_answermsec,variable_waitmsec,variable_progress_mediamsec,variable_call_uuid,variable_origination_caller_id_number,variable_caller_id,variable_answer_epoch,variable_answer_uepoch"}1' /usr/share/plivo/etc/plivo/default.conf > /tmp/default.conf
+# mv /tmp/default.conf /usr/share/plivo/etc/plivo/default.conf
 
-#Stop/Start Plivo & Cache Server
-/etc/init.d/plivo stop
-/etc/init.d/plivocache stop
-/etc/init.d/plivo start
-/etc/init.d/plivocache start
+# #Stop/Start Plivo & Cache Server
+# /etc/init.d/plivo stop
+# /etc/init.d/plivocache stop
+# /etc/init.d/plivo start
+# /etc/init.d/plivocache start
 
-echo "Install Logrotate..."
-#Setup log rotation
-touch /etc/logrotate.d/plivo
-echo '
-/usr/share/plivo/tmp/*.log {
-    daily
-    rotate 10
-    size = 20M
-    missingok
-    compress
-}
-'  >> /etc/logrotate.d/plivo
+# echo "Install Logrotate..."
+# #Setup log rotation
+# touch /etc/logrotate.d/plivo
+# echo '
+# /usr/share/plivo/tmp/*.log {
+#     daily
+#     rotate 10
+#     size = 20M
+#     missingok
+#     compress
+# }
+# '  >> /etc/logrotate.d/plivo
 
 #Install Newfies
 cd /usr/src/

@@ -54,6 +54,23 @@ end
 --Main function starts here
 logger("Starting")
 
+-- ensure DB works, create table if it doesnt exist
+env = assert (luasql.postgres())
+dbcon = assert (env:connect(DATABASE,USERNAME,PASSWORD,DBHOST, 5432))
+blah = assert(dbcon:execute([["CREATE TABLE if not exists call_event (
+        id serial NOT NULL PRIMARY KEY,
+        event_name varchar(200) NOT NULL,
+        body varchar(200) NOT NULL,
+        job_uuid varchar(200),
+        core_uuid varchar(200) NOT NULL,
+        status integer,
+        created_date timestamp with time zone NOT NULL,
+        UNIQUE ("event_name", "core_uuid")
+        )"]]))
+dbcon:close()
+env:close()
+
+
 
 local event_name
 local event_subclass

@@ -44,10 +44,10 @@ def check_retrycall_completion(obj_subscriber, callrequest):
 
     #Check if subscriber is not completed and check if
     #subscriber.completion_count_attempt < campaign.completion_maxretry
-    if obj_subscriber.status == SUBSCRIBER_STATUS.COMPLETED \
-        or obj_subscriber.completion_count_attempt >= callrequest.campaign.completion_maxretry\
-        or not callrequest.campaign.completion_maxretry \
-        or callrequest.campaign.completion_maxretry == 0:
+    if (obj_subscriber.status == SUBSCRIBER_STATUS.COMPLETED
+       or obj_subscriber.completion_count_attempt >= callrequest.campaign.completion_maxretry
+       or not callrequest.campaign.completion_maxretry
+       or callrequest.campaign.completion_maxretry == 0):
         logger.info("Subscriber completed or limit reached!")
     else:
         #Let's Init a new callrequest
@@ -76,15 +76,15 @@ def check_retrycall_completion(obj_subscriber, callrequest):
             timeout=callrequest.timeout,
             content_object=callrequest.content_object,
             subscriber=callrequest.subscriber
-            )
+        )
         new_callrequest.save()
         #Todo Check if it's a good practice
         #implement a PID algorithm
         second_towait = callrequest.campaign.completion_intervalretry
         logger.info("Init Completion Retry CallRequest in  %d seconds" % second_towait)
         init_callrequest.apply_async(
-                    args=[new_callrequest.id, callrequest.campaign.id],
-                    countdown=second_towait)
+            args=[new_callrequest.id, callrequest.campaign.id],
+            countdown=second_towait)
 
 
 class HangupcallValidation(Validation):
@@ -108,8 +108,7 @@ class HangupcallValidation(Validation):
         try:
             Callrequest.objects.get(request_uuid=opt_request_uuid)
         except:
-            errors['CallRequest'] = ["CallRequest not found - uuid:%s" %\
-                                     opt_request_uuid]
+            errors['CallRequest'] = ["CallRequest not found - uuid:%s" % opt_request_uuid]
         return errors
 
 
@@ -153,9 +152,8 @@ class HangupcallResource(ModelResource):
     def override_urls(self):
         """Override urls"""
         return [
-            url(r'^(?P<resource_name>%s)/$' %\
-                self._meta.resource_name, self.wrap_view('create')),
-            ]
+            url(r'^(?P<resource_name>%s)/$' % self._meta.resource_name, self.wrap_view('create')),
+        ]
 
     def create_response(self, request, data,
                         response_class=HttpResponse, **response_kwargs):
@@ -220,18 +218,18 @@ class HangupcallResource(ModelResource):
             obj = CustomXmlEmitter()
 
             #If the call failed we will check if we want to make a retry call
-            if opt_hangup_cause != 'NORMAL_CLEARING'\
-                and callrequest.call_type == CALLREQUEST_TYPE.ALLOW_RETRY:
+            if (opt_hangup_cause != 'NORMAL_CLEARING'
+               and callrequest.call_type == CALLREQUEST_TYPE.ALLOW_RETRY):
                 #Update to Retry Done
                 callrequest.call_type = CALLREQUEST_TYPE.RETRY_DONE
                 callrequest.save()
 
                 dialer_set = user_dialer_setting(callrequest.user)
                 #check if we are allowed to retry on failure
-                if (obj_subscriber.count_attempt - 1) >= callrequest.campaign.maxretry\
-                    or (obj_subscriber.count_attempt - 1) >= dialer_set.maxretry\
-                    or not callrequest.campaign.maxretry:
-                    logger.error("Not allowed retry - Maxretry (%d)" %\
+                if ((obj_subscriber.count_attempt - 1) >= callrequest.campaign.maxretry
+                   or (obj_subscriber.count_attempt - 1) >= dialer_set.maxretry
+                   or not callrequest.campaign.maxretry):
+                    logger.error("Not allowed retry - Maxretry (%d)" %
                                  callrequest.campaign.maxretry)
                     #Check here if we should try for completion
                     check_retrycall_completion(obj_subscriber, callrequest)
@@ -257,15 +255,15 @@ class HangupcallResource(ModelResource):
                         timeout=callrequest.timeout,
                         content_object=callrequest.content_object,
                         subscriber=callrequest.subscriber
-                        )
+                    )
                     new_callrequest.save()
                     #Todo Check if it's a good practice
                     #implement a PID algorithm
                     second_towait = callrequest.campaign.intervalretry
                     logger.info("Init Retry CallRequest in  %d seconds" % second_towait)
                     init_callrequest.apply_async(
-                                args=[new_callrequest.id, callrequest.campaign.id],
-                                countdown=second_towait)
+                        args=[new_callrequest.id, callrequest.campaign.id],
+                        countdown=second_towait)
             else:
                 #The Call is Answered
                 logger.info("Check for completion call")

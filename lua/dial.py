@@ -26,4 +26,10 @@ c.connected()
 dial = "originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=10,newfiesdialer=true,used_gateway_id=1,callrequest_id=26,leg_type=1}user/areski &playback(/tmp/myfile.wav)"
 # originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=10}user/areski &playback(/tmp/myfile.wav)
 ev = c.api("bgapi", dial)
-print ev.serialize()
+c.disconnect()
+
+result = ev.serialize()
+print(result)
+pos = result.find('Job-UUID:')
+job_uuid = result[pos + 10:pos + 46]
+print(job_uuid)

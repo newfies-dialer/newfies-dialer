@@ -113,6 +113,7 @@ def init_callrequest(callrequest_id, campaign_id):
 
     #Retrieve the Gateway for the A-Leg
     gateways = obj_callrequest.aleg_gateway.gateways
+    gateway_id = obj_callrequest.aleg_gateway.id
     gateway_codecs = obj_callrequest.aleg_gateway.gateway_codecs
     gateway_timeouts = obj_callrequest.aleg_gateway.gateway_timeouts
     gateway_retries = obj_callrequest.aleg_gateway.gateway_retries
@@ -188,7 +189,48 @@ def init_callrequest(callrequest_id, campaign_id):
                 obj_subscriber.save()
             return False
         logger.info(result)
-        logger.error('Received RequestUUID :> ' + str(result['RequestUUID']))
+        request_uuid = str(result['RequestUUID'])
+        logger.info('Received RequestUUID :> ' + request_uuid)
+
+    elif settings.NEWFIES_DIALER_ENGINE.lower() == 'esl':
+        try:
+            # {ignore_early_media=true,continue_on_fail=true,bypass_media=false,hangup_after_bridge=true,originate_timeout=10,api_hangup_hook='luarun hangup.lua ${uuid}'}sofia/gateway/phoneno &park()
+            calleridvars = "origination_caller_id_number=%s,origination_caller_id_name=%s,effective_caller_id_number=%s,effective_caller_id_name=%s" % \
+                (obj_callrequest.callerid, obj_callrequest.campaign.caller_name, obj_callrequest.callerid, obj_callrequest.campaign.caller_name)
+
+            import ESL
+            c = ESL.ESLconnection(settings.ESL_HOSTNAME, settings.ESL_PORT, settings.ESL_SECRET)
+            c.connected()
+
+            appvars = "used_gateway_id=%s,callrequest_id=%s" % (gateway_id, obj_callrequest.id)
+            callvars = "{bridge_early_media=true,hangup_after_bridge=true,originate_timeout=%s,newfiesdialer=true,%s,leg_type=1,%s,%s}" % \
+                (gateway_timeouts, appvars, calleridvars, originate_dial_string)
+
+            dial = "originate %s%s/%s &luarun (/tmp/myfile.wav)" % \
+                (callvars, gateways, dialout_phone_number)
+            # originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=10}user/areski &playback(/tmp/myfile.wav)
+            ev = c.api("bgapi", dial)
+            c.disconnect()
+
+            result = ev.serialize()
+            pos = result.find('Job-UUID:')
+            if pos:
+                request_uuid = result[pos + 10:pos + 46]
+            else:
+                request_uuid = 'error'
+
+        except:
+            logger.error('error : ESL')
+            obj_callrequest.status = 2  # Update to Failure
+            obj_callrequest.save()
+            if obj_callrequest.subscriber and obj_callrequest.subscriber.id:
+                obj_subscriber = Subscriber.objects\
+                    .get(id=obj_callrequest.subscriber.id)
+                obj_subscriber.status = SUBSCRIBER_STATUS.FAIL
+                obj_subscriber.save()
+            return False
+        logger.debug(result)
+        logger.info('Received RequestUUID :> ' + request_uuid)
 
     else:
         logger.error('No other method supported!')
@@ -205,7 +247,7 @@ def init_callrequest(callrequest_id, campaign_id):
         obj_subscriber.save()
 
     #Update CallRequest Object
-    obj_callrequest.request_uuid = result['RequestUUID']
+    obj_callrequest.request_uuid = request_uuid
     obj_callrequest.save()
 
     #lock to limit running process, do so per campaign

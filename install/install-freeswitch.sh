@@ -22,7 +22,7 @@ FS_CONF_PATH=https://raw.github.com/Star2Billing/newfies-dialer/master/install/f
 FS_INIT_PATH=https://raw.github.com/Star2Billing/newfies-dialer/master/install/freeswitch-init
 FS_INSTALLED_PATH=/usr/local/freeswitch
 FS_CONFIG_PATH=/etc/freeswitch
-FS_DOWNLOAD=http://files.freeswitch.org/freeswitch-1.2.3.tar.bz2
+FS_DOWNLOAD=http://files.freeswitch.org/freeswitch-1.2.5.tar.bz2
 FS_BASE_PATH=/usr/src/
 CURRENT_PATH=$PWD
 
@@ -105,6 +105,7 @@ func_install_fs_source
 cd $FS_CONFIG_PATH/autoload_configs/
 [ -f modules.conf.xml ] && cp modules.conf.xml modules.conf.xml.bak
 sed -i -r \
+-e "s/<\!--\s?<load module=\"mod_lua\"\/>\s?-->/<load module=\"mod_lua\"\/>/g" \
 -e "s/<\!--\s?<load module=\"mod_xml_curl\"\/>\s?-->/<load module=\"mod_xml_curl\"\/>/g" \
 -e "s/<\!--\s?<load module=\"mod_xml_cdr\"\/>\s?-->/<load module=\"mod_xml_cdr\"\/>/g" \
 -e "s/<\!--\s?<load module=\"mod_dingaling\"\/>\s?-->/<load module=\"mod_dingaling\"\/>/g" \
@@ -117,6 +118,9 @@ sed -i -r \
 -e "s/<\!--\s?<load module=\"mod_say_zh\"\/>\s?-->/<load module=\"mod_say_zh\"\/>/g" \
 -e 's/mod_say_zh.*$/&\n    <load module="mod_say_de"\/>\n    <load module="mod_say_es"\/>\n    <load module="mod_say_fr"\/>\n    <load module="mod_say_it"\/>\n    <load module="mod_say_nl"\/>\n    <load module="mod_say_hu"\/>\n    <load module="mod_say_th"\/>/' \
 modules.conf.xml
+
+[ -f lua.conf.xml ] && mv lua.conf.xml lua.conf.xml.bak
+wget --no-check-certificate $FS_CONF_PATH/lua.conf.xml -O lua.conf.xml
 
 #Configure Dialplan
 cd $FS_CONFIG_PATH/conf/dialplan/

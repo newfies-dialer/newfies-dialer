@@ -198,18 +198,21 @@ def init_callrequest(callrequest_id, campaign_id):
             calleridvars = "origination_caller_id_number=%s,origination_caller_id_name=%s,effective_caller_id_number=%s,effective_caller_id_name=%s" % \
                 (obj_callrequest.callerid, obj_callrequest.campaign.caller_name, obj_callrequest.callerid, obj_callrequest.campaign.caller_name)
 
-            import ESL
-            c = ESL.ESLconnection(settings.ESL_HOSTNAME, settings.ESL_PORT, settings.ESL_SECRET)
-            c.connected()
-
             appvars = "used_gateway_id=%s,callrequest_id=%s" % (gateway_id, obj_callrequest.id)
             callvars = "{bridge_early_media=true,hangup_after_bridge=true,originate_timeout=%s,newfiesdialer=true,%s,leg_type=1,%s,%s}" % \
                 (gateway_timeouts, appvars, calleridvars, originate_dial_string)
 
-            dial = "originate %s%s/%s &luarun (/tmp/myfile.wav)" % \
+            dial = "originate %s%s%s '&lua(/usr/share/newfies-lua/newfies.lua)'" % \
                 (callvars, gateways, dialout_phone_number)
             # originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=10}user/areski &playback(/tmp/myfile.wav)
-            ev = c.api("bgapi", dial)
+            print dial
+            # dial = "originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=,newfiesdialer=true,used_gateway_id=1,callrequest_id=38,leg_type=1,origination_caller_id_number=234234234,origination_caller_id_name=234234,effective_caller_id_number=234234234,effective_caller_id_name=234234,}user//1000 '&lua(/usr/share/newfies-lua/newfies.lua)'"
+            # print dial
+
+            import ESL
+            c = ESL.ESLconnection(settings.ESL_HOSTNAME, settings.ESL_PORT, settings.ESL_SECRET)
+            c.connected()
+            ev = c.api("bgapi", str(dial))
             c.disconnect()
 
             result = ev.serialize()
@@ -220,6 +223,7 @@ def init_callrequest(callrequest_id, campaign_id):
                 request_uuid = 'error'
 
         except:
+            raise
             logger.error('error : ESL')
             obj_callrequest.status = 2  # Update to Failure
             obj_callrequest.save()

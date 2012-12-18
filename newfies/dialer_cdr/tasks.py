@@ -188,9 +188,9 @@ def check_callevent():
             #hangup cause come from body
             hangup_cause = body[5:]
 
-        if event_name == 'CHANNEL_HANGUP_COMPLETE':
-            #hangup cause come from body
-            print(event_name)
+        # if event_name == 'CHANNEL_HANGUP_COMPLETE':
+        #     #hangup cause come from body
+        #     print(event_name)
 
         if hangup_cause == '':
             hangup_cause = body[5:]
@@ -240,9 +240,6 @@ def check_callevent():
             call_uuid=call_uuid,
             duration=duration,
             billsec=billsec)
-
-
-        print('3.********************************')
 
         #If the call failed we will check if we want to make a retry call
         if (opt_hangup_cause != 'NORMAL_CLEARING'
@@ -478,9 +475,8 @@ def init_callrequest(callrequest_id, campaign_id):
             dial = "originate %s%s%s '&lua(/usr/share/newfies-lua/newfies.lua)'" % \
                 (callvars, gateways, dialout_phone_number)
             # originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=10}user/areski &playback(/tmp/myfile.wav)
-            print dial
             # dial = "originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=,newfiesdialer=true,used_gateway_id=1,callrequest_id=38,leg_type=1,origination_caller_id_number=234234234,origination_caller_id_name=234234,effective_caller_id_number=234234234,effective_caller_id_name=234234,}user//1000 '&lua(/usr/share/newfies-lua/newfies.lua)'"
-            # print dial
+            print dial
 
             import ESL
             c = ESL.ESLconnection(settings.ESL_HOSTNAME, settings.ESL_PORT, settings.ESL_SECRET)

@@ -35,12 +35,12 @@ function trim(s)
     return (string.gsub(s, "^%s*(.-)%s*$", "%1"))
 end
 
-function insert_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, starting_date)
+function db_insert_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, starting_date)
     -- event_name, body, job_uuid, call_uuid
     sql = string.format([[
     INSERT INTO call_event (event_name, body, job_uuid, call_uuid, status, created_date, used_gateway_id, callrequest_id, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, starting_date)
     VALUES ('%s', '%s', '%s', '%s', '%s', now(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s)]], event_name, body, job_uuid, call_uuid, status, used_gateway_id, callrequest_id, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, starting_date)
-    logger(sql)
+    --logger(sql)
     env = assert (luasql.postgres())
     dbcon = assert (env:connect(DATABASE,USERNAME,PASSWORD,DBHOST, 5432))
     res = assert (dbcon:execute(sql))
@@ -158,16 +158,16 @@ while true do
         -- CHANNEL_ANSWER
         if event_name == 'CHANNEL_HANGUP_COMPLETE' or event_name == 'BACKGROUND_JOB' then
 
-            logger('-----------------------------')
-            logger(event_name)
-            logger(event_subclass)
+            --logger('-----------------------------')
+            logger('Listener Event : '..event_name)
+            --logger(event_subclass)
             body = e:getBody() or ''
 
             if event_name == 'BACKGROUND_JOB' then
                 variable_newfiesdialer = e:getHeader("variable_newfiesdialer")
-                if variable_newfiesdialer ~= nil then
-                    logger("variable_newfiesdialer is: " .. variable_newfiesdialer .. "\n")
-                end
+                -- if variable_newfiesdialer ~= nil then
+                --     logger("variable_newfiesdialer is: " .. variable_newfiesdialer .. "\n")
+                -- end
 
                 if body ~= nil then
                     if string.len(body) > 10 then
@@ -180,26 +180,25 @@ while true do
                             logger("GOOD OUTBOUND: " .. call_uuid .. "(END)\n")
                         end
                     end
-                    logger("Here's getBody: " .. trim(body) .. "(END)\n")
+                    --logger("Here's getBody: " .. trim(body) .. "(END)\n")
                 end
 
-                insert_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, starting_date)
+                --Insert Event to Database
+                db_insert_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, starting_date)
 
             elseif event_name == 'CHANNEL_HANGUP_COMPLETE' then
 
-                logger('************************************')
                 variable_newfiesdialer = e:getHeader("variable_newfiesdialer") or ""
-                logger(variable_newfiesdialer)
-                logger('************************************')
-                if variable_newfiesdialer ~= nil then
-                    logger("variable_newfiesdialer is: " .. variable_newfiesdialer .. "\n")
-                end
+                -- if variable_newfiesdialer ~= nil then
+                --     logger("variable_newfiesdialer is: " .. variable_newfiesdialer .. "\n")
+                -- end
 
                 if hangup_cause ~= 'NORMAL_CLEARING' then
                     status = 0
                 end
 
-                insert_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, starting_date)
+                --Insert Event to Database
+                db_insert_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, starting_date)
 
             end
 

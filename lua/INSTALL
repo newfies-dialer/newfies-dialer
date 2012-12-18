@@ -32,3 +32,14 @@ Edit autoload_configs/lua.conf.xml::
 Compile
 -------
 luac -o newfies.luac newfies.lua
+
+
+Python ESL
+----------
+You will need to compile Python ESL, this can be achieved with the following command on your FreeSWITCH box::
+
+    apt-get install python-dev
+    workon newfies-dialer
+    cd /usr/src/freeswitch/libs/esl
+    make pymod-install
+

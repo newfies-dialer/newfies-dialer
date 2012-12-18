@@ -131,6 +131,9 @@ def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
     logger.debug('Create CDR - request_uuid=%s ; leg=%d ; hangup_cause= %s' %
         (request_uuid, leg_type, hangup_cause))
 
+    if hangup_cause == 'NORMAL_CLEARING':
+        hangup_cause = 'ANSWER'
+
     new_voipcall = VoIPCall(
         user=obj_callrequest.user,
         request_uuid=request_uuid,
@@ -468,8 +471,9 @@ def init_callrequest(callrequest_id, campaign_id):
             calleridvars = "origination_caller_id_number=%s,origination_caller_id_name=%s,effective_caller_id_number=%s,effective_caller_id_name=%s" % \
                 (obj_callrequest.callerid, obj_callrequest.campaign.caller_name, obj_callrequest.callerid, obj_callrequest.campaign.caller_name)
 
-            appvars = "used_gateway_id=%s,callrequest_id=%s" % (gateway_id, obj_callrequest.id)
-            callvars = "{bridge_early_media=true,hangup_after_bridge=true,originate_timeout=%s,newfiesdialer=true,%s,leg_type=1,%s,%s}" % \
+            appvars = "campaign_id=%d,subscriber_id=%d,used_gateway_id=%s,callrequest_id=%s" % \
+                (obj_callrequest.campaign_id, obj_callrequest.subscriber_id, gateway_id, obj_callrequest.id)
+            callvars = "{bridge_early_media=true,originate_timeout=%s,newfiesdialer=true,%s,leg_type=1,%s,%s}" % \
                 (gateway_timeouts, appvars, calleridvars, originate_dial_string)
 
             dial = "originate %s%s%s '&lua(/usr/share/newfies-lua/newfies.lua)'" % \

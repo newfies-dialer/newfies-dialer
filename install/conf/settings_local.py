@@ -74,7 +74,7 @@ PLIVO_DEFAULT_SURVEY_ANSWER_URL = 'http://SERVER_IP_PORT/survey_finitestatemachi
 
 FS_RECORDING_PATH = '/usr/share/newfies/usermedia/recording/'
 
-# ADD 'dummy','plivo','twilio'
+# ADD 'dummy','plivo','twilio','esl'
 NEWFIES_DIALER_ENGINE = 'dummy'
 
 API_ALLOWED_IP = [

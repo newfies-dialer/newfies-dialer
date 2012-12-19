@@ -431,7 +431,7 @@ PLIVO_DEFAULT_SURVEY_ANSWER_URL = 'http://127.0.0.1:8000/' \
 
 FS_RECORDING_PATH = '/usr/share/newfies/usermedia/recording/'
 
-# ADD 'dummy','plivo','twilio', 'esl'
+# ADD 'dummy','plivo','twilio','esl'
 NEWFIES_DIALER_ENGINE = 'esl'
 
 #TASTYPIE API

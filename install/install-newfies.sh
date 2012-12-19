@@ -295,8 +295,7 @@ func_install_frontend(){
 
     #Copy files
     cp -r /usr/src/newfies-dialer/newfies $INSTALL_DIR
-    mkdir $LUA_DIR
-    cp -r /usr/src/newfies-dialer/lua $LUA_DIR
+    cp -r /usr/src/newfies-dialer/lua /usr/share/newfies-lua
 
     #Install Newfies-Dialer depencencies
     easy_install -U distribute

@@ -42,7 +42,7 @@ function db_insert_event(event_name, body, job_uuid, call_uuid, used_gateway_id,
     VALUES ('%s', '%s', '%s', '%s', '%s', now(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s)]], event_name, body, job_uuid, call_uuid, status, used_gateway_id, callrequest_id, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, starting_date)
     --logger(sql)
     env = assert (luasql.postgres())
-    dbcon = assert(self.env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT))
+    dbcon = assert(env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT))
     res = assert (dbcon:execute(sql))
     dbcon:close()
     env:close()
@@ -69,7 +69,7 @@ logger("Starting")
 
 -- ensure DB works, create table if it doesnt exist
 env = assert (luasql.postgres())
-dbcon = assert(self.env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT))
+dbcon = assert(env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT))
 -- DROP TABLE call_event;
 blah = assert(dbcon:execute([[
     DROP TABLE call_event;

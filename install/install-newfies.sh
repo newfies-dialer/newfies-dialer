@@ -34,6 +34,7 @@ DB_BACKEND=PostgreSQL
 DATETIME=$(date +"%Y%m%d%H%M%S")
 KERNEL_ARCH=$(uname -p)
 INSTALL_DIR='/usr/share/newfies'
+LUA_DIR='/usr/share/newfies-lua'
 INSTALL_DIR_WELCOME='/var/www/newfies'
 DATABASENAME='newfies_dialer'
 DB_USERSALT=`</dev/urandom tr -dc 0-9| (head -c $1 > /dev/null 2>&1 || head -c 5)`
@@ -215,7 +216,7 @@ func_install_frontend(){
     apt-get -y install python-setuptools python-dev build-essential
     apt-get -y install nginx supervisor
     apt-get -y install git-core mercurial gawk
-    apt-get -y install python-pip
+    apt-get -y install python-pip python-dev
     #for audiofile convertion
     apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
 
@@ -224,6 +225,17 @@ func_install_frontend(){
     apt-get -y install libpq-dev
     #Start PostgreSQL
     /etc/init.d/postgresql start
+
+    #Lua Deps
+    apt-get -y install liblua5.1-sql-postgres-dev
+    apt-get -y install postgresql-server-dev-9.1
+    #Luarocks
+    apt-get -y install luarocks
+    luarocks install luasql-postgres
+    luarocks install lualogging
+    luarocks install loop
+    luarocks install md5
+    luarocks install luafilesystem
 
     #Create Newfies User
     echo ""
@@ -285,6 +297,8 @@ func_install_frontend(){
 
     #Copy files
     cp -r /usr/src/newfies-dialer/newfies $INSTALL_DIR
+    mkdir $LUA_DIR
+    cp -r /usr/src/newfies-dialer/lua $LUA_DIR
 
     #Install Newfies-Dialer depencencies
     easy_install -U distribute
@@ -300,7 +314,11 @@ func_install_frontend(){
     do
         pip install $line
     done
-    pip install plivohelper
+    #pip install plivohelper
+
+    #Install Python ESL
+    cd /usr/src/freeswitch/libs/esl
+    make pymod-install
 
     #Check Python dependencies
     func_check_dependencies
@@ -437,6 +455,9 @@ func_install_frontend(){
     '  >> /etc/logrotate.d/newfies_dialer
 
     logrotate /etc/logrotate.d/newfies_dialer
+
+    #Restart FreeSWITCH to find the startup-script
+    /etc/init.d/freeswitch restart
 
     echo ""
     echo "*****************************************************************"

@@ -25,7 +25,7 @@
 
 
 #Set branch to install DEVEL/STABLE
-BRANCH="DEVEL"
+BRANCH="develop"
 #TODO: update before release
 
 #Install mode can me either CLONE or DOWNLOAD
@@ -206,8 +206,6 @@ func_install_frontend(){
     echo "This script will install Newfies-Dialer on your server"
     echo "======================================================"
     echo ""
-    #echo "Which version do you want to install ? DEVEL or STABLE [] (default:STABLE)"
-    #read BRANCH
 
     #python setup tools
     echo "Install Dependencies and python modules..."
@@ -279,7 +277,7 @@ func_install_frontend(){
         'CLONE')
             git clone git://github.com/Star2Billing/newfies-dialer.git
             #Install Develop / Master
-            if echo $BRANCH | grep -i "^DEVEL" > /dev/null ; then
+            if echo $BRANCH | grep -i "^develop" > /dev/null ; then
                 cd newfies-dialer
                 git checkout -b develop --track origin/develop
             fi

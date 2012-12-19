@@ -21,6 +21,13 @@ local oo = require "loop.simple"
 local inspect = require 'inspect'
 require "constant"
 
+-- Database connection settings
+local DBHOST = '127.0.0.1'
+local DBNAME = 'newfiesdb'
+local DBUSER = 'newfiesuser'
+local DBPASS = 'password'
+local DBPORT = 5432
+
 
 Database = oo.class{
 	-- default field values
@@ -50,7 +57,7 @@ end
 
 function Database:connect(debugger)
 	self.env = assert(luasql.postgres())
-	self.con = assert(self.env:connect('newfies2', 'newfiesuser', 'password', "127.0.0.1", 5432))
+	self.con = assert(self.env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT))
 end
 
 function Database:disconnect()

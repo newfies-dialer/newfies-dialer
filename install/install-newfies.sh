@@ -252,6 +252,8 @@ func_install_frontend(){
 
         mkdir /tmp/old-newfies-dialer_$DATETIME
         mv $INSTALL_DIR /tmp/old-newfies-dialer_$DATETIME
+        mkdir /tmp/old-lua-newfies-dialer_$DATETIME
+        mv $LUA_DIR /tmp/old-lua-newfies-dialer_$DATETIME
         echo "Files from $INSTALL_DIR has been moved to /tmp/old-newfies-dialer_$DATETIME"
 
         if [ `sudo -u postgres psql -qAt --list | egrep '^$DATABASENAME\|' | wc -l` -eq 1 ]; then
@@ -295,7 +297,7 @@ func_install_frontend(){
 
     #Copy files
     cp -r /usr/src/newfies-dialer/newfies $INSTALL_DIR
-    cp -r /usr/src/newfies-dialer/lua /usr/share/newfies-lua
+    cp -r /usr/src/newfies-dialer/lua $LUA_DIR
 
     #Install Newfies-Dialer depencencies
     easy_install -U distribute
@@ -344,6 +346,13 @@ func_install_frontend(){
     sed -i "s/DB_PASSWORD/$DB_PASSWORD/" $INSTALL_DIR/settings_local.py
     sed -i "s/DB_HOSTNAME/$DB_HOSTNAME/" $INSTALL_DIR/settings_local.py
     sed -i "s/DB_PORT/$DB_PORT/" $INSTALL_DIR/settings_local.py
+
+    #Setup settings_local.py for POSTGRESQL
+    sed -i "s/newfiesdb/$DATABASENAME/"  $LUA_DIR/libs/database.lua
+    sed -i "s/newfiesuser/$DB_USERNAME/" $LUA_DIR/libs/database.lua
+    sed -i "s/password/$DB_PASSWORD/" $LUA_DIR/libs/database.lua
+    sed -i "s/127.0.0.1/$DB_HOSTNAME/" $LUA_DIR/libs/database.lua
+    sed -i "s/5432/$DB_PORT/" $LUA_DIR/libs/database.lua
 
     # Create the Database
     echo "Remove Existing Database if exists..."

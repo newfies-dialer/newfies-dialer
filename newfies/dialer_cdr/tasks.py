@@ -25,14 +25,13 @@ from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE
 from dialer_gateway.utils import phonenumber_change_prefix
 from dialer_campaign.function_def import user_dialer_setting
 from datetime import datetime, timedelta
-
+from common.only_one_task import only_one
 from uuid import uuid1
 
 
 logger = get_task_logger(__name__)
 
-
-LOCK_EXPIRE = 60 * 1  # Lock expires in 1 minute
+LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
 
 
 def check_retrycall_completion(obj_subscriber, callrequest):
@@ -84,21 +83,6 @@ def check_retrycall_completion(obj_subscriber, callrequest):
         init_callrequest.apply_async(
             args=[new_callrequest.id, callrequest.campaign.id],
             countdown=second_towait)
-
-
-def single_instance_task(timeout):
-    def task_exc(func):
-        def wrapper(*args, **kwargs):
-            lock_id = "celery-single-instance-" + func.__name__
-            acquire_lock = lambda: cache.add(lock_id, "true", timeout)
-            release_lock = lambda: cache.delete(lock_id)
-            if acquire_lock():
-                try:
-                    func(*args, **kwargs)
-                finally:
-                    release_lock()
-        return wrapper
-    return task_exc
 
 
 def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
@@ -314,6 +298,7 @@ class task_pending_callevent(PeriodicTask):
     # of calls per minute. Cons : new calls might delay 60seconds
     #run_every = timedelta(seconds=60)
 
+    @only_one(key="task_pending_callevent", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
         logger.info("ASK :: task_pending_callevent")
         check_callevent()
@@ -324,7 +309,7 @@ from celery.decorators import periodic_task
 from datetime import timedelta
 
 @periodic_task(run_every=timedelta(seconds=1))
-@single_instance_task(LOCK_EXPIRE)
+@only_one(key="callrequest_pending", timeout=LOCK_EXPIRE)
 def callrequest_pending(*args, **kwargs):
     #A periodic task that checks for pending calls
     #**Usage**:

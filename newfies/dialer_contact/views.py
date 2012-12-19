@@ -321,6 +321,7 @@ def contact_list(request):
         kwargs[i] = contact_no[i]
 
     contact_list = []
+    contact_count = 0
 
     if phonebook_id_list:
         select_data = {"status": "(CASE status WHEN 1 THEN 'ACTIVE' ELSE 'INACTIVE' END)"}
@@ -338,12 +339,13 @@ def contact_list(request):
                 contact_list = contact_list.filter(q)
 
         contact_list = contact_list.order_by(sort_order)
+        contact_count = contact_list.count()
 
     template = 'frontend/contact/list.html'
     data = {
         'module': current_view(request),
         'contact_list': contact_list,
-        'total_contacts': contact_list.count(),
+        'total_contacts': contact_count,
         'PAGE_SIZE': PAGE_SIZE,
         'CONTACT_COLUMN_NAME': CONTACT_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],

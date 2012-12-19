@@ -354,6 +354,12 @@ func_install_frontend(){
     sed -i "s/127.0.0.1/$DB_HOSTNAME/" $LUA_DIR/libs/database.lua
     sed -i "s/5432/$DB_PORT/" $LUA_DIR/libs/database.lua
 
+    sed -i "s/newfiesdb/$DATABASENAME/"  $LUA_DIR/listener.lua
+    sed -i "s/newfiesuser/$DB_USERNAME/" $LUA_DIR/listener.lua
+    sed -i "s/password/$DB_PASSWORD/" $LUA_DIR/listener.lua
+    sed -i "s/127.0.0.1/$DB_HOSTNAME/" $LUA_DIR/listener.lua
+    sed -i "s/5432/$DB_PORT/" $LUA_DIR/listener.lua
+
     # Create the Database
     echo "Remove Existing Database if exists..."
     if [ `sudo -u postgres psql -qAt --list | egrep '^$DATABASENAME\|' | wc -l` -eq 1 ]; then
@@ -449,6 +455,8 @@ func_install_frontend(){
     # * * LOGROTATE * *
 
     echo "Install Logrotate..."
+    # First delete to avoid error when running the script several times.
+    rm /etc/logrotate.d/newfies_dialer
     touch /etc/logrotate.d/newfies_dialer
     echo '
     /var/log/newfies/*.log {

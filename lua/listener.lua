@@ -72,7 +72,7 @@ env = assert (luasql.postgres())
 dbcon = assert(env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT))
 -- DROP TABLE call_event;
 blah = assert(dbcon:execute([[
-    DROP TABLE call_event;
+    DROP TABLE if exists call_event;
     CREATE TABLE if not exists call_event (
         id serial NOT NULL PRIMARY KEY,
         event_name varchar(200) NOT NULL,

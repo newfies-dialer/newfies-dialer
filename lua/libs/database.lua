@@ -13,8 +13,8 @@
 --
 
 
-package.path = package.path .. ";/home/areski/public_html/django/MyProjects/newfies-dialer/lua/?.lua";
-package.path = package.path .. ";/home/areski/public_html/django/MyProjects/newfies-dialer/lua/libs/?.lua";
+package.path = package.path .. ";/usr/share/newfies-lua/?.lua";
+package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
 local luasql = require "luasql.postgres"
 local oo = require "loop.simple"
@@ -227,6 +227,7 @@ function Database:check_data()
 	if not self.start_node then
 		self.valid_data = false
 	end
+	return self.valid_data
 end
 
 -- TODO: Finish this later

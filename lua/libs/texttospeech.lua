@@ -12,8 +12,8 @@
 -- Arezqui Belaid <info@star2billing.com>
 --
 
-package.path = package.path .. ";/home/areski/public_html/django/MyProjects/newfies-dialer/lua/?.lua";
-package.path = package.path .. ";/home/areski/public_html/django/MyProjects/newfies-dialer/lua/libs/?.lua";
+package.path = package.path .. ";/usr/share/newfies-lua/?.lua";
+package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
 -- this file contain function to :
 --

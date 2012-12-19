@@ -12,8 +12,8 @@
 -- Arezqui Belaid <info@star2billing.com>
 --
 
-package.path = package.path .. ";/home/areski/public_html/django/MyProjects/newfies-dialer/lua/?.lua";
-package.path = package.path .. ";/home/areski/public_html/django/MyProjects/newfies-dialer/lua/libs/?.lua";
+package.path = package.path .. ";/usr/share/newfies-lua/?.lua";
+package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
 local oo = require "loop.simple"
 local inspect = require 'inspect'
@@ -52,6 +52,7 @@ end
 
 function FSMCall:init()
     self.debugger:msg("INFO", "FSMCall:init")
+    self.call_start = os.time()
     self.caller_id_name = self.session:getVariable("caller_id_name")
     self.caller_id_number = self.session:getVariable("caller_id_number")
     self.destination_number = self.session:getVariable("destination_number")
@@ -82,6 +83,7 @@ function FSMCall:init()
     end
     self.debugger:msg("INFO", "start_node--->"..self.db.start_node)
     self.current_node_id = self.db.start_node
+    return true
 end
 
 function FSMCall:end_call()
@@ -106,7 +108,6 @@ end
 
 function FSMCall:start_call()
     self.debugger:msg("ERROR", "FSMCall:start_call...")
-    self.call_start = os.time()
     self:next_node()
 end
 

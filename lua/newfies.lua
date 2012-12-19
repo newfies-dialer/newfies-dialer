@@ -12,8 +12,8 @@
 -- Arezqui Belaid <info@star2billing.com>
 --
 
-package.path = package.path .. ";/home/areski/public_html/django/MyProjects/newfies-dialer/lua/?.lua";
-package.path = package.path .. ";/home/areski/public_html/django/MyProjects/newfies-dialer/lua/libs/?.lua";
+package.path = package.path .. ";/usr/share/newfies-lua/?.lua";
+package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
 require "luasql.postgres"
 require "logging.file"
@@ -97,17 +97,19 @@ if session:ready() then
     session:answer()
     session:setHangupHook("myHangupHook")
 
-    callflow:init()
-    callflow:start_call()
+    res = callflow:init()
+    if res then
+        callflow:start_call()
 
-    loop = 0
-    while session:ready() and not callflow.call_ended and loop < 1000 do
-        loop = loop + 1
+        loop = 0
+        while session:ready() and not callflow.call_ended and loop < 1000 do
+            loop = loop + 1
 
-        -- Loop on the State Machine to find the next node to proceed
-        callflow:next_node()
-        if not fs_env then
-            sleep(1)
+            -- Loop on the State Machine to find the next node to proceed
+            callflow:next_node()
+            if not fs_env then
+                sleep(1)
+            end
         end
     end
 

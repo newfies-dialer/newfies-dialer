@@ -297,7 +297,7 @@ end
 
 function Database:save_result_dtmf(callrequest_id, section_id, dtmf)
 	sqlquery = "INSERT INTO survey_result (callrequest_id, section_id, response, record_file, created_date) "..
-		"VALUES ("..callrequest_id..", "..section_id..", "..dtmf..", '', NOW())"
+		"VALUES ("..callrequest_id..", "..section_id..", '"..dtmf.."', '', NOW())"
 	self.debugger:msg("INFO", "Save Result DTMF:"..sqlquery)
 	res = self.con:execute(sqlquery)
 	if not res then
@@ -308,7 +308,7 @@ function Database:save_result_dtmf(callrequest_id, section_id, dtmf)
 end
 
 function Database:update_result_dtmf(callrequest_id, section_id, dtmf)
-	sqlquery = "UPDATE survey_result SET response="..dtmf..
+	sqlquery = "UPDATE survey_result SET response='"..dtmf.."'"..
 		" WHERE callrequest_id="..callrequest_id.." AND section_id="..section_id
 	self.debugger:msg("INFO", "Update Result DTMF:"..sqlquery)
 	res = self.con:execute(sqlquery)
@@ -319,22 +319,77 @@ function Database:update_result_dtmf(callrequest_id, section_id, dtmf)
 	end
 end
 
-function Database:save_section_result(callrequest_id, current_node, DTMF, record_file)
+function Database:save_result_aggregate(campaign_id, survey_id, section_id, response)
+	sqlquery = "INSERT INTO survey_resultaggregate (campaign_id, survey_id, section_id, response, count, created_date) "..
+		"VALUES ("..campaign_id..", "..survey_id..", "..section_id..", '"..response.."', 1, NOW())"
+	self.debugger:msg("INFO", "Save Result Aggregate:"..sqlquery)
+	res = self.con:execute(sqlquery)
+	if not res then
+		return false
+	else
+		return true
+	end
+end
+
+function Database:update_result_aggregate(campaign_id, survey_id, section_id, response)
+	sqlquery = "UPDATE survey_resultaggregate SET count = count + 1"..
+		" WHERE campaign_id="..campaign_id.." AND survey_id="..survey_id.." AND section_id="..section_id.." AND response='"..section_id.."'"
+	self.debugger:msg("INFO", "Update Result Aggregate:"..sqlquery)
+	res = self.con:execute(sqlquery)
+	if not res then
+		return false
+	else
+		return true
+	end
+end
+
+function Database:set_aggregate_result(campaign_id, survey_id, section_id, response, recording_dur)
+    -- save the aggregate result for the campaign / survey
+    if recording_dur and tonumber(recording_dur) > 0 then
+    	recording_dur = tonumber(recording_dur)
+    	response = 'error to detect recording duration'
+        -- recording duration 0 - 20 seconds ; 20 - 40 seconds ; 40 - 60 seconds
+        if recording_dur > 0 and recording_dur <= 20 then
+            response = '0 - 20 seconds'
+        elseif recording_dur > 20 and recording_dur <= 40 then
+            response = '21 - 40 seconds'
+        elseif recording_dur > 40 and recording_dur <= 60 then
+            response = '41 - 60 seconds'
+        elseif recording_dur > 60 and recording_dur <= 90 then
+            response = '61 - 90 seconds'
+        elseif recording_dur > 90 then
+            response = '> 90 seconds'
+        end
+    end
+    -- Insert ResultAggregate
+    if self:save_result_aggregate(campaign_id, survey_id, section_id, response) then
+		-- no errors in save_result_aggregate
+		return true
+	else
+		-- threw an error
+		res = pcall(self:update_result_aggregate(campaign_id, survey_id, section_id, response))
+		if not res then
+			self.debugger:msg("ERROR", "Error update_result_aggregate")
+		end
+		return true
+	end
+end
+
+function Database:save_section_result(campaign_id, survey_id, callrequest_id, current_node, DTMF, record_file, recording_dur)
+	-- DTMF can be false
+	if not DTMF then
+		DTMF = ''
+	end
     -- save the result of a section
     if current_node.type == RECORD_MSG then
-        --RECORD_MSG
-        --TODO: Use sox to get recording duration
-        recording_duration = 0
+		--Save aggregated result
+        self:set_aggregate_result(campaign_id, survey_id, current_node.id, DTMF, recording_dur)
 
-		--TODO: Save aggregated result
-        --set_aggregate_result(callrequest_id, current_node, DTMF, recording_duration)
-
-		if self:save_result_recording(callrequest_id, current_node.id, record_file, recording_duration) then
+		if self:save_result_recording(callrequest_id, current_node.id, record_file, recording_dur) then
 			-- no errors in save_result
 			return true
 		else
-			-- threw an error
-			res = pcall(self:update_result_recording(callrequest_id, current_node.id, record_file, recording_duration))
+			res = self:update_result_recording(callrequest_id, current_node.id, record_file, recording_dur)
 			if not res then
 				self.debugger:msg("ERROR", "Error update_result_recording")
 			end
@@ -348,37 +403,39 @@ function Database:save_section_result(callrequest_id, current_node, DTMF, record
 
         if current_node.type == MULTI_CHOICE then
             -- Get value for the DTMF from current_node.key_X
-            if DTMF == '0' and current_node.key_0 then
+            if DTMF == '0' and string.len(current_node.key_0) then
                 DTMF = current_node.key_0
-            elseif DTMF == '1' and current_node.key_1 then
+            elseif DTMF == '1' and string.len(current_node.key_1) then
                 DTMF = current_node.key_1
-            elseif DTMF == '2' and current_node.key_2 then
+            elseif DTMF == '2' and string.len(current_node.key_2) then
                 DTMF = current_node.key_2
-            elseif DTMF == '3' and current_node.key_3 then
+            elseif DTMF == '3' and string.len(current_node.key_3) then
                 DTMF = current_node.key_3
-            elseif DTMF == '4' and current_node.key_4 then
+            elseif DTMF == '4' and string.len(current_node.key_4) then
                 DTMF = current_node.key_4
-            elseif DTMF == '5' and current_node.key_5 then
+            elseif DTMF == '5' and string.len(current_node.key_5) then
                 DTMF = current_node.key_5
-            elseif DTMF == '6' and current_node.key_6 then
+            elseif DTMF == '6' and string.len(current_node.key_6) then
                 DTMF = current_node.key_6
-            elseif DTMF == '7' and current_node.key_7 then
+            elseif DTMF == '7' and string.len(current_node.key_7) then
                 DTMF = current_node.key_7
-            elseif DTMF == '8' and current_node.key_8 then
+            elseif DTMF == '8' and string.len(current_node.key_8) then
                 DTMF = current_node.key_8
-            elseif DTMF == '9' and current_node.key_8 then
+            elseif DTMF == '9' and string.len(current_node.key_9) then
                 DTMF = current_node.key_9
             end
         end
 
 		--Save aggregated result
-        --set_aggregate_result(callrequest_id, current_node, DTMF, False)
-		if pcall(self:save_result_dtmf(callrequest_id, current_node.id, DTMF)) then
+        self:set_aggregate_result(campaign_id, survey_id, current_node.id, DTMF, recording_dur)
+
+		if self:save_result_dtmf(callrequest_id, current_node.id, DTMF) then
 			-- no errors in save_result
+
 			return true
 		else
-			-- threw an error
-			res = pcall(self:update_result_dtmf(callrequest_id, current_node.id, DTMF))
+			res = self:update_result_dtmf(callrequest_id, current_node.id, DTMF)
+			self.debugger:msg("ERROR", tostring(res))
 			if not res then
 				self.debugger:msg("ERROR", "Error update_result_dtmf")
 			end
@@ -397,7 +454,7 @@ if false then
     debug_mode = false
     section_id = 40
     record_file = '/tmp/recording-file.wav'
-    recording_duration = '30'
+    recording_dur = '30'
     dtmf = '5'
 
     db = Database(debug_mode)
@@ -412,11 +469,11 @@ if false then
 
     db:update_callrequest_cpt(callrequest_id)
     db:check_data()
-    if db:save_result_recording(callrequest_id, section_id, record_file, recording_duration) then
+    if db:save_result_recording(callrequest_id, section_id, record_file, recording_dur) then
     	print("OK save_result_recording")
     else
     	print("ERROR save_result_recording")
-    	res = db:update_result_recording(callrequest_id, section_id, record_file, recording_duration)
+    	res = db:update_result_recording(callrequest_id, section_id, record_file, recording_dur)
     	print(res)
     end
 

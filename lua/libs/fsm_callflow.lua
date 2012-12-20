@@ -21,6 +21,7 @@ local database = require "database"
 require "texttospeech"
 require "constant"
 
+local FS_RECORDING_PATH = '/usr/share/newfies/usermedia/recording/'
 
 FSMCall = oo.class{
     -- default field values
@@ -60,12 +61,14 @@ function FSMCall:init()
     self.campaign_id = self.session:getVariable("campaign_id")
     self.subscriber_id = self.session:getVariable("subscriber_id")
     self.callrequest_id = self.session:getVariable("callrequest_id")
+    self.survey_id = self.session:getVariable("survey_id")
     --Keep this for manual test
-    if not self.campaign_id or self.campaign_id == nil then
-        self.campaign_id = 23
-        self.subscriber_id = 15
-        self.callrequest_id = 30
-    end
+    --if not self.campaign_id or self.campaign_id == nil then
+        self.campaign_id = 29
+        self.subscriber_id = 20
+        self.callrequest_id = 79
+        self.survey_id = 18
+    --end
 
     self.db:connect()
     if not self.db:load_all(self.campaign_id, self.subscriber_id) then
@@ -287,11 +290,14 @@ function FSMCall:next_node()
         max_len_secs = 120
         silence_threshold = 30
         silence_secs = 5
-        -- Python setting = FS_RECORDING_PATH
-        id_recordfile = math.random(10000000, 99999999);
-        record_file = "/tmp/recording-".."-"..id_recordfile..".wav"
-        result_rec = self.session:recordFile(record_file, max_len_secs, silence_threshold, silence_secs)
-        self.debugger:msg("INFO", "RECORDING : "..record_file)
+        id_recordfile = math.random(10000000, 99999999)
+        record_filename = "recording-"..current_node.id.."-"..id_recordfile..".wav"
+        record_filepath = FS_RECORDING_PATH..record_filename
+        result_rec = self.session:recordFile(record_filepath, max_len_secs, silence_threshold, silence_secs)
+        self.debugger:msg("INFO", "RECORDING : "..record_filepath)
+        record_dur = audio_lenght(record_filepath)
+        self.debugger:msg("INFO", "RECORDING DURATION: "..record_dur)
+
     else
         self.debugger:msg("INFO", "EXCEPTION -> HANGUP")
         self:end_call()
@@ -300,14 +306,11 @@ function FSMCall:next_node()
     --
     -- 3. Record result and Aggregate result
     --
-
-    -- TODO: Finish Aggregate result
-    if digits or record_file then
+    if digits or record_filename then
         self.db:connect()
-        self.db:save_section_result(self.callrequest_id, current_node, digits, record_file)
+        self.db:save_section_result(self.campaign_id, self.survey_id, self.callrequest_id, current_node, digits, record_filename, record_dur)
         self.db:disconnect()
-        --TODO: Improve by saving all the result at the end of the calls
-        --TODO: Bulk insert
+        --TODO: Bulk insert / Improve by saving all the result at the end of the calls
     end
 
     --
@@ -398,7 +401,7 @@ function FSMCall:next_node()
         -- check if we got a branching for this capture
         if not digits or string.len(digits) == 0 then
             -- check if there is a timeout / you should
-            if not current_branching["timeout"].goto_id then
+            if not current_branching["timeout"] or not current_branching["timeout"].goto_id then
                 -- go to hangup
                 self.debugger:msg("INFO", "No more branching -> Goto Hangup")
                 self:end_call()

@@ -456,8 +456,8 @@ def init_callrequest(callrequest_id, campaign_id):
             calleridvars = "origination_caller_id_number=%s,origination_caller_id_name=%s,effective_caller_id_number=%s,effective_caller_id_name=%s" % \
                 (obj_callrequest.callerid, obj_callrequest.campaign.caller_name, obj_callrequest.callerid, obj_callrequest.campaign.caller_name)
 
-            appvars = "campaign_id=%d,subscriber_id=%d,used_gateway_id=%s,callrequest_id=%s" % \
-                (obj_callrequest.campaign_id, obj_callrequest.subscriber_id, gateway_id, obj_callrequest.id)
+            appvars = "campaign_id=%d,survey_id=%d,subscriber_id=%d,used_gateway_id=%s,callrequest_id=%s" % \
+                (obj_callrequest.campaign_id, obj_callrequest.object_id, obj_callrequest.subscriber_id, gateway_id, obj_callrequest.id)
             callvars = "{bridge_early_media=true,originate_timeout=%s,newfiesdialer=true,%s,leg_type=1,%s,%s}" % \
                 (gateway_timeouts, appvars, calleridvars, originate_dial_string)
 

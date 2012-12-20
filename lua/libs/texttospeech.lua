@@ -25,6 +25,7 @@ package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
 require "md5"
 require "lfs"
+local inspect = require 'inspect'
 
 function skip2(_,_, ...)
     --
@@ -85,6 +86,24 @@ function trim(s)
         return ''
     end
     return (string.gsub(s, "^%s*(.-)%s*$", "%1"))
+end
+
+
+--
+-- Return the audio lenght in float
+--
+function audio_lenght(wav_file)
+    if not file_exists(wav_file) then
+        return '0'
+    else
+        len_command = "soxi -D "..wav_file
+        res = simple_command(len_command)
+        if res then
+            return trim(res)
+        else
+            return '0'
+        end
+    end
 end
 
 --
@@ -159,4 +178,8 @@ if false then
     text = "Let's see if this works for us. Give a try!"
     wav_file = tts(text, TTS_DIR)
     print("wav_file => "..wav_file)
+
+    print("\n\nGet Lenght Audio")
+    res = audio_lenght('/usr/share/newfies/usermedia/recording/recording-103-35225576.wav')
+    print(res)
 end

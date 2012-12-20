@@ -63,12 +63,12 @@ function FSMCall:init()
     self.callrequest_id = self.session:getVariable("callrequest_id")
     self.survey_id = self.session:getVariable("survey_id")
     --Keep this for manual test
-    --if not self.campaign_id or self.campaign_id == nil then
+    if not self.campaign_id or self.campaign_id == nil then
         self.campaign_id = 29
         self.subscriber_id = 20
         self.callrequest_id = 79
         self.survey_id = 18
-    --end
+    end
 
     self.db:connect()
     if not self.db:load_all(self.campaign_id, self.subscriber_id) then

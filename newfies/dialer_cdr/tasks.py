@@ -17,7 +17,6 @@ from django.db import connection
 from celery.decorators import task
 from celery.task import PeriodicTask
 from django.conf import settings
-from django.core.cache import cache
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.constants import SUBSCRIBER_STATUS
 from dialer_cdr.models import Callrequest, VoIPCall
@@ -452,20 +451,79 @@ def init_callrequest(callrequest_id, campaign_id):
 
     elif settings.NEWFIES_DIALER_ENGINE.lower() == 'esl':
         try:
-            caller_name = "'" + obj_callrequest.campaign.caller_name + "'"
-            callerid = obj_callrequest.callerid
+            args_list = []
+            send_digits = False
+            time_limit = obj_callrequest.campaign.callmaxduration
 
-            # {ignore_early_media=true,continue_on_fail=true,bypass_media=false,hangup_after_bridge=true,originate_timeout=10,api_hangup_hook='luarun hangup.lua ${uuid}'}sofia/gateway/phoneno &park()
-            calleridvars = "origination_caller_id_number=%s,origination_caller_id_name=%s,effective_caller_id_number=%s,effective_caller_id_name=%s" % \
-                (callerid, caller_name, callerid, caller_name)
+            # To wait before sending DTMF to the extension, you can add leading 'w'
+            # characters.
+            # Each 'w' character waits 0.5 seconds instead of sending a digit.
+            # Each 'W' character waits 1.0 seconds instead of sending a digit.
+            # You can also add the tone duration in ms by appending @[duration] after string.
+            # Eg. 1w2w3@1000
+            check_senddigit = dialout_phone_number.partition('w')
+            if check_senddigit[1] == 'w':
+                send_digits = check_senddigit[1] + check_senddigit[2]
+                dialout_phone_number = check_senddigit[0]
 
-            appvars = "campaign_id=%d,survey_id=%d,subscriber_id=%d,used_gateway_id=%s,callrequest_id=%s" % \
-                (obj_callrequest.campaign_id, obj_callrequest.object_id, obj_callrequest.subscriber_id, gateway_id, obj_callrequest.id)
-            callvars = "{bridge_early_media=true,originate_timeout=%s,newfiesdialer=true,%s,leg_type=1,%s,%s}" % \
-                (gateway_timeouts, appvars, calleridvars, originate_dial_string)
+            args_list.append("origination_caller_id_number=%s" % obj_callrequest.callerid)
+            if obj_callrequest.campaign.caller_name:
+                args_list.append("origination_caller_id_name='%s'" % obj_callrequest.campaign.caller_name)
 
-            dial = "originate %s%s%s '&lua(/usr/share/newfies-lua/newfies.lua)'" % \
-                (callvars, gateways, dialout_phone_number)
+            #Add App Vars
+            args_list.append("campaign_id=%d,survey_id=%d,subscriber_id=%d,used_gateway_id=%s,callrequest_id=%s" %
+                (obj_callrequest.campaign_id, obj_callrequest.object_id, obj_callrequest.subscriber_id, gateway_id, obj_callrequest.id))
+
+            args_list.append(originate_dial_string)
+
+            #Call Vars
+            callvars = "bridge_early_media=true,originate_timeout=%s,newfiesdialer=true,leg_type=1" % \
+                (gateway_timeouts, )
+
+            args_list.append(callvars)
+
+            #Default Test
+            hangup_on_ring = ''
+            send_preanswer = False
+
+            # set hangup_on_ring
+            try:
+                hangup_on_ring = int(hangup_on_ring)
+            except ValueError:
+                hangup_on_ring = -1
+            exec_on_media = 1
+            if hangup_on_ring >= 0:
+                args_list.append("execute_on_media_%d='sched_hangup +%d ORIGINATOR_CANCEL'"
+                    % (exec_on_media, hangup_on_ring))
+                exec_on_media += 1
+
+            # Send digits
+            if send_digits:
+                if send_preanswer:
+                    args_list.append("execute_on_media_%d='send_dtmf %s'"
+                        % (exec_on_media, send_digits))
+                    exec_on_media += 1
+                else:
+                    args_list.append("execute_on_answer='send_dtmf %s'" % send_digits)
+
+            # set time_limit
+            try:
+                time_limit = int(time_limit)
+            except ValueError:
+                time_limit = -1
+            if time_limit > 0:
+                # create sched_hangup_id
+                sched_hangup_id = str(uuid1())
+                # create a new request uuid
+                request_uuid = str(uuid1())
+                args_list.append("api_on_answer_1='sched_api +%d %s hupall ALLOTTED_TIMEOUT'"
+                    % (time_limit, sched_hangup_id))
+
+            # build originate string
+            args_str = ','.join(args_list)
+
+            dial = "originate {%s}%s%s '&lua(/usr/share/newfies-lua/newfies.lua)'" % \
+                (args_str, gateways, dialout_phone_number)
             # originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=10}user/areski &playback(/tmp/myfile.wav)
             # dial = "originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=,newfiesdialer=true,used_gateway_id=1,callrequest_id=38,leg_type=1,origination_caller_id_number=234234234,origination_caller_id_name=234234,effective_caller_id_number=234234234,effective_caller_id_name=234234,}user//1000 '&lua(/usr/share/newfies-lua/newfies.lua)'"
             print dial

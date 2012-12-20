@@ -452,9 +452,12 @@ def init_callrequest(callrequest_id, campaign_id):
 
     elif settings.NEWFIES_DIALER_ENGINE.lower() == 'esl':
         try:
+            caller_name = "'" + obj_callrequest.campaign.caller_name + "'"
+            callerid = obj_callrequest.callerid
+
             # {ignore_early_media=true,continue_on_fail=true,bypass_media=false,hangup_after_bridge=true,originate_timeout=10,api_hangup_hook='luarun hangup.lua ${uuid}'}sofia/gateway/phoneno &park()
             calleridvars = "origination_caller_id_number=%s,origination_caller_id_name=%s,effective_caller_id_number=%s,effective_caller_id_name=%s" % \
-                (obj_callrequest.callerid, obj_callrequest.campaign.caller_name, obj_callrequest.callerid, obj_callrequest.campaign.caller_name)
+                (callerid, caller_name, callerid, caller_name)
 
             appvars = "campaign_id=%d,survey_id=%d,subscriber_id=%d,used_gateway_id=%s,callrequest_id=%s" % \
                 (obj_callrequest.campaign_id, obj_callrequest.object_id, obj_callrequest.subscriber_id, gateway_id, obj_callrequest.id)

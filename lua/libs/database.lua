@@ -20,13 +20,7 @@ local luasql = require "luasql.postgres"
 local oo = require "loop.simple"
 local inspect = require 'inspect'
 require "constant"
-
--- Database connection settings
-local DBHOST = '127.0.0.1'
-local DBNAME = 'newfiesdb'
-local DBUSER = 'newfiesuser'
-local DBPASS = 'password'
-local DBPORT = 5432
+require "db_config"
 
 
 Database = oo.class{

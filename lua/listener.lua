@@ -4,13 +4,7 @@
 -- http://wiki.freeswitch.org/wiki/Event_list#CHANNEL_STATE
 
 local luasql = require "luasql.postgres"
-
--- Database connection settings
-local DBHOST = '127.0.0.1'
-local DBNAME = 'newfiesdb'
-local DBUSER = 'newfiesuser'
-local DBPASS = 'password'
-local DBPORT = 5432
+require "db_config"
 
 -- LOGGING
 LOGLEVEL = "info"

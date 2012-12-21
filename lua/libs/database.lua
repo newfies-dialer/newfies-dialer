@@ -267,7 +267,7 @@ end
 
 function Database:save_result_recording(callrequest_id, section_id, record_file, recording_duration)
 	sqlquery = "INSERT INTO survey_result (callrequest_id, section_id, record_file, recording_duration, response, created_date) "..
-		"VALUES ("..callrequest_id..", "..section_id..", '"..record_file.."', '"..recording_duration.."', '', NOW())"
+		"VALUES ("..callrequest_id..", "..section_id..", '"..record_file.."', "..recording_duration..", '', NOW())"
 	self.debugger:msg("INFO", "Save Result Recording:"..sqlquery)
 	res = self.con:execute(sqlquery)
 	if not res then
@@ -278,7 +278,7 @@ function Database:save_result_recording(callrequest_id, section_id, record_file,
 end
 
 function Database:update_result_recording(callrequest_id, section_id, record_file, recording_duration)
-	sqlquery = "UPDATE survey_result SET record_file='"..record_file.."', recording_duration='"..recording_duration.."'"..
+	sqlquery = "UPDATE survey_result SET record_file='"..record_file.."', recording_duration="..recording_duration..
 		" WHERE callrequest_id="..callrequest_id.." AND section_id="..section_id
 	self.debugger:msg("INFO", "Update Result Recording:"..sqlquery)
 	res = self.con:execute(sqlquery)

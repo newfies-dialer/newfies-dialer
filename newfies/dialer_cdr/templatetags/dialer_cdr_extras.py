@@ -17,8 +17,9 @@ from django.template.defaultfilters import register
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from survey.views import survey_audio_recording
+from survey.models import Section_template, Branching_template
 from dialer_campaign.constants import CAMPAIGN_STATUS
-from dialer_campaign.views import tpl_control_icon, make_duplicate_campaign
+from dialer_campaign.views import make_duplicate_campaign
 from dialer_cdr.constants import LEG_TYPE
 from survey.constants import SECTION_TYPE
 from voice_app.constants import VOICEAPP_TYPE
@@ -175,7 +176,7 @@ def que_res_string(val):
             que_res = i.encode('utf-8').split("*|*")
             result_string += \
                 '<tr><td>%s</td><td class="survey_result_key">%s</td></tr>' % \
-                    (que_res[0], que_res[1])
+                (que_res[0], que_res[1])
 
     result_string += '</table>'
     return result_string
@@ -226,17 +227,13 @@ def get_campaign_status_url(id, status):
     return get_url_campaign_status(id, status)
 
 
-from survey.models import Section_template, Branching_template
-from django.utils.translation import gettext as __
-
 @register.filter(name='get_branching_goto_field')
 def get_branching_goto_field(section_id, selected_value):
+    """
+    get_branching_goto_field
+    """
     section_obj = Section_template.objects.get(id=section_id)
-    section_branch_list = Branching_template\
-        .objects.values_list('section_id', flat=True)\
-        .filter(section__survey_id=section_obj.survey_id)
-
-    option_list = '<option value="">%s</option>' % __('Hang up')
+    option_list = '<option value="">%s</option>' % _('Hang up')
     list = Section_template.objects.filter(survey_id=section_obj.survey_id).order_by('id')
     for i in list:
         if i.question:

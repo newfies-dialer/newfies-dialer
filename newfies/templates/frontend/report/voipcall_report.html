@@ -86,7 +86,7 @@
                     <th>{% sort_link CDR_REPORT_COLUMN_NAME.gateway col_name_with_order.used_gateway %}</th>
 
                     <th>{% sort_link CDR_REPORT_COLUMN_NAME.duration col_name_with_order.duration %}</th>
-                    <th>{% sort_link CDR_REPORT_COLUMN_NAME.bill_sec col_name_with_order.billsec %}</th>
+                    <th>{% sort_link CDR_REPORT_COLUMN_NAME.billsec col_name_with_order.billsec %}</th>
                     <th>{% sort_link CDR_REPORT_COLUMN_NAME.disposition col_name_with_order.disposition %}</th>
                 </tr>
                 </thead>
@@ -99,7 +99,7 @@
                             <td>{{ row.leg_type|leg_type_name }}</td>
                             <td>{{ row.callerid }}</td>
                             <td>{{ row.phone_number }}</td>
-                            <td>{{ row.get_used_gateway_name }}</td>
+                            <td>{{ row.used_gateway }}</td>
                             <td>{{ row.duration }}</td>
                             <td>{{ row.bill_sec }}</td>
                             <td>{{ row.disposition }}</td>

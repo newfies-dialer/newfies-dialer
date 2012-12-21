@@ -135,7 +135,6 @@ def voipcall_report(request):
     # into export file
     request.session['voipcall_record_qs'] = voipcall_list
 
-
     select_data = {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
 
     # Get Total Rrecords from VoIPCall Report table for Daily Call Report

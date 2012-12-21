@@ -254,7 +254,7 @@ func_install_frontend(){
         mv $INSTALL_DIR /tmp/old-newfies-dialer_$DATETIME
         mkdir /tmp/old-lua-newfies-dialer_$DATETIME
         mv $LUA_DIR /tmp/old-lua-newfies-dialer_$DATETIME
-        echo "Files from $INSTALL_DIR has been moved to /tmp/old-newfies-dialer_$DATETIME"
+        echo "Files from $INSTALL_DIR has been moved to /tmp/old-newfies-dialer_$DATETIME and /tmp/old-lua-newfies-dialer_$DATETIME"
 
         if [ `sudo -u postgres psql -qAt --list | egrep '^$DATABASENAME\|' | wc -l` -eq 1 ]; then
             echo ""

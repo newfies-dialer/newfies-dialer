@@ -321,12 +321,17 @@ function FSMCall:next_node()
     if current_node.type == PLAY_MESSAGE
         or current_node.type == RECORD_MSG
         or current_node.type == CALL_TRANSFER then
-        if not current_branching["0"].goto_id then
+        if (not current_branching["0"] or not current_branching["0"].goto_id) and
+           (not current_branching["timeout"] or not current_branching["timeout"].goto_id) then
             -- go to hangup
             self.debugger:msg("INFO", "No more branching -> Goto Hangup")
             self:end_call()
         else
-            self.current_node_id = tonumber(current_branching["0"].goto_id)
+            if current_branching["0"] and current_branching["0"].goto_id then
+                self.current_node_id = tonumber(current_branching["0"].goto_id)
+            elseif current_branching["timeout"] and current_branching["timeout"].goto_id then
+                self.current_node_id = tonumber(current_branching["timeout"].goto_id)
+            end
         end
 
     elseif current_node.type == MULTI_CHOICE

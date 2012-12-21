@@ -114,7 +114,7 @@ def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
     logger.info('Create CDR - request_uuid=%s;leg=%d;hangup_cause=%s;billsec=%s' %
         (request_uuid, leg_type, hangup_cause, str(billsec)))
 
-    if hangup_cause == 'NORMAL_CLEARING':
+    if hangup_cause == 'NORMAL_CLEARING' or hangup_cause == 'ALLOTTED_TIMEOUT':
         hangup_cause = 'ANSWER'
 
     new_voipcall = VoIPCall(

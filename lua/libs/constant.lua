@@ -32,8 +32,9 @@ SUBSCRIBER_COMPLETED = "8"
 
 ROOT_DIR = '/usr/share/newfies-lua/'
 TTS_DIR = ROOT_DIR..'tts/'
-UPLOAD_DIR = '/home/areski/public_html/django/MyProjects/newfies-dialer/newfies/usermedia/'
-AUDIODIR = '/home/areski/public_html/django/MyProjects/newfies-dialer/newfies/usermedia/tts/'
+UPLOAD_DIR = '/usr/share/newfies/usermedia/'
+AUDIODIR = '/usr/share/newfies/usermedia/tts/'
 AUDIO_WELCOME = AUDIODIR..'script_9805d01afeec350f36ff3fd908f0cbd5.wav'
 AUDIO_ENTERAGE = AUDIODIR..'script_4ee73b76b5b4c5d596ed1cb3257861f0.wav'
 AUDIO_PRESSDIGIT = AUDIODIR..'script_610e09c761c4b592aaa954259ce4ce1d.wav'
+FS_RECORDING_PATH = '/usr/share/newfies/usermedia/recording/'

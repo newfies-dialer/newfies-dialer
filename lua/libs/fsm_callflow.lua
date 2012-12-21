@@ -21,7 +21,6 @@ local database = require "database"
 require "texttospeech"
 require "constant"
 
-local FS_RECORDING_PATH = '/usr/share/newfies/usermedia/recording/'
 
 FSMCall = oo.class{
     -- default field values

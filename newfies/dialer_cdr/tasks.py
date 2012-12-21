@@ -111,8 +111,8 @@ def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
             #Survey
             used_gateway = obj_callrequest.aleg_gateway
 
-    logger.debug('Create CDR - request_uuid=%s ; leg=%d ; hangup_cause= %s' %
-        (request_uuid, leg_type, hangup_cause))
+    logger.info('Create CDR - request_uuid=%s;leg=%d;hangup_cause=%s;billsec=%s' %
+        (request_uuid, leg_type, hangup_cause, str(billsec)))
 
     if hangup_cause == 'NORMAL_CLEARING':
         hangup_cause = 'ANSWER'
@@ -169,6 +169,7 @@ def check_callevent():
         #Update Call Event
         sql_statement = "UPDATE call_event SET status=2 WHERE id=%d" % call_event_id
         cursor.execute(sql_statement)
+        logger.info("Processing Event : %s" % event_name)
 
         if event_name == 'BACKGROUND_JOB':
             #hangup cause come from body
@@ -183,10 +184,16 @@ def check_callevent():
 
         opt_request_uuid = job_uuid
         opt_hangup_cause = hangup_cause
-        if callrequest_id == 0:
-            callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid.strip(' \t\n\r'))
-        else:
-            callrequest = Callrequest.objects.get(id=callrequest_id)
+        try:
+            if callrequest_id == 0:
+                callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid.strip(' \t\n\r'))
+            else:
+                callrequest = Callrequest.objects.get(id=callrequest_id)
+        except:
+            logger.error("Cannot find Callrequest job_uuid : %s" % job_uuid)
+            continue
+
+        logger.info("Find Callrequest id : %d" % callrequest.id)
 
         try:
             obj_subscriber = Subscriber.objects.get(id=callrequest.subscriber.id)

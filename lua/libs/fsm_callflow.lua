@@ -172,62 +172,80 @@ function FSMCall:build_dtmf_filter(current_node)
 end
 
 function FSMCall:getdigitnode(current_node)
-    self.debugger:msg("INFO", "*** getdigitnode ***")
-    number_digits = 1
-    dtmf_filter = '0123456789'
     -- Get the node type and start playing it
-    timeout = tonumber(current_node.timeout)
+    self.debugger:msg("INFO", "*** getdigitnode ***")
+    local number_digits = 1
+    local dtmf_filter = '0123456789'
+    local invalid_audiofile = ''
+    local timeout = tonumber(current_node.timeout)
+    local retries = tonumber(current_node.retries)
+
+    --Validate timeout
     if timeout <= 0 then
         timeout = 1 -- GetDigits 'timeout' must be a positive integer
     end
-    -- Get number of retries
-    retries = tonumber(current_node.retries)
+    --Validate retries
     if not retries then
         retries = 1
     elseif retries <= 0 then
         retries = 1
-    end
-
-    --Invalid Audio
-    if current_node.invalid_audiofile_id then
-        invalid_audiofile = self.db.list_audio[tonumber(current_node.invalid_audiofile_id)]
     else
-        invalid_audiofile = ''
+        retries = retries + 1
     end
+    --Get Invalid Audio
+    if current_node.invalid_audiofile_id then
+        invalid_audiofile = UPLOAD_DIR..
+            self.db.list_audio[tonumber(current_node.invalid_audiofile_id)].audio_file
+    end
+    self.debugger:msg("INFO", "*** getdigitnode 1***")
 
+    --Get DTMF Filter
     if current_node.type == MULTI_CHOICE then
         dtmf_filter = self:build_dtmf_filter(current_node)
     end
-
-    -- retrieve number_digits
+    --Retrieve number_digits
     if current_node.type == RATING_SECTION then
         number_digits = string.len(tostring(current_node.rating_laps))
     elseif current_node.type == CAPTURE_DIGITS then
         number_digits = current_node.number_digits
     end
+    self.debugger:msg("INFO", "*** getdigitnode 2***")
 
+    -- Function definition for playAndGetDigits
     -- digits = session:playAndGetDigits (
     --       min_digits, max_digits, max_attempts, timeout, terminators,
     --       prompt_audio_files, input_error_audio_files,
     --       digit_regex, variable_name, digit_timeout,
     --       transfer_on_failure)
+    self.debugger:msg("INFO", retries)
+    self.debugger:msg("INFO", timeout)
+    self.debugger:msg("INFO", number_digits)
+    self.debugger:msg("INFO", tostring(invalid_audiofile))
+    self.debugger:msg("INFO", dtmf_filter)
+    self.debugger:msg("INFO", "\nPlay TTS (timeout="..tostring(timeout)..
+        ",number_digits="..number_digits..", retries="..retries..
+        ",invalid_audiofile="..tostring(invalid_audiofile)..
+        ", dtmf_filter="..tostring(dtmf_filter)..")")
 
     --play the audiofile or play the audio TTS
     if current_node.audiofile_id then
         --Get audio path
+        self.debugger:msg("INFO", "Play Audio to GetDigits")
         current_audio = self.db.list_audio[tonumber(current_node.audiofile_id)]
         filetoplay = UPLOAD_DIR..current_audio.audio_file
         self.debugger:msg("INFO", "\nPlay the audiofile : "..filetoplay)
 
         digits = self.session:playAndGetDigits(1, number_digits, retries,
-            timeout*1000, '#', filetoplay, invalid_audiofile, dtmf_filter)
+            timeout*1000, '#', filetoplay, invalid_audiofile, '['..dtmf_filter..']|#')
     else
         --Use TTS
+        self.debugger:msg("INFO", "Play TTS to GetDigits")
+
         --TODO: Build placeholder_replace
         script = self.db:placeholder_replace(current_node.script)
 
         tts_file = tts(current_node.script, TTS_DIR)
-        self.debugger:msg("INFO", "\nPlay TTS (number_digits="..number_digits..", retries="..retries.."): "..tts_file)
+        self.debugger:msg("INFO", "\nPlay TTS : "..tts_file)
         --entered_age = session:playAndGetDigits(1, 6, 3, 4000, '#', tts_file, '', '\\d+|#')
         digits = self.session:playAndGetDigits(1, number_digits, retries,
             timeout*1000, '#', tts_file, invalid_audiofile, '['..dtmf_filter..']|#')

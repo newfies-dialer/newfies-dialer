@@ -25,8 +25,7 @@ require "db_config"
 
 Database = oo.class{
 	-- default field values
-	-- TABLE_SECTION   = 'survey_section_template',
-	-- TABLE_BRANCHING = 'survey_branching_template',
+	DG_SURVEY_ID = false,
 	TABLE_SECTION   = 'survey_section',
 	TABLE_BRANCHING = 'survey_branching',
 	env = nil,
@@ -208,11 +207,14 @@ function Database:load_all(campaign_id, subscriber_id)
 		self.app_type = 'voice_app'
 	end
 	survey_id = self.campaign_info.object_id
+	if self.DG_SURVEY_ID and self.DG_SURVEY_ID > 0 then
+		survey_id = self.DG_SURVEY_ID
+	end
 	--TODO: Support Voice App
 	self:load_survey_section(survey_id)
 	self:load_survey_branching(survey_id)
 	self:load_audiofile()
-	return true
+	return survey_id
 end
 
 function Database:check_data()

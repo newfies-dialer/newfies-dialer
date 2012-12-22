@@ -58,7 +58,10 @@ function Session:hangupCause()
 end
 
 function Session:getVariable(varname)
-    valret = math.random(100000, 999999);
+    valret = math.random(100000, 999999)
+    if varname == 'campaign_id' then
+        valret = 0
+    end
     print("Session:getVariable -> "..varname.." = "..valret)
     return valret
 end

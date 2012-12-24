@@ -62,7 +62,7 @@ function FSMCall:init()
     self.callrequest_id = self.session:getVariable("callrequest_id")
 
     --This is needed for Inbound test
-    if not self.campaign_id or self.campaign_id == nil or not self.campaign_id > 0 then
+    if not self.campaign_id or self.campaign_id == nil then
         self.campaign_id = 30
         self.subscriber_id = 23
         self.callrequest_id = 99

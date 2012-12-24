@@ -217,11 +217,6 @@ function FSMCall:getdigitnode(current_node)
     --       prompt_audio_files, input_error_audio_files,
     --       digit_regex, variable_name, digit_timeout,
     --       transfer_on_failure)
-    self.debugger:msg("INFO", retries)
-    self.debugger:msg("INFO", timeout)
-    self.debugger:msg("INFO", number_digits)
-    self.debugger:msg("INFO", tostring(invalid_audiofile))
-    self.debugger:msg("INFO", dtmf_filter)
     self.debugger:msg("INFO", "\nPlay TTS (timeout="..tostring(timeout)..
         ",number_digits="..number_digits..", retries="..retries..
         ",invalid_audiofile="..tostring(invalid_audiofile)..
@@ -305,6 +300,7 @@ function FSMCall:next_node()
         self.debugger:msg("INFO", "result digit => "..digits)
 
     elseif current_node.type == RECORD_MSG then
+        self:playnode(current_node)
         --timeout : Seconds of silence before considering the recording complete
         -- syntax is session:recordFile(file_name, max_len_secs, silence_threshold, silence_secs)
         max_len_secs = 120

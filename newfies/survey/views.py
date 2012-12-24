@@ -1933,7 +1933,6 @@ def import_survey(request, id):
 
                     duplicate_count = \
                         Branching_template.objects.filter(keys=row[0], section_id=new_section_id).count()
-
                     if duplicate_count == 0:
                         try:
                             obj = Branching_template.objects.create(
@@ -1941,7 +1940,6 @@ def import_survey(request, id):
                                 section_id=new_section_id,
                                 goto_id=int(new_goto_section_id) if new_goto_section_id else None,
                             )
-                            branching_row.append(row)
                         except:
                             type_error_import_list.append(row)
 

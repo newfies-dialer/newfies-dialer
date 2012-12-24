@@ -461,6 +461,7 @@ def campaign_duplicate(request, id):
             dup_campaign.status = CAMPAIGN_STATUS.PAUSE
             dup_campaign.totalcontact = 0
             dup_campaign.completed = 0
+            dup_campaign.imported_phonebook = ''
             dup_campaign.save()
 
             return HttpResponseRedirect('/campaign/')

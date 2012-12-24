@@ -78,6 +78,7 @@ def get_multi_question_choice_list(section_id):
             list_sq.append((i, '%s' % (obj_section.__dict__['key_' + str(i)])))
 
     list_sq.append(('any', _('Any Other Key')))
+    list_sq.append(('invalid', _('Invalid')))
     return list_sq
 
 
@@ -103,6 +104,7 @@ def get_rating_choice_list(section_id):
                 list_sq.append((i, '%s' % (str(i))))
 
     list_sq.append(('any', _('Any Other Key')))
+    list_sq.append(('invalid', _('Invalid')))
     return list_sq
 
 

@@ -222,29 +222,77 @@ function FSMCall:getdigitnode(current_node)
         ",invalid_audiofile="..tostring(invalid_audiofile)..
         ", dtmf_filter="..tostring(dtmf_filter)..")")
 
-    --play the audiofile or play the audio TTS
-    if current_node.audiofile_id then
-        --Get audio path
-        self.debugger:msg("INFO", "Play Audio to GetDigits")
-        current_audio = self.db.list_audio[tonumber(current_node.audiofile_id)]
-        filetoplay = UPLOAD_DIR..current_audio.audio_file
-        self.debugger:msg("INFO", "\nPlay the audiofile : "..filetoplay)
+    i = 0
+    while i < retries do
+        i = i + 1
+        self.debugger:msg("INFO", ">> Retries = "..i)
+        invalid = invalid_audiofile
 
-        digits = self.session:playAndGetDigits(1, number_digits, retries,
-            timeout*1000, '#', filetoplay, invalid_audiofile, '['..dtmf_filter..']|#')
-    else
-        --Use TTS
-        self.debugger:msg("INFO", "Play TTS to GetDigits")
+        if current_node.type == RATING_SECTION or current_node.type == CAPTURE_DIGITS then
+            -- for those 2 types we don't need invalid audio as we will handle this manually
+            invalid = ''
+        end
 
-        --TODO: Build placeholder_replace
-        script = self.db:placeholder_replace(current_node.script)
+        --play the audiofile or play the audio TTS
+        if current_node.audiofile_id then
+            --Get audio path
+            self.debugger:msg("INFO", "Play Audio to GetDigits")
+            current_audio = self.db.list_audio[tonumber(current_node.audiofile_id)]
+            filetoplay = UPLOAD_DIR..current_audio.audio_file
+            self.debugger:msg("INFO", "\nPlay the audiofile : "..filetoplay)
 
-        tts_file = tts(current_node.script, TTS_DIR)
-        self.debugger:msg("INFO", "\nPlay TTS : "..tts_file)
-        --entered_age = session:playAndGetDigits(1, 6, 3, 4000, '#', tts_file, '', '\\d+|#')
-        digits = self.session:playAndGetDigits(1, number_digits, retries,
-            timeout*1000, '#', tts_file, invalid_audiofile, '['..dtmf_filter..']|#')
+            digits = self.session:playAndGetDigits(1, number_digits, retries,
+                timeout*1000, '#', filetoplay, invalid, '['..dtmf_filter..']|#')
+        else
+            --Use TTS
+            self.debugger:msg("INFO", "Play TTS to GetDigits")
+            --TODO: Build placeholder_replace
+            script = self.db:placeholder_replace(current_node.script)
+
+            tts_file = tts(current_node.script, TTS_DIR)
+            self.debugger:msg("INFO", "\nPlay TTS : "..tts_file)
+
+            digits = self.session:playAndGetDigits(1, number_digits, 1,
+                timeout*1000, '#', tts_file, invalid, '['..dtmf_filter..']|#')
+        end
+
+        self.debugger:msg("INFO", "\nRESULT playAndGetDigits : "..digits)
+
+        if current_node.type == RATING_SECTION then
+            --break if digits is accepted
+            if digits ~= '' and tonumber(digits) >= 1 and tonumber(digits) <= tonumber(current_node.rating_laps) then
+                --Correct entrie, quit the loop
+                break
+            end
+        elseif current_node.type == MULTI_CHOICE then
+            --We already managed invalid on the playAndGetDigits
+            break
+
+        elseif current_node.type == CAPTURE_DIGITS and current_node.validate_number == 't'
+            and digits ~= '' then
+            -- CAPTURE_DIGITS / Check Validity
+            int_dtmf = tonumber(digits)
+            int_min = tonumber(current_node.min_number)
+            int_max = tonumber(current_node.max_number)
+            if not int_min then
+                int_min = 0
+            end
+            if not int_max then
+                int_max = 999999999999999
+            end
+            if int_dtmf >= int_min and int_dtmf <= int_max then
+                break
+            end
+        end
+
+        -- Play invalid audiofile
+        if invalid_audiofile ~= '' and i < retries then
+            --play invalid message
+            self.debugger:msg("INFO", "\n--->> streamFile for Invalid : "..invalid_audiofile)
+            self.session:streamFile(invalid_audiofile)
+        end
     end
+
     return digits
 end
 
@@ -337,6 +385,7 @@ function FSMCall:next_node()
     if current_node.type == PLAY_MESSAGE
         or current_node.type == RECORD_MSG
         or current_node.type == CALL_TRANSFER then
+        --check for timeout
         if (not current_branching["0"] or not current_branching["0"].goto_id) and
            (not current_branching["timeout"] or not current_branching["timeout"].goto_id) then
             -- go to hangup
@@ -354,13 +403,26 @@ function FSMCall:next_node()
         or current_node.type == RATING_SECTION
         or current_node.type == CAPTURE_DIGITS then
 
-        -- CAPTURE_DIGITS / Check Validity
-        if current_node.type == CAPTURE_DIGITS
+        --flag for invalid input
+        invalid_input = false
+        self.debugger:msg("INFO", "\n Check Validity")
+
+        -- Check Validity
+        if current_node.type == RATING_SECTION then
+            --break if digits is accepted
+            if digits == '' or tonumber(digits) < 1 or tonumber(digits) > tonumber(current_node.rating_laps) then
+                invalid_input = true
+            end
+        elseif current_node.type == MULTI_CHOICE then
+            --break if digits is accepted
+            if digits == '' then
+                invalid_input = true
+            end
+        elseif current_node.type == CAPTURE_DIGITS
             and current_node.validate_number == 't'
-            and digits and string.len(digits) >= 0 then
+            and digits ~= '' then
             -- we have DTMF now we check validity
             int_dtmf = tonumber(digits)
-
             int_min = tonumber(current_node.min_number)
             int_max = tonumber(current_node.max_number)
             if not int_min then
@@ -371,18 +433,22 @@ function FSMCall:next_node()
             end
 
             if not int_dtmf or int_dtmf < int_min or int_dtmf > int_max then
-                -- Invalid input
-                if current_branching["invalid"] and current_branching["invalid"].goto_id then
-                    --We got an "invalid branching" and as we got a DTMF we shall go there
-                    self.debugger:msg("INFO", "Got 'invalid' Branching : "..current_branching["invalid"].goto_id)
-                    self.current_node_id = tonumber(current_branching["invalid"].goto_id)
-                    return true
-                elseif current_branching["invalid"] then
-                    -- There is no goto_id -> then we got to hangup
-                    self.debugger:msg("INFO", "Got 'invalid' Branching but no goto_id -> then we got to hangup")
-                    self:end_call()
-                    return true
-                end
+                invalid_input = true
+            end
+        end
+
+        if invalid_input then
+            -- Invalid input
+            if current_branching["invalid"] and current_branching["invalid"].goto_id then
+                --We got an "invalid branching" and as we got a DTMF we shall go there
+                self.debugger:msg("INFO", "Got 'invalid' Branching : "..current_branching["invalid"].goto_id)
+                self.current_node_id = tonumber(current_branching["invalid"].goto_id)
+                return true
+            elseif current_branching["invalid"] then
+                -- There is no goto_id -> then we got to hangup
+                self.debugger:msg("INFO", "Got 'invalid' Branching but no goto_id -> then we got to hangup")
+                self:end_call()
+                return true
             end
         end
 

@@ -40,7 +40,7 @@ FSMCall = oo.class{
 }
 
 function FSMCall:__init(session, debug_mode, debugger)
-    -- self is the class
+    -- constructor
     return oo.rawnew(self, {
         session = session,
         debug_mode = debug_mode,
@@ -48,7 +48,6 @@ function FSMCall:__init(session, debug_mode, debugger)
         db = Database(debug_mode, debugger),
     })
 end
-
 
 function FSMCall:init()
     self.debugger:msg("INFO", "FSMCall:init")
@@ -123,12 +122,12 @@ function FSMCall:playnode(current_node)
         --Get audio path
         current_audio = self.db.list_audio[tonumber(current_node.audiofile_id)]
         filetoplay = UPLOAD_DIR..current_audio.audio_file
-        self.debugger:msg("INFO", "\n--->> streamFile : "..filetoplay)
+        self.debugger:msg("INFO", "--->> streamFile : "..filetoplay)
         self.session:streamFile(filetoplay)
     else
         --Use TTS
         self.session:set_tts_parms("flite", "slt")
-        self.debugger:msg("INFO", "\n--->> Speak : "..current_node.script)
+        self.debugger:msg("INFO", "--->> Speak : "..current_node.script)
         self.session:speak(current_node.script)
     end
 end
@@ -197,8 +196,6 @@ function FSMCall:getdigitnode(current_node)
         invalid_audiofile = UPLOAD_DIR..
             self.db.list_audio[tonumber(current_node.invalid_audiofile_id)].audio_file
     end
-    self.debugger:msg("INFO", "*** getdigitnode 1***")
-
     --Get DTMF Filter
     if current_node.type == MULTI_CHOICE then
         dtmf_filter = self:build_dtmf_filter(current_node)
@@ -209,15 +206,13 @@ function FSMCall:getdigitnode(current_node)
     elseif current_node.type == CAPTURE_DIGITS then
         number_digits = current_node.number_digits
     end
-    self.debugger:msg("INFO", "*** getdigitnode 2***")
-
     -- Function definition for playAndGetDigits
     -- digits = session:playAndGetDigits (
     --       min_digits, max_digits, max_attempts, timeout, terminators,
     --       prompt_audio_files, input_error_audio_files,
     --       digit_regex, variable_name, digit_timeout,
     --       transfer_on_failure)
-    self.debugger:msg("INFO", "\nPlay TTS (timeout="..tostring(timeout)..
+    self.debugger:msg("INFO", "Play TTS (timeout="..tostring(timeout)..
         ",number_digits="..number_digits..", retries="..retries..
         ",invalid_audiofile="..tostring(invalid_audiofile)..
         ", dtmf_filter="..tostring(dtmf_filter)..")")
@@ -239,7 +234,7 @@ function FSMCall:getdigitnode(current_node)
             self.debugger:msg("INFO", "Play Audio to GetDigits")
             current_audio = self.db.list_audio[tonumber(current_node.audiofile_id)]
             filetoplay = UPLOAD_DIR..current_audio.audio_file
-            self.debugger:msg("INFO", "\nPlay the audiofile : "..filetoplay)
+            self.debugger:msg("INFO", "Play the audiofile : "..filetoplay)
 
             digits = self.session:playAndGetDigits(1, number_digits, retries,
                 timeout*1000, '#', filetoplay, invalid, '['..dtmf_filter..']|#')
@@ -248,15 +243,14 @@ function FSMCall:getdigitnode(current_node)
             self.debugger:msg("INFO", "Play TTS to GetDigits")
             --TODO: Build placeholder_replace
             script = self.db:placeholder_replace(current_node.script)
-
             tts_file = tts(current_node.script, TTS_DIR)
-            self.debugger:msg("INFO", "\nPlay TTS : "..tts_file)
+            self.debugger:msg("INFO", "Play TTS : "..tts_file)
 
             digits = self.session:playAndGetDigits(1, number_digits, 1,
                 timeout*1000, '#', tts_file, invalid, '['..dtmf_filter..']|#')
         end
 
-        self.debugger:msg("INFO", "\nRESULT playAndGetDigits : "..digits)
+        self.debugger:msg("INFO", "RESULT playAndGetDigits : "..digits)
 
         if current_node.type == RATING_SECTION then
             --break if digits is accepted
@@ -288,7 +282,7 @@ function FSMCall:getdigitnode(current_node)
         -- Play invalid audiofile
         if invalid_audiofile ~= '' and i < retries then
             --play invalid message
-            self.debugger:msg("INFO", "\n--->> streamFile for Invalid : "..invalid_audiofile)
+            self.debugger:msg("INFO", "--->> streamFile for Invalid : "..invalid_audiofile)
             self.session:streamFile(invalid_audiofile)
         end
     end
@@ -404,7 +398,7 @@ function FSMCall:next_node()
 
         --flag for invalid input
         invalid_input = false
-        self.debugger:msg("INFO", "\n Check Validity")
+        self.debugger:msg("INFO", "Check Validity")
 
         -- Check Validity
         if current_node.type == RATING_SECTION then

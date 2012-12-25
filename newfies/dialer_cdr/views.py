@@ -59,6 +59,7 @@ def voipcall_report(request):
     sort_order = pagination_data['sort_order']
 
     search_tag = 1
+    action = 'tabs-1'
     form = VoipSearchForm()
     if request.method == 'POST':
         form = VoipSearchForm(request.POST)
@@ -181,6 +182,7 @@ def voipcall_report(request):
         'search_tag': search_tag,
         'start_date': start_date,
         'end_date': end_date,
+        'action': action,
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''

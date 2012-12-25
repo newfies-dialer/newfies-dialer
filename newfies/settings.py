@@ -203,6 +203,7 @@ INSTALLED_APPS = (
     'chart_tools',
     'country_dialcode',
     'common',
+    'dialer_audio',
     'dialer_campaign',
     'survey',
     'dialer_gateway',
@@ -212,7 +213,7 @@ INSTALLED_APPS = (
     'user_profile',
     'notification',
     'voice_app',
-    'dialer_audio',
+
     #'raven.contrib.django',
     'apiplayground',
     'frontend_notification',

@@ -13,10 +13,8 @@
 #
 
 from django.template.defaultfilters import register
-from django.conf import settings
 from dialer_cdr.constants import LEG_TYPE
 from voice_app.constants import VOICEAPP_TYPE
-import os.path
 
 
 @register.simple_tag(name='percentage_tag')
@@ -88,11 +86,3 @@ def voiceapp_type(value):
 @register.filter(name='running_total')
 def running_total(running_list, field_name):
     return sum(d[field_name] for d in running_list)
-
-
-@register.filter(name='get_file_basename')
-def get_file_basename(val):
-    if val:
-        file_url = settings.MEDIA_URL + str(val)
-        return os.path.basename(file_url)
-    return ''

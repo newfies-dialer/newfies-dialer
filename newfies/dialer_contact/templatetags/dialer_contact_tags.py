@@ -13,28 +13,19 @@
 #
 
 from django.template.defaultfilters import register
-from dialer_cdr.constants import LEG_TYPE
 
 
-@register.filter(name='leg_type_name')
-def leg_type_name(value):
-    """leg type
+@register.filter(name='contact_status')
+def contact_status(value):
+    """Contact status
 
-    >>> leg_type_name(1)
-    u'A-Leg'
+    >>> contact_status(1)
+    'ACTIVE'
 
-    >>> leg_type_name(2)
-    u'B-Leg'
-
-    >>> leg_type_name(0)
-    ''
+    >>> contact_status(2)
+    'INACTIVE'
     """
-    if not value:
-        return ''
-    TYPE = dict(LEG_TYPE)
-    try:
-        status = TYPE[value]
-    except:
-        status = ''
-
-    return unicode(status)
+    if value == 1:
+        return str('ACTIVE')
+    else:
+        return str('INACTIVE')

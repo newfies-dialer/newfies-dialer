@@ -122,6 +122,7 @@ class SurveyForm(ModelForm):
         self.fields['description'].widget.attrs['class'] = 'span3'
 
 
+#TODO Rename Form with the actually name
 class VoiceSectionForm(ModelForm):
     """VoiceSectionForm ModelForm"""
 
@@ -132,7 +133,6 @@ class VoiceSectionForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(VoiceSectionForm, self).__init__(*args, **kwargs)
-        instance = getattr(self, 'instance', None)
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
         self.fields['question'].widget.attrs['class'] = 'span3'
@@ -155,7 +155,6 @@ class MultipleChoiceSectionForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(MultipleChoiceSectionForm, self).__init__(*args, **kwargs)
-        instance = getattr(self, 'instance', None)
         if user:
             self.fields['invalid_audiofile'].choices = get_audiofile_list(user)
             self.fields['audiofile'].widget.attrs['class'] = 'span2'
@@ -181,8 +180,6 @@ class RatingSectionForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(RatingSectionForm, self).__init__(*args, **kwargs)
-        instance = getattr(self, 'instance', None)
-
         if user:
             self.fields['invalid_audiofile'].choices = get_audiofile_list(user)
             self.fields['audiofile'].widget.attrs['class'] = 'span2'
@@ -196,6 +193,7 @@ class RatingSectionForm(ModelForm):
         self.fields['rating_laps'].widget.attrs['maxlength'] = 3
 
 
+#TODO Rename Form with the actually name
 class EnterNumberSectionForm(ModelForm):
     """EnterNumberSectionForm ModelForm"""
 
@@ -208,11 +206,10 @@ class EnterNumberSectionForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(EnterNumberSectionForm, self).__init__(*args, **kwargs)
-        instance = getattr(self, 'instance', None)
         if user:
             self.fields['invalid_audiofile'].choices = get_audiofile_list(user)
             self.fields['audiofile'].widget.attrs['class'] = 'span2'
-            
+
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
         self.fields['question'].widget.attrs['class'] = 'span3'
@@ -228,15 +225,18 @@ class RecordMessageSectionForm(ModelForm):
 
     class Meta:
         model = Section_template
-        fields = ['type', 'survey', 'question', 'completed']
+        fields = ['type', 'survey', 'question', 'audiofile', 'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(RecordMessageSectionForm, self).__init__(*args, **kwargs)
+        if user:
+            self.fields['audiofile'].widget.attrs['class'] = 'span2'
         self.fields['question'].widget.attrs['class'] = 'span3'
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
 
 
+#TODO Rename Form with the actually name
 class PatchThroughSectionForm(ModelForm):
     """PatchThroughSectionForm ModelForm"""
 
@@ -260,7 +260,6 @@ class ScriptForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ScriptForm, self).__init__(*args, **kwargs)
-        #instance = getattr(self, 'instance', None)
         self.fields['script'].widget = forms.Textarea()
         self.fields['script'].widget.attrs['class'] = 'span4'
 

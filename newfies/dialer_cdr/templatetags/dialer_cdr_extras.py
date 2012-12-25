@@ -49,36 +49,6 @@ def contact_status(value):
         return str('INACTIVE')
 
 
-@register.filter(name='campaign_status')
-def campaign_status(value):
-    """Campaign Status
-
-    >>> campaign_status(1)
-    'START'
-
-    >>> campaign_status(2)
-    'PAUSE'
-
-    >>> campaign_status(3)
-    'ABORT'
-
-    >>> campaign_status(4)
-    'END'
-
-    >>> campaign_status(0)
-    ''
-    """
-    if not value:
-        return ''
-    STATUS = dict(CAMPAIGN_STATUS)
-    try:
-        status = STATUS[value]
-    except:
-        status = ''
-
-    return str(status)
-
-
 @register.filter(name='leg_type_name')
 def leg_type_name(value):
     """leg type
@@ -131,35 +101,3 @@ def get_file_basename(val):
         file_url = settings.MEDIA_URL + str(val)
         return os.path.basename(file_url)
     return ''
-
-
-@register.filter(name='get_campaign_status')
-def get_campaign_status(id):
-    return get_campaign_status_name(id)
-
-
-@register.simple_tag(name='get_app_name')
-def get_app_name(app_label, model_name, object_id):
-    """To get app name from app_label, model_name & object_id
-    Usage: {% get_app_name app_label model_name object_id %}
-    """
-    try:
-        return get_model(app_label, model_name).objects.get(pk=object_id)
-    except:
-        return '-'
-
-
-@register.filter(name='create_duplicate_campaign')
-def create_duplicate_campaign(camp_id):
-    link = make_duplicate_campaign(camp_id)
-    return link
-
-
-@register.simple_tag(name='get_campaign_app_view')
-def get_campaign_app_view(campaign_object):
-    return get_campaign_survey_view(campaign_object)
-
-
-@register.simple_tag(name='get_campaign_status_url')
-def get_campaign_status_url(id, status):
-    return get_url_campaign_status(id, status)

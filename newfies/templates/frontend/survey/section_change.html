@@ -118,25 +118,23 @@
 
                 <!--Audio field while updating section-->
                 {% if form.type.value|convert_to_int == SECTION_TYPE.PLAY_MESSAGE or form.type.value|convert_to_int == SECTION_TYPE.HANGUP_SECTION or form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION or form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS %}
-                    {% if action == 'update' %}
-                        <div class="row">
-                            <div class="span2">
-                                <label class="control-label" for="{{ form.audiofile.auto_id }}">{{ form.audiofile.label }}</label>
-                            </div>
-                            <div class="span3 clearfix{% if form.audiofile.errors %} control-group error{% endif %}">
-                                <div class="input">
-                                    {{ form.audiofile }}&nbsp;
-                                    <a href="/audio/add/" target="_blank">
-                                        <i class="icon-plus"></i>
-                                    </a>
-                                    {% if form.audiofile.errors %}
-                                        <span class="help-inline">{{ form.audiofile.errors|removetags:"ul li"|safe }}</span>
-                                    {% endif %}
-                                    <span class="help-block">{{ form.audiofile.help_text|safe }} </span>
-                                </div>
+                    <div class="row">
+                        <div class="span2">
+                            <label class="control-label" for="{{ form.audiofile.auto_id }}">{{ form.audiofile.label }}</label>
+                        </div>
+                        <div class="span3 clearfix{% if form.audiofile.errors %} control-group error{% endif %}">
+                            <div class="input">
+                                {{ form.audiofile }}&nbsp;
+                                <a href="/audio/add/" target="_blank">
+                                    <i class="icon-plus"></i>
+                                </a>
+                                {% if form.audiofile.errors %}
+                                    <span class="help-inline">{{ form.audiofile.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                                <span class="help-block">{{ form.audiofile.help_text|safe }} </span>
                             </div>
                         </div>
-                    {% endif %}
+                    </div>
                 {% endif %}
 
                 <!--Multiple choice Section form-->

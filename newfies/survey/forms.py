@@ -137,7 +137,7 @@ class VoiceSectionForm(ModelForm):
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
         self.fields['question'].widget.attrs['class'] = 'span3'
         self.fields['retries'].widget.attrs['class'] = 'span1'
-        if instance.id and user:
+        if user:
             self.fields['audiofile'].choices = get_audiofile_list(user)
             self.fields['audiofile'].widget.attrs['class'] = 'span2'
 
@@ -158,8 +158,6 @@ class MultipleChoiceSectionForm(ModelForm):
         instance = getattr(self, 'instance', None)
         if user:
             self.fields['invalid_audiofile'].choices = get_audiofile_list(user)
-        if instance.id:
-            self.fields['audiofile'].choices = get_audiofile_list(user)
             self.fields['audiofile'].widget.attrs['class'] = 'span2'
 
         self.fields['survey'].widget = forms.HiddenInput()
@@ -187,9 +185,6 @@ class RatingSectionForm(ModelForm):
 
         if user:
             self.fields['invalid_audiofile'].choices = get_audiofile_list(user)
-
-        if instance.id:
-            self.fields['audiofile'].choices = get_audiofile_list(user)
             self.fields['audiofile'].widget.attrs['class'] = 'span2'
 
         self.fields['survey'].widget = forms.HiddenInput()
@@ -216,10 +211,8 @@ class EnterNumberSectionForm(ModelForm):
         instance = getattr(self, 'instance', None)
         if user:
             self.fields['invalid_audiofile'].choices = get_audiofile_list(user)
-
-        if instance.id:
-            self.fields['audiofile'].choices = get_audiofile_list(user)
             self.fields['audiofile'].widget.attrs['class'] = 'span2'
+            
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
         self.fields['question'].widget.attrs['class'] = 'span3'

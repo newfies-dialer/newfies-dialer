@@ -14,7 +14,6 @@
 
 from django.template.defaultfilters import register
 from dialer_cdr.constants import LEG_TYPE
-from voice_app.constants import VOICEAPP_TYPE
 
 
 @register.simple_tag(name='percentage_tag')
@@ -65,24 +64,3 @@ def leg_type_name(value):
 
     return unicode(status)
 
-
-@register.filter(name='voiceapp_type')
-def voiceapp_type(value):
-    """
-    >>> voiceapp_type(1)
-    'DIAL'
-    """
-    if not value:
-        return ''
-    TYPE = dict(VOICEAPP_TYPE)
-    try:
-        status = TYPE[value]
-    except:
-        status = ''
-
-    return str(status)
-
-
-@register.filter(name='running_total')
-def running_total(running_list, field_name):
-    return sum(d[field_name] for d in running_list)

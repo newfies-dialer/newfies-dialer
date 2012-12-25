@@ -19,6 +19,15 @@ from survey.models import Section_template, Branching_template
 from survey.constants import SECTION_TYPE
 
 
+@register.simple_tag(name='percentage_tag')
+def percentage_tag(fraction, population):
+    """Usage: {% percentage_tag fraction population %}"""
+    try:
+        return "%.2f%%" % ((float(fraction) / float(population)) * 100)
+    except:
+        return "0.00%"
+
+
 @register.filter(name='section_type_name')
 def section_type_name(value):
     """survey section type name

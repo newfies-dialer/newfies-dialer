@@ -12,15 +12,10 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.db.models import get_model
 from django.template.defaultfilters import register
 from django.conf import settings
-from dialer_campaign.constants import CAMPAIGN_STATUS
-from dialer_campaign.views import make_duplicate_campaign
 from dialer_cdr.constants import LEG_TYPE
 from voice_app.constants import VOICEAPP_TYPE
-from dialer_campaign.function_def import get_campaign_status_name
-from dialer_campaign.views import get_campaign_survey_view, get_url_campaign_status
 import os.path
 
 

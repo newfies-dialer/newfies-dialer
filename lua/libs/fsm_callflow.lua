@@ -127,7 +127,7 @@ function FSMCall:playnode(current_node)
         self.session:streamFile(filetoplay)
     else
         --Use TTS
-        self.session:set_tts_parms("flite", "kal")
+        self.session:set_tts_parms("flite", "slt")
         self.debugger:msg("INFO", "\n--->> Speak : "..current_node.script)
         self.session:speak(current_node.script)
     end

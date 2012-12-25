@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n pagination_tags common_tags icons dialer_cdr_extras %}
+{% load i18n pagination_tags common_tags icons dialer_cdr_tags %}
 
 {% block extra_files %}
     {% include "frontend/common_datepicker.html" %}
@@ -91,7 +91,7 @@
                     <th>{% sort_link CDR_REPORT_COLUMN_NAME.gateway col_name_with_order.used_gateway %}</th>
 
                     <th>{% sort_link CDR_REPORT_COLUMN_NAME.duration col_name_with_order.duration %}</th>
-                    <th>{% sort_link CDR_REPORT_COLUMN_NAME.billsec col_name_with_order.billsec %}</th>
+                    <th>{% sort_link CDR_REPORT_COLUMN_NAME.bill_sec col_name_with_order.billsec %}</th>
                     <th>{% sort_link CDR_REPORT_COLUMN_NAME.disposition col_name_with_order.disposition %}</th>
                 </tr>
                 </thead>

@@ -361,7 +361,6 @@ function FSMCall:next_node()
         self.debugger:msg("INFO", "RECORDING : "..record_filepath)
         record_dur = audio_lenght(record_filepath)
         self.debugger:msg("INFO", "RECORDING DURATION: "..record_dur)
-
     else
         self.debugger:msg("INFO", "EXCEPTION -> HANGUP")
         self:end_call()

@@ -70,7 +70,7 @@ def que_res_string(val):
         else:
             que_res = i.encode('utf-8').split("*|*")
             result_string +=\
-            '<tr><td>%s</td><td class="survey_result_key">%s</td></tr>' %\
+                '<tr><td>%s</td><td class="survey_result_key">%s</td></tr>' %\
             (que_res[0], que_res[1])
 
     result_string += '</table>'
@@ -90,7 +90,8 @@ def get_branching_goto_field(section_id, selected_value):
     section_obj = Section_template.objects.get(id=section_id)
     #We don't need a lazy translation in this case
     option_list = '<option value="">%s</option>' % _('Hang up').encode('utf-8')
-    list = Section_template.objects.filter(survey_id=section_obj.survey_id).order_by('id')
+    list = Section_template.objects.filter(survey_id=section_obj.survey_id)\
+        .order_by('id')
     for i in list:
         if i.question:
             q_string = i.question
@@ -98,9 +99,11 @@ def get_branching_goto_field(section_id, selected_value):
             q_string = i.script
 
         if selected_value == i.id:
-            option_list += '<option value="%s" selected=selected>Goto: %s</option>' % (str(i.id), (q_string))
+            option_list += '<option value="%s" selected=selected>Goto: %s</option>' %\
+                           (str(i.id), (q_string))
         else:
-            option_list += '<option value="%s">Goto: %s</option>' % (str(i.id), (q_string))
+            option_list += '<option value="%s">Goto: %s</option>' %\
+                           (str(i.id), (q_string))
 
     return option_list
 
@@ -108,8 +111,8 @@ def get_branching_goto_field(section_id, selected_value):
 @register.filter(name='get_branching_count')
 def get_branching_count(section_id, branch_id):
     branch_list = Branching_template\
-    .objects.values_list('id', flat=True).filter(section_id=section_id)\
-    .order_by('id')
+        .objects.values_list('id', flat=True).filter(section_id=section_id)\
+        .order_by('id')
     branch_count = branch_list.count()
     # for default branching option to remove delete option
     if branch_list[0] == branch_id:

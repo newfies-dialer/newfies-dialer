@@ -20,7 +20,7 @@ local luasql = require "luasql.postgres"
 local oo = require "loop.simple"
 local inspect = require 'inspect'
 require "constant"
-require "db_config"
+require "settings"
 
 
 Database = oo.class{

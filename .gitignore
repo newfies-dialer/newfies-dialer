@@ -19,4 +19,6 @@ output.html
 amd*.lua
 *.log
 lua/tts/*.wav
+lua/tts/*.mp3
 lua/tts/*.txt
+acapela*.lua

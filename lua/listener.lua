@@ -19,7 +19,7 @@ package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 -- http://wiki.freeswitch.org/wiki/Event_list#CHANNEL_STATE
 
 local luasql = require "luasql.postgres"
-require "db_config"
+require "settings"
 
 -- LOGGING
 LOGLEVEL = "info"

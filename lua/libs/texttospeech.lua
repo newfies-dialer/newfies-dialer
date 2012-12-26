@@ -25,6 +25,7 @@ package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
 require "md5"
 require "lfs"
+require "acapela"
 local inspect = require 'inspect'
 
 function skip2(_,_, ...)
@@ -92,11 +93,11 @@ end
 --
 -- Return the audio lenght in float
 --
-function audio_lenght(wav_file)
-    if not file_exists(wav_file) then
+function audio_lenght(audio_file)
+    if not file_exists(audio_file) then
         return '0'
     else
-        len_command = "soxi -D "..wav_file
+        len_command = "soxi -D "..audio_file
         res = simple_command(len_command)
         if res then
             return trim(res)
@@ -110,9 +111,21 @@ end
 -- Create TTS audio using a speech processing engine
 --
 function tts(text, dir)
-    --produce tts audio file
-    engine = 'flite'
-    if engine == 'cepstral' then
+
+    --load local config first
+    require "acapela_config"
+    if ACCOUNT_LOGIN == nil then
+        --if local config failed, import settings
+        require "settings"
+    end
+
+    --Set a default TTS engine
+    if TTS_ENGINE == nil then
+        TTS_ENGINE = 'flite'
+    end
+
+    if TTS_ENGINE == 'cepstral' then
+        --Cepstral
         voice = "-n Allison-8kHz"
         frequency = 8000
         text = trim(text)
@@ -122,20 +135,21 @@ function tts(text, dir)
 
         hash = md5.sumhexa(voice..text)
         filename = dir..'cepstral_'..hash
-        wav_file = filename..'.wav'
+        output_file = filename..'.wav'
         txt_file = filename..'.txt'
 
-        if not file_exists(wav_file) then
+        if not file_exists(output_file) then
             local out = assert(io.open(txt_file, "w"))
             out:write(text)
             assert(out:close())
 
-            swift_command = "swift -p speech/rate=150,audio/channels=1,audio/sampling-rate="..frequency.." "..voice.." -o "..wav_file.." -f "..txt_file
+            swift_command = "swift -p speech/rate=150,audio/channels=1,audio/sampling-rate="..frequency.." "..voice.." -o "..output_file.." -f "..txt_file
             excecute_command(swift_command)
-            return wav_file
+            return output_file
         end
 
-    elseif engine == 'flite' then
+    elseif TTS_ENGINE == 'flite' then
+        --Flite
         voice = "slt"
         frequency = 8000
         text = trim(text)
@@ -145,27 +159,32 @@ function tts(text, dir)
 
         hash = md5.sumhexa(voice..text)
         filename = dir..'flite_'..hash
-        wav_file = filename..'.wav'
+        output_file = filename..'.wav'
         txt_file = filename..'.txt'
 
-        if not file_exists(wav_file) then
+        if not file_exists(output_file) then
             local out = assert(io.open(txt_file, "w"))
             out:write(text)
             assert(out:close())
 
             -- Convert file
-            flite_command = 'flite -voice '..voice..' -f '..txt_file..' -o '..wav_file
+            flite_command = 'flite -voice '..voice..' -f '..txt_file..' -o '..output_file
             --print(flite_command)
             excecute_command(flite_command)
-            return wav_file
+            return output_file
         end
 
-    elseif engine == 'acapela' then
-        -- TODO: code for acapela
+    elseif TTS_ENGINE == 'acapela' then
+        --Acapela
+        tts_acapela = Acapela(ACCOUNT_LOGIN, APPLICATION_LOGIN, APPLICATION_PASSWORD, SERVICE_URL, QUALITY, dir)
+
+        tts_acapela:set_cache(true)
+        tts_acapela:prepare(text, ACAPELA_LANG, ACAPELA_GENDER, ACAPELA_INTONATION)
+        output_file = tts_acapela:run()
 
     end
 
-    return wav_file
+    return output_file
 end
 
 
@@ -176,10 +195,10 @@ if false then
     local ROOT_DIR = '/usr/share/newfies-lua/'
     local TTS_DIR = ROOT_DIR..'tts/'
     text = "Let's see if this works for us. Give a try!"
-    wav_file = tts(text, TTS_DIR)
-    print("wav_file => "..wav_file)
+    output_file = tts(text, TTS_DIR)
+    print("output_file => "..output_file)
 
-    print("\n\nGet Lenght Audio")
-    res = audio_lenght('/usr/share/newfies/usermedia/recording/recording-103-35225576.wav')
-    print(res)
+    -- print("\n\nGet Lenght Audio")
+    -- res = audio_lenght('/usr/share/newfies/usermedia/recording/recording-103-35225576.wav')
+    -- print(res)
 end

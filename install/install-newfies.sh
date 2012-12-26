@@ -227,6 +227,7 @@ func_install_frontend(){
     #Lua Deps
     apt-get -y install liblua5.1-sql-postgres-dev
     apt-get -y install postgresql-server-dev-9.1
+    apt-get -y liblua5.1-curl0 liblua5.1-curl-dev
     #Luarocks
     apt-get -y install luarocks
     luarocks install luasql-postgres
@@ -236,6 +237,7 @@ func_install_frontend(){
     luarocks install luafilesystem
     luarocks install luajson
     luarocks install inspect
+
 
     #Create Newfies User
     echo ""
@@ -300,6 +302,10 @@ func_install_frontend(){
     #Copy files
     cp -r /usr/src/newfies-dialer/newfies $INSTALL_DIR
     cp -r /usr/src/newfies-dialer/lua $LUA_DIR
+    cd $LUA_DIR/libs/
+    wget --no-check-certificate https://raw.github.com/areski/lua-acapela/master/acapela.lua
+    wget --no-check-certificate https://raw.github.com/areski/lua-acapela/master/acapela_config_sample.lua
+    mv acapela_config_sample.lua acapela_config.lua
 
     #Install Newfies-Dialer depencencies
     easy_install -U distribute

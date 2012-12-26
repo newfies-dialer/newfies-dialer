@@ -124,7 +124,7 @@
                     <div class="span3 clearfix{% if form.audiofile.errors %} control-group error{% endif %}">
                         <div class="input">
                             {{ form.audiofile }}&nbsp;
-                            <a href="#" id="helpover" rel="popover" data-placement="top" data-content="{% blocktrans %}If you don't specify an audio file, the script text will be play via Text-To-Speech{% endblocktrans %}" data-original-title="{% trans "Information" %}"><i class="icon-info-sign"></i></a>
+                            <a href="#" id="helpover" rel="popover" data-placement="top" data-content="{% blocktrans %}If an audio file is not selected, the script will be played using Text-To-Speech{% endblocktrans %}" data-original-title="{% trans "Information" %}"><i class="icon-info-sign"></i></a>
                             {% if form.audiofile.errors %}
                                 <span class="help-inline">{{ form.audiofile.errors|removetags:"ul li"|safe }}</span>
                             {% endif %}

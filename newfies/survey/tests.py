@@ -475,7 +475,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         response = import_survey(request, 1)
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post('/import_survey/',
+        response = self.client.post('/import_survey/1/',
             data={'survey_file': ''})
         self.assertEqual(response.status_code, 200)
 

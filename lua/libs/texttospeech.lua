@@ -28,6 +28,20 @@ require "lfs"
 require "acapela"
 local inspect = require 'inspect'
 
+
+--load local config first
+require "acapela_config"
+if ACCOUNT_LOGIN == nil then
+    --if local config failed, import settings
+    require "settings"
+end
+
+--Set a default TTS engine
+if TTS_ENGINE == nil then
+    TTS_ENGINE = 'flite'
+end
+
+
 function skip2(_,_, ...)
     --
     return unpack(arg)
@@ -110,19 +124,7 @@ end
 --
 -- Create TTS audio using a speech processing engine
 --
-function tts(text, dir)
-
-    --load local config first
-    require "acapela_config"
-    if ACCOUNT_LOGIN == nil then
-        --if local config failed, import settings
-        require "settings"
-    end
-
-    --Set a default TTS engine
-    if TTS_ENGINE == nil then
-        TTS_ENGINE = 'flite'
-    end
+function tts(text, tts_dir)
 
     if TTS_ENGINE == 'cepstral' then
         --Cepstral
@@ -134,7 +136,7 @@ function tts(text, dir)
         end
 
         hash = md5.sumhexa(voice..text)
-        filename = dir..'cepstral_'..hash
+        filename = tts_dir..'cepstral_'..hash
         output_file = filename..'.wav'
         txt_file = filename..'.txt'
 
@@ -158,7 +160,7 @@ function tts(text, dir)
         end
 
         hash = md5.sumhexa(voice..text)
-        filename = dir..'flite_'..hash
+        filename = tts_dir..'flite_'..hash
         output_file = filename..'.wav'
         txt_file = filename..'.txt'
 
@@ -176,8 +178,7 @@ function tts(text, dir)
 
     elseif TTS_ENGINE == 'acapela' then
         --Acapela
-        tts_acapela = Acapela(ACCOUNT_LOGIN, APPLICATION_LOGIN, APPLICATION_PASSWORD, SERVICE_URL, QUALITY, dir)
-
+        local tts_acapela = Acapela(ACCOUNT_LOGIN, APPLICATION_LOGIN, APPLICATION_PASSWORD, SERVICE_URL, QUALITY, tts_dir)
         tts_acapela:set_cache(true)
         tts_acapela:prepare(text, ACAPELA_LANG, ACAPELA_GENDER, ACAPELA_INTONATION)
         output_file = tts_acapela:run()
@@ -195,6 +196,10 @@ if false then
     local ROOT_DIR = '/usr/share/newfies-lua/'
     local TTS_DIR = ROOT_DIR..'tts/'
     text = "Let's see if this works for us. Give a try!"
+    output_file = tts(text, TTS_DIR)
+    print("output_file => "..output_file)
+
+    text = "Second attempt!"
     output_file = tts(text, TTS_DIR)
     print("output_file => "..output_file)
 

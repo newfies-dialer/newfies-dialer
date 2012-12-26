@@ -21,10 +21,10 @@ from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.forms import VoipSearchForm
 from dialer_cdr.views import export_voipcall_report, voipcall_report
 from dialer_cdr.function_def import voipcall_search_admin_form_fun
-from dialer_cdr.tasks import init_callrequest, \
-                             dummy_testcall, \
-                             dummy_test_answerurl, \
-                             dummy_test_hangupurl
+from dialer_cdr.tasks import init_callrequest
+from dialer_cdr.tasks_dummy import dummy_testcall, \
+                                   dummy_test_answerurl, \
+                                   dummy_test_hangupurl
 from datetime import datetime
 
 

@@ -18,6 +18,7 @@ package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 local oo = require "loop.simple"
 local inspect = require 'inspect'
 local database = require "database"
+require "tag_replace"
 require "texttospeech"
 require "constant"
 
@@ -127,8 +128,9 @@ function FSMCall:playnode(current_node)
     else
         --Use TTS
         self.session:set_tts_parms("flite", "slt")
-        self.debugger:msg("INFO", "--->> Speak : "..current_node.script)
-        self.session:speak(current_node.script)
+        mscript = tag_replace(current_node.script, self.db.contact)
+        self.debugger:msg("INFO", "--->> Speak : "..mscript)
+        self.session:speak(mscript)
     end
 end
 
@@ -241,9 +243,9 @@ function FSMCall:getdigitnode(current_node)
         else
             --Use TTS
             self.debugger:msg("INFO", "Play TTS to GetDigits")
-            --TODO: Build placeholder_replace
-            script = self.db:placeholder_replace(current_node.script)
-            tts_file = tts(current_node.script, TTS_DIR)
+            mscript = tag_replace(current_node.script, self.db.contact)
+
+            tts_file = tts(mscript, TTS_DIR)
             self.debugger:msg("INFO", "Play TTS : "..tts_file)
 
             digits = self.session:playAndGetDigits(1, number_digits, 1,
@@ -445,7 +447,7 @@ function FSMCall:next_node()
             end
         end
 
-        self.debugger:msg("INFO", "Got -------------------------> : "..digits)
+        self.debugger:msg("INFO", "Got digits : "..digits)
         -- check if we got a branching for this capture
         if digits and string.len(digits) > 0 then
 

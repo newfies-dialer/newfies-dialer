@@ -234,6 +234,8 @@ func_install_frontend(){
     luarocks install loop
     luarocks install md5
     luarocks install luafilesystem
+    luarocks install luajson
+    luarocks install inspect
 
     #Create Newfies User
     echo ""

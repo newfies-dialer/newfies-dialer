@@ -48,7 +48,7 @@ function Database:__init(debug_mode, debugger)
 	})
 end
 
-function Database:connect(debugger)
+function Database:connect()
 	self.env = assert(luasql.postgres())
 	self.con = assert(self.env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT))
 end
@@ -233,40 +233,6 @@ function Database:check_data()
 	return self.valid_data
 end
 
--- TODO: Finish this later
-function Database:placeholder_replace(text)
-	--use contact self.contact
-
-    -- Replace place holders by tag value.
-    -- This function will replace all the following tags :
-    --     {last_name}
-    --     {first_name}
-    --     {email}
-    --     {country}
-    --     {city}
-    --     {phone_number}
-    -- as well as, get additional_vars, and replace json tags
-
-    --TODO Finish implementation of placeholder_replace
-    --{PYTHON CODE}
-    --text = str(text).lower()
-    -- context = {
-    --     'last_name': contact.last_name,
-    --     'first_name': contact.first_name,
-    --     'email': contact.email,
-    --     'country': contact.country,
-    --     'city': contact.city,
-    --     'phone_number': contact.contact,
-    -- }
-    -- if contact.additional_vars:
-    --     for index in contact.additional_vars:
-    --         context[index] = contact.additional_vars[index]
-
-    -- for ind in context:
-    --     text = text.replace('{' + ind + '}', str(context[ind]))
-    return text
-end
-
 function Database:save_result_recording(callrequest_id, section_id, record_file, recording_duration)
 	sqlquery = "INSERT INTO survey_result (callrequest_id, section_id, record_file, recording_duration, response, created_date) "..
 		"VALUES ("..callrequest_id..", "..section_id..", '"..record_file.."', "..recording_duration..", '', NOW())"
@@ -445,16 +411,21 @@ end
 --
 if false then
 	campaign_id = 23
-    subscriber_id = 15
+    subscriber_id = 30
     callrequest_id = 30
     debug_mode = false
     section_id = 40
     record_file = '/tmp/recording-file.wav'
     recording_dur = '30'
     dtmf = '5'
+    require "debugger"
+    local debugger = Debugger('INFO', false)
 
-    db = Database(debug_mode)
+    db = Database(debug_mode, debugger)
     db:connect()
+    db:load_contact(subscriber_id)
+    print(inspect(db.contact))
+    error()
     db:load_all(campaign_id, subscriber_id)
 
 	print(inspect(db.list_audio))

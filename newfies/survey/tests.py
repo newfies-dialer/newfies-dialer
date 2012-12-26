@@ -475,7 +475,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         response = import_survey(request, 1)
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post('/import_survey/',
+        response = self.client.post('/import_survey/1/',
             data={'survey_file': ''})
         self.assertEqual(response.status_code, 200)
 
@@ -576,26 +576,12 @@ class SurveyModel(TestCase):
         obj.survey = self.survey_template
         obj.save()
 
-        form = BranchingForm(self.survey_template.id, self.section_template.id)
-        obj = form.save(commit=False)
-        obj.keys = 0
-        obj.section = self.section_template
-        obj.goto = self.section_template
-        obj.save()
-
         form = MultipleChoiceSectionForm(self.user, instance=self.section_template)
         obj = form.save(commit=False)
         obj.type = 2
         obj.question = "test question"
         obj.key_0 = "apple"
         obj.survey = self.survey_template
-        obj.save()
-
-        form = BranchingForm(self.survey_template.id, self.section_template.id)
-        obj = form.save(commit=False)
-        obj.keys = 1
-        obj.section = self.section_template
-        obj.goto = self.section_template
         obj.save()
 
         form = RatingSectionForm(self.user,
@@ -607,13 +593,6 @@ class SurveyModel(TestCase):
         obj.survey_template = self.survey_template
         obj.save()
 
-        form = BranchingForm(self.survey_template.id, self.section_template.id)
-        obj = form.save(commit=False)
-        obj.keys = 2
-        obj.section = self.section_template
-        obj.goto = self.section_template
-        obj.save()
-
         form = CaptureDigitsSectionForm(self.user,
                                         instance=self.section_template)
         obj = form.save(commit=False)
@@ -623,13 +602,6 @@ class SurveyModel(TestCase):
         obj.min_number = 1
         obj.max_number = 100
         obj.survey = self.survey_template
-        obj.save()
-
-        form = BranchingForm(2, 2)
-        obj = form.save(commit=False)
-        obj.keys = 3
-        obj.section = self.section_template
-        obj.goto = self.section_template
         obj.save()
 
         form = RecordMessageSectionForm(self.user)

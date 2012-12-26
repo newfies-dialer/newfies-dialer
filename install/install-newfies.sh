@@ -304,8 +304,6 @@ func_install_frontend(){
     cp -r /usr/src/newfies-dialer/lua $LUA_DIR
     cd $LUA_DIR/libs/
     wget --no-check-certificate https://raw.github.com/areski/lua-acapela/master/acapela.lua
-    wget --no-check-certificate https://raw.github.com/areski/lua-acapela/master/acapela_config_sample.lua
-    mv acapela_config_sample.lua acapela_config.lua
 
     #Install Newfies-Dialer depencencies
     easy_install -U distribute

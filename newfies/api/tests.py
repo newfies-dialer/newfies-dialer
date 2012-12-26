@@ -101,7 +101,7 @@ class ApiTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 400)
         response = self.client.get('/api/v1/campaign/1/?format=json',
                    **self.extra)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 400)
 
     def test_update_campaign(self):
         """Test Function to update a campaign"""

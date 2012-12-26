@@ -33,10 +33,10 @@ from dialer_cdr.constants import VOIPCALL_DISPOSITION
 from survey.models import Survey_template, Survey, Section_template, Section,\
     Branching_template, Branching,\
     Result, ResultAggregate
-from survey.forms import SurveyForm, VoiceSectionForm,\
+from survey.forms import SurveyForm, PlayMessageSectionForm,\
     MultipleChoiceSectionForm, RatingSectionForm,\
-    EnterNumberSectionForm, RecordMessageSectionForm,\
-    PatchThroughSectionForm, BranchingForm, ScriptForm,\
+    CaptureDigitsSectionForm, RecordMessageSectionForm,\
+    CallTransferSectionForm, BranchingForm, ScriptForm,\
     SurveyDetailReportForm, SurveyFileImport
 from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME
 from frontend_notification.views import notice_count
@@ -844,8 +844,8 @@ def section_add_form(request, Form, survey, section_type):
     **Attributes**:
 
         * ``request`` - Request variable
-        * ``Form`` - VoiceSectionForm, MultipleChoiceSectionForm,
-                     EnterNumberSectionForm etc...
+        * ``Form`` - PlayMessageSectionForm, MultipleChoiceSectionForm,
+                     CaptureDigitsSectionForm etc...
         * ``section_type`` - value from SECTION_TYPE list
         * ``survey`` - Survey object
 
@@ -894,7 +894,7 @@ def section_add(request):
     """
     survey_id = request.GET.get('survey_id')
     survey = Survey_template.objects.get(pk=survey_id)
-    form = VoiceSectionForm(request.user, initial={'survey': survey})
+    form = PlayMessageSectionForm(request.user, initial={'survey': survey})
 
     request.session['err_msg'] = ''
     if request.method == 'POST':
@@ -902,7 +902,7 @@ def section_add(request):
         # Play message
         if int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE:
             form_data = \
-                section_add_form(request, VoiceSectionForm, survey, SECTION_TYPE.PLAY_MESSAGE)
+                section_add_form(request, PlayMessageSectionForm, survey, SECTION_TYPE.PLAY_MESSAGE)
             if form_data['save_tag']:
                 return HttpResponseRedirect('/survey/%s/#row%s'
                     % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
@@ -912,7 +912,7 @@ def section_add(request):
         # hangup
         if int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION:
             form_data =\
-                section_add_form(request, VoiceSectionForm, survey, SECTION_TYPE.HANGUP_SECTION)
+                section_add_form(request, PlayMessageSectionForm, survey, SECTION_TYPE.HANGUP_SECTION)
             if form_data['save_tag']:
                 return HttpResponseRedirect('/survey/%s/#row%s'
                     % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
@@ -939,10 +939,10 @@ def section_add(request):
             else:
                 form = form_data['form']
 
-        # Enter Number Section
+        # Capture Digits Section
         if int(request.POST.get('type')) == SECTION_TYPE.CAPTURE_DIGITS:
             form_data =\
-                section_add_form(request, EnterNumberSectionForm, survey, SECTION_TYPE.CAPTURE_DIGITS)
+                section_add_form(request, CaptureDigitsSectionForm, survey, SECTION_TYPE.CAPTURE_DIGITS)
             if form_data['save_tag']:
                 return HttpResponseRedirect('/survey/%s/#row%s'
                     % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
@@ -962,7 +962,7 @@ def section_add(request):
         # Call transfer Section
         if int(request.POST.get('type')) == SECTION_TYPE.CALL_TRANSFER:
             form_data =\
-                section_add_form(request, PatchThroughSectionForm, survey, SECTION_TYPE.CALL_TRANSFER)
+                section_add_form(request, CallTransferSectionForm, survey, SECTION_TYPE.CALL_TRANSFER)
             if form_data['save_tag']:
                 return HttpResponseRedirect('/survey/%s/#row%s'
                     % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
@@ -989,8 +989,8 @@ def section_update_form(request, Form, section_type, section_instance):
     **Attributes**:
 
         * ``request`` - Request variable
-        * ``Form`` - VoiceSectionForm, MultipleChoiceSectionForm,
-                     EnterNumberSectionForm etc...
+        * ``Form`` - PlayMessageSectionForm, MultipleChoiceSectionForm,
+                     CaptureDigitsSectionForm etc...
         * ``section_type`` - value from SECTION_TYPE list
         * ``section_instance`` - section object
 
@@ -1041,7 +1041,7 @@ def section_change(request, id):
     if (section.type == SECTION_TYPE.PLAY_MESSAGE
        or section.type == SECTION_TYPE.HANGUP_SECTION):
         #PLAY_MESSAGE & HANGUP_SECTION
-        form = VoiceSectionForm(request.user, instance=section)
+        form = PlayMessageSectionForm(request.user, instance=section)
     elif section.type == SECTION_TYPE.MULTI_CHOICE:
         #MULTI_CHOICE
         form = MultipleChoiceSectionForm(request.user, instance=section)
@@ -1050,13 +1050,13 @@ def section_change(request, id):
         form = RatingSectionForm(request.user, instance=section)
     elif section.type == SECTION_TYPE.CAPTURE_DIGITS:
         #CAPTURE_DIGITS
-        form = EnterNumberSectionForm(request.user, instance=section)
+        form = CaptureDigitsSectionForm(request.user, instance=section)
     elif section.type == SECTION_TYPE.RECORD_MSG:
         #RECORD_MSG
         form = RecordMessageSectionForm(request.user, instance=section)
     elif section.type == SECTION_TYPE.CALL_TRANSFER:
         #CALL_TRANSFER
-        form = PatchThroughSectionForm(request.user, instance=section)
+        form = CallTransferSectionForm(request.user, instance=section)
 
     request.session['err_msg'] = ''
 
@@ -1065,7 +1065,7 @@ def section_change(request, id):
         if int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE or \
            int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION:
             form_data = section_update_form(request,
-                VoiceSectionForm, SECTION_TYPE.PLAY_MESSAGE, section)
+                PlayMessageSectionForm, SECTION_TYPE.PLAY_MESSAGE, section)
             if form_data['save_tag']:
                 return HttpResponseRedirect('/survey/%s/#row%s'
                     % (section.survey_id, section.id))
@@ -1092,10 +1092,10 @@ def section_change(request, id):
             else:
                 form = form_data['form']
 
-        # Enter Number Section
+        # Capture Digits Section
         if int(request.POST.get('type')) == SECTION_TYPE.CAPTURE_DIGITS:
             form_data = section_update_form(request,
-                EnterNumberSectionForm, SECTION_TYPE.CAPTURE_DIGITS, section)
+                CaptureDigitsSectionForm, SECTION_TYPE.CAPTURE_DIGITS, section)
             if form_data['save_tag']:
                 return HttpResponseRedirect('/survey/%s/#row%s'
                     % (section.survey_id, section.id))
@@ -1112,10 +1112,10 @@ def section_change(request, id):
             else:
                 form = form_data['form']
 
-        # Patch Through Section Section
+        # Call Transfer Section
         if int(request.POST.get('type')) == SECTION_TYPE.CALL_TRANSFER:
             form_data = section_update_form(request,
-                PatchThroughSectionForm, SECTION_TYPE.CALL_TRANSFER, section)
+                CallTransferSectionForm, SECTION_TYPE.CALL_TRANSFER, section)
             if form_data['save_tag']:
                 return HttpResponseRedirect('/survey/%s/#row%s'
                     % (section.survey_id, section.id))

@@ -19,10 +19,10 @@ from common.utils import BaseAuthenticatedClient
 from survey.models import Survey, Survey_template, Section,\
     Section_template, Branching, Branching_template, Result, \
     ResultAggregate
-from survey.forms import SurveyForm, VoiceSectionForm,\
+from survey.forms import SurveyForm, PlayMessageSectionForm,\
     MultipleChoiceSectionForm, RatingSectionForm,\
-    EnterNumberSectionForm, RecordMessageSectionForm,\
-    PatchThroughSectionForm, BranchingForm, ScriptForm,\
+    CaptureDigitsSectionForm, RecordMessageSectionForm,\
+    CallTransferSectionForm, BranchingForm, ScriptForm,\
     SurveyDetailReportForm
 from survey.views import survey_list, survey_add, \
     survey_change, survey_del, section_add, section_change,\
@@ -569,7 +569,7 @@ class SurveyModel(TestCase):
         self.assertEqual(self.branching_template.section, self.section_template)
         self.assertEqual(self.result.section, self.section)
 
-        form = VoiceSectionForm(self.user, instance=self.section_template)
+        form = PlayMessageSectionForm(self.user, instance=self.section_template)
         obj = form.save(commit=False)
         obj.question = "test question"
         obj.type = 1
@@ -614,8 +614,8 @@ class SurveyModel(TestCase):
         obj.goto = self.section_template
         obj.save()
 
-        form = EnterNumberSectionForm(self.user,
-                                      instance=self.section_template)
+        form = CaptureDigitsSectionForm(self.user,
+                                        instance=self.section_template)
         obj = form.save(commit=False)
         obj.type = 4
         obj.question = "test question"
@@ -639,7 +639,7 @@ class SurveyModel(TestCase):
         obj.survey = self.survey_template
         obj.save()
 
-        form = PatchThroughSectionForm(self.user)
+        form = CallTransferSectionForm(self.user)
         obj = form.save(commit=False)
         obj.type = 6
         obj.question = "test question"

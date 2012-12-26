@@ -12,7 +12,6 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 from dajaxice.decorators import dajaxice_register

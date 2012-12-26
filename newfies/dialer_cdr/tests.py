@@ -121,11 +121,11 @@ class DialerCdrCeleryTaskTestCase(TestCase):
     def setUp(self):
         self.callrequest = Callrequest.objects.get(pk=1)
 
-    def test_init_callrequest(self):
-        """Test that the ``init_callrequest``
-        task runs with no errors, and returns the correct result."""
-        result = init_callrequest.delay(self.callrequest.id, 1)
-        self.assertEqual(result.successful(), True)
+    #def test_init_callrequest(self):
+    #    """Test that the ``init_callrequest``
+    #    task runs with no errors, and returns the correct result."""
+    #    result = init_callrequest.delay(self.callrequest.id, 1)
+    #    self.assertEqual(result.successful(), True)
 
     def test_dummy_test_answerurl(self):
         """Test that the ``dummy_test_answerurl``

@@ -26,6 +26,7 @@ function delete_button(){
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
+                <li><a href="/import_survey/">{% trans "Import survey" %}</a></li>
                 {% if perms.survey.delete_survey %}
                     <li><a href="#" onclick="delete_button()">{% trans "Delete survey" %}</a></li>
                 {% endif %}
@@ -71,7 +72,7 @@ function delete_button(){
                                     <a href="/export_survey/{{ row.id }}/" target="_blank" {% icon "database_go" %} title="{% trans "Export survey" %}"></a>
                                 {% endif %}
 
-                                &nbsp;<a href="/import_survey/{{ row.id }}/" {% icon "database_save" %} title="{% trans "Import survey" %}"></a>
+                                <!--&nbsp;<a href="/import_survey/{{ row.id }}/" {% icon "database_save" %} title="{% trans "Import survey" %}"></a>-->
                             </td>
                         </tr>
                     {% endfor %}

@@ -715,8 +715,8 @@ def survey_list(request):
 
         * List all surveys which belong to the logged in user.
     """
-    sort_col_field_list = ['name', 'updated_date']
-    default_sort_field = 'name'
+    sort_col_field_list = ['id', 'name', 'updated_date']
+    default_sort_field = 'id'
     pagination_data =\
         get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
@@ -1857,7 +1857,7 @@ def export_survey(request, id):
 
 @permission_required('survey.import_survey', login_url='/')
 @login_required
-def import_survey(request, id):
+def import_survey(request):
     """Importing sections and branching of survey
 
     **Attributes**:
@@ -1872,6 +1872,10 @@ def import_survey(request, id):
     if request.method == 'POST':
         form = SurveyFileImport(request.POST, request.FILES)
         if form.is_valid():
+
+            new_survey = Survey_template.objects.create(name=request.POST['name'],
+                                                        user=request.user)
+
             records = csv.reader(request.FILES['survey_file'],
                 delimiter='|', quotechar='"')
 
@@ -1912,7 +1916,7 @@ def import_survey(request, id):
                             phonenumber=row[22],
                             completed=1 if row[23] == 'TRUE' else 0,
                             invalid_audiofile_id=int(row[24]) if row[24] else None,
-                            survey_id=int(id)
+                            survey=new_survey,
                         )
 
                         new_old_section[int(row[25])] = section_template_obj.id

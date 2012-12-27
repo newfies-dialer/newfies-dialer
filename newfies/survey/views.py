@@ -1896,8 +1896,8 @@ def import_survey(request):
                     try:
                         # for section
                         section_template_obj = Section_template.objects.create(
-                            type=int(row[0]) if row[0] else 1,
-                            order=int(row[1]) if row[1] else 1,
+                            order=int(row[0]) if row[0] else 1,
+                            type=int(row[1]) if row[1] else 1,
                             question=row[2],
                             script=row[3],
                             audiofile_id=int(row[4]) if row[4] else None,
@@ -1929,7 +1929,6 @@ def import_survey(request):
                     except:
                         type_error_import_list.append(row)
 
-
                 if  len(row) == 3:
                     new_section_id = ''
                     new_goto_section_id = ''
@@ -1946,7 +1945,7 @@ def import_survey(request):
                     #    Branching_template.objects.filter(keys=row[0], section_id=new_section_id).count()
                     #if duplicate_count == 0:
                     try:
-                        obj = Branching_template.objects.create(
+                        Branching_template.objects.create(
                             keys=row[0],
                             section_id=new_section_id,
                             goto_id=int(new_goto_section_id) if new_goto_section_id else None,

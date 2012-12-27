@@ -1935,6 +1935,8 @@ def import_survey(request):
                     if row[2]:
                         new_goto_section_id = new_old_section[int(row[2])]
 
+                    print 'Key => ' + str(row[0]) + ' | section_id => ' + str(new_section_id) + ' | goto_id => ' + str(new_goto_section_id)
+
                     duplicate_count = \
                         Branching_template.objects.filter(keys=row[0], section_id=new_section_id).count()
                     if duplicate_count == 0:

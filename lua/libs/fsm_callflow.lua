@@ -38,6 +38,8 @@ FSMCall = oo.class{
     hangup_trigger = false,
     current_node_id = false,
     db = nil,
+    record_filename = false,
+    last_node = nil,
 }
 
 function FSMCall:__init(session, debug_mode, debugger)
@@ -93,6 +95,20 @@ end
 
 function FSMCall:end_call()
     self.debugger:msg("ERROR", "FSMCall:end_call")
+
+    --Check if we need to save the last recording
+    if self.record_filename and string.len(self.record_filename) > 0 then
+        self.db:connect()
+        current_node = self.last_node
+        digits = ''
+        record_filepath = FS_RECORDING_PATH..self.record_filename
+        record_dur = audio_lenght(record_filepath)
+        self.debugger:msg("INFO", "FSMCall:end_call -- RECORDING DONE DURATION: "..record_dur)
+        self.debugger:msg("INFO", "FSMCall:end_call -- Save missing recording")
+        self.db:save_section_result(self.campaign_id, self.survey_id, self.callrequest_id, current_node, digits, self.record_filename, record_dur)
+        self.db:disconnect()
+    end
+
     -- NOTE: Don't use this call time for Billing
     -- Use FS CDRs
     if not self.call_ended then
@@ -299,6 +315,8 @@ function FSMCall:next_node()
 
     self.debugger:msg("INFO", "FSMCall:next_node (current_node="..tonumber(self.current_node_id)..")")
     local current_node = self.db.list_section[tonumber(self.current_node_id)]
+    self.last_node = current_node
+
     current_branching = self.db.list_branching[tonumber(self.current_node_id)]
     if not current_node then
         self.debugger:msg("ERROR", "Not current_node : "..type(current_node))
@@ -352,12 +370,12 @@ function FSMCall:next_node()
         silence_threshold = 30
         silence_secs = 5
         id_recordfile = math.random(10000000, 99999999)
-        record_filename = "recording-"..current_node.id.."-"..id_recordfile..".wav"
-        record_filepath = FS_RECORDING_PATH..record_filename
+        self.record_filename = "recording-"..current_node.id.."-"..id_recordfile..".wav"
+        record_filepath = FS_RECORDING_PATH..self.record_filename
+        self.debugger:msg("INFO", "STARTING RECORDING : "..record_filepath)
         result_rec = self.session:recordFile(record_filepath, max_len_secs, silence_threshold, silence_secs)
-        self.debugger:msg("INFO", "RECORDING : "..record_filepath)
         record_dur = audio_lenght(record_filepath)
-        self.debugger:msg("INFO", "RECORDING DURATION: "..record_dur)
+        self.debugger:msg("INFO", "RECORDING DONE DURATION: "..record_dur)
     else
         self.debugger:msg("INFO", "EXCEPTION -> HANGUP")
         self:end_call()
@@ -366,10 +384,13 @@ function FSMCall:next_node()
     --
     -- 3. Record result and Aggregate result
     --
-    if digits or record_filename then
+    if digits or self.record_filename then
         self.db:connect()
-        self.db:save_section_result(self.campaign_id, self.survey_id, self.callrequest_id, current_node, digits, record_filename, record_dur)
+        self.db:save_section_result(self.campaign_id, self.survey_id, self.callrequest_id, current_node, digits, self.record_filename, record_dur)
         self.db:disconnect()
+        --reinit record_filename
+        self.record_filename = false
+        record_dur = false
         --TODO: Bulk insert / Improve by saving all the result at the end of the calls
     end
 

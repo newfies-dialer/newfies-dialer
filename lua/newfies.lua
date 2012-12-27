@@ -95,15 +95,18 @@ end
 
 if session:ready() then
 
-    session:answer()
-    session:setHangupHook("myHangupHook")
-
     res = callflow:init()
     if res then
+        --Answer the call
+        session:answer()
+        session:setHangupHook("myHangupHook")
+
+        --Start the FSM
         callflow:start_call()
 
         loop = 0
-        while session:ready() and not callflow.call_ended and loop < 1000 do
+        --While the session is ready and call is not ended loop
+        while session:ready() and not callflow.call_ended and loop < 10000 do
             loop = loop + 1
 
             -- Loop on the State Machine to find the next node to proceed

@@ -27,7 +27,7 @@ from django.db.models import Sum, Avg, Count
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.forms import VoipSearchForm
 from dialer_cdr.function_def import voipcall_record_common_fun, \
-                                    voipcall_search_admin_form_fun
+    voipcall_search_admin_form_fun
 from common.common_functions import variable_value
 from genericadmin.admin import GenericAdminModelAdmin
 from datetime import datetime
@@ -47,8 +47,7 @@ class CallrequestAdmin(GenericAdminModelAdmin):
         }),
         (_('Advanced options'), {
             'classes': ('collapse',),
-            'fields': ('extra_data', 'extra_dial_string', 'subscriber',
-                        'completed'),
+            'fields': ('extra_data', 'extra_dial_string', 'subscriber', 'completed'),
         }),
     )
     #NOTE : display user / content_type low the performance
@@ -137,7 +136,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
         form = VoipSearchForm()
         if request.method == 'POST':
             query_string = voipcall_search_admin_form_fun(request)
-            return HttpResponseRedirect("/admin/%s/%s/?%s" \
+            return HttpResponseRedirect("/admin/%s/%s/?%s"
                 % (opts.app_label, opts.object_name.lower(), query_string))
         else:
             status = ''
@@ -182,10 +181,8 @@ class VoIPCallAdmin(admin.ModelAdmin):
             'All %(total_count)s selected', cl.result_count)
 
         ctx = {
-            'selection_note': \
-                _('0 of %(cnt)s selected') % {'cnt': len(cl.result_list)},
-            'selection_note_all': \
-                selection_note_all % {'total_count': cl.result_count},
+            'selection_note': _('0 of %(cnt)s selected') % {'cnt': len(cl.result_list)},
+            'selection_note_all': selection_note_all % {'total_count': cl.result_count},
             'cl': cl,
             'form': form,
             'opts': opts,
@@ -193,8 +190,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             'app_label': _('VoIP Report'),
             'title': _('Call Report'),
         }
-        return super(VoIPCallAdmin, self)\
-               .changelist_view(request, extra_context=ctx)
+        return super(VoIPCallAdmin, self).changelist_view(request, extra_context=ctx)
 
     def voip_report(self, request):
         opts = VoIPCall._meta
@@ -221,23 +217,19 @@ class VoIPCallAdmin(admin.ModelAdmin):
         total_data = ''
         # Get Total Records from VoIPCall Report table for Daily Call Report
         total_data = VoIPCall.objects.extra(select=select_data)\
-                     .values('starting_date')\
-                     .filter(**kwargs)\
-                     .annotate(Count('starting_date'))\
-                     .annotate(Sum('duration'))\
-                     .annotate(Avg('duration'))\
-                     .order_by('-starting_date')
+            .values('starting_date')\
+            .filter(**kwargs)\
+            .annotate(Count('starting_date'))\
+            .annotate(Sum('duration'))\
+            .annotate(Avg('duration'))\
+            .order_by('-starting_date')
 
         # Following code will count total voip calls, duration
         if total_data.count() != 0:
-            max_duration = \
-                max([x['duration__sum'] for x in total_data])
-            total_duration = \
-                sum([x['duration__sum'] for x in total_data])
-            total_calls = \
-                sum([x['starting_date__count'] for x in total_data])
-            total_avg_duration = \
-                (sum([x['duration__avg']\
+            max_duration = max([x['duration__sum'] for x in total_data])
+            total_duration = sum([x['duration__sum'] for x in total_data])
+            total_calls = sum([x['starting_date__count'] for x in total_data])
+            total_avg_duration = (sum([x['duration__avg']
                     for x in total_data])) / total_data.count()
         else:
             max_duration = 0

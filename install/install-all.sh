@@ -53,7 +53,7 @@ apt-get -y install vim git-core
 
 #Install Freeswitch
 cd /usr/src/
-wget https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/install-freeswitch.sh -O install-freeswitch.sh
+wget --no-check-certificate  https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/install-freeswitch.sh -O install-freeswitch.sh
 bash install-freeswitch.sh
 /etc/init.d/freeswitch start
 
@@ -88,5 +88,5 @@ bash install-freeswitch.sh
 
 #Install Newfies
 cd /usr/src/
-wget https://raw.github.com/Star2Billing/newfies-dialer/develop/install/install-newfies.sh -O install-newfies.sh
+wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/develop/install/install-newfies.sh -O install-newfies.sh
 bash install-newfies.sh

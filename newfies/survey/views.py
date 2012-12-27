@@ -1231,12 +1231,12 @@ def section_script_play(request, id):
         * Create text file from section script
         * Convert text file into wav file
     """
-    section = get_object_or_404(
-        Section_template, pk=int(id), survey__user=request.user)
+    section = get_object_or_404(Section_template, pk=int(id), survey__user=request.user)
+    #TODO: Add support for Acapela
     if section.script:
         script_text = section.script
         script_hexdigest = hashlib.md5(script_text).hexdigest()
-        file_path = '%s/tts/script_%s' % \
+        file_path = '%s/tts/flite_%s' % \
             (settings.MEDIA_ROOT, script_hexdigest)
         audio_file_path = file_path + '.wav'
         text_file_path = file_path + '.txt'

@@ -332,6 +332,7 @@ class SurveyDetailReportForm(VoipSearchForm, SurveyReportForm):
 
 class SurveyFileImport(forms.Form):
     """General Form : file upload"""
+    name = forms.CharField(label=_('Survey name'), required=True)
     survey_file = forms.FileField(label=_("Upload File "), required=True,
         error_messages={'required': 'Please upload File'},
         help_text=_("Browse text file"))

@@ -26,6 +26,11 @@ function delete_button(){
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
+                <li>
+                <a href="#survey-import"  url="/import_survey/" class="survey-import" data-toggle="modal" data-controls-modal="survey-import" title="{% trans "Import survey" %}" >
+                    {% trans "import survey"|title %}
+                </a>
+                </li>
                 {% if perms.survey.delete_survey %}
                     <li><a href="#" onclick="delete_button()">{% trans "Delete survey" %}</a></li>
                 {% endif %}
@@ -71,7 +76,7 @@ function delete_button(){
                                     <a href="/export_survey/{{ row.id }}/" target="_blank" {% icon "database_go" %} title="{% trans "Export survey" %}"></a>
                                 {% endif %}
 
-                                &nbsp;<a href="/import_survey/{{ row.id }}/" {% icon "database_save" %} title="{% trans "Import survey" %}"></a>
+                                <!--&nbsp;<a href="/import_survey/{{ row.id }}/" {% icon "database_save" %} title="{% trans "Import survey" %}"></a>-->
                             </td>
                         </tr>
                     {% endfor %}
@@ -90,6 +95,20 @@ function delete_button(){
                 {% paginate %}
             {% endif %}
         </form>
+
+        <!--Survey import modal-->
+        <script type="text/javascript" charset="utf-8">
+
+            $(".survey-import").live('click', function() {
+                var url = $(this).attr('url');
+                var modal_id = $(this).attr('data-controls-modal');
+                $("#" + modal_id).load(url);
+            });
+
+        </script>
+        <!-- modal content-->
+        <div id="survey-import" class="modal modal hide fade"></div>
+
     </div>
 </div>
 {% endblock %}

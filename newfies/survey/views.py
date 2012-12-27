@@ -1881,6 +1881,11 @@ def import_survey(request):
 
             new_old_section = {}
 
+            # dirty patch
+            from django.db.models.signals import post_save
+            from survey.models import post_save_add_script
+            post_save.disconnect(post_save_add_script)
+
             # Read each row
             for row in records:
                 row = striplist(row)
@@ -1937,17 +1942,18 @@ def import_survey(request):
 
                     print 'Key => ' + str(row[0]) + ' | section_id => ' + str(new_section_id) + ' | goto_id => ' + str(new_goto_section_id)
 
-                    duplicate_count = \
-                        Branching_template.objects.filter(keys=row[0], section_id=new_section_id).count()
-                    if duplicate_count == 0:
-                        try:
-                            obj = Branching_template.objects.create(
-                                keys=row[0],
-                                section_id=new_section_id,
-                                goto_id=int(new_goto_section_id) if new_goto_section_id else None,
-                            )
-                        except:
-                            type_error_import_list.append(row)
+                    #duplicate_count = \
+                    #    Branching_template.objects.filter(keys=row[0], section_id=new_section_id).count()
+                    #if duplicate_count == 0:
+                    try:
+                        obj = Branching_template.objects.create(
+                            keys=row[0],
+                            section_id=new_section_id,
+                            goto_id=int(new_goto_section_id) if new_goto_section_id else None,
+                        )
+                    except:
+                        type_error_import_list.append(row)
+            post_save.connect(post_save_add_script)
             return HttpResponseRedirect('/survey/')
         else:
             request.session["err_msg"] = True

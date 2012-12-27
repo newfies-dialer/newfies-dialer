@@ -1930,6 +1930,7 @@ def import_survey(request):
                     except:
                         type_error_import_list.append(row)
 
+                #if row is only 3, it's a branching
                 if  len(row) == 3:
                     new_section_id = ''
                     new_goto_section_id = ''
@@ -1940,17 +1941,20 @@ def import_survey(request):
                     if row[2]:
                         new_goto_section_id = new_old_section[int(row[2])]
 
-                    print 'Key => ' + str(row[0]) + ' | section_id => ' + str(new_section_id) + ' | goto_id => ' + str(new_goto_section_id)
+                    # print 'Key=%s |section_id=%s | goto_id=%s' % \
+                    #     (str(row[0]), str(new_section_id), str(new_goto_section_id))
 
                     #duplicate_count = \
                     #    Branching_template.objects.filter(keys=row[0], section_id=new_section_id).count()
                     #if duplicate_count == 0:
                     try:
-                        Branching_template.objects.create(
+                        obj = Branching_template.objects.create(
                             keys=row[0],
                             section_id=new_section_id,
                             goto_id=int(new_goto_section_id) if new_goto_section_id else None,
                         )
+                        # print(obj)
+                        # print(obj.goto_id)
                     except:
                         type_error_import_list.append(row)
 

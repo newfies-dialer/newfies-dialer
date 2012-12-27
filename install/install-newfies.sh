@@ -227,7 +227,7 @@ func_install_frontend(){
     #Lua Deps
     apt-get -y install liblua5.1-sql-postgres-dev
     apt-get -y install postgresql-server-dev-9.1
-    apt-get -y liblua5.1-curl0 liblua5.1-curl-dev
+    apt-get -y install liblua5.1-curl0 liblua5.1-curl-dev
     #Luarocks
     apt-get -y install luarocks
     luarocks install luasql-postgres

@@ -44,11 +44,11 @@ function trim(s)
     return (string.gsub(s, "^%s*(.-)%s*$", "%1"))
 end
 
-function db_insert_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, starting_date)
+function db_insert_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, starting_date, amd_status)
     -- event_name, body, job_uuid, call_uuid
     sql = string.format([[
-    INSERT INTO call_event (event_name, body, job_uuid, call_uuid, status, created_date, used_gateway_id, callrequest_id, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, starting_date)
-    VALUES ('%s', '%s', '%s', '%s', '%s', now(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s)]], event_name, body, job_uuid, call_uuid, status, used_gateway_id, callrequest_id, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, starting_date)
+    INSERT INTO call_event (event_name, body, job_uuid, call_uuid, status, created_date, used_gateway_id, callrequest_id, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date)
+    VALUES ('%s', '%s', '%s', '%s', '%s', now(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s)]], event_name, body, job_uuid, call_uuid, status, used_gateway_id, callrequest_id, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date)
     --logger(sql)
     env = assert (luasql.postgres())
     dbcon = assert(env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT))
@@ -96,6 +96,7 @@ blah = assert(dbcon:execute([[
         billsec integer DEFAULT 0,
         hangup_cause varchar(40),
         hangup_cause_q850 varchar(10),
+        amd_status varchar(40),
         starting_date timestamp with time zone,
         status integer,
         created_date timestamp with time zone NOT NULL
@@ -156,6 +157,7 @@ while true do
         accountcode = e:getHeader("variable_accountcode") or ""
         phonenumber = e:getHeader("variable_dialed_user") or ""
         hangup_cause = e:getHeader("variable_hangup_cause") or ""
+        amd_status = e:getHeader("variable_amd_status") or "person"
         hangup_cause_q850 = e:getHeader("variable_hangup_cause_q850") or ""
         start_uepoch = e:getHeader("variable_start_uepoch") -- 1355809698350872
         if start_uepoch ~= nil then
@@ -193,7 +195,7 @@ while true do
                 end
 
                 --Insert Event to Database
-                db_insert_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, starting_date)
+                db_insert_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, starting_date, amd_status)
 
             elseif event_name == 'CHANNEL_HANGUP_COMPLETE' then
 
@@ -207,7 +209,7 @@ while true do
                 end
 
                 --Insert Event to Database
-                db_insert_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, starting_date)
+                db_insert_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, starting_date, amd_status)
 
             end
 

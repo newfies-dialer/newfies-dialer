@@ -16,6 +16,7 @@ from django.contrib import admin
 from django.contrib.admin.options import IncorrectLookupParameters
 from django.contrib.admin.views.main import ERROR_FLAG
 from django.conf.urls import patterns
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
@@ -70,6 +71,8 @@ class VoIPCallAdmin(admin.ModelAdmin):
     list_display = ('id', 'leg_type', 'callid', 'callerid', 'phone_number',
                     'starting_date', 'min_duration', 'billsec', 'disposition',
                     'hangup_cause', 'hangup_cause_q850')
+    if settings.AMD:
+        list_display += ('amd_status',)
     ordering = ('-id', )
 
     def user_link(self, obj):

@@ -19,7 +19,8 @@ from django.contrib.contenttypes import generic
 from dialer_gateway.models import Gateway
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_cdr.constants import CALLREQUEST_STATUS, \
-    CALLREQUEST_TYPE, LEG_TYPE, VOIPCALL_DISPOSITION
+    CALLREQUEST_TYPE, LEG_TYPE, VOIPCALL_DISPOSITION, \
+    VOIPCALL_AMD_STATUS
 from common.intermediate_model_base_class import Model
 from country_dialcode.models import Prefix
 from uuid import uuid1
@@ -225,10 +226,10 @@ class VoIPCall(models.Model):
     hangup_cause = models.CharField(max_length=40, null=True, blank=True,
                     verbose_name=_("Hangup cause"))
     hangup_cause_q850 = models.CharField(max_length=10, null=True, blank=True)
-    leg_type = models.SmallIntegerField(choices=list(LEG_TYPE),
-                                        default=LEG_TYPE.A_LEG,
-                                        verbose_name=_("Leg"),
-                                        null=True, blank=True)
+    leg_type = models.SmallIntegerField(choices=list(LEG_TYPE), default=LEG_TYPE.A_LEG,
+                                        verbose_name=_("Leg"), null=True, blank=True)
+    amd_status = models.SmallIntegerField(choices=list(VOIPCALL_AMD_STATUS), default=VOIPCALL_AMD_STATUS.PERSON,
+                                          null=True, blank=True, verbose_name=_("AMD Status"))
 
     def destination_name(self):
         """Return Recipient dialcode"""

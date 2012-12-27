@@ -65,6 +65,9 @@ class VOIPCALL_DISPOSITION(Choice):
 
 
 class CDR_REPORT_COLUMN_NAME(Choice):
+    """
+    Column Name for the CDR Report
+    """
     date = _('Start date')
     call_id = _('Call ID')
     leg = _('Leg')
@@ -74,3 +77,12 @@ class CDR_REPORT_COLUMN_NAME(Choice):
     duration = _('Duration')
     bill_sec = _('Bill Sec')
     disposition = _('Disposition')
+
+
+class VOIPCALL_AMD_STATUS(Choice):
+    """
+    Store the AMD Status
+    """
+    PERSON = 1, _("Person")
+    MACHINE = 2, _("Machine")
+    UNSURE = 3, _("Unsure")

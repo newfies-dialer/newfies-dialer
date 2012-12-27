@@ -1946,6 +1946,9 @@ def import_survey(request):
                             )
                         except:
                             type_error_import_list.append(row)
+            return HttpResponseRedirect('/survey/')
+        else:
+            request.session["err_msg"] = True
 
     template = 'frontend/survey/import_survey.html'
     data = {
@@ -1953,6 +1956,8 @@ def import_survey(request):
         'section_row': section_row,
         'branching_row': branching_row,
         'type_error_import_list': type_error_import_list,
+        'err_msg': request.session.get('err_msg'),
     }
+    request.session['err_msg'] = ''
     return render_to_response(template, data,
         context_instance=RequestContext(request))

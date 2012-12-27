@@ -2,44 +2,106 @@
 {% load i18n %}
 
 {% block extra_files %}
-    <style>
-    .help-inline {
-        padding-left: 55px;
-    }
-    </style>
 {% endblock %}
 
-{% block content_header %}
-    <h1>{% trans "Import Survey" %} <small>{% trans "Import list of survey by uploading Text files" %}</small></h1>
+{% block row_fluid %}
 {% endblock %}
 
-{% block content %}
+{% block header %}
+{% endblock %}
 
-<form class="well" method="post" action="" enctype="multipart/form-data" >{% csrf_token %}
-     {% for field in form %}
-     <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-         <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
-         <div class="input">
-             {{ field }}
-             {% if field.errors %}
-                 <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-             {% endif %}
-             <span class="help-block">{{ field.help_text }} </span>
-         </div>
-     </div>
-     {% endfor %}
+{% block menu %}
+{% endblock %}
 
-     <div class="actions">
-         <input type="submit" class="btn btn-primary" name="submit" value="{% trans "Submit" %}" />
-     </div>
-</form>
+{% block container %}
 
-{% if section_row %}
+    {% block content %}
+        {% if err_msg %}
+            <script type="text/javascript" charset="utf-8">
+                $(window).load(function(){
+                    $('#survey_import_modal').modal('show');
+                });
+                var url = '/survey/';
+                $(".close").live('click', function() {
+                    $(location).attr('href', url);
+                });
+                var KEYCODE_ESC = 27;
+                $(document).keyup(function(e) {
+                    if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
+                });
+            </script>
+            <!-- modal content-->
+            <div class="modal hide fade" id="survey_import_modal">
+
+        {% endif %}
+
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal" >&times;</a>
+            <h3>{% trans "import survey"|title %}</h3>
+        </div>
+        <form method="post" action="/import_survey/" enctype="multipart/form-data" >{% csrf_token %}
+             <div class="modal-body">
+                 {% for field in form %}
+                 <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                     <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+                     <div class="input">
+                         {{ field }}
+                         {% if field.errors %}
+                             <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                         {% endif %}
+                         <span class="help-block">{{ field.help_text }} </span>
+                     </div>
+                 </div>
+                 {% endfor %}
+             </div>
+             <div class="modal-footer">
+                 <input type="submit" class="btn btn-primary" name="submit" value="{% trans "Submit" %}" />
+                 <a href="#" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
+             </div>
+        </form>
+
+        {% if err_msg %}
+            </div>
+        {% endif %}
+
+    <!--
+    {% if section_row %}
+        <table class="table table-striped table-bordered table-condensed">
+            <tr>
+                <th>{% trans "Survey's sections imported" %} :</th>
+            </tr>
+            {% for row in section_row %}
+            <tr>
+                <td>
+                    {{ row }}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if branching_row %}
+        <table class="table table-striped table-bordered table-condensed">
+            <tr>
+                <th>{% trans "Survey's branching imported" %} :</th>
+            </tr>
+            {% for row in branching_row %}
+                <tr>
+                    <td>
+                        {{ row }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if type_error_import_list %}
+    <br/>
     <table class="table table-striped table-bordered table-condensed">
         <tr>
-            <th>{% trans "Survey's sections imported" %} :</th>
+            <th>{% trans "Type mismatch" %} :</th>
         </tr>
-        {% for row in section_row %}
+        {% for row in type_error_import_list %}
         <tr>
             <td>
                 {{ row }}
@@ -47,37 +109,12 @@
         </tr>
         {% endfor %}
     </table>
-{% endif %}
+    {% endif %}
+    -->
 
-{% if branching_row %}
-    <table class="table table-striped table-bordered table-condensed">
-        <tr>
-            <th>{% trans "Survey's branching imported" %} :</th>
-        </tr>
-        {% for row in branching_row %}
-            <tr>
-                <td>
-                    {{ row }}
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
-{% endif %}
+    {% endblock %}
 
-{% if type_error_import_list %}
-<br/>
-<table class="table table-striped table-bordered table-condensed">
-    <tr>
-        <th>{% trans "Type mismatch" %} :</th>
-    </tr>
-    {% for row in type_error_import_list %}
-    <tr>
-        <td>
-            {{ row }}
-        </td>
-    </tr>
-    {% endfor %}
-</table>
-{% endif %}
+    {% block footer %}
+    {% endblock %}
 
 {% endblock %}

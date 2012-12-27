@@ -21,4 +21,5 @@ amd*.lua
 lua/tts/*.wav
 lua/tts/*.mp3
 lua/tts/*.txt
+lua/*amd*
 acapela*.lua

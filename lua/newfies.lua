@@ -22,12 +22,16 @@ require "fsm_callflow"
 require "debugger"
 
 
+--Init debug and fs_env
+debug_mode = false
+fs_env = true
+
 local OptionParser = require "pythonic.optparse" . OptionParser
---TODO: parse version from __init__.py
 local opt = OptionParser{usage="%prog [options] [gzip-file...]",
-                           version="Newfies-Dialer Version 1.0", add_help_option=false}
-opt.add_option{"-h", "--help", action="store_true", dest="help",
-                 help="Newfies-Dialer Voice Application FSM"}
+    version="Newfies-Dialer-Lua Version 1.0", add_help_option=false}
+opt.add_option{
+    "-h", "--help", action="store_true", dest="help",
+    help="Newfies-Dialer Voice Application FSM"}
 opt.add_option{
     "-n", "--nofs", action="store_true", dest="nofs",
     help="select the environement to run the script, as command line, you might want to run this with --nofs"}
@@ -40,19 +44,13 @@ if options.help then opt.print_help(); os.exit(1) end
 -- Set if the environment is FreeSWITCH
 if options.nofs then
     fs_env = false
-else
-    fs_env = true
 end
 
 local debugger = Debugger('INFO', fs_env)
-
-debug_mode = false
-
 if not fs_env then
     require "session"
     session = Session()
 end
-
 local callflow = FSMCall(session, debug_mode, debugger)
 
 

@@ -1881,9 +1881,10 @@ def import_survey(request):
 
             new_old_section = {}
 
-            # dirty patch
+            # TODO : find out better way to disconnect post_save signal
             from django.db.models.signals import post_save
             from survey.models import post_save_add_script
+            # disconnect post_save_add_script signal from Section_template
             post_save.disconnect(post_save_add_script)
 
             # Read each row
@@ -1952,6 +1953,8 @@ def import_survey(request):
                         )
                     except:
                         type_error_import_list.append(row)
+
+            # connect post_save_add_script signal with Section_template
             post_save.connect(post_save_add_script)
             return HttpResponseRedirect('/survey/')
         else:

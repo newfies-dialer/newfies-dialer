@@ -26,6 +26,7 @@ from django.utils.translation import ugettext as _
 from django.utils.html import escape
 from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
+from django.db.models.signals import post_save
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.constants import SUBSCRIBER_STATUS
 from dialer_cdr.models import Callrequest, VoIPCall, CALLREQUEST_STATUS
@@ -39,6 +40,7 @@ from survey.forms import SurveyForm, PlayMessageSectionForm,\
     CallTransferSectionForm, BranchingForm, ScriptForm,\
     SurveyDetailReportForm, SurveyFileImport
 from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME
+from survey.models import post_save_add_script
 from frontend_notification.views import notice_count
 from common.common_functions import striplist, variable_value, current_view,\
     ceil_strdate, get_pagination_vars
@@ -1876,9 +1878,6 @@ def import_survey(request):
 
             new_old_section = {}
 
-            # TODO : find out better way to disconnect post_save signal
-            from django.db.models.signals import post_save
-            from survey.models import post_save_add_script
             # disconnect post_save_add_script signal from Section_template
             post_save.disconnect(post_save_add_script, sender=Section_template)
 
@@ -1888,6 +1887,7 @@ def import_survey(request):
                 if not row or str(row[0]) == 0:
                     continue
 
+                #if length of row is 26, it's a section
                 if  len(row) == 26:
                     try:
                         # for section
@@ -1925,7 +1925,7 @@ def import_survey(request):
                     except:
                         type_error_import_list.append(row)
 
-                #if row is only 3, it's a branching
+                #if length of row is 3, it's a branching
                 if  len(row) == 3:
                     new_section_id = ''
                     new_goto_section_id = ''

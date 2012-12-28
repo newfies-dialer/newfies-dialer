@@ -39,7 +39,7 @@ from survey.forms import SurveyForm, PlayMessageSectionForm,\
     CaptureDigitsSectionForm, RecordMessageSectionForm,\
     CallTransferSectionForm, BranchingForm, ScriptForm,\
     SurveyDetailReportForm, SurveyFileImport
-from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME
+from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME, SURVEY_CALL_RESULT_NAME
 from survey.models import post_save_add_script
 from frontend_notification.views import notice_count
 from common.common_functions import striplist, variable_value, current_view,\
@@ -1576,7 +1576,18 @@ def survey_report(request):
         'total_avg_duration': '',
         'max_duration': '',
     }
-    PAGE_SIZE = settings.PAGE_SIZE
+
+    sort_col_field_list = ['starting_date', 'phone_number', 'duration',
+                           'disposition', 'id']
+    default_sort_field = 'starting_date'
+    pagination_data =\
+        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+
+    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    sort_order = pagination_data['sort_order']
+    start_page = pagination_data['start_page']
+    end_page = pagination_data['end_page']
+
     campaign_obj = ''
     action = 'tabs-1'
 
@@ -1662,21 +1673,9 @@ def survey_report(request):
         survey_result = get_survey_result(survey_result_kwargs)
         kwargs['callrequest__campaign'] = campaign_obj
 
-        # sorting on column
-        col_name_with_order = {}
-        sort_field = variable_value(request, 'sort_by')
-        if not sort_field:
-            sort_field = '-starting_date'  # default sort field
-        else:
-            if "-" in sort_field:
-                col_name_with_order['sort_field'] = sort_field[1:]
-            else:
-                col_name_with_order['sort_field'] = sort_field
-
         # List of Survey VoIP call report
-        rows = VoIPCall.objects\
-            .only('starting_date', 'phone_number', 'duration', 'disposition', 'id')\
-            .filter(**kwargs).order_by(sort_field)
+        all_call_list = VoIPCall.objects.filter(**kwargs).order_by(sort_order)
+        rows = all_call_list[start_page:end_page]
 
         request.session['session_surveycalls'] = rows
 
@@ -1699,8 +1698,11 @@ def survey_report(request):
 
     data = {
         'rows': rows,
+        'all_call_list': all_call_list,
+        'call_count': all_call_list.count(),
         'PAGE_SIZE': PAGE_SIZE,
-        'col_name_with_order': col_name_with_order,
+        'SURVEY_CALL_RESULT_NAME': SURVEY_CALL_RESULT_NAME,
+        'col_name_with_order': pagination_data['col_name_with_order'],
         'total_data': survey_cdr_daily_data['total_data'],
         'total_duration': survey_cdr_daily_data['total_duration'],
         'total_calls': survey_cdr_daily_data['total_calls'],

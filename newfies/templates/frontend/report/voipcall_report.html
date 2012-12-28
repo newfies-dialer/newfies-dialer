@@ -98,7 +98,7 @@
                 </tr>
                 </thead>
                 {% if voipcall_list %}
-                    {% autopaginate voipcall_list PAGE_SIZE %}
+                    {% autopaginate all_voipcall_list PAGE_SIZE %}
                     {% for row in voipcall_list %}
                         <tr>
                             <td>{{ row.starting_date }}</td>

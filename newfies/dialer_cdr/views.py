@@ -58,6 +58,8 @@ def voipcall_report(request):
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
+    start_page = pagination_data['start_page']
+    end_page = pagination_data['end_page']
 
     search_tag = 1
     action = 'tabs-1'
@@ -130,8 +132,8 @@ def voipcall_report(request):
 
     kwargs['user'] = User.objects.get(username=request.user)
 
-    voipcall_list = VoIPCall.objects.filter(**kwargs).order_by(sort_order)
-    #voipcall_list = voipcall_list[start_page:end_page]
+    all_voipcall_list = VoIPCall.objects.filter(**kwargs).order_by(sort_order)
+    voipcall_list = all_voipcall_list[start_page:end_page]
 
     # Session variable is used to get record set with searched option
     # into export file
@@ -171,8 +173,9 @@ def voipcall_report(request):
         'module': current_view(request),
         'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'all_voipcall_list': all_voipcall_list,
         'voipcall_list': voipcall_list,
-        'total_voipcall': voipcall_list.count(),
+        'total_voipcall': all_voipcall_list.count(),
         'PAGE_SIZE': PAGE_SIZE,
         'CDR_REPORT_COLUMN_NAME': CDR_REPORT_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],

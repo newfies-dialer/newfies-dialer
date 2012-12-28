@@ -92,6 +92,9 @@
                     <th>{% sort_link CDR_REPORT_COLUMN_NAME.duration col_name_with_order.duration %}</th>
                     <th>{% sort_link CDR_REPORT_COLUMN_NAME.bill_sec col_name_with_order.billsec %}</th>
                     <th>{% sort_link CDR_REPORT_COLUMN_NAME.disposition col_name_with_order.disposition %}</th>
+                    {% if AMD %}
+                        <th>{% sort_link CDR_REPORT_COLUMN_NAME.amd_status col_name_with_order.amd_status %}</th>
+                    {% endif %}
                 </tr>
                 </thead>
                 {% if voipcall_list %}
@@ -107,6 +110,9 @@
                             <td>{{ row.duration }}</td>
                             <td>{{ row.billsec }}</td>
                             <td>{{ row.disposition }}</td>
+                            {% if AMD %}
+                                <td>{{ row.amd_status|amd_status_name }}</td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                 {% else %}

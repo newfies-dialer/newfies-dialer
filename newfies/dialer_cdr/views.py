@@ -19,6 +19,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.db.models import Sum, Avg, Count
+from django.conf import settings
 from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import CDR_REPORT_COLUMN_NAME
@@ -50,7 +51,7 @@ def voipcall_report(request):
     """
     sort_col_field_list = ['starting_date', 'leg_type', 'disposition',
                            'used_gateway', 'callerid', 'callid', 'phone_number',
-                           'duration', 'billsec']
+                           'duration', 'billsec', 'amd_status']
     default_sort_field = 'starting_date'
     pagination_data =\
         get_pagination_vars(request, sort_col_field_list, default_sort_field)
@@ -149,14 +150,10 @@ def voipcall_report(request):
 
     # Following code will count total voip calls, duration
     if total_data.count() != 0:
-        max_duration = \
-            max([x['duration__sum'] for x in total_data])
-        total_duration = \
-            sum([x['duration__sum'] for x in total_data])
-        total_calls = \
-            sum([x['starting_date__count'] for x in total_data])
-        total_avg_duration = (
-            sum([x['duration__avg'] for x in total_data])) / total_data.count()
+        max_duration = max([x['duration__sum'] for x in total_data])
+        total_duration = sum([x['duration__sum'] for x in total_data])
+        total_calls = sum([x['starting_date__count'] for x in total_data])
+        total_avg_duration = (sum([x['duration__avg'] for x in total_data])) / total_data.count()
     else:
         max_duration = 0
         total_duration = 0
@@ -183,6 +180,7 @@ def voipcall_report(request):
         'start_date': start_date,
         'end_date': end_date,
         'action': action,
+        'AMD': settings.AMD,
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -212,12 +210,18 @@ def export_voipcall_report(request):
     if request.session.get('voipcall_record_qs'):
         qs = request.session['voipcall_record_qs']
 
+        amd_status = ''
+        if settings.AMD:
+            amd_status = 'amd_status'
+
         writer.writerow(['user', 'callid', 'callerid', 'phone_number',
                          'starting_date', 'duration', 'billsec',
                          'disposition', 'hangup_cause', 'hangup_cause_q850',
-                         'used_gateway'])
+                         'used_gateway', amd_status])
         for i in qs:
             gateway_used = i.used_gateway.name if i.used_gateway else ''
+            amd_status = i.amd_status if settings.AMD else ''
+
             writer.writerow([
                 i.user,
                 i.callid,
@@ -230,5 +234,6 @@ def export_voipcall_report(request):
                 i.hangup_cause,
                 i.hangup_cause_q850,
                 gateway_used,
+                amd_status,
             ])
     return response

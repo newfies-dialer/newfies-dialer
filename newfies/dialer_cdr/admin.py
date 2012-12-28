@@ -273,11 +273,16 @@ class VoIPCallAdmin(admin.ModelAdmin):
         # super(VoIPCall_ReportAdmin, self).queryset(request)
         qs = request.session['admin_voipcall_record_qs']
 
-        writer.writerow(['user', 'callid', 'callerid',
-                         'phone_number', 'starting_date', 'duration',
-                         'disposition', 'gateway'])
+        amd_status = ''
+        if settings.AMD:
+            amd_status = 'amd_status'
+
+        writer.writerow(['user', 'callid', 'callerid', 'phone_number',
+                         'starting_date', 'duration', 'disposition',
+                         'gateway', amd_status])
         for i in qs:
             gateway_used = i.used_gateway.name if i.used_gateway else ''
+            amd_status = i.amd_status if settings.AMD else ''
             writer.writerow([i.user,
                              i.callid,
                              i.callerid,
@@ -286,6 +291,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
                              i.duration,
                              i.disposition,
                              gateway_used,
+                             amd_status,
                              ])
         return response
 

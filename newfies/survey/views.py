@@ -1677,7 +1677,7 @@ def survey_report(request):
         all_call_list = VoIPCall.objects.filter(**kwargs).order_by(sort_order)
         rows = all_call_list[start_page:end_page]
 
-        request.session['session_surveycalls'] = rows
+        request.session['session_surveycalls'] = all_call_list
 
         # Get daily report from session while using pagination & sorting
         if request.GET.get('page') or request.GET.get('sort_by'):

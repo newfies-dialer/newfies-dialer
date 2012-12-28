@@ -34,6 +34,7 @@ SURVEY_RESULT_QUE = [
     'press 1 for yes press 2 for no and 3 to go back',
     'lease record a message to comment on our agent after the beep'
 ]
+VOIPCALL_AMD_STATUS = [1, 2, 3]
 
 RESPONSE = ['apple', 'orange', 'banana']
 
@@ -80,7 +81,8 @@ def create_callrequest(campaign_id, quantity):
                             callrequest=new_callrequest,
                             phone_number=phonenumber,
                             duration=random.randint(1, 100),
-                            disposition=choice(VOIPCALL_DISPOSITION))
+                            disposition=choice(VOIPCALL_DISPOSITION),
+                            amd_status=choice(VOIPCALL_AMD_STATUS))
         print "voipcall:"
         print voipcall.id
 

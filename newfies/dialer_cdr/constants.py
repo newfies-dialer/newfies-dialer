@@ -77,6 +77,7 @@ class CDR_REPORT_COLUMN_NAME(Choice):
     duration = _('Duration')
     bill_sec = _('Bill Sec')
     disposition = _('Disposition')
+    amd_status = _('Amd status')
 
 
 class VOIPCALL_AMD_STATUS(Choice):

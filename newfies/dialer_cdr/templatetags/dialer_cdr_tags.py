@@ -13,7 +13,7 @@
 #
 
 from django.template.defaultfilters import register
-from dialer_cdr.constants import LEG_TYPE
+from dialer_cdr.constants import LEG_TYPE, VOIPCALL_AMD_STATUS
 
 
 @register.filter(name='leg_type_name')
@@ -32,6 +32,30 @@ def leg_type_name(value):
     if not value:
         return ''
     TYPE = dict(LEG_TYPE)
+    try:
+        status = TYPE[value]
+    except:
+        status = ''
+
+    return unicode(status)
+
+
+@register.filter(name='amd_status_name')
+def amd_status_name(value):
+    """amd status name
+
+    >>> amd_status_name(1)
+    u'Person'
+
+    >>> amd_status_name(2)
+    u'Machine'
+
+    >>> amd_status_name(0)
+    ''
+    """
+    if not value:
+        return ''
+    TYPE = dict(VOIPCALL_AMD_STATUS)
     try:
         status = TYPE[value]
     except:

@@ -1502,15 +1502,10 @@ def survey_cdr_daily_report(kwargs):
 
     # Following code will count total voip calls, duration
     if total_data.count() != 0:
-        max_duration =\
-            max([x['duration__sum'] for x in total_data])
-        total_duration =\
-            sum([x['duration__sum'] for x in total_data])
-        total_calls =\
-            sum([x['starting_date__count'] for x in total_data])
-        total_avg_duration =\
-            (sum([x['duration__avg']
-                  for x in total_data])) / total_data.count()
+        max_duration = max([x['duration__sum'] for x in total_data])
+        total_duration = sum([x['duration__sum'] for x in total_data])
+        total_calls = sum([x['starting_date__count'] for x in total_data])
+        total_avg_duration = (sum([x['duration__avg'] for x in total_data])) / total_data.count()
 
     survey_cdr_daily_data = {
         'total_data': total_data,
@@ -1885,7 +1880,7 @@ def import_survey(request):
             from django.db.models.signals import post_save
             from survey.models import post_save_add_script
             # disconnect post_save_add_script signal from Section_template
-            post_save.disconnect(post_save_add_script)
+            post_save.disconnect(post_save_add_script, sender=Section_template)
 
             # Read each row
             for row in records:
@@ -1941,25 +1936,20 @@ def import_survey(request):
                     if row[2]:
                         new_goto_section_id = new_old_section[int(row[2])]
 
-                    # print 'Key=%s |section_id=%s | goto_id=%s' % \
-                    #     (str(row[0]), str(new_section_id), str(new_goto_section_id))
-
-                    #duplicate_count = \
-                    #    Branching_template.objects.filter(keys=row[0], section_id=new_section_id).count()
-                    #if duplicate_count == 0:
-                    try:
-                        obj = Branching_template.objects.create(
-                            keys=row[0],
-                            section_id=new_section_id,
-                            goto_id=int(new_goto_section_id) if new_goto_section_id else None,
-                        )
-                        # print(obj)
-                        # print(obj.goto_id)
-                    except:
-                        type_error_import_list.append(row)
+                    duplicate_count = \
+                        Branching_template.objects.filter(keys=row[0], section_id=new_section_id).count()
+                    if duplicate_count == 0:
+                        try:
+                            obj = Branching_template.objects.create(
+                                keys=row[0],
+                                section_id=new_section_id,
+                                goto_id=int(new_goto_section_id) if new_goto_section_id else None,
+                            )
+                        except:
+                            type_error_import_list.append(row)
 
             # connect post_save_add_script signal with Section_template
-            post_save.connect(post_save_add_script)
+            post_save.connect(post_save_add_script, sender=Section_template)
             return HttpResponseRedirect('/survey/')
         else:
             request.session["err_msg"] = True

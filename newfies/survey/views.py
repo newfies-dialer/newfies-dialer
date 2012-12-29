@@ -92,7 +92,6 @@ def getaudio_acapela(text, tts_language='en'):
     DIRECTORY = settings.MEDIA_ROOT + '/tts/'
     if not tts_language:
         tts_language = 'en'
-    domain = Site.objects.get_current().domain
     tts_acapela = acapela.Acapela(
         settings.ACCOUNT_LOGIN, settings.APPLICATION_LOGIN,
         settings.APPLICATION_PASSWORD, settings.SERVICE_URL,
@@ -101,8 +100,8 @@ def getaudio_acapela(text, tts_language='en'):
         text, tts_language, settings.ACAPELA_GENDER,
         settings.ACAPELA_INTONATION)
     output_filename = tts_acapela.run()
-    audiofile_url = domain + settings.MEDIA_URL + 'tts/' + output_filename
-    return audiofile_url
+    audiofile = 'tts/' + output_filename
+    return audiofile
 
 
 def set_aggregate_result(obj_callrequest, obj_p_section, response, RecordingDuration):
@@ -503,7 +502,8 @@ def survey_finitestatemachine(request):
         if settings.TTS_ENGINE != 'ACAPELA':
             html_play = "<Speak>%s</Speak>" % script
         else:
-            audio_url = getaudio_acapela(script,
+            domain = Site.objects.get_current().domain
+            audio_url = domain + settings.MEDIA_URL + getaudio_acapela(script,
                                          obj_callrequest.content_object.tts_language)
             html_play = "<Play>%s</Play>" % audio_url
 
@@ -1234,25 +1234,33 @@ def section_script_play(request, id):
         * Convert text file into wav file
     """
     section = get_object_or_404(Section_template, pk=int(id), survey__user=request.user)
-    #TODO: Add support for Acapela
+
     if section.script:
         script_text = section.script
-        script_hexdigest = hashlib.md5(script_text).hexdigest()
-        file_path = '%s/tts/flite_%s' % \
-            (settings.MEDIA_ROOT, script_hexdigest)
-        audio_file_path = file_path + '.wav'
-        text_file_path = file_path + '.txt'
 
-        if not os.path.isfile(audio_file_path):
-            #Write text to file
-            text_file = open(text_file_path, "w")
-            text_file.write(script_text)
-            text_file.close()
+        if settings.TTS_ENGINE == 'ACAPELA':
+            #Acapela
+            audio_file_path = settings.MEDIA_ROOT + '/' + getaudio_acapela(script_text, 'US')
+            print(audio_file_path)
+        else:
+            #Flite
+            script_hexdigest = hashlib.md5(script_text).hexdigest()
+            file_path = '%s/tts/flite_%s' % \
+                (settings.MEDIA_ROOT, script_hexdigest)
+            audio_file_path = file_path + '.wav'
+            text_file_path = file_path + '.txt'
+            print(audio_file_path)
 
-            #Convert file
-            conv = 'flite -voice slt -f %s -o %s' % (text_file_path, audio_file_path)
-            response = subprocess.Popen(conv.split(' '), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            (filetype, error) = response.communicate()
+            if not os.path.isfile(audio_file_path):
+                #Write text to file
+                text_file = open(text_file_path, "w")
+                text_file.write(script_text)
+                text_file.close()
+
+                #Convert file
+                conv = 'flite -voice slt -f %s -o %s' % (text_file_path, audio_file_path)
+                response = subprocess.Popen(conv.split(' '), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                (filetype, error) = response.communicate()
 
         if os.path.isfile(audio_file_path):
             response = HttpResponse()

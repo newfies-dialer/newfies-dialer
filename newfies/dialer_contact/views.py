@@ -248,6 +248,8 @@ def contact_list(request):
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
+    start_page = pagination_data['start_page']
+    end_page = pagination_data['end_page']
 
     form = ContactSearchForm(request.user)
     phonebook_id_list = Phonebook.objects.values_list('id', flat=True)\
@@ -338,13 +340,15 @@ def contact_list(request):
             if q:
                 contact_list = contact_list.filter(q)
 
-        contact_list = contact_list.order_by(sort_order)
-        contact_count = contact_list.count()
+        all_contact_list = contact_list.order_by(sort_order)
+        contact_count = all_contact_list.count()
+        contact_list = contact_list[start_page:end_page]
 
     template = 'frontend/contact/list.html'
     data = {
         'module': current_view(request),
         'contact_list': contact_list,
+        'all_contact_list': all_contact_list,
         'total_contacts': contact_count,
         'PAGE_SIZE': PAGE_SIZE,
         'CONTACT_COLUMN_NAME': CONTACT_COLUMN_NAME,

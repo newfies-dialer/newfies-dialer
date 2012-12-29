@@ -40,3 +40,11 @@ class SURVEY_COLUMN_NAME(Choice):
     name = _('Name')
     description = _('Description')
     date = _('Date')
+
+
+class SURVEY_CALL_RESULT_NAME(Choice):
+    date = _('Call-date ')
+    destination  = _('Destination')
+    duration = _('Duration')
+    disposition = _('Disposition')
+    result = _('Survey Result')

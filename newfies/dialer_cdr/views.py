@@ -31,6 +31,41 @@ from datetime import datetime
 import csv
 
 
+def get_voipcall_daily_data(kwargs):
+    """Get voipcall daily data"""
+    select_data = {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
+
+    # Get Total Rrecords from VoIPCall Report table for Daily Call Report
+    total_data = VoIPCall.objects.extra(select=select_data)\
+        .values('starting_date')\
+        .filter(**kwargs)\
+        .annotate(Count('starting_date'))\
+        .annotate(Sum('duration'))\
+        .annotate(Avg('duration'))\
+        .order_by('-starting_date')
+
+    # Following code will count total voip calls, duration
+    if total_data.count() != 0:
+        max_duration = max([x['duration__sum'] for x in total_data])
+        total_duration = sum([x['duration__sum'] for x in total_data])
+        total_calls = sum([x['starting_date__count'] for x in total_data])
+        total_avg_duration = (sum([x['duration__avg'] for x in total_data])) / total_data.count()
+    else:
+        max_duration = 0
+        total_duration = 0
+        total_calls = 0
+        total_avg_duration = 0
+
+    data = {
+        'total_data': total_data.reverse(),
+        'total_duration': total_duration,
+        'total_calls': total_calls,
+        'total_avg_duration': total_avg_duration,
+        'max_duration': max_duration,
+    }
+    return data
+
+
 @permission_required('dialer_cdr.view_call_detail_report', login_url='/')
 @login_required
 def voipcall_report(request):
@@ -58,6 +93,8 @@ def voipcall_report(request):
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
+    start_page = pagination_data['start_page']
+    end_page = pagination_data['end_page']
 
     search_tag = 1
     action = 'tabs-1'
@@ -130,49 +167,36 @@ def voipcall_report(request):
 
     kwargs['user'] = User.objects.get(username=request.user)
 
-    voipcall_list = VoIPCall.objects.filter(**kwargs).order_by(sort_order)
-    #voipcall_list = voipcall_list[start_page:end_page]
+    all_voipcall_list = VoIPCall.objects.filter(**kwargs).order_by(sort_order)
+    voipcall_list = all_voipcall_list[start_page:end_page]
 
     # Session variable is used to get record set with searched option
     # into export file
-    request.session['voipcall_record_qs'] = voipcall_list
+    request.session['voipcall_record_qs'] = all_voipcall_list
 
-    select_data = {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
-
-    # Get Total Rrecords from VoIPCall Report table for Daily Call Report
-    total_data = VoIPCall.objects.extra(select=select_data)\
-        .values('starting_date')\
-        .filter(**kwargs)\
-        .annotate(Count('starting_date'))\
-        .annotate(Sum('duration'))\
-        .annotate(Avg('duration'))\
-        .order_by('-starting_date')
-
-    # Following code will count total voip calls, duration
-    if total_data.count() != 0:
-        max_duration = max([x['duration__sum'] for x in total_data])
-        total_duration = sum([x['duration__sum'] for x in total_data])
-        total_calls = sum([x['starting_date__count'] for x in total_data])
-        total_avg_duration = (sum([x['duration__avg'] for x in total_data])) / total_data.count()
+    if request.GET.get('page') or request.GET.get('sort_by'):
+        if voipcall_list:
+            daily_data = request.session['voipcall_daily_data']
+        else:
+            request.session['voipcall_daily_data'] = ''
     else:
-        max_duration = 0
-        total_duration = 0
-        total_calls = 0
-        total_avg_duration = 0
+        daily_data = get_voipcall_daily_data(kwargs)
+        request.session['voipcall_daily_data'] = daily_data
 
     template = 'frontend/report/voipcall_report.html'
     data = {
         'form': form,
-        'total_data': total_data.reverse(),
-        'total_duration': total_duration,
-        'total_calls': total_calls,
-        'total_avg_duration': total_avg_duration,
-        'max_duration': max_duration,
+        'total_data': daily_data['total_data'],
+        'total_duration': daily_data['total_duration'],
+        'total_calls': daily_data['total_calls'],
+        'total_avg_duration': daily_data['total_avg_duration'],
+        'max_duration': daily_data['max_duration'],
         'module': current_view(request),
         'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'all_voipcall_list': all_voipcall_list,
         'voipcall_list': voipcall_list,
-        'total_voipcall': voipcall_list.count(),
+        'total_voipcall': all_voipcall_list.count(),
         'PAGE_SIZE': PAGE_SIZE,
         'CDR_REPORT_COLUMN_NAME': CDR_REPORT_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],

@@ -121,7 +121,7 @@ function delete_button()
                 </tr>
                 </thead>
                 {% if contact_list %}
-                    {% autopaginate contact_list PAGE_SIZE %}
+                    {% autopaginate all_contact_list PAGE_SIZE %}
                     {% for row in contact_list %}
                         <tr>
                             <td><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>

@@ -25,7 +25,7 @@ require "settings"
 LOGLEVEL = "info"
 
 -- PROGNAME
-PROGNAME = "dialer.lua"
+PROGNAME = "listener.lua"
 
 function logger(message)
     freeswitch.console_log(LOGLEVEL,"["..PROGNAME.."] "..message.."\n")

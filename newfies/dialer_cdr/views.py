@@ -150,8 +150,8 @@ def voipcall_report(request):
         form = VoipSearchForm(initial={'from_date': from_date, 'to_date': to_date,
                                        'status': disposition})
         # unset session var
-        request.session['session_from_date'] = from_date
-        request.session['session_end_date'] = to_date
+        request.session['session_start_date'] = start_date
+        request.session['session_end_date'] = end_date
         request.session['session_disposition'] = disposition
 
     kwargs = {}
@@ -168,7 +168,6 @@ def voipcall_report(request):
     kwargs['user'] = request.user
 
     voipcall_list = VoIPCall.objects.filter(**kwargs)
-
     all_voipcall_list = voipcall_list.values_list('id', flat=True)
 
     # Session variable is used to get record set with searched option

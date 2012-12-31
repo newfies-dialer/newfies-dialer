@@ -122,16 +122,15 @@ end
 
 function FSMCall:hangupcall()
     -- This will interrupt lua script
-    self.debugger:msg("ERROR", "FSMCall:hangupcall")
+    self.debugger:msg("INFO", "FSMCall:hangupcall")
     self.hangup_trigger = true
     self.session:hangup()
 end
 
 function FSMCall:start_call()
-    self.debugger:msg("ERROR", "FSMCall:start_call...")
+    self.debugger:msg("INFO", "FSMCall:start_call...")
     self:next_node()
 end
-
 
 function FSMCall:playnode(current_node)
     --play the audiofile or play the audio TTS
@@ -309,6 +308,66 @@ function FSMCall:getdigitnode(current_node)
     return digits
 end
 
+--Used for AMD / Version of next_node only for PLAY_MESSAGE
+--Review if this code is really needed, maybe can replace by next_node
+function FSMCall:next_node_light()
+    self.debugger:msg("INFO", "FSMCall:next_node_light (current_node="..tonumber(self.current_node_id)..")")
+    local current_node = self.db.list_section[tonumber(self.current_node_id)]
+    self.last_node = current_node
+
+    current_branching = self.db.list_branching[tonumber(self.current_node_id)]
+
+    self:marked_node_completed(current_node)
+
+    self.debugger:msg("INFO", "-------------------------------------------")
+    self.debugger:msg("INFO", "TITLE :: ("..current_node.id..") "..current_node.question)
+    self.debugger:msg("INFO", "NODE TYPE ==> "..SECTION_TYPE[current_node.type])
+
+    --
+    -- Run Action
+    --
+    if current_node.type == PLAY_MESSAGE then
+        self:playnode(current_node)
+    else
+        self.debugger:msg("ERROR", "next_node_light need to be a PLAY_MESSAGE")
+        self:end_call()
+        return false
+    end
+
+    --
+    -- Check Branching / Find the next node
+    --
+    self.debugger:msg("DEBUG", inspect(current_branching))
+
+    if current_node.type == PLAY_MESSAGE then
+        --check for timeout
+        if (not current_branching["0"] or not current_branching["0"].goto_id) and
+           (not current_branching["timeout"] or not current_branching["timeout"].goto_id) then
+            -- go to hangup
+            self.debugger:msg("INFO", "No more branching -> Goto Hangup")
+            self:end_call()
+        else
+            if current_branching["0"] and current_branching["0"].goto_id then
+                self.current_node_id = tonumber(current_branching["0"].goto_id)
+            elseif current_branching["timeout"] and current_branching["timeout"].goto_id then
+                self.current_node_id = tonumber(current_branching["timeout"].goto_id)
+            end
+        end
+    end
+    return true
+end
+
+function FSMCall:marked_node_completed(current_node)
+    if (current_node.completed == 't' and not self.marked_completed) then
+        self.db:connect()
+        -- Mark the subscriber as completed and increment campaign completed field
+        self.db:update_subscriber(self.subscriber_id, SUBSCRIBER_COMPLETED)
+        --Flag Callrequest
+        self.db:update_callrequest_cpt(self.callrequest_id)
+        self.db:disconnect()
+    end
+end
+
 function FSMCall:next_node()
     digits = false
     recording_filename = false
@@ -324,14 +383,7 @@ function FSMCall:next_node()
         return false
     end
 
-    if (current_node.completed == 't' and not self.marked_completed) then
-        self.db:connect()
-        -- Mark the subscriber as completed and increment campaign completed field
-        self.db:update_subscriber(self.subscriber_id, SUBSCRIBER_COMPLETED)
-        --Flag Callrequest
-        self.db:update_callrequest_cpt(self.callrequest_id)
-        self.db:disconnect()
-    end
+    self:marked_node_completed(current_node)
 
     --self.debugger:msg("INFO", "current_node.type >>>>> "..current_node.type)
     self.debugger:msg("INFO", "-------------------------------------------")

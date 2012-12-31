@@ -18,9 +18,10 @@ from celery.decorators import task
 from celery.task import PeriodicTask
 from django.conf import settings
 from dialer_campaign.models import Campaign, Subscriber
-from dialer_campaign.constants import SUBSCRIBER_STATUS
+from dialer_campaign.constants import SUBSCRIBER_STATUS, AMD_BEHAVIOR
 from dialer_cdr.models import Callrequest, VoIPCall
-from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE
+from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE, \
+    VOIPCALL_AMD_STATUS
 from dialer_gateway.utils import phonenumber_change_prefix
 from dialer_campaign.function_def import user_dialer_setting
 from datetime import datetime, timedelta
@@ -87,7 +88,7 @@ def check_retrycall_completion(obj_subscriber, callrequest):
 def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
                         hangup_cause_q850='', callerid='',
                         phonenumber='', starting_date='',
-                        call_uuid='', duration=0, billsec=0):
+                        call_uuid='', duration=0, billsec=0, amd_status='person'):
     """
     Common function to create CDR / VoIP Call
 
@@ -110,9 +111,13 @@ def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
         else:
             #Survey
             used_gateway = obj_callrequest.aleg_gateway
+    if amd_status == 'machine':
+        amd_status_id = VOIPCALL_AMD_STATUS.MACHINE
+    else:
+        amd_status_id = VOIPCALL_AMD_STATUS.PERSON
 
-    logger.info('Create CDR - request_uuid=%s;leg=%d;hangup_cause=%s;billsec=%s' %
-        (request_uuid, leg_type, hangup_cause, str(billsec)))
+    logger.info('Create CDR - request_uuid=%s;leg=%d;hangup_cause=%s;billsec=%s;amd_status=%s' %
+        (request_uuid, leg_type, hangup_cause, str(billsec), amd_status))
 
     if hangup_cause == 'NORMAL_CLEARING' or hangup_cause == 'ALLOTTED_TIMEOUT':
         hangup_cause = 'ANSWER'
@@ -132,7 +137,8 @@ def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
         billsec=billsec,
         disposition=hangup_cause,
         hangup_cause=hangup_cause,
-        hangup_cause_q850=hangup_cause_q850)
+        hangup_cause_q850=hangup_cause_q850,
+        amd_status=amd_status_id)
     #Save CDR
     new_voipcall.save()
 
@@ -145,7 +151,7 @@ def check_callevent():
 
     sql_statement = "SELECT id, event_name, body, job_uuid, call_uuid, used_gateway_id, "\
         "callrequest_id, callerid, phonenumber, duration, billsec, hangup_cause, "\
-        "hangup_cause_q850, starting_date, status, created_date FROM call_event WHERE status=1 LIMIT 1000 OFFSET 0"
+        "hangup_cause_q850, starting_date, status, created_date, amd_status FROM call_event WHERE status=1 LIMIT 1000 OFFSET 0"
 
     cursor.execute(sql_statement)
     row = cursor.fetchall()
@@ -165,6 +171,7 @@ def check_callevent():
         hangup_cause = record[11]
         hangup_cause_q850 = record[12]
         starting_date = record[13]
+        amd_status = record[16]
 
         #Update Call Event
         sql_statement = "UPDATE call_event SET status=2 WHERE id=%d" % call_event_id
@@ -232,11 +239,15 @@ def check_callevent():
             starting_date=starting_date,
             call_uuid=call_uuid,
             duration=duration,
-            billsec=billsec)
+            billsec=billsec,
+            amd_status=amd_status)
 
         #If the call failed we will check if we want to make a retry call
+        #Add condition to retry when it s machine and we want to reach a human
         if (opt_hangup_cause != 'NORMAL_CLEARING'
-           and callrequest.call_type == CALLREQUEST_TYPE.ALLOW_RETRY):
+           and callrequest.call_type == CALLREQUEST_TYPE.ALLOW_RETRY) or \
+           (amd_status == 'machine' and callrequest.campaign.voicemail
+           and callrequest.campaign.amd_behavior == AMD_BEHAVIOR.HUMAN_ONLY):
             #Update to Retry Done
             callrequest.call_type = CALLREQUEST_TYPE.RETRY_DONE
             callrequest.save()

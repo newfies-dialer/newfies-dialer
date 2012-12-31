@@ -42,6 +42,11 @@ function Session:answer()
     return true
 end
 
+function Session:preAnswer()
+    print("Session:preAnswer")
+    return true
+end
+
 function Session:hangup()
     print("Session:hangup")
     return true
@@ -49,6 +54,16 @@ end
 
 function Session:setHangupHook(data)
     print("Session:setHangupHook -> "..data)
+    return true
+end
+
+function Session:setInputCallback(data)
+    print("Session:setInputCallback -> "..data)
+    return true
+end
+
+function Session:execute(data)
+    print("Session:execute -> "..data)
     return true
 end
 
@@ -61,6 +76,9 @@ function Session:getVariable(varname)
     valret = math.random(100000, 999999)
     if varname == 'campaign_id' then
         valret = 0
+    elseif varname == 'amd_status' then
+        valret = 'person'
+        --valret = 'machine'
     end
     print("Session:getVariable -> "..varname.." = "..valret)
     return valret

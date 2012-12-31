@@ -555,6 +555,7 @@ AUDIO_DEBUG = False
 ESL_HOSTNAME = 'localhost'
 ESL_PORT = '8021'
 ESL_SECRET = 'ClueCon'
+ESL_SCRIPT = '&lua(/usr/share/newfies-lua/newfies.lua)'
 
 #TEXT-TO-SPEECH
 #==============

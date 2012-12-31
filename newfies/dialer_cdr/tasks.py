@@ -529,8 +529,8 @@ def init_callrequest(callrequest_id, campaign_id):
             # build originate string
             args_str = ','.join(args_list)
 
-            dial = "originate {%s}%s%s '&lua(/usr/share/newfies-lua/newfies.lua)'" % \
-                (args_str, gateways, dialout_phone_number)
+            dial = "originate {%s}%s%s '%s'" % \
+                (args_str, gateways, dialout_phone_number, settings.ESL_SCRIPT)
             # originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=10}user/areski &playback(/tmp/myfile.wav)
             # dial = "originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=,newfiesdialer=true,used_gateway_id=1,callrequest_id=38,leg_type=1,origination_caller_id_number=234234234,origination_caller_id_name=234234,effective_caller_id_number=234234234,effective_caller_id_name=234234,}user//1000 '&lua(/usr/share/newfies-lua/newfies.lua)'"
             print dial

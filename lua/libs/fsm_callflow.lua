@@ -64,16 +64,17 @@ function FSMCall:init()
     self.callrequest_id = self.session:getVariable("callrequest_id")
 
     --This is needed for Inbound test
-    if not self.campaign_id or self.campaign_id == nil then
-        self.campaign_id = 30
-        self.subscriber_id = 23
+    if not self.campaign_id or self.campaign_id == 0 then
+        self.campaign_id = 43
+        self.subscriber_id = 35
         self.callrequest_id = 99
-        self.db.DG_SURVEY_ID = 9
+        self.db.DG_SURVEY_ID = 21
         self.db.TABLE_SECTION = 'survey_section_template'
         self.db.TABLE_BRANCHING = 'survey_branching_template'
     end
 
     self.db:connect()
+    --Load All data
     self.survey_id = self.db:load_all(self.campaign_id, self.subscriber_id)
     if not self.survey_id then
         self.debugger:msg("ERROR", "Error loading data")

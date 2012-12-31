@@ -64,14 +64,15 @@ REDIS_DB = 0
 # Use only in Debug mode. Not in production
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+#ESL
+#===
+ESL_HOSTNAME = 'localhost'
+ESL_PORT = '8021'
+ESL_SECRET = 'ClueCon'
+ESL_SCRIPT = '&lua(/usr/share/newfies-lua/newfies_amd.lua)'
 
-#PLIVO
-#=====
-PLIVO_DEFAULT_ANSWER_URL = 'http://SERVER_IP_PORT/api/v1/answercall/'
-PLIVO_DEFAULT_HANGUP_URL = 'http://SERVER_IP_PORT/api/v1/hangupcall/'
-PLIVO_DEFAULT_DIALCALLBACK_URL = 'http://SERVER_IP_PORT/api/v1/dialcallback/'
-PLIVO_DEFAULT_SURVEY_ANSWER_URL = 'http://SERVER_IP_PORT/survey_finitestatemachine/'
-
+#CUSTOM
+#======
 FS_RECORDING_PATH = '/usr/share/newfies/usermedia/recording/'
 
 # ADD 'dummy','plivo','twilio','esl'

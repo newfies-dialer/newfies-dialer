@@ -229,7 +229,7 @@ func_install_frontend(){
     apt-get -y install postgresql-server-dev-9.1
     apt-get -y install liblua5.1-curl0 liblua5.1-curl-dev
     #Luarocks
-    apt-get -y install luarocks
+    apt-get -y install luarocks luasocket
     luarocks install luasql-postgres PGSQL_INCDIR=/usr/include/postgresql/
     luarocks install lualogging
     luarocks install loop

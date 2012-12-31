@@ -26,11 +26,14 @@ package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 require "md5"
 require "lfs"
 require "acapela"
+require "constant"
 local inspect = require 'inspect'
 
 
 --load local config first
-require "acapela_config"
+if file_exists(ROOT_DIR..'libs/acapela_config.lua') then
+    require "acapela_config"
+end
 if ACCOUNT_LOGIN == nil then
     --if local config failed, import settings
     require "settings"

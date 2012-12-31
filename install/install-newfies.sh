@@ -354,11 +354,11 @@ func_install_frontend(){
     sed -i "s/DB_PORT/$DB_PORT/" $INSTALL_DIR/settings_local.py
 
     #Setup settings_local.py for POSTGRESQL
-    sed -i "s/newfiesdb/$DATABASENAME/"  $LUA_DIR/libs/db_config.lua
-    sed -i "s/newfiesuser/$DB_USERNAME/" $LUA_DIR/libs/db_config.lua
-    sed -i "s/password/$DB_PASSWORD/" $LUA_DIR/libs/db_config.lua
-    sed -i "s/127.0.0.1/$DB_HOSTNAME/" $LUA_DIR/libs/db_config.lua
-    sed -i "s/5432/$DB_PORT/" $LUA_DIR/libs/db_config.lua
+    sed -i "s/newfiesdb/$DATABASENAME/"  $LUA_DIR/libs/settings.lua
+    sed -i "s/newfiesuser/$DB_USERNAME/" $LUA_DIR/libs/settings.lua
+    sed -i "s/password/$DB_PASSWORD/" $LUA_DIR/libs/settings.lua
+    sed -i "s/127.0.0.1/$DB_HOSTNAME/" $LUA_DIR/libs/settings.lua
+    sed -i "s/5432/$DB_PORT/" $LUA_DIR/libs/settings.lua
 
     # Create the Database
     echo "We will remove existing Database"

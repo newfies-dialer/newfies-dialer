@@ -56,14 +56,6 @@ Admin Interface Test Case
     :members:
 
 
-.. automodule:: dialer_settings.tests
-
-.. _DialerSettingView-admin:
-
-.. autoclass:: DialerSettingView
-    :members:
-
-
 .. automodule:: survey.tests
 
 

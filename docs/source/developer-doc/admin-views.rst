@@ -14,6 +14,17 @@ Newfies-Dialer Admin Views
     :members:
 
 
+.. _SubscriberAdmin:
+
+:class:`SubscriberAdmin`
+------------------------
+
+.. autoclass:: SubscriberAdmin
+    :members:
+
+
+.. automodule:: dialer_contact.admin
+
 .. _PhonebookAdmin:
 
 :class:`PhonebookAdmin`
@@ -29,15 +40,6 @@ Newfies-Dialer Admin Views
 ---------------------
 
 .. autoclass:: ContactAdmin
-    :members:
-
-
-.. _CampaignSubscriberAdmin:
-
-:class:`CampaignSubscriberAdmin`
---------------------------------
-
-.. autoclass:: CampaignSubscriberAdmin
     :members:
 
 
@@ -82,38 +84,58 @@ Newfies-Dialer Admin Views
     :members:
 
 
+.. automodule:: voice_app.admin
+
+.. _voicaappadmin:
+
+:class:`VoiceAppAdmin`
+----------------------
+
+.. autoclass:: VoiceAppAdmin
+    :members:
+
+
 .. automodule:: survey.admin
 
 .. _surveyappadmin:
 
-:class:`SurveyAppAdmin`
------------------------
+:class:`SurveyAdmin`
+--------------------
 
-.. autoclass:: SurveyAppAdmin
+.. autoclass:: SurveyAdmin
     :members:
 
-.. _surveyquestionadmin:
+.. _surveysectionadmin:
 
-:class:`SurveyQuestionAdmin`
+:class:`SectionAdmin`
+---------------------
+
+.. autoclass:: SectionAdmin
+    :members:
+
+
+.. _surveybranchingadmin:
+
+:class:`BranchingAdmin`
 ----------------------------
 
-.. autoclass:: SurveyQuestionAdmin
+.. autoclass:: BranchingAdmin
     :members:
 
 
-.. _surveyresponseadmin:
+.. _surveyresultadmin:
 
-:class:`SurveyResponseAdmin`
-----------------------------
+:class:`ResultAdmin`
+--------------------
 
-.. autoclass:: SurveyResponseAdmin
+.. autoclass:: ResultAdmin
     :members:
 
 
-.. _surveycampaignresultadmin:
+.. _surveyresultaggregateadmin:
 
-:class:`SurveyCampaignResultAdmin`
-----------------------------------
+:class:`ResultAggregate`
+------------------------
 
-.. autoclass:: SurveyCampaignResultAdmin
+.. autoclass:: ResultAggregate
     :members:

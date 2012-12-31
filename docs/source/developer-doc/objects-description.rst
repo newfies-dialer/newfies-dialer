@@ -3,7 +3,7 @@
 Objects Description
 ===================
 
-.. automodule:: dialer_campaign.models
+.. automodule:: dialer_contact.models
 
 .. _Phonebook-model:
 
@@ -21,6 +21,8 @@ Objects Description
 
 .. autoclass:: Contact
     :members:
+
+.. automodule:: dialer_campaign.models
 
 .. _Campaign-manager-model:
 
@@ -40,12 +42,12 @@ Objects Description
     :members:
 
 
-.. _CampaignSubscriber-model:
+.. _Subscriber-model:
 
-:class:`CampaignSubscriber`
----------------------------
+:class:`Subscriber`
+-------------------
 
-.. autoclass:: CampaignSubscriber
+.. autoclass:: Subscriber
     :members:
 
 
@@ -118,41 +120,6 @@ Objects Description
 
 
 .. automodule:: survey.models
-
-.. _SurveyApp-model:
-
-:class:`SurveyApp`
-------------------
-
-.. autoclass:: SurveyApp
-    :members:
-
-.. _SurveyQuestion-model:
-
-:class:`SurveyQuestion`
------------------------
-
-.. autoclass:: SurveyQuestion
-    :members:
-
-.. _SurveyResponse-model:
-
-:class:`SurveyResponse`
------------------------
-
-.. autoclass:: SurveyResponse
-    :members:
-
-.. _SurveyCampaignResult-model:
-
-:class:`SurveyCampaignResult`
------------------------------
-
-.. autoclass:: SurveyCampaignResult
-    :members:
-
-
-.. automodule:: survey2.models
 
 .. _Survey-model:
 

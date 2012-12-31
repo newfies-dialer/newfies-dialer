@@ -17,4 +17,5 @@ Contents:
     ./developer-doc/tasks
     ./developer-doc/signals
     ./developer-doc/testing
+    ./developer-doc/javasctipt_files
 

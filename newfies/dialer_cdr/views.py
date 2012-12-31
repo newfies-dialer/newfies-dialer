@@ -31,14 +31,13 @@ from datetime import datetime
 import csv
 
 
-def get_voipcall_daily_data(kwargs):
+def get_voipcall_daily_data(voipcall_list):
     """Get voipcall daily data"""
     select_data = {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
 
     # Get Total Rrecords from VoIPCall Report table for Daily Call Report
-    total_data = VoIPCall.objects.extra(select=select_data)\
+    total_data = voipcall_list.extra(select=select_data)\
         .values('starting_date')\
-        .filter(**kwargs)\
         .annotate(Count('starting_date'))\
         .annotate(Sum('duration'))\
         .annotate(Avg('duration'))\
@@ -99,6 +98,7 @@ def voipcall_report(request):
     search_tag = 1
     action = 'tabs-1'
     form = VoipSearchForm()
+
     if request.method == 'POST':
         form = VoipSearchForm(request.POST)
         if form.is_valid():
@@ -150,8 +150,8 @@ def voipcall_report(request):
         form = VoipSearchForm(initial={'from_date': from_date, 'to_date': to_date,
                                        'status': disposition})
         # unset session var
-        request.session['session_from_date'] = from_date
-        request.session['session_end_date'] = to_date
+        request.session['session_start_date'] = start_date
+        request.session['session_end_date'] = end_date
         request.session['session_disposition'] = disposition
 
     kwargs = {}
@@ -165,23 +165,24 @@ def voipcall_report(request):
     if disposition and disposition != 'all':
         kwargs['disposition__exact'] = disposition
 
-    kwargs['user'] = User.objects.get(username=request.user)
+    kwargs['user'] = request.user
 
-    all_voipcall_list = VoIPCall.objects.filter(**kwargs).order_by(sort_order)
-    voipcall_list = all_voipcall_list[start_page:end_page]
+    voipcall_list = VoIPCall.objects.filter(**kwargs)
+    all_voipcall_list = voipcall_list.values_list('id', flat=True)
 
     # Session variable is used to get record set with searched option
     # into export file
     request.session['voipcall_record_qs'] = all_voipcall_list
 
     if request.GET.get('page') or request.GET.get('sort_by'):
-        if voipcall_list:
-            daily_data = request.session['voipcall_daily_data']
-        else:
-            request.session['voipcall_daily_data'] = ''
+        daily_data = request.session['voipcall_daily_data']
     else:
-        daily_data = get_voipcall_daily_data(kwargs)
+        if not voipcall_list:
+            request.session['voipcall_daily_data'] = ''
+        daily_data = get_voipcall_daily_data(voipcall_list)
         request.session['voipcall_daily_data'] = daily_data
+
+    voipcall_list = voipcall_list.order_by(sort_order)[start_page:end_page]
 
     template = 'frontend/report/voipcall_report.html'
     data = {

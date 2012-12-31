@@ -1,8 +1,8 @@
 .. automodule:: survey.api.survey_api
 
-.. _surveyappResource-model:
+.. _surveyResource-model:
 
-:class:`SurveyAppResource`
---------------------------
+:class:`SurveyResource`
+-----------------------
 
-.. autoclass:: SurveyAppResource
+.. autoclass:: SurveyResource

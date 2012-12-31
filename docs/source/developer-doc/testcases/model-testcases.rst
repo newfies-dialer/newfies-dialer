@@ -44,14 +44,6 @@ Model Test Case
     :members:
 
 
-.. automodule:: dialer_audio.tests
-
-.. _AudioFileModel:
-
-.. autoclass:: AudioFileModel
-    :members:
-
-
 .. automodule:: voice_app.tests
 
 .. _VoiceAppModel:

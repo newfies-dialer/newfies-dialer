@@ -49,22 +49,7 @@ Newfies-Dialer Views
   .. autofunction:: cust_password_reset_confirm
 
 
-.. automodule:: dialer_campaign.views
-
-.. _common_send_notification:
-
-:class:`common_send_notification`
----------------------------------
-
-  .. autofunction:: common_send_notification
-
-
-.. _common_campaign_status:
-
-:class:`common_campaign_status`
--------------------------------
-
-  .. autofunction:: common_campaign_status
+.. automodule:: dialer_contact.views
 
 
 .. _phonebook_list:
@@ -121,6 +106,9 @@ Newfies-Dialer Views
 -----------------------
 
   .. autofunction:: contact_import
+
+
+.. automodule:: dialer_campaign.views
 
 
 .. _campaign_list:

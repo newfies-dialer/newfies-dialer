@@ -53,6 +53,7 @@ def create_callrequest(campaign_id, quantity):
 
     length = 5
     chars = "1234567890"
+    alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
     #'survey' | 'voiceapp'
     try:
@@ -93,8 +94,6 @@ def create_callrequest(campaign_id, quantity):
         list_section = Section.objects.all()
 
         #"""
-        #for elem in list_section:
-        #    print elem[1]
         for j in range(1, 3):
             section_id = random.randint(0, len(list_section) - 1)
             print section_id
@@ -109,12 +108,13 @@ def create_callrequest(campaign_id, quantity):
                                     callrequest=new_callrequest)
             except:
                 pass
-
+        #response = '' . join([choice(alpha) for i in range(length)])
         ResultAggregate.objects.create(
                             campaign=obj_campaign,
                             survey_id=obj_campaign.object_id,
                             section=list_section[section_id],
                             response=choice(RESPONSE),
+                            #response=response,
                             count=response_count)
         #"""
     print _("No of Callrequest & CDR created :%(count)s" % \

@@ -36,7 +36,7 @@ SURVEY_RESULT_QUE = [
 ]
 VOIPCALL_AMD_STATUS = [1, 2, 3]
 
-RESPONSE = ['apple', 'orange', 'banana']
+RESPONSE = ['apple', 'orange', 'banana', 'mango', 'greps', 'watermelon']
 
 
 def create_callrequest(campaign_id, quantity):
@@ -56,7 +56,7 @@ def create_callrequest(campaign_id, quantity):
 
     #'survey' | 'voiceapp'
     try:
-        content_type_id = ContentType.objects.get(model='voiceapp').id
+        content_type_id = ContentType.objects.get(model='survey').id
     except:
         content_type_id = 1
 
@@ -89,11 +89,12 @@ def create_callrequest(campaign_id, quantity):
         response_count = choice("1234567890")
 
         print "Get list section:"
-        list_section = Section.objects.filter(survey=obj_campaign.object_id)
+        #list_section = Section.objects.filter(survey_id=obj_campaign.object_id)
+        list_section = Section.objects.all()
 
-        """
-        # for elem in list_section:
-        #     print elem[1]
+        #"""
+        #for elem in list_section:
+        #    print elem[1]
         for j in range(1, 3):
             section_id = random.randint(0, len(list_section) - 1)
             print section_id
@@ -108,8 +109,6 @@ def create_callrequest(campaign_id, quantity):
                                     callrequest=new_callrequest)
             except:
                 pass
-        #print "cpg_result:"
-        #print cpg_result
 
         ResultAggregate.objects.create(
                             campaign=obj_campaign,
@@ -117,7 +116,7 @@ def create_callrequest(campaign_id, quantity):
                             section=list_section[section_id],
                             response=choice(RESPONSE),
                             count=response_count)
-        """
+        #"""
     print _("No of Callrequest & CDR created :%(count)s" % \
                 {'count': quantity})
 

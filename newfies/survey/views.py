@@ -1490,7 +1490,7 @@ def survey_view(request, object_id):
         context_instance=RequestContext(request))
 
 
-def survey_cdr_daily_report(kwargs):
+def survey_cdr_daily_report(all_call_list):
     """Get survey voip call daily report"""
     max_duration = 0
     total_duration = 0
@@ -1502,9 +1502,8 @@ def survey_cdr_daily_report(kwargs):
         {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
 
     # Get Total from VoIPCall table for Daily Call Report
-    total_data = VoIPCall.objects.extra(select=select_data)\
+    total_data = all_call_list.extra(select=select_data)\
         .values('starting_date')\
-        .filter(**kwargs)\
         .annotate(Count('starting_date'))\
         .annotate(Sum('duration'))\
         .annotate(Avg('duration'))\
@@ -1576,7 +1575,7 @@ def survey_report(request):
                                            'to_date': to_date})
     search_tag = 1
     survey_result = ''
-    col_name_with_order = []
+
     survey_cdr_daily_data = {
         'total_data': '',
         'total_duration': '',
@@ -1614,13 +1613,11 @@ def survey_report(request):
             if "from_date" in request.POST:
                 # From
                 from_date = request.POST['from_date']
-                start_date = ceil_strdate(from_date, 'start')
                 request.session['session_from_date'] = from_date
 
             if "to_date" in request.POST:
                 # To
                 to_date = request.POST['to_date']
-                end_date = ceil_strdate(to_date, 'end')
                 request.session['session_to_date'] = to_date
 
             campaign_id = variable_value(request, 'campaign')
@@ -1674,6 +1671,7 @@ def survey_report(request):
         kwargs['starting_date__lte'] = end_date
         survey_result_kwargs['created_date__lte'] = end_date
 
+    all_call_list = []
     try:
         campaign_obj = Campaign.objects.get(id=int(campaign_id))
         survey_result_kwargs['campaign'] = campaign_obj
@@ -1682,10 +1680,9 @@ def survey_report(request):
         kwargs['callrequest__campaign'] = campaign_obj
 
         # List of Survey VoIP call report
-        all_call_list = VoIPCall.objects.filter(**kwargs).order_by(sort_order)
-        rows = all_call_list[start_page:end_page]
-
-        request.session['session_surveycalls'] = all_call_list
+        voipcall_list = VoIPCall.objects.filter(**kwargs)
+        request.session['session_surveycalls'] = voipcall_list
+        all_call_list = voipcall_list.values_list('id', flat=True)
 
         # Get daily report from session while using pagination & sorting
         if request.GET.get('page') or request.GET.get('sort_by'):
@@ -1693,21 +1690,22 @@ def survey_report(request):
                 request.session['session_survey_cdr_daily_data']
             action = 'tabs-2'
         else:
-            survey_cdr_daily_data = survey_cdr_daily_report(kwargs)
+            survey_cdr_daily_data = survey_cdr_daily_report(voipcall_list)
             request.session['session_survey_cdr_daily_data'] =\
                 survey_cdr_daily_data
+
+        rows = voipcall_list.order_by(sort_order)[start_page:end_page]
     except:
         rows = []
         if request.method == 'POST':
-            request.session["err_msg"] =\
-                _('No campaign attached with survey.')
+            request.session["err_msg"] = _('No campaign attached with survey.')
 
     template = 'frontend/survey/survey_report.html'
 
     data = {
         'rows': rows,
         'all_call_list': all_call_list,
-        'call_count': all_call_list.count(),
+        'call_count': all_call_list.count() if all_call_list else 0,
         'PAGE_SIZE': PAGE_SIZE,
         'SURVEY_CALL_RESULT_NAME': SURVEY_CALL_RESULT_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],

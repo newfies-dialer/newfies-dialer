@@ -230,7 +230,7 @@ func_install_frontend(){
     apt-get -y install liblua5.1-curl0 liblua5.1-curl-dev
     #Luarocks
     apt-get -y install luarocks
-    luarocks install luasql-postgres
+    luarocks install luasql-postgres PGSQL_INCDIR=/usr/include/postgresql/
     luarocks install lualogging
     luarocks install loop
     luarocks install md5

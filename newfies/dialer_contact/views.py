@@ -326,10 +326,9 @@ def contact_list(request):
     contact_count = 0
 
     if phonebook_id_list:
-        select_data = {"status": "(CASE status WHEN 1 THEN 'ACTIVE' ELSE 'INACTIVE' END)"}
         contact_list = Contact.objects.values('id', 'phonebook__name', 'contact',
             'last_name', 'first_name', 'status', 'updated_date')\
-            .extra(select=select_data).filter(phonebook__in=phonebook_id_list)
+            .filter(phonebook__in=phonebook_id_list)
 
         if kwargs:
             contact_list = contact_list.filter(**kwargs)

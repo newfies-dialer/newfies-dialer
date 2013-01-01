@@ -130,7 +130,12 @@ function delete_button()
                             <td>{{ row.contact }}</td>
                             <td>{{ row.last_name }}</td>
                             <td>{{ row.first_name }}</td>
-                            <td>{{ row.status }}</td>
+                            <td>{% if row.status == 1 %}
+                                    {% trans "ACTIVE" %}
+                                {% else %}
+                                    {% trans "INACTIVE" %}
+                                {% endif %}
+                            </td>
                             <td>{{ row.updated_date }}</td>
                             <td>
                                 {% if perms.dialer_contact.change_contact %}

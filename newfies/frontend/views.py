@@ -177,8 +177,6 @@ def customer_dashboard(request, on_index=None):
     form = DashboardForm(request.user)
 
     total_record = dict()
-    min_limit = ''
-    max_limit = ''
     total_duration_sum = 0
     total_call_count = 0
     total_answered = 0
@@ -207,10 +205,6 @@ def customer_dashboard(request, on_index=None):
 
         end_date = datetime.today()
         start_date = calculate_date(search_type)
-
-        #TODO: Vars not used
-        min_limit = time.mktime(start_date.timetuple())
-        max_limit = time.mktime(end_date.timetuple())
 
         # date_length is used to do group by starting_date
         if int(search_type) >= SEARCH_TYPE.B_Last_7_days:  # all options except 30 days

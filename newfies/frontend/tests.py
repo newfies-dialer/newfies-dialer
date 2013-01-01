@@ -45,9 +45,9 @@ class FrontendCustomerView(BaseAuthenticatedClient):
                 'callrequest.json', 'voipcall.json',
                 'survey.json', 'section.json', 'branching.json']
 
-    def test_a_mgt_command(self):
-        # Test mgt command
-        call_command("create_callrequest_cdr", "1|100")
+    #def test_a_mgt_command(self):
+    #    # Test mgt command
+    #    call_command("create_callrequest_cdr", "1|100")
 
     def test_login_view(self):
         """Test Function to check login view"""

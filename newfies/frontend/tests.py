@@ -42,7 +42,8 @@ class FrontendCustomerView(BaseAuthenticatedClient):
     fixtures = ['dialer_setting.json', 'auth_user.json', 'gateway.json',
                 'voiceapp.json', 'phonebook.json', 'contact.json',
                 'campaign.json', 'subscriber.json',
-                'callrequest.json', 'voipcall.json']
+                'callrequest.json', 'voipcall.json',
+                'survey.json', 'section.json', 'branching.json']
 
     def test_a_mgt_command(self):
         # Test mgt command

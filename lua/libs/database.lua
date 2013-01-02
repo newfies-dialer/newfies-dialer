@@ -38,6 +38,7 @@ Database = oo.class{
 	app_type = 'survey', -- survey or voice_app
 	start_node = false,
 	debugger = nil,
+    results = {},
 }
 
 function Database:__init(debug_mode, debugger)
@@ -233,28 +234,32 @@ function Database:check_data()
 	return self.valid_data
 end
 
-function Database:save_result_recording(callrequest_id, section_id, record_file, recording_duration)
-	sqlquery = "INSERT INTO survey_result (callrequest_id, section_id, record_file, recording_duration, response, created_date) "..
-		"VALUES ("..callrequest_id..", "..section_id..", '"..record_file.."', "..recording_duration..", '', NOW())"
-	self.debugger:msg("INFO", "Save Result Recording:"..sqlquery)
-	res = self.con:execute(sqlquery)
-	if not res then
-		return false
-	else
-		return true
-	end
+function Database:save_result_mem(callrequest_id, section_id, record_file, recording_duration, response)
+    --We save the result in memory and we will commit later when the call stop
+    self.results[tonumber(section_id)] = {callrequest_id, section_id, record_file, recording_duration, response, os.time()}
 end
 
-function Database:update_result_recording(callrequest_id, section_id, record_file, recording_duration)
-	sqlquery = "UPDATE survey_result SET record_file='"..record_file.."', recording_duration="..recording_duration..
-		" WHERE callrequest_id="..callrequest_id.." AND section_id="..section_id
-	self.debugger:msg("INFO", "Update Result Recording:"..sqlquery)
-	res = self.con:execute(sqlquery)
-	if not res then
-		return false
-	else
-		return true
-	end
+function Database:commit_result_mem()
+    --Commit all results with one bulk insert to the Database
+    sql_result = ''
+    count = 0
+    for k, v in pairs(self.results) do
+        count = count + 1
+        if count > 1 then
+            sql_result = sql_result..","
+        end
+        sql_result = sql_result.."("..v[1]..", "..v[2]..", '"..v[3].."', "..v[4]..", '"..v[5].."', CURRENT_TIMESTAMP("..v[6].."))"
+    end
+    sqlquery = "INSERT INTO survey_result "..
+    "(callrequest_id, section_id, record_file, recording_duration, response, created_date) "..
+    "VALUES "..sql_result
+    if count > 0 then
+        self.debugger:msg("INFO", "Insert Bulk Result : "..sqlquery)
+        res = self.con:execute(sqlquery)
+        if not res then
+            self.debugger:msg("ERROR", "ERROR to Insert Bulk Result : "..sqlquery)
+        end
+    end
 end
 
 function Database:save_result_dtmf(callrequest_id, section_id, dtmf)
@@ -347,16 +352,7 @@ function Database:save_section_result(campaign_id, survey_id, callrequest_id, cu
 		--Save aggregated result
         self:set_aggregate_result(campaign_id, survey_id, current_node.id, DTMF, recording_dur)
 
-		if self:save_result_recording(callrequest_id, current_node.id, record_file, recording_dur) then
-			-- no errors in save_result
-			return true
-		else
-			res = self:update_result_recording(callrequest_id, current_node.id, record_file, recording_dur)
-			if not res then
-				self.debugger:msg("ERROR", "Error update_result_recording")
-			end
-			return true
-		end
+        self:save_result_mem(callrequest_id, current_node.id, record_file, recording_dur, DTMF)
 
     elseif DTMF and string.len(DTMF) > 0 and
     	(current_node.type == MULTI_CHOICE or
@@ -391,18 +387,7 @@ function Database:save_section_result(campaign_id, survey_id, callrequest_id, cu
 		--Save aggregated result
         self:set_aggregate_result(campaign_id, survey_id, current_node.id, DTMF, recording_dur)
 
-		if self:save_result_dtmf(callrequest_id, current_node.id, DTMF) then
-			-- no errors in save_result
-
-			return true
-		else
-			res = self:update_result_dtmf(callrequest_id, current_node.id, DTMF)
-			self.debugger:msg("ERROR", tostring(res))
-			if not res then
-				self.debugger:msg("ERROR", "Error update_result_dtmf")
-			end
-			return true
-		end
+        self:save_result_mem(callrequest_id, current_node.id, '', 0, DTMF)
 	end
 end
 
@@ -410,13 +395,38 @@ end
 -- Test Code
 --
 if false then
+    callrequest_id = 165
+    section_id = 180
+    record_file = '/tmp/recording-file.wav'
+    recording_duration = '30'
+    dtmf = '5'
+    require "debugger"
+    local debugger = Debugger('INFO', false)
+    db = Database(debug_mode, debugger)
+    db:connect()
+
+    db:save_result_mem(callrequest_id, section_id, record_file, recording_duration, dtmf)
+    dtmf=io.read()
+    section_id = section_id + 1
+    db:save_result_mem(callrequest_id, section_id, record_file, recording_duration, dtmf)
+    dtmf=io.read()
+    section_id = section_id + 1
+    db:save_result_mem(callrequest_id, section_id, record_file, recording_duration, dtmf)
+    dtmf=io.read()
+    --section_id = section_id + 1
+    db:save_result_mem(callrequest_id, section_id, record_file, recording_duration, dtmf)
+
+    db:commit_result_mem()
+end
+
+if false then
 	campaign_id = 23
     subscriber_id = 30
     callrequest_id = 30
     debug_mode = false
     section_id = 40
     record_file = '/tmp/recording-file.wav'
-    recording_dur = '30'
+    recording_duration = '30'
     dtmf = '5'
     require "debugger"
     local debugger = Debugger('INFO', false)
@@ -436,13 +446,6 @@ if false then
 
     db:update_callrequest_cpt(callrequest_id)
     db:check_data()
-    if db:save_result_recording(callrequest_id, section_id, record_file, recording_dur) then
-    	print("OK save_result_recording")
-    else
-    	print("ERROR save_result_recording")
-    	res = db:update_result_recording(callrequest_id, section_id, record_file, recording_dur)
-    	print(res)
-    end
 
     if db:save_result_dtmf(callrequest_id, section_id, dtmf) then
 		print("OK save_result_dtmf")

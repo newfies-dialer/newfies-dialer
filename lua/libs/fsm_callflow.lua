@@ -99,7 +99,6 @@ function FSMCall:end_call()
 
     --Check if we need to save the last recording
     if self.record_filename and string.len(self.record_filename) > 0 then
-        self.db:connect()
         current_node = self.last_node
         digits = ''
         record_filepath = FS_RECORDING_PATH..self.record_filename
@@ -107,8 +106,10 @@ function FSMCall:end_call()
         self.debugger:msg("INFO", "FSMCall:end_call -- RECORDING DONE DURATION: "..record_dur)
         self.debugger:msg("INFO", "FSMCall:end_call -- Save missing recording")
         self.db:save_section_result(self.campaign_id, self.survey_id, self.callrequest_id, current_node, digits, self.record_filename, record_dur)
-        self.db:disconnect()
     end
+
+    --Time to save all the result to the Database
+    self.db:commit_result_mem()
 
     -- NOTE: Don't use this call time for Billing
     -- Use FS CDRs

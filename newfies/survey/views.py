@@ -1686,13 +1686,11 @@ def survey_report(request):
 
         # Get daily report from session while using pagination & sorting
         if request.GET.get('page') or request.GET.get('sort_by'):
-            survey_cdr_daily_data =\
-                request.session['session_survey_cdr_daily_data']
+            survey_cdr_daily_data = request.session['session_survey_cdr_daily_data']
             action = 'tabs-2'
         else:
             survey_cdr_daily_data = survey_cdr_daily_report(voipcall_list)
-            request.session['session_survey_cdr_daily_data'] =\
-                survey_cdr_daily_data
+            request.session['session_survey_cdr_daily_data'] = survey_cdr_daily_data
 
         rows = voipcall_list.order_by(sort_order)[start_page:end_page]
     except:

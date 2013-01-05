@@ -239,7 +239,7 @@ function Database:save_result_mem(callrequest_id, section_id, record_file, recor
     self.results[tonumber(section_id)] = {callrequest_id, section_id, record_file, recording_duration, response, os.time()}
 end
 
-function Database:commit_result_mem()
+function Database:commit_result_mem(campaign_id, survey_id)
     --Commit all results with one bulk insert to the Database
     sql_result = ''
     count = 0
@@ -249,6 +249,9 @@ function Database:commit_result_mem()
             sql_result = sql_result..","
         end
         sql_result = sql_result.."("..v[1]..", "..v[2]..", '"..v[3].."', "..v[4]..", '"..v[5].."', CURRENT_TIMESTAMP("..v[6].."))"
+        --Save Aggregate result
+        --TODO: For performance replace this by a celery task which will read 1000 survey_result and aggregate them in block
+        self:set_aggregate_result(campaign_id, survey_id, v[2], v[5], v[4])
     end
     sqlquery = "INSERT INTO survey_result "..
     "(callrequest_id, section_id, record_file, recording_duration, response, created_date) "..
@@ -260,30 +263,6 @@ function Database:commit_result_mem()
             self.debugger:msg("ERROR", "ERROR to Insert Bulk Result : "..sqlquery)
         end
     end
-end
-
-function Database:save_result_dtmf(callrequest_id, section_id, dtmf)
-	sqlquery = "INSERT INTO survey_result (callrequest_id, section_id, response, record_file, created_date) "..
-		"VALUES ("..callrequest_id..", "..section_id..", '"..dtmf.."', '', NOW())"
-	self.debugger:msg("INFO", "Save Result DTMF:"..sqlquery)
-	res = self.con:execute(sqlquery)
-	if not res then
-		return false
-	else
-		return true
-	end
-end
-
-function Database:update_result_dtmf(callrequest_id, section_id, dtmf)
-	sqlquery = "UPDATE survey_result SET response='"..dtmf.."'"..
-		" WHERE callrequest_id="..callrequest_id.." AND section_id="..section_id
-	self.debugger:msg("INFO", "Update Result DTMF:"..sqlquery)
-	res = self.con:execute(sqlquery)
-	if not res then
-		return false
-	else
-		return true
-	end
 end
 
 function Database:save_result_aggregate(campaign_id, survey_id, section_id, response)
@@ -342,17 +321,15 @@ function Database:set_aggregate_result(campaign_id, survey_id, section_id, respo
 	end
 end
 
-function Database:save_section_result(campaign_id, survey_id, callrequest_id, current_node, DTMF, record_file, recording_dur)
+function Database:save_section_result(callrequest_id, current_node, DTMF, record_file, recording_dur)
 	-- DTMF can be false
 	if not DTMF then
 		DTMF = ''
 	end
     -- save the result of a section
     if current_node.type == RECORD_MSG then
-		--Save aggregated result
-        self:set_aggregate_result(campaign_id, survey_id, current_node.id, DTMF, recording_dur)
-
-        self:save_result_mem(callrequest_id, current_node.id, record_file, recording_dur, DTMF)
+        --Save result to memory
+		self:save_result_mem(callrequest_id, current_node.id, record_file, recording_dur, DTMF)
 
     elseif DTMF and string.len(DTMF) > 0 and
     	(current_node.type == MULTI_CHOICE or
@@ -383,10 +360,7 @@ function Database:save_section_result(campaign_id, survey_id, callrequest_id, cu
                 DTMF = current_node.key_9
             end
         end
-
-		--Save aggregated result
-        self:set_aggregate_result(campaign_id, survey_id, current_node.id, DTMF, recording_dur)
-
+        --Save result to memory
         self:save_result_mem(callrequest_id, current_node.id, '', 0, DTMF)
 	end
 end
@@ -395,6 +369,8 @@ end
 -- Test Code
 --
 if false then
+    campaign_id = 23
+    survey_id = 11
     callrequest_id = 165
     section_id = 180
     record_file = '/tmp/recording-file.wav'
@@ -416,7 +392,7 @@ if false then
     --section_id = section_id + 1
     db:save_result_mem(callrequest_id, section_id, record_file, recording_duration, dtmf)
 
-    db:commit_result_mem()
+    db:commit_result_mem(campaign_id, survey_id)
 end
 
 if false then
@@ -447,12 +423,5 @@ if false then
     db:update_callrequest_cpt(callrequest_id)
     db:check_data()
 
-    if db:save_result_dtmf(callrequest_id, section_id, dtmf) then
-		print("OK save_result_dtmf")
-    else
-    	print("ERROR save_result_dtmf")
-    	res = db:update_result_dtmf(callrequest_id, section_id, dtmf)
-    	print(res)
-    end
     db:disconnect()
 end

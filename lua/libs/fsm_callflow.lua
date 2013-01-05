@@ -65,10 +65,10 @@ function FSMCall:init()
 
     --This is needed for Inbound test
     if not self.campaign_id or self.campaign_id == 0 then
-        self.campaign_id = 43
-        self.subscriber_id = 35
-        self.callrequest_id = 99
-        self.db.DG_SURVEY_ID = 21
+        self.campaign_id = 47
+        self.subscriber_id = 39
+        self.callrequest_id = 215
+        self.db.DG_SURVEY_ID = 17
         self.db.TABLE_SECTION = 'survey_section_template'
         self.db.TABLE_BRANCHING = 'survey_branching_template'
     end
@@ -105,11 +105,13 @@ function FSMCall:end_call()
         record_dur = audio_lenght(record_filepath)
         self.debugger:msg("INFO", "FSMCall:end_call -- RECORDING DONE DURATION: "..record_dur)
         self.debugger:msg("INFO", "FSMCall:end_call -- Save missing recording")
-        self.db:save_section_result(self.campaign_id, self.survey_id, self.callrequest_id, current_node, digits, self.record_filename, record_dur)
+        self.db:save_section_result(self.callrequest_id, current_node, digits, self.record_filename, record_dur)
     end
 
-    --Time to save all the result to the Database
-    self.db:commit_result_mem()
+    --Save all the result to the Database
+    self.db:connect()
+    self.db:commit_result_mem(self.campaign_id, self.survey_id)
+    self.db:disconnect()
 
     -- NOTE: Don't use this call time for Billing
     -- Use FS CDRs
@@ -440,7 +442,7 @@ function FSMCall:next_node()
     --
     if digits or self.record_filename then
         self.db:connect()
-        self.db:save_section_result(self.campaign_id, self.survey_id, self.callrequest_id, current_node, digits, self.record_filename, record_dur)
+        self.db:save_section_result(self.callrequest_id, current_node, digits, self.record_filename, record_dur)
         self.db:disconnect()
         --reinit record_filename
         self.record_filename = false

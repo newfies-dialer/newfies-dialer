@@ -34,6 +34,7 @@ Database = oo.class{
 	list_branching = nil,
 	list_audio = nil,
 	campaign_info = nil,
+    user_id = nil,
 	valid_data = true,
 	app_type = 'survey', -- survey or voice_app
 	start_node = false,
@@ -55,7 +56,6 @@ function Database:connect()
 end
 
 function Database:disconnect()
-	--TODO - DB connection closed before end of the call
 	self.con:close()
 	self.env:close()
 end
@@ -108,13 +108,11 @@ function Database:load_survey_branching(survey_id)
 	end
 	cur:close()
 	self.list_branching = list
-	--print(inspect(self.list_branching))
 end
 
 function Database:load_audiofile()
 	-- id	name	audio_file	user_id
-	--TODO: Add user_id
-	sqlquery = "SELECT * FROM audio_file"
+	sqlquery = "SELECT * FROM audio_file WHERE user_id="..self.user_id
 	self.debugger:msg("INFO", "Load audiofile branching : "..sqlquery)
 	cur = self.con:execute(sqlquery)
 
@@ -127,7 +125,6 @@ function Database:load_audiofile()
 	end
 	cur:close()
 	self.list_audio = list
-	--print(inspect(self.list_audio))
 end
 
 function Database:get_list(sqlquery)
@@ -155,7 +152,7 @@ function Database:load_campaign_info(campaign_id)
 	sqlquery = "SELECT * FROM dialer_campaign WHERE id="..campaign_id
 	self.debugger:msg("INFO", "Load campaign info : "..sqlquery)
 	self.campaign_info = self:get_object(sqlquery)
-	-- check campaign info
+    self.user_id = self.campaign_info["user_id"]
 end
 
 function Database:load_contact(subscriber_id)
@@ -164,7 +161,6 @@ function Database:load_contact(subscriber_id)
 		"WHERE dialer_subscriber.id="..subscriber_id
 	self.debugger:msg("INFO", "Load contact data : "..sqlquery)
 	self.contact = self:get_object(sqlquery)
-	-- check campaign info
 end
 
 function Database:update_subscriber(subscriber_id, status)
@@ -192,14 +188,12 @@ function Database:load_all(campaign_id, subscriber_id)
 		self.debugger:msg("ERROR", "Error: No Contact")
 		return false
 	end
-	--print(inspect(self.contact))
 
 	self:load_campaign_info(campaign_id)
 	if not self.campaign_info then
 		self.debugger:msg("ERROR", "Error: No Campaign")
 		return false
 	end
-	--print(inspect(self.campaign_info))
 
 	--TODO: Fix content_type_id = 34 should be flexible
 	if self.campaign_info.content_type_id == 34 then
@@ -396,8 +390,8 @@ if false then
 end
 
 if false then
-	campaign_id = 23
-    subscriber_id = 30
+	campaign_id = 42
+    subscriber_id = 39
     callrequest_id = 30
     debug_mode = false
     section_id = 40

@@ -53,7 +53,7 @@ function FSMCall:__init(session, debug_mode, debugger)
 end
 
 function FSMCall:init()
-    self.debugger:msg("INFO", "FSMCall:init")
+    self.debugger:msg("DEBUG", "FSMCall:init")
     self.call_start = os.time()
     self.caller_id_name = self.session:getVariable("caller_id_name")
     self.caller_id_number = self.session:getVariable("caller_id_number")
@@ -89,7 +89,7 @@ function FSMCall:init()
         self:hangupcall()
         return false
     end
-    self.debugger:msg("INFO", "start_node--->"..self.db.start_node)
+    self.debugger:msg("INFO", "Start_node : "..self.db.start_node)
     self.current_node_id = self.db.start_node
     return true
 end
@@ -103,8 +103,7 @@ function FSMCall:end_call()
         digits = ''
         record_filepath = FS_RECORDING_PATH..self.record_filename
         record_dur = audio_lenght(record_filepath)
-        self.debugger:msg("INFO", "FSMCall:end_call -- RECORDING DONE DURATION: "..record_dur)
-        self.debugger:msg("INFO", "FSMCall:end_call -- Save missing recording")
+        self.debugger:msg("INFO", "End_call -> Save missing recording")
         self.db:save_section_result(self.callrequest_id, current_node, digits, self.record_filename, record_dur)
     end
 
@@ -113,11 +112,10 @@ function FSMCall:end_call()
     self.db:commit_result_mem(self.campaign_id, self.survey_id)
     self.db:disconnect()
 
-    -- NOTE: Don't use this call time for Billing
-    -- Use FS CDRs
+    -- NOTE: Don't use this call time for Billing / Use CDRs
     if not self.call_ended then
         self.call_ended = true
-        --Duration call
+        --Estimate the call Duration
         self.call_duration = os.time() - self.call_start
         self.debugger:msg("DEBUG", "Estimated Call Duration : "..self.call_duration)
         self:hangupcall()
@@ -142,14 +140,14 @@ function FSMCall:playnode(current_node)
         --Get audio path
         current_audio = self.db.list_audio[tonumber(current_node.audiofile_id)]
         filetoplay = UPLOAD_DIR..current_audio.audio_file
-        self.debugger:msg("INFO", "--->> streamFile : "..filetoplay)
+        self.debugger:msg("INFO", "StreamFile : "..filetoplay)
         self.session:streamFile(filetoplay)
     else
         --Use TTS
         mscript = tag_replace(current_node.script, self.db.contact)
-        self.debugger:msg("INFO", "--->> Speak : "..mscript)
+        self.debugger:msg("INFO", "Speak : "..mscript)
         tts_file = tts(mscript, TTS_DIR)
-        self.debugger:msg("INFO", "Speak TTS : "..tts_file)
+        self.debugger:msg("DEBUG", "Speak TTS : "..tts_file)
         self.session:streamFile(tts_file)
     end
 end
@@ -194,7 +192,7 @@ end
 
 function FSMCall:getdigitnode(current_node)
     -- Get the node type and start playing it
-    self.debugger:msg("INFO", "*** getdigitnode ***")
+    self.debugger:msg("DEBUG", "*** getdigitnode ***")
     local number_digits = 1
     local dtmf_filter = '0123456789'
     local invalid_audiofile = ''
@@ -234,7 +232,7 @@ function FSMCall:getdigitnode(current_node)
     --       prompt_audio_files, input_error_audio_files,
     --       digit_regex, variable_name, digit_timeout,
     --       transfer_on_failure)
-    self.debugger:msg("INFO", "Play TTS (timeout="..tostring(timeout)..
+    self.debugger:msg("DEBUG", "Play TTS (timeout="..tostring(timeout)..
         ",number_digits="..number_digits..", retries="..retries..
         ",invalid_audiofile="..tostring(invalid_audiofile)..
         ", dtmf_filter="..tostring(dtmf_filter)..")")
@@ -242,7 +240,7 @@ function FSMCall:getdigitnode(current_node)
     i = 0
     while i < retries do
         i = i + 1
-        self.debugger:msg("INFO", ">> Retries = "..i)
+        self.debugger:msg("DEBUG", ">> Retries = "..i)
         invalid = invalid_audiofile
 
         if current_node.type == RATING_SECTION or current_node.type == CAPTURE_DIGITS then
@@ -253,7 +251,7 @@ function FSMCall:getdigitnode(current_node)
         --play the audiofile or play the audio TTS
         if current_node.audiofile_id then
             --Get audio path
-            self.debugger:msg("INFO", "Play Audio to GetDigits")
+            self.debugger:msg("DEBUG", "Play Audio to GetDigits")
             current_audio = self.db.list_audio[tonumber(current_node.audiofile_id)]
             filetoplay = UPLOAD_DIR..current_audio.audio_file
             self.debugger:msg("INFO", "Play the audiofile : "..filetoplay)
@@ -262,7 +260,7 @@ function FSMCall:getdigitnode(current_node)
                 timeout*1000, '#', filetoplay, invalid, '['..dtmf_filter..']|#')
         else
             --Use TTS
-            self.debugger:msg("INFO", "Play TTS to GetDigits")
+            self.debugger:msg("DEBUG", "Play TTS to GetDigits")
             mscript = tag_replace(current_node.script, self.db.contact)
 
             tts_file = tts(mscript, TTS_DIR)
@@ -286,7 +284,7 @@ function FSMCall:getdigitnode(current_node)
 
         elseif current_node.type == CAPTURE_DIGITS and current_node.validate_number == 't'
             and digits ~= '' then
-            -- CAPTURE_DIGITS / Check Validity
+            --CAPTURE_DIGITS / Check Validity
             int_dtmf = tonumber(digits)
             int_min = tonumber(current_node.min_number)
             int_max = tonumber(current_node.max_number)
@@ -301,10 +299,9 @@ function FSMCall:getdigitnode(current_node)
             end
         end
 
-        -- Play invalid audiofile
         if invalid_audiofile ~= '' and i < retries then
-            --play invalid message
-            self.debugger:msg("INFO", "--->> streamFile for Invalid : "..invalid_audiofile)
+            --Play invalid audiofile
+            self.debugger:msg("INFO", "StreamFile Invalid : "..invalid_audiofile)
             self.session:streamFile(invalid_audiofile)
         end
     end
@@ -323,12 +320,12 @@ function FSMCall:next_node_light()
 
     self:marked_node_completed(current_node)
 
-    self.debugger:msg("INFO", "-------------------------------------------")
-    self.debugger:msg("INFO", "TITLE :: ("..current_node.id..") "..current_node.question)
-    self.debugger:msg("INFO", "NODE TYPE ==> "..SECTION_TYPE[current_node.type])
+    self.debugger:msg("DEBUG", "-------------------------------------------")
+    self.debugger:msg("DEBUG", "TITLE :: ("..current_node.id..") "..current_node.question)
+    self.debugger:msg("DEBUG", "NODE TYPE ==> "..SECTION_TYPE[current_node.type])
 
     --
-    -- Run Action
+    --Run Action
     --
     if current_node.type == PLAY_MESSAGE then
         self:playnode(current_node)
@@ -339,16 +336,16 @@ function FSMCall:next_node_light()
     end
 
     --
-    -- Check Branching / Find the next node
+    --Check Branching / Find the next node
     --
     self.debugger:msg("DEBUG", inspect(current_branching))
 
     if current_node.type == PLAY_MESSAGE then
-        --check for timeout
+        --Check for timeout
         if (not current_branching["0"] or not current_branching["0"].goto_id) and
            (not current_branching["timeout"] or not current_branching["timeout"].goto_id) then
-            -- go to hangup
-            self.debugger:msg("INFO", "No more branching -> Goto Hangup")
+            --Go to hangup
+            self.debugger:msg("DEBUG", "No more branching -> Goto Hangup")
             self:end_call()
         else
             if current_branching["0"] and current_branching["0"].goto_id then
@@ -364,7 +361,7 @@ end
 function FSMCall:marked_node_completed(current_node)
     if (current_node.completed == 't' and not self.marked_completed) then
         self.db:connect()
-        -- Mark the subscriber as completed and increment campaign completed field
+        --Mark the subscriber as completed and increment campaign completed field
         self.db:update_subscriber(self.subscriber_id, SUBSCRIBER_COMPLETED)
         --Flag Callrequest
         self.db:update_callrequest_cpt(self.callrequest_id)
@@ -376,7 +373,7 @@ function FSMCall:next_node()
     digits = false
     recording_filename = false
 
-    self.debugger:msg("INFO", "FSMCall:next_node (current_node="..tonumber(self.current_node_id)..")")
+    self.debugger:msg("DEBUG", "FSMCall:next_node (current_node="..tonumber(self.current_node_id)..")")
     local current_node = self.db.list_section[tonumber(self.current_node_id)]
     self.last_node = current_node
 
@@ -389,13 +386,12 @@ function FSMCall:next_node()
 
     self:marked_node_completed(current_node)
 
-    --self.debugger:msg("INFO", "current_node.type >>>>> "..current_node.type)
-    self.debugger:msg("INFO", "-------------------------------------------")
-    self.debugger:msg("INFO", "TITLE :: ("..current_node.id..") "..current_node.question)
-    self.debugger:msg("INFO", "NODE TYPE ==> "..SECTION_TYPE[current_node.type])
+    self.debugger:msg("DEBUG", "-------------------------------------------")
+    self.debugger:msg("DEBUG", "TITLE :: ("..current_node.id..") "..current_node.question)
+    self.debugger:msg("DEBUG", "NODE TYPE ==> "..SECTION_TYPE[current_node.type])
 
     --
-    -- Run Action
+    --Run Action
     --
     if current_node.type == PLAY_MESSAGE then
         number_digits = 1
@@ -421,7 +417,7 @@ function FSMCall:next_node()
     elseif current_node.type == RECORD_MSG then
         self:playnode(current_node)
         --timeout : Seconds of silence before considering the recording complete
-        -- syntax is session:recordFile(file_name, max_len_secs, silence_threshold, silence_secs)
+        --syntax is session:recordFile(file_name, max_len_secs, silence_threshold, silence_secs)
         max_len_secs = 120
         silence_threshold = 30
         silence_secs = 5
@@ -431,14 +427,14 @@ function FSMCall:next_node()
         self.debugger:msg("INFO", "STARTING RECORDING : "..record_filepath)
         result_rec = self.session:recordFile(record_filepath, max_len_secs, silence_threshold, silence_secs)
         record_dur = audio_lenght(record_filepath)
-        self.debugger:msg("INFO", "RECORDING DONE DURATION: "..record_dur)
+        self.debugger:msg("DEBUG", "RECORDING DONE DURATION: "..record_dur)
     else
-        self.debugger:msg("INFO", "EXCEPTION -> HANGUP")
+        self.debugger:msg("DEBUG", "EXCEPTION -> HANGUP")
         self:end_call()
     end
 
     --
-    -- 3. Record result and Aggregate result
+    --3. Record result and Aggregate result
     --
     if digits or self.record_filename then
         self.db:connect()
@@ -447,22 +443,21 @@ function FSMCall:next_node()
         --reinit record_filename
         self.record_filename = false
         record_dur = false
-        --TODO: Bulk insert / Improve by saving all the result at the end of the calls
     end
 
     --
-    -- Check Branching / Find the next node
+    --Check Branching / Find the next node
     --
     self.debugger:msg("DEBUG", inspect(current_branching))
 
     if current_node.type == PLAY_MESSAGE
         or current_node.type == RECORD_MSG
         or current_node.type == CALL_TRANSFER then
-        --check for timeout
+        --Check for timeout
         if (not current_branching["0"] or not current_branching["0"].goto_id) and
            (not current_branching["timeout"] or not current_branching["timeout"].goto_id) then
-            -- go to hangup
-            self.debugger:msg("INFO", "No more branching -> Goto Hangup")
+            --Go to hangup
+            self.debugger:msg("DEBUG", "No more branching -> Goto Hangup")
             self:end_call()
         else
             if current_branching["0"] and current_branching["0"].goto_id then
@@ -476,25 +471,25 @@ function FSMCall:next_node()
         or current_node.type == RATING_SECTION
         or current_node.type == CAPTURE_DIGITS then
 
-        --flag for invalid input
+        --Flag for invalid input
         invalid_input = false
-        self.debugger:msg("INFO", "Check Validity")
+        self.debugger:msg("DEBUG", "Check Validity")
 
-        -- Check Validity
+        --Check Validity
         if current_node.type == RATING_SECTION then
-            --break if digits is accepted
+            --Break if digits is accepted
             if digits == '' or tonumber(digits) < 1 or tonumber(digits) > tonumber(current_node.rating_laps) then
                 invalid_input = true
             end
         elseif current_node.type == MULTI_CHOICE then
-            --break if digits is accepted
+            --Break if digits is accepted
             if digits == '' then
                 invalid_input = true
             end
         elseif current_node.type == CAPTURE_DIGITS
             and current_node.validate_number == 't'
             and digits ~= '' then
-            -- we have DTMF now we check validity
+            --We have DTMF now we check validity
             int_dtmf = tonumber(digits)
             int_min = tonumber(current_node.min_number)
             int_max = tonumber(current_node.max_number)
@@ -511,22 +506,22 @@ function FSMCall:next_node()
         end
 
         if invalid_input then
-            -- Invalid input
+            --Invalid input
             if current_branching["invalid"] and current_branching["invalid"].goto_id then
                 --We got an "invalid branching" and as we got a DTMF we shall go there
-                self.debugger:msg("INFO", "Got 'invalid' Branching : "..current_branching["invalid"].goto_id)
+                self.debugger:msg("DEBUG", "Got 'invalid' Branching : "..current_branching["invalid"].goto_id)
                 self.current_node_id = tonumber(current_branching["invalid"].goto_id)
                 return true
             elseif current_branching["invalid"] then
-                -- There is no goto_id -> then we got to hangup
-                self.debugger:msg("INFO", "Got 'invalid' Branching but no goto_id -> then we got to hangup")
+                --There is no goto_id -> then we got to hangup
+                self.debugger:msg("DEBUG", "Got 'invalid' Branching but no goto_id -> then we got to hangup")
                 self:end_call()
                 return true
             end
         end
 
         self.debugger:msg("INFO", "Got digits : "..digits)
-        -- check if we got a branching for this capture
+        --Check if we got a branching for this capture
         if digits and string.len(digits) > 0 then
 
             if current_branching[digits] and current_branching[digits].goto_id then
@@ -536,40 +531,39 @@ function FSMCall:next_node()
 
             elseif current_branching[digits] then
                 --We got a branching for this DTMF but no goto_id
-                self.debugger:msg("INFO", "We got a branching for this DTMF but no goto_id -> then we got to hangup")
+                self.debugger:msg("DEBUG", "We got a branching for this DTMF but no goto_id -> then we got to hangup")
                 self:end_call()
                 return true
 
             elseif current_branching["any"] and current_branching["any"].goto_id then
                 --We got an "any branching" and as we got a DTMF we shall go there
-                self.debugger:msg("INFO", "Got 'any' Branching : "..current_branching["any"].goto_id)
+                self.debugger:msg("DEBUG", "Got 'any' Branching : "..current_branching["any"].goto_id)
                 self.current_node_id = tonumber(current_branching["any"].goto_id)
                 return true
             elseif current_branching["any"] then
-                -- There is no goto_id -> then we got to hangup
-                self.debugger:msg("INFO", "Got 'any' Branching but no goto_id -> then we got to hangup")
+                --There is no goto_id -> then we got to hangup
+                self.debugger:msg("DEBUG", "Got 'any' Branching but no goto_id -> then we got to hangup")
                 self:end_call()
                 return true
             else
                 --We got a capture but nothing accepted for this
                 --let's stay on the same node then
-                self.debugger:msg("INFO", "let's stay on the same node then")
+                self.debugger:msg("DEBUG", "Let's stay on the same node then")
                 return true
             end
         end
 
-        -- check if we got a branching for this capture
+        --Check if we got a branching for this capture
         if not digits or string.len(digits) == 0 then
-            -- check if there is a timeout / you should
+            --Check if there is a timeout / you should
             if not current_branching["timeout"] or not current_branching["timeout"].goto_id then
-                -- go to hangup
-                self.debugger:msg("INFO", "No more branching -> Goto Hangup")
+                --Go to hangup
+                self.debugger:msg("DEBUG", "No more branching -> Goto Hangup")
                 self:end_call()
             else
                 self.current_node_id = tonumber(current_branching["timeout"].goto_id)
             end
         end
-
     end
 
     return true

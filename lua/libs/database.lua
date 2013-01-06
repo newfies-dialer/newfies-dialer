@@ -66,7 +66,7 @@ function Database:load_survey_section(survey_id)
 	-- rating_laps	validate_number	number_digits	phonenumber	completed	created_date
 	-- updated_date	survey_id	invalid_audiofile_id	min_number	max_number
 	sqlquery = "SELECT * FROM "..self.TABLE_SECTION.." WHERE survey_id="..survey_id.." ORDER BY "..self.TABLE_SECTION..".order"
-	self.debugger:msg("INFO", "Load survey section : "..sqlquery)
+	self.debugger:msg("DEBUG", "Load survey section : "..sqlquery)
 	cur = self.con:execute(sqlquery)
 	list = {}
 	row = cur:fetch ({}, "a")
@@ -81,7 +81,7 @@ function Database:load_survey_section(survey_id)
 	cur:close()
 	self.list_section = list
 	if not self.start_node then
-		self.debugger:msg("INFO", "Error Loading Survey Section")
+		self.debugger:msg("ERROR", "Error Loading Survey Section")
 	end
 end
 
@@ -91,7 +91,7 @@ function Database:load_survey_branching(survey_id)
 		"FROM "..self.TABLE_BRANCHING.." LEFT JOIN "..self.TABLE_SECTION..
 		" ON "..self.TABLE_SECTION..".id="..self.TABLE_BRANCHING..".section_id "..
 		"WHERE survey_id="..survey_id
-	self.debugger:msg("INFO", "Load survey branching : "..sqlquery)
+	self.debugger:msg("DEBUG", "Load survey branching : "..sqlquery)
 	cur = self.con:execute(sqlquery)
 
 	-- LOOP THROUGH THE CURSOR
@@ -113,7 +113,7 @@ end
 function Database:load_audiofile()
 	-- id	name	audio_file	user_id
 	sqlquery = "SELECT * FROM audio_file WHERE user_id="..self.user_id
-	self.debugger:msg("INFO", "Load audiofile branching : "..sqlquery)
+	self.debugger:msg("DEBUG", "Load audiofile branching : "..sqlquery)
 	cur = self.con:execute(sqlquery)
 
 	-- LOOP THROUGH THE CURSOR
@@ -128,7 +128,7 @@ function Database:load_audiofile()
 end
 
 function Database:get_list(sqlquery)
-	self.debugger:msg("INFO", "Load SQL : "..sqlquery)
+	self.debugger:msg("DEBUG", "Load SQL : "..sqlquery)
 	cur = assert(self.con:execute(sqlquery))
 	list = {}
 	row = cur:fetch ({}, "a")
@@ -141,7 +141,7 @@ function Database:get_list(sqlquery)
 end
 
 function Database:get_object(sqlquery)
-	self.debugger:msg("INFO", "Load SQL : "..sqlquery)
+	self.debugger:msg("DEBUG", "Load SQL : "..sqlquery)
 	cur = assert(self.con:execute(sqlquery))
 	row = cur:fetch ({}, "a")
 	cur:close()
@@ -150,7 +150,7 @@ end
 
 function Database:load_campaign_info(campaign_id)
 	sqlquery = "SELECT * FROM dialer_campaign WHERE id="..campaign_id
-	self.debugger:msg("INFO", "Load campaign info : "..sqlquery)
+	self.debugger:msg("DEBUG", "Load campaign info : "..sqlquery)
 	self.campaign_info = self:get_object(sqlquery)
     self.user_id = self.campaign_info["user_id"]
 end
@@ -159,26 +159,26 @@ function Database:load_contact(subscriber_id)
 	sqlquery = "SELECT * FROM dialer_subscriber "..
 		"LEFT JOIN dialer_contact ON dialer_contact.id=contact_id "..
 		"WHERE dialer_subscriber.id="..subscriber_id
-	self.debugger:msg("INFO", "Load contact data : "..sqlquery)
+	self.debugger:msg("DEBUG", "Load contact data : "..sqlquery)
 	self.contact = self:get_object(sqlquery)
 end
 
 function Database:update_subscriber(subscriber_id, status)
 	sqlquery = "UPDATE dialer_subscriber SET status='"..status.."' WHERE id="..subscriber_id
-	self.debugger:msg("INFO", "Update Subscriber : "..sqlquery)
+	self.debugger:msg("DEBUG", "Update Subscriber : "..sqlquery)
 	res = self.con:execute(sqlquery)
 	self:update_campaign_completed()
 end
 
 function Database:update_campaign_completed()
 	sqlquery = "UPDATE dialer_campaign SET completed = completed + 1 WHERE id="..self.campaign_info.id
-	self.debugger:msg("INFO", "Update Campaign : "..sqlquery)
+	self.debugger:msg("DEBUG", "Update Campaign : "..sqlquery)
 	res = self.con:execute(sqlquery)
 end
 
 function Database:update_callrequest_cpt(callrequest_id)
 	sqlquery = "UPDATE dialer_callrequest SET completed = 't' WHERE id="..callrequest_id
-	self.debugger:msg("INFO", "Update CallRequest : "..sqlquery)
+	self.debugger:msg("DEBUG", "Update CallRequest : "..sqlquery)
 	res = self.con:execute(sqlquery)
 end
 
@@ -251,7 +251,7 @@ function Database:commit_result_mem(campaign_id, survey_id)
     "(callrequest_id, section_id, record_file, recording_duration, response, created_date) "..
     "VALUES "..sql_result
     if count > 0 then
-        self.debugger:msg("INFO", "Insert Bulk Result : "..sqlquery)
+        self.debugger:msg("DEBUG", "Insert Bulk Result : "..sqlquery)
         res = self.con:execute(sqlquery)
         if not res then
             self.debugger:msg("ERROR", "ERROR to Insert Bulk Result : "..sqlquery)
@@ -262,7 +262,7 @@ end
 function Database:save_result_aggregate(campaign_id, survey_id, section_id, response)
 	sqlquery = "INSERT INTO survey_resultaggregate (campaign_id, survey_id, section_id, response, count, created_date) "..
 		"VALUES ("..campaign_id..", "..survey_id..", "..section_id..", '"..response.."', 1, NOW())"
-	self.debugger:msg("INFO", "Save Result Aggregate:"..sqlquery)
+	self.debugger:msg("DEBUG", "Save Result Aggregate:"..sqlquery)
 	res = self.con:execute(sqlquery)
 	if not res then
 		return false
@@ -274,7 +274,7 @@ end
 function Database:update_result_aggregate(campaign_id, survey_id, section_id, response)
 	sqlquery = "UPDATE survey_resultaggregate SET count = count + 1"..
 		" WHERE campaign_id="..campaign_id.." AND survey_id="..survey_id.." AND section_id="..section_id.." AND response='"..section_id.."'"
-	self.debugger:msg("INFO", "Update Result Aggregate:"..sqlquery)
+	self.debugger:msg("DEBUG", "Update Result Aggregate:"..sqlquery)
 	res = self.con:execute(sqlquery)
 	if not res then
 		return false

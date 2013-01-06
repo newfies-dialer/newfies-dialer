@@ -121,7 +121,7 @@ if session:ready() then
 else
     -- This means the call was not answered ... Check for the reason
     local obCause = session:hangupCause()
-    debug("info", "obSession:hangupCause() = " .. obCause )
+    debugger:msg("INFO", "obSession:hangupCause() = "..obCause)
 
     if ( obCause == "USER_BUSY" ) then              -- SIP 486
        -- For BUSY you may reschedule the call for later

@@ -7,15 +7,20 @@ Requirements
 
 Install the following::
 
-    apt-get install luarocks
-    apt-get install liblua5.1-sql-postgres-dev
+    #Lua Deps
+    apt-get -y install liblua5.1-sql-postgres-dev luasocket
+    apt-get -y install postgresql-server-dev-9.1
+    apt-get -y install liblua5.1-curl0 liblua5.1-curl-dev
 
-    apt-get install postgresql-server-dev-9.1
-    sudo luarocks install luasql-postgres
+    #Luarocks
+    apt-get -y install luarocks
+    luarocks install luasql-postgres PGSQL_INCDIR=/usr/include/postgresql/
     luarocks install lualogging
     luarocks install loop
     luarocks install md5
     luarocks install luafilesystem
+    luarocks install luajson
+    luarocks install inspect
 
 
 Configure FreeSWITCH
@@ -42,4 +47,3 @@ You will need to compile Python ESL, this can be achieved with the following com
     workon newfies-dialer
     cd /usr/src/freeswitch/libs/esl
     make pymod-install
-

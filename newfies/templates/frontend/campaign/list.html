@@ -81,7 +81,7 @@ function delete_button()
                             <td class="survey_edit_key">{{ row.campaign_code }}</td>
                             <td>{{ row.name }}</td>
                             <td>{{ row.startingdate }}</td>
-                            <td class="camp_type">{{ row.get_campaign_type }}</td>
+                            <td>{{ row.content_type }}</td>
                             <td>{% get_app_name row.content_type.app_label row.content_type.model row.object_id %}</td>
                             <td class="survey_edit_key">{{ row.totalcontact }}</td>
                             <td class="survey_edit_key">{{ row.status|get_campaign_status|safe }}</td>

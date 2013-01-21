@@ -323,6 +323,7 @@ def contact_list(request):
         kwargs[i] = contact_no[i]
 
     contact_list = []
+    all_contact_list = []
     contact_count = 0
 
     if phonebook_id_list:

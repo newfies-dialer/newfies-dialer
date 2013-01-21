@@ -23,7 +23,7 @@ local json = require("json")
 --         {email}
 --         {country}
 --         {city}
---         {phone_number}
+--         {contact}
 --     as well as, get additional_vars, and replace json tags
 --
 function tag_replace(text, contact)

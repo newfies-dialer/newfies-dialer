@@ -41,7 +41,13 @@ function tag_replace(text, contact)
     end
 
     for k, v in pairs(mcontact) do
-        if string.sub(k, -3) ~= '_id' then
+        if k == 'contact' then
+            newv = ''
+            for i = 1, string.len(v) do
+                newv = newv..string.sub(v, i, i)..' '
+            end
+            text = string.gsub(text, '{'..k..'}', newv)
+        elseif string.sub(k, -3) ~= '_id' then
             text = string.gsub(text, '{'..k..'}', v)
         end
     end
@@ -87,7 +93,7 @@ if false then
 
     local inspect = require 'inspect'
 
-    text = "Hello there {first_name}, your city is {city} and your age is {age} - {campaign_id}"
+    text = "Hello there {first_name}, your city is {city} and your age is {age}, your number is {contact}"
 
     contact = {
       additional_vars = '{"country": "canada", "age": "32", "city":"barcelona"}',

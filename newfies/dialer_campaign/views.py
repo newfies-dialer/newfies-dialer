@@ -157,16 +157,24 @@ def get_campaign_survey_view(campaign_object):
     if campaign_object.status and int(campaign_object.status) == CAMPAIGN_STATUS.START:
         if campaign_object.content_type.model == 'survey':
             link = '<a href="/survey_view/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' % \
-                   (campaign_object.object_id,
-                    _('Survey'),
+                   (campaign_object.object_id, _('Survey'),
                     tpl_control_icon('zoom.png'))
 
         if campaign_object.content_type.model == 'voiceapp':
             link = '<a href="/voiceapp_view/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' % \
-                   (campaign_object.object_id,
-                    _('Voice app'),
+                   (campaign_object.object_id, _('Voice app'),
                     tpl_control_icon('zoom.png'))
-        return link
+
+    if campaign_object.status and int(campaign_object.status) != CAMPAIGN_STATUS.START:
+        if campaign_object.content_type.model == 'survey_template':
+            link = '<a href="/survey/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' %\
+                   (campaign_object.object_id, _('Edit Survey'),
+                    tpl_control_icon('zoom.png'))
+
+        if campaign_object.content_type.model == 'voiceapp_template':
+            link = '<a href="/voiceapp/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' %\
+                   (campaign_object.object_id, _('Edit Voice app'),
+                    tpl_control_icon('zoom.png'))
     return link
 
 

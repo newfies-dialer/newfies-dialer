@@ -25,13 +25,13 @@ function delete_button()
 <!--Section branching change modal-->
 <script type="text/javascript" charset="utf-8">
 
-    $(".campaign-duplicate").live('click', function() {
-
+    $(".campaign-duplicate").live('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
         var url = $(this).attr('url');
         var modal_id = $(this).attr('data-controls-modal');
         $("#" + modal_id).load(url);
-    });
-
+    });    
 </script>
 <!-- modal content-->
 <div id="campaign-duplicate" class="modal hide fade"></div>

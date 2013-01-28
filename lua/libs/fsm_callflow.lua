@@ -479,11 +479,13 @@ function FSMCall:next_node()
         if current_node.type == RATING_SECTION then
             --Break if digits is accepted
             if digits == '' or tonumber(digits) < 1 or tonumber(digits) > tonumber(current_node.rating_laps) then
+                self.debugger:msg("DEBUG", "RATING_SECTION invalid_input")
                 invalid_input = true
             end
         elseif current_node.type == MULTI_CHOICE then
             --Break if digits is accepted
             if digits == '' then
+                self.debugger:msg("DEBUG", "MULTI_CHOICE invalid_input")
                 invalid_input = true
             end
         elseif current_node.type == CAPTURE_DIGITS
@@ -501,6 +503,7 @@ function FSMCall:next_node()
             end
 
             if not int_dtmf or int_dtmf < int_min or int_dtmf > int_max then
+                self.debugger:msg("DEBUG", "CAPTURE_DIGITS invalid_input")
                 invalid_input = true
             end
         end
@@ -520,7 +523,7 @@ function FSMCall:next_node()
             end
         end
 
-        self.debugger:msg("INFO", "Got digits : "..digits)
+        self.debugger:msg("INFO", "Got valid digit(s) : "..digits)
         --Check if we got a branching for this capture
         if digits and string.len(digits) > 0 then
 

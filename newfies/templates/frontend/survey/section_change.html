@@ -1,23 +1,14 @@
-{% extends "frontend/master.html" %}
 {% load i18n common_tags %}
 
-{% block extra_files %}
-{% endblock %}
-
-{% block row_fluid %}
-{% endblock %}
-
-{% block header %}
-{% endblock %}
-
-{% block menu %}
-{% endblock %}
-
-{% block container %}
 
 {% block content %}
 
     {% if err_msg %}
+        <script type="text/javascript" src="{{ STATIC_URL }}newfies/js/jquery-1.8.2.min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}newfies/js/jquery-ui-1.9.1.custom.min.js"></script>
+        <script src="{{ STATIC_URL }}newfies/bootstrap/js/bootstrap.js"></script>
+        <link href="{{ STATIC_URL }}newfies/bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="{{ STATIC_URL }}newfies/bootstrap/css/bootstrap-responsive.css" rel="stylesheet"> 
         <script type="text/javascript" charset="utf-8">
             $(window).load(function(){
                 $('#section_modal').modal('show');
@@ -305,4 +296,4 @@
 {% block footer %}
 {% endblock %}
 
-{% endblock %}
+

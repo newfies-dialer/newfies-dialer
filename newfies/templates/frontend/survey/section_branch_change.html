@@ -1,131 +1,121 @@
-{% extends "frontend/master.html" %}
+
 {% load i18n %}
 
-{% block extra_files %}
-{% endblock %}
-
-{% block row_fluid %}
-{% endblock %}
-
-{% block header %}
-{% endblock %}
-
-{% block menu %}
-{% endblock %}
-
-{% block container %}
-
-    {% block content %}
-
-        {% if err_msg %}
-            <script type="text/javascript" charset="utf-8">
-                $(window).load(function(){
-                    $('#section_modal').modal('show');
-                });
-                var url = '/survey/' + '{{ survey_id }}'  + '/#row{{ section_id }}';
-                $(".close").live('click', function() {
-                    $(location).attr('href', url);
-                });
-                var KEYCODE_ESC = 27;
-                $(document).keyup(function(e) {
-                    if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
-                });
-            </script>
-        <!-- modal content-->
-        <div class="modal hide fade" id="section_modal">
-
-        {% endif %}
-
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal" >&times;</a>
-            {% trans "branch to section"|title %}
-            </h3>
-        </div>
-
-        <form method="POST" action="{% if action == 'update' %}/section/branch/{{ branching_id }}/{% else %}/section/branch/add/?section_id={{ section_id }}{% endif %}" enctype="multipart/form-data" id="update_form">
-            {% csrf_token %}
-
-            {{ form.section }}
-            <!--"keys" is hidden for section_type 1 (voice) & 5(record message)-->
-            <div class="modal-body">
-                {% if section_type != SECTION_TYPE.HANGUP_SECTION %}
-
-                {% if section_type == SECTION_TYPE.PLAY_MESSAGE or section_type == SECTION_TYPE.RECORD_MSG %}
-                    {{ form.keys }}
-                {% else %}
-                    <div class="row">
-                        <script type="text/javascript" charset="utf-8">
-                            $("#button-anything").live('click', function() {
-                                $("#id_keys").attr('value', 'any');
-                            });
-                            $("#button-invalid").live('click', function() {
-                                $("#id_keys").attr('value', 'invalid');
-                            });
-                        </script>
-                        <div class="span2">
-                            <div class="btn-group" data-toggle="buttons-radio">
-                                <button type="button" class="btn" id="button-anything">{% trans "any other key"|title %}</button>
-                                <button type="button" class="btn" id="button-invalid">{% trans "invalid"|title %}</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="span2 clearfix{% if form.keys.errors %} control-group error{% endif %}">
-                            <label class="control-label" for="{{ form.keys.auto_id }}">{{ form.keys.label }}</label>
-                            <div class="input">
-                                {{ form.keys }}
-                                {% if form.keys.errors %}
-                                    <span class="help-inline">{{ form.keys.errors|removetags:"ul li"|safe }}</span>
-                                {% endif %}
-                                <span class="help-block">{{ form.keys.help_text|safe }} </span>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-
-                <div class="row">
-                    <div class="span2 clearfix{% if form.goto.errors %} control-group error{% endif %}">
-                        <label class="control-label" for="{{ form.goto.auto_id }}">{{ form.goto.label }}</label>
-                        <div class="input">
-                            {{ form.goto }}
-                            {% if form.goto.errors %}
-                                <span class="help-inline">{{ form.goto.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                            <span class="help-block">{{ form.goto.help_text|safe }} </span>
-                        </div>
-                    </div>
-                </div>
-                {% else %}
-
-                <div class="row">
-                    <div class="span4 clearfix">
-                        <span class="help-block">{% trans "No branching on hangup, this will terminate the call" %}</span>
-                    </div>
-                </div>
-                {% endif %}
-            </div>
-
-            <div class="modal-footer">
-                {% if section_type != SECTION_TYPE.HANGUP_SECTION %}
-                {% if action == 'update' %}
-                    <input id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
-                {% else %}
-                    <input id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans "Save" %}" />
-                {% endif %}
-                &nbsp;
-                {% endif %}
-                <a href="#" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
-            </div>
-        </form>
-
+{% block content %}
 
     {% if err_msg %}
-    </div>
+        <script type="text/javascript" src="{{ STATIC_URL }}newfies/js/jquery-1.8.2.min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}newfies/js/jquery-ui-1.9.1.custom.min.js"></script>
+        <script src="{{ STATIC_URL }}newfies/bootstrap/js/bootstrap.js"></script>
+        <link href="{{ STATIC_URL }}newfies/bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="{{ STATIC_URL }}newfies/bootstrap/css/bootstrap-responsive.css" rel="stylesheet"> 
+        <script type="text/javascript" charset="utf-8">
+            $(window).load(function(){
+                $('#section_modal').modal('show');
+            });
+            var url = '/survey/' + '{{ survey_id }}'  + '/#row{{ section_id }}';
+            $(".close").live('click', function() {
+                $(location).attr('href', url);
+            });
+            var KEYCODE_ESC = 27;
+            $(document).keyup(function(e) {
+                if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
+            });
+        </script>
+    <!-- modal content-->
+    <div class="modal hide fade" id="section_modal">
+
     {% endif %}
 
-    {% endblock %}
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal" >&times;</a>
+        <h3>{% trans "branch to section"|title %}</h3>
+    </div>
 
-    {% block footer %}
-    {% endblock %}
+    <form method="POST" action="{% if action == 'update' %}/section/branch/{{ branching_id }}/{% else %}/section/branch/add/?section_id={{ section_id }}{% endif %}" enctype="multipart/form-data" id="update_form">
+        {% csrf_token %}
+
+        {{ form.section }}
+        <!--"keys" is hidden for section_type 1 (voice) & 5(record message)-->
+        <div class="modal-body">
+            {% if section_type != SECTION_TYPE.HANGUP_SECTION %}
+
+            {% if section_type == SECTION_TYPE.PLAY_MESSAGE or section_type == SECTION_TYPE.RECORD_MSG %}
+                {{ form.keys }}
+            {% else %}
+                <div class="row">
+                    <script type="text/javascript" charset="utf-8">
+                        $("#button-anything").live('click', function() {
+                            $("#id_keys").attr('value', 'any');
+                        });
+                        $("#button-invalid").live('click', function() {
+                            $("#id_keys").attr('value', 'invalid');
+                        });
+                    </script>
+                    <div class="span2">
+                        <div class="btn-group" data-toggle="buttons-radio">
+                            <button type="button" class="btn" id="button-anything">{% trans "any other key"|title %}</button>
+                            <button type="button" class="btn" id="button-invalid">{% trans "invalid"|title %}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span2 clearfix{% if form.keys.errors %} control-group error{% endif %}">
+                        <label class="control-label" for="{{ form.keys.auto_id }}">{{ form.keys.label }}</label>
+                        <div class="input">
+                            {{ form.keys }}
+                            {% if form.keys.errors %}
+                                <span class="help-inline">{{ form.keys.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ form.keys.help_text|safe }} </span>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="row">
+                <div class="span2 clearfix{% if form.goto.errors %} control-group error{% endif %}">
+                    <label class="control-label" for="{{ form.goto.auto_id }}">{{ form.goto.label }}</label>
+                    <div class="input">
+                        {{ form.goto }}
+                        {% if form.goto.errors %}
+                            <span class="help-inline">{{ form.goto.errors|removetags:"ul li"|safe }}</span>
+                        {% endif %}
+                        <span class="help-block">{{ form.goto.help_text|safe }} </span>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+
+            <div class="row">
+                <div class="span4 clearfix">
+                    <span class="help-block">{% trans "No branching on hangup, this will terminate the call" %}</span>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="modal-footer">
+            {% if section_type != SECTION_TYPE.HANGUP_SECTION %}
+            {% if action == 'update' %}
+                <input id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
+            {% else %}
+                <input id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans "Save" %}" />
+            {% endif %}
+            &nbsp;
+            {% endif %}
+            <a href="#" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
+        </div>
+    </form>
+
+
+{% if err_msg %}
+</div>
+{% endif %}
 
 {% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+

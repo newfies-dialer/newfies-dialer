@@ -1,42 +1,33 @@
-{% extends "frontend/master.html" %}
 {% load i18n common_tags %}
 
-{% block extra_files %}
-{% endblock %}
+{% block content %}
 
-{% block row_fluid %}
-{% endblock %}
+{% if err_msg %}
+    <script type="text/javascript" src="{{ STATIC_URL }}newfies/js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}newfies/js/jquery-ui-1.9.1.custom.min.js"></script>
+    <script src="{{ STATIC_URL }}newfies/bootstrap/js/bootstrap.js"></script>
+    <link href="{{ STATIC_URL }}newfies/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}newfies/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">        
 
-{% block header %}
-{% endblock %}
+    <script type="text/javascript" charset="utf-8">
 
-{% block menu %}
-{% endblock %}
+        $(window).load(function(){
+            $('#duplicate-campaign').modal('show');
+        });
 
-{% block container %}
+        var url = '/campaign/';
+        $(".close").live('click', function() {
+            $(location).attr('href', url);
+        });
 
-    {% block content %}
-
-    {% if err_msg %}
-        <script type="text/javascript" charset="utf-8">
-
-            $(window).load(function(){
-                $('#duplicate-campaign').modal('show');
-            });
-
-            var url = '/campaign/';
-            $(".close").live('click', function() {
-                $(location).attr('href', url);
-            });
-
-            var KEYCODE_ESC = 27;
-            $(document).keyup(function(e) {
-                if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
-            });
-        </script>
+        var KEYCODE_ESC = 27;
+        $(document).keyup(function(e) {
+            if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
+        });
+    </script>
     <!-- modal content-->
     <div class="modal hide fade" id="duplicate-campaign">
-    {% endif %}
+{% endif %}
 
         <div class="modal-header">
             <a class="close" data-dismiss="modal" >&times;</a>
@@ -76,13 +67,12 @@
             </div>
         </form>
 
-    {% if err_msg %}
+{% if err_msg %}
     </div>
-    {% endif %}
-
-    {% endblock %}
-
-    {% block footer %}
-    {% endblock %}
+{% endif %}
 
 {% endblock %}
+
+{% block footer %}
+{% endblock %}
+

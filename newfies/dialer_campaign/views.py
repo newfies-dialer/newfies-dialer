@@ -178,7 +178,7 @@ def get_campaign_survey_view(campaign_object):
     return link
 
 
-def make_duplicate_campaign(campaign_object_id):
+def make_duplicate_campaign(campaign_object_id):    
     link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate icon" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s" %s>&nbsp;</a>'\
            % (campaign_object_id, _('Duplicate this campaign'),
               tpl_control_icon('layers.png'))
@@ -197,7 +197,7 @@ def campaign_list(request):
     **Logic Description**:
 
         * List all campaigns belonging to the logged in user
-    """
+    """    
     sort_col_field_list = ['id', 'name', 'startingdate', 'status', 'totalcontact']
     default_sort_field = 'id'
     pagination_data =\
@@ -209,7 +209,7 @@ def campaign_list(request):
     campaign_list = Campaign.objects.filter(user=request.user).order_by(sort_order)
 
     template = 'frontend/campaign/list.html'
-    data = {
+    data = {        
         'module': current_view(request),
         'campaign_list': campaign_list,
         'total_campaign': campaign_list.count(),
@@ -454,6 +454,7 @@ def campaign_change(request, object_id):
 @login_required
 def campaign_duplicate(request, id):
     form = DuplicateCampaignForm()
+    request.session['error_msg'] = ''
     if request.method == 'POST':
         form = DuplicateCampaignForm(request.POST)
         if form.is_valid():

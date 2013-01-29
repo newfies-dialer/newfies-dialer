@@ -68,7 +68,7 @@ function FSMCall:init()
         self.campaign_id = 47
         self.subscriber_id = 39
         self.callrequest_id = 215
-        self.db.DG_SURVEY_ID = 17
+        self.db.DG_SURVEY_ID = 22
         self.db.TABLE_SECTION = 'survey_section_template'
         self.db.TABLE_BRANCHING = 'survey_branching_template'
     end
@@ -549,9 +549,13 @@ function FSMCall:next_node()
                 self:end_call()
                 return true
             else
-                --We got a capture but nothing accepted for this
-                --let's stay on the same node then
-                self.debugger:msg("DEBUG", "Let's stay on the same node then")
+                --Got digits but nothing accepted for this, let's stay on the same node
+                self.debugger:msg("DEBUG", "Got digits but nothing accepted for this, let's stay on the same node")
+                --If Rating and it's value
+                if current_node.type == RATING_SECTION and not invalid_input then
+                    self.debugger:msg("DEBUG", "It's a valid input but there is no branching for it, so we hangup")
+                    self:end_call()
+                end
                 return true
             end
         end

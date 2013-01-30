@@ -370,7 +370,7 @@ if false then
     recording_duration = '30'
     dtmf = '5'
     require "debugger"
-    local debugger = Debugger('INFO', false)
+    local debugger = Debugger(false)
     db = Database(debug_mode, debugger)
     db:connect()
 
@@ -398,7 +398,7 @@ if false then
     recording_duration = '30'
     dtmf = '5'
     require "debugger"
-    local debugger = Debugger('INFO', false)
+    local debugger = Debugger(false)
 
     db = Database(debug_mode, debugger)
     db:connect()

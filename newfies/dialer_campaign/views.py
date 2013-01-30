@@ -55,6 +55,10 @@ def update_campaign_status_cust(request, pk, status):
     """Campaign Status (e.g. start|stop|pause|abort) can be changed from
     customer interface (via dialer_campaign/campaign list)"""
     obj_campaign = Campaign.objects.get(id=pk)
+        
+    pagination_path = '/campaign/'
+    if request.session.get('pagination_path'):
+        pagination_path = request.session.get('pagination_path')
 
     # Notify user while campaign Start & no phonebook attached
     if int(status) == CAMPAIGN_STATUS.START and obj_campaign.phonebook.all().count() == 0:
@@ -72,7 +76,7 @@ def update_campaign_status_cust(request, pk, status):
             elif obj_campaign.content_type.model == 'voiceapp_template':
                 check_voiceapp_campaign(request, pk)
 
-    return HttpResponseRedirect('/campaign/')
+    return HttpResponseRedirect(pagination_path)
 
 
 @login_required
@@ -198,6 +202,7 @@ def campaign_list(request):
 
         * List all campaigns belonging to the logged in user
     """    
+    request.session['pagination_path'] = request.META['PATH_INFO'] + '?' + request.META['QUERY_STRING']
     sort_col_field_list = ['id', 'name', 'startingdate', 'status', 'totalcontact']
     default_sort_field = 'id'
     pagination_data =\

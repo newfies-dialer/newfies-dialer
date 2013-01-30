@@ -199,6 +199,8 @@ function Database:load_all(campaign_id, subscriber_id)
 		self.app_type = 'survey'
 	else
 		self.app_type = 'voice_app'
+        self.debugger:msg("ERROR", "Error: voice_app is not supported")
+        return false
 	end
 	survey_id = self.campaign_info.object_id
 	if self.DG_SURVEY_ID and self.DG_SURVEY_ID > 0 then

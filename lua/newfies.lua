@@ -46,7 +46,7 @@ if options.nofs then
     fs_env = false
 end
 
-local debugger = Debugger('INFO', fs_env)
+local debugger = Debugger(fs_env)
 if not fs_env then
     require "session"
     session = Session()

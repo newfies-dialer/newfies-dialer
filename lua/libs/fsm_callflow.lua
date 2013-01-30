@@ -73,6 +73,9 @@ function FSMCall:init()
         self.db.TABLE_BRANCHING = 'survey_branching_template'
     end
 
+    call_id = self.uuid..'_'..self.callrequest_id
+    self.debugger:set_call_id(call_id)
+
     self.db:connect()
     --Load All data
     self.survey_id = self.db:load_all(self.campaign_id, self.subscriber_id)

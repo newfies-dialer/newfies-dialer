@@ -35,23 +35,31 @@ local logger = logging.file(LOGDIR .. "logs_%s.log", "%Y-%m-%d", "%date %level %
 -- logging.FATAL
 -- The FATAL level designates very severe error events that would presumably lead the application to abort.
 --
-logger:setLevel(logging.DEBUG)
+logger:setLevel(logging.INFO)
 
 
 Debugger = oo.class{
     -- default field values
     fs_env = false,
+    call_id = '',
 }
 
-function Debugger:__init(fs_env)
+function Debugger:__init(fs_env, call_id)
     -- self is the class
     return oo.rawnew(self, {
         fs_env = fs_env,
+        call_id = call_id,
     })
 end
 
+function Debugger:set_call_id(call_id)
+    --Set property call_id
+    self.call_id = call_id
+end
 
 function Debugger:msg(level, message)
+    --Print out or logger message according to the verbosity
+    message = self.call_id..' '..message
     -- level : DEBUG, INFO, WARN, ERROR
     if not self.fs_env then
         print(message)
@@ -67,6 +75,4 @@ function Debugger:msg(level, message)
     elseif level == 'ERROR' then
         logger:error(message)
     end
-
 end
-

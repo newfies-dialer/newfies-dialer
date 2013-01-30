@@ -73,15 +73,18 @@ function Session:hangupCause()
 end
 
 function Session:getVariable(varname)
-    valret = math.random(100000, 999999)
+    var_value = math.random(100000, 999999)
     if varname == 'campaign_id' then
-        valret = 0
+        var_value = 0
     elseif varname == 'amd_status' then
-        valret = 'person'
-        --valret = 'machine'
+        var_value = 'person'
+        --var_value = 'machine'
+    elseif varname == 'uuid' then
+        var_value = math.random(1000, 9999)..'-'..math.random(1000, 9999)..'-'..
+            math.random(1000, 9999)..'-'..math.random(1000, 9999)
     end
-    print("Session:getVariable -> "..varname.." = "..valret)
-    return valret
+    print("Session:getVariable -> "..varname.." = "..var_value)
+    return var_value
 end
 
 function Session:streamFile(data)

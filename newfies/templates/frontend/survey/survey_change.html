@@ -368,7 +368,8 @@
 
 <!--update section in modal-->
 <script type="text/javascript" charset="utf-8">
-    $(".section-edit").live('click', function() {
+    $(".section-edit").live('click', function(e) {
+        e.preventDefault();
         var url = $(this).attr('url');
         var modal_id = $(this).attr('data-controls-modal');
         $("#" + modal_id).load(url);
@@ -396,7 +397,8 @@
 <!--Section add modal-->
 <script type="text/javascript" charset="utf-8">
 
-    $(".section-add").live('click', function() {
+    $(".section-add").live('click', function(e) {
+        e.preventDefault();
         var url = $(this).attr('url');
         var modal_id = $(this).attr('data-controls-modal');
         url = url + "?survey_id=" + {{ survey_obj_id }};
@@ -411,7 +413,8 @@
 <!--Section branching change modal-->
 <script type="text/javascript" charset="utf-8">
 
-    $(".section-branch").live('click', function() {
+    $(".section-branch").live('click', function(e) {
+        e.preventDefault();
         var url = $(this).attr('url');
         var modal_id = $(this).attr('data-controls-modal');
         $("#" + modal_id).load(url);
@@ -424,7 +427,8 @@
 <!--Section script update modal-->
 <script type="text/javascript" charset="utf-8">
 
-    $(".script-edit").live('click', function() {
+    $(".script-edit").live('click', function(e) {
+        e.preventDefault();
         var url = $(this).attr('url');
         var modal_id = $(this).attr('data-controls-modal');
         $("#" + modal_id).load(url);
@@ -438,7 +442,8 @@
 <!--Section delete modal-->
 <script type="text/javascript" charset="utf-8">
 
-    $(".section-delete").live('click', function() {
+    $(".section-delete").live('click', function(e) {
+        e.preventDefault();
         var url = $(this).attr('url');
         var modal_id = $(this).attr('data-controls-modal');
         $("#" + modal_id).load(url);

@@ -1,27 +1,45 @@
+{% extends "frontend/master.html" %}
 {% load i18n common_tags %}
 
-{% block content %}
+{% block header_files %}
+{% endblock %}
 
-{% if err_msg %}
-    {% include "frontend/extra_modal_files.html" %}        
-    <script type="text/javascript" charset="utf-8">
-        $(window).load(function(){
-            $('#duplicate-campaign').modal('show');
-        });
+{% block extra_files %}
+{% endblock %}
 
-        var url = '/campaign/';
-        $(".close").live('click', function() {
-            $(location).attr('href', url);
-        });
+{% block row_fluid %}
+{% endblock %}
 
-        var KEYCODE_ESC = 27;
-        $(document).keyup(function(e) {
-            if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
-        });
-    </script>
-    <!-- modal content-->
-    <div class="modal hide fade" id="duplicate-campaign">
-{% endif %}
+{% block header %}
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block container %}
+
+    {% block content %}
+
+        {% if err_msg %}
+            {% include "frontend/extra_modal_files.html" %}        
+            <script type="text/javascript" charset="utf-8">
+                $(window).load(function(){
+                    $('#duplicate-campaign').modal('show');
+                });
+
+                var url = '/campaign/';
+                $(".close").live('click', function() {
+                    $(location).attr('href', url);
+                });
+
+                var KEYCODE_ESC = 27;
+                $(document).keyup(function(e) {
+                    if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
+                });
+            </script>
+            <!-- modal content-->
+            <div class="modal hide fade" id="duplicate-campaign">
+        {% endif %}
 
         <div class="modal-header">
             <a class="close" data-dismiss="modal" >&times;</a>
@@ -61,12 +79,13 @@
             </div>
         </form>
 
-{% if err_msg %}
-    </div>
-{% endif %}
+    {% if err_msg %}
+        </div>
+    {% endif %}
+
+    {% endblock %}
+
+    {% block footer %}
+    {% endblock %}
 
 {% endblock %}
-
-{% block footer %}
-{% endblock %}
-

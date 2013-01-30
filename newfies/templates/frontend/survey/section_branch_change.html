@@ -1,6 +1,24 @@
+{% extends "frontend/master.html" %}
 {% load i18n %}
 
-{% block content %}
+{% block header_files %}
+{% endblock %}
+
+{% block extra_files %}
+{% endblock %}
+
+{% block row_fluid %}
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block container %}
+
+    {% block content %}
 
     {% if err_msg %}
         {% include "frontend/extra_modal_files.html" %}
@@ -112,4 +130,4 @@
 {% block footer %}
 {% endblock %}
 
-
+{% endblock %}

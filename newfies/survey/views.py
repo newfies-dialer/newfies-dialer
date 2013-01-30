@@ -1343,7 +1343,7 @@ def section_branch_change(request, id):
 
         *
 
-    """
+    """    
     request.session['msg'] = ''
     if request.GET.get('delete'):
         # perform delete
@@ -1361,12 +1361,12 @@ def section_branch_change(request, id):
     form = BranchingForm(branching.section.survey_id,
                          branching.section_id,
                          instance=branching)
-    if request.method == 'POST':
+    if request.method == 'POST':        
         form = BranchingForm(branching.section.survey_id,
                              branching.section_id,
                              request.POST,
                              instance=branching)
-        if form.is_valid():
+        if form.is_valid():            
             form.save()
             request.session["msg"] = _('Branching updated.')
             return HttpResponseRedirect('/survey/%s/#row%s'

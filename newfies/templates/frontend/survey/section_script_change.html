@@ -1,6 +1,9 @@
 {% extends "frontend/master.html" %}
 {% load i18n %}
 
+{% block header_files %}
+{% endblock %}
+
 {% block extra_files %}
 {% endblock %}
 
@@ -18,17 +21,15 @@
     {% block content %}
 
         {% if err_msg %}
+            {% include "frontend/extra_modal_files.html" %}
             <script type="text/javascript" charset="utf-8">
-
                 $(window).load(function(){
                     $('#section_modal').modal('show');
                 });
-
                 var url = '/survey/' + '{{ survey_id }}'  + '/#row{{ section_id }}';
                 $(".close").live('click', function() {
                     $(location).attr('href', url);
                 });
-
                 var KEYCODE_ESC = 27;
                 $(document).keyup(function(e) {
                     if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }

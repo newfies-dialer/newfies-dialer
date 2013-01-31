@@ -54,8 +54,9 @@ class CampaignAdmin(GenericAdminModelAdmin):
                     'subscriber_detail', 'progress_bar')
 
     list_display_links = ('id', 'name', )
-    #list_filter = ['user', 'status', 'startingdate', 'created_date']
-    ordering = ('id', )
+    #list_filter doesn't display correctly too many elements in list_display
+    #list_filter = ['user', 'status', 'created_date']
+    ordering = ('-id', )
     filter_horizontal = ('phonebook',)
 
     def get_urls(self):

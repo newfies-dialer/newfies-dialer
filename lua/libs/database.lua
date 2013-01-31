@@ -194,12 +194,13 @@ function Database:load_all(campaign_id, subscriber_id)
 		return false
 	end
 
-	--TODO: Fix content_type_id = 34 should be flexible
-	if self.campaign_info.content_type_id == 34 then
+	--TODO: Fix content_type_id = 35 should be flexible
+	if self.campaign_info.content_type_id == 35 then
 		self.app_type = 'survey'
 	else
 		self.app_type = 'voice_app'
-        self.debugger:msg("ERROR", "Error: voice_app is not supported")
+        self.debugger:msg("ERROR", "Error: voice_app("..self.campaign_info.content_type_id..
+            ") is not supported")
         return false
 	end
 	survey_id = self.campaign_info.object_id

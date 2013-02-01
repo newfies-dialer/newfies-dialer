@@ -98,7 +98,7 @@ function FSMCall:init()
 end
 
 function FSMCall:end_call()
-    self.debugger:msg("ERROR", "FSMCall:end_call")
+    self.debugger:msg("INFO", "FSMCall:end_call")
 
     --Check if we need to save the last recording
     if self.record_filename and string.len(self.record_filename) > 0 then

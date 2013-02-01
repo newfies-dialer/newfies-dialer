@@ -11,23 +11,24 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
+from django.utils.translation import gettext as _
 from apiplayground import APIPlayground
 
 
 class StoreCdrAPIPlayground(APIPlayground):
 
     schema = {
-        "title": "Store CDR API Playground",
+        "title": _("Store CDR API Playground"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/store_cdr/",
-                "description": "This resource allows you to manage store cdr.",
+                "description": _("This resource allows you to manage store cdr."),
                 "endpoints": [
                     {
                         "method": "POST",
                         "url": "/api/v1/store_cdr/",
-                        "description": "Store cdr",
+                        "description": _("Store cdr"),
                         "parameters": [{
                                            "name": "cdr",
                                            "type": "string",

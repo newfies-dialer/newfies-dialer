@@ -11,33 +11,34 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
+from django.utils.translation import gettext as _
 from apiplayground import APIPlayground
 
 
 class SurveyAPIPlayground(APIPlayground):
 
     schema = {
-        "title": "Survey API Playground",
+        "title": _("Survey API Playground"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/survey/",
-                "description": "This resource allows you to manage survey.",
+                "description": _("This resource allows you to manage survey."),
                 "endpoints": [
                     {
                         "method": "GET",
                         "url": "/api/v1/survey/",
-                        "description": "Returns all surveys"
+                        "description": _("Returns all surveys")
                     },
                     {
                         "method": "GET",
                         "url": "/api/v1/survey/{survey-id}/",
-                        "description": "Returns a specific survey"
+                        "description": _("Returns a specific survey")
                     },
                     {
                         "method": "POST",
                         "url": "/api/v1/survey/",
-                        "description": "Creates new survey",
+                        "description": _("Creates new survey"),
                         "parameters": [{
                                            "name": "name",
                                            "type": "string",
@@ -53,7 +54,7 @@ class SurveyAPIPlayground(APIPlayground):
                     {
                         "method": "PUT",
                         "url": "/api/v1/survey/{survey-id}/",
-                        "description": "Update survey",
+                        "description": _("Update survey"),
                         "parameters": [{
                                            "name": "name",
                                            "type": "string",
@@ -69,7 +70,7 @@ class SurveyAPIPlayground(APIPlayground):
                     {
                         "method": "DELETE",
                         "url": "/api/v1/survey/{survey-id}/",
-                        "description": "Delete survey",
+                        "description": _("Delete survey"),
                     }
                 ]
             },

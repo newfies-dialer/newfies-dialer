@@ -11,23 +11,24 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
+from django.utils.translation import gettext as _
 from apiplayground import APIPlayground
 
 
 class CampaignDelCascadeAPIPlayground(APIPlayground):
 
     schema = {
-        "title": "Campaign Delete Cascade API Playground",
+        "title": _("Campaign Delete Cascade API Playground"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/campaign_delete_cascade/",
-                "description": "This resource allows you to delete campaign.",
+                "description": _("This resource allows you to delete campaign."),
                 "endpoints": [
                     {
                         "method": "DELETE",
                         "url": "/api/v1/campaign_delete_cascade/{campaign-id}/",
-                        "description": "Delete campaign",
+                        "description": _("Delete campaign"),
                     }
                 ]
             },

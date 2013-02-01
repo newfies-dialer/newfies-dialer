@@ -11,33 +11,34 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
+from django.utils.translation import gettext as _
 from apiplayground import APIPlayground
 
 
 class VoiceAppAPIPlayground(APIPlayground):
 
     schema = {
-        "title": "VoiceApp API Playground",
+        "title": _("VoiceApp API Playground"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/voiceapp/",
-                "description": "This resource allows you to manage voiceapps.",
+                "description": _("This resource allows you to manage voiceapps."),
                 "endpoints": [
                     {
                         "method": "GET",
                         "url": "/api/v1/voiceapp/",
-                        "description": "Returns all voiceapps"
+                        "description": _("Returns all voiceapps")
                     },
                     {
                         "method": "GET",
                         "url": "/api/v1/voiceapp/{voiceapp-id}/",
-                        "description": "Returns a specific voiceapp"
+                        "description": _("Returns a specific voiceapp")
                     },
                     {
                         "method": "POST",
                         "url": "/api/v1/voiceapp/",
-                        "description": "Creates new voiceapp",
+                        "description": _("Creates new voiceapp"),
                         "parameters": [{
                                            "name": "name",
                                            "type": "string"
@@ -50,7 +51,7 @@ class VoiceAppAPIPlayground(APIPlayground):
                     {
                         "method": "PUT",
                         "url": "/api/v1/voiceapp/{voiceapp-id}/",
-                        "description": "Update voiceapp",
+                        "description": _("Update voiceapp"),
                         "parameters": [{
                                            "name": "name",
                                            "type": "string"
@@ -63,7 +64,7 @@ class VoiceAppAPIPlayground(APIPlayground):
                     {
                         "method": "DELETE",
                         "url": "/api/v1/voiceapp/{voiceapp-id}/",
-                        "description": "Delete voiceapp",
+                        "description": _("Delete voiceapp"),
                     }
                 ]
             },

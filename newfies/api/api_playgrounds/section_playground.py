@@ -11,33 +11,34 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
+from django.utils.translation import gettext as _
 from apiplayground import APIPlayground
 
 
 class SectionAPIPlayground(APIPlayground):
 
     schema = {
-        "title": "Section API Playground",
+        "title": _("Section API Playground"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/section/",
-                "description": "This resource allows you to manage sections.",
+                "description": _("This resource allows you to manage sections."),
                 "endpoints": [
                     {
                         "method": "GET",
                         "url": "/api/v1/section/",
-                        "description": "Returns all sections"
+                        "description": _("Returns all sections")
                     },
                     {
                         "method": "GET",
                         "url": "/api/v1/section/{section-id}/",
-                        "description": "Returns a specific section"
+                        "description": _("Returns a specific section")
                     },
                     {
                         "method": "POST",
                         "url": "/api/v1/section/",
-                        "description": "Creates new section",
+                        "description": _("Creates new section"),
                         "parameters": [{
                                            "name": "type",
                                            "type": "string",
@@ -64,7 +65,7 @@ class SectionAPIPlayground(APIPlayground):
                     {
                         "method": "PUT",
                         "url": "/api/v1/section/{section-id}/",
-                        "description": "Update section",
+                        "description": _("Update section"),
                         "parameters": [{
                                            "name": "type",
                                            "type": "string",
@@ -91,7 +92,7 @@ class SectionAPIPlayground(APIPlayground):
                     {
                         "method": "DELETE",
                         "url": "/api/v1/section/{section-id}/",
-                        "description": "Delete section",
+                        "description": _("Delete section"),
                         }
                 ]
             },

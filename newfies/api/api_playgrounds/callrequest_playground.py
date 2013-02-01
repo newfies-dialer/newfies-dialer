@@ -11,33 +11,34 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
+from django.utils.translation import gettext as _
 from apiplayground import APIPlayground
 
 
 class CallrequestAPIPlayground(APIPlayground):
 
     schema = {
-        "title": "Callrequest API Playground",
+        "title": _("Callrequest API Playground"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/callrequest/",
-                "description": "This resource allows you to manage callrequest.",
+                "description": _("This resource allows you to manage callrequest."),
                 "endpoints": [
                     {
                         "method": "GET",
                         "url": "/api/v1/callrequest/",
-                        "description": "Returns all callrequests"
+                        "description": _("Returns all callrequests")
                     },
                     {
                         "method": "GET",
                         "url": "/api/v1/callrequest/{callrequest-id}/",
-                        "description": "Returns a specific callrequest"
+                        "description": _("Returns a specific callrequest")
                     },
                     {
                         "method": "POST",
                         "url": "/api/v1/callrequest/",
-                        "description": "Creates new callrequest",
+                        "description": _("Creates new callrequest"),
                         "parameters": [{
                                            "name": "request_uuid",
                                            "type": "string",
@@ -84,7 +85,7 @@ class CallrequestAPIPlayground(APIPlayground):
                     {
                         "method": "PUT",
                         "url": "/api/v1/callrequest/{callrequest-id}/",
-                        "description": "Update callrequest",
+                        "description": _("Update callrequest"),
                         "parameters": [{
                                            "name": "request_uuid",
                                            "type": "string",

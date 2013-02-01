@@ -11,33 +11,34 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
+from django.utils.translation import gettext as _
 from apiplayground import APIPlayground
 
 
 class CampaignAPIPlayground(APIPlayground):
 
     schema = {
-        "title": "Campaign API Playground",
+        "title": _("Campaign API Playground"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/campaign/",
-                "description": "This resource allows you to manage campaign.",
+                "description": _("This resource allows you to manage campaign."),
                 "endpoints": [
                     {
                         "method": "GET",
                         "url": "/api/v1/campaign/",
-                        "description": "Returns all campaigns"
+                        "description": _("Returns all campaigns")
                     },
                     {
                         "method": "GET",
                         "url": "/api/v1/campaign/{campaign-id}/",
-                        "description": "Returns a specific campaign"
+                        "description": _("Returns a specific campaign")
                     },
                     {
                         "method": "POST",
                         "url": "/api/v1/campaign/",
-                        "description": "Creates new campaign",
+                        "description": _("Creates new campaign"),
                         "parameters": [
                             {
                                 "name": "name",
@@ -128,7 +129,7 @@ class CampaignAPIPlayground(APIPlayground):
                     {
                         "method": "PUT",
                         "url": "/api/v1/campaign/{campaign-id}/",
-                        "description": "Update campaign",
+                        "description": _("Update campaign"),
                         "parameters": [
                             {
                                 "name": "name",
@@ -209,7 +210,7 @@ class CampaignAPIPlayground(APIPlayground):
                     {
                         "method": "DELETE",
                         "url": "/api/v1/campaign/{campaign-id}/",
-                        "description": "Delete campaign",
+                        "description": _("Delete campaign"),
                     }
                 ]
             }

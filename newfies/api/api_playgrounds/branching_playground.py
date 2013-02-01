@@ -11,33 +11,34 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
+from django.utils.translation import gettext as _
 from apiplayground import APIPlayground
 
 
 class BranchingAPIPlayground(APIPlayground):
 
     schema = {
-        "title": "Branching API Playground",
+        "title": _("Branching API Playground"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/branching/",
-                "description": "This resource allows you to manage branching.",
+                "description": _("This resource allows you to manage branching."),
                 "endpoints": [
                     {
                         "method": "GET",
                         "url": "/api/v1/branching/",
-                        "description": "Returns all branching"
+                        "description": _("Returns all branching")
                     },
                     {
                         "method": "GET",
                         "url": "/api/v1/branching/{branching-id}/",
-                        "description": "Returns a specific branching"
+                        "description": _("Returns a specific branching")
                     },
                     {
                         "method": "POST",
                         "url": "/api/v1/branching/",
-                        "description": "Creates new branching",
+                        "description": _("Creates new branching"),
                         "parameters": [{
                                            "name": "keys",
                                            "type": "string",
@@ -54,7 +55,7 @@ class BranchingAPIPlayground(APIPlayground):
                     {
                         "method": "PUT",
                         "url": "/api/v1/branching/{branching-id}/",
-                        "description": "Update branching",
+                        "description": _("Update branching"),
                         "parameters": [{
                                            "name": "keys",
                                            "type": "string",
@@ -71,7 +72,7 @@ class BranchingAPIPlayground(APIPlayground):
                     {
                         "method": "DELETE",
                         "url": "/api/v1/branching/{branching-id}/",
-                        "description": "Delete branching",
+                        "description": _("Delete branching"),
                         }
                 ]
             },

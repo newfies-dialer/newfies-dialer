@@ -11,18 +11,19 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
+from django.utils.translation import gettext as _
 from apiplayground import APIPlayground
 
 
 class SubscriberAPIPlayground(APIPlayground):
 
     schema = {
-        "title": "Campaign API Playground",
+        "title": _("Subscriber API Playground"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/subscriber/",
-                "description": "This resource allows you to manage campaign subscriber.",
+                "description": _("This resource allows you to manage campaign subscriber."),
                 "endpoints": [
                     {
                         "method": "GET",
@@ -32,7 +33,7 @@ class SubscriberAPIPlayground(APIPlayground):
                     {
                         "method": "POST",
                         "url": "/api/v1/subscriber/",
-                        "description": "Creates new campaign subscriber",
+                        "description": _("Creates new campaign subscriber"),
                         "parameters": [{
                                            "name": "contact",
                                            "type": "string",
@@ -64,7 +65,7 @@ class SubscriberAPIPlayground(APIPlayground):
                     {
                         "method": "PUT",
                         "url": "/api/v1/subscriber/{campaign-id}/",
-                        "description": "Update campaign subscriber",
+                        "description": _("Update campaign subscriber"),
                         "parameters": [{
                                            "name": "contact",
                                            "type": "string",

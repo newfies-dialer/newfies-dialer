@@ -478,6 +478,11 @@ def campaign_duplicate(request, id):
             dup_campaign.imported_phonebook = ''
             dup_campaign.save()
 
+            # Many to many field
+            for pb in request.POST.getlist('phonebook'):
+                dup_campaign.phonebook.add(pb)
+
+
             return HttpResponseRedirect('/campaign/')
         else:
             request.session['error_msg'] = True

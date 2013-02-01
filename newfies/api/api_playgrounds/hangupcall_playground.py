@@ -11,23 +11,24 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
+from django.utils.translation import gettext as _
 from apiplayground import APIPlayground
 
 
 class HangupCallAPIPlayground(APIPlayground):
 
     schema = {
-        "title": "Hangup Call API Playground",
+        "title": _("Hangup Call API Playground"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/hangupcall/",
-                "description": "This resource allows you to manage hangup call.",
+                "description": _("This resource allows you to manage hangup call."),
                 "endpoints": [
                     {
                         "method": "POST",
                         "url": "/api/v1/hangupcall/",
-                        "description": "hangup call",
+                        "description": _("hangup call"),
                         "parameters": [{
                                            "name": "RequestUUID",
                                            "type": "string",

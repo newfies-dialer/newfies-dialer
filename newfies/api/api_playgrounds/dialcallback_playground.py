@@ -11,23 +11,24 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
+from django.utils.translation import gettext as _
 from apiplayground import APIPlayground
 
 
 class DialCallbackAPIPlayground(APIPlayground):
 
     schema = {
-        "title": "Dial Callback API Playground",
+        "title": _("Dial Callback API Playground"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/dialcallback/",
-                "description": "This resource allows you to manage dial callback.",
+                "description": _("This resource allows you to manage dial callback."),
                 "endpoints": [
                     {
                         "method": "POST",
                         "url": "/api/v1/dialcallback/",
-                        "description": "Creates new campaign subscriber",
+                        "description": _("Creates new campaign subscriber"),
                         "parameters": [{
                                            "name": "DialALegUUID",
                                            "type": "string",

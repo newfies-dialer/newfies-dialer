@@ -177,7 +177,7 @@ class DuplicateCampaignForm(ModelForm):
 
     class Meta:
         model = Campaign
-        fields = ['campaign_code', 'name']
+        fields = ['campaign_code', 'name', 'phonebook']
 
     def __init__(self, *args, **kwargs):
         super(DuplicateCampaignForm, self).__init__(*args, **kwargs)

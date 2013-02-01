@@ -50,13 +50,13 @@
         <form method="POST" action="/campaign_duplicate/{{ campaign_id }}/" enctype="multipart/form-data" id="update_form">
         {% csrf_token %}
             <div class="modal-body">
-                <div class="row">
-                    {% get_fieldset campaign_code,name as campaign_fields from form %}
-                    {% for field in campaign_fields.hidden_fields %}
-                        {{ field }}
-                    {% endfor %}
-                    {% for field in campaign_fields.visible_fields %}
-                        <div class="span2">
+                {% get_fieldset campaign_code,name,phonebook as campaign_fields from form %}
+                {% for field in campaign_fields.hidden_fields %}
+                    {{ field }}
+                {% endfor %}
+                {% for field in campaign_fields.visible_fields %}
+                    <div class="row">
+                        <div class="span5">
                             <div class="clearfix{% if field.errors %} control-group error{% endif %}">
                                 <label for="id_{{ field.name }}">{{ field.label }}</label>
                                 <div class="input">
@@ -68,8 +68,8 @@
                                 </div>
                             </div>
                         </div>
-                    {% endfor %}
-                </div>
+                    </div>
+                {% endfor %}
             </div>
 
             <div class="modal-footer" align="right">

@@ -95,14 +95,14 @@ esac
 
 #Install Freeswitch
 cd /usr/src/
-wget https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-freeswitch.sh -O install-freeswitch.sh
+wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-freeswitch.sh -O install-freeswitch.sh
 bash install-freeswitch.sh
 /etc/init.d/freeswitch start
 
 
 #Install Plivo
 cd /usr/src/
-wget https://raw.github.com/plivo/plivoframework/master/scripts/plivo_install.sh -O plivo_install.sh
+wget -- no-check-certificate https://raw.github.com/plivo/plivoframework/master/scripts/plivo_install.sh -O plivo_install.sh
 bash plivo_install.sh /usr/share/plivo
 
 #UPDATE Plivo configuration
@@ -119,7 +119,7 @@ mv /tmp/default.conf /usr/share/plivo/etc/plivo/default.conf
 
 #Install Newfies
 cd /usr/src/
-wget https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-newfies.sh -O install-newfies.sh
+wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-newfies.sh -O install-newfies.sh
 bash install-newfies.sh
 
 

@@ -580,6 +580,12 @@ DIALERDEBUG_PHONENUMBER = 1000
 SURVEYDEV = False
 AMD = False
 
+IPYTHON_ARGUMENTS = [
+    '--ext', 'django_extensions.management.notebook_extension',
+    '--profile=nbserver',
+    '--debug'
+]
+
 #IMPORT LOCAL SETTINGS
 #=====================
 try:

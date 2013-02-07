@@ -69,7 +69,7 @@ REDIS_DB = 0
 ESL_HOSTNAME = 'localhost'
 ESL_PORT = '8021'
 ESL_SECRET = 'ClueCon'
-ESL_SCRIPT = '&lua(/usr/share/newfies-lua/newfies_amd.lua)'
+ESL_SCRIPT = '&lua(/usr/share/newfies-lua/newfies.lua)'
 
 #CUSTOM
 #======

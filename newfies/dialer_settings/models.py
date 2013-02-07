@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -59,12 +59,12 @@ class DialerSetting(models.Model):
                 help_text=_("Maximum subscribers per campaign"))
 
     blacklist = models.TextField(blank=True, null=True, default='',
-                verbose_name=_("Blacklist"),
-                help_text=_("Use regular expressions to blacklist phone numbers. For example, '^[2-4][1]+' will prevent all phone numbers starting with 2,3 or 4 and followed by 1 being called."))
+        verbose_name=_("Blacklist"),
+        help_text=_("Use regular expressions to blacklist phone numbers. For example, '^[2-4][1]+' will prevent all phone numbers starting with 2,3 or 4 and followed by 1 being called."))
 
     whitelist = models.TextField(blank=True, null=True, default='',
-                verbose_name=_("Whitelist"),
-                help_text=_("Use regular expressions to whitelist phone numbers"))
+        verbose_name=_("Whitelist"),
+        help_text=_("Use regular expressions to whitelist phone numbers"))
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)

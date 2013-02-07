@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -36,7 +36,7 @@ def calculate_date(search_type):
             hour=0, minute=0, second=0)
 
     # Last 24 hours
-    if search_type ==  SEARCH_TYPE.D_Last_24_hours:
+    if search_type == SEARCH_TYPE.D_Last_24_hours:
         start_date = end_date + relativedelta(hours=-int(24))
 
     # Last 12 hours

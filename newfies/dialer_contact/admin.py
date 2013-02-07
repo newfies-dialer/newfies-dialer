@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -161,6 +161,7 @@ class ContactAdmin(admin.ModelAdmin):
 
                     # check field type
                     if not int(row[5]):
+                        #TODO: error_msg never used
                         error_msg = _("Invalid value for import! Please check the import samples or phonebook is not valid")
                         type_error_import_list.append(row)
                         break
@@ -197,8 +198,7 @@ class ContactAdmin(admin.ModelAdmin):
                 #check if there is contact imported
                 if contact_cnt > 0:
                     msg = _('%(contact_cnt)s Contact(s) are uploaded successfully out of %(total_rows)s row(s) !!')\
-                          % {'contact_cnt': contact_cnt,
-                             'total_rows': total_rows}
+                        % {'contact_cnt': contact_cnt, 'total_rows': total_rows}
         else:
             form = Contact_fileImport(request.user)
 

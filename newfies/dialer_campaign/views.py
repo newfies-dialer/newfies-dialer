@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -55,7 +55,7 @@ def update_campaign_status_cust(request, pk, status):
     """Campaign Status (e.g. start|stop|pause|abort) can be changed from
     customer interface (via dialer_campaign/campaign list)"""
     obj_campaign = Campaign.objects.get(id=pk)
-        
+
     pagination_path = '/campaign/'
     if request.session.get('pagination_path'):
         pagination_path = request.session.get('pagination_path')
@@ -182,7 +182,7 @@ def get_campaign_survey_view(campaign_object):
     return link
 
 
-def make_duplicate_campaign(campaign_object_id):    
+def make_duplicate_campaign(campaign_object_id):
     link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate icon" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s" %s>&nbsp;</a>'\
            % (campaign_object_id, _('Duplicate this campaign'),
               tpl_control_icon('layers.png'))
@@ -201,7 +201,7 @@ def campaign_list(request):
     **Logic Description**:
 
         * List all campaigns belonging to the logged in user
-    """    
+    """
     request.session['pagination_path'] = request.META['PATH_INFO'] + '?' + request.META['QUERY_STRING']
     sort_col_field_list = ['id', 'name', 'startingdate', 'status', 'totalcontact']
     default_sort_field = 'id'
@@ -214,7 +214,7 @@ def campaign_list(request):
     campaign_list = Campaign.objects.filter(user=request.user).order_by(sort_order)
 
     template = 'frontend/campaign/list.html'
-    data = {        
+    data = {
         'module': current_view(request),
         'campaign_list': campaign_list,
         'total_campaign': campaign_list.count(),
@@ -481,7 +481,6 @@ def campaign_duplicate(request, id):
             # Many to many field
             for pb in request.POST.getlist('phonebook'):
                 dup_campaign.phonebook.add(pb)
-
 
             return HttpResponseRedirect('/campaign/')
         else:

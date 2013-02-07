@@ -6,13 +6,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 from django.conf.urls import handler404, handler500, \
-                             include, patterns
+    include, patterns
 from django.conf import settings
 from frontend.urls import urlpatterns as urlpatterns_frontend
 from dialer_contact.urls import urlpatterns as urlpatterns_dialer_contact
@@ -36,7 +36,7 @@ from api.bulk_contact_api import BulkContactResource
 from api.campaign_delete_cascade_api import CampaignDeleteCascadeResource
 from api.subscriber_api import SubscriberResource
 from api.subscriber_per_campaign_api import \
-                                    SubscriberPerCampaignResource
+    SubscriberPerCampaignResource
 from api.callrequest_api import CallrequestResource
 from api.answercall_api import AnswercallResource
 from api.dialcallback_api import DialCallbackResource
@@ -106,9 +106,9 @@ urlpatterns = patterns('',
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
     (r'^admin_tools/', include('admin_tools.urls')),
     (r'^static/(?P<path>.*)$', 'django.views.static.serve',
-                        {'document_root': settings.STATIC_ROOT}),
-    (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', \
-                            {'url': 'static/newfies/images/favicon.png'}),
+        {'document_root': settings.STATIC_ROOT}),
+    (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to',
+        {'url': 'static/newfies/images/favicon.png'}),
     #(r'^sentry/', include('sentry.web.urls')),
     (r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
 )

@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -15,7 +15,6 @@
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from dialer_contact.models import Contact
-from dialer_contact.forms import STATUS_CHOICE
 from dialer_campaign.models import Campaign
 from dialer_campaign.constants import CAMPAIGN_STATUS,\
     CAMPAIGN_STATUS_COLOR
@@ -63,7 +62,7 @@ def check_dialer_setting(request, check_for, field_value=''):
                 # check running campaign for User
                 if check_for == "campaign":
                     campaign_count = Campaign.objects\
-                                     .filter(user=request.user).count()
+                        .filter(user=request.user).count()
                     # Total active campaign matched with
                     # max_number_campaigns
                     if campaign_count >= dialer_set_obj.max_number_campaign:
@@ -80,13 +79,11 @@ def check_dialer_setting(request, check_for, field_value=''):
                     for i in campaign_list:
                         # Total contacts per campaign
                         contact_count = Contact.objects\
-                                    .filter(phonebook__campaign=i.id,
-                                            phonebook__user=request.user)\
-                                    .count()
+                            .filter(phonebook__campaign=i.id, phonebook__user=request.user)\
+                            .count()
                         # Total active contacts matched with
                         # max_number_subscriber_campaign
-                        if contact_count >= \
-                            dialer_set_obj.max_number_subscriber_campaign:
+                        if contact_count >= dialer_set_obj.max_number_subscriber_campaign:
                             # Limit matched or exceeded
                             return True
                     # Limit not matched

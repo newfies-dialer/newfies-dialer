@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -30,7 +30,7 @@ class DialerSettingModel(TestCase):
             max_calltimeout=45,
             max_number_campaign=10,
             max_number_subscriber_campaign=1000,
-            )
+        )
         self.dialer_setting.save()
 
         self.assertTrue(self.dialer_setting.__unicode__())

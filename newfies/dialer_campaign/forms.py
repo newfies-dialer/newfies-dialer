@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -131,8 +131,7 @@ class CampaignForm(ModelForm):
             self.fields['content_object'].widget.attrs['disabled'] = 'disabled'
             self.fields['content_object'].required = False
             self.fields['selected_content_object'].initial = "type:%s-id:%s" \
-                                                  % (instance.content_type.id,
-                                                     instance.object_id)
+                % (instance.content_type.id, instance.object_id)
 
     def clean(self):
         cleaned_data = self.cleaned_data
@@ -145,25 +144,25 @@ class CampaignForm(ModelForm):
         dialer_set = user_dialer_setting(ds_user)
         if dialer_set:
             if frequency > dialer_set.max_frequency:
-                msg = _('Maximum Frequency limit of %d exceeded.'\
+                msg = _('Maximum Frequency limit of %d exceeded.'
                     % dialer_set.max_frequency)
                 self._errors['frequency'] = ErrorList([msg])
                 del self.cleaned_data['frequency']
 
             if callmaxduration > dialer_set.callmaxduration:
-                msg = _('Maximum Duration limit of %d exceeded.'\
-                         % dialer_set.callmaxduration)
+                msg = _('Maximum Duration limit of %d exceeded.'
+                    % dialer_set.callmaxduration)
                 self._errors['callmaxduration'] = ErrorList([msg])
                 del self.cleaned_data['callmaxduration']
 
             if maxretry > dialer_set.maxretry:
-                msg = _('Maximum Retries limit of %d exceeded.' \
+                msg = _('Maximum Retries limit of %d exceeded.'
                     % dialer_set.maxretry)
                 self._errors['maxretry'] = ErrorList([msg])
                 del self.cleaned_data['maxretry']
 
             if calltimeout > dialer_set.max_calltimeout:
-                msg = _('Maximum Timeout limit of %d exceeded.'\
+                msg = _('Maximum Timeout limit of %d exceeded.'
                     % dialer_set.max_calltimeout)
                 self._errors['calltimeout'] = ErrorList([msg])
                 del self.cleaned_data['calltimeout']

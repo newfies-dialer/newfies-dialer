@@ -8,7 +8,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -63,8 +63,8 @@ class CallrequestValidation(Validation):
 
         if request.method == 'POST':
             rq_count = Callrequest.objects\
-            .filter(request_uuid=bundle.data.get('request_uuid'))\
-            .count()
+                .filter(request_uuid=bundle.data.get('request_uuid'))\
+                .count()
             if (rq_count != 0):
                 errors['chk_request_uuid'] = ["The Request uuid duplicated!"]
 

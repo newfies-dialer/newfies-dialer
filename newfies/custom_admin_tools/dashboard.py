@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -24,12 +24,10 @@ And to activate the app index dashboard::
 
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
-from django.conf import settings
-
 from admin_tools.dashboard import modules, Dashboard, AppIndexDashboard
 from admin_tools_stats.modules import DashboardCharts, get_active_graph
 from admin_tools.utils import get_admin_site_name
-
+from django.conf import settings
 
 class HistoryDashboardModule(modules.LinkList):
     title = 'History'

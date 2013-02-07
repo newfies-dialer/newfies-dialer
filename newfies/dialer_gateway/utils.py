@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -54,8 +54,8 @@ def phonenumber_change_prefix(phone_number, gateway_id):
         print 'Gateway not Active: %s' % gateway_id
         return False
 
-    if len(obj_gateway.removeprefix) > 0 \
-        and phone_number.startswith(obj_gateway.removeprefix):
+    if (len(obj_gateway.removeprefix) > 0
+       and phone_number.startswith(obj_gateway.removeprefix)):
         phone_number = phone_number[len(obj_gateway.removeprefix):]
 
     phone_number = obj_gateway.addprefix + phone_number

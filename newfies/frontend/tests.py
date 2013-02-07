@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -17,7 +17,7 @@ from django.core.management import call_command
 from common.utils import BaseAuthenticatedClient
 from frontend.forms import LoginForm, DashboardForm
 from frontend.views import customer_dashboard, index, \
-                           login_view, logout_view, pleaselog
+    login_view, logout_view
 from frontend.constants import SEARCH_TYPE
 
 from newfies.urls import custom_404_view, custom_500_view
@@ -168,7 +168,6 @@ class FrontendCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         response = customer_dashboard(request, on_index='yes')
 
-
     def test_logout_view(self):
         """Test Function to check logout view"""
         response = self.client.post('/logout/', follow=True)
@@ -224,9 +223,11 @@ class FrontendForgotPassword(TestCase):
             response,
             'frontend/registration/password_reset_confirm.html')
         response = self.client.post('/reset/1-2xc-5791af4cc6b67e88ce8e/',
-                                    {'new_password1': 'admin',
-                                     'new_password2': 'admin' },
-                                    follow=True)
+            {
+                'new_password1': 'admin',
+                'new_password2': 'admin'
+            },
+            follow=True)
         self.assertEqual(response.status_code, 200)
 
         response = self.client.get('/reset/done/')

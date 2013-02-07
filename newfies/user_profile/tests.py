@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -17,9 +17,7 @@ from django.test import TestCase
 from django.contrib.auth.forms import PasswordChangeForm
 from user_profile.models import UserProfile
 from user_profile.forms import UserChangeDetailForm, \
-                               UserChangeDetailExtendForm, \
-                               CheckPhoneNumberForm, \
-                               UserProfileForm
+    UserChangeDetailExtendForm, CheckPhoneNumberForm
 from user_profile.views import customer_detail_change
 from dialer_settings.models import DialerSetting
 from common.utils import BaseAuthenticatedClient
@@ -68,7 +66,6 @@ class UserProfileCustomerView(BaseAuthenticatedClient):
         self.assertTrue(response.context['user_detail_extened_form'],
                         UserChangeDetailExtendForm(self.user))
 
-
         response = self.client.post('/user_detail_change/?action=tabs-2',
                                     {'form-type': ''})
         self.assertTrue(response.context['user_password_form'],
@@ -103,8 +100,8 @@ class UserProfileModel(TestCase):
         self.dialersetting = DialerSetting.objects.get(pk=1)
 
         self.user_profile = UserProfile(
-        user=self.user,
-        dialersetting=self.dialersetting
+            user=self.user,
+            dialersetting=self.dialersetting
         )
         self.user_profile.save()
 
@@ -117,7 +114,7 @@ class UserProfileModel(TestCase):
         form.user.save()
 
         form = UserChangeDetailExtendForm(self.user)
-        form.user.address="test address"
+        form.user.address = "test address"
         form.user.save()
 
     def teardown(self):

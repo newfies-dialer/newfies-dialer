@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -33,9 +33,9 @@ class GatewayAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (_('Standard options'), {
-         'fields': ('name', 'description', 'gateways', 'gateway_codecs',
-                    'gateway_timeouts', 'gateway_retries',
-                    'originate_dial_string', 'status'),
+            'fields': ('name', 'description', 'gateways', 'gateway_codecs',
+                'gateway_timeouts', 'gateway_retries',
+                'originate_dial_string', 'status'),
         }),
         (_('Advanced options'), {
             'classes': ('collapse',),

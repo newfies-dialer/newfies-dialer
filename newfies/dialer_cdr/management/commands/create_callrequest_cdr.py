@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -64,26 +64,26 @@ def create_callrequest(campaign_id, quantity):
     for i in range(1, int(quantity) + 1):
         phonenumber = '' . join([choice(chars) for i in range(length)])
         new_callrequest = Callrequest.objects.create(
-                            request_uuid=uuid1(),
-                            user=admin_user,
-                            phone_number=phonenumber,
-                            campaign=obj_campaign,
-                            aleg_gateway_id=1,
-                            status=choice("12345678"),
-                            call_type=1,
-                            content_type_id=content_type_id,
-                            object_id=1)
+            request_uuid=uuid1(),
+            user=admin_user,
+            phone_number=phonenumber,
+            campaign=obj_campaign,
+            aleg_gateway_id=1,
+            status=choice("12345678"),
+            call_type=1,
+            content_type_id=content_type_id,
+            object_id=1)
         print "new_callrequest:"
         print new_callrequest
 
         voipcall = VoIPCall.objects.create(
-                            request_uuid=uuid1(),
-                            user=admin_user,
-                            callrequest=new_callrequest,
-                            phone_number=phonenumber,
-                            duration=random.randint(1, 100),
-                            disposition=choice(VOIPCALL_DISPOSITION),
-                            amd_status=choice(VOIPCALL_AMD_STATUS))
+            request_uuid=uuid1(),
+            user=admin_user,
+            callrequest=new_callrequest,
+            phone_number=phonenumber,
+            duration=random.randint(1, 100),
+            disposition=choice(VOIPCALL_DISPOSITION),
+            amd_status=choice(VOIPCALL_AMD_STATUS))
         print "voipcall:"
         print voipcall.id
 
@@ -117,8 +117,8 @@ def create_callrequest(campaign_id, quantity):
                             #response=response,
                             count=response_count)
         """
-    print _("No of Callrequest & CDR created :%(count)s" % \
-                {'count': quantity})
+    print _("No of Callrequest & CDR created :%(count)s" %
+        {'count': quantity})
 
 
 class Command(BaseCommand):

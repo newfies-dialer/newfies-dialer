@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -23,7 +23,6 @@ from django.db.models import Sum, Avg, Count
 from django.conf import settings
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
-
 from dialer_contact.models import Contact
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.function_def import date_range, \

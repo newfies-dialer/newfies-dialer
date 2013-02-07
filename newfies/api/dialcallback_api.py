@@ -8,7 +8,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -53,8 +53,8 @@ class DialCallbackValidation(Validation):
         try:
             Callrequest.objects.get(aleg_uuid=opt_aleg_uuid)
         except:
-            errors['CallRequest'] = ["Call request not found - uuid:%s" %\
-                                     opt_request_uuid_bleg]
+            errors['CallRequest'] = ["Call request not found - uuid:%s" %
+                opt_request_uuid_bleg]
         return errors
 
 
@@ -99,9 +99,8 @@ class DialCallbackResource(ModelResource):
     def override_urls(self):
         """Override urls"""
         return [
-            url(r'^(?P<resource_name>%s)/$' %\
-                self._meta.resource_name, self.wrap_view('create')),
-            ]
+            url(r'^(?P<resource_name>%s)/$' % self._meta.resource_name, self.wrap_view('create')),
+        ]
 
     def create_response(self, request, data,
                         response_class=HttpResponse, **response_kwargs):

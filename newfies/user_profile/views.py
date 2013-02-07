@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -23,8 +23,8 @@ from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_settings.models import DialerSetting
 from user_profile.models import UserProfile
 from user_profile.forms import UserChangeDetailForm, \
-                               UserChangeDetailExtendForm, \
-                               CheckPhoneNumberForm
+    UserChangeDetailExtendForm, \
+    CheckPhoneNumberForm
 from frontend_notification.views import notice_count
 from common.common_functions import current_view
 
@@ -86,8 +86,8 @@ def customer_detail_change(request):
                 UserChangeDetailExtendForm(
                     request.user, request.POST, instance=user_detail_extened)
             action = 'tabs-1'
-            if user_detail_form.is_valid() \
-                and user_detail_extened_form.is_valid():
+            if (user_detail_form.is_valid()
+               and user_detail_extened_form.is_valid()):
                 #DEMO / Disable
                 user_detail_form.save()
                 user_detail_extened_form.save()
@@ -98,9 +98,7 @@ def customer_detail_change(request):
             action = 'tabs-4'
             check_phone_no_form = CheckPhoneNumberForm(data=request.POST)
             if check_phone_no_form.is_valid():
-                if not common_contact_authorization(
-                    request.user,
-                    request.POST['phone_number']):
+                if not common_contact_authorization(request.user, request.POST['phone_number']):
                     error_number = _('This phone number is not authorized.')
                 else:
                     msg_number = _('This phone number is authorized.')

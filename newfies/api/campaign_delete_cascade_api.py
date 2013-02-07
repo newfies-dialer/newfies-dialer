@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -87,7 +87,7 @@ class CampaignDeleteCascadeResource(ModelResource):
                 other_campaing_count =\
                     Campaign.objects.filter(user=request.user,
                         phonebook__in=del_campaign.phonebook.all())\
-                        .exclude(id=campaign_id).count()
+                            .exclude(id=campaign_id).count()
 
                 if other_campaing_count == 0:
                     # delete phonebooks as well as contacts belong to it

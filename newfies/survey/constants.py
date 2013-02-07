@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -44,7 +44,7 @@ class SURVEY_COLUMN_NAME(Choice):
 
 class SURVEY_CALL_RESULT_NAME(Choice):
     date = _('Call-date ')
-    destination  = _('Destination')
+    destination = _('Destination')
     duration = _('Duration')
     disposition = _('Disposition')
     result = _('Survey Result')

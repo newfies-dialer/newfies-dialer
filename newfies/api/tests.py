@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -195,11 +195,11 @@ class ApiTestCase(BaseAuthenticatedClient):
     def test_create_subscriber(self):
         """Test Function to create a campaign subscriber"""
         data = simplejson.dumps({
-                "contact": "650784355",
-                "last_name": "belaid",
-                "first_name": "areski",
-                "email": "areski@gmail.com",
-                "phonebook_id": "1"})
+            "contact": "650784355",
+            "last_name": "belaid",
+            "first_name": "areski",
+            "email": "areski@gmail.com",
+            "phonebook_id": "1"})
         response = self.client.post('/api/v1/subscriber/',
             data, content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 201)
@@ -211,7 +211,7 @@ class ApiTestCase(BaseAuthenticatedClient):
         data = simplejson.dumps({
             "contact": "650784355",
             "phonebook_id": "3"
-            })
+        })
         response = self.client.post('/api/v1/subscriber/', data,
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 400)
@@ -243,14 +243,14 @@ class ApiTestCase(BaseAuthenticatedClient):
     def test_create_callrequest(self):
         """Test Function to create a callrequest"""
         data = simplejson.dumps({
-                    "request_uuid": "df8a8478-cc57-11e1-aa17-00231470a30c",
-                    "call_time": "2011-05-01 11:22:33",
-                    "phone_number": "8792749823",
-                    "content_type": "voice_app",
-                    "object_id": "1",
-                    "timeout": "30000",
-                    "callerid": "650784355",
-                    "call_type": "1"})
+            "request_uuid": "df8a8478-cc57-11e1-aa17-00231470a30c",
+            "call_time": "2011-05-01 11:22:33",
+            "phone_number": "8792749823",
+            "content_type": "voice_app",
+            "object_id": "1",
+            "timeout": "30000",
+            "callerid": "650784355",
+            "call_type": "1"})
         response = self.client.post('/api/v1/callrequest/',
             data, content_type='application/json', **self.extra)
         #self.assertEqual(response.status_code, 201)

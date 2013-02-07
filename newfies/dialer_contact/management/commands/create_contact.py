@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -36,8 +36,7 @@ class Command(BaseCommand):
             try:
                 obj_phonebook = Phonebook.objects.get(id=myphonebook_id)
             except:
-                print _('Can\'t find this Phonebook : %(id)s' % \
-                            {'id': myphonebook_id})
+                print _('Can\'t find this Phonebook : %(id)s' % {'id': myphonebook_id})
                 return False
 
             try:
@@ -48,8 +47,7 @@ class Command(BaseCommand):
                     Contact.objects.create(
                         contact=phone_no,
                         phonebook=obj_phonebook)
-                print _("No of Contact created : %(count)s" % \
-                        {'count': no_of_record})
+                print _("No of Contact created : %(count)s" % {'count': no_of_record})
             except IntegrityError:
                 print _("Duplicate contact!")
                 return False

@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -57,8 +57,7 @@ class Contact_fileImport(FileImport):
         # To get user's phonebook list
         if user:  # and not user.is_superuser
             self.fields['phonebook'].choices = \
-                Phonebook.objects.values_list('id', 'name')\
-                    .filter(user=user).order_by('id')
+                Phonebook.objects.values_list('id', 'name').filter(user=user).order_by('id')
 
 
 class PhonebookForm(ModelForm):
@@ -91,8 +90,7 @@ class ContactForm(ModelForm):
         # To get user's phonebook list
         if user:
             self.fields['phonebook'].choices = \
-                Phonebook.objects.values_list('id', 'name')\
-                    .filter(user=user).order_by('id')
+                Phonebook.objects.values_list('id', 'name').filter(user=user).order_by('id')
 
 
 class ContactSearchForm(forms.Form):
@@ -114,8 +112,7 @@ class ContactSearchForm(forms.Form):
         if user:
             pb_list_user = []
             pb_list_user.append((0, '---'))
-            phonebook_list = Phonebook.objects.values_list('id', 'name')\
-                                .filter(user=user).order_by('id')
+            phonebook_list = Phonebook.objects.values_list('id', 'name').filter(user=user).order_by('id')
             for i in phonebook_list:
                 pb_list_user.append((i[0], i[1]))
 

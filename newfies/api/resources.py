@@ -8,7 +8,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -59,7 +59,7 @@ class CustomJSONSerializer(Serializer):
 
 
 def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='',
-    leg='a', hangup_cause='', from_plivo='', to_plivo=''):
+                    leg='a', hangup_cause='', from_plivo='', to_plivo=''):
     """
     Common function to create CDR / VoIP Call
 
@@ -108,34 +108,31 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='',
     if cdr_hangup_cause == 'USER_BUSY':
         disposition = 'BUSY'
     else:
-        disposition = data["%s%s" % \
-                        (data_prefix, 'endpoint_disposition')] or ''
+        disposition = data["%s%s" % (data_prefix, 'endpoint_disposition')] or ''
     if not from_plivo:
         from_plivo = ''
 
-    logger.debug('Create CDR - request_uuid=%s ; leg=%d ; hangup_cause= %s' % \
-                    (plivo_request_uuid, leg_type, cdr_hangup_cause))
+    logger.debug('Create CDR - request_uuid=%s ; leg=%d ; hangup_cause= %s' %
+        (plivo_request_uuid, leg_type, cdr_hangup_cause))
 
     new_voipcall = VoIPCall(
-                    user=obj_callrequest.user,
-                    request_uuid=plivo_request_uuid,
-                    leg_type=leg_type,
-                    used_gateway=used_gateway,
-                    callrequest=obj_callrequest,
-                    callid=data["%s%s" % (data_prefix, 'call_uuid')] or '',
-                    callerid=from_plivo,
-                    phone_number=to_plivo,
-                    dialcode=None,  # TODO
-                    starting_date=starting_date,
-                    duration=data["%s%s" % (data_prefix, 'duration')] or 0,
-                    billsec=data["%s%s" % (data_prefix, 'billsec')] or 0,
-                    progresssec=data["%s%s" % \
-                                        (data_prefix, 'progresssec')] or 0,
-                    answersec=data["%s%s" % (data_prefix, 'answersec')] or 0,
-                    disposition=disposition,
-                    hangup_cause=cdr_hangup_cause,
-                    hangup_cause_q850=data["%s%s" % \
-                                    (data_prefix, 'hangup_cause_q850')] or '',)
+        user=obj_callrequest.user,
+        request_uuid=plivo_request_uuid,
+        leg_type=leg_type,
+        used_gateway=used_gateway,
+        callrequest=obj_callrequest,
+        callid=data["%s%s" % (data_prefix, 'call_uuid')] or '',
+        callerid=from_plivo,
+        phone_number=to_plivo,
+        dialcode=None,  # TODO
+        starting_date=starting_date,
+        duration=data["%s%s" % (data_prefix, 'duration')] or 0,
+        billsec=data["%s%s" % (data_prefix, 'billsec')] or 0,
+        progresssec=data["%s%s" % (data_prefix, 'progresssec')] or 0,
+        answersec=data["%s%s" % (data_prefix, 'answersec')] or 0,
+        disposition=disposition,
+        hangup_cause=cdr_hangup_cause,
+        hangup_cause_q850=data["%s%s" % (data_prefix, 'hangup_cause_q850')] or '',)
 
     new_voipcall.save()
 

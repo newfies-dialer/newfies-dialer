@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -16,9 +16,8 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from common.utils import BaseAuthenticatedClient
 from audiofield.models import AudioFile
-from dialer_audio.forms import DialerAudioFileForm
 from dialer_audio.views import audio_list, audio_add,\
-                               audio_change, audio_del
+    audio_change, audio_del
 
 audio_file = open(
     settings.APPLICATION_DIR + '/dialer_audio/fixtures/sample_audio_file.mp3', 'r'

@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -22,9 +22,8 @@ from dialer_cdr.forms import VoipSearchForm
 from dialer_cdr.views import export_voipcall_report, voipcall_report
 from dialer_cdr.function_def import voipcall_search_admin_form_fun
 from dialer_cdr.tasks import init_callrequest
-from dialer_cdr.tasks_dummy import dummy_testcall, \
-                                   dummy_test_answerurl, \
-                                   dummy_test_hangupurl
+# from dialer_cdr.tasks_dummy import dummy_testcall, \
+#    dummy_test_answerurl, dummy_test_hangupurl
 from datetime import datetime
 
 
@@ -127,17 +126,17 @@ class DialerCdrCeleryTaskTestCase(TestCase):
     #    result = init_callrequest.delay(self.callrequest.id, 1)
     #    self.assertEqual(result.successful(), True)
 
-    def test_dummy_test_answerurl(self):
-        """Test that the ``dummy_test_answerurl``
-        task runs with no errors, and returns the correct result."""
-        result = dummy_test_answerurl.delay(self.callrequest.request_uuid)
-        self.assertEqual(result.successful(), True)
+    # def test_dummy_test_answerurl(self):
+    #     """Test that the ``dummy_test_answerurl``
+    #     task runs with no errors, and returns the correct result."""
+    #     result = dummy_test_answerurl.delay(self.callrequest.request_uuid)
+    #     self.assertEqual(result.successful(), True)
 
-    def test_dummy_test_hangupurl(self):
-        """Test that the ``dummy_test_hangupurl``
-        periodic task runs with no errors, and returns the correct result."""
-        result = dummy_test_hangupurl.delay(self.callrequest.request_uuid)
-        self.assertEqual(result.successful(), True)
+    # def test_dummy_test_hangupurl(self):
+    #     """Test that the ``dummy_test_hangupurl``
+    #     periodic task runs with no errors, and returns the correct result."""
+    #     result = dummy_test_hangupurl.delay(self.callrequest.request_uuid)
+    #     self.assertEqual(result.successful(), True)
 
 
 class DialerCdrModel(TestCase):

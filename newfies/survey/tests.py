@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -22,13 +22,13 @@ from survey.models import Survey, Survey_template, Section,\
 from survey.forms import SurveyForm, PlayMessageSectionForm,\
     MultipleChoiceSectionForm, RatingSectionForm,\
     CaptureDigitsSectionForm, RecordMessageSectionForm,\
-    CallTransferSectionForm, BranchingForm, ScriptForm,\
+    CallTransferSectionForm, ScriptForm,\
     SurveyDetailReportForm
 from survey.views import survey_list, survey_add, \
     survey_change, survey_del, section_add, section_change,\
-    section_script_change, section_branch_change, survey_report,\
-    survey_finitestatemachine, export_surveycall_report, section_branch_add,\
-    section_delete, section_script_play, survey_view, survey_campaign_result,\
+    section_script_change, section_branch_change, \
+    section_branch_add, section_delete, section_script_play, \
+    survey_view, survey_campaign_result,\
     import_survey, export_survey
 from survey.ajax import section_sort
 

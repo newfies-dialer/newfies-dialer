@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -1006,7 +1006,7 @@ def section_update_form(request, Form, section_type, section_instance):
     if request.POST.get('update'):
         form = Form(request.user, request.POST, instance=section_instance)
         if form.is_valid():
-            obj = form.save()
+            form.save()
             request.session["msg"] = _('Section updated.')
             save_tag = True
         else:
@@ -1064,8 +1064,8 @@ def section_change(request, id):
 
     if request.method == 'POST' and request.POST.get('type'):
         # Play message or Hangup Section
-        if int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE or \
-           int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION:
+        if (int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE or
+           int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION):
             form_data = section_update_form(request,
                 PlayMessageSectionForm, SECTION_TYPE.PLAY_MESSAGE, section)
             if form_data['save_tag']:
@@ -1343,7 +1343,7 @@ def section_branch_change(request, id):
 
         *
 
-    """    
+    """
     request.session['msg'] = ''
     if request.GET.get('delete'):
         # perform delete
@@ -1361,12 +1361,12 @@ def section_branch_change(request, id):
     form = BranchingForm(branching.section.survey_id,
                          branching.section_id,
                          instance=branching)
-    if request.method == 'POST':        
+    if request.method == 'POST':
         form = BranchingForm(branching.section.survey_id,
                              branching.section_id,
                              request.POST,
                              instance=branching)
-        if form.is_valid():            
+        if form.is_valid():
             form.save()
             request.session["msg"] = _('Branching updated.')
             return HttpResponseRedirect('/survey/%s/#row%s'
@@ -1946,7 +1946,7 @@ def import_survey(request):
                         Branching_template.objects.filter(keys=row[0], section_id=new_section_id).count()
                     if duplicate_count == 0:
                         try:
-                            obj = Branching_template.objects.create(
+                            Branching_template.objects.create(
                                 keys=row[0],
                                 section_id=new_section_id,
                                 goto_id=int(new_goto_section_id) if new_goto_section_id else None,

@@ -8,7 +8,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -21,15 +21,15 @@ from tastypie.resources import ModelResource
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import ImmediateHttpResponse, \
-                                BadRequest
+    BadRequest
 from tastypie import http
 
 from dialer_cdr.models import Callrequest
 from api.resources import CustomXmlEmitter, \
-                          IpAddressAuthorization, \
-                          IpAddressAuthentication,\
-                          create_voipcall,\
-                          CDR_VARIABLES
+    IpAddressAuthorization, \
+    IpAddressAuthentication,\
+    create_voipcall,\
+    CDR_VARIABLES
 
 import logging
 import urllib
@@ -89,9 +89,8 @@ class CdrResource(ModelResource):
     def override_urls(self):
         """Override urls"""
         return [
-            url(r'^(?P<resource_name>%s)/$' %\
-                self._meta.resource_name, self.wrap_view('create')),
-            ]
+            url(r'^(?P<resource_name>%s)/$' % self._meta.resource_name, self.wrap_view('create')),
+        ]
 
     def create_response(self, request, data,
                         response_class=HttpResponse, **response_kwargs):
@@ -112,8 +111,7 @@ class CdrResource(ModelResource):
         auth_result = self._meta.authorization.is_authorized(request, object)
 
         errors = self._meta.validation.is_valid(request)
-        logger.debug('CDR API get called from IP %s' %\
-                     request.META.get('REMOTE_ADDR'))
+        logger.debug('CDR API get called from IP %s' % request.META.get('REMOTE_ADDR'))
         if not errors:
 
             opt_cdr = request.POST.get('cdr')
@@ -139,8 +137,7 @@ class CdrResource(ModelResource):
                     logger.debug("%s not found!")
 
             #TODO: Add tag for newfies in outbound call
-            if not 'plivo_request_uuid' in data \
-                or not data['plivo_request_uuid']:
+            if not 'plivo_request_uuid' in data or not data['plivo_request_uuid']:
                 # CDR not related to plivo
                 error_msg = 'CDR not related to Newfies/Plivo!'
                 logger.error(error_msg)
@@ -188,8 +185,7 @@ class CdrResource(ModelResource):
 
             object_list = [{'result': 'OK'}]
             obj = CustomXmlEmitter()
-            return self.create_response(request,\
-                obj.render(request, object_list))
+            return self.create_response(request, obj.render(request, object_list))
 
         else:
             if len(errors):

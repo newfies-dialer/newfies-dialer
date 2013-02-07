@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -47,8 +47,7 @@ class DialerSettingAdmin(admin.ModelAdmin):
             #'app_label': _('Dialer setting'),
             #'title': _('Select dialer setting to Change'),
         }
-        return super(DialerSettingAdmin, self)\
-               .changelist_view(request, extra_context=ctx)
+        return super(DialerSettingAdmin, self).changelist_view(request, extra_context=ctx)
 
     def add_view(self, request, extra_context=None):
         """
@@ -58,8 +57,7 @@ class DialerSettingAdmin(admin.ModelAdmin):
             #'app_label': _('Dialer Setting'),
             'title': _('Add dialer settings'),
         }
-        return super(DialerSettingAdmin, self)\
-               .add_view(request, extra_context=ctx)
+        return super(DialerSettingAdmin, self).add_view(request, extra_context=ctx)
 
     def change_view(self, request, object_id, extra_context=None):
         """
@@ -69,7 +67,6 @@ class DialerSettingAdmin(admin.ModelAdmin):
             #'app_label': _('Dialer Setting'),
             'title': _('Change dialer settings'),
         }
-        return super(DialerSettingAdmin, self)\
-               .change_view(request, object_id, extra_context=ctx)
+        return super(DialerSettingAdmin, self).change_view(request, object_id, extra_context=ctx)
 
 admin.site.register(DialerSetting, DialerSettingAdmin)

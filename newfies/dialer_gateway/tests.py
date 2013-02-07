@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -40,7 +40,7 @@ class GatewayView(BaseAuthenticatedClient):
                 "gateway_timeouts": "10,10",
                 "gateway_retries": "2,1",
                 "gateways": "user/,user",
-                }, follow=True)
+            }, follow=True)
         self.assertEqual(response.status_code, 200)
 
 
@@ -52,7 +52,7 @@ class GatewayModel(TestCase):
             name='test gateway',
             status=2,
             removeprefix='94'
-            )
+        )
         self.gateway.set_name("MyGateway")
         self.gateway.save()
         self.assertEqual(self.gateway.__unicode__(), u'MyGateway')

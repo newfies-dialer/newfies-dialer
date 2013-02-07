@@ -8,7 +8,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -20,7 +20,6 @@ from tastypie.authorization import Authorization
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie import fields
-
 from survey.api.survey_section_api import SectionResource
 from survey.models import Section, Branching
 
@@ -48,7 +47,7 @@ class BranchingValidation(Validation):
             try:
                 section_id = Section.objects.get(id=section_id).id
                 bundle.data['section'] = \
-                      '/api/v1/section/%s/' % section_id
+                    '/api/v1/section/%s/' % section_id
             except:
                 errors['section'] = \
                       ["The Section ID doesn't exist!"]

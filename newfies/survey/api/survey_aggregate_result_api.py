@@ -7,7 +7,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -15,14 +15,12 @@
 
 from django.conf.urls import url
 from django.http import HttpResponse
-
 from tastypie.resources import ModelResource
 from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import Authorization
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import BadRequest, ImmediateHttpResponse
 from tastypie import http
-
 from dialer_campaign.models import Campaign
 from survey.models import ResultAggregate
 import logging
@@ -72,9 +70,9 @@ class ResultAggregateResource(ModelResource):
     def override_urls(self):
         """Override urls"""
         return [
-            url(r'^(?P<resource_name>%s)/(.+)/$' %\
+            url(r'^(?P<resource_name>%s)/(.+)/$' %
                 self._meta.resource_name, self.wrap_view('read')),
-            ]
+        ]
 
     def read_response(self, request, data,
                       response_class=HttpResponse, **response_kwargs):

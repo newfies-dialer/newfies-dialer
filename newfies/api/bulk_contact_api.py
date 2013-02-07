@@ -8,7 +8,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -23,7 +23,6 @@ from tastypie.exceptions import BadRequest
 from dialer_contact.models import Contact, Phonebook
 from dialer_campaign.function_def import check_dialer_setting, \
     dialer_setting_limit
-
 import logging
 
 logger = logging.getLogger('newfies.filelog')
@@ -39,8 +38,8 @@ class BulkContactValidation(Validation):
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
         if check_dialer_setting(request, check_for="contact"):
-            errors['contact_dialer_setting'] = ["You have too many contacts per campaign. You are allowed a maximum of %s" %\
-                        dialer_setting_limit(request, limit_for="contact")]
+            errors['contact_dialer_setting'] = ["You have too many contacts per campaign. You are allowed a maximum of %s" %
+                dialer_setting_limit(request, limit_for="contact")]
         phonebook_id = bundle.data.get('phonebook_id')
         if phonebook_id:
             try:

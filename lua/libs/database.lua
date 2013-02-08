@@ -162,6 +162,13 @@ function Database:load_contact(subscriber_id)
 	self.contact = self:get_object(sqlquery)
 end
 
+function Database:load_content_type()
+    sqlquery = "SELECt id FROM django_content_type WHERE model='survey'"
+    self.debugger:msg("DEBUG", "Load content_type : "..sqlquery)
+    result = self:get_object(sqlquery)
+    return result["id"]
+end
+
 function Database:update_subscriber(subscriber_id, status)
 	sqlquery = "UPDATE dialer_subscriber SET status='"..status.."' WHERE id="..subscriber_id
 	self.debugger:msg("DEBUG", "Update Subscriber : "..sqlquery)
@@ -194,8 +201,8 @@ function Database:load_all(campaign_id, subscriber_id)
 		return false
 	end
 
-	--TODO: Fix content_type_id = 35 should be flexible
-	if self.campaign_info.content_type_id == 35 then
+    content_type_id = self:load_content_type()
+	if tonumber(self.campaign_info.content_type_id) == tonumber(content_type_id) then
 		self.app_type = 'survey'
 	else
 		self.app_type = 'voice_app'
@@ -376,6 +383,8 @@ if false then
     local debugger = Debugger(false)
     db = Database(debug_mode, debugger)
     db:connect()
+
+    print(db:load_content_type())
 
     db:save_result_mem(callrequest_id, section_id, record_file, recording_duration, dtmf)
     dtmf=io.read()

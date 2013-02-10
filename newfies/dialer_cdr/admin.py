@@ -50,7 +50,7 @@ class CallrequestAdmin(GenericAdminModelAdmin):
             'fields': ('extra_data', 'extra_dial_string', 'subscriber', 'completed'),
         }),
     )
-    #NOTE : display user / content_type low the performance
+    #If we try to display user / content_type low the performance
     list_display = ('id', 'request_uuid', 'aleg_uuid', 'call_time',
                     'status', 'callerid', 'phone_number', 'call_type',
                     'completed', 'num_attempt', 'last_attempt_time',)

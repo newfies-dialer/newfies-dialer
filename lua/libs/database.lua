@@ -214,7 +214,6 @@ function Database:load_all(campaign_id, subscriber_id)
 	if self.DG_SURVEY_ID and self.DG_SURVEY_ID > 0 then
 		survey_id = self.DG_SURVEY_ID
 	end
-	--TODO: Support Voice App
 	self:load_survey_section(survey_id)
 	self:load_survey_branching(survey_id)
 	self:load_audiofile()

@@ -14,11 +14,39 @@
 
 from django.conf import settings
 from celery.decorators import task
+from celery.task import Task
 from celery.utils.log import get_task_logger
 from dialer_campaign.models import Campaign, Subscriber
-
+from common.only_one_task import only_one
 
 logger = get_task_logger(__name__)
+
+
+class ImportPhonebook(Task):
+    @only_one(ikey="import_phonebook", timeout=60 * 5)
+    def run(self, campaign_id, phonebook_id):
+        """
+        Read all the contact from phonebook_id and insert into subscriber
+        """
+        logger = self.get_logger()
+        logger.info("TASK :: import_phonebook")
+        obj_campaign = Campaign.objects.get(id=campaign_id)
+
+        #Faster method, ask the Database to do the job
+        importcontact_custom_sql(campaign_id, phonebook_id)
+        #Count contact imported
+        count_contact = Subscriber.objects.filter(campaign=campaign_id).count()
+
+        #Add the phonebook id to the imported list
+        if obj_campaign.imported_phonebook == '':
+            sep = ''
+        else:
+            sep = ','
+        obj_campaign.imported_phonebook = obj_campaign.imported_phonebook + \
+            '%s%d' % (sep, phonebook_id)
+        obj_campaign.totalcontact = count_contact
+        obj_campaign.save()
+        return True
 
 
 @task()
@@ -42,7 +70,8 @@ def collect_subscriber(campaign_id):
         # check if phonebook_id is missing in imported_phonebook list
         if not str(phonebook_id) in obj_campaign.imported_phonebook.split(','):
             #Run import
-            import_phonebook.delay(obj_campaign.id, phonebook_id)
+            keytask = 'import_phonebook-%d-%d' % (campaign_id, phonebook_id)
+            ImportPhonebook().delay(obj_campaign.id, phonebook_id, keytask=keytask)
 
     return True
 
@@ -81,32 +110,4 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
 
     cursor.execute(sqlimport)
     transaction.commit_unless_managed()
-    return True
-
-
-@task()
-def import_phonebook(campaign_id, phonebook_id):
-    """
-    Read all the contact from phonebook_id and insert into subscriber
-    """
-    logger.info("TASK :: import_phonebook")
-
-    #TODO: Add a semafore
-
-    obj_campaign = Campaign.objects.get(id=campaign_id)
-
-    #Faster method, ask the Database to do the job
-    importcontact_custom_sql(campaign_id, phonebook_id)
-    #Count contact imported
-    count_contact = Subscriber.objects.filter(campaign=campaign_id).count()
-
-    #Add the phonebook id to the imported list
-    if obj_campaign.imported_phonebook == '':
-        sep = ''
-    else:
-        sep = ','
-    obj_campaign.imported_phonebook = obj_campaign.imported_phonebook + \
-        '%s%d' % (sep, phonebook_id)
-    obj_campaign.totalcontact = count_contact
-    obj_campaign.save()
     return True

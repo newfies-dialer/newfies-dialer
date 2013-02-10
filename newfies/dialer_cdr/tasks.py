@@ -131,7 +131,7 @@ def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
         callid=call_uuid,
         callerid=callerid,
         phone_number=phonenumber,
-        dialcode=None,  # TODO
+        dialcode=None,  # TODO : Search for Dialcode in the Prefix table
         starting_date=starting_date,
         duration=duration,
         billsec=billsec,
@@ -552,10 +552,14 @@ def init_callrequest(callrequest_id, campaign_id):
             ev = c.api("bgapi", str(dial))
             c.disconnect()
 
-            result = ev.serialize()
-            pos = result.find('Job-UUID:')
-            if pos:
-                request_uuid = result[pos + 10:pos + 46]
+            if ev:
+                result = ev.serialize()
+                logger.debug(result)
+                pos = result.find('Job-UUID:')
+                if pos:
+                    request_uuid = result[pos + 10:pos + 46]
+                else:
+                    request_uuid = 'error'
             else:
                 request_uuid = 'error'
 
@@ -570,9 +574,7 @@ def init_callrequest(callrequest_id, campaign_id):
                 obj_subscriber.status = SUBSCRIBER_STATUS.FAIL
                 obj_subscriber.save()
             return False
-        logger.debug(result)
         logger.info('Received RequestUUID :> ' + request_uuid)
-
     else:
         logger.error('No other method supported!')
         return False

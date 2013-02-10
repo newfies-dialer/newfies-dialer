@@ -84,19 +84,21 @@ def notify_admin(request):
     """Notify administrator regarding dialer setting configuration for
        system user via mail
     """
-    # TODO : get recipient = admin user
-    recipient = User.objects.get(pk=request.user.pk)
-    if not request.session['has_notified']:
-        frontend_send_notification(
-            request, NOTIFICATION_NAME.dialer_setting_configuration, recipient)
-        # Send mail to ADMINS
-        subject = _('Dialer setting configuration')
-        message = _('Notification - User Dialer Setting The user "%(user)s" - "%(user_id)s" is not properly configured to use the system, please configure their dialer settings.') %\
-            {'user': request.user, 'user_id': request.user.id}
-        # mail_admins() is a shortcut for sending an email to the site admins,
-        # as defined in the ADMINS setting
-        mail_admins(subject, message)
-        request.session['has_notified'] = True
+    # Get all the admin users - admin superuser
+    all_admin_user = User.objects.filter(is_superuser=True)
+    for user in all_admin_user:
+        recipient = user    
+        if not request.session['has_notified']:
+            frontend_send_notification(
+                request, NOTIFICATION_NAME.dialer_setting_configuration, recipient)
+            # Send mail to ADMINS
+            subject = _('Dialer setting configuration')
+            message = _('Notification - User Dialer Setting The user "%(user)s" - "%(user_id)s" is not properly configured to use the system, please configure their dialer settings.') %\
+                {'user': request.user, 'user_id': request.user.id}
+            # mail_admins() is a shortcut for sending an email to the site admins,
+            # as defined in the ADMINS setting
+            mail_admins(subject, message)
+            request.session['has_notified'] = True
 
     return HttpResponseRedirect('/dashboard/')
 

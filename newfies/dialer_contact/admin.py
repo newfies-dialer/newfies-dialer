@@ -125,6 +125,7 @@ class ContactAdmin(admin.ModelAdmin):
         opts = Contact._meta
         rdr = ''  # will contain CSV data
         msg = ''
+        error_msg = ''
         success_import_list = []
         type_error_import_list = []
         contact_cnt = 0
@@ -160,8 +161,7 @@ class ContactAdmin(admin.ModelAdmin):
                         continue
 
                     # check field type
-                    if not int(row[5]):
-                        #TODO: error_msg never used
+                    if not int(row[5]):                        
                         error_msg = _("Invalid value for import! Please check the import samples or phonebook is not valid")
                         type_error_import_list.append(row)
                         break
@@ -210,6 +210,7 @@ class ContactAdmin(admin.ModelAdmin):
             'app_label': _('Dialer_contact'),
             'rdr': rdr,
             'msg': msg,
+            'error_msg': error_msg,
             'success_import_list': success_import_list,
             'type_error_import_list': type_error_import_list,
         })

@@ -454,8 +454,7 @@ def contact_del(request, object_id):
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
 
-        try:
-            #TODO : checked with filter(phonebook__user=request.user) but not working
+        try:            
             contact_list = Contact.objects.extra(where=['id IN (%s)' % values])
             if contact_list:
                 request.session["msg"] =\

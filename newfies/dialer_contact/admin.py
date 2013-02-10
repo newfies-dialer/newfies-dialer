@@ -125,6 +125,7 @@ class ContactAdmin(admin.ModelAdmin):
         opts = Contact._meta
         rdr = ''  # will contain CSV data
         msg = ''
+        error_msg = ''
         success_import_list = []
         type_error_import_list = []
         contact_cnt = 0

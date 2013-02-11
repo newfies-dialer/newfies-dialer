@@ -26,7 +26,7 @@ from dialer_contact.views import phonebook_add, \
     contact_change, contact_del, contact_import,\
     get_contact_count
 from dialer_campaign.views import get_url_campaign_status
-from dialer_contact.tasks import import_phonebook
+from dialer_contact.tasks import ImportPhonebook
 from common.utils import BaseAuthenticatedClient
 from datetime import datetime
 
@@ -330,9 +330,9 @@ class DialerContactCeleryTaskTestCase(TestCase):
                 'user_profile.json']
 
     def test_import_phonebook(self):
-        """Test that the ``import_phonebook``
+        """Test that the ``ImportPhonebook``
         task runs with no errors, and returns the correct result."""
-        result = import_phonebook.delay(1, 1)
+        result = ImportPhonebook.delay(1, 1)
         self.assertEqual(result.successful(), True)
 
         # Test mgt command

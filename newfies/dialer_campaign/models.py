@@ -420,8 +420,7 @@ class Campaign(Model):
 
     def get_pending_subscriber_update(self, limit=1000, status=SUBSCRIBER_STATUS.IN_PROCESS):
         """Get all the pending subscribers from the campaign"""
-        #TODO: in django 1.4 : replace by SELECT FOR UPDATE
-        list_subscriber = Subscriber.objects\
+        list_subscriber = Subscriber.objects.select_for_update()\
             .filter(campaign=self.id, status=SUBSCRIBER_STATUS.PENDING)\
             .all()[:limit]
         if not list_subscriber:

@@ -178,9 +178,18 @@ class DuplicateCampaignForm(ModelForm):
         model = Campaign
         fields = ['campaign_code', 'name', 'phonebook']
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         super(DuplicateCampaignForm, self).__init__(*args, **kwargs)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
+
+        if user:                    
+            list_pb = []
+            list_pb.append((0, '---'))
+            list = Phonebook.objects.values_list('id', 'name')\
+                .filter(user=user).order_by('id')
+            for l in list:
+                list_pb.append((l[0], l[1]))
+            self.fields['phonebook'].choices = list_pb
 
 
 class CampaignAdminForm(ModelForm):

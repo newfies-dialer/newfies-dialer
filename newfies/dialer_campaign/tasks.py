@@ -192,7 +192,7 @@ class campaign_running(PeriodicTask):
     # of calls per minute. Cons : new calls might delay 60seconds
     #run_every = timedelta(seconds=60)
 
-    @only_one(key="campaign_running", timeout=LOCK_EXPIRE)
+    @only_one(ikey="campaign_running", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
         logger.debug("TASK :: campaign_running")
 
@@ -212,7 +212,7 @@ class campaign_expire_check(PeriodicTask):
     """
     run_every = timedelta(seconds=300)
 
-    @only_one(key="campaign_expire_check", timeout=LOCK_EXPIRE)
+    @only_one(ikey="campaign_expire_check", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
         logger.info("TASK :: campaign_expire_check")
 

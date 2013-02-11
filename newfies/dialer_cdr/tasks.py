@@ -315,7 +315,7 @@ class task_pending_callevent(PeriodicTask):
     # of calls per minute. Cons : new calls might delay 60seconds
     #run_every = timedelta(seconds=60)
 
-    @only_one(key="task_pending_callevent", timeout=LOCK_EXPIRE)
+    @only_one(ikey="task_pending_callevent", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
         logger.info("ASK :: task_pending_callevent")
         check_callevent()
@@ -326,7 +326,7 @@ from celery.decorators import periodic_task
 from datetime import timedelta
 
 @periodic_task(run_every=timedelta(seconds=1))
-@only_one(key="callrequest_pending", timeout=LOCK_EXPIRE)
+@only_one(ikey="callrequest_pending", timeout=LOCK_EXPIRE)
 def callrequest_pending(*args, **kwargs):
     #A periodic task that checks for pending calls
     #**Usage**:

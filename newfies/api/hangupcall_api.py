@@ -206,7 +206,7 @@ class HangupcallResource(ModelResource):
                         subscriber=callrequest.subscriber
                     )
                     new_callrequest.save()
-                    #Todo Check if it's a good practice
+                    #TODO: Check if it's a good practice
                     #implement a PID algorithm
                     second_towait = callrequest.campaign.intervalretry
                     logger.info("Init Retry CallRequest in  %d seconds" % second_towait)

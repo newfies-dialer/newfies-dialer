@@ -44,6 +44,8 @@ def update_campaign_status_admin(request, pk, status):
     """Campaign Status (e.g. start|stop|pause|abort) can be changed from
     admin interface (via campaign list)"""
     obj_campaign = Campaign.objects.get(id=pk)
+    obj_campaign.status = status
+    obj_campaign.save()
     recipient = request.user
     frontend_send_notification(request, status, recipient)
     return HttpResponseRedirect(
@@ -55,6 +57,8 @@ def update_campaign_status_cust(request, pk, status):
     """Campaign Status (e.g. start|stop|pause|abort) can be changed from
     customer interface (via dialer_campaign/campaign list)"""
     obj_campaign = Campaign.objects.get(id=pk)
+    obj_campaign.status = status
+    obj_campaign.save()
 
     pagination_path = '/campaign/'
     if request.session.get('pagination_path'):

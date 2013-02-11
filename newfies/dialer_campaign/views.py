@@ -460,10 +460,10 @@ def campaign_change(request, object_id):
 
 @login_required
 def campaign_duplicate(request, id):
-    form = DuplicateCampaignForm()
+    form = DuplicateCampaignForm(request.user)
     request.session['error_msg'] = ''
     if request.method == 'POST':
-        form = DuplicateCampaignForm(request.POST)
+        form = DuplicateCampaignForm(request.user, request.POST)
         if form.is_valid():
 
             campaign_obj = Campaign.objects.get(pk=id)

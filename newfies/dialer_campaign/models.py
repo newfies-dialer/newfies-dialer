@@ -420,8 +420,7 @@ class Campaign(Model):
 
     def get_pending_subscriber_update(self, limit=1000, status=SUBSCRIBER_STATUS.IN_PROCESS):
         """Get all the pending subscribers from the campaign"""
-        #TODO: in django 1.4 : replace by SELECT FOR UPDATE
-        list_subscriber = Subscriber.objects\
+        list_subscriber = Subscriber.objects.select_for_update()\
             .filter(campaign=self.id, status=SUBSCRIBER_STATUS.PENDING)\
             .all()[:limit]
         if not list_subscriber:
@@ -430,26 +429,6 @@ class Campaign(Model):
             elem_subscriber.status = status
             elem_subscriber.save()
         return list_subscriber
-
-    def update_status(self, status):
-        """Campaign Status (e.g. start | stop | abort | pause) needs to be changed.
-        It is a common function for the admin and customer UI's
-
-        **Attributes**:
-
-            * ``status`` - selected status for the campaign record
-
-        """
-        previous_status = self.status
-        self.status = status
-        self.save()
-        #Start tasks to import subscriber
-        if (int(status) == CAMPAIGN_STATUS.START
-           and int(previous_status) != CAMPAIGN_STATUS.START):
-            #TODO: Move to signal
-            from dialer_campaign.tasks import collect_subscriber
-            collect_subscriber.delay(self.id)
-        return self.user
 
 
 class Subscriber(Model):
@@ -550,3 +529,19 @@ def post_save_add_contact(sender, **kwargs):
                 pass
 
 post_save.connect(post_save_add_contact, sender=Contact)
+
+
+def post_update_campaign_status(sender, **kwargs):
+    """A ``post_save`` signal is sent by the Campaign model instance whenever
+    it is going to save.
+
+    If Campaign Status is start, perform collect_subscriber task
+    """
+    obj = kwargs['instance']
+    #Start tasks to import subscriber
+    if int(obj.status) == CAMPAIGN_STATUS.START:
+        from dialer_campaign.tasks import collect_subscriber
+        collect_subscriber.delay(obj.id)
+
+
+post_save.connect(post_update_campaign_status, sender=Campaign)

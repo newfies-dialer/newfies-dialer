@@ -44,7 +44,7 @@ def update_campaign_status_admin(request, pk, status):
     """Campaign Status (e.g. start|stop|pause|abort) can be changed from
     admin interface (via campaign list)"""
     obj_campaign = Campaign.objects.get(id=pk)
-    recipient = obj_campaign.update_status(status)
+    recipient = request.user
     frontend_send_notification(request, status, recipient)
     return HttpResponseRedirect(
         reverse("admin:dialer_campaign_campaign_changelist"))
@@ -64,7 +64,7 @@ def update_campaign_status_cust(request, pk, status):
     if int(status) == CAMPAIGN_STATUS.START and obj_campaign.phonebook.all().count() == 0:
         request.session['error_msg'] = _('Error : You have to assign a phonebook to your campaign before starting it')
     else:
-        recipient = obj_campaign.update_status(status)
+        recipient = request.user
         frontend_send_notification(request, status, recipient)
 
         # Notify user while campaign Start

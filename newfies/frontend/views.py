@@ -183,12 +183,7 @@ def customer_dashboard(request, on_index=None):
     total_busy = 0
     total_cancel = 0
     total_congestion = 0
-    total_chanunavail = 0
-    total_dontcall = 0
-    total_torture = 0
-    total_invalidargs = 0
-    total_noroute = 0
-    total_forbidden = 0
+    total_failed = 0
     search_type = SEARCH_TYPE.D_Last_24_hours  # default Last 24 hours
     selected_campaign = ''
 
@@ -253,19 +248,9 @@ def customer_dashboard(request, on_index=None):
                 total_cancel += i['starting_date__count']
             elif i['disposition'] == VOIPCALL_DISPOSITION.CONGESTION:
                 total_congestion += i['starting_date__count']
-            elif i['disposition'] == VOIPCALL_DISPOSITION.CHANUNAVAIL:
-                total_chanunavail += i['starting_date__count']
-            elif i['disposition'] == VOIPCALL_DISPOSITION.DONTCALL:
-                total_dontcall += i['starting_date__count']
-            elif i['disposition'] == VOIPCALL_DISPOSITION.TORTURE:
-                total_torture += i['starting_date__count']
-            elif i['disposition'] == VOIPCALL_DISPOSITION.INVALIDARGS:
-                total_invalidargs += i['starting_date__count']
-            elif (i['disposition'] == VOIPCALL_DISPOSITION.NOROUTE
-               or i['disposition'] == 'NO_ROUTE'):
-                total_noroute += i['starting_date__count']
             else:
-                total_forbidden += i['starting_date__count']  # FORBIDDEN
+                #VOIP CALL FAILED
+                total_failed += i['starting_date__count']
 
         # This part got from cdr-stats 'global report'
         # following calls list is without disposition & group by call date
@@ -446,23 +431,13 @@ def customer_dashboard(request, on_index=None):
         #'total_others': total_others,
         'total_cancel': total_cancel,
         'total_congestion': total_congestion,
-        'total_chanunavail': total_chanunavail,
-        'total_dontcall': total_dontcall,
-        'total_torture': total_torture,
-        'total_invalidargs': total_invalidargs,
-        'total_noroute': total_noroute,
-        'total_forbidden': total_forbidden,
+        'total_failed': total_failed,
         'answered_color': COLOR_DISPOSITION['ANSWER'],
         'busy_color': COLOR_DISPOSITION['BUSY'],
         'not_answered_color': COLOR_DISPOSITION['NOANSWER'],
         'cancel_color': COLOR_DISPOSITION['CANCEL'],
         'congestion_color': COLOR_DISPOSITION['CONGESTION'],
-        'chanunavail_color': COLOR_DISPOSITION['CHANUNAVAIL'],
-        'dontcall_color': COLOR_DISPOSITION['DONTCALL'],
-        'torture_color': COLOR_DISPOSITION['TORTURE'],
-        'invalidargs_color': COLOR_DISPOSITION['INVALIDARGS'],
-        'noroute_color': COLOR_DISPOSITION['NOROUTE'],
-        'forbidden_color': COLOR_DISPOSITION['FORBIDDEN'],
+        'failed_color': COLOR_DISPOSITION['FAILED'],
         'SEARCH_TYPE': SEARCH_TYPE,
     }
     if on_index == 'yes':

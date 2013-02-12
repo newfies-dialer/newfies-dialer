@@ -18,15 +18,12 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
 from dialer_campaign.models import Campaign
 from dialer_cdr.models import Callrequest, VoIPCall
-from survey.models import Result, ResultAggregate, Section
+#from survey.models import Section
 from random import choice
 from uuid import uuid1
 import random
 
-VOIPCALL_DISPOSITION = ['ANSWER', 'BUSY', 'NOANSWER', 'CANCEL', 'CONGESTION',
-                        'CHANUNAVAIL', 'DONTCALL', 'TORTURE', 'INVALIDARGS',
-                        'NOROUTE', 'FORBIDDEN']
-VOIPCALL_DISPOSITION = ['ANSWER']
+VOIPCALL_DISPOSITION = ['ANSWER', 'BUSY', 'NOANSWER', 'CANCEL', 'CONGESTION', 'FAILED']
 
 SURVEY_RESULT_QUE = [
     'Please rank our support from 1 to 9, 1 being low and 9 being high',
@@ -87,10 +84,10 @@ def create_callrequest(campaign_id, quantity):
         print "voipcall:"
         print voipcall.id
 
-        response_count = choice("1234567890")
+        # response_count = choice("1234567890")
 
-        print "Get list section:"
-        list_section = Section.objects.filter(survey_id=obj_campaign.object_id)
+        # print "Get list section:"
+        # list_section = Section.objects.filter(survey_id=obj_campaign.object_id)
         #list_section = Section.objects.all()
 
         """

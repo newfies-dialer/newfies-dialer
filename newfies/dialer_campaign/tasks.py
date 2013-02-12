@@ -63,7 +63,7 @@ class campaign_spool_contact(PeriodicTask):
             collect_subscriber.delay(campaign.id)
 
 
-#TODO: Put a priority on this task
+#TODO : Put a priority on this task
 @task()
 def check_campaign_pendingcall(campaign_id):
     """This will execute the outbound calls in the campaign
@@ -80,31 +80,28 @@ def check_campaign_pendingcall(campaign_id):
         logger.error('Can\'t find this campaign')
         return False
 
-    #TODO: Control the Speed
+    #TODO : Control the Speed
     #if there is many task pending we should slow down
     frequency = obj_campaign.frequency  # default 10 calls per minutes
 
     dialer_set = user_dialer_setting(obj_campaign.user)
 
-    # default call_type
+    #Default call_type
     call_type = 1
     # Check campaign's maxretry
     if obj_campaign.maxretry == 0:
         call_type = 2
 
-    # Check user's dialer setting maxretry
+    #Check user's dialer setting maxretry
     if dialer_set:
         if dialer_set.maxretry == 0:
             call_type = 2
-        # check frequency to control the Speed
-        #if dialer_set.frequency:
-        #    frequency = 20
 
     #Speed
-    #check if the other tasks send for this campaign finished to be ran
+    #Check if the other tasks send for this campaign finished to be ran
 
     #Get the subscriber of this campaign
-    # get_pending_subscriber get Max 1000 records
+    #get_pending_subscriber get Max 1000 records
     list_subscriber = obj_campaign.get_pending_subscriber_update(
         frequency,
         SUBSCRIBER_STATUS.IN_PROCESS
@@ -121,8 +118,11 @@ def check_campaign_pendingcall(campaign_id):
         logger.info("No Subscriber to proceed on this campaign")
         return False
 
-    if no_subscriber < 10:
-        #if not many subscriber, don't wait too long n create a faster dialing feeling
+    if no_subscriber == 1:
+        #Not many subscriber do a fast dial
+        time_to_wait = 1.0
+    elif no_subscriber < 10:
+        #Not many subscriber do a fast dial
         time_to_wait = 6.0
     else:
         #Set time to wait for balanced dispatching of calls
@@ -160,7 +160,6 @@ def check_campaign_pendingcall(campaign_id):
             subscriber=elem_camp_subscriber)
         new_callrequest.save()
 
-        #TODO: Check if it's a good practice / implement a PID algorithm
         second_towait = ceil(count * time_to_wait)
         logger.info("Init CallRequest in  %d seconds" % second_towait)
         init_callrequest.apply_async(

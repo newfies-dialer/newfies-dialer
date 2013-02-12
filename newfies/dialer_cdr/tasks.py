@@ -76,8 +76,7 @@ def check_retrycall_completion(obj_subscriber, callrequest):
             subscriber=callrequest.subscriber
         )
         new_callrequest.save()
-        #TODO: Check if it's a good practice
-        #implement a PID algorithm
+        #NOTE : implement a PID algorithm
         second_towait = callrequest.campaign.completion_intervalretry
         logger.info("Init Completion Retry CallRequest in  %d seconds" % second_towait)
         init_callrequest.apply_async(
@@ -265,7 +264,6 @@ def check_callevent():
                 #Allowed Retry
                 logger.error("Allowed Retry - Maxretry (%d)" % callrequest.campaign.maxretry)
 
-                # TODO : Review Logic
                 # Create new callrequest, Assign parent_callrequest,
                 # Change callrequest_type & num_attempt
                 new_callrequest = Callrequest(
@@ -286,8 +284,7 @@ def check_callevent():
                     subscriber=callrequest.subscriber
                 )
                 new_callrequest.save()
-                #TODO: Check if it's a good practice
-                #implement a PID algorithm
+                #NOTE : implement a PID algorithm
                 second_towait = callrequest.campaign.intervalretry
                 logger.info("Init Retry CallRequest in  %d seconds" % second_towait)
                 init_callrequest.apply_async(
@@ -334,7 +331,6 @@ def callrequest_pending(*args, **kwargs):
     #
     logger.info("TASK :: callrequest_pending")
 
-    #TODO: Django 1.4 select_for_update
     list_callrequest = Callrequest.objects\
                 .get_pending_callrequest()[:settings.MAX_CALLS_PER_SECOND]
     logger.info("callrequest_pending - number_found=%d" % \
@@ -529,7 +525,7 @@ def init_callrequest(callrequest_id, campaign_id):
                 time_limit = int(time_limit)
             except ValueError:
                 time_limit = -1
-            #TODO:Fix time_limit - maybe implement this into Lua
+            #TODO : Fix time_limit - maybe implement this into Lua
             # if time_limit > 0:
             #     # create sched_hangup_id
             #     sched_hangup_id = str(uuid1())

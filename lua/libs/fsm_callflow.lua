@@ -333,7 +333,7 @@ function FSMCall:next_node_light()
     if current_node.type == PLAY_MESSAGE then
         self:playnode(current_node)
     else
-        self.debugger:msg("ERROR", "next_node_light need to be a PLAY_MESSAGE")
+        self.debugger:msg("ERROR", "next_node_light need to be a PLAY_MESSAGE : "..current_node.type)
         self:end_call()
         return false
     end

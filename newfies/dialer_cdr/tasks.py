@@ -529,13 +529,14 @@ def init_callrequest(callrequest_id, campaign_id):
                 time_limit = int(time_limit)
             except ValueError:
                 time_limit = -1
-            if time_limit > 0:
-                # create sched_hangup_id
-                sched_hangup_id = str(uuid1())
-                # create a new request uuid
-                request_uuid = str(uuid1())
-                args_list.append("api_on_answer_1='sched_api +%d %s hupall ALLOTTED_TIMEOUT'"
-                    % (time_limit, sched_hangup_id))
+            #TODO:Fix time_limit - maybe implement this into Lua
+            # if time_limit > 0:
+            #     # create sched_hangup_id
+            #     sched_hangup_id = str(uuid1())
+            #     # create a new request uuid
+            #     request_uuid = str(uuid1())
+            #     args_list.append("api_on_answer_1='sched_api +%d %s hupall ALLOTTED_TIMEOUT'"
+            #         % (time_limit, sched_hangup_id))
 
             # build originate string
             args_str = ','.join(args_list)

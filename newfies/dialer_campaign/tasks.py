@@ -160,7 +160,7 @@ def check_campaign_pendingcall(campaign_id):
             subscriber=elem_camp_subscriber)
         new_callrequest.save()
 
-        #Todo Check if it's a good practice / implement a PID algorithm
+        #TODO: Check if it's a good practice / implement a PID algorithm
         second_towait = ceil(count * time_to_wait)
         logger.info("Init CallRequest in  %d seconds" % second_towait)
         init_callrequest.apply_async(

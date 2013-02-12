@@ -43,7 +43,7 @@ def campaign_status(value):
         return ''
     STATUS = dict(CAMPAIGN_STATUS)
     try:
-        status = STATUS[value]
+        status = STATUS[value].encode('utf-8')
     except:
         status = ''
 

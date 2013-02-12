@@ -219,5 +219,6 @@ class campaign_expire_check(PeriodicTask):
         for obj_campaign in Campaign.objects.get_expired_campaign():
             logger.debug("=> Campaign name %s (id:%s)" %
                 (obj_campaign.name, obj_campaign.id))
-            obj_campaign.update_status(CAMPAIGN_STATUS.END)
+            obj_campaign.status = CAMPAIGN_STATUS.END
+            obj_campaign.save()
         return True

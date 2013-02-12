@@ -51,7 +51,7 @@ import hashlib
 import csv
 import os
 
-testdebug = False  # TODO: Change later
+testdebug = False
 
 
 def placeholder_replace(text, contact):
@@ -169,7 +169,6 @@ def save_section_result(request, obj_callrequest, obj_p_section, DTMF):
             RecordFile = os.path.split(RecordFile)[1]
         except:
             RecordFile = ''
-        #TODO: Find more elegant way to do an UPSERT
         try:
             #Insert Result
             result = Result(

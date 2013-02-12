@@ -245,7 +245,7 @@ def get_content_type(object_string):
     Retrieve ContentType and Object ID from a string
     It is used by campaign_add & campaign_change
 
-    >>> get_content_type("type:31-id:1")
+    >>> get_content_type("type:30-id:1")
     {'object_type': <ContentType: Phonebook>, 'object_id': '1'}
     """
     contenttype = {}

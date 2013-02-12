@@ -160,7 +160,7 @@ def check_campaign_pendingcall(campaign_id):
             subscriber=elem_camp_subscriber)
         new_callrequest.save()
 
-        #Todo Check if it's a good practice / implement a PID algorithm
+        #TODO: Check if it's a good practice / implement a PID algorithm
         second_towait = ceil(count * time_to_wait)
         logger.info("Init CallRequest in  %d seconds" % second_towait)
         init_callrequest.apply_async(
@@ -219,5 +219,6 @@ class campaign_expire_check(PeriodicTask):
         for obj_campaign in Campaign.objects.get_expired_campaign():
             logger.debug("=> Campaign name %s (id:%s)" %
                 (obj_campaign.name, obj_campaign.id))
-            obj_campaign.update_status(CAMPAIGN_STATUS.END)
+            obj_campaign.status = CAMPAIGN_STATUS.END
+            obj_campaign.save()
         return True

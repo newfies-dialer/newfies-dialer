@@ -50,7 +50,6 @@ def create_callrequest(campaign_id, quantity):
 
     length = 5
     chars = "1234567890"
-    alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
     #'survey' | 'voiceapp'
     try:
@@ -84,13 +83,15 @@ def create_callrequest(campaign_id, quantity):
         print "voipcall:"
         print voipcall.id
 
-        # response_count = choice("1234567890")
+        """
+        alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        response_count = choice("1234567890")
 
         # print "Get list section:"
-        # list_section = Section.objects.filter(survey_id=obj_campaign.object_id)
+        list_section = Section.objects.filter(survey_id=obj_campaign.object_id)
         #list_section = Section.objects.all()
 
-        """
+
         for j in range(1, 3):
             section_id = random.randint(0, len(list_section) - 1)
             print section_id

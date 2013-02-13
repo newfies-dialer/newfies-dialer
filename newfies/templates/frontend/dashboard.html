@@ -109,7 +109,7 @@
         ];
 
         var data = call_count_data;
-        function Info(time, info){
+        function Info(time, info) {
             for(var i in data){
                 if(data[i][0] == parseInt(time)){
                     switch(info){
@@ -131,7 +131,6 @@
 
 
         function formTicks(val) {
-
             var dt = new Date(parseInt(val));
             var hour = dt.getHours();
             var minute = dt.getMinutes();

@@ -13,6 +13,7 @@
 #
 
 from django.core.management.base import BaseCommand
+from optparse import make_option
 from django.utils.translation import gettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
@@ -21,10 +22,12 @@ from dialer_cdr.models import Callrequest, VoIPCall
 #from survey.models import Section
 from random import choice
 from uuid import uuid1
+import datetime
 import random
+import bisect
 
-VOIPCALL_DISPOSITION = ['ANSWER', 'BUSY', 'NOANSWER', 'CANCEL', 'CONGESTION', 'FAILED']
 
+VOIPCALL_DISPOSITION = [('ANSWER', 80), ('BUSY', 10), ('NOANSWER', 20), ('CANCEL', 5), ('CONGESTION', 4), ('FAILED', 10)]
 SURVEY_RESULT_QUE = [
     'Please rank our support from 1 to 9, 1 being low and 9 being high',
     'Were you satisfy by the technical expertise of our agent, '
@@ -32,11 +35,22 @@ SURVEY_RESULT_QUE = [
     'lease record a message to comment on our agent after the beep'
 ]
 VOIPCALL_AMD_STATUS = [1, 2, 3]
-
 RESPONSE = ['apple', 'orange', 'banana', 'mango', 'greps', 'watermelon']
 
 
-def create_callrequest(campaign_id, quantity):
+def weighted_choice(choices):
+    values, weights = zip(*choices)
+    total = 0
+    cum_weights = []
+    for w in weights:
+        total += w
+        cum_weights.append(total)
+    x = random.random() * total
+    i = bisect.bisect(cum_weights, x)
+    return values[i]
+
+
+def create_callrequest(campaign_id, no_of_record, day_delta_int):
     """
     Create Callrequest
     """
@@ -51,13 +65,19 @@ def create_callrequest(campaign_id, quantity):
     length = 5
     chars = "1234567890"
 
-    #'survey' | 'voiceapp'
+    #content_type_id is survey or voiceapp
     try:
         content_type_id = ContentType.objects.get(model='survey').id
     except:
         content_type_id = 1
 
-    for i in range(1, int(quantity) + 1):
+    for i in range(1, int(no_of_record) + 1):
+        delta_days = random.randint(0, day_delta_int)
+        delta_minutes = random.randint(-720, 720)
+        created_date = datetime.datetime.now() \
+            - datetime.timedelta(minutes=delta_minutes) \
+            - datetime.timedelta(days=delta_days)
+
         phonenumber = '' . join([choice(chars) for i in range(length)])
         new_callrequest = Callrequest.objects.create(
             request_uuid=uuid1(),
@@ -68,20 +88,24 @@ def create_callrequest(campaign_id, quantity):
             status=choice("12345678"),
             call_type=1,
             content_type_id=content_type_id,
+            call_time=created_date,
+            created_date=created_date,
             object_id=1)
-        print "new_callrequest:"
-        print new_callrequest
+        print "new_callrequest: " + str(new_callrequest)
 
         voipcall = VoIPCall.objects.create(
             request_uuid=uuid1(),
+            callid=uuid1(),
             user=admin_user,
             callrequest=new_callrequest,
+            starting_date=created_date,
             phone_number=phonenumber,
-            duration=random.randint(1, 100),
-            disposition=choice(VOIPCALL_DISPOSITION),
+            duration=random.randint(50, 1000),
+            disposition=weighted_choice(VOIPCALL_DISPOSITION),
             amd_status=choice(VOIPCALL_AMD_STATUS))
-        print "voipcall:"
-        print voipcall.id
+        print "voipcall: " + str(voipcall)
+        voipcall.starting_date = created_date
+        voipcall.save()
 
         """
         alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -115,22 +139,55 @@ def create_callrequest(campaign_id, quantity):
                             #response=response,
                             count=response_count)
         """
-    print _("No of Callrequest & CDR created :%(count)s" %
-        {'count': quantity})
+    print _("Callrequests and CDRs created : %(count)s" %
+        {'count': no_of_record})
 
 
 class Command(BaseCommand):
-    # Use : create_callrequest_cdr '1|1324242' '3|124242'
-    #                              'campaign_id|quantity'
-    args = _('"campaign_id|quantity" "campaign_id|quantity"')
-    help = _("Create new call requests and CDRs for a given campaign_id")
+    args = 'campaign_id, no_of_record, delta_day'
+    help = "Generate random call-requests and CDRs for a given campaign_id\n"\
+           "--------------------------------------------------------------\n"\
+           "python manage.py create_callrequest_cdr --campaign_id=1 --number-call=100 --delta-day=0"
+
+    option_list = BaseCommand.option_list + (
+        make_option('--number-call',
+                    default=None,
+                    dest='number-call',
+                    help=help),
+        make_option('--delta-day',
+                    default=None,
+                    dest='delta-day',
+                    help=help),
+        make_option('--campaign_id',
+                    default=None,
+                    dest='campaign_id',
+                    help=help),
+    )
 
     def handle(self, *args, **options):
-        """Note that subscriber created this way are only for devel purposes"""
+        """
+        Note that subscriber created this way are only for devel purposes
+        """
+        no_of_record = 1  # default
+        if options.get('number-call'):
+            try:
+                no_of_record = int(options.get('number-call'))
+            except ValueError:
+                no_of_record = 1
 
-        for newinst in args:
-            res = newinst.split('|')
-            campaign_id = res[0]
-            quantity = res[1]
+        day_delta_int = 30  # default
+        if options.get('delta-day'):
+            try:
+                day_delta_int = int(options.get('delta-day'))
+            except ValueError:
+                day_delta_int = 30
 
-            create_callrequest(campaign_id, quantity)
+        campaign_id = 1
+        if options.get('campaign_id'):
+            try:
+                campaign_id = options.get('campaign_id')
+                campaign_id = int(campaign_id)
+            except ValueError:
+                campaign_id = 1
+
+        create_callrequest(campaign_id, no_of_record, day_delta_int)

@@ -236,7 +236,8 @@ def customer_dashboard(request, on_index=None):
             .order_by('starting_date')
 
         for i in calls:
-            if i['disposition'] == VOIPCALL_DISPOSITION.ANSWER:
+            if (i['disposition'] == VOIPCALL_DISPOSITION.ANSWER
+               or i['disposition'] == 'NORMAL_CLEARING'):
                 total_answered += i['starting_date__count']
             elif (i['disposition'] == VOIPCALL_DISPOSITION.BUSY
                or i['disposition'] == 'USER_BUSY'):
@@ -244,9 +245,11 @@ def customer_dashboard(request, on_index=None):
             elif (i['disposition'] == VOIPCALL_DISPOSITION.NOANSWER
                or i['disposition'] == 'NO_ANSWER'):
                 total_not_answered += i['starting_date__count']
-            elif i['disposition'] == VOIPCALL_DISPOSITION.CANCEL:
+            elif (i['disposition'] == VOIPCALL_DISPOSITION.CANCEL
+               or i['disposition'] == 'ORIGINATOR_CANCEL'):
                 total_cancel += i['starting_date__count']
-            elif i['disposition'] == VOIPCALL_DISPOSITION.CONGESTION:
+            elif (i['disposition'] == VOIPCALL_DISPOSITION.CONGESTION
+               or i['disposition'] == 'NORMAL_CIRCUIT_CONGESTION'):
                 total_congestion += i['starting_date__count']
             else:
                 #VOIP CALL FAILED

@@ -2,7 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -3620,20 +3620,3 @@ msgstr ""
 #, python-format
 msgid "%(count)s voiceapp(s) are deleted."
 msgstr ""
-
-#~ msgid "Download audio"
-#~ msgstr "Scarica audio"
-
-#, fuzzy
-#~ msgid "survey"
-#~ msgstr "Sondaggio"
-
-#, fuzzy
-#~ msgid "\"campaign_id|quantity\" \"campaign_id|quantity\""
-#~ msgstr "\"Campaign_id | no_of_record\" \"campaign_id | no_of_record\""
-
-#, fuzzy
-#~ msgid "Create new call requests and CDRs for a given campaign_id"
-#~ msgstr ""
-#~ "Non crea di nuove richieste di chiamata e CDR per un campaign_id dato e "
-#~ "non di record"

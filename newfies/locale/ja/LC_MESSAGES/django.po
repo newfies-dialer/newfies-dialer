@@ -2,7 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Newfies-Dialer\n"
@@ -3548,41 +3548,3 @@ msgstr "ボイスアプリケーションのアップデート"
 #, python-format
 msgid "%(count)s voiceapp(s) are deleted."
 msgstr "%(count)sボイスアプリケーションが削除されました"
-
-#~ msgid "CHANUNAVAIL"
-#~ msgstr "チャンネル使用不可能"
-
-#~ msgid "DONTCALL"
-#~ msgstr "受信拒否"
-
-#~ msgid "TORTURE"
-#~ msgstr "TORTURE"
-
-#~ msgid "INVALIDARGS"
-#~ msgstr "エラー引数"
-
-#~ msgid "NOROUTE"
-#~ msgstr "ルートなし"
-
-#~ msgid "FORBIDDEN"
-#~ msgstr "禁止"
-
-#~ msgid "\"campaign_id|quantity\" \"campaign_id|quantity\""
-#~ msgstr "\"campaign_id|no_of_record\" \"campaign_id|no_of_record\""
-
-#~ msgid "Create new call requests and CDRs for a given campaign_id"
-#~ msgstr "この campaign_id で新しいコールリクエストとCDRを作成する"
-
-#~ msgid "Voice Apps"
-#~ msgstr "ボイスアプリケーション"
-
-#, fuzzy
-#~ msgid "Import Survey"
-#~ msgstr "アンケート調査"
-
-#, fuzzy
-#~ msgid "Import list of survey by uploading Text files"
-#~ msgstr "CSVアップロードによりコンタクトリストをインポート"
-
-#~ msgid "Branching on timeout"
-#~ msgstr "タイムアウト時の分岐"

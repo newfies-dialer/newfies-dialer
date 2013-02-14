@@ -20,7 +20,7 @@ create-static:
 #	cd $(PRJ_DIR) && echo rm -rf $(dirname $(shell ./manage.py findstatic site.js))
 
 makeallmessages:
-	cd $(PRJ_DIR) && ./manage.py makemessages -s -a -e ".html,.txt" 
+	cd $(PRJ_DIR) && ./manage.py makemessages -s -a -e ".html,.txt"
 
 test:
 	python setup.py nosetests
@@ -59,3 +59,6 @@ reset: cleardb
 	cd $(PRJ_DIR) && python manage.py syncdb --noinput
 	cd $(PRJ_DIR) && python manage.py loaddata fixtures/auth.json
 	@echo 'Login as admin/admin'
+
+graph_models:
+	cd $(PRJ_DIR) && python manage.py graph_models -a -g -o project_models.png

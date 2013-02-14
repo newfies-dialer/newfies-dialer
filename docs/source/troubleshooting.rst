@@ -54,13 +54,7 @@ All the logs are centralized into one single directory **/var/log/newfies/**
 
 **celery-newfies-node1.log** : This contains celery activity
 
-
-The logs files for plivo can be find in this directory : /usr/share/plivo/tmp/
-
-**plivo-rest.log** : Plivo REST APIs logs
-
-**plivo-outbound.log** : Logs of communication between FreeSWITCH and Plivo
-
+**newfieslua_logs_%%.log.log** : This contains the phone system logs
 
 
 .. _enable-debug:
@@ -161,7 +155,6 @@ Now you can visit the webserver celerymon starts by going to: http://localhost:8
 
 
 
-
 .. _discard-pending-tasks:
 
 How to discard all pending tasks
@@ -169,27 +162,6 @@ How to discard all pending tasks
 
 http://docs.celeryproject.org/en/latest/faq.html?highlight=purge#how-do-i-discard-all-waiting-tasks
 
-
-
-.. _checking-plivo-running:
-
-Checking Plivo is running
-=========================
-
-At the command line, type::
-
-    $ ps aux | grep plivo
-
-
-This should tell you that Plivo-rest, Plivo-Outbound and Plivo-cache are all running. If they are not, these services can be restarted with the following commands::
-
-    $ /etc/init.d/plivo stop
-    $ /etc/init.d/plivocache stop
-    $ /etc/init.d/plivo start
-    $ /etc/init.d/plivocache start
-
-
-If there are still issues with Plivo, then check the logs for clues at **/usr/share/plivo/tmp/**
 
 
 .. _checking-freeswitch:
@@ -236,9 +208,7 @@ Backend :
 
     * 1. Celery Monitor Running
 
-    * 2. Plivo Running
-
-    * 3. Freeswitch running
+    * 2. Freeswitch running
 
 
 If there are still problems, then raise a support question on the mailing-list http://groups.google.com/group/newfies-dialer or our forum, http://forum.newfies-dialer.org/, alternatively, contact newfies-dialer@star2billing.com for commercial support.

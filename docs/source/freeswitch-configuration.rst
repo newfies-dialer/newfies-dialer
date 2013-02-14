@@ -11,5 +11,4 @@ Contents:
     :maxdepth: 2
 
     ./freeswitch/install-configure-freeswitch
-    ./freeswitch/install-plivo
     ./freeswitch/trunk-configuration

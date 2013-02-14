@@ -55,10 +55,6 @@ img {
     border: 0;
 }
 
-.visualize {
-    margin:10px 0 0 30px;
-}
-
 .dashboard_summary_header{
     height: 20px;
     color: #1b5582;
@@ -682,12 +678,15 @@ td {
 
 td.survey_result_key {
     width: 70px;
-    text-align: center;
     font-weight: bold;
 }
 
 td.survey_edit_key {
-    width: 70px;
+    width: 100px;
+}
+
+td.camp_type {
+    width: 200px;
 }
 
 /* customize the survey edition, this is for the sortable question header */
@@ -710,3 +709,10 @@ td.survey_edit_key {
     line-height: 38px;
 }
 
+body .modal-section {
+    width: 610px;
+}
+
+.navbar-fixed-top .logo_name {
+    padding: 15px 20px;
+}

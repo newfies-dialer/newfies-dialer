@@ -8,7 +8,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -23,7 +23,8 @@ from tastypie.throttle import BaseThrottle
 from tastypie import fields
 
 from api.user_api import UserResource
-from dialer_campaign.models import Campaign, Phonebook
+from dialer_contact.models import Phonebook
+from dialer_campaign.models import Campaign
 
 
 class PhonebookValidation(Validation):
@@ -168,5 +169,5 @@ class PhonebookResource(ModelResource):
         validation = PhonebookValidation()
         filtering = {
             'name': ALL,
-            }
+        }
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600)

@@ -2,8 +2,7 @@
 
 Newfies-Dialer Views
 ====================
-.. automodule:: dialer_campaign.views
-
+.. automodule:: frontend.views
 
 .. _index-view:
 
@@ -50,20 +49,7 @@ Newfies-Dialer Views
   .. autofunction:: cust_password_reset_confirm
 
 
-.. _common_send_notification:
-
-:class:`common_send_notification`
----------------------------------
-
-  .. autofunction:: common_send_notification
-
-
-.. _common_campaign_status:
-
-:class:`common_campaign_status`
--------------------------------
-
-  .. autofunction:: common_campaign_status
+.. automodule:: dialer_contact.views
 
 
 .. _phonebook_list:
@@ -72,14 +58,6 @@ Newfies-Dialer Views
 -----------------------
 
   .. autofunction:: phonebook_list
-
-
-.. _phonebook_grid:
-
-:class:`phonebook_grid`
------------------------
-
-  .. autofunction:: phonebook_grid
 
 
 .. _phonebook_add:
@@ -106,14 +84,6 @@ Newfies-Dialer Views
   .. autofunction:: contact_list
 
 
-.. _contact_grid:
-
-:class:`contact_grid`
----------------------
-
-  .. autofunction:: contact_grid
-
-
 .. _contact_add:
 
 :class:`contact_add`
@@ -138,20 +108,15 @@ Newfies-Dialer Views
   .. autofunction:: contact_import
 
 
+.. automodule:: dialer_campaign.views
+
+
 .. _campaign_list:
 
 :class:`campaign_list`
 ----------------------
 
   .. autofunction:: campaign_list
-
-
-.. _campaign_grid:
-
-:class:`campaign_grid`
-----------------------
-
-  .. autofunction:: campaign_grid
 
 
 .. _campaign_add:
@@ -201,6 +166,7 @@ Newfies-Dialer Views
 ----------------------
 
   .. autofunction:: survey_report
+
 
 
 .. automodule:: dialer_audio.views

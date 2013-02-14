@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n dialer_cdr_tags %}
 
 <script type="text/javascript" language="javascript">
 function toggleChecked(status) {
@@ -7,14 +7,17 @@ function toggleChecked(status) {
     })
 }
 
-$(document).ready(function() {
-    $('#ListForm').submit(function() {
-        
+$(function () {
+    $('#ListForm').submit(function(e) {
+
+        var currentForm = this;
+        e.preventDefault();
+
         var $fields = $(this).find('input[name="select"]:checked');
 
         if (!$fields.length) {
             msg = '{% trans "You must check at least one box!" %}';
-            alert(msg);
+            bootbox.alert(msg);
             return false; // The form will *not* submit
         }
         else
@@ -22,84 +25,74 @@ $(document).ready(function() {
             var confirm_string;
             var contact_count;
 
-            if(document.location.href.search("/voiceapp/") != -1)
-            {
+            if(document.location.href.search("/voiceapp/") != -1) {
                 confirm_string =  $fields.length + '{% trans " voice app(s) are going to be deleted?" %}';
             }
-            if(document.location.href.search("/contact/") != -1)
-            {
-                confirm_string = $fields.length +  '{% trans " phonebook(s) are going to be deleted?" %}' ;
+            if(document.location.href.search("/contact/") != -1) {
+                confirm_string = $fields.length +  '{% trans " contact(s) are going to be deleted?" %}' ;
             }
-            if(document.location.href.search("/survey/") != -1)
-            {
+            if(document.location.href.search("/survey/") != -1) {
                 confirm_string = $fields.length + '{% trans " survey(s) are going to be deleted?" %}';
             }
-            if(document.location.href.search("/audio/") != -1)
-            {
+            if(document.location.href.search("/audio/") != -1) {
                 confirm_string = $fields.length + '{% trans " audio(s) are going to be deleted?" %}';
             }
-            if(document.location.href.search("/phonebook/") != -1)
-            {
-                var allVals = [];                
+            if(document.location.href.search("/phonebook/") != -1) {
+                var allVals = [];
                 $fields.each(function() {
-                   allVals.push($(this).val());                   
-                });                                 
+                   allVals.push($(this).val());
+                });
                 $.ajax({
-                    url: "http://127.0.0.1:8000/phonebook/contact_count/",
+                    url: "/phonebook/contact_count/",
                     type: "GET",
                     async: false,
                     cache: false,
                     timeout: 30000,
                     data: "pb_ids=" + allVals,
-                    success: function(data) {                                                
-                        contact_count = data;                                               
+                    success: function(data) {
+                        contact_count = data;
                     },
                     error: function() {
                         alert("Request failed");
                     }
                 });
-                
+
                 confirm_string = $fields.length + '{% trans " phonebook(s) are going to be deleted with " %}' + contact_count + '{% trans " contact(s)?" %}';
             }
-            if(document.location.href.search("/campaign/") != -1)
-            {
+            if(document.location.href.search("/campaign/") != -1) {
                 confirm_string = $fields.length + '{% trans " campaign(s) are going to be deleted?" %}';
             }
-            if(document.location.href.search("/user_detail_change/") != -1)
-            {
-                confirm_string = $fields.length + '{% trans " notification(s) are going to be deleted?" %}';
-
-                if(document.getElementById('id_mark_read') && document.getElementById('id_mark_read').value == 'true')
-                {
-                    confirm_string = $fields.length + '{% trans " notification(s) are going to be marked as read?" %}';
-                }
+            if(document.location.href.search("/survey/") != -1) {
+                confirm_string = $fields.length + '{% trans " survey(s) are going to be deleted?" %}';
             }
 
-            var answer = confirm(confirm_string);
-            return answer; // answer is a boolean
+            bootbox.confirm(confirm_string, function(result) {
+                if (result) {
+                    currentForm.submit();
+                }
+            });
+
+            return false;
         }
     });
+
+    $('#id_delete_confirm').click(function(e) {
+        e.preventDefault();
+        var href = this.href;
+        confirm_string = '{% trans "Confirm deletion?" %}';
+        bootbox.confirm(confirm_string, function(result){
+            if (result) {
+                window.location = href;
+            }
+        });
+        return false;
+    });
 });
-</script>
-
-
-<!--flexigrid css & js-->
-<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid.css" type="text/css" />
-<script type="text/javascript" src="{{STATIC_URL}}newfies/js/flexigrid.js"></script>
-<link rel="stylesheet" href="{{STATIC_URL}}newfies/css/flexigrid_custom.css" type="text/css" />
-
-<script type="text/javascript" language="javascript">
-function get_alert_msg(id)
-{
-    confirm_string = '{% trans "Confirm deletion?" %}';
-    var answer = confirm(confirm_string);
-    return answer // answer is a boolean
-}
 
 function get_alert_msg_for_phonebook(id)
 {
     $.ajax({
-        url: "http://127.0.0.1:8000/phonebook/contact_count/",
+        url: "/phonebook/contact_count/",
         type: "GET",
         async: false,
         cache: false,
@@ -108,12 +101,18 @@ function get_alert_msg_for_phonebook(id)
         success: function(data) {
             contact_count = data;
         },
-        error: function() {
-            //alert("Request failed");
+        // error: function() {
+        //     alert("Request failed");
+        // }
+    });
+    var href = $('#id_phonebook_delete_confirm').attr('href');
+    confirm_string = '{% trans "Please confirm to delete this phonebook with" %} ' + contact_count + ' {% trans "contact(s)" %}'
+
+    bootbox.confirm(confirm_string, function(result){
+        if (result) {
+            window.location = href;
         }
     });
-    confirm_string = '{% trans "Please confirm to delete this phonebook with" %} ' + contact_count + ' {% trans "contact(s)" %}'
-    var answer = confirm(confirm_string);
-    return answer // answer is a boolean
+    return false;
 }
 </script>

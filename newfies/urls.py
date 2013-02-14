@@ -6,22 +6,26 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-from django.conf.urls.defaults import handler404, handler500, \
-                                    include, patterns
+from django.conf.urls import handler404, handler500, \
+    include, patterns
 from django.conf import settings
-from django.conf.urls.i18n import *
+from frontend.urls import urlpatterns as urlpatterns_frontend
+from dialer_contact.urls import urlpatterns as urlpatterns_dialer_contact
 from dialer_campaign.urls import urlpatterns as urlpatterns_dialer_campaign
 from dialer_cdr.urls import urlpatterns as urlpatterns_dialer_cdr
 from user_profile.urls import urlpatterns as urlpatterns_user_profile
 from voice_app.urls import urlpatterns as urlpatterns_voice_app
 from survey.urls import urlpatterns as urlpatterns_survey
 from dialer_audio.urls import urlpatterns as urlpatterns_dialer_audio
+from frontend_notification.urls import urlpatterns as urlpatterns_frontend_notification
+from api.api_playgrounds.urls import urlpatterns as urlpatterns_api_playgrounds
 from tastypie.api import Api
+
 from api.user_api import UserResource
 from api.voiceapp_api import VoiceAppResource
 from api.gateway_api import GatewayResource
@@ -30,17 +34,20 @@ from api.phonebook_api import PhonebookResource
 from api.campaign_api import CampaignResource
 from api.bulk_contact_api import BulkContactResource
 from api.campaign_delete_cascade_api import CampaignDeleteCascadeResource
-from api.campaign_subscriber_api import CampaignSubscriberResource
-from api.campaignsubscriber_per_campaign_api import \
-                                    CampaignSubscriberPerCampaignResource
+from api.subscriber_api import SubscriberResource
+from api.subscriber_per_campaign_api import \
+    SubscriberPerCampaignResource
 from api.callrequest_api import CallrequestResource
 from api.answercall_api import AnswercallResource
 from api.dialcallback_api import DialCallbackResource
 from api.hangupcall_api import HangupcallResource
 from api.store_cdr_api import CdrResource
-from survey.api.survey_api import SurveyAppResource
-from survey.api.survey_question_api import SurveyQuestionResource
-from survey.api.survey_response_api import SurveyResponseResource
+from api.audiofile_api import AudioFileResource
+
+from survey.api.survey_api import SurveyResource
+from survey.api.survey_section_api import SectionResource
+from survey.api.survey_branching_api import BranchingResource
+from survey.api.survey_aggregate_result_api import ResultAggregateResource
 
 import os
 from django.contrib import admin
@@ -64,16 +71,22 @@ tastypie_api.register(PhonebookResource())
 tastypie_api.register(CampaignResource())
 tastypie_api.register(BulkContactResource())
 tastypie_api.register(CampaignDeleteCascadeResource())
-tastypie_api.register(CampaignSubscriberResource())
-tastypie_api.register(CampaignSubscriberPerCampaignResource())
+tastypie_api.register(SubscriberResource())
+tastypie_api.register(SubscriberPerCampaignResource())
 tastypie_api.register(CallrequestResource())
 tastypie_api.register(AnswercallResource())
 tastypie_api.register(DialCallbackResource())
 tastypie_api.register(HangupcallResource())
 tastypie_api.register(CdrResource())
-tastypie_api.register(SurveyAppResource())
-tastypie_api.register(SurveyQuestionResource())
-tastypie_api.register(SurveyResponseResource())
+#tastypie_api.register(SurveyAppResource())
+#tastypie_api.register(SurveyQuestionResource())
+#tastypie_api.register(SurveyResponseResource())
+tastypie_api.register(SurveyResource())
+tastypie_api.register(SectionResource())
+tastypie_api.register(BranchingResource())
+tastypie_api.register(ResultAggregateResource())
+tastypie_api.register(AudioFileResource())
+
 
 js_info_dict = {
     'domain': 'djangojs',
@@ -85,26 +98,31 @@ js_info_dict = {
 }
 
 urlpatterns = patterns('',
-    (r'^logout/$', 'dialer_campaign.views.logout_view'),
+    (r'^logout/$', 'frontend.views.logout_view'),
     (r'^admin/', include(admin.site.urls)),
     (r'^api/', include(tastypie_api.urls)),
+
     (r'^i18n/', include('django.conf.urls.i18n')),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
     (r'^admin_tools/', include('admin_tools.urls')),
     (r'^static/(?P<path>.*)$', 'django.views.static.serve',
-                        {'document_root': settings.STATIC_ROOT}),
-    (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', \
-                            {'url': 'static/newfies/images/favicon.png'}),
+        {'document_root': settings.STATIC_ROOT}),
+    (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to',
+        {'url': 'static/newfies/images/favicon.png'}),
     #(r'^sentry/', include('sentry.web.urls')),
     (r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
 )
 
+urlpatterns += urlpatterns_frontend
+urlpatterns += urlpatterns_dialer_contact
 urlpatterns += urlpatterns_dialer_campaign
 urlpatterns += urlpatterns_dialer_cdr
 urlpatterns += urlpatterns_user_profile
 urlpatterns += urlpatterns_voice_app
 urlpatterns += urlpatterns_survey
 urlpatterns += urlpatterns_dialer_audio
+urlpatterns += urlpatterns_api_playgrounds
+urlpatterns += urlpatterns_frontend_notification
 
 urlpatterns += patterns('',
     (r'^%s/(?P<path>.*)$' % settings.MEDIA_URL.strip(os.sep),

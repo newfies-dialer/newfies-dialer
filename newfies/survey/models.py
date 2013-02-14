@@ -6,69 +6,27 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 
 from django.db import models
+from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
-from tagging.fields import TagField
+from django.contrib.contenttypes.models import ContentType
 from dialer_campaign.models import Campaign
-from dialer_gateway.models import Gateway
 from dialer_cdr.models import Callrequest
+from survey.constants import SECTION_TYPE_NOTRANSFER, SECTION_TYPE
 from audiofield.models import AudioFile
+from common.language_field import LanguageField
+from common.big_integer_field import BigIntegerField
 from adminsortable.models import Sortable
 
-from south.modelsinspector import add_introspection_rules
-add_introspection_rules([], ["^tagging.fields.TagField"])
-add_introspection_rules([], ["^audiofield.fields.AudioField"])
 
-
-TTS_CHOICES = (
-    ('us-Callie-8Hz',   u'us-Callie-8Hz'),
-    ('us-Allison-8Hz',   u'us-Allison-8Hz'),
-)
-
-MESSAGE_TYPE = (
-    (1, u'Audio File'),
-    (2, u'Text2Speech'),
-)
-
-APP_TYPE = (
-    (1, u'MENU'),
-    (2, u'HANGUP'),
-    (3, u'RECORDING'),
-    #(4, u'DIAL'),
-    #(5, u'PLAYAUDIO'),
-    #(6, u'CONFERENCE'),
-    #(7, u'SPEAK'),
-)
-
-
-"""
-class Text2speechMessage(models.Model):
-    name = models.CharField(max_length=150, blank=False, verbose_name="Name")
-    tts_message = models.TextField(max_length=1500, blank=True,
-                        verbose_name="Text2Speech Message",
-                        help_text = 'Define the text2speech message')
-    tts_engine = models.CharField(choices=TTS_CHOICES, max_length=120,
-                        blank=True, verbose_name="TTS Engine")
-    created_date = models.DateTimeField(auto_now_add=True)
-    updated_date = models.DateTimeField(auto_now=True)
-    #code_language = models.ForeignKey(Language, verbose_name="Language")
-
-    #link to user
-    user = models.ForeignKey('auth.User', related_name='TTS Message owner')
-
-    def __unicode__(self):
-        return '[%s] %s' %(self.id, self.name)
-"""
-
-
-class SurveyApp(Sortable):
-    """This defines the Survey
+class Survey_abstract(models.Model):
+    """This defines the Survey template
 
     **Attributes**:
 
@@ -80,114 +38,382 @@ class SurveyApp(Sortable):
         * ``user`` - Foreign key relationship to the User model.\
         Each survey is assigned to a User
 
-    **Name of DB table**: surveyapp
+    **Name of DB table**: survey
     """
     name = models.CharField(max_length=90, verbose_name=_('Name'))
+    tts_language = LanguageField(blank=True, null=True, default='en',
+                                 verbose_name=_('Text-to-Speech Language'))
     description = models.TextField(null=True, blank=True,
-                        verbose_name=_('Description'),
-                        help_text=_("Survey Description"))
-    user = models.ForeignKey('auth.User', related_name='owner')
+                                   verbose_name=_('Description'))
     created_date = models.DateTimeField(auto_now_add=True,
-                        verbose_name=_('Date'))
+                                        verbose_name=_('Date'))
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = _("Survey")
-        verbose_name_plural = _("Surveys")
+        abstract = True
 
     def __unicode__(self):
             return u"%s" % self.name
 
 
-class SurveyQuestion(Sortable):
+class Survey_template(Survey_abstract):
+    """
+    This defines the Survey template
+    """
+    user = models.ForeignKey('auth.User', related_name='survey_template_user')
+
+    class Meta:
+        permissions = (
+            ("view_survey_template", _('Can see Survey Template')),
+        )
+        verbose_name = _("Survey template")
+        verbose_name_plural = _("Survey templates")
+
+    def copy_survey_template(self, campaign_obj):
+        """
+        copy survey template to survey when starting campaign
+        """
+        new_survey_obj = Survey.objects.create(
+            name=self.name,
+            tts_language=self.tts_language,
+            description=self.description,
+            user=self.user,
+            campaign_id=campaign_obj.id)
+
+        # updated campaign content_type & object_id with new survey object
+        survey_id = ContentType.objects.get(model='survey').id
+        campaign_obj.content_type_id = survey_id
+        campaign_obj.object_id = new_survey_obj.id
+        campaign_obj.save()
+
+        # Copy Sections
+        section_template = Section_template.objects.filter(survey=self)
+        for section_temp in section_template:
+            section_temp.copy_section_template(new_survey_obj)
+
+        # Copy Sections Branching
+        for section_temp in section_template:
+            #get the new created section
+            section = Section.objects.get(section_template=section_temp.id, survey=new_survey_obj)
+            #Now add the branching for this section
+            section_temp.copy_section_branching_template(section, new_survey_obj)
+
+        return True
+
+
+class Survey(Survey_abstract):
+    """
+    This defines the Survey
+    """
+    user = models.ForeignKey('auth.User', related_name='survey_user')
+    campaign = models.ForeignKey(Campaign, null=True, blank=True,
+                                 verbose_name=_("Campaign"))
+
+    class Meta:
+        permissions = (
+            ("view_survey", _('Can see Survey')),
+            ("export_survey", _('Can export Survey')),
+            ("import_survey", _('Can import Survey')),
+            ("view_survey_report", _('Can see Survey Report'))
+        )
+        verbose_name = _("Survey")
+        verbose_name_plural = _("Surveys")
+
+
+class Section_abstract(Sortable):
     """This defines the question for survey
 
     **Attributes**:
 
-        * ``question`` - survey name.
-        * ``tags`` -
-        * ``message_type`` -
+        * ``type`` - section type
+        * ``question`` - question
+        * ``script`` - text that will be used for TTS
+        * ``audiofile`` - audio file to be use instead of TTS
+        * ``invalid_audiofile`` - audio to play when input is invalid
+        * ``retries`` - amount of time to retry to get a valid input
+        * ``timeout`` - time to wait for user input
+        * ``key_0`` - on multi choice section, text for result on key 0
+        * ``key_1`` - on multi choice section, text for result on key 1
+        * ``key_2`` - on multi choice section, text for result on key 2
+        * ``key_3`` - on multi choice section, text for result on key 3
+        * ``key_4`` - on multi choice section, text for result on key 4
+        * ``key_5`` - on multi choice section, text for result on key 5
+        * ``key_6`` - on multi choice section, text for result on key 6
+        * ``key_7`` - on multi choice section, text for result on key 7
+        * ``key_8`` - on multi choice section, text for result on key 8
+        * ``key_9`` - on multi choice section, text for result on key 9
+        * ``rating_laps`` - From 1 to X, value to accept rating input
+        * ``validate_number`` - check if we want to valid the input on Enter Number section
+        * ``number_digits`` - Number of digits to wait for on Enter Number section
+        * ``min_number`` - if validate_number the minimum number accepted
+        * ``max_number`` - if validate_number the maximum number accepted
+        * ``phonenumber`` - phonenumber to dialout
+        * ``completed`` - reaching this section will mark the subscriber as completed
 
     **Relationships**:
 
-        * ``user`` - Foreign key relationship to the User model.\
-        Each survey question is assigned to a User
-        * ``surveyapp`` - Foreign key relationship to the SurveyApp model.\
-        Each survey question is assigned to a SurveyApp
+        * ``survey`` - Foreign key relationship to the Survey model.\
+        Each survey question is assigned to a Survey
         * ``audio_message`` - Foreign key relationship to the AudioFile model.
 
     **Name of DB table**: survey_question
     """
-    class Meta(Sortable.Meta):
-        ordering = Sortable.Meta.ordering + ['surveyapp']
-
-    question = models.CharField(max_length=500,
-                    verbose_name=_("Question"),
-                    help_text=_('Enter your question'))
-    tags = TagField(blank=True, max_length=1000)
-    user = models.ForeignKey('auth.User', related_name='Survey owner')
-    surveyapp = models.ForeignKey(SurveyApp, verbose_name=_("SurveyApp"))
-    audio_message = models.ForeignKey(AudioFile, null=True, blank=True,
-                    verbose_name=_("Audio File"))
-    message_type = models.IntegerField(max_length=20,
-                    choices=MESSAGE_TYPE,
-                    default='1', blank=True, null=True,
-                    verbose_name=_('Message type'))
-
-    type = models.IntegerField(max_length=20, choices=APP_TYPE,
-           blank=True, null=True, verbose_name=_('Action type'))
-    gateway = models.ForeignKey(Gateway, null=True, blank=True,
-                    verbose_name=_('B-Leg'),
-                    help_text=_("Gateway used if we redirect the call"))
-    data = models.CharField(max_length=500, blank=True,
-                    help_text=_("The value of 'data' depends on the type of voice application :<br/>"\
-                    "- Dial : The phone number to dial<br/>"\
-                    "- Conference : Conference room name or number<br/>"))
-
+    # select section
+    type = models.IntegerField(max_length=20, choices=list(SECTION_TYPE_NOTRANSFER),
+                               default=SECTION_TYPE_NOTRANSFER.PLAY_MESSAGE,
+                               blank=True, null=True,
+                               verbose_name=_('section type'))
+    # Question is the section label, this is used in the reporting
+    question = models.CharField(max_length=500, blank=False,
+                                verbose_name=_("Question"),
+                                help_text=_('Example : Hotel Service Rating'))
+    # Script will be used by TTS
+    script = models.CharField(max_length=1000, null=True, blank=True,
+                              help_text=_('Example : Capture digits between 1 to 5, press pound key when done'))
+    audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
+                                  verbose_name=_("Audio File"))
+    retries = models.IntegerField(max_length=1, null=True, blank=True,
+                                  verbose_name=_("retries"), default=0,
+                                  help_text=_('Retries this section until it\'s valid'))
+    timeout = models.IntegerField(max_length=2, null=True, blank=True,
+                                  verbose_name=_("timeout"), default=5,
+                                  help_text=_('Timeout in seconds to press the key(s)'))
+    # Multi-choice
+    key_0 = models.CharField(max_length=100, null=True, blank=True,
+                             verbose_name=_("Key") + " 0")
+    key_1 = models.CharField(max_length=100, null=True, blank=True,
+                             verbose_name=_("Key") + " 1")
+    key_2 = models.CharField(max_length=100, null=True, blank=True,
+                             verbose_name=_("Key") + " 2")
+    key_3 = models.CharField(max_length=100, null=True, blank=True,
+                             verbose_name=_("Key") + " 3")
+    key_4 = models.CharField(max_length=100, null=True, blank=True,
+                             verbose_name=_("Key") + " 4")
+    key_5 = models.CharField(max_length=100, null=True, blank=True,
+                             verbose_name=_("Key") + " 5")
+    key_6 = models.CharField(max_length=100, null=True, blank=True,
+                             verbose_name=_("Key") + " 6")
+    key_7 = models.CharField(max_length=100, null=True, blank=True,
+                             verbose_name=_("Key") + " 7")
+    key_8 = models.CharField(max_length=100, null=True, blank=True,
+                             verbose_name=_("Key") + " 8")
+    key_9 = models.CharField(max_length=100, null=True, blank=True,
+                             verbose_name=_("Key") + " 9")
+    #Rating question
+    rating_laps = models.IntegerField(max_length=1, default=9,
+                                      null=True, blank=True,
+                                      verbose_name=_("From 1 to X"))
+    #Capture Digits
+    validate_number = models.BooleanField(default=True,
+                                          verbose_name=_('Check validity'))
+    number_digits = models.IntegerField(max_length=2, null=True, blank=True,
+                                        default="2",
+                                        verbose_name=_("Number of digits"))
+    min_number = models.BigIntegerField(max_length=50, null=True, blank=True,
+                                  default=0, verbose_name=_("Minimum"))
+    max_number = models.BigIntegerField(max_length=50, null=True, blank=True,
+                                  default=99, verbose_name=_("Maximum"))
+    #Call Transfer
+    phonenumber = models.CharField(max_length=50,
+                                   null=True, blank=True,
+                                   verbose_name=_("phone number"))
+    # if the current section means that the survey is completed
+    completed = models.BooleanField(default=False,
+                                    verbose_name=_('Survey complete'))
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
-    sortable_by = SurveyApp
+    sortable_by = Survey
+
+    class Meta(Sortable.Meta):
+        ordering = Sortable.Meta.ordering + ['survey']
+        abstract = True
 
     def __unicode__(self):
-        return self.question
+        return '[%s] %s' % (self.id, self.question)
+
+    def get_branching_count_per_section(self):
+        """Get branching count per section"""
+        branching_count = Branching_template.objects\
+            .filter(section_id=self.id).count()
+        return branching_count
+
+    def build_dtmf_filter(self):
+        """Build the dtmf filter to capture digits"""
+        dtmffilter = ''
+        if self.key_0 and len(self.key_0) > 0:
+            dtmffilter = dtmffilter + '0'
+        if self.key_1 and len(self.key_1) > 0:
+            dtmffilter = dtmffilter + '1'
+        if self.key_2 and len(self.key_2) > 0:
+            dtmffilter = dtmffilter + '2'
+        if self.key_3 and len(self.key_3) > 0:
+            dtmffilter = dtmffilter + '3'
+        if self.key_4 and len(self.key_4) > 0:
+            dtmffilter = dtmffilter + '4'
+        if self.key_5 and len(self.key_5) > 0:
+            dtmffilter = dtmffilter + '5'
+        if self.key_6 and len(self.key_6) > 0:
+            dtmffilter = dtmffilter + '6'
+        if self.key_7 and len(self.key_7) > 0:
+            dtmffilter = dtmffilter + '7'
+        if self.key_8 and len(self.key_8) > 0:
+            dtmffilter = dtmffilter + '8'
+        if self.key_9 and len(self.key_9) > 0:
+            dtmffilter = dtmffilter + '9'
+        return dtmffilter
 
 
-class SurveyResponse(models.Model):
-    """This defines the response for survey question
+class Section_template(Section_abstract):
+    """
+    This defines the question for survey section template
+    """
+    survey = models.ForeignKey(Survey_template, verbose_name=_("Survey"))
+    invalid_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
+                                          verbose_name=_("Audio Invalid Input"),
+                                          related_name='survey_template_invalid_audiofile')
+
+    class Meta(Sortable.Meta):
+        ordering = Sortable.Meta.ordering + ['survey']
+        verbose_name = _("Section template")
+        verbose_name_plural = _("Section templates")
+
+    def copy_section_template(self, new_survey_obj):
+        """
+        copy section template to section when starting campaign
+        """
+        Section.objects.create(
+            survey_id=new_survey_obj.id,  # Survey
+            section_template=self.id,
+            type=self.type,
+            question=self.question,
+            script=self.script,
+            audiofile_id=self.audiofile_id,
+            retries=self.retries,
+            timeout=self.timeout,
+            key_0=self.key_0,
+            key_1=self.key_1,
+            key_2=self.key_2,
+            key_3=self.key_3,
+            key_4=self.key_4,
+            key_5=self.key_5,
+            key_6=self.key_6,
+            key_7=self.key_7,
+            key_8=self.key_8,
+            key_9=self.key_9,
+            rating_laps=self.rating_laps,
+            validate_number=self.validate_number,
+            number_digits=self.number_digits,
+            min_number=self.min_number,
+            max_number=self.max_number,
+            phonenumber=self.phonenumber,
+            completed=self.completed,
+            order=self.order,
+            invalid_audiofile_id=self.invalid_audiofile_id,
+        )
+        return True
+
+    def copy_section_branching_template(self, section, new_survey_obj):
+        """
+        copy section template to section when starting campaign
+        """
+        # Get all the Branching for this section
+        branching_template = Branching_template.objects\
+            .filter(section=self)
+        for branching_temp in branching_template:
+            #copy the brancing
+            branching_temp.copy_branching_template(section, new_survey_obj)
+        return True
+
+
+class Section(Section_abstract):
+    """
+    This defines the question for survey section
+    """
+    survey = models.ForeignKey(Survey, verbose_name=_("Survey"))
+    invalid_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
+                                          verbose_name=_("Audio Invalid Input"),
+                                          related_name='survey_invalid_audiofile')
+    #section_template_id is used to easy duplication
+    section_template = models.IntegerField(max_length=10, blank=True,
+                                           default=0, null=True,
+                                           verbose_name=_('Section Template ID'))
+
+    class Meta(Sortable.Meta):
+        ordering = Sortable.Meta.ordering + ['survey']
+
+
+class Branching_abstract(models.Model):
+    """This defines the response of the survey section
 
     **Attributes**:
 
-        * ``key`` - Key digit.
-        * ``keyvalue`` - Key Value
+        * ``keys`` - Key digit (DTMF entered by the calling party)
 
     **Relationships**:
 
-        * ``surveyquestion`` - Foreign key relationship to the SurveyQuestion.\
-        Each survey response is assigned to a SurveyQuestion
-
-    **Name of DB table**: survey_response
+        * ``section`` - Foreign key relationship to the Section.\
+        Each response is assigned to a Section
     """
-    key = models.CharField(max_length=9, blank=False,
-                    verbose_name=_("Key Digit"),
-                    help_text=_('Define the key link to the response'))  # 1;2
-    keyvalue = models.CharField(max_length=150, blank=True,
-                    verbose_name=_("Key Value"))  # Orange ; Kiwi
+    keys = models.CharField(max_length=150, blank=True,
+                            verbose_name=_("Entered value"))
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
-    surveyquestion = models.ForeignKey(SurveyQuestion,
-                    related_name='SurveyQuestion')
-    goto_surveyquestion = models.ForeignKey(SurveyQuestion, null=True,
-                    blank=True, related_name='Goto SurveyQuestion')
 
     class Meta:
-        unique_together = ("key", "surveyquestion")
+        abstract = True
 
     def __unicode__(self):
-        return '[%s] %s' % (self.id, self.keyvalue)
+        return '[%s] %s' % (self.id, self.keys)
 
 
-class SurveyCampaignResult(models.Model):
+class Branching_template(Branching_abstract):
+    """
+    This defines the response of the survey section
+    """
+    section = models.ForeignKey(Section_template,
+                                related_name='Branching Template Section')
+    goto = models.ForeignKey(Section_template, null=True,
+                             blank=True,
+                             related_name='Goto Template Section')
+
+    class Meta():
+        unique_together = ("keys", "section")
+        verbose_name = _("Branching template")
+        verbose_name_plural = _("Branching templates")
+
+    def copy_branching_template(self, new_section, new_survey_obj):
+        """
+        copy branching template to branching when starting campaign
+        """
+        #
+        goto_section = None
+        if self.goto:
+            goto_section = Section.objects.get(section_template=self.goto_id, survey=new_survey_obj)
+
+        Branching.objects.create(
+            keys=self.keys,
+            section=new_section,
+            goto=goto_section
+        )
+        return True
+
+
+class Branching(Branching_abstract):
+    """
+    This defines the response of the survey section
+    """
+    section = models.ForeignKey(Section, related_name='Branching Section')
+    goto = models.ForeignKey(Section, null=True,
+                             blank=True, related_name='Goto Section')
+
+    class Meta():
+        unique_together = ("keys", "section")
+        verbose_name = _("Branching")
+        verbose_name_plural = _("Branching")
+
+
+class Result(models.Model):
     """This gives survey result
 
     That will be difficult to scale for reporting
@@ -200,38 +426,86 @@ class SurveyCampaignResult(models.Model):
 
     **Attributes**:
 
-        * ``callid`` - VoIP Call-ID
-        * ``question`` - survey question
+        * ``callrequest`` - Call Request
+        * ``section`` - survey question
         * ``response`` - survey question's response
 
     **Relationships**:
 
         * ``campaign`` - Foreign key relationship to the Campaign model.\
         Each survey result is belonged to a Campaign
-        * ``surveyapp`` - Foreign key relationship to the SurveyApp model.\
-        Each survey question is assigned to a SurveyApp
+        * ``survey`` - Foreign key relationship to the Survey model.\
+        Each survey question is assigned to a Survey
+        * ``section`` - Foreign key relationship to the Section model.\
+        Each result is assigned to a Section
 
-    **Name of DB table**: survey_campaign_result
+    **Name of DB table**: result
+    """
+    callrequest = models.ForeignKey(Callrequest,
+                                    blank=True, null=True,
+                                    related_name='survey_callrequest')
+    section = models.ForeignKey(Section, related_name='Result Section')
+    response = models.CharField(max_length=150, blank=False,
+                                verbose_name=_("Response"))
+    record_file = models.CharField(max_length=200, blank=True, default='',
+                                   verbose_name=_("Record File"))
+    recording_duration = models.IntegerField(max_length=10, blank=True,
+                                             default=0, null=True,
+                                             verbose_name=_('Recording Duration'))
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("callrequest", "section")
+
+    def __unicode__(self):
+        return '[%s] %s = %s' % (self.id, self.section, self.response)
+
+
+class ResultAggregate(models.Model):
+    """This gives survey result aggregate, used to display survey
+    result in a more efficient way
+
+    **Name of DB table**: result_aggregate
     """
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
-                    verbose_name=_("Campaign"))
-
-    surveyapp = models.ForeignKey(SurveyApp, related_name='SurveyApp')
-    callid = models.CharField(max_length=120, help_text=_("VoIP Call-ID"),
-                    verbose_name=_("Call-ID"))
-
-    question = models.CharField(max_length=500, blank=False,
-                    verbose_name=_("Question"))  # What is your prefered fruit?
-    response = models.CharField(max_length=150, blank=False,
-                    verbose_name=_("Response"))  # Orange ; Kiwi
-    record_file = models.CharField(max_length=200, blank=True, default='',
-                    verbose_name=_("Record File"))
-    recording_duration = models.IntegerField(max_length=20,
-                    blank=True, default=0,
-                    null=True, verbose_name=_('Recording Duration'))
-    callrequest = models.ForeignKey(Callrequest, related_name='Callrequest')
+                                 verbose_name=_("Campaign"))
+    survey = models.ForeignKey(Survey, related_name='ResultSum Survey')
+    section = models.ForeignKey(Section, related_name='ResultSum Section')
+    response = models.CharField(max_length=150, blank=False, db_index=True,
+                                verbose_name=_("Response"))  # Orange ; Kiwi
+    count = models.IntegerField(max_length=20, default=0,
+                                verbose_name=_("Result count"))
 
     created_date = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        unique_together = ("campaign", "survey", "section", "response")
+
     def __unicode__(self):
-        return '[%s] %s = %s' % (self.id, self.question, self.response)
+        return '[%s] %s = %s' % (self.id, self.section, self.response)
+
+
+def post_save_add_script(sender, **kwargs):
+    """A ``post_save`` signal is sent by the Contact model instance whenever
+    it is going to save.
+
+    **Logic Description**:
+
+        * When new section is added into ``Section`` model, save the
+          question & script field.
+    """
+    if kwargs['created']:
+        obj = kwargs['instance']
+        obj.script = kwargs['instance'].question
+        obj.save()
+
+        # Add default branching
+        if obj.type == SECTION_TYPE.PLAY_MESSAGE or obj.type == SECTION_TYPE.RECORD_MSG:
+            Branching_template.objects.create(keys=0, section_id=obj.id, goto_id='')
+
+        if obj.type == SECTION_TYPE.MULTI_CHOICE or \
+            obj.type == SECTION_TYPE.CAPTURE_DIGITS or \
+                obj.type == SECTION_TYPE.RATING_SECTION:
+            Branching_template.objects.create(keys='timeout', section_id=obj.id, goto_id='')
+
+post_save.connect(post_save_add_script, sender=Section_template)

@@ -8,7 +8,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -16,14 +16,12 @@
 
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
-
 from tastypie.resources import ModelResource
 from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import Authorization
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie import fields
-
 from api.user_api import UserResource
 from api.content_type_api import ContentTypeResource
 from dialer_cdr.models import Callrequest
@@ -40,24 +38,22 @@ class CallrequestValidation(Validation):
             errors['Data'] = ['Data set is empty']
 
         content_type = bundle.data.get('content_type')
-        if content_type == 'voice_app' or content_type == 'survey':
+        if content_type == 'voiceapp_template' or content_type == 'survey_template':
             try:
                 content_type_id = ContentType.objects\
-                .get(app_label=str(content_type)).id
+                    .get(model=str(content_type)).id
                 bundle.data['content_type'] = '/api/v1/contenttype/%s/'\
-                % content_type_id
+                    % content_type_id
             except:
                 errors['chk_content_type'] = ["The ContentType doesn't exist!"]
         else:
-            errors['chk_content_type'] = ["Wrong option. \
-                                            Enter 'voice_app' or 'survey' !"]
+            errors['chk_content_type'] = ["Wrong option. Enter 'voice_app' or 'survey' !"]
 
         object_id = bundle.data.get('object_id')
         if object_id:
-            try:
-                bundle.data['object_id'] = object_id
-            except:
-                errors['chk_object_id'] = ["App object Id doesn't exist!"]
+            bundle.data['object_id'] = object_id
+        else:
+            errors['chk_object_id'] = ["App object Id doesn't exist!"]
 
         try:
             user_id = User.objects.get(username=request.user).id
@@ -67,8 +63,8 @@ class CallrequestValidation(Validation):
 
         if request.method == 'POST':
             rq_count = Callrequest.objects\
-            .filter(request_uuid=bundle.data.get('request_uuid'))\
-            .count()
+                .filter(request_uuid=bundle.data.get('request_uuid'))\
+                .count()
             if (rq_count != 0):
                 errors['chk_request_uuid'] = ["The Request uuid duplicated!"]
 
@@ -88,7 +84,7 @@ class CallrequestResource(ModelResource):
         * ``timeout`` -
         * ``timelimit`` -
         * ``status`` -
-        * ``campaign_subscriber`` -
+        * ``subscriber`` -
         * ``campaign`` -
         * ``phone_number`` -
         * ``extra_dial_string`` -
@@ -114,7 +110,7 @@ class CallrequestResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"request_uuid": "2342jtdsf-00123", "call_time": "2011-10-20 12:21:22", "phone_number": "8792749823", "content_type":"voice_app", "object_id":1, "timeout": "30000", "callerid": "650784355", "call_type": "1"}' http://localhost:8000/api/v1/callrequest/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"request_uuid": "2342jtdsf-00123", "call_time": "2011-10-20 12:21:22", "phone_number": "8792749823", "content_type":"voiceapp_template", "object_id":1, "timeout": "30000", "callerid": "650784355", "call_type": "1"}' http://localhost:8000/api/v1/callrequest/
 
         Response::
 
@@ -123,7 +119,7 @@ class CallrequestResource(ModelResource):
             Server: WSGIServer/0.1 Python/2.7.1+
             Vary: Accept-Language, Cookie
             Content-Type: text/html; charset=utf-8
-            Location: http://localhost:8000/api/app/campaign/1/
+            Location: http://localhost:8000/api/app/callrequest/1/
             Content-Language: en-us
 
 

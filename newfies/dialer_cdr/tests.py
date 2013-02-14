@@ -6,525 +6,200 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 
 from django.contrib.auth.models import User
-from django.test import TestCase, Client
-from common.test_utils import build_test_suite_from
-
-import base64
-import simplejson
-
-
-class BaseAuthenticatedClient(TestCase):
-    """Common Authentication"""
-
-    def setUp(self):
-        """To create admin user"""
-        self.client = Client()
-        self.user = \
-        User.objects.create_user('admin', 'admin@world.com', 'admin')
-        self.user.is_staff = True
-        self.user.is_superuser = True
-        self.user.is_active = True
-        self.user.save()
-        auth = '%s:%s' % ('admin', 'admin')
-        auth = 'Basic %s' % base64.encodestring(auth)
-        auth = auth.strip()
-        self.extra = {
-            'HTTP_AUTHORIZATION': auth,
-        }
-        login = self.client.login(username='admin', password='admin')
-        self.assertTrue(login)
+from django.contrib.contenttypes.models import ContentType
+from django.core.management import call_command
+from django.test import TestCase
+from common.utils import BaseAuthenticatedClient
+from dialer_cdr.models import Callrequest, VoIPCall
+from dialer_cdr.forms import VoipSearchForm
+from dialer_cdr.views import export_voipcall_report, voipcall_report
+from dialer_cdr.function_def import voipcall_search_admin_form_fun
+from dialer_cdr.tasks import init_callrequest
+# from dialer_cdr.tasks_dummy import dummy_testcall, \
+#    dummy_test_answerurl, dummy_test_hangupurl
+from datetime import datetime
 
 
-class NewfiesTastypieApiTestCase(BaseAuthenticatedClient):
-    """Test cases for Newfies-Dialer API."""
-    fixtures = ['gateway.json', 'auth_user', 'voiceapp', 'phonebook',
-                'dialer_setting', 'campaign', 'campaign_subscriber',
-                'callrequest', 'survey', 'survey_question',
-                'survey_response']
+class DialerCdrView(BaseAuthenticatedClient):
+    """Test cases for Callrequest, VoIPCall Admin Interface."""
 
-    def test_create_campaign(self):
-        """Test Function to create a campaign"""
-        data = simplejson.dumps({
-                "name": "mycampaign",
-                "description": "",
-                "callerid": "1239876",
-                "startingdate": "1301392136.0",
-                "expirationdate": "1301332136.0",
-                "frequency": "20",
-                "callmaxduration": "50",
-                "maxretry": "3",
-                "intervalretry": "3000",
-                "calltimeout": "45",
-                "aleg_gateway": "1",
-                "content_type": "voice_app",
-                "object_id": "1",
-                "extra_data": "2000",
-                "phonebook_id": "1"})
-        response = self.client.post('/api/v1/campaign/',
-        data, content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 201)
-
-    def test_read_campaign(self):
-        """Test Function to get all campaigns"""
-        response = self.client.get('/api/v1/campaign/?format=json',
-                   **self.extra)
-        self.assertEqual(response.status_code, 200)
-        response = self.client.get('/api/v1/campaign/1/?format=json',
-                   **self.extra)
-        self.assertEqual(response.status_code, 200)
-
-    def test_update_campaign(self):
-        """Test Function to update a campaign"""
-        response = self.client.put('/api/v1/campaign/1/',
-                   simplejson.dumps({
-                        "status": "2",
-                        "content_type": "voice_app",
-                        "object_id": "1"}),
-                   content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 204)
-
-    def test_delete_campaign(self):
-        """Test Function to delete a campaign"""
-        response = self.client.delete('/api/v1/campaign/1/',
-        **self.extra)
-        self.assertEqual(response.status_code, 204)
-
-    def test_delete_cascade_campaign(self):
-        """Test Function to cascade delete a campaign"""
-        response = \
-        self.client.delete('/api/v1/campaign_delete_cascade/1/',
-        **self.extra)
-        self.assertEqual(response.status_code, 204)
-
-    def test_create_phonebook(self):
-        """Test Function to create a phonebook"""
-        data = simplejson.dumps({"name": "mylittlephonebook",
-                "description": "Test",
-                "campaign_id": "1"})
-        response = self.client.post('/api/v1/phonebook/', data,
-                   content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 201)
-
-    def test_read_phonebook(self):
-        """Test Function to get all phonebooks"""
-        response = self.client.get('/api/v1/phonebook/',
-        **self.extra)
-        self.assertEqual(response.status_code, 200)
-        response = self.client.get('/api/v1/phonebook/1/',
-        **self.extra)
-        self.assertEqual(response.status_code, 200)
-
-    def test_create_bulk_contact(self):
-        """Test Function to bulk create contacts"""
-        data = simplejson.dumps({"phoneno_list": "12345,54344",
-                "phonebook_id": "1"})
-        response = self.client.post('/api/v1/bulkcontact/',
-        data, content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 201)
-
-    def test_create_campaign_subscriber(self):
-        """Test Function to create a campaign subscriber"""
-        data = simplejson.dumps({
-                "contact": "650784355",
-                "last_name": "belaid",
-                "first_name": "areski",
-                "email": "areski@gmail.com",
-                "phonebook_id": "1"})
-        response = self.client.post('/api/v1/campaignsubscriber/',
-        data, content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 201)
-
-    def test_read_campaign_subscriber(self):
-        """Test Function to get all campaign subscriber"""
-        response = self.client.get('/api/v1/campaignsubscriber/1/?format=json',
-                   **self.extra)
-        self.assertEqual(response.status_code, 200)
-
-    def test_update_campaign_subscriber(self):
-        """Test Function to update a campaign subscriber"""
-        data = simplejson.dumps({"status": "1",
-                "contact": "640234000"})
-        response = self.client.put('/api/v1/campaignsubscriber/1/',
-                   data, content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 204)
-
-    def test_create_callrequest(self):
-        """Test Function to create a callrequest"""
-        data = simplejson.dumps({
-                    "request_uuid": "2342jtdsf-00153",
-                    "call_time": "2011-05-01 11:22:33",
-                    "phone_number": "8792749823",
-                    "content_type": "voice_app",
-                    "object_id": "1",
-                    "timeout": "30000",
-                    "callerid": "650784355",
-                    "call_type": "1"})
-        response = self.client.post('/api/v1/callrequest/',
-        data, content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 201)
-
-    def test_read_callrequest(self):
-        """Test Function to get all callrequests"""
-        response = self.client.get('/api/v1/callrequest/?format=json',
-        **self.extra)
-        self.assertEqual(response.status_code, 200)
-
-    def test_create_answercall(self):
-        """Test Function to create a answercall"""
-        data = {"ALegRequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875",
-                "CallUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875"}
-        response = self.client.post('/api/v1/answercall/', data, **self.extra)
-        self.assertEqual(response.status_code, 200)
-
-    def test_create_hangupcall(self):
-        """Test Function to create a hangupcall"""
-        data = {"RequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875",
-         "HangupCause": "SUBSCRIBER_ABSENT"}
-        response = self.client.post('/api/v1/hangupcall/', data, **self.extra)
-        self.assertEqual(response.status_code, 200)
-
-    def test_create_cdr(self):
-        """Test Function to create a CDR"""
-        data = ('cdr=<?xml version="1.0"?><cdr><other></other><variables><plivo_request_uuid>e8fee8f6-40dd-11e1-964f-000c296bd875</plivo_request_uuid><duration>3</duration></variables><notvariables><plivo_request_uuid>TESTc</plivo_request_uuid><duration>5</duration></notvariables></cdr>')
-        response = self.client.post('/api/v1/store_cdr/', data,
-                        content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 200)
-
-    def test_create_survey(self):
-        """Test Function to create a survey"""
-        data = simplejson.dumps({"name": "mysurvey",
-                "description": "Test"})
-        response = self.client.post('/api/v1/survey/', data,
-                   content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 201)
-
-    def test_read_survey(self):
-        """Test Function to get all surveys"""
-        response = self.client.get('/api/v1/survey/?format=json',
-        **self.extra)
-        self.assertEqual(response.status_code, 200)
-
-    def test_update_survey(self):
-        """Test Function to update a survey"""
-        data = simplejson.dumps({
-                "name": "mysurvey",
-                "description": "test",
-                "user": "1"})
-        response = self.client.put('/api/v1/survey/1/',
-                   data, content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 204)
-
-    def test_create_survey_question(self):
-        """Test Function to create a survey question"""
-        data = simplejson.dumps({
-                "question": "survey que",
-                "tags": "",
-                "user": "1",
-                "surveyapp": "1",
-                "message_type": "1"})
-        response = self.client.post('/api/v1/survey_question/', data,
-                   content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 201)
-
-    def test_read_survey_question(self):
-        """Test Function to get all survey questions"""
-        response = self.client.get('/api/v1/survey_question/?format=json',
-        **self.extra)
-        self.assertEqual(response.status_code, 200)
-
-    def test_update_survey_question(self):
-        """Test Function to update a survey question"""
-        data = simplejson.dumps({
-                "question": "survey que",
-                "tags": "",
-                "surveyapp": "1",
-                "message_type": "1"})
-        response = self.client.put('/api/v1/survey_question/1/',
-                   data, content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 204)
-
-    def test_create_survey_response(self):
-        """Test Function to create a survey response"""
-        data = simplejson.dumps({"key": "orange",
-                "keyvalue": "1",
-                "surveyquestion": "1"})
-        response = self.client.post('/api/v1/survey_response/', data,
-                   content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 201)
-
-    def test_read_survey_response(self):
-        """Test Function to get all survey response"""
-        response = self.client.get('/api/v1/survey_response/?format=json',
-        **self.extra)
-        self.assertEqual(response.status_code, 200)
-
-    def test_update_survey_response(self):
-        """Test Function to update a survey response"""
-        data = simplejson.dumps({"key": "Apple",
-                "keyvalue": "1",
-                "surveyquestion": "1"})
-        response = self.client.put('/api/v1/survey_response/1/',
-                   data, content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 204)
-
-
-class NewfiesAdminInterfaceTestCase(TestCase):
-    """Test cases for Newfies-Dialer Admin Interface."""
-
-    def setUp(self):
-        """To create admin user"""
-        self.client = Client()
-        self.user = \
-        User.objects.create_user('admin', 'admin@world.com', 'admin')
-        self.user.is_staff = True
-        self.user.is_superuser = True
-        self.user.is_active = True
-        self.user.save()
-        auth = '%s:%s' % ('admin', 'admin')
-        auth = 'Basic %s' % base64.encodestring(auth)
-        auth = auth.strip()
-        self.extra = {
-            'HTTP_AUTHORIZATION': auth,
-        }
-
-    def test_admin_index(self):
-        """Test Function to check Admin index page"""
-        response = self.client.get('/admin/')
-        self.failUnlessEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'admin/base_site.html')
-        response = self.client.login(username=self.user.username,
-                                     password='admin')
-        self.assertEqual(response, True)
-
-    def test_admin_newfies(self):
-        """Test Function to check Newfies-Dialer Admin pages"""
-        response = self.client.get('/admin/auth/')
-        self.failUnlessEqual(response.status_code, 200)
-
-        response = self.client.get('/admin/dialer_settings/')
-        self.failUnlessEqual(response.status_code, 200)
-
-        response = self.client.get('/admin/dialer_campaign/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/dialer_campaign/contact/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = \
-        self.client.get('/admin/dialer_campaign/contact/import_contact/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = \
-        self.client.get('/admin/dialer_campaign/campaignsubscriber/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/dialer_campaign/campaign/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/dialer_campaign/phonebook/')
-        self.failUnlessEqual(response.status_code, 200)
-
-        response = self.client.get('/admin/dialer_cdr/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/dialer_cdr/voipcall/')
-        self.failUnlessEqual(response.status_code, 200)
+    def test_admin_callrequest_view_list(self):
+        """Test Function to check admin callrequest list"""
         response = self.client.get('/admin/dialer_cdr/callrequest/')
         self.failUnlessEqual(response.status_code, 200)
 
-        response = self.client.get('/admin/dialer_gateway/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/dialer_gateway/gateway/')
-        self.failUnlessEqual(response.status_code, 200)
-
-        response = self.client.get('/admin/voice_app/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/voice_app/voiceapp/')
+    def test_admin_callrequest_view_add(self):
+        """Test Function to check admin callrequest add"""
+        response = self.client.get('/admin/dialer_cdr/callrequest/add/')
         self.failUnlessEqual(response.status_code, 200)
 
-        response = self.client.get('/admin/survey/')
+        response = self.client.post(
+            '/admin/dialer_cdr/callrequest/add/',
+            data={'status': '1', 'campaign': '1',
+                  'aleg_uuid': 'e8fee8f6-40dd-11e1-964f-000c296bd875',
+                  'callerid': '12345',
+                  'request_uuid': 'e8fee8f6-40dd-11e1-964f-000c296bd875',
+                  'phone_number': '123456789',
+                  'aleg_gateway': '1',
+                  'user': '1'})
+        self.assertEqual(response.status_code, 200)
+
+    def test_admin_voipcall_view_list(self):
+        """Test Function to check admin voipcall list"""
+        response = self.client.get('/admin/dialer_cdr/voipcall/')
         self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/survey/surveyapp/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/survey/surveyquestion/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/survey/surveyresponse/')
-        self.failUnlessEqual(response.status_code, 200)
-        response = self.client.get('/admin/survey/surveycampaignresult/')
+
+    def test_admin_voipcall_view_report(self):
+        """Test Function to check admin voipcall list"""
+        response = self.client.get('/admin/dialer_cdr/voipcall/voip_report/')
         self.failUnlessEqual(response.status_code, 200)
 
-
-class NewfiesCustomerInterfaceTestCase(BaseAuthenticatedClient):
-    """Test cases for Newfies-Dialer Customer Interface."""
-    fixtures = ['gateway.json', 'auth_user', 'voiceapp', 'phonebook',
-                'contact', 'campaign', 'campaign_subscriber', 'survey',
-                'surve_question', 'survey_response']
-
-    def test_index(self):
-        """Test Function to check customer index page"""
-        response = self.client.get('/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/index.html')
-        response = self.client.post('/login/',
-                    {'username': 'userapi',
-                     'password': 'passapi'})
+        response = self.client.post('/admin/dialer_cdr/voipcall/voip_report/',
+            data={'from_date': datetime.now().strftime("%Y-%m-%d"),
+                  'to_date': datetime.now().strftime("%Y-%m-%d")})
         self.assertEqual(response.status_code, 200)
 
-    def test_dashboard(self):
-        """Test Function to check customer dashboard"""
-        response = self.client.get('/dashboard/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/dashboard.html')
+        request = self.factory.post(
+            '/admin/dialer_cdr/voipcall/voip_report/',
+            data={'from_date': datetime.now().strftime("%Y-%m-%d"),
+                  'to_date': datetime.now().strftime("%Y-%m-%d")})
+        request.user = self.user
+        request.session = {}
+        response = voipcall_search_admin_form_fun(request)
+        self.assertTrue(response)
 
-    def test_voiceapp_view(self):
-        """Test Function to check voiceapp"""
-        response = self.client.get('/voiceapp/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-                                'frontend/voiceapp/list.html')
-        response = self.client.get('/voiceapp/add/')
-        self.assertTemplateUsed(response,
-                                'frontend/voiceapp/change.html')
-        response = self.client.get('/voiceapp/1/')
-        self.assertEqual(response.status_code, 200)
 
-    def test_phonebook_view(self):
-        """Test Function to check phonebook"""
-        response = self.client.get('/phonebook/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-                                'frontend/phonebook/list.html')
-        response = self.client.get('/phonebook/add/')
-        self.assertEqual(response.status_code, 200)
-        response = self.client.post('/phonebook/add/',
-                   data={'name': 'My Phonebook', 'description': 'phonebook',
-                         'user': self.user})
-        response = self.client.get('/phonebook/1/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-                                'frontend/phonebook/change.html')
+class DialerCdrCustomerView(BaseAuthenticatedClient):
+    """Test cases for Callrequest, VoIPCall Customer Interface."""
 
-    def test_contact_view(self):
-        """Test Function to check Contact"""
-        response = self.client.get('/contact/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-                                'frontend/contact/list.html')
-        response = self.client.get('/contact/add/')
-        self.assertEqual(response.status_code, 200)
-        response = self.client.post('/contact/add/',
-                   data={'phonebook_id': '1', 'contact': '1234',
-                         'last_name': 'xyz', 'first_name': 'abc',
-                         'status': '1'})
-        self.assertEqual(response.status_code, 200)
-        response = self.client.get('/contact/1/')
-        self.assertTemplateUsed(response,
-                                'frontend/contact/change.html')
-        response = self.client.get('/contact/import/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-                                'frontend/contact/import_contact.html')
-
-    def test_campaign_view(self):
-        """Test Function to check campaign"""
-        response = self.client.get('/campaign/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-                                'frontend/campaign/list.html')
-        response = self.client.post('/campaign/add/', data={
-                    "name": "mylittlecampaign",
-                    "description": "xyz",
-                    "startingdate": "1301392136.0",
-                    "expirationdate": "1301332136.0",
-                    "frequency": "20",
-                    "callmaxduration": "50",
-                    "maxretry": "3",
-                    "intervalretry": "3000",
-                    "calltimeout": "60",
-                    "aleg_gateway": "1",
-                    "content_object": "type:30-id:1",
-                    "extra_data": "2000"})
-        self.assertEqual(response.status_code, 302)
-
-    def test_voip_call_report(self):
+    def test_customer_voipcall(self):
         """Test Function to check VoIP call report"""
         response = self.client.get('/voipcall_report/')
         self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context['form'], VoipSearchForm())
         self.assertTemplateUsed(response,
-        'frontend/report/voipcall_report.html')
+            'frontend/report/voipcall_report.html')
 
-    def test_user_settings(self):
-        """Test Function to check User settings"""
-        response = self.client.get('/user_detail_change/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-        'frontend/registration/user_detail_change.html')
-
-    def test_audio_view(self):
-        """Test Function audio view"""
-        response = self.client.get('/audio/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-            'frontend/audio/audio_list.html')
-        response = self.client.get('/audio/add/')
+        response = self.client.post('/voipcall_report/',
+                        data={'from_date': datetime.now().strftime("%Y-%m-%d"),
+                              'to_date': datetime.now().strftime("%Y-%m-%d")})
         self.assertEqual(response.status_code, 200)
 
-    def test_survey_view(self):
-        """Test Function survey view"""
-        response = self.client.get('/survey/')
+        request = self.factory.get('/voipcall_report/')
+        request.user = self.user
+        request.session = {}
+        response = voipcall_report(request)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-                                'frontend/survey/survey_list.html')
-        response = self.client.get('/survey/add/')
+
+    def test_export_voipcall_report(self):
+        """Test Function to check VoIP call export report"""
+        request = self.factory.get('/export_voipcall_report/')
+        request.user = self.user
+        request.session = {}
+        request.session['voipcall_record_qs'] = {}
+        response = export_voipcall_report(request)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-                                'frontend/survey/survey_change.html')
-        response = self.client.get('/survey/1/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-                                'frontend/survey/survey_change.html')
-        response = self.client.get('/survey_report/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-                                'frontend/survey/survey_report.html')
 
 
-class NewfiesCustomerInterfaceForgotPassTestCase(TestCase):
-    """Test cases for Newfies-Dialer Customer Interface. for forgot password"""
+class DialerCdrCeleryTaskTestCase(TestCase):
+    """Test cases for celery task"""
 
-    def test_check_password_reset(self):
-        """Test Function to check password reset"""
-        response = self.client.get('/password_reset/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-        'frontend/registration/password_reset_form.html')
+    fixtures = ['gateway.json', 'voiceapp.json', 'auth_user.json',
+                'dialer_setting.json', 'contenttype.json',
+                'phonebook.json', 'contact.json',
+                'campaign.json', 'subscriber.json',
+                'callrequest.json', 'voipcall.json', 'user_profile.json']
 
-        response = self.client.get('/password_reset/done/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-        'frontend/registration/password_reset_done.html')
+    def setUp(self):
+        self.callrequest = Callrequest.objects.get(pk=1)
 
-        response = self.client.get(
-                   '/reset/1-2xc-5791af4cc6b67e88ce8e/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-        'frontend/registration/password_reset_confirm.html')
+    #def test_init_callrequest(self):
+    #    """Test that the ``init_callrequest``
+    #    task runs with no errors, and returns the correct result."""
+    #    result = init_callrequest.delay(self.callrequest.id, 1)
+    #    self.assertEqual(result.successful(), True)
 
-        response = self.client.get('/reset/done/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-        'frontend/registration/password_reset_complete.html')
+    # def test_dummy_test_answerurl(self):
+    #     """Test that the ``dummy_test_answerurl``
+    #     task runs with no errors, and returns the correct result."""
+    #     result = dummy_test_answerurl.delay(self.callrequest.request_uuid)
+    #     self.assertEqual(result.successful(), True)
 
-
-test_cases = [
-    NewfiesTastypieApiTestCase,
-    NewfiesAdminInterfaceTestCase,
-    NewfiesCustomerInterfaceTestCase,
-    NewfiesCustomerInterfaceForgotPassTestCase,
-]
+    # def test_dummy_test_hangupurl(self):
+    #     """Test that the ``dummy_test_hangupurl``
+    #     periodic task runs with no errors, and returns the correct result."""
+    #     result = dummy_test_hangupurl.delay(self.callrequest.request_uuid)
+    #     self.assertEqual(result.successful(), True)
 
 
-def suite():
-    return build_test_suite_from(test_cases)
+class DialerCdrModel(TestCase):
+    """Test Callrequest, VoIPCall models"""
 
+    fixtures = ['gateway.json', 'auth_user.json', 'contenttype.json',
+                'phonebook.json', 'contact.json',
+                'campaign.json', 'subscriber.json',
+                'callrequest.json', 'survey.json', 'section.json']
+
+    def setUp(self):
+        self.user = User.objects.get(username='admin')
+
+        try:
+            content_type_id = ContentType.objects.get(model='voiceapp').id
+        except:
+            content_type_id = 1
+
+        # Callrequest model
+        self.callrequest = Callrequest(
+            call_type=1,
+            status=1,
+            user=self.user,
+            phone_number='123456',
+            subscriber_id=1,
+            campaign_id=1,
+            aleg_gateway_id=1,
+            content_type_id=content_type_id,
+            object_id=1,
+        )
+        self.callrequest.save()
+
+        # VoIPCall model
+        self.voipcall = VoIPCall(
+            user=self.user,
+            used_gateway_id=1,
+            callrequest=self.callrequest,
+            callid='Top Gun',
+            phone_number='123456',
+            leg_type=1,
+            duration=20,
+        )
+        self.voipcall.save()
+        self.assertEqual(self.voipcall.__unicode__(), u'1 - Top Gun')
+
+        # Test mgt command
+        call_command("create_callrequest_cdr", "1|1")
+
+        call_command("create_callrequest_cdr", "3|1")
+
+    def test_name(self):
+        self.assertEqual(self.callrequest.phone_number, "123456")
+        #self.assertEqual(self.callrequest.__unicode__(), u'Top Gun')
+        self.assertEqual(self.voipcall.phone_number, "123456")
+
+        Callrequest.objects.get_pending_callrequest()
+
+        self.voipcall.destination_name()
+        self.voipcall.duration = ''
+        self.voipcall.min_duration()
+        self.voipcall.duration = 12
+        self.voipcall.min_duration()
+
+    def teardown(self):
+        self.callrequest.delete()
+        self.voipcall.delete()

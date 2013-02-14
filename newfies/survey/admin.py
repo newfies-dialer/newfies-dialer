@@ -7,78 +7,125 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 
 from django.contrib import admin
-from survey.models import SurveyApp, SurveyQuestion, \
-                          SurveyResponse, SurveyCampaignResult
+from survey.models import Survey, Section, Branching, \
+    Survey_template, Section_template, Branching_template, \
+    Result, ResultAggregate
 from adminsortable.admin import SortableAdmin, SortableTabularInline
 
 
-class SurveyQuestionInline(SortableTabularInline):
+#Templates Section, Survey and Branching for Admin
+class SectionTemplateInline(SortableTabularInline):
+    """
+    Inline Section Template
+    """
+    model = Section_template
 
-    model = SurveyQuestion
+
+class SurveyTemplateAdmin(admin.ModelAdmin):
+    """
+    Allows the administrator to view and modify survey.
+    """
+    inlines = [SectionTemplateInline]
+    list_display = ('id', 'name', 'created_date', 'tts_language')
+    list_display_links = ('id', 'name')
+
+admin.site.register(Survey_template, SurveyTemplateAdmin)
 
 
-class SurveyAppAdmin(SortableAdmin):
+class BranchingTemplateAdmin(admin.ModelAdmin):
+    """
+    Allows the administrator to view and modify branching.
+    """
+    list_display = ('id', 'keys', 'section', 'goto', 'created_date')
+    search_fields = ['keys']
+    list_filter = ['created_date', 'section']
+
+admin.site.register(Branching_template, BranchingTemplateAdmin)
+
+
+#Section, Survey and Branching for Admin
+class SectionInline(SortableTabularInline):
+    """
+    Inline Section
+    """
+    model = Section
+
+
+class SurveyAdmin(admin.ModelAdmin):
 
     """Allows the administrator to view and modify survey."""
 
-    inlines = [SurveyQuestionInline]
-    list_display = ('id', 'name', 'created_date')
+    inlines = [SectionInline]
+    list_display = ('id', 'name', 'created_date', 'tts_language')
     list_display_links = ('id', 'name')
 
-admin.site.register(SurveyApp, SurveyAppAdmin)
+admin.site.register(Survey, SurveyAdmin)
 
 
-class SurveyResponseAdmin(admin.ModelAdmin):
-
-    """
-    Allows the administrator to view and modify attributes
-    of a survey response.
-    """
-
-    list_display = ('key', 'keyvalue', 'created_date')
-    search_fields = ['key', 'keyvalue']
-
-admin.site.register(SurveyResponse, SurveyResponseAdmin)
-
-
-class SurveyResponseInline(admin.TabularInline):
-
-    model = SurveyResponse
-    fk_name = 'surveyquestion'
-    extra = 1
-
-
-class SurveyQuestionAdmin(SortableAdmin):
+class SectionTemplateAdmin(SortableAdmin):
 
     """Allows the administrator to view and modify survey question."""
 
-    inlines = [SurveyResponseInline]
-    list_display = ('id', 'user', 'surveyapp', 'question', 'audio_message',
-                    'type', 'gateway', 'created_date')
+    list_display = ('id', 'survey', 'created_date')
     search_fields = ['question']
-    list_display_links = ('question', )
-    list_filter = ['created_date', 'surveyapp']
+    list_filter = ['created_date', 'survey']
 
-admin.site.register(SurveyQuestion, SurveyQuestionAdmin)
+admin.site.register(Section_template, SectionTemplateAdmin)
 
 
-class SurveyCampaignResultAdmin(admin.ModelAdmin):
+class SectionAdmin(SortableAdmin):
 
-    """Allows the administrator to view and modify survey campaign result."""
+    """Allows the administrator to view and modify survey question."""
 
-    list_display = ('id', 'campaign', 'surveyapp', 'callid', 'question',
-                    'response', 'record_file', 'recording_duration',
-                    'created_date')
-    search_fields = ['campaign', 'surveyapp', 'question']
-    list_filter = ['created_date', 'surveyapp']
-    list_display_links = ('id', 'question', )
+    list_display = ('id', 'survey', 'created_date')
+    search_fields = ['question']
+    list_filter = ['created_date', 'survey']
+
+admin.site.register(Section, SectionAdmin)
+
+
+class BranchingAdmin(admin.ModelAdmin):
+
+    """Allows the administrator to view and modify branching."""
+
+    list_display = ('id', 'keys', 'section', 'goto', 'created_date')
+    search_fields = ['keys']
+    list_filter = ['created_date', 'section']
+
+admin.site.register(Branching, BranchingAdmin)
+
+
+#Result
+class ResultAdmin(admin.ModelAdmin):
+
+    """Allows the administrator to view and modify survey results."""
+
+    list_display = ('id', 'callrequest', 'section', 'response',
+                    'record_file', 'created_date')
+    search_fields = ['campaign']
+    list_filter = ['created_date']
+    list_display_links = ('id',)
     ordering = ('id', )
 
-admin.site.register(SurveyCampaignResult, SurveyCampaignResultAdmin)
+admin.site.register(Result, ResultAdmin)
+
+
+class ResultAggregateAdmin(admin.ModelAdmin):
+
+    """Allows the administrator to view and modify survey aggregated result."""
+
+    list_display = ('id', 'campaign', 'survey', 'section', 'response',
+                    'count', 'created_date')
+    search_fields = ['campaign', 'survey']
+    list_filter = ['created_date', 'survey']
+    list_display_links = ('id',)
+    ordering = ('id', )
+
+admin.site.register(ResultAggregate, ResultAggregateAdmin)

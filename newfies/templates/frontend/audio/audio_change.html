@@ -20,11 +20,10 @@
 {% block content %}
 
 <form class="well" method="POST" action="." enctype="multipart/form-data" id="update_form">{% csrf_token %}
-
     {# audiofield form #}
     {% for field in form %}
     <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-        <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+        <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
         <div class="input">
             {{ field }}
             {% if field.errors %}
@@ -42,7 +41,6 @@
             <input id="add" type="submit" class="btn btn-primary" value="{% trans "Submit" %}" />
          {% endif %}
     </div>
-
 </form>
 
 {% endblock %}

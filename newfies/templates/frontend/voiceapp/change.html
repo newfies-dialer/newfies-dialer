@@ -1,14 +1,11 @@
 {% extends "frontend/master.html" %}
 {% load i18n %}
 
-{% block extra_files %}
-{% endblock %}
-
 {% block content_header %}
     <h1>
         {% if action == 'update' %}
             {% trans "Update" %}
-        {% else %}
+        {% elif action == 'add' %}
             {% trans "Add" %}
         {% endif %}
         {% trans "Voice Applications" %}
@@ -18,11 +15,10 @@
 
 {% block content %}
 
-
-    <form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+    <form class="well" {% if action != 'view' %}method="POST" action="." enctype="multipart/form-data"{% endif %}>{% csrf_token %}
         {% for field in form %}
          <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-            <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+            <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
             <div class="input">
                 {{ field }}
                 {% if field.errors %}
@@ -33,6 +29,7 @@
          </div>
          {% endfor %}
 
+         {% if action != 'view' %}
          <div class="actions">
              {% if action == 'update' %}
                 <input id="update" type="submit" class="btn btn-primary" value="{% trans "Update" %}" />
@@ -44,7 +41,7 @@
                  <input id="delete" class="btn btn-danger" name="delete" type="submit" value="{% trans "Delete" %}" />
              {% endif %}
          </div>
+         {% endif %}
     </form>
-
 
 {% endblock %}

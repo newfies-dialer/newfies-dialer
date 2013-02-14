@@ -2,26 +2,42 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+# Copyright (C) 2011-2013 Star2Billing S.L.
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
+
 from django.contrib import admin
-#from django.utils.translation import ugettext_lazy as _
-from voice_app.models import VoiceApp
+from voice_app.models import VoiceApp, VoiceApp_template
 
 
-class VoiceAppAdmin(admin.ModelAdmin):
-    """Allows the administrator to view and modify certain attributes
-    of a VoiceApp."""
+class VoiceAppTemplateAdmin(admin.ModelAdmin):
+    """
+    Allows the administrator to view and modify certain attributes
+    of a VoiceApp Template
+    """
     list_display = ('id', 'name', 'type', 'data', 'tts_language', 'user',
                     'gateway', 'created_date')
     list_display_links = ('id', 'name', )
     list_filter = ['created_date', ]
     ordering = ('id', )
+
+admin.site.register(VoiceApp_template, VoiceAppTemplateAdmin)
+
+
+class VoiceAppAdmin(admin.ModelAdmin):
+    """
+    Allows the administrator to view VoiceApp
+    """
+    list_display = ('id', 'name', 'type', 'data', 'tts_language', 'user',
+                    'gateway', 'created_date')
+    list_display_links = ('id', 'name', )
+    list_filter = ['created_date', ]
+    ordering = ('id', )
+
 admin.site.register(VoiceApp, VoiceAppAdmin)

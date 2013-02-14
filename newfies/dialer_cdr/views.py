@@ -2,155 +2,69 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+# Copyright (C) 2011-2013 Star2Billing S.L.
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required,\
+    permission_required
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
-from django.db.models import *
 from django.template.context import RequestContext
-from django.utils.translation import ugettext_lazy as _
-from django.utils import simplejson
-from dialer_campaign.views import notice_count, grid_common_function
+from django.db.models import Sum, Avg, Count
+from django.conf import settings
 from dialer_campaign.function_def import user_dialer_setting_msg
-from dialer_cdr.models import Callrequest, VoIPCall
+from dialer_cdr.models import VoIPCall
+from dialer_cdr.constants import CDR_REPORT_COLUMN_NAME
 from dialer_cdr.forms import VoipSearchForm
-from dialer_cdr.function_def import voipcall_record_common_fun, get_disposition_name
-from common.common_functions import variable_value, current_view
+from frontend_notification.views import notice_count
+from common.common_functions import current_view, ceil_strdate,\
+    get_pagination_vars
 from datetime import datetime
 import csv
-import urllib
-import ast
 
 
-@login_required
-def voipcall_report_grid(request):
-    """VoIP Call list in json format for flexigrid
+def get_voipcall_daily_data(voipcall_list):
+    """Get voipcall daily data"""
+    select_data = {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
 
-    **Model**: VoIPCall
+    # Get Total Rrecords from VoIPCall Report table for Daily Call Report
+    total_data = voipcall_list.extra(select=select_data)\
+        .values('starting_date')\
+        .annotate(Count('starting_date'))\
+        .annotate(Sum('duration'))\
+        .annotate(Avg('duration'))\
+        .order_by('-starting_date')
 
-    **Fields**: [id, user__username, used_gateway__name, callid, request_uuid,
-                 callerid, phone_number, starting_date, sessiontime,
-                 disposition, leg_type]
+    # Following code will count total voip calls, duration
+    if total_data.count() != 0:
+        max_duration = max([x['duration__sum'] for x in total_data])
+        total_duration = sum([x['duration__sum'] for x in total_data])
+        total_calls = sum([x['starting_date__count'] for x in total_data])
+        total_avg_duration = (sum([x['duration__avg'] for x in total_data])) / total_data.count()
+    else:
+        max_duration = 0
+        total_duration = 0
+        total_calls = 0
+        total_avg_duration = 0
 
-    **Logic Description**:
-
-        * Get VoIP call list according to search parameters for loggedin user
-    """
-    grid_data = grid_common_function(request)
-    page = int(grid_data['page'])
-    start_page = int(grid_data['start_page'])
-    end_page = int(grid_data['end_page'])
-    sortorder_sign = grid_data['sortorder_sign']
-    sortname = grid_data['sortname']
-
-
-    # Search vars
-    kwargs = {}
-    from_date = ''
-    start_date = ''
-    to_date = ''
-    end_date = ''
-    disposition = 'all'
-
-    if not sortorder_sign == '':
-        sortorder_sign = '-'
-    
-    # get querystring from URL
-    q_arr = list(request.get_full_path().split('?'))
-    j = 0
-    q_para = ''
-
-    # get para from querystring
-    for i in q_arr:
-        if j == 1:
-            q_para = i
-        j = j + 1
-
-    if "from_date" in q_para:
-        # decode query string
-        decoded_string = urllib.unquote(q_para.decode("utf8"))
-
-        temp_list = list(decoded_string.split('&'))
-        for i in range(0, len(temp_list)):
-            if temp_list[i].find('='):
-                kwargs_list = list(temp_list[i].split('='))
-
-                if kwargs_list[0] == 'from_date':
-                    if kwargs_list[1]:
-                        from_date = kwargs_list[1]
-                        start_date = \
-                        datetime(int(from_date[0:4]), int(from_date[5:7]),
-                                 int(from_date[8:10]), 0, 0, 0, 0)
-
-                if kwargs_list[0] == 'to_date':
-                    if kwargs_list[1]:
-                        to_date = kwargs_list[1]
-                        end_date = \
-                        datetime(int(to_date[0:4]), int(to_date[5:7]),
-                                 int(to_date[8:10]), 23, 59, 59, 999999)
-
-                if kwargs_list[0] == 'disposition':
-                    if kwargs_list[1]:
-                        disposition = kwargs_list[1]
-
-        if start_date and end_date:
-            kwargs['starting_date__range'] = (start_date, end_date)
-        if start_date and end_date == '':
-            kwargs['starting_date__gte'] = start_date
-        if start_date == '' and end_date:
-            kwargs['starting_date__lte'] = end_date
-
-        if disposition != 'all':
-            kwargs['disposition__exact'] = disposition
-
-        if len(kwargs) == 0:
-            tday = datetime.today()
-            kwargs['starting_date__gte'] = datetime(tday.year,
-                                                    tday.month,
-                                                    tday.day, 0, 0, 0, 0)
-    kwargs['user'] = User.objects.get(username=request.user)
-
-    voipcall_list = VoIPCall.objects.filter(**kwargs)
-
-    count = voipcall_list.count()
-    voipcall_list = \
-        voipcall_list.order_by(sortorder_sign + sortname)[start_page:end_page]
-    
-    rows = []
-    for row in voipcall_list:
-        gateway_used = row.used_gateway.name if row.used_gateway else ''
-        rows.append({'id': row.id,
-                     'cell': [ row.starting_date.strftime('%Y-%m-%d %H:%M:%S'),
-                               row.callid,
-                               row.get_leg_type_display(),
-                               row.callerid,
-                               row.phone_number,
-                               gateway_used,
-                               #str(timedelta(seconds=row.duration)), # original
-                               row.duration, # dilla test
-                               row.billsec,
-                               row.get_disposition_display(),
-                               #row.hangup_cause,
-                               #row.hangup_cause_q850,
-                               ]})
-        
-    data = {'rows': rows,
-            'page': page,
-            'total': count}
-    return HttpResponse(simplejson.dumps(data), mimetype='application/json',
-                        content_type="application/json")
+    data = {
+        'total_data': total_data.reverse(),
+        'total_duration': total_duration,
+        'total_calls': total_calls,
+        'total_avg_duration': total_avg_duration,
+        'max_duration': max_duration,
+    }
+    return data
 
 
+@permission_required('dialer_cdr.view_call_detail_report', login_url='/')
 @login_required
 def voipcall_report(request):
     """VoIP Call Report
@@ -168,78 +82,132 @@ def voipcall_report(request):
 
         * ``request.session['voipcall_record_qs']`` - stores voipcall query set
     """
-    kwargs = {}
-    kwargs['user'] = User.objects.get(username=request.user)
-    from_date = ''
-    to_date = ''
-    disposition = variable_value(request, 'status')
+    sort_col_field_list = ['starting_date', 'leg_type', 'disposition',
+                           'used_gateway', 'callerid', 'callid', 'phone_number',
+                           'duration', 'billsec', 'amd_status']
+    default_sort_field = 'starting_date'
+    pagination_data =\
+        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+
+    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    sort_order = pagination_data['sort_order']
+    start_page = pagination_data['start_page']
+    end_page = pagination_data['end_page']
+
+    search_tag = 1
+    action = 'tabs-1'
     form = VoipSearchForm()
+
     if request.method == 'POST':
-
-        if request.POST['from_date'] != "":
-            from_date = request.POST['from_date']
-        if request.POST['to_date'] != "":
-            to_date = request.POST['to_date']
-
         form = VoipSearchForm(request.POST)
-        kwargs = voipcall_record_common_fun(request)
-    else:
-        tday = datetime.today()
-        kwargs['starting_date__gte'] = datetime(tday.year,
-                                               tday.month,
-                                               tday.day, 0, 0, 0, 0)
+        if form.is_valid():
+            request.session['session_start_date'] = ''
+            request.session['session_end_date'] = ''
+            request.session['session_disposition'] = ''
 
-    voipcall_list = \
-        VoIPCall.objects.filter(**kwargs).order_by('-starting_date')
+            if request.POST.get('from_date'):
+                # From
+                from_date = request.POST['from_date']
+                start_date = ceil_strdate(from_date, 'start')
+                request.session['session_start_date'] = start_date
+
+            if request.POST.get('to_date'):
+                # To
+                to_date = request.POST['to_date']
+                end_date = ceil_strdate(to_date, 'end')
+                request.session['session_end_date'] = end_date
+
+            disposition = request.POST.get('status')
+            if disposition != 'all':
+                request.session['session_disposition'] = disposition
+
+    post_var_with_page = 0
+    try:
+        if request.GET.get('page') or request.GET.get('sort_by'):
+            post_var_with_page = 1
+            start_date = request.session.get('session_start_date')
+            end_date = request.session.get('session_end_date')
+            disposition = request.session.get('session_disposition')
+            form = VoipSearchForm(initial={'from_date': start_date.strftime('%Y-%m-%d'),
+                                           'to_date': end_date.strftime('%Y-%m-%d'),
+                                           'status': disposition})
+        else:
+            post_var_with_page = 1
+            if request.method == 'GET':
+                post_var_with_page = 0
+    except:
+        pass
+
+    if post_var_with_page == 0:
+        # default
+        tday = datetime.today()
+        from_date = tday.strftime('%Y-%m-%d')
+        to_date = tday.strftime('%Y-%m-%d')
+        start_date = datetime(tday.year, tday.month, tday.day, 0, 0, 0, 0)
+        end_date = datetime(tday.year, tday.month, tday.day, 23, 59, 59, 999999)
+        disposition = 'all'
+        form = VoipSearchForm(initial={'from_date': from_date, 'to_date': to_date,
+                                       'status': disposition})
+        # unset session var
+        request.session['session_start_date'] = start_date
+        request.session['session_end_date'] = end_date
+        request.session['session_disposition'] = disposition
+
+    kwargs = {}
+    if start_date and end_date:
+        kwargs['starting_date__range'] = (start_date, end_date)
+    if start_date and end_date == '':
+        kwargs['starting_date__gte'] = start_date
+    if start_date == '' and end_date:
+        kwargs['starting_date__lte'] = end_date
+
+    if disposition and disposition != 'all':
+        kwargs['disposition__exact'] = disposition
+
+    kwargs['user'] = request.user
+
+    voipcall_list = VoIPCall.objects.filter(**kwargs)
+    all_voipcall_list = voipcall_list.values_list('id', flat=True)
 
     # Session variable is used to get record set with searched option
     # into export file
-    request.session['voipcall_record_qs'] = voipcall_list
+    request.session['voipcall_record_qs'] = all_voipcall_list
 
-    select_data = \
-        {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
-
-    # Get Total Rrecords from VoIPCall Report table for Daily Call Report
-    total_data = VoIPCall.objects.extra(select=select_data)\
-                 .values('starting_date')\
-                 .filter(**kwargs).annotate(Count('starting_date'))\
-                 .annotate(Sum('duration'))\
-                 .annotate(Avg('duration'))\
-                 .order_by('-starting_date')
-
-    # Following code will count total voip calls, duration
-    if total_data.count() != 0:
-        max_duration = \
-            max([x['duration__sum'] for x in total_data])
-        total_duration = \
-            sum([x['duration__sum'] for x in total_data])
-        total_calls = \
-            sum([x['starting_date__count'] for x in total_data])
-        total_avg_duration = \
-            (sum([x['duration__avg']\
-                for x in total_data])) / total_data.count()
+    if request.GET.get('page') or request.GET.get('sort_by'):
+        daily_data = request.session['voipcall_daily_data']
     else:
-        max_duration = 0
-        total_duration = 0
-        total_calls = 0
-        total_avg_duration = 0
+        if not voipcall_list:
+            request.session['voipcall_daily_data'] = ''
+        daily_data = get_voipcall_daily_data(voipcall_list)
+        request.session['voipcall_daily_data'] = daily_data
+
+    voipcall_list = voipcall_list.order_by(sort_order)[start_page:end_page]
 
     template = 'frontend/report/voipcall_report.html'
     data = {
         'form': form,
-        'from_date': from_date,
-        'to_date': to_date,
-        'disposition': disposition,
-        'total_data': total_data.reverse(),
-        'total_duration': total_duration,
-        'total_calls': total_calls,
-        'total_avg_duration': total_avg_duration,
-        'max_duration': max_duration,
+        'total_data': daily_data['total_data'],
+        'total_duration': daily_data['total_duration'],
+        'total_calls': daily_data['total_calls'],
+        'total_avg_duration': daily_data['total_avg_duration'],
+        'max_duration': daily_data['max_duration'],
         'module': current_view(request),
         'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'all_voipcall_list': all_voipcall_list,
+        'voipcall_list': voipcall_list,
+        'total_voipcall': all_voipcall_list.count(),
+        'PAGE_SIZE': PAGE_SIZE,
+        'CDR_REPORT_COLUMN_NAME': CDR_REPORT_COLUMN_NAME,
+        'col_name_with_order': pagination_data['col_name_with_order'],
+        'search_tag': search_tag,
+        'start_date': start_date,
+        'end_date': end_date,
+        'action': action,
+        'AMD': settings.AMD,
     }
-
+    request.session['msg'] = ''
+    request.session['error_msg'] = ''
     return render_to_response(template, data,
            context_instance=RequestContext(request))
 
@@ -263,24 +231,33 @@ def export_voipcall_report(request):
     writer = csv.writer(response)
 
     # super(VoIPCall_ReportAdmin, self).queryset(request)
-    qs = request.session['voipcall_record_qs']
+    if request.session.get('voipcall_record_qs'):
+        qs = request.session['voipcall_record_qs']
 
-    writer.writerow(['user', 'callid', 'callerid', 'phone_number',
-                     'starting_date', 'duration', 'billsec',
-                     'disposition', 'hangup_cause', 'hangup_cause_q850',
-                     'used_gateway'])
-    for i in qs:
-        gateway_used = i.used_gateway.name if i.used_gateway else ''
-        writer.writerow([i.user,
-                         i.callid,
-                         i.callerid,
-                         i.phone_number,
-                         i.starting_date,
-                         i.duration,
-                         i.billsec,
-                         get_disposition_name(i.disposition),
-                         i.hangup_cause,
-                         i.hangup_cause_q850,
-                         gateway_used,
-                         ])
+        amd_status = ''
+        if settings.AMD:
+            amd_status = 'amd_status'
+
+        writer.writerow(['user', 'callid', 'callerid', 'phone_number',
+                         'starting_date', 'duration', 'billsec',
+                         'disposition', 'hangup_cause', 'hangup_cause_q850',
+                         'used_gateway', amd_status])
+        for i in qs:
+            gateway_used = i.used_gateway.name if i.used_gateway else ''
+            amd_status = i.amd_status if settings.AMD else ''
+
+            writer.writerow([
+                i.user,
+                i.callid,
+                i.callerid,
+                i.phone_number,
+                i.starting_date,
+                i.duration,
+                i.billsec,
+                i.disposition,
+                i.hangup_cause,
+                i.hangup_cause_q850,
+                gateway_used,
+                amd_status,
+            ])
     return response

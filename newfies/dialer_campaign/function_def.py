@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -14,38 +14,15 @@
 
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from dialer_campaign.models import Phonebook, Campaign, \
-                                Contact, CAMPAIGN_STATUS, \
-                                CAMPAIGN_STATUS_COLOR
+from dialer_contact.models import Contact
+from dialer_campaign.models import Campaign
+from dialer_campaign.constants import CAMPAIGN_STATUS,\
+    CAMPAIGN_STATUS_COLOR
 from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting
-from voice_app.models import VoiceApp
-from common.common_functions import variable_value
-from dateutil.relativedelta import relativedelta
 from dateutil.rrule import rrule, DAILY, HOURLY
 from dateutil.parser import parse
-from datetime import datetime, timedelta
-
-
-def field_list(name, user=None):
-    """Return List of phonebook, campaign, country"""
-    if name == "phonebook" and user is None:
-        list = Phonebook.objects.all()
-
-    if name == "phonebook" and user is not None:
-        list = Phonebook.objects.filter(user=user)
-
-    if name == "campaign" and user is not None:
-        list = Campaign.objects.filter(user=user)
-
-    if name == "voiceapp" and user is not None:
-        list = VoiceApp.objects.filter(user=user)
-
-    if name == "gateway" and user is not None:
-        list = UserProfile.objects.get(user=user)
-        list = list.userprofile_gateway.all()
-
-    return ((l.id, l.name) for l in list)
+from datetime import timedelta
 
 
 def user_attached_with_dialer_settings(request):
@@ -55,10 +32,8 @@ def user_attached_with_dialer_settings(request):
                                            dialersetting__isnull=False)
         # DialerSettings link to the User
         if user_obj:
-            dialer_set_obj = \
-            DialerSetting.objects.get(pk=user_obj.dialersetting_id)
             # DialerSettings is exists
-            if dialer_set_obj:
+            if DialerSetting.objects.get(pk=user_obj.dialersetting_id):
                 # attached with dialer setting
                 return False
             else:
@@ -82,12 +57,12 @@ def check_dialer_setting(request, check_for, field_value=''):
         # DialerSettings link to the User
         if user_obj:
             dialer_set_obj = \
-            DialerSetting.objects.get(pk=user_obj.dialersetting_id)
+                DialerSetting.objects.get(pk=user_obj.dialersetting_id)
             if dialer_set_obj:
                 # check running campaign for User
                 if check_for == "campaign":
                     campaign_count = Campaign.objects\
-                                     .filter(user=request.user).count()
+                        .filter(user=request.user).count()
                     # Total active campaign matched with
                     # max_number_campaigns
                     if campaign_count >= dialer_set_obj.max_number_campaign:
@@ -104,11 +79,11 @@ def check_dialer_setting(request, check_for, field_value=''):
                     for i in campaign_list:
                         # Total contacts per campaign
                         contact_count = Contact.objects\
-                                    .filter(phonebook__campaign=i.id).count()
+                            .filter(phonebook__campaign=i.id, phonebook__user=request.user)\
+                            .count()
                         # Total active contacts matched with
                         # max_number_subscriber_campaign
-                        if contact_count >= \
-                        dialer_set_obj.max_number_subscriber_campaign:
+                        if contact_count >= dialer_set_obj.max_number_subscriber_campaign:
                             # Limit matched or exceeded
                             return True
                     # Limit not matched
@@ -165,7 +140,7 @@ def dialer_setting_limit(request, limit_for):
     # DialerSettings link to the User
     if user_obj:
         dialer_set_obj = \
-        DialerSetting.objects.get(pk=user_obj.dialersetting_id)
+            DialerSetting.objects.get(pk=user_obj.dialersetting_id)
         if limit_for == "contact":
             return str(dialer_set_obj.max_number_subscriber_campaign)
         if limit_for == "campaign":
@@ -182,7 +157,21 @@ def dialer_setting_limit(request, limit_for):
 
 def type_field_chk(base_field, base_field_type, field_name):
     """Type fields (e.g. equal to, begins with, ends with, contains)
-    are checked."""
+    are checked.
+
+    >>> type_field_chk('1234', '1', 'contact')
+    {'contact__contains': '1234'}
+
+    >>> type_field_chk('1234', '2', 'contact')
+    {'contact__exact': '1234'}
+
+    >>> type_field_chk('1234', '3', 'contact')
+    {'contact__startswith': '1234'}
+
+    >>> type_field_chk('1234', '4', 'contact')
+    {'contact__endswith': '1234'}
+
+    """
     kwargs = {}
     if base_field != '':
         if base_field_type == '1':
@@ -196,63 +185,19 @@ def type_field_chk(base_field, base_field_type, field_name):
     return kwargs
 
 
-def contact_search_common_fun(request):
-    """Return Array (kwargs) for Contact list"""
-
-    # Assign form field value to local variable
-    contact_no = variable_value(request, 'contact_no')
-    contact_no_type = variable_value(request, 'contact_no_type')
-    phonebook = variable_value(request, 'phonebook')
-    status = variable_value(request, 'status')
-
-    kwargs = {}
-    if phonebook != '0':
-        kwargs['phonebook'] = phonebook
-
-    if status != '2':
-        kwargs['status'] = status
-
-    contact_no = type_field_chk(contact_no, contact_no_type, 'contact')
-    for i in contact_no:
-        kwargs[i] = contact_no[i]
-
-    return kwargs
-
-
-def calculate_date(search_type):
-    """calculate date"""
-    end_date = datetime.today()
-    search_type = int(search_type)
-    # Last 30 days
-    if search_type == 1:
-        start_date = end_date + relativedelta(days=-int(30))
-    # Last 7 days
-    if search_type == 2:
-        start_date = end_date + relativedelta(days=-int(7))
-    # Yesterday
-    if search_type == 3:
-        start_date = end_date + relativedelta(days=-int(1),
-                                            hour=0,
-                                            minute=0,
-                                            second=0)
-    # Last 24 hours
-    if search_type == 4:
-        start_date = end_date + relativedelta(hours=-int(24))
-    # Last 12 hours
-    if search_type == 5:
-        start_date = end_date + relativedelta(hours=-int(12))
-    # Last 6 hours
-    if search_type == 6:
-        start_date = end_date + relativedelta(hours=-int(6))
-    # Last hour
-    if search_type == 7:
-        start_date = end_date + relativedelta(hours=-int(1))
-
-    return start_date
-
-
 def date_range(start, end, q):
-    """Date  Range"""
+    """Date  Range
+
+    >>> from datetime import datetime
+
+    >>> s_date = datetime(2012, 07, 11, 0, 0, 0, 0)
+
+    >>> e_date = datetime(2012, 07, 12, 23, 59, 59, 99999)
+
+    >>> date_range(s_date, e_date, 2)
+    [datetime.datetime(2012, 7, 11, 0, 0), datetime.datetime(2012, 7, 12, 0, 0)]
+
+    """
     r = (end + timedelta(days=1) - start).days
     if int(q) <= 2:
         return list(rrule(DAILY,
@@ -267,22 +212,35 @@ def date_range(start, end, q):
 
 
 def get_campaign_status_name(id):
-    """To get status name from CAMPAIGN_STATUS"""
+    """To get status name from CAMPAIGN_STATUS
+
+    >>> get_campaign_status_name(1)
+    '<font color="green">STARTED</font>'
+
+    >>> get_campaign_status_name(2)
+    '<font color="blue">PAUSED</font>'
+
+    >>> get_campaign_status_name(3)
+    '<font color="orange">ABORTED</font>'
+
+    >>> get_campaign_status_name(4)
+    '<font color="red">STOPPED</font>'
+    """
     for i in CAMPAIGN_STATUS:
         if i[0] == id:
             #return i[1]
             if i[1] == 'START':
-                return '<font color="' + CAMPAIGN_STATUS_COLOR[id] + '">' \
-                    + 'STARTED' + '</font>'
+                return '<font color="%s">STARTED</font>' \
+                       % (CAMPAIGN_STATUS_COLOR[id])
             if i[1] == 'PAUSE':
-                return '<font color="' + CAMPAIGN_STATUS_COLOR[id] + '">' \
-                    + 'PAUSED' + '</font>'
+                return '<font color="%s">PAUSED</font>' \
+                       % (CAMPAIGN_STATUS_COLOR[id])
             if i[1] == 'ABORT':
-                return '<font color="' + CAMPAIGN_STATUS_COLOR[id] + '">' \
-                    + 'ABORTED' + '</font>'
+                return '<font color="%s">ABORTED</font>' \
+                       % (CAMPAIGN_STATUS_COLOR[id])
             if i[1] == 'END':
-                return '<font color="' + CAMPAIGN_STATUS_COLOR[id] + '">' \
-                    + 'STOPPED' + '</font>'
+                return '<font color="%s">STOPPED</font>' \
+                       % (CAMPAIGN_STATUS_COLOR[id])
 
 
 def user_dialer_setting(user):

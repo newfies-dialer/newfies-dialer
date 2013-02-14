@@ -3,12 +3,6 @@ html, body {
     background-color: #fff; /* default background-color: #fff */
 }
 
-/* Page header in content wrapper */
-.page-header {
-    background-color: #f5f5f5;
-    padding: 10px 20px 10px;  /* affected width & height of Page header */
-}
-
 #language-container {
     width: 110px; /* language selection box */
 }
@@ -42,9 +36,6 @@ ul.nav {
   margin-bottom: 20px;
 }
 
-.input {
-  margin-bottom: 20px;
-}
 
 .row {
   margin-bottom: 10px;
@@ -56,14 +47,14 @@ label {
 
 /* * * Responsive * * */
 
-// Landscape phones and down
+/* Landscape phones and down */
 @media (max-width: 480px) {
     #finance {
         position: relative; margin: 40px 0px; width: 350px; border: 1px solid #99CCFF;
     }
 }
 
-// Landscape phone to portrait tablet
+/* Landscape phone to portrait tablet */
 @media (max-width: 768px) {
     #finance {
         position: relative; margin: 40px 0px; width: 700px; border: 1px solid #99CCFF;
@@ -71,7 +62,7 @@ label {
 
 }
 
-// Portrait tablet to landscape and desktop
+/* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 980px) {
     #finance {
         position: relative; margin: 40px 0px; width: 900px; border: 1px solid #99CCFF;
@@ -79,10 +70,23 @@ label {
 
 }
 
-// Large desktop
+/* Large desktop */
 @media (min-width: 1200px) {
     #finance {
         position: relative; margin: 40px 0px; width: 1000px; border: 1px solid #99CCFF;
     }
 
+}
+
+/*Survey campaign result modal width changed*/
+.modal-big {
+    width: 800px;
+    margin-left: -350px;
+}
+
+@media (max-width: 900px) {
+    .modal-big {
+        width: auto;
+        margin-left: auto;
+    }
 }

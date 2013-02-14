@@ -1,0 +1,91 @@
+{% extends "frontend/master.html" %}
+{% load i18n %}
+
+{% block header_files %}
+{% endblock %}
+
+{% block extra_files %}
+{% endblock %}
+
+{% block row_fluid %}
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block container %}
+
+    {% block content %}
+
+        {% if err_msg %}
+            {% include "frontend/extra_modal_files.html" %}
+            <script type="text/javascript" charset="utf-8">
+                $(window).load(function(){
+                    $('#section_modal').modal('show');
+                });
+                var url = '/survey/' + '{{ survey_id }}'  + '/#row{{ section_id }}';
+                $(".close").live('click', function() {
+                    $(location).attr('href', url);
+                });
+                var KEYCODE_ESC = 27;
+                $(document).keyup(function(e) {
+                    if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
+                });
+            </script>
+        <!-- modal content-->
+        <div class="modal hide fade" id="section_script_modal">
+        {% endif %}
+
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal" >&times;</a>
+                <h3>{% if action == 'update' %}
+                    {% trans "Update" %}
+                {% else %}
+                    {% trans "Add" %}
+                {% endif %} {% trans "Section script" %}
+                    <small></small>
+                </h3>
+            </div>
+
+
+            <form method="POST" action="/section/script/{{ section_id }}/" enctype="multipart/form-data" id="update_form">
+            {% csrf_token %}
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="span5 clearfix{% if form.script.errors %} control-group error{% endif %}">
+                            <label class="control-label" for="{{ form.script.auto_id }}">{{ form.script.label }}</label>
+                            <div class="input">
+                                {{ form.script }}
+                                {% if form.script.errors %}
+                                    <span class="help-inline">{{ form.script.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                                <span class="help-block">{{ form.script.help_text|safe }} </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" align="right">
+                    {% if action == 'update' %}
+                        <input id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
+                    {% else %}
+                        <input id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans "Save" %}" />
+                    {% endif %}
+                    &nbsp;
+                    <a href="#" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
+                </div>
+
+            </form>
+
+        {% if err_msg %}
+            </div>
+        {% endif %}
+
+    {% endblock %}
+
+    {% block footer %}
+    {% endblock %}
+
+{% endblock %}

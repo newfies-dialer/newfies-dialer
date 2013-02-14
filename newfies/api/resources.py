@@ -8,7 +8,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -16,6 +16,7 @@
 
 from django.utils.encoding import smart_unicode
 from django.utils.xmlutils import SimplerXMLGenerator
+from django.conf import settings
 
 from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
@@ -24,7 +25,7 @@ from tastypie.exceptions import ImmediateHttpResponse
 from tastypie import http
 
 from dialer_cdr.models import VoIPCall
-from settings_local import API_ALLOWED_IP
+
 from random import seed
 from cStringIO import StringIO
 import urllib
@@ -58,7 +59,7 @@ class CustomJSONSerializer(Serializer):
 
 
 def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='',
-    leg='a', hangup_cause='', from_plivo='', to_plivo=''):
+                    leg='a', hangup_cause='', from_plivo='', to_plivo=''):
     """
     Common function to create CDR / VoIP Call
 
@@ -87,7 +88,15 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='',
     else:
         #B-Leg
         leg_type = 2
-        used_gateway = obj_callrequest.content_object.gateway
+        if obj_callrequest.content_object.__class__.__name__ == 'VoiceApp':
+            used_gateway = obj_callrequest.content_object.gateway
+        else:
+            #Survey
+            used_gateway = obj_callrequest.aleg_gateway
+
+        #On B-leg issue to get the right CallerID and Phonenumber
+        if not to_plivo or len(to_plivo) == 0:
+            to_plivo = data["%s%s" % (data_prefix, 'caller_id')]
 
     #check the right variable for hangup cause
     data_hangup_cause = data["%s%s" % (data_prefix, 'hangup_cause')]
@@ -99,38 +108,43 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='',
     if cdr_hangup_cause == 'USER_BUSY':
         disposition = 'BUSY'
     else:
-        disposition = data["%s%s" % \
-                        (data_prefix, 'endpoint_disposition')] or ''
+        disposition = data["%s%s" % (data_prefix, 'endpoint_disposition')] or ''
+    if not from_plivo:
+        from_plivo = ''
 
-    logger.debug('Create CDR - request_uuid=%s ; leg=%d ; hangup_cause= %s' % \
-                    (plivo_request_uuid, leg_type, cdr_hangup_cause))
+    logger.debug('Create CDR - request_uuid=%s ; leg=%d ; hangup_cause= %s' %
+        (plivo_request_uuid, leg_type, cdr_hangup_cause))
 
     new_voipcall = VoIPCall(
-                    user=obj_callrequest.user,
-                    request_uuid=plivo_request_uuid,
-                    leg_type=leg_type,
-                    used_gateway=used_gateway,
-                    callrequest=obj_callrequest,
-                    callid=data["%s%s" % (data_prefix, 'call_uuid')] or '',
-                    callerid=from_plivo,
-                    phone_number=to_plivo,
-                    dialcode=None,  # TODO
-                    starting_date=starting_date,
-                    duration=data["%s%s" % (data_prefix, 'duration')] or 0,
-                    billsec=data["%s%s" % (data_prefix, 'billsec')] or 0,
-                    progresssec=data["%s%s" % \
-                                        (data_prefix, 'progresssec')] or 0,
-                    answersec=data["%s%s" % (data_prefix, 'answersec')] or 0,
-                    disposition=disposition,
-                    hangup_cause=cdr_hangup_cause,
-                    hangup_cause_q850=data["%s%s" % \
-                                    (data_prefix, 'hangup_cause_q850')] or '',)
+        user=obj_callrequest.user,
+        request_uuid=plivo_request_uuid,
+        leg_type=leg_type,
+        used_gateway=used_gateway,
+        callrequest=obj_callrequest,
+        callid=data["%s%s" % (data_prefix, 'call_uuid')] or '',
+        callerid=from_plivo,
+        phone_number=to_plivo,
+        dialcode=None,  # TODO
+        starting_date=starting_date,
+        duration=data["%s%s" % (data_prefix, 'duration')] or 0,
+        billsec=data["%s%s" % (data_prefix, 'billsec')] or 0,
+        progresssec=data["%s%s" % (data_prefix, 'progresssec')] or 0,
+        answersec=data["%s%s" % (data_prefix, 'answersec')] or 0,
+        disposition=disposition,
+        hangup_cause=cdr_hangup_cause,
+        hangup_cause_q850=data["%s%s" % (data_prefix, 'hangup_cause_q850')] or '',)
 
     new_voipcall.save()
 
 
 def get_attribute(attrs, attr_name):
-    """this is a helper to retrieve an attribute if it exists"""
+    """this is a helper to retrieve an attribute if it exists
+
+    >>> x = {'a': 'apple'}
+
+    >>> get_attribute(x, 'a')
+    'apple'
+    """
     if attr_name in attrs:
         attr_value = attrs[attr_name]
     else:
@@ -139,7 +153,16 @@ def get_attribute(attrs, attr_name):
 
 
 def get_value_if_none(x, value):
-    """return value if x is None"""
+    """return value if x is None
+
+    >>> x = None
+
+    >>> get_value_if_none(x, 'abc')
+    'abc'
+
+    >>> get_value_if_none('a', 'abc')
+    'a'
+    """
     if x is None:
         return value
     return x
@@ -153,7 +176,7 @@ def save_if_set(record, fproperty, value):
 
 class IpAddressAuthorization(Authorization):
     def is_authorized(self, request, object=None):
-        if request.META['REMOTE_ADDR'] in API_ALLOWED_IP:
+        if request.META['REMOTE_ADDR'] in settings.API_ALLOWED_IP:
             return True
         else:
             raise ImmediateHttpResponse(response=http.HttpUnauthorized())
@@ -162,7 +185,7 @@ class IpAddressAuthorization(Authorization):
 
 class IpAddressAuthentication(Authentication):
     def is_authorized(self, request, object=None):
-        if request.META['REMOTE_ADDR'] in API_ALLOWED_IP:
+        if request.META['REMOTE_ADDR'] in settings.API_ALLOWED_IP:
             return True
         else:
             raise ImmediateHttpResponse(response=http.HttpUnauthorized())

@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -21,7 +21,7 @@ SID = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 AUTH_TOKEN = 'YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY'
 
 
-def call_plivo(callerid=None, phone_number=None, Gateways=None,
+def call_plivo(callerid=None, callername=None, phone_number=None, Gateways=None,
                GatewayCodecs="'PCMA,PCMU'", GatewayTimeouts="60",
                GatewayRetries='1', ExtraDialString=None,
                AnswerUrl=None, HangupUrl=None, TimeLimit="3600"):
@@ -39,16 +39,14 @@ def call_plivo(callerid=None, phone_number=None, Gateways=None,
 
     if not callerid:
         callerid = '8888888888'
-
+    if not callername:
+        callername = callerid
     if not GatewayCodecs:
         GatewayCodecs = "'PCMA,PCMU'"
-
     if not GatewayTimeouts:
         GatewayTimeouts = "1800"
-
     if not GatewayRetries:
         GatewayRetries = "1"
-
     if not TimeLimit:
         TimeLimit = "3600"
 
@@ -58,20 +56,26 @@ def call_plivo(callerid=None, phone_number=None, Gateways=None,
     # Initiate a new outbound call to user/1000 using a HTTP POST
     call_params = {
         'From': callerid,  # Caller Id
-        'To': phone_number,  # User Number to Call
+        'CallerName': callername,  # CallerName
         'Gateways': Gateways,  # Gateway string to try dialing separated by comma. First in list will be tried first
         'GatewayCodecs': GatewayCodecs,  # Codec string as needed by FS for each gateway separated by comma
         'GatewayTimeouts': GatewayTimeouts,  # Seconds to timeout in string for each gateway separated by comma
         'GatewayRetries': GatewayRetries,  # Retry String for Gateways separated by comma, on how many times each gateway should be retried
         'ExtraDialString': extra_dial_string,
-        #TODO : Remove this
-        #'AnswerUrl': 'http://localhost/~areski/django/MyProjects/plivohelper-php/examples/test.php',
-        #'AnswerUrl': 'http://192.168.1.11:8000/api/dialer_cdr/answercall/',
         'AnswerUrl': AnswerUrl,
         'HangupUrl': HangupUrl,
-        #TODO : Fix TimeLimit on Plivo
-        #'TimeLimit': TimeLimit,
+        'TimeLimit': TimeLimit,
     }
+
+    #Check to send digit
+    #This allow to have phonenumber with 13213132132www567
+    #it will wait and send DTMF after Answering the call
+    check_senddigit = phone_number.partition('w')
+    if check_senddigit[1] == 'w':
+        call_params['SendDigits'] = check_senddigit[1] + check_senddigit[2]
+        call_params['To'] = check_senddigit[0]
+    else:
+        call_params['To'] = phone_number
 
     print call_params
 

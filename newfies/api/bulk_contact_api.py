@@ -8,7 +8,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -20,28 +20,26 @@ from tastypie.authorization import Authorization
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import BadRequest
-
-from dialer_campaign.models import Contact, Phonebook
+from dialer_contact.models import Contact, Phonebook
 from dialer_campaign.function_def import check_dialer_setting, \
-                                    dialer_setting_limit
-
+    dialer_setting_limit
 import logging
 
 logger = logging.getLogger('newfies.filelog')
 
 
 class BulkContactValidation(Validation):
-    """BulkContact Validation Class"""
+    """
+    BulkContact Validation Class
+    """
+
     def is_valid(self, bundle, request=None):
         errors = {}
-
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
         if check_dialer_setting(request, check_for="contact"):
-            errors['contact_dialer_setting'] = ["You have too many contacts \
-                per campaign. You are allowed a maximum of %s" %\
-                            dialer_setting_limit(request, limit_for="contact")]
-
+            errors['contact_dialer_setting'] = ["You have too many contacts per campaign. You are allowed a maximum of %s" %
+                dialer_setting_limit(request, limit_for="contact")]
         phonebook_id = bundle.data.get('phonebook_id')
         if phonebook_id:
             try:
@@ -50,12 +48,12 @@ class BulkContactValidation(Validation):
                 errors['phonebook_error'] = ["Phonebook is not selected!"]
         else:
             errors['phonebook_error'] = ["Phonebook is not selected!"]
-
         return errors
 
 
 class BulkContactResource(ModelResource):
-    """API to bulk create contacts
+    """
+    API to bulk create contacts
 
     **Attributes**
 
@@ -103,19 +101,23 @@ class BulkContactResource(ModelResource):
         phonebook_id = bundle.data.get('phonebook_id')
         phonenolist = list(phoneno_list.split(","))
 
-        try:
-            obj_phonebook = Phonebook.objects.get(id=phonebook_id)
-            new_contact_count = 0
-            for phoneno in phonenolist:
+        obj_phonebook = Phonebook.objects.get(id=phonebook_id)
+        new_contact_count = 0
+        for phoneno in phonenolist:
+            # check phoneno in Contact
+            dup_count = Contact.objects.filter(contact=phoneno).count()
+
+            # If dup_count is zero, create new contact
+            if dup_count == 0:
                 new_contact = Contact.objects.create(
                     phonebook=obj_phonebook,
                     contact=phoneno,)
                 new_contact_count = new_contact_count + 1
                 new_contact.save()
-        except:
-            error_msg = "The contact duplicated (%s)!\n" % phoneno
-            logger.error(error_msg)
-            raise BadRequest(error_msg)
+            else:
+                error_msg = "The contact duplicated (%s)!\n" % phoneno
+                logger.error(error_msg)
+                raise BadRequest(error_msg)
 
         logger.debug('BulkContact API : result ok 200')
         return bundle

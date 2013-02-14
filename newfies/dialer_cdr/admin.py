@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -15,7 +15,8 @@
 from django.contrib import admin
 from django.contrib.admin.options import IncorrectLookupParameters
 from django.contrib.admin.views.main import ERROR_FLAG
-from django.conf.urls.defaults import patterns
+from django.conf.urls import patterns
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
@@ -26,10 +27,9 @@ from django.db.models import Sum, Avg, Count
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.forms import VoipSearchForm
 from dialer_cdr.function_def import voipcall_record_common_fun, \
-                                    voipcall_search_admin_form_fun, \
-                                    get_disposition_name
+    voipcall_search_admin_form_fun
 from common.common_functions import variable_value
-from genericadmin.admin import GenericAdminModelAdmin, GenericTabularInline
+from genericadmin.admin import GenericAdminModelAdmin
 from datetime import datetime
 import csv
 
@@ -37,27 +37,26 @@ import csv
 class CallrequestAdmin(GenericAdminModelAdmin):
     """Allows the administrator to view and modify certain attributes
     of a Callrequest."""
-    content_type_whitelist = ('voice_app/voiceapp', 'survey/surveyapp', )
+    content_type_whitelist = ('voice_app/voiceapp', 'survey/survey', )
     fieldsets = (
         (_('Standard options'), {
-            'fields': ('user', 'request_uuid',  'call_time', 'campaign',
+            'fields': ('user', 'request_uuid', 'call_time', 'campaign',
                        'status', 'hangup_cause', 'callerid', 'phone_number',
                        'timeout', 'timelimit', 'call_type', 'aleg_gateway',
                        'content_type', 'object_id', ),
         }),
         (_('Advanced options'), {
             'classes': ('collapse',),
-            'fields': ('extra_data',  'extra_dial_string',
-                       'campaign_subscriber'),
+            'fields': ('extra_data', 'extra_dial_string', 'subscriber', 'completed'),
         }),
     )
-    #NOTE : display user / content_type low the performance
+    #If we try to display user / content_type low the performance
     list_display = ('id', 'request_uuid', 'aleg_uuid', 'call_time',
                     'status', 'callerid', 'phone_number', 'call_type',
-                    'num_attempt', 'last_attempt_time',)
+                    'completed', 'num_attempt', 'last_attempt_time',)
     list_display_links = ('id', 'request_uuid', )
     list_filter = ['callerid', 'call_time', 'status', 'call_type', 'campaign']
-    ordering = ('id', )
+    ordering = ('-id', )
     search_fields = ('request_uuid', )
 
 admin.site.register(Callrequest, CallrequestAdmin)
@@ -68,10 +67,12 @@ class VoIPCallAdmin(admin.ModelAdmin):
     of a VoIPCall."""
     can_add = False
     detail_title = _("Call Report")
-    list_display = ('id', 'leg_type',
-                    'callid', 'callerid', 'phone_number', 'starting_date',
-                    'min_duration', 'billsec', 'disposition', 'hangup_cause',
-                    'hangup_cause_q850')
+    list_display = ('id', 'leg_type', 'callid', 'callerid', 'phone_number',
+                    'starting_date', 'min_duration', 'billsec', 'disposition',
+                    'hangup_cause', 'hangup_cause_q850')
+    if settings.AMD:
+        list_display += ('amd_status',)
+    ordering = ('-id', )
 
     def user_link(self, obj):
         """User link to user profile"""
@@ -117,7 +118,8 @@ class VoIPCallAdmin(admin.ModelAdmin):
         return my_urls + urls
 
     def changelist_view(self, request, extra_context=None):
-        """Override changelist_view method of django-admin for search parameters
+        """
+        Override changelist_view method of django-admin for search parameters
 
         **Attributes**:
 
@@ -130,14 +132,12 @@ class VoIPCallAdmin(admin.ModelAdmin):
               search Parameters: by date, by status and by billed.
         """
         opts = VoIPCall._meta
-        app_label = opts.app_label
-
         query_string = ''
         form = VoipSearchForm()
         if request.method == 'POST':
             query_string = voipcall_search_admin_form_fun(request)
-            return HttpResponseRedirect("/admin/" + opts.app_label + "/" + \
-                opts.object_name.lower() + "/?" + query_string)
+            return HttpResponseRedirect("/admin/%s/%s/?%s"
+                % (opts.app_label, opts.object_name.lower(), query_string))
         else:
             status = ''
             from_date = ''
@@ -148,20 +148,22 @@ class VoIPCallAdmin(admin.ModelAdmin):
                 to_date = variable_value(request, 'starting_date__lte')[0:10]
             if request.GET.get('disposition__exact'):
                 status = variable_value(request, 'disposition__exact')
-            form = VoipSearchForm(initial={'status': status, 'from_date': from_date, 'to_date': to_date})
-
+            form = VoipSearchForm(initial={'status': status,
+                                           'from_date': from_date,
+                                           'to_date': to_date})
 
         ChangeList = self.get_changelist(request)
         try:
             cl = ChangeList(request, self.model, self.list_display,
-                 self.list_display_links, self.list_filter, self.date_hierarchy,
-                 self.search_fields, self.list_select_related,
-                 self.list_per_page, self.list_max_show_all, self.list_editable,
-                 self)
+                self.list_display_links, self.list_filter, self.date_hierarchy,
+                self.search_fields, self.list_select_related,
+                self.list_per_page, self.list_max_show_all, self.list_editable,
+                self)
         except IncorrectLookupParameters:
             if ERROR_FLAG in request.GET.keys():
-                return render_to_response('admin/invalid_setup.html', {'title': _('Database error')})
-            return HttpResponseRedirect(request.path + '?' + ERROR_FLAG + '=1')
+                return render_to_response('admin/invalid_setup.html',
+                        {'title': _('Database error')})
+            return HttpResponseRedirect('%s?%s=1' % (request.path, ERROR_FLAG))
 
         kwargs = {}
         if request.META['QUERY_STRING'] == '':
@@ -171,9 +173,8 @@ class VoIPCallAdmin(admin.ModelAdmin):
                                                     tday.day, 0, 0, 0, 0)
             cl.root_query_set.filter(**kwargs)
 
-        formset = cl.formset = None
-
-        # Session variable is used to get record set with searched option into export file
+        cl.formset = None
+        # Session variable get record set with searched option into export file
         request.session['admin_voipcall_record_qs'] = cl.root_query_set
 
         selection_note_all = ungettext('%(total_count)s selected',
@@ -189,14 +190,10 @@ class VoIPCallAdmin(admin.ModelAdmin):
             'app_label': _('VoIP Report'),
             'title': _('Call Report'),
         }
-        return super(VoIPCallAdmin, self)\
-               .changelist_view(request, extra_context=ctx)
-
+        return super(VoIPCallAdmin, self).changelist_view(request, extra_context=ctx)
 
     def voip_report(self, request):
         opts = VoIPCall._meta
-        app_label = opts.app_label
-
         kwargs = {}
 
         form = VoipSearchForm()
@@ -220,23 +217,20 @@ class VoIPCallAdmin(admin.ModelAdmin):
         total_data = ''
         # Get Total Records from VoIPCall Report table for Daily Call Report
         total_data = VoIPCall.objects.extra(select=select_data)\
-                     .values('starting_date')\
-                     .filter(**kwargs).annotate(Count('starting_date'))\
-                     .annotate(Sum('duration'))\
-                     .annotate(Avg('duration'))\
-                     .order_by('-starting_date')
+            .values('starting_date')\
+            .filter(**kwargs)\
+            .annotate(Count('starting_date'))\
+            .annotate(Sum('duration'))\
+            .annotate(Avg('duration'))\
+            .order_by('-starting_date')
 
         # Following code will count total voip calls, duration
         if total_data.count() != 0:
-            max_duration = \
-                max([x['duration__sum'] for x in total_data])
-            total_duration = \
-                sum([x['duration__sum'] for x in total_data])
-            total_calls = \
-                sum([x['starting_date__count'] for x in total_data])
-            total_avg_duration = \
-                (sum([x['duration__avg']\
-                for x in total_data])) / total_data.count()
+            max_duration = max([x['duration__sum'] for x in total_data])
+            total_duration = sum([x['duration__sum'] for x in total_data])
+            total_calls = sum([x['starting_date__count'] for x in total_data])
+            total_avg_duration = (sum([x['duration__avg']
+                    for x in total_data])) / total_data.count()
         else:
             max_duration = 0
             total_duration = 0
@@ -264,7 +258,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
         **Important variable**:
 
-            * request.session['admin_voipcall_record_qs'] - stores voipcall query set
+            * request.session['admin_voipcall_record_qs'] - stores voipcall
 
         **Exported fields**: [user, callid, callerid, phone_number,
                               starting_date, duration, disposition,
@@ -279,19 +273,25 @@ class VoIPCallAdmin(admin.ModelAdmin):
         # super(VoIPCall_ReportAdmin, self).queryset(request)
         qs = request.session['admin_voipcall_record_qs']
 
-        writer.writerow(['user', 'callid', 'callerid',
-                         'phone_number', 'starting_date', 'duration',
-                         'disposition', 'gateway'])
+        amd_status = ''
+        if settings.AMD:
+            amd_status = 'amd_status'
+
+        writer.writerow(['user', 'callid', 'callerid', 'phone_number',
+                         'starting_date', 'duration', 'disposition',
+                         'gateway', amd_status])
         for i in qs:
             gateway_used = i.used_gateway.name if i.used_gateway else ''
+            amd_status = i.amd_status if settings.AMD else ''
             writer.writerow([i.user,
                              i.callid,
                              i.callerid,
                              i.phone_number,
                              i.starting_date,
                              i.duration,
-                             get_disposition_name(i.disposition),
+                             i.disposition,
                              gateway_used,
+                             amd_status,
                              ])
         return response
 

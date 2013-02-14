@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 #
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
@@ -8,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -20,7 +18,8 @@ from tastypie.authorization import Authorization
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import NotFound
 
-from dialer_campaign.models import Contact, Phonebook, Campaign
+from dialer_contact.models import Contact, Phonebook
+from dialer_campaign.models import Campaign
 
 import logging
 
@@ -86,21 +85,21 @@ class CampaignDeleteCascadeResource(ModelResource):
             else:
                 # phonebook_count > 0
                 other_campaing_count =\
-                Campaign.objects.filter(user=request.user,
-                    phonebook__in=del_campaign.phonebook.all())\
-                .exclude(id=campaign_id).count()
+                    Campaign.objects.filter(user=request.user,
+                        phonebook__in=del_campaign.phonebook.all())\
+                            .exclude(id=campaign_id).count()
 
                 if other_campaing_count == 0:
                     # delete phonebooks as well as contacts belong to it
 
                     # 1) delete all contacts which are belong to phonebook
                     contact_list = Contact.objects\
-                    .filter(phonebook__in=del_campaign.phonebook.all())
+                        .filter(phonebook__in=del_campaign.phonebook.all())
                     contact_list.delete()
 
                     # 2) delete phonebook
                     phonebook_list = Phonebook.objects\
-                    .filter(id__in=del_campaign.phonebook.all())
+                        .filter(id__in=del_campaign.phonebook.all())
                     phonebook_list.delete()
 
                     # 3) delete campaign

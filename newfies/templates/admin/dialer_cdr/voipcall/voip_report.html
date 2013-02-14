@@ -1,5 +1,5 @@
 {% extends "admin/change_list.html" %}
-{% load adminmedia admin_list i18n dialer_cdr_extras %}
+{% load adminmedia admin_list i18n dialer_cdr_tags common_tags %}
 
 {% if not is_popup %}
   {% block breadcrumbs %}
@@ -8,7 +8,7 @@
         {% trans "Home" %}
       </a>
        &rsaquo;
-       <a href="../">
+       <a href="../../">
          {{ app_label|capfirst }}
       </a>
       &rsaquo; <a href="../">{% trans "Call Report" %}</a>
@@ -18,29 +18,6 @@
 {% endif %}
 
 {% block content %}
-<!-- jquery UI css -->
-<link type="text/css" href="{{STATIC_URL}}newfies/css/jquery-ui-bootstrap/jquery-ui-1.8.16.custom.css" rel="stylesheet">
-
-<!-- Javascript -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-ui-1.8.16.custom.min.js"></script>
-
-<script type="text/javascript">
-$(function() {
-    var dates = $('#id_from_date, #id_to_date').datepicker({
-        defaultDate: "+1w",
-        changeMonth: true,
-        dateFormat: 'yy-mm-dd',
-        onSelect: function(selectedDate) {
-            var option = this.id == "id_from_date" ? "minDate" : "maxDate";
-            var instance = $(this).data("datepicker");
-            var date = $.datepicker.parseDate(instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
-            dates.not(this).datepicker("option", option, date);
-        }
-    });
-});
-</script>
-
 <div id="content-main">
 
 {% if cl.formset.errors %}
@@ -69,14 +46,14 @@ $(function() {
 <p>&nbsp;</p>
 <div>
     <table  class="module" align=left>
-    <caption>{% trans "Call Detail Report Summary"  %}</caption>
+    <caption>{% trans "Call Detail Report Summary" %}</caption>
     <thead>
         <tr>
-            <th scope="col">{% trans "Date"  %}</th>
-            <th scope="col">{% trans "Duration"  %}</th>
-            <th scope="col">{% trans "Graphic"  %}</th>
-            <th scope="col">{% trans "Calls"  %}</th>
-            <th scope="col"><acronym title="{% trans "Average Connection Time"  %}">{% trans "ACT"  %}</acronym></th>
+            <th scope="col">{% trans "Date" %}</th>
+            <th scope="col">{% trans "Duration" %}</th>
+            <th scope="col">{% trans "Graphic" %}</th>
+            <th scope="col">{% trans "Calls" %}</th>
+            <th scope="col"><acronym title="{% trans "Average Connection Time" %}">{% trans "ACT" %}</acronym></th>
         </tr>
     </thead>
     <tbody>
@@ -95,7 +72,7 @@ $(function() {
     </tbody>
     <tfoot>
         <tr>
-            <td>{% trans "Total"  %}</td>
+            <td>{% trans "Total" %}</td>
             <td>{{ total_duration|conv_min }}</td>
             <td></td>
             <td>{{ total_calls }}</td>

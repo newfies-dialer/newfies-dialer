@@ -3,7 +3,7 @@
 Objects Description
 ===================
 
-.. automodule:: dialer_campaign.models
+.. automodule:: dialer_contact.models
 
 .. _Phonebook-model:
 
@@ -21,6 +21,8 @@ Objects Description
 
 .. autoclass:: Contact
     :members:
+
+.. automodule:: dialer_campaign.models
 
 .. _Campaign-manager-model:
 
@@ -40,12 +42,12 @@ Objects Description
     :members:
 
 
-.. _CampaignSubscriber-model:
+.. _Subscriber-model:
 
-:class:`CampaignSubscriber`
----------------------------
+:class:`Subscriber`
+-------------------
 
-.. autoclass:: CampaignSubscriber
+.. autoclass:: Subscriber
     :members:
 
 
@@ -74,6 +76,19 @@ Objects Description
 .. automodule:: voice_app.models
 
 .. _VoiceApp-model:
+
+:class:`VoiceApp_abstract`
+--------------------------
+
+.. autoclass:: VoiceApp_abstract
+    :members:
+
+
+:class:`VoiceApp_template`
+--------------------------
+
+.. autoclass:: VoiceApp_template
+    :members:
 
 :class:`VoiceApp`
 -----------------
@@ -106,38 +121,85 @@ Objects Description
 
 .. automodule:: survey.models
 
-.. _SurveyApp-model:
+.. _Survey-model:
 
-:class:`SurveyApp`
+:class:`Survey_abstract`
+------------------------
+
+.. autoclass:: Survey_abstract
+    :members:
+
+:class:`Survey_template`
+------------------------
+
+.. autoclass:: Survey_template
+    :members:
+
+:class:`Survey`
+---------------
+
+.. autoclass:: Survey
+    :members:
+
+
+.. _Section-model:
+
+:class:`Section_abstract`
+-------------------------
+
+.. autoclass:: Section_abstract
+    :members:
+
+:class:`Section_template`
+-------------------------
+
+.. autoclass:: Section_template
+    :members:
+
+:class:`Section`
+----------------
+
+.. autoclass:: Section
+    :members:
+
+
+.. _Branching-model:
+
+:class:`Branching_abstract`
+---------------------------
+
+.. autoclass:: Branching_abstract
+    :members:
+
+:class:`Branching_template`
+---------------------------
+
+.. autoclass:: Branching_template
+    :members:
+
+:class:`Branching`
 ------------------
 
-.. autoclass:: SurveyApp
+.. autoclass:: Branching
     :members:
 
-.. _SurveyQuestion-model:
 
-:class:`SurveyQuestion`
------------------------
+.. _Result-model:
 
-.. autoclass:: SurveyQuestion
+:class:`Result`
+---------------
+
+.. autoclass:: Result
     :members:
 
-.. _SurveyResponse-model:
 
-:class:`SurveyResponse`
------------------------
+.. _ResultAggregate-model:
 
-.. autoclass:: SurveyResponse
+:class:`ResultAggregate`
+------------------------
+
+.. autoclass:: ResultAggregate
     :members:
-
-.. _SurveyCampaignResult-model:
-
-:class:`SurveyCampaignResult`
------------------------------
-
-.. autoclass:: SurveyCampaignResult
-    :members:
-
 
 
 .. automodule:: user_profile.models

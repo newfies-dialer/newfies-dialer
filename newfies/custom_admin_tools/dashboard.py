@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -21,13 +21,13 @@ To activate your index dashboard add the following to your settings.py::
 
 And to activate the app index dashboard::
     ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'dashboard.CustomAppIndexDashboard'"""
+
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from admin_tools.dashboard import modules, Dashboard, AppIndexDashboard
-from admin_tools.utils import get_admin_site_name
 from admin_tools_stats.modules import DashboardCharts, get_active_graph
+from admin_tools.utils import get_admin_site_name
 from django.conf import settings
-
 
 class HistoryDashboardModule(modules.LinkList):
     title = 'History'
@@ -86,25 +86,20 @@ class CustomIndexDashboard(Dashboard):
         # append an app list module for "Dialer"
         self.children.append(modules.AppList(
             _('Voip Dialer'),
-            models=('dialer_cdr.*', 'dialer_gateway.*', 'dialer_campaign.*', ),
+            models=('dialer_cdr.*', 'dialer_gateway.*',
+                    'dialer_contact.*', 'dialer_campaign.*', ),
         ))
 
         # append an app list module for "Dialer"
         self.children.append(modules.AppList(
-            _('Voip Server'),
-            models=('voice_app.*', ),
+            _('Voice Applications'),
+            models=('voice_app.*', 'survey.*', ),
         ))
 
         # append an app list module for "Dialer"
         self.children.append(modules.AppList(
             _('Audio Files'),
             models=('audiofield.*', ),
-        ))
-
-        # append an app list module for "Country_prefix"
-        self.children.append(modules.AppList(
-            _('Survey'),
-            models=('survey.*', ),
         ))
 
         # append a link list module for "quick links"

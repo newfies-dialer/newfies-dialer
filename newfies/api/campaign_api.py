@@ -8,7 +8,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -16,6 +16,7 @@
 
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
+from django.conf import settings
 
 from tastypie.resources import ModelResource, ALL
 from tastypie.authentication import BasicAuthentication
@@ -27,15 +28,17 @@ from tastypie import fields
 
 from api.user_api import UserResource
 from api.gateway_api import GatewayResource
+from api.audiofile_api import AudioFileResource
 from api.content_type_api import ContentTypeResource
 from api.phonebook_api import PhonebookResource
 from api.resources import get_value_if_none
-from dialer_campaign.models import Campaign, Phonebook
+from dialer_contact.models import Phonebook
+from dialer_campaign.models import Campaign
 from dialer_gateway.models import Gateway
 from dialer_campaign.function_def import \
-            user_attached_with_dialer_settings, \
-            check_dialer_setting, \
-            dialer_setting_limit
+    user_attached_with_dialer_settings, check_dialer_setting, \
+    dialer_setting_limit
+from audiofield.models import AudioFile
 import time
 import logging
 
@@ -63,9 +66,9 @@ class CampaignValidation(Validation):
             expirationdate = float(expirationdate) - time.altzone
 
             bundle.data['startingdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
-                time.gmtime(float(startingdate)))
+                time.gmtime(startingdate))
             bundle.data['expirationdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
-                time.gmtime(float(expirationdate)))
+                time.gmtime(expirationdate))
 
         if request.method == 'PUT':
             if startingdate:
@@ -76,42 +79,34 @@ class CampaignValidation(Validation):
                     '%Y-%m-%d %H:%M:%S', time.gmtime(float(expirationdate)))
 
         if user_attached_with_dialer_settings(request):
-            errors['user_dialer_setting'] = ['Your settings are not \
-                    configured properly, Please contact the administrator.']
+            errors['user_dialer_setting'] = ['Your settings are not configured properly, Please contact the administrator.']
 
         if check_dialer_setting(request, check_for="campaign"):
-            errors['chk_campaign'] = ["Too many campaigns. Max allowed %s"\
-                    % dialer_setting_limit(request, limit_for="campaign")]
+            errors['chk_campaign'] = ["Too many campaigns. Max allowed %s"
+                % dialer_setting_limit(request, limit_for="campaign")]
 
         frequency = bundle.data.get('frequency')
         if frequency:
-            if check_dialer_setting(request, check_for="frequency",
-                field_value=int(frequency)):
-                errors['chk_frequency'] = ["Frequency limit of %s exceeded."\
+            if check_dialer_setting(request, check_for="frequency", field_value=int(frequency)):
+                errors['chk_frequency'] = ["Frequency limit of %s exceeded."
                     % dialer_setting_limit(request, limit_for="frequency")]
 
         callmaxduration = bundle.data.get('callmaxduration')
         if callmaxduration:
-            if check_dialer_setting(request,
-                check_for="duration",
-                field_value=int(callmaxduration)):
-                errors['chk_duration'] = ["Duration limit of %s exceeded."\
+            if check_dialer_setting(request, check_for="duration", field_value=int(callmaxduration)):
+                errors['chk_duration'] = ["Duration limit of %s exceeded."
                     % dialer_setting_limit(request, limit_for="duration")]
 
         maxretry = bundle.data.get('maxretry')
         if maxretry:
-            if check_dialer_setting(request,
-                check_for="retry",
-                field_value=int(maxretry)):
-                errors['chk_duration'] = ["Retries limit of %s exceeded."\
+            if check_dialer_setting(request, check_for="retry", field_value=int(maxretry)):
+                errors['chk_duration'] = ["Retries limit of %s exceeded."
                     % dialer_setting_limit(request, limit_for="retry")]
 
         calltimeout = bundle.data.get('calltimeout')
         if calltimeout:
-            if check_dialer_setting(request,
-                check_for="timeout",
-                field_value=int(calltimeout)):
-                errors['chk_timeout'] = ["Timeout limit of %s exceeded."\
+            if check_dialer_setting(request, check_for="timeout", field_value=int(calltimeout)):
+                errors['chk_timeout'] = ["Timeout limit of %s exceeded."
                     % dialer_setting_limit(request, limit_for="timeout")]
 
         aleg_gateway_id = bundle.data.get('aleg_gateway')
@@ -124,24 +119,22 @@ class CampaignValidation(Validation):
                 errors['chk_gateway'] = ["The Gateway ID doesn't exist!"]
 
         content_type = bundle.data.get('content_type')
-        if content_type == 'voice_app' or content_type == 'survey':
+        if content_type == 'voiceapp_template' or content_type == 'survey_template':
             try:
                 content_type_id = ContentType.objects\
-                .get(app_label=str(content_type)).id
+                    .get(model=str(content_type)).id
                 bundle.data['content_type'] = '/api/v1/contenttype/%s/' %\
                                               content_type_id
             except:
                 errors['chk_content_type'] = ["The ContentType doesn't exist!"]
         else:
-            errors['chk_content_type'] = ["Entered wrong option. Please enter \
-                                            'voice_app' or 'survey' !"]
+            errors['chk_content_type'] = ["Entered wrong option. Please enter 'voice_app' or 'survey' !"]
 
         object_id = bundle.data.get('object_id')
         if object_id:
-            try:
                 bundle.data['object_id'] = object_id
-            except:
-                errors['chk_object_id'] = ["App Object ID doesn't exist!"]
+        else:
+            errors['chk_object_id'] = ["App Object ID doesn't exist!"]
 
         try:
             user_id = User.objects.get(username=request.user).id
@@ -154,6 +147,23 @@ class CampaignValidation(Validation):
                 user=request.user).count()
             if (name_count != 0):
                 errors['chk_campaign_name'] = ["The Campaign name duplicated!"]
+
+        # Voicemail setting is not enabled by default
+        if settings.AMD:
+            voicemail = bundle.data.get('voicemail')
+            if voicemail:
+                bundle.data['voicemail'] = voicemail
+                amd_behavior = bundle.data.get('amd_behavior')
+                audiofile_id = bundle.data.get('voicemail_audiofile')
+                if audiofile_id:
+                    try:
+                        audiofile_id = AudioFile.objects.get(id=audiofile_id).id
+                        bundle.data['voicemail_audiofile'] = '/api/v1/audiofile/%s/' %\
+                                                             audiofile_id
+                    except:
+                        errors['voicemail_audiofile'] = ["The audiofile ID doesn't exist!"]
+            else:
+                errors['voicemail'] = ["voicemail not enabled!"]
 
         return errors
 
@@ -185,6 +195,11 @@ class CampaignResource(ModelResource):
             * ``sunday`` - Set to 1 if you want to run this day of the week,\
             default '1'
 
+            # Voicemail setting is not enabled by default
+            * ``voicemail`` - Enable Voicemail Detection
+            * ``amd_behavior`` - Detection Behaviour
+            * ``voicemail_audiofile`` - Foreign key relationship to the a AudioFile model.
+
         **Campaign Settings**:
 
             * ``frequency`` - Defines the frequency, speed of the campaign.\
@@ -193,14 +208,16 @@ class CampaignResource(ModelResource):
             * ``maxretry`` - Defines the max retries allowed per user.
             * ``intervalretry`` - Defines the time to wait between retries\
                                   in seconds
+            * ``completion_maxretry`` - Amount of retries until a contact is completed. Completed means that it reachs a point in the phone application marked as completed
+            * ``intervalretry`` - Time delay in seconds before retrying contact for completion
             * ``calltimeout`` - Set seconds of call timeout
 
         **Gateways**:
 
             * ``aleg_gateway`` - Defines the Gateway to use to call the\
                                  subscriber
-            * ``content_type`` - Defines the application (``voice_app`` \
-                                or ``survey``) to use when the \
+            * ``content_type`` - Defines the application (``voice_app_template`` \
+                                or ``survey_template``) to use when the \
                                 call is established on the A-Leg
             * ``object_id`` - Defines the object of content_type application
             * ``extra_data`` - Defines the additional data to pass to the\
@@ -214,7 +231,7 @@ class CampaignResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "content_type": "voice_app", "object_id" : "1", "extra_data": "2000", "phonebook_id": "1"}' http://localhost:8000/api/v1/campaign/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "content_type": "voiceapp_template", "object_id" : "1", "extra_data": "2000", "phonebook_id": "1", "voicemail": "True", "amd_behavior": "1", "voicemail_audiofile": "1"}' http://localhost:8000/api/v1/campaign/
 
         Response::
 
@@ -259,6 +276,8 @@ class CampaignResource(ModelResource):
                      "id":"1",
                      "intervalretry":3,
                      "maxretry":3,
+                     "completion_intervalretry":0,
+                     "completion_maxretry":0,
                      "monday":true,
                      "name":"Default_Campaign",
                      "resource_uri":"/api/app/campaign/1/",
@@ -380,6 +399,9 @@ class CampaignResource(ModelResource):
         'content_type')
     phonebook = fields.ToManyField(PhonebookResource,
         'phonebook', full=True, readonly=True)
+    # Voicemail setting is not enabled by default
+    voicemail_audiofile = fields.ForeignKey(AudioFileResource,
+        'voicemail_audiofile', full=True)
 
     class Meta:
         queryset = Campaign.objects.all()
@@ -392,7 +414,7 @@ class CampaignResource(ModelResource):
         filtering = {
             'name': ALL,
             'status': ALL,
-            }
+        }
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
 
     def obj_create(self, bundle, request=None, **kwargs):

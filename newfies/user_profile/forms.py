@@ -2,12 +2,12 @@
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
 #
-# This Source Code Form is subject to the terms of the Mozilla Public 
+# This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
-# 
+# Copyright (C) 2011-2013 Star2Billing S.L.
+#
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
@@ -23,12 +23,13 @@ from user_profile.models import UserProfile
 class UserChangeDetailForm(ModelForm):
     """A form used to change the detail of a user in the Customer UI."""
     email = forms.CharField(label=_('Email address'), required=True)
+
     class Meta:
         model = User
         fields = ["last_name", "first_name", "email"]
 
     def __init__(self, user, *args, **kwargs):
-        self.user = user        
+        self.user = user
         super(UserChangeDetailForm, self).__init__(*args, **kwargs)
 
     def save(self, commit=True):
@@ -45,8 +46,9 @@ class UserChangeDetailExtendForm(ModelForm):
     """A form used to change the detail of a user in the Customer UI."""
     class Meta:
         model = UserProfile
-        fields = ["address", "city", "state", "country", "zip_code", "phone_no",
-                  "fax", "company_name", "company_website", "language", "note"]
+        fields = ["address", "city", "state", "country", "zip_code",
+                  "phone_no", "fax", "company_name", "company_website",
+                  "language", "note"]
 
     def __init__(self, user, *args, **kwargs):
         self.user = user
@@ -55,12 +57,13 @@ class UserChangeDetailExtendForm(ModelForm):
 
 class CheckPhoneNumberForm(forms.Form):
     """A form used to check the phone number in the Customer UI."""
-    phone_number = forms.CharField(label=_('Phone Number'), required=True,
-                                help_text=_("Check number is authorised to call"))
+    phone_number = forms.CharField(
+        label=_('Phone Number'),
+        required=True,
+        help_text=_("Check number is authorised to call"))
 
 
 class UserProfileForm(ModelForm):
 
     class Meta:
         model = UserProfile
-

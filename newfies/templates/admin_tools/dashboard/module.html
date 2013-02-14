@@ -1,0 +1,53 @@
+{% load i18n %}
+{% if not module.is_empty %}
+    <div id="module_{{ module.id }}" class="{{ module.render_css_classes }}">
+        {% if module.show_title %}<h2>
+
+            {% if module.title == "Dialer_Campaign" %}
+                {% trans "Dialer Campaign" %}
+            {% else %}
+                {% if module.title == "Dialer_Contact" %}
+                    {% trans "Dialer Contact" %}
+                {% else %}
+                    {% if module.title == "Dialer_Cdr" %}
+                        {% trans "Dialer CDR" %}
+                    {% else %}
+                        {% if module.title == "Dialer_Gateway" %}
+                            {% trans "Dialer Gateway" %}
+                        {% else %}
+                            {% if module.title == "Prefix_Country" %}
+                                {% trans "Prefix Country" %}
+                            {% else %}
+                                {% if module.title == "Dialer_Settings" %}
+                                    {% trans "Dialer Settings" %}
+                                {% else %}
+                                    {% if module.title == "Voice_App" %}
+                                        {% trans "Voice Application" %}
+                                    {% else %}
+                                        {{ module.title }}
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+
+            </h2>{% endif %}
+        <div class="dashboard-module-content">
+            {% spaceless %}
+            {% if module.pre_content %}
+            <p>{{ module.pre_content }}</p>
+            {% endif %}
+            {% block module_content %}
+            {% for child in module.children %}
+            {{ child }}
+            {% endfor %}
+            {% endblock %}
+            {% if module.post_content %}
+            <p>{{ module.post_content }}</p>
+            {% endif %}
+            {% endspaceless %}
+        </div>
+    </div>
+{% endif %}

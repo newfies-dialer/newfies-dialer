@@ -8,7 +8,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -16,23 +16,20 @@
 
 from django.conf.urls.defaults import url
 from django.http import HttpResponse
-
 from tastypie.resources import ModelResource
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie import http
-
+from dialer_campaign.constants import SUBSCRIBER_STATUS
+from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE
 from dialer_cdr.models import Callrequest
-from dialer_cdr.tasks import init_callrequest
-from dialer_campaign.models import CampaignSubscriber
+from dialer_cdr.tasks import init_callrequest, check_retrycall_completion
+from dialer_campaign.models import Subscriber
 from dialer_campaign.function_def import user_dialer_setting
 from api.resources import CustomXmlEmitter, \
-                          IpAddressAuthorization, \
-                          IpAddressAuthentication,\
-                          create_voipcall,\
-                          CDR_VARIABLES
-from datetime import datetime, timedelta
+    IpAddressAuthorization, IpAddressAuthentication, \
+    create_voipcall, CDR_VARIABLES
 import logging
 from uuid import uuid1
 
@@ -60,8 +57,7 @@ class HangupcallValidation(Validation):
         try:
             Callrequest.objects.get(request_uuid=opt_request_uuid)
         except:
-            errors['CallRequest'] = ["CallRequest not found - uuid:%s" %\
-                                     opt_request_uuid]
+            errors['CallRequest'] = ["CallRequest not found - uuid:%s" % opt_request_uuid]
         return errors
 
 
@@ -76,7 +72,7 @@ class HangupcallResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data "RequestUUID=e4fc2188-0af5-11e1-b64d-00231470a30c&HangupCause=SUBSCRIBER_ABSENT" http://localhost:8000/api/v1/hangupcall/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data "RequestUUID=e4fc2188-0af5-11e1-b64d-00231470a30c&HangupCause=SUBSCRIBER_ABSENT&From=800124545&To=34650111222" http://localhost:8000/api/v1/hangupcall/
 
         Response::
 
@@ -103,11 +99,10 @@ class HangupcallResource(ModelResource):
             timeframe=3600)
 
     def override_urls(self):
-        """Override url"""
+        """Override urls"""
         return [
-            url(r'^(?P<resource_name>%s)/$' %\
-                self._meta.resource_name, self.wrap_view('create')),
-            ]
+            url(r'^(?P<resource_name>%s)/$' % self._meta.resource_name, self.wrap_view('create')),
+        ]
 
     def create_response(self, request, data,
                         response_class=HttpResponse, **response_kwargs):
@@ -128,31 +123,28 @@ class HangupcallResource(ModelResource):
         if not errors:
             opt_request_uuid = request.POST.get('RequestUUID')
             opt_hangup_cause = request.POST.get('HangupCause')
+            callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid)
+
             try:
-                callrequest = Callrequest.objects.get(
-                    request_uuid=opt_request_uuid)
-            except:
-                logger.debug('Hangupcall Error cannot find the Callrequest!')
-            try:
-                obj_subscriber = CampaignSubscriber.objects.get(
-                    id=callrequest.campaign_subscriber.id)
+                obj_subscriber = Subscriber.objects.get(id=callrequest.subscriber.id)
                 if opt_hangup_cause == 'NORMAL_CLEARING':
-                    obj_subscriber.status = 5  # Complete
+                    if obj_subscriber.status != SUBSCRIBER_STATUS.COMPLETED:
+                        obj_subscriber.status = SUBSCRIBER_STATUS.SENT
                 else:
-                    obj_subscriber.status = 4  # Fail
+                    obj_subscriber.status = SUBSCRIBER_STATUS.FAIL
                 obj_subscriber.save()
             except:
-                logger.debug('Hangupcall Error cannot find the '
-                             'Campaignsubscriber!')
+                logger.debug('Hangupcall Error cannot find the Subscriber!')
+                return False
 
-            # 2 / FAILURE ; 3 / RETRY ; 4 / SUCCESS
+            #Update Callrequest Status
             if opt_hangup_cause == 'NORMAL_CLEARING':
-                callrequest.status = 4  # Success
+                callrequest.status = CALLREQUEST_STATUS.SUCCESS
             else:
-                callrequest.status = 2  # Failure
+                callrequest.status = CALLREQUEST_STATUS.FAILURE
             callrequest.hangup_cause = opt_hangup_cause
-            #save callrequest & campaignsubscriber
             callrequest.save()
+
             data = {}
             for element in CDR_VARIABLES:
                 if not request.POST.get('variable_%s' % element):
@@ -174,18 +166,22 @@ class HangupcallResource(ModelResource):
             logger.debug('Hangupcall API : Result 200!')
             obj = CustomXmlEmitter()
 
-            #We will manage the retry directly from the API
-            if opt_hangup_cause != 'NORMAL_CLEARING'\
-            and callrequest.call_type == 1:  # Allow retry
+            #If the call failed we will check if we want to make a retry call
+            if (opt_hangup_cause != 'NORMAL_CLEARING'
+               and callrequest.call_type == CALLREQUEST_TYPE.ALLOW_RETRY):
                 #Update to Retry Done
-                callrequest.call_type = 3
+                callrequest.call_type = CALLREQUEST_TYPE.RETRY_DONE
                 callrequest.save()
 
                 dialer_set = user_dialer_setting(callrequest.user)
-                if callrequest.num_attempt >= callrequest.campaign.maxretry\
-                or callrequest.num_attempt >= dialer_set.maxretry:
-                    logger.error("Not allowed retry - Maxretry (%d)" %\
+                #check if we are allowed to retry on failure
+                if ((obj_subscriber.count_attempt - 1) >= callrequest.campaign.maxretry
+                   or (obj_subscriber.count_attempt - 1) >= dialer_set.maxretry
+                   or not callrequest.campaign.maxretry):
+                    logger.error("Not allowed retry - Maxretry (%d)" %
                                  callrequest.campaign.maxretry)
+                    #Check here if we should try for completion
+                    check_retrycall_completion(obj_subscriber, callrequest)
                 else:
                     #Allowed Retry
 
@@ -202,18 +198,27 @@ class HangupcallResource(ModelResource):
                         aleg_gateway_id=callrequest.aleg_gateway_id,
                         content_type=callrequest.content_type,
                         object_id=callrequest.object_id,
-                        phone_number=callrequest.phone_number)
+                        phone_number=callrequest.phone_number,
+                        timelimit=callrequest.timelimit,
+                        callerid=callrequest.callerid,
+                        timeout=callrequest.timeout,
+                        content_object=callrequest.content_object,
+                        subscriber=callrequest.subscriber
+                    )
                     new_callrequest.save()
-                    #Todo Check if it's a good practice
+                    #TODO: Check if it's a good practice
                     #implement a PID algorithm
                     second_towait = callrequest.campaign.intervalretry
-                    launch_date = datetime.now() + \
-                                  timedelta(seconds=second_towait)
-                    logger.info("Init Retry CallRequest at %s" %\
-                                (launch_date.strftime("%b %d %Y %I:%M:%S")))
+                    logger.info("Init Retry CallRequest in  %d seconds" % second_towait)
                     init_callrequest.apply_async(
                         args=[new_callrequest.id, callrequest.campaign.id],
-                        eta=launch_date)
+                        countdown=second_towait)
+            else:
+                #The Call is Answered
+                logger.info("Check for completion call")
+
+                #Check if we should relaunch a new call to achieve completion
+                check_retrycall_completion(obj_subscriber, callrequest)
 
             return self.create_response(request,
                 obj.render(request, object_list))

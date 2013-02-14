@@ -1,0 +1,20 @@
+[
+   {
+      "pk":1,
+      "model":"dialer_contact.contact",
+      "fields":{
+         "status":1,
+         "city":null,
+         "first_name":"Arezqui",
+         "last_name":"Belaid",
+         "updated_date":"2012-01-02 05:51:19",
+         "description":"test subscriber",
+         "country":null,
+         "additional_vars":"",
+         "phonebook":1,
+         "contact":"640234000",
+         "created_date":"2012-01-02 05:51:19",
+         "email":"areski@gmail.com"
+      }
+   }
+]

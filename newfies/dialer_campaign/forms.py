@@ -6,107 +6,39 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 
 from django import forms
+from django.conf import settings
 from django.forms.util import ErrorList
 from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
-
-from dialer_campaign.models import Phonebook, \
-                                   Contact, \
-                                   Campaign, \
-                                   get_unique_code
-from dialer_campaign.function_def import field_list, user_dialer_setting
-
-
-class SearchForm(forms.Form):
-    """General Search Form with From & To date para."""
-    from_date = forms.CharField(label=_('From'), required=False, max_length=10,
-    help_text=_("Date Format") + ": <em>YYYY-MM-DD</em>.")
-    to_date = forms.CharField(label=_('To'), required=False, max_length=10,
-    help_text=_("Date Format") + ": <em>YYYY-MM-DD</em>.")
+from dialer_campaign.models import Phonebook, Campaign
+from dialer_campaign.constants import CAMPAIGN_STATUS
+from dialer_campaign.function_def import user_dialer_setting
+from user_profile.models import UserProfile
+from common.common_functions import get_unique_code
 
 
-class FileImport(forms.Form):
-    """General Form : CSV file upload"""
-    csv_file = forms.FileField(label=_("Upload CSV File "), required=True,
-                            error_messages={'required': 'Please upload File'},
-                            help_text=_("Browse CSV file"))
+def get_object_choices(available_objects):
+    """Function is used to get object_choices for
+    ``content_object`` field in campaign form"""
+    object_choices = []
+    for obj in available_objects:
+        type_id = ContentType.objects.get_for_model(obj.__class__).id
+        obj_id = obj.id
+        # form_value - e.g."type:12-id:3"
+        form_value = "type:%s-id:%s" % (type_id, obj_id)
+        display_text = '%s : %s' \
+            % (str(ContentType.objects.get_for_model(obj.__class__)), str(obj))
+        object_choices.append([form_value, display_text])
 
-    def clean_file(self):
-        """Form Validation :  File extension Check"""
-        filename = self.cleaned_data["csv_file"]
-        file_exts = (".csv", )
-        if not str(filename).split(".")[1].lower() in file_exts:
-            raise forms.ValidationError(_(u'Document types accepted: %s' % \
-            ' '.join(file_exts)))
-        else:
-            return filename
-
-
-class Contact_fileImport(FileImport):
-    """Admin Form : Import CSV file with phonebook"""
-    phonebook = forms.ChoiceField(label=_("Phonebook"),
-                                choices=field_list("phonebook"),
-                                required=False,
-                                help_text=_("Select Phonebook"))
-
-    def __init__(self, user, *args, **kwargs):
-        super(Contact_fileImport, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = ['phonebook', 'csv_file']
-        # To get user's phonebook list
-        if user:  # and not user.is_superuser
-            self.fields['phonebook'].choices = field_list(name="phonebook",
-                                                          user=user)
-
-
-class LoginForm(forms.Form):
-    """Client Login Form"""
-    user = forms.CharField(max_length=30, label=_('Username:'), required=True)
-    user.widget.attrs['class'] = 'input-small'
-    user.widget.attrs['placeholder'] = 'Username'
-    password = forms.CharField(max_length=30, label=_('Password:'),
-               required=True, widget=forms.PasswordInput())
-    password.widget.attrs['class'] = 'input-small'
-    password.widget.attrs['placeholder'] = 'Password'
-
-
-class PhonebookForm(ModelForm):
-    """Phonebook ModelForm"""
-
-    class Meta:
-        model = Phonebook
-        fields = ['name', 'description']
-        exclude = ('user',)
-        widgets = {
-            'description': Textarea(attrs={'cols': 26, 'rows': 3}),
-        }
-
-
-class ContactForm(ModelForm):
-    """Contact ModelForm"""
-
-    class Meta:
-        model = Contact
-        fields = ['phonebook', 'contact', 'last_name', 'first_name', 'email',
-                  'country', 'city', 'description', 'status',
-                  'additional_vars']
-        widgets = {
-            'description': Textarea(attrs={'cols': 23, 'rows': 3}),
-        }
-
-    def __init__(self, user, *args, **kwargs):
-        super(ContactForm, self).__init__(*args, **kwargs)
-        # To get user's phonebook list
-        if user:
-            self.fields['phonebook'].choices = field_list(name="phonebook",
-                                                          user=user)
+    return object_choices
 
 
 class CampaignForm(ModelForm):
@@ -116,18 +48,26 @@ class CampaignForm(ModelForm):
 
     content_object = forms.ChoiceField(label=_("Application"),)
 
+    selected_phonebook = forms.CharField(widget=forms.HiddenInput,
+                                         required=False)
+    selected_content_object = forms.CharField(widget=forms.HiddenInput,
+                                              required=False)
+
     class Meta:
         model = Campaign
         fields = ['campaign_code', 'name', 'description',
-                  'callerid', 'status', 'aleg_gateway',
-                  'content_object',  # 'content_type', 'object_id'
+                  'callerid', 'caller_name', 'aleg_gateway',
+                  'content_object',   # 'content_type', 'object_id'
                   'extra_data', 'phonebook',
                   'frequency', 'callmaxduration', 'maxretry',
                   'intervalretry', 'calltimeout',
+                  'completion_maxretry', 'completion_intervalretry',
                   'startingdate', 'expirationdate',
                   'daily_start_time', 'daily_stop_time',
                   'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
                   'saturday', 'sunday', 'ds_user',
+                  'selected_phonebook', 'selected_content_object',
+                  'voicemail', 'amd_behavior', 'voicemail_audiofile'
                   ]
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
@@ -135,40 +75,63 @@ class CampaignForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(CampaignForm, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
         self.fields['description'].widget.attrs['class'] = "input-xlarge"
 
         if user:
             self.fields['ds_user'].initial = user
-            list_pb = []
             list_gw = []
+            list_pb = []
 
             list_pb.append((0, '---'))
-            pb_list = field_list("phonebook", user)
-            for i in pb_list:
-                list_pb.append((i[0], i[1]))
+            list = Phonebook.objects.values_list('id', 'name')\
+                .filter(user=user).order_by('id')
+            for l in list:
+                list_pb.append((l[0], l[1]))
             self.fields['phonebook'].choices = list_pb
 
-            list_gw.append((0, '---'))
-            gw_list = field_list("gateway", user)
+            user_profile = UserProfile.objects.get(user=user)
+            list = user_profile.userprofile_gateway.all()
+            gw_list = ((l.id, l.name) for l in list)
+
             for i in gw_list:
                 list_gw.append((i[0], i[1]))
             self.fields['aleg_gateway'].choices = list_gw
 
-            from voice_app.models import VoiceApp
-            from survey.models import SurveyApp
-            available_objects = list(VoiceApp.objects.filter(user=user))
-            available_objects += list(SurveyApp.objects.filter(user=user))
-            object_choices = []
-            for obj in available_objects:
-                type_id = ContentType.objects.get_for_model(obj.__class__).id
-                obj_id = obj.id
-                # form_value - e.g."type:12-id:3"
-                form_value = "type:%s-id:%s" % (type_id, obj_id)
-                display_text = str(ContentType.objects\
-                            .get_for_model(obj.__class__)) + ' : ' + str(obj)
-                object_choices.append([form_value, display_text])
+            from voice_app.models import VoiceApp_template
+            available_objects = VoiceApp_template.objects.filter(user=user)
+            object_choices = get_object_choices(available_objects)
+
+            from survey.models import Survey_template
+            available_objects = Survey_template.objects.filter(user=user)
+            object_choices += get_object_choices(available_objects)
+
             self.fields['content_object'].choices = object_choices
+
+            # Voicemail setting is not enabled by default
+            if settings.AMD:
+                from survey.forms import get_audiofile_list
+                self.fields['voicemail_audiofile'].choices = get_audiofile_list(user)
+
+        # if campaign is running
+        if instance.status == CAMPAIGN_STATUS.START:
+            self.fields['name'].widget.attrs['readonly'] = True
+            self.fields['caller_name'].widget.attrs['readonly'] = True
+            self.fields['callerid'].widget.attrs['readonly'] = True
+            self.fields['extra_data'].widget.attrs['readonly'] = True
+            self.fields['phonebook'].widget.attrs['disabled'] = 'disabled'
+
+            selected_phonebook = ''
+            if instance.phonebook.all():
+                selected_phonebook = \
+                    ",".join(["%s" % (i.id) for i in instance.phonebook.all()])
+            self.fields['selected_phonebook'].initial = selected_phonebook
+
+            self.fields['content_object'].widget.attrs['disabled'] = 'disabled'
+            self.fields['content_object'].required = False
+            self.fields['selected_content_object'].initial = "type:%s-id:%s" \
+                % (instance.content_type.id, instance.object_id)
 
     def clean(self):
         cleaned_data = self.cleaned_data
@@ -181,30 +144,52 @@ class CampaignForm(ModelForm):
         dialer_set = user_dialer_setting(ds_user)
         if dialer_set:
             if frequency > dialer_set.max_frequency:
-                msg = _('Maximum Frequency limit of %d exceeded.'\
-                % dialer_set.max_frequency)
+                msg = _('Maximum Frequency limit of %d exceeded.'
+                    % dialer_set.max_frequency)
                 self._errors['frequency'] = ErrorList([msg])
                 del self.cleaned_data['frequency']
 
             if callmaxduration > dialer_set.callmaxduration:
-                msg = _('Maximum Duration limit of %d exceeded.'\
-                         % dialer_set.callmaxduration)
+                msg = _('Maximum Duration limit of %d exceeded.'
+                    % dialer_set.callmaxduration)
                 self._errors['callmaxduration'] = ErrorList([msg])
                 del self.cleaned_data['callmaxduration']
 
             if maxretry > dialer_set.maxretry:
-                msg = _('Maximum Retries limit of %d exceeded.' \
-                % dialer_set.maxretry)
+                msg = _('Maximum Retries limit of %d exceeded.'
+                    % dialer_set.maxretry)
                 self._errors['maxretry'] = ErrorList([msg])
                 del self.cleaned_data['maxretry']
 
             if calltimeout > dialer_set.max_calltimeout:
-                msg = _('Maximum Timeout limit of %d exceeded.'\
-                % dialer_set.max_calltimeout)
+                msg = _('Maximum Timeout limit of %d exceeded.'
+                    % dialer_set.max_calltimeout)
                 self._errors['calltimeout'] = ErrorList([msg])
                 del self.cleaned_data['calltimeout']
 
         return cleaned_data
+
+
+class DuplicateCampaignForm(ModelForm):
+    """DuplicateCampaignForm ModelForm"""
+    campaign_code = forms.CharField(widget=forms.HiddenInput)
+
+    class Meta:
+        model = Campaign
+        fields = ['campaign_code', 'name', 'phonebook']
+
+    def __init__(self, user, *args, **kwargs):
+        super(DuplicateCampaignForm, self).__init__(*args, **kwargs)
+        self.fields['campaign_code'].initial = get_unique_code(length=5)
+
+        if user:                    
+            list_pb = []
+            list_pb.append((0, '---'))
+            list = Phonebook.objects.values_list('id', 'name')\
+                .filter(user=user).order_by('id')
+            for l in list:
+                list_pb.append((l[0], l[1]))
+            self.fields['phonebook'].choices = list_pb
 
 
 class CampaignAdminForm(ModelForm):
@@ -212,85 +197,15 @@ class CampaignAdminForm(ModelForm):
     class Meta:
         model = Campaign
         fields = ['campaign_code', 'name', 'description', 'user', 'status',
-                  'callerid', 'startingdate', 'expirationdate', 'aleg_gateway',
-                  'content_type', 'object_id', 'extra_data', 'phonebook',
-                  'frequency', 'callmaxduration', 'maxretry', 'intervalretry',
-                  'calltimeout', 'daily_start_time', 'daily_stop_time',
-                  'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
-                  'saturday', 'sunday']
+                  'callerid', 'caller_name', 'startingdate', 'expirationdate',
+                  'aleg_gateway', 'content_type', 'object_id', 'extra_data',
+                  'phonebook', 'frequency', 'callmaxduration', 'maxretry',
+                  'intervalretry', 'calltimeout', 'daily_start_time',
+                  'daily_stop_time', 'monday', 'tuesday', 'wednesday',
+                  'thursday', 'friday', 'saturday', 'sunday',
+                  'completion_maxretry', 'completion_intervalretry']
 
     def __init__(self, *args, **kwargs):
         super(CampaignAdminForm, self).__init__(*args, **kwargs)
         self.fields['campaign_code'].widget.attrs['readonly'] = True
         self.fields['campaign_code'].initial = get_unique_code(length=5)
-
-
-NAME_TYPE = (
-    (1, _('Last Name')),
-    (2, _('First Name')),
-)
-
-CHOICE_TYPE = (
-    (1, _('Contains')),
-    (2, _('Equals')),
-    (3, _('Begins with')),
-    (4, _('Ends with')),
-)
-
-SEARCH_TYPE = (
-    (1, _('Last 30 days')),
-    (2, _('Last 7 days')),
-    (3, _('Yesterday')),
-    (4, _('Last 24 hours')),
-    (5, _('Last 12 hours')),
-    (6, _('Last 6 hours')),
-    (7, _('Last hour')),
-)
-
-
-class ContactSearchForm(forms.Form):
-    """Search Form on Contact List"""
-    contact_no = forms.CharField(label=_('Contact Number:'), required=False,
-                           widget=forms.TextInput(attrs={'size': 15}))
-    contact_no_type = forms.ChoiceField(label='', required=False, initial=1,
-                      choices=CHOICE_TYPE, widget=forms.RadioSelect)
-    name = forms.CharField(label=_('Contact Name:'), required=False,
-                           widget=forms.TextInput(attrs={'size': 15}))
-    phonebook = forms.ChoiceField(label=_('Phonebook:'), required=False)
-    status = forms.TypedChoiceField(label=_('Status:'), required=False,
-                choices=(
-                    ('0', _('Inactive')),
-                    ('1', _('Active ')),
-                    ('2', _('All'))),
-                widget=forms.RadioSelect,
-                initial='2')
-
-    def __init__(self, user, *args, **kwargs):
-        super(ContactSearchForm, self).__init__(*args, **kwargs)
-         # To get user's phonebook list
-        if user:
-            list = []
-            list.append((0, '---'))
-            pb_list = field_list("phonebook", user)
-            for i in pb_list:
-                list.append((i[0], i[1]))
-            self.fields['phonebook'].choices = list
-
-
-class DashboardForm(forms.Form):
-    """Dashboard Form"""
-    campaign = forms.ChoiceField(label=_('Campaign'), required=False)
-    search_type = forms.ChoiceField(label=_('Type'), required=False, initial=4,
-                                    choices=SEARCH_TYPE)
-
-    def __init__(self, user, *args, **kwargs):
-        super(DashboardForm, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = ['campaign', 'search_type']
-         # To get user's running campaign list
-        if user:
-            list = []
-            #list.append((0, '---'))
-            pb_list = field_list("campaign", user)
-            for i in pb_list:
-                list.append((i[0], i[1]))
-            self.fields['campaign'].choices = list

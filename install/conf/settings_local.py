@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -21,7 +21,6 @@ ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
 )
 
-#TODO : Installation script should ask the timezone
 TIME_ZONE = 'Europe/Madrid'
 
 APPLICATION_DIR = os.path.dirname(globals()['__file__'])
@@ -31,21 +30,20 @@ APPLICATION_DIR = os.path.dirname(globals()['__file__'])
 DATABASES = {
     'default': {
         # Add 'postgresql_psycopg2','postgresql','mysql','sqlite3','oracle'
-        'ENGINE': 'django.db.backends.sqlite3',
-        # Or path to database file if using sqlite3.
-        'NAME': APPLICATION_DIR + '/database/newfies-dialer.db',
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost.
-                                         # Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default.
-                                         # Not used with sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'DATABASENAME',
+        'USER': 'DB_USERNAME',
+        'PASSWORD': 'DB_PASSWORD',
+        'HOST': 'DB_HOSTNAME',
+        'PORT': 'DB_PORT',
         'OPTIONS': {
-           'init_command': 'SET storage_engine=INNODB',
+            #Needed on Mysql
+            # 'init_command': 'SET storage_engine=INNODB',
+            #Postgresql Autocommit
+            'autocommit': True,
         }
     }
 }
-
 
 #CELERY SETTINGS
 #===============
@@ -66,36 +64,35 @@ REDIS_DB = 0
 # Use only in Debug mode. Not in production
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+#ESL
+#===
+ESL_HOSTNAME = 'localhost'
+ESL_PORT = '8021'
+ESL_SECRET = 'ClueCon'
+ESL_SCRIPT = '&lua(/usr/share/newfies-lua/newfies.lua)'
 
-#PLIVO
-#=====
-PLIVO_DEFAULT_ANSWER_URL = 'http://SERVER_IP_PORT/api/v1/answercall/'
-PLIVO_DEFAULT_HANGUP_URL = 'http://SERVER_IP_PORT/api/v1/hangupcall/'
-PLIVO_DEFAULT_DIALCALLBACK_URL = 'http://SERVER_IP_PORT/api/v1/dialcallback/'
-PLIVO_DEFAULT_SURVEY_ANSWER_URL = 'http://SERVER_IP_PORT/survey_finestatemachine/'
-
+#CUSTOM
+#======
 FS_RECORDING_PATH = '/usr/share/newfies/usermedia/recording/'
 
-#Time to wait between menu / questions in survey
-MENU_TIMEOUT = '5'
-
-# ADD 'dummy','plivo','twilio'
+# ADD 'dummy','plivo','twilio','esl'
 NEWFIES_DIALER_ENGINE = 'dummy'
 
 API_ALLOWED_IP = [
-            '127.0.0.1',
-            'localhost',
-            #'SERVER_IP',
-                ]
+    '127.0.0.1',
+    'localhost',
+    #'SERVER_IP',
+]
 
 #TEXT-TO-SPEECH
 #==============
+TTS_ENGINE = 'FLITE'  # FLITE, CEPSTRAL, ACAPELA
+
 ACCOUNT_LOGIN = 'EVAL_XXXX'
 APPLICATION_LOGIN = 'EVAL_XXXXXXX'
 APPLICATION_PASSWORD = 'XXXXXXXX'
 
 SERVICE_URL = 'http://vaas.acapela-group.com/Services/Synthesizer'
 QUALITY = '22k'  # 22k, 8k, 8ka, 8kmu
-TTS_ENGINE = 'FLITE'  # FLITE, CEPSTRAL, ACAPELA
 ACAPELA_GENDER = 'W'
 ACAPELA_INTONATION = 'NORMAL'

@@ -1,0 +1,13 @@
+[
+   {
+      "pk":1,
+      "model":"dialer_contact.phonebook",
+      "fields":{
+         "updated_date":"2011-04-08 07:55:05",
+         "user":1,
+         "created_date":"2011-04-08 07:55:05",
+         "name":"Default_Phonebook",
+         "description":"This is default phone book"
+      }
+   }
+]

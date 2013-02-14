@@ -25,56 +25,48 @@ How to run test
 
 **1. Run Full Test Suit**::
 
-    $ python manage.py test --verbosity=2
+    $ python manage.py test
 
-**2. Run NewfiesTastypieApiTestCase**::
+**2. Run Individual Test**::
 
-    $ python manage.py test dialer_cdr.NewfiesTastypieApiTestCase --verbosity=2
+    $ python manage.py test api
 
-**3. Run NewfiesAdminInterfaceTestCase**::
+    $ python manage.py test dialer_campaign
 
-    $ python manage.py test dialer_cdr.NewfiesAdminInterfaceTestCase --verbosity=2
+    $ python manage.py test dialer_cdr
 
-**4. Run NewfiesCustomerInterfaceTestCase**::
+    $ python manage.py test dialer_audio
 
-    $ python manage.py test dialer_cdr.NewfiesCustomerInterfaceTestCase --verbosity=2
+    $ python manage.py test dialer_gateway
 
+    $ python manage.py test dialer_settings
 
-.. automodule:: dialer_cdr.tests
+    $ python manage.py test frontend
 
-----------------------
-Tastypie API Test Case
-----------------------
-.. _NewfiesTastypieApiTestCase-model:
+    $ python manage.py test survey
 
-.. autoclass:: NewfiesTastypieApiTestCase
-    :members:
+    $ python manage.py test user_profile
 
-
--------------------------
-Admin Interface Test Case
--------------------------
-
-.. _NewfiesAdminInterfaceTestCase-model:
-
-.. autoclass:: NewfiesAdminInterfaceTestCase
-    :members:
+    $ python manage.py test voice_app
 
 
-----------------------------
-Customer Interface Test Case
-----------------------------
 
-.. _NewfiesCustomerInterfaceTestCase-model:
+.. toctree::
+    :maxdepth: 2
 
-.. autoclass:: NewfiesCustomerInterfaceTestCase
-    :members:
+    ./testcases/api-testcases
+    ./testcases/admin-testcases
+    ./testcases/customer-testcases
+    ./testcases/model-testcases
+
+
+.. automodule:: frontend.tests
 
 -----------------------------------
 Customer Interface Forgot Test Case
 -----------------------------------
 
-.. _NewfiesCustomerInterfaceForgotPassTestCase-model:
+.. _FrontendForgotPassword:
 
-.. autoclass:: NewfiesCustomerInterfaceForgotPassTestCase
+.. autoclass:: FrontendForgotPassword
     :members:

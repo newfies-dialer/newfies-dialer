@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 #
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
@@ -8,7 +7,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -21,12 +20,11 @@ from tastypie.authorization import Authorization
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie import fields
-
 from api.user_api import UserResource
-from survey.models import SurveyApp
+from survey.models import Survey
 
 
-class SurveyAppValidation(Validation):
+class SurveyValidation(Validation):
     """SurveyApp Validation Class"""
     def is_valid(self, bundle, request=None):
         errors = {}
@@ -41,7 +39,7 @@ class SurveyAppValidation(Validation):
         return errors
 
 
-class SurveyAppResource(ModelResource):
+class SurveyResource(ModelResource):
     """
     **Attributes**:
 
@@ -51,7 +49,7 @@ class SurveyAppResource(ModelResource):
 
     **Validation**:
 
-        * SurveyAppValidation()
+        * SurveyValidation()
 
     **Create**:
 
@@ -89,7 +87,7 @@ class SurveyAppResource(ModelResource):
                "objects":[
                   {
                      "created_date":"2011-04-08T07:55:05",
-                     "description":"This is default phone book",
+                     "description":"This is default survey",
                      "id":"1",
                      "name":"survey name",
                      "resource_uri":"/api/v1/survey/1/",
@@ -146,10 +144,14 @@ class SurveyAppResource(ModelResource):
     user = fields.ForeignKey(UserResource, 'user', full=True)
 
     class Meta:
-        queryset = SurveyApp.objects.all()
+        queryset = Survey.objects.all()
         resource_name = 'survey'
         authorization = Authorization()
         authentication = BasicAuthentication()
-        validation = SurveyAppValidation()
+        validation = SurveyValidation()
+        list_allowed_methods = ['post', 'get', 'put', 'delete']
+        detail_allowed_methods = ['post', 'get', 'put', 'delete']
         # default 1000 calls / hour
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
+
+

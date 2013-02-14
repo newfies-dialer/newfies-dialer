@@ -6,22 +6,26 @@
             {% if child.title == "Dialer_Campaign" %}
                 {% trans "Dialer Campaign" %}
             {% else %}
-                {% if child.title == "Dialer_Cdr" %}
-                    {% trans "Dialer CDR" %}
+                {% if child.title == "Dialer_Contact" %}
+                    {% trans "Dialer Contact" %}
                 {% else %}
-                    {% if child.title == "Dialer_Gateway" %}
-                        {% trans "Dialer Gateway" %}
+                    {% if child.title == "Dialer_Cdr" %}
+                        {% trans "Dialer CDR" %}
                     {% else %}
-                        {% if child.title == "Prefix_Country" %}
-                            {% trans "Prefix Country" %}
+                        {% if child.title == "Dialer_Gateway" %}
+                            {% trans "Dialer Gateway" %}
                         {% else %}
-                            {% if child.title == "Dialer_Settings" %}
-                                {% trans "Dialer Settings" %}
+                            {% if child.title == "Prefix_Country" %}
+                                {% trans "Prefix Country" %}
                             {% else %}
-                                {% if child.title == "Voice_App" %}
-                                    {% trans "Voice Application" %}
+                                {% if child.title == "Dialer_Settings" %}
+                                    {% trans "Dialer Settings" %}
                                 {% else %}
-                                    {{ child.title }}
+                                    {% if child.title == "Voice_App" %}
+                                        {% trans "Voice Application" %}
+                                    {% else %}
+                                        {{ child.title }}
+                                    {% endif %}
                                 {% endif %}
                             {% endif %}
                         {% endif %}
@@ -45,13 +49,32 @@
                 {% else %}
                     {{ model.title }}
                 {% endif %}
+
                 {% if model.add_url or model.change_url %}
                 <ul>
                     {% if model.add_url %}<li><a class="addlink" href="{{ model.add_url }}"><span class="icon">{% trans "Add" %}</span></a></li>{% endif %}
-                    {% if model.change_url %}<li><a class="changelink" href="{{ model.change_url }}"><span class="icon">{% trans "Change" %}</span></a></li>{% endif %}
+                    {% if model.change_url %}
+                        {% if model.title != "VoIP Call" %}
+                        <li>
+                            <a class="changelink" href="{{ model.change_url }}">
+                                <span class="icon">{% trans "Change" %}</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                    {% endif %}
                 </ul>
                 {% endif %}
             </li>
+
+            <li>
+                {% if model.change_url %}
+                    {% if model.title == "VoIP Call" %}
+                        <a class="" href="/admin/dialer_cdr/voipcall/voip_report/">{% trans "Call aggregate report" %}</a>
+                    {% endif %}
+                {% endif %}
+            </li>
+
+
             {% endspaceless %}
             {% endfor %}
         </ul>

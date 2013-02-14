@@ -24,7 +24,8 @@ CELERYD_CTL="/usr/share/virtualenvs/newfies-dialer/bin/python $CELERYD_CHDIR/man
 CELERYD='/usr/share/virtualenvs/newfies-dialer/bin/python $CELERYD_CHDIR/manage.py celeryd_detach'
 
 # celeryd options
-CELERYD_OPTS='-EB -l info'
+CELERYD_OPTS='-EB -l info --time-limit=300 --concurrency=10'
+
 
 # %n will be replaced with the nodename.
 CELERYD_LOG_FILE="/var/log/newfies/celery-%n.log"

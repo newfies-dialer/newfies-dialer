@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -20,7 +20,7 @@ DEBUG = False
 TEMPLATE_DEBUG = False
 
 ADMINS = (
-     ('Your Name', 'your_email@domain.com'),
+    ('Your Name', 'your_email@domain.com'),
 )
 MANAGERS = ADMINS
 
@@ -30,8 +30,7 @@ APPLICATION_DIR = os.path.dirname(globals()['__file__'])
 
 DATABASES = {
     'default': {
-        # 'postgresql_psycopg2','postgresql','sqlite3','oracle'
-        # 'django.db.backends.mysql'
+        # 'postgresql_psycopg2','postgresql','sqlite3','oracle', 'django.db.backends.mysql'
         'ENGINE': 'django.db.backends.sqlite3',
         # Database name or path to database file if using sqlite3.
         'NAME': APPLICATION_DIR + '/database/newfies-dialer.db',
@@ -39,9 +38,9 @@ DATABASES = {
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Not used with sqlite3.
         'PORT': '',                      # Not used with sqlite3.
-        'OPTIONS': {
-           'init_command': 'SET storage_engine=INNODB',
-        }
+        # 'OPTIONS': {
+        #    'init_command': 'SET storage_engine=INNODB',
+        # }
     }
 }
 
@@ -98,11 +97,6 @@ MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'usermedia')
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = '/mediafiles/'
 
-# URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
-# trailing slash.
-# Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
-
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
@@ -118,6 +112,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     #'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'dajaxice.finders.DajaxiceFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -191,34 +186,36 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.markup',
     'django_countries',
-    'country_dialcode',
-    'dialer_gateway',
-    'dialer_campaign',
-    'dialer_cdr',
-    'dialer_settings',
-    'user_profile',
-    'common',
-    'djcelery',
-    'dateutil',
-    #'pagination',
-    'linaro_django_pagination',
-    'memcache_status',
-    'notification',
-    'voice_app',
-    'survey',
-    'dialer_audio',
-    'common',
-    #'raven.contrib.django',
     'admin_tools_stats',
-    'chart_tools',
+    'genericadmin',
     'south',
+    'djcelery',
     'tastypie',
     'audiofield',
     'tagging',
     'adminsortable',
     'dajaxice',
     'dajax',
-    'genericadmin',
+    'dateutil',
+    #'pagination',
+    'linaro_django_pagination',
+    'memcache_status',
+    'chart_tools',
+    'country_dialcode',
+    'common',
+    'dialer_contact',
+    'dialer_cdr',
+    'dialer_audio',
+    'dialer_campaign',
+    'dialer_gateway',
+    'dialer_settings',
+    'user_profile',
+    'notification',
+    'voice_app',
+    'survey',
+    #'raven.contrib.django',
+    'apiplayground',
+    'frontend_notification',
 )
 
 # Django extensions
@@ -260,13 +257,12 @@ else:
 
 # Nose
 try:
-    import nose  #TODO: Check / replace by django_nose
+    import nose
 except ImportError:
     pass
 else:
     INSTALLED_APPS = INSTALLED_APPS + ('django_nose',)
-    TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
+    TEST_RUNNER = 'utils.test_runner.MyRunner'
 
 # Dilla
 try:
@@ -297,6 +293,10 @@ else:
 SMSDEBUG = False
 """
 
+#API PLAYGROUND
+#==============
+API_PLAYGROUND_FEEDBACK = False
+
 #No of records per page
 #=======================
 PAGE_SIZE = 10
@@ -310,17 +310,17 @@ LOGIN_URL = '/pleaselog/'
 DICTIONARY = "/usr/share/dict/words"
 DILLA_USE_LOREM_IPSUM = False  # set to True ignores dictionary
 DILLA_APPS = [
-                'auth',
-                #'dialer_gateway',
-                'voip_app',
-                'dialer_campaign',
-                'dialer_cdr',
-             ]
+    'auth',
+    #'dialer_gateway',
+    'voip_app',
+    'dialer_campaign',
+    'dialer_cdr',
+]
 DILLA_SPAMLIBS = [
-                #'voip_app.voip_app_custom_spamlib',
-                #'dialer_campaign.dialer_campaign_custom_spamlib',
-                 'dialer_cdr.dialer_cdr_custom_spamlib',
-                ]
+    #'voip_app.voip_app_custom_spamlib',
+    #'dialer_campaign.dialer_campaign_custom_spamlib',
+    'dialer_cdr.dialer_cdr_custom_spamlib',
+]
 # To use Dilla
 # > python manage.py run_dilla --cycles=100
 
@@ -365,6 +365,17 @@ REDIS_PORT = 6379
 REDIS_DB = 0
 #REDIS_CONNECT_RETRY = True
 
+CELERY_DEFAULT_QUEUE = 'newfies'
+CELERY_DEFAULT_EXCHANGE = "newfies_tasks"
+CELERY_DEFAULT_EXCHANGE_TYPE = "topic"
+CELERY_DEFAULT_ROUTING_KEY = "task.newfies"
+CELERY_QUEUES = {
+    'newfies': {
+        'binding_key': '#',
+    },
+}
+
+
 """
 from datetime import timedelta
 from celery.schedules import crontab
@@ -383,11 +394,12 @@ CELERYBEAT_SCHEDULE = {
 gettext = lambda s: s
 LANGUAGES = (
     ('en', gettext('English')),
-    #('fr', gettext('French')),
+    ('fr', gettext('French')),
     ('es', gettext('Spanish')),
     ('pt', gettext('Portuguese')),
     ('zh', gettext('Chinese')),
     ('tr', gettext('Turkish')),
+    ('ja', gettext('Japanese')),
 )
 
 LANGUAGE_COOKIE_NAME = 'newfies_dialer_language'
@@ -395,12 +407,11 @@ LANGUAGE_COOKIE_NAME = 'newfies_dialer_language'
 #DJANGO-ADMIN-TOOL
 #=================
 ADMIN_TOOLS_MENU = 'custom_admin_tools.menu.CustomMenu'
-
-ADMIN_TOOLS_INDEX_DASHBOARD =\
-'custom_admin_tools.dashboard.CustomIndexDashboard'
-ADMIN_TOOLS_APP_INDEX_DASHBOARD =\
-'custom_admin_tools.dashboard.CustomAppIndexDashboard'
-
+ADMIN_TOOLS_INDEX_DASHBOARD = \
+    'custom_admin_tools.dashboard.CustomIndexDashboard'
+ADMIN_TOOLS_APP_INDEX_DASHBOARD = \
+    'custom_admin_tools.dashboard.CustomAppIndexDashboard'
+ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 #EMAIL BACKEND
 #=============
@@ -414,17 +425,14 @@ PLIVO_DEFAULT_ANSWER_URL = 'http://127.0.0.1:8000/api/v1/answercall/'
 PLIVO_DEFAULT_HANGUP_URL = 'http://127.0.0.1:8000/api/v1/hangupcall/'
 PLIVO_DEFAULT_DIALCALLBACK_URL = 'http://127.0.0.1:8000/api/v1/dialcallback/'
 
-#TODO add consistancy between answercall api and survey_finestatemachine
+#TODO add consistancy between answercall api and survey_finitestatemachine
 PLIVO_DEFAULT_SURVEY_ANSWER_URL = 'http://127.0.0.1:8000/' \
-                                  'survey_finestatemachine/'
+                                  'survey_finitestatemachine/'
 
 FS_RECORDING_PATH = '/usr/share/newfies/usermedia/recording/'
 
-#Time to wait between menu / questions in survey
-MENU_TIMEOUT = '5'
-
-# ADD 'dummy','plivo','twilio'
-NEWFIES_DIALER_ENGINE = 'plivo'
+# ADD 'dummy','plivo','twilio','esl'
+NEWFIES_DIALER_ENGINE = 'esl'
 
 #TASTYPIE API
 #============
@@ -454,7 +462,7 @@ LOGGING = {
         'mail_admins': {
             'class': 'django.utils.log.AdminEmailHandler',
             'level': 'ERROR',
-             # But the emails are plain text by default - HTML is nicer
+            # But the emails are plain text by default - HTML is nicer
             'include_html': True,
         },
         'default': {
@@ -542,16 +550,23 @@ CONVERT_TYPE_VALUE = 2
 
 AUDIO_DEBUG = False
 
+#ESL
+#===
+ESL_HOSTNAME = 'localhost'
+ESL_PORT = '8021'
+ESL_SECRET = 'ClueCon'
+ESL_SCRIPT = '&lua(/usr/share/newfies-lua/newfies.lua)'
 
 #TEXT-TO-SPEECH
 #==============
+TTS_ENGINE = 'FLITE'  # FLITE, CEPSTRAL, ACAPELA
+
 ACCOUNT_LOGIN = 'EVAL_XXXX'
 APPLICATION_LOGIN = 'EVAL_XXXXXXX'
 APPLICATION_PASSWORD = 'XXXXXXXX'
 
 SERVICE_URL = 'http://vaas.acapela-group.com/Services/Synthesizer'
 QUALITY = '22k'  # 22k, 8k, 8ka, 8kmu
-TTS_ENGINE = 'FLITE'  # FLITE, CEPSTRAL, ACAPELA
 ACAPELA_GENDER = 'W'
 ACAPELA_INTONATION = 'NORMAL'
 
@@ -560,6 +575,22 @@ ACAPELA_INTONATION = 'NORMAL'
 DIALERDEBUG = False
 DIALERDEBUG_PHONENUMBER = 1000
 
+#Survey in dev
+#=============
+SURVEYDEV = False
+AMD = False
+
+#IPYTHON
+#=======
+IPYTHON_ARGUMENTS = [
+    '--ext', 'django_extensions.management.notebook_extension',
+    '--profile=nbserver',
+    '--debug'
+]
+
 #IMPORT LOCAL SETTINGS
 #=====================
-from settings_local import *
+try:
+    from settings_local import *
+except ImportError:
+    pass

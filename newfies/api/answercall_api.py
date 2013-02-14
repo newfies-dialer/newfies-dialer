@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2013 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -14,22 +14,17 @@
 
 from django.conf.urls.defaults import url
 from django.conf import settings
-from django.contrib.sites.models import Site
 from django.http import HttpResponse
-
 from tastypie.resources import ModelResource
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie import http
-
+from dialer_cdr.constants import CALLREQUEST_STATUS
 from dialer_cdr.models import Callrequest
-from settings_local import PLIVO_DEFAULT_DIALCALLBACK_URL
 from api.resources import CustomXmlEmitter, \
-                          IpAddressAuthorization, \
-                          IpAddressAuthentication
+    IpAddressAuthorization, IpAddressAuthentication
 from common_functions import search_tag_string
-
 import logging
 
 logger = logging.getLogger('newfies.filelog')
@@ -44,8 +39,7 @@ class AnswercallValidation(Validation):
 
         opt_ALegRequestUUID = request.POST.get('ALegRequestUUID')
         if not opt_ALegRequestUUID:
-            errors['ALegRequestUUID'] = ["Wrong parameters - "\
-                                         "missing ALegRequestUUID!"]
+            errors['ALegRequestUUID'] = ["Wrong parameters - missing ALegRequestUUID!"]
 
         opt_CallUUID = request.POST.get('CallUUID')
         if not opt_CallUUID:
@@ -104,9 +98,8 @@ class AnswercallResource(ModelResource):
     def override_urls(self):
         """Override urls"""
         return [
-            url(r'^(?P<resource_name>%s)/$' %\
-                self._meta.resource_name, self.wrap_view('create')),
-            ]
+            url(r'^(?P<resource_name>%s)/$' % self._meta.resource_name, self.wrap_view('create')),
+        ]
 
     def create_response(self, request, data,
                         response_class=HttpResponse, **response_kwargs):
@@ -141,7 +134,7 @@ class AnswercallResource(ModelResource):
                 .get(request_uuid=opt_ALegRequestUUID)
 
             #TODO : use constant
-            obj_callrequest.status = 8  # IN-PROGRESS
+            obj_callrequest.status = CALLREQUEST_STATUS.IN_PROGRESS  # IN-PROGRESS
             obj_callrequest.aleg_uuid = opt_CallUUID
             obj_callrequest.save()
 
@@ -152,6 +145,8 @@ class AnswercallResource(ModelResource):
             else:
                 data = obj_callrequest.content_object.data
                 tts_language = obj_callrequest.content_object.tts_language
+                if not tts_language:
+                    tts_language = 'en'
 
                 extra_data = obj_callrequest.campaign.extra_data
                 if extra_data and len(extra_data) > 1:
@@ -172,7 +167,7 @@ class AnswercallResource(ModelResource):
                                    'callbackUrl="%s"' % \
                                    (timelimit,
                                     callerid,
-                                    PLIVO_DEFAULT_DIALCALLBACK_URL)
+                                    settings.PLIVO_DEFAULT_DIALCALLBACK_URL)
                     number_command = 'Number gateways="%s" ' \
                                      'gatewayTimeouts="%s"' % \
                                      (gateways, gatewaytimeouts)
@@ -192,31 +187,17 @@ class AnswercallResource(ModelResource):
 
                 elif obj_callrequest.content_object.type == 4:
                     #Speak
+                    from survey.views import getaudio_acapela, placeholder_replace
+                    #Replace place holders by tag value
+                    script = placeholder_replace(data, obj_callrequest.subscriber.contact)
+
                     if settings.TTS_ENGINE != 'ACAPELA':
-                        object_list = [{'Speak': data}]
+                        object_list = [{'Speak': script}]
                         logger.debug('Speak')
                     else:
-                        import acapela
-                        DIRECTORY = settings.MEDIA_ROOT + '/tts/'
-                        domain = Site.objects.get_current().domain
-                        tts_acapela = acapela.Acapela(
-                            settings.TTS_ENGINE,
-                            settings.ACCOUNT_LOGIN,
-                            settings.APPLICATION_LOGIN,
-                            settings.APPLICATION_PASSWORD,
-                            settings.SERVICE_URL,
-                            settings.QUALITY,
-                            DIRECTORY)
-                        tts_acapela.prepare(
-                            data,
-                            tts_language,
-                            settings.ACAPELA_GENDER,
-                            settings.ACAPELA_INTONATION)
-                        output_filename = tts_acapela.run()
-
-                        audiofile_url = domain + settings.MEDIA_URL +\
-                                        'tts/' + output_filename
-                        object_list = [{'Play': audiofile_url}]
+                        #Acapela TTS
+                        audio_url = getaudio_acapela(script, tts_language)
+                        object_list = [{'Play': audio_url}]
                         logger.debug('PlayAudio-TTS')
                 else:
                     logger.error('Error with Voice App type!')
@@ -237,4 +218,3 @@ class AnswercallResource(ModelResource):
                 response = http.HttpBadRequest(content=serialized,
                     content_type=desired_format)
                 raise ImmediateHttpResponse(response=response)
-

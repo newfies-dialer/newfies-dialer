@@ -14,3 +14,13 @@ newfies/usermedia/tts/*.*
 newfies/usermedia/recording/*.*
 build/
 dist/
+coverage_info
+output.html
+amd*.lua
+*.log
+lua/tts/*.wav
+lua/tts/*.mp3
+lua/tts/*.txt
+lua/*amd*
+acapela*.lua
+*.ipynb

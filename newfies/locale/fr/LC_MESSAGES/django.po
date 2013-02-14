@@ -44,15 +44,15 @@ msgstr "Turc"
 
 #: settings.py:402
 msgid "Japanese"
-msgstr ""
+msgstr "Japonais"
 
 #: api/api_playgrounds/answercall_playground.py:21
 msgid "Answer Call API Playground"
-msgstr ""
+msgstr "Répondre à un appel API Playground"
 
 #: api/api_playgrounds/answercall_playground.py:26
 msgid "This resource allows you to manage answer call."
-msgstr ""
+msgstr "Cette ressource vous permet de gérer réponse à un appel."
 
 #: api/api_playgrounds/answercall_playground.py:31
 #: api/api_playgrounds/hangupcall_playground.py:31
@@ -62,23 +62,23 @@ msgstr "Raccrocher la cause"
 
 #: api/api_playgrounds/branching_playground.py:21
 msgid "Branching API Playground"
-msgstr ""
+msgstr "Aire de jeux branchement API"
 
 #: api/api_playgrounds/branching_playground.py:26
 msgid "This resource allows you to manage branching."
-msgstr ""
+msgstr "Cette ressource vous permet de gérer la ramification."
 
 #: api/api_playgrounds/branching_playground.py:31
 msgid "Returns all branching"
-msgstr ""
+msgstr "Renvoie tous ramification"
 
 #: api/api_playgrounds/branching_playground.py:36
 msgid "Returns a specific branching"
-msgstr ""
+msgstr "Retourne un branchement spécifique"
 
 #: api/api_playgrounds/branching_playground.py:41
 msgid "Creates new branching"
-msgstr ""
+msgstr "Crée un nouveau branchement"
 
 #: api/api_playgrounds/branching_playground.py:58
 #, fuzzy
@@ -92,11 +92,11 @@ msgstr "Supprimer l&#39;article"
 
 #: api/api_playgrounds/bulk_contact_playground.py:21
 msgid "Bulk contact API Playground"
-msgstr ""
+msgstr "En vrac API Playground de contact"
 
 #: api/api_playgrounds/bulk_contact_playground.py:26
 msgid "This resource allows you to create bulk contacts."
-msgstr ""
+msgstr "Cette ressource vous permet de créer des contacts en vrac."
 
 #: api/api_playgrounds/bulk_contact_playground.py:31
 #: api/api_playgrounds/phonebook_playground.py:41
@@ -111,15 +111,15 @@ msgstr "Appelez demander introuvable"
 
 #: api/api_playgrounds/callrequest_playground.py:26
 msgid "This resource allows you to manage callrequest."
-msgstr ""
+msgstr "Cette ressource vous permet de gérer callrequest."
 
 #: api/api_playgrounds/callrequest_playground.py:31
 msgid "Returns all callrequests"
-msgstr ""
+msgstr "Retourne toutes les callrequests"
 
 #: api/api_playgrounds/callrequest_playground.py:36
 msgid "Returns a specific callrequest"
-msgstr ""
+msgstr "Retourne un particulier callrequest"
 
 #: api/api_playgrounds/callrequest_playground.py:41
 #, fuzzy
@@ -133,11 +133,11 @@ msgstr "Callrequest"
 
 #: api/api_playgrounds/campaign_delete_cascade_playground.py:21
 msgid "Campaign Delete Cascade API Playground"
-msgstr ""
+msgstr "Campagne Cascade Delete API Playground"
 
 #: api/api_playgrounds/campaign_delete_cascade_playground.py:26
 msgid "This resource allows you to delete campaign."
-msgstr ""
+msgstr "Cette ressource permet de supprimer campagne."
 
 #: api/api_playgrounds/campaign_delete_cascade_playground.py:31
 #: api/api_playgrounds/campaign_playground.py:213
@@ -153,7 +153,7 @@ msgstr "Campagne mise en veille"
 
 #: api/api_playgrounds/campaign_playground.py:26
 msgid "This resource allows you to manage campaign."
-msgstr ""
+msgstr "Cette ressource vous permet de gérer la campagne."
 
 #: api/api_playgrounds/campaign_playground.py:31
 #, fuzzy
@@ -162,7 +162,7 @@ msgstr "Supprimer campagne"
 
 #: api/api_playgrounds/campaign_playground.py:36
 msgid "Returns a specific campaign"
-msgstr ""
+msgstr "Retourne une campagne spécifique"
 
 #: api/api_playgrounds/campaign_playground.py:41
 #, fuzzy
@@ -176,32 +176,32 @@ msgstr "Mise à jour de campagne"
 
 #: api/api_playgrounds/dialcallback_playground.py:21
 msgid "Dial Callback API Playground"
-msgstr ""
+msgstr "Composez rappel API Playground"
 
 #: api/api_playgrounds/dialcallback_playground.py:26
 msgid "This resource allows you to manage dial callback."
-msgstr ""
+msgstr "Cette ressource vous permet de gérer rappel cadran."
 
 #: api/api_playgrounds/dialcallback_playground.py:31
 #: api/api_playgrounds/subscriber_playground.py:36
 msgid "Creates new campaign subscriber"
-msgstr ""
+msgstr "Crée abonné nouvelle campagne"
 
 #: api/api_playgrounds/gateway_playground.py:21
 msgid "Gateway API Playground"
-msgstr ""
+msgstr "Passerelle API Playground"
 
 #: api/api_playgrounds/gateway_playground.py:26
 msgid "This resource allows you to manage gateways."
-msgstr ""
+msgstr "Cette ressource vous permet de gérer les passerelles."
 
 #: api/api_playgrounds/gateway_playground.py:31
 msgid "Returns all gateways"
-msgstr ""
+msgstr "Retourne toutes les passerelles"
 
 #: api/api_playgrounds/gateway_playground.py:36
 msgid "Returns a specific gateway"
-msgstr ""
+msgstr "Retourne une passerelle spécifique"
 
 #: api/api_playgrounds/gateway_playground.py:41
 #, fuzzy
@@ -220,19 +220,19 @@ msgstr "Sélectionnez Passerelle"
 
 #: api/api_playgrounds/hangupcall_playground.py:21
 msgid "Hangup Call API Playground"
-msgstr ""
+msgstr "Raccrocher appel API Playground"
 
 #: api/api_playgrounds/hangupcall_playground.py:26
 msgid "This resource allows you to manage hangup call."
-msgstr ""
+msgstr "Cette ressource vous permet de gérer l&#39;appel raccroche."
 
 #: api/api_playgrounds/phonebook_playground.py:21
 msgid "Phonebook API Playground"
-msgstr ""
+msgstr "Aire de jeux API répertoire"
 
 #: api/api_playgrounds/phonebook_playground.py:26
 msgid "This resource allows you to manage phonebooks."
-msgstr ""
+msgstr "Cette ressource vous permet de gérer les répertoires."
 
 #: api/api_playgrounds/phonebook_playground.py:31
 #, fuzzy
@@ -241,7 +241,7 @@ msgstr "Supprimer le répertoire"
 
 #: api/api_playgrounds/phonebook_playground.py:36
 msgid "Returns a specific phonebook"
-msgstr ""
+msgstr "Retourne un répertoire spécifique"
 
 #: api/api_playgrounds/phonebook_playground.py:56
 #: templates/frontend/phonebook/list.html:71
@@ -255,11 +255,11 @@ msgstr "Supprimer le répertoire"
 
 #: api/api_playgrounds/section_playground.py:21
 msgid "Section API Playground"
-msgstr ""
+msgstr "Section API Playground"
 
 #: api/api_playgrounds/section_playground.py:26
 msgid "This resource allows you to manage sections."
-msgstr ""
+msgstr "Cette ressource vous permet de gérer les sections."
 
 #: api/api_playgrounds/section_playground.py:31
 #, fuzzy
@@ -268,7 +268,7 @@ msgstr "Paramètres généraux"
 
 #: api/api_playgrounds/section_playground.py:36
 msgid "Returns a specific section"
-msgstr ""
+msgstr "Retourne une section spécifique"
 
 #: api/api_playgrounds/section_playground.py:41
 #, fuzzy
@@ -287,19 +287,19 @@ msgstr "Supprimer la rubrique"
 
 #: api/api_playgrounds/store_cdr_playground.py:21
 msgid "Store CDR API Playground"
-msgstr ""
+msgstr "Magasin CDR API Playground"
 
 #: api/api_playgrounds/store_cdr_playground.py:26
 msgid "This resource allows you to manage store cdr."
-msgstr ""
+msgstr "Cette ressource vous permet de gérer magasin cdr."
 
 #: api/api_playgrounds/store_cdr_playground.py:31
 msgid "Store cdr"
-msgstr ""
+msgstr "Magasin de cdr"
 
 #: api/api_playgrounds/subscriber_per_campaign_playground.py:26
 msgid "This resource allows you to manage campaign subscriber per campaign."
-msgstr ""
+msgstr "Cette ressource vous permet de gérer abonné campagne par campagne."
 
 #: api/api_playgrounds/subscriber_per_campaign_playground.py:36
 #, fuzzy
@@ -313,7 +313,7 @@ msgstr "Terrain de jeux navigateur"
 
 #: api/api_playgrounds/subscriber_playground.py:26
 msgid "This resource allows you to manage campaign subscriber."
-msgstr ""
+msgstr "Cette ressource vous permet de gérer abonné campagne."
 
 #: api/api_playgrounds/subscriber_playground.py:68
 #, fuzzy
@@ -322,11 +322,11 @@ msgstr "Mise à jour de campagne"
 
 #: api/api_playgrounds/survey_aggregate_result_playground.py:21
 msgid "Survey Aggregate Result API Playground"
-msgstr ""
+msgstr "Enquête aire de jeu globale API Résultat"
 
 #: api/api_playgrounds/survey_aggregate_result_playground.py:26
 msgid "This resource allows you to get survey aggregate result."
-msgstr ""
+msgstr "Cette ressource vous permet d&#39;obtenir un résultat sur des données agrégées."
 
 #: api/api_playgrounds/survey_playground.py:21
 #, fuzzy
@@ -335,15 +335,15 @@ msgstr "Terrain de jeux navigateur"
 
 #: api/api_playgrounds/survey_playground.py:26
 msgid "This resource allows you to manage survey."
-msgstr ""
+msgstr "Cette ressource vous permet de gérer l&#39;enquête."
 
 #: api/api_playgrounds/survey_playground.py:31
 msgid "Returns all surveys"
-msgstr ""
+msgstr "Retourne toutes les enquêtes"
 
 #: api/api_playgrounds/survey_playground.py:36
 msgid "Returns a specific survey"
-msgstr ""
+msgstr "Retourne une enquête spécifique"
 
 #: api/api_playgrounds/survey_playground.py:41
 #, fuzzy
@@ -368,19 +368,19 @@ msgstr "Voice Application"
 
 #: api/api_playgrounds/voiceapp_playground.py:26
 msgid "This resource allows you to manage voiceapps."
-msgstr ""
+msgstr "Cette ressource vous permet de gérer voiceapps."
 
 #: api/api_playgrounds/voiceapp_playground.py:31
 msgid "Returns all voiceapps"
-msgstr ""
+msgstr "Retourne toutes les voiceapps"
 
 #: api/api_playgrounds/voiceapp_playground.py:36
 msgid "Returns a specific voiceapp"
-msgstr ""
+msgstr "Retourne une voiceapp spécifique"
 
 #: api/api_playgrounds/voiceapp_playground.py:41
 msgid "Creates new voiceapp"
-msgstr ""
+msgstr "Crée un nouveau voiceapp"
 
 #: api/api_playgrounds/voiceapp_playground.py:54
 #: templates/frontend/voiceapp/list.html:73
@@ -599,15 +599,15 @@ msgstr "Statut"
 
 #: dialer_campaign/constants.py:50
 msgid "ALWAYS PLAY MESSAGE"
-msgstr ""
+msgstr "TOUJOURS JOUER UN MESSAGE"
 
 #: dialer_campaign/constants.py:51
 msgid "PLAY MESSAGE TO HUMAN ONLY"
-msgstr ""
+msgstr "JOUER UN MESSAGE AU SEUL HOMME"
 
 #: dialer_campaign/constants.py:52
 msgid "LEAVE MESSAGE TO VOICEMAIL ONLY"
-msgstr ""
+msgstr "LAISSER UN MESSAGE AU MESSAGERIE VOCALE SEULEMENT"
 
 #: dialer_campaign/forms.py:49 dialer_campaign/models.py:230
 #: dialer_cdr/models.py:136
@@ -835,7 +835,7 @@ msgstr "Détection de messagerie vocale (AMD)"
 
 #: dialer_campaign/models.py:248
 msgid "Detection Behaviour"
-msgstr ""
+msgstr "Comportement de détection"
 
 #: dialer_campaign/models.py:250
 #, fuzzy
@@ -942,7 +942,7 @@ msgstr "Abonnés"
 #: dialer_campaign/views.py:69
 msgid ""
 "Error : You have to assign a phonebook to your campaign before starting it"
-msgstr ""
+msgstr "Erreur: Vous devez attribuer un répertoire de votre campagne avant de partir"
 
 #: dialer_campaign/views.py:77
 msgid ""
@@ -1077,14 +1077,10 @@ msgstr "Erreur de base de données"
 
 #: dialer_cdr/admin.py:180
 #, fuzzy, python-format
-msgid "%(total_count)s selected"
-msgid_plural "All %(total_count)s selected"
-msgstr[0] "0 of %(total_count)s sélectionné"
-msgstr[1] "0 of %(total_count)s sélectionné"
 
 #: dialer_cdr/admin.py:184
 #, fuzzy, python-format
-msgid "0 of %(cnt)s selected"
+msgid "%(total_count)s selected"
 msgstr "0 of %(total_count)s sélectionné"
 
 #: dialer_cdr/admin.py:190 dialer_cdr/admin.py:249
@@ -1211,7 +1207,7 @@ msgstr "statut"
 
 #: dialer_cdr/constants.py:82
 msgid "Person"
-msgstr ""
+msgstr "Personne"
 
 #: dialer_cdr/constants.py:83
 #, fuzzy
@@ -1220,7 +1216,7 @@ msgstr "Branchement"
 
 #: dialer_cdr/constants.py:84
 msgid "Unsure"
-msgstr ""
+msgstr "Incertain"
 
 #: dialer_cdr/models.py:97 dialer_cdr/models.py:194
 msgid "RequestUUID"
@@ -1429,7 +1425,7 @@ msgstr "Tous"
 
 #: dialer_contact/constants.py:38 dialer_contact/constants.py:46
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: dialer_contact/constants.py:47 dialer_contact/forms.py:48
 #: dialer_contact/models.py:51 dialer_contact/models.py:87
@@ -1458,7 +1454,7 @@ msgstr "À"
 
 #: dialer_contact/forms.py:32
 msgid "Upload CSV File, the delimiter have to be "
-msgstr ""
+msgstr "Télécharger un fichier CSV, le séparateur doivent être"
 
 #: dialer_contact/forms.py:42 survey/forms.py:347
 #, python-format
@@ -2140,15 +2136,11 @@ msgstr "Maison"
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:25
 #: templates/admin/dialer_contact/contact/change_list.html:38
 #, fuzzy
-msgid "Please correct the error below."
-msgid_plural "Please correct the errors below."
-msgstr[0] "S&#39;il vous plaît corriger l&#39;erreur ci-dessous."
-msgstr[1] "S&#39;il vous plaît corriger l&#39;erreur ci-dessous."
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:33
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:33
 #, fuzzy
-msgid "Search Option"
+msgid "Please correct the error below."
 msgstr "Section"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:37
@@ -2497,11 +2489,11 @@ msgstr "et"
 
 #: templates/frontend/dashboard.html:67
 msgid "Feb"
-msgstr ""
+msgstr "Février"
 
 #: templates/frontend/dashboard.html:68
 msgid "Mar"
-msgstr ""
+msgstr "Mar"
 
 #: templates/frontend/dashboard.html:69
 #, fuzzy
@@ -2515,23 +2507,23 @@ msgstr "Lundi"
 
 #: templates/frontend/dashboard.html:71
 msgid "Jun"
-msgstr ""
+msgstr "Juin"
 
 #: templates/frontend/dashboard.html:72
 msgid "Jul"
-msgstr ""
+msgstr "Juillet"
 
 #: templates/frontend/dashboard.html:73
 msgid "Aug"
-msgstr ""
+msgstr "Août"
 
 #: templates/frontend/dashboard.html:74
 msgid "Sep"
-msgstr ""
+msgstr "Septembre"
 
 #: templates/frontend/dashboard.html:75
 msgid "Oct"
-msgstr ""
+msgstr "Octobre"
 
 #: templates/frontend/dashboard.html:76
 #, fuzzy
@@ -2540,15 +2532,15 @@ msgstr "Aucun"
 
 #: templates/frontend/dashboard.html:77
 msgid "Dec"
-msgstr ""
+msgstr "Décembre"
 
 #: templates/frontend/dashboard.html:79
 msgid "January"
-msgstr ""
+msgstr "Janvier"
 
 #: templates/frontend/dashboard.html:80
 msgid "February"
-msgstr ""
+msgstr "Février"
 
 #: templates/frontend/dashboard.html:81
 #, fuzzy
@@ -2557,27 +2549,27 @@ msgstr "Rechercher"
 
 #: templates/frontend/dashboard.html:82
 msgid "April"
-msgstr ""
+msgstr "Avril"
 
 #: templates/frontend/dashboard.html:84
 msgid "June"
-msgstr ""
+msgstr "Juin"
 
 #: templates/frontend/dashboard.html:85
 msgid "July"
-msgstr ""
+msgstr "Juillet"
 
 #: templates/frontend/dashboard.html:86
 msgid "August"
-msgstr ""
+msgstr "Août"
 
 #: templates/frontend/dashboard.html:87
 msgid "September"
-msgstr ""
+msgstr "Septembre"
 
 #: templates/frontend/dashboard.html:88
 msgid "October"
-msgstr ""
+msgstr "Octobre"
 
 #: templates/frontend/dashboard.html:89
 #, fuzzy
@@ -2586,7 +2578,7 @@ msgstr "Numéro de téléphone"
 
 #: templates/frontend/dashboard.html:90
 msgid "December"
-msgstr ""
+msgstr "Décembre"
 
 #: templates/frontend/dashboard.html:232
 #, fuzzy
@@ -2595,7 +2587,7 @@ msgstr "Durée"
 
 #: templates/frontend/dashboard.html:233
 msgid "Hour"
-msgstr ""
+msgstr "Heure"
 
 #: templates/frontend/dashboard.html:383
 msgid "TOTAL CALLS"
@@ -3104,7 +3096,7 @@ msgstr "Rapport détaillé de l&#39;Enquête"
 
 #: templates/frontend/survey/import_survey.html:86
 msgid "Survey's branching imported"
-msgstr ""
+msgstr "Enquête sur la ramification est importé"
 
 #: templates/frontend/survey/section_branch_change.html:45
 msgid "branch to section"
@@ -3146,7 +3138,7 @@ msgstr "titre de section"
 msgid ""
 "If an audio file is not selected, the script will be played using Text-To-"
 "Speech"
-msgstr ""
+msgstr "Si un fichier audio n&#39;est pas sélectionné, le script va être joué en utilisant Text-To-Speech"
 
 #: templates/frontend/survey/section_change.html:131
 #, fuzzy

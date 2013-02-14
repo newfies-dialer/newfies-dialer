@@ -38,7 +38,7 @@ class CallrequestAPIPlayground(APIPlayground):
                     {
                         "method": "POST",
                         "url": "/api/v1/callrequest/",
-                        "description": _("Creates new callrequest"),
+                        "description": _("Create new callrequest"),
                         "parameters": [{
                                            "name": "request_uuid",
                                            "type": "string",

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Newfies-Dialer 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-14 16:29+0100\n"
+"POT-Creation-Date: 2013-02-14 16:42+0100\n"
 "PO-Revision-Date: 2012-01-10 21:33+0100\n"
 "Last-Translator: Areski Belaid <areski@gmail.com>\n"
 "Language-Team: Areski Belaid <areski@gmail.com>\n"
@@ -48,7 +48,7 @@ msgstr "Japonés"
 
 #: api/api_playgrounds/answercall_playground.py:21
 msgid "Answer Call API Playground"
-msgstr "Respuesta de llamada Zona de juegos API"
+msgstr "Respuesta de llamada API Zona de juegos"
 
 #: api/api_playgrounds/answercall_playground.py:26
 msgid "This resource allows you to manage answer call."
@@ -61,7 +61,7 @@ msgstr "Colgar llamada"
 
 #: api/api_playgrounds/branching_playground.py:21
 msgid "Branching API Playground"
-msgstr "Bifurcación Zona de juegos API"
+msgstr "Bifurcación API Zona de juegos"
 
 #: api/api_playgrounds/branching_playground.py:26
 msgid "This resource allows you to manage branching."
@@ -76,8 +76,8 @@ msgid "Returns a specific branching"
 msgstr "Devuelve una ramificación específica"
 
 #: api/api_playgrounds/branching_playground.py:41
-msgid "Creates new branching"
-msgstr "Crea una nueva ramificación"
+msgid "Create new branching"
+msgstr "Crear una nueva ramificación"
 
 #: api/api_playgrounds/branching_playground.py:58
 msgid "Update branching"
@@ -97,7 +97,7 @@ msgstr "Este recurso le permite crear contactos a granel."
 
 #: api/api_playgrounds/bulk_contact_playground.py:31
 #: api/api_playgrounds/phonebook_playground.py:41
-msgid "Creates new phonebook"
+msgid "Create new phonebook"
 msgstr "Crear nuevo directorio telefónico"
 
 #: api/api_playgrounds/callrequest_playground.py:21
@@ -117,7 +117,7 @@ msgid "Returns a specific callrequest"
 msgstr "Devuelve un determinado callrequest"
 
 #: api/api_playgrounds/callrequest_playground.py:41
-msgid "Creates new callrequest"
+msgid "Create new callrequest"
 msgstr "Crear Solicitud de Llamada"
 
 #: api/api_playgrounds/callrequest_playground.py:88
@@ -156,7 +156,7 @@ msgid "Returns a specific campaign"
 msgstr "Devuelve una campaña específica"
 
 #: api/api_playgrounds/campaign_playground.py:41
-msgid "Creates new campaign"
+msgid "Create new campaign"
 msgstr "Crear nueva campaña"
 
 #: api/api_playgrounds/campaign_playground.py:132
@@ -166,7 +166,7 @@ msgstr "Actualización de la campaña"
 
 #: api/api_playgrounds/dialcallback_playground.py:21
 msgid "Dial Callback API Playground"
-msgstr "Marque devolución de llamada Zona de juegos API"
+msgstr "Marque devolución de llamada API Zona de juegos"
 
 #: api/api_playgrounds/dialcallback_playground.py:26
 msgid "This resource allows you to manage dial callback."
@@ -175,8 +175,8 @@ msgstr ""
 
 #: api/api_playgrounds/dialcallback_playground.py:31
 #: api/api_playgrounds/subscriber_playground.py:36
-msgid "Creates new campaign subscriber"
-msgstr "Crea abonado nueva campaña"
+msgid "Create new subscriber"
+msgstr "Crear nuevo suscriptore"
 
 #: api/api_playgrounds/gateway_playground.py:21
 msgid "Gateway API Playground"
@@ -195,7 +195,7 @@ msgid "Returns a specific gateway"
 msgstr "Devuelve una puerta de enlace específica"
 
 #: api/api_playgrounds/gateway_playground.py:41
-msgid "Creates new gateway"
+msgid "Create new gateway"
 msgstr "Crear nueva Pasarela"
 
 #: api/api_playgrounds/gateway_playground.py:121
@@ -242,7 +242,7 @@ msgstr "Eliminar la directorio telefónico"
 
 #: api/api_playgrounds/section_playground.py:21
 msgid "Section API Playground"
-msgstr "Sección de Programas Zona de juegos"
+msgstr "Sección API Zona de juegos"
 
 #: api/api_playgrounds/section_playground.py:26
 msgid "This resource allows you to manage sections."
@@ -257,7 +257,7 @@ msgid "Returns a specific section"
 msgstr "Devuelve una sección específica"
 
 #: api/api_playgrounds/section_playground.py:41
-msgid "Creates new section"
+msgid "Create new section"
 msgstr "Crear nueva sección"
 
 #: api/api_playgrounds/section_playground.py:68
@@ -271,7 +271,7 @@ msgstr "Suprimir sección"
 
 #: api/api_playgrounds/store_cdr_playground.py:21
 msgid "Store CDR API Playground"
-msgstr "Tienda CDR API Zona de juegos"
+msgstr "Guardar CDR API Zona de juegos"
 
 #: api/api_playgrounds/store_cdr_playground.py:26
 msgid "This resource allows you to manage store cdr."
@@ -279,42 +279,39 @@ msgstr "Este recurso le permite administrar tienda cdr."
 
 #: api/api_playgrounds/store_cdr_playground.py:31
 msgid "Store cdr"
-msgstr "Tienda cdr"
+msgstr "Guardar cdr"
 
 #: api/api_playgrounds/subscriber_per_campaign_playground.py:26
-msgid "This resource allows you to manage campaign subscriber per campaign."
-msgstr "Este recurso le permite administrar suscriptores campaña por campaña."
+msgid "This resource allows you to manage subscriber per campaign."
+msgstr "Este recurso le permite administrar suscriptores por campaña."
 
 #: api/api_playgrounds/subscriber_per_campaign_playground.py:36
-msgid "Returns specific campaign subscribers per campaign"
-msgstr ""
+msgid "Returns specific subscribers per campaign"
+msgstr "Devuelve una suscriptor específico por campaña"
 
 #: api/api_playgrounds/subscriber_playground.py:21
-#, fuzzy
 msgid "Subscriber API Playground"
-msgstr "Navegador patio"
+msgstr "Suscriptor API Zona de juegos"
 
 #: api/api_playgrounds/subscriber_playground.py:26
-msgid "This resource allows you to manage campaign subscriber."
+msgid "This resource allows you to manage subscriber."
 msgstr "Este recurso le permite administrar suscriptores campaña."
 
 #: api/api_playgrounds/subscriber_playground.py:68
-#, fuzzy
-msgid "Update campaign subscriber"
-msgstr "Actualización de la campaña"
+msgid "Update subscriber"
+msgstr "Actualización del suscriptor"
 
 #: api/api_playgrounds/survey_aggregate_result_playground.py:21
 msgid "Survey Aggregate Result API Playground"
-msgstr "Encuesta resultado agregado Zona de juegos API"
+msgstr "Encuesta resultado agregado API Zona de juegos"
 
 #: api/api_playgrounds/survey_aggregate_result_playground.py:26
 msgid "This resource allows you to get survey aggregate result."
 msgstr "Este recurso le permite obtener resultados de la encuesta global."
 
 #: api/api_playgrounds/survey_playground.py:21
-#, fuzzy
 msgid "Survey API Playground"
-msgstr "Navegador patio"
+msgstr "Encuesta API Zona de juegos"
 
 #: api/api_playgrounds/survey_playground.py:26
 msgid "This resource allows you to manage survey."
@@ -329,8 +326,7 @@ msgid "Returns a specific survey"
 msgstr "Devuelve una encuesta específica"
 
 #: api/api_playgrounds/survey_playground.py:41
-#, fuzzy
-msgid "Creates new survey"
+msgid "Create new survey"
 msgstr "Editar la encuesta"
 
 #: api/api_playgrounds/survey_playground.py:57
@@ -345,9 +341,8 @@ msgid "Delete survey"
 msgstr "Borrar"
 
 #: api/api_playgrounds/voiceapp_playground.py:21
-#, fuzzy
 msgid "VoiceApp API Playground"
-msgstr "Aplicación de Voz"
+msgstr "Aplicación de Voz API Zona de juegos"
 
 #: api/api_playgrounds/voiceapp_playground.py:26
 msgid "This resource allows you to manage voiceapps."
@@ -362,18 +357,16 @@ msgid "Returns a specific voiceapp"
 msgstr "Devuelve una voiceapp específico"
 
 #: api/api_playgrounds/voiceapp_playground.py:41
-msgid "Creates new voiceapp"
-msgstr "Crea un nuevo voiceapp"
+msgid "Create new voiceapp"
+msgstr "Crear un nuevo voiceapp"
 
 #: api/api_playgrounds/voiceapp_playground.py:54
 #: templates/frontend/voiceapp/list.html:73
-#, fuzzy
 msgid "Update voiceapp"
 msgstr "Actualización Voz App"
 
 #: api/api_playgrounds/voiceapp_playground.py:67
 #: templates/frontend/voiceapp/list.html:76
-#, fuzzy
 msgid "Delete voiceapp"
 msgstr "Borrar Voz App"
 
@@ -1012,7 +1005,7 @@ msgid "<phonenumber|phonebook_id, phonenumber|phonebook_id,...>"
 msgstr "<phonenumber|phonebook_id, phonenumber|phonebook_id,...>"
 
 #: dialer_campaign/management/commands/create_subscriber.py:24
-msgid "Creates a new contact for a given phonenumber and phonebook"
+msgid "Create a new contact for a given phonenumber and phonebook"
 msgstr ""
 "Crea un nuevo contacto para un número del telefóno dada y la directorio "
 "telefónico"
@@ -1062,16 +1055,14 @@ msgid "Database error"
 msgstr "Base de datos de error"
 
 #: dialer_cdr/admin.py:180
-#, fuzzy, python-format
 msgid "%(total_count)s selected"
 msgid_plural "All %(total_count)s selected"
 msgstr[0] "%(total_count)s seleccionados"
-msgstr[1] "%(total_count)s seleccionados"
+msgstr[1] "Todos %(total_count)s seleccionados"
 
 #: dialer_cdr/admin.py:184
-#, fuzzy, python-format
 msgid "0 of %(cnt)s selected"
-msgstr "%(total_count)s seleccionados"
+msgstr "0 of %(cnt)s seleccionados"
 
 #: dialer_cdr/admin.py:190 dialer_cdr/admin.py:249
 msgid "VoIP Report"
@@ -1126,7 +1117,6 @@ msgid "B-Leg"
 msgstr "B-Leg"
 
 #: dialer_cdr/constants.py:54
-#, fuzzy
 msgid "ANSWER"
 msgstr "RESPUESTA"
 
@@ -1163,7 +1153,6 @@ msgid "Caller ID"
 msgstr "CallerID"
 
 #: dialer_cdr/constants.py:70
-#, fuzzy
 msgid "Phone No"
 msgstr "Num Teléfono"
 
@@ -1191,18 +1180,16 @@ msgid "Disposition"
 msgstr "Disposición"
 
 #: dialer_cdr/constants.py:75
-#, fuzzy
 msgid "Amd status"
-msgstr "estado"
+msgstr "AMD estado"
 
 #: dialer_cdr/constants.py:82
 msgid "Person"
 msgstr "Persona"
 
 #: dialer_cdr/constants.py:83
-#, fuzzy
 msgid "Machine"
-msgstr "Derivación"
+msgstr "Buzon de Voz"
 
 #: dialer_cdr/constants.py:84
 msgid "Unsure"
@@ -1317,9 +1304,8 @@ msgid "Hangup cause"
 msgstr "Colgar causa"
 
 #: dialer_cdr/models.py:232
-#, fuzzy
 msgid "AMD Status"
-msgstr "Estado"
+msgstr "AMD Estado"
 
 #: dialer_cdr/models.py:254
 msgid "Can see Call Detail Report"
@@ -1335,13 +1321,11 @@ msgid "Can't find this Campaign : %(id)s"
 msgstr "No se puede encontrar esta campaña : %(id)s"
 
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:142
-#, fuzzy, python-format
 msgid "Callrequests and CDRs created : %(count)s"
-msgstr "No de Callrequest y CDR de creación : %(count)s"
+msgstr "Callrequests y CDRs creado : %(count)s"
 
 #: dialer_contact/admin.py:77 dialer_contact/admin.py:116
 #: dialer_contact/views.py:392 dialer_contact/views.py:542
-#, python-format
 msgid ""
 "You have too many contacts per campaign. You are allowed a maximum of "
 "%(limit)s"
@@ -1545,7 +1529,7 @@ msgid "\"phonebook_id|no_of_record\" \"phonebook_id|no_of_record\""
 msgstr "\"phonebook_id|no_of_record\" \"phonebook_id|no_of_record\""
 
 #: dialer_contact/management/commands/create_contact.py:25
-msgid "Creates new contacts for a given phonebook and no of records"
+msgid "Create new contacts for a given phonebook and no of records"
 msgstr ""
 "Crea nuevos contactos para una directorio telefónico determinada y no de los "
 "registros"

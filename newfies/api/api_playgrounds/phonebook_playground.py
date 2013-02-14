@@ -38,7 +38,7 @@ class PhonebookAPIPlayground(APIPlayground):
                     {
                         "method": "POST",
                         "url": "/api/v1/phonebook/",
-                        "description": _("Creates new phonebook"),
+                        "description": _("Create new phonebook"),
                         "parameters": [{
                                            "name": "name",
                                            "type": "string",

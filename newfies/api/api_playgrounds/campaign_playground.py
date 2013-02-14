@@ -38,7 +38,7 @@ class CampaignAPIPlayground(APIPlayground):
                     {
                         "method": "POST",
                         "url": "/api/v1/campaign/",
-                        "description": _("Creates new campaign"),
+                        "description": _("Create new campaign"),
                         "parameters": [
                             {
                                 "name": "name",

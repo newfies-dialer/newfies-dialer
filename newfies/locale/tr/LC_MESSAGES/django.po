@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-14 16:29+0100\n"
+"POT-Creation-Date: 2013-02-14 16:42+0100\n"
 "PO-Revision-Date: 2012-03-04 19:32+0200\n"
 "Last-Translator: serhat alpaslan <s.alpaslan@netglobalturkey.com>\n"
 "Language-Team: LANGUAGE <s.alpaslan@netglobalturkey.com>\n"
@@ -78,8 +78,9 @@ msgid "Returns a specific branching"
 msgstr ""
 
 #: api/api_playgrounds/branching_playground.py:41
-msgid "Creates new branching"
-msgstr ""
+#, fuzzy
+msgid "Create new branching"
+msgstr "Kampanyası Update"
 
 #: api/api_playgrounds/branching_playground.py:58
 #, fuzzy
@@ -102,7 +103,7 @@ msgstr ""
 #: api/api_playgrounds/bulk_contact_playground.py:31
 #: api/api_playgrounds/phonebook_playground.py:41
 #, fuzzy
-msgid "Creates new phonebook"
+msgid "Create new phonebook"
 msgstr "Telefon defterini güncelle"
 
 #: api/api_playgrounds/callrequest_playground.py:21
@@ -124,7 +125,7 @@ msgstr ""
 
 #: api/api_playgrounds/callrequest_playground.py:41
 #, fuzzy
-msgid "Creates new callrequest"
+msgid "Create new callrequest"
 msgstr "ÇağrıSorgulama"
 
 #: api/api_playgrounds/callrequest_playground.py:88
@@ -167,7 +168,7 @@ msgstr ""
 
 #: api/api_playgrounds/campaign_playground.py:41
 #, fuzzy
-msgid "Creates new campaign"
+msgid "Create new campaign"
 msgstr "Kampanyası Update"
 
 #: api/api_playgrounds/campaign_playground.py:132
@@ -185,8 +186,9 @@ msgstr ""
 
 #: api/api_playgrounds/dialcallback_playground.py:31
 #: api/api_playgrounds/subscriber_playground.py:36
-msgid "Creates new campaign subscriber"
-msgstr ""
+#, fuzzy
+msgid "Create new subscriber"
+msgstr "Anketi güncelleyin"
 
 #: api/api_playgrounds/gateway_playground.py:21
 msgid "Gateway API Playground"
@@ -206,7 +208,7 @@ msgstr ""
 
 #: api/api_playgrounds/gateway_playground.py:41
 #, fuzzy
-msgid "Creates new gateway"
+msgid "Create new gateway"
 msgstr "Kullanılan Arama Geçidi"
 
 #: api/api_playgrounds/gateway_playground.py:121
@@ -273,7 +275,7 @@ msgstr ""
 
 #: api/api_playgrounds/section_playground.py:41
 #, fuzzy
-msgid "Creates new section"
+msgid "Create new section"
 msgstr "Kişiyi sil"
 
 #: api/api_playgrounds/section_playground.py:68
@@ -300,12 +302,13 @@ msgid "Store cdr"
 msgstr ""
 
 #: api/api_playgrounds/subscriber_per_campaign_playground.py:26
-msgid "This resource allows you to manage campaign subscriber per campaign."
-msgstr ""
+#, fuzzy
+msgid "This resource allows you to manage subscriber per campaign."
+msgstr "Kampanya başına maksimum aboneleri"
 
 #: api/api_playgrounds/subscriber_per_campaign_playground.py:36
 #, fuzzy
-msgid "Returns specific campaign subscribers per campaign"
+msgid "Returns specific subscribers per campaign"
 msgstr "Kampanya başına maksimum aboneleri"
 
 #: api/api_playgrounds/subscriber_playground.py:21
@@ -313,12 +316,12 @@ msgid "Subscriber API Playground"
 msgstr ""
 
 #: api/api_playgrounds/subscriber_playground.py:26
-msgid "This resource allows you to manage campaign subscriber."
+msgid "This resource allows you to manage subscriber."
 msgstr ""
 
 #: api/api_playgrounds/subscriber_playground.py:68
 #, fuzzy
-msgid "Update campaign subscriber"
+msgid "Update subscriber"
 msgstr "Kampanyası Update"
 
 #: api/api_playgrounds/survey_aggregate_result_playground.py:21
@@ -347,7 +350,7 @@ msgstr ""
 
 #: api/api_playgrounds/survey_playground.py:41
 #, fuzzy
-msgid "Creates new survey"
+msgid "Create new survey"
 msgstr "Anketi güncelleyin"
 
 #: api/api_playgrounds/survey_playground.py:57
@@ -379,8 +382,9 @@ msgid "Returns a specific voiceapp"
 msgstr ""
 
 #: api/api_playgrounds/voiceapp_playground.py:41
-msgid "Creates new voiceapp"
-msgstr ""
+#, fuzzy
+msgid "Create new voiceapp"
+msgstr "Kampanyası Update"
 
 #: api/api_playgrounds/voiceapp_playground.py:54
 #: templates/frontend/voiceapp/list.html:73
@@ -1039,7 +1043,8 @@ msgid "<phonenumber|phonebook_id, phonenumber|phonebook_id,...>"
 msgstr "<phonenumber|phonebook_id, phonenumber|phonebook_id,...>"
 
 #: dialer_campaign/management/commands/create_subscriber.py:24
-msgid "Creates a new contact for a given phonenumber and phonebook"
+#, fuzzy
+msgid "Create a new contact for a given phonenumber and phonebook"
 msgstr ""
 "Belirli bir telefon numarası ve telefon rehberi için yeni bir iletişim "
 "oluşturur"
@@ -1577,7 +1582,8 @@ msgid "\"phonebook_id|no_of_record\" \"phonebook_id|no_of_record\""
 msgstr "\"Phonebook_id | no_of_record\" \"phonebook_id | no_of_record\""
 
 #: dialer_contact/management/commands/create_contact.py:25
-msgid "Creates new contacts for a given phonebook and no of records"
+#, fuzzy
+msgid "Create new contacts for a given phonebook and no of records"
 msgstr ""
 "Kayıtların belirli bir telefon rehberi ve hiçbir için yeni kişiler oluşturur"
 

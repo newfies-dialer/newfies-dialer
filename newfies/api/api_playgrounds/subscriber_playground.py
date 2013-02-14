@@ -33,7 +33,7 @@ class SubscriberAPIPlayground(APIPlayground):
                     {
                         "method": "POST",
                         "url": "/api/v1/subscriber/",
-                        "description": _("Creates new subscriber"),
+                        "description": _("Create new subscriber"),
                         "parameters": [{
                                            "name": "contact",
                                            "type": "string",

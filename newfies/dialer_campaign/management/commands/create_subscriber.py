@@ -21,7 +21,7 @@ from dialer_campaign.tasks import collect_subscriber
 
 class Command(BaseCommand):
     args = _('<phonenumber|phonebook_id, phonenumber|phonebook_id,...>')
-    help = _("Creates a new contact for a given phonenumber and phonebook")
+    help = _("Create a new contact for a given phonenumber and phonebook")
 
     def handle(self, *args, **options):
         """Note that subscriber created this way are only for devel purposes"""

@@ -38,7 +38,7 @@ class SurveyAPIPlayground(APIPlayground):
                     {
                         "method": "POST",
                         "url": "/api/v1/survey/",
-                        "description": _("Creates new survey"),
+                        "description": _("Create new survey"),
                         "parameters": [{
                                            "name": "name",
                                            "type": "string",

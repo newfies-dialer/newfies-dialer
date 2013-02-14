@@ -38,7 +38,7 @@ class GatewayAPIPlayground(APIPlayground):
                     {
                         "method": "POST",
                         "url": "/api/v1/gateway/",
-                        "description": _("Creates new gateway"),
+                        "description": _("Create new gateway"),
                         "parameters": [{
                                            "name": "name",
                                            "type": "string",

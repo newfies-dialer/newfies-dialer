@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-14 16:29+0100\n"
+"POT-Creation-Date: 2013-02-14 16:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -75,7 +75,7 @@ msgid "Returns a specific branching"
 msgstr ""
 
 #: api/api_playgrounds/branching_playground.py:41
-msgid "Creates new branching"
+msgid "Create new branching"
 msgstr ""
 
 #: api/api_playgrounds/branching_playground.py:58
@@ -96,7 +96,7 @@ msgstr ""
 
 #: api/api_playgrounds/bulk_contact_playground.py:31
 #: api/api_playgrounds/phonebook_playground.py:41
-msgid "Creates new phonebook"
+msgid "Create new phonebook"
 msgstr ""
 
 #: api/api_playgrounds/callrequest_playground.py:21
@@ -116,7 +116,7 @@ msgid "Returns a specific callrequest"
 msgstr ""
 
 #: api/api_playgrounds/callrequest_playground.py:41
-msgid "Creates new callrequest"
+msgid "Create new callrequest"
 msgstr ""
 
 #: api/api_playgrounds/callrequest_playground.py:88
@@ -155,7 +155,7 @@ msgid "Returns a specific campaign"
 msgstr ""
 
 #: api/api_playgrounds/campaign_playground.py:41
-msgid "Creates new campaign"
+msgid "Create new campaign"
 msgstr ""
 
 #: api/api_playgrounds/campaign_playground.py:132
@@ -173,7 +173,7 @@ msgstr ""
 
 #: api/api_playgrounds/dialcallback_playground.py:31
 #: api/api_playgrounds/subscriber_playground.py:36
-msgid "Creates new campaign subscriber"
+msgid "Create new subscriber"
 msgstr ""
 
 #: api/api_playgrounds/gateway_playground.py:21
@@ -193,7 +193,7 @@ msgid "Returns a specific gateway"
 msgstr ""
 
 #: api/api_playgrounds/gateway_playground.py:41
-msgid "Creates new gateway"
+msgid "Create new gateway"
 msgstr ""
 
 #: api/api_playgrounds/gateway_playground.py:121
@@ -255,7 +255,7 @@ msgid "Returns a specific section"
 msgstr ""
 
 #: api/api_playgrounds/section_playground.py:41
-msgid "Creates new section"
+msgid "Create new section"
 msgstr ""
 
 #: api/api_playgrounds/section_playground.py:68
@@ -280,11 +280,11 @@ msgid "Store cdr"
 msgstr ""
 
 #: api/api_playgrounds/subscriber_per_campaign_playground.py:26
-msgid "This resource allows you to manage campaign subscriber per campaign."
+msgid "This resource allows you to manage subscriber per campaign."
 msgstr ""
 
 #: api/api_playgrounds/subscriber_per_campaign_playground.py:36
-msgid "Returns specific campaign subscribers per campaign"
+msgid "Returns specific subscribers per campaign"
 msgstr ""
 
 #: api/api_playgrounds/subscriber_playground.py:21
@@ -292,11 +292,11 @@ msgid "Subscriber API Playground"
 msgstr ""
 
 #: api/api_playgrounds/subscriber_playground.py:26
-msgid "This resource allows you to manage campaign subscriber."
+msgid "This resource allows you to manage subscriber."
 msgstr ""
 
 #: api/api_playgrounds/subscriber_playground.py:68
-msgid "Update campaign subscriber"
+msgid "Update subscriber"
 msgstr ""
 
 #: api/api_playgrounds/survey_aggregate_result_playground.py:21
@@ -324,7 +324,7 @@ msgid "Returns a specific survey"
 msgstr ""
 
 #: api/api_playgrounds/survey_playground.py:41
-msgid "Creates new survey"
+msgid "Create new survey"
 msgstr ""
 
 #: api/api_playgrounds/survey_playground.py:57
@@ -355,7 +355,7 @@ msgid "Returns a specific voiceapp"
 msgstr ""
 
 #: api/api_playgrounds/voiceapp_playground.py:41
-msgid "Creates new voiceapp"
+msgid "Create new voiceapp"
 msgstr ""
 
 #: api/api_playgrounds/voiceapp_playground.py:54
@@ -985,7 +985,7 @@ msgid "<phonenumber|phonebook_id, phonenumber|phonebook_id,...>"
 msgstr ""
 
 #: dialer_campaign/management/commands/create_subscriber.py:24
-msgid "Creates a new contact for a given phonenumber and phonebook"
+msgid "Create a new contact for a given phonenumber and phonebook"
 msgstr ""
 
 #: dialer_campaign/management/commands/create_subscriber.py:38
@@ -1504,7 +1504,7 @@ msgid "\"phonebook_id|no_of_record\" \"phonebook_id|no_of_record\""
 msgstr ""
 
 #: dialer_contact/management/commands/create_contact.py:25
-msgid "Creates new contacts for a given phonebook and no of records"
+msgid "Create new contacts for a given phonebook and no of records"
 msgstr ""
 
 #: dialer_contact/management/commands/create_contact.py:50

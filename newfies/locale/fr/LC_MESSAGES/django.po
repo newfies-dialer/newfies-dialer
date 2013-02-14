@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-14 16:29+0100\n"
+"POT-Creation-Date: 2013-02-14 16:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,7 +77,8 @@ msgid "Returns a specific branching"
 msgstr "Retourne un branchement spécifique"
 
 #: api/api_playgrounds/branching_playground.py:41
-msgid "Creates new branching"
+#, fuzzy
+msgid "Create new branching"
 msgstr "Crée un nouveau branchement"
 
 #: api/api_playgrounds/branching_playground.py:58
@@ -101,7 +102,7 @@ msgstr "Cette ressource vous permet de créer des contacts en vrac."
 #: api/api_playgrounds/bulk_contact_playground.py:31
 #: api/api_playgrounds/phonebook_playground.py:41
 #, fuzzy
-msgid "Creates new phonebook"
+msgid "Create new phonebook"
 msgstr "Mise à jour du répertoire"
 
 #: api/api_playgrounds/callrequest_playground.py:21
@@ -123,7 +124,7 @@ msgstr "Retourne un particulier callrequest"
 
 #: api/api_playgrounds/callrequest_playground.py:41
 #, fuzzy
-msgid "Creates new callrequest"
+msgid "Create new callrequest"
 msgstr "Callrequest"
 
 #: api/api_playgrounds/callrequest_playground.py:88
@@ -166,7 +167,7 @@ msgstr "Retourne une campagne spécifique"
 
 #: api/api_playgrounds/campaign_playground.py:41
 #, fuzzy
-msgid "Creates new campaign"
+msgid "Create new campaign"
 msgstr "Mise à jour de campagne"
 
 #: api/api_playgrounds/campaign_playground.py:132
@@ -184,7 +185,8 @@ msgstr "Cette ressource vous permet de gérer rappel cadran."
 
 #: api/api_playgrounds/dialcallback_playground.py:31
 #: api/api_playgrounds/subscriber_playground.py:36
-msgid "Creates new campaign subscriber"
+#, fuzzy
+msgid "Create new subscriber"
 msgstr "Crée abonné nouvelle campagne"
 
 #: api/api_playgrounds/gateway_playground.py:21
@@ -205,7 +207,7 @@ msgstr "Retourne une passerelle spécifique"
 
 #: api/api_playgrounds/gateway_playground.py:41
 #, fuzzy
-msgid "Creates new gateway"
+msgid "Create new gateway"
 msgstr "Passerelle utilisée"
 
 #: api/api_playgrounds/gateway_playground.py:121
@@ -272,7 +274,7 @@ msgstr "Retourne une section spécifique"
 
 #: api/api_playgrounds/section_playground.py:41
 #, fuzzy
-msgid "Creates new section"
+msgid "Create new section"
 msgstr "Supprimer la rubrique"
 
 #: api/api_playgrounds/section_playground.py:68
@@ -298,12 +300,13 @@ msgid "Store cdr"
 msgstr "Magasin de cdr"
 
 #: api/api_playgrounds/subscriber_per_campaign_playground.py:26
-msgid "This resource allows you to manage campaign subscriber per campaign."
+#, fuzzy
+msgid "This resource allows you to manage subscriber per campaign."
 msgstr "Cette ressource vous permet de gérer abonné campagne par campagne."
 
 #: api/api_playgrounds/subscriber_per_campaign_playground.py:36
 #, fuzzy
-msgid "Returns specific campaign subscribers per campaign"
+msgid "Returns specific subscribers per campaign"
 msgstr "Abonnés maximum par campagne"
 
 #: api/api_playgrounds/subscriber_playground.py:21
@@ -312,12 +315,13 @@ msgid "Subscriber API Playground"
 msgstr "Terrain de jeux navigateur"
 
 #: api/api_playgrounds/subscriber_playground.py:26
-msgid "This resource allows you to manage campaign subscriber."
+#, fuzzy
+msgid "This resource allows you to manage subscriber."
 msgstr "Cette ressource vous permet de gérer abonné campagne."
 
 #: api/api_playgrounds/subscriber_playground.py:68
 #, fuzzy
-msgid "Update campaign subscriber"
+msgid "Update subscriber"
 msgstr "Mise à jour de campagne"
 
 #: api/api_playgrounds/survey_aggregate_result_playground.py:21
@@ -349,7 +353,7 @@ msgstr "Retourne une enquête spécifique"
 
 #: api/api_playgrounds/survey_playground.py:41
 #, fuzzy
-msgid "Creates new survey"
+msgid "Create new survey"
 msgstr "Mise à jour enquête"
 
 #: api/api_playgrounds/survey_playground.py:57
@@ -381,7 +385,8 @@ msgid "Returns a specific voiceapp"
 msgstr "Retourne une voiceapp spécifique"
 
 #: api/api_playgrounds/voiceapp_playground.py:41
-msgid "Creates new voiceapp"
+#, fuzzy
+msgid "Create new voiceapp"
 msgstr "Crée un nouveau voiceapp"
 
 #: api/api_playgrounds/voiceapp_playground.py:54
@@ -1032,7 +1037,8 @@ msgid "<phonenumber|phonebook_id, phonenumber|phonebook_id,...>"
 msgstr "<phonenumber|phonebook_id, phonenumber|phonebook_id,...>"
 
 #: dialer_campaign/management/commands/create_subscriber.py:24
-msgid "Creates a new contact for a given phonenumber and phonebook"
+#, fuzzy
+msgid "Create a new contact for a given phonenumber and phonebook"
 msgstr "Crée un nouveau contact à un numéro de téléphone donné et répertoire"
 
 #: dialer_campaign/management/commands/create_subscriber.py:38
@@ -1563,7 +1569,8 @@ msgid "\"phonebook_id|no_of_record\" \"phonebook_id|no_of_record\""
 msgstr "\"Phonebook_id | no_of_record\" \"phonebook_id | no_of_record\""
 
 #: dialer_contact/management/commands/create_contact.py:25
-msgid "Creates new contacts for a given phonebook and no of records"
+#, fuzzy
+msgid "Create new contacts for a given phonebook and no of records"
 msgstr ""
 "Crée de nouveaux contacts pour un répertoire donné et aucun des dossiers"
 

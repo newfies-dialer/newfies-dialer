@@ -454,7 +454,7 @@ def contact_del(request, object_id):
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
 
-        try:            
+        try:
             contact_list = Contact.objects.extra(where=['id IN (%s)' % values])
             if contact_list:
                 request.session["msg"] =\
@@ -547,7 +547,7 @@ def contact_import(request):
             return HttpResponseRedirect("/contact/")
 
     form = Contact_fileImport(request.user)
-    rdr = ''  # will contain CSV data
+    csv_data = ''
     msg = ''
     error_msg = ''
     success_import_list = []
@@ -570,17 +570,18 @@ def contact_import(request):
                                  delimiter='|', quotechar='"')
             total_rows = len(list(records))
             BULK_SIZE = 1000
-            rdr = csv.reader(request.FILES['csv_file'],
+            csv_data = csv.reader(request.FILES['csv_file'],
                              delimiter='|', quotechar='"')
             #Get Phonebook Obj
             phonebook = get_object_or_404(
                 Phonebook, pk=request.POST['phonebook'],
                 user=request.user)
             # Read each Row
-            for row in rdr:
+            for row in csv_data:
                 row = striplist(row)
                 if not row or str(row[0]) == 0:
                     continue
+                row = row[0]
 
                 # check field type
                 if not int(row[5]):
@@ -590,7 +591,10 @@ def contact_import(request):
 
                 row_6 = ''
                 if row[6]:
-                    row_6 = simplejson.loads(row[6])
+                    try:
+                        row_6 = simplejson.loads(row[6])
+                    except:
+                        row_6 = ''
 
                 bulk_record.append(
                     Contact(
@@ -626,7 +630,7 @@ def contact_import(request):
 
     data = RequestContext(request, {
                           'form': form,
-                          'rdr': rdr,
+                          'csv_data': csv_data,
                           'msg': msg,
                           'error_msg': error_msg,
                           'success_import_list': success_import_list,

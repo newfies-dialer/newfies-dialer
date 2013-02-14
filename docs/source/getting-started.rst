@@ -145,6 +145,19 @@ Features
     +-----------------+----------------------------------------------------+
 
 
+.. _extra_features:
+Extra Features
+--------------
+
+    +-----------------+----------------------------------------------------+
+    | AMD             | Answer Machine Detection module is available.      |
+    |                 | For this module see the section addons on website  |
+    +-----------------+----------------------------------------------------+
+    | SMS             | SMS delivery, SMS Gateway support, SMS campaign.   |
+    |                 | For this module see the section addons on website  |
+    +-----------------+----------------------------------------------------+
+
+
 
 .. _architecture:
 

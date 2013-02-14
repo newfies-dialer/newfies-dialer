@@ -145,23 +145,19 @@ Features
 Architecture
 ============
 
-.. image:: ./_static/images/newfies_architecture.png
+.. image:: ./_static/images/newfies-dialer_architecture.png
 
 * User selects contacts, phonebooks and campaigns, then chooses a voice application to use. The campaign is then launched
 
-* ``Newfies-Dialer`` spools the outbound calls to ``FreeSWITCH`` via ``Plivo``.
-
-* ``Plivo`` sends the dial request to ``FreeSWITCH`` using the event socket.
+* ``Newfies-Dialer`` spools the outbound calls to ``FreeSWITCH`` via ``ESL``.
 
 * ``FreeSWITCH`` dials the contact via the configured telephony gateways.
 
-* Contact picks up the call, and the answer event is received in ``FreeSWITCH`` and passed back to ``Plivo``.
+* Contact picks up the call, and the answer event is received in ``FreeSWITCH`` and passed back to our Lua IVR Application.
 
-* ``Newfies-Dialer`` is notified that the call is answered, then renders & relays ``RestXML`` to ``Plivo``.
+* ``Newfies-Dialer`` is notified that the call is answered, then renders the appropriate IVR.
 
-* ``Plivo`` interprets ``RestXML`` and sends the application call-flow commands to ``FreeSWITCH``.
-
-* The voice application is delivered to the contact by ``FreeSWITCH``.
+* The application is delivered to the contact by ``FreeSWITCH``.
 
 
 .. _latest_documentation:

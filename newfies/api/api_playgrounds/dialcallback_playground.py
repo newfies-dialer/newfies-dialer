@@ -28,7 +28,7 @@ class DialCallbackAPIPlayground(APIPlayground):
                     {
                         "method": "POST",
                         "url": "/api/v1/dialcallback/",
-                        "description": _("Creates new campaign subscriber"),
+                        "description": _("Creates new subscriber"),
                         "parameters": [{
                                            "name": "DialALegUUID",
                                            "type": "string",

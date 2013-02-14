@@ -65,7 +65,7 @@ class SubscriberAPIPlayground(APIPlayground):
                     {
                         "method": "PUT",
                         "url": "/api/v1/subscriber/{campaign-id}/",
-                        "description": _("Update campaign subscriber"),
+                        "description": _("Update subscriber"),
                         "parameters": [{
                                            "name": "contact",
                                            "type": "string",

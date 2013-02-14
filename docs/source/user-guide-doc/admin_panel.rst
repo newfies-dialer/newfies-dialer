@@ -156,17 +156,17 @@ To Add/Update Campaign for user
     :width: 1000
 
 
-.. _admin-campaign-subscriber-access:
+.. _admin-subscriber-access:
 
-Campaign Subscriber
-~~~~~~~~~~~~~~~~~~~
+Subscriber
+~~~~~~~~~~
 
-The Campaign Subscriber list will be displayed from the following URL. You can add
-a new campaign subscriber by clicking ``Add Campaign Subscriber``. Also from the campaign
+The Subscriber list will be displayed from the following URL. You can add
+a new subscriber by clicking ``Add Subscriber``. Also from the campaign
 subscriber list, click on the subscriber to update.
 
 While creating a contact, if its linked phonebook is also attached
-to a running campaign, then the contact will be added into the campaign subscriber.
+to a running campaign, then the contact will be added into the subscriber.
 
 **URL**:
 
@@ -176,7 +176,7 @@ to a running campaign, then the contact will be added into the campaign subscrib
     :width: 1000
 
 
-To Add/Update Campaign Subscriber
+To Add/Update Subscriber
 
 **URL**:
 

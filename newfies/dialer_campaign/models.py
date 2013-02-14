@@ -397,7 +397,7 @@ class Campaign(Model):
     progress_bar.short_description = _('Progress')
 
     def subscriber_detail(self):
-        """This will link to campaign subscribers who are associated with
+        """This will link to subscribers who are associated with
         the campaign"""
         model_name = Subscriber._meta.object_name.lower()
         app_label = self._meta.app_label

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-14 13:47+0100\n"
+"POT-Creation-Date: 2013-02-14 16:29+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Hebrew <LL@li.org>\n"
@@ -442,12 +442,12 @@ msgstr "Newfies-Dialer"
 msgid "Applications"
 msgstr "יישומים"
 
-#: custom_admin_tools/menu.py:39 templates/frontend/bootstrap_menu.html:116
+#: custom_admin_tools/menu.py:39 templates/frontend/bootstrap_menu.html:125
 msgid "Administration"
 msgstr "מנהל"
 
 #: custom_admin_tools/menu.py:42 templates/api_browser/base.html:50
-#: templates/frontend/bootstrap_menu.html:112
+#: templates/frontend/bootstrap_menu.html:121
 msgid "API Explorer"
 msgstr ""
 
@@ -584,7 +584,8 @@ msgstr "App"
 
 #: dialer_campaign/constants.py:45 dialer_contact/constants.py:42
 #: dialer_contact/models.py:61 dialer_contact/models.py:116
-#: templates/frontend/bootstrap_menu.html:45
+#: templates/frontend/bootstrap_menu.html:42
+#: templates/frontend/bootstrap_menu.html:50
 #: templates/frontend/contact/list.html:26
 msgid "Contacts"
 msgstr "אנשי קשר"
@@ -1494,7 +1495,7 @@ msgstr "ספר טלפונים הערות"
 msgid "Can see Phonebook"
 msgstr "בחר ספר טלפונים"
 
-#: dialer_contact/models.py:52 templates/frontend/bootstrap_menu.html:41
+#: dialer_contact/models.py:52 templates/frontend/bootstrap_menu.html:46
 msgid "Phonebooks"
 msgstr "ספרי טלפונים"
 
@@ -1933,7 +1934,7 @@ msgstr "עדכון סקר"
 msgid "Can see Survey Report"
 msgstr "סקר דוחות"
 
-#: survey/models.py:120 templates/frontend/bootstrap_menu.html:69
+#: survey/models.py:120 templates/frontend/bootstrap_menu.html:78
 msgid "Surveys"
 msgstr "סקרים"
 
@@ -2392,62 +2393,62 @@ msgstr "לוח מחוונים"
 msgid "Voice Campaign"
 msgstr "חייגן קמפיין"
 
-#: templates/frontend/bootstrap_menu.html:49
+#: templates/frontend/bootstrap_menu.html:58
 msgid "Audio files"
 msgstr "קבצי אודיו"
 
-#: templates/frontend/bootstrap_menu.html:53
+#: templates/frontend/bootstrap_menu.html:62
 msgid "Reporting"
 msgstr "דיווח"
 
-#: templates/frontend/bootstrap_menu.html:56
+#: templates/frontend/bootstrap_menu.html:65
 msgid "Call Detail Report"
 msgstr "קוראים דו\"ח פירוט"
 
-#: templates/frontend/bootstrap_menu.html:59
+#: templates/frontend/bootstrap_menu.html:68
 #, fuzzy
 msgid "Survey Reports"
 msgstr "סקר דוחות"
 
-#: templates/frontend/bootstrap_menu.html:66
+#: templates/frontend/bootstrap_menu.html:75
 msgid "Modules"
 msgstr "מודולים"
 
-#: templates/frontend/bootstrap_menu.html:72
+#: templates/frontend/bootstrap_menu.html:81
 msgid "Add-ons"
 msgstr "תוספות"
 
-#: templates/frontend/bootstrap_menu.html:73
+#: templates/frontend/bootstrap_menu.html:82
 msgid "SMS (Text Messaging)"
 msgstr ""
 
-#: templates/frontend/bootstrap_menu.html:74
+#: templates/frontend/bootstrap_menu.html:83
 msgid "Voicemail Detection (AMD)"
 msgstr ""
 
-#: templates/frontend/bootstrap_menu.html:75
+#: templates/frontend/bootstrap_menu.html:84
 msgid "Rebranding"
 msgstr ""
 
-#: templates/frontend/bootstrap_menu.html:94
+#: templates/frontend/bootstrap_menu.html:103
 msgid "Account settings"
 msgstr "הגדרות חשבון"
 
-#: templates/frontend/bootstrap_menu.html:97
+#: templates/frontend/bootstrap_menu.html:106
 msgid "Notifications"
 msgstr "הודעות"
 
-#: templates/frontend/bootstrap_menu.html:106
+#: templates/frontend/bootstrap_menu.html:115
 #: templates/frontend/registration/user_detail_change.html:14
 msgid "Account Limits"
 msgstr "חשבון גבולות"
 
-#: templates/frontend/bootstrap_menu.html:108
+#: templates/frontend/bootstrap_menu.html:117
 #: templates/frontend/registration/user_detail_change.html:16
 msgid "Change language "
 msgstr "לשנות את השפה"
 
-#: templates/frontend/bootstrap_menu.html:119
+#: templates/frontend/bootstrap_menu.html:128
 msgid "Log out"
 msgstr "התנתק"
 

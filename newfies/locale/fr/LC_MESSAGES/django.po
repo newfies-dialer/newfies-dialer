@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-14 13:47+0100\n"
+"POT-Creation-Date: 2013-02-14 16:29+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -326,7 +326,9 @@ msgstr "Enquête aire de jeu globale API Résultat"
 
 #: api/api_playgrounds/survey_aggregate_result_playground.py:26
 msgid "This resource allows you to get survey aggregate result."
-msgstr "Cette ressource vous permet d&#39;obtenir un résultat sur des données agrégées."
+msgstr ""
+"Cette ressource vous permet d&#39;obtenir un résultat sur des données "
+"agrégées."
 
 #: api/api_playgrounds/survey_playground.py:21
 #, fuzzy
@@ -443,12 +445,12 @@ msgstr "Newfies-Dialer"
 msgid "Applications"
 msgstr "Applications"
 
-#: custom_admin_tools/menu.py:39 templates/frontend/bootstrap_menu.html:116
+#: custom_admin_tools/menu.py:39 templates/frontend/bootstrap_menu.html:125
 msgid "Administration"
 msgstr "Administration"
 
 #: custom_admin_tools/menu.py:42 templates/api_browser/base.html:50
-#: templates/frontend/bootstrap_menu.html:112
+#: templates/frontend/bootstrap_menu.html:121
 msgid "API Explorer"
 msgstr "API Explorer"
 
@@ -585,7 +587,8 @@ msgstr "App"
 
 #: dialer_campaign/constants.py:45 dialer_contact/constants.py:42
 #: dialer_contact/models.py:61 dialer_contact/models.py:116
-#: templates/frontend/bootstrap_menu.html:45
+#: templates/frontend/bootstrap_menu.html:42
+#: templates/frontend/bootstrap_menu.html:50
 #: templates/frontend/contact/list.html:26
 msgid "Contacts"
 msgstr "Contacts"
@@ -942,7 +945,8 @@ msgstr "Abonnés"
 #: dialer_campaign/views.py:69
 msgid ""
 "Error : You have to assign a phonebook to your campaign before starting it"
-msgstr "Erreur: Vous devez attribuer un répertoire de votre campagne avant de partir"
+msgstr ""
+"Erreur: Vous devez attribuer un répertoire de votre campagne avant de partir"
 
 #: dialer_campaign/views.py:77
 msgid ""
@@ -1077,10 +1081,14 @@ msgstr "Erreur de base de données"
 
 #: dialer_cdr/admin.py:180
 #, fuzzy, python-format
+msgid "%(total_count)s selected"
+msgid_plural "All %(total_count)s selected"
+msgstr[0] "0 of %(total_count)s sélectionné"
+msgstr[1] "0 of %(total_count)s sélectionné"
 
 #: dialer_cdr/admin.py:184
 #, fuzzy, python-format
-msgid "%(total_count)s selected"
+msgid "0 of %(cnt)s selected"
 msgstr "0 of %(total_count)s sélectionné"
 
 #: dialer_cdr/admin.py:190 dialer_cdr/admin.py:249
@@ -1489,7 +1497,7 @@ msgstr "Remarques du répertoire"
 msgid "Can see Phonebook"
 msgstr "Peux voir le répertoire"
 
-#: dialer_contact/models.py:52 templates/frontend/bootstrap_menu.html:41
+#: dialer_contact/models.py:52 templates/frontend/bootstrap_menu.html:46
 msgid "Phonebooks"
 msgstr "Annuaires"
 
@@ -1921,7 +1929,7 @@ msgstr "Peut voir l'étude"
 msgid "Can see Survey Report"
 msgstr "Peux voir Rapport d'enquête"
 
-#: survey/models.py:120 templates/frontend/bootstrap_menu.html:69
+#: survey/models.py:120 templates/frontend/bootstrap_menu.html:78
 msgid "Surveys"
 msgstr "Enquêtes"
 
@@ -2136,11 +2144,15 @@ msgstr "Maison"
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:25
 #: templates/admin/dialer_contact/contact/change_list.html:38
 #, fuzzy
+msgid "Please correct the error below."
+msgid_plural "Please correct the errors below."
+msgstr[0] "Section"
+msgstr[1] "Section"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:33
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:33
 #, fuzzy
-msgid "Please correct the error below."
+msgid "Search Option"
 msgstr "Section"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:37
@@ -2358,61 +2370,61 @@ msgstr "Tableau de bord voix"
 msgid "Voice Campaign"
 msgstr "Campagne voix"
 
-#: templates/frontend/bootstrap_menu.html:49
+#: templates/frontend/bootstrap_menu.html:58
 msgid "Audio files"
 msgstr "Audio"
 
-#: templates/frontend/bootstrap_menu.html:53
+#: templates/frontend/bootstrap_menu.html:62
 msgid "Reporting"
 msgstr "Rapports"
 
-#: templates/frontend/bootstrap_menu.html:56
+#: templates/frontend/bootstrap_menu.html:65
 msgid "Call Detail Report"
 msgstr "Rapport d'appels"
 
-#: templates/frontend/bootstrap_menu.html:59
+#: templates/frontend/bootstrap_menu.html:68
 msgid "Survey Reports"
 msgstr "Rapports d'enquêtes"
 
-#: templates/frontend/bootstrap_menu.html:66
+#: templates/frontend/bootstrap_menu.html:75
 msgid "Modules"
 msgstr "Modules"
 
-#: templates/frontend/bootstrap_menu.html:72
+#: templates/frontend/bootstrap_menu.html:81
 msgid "Add-ons"
 msgstr "Modules"
 
-#: templates/frontend/bootstrap_menu.html:73
+#: templates/frontend/bootstrap_menu.html:82
 msgid "SMS (Text Messaging)"
 msgstr "SMS (messagerie texte)"
 
-#: templates/frontend/bootstrap_menu.html:74
+#: templates/frontend/bootstrap_menu.html:83
 msgid "Voicemail Detection (AMD)"
 msgstr "Détection de messagerie vocale (AMD)"
 
-#: templates/frontend/bootstrap_menu.html:75
+#: templates/frontend/bootstrap_menu.html:84
 msgid "Rebranding"
 msgstr "Rebranding"
 
-#: templates/frontend/bootstrap_menu.html:94
+#: templates/frontend/bootstrap_menu.html:103
 msgid "Account settings"
 msgstr "Paramètres de compte"
 
-#: templates/frontend/bootstrap_menu.html:97
+#: templates/frontend/bootstrap_menu.html:106
 msgid "Notifications"
 msgstr "Notifications"
 
-#: templates/frontend/bootstrap_menu.html:106
+#: templates/frontend/bootstrap_menu.html:115
 #: templates/frontend/registration/user_detail_change.html:14
 msgid "Account Limits"
 msgstr "Compte limites"
 
-#: templates/frontend/bootstrap_menu.html:108
+#: templates/frontend/bootstrap_menu.html:117
 #: templates/frontend/registration/user_detail_change.html:16
 msgid "Change language "
 msgstr "Changer de langue"
 
-#: templates/frontend/bootstrap_menu.html:119
+#: templates/frontend/bootstrap_menu.html:128
 msgid "Log out"
 msgstr "Déconnexion"
 
@@ -3138,7 +3150,9 @@ msgstr "titre de section"
 msgid ""
 "If an audio file is not selected, the script will be played using Text-To-"
 "Speech"
-msgstr "Si un fichier audio n&#39;est pas sélectionné, le script va être joué en utilisant Text-To-Speech"
+msgstr ""
+"Si un fichier audio n&#39;est pas sélectionné, le script va être joué en "
+"utilisant Text-To-Speech"
 
 #: templates/frontend/survey/section_change.html:131
 #, fuzzy

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Newfies-Dialer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-14 13:47+0100\n"
+"POT-Creation-Date: 2013-02-14 16:29+0100\n"
 "PO-Revision-Date: 2012-12-13 19:22+0900\n"
 "Last-Translator: Chiaki Nakata <nakata@cba-japan.com>\n"
 "Language-Team: Japanese <dev@cba-japan.com>\n"
@@ -443,12 +443,12 @@ msgstr "Newfies-Dialer"
 msgid "Applications"
 msgstr "アプリケーション"
 
-#: custom_admin_tools/menu.py:39 templates/frontend/bootstrap_menu.html:116
+#: custom_admin_tools/menu.py:39 templates/frontend/bootstrap_menu.html:125
 msgid "Administration"
 msgstr "管理"
 
 #: custom_admin_tools/menu.py:42 templates/api_browser/base.html:50
-#: templates/frontend/bootstrap_menu.html:112
+#: templates/frontend/bootstrap_menu.html:121
 msgid "API Explorer"
 msgstr "API エクスプローラ"
 
@@ -585,7 +585,8 @@ msgstr "アプリケーション"
 
 #: dialer_campaign/constants.py:45 dialer_contact/constants.py:42
 #: dialer_contact/models.py:61 dialer_contact/models.py:116
-#: templates/frontend/bootstrap_menu.html:45
+#: templates/frontend/bootstrap_menu.html:42
+#: templates/frontend/bootstrap_menu.html:50
 #: templates/frontend/contact/list.html:26
 msgid "Contacts"
 msgstr "コンタクト"
@@ -1483,7 +1484,7 @@ msgstr "電話帳　備考"
 msgid "Can see Phonebook"
 msgstr "電話帳を選択"
 
-#: dialer_contact/models.py:52 templates/frontend/bootstrap_menu.html:41
+#: dialer_contact/models.py:52 templates/frontend/bootstrap_menu.html:46
 msgid "Phonebooks"
 msgstr "電話帳"
 
@@ -1906,7 +1907,7 @@ msgstr "アンケート調査のアップデート"
 msgid "Can see Survey Report"
 msgstr "アンケート調査レポート"
 
-#: survey/models.py:120 templates/frontend/bootstrap_menu.html:69
+#: survey/models.py:120 templates/frontend/bootstrap_menu.html:78
 msgid "Surveys"
 msgstr "アンケート調査"
 
@@ -2345,61 +2346,61 @@ msgstr "ボイスダッシュボード"
 msgid "Voice Campaign"
 msgstr "ボイスキャンペーン"
 
-#: templates/frontend/bootstrap_menu.html:49
+#: templates/frontend/bootstrap_menu.html:58
 msgid "Audio files"
 msgstr "音声ファイル"
 
-#: templates/frontend/bootstrap_menu.html:53
+#: templates/frontend/bootstrap_menu.html:62
 msgid "Reporting"
 msgstr "レポート"
 
-#: templates/frontend/bootstrap_menu.html:56
+#: templates/frontend/bootstrap_menu.html:65
 msgid "Call Detail Report"
 msgstr "コールレポート詳細"
 
-#: templates/frontend/bootstrap_menu.html:59
+#: templates/frontend/bootstrap_menu.html:68
 msgid "Survey Reports"
 msgstr "アンケート調査レポート"
 
-#: templates/frontend/bootstrap_menu.html:66
+#: templates/frontend/bootstrap_menu.html:75
 msgid "Modules"
 msgstr "モジュール"
 
-#: templates/frontend/bootstrap_menu.html:72
+#: templates/frontend/bootstrap_menu.html:81
 msgid "Add-ons"
 msgstr "アドオン"
 
-#: templates/frontend/bootstrap_menu.html:73
+#: templates/frontend/bootstrap_menu.html:82
 msgid "SMS (Text Messaging)"
 msgstr "SMS(テキストメッセージ)"
 
-#: templates/frontend/bootstrap_menu.html:74
+#: templates/frontend/bootstrap_menu.html:83
 msgid "Voicemail Detection (AMD)"
 msgstr "ボイスメール検索(AMD)"
 
-#: templates/frontend/bootstrap_menu.html:75
+#: templates/frontend/bootstrap_menu.html:84
 msgid "Rebranding"
 msgstr "リブランディング"
 
-#: templates/frontend/bootstrap_menu.html:94
+#: templates/frontend/bootstrap_menu.html:103
 msgid "Account settings"
 msgstr "アカウント設定"
 
-#: templates/frontend/bootstrap_menu.html:97
+#: templates/frontend/bootstrap_menu.html:106
 msgid "Notifications"
 msgstr "通知"
 
-#: templates/frontend/bootstrap_menu.html:106
+#: templates/frontend/bootstrap_menu.html:115
 #: templates/frontend/registration/user_detail_change.html:14
 msgid "Account Limits"
 msgstr "アカウント制限"
 
-#: templates/frontend/bootstrap_menu.html:108
+#: templates/frontend/bootstrap_menu.html:117
 #: templates/frontend/registration/user_detail_change.html:16
 msgid "Change language "
 msgstr "言語の変更"
 
-#: templates/frontend/bootstrap_menu.html:119
+#: templates/frontend/bootstrap_menu.html:128
 msgid "Log out"
 msgstr "ログアウト"
 

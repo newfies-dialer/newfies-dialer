@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-14 13:47+0100\n"
+"POT-Creation-Date: 2013-02-14 16:29+0100\n"
 "PO-Revision-Date: 2012-02-28 23:20+0800\n"
 "Last-Translator: samlin <sam@theta.com.tw>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -440,12 +440,12 @@ msgstr "Newfies-Dialer"
 msgid "Applications"
 msgstr "應用程式"
 
-#: custom_admin_tools/menu.py:39 templates/frontend/bootstrap_menu.html:116
+#: custom_admin_tools/menu.py:39 templates/frontend/bootstrap_menu.html:125
 msgid "Administration"
 msgstr "管理區"
 
 #: custom_admin_tools/menu.py:42 templates/api_browser/base.html:50
-#: templates/frontend/bootstrap_menu.html:112
+#: templates/frontend/bootstrap_menu.html:121
 msgid "API Explorer"
 msgstr ""
 
@@ -582,7 +582,8 @@ msgstr "App"
 
 #: dialer_campaign/constants.py:45 dialer_contact/constants.py:42
 #: dialer_contact/models.py:61 dialer_contact/models.py:116
-#: templates/frontend/bootstrap_menu.html:45
+#: templates/frontend/bootstrap_menu.html:42
+#: templates/frontend/bootstrap_menu.html:50
 #: templates/frontend/contact/list.html:26
 msgid "Contacts"
 msgstr "連絡者"
@@ -1492,7 +1493,7 @@ msgstr "電話簿註記"
 msgid "Can see Phonebook"
 msgstr "選擇電話簿"
 
-#: dialer_contact/models.py:52 templates/frontend/bootstrap_menu.html:41
+#: dialer_contact/models.py:52 templates/frontend/bootstrap_menu.html:46
 msgid "Phonebooks"
 msgstr "電話簿"
 
@@ -1925,7 +1926,7 @@ msgstr "更新民意調查"
 msgid "Can see Survey Report"
 msgstr "民意調查報表"
 
-#: survey/models.py:120 templates/frontend/bootstrap_menu.html:69
+#: survey/models.py:120 templates/frontend/bootstrap_menu.html:78
 msgid "Surveys"
 msgstr "民意調查"
 
@@ -2381,62 +2382,62 @@ msgstr "儀表板"
 msgid "Voice Campaign"
 msgstr "撥號程序競選活動"
 
-#: templates/frontend/bootstrap_menu.html:49
+#: templates/frontend/bootstrap_menu.html:58
 msgid "Audio files"
 msgstr "語音檔案"
 
-#: templates/frontend/bootstrap_menu.html:53
+#: templates/frontend/bootstrap_menu.html:62
 msgid "Reporting"
 msgstr "報表"
 
-#: templates/frontend/bootstrap_menu.html:56
+#: templates/frontend/bootstrap_menu.html:65
 msgid "Call Detail Report"
 msgstr "撥號詳細報表"
 
-#: templates/frontend/bootstrap_menu.html:59
+#: templates/frontend/bootstrap_menu.html:68
 #, fuzzy
 msgid "Survey Reports"
 msgstr "民意調查報表"
 
-#: templates/frontend/bootstrap_menu.html:66
+#: templates/frontend/bootstrap_menu.html:75
 msgid "Modules"
 msgstr "模組"
 
-#: templates/frontend/bootstrap_menu.html:72
+#: templates/frontend/bootstrap_menu.html:81
 msgid "Add-ons"
 msgstr "附加組件"
 
-#: templates/frontend/bootstrap_menu.html:73
+#: templates/frontend/bootstrap_menu.html:82
 msgid "SMS (Text Messaging)"
 msgstr ""
 
-#: templates/frontend/bootstrap_menu.html:74
+#: templates/frontend/bootstrap_menu.html:83
 msgid "Voicemail Detection (AMD)"
 msgstr ""
 
-#: templates/frontend/bootstrap_menu.html:75
+#: templates/frontend/bootstrap_menu.html:84
 msgid "Rebranding"
 msgstr ""
 
-#: templates/frontend/bootstrap_menu.html:94
+#: templates/frontend/bootstrap_menu.html:103
 msgid "Account settings"
 msgstr "帳戶設定"
 
-#: templates/frontend/bootstrap_menu.html:97
+#: templates/frontend/bootstrap_menu.html:106
 msgid "Notifications"
 msgstr "通知"
 
-#: templates/frontend/bootstrap_menu.html:106
+#: templates/frontend/bootstrap_menu.html:115
 #: templates/frontend/registration/user_detail_change.html:14
 msgid "Account Limits"
 msgstr "帳戶限制"
 
-#: templates/frontend/bootstrap_menu.html:108
+#: templates/frontend/bootstrap_menu.html:117
 #: templates/frontend/registration/user_detail_change.html:16
 msgid "Change language "
 msgstr ""
 
-#: templates/frontend/bootstrap_menu.html:119
+#: templates/frontend/bootstrap_menu.html:128
 msgid "Log out"
 msgstr "登出"
 

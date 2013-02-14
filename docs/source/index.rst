@@ -20,26 +20,17 @@ Contents:
 
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 2
 
     installation
 
 .. toctree::
     :maxdepth: 2
 
-
-    user-guide
-
-.. toctree::
-    :maxdepth: 1
-
     configuration-defaults
-
-.. toctree::
-    :maxdepth: 2
-
-    freeswitch-configuration
-
+    ./freeswitch/install-configure-freeswitch
+    troubleshooting
+    user-guide
 
 .. toctree::
     :maxdepth: 1
@@ -51,9 +42,8 @@ Contents:
 
     api-reference
     contributing
-    faq
-    troubleshooting
     resources
+    faq
 
 
 Indices and tables

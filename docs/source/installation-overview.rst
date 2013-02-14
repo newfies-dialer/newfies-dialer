@@ -1,8 +1,8 @@
 .. _installation-overview:
 
-=====================
-Installation overview
-=====================
+========
+Overview
+========
 
 .. _install-requirements:
 
@@ -97,7 +97,7 @@ Inside Newfies-Dialer directory you should run::
 ``syncdb`` will create a database named test.db in ``database`` folder of the
 Newfies-Dialer directory. We have configured Newfies-Dialer to do this, but you
 can change this simply by modifying settings.py where DATABASES dictionary is
-constructed. You can find more information about this in the 
+constructed. You can find more information about this in the
 Django documentation.
 
 ``collectstatic`` will fetch all necessary media files and put them into
@@ -124,6 +124,6 @@ To cache something is to save the result of an expensive calculation so that
 you don’t have to perform the calculation next time.
 
 ::
-    
+
     $ mkdir /usr/share/django_cache
 

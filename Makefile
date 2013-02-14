@@ -1,4 +1,6 @@
+#
 #Makefile - Why not :)
+#
 
 SHELL := /bin/bash
 VERSION = $(shell python setup.py --version)
@@ -6,7 +8,6 @@ VERSION = $(shell python setup.py --version)
 DB_NAME=newfiesdb
 DB_OPTS=
 PRJ_DIR=./newfies
-
 
 all:
 	@echo "See Makefile source for targets details"
@@ -64,7 +65,7 @@ graph_models:
 	cd $(PRJ_DIR) && python manage.py graph_models -a -g -o project_models.png
 
 doc_html:
-	cd docs && rm -rf build/html &&	make html
+	cd docs && rm -rf build/html && rm -rf build/doctrees && make html
 
 doc_pdf:
-	cd docs && rm -rf build/latex && make latexpdf
+	cd docs && rm -rf build/latex && rm -rf build/doctrees && make latexpdf

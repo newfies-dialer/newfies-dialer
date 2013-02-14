@@ -62,3 +62,9 @@ reset: cleardb
 
 graph_models:
 	cd $(PRJ_DIR) && python manage.py graph_models -a -g -o project_models.png
+
+doc_html:
+	cd docs && rm -rf build/html &&	make html
+
+doc_pdf:
+	cd docs && rm -rf build/latex && make latexpdf

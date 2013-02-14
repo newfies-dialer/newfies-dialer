@@ -18,12 +18,6 @@ To install using pip
 
     $ pip install Celery
 
-To install using easy_install
------------------------------
-::
-
-    $ easy_install Celery
-
 
 .. _celery-installing-from-source:
 

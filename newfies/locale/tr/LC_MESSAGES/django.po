@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-14 13:06+0100\n"
+"POT-Creation-Date: 2013-02-14 13:47+0100\n"
 "PO-Revision-Date: 2012-03-04 19:32+0200\n"
 "Last-Translator: serhat alpaslan <s.alpaslan@netglobalturkey.com>\n"
 "Language-Team: LANGUAGE <s.alpaslan@netglobalturkey.com>\n"
@@ -1445,7 +1445,7 @@ msgstr "Tüm"
 msgid "ID"
 msgstr ""
 
-#: dialer_contact/constants.py:47 dialer_contact/forms.py:50
+#: dialer_contact/constants.py:47 dialer_contact/forms.py:48
 #: dialer_contact/models.py:51 dialer_contact/models.py:87
 #: templates/frontend/phonebook/change.html:11
 #: templates/frontend/phonebook/list.html:9
@@ -1471,35 +1471,31 @@ msgid "To"
 msgstr "Için"
 
 #: dialer_contact/forms.py:32
-msgid "Upload CSV File "
-msgstr "CSV Dosya Yükle"
+msgid "Upload CSV File, the delimiter have to be "
+msgstr ""
 
-#: dialer_contact/forms.py:35
-msgid "Browse CSV file"
-msgstr "CSV dosyası Gözat"
-
-#: dialer_contact/forms.py:44 survey/forms.py:347
+#: dialer_contact/forms.py:42 survey/forms.py:347
 #, python-format
 msgid "Document types accepted: %s"
 msgstr "Belge türleri kabul edilir: %s"
 
-#: dialer_contact/forms.py:52 dialer_contact/models.py:88
+#: dialer_contact/forms.py:50 dialer_contact/models.py:88
 msgid "Select Phonebook"
 msgstr "Rehber seçin"
 
-#: dialer_contact/forms.py:98
+#: dialer_contact/forms.py:96
 msgid "Contact Number:"
 msgstr "İletişim Numarası:"
 
-#: dialer_contact/forms.py:102
+#: dialer_contact/forms.py:100
 msgid "Contact Name:"
 msgstr "İsim:"
 
-#: dialer_contact/forms.py:104
+#: dialer_contact/forms.py:102
 msgid "Phonebook:"
 msgstr "Telefon Defteri:"
 
-#: dialer_contact/forms.py:105
+#: dialer_contact/forms.py:103
 msgid "Status:"
 msgstr "Durum:"
 

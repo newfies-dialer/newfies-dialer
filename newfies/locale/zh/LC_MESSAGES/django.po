@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-14 13:06+0100\n"
+"POT-Creation-Date: 2013-02-14 13:47+0100\n"
 "PO-Revision-Date: 2012-02-28 23:20+0800\n"
 "Last-Translator: samlin <sam@theta.com.tw>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1429,7 +1429,7 @@ msgstr "所有"
 msgid "ID"
 msgstr ""
 
-#: dialer_contact/constants.py:47 dialer_contact/forms.py:50
+#: dialer_contact/constants.py:47 dialer_contact/forms.py:48
 #: dialer_contact/models.py:51 dialer_contact/models.py:87
 #: templates/frontend/phonebook/change.html:11
 #: templates/frontend/phonebook/list.html:9
@@ -1455,35 +1455,31 @@ msgid "To"
 msgstr "到"
 
 #: dialer_contact/forms.py:32
-msgid "Upload CSV File "
-msgstr "上傳 CSV 檔案"
+msgid "Upload CSV File, the delimiter have to be "
+msgstr ""
 
-#: dialer_contact/forms.py:35
-msgid "Browse CSV file"
-msgstr "瀏覽 CSV 檔案"
-
-#: dialer_contact/forms.py:44 survey/forms.py:347
+#: dialer_contact/forms.py:42 survey/forms.py:347
 #, python-format
 msgid "Document types accepted: %s"
 msgstr "文件型態已接受: %s"
 
-#: dialer_contact/forms.py:52 dialer_contact/models.py:88
+#: dialer_contact/forms.py:50 dialer_contact/models.py:88
 msgid "Select Phonebook"
 msgstr "選擇電話簿"
 
-#: dialer_contact/forms.py:98
+#: dialer_contact/forms.py:96
 msgid "Contact Number:"
 msgstr "連絡電話:"
 
-#: dialer_contact/forms.py:102
+#: dialer_contact/forms.py:100
 msgid "Contact Name:"
 msgstr "聯絡姓名:"
 
-#: dialer_contact/forms.py:104
+#: dialer_contact/forms.py:102
 msgid "Phonebook:"
 msgstr "電話簿:"
 
-#: dialer_contact/forms.py:105
+#: dialer_contact/forms.py:103
 msgid "Status:"
 msgstr "狀態:"
 

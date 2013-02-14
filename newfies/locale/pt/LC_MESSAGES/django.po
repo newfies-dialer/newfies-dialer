@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-14 13:06+0100\n"
+"POT-Creation-Date: 2013-02-14 13:47+0100\n"
 "PO-Revision-Date: 2012-01-06 20:33-0300\n"
 "Last-Translator: Emerson Reis <eluizbr@gmail.com>\n"
 "Language-Team: PORTUGUES BRASIL <eluizbr@gmail.com>\n"
@@ -1444,7 +1444,7 @@ msgstr "Tudo"
 msgid "ID"
 msgstr ""
 
-#: dialer_contact/constants.py:47 dialer_contact/forms.py:50
+#: dialer_contact/constants.py:47 dialer_contact/forms.py:48
 #: dialer_contact/models.py:51 dialer_contact/models.py:87
 #: templates/frontend/phonebook/change.html:11
 #: templates/frontend/phonebook/list.html:9
@@ -1470,35 +1470,31 @@ msgid "To"
 msgstr "para"
 
 #: dialer_contact/forms.py:32
-msgid "Upload CSV File "
-msgstr "Enviar arquivo CSV"
+msgid "Upload CSV File, the delimiter have to be "
+msgstr ""
 
-#: dialer_contact/forms.py:35
-msgid "Browse CSV file"
-msgstr "Vizualizar arquivo CVS"
-
-#: dialer_contact/forms.py:44 survey/forms.py:347
+#: dialer_contact/forms.py:42 survey/forms.py:347
 #, python-format
 msgid "Document types accepted: %s"
 msgstr "Tipo de documentos acitos: %s"
 
-#: dialer_contact/forms.py:52 dialer_contact/models.py:88
+#: dialer_contact/forms.py:50 dialer_contact/models.py:88
 msgid "Select Phonebook"
 msgstr "Selecione a agenda telefônica"
 
-#: dialer_contact/forms.py:98
+#: dialer_contact/forms.py:96
 msgid "Contact Number:"
 msgstr "Número do contato:"
 
-#: dialer_contact/forms.py:102
+#: dialer_contact/forms.py:100
 msgid "Contact Name:"
 msgstr "Nome do contato:"
 
-#: dialer_contact/forms.py:104
+#: dialer_contact/forms.py:102
 msgid "Phonebook:"
 msgstr "Agenda telefônica:"
 
-#: dialer_contact/forms.py:105
+#: dialer_contact/forms.py:103
 msgid "Status:"
 msgstr "Status:"
 

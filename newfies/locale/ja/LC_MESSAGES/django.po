@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Newfies-Dialer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-14 13:05+0100\n"
+"POT-Creation-Date: 2013-02-14 13:47+0100\n"
 "PO-Revision-Date: 2012-12-13 19:22+0900\n"
 "Last-Translator: Chiaki Nakata <nakata@cba-japan.com>\n"
 "Language-Team: Japanese <dev@cba-japan.com>\n"
@@ -1421,7 +1421,7 @@ msgstr "すべて"
 msgid "ID"
 msgstr "ID"
 
-#: dialer_contact/constants.py:47 dialer_contact/forms.py:50
+#: dialer_contact/constants.py:47 dialer_contact/forms.py:48
 #: dialer_contact/models.py:51 dialer_contact/models.py:87
 #: templates/frontend/phonebook/change.html:11
 #: templates/frontend/phonebook/list.html:9
@@ -1447,35 +1447,31 @@ msgid "To"
 msgstr "終了"
 
 #: dialer_contact/forms.py:32
-msgid "Upload CSV File "
-msgstr "CSVファイルをアップロード"
+msgid "Upload CSV File, the delimiter have to be "
+msgstr ""
 
-#: dialer_contact/forms.py:35
-msgid "Browse CSV file"
-msgstr "CSVファイルを閲覧"
-
-#: dialer_contact/forms.py:44 survey/forms.py:347
+#: dialer_contact/forms.py:42 survey/forms.py:347
 #, python-format
 msgid "Document types accepted: %s"
 msgstr "ドキュメントの種類が承諾されました: %s"
 
-#: dialer_contact/forms.py:52 dialer_contact/models.py:88
+#: dialer_contact/forms.py:50 dialer_contact/models.py:88
 msgid "Select Phonebook"
 msgstr "電話帳を選択"
 
-#: dialer_contact/forms.py:98
+#: dialer_contact/forms.py:96
 msgid "Contact Number:"
 msgstr "コンタクト番号:"
 
-#: dialer_contact/forms.py:102
+#: dialer_contact/forms.py:100
 msgid "Contact Name:"
 msgstr "コンタクト名:"
 
-#: dialer_contact/forms.py:104
+#: dialer_contact/forms.py:102
 msgid "Phonebook:"
 msgstr "電話帳:"
 
-#: dialer_contact/forms.py:105
+#: dialer_contact/forms.py:103
 msgid "Status:"
 msgstr "ステータス："
 

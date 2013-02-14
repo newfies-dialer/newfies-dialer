@@ -13,31 +13,20 @@ and second is ``Rabbitmq``. You can install either to work with Newfies-Dialer.
 Redis
 -----
 
-Download Source
----------------
-
-Download : `redis-server_2.0.0~rc2-1_amd64.deb`_.
-
-.. _redis-server_2.0.0~rc2-1_amd64.deb : https://launchpad.net/ubuntu/maverick/amd64/redis-server/2:2.0.0~rc2-1
-
-
 To install Redis-Server
 -----------------------
-::
 
-    $ sudo dpkg -i redis-server_2.0.0~rc2-1_amd64.deb
 
-or you can use apt-get
-::
+On Ubuntu 12.04 TLS you can easily install Redis as follow::
 
     $ apt-get install redis-server
 
-Running Server
---------------
+
+Start Redis Server
+------------------
 ::
 
-    $ redis-server
-
+    $ /etc/init.d/redis-server start
 
 
 .. _broker-rabbitmq:
@@ -63,6 +52,7 @@ See `Installing RabbitMQ`_ over at RabbitMQ's website.
 
         http://somic.org/2009/02/19/on-rabbitmqctl-and-badrpcnodedown/
 
+
 Download Source
 ---------------
 http://www.rabbitmq.com/server.html
@@ -75,8 +65,7 @@ Debian APT repository
 
 To make use of the RabbitMQ APT repository,
 
-1. Add the following line to your /etc/apt/sources.list
-::
+1. Add the following line to your /etc/apt/sources.list::
 
    deb http://www.rabbitmq.com/debian/ testing main
 
@@ -88,9 +77,7 @@ To make use of the RabbitMQ APT repository,
     repository.
 
 2. (optional) To avoid warnings about unsigned packages, add RabbitMQ's public key to
-   your trusted key list using apt-key(8)
-   
-::
+   your trusted key list using apt-key(8)::
 
    $ wget http://www.rabbitmq.com/rabbitmq-signing-key-public.asc
 
@@ -98,8 +85,7 @@ To make use of the RabbitMQ APT repository,
 
 3. Run apt-get update.
 
-4. Install packages as usual; for instance,
-::
+4. Install packages as usual; for instance::
 
    $ sudo apt-get install rabbitmq-server
 

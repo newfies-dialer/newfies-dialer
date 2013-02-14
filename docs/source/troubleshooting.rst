@@ -160,7 +160,8 @@ Now you can visit the webserver celerymon starts by going to: http://localhost:8
 How to discard all pending tasks
 ================================
 
-http://docs.celeryproject.org/en/latest/faq.html?highlight=purge#how-do-i-discard-all-waiting-tasks
+You can use the celery purge command to purge all configured task queues.
+http://docs.celeryproject.org/en/latest/faq.html?highlight=purge#how-do-i-purge-all-waiting-tasks
 
 
 

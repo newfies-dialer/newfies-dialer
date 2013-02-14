@@ -67,15 +67,11 @@ Installation Script
 
 You can install Newfies-Dialer manually or using the shell script provided.
 
-To install Newfies-Dialer using the script,::
+To install Newfies-Dialer using this script,::
 
     $ chmod +x install/install-newfies.sh
 
     $ ./install/install-newfies.sh
-
-    $ chmod +x install/install-celery.sh
-
-    $ ./install/install-celery.sh
 
 
 .. _running-newfies-dialer:
@@ -84,8 +80,6 @@ Running a Newfies-Dialer
 ========================
 
 Inside Newfies-Dialer directory you should run::
-
-    $ mkdir database
 
     $ python manage.py syncdb
 
@@ -121,9 +115,6 @@ read-a-file-off-the-filesystem server arrangement.
 This is where caching comes in.
 
 To cache something is to save the result of an expensive calculation so that
-you don’t have to perform the calculation next time.
-
-::
+you don’t have to perform the calculation next time::
 
     $ mkdir /usr/share/django_cache
-

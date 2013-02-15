@@ -15,32 +15,55 @@
 from django.core.management.base import BaseCommand
 from django.utils.translation import ugettext as _
 from django.db import IntegrityError
+from optparse import make_option
 from dialer_campaign.models import Phonebook, Contact, Campaign
 from dialer_campaign.tasks import collect_subscriber
 
 
-class Command(BaseCommand):
-    args = _('<phonenumber|phonebook_id, phonenumber|phonebook_id,...>')
-    help = _("Create a new contact for a given phonenumber and phonebook")
+class Command(BaseCommand):    
+    args = 'phonebook_id, list_of_phonenumber'
+    help = "Create a new contact for a given phonenumber and phonebook\n"\
+           "--------------------------------------------------------------\n"\
+           "python manage.py create_subscriber --phonebook_id=1 --list_of_phonenumber=123456,9867456"
+
+    option_list = BaseCommand.option_list + (
+        make_option('--list_of_phonenumber',
+                    default=None,
+                    dest='list_of_phonenumber',
+                    help=help),
+        make_option('--phonebook_id',
+                    default=None,
+                    dest='phonebook_id',
+                    help=help),            
+    )
 
     def handle(self, *args, **options):
         """Note that subscriber created this way are only for devel purposes"""
-
-        for newinst in args:
-            print newinst
-            res = newinst.split('|')
-            myphonenumber = res[0]
-            myphonebook_id = res[1]
-
+        list_of_phonenumber = ''  # default
+        if options.get('list_of_phonenumber'):
             try:
-                obj_phonebook = Phonebook.objects.get(id=myphonebook_id)
-            except:
-                print _('Can\'t find this Phonebook : %(id)s' % {'id': myphonebook_id})
-                return False
+                list_of_phonenumber = options.get('list_of_phonenumber').split(',')
+            except ValueError:
+                list_of_phonenumber = ''       
 
+        phonebook_id = ''
+        if options.get('phonebook_id'):
+            try:
+                phonebook_id = options.get('phonebook_id')
+                phonebook_id = int(phonebook_id)
+            except ValueError:
+                phonebook_id = ''            
+
+        try:
+            obj_phonebook = Phonebook.objects.get(id=phonebook_id)
+        except:
+            print _('Can\'t find this Phonebook : %(id)s' % {'id': phonebook_id})
+            return False
+
+        for phonenumber in list_of_phonenumber:            
             try:
                 new_contact = Contact.objects.create(
-                    contact=myphonenumber,
+                    contact=int(phonenumber),
                     phonebook=obj_phonebook)
             except IntegrityError:
                 print _("Duplicate contact!")
@@ -48,12 +71,12 @@ class Command(BaseCommand):
 
             print _("Contact created id:%(id)s" % {'id': new_contact.id})
 
-            try:
-                obj_campaign = Campaign.objects.get(phonebook=obj_phonebook)
-            except:
-                print _('Can\'t find a Campaign with this phonebook')
-                return False
+        try:
+            obj_campaign = Campaign.objects.get(phonebook=obj_phonebook)
+        except:
+            print _('Can\'t find a Campaign with this phonebook')
+            return False
 
-            print _("Launch Task : collect_subscriber(%(id)s)" %
-                {'id': str(obj_campaign.id)})
-            collect_subscriber.delay(obj_campaign.id)
+        print _("Launch Task : collect_subscriber(%(id)s)" % {'id': str(obj_campaign.id)})
+        collect_subscriber.delay(obj_campaign.id)
+        

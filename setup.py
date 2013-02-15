@@ -18,6 +18,7 @@ from setuptools import setup, find_packages
 import os
 import re
 import newfies
+import errno
 
 
 def read(fname):
@@ -48,6 +49,16 @@ def parse_dependency_links(file_name):
 
     return dependency_links
 
+
+def make_sure_path_exists(path):
+    try:
+        os.makedirs(path)
+    except OSError as exception:
+        if exception.errno != errno.EEXIST:
+            raise
+
+#Create directory for logs
+make_sure_path_exists('/var/log/newfies')
 
 setup(
     name='newfies-dialer',

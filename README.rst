@@ -113,7 +113,7 @@ Newfies is a django based application, so the major requirements are :
 The rest of the requirements can easily be installed with PIP
 (http://pypi.python.org/pypi/pip) :
 
-    - https://github.com/Star2Billing/newfies-dialer/blob/master/install/conf/requirements.txt
+    - https://github.com/Star2Billing/newfies-dialer/blob/master/install/requirements/all-requirements.txt
 
 
 Newfies-Dialer takes advantage of messaging systems such as RabbitMQ or Redis. Other

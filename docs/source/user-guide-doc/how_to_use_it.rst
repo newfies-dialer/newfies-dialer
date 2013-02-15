@@ -194,9 +194,6 @@ Update Campaign:
 .. image:: ../_static/images/customer/update_campaign.png
 
 
-.. image:: ../_static/images/customer/update_campaign_part2.png
-
-
 .. _apply-dialer-settings:
 
 Dialer Settings

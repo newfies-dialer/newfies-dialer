@@ -26,7 +26,7 @@ Index
 Index page for the customer interface after successful login with user credentials 
 
 .. image:: ../_static/images/customer_screenshot.png
-    :width: 850
+    
 
 
 .. _customer-phonebook-access:
@@ -43,7 +43,7 @@ description. Also from the phonebook list, click on the phonebook to update.
     * http://localhost:8000/dialer_campaign/phonebook/
 
 .. image:: ../_static/images/customer/phonebook_list.png
-    :width: 850
+    
 
 To Add/Update a Phonebook for a logged in user
 
@@ -53,7 +53,7 @@ To Add/Update a Phonebook for a logged in user
     * http://localhost:8000/dialer_campaign/phonebook/1/
 
 .. image:: ../_static/images/customer/update_phonebook.png
-    :width: 850
+    
 
 .. _customer-contact-access:
 
@@ -71,7 +71,7 @@ the phonebook list. On the contact list, click on the contact to update.
     * http://localhost:8000/dialer_campaign/contact/
 
 .. image:: ../_static/images/customer/contact_list.png
-    :width: 850
+    
 
 To Add/Update a contact in a phonebook
 
@@ -81,7 +81,7 @@ To Add/Update a contact in a phonebook
     * http://localhost:8000/dialer_campaign/contact/1/
 
 .. image:: ../_static/images/customer/update_contact.png
-    :width: 850
+    
 
 To import bulk contacts into a phonebook, click on ``Import``.
 where you can upload contacts via a CSV file under a logged in 
@@ -92,7 +92,7 @@ user's phonebook.
     * http://localhost:8000/dialer_campaign/contact/import/
 
 .. image:: ../_static/images/customer/import_contact.png
-    :width: 850
+    
 
 
 .. _voice-app:
@@ -110,7 +110,7 @@ this would be the words to convert to text to speech.
     * http://localhost:8000/voiceapp/
 
 .. image:: ../_static/images/customer/voiceapp_list.png
-    :width: 850
+    
 
 
 To Add/Update a contact in a voice app
@@ -121,7 +121,7 @@ To Add/Update a contact in a voice app
     * http://localhost:8000/voiceapp/1/
 
 .. image:: ../_static/images/customer/update_voiceapp.png
-    :width: 850
+    
 
 A Number of voice applications currently supported are:-
 
@@ -197,7 +197,7 @@ The audio file will then be uploaded and renamed so that it is unique.
     * http://localhost:8000/survey/1/
 
 .. image:: ../_static/images/customer/survey_list.png
-    :width: 850
+    
 
 Select Modules from the top menu, then Survey. 
 
@@ -246,7 +246,7 @@ linked with contacts from the campaign list, click on campaign to update.
     * http://localhost:8000/dialer_campaign/campaign/
 
 .. image:: ../_static/images/customer/campaign_list.png
-    :width: 850
+    
 
 To Add/Update a Campaign for a logged in user
 
@@ -256,7 +256,7 @@ To Add/Update a Campaign for a logged in user
     * http://localhost:8000/dialer_campaign/campaign/1/
 
 .. image:: ../_static/images/customer/update_campaign.png
-    :width: 850
+    
 
 
 .. _customer-dashboard-access:
@@ -267,4 +267,4 @@ Dashboard
 Dashboard gives the information anbout campaign & its related call records
 
 .. image:: ../_static/images/customer/customer_dashboard.png
-    :width: 850
+    

@@ -217,7 +217,7 @@
                     var hour = dt.getHours();//(time.toString().split("."))[0];
                     var minute = dt.getMinutes();//Math.round(time * 60 - (hour * 60));
                     var output = '';
-                    var duration_avg = Info(time, 2);
+                    var duration_avg = parseFloat(Info(time, 2)).toFixed(2);
                     output += '<div class="graph_tooltip_header">';
 
                     var ampm = hour >= 12 ? 'pm' : 'am';

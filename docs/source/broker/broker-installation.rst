@@ -67,7 +67,7 @@ To make use of the RabbitMQ APT repository,
 
 1. Add the following line to your /etc/apt/sources.list::
 
-   deb http://www.rabbitmq.com/debian/ testing main
+    deb http://www.rabbitmq.com/debian/ testing main
 
 .. note::
 

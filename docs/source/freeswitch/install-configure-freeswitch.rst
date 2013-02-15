@@ -35,7 +35,6 @@ The above commmand download the installation script. We can then execute the scr
 This will download and install Freeswitch with the modules appropriate for Newfies-Dialer. The installation will take some time, but does not require your interaction once started.
 
 
-.. _`Freeswitch`: http://www.freeswitch.org/
 .. _`ESL`: http://wiki.freeswitch.org/wiki/Event_Socket_Library
 
 

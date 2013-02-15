@@ -367,7 +367,7 @@ func_install_frontend(){
     echo "sudo -u postgres dropdb $DATABASENAME"
     sudo -u postgres dropdb $DATABASENAME
     # echo "Remove Existing Database if exists..."
-    # if [ `sudo -u postgres psql -qAt --list | egrep '^$DATABASENAME\|' | wc -l` -eq 1 ]; then
+    #if [ `sudo -u postgres psql -qAt --list | egrep $DATABASENAME | wc -l` -eq 1 ]; then
     #     echo "sudo -u postgres dropdb $DATABASENAME"
     #     sudo -u postgres dropdb $DATABASENAME
     # fi

@@ -15,9 +15,9 @@ import sys
 import os
 
 sys.path.insert(0, os.path.abspath('../../newfies'))
-import newfies.settings
+import settings
 from django.core.management import setup_environ
-setup_environ(newfies.settings)
+setup_environ(settings)
 
 
 # If extensions (or modules to document with autodoc) are in another directory,

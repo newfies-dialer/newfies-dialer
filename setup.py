@@ -52,8 +52,7 @@ def parse_dependency_links(file_name):
 setup(
     name='newfies-dialer',
     version=newfies.__version__,
-    description='Newfies is a Bulk Dialer and Voice Broadcasting application '
-                'dedicated to provide information via phone technology.',
+    description='Newfies is a Bulk Dialer and Voice Broadcasting application dedicated to provide information via phone technology.',
     long_description=read('README.rst'),
     author='Belaid Arezqui',
     author_email='areski@gmail.com',
@@ -63,8 +62,8 @@ setup(
     package_dir={'newfies': 'newfies'},
     packages=find_packages(),
     package_data={},
-    install_requires=parse_requirements('install/requirements/all-requirements.txt'),
-    dependency_links=parse_dependency_links('install/requirements/all-requirements.txt'),
+    install_requires=parse_requirements('install/requirements/rtd-requirements.txt'),
+    dependency_links=parse_dependency_links('install/requirements/rtd-requirements.txt'),
     license='MPL 2.0 License',
     classifiers=[
         'Development Status :: 5 - Production/Stable',

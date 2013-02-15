@@ -23,17 +23,17 @@ class SubscriberAPIPlayground(APIPlayground):
         "resources": [
             {
                 "name": "/subscriber/",
-                "description": _("This resource allows you to manage campaign subscriber."),
+                "description": _("This resource allows you to manage subscriber."),
                 "endpoints": [
                     {
                         "method": "GET",
                         "url": "/api/v1/subscriber/",
-                        "description": "Returns all campaign subscribers"
+                        "description": "Returns all subscribers"
                     },
                     {
                         "method": "POST",
                         "url": "/api/v1/subscriber/",
-                        "description": _("Creates new campaign subscriber"),
+                        "description": _("Create new subscriber"),
                         "parameters": [{
                                            "name": "contact",
                                            "type": "string",
@@ -65,7 +65,7 @@ class SubscriberAPIPlayground(APIPlayground):
                     {
                         "method": "PUT",
                         "url": "/api/v1/subscriber/{campaign-id}/",
-                        "description": _("Update campaign subscriber"),
+                        "description": _("Update subscriber"),
                         "parameters": [{
                                            "name": "contact",
                                            "type": "string",

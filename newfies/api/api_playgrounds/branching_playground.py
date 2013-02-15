@@ -38,7 +38,7 @@ class BranchingAPIPlayground(APIPlayground):
                     {
                         "method": "POST",
                         "url": "/api/v1/branching/",
-                        "description": _("Creates new branching"),
+                        "description": _("Create new branching"),
                         "parameters": [{
                                            "name": "keys",
                                            "type": "string",

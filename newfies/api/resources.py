@@ -25,6 +25,7 @@ from tastypie.exceptions import ImmediateHttpResponse
 from tastypie import http
 
 from dialer_cdr.models import VoIPCall
+from country_dialcode.models import Prefix
 
 from random import seed
 from cStringIO import StringIO
@@ -114,6 +115,9 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='',
 
     logger.debug('Create CDR - request_uuid=%s ; leg=%d ; hangup_cause= %s' %
         (plivo_request_uuid, leg_type, cdr_hangup_cause))
+
+    #TODO: Get prefix obj from phone_number(to_plivo)
+    #prefix = Prefix.objects.get(prefix=to_plivo)
 
     new_voipcall = VoIPCall(
         user=obj_callrequest.user,

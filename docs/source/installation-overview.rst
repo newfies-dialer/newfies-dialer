@@ -1,8 +1,8 @@
 .. _installation-overview:
 
-=====================
-Installation overview
-=====================
+========
+Overview
+========
 
 .. _install-requirements:
 
@@ -67,15 +67,11 @@ Installation Script
 
 You can install Newfies-Dialer manually or using the shell script provided.
 
-To install Newfies-Dialer using the script,::
+To install Newfies-Dialer using this script,::
 
     $ chmod +x install/install-newfies.sh
 
     $ ./install/install-newfies.sh
-
-    $ chmod +x install/install-celery.sh
-
-    $ ./install/install-celery.sh
 
 
 .. _running-newfies-dialer:
@@ -84,8 +80,6 @@ Running a Newfies-Dialer
 ========================
 
 Inside Newfies-Dialer directory you should run::
-
-    $ mkdir database
 
     $ python manage.py syncdb
 
@@ -97,7 +91,7 @@ Inside Newfies-Dialer directory you should run::
 ``syncdb`` will create a database named test.db in ``database`` folder of the
 Newfies-Dialer directory. We have configured Newfies-Dialer to do this, but you
 can change this simply by modifying settings.py where DATABASES dictionary is
-constructed. You can find more information about this in the 
+constructed. You can find more information about this in the
 Django documentation.
 
 ``collectstatic`` will fetch all necessary media files and put them into
@@ -121,9 +115,6 @@ read-a-file-off-the-filesystem server arrangement.
 This is where caching comes in.
 
 To cache something is to save the result of an expensive calculation so that
-you don’t have to perform the calculation next time.
+you don’t have to perform the calculation next time::
 
-::
-    
     $ mkdir /usr/share/django_cache
-

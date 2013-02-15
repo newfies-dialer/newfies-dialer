@@ -454,7 +454,7 @@ def contact_del(request, object_id):
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
 
-        try:            
+        try:
             contact_list = Contact.objects.extra(where=['id IN (%s)' % values])
             if contact_list:
                 request.session["msg"] =\
@@ -547,7 +547,7 @@ def contact_import(request):
             return HttpResponseRedirect("/contact/")
 
     form = Contact_fileImport(request.user)
-    rdr = ''  # will contain CSV data
+    csv_data = ''
     msg = ''
     error_msg = ''
     success_import_list = []
@@ -564,23 +564,25 @@ def contact_import(request):
             #  3     - email
             #  4     - description
             #  5     - status
-            #  6     - additional_vars
+            #  6     - country
+            #  7     - city
+            #  8     - additional_vars
             # To count total rows of CSV file
             records = csv.reader(request.FILES['csv_file'],
                                  delimiter='|', quotechar='"')
             total_rows = len(list(records))
             BULK_SIZE = 1000
-            rdr = csv.reader(request.FILES['csv_file'],
+            csv_data = csv.reader(request.FILES['csv_file'],
                              delimiter='|', quotechar='"')
             #Get Phonebook Obj
             phonebook = get_object_or_404(
                 Phonebook, pk=request.POST['phonebook'],
                 user=request.user)
             # Read each Row
-            for row in rdr:
-                row = striplist(row)
+            for row in csv_data:                
+                row = striplist(row)                
                 if not row or str(row[0]) == 0:
-                    continue
+                    continue                
 
                 # check field type
                 if not int(row[5]):
@@ -588,9 +590,12 @@ def contact_import(request):
                     type_error_import_list.append(row)
                     break
 
-                row_6 = ''
-                if row[6]:
-                    row_6 = simplejson.loads(row[6])
+                row_8 = ''
+                if row[8]:
+                    try:
+                        row_8 = simplejson.loads(row[8])
+                    except:
+                        row_8 = ''
 
                 bulk_record.append(
                     Contact(
@@ -601,7 +606,9 @@ def contact_import(request):
                         email=row[3],
                         description=row[4],
                         status=int(row[5]),
-                        additional_vars=row_6)
+                        country=row[6],
+                        city=row[7],
+                        additional_vars=row_8)
                 )
 
                 contact_cnt = contact_cnt + 1
@@ -626,7 +633,7 @@ def contact_import(request):
 
     data = RequestContext(request, {
                           'form': form,
-                          'rdr': rdr,
+                          'csv_data': csv_data,
                           'msg': msg,
                           'error_msg': error_msg,
                           'success_import_list': success_import_list,

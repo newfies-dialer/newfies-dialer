@@ -29,10 +29,8 @@ class SearchForm(forms.Form):
 
 class FileImport(forms.Form):
     """General Form : CSV file upload"""
-    csv_file = forms.FileField(label=_("Upload CSV File "), required=True,
-                               error_messages={
-                                   'required': 'Please upload File'},
-                               help_text=_("Browse CSV file"))
+    csv_file = forms.FileField(label=_("Upload CSV File, the delimiter have to be " + '\"|\"'), required=True,
+                               error_messages={'required': 'Please upload a CSV File'})
 
     def clean_csv_file(self):
         """Form Validation :  File extension Check"""

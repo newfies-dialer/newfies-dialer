@@ -7,21 +7,21 @@ Contributing
 .. contents::
     :local:
     :depth: 1
-    
+
 
 .. _community-code-of-conduct:
 
 Community Code of Conduct
 =========================
 
-Members of our community need to work together effectively, and this code 
+Members of our community need to work together effectively, and this code
 of conduct lays down the ground rules for our cooperation.
 
-Please read the following documentation about how the Newfies-Dialer Project functions, 
-coding styles expected for contributions, and the community standards we expect 
+Please read the following documentation about how the Newfies-Dialer Project functions,
+coding styles expected for contributions, and the community standards we expect
 everyone to abide by.
 
-The Code of Conduct is heavily based on the `Ubuntu Code of Conduct`_, 
+The Code of Conduct is heavily based on the `Ubuntu Code of Conduct`_,
 `Celery Code of Conduct`_, and the `Pylons Code of Conduct`_.
 
 .. _`Ubuntu Code of Conduct`: http://www.ubuntu.com/community/conduct
@@ -75,7 +75,7 @@ the Newfies-Dialer community is no exception. It is important that we resolve
 disagreements and differing views constructively and with the help of the
 community and community process. If you really want to go a different
 way, then we encourage you to make a derivative distribution or alternate
-set of packages that still build on the work we've done to utilise as common 
+set of packages that still build on the work we've done to utilise as common
 a core as possible.
 
 When you are unsure, ask for help.
@@ -156,7 +156,6 @@ issue tracker.
 * Newfies-Dialer: http://github.com/Star2Billing/newfies-dialer/issues/
 * Celery: https://github.com/ask/celery/issues/
 * Freeswitch: http://jira.freeswitch.org/secure/Dashboard.jspa
-* Plivo: https://github.com/plivo/plivo/issues/
 
 If you are unsure of the origin of the bug you can ask the
 :ref:`mailing-list`, or just use the Newfies-Dialer issue tracker.

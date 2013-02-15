@@ -367,7 +367,7 @@ func_install_frontend(){
     echo "sudo -u postgres dropdb $DATABASENAME"
     sudo -u postgres dropdb $DATABASENAME
     # echo "Remove Existing Database if exists..."
-    # if [ `sudo -u postgres psql -qAt --list | egrep '^$DATABASENAME\|' | wc -l` -eq 1 ]; then
+    #if [ `sudo -u postgres psql -qAt --list | egrep $DATABASENAME | wc -l` -eq 1 ]; then
     #     echo "sudo -u postgres dropdb $DATABASENAME"
     #     sudo -u postgres dropdb $DATABASENAME
     # fi
@@ -432,7 +432,7 @@ func_install_frontend(){
     #sed -i "s/APIUSERNAME/$APIUSERNAME/g" xml_cdr.conf.xml
     #sed -i "s/APIPASSWORD/$APIPASSWORD/g" xml_cdr.conf.xml
 
-    #Update for Plivo URL & Authorize local IP
+    #Update Authorize local IP
     sed -i "s/SERVER_IP_PORT/$IPADDR:$HTTP_PORT/g" $INSTALL_DIR/settings_local.py
     sed -i "s/#'SERVER_IP',/'$IPADDR',/g" $INSTALL_DIR/settings_local.py
     sed -i "s/dummy/esl/g" $INSTALL_DIR/settings_local.py

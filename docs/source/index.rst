@@ -14,47 +14,37 @@ Welcome to Newfies-Dialer's documentation!
 Contents:
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 2
 
     getting-started
 
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 2
 
-    installation    
+    installation
 
 .. toctree::
     :maxdepth: 2
-    
 
-    user-guide
-    
-.. toctree::
-    :maxdepth: 1
-    
     configuration-defaults
-    
-.. toctree::
-    :maxdepth: 2
-    
-    freeswitch-configuration
-    
+    ./freeswitch/install-configure-freeswitch
+    troubleshooting
+    user-guide
 
 .. toctree::
     :maxdepth: 1
 
     developer-doc
-    
+
 .. toctree::
     :maxdepth: 2
 
     api-reference
     contributing
-    faq
-    troubleshooting
     resources
-    
+    faq
+
 
 Indices and tables
 ==================

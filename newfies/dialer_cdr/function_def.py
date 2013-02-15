@@ -12,6 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
+from django.conf import settings
 #from dialer_cdr.models import Callrequest, VoIPCall
 from common.common_functions import variable_value
 from datetime import datetime

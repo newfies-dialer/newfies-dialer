@@ -24,6 +24,7 @@ from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE, \
     VOIPCALL_AMD_STATUS
 from dialer_gateway.utils import phonenumber_change_prefix
 from dialer_campaign.function_def import user_dialer_setting
+from country_dialcode.models import Prefix
 from datetime import datetime, timedelta
 from common.only_one_task import only_one
 from uuid import uuid1
@@ -120,6 +121,9 @@ def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
 
     if hangup_cause == 'NORMAL_CLEARING' or hangup_cause == 'ALLOTTED_TIMEOUT':
         hangup_cause = 'ANSWER'
+
+    #TODO: Get prefix obj from phone_number
+    #prefix = Prefix.objects.get(prefix=phonenumber)
 
     new_voipcall = VoIPCall(
         user=obj_callrequest.user,

@@ -38,7 +38,7 @@ class SectionAPIPlayground(APIPlayground):
                     {
                         "method": "POST",
                         "url": "/api/v1/section/",
-                        "description": _("Creates new section"),
+                        "description": _("Create new section"),
                         "parameters": [{
                                            "name": "type",
                                            "type": "string",

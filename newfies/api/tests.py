@@ -193,7 +193,7 @@ class ApiTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 400)
 
     def test_create_subscriber(self):
-        """Test Function to create a campaign subscriber"""
+        """Test Function to create a subscriber"""
         data = simplejson.dumps({
             "contact": "650784355",
             "last_name": "belaid",
@@ -217,13 +217,13 @@ class ApiTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 400)
 
     def test_read_subscriber(self):
-        """Test Function to get all campaign subscriber"""
+        """Test Function to get all subscriber"""
         response = self.client.get('/api/v1/subscriber/1/?format=json',
             **self.extra)
         self.assertEqual(response.status_code, 200)
 
     def test_update_subscriber(self):
-        """Test Function to update a campaign subscriber"""
+        """Test Function to update a subscriber"""
         data = simplejson.dumps({"status": "1",
                                  "contact": "640234000"})
         response = self.client.put('/api/v1/subscriber/1/',

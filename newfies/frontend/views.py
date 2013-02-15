@@ -309,14 +309,14 @@ def customer_dashboard(request, on_index=None):
                     {
                         'call_count': data['starting_date__count'],
                         'duration_sum': data['duration__sum'],
-                        'duration_avg': data['duration__avg'],
+                        'duration_avg': float(data['duration__avg']),
                     }
 
                 calls_dict_with_min[int(ctime.strftime("%Y%m%d%H%M"))] =\
                     {
                         'call_count': data['starting_date__count'],
                         'duration_sum': data['duration__sum'],
-                        'duration_avg': data['duration__avg'],
+                        'duration_avg': float(data['duration__avg']),
                     }
             else:
                 # Last 30 days option
@@ -324,7 +324,7 @@ def customer_dashboard(request, on_index=None):
                     {
                         'call_count': data['starting_date__count'],
                         'duration_sum': data['duration__sum'],
-                        'duration_avg': data['duration__avg'],
+                        'duration_avg': float(data['duration__avg']),
                     }
 
         dateList = date_range(mintime, maxtime, q=search_type)
@@ -349,13 +349,13 @@ def customer_dashboard(request, on_index=None):
                     total_record[dt] = {
                         'call_count': 0,
                         'duration_sum': 0,
-                        'duration_avg': 0,
+                        'duration_avg': 0.0,
                     }
 
                     if day_time in calls_dict.keys():
                         total_record[dt]['call_count'] += calls_dict[day_time]['call_count']
                         total_record[dt]['duration_sum'] += calls_dict[day_time]['duration_sum']
-                        total_record[dt]['duration_avg'] += calls_dict[day_time]['duration_avg']
+                        total_record[dt]['duration_avg'] += float(calls_dict[day_time]['duration_avg'])
 
             # last 12 hrs | last 6 hrs | last 1 hrs
             elif (int(search_type) == SEARCH_TYPE.E_Last_12_hours
@@ -376,13 +376,13 @@ def customer_dashboard(request, on_index=None):
                         total_record[dt] = {
                             'call_count': 0,
                             'duration_sum': 0,
-                            'duration_avg': 0,
+                            'duration_avg': 0.0,
                         }
 
                         if hr_time in calls_dict_with_min.keys():
                             total_record[dt]['call_count'] += calls_dict_with_min[hr_time]['call_count']
                             total_record[dt]['duration_sum'] += calls_dict_with_min[hr_time]['duration_sum']
-                            total_record[dt]['duration_avg'] += calls_dict_with_min[hr_time]['duration_avg']
+                            total_record[dt]['duration_avg'] += float(calls_dict_with_min[hr_time]['duration_avg'])
             else:
                 # Last 30 days option
                 graph_day = datetime(int(date.strftime("%Y")),
@@ -397,9 +397,9 @@ def customer_dashboard(request, on_index=None):
                 if inttime in calls_dict.keys():
                     total_record[dt]['call_count'] += calls_dict[inttime]['call_count']
                     total_record[dt]['duration_sum'] += calls_dict[inttime]['duration_sum']
-                    total_record[dt]['duration_avg'] += calls_dict[inttime]['duration_avg']
+                    total_record[dt]['duration_avg'] += float(calls_dict[inttime]['duration_avg'])
 
-    # sorting on date col
+    # sorting on date col    
     total_record = total_record.items()
     total_record = sorted(total_record, key=lambda k: k[0])
 

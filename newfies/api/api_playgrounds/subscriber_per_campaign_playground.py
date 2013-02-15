@@ -23,17 +23,17 @@ class SubscriberPerCampaignAPIPlayground(APIPlayground):
         "resources": [
             {
                 "name": "/subscriber_per_campaign/",
-                "description": _("This resource allows you to manage campaign subscriber per campaign."),
+                "description": _("This resource allows you to manage subscriber per campaign."),
                 "endpoints": [
                     {
                         "method": "GET",
                         "url": "/api/v1/subscriber_per_campaign/{campaign-id}/?format=json",
-                        "description": "Returns campaign subscribers per campaign"
+                        "description": "Returns subscribers per campaign"
                     },
                     {
                         "method": "GET",
                         "url": "/api/v1/subscriber_per_campaign/{campaign-id}/{contact}/?format=json",
-                        "description": _("Returns specific campaign subscribers per campaign")
+                        "description": _("Returns specific subscribers per campaign")
                     },
                 ]
             },

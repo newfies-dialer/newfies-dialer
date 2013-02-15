@@ -38,7 +38,7 @@ class VoiceAppAPIPlayground(APIPlayground):
                     {
                         "method": "POST",
                         "url": "/api/v1/voiceapp/",
-                        "description": _("Creates new voiceapp"),
+                        "description": _("Create new voiceapp"),
                         "parameters": [{
                                            "name": "name",
                                            "type": "string"

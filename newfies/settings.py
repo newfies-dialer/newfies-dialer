@@ -497,6 +497,13 @@ IPYTHON_ARGUMENTS = [
     '--debug'
 ]
 
+#GENERAL
+#=======
+# PREFIX_LIMIT_MIN & PREFIX_LIMIT_MAX are used to know
+# how many digits are used to match against the dialcode prefix database
+PREFIX_LIMIT_MIN = 2
+PREFIX_LIMIT_MAX = 5
+
 #IMPORT LOCAL SETTINGS
 #=====================
 try:

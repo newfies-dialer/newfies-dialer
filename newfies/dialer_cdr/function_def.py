@@ -13,7 +13,6 @@
 #
 
 from django.conf import settings
-#from dialer_cdr.models import Callrequest, VoIPCall
 from common.common_functions import variable_value
 from datetime import datetime
 
@@ -119,3 +118,39 @@ def voipcall_search_admin_form_fun(request):
                                         disposition_string)
 
     return query_string
+
+
+def prefix_list_string(phone_number):
+    """
+    To return prefix string
+    For Example :-
+    phone_no = 34650XXXXXX
+    prefix_string = (34650, 3465, 346, 34)
+
+    >>> phone_no = 34650123456
+
+    >>> prefix_list_string(phone_no)
+    '34650, 3465, 346, 34'
+
+    >>> phone_no = -34650123456
+
+    >>> prefix_list_string(phone_no)
+    False
+    """
+    try:
+        int(phone_number)
+    except ValueError:
+        return False
+    phone_number = str(phone_number)
+    prefix_range = range(settings.PREFIX_LIMIT_MIN,
+                         settings.PREFIX_LIMIT_MAX + 1)
+    prefix_range.reverse()
+    destination_prefix_list = ''
+    for i in prefix_range:
+        if i == settings.PREFIX_LIMIT_MIN:
+            destination_prefix_list = destination_prefix_list \
+                + phone_number[0:i]
+        else:
+            destination_prefix_list = destination_prefix_list \
+                + phone_number[0:i] + ', '
+    return str(destination_prefix_list)

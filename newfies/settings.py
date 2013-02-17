@@ -489,6 +489,11 @@ DIALERDEBUG_PHONENUMBER = 1000
 SURVEYDEV = False
 AMD = False
 
+#Demo mode
+#=========
+#This will disable certain save, to avoid changing password
+DEMO_MODE = False
+
 #IPYTHON
 #=======
 IPYTHON_ARGUMENTS = [

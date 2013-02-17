@@ -15,6 +15,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
+from django.conf import settings
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext_lazy as _
@@ -50,7 +51,8 @@ def customer_detail_change(request):
         #create UserProfile
         user_detail_extened = UserProfile(user=user_detail)
         #DEMO / Disable
-        user_detail_extened.save()
+        if not settings.DEMO_MODE:
+            user_detail_extened.save()
 
     user_detail_form = UserChangeDetailForm(request.user,
                                             instance=user_detail)
@@ -89,8 +91,9 @@ def customer_detail_change(request):
             if (user_detail_form.is_valid()
                and user_detail_extened_form.is_valid()):
                 #DEMO / Disable
-                user_detail_form.save()
-                user_detail_extened_form.save()
+                if not settings.DEMO_MODE:
+                    user_detail_form.save()
+                    user_detail_extened_form.save()
                 msg_detail = _('Detail has been changed.')
             else:
                 error_detail = _('Please correct the errors below.')
@@ -110,7 +113,8 @@ def customer_detail_change(request):
             action = 'tabs-2'
             if user_password_form.is_valid():
                 #DEMO / Disable
-                user_password_form.save()
+                if not settings.DEMO_MODE:
+                    user_password_form.save()
                 msg_pass = _('Your password has been changed.')
             else:
                 error_pass = _('Please correct the errors below.')

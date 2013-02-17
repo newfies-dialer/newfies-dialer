@@ -251,33 +251,6 @@ To Add/Update a dialer gateway
     :width: 1000
 
 
-.. _admin-voice-app-access:
-
-Voice Application
-~~~~~~~~~~~~~~~~~
-
-The Voice application list will be displayed from the following URL. You can add a new
-application by clicking ``Add Voice Application``. Also from the application list,
-click on the application to update.
-
-**URL**:
-
-    * http://localhost:8000/admin/voice_app/voiceapp/
-
-.. image:: ../_static/images/admin/voiceapp_list.png
-    :width: 1000
-
-To Add/Update a Voice application
-
-**URL**:
-
-    * http://localhost:8000/admin/voice_app/voiceapp/add/
-    * http://localhost:8000/admin/voice_app/voiceapp/1/
-
-.. image:: ../_static/images/admin/update_voiceapp.png
-    :width: 1000
-
-
 .. _admin-survey-access:
 
 Survey

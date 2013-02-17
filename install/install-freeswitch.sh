@@ -24,13 +24,7 @@ FS_CONF_PATH=https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/
 FS_INIT_PATH=https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/freeswitch-init
 FS_INSTALLED_PATH=/usr/local/freeswitch
 FS_CONFIG_PATH=/etc/freeswitch
-<<<<<<< HEAD
-FS_DOWNLOAD=http://files.freeswitch.org/freeswitch-1.2.3.tar.bz2
-
-#####################################################
-=======
 FS_DOWNLOAD=http://files.freeswitch.org/freeswitch-1.2.5.tar.bz2
->>>>>>> release/v2.0.0-b1
 FS_BASE_PATH=/usr/src/
 CURRENT_PATH=$PWD
 
@@ -100,52 +94,11 @@ func_install_fs_source() {
 
 
 echo "Setting up Prerequisites and Dependencies for FreeSWITCH"
-<<<<<<< HEAD
-case $DIST in
-    'DEBIAN')
-        apt-get -y update
-        apt-get -y install autoconf automake autotools-dev binutils bison build-essential cpp curl flex g++ gcc git-core libaudiofile-dev libc6-dev libdb-dev libexpat1 libexpat1-dev libgdbm-dev libgnutls-dev libmcrypt-dev libncurses5-dev libnewt-dev libpcre3 libpopt-dev libsctp-dev libsqlite3-dev libtiff4 libtiff4-dev libtool libx11-dev libxml2 libxml2-dev lksctp-tools lynx m4 make mcrypt ncftp nmap openssl sox sqlite3 ssl-cert ssl-cert unixodbc-dev unzip zip zlib1g-dev zlib1g-dev
-        apt-get -y install libssl-dev pkg-config
-        apt-get -y install libvorbis0a libogg0 libogg-dev libvorbis-dev
-        apt-get -y install flite flite1-dev
-        #Install Freeswitch
-        func_install_fs_source
-        ;;
-    'CENTOS')
-    	echo ""
-    	echo "Do you want to install Freeswitch via the yum repository instead of from source [y/n]" 
-		read YUMSOURCE
-        yum -y update
-        yum -y install autoconf automake bzip2 cpio curl curl-devel curl-devel expat-devel fileutils gcc-c++ gettext-devel gnutls-devel libjpeg-devel libogg-devel libtiff-devel libtool libvorbis-devel make ncurses-devel nmap openssl openssl-devel openssl-devel perl patch unixODBC unixODBC-devel unzip wget zip zlib zlib-devel
-        yum -y install flite
-
-		#install the RPMFORGE Repository
-        if [ ! -f /etc/yum.repos.d/rpmforge.repo ];
-            then
-                # Install RPMFORGE Repo
-                #Check architecture
-        		KERNELARCH=$(uname -p)
-        		if [ $KERNELARCH = "x86_64" ]; then
-					rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.x86_64.rpm
-				else
-					rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.i686.rpm
-				fi
-        fi
-        
-        yum -y --enablerepo=rpmforge install git-core
-        
-		if [ "$YUMSOURCE" = "y" ] || [ "$YUMSOURCE" = "Y" ]; then
-	    	echo "Installing via yum repository"
-	    	
-	    	# install the Freeswitch Repo
-			rpm -Uvh http://files.freeswitch.org/freeswitch-release-1-0.noarch.rpm
-=======
 apt-get -y update
 apt-get -y install autoconf automake autotools-dev binutils bison build-essential cpp curl flex g++ gcc git-core libaudiofile-dev libc6-dev libdb-dev libexpat1 libexpat1-dev libgdbm-dev libgnutls-dev libmcrypt-dev libncurses5-dev libnewt-dev libpcre3 libpopt-dev libsctp-dev libsqlite3-dev libtiff4 libtiff4-dev libtool libx11-dev libxml2 libxml2-dev lksctp-tools lynx m4 make mcrypt ncftp nmap openssl sox sqlite3 ssl-cert ssl-cert unixodbc-dev unzip zip zlib1g-dev zlib1g-dev
 apt-get -y install libssl-dev pkg-config
 apt-get -y install libvorbis0a libogg0 libogg-dev libvorbis-dev
 apt-get -y install flite flite1-dev
->>>>>>> release/v2.0.0-b1
 
 #Install Freeswitch
 func_install_fs_source

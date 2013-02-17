@@ -59,5 +59,5 @@ bash install-freeswitch.sh
 
 #Install Newfies
 cd /usr/src/
-wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/develop/install/install-newfies.sh -O install-newfies.sh
+wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/install-newfies.sh -O install-newfies.sh
 bash install-newfies.sh

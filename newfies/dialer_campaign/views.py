@@ -69,7 +69,7 @@ def update_campaign_status_cust(request, pk, status):
         request.session['error_msg'] = _('Error : You have to assign a phonebook to your campaign before starting it')
     else:
         recipient = request.user
-        frontend_send_notification(request, status, recipient)
+        frontend_send_notification(request, status, recipient)        
 
         # Notify user while campaign Start
         if int(status) == CAMPAIGN_STATUS.START:

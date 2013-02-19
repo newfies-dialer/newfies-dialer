@@ -24,8 +24,7 @@ Dashboard
 
 Dashboard page for the admin interface after successful login with superuser credentials
 
-.. image:: ../_static/images/admin_screenshot.png
-    :width: 1000
+.. image:: ../_static/images/admin_screenshot.png    
 
 
 Admin
@@ -73,7 +72,7 @@ to update.
     * http://localhost:8000/admin/dialer_campaign/phonebook/
 
 .. image:: ../_static/images/admin/phonebook_list.png
-    :width: 1000
+    
 
 To Add/Update phonebook for a user
 
@@ -83,7 +82,7 @@ To Add/Update phonebook for a user
     * http://localhost:8000/admin/dialer_campaign/phonebook/1/
 
 .. image:: ../_static/images/admin/update_phonebook.png
-    :width: 1000
+    
 
 .. _admin-contact-access:
 
@@ -104,7 +103,7 @@ From the contact list, click on the contact that you want to update.
     * http://localhost:8000/admin/dialer_campaign/contact/
 
 .. image:: ../_static/images/admin/contact_list.png
-    :width: 1000
+    
 
 To Add/Update a contact
 
@@ -114,7 +113,7 @@ To Add/Update a contact
     * http://localhost:8000/admin/dialer_campaign/contact/1/
 
 .. image:: ../_static/images/admin/update_contact.png
-    :width: 1000
+    
 
 To import bulk contacts into a phonebook, click on ``Import contacts``.
 where you can upload the contacts via a CSV file in to one phonebook.
@@ -143,7 +142,7 @@ From the campaign list, click on the campaign that you want to update.
     * http://localhost:8000/admin/dialer_campaign/campaign/
 
 .. image:: ../_static/images/admin/campaign_list.png
-    :width: 1000
+    
 
 To Add/Update Campaign for user
 
@@ -153,7 +152,7 @@ To Add/Update Campaign for user
     * http://localhost:8000/admin/dialer_campaign/campaign/1/
 
 .. image:: ../_static/images/admin/update_campaign.png
-    :width: 1000
+    
 
 
 .. _admin-subscriber-access:
@@ -173,7 +172,7 @@ to a running campaign, then the contact will be added into the subscriber.
     * http://localhost:8000/admin/dialer_campaign/campaignsubscriber/
 
 .. image:: ../_static/images/admin/campaignsubscriber_list.png
-    :width: 1000
+    
 
 
 To Add/Update Subscriber
@@ -184,7 +183,7 @@ To Add/Update Subscriber
     * http://localhost:8000/admin/dialer_campaign/campaignsubscriber/1/
 
 .. image:: ../_static/images/admin/update_campaignsubscriber.png
-    :width: 1000
+    
 
 
 .. _admin-dialer-settings-access:
@@ -202,7 +201,7 @@ the setting to update.
     * http://localhost:8000/admin/dialer_settings/dialersetting/
 
 .. image:: ../_static/images/admin/dialersetting_list.png
-    :width: 1000
+    
 
 To Add/Update dialer settings for a Newfies-Dialer user
 
@@ -212,7 +211,7 @@ To Add/Update dialer settings for a Newfies-Dialer user
     * http://localhost:8000/admin/dialer_settings/dialersetting/1/
 
 .. image:: ../_static/images/admin/update_dialersetting.png
-    :width: 1000
+    
 
 To apply dialer settings limit to a User, click on ``Customers`` or ``Admins``,
 select the user to be updated & apply settings from the dialer settings list.
@@ -222,7 +221,7 @@ select the user to be updated & apply settings from the dialer settings list.
     * http://localhost:8000/admin/auth/staff/1/
 
 .. image:: ../_static/images/admin/apply_dialer_setting_to_user.png
-    :width: 1000
+    
 
 .. _admin-dialer-gateway-access:
 
@@ -238,7 +237,7 @@ protocol etc.). Also from the gateway list, click on the gateway that you want t
     * http://localhost:8000/admin/dialer_gateway/gateway/
 
 .. image:: ../_static/images/admin/gateway_list.png
-    :width: 1000
+    
 
 To Add/Update a dialer gateway
 
@@ -248,7 +247,7 @@ To Add/Update a dialer gateway
     * http://localhost:8000/admin/dialer_gateway/gateway/1/
 
 .. image:: ../_static/images/admin/update_gateway.png
-    :width: 1000
+    
 
 
 .. _admin-survey-access:
@@ -284,7 +283,7 @@ be re-ordered.
     * http://localhost:8000/admin/survey/surveyapp/
 
 .. image:: ../_static/images/admin/survey_list.png
-    :width: 1000
+    
 
 To Add/Update a survey
 
@@ -294,7 +293,7 @@ To Add/Update a survey
     * http://localhost:8000/admin/survey/surveyapp/1/
 
 .. image:: ../_static/images/admin/update_survey.png
-    :width: 1000
+    
 
 To Add/Update a survey question
 
@@ -302,7 +301,7 @@ To Add/Update a survey question
     * http://localhost:8000/admin/survey/surveyquestion/1/
 
 .. image:: ../_static/images/admin/update_surveyquestion.png
-    :width: 1000
+    
 
 When the survey is complete, the results can be inspected.
 
@@ -323,7 +322,7 @@ click on the request to update.
     * http://localhost:8000/admin/dialer_cdr/callrequest/
 
 .. image:: ../_static/images/admin/callrequest_list.png
-    :width: 1000
+    
 
 To Add/Update a Call Request
 
@@ -333,10 +332,10 @@ To Add/Update a Call Request
     * http://localhost:8000/admin/dialer_cdr/callrequest/1/
 
 .. image:: ../_static/images/admin/callrequest_part1.png
-    :width: 1000
+    
 
 .. image:: ../_static/images/admin/callrequest_part2.png
-    :width: 1000
+    
 
 VoIP Call Report
 ~~~~~~~~~~~~~~~~
@@ -348,4 +347,4 @@ A VoIP Call list will be displayed from following URL. You **can not** add new c
     * http://localhost:8000/admin/dialer_cdr/voipcall/
 
 .. image:: ../_static/images/admin/voipcall_list.png
-    :width: 1000
+    

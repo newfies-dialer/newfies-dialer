@@ -161,7 +161,7 @@ def get_prefix_obj(phonenumber):
     """Get Prefix object"""
     prefix_obj = None
     list_prefix = prefix_list_string(phonenumber)
-    if not list_prefix:
+    if list_prefix:
         split_prefix_list = list_prefix.split(',')
         for prefix in split_prefix_list:
             try:

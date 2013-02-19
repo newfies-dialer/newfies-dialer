@@ -17,17 +17,13 @@
 from django.utils.encoding import smart_unicode
 from django.utils.xmlutils import SimplerXMLGenerator
 from django.conf import settings
-
 from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
 from tastypie.serializers import Serializer
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie import http
-
 from dialer_cdr.models import VoIPCall
-from dialer_cdr.function_def import prefix_list_string
-from country_dialcode.models import Prefix
-
+from dialer_cdr.function_def import get_prefix_obj
 from random import seed
 from cStringIO import StringIO
 import urllib
@@ -116,15 +112,8 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='',
 
     logger.debug('Create CDR - request_uuid=%s ; leg=%d ; hangup_cause= %s' %
         (plivo_request_uuid, leg_type, cdr_hangup_cause))
-    
-    prefix_obj = None
-    prefix_list = prefix_list_string(to_plivo).split(',')
-    for prefix in prefix_list:
-        try:
-            prefix_obj = Prefix.objects.get(prefix=int(prefix))
-            break
-        except:
-            prefix_obj = None
+
+    prefix_obj = get_prefix_obj(to_plivo)
 
     new_voipcall = VoIPCall(
         user=obj_callrequest.user,

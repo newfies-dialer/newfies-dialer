@@ -15,6 +15,7 @@
 from django.conf import settings
 from common.common_functions import variable_value
 from datetime import datetime
+from country_dialcode.models import Prefix
 
 
 def voipcall_record_common_fun(request):
@@ -154,3 +155,18 @@ def prefix_list_string(phone_number):
             destination_prefix_list = destination_prefix_list \
                 + phone_number[0:i] + ', '
     return str(destination_prefix_list)
+
+
+def get_prefix_obj(phonenumber):
+    """Get Prefix object"""
+    prefix_obj = None
+    list_prefix = prefix_list_string(phonenumber)
+    if not list_prefix:
+        split_prefix_list = list_prefix.split(',')
+        for prefix in split_prefix_list:
+            try:
+                prefix_obj = Prefix.objects.get(prefix=int(prefix))
+                break
+            except:
+                prefix_obj = None
+    return prefix_obj

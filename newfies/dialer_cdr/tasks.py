@@ -22,10 +22,9 @@ from dialer_campaign.constants import SUBSCRIBER_STATUS, AMD_BEHAVIOR
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE, \
     VOIPCALL_AMD_STATUS
-from dialer_cdr.function_def import prefix_list_string
+from dialer_cdr.function_def import get_prefix_obj
 from dialer_gateway.utils import phonenumber_change_prefix
 from dialer_campaign.function_def import user_dialer_setting
-from country_dialcode.models import Prefix
 from datetime import datetime, timedelta
 from common.only_one_task import only_one
 from uuid import uuid1
@@ -122,15 +121,8 @@ def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
 
     if hangup_cause == 'NORMAL_CLEARING' or hangup_cause == 'ALLOTTED_TIMEOUT':
         hangup_cause = 'ANSWER'
-    
-    prefix_obj = None
-    prefix_list = prefix_list_string(phonenumber).split(',')
-    for prefix in prefix_list:
-        try:
-            prefix_obj = Prefix.objects.get(prefix=int(prefix))
-            break
-        except:
-            prefix_obj = None    
+
+    prefix_obj = get_prefix_obj(phonenumber)
 
     new_voipcall = VoIPCall(
         user=obj_callrequest.user,

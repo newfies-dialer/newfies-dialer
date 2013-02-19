@@ -112,6 +112,7 @@ def create_callrequest(campaign_id, no_of_record, day_delta_int):
         response_count = choice("1234567890")
 
         # print "Get list section:"
+        from survey.models import Section, ResultAggregate
         list_section = Section.objects.filter(survey_id=obj_campaign.object_id)
         #list_section = Section.objects.all()
 

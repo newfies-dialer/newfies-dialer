@@ -40,8 +40,8 @@ To get started with Newfies-Dialer you must have the following installed:
 - simplejson >= 2.1.3 (Simple, fast, complete, correct and extensible JSON)
 - uuid >= 1.30 (UUID object and generation functions )
 - wsgiref >= 0.1.2 (Validation support for WSGI )
-- switch2bill-common (Common library that are reused by Star2Billing)
-- simu-prefix-country (Provide Prefix and Country information)
+- switch2bill-common >= 2.4.1 (Common library that are reused by Star2Billing)
+- django-country-dialcode >= 0.4.7 (Provide Prefix and Country information)
 - django-tastypie (Creating delicious APIs for Django)
 - BeautifulSoup >= 3.2.0 (HTML parser optimized for screen-scraping)
 - Pygments >= 1.4 (A generic syntax highlighter)
@@ -52,7 +52,7 @@ To get started with Newfies-Dialer you must have the following installed:
 - identicon (identicon python implementation)
 - django-sentry >= 1.8.6.2 (Real-time logging / error tracing for Django)
 - django-qsstats >= 0.3.1 (A django microframework that eases the generation of aggregate data for querysets)
-- django-frontend-notification (Django application to display quickly on frontend the list of notification and run some basic actions such as view all notifications, delete notifications, etc...)
+- django-frontend-notification >= 0.1.3 (Django application to display quickly on frontend the list of notification and run some basic actions such as view all notifications, delete notifications, etc...)
 
 
 Use PIP to install all the requirements,::

@@ -212,13 +212,11 @@ select the user to update, & apply the settings from the dialer settings list.
 Dialer settings:
 
 .. image:: ../_static/images/admin/dialersetting_list.png
-    :width: 1000
 
 
 Update dialer settings:
 
-.. image:: ../_static/images/admin/update_dialersetting.png
-    :width: 1000
+.. image:: ../_static/images/admin/update_dialersetting.png    
 
 
 .. _reach-to-contact:
@@ -229,8 +227,7 @@ Call contacts/subscribers
 A call-request will spool a call directly from the platform using a dialer gateway
 and update the call-request status after receiving a response from the gateway.
 
-.. image:: ../_static/images/admin/update_callrequest.png
-    :width: 1000
+.. image:: ../_static/images/admin/update_callrequest.png    
 
 
 .. _call-report:

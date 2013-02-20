@@ -514,9 +514,9 @@ def post_save_add_contact(sender, **kwargs):
     """
     obj = kwargs['instance']
     active_campaign_list = \
-        Campaign.objects.filter(phonebook__contact__id=obj.id, status=1)
+        Campaign.objects.filter(phonebook__contact__id=obj.id, status=CAMPAIGN_STATUS.START)
     # created instance = True + active contact + active_campaign
-    if kwargs['created'] and obj.status == 1 \
+    if kwargs['created'] and obj.status == CAMPAIGN_STATUS.START \
             and active_campaign_list.count() >= 1:
         for elem_campaign in active_campaign_list:
             try:

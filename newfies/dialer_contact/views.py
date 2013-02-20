@@ -340,10 +340,10 @@ def contact_list(request):
                  Q(first_name__icontains=contact_name))
             if q:
                 contact_list = contact_list.filter(q)
-
-        all_contact_list = contact_list.order_by(sort_order)
+               
+        all_contact_list = contact_list.order_by(sort_order)        
+        contact_list = all_contact_list[start_page:end_page]
         contact_count = all_contact_list.count()
-        contact_list = contact_list[start_page:end_page]
 
     template = 'frontend/contact/list.html'
     data = {

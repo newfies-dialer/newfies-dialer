@@ -23,6 +23,7 @@ from django.contrib.contenttypes import generic
 from dateutil.relativedelta import relativedelta
 from dialer_campaign.constants import SUBSCRIBER_STATUS, \
     CAMPAIGN_STATUS, AMD_BEHAVIOR
+from dialer_contact.constants import CONTACT_STATUS
 from dialer_contact.models import Phonebook, Contact
 from dialer_gateway.models import Gateway
 from audiofield.models import AudioFile
@@ -516,14 +517,14 @@ def post_save_add_contact(sender, **kwargs):
     active_campaign_list = \
         Campaign.objects.filter(phonebook__contact__id=obj.id, status=CAMPAIGN_STATUS.START)
     # created instance = True + active contact + active_campaign
-    if kwargs['created'] and obj.status == CAMPAIGN_STATUS.START \
+    if kwargs['created'] and obj.status == CONTACT_STATUS.ACTIVE \
             and active_campaign_list.count() >= 1:
         for elem_campaign in active_campaign_list:
             try:
                 Subscriber.objects.create(
                     contact=obj,
                     duplicate_contact=obj.contact,
-                    status=CAMPAIGN_STATUS.START,
+                    status=SUBSCRIBER_STATUS.PENDING,
                     campaign=elem_campaign)
             except:
                 pass

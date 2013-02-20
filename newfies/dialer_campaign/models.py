@@ -500,6 +500,7 @@ class Subscriber(Model):
     """
 
 
+#Note : This will cause the running campaign to add the new contacts to the subscribers list
 def post_save_add_contact(sender, **kwargs):
     """A ``post_save`` signal is sent by the Contact model instance whenever
     it is going to save.
@@ -542,6 +543,5 @@ def post_update_campaign_status(sender, **kwargs):
     if int(obj.status) == CAMPAIGN_STATUS.START:
         from dialer_campaign.tasks import collect_subscriber
         collect_subscriber.delay(obj.id)
-
 
 post_save.connect(post_update_campaign_status, sender=Campaign)

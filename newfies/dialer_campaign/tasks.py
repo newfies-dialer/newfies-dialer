@@ -48,10 +48,9 @@ class campaign_spool_contact(PeriodicTask):
 
         campaign_spool_contact.delay()
     """
-    run_every = timedelta(seconds=15)
     #The campaign have to run every minutes in order to control the number
     # of calls per minute. Cons : new calls might delay 60seconds
-    #run_every = timedelta(seconds=60)
+    run_every = timedelta(seconds=60)
 
     def run(self, **kwargs):
         logger.info("TASK :: campaign_spool_contact")
@@ -177,7 +176,7 @@ def check_campaign_pendingcall(campaign_id):
 
 
 class campaign_running(PeriodicTask):
-    """A periodic task that checks the campaign, create and tasks the calls
+    """A periodic task that checks the campaign, create and spool the calls
 
     **Usage**:
 

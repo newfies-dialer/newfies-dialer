@@ -57,8 +57,7 @@ def collect_subscriber(campaign_id):
 
         * ``campaign_id`` - Campaign ID
     """
-    logger.debug("Collect subscribers for the campaign = %s" %
-                 str(campaign_id))
+    logger.debug("Collect subscribers for the campaign = %s" % str(campaign_id))
 
     #Retrieve the list of active contact
     obj_campaign = Campaign.objects.get(id=campaign_id)
@@ -70,6 +69,7 @@ def collect_subscriber(campaign_id):
         # check if phonebook_id is missing in imported_phonebook list
         if not str(phonebook_id) in obj_campaign.imported_phonebook.split(','):
             #Run import
+            logger.info("ImportPhonebook %d for campaign = %d" % (phonebook_id, campaign_id))
             keytask = 'import_phonebook-%d-%d' % (campaign_id, phonebook_id)
             ImportPhonebook().delay(obj_campaign.id, phonebook_id, keytask=keytask)
 

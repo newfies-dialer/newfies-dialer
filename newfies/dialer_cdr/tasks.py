@@ -119,8 +119,24 @@ def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
     logger.info('Create CDR - request_uuid=%s;leg=%d;hangup_cause=%s;billsec=%s;amd_status=%s' %
         (request_uuid, leg_type, hangup_cause, str(billsec), amd_status))
 
+    #Get the first word only
+    hangup_cause = hangup_cause.split(' ')[0]
+
     if hangup_cause == 'NORMAL_CLEARING' or hangup_cause == 'ALLOTTED_TIMEOUT':
         hangup_cause = 'ANSWER'
+
+    if hangup_cause == 'ANSWER':
+        disposition = 'ANSWER'
+    elif hangup_cause == 'USER_BUSY':
+        disposition = 'BUSY'
+    elif hangup_cause == 'NO_ANSWER':
+        disposition = 'NOANSWER'
+    elif hangup_cause == 'ORIGINATOR_CANCEL':
+        disposition = 'CANCEL'
+    elif hangup_cause == 'NORMAL_CIRCUIT_CONGESTION':
+        disposition = 'CONGESTION'
+    else:
+        disposition = 'FAILED'
 
     prefix_obj = get_prefix_obj(phonenumber)
 
@@ -137,7 +153,7 @@ def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
         starting_date=starting_date,
         duration=duration,
         billsec=billsec,
-        disposition=hangup_cause,
+        disposition=disposition,
         hangup_cause=hangup_cause,
         hangup_cause_q850=hangup_cause_q850,
         amd_status=amd_status_id)

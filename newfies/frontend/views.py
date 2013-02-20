@@ -399,7 +399,7 @@ def customer_dashboard(request, on_index=None):
                     total_record[dt]['duration_sum'] += calls_dict[inttime]['duration_sum']
                     total_record[dt]['duration_avg'] += float(calls_dict[inttime]['duration_avg'])
 
-    # sorting on date col    
+    # sorting on date col
     total_record = total_record.items()
     total_record = sorted(total_record, key=lambda k: k[0])
 

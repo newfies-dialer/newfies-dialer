@@ -182,7 +182,7 @@ class DuplicateCampaignForm(ModelForm):
         super(DuplicateCampaignForm, self).__init__(*args, **kwargs)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
 
-        if user:                    
+        if user:
             list_pb = []
             list_pb.append((0, '---'))
             list = Phonebook.objects.values_list('id', 'name')\

@@ -181,7 +181,7 @@ class Campaign(Model):
                                         verbose_name=_('Start'),
                                         help_text=_("Date Format: YYYY-mm-DD HH:MM:SS"),
                                         db_index=True)
-    expirationdate = models.DateTimeField(default=(lambda: datetime.now() + relativedelta(months=+12)),
+    expirationdate = models.DateTimeField(default=(lambda: datetime.now() + relativedelta(days=+1)),
                                           verbose_name=_('Finish'),
                                           help_text=_("Date Format: YYYY-mm-DD HH:MM:SS"))
     #Per Day Starting & Stopping Time

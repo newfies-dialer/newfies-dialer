@@ -28,14 +28,14 @@ turns on debug mode allowing the browser user to see project settings and tempor
 
 sends all errors from the production server to the admin's email address. ::
 
-      DATABASE_ENGINE = 'mysql'
-      DATABASE_NAME = 'db-name'
+      DATABASE_ENGINE = 'django.db.backends.postgresql_psycopg2'
+      DATABASE_NAME = 'newfies_dialer_db'
       DATABASE_USER = 'user'
       DATABASE_PASSWORD = 'password'
-      DATABASE_HOST = 'mysql-host'
-      DATABASE_PORT = ''
+      DATABASE_HOST = 'db-host'
+      DATABASE_PORT = '5432'
 
-sets up the options required for Django to connect to your database. ::
+sets up the options required for Django to connect to your database. Only Postgresql is supported. ::
 
      MEDIA_ROOT = os.path.join(APPLICATION_DIR, 'static')
 

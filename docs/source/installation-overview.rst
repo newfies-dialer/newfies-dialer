@@ -76,7 +76,7 @@ To install Newfies-Dialer using this script,::
 
 .. _running-newfies-dialer:
 
-Running a Newfies-Dialer
+Running Newfies-Dialer
 ========================
 
 Inside Newfies-Dialer directory you should run::

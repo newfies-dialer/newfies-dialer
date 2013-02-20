@@ -35,9 +35,6 @@ Below are some examples of some of the uses that Newfies-Dialer can be put to. T
 
     Broadcast marketing or informational messages to customers and clients.
 
-* **Telemarketing**:
-
-    Broadcast a marketing message to potential customers, and give them the option to be put through to a call-centre via an IVR (Interactive Voice Response) Menu.
 
 * **Phone Polling, Surveys and Voting**:
 
@@ -59,9 +56,6 @@ Below are some examples of some of the uses that Newfies-Dialer can be put to. T
 
         Where there is a necessity to warn large numbers of people in a short space of time, such as weather warnings.
 
-* **Voice Conferencing**:
-
-    Attendees for a voice conference or podcast can be dialled up from a central location, and be connected in an audio conference room.
 
 * **Subscription Reminders and Renewals**:
 

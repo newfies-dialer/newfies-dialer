@@ -20,7 +20,7 @@ from dialer_campaign.models import Phonebook, Contact, Campaign
 from dialer_campaign.tasks import collect_subscriber
 
 
-class Command(BaseCommand):    
+class Command(BaseCommand):
     args = 'phonebook_id, list_of_phonenumber'
     help = "Create a new contact for a given phonenumber and phonebook\n"\
            "--------------------------------------------------------------\n"\
@@ -34,7 +34,7 @@ class Command(BaseCommand):
         make_option('--phonebook_id',
                     default=None,
                     dest='phonebook_id',
-                    help=help),            
+                    help=help),
     )
 
     def handle(self, *args, **options):
@@ -44,7 +44,7 @@ class Command(BaseCommand):
             try:
                 list_of_phonenumber = options.get('list_of_phonenumber').split(',')
             except ValueError:
-                list_of_phonenumber = ''       
+                list_of_phonenumber = ''
 
         phonebook_id = ''
         if options.get('phonebook_id'):
@@ -52,7 +52,7 @@ class Command(BaseCommand):
                 phonebook_id = options.get('phonebook_id')
                 phonebook_id = int(phonebook_id)
             except ValueError:
-                phonebook_id = ''            
+                phonebook_id = ''
 
         try:
             obj_phonebook = Phonebook.objects.get(id=phonebook_id)
@@ -60,7 +60,7 @@ class Command(BaseCommand):
             print _('Can\'t find this Phonebook : %(id)s' % {'id': phonebook_id})
             return False
 
-        for phonenumber in list_of_phonenumber:            
+        for phonenumber in list_of_phonenumber:
             try:
                 new_contact = Contact.objects.create(
                     contact=int(phonenumber),
@@ -79,4 +79,3 @@ class Command(BaseCommand):
 
         print _("Launch Task : collect_subscriber(%(id)s)" % {'id': str(obj_campaign.id)})
         collect_subscriber.delay(obj_campaign.id)
-        

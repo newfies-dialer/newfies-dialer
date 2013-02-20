@@ -13,41 +13,72 @@
 #
 
 from django.core.management.base import BaseCommand
-from django.utils.translation import ugettext as _
 from dialer_contact.models import Phonebook, Contact
+from optparse import make_option
 from django.db import IntegrityError
 from random import choice
 
 
 class Command(BaseCommand):
-    # Use : create_contact '1|100' '2|50'
-    args = _('"phonebook_id|no_of_record" "phonebook_id|no_of_record"')
-    help = _("Create new contacts for a given phonebook and no of records")
+    args = 'phonebook_id, quantity'
+    help = "Create a new contacts for a given phonebook\n"\
+           "--------------------------------------------------------------\n"\
+           "python manage.py create_contact --phonebook_id=1 --quantity=100 --prefix=@myip"
+
+    option_list = BaseCommand.option_list + (
+        make_option('--quantity',
+                    default=None,
+                    dest='quantity',
+                    help=help),
+        make_option('--phonebook_id',
+                    default=None,
+                    dest='phonebook_id',
+                    help=help),
+        make_option('--prefix',
+                    default=None,
+                    dest='prefix',
+                    help=help),
+    )
 
     def handle(self, *args, **options):
-        """Note that subscriber created this way are only for devel purposes"""
-
-        for newinst in args:
-            print newinst
-            res = newinst.split('|')
-            myphonebook_id = res[0]
-            no_of_record = res[1]
-
+        """
+        Note that contacts created this way are only for devel purposes
+        """
+        quantity = 1  # default
+        if options.get('quantity'):
             try:
-                obj_phonebook = Phonebook.objects.get(id=myphonebook_id)
-            except:
-                print _('Can\'t find this Phonebook : %(id)s' % {'id': myphonebook_id})
-                return False
+                quantity = options.get('quantity')
+                quantity = int(quantity)
+            except ValueError:
+                quantity = 1
 
+        phonebook_id = 1
+        if options.get('phonebook_id'):
             try:
-                length = 5
-                chars = "1234567890"
-                for i in range(1, int(no_of_record) + 1):
-                    phone_no = ''.join([choice(chars) for i in range(length)])
-                    Contact.objects.create(
-                        contact=phone_no,
-                        phonebook=obj_phonebook)
-                print _("No of Contact created : %(count)s" % {'count': no_of_record})
+                phonebook_id = options.get('phonebook_id')
+                phonebook_id = int(phonebook_id)
+            except ValueError:
+                phonebook_id = 1
+
+        prefix = ''
+        if options.get('prefix'):
+            prefix = options.get('prefix')
+
+        try:
+            obj_phonebook = Phonebook.objects.get(id=phonebook_id)
+        except:
+            print 'Can\'t find this Phonebook : %(id)s' % {'id': phonebook_id}
+            return False
+
+        length = 15
+        chars = "1234567890"
+        for i in range(1, int(quantity) + 1):
+            phone_no = ''.join([choice(chars) for i in range(length)])
+            try:
+                Contact.objects.create(
+                    contact=phone_no + prefix,
+                    phonebook=obj_phonebook)
             except IntegrityError:
-                print _("Duplicate contact!")
-                return False
+                print "Error : Duplicate contact - %s" % phone_no
+
+        print "Number of Contact created : %(count)s" % {'count': quantity}

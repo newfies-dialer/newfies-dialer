@@ -14,7 +14,7 @@
 #
 
 from django.contrib import admin
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 from survey.models import Survey, Section, Branching, \
     Survey_template, Section_template, Branching_template, \
     Result, ResultAggregate

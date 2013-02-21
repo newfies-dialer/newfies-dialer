@@ -120,7 +120,7 @@ def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
         (request_uuid, leg_type, hangup_cause, str(billsec), amd_status))
 
     #Get the first word only
-    hangup_cause = hangup_cause.split(' ')[0]
+    hangup_cause = hangup_cause.split()[0]
 
     if hangup_cause == 'NORMAL_CLEARING' or hangup_cause == 'ALLOTTED_TIMEOUT':
         hangup_cause = 'ANSWER'

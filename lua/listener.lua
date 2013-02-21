@@ -17,6 +17,9 @@ package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
 -- List of Channels States
 -- http://wiki.freeswitch.org/wiki/Event_list#CHANNEL_STATE
+--
+-- Usage:
+-- To stop : luarun /usr/share/newfies-lua/listener.lua stop
 
 local luasql = require "luasql.postgres"
 require "settings"

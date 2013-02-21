@@ -556,6 +556,8 @@ def init_callrequest(callrequest_id, campaign_id):
             # build originate string
             args_str = ','.join(args_list)
 
+            #DEBUG
+            #settings.ESL_SCRIPT = '&playback(/usr/local/freeswitch/sounds/en/us/callie/voicemail/8000/vm-record_greeting.wav)'
             dial = "originate {%s}%s%s '%s'" % \
                 (args_str, gateways, dialout_phone_number, settings.ESL_SCRIPT)
             # originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=10}user/areski &playback(/tmp/myfile.wav)

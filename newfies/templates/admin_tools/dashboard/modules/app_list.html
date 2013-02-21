@@ -2,13 +2,7 @@
 {% load i18n %}
 {% block module_content %}
         {% for child in module.children %}
-        <h3><a href="{{ child.url }}">                                                          
-            {% if child.title == "Prefix_Country" %}
-                {% trans "Prefix Country" %}
-            {% else %}                                            
-                {{ child.title }}                                        
-            {% endif %}                                                            
-            </a></h3>
+        <h3><a href="{{ child.url }}">{{ child.title }}</a></h3>
         <ul>
             {% for model in child.models %}
             {% spaceless %}

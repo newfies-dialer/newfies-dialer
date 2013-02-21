@@ -2,37 +2,12 @@
 {% load i18n %}
 {% block module_content %}
         {% for child in module.children %}
-        <h3><a href="{{ child.url }}">
-            {% if child.title == "Dialer_Campaign" %}
-                {% trans "Dialer Campaign" %}
-            {% else %}
-                {% if child.title == "Dialer_Contact" %}
-                    {% trans "Dialer Contact" %}
-                {% else %}
-                    {% if child.title == "Dialer_Cdr" %}
-                        {% trans "Dialer CDR" %}
-                    {% else %}
-                        {% if child.title == "Dialer_Gateway" %}
-                            {% trans "Dialer Gateway" %}
-                        {% else %}
-                            {% if child.title == "Prefix_Country" %}
-                                {% trans "Prefix Country" %}
-                            {% else %}
-                                {% if child.title == "Dialer_Settings" %}
-                                    {% trans "Dialer Settings" %}
-                                {% else %}
-                                    {% if child.title == "Voice_App" %}
-                                        {% trans "Voice Application" %}
-                                    {% else %}
-                                        {{ child.title }}
-                                    {% endif %}
-                                {% endif %}
-                            {% endif %}
-                        {% endif %}
-                    {% endif %}
-                {% endif %}
-            {% endif %}
-             
+        <h3><a href="{{ child.url }}">                                                          
+            {% if child.title == "Prefix_Country" %}
+                {% trans "Prefix Country" %}
+            {% else %}                                            
+                {{ child.title }}                                        
+            {% endif %}                                                            
             </a></h3>
         <ul>
             {% for model in child.models %}

@@ -29,7 +29,9 @@ from dialer_campaign.function_def import check_dialer_setting, \
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import frontend_send_notification
 from common.common_functions import striplist
+from common.app_label_renamer import AppLabelRenamer
 import csv
+AppLabelRenamer(native_app_label=u'dialer_contact', app_label=_('Dialer Contact')).main()
 
 
 class PhonebookAdmin(admin.ModelAdmin):
@@ -211,7 +213,7 @@ class ContactAdmin(admin.ModelAdmin):
             'form': form,
             'opts': opts,
             'model_name': opts.object_name.lower(),
-            'app_label': _('Dialer_contact'),
+            'app_label': _('Dialer contact'),
             'rdr': rdr,
             'msg': msg,
             'error_msg': error_msg,

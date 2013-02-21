@@ -14,6 +14,9 @@
 
 from django.contrib import admin
 from voice_app.models import VoiceApp, VoiceApp_template
+from django.utils.translation import ugettext_lazy as _
+from common.app_label_renamer import AppLabelRenamer
+AppLabelRenamer(native_app_label=u'voice_app', app_label=_('Voice Application')).main()
 
 
 class VoiceAppTemplateAdmin(admin.ModelAdmin):

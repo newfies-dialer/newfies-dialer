@@ -255,7 +255,7 @@ class VoIPCall(models.Model):
         )
         db_table = 'dialer_cdr'
         verbose_name = _("VoIP Call")
-        verbose_name_plural = _("VoIP Call")
+        verbose_name_plural = _("VoIP Calls")
 
     def __unicode__(self):
             return u"%d - %s" % (self.id, self.callid)

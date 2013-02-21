@@ -20,6 +20,8 @@ from django.http import HttpResponseRedirect
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.function_def import check_dialer_setting, dialer_setting_limit
 from genericadmin.admin import GenericAdminModelAdmin
+from common.app_label_renamer import AppLabelRenamer
+AppLabelRenamer(native_app_label=u'dialer_campaign', app_label=_('Dialer Campaign')).main()
 
 
 class CampaignAdmin(GenericAdminModelAdmin):

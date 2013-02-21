@@ -74,5 +74,5 @@ class DialerSetting(models.Model):
 
     class Meta:
         verbose_name = _("Dialer Setting")
-        verbose_name_plural = _("Dialer Setting")
+        verbose_name_plural = _("Dialer Settings")
         db_table = "dialer_setting"

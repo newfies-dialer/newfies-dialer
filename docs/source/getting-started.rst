@@ -73,9 +73,6 @@ Below are examples of some of the uses for Newfies-Dialer
 
     * ``Telecasting``: Broadcast marketing or informational messages to customers and clients.
 
-    * ``Telemarketing``: Broadcast a marketing message to potential customers, and give
-      them the option to be put through to a call-centre via an IVR (Interactive Voice Response) Menu.
-
     * ``Phone Polling, Surveys and Voting``: Ring large numbers of people and present
       IVR options for either polling their opinions, interactive surveys, or taking
       their vote and record the results.
@@ -97,13 +94,9 @@ Below are examples of some of the uses for Newfies-Dialer
     * ``Mass Emergency broadcast``: Where there is a necessity to warn large numbers
       of people in a short space of time, such as weather warnings.
 
-    * ``Voice Conferencing``: Attendees for a voice conference or podcast can be
-      dialled up from a central location, and be connected in an audio conference room.
-
     * ``Subscription Reminders and Renewals``: Where a company sells an annual
       subscription for a product or service, Newfies-Dialer can be configured to
-      dial the customer, remind them that the subscription is due, and optionally
-      pass the call into a call centre or into a credit card payment IVR.
+      dial the customer, remind them that the subscription is due. a
 
 
 .. _features:

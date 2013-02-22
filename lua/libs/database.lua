@@ -25,7 +25,7 @@ require "settings"
 Database = oo.class{
 	-- default field values
 	DG_SURVEY_ID = false,
-	TABLE_SECTION   = 'survey_section',
+	TABLE_SECTION = 'survey_section',
 	TABLE_BRANCHING = 'survey_branching',
 	env = nil,
 	con = nil,
@@ -151,6 +151,9 @@ function Database:load_campaign_info(campaign_id)
 	sqlquery = "SELECT * FROM dialer_campaign WHERE id="..campaign_id
 	self.debugger:msg("DEBUG", "Load campaign info : "..sqlquery)
 	self.campaign_info = self:get_object(sqlquery)
+    if not self.campaign_info then
+        return false
+    end
     self.user_id = self.campaign_info["user_id"]
 end
 

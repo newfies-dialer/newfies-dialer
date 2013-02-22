@@ -37,6 +37,7 @@
          "intervalretry":300,
          "totalcontact":10,
          "completed":1,
+         "has_been_started":true,
          "created_date":"2011-12-28 13:21:43"
       }
    },
@@ -78,6 +79,7 @@
             "intervalretry":300,
             "totalcontact":10,
             "completed":1,
+            "has_been_started":false,
             "created_date":"2011-12-28 13:21:43"
         }
    }

@@ -73,6 +73,10 @@ def update_campaign_status_cust(request, pk, status):
 
         # Notify user while campaign Start
         if int(status) == CAMPAIGN_STATUS.START:
+            # change has_been_started flag
+            obj_campaign.has_been_started = True
+            obj_campaign.save()
+
             request.session['info_msg'] = \
                 _('The campaign global settings cannot be edited when the campaign is started')
             if obj_campaign.content_type.model == 'survey_template':
@@ -80,15 +84,6 @@ def update_campaign_status_cust(request, pk, status):
             elif obj_campaign.content_type.model == 'voiceapp_template':
                 check_voiceapp_campaign(request, pk)
 
-        #TODO: get back from survey/voiceapp object to survey/voice_app template object and save object id
-        """
-        if int(status) != CAMPAIGN_STATUS.START:            
-            if obj_campaign.content_type.model == 'survey':
-                obj_campaign.content_type.model = 'survey_template'
-
-            if obj_campaign.content_type.model == 'voiceapp':
-                obj_campaign.content_type.model = 'voiceapp_template'
-        """        
     return HttpResponseRedirect(pagination_path)
 
 
@@ -170,32 +165,55 @@ def get_app_name(app_label, model_name, object_id):
         return '-'
 
 
+def _return_link(app_name, obj_id):
+    """
+    Return link on campaign listing view
+    """
+    link = ''
+    # Object view links
+    if app_name == 'survey':
+        link = '<a href="/survey_view/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' % \
+                   (obj_id, _('Survey'), tpl_control_icon('zoom.png'))
+
+    if app_name == 'voiceapp':
+        link = '<a href="/voiceapp_view/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' % \
+                   (obj_id, _('Voice app'), tpl_control_icon('zoom.png'))
+
+    # Object edit links
+    if app_name == 'survey_template':
+        link = '<a href="/survey/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' %\
+                   (obj_id, _('Edit Survey'), tpl_control_icon('zoom.png'))
+
+    if app_name == 'voiceapp_template':
+        link = '<a href="/voiceapp/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' %\
+                   (obj_id, _('Edit Voice app'), tpl_control_icon('zoom.png'))
+
+    return link
+
 def get_campaign_survey_view(campaign_object):
     """display view button on campaign list"""
     link = ''
     if campaign_object.status and int(campaign_object.status) == CAMPAIGN_STATUS.START:
         if campaign_object.content_type.model == 'survey':
-            link = '<a href="/survey_view/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' % \
-                   (campaign_object.object_id, _('Survey'),
-                    tpl_control_icon('zoom.png'))
+            link = _return_link('survey', campaign_object.object_id)            
 
         if campaign_object.content_type.model == 'voiceapp':
-            link = '<a href="/voiceapp_view/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' % \
-                   (campaign_object.object_id, _('Voice app'),
-                    tpl_control_icon('zoom.png'))
+            link = _return_link('voiceapp', campaign_object.object_id)            
 
     if campaign_object.status and int(campaign_object.status) != CAMPAIGN_STATUS.START:
-        #TODO: or campaign_object.content_type.model == 'survey'
+        
         if campaign_object.content_type.model == 'survey_template':
-            link = '<a href="/survey/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' %\
-                   (campaign_object.object_id, _('Edit Survey'),
-                    tpl_control_icon('zoom.png'))
+            link = _return_link('survey_template', campaign_object.object_id)            
 
-        #TODO: or campaign_object.content_type.model == 'voiceapp'
+        if campaign_object.content_type.model == 'survey' and campaign_object.has_been_started:
+            link = _return_link('survey', campaign_object.object_id)
+        
         if campaign_object.content_type.model == 'voiceapp_template':
-            link = '<a href="/voiceapp/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' %\
-                   (campaign_object.object_id, _('Edit Voice app'),
-                    tpl_control_icon('zoom.png'))
+            link = _return_link('voiceapp_template', campaign_object.object_id)            
+
+        if campaign_object.content_type.model == 'voiceapp' and campaign_object.has_been_started:
+            link = _return_link('voiceapp', campaign_object.object_id)
+
     return link
 
 

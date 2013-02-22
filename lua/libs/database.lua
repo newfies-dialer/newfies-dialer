@@ -223,14 +223,17 @@ end
 function Database:check_data()
 	--Check if we retrieve Campaign Info
 	if not self.campaign_info then
+        self.debugger:msg("ERROR", "campaign_info no valid")
 		self.valid_data = false
 	end
 	--Check if we retrieve List Section
 	if not self.list_section then
+        self.debugger:msg("ERROR", "list_section no valid")
 		self.valid_data = false
 	end
 	--Check we got a start_node
 	if not self.start_node then
+        self.debugger:msg("ERROR", "start_node no valid")
 		self.valid_data = false
 	end
 	return self.valid_data
@@ -314,9 +317,8 @@ function Database:set_aggregate_result(campaign_id, survey_id, section_id, respo
 		-- no errors in save_result_aggregate
 		return true
 	else
-		-- threw an error
-		res = pcall(self:update_result_aggregate(campaign_id, survey_id, section_id, response))
-		if not res then
+		-- log error
+		if not self:update_result_aggregate(campaign_id, survey_id, section_id, response) then
 			self.debugger:msg("ERROR", "Error update_result_aggregate")
 		end
 		return true

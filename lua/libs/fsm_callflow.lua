@@ -40,6 +40,7 @@ FSMCall = oo.class{
     db = nil,
     record_filename = false,
     last_node = nil,
+    ended = false,
 }
 
 function FSMCall:__init(session, debug_mode, debugger)
@@ -65,12 +66,12 @@ function FSMCall:init()
 
     --This is needed for Inbound test
     if not self.campaign_id or self.campaign_id == 0 then
-        self.campaign_id = 47
+        self.campaign_id = 46
         self.subscriber_id = 39
         self.callrequest_id = 215
-        self.db.DG_SURVEY_ID = 22
-        self.db.TABLE_SECTION = 'survey_section_template'
-        self.db.TABLE_BRANCHING = 'survey_branching_template'
+        self.db.DG_SURVEY_ID = 41
+        --self.db.TABLE_SECTION = 'survey_section_template'
+        --self.db.TABLE_BRANCHING = 'survey_branching_template'
     end
 
     call_id = self.uuid..'_'..self.callrequest_id
@@ -98,6 +99,11 @@ function FSMCall:init()
 end
 
 function FSMCall:end_call()
+    if self.ended then
+        return true
+    end
+    self.ended = true
+
     self.debugger:msg("INFO", "FSMCall:end_call")
 
     --Check if we need to save the last recording

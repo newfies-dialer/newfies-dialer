@@ -21,7 +21,7 @@ from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.constants import SUBSCRIBER_STATUS, AMD_BEHAVIOR
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE, \
-    VOIPCALL_AMD_STATUS
+    VOIPCALL_AMD_STATUS, LEG_TYPE
 from dialer_cdr.function_def import get_prefix_obj
 from dialer_gateway.utils import phonenumber_change_prefix
 from dialer_campaign.function_def import user_dialer_setting
@@ -62,7 +62,7 @@ def check_retrycall_completion(obj_subscriber, callrequest):
         new_callrequest = Callrequest(
             request_uuid=uuid1(),
             parent_callrequest_id=callrequest.id,
-            call_type=1,
+            call_type=CALLREQUEST_TYPE.ALLOW_RETRY,
             num_attempt=callrequest.num_attempt + 1,
             user=callrequest.user,
             campaign_id=callrequest.campaign_id,
@@ -101,11 +101,11 @@ def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
     """
     if leg == 'a':
         #A-Leg
-        leg_type = 1
+        leg_type = LEG_TYPE.A_LEG
         used_gateway = obj_callrequest.aleg_gateway
     else:
         #B-Leg
-        leg_type = 2
+        leg_type = LEG_TYPE.B_LEG
         if obj_callrequest.content_object.__class__.__name__ == 'VoiceApp':
             used_gateway = obj_callrequest.content_object.gateway
         else:
@@ -470,7 +470,7 @@ def init_callrequest(callrequest_id, campaign_id):
                 TimeLimit=str(callmaxduration))
         except:
             logger.error('error : call_plivo')
-            obj_callrequest.status = 2  # Update to Failure
+            obj_callrequest.status = CALLREQUEST_STATUS.FAILURE
             obj_callrequest.save()
             if obj_callrequest.subscriber and obj_callrequest.subscriber.id:
                 obj_subscriber = Subscriber.objects\
@@ -582,7 +582,7 @@ def init_callrequest(callrequest_id, campaign_id):
         except:
             raise
             logger.error('error : ESL')
-            obj_callrequest.status = 2  # Update to Failure
+            obj_callrequest.status = CALLREQUEST_STATUS.FAILURE
             obj_callrequest.save()
             if obj_callrequest.subscriber and obj_callrequest.subscriber.id:
                 obj_subscriber = Subscriber.objects\

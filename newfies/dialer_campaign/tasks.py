@@ -20,7 +20,7 @@ from dialer_campaign.models import Campaign
 from dialer_campaign.function_def import user_dialer_setting
 from dialer_campaign.constants import SUBSCRIBER_STATUS, \
     CAMPAIGN_STATUS
-from dialer_cdr.constants import CALLREQUEST_STATUS
+from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE
 from dialer_cdr.models import Callrequest
 from dialer_cdr.tasks import init_callrequest
 from dialer_contact.tasks import collect_subscriber
@@ -86,15 +86,15 @@ def check_campaign_pendingcall(campaign_id):
     dialer_set = user_dialer_setting(obj_campaign.user)
 
     #Default call_type
-    call_type = 1
+    call_type = CALLREQUEST_TYPE.ALLOW_RETRY
     # Check campaign's maxretry
     if obj_campaign.maxretry == 0:
-        call_type = 2
+        call_type = CALLREQUEST_TYPE.CANNOT_RETRY
 
     #Check user's dialer setting maxretry
     if dialer_set:
         if dialer_set.maxretry == 0:
-            call_type = 2
+            call_type = CALLREQUEST_TYPE.CANNOT_RETRY
 
     #Speed
     #Check if the other tasks send for this campaign finished to be ran

@@ -157,9 +157,30 @@ class CustomAppIndexDashboard(AppIndexDashboard):
     def __init__(self, *args, **kwargs):
         AppIndexDashboard.__init__(self, *args, **kwargs)
 
+        #TODO: Find out better way 
+        if str(self.app_title) == 'Dialer_Settings':
+            app_title = _('Dialer Settings')
+            models = ['dialer_settings.*']
+        elif str(self.app_title) == 'Dialer_Campaign':
+            app_title = _('Dialer Campaign')
+            models = ['dialer_campaign.*']
+        elif str(self.app_title) == 'Dialer_Cdr':
+            app_title = _('Dialer CDR')
+            models = ['dialer_cdr.*']
+        elif str(self.app_title) == 'Dialer_Gateway':
+            app_title = _('Dialer Gateway')
+            models = ['dialer_gateway.*']
+        elif str(self.app_title) == 'Voice_App':
+            app_title = _('Voice Application')
+            models = ['voice_app.*']
+        else:
+            app_title = self.app_title
+            models = self.models
+
         # append a model list module and a recent actions module
         self.children += [
-            modules.ModelList(self.app_title, self.models),
+            #modules.ModelList(self.app_title, self.models),
+            modules.ModelList(app_title, models),
             modules.RecentActions(
                 _('Recent Actions'),
                 include_list=self.get_app_content_types(),

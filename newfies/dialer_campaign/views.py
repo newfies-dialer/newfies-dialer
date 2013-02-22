@@ -80,6 +80,15 @@ def update_campaign_status_cust(request, pk, status):
             elif obj_campaign.content_type.model == 'voiceapp_template':
                 check_voiceapp_campaign(request, pk)
 
+        #TODO: get back from survey/voiceapp object to survey/voice_app template object and save object id
+        """
+        if int(status) != CAMPAIGN_STATUS.START:            
+            if obj_campaign.content_type.model == 'survey':
+                obj_campaign.content_type.model = 'survey_template'
+
+            if obj_campaign.content_type.model == 'voiceapp':
+                obj_campaign.content_type.model = 'voiceapp_template'
+        """        
     return HttpResponseRedirect(pagination_path)
 
 
@@ -176,11 +185,13 @@ def get_campaign_survey_view(campaign_object):
                     tpl_control_icon('zoom.png'))
 
     if campaign_object.status and int(campaign_object.status) != CAMPAIGN_STATUS.START:
+        #TODO: or campaign_object.content_type.model == 'survey'
         if campaign_object.content_type.model == 'survey_template':
             link = '<a href="/survey/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' %\
                    (campaign_object.object_id, _('Edit Survey'),
                     tpl_control_icon('zoom.png'))
 
+        #TODO: or campaign_object.content_type.model == 'voiceapp'
         if campaign_object.content_type.model == 'voiceapp_template':
             link = '<a href="/voiceapp/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' %\
                    (campaign_object.object_id, _('Edit Voice app'),

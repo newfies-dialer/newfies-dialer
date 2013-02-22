@@ -504,8 +504,8 @@ def init_callrequest(callrequest_id, campaign_id):
                 args_list.append("origination_caller_id_name='%s'" % obj_callrequest.campaign.caller_name)
 
             #Add App Vars
-            args_list.append("campaign_id=%d,subscriber_id=%d,used_gateway_id=%s,callrequest_id=%s" %
-                (obj_callrequest.campaign_id, obj_callrequest.subscriber_id, gateway_id, obj_callrequest.id))
+            args_list.append("campaign_id=%d,subscriber_id=%d,used_gateway_id=%s,callrequest_id=%s,contact_id=%s" %
+                (obj_callrequest.campaign_id, obj_callrequest.subscriber_id, gateway_id, obj_callrequest.id, obj_callrequest.subscriber.contact_id))
 
             args_list.append(originate_dial_string)
 

@@ -108,7 +108,6 @@ function Database:load_survey_branching(survey_id)
 	end
 
 	self.list_branching = list
-    print(inspect(self.list_branching))
 end
 
 function Database:get_list(sqlquery)
@@ -192,10 +191,9 @@ function Database:load_campaign_info(campaign_id)
     self.user_id = self.campaign_info["user_id"]
 end
 
-function Database:load_contact(subscriber_id)
-	sqlquery = "SELECT * FROM dialer_subscriber "..
-		"LEFT JOIN dialer_contact ON dialer_contact.id=contact_id "..
-		"WHERE dialer_subscriber.id="..subscriber_id
+function Database:load_contact(contact_id)
+	sqlquery = "SELECT * FROM dialer_contact "..
+		"WHERE id="..contact_id
 	self.debugger:msg("DEBUG", "Load contact data : "..sqlquery)
 	self.contact = self:get_object(sqlquery)
 end
@@ -226,8 +224,8 @@ function Database:update_callrequest_cpt(callrequest_id)
 	res = self.con:execute(sqlquery)
 end
 
-function Database:load_all(campaign_id, subscriber_id)
-	self:load_contact(subscriber_id)
+function Database:load_all(campaign_id, contact_id)
+	self:load_contact(contact_id)
 	if not self.contact then
 		self.debugger:msg("ERROR", "Error: No Contact")
 		return false
@@ -442,6 +440,7 @@ end
 if false then
 	campaign_id = 42
     subscriber_id = 39
+    contact_id = 40
     callrequest_id = 30
     debug_mode = false
     section_id = 40
@@ -456,7 +455,7 @@ if false then
     db:load_contact(subscriber_id)
     print(inspect(db.contact))
     error()
-    db:load_all(campaign_id, subscriber_id)
+    db:load_all(campaign_id, contact_id)
 
 	print(inspect(db.list_audio))
 	print(inspect(db.list_branching))

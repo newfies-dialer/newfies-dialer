@@ -18,9 +18,17 @@ package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 local luasql = require "luasql.postgres"
 local oo = require "loop.simple"
 local inspect = require 'inspect'
+local cmsgpack = require 'cmsgpack'
+local redis = require 'redis'
+
 require "constant"
 require "settings"
+require "md5"
 
+redis.commands.expire = redis.command('EXPIRE')
+redis.commands.ttl = redis.command('TTL')
+
+local rd_client = redis.connect('127.0.0.1', 6379)
 
 Database = oo.class{
 	-- default field values
@@ -66,18 +74,16 @@ function Database:load_survey_section(survey_id)
 	-- updated_date	survey_id	invalid_audiofile_id	min_number	max_number
 	sqlquery = "SELECT * FROM "..self.TABLE_SECTION.." WHERE survey_id="..survey_id.." ORDER BY "..self.TABLE_SECTION..".order"
 	self.debugger:msg("DEBUG", "Load survey section : "..sqlquery)
-	cur = self.con:execute(sqlquery)
-	list = {}
-	row = cur:fetch ({}, "a")
-	while row do
+    qresult = self:get_cache_list(sqlquery, 300)
+
+    list = {}
+    for i,row in pairs(qresult) do
 		self.debugger:msg("DEBUG", string.format("%15d  %-15s %-15s %-15s", row.id, row.question, row.type, row.order))
 		if not self.start_node then
 			self.start_node = row.id
 		end
-		list[tonumber(row.id)] = row
-		row = cur:fetch ({}, "a")
+		list[tonumber(row['id'])] = row
 	end
-	cur:close()
 	self.list_section = list
 	if not self.start_node then
 		self.debugger:msg("ERROR", "Error Loading Survey Section")
@@ -91,39 +97,18 @@ function Database:load_survey_branching(survey_id)
 		" ON "..self.TABLE_SECTION..".id="..self.TABLE_BRANCHING..".section_id "..
 		"WHERE survey_id="..survey_id
 	self.debugger:msg("DEBUG", "Load survey branching : "..sqlquery)
-	cur = self.con:execute(sqlquery)
+    qresult = self:get_cache_list(sqlquery, 300)
 
-	-- LOOP THROUGH THE CURSOR
-	self.debugger:msg("DEBUG", string.format("%15s  %-15s %-15s %-15s", "#", "KEYS", "SECTION_ID", "GOTO_ID"))
 	list = {}
-	row = cur:fetch ({}, "a")
-	while row do
-		self.debugger:msg("DEBUG", string.format("%15d  %-15s %-15s %-15s", row.id, tostring(row.keys), tostring(row.section_id), tostring(row.goto_id)))
-		if not list[tonumber(row.section_id)] then
-			list[tonumber(row.section_id)] = {}
+	for i,row in pairs(qresult) do
+		if not list[tonumber(row['section_id'])] then
+			list[tonumber(row['section_id'])] = {}
 		end
-		list[tonumber(row.section_id)][tostring(row.keys)] = row
-		row = cur:fetch ({}, "a")
+		list[tonumber(row['section_id'])][tostring(row.keys)] = row
 	end
-	cur:close()
+
 	self.list_branching = list
-end
-
-function Database:load_audiofile()
-	-- id	name	audio_file	user_id
-	sqlquery = "SELECT * FROM audio_file WHERE user_id="..self.user_id
-	self.debugger:msg("DEBUG", "Load audiofile branching : "..sqlquery)
-	cur = self.con:execute(sqlquery)
-
-	-- LOOP THROUGH THE CURSOR
-	list = {}
-	row = cur:fetch ({}, "a")
-	while row do
-		list[tonumber(row.id)] = row
-		row = cur:fetch ({}, "a")
-	end
-	cur:close()
-	self.list_audio = list
+    print(inspect(self.list_branching))
 end
 
 function Database:get_list(sqlquery)
@@ -139,6 +124,30 @@ function Database:get_list(sqlquery)
 	return list
 end
 
+function Database:get_cache_list(sqlquery, ttl)
+    hashkey = md5.sumhexa(sqlquery)
+    local value = rd_client:get(hashkey)
+    if value then
+        --Cached
+        return cmsgpack.unpack(value)
+    else
+        --Not in Cache
+        cur = assert(self.con:execute(sqlquery))
+        list = {}
+        row = cur:fetch ({}, "a")
+        while row do
+            list[tonumber(row.id)] = row
+            row = cur:fetch ({}, "a")
+        end
+        cur:close()
+        --Add in Cache
+        msgpack = cmsgpack.pack(list)
+        rd_client:set(hashkey, msgpack)
+        rd_client:expire(hashkey, ttl)
+        return list
+    end
+end
+
 function Database:get_object(sqlquery)
 	self.debugger:msg("DEBUG", "Load SQL : "..sqlquery)
 	cur = assert(self.con:execute(sqlquery))
@@ -147,10 +156,36 @@ function Database:get_object(sqlquery)
 	return row
 end
 
+function Database:get_cache_object(sqlquery, ttl)
+    hashkey = md5.sumhexa(sqlquery)
+    local value = rd_client:get(hashkey)
+    if value then
+        --Cached
+        return cmsgpack.unpack(value)
+    else
+        --Not in Cache
+        cur = assert(self.con:execute(sqlquery))
+        row = cur:fetch ({}, "a")
+        cur:close()
+        --Add in Cache
+        msgpack = cmsgpack.pack(row)
+        rd_client:set(hashkey, msgpack)
+        rd_client:expire(hashkey, ttl)
+        return row
+    end
+end
+
+function Database:load_audiofile()
+    -- id   name    audio_file  user_id
+    sqlquery = "SELECT * FROM audio_file WHERE user_id="..self.user_id
+    self.debugger:msg("DEBUG", "Load audiofile branching : "..sqlquery)
+    self.list_audio = self:get_cache_list(sqlquery, 300)
+end
+
 function Database:load_campaign_info(campaign_id)
 	sqlquery = "SELECT * FROM dialer_campaign WHERE id="..campaign_id
 	self.debugger:msg("DEBUG", "Load campaign info : "..sqlquery)
-	self.campaign_info = self:get_object(sqlquery)
+	self.campaign_info = self:get_cache_object(sqlquery, 300)
     if not self.campaign_info then
         return false
     end
@@ -168,7 +203,7 @@ end
 function Database:load_content_type()
     sqlquery = "SELECt id FROM django_content_type WHERE model='survey'"
     self.debugger:msg("DEBUG", "Load content_type : "..sqlquery)
-    result = self:get_object(sqlquery)
+    result = self:get_cache_object(sqlquery, 300)
     return result["id"]
 end
 

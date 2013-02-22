@@ -235,7 +235,8 @@ func_install_frontend(){
     luarocks install luafilesystem
     luarocks install luajson
     luarocks install inspect
-
+    luarocks install redis-lua
+    luarocks install lua-cmsgpack
 
     #Create Newfies User
     echo ""

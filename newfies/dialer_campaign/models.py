@@ -242,6 +242,7 @@ class Campaign(Model):
     completed = models.IntegerField(default=0, blank=True, null=True,
                                     verbose_name=_('Completed'),
                                     help_text=_("Total Contact that completed Call / Survey"))
+    has_been_started = models.BooleanField(default=False, verbose_name=_('Has been started'))
     #Voicemail
     voicemail = models.BooleanField(default=False, verbose_name=_('Enable Voicemail Detection'))
     amd_behavior = models.IntegerField(choices=list(AMD_BEHAVIOR),

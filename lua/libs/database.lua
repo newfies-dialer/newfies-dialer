@@ -28,7 +28,7 @@ require "md5"
 redis.commands.expire = redis.command('EXPIRE')
 redis.commands.ttl = redis.command('TTL')
 
-local rd_client = redis.connect('127.0.0.1', 6379)
+USE_CACHE = true
 
 Database = oo.class{
 	-- default field values
@@ -47,19 +47,23 @@ Database = oo.class{
 	start_node = false,
 	debugger = nil,
     results = {},
+    rd_client = false,
 }
 
 function Database:__init(debug_mode, debugger)
 	-- self is the class
 	return oo.rawnew(self, {
 		debug_mode = debug_mode,
-		debugger = debugger
+		debugger = debugger,
 	})
 end
 
 function Database:connect()
 	self.env = assert(luasql.postgres())
 	self.con = assert(self.env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT))
+    if USE_CACHE then
+        self.rd_client = redis.connect('127.0.0.1', 6379)
+    end
 end
 
 function Database:disconnect()
@@ -124,8 +128,12 @@ function Database:get_list(sqlquery)
 end
 
 function Database:get_cache_list(sqlquery, ttl)
+    --If not Cache
+    if not USE_CACHE then
+        return self:get_list(sqlquery)
+    end
     hashkey = md5.sumhexa(sqlquery)
-    local value = rd_client:get(hashkey)
+    local value = self.rd_client:get(hashkey)
     if value then
         --Cached
         return cmsgpack.unpack(value)
@@ -141,8 +149,8 @@ function Database:get_cache_list(sqlquery, ttl)
         cur:close()
         --Add in Cache
         msgpack = cmsgpack.pack(list)
-        rd_client:set(hashkey, msgpack)
-        rd_client:expire(hashkey, ttl)
+        self.rd_client:set(hashkey, msgpack)
+        self.rd_client:expire(hashkey, ttl)
         return list
     end
 end
@@ -156,8 +164,12 @@ function Database:get_object(sqlquery)
 end
 
 function Database:get_cache_object(sqlquery, ttl)
+    --If not Cache
+    if not USE_CACHE then
+        return self:get_object(sqlquery)
+    end
     hashkey = md5.sumhexa(sqlquery)
-    local value = rd_client:get(hashkey)
+    local value = self.rd_client:get(hashkey)
     if value then
         --Cached
         return cmsgpack.unpack(value)
@@ -168,8 +180,8 @@ function Database:get_cache_object(sqlquery, ttl)
         cur:close()
         --Add in Cache
         msgpack = cmsgpack.pack(row)
-        rd_client:set(hashkey, msgpack)
-        rd_client:expire(hashkey, ttl)
+        self.rd_client:set(hashkey, msgpack)
+        self.rd_client:expire(hashkey, ttl)
         return row
     end
 end
@@ -192,8 +204,7 @@ function Database:load_campaign_info(campaign_id)
 end
 
 function Database:load_contact(contact_id)
-	sqlquery = "SELECT * FROM dialer_contact "..
-		"WHERE id="..contact_id
+	sqlquery = "SELECT * FROM dialer_contact WHERE id="..contact_id
 	self.debugger:msg("DEBUG", "Load contact data : "..sqlquery)
 	self.contact = self:get_object(sqlquery)
 end

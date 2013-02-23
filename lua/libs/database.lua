@@ -19,14 +19,14 @@ local luasql = require "luasql.postgres"
 local oo = require "loop.simple"
 local inspect = require 'inspect'
 local cmsgpack = require 'cmsgpack'
-local redis = require 'redis'
-
+--local redis = require 'redis'
+require "memcached"
 require "constant"
 require "settings"
 require "md5"
 
-redis.commands.expire = redis.command('EXPIRE')
-redis.commands.ttl = redis.command('TTL')
+--redis.commands.expire = redis.command('EXPIRE')
+--redis.commands.ttl = redis.command('TTL')
 
 USE_CACHE = true
 
@@ -47,7 +47,7 @@ Database = oo.class{
     start_node = false,
     debugger = nil,
     results = {},
-    rd_client = false,
+    caching = false,
 }
 
 function Database:__init(debug_mode, debugger)
@@ -62,7 +62,8 @@ function Database:connect()
     self.env = assert(luasql.postgres())
     self.con = assert(self.env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT))
     if USE_CACHE then
-        self.rd_client = redis.connect('127.0.0.1', 6379)
+        --self.caching = redis.connect('127.0.0.1', 6379)
+        self.caching = memcached.connect('127.0.0.1', 11211)
     end
 end
 
@@ -133,7 +134,7 @@ function Database:get_cache_list(sqlquery, ttl)
         return self:get_list(sqlquery)
     end
     hashkey = md5.sumhexa(sqlquery)
-    local value = self.rd_client:get(hashkey)
+    local value = self.caching:get(hashkey)
     if value then
         --Cached
         return cmsgpack.unpack(value)
@@ -149,8 +150,11 @@ function Database:get_cache_list(sqlquery, ttl)
         cur:close()
         --Add in Cache
         msgpack = cmsgpack.pack(list)
-        self.rd_client:set(hashkey, msgpack)
-        self.rd_client:expire(hashkey, ttl)
+        --Redis
+        --self.caching:set(hashkey, msgpack)
+        --self.caching:expire(hashkey, ttl)
+        --Memcache
+        self.caching:set(hashkey, msgpack, ttl)
         return list
     end
 end
@@ -169,7 +173,7 @@ function Database:get_cache_object(sqlquery, ttl)
         return self:get_object(sqlquery)
     end
     hashkey = md5.sumhexa(sqlquery)
-    local value = self.rd_client:get(hashkey)
+    local value = self.caching:get(hashkey)
     if value then
         --Cached
         return cmsgpack.unpack(value)
@@ -180,8 +184,11 @@ function Database:get_cache_object(sqlquery, ttl)
         cur:close()
         --Add in Cache
         msgpack = cmsgpack.pack(row)
-        self.rd_client:set(hashkey, msgpack)
-        self.rd_client:expire(hashkey, ttl)
+        --Redis
+        --self.caching:set(hashkey, msgpack)
+        --self.caching:expire(hashkey, ttl)
+        --Memcache
+        self.caching:set(hashkey, msgpack, ttl)
         return row
     end
 end

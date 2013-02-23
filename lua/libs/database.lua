@@ -31,100 +31,100 @@ redis.commands.ttl = redis.command('TTL')
 USE_CACHE = true
 
 Database = oo.class{
-	-- default field values
-	DG_SURVEY_ID = false,
-	TABLE_SECTION = 'survey_section',
-	TABLE_BRANCHING = 'survey_branching',
-	env = nil,
-	con = nil,
-	list_section = nil,
-	list_branching = nil,
-	list_audio = nil,
-	campaign_info = nil,
+    -- default field values
+    DG_SURVEY_ID = false,
+    TABLE_SECTION = 'survey_section',
+    TABLE_BRANCHING = 'survey_branching',
+    env = nil,
+    con = nil,
+    list_section = nil,
+    list_branching = nil,
+    list_audio = nil,
+    campaign_info = nil,
     user_id = nil,
-	valid_data = true,
-	app_type = 'survey', -- survey or voice_app
-	start_node = false,
-	debugger = nil,
+    valid_data = true,
+    app_type = 'survey', -- survey or voice_app
+    start_node = false,
+    debugger = nil,
     results = {},
     rd_client = false,
 }
 
 function Database:__init(debug_mode, debugger)
-	-- self is the class
-	return oo.rawnew(self, {
-		debug_mode = debug_mode,
-		debugger = debugger,
-	})
+    -- self is the class
+    return oo.rawnew(self, {
+        debug_mode = debug_mode,
+        debugger = debugger,
+    })
 end
 
 function Database:connect()
-	self.env = assert(luasql.postgres())
-	self.con = assert(self.env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT))
+    self.env = assert(luasql.postgres())
+    self.con = assert(self.env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT))
     if USE_CACHE then
         self.rd_client = redis.connect('127.0.0.1', 6379)
     end
 end
 
 function Database:disconnect()
-	self.con:close()
-	self.env:close()
+    self.con:close()
+    self.env:close()
 end
 
 function Database:load_survey_section(survey_id)
-	-- id	order	type	question	script	audiofile_id	retries	timeout
-	-- key_0	key_1	key_2	key_3	key_4	key_5	key_6	key_7	key_8	key_9
-	-- rating_laps	validate_number	number_digits	phonenumber	completed	created_date
-	-- updated_date	survey_id	invalid_audiofile_id	min_number	max_number
-	sqlquery = "SELECT * FROM "..self.TABLE_SECTION.." WHERE survey_id="..survey_id.." ORDER BY "..self.TABLE_SECTION..".order"
-	self.debugger:msg("DEBUG", "Load survey section : "..sqlquery)
+    -- id   order   type    question    script  audiofile_id    retries timeout
+    -- key_0    key_1   key_2   key_3   key_4   key_5   key_6   key_7   key_8   key_9
+    -- rating_laps  validate_number number_digits   phonenumber completed   created_date
+    -- updated_date survey_id   invalid_audiofile_id    min_number  max_number
+    sqlquery = "SELECT * FROM "..self.TABLE_SECTION.." WHERE survey_id="..survey_id.." ORDER BY "..self.TABLE_SECTION..".order"
+    self.debugger:msg("DEBUG", "Load survey section : "..sqlquery)
     qresult = self:get_cache_list(sqlquery, 300)
 
     list = {}
     for i,row in pairs(qresult) do
-		self.debugger:msg("DEBUG", string.format("%15d  %-15s %-15s %-15s", row.id, row.question, row.type, row.order))
-		if not self.start_node then
-			self.start_node = row.id
-		end
-		list[tonumber(row['id'])] = row
-	end
-	self.list_section = list
-	if not self.start_node then
-		self.debugger:msg("ERROR", "Error Loading Survey Section")
-	end
+        self.debugger:msg("DEBUG", string.format("%15d  %-15s %-15s %-15s", row.id, row.question, row.type, row.order))
+        if not self.start_node then
+            self.start_node = row.id
+        end
+        list[tonumber(row['id'])] = row
+    end
+    self.list_section = list
+    if not self.start_node then
+        self.debugger:msg("ERROR", "Error Loading Survey Section")
+    end
 end
 
 function Database:load_survey_branching(survey_id)
-	-- id	keys section_id	goto_id
-	sqlquery = "SELECT "..self.TABLE_BRANCHING..".id, keys, section_id, goto_id "..
-		"FROM "..self.TABLE_BRANCHING.." LEFT JOIN "..self.TABLE_SECTION..
-		" ON "..self.TABLE_SECTION..".id="..self.TABLE_BRANCHING..".section_id "..
-		"WHERE survey_id="..survey_id
-	self.debugger:msg("DEBUG", "Load survey branching : "..sqlquery)
+    -- id   keys section_id goto_id
+    sqlquery = "SELECT "..self.TABLE_BRANCHING..".id, keys, section_id, goto_id "..
+        "FROM "..self.TABLE_BRANCHING.." LEFT JOIN "..self.TABLE_SECTION..
+        " ON "..self.TABLE_SECTION..".id="..self.TABLE_BRANCHING..".section_id "..
+        "WHERE survey_id="..survey_id
+    self.debugger:msg("DEBUG", "Load survey branching : "..sqlquery)
     qresult = self:get_cache_list(sqlquery, 300)
 
-	list = {}
-	for i,row in pairs(qresult) do
-		if not list[tonumber(row['section_id'])] then
-			list[tonumber(row['section_id'])] = {}
-		end
-		list[tonumber(row['section_id'])][tostring(row.keys)] = row
-	end
+    list = {}
+    for i,row in pairs(qresult) do
+        if not list[tonumber(row['section_id'])] then
+            list[tonumber(row['section_id'])] = {}
+        end
+        list[tonumber(row['section_id'])][tostring(row.keys)] = row
+    end
 
-	self.list_branching = list
+    self.list_branching = list
 end
 
 function Database:get_list(sqlquery)
-	self.debugger:msg("DEBUG", "Load SQL : "..sqlquery)
-	cur = assert(self.con:execute(sqlquery))
-	list = {}
-	row = cur:fetch ({}, "a")
-	while row do
-		list[tonumber(row.id)] = row
-		row = cur:fetch ({}, "a")
-	end
-	cur:close()
-	return list
+    self.debugger:msg("DEBUG", "Load SQL : "..sqlquery)
+    cur = assert(self.con:execute(sqlquery))
+    list = {}
+    row = cur:fetch ({}, "a")
+    while row do
+        list[tonumber(row.id)] = row
+        row = cur:fetch ({}, "a")
+    end
+    cur:close()
+    return list
 end
 
 function Database:get_cache_list(sqlquery, ttl)
@@ -156,11 +156,11 @@ function Database:get_cache_list(sqlquery, ttl)
 end
 
 function Database:get_object(sqlquery)
-	self.debugger:msg("DEBUG", "Load SQL : "..sqlquery)
-	cur = assert(self.con:execute(sqlquery))
-	row = cur:fetch ({}, "a")
-	cur:close()
-	return row
+    self.debugger:msg("DEBUG", "Load SQL : "..sqlquery)
+    cur = assert(self.con:execute(sqlquery))
+    row = cur:fetch ({}, "a")
+    cur:close()
+    return row
 end
 
 function Database:get_cache_object(sqlquery, ttl)
@@ -194,9 +194,9 @@ function Database:load_audiofile()
 end
 
 function Database:load_campaign_info(campaign_id)
-	sqlquery = "SELECT * FROM dialer_campaign WHERE id="..campaign_id
-	self.debugger:msg("DEBUG", "Load campaign info : "..sqlquery)
-	self.campaign_info = self:get_cache_object(sqlquery, 300)
+    sqlquery = "SELECT * FROM dialer_campaign WHERE id="..campaign_id
+    self.debugger:msg("DEBUG", "Load campaign info : "..sqlquery)
+    self.campaign_info = self:get_cache_object(sqlquery, 300)
     if not self.campaign_info then
         return false
     end
@@ -204,9 +204,9 @@ function Database:load_campaign_info(campaign_id)
 end
 
 function Database:load_contact(contact_id)
-	sqlquery = "SELECT * FROM dialer_contact WHERE id="..contact_id
-	self.debugger:msg("DEBUG", "Load contact data : "..sqlquery)
-	self.contact = self:get_object(sqlquery)
+    sqlquery = "SELECT * FROM dialer_contact WHERE id="..contact_id
+    self.debugger:msg("DEBUG", "Load contact data : "..sqlquery)
+    self.contact = self:get_object(sqlquery)
 end
 
 function Database:load_content_type()
@@ -217,73 +217,73 @@ function Database:load_content_type()
 end
 
 function Database:update_subscriber(subscriber_id, status)
-	sqlquery = "UPDATE dialer_subscriber SET status='"..status.."' WHERE id="..subscriber_id
-	self.debugger:msg("DEBUG", "Update Subscriber : "..sqlquery)
-	res = self.con:execute(sqlquery)
-	self:update_campaign_completed()
+    sqlquery = "UPDATE dialer_subscriber SET status='"..status.."' WHERE id="..subscriber_id
+    self.debugger:msg("DEBUG", "Update Subscriber : "..sqlquery)
+    res = self.con:execute(sqlquery)
+    self:update_campaign_completed()
 end
 
 function Database:update_campaign_completed()
-	sqlquery = "UPDATE dialer_campaign SET completed = completed + 1 WHERE id="..self.campaign_info.id
-	self.debugger:msg("DEBUG", "Update Campaign : "..sqlquery)
-	res = self.con:execute(sqlquery)
+    sqlquery = "UPDATE dialer_campaign SET completed = completed + 1 WHERE id="..self.campaign_info.id
+    self.debugger:msg("DEBUG", "Update Campaign : "..sqlquery)
+    res = self.con:execute(sqlquery)
 end
 
 function Database:update_callrequest_cpt(callrequest_id)
-	sqlquery = "UPDATE dialer_callrequest SET completed = 't' WHERE id="..callrequest_id
-	self.debugger:msg("DEBUG", "Update CallRequest : "..sqlquery)
-	res = self.con:execute(sqlquery)
+    sqlquery = "UPDATE dialer_callrequest SET completed = 't' WHERE id="..callrequest_id
+    self.debugger:msg("DEBUG", "Update CallRequest : "..sqlquery)
+    res = self.con:execute(sqlquery)
 end
 
 function Database:load_all(campaign_id, contact_id)
-	self:load_contact(contact_id)
-	if not self.contact then
-		self.debugger:msg("ERROR", "Error: No Contact")
-		return false
-	end
+    self:load_contact(contact_id)
+    if not self.contact then
+        self.debugger:msg("ERROR", "Error: No Contact")
+        return false
+    end
 
-	self:load_campaign_info(campaign_id)
-	if not self.campaign_info then
-		self.debugger:msg("ERROR", "Error: No Campaign")
-		return false
-	end
+    self:load_campaign_info(campaign_id)
+    if not self.campaign_info then
+        self.debugger:msg("ERROR", "Error: No Campaign")
+        return false
+    end
 
     content_type_id = self:load_content_type()
-	if tonumber(self.campaign_info.content_type_id) == tonumber(content_type_id) then
-		self.app_type = 'survey'
-	else
-		self.app_type = 'voice_app'
+    if tonumber(self.campaign_info.content_type_id) == tonumber(content_type_id) then
+        self.app_type = 'survey'
+    else
+        self.app_type = 'voice_app'
         self.debugger:msg("ERROR", "Error: voice_app("..self.campaign_info.content_type_id..
             ") is not supported")
         return false
-	end
-	survey_id = self.campaign_info.object_id
-	if self.DG_SURVEY_ID and self.DG_SURVEY_ID > 0 then
-		survey_id = self.DG_SURVEY_ID
-	end
-	self:load_survey_section(survey_id)
-	self:load_survey_branching(survey_id)
-	self:load_audiofile()
-	return survey_id
+    end
+    survey_id = self.campaign_info.object_id
+    if self.DG_SURVEY_ID and self.DG_SURVEY_ID > 0 then
+        survey_id = self.DG_SURVEY_ID
+    end
+    self:load_survey_section(survey_id)
+    self:load_survey_branching(survey_id)
+    self:load_audiofile()
+    return survey_id
 end
 
 function Database:check_data()
-	--Check if we retrieve Campaign Info
-	if not self.campaign_info then
+    --Check if we retrieve Campaign Info
+    if not self.campaign_info then
         self.debugger:msg("ERROR", "campaign_info no valid")
-		self.valid_data = false
-	end
-	--Check if we retrieve List Section
-	if not self.list_section then
+        self.valid_data = false
+    end
+    --Check if we retrieve List Section
+    if not self.list_section then
         self.debugger:msg("ERROR", "list_section no valid")
-		self.valid_data = false
-	end
-	--Check we got a start_node
-	if not self.start_node then
+        self.valid_data = false
+    end
+    --Check we got a start_node
+    if not self.start_node then
         self.debugger:msg("ERROR", "start_node no valid")
-		self.valid_data = false
-	end
-	return self.valid_data
+        self.valid_data = false
+    end
+    return self.valid_data
 end
 
 function Database:save_result_mem(callrequest_id, section_id, record_file, recording_duration, response)
@@ -318,34 +318,34 @@ function Database:commit_result_mem(campaign_id, survey_id)
 end
 
 function Database:save_result_aggregate(campaign_id, survey_id, section_id, response)
-	sqlquery = "INSERT INTO survey_resultaggregate (campaign_id, survey_id, section_id, response, count, created_date) "..
-		"VALUES ("..campaign_id..", "..survey_id..", "..section_id..", '"..response.."', 1, NOW())"
-	self.debugger:msg("DEBUG", "Save Result Aggregate:"..sqlquery)
-	res = self.con:execute(sqlquery)
-	if not res then
-		return false
-	else
-		return true
-	end
+    sqlquery = "INSERT INTO survey_resultaggregate (campaign_id, survey_id, section_id, response, count, created_date) "..
+        "VALUES ("..campaign_id..", "..survey_id..", "..section_id..", '"..response.."', 1, NOW())"
+    self.debugger:msg("DEBUG", "Save Result Aggregate:"..sqlquery)
+    res = self.con:execute(sqlquery)
+    if not res then
+        return false
+    else
+        return true
+    end
 end
 
 function Database:update_result_aggregate(campaign_id, survey_id, section_id, response)
-	sqlquery = "UPDATE survey_resultaggregate SET count = count + 1"..
-		" WHERE campaign_id="..campaign_id.." AND survey_id="..survey_id.." AND section_id="..section_id.." AND response='"..section_id.."'"
-	self.debugger:msg("DEBUG", "Update Result Aggregate:"..sqlquery)
-	res = self.con:execute(sqlquery)
-	if not res then
-		return false
-	else
-		return true
-	end
+    sqlquery = "UPDATE survey_resultaggregate SET count = count + 1"..
+        " WHERE campaign_id="..campaign_id.." AND survey_id="..survey_id.." AND section_id="..section_id.." AND response='"..section_id.."'"
+    self.debugger:msg("DEBUG", "Update Result Aggregate:"..sqlquery)
+    res = self.con:execute(sqlquery)
+    if not res then
+        return false
+    else
+        return true
+    end
 end
 
 function Database:set_aggregate_result(campaign_id, survey_id, section_id, response, recording_dur)
     -- save the aggregate result for the campaign / survey
     if recording_dur and tonumber(recording_dur) > 0 then
-    	recording_dur = tonumber(recording_dur)
-    	response = 'error to detect recording duration'
+        recording_dur = tonumber(recording_dur)
+        response = 'error to detect recording duration'
         -- recording duration 0 - 20 seconds ; 20 - 40 seconds ; 40 - 60 seconds
         if recording_dur > 0 and recording_dur <= 20 then
             response = '0 - 20 seconds'
@@ -361,30 +361,30 @@ function Database:set_aggregate_result(campaign_id, survey_id, section_id, respo
     end
     -- Insert ResultAggregate
     if self:save_result_aggregate(campaign_id, survey_id, section_id, response) then
-		-- no errors in save_result_aggregate
-		return true
-	else
-		-- log error
-		if not self:update_result_aggregate(campaign_id, survey_id, section_id, response) then
-			self.debugger:msg("ERROR", "Error update_result_aggregate")
-		end
-		return true
-	end
+        -- no errors in save_result_aggregate
+        return true
+    else
+        -- log error
+        if not self:update_result_aggregate(campaign_id, survey_id, section_id, response) then
+            self.debugger:msg("ERROR", "Error update_result_aggregate")
+        end
+        return true
+    end
 end
 
 function Database:save_section_result(callrequest_id, current_node, DTMF, record_file, recording_dur)
-	-- DTMF can be false
-	if not DTMF then
-		DTMF = ''
-	end
+    -- DTMF can be false
+    if not DTMF then
+        DTMF = ''
+    end
     -- save the result of a section
     if current_node.type == RECORD_MSG then
         --Save result to memory
-		self:save_result_mem(callrequest_id, current_node.id, record_file, recording_dur, DTMF)
+        self:save_result_mem(callrequest_id, current_node.id, record_file, recording_dur, DTMF)
 
     elseif DTMF and string.len(DTMF) > 0 and
-    	(current_node.type == MULTI_CHOICE or
-    	 current_node.type == RATING_SECTION or
+        (current_node.type == MULTI_CHOICE or
+         current_node.type == RATING_SECTION or
          current_node.type == CAPTURE_DIGITS) then
 
         if current_node.type == MULTI_CHOICE then
@@ -413,7 +413,7 @@ function Database:save_section_result(callrequest_id, current_node, DTMF, record
         end
         --Save result to memory
         self:save_result_mem(callrequest_id, current_node.id, '', 0, DTMF)
-	end
+    end
 end
 
 --
@@ -449,7 +449,7 @@ if false then
 end
 
 if false then
-	campaign_id = 42
+    campaign_id = 42
     subscriber_id = 39
     contact_id = 40
     callrequest_id = 30
@@ -468,11 +468,11 @@ if false then
     error()
     db:load_all(campaign_id, contact_id)
 
-	print(inspect(db.list_audio))
-	print(inspect(db.list_branching))
-	print(inspect(db.list_branching[11]["any"]))
-	print(inspect(db.list_branching[11]["1"]))
-	print(inspect(db.list_branching[11]["timeout"]))
+    print(inspect(db.list_audio))
+    print(inspect(db.list_branching))
+    print(inspect(db.list_branching[11]["any"]))
+    print(inspect(db.list_branching[11]["1"]))
+    print(inspect(db.list_branching[11]["timeout"]))
 
     db:update_callrequest_cpt(callrequest_id)
     db:check_data()

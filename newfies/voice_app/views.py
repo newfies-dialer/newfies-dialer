@@ -11,9 +11,6 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-
-# Create your views here.
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required,\
                                            permission_required
 from django.http import HttpResponseRedirect, HttpResponse, Http404

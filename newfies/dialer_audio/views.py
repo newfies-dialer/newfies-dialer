@@ -91,7 +91,7 @@ def audio_add(request):
         form = DialerAudioFileForm(request.POST, request.FILES)
         if form.is_valid():
             obj = form.save(commit=False)
-            obj.user = User.objects.get(username=request.user)
+            obj.user = request.user
             obj.save()
             request.session["msg"] = _('"%(name)s" added.') %\
                 {'name': request.POST['name']}

@@ -245,9 +245,8 @@ def get_campaign_status_name(id):
 
 def user_dialer_setting(user):
     """Get Dialer setting for user"""
-    try:
-        user_ds = UserProfile.objects.get(user=User.objects.get(username=user))
-        dialer_set = DialerSetting.objects.get(id=user_ds.dialersetting.id)
+    try:        
+        dialer_set = DialerSetting.objects.get(id=user.get_profile().dialersetting_id)
     except:
         dialer_set = []
     return dialer_set

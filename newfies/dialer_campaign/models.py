@@ -350,7 +350,7 @@ class Campaign(Model):
     def get_active_contact(self):
         """Get all the active Contacts from the phonebook"""
         list_contact =\
-            Contact.objects.filter(phonebook__campaign=self.id, status=1).all()
+            Contact.objects.filter(phonebook__campaign=self.id, status=CONTACT_STATUS.ACTIVE).all()
         if not list_contact:
             return False
         return list_contact
@@ -414,7 +414,7 @@ class Campaign(Model):
     def get_pending_subscriber(self, limit=1000):
         """Get all the pending subscribers from the campaign"""
         list_subscriber = \
-            Subscriber.objects.filter(campaign=self.id, status=1)\
+            Subscriber.objects.filter(campaign=self.id, status=SUBSCRIBER_STATUS.PENDING)\
             .all()[:limit]
         if not list_subscriber:
             return False

@@ -191,7 +191,7 @@ class HangupcallResource(ModelResource):
                     new_callrequest = Callrequest(
                         request_uuid=uuid1(),
                         parent_callrequest_id=callrequest.id,
-                        call_type=1,
+                        call_type=CALLREQUEST_TYPE.ALLOW_RETRY,
                         num_attempt=callrequest.num_attempt + 1,
                         user=callrequest.user,
                         campaign_id=callrequest.campaign_id,

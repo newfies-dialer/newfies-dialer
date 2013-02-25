@@ -236,7 +236,7 @@ def campaign_list(request):
     **Logic Description**:
 
         * List all campaigns belonging to the logged in user
-    """
+    """    
     request.session['pagination_path'] = request.META['PATH_INFO'] + '?' + request.META['QUERY_STRING']
     sort_col_field_list = ['id', 'name', 'startingdate', 'status', 'totalcontact']
     default_sort_field = 'id'

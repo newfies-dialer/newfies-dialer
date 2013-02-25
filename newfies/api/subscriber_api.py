@@ -21,10 +21,11 @@ from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import BadRequest
 from dialer_contact.models import Contact, Phonebook
+from dialer_contact.constants import CONTACT_STATUS
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.function_def import check_dialer_setting, \
     dialer_setting_limit
-
+from dialer_campaign.constants import SUBSCRIBER_STATUS
 import logging
 
 logger = logging.getLogger('newfies.filelog')
@@ -164,7 +165,7 @@ class SubscriberResource(ModelResource):
             first_name=bundle.data.get('first_name'),
             email=bundle.data.get('email'),
             description=bundle.data.get('description'),
-            status=1,  # default active
+            status=CONTACT_STATUS.ACTIVE,  # default active
             phonebook=obj_phonebook)
         # Assign new contact object
         bundle.obj = new_contact
@@ -193,13 +194,13 @@ class SubscriberResource(ModelResource):
                 common_phonebook_list = list(set(imported_phonebook) & set(phonebook_list))
                 if common_phonebook_list:
                     contact_list = Contact.objects\
-                        .filter(phonebook__in=common_phonebook_list, status=1)
+                        .filter(phonebook__in=common_phonebook_list, status=CONTACT_STATUS.ACTIVE)
                     for con_obj in contact_list:
                         try:
                             Subscriber.objects.create(
                                 contact=con_obj,
                                 duplicate_contact=con_obj.contact,
-                                status=1,  # START
+                                status=SUBSCRIBER_STATUS.PENDING,  # PENDING
                                 campaign=c_campaign)
                         except:
                             #TODO Catching duplicate error

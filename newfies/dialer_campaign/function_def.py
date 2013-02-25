@@ -26,7 +26,7 @@ from datetime import timedelta
 
 
 def user_attached_with_dialer_settings(request):
-    """Check user is attached with dialer setting or not"""
+    """Check user is attached with dialer setting or not"""    
     try:
         # DialerSettings is exists & attached with user
         DialerSetting.objects.get(pk=request.user.get_profile().dialersetting_id)        

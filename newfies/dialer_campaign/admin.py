@@ -64,11 +64,9 @@ class CampaignAdmin(GenericAdminModelAdmin):
     def get_urls(self):
         urls = super(CampaignAdmin, self).get_urls()
         my_urls = patterns('',
-                           (r'^$',
-                            self.admin_site.admin_view(self.changelist_view)),
-                           (r'^add/$',
-                            self.admin_site.admin_view(self.add_view)),
-                           )
+                           (r'^$', self.admin_site.admin_view(self.changelist_view)),
+                           (r'^add/$', self.admin_site.admin_view(self.add_view)),
+                          )
         return my_urls + urls
 
     def add_view(self, request, extra_context=None):

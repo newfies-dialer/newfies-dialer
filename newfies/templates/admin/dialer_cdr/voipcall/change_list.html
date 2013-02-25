@@ -5,13 +5,13 @@
   {% block breadcrumbs %}
     <div class="breadcrumbs">
       <a href="../../">
-        {% trans "Home" %}
+        {% trans "home"|title %}
       </a>
        &rsaquo;
        <a href="../">
          {{ app_label|capfirst }}
       </a>
-      &rsaquo; {% trans "Call Report" %}
+      &rsaquo; {% trans "call report"|title %}
       <!--{{ cl.opts.verbose_name_plural|capfirst }}-->
     </div>
   {% endblock %}
@@ -30,7 +30,7 @@
     {% block custom-search %}
         <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
         <table class="actions">
-        <caption>{% trans "Search Option" %}</caption>
+        <caption>{% trans "search option"|title %}</caption>
         {{ form.as_table }}
         <tr>
             <td>&nbsp;</td>
@@ -53,6 +53,11 @@
             <li>
                 <a href="export_voip_report/" class="addlink">
                     {% trans "Export CSV file" %}
+                </a>
+            </li>
+            <li>
+                <a href="voip_daily_report/" class="addlink">
+                    {% trans "daily report"|title %}
                 </a>
             </li>
         </ul>

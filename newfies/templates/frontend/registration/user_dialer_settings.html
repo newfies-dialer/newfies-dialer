@@ -2,35 +2,35 @@
 {% if dialer_set %}
     <table class="table table-striped table-bordered table-condensed">
         <tr>
-            <td>{% trans "Maximum calls per minute" %}</td>
+            <td>{% trans "maximum calls per minute"|title %}</td>
             <td>{{ dialer_set.max_frequency }}</td>
         </tr>
         <tr>
-            <td>{% trans "Maximum call duration" %}</td>
+            <td>{% trans "maximum call duration"|title %}</td>
             <td>{{ dialer_set.callmaxduration }}</td>
         </tr>
         <tr>
-            <td>{% trans "Maximum retries" %}</td>
+            <td>{% trans "maximum retries"|title %}</td>
             <td>{{ dialer_set.maxretry }}</td>
         </tr>
         <tr>
-            <td>{% trans "Timeout" %}</td>
+            <td>{% trans "timeout"|title %}</td>
             <td>{{ dialer_set.max_calltimeout }}</td>
         </tr>
         <tr>
-            <td>{% trans "Maximum campaigns" %}</td>
+            <td>{% trans "maximum campaigns"|title %}</td>
             <td>{{ dialer_set.max_number_campaign }}</td>
         </tr>
         <tr>
-            <td>{% trans "Maximum subscribers per campaign" %}</td>
+            <td>{% trans "maximum subscribers per campaign"|title %}</td>
             <td>{{ dialer_set.max_number_subscriber_campaign }}</td>
         </tr>
         <tr>
-            <td>{% trans "Whitelist" %}</td>
+            <td>{% trans "whitelist"|title %}</td>
             <td>{{ dialer_set.whitelist }}</td>
         </tr>
         <tr>
-            <td>{% trans "Blacklist" %}</td>
+            <td>{% trans "blacklist"|title %}</td>
             <td>{{ dialer_set.blacklist }}</td>
         </tr>
     </table>

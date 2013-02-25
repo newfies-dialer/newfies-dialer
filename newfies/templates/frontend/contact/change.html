@@ -13,11 +13,11 @@
 {% block content_header %}
     <h1>
         {% if action == 'update' %}
-            {% trans "Update" %}
+            {% trans "update"|title %}
         {% else %}
-            {% trans "Add" %}
-        {% endif %} {% trans "Contact" %}
-        <small>{% trans "Add contact details" %}</small>
+            {% trans "add"|title %}
+        {% endif %} {% trans "contact"|title %}
+        <small>{% trans "add contact details"|title %}</small>
     </h1>
 {% endblock %}
 
@@ -39,13 +39,13 @@
 
     <div class="actions">
         {% if action == 'update' %}
-            <input id="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
+            <input id="update" class="btn btn-primary" type="submit" value="{% trans "update"|title %}" />
         {% else %}
-            <input id="add" class="btn btn-primary" type="submit" value="{% trans "Submit" %}" />
+            <input id="add" class="btn btn-primary" type="submit" value="{% trans "submit"|title %}" />
         {% endif %}
             &nbsp;&nbsp;
         {% if action == 'update' %}
-            <input id="delete" class="btn btn-danger" name="delete" type="submit" value="{% trans "Delete" %}" />
+            <input id="delete" class="btn btn-danger" name="delete" type="submit" value="{% trans "delete"|title %}" />
         {% endif %}
     </div>
 </form>

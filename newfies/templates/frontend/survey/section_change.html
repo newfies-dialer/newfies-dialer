@@ -44,10 +44,10 @@
             <div class="modal-header">
                 <a class="close" data-dismiss="modal" >&times;</a>
                 <h3>{% if action == 'update' %}
-                    {% trans "Update" %}
+                    {% trans "update"|title %}
                 {% else %}
-                    {% trans "Add" %}
-                {% endif %} {% trans "Section" %}
+                    {% trans "add"|title %}
+                {% endif %} {% trans "section"|title %}
                 </h3>
             </div>
 
@@ -291,12 +291,12 @@
 
                 <div class="modal-footer" align="right">
                     {% if action == 'update' %}
-                        <input id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
+                        <input id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans "update"|title %}" />
                     {% else %}
-                        <input id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans "Save" %}" />
+                        <input id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans "save"|title %}" />
                     {% endif %}
                     &nbsp;
-                    <a href="#" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
+                    <a href="#" class="close btn" data-dismiss="modal">{% trans "close"|title %}</a>
                 </div>
             </form>
 

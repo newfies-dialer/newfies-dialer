@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content_header %}
-    <h1>{% trans "Voice Applications" %} <small>{% trans "List, add and edit voice applications" %}</small></h1>
+    <h1>{% trans "voice applications"|title %} <small>{% trans "list, add and edit voice applications"|capfirst %}</small></h1>
 {% endblock %}
 
 {% block content %}
@@ -30,12 +30,12 @@ function delete_button()
             </button>
             <ul class="dropdown-menu">
                 {% if perms.voice_app.delete_voiceapp %}
-                    <li><a href="#" onclick="delete_button()">{% trans "Delete selected" %}</a></li>
+                    <li><a href="#" onclick="delete_button()">{% trans "delete selected"|capfirst %}</a></li>
                 {% endif %}
             </ul>
         </div>
         {% if perms.voice_app.add_voiceapp %}
-            <a class="btn btn-info" href="#" onclick="add_button()">{% trans "Add" %}</a>
+            <a class="btn btn-info" href="#" onclick="add_button()">{% trans "add"|title %}</a>
         {% endif %}
     </div>
 </div>
@@ -70,10 +70,10 @@ function delete_button()
                             <td>{{ row.updated_date }}</td>
                             <td>
                                 {% if perms.voice_app.change_voiceapp %}
-                                    <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "Update voiceapp" %}"></a>
+                                    <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update voiceapp"|title %}"></a>
                                 {% endif %}
                                 {% if perms.voice_app.delete_voiceapp %}
-                                    <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "Delete voiceapp" %}"></a>
+                                    <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete voiceapp"|title %}"></a>
                                 {% endif %}
                             </td>
                         </tr>

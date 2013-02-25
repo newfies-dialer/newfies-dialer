@@ -1,12 +1,12 @@
 {% load i18n %}
 {% if msg_number %}
     <div class="alert alert-success">
-        <strong>{% trans "Alert" %} : </strong>  {{ msg_number }}
+        <strong>{% trans "alert"|title %} : </strong>  {{ msg_number }}
     </div>
 {% endif %}
 {% if error_number %}
     <div class="alert alert-error">
-        <strong>{% trans "Alert" %} : </strong>  {{ error_number }}
+        <strong>{% trans "alert"|title %} : </strong>  {{ error_number }}
     </div>
 {% endif %}
 
@@ -32,6 +32,6 @@
     <div class="actions">
         <input type="hidden" name="action" value="tabs-5" />
         <input type="hidden" name="form-type" value="check-number" />
-        <input type="submit" class="btn btn-primary" value="{% trans 'Check' %}" />
+        <input type="submit" class="btn btn-primary" value="{% trans 'check'|title %}" />
     </div>
 </form>

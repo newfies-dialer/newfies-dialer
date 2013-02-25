@@ -8,12 +8,12 @@
 {% block content_header %}
     <h1>
         {% if action == 'update' %}
-            {% trans "Update" %}
+            {% trans "update"|title %}
         {% else %}
-            {% trans "Add" %}
+            {% trans "add"|title %}
         {% endif %}
-        {% trans "Audio Files" %}
-        <small>{% trans "Upload audio to be used in Voice applications" %}</small>
+        {% trans "audio file"|title %}
+        <small>{% trans "upload audio to be used in voice applications"|title %}</small>
     </h1>
 {% endblock %}
 
@@ -36,9 +36,9 @@
 
     <div class="actions">
          {% if action == 'update' %}
-            <input id="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
+            <input id="update" class="btn btn-primary" type="submit" value="{% trans "update"|title %}" />
          {% else %}
-            <input id="add" type="submit" class="btn btn-primary" value="{% trans "Submit" %}" />
+            <input id="add" type="submit" class="btn btn-primary" value="{% trans "submit"|title %}" />
          {% endif %}
     </div>
 </form>

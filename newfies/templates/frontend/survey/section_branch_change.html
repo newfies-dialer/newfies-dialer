@@ -111,13 +111,13 @@
         <div class="modal-footer">
             {% if section_type != SECTION_TYPE.HANGUP_SECTION %}
             {% if action == 'update' %}
-                <input id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans "Update" %}" />
+                <input id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans "update"|title %}" />
             {% else %}
-                <input id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans "Save" %}" />
+                <input id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans "save"|title %}" />
             {% endif %}
             &nbsp;
             {% endif %}
-            <a href="#" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
+            <a href="#" class="close btn" data-dismiss="modal">{% trans "close"|title %}</a>
         </div>
     </form>
 

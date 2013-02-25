@@ -13,14 +13,14 @@
 {% endblock %}
 
 {% block content_header %}
-    <h1>{% trans "Call Reports" %} <small>{% trans "Detailed call data" %}</small></h1>
+    <h1>{% trans "call reports"|title %} <small>{% trans "detailed call data"|title %}</small></h1>
 {% endblock %}
 
 {% block content %}
     <div class="tabbable">
     <ul class="nav nav-tabs">
-        <li {% if action == "tabs-1" %}class="active"{% endif %}><a href="#tabs-1" data-toggle="tab">{% trans "VoIP calls"|title %}</a></li>
-        <li {% if action == "tabs-2" %}class="active"{% endif %}><a href="#tabs-2" data-toggle="tab">{% trans "Daily report"|title %}</a></li>
+        <li {% if action == "tabs-1" %}class="active"{% endif %}><a href="#tabs-1" data-toggle="tab">{% trans "VoIP calls" %}</a></li>
+        <li {% if action == "tabs-2" %}class="active"{% endif %}><a href="#tabs-2" data-toggle="tab">{% trans "daily report"|title %}</a></li>
     </ul>
 
     <div id="form_collapse" class="collapse">
@@ -52,7 +52,7 @@
         </form>
     </div>
     <a class="btn btn-small" id="toggle_btn" href="#" data-toggle="collapse" data-target="#form_collapse">
-        <i class="icon-search"></i> <span>{% trans "Search"|title %}</span>
+        <i class="icon-search"></i> <span>{% trans "search"|title %}</span>
     </a>
 
 
@@ -60,7 +60,7 @@
 
         <div id="tabs-1" class="tab-pane {% if action == "tabs-1" %}active{% endif %}">
             <div class="graph_header">
-                {% trans "Voip call detail records"|title %} -
+                {% trans "voip call detail records"|title %} -
                 <b>
                     {% if start_date  %}
                         {{ start_date|date:"jS N Y" }}
@@ -132,15 +132,15 @@
         </div>
 
         <div id="tabs-2" class="tab-pane {% if action == "tabs-2" or action == "" %}active{% endif %}">
-            <h3><center>{% trans "Call Detail Report Summary" %}</center></h3>
+            <h3><center>{% trans "call detail report summary"|title %}</center></h3>
             <table class="table table-striped table-bordered table-condensed">
                 <thead>
                     <tr>
-                        <th>{% trans "Date" %}</th>
-                        <th>{% trans "Duration" %}</th>
-                        <th>{% trans "Graphic" %}</th>
-                        <th>{% trans "Calls" %}</th>
-                        <th><acronym title="{% trans "Average Connection Time" %}">{% trans "ACT" %}</acronym></th>
+                        <th>{% trans "date"|title %}</th>
+                        <th>{% trans "duration"|title %}</th>
+                        <th>{% trans "graphic"|title %}</th>
+                        <th>{% trans "calls"|title %}</th>
+                        <th><acronym title="{% trans "average connection time"|title %}">{% trans "ACT" %}</acronym></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -149,7 +149,7 @@
                         <td>{{ td.starting_date }}</td>
                         <td>{{ td.duration__sum|conv_min }}</td>
                         <td>{% if max_duration > 0 %}
-                            <img src="{{STATIC_URL}}newfies/images/spacer.png" width="{{td.duration__sum|cal_width:max_duration}}" style="vertical-align:center; height:15px"/>
+                            <img src="{{ STATIC_URL }}newfies/images/spacer.png" width="{{td.duration__sum|cal_width:max_duration}}" style="vertical-align:center; height:15px"/>
                             {% endif %}
                         </td>
                         <td>{{ td.starting_date__count }}</td>
@@ -160,7 +160,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td>{% trans "Total" %}</td>
+                        <td>{% trans "total"|title %}</td>
                         <td>{{ total_duration|conv_min }}</td>
                         <td></td>
                         <td>{{ total_calls }}</td>

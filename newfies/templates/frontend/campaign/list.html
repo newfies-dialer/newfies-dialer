@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content_header %}
-    <h1>{% trans "Campaign" %} <small>{% trans "List, add and edit campaigns" %}</small></h1>
+    <h1>{% trans "campaign"|title %} <small>{% trans "list, add and edit campaigns"|title %}</small></h1>
 {% endblock %}
 
 {% block content %}
@@ -45,13 +45,13 @@ function delete_button()
             </button>
             <ul class="dropdown-menu">
                 {% if perms.dialer_campaign.delete_campaign %}
-                    <li><a href="#" onclick="delete_button()">{% trans "Delete selected" %}</a></li>
+                    <li><a href="#" onclick="delete_button()">{% trans "delete selected"|title %}</a></li>
                 {% endif %}
             </ul>
         </div>
 
         {% if perms.dialer_campaign.add_campaign %}
-            <a class="btn btn-info" href="#" onclick="add_button()">{% trans "Add" %}</a>
+            <a class="btn btn-info" href="#" onclick="add_button()">{% trans "add"|title %}</a>
         {% endif %}
     </div>
 </div>
@@ -70,7 +70,7 @@ function delete_button()
                     <th>{{ CAMPAIGN_COLUMN_NAME.app }}</th>
                     <th>{% sort_link CAMPAIGN_COLUMN_NAME.contacts col_name_with_order.totalcontact %}</th>
                     <th>{% sort_link CAMPAIGN_COLUMN_NAME.status col_name_with_order.status %}</th>
-                    <th>{% trans 'Action' %}</th>
+                    <th>{% trans 'action'|title %}</th>
                 </tr>
                 </thead>
                 {% if campaign_list %}
@@ -87,10 +87,10 @@ function delete_button()
                             <td class="survey_edit_key">{{ row.status|get_campaign_status|safe }}</td>
                             <td>
                                 {% if perms.dialer_campaign.change_campaign %}
-                                    <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "Update campaign" %}"></a>
+                                    <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update campaign"|title %}"></a>
                                 {% endif %}
                                 {% if perms.dialer_campaign.delete_campaign %}
-                                    <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "Delete campaign" %}"></a>
+                                    <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete campaign"|title %}"></a>
                                 {% endif %}
 
                                 {{ row.id|create_duplicate_campaign|safe }}                                

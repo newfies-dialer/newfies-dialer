@@ -63,9 +63,8 @@ def customer_detail_change(request):
     user_password_form = PasswordChangeForm(user=request.user)
     check_phone_no_form = CheckPhoneNumberForm()
 
-    try:
-        user_ds = UserProfile.objects.get(user=request.user)
-        dialer_set = DialerSetting.objects.get(id=user_ds.dialersetting.id)
+    try:        
+        dialer_set = DialerSetting.objects.get(id=request.user.get_profile().dialersetting_id)
     except:
         dialer_set = ''
 

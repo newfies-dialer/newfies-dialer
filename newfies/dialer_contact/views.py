@@ -101,7 +101,7 @@ def phonebook_add(request):
         form = PhonebookForm(request.POST)
         if form.is_valid():
             obj = form.save(commit=False)
-            obj.user = User.objects.get(username=request.user)
+            obj.user = request.user
             obj.save()
             request.session["msg"] = _('"%(name)s" added.') %\
                 {'name': request.POST['name']}

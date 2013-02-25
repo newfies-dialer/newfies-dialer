@@ -55,9 +55,8 @@ class CallrequestValidation(Validation):
         else:
             errors['chk_object_id'] = ["App object Id doesn't exist!"]
 
-        try:
-            user_id = User.objects.get(username=request.user).id
-            bundle.data['user'] = '/api/v1/user/%s/' % user_id
+        try:            
+            bundle.data['user'] = '/api/v1/user/%s/' % request.user.id
         except:
             errors['chk_user'] = ["The User doesn't exist!"]
 

@@ -11,8 +11,6 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, \
     permission_required
 from django.http import HttpResponseRedirect, HttpResponse, \
@@ -101,7 +99,7 @@ def phonebook_add(request):
         form = PhonebookForm(request.POST)
         if form.is_valid():
             obj = form.save(commit=False)
-            obj.user = User.objects.get(username=request.user)
+            obj.user = request.user
             obj.save()
             request.session["msg"] = _('"%(name)s" added.') %\
                 {'name': request.POST['name']}

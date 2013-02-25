@@ -55,62 +55,14 @@
                  {% endfor %}
              </div>
              <div class="modal-footer">
-                 <input type="submit" class="btn btn-primary" name="submit" value="{% trans "Submit" %}" />
-                 <a href="#" class="close btn" data-dismiss="modal">{% trans "Close" %}</a>
+                 <input type="submit" class="btn btn-primary" name="submit" value="{% trans "submit"|title %}" />
+                 <a href="#" class="close btn" data-dismiss="modal">{% trans "close"|title %}</a>
              </div>
         </form>
 
         {% if err_msg %}
             </div>
-        {% endif %}
-
-    <!--
-    {% if section_row %}
-        <table class="table table-striped table-bordered table-condensed">
-            <tr>
-                <th>{% trans "Survey's sections imported" %} :</th>
-            </tr>
-            {% for row in section_row %}
-            <tr>
-                <td>
-                    {{ row }}
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-    {% endif %}
-
-    {% if branching_row %}
-        <table class="table table-striped table-bordered table-condensed">
-            <tr>
-                <th>{% trans "Survey's branching imported" %} :</th>
-            </tr>
-            {% for row in branching_row %}
-                <tr>
-                    <td>
-                        {{ row }}
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-    {% endif %}
-
-    {% if type_error_import_list %}
-    <br/>
-    <table class="table table-striped table-bordered table-condensed">
-        <tr>
-            <th>{% trans "Type mismatch" %} :</th>
-        </tr>
-        {% for row in type_error_import_list %}
-        <tr>
-            <td>
-                {{ row }}
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-    {% endif %}
-    -->
+        {% endif %}    
 
     {% endblock %}
 

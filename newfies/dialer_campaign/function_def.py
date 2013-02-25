@@ -26,19 +26,11 @@ from datetime import timedelta
 
 
 def user_attached_with_dialer_settings(request):
-    """Check user is attached with dialer setting or not"""
+    """Check user is attached with dialer setting or not"""    
     try:
-        user_obj = UserProfile.objects.get(user=request.user,
-                                           dialersetting__isnull=False)
-        # DialerSettings link to the User
-        if user_obj:
-            # DialerSettings is exists
-            if DialerSetting.objects.get(pk=user_obj.dialersetting_id):
-                # attached with dialer setting
-                return False
-            else:
-                # not attached
-                return True
+        # DialerSettings is exists & attached with user
+        DialerSetting.objects.get(pk=request.user.get_profile().dialersetting_id)        
+        return False        
     except:
         # not attached
         return True
@@ -51,75 +43,72 @@ def check_dialer_setting(request, check_for, field_value=''):
 
         * ``check_for`` -  for campaign or for contact
     """
-    try:
-        user_obj = UserProfile.objects.get(user=request.user,
-                                           dialersetting__isnull=False)
-        # DialerSettings link to the User
-        if user_obj:
-            dialer_set_obj = \
-                DialerSetting.objects.get(pk=user_obj.dialersetting_id)
-            if dialer_set_obj:
-                # check running campaign for User
-                if check_for == "campaign":
-                    campaign_count = Campaign.objects\
-                        .filter(user=request.user).count()
-                    # Total active campaign matched with
-                    # max_number_campaigns
-                    if campaign_count >= dialer_set_obj.max_number_campaign:
-                        # Limit matched or exceeded
-                        return True
-                    else:
-                        # Limit not matched
-                        return False
-
-                # check for subscriber per campaign
-                if check_for == "contact":
-                    # Campaign list for User
-                    campaign_list = Campaign.objects.filter(user=request.user)
-                    for i in campaign_list:
-                        # Total contacts per campaign
-                        contact_count = Contact.objects\
-                            .filter(phonebook__campaign=i.id, phonebook__user=request.user)\
-                            .count()
-                        # Total active contacts matched with
-                        # max_number_subscriber_campaign
-                        if contact_count >= dialer_set_obj.max_number_subscriber_campaign:
-                            # Limit matched or exceeded
-                            return True
+    try:        
+        # DialerSettings is linked with the User        
+        dialer_set_obj = \
+            DialerSetting.objects.get(pk=request.user.get_profile().dialersetting_id)
+        if dialer_set_obj:
+            # check running campaign for User
+            if check_for == "campaign":
+                campaign_count = Campaign.objects\
+                    .filter(user=request.user).count()
+                # Total active campaign matched with
+                # max_number_campaigns
+                if campaign_count >= dialer_set_obj.max_number_campaign:
+                    # Limit matched or exceeded
+                    return True
+                else:
                     # Limit not matched
                     return False
 
-                # check for frequency limit
-                if check_for == "frequency":
-                    if field_value > dialer_set_obj.max_frequency:
+            # check for subscriber per campaign
+            if check_for == "contact":
+                # Campaign list for User
+                campaign_list = Campaign.objects.filter(user=request.user)
+                for i in campaign_list:
+                    # Total contacts per campaign
+                    contact_count = Contact.objects\
+                        .filter(phonebook__campaign=i.id, phonebook__user=request.user)\
+                        .count()
+                    # Total active contacts matched with
+                    # max_number_subscriber_campaign
+                    if contact_count >= dialer_set_obj.max_number_subscriber_campaign:
                         # Limit matched or exceeded
                         return True
-                    # Limit not exceeded
-                    return False
+                # Limit not matched
+                return False
 
-                # check for call duration limit
-                if check_for == "duration":
-                    if field_value > dialer_set_obj.callmaxduration:
-                        # Limit matched or exceeded
-                        return True
-                    # Limit not exceeded
-                    return False
+            # check for frequency limit
+            if check_for == "frequency":
+                if field_value > dialer_set_obj.max_frequency:
+                    # Limit matched or exceeded
+                    return True
+                # Limit not exceeded
+                return False
 
-                # check for call retry limit
-                if check_for == "retry":
-                    if field_value > dialer_set_obj.maxretry:
-                        # Limit matched or exceeded
-                        return True
-                    # Limit not exceeded
-                    return False
+            # check for call duration limit
+            if check_for == "duration":
+                if field_value > dialer_set_obj.callmaxduration:
+                    # Limit matched or exceeded
+                    return True
+                # Limit not exceeded
+                return False
 
-                # check for call timeout limit
-                if check_for == "timeout":
-                    if field_value > dialer_set_obj.max_calltimeout:
-                        # Limit matched or exceeded
-                        return True
-                    # Limit not exceeded
-                    return False
+            # check for call retry limit
+            if check_for == "retry":
+                if field_value > dialer_set_obj.maxretry:
+                    # Limit matched or exceeded
+                    return True
+                # Limit not exceeded
+                return False
+
+            # check for call timeout limit
+            if check_for == "timeout":
+                if field_value > dialer_set_obj.max_calltimeout:
+                    # Limit matched or exceeded
+                    return True
+                # Limit not exceeded
+                return False
     except:
         # DialerSettings not link to the User
         return False
@@ -134,13 +123,11 @@ def dialer_setting_limit(request, limit_for):
          callmaxduration
          maxretry
          max_calltimeout
-    """
-    user_obj = UserProfile.objects.get(user=request.user,
-                                       dialersetting__isnull=False)
-    # DialerSettings link to the User
-    if user_obj:
+    """    
+    try:
+        # DialerSettings is linked with the User
         dialer_set_obj = \
-            DialerSetting.objects.get(pk=user_obj.dialersetting_id)
+            DialerSetting.objects.get(pk=request.user.get_profile().dialersetting_id)
         if limit_for == "contact":
             return str(dialer_set_obj.max_number_subscriber_campaign)
         if limit_for == "campaign":
@@ -153,6 +140,8 @@ def dialer_setting_limit(request, limit_for):
             return str(dialer_set_obj.maxretry)
         if limit_for == "timeout":
             return str(dialer_set_obj.max_calltimeout)
+    except:
+        return False
 
 
 def type_field_chk(base_field, base_field_type, field_name):
@@ -245,9 +234,8 @@ def get_campaign_status_name(id):
 
 def user_dialer_setting(user):
     """Get Dialer setting for user"""
-    try:
-        user_ds = UserProfile.objects.get(user=User.objects.get(username=user))
-        dialer_set = DialerSetting.objects.get(id=user_ds.dialersetting.id)
+    try:        
+        dialer_set = DialerSetting.objects.get(id=user.get_profile().dialersetting_id)
     except:
         dialer_set = []
     return dialer_set

@@ -90,9 +90,8 @@ class CampaignForm(ModelForm):
             for l in list:
                 list_pb.append((l[0], l[1]))
             self.fields['phonebook'].choices = list_pb
-
-            user_profile = UserProfile.objects.get(user=user)
-            list = user_profile.userprofile_gateway.all()
+                        
+            list = user.get_profile().userprofile_gateway.all()
             gw_list = ((l.id, l.name) for l in list)
 
             for i in gw_list:

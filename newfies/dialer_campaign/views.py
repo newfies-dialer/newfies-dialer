@@ -236,7 +236,7 @@ def campaign_list(request):
     **Logic Description**:
 
         * List all campaigns belonging to the logged in user
-    """
+    """    
     request.session['pagination_path'] = request.META['PATH_INFO'] + '?' + request.META['QUERY_STRING']
     sort_col_field_list = ['id', 'name', 'startingdate', 'status', 'totalcontact']
     default_sort_field = 'id'
@@ -329,7 +329,7 @@ def campaign_add(request):
             contenttype = get_content_type(form.cleaned_data['content_object'])
             obj.content_type = contenttype['object_type']
             obj.object_id = contenttype['object_id']
-            obj.user = User.objects.get(username=request.user)
+            obj.user = request.user
             obj.save()
 
             # Start tasks to import subscriber

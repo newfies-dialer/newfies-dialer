@@ -4,12 +4,12 @@
 {% block content_header %}
     <h1>
         {% if action == 'update' %}
-            {% trans "Update" %}
+            {% trans "update"|title %}
         {% else %}
-            {% trans "Add" %}
+            {% trans "add"|title %}
         {% endif %}
-        {% trans "Phonebook" %}
-        <small>{% trans "Contacts are stored in phonebooks" %}</small>
+        {% trans "phonebook"|title %}
+        <small>{% trans "contacts are stored in phonebooks"|title %}</small>
     </h1>
 {% endblock %}
 
@@ -30,13 +30,13 @@
     {% endfor %}
     <div class="actions">
         {% if action == 'update' %}
-        <input id="update" type="submit" class="btn btn-primary" value="{% trans "Update" %}" />
+        <input id="update" type="submit" class="btn btn-primary" value="{% trans "update"|title %}" />
         {% else %}
-        <input id="add" type="submit" class="btn btn-primary" value="{% trans "Submit" %}" />
+        <input id="add" type="submit" class="btn btn-primary" value="{% trans "submit"|title %}" />
         {% endif %}
         &nbsp;&nbsp;
         {% if action == 'update' %}
-         <input id="delete" name="delete" class="btn btn-danger" type="submit" value="{% trans "Delete" %}" />
+         <input id="delete" name="delete" class="btn btn-danger" type="submit" value="{% trans "delete"|title %}" />
         {% endif %}
     </div>
 </form>

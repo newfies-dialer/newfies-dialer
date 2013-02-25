@@ -11,9 +11,6 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-
-# Create your views here.
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required,\
                                            permission_required
 from django.http import HttpResponseRedirect, HttpResponse, Http404
@@ -93,7 +90,7 @@ def voiceapp_add(request):
         form = VoiceAppForm(request.POST)
         if form.is_valid():
             obj = form.save(commit=False)
-            obj.user = User.objects.get(username=request.user)
+            obj.user = request.user
             obj.save()
             request.session["msg"] = _('"%(name)s" added.') %\
                 request.POST

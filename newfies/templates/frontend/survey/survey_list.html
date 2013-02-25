@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content_header %}
-    <h1>{% trans "Survey" %} <small>{% trans "List, add and edit surveys" %}</small></h1>
+    <h1>{% trans "survey"|title %} <small>{% trans "list, add and edit surveys" %}</small></h1>
 {% endblock %}
 
 {% block content %}
@@ -32,12 +32,12 @@ function delete_button(){
                 </a>
                 </li>
                 {% if perms.survey.delete_survey %}
-                    <li><a href="#" onclick="delete_button()">{% trans "Delete survey" %}</a></li>
+                    <li><a href="#" onclick="delete_button()">{% trans "delete survey"|title %}</a></li>
                 {% endif %}
             </ul>
         </div>
         {% if perms.survey.add_survey %}
-            <a class="btn btn-info" href="#" onclick="add_button()">{% trans "Add" %}</a>
+            <a class="btn btn-info" href="#" onclick="add_button()">{% trans "add"|title %}</a>
         {% endif %}
     </div>
 </div>
@@ -65,18 +65,16 @@ function delete_button(){
                             <td>{{ row.updated_date }}</td>
                             <td>
                                 {% if perms.survey.change_survey %}
-                                    <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "Update survey" %}"></a>
+                                    <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update survey"|title %}"></a>
                                 {% endif %}
 
                                 {% if perms.survey.delete_survey %}
-                                    <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "Delete survey" %}"></a>
+                                    <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete survey"|title %}"></a>
                                 {% endif %}
 
                                 {% if perms.survey.export_survey %}
-                                    <a href="/export_survey/{{ row.id }}/" target="_blank" {% icon "database_go" %} title="{% trans "Export survey" %}"></a>
-                                {% endif %}
-
-                                <!--&nbsp;<a href="/import_survey/{{ row.id }}/" {% icon "database_save" %} title="{% trans "Import survey" %}"></a>-->
+                                    <a href="/export_survey/{{ row.id }}/" target="_blank" {% icon "database_go" %} title="{% trans "export survey"|title %}"></a>
+                                {% endif %}                                
                             </td>
                         </tr>
                     {% endfor %}

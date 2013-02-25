@@ -144,14 +144,14 @@
             {% for field in loginform %}
                 {{ field }}
             {% endfor %}
-            <button class="btn" type="submit">{% trans "Login" %}</button>
-            <a class="btn btn-info" href="/password_reset/">{% trans "Forgot password?" %}</a>
+            <button class="btn" type="submit">{% trans "login"|title %}</button>
+            <a class="btn btn-info" href="/password_reset/">{% trans "forgot password?"|capfirst %}</a>
         </form>
         </div>
         <div class="span6">
             <form class="well form-inline" action="/i18n/setlang/" method="post" class="pull-right">
                 {% csrf_token %}
-                {% trans "Display language" %} : <select name="language" id="language-container" class="input-small" >
+                {% trans "display language"|capfirst %} : <select name="language" id="language-container" class="input-small" >
                 {% for lang in LANGUAGES %}
                 <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected{% endifequal %}>{{ lang.1 }}</option>
                 {% endfor %}
@@ -166,13 +166,13 @@
 
         {% if errorlogin %}
         <div class="alert alert-error">
-            <strong>{% trans "Alert" %} : </strong>  {{ errorlogin }}
+            <strong>{% trans "alert"|title %} : </strong>  {{ errorlogin }}
         </div>
         </br>
         {% else %}
             {% if notlogged %}
             <div class="alert alert-error">
-                <strong>{% trans "Alert" %} : </strong>  {% trans "Please login by clicking on login button" %}
+                <strong>{% trans "alert"|title %} : </strong>  {% trans "please login by clicking on login button"|capfirst %}
             </div>
             </br>
         {% endif %}
@@ -194,9 +194,9 @@
             {% if dialer_setting_msg %}
 
             <div class="alert alert-error">
-                <strong>{% trans "Alert" %} : </strong>  {{ dialer_setting_msg }}
+                <strong>{% trans "alert"|title %} : </strong>  {{ dialer_setting_msg }}
                 {% if not request.session.has_notified %}
-                    {% trans "To send notification to administrator" %} <a href="/notify/admin/">{% trans "Click here" %}</a>
+                    {% trans "to send notification to administrator"|capfirst %} <a href="/notify/admin/">{% trans "click here"|capfirst %}</a>
                 {% else %}
                     {% trans "(Notification sent)" %}
                 {% endif %}
@@ -208,21 +208,21 @@
     <!--Success Message of view-->
     {% if msg %}
         <div class="alert alert-success">
-            <strong>{% trans "Alert" %} : </strong>  {{ msg }}
+            <strong>{% trans "alert"|title %} : </strong>  {{ msg }}
         </div>
     {% endif %}
 
     <!--Error Message of view-->
     {% if error_msg %}
         <div class="alert alert-error">
-            <strong>{% trans "Error" %} : </strong>  {{ error_msg }}
+            <strong>{% trans "error"|title %} : </strong>  {{ error_msg }}
         </div>
     {% endif %}
 
     <!--Alert Message of view-->
     {% if info_msg %}
         <div class="alert alert-info">
-            <strong>{% trans "Info" %} : </strong>  {{ info_msg }}
+            <strong>{% trans "info"|title %} : </strong>  {{ info_msg }}
         </div>
     {% endif %}
 

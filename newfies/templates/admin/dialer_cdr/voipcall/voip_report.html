@@ -5,14 +5,14 @@
   {% block breadcrumbs %}
     <div class="breadcrumbs">
       <a href="../../">
-        {% trans "Home" %}
+        {% trans "home"|title %}
       </a>
        &rsaquo;
        <a href="../../">
          {{ app_label|capfirst }}
       </a>
       &rsaquo; <a href="../">{% trans "Call Report" %}</a>
-      &rsaquo; {% trans "Call aggregate report" %}
+      &rsaquo; {% trans "call aggregate report"|title %}
     </div>
   {% endblock %}
 {% endif %}
@@ -30,12 +30,12 @@
 {% block custom-search %}
     <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
     <table class="actions">
-    <caption>{% trans "Search Option" %}</caption>
+    <caption>{% trans "search option"|title %}</caption>
     {{ form.as_table }}
     <tr>
         <td>&nbsp;</td>
-        <td><input type="submit" value="{% trans "Search" %}" class="l-1" />&nbsp;
-        <input type="reset" class="j-2" name="reset" value="{% trans "Reset" %}"><td>
+        <td><input type="submit" value="{% trans "search"|title %}" class="l-1" />&nbsp;
+        <input type="reset" class="j-2" name="reset" value="{% trans "reset"|title %}"><td>
     </tr>
     </table>
     </form>
@@ -49,11 +49,11 @@
     <caption>{% trans "Call Detail Report Summary" %}</caption>
     <thead>
         <tr>
-            <th scope="col">{% trans "Date" %}</th>
-            <th scope="col">{% trans "Duration" %}</th>
-            <th scope="col">{% trans "Graphic" %}</th>
-            <th scope="col">{% trans "Calls" %}</th>
-            <th scope="col"><acronym title="{% trans "Average Connection Time" %}">{% trans "ACT" %}</acronym></th>
+            <th scope="col">{% trans "date"|title %}</th>
+            <th scope="col">{% trans "duration"|title %}</th>
+            <th scope="col">{% trans "graphic"|title %}</th>
+            <th scope="col">{% trans "calls"|title %}</th>
+            <th scope="col"><acronym title="{% trans "average connection time"|title %}">{% trans "ACT" %}</acronym></th>
         </tr>
     </thead>
     <tbody>

@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content_header %}
-    <h1>{% trans "Audio Files" %} <small>{% trans "List, upload and edit audio files" %}</small></h1>
+    <h1>{% trans "audio files"|title %} <small>{% trans "list, upload and edit audio files"|title %}</small></h1>
 {% endblock %}
 
 {% block content %}
@@ -24,18 +24,18 @@ function delete_button()
 <div class="span12">
     <div class="row">
         <div class="btn-group">
-            <button class="btn">{% trans "Action" %}</button>
+            <button class="btn">{% trans "action"|title %}</button>
             <button class="btn dropdown-toggle" data-toggle="dropdown">
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
                 {% if perms.audiofield.delete_audiofile %}
-                    <li><a href="#" onclick="delete_button()">{% trans "Delete selected" %}</a></li>
+                    <li><a href="#" onclick="delete_button()">{% trans "delete selected"|title %}</a></li>
                 {% endif %}
             </ul>
         </div>
         {% if perms.audiofield.add_audiofile %}
-            <a class="btn btn-info" href="#" onclick="add_button()">{% trans "Add" %}</a>
+            <a class="btn btn-info" href="#" onclick="add_button()">{% trans "add"|title %}</a>
         {% endif %}
     </div>
 </div>
@@ -50,7 +50,7 @@ function delete_button()
                 <th>{% trans AUDIO_COLUMN_NAME.audio_name %}</th>
                 <th>{% trans AUDIO_COLUMN_NAME.audio_url %}</th>
                 <th>{% sort_link AUDIO_COLUMN_NAME.date col_name_with_order.updated_date %}</th>
-                <th>{% trans 'Action' %}</th>
+                <th>{% trans 'action'|title %}</th>
             </tr>
             </thead>
             {% if audio_list %}
@@ -70,10 +70,10 @@ function delete_button()
                         <td>{{ row.updated_date }}</td>
                         <td>
                             {% if perms.audiofield.change_audiofile %}
-                                <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "Update audio" %}"></a>
+                                <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update audio"|title %}"></a>
                             {% endif %}
                             {% if perms.audiofield.delete_audiofile %}
-                                <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "Delete audio" %}"></a>
+                                <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete audio"|title %}"></a>
                             {% endif %}
                         </td>
                     </tr>

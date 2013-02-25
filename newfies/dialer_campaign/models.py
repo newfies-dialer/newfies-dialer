@@ -69,15 +69,15 @@ class CampaignManager(models.Manager):
          based on the expiry date but status is not 'END'"""
         kwargs = {}
         kwargs['expirationdate__lte'] = datetime.now()
-        return Campaign.objects.filter(**kwargs).exclude(status=4)
+        return Campaign.objects.filter(**kwargs).exclude(status=CAMPAIGN_STATUS.END)
 
 
 def common_contact_authorization(user, str_contact):
     """Common Function to check contact no is authorized or not.
     For this we will check the dialer settings : whitelist and blacklist
-    """
+    """    
     try:
-        obj_userprofile = UserProfile.objects.get(user=user)
+        obj_userprofile = user.get_profile()
     except UserProfile.DoesNotExist:
         return False
 
@@ -324,7 +324,7 @@ class Campaign(Model):
     def get_active_max_frequency(self):
         """Get the active max frequency"""
         try:
-            obj_userprofile = UserProfile.objects.get(user=self.user_id)
+            obj_userprofile = self.user.get_profile()
         except UserProfile.DoesNotExist:
             return self.frequency
 
@@ -337,7 +337,7 @@ class Campaign(Model):
     def get_active_callmaxduration(self):
         """Get the active call max duration"""
         try:
-            obj_userprofile = UserProfile.objects.get(user=self.user_id)
+            obj_userprofile = self.user.get_profile()
         except UserProfile.DoesNotExist:
             return self.frequency
 
@@ -350,13 +350,13 @@ class Campaign(Model):
     def get_active_contact(self):
         """Get all the active Contacts from the phonebook"""
         list_contact =\
-            Contact.objects.filter(phonebook__campaign=self.id, status=1).all()
+            Contact.objects.filter(phonebook__campaign=self.id, status=CONTACT_STATUS.ACTIVE).all()
         if not list_contact:
             return False
         return list_contact
 
     def progress_bar(self):
-        """Progress bar generated based on no of contacts"""
+        """Progress bar generated based on no of contacts"""        
         # Cache subscriber_count
         count_contact = \
             Contact.objects.filter(phonebook__campaign=self.id).count()
@@ -414,7 +414,7 @@ class Campaign(Model):
     def get_pending_subscriber(self, limit=1000):
         """Get all the pending subscribers from the campaign"""
         list_subscriber = \
-            Subscriber.objects.filter(campaign=self.id, status=1)\
+            Subscriber.objects.filter(campaign=self.id, status=SUBSCRIBER_STATUS.PENDING)\
             .all()[:limit]
         if not list_subscriber:
             return False

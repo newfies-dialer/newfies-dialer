@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content_header %}
-    <h1>{% trans "Phonebook" %} <small>{% trans "List, add and edit phonebooks" %}</small></h1>
+    <h1>{% trans "phonebook"|title %} <small>{% trans "list, add and edit phonebooks"|title %}</small></h1>
 {% endblock %}
 
 {% block content %}
@@ -31,12 +31,12 @@
             </button>
             <ul class="dropdown-menu">
                 {% if perms.dialer_contact.delete_phonebook %}
-                    <li><a href="#" onclick="delete_button()">{% trans "Delete selected" %}</a></li>
+                    <li><a href="#" onclick="delete_button()">{% trans "delete selected"|title %}</a></li>
                 {% endif %}
             </ul>
         </div>
         {% if perms.dialer_contact.add_phonebook %}
-            <a class="btn btn-info" href="#" onclick="add_button()">{% trans "Add" %}</a>
+            <a class="btn btn-info" href="#" onclick="add_button()">{% trans "add"|title %}</a>
         {% endif %}
     </div>
 </div>
@@ -53,7 +53,7 @@
                     <th>{{ PHONEBOOK_COLUMN_NAME.description }}</th>
                     <th>{% sort_link PHONEBOOK_COLUMN_NAME.date col_name_with_order.updated_date %}</th>
                     <th>{{ PHONEBOOK_COLUMN_NAME.contacts }}</th>
-                    <th>{% trans 'Action' %}</th>
+                    <th>{% trans 'action'|title %}</th>
                 </tr>
                 </thead>
                 {% if phonebook_list %}
@@ -68,10 +68,10 @@
                             <td>{{ row.contact_count }}</td>
                             <td>
                                 {% if perms.dialer_contact.change_phonebook %}
-                                    <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "Update phonebook" %}"></a>
+                                    <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update phonebook"|title %}"></a>
                                 {% endif %}
                                 {% if perms.dialer_contact.delete_phonebook %}
-                                    <a id="id_phonebook_delete_confirm" onclick="return get_alert_msg_for_phonebook({{ row.id }});"  href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "Delete phonebook" %}"></a>
+                                    <a id="id_phonebook_delete_confirm" onclick="return get_alert_msg_for_phonebook({{ row.id }});"  href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete phonebook"|title %}"></a>
                                 {% endif %}
                             </td>
                         </tr>

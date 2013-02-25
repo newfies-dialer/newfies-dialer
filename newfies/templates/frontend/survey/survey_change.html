@@ -10,12 +10,12 @@
 {% block content_header %}
     <h1>
         {% if action == 'update' %}
-            {% trans "Update" %}
+            {% trans "update"|title %}
         {% else %}
-            {% trans "Add" %}
+            {% trans "add"|title %}
         {% endif %}
-        {% trans "Survey" %}
-        <small>{% trans "Survey configuration" %}</small>
+        {% trans "survey"|title %}
+        <small>{% trans "survey configuration"|title %}</small>
     </h1>
 {% endblock %}
 
@@ -45,7 +45,7 @@
             <div class="input">
                 <div align="center">
                 {% if action == 'add' %}
-                    <input id="add" type="submit" class="btn btn-primary" value="{% trans "Submit" %}" />
+                    <input id="add" type="submit" class="btn btn-primary" value="{% trans "submit"|title %}" />
                 {% endif %}
                 </div>
             </div>
@@ -182,7 +182,7 @@
                                     <tr>
                                         <th colspan="2">
                                             <center>
-                                                <h4><em>{% trans "Key Associations" %}</em></h4>
+                                                <h4><em>{% trans "key associations"|title %}</em></h4>
                                             </center>
                                         </th>
                                     </tr>
@@ -289,7 +289,7 @@
                         <div class="row">
                             <div class="span8">
 
-                                <br/><b>{% trans "Branching" %}</b><br/>
+                                <br/><b>{% trans "branching"|title %}</b><br/>
                                 <table class="table table-striped table-bordered table-condensed">
                                     <thead>
                                     <tr>
@@ -316,7 +316,7 @@
                                                             {% trans "Key" %}&nbsp;
                                                             {{ branch.keys }}
                                                         {% else %}
-                                                            {% trans "None" %}
+                                                            {% trans "none"|title %}
                                                         {% endif %}
                                                     </td>
                                             {% endif %}
@@ -342,7 +342,7 @@
                                             <td class="survey_edit_key">
                                                 {% if branch.section_id|get_branching_count:branch.id > 1 %}
                                                     {% if perms.survey.delete_branching %}
-                                                        <a {% icon_style 'cross' %} href="/section/branch/{{ branch.id }}/?delete=true" class="icon" title="{% trans "Delete" %}">&nbsp;</a>
+                                                        <a {% icon_style 'cross' %} href="/section/branch/{{ branch.id }}/?delete=true" class="icon" title="{% trans "delete"|title %}">&nbsp;</a>
                                                     {% endif %}
                                                 {% endif %}
                                             </td>
@@ -384,12 +384,12 @@
         <div class="span10">
         {% if perms.survey.add_section %}
             <button data-toggle="modal" href="#section-create-add" class="section-add btn btn-info" url='/section/add/' data-controls-modal='section-create-add'>
-                {% trans "Add Section" %}
+                {% trans "add section"|title %}
             </button>
         {% endif %}
         </div>
         <div class="span1">
-            <input id="update" type="submit" class="btn btn-primary" onclick="javascript:document.getElementById('update_form').submit();" value="{% trans "Close Survey" %}" />
+            <input id="update" type="submit" class="btn btn-primary" onclick="javascript:document.getElementById('update_form').submit();" value="{% trans "close survey"|title %}" />
         </div>
     </div>
 {% endif %}

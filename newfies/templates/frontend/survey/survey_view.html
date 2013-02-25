@@ -21,7 +21,7 @@
             <div class="row">
                 {% if survey.description %}
                 <div class="span4">
-                    {% trans "Description" %}: {{ survey.description }}
+                    {% trans "description"|title %}: {{ survey.description }}
                 </div>
                 {% endif %}
             </div>
@@ -106,7 +106,7 @@
                                     <tr>
                                         <th colspan="2">
                                             <center>
-                                                <h4><em>{% trans "Key Associations" %}</em></h4>
+                                                <h4><em>{% trans "key associations"|title %}</em></h4>
                                             </center>
                                         </th>
                                     </tr>
@@ -238,7 +238,7 @@
                                                             {% trans "Key" %}&nbsp;
                                                             {{ branch.keys }}
                                                         {% else %}
-                                                            {% trans "None" %}
+                                                            {% trans "none"|title %}
                                                         {% endif %}
                                                     </td>
                                                 {% endif %}
@@ -250,7 +250,7 @@
                                                             {{ branch.goto.script }}
                                                         {% endif %}
                                                     {% else %}
-                                                        &nbsp;{% trans "Hang up" %}
+                                                        &nbsp;{% trans "hang up"|capfirst %}
                                                     {% endif %}
                                                 </td>
                                             {% endif %}

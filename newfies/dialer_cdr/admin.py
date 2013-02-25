@@ -112,8 +112,8 @@ class VoIPCallAdmin(admin.ModelAdmin):
         urls = super(VoIPCallAdmin, self).get_urls()
         my_urls = patterns('',
             (r'^$', self.admin_site.admin_view(self.changelist_view)),
-            (r'^voip_report/$',
-             self.admin_site.admin_view(self.voip_report)),
+            (r'^voip_daily_report/$',
+             self.admin_site.admin_view(self.voip_daily_report)),
             (r'^export_voip_report/$',
              self.admin_site.admin_view(self.export_voip_report)),
         )
@@ -194,7 +194,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
         }
         return super(VoIPCallAdmin, self).changelist_view(request, extra_context=ctx)
 
-    def voip_report(self, request):
+    def voip_daily_report(self, request):
         opts = VoIPCall._meta
         kwargs = {}
 
@@ -211,8 +211,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             if len(kwargs) == 0:
                 kwargs['starting_date__gte'] = datetime(tday.year,
                                                         tday.month,
-                                                        tday.day, 0, 0, 0, 0)
-
+                                                        tday.day, 0, 0, 0, 0)        
         select_data = \
             {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
 

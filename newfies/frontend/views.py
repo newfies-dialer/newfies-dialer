@@ -24,6 +24,7 @@ from django.conf import settings
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from dialer_contact.models import Contact
+from dialer_contact.constants import CONTACT_STATUS
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.function_def import date_range, \
     user_dialer_setting_msg
@@ -167,7 +168,7 @@ def customer_dashboard(request, on_index=None):
     # Contacts count which are active and belong to those phonebook(s) which is
     # associated with all campaign
     pb_active_contact_count = Contact.objects\
-        .filter(phonebook__campaign__in=campaign_id_list, status=1)\
+        .filter(phonebook__campaign__in=campaign_id_list, status=CONTACT_STATUS.ACTIVE)\
         .count()
 
     total_of_phonebook_contacts =\

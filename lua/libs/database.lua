@@ -20,7 +20,8 @@ local oo = require "loop.simple"
 local inspect = require 'inspect'
 local cmsgpack = require 'cmsgpack'
 --local redis = require 'redis'
-require "memcached"
+--require "memcached"
+local lfs_cache = require "lfs_cache"
 require "constant"
 require "settings"
 require "md5"
@@ -63,7 +64,8 @@ function Database:connect()
     self.con = assert(self.env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT))
     if USE_CACHE then
         --self.caching = redis.connect('127.0.0.1', 6379)
-        self.caching = memcached.connect('127.0.0.1', 11211)
+        --self.caching = memcached.connect('127.0.0.1', 11211)
+        self.caching = LFS_Caching(nil)
     end
 end
 
@@ -79,7 +81,11 @@ function Database:load_survey_section(survey_id)
     -- updated_date survey_id   invalid_audiofile_id    min_number  max_number
     sqlquery = "SELECT * FROM "..self.TABLE_SECTION.." WHERE survey_id="..survey_id.." ORDER BY "..self.TABLE_SECTION..".order"
     self.debugger:msg("DEBUG", "Load survey section : "..sqlquery)
-    qresult = self:get_cache_list(sqlquery, 300)
+    if not USE_CACHE then
+        qresult = self:get_list(sqlquery, 300)
+    else
+        qresult = self:get_cache_list(sqlquery, 300)
+    end
 
     list = {}
     for i,row in pairs(qresult) do
@@ -102,7 +108,11 @@ function Database:load_survey_branching(survey_id)
         " ON "..self.TABLE_SECTION..".id="..self.TABLE_BRANCHING..".section_id "..
         "WHERE survey_id="..survey_id
     self.debugger:msg("DEBUG", "Load survey branching : "..sqlquery)
-    qresult = self:get_cache_list(sqlquery, 300)
+    if not USE_CACHE then
+        qresult = self:get_list(sqlquery, 300)
+    else
+        qresult = self:get_cache_list(sqlquery, 300)
+    end
 
     list = {}
     for i,row in pairs(qresult) do
@@ -134,7 +144,10 @@ function Database:get_cache_list(sqlquery, ttl)
         return self:get_list(sqlquery)
     end
     hashkey = md5.sumhexa(sqlquery)
-    local value = self.caching:get(hashkey)
+    --memcached / redis
+    --local value = self.caching:get(hashkey)
+    --lfs_cache
+    local value = self.caching:get(hashkey, ttl)
     if value then
         --Cached
         return cmsgpack.unpack(value)
@@ -154,7 +167,9 @@ function Database:get_cache_list(sqlquery, ttl)
         --self.caching:set(hashkey, msgpack)
         --self.caching:expire(hashkey, ttl)
         --Memcache
-        self.caching:set(hashkey, msgpack, ttl)
+        --self.caching:set(hashkey, msgpack, ttl)
+        --lfs_cache
+        self.caching:set(hashkey, msgpack)
         return list
     end
 end
@@ -173,7 +188,9 @@ function Database:get_cache_object(sqlquery, ttl)
         return self:get_object(sqlquery)
     end
     hashkey = md5.sumhexa(sqlquery)
-    local value = self.caching:get(hashkey)
+    --local value = self.caching:get(hashkey)
+    --lfs_cache
+    local value = self.caching:get(hashkey, ttl)
     if value then
         --Cached
         return cmsgpack.unpack(value)
@@ -188,7 +205,9 @@ function Database:get_cache_object(sqlquery, ttl)
         --self.caching:set(hashkey, msgpack)
         --self.caching:expire(hashkey, ttl)
         --Memcache
-        self.caching:set(hashkey, msgpack, ttl)
+        --self.caching:set(hashkey, msgpack, ttl)
+        --lfs_cache
+        self.caching:set(hashkey, msgpack)
         return row
     end
 end

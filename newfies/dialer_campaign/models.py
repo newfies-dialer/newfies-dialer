@@ -75,7 +75,7 @@ class CampaignManager(models.Manager):
 def common_contact_authorization(user, str_contact):
     """Common Function to check contact no is authorized or not.
     For this we will check the dialer settings : whitelist and blacklist
-    """    
+    """
     try:
         obj_userprofile = user.get_profile()
     except UserProfile.DoesNotExist:
@@ -180,8 +180,7 @@ class Campaign(Model):
     #General Starting & Stopping date
     startingdate = models.DateTimeField(default=(lambda: datetime.now()),
                                         verbose_name=_('Start'),
-                                        help_text=_("Date Format: YYYY-mm-DD HH:MM:SS"),
-                                        db_index=True)
+                                        help_text=_("Date Format: YYYY-mm-DD HH:MM:SS"))
     expirationdate = models.DateTimeField(default=(lambda: datetime.now() + relativedelta(days=+1)),
                                           verbose_name=_('Finish'),
                                           help_text=_("Date Format: YYYY-mm-DD HH:MM:SS"))
@@ -356,7 +355,7 @@ class Campaign(Model):
         return list_contact
 
     def progress_bar(self):
-        """Progress bar generated based on no of contacts"""        
+        """Progress bar generated based on no of contacts"""
         # Cache subscriber_count
         count_contact = \
             Contact.objects.filter(phonebook__campaign=self.id).count()

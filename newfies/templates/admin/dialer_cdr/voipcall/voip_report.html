@@ -11,7 +11,7 @@
        <a href="../../">
          {{ app_label|capfirst }}
       </a>
-      &rsaquo; <a href="../">{% trans "Call Report" %}</a>
+      &rsaquo; <a href="../">{% trans "call report"|title %}</a>
       &rsaquo; {% trans "call aggregate report"|title %}
     </div>
   {% endblock %}
@@ -46,7 +46,7 @@
 <p>&nbsp;</p>
 <div>
     <table  class="module" align=left>
-    <caption>{% trans "Call Detail Report Summary" %}</caption>
+    <caption>{% trans "call detail report summary"|title %}</caption>
     <thead>
         <tr>
             <th scope="col">{% trans "date"|title %}</th>
@@ -72,7 +72,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <td>{% trans "Total" %}</td>
+            <td>{% trans "total"|title %}</td>
             <td>{{ total_duration|conv_min }}</td>
             <td></td>
             <td>{{ total_calls }}</td>

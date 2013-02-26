@@ -3,10 +3,10 @@
 
 {% block breadcrumbs %}{% if not is_popup %}
 <div class="breadcrumbs">
-     <a href="../../../">{% trans "Home" %}</a> &rsaquo;
+     <a href="../../../">{% trans "home"|title %}</a> &rsaquo;
      <a href="../../">{{ app_label|capfirst|escape }}</a> &rsaquo;
      <a href="/admin/{{ opts.app_label }}/{{ model_name }}">{{ opts.verbose_name_plural|capfirst }}</a> &rsaquo;
-     Import {{ opts.verbose_name }}
+     {% trans "import"|title %} {{ opts.verbose_name }}
 </div>
 {% endif %}{% endblock %}
 
@@ -15,17 +15,17 @@
 <br/>
 
 <table border="1">
-<caption>{% trans "Sample File" %}</caption>
+<caption>{% trans "sample file"|title %}</caption>
 <tr>
-    <th>{% trans "contact" %}</th>
-    <th>{% trans "last name" %}</th>
-    <th>{% trans "first name" %}</th>
-    <th>{% trans "email-id" %}</th>
-    <th>{% trans "description" %}</th>
-    <th>{% trans "status" %}</th>
-    <th>{% trans "Country" %}</th>
-    <th>{% trans "City" %}</th>
-    <th>{% trans "additional_vars" %}</th>
+    <th>{% trans "contact"|title %}</th>
+    <th>{% trans "last name"|title %}</th>
+    <th>{% trans "first name"|title %}</th>
+    <th>{% trans "email-id"|title %}</th>
+    <th>{% trans "description"|title %}</th>
+    <th>{% trans "status"|title %}</th>
+    <th>{% trans "country"|title %}</th>
+    <th>{% trans "city"|title %}</th>
+    <th>{% trans "additional_vars"|title %}</th>
 </tr>
 <tr>
     <td>1234</td>
@@ -60,8 +60,8 @@
     {{ form.as_table }}
     <tr>
         <td colspan=2 align=right>
-        <input type="submit" class="l-1" name="submit" value="{% trans "Submit" %}" />&nbsp;
-        <input type="reset" name="reset" class="j-2" value="{% trans "Reset" %}" />
+        <input type="submit" class="l-1" name="submit" value="{% trans "submit"|title %}" />&nbsp;
+        <input type="reset" name="reset" class="j-2" value="{% trans "reset"|title %}" />
         </td>
     </tr>
     </table>
@@ -86,7 +86,7 @@
 {% if success_import_list %}
 <table border="1">
     <tr>
-        <th>{% trans "Contact(s) imported" %} :</th>
+        <th>{% trans "contact(s) imported"|capfirst %} :</th>
     </tr>
     {% for row in success_import_list %}
     <tr class="{% cycle 'row1' 'row2' %}">
@@ -102,7 +102,7 @@
 <br/>
 <table border="1">
     <tr>
-        <th>{% trans "Type mismatch" %} :</th>
+        <th>{% trans "type mismatch"|capfirst %} :</th>
     </tr>
     {% for row in type_error_import_list %}
     <tr class="{% cycle 'row1' 'row2' %}">

@@ -5,7 +5,7 @@
   {% block breadcrumbs %}
     <div class="breadcrumbs">
       <a href="../../">
-        {% trans "Home" %}
+        {% trans "home"|title %}
       </a>
        &rsaquo;
        <a href="../">
@@ -28,7 +28,7 @@
                 {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
               </a>              
             </li>
-            <li><a href="import_contact/" class="addlink">{% trans "Import Contacts" %}</a></li>
+            <li><a href="import_contact/" class="addlink">{% trans "import contacts"|title %}</a></li>
           {% endblock %}
         </ul>
       {% endif %}

@@ -58,10 +58,10 @@ class DialerCdrView(BaseAuthenticatedClient):
 
     def test_admin_voipcall_view_report(self):
         """Test Function to check admin voipcall list"""
-        response = self.client.get('/admin/dialer_cdr/voipcall/voip_report/')
+        response = self.client.get('/admin/dialer_cdr/voipcall/voip_daily_report/')
         self.failUnlessEqual(response.status_code, 200)
 
-        response = self.client.post('/admin/dialer_cdr/voipcall/voip_report/',
+        response = self.client.post('/admin/dialer_cdr/voipcall/voip_daily_report/',
             data={'from_date': datetime.now().strftime("%Y-%m-%d"),
                   'to_date': datetime.now().strftime("%Y-%m-%d")})
         self.assertEqual(response.status_code, 200)

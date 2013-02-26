@@ -67,7 +67,7 @@ class DialerCdrView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post(
-            '/admin/dialer_cdr/voipcall/voip_report/',
+            '/admin/dialer_cdr/voipcall/voip_daily_report/',
             data={'from_date': datetime.now().strftime("%Y-%m-%d"),
                   'to_date': datetime.now().strftime("%Y-%m-%d")})
         request.user = self.user

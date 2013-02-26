@@ -14,7 +14,7 @@
                     </li>
                     {% endif %}
                     {% if child.title != "VoIP Call" %}
-                        {% if child.change_url %}<li><a class="changelink" href="{{ child.change_url }}"><span class="icon">{% trans "Change" %}</span></a></li>{% endif %}
+                        {% if child.change_url %}<li><a class="changelink" href="{{ child.change_url }}"><span class="icon">{% trans "change"|title %}</span></a></li>{% endif %}
                     {% endif %}
                 </ul>
                 {% endif %}

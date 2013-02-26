@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content_header %}
-    <h1>{% trans "audio files"|title %} <small>{% trans "list, upload and edit audio files"|title %}</small></h1>
+    <h1>{% trans "audio files"|title %} <small>{% trans "list, upload and edit audio files"|capfirst %}</small></h1>
 {% endblock %}
 
 {% block content %}
@@ -70,10 +70,10 @@ function delete_button()
                         <td>{{ row.updated_date }}</td>
                         <td>
                             {% if perms.audiofield.change_audiofile %}
-                                <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update audio"|title %}"></a>
+                                <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update audio"|capfirst %}"></a>
                             {% endif %}
                             {% if perms.audiofield.delete_audiofile %}
-                                <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete audio"|title %}"></a>
+                                <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete audio"|capfirst %}"></a>
                             {% endif %}
                         </td>
                     </tr>

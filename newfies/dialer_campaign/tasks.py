@@ -17,7 +17,6 @@ from celery.task import PeriodicTask
 from celery.decorators import task
 from celery.utils.log import get_task_logger
 from dialer_campaign.models import Campaign
-from dialer_campaign.function_def import user_dialer_setting
 from dialer_campaign.constants import SUBSCRIBER_STATUS, \
     CAMPAIGN_STATUS
 from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE
@@ -74,7 +73,7 @@ def check_campaign_pendingcall(campaign_id):
     logger.info("TASK :: check_campaign_pendingcall = %s" % str(campaign_id))
 
     try:
-        obj_campaign = Campaign.objects.get(id=campaign_id)
+        obj_campaign = Campaign.objects.select_related('user__profile__dialersetting').get(id=campaign_id)
     except:
         logger.error('Can\'t find this campaign')
         return False
@@ -83,8 +82,6 @@ def check_campaign_pendingcall(campaign_id):
     #if there is many task pending we should slow down
     frequency = obj_campaign.frequency  # default 10 calls per minutes
 
-    dialer_set = user_dialer_setting(obj_campaign.user)
-
     #Default call_type
     call_type = CALLREQUEST_TYPE.ALLOW_RETRY
     # Check campaign's maxretry
@@ -92,8 +89,8 @@ def check_campaign_pendingcall(campaign_id):
         call_type = CALLREQUEST_TYPE.CANNOT_RETRY
 
     #Check user's dialer setting maxretry
-    if dialer_set:
-        if dialer_set.maxretry == 0:
+    if obj_campaign.user.userprofile.dialersetting:
+        if obj_campaign.user.userprofile.dialersetting.maxretry == 0:
             call_type = CALLREQUEST_TYPE.CANNOT_RETRY
 
     #Speed
@@ -106,11 +103,9 @@ def check_campaign_pendingcall(campaign_id):
         SUBSCRIBER_STATUS.IN_PROCESS
     )
     if list_subscriber:
-        logger.info("#Subscriber: %d" % len(list_subscriber))
-
-    try:
         no_subscriber = list_subscriber.count()
-    except AttributeError:
+        logger.info("#Subscriber: %d" % no_subscriber)
+    else:
         no_subscriber = 0
 
     if no_subscriber == 0:

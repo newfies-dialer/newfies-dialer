@@ -50,6 +50,7 @@ class UserProfile(models.Model):
         model.
 
     **Name of DB table**: user_profile
+
     """
     user = models.OneToOneField(User)
     address = models.CharField(blank=True, null=True,

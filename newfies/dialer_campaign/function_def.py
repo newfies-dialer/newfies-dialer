@@ -12,13 +12,11 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from dialer_contact.models import Contact
 from dialer_campaign.models import Campaign
 from dialer_campaign.constants import CAMPAIGN_STATUS,\
     CAMPAIGN_STATUS_COLOR
-from user_profile.models import UserProfile
 from dialer_settings.models import DialerSetting
 from dateutil.rrule import rrule, DAILY, HOURLY
 from dateutil.parser import parse
@@ -26,11 +24,11 @@ from datetime import timedelta
 
 
 def user_attached_with_dialer_settings(request):
-    """Check user is attached with dialer setting or not"""    
+    """Check user is attached with dialer setting or not"""
     try:
         # DialerSettings is exists & attached with user
-        DialerSetting.objects.get(pk=request.user.get_profile().dialersetting_id)        
-        return False        
+        DialerSetting.objects.get(pk=request.user.get_profile().dialersetting_id)
+        return False
     except:
         # not attached
         return True
@@ -43,8 +41,8 @@ def check_dialer_setting(request, check_for, field_value=''):
 
         * ``check_for`` -  for campaign or for contact
     """
-    try:        
-        # DialerSettings is linked with the User        
+    try:
+        # DialerSettings is linked with the User
         dialer_set_obj = \
             DialerSetting.objects.get(pk=request.user.get_profile().dialersetting_id)
         if dialer_set_obj:
@@ -123,7 +121,7 @@ def dialer_setting_limit(request, limit_for):
          callmaxduration
          maxretry
          max_calltimeout
-    """    
+    """
     try:
         # DialerSettings is linked with the User
         dialer_set_obj = \
@@ -232,9 +230,10 @@ def get_campaign_status_name(id):
                        % (CAMPAIGN_STATUS_COLOR[id])
 
 
+#Note: Do we need this ? maybe replace by select.related
 def user_dialer_setting(user):
     """Get Dialer setting for user"""
-    try:        
+    try:
         dialer_set = DialerSetting.objects.get(id=user.get_profile().dialersetting_id)
     except:
         dialer_set = []

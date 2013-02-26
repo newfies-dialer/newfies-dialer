@@ -76,6 +76,7 @@ def common_contact_authorization(user, str_contact):
     """Common Function to check contact no is authorized or not.
     For this we will check the dialer settings : whitelist and blacklist
     """
+    #TODO - Areski: pass dialersetting instead of user and use select_related upstream
     try:
         obj_userprofile = user.get_profile()
     except UserProfile.DoesNotExist:

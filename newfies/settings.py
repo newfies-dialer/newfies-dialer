@@ -509,6 +509,10 @@ IPYTHON_ARGUMENTS = [
 PREFIX_LIMIT_MIN = 2
 PREFIX_LIMIT_MAX = 5
 
+# List of phonenumber prefix to ignore, this will be remove prior analysis
+PREFIX_TO_IGNORE = "+,0,00,000,0000,00000,011,55555,99999"
+
+
 #IMPORT LOCAL SETTINGS
 #=====================
 try:

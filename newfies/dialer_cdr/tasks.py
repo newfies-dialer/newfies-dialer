@@ -23,11 +23,12 @@ from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE, \
     VOIPCALL_AMD_STATUS, LEG_TYPE
 from dialer_cdr.function_def import get_prefix_obj
-from dialer_gateway.utils import phonenumber_change_prefix
+from dialer_gateway.utils import prepare_phonenumber
 from dialer_campaign.function_def import user_dialer_setting
 from datetime import datetime, timedelta
 from common.only_one_task import only_one
 from uuid import uuid1
+from common_functions import debug_query
 
 
 logger = get_task_logger(__name__)
@@ -81,7 +82,7 @@ def check_retrycall_completion(obj_subscriber, callrequest):
         second_towait = callrequest.campaign.completion_intervalretry
         logger.info("Init Completion Retry CallRequest in  %d seconds" % second_towait)
         init_callrequest.apply_async(
-            args=[new_callrequest.id, callrequest.campaign.id],
+            args=[new_callrequest.id, callrequest.campaign.id, callrequest.campaign.callmaxduration],
             countdown=second_towait)
 
 
@@ -364,38 +365,46 @@ def callrequest_pending(*args, **kwargs):
 
         callrequest.status = 7 # Update to Process
         callrequest.save()
-        init_callrequest.delay(callrequest.id, callrequest.campaign.id)
+        init_callrequest.delay(callrequest.id, callrequest.campaign.id, callrequest.campaign.callmaxduration)
 """
 
 
 @task()
-def init_callrequest(callrequest_id, campaign_id):
-    """This task outbounds the call
+def init_callrequest(callrequest_id, campaign_id, callmaxduration):
+    """
+    This task read the callrequest, update it as 'In Process'
+    then proceed on the call outbound, using the different call engine supported
 
     **Attributes**:
 
         * ``callrequest_id`` - Callrequest ID
+
     """
+    debug_query(8)
+
     #Update callrequest to Process
-    obj_callrequest = Callrequest.objects.get(id=callrequest_id)
+    obj_callrequest = Callrequest.objects.select_related('aleg_gateway', 'user__userprofile').get(id=callrequest_id)
     obj_callrequest.status = CALLREQUEST_STATUS.PROCESS
     obj_callrequest.save()
+
+    debug_query(9)
+
     logger.info("TASK :: init_callrequest - status = %s" %
         str(obj_callrequest.status))
-    try:
-        obj_campaign = Campaign.objects.get(id=campaign_id)
-    except:
-        logger.error("Can't find the campaign : %s" % campaign_id)
-        return False
+
+    debug_query(10)
 
     if obj_callrequest.aleg_gateway:
-        id_aleg_gateway = obj_callrequest.aleg_gateway.id
-        dialout_phone_number = phonenumber_change_prefix(
+        dialout_phone_number = prepare_phonenumber(
             obj_callrequest.phone_number,
-            id_aleg_gateway)
+            obj_callrequest.aleg_gateway.addprefix,
+            obj_callrequest.aleg_gateway.removeprefix,
+            obj_callrequest.aleg_gateway.status)
     else:
         dialout_phone_number = obj_callrequest.phone_number
     logger.info("dialout_phone_number : %s" % dialout_phone_number)
+
+    debug_query(11)
 
     if settings.DIALERDEBUG:
         dialout_phone_number = settings.DIALERDEBUG_PHONENUMBER
@@ -407,24 +416,21 @@ def init_callrequest(callrequest_id, campaign_id):
     gateway_timeouts = obj_callrequest.aleg_gateway.gateway_timeouts
     gateway_retries = obj_callrequest.aleg_gateway.gateway_retries
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
-    callmaxduration = obj_campaign.callmaxduration
+
+    debug_query(12)
 
     #Sanitize gateways
     gateways = gateways.strip()
     if gateways[-1] != '/':
         gateways = gateways + '/'
 
-    if obj_campaign.content_type.app_label == 'survey':
-        #Use Survey Statemachine
-        answer_url = settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL
-    else:
-        answer_url = settings.PLIVO_DEFAULT_ANSWER_URL
-
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
     if (obj_callrequest.user.userprofile.accountcode and
        obj_callrequest.user.userprofile.accountcode > 0):
         originate_dial_string = originate_dial_string + \
             ',accountcode=' + str(obj_callrequest.user.userprofile.accountcode)
+
+    debug_query(13)
 
     #Send Call to API
     #http://ask.github.com/celery/userguide/remote-tasks.html
@@ -456,6 +462,8 @@ def init_callrequest(callrequest_id, campaign_id):
         try:
             #Request Call via Plivo
             from telefonyhelper import call_plivo
+            answer_url = settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL
+
             result = call_plivo(
                 callerid=obj_callrequest.callerid,
                 callername=obj_callrequest.campaign.caller_name,
@@ -486,7 +494,7 @@ def init_callrequest(callrequest_id, campaign_id):
         try:
             args_list = []
             send_digits = False
-            time_limit = obj_callrequest.campaign.callmaxduration
+            time_limit = callmaxduration
 
             # To wait before sending DTMF to the extension, you can add leading 'w'
             # characters.
@@ -570,6 +578,8 @@ def init_callrequest(callrequest_id, campaign_id):
             ev = c.api("bgapi", str(dial))
             c.disconnect()
 
+            debug_query(14)
+
             if ev:
                 result = ev.serialize()
                 logger.debug(result)
@@ -613,5 +623,7 @@ def init_callrequest(callrequest_id, campaign_id):
 
     #lock to limit running process, do so per campaign
     #http://ask.github.com/celery/cookbook/tasks.html
+
+    debug_query(15)
 
     return True

@@ -12,7 +12,20 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
+from django.conf import settings
+from django import db
 import os
+
+
+def debug_query(number):
+    """
+    Function to debug the SQL queries
+    """
+    if settings.DIALERDEBUG:
+        print("%d) " % number)
+        print("QUERY #) %d" % len(db.connection.queries))
+        print(db.connection.queries)
+        db.reset_queries()
 
 
 def check_celeryd_process():

@@ -15,31 +15,10 @@
 from dialer_gateway.models import Gateway
 
 
+#NOTE: This might get deleted as replaced by prepare_phonenumber
 def phonenumber_change_prefix(phone_number, gateway_id):
-    """apply prefix modification for a given phone_number and gateway
-
-    **Attributes**:
-
-        * ``name`` - Gateway name.
-        * ``description`` - Description about Gateway.
-        * ``addprefix`` - Add prefix.
-        * ``removeprefix`` - Remove prefix.
-        * ``gateways`` - "user/,user", # Gateway string to try dialing \
-                    separated by comma. First in list will be tried first
-        * ``gateway_codecs`` - "'PCMA,PCMU','PCMA,PCMU'", # Codec string as \
-                    needed by FS for each gateway separated by comma
-        * ``gateway_timeouts`` - "10,10", # Seconds to timeout in string for \
-                    each gateway separated by comma
-        * ``gateway_retries`` - "2,1", # Retry String for Gateways separated \
-                    by comma, on how many times each gateway should be retried
-        * ``originate_dial_string`` - originate_dial_string
-        * ``secondused`` -
-        * ``failover`` -
-        * ``addparameter`` -
-        * ``count_call`` -
-        * ``count_in_use`` -
-        * ``maximum_call`` -
-        * ``status`` - Gateway status
+    """
+    apply prefix modification for a given phone_number and gateway
     """
     try:
         obj_gateway = Gateway.objects.get(id=gateway_id)
@@ -51,7 +30,7 @@ def phonenumber_change_prefix(phone_number, gateway_id):
         return False
 
     if obj_gateway.status != 1:
-        print 'Gateway not Active: %s' % gateway_id
+        #Gateway not Active
         return False
 
     if (len(obj_gateway.removeprefix) > 0
@@ -59,5 +38,25 @@ def phonenumber_change_prefix(phone_number, gateway_id):
         phone_number = phone_number[len(obj_gateway.removeprefix):]
 
     phone_number = obj_gateway.addprefix + phone_number
+
+    return phone_number
+
+
+def prepare_phonenumber(phone_number, addprefix, removeprefix, gw_status):
+    """
+    apply prefix modification for a given phone_number and gateway
+    """
+    if not phone_number:
+        return False
+
+    if gw_status != 1:
+        #Gateway not Active
+        return False
+
+    if (len(removeprefix) > 0
+       and phone_number.startswith(removeprefix)):
+        phone_number = phone_number[len(removeprefix):]
+
+    phone_number = addprefix + phone_number
 
     return phone_number

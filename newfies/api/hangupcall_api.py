@@ -211,7 +211,7 @@ class HangupcallResource(ModelResource):
                     second_towait = callrequest.campaign.intervalretry
                     logger.info("Init Retry CallRequest in  %d seconds" % second_towait)
                     init_callrequest.apply_async(
-                        args=[new_callrequest.id, callrequest.campaign.id],
+                        args=[new_callrequest.id, callrequest.campaign.id, callrequest.campaign.callmaxduration],
                         countdown=second_towait)
             else:
                 #The Call is Answered

@@ -65,28 +65,22 @@ class CampaignManager(models.Manager):
         return Campaign.objects.filter(**kwargs)
 
     def get_expired_campaign(self):
-        """Return all the campaigns which are expired or going to expire
-         based on the expiry date but status is not 'END'"""
+        """
+        Return all the campaigns which are expired or going to expire
+        based on the expiry date but status is not 'END'
+        """
         kwargs = {}
         kwargs['expirationdate__lte'] = datetime.now()
         return Campaign.objects.filter(**kwargs).exclude(status=CAMPAIGN_STATUS.END)
 
 
-def common_contact_authorization(user, str_contact):
-    """Common Function to check contact no is authorized or not.
+def common_contact_authorization(dialersetting, str_contact):
+    """
+    Common Function to check contact no is authorized or not.
     For this we will check the dialer settings : whitelist and blacklist
     """
-    #TODO - Areski: pass dialersetting instead of user and use select_related upstream
-    try:
-        obj_userprofile = user.get_profile()
-    except UserProfile.DoesNotExist:
-        return False
-
-    if not obj_userprofile.dialersetting:
-        return False
-
-    whitelist = obj_userprofile.dialersetting.whitelist
-    blacklist = obj_userprofile.dialersetting.blacklist
+    whitelist = dialersetting.whitelist
+    blacklist = dialersetting.blacklist
 
     if whitelist == '*':
         whitelist = ''
@@ -311,9 +305,9 @@ class Campaign(Model):
     update_campaign_status.allow_tags = True
     update_campaign_status.short_description = _('Action')
 
-    def is_authorized_contact(self, str_contact):
+    def is_authorized_contact(self, dialersetting, str_contact):
         """Check if a contact is authorized"""
-        return common_contact_authorization(self.user, str_contact)
+        return common_contact_authorization(dialersetting, str_contact)
 
     def get_campaign_type(self):
         """Get campaign type"""
@@ -411,17 +405,10 @@ class Campaign(Model):
     subscriber_detail.allow_tags = True
     subscriber_detail.short_description = _('Subscriber')
 
-    def get_pending_subscriber(self, limit=1000):
-        """Get all the pending subscribers from the campaign"""
-        list_subscriber = \
-            Subscriber.objects.filter(campaign=self.id, status=SUBSCRIBER_STATUS.PENDING)\
-            .all()[:limit]
-        if not list_subscriber:
-            return False
-        return list_subscriber
-
+    # OPTIMIZATION - FINE
     def get_pending_subscriber_update(self, limit=1000, status=SUBSCRIBER_STATUS.IN_PROCESS):
         """Get all the pending subscribers from the campaign"""
+        #We cannot use select_related here as it' 's not compliant with locking the rows
         list_subscriber = Subscriber.objects.select_for_update()\
             .filter(campaign=self.id, status=SUBSCRIBER_STATUS.PENDING)\
             .all()[:limit]

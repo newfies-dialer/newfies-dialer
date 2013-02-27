@@ -383,7 +383,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
     debug_query(8)
 
     #Update callrequest to Process
-    obj_callrequest = Callrequest.objects.select_related('aleg_gateway', 'user__userprofile').get(id=callrequest_id)
+    obj_callrequest = Callrequest.objects.select_related('aleg_gateway', 'user__userprofile', 'subscriber', 'campaign').get(id=callrequest_id)
     obj_callrequest.status = CALLREQUEST_STATUS.PROCESS
     obj_callrequest.save()
 

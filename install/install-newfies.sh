@@ -208,6 +208,7 @@ func_install_frontend(){
     #python setup tools
     echo "Install Dependencies and python modules..."
 
+    add-apt-repository ppa:pitti/postgresql
     apt-get update
     apt-get -y install python-setuptools python-dev build-essential
     apt-get -y install nginx supervisor
@@ -217,14 +218,14 @@ func_install_frontend(){
     apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
 
     #PostgreSQL
-    apt-get -y install postgresql
+    apt-get -y install python-software-properties
+    apt-get -y install postgresql-9.2 postgresql-server-dev-9.2
     apt-get -y install libpq-dev
     #Start PostgreSQL
     /etc/init.d/postgresql start
 
     #Lua Deps
     apt-get -y install liblua5.1-sql-postgres-dev
-    apt-get -y install postgresql-server-dev-9.1
     apt-get -y install liblua5.1-curl0 liblua5.1-curl-dev
     #Memcached
     apt-get install memcached

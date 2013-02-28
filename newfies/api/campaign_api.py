@@ -78,7 +78,7 @@ class CampaignValidation(Validation):
                 bundle.data['expirationdate'] = time.strftime(
                     '%Y-%m-%d %H:%M:%S', time.gmtime(float(expirationdate)))
 
-        if not user_dialer_setting(request):
+        if not user_dialer_setting(request.user):
             errors['user_dialer_setting'] = ['Your settings are not configured properly, Please contact the administrator.']
 
         if check_dialer_setting(request, check_for="campaign"):

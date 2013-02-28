@@ -410,7 +410,8 @@ class DialerCampaignModel(TestCase):
             "calltimeout": "60",
             "aleg_gateway": "1",
             "content_object": "type:32-id:1",
-            "extra_data": "2000"})
+            "extra_data": "2000"
+            "ds_user": self.user})
         self.assertEquals(form.is_valid(), False)
 
     def teardown(self):

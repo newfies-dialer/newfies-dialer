@@ -36,7 +36,7 @@ from dialer_contact.models import Phonebook
 from dialer_campaign.models import Campaign
 from dialer_gateway.models import Gateway
 from dialer_campaign.function_def import \
-    user_attached_with_dialer_settings, check_dialer_setting, \
+    user_dialer_setting, check_dialer_setting, \
     dialer_setting_limit
 from audiofield.models import AudioFile
 import time
@@ -78,7 +78,7 @@ class CampaignValidation(Validation):
                 bundle.data['expirationdate'] = time.strftime(
                     '%Y-%m-%d %H:%M:%S', time.gmtime(float(expirationdate)))
 
-        if user_attached_with_dialer_settings(request):
+        if not user_dialer_setting(request):
             errors['user_dialer_setting'] = ['Your settings are not configured properly, Please contact the administrator.']
 
         if check_dialer_setting(request, check_for="campaign"):

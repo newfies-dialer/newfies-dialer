@@ -28,8 +28,8 @@ from dialer_contact.models import Phonebook
 from dialer_campaign.models import Campaign
 from dialer_campaign.forms import CampaignForm, DuplicateCampaignForm
 from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_COLUMN_NAME
-from dialer_campaign.function_def import user_attached_with_dialer_settings, \
-    check_dialer_setting, dialer_setting_limit, user_dialer_setting_msg
+from dialer_campaign.function_def import check_dialer_setting, dialer_setting_limit, \
+    user_dialer_setting, user_dialer_setting_msg
 from dialer_campaign.tasks import collect_subscriber
 from survey.function_def import check_survey_campaign
 from voice_app.function_def import check_voiceapp_campaign
@@ -302,8 +302,8 @@ def campaign_add(request):
         * Add the new campaign which will belong to the logged in user
           via CampaignForm & get redirected to campaign list
     """
-    # If dialer setting is not attached with user, redirect to campaign list
-    if user_attached_with_dialer_settings(request):
+    # If dialer setting is not attached with user, redirect to campaign list    
+    if not user_dialer_setting(request.user):        
         request.session['error_msg'] = \
             _("In order to add a campaign, you need to have your settings configured properly, please contact the admin.")
         return HttpResponseRedirect("/campaign/")
@@ -352,8 +352,7 @@ def campaign_add(request):
         'module': current_view(request),
         'form': form,
         'action': 'add',
-        'notice_count': notice_count(request),
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'notice_count': notice_count(request),        
         'AMD': settings.AMD,
     }
     return render_to_response(template, data,
@@ -415,7 +414,7 @@ def campaign_change(request, object_id):
           via CampaignForm & get redirected to the campaign list
     """
     # If dialer setting is not attached with user, redirect to campaign list
-    if user_attached_with_dialer_settings(request):
+    if not user_dialer_setting(request.user):
         return HttpResponseRedirect("/campaign/")
 
     campaign = get_object_or_404(Campaign, pk=object_id, user=request.user)
@@ -479,8 +478,7 @@ def campaign_change(request, object_id):
         'module': current_view(request),
         'form': form,
         'action': 'update',
-        'notice_count': notice_count(request),
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'notice_count': notice_count(request),        
         'error_msg': request.session.get('error_msg'),
         'info_msg': request.session.get('info_msg'),
         'AMD': settings.AMD,
@@ -528,8 +526,7 @@ def campaign_duplicate(request, id):
         'module': current_view(request),
         'campaign_id': id,
         'form': form,
-        'notice_count': notice_count(request),
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'notice_count': notice_count(request),        
         'err_msg': request.session.get('error_msg'),
     }
     request.session['error_msg'] = ''

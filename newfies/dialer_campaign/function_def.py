@@ -23,17 +23,6 @@ from dateutil.parser import parse
 from datetime import timedelta
 
 
-def user_attached_with_dialer_settings(request):
-    """Check user is attached with dialer setting or not"""
-    try:
-        # DialerSettings is exists & attached with user
-        request.user.get_profile().dialersetting
-        return False
-    except:
-        # not attached
-        return True
-
-
 def check_dialer_setting(request, check_for, field_value=''):
     """Check Dialer Setting Limitation
 

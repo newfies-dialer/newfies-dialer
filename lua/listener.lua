@@ -47,17 +47,49 @@ function trim(s)
     return (string.gsub(s, "^%s*(.-)%s*$", "%1"))
 end
 
-function db_insert_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, starting_date, amd_status)
-    -- event_name, body, job_uuid, call_uuid
-    sql = string.format([[
-    INSERT INTO call_event (event_name, body, job_uuid, call_uuid, status, created_date, used_gateway_id, callrequest_id, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date)
-    VALUES ('%s', '%s', '%s', '%s', '%s', now(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s)]], event_name, body, job_uuid, call_uuid, status, used_gateway_id, callrequest_id, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date)
-    --logger(sql)
-    env = assert (luasql.postgres())
-    dbcon = assert(env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT))
-    res = assert (dbcon:execute(sql))
-    dbcon:close()
-    env:close()
+results = {}
+incr = 0
+
+function commit_event()
+    --Commit events with one bulk insert to the DB
+    sql_result = ''
+    count = 0
+    for k, v in pairs(results) do
+        count = count + 1
+        if count > 1 then
+            sql_result = sql_result..","
+        end
+        -- VALUES ('%s', '%s', '%s', 4'%s', '%s', now(), 7'%s', '%s', '%s', '%s', '%s', 12'%s', '%s', '%s', 15'%s', %s)]], event_name, body, job_uuid, call_uuid, status, used_gateway_id, callrequest_id, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, 0)
+
+        sql_result = sql_result.."('"..v[1].."', '"..v[2].."', '"..v[3].."', '"..v[4].."', "..v[5]..", "..v[6]..
+            ", "..v[7]..", "..v[8]..", "..v[9]..", '"..v[10].."', '"..v[11].."', '"..v[12].."', '"..v[13].."', '"..v[14].."', "..
+            ""..v[15]..", "..v[15]..")"
+    end
+-- (event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, 10 callerid, phonenumber, hangup_cause,
+-- hangup_cause_q850, amd_status, starting_date)
+    sql = "INSERT INTO call_event "..
+    "(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, created_date) "..
+    "VALUES "..sql_result
+    if count > 0 then
+        --logger(sql)
+        env = assert (luasql.postgres())
+        dbcon = assert(env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT))
+        print(sql)
+        res = assert (dbcon:execute(sql))
+        dbcon:close()
+        env:close()
+        --Reset to zero
+        results = {}
+        incr = 0
+    end
+end
+
+function push_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date)
+    results[incr] = {event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, os.time()}
+    incr = incr + 1
+    if (incr >= 500) then
+        commit_event()
+    end
 end
 
 if argv[1] then
@@ -164,9 +196,17 @@ while true do
         hangup_cause_q850 = e:getHeader("variable_hangup_cause_q850") or ""
         start_uepoch = e:getHeader("variable_start_uepoch") -- 1355809698350872
         if start_uepoch ~= nil then
-            starting_date = 'to_timestamp('..start_uepoch..')'
+            starting_date = 'to_timestamp('..start_uepoch..'/1000000)'
         else
             starting_date = 'NOW()'
+        end
+
+        -- HEARTBEAT happening every 30 seconds
+        if event_name == 'HEARTBEAT' then
+            logger(event_name .. "\n")
+            print(event_name)
+            --let's empty the buffer
+            commit_event()
         end
 
         -- CHANNEL_ANSWER
@@ -198,7 +238,8 @@ while true do
                 end
 
                 --Insert Event to Database
-                db_insert_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, starting_date, amd_status)
+                push_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status,
+                    duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date)
 
             elseif event_name == 'CHANNEL_HANGUP_COMPLETE' then
 
@@ -212,7 +253,8 @@ while true do
                 end
 
                 --Insert Event to Database
-                db_insert_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, starting_date, amd_status)
+                push_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status,
+                    duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date)
 
             end
 

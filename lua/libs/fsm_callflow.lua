@@ -66,7 +66,7 @@ function FSMCall:init()
     self.callrequest_id = self.session:getVariable("callrequest_id")
 
     --This is needed for Inbound test
-    if not self.campaign_id or self.campaign_id == 0 then
+    if not self.campaign_id or self.campaign_id == 0 or not self.contact_id then
         self.campaign_id = 46
         self.subscriber_id = 39
         self.contact_id = 39
@@ -119,6 +119,7 @@ function FSMCall:end_call()
     end
 
     --Save all the result to the Database
+    --TODO: Reuse connection is faster, use the opened con
     self.db:connect()
     self.db:commit_result_mem(self.campaign_id, self.survey_id)
     self.db:disconnect()

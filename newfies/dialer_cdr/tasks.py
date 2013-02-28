@@ -17,7 +17,7 @@ from django.db import connection
 from celery.decorators import task
 from celery.task import PeriodicTask
 from django.conf import settings
-from dialer_campaign.models import Campaign, Subscriber
+from dialer_campaign.models import Subscriber
 from dialer_campaign.constants import SUBSCRIBER_STATUS, AMD_BEHAVIOR
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE, \
@@ -610,7 +610,10 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
         return False
 
     #Update Subscriber
-    obj_callrequest.subscriber.count_attempt = obj_callrequest.subscriber.count_attempt + 1
+    if not obj_callrequest.subscriber.count_attempt:
+        obj_callrequest.subscriber.count_attempt = 1
+    else:
+        obj_callrequest.subscriber.count_attempt = obj_callrequest.subscriber.count_attempt + 1
     obj_callrequest.subscriber.last_attempt = datetime.now()
     #check if the outbound call failed then update Subscriber
     if outbound_failure:

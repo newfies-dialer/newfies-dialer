@@ -382,10 +382,8 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
     """
     debug_query(8)
 
-    #Update callrequest to Process
+    #Get CallRequest object
     obj_callrequest = Callrequest.objects.select_related('aleg_gateway', 'user__userprofile', 'subscriber', 'campaign').get(id=callrequest_id)
-    obj_callrequest.status = CALLREQUEST_STATUS.PROCESS
-    obj_callrequest.save()
 
     debug_query(9)
 
@@ -431,6 +429,8 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
             ',accountcode=' + str(obj_callrequest.user.userprofile.accountcode)
 
     debug_query(13)
+
+    outbound_failure = False
 
     #Send Call to API
     #http://ask.github.com/celery/userguide/remote-tasks.html
@@ -594,31 +594,30 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
         except:
             raise
             logger.error('error : ESL')
-            obj_callrequest.status = CALLREQUEST_STATUS.FAILURE
-            obj_callrequest.save()
-            if obj_callrequest.subscriber and obj_callrequest.subscriber.id:
-                obj_subscriber = Subscriber.objects\
-                    .get(id=obj_callrequest.subscriber.id)
-                obj_subscriber.status = SUBSCRIBER_STATUS.FAIL
-                obj_subscriber.save()
+            outbound_failure = True
             return False
         logger.info('Received RequestUUID :> ' + request_uuid)
     else:
         logger.error('No other method supported!')
+        obj_callrequest.status = CALLREQUEST_STATUS.FAILURE
+        obj_callrequest.save()
         return False
 
     #Update Subscriber
-    if obj_callrequest.subscriber and obj_callrequest.subscriber.id:
-        obj_subscriber = Subscriber.objects.get(id=obj_callrequest.subscriber.id)
-        if not obj_subscriber.count_attempt:
-            obj_subscriber.count_attempt = 1
-        else:
-            obj_subscriber.count_attempt = obj_subscriber.count_attempt + 1
-        obj_subscriber.last_attempt = datetime.now()
-        obj_subscriber.save()
+    obj_callrequest.subscriber.count_attempt = obj_callrequest.subscriber.count_attempt + 1
+    obj_callrequest.subscriber.last_attempt = datetime.now()
+    #check if the outbound call failed then update Subscriber
+    if outbound_failure:
+        obj_callrequest.subscriber.status = SUBSCRIBER_STATUS.FAIL
+    obj_callrequest.subscriber.save()
 
     #Update CallRequest Object
     obj_callrequest.request_uuid = request_uuid
+    #check if the outbound call failed
+    if outbound_failure:
+        obj_callrequest.status = CALLREQUEST_STATUS.FAILURE
+    else:
+        obj_callrequest.status = CALLREQUEST_STATUS.PROCESS
     obj_callrequest.save()
 
     #lock to limit running process, do so per campaign

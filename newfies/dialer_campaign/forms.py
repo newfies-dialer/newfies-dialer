@@ -15,8 +15,10 @@
 from django import forms
 from django.conf import settings
 from django.forms.util import ErrorList
+from django.contrib.auth.models import User
 from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
+
 from django.contrib.contenttypes.models import ContentType
 from dialer_campaign.models import Phonebook, Campaign
 from dialer_campaign.constants import CAMPAIGN_STATUS
@@ -73,7 +75,7 @@ class CampaignForm(ModelForm):
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
         }
 
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):        
         super(CampaignForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
@@ -139,8 +141,8 @@ class CampaignForm(ModelForm):
         callmaxduration = cleaned_data.get('callmaxduration')
         maxretry = cleaned_data.get('maxretry')
         calltimeout = cleaned_data.get('calltimeout')
-
-        dialer_set = user_dialer_setting(ds_user)
+        
+        dialer_set = user_dialer_setting(User.objects.get(username=ds_user))        
         if dialer_set:
             if frequency > dialer_set.max_frequency:
                 msg = _('Maximum Frequency limit of %d exceeded.'

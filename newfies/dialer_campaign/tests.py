@@ -26,7 +26,7 @@ from dialer_campaign.views import campaign_list, campaign_add, \
     get_url_campaign_status, campaign_duplicate
 from dialer_campaign.tasks import campaign_running, \
     collect_subscriber, campaign_expire_check
-from dialer_setting.models import DialerSetting
+from dialer_settings.models import DialerSetting
 from common.utils import BaseAuthenticatedClient
 
 
@@ -374,7 +374,9 @@ class DialerCampaignModel(TestCase):
         self.campaign.update_campaign_status()
         get_url_campaign_status(self.campaign.pk, self.campaign.status)
         
-        self.campaign.is_authorized_contact(self.user.get_profile().dialersetting, '123456789')        
+        dialersetting = DialerSetting.objects.get(pk=1)
+        #self.user.get_profile().dialersetting
+        self.campaign.is_authorized_contact(dialersetting, '123456789')        
         self.campaign.get_active_max_frequency()
         self.campaign.get_active_callmaxduration()
         self.campaign.get_active_contact()

@@ -383,6 +383,12 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
     debug_query(8)
 
     #Get CallRequest object
+    # .values_list('id', 'callerid', 'phone_number', 'status',
+    #     'request_uuid', 'campaign_id', 'subscriber_id',
+    #     'aleg_gateway__id', 'aleg_gateway__addprefix', 'aleg_gateway__removeprefix', 'aleg_gateway__status',
+    #     'aleg_gateway__gateways', 'aleg_gateway__gateway_timeouts', 'aleg_gateway__originate_dial_string',
+    #     'user__userprofile__accountcode', 'campaign__caller_name',
+    #     'subscriber__id', 'subscriber__contact_id', 'subscriber__count_attempt', 'subscriber__last_attempt')
     obj_callrequest = Callrequest.objects.select_related('aleg_gateway', 'user__userprofile', 'subscriber', 'campaign').get(id=callrequest_id)
 
     debug_query(9)
@@ -410,9 +416,9 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
     #Retrieve the Gateway for the A-Leg
     gateways = obj_callrequest.aleg_gateway.gateways
     gateway_id = obj_callrequest.aleg_gateway.id
-    gateway_codecs = obj_callrequest.aleg_gateway.gateway_codecs
+    #gateway_codecs = obj_callrequest.aleg_gateway.gateway_codecs
+    #gateway_retries = obj_callrequest.aleg_gateway.gateway_retries
     gateway_timeouts = obj_callrequest.aleg_gateway.gateway_timeouts
-    gateway_retries = obj_callrequest.aleg_gateway.gateway_retries
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
 
     debug_query(12)
@@ -469,9 +475,9 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
                 callername=obj_callrequest.campaign.caller_name,
                 phone_number=dialout_phone_number,
                 Gateways=gateways,
-                GatewayCodecs=gateway_codecs,
+                #GatewayCodecs=gateway_codecs,
                 GatewayTimeouts=gateway_timeouts,
-                GatewayRetries=gateway_retries,
+                #GatewayRetries=gateway_retries,
                 ExtraDialString=originate_dial_string,
                 AnswerUrl=answer_url,
                 HangupUrl=settings.PLIVO_DEFAULT_HANGUP_URL,

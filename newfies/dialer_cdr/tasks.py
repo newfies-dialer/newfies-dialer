@@ -272,45 +272,44 @@ def check_callevent():
             callrequest.save()
 
             dialer_set = user_dialer_setting(callrequest.user)
-            if dialer_set:
-                #check if we are allowed to retry on failure
-                if ((obj_subscriber.count_attempt - 1) >= callrequest.campaign.maxretry
-                   or (obj_subscriber.count_attempt - 1) >= dialer_set.maxretry
-                   or not callrequest.campaign.maxretry):
-                    logger.error("Not allowed retry - Maxretry (%d)" %
-                                 callrequest.campaign.maxretry)
-                    #Check here if we should try for completion
-                    check_retrycall_completion(obj_subscriber, callrequest)
-                else:
-                    #Allowed Retry
-                    logger.error("Allowed Retry - Maxretry (%d)" % callrequest.campaign.maxretry)
+            #check if we are allowed to retry on failure
+            if ((obj_subscriber.count_attempt - 1) >= callrequest.campaign.maxretry
+               or (obj_subscriber.count_attempt - 1) >= dialer_set.maxretry
+               or not callrequest.campaign.maxretry):
+                logger.error("Not allowed retry - Maxretry (%d)" %
+                             callrequest.campaign.maxretry)
+                #Check here if we should try for completion
+                check_retrycall_completion(obj_subscriber, callrequest)
+            else:
+                #Allowed Retry
+                logger.error("Allowed Retry - Maxretry (%d)" % callrequest.campaign.maxretry)
 
-                    # Create new callrequest, Assign parent_callrequest,
-                    # Change callrequest_type & num_attempt
-                    new_callrequest = Callrequest(
-                        request_uuid=uuid1(),
-                        parent_callrequest_id=callrequest.id,
-                        call_type=CALLREQUEST_TYPE.ALLOW_RETRY,
-                        num_attempt=callrequest.num_attempt + 1,
-                        user=callrequest.user,
-                        campaign_id=callrequest.campaign_id,
-                        aleg_gateway_id=callrequest.aleg_gateway_id,
-                        content_type=callrequest.content_type,
-                        object_id=callrequest.object_id,
-                        phone_number=callrequest.phone_number,
-                        timelimit=callrequest.timelimit,
-                        callerid=callrequest.callerid,
-                        timeout=callrequest.timeout,
-                        content_object=callrequest.content_object,
-                        subscriber=callrequest.subscriber
-                    )
-                    new_callrequest.save()
-                    #NOTE : implement a PID algorithm
-                    second_towait = callrequest.campaign.intervalretry
-                    logger.info("Init Retry CallRequest in  %d seconds" % second_towait)
-                    init_callrequest.apply_async(
-                        args=[new_callrequest.id, callrequest.campaign.id],
-                        countdown=second_towait)
+                # Create new callrequest, Assign parent_callrequest,
+                # Change callrequest_type & num_attempt
+                new_callrequest = Callrequest(
+                    request_uuid=uuid1(),
+                    parent_callrequest_id=callrequest.id,
+                    call_type=CALLREQUEST_TYPE.ALLOW_RETRY,
+                    num_attempt=callrequest.num_attempt + 1,
+                    user=callrequest.user,
+                    campaign_id=callrequest.campaign_id,
+                    aleg_gateway_id=callrequest.aleg_gateway_id,
+                    content_type=callrequest.content_type,
+                    object_id=callrequest.object_id,
+                    phone_number=callrequest.phone_number,
+                    timelimit=callrequest.timelimit,
+                    callerid=callrequest.callerid,
+                    timeout=callrequest.timeout,
+                    content_object=callrequest.content_object,
+                    subscriber=callrequest.subscriber
+                )
+                new_callrequest.save()
+                #NOTE : implement a PID algorithm
+                second_towait = callrequest.campaign.intervalretry
+                logger.info("Init Retry CallRequest in  %d seconds" % second_towait)
+                init_callrequest.apply_async(
+                    args=[new_callrequest.id, callrequest.campaign.id],
+                    countdown=second_towait)
         else:
             #The Call is Answered
             logger.info("Check for completion call")
@@ -384,12 +383,12 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
     debug_query(8)
 
     #Get CallRequest object
-    # .values_list('id', 'callerid', 'phone_number', 'status',
-    #     'request_uuid', 'campaign_id', 'subscriber_id',
+    # .only('id', 'callerid', 'phone_number', 'status',
+    #     'request_uuid', 'campaign__id', 'subscriber__id',
     #     'aleg_gateway__id', 'aleg_gateway__addprefix', 'aleg_gateway__removeprefix', 'aleg_gateway__status',
     #     'aleg_gateway__gateways', 'aleg_gateway__gateway_timeouts', 'aleg_gateway__originate_dial_string',
     #     'user__userprofile__accountcode', 'campaign__caller_name',
-    #     'subscriber__id', 'subscriber__contact_id', 'subscriber__count_attempt', 'subscriber__last_attempt')
+    #     'subscriber__id', 'subscriber__contact__id', 'subscriber__count_attempt', 'subscriber__last_attempt')\
     obj_callrequest = Callrequest.objects.select_related('aleg_gateway', 'user__userprofile', 'subscriber', 'campaign').get(id=callrequest_id)
 
     debug_query(9)

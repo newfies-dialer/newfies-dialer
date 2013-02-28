@@ -352,8 +352,9 @@ class DialerCampaignModel(TestCase):
 
         Campaign.objects.get_running_campaign()
         Campaign.objects.get_expired_campaign()
-
-        common_contact_authorization(self.user, '1234567890')
+        dialersetting = DialerSetting.objects.get(pk=1)
+        #self.user.get_profile().dialersetting
+        common_contact_authorization(dialersetting, '1234567890')
 
         # status = 1
         self.campaign.update_campaign_status()
@@ -373,9 +374,7 @@ class DialerCampaignModel(TestCase):
         self.campaign.save()
         self.campaign.update_campaign_status()
         get_url_campaign_status(self.campaign.pk, self.campaign.status)
-        
-        dialersetting = DialerSetting.objects.get(pk=1)
-        #self.user.get_profile().dialersetting
+                
         self.campaign.is_authorized_contact(dialersetting, '123456789')        
         self.campaign.get_active_max_frequency()
         self.campaign.get_active_callmaxduration()

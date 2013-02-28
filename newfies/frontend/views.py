@@ -255,8 +255,7 @@ def customer_dashboard(request, on_index=None):
             else:
                 #VOIP CALL FAILED
                 total_failed += i['starting_date__count']
-
-        # This part got from cdr-stats 'global report'
+        
         # following calls list is without disposition & group by call date
         calls = VoIPCall.objects\
             .filter(callrequest__campaign=selected_campaign,

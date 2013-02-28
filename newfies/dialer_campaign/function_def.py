@@ -27,7 +27,7 @@ def user_attached_with_dialer_settings(request):
     """Check user is attached with dialer setting or not"""
     try:
         # DialerSettings is exists & attached with user
-        DialerSetting.objects.get(pk=request.user.get_profile().dialersetting_id)
+        request.user.get_profile().dialersetting
         return False
     except:
         # not attached
@@ -43,8 +43,7 @@ def check_dialer_setting(request, check_for, field_value=''):
     """
     try:
         # DialerSettings is linked with the User
-        dialer_set_obj = \
-            DialerSetting.objects.get(pk=request.user.get_profile().dialersetting_id)
+        dialer_set_obj = request.user.get_profile().dialersetting
         if dialer_set_obj:
             # check running campaign for User
             if check_for == "campaign":
@@ -124,8 +123,7 @@ def dialer_setting_limit(request, limit_for):
     """
     try:
         # DialerSettings is linked with the User
-        dialer_set_obj = \
-            DialerSetting.objects.get(pk=request.user.get_profile().dialersetting_id)
+        dialer_set_obj = request.user.get_profile().dialersetting
         if limit_for == "contact":
             return str(dialer_set_obj.max_number_subscriber_campaign)
         if limit_for == "campaign":
@@ -230,11 +228,10 @@ def get_campaign_status_name(id):
                        % (CAMPAIGN_STATUS_COLOR[id])
 
 
-#Note: Do we need this ? maybe replace by select.related
 def user_dialer_setting(user):
     """Get Dialer setting for user"""
-    try:
-        dialer_set = DialerSetting.objects.get(id=user.get_profile().dialersetting_id)
+    try:        
+        dialer_set = user.get_profile().dialersetting
     except:
         dialer_set = []
     return dialer_set

@@ -625,8 +625,7 @@ class SurveyModel(TestCase):
         obj.survey = self.survey_template
         obj.save()
 
-        form = SurveyDetailReportForm(self.user,
-                                      initial={'campaign': 1})
+        form = SurveyDetailReportForm(self.user)
 
     def teardown(self):
         self.survey_template.delete()

@@ -14,6 +14,7 @@
 
 from django import forms
 from django.utils.translation import ugettext_lazy as _
+from dialer_campaign.models import Campaign
 from dialer_cdr.constants import VOIPCALL_DISPOSITION
 from dialer_contact.forms import SearchForm
 
@@ -29,3 +30,19 @@ class VoipSearchForm(SearchForm):
     status = forms.ChoiceField(label=_('Disposition'),
                                choices=voip_call_disposition_list,
                                required=False)
+    campaign = forms.ChoiceField(label=_('Campaign'), required=False)
+
+    def __init__(self, user, *args, **kwargs):
+        super(VoipSearchForm, self).__init__(*args, **kwargs)        
+        # To get user's campaign list which are attached with voipcall
+        if user:
+            list = []
+            list.append((0, _('ALL')))
+            try:
+                camp_list = Campaign.objects.values_list('id', 'name')\
+                    .filter(user=user, content_type__model='voiceapp')
+                for i in camp_list:
+                    list.append((i[0], i[1]))
+            except:
+                pass
+            self.fields['campaign'].choices = list

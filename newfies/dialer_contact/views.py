@@ -27,8 +27,7 @@ from dialer_contact.forms import ContactSearchForm, Contact_fileImport, \
 from dialer_contact.constants import PHONEBOOK_COLUMN_NAME, CONTACT_COLUMN_NAME
 from dialer_contact.constants import STATUS_CHOICE
 from dialer_campaign.function_def import check_dialer_setting,\
-    dialer_setting_limit, \
-    user_dialer_setting_msg, type_field_chk
+    dialer_setting_limit, user_dialer_setting_msg, type_field_chk
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import notice_count, frontend_send_notification
 from common.common_functions import striplist, current_view,\

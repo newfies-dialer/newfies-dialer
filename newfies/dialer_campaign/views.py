@@ -501,6 +501,10 @@ def campaign_duplicate(request, id):
             del campaign_obj.__dict__['_state']
             del campaign_obj.__dict__['id']
             del campaign_obj.__dict__['campaign_code']
+            del campaign_obj.__dict__['startingdate']
+            del campaign_obj.__dict__['expirationdate']
+            del campaign_obj.__dict__['daily_start_time']
+            del campaign_obj.__dict__['daily_stop_time']
 
             dup_campaign = Campaign(**campaign_obj.__dict__)
             dup_campaign.campaign_code = request.POST.get('campaign_code')

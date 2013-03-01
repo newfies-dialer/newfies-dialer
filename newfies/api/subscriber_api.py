@@ -202,8 +202,10 @@ class SubscriberResource(ModelResource):
                                 duplicate_contact=con_obj.contact,
                                 status=SUBSCRIBER_STATUS.PENDING,  # PENDING
                                 campaign=c_campaign)
-                        except:
-                            #TODO Catching duplicate error
+                        except:                            
+                            error_msg = "Duplicate Subscriber"
+                            logger.error(error_msg)
+                            #raise BadRequest(error_msg)
                             pass
 
         logger.debug('Subscriber POST API : result ok 200')

@@ -34,6 +34,7 @@ def voipcall_record_common_fun(request):
 
     # Assign form field value to local variable
     disposition = variable_value(request, 'status')
+    campaign_id = variable_value(request, 'campaign')
 
     # Patch code for persist search
     if request.method != 'POST':
@@ -51,6 +52,9 @@ def voipcall_record_common_fun(request):
         if request.session.get('status'):
             disposition = request.session['status']
 
+        if request.session.get('campaign_id'):
+            campaign_id = request.session['campaign_id']
+
     kwargs = {}
     if start_date and end_date:
         kwargs['starting_date__range'] = (start_date, end_date)
@@ -61,6 +65,9 @@ def voipcall_record_common_fun(request):
 
     if disposition and disposition != 'all':
         kwargs['disposition__exact'] = disposition
+
+    if campaign_id and campaign_id != '0':
+        kwargs['callrequest__campaign_id'] = campaign_id
 
     if len(kwargs) == 0:
         tday = datetime.today()
@@ -98,6 +105,7 @@ def voipcall_search_admin_form_fun(request):
 
     # Assign form field value to local variable
     disposition = variable_value(request, 'status')
+    campaign_id = variable_value(request, 'campaign')
     query_string = ''
 
     if start_date and end_date:
@@ -117,6 +125,12 @@ def voipcall_search_admin_form_fun(request):
         disposition_string = 'disposition__exact=' + disposition
         query_string = return_query_string(query_string,
                                         disposition_string)
+    
+    if campaign_id and campaign_id != '0':
+        campaign_string = 'callrequest__campaign_id=' + str(campaign_id)
+        query_string = return_query_string(query_string,
+                                           campaign_string)
+        
 
     return query_string
 

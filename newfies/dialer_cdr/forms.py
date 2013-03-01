@@ -39,10 +39,16 @@ class VoipSearchForm(SearchForm):
             list = []
             list.append((0, _('ALL')))
             try:
-                camp_list = Campaign.objects.values_list('id', 'name')\
-                    .filter(user=user, content_type__model='voiceapp')
+            	if user.is_superuser:            		
+            		camp_list = Campaign.objects.values_list('id', 'name')\
+                    	.filter(content_type__model='voiceapp')
+            	else:            		
+            		camp_list = Campaign.objects.values_list('id', 'name')\
+                    	.filter(user=user, content_type__model='voiceapp')
+                
                 for i in camp_list:
                     list.append((i[0], i[1]))
             except:
-                pass
+            	pass
+                
             self.fields['campaign'].choices = list

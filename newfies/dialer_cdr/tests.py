@@ -82,8 +82,7 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
     def test_customer_voipcall(self):
         """Test Function to check VoIP call report"""
         response = self.client.get('/voipcall_report/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(response.context['form'], VoipSearchForm())
+        self.assertEqual(response.status_code, 200)        
         self.assertTemplateUsed(response,
             'frontend/report/voipcall_report.html')
 
@@ -149,6 +148,7 @@ class DialerCdrModel(TestCase):
 
     def setUp(self):
         self.user = User.objects.get(username='admin')
+        VoipSearchForm(self.user)
 
         try:
             content_type_id = ContentType.objects.get(model='voiceapp').id

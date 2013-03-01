@@ -229,5 +229,5 @@ def user_dialer_setting(user):
 def user_dialer_setting_msg(user):
     msg = ''
     if not user_dialer_setting(user):
-        msg = _('Your settings are not configured properly, Please contact the administrator.')
+        msg = _('your settings are not configured properly, please contact the administrator.')
     return msg

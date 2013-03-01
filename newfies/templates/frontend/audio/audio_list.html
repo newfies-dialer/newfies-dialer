@@ -46,10 +46,10 @@ function delete_button()
             <thead>
             <tr>
                 <th><input type="checkbox" onclick="toggleChecked(this.checked)"></th>
-                <th>{% sort_link AUDIO_COLUMN_NAME.name col_name_with_order.name %}</th>
-                <th>{% trans AUDIO_COLUMN_NAME.audio_name %}</th>
-                <th>{% trans AUDIO_COLUMN_NAME.audio_url %}</th>
-                <th>{% sort_link AUDIO_COLUMN_NAME.date col_name_with_order.updated_date %}</th>
+                <th>{% sort_link AUDIO_COLUMN_NAME.name|capfirst col_name_with_order.name %}</th>
+                <th>{% trans AUDIO_COLUMN_NAME.audio_name|capfirst %}</th>
+                <th>{% trans AUDIO_COLUMN_NAME.audio_url|capfirst %}</th>
+                <th>{% sort_link AUDIO_COLUMN_NAME.date|capfirst col_name_with_order.updated_date %}</th>
                 <th>{% trans 'action'|title %}</th>
             </tr>
             </thead>

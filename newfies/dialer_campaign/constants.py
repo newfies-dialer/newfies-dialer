@@ -37,13 +37,13 @@ CAMPAIGN_STATUS_COLOR = {1: "green", 2: "blue", 3: "orange", 4: "red"}
 
 
 class CAMPAIGN_COLUMN_NAME(Choice):
-    key = _('Key')
-    name = _('Name')
-    start_date = _('Start date')
-    type = _('Type')
-    app = _('App')
-    contacts = _('Contacts')
-    status = _('Status')
+    key = _('key')
+    name = _('name')
+    start_date = _('start date')
+    type = _('type')
+    app = _('app')
+    contacts = _('contacts')
+    status = _('status')
 
 
 class AMD_BEHAVIOR(Choice):

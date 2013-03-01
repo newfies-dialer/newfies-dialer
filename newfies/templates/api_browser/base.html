@@ -2,29 +2,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% trans "API Browser" %}</title>
+    <title>{% trans "API" %} {% trans "browser"|capfirst %}</title>
 
     <!-- Le styles -->
-    <link href="{{STATIC_URL}}newfies/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}newfies/bootstrap/css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
         body {
             padding-top: 60px;
             padding-bottom: 40px;
     }
     </style>
-    <link href="{{STATIC_URL}}newfies/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}newfies/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
     <!--Override bootstrap-->
-    <link href="{{STATIC_URL}}newfies/css/override_bootstrap.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}newfies/css/override_bootstrap.css" rel="stylesheet">
 
     <!-- jquery UI css -->
-    <link type="text/css" href="{{STATIC_URL}}newfies/css/jquery-ui-bootstrap/jquery-ui-1.8.16.custom.css" rel="stylesheet">
+    <link type="text/css" href="{{ STATIC_URL }}newfies/css/jquery-ui-bootstrap/jquery-ui-1.8.16.custom.css" rel="stylesheet">
     <!-- Le javascript -->
-    <script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}newfies/js/jquery-ui-1.8.16.custom.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="{{STATIC_URL}}newfies/bootstrap/js/bootstrap.js"></script>
+    <script src="{{ STATIC_URL }}newfies/bootstrap/js/bootstrap.js"></script>
 
     <!-- Newfies custom css -->
-    <link type="text/css" media="screen" href="{{STATIC_URL}}newfies/css/newfies_custom.css" rel="stylesheet"/>
+    <link type="text/css" media="screen" href="{{ STATIC_URL }}newfies/css/newfies_custom.css" rel="stylesheet"/>
 
     <link rel="stylesheet" href="{{ STATIC_URL }}api_browser/css/h5bp.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}api_browser/css/screen.css">
@@ -47,8 +47,8 @@
     {% endblock %}
 
     <ul class="breadcrumb">
-        <li><a href="/api-explorer/"> {% trans "API Explorer" %}</a> /</li>
-        <li class="active">{{ schema.title }}</li>
+        <li><a href="/api-explorer/"> {% trans "API" %} {% trans "explorer"|capfirst %}</a> /</li>
+        <li class="active">{{ schema.title|title }} {% trans "API" %} {% trans "playground"|title %}</li>
     </ul>
 
     {% block container %}

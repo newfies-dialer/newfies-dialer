@@ -18,27 +18,27 @@ from apiplayground import APIPlayground
 class SurveyAPIPlayground(APIPlayground):
 
     schema = {
-        "title": _("Survey API Playground"),
+        "title": _("survey"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/survey/",
-                "description": _("This resource allows you to manage survey."),
+                "description": _("this resource allows you to manage survey."),
                 "endpoints": [
                     {
                         "method": "GET",
                         "url": "/api/v1/survey/",
-                        "description": _("Returns all surveys")
+                        "description": _("returns all surveys")
                     },
                     {
                         "method": "GET",
                         "url": "/api/v1/survey/{survey-id}/",
-                        "description": _("Returns a specific survey")
+                        "description": _("returns a specific survey")
                     },
                     {
                         "method": "POST",
                         "url": "/api/v1/survey/",
-                        "description": _("Create new survey"),
+                        "description": _("create new survey"),
                         "parameters": [{
                                            "name": "name",
                                            "type": "string",
@@ -54,7 +54,7 @@ class SurveyAPIPlayground(APIPlayground):
                     {
                         "method": "PUT",
                         "url": "/api/v1/survey/{survey-id}/",
-                        "description": _("Update survey"),
+                        "description": _("update survey"),
                         "parameters": [{
                                            "name": "name",
                                            "type": "string",
@@ -70,7 +70,7 @@ class SurveyAPIPlayground(APIPlayground):
                     {
                         "method": "DELETE",
                         "url": "/api/v1/survey/{survey-id}/",
-                        "description": _("Delete survey"),
+                        "description": _("delete survey"),
                     }
                 ]
             },

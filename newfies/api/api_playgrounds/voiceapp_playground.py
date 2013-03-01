@@ -18,27 +18,27 @@ from apiplayground import APIPlayground
 class VoiceAppAPIPlayground(APIPlayground):
 
     schema = {
-        "title": _("VoiceApp API Playground"),
+        "title": _("voice application"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/voiceapp/",
-                "description": _("This resource allows you to manage voiceapps."),
+                "description": _("this resource allows you to manage voice applications."),
                 "endpoints": [
                     {
                         "method": "GET",
                         "url": "/api/v1/voiceapp/",
-                        "description": _("Returns all voiceapps")
+                        "description": _("returns all voice applications.")
                     },
                     {
                         "method": "GET",
                         "url": "/api/v1/voiceapp/{voiceapp-id}/",
-                        "description": _("Returns a specific voiceapp")
+                        "description": _("returns a specific voice application.")
                     },
                     {
                         "method": "POST",
                         "url": "/api/v1/voiceapp/",
-                        "description": _("Create new voiceapp"),
+                        "description": _("create new voice application."),
                         "parameters": [{
                                            "name": "name",
                                            "type": "string"
@@ -51,7 +51,7 @@ class VoiceAppAPIPlayground(APIPlayground):
                     {
                         "method": "PUT",
                         "url": "/api/v1/voiceapp/{voiceapp-id}/",
-                        "description": _("Update voiceapp"),
+                        "description": _("update voiceapp"),
                         "parameters": [{
                                            "name": "name",
                                            "type": "string"
@@ -64,7 +64,7 @@ class VoiceAppAPIPlayground(APIPlayground):
                     {
                         "method": "DELETE",
                         "url": "/api/v1/voiceapp/{voiceapp-id}/",
-                        "description": _("Delete voiceapp"),
+                        "description": _("delete voiceapp"),
                     }
                 ]
             },

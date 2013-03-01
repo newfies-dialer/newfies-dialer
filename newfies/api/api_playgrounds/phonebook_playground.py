@@ -18,27 +18,27 @@ from apiplayground import APIPlayground
 class PhonebookAPIPlayground(APIPlayground):
 
     schema = {
-        "title": _("Phonebook API Playground"),
+        "title": _("phonebook"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/phonebook/",
-                "description": _("This resource allows you to manage phonebooks."),
+                "description": _("this resource allows you to manage phonebooks."),
                 "endpoints": [
                     {
                         "method": "GET",
                         "url": "/api/v1/phonebook/",
-                        "description": _("Returns all phonebooks")
+                        "description": _("returns all phonebooks")
                     },
                     {
                         "method": "GET",
                         "url": "/api/v1/phonebook/{phonebook-id}/",
-                        "description": _("Returns a specific phonebook")
+                        "description": _("returns a specific phonebook")
                     },
                     {
                         "method": "POST",
                         "url": "/api/v1/phonebook/",
-                        "description": _("Create new phonebook"),
+                        "description": _("create new phonebook"),
                         "parameters": [{
                                            "name": "name",
                                            "type": "string",
@@ -53,7 +53,7 @@ class PhonebookAPIPlayground(APIPlayground):
                     {
                         "method": "PUT",
                         "url": "/api/v1/phonebook/{phonebook-id}/",
-                        "description": _("Update phonebook"),
+                        "description": _("update phonebook"),
                         "parameters": [{
                                            "name": "name",
                                            "type": "string"
@@ -66,7 +66,7 @@ class PhonebookAPIPlayground(APIPlayground):
                     {
                         "method": "DELETE",
                         "url": "/api/v1/phonebook/{phonebook-id}/",
-                        "description": _("Delete phonebook"),
+                        "description": _("delete phonebook"),
                     }
                 ]
             },

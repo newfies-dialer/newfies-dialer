@@ -18,17 +18,17 @@ from apiplayground import APIPlayground
 class BulkContactAPIPlayground(APIPlayground):
 
     schema = {
-        "title": _("Bulk contact API Playground"),
+        "title": _("bulk contact"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/bulkcontact/",
-                "description": _("This resource allows you to create bulk contacts."),
+                "description": _("this resource allows you to create bulk contacts."),
                 "endpoints": [
                     {
                         "method": "POST",
                         "url": "/api/v1/phonebook/",
-                        "description": _("Create new phonebook"),
+                        "description": _("create new phonebook"),
                         "parameters": [{
                                            "name": "phonebook_id",
                                            "type": "string",

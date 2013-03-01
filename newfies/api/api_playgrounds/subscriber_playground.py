@@ -18,22 +18,22 @@ from apiplayground import APIPlayground
 class SubscriberAPIPlayground(APIPlayground):
 
     schema = {
-        "title": _("Subscriber API Playground"),
+        "title": _("subscriber"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/subscriber/",
-                "description": _("This resource allows you to manage subscriber."),
+                "description": _("this resource allows you to manage subscriber."),
                 "endpoints": [
                     {
                         "method": "GET",
                         "url": "/api/v1/subscriber/",
-                        "description": "Returns all subscribers"
+                        "description": "returns all subscribers"
                     },
                     {
                         "method": "POST",
                         "url": "/api/v1/subscriber/",
-                        "description": _("Create new subscriber"),
+                        "description": _("create new subscriber"),
                         "parameters": [{
                                            "name": "contact",
                                            "type": "string",
@@ -65,7 +65,7 @@ class SubscriberAPIPlayground(APIPlayground):
                     {
                         "method": "PUT",
                         "url": "/api/v1/subscriber/{campaign-id}/",
-                        "description": _("Update subscriber"),
+                        "description": _("update subscriber"),
                         "parameters": [{
                                            "name": "contact",
                                            "type": "string",

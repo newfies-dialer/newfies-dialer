@@ -18,17 +18,17 @@ from apiplayground import APIPlayground
 class ResultAggregateResourceAPIPlayground(APIPlayground):
 
     schema = {
-        "title": _("Survey Aggregate Result API Playground"),
+        "title": _("survey aggregate result"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/survey_aggregate_result/",
-                "description": _("This resource allows you to get survey aggregate result."),
+                "description": _("this resource allows you to get survey aggregate result."),
                 "endpoints": [
                     {
                         "method": "GET",
                         "url": "/api/v1/survey_aggregate_result/{campaign-id}/",
-                        "description": "Returns a result belong to campaign"
+                        "description": _("returns a result belong to campaign")
                     }
                 ]
             }

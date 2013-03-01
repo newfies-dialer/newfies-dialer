@@ -18,12 +18,12 @@ from apiplayground import APIPlayground
 class HangupCallAPIPlayground(APIPlayground):
 
     schema = {
-        "title": _("Hangup Call API Playground"),
+        "title": _("hangup call"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/hangupcall/",
-                "description": _("This resource allows you to manage hangup call."),
+                "description": _("this resource allows you to manage hangup call."),
                 "endpoints": [
                     {
                         "method": "POST",

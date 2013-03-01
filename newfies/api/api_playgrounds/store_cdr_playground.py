@@ -18,12 +18,12 @@ from apiplayground import APIPlayground
 class StoreCdrAPIPlayground(APIPlayground):
 
     schema = {
-        "title": _("Store CDR API Playground"),
+        "title": _("store cdr"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/store_cdr/",
-                "description": _("This resource allows you to manage store cdr."),
+                "description": _("this resource allows you to manage store cdr."),
                 "endpoints": [
                     {
                         "method": "POST",

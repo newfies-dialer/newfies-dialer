@@ -18,27 +18,27 @@ from apiplayground import APIPlayground
 class CallrequestAPIPlayground(APIPlayground):
 
     schema = {
-        "title": _("Callrequest API Playground"),
+        "title": _("Callrequest"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/callrequest/",
-                "description": _("This resource allows you to manage callrequest."),
+                "description": _("this resource allows you to manage callrequest."),
                 "endpoints": [
                     {
                         "method": "GET",
                         "url": "/api/v1/callrequest/",
-                        "description": _("Returns all callrequests")
+                        "description": _("returns all callrequests")
                     },
                     {
                         "method": "GET",
                         "url": "/api/v1/callrequest/{callrequest-id}/",
-                        "description": _("Returns a specific callrequest")
+                        "description": _("returns a specific callrequest")
                     },
                     {
                         "method": "POST",
                         "url": "/api/v1/callrequest/",
-                        "description": _("Create new callrequest"),
+                        "description": _("create new callrequest"),
                         "parameters": [{
                                            "name": "request_uuid",
                                            "type": "string",
@@ -85,7 +85,7 @@ class CallrequestAPIPlayground(APIPlayground):
                     {
                         "method": "PUT",
                         "url": "/api/v1/callrequest/{callrequest-id}/",
-                        "description": _("Update callrequest"),
+                        "description": _("update callrequest"),
                         "parameters": [{
                                            "name": "request_uuid",
                                            "type": "string",

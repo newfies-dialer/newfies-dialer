@@ -18,27 +18,27 @@ from apiplayground import APIPlayground
 class SectionAPIPlayground(APIPlayground):
 
     schema = {
-        "title": _("Section API Playground"),
+        "title": _("section"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/section/",
-                "description": _("This resource allows you to manage sections."),
+                "description": _("this resource allows you to manage sections."),
                 "endpoints": [
                     {
                         "method": "GET",
                         "url": "/api/v1/section/",
-                        "description": _("Returns all sections")
+                        "description": _("returns all sections")
                     },
                     {
                         "method": "GET",
                         "url": "/api/v1/section/{section-id}/",
-                        "description": _("Returns a specific section")
+                        "description": _("returns a specific section")
                     },
                     {
                         "method": "POST",
                         "url": "/api/v1/section/",
-                        "description": _("Create new section"),
+                        "description": _("create new section"),
                         "parameters": [{
                                            "name": "type",
                                            "type": "string",
@@ -65,7 +65,7 @@ class SectionAPIPlayground(APIPlayground):
                     {
                         "method": "PUT",
                         "url": "/api/v1/section/{section-id}/",
-                        "description": _("Update section"),
+                        "description": _("update section"),
                         "parameters": [{
                                            "name": "type",
                                            "type": "string",
@@ -92,7 +92,7 @@ class SectionAPIPlayground(APIPlayground):
                     {
                         "method": "DELETE",
                         "url": "/api/v1/section/{section-id}/",
-                        "description": _("Delete section"),
+                        "description": _("delete section"),
                         }
                 ]
             },

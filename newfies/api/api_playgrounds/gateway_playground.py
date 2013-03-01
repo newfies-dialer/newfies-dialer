@@ -18,27 +18,27 @@ from apiplayground import APIPlayground
 class GatewayAPIPlayground(APIPlayground):
 
     schema = {
-        "title": _("Gateway API Playground"),
+        "title": _("gateway"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/gateway/",
-                "description": _("This resource allows you to manage gateways."),
+                "description": _("this resource allows you to manage gateways."),
                 "endpoints": [
                     {
                         "method": "GET",
                         "url": "/api/v1/gateway/",
-                        "description": _("Returns all gateways")
+                        "description": _("returns all gateways")
                     },
                     {
                         "method": "GET",
                         "url": "/api/v1/gateway/{gateway-id}/",
-                        "description": _("Returns a specific gateway")
+                        "description": _("returns a specific gateway")
                     },
                     {
                         "method": "POST",
                         "url": "/api/v1/gateway/",
-                        "description": _("Create new gateway"),
+                        "description": _("create new gateway"),
                         "parameters": [{
                                            "name": "name",
                                            "type": "string",
@@ -118,7 +118,7 @@ class GatewayAPIPlayground(APIPlayground):
                     {
                         "method": "PUT",
                         "url": "/api/v1/gateway/{gateway-id}/",
-                        "description": _("Update gateway"),
+                        "description": _("update gateway"),
                         "parameters": [{
                                            "name": "name",
                                            "type": "string"
@@ -197,7 +197,7 @@ class GatewayAPIPlayground(APIPlayground):
                     {
                         "method": "DELETE",
                         "url": "/api/v1/gateway/{gateway-id}/",
-                        "description": _("Delete gateway"),
+                        "description": _("delete gateway"),
                         }
                 ]
             },

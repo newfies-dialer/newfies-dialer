@@ -18,27 +18,27 @@ from apiplayground import APIPlayground
 class CampaignAPIPlayground(APIPlayground):
 
     schema = {
-        "title": _("Campaign API Playground"),
+        "title": _("campaign"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/campaign/",
-                "description": _("This resource allows you to manage campaign."),
+                "description": _("this resource allows you to manage campaign."),
                 "endpoints": [
                     {
                         "method": "GET",
                         "url": "/api/v1/campaign/",
-                        "description": _("Returns all campaigns")
+                        "description": _("returns all campaigns")
                     },
                     {
                         "method": "GET",
                         "url": "/api/v1/campaign/{campaign-id}/",
-                        "description": _("Returns a specific campaign")
+                        "description": _("returns a specific campaign")
                     },
                     {
                         "method": "POST",
                         "url": "/api/v1/campaign/",
-                        "description": _("Create new campaign"),
+                        "description": _("create new campaign"),
                         "parameters": [
                             {
                                 "name": "name",
@@ -129,7 +129,7 @@ class CampaignAPIPlayground(APIPlayground):
                     {
                         "method": "PUT",
                         "url": "/api/v1/campaign/{campaign-id}/",
-                        "description": _("Update campaign"),
+                        "description": _("update campaign"),
                         "parameters": [
                             {
                                 "name": "name",
@@ -210,7 +210,7 @@ class CampaignAPIPlayground(APIPlayground):
                     {
                         "method": "DELETE",
                         "url": "/api/v1/campaign/{campaign-id}/",
-                        "description": _("Delete campaign"),
+                        "description": _("delete campaign"),
                     }
                 ]
             }

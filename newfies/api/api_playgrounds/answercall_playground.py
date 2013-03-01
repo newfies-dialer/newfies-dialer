@@ -18,12 +18,12 @@ from apiplayground import APIPlayground
 class AnswerCallAPIPlayground(APIPlayground):
 
     schema = {
-        "title": _("Answer Call API Playground"),
+        "title": _("answer call"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/answercall/",
-                "description": _("This resource allows you to manage answer call."),
+                "description": _("this resource allows you to manage answer call."),
                 "endpoints": [
                     {
                         "method": "POST",

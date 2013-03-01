@@ -18,17 +18,17 @@ from apiplayground import APIPlayground
 class CampaignDelCascadeAPIPlayground(APIPlayground):
 
     schema = {
-        "title": _("Campaign Delete Cascade API Playground"),
+        "title": _("campaign delete cascade"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/campaign_delete_cascade/",
-                "description": _("This resource allows you to delete campaign."),
+                "description": _("this resource allows you to delete campaign."),
                 "endpoints": [
                     {
                         "method": "DELETE",
                         "url": "/api/v1/campaign_delete_cascade/{campaign-id}/",
-                        "description": _("Delete campaign"),
+                        "description": _("delete campaign"),
                     }
                 ]
             },

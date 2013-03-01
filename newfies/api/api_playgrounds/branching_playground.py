@@ -18,27 +18,27 @@ from apiplayground import APIPlayground
 class BranchingAPIPlayground(APIPlayground):
 
     schema = {
-        "title": _("Branching API Playground"),
+        "title": _("branching"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/branching/",
-                "description": _("This resource allows you to manage branching."),
+                "description": _("this resource allows you to manage branching."),
                 "endpoints": [
                     {
                         "method": "GET",
                         "url": "/api/v1/branching/",
-                        "description": _("Returns all branching")
+                        "description": _("returns all branching")
                     },
                     {
                         "method": "GET",
                         "url": "/api/v1/branching/{branching-id}/",
-                        "description": _("Returns a specific branching")
+                        "description": _("returns a specific branching")
                     },
                     {
                         "method": "POST",
                         "url": "/api/v1/branching/",
-                        "description": _("Create new branching"),
+                        "description": _("create new branching"),
                         "parameters": [{
                                            "name": "keys",
                                            "type": "string",
@@ -55,7 +55,7 @@ class BranchingAPIPlayground(APIPlayground):
                     {
                         "method": "PUT",
                         "url": "/api/v1/branching/{branching-id}/",
-                        "description": _("Update branching"),
+                        "description": _("update branching"),
                         "parameters": [{
                                            "name": "keys",
                                            "type": "string",
@@ -72,7 +72,7 @@ class BranchingAPIPlayground(APIPlayground):
                     {
                         "method": "DELETE",
                         "url": "/api/v1/branching/{branching-id}/",
-                        "description": _("Delete branching"),
+                        "description": _("delete branching"),
                         }
                 ]
             },

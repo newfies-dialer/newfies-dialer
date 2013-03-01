@@ -18,17 +18,17 @@ from apiplayground import APIPlayground
 class DialCallbackAPIPlayground(APIPlayground):
 
     schema = {
-        "title": _("Dial Callback API Playground"),
+        "title": _("dial callback"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {
                 "name": "/dialcallback/",
-                "description": _("This resource allows you to manage dial callback."),
+                "description": _("this resource allows you to manage dial callback."),
                 "endpoints": [
                     {
                         "method": "POST",
                         "url": "/api/v1/dialcallback/",
-                        "description": _("Create new subscriber"),
+                        "description": _("create new subscriber"),
                         "parameters": [{
                                            "name": "DialALegUUID",
                                            "type": "string",

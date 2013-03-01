@@ -82,7 +82,7 @@ class CampaignAdmin(GenericAdminModelAdmin):
         # Check dialer setting limit
         # check Max Number of running campaigns
         if check_dialer_setting(request, check_for="campaign"):
-            msg = _("you have too many campaigns. Max allowed %(limit)s") \
+            msg = _("you have too many campaigns. max allowed %(limit)s") \
                 % {'limit':
                     dialer_setting_limit(request, limit_for="campaign")}
             messages.error(request, msg)

@@ -17,7 +17,7 @@ from common.utils import Choice
 
 
 class AUDIO_COLUMN_NAME(Choice):
-    name = _('Name')
-    audio_name = _('Audio')
-    audio_url = _('Audio URL')
-    date = _('Date')
+    name = _('name')
+    audio_name = _('audio')
+    audio_url = _('audio URL')
+    date = _('date')

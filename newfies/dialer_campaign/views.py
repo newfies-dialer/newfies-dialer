@@ -66,7 +66,7 @@ def update_campaign_status_cust(request, pk, status):
 
     # Notify user while campaign Start & no phonebook attached
     if int(status) == CAMPAIGN_STATUS.START and obj_campaign.phonebook.all().count() == 0:
-        request.session['error_msg'] = _('Error : You have to assign a phonebook to your campaign before starting it')
+        request.session['error_msg'] = _('error : you have to assign a phonebook to your campaign before starting it')
     else:
         recipient = request.user
         frontend_send_notification(request, status, recipient)        
@@ -78,7 +78,7 @@ def update_campaign_status_cust(request, pk, status):
             obj_campaign.save()
 
             request.session['info_msg'] = \
-                _('The campaign global settings cannot be edited when the campaign is started')
+                _('the campaign global settings cannot be edited when the campaign is started')
             if obj_campaign.content_type.model == 'survey_template':
                 check_survey_campaign(request, pk)
             elif obj_campaign.content_type.model == 'voiceapp_template':
@@ -100,8 +100,8 @@ def notify_admin(request):
             frontend_send_notification(
                 request, NOTIFICATION_NAME.dialer_setting_configuration, recipient)
             # Send mail to ADMINS
-            subject = _('Dialer setting configuration')
-            message = _('Notification - User Dialer Setting The user "%(user)s" - "%(user_id)s" is not properly configured to use the system, please configure their dialer settings.') %\
+            subject = _('dialer setting configuration')
+            message = _('notification - user dialer setting. The user "%(user)s" - "%(user_id)s" is not properly configured to use the system, please configure their dialer settings.') %\
                 {'user': request.user, 'user_id': request.user.id}
             # mail_admins() is a shortcut for sending an email to the site admins,
             # as defined in the ADMINS setting
@@ -151,10 +151,10 @@ def get_url_campaign_status(id, status):
 
     #return all the html button for campaign status management
     return "<a href='%s' class='icon' title='%s' %s>&nbsp;</a> <a href='%s' class='icon' title='%s' %s>&nbsp;</a> <a href='%s' class='icon' title='%s' %s>&nbsp;</a> <a href='%s' class='icon' title='%s' %s>&nbsp;</a>" % \
-        (url_cpg_start, _("Start"), control_play_style,
-        url_cpg_pause, _("Pause"), control_pause_style,
-        url_cpg_abort, _("Abort"), control_abort_style,
-        url_cpg_stop, _("Stop"), control_stop_style)
+        (url_cpg_start, _("start"), control_play_style,
+        url_cpg_pause, _("pause"), control_pause_style,
+        url_cpg_abort, _("abort"), control_abort_style,
+        url_cpg_stop, _("stop"), control_stop_style)
 
 
 def get_app_name(app_label, model_name, object_id):
@@ -173,20 +173,20 @@ def _return_link(app_name, obj_id):
     # Object view links
     if app_name == 'survey':
         link = '<a href="/survey_view/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' % \
-                   (obj_id, _('Survey'), tpl_control_icon('zoom.png'))
+                   (obj_id, _('survey'), tpl_control_icon('zoom.png'))
 
     if app_name == 'voiceapp':
         link = '<a href="/voiceapp_view/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' % \
-                   (obj_id, _('Voice app'), tpl_control_icon('zoom.png'))
+                   (obj_id, _('voice app'), tpl_control_icon('zoom.png'))
 
     # Object edit links
     if app_name == 'survey_template':
         link = '<a href="/survey/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' %\
-                   (obj_id, _('Edit Survey'), tpl_control_icon('zoom.png'))
+                   (obj_id, _('edit survey'), tpl_control_icon('zoom.png'))
 
     if app_name == 'voiceapp_template':
         link = '<a href="/voiceapp/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' %\
-                   (obj_id, _('Edit Voice app'), tpl_control_icon('zoom.png'))
+                   (obj_id, _('edit voice app'), tpl_control_icon('zoom.png'))
 
     return link
 
@@ -219,7 +219,7 @@ def get_campaign_survey_view(campaign_object):
 
 def make_duplicate_campaign(campaign_object_id):
     link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate icon" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s" %s>&nbsp;</a>'\
-           % (campaign_object_id, _('Duplicate this campaign'),
+           % (campaign_object_id, _('duplicate this campaign'),
               tpl_control_icon('layers.png'))
     return link
 
@@ -427,7 +427,7 @@ def campaign_change(request, object_id):
 
     if campaign.status == CAMPAIGN_STATUS.START:
         request.session['info_msg'] =\
-            _('The campaign is started, you can only edit Dialer settings and Campaign schedule')
+            _('the campaign is started, you can only edit Dialer settings and Campaign schedule')
 
     if request.method == 'POST':
         # Delete campaign

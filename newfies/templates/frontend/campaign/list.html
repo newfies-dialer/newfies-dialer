@@ -63,14 +63,14 @@ function delete_button()
                 <thead>
                 <tr>
                     <th><input type="checkbox" onclick="toggleChecked(this.checked)"></th>
-                    <th>{% sort_link CAMPAIGN_COLUMN_NAME.key col_name_with_order.id %}</th>
-                    <th>{% sort_link CAMPAIGN_COLUMN_NAME.name col_name_with_order.name %}</th>
-                    <th>{% sort_link CAMPAIGN_COLUMN_NAME.start_date col_name_with_order.startingdate %}</th>
-                    <th>{{ CAMPAIGN_COLUMN_NAME.type }}</th>
-                    <th>{{ CAMPAIGN_COLUMN_NAME.app }}</th>
-                    <th>{% sort_link CAMPAIGN_COLUMN_NAME.contacts col_name_with_order.totalcontact %}</th>
-                    <th>{% sort_link CAMPAIGN_COLUMN_NAME.status col_name_with_order.status %}</th>
-                    <th>{% trans 'action'|title %}</th>
+                    <th>{% sort_link CAMPAIGN_COLUMN_NAME.key|capfirst col_name_with_order.id %}</th>
+                    <th>{% sort_link CAMPAIGN_COLUMN_NAME.name|capfirst col_name_with_order.name %}</th>
+                    <th>{% sort_link CAMPAIGN_COLUMN_NAME.start_date|capfirst col_name_with_order.startingdate %}</th>
+                    <th>{{ CAMPAIGN_COLUMN_NAME.type|capfirst }}</th>
+                    <th>{{ CAMPAIGN_COLUMN_NAME.app|capfirst }}</th>
+                    <th>{% sort_link CAMPAIGN_COLUMN_NAME.contacts|capfirst col_name_with_order.totalcontact %}</th>
+                    <th>{% sort_link CAMPAIGN_COLUMN_NAME.status|capfirst col_name_with_order.status %}</th>
+                    <th>{% trans 'action'|capfirst %}</th>
                 </tr>
                 </thead>
                 {% if campaign_list %}

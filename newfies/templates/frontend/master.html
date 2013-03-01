@@ -166,7 +166,7 @@
 
         {% if errorlogin %}
         <div class="alert alert-error">
-            <strong>{% trans "alert"|title %} : </strong>  {{ errorlogin }}
+            <strong>{% trans "alert"|title %} : </strong>  {{ errorlogin|capfirst }}
         </div>
         </br>
         {% else %}
@@ -181,7 +181,7 @@
     {% block header %}
         <div class="page-header">
             {% block content_header %}
-                <h1>Newfies-Dialer <small>{% trans "Voice Broadcasting solution" %}</small></h1>
+                <h1>Newfies-Dialer <small>{% trans "voice broadcasting solution"|title %}</small></h1>
             {% endblock %}
         </div>
     {% endblock %}
@@ -208,21 +208,21 @@
     <!--Success Message of view-->
     {% if msg %}
         <div class="alert alert-success">
-            <strong>{% trans "alert"|title %} : </strong>  {{ msg }}
+            <strong>{% trans "alert"|title %} : </strong>  {{ msg|capfirst }}
         </div>
     {% endif %}
 
     <!--Error Message of view-->
     {% if error_msg %}
         <div class="alert alert-error">
-            <strong>{% trans "error"|title %} : </strong>  {{ error_msg }}
+            <strong>{% trans "error"|title %} : </strong>  {{ error_msg|capfirst }}
         </div>
     {% endif %}
 
     <!--Alert Message of view-->
     {% if info_msg %}
         <div class="alert alert-info">
-            <strong>{% trans "info"|title %} : </strong>  {{ info_msg }}
+            <strong>{% trans "info"|title %} : </strong>  {{ info_msg|capfirst }}
         </div>
     {% endif %}
 

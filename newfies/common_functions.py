@@ -21,10 +21,11 @@ def debug_query(number):
     """
     Function to debug the SQL queries
     """
-    if settings.DIALERDEBUG:
+    if settings.DIALERDEBUG and number >= 20:
         print("%d) " % number)
         print("QUERY #) %d" % len(db.connection.queries))
         print(db.connection.queries)
+    if settings.DIALERDEBUG:
         db.reset_queries()
 
 

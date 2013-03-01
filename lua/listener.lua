@@ -74,7 +74,6 @@ function commit_event()
         --logger(sql)
         env = assert (luasql.postgres())
         dbcon = assert(env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT))
-        print(sql)
         res = assert (dbcon:execute(sql))
         dbcon:close()
         env:close()
@@ -204,7 +203,6 @@ while true do
         -- HEARTBEAT happening every 30 seconds
         if event_name == 'HEARTBEAT' then
             logger(event_name .. "\n")
-            print(event_name)
             --let's empty the buffer
             commit_event()
         end

@@ -36,7 +36,7 @@ logger = get_task_logger(__name__)
 LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
 
 
-def check_retrycall_completion(obj_subscriber, callrequest):
+def check_retrycall_completion(callrequest):
     """
     We will check if the callrequest need to be restarted
     in order to achieve completion
@@ -44,8 +44,8 @@ def check_retrycall_completion(obj_subscriber, callrequest):
 
     #Check if subscriber is not completed and check if
     #subscriber.completion_count_attempt < campaign.completion_maxretry
-    if (obj_subscriber.status == SUBSCRIBER_STATUS.COMPLETED
-       or obj_subscriber.completion_count_attempt >= callrequest.campaign.completion_maxretry
+    if (callrequest.subscriber.status == SUBSCRIBER_STATUS.COMPLETED
+       or callrequest.subscriber.completion_count_attempt >= callrequest.campaign.completion_maxretry
        or not callrequest.campaign.completion_maxretry
        or callrequest.campaign.completion_maxretry == 0):
         logger.info("Subscriber completed or limit reached!")
@@ -53,11 +53,11 @@ def check_retrycall_completion(obj_subscriber, callrequest):
         #Let's Init a new callrequest
 
         #Increment subscriber.completion_count_attempt
-        if obj_subscriber.completion_count_attempt:
-            obj_subscriber.completion_count_attempt = obj_subscriber.completion_count_attempt + 1
+        if callrequest.subscriber.completion_count_attempt:
+            callrequest.subscriber.completion_count_attempt = callrequest.subscriber.completion_count_attempt + 1
         else:
-            obj_subscriber.completion_count_attempt = 1
-        obj_subscriber.save()
+            callrequest.subscriber.completion_count_attempt = 1
+        callrequest.subscriber.save()
 
         #init_callrequest -> delay at completion_intervalretry
         new_callrequest = Callrequest(
@@ -165,7 +165,35 @@ def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
 def check_callevent():
     """
     Check callevent
+
+    call_event table is created by listener.lua
+
+    CREATE TABLE if not exists call_event (
+        id serial NOT NULL PRIMARY KEY,
+        event_name varchar(200) NOT NULL,
+        body varchar(200) NOT NULL,
+        job_uuid varchar(200),
+        call_uuid varchar(200) NOT NULL,
+        used_gateway_id integer,
+        callrequest_id integer,
+        callerid varchar(200),
+        phonenumber varchar(200),
+        duration integer DEFAULT 0,
+        billsec integer DEFAULT 0,
+        hangup_cause varchar(40),
+        hangup_cause_q850 varchar(10),
+        amd_status varchar(40),
+        starting_date timestamp with time zone,
+        status integer,
+        created_date timestamp with time zone NOT NULL
+        );
+    CREATE INDEX call_event_idx_uuid ON call_event (call_uuid);
+    CREATE INDEX call_event_idx_status ON call_event (status);
+    CREATE INDEX call_event_idx_date ON call_event (created_date);
+
     """
+    debug_query(20)
+
     cursor = connection.cursor()
 
     sql_statement = "SELECT id, event_name, body, job_uuid, call_uuid, used_gateway_id, "\
@@ -174,6 +202,8 @@ def check_callevent():
 
     cursor.execute(sql_statement)
     row = cursor.fetchall()
+
+    debug_query(21)
 
     for record in row:
         call_event_id = record[0]
@@ -210,36 +240,39 @@ def check_callevent():
 
         opt_request_uuid = job_uuid
         opt_hangup_cause = hangup_cause
+
+        debug_query(22)
+
         try:
             if callrequest_id == 0:
-                callrequest = Callrequest.objects.get(request_uuid=opt_request_uuid.strip(' \t\n\r'))
+                callrequest = Callrequest.objects\
+                    .select_related('content_type', 'content_object', 'subscriber', 'campaign')\
+                    .get(request_uuid=opt_request_uuid.strip(' \t\n\r'))
             else:
-                callrequest = Callrequest.objects.get(id=callrequest_id)
+                callrequest = Callrequest.objects\
+                    .select_related('content_type', 'content_object', 'subscriber', 'campaign')\
+                    .get(id=callrequest_id)
         except:
             logger.error("Cannot find Callrequest job_uuid : %s" % job_uuid)
             continue
 
         logger.info("Find Callrequest id : %d" % callrequest.id)
-
-        try:
-            obj_subscriber = Subscriber.objects.get(id=callrequest.subscriber.id)
-            if opt_hangup_cause == 'NORMAL_CLEARING':
-                if obj_subscriber.status != SUBSCRIBER_STATUS.COMPLETED:
-                    obj_subscriber.status = SUBSCRIBER_STATUS.SENT
-            else:
-                obj_subscriber.status = SUBSCRIBER_STATUS.FAIL
-            obj_subscriber.save()
-        except:
-            logger.debug('Error cannot find the Subscriber!')
-            return False
+        debug_query(23)
 
         #Update Callrequest Status
         if opt_hangup_cause == 'NORMAL_CLEARING':
             callrequest.status = CALLREQUEST_STATUS.SUCCESS
+            if callrequest.subscriber.status != SUBSCRIBER_STATUS.COMPLETED:
+                callrequest.subscriber.status = SUBSCRIBER_STATUS.SENT
         else:
             callrequest.status = CALLREQUEST_STATUS.FAILURE
+            callrequest.subscriber.status = SUBSCRIBER_STATUS.FAIL
         callrequest.hangup_cause = opt_hangup_cause
+
         callrequest.save()
+        callrequest.subscriber.save()
+
+        debug_query(24)
 
         if call_uuid == '':
             call_uuid = job_uuid
@@ -248,6 +281,7 @@ def check_callevent():
         if phonenumber == '':
             phonenumber = callrequest.phone_number
 
+        #TODO: Create those in Bulk - add in a buffer until reach certain number
         create_voipcall_esl(obj_callrequest=callrequest,
             request_uuid=opt_request_uuid,
             leg='a',
@@ -261,25 +295,31 @@ def check_callevent():
             billsec=billsec,
             amd_status=amd_status)
 
+        debug_query(25)
+
         #If the call failed we will check if we want to make a retry call
         #Add condition to retry when it s machine and we want to reach a human
-        if (opt_hangup_cause != 'NORMAL_CLEARING'
-           and callrequest.call_type == CALLREQUEST_TYPE.ALLOW_RETRY) or \
+        if (opt_hangup_cause != 'NORMAL_CLEARING' and callrequest.call_type == CALLREQUEST_TYPE.ALLOW_RETRY) or \
            (amd_status == 'machine' and callrequest.campaign.voicemail
            and callrequest.campaign.amd_behavior == AMD_BEHAVIOR.HUMAN_ONLY):
             #Update to Retry Done
             callrequest.call_type = CALLREQUEST_TYPE.RETRY_DONE
             callrequest.save()
 
+            debug_query(26)
+
             dialer_set = user_dialer_setting(callrequest.user)
+
+            debug_query(27)
             #check if we are allowed to retry on failure
-            if ((obj_subscriber.count_attempt - 1) >= callrequest.campaign.maxretry
-               or (obj_subscriber.count_attempt - 1) >= dialer_set.maxretry
+            if ((callrequest.subscriber.count_attempt - 1) >= callrequest.campaign.maxretry
+               or (callrequest.subscriber.count_attempt - 1) >= dialer_set.maxretry
                or not callrequest.campaign.maxretry):
                 logger.error("Not allowed retry - Maxretry (%d)" %
                              callrequest.campaign.maxretry)
                 #Check here if we should try for completion
-                check_retrycall_completion(obj_subscriber, callrequest)
+                check_retrycall_completion(callrequest)
+                debug_query(28)
             else:
                 #Allowed Retry
                 logger.error("Allowed Retry - Maxretry (%d)" % callrequest.campaign.maxretry)
@@ -306,16 +346,20 @@ def check_callevent():
                 new_callrequest.save()
                 #NOTE : implement a PID algorithm
                 second_towait = callrequest.campaign.intervalretry
+                debug_query(29)
+
                 logger.info("Init Retry CallRequest in  %d seconds" % second_towait)
                 init_callrequest.apply_async(
-                    args=[new_callrequest.id, callrequest.campaign.id],
+                    args=[new_callrequest.id, callrequest.campaign.id, callrequest.campaign.callmaxduration],
                     countdown=second_towait)
         else:
             #The Call is Answered
             logger.info("Check for completion call")
 
             #Check if we should relaunch a new call to achieve completion
-            check_retrycall_completion(obj_subscriber, callrequest)
+            check_retrycall_completion(callrequest)
+
+    debug_query(30)
 
     logger.debug('End Loop : check_callevent')
 

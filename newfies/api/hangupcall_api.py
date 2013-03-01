@@ -181,7 +181,7 @@ class HangupcallResource(ModelResource):
                     logger.error("Not allowed retry - Maxretry (%d)" %
                                  callrequest.campaign.maxretry)
                     #Check here if we should try for completion
-                    check_retrycall_completion(obj_subscriber, callrequest)
+                    check_retrycall_completion(callrequest)
                 else:
                     #Allowed Retry
 
@@ -218,7 +218,7 @@ class HangupcallResource(ModelResource):
                 logger.info("Check for completion call")
 
                 #Check if we should relaunch a new call to achieve completion
-                check_retrycall_completion(obj_subscriber, callrequest)
+                check_retrycall_completion(callrequest)
 
             return self.create_response(request,
                 obj.render(request, object_list))

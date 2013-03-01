@@ -95,7 +95,7 @@ class Callrequest(Model):
     """
     user = models.ForeignKey('auth.User')
     request_uuid = models.CharField(verbose_name=_("RequestUUID"),
-                                    default=str_uuid1(),
+                                    default=str_uuid1(), db_index=True,
                                     max_length=120, null=True, blank=True)
     aleg_uuid = models.CharField(max_length=120, help_text=_("A-Leg Call-ID"),
                                  null=True, blank=True)

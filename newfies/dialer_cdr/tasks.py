@@ -24,7 +24,6 @@ from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE, \
     VOIPCALL_AMD_STATUS, LEG_TYPE
 #from dialer_cdr.function_def import get_prefix_obj
 from dialer_gateway.utils import prepare_phonenumber
-from dialer_campaign.function_def import user_dialer_setting
 from datetime import datetime, timedelta
 from common.only_one_task import only_one
 from uuid import uuid1
@@ -48,7 +47,7 @@ def check_retrycall_completion(callrequest):
        or callrequest.subscriber.completion_count_attempt >= callrequest.campaign.completion_maxretry
        or not callrequest.campaign.completion_maxretry
        or callrequest.campaign.completion_maxretry == 0):
-        logger.info("Subscriber completed or limit reached!")
+        logger.debug("Subscriber completed or limit reached!")
     else:
         #Let's Init a new callrequest
 
@@ -80,12 +79,13 @@ def check_retrycall_completion(callrequest):
         new_callrequest.save()
         #NOTE : implement a PID algorithm
         second_towait = callrequest.campaign.completion_intervalretry
-        logger.info("Init Completion Retry CallRequest in  %d seconds" % second_towait)
+        logger.debug("Init Completion Retry CallRequest in  %d seconds" % second_towait)
         init_callrequest.apply_async(
             args=[new_callrequest.id, callrequest.campaign.id, callrequest.campaign.callmaxduration],
             countdown=second_towait)
 
 
+#TODO: Add this into a buffer and commit at the end of the loop
 def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
                         hangup_cause_q850='', callerid='',
                         phonenumber='', starting_date='',
@@ -118,7 +118,7 @@ def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
     else:
         amd_status_id = VOIPCALL_AMD_STATUS.PERSON
 
-    logger.info('Create CDR - request_uuid=%s;leg=%d;hangup_cause=%s;billsec=%s;amd_status=%s' %
+    logger.debug('Create CDR - request_uuid=%s;leg=%d;hangup_cause=%s;billsec=%s;amd_status=%s' %
         (request_uuid, leg_type, hangup_cause, str(billsec), amd_status))
 
     #Get the first word only
@@ -165,7 +165,7 @@ def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
     new_voipcall.save()
 
 
-# OPTIMIZATION - GOOD
+# OPTIMIZATION - TO REVIEW
 def check_callevent():
     """
     Check callevent
@@ -260,7 +260,7 @@ def check_callevent():
             logger.error("Cannot find Callrequest job_uuid : %s" % job_uuid)
             continue
 
-        logger.info("Find Callrequest id : %d" % callrequest.id)
+        logger.debug("Find Callrequest id : %d" % callrequest.id)
         debug_query(23)
 
         #Update Callrequest Status
@@ -312,12 +312,8 @@ def check_callevent():
 
             debug_query(26)
 
-            dialer_set = user_dialer_setting(callrequest.user)
-
-            debug_query(27)
             #check if we are allowed to retry on failure
             if ((callrequest.subscriber.count_attempt - 1) >= callrequest.campaign.maxretry
-               or (callrequest.subscriber.count_attempt - 1) >= dialer_set.maxretry
                or not callrequest.campaign.maxretry):
                 logger.error("Not allowed retry - Maxretry (%d)" %
                              callrequest.campaign.maxretry)
@@ -352,13 +348,13 @@ def check_callevent():
                 second_towait = callrequest.campaign.intervalretry
                 debug_query(29)
 
-                logger.info("Init Retry CallRequest in  %d seconds" % second_towait)
+                logger.debug("Init Retry CallRequest in  %d seconds" % second_towait)
                 init_callrequest.apply_async(
                     args=[new_callrequest.id, callrequest.campaign.id, callrequest.campaign.callmaxduration],
                     countdown=second_towait)
         else:
             #The Call is Answered
-            logger.info("Check for completion call")
+            logger.debug("Check for completion call")
 
             #Check if we should relaunch a new call to achieve completion
             check_retrycall_completion(callrequest)
@@ -441,8 +437,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
 
     debug_query(9)
 
-    logger.info("TASK :: init_callrequest - status = %s" %
-        str(obj_callrequest.status))
+    logger.info("TASK :: init_callrequest - status = %s" % str(obj_callrequest.status))
 
     debug_query(10)
 
@@ -454,7 +449,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
             obj_callrequest.aleg_gateway.status)
     else:
         dialout_phone_number = obj_callrequest.phone_number
-    logger.info("dialout_phone_number : %s" % dialout_phone_number)
+    logger.debug("dialout_phone_number : %s" % dialout_phone_number)
 
     debug_query(11)
 
@@ -540,9 +535,9 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
                 obj_subscriber.status = SUBSCRIBER_STATUS.FAIL
                 obj_subscriber.save()
             return False
-        logger.info(result)
+        logger.debug(result)
         request_uuid = str(result['RequestUUID'])
-        logger.info('Received RequestUUID :> ' + request_uuid)
+        logger.debug('Received RequestUUID :> ' + request_uuid)
 
     elif settings.NEWFIES_DIALER_ENGINE.lower() == 'esl':
         try:

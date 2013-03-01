@@ -16,7 +16,7 @@ from django import forms
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 from dialer_campaign.models import Campaign
-from dialer_cdr.forms import VoipSearchForm
+from dialer_contact.forms import SearchForm
 from survey.models import Survey_template, Section_template, \
     Branching_template
 from survey.constants import SECTION_TYPE
@@ -313,17 +313,22 @@ class SurveyReportForm(forms.Form):
         # To get user's campaign list which are attached with survey
         if user:
             list = []
+            list.append((0, ''))
             try:
-                camp_list = Campaign.objects.values_list('id', 'name')\
-                    .filter(user=user, content_type__model='survey')
+                if user.is_superuser:
+                    camp_list = Campaign.objects.values_list('id', 'name')\
+                        .filter(content_type__model='survey')
+                else:
+                    camp_list = Campaign.objects.values_list('id', 'name')\
+                        .filter(user=user, content_type__model='survey')
                 for i in camp_list:
                     list.append((i[0], i[1]))
             except:
-                list.append((0, ''))
+                pass                
             self.fields['campaign'].choices = list
 
 
-class SurveyDetailReportForm(VoipSearchForm, SurveyReportForm):
+class SurveyDetailReportForm(SearchForm, SurveyReportForm):
 
     def __init__(self, user, *args, **kwargs):
         super(SurveyDetailReportForm, self).__init__(user, *args, **kwargs)

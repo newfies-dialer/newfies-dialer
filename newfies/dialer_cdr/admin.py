@@ -72,9 +72,15 @@ class VoIPCallAdmin(admin.ModelAdmin):
     list_display = ('id', 'leg_type', 'callid', 'callerid', 'phone_number',
                     'starting_date', 'min_duration', 'billsec', 'disposition',
                     'hangup_cause', 'hangup_cause_q850')
+    valid_lookups = ('callrequest__campaign_id',) 
     if settings.AMD:
         list_display += ('amd_status',)
     ordering = ('-id', )
+
+    def lookup_allowed(self, lookup, *args, **kwargs):
+        if lookup.startswith(self.valid_lookups):
+            return True
+        return super(VoIPCallAdmin, self).lookup_allowed(lookup, *args, **kwargs)
 
     def user_link(self, obj):
         """User link to user profile"""
@@ -132,10 +138,10 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
             * VoIP report Record Listing with search option & Daily Call Report
               search Parameters: by date, by status and by billed.
-        """
+        """        
         opts = VoIPCall._meta
         query_string = ''
-        form = VoipSearchForm()
+        form = VoipSearchForm(request.user)
         if request.method == 'POST':
             query_string = voipcall_search_admin_form_fun(request)
             return HttpResponseRedirect("/admin/%s/%s/?%s"
@@ -144,15 +150,20 @@ class VoIPCallAdmin(admin.ModelAdmin):
             status = ''
             from_date = ''
             to_date = ''
+            campaign_id = ''
             if request.GET.get('starting_date__gte'):
                 from_date = variable_value(request, 'starting_date__gte')
             if request.GET.get('starting_date__lte'):
                 to_date = variable_value(request, 'starting_date__lte')[0:10]
             if request.GET.get('disposition__exact'):
                 status = variable_value(request, 'disposition__exact')
-            form = VoipSearchForm(initial={'status': status,
+            if request.GET.get('callrequest__campaign_id'):
+                campaign_id = variable_value(request, 'callrequest__campaign_id')
+            form = VoipSearchForm(request.user, 
+                                  initial={'status': status,
                                            'from_date': from_date,
-                                           'to_date': to_date})
+                                           'to_date': to_date,
+                                           'campaign': campaign_id})
 
         ChangeList = self.get_changelist(request)
         try:
@@ -172,7 +183,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             tday = datetime.today()
             kwargs['starting_date__gte'] = datetime(tday.year,
                                                     tday.month,
-                                                    tday.day, 0, 0, 0, 0)
+                                                    tday.day, 0, 0, 0, 0)                    
             cl.root_query_set.filter(**kwargs)
 
         cl.formset = None
@@ -198,13 +209,14 @@ class VoIPCallAdmin(admin.ModelAdmin):
         opts = VoIPCall._meta
         kwargs = {}
 
-        form = VoipSearchForm()
+        form = VoipSearchForm(request.user)
         if request.method == 'POST':
-            form = VoipSearchForm(request.POST)
+            form = VoipSearchForm(request.user, request.POST)
             kwargs = voipcall_record_common_fun(request)
             request.session['from_date'] = request.POST.get('from_date')
             request.session['to_date'] = request.POST.get('to_date')
             request.session['status'] = request.POST.get('status')
+            request.session['campaign_id'] = request.POST.get('campaign')
         else:
             kwargs = voipcall_record_common_fun(request)
             tday = datetime.today()

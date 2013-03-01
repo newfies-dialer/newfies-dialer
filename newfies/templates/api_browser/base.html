@@ -48,7 +48,7 @@
 
     <ul class="breadcrumb">
         <li><a href="/api-explorer/"> {% trans "API" %} {% trans "explorer"|capfirst %}</a> /</li>
-        <li class="active">{{ schema.title|title }} {% trans "API" %} {% trans "playground"|title %}</li>
+        <li class="active">{{ schema.title|capfirst }} {% trans "API" %} {% trans "playground"|title %}</li>
     </ul>
 
     {% block container %}

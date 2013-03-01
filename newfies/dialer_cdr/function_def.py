@@ -13,9 +13,9 @@
 #
 
 from django.conf import settings
-from common.common_functions import variable_value
-from datetime import datetime
+from common.common_functions import variable_value, ceil_strdate
 from country_dialcode.models import Prefix
+from datetime import datetime
 
 
 def voipcall_record_common_fun(request):
@@ -25,12 +25,11 @@ def voipcall_record_common_fun(request):
     end_date = ''
     if request.POST.get('from_date'):
         from_date = request.POST.get('from_date')
-        start_date = datetime(int(from_date[0:4]), int(from_date[5:7]),
-                              int(from_date[8:10]), 0, 0, 0, 0)
+        start_date = ceil_strdate(from_date, 'start')
+        
     if request.POST.get('to_date'):
         to_date = request.POST.get('to_date')
-        end_date = datetime(int(to_date[0:4]), int(to_date[5:7]),
-                            int(to_date[8:10]), 23, 59, 59, 999999)
+        end_date = ceil_strdate(to_date, 'end')        
 
     # Assign form field value to local variable
     disposition = variable_value(request, 'status')
@@ -38,16 +37,13 @@ def voipcall_record_common_fun(request):
 
     # Patch code for persist search
     if request.method != 'POST':
-
         if request.session.get('from_date'):
             from_date = request.session['from_date']
-            start_date = datetime(int(from_date[0:4]), int(from_date[5:7]),
-                                  int(from_date[8:10]), 0, 0, 0, 0)
+            start_date = ceil_strdate(from_date, 'start')
 
         if request.session.get('to_date'):
             to_date = request.session['to_date']
-            end_date = datetime(int(to_date[0:4]), int(to_date[5:7]),
-                                int(to_date[8:10]), 23, 59, 59, 999999)
+            end_date = ceil_strdate(to_date, 'end')
 
         if request.session.get('status'):
             disposition = request.session['status']
@@ -123,14 +119,11 @@ def voipcall_search_admin_form_fun(request):
 
     if disposition and disposition != 'all':
         disposition_string = 'disposition__exact=' + disposition
-        query_string = return_query_string(query_string,
-                                        disposition_string)
+        query_string = return_query_string(query_string, disposition_string)
     
     if campaign_id and campaign_id != '0':
         campaign_string = 'callrequest__campaign_id=' + str(campaign_id)
-        query_string = return_query_string(query_string,
-                                           campaign_string)
-        
+        query_string = return_query_string(query_string, campaign_string)
 
     return query_string
 

@@ -22,7 +22,7 @@ from dialer_campaign.constants import SUBSCRIBER_STATUS, AMD_BEHAVIOR
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE, \
     VOIPCALL_AMD_STATUS, LEG_TYPE
-from dialer_cdr.function_def import get_prefix_obj
+#from dialer_cdr.function_def import get_prefix_obj
 from dialer_gateway.utils import prepare_phonenumber
 from dialer_campaign.function_def import user_dialer_setting
 from datetime import datetime, timedelta
@@ -108,6 +108,7 @@ def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
         #B-Leg
         leg_type = LEG_TYPE.B_LEG
         if obj_callrequest.content_object.__class__.__name__ == 'VoiceApp':
+            #Get the gateway from the App
             used_gateway = obj_callrequest.content_object.gateway
         else:
             #Survey
@@ -139,10 +140,12 @@ def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
     else:
         disposition = 'FAILED'
 
-    prefix_obj = get_prefix_obj(phonenumber)
+    #Note: Removed for test performance
+    #Note: Look at prefix PG module : https://github.com/dimitri/prefix
+    #prefix_obj = get_prefix_obj(phonenumber)
 
     new_voipcall = VoIPCall(
-        user=obj_callrequest.user,
+        user_id=obj_callrequest.user_id,
         request_uuid=request_uuid,
         leg_type=leg_type,
         used_gateway=used_gateway,
@@ -150,7 +153,7 @@ def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
         callid=call_uuid,
         callerid=callerid,
         phone_number=phonenumber,
-        dialcode=prefix_obj,
+        #dialcode=prefix_obj,
         starting_date=starting_date,
         duration=duration,
         billsec=billsec,
@@ -162,6 +165,7 @@ def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
     new_voipcall.save()
 
 
+# OPTIMIZATION - GOOD
 def check_callevent():
     """
     Check callevent
@@ -246,11 +250,11 @@ def check_callevent():
         try:
             if callrequest_id == 0:
                 callrequest = Callrequest.objects\
-                    .select_related('content_type', 'content_object', 'subscriber', 'campaign')\
+                    .select_related('aleg_gateway', 'content_type', 'content_object', 'subscriber', 'campaign')\
                     .get(request_uuid=opt_request_uuid.strip(' \t\n\r'))
             else:
                 callrequest = Callrequest.objects\
-                    .select_related('content_type', 'content_object', 'subscriber', 'campaign')\
+                    .select_related('aleg_gateway', 'content_type', 'content_object', 'subscriber', 'campaign')\
                     .get(id=callrequest_id)
         except:
             logger.error("Cannot find Callrequest job_uuid : %s" % job_uuid)

@@ -61,7 +61,7 @@
 
                     <div class="row">
                         <div class="span2">
-                            <label class="control-label" for="{{ form.type.auto_id }}">{{ form.type.label }}</label>
+                            <label class="control-label" for="{{ form.type.auto_id }}">{{ form.type.label|title }}</label>
                         </div>
                         <div class="span3 clearfix{% if form.type.errors %} control-group error{% endif %}">
                             <div class="input">
@@ -77,7 +77,7 @@
                     {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION  or form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS %}
                         <div class="row">
                             <div class="span2">
-                                <label class="control-label" for="{{ form.retries.auto_id }}">{{ form.retries.label }}</label>
+                                <label class="control-label" for="{{ form.retries.auto_id }}">{{ form.retries.label|title }}</label>
                             </div>
                             <div class="span clearfix{% if form.retries.errors %} control-group error{% endif %}">
                                 <div class="input">
@@ -88,7 +88,7 @@
                                 </div>
                             </div>
                             <div class="span1">
-                                <label class="control-label" for="{{ form.timeout.auto_id }}">{{ form.timeout.label }}</label>
+                                <label class="control-label" for="{{ form.timeout.auto_id }}">{{ form.timeout.label|title }}</label>
                             </div>
                             <div class="span1 clearfix{% if form.timeout.errors %} control-group error{% endif %}">
                                 <div class="input">
@@ -125,12 +125,12 @@
                     <!--Audio field while updating section-->
                     <div class="row">
                         <div class="span2">
-                            <label class="control-label" for="{{ form.audiofile.auto_id }}">{{ form.audiofile.label }}</label>
+                            <label class="control-label" for="{{ form.audiofile.auto_id }}">{{ form.audiofile.label|title }}</label>
                         </div>
                         <div class="span3 clearfix{% if form.audiofile.errors %} control-group error{% endif %}">
                             <div class="input">
                                 {{ form.audiofile }}&nbsp;
-                                <a href="#" id="helpover" rel="popover" data-placement="top" data-content="{% blocktrans %}If an audio file is not selected, the script will be played using Text-To-Speech{% endblocktrans %}" data-original-title="{% trans "Information" %}"><i class="icon-info-sign"></i></a>
+                                <a href="#" id="helpover" rel="popover" data-placement="top" data-content="{% blocktrans %}If an audio file is not selected, the script will be played using Text-To-Speech{% endblocktrans %}" data-original-title="{% trans "information"|title %}"><i class="icon-info-sign"></i></a>
                                 {% if form.audiofile.errors %}
                                     <span class="help-inline">{{ form.audiofile.errors|removetags:"ul li"|safe }}</span>
                                 {% endif %}
@@ -142,14 +142,14 @@
                     <!--Multiple choice Section form-->
                     {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE %}
                         <div>                            
-                            {% trans "Configure valid multi-choice options. The value of each field will be shown in the survey report" %}                            
+                            {% trans "configure valid multi-choice options. The value of each field will be shown in the survey report"|capfirst %}                            
                         </div>
                         <div class="row">
                             {% get_fieldset key_0,key_1,key_2,key_3,key_4,key_5,key_6,key_7,key_8,key_9 as key_fields from form %}
                             {% for field in key_fields.visible_fields %}
                                 <div class="span1 clearfix{% if field.errors %} control-group error{% endif %}">
                                     <div class="input">
-                                        {{ field.label }}&nbsp;{{ field }}
+                                        {{ field.label|title }}&nbsp;{{ field }}
                                         {% if field.errors %}
                                             <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
                                         {% endif %}
@@ -163,7 +163,7 @@
                     {% if form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION %}
                         <div class="row">
                             <div class="span2">
-                                <label class="control-label" for="{{ form.rating_laps.auto_id }}">{{ form.rating_laps.label }}</label>
+                                <label class="control-label" for="{{ form.rating_laps.auto_id }}">{{ form.rating_laps.label|title }}</label>
                             </div>
                             <div class="span3 clearfix{% if form.rating_laps.errors %} control-group error{% endif %}">
                                 <div class="input">
@@ -181,7 +181,7 @@
                     {% if form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS %}
                         <div class="row">
                             <div class="span2">
-                                <label class="control-label" for="{{ form.number_digits.auto_id }}">{{ form.number_digits.label }}</label>
+                                <label class="control-label" for="{{ form.number_digits.auto_id }}">{{ form.number_digits.label|title }}</label>
                             </div>
                             <div class="span3 clearfix{% if form.number_digits.errors %} control-group error{% endif %}">
                                 <div class="input">
@@ -196,7 +196,7 @@
 
                         <div class="row">
                             <div class="span2">
-                                <label class="control-label" for="{{ form.validate_number.auto_id }}">{{ form.validate_number.label }}</label>
+                                <label class="control-label" for="{{ form.validate_number.auto_id }}">{{ form.validate_number.label|title }}</label>
                             </div>
                             <div class="span3">
                                 {{ form.validate_number }}
@@ -209,7 +209,7 @@
 
                         <div class="row">
                             <div class="span2">
-                                <label class="control-label" for="{{ form.min_number.auto_id }}">{{ form.min_number.label }}</label>
+                                <label class="control-label" for="{{ form.min_number.auto_id }}">{{ form.min_number.label|title }}</label>
                             </div>
                             <div class="span1 clearfix{% if form.min_number.errors %} control-group error{% endif %}">
                                 <div class="input">
@@ -240,7 +240,7 @@
                     {% if form.type.value|convert_to_int == SECTION_TYPE.CALL_TRANSFER %}
                         <div class="row">
                             <div class="span2">
-                                <label class="control-label" for="{{ form.phonenumber.auto_id }}">{{ form.phonenumber.label }}</label>
+                                <label class="control-label" for="{{ form.phonenumber.auto_id }}">{{ form.phonenumber.label|title }}</label>
                             </div>
                             <div class="span3 clearfix{% if form.phonenumber.errors %} control-group error{% endif %}">
                                 <div class="input">
@@ -257,7 +257,7 @@
                     <!--Survey complete field -->
                     <div class="row">
                         <div class="span2 clearfix{% if form.completed.errors %} control-group error{% endif %}">
-                            {{ form.completed.label }}
+                            {{ form.completed.label|title }}
                         </div>
                         <div class="span3 clearfix{% if form.completed.errors %} control-group error{% endif %}">
                             <div class="input">
@@ -274,7 +274,7 @@
                     {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION %}
                         <div class="row">
                             <div class="span2">
-                                <label class="control-label" for="{{ form.invalid_audiofile.auto_id }}">{{ form.invalid_audiofile.label }}</label>
+                                <label class="control-label" for="{{ form.invalid_audiofile.auto_id }}">{{ form.invalid_audiofile.label|title }}</label>
                             </div>
                             <div class="span3 clearfix{% if form.invalid_audiofile.errors %} control-group error{% endif %}">
                                 <div class="input">

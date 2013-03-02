@@ -861,7 +861,7 @@ def section_add_form(request, Form, survey, section_type):
         form = Form(request.user, request.POST)
         if form.is_valid():
             new_obj = form.save()
-            request.session["msg"] = _('Section is added successfully.')
+            request.session["msg"] = _('section is added successfully.')
             save_tag = True
         else:
             request.session["err_msg"] = True
@@ -1006,7 +1006,7 @@ def section_update_form(request, Form, section_type, section_instance):
         form = Form(request.user, request.POST, instance=section_instance)
         if form.is_valid():
             form.save()
-            request.session["msg"] = _('Section updated.')
+            request.session["msg"] = _('section updated.')
             save_tag = True
         else:
             request.session["err_msg"] = True
@@ -1164,7 +1164,7 @@ def section_delete(request, id):
 
         # 2) delete section
         section.delete()
-        request.session["msg"] = _('Section is deleted successfully.')
+        request.session["msg"] = _('section is deleted successfully.')
         return HttpResponseRedirect('/survey/%s/' % (survey_id))
 
     template = 'frontend/survey/section_delete_confirmation.html'
@@ -1199,7 +1199,7 @@ def section_script_change(request, id):
         form = ScriptForm(request.POST, instance=section)
         if form.is_valid():
             obj = form.save()
-            request.session["msg"] = _('Script updated.')
+            request.session["msg"] = _('script updated.')
             return HttpResponseRedirect('/survey/%s/#row%s'
                 % (obj.survey_id, obj.id))
         else:
@@ -1304,7 +1304,7 @@ def section_branch_add(request):
                 section.survey_id, section.id, request.POST)
             if form.is_valid():
                 form.save()
-                request.session["msg"] = _('Branching is added successfully.')
+                request.session["msg"] = _('branching is added successfully.')
                 return HttpResponseRedirect('/survey/%s/#row%s'
                                         % (section.survey_id, section_id))
             else:
@@ -1351,7 +1351,7 @@ def section_branch_change(request, id):
         survey_id = branching_obj.section.survey_id
         section_id = branching_obj.section_id
         branching_obj.delete()
-        request.session["msg"] = _('Branching is deleted successfully.')
+        request.session["msg"] = _('branching is deleted successfully.')
         return HttpResponseRedirect('/survey/%s/#row%s'
                                     % (survey_id, section_id))
 
@@ -1367,7 +1367,7 @@ def section_branch_change(request, id):
                              instance=branching)
         if form.is_valid():
             form.save()
-            request.session["msg"] = _('Branching updated.')
+            request.session["msg"] = _('branching updated.')
             return HttpResponseRedirect('/survey/%s/#row%s'
                                         % (branching.section.survey_id,
                                            branching.section_id))

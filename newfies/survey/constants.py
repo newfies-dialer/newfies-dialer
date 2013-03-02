@@ -17,34 +17,34 @@ from common.utils import Choice
 
 
 class SECTION_TYPE(Choice):
-    PLAY_MESSAGE = 1, _('Play message')
-    MULTI_CHOICE = 2, _('Multi-choice')
-    RATING_SECTION = 3, _('Rating question')
-    CAPTURE_DIGITS = 4, _('Capture digits')
-    RECORD_MSG = 5, _('Record message')
-    CALL_TRANSFER = 6, _('Call transfer')
-    HANGUP_SECTION = 7, _('Hangup')
+    PLAY_MESSAGE = 1, _('play message')
+    MULTI_CHOICE = 2, _('multi-choice')
+    RATING_SECTION = 3, _('rating question')
+    CAPTURE_DIGITS = 4, _('capture digits')
+    RECORD_MSG = 5, _('record message')
+    CALL_TRANSFER = 6, _('call transfer')
+    HANGUP_SECTION = 7, _('hangup')
 
 
 class SECTION_TYPE_NOTRANSFER(Choice):
-    PLAY_MESSAGE = 1, _('Play message')
-    MULTI_CHOICE = 2, _('Multi-choice')
-    RATING_SECTION = 3, _('Rating question')
-    CAPTURE_DIGITS = 4, _('Capture digits')
-    RECORD_MSG = 5, _('Record message')
+    PLAY_MESSAGE = 1, _('play message')
+    MULTI_CHOICE = 2, _('multi-choice')
+    RATING_SECTION = 3, _('rating question')
+    CAPTURE_DIGITS = 4, _('capture digits')
+    RECORD_MSG = 5, _('record message')
     #CALL_TRANSFER = 6, _('Call transfer')
-    HANGUP_SECTION = 7, _('Hangup')
+    HANGUP_SECTION = 7, _('hangup')
 
 
 class SURVEY_COLUMN_NAME(Choice):
-    name = _('Name')
-    description = _('Description')
-    date = _('Date')
+    name = _('name')
+    description = _('description')
+    date = _('date')
 
 
 class SURVEY_CALL_RESULT_NAME(Choice):
-    date = _('Call-date ')
-    destination = _('Destination')
-    duration = _('Duration')
-    disposition = _('Disposition')
-    result = _('Survey Result')
+    date = _('call-date ')
+    destination = _('destination')
+    duration = _('duration')
+    disposition = _('disposition')
+    result = _('survey result')

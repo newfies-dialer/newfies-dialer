@@ -15,9 +15,9 @@
 
 <div class="tabbable">
 <ul class="nav nav-tabs">
-    <li {% if action == "tabs-1" %}class="active"{% endif %}><a href="#tabs-1" data-toggle="tab">{% trans "Survey result"|title %}</a></li>
-    <li {% if action == "tabs-2" %}class="active"{% endif %}><a href="#tabs-2" data-toggle="tab">{% trans "Survey calls"|title %}</a></li>
-    <li {% if action == "tabs-3" %}class="active"{% endif %}><a href="#tabs-3" data-toggle="tab">{% trans "Survey daily call report"|title %}</a></li>
+    <li {% if action == "tabs-1" %}class="active"{% endif %}><a href="#tabs-1" data-toggle="tab">{% trans "survey result"|capfirst %}</a></li>
+    <li {% if action == "tabs-2" %}class="active"{% endif %}><a href="#tabs-2" data-toggle="tab">{% trans "survey calls"|capfirst %}</a></li>
+    <li {% if action == "tabs-3" %}class="active"{% endif %}><a href="#tabs-3" data-toggle="tab">{% trans "survey daily call report"|capfirst %}</a></li>
 </ul>
 
 <div id="form_collapse" class="collapse">
@@ -28,7 +28,7 @@
                     {% get_fieldset campaign,from_date,to_date as campaign_fields from form %}
                     {% for field in campaign_fields.visible_fields %}
                         <div class="span4 clearfix{% if field.errors %} control-group error{% endif %}">
-                            <label for="{{ field.auto_id }}">{{ field.label }}</label>
+                            <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
                             <div class="input">
                                 {{ field }}
                                 {% if field.errors %}
@@ -62,7 +62,7 @@
             <table align="center" class="table table-striped table-bordered table-condensed">
                 <thead>
                     <th>{% trans "total contact"|title %}</th>
-                    <th>{% trans "Total contact that completed Call / Survey" %}</th>
+                    <th>{% trans "total contact that completed Call / Survey"|capfirst %}</th>
                 </thead>
                 <tbody>
                     <td>{{ campaign_obj.totalcontact }}</td>
@@ -138,18 +138,18 @@
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <li><a href="/export_surveycall_report/">{% trans "Export CSV file" %}</a></li>
+                <li><a href="/export_surveycall_report/">{% trans "export CSV file"|capfirst %}</a></li>
             </ul>
         </div>
         <div>&nbsp;</div>
         <table class="table table-striped table-bordered table-condensed">
             <thead>
             <tr>
-                <th>{% sort_link SURVEY_CALL_RESULT_NAME.date col_name_with_order.starting_date %}</th>
-                <th>{% sort_link SURVEY_CALL_RESULT_NAME.destination col_name_with_order.phone_number %}</th>
-                <th>{% sort_link SURVEY_CALL_RESULT_NAME.duration col_name_with_order.duration %}</th>
-                <th>{{ SURVEY_CALL_RESULT_NAME.disposition }}</th>
-                <th>{{ SURVEY_CALL_RESULT_NAME.result }}</th>
+                <th>{% sort_link SURVEY_CALL_RESULT_NAME.date|capfirst col_name_with_order.starting_date %}</th>
+                <th>{% sort_link SURVEY_CALL_RESULT_NAME.destination|capfirst col_name_with_order.phone_number %}</th>
+                <th>{% sort_link SURVEY_CALL_RESULT_NAME.duration|capfirst col_name_with_order.duration %}</th>
+                <th>{{ SURVEY_CALL_RESULT_NAME.disposition|capfirst }}</th>
+                <th>{{ SURVEY_CALL_RESULT_NAME.result|capfirst }}</th>
             </tr>
             </thead>
             {% if rows %}
@@ -161,7 +161,7 @@
                         <td>{{ row.duration|conv_min }}</td>
                         <td>{{ row.disposition }}</td>
                         <td>
-                            <a href="#survey-campaign-result"  url="/survey_campaign_result/{{ row.id }}/" class="survey-campaign-result icon" data-toggle="modal" data-controls-modal="survey-campaign-result" title="{% trans "Result" %}" >
+                            <a href="#survey-campaign-result"  url="/survey_campaign_result/{{ row.id }}/" class="survey-campaign-result icon" data-toggle="modal" data-controls-modal="survey-campaign-result" title="{% trans "result"|title %}" >
                                 {% trans "view details"|title %}
                             </a>
                         </td>
@@ -229,7 +229,7 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                    <td>{% trans "Total" %}</td>
+                    <td>{% trans "total"|title %}</td>
                     <td>{{ total_duration|conv_min }}</td>
                     <td></td>
                     <td>{{ total_calls }}</td>

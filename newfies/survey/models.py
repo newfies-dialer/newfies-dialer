@@ -40,13 +40,13 @@ class Survey_abstract(models.Model):
 
     **Name of DB table**: survey
     """
-    name = models.CharField(max_length=90, verbose_name=_('Name'))
+    name = models.CharField(max_length=90, verbose_name=_('name'))
     tts_language = LanguageField(blank=True, null=True, default='en',
-                                 verbose_name=_('Text-to-Speech Language'))
+                                 verbose_name=_('Text-to-Speech language'))
     description = models.TextField(null=True, blank=True,
-                                   verbose_name=_('Description'))
+                                   verbose_name=_('description'))
     created_date = models.DateTimeField(auto_now_add=True,
-                                        verbose_name=_('Date'))
+                                        verbose_name=_('date'))
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -64,10 +64,10 @@ class Survey_template(Survey_abstract):
 
     class Meta:
         permissions = (
-            ("view_survey_template", _('Can see Survey Template')),
+            ("view_survey_template", _('can see survey Template')),
         )
-        verbose_name = _("Survey template")
-        verbose_name_plural = _("Survey templates")
+        verbose_name = _("survey template")
+        verbose_name_plural = _("survey templates")
 
     def copy_survey_template(self, campaign_obj):
         """
@@ -107,17 +107,17 @@ class Survey(Survey_abstract):
     """
     user = models.ForeignKey('auth.User', related_name='survey_user')
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
-                                 verbose_name=_("Campaign"))
+                                 verbose_name=_("campaign"))
 
     class Meta:
         permissions = (
-            ("view_survey", _('Can see Survey')),
-            ("export_survey", _('Can export Survey')),
-            ("import_survey", _('Can import Survey')),
-            ("view_survey_report", _('Can see Survey Report'))
+            ("view_survey", _('can see survey')),
+            ("export_survey", _('can export survey')),
+            ("import_survey", _('can import survey')),
+            ("view_survey_report", _('can see survey report'))
         )
-        verbose_name = _("Survey")
-        verbose_name_plural = _("Surveys")
+        verbose_name = _("survey")
+        verbose_name_plural = _("surveys")
 
 
 class Section_abstract(Sortable):
@@ -165,61 +165,61 @@ class Section_abstract(Sortable):
                                verbose_name=_('section type'))
     # Question is the section label, this is used in the reporting
     question = models.CharField(max_length=500, blank=False,
-                                verbose_name=_("Question"),
-                                help_text=_('Example : Hotel Service Rating'))
+                                verbose_name=_("question"),
+                                help_text=_('example : hotel service rating'))
     # Script will be used by TTS
     script = models.CharField(max_length=1000, null=True, blank=True,
-                              help_text=_('Example : Capture digits between 1 to 5, press pound key when done'))
+                              help_text=_('example : capture digits between 1 to 5, press pound key when done'))
     audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
-                                  verbose_name=_("Audio File"))
+                                  verbose_name=_("audio File"))
     retries = models.IntegerField(max_length=1, null=True, blank=True,
                                   verbose_name=_("retries"), default=0,
-                                  help_text=_('Retries this section until it\'s valid'))
+                                  help_text=_('retries this section until it\'s valid'))
     timeout = models.IntegerField(max_length=2, null=True, blank=True,
                                   verbose_name=_("timeout"), default=5,
-                                  help_text=_('Timeout in seconds to press the key(s)'))
+                                  help_text=_('timeout in seconds to press the key(s)'))
     # Multi-choice
     key_0 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Key") + " 0")
+                             verbose_name=_("key") + " 0")
     key_1 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Key") + " 1")
+                             verbose_name=_("key") + " 1")
     key_2 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Key") + " 2")
+                             verbose_name=_("key") + " 2")
     key_3 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Key") + " 3")
+                             verbose_name=_("key") + " 3")
     key_4 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Key") + " 4")
+                             verbose_name=_("key") + " 4")
     key_5 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Key") + " 5")
+                             verbose_name=_("key") + " 5")
     key_6 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Key") + " 6")
+                             verbose_name=_("key") + " 6")
     key_7 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Key") + " 7")
+                             verbose_name=_("key") + " 7")
     key_8 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Key") + " 8")
+                             verbose_name=_("key") + " 8")
     key_9 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("Key") + " 9")
+                             verbose_name=_("key") + " 9")
     #Rating question
     rating_laps = models.IntegerField(max_length=1, default=9,
                                       null=True, blank=True,
-                                      verbose_name=_("From 1 to X"))
+                                      verbose_name=_("from 1 to X"))
     #Capture Digits
     validate_number = models.BooleanField(default=True,
-                                          verbose_name=_('Check validity'))
+                                          verbose_name=_('check validity'))
     number_digits = models.IntegerField(max_length=2, null=True, blank=True,
                                         default="2",
-                                        verbose_name=_("Number of digits"))
+                                        verbose_name=_("number of digits"))
     min_number = models.BigIntegerField(max_length=50, null=True, blank=True,
-                                  default=0, verbose_name=_("Minimum"))
+                                  default=0, verbose_name=_("minimum"))
     max_number = models.BigIntegerField(max_length=50, null=True, blank=True,
-                                  default=99, verbose_name=_("Maximum"))
+                                  default=99, verbose_name=_("maximum"))
     #Call Transfer
     phonenumber = models.CharField(max_length=50,
                                    null=True, blank=True,
                                    verbose_name=_("phone number"))
     # if the current section means that the survey is completed
     completed = models.BooleanField(default=False,
-                                    verbose_name=_('Survey complete'))
+                                    verbose_name=_('survey complete'))
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -268,15 +268,15 @@ class Section_template(Section_abstract):
     """
     This defines the question for survey section template
     """
-    survey = models.ForeignKey(Survey_template, verbose_name=_("Survey"))
+    survey = models.ForeignKey(Survey_template, verbose_name=_("survey"))
     invalid_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
-                                          verbose_name=_("Audio Invalid Input"),
+                                          verbose_name=_("audio invalid input"),
                                           related_name='survey_template_invalid_audiofile')
 
     class Meta(Sortable.Meta):
         ordering = Sortable.Meta.ordering + ['survey']
-        verbose_name = _("Section template")
-        verbose_name_plural = _("Section templates")
+        verbose_name = _("section template")
+        verbose_name_plural = _("section templates")
 
     def copy_section_template(self, new_survey_obj):
         """
@@ -330,14 +330,14 @@ class Section(Section_abstract):
     """
     This defines the question for survey section
     """
-    survey = models.ForeignKey(Survey, verbose_name=_("Survey"))
+    survey = models.ForeignKey(Survey, verbose_name=_("survey"))
     invalid_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
-                                          verbose_name=_("Audio Invalid Input"),
+                                          verbose_name=_("audio invalid input"),
                                           related_name='survey_invalid_audiofile')
     #section_template_id is used to easy duplication
     section_template = models.IntegerField(max_length=10, blank=True,
                                            default=0, null=True,
-                                           verbose_name=_('Section Template ID'))
+                                           verbose_name=_('section template ID'))
 
     class Meta(Sortable.Meta):
         ordering = Sortable.Meta.ordering + ['survey']
@@ -356,7 +356,7 @@ class Branching_abstract(models.Model):
         Each response is assigned to a Section
     """
     keys = models.CharField(max_length=150, blank=True,
-                            verbose_name=_("Entered value"))
+                            verbose_name=_("entered value"))
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -379,8 +379,8 @@ class Branching_template(Branching_abstract):
 
     class Meta():
         unique_together = ("keys", "section")
-        verbose_name = _("Branching template")
-        verbose_name_plural = _("Branching templates")
+        verbose_name = _("branching template")
+        verbose_name_plural = _("branching templates")
 
     def copy_branching_template(self, new_section, new_survey_obj):
         """
@@ -409,8 +409,8 @@ class Branching(Branching_abstract):
 
     class Meta():
         unique_together = ("keys", "section")
-        verbose_name = _("Branching")
-        verbose_name_plural = _("Branching")
+        verbose_name = _("branching")
+        verbose_name_plural = _("branching")
 
 
 class Result(models.Model):
@@ -446,12 +446,12 @@ class Result(models.Model):
                                     related_name='survey_callrequest')
     section = models.ForeignKey(Section, related_name='Result Section')
     response = models.CharField(max_length=150, blank=False,
-                                verbose_name=_("Response"))
+                                verbose_name=_("response"))
     record_file = models.CharField(max_length=200, blank=True, default='',
-                                   verbose_name=_("Record File"))
+                                   verbose_name=_("record File"))
     recording_duration = models.IntegerField(max_length=10, blank=True,
                                              default=0, null=True,
-                                             verbose_name=_('Recording Duration'))
+                                             verbose_name=_('recording duration'))
     created_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -468,13 +468,13 @@ class ResultAggregate(models.Model):
     **Name of DB table**: result_aggregate
     """
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
-                                 verbose_name=_("Campaign"))
+                                 verbose_name=_("campaign"))
     survey = models.ForeignKey(Survey, related_name='ResultSum Survey')
     section = models.ForeignKey(Section, related_name='ResultSum Section')
     response = models.CharField(max_length=150, blank=False, db_index=True,
-                                verbose_name=_("Response"))  # Orange ; Kiwi
+                                verbose_name=_("response"))  # Orange ; Kiwi
     count = models.IntegerField(max_length=20, default=0,
-                                verbose_name=_("Result count"))
+                                verbose_name=_("result count"))
 
     created_date = models.DateTimeField(auto_now_add=True)
 

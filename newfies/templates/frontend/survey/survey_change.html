@@ -29,13 +29,13 @@
         {% get_fieldset name,tts_language,description as survey_fields from form %}
         {% for field in survey_fields.visible_fields %}
             <div class="span3 clearfix{% if field.errors %} control-group error{% endif %}">
-                <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
                 <div class="input">
                     {{ field }}
                     {% if field.errors %}
                         <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
                     {% endif %}
-                    <span class="help-block">{{ field.help_text }} </span>
+                    <span class="help-block">{{ field.help_text|capfirst }} </span>
                 </div>
             </div>
         {% endfor %}
@@ -61,7 +61,7 @@
         {% for section in section_list %}
         <div id="row{{ section.id }}" class="portlet">
             <div class="portlet-header">
-                {{ forloop.counter }}. {{ section.type|section_type_name }}
+                {{ forloop.counter }}. {{ section.type|section_type_name|title }}
 
                 {% if section.timeout and section.type != SECTION_TYPE.PLAY_MESSAGE and section.type != SECTION_TYPE.HANGUP_SECTION and section.type != SECTION_TYPE.RECORD_MSG and section.type != SECTION_TYPE.CALL_TRANSFER %}
                     <span class="label label-info">T-{{ section.timeout }}s</span>
@@ -162,12 +162,12 @@
 
                                     {% if perms.survey.change_section %}
                                         <a data-toggle="modal" href="#script-update-edit" class="script-edit" url='/section/script/{{ section.id }}/' data-controls-modal='script-update-edit'>
-                                            <i title="{% trans "Edit" %}" class="icon-edit"></i>
+                                            <i title="{% trans "edit"|title %}" class="icon-edit"></i>
                                         </a>
                                     {% endif %}
                                     {% if section.script %}
                                         <a class="" target="_blank" href='/section/script_play/{{ section.id }}/'>
-                                            <i title="{% trans "Play" %}" class="icon-play"></i>
+                                            <i title="{% trans "play"|title %}" class="icon-play"></i>
                                         </a>
                                     {% endif %}
                                 {% endif %}
@@ -268,7 +268,7 @@
                             {% if section.type == SECTION_TYPE.CAPTURE_DIGITS %}
                                 <div class="span8">
                                     {% if section.validate_number %}
-                                        {% trans "Number is between" %}&nbsp;{{ section.min_number }}&nbsp;{% trans "and" %}&nbsp;{{ section.max_number }}
+                                        {% trans "number is between"|capfirst %}&nbsp;{{ section.min_number }}&nbsp;{% trans "and" %}&nbsp;{{ section.max_number }}
                                     {% endif %}
                                 </div>
                             {% endif %}

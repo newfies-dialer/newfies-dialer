@@ -39,7 +39,7 @@ function delete_button()
 <div class="span12">
     <div class="row">
         <div class="btn-group">
-            <button class="btn">{% trans "Action" %}</button>
+            <button class="btn">{% trans "action"|capfirst %}</button>
             <button class="btn dropdown-toggle" data-toggle="dropdown">
                 <span class="caret"></span>
             </button>
@@ -51,7 +51,7 @@ function delete_button()
         </div>
 
         {% if perms.dialer_campaign.add_campaign %}
-            <a class="btn btn-info" href="#" onclick="add_button()">{% trans "add"|title %}</a>
+            <a class="btn btn-info" href="#" onclick="add_button()">{% trans "add"|capfirst %}</a>
         {% endif %}
     </div>
 </div>

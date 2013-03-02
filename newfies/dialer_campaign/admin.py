@@ -31,7 +31,7 @@ class CampaignAdmin(GenericAdminModelAdmin):
     """
     content_type_whitelist = ('voice_app/voiceapp_template', 'survey/survey_template', )
     fieldsets = (
-        (_('standard options'), {
+        (_('Standard options'), {
             'fields': ('campaign_code', 'name', 'description', 'callerid',
                        'user', 'status', 'startingdate', 'expirationdate',
                        'aleg_gateway', 'content_type', 'object_id',
@@ -39,7 +39,7 @@ class CampaignAdmin(GenericAdminModelAdmin):
                        'voicemail_audiofile'
                        ),
         }),
-        (_('advanced options'), {
+        (_('Advanced options'), {
             'classes': ('collapse',),
             'fields': ('frequency', 'callmaxduration', 'maxretry',
                        'intervalretry', 'calltimeout', 'imported_phonebook',

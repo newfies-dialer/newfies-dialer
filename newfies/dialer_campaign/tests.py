@@ -164,25 +164,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         request.session = {}
         response = campaign_add(request)
         self.assertEqual(response['Location'], '/campaign/')
-        self.assertEqual(response.status_code, 302)
-
-        out = Template(
-            '{% block content %}'
-            '{% if msg %}'
-            '{{ msg|safe }}'
-            '{% endif %}'
-            '{% if error_msg %}'
-            '{{ error_msg|safe }}'
-            '{% endif %}'
-            '{% endblock %}'
-        ).render(Context({
-                         'msg': request.session.get('msg'),
-                         'error_msg': request.session.get('error_msg'),
-                         }))
-        self.assertEqual(out,
-                         'In order to add a campaign, '
-                         'you need to have your settings configured properly, '
-                         'please contact the admin.')
+        self.assertEqual(response.status_code, 302)        
 
     def test_campaign_view_update(self):
         """Test Function to check update campaign"""
@@ -211,17 +193,6 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         response = campaign_del(request, 1)
         self.assertEqual(response['Location'], '/campaign/')
         self.assertEqual(response.status_code, 302)
-
-        out = Template(
-            '{% block content %}'
-            '{% if msg %}'
-            '{{ msg|safe }}'
-            '{% endif %}'
-            '{% endblock %}'
-        ).render(Context({
-                         'msg': request.session.get('msg'),
-                         }))
-        self.assertEqual(out, '"Sample campaign" is deleted.')
 
         request = self.factory.post('/campaign/del/', {'select': '1'})
         request.user = self.user

@@ -34,7 +34,7 @@ from genericadmin.admin import GenericAdminModelAdmin
 from datetime import datetime
 import csv
 AppLabelRenamer(native_app_label=u'dialer_cdr', app_label=_('Dialer CDR')).main()
-
+APP_LABEL = _('VoIP report')
 
 class CallrequestAdmin(GenericAdminModelAdmin):
     """Allows the administrator to view and modify certain attributes
@@ -91,7 +91,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             url = reverse('admin:auth_customer_change', args=(obj.user_id,))
         return '<a href="%s"><b>%s</b></a>' % (url, obj.user)
     user_link.allow_tags = True
-    user_link.short_description = _('User')
+    user_link.short_description = _('user')
 
     def used_gateway_link(self, obj):
         """Used gateway link to edit gateway detail"""
@@ -100,7 +100,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
                           args=(obj.used_gateway.id,))
             return '<a href="%s">%s</a>' % (url, obj.used_gateway)
     used_gateway_link.allow_tags = True
-    used_gateway_link.short_description = _('Gateway used')
+    used_gateway_link.short_description = _('gateway used')
 
     def has_add_permission(self, request):
         """Remove add permission on VoIP Call Report model
@@ -200,8 +200,8 @@ class VoIPCallAdmin(admin.ModelAdmin):
             'form': form,
             'opts': opts,
             'model_name': opts.object_name.lower(),
-            'app_label': _('VoIP Report'),
-            'title': _('Call Report'),
+            'app_label': APP_LABEL,
+            'title': _('call report'),
         }
         return super(VoIPCallAdmin, self).changelist_view(request, extra_context=ctx)
 
@@ -259,8 +259,8 @@ class VoIPCallAdmin(admin.ModelAdmin):
             'max_duration': max_duration,
             'opts': opts,
             'model_name': opts.object_name.lower(),
-            'app_label': _('VoIP Report'),
-            'title': _('Call Aggregate Report'),
+            'app_label': APP_LABEL,
+            'title': _('call aggregate report'),
         })
 
         return render_to_response('admin/dialer_cdr/voipcall/voip_report.html',

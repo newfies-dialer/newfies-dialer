@@ -53,43 +53,42 @@ class UserProfile(models.Model):
     """
     user = models.OneToOneField(User)
     address = models.CharField(blank=True, null=True,
-                               max_length=200, verbose_name=_('Address'))
+                               max_length=200, verbose_name=_('address'))
     city = models.CharField(max_length=120, blank=True, null=True,
-                            verbose_name=_('City'))
+                            verbose_name=_('city'))
     state = models.CharField(max_length=120, blank=True, null=True,
-                             verbose_name=_('State'))
-    country = CountryField(blank=True, null=True, verbose_name=_('Country'))
+                             verbose_name=_('state'))
+    country = CountryField(blank=True, null=True, verbose_name=_('country'))
     zip_code = models.CharField(max_length=120, blank=True, null=True,
-                                verbose_name=_('Zip code'))
+                                verbose_name=_('zip code'))
     phone_no = models.CharField(max_length=90, blank=True, null=True,
-                                verbose_name=_('Phone number'))
+                                verbose_name=_('phone number'))
     fax = models.CharField(max_length=90, blank=True, null=True,
-                           verbose_name=_('Fax Number'))
+                           verbose_name=_('fax Number'))
     company_name = models.CharField(max_length=90, blank=True, null=True,
-                                    verbose_name=_('Company name'))
+                                    verbose_name=_('company name'))
     company_website = models.URLField(verify_exists=False,
                                       max_length=90, blank=True, null=True,
-                                      verbose_name=_('Company website'))
-    language = LanguageField(blank=True, null=True, verbose_name=_('Language'))
+                                      verbose_name=_('company website'))
+    language = LanguageField(blank=True, null=True, verbose_name=_('language'))
     note = models.CharField(max_length=250, blank=True, null=True,
-                            verbose_name=_('Note'))
+                            verbose_name=_('note'))
     accountcode = models.PositiveIntegerField(null=True, blank=True)
     #voip_gateway = models.ForeignKey(Gateway, verbose_name='VoIP Gateway',
     #                            help_text=_("Select VoIP Gateway"))
-    userprofile_gateway = models.ManyToManyField(Gateway,
-                                            verbose_name=_('Gateway'))
+    userprofile_gateway = models.ManyToManyField(Gateway, verbose_name=_('gateway'))
     dialersetting = models.ForeignKey(DialerSetting,
-                      verbose_name=_('Dialer settings'), null=True, blank=True)
+                      verbose_name=_('dialer settings'), null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:
         permissions = (
-            ("view_api_explorer", _('Can see API-Explorer')),
+            ("view_api_explorer", _('can see API-Explorer')),
         )
         db_table = 'user_profile'
-        verbose_name = _("User Profile")
-        verbose_name_plural = _("User Profile")
+        verbose_name = _("user profile")
+        verbose_name_plural = _("user profiles")
 
 
 class Customer(User):
@@ -97,8 +96,8 @@ class Customer(User):
     class Meta:
         proxy = True
         app_label = 'auth'
-        verbose_name = _('Customer')
-        verbose_name_plural = _('Customers')
+        verbose_name = _('customer')
+        verbose_name_plural = _('customers')
 
 
 class Staff(User):
@@ -106,8 +105,8 @@ class Staff(User):
     class Meta:
         proxy = True
         app_label = 'auth'
-        verbose_name = _('Admin')
-        verbose_name_plural = _('Admins')
+        verbose_name = _('admin')
+        verbose_name_plural = _('admins')
 
     def save(self, **kwargs):
         if not self.pk:

@@ -34,7 +34,7 @@
                                 {% if field.errors %}
                                     <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
                                 {% endif %}
-                                <span class="help-block">{{ field.help_text|safe }} </span>
+                                <span class="help-block">{{ field.help_text|capfirst|safe }} </span>
                             </div>
                         </div>
                     {% endfor %}

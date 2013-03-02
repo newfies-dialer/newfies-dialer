@@ -93,19 +93,19 @@ def customer_detail_change(request):
                 if not settings.DEMO_MODE:
                     user_detail_form.save()
                     user_detail_extened_form.save()
-                msg_detail = _('Detail has been changed.')
+                msg_detail = _('detail has been changed.')
             else:
-                error_detail = _('Please correct the errors below.')
+                error_detail = _('please correct the errors below.')
         elif request.POST['form-type'] == "check-number":  # check phone no
             action = 'tabs-4'
             check_phone_no_form = CheckPhoneNumberForm(data=request.POST)
             if check_phone_no_form.is_valid():
                 if not common_contact_authorization(request.user, request.POST['phone_number']):
-                    error_number = _('This phone number is not authorized.')
+                    error_number = _('this phone number is not authorized.')
                 else:
-                    msg_number = _('This phone number is authorized.')
+                    msg_number = _('this phone number is authorized.')
             else:
-                error_number = _('Please correct the errors below.')
+                error_number = _('please correct the errors below.')
         else:  # "change-password"
             user_password_form = PasswordChangeForm(user=request.user,
                                                     data=request.POST)
@@ -114,9 +114,9 @@ def customer_detail_change(request):
                 #DEMO / Disable
                 if not settings.DEMO_MODE:
                     user_password_form.save()
-                msg_pass = _('Your password has been changed.')
+                msg_pass = _('your password has been changed.')
             else:
-                error_pass = _('Please correct the errors below.')
+                error_pass = _('please correct the errors below.')
 
     template = 'frontend/registration/user_detail_change.html'
     data = {

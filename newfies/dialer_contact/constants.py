@@ -22,31 +22,31 @@ class CONTACT_STATUS(Choice):
 
 
 class CHOICE_TYPE(Choice):
-    CONTAINS = 1, _('Contains')
-    EQUALS = 2, _('Equals')
-    BEGINS_WITH = 3, _('Begins with')
-    ENDS_WITH = 4, _('Ends with')
+    CONTAINS = 1, _('contains')
+    EQUALS = 2, _('equals')
+    BEGINS_WITH = 3, _('begins with')
+    ENDS_WITH = 4, _('ends with')
 
 
 class STATUS_CHOICE(Choice):
-    INACTIVE = 0, _('Inactive')
-    ACTIVE = 1, _('Active')
-    ALL = 2, _('All')
+    INACTIVE = 0, _('inactive')
+    ACTIVE = 1, _('active')
+    ALL = 2, _('all')
 
 
 class PHONEBOOK_COLUMN_NAME(Choice):
     id = _('ID')
-    name = _('Name')
-    description = _('Description')
-    date = _('Date')
-    contacts = _('Contacts')
+    name = _('name')
+    description = _('description')
+    date = _('date')
+    contacts = _('contacts')
 
 
 class CONTACT_COLUMN_NAME(Choice):
     id = _('ID')
-    phonebook = _('Phonebook')
-    contact = _('Contact')
-    last_name = _('Last name')
-    first_name = _('First name')
-    status = _('Status')
-    date = _('Date')
+    phonebook = _('phonebook')
+    contact = _('contact')
+    last_name = _('last name')
+    first_name = _('first name')
+    status = _('status')
+    date = _('date')

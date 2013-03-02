@@ -48,12 +48,12 @@
                 <thead>
                 <tr>
                     <th><input type="checkbox" onclick="toggleChecked(this.checked)"></th>
-                    <th>{% sort_link PHONEBOOK_COLUMN_NAME.id col_name_with_order.id %}</th>
-                    <th>{% sort_link PHONEBOOK_COLUMN_NAME.name col_name_with_order.name %}</th>
-                    <th>{{ PHONEBOOK_COLUMN_NAME.description }}</th>
-                    <th>{% sort_link PHONEBOOK_COLUMN_NAME.date col_name_with_order.updated_date %}</th>
-                    <th>{{ PHONEBOOK_COLUMN_NAME.contacts }}</th>
-                    <th>{% trans 'action'|title %}</th>
+                    <th>{% sort_link PHONEBOOK_COLUMN_NAME.id|capfirst col_name_with_order.id %}</th>
+                    <th>{% sort_link PHONEBOOK_COLUMN_NAME.name|capfirst col_name_with_order.name %}</th>
+                    <th>{{ PHONEBOOK_COLUMN_NAME.description|capfirst }}</th>
+                    <th>{% sort_link PHONEBOOK_COLUMN_NAME.date|capfirst col_name_with_order.updated_date %}</th>
+                    <th>{{ PHONEBOOK_COLUMN_NAME.contacts|capfirst }}</th>
+                    <th>{% trans 'action'|capfirst %}</th>
                 </tr>
                 </thead>
                 {% if phonebook_list %}

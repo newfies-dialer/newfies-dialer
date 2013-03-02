@@ -22,15 +22,15 @@ from dialer_contact.constants import STATUS_CHOICE
 
 class SearchForm(forms.Form):
     """General Search Form with From & To date para."""
-    from_date = forms.CharField(label=_('From'), required=False,
+    from_date = forms.CharField(label=_('from'), required=False,
                                 max_length=10)
-    to_date = forms.CharField(label=_('To'), required=False, max_length=10)
+    to_date = forms.CharField(label=_('to'), required=False, max_length=10)
 
 
 class FileImport(forms.Form):
     """General Form : CSV file upload"""
-    csv_file = forms.FileField(label=_("Upload CSV File, the delimiter have to be " + '\"|\"'), required=True,
-                               error_messages={'required': 'Please upload a CSV File'})
+    csv_file = forms.FileField(label=_("upload CSV file, the delimiter have to be " + '\"|\"'), required=True,
+                               error_messages={'required': 'please upload a CSV File'})
 
     def clean_csv_file(self):
         """Form Validation :  File extension Check"""
@@ -39,15 +39,15 @@ class FileImport(forms.Form):
         if str(filename).split(".")[1].lower() in file_exts:
             return filename
         else:
-            raise forms.ValidationError(_(u'Document types accepted: %s' %
+            raise forms.ValidationError(_(u'document types accepted: %s' %
                                           ' '.join(file_exts)))
 
 
 class Contact_fileImport(FileImport):
     """Admin Form : Import CSV file with phonebook"""
-    phonebook = forms.ChoiceField(label=_("Phonebook"),
+    phonebook = forms.ChoiceField(label=_("phonebook"),
                                   required=False,
-                                  help_text=_("Select Phonebook"))
+                                  help_text=_("select phonebook"))
 
     def __init__(self, user, *args, **kwargs):
         super(Contact_fileImport, self).__init__(*args, **kwargs)
@@ -93,14 +93,14 @@ class ContactForm(ModelForm):
 
 class ContactSearchForm(forms.Form):
     """Search Form on Contact List"""
-    contact_no = forms.CharField(label=_('Contact Number:'), required=False,
+    contact_no = forms.CharField(label=_('contact number'), required=False,
                                  widget=forms.TextInput(attrs={'size': 15}))
     # contact_no_type = forms.ChoiceField(label='', required=False, initial=1,
     #                                     choices=list(CHOICE_TYPE), widget=forms.RadioSelect)
-    name = forms.CharField(label=_('Contact Name:'), required=False,
+    name = forms.CharField(label=_('contact name'), required=False,
                            widget=forms.TextInput(attrs={'size': 15}))
-    phonebook = forms.ChoiceField(label=_('Phonebook:'), required=False)
-    status = forms.TypedChoiceField(label=_('Status:'), required=False,
+    phonebook = forms.ChoiceField(label=_('phonebook'), required=False)
+    status = forms.TypedChoiceField(label=_('status'), required=False,
                                     choices=list(STATUS_CHOICE),
                                     initial=STATUS_CHOICE.ALL)
 

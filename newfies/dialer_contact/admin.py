@@ -208,12 +208,12 @@ class ContactAdmin(admin.ModelAdmin):
         else:
             form = Contact_fileImport(request.user)
 
-        ctx = RequestContext(request, {
-            'title': _('Import Contact'),
+        ctx = RequestContext(request, {            
             'form': form,
             'opts': opts,
             'model_name': opts.object_name.lower(),
-            'app_label': _('Dialer contact'),
+            'app_label': _('dialer contact'),
+            'title': _('import contact'),
             'rdr': rdr,
             'msg': msg,
             'error_msg': error_msg,

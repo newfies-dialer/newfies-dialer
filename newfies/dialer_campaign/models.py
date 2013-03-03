@@ -405,7 +405,7 @@ class Campaign(Model):
     subscriber_detail.allow_tags = True
     subscriber_detail.short_description = _('subscriber')
 
-    # OPTIMIZATION - FINE
+    # OPTIMIZATION - GOOD
     def get_pending_subscriber_update(self, limit=1000, status=SUBSCRIBER_STATUS.IN_PROCESS):
         """Get all the pending subscribers from the campaign"""
         #We cannot use select_related here as it' 's not compliant with locking the rows
@@ -414,9 +414,11 @@ class Campaign(Model):
             .all()[:limit]
         if not list_subscriber:
             return False
+        id_list_sb = []
         for elem_subscriber in list_subscriber:
-            elem_subscriber.status = status
-            elem_subscriber.save()
+            id_list_sb.append(elem_subscriber.id)
+        #Update in bulk
+        Subscriber.objects.filter(id__in=id_list_sb).update(status=status)
         return list_subscriber
 
 

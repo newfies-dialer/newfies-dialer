@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-01 17:29+0100\n"
+"POT-Creation-Date: 2013-03-04 00:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Hebrew <LL@li.org>\n"
@@ -63,8 +63,9 @@ msgstr "מנויים מקסימום לכל מסע פרסום"
 msgid "hangup call"
 msgstr "נתק סיבה"
 
-#: api/api_playgrounds/branching_playground.py:21
-#: templates/frontend/survey/survey_change.html:292
+#: api/api_playgrounds/branching_playground.py:21 survey/models.py:412
+#: survey/models.py:413 templates/frontend/survey/survey_change.html:292
+#: templates/frontend/survey/survey_view.html:215
 #, fuzzy
 msgid "branching"
 msgstr "עדכן את הקמפיין"
@@ -115,7 +116,7 @@ msgstr "מנויים מקסימום לכל מסע פרסום"
 msgid "create new phonebook"
 msgstr "עדכון ספר הטלפונים"
 
-#: api/api_playgrounds/callrequest_playground.py:21 dialer_cdr/models.py:200
+#: api/api_playgrounds/callrequest_playground.py:21
 msgid "Callrequest"
 msgstr "Callrequest"
 
@@ -162,11 +163,13 @@ msgid "delete campaign"
 msgstr "מחק את הקמפיין"
 
 #: api/api_playgrounds/campaign_playground.py:21 dialer_campaign/models.py:261
+#: dialer_cdr/forms.py:33 frontend/forms.py:34 survey/forms.py:307
+#: survey/models.py:110 survey/models.py:471
 #: templates/frontend/bootstrap_menu.html:32
 #: templates/frontend/dashboard.html:27
 #: templates/frontend/campaign/campaign_duplicate.html:46
 #: templates/frontend/campaign/change.html:12
-#: templates/frontend/campaign/list.html:9
+#: templates/frontend/campaign/list.html:9 voice_app/models.py:131
 #, fuzzy
 msgid "campaign"
 msgstr "מסע"
@@ -212,7 +215,8 @@ msgstr "מנויים מקסימום לכל מסע פרסום"
 msgid "create new subscriber"
 msgstr "עדכון בסקר"
 
-#: api/api_playgrounds/gateway_playground.py:21
+#: api/api_playgrounds/gateway_playground.py:21 dialer_cdr/constants.py:71
+#: user_profile/models.py:79 voice_app/constants.py:30
 #, fuzzy
 msgid "gateway"
 msgstr "שער"
@@ -252,7 +256,9 @@ msgid "this resource allows you to manage hangup call."
 msgstr "מנויים מקסימום לכל מסע פרסום"
 
 #: api/api_playgrounds/phonebook_playground.py:21
-#: templates/frontend/phonebook/change.html:11
+#: dialer_contact/constants.py:47 dialer_contact/forms.py:48
+#: dialer_contact/forms.py:102 dialer_contact/models.py:51
+#: dialer_contact/models.py:87 templates/frontend/phonebook/change.html:11
 #: templates/frontend/phonebook/list.html:9
 #, fuzzy
 msgid "phonebook"
@@ -352,7 +358,7 @@ msgid "returns specific subscribers per campaign"
 msgstr "מנויים מקסימום לכל מסע פרסום"
 
 #: api/api_playgrounds/subscriber_playground.py:21
-#: dialer_campaign/models.py:406 dialer_campaign/models.py:464
+#: dialer_campaign/models.py:406 dialer_campaign/models.py:466
 #, fuzzy
 msgid "subscriber"
 msgstr "מבצע מנוי"
@@ -383,8 +389,8 @@ msgid "returns a result belong to campaign"
 msgstr "מחק את הקמפיין"
 
 #: api/api_playgrounds/survey_playground.py:21 dialer_campaign/models.py:315
-#: dialer_campaign/views.py:176
-#: templates/frontend/survey/survey_change.html:17
+#: dialer_campaign/views.py:176 survey/models.py:119 survey/models.py:271
+#: survey/models.py:333 templates/frontend/survey/survey_change.html:17
 #: templates/frontend/survey/survey_list.html:9
 #, fuzzy
 msgid "survey"
@@ -423,7 +429,7 @@ msgstr "עדכון בסקר"
 msgid "delete survey"
 msgstr "מחיקת סקר"
 
-#: api/api_playgrounds/voiceapp_playground.py:21
+#: api/api_playgrounds/voiceapp_playground.py:21 voice_app/models.py:138
 #, fuzzy
 msgid "voice application"
 msgstr "קול יישומים"
@@ -480,7 +486,7 @@ msgstr "הגדרות"
 msgid "Voip Dialer"
 msgstr "VoIP Dialer"
 
-#: custom_admin_tools/dashboard.py:95 survey/models.py:120
+#: custom_admin_tools/dashboard.py:95
 msgid "Surveys"
 msgstr "סקרים"
 
@@ -497,7 +503,6 @@ msgid "Dashboard Stats Settings"
 msgstr "לוח המחוונים סטטיסטיקות הגדרות"
 
 #: custom_admin_tools/dashboard.py:162 dialer_settings/admin.py:19
-#: dialer_settings/models.py:74
 msgid "Dialer Settings"
 msgstr "הגדרות חייגן"
 
@@ -510,11 +515,10 @@ msgid "Dialer CDR"
 msgstr "חייגן CDR"
 
 #: custom_admin_tools/dashboard.py:171 dialer_gateway/admin.py:19
-#: dialer_gateway/models.py:103
 msgid "Dialer Gateway"
 msgstr "חייגן Gateway"
 
-#: custom_admin_tools/dashboard.py:174 voice_app/models.py:138
+#: custom_admin_tools/dashboard.py:174
 msgid "Voice Application"
 msgstr "קול יישום"
 
@@ -539,7 +543,12 @@ msgid "Customer Panel"
 msgstr "לקוחות לוח"
 
 #: dialer_audio/constants.py:20 dialer_campaign/constants.py:41
-#: dialer_campaign/models.py:162 templates/frontend/api/api_list.html:32
+#: dialer_campaign/models.py:162 dialer_contact/constants.py:39
+#: dialer_contact/models.py:38 dialer_contact/models.py:125
+#: dialer_gateway/models.py:53 dialer_settings/models.py:38
+#: survey/constants.py:40 survey/models.py:43
+#: templates/frontend/api/api_list.html:32 voice_app/constants.py:27
+#: voice_app/models.py:45
 #, fuzzy
 msgid "name"
 msgstr "שם משפחה"
@@ -555,11 +564,14 @@ msgid "audio URL"
 msgstr "אודיו URL"
 
 #: dialer_audio/constants.py:23 dialer_campaign/models.py:247
-#: dialer_campaign/models.py:459
-#: templates/admin/dialer_cdr/voipcall/voip_report.html:52
+#: dialer_campaign/models.py:461 dialer_cdr/models.py:104
+#: dialer_contact/constants.py:41 dialer_contact/constants.py:52
+#: dialer_contact/models.py:43 dialer_contact/models.py:107
+#: dialer_gateway/models.py:86 survey/constants.py:42 survey/models.py:49
+#: templates/admin/dialer_cdr/voipcall/voip_report.html:54
 #: templates/frontend/dashboard.html:229
 #: templates/frontend/report/voipcall_report.html:156
-#: templates/frontend/survey/survey_report.html:208
+#: templates/frontend/survey/survey_report.html:208 voice_app/constants.py:33
 #, fuzzy
 msgid "date"
 msgstr "לעדכן"
@@ -638,7 +650,10 @@ msgstr ""
 msgid "END"
 msgstr ""
 
-#: dialer_campaign/constants.py:40
+#: dialer_campaign/constants.py:40 survey/models.py:183 survey/models.py:185
+#: survey/models.py:187 survey/models.py:189 survey/models.py:191
+#: survey/models.py:193 survey/models.py:195 survey/models.py:197
+#: survey/models.py:199 survey/models.py:201
 #: templates/frontend/survey/survey_change.html:193
 #: templates/frontend/survey/survey_change.html:199
 #: templates/frontend/survey/survey_change.html:205
@@ -663,12 +678,14 @@ msgstr ""
 msgid "key"
 msgstr "מפתח"
 
-#: dialer_campaign/constants.py:42
+#: dialer_campaign/constants.py:42 dialer_cdr/constants.py:66
 #, fuzzy
 msgid "start date"
 msgstr "תאריך התחלה"
 
 #: dialer_campaign/constants.py:43 dialer_campaign/models.py:222
+#: dialer_cdr/models.py:135 frontend/forms.py:35 voice_app/constants.py:29
+#: voice_app/models.py:52
 msgid "type"
 msgstr ""
 
@@ -677,7 +694,9 @@ msgstr ""
 msgid "app"
 msgstr "App"
 
-#: dialer_campaign/constants.py:45 templates/frontend/bootstrap_menu.html:42
+#: dialer_campaign/constants.py:45 dialer_contact/constants.py:42
+#: dialer_contact/models.py:61 dialer_contact/models.py:116
+#: templates/frontend/bootstrap_menu.html:42
 #: templates/frontend/bootstrap_menu.html:50
 #: templates/frontend/contact/list.html:26
 #, fuzzy
@@ -685,7 +704,9 @@ msgid "contacts"
 msgstr "ליצור קשר"
 
 #: dialer_campaign/constants.py:46 dialer_campaign/models.py:168
-#: dialer_campaign/models.py:457
+#: dialer_campaign/models.py:459 dialer_cdr/models.py:113
+#: dialer_contact/constants.py:51 dialer_contact/forms.py:103
+#: dialer_contact/models.py:92
 #: templates/admin/dialer_contact/contact/import_contact.html:25
 #: templates/frontend/contact/import_contact.html:27
 msgid "status"
@@ -704,28 +725,29 @@ msgid "LEAVE MESSAGE TO VOICEMAIL ONLY"
 msgstr ""
 
 #: dialer_campaign/forms.py:51 dialer_campaign/models.py:225
+#: dialer_cdr/models.py:136
 #, fuzzy
 msgid "application"
 msgstr "בקשה"
 
 #: dialer_campaign/forms.py:148
 #, fuzzy, python-format
-msgid "maximum Frequency limit of %d exceeded."
+msgid "maximum frequency limit of %d exceeded."
 msgstr "מגבלת תדירות מקסימלית של ד% חריגה."
 
 #: dialer_campaign/forms.py:154
 #, fuzzy, python-format
-msgid "maximum Duration limit of %d exceeded."
+msgid "maximum duration limit of %d exceeded."
 msgstr "מגבלת אורך מרבי של ד% חריגה."
 
 #: dialer_campaign/forms.py:160
 #, fuzzy, python-format
-msgid "maximum Retries limit of %d exceeded."
+msgid "maximum retries limit of %d exceeded."
 msgstr "מגבלת נסיונות המרבי של% d חריגה."
 
 #: dialer_campaign/forms.py:166
 #, fuzzy, python-format
-msgid "maximum Timeout limit of %d exceeded."
+msgid "maximum timeout limit of %d exceeded."
 msgstr "גבול Timeout המרבי של% d חריגה."
 
 #: dialer_campaign/function_def.py:232
@@ -746,10 +768,12 @@ msgid ""
 "campaign"
 msgstr "קוד זה שנוצר באופן אוטומטי על ידי פלטפורמת, זה משמש לזיהוי קמפיין"
 
-#: dialer_campaign/models.py:163
+#: dialer_campaign/models.py:163 dialer_contact/constants.py:40
+#: dialer_gateway/models.py:57 survey/constants.py:41 survey/models.py:47
 #: templates/admin/dialer_contact/contact/import_contact.html:24
 #: templates/frontend/contact/import_contact.html:26
-#: templates/frontend/survey/survey_view.html:24
+#: templates/frontend/survey/survey_view.html:24 voice_app/constants.py:28
+#: voice_app/models.py:49
 msgid "description"
 msgstr "תאור"
 
@@ -774,8 +798,9 @@ msgid "caller name"
 msgstr "השער שם"
 
 #: dialer_campaign/models.py:174
-msgid "Outbound caller-Name"
-msgstr ""
+#, fuzzy
+msgid "outbound caller-Name"
+msgstr "יוצאת שיחה מזוהה"
 
 #: dialer_campaign/models.py:177 dialer_campaign/views.py:154
 #, fuzzy
@@ -899,7 +924,7 @@ msgstr "זמן בין נסיונות"
 msgid "time delay in seconds before retrying contact for completion"
 msgstr "זמן העיכוב שניות לפני שתנסה שוב קשר"
 
-#: dialer_campaign/models.py:217
+#: dialer_campaign/models.py:217 dialer_settings/models.py:52
 #, fuzzy
 msgid "timeout on call"
 msgstr "פסק זמן על שיחות"
@@ -990,9 +1015,14 @@ msgstr "מסע"
 
 #: dialer_campaign/models.py:306 templates/frontend/audio/audio_list.html:27
 #: templates/frontend/audio/audio_list.html:53
+#: templates/frontend/campaign/list.html:42
 #: templates/frontend/campaign/list.html:73
 #: templates/frontend/phonebook/list.html:56
+#: templates/frontend/survey/survey_list.html:24
+#: templates/frontend/survey/survey_list.html:55
 #: templates/frontend/survey/survey_report.html:136
+#: templates/frontend/voiceapp/list.html:27
+#: templates/frontend/voiceapp/list.html:56
 #, fuzzy
 msgid "action"
 msgstr "פעולה"
@@ -1017,38 +1047,39 @@ msgstr "<a href='%(link)s'>(שם)%s</a>"
 msgid "details"
 msgstr "פרטים"
 
-#: dialer_campaign/models.py:442
+#: dialer_campaign/models.py:444
 #, fuzzy
 msgid "select contact"
 msgstr "בחר צור"
 
-#: dialer_campaign/models.py:444
+#: dialer_campaign/models.py:446
 #, fuzzy
 msgid "select campaign"
 msgstr "בחר מסע פרסום"
 
-#: dialer_campaign/models.py:446
+#: dialer_campaign/models.py:448
 #, fuzzy
 msgid "last attempt"
 msgstr "הניסיון האחרון"
 
-#: dialer_campaign/models.py:448
+#: dialer_campaign/models.py:450
 #, fuzzy
 msgid "count attempts"
 msgstr "ספור ניסיונות"
 
-#: dialer_campaign/models.py:451
+#: dialer_campaign/models.py:453
 #, fuzzy
 msgid "completion count attempts"
 msgstr "ספור ניסיונות"
 
-#: dialer_campaign/models.py:454
+#: dialer_campaign/models.py:456 dialer_contact/constants.py:48
+#: dialer_contact/models.py:115
 #: templates/admin/dialer_contact/contact/import_contact.html:20
 #: templates/frontend/contact/change.html:19
 msgid "contact"
 msgstr "ליצור קשר"
 
-#: dialer_campaign/models.py:465
+#: dialer_campaign/models.py:467
 #, fuzzy
 msgid "subscribers"
 msgstr "הקמפיין מנויים"
@@ -1064,6 +1095,7 @@ msgid ""
 msgstr ""
 
 #: dialer_campaign/views.py:103 user_profile/constants.py:26
+#: user_profile/management.py:57
 #, fuzzy
 msgid "dialer setting configuration"
 msgstr "חייגן בתצורת הגדרה"
@@ -1078,12 +1110,12 @@ msgstr ""
 "הודעה על - חייגן משתמש הגדרת המשתמש \"% (המשתמש) s\" - \"% (user_id) s\" "
 "אינו מוגדר כהלכה להשתמש במערכת, יש להגדיר הגדרות חייגן שלהם."
 
-#: dialer_campaign/views.py:155
+#: dialer_campaign/views.py:155 dialer_cdr/constants.py:28
 #, fuzzy
 msgid "pause"
 msgstr "הפסקה"
 
-#: dialer_campaign/views.py:156
+#: dialer_campaign/views.py:156 dialer_cdr/constants.py:27
 #, fuzzy
 msgid "abort"
 msgstr "להפיל"
@@ -1108,8 +1140,9 @@ msgid "duplicate this campaign"
 msgstr "עדכן את הקמפיין"
 
 #: dialer_campaign/views.py:308
+#, fuzzy
 msgid ""
-"In order to add a campaign, you need to have your settings configured "
+"in order to add a campaign, you need to have your settings configured "
 "properly, please contact the admin."
 msgstr ""
 "כדי להוסיף מסע פרסום, אתה צריך לעבור את ההגדרות שלך מוגדרת כראוי, צור קשר עם "
@@ -1160,16 +1193,22 @@ msgstr "לא ניתן למצוא את הקמפיין עם הטלפונים זה"
 msgid "Launch Task : collect_subscriber(%(id)s)"
 msgstr "הפעל משימה: collect_subscriber ((id)%s)"
 
-#: dialer_cdr/admin.py:71 dialer_cdr/admin.py:204
+#: dialer_cdr/admin.py:37
+#, fuzzy
+msgid "VoIP report"
+msgstr "דו\"ח ה-VoIP"
+
+#: dialer_cdr/admin.py:71
 msgid "Call Report"
 msgstr "קוראים דו\"ח"
 
 #: dialer_cdr/admin.py:94
-msgid "User"
-msgstr "משתמש"
+msgid "user"
+msgstr ""
 
 #: dialer_cdr/admin.py:103
-msgid "Gateway used"
+#, fuzzy
+msgid "gateway used"
 msgstr "השער משמש"
 
 #: dialer_cdr/admin.py:178
@@ -1188,46 +1227,45 @@ msgstr[1] "(TOTAL_COUNT)%s נבחר"
 msgid "0 of %(cnt)s selected"
 msgstr "(TOTAL_COUNT)%s נבחר"
 
-#: dialer_cdr/admin.py:203 dialer_cdr/admin.py:262
-msgid "VoIP Report"
-msgstr "דו\"ח ה-VoIP"
+#: dialer_cdr/admin.py:204
+#: templates/admin/dialer_cdr/voipcall/voip_report.html:14
+#: templates/admin_tools/dashboard/modules/app_list.html:13
+#, fuzzy
+msgid "call report"
+msgstr "קוראים דו\"ח"
 
 #: dialer_cdr/admin.py:263
+#: templates/admin_tools/dashboard/modules/app_list.html:45
+#: templates/admin_tools/dashboard/modules/model_list.html:26
 #, fuzzy
-msgid "Call Aggregate Report"
+msgid "call aggregate report"
 msgstr "קוראים דו\"ח פירוט"
 
 #: dialer_cdr/constants.py:23
-msgid "Pending"
-msgstr ""
+#, fuzzy
+msgid "pending"
+msgstr "שיא לא נמצאו."
 
 #: dialer_cdr/constants.py:24
-msgid "Failure"
+msgid "failure"
 msgstr ""
 
 #: dialer_cdr/constants.py:25
-msgid "Retry"
-msgstr ""
+#, fuzzy
+msgid "retry"
+msgstr "מקס נסיונות"
 
 #: dialer_cdr/constants.py:26
-msgid "Success"
+msgid "success"
 msgstr ""
 
-#: dialer_cdr/constants.py:27
-msgid "Abort"
-msgstr "להפיל"
-
-#: dialer_cdr/constants.py:28
-msgid "Pause"
-msgstr "הפסקה"
-
 #: dialer_cdr/constants.py:29
-msgid "Processing"
+msgid "processing"
 msgstr ""
 
 #: dialer_cdr/constants.py:30
 #, fuzzy
-msgid "In Progress"
+msgid "in progress"
 msgstr "התקדמות"
 
 #: dialer_cdr/constants.py:37
@@ -1275,215 +1313,232 @@ msgstr "גודש"
 msgid "FAILED"
 msgstr ""
 
-#: dialer_cdr/constants.py:66
-msgid "Start date"
-msgstr "תאריך התחלה"
-
 #: dialer_cdr/constants.py:67
-msgid "Call ID"
+#, fuzzy
+msgid "call ID"
 msgstr "קוראים ID"
 
-#: dialer_cdr/constants.py:68 dialer_cdr/models.py:230
-msgid "Leg"
+#: dialer_cdr/constants.py:68 dialer_cdr/models.py:224
+#, fuzzy
+msgid "leg"
 msgstr "רגל"
 
 #: dialer_cdr/constants.py:69
-msgid "Caller ID"
-msgstr "שיחה מזוהה"
+#, fuzzy
+msgid "caller ID"
+msgstr "זיהוי שיחה"
 
 #: dialer_cdr/constants.py:70
 #, fuzzy
-msgid "Phone No"
+msgid "phone no"
 msgstr "מספר טלפון"
 
-#: dialer_cdr/constants.py:71 user_profile/models.py:80
-#: voice_app/constants.py:30
-msgid "Gateway"
-msgstr "שער"
-
-#: dialer_cdr/constants.py:72 dialer_cdr/models.py:214 survey/constants.py:48
-msgid "Duration"
+#: dialer_cdr/constants.py:72 dialer_cdr/models.py:212 survey/constants.py:48
+#: templates/admin/dialer_cdr/voipcall/voip_report.html:55
+#: templates/frontend/dashboard.html:43 templates/frontend/dashboard.html:231
+#: templates/frontend/report/voipcall_report.html:157
+#: templates/frontend/survey/survey_campaign_result.html:17
+#: templates/frontend/survey/survey_report.html:209
+#, fuzzy
+msgid "duration"
 msgstr "משך"
 
-#: dialer_cdr/constants.py:73
-msgid "Bill Sec"
+#: dialer_cdr/constants.py:73 dialer_cdr/models.py:213
+#, fuzzy
+msgid "bill sec"
 msgstr "ביל שניות"
 
-#: dialer_cdr/constants.py:74 dialer_cdr/forms.py:30 dialer_cdr/models.py:225
+#: dialer_cdr/constants.py:74 dialer_cdr/forms.py:30 dialer_cdr/models.py:219
 #: survey/constants.py:49
-msgid "Disposition"
+#, fuzzy
+msgid "disposition"
 msgstr "מזג"
 
 #: dialer_cdr/constants.py:75
 #, fuzzy
-msgid "Amd status"
+msgid "amd status"
 msgstr "מצב"
 
 #: dialer_cdr/constants.py:82
-msgid "Person"
+msgid "person"
 msgstr ""
 
 #: dialer_cdr/constants.py:83
-msgid "Machine"
-msgstr ""
+#, fuzzy
+msgid "machine"
+msgstr "עדכן את הקמפיין"
 
 #: dialer_cdr/constants.py:84
-msgid "Unsure"
+msgid "unsure"
 msgstr ""
 
-#: dialer_cdr/forms.py:33 frontend/forms.py:34 survey/forms.py:308
-#: survey/models.py:110 survey/models.py:471 voice_app/models.py:131
-msgid "Campaign"
-msgstr "מסע"
-
-#: dialer_cdr/forms.py:40
+#: dialer_cdr/forms.py:23 dialer_cdr/forms.py:40
 msgid "ALL"
 msgstr ""
 
-#: dialer_cdr/models.py:97 dialer_cdr/models.py:194
+#: dialer_cdr/models.py:97 dialer_cdr/models.py:193
 msgid "RequestUUID"
 msgstr "RequestUUID"
 
 #: dialer_cdr/models.py:100
-msgid "A-Leg Call-ID"
+#, fuzzy
+msgid "a-leg call-ID"
 msgstr "Leg-Call-ID"
 
 #: dialer_cdr/models.py:108
-msgid "Call Request Type"
+#, fuzzy
+msgid "call request type"
 msgstr "סוג שיחת בקשה"
 
-#: dialer_cdr/models.py:113 dialer_contact/constants.py:51
-#: dialer_contact/models.py:92
-msgid "Status"
-msgstr "מצב"
-
-#: dialer_cdr/models.py:115
+#: dialer_cdr/models.py:115 dialer_cdr/models.py:201
 msgid "CallerID"
 msgstr "זיהוי שיחה"
 
 #: dialer_cdr/models.py:116
-msgid "CallerID used to call the A-Leg"
+#, fuzzy
+msgid "callerID used to call the A-Leg"
 msgstr "זיהוי שיחה נהג לכנות-Leg"
 
-#: dialer_cdr/models.py:118 dialer_cdr/models.py:204 user_profile/models.py:65
-msgid "Phone number"
+#: dialer_cdr/models.py:118 dialer_cdr/models.py:203 survey/models.py:219
+#: templates/frontend/survey/survey_change.html:280
+#: templates/frontend/survey/survey_view.html:204 user_profile/models.py:65
+#, fuzzy
+msgid "phone number"
 msgstr "מספר טלפון"
 
 #: dialer_cdr/models.py:120
-msgid "Time out"
+#, fuzzy
+msgid "time out"
 msgstr "פסק זמן"
 
 #: dialer_cdr/models.py:122
-msgid "Time limit"
+#, fuzzy
+msgid "time limit"
 msgstr "הגבל את הזמן"
 
 #: dialer_cdr/models.py:124
-msgid "Extra dial string"
+#, fuzzy
+msgid "extra dial string"
 msgstr "חיוג נוסף מחרוזת"
 
 #: dialer_cdr/models.py:127
-msgid "Subscriber related to this call request"
+#, fuzzy
+msgid "subscriber related to this call request"
 msgstr "מבצע מנוי הקשור לבקשה זו שיחה"
 
 #: dialer_cdr/models.py:130
-msgid "Select Campaign"
+#, fuzzy
+msgid "select Campaign"
 msgstr "בחר מסע פרסום"
 
+#: dialer_cdr/models.py:132
+#, fuzzy
+msgid "a-leg gateway"
+msgstr "רגליים Gateway"
+
 #: dialer_cdr/models.py:133
-msgid "Select gateway to use to call the subscriber"
+#, fuzzy
+msgid "select gateway to use to call the subscriber"
 msgstr "שער בחר להשתמש להתקשר מנוי"
 
-#: dialer_cdr/models.py:135 frontend/forms.py:35 voice_app/constants.py:29
-#: voice_app/models.py:52
-msgid "Type"
-msgstr "סוג"
-
-#: dialer_cdr/models.py:136
-msgid "Application"
-msgstr "בקשה"
-
-#: dialer_cdr/models.py:140
+#: dialer_cdr/models.py:139
 #, fuzzy
-msgid "Call completed"
+msgid "call completed"
 msgstr "קוראים לספור"
 
-#: dialer_cdr/models.py:143
-msgid "Extra Data"
+#: dialer_cdr/models.py:142
+#, fuzzy
+msgid "extra data"
 msgstr "נתונים נוספים"
 
-#: dialer_cdr/models.py:144
-msgid "Define the additional data to pass to the application"
+#: dialer_cdr/models.py:143
+#, fuzzy
+msgid "define the additional data to pass to the application"
 msgstr "מגדירים את הנתונים הנוספים לעבור ליישום"
 
-#: dialer_cdr/models.py:158
-msgid "Call Request"
-msgstr "בקשה לשיחה"
+#: dialer_cdr/models.py:157
+#, fuzzy
+msgid "call request"
+msgstr "Callrequest"
 
-#: dialer_cdr/models.py:159
-msgid "Call Requests"
+#: dialer_cdr/models.py:158
+#, fuzzy
+msgid "call requests"
 msgstr "שיחה בקשות"
 
-#: dialer_cdr/models.py:198
-msgid "Used gateway"
+#: dialer_cdr/models.py:197
+#, fuzzy
+msgid "used gateway"
 msgstr "משמש שער"
 
-#: dialer_cdr/models.py:201
-msgid "VoIP Call-ID"
+#: dialer_cdr/models.py:199
+#, fuzzy
+msgid "callrequest"
+msgstr "Callrequest"
+
+#: dialer_cdr/models.py:200
+#, fuzzy
+msgid "VoIP call-ID"
 msgstr "שיחות VoIP-ID"
 
-#: dialer_cdr/models.py:205
-msgid "The international number of the recipient, without the leading +"
+#: dialer_cdr/models.py:204
+#, fuzzy
+msgid "the international number of the recipient, without the leading +"
 msgstr "מספר בינלאומי של הנמען, ללא + מוביל"
 
-#: dialer_cdr/models.py:207 survey/constants.py:47
-msgid "Destination"
+#: dialer_cdr/models.py:206 survey/constants.py:47
+#, fuzzy
+msgid "destination"
 msgstr "יעד"
 
-#: dialer_cdr/models.py:209
-msgid "Select Prefix"
+#: dialer_cdr/models.py:208
+#, fuzzy
+msgid "select prefix"
 msgstr "בחר קידומת"
 
-#: dialer_cdr/models.py:211
-msgid "Starting date"
+#: dialer_cdr/models.py:210
+#, fuzzy
+msgid "starting date"
 msgstr "החל תאריך"
 
-#: dialer_cdr/models.py:216
-msgid "Bill sec"
-msgstr "ביל שניות"
-
-#: dialer_cdr/models.py:218
-msgid "Progress sec"
+#: dialer_cdr/models.py:214
+#, fuzzy
+msgid "progress sec"
 msgstr "התקדמות שניות"
 
-#: dialer_cdr/models.py:220
-msgid "Answer sec"
+#: dialer_cdr/models.py:215
+#, fuzzy
+msgid "answer sec"
 msgstr "עונה שנייה"
 
-#: dialer_cdr/models.py:222
-msgid "Wait sec"
+#: dialer_cdr/models.py:216
+#, fuzzy
+msgid "wait sec"
 msgstr "חכו שניה"
 
-#: dialer_cdr/models.py:227
-msgid "Hangup cause"
+#: dialer_cdr/models.py:221
+#, fuzzy
+msgid "hangup cause"
 msgstr "נתק סיבה"
 
-#: dialer_cdr/models.py:232
+#: dialer_cdr/models.py:226
 #, fuzzy
 msgid "AMD Status"
 msgstr "מצב"
 
-#: dialer_cdr/models.py:254
+#: dialer_cdr/models.py:248
 #, fuzzy
-msgid "Can see Call Detail Report"
+msgid "can see call detail report"
 msgstr "קוראים דו\"ח פירוט"
 
-#: dialer_cdr/models.py:257
-msgid "VoIP Call"
+#: dialer_cdr/models.py:251
+#, fuzzy
+msgid "VoIP call"
 msgstr "שיחות ה-VoIP"
 
-#: dialer_cdr/models.py:258
+#: dialer_cdr/models.py:252 templates/frontend/report/voipcall_report.html:22
 #, fuzzy
-msgid "VoIP Calls"
+msgid "VoIP calls"
 msgstr "שיחות ה-VoIP"
 
 #: dialer_cdr/management/commands/create_callrequest_cdr.py:62
@@ -1503,35 +1558,37 @@ msgstr "בחר צור"
 
 #: dialer_contact/admin.py:79 dialer_contact/admin.py:118
 #: dialer_contact/views.py:389 dialer_contact/views.py:539
-#, python-format
+#, fuzzy, python-format
 msgid ""
-"You have too many contacts per campaign. You are allowed a maximum of "
+"you have too many contacts per campaign. you are allowed a maximum of "
 "%(limit)s"
 msgstr "יש לך קשרים רבים מדי לכל מסע פרסום. מותר לכל היותר% (הגבול) של"
 
 #: dialer_contact/admin.py:169 dialer_contact/views.py:586
 #, fuzzy
 msgid ""
-"Invalid value for import! Please check the import samples or phonebook is "
+"invalid value for import! please check the import samples or phonebook is "
 "not valid"
 msgstr "ערך לא חוקי עבור יבוא! אנא בדקו את דגימות היבוא."
 
 #: dialer_contact/admin.py:206 dialer_contact/views.py:627
-#, python-format
+#, fuzzy, python-format
 msgid ""
-"%(contact_cnt)s Contact(s) are uploaded successfully out of %(total_rows)s "
+"%(contact_cnt)s contact(s) are uploaded successfully out of %(total_rows)s "
 "row(s) !!"
 msgstr ""
 "% (contact_cnt) של צור (ים) הועלה בהצלחה מתוך% (TOTAL_ROWS) בשורה של (ים)!"
 
-#: dialer_contact/admin.py:212
-msgid "Import Contact"
-msgstr "ייבוא ​​צור קשר"
+#: dialer_contact/admin.py:215
+#, fuzzy
+msgid "dialer contact"
+msgstr "מחק קשר"
 
 #: dialer_contact/admin.py:216
+#: templates/frontend/contact/import_contact.html:13
 #, fuzzy
-msgid "Dialer contact"
-msgstr "מחק קשר"
+msgid "import contact"
+msgstr "ייבוא ​​צור קשר"
 
 #: dialer_contact/constants.py:20 dialer_gateway/constants.py:20
 #: templates/frontend/contact/list.html:134
@@ -1544,171 +1601,142 @@ msgid "INACTIVE"
 msgstr "לא פעיל"
 
 #: dialer_contact/constants.py:25
-msgid "Contains"
+#, fuzzy
+msgid "contains"
 msgstr "מכיל"
 
 #: dialer_contact/constants.py:26
-msgid "Equals"
+#, fuzzy
+msgid "equals"
 msgstr "שווה"
 
 #: dialer_contact/constants.py:27
-msgid "Begins with"
+#, fuzzy
+msgid "begins with"
 msgstr "מתחיל"
 
 #: dialer_contact/constants.py:28
-msgid "Ends with"
+#, fuzzy
+msgid "ends with"
 msgstr "עם צאת"
 
 #: dialer_contact/constants.py:32
-msgid "Inactive"
+#, fuzzy
+msgid "inactive"
 msgstr "לא פעיל"
 
 #: dialer_contact/constants.py:33
 #, fuzzy
-msgid "Active"
-msgstr "פעיל"
+msgid "active"
+msgstr "לא פעיל"
 
 #: dialer_contact/constants.py:34
-msgid "All"
-msgstr "כל"
+#, fuzzy
+msgid "all"
+msgstr "שיחות"
 
 #: dialer_contact/constants.py:38 dialer_contact/constants.py:46
 msgid "ID"
 msgstr ""
 
-#: dialer_contact/constants.py:39 dialer_contact/models.py:38
-#: dialer_contact/models.py:125 dialer_gateway/models.py:53
-#: dialer_settings/models.py:38 survey/constants.py:40 survey/models.py:43
-#: voice_app/constants.py:27 voice_app/models.py:45
-msgid "Name"
-msgstr "שם"
-
-#: dialer_contact/constants.py:40 dialer_gateway/models.py:57
-#: survey/constants.py:41 survey/models.py:47 voice_app/constants.py:28
-#: voice_app/models.py:49
-msgid "Description"
-msgstr "תאור"
-
-#: dialer_contact/constants.py:41 dialer_contact/constants.py:52
-#: dialer_contact/models.py:43 dialer_contact/models.py:107
-#: dialer_gateway/models.py:86 survey/constants.py:42 survey/models.py:49
-#: voice_app/constants.py:33 voice_app/models.py:64
-msgid "Date"
-msgstr "תאריך"
-
-#: dialer_contact/constants.py:42 dialer_contact/models.py:61
-#: dialer_contact/models.py:116
-msgid "Contacts"
-msgstr "אנשי קשר"
-
-#: dialer_contact/constants.py:47 dialer_contact/forms.py:48
-#: dialer_contact/models.py:51 dialer_contact/models.py:87
-msgid "Phonebook"
-msgstr "ספר טלפונים"
-
-#: dialer_contact/constants.py:48 dialer_contact/models.py:115
-msgid "Contact"
-msgstr "ליצור קשר"
-
-#: dialer_contact/constants.py:49
-msgid "Last name"
+#: dialer_contact/constants.py:49 dialer_contact/models.py:94
+#: templates/admin/dialer_contact/contact/import_contact.html:21
+#: templates/frontend/contact/import_contact.html:23
+msgid "last name"
 msgstr "שם משפחה"
 
-#: dialer_contact/constants.py:50
-msgid "First name"
+#: dialer_contact/constants.py:50 dialer_contact/models.py:96
+#: templates/admin/dialer_contact/contact/import_contact.html:22
+#: templates/frontend/contact/import_contact.html:24
+msgid "first name"
 msgstr "שם פרטי"
 
 #: dialer_contact/forms.py:25
-msgid "From"
-msgstr "מן"
+msgid "from"
+msgstr ""
 
 #: dialer_contact/forms.py:27
-msgid "To"
+#: templates/frontend/report/voipcall_report.html:86
+#: templates/frontend/survey/survey_report.html:131
+msgid "to"
 msgstr "אל"
 
 #: dialer_contact/forms.py:32
-msgid "Upload CSV File, the delimiter have to be "
+msgid "upload CSV file, the delimiter have to be "
 msgstr ""
 
-#: dialer_contact/forms.py:42 survey/forms.py:352
-#, python-format
-msgid "Document types accepted: %s"
+#: dialer_contact/forms.py:42 survey/forms.py:351
+#, fuzzy, python-format
+msgid "document types accepted: %s"
 msgstr "מסמכים סוגים מקובלים:%s"
 
 #: dialer_contact/forms.py:50 dialer_contact/models.py:88
-msgid "Select Phonebook"
+#, fuzzy
+msgid "select phonebook"
 msgstr "בחר ספר טלפונים"
 
-#: dialer_contact/forms.py:96
-msgid "Contact Number:"
-msgstr "צור מספר:"
+#: dialer_contact/forms.py:96 dialer_contact/models.py:89
+#: templates/frontend/contact/import_contact.html:22
+#, fuzzy
+msgid "contact number"
+msgstr "צור מספר"
 
 #: dialer_contact/forms.py:100
-msgid "Contact Name:"
-msgstr "שם איש קשר:"
-
-#: dialer_contact/forms.py:102
-msgid "Phonebook:"
-msgstr "ספר טלפונים:"
-
-#: dialer_contact/forms.py:103
-msgid "Status:"
-msgstr "סטטוס:"
+#, fuzzy
+msgid "contact name"
+msgstr "צור מספר"
 
 #: dialer_contact/models.py:40
-msgid "Phonebook Notes"
+#, fuzzy
+msgid "phonebook notes"
 msgstr "ספר טלפונים הערות"
 
 #: dialer_contact/models.py:48
 #, fuzzy
-msgid "Can see Phonebook"
+msgid "can see phonebook"
 msgstr "בחר ספר טלפונים"
 
-#: dialer_contact/models.py:52
-msgid "Phonebooks"
+#: dialer_contact/models.py:52 templates/frontend/bootstrap_menu.html:46
+#, fuzzy
+msgid "phonebooks"
 msgstr "ספרי טלפונים"
 
-#: dialer_contact/models.py:89
-msgid "Contact Number"
-msgstr "צור מספר"
-
-#: dialer_contact/models.py:94
-msgid "Last Name"
-msgstr "שם משפחה"
-
-#: dialer_contact/models.py:96
-msgid "First Name"
-msgstr "שם פרטי"
-
 #: dialer_contact/models.py:97
-msgid "Email"
+#: templates/frontend/contact/import_contact.html:25
+#, fuzzy
+msgid "email"
 msgstr "דוא\"ל"
 
-#: dialer_contact/models.py:98 user_profile/models.py:61
-msgid "Country"
+#: dialer_contact/models.py:98
+#: templates/admin/dialer_contact/contact/import_contact.html:26
+#: templates/frontend/contact/import_contact.html:28 user_profile/models.py:61
+#, fuzzy
+msgid "country"
 msgstr "מדינה"
 
-#: dialer_contact/models.py:100 user_profile/models.py:58
-msgid "City"
-msgstr "עיר"
+#: dialer_contact/models.py:100
+#: templates/admin/dialer_contact/contact/import_contact.html:27
+#: templates/frontend/contact/import_contact.html:29 user_profile/models.py:58
+msgid "city"
+msgstr ""
 
 #: dialer_contact/models.py:102
 #, fuzzy
-msgid "Additional parameters (JSON)"
+msgid "additional parameters (JSON)"
 msgstr "פרמטרים נוספים"
 
 #: dialer_contact/models.py:103
-msgid "Enter the list of parameters in Json format, e.g. {\"age\": \"32\"}"
+msgid "enter the list of parameters in Json format, e.g. {\"age\": \"32\"}"
 msgstr ""
 
 #: dialer_contact/models.py:105
 #, fuzzy
-msgid "Notes"
+msgid "notes"
 msgstr "הערה"
 
 #: dialer_contact/models.py:112
 #, fuzzy
-msgid "Can see Contact"
+msgid "can see contact"
 msgstr "בחר צור"
 
 #: dialer_contact/views.py:175
@@ -1747,32 +1775,39 @@ msgid "JINGLE"
 msgstr "ומקשקשים"
 
 #: dialer_gateway/models.py:53
-msgid "Gateway name"
+#, fuzzy
+msgid "gateway name"
 msgstr "השער שם"
 
 #: dialer_gateway/models.py:56
-msgid "Gateway Status"
+#, fuzzy
+msgid "gateway status"
 msgstr "שער סטטוס"
 
 #: dialer_gateway/models.py:58
-msgid "Gateway provider notes"
+#, fuzzy
+msgid "gateway provider notes"
 msgstr "ספק שער הערות"
 
 #: dialer_gateway/models.py:59
-msgid "Add prefix"
+#, fuzzy
+msgid "add prefix"
 msgstr "הוספת הקידומת"
 
 #: dialer_gateway/models.py:61
-msgid "Remove prefix"
+#, fuzzy
+msgid "remove prefix"
 msgstr "הסרה של קידומת"
 
 #: dialer_gateway/models.py:63
-msgid "Gateways"
-msgstr "שערים"
+#, fuzzy
+msgid "gateways"
+msgstr "שער"
 
 #: dialer_gateway/models.py:64
+#, fuzzy
 msgid ""
-"Example : \"sofia/gateway/myprovider/\" or 2 for failover \"sofia/gateway/"
+"example : \"sofia/gateway/myprovider/\" or 2 for failover \"sofia/gateway/"
 "myprovider/, user/\", # Gateway string to try dialing separated by comma. "
 "First in list will be tried first"
 msgstr ""
@@ -1781,120 +1816,148 @@ msgstr ""
 "באמצעות פסיק. הראשון ברשימה יישפט 1"
 
 #: dialer_gateway/models.py:67
-msgid "Gateway codecs"
+#, fuzzy
+msgid "gateway codecs"
 msgstr "שער קודקים"
 
 #: dialer_gateway/models.py:68
+#, fuzzy
 msgid ""
-"\"'PCMA,PCMU','PCMA,PCMU'\", # Codec string as needed by FS for each gateway "
+"\"'PCMA,PCMU','PCMA,PCMU'\", # codec string as needed by FS for each gateway "
 "separated by comma"
 msgstr ""
 "\"&#39;PCMA, PCMU\", \"PCMA, PCMU&#39;\", # מחרוזת Codec לפי הצורך על ידי FS "
 "עבור שער זה מופרדים על ידי פסיק"
 
 #: dialer_gateway/models.py:71
-msgid "Gateway timeouts"
+#, fuzzy
+msgid "gateway timeouts"
 msgstr "שער זמנים קצובים"
 
 #: dialer_gateway/models.py:72
+#, fuzzy
 msgid ""
-"\"10,10\", # Seconds to timeout in string for each gateway separated by comma"
+"\"10,10\", # seconds to timeout in string for each gateway separated by comma"
 msgstr "\"10,10\", # שניות כדי פסק הזמן במחרוזת של שער אחד מפריד פסיק"
 
 #: dialer_gateway/models.py:75
-msgid "Gateway retries"
+#, fuzzy
+msgid "gateway retries"
 msgstr "שער נסיונות"
 
 #: dialer_gateway/models.py:76
+#, fuzzy
 msgid ""
-"\"2,1\", # Retry String for Gateways separated by comma, on how many times "
+"\"2,1\", # retry String for Gateways separated by comma, on how many times "
 "each gateway should be retried"
 msgstr ""
 "\"2,1\", # נסה שוב מחרוזת של שערים מופרדים באמצעות פסיק, על כמה פעמים כל שער "
 "צריך יועמדו שנית"
 
 #: dialer_gateway/models.py:79
-msgid "Originate dial string"
+#, fuzzy
+msgid "originate dial string"
 msgstr "מקורם לחייג מחרוזת"
 
 #: dialer_gateway/models.py:80
+#, fuzzy
 msgid ""
-"Add Channels Variables : http://wiki.freeswitch.org/wiki/Channel_Variables, "
+"add channels variables : http://wiki.freeswitch.org/wiki/Channel_Variables, "
 "ie: bridge_early_media=true,hangup_after_bridge=true"
 msgstr ""
 "להוסיף משתנים ערוצים: http://wiki.freeswitch.org/wiki/Channel_Variables, "
 "כלומר: bridge_early_media = נכון, hangup_after_bridge = נכון"
 
 #: dialer_gateway/models.py:83
-msgid "Second used"
+#, fuzzy
+msgid "second used"
 msgstr "השתמשו שנית"
 
 #: dialer_gateway/models.py:90
-msgid "Select Gateway"
+#, fuzzy
+msgid "select gateway"
 msgstr "בחר Gateway"
 
 #: dialer_gateway/models.py:91
-msgid "Add parameter"
+#, fuzzy
+msgid "add parameter"
 msgstr "הוספת פרמטר"
 
-#: dialer_gateway/models.py:94
-msgid "Call count"
+#: dialer_gateway/models.py:94 templates/frontend/dashboard.html:42
+#, fuzzy
+msgid "call count"
 msgstr "קוראים לספור"
 
 #: dialer_gateway/models.py:96
-msgid "Count in use"
+#, fuzzy
+msgid "count in use"
 msgstr "ספירת בשימוש"
 
 #: dialer_gateway/models.py:97
-msgid "Max concurrent calls"
+#, fuzzy
+msgid "max concurrent calls"
 msgstr "מקס שיחות בו זמנית"
 
+#: dialer_gateway/models.py:103
+#, fuzzy
+msgid "dialer gateway"
+msgstr "חייגן Gateway"
+
 #: dialer_gateway/models.py:104
-msgid "Dialer Gateways"
+#, fuzzy
+msgid "dialer gateways"
 msgstr "חייגן שערים"
 
 #: dialer_settings/models.py:39
-msgid "Settings name"
+#, fuzzy
+msgid "settings name"
 msgstr "הגדרות שם"
 
 #: dialer_settings/models.py:42
-msgid "Max frequency"
+#, fuzzy
+msgid "max frequency"
 msgstr "מקס תדר"
 
 #: dialer_settings/models.py:43
-msgid "Maximum calls per minute"
+#: templates/frontend/registration/user_dialer_settings.html:5
+#, fuzzy
+msgid "maximum calls per minute"
 msgstr "שיחות מקסימום לדקה"
 
 #: dialer_settings/models.py:45
-msgid "Max Call Duration"
+#, fuzzy
+msgid "max Call Duration"
 msgstr "מקס משך שיחה"
 
 #: dialer_settings/models.py:46
-msgid "Maximum call duration in seconds (1800 = 30 Minutes)"
+#, fuzzy
+msgid "maximum call duration in seconds (1800 = 30 Minutes)"
 msgstr "משך השיחה המקסימלי בשניות (1800 = 30 דקות)"
 
 #: dialer_settings/models.py:49
-msgid "Max Retries"
+#, fuzzy
+msgid "max Retries"
 msgstr "מקס נסיונות"
 
 #: dialer_settings/models.py:50
-msgid "Maximum retries per user."
+#, fuzzy
+msgid "maximum retries per user."
 msgstr "נסיונות מקסימום לכל משתמש."
 
-#: dialer_settings/models.py:52
-msgid "Timeout on Call"
-msgstr "פסק זמן על שיחות"
-
 #: dialer_settings/models.py:53
-msgid "Maximum call timeout in seconds"
+#, fuzzy
+msgid "maximum call timeout in seconds"
 msgstr "שיחת פסק זמן מקסימלי תוך שניות"
 
 #: dialer_settings/models.py:56
-msgid "Maximum number of campaigns"
+#, fuzzy
+msgid "maximum number of campaigns"
 msgstr "מספר מרבי של מסעות פרסום"
 
 #: dialer_settings/models.py:58
-msgid "Maximum subscribers per campaign"
+#: templates/frontend/registration/user_dialer_settings.html:25
+#, fuzzy
+msgid "maximum subscribers per campaign"
 msgstr "מנויים מקסימום לכל מסע פרסום"
 
 #: dialer_settings/models.py:60
@@ -1902,8 +1965,9 @@ msgid "Blacklist"
 msgstr "לכלול ברשימה השחורה"
 
 #: dialer_settings/models.py:61
+#, fuzzy
 msgid ""
-"Use regular expressions to blacklist phone numbers. For example, '^[2-4]"
+"use regular expressions to blacklist phone numbers. For example, '^[2-4]"
 "[1]+' will prevent all phone numbers starting with 2,3 or 4 and followed by "
 "1 being called."
 msgstr ""
@@ -1915,198 +1979,231 @@ msgid "Whitelist"
 msgstr "הרשימה הלבנה"
 
 #: dialer_settings/models.py:64
-msgid "Use regular expressions to whitelist phone numbers"
+#, fuzzy
+msgid "use regular expressions to whitelist phone numbers"
 msgstr "השתמש בביטויים רגילים למספרי טלפון לרשימה הלבנה"
 
 #: dialer_settings/models.py:73
-msgid "Dialer Setting"
-msgstr "הגדרת חייגן"
+#, fuzzy
+msgid "dialer setting"
+msgstr "הגדרות חייגן"
+
+#: dialer_settings/models.py:74 templates/frontend/campaign/change.html:66
+#: user_profile/models.py:81
+#, fuzzy
+msgid "dialer settings"
+msgstr "הגדרות חייגן"
 
 #: frontend/constants.py:20
-msgid "Last 30 days"
+#, fuzzy
+msgid "last 30 days"
 msgstr "30 יום אחרונים"
 
 #: frontend/constants.py:21
-msgid "Last 7 days"
+#, fuzzy
+msgid "last 7 days"
 msgstr "אחרונים 7 ימים"
 
 #: frontend/constants.py:22
-msgid "Yesterday"
+#, fuzzy
+msgid "yesterday"
 msgstr "אתמול"
 
 #: frontend/constants.py:23
-msgid "Last 24 hours"
+#, fuzzy
+msgid "last 24 hours"
 msgstr "24 השעות האחרונות"
 
 #: frontend/constants.py:24
-msgid "Last 12 hours"
+#, fuzzy
+msgid "last 12 hours"
 msgstr "האחרונות 12 שעות"
 
 #: frontend/constants.py:25
-msgid "Last 6 hours"
+#, fuzzy
+msgid "last 6 hours"
 msgstr "האחרונות 6 שעות"
 
 #: frontend/constants.py:26
-msgid "Last hour"
+#, fuzzy
+msgid "last hour"
 msgstr "בשעה האחרונה"
 
 #: frontend/forms.py:23
-msgid "Username:"
+#, fuzzy
+msgid "username"
 msgstr "שם משתמש:"
 
 #: frontend/forms.py:26
-msgid "Password:"
-msgstr "סיסמה:"
+#: templates/frontend/registration/user_detail_change.html:13
+#, fuzzy
+msgid "password"
+msgstr "סיסמה"
 
 #: frontend/views.py:89
-msgid "Disabled Account"
+#, fuzzy
+msgid "disabled account"
 msgstr "חשבון לא זמין"
 
 #: frontend/views.py:92
-msgid "Invalid Login."
+#, fuzzy
+msgid "invalid login."
 msgstr "כניסה לא חוקית."
 
 #: frontend/views.py:95
-msgid "Enter Valid User Credentials."
+#, fuzzy
+msgid "enter valid user credentials."
 msgstr "הזן אישורים משתמש חוקי."
 
-#: survey/admin.py:23 survey/models.py:119 survey/models.py:271
-#: survey/models.py:333 templates/frontend/survey/survey_view.html:12
+#: survey/admin.py:23 templates/frontend/survey/survey_view.html:12
 msgid "Survey"
 msgstr "סקר"
 
 #: survey/constants.py:20 survey/constants.py:30
 #, fuzzy
-msgid "Play message"
+msgid "play message"
 msgstr "קול יישום"
 
 #: survey/constants.py:21 survey/constants.py:31
 #, fuzzy
-msgid "Multi-choice"
+msgid "multi-choice"
 msgstr "הזן את שאלתך"
 
 #: survey/constants.py:22 survey/constants.py:32
 #, fuzzy
-msgid "Rating question"
+msgid "rating question"
 msgstr "מחק את השאלה"
 
 #: survey/constants.py:23 survey/constants.py:33
 #, fuzzy
-msgid "Capture digits"
+msgid "capture digits"
 msgstr "צור מספר"
 
 #: survey/constants.py:24 survey/constants.py:34
 #, fuzzy
-msgid "Record message"
+msgid "record message"
 msgstr "קבצי אודיו"
 
 #: survey/constants.py:25
-msgid "Call transfer"
-msgstr ""
-
-#: survey/constants.py:26 survey/constants.py:36
 #, fuzzy
-msgid "Hangup"
+msgid "call transfer"
+msgstr "קוראים דו\"ח"
+
+#: survey/constants.py:26 survey/constants.py:36 survey/forms.py:45
+#, fuzzy
+msgid "hangup"
 msgstr "נתק סיבה"
 
 #: survey/constants.py:46
 #, fuzzy
-msgid "Call-date "
+msgid "call-date "
 msgstr "השיחה-ID"
 
-#: survey/constants.py:50
+#: survey/constants.py:50 templates/frontend/survey/survey_report.html:18
 #, fuzzy
-msgid "Survey Result"
-msgstr "סקר דוח"
+msgid "survey result"
+msgstr "סקרים"
 
-#: survey/forms.py:46 survey/templatetags/survey_tags.py:101
-#: templates/frontend/survey/survey_change.html:331
-#, fuzzy
-msgid "Hang up"
-msgstr "נתק סיבה"
-
-#: survey/forms.py:80 survey/forms.py:106
-msgid "Any Other Key"
+#: survey/forms.py:79 survey/forms.py:105
+#: templates/frontend/survey/section_branch_change.html:70
+#: templates/frontend/survey/survey_change.html:310
+#: templates/frontend/survey/survey_view.html:232
+msgid "any other key"
 msgstr ""
 
-#: survey/forms.py:81 survey/forms.py:107
+#: survey/forms.py:80 survey/forms.py:106
+#: templates/frontend/survey/section_branch_change.html:71
+#: templates/frontend/survey/survey_change.html:312
+#: templates/frontend/survey/survey_view.html:234
 #, fuzzy
-msgid "Invalid"
+msgid "invalid"
 msgstr "קבצי אודיו"
+
+#: survey/forms.py:339
+#, fuzzy
+msgid "survey name"
+msgstr "סקר"
 
 #: survey/forms.py:340
 #, fuzzy
-msgid "Survey name"
-msgstr "סקר"
-
-#: survey/forms.py:341
-#, fuzzy
-msgid "Upload File "
+msgid "upload File "
 msgstr "העלאת קובץ CSV"
 
-#: survey/forms.py:343
+#: survey/forms.py:342
 #, fuzzy
-msgid "Browse text file"
+msgid "browse text file"
 msgstr "עיון קובץ CSV"
 
-#: survey/models.py:45 voice_app/models.py:47
+#: survey/models.py:45
 #, fuzzy
-msgid "Text-to-Speech Language"
+msgid "Text-to-Speech language"
 msgstr "בחר את השפה"
 
 #: survey/models.py:67
-msgid "Can see Survey Template"
-msgstr ""
+#, fuzzy
+msgid "can see survey Template"
+msgstr "סקר דוחות"
 
 #: survey/models.py:69
 #, fuzzy
-msgid "Survey template"
+msgid "survey template"
 msgstr "סקרים"
 
 #: survey/models.py:70
 #, fuzzy
-msgid "Survey templates"
+msgid "survey templates"
 msgstr "סקר דוחות"
 
 #: survey/models.py:114
 #, fuzzy
-msgid "Can see Survey"
+msgid "can see survey"
 msgstr "עדכון סקר"
 
 #: survey/models.py:115
 #, fuzzy
-msgid "Can export Survey"
+msgid "can export survey"
 msgstr "עדכון סקר"
 
 #: survey/models.py:116
 #, fuzzy
-msgid "Can import Survey"
+msgid "can import survey"
 msgstr "עדכון סקר"
 
 #: survey/models.py:117
 #, fuzzy
-msgid "Can see Survey Report"
+msgid "can see survey report"
 msgstr "סקר דוחות"
+
+#: survey/models.py:120 templates/frontend/bootstrap_menu.html:78
+#, fuzzy
+msgid "surveys"
+msgstr "סקרים"
 
 #: survey/models.py:165
 #, fuzzy
 msgid "section type"
 msgstr "הודעה על סוג"
 
-#: survey/models.py:168
-msgid "Question"
+#: survey/models.py:168 templates/frontend/survey/section_change.html:108
+#: templates/frontend/survey/survey_campaign_result.html:14
+#: templates/frontend/survey/survey_change.html:143
+#: templates/frontend/survey/survey_report.html:86
+#: templates/frontend/survey/survey_view.html:77
+#, fuzzy
+msgid "question"
 msgstr "שאלה"
 
 #: survey/models.py:169
-msgid "Example : Hotel Service Rating"
+msgid "example : hotel service rating"
 msgstr ""
 
 #: survey/models.py:172
-msgid "Example : Capture digits between 1 to 5, press pound key when done"
+msgid "example : capture digits between 1 to 5, press pound key when done"
 msgstr ""
 
 #: survey/models.py:174
-msgid "Audio File"
+#, fuzzy
+msgid "audio File"
 msgstr "קובץ אודיו"
 
 #: survey/models.py:176
@@ -2115,7 +2212,7 @@ msgid "retries"
 msgstr "מקס נסיונות"
 
 #: survey/models.py:177
-msgid "Retries this section until it's valid"
+msgid "retries this section until it's valid"
 msgstr ""
 
 #: survey/models.py:179
@@ -2127,102 +2224,90 @@ msgid "timeout"
 msgstr "פסק זמן"
 
 #: survey/models.py:180
-msgid "Timeout in seconds to press the key(s)"
+msgid "timeout in seconds to press the key(s)"
 msgstr ""
-
-#: survey/models.py:183 survey/models.py:185 survey/models.py:187
-#: survey/models.py:189 survey/models.py:191 survey/models.py:193
-#: survey/models.py:195 survey/models.py:197 survey/models.py:199
-#: survey/models.py:201 templates/frontend/survey/survey_change.html:316
-#: templates/frontend/survey/survey_view.html:238
-msgid "Key"
-msgstr "מפתח"
 
 #: survey/models.py:205
-msgid "From 1 to X"
-msgstr ""
+#, fuzzy
+msgid "from 1 to X"
+msgstr "מן"
 
 #: survey/models.py:208
-msgid "Check validity"
+msgid "check validity"
 msgstr ""
 
 #: survey/models.py:211
-msgid "Number of digits"
-msgstr ""
+#, fuzzy
+msgid "number of digits"
+msgstr "מספר מרבי של מסעות פרסום"
 
 #: survey/models.py:213
-msgid "Minimum"
+msgid "minimum"
 msgstr ""
 
 #: survey/models.py:215
 #, fuzzy
-msgid "Maximum"
+msgid "maximum"
 msgstr "מקסימום נסיונות"
-
-#: survey/models.py:219 templates/frontend/survey/survey_change.html:280
-#: templates/frontend/survey/survey_view.html:204
-#, fuzzy
-msgid "phone number"
-msgstr "מספר טלפון"
 
 #: survey/models.py:222
 #, fuzzy
-msgid "Survey complete"
+msgid "survey complete"
 msgstr "סקרים"
 
 #: survey/models.py:273 survey/models.py:335
 #, fuzzy
-msgid "Audio Invalid Input"
+msgid "audio invalid input"
 msgstr "קבצי אודיו"
 
 #: survey/models.py:278
 #, fuzzy
-msgid "Section template"
+msgid "section template"
 msgstr "הודעה על סוג"
 
 #: survey/models.py:279
 #, fuzzy
-msgid "Section templates"
+msgid "section templates"
 msgstr "הודעה על סוג"
 
 #: survey/models.py:340
 #, fuzzy
-msgid "Section Template ID"
+msgid "section template ID"
 msgstr "הודעה על סוג"
 
 #: survey/models.py:359
-msgid "Entered value"
+msgid "entered value"
 msgstr ""
 
 #: survey/models.py:382
-msgid "Branching template"
-msgstr ""
+#, fuzzy
+msgid "branching template"
+msgstr "הודעה על סוג"
 
 #: survey/models.py:383
-msgid "Branching templates"
-msgstr ""
-
-#: survey/models.py:412 survey/models.py:413
-#: templates/frontend/survey/survey_view.html:215
-msgid "Branching"
-msgstr ""
+#, fuzzy
+msgid "branching templates"
+msgstr "הודעה על סוג"
 
 #: survey/models.py:449 survey/models.py:475
-msgid "Response"
+#: templates/frontend/survey/survey_campaign_result.html:15
+#, fuzzy
+msgid "response"
 msgstr "תגובה"
 
 #: survey/models.py:451
-msgid "Record File"
-msgstr ""
+#, fuzzy
+msgid "record File"
+msgstr "פרופיל"
 
 #: survey/models.py:454
 #, fuzzy
-msgid "Recording Duration"
+msgid "recording duration"
 msgstr "סקר תצורה"
 
 #: survey/models.py:477
 #, fuzzy
-msgid "Result count"
+msgid "result count"
 msgstr "קוראים לספור"
 
 #: survey/views.py:833
@@ -2231,24 +2316,25 @@ msgid "%(count)s survey(s) are deleted."
 msgstr "(Count) s% בסקר (ים) יימחקו."
 
 #: survey/views.py:864
-msgid "Section is added successfully."
+msgid "section is added successfully."
 msgstr ""
 
 #: survey/views.py:1009
 #, fuzzy
-msgid "Section updated."
+msgid "section updated."
 msgstr "הודעה על סוג"
 
 #: survey/views.py:1167
-msgid "Section is deleted successfully."
+msgid "section is deleted successfully."
 msgstr ""
 
 #: survey/views.py:1202
-msgid "Script updated."
-msgstr ""
+#, fuzzy
+msgid "script updated."
+msgstr "הודעה על סוג"
 
 #: survey/views.py:1307
-msgid "Branching is added successfully."
+msgid "branching is added successfully."
 msgstr ""
 
 #: survey/views.py:1311 survey/views.py:1375
@@ -2257,12 +2343,13 @@ msgid "duplicate record keys with goto."
 msgstr "שכפל קשר!"
 
 #: survey/views.py:1354
-msgid "Branching is deleted successfully."
+msgid "branching is deleted successfully."
 msgstr ""
 
 #: survey/views.py:1370
-msgid "Branching updated."
-msgstr ""
+#, fuzzy
+msgid "branching updated."
+msgstr "הודעה על סוג"
 
 #: survey/views.py:1552
 #, fuzzy
@@ -2273,16 +2360,25 @@ msgstr "שיא לא נמצאו."
 msgid "No campaign attached with survey."
 msgstr "הקמפיין לא מחובר עם הסקר."
 
+#: survey/templatetags/survey_tags.py:101
+#: templates/frontend/survey/survey_change.html:331
+#, fuzzy
+msgid "Hang up"
+msgstr "נתק סיבה"
+
 #: templates/404.html:20
-msgid "This page cannot be found!"
+#, fuzzy
+msgid "this page cannot be found!"
 msgstr "דף זה לא ניתן למצוא!"
 
 #: templates/404.html:23 templates/500.html:23
-msgid "If you need assistance, you may reference this error as"
+#, fuzzy
+msgid "if you need assistance, you may reference this error as"
 msgstr "אם אתם זקוקים לעזרה, אתה עשוי להפנות את השגיאה כמו"
 
 #: templates/500.html:20
-msgid "You've encountered an error!"
+#, fuzzy
+msgid "you've encountered an error!"
 msgstr "נתקלת בשגיאה!"
 
 #: templates/documentation.html:8
@@ -2294,7 +2390,8 @@ msgid "Newfies-Dialer : API Documentation"
 msgstr "Newfies-חייגן: תיעוד API"
 
 #: templates/documentation.html:34
-msgid "Accepted methods"
+#, fuzzy
+msgid "accepted methods"
 msgstr "שיטות מקובלות"
 
 #: templates/admin/base_site.html:4
@@ -2310,18 +2407,12 @@ msgstr "על ידי (filter_title)%s"
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:8
 #: templates/admin/dialer_contact/contact/change_list.html:8
 #: templates/admin/dialer_contact/contact/import_contact.html:6
+#: templates/registration/logged_out.html:4
 msgid "home"
 msgstr ""
 
-#: templates/admin/dialer_cdr/voipcall/change_list.html:14
-#: templates/admin/dialer_cdr/voipcall/voip_report.html:14
-#: templates/admin_tools/dashboard/modules/app_list.html:13
-#, fuzzy
-msgid "call report"
-msgstr "קוראים דו\"ח"
-
-#: templates/admin/dialer_cdr/voipcall/change_list.html:25
-#: templates/admin/dialer_cdr/voipcall/voip_report.html:25
+#: templates/admin/dialer_cdr/voipcall/change_list.html:27
+#: templates/admin/dialer_cdr/voipcall/voip_report.html:27
 #: templates/admin/dialer_contact/contact/change_list.html:38
 #, fuzzy
 msgid "Please correct the error below."
@@ -2329,90 +2420,76 @@ msgid_plural "Please correct the errors below."
 msgstr[0] "נא לתקן את השגיאה הבאה."
 msgstr[1] "נא לתקן את השגיאה הבאה."
 
-#: templates/admin/dialer_cdr/voipcall/change_list.html:33
-#: templates/admin/dialer_cdr/voipcall/voip_report.html:33
+#: templates/admin/dialer_cdr/voipcall/change_list.html:35
+#: templates/admin/dialer_cdr/voipcall/voip_report.html:35
 #, fuzzy
 msgid "search option"
 msgstr "אפשרויות חיפוש"
 
-#: templates/admin/dialer_cdr/voipcall/change_list.html:37
+#: templates/admin/dialer_cdr/voipcall/change_list.html:39
 #: templates/frontend/master.html:106 templates/frontend/master.html.py:111
-#: templates/frontend/report/voipcall_report.html:67
 msgid "Search"
 msgstr "חיפוש"
 
-#: templates/admin/dialer_cdr/voipcall/change_list.html:38
+#: templates/admin/dialer_cdr/voipcall/change_list.html:40
 msgid "Reset"
 msgstr "לאתחל"
 
-#: templates/admin/dialer_cdr/voipcall/change_list.html:49
+#: templates/admin/dialer_cdr/voipcall/change_list.html:51
 #: templates/admin/dialer_contact/contact/change_list.html:28
 #, python-format
 msgid "Add %(name)s"
 msgstr "הוסף%(name)s"
 
-#: templates/admin/dialer_cdr/voipcall/change_list.html:55
+#: templates/admin/dialer_cdr/voipcall/change_list.html:57
 #: templates/frontend/report/voipcall_report.html:96
 #: templates/frontend/survey/survey_report.html:141
-msgid "Export CSV file"
+#, fuzzy
+msgid "export CSV file"
 msgstr "ייצוא קובץ CSV"
 
-#: templates/admin/dialer_cdr/voipcall/change_list.html:60
+#: templates/admin/dialer_cdr/voipcall/change_list.html:62
 #: templates/frontend/report/voipcall_report.html:23
 #, fuzzy
 msgid "daily report"
 msgstr "קוראים דו\"ח"
 
-#: templates/admin/dialer_cdr/voipcall/change_list.html:73
+#: templates/admin/dialer_cdr/voipcall/change_list.html:75
+#: templates/admin/dialer_contact/contact/change_list.html:49
 msgid "filter"
 msgstr ""
 
-#: templates/admin/dialer_cdr/voipcall/voip_report.html:15
-#: templates/admin_tools/dashboard/modules/app_list.html:45
-#: templates/admin_tools/dashboard/modules/model_list.html:26
-#, fuzzy
-msgid "call aggregate report"
-msgstr "קוראים דו\"ח פירוט"
-
-#: templates/admin/dialer_cdr/voipcall/voip_report.html:37
+#: templates/admin/dialer_cdr/voipcall/voip_report.html:39
 #: templates/frontend/contact/list.html:62
 #: templates/frontend/contact/list.html:68
+#: templates/frontend/report/voipcall_report.html:67
 #: templates/frontend/report/voipcall_report.html:72
 #: templates/frontend/survey/survey_report.html:53
 #, fuzzy
 msgid "search"
 msgstr "חיפוש"
 
-#: templates/admin/dialer_cdr/voipcall/voip_report.html:38
+#: templates/admin/dialer_cdr/voipcall/voip_report.html:40
 #: templates/admin/dialer_contact/contact/import_contact.html:64
 #, fuzzy
 msgid "reset"
 msgstr "לאתחל"
 
-#: templates/admin/dialer_cdr/voipcall/voip_report.html:49
+#: templates/admin/dialer_cdr/voipcall/voip_report.html:51
 #: templates/frontend/report/voipcall_report.html:152
 #: templates/frontend/survey/survey_report.html:204
 #, fuzzy
 msgid "call detail report summary"
 msgstr "קוראים דוח סיכום פרטי"
 
-#: templates/admin/dialer_cdr/voipcall/voip_report.html:53
-#: templates/frontend/dashboard.html:43 templates/frontend/dashboard.html:231
-#: templates/frontend/report/voipcall_report.html:157
-#: templates/frontend/survey/survey_campaign_result.html:17
-#: templates/frontend/survey/survey_report.html:209
-#, fuzzy
-msgid "duration"
-msgstr "משך"
-
-#: templates/admin/dialer_cdr/voipcall/voip_report.html:54
+#: templates/admin/dialer_cdr/voipcall/voip_report.html:56
 #: templates/frontend/report/voipcall_report.html:158
 #: templates/frontend/survey/survey_report.html:210
 #, fuzzy
 msgid "graphic"
 msgstr "גרפי"
 
-#: templates/admin/dialer_cdr/voipcall/voip_report.html:55
+#: templates/admin/dialer_cdr/voipcall/voip_report.html:57
 #: templates/frontend/dashboard.html:230
 #: templates/frontend/report/voipcall_report.html:159
 #: templates/frontend/survey/survey_report.html:211
@@ -2420,19 +2497,19 @@ msgstr "גרפי"
 msgid "calls"
 msgstr "שיחות"
 
-#: templates/admin/dialer_cdr/voipcall/voip_report.html:56
+#: templates/admin/dialer_cdr/voipcall/voip_report.html:58
 #: templates/frontend/report/voipcall_report.html:160
 #, fuzzy
 msgid "average connection time"
 msgstr "חיבור ממוצע זמן"
 
-#: templates/admin/dialer_cdr/voipcall/voip_report.html:56
+#: templates/admin/dialer_cdr/voipcall/voip_report.html:58
 #: templates/frontend/report/voipcall_report.html:160
 #: templates/frontend/survey/survey_report.html:212
 msgid "ACT"
 msgstr "מערכה"
 
-#: templates/admin/dialer_cdr/voipcall/voip_report.html:75
+#: templates/admin/dialer_cdr/voipcall/voip_report.html:77
 #: templates/frontend/audio/audio_list.html:90
 #: templates/frontend/campaign/list.html:113
 #: templates/frontend/contact/list.html:159
@@ -2441,6 +2518,7 @@ msgstr "מערכה"
 #: templates/frontend/report/voipcall_report.html:180
 #: templates/frontend/survey/survey_list.html:90
 #: templates/frontend/survey/survey_report.html:107
+#: templates/frontend/survey/survey_report.html:232
 #: templates/frontend/voiceapp/list.html:90
 #, fuzzy
 msgid "total"
@@ -2450,10 +2528,6 @@ msgstr "סך הכל"
 #, fuzzy
 msgid "import contacts"
 msgstr "ייבוא ​​אנשי קשר"
-
-#: templates/admin/dialer_contact/contact/change_list.html:49
-msgid "Filter"
-msgstr ""
 
 #: templates/admin/dialer_contact/contact/import_contact.html:9
 #: templates/frontend/contact/list.html:94
@@ -2467,30 +2541,9 @@ msgstr "יבוא"
 msgid "sample file"
 msgstr "לדוגמה קובץ"
 
-#: templates/admin/dialer_contact/contact/import_contact.html:21
-#: templates/frontend/contact/import_contact.html:23
-msgid "last name"
-msgstr "שם משפחה"
-
-#: templates/admin/dialer_contact/contact/import_contact.html:22
-#: templates/frontend/contact/import_contact.html:24
-msgid "first name"
-msgstr "שם פרטי"
-
 #: templates/admin/dialer_contact/contact/import_contact.html:23
 msgid "email-id"
 msgstr "דוא\"ל-id"
-
-#: templates/admin/dialer_contact/contact/import_contact.html:26
-#: templates/frontend/contact/import_contact.html:28
-#, fuzzy
-msgid "country"
-msgstr "מדינה"
-
-#: templates/admin/dialer_contact/contact/import_contact.html:27
-#: templates/frontend/contact/import_contact.html:29
-msgid "city"
-msgstr ""
 
 #: templates/admin/dialer_contact/contact/import_contact.html:28
 msgid "additional_vars"
@@ -2604,7 +2657,7 @@ msgid "submit bug & feedback"
 msgstr ""
 
 #: templates/frontend/bootstrap_menu.html:24
-#: templates/frontend/dashboard.html:12
+#: templates/frontend/dashboard.html:5 templates/frontend/dashboard.html:12
 #, fuzzy
 msgid "dashboard"
 msgstr "לוח מחוונים"
@@ -2618,11 +2671,6 @@ msgstr "לוח מחוונים"
 #, fuzzy
 msgid "voice campaign"
 msgstr "חייגן קמפיין"
-
-#: templates/frontend/bootstrap_menu.html:46
-#, fuzzy
-msgid "phonebooks"
-msgstr "ספרי טלפונים"
 
 #: templates/frontend/bootstrap_menu.html:58
 #: templates/frontend/audio/audio_list.html:10
@@ -2649,11 +2697,6 @@ msgstr "סקר דוחות"
 #, fuzzy
 msgid "modules"
 msgstr "מודולים"
-
-#: templates/frontend/bootstrap_menu.html:78
-#, fuzzy
-msgid "surveys"
-msgstr "סקרים"
 
 #: templates/frontend/bootstrap_menu.html:81
 #, fuzzy
@@ -2750,10 +2793,6 @@ msgstr "נא לאשר למחוק את ספר הטלפונים עם"
 msgid "contact(s)"
 msgstr "מגע (ים)"
 
-#: templates/frontend/dashboard.html:5
-msgid "Dashboard"
-msgstr "לוח מחוונים"
-
 #: templates/frontend/dashboard.html:12
 #, fuzzy
 msgid "realtime campaign performance monitoring"
@@ -2778,108 +2817,105 @@ msgstr "קמפיין אנשי קשר סך הכל"
 msgid "contacted today"
 msgstr "פנה היום"
 
-#: templates/frontend/dashboard.html:42
-#, fuzzy
-msgid "call count"
-msgstr "קוראים לספור"
-
 #: templates/frontend/dashboard.html:66
 #, fuzzy
-msgid "Jan"
+msgid "jan"
 msgstr "Ganda"
 
 #: templates/frontend/dashboard.html:67
-msgid "Feb"
+msgid "feb"
 msgstr ""
 
 #: templates/frontend/dashboard.html:68
-msgid "Mar"
+msgid "mar"
 msgstr ""
 
 #: templates/frontend/dashboard.html:69
 #, fuzzy
-msgid "Apr"
+msgid "apr"
 msgstr "App"
 
 #: templates/frontend/dashboard.html:70 templates/frontend/dashboard.html:83
 #, fuzzy
-msgid "May"
+msgid "may"
 msgstr "יום שני"
 
 #: templates/frontend/dashboard.html:71
-msgid "Jun"
+msgid "jun"
 msgstr ""
 
 #: templates/frontend/dashboard.html:72
-msgid "Jul"
+msgid "jul"
 msgstr ""
 
 #: templates/frontend/dashboard.html:73
-msgid "Aug"
+msgid "aug"
 msgstr ""
 
 #: templates/frontend/dashboard.html:74
-msgid "Sep"
+msgid "sep"
 msgstr ""
 
 #: templates/frontend/dashboard.html:75
-msgid "Oct"
-msgstr ""
+#, fuzzy
+msgid "oct"
+msgstr "ליצור קשר"
 
 #: templates/frontend/dashboard.html:76
 #, fuzzy
-msgid "Nov"
+msgid "nov"
 msgstr "הערה"
 
 #: templates/frontend/dashboard.html:77
-msgid "Dec"
+msgid "dec"
 msgstr ""
 
 #: templates/frontend/dashboard.html:79
-msgid "January"
+msgid "january"
 msgstr ""
 
 #: templates/frontend/dashboard.html:80
-msgid "February"
+msgid "february"
 msgstr ""
 
 #: templates/frontend/dashboard.html:81
 #, fuzzy
-msgid "March"
+msgid "march"
 msgstr "חיפוש"
 
 #: templates/frontend/dashboard.html:82
-msgid "April"
+msgid "april"
 msgstr ""
 
 #: templates/frontend/dashboard.html:84
-msgid "June"
+msgid "june"
 msgstr ""
 
 #: templates/frontend/dashboard.html:85
-msgid "July"
+msgid "july"
 msgstr ""
 
 #: templates/frontend/dashboard.html:86
-msgid "August"
+msgid "august"
 msgstr ""
 
 #: templates/frontend/dashboard.html:87
-msgid "September"
+msgid "september"
 msgstr ""
 
 #: templates/frontend/dashboard.html:88
-msgid "October"
+msgid "october"
 msgstr ""
 
 #: templates/frontend/dashboard.html:89
 #, fuzzy
-msgid "November"
+msgid "november"
 msgstr "מספר טלפון"
 
 #: templates/frontend/dashboard.html:90
-msgid "December"
-msgstr ""
+#, fuzzy
+msgid "december"
+msgstr "מספר טלפון"
 
 #: templates/frontend/dashboard.html:232
 #, fuzzy
@@ -2963,7 +2999,8 @@ msgid "View Licensing details"
 msgstr ""
 
 #: templates/frontend/master.html:24
-msgid "Customer Interface"
+#, fuzzy
+msgid "customer interface"
 msgstr "לקוחות ממשק"
 
 #: templates/frontend/master.html:114 templates/frontend/master.html.py:119
@@ -3134,11 +3171,6 @@ msgstr "להגדיר את הפרמטרים של מסע הפרסום"
 msgid "general settings"
 msgstr "הגדרות כלליות"
 
-#: templates/frontend/campaign/change.html:66
-#, fuzzy
-msgid "dialer settings"
-msgstr "הגדרות חייגן"
-
 #: templates/frontend/campaign/change.html:89
 #, fuzzy
 msgid "dialer completion settings"
@@ -3155,7 +3187,8 @@ msgid "campaign schedule"
 msgstr "הקמפיין לוח הזמנים"
 
 #: templates/frontend/campaign/change.html:185
-msgid "Week Days"
+#, fuzzy
+msgid "week days"
 msgstr "בשבוע ימים"
 
 #: templates/frontend/campaign/change.html:207
@@ -3172,18 +3205,6 @@ msgstr "למחוק"
 msgid "list, add and edit campaigns"
 msgstr "רשימה, להוסיף ולערוך את מסעות הפרסום"
 
-#: templates/frontend/campaign/list.html:42
-#: templates/frontend/contact/list.html:89
-#: templates/frontend/contact/list.html:120
-#: templates/frontend/phonebook/list.html:28
-#: templates/frontend/report/voipcall_report.html:91
-#: templates/frontend/survey/survey_list.html:24
-#: templates/frontend/survey/survey_list.html:55
-#: templates/frontend/voiceapp/list.html:27
-#: templates/frontend/voiceapp/list.html:56
-msgid "Action"
-msgstr "פעולה"
-
 #: templates/frontend/contact/change.html:20
 #, fuzzy
 msgid "add contact details"
@@ -3191,23 +3212,8 @@ msgstr "הוספת פרטי אנשי קשר"
 
 #: templates/frontend/contact/import_contact.html:13
 #, fuzzy
-msgid "import contact"
-msgstr "ייבוא ​​צור קשר"
-
-#: templates/frontend/contact/import_contact.html:13
-#, fuzzy
 msgid "import list of contact by uploading CSV files"
 msgstr "ייבוא ​​רשימת אנשי הקשר על ידי העלאת קבצים-CSV"
-
-#: templates/frontend/contact/import_contact.html:22
-#, fuzzy
-msgid "contact number"
-msgstr "צור מספר"
-
-#: templates/frontend/contact/import_contact.html:25
-#, fuzzy
-msgid "email"
-msgstr "דוא\"ל"
 
 #: templates/frontend/contact/import_contact.html:30
 #, fuzzy
@@ -3229,6 +3235,13 @@ msgstr "מנוי (ים) יובאו"
 #, fuzzy
 msgid "list, add and edit contacts"
 msgstr "רשימה, להוסיף ולערוך קשרים"
+
+#: templates/frontend/contact/list.html:89
+#: templates/frontend/contact/list.html:120
+#: templates/frontend/phonebook/list.html:28
+#: templates/frontend/report/voipcall_report.html:91
+msgid "Action"
+msgstr "פעולה"
 
 #: templates/frontend/contact/list.html:142
 #, fuzzy
@@ -3263,11 +3276,12 @@ msgstr "איפוס סיסמה המלא"
 
 #: templates/frontend/registration/password_reset_complete.html:12
 #, fuzzy
-msgid "Your password has been set. You may go ahead and log in now."
+msgid "your password has been set. you may go ahead and log in now."
 msgstr "הסיסמה שלך נקבע. אולי אתם מוזמנים להיכנס עכשיו."
 
 #: templates/frontend/registration/password_reset_complete.html:15
-msgid "Log in"
+#, fuzzy
+msgid "log in"
 msgstr "התחבר"
 
 #: templates/frontend/registration/password_reset_confirm.html:4
@@ -3282,7 +3296,8 @@ msgid "enter new password"
 msgstr "הזן את הסיסמה החדשה"
 
 #: templates/frontend/registration/password_reset_confirm.html:13
-msgid "Please enter your new password twice for verification."
+#, fuzzy
+msgid "please enter your new password twice for verification."
 msgstr "אנא הכנס את הסיסמה החדשה פעמיים לשם אימות."
 
 #: templates/frontend/registration/password_reset_confirm.html:25
@@ -3296,9 +3311,10 @@ msgid "password reset unsuccessful"
 msgstr "איפוס הסיסמה לא מוצלח"
 
 #: templates/frontend/registration/password_reset_confirm.html:36
+#, fuzzy
 msgid ""
-"The password reset link was invalid, possibly because it has already been "
-"used.  Please request a new password reset."
+"the password reset link was invalid, possibly because it has already been "
+"used. please request a new password reset."
 msgstr ""
 "הקישור איפוס סיסמה לא תקין, אולי כי זה כבר נעשה שימוש. נא לבקש איפוס סיסמה "
 "חדש."
@@ -3310,9 +3326,10 @@ msgid "password reset successful"
 msgstr "איפוס הסיסמה מוצלחת"
 
 #: templates/frontend/registration/password_reset_done.html:10
+#, fuzzy
 msgid ""
-"We've e-mailed you instructions for setting your password to the e-mail "
-"address you submitted. You should be receiving it shortly."
+"we've e-mailed you instructions for setting your password to the e-mail "
+"address you submitted. you should be receiving it shortly."
 msgstr ""
 "יש לנו בדואר אלקטרוני את הוראות לקביעת הסיסמה אל כתובת הדואר האלקטרוני "
 "ששלחת. אתה צריך להתקבל בקרוב."
@@ -3327,11 +3344,13 @@ msgstr ""
 "(SITE_NAME) s."
 
 #: templates/frontend/registration/password_reset_email.html:7
-msgid "Please go to the following page and choose a new password:"
+#, fuzzy
+msgid "please go to the following page and choose a new password:"
 msgstr "נא לעבור לדף הבא ולבחור סיסמה חדשה:"
 
 #: templates/frontend/registration/password_reset_email.html:11
-msgid "Your username, in case you've forgotten:"
+#, fuzzy
+msgid "your username, in case you've forgotten:"
 msgstr "שם המשתמש שלך, במקרה ששכחת:"
 
 #: templates/frontend/registration/password_reset_email.html:13
@@ -3340,18 +3359,21 @@ msgid "The %(site_name)s team"
 msgstr "(SITE_NAME)% צוות"
 
 #: templates/frontend/registration/password_reset_form.html:10
-msgid "Forgotten your password?"
+#, fuzzy
+msgid "forgotten your password?"
 msgstr "שכחת את הסיסמה?"
 
 #: templates/frontend/registration/password_reset_form.html:11
+#, fuzzy
 msgid ""
-"Enter your e-mail address below, and we'll e-mail instructions for setting a "
+"enter your e-mail address below, and we'll e-mail instructions for setting a "
 "new one."
 msgstr ""
 "הכנס את כתובת הדואר האלקטרוני שלך, ואנו דואר אלקטרוני הוראות לקביעת חדש."
 
 #: templates/frontend/registration/password_reset_form.html:20
-msgid "Reset my password"
+#, fuzzy
+msgid "reset my password"
 msgstr "לאפס את הסיסמה שלי"
 
 #: templates/frontend/registration/user_account.html:51
@@ -3379,11 +3401,6 @@ msgstr "סיסמה, הודעות, מגבלות חשבון בדוק מספר"
 msgid "account"
 msgstr "חשבון"
 
-#: templates/frontend/registration/user_detail_change.html:13
-#, fuzzy
-msgid "password"
-msgstr "סיסמה"
-
 #: templates/frontend/registration/user_detail_change.html:15
 #, fuzzy
 msgid "number check"
@@ -3393,11 +3410,6 @@ msgstr "מספר צ&#39;ק"
 #, fuzzy
 msgid "select language"
 msgstr "בחר את השפה"
-
-#: templates/frontend/registration/user_dialer_settings.html:5
-#, fuzzy
-msgid "maximum calls per minute"
-msgstr "שיחות מקסימום לדקה"
 
 #: templates/frontend/registration/user_dialer_settings.html:9
 #, fuzzy
@@ -3413,11 +3425,6 @@ msgstr "מקסימום נסיונות"
 #, fuzzy
 msgid "maximum campaigns"
 msgstr "מקסימום קמפיינים"
-
-#: templates/frontend/registration/user_dialer_settings.html:25
-#, fuzzy
-msgid "maximum subscribers per campaign"
-msgstr "מנויים מקסימום לכל מסע פרסום"
 
 #: templates/frontend/registration/user_dialer_settings.html:29
 #, fuzzy
@@ -3439,22 +3446,13 @@ msgstr "שיחה דוחות"
 msgid "detailed call data"
 msgstr "שיחות נתונים מפורטים"
 
-#: templates/frontend/report/voipcall_report.html:22
-#, fuzzy
-msgid "VoIP calls"
-msgstr "שיחות ה-VoIP"
-
 #: templates/frontend/report/voipcall_report.html:80
 #, fuzzy
 msgid "voip call detail records"
 msgstr "קוראים דו\"ח פירוט"
 
-#: templates/frontend/report/voipcall_report.html:86
-#: templates/frontend/survey/survey_report.html:131
-msgid "to"
-msgstr "אל"
-
 #: templates/frontend/survey/import_survey.html:40
+#: templates/frontend/survey/survey_list.html:30
 #: templates/frontend/survey/survey_list.html:31
 #, fuzzy
 msgid "import survey"
@@ -3465,31 +3463,9 @@ msgstr "עדכון בסקר"
 msgid "branch to section"
 msgstr "הוסף תגובה"
 
-#: templates/frontend/survey/section_branch_change.html:70
-#: templates/frontend/survey/survey_change.html:310
-#: templates/frontend/survey/survey_view.html:232
-msgid "any other key"
-msgstr ""
-
-#: templates/frontend/survey/section_branch_change.html:71
-#: templates/frontend/survey/survey_change.html:312
-#: templates/frontend/survey/survey_view.html:234
-#, fuzzy
-msgid "invalid"
-msgstr "קבצי אודיו"
-
 #: templates/frontend/survey/section_branch_change.html:105
-msgid "No branching on hangup, this will terminate the call"
+msgid "no branching on hangup, this will terminate the call"
 msgstr ""
-
-#: templates/frontend/survey/section_change.html:108
-#: templates/frontend/survey/survey_campaign_result.html:14
-#: templates/frontend/survey/survey_change.html:143
-#: templates/frontend/survey/survey_report.html:86
-#: templates/frontend/survey/survey_view.html:77
-#, fuzzy
-msgid "question"
-msgstr "שאלה"
 
 #: templates/frontend/survey/section_change.html:110
 #: templates/frontend/survey/survey_change.html:145
@@ -3506,17 +3482,17 @@ msgstr ""
 
 #: templates/frontend/survey/section_change.html:133
 #, fuzzy
-msgid "Information"
+msgid "information"
 msgstr "לפרטים נוספים"
 
 #: templates/frontend/survey/section_change.html:145
 msgid ""
-"Configure valid multi-choice options. The value of each field will be shown "
+"configure valid multi-choice options. The value of each field will be shown "
 "in the survey report"
 msgstr ""
 
 #: templates/frontend/survey/section_delete_confirmation.html:9
-msgid "You are about to delete"
+msgid "you are about to delete"
 msgstr ""
 
 #: templates/frontend/survey/section_delete_confirmation.html:9
@@ -3524,7 +3500,7 @@ msgid "this procedure is irreversible."
 msgstr ""
 
 #: templates/frontend/survey/section_delete_confirmation.html:10
-msgid "Do you want to proceed?"
+msgid "do you want to proceed?"
 msgstr ""
 
 #: templates/frontend/survey/section_delete_confirmation.html:14
@@ -3537,14 +3513,10 @@ msgid "section script"
 msgstr "הודעה על סוג"
 
 #: templates/frontend/survey/survey_campaign_result.html:7
+#: templates/frontend/survey/survey_report.html:164
 #, fuzzy
 msgid "result"
 msgstr "סקר דוח"
-
-#: templates/frontend/survey/survey_campaign_result.html:15
-#, fuzzy
-msgid "response"
-msgstr "תגובה"
 
 #: templates/frontend/survey/survey_campaign_result.html:16
 #, fuzzy
@@ -3568,11 +3540,11 @@ msgid "script"
 msgstr ""
 
 #: templates/frontend/survey/survey_change.html:165
-msgid "Edit"
+msgid "edit"
 msgstr ""
 
 #: templates/frontend/survey/survey_change.html:170
-msgid "Play"
+msgid "play"
 msgstr ""
 
 #: templates/frontend/survey/survey_change.html:185
@@ -3581,14 +3553,13 @@ msgid "key associations"
 msgstr ""
 
 #: templates/frontend/survey/survey_change.html:263
-#: templates/frontend/survey/survey_view.html:187
 #, fuzzy
 msgid "From 1 to"
 msgstr "מן"
 
 #: templates/frontend/survey/survey_change.html:271
 #: templates/frontend/survey/survey_view.html:195
-msgid "Number is between"
+msgid "number is between"
 msgstr ""
 
 #: templates/frontend/survey/survey_change.html:271
@@ -3606,6 +3577,11 @@ msgstr ""
 #: templates/frontend/survey/survey_view.html:222
 msgid "goto"
 msgstr ""
+
+#: templates/frontend/survey/survey_change.html:316
+#: templates/frontend/survey/survey_view.html:238
+msgid "Key"
+msgstr "מפתח"
 
 #: templates/frontend/survey/survey_change.html:319
 #: templates/frontend/survey/survey_view.html:241
@@ -3644,11 +3620,6 @@ msgstr ""
 msgid "list, add and edit surveys"
 msgstr "רשימה, להוסיף ולערוך סקרים"
 
-#: templates/frontend/survey/survey_list.html:30
-#, fuzzy
-msgid "Import survey"
-msgstr "עדכון בסקר"
-
 #: templates/frontend/survey/survey_list.html:76
 #, fuzzy
 msgid "export survey"
@@ -3664,23 +3635,18 @@ msgstr "סקר דוח"
 msgid "monitor survey reports"
 msgstr "מעקב אחר תוצאות הסקר"
 
-#: templates/frontend/survey/survey_report.html:18
-#, fuzzy
-msgid "Survey result"
-msgstr "סקרים"
-
 #: templates/frontend/survey/survey_report.html:19
 #, fuzzy
-msgid "Survey calls"
+msgid "survey calls"
 msgstr "סקרים"
 
 #: templates/frontend/survey/survey_report.html:20
 #, fuzzy
-msgid "Survey daily call report"
+msgid "survey daily call report"
 msgstr "סקר דוח"
 
 #: templates/frontend/survey/survey_report.html:65
-msgid "Total contact that completed Call / Survey"
+msgid "total contact that completed Call / Survey"
 msgstr ""
 
 #: templates/frontend/survey/survey_report.html:119
@@ -3693,11 +3659,6 @@ msgstr "שיא לא נמצאו."
 #, fuzzy
 msgid "survey call detail records"
 msgstr "קוראים דו\"ח פירוט"
-
-#: templates/frontend/survey/survey_report.html:164
-#, fuzzy
-msgid "Result"
-msgstr "סקר דוח"
 
 #: templates/frontend/survey/survey_report.html:165
 #, fuzzy
@@ -3712,9 +3673,10 @@ msgstr ""
 msgid "Average Connection Time"
 msgstr "חיבור ממוצע זמן"
 
-#: templates/frontend/survey/survey_report.html:232
-msgid "Total"
-msgstr "סך הכל"
+#: templates/frontend/survey/survey_view.html:187
+#, fuzzy
+msgid "from 1 to"
+msgstr "מן"
 
 #: templates/frontend/survey/survey_view.html:253
 #, fuzzy
@@ -3726,7 +3688,7 @@ msgid "Update"
 msgstr "לעדכן"
 
 #: templates/frontend/voiceapp/change.html:11
-#: templates/frontend/voiceapp/list.html:9
+#: templates/frontend/voiceapp/list.html:9 voice_app/models.py:139
 #, fuzzy
 msgid "voice applications"
 msgstr "קול יישומים"
@@ -3751,45 +3713,48 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#: templates/registration/logged_out.html:4
-msgid "Home"
-msgstr "בית"
-
 #: templates/registration/logged_out.html:8
 #, fuzzy
-msgid "Thank you for using Newfies-Dialer."
+msgid "thank you for using Newfies-Dialer."
 msgstr "תודה על השימוש Newfies."
 
 #: templates/registration/logged_out.html:10
-msgid "Log in again"
+#, fuzzy
+msgid "log in again"
 msgstr "להתחבר שוב"
 
-#: user_profile/constants.py:20
+#: user_profile/constants.py:20 user_profile/management.py:27
+#: user_profile/management.py:28
 #, fuzzy
 msgid "campaign started"
 msgstr "הקמפיין התחיל"
 
-#: user_profile/constants.py:21
+#: user_profile/constants.py:21 user_profile/management.py:32
+#: user_profile/management.py:33
 #, fuzzy
 msgid "campaign paused"
 msgstr "מסע פרסום מושהה"
 
-#: user_profile/constants.py:22
+#: user_profile/constants.py:22 user_profile/management.py:37
+#: user_profile/management.py:38
 #, fuzzy
 msgid "campaign aborted"
 msgstr "בוטל מבצע"
 
-#: user_profile/constants.py:23
+#: user_profile/constants.py:23 user_profile/management.py:42
+#: user_profile/management.py:43
 #, fuzzy
 msgid "campaign stopped"
 msgstr "הקמפיין עצר"
 
-#: user_profile/constants.py:24
+#: user_profile/constants.py:24 user_profile/management.py:47
+#: user_profile/management.py:48
 #, fuzzy
 msgid "campaign limit reached"
 msgstr "הקמפיין הגיע לגבול"
 
-#: user_profile/constants.py:25
+#: user_profile/constants.py:25 user_profile/management.py:52
+#: user_profile/management.py:53
 #, fuzzy
 msgid "contact limit reached"
 msgstr "צור הגבול הגיעו"
@@ -3811,121 +3776,113 @@ msgstr "מספר טלפון"
 msgid "Check number is authorised to call"
 msgstr "מספר צ&#39;ק רשאי להתקשר"
 
-#: user_profile/management.py:27 user_profile/management.py:28
-msgid "Campaign started"
-msgstr "הקמפיין התחיל"
-
-#: user_profile/management.py:32 user_profile/management.py:33
-msgid "Campaign paused"
-msgstr "מסע פרסום מושהה"
-
-#: user_profile/management.py:37 user_profile/management.py:38
-msgid "Campaign aborted"
-msgstr "בוטל מבצע"
-
-#: user_profile/management.py:42 user_profile/management.py:43
-msgid "Campaign stopped"
-msgstr "הקמפיין עצר"
-
-#: user_profile/management.py:47 user_profile/management.py:48
-msgid "Campaign limit reached"
-msgstr "הקמפיין הגיע לגבול"
-
-#: user_profile/management.py:52 user_profile/management.py:53
-msgid "Contact limit reached"
-msgstr "צור הגבול הגיעו"
-
-#: user_profile/management.py:57
-msgid "Dialer setting configuration"
-msgstr "חייגן בתצורת הגדרה"
-
 #: user_profile/management.py:58
-msgid "The user needs to be mapped with dialer settings by the administrator"
+#, fuzzy
+msgid "the user needs to be mapped with dialer settings by the administrator"
 msgstr "המשתמש צריך להיות ממופה עם הגדרות חייגן ידי מנהל"
 
 #: user_profile/management.py:62 user_profile/management.py:63
-msgid "Call request not found"
+#, fuzzy
+msgid "call request not found"
 msgstr "התקשר לבקש לא נמצא"
 
 #: user_profile/models.py:56
-msgid "Address"
+#, fuzzy
+msgid "address"
 msgstr "כתובת"
 
 #: user_profile/models.py:60
-msgid "State"
+#, fuzzy
+msgid "state"
 msgstr "מדינה"
 
 #: user_profile/models.py:63
-msgid "Zip code"
+#, fuzzy
+msgid "zip code"
 msgstr "מיקוד"
 
 #: user_profile/models.py:67
-msgid "Fax Number"
+#, fuzzy
+msgid "fax Number"
 msgstr "מספר פקס"
 
 #: user_profile/models.py:69
-msgid "Company name"
+#, fuzzy
+msgid "company name"
 msgstr "שם החברה"
 
 #: user_profile/models.py:72
-msgid "Company website"
+#, fuzzy
+msgid "company website"
 msgstr "אתר החברה"
 
 #: user_profile/models.py:73
-msgid "Language"
+#, fuzzy
+msgid "language"
 msgstr "שפה"
 
 #: user_profile/models.py:75
-msgid "Note"
-msgstr "הערה"
-
-#: user_profile/models.py:82
-msgid "Dialer settings"
-msgstr "הגדרות חייגן"
-
-#: user_profile/models.py:88
-msgid "Can see API-Explorer"
+msgid "note"
 msgstr ""
 
-#: user_profile/models.py:91 user_profile/models.py:92
-msgid "User Profile"
+#: user_profile/models.py:87
+msgid "can see API-Explorer"
+msgstr ""
+
+#: user_profile/models.py:90
+#, fuzzy
+msgid "user profile"
 msgstr "פרופיל"
 
-#: user_profile/models.py:100
-msgid "Customer"
+#: user_profile/models.py:91
+#, fuzzy
+msgid "user profiles"
+msgstr "פרופיל"
+
+#: user_profile/models.py:99
+#, fuzzy
+msgid "customer"
 msgstr "לקוח"
 
-#: user_profile/models.py:101
-msgid "Customers"
+#: user_profile/models.py:100
+#, fuzzy
+msgid "customers"
 msgstr "לקוחות"
 
-#: user_profile/models.py:109
-msgid "Admin"
+#: user_profile/models.py:108
+#, fuzzy
+msgid "admin"
 msgstr "Admin"
 
-#: user_profile/models.py:110
-msgid "Admins"
+#: user_profile/models.py:109
+#, fuzzy
+msgid "admins"
 msgstr "מנהלים"
 
 #: user_profile/views.py:96
-msgid "Detail has been changed."
+#, fuzzy
+msgid "detail has been changed."
 msgstr "פרט השתנה."
 
 #: user_profile/views.py:98 user_profile/views.py:108
 #: user_profile/views.py:119
-msgid "Please correct the errors below."
+#, fuzzy
+msgid "please correct the errors below."
 msgstr "אנא תקן את השגיאות הבאות."
 
 #: user_profile/views.py:104
-msgid "This phone number is not authorized."
+#, fuzzy
+msgid "this phone number is not authorized."
 msgstr "מספר הטלפון הזה אינו מורשה."
 
 #: user_profile/views.py:106
-msgid "This phone number is authorized."
+#, fuzzy
+msgid "this phone number is authorized."
 msgstr "מספר הטלפון הזה מוסמך."
 
 #: user_profile/views.py:117
-msgid "Your password has been changed."
+#, fuzzy
+msgid "your password has been changed."
 msgstr "סיסמתך שונתה."
 
 #: voice_app/constants.py:20
@@ -3945,20 +3902,27 @@ msgid "SPEAK"
 msgstr ""
 
 #: voice_app/constants.py:31
-msgid "Data"
-msgstr "נתונים"
+msgid "data"
+msgstr ""
 
 #: voice_app/constants.py:32
 #, fuzzy
 msgid "TTS Language"
 msgstr "שפה"
 
+#: voice_app/models.py:47
+#, fuzzy
+msgid "Text-to-Speech Language"
+msgstr "בחר את השפה"
+
 #: voice_app/models.py:50
-msgid "Voice Application Description"
+#, fuzzy
+msgid "voice application description"
 msgstr "יישום קול תיאור"
 
 #: voice_app/models.py:55
-msgid "Gateway used if we redirect the call"
+#, fuzzy
+msgid "gateway used if we redirect the call"
 msgstr "השער משמש אם להפנות את השיחה"
 
 #: voice_app/models.py:57
@@ -3969,33 +3933,264 @@ msgstr ""
 "<br/> - כנס: חדר הישיבות שם או מספר <br/> - Playaudio: כתובת קובץ אודיו <br/"
 "> - דבר: טקסט לדבר באמצעות TTS"
 
+#: voice_app/models.py:64
+msgid "Date"
+msgstr "תאריך"
+
 #: voice_app/models.py:85
-msgid "Can see Voiceapp Template"
-msgstr ""
+#, fuzzy
+msgid "can see voiceapp template"
+msgstr "בחר מסע פרסום"
 
 #: voice_app/models.py:87
 #, fuzzy
-msgid "Voice Application Template"
+msgid "voice application template"
 msgstr "קול יישום"
 
 #: voice_app/models.py:88
 #, fuzzy
-msgid "Voice Applications Templates"
+msgid "voice application templates"
 msgstr "קול יישומים"
 
 #: voice_app/models.py:135
 #, fuzzy
-msgid "Can see Voice App"
-msgstr "עדכון קול App"
-
-#: voice_app/models.py:139
-msgid "Voice Applications"
-msgstr "קול יישומים"
+msgid "can see voice application"
+msgstr "קביעת התצורה של יישום קול"
 
 #: voice_app/views.py:144
 #, python-format
 msgid "%(count)s voiceapp(s) are deleted."
 msgstr "% (Count) s voiceapp (ים) יימחקו."
+
+#~ msgid "User"
+#~ msgstr "משתמש"
+
+#, fuzzy
+#~ msgid "Call Aggregate Report"
+#~ msgstr "קוראים דו\"ח פירוט"
+
+#~ msgid "Abort"
+#~ msgstr "להפיל"
+
+#~ msgid "Pause"
+#~ msgstr "הפסקה"
+
+#, fuzzy
+#~ msgid "In Progress"
+#~ msgstr "התקדמות"
+
+#~ msgid "Start date"
+#~ msgstr "תאריך התחלה"
+
+#~ msgid "Caller ID"
+#~ msgstr "שיחה מזוהה"
+
+#~ msgid "Gateway"
+#~ msgstr "שער"
+
+#~ msgid "Duration"
+#~ msgstr "משך"
+
+#~ msgid "Bill Sec"
+#~ msgstr "ביל שניות"
+
+#~ msgid "Campaign"
+#~ msgstr "מסע"
+
+#~ msgid "Status"
+#~ msgstr "מצב"
+
+#~ msgid "Phone number"
+#~ msgstr "מספר טלפון"
+
+#~ msgid "Time out"
+#~ msgstr "פסק זמן"
+
+#~ msgid "Type"
+#~ msgstr "סוג"
+
+#~ msgid "Application"
+#~ msgstr "בקשה"
+
+#~ msgid "Call Request"
+#~ msgstr "בקשה לשיחה"
+
+#~ msgid "VoIP Call"
+#~ msgstr "שיחות ה-VoIP"
+
+#, fuzzy
+#~ msgid "VoIP Calls"
+#~ msgstr "שיחות ה-VoIP"
+
+#~ msgid "Import Contact"
+#~ msgstr "ייבוא ​​צור קשר"
+
+#, fuzzy
+#~ msgid "Active"
+#~ msgstr "פעיל"
+
+#~ msgid "All"
+#~ msgstr "כל"
+
+#~ msgid "Name"
+#~ msgstr "שם"
+
+#~ msgid "Description"
+#~ msgstr "תאור"
+
+#~ msgid "Contacts"
+#~ msgstr "אנשי קשר"
+
+#~ msgid "Phonebook"
+#~ msgstr "ספר טלפונים"
+
+#~ msgid "Contact"
+#~ msgstr "ליצור קשר"
+
+#~ msgid "Last name"
+#~ msgstr "שם משפחה"
+
+#~ msgid "First name"
+#~ msgstr "שם פרטי"
+
+#~ msgid "From"
+#~ msgstr "מן"
+
+#~ msgid "To"
+#~ msgstr "אל"
+
+#~ msgid "Contact Number:"
+#~ msgstr "צור מספר:"
+
+#~ msgid "Contact Name:"
+#~ msgstr "שם איש קשר:"
+
+#~ msgid "Phonebook:"
+#~ msgstr "ספר טלפונים:"
+
+#~ msgid "Status:"
+#~ msgstr "סטטוס:"
+
+#~ msgid "Phonebooks"
+#~ msgstr "ספרי טלפונים"
+
+#~ msgid "Contact Number"
+#~ msgstr "צור מספר"
+
+#~ msgid "Last Name"
+#~ msgstr "שם משפחה"
+
+#~ msgid "First Name"
+#~ msgstr "שם פרטי"
+
+#~ msgid "Email"
+#~ msgstr "דוא\"ל"
+
+#~ msgid "Country"
+#~ msgstr "מדינה"
+
+#~ msgid "City"
+#~ msgstr "עיר"
+
+#~ msgid "Gateways"
+#~ msgstr "שערים"
+
+#~ msgid "Call count"
+#~ msgstr "קוראים לספור"
+
+#~ msgid "Maximum calls per minute"
+#~ msgstr "שיחות מקסימום לדקה"
+
+#~ msgid "Timeout on Call"
+#~ msgstr "פסק זמן על שיחות"
+
+#~ msgid "Maximum subscribers per campaign"
+#~ msgstr "מנויים מקסימום לכל מסע פרסום"
+
+#~ msgid "Dialer Setting"
+#~ msgstr "הגדרת חייגן"
+
+#~ msgid "Password:"
+#~ msgstr "סיסמה:"
+
+#, fuzzy
+#~ msgid "Hangup"
+#~ msgstr "נתק סיבה"
+
+#, fuzzy
+#~ msgid "Survey Result"
+#~ msgstr "סקר דוח"
+
+#, fuzzy
+#~ msgid "Invalid"
+#~ msgstr "קבצי אודיו"
+
+#~ msgid "Question"
+#~ msgstr "שאלה"
+
+#~ msgid "Response"
+#~ msgstr "תגובה"
+
+#~ msgid "Dashboard"
+#~ msgstr "לוח מחוונים"
+
+#, fuzzy
+#~ msgid "Apr"
+#~ msgstr "App"
+
+#, fuzzy
+#~ msgid "Import survey"
+#~ msgstr "עדכון בסקר"
+
+#, fuzzy
+#~ msgid "Result"
+#~ msgstr "סקר דוח"
+
+#~ msgid "Total"
+#~ msgstr "סך הכל"
+
+#~ msgid "Home"
+#~ msgstr "בית"
+
+#~ msgid "Campaign started"
+#~ msgstr "הקמפיין התחיל"
+
+#~ msgid "Campaign paused"
+#~ msgstr "מסע פרסום מושהה"
+
+#~ msgid "Campaign aborted"
+#~ msgstr "בוטל מבצע"
+
+#~ msgid "Campaign stopped"
+#~ msgstr "הקמפיין עצר"
+
+#~ msgid "Campaign limit reached"
+#~ msgstr "הקמפיין הגיע לגבול"
+
+#~ msgid "Contact limit reached"
+#~ msgstr "צור הגבול הגיעו"
+
+#~ msgid "Dialer setting configuration"
+#~ msgstr "חייגן בתצורת הגדרה"
+
+#~ msgid "Call request not found"
+#~ msgstr "התקשר לבקש לא נמצא"
+
+#~ msgid "Note"
+#~ msgstr "הערה"
+
+#~ msgid "Dialer settings"
+#~ msgstr "הגדרות חייגן"
+
+#~ msgid "Data"
+#~ msgstr "נתונים"
+
+#, fuzzy
+#~ msgid "Can see Voice App"
+#~ msgstr "עדכון קול App"
+
+#~ msgid "Voice Applications"
+#~ msgstr "קול יישומים"
 
 #, fuzzy
 #~ msgid "Callrequest API Playground"

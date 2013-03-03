@@ -42,17 +42,17 @@ class VoiceApp_abstract(models.Model):
 
     **Name of DB table**: voip_app
     """
-    name = models.CharField(max_length=90, verbose_name=_("Name"))
+    name = models.CharField(max_length=90, verbose_name=_("name"))
     tts_language = LanguageField(blank=True, null=True, default='en',
                     verbose_name=_('Text-to-Speech Language'))
     description = models.TextField(null=True, blank=True,
-                    verbose_name=_("Description"),
-                    help_text=_("Voice Application Description"))
+                    verbose_name=_("description"),
+                    help_text=_("voice application description"))
     type = models.IntegerField(max_length=20, choices=list(VOICEAPP_TYPE), default=1,
-           blank=True, null=True, verbose_name=_('Type'))
+           blank=True, null=True, verbose_name=_('type'))
     gateway = models.ForeignKey(Gateway, null=True, blank=True,
                     verbose_name=_('B-Leg'),
-                    help_text=_("Gateway used if we redirect the call"))
+                    help_text=_("gateway used if we redirect the call"))
     data = models.CharField(max_length=500, blank=True,
                     help_text=_("The value of 'data' depends on the type of voice application :<br/>"\
                     "- Dial : The phone number to dial<br/>"\
@@ -82,10 +82,10 @@ class VoiceApp_template(VoiceApp_abstract):
 
     class Meta:
         permissions = (
-            ("view_voiceapp_template", _('Can see Voiceapp Template')),
+            ("view_voiceapp_template", _('can see voiceapp template')),
         )
-        verbose_name = _("Voice Application Template")
-        verbose_name_plural = _("Voice Applications Templates")
+        verbose_name = _("voice application template")
+        verbose_name_plural = _("voice application templates")
 
     def copy_voiceapp_template(self, campaign_obj):
         try:
@@ -128,15 +128,15 @@ class VoiceApp(VoiceApp_abstract):
     """
     user = models.ForeignKey('auth.User', related_name='voiceapp_user')
     campaign = models.ForeignKey(Campaign, null=True, blank=True,
-        verbose_name=_("Campaign"))
+        verbose_name=_("campaign"))
 
     class Meta:
         permissions = (
-            ("view_voiceapp", _('Can see Voice App')),
+            ("view_voiceapp", _('can see voice application')),
         )
         db_table = u'voice_app'
-        verbose_name = _("Voice Application")
-        verbose_name_plural = _("Voice Applications")
+        verbose_name = _("voice application")
+        verbose_name_plural = _("voice applications")
 
     def set_name(self, name):
         self.name = name

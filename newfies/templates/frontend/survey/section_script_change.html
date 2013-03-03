@@ -56,13 +56,13 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="span5 clearfix{% if form.script.errors %} control-group error{% endif %}">
-                            <label class="control-label" for="{{ form.script.auto_id }}">{{ form.script.label }}</label>
+                            <label class="control-label" for="{{ form.script.auto_id }}">{{ form.script.label|title }}</label>
                             <div class="input">
                                 {{ form.script }}
                                 {% if form.script.errors %}
                                     <span class="help-inline">{{ form.script.errors|removetags:"ul li"|safe }}</span>
                                 {% endif %}
-                                <span class="help-block">{{ form.script.help_text|safe }} </span>
+                                <span class="help-block">{{ form.script.help_text|capfirst|safe }} </span>
                             </div>
                         </div>
                     </div>

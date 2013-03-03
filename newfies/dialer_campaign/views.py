@@ -305,7 +305,7 @@ def campaign_add(request):
     # If dialer setting is not attached with user, redirect to campaign list    
     if not user_dialer_setting(request.user):        
         request.session['error_msg'] = \
-            _("In order to add a campaign, you need to have your settings configured properly, please contact the admin.")
+            _("in order to add a campaign, you need to have your settings configured properly, please contact the admin.")
         return HttpResponseRedirect("/campaign/")
 
     # Check dialer setting limit

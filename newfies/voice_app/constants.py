@@ -24,10 +24,10 @@ class VOICEAPP_TYPE(Choice):
 
 
 class VOICEAPP_COLUMN_NAME(Choice):
-    name = _('Name')
-    description = _('Description')
-    type = _('Type')
-    gateway = _('Gateway')
-    data = _('Data')
+    name = _('name')
+    description = _('description')
+    type = _('type')
+    gateway = _('gateway')
+    data = _('data')
     tts_language = _('TTS Language')
-    date = _('Date')
+    date = _('date')

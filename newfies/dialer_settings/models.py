@@ -35,33 +35,33 @@ class DialerSetting(models.Model):
     **Name of DB table**: dialer_setting
     """
     name = models.CharField(max_length=50, blank=False,
-                            null=True, verbose_name=_("Name"),
-                            help_text=_("Settings name"))
+                            null=True, verbose_name=_("name"),
+                            help_text=_("settings name"))
     #Campaign Settings
     max_frequency = models.IntegerField(default='100', blank=True,
-                                        null=True, verbose_name=_("Max frequency"),
-                                        help_text=_("Maximum calls per minute"))
+                                        null=True, verbose_name=_("max frequency"),
+                                        help_text=_("maximum calls per minute"))
     callmaxduration = models.IntegerField(default='1800', blank=True,
-                                          null=True, verbose_name=_('Max Call Duration'),
-                                          help_text=_("Maximum call duration in seconds (1800 = 30 Minutes)"))
+                                          null=True, verbose_name=_('max Call Duration'),
+                                          help_text=_("maximum call duration in seconds (1800 = 30 Minutes)"))
 
     maxretry = models.IntegerField(default='3', blank=True, null=True,
-                                   verbose_name=_('Max Retries'),
-                                   help_text=_("Maximum retries per user."))
+                                   verbose_name=_('max Retries'),
+                                   help_text=_("maximum retries per user."))
     max_calltimeout = models.IntegerField(default='45', blank=True, null=True,
-                                          verbose_name=_('Timeout on Call'),
-                                          help_text=_("Maximum call timeout in seconds"))
+                                          verbose_name=_('timeout on call'),
+                                          help_text=_("maximum call timeout in seconds"))
 
     max_number_campaign = models.IntegerField(default=10,
-                                              help_text=_("Maximum number of campaigns"))
+                                              help_text=_("maximum number of campaigns"))
     max_number_subscriber_campaign = models.IntegerField(default=10000,
-                help_text=_("Maximum subscribers per campaign"))
+                help_text=_("maximum subscribers per campaign"))
 
     blacklist = models.TextField(blank=True, null=True, default='', verbose_name=_("Blacklist"),
-        help_text=_("Use regular expressions to blacklist phone numbers. For example, '^[2-4][1]+' will prevent all phone numbers starting with 2,3 or 4 and followed by 1 being called."))
+        help_text=_("use regular expressions to blacklist phone numbers. For example, '^[2-4][1]+' will prevent all phone numbers starting with 2,3 or 4 and followed by 1 being called."))
 
     whitelist = models.TextField(blank=True, null=True, default='', verbose_name=_("Whitelist"),
-        help_text=_("Use regular expressions to whitelist phone numbers"))
+        help_text=_("use regular expressions to whitelist phone numbers"))
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
@@ -70,6 +70,6 @@ class DialerSetting(models.Model):
         return '[%s] %s' % (self.id, self.name)
 
     class Meta:
-        verbose_name = _("Dialer Setting")
-        verbose_name_plural = _("Dialer Settings")
+        verbose_name = _("dialer setting")
+        verbose_name_plural = _("dialer settings")
         db_table = "dialer_setting"

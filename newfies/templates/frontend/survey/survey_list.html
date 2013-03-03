@@ -21,13 +21,13 @@ function delete_button(){
 <div class="span12">
     <div class="row">
         <div class="btn-group">
-            <button class="btn">{% trans "Action" %}</button>
+            <button class="btn">{% trans "action"|title %}</button>
             <button class="btn dropdown-toggle" data-toggle="dropdown">
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
                 <li>
-                <a href="#survey-import"  url="/import_survey/" class="survey-import" data-toggle="modal" data-controls-modal="survey-import" title="{% trans "Import survey" %}" >
+                <a href="#survey-import"  url="/import_survey/" class="survey-import" data-toggle="modal" data-controls-modal="survey-import" title="{% trans "import survey"|title %}" >
                     {% trans "import survey"|title %}
                 </a>
                 </li>
@@ -49,10 +49,10 @@ function delete_button(){
                 <thead>
                 <tr>
                     <th><input type="checkbox" onclick="toggleChecked(this.checked)"></th>
-                    <th>{% sort_link SURVEY_COLUMN_NAME.name col_name_with_order.name %}</th>
-                    <th>{{ SURVEY_COLUMN_NAME.description }}</th>
-                    <th>{% sort_link SURVEY_COLUMN_NAME.date col_name_with_order.updated_date %}</th>
-                    <th>{% trans 'Action' %}</th>
+                    <th>{% sort_link SURVEY_COLUMN_NAME.name|capfirst col_name_with_order.name %}</th>
+                    <th>{{ SURVEY_COLUMN_NAME.description|capfirst }}</th>
+                    <th>{% sort_link SURVEY_COLUMN_NAME.date|capfirst col_name_with_order.updated_date %}</th>
+                    <th>{% trans 'action'|capfirst %}</th>
                 </tr>
                 </thead>
                 {% if survey_list %}

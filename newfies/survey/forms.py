@@ -28,8 +28,7 @@ def get_audiofile_list(user):
     with default none option"""
     list_af = []
     list_af.append(('', '---'))
-    list = AudioFile.objects.values_list('id', 'name')\
-        .filter(user=user)\
+    list = AudioFile.objects.values_list('id', 'name').filter(user=user)\
         .order_by('id')
     for i in list:
         list_af.append((i[0], i[1]))
@@ -43,7 +42,7 @@ def get_section_question_list(survey_id, section_id):
         .objects.values_list('section_id', flat=True)\
         .filter(section_id=section_id)
     list_sq = []
-    list_sq.append(('', _('Hang up')))
+    list_sq.append(('', _('hangup')))
 
     list = Section_template.objects.filter(survey_id=survey_id)\
         .exclude(pk=section_id)\
@@ -77,8 +76,8 @@ def get_multi_question_choice_list(section_id):
            and i not in keys_list):
             list_sq.append((i, '%s' % (obj_section.__dict__['key_' + str(i)])))
 
-    list_sq.append(('any', _('Any Other Key')))
-    list_sq.append(('invalid', _('Invalid')))
+    list_sq.append(('any', _('any other key')))
+    list_sq.append(('invalid', _('invalid')))
     return list_sq
 
 
@@ -103,8 +102,8 @@ def get_rating_choice_list(section_id):
             if i not in keys_list:
                 list_sq.append((i, '%s' % (str(i))))
 
-    list_sq.append(('any', _('Any Other Key')))
-    list_sq.append(('invalid', _('Invalid')))
+    list_sq.append(('any', _('any other key')))
+    list_sq.append(('invalid', _('invalid')))
     return list_sq
 
 
@@ -305,7 +304,7 @@ class BranchingForm(ModelForm):
 
 class SurveyReportForm(forms.Form):
     """Survey Report Form"""
-    campaign = forms.ChoiceField(label=_('Campaign'), required=False)
+    campaign = forms.ChoiceField(label=_('campaign'), required=False)
 
     def __init__(self, user, *args, **kwargs):
         super(SurveyReportForm, self).__init__(*args, **kwargs)
@@ -337,10 +336,10 @@ class SurveyDetailReportForm(SearchForm, SurveyReportForm):
 
 class SurveyFileImport(forms.Form):
     """General Form : file upload"""
-    name = forms.CharField(label=_('Survey name'), required=True)
-    survey_file = forms.FileField(label=_("Upload File "), required=True,
-        error_messages={'required': 'Please upload File'},
-        help_text=_("Browse text file"))
+    name = forms.CharField(label=_('survey name'), required=True)
+    survey_file = forms.FileField(label=_("upload File "), required=True,
+        error_messages={'required': 'please upload File'},
+        help_text=_("browse text file"))
 
     def clean_csv_file(self):
         """Form Validation :  File extension Check"""
@@ -349,5 +348,5 @@ class SurveyFileImport(forms.Form):
         if str(filename).split(".")[1].lower() in file_exts:
             return filename
         else:
-            raise forms.ValidationError(_(u'Document types accepted: %s' %
+            raise forms.ValidationError(_(u'document types accepted: %s' %
                                           ' '.join(file_exts)))

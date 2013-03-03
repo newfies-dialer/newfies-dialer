@@ -17,8 +17,8 @@
 
 <h1>404 Error</h1>
 
-<p>{% trans "This page cannot be found!" %}</p>
+<p>{% trans "this page cannot be found!"|capfirst %}</p>
 
 {% if request.sentry.id %}
-    <p>{% trans "If you need assistance, you may reference this error as" %} <strong>{{ request.sentry.id }}</strong>.</p>
+    <p>{% trans "if you need assistance, you may reference this error as"|capfirst %} <strong>{{ request.sentry.id }}</strong>.</p>
 {% endif %}

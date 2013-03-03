@@ -32,7 +32,7 @@
                         {% get_fieldset from_date,to_date,status as campaign_fields from form %}
                         {% for field in campaign_fields.visible_fields %}
                             <div class="span4 clearfix{% if field.errors %} control-group error{% endif %}">
-                                <label for="{{ field.auto_id }}">{{ field.label }}</label>
+                                <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
                                 <div class="input">
                                     {{ field }}
                                     {% if field.errors %}
@@ -49,7 +49,7 @@
                         {% get_fieldset campaign as campaign_fields from form %}
                         {% for field in campaign_fields.visible_fields %}
                             <div class="span4 clearfix{% if field.errors %} control-group error{% endif %}">
-                                <label for="{{ field.auto_id }}">{{ field.label }}</label>
+                                <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
                                 <div class="input">
                                     {{ field }}
                                     {% if field.errors %}
@@ -64,7 +64,7 @@
             </div>
             <label></label>
             <div class="actions">
-                <input type="submit" value="{% trans "Search" %}" class="btn btn-primary"/>
+                <input type="submit" value="{% trans "search"|title %}" class="btn btn-primary"/>
             </div>
         </form>
     </div>
@@ -93,24 +93,24 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a href="/export_voipcall_report/">{% trans "Export CSV file" %}</a></li>
+                    <li><a href="/export_voipcall_report/">{% trans "export CSV file"|capfirst %}</a></li>
                 </ul>
             </div>
             <div>&nbsp;</div>
             <table class="table table-striped table-bordered table-condensed">
                 <thead>
                 <tr>
-                    <th>{% sort_link CDR_REPORT_COLUMN_NAME.date col_name_with_order.starting_date %}</th>
-                    <th>{% sort_link CDR_REPORT_COLUMN_NAME.call_id col_name_with_order.callid %}</th>
-                    <th>{% sort_link CDR_REPORT_COLUMN_NAME.leg col_name_with_order.leg_type %}</th>
-                    <th>{% sort_link CDR_REPORT_COLUMN_NAME.caller_id col_name_with_order.callerid %}</th>
-                    <th>{% sort_link CDR_REPORT_COLUMN_NAME.phone_no col_name_with_order.phone_number %}</th>
-                    <th>{% sort_link CDR_REPORT_COLUMN_NAME.gateway col_name_with_order.used_gateway %}</th>
-                    <th>{% sort_link CDR_REPORT_COLUMN_NAME.duration col_name_with_order.duration %}</th>
-                    <th>{% sort_link CDR_REPORT_COLUMN_NAME.bill_sec col_name_with_order.billsec %}</th>
-                    <th>{% sort_link CDR_REPORT_COLUMN_NAME.disposition col_name_with_order.disposition %}</th>
+                    <th>{% sort_link CDR_REPORT_COLUMN_NAME.date|capfirst col_name_with_order.starting_date %}</th>
+                    <th>{% sort_link CDR_REPORT_COLUMN_NAME.call_id|capfirst col_name_with_order.callid %}</th>
+                    <th>{% sort_link CDR_REPORT_COLUMN_NAME.leg|capfirst col_name_with_order.leg_type %}</th>
+                    <th>{% sort_link CDR_REPORT_COLUMN_NAME.caller_id|capfirst col_name_with_order.callerid %}</th>
+                    <th>{% sort_link CDR_REPORT_COLUMN_NAME.phone_no|capfirst col_name_with_order.phone_number %}</th>
+                    <th>{% sort_link CDR_REPORT_COLUMN_NAME.gateway|capfirst col_name_with_order.used_gateway %}</th>
+                    <th>{% sort_link CDR_REPORT_COLUMN_NAME.duration|capfirst col_name_with_order.duration %}</th>
+                    <th>{% sort_link CDR_REPORT_COLUMN_NAME.bill_sec|capfirst col_name_with_order.billsec %}</th>
+                    <th>{% sort_link CDR_REPORT_COLUMN_NAME.disposition|capfirst col_name_with_order.disposition %}</th>
                     {% if AMD %}
-                        <th>{% sort_link CDR_REPORT_COLUMN_NAME.amd_status col_name_with_order.amd_status %}</th>
+                        <th>{% sort_link CDR_REPORT_COLUMN_NAME.amd_status|capfirst col_name_with_order.amd_status %}</th>
                     {% endif %}
                 </tr>
                 </thead>

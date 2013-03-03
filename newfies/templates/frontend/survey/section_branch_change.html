@@ -74,7 +74,7 @@
                 </div>
                 <div class="row">
                     <div class="span2 clearfix{% if form.keys.errors %} control-group error{% endif %}">
-                        <label class="control-label" for="{{ form.keys.auto_id }}">{{ form.keys.label }}</label>
+                        <label class="control-label" for="{{ form.keys.auto_id }}">{{ form.keys.label|title }}</label>
                         <div class="input">
                             {{ form.keys }}
                             {% if form.keys.errors %}
@@ -88,7 +88,7 @@
 
             <div class="row">
                 <div class="span2 clearfix{% if form.goto.errors %} control-group error{% endif %}">
-                    <label class="control-label" for="{{ form.goto.auto_id }}">{{ form.goto.label }}</label>
+                    <label class="control-label" for="{{ form.goto.auto_id }}">{{ form.goto.label|title }}</label>
                     <div class="input">
                         {{ form.goto }}
                         {% if form.goto.errors %}
@@ -102,7 +102,7 @@
 
             <div class="row">
                 <div class="span4 clearfix">
-                    <span class="help-block">{% trans "No branching on hangup, this will terminate the call" %}</span>
+                    <span class="help-block">{% trans "no branching on hangup, this will terminate the call"|capfirst %}</span>
                 </div>
             </div>
             {% endif %}

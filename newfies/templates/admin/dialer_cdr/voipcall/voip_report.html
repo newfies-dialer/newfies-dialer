@@ -12,10 +12,12 @@
          {{ app_label|capfirst }}
       </a>
       &rsaquo; <a href="../">{% trans "call report"|title %}</a>
-      &rsaquo; {% trans "call aggregate report"|title %}
+      &rsaquo; {{ title|title }} 
     </div>
   {% endblock %}
 {% endif %}
+
+{% block content_title %}{% if title %}<h1>{{ title|title }}</h1>{% endif %}{% endblock %}
 
 {% block content %}
 <div id="content-main">

@@ -31,7 +31,7 @@
 			</p>-->
 
 			<p>
-				{% trans "Accepted methods" %}: {% for meth in doc.allowed_methods %}<b>{{ meth }}</b>{% if not forloop.last %}, {% endif %}{% endfor %}
+				{% trans "accepted methods"|capfirst %}: {% for meth in doc.allowed_methods %}<b>{{ meth }}</b>{% if not forloop.last %}, {% endif %}{% endfor %}
 			</p>
             
 			<dl>

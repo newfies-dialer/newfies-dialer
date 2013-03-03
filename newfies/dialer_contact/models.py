@@ -35,21 +35,21 @@ class Phonebook(Model):
 
     **Name of DB table**: dialer_phonebook
     """
-    name = models.CharField(max_length=90, verbose_name=_('Name'))
+    name = models.CharField(max_length=90, verbose_name=_('name'))
     description = models.TextField(null=True, blank=True,
-                                   help_text=_("Phonebook Notes"))
+                                   help_text=_("phonebook notes"))
     user = models.ForeignKey('auth.User', related_name='Phonebook owner')
     created_date = models.DateTimeField(auto_now_add=True,
-                                        verbose_name=_('Date'))
+                                        verbose_name=_('date'))
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:
         permissions = (
-            ("view_phonebook", _('Can see Phonebook')),
+            ("view_phonebook", _('can see phonebook')),
         )
         db_table = u'dialer_phonebook'
-        verbose_name = _("Phonebook")
-        verbose_name_plural = _("Phonebooks")
+        verbose_name = _("phonebook")
+        verbose_name_plural = _("phonebooks")
 
     def __unicode__(self):
             return u"%s" % self.name
@@ -58,7 +58,7 @@ class Phonebook(Model):
         """This will return a count of the contacts in the phonebook"""
         return Contact.objects.filter(phonebook=self.id).count()
     phonebook_contacts.allow_tags = True
-    phonebook_contacts.short_description = _('Contacts')
+    phonebook_contacts.short_description = _('contacts')
 
 
 class Contact(Model):
@@ -84,36 +84,36 @@ class Contact(Model):
 
     **Name of DB table**: dialer_contact
     """
-    phonebook = models.ForeignKey(Phonebook, verbose_name=_('Phonebook'),
-                                  help_text=_("Select Phonebook"))
-    contact = models.CharField(max_length=90, verbose_name=_('Contact Number'))
+    phonebook = models.ForeignKey(Phonebook, verbose_name=_('phonebook'),
+                                  help_text=_("select phonebook"))
+    contact = models.CharField(max_length=90, verbose_name=_('contact number'))
     status = models.IntegerField(choices=list(CONTACT_STATUS),
                                  default=CONTACT_STATUS.ACTIVE,
-                                 verbose_name=_("Status"), blank=True, null=True)
+                                 verbose_name=_("status"), blank=True, null=True)
     last_name = models.CharField(max_length=120, blank=True, null=True,
-                                 verbose_name=_('Last Name'))
+                                 verbose_name=_('last name'))
     first_name = models.CharField(max_length=120, blank=True, null=True,
-                                  verbose_name=_('First Name'))
-    email = models.EmailField(blank=True, null=True, verbose_name=_('Email'))
-    country = CountryField(blank=True, null=True, verbose_name=_('Country'))
+                                  verbose_name=_('first name'))
+    email = models.EmailField(blank=True, null=True, verbose_name=_('email'))
+    country = CountryField(blank=True, null=True, verbose_name=_('country'))
     city = models.CharField(max_length=120, blank=True, null=True,
-                            verbose_name=_('City'))
+                            verbose_name=_('city'))
     additional_vars = jsonfield.JSONField(null=True, blank=True,
-                                          verbose_name=_('Additional parameters (JSON)'),
-                                          help_text=_("Enter the list of parameters in Json format, e.g. {\"age\": \"32\"}"))
+                                          verbose_name=_('additional parameters (JSON)'),
+                                          help_text=_("enter the list of parameters in Json format, e.g. {\"age\": \"32\"}"))
     description = models.TextField(null=True, blank=True,
-                                   verbose_name=_("Notes"))
+                                   verbose_name=_("notes"))
     created_date = models.DateTimeField(auto_now_add=True,
-                                        verbose_name=_('Date'))
+                                        verbose_name=_('date'))
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:
         permissions = (
-            ("view_contact", _('Can see Contact')),
+            ("view_contact", _('can see contact')),
         )
         db_table = u'dialer_contact'
-        verbose_name = _("Contact")
-        verbose_name_plural = _("Contacts")
+        verbose_name = _("contact")
+        verbose_name_plural = _("contacts")
 
     def __unicode__(self):
         return u"%s (%s)" % (self.contact, self.last_name)
@@ -122,4 +122,4 @@ class Contact(Model):
         """Return Contact Name"""
         return u"%s %s" % (self.first_name, self.last_name)
     contact_name.allow_tags = True
-    contact_name.short_description = _('Name')
+    contact_name.short_description = _('name')

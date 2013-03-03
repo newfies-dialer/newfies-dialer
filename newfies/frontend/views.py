@@ -86,13 +86,13 @@ def login_view(request):
                     return HttpResponseRedirect('/dashboard/')
                 else:
                     # Return a 'disabled account' error message
-                    errorlogin = _('Disabled Account')
+                    errorlogin = _('disabled account')
             else:
                 # Return an 'invalid login' error message.
-                errorlogin = _('Invalid Login.')
+                errorlogin = _('invalid login.')
         else:
             # Return an 'Valid User Credentials' error message.
-            errorlogin = _('Enter Valid User Credentials.')
+            errorlogin = _('enter valid user credentials.')
     else:
         loginform = LoginForm()
 

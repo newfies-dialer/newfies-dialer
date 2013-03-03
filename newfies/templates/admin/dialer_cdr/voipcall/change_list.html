@@ -11,11 +11,13 @@
        <a href="../">
          {{ app_label|capfirst }}
       </a>
-      &rsaquo; {% trans "call report"|title %}
+      &rsaquo; {{ title|title }}
       <!--{{ cl.opts.verbose_name_plural|capfirst }}-->
     </div>
   {% endblock %}
 {% endif %}
+
+{% block content_title %}{% if title %}<h1>{{ title|title }}</h1>{% endif %}{% endblock %}
 
 {% block content %}
 <div id="content-main">
@@ -52,7 +54,7 @@
         {% endif %}
             <li>
                 <a href="export_voip_report/" class="addlink">
-                    {% trans "Export CSV file" %}
+                    {% trans "export CSV file"|capfirst %}
                 </a>
             </li>
             <li>

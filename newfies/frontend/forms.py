@@ -20,10 +20,10 @@ from frontend.constants import SEARCH_TYPE
 class LoginForm(forms.Form):
     """Client Login Form"""
     user = forms.CharField(max_length=30,
-        label=_('Username:'), required=True)
+        label=_('username'), required=True)
     user.widget.attrs['class'] = 'input-small'
     user.widget.attrs['placeholder'] = 'Username'
-    password = forms.CharField(max_length=30, label=_('Password:'),
+    password = forms.CharField(max_length=30, label=_('password'),
         required=True, widget=forms.PasswordInput())
     password.widget.attrs['class'] = 'input-small'
     password.widget.attrs['placeholder'] = 'Password'
@@ -31,8 +31,8 @@ class LoginForm(forms.Form):
 
 class DashboardForm(forms.Form):
     """Dashboard Form"""
-    campaign = forms.ChoiceField(label=_('Campaign'), required=False)
-    search_type = forms.ChoiceField(label=_('Type'), required=False, initial=4,
+    campaign = forms.ChoiceField(label=_('campaign'), required=False)
+    search_type = forms.ChoiceField(label=_('type'), required=False, initial=4,
         choices=list(SEARCH_TYPE))
 
     def __init__(self, user, *args, **kwargs):

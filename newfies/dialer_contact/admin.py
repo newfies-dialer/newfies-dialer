@@ -76,7 +76,7 @@ class ContactAdmin(admin.ModelAdmin):
         if request.user and request.method == 'POST':
             # check Max Number of subscribers per campaign
             if check_dialer_setting(request, check_for="contact"):
-                msg = _("You have too many contacts per campaign. You are allowed a maximum of %(limit)s")\
+                msg = _("you have too many contacts per campaign. you are allowed a maximum of %(limit)s")\
                     % {'limit': dialer_setting_limit(request, limit_for="contact")}
                 messages.error(request, msg)
 
@@ -115,7 +115,7 @@ class ContactAdmin(admin.ModelAdmin):
         if request.user and request.method == 'POST':
             # check Max Number of subscribers per campaign
             if check_dialer_setting(request, check_for="contact"):
-                msg = _("You have too many contacts per campaign. You are allowed a maximum of %(limit)s")\
+                msg = _("you have too many contacts per campaign. you are allowed a maximum of %(limit)s")\
                     % {'limit': dialer_setting_limit(request, limit_for="contact")}
                 messages.error(request, msg)
 
@@ -166,7 +166,7 @@ class ContactAdmin(admin.ModelAdmin):
 
                     # check field type
                     if not int(row[5]):                        
-                        error_msg = _("Invalid value for import! Please check the import samples or phonebook is not valid")
+                        error_msg = _("invalid value for import! please check the import samples or phonebook is not valid")
                         type_error_import_list.append(row)
                         break
 
@@ -203,17 +203,17 @@ class ContactAdmin(admin.ModelAdmin):
 
                 #check if there is contact imported
                 if contact_cnt > 0:
-                    msg = _('%(contact_cnt)s Contact(s) are uploaded successfully out of %(total_rows)s row(s) !!')\
+                    msg = _('%(contact_cnt)s contact(s) are uploaded successfully out of %(total_rows)s row(s) !!')\
                         % {'contact_cnt': contact_cnt, 'total_rows': total_rows}
         else:
             form = Contact_fileImport(request.user)
 
-        ctx = RequestContext(request, {
-            'title': _('Import Contact'),
+        ctx = RequestContext(request, {            
             'form': form,
             'opts': opts,
             'model_name': opts.object_name.lower(),
-            'app_label': _('Dialer contact'),
+            'app_label': _('dialer contact'),
+            'title': _('import contact'),
             'rdr': rdr,
             'msg': msg,
             'error_msg': error_msg,

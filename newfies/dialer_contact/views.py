@@ -386,7 +386,7 @@ def contact_add(request):
         # check  Max Number of subscriber per campaign
         if check_dialer_setting(request, check_for="contact"):
             request.session['msg'] = \
-                _("You have too many contacts per campaign. You are allowed a maximum of %(limit)s") % \
+                _("you have too many contacts per campaign. you are allowed a maximum of %(limit)s") % \
                 {'limit': dialer_setting_limit(request, limit_for="contact")}
 
             # contact limit reached
@@ -536,7 +536,7 @@ def contact_import(request):
         # check  Max Number of subscribers per campaign
         if check_dialer_setting(request, check_for="contact"):
             request.session['msg'] = \
-                _("You have too many contacts per campaign. You are allowed a maximum of %(limit)s") % \
+                _("you have too many contacts per campaign. you are allowed a maximum of %(limit)s") % \
                 {'limit': dialer_setting_limit(request, limit_for="contact")}
 
             # contact limit reached
@@ -583,7 +583,7 @@ def contact_import(request):
 
                 # check field type
                 if not int(row[5]):
-                    error_msg = _("Invalid value for import! Please check the import samples or phonebook is not valid")
+                    error_msg = _("invalid value for import! please check the import samples or phonebook is not valid")
                     type_error_import_list.append(row)
                     break
 
@@ -624,7 +624,7 @@ def contact_import(request):
 
     #check if there is contact imported
     if contact_cnt > 0:
-        msg = _('%(contact_cnt)s Contact(s) are uploaded successfully out of %(total_rows)s row(s) !!') \
+        msg = _('%(contact_cnt)s contact(s) are uploaded successfully out of %(total_rows)s row(s) !!') \
             % {'contact_cnt': contact_cnt,
                'total_rows': total_rows}
 

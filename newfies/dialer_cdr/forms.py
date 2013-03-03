@@ -20,17 +20,17 @@ from dialer_contact.forms import SearchForm
 
 
 voip_call_disposition_list = []
-voip_call_disposition_list.append(('all', 'ALL'))
+voip_call_disposition_list.append(('all', _('ALL')))
 for i in VOIPCALL_DISPOSITION:
     voip_call_disposition_list.append((i[0], i[1]))
 
 
 class VoipSearchForm(SearchForm):
     """VoIP call Report Search Parameters"""
-    status = forms.ChoiceField(label=_('Disposition'),
+    status = forms.ChoiceField(label=_('disposition'),
                                choices=voip_call_disposition_list,
                                required=False)
-    campaign = forms.ChoiceField(label=_('Campaign'), required=False)
+    campaign = forms.ChoiceField(label=_('campaign'), required=False)
 
     def __init__(self, user, *args, **kwargs):
         super(VoipSearchForm, self).__init__(*args, **kwargs)        

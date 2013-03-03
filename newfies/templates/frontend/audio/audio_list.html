@@ -70,10 +70,10 @@ function delete_button()
                         <td>{{ row.updated_date }}</td>
                         <td>
                             {% if perms.audiofield.change_audiofile %}
-                                <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update audio"|capfirst %}"></a>
+                                <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update audio"|title %}"></a>
                             {% endif %}
                             {% if perms.audiofield.delete_audiofile %}
-                                <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete audio"|capfirst %}"></a>
+                                <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete audio"|title %}"></a>
                             {% endif %}
                         </td>
                     </tr>

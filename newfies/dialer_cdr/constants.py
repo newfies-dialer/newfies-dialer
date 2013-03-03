@@ -20,14 +20,14 @@ class CALLREQUEST_STATUS(Choice):
     """
     Store the Call Request Status
     """
-    PENDING = 1, _("Pending")
-    FAILURE = 2, _("Failure")
-    RETRY = 3, _("Retry")
-    SUCCESS = 4, _("Success")
-    ABORT = 5, _("Abort")
-    PAUSE = 6, _("Pause")
-    PROCESS = 7, _("Processing")
-    IN_PROGRESS = 8, _("In Progress")
+    PENDING = 1, _("pending")
+    FAILURE = 2, _("failure")
+    RETRY = 3, _("retry")
+    SUCCESS = 4, _("success")
+    ABORT = 5, _("abort")
+    PAUSE = 6, _("pause")
+    PROCESS = 7, _("processing")
+    IN_PROGRESS = 8, _("in progress")
 
 
 class CALLREQUEST_TYPE(Choice):
@@ -63,22 +63,22 @@ class CDR_REPORT_COLUMN_NAME(Choice):
     """
     Column Name for the CDR Report
     """
-    date = _('Start date')
-    call_id = _('Call ID')
-    leg = _('Leg')
-    caller_id = _('Caller ID')
-    phone_no = _('Phone No')
-    gateway = _('Gateway')
-    duration = _('Duration')
-    bill_sec = _('Bill Sec')
-    disposition = _('Disposition')
-    amd_status = _('Amd status')
+    date = _('start date')
+    call_id = _('call ID')
+    leg = _('leg')
+    caller_id = _('caller ID')
+    phone_no = _('phone no')
+    gateway = _('gateway')
+    duration = _('duration')
+    bill_sec = _('bill sec')
+    disposition = _('disposition')
+    amd_status = _('amd status')
 
 
 class VOIPCALL_AMD_STATUS(Choice):
     """
     Store the AMD Status
     """
-    PERSON = 1, _("Person")
-    MACHINE = 2, _("Machine")
-    UNSURE = 3, _("Unsure")
+    PERSON = 1, _("person")
+    MACHINE = 2, _("machine")
+    UNSURE = 3, _("unsure")

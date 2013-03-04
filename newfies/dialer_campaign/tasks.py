@@ -231,10 +231,12 @@ class campaign_expire_check(PeriodicTask):
     @only_one(ikey="campaign_expire_check", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
         logger.info("TASK :: campaign_expire_check")
-
+        campaign_id_list = []
         for obj_campaign in Campaign.objects.get_expired_campaign():
             logger.debug("=> Campaign name %s (id:%s)" %
                         (obj_campaign.name, obj_campaign.id))
-            obj_campaign.status = CAMPAIGN_STATUS.END
-            obj_campaign.save()
+            campaign_id_list.append(obj_campaign.id)            
+
+        #Update in bulk
+        Campaign.objects.filter(id__in=campaign_id_list).update(status=CAMPAIGN_STATUS.END)
         return True

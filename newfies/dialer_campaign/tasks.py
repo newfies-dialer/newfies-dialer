@@ -130,7 +130,7 @@ def check_campaign_pendingcall(campaign_id):
         time_to_wait = 1.0
     elif no_subscriber < 10:
         # Not many subscriber do a fast dial
-        time_to_wait = 6.0
+        time_to_wait = 1.0
     else:
         # Set time to wait for balanced dispatching of calls
         time_to_wait = 60.0 / no_subscriber
@@ -235,7 +235,7 @@ class campaign_expire_check(PeriodicTask):
         for obj_campaign in Campaign.objects.get_expired_campaign():
             logger.debug("=> Campaign name %s (id:%s)" %
                         (obj_campaign.name, obj_campaign.id))
-            campaign_id_list.append(obj_campaign.id)            
+            campaign_id_list.append(obj_campaign.id)
 
         #Update in bulk
         Campaign.objects.filter(id__in=campaign_id_list).update(status=CAMPAIGN_STATUS.END)

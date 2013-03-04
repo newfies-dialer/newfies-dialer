@@ -85,84 +85,90 @@ def check_retrycall_completion(callrequest):
             countdown=second_towait)
 
 
-#TODO: Add this into a buffer and commit at the end of the loop
-def create_voipcall_esl(obj_callrequest, request_uuid, leg='a', hangup_cause='',
-                        hangup_cause_q850='', callerid='',
-                        phonenumber='', starting_date='',
-                        call_uuid='', duration=0, billsec=0, amd_status='person'):
-    """
-    Common function to create CDR / VoIP Call
+class BufferVoIPCall:
 
-    **Attributes**:
+    list_voipcall = []
 
-        * data : list with call details data
-        * obj_callrequest:  refer to the CallRequest object
-        * request_uuid : cdr uuid
+    def __init__(self):
+        self.list_voipcall = []
 
-    """
-    if leg == 'a':
-        #A-Leg
-        leg_type = LEG_TYPE.A_LEG
-        used_gateway = obj_callrequest.aleg_gateway
-    else:
-        #B-Leg
-        leg_type = LEG_TYPE.B_LEG
-        if obj_callrequest.content_object.__class__.__name__ == 'VoiceApp':
-            #Get the gateway from the App
-            used_gateway = obj_callrequest.content_object.gateway
-        else:
-            #Survey
+    def save(self, obj_callrequest, request_uuid, leg='a', hangup_cause='',
+             hangup_cause_q850='', callerid='',
+             phonenumber='', starting_date='',
+             call_uuid='', duration=0, billsec=0, amd_status='person'):
+        """
+        Save voip call into buffer
+        """
+        if leg == 'a':
+            #A-Leg
+            leg_type = LEG_TYPE.A_LEG
             used_gateway = obj_callrequest.aleg_gateway
-    if amd_status == 'machine':
-        amd_status_id = VOIPCALL_AMD_STATUS.MACHINE
-    else:
-        amd_status_id = VOIPCALL_AMD_STATUS.PERSON
+        else:
+            #B-Leg
+            leg_type = LEG_TYPE.B_LEG
+            if obj_callrequest.content_object.__class__.__name__ == 'VoiceApp':
+                #Get the gateway from the App
+                used_gateway = obj_callrequest.content_object.gateway
+            else:
+                #Survey
+                used_gateway = obj_callrequest.aleg_gateway
+        if amd_status == 'machine':
+            amd_status_id = VOIPCALL_AMD_STATUS.MACHINE
+        else:
+            amd_status_id = VOIPCALL_AMD_STATUS.PERSON
 
-    logger.debug('Create CDR - request_uuid=%s;leg=%d;hangup_cause=%s;billsec=%s;amd_status=%s' %
-        (request_uuid, leg_type, hangup_cause, str(billsec), amd_status))
+        logger.debug('Create CDR - request_uuid=%s;leg=%d;hangup_cause=%s;billsec=%s;amd_status=%s' %
+            (request_uuid, leg_type, hangup_cause, str(billsec), amd_status))
 
-    #Get the first word only
-    hangup_cause = hangup_cause.split()[0]
+        #Get the first word only
+        hangup_cause = hangup_cause.split()[0]
 
-    if hangup_cause == 'NORMAL_CLEARING' or hangup_cause == 'ALLOTTED_TIMEOUT':
-        hangup_cause = 'ANSWER'
+        if hangup_cause == 'NORMAL_CLEARING' or hangup_cause == 'ALLOTTED_TIMEOUT':
+            hangup_cause = 'ANSWER'
 
-    if hangup_cause == 'ANSWER':
-        disposition = 'ANSWER'
-    elif hangup_cause == 'USER_BUSY':
-        disposition = 'BUSY'
-    elif hangup_cause == 'NO_ANSWER':
-        disposition = 'NOANSWER'
-    elif hangup_cause == 'ORIGINATOR_CANCEL':
-        disposition = 'CANCEL'
-    elif hangup_cause == 'NORMAL_CIRCUIT_CONGESTION':
-        disposition = 'CONGESTION'
-    else:
-        disposition = 'FAILED'
+        if hangup_cause == 'ANSWER':
+            disposition = 'ANSWER'
+        elif hangup_cause == 'USER_BUSY':
+            disposition = 'BUSY'
+        elif hangup_cause == 'NO_ANSWER':
+            disposition = 'NOANSWER'
+        elif hangup_cause == 'ORIGINATOR_CANCEL':
+            disposition = 'CANCEL'
+        elif hangup_cause == 'NORMAL_CIRCUIT_CONGESTION':
+            disposition = 'CONGESTION'
+        else:
+            disposition = 'FAILED'
 
-    #Note: Removed for test performance
-    #Note: Look at prefix PG module : https://github.com/dimitri/prefix
-    #prefix_obj = get_prefix_obj(phonenumber)
+        #Note: Removed for test performance
+        #Note: Look at prefix PG module : https://github.com/dimitri/prefix
+        #prefix_obj = get_prefix_obj(phonenumber)
 
-    new_voipcall = VoIPCall(
-        user_id=obj_callrequest.user_id,
-        request_uuid=request_uuid,
-        leg_type=leg_type,
-        used_gateway=used_gateway,
-        callrequest=obj_callrequest,
-        callid=call_uuid,
-        callerid=callerid,
-        phone_number=phonenumber,
-        #dialcode=prefix_obj,
-        starting_date=starting_date,
-        duration=duration,
-        billsec=billsec,
-        disposition=disposition,
-        hangup_cause=hangup_cause,
-        hangup_cause_q850=hangup_cause_q850,
-        amd_status=amd_status_id)
-    #Save CDR
-    new_voipcall.save()
+        #Save this for bulk saving
+        self.list_voipcall.append(
+            VoIPCall(
+                user_id=obj_callrequest.user_id,
+                request_uuid=request_uuid,
+                leg_type=leg_type,
+                used_gateway=used_gateway,
+                callrequest_id=obj_callrequest.id,
+                callid=call_uuid,
+                callerid=callerid,
+                phone_number=phonenumber,
+                #dialcode=prefix_obj,
+                starting_date=starting_date,
+                duration=duration,
+                billsec=billsec,
+                disposition=disposition,
+                hangup_cause=hangup_cause,
+                hangup_cause_q850=hangup_cause_q850,
+                amd_status=amd_status_id)
+        )
+
+    def commit(self):
+        """
+        function to create CDR / VoIP Call
+        """
+        VoIPCall.objects.bulk_create(self.list_voipcall)
 
 
 # OPTIMIZATION - TO REVIEW
@@ -208,6 +214,7 @@ def check_callevent():
     row = cursor.fetchall()
 
     debug_query(21)
+    buff_voipcall = BufferVoIPCall()
 
     for record in row:
         call_event_id = record[0]
@@ -286,7 +293,8 @@ def check_callevent():
             phonenumber = callrequest.phone_number
 
         #TODO: Create those in Bulk - add in a buffer until reach certain number
-        create_voipcall_esl(obj_callrequest=callrequest,
+        buff_voipcall.save(
+            obj_callrequest=callrequest,
             request_uuid=opt_request_uuid,
             leg='a',
             hangup_cause=opt_hangup_cause,
@@ -360,6 +368,9 @@ def check_callevent():
             check_retrycall_completion(callrequest)
 
     debug_query(30)
+
+    buff_voipcall.commit()
+    debug_query(31)
 
     logger.debug('End Loop : check_callevent')
 

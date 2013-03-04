@@ -63,7 +63,7 @@ class CustomIndexDashboard(Dashboard):
             display="tabs",
             children=[
                 modules.AppList(
-                    title='User',
+                    title=_('User'),
                     models=('django.contrib.*', 'user_profile.*', ),
                 ),
                 modules.AppList(

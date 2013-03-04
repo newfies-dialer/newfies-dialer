@@ -86,7 +86,7 @@ function delete_button()
 <div class="span12">
     <div class="row">
         <div class="btn-group">
-            <button class="btn">{% trans "Action" %}</button>
+            <button class="btn">{% trans "action"|action %}</button>
             <button class="btn dropdown-toggle" data-toggle="dropdown">
                 <span class="caret"></span>
             </button>
@@ -117,7 +117,7 @@ function delete_button()
                     <th>{% sort_link CONTACT_COLUMN_NAME.first_name|capfirst col_name_with_order.first_name %}</th>
                     <th>{% sort_link CONTACT_COLUMN_NAME.status|capfirst col_name_with_order.status %}</th>
                     <th>{% sort_link CONTACT_COLUMN_NAME.date|capfirst col_name_with_order.updated_date %}</th>
-                    <th>{% trans 'Action' %}</th>
+                    <th>{% trans 'action'|capfirst %}</th>
                 </tr>
                 </thead>
                 {% if contact_list %}

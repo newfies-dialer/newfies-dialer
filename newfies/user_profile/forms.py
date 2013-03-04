@@ -58,9 +58,9 @@ class UserChangeDetailExtendForm(ModelForm):
 class CheckPhoneNumberForm(forms.Form):
     """A form used to check the phone number in the Customer UI."""
     phone_number = forms.CharField(
-        label=_('Phone Number'),
+        label=_('phone number'),
         required=True,
-        help_text=_("Check number is authorised to call"))
+        help_text=_("check number is authorised to call"))
 
 
 class UserProfileForm(ModelForm):

@@ -260,7 +260,7 @@
                             <!--Rating Section form-->
                             {% if section.type == SECTION_TYPE.RATING_SECTION %}
                                 <div class="span8">
-                                    {% trans "From 1 to" %} {{ section.rating_laps }}
+                                    {% trans "from 1 to"|capfirst %} {{ section.rating_laps }}
                                 </div>
                             {% endif %}
 
@@ -328,7 +328,7 @@
                                                         {{ branch.goto.script }}
                                                     {% endif %}
                                                 {% else %}
-                                                    <!--{% trans "Hang up" %}-->
+                                                    <!--{% trans "hang up" %}-->
                                                 {% endif %}
 
                                                 <!--default branching change-->

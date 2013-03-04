@@ -61,7 +61,7 @@ class VoiceApp_abstract(models.Model):
                     "- Speak : The text to speak using TTS"))
 
     created_date = models.DateTimeField(auto_now_add=True,
-        verbose_name=_('Date'))
+        verbose_name=_('date'))
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:

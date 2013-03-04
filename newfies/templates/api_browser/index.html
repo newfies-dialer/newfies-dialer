@@ -23,12 +23,12 @@
                                 {% get_endpoint_forms endpoint as forms %}
                                 {% if forms.url_parameter_form.fields %}
                                     <fieldset class="url-parameters">
-                                        <legend>URL Parameters</legend>
+                                        <legend>{% trans "URL parameters" %}</legend>
                                         {{ forms.url_parameter_form.as_p }}
                                     </fieldset>
                                 {% endif %}{% if forms.data_parameter_form.fields %}
                                 <fieldset>
-                                    <legend>Data Parameters</legend>
+                                    <legend>{% trans "data parameters"|title %}</legend>
                                     {{ forms.data_parameter_form.as_p }}
                                 </fieldset>
                             {% endif %}
@@ -58,7 +58,7 @@
             {{ feedback_form.as_p }}
             <input type="submit" value="Submit">
         </form>
-        <div id="feedback-response">{% trans "Thanks, Your feedback has been sent successfully." %}</div>
+        <div id="feedback-response">{% trans "thanks, your feedback has been sent successfully."|capfirst %}</div>
         <a href="#" id="submit-feedback-button">{% trans "submit bug & feedback"|title %}</a>
     </div>
 {% endif %}

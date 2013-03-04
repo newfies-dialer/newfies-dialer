@@ -57,10 +57,10 @@ class DialerSetting(models.Model):
     max_number_subscriber_campaign = models.IntegerField(default=10000,
                 help_text=_("maximum subscribers per campaign"))
 
-    blacklist = models.TextField(blank=True, null=True, default='', verbose_name=_("Blacklist"),
+    blacklist = models.TextField(blank=True, null=True, default='', verbose_name=_("blacklist"),
         help_text=_("use regular expressions to blacklist phone numbers. For example, '^[2-4][1]+' will prevent all phone numbers starting with 2,3 or 4 and followed by 1 being called."))
 
-    whitelist = models.TextField(blank=True, null=True, default='', verbose_name=_("Whitelist"),
+    whitelist = models.TextField(blank=True, null=True, default='', verbose_name=_("whitelist"),
         help_text=_("use regular expressions to whitelist phone numbers"))
 
     created_date = models.DateTimeField(auto_now_add=True)

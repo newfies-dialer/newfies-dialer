@@ -18,6 +18,6 @@ source bin/activate
 cd /usr/share/newfies
 
 test -d $LOGDIR || mkdir -p $LOGDIR
-exec gunicorn_django -b 127.0.0.1:8123 -w $NUM_WORKERS \
+exec gunicorn_django -b 127.0.0.1:8123 -w $NUM_WORKERS --timeout=120 \
     --user=$USER --group=$GROUP --log-level=debug \
     --log-file=$LOGFILE 2>>$LOGFILE

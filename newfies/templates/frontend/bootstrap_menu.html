@@ -103,7 +103,7 @@
                         {% trans "account settings"|capfirst %}</a>
                     </li>
                     <li>
-                        <a href="/user_notification/">{% trans "Notifications" %}
+                        <a href="/user_notification/">{% trans "notifications"|title %}
                             {% if notice_count or notice_count == 0 %}
                                 <span class="label label-warning">{{ notice_count }}</span>
                             {% elif "/api-explorer/" in request.get_full_path %}

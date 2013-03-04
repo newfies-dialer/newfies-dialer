@@ -20,14 +20,14 @@ class CALLREQUEST_STATUS(Choice):
     """
     Store the Call Request Status
     """
-    PENDING = 1, _("pending")
-    FAILURE = 2, _("failure")
-    RETRY = 3, _("retry")
-    SUCCESS = 4, _("success")
-    ABORT = 5, _("abort")
-    PAUSE = 6, _("pause")
-    PROCESS = 7, _("processing")
-    IN_PROGRESS = 8, _("in progress")
+    PENDING = 1, _("pending").capitalize()
+    FAILURE = 2, _("failure").capitalize()
+    RETRY = 3, _("retry").capitalize()
+    SUCCESS = 4, _("success").capitalize()
+    ABORT = 5, _("abort").capitalize()
+    PAUSE = 6, _("pause").capitalize()
+    PROCESS = 7, _("processing").capitalize()
+    IN_PROGRESS = 8, _("in progress").capitalize()
 
 
 class CALLREQUEST_TYPE(Choice):
@@ -79,6 +79,6 @@ class VOIPCALL_AMD_STATUS(Choice):
     """
     Store the AMD Status
     """
-    PERSON = 1, _("person")
-    MACHINE = 2, _("machine")
-    UNSURE = 3, _("unsure")
+    PERSON = 1, _("person").capitalize()
+    MACHINE = 2, _("machine").capitalize()
+    UNSURE = 3, _("unsure").capitalize()

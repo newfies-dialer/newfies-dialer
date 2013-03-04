@@ -33,12 +33,12 @@ class GatewayAdmin(admin.ModelAdmin):
     of a Gateway."""
 
     fieldsets = (
-        (_('Standard options'), {
+        (_('standard options').capitalize(), {
             'fields': ('name', 'description', 'gateways', 'gateway_codecs',
                 'gateway_timeouts', 'gateway_retries',
                 'originate_dial_string', 'status'),
         }),
-        (_('Advanced options'), {
+        (_('advanced options').capitalize(), {
             'classes': ('collapse',),
             'fields': ('addprefix', 'removeprefix', 'failover', 'addparameter',
                        'maximum_call', )

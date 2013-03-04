@@ -98,7 +98,7 @@ def get_branching_goto_field(section_id, selected_value):
     """
     section_obj = Section_template.objects.get(id=section_id)
     #We don't need a lazy translation in this case
-    option_list = '<option value="">%s</option>' % _('Hang up').encode('utf-8')
+    option_list = '<option value="">%s</option>' % _('hang up').encode('utf-8')
     list = Section_template.objects.filter(survey_id=section_obj.survey_id)\
         .order_by('id')
     for i in list:

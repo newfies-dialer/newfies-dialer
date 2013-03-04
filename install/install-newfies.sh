@@ -46,6 +46,7 @@ CELERYD_USER='celery'
 CELERYD_GROUP='celery'
 NEWFIES_ENV='newfies-dialer'
 HTTP_PORT='8008'
+DEBVERSION=$( lsb_release -cs )
 
 
 #Django bug https://code.djangoproject.com/ticket/16017
@@ -207,8 +208,16 @@ func_install_frontend(){
 
     #python setup tools
     echo "Install Dependencies and python modules..."
+    
+    #Install Postgresql repository (https://wiki.postgresql.org/wiki/Apt)
+    if grep -Fxq "deb http://apt.postgresql.org/pub/repos/apt/ $DEBVERSION-pgdg main" /etc/apt/sources.list.d/pgdg.list
+    then
+        echo "Postgresql repository already installed"
+    else
+        echo "deb http://apt.postgresql.org/pub/repos/apt/ $DEBVERSION-pgdg main" >> /etc/apt/sources.list.d/pgdg.list
+        wget -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | apt-key add -
+    fi
 
-    add-apt-repository ppa:pitti/postgresql
     apt-get update
     apt-get -y install python-setuptools python-dev build-essential
     apt-get -y install nginx supervisor

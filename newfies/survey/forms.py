@@ -42,7 +42,7 @@ def get_section_question_list(survey_id, section_id):
         .objects.values_list('section_id', flat=True)\
         .filter(section_id=section_id)
     list_sq = []
-    list_sq.append(('', _('hangup')))
+    list_sq.append(('', _('hangup').capitalize()))
 
     list = Section_template.objects.filter(survey_id=survey_id)\
         .exclude(pk=section_id)\
@@ -76,8 +76,8 @@ def get_multi_question_choice_list(section_id):
            and i not in keys_list):
             list_sq.append((i, '%s' % (obj_section.__dict__['key_' + str(i)])))
 
-    list_sq.append(('any', _('any other key')))
-    list_sq.append(('invalid', _('invalid')))
+    list_sq.append(('any', _('any other key').capitalize()))
+    list_sq.append(('invalid', _('invalid').capitalize()))
     return list_sq
 
 
@@ -102,8 +102,8 @@ def get_rating_choice_list(section_id):
             if i not in keys_list:
                 list_sq.append((i, '%s' % (str(i))))
 
-    list_sq.append(('any', _('any other key')))
-    list_sq.append(('invalid', _('invalid')))
+    list_sq.append(('any', _('any other key').capitalize()))
+    list_sq.append(('invalid', _('invalid').capitalize()))
     return list_sq
 
 

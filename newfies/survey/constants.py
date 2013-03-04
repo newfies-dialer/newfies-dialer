@@ -17,23 +17,23 @@ from common.utils import Choice
 
 
 class SECTION_TYPE(Choice):
-    PLAY_MESSAGE = 1, _('play message')
-    MULTI_CHOICE = 2, _('multi-choice')
-    RATING_SECTION = 3, _('rating question')
-    CAPTURE_DIGITS = 4, _('capture digits')
-    RECORD_MSG = 5, _('record message')
-    CALL_TRANSFER = 6, _('call transfer')
-    HANGUP_SECTION = 7, _('hangup')
+    PLAY_MESSAGE = 1, _('play message').capitalize()
+    MULTI_CHOICE = 2, _('multi-choice').capitalize()
+    RATING_SECTION = 3, _('rating question').capitalize()
+    CAPTURE_DIGITS = 4, _('capture digits').capitalize()
+    RECORD_MSG = 5, _('record message').capitalize()
+    CALL_TRANSFER = 6, _('call transfer').capitalize()
+    HANGUP_SECTION = 7, _('hangup').capitalize()
 
 
 class SECTION_TYPE_NOTRANSFER(Choice):
-    PLAY_MESSAGE = 1, _('play message')
-    MULTI_CHOICE = 2, _('multi-choice')
-    RATING_SECTION = 3, _('rating question')
-    CAPTURE_DIGITS = 4, _('capture digits')
-    RECORD_MSG = 5, _('record message')
+    PLAY_MESSAGE = 1, _('play message').capitalize()
+    MULTI_CHOICE = 2, _('multi-choice').capitalize()
+    RATING_SECTION = 3, _('rating question').capitalize()
+    CAPTURE_DIGITS = 4, _('capture digits').capitalize()
+    RECORD_MSG = 5, _('record message').capitalize()
     #CALL_TRANSFER = 6, _('Call transfer')
-    HANGUP_SECTION = 7, _('hangup')
+    HANGUP_SECTION = 7, _('hangup').capitalize()
 
 
 class SURVEY_COLUMN_NAME(Choice):

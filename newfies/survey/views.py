@@ -1540,7 +1540,7 @@ def survey_audio_recording(audio_file):
     """audio player tag for frontend for survey recording
 
     >>> survey_audio_recording('')
-    u'<br/><span class="label label-important">No recording</span>'
+    u'<br/><span class="label label-important">no recording</span>'
     """
     if audio_file:
         file_url = '%srecording/%s' % (settings.MEDIA_URL, str(audio_file))
@@ -1549,7 +1549,7 @@ def survey_audio_recording(audio_file):
         return player_string
     else:
         return '<br/><span class="label label-important">%s</span>' %\
-               _('No recording')
+               _('no recording')
 
 
 @permission_required('survey.view_survey_report', login_url='/')
@@ -1695,7 +1695,7 @@ def survey_report(request):
     except:
         rows = []
         if request.method == 'POST':
-            request.session["err_msg"] = _('No campaign attached with survey.')
+            request.session["err_msg"] = _('no campaign attached with survey.')
 
     template = 'frontend/survey/survey_report.html'
 

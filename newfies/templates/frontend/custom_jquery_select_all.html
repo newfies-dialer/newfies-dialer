@@ -16,7 +16,7 @@ $(function () {
         var $fields = $(this).find('input[name="select"]:checked');
 
         if (!$fields.length) {
-            msg = '{% trans "You must check at least one box!" %}';
+            msg = '{% trans "you must check at least one box!"|capfirst %}';
             bootbox.alert(msg);
             return false; // The form will *not* submit
         }
@@ -79,7 +79,7 @@ $(function () {
     $('#id_delete_confirm').click(function(e) {
         e.preventDefault();
         var href = this.href;
-        confirm_string = '{% trans "Confirm deletion?" %}';
+        confirm_string = '{% trans "confirm deletion?"|capfirst %}';
         bootbox.confirm(confirm_string, function(result){
             if (result) {
                 window.location = href;
@@ -106,7 +106,7 @@ function get_alert_msg_for_phonebook(id)
         // }
     });
     var href = $('#id_phonebook_delete_confirm').attr('href');
-    confirm_string = '{% trans "Please confirm to delete this phonebook with" %} ' + contact_count + ' {% trans "contact(s)" %}'
+    confirm_string = '{% trans "please confirm to delete this phonebook with"|capfirst %} ' + contact_count + ' {% trans "contact(s)" %}'
 
     bootbox.confirm(confirm_string, function(result){
         if (result) {

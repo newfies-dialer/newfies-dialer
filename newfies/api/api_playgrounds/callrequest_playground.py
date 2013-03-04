@@ -18,7 +18,7 @@ from apiplayground import APIPlayground
 class CallrequestAPIPlayground(APIPlayground):
 
     schema = {
-        "title": _("Callrequest"),
+        "title": _("callrequest"),
         "base_url": "http://localhost/api/v1/",
         "resources": [
             {

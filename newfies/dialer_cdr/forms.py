@@ -20,7 +20,7 @@ from dialer_contact.forms import SearchForm
 
 
 voip_call_disposition_list = []
-voip_call_disposition_list.append(('all', _('ALL')))
+voip_call_disposition_list.append(('all', _('all').upper()))
 for i in VOIPCALL_DISPOSITION:
     voip_call_disposition_list.append((i[0], i[1]))
 
@@ -37,7 +37,7 @@ class VoipSearchForm(SearchForm):
         # To get user's campaign list which are attached with voipcall
         if user:
             list = []
-            list.append((0, _('ALL')))
+            list.append((0, _('all').upper()))
             try:
             	if user.is_superuser:            		
             		camp_list = Campaign.objects.values_list('id', 'name')\

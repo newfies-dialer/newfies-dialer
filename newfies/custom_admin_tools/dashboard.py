@@ -63,42 +63,42 @@ class CustomIndexDashboard(Dashboard):
             display="tabs",
             children=[
                 modules.AppList(
-                    title='User',
+                    title=_('user').capitalize(),
                     models=('django.contrib.*', 'user_profile.*', ),
                 ),
                 modules.AppList(
-                    _('Task Manager'),
+                    _('task manager').title(),
                     models=('djcelery.*', ),
                 ),
                 modules.AppList(
-                    _('Dashboard Stats'),
+                    _('dashboard stats').capitalize(),
                     models=('admin_tools_stats.*', ),
                 ),
-                modules.RecentActions(_('Recent Actions'), 5),
+                modules.RecentActions(_('recent actions').capitalize(), 5),
             ]
         ))
 
         self.children.append(modules.AppList(
-            _('Settings'),
+            _('settings').capitalize(),
             models=('dialer_settings.*', ),
         ))
 
         # append an app list module for "Dialer"
         self.children.append(modules.AppList(
-            _('Voip Dialer'),
+            _('VoIP dialer').title(),
             models=('dialer_cdr.*', 'dialer_gateway.*',
                     'dialer_contact.*', 'dialer_campaign.*', ),
         ))
 
         # append an app list module for "Dialer"
         self.children.append(modules.AppList(
-            _('Surveys'),
+            _('surveys').capitalize(),
             models=('survey.*', ),
         ))
 
         # append an app list module for "Dialer"
         self.children.append(modules.AppList(
-            _('Audio Files'),
+            _('audio files').title(),
             models=('audiofield.*', ),
         ))
 
@@ -132,7 +132,7 @@ class CustomIndexDashboard(Dashboard):
 
         # append an app list module for "Country_prefix"
         self.children.append(modules.AppList(
-            _('Dashboard Stats Settings'),
+            _('dashboard stats settings').title(),
             models=('admin_dashboard_stats.*', ),
         ))
 
@@ -159,19 +159,19 @@ class CustomAppIndexDashboard(AppIndexDashboard):
 
         #TODO: Find out better way 
         if str(self.app_title) == 'Dialer_Settings':
-            app_title = _('Dialer Settings')
+            app_title = _('dialer settings').title()
             models = ['dialer_settings.*']
         elif str(self.app_title) == 'Dialer_Campaign':
-            app_title = _('Dialer Campaign')
+            app_title = _('dialer campaign').title()
             models = ['dialer_campaign.*']
         elif str(self.app_title) == 'Dialer_Cdr':
             app_title = _('Dialer CDR')
             models = ['dialer_cdr.*']
         elif str(self.app_title) == 'Dialer_Gateway':
-            app_title = _('Dialer Gateway')
+            app_title = _('dialer gateway').title()
             models = ['dialer_gateway.*']
         elif str(self.app_title) == 'Voice_App':
-            app_title = _('Voice Application')
+            app_title = _('voice application').title()
             models = ['voice_app.*']
         else:
             app_title = self.app_title
@@ -182,7 +182,7 @@ class CustomAppIndexDashboard(AppIndexDashboard):
             #modules.ModelList(self.app_title, self.models),
             modules.ModelList(app_title, models),
             modules.RecentActions(
-                _('Recent Actions'),
+                _('recent actions').title(),
                 include_list=self.get_app_content_types(),
                 limit=5,
             ),

@@ -128,9 +128,9 @@ def check_campaign_pendingcall(campaign_id):
     if no_subscriber == 1:
         # Not many subscriber do a fast dial
         time_to_wait = 1.0
-    elif no_subscriber < 10:
+    elif no_subscriber <= 10:
         # Not many subscriber do a fast dial
-        time_to_wait = 1.0
+        time_to_wait = 6.0
     else:
         # Set time to wait for balanced dispatching of calls
         time_to_wait = 60.0 / no_subscriber

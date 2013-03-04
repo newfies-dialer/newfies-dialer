@@ -32,7 +32,8 @@ class LoginForm(forms.Form):
 class DashboardForm(forms.Form):
     """Dashboard Form"""
     campaign = forms.ChoiceField(label=_('campaign'), required=False)
-    search_type = forms.ChoiceField(label=_('type'), required=False, initial=4,
+    search_type = forms.ChoiceField(label=_('type'), required=False, 
+        initial=SEARCH_TYPE.D_Last_24_hours,
         choices=list(SEARCH_TYPE))
 
     def __init__(self, user, *args, **kwargs):

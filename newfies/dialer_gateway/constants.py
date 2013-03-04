@@ -17,8 +17,8 @@ from common.utils import Choice
 
 
 class GATEWAY_STATUS(Choice):
-    ACTIVE = 1, _('ACTIVE')
-    INACTIVE = 0, _('INACTIVE')
+    ACTIVE = 1, _('active').upper()
+    INACTIVE = 0, _('inactive').upper()
 
 
 class GATEWAY_PROTOCOL(Choice):

@@ -64,7 +64,7 @@ class Survey_template(Survey_abstract):
 
     class Meta:
         permissions = (
-            ("view_survey_template", _('can see survey Template')),
+            ("view_survey_template", _('can see survey template')),
         )
         verbose_name = _("survey template")
         verbose_name_plural = _("survey templates")

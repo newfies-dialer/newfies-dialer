@@ -17,10 +17,10 @@ from common.utils import Choice
 
 
 class VOICEAPP_TYPE(Choice):
-    DIAL = 1, _('DIAL')
-    PLAYAUDIO = 2, _('PLAYAUDIO')
-    CONFERENCE = 3, _('CONFERENCE')
-    SPEAK = 4, _('SPEAK')
+    DIAL = 1, _('dial').upper()
+    PLAYAUDIO = 2, _('playaudio').upper()
+    CONFERENCE = 3, _('conference').upper()
+    SPEAK = 4, _('speak').upper()
 
 
 class VOICEAPP_COLUMN_NAME(Choice):

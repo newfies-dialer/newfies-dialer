@@ -26,8 +26,7 @@ class CALLREQUEST_STATUS(Choice):
     SUCCESS = 4, _("success").capitalize()
     ABORT = 5, _("abort").capitalize()
     PAUSE = 6, _("pause").capitalize()
-    PROCESS = 7, _("processing").capitalize()
-    IN_PROGRESS = 8, _("in progress").capitalize()
+    CALLING = 7, _("calling").capitalize()
 
 
 class CALLREQUEST_TYPE(Choice):

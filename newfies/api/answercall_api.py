@@ -133,8 +133,7 @@ class AnswercallResource(ModelResource):
             obj_callrequest = Callrequest.objects\
                 .get(request_uuid=opt_ALegRequestUUID)
 
-            #TODO : use constant
-            obj_callrequest.status = CALLREQUEST_STATUS.IN_PROGRESS  # IN-PROGRESS
+            obj_callrequest.status = CALLREQUEST_STATUS.CALLING
             obj_callrequest.aleg_uuid = opt_CallUUID
             obj_callrequest.save()
 

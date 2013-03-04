@@ -14,7 +14,6 @@
 
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
-from django.template import Template, Context
 from django.core.management import call_command
 from django.test import TestCase
 from dialer_campaign.models import Campaign, Subscriber, \
@@ -27,6 +26,7 @@ from dialer_campaign.views import campaign_list, campaign_add, \
 from dialer_campaign.tasks import campaign_running, \
     collect_subscriber, campaign_expire_check
 from dialer_settings.models import DialerSetting
+from dialer_campaign.constants import SUBSCRIBER_STATUS
 from common.utils import BaseAuthenticatedClient
 
 
@@ -164,7 +164,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         request.session = {}
         response = campaign_add(request)
         self.assertEqual(response['Location'], '/campaign/')
-        self.assertEqual(response.status_code, 302)        
+        self.assertEqual(response.status_code, 302)
 
     def test_campaign_view_update(self):
         """Test Function to check update campaign"""
@@ -345,14 +345,14 @@ class DialerCampaignModel(TestCase):
         self.campaign.save()
         self.campaign.update_campaign_status()
         get_url_campaign_status(self.campaign.pk, self.campaign.status)
-                
-        self.campaign.is_authorized_contact(dialersetting, '123456789')        
+
+        self.campaign.is_authorized_contact(dialersetting, '123456789')
         self.campaign.get_active_max_frequency()
         self.campaign.get_active_callmaxduration()
         self.campaign.get_active_contact()
         self.campaign.progress_bar()
         self.campaign.subscriber_detail()
-        self.campaign.get_pending_subscriber_update()
+        self.campaign.get_pending_subscriber_update(10, SUBSCRIBER_STATUS.IN_PROCESS)
 
         self.assertEqual(self.subscriber.campaign, self.campaign)
 

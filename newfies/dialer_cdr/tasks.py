@@ -680,7 +680,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
     if outbound_failure:
         obj_callrequest.status = CALLREQUEST_STATUS.FAILURE
     else:
-        obj_callrequest.status = CALLREQUEST_STATUS.PROCESS
+        obj_callrequest.status = CALLREQUEST_STATUS.CALLING
     obj_callrequest.save()
 
     #lock to limit running process, do so per campaign

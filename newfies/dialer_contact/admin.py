@@ -165,7 +165,7 @@ class ContactAdmin(admin.ModelAdmin):
                         continue
 
                     # check field type
-                    if not int(row[5]):                        
+                    if not int(row[5]):
                         error_msg = _("invalid value for import! please check the import samples or phonebook is not valid")
                         type_error_import_list.append(row)
                         break
@@ -208,7 +208,7 @@ class ContactAdmin(admin.ModelAdmin):
         else:
             form = Contact_fileImport(request.user)
 
-        ctx = RequestContext(request, {            
+        ctx = RequestContext(request, {
             'form': form,
             'opts': opts,
             'model_name': opts.object_name.lower(),

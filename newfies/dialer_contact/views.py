@@ -337,8 +337,8 @@ def contact_list(request):
                  Q(first_name__icontains=contact_name))
             if q:
                 contact_list = contact_list.filter(q)
-               
-        all_contact_list = contact_list.order_by(sort_order)        
+
+        all_contact_list = contact_list.order_by(sort_order)
         contact_list = all_contact_list[start_page:end_page]
         contact_count = all_contact_list.count()
 
@@ -576,10 +576,10 @@ def contact_import(request):
                 Phonebook, pk=request.POST['phonebook'],
                 user=request.user)
             # Read each Row
-            for row in csv_data:                
-                row = striplist(row)                
+            for row in csv_data:
+                row = striplist(row)
                 if not row or str(row[0]) == 0:
-                    continue                
+                    continue
 
                 # check field type
                 if not int(row[5]):

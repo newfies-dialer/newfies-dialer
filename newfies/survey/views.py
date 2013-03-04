@@ -355,10 +355,10 @@ def survey_finitestatemachine(request):
     cache.set(key_survey, survey_id, 21600)  # 21600 seconds = 6 hours
 
     if current_state == 0:
-        obj_callrequest.status = CALLREQUEST_STATUS.IN_PROGRESS
+        obj_callrequest.status = CALLREQUEST_STATUS.CALLING
         obj_callrequest.aleg_uuid = opt_CallUUID
         obj_callrequest.save()
-        debug_outp += "Callrequest Saves (IN_PROGRESS) <br/>"
+        debug_outp += "Callrequest Saves (CALLING) <br/>"
 
     debug_outp += "current_state = %s <br/>" % str(current_state)
     debug_outp += "Previous Section = %s <br/>" % str(obj_p_section)

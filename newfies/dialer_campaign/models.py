@@ -406,7 +406,7 @@ class Campaign(Model):
     subscriber_detail.short_description = _('subscriber')
 
     # OPTIMIZATION - GOOD
-    def get_pending_subscriber_update(self, limit=1000, status=SUBSCRIBER_STATUS.IN_PROCESS):
+    def get_pending_subscriber_update(self, limit, status):
         """Get all the pending subscribers from the campaign"""
         #We cannot use select_related here as it' 's not compliant with locking the rows
         list_subscriber = Subscriber.objects.select_for_update()\

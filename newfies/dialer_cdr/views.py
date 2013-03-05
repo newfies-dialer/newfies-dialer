@@ -80,7 +80,7 @@ def voipcall_report(request):
 
     **Important variable**:
 
-        * ``request.session['voipcall_record_qs']`` - stores voipcall query set
+        * ``request.session['voipcall_record_kwargs']`` - stores voipcall kwargs
     """
     sort_col_field_list = ['starting_date', 'leg_type', 'disposition',
                            'used_gateway', 'callerid', 'callid', 'phone_number',
@@ -186,7 +186,7 @@ def voipcall_report(request):
 
     # Session variable is used to get record set with searched option
     # into export file
-    request.session['voipcall_record_qs'] = all_voipcall_list
+    request.session['voipcall_record_kwargs'] = kwargs
 
     if request.GET.get('page') or request.GET.get('sort_by'):
         daily_data = request.session['voipcall_daily_data']
@@ -232,7 +232,7 @@ def export_voipcall_report(request):
 
     **Important variable**:
 
-        * ``request.session['voipcall_record_qs']`` - stores voipcall query set
+        * ``request.session['voipcall_record_kwargs']`` - stores voipcall kwargs
 
     **Exported fields**: [user, callid, callerid, phone_number, starting_date,
                           duration, disposition, used_gateway]
@@ -245,8 +245,9 @@ def export_voipcall_report(request):
     writer = csv.writer(response)
 
     # super(VoIPCall_ReportAdmin, self).queryset(request)
-    if request.session.get('voipcall_record_qs'):
-        qs = request.session['voipcall_record_qs']
+    if request.session.get('voipcall_record_kwargs'):
+        kwargs = request.session['voipcall_record_kwargs']
+        qs = VoIPCall.objects.filter(**kwargs)
 
         amd_status = ''
         if settings.AMD:

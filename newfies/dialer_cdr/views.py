@@ -122,7 +122,7 @@ def voipcall_report(request):
             if disposition != 'all':
                 request.session['session_disposition'] = disposition
 
-            campaign_id = request.POST.get('campaign')
+            campaign_id = int(request.POST.get('campaign'))            
             if campaign_id and campaign_id != 0:
                 request.session['session_campaign_id'] = int(campaign_id)
 
@@ -177,8 +177,9 @@ def voipcall_report(request):
     if campaign_id and campaign_id != 0:
         kwargs['callrequest__campaign_id'] = campaign_id
 
-    kwargs['user'] = request.user
-
+    if not request.user.is_superuser:
+        kwargs['user'] = request.user
+    
     voipcall_list = VoIPCall.objects.filter(**kwargs)
     all_voipcall_list = voipcall_list.values_list('id', flat=True)
 

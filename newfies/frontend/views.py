@@ -38,6 +38,7 @@ from common.common_functions import current_view
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import time
+import logging
 
 
 def logout_view(request):
@@ -159,7 +160,7 @@ def customer_dashboard(request, on_index=None):
         * ``template`` - frontend/dashboard.html
         * ``form`` - DashboardForm
     """
-
+    logging.debug('Start Dashboard')
     # All campaign for logged in User
     campaign_id_list = Campaign.objects.values_list('id', flat=True)\
         .filter(user=request.user).order_by('id')
@@ -175,6 +176,7 @@ def customer_dashboard(request, on_index=None):
         Contact.objects.filter(phonebook__user=request.user).count()
 
     form = DashboardForm(request.user)
+    logging.debug('Got Campaign list')
 
     total_record = dict()
     total_duration_sum = 0
@@ -236,6 +238,8 @@ def customer_dashboard(request, on_index=None):
             .annotate(Count('starting_date'))\
             .order_by('starting_date')
 
+        logging.debug('Aggregate VoIPCall')
+
         for i in calls:
             if (i['disposition'] == VOIPCALL_DISPOSITION.ANSWER
                or i['disposition'] == 'NORMAL_CLEARING'):
@@ -255,7 +259,7 @@ def customer_dashboard(request, on_index=None):
             else:
                 #VOIP CALL FAILED
                 total_failed += i['starting_date__count']
-        
+
         # following calls list is without disposition & group by call date
         calls = VoIPCall.objects\
             .filter(callrequest__campaign=selected_campaign,
@@ -267,6 +271,8 @@ def customer_dashboard(request, on_index=None):
             .annotate(Avg('duration'))\
             .annotate(Count('starting_date'))\
             .order_by('starting_date')
+
+        logging.debug('Aggregate VoIPCall (2)')
 
         mintime = start_date
         maxtime = end_date
@@ -326,6 +332,8 @@ def customer_dashboard(request, on_index=None):
                         'duration_sum': data['duration__sum'],
                         'duration_avg': float(data['duration__avg']),
                     }
+
+        logging.debug('After Call Loops')
 
         dateList = date_range(mintime, maxtime, q=search_type)
 
@@ -398,6 +406,8 @@ def customer_dashboard(request, on_index=None):
                     total_record[dt]['call_count'] += calls_dict[inttime]['call_count']
                     total_record[dt]['duration_sum'] += calls_dict[inttime]['duration_sum']
                     total_record[dt]['duration_avg'] += float(calls_dict[inttime]['duration_avg'])
+
+    logging.debug('After dateList Loops')
 
     # sorting on date col
     total_record = total_record.items()

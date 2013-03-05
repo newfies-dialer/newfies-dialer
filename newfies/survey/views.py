@@ -1509,11 +1509,11 @@ def survey_cdr_daily_report(all_call_list):
         .order_by('-starting_date')
 
     # Following code will count total voip calls, duration
-    if total_data.count() != 0:
+    if total_data:
         max_duration = max([x['duration__sum'] for x in total_data])
         total_duration = sum([x['duration__sum'] for x in total_data])
         total_calls = sum([x['starting_date__count'] for x in total_data])
-        total_avg_duration = (sum([x['duration__avg'] for x in total_data])) / total_data.count()
+        total_avg_duration = (sum([x['duration__avg'] for x in total_data])) / total_calls
 
     survey_cdr_daily_data = {
         'total_data': total_data,
@@ -1655,7 +1655,8 @@ def survey_report(request):
     end_date = ceil_strdate(to_date, 'end')
 
     kwargs = {}
-    kwargs['user'] = request.user
+    if not request.user.is_superuser:
+        kwargs['user'] = request.user
     kwargs['disposition__exact'] = VOIPCALL_DISPOSITION.ANSWER
 
     survey_result_kwargs = {}

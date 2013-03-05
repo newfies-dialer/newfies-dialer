@@ -233,14 +233,13 @@ def customer_dashboard(request, on_index=None):
                 starting_date__range=(start_date, end_date))\
             .extra(select=select_data)\
             .values('starting_date', 'disposition')\
-            .annotate(Sum('duration'))\
-            .annotate(Avg('duration'))\
             .annotate(Count('starting_date'))\
             .order_by('starting_date')
 
         logging.debug('Aggregate VoIPCall')
 
         for i in calls:
+            total_call_count += i['starting_date__count']
             if (i['disposition'] == VOIPCALL_DISPOSITION.ANSWER
                or i['disposition'] == 'NORMAL_CLEARING'):
                 total_answered += i['starting_date__count']
@@ -432,7 +431,7 @@ def customer_dashboard(request, on_index=None):
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'campaign_count': campaign_count,
         'total_of_phonebook_contacts': total_of_phonebook_contacts,
-        'pb_active_contact_count': pb_active_contact_count,
+        'campaign_phonebook_active_contact_count': pb_active_contact_count,
         'reached_contact': reached_contact,
         'notice_count': notice_count(request),
         'total_record': total_record,

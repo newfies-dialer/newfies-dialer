@@ -74,6 +74,10 @@ class Command(BaseCommand):
         chars = "1234567890"
         for i in range(1, int(quantity) + 1):
             phone_no = ''.join([choice(chars) for i in range(length)])
+
+            #TODO: Use generate_series to speed up the contact creation
+            #INSERT INTO numbers (num) VALUES ( generate_series(1,1000));
+
             try:
                 Contact.objects.create(
                     contact=phone_no + prefix,

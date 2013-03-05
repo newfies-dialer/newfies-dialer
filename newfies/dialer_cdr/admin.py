@@ -144,6 +144,9 @@ class VoIPCallAdmin(admin.ModelAdmin):
         query_string = ''
         form = VoipSearchForm(request.user)
         if request.method == 'POST':
+            # Session variable get record set with searched option into export file
+            request.session['admin_voipcall_record_kwargs'] = voipcall_record_common_fun(request)
+
             query_string = voipcall_search_admin_form_fun(request)
             return HttpResponseRedirect("/admin/%s/%s/?%s"
                 % (opts.app_label, opts.object_name.lower(), query_string))
@@ -180,13 +183,15 @@ class VoIPCallAdmin(admin.ModelAdmin):
             return HttpResponseRedirect('%s?%s=1' % (request.path, ERROR_FLAG))
 
         if request.META['QUERY_STRING'] == '':
+            # Default
+            # Session variable get record set with searched option into export file
+            request.session['admin_voipcall_record_kwargs'] = voipcall_record_common_fun(request)
+
             query_string = voipcall_search_admin_form_fun(request)
             return HttpResponseRedirect("/admin/%s/%s/?%s"
                 % (opts.app_label, opts.object_name.lower(), query_string))
 
         cl.formset = None
-        # Session variable get record set with searched option into export file
-        request.session['admin_voipcall_record_qs'] = cl.root_query_set
 
         selection_note_all = ungettext('%(total_count)s selected',
             'All %(total_count)s selected', cl.result_count)
@@ -262,7 +267,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
         **Important variable**:
 
-            * request.session['admin_voipcall_record_qs'] - stores voipcall
+            * request.session['admin_voipcall_record_kwargs'] - stores voipcall kwargs
 
         **Exported fields**: [user, callid, callerid, phone_number,
                               starting_date, duration, disposition,
@@ -275,7 +280,8 @@ class VoIPCallAdmin(admin.ModelAdmin):
         writer = csv.writer(response)
 
         # super(VoIPCall_ReportAdmin, self).queryset(request)
-        qs = request.session['admin_voipcall_record_qs']
+        kwargs = request.session['admin_voipcall_record_kwargs']
+        qs = VoIPCall.objects.filter(**kwargs)
 
         amd_status = ''
         if settings.AMD:

@@ -459,7 +459,7 @@ class Subscriber(Model):
                                  verbose_name=_("status"), blank=True, null=True)
 
     created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('date'))
-    updated_date = models.DateTimeField(auto_now=True)
+    updated_date = models.DateTimeField(auto_now=True, db_index=True)
 
     class Meta:
         db_table = u'dialer_subscriber'
@@ -468,7 +468,7 @@ class Subscriber(Model):
         unique_together = ['contact', 'campaign']
 
     def __unicode__(self):
-            return u"%s" % str(self.id)
+        return u"%s" % str(self.id)
 
     def contact_name(self):
         return self.contact.name

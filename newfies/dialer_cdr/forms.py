@@ -33,22 +33,25 @@ class VoipSearchForm(SearchForm):
     campaign = forms.ChoiceField(label=_('campaign'), required=False)
 
     def __init__(self, user, *args, **kwargs):
-        super(VoipSearchForm, self).__init__(*args, **kwargs)        
+        super(VoipSearchForm, self).__init__(*args, **kwargs)
         # To get user's campaign list which are attached with voipcall
         if user:
             list = []
             list.append((0, _('all').upper()))
+            content_type_list = ['voiceapp', 'survey']
             try:
-            	if user.is_superuser:            		
+            	if user.is_superuser:
             		camp_list = Campaign.objects.values_list('id', 'name')\
-                    	.filter(content_type__model='voiceapp', has_been_started=True)
-            	else:            		
+                    	.filter(content_type__model__in=content_type_list,
+                                has_been_started=True)
+            	else:
             		camp_list = Campaign.objects.values_list('id', 'name')\
-                    	.filter(user=user, content_type__model='voiceapp', has_been_started=True)
-                
+                    	.filter(user=user, content_type__model__in=content_type_list,
+                                has_been_started=True)
+
                 for i in camp_list:
                     list.append((i[0], i[1]))
             except:
             	pass
-                
+
             self.fields['campaign'].choices = list

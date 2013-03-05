@@ -178,13 +178,11 @@ class VoIPCallAdmin(admin.ModelAdmin):
                         {'title': _('Database error')})
             return HttpResponseRedirect('%s?%s=1' % (request.path, ERROR_FLAG))
 
-        kwargs = {}
+        kwargs = {}            
         if request.META['QUERY_STRING'] == '':
-            tday = datetime.today()
-            kwargs['starting_date__gte'] = datetime(tday.year,
-                                                    tday.month,
-                                                    tday.day, 0, 0, 0, 0)                    
-            cl.root_query_set.filter(**kwargs)
+            query_string = voipcall_search_admin_form_fun(request)            
+            return HttpResponseRedirect("/admin/%s/%s/?%s"
+                % (opts.app_label, opts.object_name.lower(), query_string))
 
         cl.formset = None
         # Session variable get record set with searched option into export file

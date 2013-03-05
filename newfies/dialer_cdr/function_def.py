@@ -91,7 +91,7 @@ def voipcall_search_admin_form_fun(request):
     if start_date and end_date:
         date_string = 'starting_date__gte=' + start_date + \
             '&starting_date__lte=' + end_date + '+23%3A59%3A59'
-        query_string = return_query_string(query_string, date_string)
+        query_string = return_query_string(query_string, date_string)        
 
     if start_date and end_date == '':
         date_string = 'starting_date__gte=' + start_date
@@ -108,6 +108,13 @@ def voipcall_search_admin_form_fun(request):
     if campaign_id and campaign_id != '0':
         campaign_string = 'callrequest__campaign_id=' + str(campaign_id)
         query_string = return_query_string(query_string, campaign_string)
+
+    if start_date == '' and end_date == '':
+        tday = datetime.today()
+        end_date = start_date = tday.strftime("%Y-%m-%d")
+        date_string = 'starting_date__gte=' + start_date + \
+            '&starting_date__lte=' + end_date + '+23%3A59%3A59'
+        query_string = return_query_string(query_string, date_string)
 
     return query_string
 

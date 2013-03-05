@@ -17,16 +17,17 @@ from dialer_campaign.constants import CAMPAIGN_STATUS
 from survey.models import Survey_template
 
 
-def check_survey_campaign(request, pk):
-    """Start Survey Campaign"""
-    obj_campaign = Campaign.objects\
-        .get(id=pk,
-             status=CAMPAIGN_STATUS.START,
-             content_type__model='survey_template')
+def copy_survey_template_campaign(user, pk):
+    """
+    Start Survey Campaign
+    """
+    obj_campaign = Campaign.objects.get(id=pk,
+        status=CAMPAIGN_STATUS.START,
+        content_type__model='survey_template')
     if obj_campaign:
         # Copy survey
         survey_template = Survey_template.objects\
-            .get(user=request.user,
+            .get(user=user,
                  pk=obj_campaign.object_id)
         survey_template.copy_survey_template(obj_campaign)
 

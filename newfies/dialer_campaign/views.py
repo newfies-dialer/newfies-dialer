@@ -31,12 +31,13 @@ from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_COLUMN_NAME
 from dialer_campaign.function_def import check_dialer_setting, dialer_setting_limit, \
     user_dialer_setting, user_dialer_setting_msg
 from dialer_campaign.tasks import collect_subscriber
-from survey.function_def import check_survey_campaign
-from voice_app.function_def import check_voiceapp_campaign
+from survey.function_def import copy_survey_template_campaign
+#from voice_app.function_def import check_voiceapp_campaign
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import notice_count, frontend_send_notification
 from common.common_functions import current_view, get_pagination_vars
 import re
+import logging
 
 
 @login_required
@@ -69,7 +70,9 @@ def update_campaign_status_cust(request, pk, status):
         request.session['error_msg'] = _('error : you have to assign a phonebook to your campaign before starting it')
     else:
         recipient = request.user
-        frontend_send_notification(request, status, recipient)        
+        frontend_send_notification(request, status, recipient)
+        logging.info("obj_campaign")
+        logging.info(obj_campaign)
 
         # Notify user while campaign Start
         if int(status) == CAMPAIGN_STATUS.START:
@@ -79,10 +82,11 @@ def update_campaign_status_cust(request, pk, status):
 
             request.session['info_msg'] = \
                 _('the campaign global settings cannot be edited when the campaign is started')
+            logging.debug('obj_campaign.content_type.model : ' + obj_campaign.content_type.model)
             if obj_campaign.content_type.model == 'survey_template':
-                check_survey_campaign(request, pk)
-            elif obj_campaign.content_type.model == 'voiceapp_template':
-                check_voiceapp_campaign(request, pk)
+                copy_survey_template_campaign(request.user, pk)
+            # elif obj_campaign.content_type.model == 'voiceapp_template':
+            #     check_voiceapp_campaign(request, pk)
 
     return HttpResponseRedirect(pagination_path)
 
@@ -95,7 +99,7 @@ def notify_admin(request):
     # Get all the admin users - admin superuser
     all_admin_user = User.objects.filter(is_superuser=True)
     for user in all_admin_user:
-        recipient = user    
+        recipient = user
         if not request.session['has_notified']:
             frontend_send_notification(
                 request, NOTIFICATION_NAME.dialer_setting_configuration, recipient)
@@ -173,43 +177,43 @@ def _return_link(app_name, obj_id):
     # Object view links
     if app_name == 'survey':
         link = '<a href="/survey_view/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' % \
-                   (obj_id, _('survey').title(), tpl_control_icon('zoom.png'))
+            (obj_id, _('survey').title(), tpl_control_icon('zoom.png'))
 
     if app_name == 'voiceapp':
         link = '<a href="/voiceapp_view/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' % \
-                   (obj_id, _('voice application').title(), tpl_control_icon('zoom.png'))
+            (obj_id, _('voice application').title(), tpl_control_icon('zoom.png'))
 
     # Object edit links
     if app_name == 'survey_template':
         link = '<a href="/survey/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' %\
-                   (obj_id, _('edit survey').title(), tpl_control_icon('zoom.png'))
+            (obj_id, _('edit survey').title(), tpl_control_icon('zoom.png'))
 
     if app_name == 'voiceapp_template':
         link = '<a href="/voiceapp/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' %\
-                   (obj_id, _('edit voice application').title(), tpl_control_icon('zoom.png'))
-
+            (obj_id, _('edit voice application').title(), tpl_control_icon('zoom.png'))
     return link
+
 
 def get_campaign_survey_view(campaign_object):
     """display view button on campaign list"""
     link = ''
     if campaign_object.status and int(campaign_object.status) == CAMPAIGN_STATUS.START:
         if campaign_object.content_type.model == 'survey':
-            link = _return_link('survey', campaign_object.object_id)            
+            link = _return_link('survey', campaign_object.object_id)
 
         if campaign_object.content_type.model == 'voiceapp':
-            link = _return_link('voiceapp', campaign_object.object_id)            
+            link = _return_link('voiceapp', campaign_object.object_id)
 
     if campaign_object.status and int(campaign_object.status) != CAMPAIGN_STATUS.START:
-        
+
         if campaign_object.content_type.model == 'survey_template':
-            link = _return_link('survey_template', campaign_object.object_id)            
+            link = _return_link('survey_template', campaign_object.object_id)
 
         if campaign_object.content_type.model == 'survey' and campaign_object.has_been_started:
             link = _return_link('survey', campaign_object.object_id)
-        
+
         if campaign_object.content_type.model == 'voiceapp_template':
-            link = _return_link('voiceapp_template', campaign_object.object_id)            
+            link = _return_link('voiceapp_template', campaign_object.object_id)
 
         if campaign_object.content_type.model == 'voiceapp' and campaign_object.has_been_started:
             link = _return_link('voiceapp', campaign_object.object_id)
@@ -236,7 +240,7 @@ def campaign_list(request):
     **Logic Description**:
 
         * List all campaigns belonging to the logged in user
-    """    
+    """
     request.session['pagination_path'] = request.META['PATH_INFO'] + '?' + request.META['QUERY_STRING']
     sort_col_field_list = ['id', 'name', 'startingdate', 'status', 'totalcontact']
     default_sort_field = 'id'
@@ -302,8 +306,8 @@ def campaign_add(request):
         * Add the new campaign which will belong to the logged in user
           via CampaignForm & get redirected to campaign list
     """
-    # If dialer setting is not attached with user, redirect to campaign list    
-    if not user_dialer_setting(request.user):        
+    # If dialer setting is not attached with user, redirect to campaign list
+    if not user_dialer_setting(request.user):
         request.session['error_msg'] = \
             _("in order to add a campaign, you need to have your settings configured properly, please contact the admin.")
         return HttpResponseRedirect("/campaign/")
@@ -335,9 +339,9 @@ def campaign_add(request):
             # Start tasks to import subscriber
             if obj.status == CAMPAIGN_STATUS.START:
                 if obj.content_type.model == 'survey_template':
-                    check_survey_campaign(request, obj.id)
-                elif obj.content_type.model == 'voiceapp_template':
-                    check_voiceapp_campaign(request, obj.id)
+                    copy_survey_template_campaign(request.user, obj.id)
+                # elif obj.content_type.model == 'voiceapp_template':
+                #     check_voiceapp_campaign(request, obj.id)
 
                 collect_subscriber.delay(obj.pk)
 
@@ -352,7 +356,7 @@ def campaign_add(request):
         'module': current_view(request),
         'form': form,
         'action': 'add',
-        'notice_count': notice_count(request),        
+        'notice_count': notice_count(request),
         'AMD': settings.AMD,
     }
     return render_to_response(template, data,
@@ -478,7 +482,7 @@ def campaign_change(request, object_id):
         'module': current_view(request),
         'form': form,
         'action': 'update',
-        'notice_count': notice_count(request),        
+        'notice_count': notice_count(request),
         'error_msg': request.session.get('error_msg'),
         'info_msg': request.session.get('info_msg'),
         'AMD': settings.AMD,
@@ -530,7 +534,7 @@ def campaign_duplicate(request, id):
         'module': current_view(request),
         'campaign_id': id,
         'form': form,
-        'notice_count': notice_count(request),        
+        'notice_count': notice_count(request),
         'err_msg': request.session.get('error_msg'),
     }
     request.session['error_msg'] = ''

@@ -96,7 +96,6 @@ def voipcall_report(request):
 
     search_tag = 1
     action = 'tabs-1'
-    form = VoipSearchForm(request.user)
 
     if request.method == 'POST':
         form = VoipSearchForm(request.user, request.POST)
@@ -122,7 +121,7 @@ def voipcall_report(request):
             if disposition != 'all':
                 request.session['session_disposition'] = disposition
 
-            campaign_id = request.POST.get('campaign')            
+            campaign_id = request.POST.get('campaign')
             if campaign_id and int(campaign_id) != 0:
                 request.session['session_campaign_id'] = int(campaign_id)
 
@@ -130,11 +129,11 @@ def voipcall_report(request):
     try:
         if request.GET.get('page') or request.GET.get('sort_by'):
             post_var_with_page = 1
-            start_date = request.session.get('session_start_date')            
+            start_date = request.session.get('session_start_date')
             end_date = request.session.get('session_end_date')
             disposition = request.session.get('session_disposition')
             campaign_id = request.session.get('session_campaign_id')
-            form = VoipSearchForm(request.user, 
+            form = VoipSearchForm(request.user,
                                   initial={'from_date': start_date.strftime('%Y-%m-%d'),
                                            'to_date': end_date.strftime('%Y-%m-%d'),
                                            'status': disposition,
@@ -155,7 +154,7 @@ def voipcall_report(request):
         end_date = datetime(tday.year, tday.month, tday.day, 23, 59, 59, 999999)
         disposition = 'all'
         campaign_id = 0
-        form = VoipSearchForm(request.user, 
+        form = VoipSearchForm(request.user,
                               initial={'from_date': from_date, 'to_date': to_date,
                                        'status': disposition, 'campaign': campaign_id})
         # unset session var
@@ -180,9 +179,9 @@ def voipcall_report(request):
 
     if not request.user.is_superuser:
         kwargs['user'] = request.user
-    
+
     voipcall_list = VoIPCall.objects.filter(**kwargs)
-    
+
     all_voipcall_list = voipcall_list.values_list('id', flat=True)
 
     # Session variable is used to get record set with searched option
@@ -211,7 +210,7 @@ def voipcall_report(request):
         'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'all_voipcall_list': all_voipcall_list,
-        'voipcall_list': voipcall_list,        
+        'voipcall_list': voipcall_list,
         'PAGE_SIZE': PAGE_SIZE,
         'CDR_REPORT_COLUMN_NAME': CDR_REPORT_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],

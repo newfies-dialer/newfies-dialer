@@ -316,10 +316,10 @@ class SurveyReportForm(forms.Form):
             try:
                 if user.is_superuser:
                     camp_list = Campaign.objects.values_list('id', 'name')\
-                        .filter(content_type__model='survey')
+                        .filter(content_type__model='survey', has_been_started=True)
                 else:
                     camp_list = Campaign.objects.values_list('id', 'name')\
-                        .filter(user=user, content_type__model='survey')
+                        .filter(user=user, content_type__model='survey', has_been_started=True)
                 for i in camp_list:
                     list.append((i[0], i[1]))
             except:

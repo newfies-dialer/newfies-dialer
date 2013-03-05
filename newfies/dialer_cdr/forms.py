@@ -41,10 +41,10 @@ class VoipSearchForm(SearchForm):
             try:
             	if user.is_superuser:            		
             		camp_list = Campaign.objects.values_list('id', 'name')\
-                    	.filter(content_type__model='voiceapp')
+                    	.filter(content_type__model='voiceapp', has_been_started=True)
             	else:            		
             		camp_list = Campaign.objects.values_list('id', 'name')\
-                    	.filter(user=user, content_type__model='voiceapp')
+                    	.filter(user=user, content_type__model='voiceapp', has_been_started=True)
                 
                 for i in camp_list:
                     list.append((i[0], i[1]))

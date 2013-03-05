@@ -122,8 +122,8 @@ def voipcall_report(request):
             if disposition != 'all':
                 request.session['session_disposition'] = disposition
 
-            campaign_id = int(request.POST.get('campaign'))            
-            if campaign_id and campaign_id != 0:
+            campaign_id = request.POST.get('campaign')            
+            if campaign_id and int(campaign_id) != 0:
                 request.session['session_campaign_id'] = int(campaign_id)
 
     post_var_with_page = 0

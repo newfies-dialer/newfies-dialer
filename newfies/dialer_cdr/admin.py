@@ -207,27 +207,20 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
     def voip_daily_report(self, request):
         opts = VoIPCall._meta
-        kwargs = {}
-
-        form = VoipSearchForm(request.user)
+        kwargs = {}        
         if request.method == 'POST':
             form = VoipSearchForm(request.user, request.POST)
-            kwargs = voipcall_record_common_fun(request)
-            request.session['from_date'] = request.POST.get('from_date')
-            request.session['to_date'] = request.POST.get('to_date')
-            request.session['status'] = request.POST.get('status')
-            request.session['campaign_id'] = request.POST.get('campaign')
+            kwargs = voipcall_record_common_fun(request)            
         else:
             kwargs = voipcall_record_common_fun(request)
             tday = datetime.today()
+            form = VoipSearchForm(request.user, initial={"from_date": tday.strftime("%Y-%m-%d"),
+                                                         "to_date": tday.strftime("%Y-%m-%d")})
             if len(kwargs) == 0:
-                kwargs['starting_date__gte'] = datetime(tday.year,
-                                                        tday.month,
-                                                        tday.day, 0, 0, 0, 0)        
-        select_data = \
-            {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
-
-        total_data = ''
+                kwargs['starting_date__gte'] = datetime(tday.year, tday.month, tday.day, 
+                                                        0, 0, 0, 0)     
+        total_data = []
+        select_data = {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}            
         # Get Total Records from VoIPCall Report table for Daily Call Report
         total_data = VoIPCall.objects.extra(select=select_data)\
             .values('starting_date')\
@@ -238,7 +231,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             .order_by('-starting_date')
 
         # Following code will count total voip calls, duration
-        if total_data.count() != 0:
+        if total_data:
             max_duration = max([x['duration__sum'] for x in total_data])
             total_duration = sum([x['duration__sum'] for x in total_data])
             total_calls = sum([x['starting_date__count'] for x in total_data])
@@ -252,7 +245,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
         ctx = RequestContext(request, {
             'form': form,
-            'total_data': total_data.reverse(),
+            'total_data': total_data,
             'total_duration': total_duration,
             'total_calls': total_calls,
             'total_avg_duration': total_avg_duration,

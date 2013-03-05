@@ -34,23 +34,7 @@ def voipcall_record_common_fun(request):
     # Assign form field value to local variable
     disposition = variable_value(request, 'status')
     campaign_id = variable_value(request, 'campaign')
-
-    # Patch code for persist search
-    if request.method != 'POST':
-        if request.session.get('from_date'):
-            from_date = request.session['from_date']
-            start_date = ceil_strdate(from_date, 'start')
-
-        if request.session.get('to_date'):
-            to_date = request.session['to_date']
-            end_date = ceil_strdate(to_date, 'end')
-
-        if request.session.get('status'):
-            disposition = request.session['status']
-
-        if request.session.get('campaign_id'):
-            campaign_id = request.session['campaign_id']
-
+    
     kwargs = {}
     if start_date and end_date:
         kwargs['starting_date__range'] = (start_date, end_date)

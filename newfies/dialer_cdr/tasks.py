@@ -67,7 +67,7 @@ def check_retrycall_completion(callrequest):
             user=callrequest.user,
             campaign_id=callrequest.campaign_id,
             aleg_gateway_id=callrequest.aleg_gateway_id,
-            content_type=callrequest.content_type,
+            content_type_id=callrequest.content_type_id,
             object_id=callrequest.object_id,
             phone_number=callrequest.phone_number,
             timelimit=callrequest.timelimit,
@@ -208,7 +208,7 @@ def check_callevent():
 
     sql_statement = "SELECT id, event_name, body, job_uuid, call_uuid, used_gateway_id, "\
         "callrequest_id, callerid, phonenumber, duration, billsec, hangup_cause, "\
-        "hangup_cause_q850, starting_date, status, created_date, amd_status FROM call_event WHERE status=1 LIMIT 1000 OFFSET 0"
+        "hangup_cause_q850, starting_date, status, created_date, amd_status FROM call_event WHERE status=1 LIMIT 2000 OFFSET 0"
 
     cursor.execute(sql_statement)
     row = cursor.fetchall()
@@ -257,11 +257,12 @@ def check_callevent():
         try:
             if callrequest_id == 0:
                 callrequest = Callrequest.objects\
-                    .select_related('aleg_gateway', 'content_type', 'content_object', 'subscriber', 'campaign')\
+                    .select_related('subscriber', 'campaign')\
                     .get(request_uuid=opt_request_uuid.strip(' \t\n\r'))
             else:
+                #mainly coming here
                 callrequest = Callrequest.objects\
-                    .select_related('aleg_gateway', 'content_type', 'content_object', 'subscriber', 'campaign')\
+                    .select_related('subscriber', 'campaign')\
                     .get(id=callrequest_id)
         except:
             logger.error("Cannot find Callrequest job_uuid : %s" % job_uuid)
@@ -348,8 +349,7 @@ def check_callevent():
                     timelimit=callrequest.timelimit,
                     callerid=callrequest.callerid,
                     timeout=callrequest.timeout,
-                    content_object=callrequest.content_object,
-                    subscriber=callrequest.subscriber
+                    subscriber_id=callrequest.subscriber_id
                 )
                 new_callrequest.save()
                 #NOTE : implement a PID algorithm
@@ -382,7 +382,7 @@ class task_pending_callevent(PeriodicTask):
 
         check_callevent.delay()
     """
-    run_every = timedelta(seconds=5)
+    run_every = timedelta(seconds=15)
     #The campaign have to run every minutes in order to control the number
     # of calls per minute. Cons : new calls might delay 60seconds
     #run_every = timedelta(seconds=60)

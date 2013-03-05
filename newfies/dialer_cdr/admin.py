@@ -36,6 +36,7 @@ import csv
 AppLabelRenamer(native_app_label=u'dialer_cdr', app_label=_('Dialer CDR')).main()
 APP_LABEL = _('VoIP report')
 
+
 class CallrequestAdmin(GenericAdminModelAdmin):
     """Allows the administrator to view and modify certain attributes
     of a Callrequest."""
@@ -72,7 +73,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
     list_display = ('id', 'leg_type', 'callid', 'callerid', 'phone_number',
                     'starting_date', 'min_duration', 'billsec', 'disposition',
                     'hangup_cause', 'hangup_cause_q850')
-    valid_lookups = ('callrequest__campaign_id',) 
+    valid_lookups = ('callrequest__campaign_id',)
     if settings.AMD:
         list_display += ('amd_status',)
     ordering = ('-id', )
@@ -138,7 +139,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
             * VoIP report Record Listing with search option & Daily Call Report
               search Parameters: by date, by status and by billed.
-        """        
+        """
         opts = VoIPCall._meta
         query_string = ''
         form = VoipSearchForm(request.user)
@@ -159,7 +160,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
                 status = variable_value(request, 'disposition__exact')
             if request.GET.get('callrequest__campaign_id'):
                 campaign_id = variable_value(request, 'callrequest__campaign_id')
-            form = VoipSearchForm(request.user, 
+            form = VoipSearchForm(request.user,
                                   initial={'status': status,
                                            'from_date': from_date,
                                            'to_date': to_date,
@@ -178,9 +179,8 @@ class VoIPCallAdmin(admin.ModelAdmin):
                         {'title': _('Database error')})
             return HttpResponseRedirect('%s?%s=1' % (request.path, ERROR_FLAG))
 
-        kwargs = {}            
         if request.META['QUERY_STRING'] == '':
-            query_string = voipcall_search_admin_form_fun(request)            
+            query_string = voipcall_search_admin_form_fun(request)
             return HttpResponseRedirect("/admin/%s/%s/?%s"
                 % (opts.app_label, opts.object_name.lower(), query_string))
 
@@ -205,20 +205,20 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
     def voip_daily_report(self, request):
         opts = VoIPCall._meta
-        kwargs = {}        
+        kwargs = {}
         if request.method == 'POST':
             form = VoipSearchForm(request.user, request.POST)
-            kwargs = voipcall_record_common_fun(request)            
+            kwargs = voipcall_record_common_fun(request)
         else:
             kwargs = voipcall_record_common_fun(request)
             tday = datetime.today()
             form = VoipSearchForm(request.user, initial={"from_date": tday.strftime("%Y-%m-%d"),
                                                          "to_date": tday.strftime("%Y-%m-%d")})
             if len(kwargs) == 0:
-                kwargs['starting_date__gte'] = datetime(tday.year, tday.month, tday.day, 
-                                                        0, 0, 0, 0)     
-        
-        select_data = {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}            
+                kwargs['starting_date__gte'] = datetime(tday.year, tday.month, tday.day,
+                                                        0, 0, 0, 0)
+
+        select_data = {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
         # Get Total Records from VoIPCall Report table for Daily Call Report
         total_data = VoIPCall.objects.extra(select=select_data)\
             .values('starting_date')\

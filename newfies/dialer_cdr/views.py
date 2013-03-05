@@ -130,11 +130,12 @@ def voipcall_report(request):
     try:
         if request.GET.get('page') or request.GET.get('sort_by'):
             post_var_with_page = 1
-            start_date = request.session.get('session_start_date')
+            start_date = request.session.get('session_start_date')            
             end_date = request.session.get('session_end_date')
             disposition = request.session.get('session_disposition')
             campaign_id = request.session.get('session_campaign_id')
-            form = VoipSearchForm(initial={'from_date': start_date.strftime('%Y-%m-%d'),
+            form = VoipSearchForm(request.user, 
+                                  initial={'from_date': start_date.strftime('%Y-%m-%d'),
                                            'to_date': end_date.strftime('%Y-%m-%d'),
                                            'status': disposition,
                                            'campaign': campaign_id})

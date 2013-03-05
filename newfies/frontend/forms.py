@@ -32,7 +32,7 @@ class LoginForm(forms.Form):
 class DashboardForm(forms.Form):
     """Dashboard Form"""
     campaign = forms.ChoiceField(label=_('campaign'), required=False)
-    search_type = forms.ChoiceField(label=_('type'), required=False, 
+    search_type = forms.ChoiceField(label=_('type'), required=False,
         initial=SEARCH_TYPE.D_Last_24_hours,
         choices=list(SEARCH_TYPE))
 
@@ -42,5 +42,5 @@ class DashboardForm(forms.Form):
         # To get user's running campaign list
         if user:
             campaign_list = Campaign.objects.values_list('id', 'name')\
-                .filter(user=user).order_by('id')
+                .filter(user=user).order_by('-id')
             self.fields['campaign'].choices = campaign_list

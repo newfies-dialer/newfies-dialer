@@ -28,8 +28,7 @@ def get_audiofile_list(user):
     with default none option"""
     list_af = []
     list_af.append(('', '---'))
-    list = AudioFile.objects.values_list('id', 'name').filter(user=user)\
-        .order_by('id')
+    list = AudioFile.objects.values_list('id', 'name').filter(user=user).order_by('-id')
     for i in list:
         list_af.append((i[0], i[1]))
     return list_af
@@ -323,7 +322,7 @@ class SurveyReportForm(forms.Form):
                 for i in camp_list:
                     list.append((i[0], i[1]))
             except:
-                pass                
+                pass
             self.fields['campaign'].choices = list
 
 

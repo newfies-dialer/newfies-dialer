@@ -40,18 +40,19 @@ class VoipSearchForm(SearchForm):
             list.append((0, _('all').upper()))
             content_type_list = ['voiceapp', 'survey']
             try:
-            	if user.is_superuser:
-            		camp_list = Campaign.objects.values_list('id', 'name')\
-                    	.filter(content_type__model__in=content_type_list,
-                                has_been_started=True)
-            	else:
-            		camp_list = Campaign.objects.values_list('id', 'name')\
-                    	.filter(user=user, content_type__model__in=content_type_list,
-                                has_been_started=True)
+                if user.is_superuser:
+                    campaign_list = Campaign.objects.values_list('id', 'name')\
+                        .filter(content_type__model__in=content_type_list,
+                                has_been_started=True)\
+                        .order_by('-id')
+                else:
+                    campaign_list = Campaign.objects.values_list('id', 'name')\
+                        .filter(user=user, content_type__model__in=content_type_list,
+                                has_been_started=True)\
+                        .order_by('-id')
 
-                for i in camp_list:
+                for i in campaign_list:
                     list.append((i[0], i[1]))
             except:
-            	pass
-
+                pass
             self.fields['campaign'].choices = list

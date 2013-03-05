@@ -217,7 +217,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             if len(kwargs) == 0:
                 kwargs['starting_date__gte'] = datetime(tday.year, tday.month, tday.day, 
                                                         0, 0, 0, 0)     
-        total_data = []
+        
         select_data = {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}            
         # Get Total Records from VoIPCall Report table for Daily Call Report
         total_data = VoIPCall.objects.extra(select=select_data)\
@@ -234,7 +234,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             total_duration = sum([x['duration__sum'] for x in total_data])
             total_calls = sum([x['starting_date__count'] for x in total_data])
             total_avg_duration = (sum([x['duration__avg']
-                    for x in total_data])) / total_data.count()
+                    for x in total_data])) / total_calls
         else:
             max_duration = 0
             total_duration = 0

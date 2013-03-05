@@ -43,11 +43,11 @@ def get_voipcall_daily_data(voipcall_list):
         .order_by('-starting_date')
 
     # Following code will count total voip calls, duration
-    if total_data.count() != 0:
+    if total_data:
         max_duration = max([x['duration__sum'] for x in total_data])
         total_duration = sum([x['duration__sum'] for x in total_data])
         total_calls = sum([x['starting_date__count'] for x in total_data])
-        total_avg_duration = (sum([x['duration__avg'] for x in total_data])) / total_data.count()
+        total_avg_duration = (sum([x['duration__avg'] for x in total_data])) / total_calls
     else:
         max_duration = 0
         total_duration = 0
@@ -55,7 +55,7 @@ def get_voipcall_daily_data(voipcall_list):
         total_avg_duration = 0
 
     data = {
-        'total_data': total_data.reverse(),
+        'total_data': total_data,
         'total_duration': total_duration,
         'total_calls': total_calls,
         'total_avg_duration': total_avg_duration,
@@ -174,13 +174,14 @@ def voipcall_report(request):
     if disposition and disposition != 'all':
         kwargs['disposition__exact'] = disposition
 
-    if campaign_id and campaign_id != 0:
+    if campaign_id and int(campaign_id) != 0:
         kwargs['callrequest__campaign_id'] = campaign_id
 
     if not request.user.is_superuser:
         kwargs['user'] = request.user
     
     voipcall_list = VoIPCall.objects.filter(**kwargs)
+    
     all_voipcall_list = voipcall_list.values_list('id', flat=True)
 
     # Session variable is used to get record set with searched option

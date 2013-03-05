@@ -257,12 +257,12 @@ def check_callevent():
         try:
             if callrequest_id == 0:
                 callrequest = Callrequest.objects\
-                    .select_related('subscriber', 'campaign')\
+                    .select_related('aleg_gateway', 'subscriber', 'campaign')\
                     .get(request_uuid=opt_request_uuid.strip(' \t\n\r'))
             else:
                 #mainly coming here
                 callrequest = Callrequest.objects\
-                    .select_related('subscriber', 'campaign')\
+                    .select_related('aleg_gateway', 'subscriber', 'campaign')\
                     .get(id=callrequest_id)
         except:
             logger.error("Cannot find Callrequest job_uuid : %s" % job_uuid)

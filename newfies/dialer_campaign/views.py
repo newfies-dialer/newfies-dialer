@@ -59,6 +59,8 @@ def update_campaign_status_cust(request, pk, status):
     """Campaign Status (e.g. start|stop|pause|abort) can be changed from
     customer interface (via dialer_campaign/campaign list)"""
     obj_campaign = Campaign.objects.get(id=pk)
+    obj_campaign.status = status
+    obj_campaign.save()
 
     pagination_path = '/campaign/'
     if request.session.get('pagination_path'):
@@ -79,17 +81,14 @@ def update_campaign_status_cust(request, pk, status):
             #    copy_survey_template_campaign(request.user, pk)
             # elif obj_campaign.content_type.model == 'voiceapp_template':
             #     check_voiceapp_campaign(request, pk)
-
-            # change has_been_started flag
-            obj_campaign.has_been_started = True
-            obj_campaign.status = status
-            obj_campaign.save()
-
             if obj_campaign.content_type.model == 'survey_template':
                 # Copy survey
                 survey_template = Survey_template.objects.get(user=request.user, pk=obj_campaign.object_id)
                 survey_template.copy_survey_template(obj_campaign.id)
 
+            # change has_been_started flag
+            obj_campaign.has_been_started = True
+            obj_campaign.save()
             collect_subscriber.delay(obj_campaign.id)
 
     return HttpResponseRedirect(pagination_path)

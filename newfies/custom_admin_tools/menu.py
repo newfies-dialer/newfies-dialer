@@ -32,15 +32,15 @@ class CustomMenu(Menu):
             items.MenuItem(_('Newfies-Dialer' + ' V' + newfies.__version__), reverse('admin:index')),
             items.Bookmarks(),
             items.AppList(
-                _('Applications'),
+                _('applications').capitalize(),
                 exclude=('django.contrib.*', )
             ),
             items.AppList(
-                _('Administration'),
+                _('administration').capitalize(),
                 models=('django.contrib.*', )
             ),
             items.MenuItem(_('API Explorer'), reverse('admin:index') + '../api-explorer/'),
-            items.MenuItem(_('Customer Panel'), reverse('admin:index') + '../'),
+            items.MenuItem(_('customer panel').title(), reverse('admin:index') + '../'),
         ]
 
     def init_with_context(self, context):

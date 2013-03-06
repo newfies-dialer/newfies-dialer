@@ -59,7 +59,7 @@ class CustomIndexDashboard(Dashboard):
         self.columns = 3
 
         self.children.append(modules.Group(
-            title="General",
+            title=_("general").capitalize(),
             display="tabs",
             children=[
                 modules.AppList(
@@ -157,7 +157,7 @@ class CustomAppIndexDashboard(AppIndexDashboard):
     def __init__(self, *args, **kwargs):
         AppIndexDashboard.__init__(self, *args, **kwargs)
 
-        #TODO: Find out better way 
+        #TODO: Find out better way
         if str(self.app_title) == 'Dialer_Settings':
             app_title = _('dialer settings').title()
             models = ['dialer_settings.*']

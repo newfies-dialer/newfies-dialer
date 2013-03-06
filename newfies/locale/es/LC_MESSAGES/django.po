@@ -63,85 +63,69 @@ msgstr "colgar llamada"
 #: api/api_playgrounds/branching_playground.py:21 survey/models.py:413
 #: survey/models.py:414 templates/frontend/survey/survey_change.html:292
 #: templates/frontend/survey/survey_view.html:215
-#, fuzzy
 msgid "branching"
 msgstr "derivación"
 
 #: api/api_playgrounds/branching_playground.py:26
-#, fuzzy
 msgid "this resource allows you to manage branching."
-msgstr "Este recurso le permite administrar ramificación."
+msgstr "este recurso le permite administrar ramificación."
 
 #: api/api_playgrounds/branching_playground.py:31
-#, fuzzy
 msgid "returns all branching"
-msgstr "Devuelve todas las ramas"
+msgstr "devuelve todas las ramas"
 
 #: api/api_playgrounds/branching_playground.py:36
-#, fuzzy
 msgid "returns a specific branching"
-msgstr "Devuelve una ramificación específica"
+msgstr "devuelve una ramificación específica"
 
 #: api/api_playgrounds/branching_playground.py:41
-#, fuzzy
 msgid "create new branching"
-msgstr "Crear una nueva ramificación"
+msgstr "crear una nueva ramificación"
 
 #: api/api_playgrounds/branching_playground.py:58
-#, fuzzy
 msgid "update branching"
-msgstr "Actualización branch"
+msgstr "actualización branch"
 
 #: api/api_playgrounds/branching_playground.py:75
-#, fuzzy
 msgid "delete branching"
-msgstr "Borrar ramificación"
+msgstr "borrar ramificación"
 
 #: api/api_playgrounds/bulk_contact_playground.py:21
-#, fuzzy
 msgid "bulk contact"
-msgstr "contacto"
+msgstr "Mass contacto"
 
 #: api/api_playgrounds/bulk_contact_playground.py:26
-#, fuzzy
 msgid "this resource allows you to create bulk contacts."
-msgstr "Este recurso le permite crear contactos a granel."
+msgstr "este recurso le permite crear contactos a granel."
 
 #: api/api_playgrounds/bulk_contact_playground.py:31
 #: api/api_playgrounds/phonebook_playground.py:41
-#, fuzzy
 msgid "create new phonebook"
-msgstr "Crear nuevo directorio telefónico"
+msgstr "crear nuevo directorio telefónico"
 
 #: api/api_playgrounds/callrequest_playground.py:21 dialer_cdr/models.py:199
-#, fuzzy
 msgid "callrequest"
-msgstr "Solicitud de Llamada"
+msgstr "solicitud de llamada"
 
 #: api/api_playgrounds/callrequest_playground.py:26
-#, fuzzy
 msgid "this resource allows you to manage callrequest."
-msgstr "Este recurso le permite administrar callrequest."
+msgstr "este recurso le permite administrar callrequest."
 
 #: api/api_playgrounds/callrequest_playground.py:31
-#, fuzzy
 msgid "returns all callrequests"
-msgstr "Devuelve todos callrequests"
+msgstr "devuelve todos callrequests"
 
 #: api/api_playgrounds/callrequest_playground.py:36
-#, fuzzy
 msgid "returns a specific callrequest"
-msgstr "Devuelve un determinado callrequest"
+msgstr "devuelve un determinado callrequest"
 
 #: api/api_playgrounds/callrequest_playground.py:41
-#, fuzzy
 msgid "create new callrequest"
-msgstr "Crear Solicitud de Llamada"
+msgstr "crear solicitud de llamada"
 
 #: api/api_playgrounds/callrequest_playground.py:88
-#, fuzzy
 msgid "update callrequest"
-msgstr "Actualizar de solicitud de llamada"
+msgstr "actualizar de solicitud de llamada"
 
 #: api/api_playgrounds/campaign_delete_cascade_playground.py:21
 #, fuzzy
@@ -149,16 +133,14 @@ msgid "campaign delete cascade"
 msgstr "campaña ha llegado a su límite"
 
 #: api/api_playgrounds/campaign_delete_cascade_playground.py:26
-#, fuzzy
 msgid "this resource allows you to delete campaign."
-msgstr "Este recurso le permite borrar campaña."
+msgstr "este recurso le permite borrar campaña."
 
 #: api/api_playgrounds/campaign_delete_cascade_playground.py:31
 #: api/api_playgrounds/campaign_playground.py:213
 #: templates/frontend/campaign/list.html:93
-#, fuzzy
 msgid "delete campaign"
-msgstr "Eliminar la campaña"
+msgstr "eliminar la campaña"
 
 #: api/api_playgrounds/campaign_playground.py:21 dialer_campaign/models.py:263
 #: dialer_cdr/forms.py:33 frontend/forms.py:34 survey/forms.py:306
@@ -168,242 +150,200 @@ msgstr "Eliminar la campaña"
 #: templates/frontend/campaign/campaign_duplicate.html:46
 #: templates/frontend/campaign/change.html:12
 #: templates/frontend/campaign/list.html:9 voice_app/models.py:131
-#, fuzzy
 msgid "campaign"
 msgstr "Campaña"
 
 #: api/api_playgrounds/campaign_playground.py:26
-#, fuzzy
 msgid "this resource allows you to manage campaign."
-msgstr "Este recurso le permite gestionar campañas."
+msgstr "este recurso le permite gestionar campañas."
 
 #: api/api_playgrounds/campaign_playground.py:31
-#, fuzzy
 msgid "returns all campaigns"
-msgstr "Devuelve todas las campañas"
+msgstr "devuelve todas las campañas"
 
 #: api/api_playgrounds/campaign_playground.py:36
-#, fuzzy
 msgid "returns a specific campaign"
-msgstr "Devuelve una campaña específica"
+msgstr "devuelve una campaña específica"
 
 #: api/api_playgrounds/campaign_playground.py:41
-#, fuzzy
 msgid "create new campaign"
-msgstr "Crear nueva campaña"
+msgstr "crear nueva campaña"
 
 #: api/api_playgrounds/campaign_playground.py:132
 #: templates/frontend/campaign/list.html:90
-#, fuzzy
 msgid "update campaign"
-msgstr "Actualización de la campaña"
+msgstr "actualización de la campaña"
 
 #: api/api_playgrounds/dialcallback_playground.py:21
 msgid "dial callback"
 msgstr ""
 
 #: api/api_playgrounds/dialcallback_playground.py:26
-#, fuzzy
 msgid "this resource allows you to manage dial callback."
 msgstr ""
 "Este recurso le permite gestionar de devolución de llamada de marcación."
 
 #: api/api_playgrounds/dialcallback_playground.py:31
 #: api/api_playgrounds/subscriber_playground.py:36
-#, fuzzy
 msgid "create new subscriber"
-msgstr "Crear nuevo suscriptore"
+msgstr "crear nuevo suscriptore"
 
 #: api/api_playgrounds/gateway_playground.py:21 dialer_cdr/constants.py:70
 #: user_profile/models.py:79 voice_app/constants.py:30
-#, fuzzy
 msgid "gateway"
 msgstr "pasarela"
 
 #: api/api_playgrounds/gateway_playground.py:26
-#, fuzzy
 msgid "this resource allows you to manage gateways."
-msgstr "Este recurso le permite administrar gateways."
+msgstr "este recurso le permite administrar gateways."
 
 #: api/api_playgrounds/gateway_playground.py:31
-#, fuzzy
 msgid "returns all gateways"
-msgstr "Devuelve todas las puertas de enlace"
+msgstr "devuelve todas las puertas de enlace"
 
 #: api/api_playgrounds/gateway_playground.py:36
 #, fuzzy
 msgid "returns a specific gateway"
-msgstr "Devuelve una puerta de enlace específica"
+msgstr "devuelve una puerta de enlace específica"
 
 #: api/api_playgrounds/gateway_playground.py:41
-#, fuzzy
 msgid "create new gateway"
-msgstr "Crear nueva pasarela"
+msgstr "crear nueva pasarela"
 
 #: api/api_playgrounds/gateway_playground.py:121
-#, fuzzy
 msgid "update gateway"
-msgstr "Actualiza pasarela"
+msgstr "actualiza pasarela"
 
 #: api/api_playgrounds/gateway_playground.py:200
-#, fuzzy
 msgid "delete gateway"
-msgstr "Borrar pasarela"
+msgstr "borrar pasarela"
 
 #: api/api_playgrounds/hangupcall_playground.py:26
-#, fuzzy
 msgid "this resource allows you to manage hangup call."
-msgstr "Este recurso le permite gestionar llamadas colgar."
+msgstr "este recurso le permite gestionar llamadas colgar."
 
 #: api/api_playgrounds/phonebook_playground.py:21
 #: dialer_contact/constants.py:47 dialer_contact/forms.py:48
 #: dialer_contact/forms.py:102 dialer_contact/models.py:51
 #: dialer_contact/models.py:87 templates/frontend/phonebook/change.html:11
 #: templates/frontend/phonebook/list.html:9
-#, fuzzy
 msgid "phonebook"
-msgstr "Directorio Telefónico"
+msgstr "directorio telefónico"
 
 #: api/api_playgrounds/phonebook_playground.py:26
-#, fuzzy
 msgid "this resource allows you to manage phonebooks."
-msgstr "Este recurso le permite administrar directorios."
+msgstr "este recurso le permite administrar directorios."
 
 #: api/api_playgrounds/phonebook_playground.py:31
-#, fuzzy
 msgid "returns all phonebooks"
-msgstr "Devuelve todos los directorios telefónicos"
+msgstr "devuelve todos los directorios telefónicos"
 
 #: api/api_playgrounds/phonebook_playground.py:36
-#, fuzzy
 msgid "returns a specific phonebook"
-msgstr "Devuelve una directorio telefónico específico"
+msgstr "devuelve una directorio telefónico específico"
 
 #: api/api_playgrounds/phonebook_playground.py:56
 #: templates/frontend/phonebook/list.html:71
-#, fuzzy
 msgid "update phonebook"
-msgstr "Actualización de la directorio telefónico"
+msgstr "actualización de la directorio telefónico"
 
 #: api/api_playgrounds/phonebook_playground.py:69
 #: templates/frontend/phonebook/list.html:74
-#, fuzzy
 msgid "delete phonebook"
-msgstr "Eliminar la directorio telefónico"
+msgstr "eliminar la directorio telefónico"
 
 #: api/api_playgrounds/section_playground.py:21
 #: templates/frontend/survey/section_change.html:50
-#, fuzzy
 msgid "section"
-msgstr "Sección"
+msgstr "sección"
 
 #: api/api_playgrounds/section_playground.py:26
-#, fuzzy
 msgid "this resource allows you to manage sections."
-msgstr "Este recurso le permite administrar secciones."
+msgstr "este recurso le permite administrar secciones."
 
 #: api/api_playgrounds/section_playground.py:31
-#, fuzzy
 msgid "returns all sections"
-msgstr "Devuelve todas las secciones"
+msgstr "devuelve todas las secciones"
 
 #: api/api_playgrounds/section_playground.py:36
-#, fuzzy
 msgid "returns a specific section"
-msgstr "Devuelve una sección específica"
+msgstr "devuelve una sección específica"
 
 #: api/api_playgrounds/section_playground.py:41
-#, fuzzy
 msgid "create new section"
-msgstr "Crear nueva sección"
+msgstr "crear nueva sección"
 
 #: api/api_playgrounds/section_playground.py:68
-#, fuzzy
 msgid "update section"
-msgstr "Editar sección"
+msgstr "editar sección"
 
 #: api/api_playgrounds/section_playground.py:95
 #: templates/frontend/survey/section_delete_confirmation.html:5
 #: templates/frontend/survey/survey_change_header.html:61
-#, fuzzy
 msgid "delete section"
-msgstr "Suprimir sección"
+msgstr "suprimir sección"
 
 #: api/api_playgrounds/store_cdr_playground.py:21
 msgid "store CDR"
 msgstr ""
 
 #: api/api_playgrounds/store_cdr_playground.py:26
-#, fuzzy
 msgid "this resource allows you to manage store CDR."
 msgstr "Este recurso le permite administrar tienda cdr."
 
 #: api/api_playgrounds/store_cdr_playground.py:31
-#, fuzzy
 msgid "Store CDR"
-msgstr "Guardar cdr"
+msgstr "Guardar CDR"
 
 #: api/api_playgrounds/subscriber_per_campaign_playground.py:21
-#, fuzzy
 msgid "subscriber per campaign"
-msgstr "Suscriptores máximo por campaña"
+msgstr "suscriptores máximo por campaña"
 
 #: api/api_playgrounds/subscriber_per_campaign_playground.py:26
-#, fuzzy
 msgid "this resource allows you to manage subscriber per campaign."
-msgstr "Este recurso le permite administrar suscriptores por campaña."
+msgstr "este recurso le permite administrar suscriptores por campaña."
 
 #: api/api_playgrounds/subscriber_per_campaign_playground.py:36
-#, fuzzy
 msgid "returns specific subscribers per campaign"
-msgstr "Devuelve una suscriptor específico por campaña"
+msgstr "devuelve una suscriptor específico por campaña"
 
 #: api/api_playgrounds/subscriber_playground.py:21
 #: dialer_campaign/models.py:408 dialer_campaign/models.py:468
-#, fuzzy
 msgid "subscriber"
-msgstr "Campaña de abonado"
+msgstr "abonado"
 
 #: api/api_playgrounds/subscriber_playground.py:26
-#, fuzzy
 msgid "this resource allows you to manage subscriber."
-msgstr "Este recurso le permite administrar suscriptores campaña."
+msgstr "este recurso le permite administrar los abonados."
 
 #: api/api_playgrounds/subscriber_playground.py:68
-#, fuzzy
 msgid "update subscriber"
-msgstr "Actualización del suscriptor"
+msgstr "actualización abonado"
 
 #: api/api_playgrounds/survey_aggregate_result_playground.py:21
-#, fuzzy
 msgid "survey aggregate result"
-msgstr "Encuesta resultado"
+msgstr "encuesta resultado"
 
 #: api/api_playgrounds/survey_aggregate_result_playground.py:26
-#, fuzzy
 msgid "this resource allows you to get survey aggregate result."
-msgstr "Este recurso le permite obtener resultados de la encuesta global."
+msgstr "este recurso le permite obtener resultados de la encuesta global."
 
 #: api/api_playgrounds/survey_aggregate_result_playground.py:31
-#, fuzzy
 msgid "returns a result belong to campaign"
-msgstr "Devuelve todas las campañas"
+msgstr "devuelve todas las campañas"
 
 #: api/api_playgrounds/survey_playground.py:21 dialer_campaign/models.py:317
 #: dialer_campaign/views.py:184 survey/models.py:120 survey/models.py:272
 #: survey/models.py:334 templates/frontend/survey/survey_change.html:17
 #: templates/frontend/survey/survey_list.html:9
-#, fuzzy
 msgid "survey"
-msgstr "Estudio"
+msgstr "estudio"
 
 #: api/api_playgrounds/survey_playground.py:26
-#, fuzzy
 msgid "this resource allows you to manage survey."
-msgstr "Este recurso le permite administrar la encuesta."
+msgstr "este recurso le permite administrar la encuesta."
 
 #: api/api_playgrounds/survey_playground.py:31
-#, fuzzy
 msgid "returns all surveys"
 msgstr "Devuelve todas las encuestas"
 

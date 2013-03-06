@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-07 00:32+0100\n"
+"POT-Creation-Date: 2013-03-07 00:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -52,116 +52,95 @@ msgid "answer call"
 msgstr "Répondez à sec"
 
 #: api/api_playgrounds/answercall_playground.py:26
-#, fuzzy
 msgid "this resource allows you to manage answer call."
-msgstr "Cette ressource vous permet de gérer réponse à un appel."
+msgstr "cette ressource vous permet de gérer réponse à un appel."
 
 #: api/api_playgrounds/answercall_playground.py:31
 #: api/api_playgrounds/hangupcall_playground.py:21
 #: api/api_playgrounds/hangupcall_playground.py:31
-#, fuzzy
 msgid "hangup call"
-msgstr "Raccrocher la cause"
+msgstr "cause raccrocher"
 
 #: api/api_playgrounds/branching_playground.py:21 survey/models.py:413
 #: survey/models.py:414 templates/frontend/survey/survey_change.html:292
 #: templates/frontend/survey/survey_view.html:215
-#, fuzzy
 msgid "branching"
-msgstr "Branchement"
+msgstr "branchement"
 
 #: api/api_playgrounds/branching_playground.py:26
-#, fuzzy
 msgid "this resource allows you to manage branching."
-msgstr "Cette ressource vous permet de gérer la ramification."
+msgstr "cette ressource vous permet de gérer la ramification."
 
 #: api/api_playgrounds/branching_playground.py:31
-#, fuzzy
 msgid "returns all branching"
-msgstr "Renvoie tous ramification"
+msgstr "renvoie tous ramification"
 
 #: api/api_playgrounds/branching_playground.py:36
-#, fuzzy
 msgid "returns a specific branching"
-msgstr "Retourne un branchement spécifique"
+msgstr "retourne un branchement spécifique"
 
 #: api/api_playgrounds/branching_playground.py:41
-#, fuzzy
 msgid "create new branching"
-msgstr "Crée un nouveau branchement"
+msgstr "crée un nouveau branchement"
 
 #: api/api_playgrounds/branching_playground.py:58
-#, fuzzy
 msgid "update branching"
-msgstr "Mise à jour de campagne"
+msgstr "mise à jour du branchement"
 
 #: api/api_playgrounds/branching_playground.py:75
-#, fuzzy
 msgid "delete branching"
-msgstr "Supprimer l&#39;article"
+msgstr "supprimer le branchement"
 
 #: api/api_playgrounds/bulk_contact_playground.py:21
-#, fuzzy
 msgid "bulk contact"
-msgstr "contacter"
+msgstr "contact en vrac"
 
 #: api/api_playgrounds/bulk_contact_playground.py:26
-#, fuzzy
 msgid "this resource allows you to create bulk contacts."
-msgstr "Cette ressource vous permet de créer des contacts en vrac."
+msgstr "cette ressource vous permet de créer des contacts en vrac."
 
 #: api/api_playgrounds/bulk_contact_playground.py:31
 #: api/api_playgrounds/phonebook_playground.py:41
-#, fuzzy
 msgid "create new phonebook"
-msgstr "Mise à jour du répertoire"
+msgstr "mise à jour du répertoire"
 
 #: api/api_playgrounds/callrequest_playground.py:21 dialer_cdr/models.py:199
-#, fuzzy
 msgid "callrequest"
-msgstr "Callrequest"
+msgstr "callrequest"
 
 #: api/api_playgrounds/callrequest_playground.py:26
-#, fuzzy
 msgid "this resource allows you to manage callrequest."
-msgstr "Cette ressource vous permet de gérer callrequest."
+msgstr "cette ressource vous permet de gérer callrequest."
 
 #: api/api_playgrounds/callrequest_playground.py:31
-#, fuzzy
 msgid "returns all callrequests"
-msgstr "Retourne toutes les callrequests"
+msgstr "retourne toutes les callrequests"
 
 #: api/api_playgrounds/callrequest_playground.py:36
-#, fuzzy
 msgid "returns a specific callrequest"
-msgstr "Retourne un particulier callrequest"
+msgstr "retourne un particulier callrequest"
 
 #: api/api_playgrounds/callrequest_playground.py:41
-#, fuzzy
 msgid "create new callrequest"
-msgstr "Callrequest"
+msgstr "creer une nouvelle callrequest"
 
 #: api/api_playgrounds/callrequest_playground.py:88
-#, fuzzy
 msgid "update callrequest"
-msgstr "Callrequest"
+msgstr "mettre a jour callrequest"
 
 #: api/api_playgrounds/campaign_delete_cascade_playground.py:21
-#, fuzzy
 msgid "campaign delete cascade"
-msgstr "Campagne a atteint la limite"
+msgstr ""
 
 #: api/api_playgrounds/campaign_delete_cascade_playground.py:26
-#, fuzzy
 msgid "this resource allows you to delete campaign."
-msgstr "Cette ressource permet de supprimer campagne."
+msgstr "cette ressource permet de supprimer campagne."
 
 #: api/api_playgrounds/campaign_delete_cascade_playground.py:31
 #: api/api_playgrounds/campaign_playground.py:213
 #: templates/frontend/campaign/list.html:93
-#, fuzzy
 msgid "delete campaign"
-msgstr "Supprimer campagne"
+msgstr "supprimer campagne"
 
 #: api/api_playgrounds/campaign_playground.py:21 dialer_campaign/models.py:263
 #: dialer_cdr/forms.py:33 frontend/forms.py:34 survey/forms.py:306
@@ -171,9 +150,8 @@ msgstr "Supprimer campagne"
 #: templates/frontend/campaign/campaign_duplicate.html:46
 #: templates/frontend/campaign/change.html:12
 #: templates/frontend/campaign/list.html:9 voice_app/models.py:131
-#, fuzzy
 msgid "campaign"
-msgstr "Campagne"
+msgstr "campagne"
 
 #: api/api_playgrounds/campaign_playground.py:26
 #, fuzzy
@@ -218,9 +196,8 @@ msgstr "Crée abonné nouvelle campagne"
 
 #: api/api_playgrounds/gateway_playground.py:21 dialer_cdr/constants.py:70
 #: user_profile/models.py:79 voice_app/constants.py:30
-#, fuzzy
 msgid "gateway"
-msgstr "Porte"
+msgstr "passerelle"
 
 #: api/api_playgrounds/gateway_playground.py:26
 #, fuzzy
@@ -372,39 +349,34 @@ msgid "this resource allows you to manage subscriber."
 msgstr "Cette ressource vous permet de gérer abonné campagne."
 
 #: api/api_playgrounds/subscriber_playground.py:68
-#, fuzzy
 msgid "update subscriber"
-msgstr "Mise à jour de campagne"
+msgstr "mise à jour de l'abonné"
 
 #: api/api_playgrounds/survey_aggregate_result_playground.py:21
 #, fuzzy
 msgid "survey aggregate result"
-msgstr "Résultat de l&#39;enquête"
+msgstr "résultat de l&#39;enquête"
 
 #: api/api_playgrounds/survey_aggregate_result_playground.py:26
-#, fuzzy
 msgid "this resource allows you to get survey aggregate result."
 msgstr ""
-"Cette ressource vous permet d&#39;obtenir un résultat sur des données "
+"cette ressource vous permet d&#39;obtenir un résultat sur des données "
 "agrégées."
 
 #: api/api_playgrounds/survey_aggregate_result_playground.py:31
-#, fuzzy
 msgid "returns a result belong to campaign"
-msgstr "Supprimer campagne"
+msgstr ""
 
 #: api/api_playgrounds/survey_playground.py:21 dialer_campaign/models.py:317
 #: dialer_campaign/views.py:184 survey/models.py:120 survey/models.py:272
 #: survey/models.py:334 templates/frontend/survey/survey_change.html:17
 #: templates/frontend/survey/survey_list.html:9
-#, fuzzy
 msgid "survey"
 msgstr "Enquête"
 
 #: api/api_playgrounds/survey_playground.py:26
-#, fuzzy
 msgid "this resource allows you to manage survey."
-msgstr "Cette ressource vous permet de gérer l&#39;enquête."
+msgstr "cette ressource vous permet de gérer l&#39;enquête."
 
 #: api/api_playgrounds/survey_playground.py:31
 #, fuzzy
@@ -1051,9 +1023,8 @@ msgid "voicemail audio file"
 msgstr "Fichier Audio"
 
 #: dialer_campaign/models.py:259
-#, fuzzy
 msgid "can see campaign"
-msgstr "Peut voir la campagne"
+msgstr "peut voir la campagne"
 
 #: dialer_campaign/models.py:260
 #, fuzzy
@@ -1557,9 +1528,8 @@ msgid "AMD Status"
 msgstr "Statut"
 
 #: dialer_cdr/models.py:248
-#, fuzzy
 msgid "can see call detail report"
-msgstr "Peut consulter le rapport détaillé de l'appel"
+msgstr "peut consulter le rapport détaillé de l'appel"
 
 #: dialer_cdr/models.py:251
 #, fuzzy
@@ -1759,9 +1729,8 @@ msgid "notes"
 msgstr "Remarques"
 
 #: dialer_contact/models.py:112
-#, fuzzy
 msgid "can see contact"
-msgstr "Peut voir Contact"
+msgstr "peut voir Contact"
 
 #: dialer_contact/views.py:175
 #, python-format
@@ -2166,39 +2135,32 @@ msgid "Text-to-Speech language"
 msgstr "Text-to-Speech Language"
 
 #: survey/models.py:66
-#, fuzzy
 msgid "can see survey template"
-msgstr "Peut voir le modèle de l'Enquête"
+msgstr "peut voir le modèle de l'Enquête"
 
 #: survey/models.py:68
-#, fuzzy
 msgid "survey template"
-msgstr "Modèle d'enquête"
+msgstr "modèle d'enquête"
 
 #: survey/models.py:69
-#, fuzzy
 msgid "survey templates"
-msgstr "Modèles d'enquête"
+msgstr "modèles d'enquête"
 
 #: survey/models.py:115
-#, fuzzy
 msgid "can see survey"
-msgstr "Peut voir l'étude"
+msgstr "peut voir l'étude"
 
 #: survey/models.py:116
-#, fuzzy
 msgid "can export survey"
-msgstr "Peut voir l'étude"
+msgstr "peut voir l'étude"
 
 #: survey/models.py:117
-#, fuzzy
 msgid "can import survey"
-msgstr "Peut voir l'étude"
+msgstr "peut voir l'étude"
 
 #: survey/models.py:118
-#, fuzzy
 msgid "can see survey report"
-msgstr "Peux voir Rapport d'enquête"
+msgstr "peux voir rapport d'enquête"
 
 #: survey/models.py:166
 msgid "section type"
@@ -3863,9 +3825,8 @@ msgid "note"
 msgstr ""
 
 #: user_profile/models.py:87
-#, fuzzy
 msgid "can see API-Explorer"
-msgstr "Peut voir API-Explorer"
+msgstr "peut voir API-Explorer"
 
 #: user_profile/models.py:90
 #, fuzzy
@@ -3953,140 +3914,34 @@ msgid "Text-to-Speech Language"
 msgstr "Text-to-Speech Language"
 
 #: voice_app/models.py:50
-#, fuzzy
 msgid "voice application description"
-msgstr "Description de l&#39;application vocale"
+msgstr "description de l&#39;application vocale"
 
 #: voice_app/models.py:55
-#, fuzzy
 msgid "gateway used if we redirect the call"
-msgstr "Passerelle utilisée si l&#39;on rediriger l&#39;appel"
+msgstr "passerelle utilisée si l&#39;on rediriger l&#39;appel"
 
 #: voice_app/models.py:57
 msgid "The value of 'data' depends on the type of voice application :<br/>"
 msgstr "La valeur de «données» dépend du type d'application vocale: <br/>"
 
 #: voice_app/models.py:85
-#, fuzzy
 msgid "can see voiceapp template"
-msgstr "Peut voir le modèle AppVocal"
+msgstr "peut voir le modèle AppVocal"
 
 #: voice_app/models.py:87
-#, fuzzy
 msgid "voice application template"
-msgstr "Modèle d&#39;application vocale"
+msgstr "modèle d&#39;application vocale"
 
 #: voice_app/models.py:88
-#, fuzzy
 msgid "voice application templates"
-msgstr "Applications vocales Modèles"
+msgstr "applications vocales modèles"
 
 #: voice_app/models.py:135
-#, fuzzy
 msgid "can see voice application"
-msgstr "Configurer application vocale"
+msgstr "configurer application vocale"
 
 #: voice_app/views.py:144
 #, python-format
 msgid "%(count)s voiceapp(s) are deleted."
 msgstr "%(count)s appvocal(s) sont supprimés."
-
-#, fuzzy
-#~ msgid "max Retries"
-#~ msgstr "Max Retries"
-
-#~ msgid "Callrequest"
-#~ msgstr "Callrequest"
-
-#~ msgid "Settings"
-#~ msgstr "Réglages"
-
-#~ msgid "Surveys"
-#~ msgstr "Enquêtes"
-
-#~ msgid "Audio Files"
-#~ msgstr "Fichiers audio"
-
-#~ msgid "Voice Application"
-#~ msgstr "Voice Application"
-
-#~ msgid "Applications"
-#~ msgstr "Applications"
-
-#~ msgid "Administration"
-#~ msgstr "Administration"
-
-#, fuzzy
-#~ msgid "edit voice app"
-#~ msgstr "Voix app"
-
-#~ msgid "Can't find this Phonebook : %(id)s"
-#~ msgstr "Vous ne trouvez pas ce répertoire: %(id)s"
-
-#~ msgid "Duplicate contact!"
-#~ msgstr "Dupliquer contact!"
-
-#~ msgid "Contact created id:%(id)s"
-#~ msgstr "Contact créé id:%(id)s"
-
-#~ msgid "Can't find a Campaign with this phonebook"
-#~ msgstr "Vous ne trouvez pas une campagne avec ce répertoire"
-
-#~ msgid "Launch Task : collect_subscriber(%(id)s)"
-#~ msgstr "Lancement de tache: collect_subscriber(%(id)s)"
-
-#~ msgid "Call Report"
-#~ msgstr "Appelez-Rapport"
-
-#, fuzzy
-#~ msgid "processing"
-#~ msgstr "Traitement"
-
-#, fuzzy
-#~ msgid "in progress"
-#~ msgstr "Progrès"
-
-#~ msgid "Blacklist"
-#~ msgstr "Liste Noir"
-
-#~ msgid "Whitelist"
-#~ msgstr "Liste blanche"
-
-#~ msgid "Hang up"
-#~ msgstr "Raccrocher"
-
-#~ msgid "Search"
-#~ msgstr "Rechercher"
-
-#~ msgid "Reset"
-#~ msgstr "Réinitialiser"
-
-#~ msgid "Action"
-#~ msgstr "Action"
-
-#~ msgid "From 1 to"
-#~ msgstr "De 1 à"
-
-#~ msgid "Update"
-#~ msgstr "Mettre à jour"
-
-#~ msgid "Next"
-#~ msgstr "Suivant"
-
-#~ msgid "Phone Number"
-#~ msgstr "Numéro de téléphone"
-
-#~ msgid "DIAL"
-#~ msgstr "DIAL"
-
-#~ msgid "PLAYAUDIO"
-#~ msgstr "PLAYAUDIO"
-
-#~ msgid "CONFERENCE"
-#~ msgstr "CONFÉRENCE"
-
-#~ msgid "SPEAK"
-#~ msgstr "PARLER"
-
-#~ msgid "Date"
-#~ msgstr "Date"

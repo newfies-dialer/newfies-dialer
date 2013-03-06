@@ -82,7 +82,8 @@ def update_campaign_status_cust(request, pk, status):
             #    copy_survey_template_campaign(request.user, pk)
             # elif obj_campaign.content_type.model == 'voiceapp_template':
             #     check_voiceapp_campaign(request, pk)
-            copy_survey_template_campaign(request.user, pk)
+            if obj_campaign.content_type.model == 'survey_template':
+                copy_survey_template_campaign(request.user, pk)
 
             # change has_been_started flag
             obj_campaign.has_been_started = True

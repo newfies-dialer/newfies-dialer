@@ -478,7 +478,7 @@ def campaign_change(request, object_id):
            context_instance=RequestContext(request))
 
 
-def make_duplicate_survey(campaign_obj):
+def make_duplicate_survey(campaign_obj, new_campaign):
     """Make duplicate survey with section & branching
        & return new survey object id
     """
@@ -487,6 +487,7 @@ def make_duplicate_survey(campaign_obj):
     del survey_obj.__dict__['_state']
     del survey_obj.__dict__['id']
     new_survey_obj = Survey(**survey_obj.__dict__)
+    new_survey_obj.campaign = new_campaign
     new_survey_obj.save()
 
     section_objs = Section.objects.filter(survey_id=original_survey_id)
@@ -522,11 +523,6 @@ def campaign_duplicate(request, id):
 
             campaign_obj = Campaign.objects.get(pk=id)
 
-            #Make duplicate survey
-            new_survey_id = campaign_obj.object_id # default
-            if campaign_obj.content_type.model == 'survey':
-                new_survey_id = make_duplicate_survey(campaign_obj)
-
             del campaign_obj.__dict__['_state']
             del campaign_obj.__dict__['id']
             del campaign_obj.__dict__['campaign_code']
@@ -545,6 +541,11 @@ def campaign_duplicate(request, id):
             dup_campaign.imported_phonebook = ''
             dup_campaign.object_id = new_survey_id
             dup_campaign.save()
+
+            #Make duplicate survey
+            new_survey_id = campaign_obj.object_id # default
+            if campaign_obj.content_type.model == 'survey':
+                new_survey_id = make_duplicate_survey(campaign_obj, dup_campaign)
 
             # Many to many field
             for pb in request.POST.getlist('phonebook'):

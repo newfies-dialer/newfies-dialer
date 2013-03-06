@@ -31,6 +31,8 @@ from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_COLUMN_NAME
 from dialer_campaign.function_def import check_dialer_setting, dialer_setting_limit, \
     user_dialer_setting, user_dialer_setting_msg
 from dialer_campaign.tasks import collect_subscriber
+from survey.models import Survey_template, Survey, Section_template, Section,\
+    Branching_template, Branching
 from survey.function_def import copy_survey_template_campaign
 #from voice_app.function_def import check_voiceapp_campaign
 from user_profile.constants import NOTIFICATION_NAME
@@ -476,6 +478,40 @@ def campaign_change(request, object_id):
            context_instance=RequestContext(request))
 
 
+def make_duplicate_survey(campaign_obj):
+    """Make duplicate survey with section & branching
+       & return new survey object id
+    """
+    survey_obj = campaign_obj.content_type.model_class().objects.get(pk=campaign_obj.object_id)
+    original_survey_id = survey_obj.id
+    del survey_obj.__dict__['_state']
+    del survey_obj.__dict__['id']
+    new_survey_obj = Survey(**survey_obj.__dict__)
+    new_survey_obj.save()
+
+    section_objs = Section.objects.filter(survey_id=original_survey_id)
+    for section_obj in section_objs:
+        original_section_id = section_obj.id
+        del section_obj.__dict__['_state']
+        del section_obj.__dict__['id']
+
+        new_section_obj = Section(**section_obj.__dict__)
+        new_section_obj.survey = new_survey_obj
+        new_section_obj.save()
+
+        branching_objs = Branching.objects.filter(section_id=original_section_id)
+        for branching_obj in branching_objs:
+            #original_branching_id = branching_obj.id
+            del branching_obj.__dict__['_state']
+            del branching_obj.__dict__['id']
+
+            new_branching_obj = Branching(**branching_obj.__dict__)
+            new_branching_obj.section = new_section_obj
+            new_branching_obj.save()
+
+    return new_survey_obj.id
+
+
 @login_required
 def campaign_duplicate(request, id):
     form = DuplicateCampaignForm(request.user)
@@ -485,6 +521,12 @@ def campaign_duplicate(request, id):
         if form.is_valid():
 
             campaign_obj = Campaign.objects.get(pk=id)
+
+            #Make duplicate survey
+            new_survey_id = campaign_obj.object_id # default
+            if campaign_obj.content_type.model == 'survey':
+                new_survey_id = make_duplicate_survey(campaign_obj)
+
             del campaign_obj.__dict__['_state']
             del campaign_obj.__dict__['id']
             del campaign_obj.__dict__['campaign_code']
@@ -494,9 +536,6 @@ def campaign_duplicate(request, id):
             del campaign_obj.__dict__['daily_stop_time']
             del campaign_obj.__dict__['has_been_started']
 
-            #TODO: Duplicate the Survey Object here and relink properly
-            #Right now we got the risk to have 1 Survey link to different campaign
-
             dup_campaign = Campaign(**campaign_obj.__dict__)
             dup_campaign.campaign_code = request.POST.get('campaign_code')
             dup_campaign.name = request.POST.get('name')
@@ -504,6 +543,7 @@ def campaign_duplicate(request, id):
             dup_campaign.totalcontact = 0
             dup_campaign.completed = 0
             dup_campaign.imported_phonebook = ''
+            dup_campaign.object_id = new_survey_id
             dup_campaign.save()
 
             # Many to many field

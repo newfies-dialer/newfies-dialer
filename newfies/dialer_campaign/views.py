@@ -525,7 +525,7 @@ def campaign_duplicate(request, id):
 
             original_camp = campaign_obj = Campaign.objects.get(pk=id)
             #Make duplicate survey
-            new_survey_id = campaign_obj.object_id # default
+            new_survey_id = campaign_obj.object_id
 
             campaign_obj.pk = None
             campaign_obj.campaign_code = request.POST.get('campaign_code')
@@ -539,7 +539,7 @@ def campaign_duplicate(request, id):
             campaign_obj.daily_start_time = '23:59:59'
             campaign_obj.imported_phonebook = ''
             campaign_obj.has_been_started = False
-            campaign_obj.save() # New campaign
+            campaign_obj.save()
 
             if campaign_obj.content_type.model == 'survey':
                 new_survey_id = make_duplicate_survey(original_camp, campaign_obj)

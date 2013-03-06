@@ -37,7 +37,6 @@ from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import notice_count, frontend_send_notification
 from common.common_functions import current_view, get_pagination_vars
 import re
-import logging
 
 
 @login_required
@@ -58,35 +57,35 @@ def update_campaign_status_cust(request, pk, status):
     """Campaign Status (e.g. start|stop|pause|abort) can be changed from
     customer interface (via dialer_campaign/campaign list)"""
     obj_campaign = Campaign.objects.get(id=pk)
-    obj_campaign.status = status
-    obj_campaign.save()
+    print(obj_campaign.__dict__)
 
     pagination_path = '/campaign/'
     if request.session.get('pagination_path'):
         pagination_path = request.session.get('pagination_path')
 
-    # Notify user while campaign Start & no phonebook attached
+    #Check if no phonebook attached
     if int(status) == CAMPAIGN_STATUS.START and obj_campaign.phonebook.all().count() == 0:
         request.session['error_msg'] = _('error : you have to assign a phonebook to your campaign before starting it')
     else:
         recipient = request.user
         frontend_send_notification(request, status, recipient)
-        logging.info("obj_campaign")
-        logging.info(obj_campaign)
 
         # Notify user while campaign Start
-        if int(status) == CAMPAIGN_STATUS.START:
-            # change has_been_started flag
-            obj_campaign.has_been_started = True
-            obj_campaign.save()
-
+        if int(status) == CAMPAIGN_STATUS.START and not obj_campaign.has_been_started:
             request.session['info_msg'] = \
                 _('the campaign global settings cannot be edited when the campaign is started')
-            logging.debug('obj_campaign.content_type.model : ' + obj_campaign.content_type.model)
-            if obj_campaign.content_type.model == 'survey_template':
-                copy_survey_template_campaign(request.user, pk)
+            #if obj_campaign.content_type.model == 'survey_template':
+            #    copy_survey_template_campaign(request.user, pk)
             # elif obj_campaign.content_type.model == 'voiceapp_template':
             #     check_voiceapp_campaign(request, pk)
+            copy_survey_template_campaign(request.user, pk)
+
+            # change has_been_started flag
+            obj_campaign.has_been_started = True
+            obj_campaign.status = status
+            obj_campaign.save()
+
+            collect_subscriber.delay(obj_campaign.id)
 
     return HttpResponseRedirect(pagination_path)
 
@@ -209,14 +208,14 @@ def get_campaign_survey_view(campaign_object):
         if campaign_object.content_type.model == 'survey_template':
             link = _return_link('survey_template', campaign_object.object_id)
 
-        if campaign_object.content_type.model == 'survey' and campaign_object.has_been_started:
+        if campaign_object.content_type.model == 'survey':
             link = _return_link('survey', campaign_object.object_id)
 
-        if campaign_object.content_type.model == 'voiceapp_template':
-            link = _return_link('voiceapp_template', campaign_object.object_id)
+        # if campaign_object.content_type.model == 'voiceapp_template':
+        #     link = _return_link('voiceapp_template', campaign_object.object_id)
 
-        if campaign_object.content_type.model == 'voiceapp' and campaign_object.has_been_started:
-            link = _return_link('voiceapp', campaign_object.object_id)
+        # if campaign_object.content_type.model == 'voiceapp' and campaign_object.has_been_started:
+        #     link = _return_link('voiceapp', campaign_object.object_id)
 
     return link
 
@@ -336,15 +335,6 @@ def campaign_add(request):
             obj.user = request.user
             obj.save()
 
-            # Start tasks to import subscriber
-            if obj.status == CAMPAIGN_STATUS.START:
-                if obj.content_type.model == 'survey_template':
-                    copy_survey_template_campaign(request.user, obj.id)
-                # elif obj.content_type.model == 'voiceapp_template':
-                #     check_voiceapp_campaign(request, obj.id)
-
-                collect_subscriber.delay(obj.pk)
-
             form.save_m2m()
 
             request.session["msg"] = _('"%(name)s" added.') %\
@@ -444,7 +434,6 @@ def campaign_change(request, object_id):
         else:
             # Update campaign
             form = CampaignForm(request.user, request.POST, instance=campaign)
-            previous_status = int(campaign.status)
 
             if form.is_valid():
                 form.save()
@@ -465,12 +454,6 @@ def campaign_change(request, object_id):
                 obj.content_type = contenttype['object_type']
                 obj.object_id = contenttype['object_id']
                 obj.save()
-
-                # Start tasks to import subscriber
-                if (obj.status
-                   and int(obj.status) == CAMPAIGN_STATUS.START
-                   and previous_status != CAMPAIGN_STATUS.START):
-                    collect_subscriber.delay(obj.id)
 
                 request.session["msg"] = _('"%(name)s" is updated.') \
                     % {'name': request.POST['name']}
@@ -509,6 +492,10 @@ def campaign_duplicate(request, id):
             del campaign_obj.__dict__['expirationdate']
             del campaign_obj.__dict__['daily_start_time']
             del campaign_obj.__dict__['daily_stop_time']
+            del campaign_obj.__dict__['has_been_started']
+
+            #TODO: Duplicate the Survey Object here and relink properly
+            #Right now we got the risk to have 1 Survey link to different campaign
 
             dup_campaign = Campaign(**campaign_obj.__dict__)
             dup_campaign.campaign_code = request.POST.get('campaign_code')

@@ -57,7 +57,7 @@ class Command(BaseCommand):
         try:
             obj_phonebook = Phonebook.objects.get(id=phonebook_id)
         except:
-            print _('Can\'t find this Phonebook : %(id)s' % {'id': phonebook_id})
+            print 'Can\'t find this Phonebook : %(id)s' % {'id': phonebook_id}
             return False
 
         for phonenumber in list_of_phonenumber:
@@ -66,16 +66,16 @@ class Command(BaseCommand):
                     contact=int(phonenumber),
                     phonebook=obj_phonebook)
             except IntegrityError:
-                print _("Duplicate contact!")
+                print "Duplicate contact!"
                 return False
 
-            print _("Contact created id:%(id)s" % {'id': new_contact.id})
+            print "Contact created id:%(id)s" % {'id': new_contact.id}
 
         try:
             obj_campaign = Campaign.objects.get(phonebook=obj_phonebook)
         except:
-            print _('Can\'t find a Campaign with this phonebook')
+            print 'Can\'t find a Campaign with this phonebook'
             return False
 
-        print _("Launch Task : collect_subscriber(%(id)s)" % {'id': str(obj_campaign.id)})
+        print "Launch Task : collect_subscriber(%(id)s)" % {'id': str(obj_campaign.id)}
         collect_subscriber.delay(obj_campaign.id)

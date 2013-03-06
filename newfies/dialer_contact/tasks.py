@@ -23,6 +23,9 @@ logger = get_task_logger(__name__)
 
 
 class ImportPhonebook(Task):
+    """
+    ImportPhonebook class call the import for a specific campaign_id and phonebook_id
+    """
     @only_one(ikey="import_phonebook", timeout=60 * 5)
     def run(self, campaign_id, phonebook_id):
         """
@@ -34,6 +37,7 @@ class ImportPhonebook(Task):
 
         #Faster method, ask the Database to do the job
         importcontact_custom_sql(campaign_id, phonebook_id)
+
         #Count contact imported
         count_contact = Subscriber.objects.filter(campaign=campaign_id).count()
 
@@ -51,7 +55,9 @@ class ImportPhonebook(Task):
 
 @task()
 def collect_subscriber(campaign_id):
-    """This task will collect all the subscribers
+    """
+    This task will collect all the contact and create the Subscriber
+    if the phonebook_id is no in the list of imported_phonebook IDs.
 
     **Attributes**:
 

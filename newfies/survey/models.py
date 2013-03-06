@@ -21,7 +21,6 @@ from dialer_cdr.models import Callrequest
 from survey.constants import SECTION_TYPE_NOTRANSFER, SECTION_TYPE
 from audiofield.models import AudioFile
 from common.language_field import LanguageField
-from common.big_integer_field import BigIntegerField
 from adminsortable.models import Sortable
 
 
@@ -69,7 +68,7 @@ class Survey_template(Survey_abstract):
         verbose_name = _("survey template")
         verbose_name_plural = _("survey templates")
 
-    def copy_survey_template(self, campaign_obj):
+    def copy_survey_template(self, campaign_id):
         """
         copy survey template to survey when starting campaign
         """
@@ -78,10 +77,12 @@ class Survey_template(Survey_abstract):
             tts_language=self.tts_language,
             description=self.description,
             user=self.user,
-            campaign_id=campaign_obj.id)
+            campaign_id=campaign_id)
 
         # updated campaign content_type & object_id with new survey object
         survey_id = ContentType.objects.get(model='survey').id
+
+        campaign_obj = Campaign.objects.get(id=campaign_id)
         campaign_obj.content_type_id = survey_id
         campaign_obj.object_id = new_survey_obj.id
         campaign_obj.save()

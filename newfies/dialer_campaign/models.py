@@ -523,16 +523,16 @@ def post_save_add_contact(sender, **kwargs):
 post_save.connect(post_save_add_contact, sender=Contact)
 
 
-def post_update_campaign_status(sender, **kwargs):
-    """A ``post_save`` signal is sent by the Campaign model instance whenever
-    it is going to save.
+# def post_update_campaign_status(sender, **kwargs):
+#     """A ``post_save`` signal is sent by the Campaign model instance whenever
+#     it is going to save.
 
-    If Campaign Status is start, perform collect_subscriber task
-    """
-    obj = kwargs['instance']
-    #Start tasks to import subscriber
-    if int(obj.status) == CAMPAIGN_STATUS.START:
-        from dialer_campaign.tasks import collect_subscriber
-        collect_subscriber.delay(obj.id)
+#     If Campaign Status is start, perform collect_subscriber task
+#     """
+#     obj = kwargs['instance']
+#     #Start tasks to import subscriber
+#     if int(obj.status) == CAMPAIGN_STATUS.START:
+#         from dialer_campaign.tasks import collect_subscriber
+#         collect_subscriber.delay(obj.id)
 
-post_save.connect(post_update_campaign_status, sender=Campaign)
+# post_save.connect(post_update_campaign_status, sender=Campaign)

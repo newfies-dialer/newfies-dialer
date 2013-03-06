@@ -208,7 +208,7 @@ func_install_frontend(){
 
     #python setup tools
     echo "Install Dependencies and python modules..."
-    
+
     #Install Postgresql repository (https://wiki.postgresql.org/wiki/Apt)
     if grep -Fxq "deb http://apt.postgresql.org/pub/repos/apt/ $DEBVERSION-pgdg main" /etc/apt/sources.list.d/pgdg.list
     then
@@ -399,9 +399,9 @@ func_install_frontend(){
     cd $INSTALL_DIR/
 
     #Fix permission on python-egg
-    mkdir /usr/share/newfies/.python-eggs
-    chown $NEWFIES_USER:$NEWFIES_USER /usr/share/newfies/.python-eggs
-    mkdir database
+    #mkdir /usr/share/newfies/.python-eggs
+    #chown $NEWFIES_USER:$NEWFIES_USER /usr/share/newfies/.python-eggs
+    #mkdir database
 
     #Upload audio files
     mkdir -p /usr/share/newfies/usermedia/upload/audiofiles

@@ -539,13 +539,15 @@ def campaign_duplicate(request, id):
             dup_campaign.totalcontact = 0
             dup_campaign.completed = 0
             dup_campaign.imported_phonebook = ''
-            dup_campaign.object_id = new_survey_id
             dup_campaign.save()
 
             #Make duplicate survey
             new_survey_id = campaign_obj.object_id # default
             if campaign_obj.content_type.model == 'survey':
                 new_survey_id = make_duplicate_survey(campaign_obj, dup_campaign)
+
+            dup_campaign.object_id = new_survey_id
+            dup_campaign.save()
 
             # Many to many field
             for pb in request.POST.getlist('phonebook'):

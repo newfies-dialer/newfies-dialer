@@ -75,11 +75,12 @@ class CampaignForm(ModelForm):
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
         }
 
-    def __init__(self, user, *args, **kwargs):        
+    def __init__(self, user, *args, **kwargs):
         super(CampaignForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
         self.fields['description'].widget.attrs['class'] = "input-xlarge"
+
 
         if user:
             self.fields['ds_user'].initial = user
@@ -92,7 +93,7 @@ class CampaignForm(ModelForm):
             for l in list:
                 list_pb.append((l[0], l[1]))
             self.fields['phonebook'].choices = list_pb
-                        
+
             list = user.get_profile().userprofile_gateway.all()
             gw_list = ((l.id, l.name) for l in list)
 
@@ -100,13 +101,19 @@ class CampaignForm(ModelForm):
                 list_gw.append((i[0], i[1]))
             self.fields['aleg_gateway'].choices = list_gw
 
-            from voice_app.models import VoiceApp_template
-            available_objects = VoiceApp_template.objects.filter(user=user)
-            object_choices = get_object_choices(available_objects)
+            if instance.has_been_duplicated:
+                from survey.models import Survey
+                available_objects = Survey.objects.filter(user=user, campaign=instance)
+                object_choices = get_object_choices(available_objects)
+                self.fields['content_object'].widget.attrs['readonly'] = True
+            else:
+                from voice_app.models import VoiceApp_template
+                available_objects = VoiceApp_template.objects.filter(user=user)
+                object_choices = get_object_choices(available_objects)
 
-            from survey.models import Survey_template
-            available_objects = Survey_template.objects.filter(user=user)
-            object_choices += get_object_choices(available_objects)
+                from survey.models import Survey_template
+                available_objects = Survey_template.objects.filter(user=user)
+                object_choices += get_object_choices(available_objects)
 
             self.fields['content_object'].choices = object_choices
 
@@ -141,8 +148,8 @@ class CampaignForm(ModelForm):
         callmaxduration = cleaned_data.get('callmaxduration')
         maxretry = cleaned_data.get('maxretry')
         calltimeout = cleaned_data.get('calltimeout')
-        
-        dialer_set = user_dialer_setting(User.objects.get(username=ds_user))        
+
+        dialer_set = user_dialer_setting(User.objects.get(username=ds_user))
         if dialer_set:
             if frequency > dialer_set.max_frequency:
                 msg = _('maximum frequency limit of %d exceeded.'

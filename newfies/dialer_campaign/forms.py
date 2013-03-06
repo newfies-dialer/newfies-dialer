@@ -107,13 +107,13 @@ class CampaignForm(ModelForm):
                 object_choices = get_object_choices(available_objects)
                 self.fields['content_object'].widget.attrs['readonly'] = True
             else:
-                from voice_app.models import VoiceApp_template
-                available_objects = VoiceApp_template.objects.filter(user=user)
-                object_choices = get_object_choices(available_objects)
+                #from voice_app.models import VoiceApp_template
+                #available_objects = VoiceApp_template.objects.filter(user=user)
+                #object_choices = get_object_choices(available_objects)
 
                 from survey.models import Survey_template
                 available_objects = Survey_template.objects.filter(user=user)
-                object_choices += get_object_choices(available_objects)
+                object_choices = get_object_choices(available_objects)
 
             self.fields['content_object'].choices = object_choices
 

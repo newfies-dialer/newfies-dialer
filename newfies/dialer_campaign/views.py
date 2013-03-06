@@ -486,33 +486,29 @@ def make_duplicate_survey(campaign_obj, new_campaign):
     """
     survey_obj = campaign_obj.content_type.model_class().objects.get(pk=campaign_obj.object_id)
     original_survey_id = survey_obj.id
-    del survey_obj.__dict__['_state']
-    del survey_obj.__dict__['id']
-    new_survey_obj = Survey(**survey_obj.__dict__)
-    new_survey_obj.campaign = new_campaign
-    new_survey_obj.save()
+
+    # make clone of survey
+    survey_obj.pk = None
+    survey_obj.campaign = new_campaign
+    survey_obj.save()
 
     section_objs = Section.objects.filter(survey_id=original_survey_id)
     for section_obj in section_objs:
         original_section_id = section_obj.id
-        del section_obj.__dict__['_state']
-        del section_obj.__dict__['id']
 
-        new_section_obj = Section(**section_obj.__dict__)
-        new_section_obj.survey = new_survey_obj
-        new_section_obj.save()
+        # make clone of section
+        section_obj.pk = None
+        section_obj.survey = survey_obj
+        section_obj.save()
 
         branching_objs = Branching.objects.filter(section_id=original_section_id)
         for branching_obj in branching_objs:
             #original_branching_id = branching_obj.id
-            del branching_obj.__dict__['_state']
-            del branching_obj.__dict__['id']
+            branching_obj.pk = None
+            branching_obj.section = section_obj
+            branching_obj.save()
 
-            new_branching_obj = Branching(**branching_obj.__dict__)
-            new_branching_obj.section = new_section_obj
-            new_branching_obj.save()
-
-    return new_survey_obj.id
+    return survey_obj.id
 
 
 @login_required
@@ -539,6 +535,7 @@ def campaign_duplicate(request, id):
             campaign_obj.daily_start_time = '23:59:59'
             campaign_obj.imported_phonebook = ''
             campaign_obj.has_been_started = False
+            campaign_obj.has_been_duplicated = True
             campaign_obj.save()
 
             if campaign_obj.content_type.model == 'survey':

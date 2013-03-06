@@ -77,6 +77,11 @@ def update_campaign_status_cust(request, pk, status):
         if int(status) == CAMPAIGN_STATUS.START and not obj_campaign.has_been_started:
             request.session['info_msg'] = \
                 _('the campaign global settings cannot be edited when the campaign is started')
+
+            # change has_been_started flag
+            obj_campaign.has_been_started = True
+            obj_campaign.save()
+
             #if obj_campaign.content_type.model == 'survey_template':
             #    copy_survey_template_campaign(request.user, pk)
             # elif obj_campaign.content_type.model == 'voiceapp_template':
@@ -85,10 +90,6 @@ def update_campaign_status_cust(request, pk, status):
                 # Copy survey
                 survey_template = Survey_template.objects.get(user=request.user, pk=obj_campaign.object_id)
                 survey_template.copy_survey_template(obj_campaign.id)
-
-            # change has_been_started flag
-            obj_campaign.has_been_started = True
-            obj_campaign.save()
             collect_subscriber.delay(obj_campaign.id)
 
     return HttpResponseRedirect(pagination_path)

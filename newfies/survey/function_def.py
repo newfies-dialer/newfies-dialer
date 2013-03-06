@@ -11,19 +11,3 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-
-from dialer_campaign.models import Campaign
-from survey.models import Survey_template
-
-
-def copy_survey_template_campaign(user, pk):
-    """
-    Start Survey Campaign
-    """
-    obj_campaign = Campaign.objects.get(id=pk)
-    if obj_campaign:
-        # Copy survey
-        survey_template = Survey_template.objects.get(user=user, pk=obj_campaign.object_id)
-        survey_template.copy_survey_template(obj_campaign.id)
-
-    return True

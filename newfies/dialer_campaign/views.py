@@ -31,9 +31,7 @@ from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_COLUMN_NAME
 from dialer_campaign.function_def import check_dialer_setting, dialer_setting_limit, \
     user_dialer_setting, user_dialer_setting_msg
 from dialer_campaign.tasks import collect_subscriber
-from survey.models import Survey_template, Survey, Section_template, Section,\
-    Branching_template, Branching
-from survey.function_def import copy_survey_template_campaign
+from survey.models import Section, Branching, Survey_template
 #from voice_app.function_def import check_voiceapp_campaign
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import notice_count, frontend_send_notification
@@ -83,7 +81,9 @@ def update_campaign_status_cust(request, pk, status):
             # elif obj_campaign.content_type.model == 'voiceapp_template':
             #     check_voiceapp_campaign(request, pk)
             if obj_campaign.content_type.model == 'survey_template':
-                copy_survey_template_campaign(request.user, pk)
+                # Copy survey
+                survey_template = Survey_template.objects.get(user=request.user, pk=obj_campaign.object_id)
+                survey_template.copy_survey_template(obj_campaign.id)
 
             # change has_been_started flag
             obj_campaign.has_been_started = True

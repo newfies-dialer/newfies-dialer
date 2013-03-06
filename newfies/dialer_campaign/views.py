@@ -38,6 +38,8 @@ from survey.function_def import copy_survey_template_campaign
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import notice_count, frontend_send_notification
 from common.common_functions import current_view, get_pagination_vars
+from dateutil.relativedelta import relativedelta
+from datetime import datetime
 import re
 
 
@@ -521,37 +523,33 @@ def campaign_duplicate(request, id):
         form = DuplicateCampaignForm(request.user, request.POST)
         if form.is_valid():
 
-            campaign_obj = Campaign.objects.get(pk=id)
-
-            del campaign_obj.__dict__['_state']
-            del campaign_obj.__dict__['id']
-            del campaign_obj.__dict__['campaign_code']
-            del campaign_obj.__dict__['startingdate']
-            del campaign_obj.__dict__['expirationdate']
-            del campaign_obj.__dict__['daily_start_time']
-            del campaign_obj.__dict__['daily_stop_time']
-            del campaign_obj.__dict__['has_been_started']
-
-            dup_campaign = Campaign(**campaign_obj.__dict__)
-            dup_campaign.campaign_code = request.POST.get('campaign_code')
-            dup_campaign.name = request.POST.get('name')
-            dup_campaign.status = CAMPAIGN_STATUS.PAUSE
-            dup_campaign.totalcontact = 0
-            dup_campaign.completed = 0
-            dup_campaign.imported_phonebook = ''
-            dup_campaign.save()
-
+            original_camp = campaign_obj = Campaign.objects.get(pk=id)
             #Make duplicate survey
             new_survey_id = campaign_obj.object_id # default
-            if campaign_obj.content_type.model == 'survey':
-                new_survey_id = make_duplicate_survey(campaign_obj, dup_campaign)
 
-            dup_campaign.object_id = new_survey_id
-            dup_campaign.save()
+            campaign_obj.pk = None
+            campaign_obj.campaign_code = request.POST.get('campaign_code')
+            campaign_obj.name = request.POST.get('name')
+            campaign_obj.status = CAMPAIGN_STATUS.PAUSE
+            campaign_obj.totalcontact = 0
+            campaign_obj.completed = 0
+            campaign_obj.startingdate = datetime.now()
+            campaign_obj.expirationdate = datetime.now() + relativedelta(days=+1)
+            campaign_obj.daily_start_time = '00:00:00'
+            campaign_obj.daily_start_time = '23:59:59'
+            campaign_obj.imported_phonebook = ''
+            campaign_obj.has_been_started = False
+            campaign_obj.save() # New campaign
+
+            if campaign_obj.content_type.model == 'survey':
+                new_survey_id = make_duplicate_survey(original_camp, campaign_obj)
+
+            campaign_obj.object_id = new_survey_id
+            campaign_obj.save()
 
             # Many to many field
             for pb in request.POST.getlist('phonebook'):
-                dup_campaign.phonebook.add(pb)
+                campaign_obj.phonebook.add(pb)
 
             return HttpResponseRedirect('/campaign/')
         else:

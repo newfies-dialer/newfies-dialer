@@ -109,7 +109,7 @@ def notify_admin(request):
                 request, NOTIFICATION_NAME.dialer_setting_configuration, recipient)
             # Send mail to ADMINS
             subject = _('dialer setting configuration').title()
-            message = _('Ntification - User Dialer Setting. The user "%(user)s" - "%(user_id)s" is not properly configured to use the system, please configure their dialer settings.') %\
+            message = _('Notification - User Dialer Setting. The user "%(user)s" - "%(user_id)s" is not properly configured to use the system, please configure their dialer settings.') %\
                 {'user': request.user, 'user_id': request.user.id}
             # mail_admins() is a shortcut for sending an email to the site admins,
             # as defined in the ADMINS setting

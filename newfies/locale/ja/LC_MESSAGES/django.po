@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Newfies-Dialer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-07 00:12+0100\n"
+"POT-Creation-Date: 2013-03-07 00:32+0100\n"
 "PO-Revision-Date: 2012-12-13 19:22+0900\n"
 "Last-Translator: Chiaki Nakata <nakata@cba-japan.com>\n"
 "Language-Team: Japanese <dev@cba-japan.com>\n"
@@ -922,7 +922,7 @@ msgstr "最大コール時間"
 msgid "maximum call duration in seconds"
 msgstr "秒単位の最大コール時間"
 
-#: dialer_campaign/models.py:205
+#: dialer_campaign/models.py:205 dialer_settings/models.py:49
 #, fuzzy
 msgid "max retries"
 msgstr "最大再試行回数"
@@ -934,7 +934,7 @@ msgstr "コンタクトあたりの最大再試行回数"
 
 #: dialer_campaign/models.py:208
 #, fuzzy
-msgid "time between Retries"
+msgid "time between retries"
 msgstr "再試行するまでの時間"
 
 #: dialer_campaign/models.py:209
@@ -954,7 +954,7 @@ msgstr "コンタクトが取れるまでの再試行回数"
 
 #: dialer_campaign/models.py:214
 #, fuzzy
-msgid "completion Time between Retries"
+msgid "completion time between retries"
 msgstr "再試行するまでの時間"
 
 #: dialer_campaign/models.py:215
@@ -1152,7 +1152,7 @@ msgstr "Dialerの構成設定"
 #: dialer_campaign/views.py:112
 #, fuzzy, python-format
 msgid ""
-"Ntification - User Dialer Setting. The user \"%(user)s\" - \"%(user_id)s\" "
+"Notification - User Dialer Setting. The user \"%(user)s\" - \"%(user_id)s\" "
 "is not properly configured to use the system, please configure their dialer "
 "settings."
 msgstr ""
@@ -1940,11 +1940,6 @@ msgstr "最大コール時間"
 #, fuzzy
 msgid "maximum call duration in seconds (1800 = 30 Minutes)"
 msgstr "秒単位での最大コール時間(1800 = 30分)"
-
-#: dialer_settings/models.py:49
-#, fuzzy
-msgid "max Retries"
-msgstr "最大再試行回数"
 
 #: dialer_settings/models.py:50
 #, fuzzy
@@ -3948,6 +3943,10 @@ msgstr "ボイスアプリケーションの設定"
 #, python-format
 msgid "%(count)s voiceapp(s) are deleted."
 msgstr "%(count)sボイスアプリケーションが削除されました"
+
+#, fuzzy
+#~ msgid "max Retries"
+#~ msgstr "最大再試行回数"
 
 #~ msgid "Callrequest"
 #~ msgstr "コールリクエスト"

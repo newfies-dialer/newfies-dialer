@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-07 00:12+0100\n"
+"POT-Creation-Date: 2013-03-07 00:32+0100\n"
 "PO-Revision-Date: 2012-03-04 19:32+0200\n"
 "Last-Translator: serhat alpaslan <s.alpaslan@netglobalturkey.com>\n"
 "Language-Team: LANGUAGE <s.alpaslan@netglobalturkey.com>\n"
@@ -926,7 +926,7 @@ msgstr "Maksimum arama süresi"
 msgid "maximum call duration in seconds"
 msgstr "Saniyede Maksimum arama süresi"
 
-#: dialer_campaign/models.py:205
+#: dialer_campaign/models.py:205 dialer_settings/models.py:49
 #, fuzzy
 msgid "max retries"
 msgstr "Maksimum deneme"
@@ -938,7 +938,7 @@ msgstr "Kişi başına en fazla deneme"
 
 #: dialer_campaign/models.py:208
 #, fuzzy
-msgid "time between Retries"
+msgid "time between retries"
 msgstr "Deneme arasındaki süre"
 
 #: dialer_campaign/models.py:209
@@ -957,7 +957,7 @@ msgstr ""
 
 #: dialer_campaign/models.py:214
 #, fuzzy
-msgid "completion Time between Retries"
+msgid "completion time between retries"
 msgstr "Deneme arasındaki süre"
 
 #: dialer_campaign/models.py:215
@@ -1153,7 +1153,7 @@ msgstr "Arama ayarları düzenle"
 #: dialer_campaign/views.py:112
 #, fuzzy, python-format
 msgid ""
-"Ntification - User Dialer Setting. The user \"%(user)s\" - \"%(user_id)s\" "
+"Notification - User Dialer Setting. The user \"%(user)s\" - \"%(user_id)s\" "
 "is not properly configured to use the system, please configure their dialer "
 "settings."
 msgstr ""
@@ -1943,11 +1943,6 @@ msgstr "En fazla  arama süresi"
 #, fuzzy
 msgid "maximum call duration in seconds (1800 = 30 Minutes)"
 msgstr "Saniyede Maksimum arama süresi (1800 = 30 Dakika)"
-
-#: dialer_settings/models.py:49
-#, fuzzy
-msgid "max Retries"
-msgstr "En fazla deneme"
 
 #: dialer_settings/models.py:50
 #, fuzzy
@@ -3934,6 +3929,10 @@ msgstr "Ses uygulama yapılandırma"
 #, python-format
 msgid "%(count)s voiceapp(s) are deleted."
 msgstr "%(count)s voiceapp (ler) silindi."
+
+#, fuzzy
+#~ msgid "max Retries"
+#~ msgstr "En fazla deneme"
 
 #~ msgid "Callrequest"
 #~ msgstr "ÇağrıSorgulama"

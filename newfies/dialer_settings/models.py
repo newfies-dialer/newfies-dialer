@@ -46,7 +46,7 @@ class DialerSetting(models.Model):
                                           help_text=_("maximum call duration in seconds (1800 = 30 Minutes)"))
 
     maxretry = models.IntegerField(default='3', blank=True, null=True,
-                                   verbose_name=_('max Retries'),
+                                   verbose_name=_('max retries'),
                                    help_text=_("maximum retries per user."))
     max_calltimeout = models.IntegerField(default='45', blank=True, null=True,
                                           verbose_name=_('timeout on call'),

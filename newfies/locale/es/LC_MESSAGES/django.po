@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Newfies-Dialer 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-07 00:12+0100\n"
+"POT-Creation-Date: 2013-03-07 00:32+0100\n"
 "PO-Revision-Date: 2012-01-10 21:33+0100\n"
 "Last-Translator: Areski Belaid <areski@gmail.com>\n"
 "Language-Team: Areski Belaid <areski@gmail.com>\n"
@@ -545,7 +545,7 @@ msgid "advanced options"
 msgstr "Opciones avanzadas"
 
 #: dialer_campaign/admin.py:85
-#, fuzzy, python-format
+#, python-format
 msgid "you have too many campaigns. max allowed %(limit)s"
 msgstr "usted tiene demasiadas campañas. Máximo permitido de %(limit)s"
 
@@ -662,25 +662,25 @@ msgstr "DEJAR MENSAJE AL BUZÓN DE VOZ SOLAMENTE"
 #: dialer_campaign/forms.py:51 dialer_campaign/models.py:225
 #: dialer_cdr/models.py:136
 msgid "application"
-msgstr "Aplicacione"
+msgstr "aplicacione"
 
 #: dialer_campaign/forms.py:155
-#, fuzzy, python-format
+#, python-format
 msgid "maximum frequency limit of %d exceeded."
-msgstr "Límite de frecuencia máxima de %d supera."
+msgstr "límite de frecuencia máxima de %d supera."
 
 #: dialer_campaign/forms.py:161
-#, fuzzy, python-format
+#, python-format
 msgid "maximum duration limit of %d exceeded."
 msgstr "Limitar la duración máxima de %d supera."
 
 #: dialer_campaign/forms.py:167
-#, fuzzy, python-format
+#, python-format
 msgid "maximum retries limit of %d exceeded."
 msgstr "Límite máximo de reintentos de %d supera."
 
 #: dialer_campaign/forms.py:173
-#, fuzzy, python-format
+#, python-format
 msgid "maximum timeout limit of %d exceeded."
 msgstr "Límite de tiempo de espera máximo de %d supera."
 
@@ -693,7 +693,7 @@ msgstr ""
 
 #: dialer_campaign/models.py:159
 msgid "campaign code"
-msgstr "Campaña Código"
+msgstr "campaña código"
 
 #: dialer_campaign/models.py:160
 msgid ""
@@ -714,15 +714,15 @@ msgstr "descripción"
 
 #: dialer_campaign/models.py:164
 msgid "campaign description"
-msgstr "Campaña descripción"
+msgstr "campaña descripción"
 
 #: dialer_campaign/models.py:170
 msgid "callerID"
-msgstr "CallerID"
+msgstr "callerID"
 
 #: dialer_campaign/models.py:171
 msgid "outbound caller-ID"
-msgstr "Salientes de identificación de llamada"
+msgstr "salientes de identificación de llamada"
 
 #: dialer_campaign/models.py:173
 msgid "caller name"
@@ -758,85 +758,85 @@ msgstr "Hora diaria de paro"
 
 #: dialer_campaign/models.py:189
 msgid "monday"
-msgstr "Lunes"
+msgstr "lunes"
 
 #: dialer_campaign/models.py:190
 msgid "tuesday"
-msgstr "Martes"
+msgstr "martes"
 
 #: dialer_campaign/models.py:191
 msgid "wednesday"
-msgstr "Miercoles"
+msgstr "miercoles"
 
 #: dialer_campaign/models.py:192
 msgid "thursday"
-msgstr "Jueves"
+msgstr "jueves"
 
 #: dialer_campaign/models.py:193
 msgid "friday"
-msgstr "Viernes"
+msgstr "viernes"
 
 #: dialer_campaign/models.py:194
 msgid "saturday"
-msgstr "Sábado"
+msgstr "sábado"
 
 #: dialer_campaign/models.py:195
 msgid "sunday"
-msgstr "Domingo"
+msgstr "domingo"
 
 #: dialer_campaign/models.py:198
 msgid "frequency"
-msgstr "Frecuencia"
+msgstr "frecuencia"
 
 #: dialer_campaign/models.py:199
 msgid "calls per minute"
-msgstr "Llamadas por minuto"
+msgstr "llamadas por minuto"
 
 #: dialer_campaign/models.py:201
 msgid "max call duration"
-msgstr "Máximo de duración de la llamada"
+msgstr "máximo de duración de la llamada"
 
 #: dialer_campaign/models.py:202
 msgid "maximum call duration in seconds"
-msgstr "Duración máxima de llamada en segundos"
+msgstr "duración máxima de llamada en segundos"
 
-#: dialer_campaign/models.py:205
+#: dialer_campaign/models.py:205 dialer_settings/models.py:49
 msgid "max retries"
-msgstr "Máximo de reintentos"
+msgstr "máximo de reintentos"
 
 #: dialer_campaign/models.py:206
 msgid "maximum retries per contact"
-msgstr "Intentos máximos por contacto"
+msgstr "intentos máximos por contacto"
 
 #: dialer_campaign/models.py:208
-msgid "time between Retries"
-msgstr "Tiempo entre reintentos"
+msgid "time between retries"
+msgstr "tiempo entre reintentos"
 
 #: dialer_campaign/models.py:209
 msgid "time delay in seconds before retrying contact"
 msgstr ""
-"Tiempo de retardo en segundos antes de volver a intentar ponerse en contacto"
+"tiempo de retardo en segundos antes de volver a intentar ponerse en contacto"
 
 #: dialer_campaign/models.py:211
 msgid "completion max retries"
-msgstr "Completion Max reintentos"
+msgstr "completion max reintentos"
 
 #: dialer_campaign/models.py:212
 msgid "amount of retries until a contact is completed"
-msgstr "Cantidad de reintentos hasta que un contacto se ha completado"
+msgstr "cantidad de reintentos hasta que un contacto se ha completado"
 
 #: dialer_campaign/models.py:214
-msgid "completion Time between Retries"
-msgstr "Completion Tiempo entre reintentos"
+msgid "completion time between retries"
+msgstr "completion tiempo entre reintentos"
 
 #: dialer_campaign/models.py:215
 msgid "time delay in seconds before retrying contact for completion"
 msgstr ""
-"Tiempo de retardo en segundos antes de volver a intentar ponerse en contacto"
+"tiempo de retardo en segundos antes de volver a intentar ponerse en contacto"
 
 #: dialer_campaign/models.py:217 dialer_settings/models.py:52
 msgid "timeout on call"
-msgstr "Tiempo de espera de llamadas"
+msgstr "tiempo de espera de llamadas"
 
 #: dialer_campaign/models.py:218
 msgid "connection timeout in seconds"
@@ -996,9 +996,9 @@ msgid "dialer setting configuration"
 msgstr "Marcador configuración"
 
 #: dialer_campaign/views.py:112
-#, fuzzy, python-format
+#, python-format
 msgid ""
-"Ntification - User Dialer Setting. The user \"%(user)s\" - \"%(user_id)s\" "
+"Notification - User Dialer Setting. The user \"%(user)s\" - \"%(user_id)s\" "
 "is not properly configured to use the system, please configure their dialer "
 "settings."
 msgstr ""
@@ -1365,7 +1365,7 @@ msgstr "Dialer Contacto"
 
 #: dialer_contact/admin.py:79 dialer_contact/admin.py:118
 #: dialer_contact/views.py:389 dialer_contact/views.py:539
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "you have too many contacts per campaign. you are allowed a maximum of "
 "%(limit)s"
@@ -1382,7 +1382,7 @@ msgstr ""
 "importación."
 
 #: dialer_contact/admin.py:206 dialer_contact/views.py:627
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "%(contact_cnt)s contact(s) are uploaded successfully out of %(total_rows)s "
 "row(s) !!"
@@ -1455,9 +1455,9 @@ msgid "upload CSV file, the delimiter have to be "
 msgstr "Cargar archivo CSV, el delimitador que ser"
 
 #: dialer_contact/forms.py:42 survey/forms.py:350
-#, fuzzy, python-format
+#, python-format
 msgid "document types accepted: %s"
-msgstr "Los tipos de documentos aceptados: %s"
+msgstr "los tipos de documentos aceptados: %s"
 
 #: dialer_contact/forms.py:50 dialer_contact/models.py:88
 msgid "select phonebook"
@@ -1686,15 +1686,11 @@ msgstr "Llama máximo por minuto"
 
 #: dialer_settings/models.py:45
 msgid "max Call Duration"
-msgstr "Máximo Duración de la Llamada"
+msgstr "máximo duración de la llamada"
 
 #: dialer_settings/models.py:46
 msgid "maximum call duration in seconds (1800 = 30 Minutes)"
 msgstr "Máximo de duración de la llamada en segundos (1800 = 30 minutos)"
-
-#: dialer_settings/models.py:49
-msgid "max Retries"
-msgstr "Max reintentos"
 
 #: dialer_settings/models.py:50
 msgid "maximum retries per user."

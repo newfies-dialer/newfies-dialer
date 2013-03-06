@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-07 00:12+0100\n"
+"POT-Creation-Date: 2013-03-07 00:32+0100\n"
 "PO-Revision-Date: 2012-01-06 20:33-0300\n"
 "Last-Translator: Emerson Reis <eluizbr@gmail.com>\n"
 "Language-Team: PORTUGUES BRASIL <eluizbr@gmail.com>\n"
@@ -922,7 +922,7 @@ msgstr "Duração máxima da chamada"
 msgid "maximum call duration in seconds"
 msgstr "Duração máxima da chamada em segundos"
 
-#: dialer_campaign/models.py:205
+#: dialer_campaign/models.py:205 dialer_settings/models.py:49
 #, fuzzy
 msgid "max retries"
 msgstr "Tentativa(s) máxima(s)"
@@ -934,7 +934,7 @@ msgstr "Máximo de tentativas por contato"
 
 #: dialer_campaign/models.py:208
 #, fuzzy
-msgid "time between Retries"
+msgid "time between retries"
 msgstr "Tempo entre tentativas"
 
 #: dialer_campaign/models.py:209
@@ -953,7 +953,7 @@ msgstr ""
 
 #: dialer_campaign/models.py:214
 #, fuzzy
-msgid "completion Time between Retries"
+msgid "completion time between retries"
 msgstr "Tempo entre tentativas"
 
 #: dialer_campaign/models.py:215
@@ -1149,7 +1149,7 @@ msgstr "Configurações do discador"
 #: dialer_campaign/views.py:112
 #, fuzzy, python-format
 msgid ""
-"Ntification - User Dialer Setting. The user \"%(user)s\" - \"%(user_id)s\" "
+"Notification - User Dialer Setting. The user \"%(user)s\" - \"%(user_id)s\" "
 "is not properly configured to use the system, please configure their dialer "
 "settings."
 msgstr ""
@@ -1936,11 +1936,6 @@ msgstr "Duração máxima da chamada"
 #, fuzzy
 msgid "maximum call duration in seconds (1800 = 30 Minutes)"
 msgstr "Duração máxima da chamada em segundos (1800 = 30 minutos)"
-
-#: dialer_settings/models.py:49
-#, fuzzy
-msgid "max Retries"
-msgstr "Tentativas Max"
 
 #: dialer_settings/models.py:50
 #, fuzzy
@@ -3927,6 +3922,10 @@ msgstr "Configure aplicação de voz"
 #, python-format
 msgid "%(count)s voiceapp(s) are deleted."
 msgstr "%(count)s voiceapp(s) apagado(s) com sucesso."
+
+#, fuzzy
+#~ msgid "max Retries"
+#~ msgstr "Tentativas Max"
 
 #~ msgid "Callrequest"
 #~ msgstr "Solicitar chamada"

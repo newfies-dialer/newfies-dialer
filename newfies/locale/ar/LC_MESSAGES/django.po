@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-07 00:12+0100\n"
+"POT-Creation-Date: 2013-03-07 00:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -797,7 +797,7 @@ msgstr ""
 msgid "maximum call duration in seconds"
 msgstr ""
 
-#: dialer_campaign/models.py:205
+#: dialer_campaign/models.py:205 dialer_settings/models.py:49
 msgid "max retries"
 msgstr ""
 
@@ -806,7 +806,7 @@ msgid "maximum retries per contact"
 msgstr ""
 
 #: dialer_campaign/models.py:208
-msgid "time between Retries"
+msgid "time between retries"
 msgstr ""
 
 #: dialer_campaign/models.py:209
@@ -822,7 +822,7 @@ msgid "amount of retries until a contact is completed"
 msgstr ""
 
 #: dialer_campaign/models.py:214
-msgid "completion Time between Retries"
+msgid "completion time between retries"
 msgstr ""
 
 #: dialer_campaign/models.py:215
@@ -989,7 +989,7 @@ msgstr ""
 #: dialer_campaign/views.py:112
 #, python-format
 msgid ""
-"Ntification - User Dialer Setting. The user \"%(user)s\" - \"%(user_id)s\" "
+"Notification - User Dialer Setting. The user \"%(user)s\" - \"%(user_id)s\" "
 "is not properly configured to use the system, please configure their dialer "
 "settings."
 msgstr ""
@@ -1655,10 +1655,6 @@ msgstr ""
 
 #: dialer_settings/models.py:46
 msgid "maximum call duration in seconds (1800 = 30 Minutes)"
-msgstr ""
-
-#: dialer_settings/models.py:49
-msgid "max Retries"
 msgstr ""
 
 #: dialer_settings/models.py:50

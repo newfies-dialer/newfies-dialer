@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-07 00:12+0100\n"
+"POT-Creation-Date: 2013-03-07 00:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -928,7 +928,7 @@ msgstr "Durée d&#39;appel maximale"
 msgid "maximum call duration in seconds"
 msgstr "Durée d'appel maximale en quelques secondes"
 
-#: dialer_campaign/models.py:205
+#: dialer_campaign/models.py:205 dialer_settings/models.py:49
 #, fuzzy
 msgid "max retries"
 msgstr "Nombre maximal de tentatives"
@@ -940,7 +940,7 @@ msgstr "Nombre maximal de tentatives par contact"
 
 #: dialer_campaign/models.py:208
 #, fuzzy
-msgid "time between Retries"
+msgid "time between retries"
 msgstr "Temps entre les tentatives"
 
 #: dialer_campaign/models.py:209
@@ -960,7 +960,7 @@ msgstr "Montant de tentatives jusqu'à ce qu'un contact est terminé"
 
 #: dialer_campaign/models.py:214
 #, fuzzy
-msgid "completion Time between Retries"
+msgid "completion time between retries"
 msgstr "Délai entre les tentatives pour complétion"
 
 #: dialer_campaign/models.py:215
@@ -1163,7 +1163,7 @@ msgstr "paramètres de configuration du dialer"
 #: dialer_campaign/views.py:112
 #, fuzzy, python-format
 msgid ""
-"Ntification - User Dialer Setting. The user \"%(user)s\" - \"%(user_id)s\" "
+"Notification - User Dialer Setting. The user \"%(user)s\" - \"%(user_id)s\" "
 "is not properly configured to use the system, please configure their dialer "
 "settings."
 msgstr ""
@@ -1964,11 +1964,6 @@ msgstr "Max Appel Durée"
 #, fuzzy
 msgid "maximum call duration in seconds (1800 = 30 Minutes)"
 msgstr "Durée d'appel maximale en secondes (1800 = 30 minutes)"
-
-#: dialer_settings/models.py:49
-#, fuzzy
-msgid "max Retries"
-msgstr "Max Retries"
 
 #: dialer_settings/models.py:50
 #, fuzzy
@@ -3995,6 +3990,10 @@ msgstr "Configurer application vocale"
 #, python-format
 msgid "%(count)s voiceapp(s) are deleted."
 msgstr "%(count)s appvocal(s) sont supprimés."
+
+#, fuzzy
+#~ msgid "max Retries"
+#~ msgstr "Max Retries"
 
 #~ msgid "Callrequest"
 #~ msgstr "Callrequest"

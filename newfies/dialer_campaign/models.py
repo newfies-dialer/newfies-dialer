@@ -205,13 +205,13 @@ class Campaign(Model):
                                    verbose_name=_('max retries'),
                                    help_text=_("maximum retries per contact"))
     intervalretry = models.IntegerField(default='300', blank=True, null=True,
-                                        verbose_name=_('time between Retries'),
+                                        verbose_name=_('time between retries'),
                                         help_text=_("time delay in seconds before retrying contact"))
     completion_maxretry = models.IntegerField(default='0', blank=True, null=True,
                                               verbose_name=_('completion max retries'),
                                               help_text=_("amount of retries until a contact is completed"))
     completion_intervalretry = models.IntegerField(default='900', blank=True, null=True,
-                                                   verbose_name=_('completion Time between Retries'),
+                                                   verbose_name=_('completion time between retries'),
                                                    help_text=_("time delay in seconds before retrying contact for completion"))
     calltimeout = models.IntegerField(default='45', blank=True, null=True,
                                       verbose_name=_('timeout on call'),

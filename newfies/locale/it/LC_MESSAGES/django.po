@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-07 00:12+0100\n"
+"POT-Creation-Date: 2013-03-07 00:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -920,7 +920,7 @@ msgstr "Chiamata Durata massima in secondi"
 msgid "maximum call duration in seconds"
 msgstr "Chiamata Durata massima in secondi"
 
-#: dialer_campaign/models.py:205
+#: dialer_campaign/models.py:205 dialer_settings/models.py:49
 #, fuzzy
 msgid "max retries"
 msgstr "Massimo di tentativi per utente."
@@ -932,7 +932,7 @@ msgstr "Massimo di tentativi per contatto"
 
 #: dialer_campaign/models.py:208
 #, fuzzy
-msgid "time between Retries"
+msgid "time between retries"
 msgstr "Tempo tra tentativi"
 
 #: dialer_campaign/models.py:209
@@ -951,7 +951,7 @@ msgstr ""
 
 #: dialer_campaign/models.py:214
 #, fuzzy
-msgid "completion Time between Retries"
+msgid "completion time between retries"
 msgstr "Tempo tra tentativi"
 
 #: dialer_campaign/models.py:215
@@ -1147,7 +1147,7 @@ msgstr "Dialer impostazione di configurazione"
 #: dialer_campaign/views.py:112
 #, fuzzy, python-format
 msgid ""
-"Ntification - User Dialer Setting. The user \"%(user)s\" - \"%(user_id)s\" "
+"Notification - User Dialer Setting. The user \"%(user)s\" - \"%(user_id)s\" "
 "is not properly configured to use the system, please configure their dialer "
 "settings."
 msgstr ""
@@ -1936,11 +1936,6 @@ msgstr "Max Durata chiamata"
 #, fuzzy
 msgid "maximum call duration in seconds (1800 = 30 Minutes)"
 msgstr "Chiamata durata massima in secondi (1800 = 30 minuti)"
-
-#: dialer_settings/models.py:49
-#, fuzzy
-msgid "max Retries"
-msgstr "Max Tentativi"
 
 #: dialer_settings/models.py:50
 #, fuzzy
@@ -3817,6 +3812,10 @@ msgstr "Aggiornamento campagna"
 #, python-format
 msgid "%(count)s voiceapp(s) are deleted."
 msgstr ""
+
+#, fuzzy
+#~ msgid "max Retries"
+#~ msgstr "Max Tentativi"
 
 #~ msgid "Callrequest"
 #~ msgstr "Callrequest"

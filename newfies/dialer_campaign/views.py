@@ -538,8 +538,6 @@ def campaign_duplicate(request, id):
             campaign_obj.completed = 0
             campaign_obj.startingdate = datetime.now()
             campaign_obj.expirationdate = datetime.now() + relativedelta(days=+1)
-            campaign_obj.daily_start_time = '00:00:00'
-            campaign_obj.daily_stop_time = '23:59:59'
             campaign_obj.imported_phonebook = ''
             campaign_obj.has_been_started = False
             campaign_obj.has_been_duplicated = True

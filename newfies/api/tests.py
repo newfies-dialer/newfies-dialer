@@ -13,6 +13,7 @@
 #
 
 from common.utils import BaseAuthenticatedClient
+from api.api_playgrounds.views import api_list_view
 import simplejson
 
 
@@ -376,5 +377,10 @@ class ApiTestCase(BaseAuthenticatedClient):
 
     def test_playground_view(self):
         """Test Function to create a api list view"""
-        response = self.client.get("/api-explorer/")
+        #response = self.client.get("/api-explorer/")
+        #self.assertEqual(response.status_code, 200)
+        request = self.factory.get('/api-explorer/')
+        request.user = self.user
+        request.session = {}
+        response = api_list_view(request)
         self.assertEqual(response.status_code, 200)

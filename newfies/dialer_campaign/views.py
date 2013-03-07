@@ -34,7 +34,7 @@ from dialer_campaign.tasks import collect_subscriber
 from survey.models import Section, Branching, Survey_template
 #from voice_app.function_def import check_voiceapp_campaign
 from user_profile.constants import NOTIFICATION_NAME
-from frontend_notification.views import notice_count, frontend_send_notification
+from frontend_notification.views import frontend_send_notification
 from common.common_functions import current_view, get_pagination_vars
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
@@ -267,7 +267,6 @@ def campaign_list(request):
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
         'info_msg': request.session.get('info_msg'),
-        'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
@@ -351,7 +350,6 @@ def campaign_add(request):
         'module': current_view(request),
         'form': form,
         'action': 'add',
-        'notice_count': notice_count(request),
         'AMD': settings.AMD,
     }
     return render_to_response(template, data,
@@ -470,7 +468,6 @@ def campaign_change(request, object_id):
         'module': current_view(request),
         'form': form,
         'action': 'update',
-        'notice_count': notice_count(request),
         'error_msg': request.session.get('error_msg'),
         'info_msg': request.session.get('info_msg'),
         'AMD': settings.AMD,
@@ -558,7 +555,6 @@ def campaign_duplicate(request, id):
         'module': current_view(request),
         'campaign_id': id,
         'form': form,
-        'notice_count': notice_count(request),
         'err_msg': request.session.get('error_msg'),
     }
     request.session['error_msg'] = ''

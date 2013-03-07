@@ -29,7 +29,7 @@ from dialer_contact.constants import STATUS_CHOICE
 from dialer_campaign.function_def import check_dialer_setting,\
     dialer_setting_limit, user_dialer_setting_msg, type_field_chk
 from user_profile.constants import NOTIFICATION_NAME
-from frontend_notification.views import notice_count, frontend_send_notification
+from frontend_notification.views import frontend_send_notification
 from common.common_functions import striplist, current_view,\
     get_pagination_vars
 import csv
@@ -69,7 +69,6 @@ def phonebook_list(request):
         'PAGE_SIZE': PAGE_SIZE,
         'PHONEBOOK_COLUMN_NAME': PHONEBOOK_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
-        'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
@@ -108,7 +107,6 @@ def phonebook_add(request):
         'module': current_view(request),
         'form': form,
         'action': 'add',
-        'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
@@ -216,7 +214,6 @@ def phonebook_change(request, object_id):
         'module': current_view(request),
         'form': form,
         'action': 'update',
-        'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
@@ -354,7 +351,6 @@ def contact_list(request):
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
         'form': form,
-        'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'search_tag': search_tag,
     }
@@ -416,7 +412,6 @@ def contact_add(request):
         'action': 'add',
         'error_msg': error_msg,
         'phonebook_count': phonebook_count,
-        'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
@@ -502,7 +497,6 @@ def contact_change(request, object_id):
         'module': current_view(request),
         'form': form,
         'action': 'update',
-        'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
@@ -636,7 +630,6 @@ def contact_import(request):
                           'success_import_list': success_import_list,
                           'type_error_import_list': type_error_import_list,
                           'module': current_view(request),
-                          'notice_count': notice_count(request),
                           'dialer_setting_msg': user_dialer_setting_msg(request.user),
                           })
     template = 'frontend/contact/import_contact.html'

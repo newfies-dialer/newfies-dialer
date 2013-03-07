@@ -26,7 +26,6 @@ from user_profile.models import UserProfile
 from user_profile.forms import UserChangeDetailForm, \
     UserChangeDetailExtendForm, \
     CheckPhoneNumberForm
-from frontend_notification.views import notice_count
 from common.common_functions import current_view
 
 
@@ -63,7 +62,7 @@ def customer_detail_change(request):
     user_password_form = PasswordChangeForm(user=request.user)
     check_phone_no_form = CheckPhoneNumberForm()
 
-    try:        
+    try:
         dialer_set = DialerSetting.objects.get(id=request.user.get_profile().dialersetting_id)
     except:
         dialer_set = ''
@@ -131,7 +130,6 @@ def customer_detail_change(request):
         'error_detail': error_detail,
         'error_pass': error_pass,
         'error_number': error_number,
-        'notice_count': notice_count(request),
         'dialer_set': dialer_set,
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'action': action,

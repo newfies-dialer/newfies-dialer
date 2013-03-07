@@ -41,7 +41,6 @@ from survey.forms import SurveyForm, PlayMessageSectionForm,\
     SurveyDetailReportForm, SurveyFileImport
 from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME, SURVEY_CALL_RESULT_NAME
 from survey.models import post_save_add_script
-from frontend_notification.views import notice_count
 from common.common_functions import striplist, variable_value, current_view,\
     ceil_strdate, get_pagination_vars
 from datetime import datetime
@@ -738,7 +737,6 @@ def survey_list(request):
         'SURVEY_COLUMN_NAME': SURVEY_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'msg': request.session.get('msg'),
-        'notice_count': notice_count(request),
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -1443,7 +1441,6 @@ def survey_change(request, object_id):
         'action': 'update',
         'form': form,
         'msg': request.session.get('msg'),
-        'notice_count': notice_count(request),
         'SECTION_TYPE': SECTION_TYPE,
     }
     request.session['msg'] = ''
@@ -1482,7 +1479,6 @@ def survey_view(request, object_id):
         'module': current_view(request),
         'action': 'view',
         'msg': request.session.get('msg'),
-        'notice_count': notice_count(request),
         'SECTION_TYPE': SECTION_TYPE,
     }
     return render_to_response(template, data,
@@ -1715,7 +1711,6 @@ def survey_report(request):
         'module': current_view(request),
         'msg': request.session.get('msg'),
         'err_msg': request.session.get('err_msg'),
-        'notice_count': notice_count(request),
         'form': form,
         'survey_result': survey_result,
         'action': action,

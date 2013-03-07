@@ -41,7 +41,6 @@ def api_list_view(request):
     template = 'frontend/api/api_list.html'
     data = {
         'list_of_api': list_of_api,
-        'notice_count': notice_count(request),
         'module': current_view(request),
     }
     return render_to_response(template, data,

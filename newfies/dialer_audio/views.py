@@ -20,7 +20,6 @@ from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
-from frontend_notification.views import notice_count
 from dialer_audio.constants import AUDIO_COLUMN_NAME
 from dialer_audio.forms import DialerAudioFileForm
 from audiofield.models import AudioFile
@@ -61,7 +60,6 @@ def audio_list(request):
         'col_name_with_order': pagination_data['col_name_with_order'],
         'domain': domain,
         'msg': request.session.get('msg'),
-        'notice_count': notice_count(request),
         'AUDIO_DEBUG': settings.AUDIO_DEBUG,
     }
     request.session['msg'] = ''

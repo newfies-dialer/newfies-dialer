@@ -21,7 +21,6 @@ from django.utils.translation import ugettext as _
 from voice_app.constants import VOICEAPP_COLUMN_NAME
 from voice_app.models import VoiceApp, VoiceApp_template
 from voice_app.forms import VoiceAppForm
-from frontend_notification.views import notice_count
 from dialer_campaign.function_def import user_dialer_setting_msg
 from common.common_functions import current_view, get_pagination_vars
 
@@ -61,7 +60,6 @@ def voiceapp_list(request):
         'VOICEAPP_COLUMN_NAME': VOICEAPP_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'msg': request.session.get('msg'),
-        'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
@@ -100,7 +98,6 @@ def voiceapp_add(request):
        'module': current_view(request),
        'form': form,
        'action': 'add',
-       'notice_count': notice_count(request),
        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
@@ -185,7 +182,6 @@ def voiceapp_change(request, object_id):
        'module': current_view(request),
        'form': form,
        'action': 'update',
-       'notice_count': notice_count(request),
        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
@@ -216,7 +212,6 @@ def voiceapp_view(request, object_id):
         'form': form,
         'action': 'view',
         'module': current_view(request),
-        'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,

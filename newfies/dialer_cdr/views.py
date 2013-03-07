@@ -23,7 +23,6 @@ from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import CDR_REPORT_COLUMN_NAME
 from dialer_cdr.forms import VoipSearchForm
-from frontend_notification.views import notice_count
 from common.common_functions import current_view, ceil_strdate,\
     get_pagination_vars
 from datetime import datetime
@@ -207,7 +206,6 @@ def voipcall_report(request):
         'total_avg_duration': daily_data['total_avg_duration'],
         'max_duration': daily_data['max_duration'],
         'module': current_view(request),
-        'notice_count': notice_count(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'all_voipcall_list': all_voipcall_list,
         'voipcall_list': voipcall_list,

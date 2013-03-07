@@ -33,7 +33,6 @@ from dialer_cdr.constants import VOIPCALL_DISPOSITION
 from frontend.forms import LoginForm, DashboardForm
 from frontend.function_def import calculate_date
 from frontend.constants import COLOR_DISPOSITION, SEARCH_TYPE
-from frontend_notification.views import notice_count
 from common.common_functions import current_view
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -122,7 +121,6 @@ def index(request):
     data = {
         'module': current_view(request),
         'user': request.user,
-        'notice_count': notice_count(request),
         'loginform': LoginForm(),
         'errorlogin': errorlogin,
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
@@ -433,7 +431,6 @@ def customer_dashboard(request, on_index=None):
         'total_of_phonebook_contacts': total_of_phonebook_contacts,
         'campaign_phonebook_active_contact_count': pb_active_contact_count,
         'reached_contact': reached_contact,
-        'notice_count': notice_count(request),
         'total_record': total_record,
         'total_duration_sum': total_duration_sum,
         'total_call_count': total_call_count,

@@ -88,13 +88,17 @@ function Database:load_survey_section(survey_id)
     end
 
     list = {}
+    low_order = -1
     for i,row in pairs(qresult) do
-        self.debugger:msg("DEBUG", string.format("%15d  %-15s %-15s %-15s", row.id, row.question, row.type, row.order))
-        if not self.start_node then
+        self.debugger:msg("DEBUG", string.format("id:%15d  question:%-15s type:%-15s order:%-15s", row.id, row.question, row.type, row.order))
+        if tonumber(row.order) < low_order or low_order < 0 then
+            low_order = tonumber(row.order)
             self.start_node = row.id
         end
+
         list[tonumber(row['id'])] = row
     end
+    self.debugger:msg("DEBUG", string.format("start_node:%15d", self.start_node))
     self.list_section = list
     if not self.start_node then
         self.debugger:msg("ERROR", "Error Loading Survey Section")
@@ -477,6 +481,7 @@ end
 if false then
     campaign_id = 42
     subscriber_id = 39
+    survey_id = 5
     contact_id = 40
     callrequest_id = 30
     debug_mode = false
@@ -489,6 +494,7 @@ if false then
 
     db = Database(debug_mode, debugger)
     db:connect()
+    db:load_survey_section(survey_id)
     db:load_contact(subscriber_id)
     print(inspect(db.contact))
     error()

@@ -19,7 +19,7 @@ linaro-django-pagination==2.0.2
 django-admin-tools==0.4.2
 django-country-dialcode==0.4.8
 django-audiofield==0.5.5
-django-admin-tools-stats==0.4.1
+django-admin-tools-stats==0.4.2
 switch2bill-common==2.6.0
 django-extensions==1.0.3
 django-notification==1.0

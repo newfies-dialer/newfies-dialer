@@ -1601,7 +1601,7 @@ def survey_report(request):
             request.session['session_from_date'] = ''
             request.session['session_to_date'] = ''
             request.session['session_campaign_id'] = ''
-            request.session['session_surveycalls'] = ''
+            request.session['session_surveycalls_kwargs'] = ''
             request.session['session_survey_result'] = ''
             request.session['session_survey_cdr_daily_data'] = {}
 
@@ -1643,7 +1643,7 @@ def survey_report(request):
         request.session['session_from_date'] = from_date
         request.session['session_to_date'] = to_date
         request.session['session_campaign_id'] = ''
-        request.session['session_surveycalls'] = ''
+        request.session['session_surveycalls_kwargs'] = ''
         request.session['session_survey_result'] = ''
         request.session['session_search_tag'] = search_tag
 
@@ -1677,7 +1677,7 @@ def survey_report(request):
 
         # List of Survey VoIP call report
         voipcall_list = VoIPCall.objects.filter(**kwargs)
-        request.session['session_surveycalls'] = voipcall_list
+        request.session['session_surveycalls_kwargs'] = kwargs
         all_call_list = voipcall_list.values_list('id', flat=True)
 
         # Get daily report from session while using pagination & sorting
@@ -1742,8 +1742,9 @@ def export_surveycall_report(request):
     # force download.
     response['Content-Disposition'] = 'attachment;filename=export.csv'
     writer = csv.writer(response)
-    if request.session.get('session_surveycalls'):
-        qs = request.session['session_surveycalls']
+    if request.session.get('session_surveycalls_kwargs'):
+        kwargs = request.session.get('session_surveycalls_kwargs')
+        qs = VoIPCall.objects.filter(**kwargs)
         campaign_id = request.session['session_campaign_id']
         campaign_obj = Campaign.objects.get(pk=campaign_id)
         column_list = ['starting_date', 'destination', 'duration', 'disposition']

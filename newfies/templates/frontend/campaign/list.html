@@ -31,7 +31,7 @@ function delete_button()
         var url = $(this).attr('url');
         var modal_id = $(this).attr('data-controls-modal');
         $("#" + modal_id).load(url);
-    });    
+    });
 </script>
 <!-- modal content-->
 <div id="campaign-duplicate" class="modal hide fade"></div>
@@ -93,7 +93,7 @@ function delete_button()
                                     <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete campaign"|title %}"></a>
                                 {% endif %}
 
-                                {{ row.id|create_duplicate_campaign|safe }}                                
+                                {{ row.id|create_duplicate_campaign|safe }}
 
                                 {% get_campaign_app_view row %}
 

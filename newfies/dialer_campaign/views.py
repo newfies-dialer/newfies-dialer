@@ -491,7 +491,7 @@ def make_duplicate_survey(campaign_obj, new_campaign):
     survey_obj.save()
 
     old_new_section_dict = {}
-    section_objs = Section.objects.filter(survey_id=original_survey_id)
+    section_objs = Section.objects.filter(survey_id=original_survey_id).order_by('order')
     for section_obj in section_objs:
         old_section_id = section_obj.id
 

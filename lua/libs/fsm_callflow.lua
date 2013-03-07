@@ -88,7 +88,7 @@ function FSMCall:init()
         return false
     end
     self.db:check_data()
-    --self.db:disconnect()
+    self.db:disconnect()
     --print(inspect(self.db.list_section[tonumber(self.db.start_node)]))
     if not self.db.valid_data then
         self.debugger:msg("ERROR", "Error invalid data")
@@ -120,7 +120,7 @@ function FSMCall:end_call()
 
     --Save all the result to the Database
     --TODO: Reuse connection is faster, use the opened con
-    --self.db:connect()
+    self.db:connect()
     self.db:commit_result_mem(self.campaign_id, self.survey_id)
     self.db:disconnect()
 
@@ -252,7 +252,7 @@ function FSMCall:getdigitnode(current_node)
     i = 0
     while i < retries do
         i = i + 1
-        self.debugger:msg("DEBUG", ">> Retries = "..i)
+        self.debugger:msg("DEBUG", ">> Retries counter = "..i.." - Max Retries = "..retries)
         invalid = invalid_audiofile
 
         if current_node.type == RATING_SECTION or current_node.type == CAPTURE_DIGITS then
@@ -278,7 +278,7 @@ function FSMCall:getdigitnode(current_node)
             tts_file = tts(mscript, TTS_DIR)
             self.debugger:msg("INFO", "Play TTS : "..tts_file)
 
-            digits = self.session:playAndGetDigits(1, number_digits, 1,
+            digits = self.session:playAndGetDigits(1, number_digits, retries,
                 timeout*1000, '#', tts_file, invalid, '['..dtmf_filter..']|#')
         end
 
@@ -327,6 +327,7 @@ function FSMCall:next_node_light()
     self.debugger:msg("INFO", "FSMCall:next_node_light (current_node="..tonumber(self.current_node_id)..")")
     local current_node = self.db.list_section[tonumber(self.current_node_id)]
     self.last_node = current_node
+    self.debugger:msg("DEBUG", inspect(current_node))
 
     current_branching = self.db.list_branching[tonumber(self.current_node_id)]
 
@@ -372,12 +373,12 @@ end
 
 function FSMCall:marked_node_completed(current_node)
     if (current_node.completed == 't' and not self.marked_completed) then
-        --self.db:connect()
+        self.db:connect()
         --Mark the subscriber as completed and increment campaign completed field
         self.db:update_subscriber(self.subscriber_id, SUBSCRIBER_COMPLETED)
         --Flag Callrequest
         self.db:update_callrequest_cpt(self.callrequest_id)
-        --self.db:disconnect()
+        self.db:disconnect()
     end
 end
 
@@ -449,9 +450,9 @@ function FSMCall:next_node()
     --3. Record result and Aggregate result
     --
     if digits or self.record_filename then
-        --self.db:connect()
+        self.db:connect()
         self.db:save_section_result(self.callrequest_id, current_node, digits, self.record_filename, record_dur)
-        --self.db:disconnect()
+        self.db:disconnect()
         --reinit record_filename
         self.record_filename = false
         record_dur = false

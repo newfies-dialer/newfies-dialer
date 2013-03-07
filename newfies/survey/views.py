@@ -1602,7 +1602,6 @@ def survey_report(request):
             request.session['session_to_date'] = ''
             request.session['session_campaign_id'] = ''
             request.session['session_surveycalls_kwargs'] = ''
-            request.session['session_survey_result'] = ''
             request.session['session_survey_cdr_daily_data'] = {}
 
             if "from_date" in request.POST:
@@ -1644,7 +1643,6 @@ def survey_report(request):
         request.session['session_to_date'] = to_date
         request.session['session_campaign_id'] = ''
         request.session['session_surveycalls_kwargs'] = ''
-        request.session['session_survey_result'] = ''
         request.session['session_search_tag'] = search_tag
 
     start_date = ceil_strdate(from_date, 'start')

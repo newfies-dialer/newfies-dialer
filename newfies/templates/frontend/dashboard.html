@@ -232,37 +232,37 @@
                     var avg_duration_tag = '{% trans "avg. duration"|title %}';
                     var hour_tag = '{% trans "hour"|title %}';
 
-                    if(graph_view=='count' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.A_Last_30_days }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.B_Last_7_days }}))
+                    if(graph_view == 'count' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.A_Last_30_days }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.B_Last_7_days }}))
                     {
                         date_string = date_tag + ' - ' + Day + ', ' + month_name + ' ' + Year  ;
                         value_string = call_tag + ' - ' + parseInt(y) ;
                     }
 
-                    if(graph_view=='duration' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.A_Last_30_days }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.B_Last_7_days }}))
+                    if(graph_view == 'duration' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.A_Last_30_days }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.B_Last_7_days }}))
                     {
                         date_string = date_tag + ' - ' + Day + ', ' + month_name + ' ' + Year;
                         value_string = duration_tag + ' - ' + y ;
                     }
 
-                    if(graph_view=='count' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.C_Yesterday }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.D_Last_24_hours }}))
+                    if(graph_view == 'count' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.C_Yesterday }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.D_Last_24_hours }}))
                     {
                         date_string = date_tag + ' - ' + Day + ', ' + month_name + ' ' + Year + '<br/> ' + hour_tag + ': ' + hour;
                         value_string = call_tag + ' - ' + parseInt(y) ;
                     }
 
-                    if(graph_view=='duration' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.C_Yesterday }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.D_Last_24_hours }}))
+                    if(graph_view == 'duration' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.C_Yesterday }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.D_Last_24_hours }}))
                     {
                         date_string = date_tag + ' - ' + Day + ', ' + month_name + ' ' + Year + '<br/> ' + hour_tag + ': ' + hour;
                         value_string = duration_tag + ' - ' + y ;
                     }
 
-                    if(graph_view=='count' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.E_Last_12_hours }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.F_Last_6_hours }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.G_Last_hour }}))
+                    if(graph_view == 'count' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.E_Last_12_hours }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.F_Last_6_hours }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.G_Last_hour }}))
                     {
                         date_string = date_tag + ' - ' + Day + ', ' + month_name + ' ' + Year + ' ' + strTime;
                         value_string = call_tag + ' - ' + parseInt(y) ;
                     }
 
-                    if(graph_view=='duration' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.E_Last_12_hours }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.F_Last_6_hours }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.G_Last_hour }}))
+                    if(graph_view == 'duration' && ({{ form.search_type.value }} == {{ SEARCH_TYPE.E_Last_12_hours }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.F_Last_6_hours }} || {{ form.search_type.value }} == {{ SEARCH_TYPE.G_Last_hour }}))
                     {
                         date_string = date_tag + ' - ' + Day + ', ' + month_name + ' ' + Year + ' ' + strTime;
                         value_string = duration_tag + ' - ' + y ;
@@ -331,13 +331,13 @@
     $(function(){
         $(function () {
             var data = [
-                { label: 'ANSWER' , data: [[1, {{ total_answered }}]], color: '{{ answered_color }}' },
-                { label: 'BUSY' , data: [[1, {{ total_busy }}]], color: '{{ busy_color }}' },
-                { label: 'NOANSWER' , data: [[1, {{ total_not_answered }}]], color: '{{ not_answered_color }}' },
+                { label: '{{ VOIPCALL_DISPOSITION.ANSWER }}', data: [[1, {{ total_answered }}]], color: '{{ answered_color }}' },
+                { label: '{{ VOIPCALL_DISPOSITION.BUSY }}', data: [[1, {{ total_busy }}]], color: '{{ busy_color }}' },
+                { label: '{{ VOIPCALL_DISPOSITION.NOANSWER }}', data: [[1, {{ total_not_answered }}]], color: '{{ not_answered_color }}' },
                 //{ label: 'OHTERS' , data: [[1, {{ total_others }}]]},
-                { label: 'CANCEL' , data: [[1, {{ total_cancel }}]], color: '{{ cancel_color }}' },
-                { label: 'CONGESTION' , data: [[1, {{ total_congestion }}]], color: '{{ congestion_color }}' },
-                { label: 'FAILED' , data: [[1, {{ total_failed }}]], color: '{{ failed_color }}' },
+                { label: '{{ VOIPCALL_DISPOSITION.CANCEL }}', data: [[1, {{ total_cancel }}]], color: '{{ cancel_color }}' },
+                { label: '{{ VOIPCALL_DISPOSITION.CONGESTION }}', data: [[1, {{ total_congestion }}]], color: '{{ congestion_color }}' },
+                { label: '{{ VOIPCALL_DISPOSITION.FAILED }}', data: [[1, {{ total_failed }}]], color: '{{ failed_color }}' },
             ];
             var options = {
                     series: {
@@ -383,14 +383,14 @@
                     <th style="color: #111111; width: 120px;" colspan="3">{{ total_call_count }}  {% trans "TOTAL CALLS" %}</th>
                 </tr>
                 <tr>
-                    <th style="color: {{ answered_color }}">{{ total_answered }}  {% trans "ANSWERED" %}</th>
-                    <th style="color: {{ busy_color }}">{{ total_busy }}  {% trans "BUSY" %}</th>
-                    <th style="color: {{ not_answered_color }}">{{ total_not_answered }}  {% trans "NOANSWER" %}</th>
+                    <th style="color: {{ answered_color }}">{{ total_answered }}  {{ VOIPCALL_DISPOSITION.ANSWER }}</th>
+                    <th style="color: {{ busy_color }}">{{ total_busy }}  {{ VOIPCALL_DISPOSITION.BUSY }}</th>
+                    <th style="color: {{ not_answered_color }}">{{ total_not_answered }}  {{ VOIPCALL_DISPOSITION.NOANSWER }}</th>
                 </tr>
                 <tr>
-                    <th style="color: {{ cancel_color }}">{{ total_cancel }}  {% trans "CANCEL" %}</th>
-                    <th style="color: {{ congestion_color }}">{{ total_congestion }}  {% trans "CONGESTION" %}</th>
-                    <th style="color: {{ failed_color }}">{{ total_failed }}  {% trans "FAILED" %}</th>
+                    <th style="color: {{ cancel_color }}">{{ total_cancel }}  {{ VOIPCALL_DISPOSITION.CANCEL }}</th>
+                    <th style="color: {{ congestion_color }}">{{ total_congestion }}  {{ VOIPCALL_DISPOSITION.CONGESTION }}</th>
+                    <th style="color: {{ failed_color }}">{{ total_failed }}  {{ VOIPCALL_DISPOSITION.FAILED }}</th>
                 </tr>
                 </table>
 

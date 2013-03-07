@@ -448,6 +448,7 @@ def customer_dashboard(request, on_index=None):
         'congestion_color': COLOR_DISPOSITION['CONGESTION'],
         'failed_color': COLOR_DISPOSITION['FAILED'],
         'SEARCH_TYPE': SEARCH_TYPE,
+        'VOIPCALL_DISPOSITION': VOIPCALL_DISPOSITION,
     }
     if on_index == 'yes':
         return data

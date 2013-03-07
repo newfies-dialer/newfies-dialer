@@ -91,7 +91,7 @@
         <ul class="nav pull-right">
             <li id="fat-menu-1" class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username|capfirst }}
-                    <span class="label label-warning">{% get_notice_count request.user %}</span>
+                    <span class="label label-warning">{% get_notice_count user %}</span>
 
                     <b class="caret"></b>
                 </a>
@@ -101,7 +101,7 @@
                     </li>
                     <li>
                         <a href="/user_notification/">{% trans "notifications"|title %}
-                            <span class="label label-warning">{% get_notice_count request.user %}</span>
+                            <span class="label label-warning">{% get_notice_count user %}</span>
                         </a>
                     </li>
                     <li {% if action == "tabs-3" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-3">

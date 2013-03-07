@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-07 00:40+0100\n"
+"POT-Creation-Date: 2013-03-07 16:01+0100\n"
 "PO-Revision-Date: 2012-03-04 19:32+0200\n"
 "Last-Translator: serhat alpaslan <s.alpaslan@netglobalturkey.com>\n"
 "Language-Team: LANGUAGE <s.alpaslan@netglobalturkey.com>\n"
@@ -556,12 +556,12 @@ msgstr "Newfies-Dialer"
 msgid "applications"
 msgstr "Uygulama"
 
-#: custom_admin_tools/menu.py:39 templates/frontend/bootstrap_menu.html:125
+#: custom_admin_tools/menu.py:39 templates/frontend/bootstrap_menu.html:119
 #, fuzzy
 msgid "administration"
 msgstr "Yönetim"
 
-#: custom_admin_tools/menu.py:42 templates/frontend/bootstrap_menu.html:121
+#: custom_admin_tools/menu.py:42 templates/frontend/bootstrap_menu.html:115
 msgid "API Explorer"
 msgstr ""
 
@@ -605,21 +605,21 @@ msgstr "Ses URL"
 msgid "date"
 msgstr "Güncelle"
 
-#: dialer_audio/views.py:95 dialer_campaign/views.py:345
-#: dialer_contact/views.py:103 dialer_contact/views.py:403 survey/views.py:771
-#: voice_app/views.py:95
+#: dialer_audio/views.py:93 dialer_campaign/views.py:344
+#: dialer_contact/views.py:102 dialer_contact/views.py:399 survey/views.py:769
+#: voice_app/views.py:93
 #, python-format
 msgid "\"%(name)s\" added."
 msgstr "\"%(name)s\" eklenir."
 
-#: dialer_audio/views.py:136 dialer_campaign/views.py:378
-#: dialer_campaign/views.py:435 dialer_contact/views.py:154
-#: dialer_contact/views.py:446 survey/views.py:816 voice_app/views.py:130
+#: dialer_audio/views.py:134 dialer_campaign/views.py:376
+#: dialer_campaign/views.py:433 dialer_contact/views.py:152
+#: dialer_contact/views.py:441 survey/views.py:814 voice_app/views.py:127
 #, python-format
 msgid "\"%(name)s\" is deleted."
 msgstr "\"%(name)s\" silinir."
 
-#: dialer_audio/views.py:152
+#: dialer_audio/views.py:150
 #, python-format
 msgid "%(count)s audio(s) are deleted."
 msgstr "%(count)s ses (ler) silinir."
@@ -1190,7 +1190,7 @@ msgstr "Ses Uygulamaları"
 msgid "duplicate this campaign"
 msgstr "Kampanyası Update"
 
-#: dialer_campaign/views.py:316
+#: dialer_campaign/views.py:315
 #, fuzzy
 msgid ""
 "in order to add a campaign, you need to have your settings configured "
@@ -1199,26 +1199,26 @@ msgstr ""
 "Kampanya eklemek için, ayarlarınızı düzgün yapılandırılmış olması gerekir, "
 "yönetici ile temasa geçiniz."
 
-#: dialer_campaign/views.py:323
+#: dialer_campaign/views.py:322
 #, python-format
 msgid "you have too many campaigns. Max allowed %(limit)s"
 msgstr ""
 "Çok fazla kampanyanız bulunmakta.Hesabınıza en fazla %(limit) sınır "
 "tanımlanmıştır."
 
-#: dialer_campaign/views.py:390
+#: dialer_campaign/views.py:388
 #, python-format
 msgid "%(count)s campaign(s) are deleted."
 msgstr "%(count)s kampanyası (ler) silinir."
 
-#: dialer_campaign/views.py:429
+#: dialer_campaign/views.py:427
 msgid ""
 "the campaign is started, you can only edit Dialer settings and Campaign "
 "schedule"
 msgstr ""
 
-#: dialer_campaign/views.py:463 dialer_contact/views.py:210
-#: dialer_contact/views.py:496 survey/views.py:1431 voice_app/views.py:179
+#: dialer_campaign/views.py:461 dialer_contact/views.py:208
+#: dialer_contact/views.py:491 survey/views.py:1429 voice_app/views.py:176
 #, python-format
 msgid "\"%(name)s\" is updated."
 msgstr "\"%(name)s\" güncellendi."
@@ -1310,23 +1310,23 @@ msgstr "B-Leg"
 msgid "ANSWER"
 msgstr "CEVAP"
 
-#: dialer_cdr/constants.py:54 templates/frontend/dashboard.html:387
+#: dialer_cdr/constants.py:54
 msgid "BUSY"
 msgstr "MEŞGUL"
 
-#: dialer_cdr/constants.py:55 templates/frontend/dashboard.html:388
+#: dialer_cdr/constants.py:55
 msgid "NOANSWER"
 msgstr "CEVAPSIZ"
 
-#: dialer_cdr/constants.py:56 templates/frontend/dashboard.html:391
+#: dialer_cdr/constants.py:56
 msgid "CANCEL"
 msgstr "İPTAL"
 
-#: dialer_cdr/constants.py:57 templates/frontend/dashboard.html:392
+#: dialer_cdr/constants.py:57
 msgid "CONGESTION"
 msgstr "TIKANIKLIK"
 
-#: dialer_cdr/constants.py:58 templates/frontend/dashboard.html:393
+#: dialer_cdr/constants.py:58
 msgid "FAILED"
 msgstr ""
 
@@ -1572,7 +1572,7 @@ msgid "Dialer Contact"
 msgstr "Kişi seç"
 
 #: dialer_contact/admin.py:79 dialer_contact/admin.py:118
-#: dialer_contact/views.py:389 dialer_contact/views.py:539
+#: dialer_contact/views.py:385 dialer_contact/views.py:533
 #, fuzzy, python-format
 msgid ""
 "you have too many contacts per campaign. you are allowed a maximum of "
@@ -1581,7 +1581,7 @@ msgstr ""
 "Kampanya için çok fazla kişi girişi yapıldı. En fazla %(limit)s kabul "
 "edilmektedir."
 
-#: dialer_contact/admin.py:169 dialer_contact/views.py:586
+#: dialer_contact/admin.py:169 dialer_contact/views.py:580
 #, fuzzy
 msgid ""
 "invalid value for import! please check the import samples or phonebook is "
@@ -1589,7 +1589,7 @@ msgid ""
 msgstr ""
 "İçe aktarma  için geçersiz değer! İçe aktarılan değerleri kontrol ediniz."
 
-#: dialer_contact/admin.py:206 dialer_contact/views.py:627
+#: dialer_contact/admin.py:206 dialer_contact/views.py:621
 #, fuzzy, python-format
 msgid ""
 "%(contact_cnt)s contact(s) are uploaded successfully out of %(total_rows)s "
@@ -1743,17 +1743,17 @@ msgstr "Notlar"
 msgid "can see contact"
 msgstr "Kişi seç"
 
-#: dialer_contact/views.py:175
+#: dialer_contact/views.py:173
 #, python-format
 msgid "%(count)s phonebook(s) are deleted."
 msgstr "%(count)s rehberi (ler) silinir."
 
-#: dialer_contact/views.py:408
+#: dialer_contact/views.py:404
 #, python-format
 msgid "\"%(name)s\" cannot be added."
 msgstr "\"%(name)s\" eklenemiyor."
 
-#: dialer_contact/views.py:458
+#: dialer_contact/views.py:453
 #, python-format
 msgid "%(count)s contact(s) are deleted."
 msgstr "%(count)s Kişi (ler) silindi."
@@ -2044,17 +2044,17 @@ msgstr "Kullanıcı Adı:"
 msgid "password"
 msgstr "Şifre"
 
-#: frontend/views.py:90
+#: frontend/views.py:89
 #, fuzzy
 msgid "disabled account"
 msgstr "Hesap devre dışı"
 
-#: frontend/views.py:93
+#: frontend/views.py:92
 #, fuzzy
 msgid "invalid login."
 msgstr "Giriş Geçersiz."
 
-#: frontend/views.py:96
+#: frontend/views.py:95
 #, fuzzy
 msgid "enter valid user credentials."
 msgstr "Geçerli Kullanıcı Kimlik Bilgileri girin."
@@ -2309,53 +2309,53 @@ msgstr "Anket yapılandırma"
 msgid "result count"
 msgstr "Çağrı sayısı"
 
-#: survey/views.py:833
+#: survey/views.py:831
 #, python-format
 msgid "%(count)s survey(s) are deleted."
 msgstr "%(count)s anketi (ler) silindi."
 
-#: survey/views.py:864
+#: survey/views.py:862
 msgid "section is added successfully."
 msgstr ""
 
-#: survey/views.py:1009
+#: survey/views.py:1007
 #, fuzzy
 msgid "section updated."
 msgstr "Bildirim türü"
 
-#: survey/views.py:1167
+#: survey/views.py:1165
 msgid "section is deleted successfully."
 msgstr ""
 
-#: survey/views.py:1202
+#: survey/views.py:1200
 #, fuzzy
 msgid "script updated."
 msgstr "Bildirim türü"
 
-#: survey/views.py:1307
+#: survey/views.py:1305
 msgid "branching is added successfully."
 msgstr ""
 
-#: survey/views.py:1311 survey/views.py:1375
+#: survey/views.py:1309 survey/views.py:1373
 #, fuzzy
 msgid "duplicate record keys with goto."
 msgstr "Temas çoğaltın!"
 
-#: survey/views.py:1354
+#: survey/views.py:1352
 msgid "branching is deleted successfully."
 msgstr ""
 
-#: survey/views.py:1370
+#: survey/views.py:1368
 #, fuzzy
 msgid "branching updated."
 msgstr "Bildirim türü"
 
-#: survey/views.py:1552
+#: survey/views.py:1548
 #, fuzzy
 msgid "no recording"
 msgstr "Kayıt bulunamadı!."
 
-#: survey/views.py:1699
+#: survey/views.py:1693
 #, fuzzy
 msgid "no campaign attached with survey."
 msgstr "Hiçbir kampanya anket ile ilişkilendirilmedi."
@@ -2712,29 +2712,29 @@ msgstr ""
 msgid "rebranding"
 msgstr "Kayıt bulunamadı!."
 
-#: templates/frontend/bootstrap_menu.html:103
+#: templates/frontend/bootstrap_menu.html:101
 #, fuzzy
 msgid "account settings"
 msgstr "Hesap ayarları"
 
-#: templates/frontend/bootstrap_menu.html:106
+#: templates/frontend/bootstrap_menu.html:104
 #, fuzzy
 msgid "notifications"
 msgstr "Bildirimler"
 
-#: templates/frontend/bootstrap_menu.html:115
+#: templates/frontend/bootstrap_menu.html:109
 #: templates/frontend/registration/user_detail_change.html:14
 #, fuzzy
 msgid "account limits"
 msgstr "Hesap Sınırları"
 
-#: templates/frontend/bootstrap_menu.html:117
+#: templates/frontend/bootstrap_menu.html:111
 #: templates/frontend/registration/user_detail_change.html:16
 #, fuzzy
 msgid "change language"
 msgstr "Dil değiştirme"
 
-#: templates/frontend/bootstrap_menu.html:128
+#: templates/frontend/bootstrap_menu.html:122
 #, fuzzy
 msgid "log out"
 msgstr "Çıkış"
@@ -2925,10 +2925,6 @@ msgstr "Son saat"
 #: templates/frontend/dashboard.html:383
 msgid "TOTAL CALLS"
 msgstr "TOPLAM ARAMALAR"
-
-#: templates/frontend/dashboard.html:386
-msgid "ANSWERED"
-msgstr "CEVAP"
 
 #: templates/frontend/index.html:12
 msgid ""
@@ -3829,28 +3825,28 @@ msgstr "Yönetici"
 msgid "admins"
 msgstr "Yöneticiler"
 
-#: user_profile/views.py:96
+#: user_profile/views.py:95
 #, fuzzy
 msgid "detail has been changed."
 msgstr "Detay değiştirildi."
 
-#: user_profile/views.py:98 user_profile/views.py:108
-#: user_profile/views.py:119
+#: user_profile/views.py:97 user_profile/views.py:107
+#: user_profile/views.py:118
 #, fuzzy
 msgid "please correct the errors below."
 msgstr "Aşağıdaki hataları düzeltin."
 
-#: user_profile/views.py:104
+#: user_profile/views.py:103
 #, fuzzy
 msgid "this phone number is not authorized."
 msgstr "Bu telefon numarası yetkili değil."
 
-#: user_profile/views.py:106
+#: user_profile/views.py:105
 #, fuzzy
 msgid "this phone number is authorized."
 msgstr "Bu telefon numarası yetkilidir."
 
-#: user_profile/views.py:117
+#: user_profile/views.py:116
 #, fuzzy
 msgid "your password has been changed."
 msgstr "Parolanız değiştirildi."
@@ -3925,10 +3921,13 @@ msgstr "Ses Uygulamaları"
 msgid "can see voice application"
 msgstr "Ses uygulama yapılandırma"
 
-#: voice_app/views.py:144
+#: voice_app/views.py:141
 #, python-format
 msgid "%(count)s voiceapp(s) are deleted."
 msgstr "%(count)s voiceapp (ler) silindi."
+
+#~ msgid "ANSWERED"
+#~ msgstr "CEVAP"
 
 #, fuzzy
 #~ msgid "max Retries"

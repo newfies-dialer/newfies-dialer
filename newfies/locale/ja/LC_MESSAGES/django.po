@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Newfies-Dialer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-07 00:40+0100\n"
+"POT-Creation-Date: 2013-03-07 16:01+0100\n"
 "PO-Revision-Date: 2012-12-13 19:22+0900\n"
 "Last-Translator: Chiaki Nakata <nakata@cba-japan.com>\n"
 "Language-Team: Japanese <dev@cba-japan.com>\n"
@@ -555,12 +555,12 @@ msgstr "Newfies-Dialer"
 msgid "applications"
 msgstr "アプリケーション"
 
-#: custom_admin_tools/menu.py:39 templates/frontend/bootstrap_menu.html:125
+#: custom_admin_tools/menu.py:39 templates/frontend/bootstrap_menu.html:119
 #, fuzzy
 msgid "administration"
 msgstr "管理"
 
-#: custom_admin_tools/menu.py:42 templates/frontend/bootstrap_menu.html:121
+#: custom_admin_tools/menu.py:42 templates/frontend/bootstrap_menu.html:115
 msgid "API Explorer"
 msgstr "API エクスプローラ"
 
@@ -604,21 +604,21 @@ msgstr "音声URL"
 msgid "date"
 msgstr "アップデート"
 
-#: dialer_audio/views.py:95 dialer_campaign/views.py:345
-#: dialer_contact/views.py:103 dialer_contact/views.py:403 survey/views.py:771
-#: voice_app/views.py:95
+#: dialer_audio/views.py:93 dialer_campaign/views.py:344
+#: dialer_contact/views.py:102 dialer_contact/views.py:399 survey/views.py:769
+#: voice_app/views.py:93
 #, python-format
 msgid "\"%(name)s\" added."
 msgstr "\"%(name)s\" が追加されました"
 
-#: dialer_audio/views.py:136 dialer_campaign/views.py:378
-#: dialer_campaign/views.py:435 dialer_contact/views.py:154
-#: dialer_contact/views.py:446 survey/views.py:816 voice_app/views.py:130
+#: dialer_audio/views.py:134 dialer_campaign/views.py:376
+#: dialer_campaign/views.py:433 dialer_contact/views.py:152
+#: dialer_contact/views.py:441 survey/views.py:814 voice_app/views.py:127
 #, python-format
 msgid "\"%(name)s\" is deleted."
 msgstr "\"%(name)s\"は削除されました"
 
-#: dialer_audio/views.py:152
+#: dialer_audio/views.py:150
 #, python-format
 msgid "%(count)s audio(s) are deleted."
 msgstr "%(count)s音声が削除されました"
@@ -1188,7 +1188,7 @@ msgstr "ボイスアプリケーション"
 msgid "duplicate this campaign"
 msgstr "キャンペーンのアップデート"
 
-#: dialer_campaign/views.py:316
+#: dialer_campaign/views.py:315
 #, fuzzy
 msgid ""
 "in order to add a campaign, you need to have your settings configured "
@@ -1197,17 +1197,17 @@ msgstr ""
 "キャンペーンを追加するには正しく設定する必要があります。管理者に問い合わせて"
 "ください。"
 
-#: dialer_campaign/views.py:323
+#: dialer_campaign/views.py:322
 #, python-format
 msgid "you have too many campaigns. Max allowed %(limit)s"
 msgstr "キャンペーンの数が最大値%(limit)sを超えています"
 
-#: dialer_campaign/views.py:390
+#: dialer_campaign/views.py:388
 #, python-format
 msgid "%(count)s campaign(s) are deleted."
 msgstr "%(count)sキャンペーンが削除されました"
 
-#: dialer_campaign/views.py:429
+#: dialer_campaign/views.py:427
 #, fuzzy
 msgid ""
 "the campaign is started, you can only edit Dialer settings and Campaign "
@@ -1216,8 +1216,8 @@ msgstr ""
 "キャンペーンが開始されました。ダイアラー設定とキャンペーンスケジュールのみ編"
 "集可になります"
 
-#: dialer_campaign/views.py:463 dialer_contact/views.py:210
-#: dialer_contact/views.py:496 survey/views.py:1431 voice_app/views.py:179
+#: dialer_campaign/views.py:461 dialer_contact/views.py:208
+#: dialer_contact/views.py:491 survey/views.py:1429 voice_app/views.py:176
 #, python-format
 msgid "\"%(name)s\" is updated."
 msgstr "\"%(name)s\" はアップデートされました"
@@ -1312,23 +1312,23 @@ msgstr "B-Leg"
 msgid "ANSWER"
 msgstr "応答済み"
 
-#: dialer_cdr/constants.py:54 templates/frontend/dashboard.html:387
+#: dialer_cdr/constants.py:54
 msgid "BUSY"
 msgstr "ビジー状態"
 
-#: dialer_cdr/constants.py:55 templates/frontend/dashboard.html:388
+#: dialer_cdr/constants.py:55
 msgid "NOANSWER"
 msgstr "応答なし"
 
-#: dialer_cdr/constants.py:56 templates/frontend/dashboard.html:391
+#: dialer_cdr/constants.py:56
 msgid "CANCEL"
 msgstr "キャンセル"
 
-#: dialer_cdr/constants.py:57 templates/frontend/dashboard.html:392
+#: dialer_cdr/constants.py:57
 msgid "CONGESTION"
 msgstr "回線混雑"
 
-#: dialer_cdr/constants.py:58 templates/frontend/dashboard.html:393
+#: dialer_cdr/constants.py:58
 #, fuzzy
 msgid "FAILED"
 msgstr "失敗"
@@ -1573,14 +1573,14 @@ msgid "Dialer Contact"
 msgstr "コンタクトを選択"
 
 #: dialer_contact/admin.py:79 dialer_contact/admin.py:118
-#: dialer_contact/views.py:389 dialer_contact/views.py:539
+#: dialer_contact/views.py:385 dialer_contact/views.py:533
 #, fuzzy, python-format
 msgid ""
 "you have too many contacts per campaign. you are allowed a maximum of "
 "%(limit)s"
 msgstr "キャンペーンにおけるコンタクトの数が最大値%(limit)sを超えています"
 
-#: dialer_contact/admin.py:169 dialer_contact/views.py:586
+#: dialer_contact/admin.py:169 dialer_contact/views.py:580
 #, fuzzy
 msgid ""
 "invalid value for import! please check the import samples or phonebook is "
@@ -1588,7 +1588,7 @@ msgid ""
 msgstr ""
 "インポートファイルに不正な値が入っています。サンプルを参照してください。"
 
-#: dialer_contact/admin.py:206 dialer_contact/views.py:627
+#: dialer_contact/admin.py:206 dialer_contact/views.py:621
 #, fuzzy, python-format
 msgid ""
 "%(contact_cnt)s contact(s) are uploaded successfully out of %(total_rows)s "
@@ -1744,17 +1744,17 @@ msgstr "メモ"
 msgid "can see contact"
 msgstr "コンタクトを選択"
 
-#: dialer_contact/views.py:175
+#: dialer_contact/views.py:173
 #, python-format
 msgid "%(count)s phonebook(s) are deleted."
 msgstr "%(count)s電話帳が削除されました"
 
-#: dialer_contact/views.py:408
+#: dialer_contact/views.py:404
 #, python-format
 msgid "\"%(name)s\" cannot be added."
 msgstr "\"%(name)s\" は追加できません"
 
-#: dialer_contact/views.py:458
+#: dialer_contact/views.py:453
 #, python-format
 msgid "%(count)s contact(s) are deleted."
 msgstr "%(count)sコンタクトが削除されました"
@@ -2041,17 +2041,17 @@ msgstr "ユーザ名"
 msgid "password"
 msgstr "パスワード"
 
-#: frontend/views.py:90
+#: frontend/views.py:89
 #, fuzzy
 msgid "disabled account"
 msgstr "無効なアカウント"
 
-#: frontend/views.py:93
+#: frontend/views.py:92
 #, fuzzy
 msgid "invalid login."
 msgstr "無効なログイン"
 
-#: frontend/views.py:96
+#: frontend/views.py:95
 #, fuzzy
 msgid "enter valid user credentials."
 msgstr "有効なユーザー認証情報を入力してください"
@@ -2308,56 +2308,56 @@ msgstr "録音時間"
 msgid "result count"
 msgstr "コール数カウント"
 
-#: survey/views.py:833
+#: survey/views.py:831
 #, python-format
 msgid "%(count)s survey(s) are deleted."
 msgstr "%(count)sアンケート調査が削除されました"
 
-#: survey/views.py:864
+#: survey/views.py:862
 #, fuzzy
 msgid "section is added successfully."
 msgstr "正常にセクションが追加されました"
 
-#: survey/views.py:1009
+#: survey/views.py:1007
 #, fuzzy
 msgid "section updated."
 msgstr "セクションが更新されました"
 
-#: survey/views.py:1167
+#: survey/views.py:1165
 #, fuzzy
 msgid "section is deleted successfully."
 msgstr "正常にセクションが削除されました"
 
-#: survey/views.py:1202
+#: survey/views.py:1200
 #, fuzzy
 msgid "script updated."
 msgstr "文章が更新されました"
 
-#: survey/views.py:1307
+#: survey/views.py:1305
 #, fuzzy
 msgid "branching is added successfully."
 msgstr "分岐が正常に追加されました"
 
-#: survey/views.py:1311 survey/views.py:1375
+#: survey/views.py:1309 survey/views.py:1373
 msgid "duplicate record keys with goto."
 msgstr "記録キーが重複しています！"
 
-#: survey/views.py:1354
+#: survey/views.py:1352
 #, fuzzy
 msgid "branching is deleted successfully."
 msgstr "分岐が正常に削除されました"
 
-#: survey/views.py:1370
+#: survey/views.py:1368
 #, fuzzy
 msgid "branching updated."
 msgstr "分岐が更新されました"
 
-#: survey/views.py:1552
+#: survey/views.py:1548
 #, fuzzy
 msgid "no recording"
 msgstr "録音はありません"
 
-#: survey/views.py:1699
+#: survey/views.py:1693
 #, fuzzy
 msgid "no campaign attached with survey."
 msgstr "アンケート調査に添付されているキャンペーンはありません"
@@ -2718,29 +2718,29 @@ msgstr "ボイスメール検索(AMD)"
 msgid "rebranding"
 msgstr "リブランディング"
 
-#: templates/frontend/bootstrap_menu.html:103
+#: templates/frontend/bootstrap_menu.html:101
 #, fuzzy
 msgid "account settings"
 msgstr "アカウント設定"
 
-#: templates/frontend/bootstrap_menu.html:106
+#: templates/frontend/bootstrap_menu.html:104
 #, fuzzy
 msgid "notifications"
 msgstr "通知"
 
-#: templates/frontend/bootstrap_menu.html:115
+#: templates/frontend/bootstrap_menu.html:109
 #: templates/frontend/registration/user_detail_change.html:14
 #, fuzzy
 msgid "account limits"
 msgstr "アカウント制限"
 
-#: templates/frontend/bootstrap_menu.html:117
+#: templates/frontend/bootstrap_menu.html:111
 #: templates/frontend/registration/user_detail_change.html:16
 #, fuzzy
 msgid "change language"
 msgstr "言語の変更"
 
-#: templates/frontend/bootstrap_menu.html:128
+#: templates/frontend/bootstrap_menu.html:122
 #, fuzzy
 msgid "log out"
 msgstr "ログアウト"
@@ -2943,10 +2943,6 @@ msgstr "1時間以内"
 #: templates/frontend/dashboard.html:383
 msgid "TOTAL CALLS"
 msgstr "総コール数"
-
-#: templates/frontend/dashboard.html:386
-msgid "ANSWERED"
-msgstr "応答済み"
 
 #: templates/frontend/index.html:12
 msgid ""
@@ -3850,28 +3846,28 @@ msgstr "Admin"
 msgid "admins"
 msgstr "管理者"
 
-#: user_profile/views.py:96
+#: user_profile/views.py:95
 #, fuzzy
 msgid "detail has been changed."
 msgstr "詳細情報が変更されました"
 
-#: user_profile/views.py:98 user_profile/views.py:108
-#: user_profile/views.py:119
+#: user_profile/views.py:97 user_profile/views.py:107
+#: user_profile/views.py:118
 #, fuzzy
 msgid "please correct the errors below."
 msgstr "以下のエラーを修正してください"
 
-#: user_profile/views.py:104
+#: user_profile/views.py:103
 #, fuzzy
 msgid "this phone number is not authorized."
 msgstr "この電話番号は許可されていません"
 
-#: user_profile/views.py:106
+#: user_profile/views.py:105
 #, fuzzy
 msgid "this phone number is authorized."
 msgstr "この番号は許可されています"
 
-#: user_profile/views.py:117
+#: user_profile/views.py:116
 #, fuzzy
 msgid "your password has been changed."
 msgstr "あなたのパスワードは変更されました"
@@ -3939,10 +3935,13 @@ msgstr "ボイスアプリケーションテンプレート"
 msgid "can see voice application"
 msgstr "ボイスアプリケーションの設定"
 
-#: voice_app/views.py:144
+#: voice_app/views.py:141
 #, python-format
 msgid "%(count)s voiceapp(s) are deleted."
 msgstr "%(count)sボイスアプリケーションが削除されました"
+
+#~ msgid "ANSWERED"
+#~ msgstr "応答済み"
 
 #, fuzzy
 #~ msgid "max Retries"

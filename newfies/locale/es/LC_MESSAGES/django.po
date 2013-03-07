@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Newfies-Dialer 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-07 00:40+0100\n"
+"POT-Creation-Date: 2013-03-07 16:01+0100\n"
 "PO-Revision-Date: 2012-01-10 21:33+0100\n"
 "Last-Translator: Areski Belaid <areski@gmail.com>\n"
 "Language-Team: Areski Belaid <areski@gmail.com>\n"
@@ -468,11 +468,11 @@ msgstr "Newfies-Dialer"
 msgid "applications"
 msgstr "Aplicacione"
 
-#: custom_admin_tools/menu.py:39 templates/frontend/bootstrap_menu.html:125
+#: custom_admin_tools/menu.py:39 templates/frontend/bootstrap_menu.html:119
 msgid "administration"
 msgstr "Administración"
 
-#: custom_admin_tools/menu.py:42 templates/frontend/bootstrap_menu.html:121
+#: custom_admin_tools/menu.py:42 templates/frontend/bootstrap_menu.html:115
 msgid "API Explorer"
 msgstr "Programas Explorador"
 
@@ -511,21 +511,21 @@ msgstr "Audio URL"
 msgid "date"
 msgstr "Actualización"
 
-#: dialer_audio/views.py:95 dialer_campaign/views.py:345
-#: dialer_contact/views.py:103 dialer_contact/views.py:403 survey/views.py:771
-#: voice_app/views.py:95
+#: dialer_audio/views.py:93 dialer_campaign/views.py:344
+#: dialer_contact/views.py:102 dialer_contact/views.py:399 survey/views.py:769
+#: voice_app/views.py:93
 #, python-format
 msgid "\"%(name)s\" added."
 msgstr "\"%(name)s\", se agregó."
 
-#: dialer_audio/views.py:136 dialer_campaign/views.py:378
-#: dialer_campaign/views.py:435 dialer_contact/views.py:154
-#: dialer_contact/views.py:446 survey/views.py:816 voice_app/views.py:130
+#: dialer_audio/views.py:134 dialer_campaign/views.py:376
+#: dialer_campaign/views.py:433 dialer_contact/views.py:152
+#: dialer_contact/views.py:441 survey/views.py:814 voice_app/views.py:127
 #, python-format
 msgid "\"%(name)s\" is deleted."
 msgstr "\"%(name)s\" es eliminado."
 
-#: dialer_audio/views.py:152
+#: dialer_audio/views.py:150
 #, python-format
 msgid "%(count)s audio(s) are deleted."
 msgstr "%(count)s audio(s) se ha eliminado."
@@ -1030,7 +1030,7 @@ msgstr "Aplicaciones de Voz"
 msgid "duplicate this campaign"
 msgstr "Copiar campaña"
 
-#: dialer_campaign/views.py:316
+#: dialer_campaign/views.py:315
 msgid ""
 "in order to add a campaign, you need to have your settings configured "
 "properly, please contact the admin."
@@ -1039,17 +1039,17 @@ msgstr ""
 "configurado correctamente, por favor póngase en contacto con el "
 "administrador."
 
-#: dialer_campaign/views.py:323
+#: dialer_campaign/views.py:322
 #, python-format
 msgid "you have too many campaigns. Max allowed %(limit)s"
 msgstr "usted tiene demasiadas campañas. Máximo permitido de %(limit)s"
 
-#: dialer_campaign/views.py:390
+#: dialer_campaign/views.py:388
 #, python-format
 msgid "%(count)s campaign(s) are deleted."
 msgstr "%(count)s la campaña(s) se ha eliminado."
 
-#: dialer_campaign/views.py:429
+#: dialer_campaign/views.py:427
 msgid ""
 "the campaign is started, you can only edit Dialer settings and Campaign "
 "schedule"
@@ -1057,8 +1057,8 @@ msgstr ""
 "La campaña se ha iniciado, sólo se puede editar la configuración del "
 "sintonizador y el calendario Campaña"
 
-#: dialer_campaign/views.py:463 dialer_contact/views.py:210
-#: dialer_contact/views.py:496 survey/views.py:1431 voice_app/views.py:179
+#: dialer_campaign/views.py:461 dialer_contact/views.py:208
+#: dialer_contact/views.py:491 survey/views.py:1429 voice_app/views.py:176
 #, python-format
 msgid "\"%(name)s\" is updated."
 msgstr "\"%(name)s\" se ha actualizado."
@@ -1143,23 +1143,23 @@ msgstr "B-Leg"
 msgid "ANSWER"
 msgstr "RESPUESTA"
 
-#: dialer_cdr/constants.py:54 templates/frontend/dashboard.html:387
+#: dialer_cdr/constants.py:54
 msgid "BUSY"
 msgstr "OCUPADO"
 
-#: dialer_cdr/constants.py:55 templates/frontend/dashboard.html:388
+#: dialer_cdr/constants.py:55
 msgid "NOANSWER"
 msgstr "NORESPUESTA"
 
-#: dialer_cdr/constants.py:56 templates/frontend/dashboard.html:391
+#: dialer_cdr/constants.py:56
 msgid "CANCEL"
 msgstr "CANCELAR"
 
-#: dialer_cdr/constants.py:57 templates/frontend/dashboard.html:392
+#: dialer_cdr/constants.py:57
 msgid "CONGESTION"
 msgstr "CONGESTIÓN"
 
-#: dialer_cdr/constants.py:58 templates/frontend/dashboard.html:393
+#: dialer_cdr/constants.py:58
 msgid "FAILED"
 msgstr "FALLO"
 
@@ -1364,7 +1364,7 @@ msgid "Dialer Contact"
 msgstr "Dialer Contacto"
 
 #: dialer_contact/admin.py:79 dialer_contact/admin.py:118
-#: dialer_contact/views.py:389 dialer_contact/views.py:539
+#: dialer_contact/views.py:385 dialer_contact/views.py:533
 #, python-format
 msgid ""
 "you have too many contacts per campaign. you are allowed a maximum of "
@@ -1373,7 +1373,7 @@ msgstr ""
 "Usted tiene demasiados contactos por campaña. Se permite un máximo de "
 "%(limit)s"
 
-#: dialer_contact/admin.py:169 dialer_contact/views.py:586
+#: dialer_contact/admin.py:169 dialer_contact/views.py:580
 msgid ""
 "invalid value for import! please check the import samples or phonebook is "
 "not valid"
@@ -1381,7 +1381,7 @@ msgstr ""
 "Valor no válido para la importación! Por favor, mire las muestras de "
 "importación."
 
-#: dialer_contact/admin.py:206 dialer_contact/views.py:627
+#: dialer_contact/admin.py:206 dialer_contact/views.py:621
 #, python-format
 msgid ""
 "%(contact_cnt)s contact(s) are uploaded successfully out of %(total_rows)s "
@@ -1519,17 +1519,17 @@ msgstr "Notas"
 msgid "can see contact"
 msgstr "Se puede ver Contacto"
 
-#: dialer_contact/views.py:175
+#: dialer_contact/views.py:173
 #, python-format
 msgid "%(count)s phonebook(s) are deleted."
 msgstr "%(count)s Directorio Telefónico(s) se ha eliminado."
 
-#: dialer_contact/views.py:408
+#: dialer_contact/views.py:404
 #, python-format
 msgid "\"%(name)s\" cannot be added."
 msgstr "\"%(name)s\", no puede ser anadido"
 
-#: dialer_contact/views.py:458
+#: dialer_contact/views.py:453
 #, python-format
 msgid "%(count)s contact(s) are deleted."
 msgstr "%(count)s contacto(s) se ha eliminado."
@@ -1775,15 +1775,15 @@ msgstr "Nombre de usuario:"
 msgid "password"
 msgstr "Contraseña"
 
-#: frontend/views.py:90
+#: frontend/views.py:89
 msgid "disabled account"
 msgstr "Cuenta con discapacidad"
 
-#: frontend/views.py:93
+#: frontend/views.py:92
 msgid "invalid login."
 msgstr "Inválida Login."
 
-#: frontend/views.py:96
+#: frontend/views.py:95
 msgid "enter valid user credentials."
 msgstr "Introduzca las credenciales de usuario válidas."
 
@@ -1999,48 +1999,48 @@ msgstr "Duración de grabación"
 msgid "result count"
 msgstr "Numero de resultados"
 
-#: survey/views.py:833
+#: survey/views.py:831
 #, python-format
 msgid "%(count)s survey(s) are deleted."
 msgstr "%(count)s encuesta(s) se ha eliminado."
 
-#: survey/views.py:864
+#: survey/views.py:862
 msgid "section is added successfully."
 msgstr "La sección se ha añadido correctamente."
 
-#: survey/views.py:1009
+#: survey/views.py:1007
 msgid "section updated."
 msgstr "Sección actualizada."
 
-#: survey/views.py:1167
+#: survey/views.py:1165
 msgid "section is deleted successfully."
 msgstr "La sección se ha eliminado correctamente."
 
-#: survey/views.py:1202
+#: survey/views.py:1200
 msgid "script updated."
 msgstr "Guión actualizada."
 
-#: survey/views.py:1307
+#: survey/views.py:1305
 msgid "branching is added successfully."
 msgstr "La ramificación se ha añadido correctamente."
 
-#: survey/views.py:1311 survey/views.py:1375
+#: survey/views.py:1309 survey/views.py:1373
 msgid "duplicate record keys with goto."
 msgstr "duplicados de las llaves de registro con goto."
 
-#: survey/views.py:1354
+#: survey/views.py:1352
 msgid "branching is deleted successfully."
 msgstr "La ramificación se eliminó con éxito."
 
-#: survey/views.py:1370
+#: survey/views.py:1368
 msgid "branching updated."
 msgstr "Bifurcación actualizada."
 
-#: survey/views.py:1552
+#: survey/views.py:1548
 msgid "no recording"
 msgstr "No registro"
 
-#: survey/views.py:1699
+#: survey/views.py:1693
 msgid "no campaign attached with survey."
 msgstr "Ninguna campaña unida con la encuesta."
 
@@ -2357,25 +2357,25 @@ msgstr "Correo de voz Detección (AMD)"
 msgid "rebranding"
 msgstr "Personalizando"
 
-#: templates/frontend/bootstrap_menu.html:103
+#: templates/frontend/bootstrap_menu.html:101
 msgid "account settings"
 msgstr "Cuenta"
 
-#: templates/frontend/bootstrap_menu.html:106
+#: templates/frontend/bootstrap_menu.html:104
 msgid "notifications"
 msgstr "Notificaciones"
 
-#: templates/frontend/bootstrap_menu.html:115
+#: templates/frontend/bootstrap_menu.html:109
 #: templates/frontend/registration/user_detail_change.html:14
 msgid "account limits"
 msgstr "Límites de Cuenta"
 
-#: templates/frontend/bootstrap_menu.html:117
+#: templates/frontend/bootstrap_menu.html:111
 #: templates/frontend/registration/user_detail_change.html:16
 msgid "change language"
 msgstr "Cambiar el idioma"
 
-#: templates/frontend/bootstrap_menu.html:128
+#: templates/frontend/bootstrap_menu.html:122
 msgid "log out"
 msgstr "Salir"
 
@@ -2547,10 +2547,6 @@ msgstr "Última hora"
 #: templates/frontend/dashboard.html:383
 msgid "TOTAL CALLS"
 msgstr "Total de llamadas"
-
-#: templates/frontend/dashboard.html:386
-msgid "ANSWERED"
-msgstr "RESPUESTA"
 
 #: templates/frontend/index.html:12
 msgid ""
@@ -3343,24 +3339,24 @@ msgstr "Administración"
 msgid "admins"
 msgstr "Administradores"
 
-#: user_profile/views.py:96
+#: user_profile/views.py:95
 msgid "detail has been changed."
 msgstr "Detalle se ha cambiado."
 
-#: user_profile/views.py:98 user_profile/views.py:108
-#: user_profile/views.py:119
+#: user_profile/views.py:97 user_profile/views.py:107
+#: user_profile/views.py:118
 msgid "please correct the errors below."
 msgstr "Por favor, corrija los errores a continuación."
 
-#: user_profile/views.py:104
+#: user_profile/views.py:103
 msgid "this phone number is not authorized."
 msgstr "Este número de teléfono no está autorizado."
 
-#: user_profile/views.py:106
+#: user_profile/views.py:105
 msgid "this phone number is authorized."
 msgstr "Este número de teléfono está autorizado."
 
-#: user_profile/views.py:117
+#: user_profile/views.py:116
 msgid "your password has been changed."
 msgstr "Su contraseña se ha cambiado."
 
@@ -3420,7 +3416,10 @@ msgstr "Plantilla de Aplicaciones de Voz"
 msgid "can see voice application"
 msgstr "Configurar aplicaciones de voz"
 
-#: voice_app/views.py:144
+#: voice_app/views.py:141
 #, python-format
 msgid "%(count)s voiceapp(s) are deleted."
 msgstr "%(count)s voz app(s) se ha eliminado."
+
+#~ msgid "ANSWERED"
+#~ msgstr "RESPUESTA"

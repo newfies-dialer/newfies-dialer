@@ -490,20 +490,29 @@ def make_duplicate_survey(campaign_obj, new_campaign):
     survey_obj.campaign = new_campaign
     survey_obj.save()
 
+    old_new_section_dict = {}
     section_objs = Section.objects.filter(survey_id=original_survey_id)
     for section_obj in section_objs:
-        original_section_id = section_obj.id
+        old_section_id = section_obj.id
 
         # make clone of section
         section_obj.pk = None
         section_obj.survey = survey_obj
         section_obj.save()
 
-        branching_objs = Branching.objects.filter(section_id=original_section_id)
+        old_new_section_dict[old_section_id] = section_obj.id
+
+    for old_section_id, new_section_id in old_new_section_dict.iteritems():
+        branching_objs = Branching.objects.filter(section_id=old_section_id)
+
         for branching_obj in branching_objs:
-            #original_branching_id = branching_obj.id
+            new_goto_id = None
+            if branching_obj.goto_id is not None:
+                new_goto_id = old_new_section_dict[branching_obj.goto_id]
+
             branching_obj.pk = None
-            branching_obj.section = section_obj
+            branching_obj.section_id = new_section_id
+            branching_obj.goto_id = new_goto_id
             branching_obj.save()
 
     return survey_obj.id

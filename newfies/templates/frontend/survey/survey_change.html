@@ -274,6 +274,15 @@
                                     {% endif %}
                                 </div>
                             {% endif %}
+
+                            <!--Conference Section form-->
+                            {% if section.type == SECTION_TYPE.CONFERENCE %}
+                                <div class="span8">
+                                    {% if section.conference %}
+                                        {% trans "conference"|title %} : {{ section.conference }} <br/>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
                         </div>
 
                     <!--branching-->

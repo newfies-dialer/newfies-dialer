@@ -327,6 +327,7 @@ class Section_template(Section_abstract):
             min_number=self.min_number,
             max_number=self.max_number,
             phonenumber=self.phonenumber,
+            conference=self.conference,
             completed=self.completed,
             order=self.order,
             invalid_audiofile_id=self.invalid_audiofile_id,

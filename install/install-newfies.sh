@@ -228,10 +228,13 @@ func_install_frontend(){
 
     #PostgreSQL
     apt-get -y install python-software-properties
-    apt-get -y install postgresql-9.2 postgresql-server-dev-9.2
+    apt-get -y install postgresql-9.2 postgresql-server-dev-9.2 chkconfig
     apt-get -y install libpq-dev
+    #Create a new cluster
+    pg_createcluster 9.2 postgres
     #Start PostgreSQL
     /etc/init.d/postgresql start
+    chkconfig postgresql on
 
     #Lua Deps
     apt-get -y install liblua5.1-sql-postgres-dev
@@ -465,7 +468,7 @@ func_install_frontend(){
     #Prepare and Start Nginx
     echo "Prepare Nginx configuration..."
     cp -rf /usr/src/newfies-dialer/install/nginx/global /etc/nginx/
-    cp /usr/src/newfies-dialer/install/nginx/sites-available/newfies_dialer /etc/nginx/sites-available/
+    cp /usr/src/newfies-dialer/install/nginx/sites-available/newfies_dialer.conf /etc/nginx/sites-available/
     service nginx restart
 
     # * * LOGROTATE * *

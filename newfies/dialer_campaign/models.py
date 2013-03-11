@@ -134,6 +134,8 @@ class Campaign(Model):
         * ``extra_data`` - Additional data to pass to the application
         * ``totalcontact`` - Total Contact for this campaign
         * ``completed`` - Total Contact that completed Call / Survey
+        * ``has_been_started`` - campaign started flag
+        * ``has_been_duplicated`` - campaign duplicated flag
         * ``voicemail`` - Enable Voicemail Detection
         * ``amd_behavior`` - Detection Behaviour
 

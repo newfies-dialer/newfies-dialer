@@ -161,8 +161,9 @@ class Section_abstract(Sortable):
         * ``number_digits`` - Number of digits to wait for on Enter Number section
         * ``min_number`` - if validate_number the minimum number accepted
         * ``max_number`` - if validate_number the maximum number accepted
-        * ``phonenumber`` - phonenumber to dialout
+        * ``phonenumber`` - phonenumber to dialout / call transfer
         * ``completed`` - reaching this section will mark the subscriber as completed
+        * ``conference`` - Conference Room
 
     **Relationships**:
 

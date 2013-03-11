@@ -18,7 +18,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from dialer_campaign.models import Campaign
 from dialer_cdr.models import Callrequest
-from survey.constants import SECTION_TYPE_NOTRANSFER, SECTION_TYPE
+from survey.constants import SECTION_TYPE
 from audiofield.models import AudioFile
 from common.language_field import LanguageField
 from adminsortable.models import Sortable
@@ -160,8 +160,8 @@ class Section_abstract(Sortable):
     **Name of DB table**: survey_question
     """
     # select section
-    type = models.IntegerField(max_length=20, choices=list(SECTION_TYPE_NOTRANSFER),
-                               default=SECTION_TYPE_NOTRANSFER.PLAY_MESSAGE,
+    type = models.IntegerField(max_length=20, choices=list(SECTION_TYPE),
+                               default=SECTION_TYPE.PLAY_MESSAGE,
                                blank=True, null=True,
                                verbose_name=_('section type'))
     # Question is the section label, this is used in the reporting
@@ -501,7 +501,10 @@ def post_save_add_script(sender, **kwargs):
         obj.save()
 
         # Add default branching
-        if obj.type == SECTION_TYPE.PLAY_MESSAGE or obj.type == SECTION_TYPE.RECORD_MSG:
+        if (obj.type == SECTION_TYPE.PLAY_MESSAGE
+           or obj.type == SECTION_TYPE.RECORD_MSG
+           or obj.type == SECTION_TYPE.CALL_TRANSFER
+           or obj.type == SECTION_TYPE.CONFERENCE):
             Branching_template.objects.create(keys=0, section_id=obj.id, goto_id='')
 
         if obj.type == SECTION_TYPE.MULTI_CHOICE or \

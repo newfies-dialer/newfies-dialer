@@ -38,7 +38,7 @@ from survey.forms import SurveyForm, PlayMessageSectionForm,\
     MultipleChoiceSectionForm, RatingSectionForm,\
     CaptureDigitsSectionForm, RecordMessageSectionForm,\
     CallTransferSectionForm, BranchingForm, ScriptForm,\
-    SurveyDetailReportForm, SurveyFileImport
+    SurveyDetailReportForm, SurveyFileImport, ConferenceSectionForm
 from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME, SURVEY_CALL_RESULT_NAME
 from survey.models import post_save_add_script
 from common.common_functions import striplist, variable_value, current_view,\
@@ -898,6 +898,8 @@ def section_add(request):
     request.session['err_msg'] = ''
     if request.method == 'POST':
 
+        #TODO: Refactor the if under this section
+
         # Play message
         if int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE:
             form_data = \
@@ -952,6 +954,16 @@ def section_add(request):
         if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG:
             form_data =\
                 section_add_form(request, RecordMessageSectionForm, survey, SECTION_TYPE.RECORD_MSG)
+            if form_data['save_tag']:
+                return HttpResponseRedirect('/survey/%s/#row%s'
+                    % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
+            else:
+                form = form_data['form']
+
+        # Call transfer Section
+        if int(request.POST.get('type')) == SECTION_TYPE.CONFERENCE:
+            form_data =\
+                section_add_form(request, ConferenceSectionForm, survey, SECTION_TYPE.CONFERENCE)
             if form_data['save_tag']:
                 return HttpResponseRedirect('/survey/%s/#row%s'
                     % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
@@ -1053,6 +1065,9 @@ def section_change(request, id):
     elif section.type == SECTION_TYPE.RECORD_MSG:
         #RECORD_MSG
         form = RecordMessageSectionForm(request.user, instance=section)
+    elif section.type == SECTION_TYPE.CONFERENCE:
+        #CONFERENCE
+        form = ConferenceSectionForm(request.user, instance=section)
     elif section.type == SECTION_TYPE.CALL_TRANSFER:
         #CALL_TRANSFER
         form = CallTransferSectionForm(request.user, instance=section)
@@ -1115,6 +1130,16 @@ def section_change(request, id):
         if int(request.POST.get('type')) == SECTION_TYPE.CALL_TRANSFER:
             form_data = section_update_form(request,
                 CallTransferSectionForm, SECTION_TYPE.CALL_TRANSFER, section)
+            if form_data['save_tag']:
+                return HttpResponseRedirect('/survey/%s/#row%s'
+                    % (section.survey_id, section.id))
+            else:
+                form = form_data['form']
+
+        # Conference Section
+        if int(request.POST.get('type')) == SECTION_TYPE.CONFERENCE:
+            form_data = section_update_form(request,
+                ConferenceSectionForm, SECTION_TYPE.CONFERENCE, section)
             if form_data['save_tag']:
                 return HttpResponseRedirect('/survey/%s/#row%s'
                     % (section.survey_id, section.id))

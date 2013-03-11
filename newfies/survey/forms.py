@@ -237,15 +237,35 @@ class RecordMessageSectionForm(ModelForm):
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
 
 
+class ConferenceSectionForm(ModelForm):
+    """ConferenceSectionForm ModelForm"""
+
+    class Meta:
+        model = Section_template
+        fields = ['type', 'survey', 'question', 'audiofile', 'phonenumber', 'completed']
+
+    def __init__(self, user, *args, **kwargs):
+        super(ConferenceSectionForm, self).__init__(*args, **kwargs)
+        if user:
+            self.fields['audiofile'].choices = get_audiofile_list(user)
+            self.fields['audiofile'].widget.attrs['class'] = 'span2'
+        self.fields['question'].widget.attrs['class'] = 'span3'
+        self.fields['survey'].widget = forms.HiddenInput()
+        self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
+
+
 class CallTransferSectionForm(ModelForm):
     """CallTransferSectionForm ModelForm"""
 
     class Meta:
         model = Section_template
-        fields = ['type', 'survey', 'question', 'phonenumber', 'completed']
+        fields = ['type', 'survey', 'question', 'audiofile', 'phonenumber', 'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(CallTransferSectionForm, self).__init__(*args, **kwargs)
+        if user:
+            self.fields['audiofile'].choices = get_audiofile_list(user)
+            self.fields['audiofile'].widget.attrs['class'] = 'span2'
         self.fields['question'].widget.attrs['class'] = 'span3'
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'

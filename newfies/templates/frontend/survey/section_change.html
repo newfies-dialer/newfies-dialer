@@ -20,7 +20,7 @@
     {% block content %}
 
         {% if err_msg %}
-            {% include "frontend/extra_modal_files.html" %} 
+            {% include "frontend/extra_modal_files.html" %}
             <script type="text/javascript" charset="utf-8">
                 $(window).load(function(){
                     $('#section_modal').modal('show');
@@ -33,10 +33,10 @@
                 $(document).keyup(function(e) {
                     if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
                 });
-                $(function () {        
+                $(function () {
                     $('#helpover').popover();
-                });       
-            </script>            
+                });
+            </script>
             <!-- modal content-->
             <div class="modal hide fade modal-section" id="section_modal">
         {% endif %}
@@ -46,7 +46,7 @@
                 <h3>{% if action == 'update' %}
                     {% trans "update"|title %}
                 {% else %}
-                    {% trans "add"|title %}
+                    {% trans "add"|title %} ***********
                 {% endif %} {% trans "section"|title %}
                 </h3>
             </div>
@@ -74,7 +74,7 @@
                         </div>
                     </div>
 
-                    {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION  or form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS %}
+                    {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION or form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS or form.type.value|convert_to_int == SECTION_TYPE.CALL_TRANSFER or form.type.value|convert_to_int == SECTION_TYPE.CONFERENCE %}
                         <div class="row">
                             <div class="span2">
                                 <label class="control-label" for="{{ form.retries.auto_id }}">{{ form.retries.label|title }}</label>
@@ -141,8 +141,8 @@
 
                     <!--Multiple choice Section form-->
                     {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE %}
-                        <div>                            
-                            {% trans "configure valid multi-choice options. The value of each field will be shown in the survey report"|capfirst %}                            
+                        <div>
+                            {% trans "configure valid multi-choice options. The value of each field will be shown in the survey report"|capfirst %}
                         </div>
                         <div class="row">
                             {% get_fieldset key_0,key_1,key_2,key_3,key_4,key_5,key_6,key_7,key_8,key_9 as key_fields from form %}
@@ -254,6 +254,25 @@
                         </div>
                     {% endif %}
 
+                    <!--Conference Section form-->
+                    {% if form.type.value|convert_to_int == SECTION_TYPE.CONFERENCE %}
+                    <!--TODO-->
+                        <div class="row">
+                            <div class="span2">
+                                <label class="control-label" for="{{ form.phonenumber.auto_id }}">{{ form.phonenumber.label|title }}</label>
+                            </div>
+                            <div class="span3 clearfix{% if form.phonenumber.errors %} control-group error{% endif %}">
+                                <div class="input">
+                                    {{ form.phonenumber }}
+                                    {% if form.phonenumber.errors %}
+                                        <span class="help-inline">{{ form.phonenumber.errors|removetags:"ul li"|safe }}</span>
+                                    {% endif %}
+                                    <span class="help-block">{{ form.phonenumber.help_text|capfirst|safe }} </span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
                     <!--Survey complete field -->
                     <div class="row">
                         <div class="span2 clearfix{% if form.completed.errors %} control-group error{% endif %}">
@@ -302,7 +321,7 @@
 
         {% if err_msg %}
             </div>
-        
+
         {% endif %}
 
     {% endblock %}

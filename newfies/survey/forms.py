@@ -242,7 +242,7 @@ class ConferenceSectionForm(ModelForm):
 
     class Meta:
         model = Section_template
-        fields = ['type', 'survey', 'question', 'audiofile', 'phonenumber', 'completed']
+        fields = ['type', 'survey', 'question', 'audiofile', 'conference', 'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(ConferenceSectionForm, self).__init__(*args, **kwargs)
@@ -311,9 +311,10 @@ class BranchingForm(ModelForm):
                 choices=get_rating_choice_list(section_id),
                 required=False)
 
-        # voice & record section
-        if (obj_section.type == SECTION_TYPE.PLAY_MESSAGE
-           or obj_section.type == SECTION_TYPE.RECORD_MSG):
+        if obj_section.type == SECTION_TYPE.PLAY_MESSAGE \
+            or obj_section.type == SECTION_TYPE.RECORD_MSG \
+            or obj_section.type == SECTION_TYPE.CALL_TRANSFER \
+            or obj_section.type == SECTION_TYPE.CONFERENCE:
             self.fields['keys'].initial = 0
             self.fields['keys'].widget = forms.HiddenInput()
 

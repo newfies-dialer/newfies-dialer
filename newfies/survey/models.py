@@ -19,13 +19,22 @@ from django.contrib.contenttypes.models import ContentType
 from dialer_campaign.models import Campaign
 from dialer_cdr.models import Callrequest
 from survey.constants import SECTION_TYPE
-from audiofield.models import AudioFile
+from audiofield.models import AudioFile, AudioField
 from common.language_field import LanguageField
 from adminsortable.models import Sortable
 from south.modelsinspector import add_introspection_rules
 
 add_introspection_rules([], ["^common\.language_field\.LanguageField"])
 add_introspection_rules([], ["^audiofield\.fields\.AudioField"])
+add_introspection_rules([
+    (
+        [AudioField],  # Class(es) these apply to
+        [],         # Positional arguments (not used)
+        {           # Keyword argument
+            "ext_whitelist": ["ext_whitelist", {"default": ""}],
+        },
+    ),
+], ["^audiofield\.fields\.AudioField"])
 
 
 class Survey_abstract(models.Model):

@@ -8,195 +8,23 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Survey_template'
-        db.create_table('survey_survey_template', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=90)),
-            ('tts_language', self.gf('common.language_field.LanguageField')(default='en', max_length=2, null=True, blank=True)),
-            ('description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('created_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('updated_date', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name='survey_template_user', to=orm['auth.User'])),
-        ))
-        db.send_create_signal('survey', ['Survey_template'])
+        # Adding field 'Section.conference'
+        db.add_column('survey_section', 'conference',
+                      self.gf('django.db.models.fields.CharField')(max_length=50, null=True, blank=True),
+                      keep_default=False)
 
-        # Adding model 'Survey'
-        db.create_table('survey_survey', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=90)),
-            ('tts_language', self.gf('common.language_field.LanguageField')(default='en', max_length=2, null=True, blank=True)),
-            ('description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('created_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('updated_date', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name='survey_user', to=orm['auth.User'])),
-            ('campaign', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dialer_campaign.Campaign'], null=True, blank=True)),
-        ))
-        db.send_create_signal('survey', ['Survey'])
-
-        # Adding model 'Section_template'
-        db.create_table('survey_section_template', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('order', self.gf('django.db.models.fields.PositiveIntegerField')(default=1, db_index=True)),
-            ('type', self.gf('django.db.models.fields.IntegerField')(default=1, max_length=20, null=True, blank=True)),
-            ('question', self.gf('django.db.models.fields.CharField')(max_length=500)),
-            ('script', self.gf('django.db.models.fields.CharField')(max_length=1000, null=True, blank=True)),
-            ('audiofile', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['audiofield.AudioFile'], null=True, blank=True)),
-            ('retries', self.gf('django.db.models.fields.IntegerField')(default=0, max_length=1, null=True, blank=True)),
-            ('timeout', self.gf('django.db.models.fields.IntegerField')(default=5, max_length=2, null=True, blank=True)),
-            ('key_0', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
-            ('key_1', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
-            ('key_2', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
-            ('key_3', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
-            ('key_4', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
-            ('key_5', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
-            ('key_6', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
-            ('key_7', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
-            ('key_8', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
-            ('key_9', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
-            ('rating_laps', self.gf('django.db.models.fields.IntegerField')(default=9, max_length=1, null=True, blank=True)),
-            ('validate_number', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('number_digits', self.gf('django.db.models.fields.IntegerField')(default='2', max_length=2, null=True, blank=True)),
-            ('min_number', self.gf('django.db.models.fields.BigIntegerField')(default=0, max_length=50, null=True, blank=True)),
-            ('max_number', self.gf('django.db.models.fields.BigIntegerField')(default=99, max_length=50, null=True, blank=True)),
-            ('phonenumber', self.gf('django.db.models.fields.CharField')(max_length=50, null=True, blank=True)),
-            ('completed', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('created_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('updated_date', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-            ('survey', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['survey.Survey_template'])),
-            ('invalid_audiofile', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='survey_template_invalid_audiofile', null=True, to=orm['audiofield.AudioFile'])),
-        ))
-        db.send_create_signal('survey', ['Section_template'])
-
-        # Adding model 'Section'
-        db.create_table('survey_section', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('order', self.gf('django.db.models.fields.PositiveIntegerField')(default=1, db_index=True)),
-            ('type', self.gf('django.db.models.fields.IntegerField')(default=1, max_length=20, null=True, blank=True)),
-            ('question', self.gf('django.db.models.fields.CharField')(max_length=500)),
-            ('script', self.gf('django.db.models.fields.CharField')(max_length=1000, null=True, blank=True)),
-            ('audiofile', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['audiofield.AudioFile'], null=True, blank=True)),
-            ('retries', self.gf('django.db.models.fields.IntegerField')(default=0, max_length=1, null=True, blank=True)),
-            ('timeout', self.gf('django.db.models.fields.IntegerField')(default=5, max_length=2, null=True, blank=True)),
-            ('key_0', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
-            ('key_1', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
-            ('key_2', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
-            ('key_3', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
-            ('key_4', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
-            ('key_5', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
-            ('key_6', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
-            ('key_7', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
-            ('key_8', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
-            ('key_9', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
-            ('rating_laps', self.gf('django.db.models.fields.IntegerField')(default=9, max_length=1, null=True, blank=True)),
-            ('validate_number', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('number_digits', self.gf('django.db.models.fields.IntegerField')(default='2', max_length=2, null=True, blank=True)),
-            ('min_number', self.gf('django.db.models.fields.BigIntegerField')(default=0, max_length=50, null=True, blank=True)),
-            ('max_number', self.gf('django.db.models.fields.BigIntegerField')(default=99, max_length=50, null=True, blank=True)),
-            ('phonenumber', self.gf('django.db.models.fields.CharField')(max_length=50, null=True, blank=True)),
-            ('completed', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('created_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('updated_date', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-            ('survey', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['survey.Survey'])),
-            ('invalid_audiofile', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='survey_invalid_audiofile', null=True, to=orm['audiofield.AudioFile'])),
-            ('section_template', self.gf('django.db.models.fields.IntegerField')(default=0, max_length=10, null=True, blank=True)),
-        ))
-        db.send_create_signal('survey', ['Section'])
-
-        # Adding model 'Branching_template'
-        db.create_table('survey_branching_template', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('keys', self.gf('django.db.models.fields.CharField')(max_length=150, blank=True)),
-            ('created_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('updated_date', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-            ('section', self.gf('django.db.models.fields.related.ForeignKey')(related_name='Branching Template Section', to=orm['survey.Section_template'])),
-            ('goto', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='Goto Template Section', null=True, to=orm['survey.Section_template'])),
-        ))
-        db.send_create_signal('survey', ['Branching_template'])
-
-        # Adding unique constraint on 'Branching_template', fields ['keys', 'section']
-        db.create_unique('survey_branching_template', ['keys', 'section_id'])
-
-        # Adding model 'Branching'
-        db.create_table('survey_branching', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('keys', self.gf('django.db.models.fields.CharField')(max_length=150, blank=True)),
-            ('created_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('updated_date', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-            ('section', self.gf('django.db.models.fields.related.ForeignKey')(related_name='Branching Section', to=orm['survey.Section'])),
-            ('goto', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='Goto Section', null=True, to=orm['survey.Section'])),
-        ))
-        db.send_create_signal('survey', ['Branching'])
-
-        # Adding unique constraint on 'Branching', fields ['keys', 'section']
-        db.create_unique('survey_branching', ['keys', 'section_id'])
-
-        # Adding model 'Result'
-        db.create_table('survey_result', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('callrequest', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='survey_callrequest', null=True, to=orm['dialer_cdr.Callrequest'])),
-            ('section', self.gf('django.db.models.fields.related.ForeignKey')(related_name='Result Section', to=orm['survey.Section'])),
-            ('response', self.gf('django.db.models.fields.CharField')(max_length=150)),
-            ('record_file', self.gf('django.db.models.fields.CharField')(default='', max_length=200, blank=True)),
-            ('recording_duration', self.gf('django.db.models.fields.IntegerField')(default=0, max_length=10, null=True, blank=True)),
-            ('created_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-        ))
-        db.send_create_signal('survey', ['Result'])
-
-        # Adding unique constraint on 'Result', fields ['callrequest', 'section']
-        db.create_unique('survey_result', ['callrequest_id', 'section_id'])
-
-        # Adding model 'ResultAggregate'
-        db.create_table('survey_resultaggregate', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('campaign', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dialer_campaign.Campaign'], null=True, blank=True)),
-            ('survey', self.gf('django.db.models.fields.related.ForeignKey')(related_name='ResultSum Survey', to=orm['survey.Survey'])),
-            ('section', self.gf('django.db.models.fields.related.ForeignKey')(related_name='ResultSum Section', to=orm['survey.Section'])),
-            ('response', self.gf('django.db.models.fields.CharField')(max_length=150, db_index=True)),
-            ('count', self.gf('django.db.models.fields.IntegerField')(default=0, max_length=20)),
-            ('created_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-        ))
-        db.send_create_signal('survey', ['ResultAggregate'])
-
-        # Adding unique constraint on 'ResultAggregate', fields ['campaign', 'survey', 'section', 'response']
-        db.create_unique('survey_resultaggregate', ['campaign_id', 'survey_id', 'section_id', 'response'])
+        # Adding field 'Section_template.conference'
+        db.add_column('survey_section_template', 'conference',
+                      self.gf('django.db.models.fields.CharField')(max_length=50, null=True, blank=True),
+                      keep_default=False)
 
 
     def backwards(self, orm):
-        # Removing unique constraint on 'ResultAggregate', fields ['campaign', 'survey', 'section', 'response']
-        db.delete_unique('survey_resultaggregate', ['campaign_id', 'survey_id', 'section_id', 'response'])
+        # Deleting field 'Section.conference'
+        db.delete_column('survey_section', 'conference')
 
-        # Removing unique constraint on 'Result', fields ['callrequest', 'section']
-        db.delete_unique('survey_result', ['callrequest_id', 'section_id'])
-
-        # Removing unique constraint on 'Branching', fields ['keys', 'section']
-        db.delete_unique('survey_branching', ['keys', 'section_id'])
-
-        # Removing unique constraint on 'Branching_template', fields ['keys', 'section']
-        db.delete_unique('survey_branching_template', ['keys', 'section_id'])
-
-        # Deleting model 'Survey_template'
-        db.delete_table('survey_survey_template')
-
-        # Deleting model 'Survey'
-        db.delete_table('survey_survey')
-
-        # Deleting model 'Section_template'
-        db.delete_table('survey_section_template')
-
-        # Deleting model 'Section'
-        db.delete_table('survey_section')
-
-        # Deleting model 'Branching_template'
-        db.delete_table('survey_branching_template')
-
-        # Deleting model 'Branching'
-        db.delete_table('survey_branching')
-
-        # Deleting model 'Result'
-        db.delete_table('survey_result')
-
-        # Deleting model 'ResultAggregate'
-        db.delete_table('survey_resultaggregate')
+        # Deleting field 'Section_template.conference'
+        db.delete_column('survey_section_template', 'conference')
 
 
     models = {
@@ -253,7 +81,7 @@ class Migration(SchemaMigration):
             'callerid': ('django.db.models.fields.CharField', [], {'max_length': '80', 'blank': 'True'}),
             'callmaxduration': ('django.db.models.fields.IntegerField', [], {'default': "'1800'", 'null': 'True', 'blank': 'True'}),
             'calltimeout': ('django.db.models.fields.IntegerField', [], {'default': "'45'", 'null': 'True', 'blank': 'True'}),
-            'campaign_code': ('django.db.models.fields.CharField', [], {'default': "'DDXRH'", 'unique': 'True', 'max_length': '20', 'blank': 'True'}),
+            'campaign_code': ('django.db.models.fields.CharField', [], {'default': "'CRJIF'", 'unique': 'True', 'max_length': '20', 'blank': 'True'}),
             'completed': ('django.db.models.fields.IntegerField', [], {'default': '0', 'null': 'True', 'blank': 'True'}),
             'completion_intervalretry': ('django.db.models.fields.IntegerField', [], {'default': "'900'", 'null': 'True', 'blank': 'True'}),
             'completion_maxretry': ('django.db.models.fields.IntegerField', [], {'default': "'0'", 'null': 'True', 'blank': 'True'}),
@@ -322,7 +150,7 @@ class Migration(SchemaMigration):
             'object_id': ('django.db.models.fields.PositiveIntegerField', [], {}),
             'parent_callrequest': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['dialer_cdr.Callrequest']", 'null': 'True', 'blank': 'True'}),
             'phone_number': ('django.db.models.fields.CharField', [], {'max_length': '80'}),
-            'request_uuid': ('django.db.models.fields.CharField', [], {'default': "'07c27666-8a3b-11e2-82d5-00231470a30c'", 'max_length': '120', 'null': 'True', 'db_index': 'True', 'blank': 'True'}),
+            'request_uuid': ('django.db.models.fields.CharField', [], {'default': "'58f52fc4-8a3b-11e2-88b4-00231470a30c'", 'max_length': '120', 'null': 'True', 'db_index': 'True', 'blank': 'True'}),
             'result': ('django.db.models.fields.CharField', [], {'max_length': '180', 'blank': 'True'}),
             'status': ('django.db.models.fields.IntegerField', [], {'default': '1', 'null': 'True', 'db_index': 'True', 'blank': 'True'}),
             'subscriber': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['dialer_campaign.Subscriber']", 'null': 'True', 'blank': 'True'}),
@@ -420,6 +248,7 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "['order', 'survey']", 'object_name': 'Section'},
             'audiofile': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['audiofield.AudioFile']", 'null': 'True', 'blank': 'True'}),
             'completed': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'conference': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True', 'blank': 'True'}),
             'created_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'invalid_audiofile': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'survey_invalid_audiofile'", 'null': 'True', 'to': "orm['audiofield.AudioFile']"}),
@@ -453,6 +282,7 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "['order', 'survey']", 'object_name': 'Section_template'},
             'audiofile': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['audiofield.AudioFile']", 'null': 'True', 'blank': 'True'}),
             'completed': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'conference': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True', 'blank': 'True'}),
             'created_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'invalid_audiofile': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'survey_template_invalid_audiofile'", 'null': 'True', 'to': "orm['audiofield.AudioFile']"}),

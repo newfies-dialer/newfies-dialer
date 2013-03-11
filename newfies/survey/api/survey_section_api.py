@@ -86,6 +86,7 @@ class SectionResource(ModelResource):
         * ``min_number`` - if validate_number the minimum number accepted
         * ``max_number`` - if validate_number the maximum number accepted
         * ``phonenumber`` - phonenumber to dialout
+        * ``conference`` - conference pin
         * ``completed`` - reaching this section will mark the subscriber as completed
 
     **Validation**:
@@ -129,6 +130,7 @@ class SectionResource(ModelResource):
                   {
                      "created_date":"2012-09-13T08:06:05.344297",
                      "phonenumber":null,
+                     "conference":null,
                      "id":"15",
                      "key_0":null,
                      "key_1":null,

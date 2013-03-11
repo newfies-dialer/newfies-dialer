@@ -29,10 +29,10 @@ add_introspection_rules([], ["^audiofield\.fields\.AudioField"])
 add_introspection_rules([
     (
         [AudioField],  # Class(es) these apply to
-        [],         # Positional arguments (not used)
-        {           # Keyword argument
+        [],  # Positional arguments (not used)
+        {
             "ext_whitelist": ["ext_whitelist", {"default": ""}],
-        },
+        },  # Keyword argument
     ),
 ], ["^audiofield\.fields\.AudioField"])
 

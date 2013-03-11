@@ -22,6 +22,10 @@ from survey.constants import SECTION_TYPE
 from audiofield.models import AudioFile
 from common.language_field import LanguageField
 from adminsortable.models import Sortable
+from south.modelsinspector import add_introspection_rules
+
+add_introspection_rules([], ["^common\.language_field\.LanguageField"])
+add_introspection_rules([], ["^audiofield\.fields\.AudioField"])
 
 
 class Survey_abstract(models.Model):

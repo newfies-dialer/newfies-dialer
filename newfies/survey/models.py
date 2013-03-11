@@ -222,6 +222,11 @@ class Section_abstract(Sortable):
     phonenumber = models.CharField(max_length=50,
                                    null=True, blank=True,
                                    verbose_name=_("phone number"))
+    #Conference Room
+    conference = models.CharField(max_length=50,
+                                  null=True, blank=True,
+                                  verbose_name=_("conference"))
+
     # if the current section means that the survey is completed
     completed = models.BooleanField(default=False,
                                     verbose_name=_('survey complete'))

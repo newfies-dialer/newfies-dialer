@@ -1708,7 +1708,7 @@ def export_surveycall_report(request):
         column_list = ['starting_date', 'destination', 'duration', 'disposition']
 
         survey_qst = False
-        if str(campaign_obj.content_type) == 'Survey':
+        if campaign_obj.content_type__model == 'survey':
             survey_qst = Section.objects\
                 .filter(survey_id=int(campaign_obj.object_id))
             for i in survey_qst:
@@ -1848,7 +1848,7 @@ def import_survey(request):
                 if not row or str(row[0]) == 0:
                     continue
 
-                #if length of row is 26, it's a section
+                #if length of row is 27, it's a section
                 if  len(row) == 27:
                     try:
                         # for section

@@ -12,7 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from dialer_gateway.models import Gateway
+from dialer_gateway.constants import GATEWAY_STATUS
 
 
 def prepare_phonenumber(phone_number, addprefix, removeprefix, gw_status):
@@ -22,7 +22,7 @@ def prepare_phonenumber(phone_number, addprefix, removeprefix, gw_status):
     if not phone_number:
         return False
 
-    if gw_status != 1:
+    if gw_status != GATEWAY_STATUS.ACTIVE:
         #Gateway not Active
         return False
 

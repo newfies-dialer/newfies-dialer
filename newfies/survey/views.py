@@ -1708,7 +1708,7 @@ def export_surveycall_report(request):
         column_list = ['starting_date', 'destination', 'duration', 'disposition']
 
         survey_qst = False
-        if campaign_obj.content_type__model == 'survey':
+        if campaign_obj.content_type.model == 'survey':
             survey_qst = Section.objects\
                 .filter(survey_id=int(campaign_obj.object_id))
             for i in survey_qst:

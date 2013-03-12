@@ -3,15 +3,15 @@
 
 {% block title %}{% trans 'Newfies-Dialer Admin' %}{% endblock %}
 {% block extrahead %}
-<link rel="icon" type="image/png" href="{{STATIC_URL}}newfies/images/favicon.png">
+<link rel="icon" type="image/png" href="{{ STATIC_URL }}newfies/images/favicon.png">
 <!-- jquery UI css -->
-<link type="text/css" href="{{STATIC_URL}}newfies/css/jquery-ui-bootstrap/jquery-ui-1.8.16.custom.css" rel="stylesheet">
+<link type="text/css" href="{{ STATIC_URL }}newfies/css/jquery-ui-bootstrap/jquery-ui-1.8.16.custom.css" rel="stylesheet">
 
 <!-- Javascript -->
-<script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-1.8.2.min.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}newfies/js/jquery-ui-1.9.1.custom.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}newfies/js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}newfies/js/jquery-ui-1.9.1.custom.min.js"></script>
 
-<link href="{{STATIC_URL}}newfies/css/datepicker.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}newfies/css/datepicker.css" rel="stylesheet">
 <script type="text/javascript">
     $(function() {
         var dates = $('#id_from_date, #id_to_date').datepicker({

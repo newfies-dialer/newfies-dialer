@@ -219,6 +219,10 @@ func_install_frontend(){
     fi
 
     apt-get update
+    dpkg-reconfigure locales
+    echo 'LANGUAGE="en_US.UTF-8"' >> /etc/default/locale
+    echo 'LC_ALL="en_US.UTF-8"' >> /etc/default/locale
+
     apt-get -y install python-setuptools python-dev build-essential
     apt-get -y install nginx supervisor
     apt-get -y install git-core mercurial gawk

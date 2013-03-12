@@ -226,6 +226,7 @@ def get_campaign_survey_view(campaign_object):
 
 
 def make_duplicate_campaign(campaign_object_id):
+    """Create link to make duplicate campaign"""
     link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate icon" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s" %s>&nbsp;</a>'\
            % (campaign_object_id, _('duplicate this campaign').capitalize(),
               tpl_control_icon('layers.png'))
@@ -520,6 +521,15 @@ def make_duplicate_survey(campaign_obj, new_campaign):
 
 @login_required
 def campaign_duplicate(request, id):
+    """
+    Duplicate campaign via DuplicateCampaignForm
+
+    **Attributes**:
+
+        * ``id`` - Selected campaign object
+        * ``form`` - DuplicateCampaignForm
+        * ``template`` - frontend/campaign/campaign_duplicate.html
+    """
     form = DuplicateCampaignForm(request.user)
     request.session['error_msg'] = ''
     if request.method == 'POST':

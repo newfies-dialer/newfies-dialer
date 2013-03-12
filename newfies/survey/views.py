@@ -1008,7 +1008,7 @@ def section_change(request, id):
 
     **Logic Description**:
 
-        *
+        * update section object via section_update_form function
     """
     section = get_object_or_404(Section_template,
                                 pk=int(id),
@@ -1100,6 +1100,8 @@ def section_change(request, id):
 @permission_required('survey.delete_section', login_url='/')
 @login_required
 def section_delete(request, id):
+    """Delete section and branching records
+    """
     section = get_object_or_404(
         Section_template, pk=int(id), survey__user=request.user)
     if request.GET.get('delete'):
@@ -1242,8 +1244,7 @@ def section_branch_add(request):
 
     **Logic Description**:
 
-        *
-
+        * Add branching record via BranchingForm
     """
     request.session['msg'] = ''
     form = ''
@@ -1298,8 +1299,8 @@ def section_branch_change(request, id):
 
     **Logic Description**:
 
-        *
-
+        * Update branching record via BranchingForm
+        * Delete branching record
     """
     request.session['msg'] = ''
     if request.GET.get('delete'):

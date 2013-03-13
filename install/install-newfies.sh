@@ -216,6 +216,7 @@ func_install_frontend(){
     dpkg-reconfigure locales
 
     apt-get update
+    apt-get -y remove apache2.2-common apache2
     apt-get install --reinstall language-pack-en
 
     apt-get -y install python-setuptools python-dev build-essential

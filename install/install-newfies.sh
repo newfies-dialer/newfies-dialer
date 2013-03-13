@@ -209,20 +209,7 @@ func_install_frontend(){
     #python setup tools
     echo "Install Dependencies and python modules..."
 
-    #Install Postgresql repository (https://wiki.postgresql.org/wiki/Apt)
-    if grep -Fxq "deb http://apt.postgresql.org/pub/repos/apt/ $DEBVERSION-pgdg main" /etc/apt/sources.list.d/pgdg.list
-    then
-        echo "Postgresql repository already installed"
-    else
-        echo "deb http://apt.postgresql.org/pub/repos/apt/ $DEBVERSION-pgdg main" >> /etc/apt/sources.list.d/pgdg.list
-        wget -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | apt-key add -
-    fi
-
     apt-get update
-    dpkg-reconfigure locales
-    echo 'LANGUAGE="en_US.UTF-8"' >> /etc/default/locale
-    echo 'LC_ALL="en_US.UTF-8"' >> /etc/default/locale
-
     apt-get -y install python-setuptools python-dev build-essential
     apt-get -y install nginx supervisor
     apt-get -y install git-core mercurial gawk
@@ -232,13 +219,10 @@ func_install_frontend(){
 
     #PostgreSQL
     apt-get -y install python-software-properties
-    apt-get -y install postgresql-9.2 postgresql-server-dev-9.2 chkconfig
+    apt-get -y install postgresql-9.1
     apt-get -y install libpq-dev
-    #Create a new cluster
-    pg_createcluster 9.2 postgres
     #Start PostgreSQL
     /etc/init.d/postgresql start
-    chkconfig postgresql on
 
     #Lua Deps
     apt-get -y install liblua5.1-sql-postgres-dev

@@ -24,7 +24,7 @@ FS_CONF_PATH=https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/
 FS_INIT_PATH=https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/freeswitch-init
 FS_INSTALLED_PATH=/usr/local/freeswitch
 FS_CONFIG_PATH=/etc/freeswitch
-FS_DOWNLOAD=http://files.freeswitch.org/freeswitch-1.2.5.tar.bz2
+FS_DOWNLOAD=http://files.freeswitch.org/freeswitch-1.2.7.tar.bz2
 FS_BASE_PATH=/usr/src/
 CURRENT_PATH=$PWD
 

@@ -475,7 +475,7 @@ class Subscriber(Model):
         return u"%s" % str(self.id)
 
     def contact_name(self):
-        return self.contact.name
+        return self.contact.first_name
 
     # static method to perform a stored procedure
     # Ref link - http://www.chrisumbel.com/article/django_python_stored_procedures.aspx

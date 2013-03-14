@@ -18,7 +18,6 @@ from django.http import HttpResponseRedirect, HttpResponse, \
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
-from django.utils import json
 from django.db.models import Q
 from django.db.models import Count
 from dialer_contact.models import Phonebook, Contact
@@ -33,6 +32,7 @@ from frontend_notification.views import frontend_send_notification
 from common.common_functions import striplist, current_view,\
     get_pagination_vars
 import csv
+import json
 
 
 @permission_required('dialer_contact.view_phonebook', login_url='/')

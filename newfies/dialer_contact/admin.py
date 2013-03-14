@@ -16,7 +16,6 @@ from django.contrib import admin
 from django.contrib import messages
 from django.conf.urls import patterns
 from django.utils.translation import ugettext as _
-from django.utils import json
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
@@ -31,6 +30,7 @@ from frontend_notification.views import frontend_send_notification
 from common.common_functions import striplist
 from common.app_label_renamer import AppLabelRenamer
 import csv
+import json
 AppLabelRenamer(native_app_label=u'dialer_contact', app_label=_('Dialer Contact')).main()
 
 

@@ -311,10 +311,10 @@ class BranchingForm(ModelForm):
                 choices=get_rating_choice_list(section_id),
                 required=False)
 
-        if obj_section.type == SECTION_TYPE.PLAY_MESSAGE \
-            or obj_section.type == SECTION_TYPE.RECORD_MSG \
-            or obj_section.type == SECTION_TYPE.CALL_TRANSFER \
-            or obj_section.type == SECTION_TYPE.CONFERENCE:
+        if (obj_section.type == SECTION_TYPE.PLAY_MESSAGE
+           or obj_section.type == SECTION_TYPE.RECORD_MSG
+           or obj_section.type == SECTION_TYPE.CALL_TRANSFER
+           or obj_section.type == SECTION_TYPE.CONFERENCE):
             self.fields['keys'].initial = 0
             self.fields['keys'].widget = forms.HiddenInput()
 

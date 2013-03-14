@@ -107,8 +107,6 @@ urlpatterns = patterns('',
     (r'^admin_tools/', include('admin_tools.urls')),
     (r'^static/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.STATIC_ROOT}),
-    (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to',
-        {'url': 'static/newfies/images/favicon.png'}),
     #(r'^sentry/', include('sentry.web.urls')),
     (r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
 )

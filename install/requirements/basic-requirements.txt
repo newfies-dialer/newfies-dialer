@@ -2,7 +2,6 @@ docutils==0.10
 ordereddict==1.1
 amqplib==1.0.2
 anyjson==0.3.3
-simplejson==3.0.7
 pyparsing==1.5.6
 python-dateutil==2.1
 uuid==1.30

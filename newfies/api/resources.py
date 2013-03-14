@@ -50,7 +50,6 @@ class CustomJSONSerializer(Serializer):
 
     def from_json(self, content):
         decoded_content = urllib.unquote(content.decode("utf8"))
-        #data = simplejson.loads(content)
         data = {}
         data['cdr'] = decoded_content[4:]
         return data

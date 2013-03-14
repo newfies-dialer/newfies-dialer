@@ -37,7 +37,6 @@ To get started with Newfies-Dialer you must have the following installed:
 - pyparsing >= 1.5.5 (A general parsing module for Python)
 - python-dateutil >= 1.5 (Extensions to the standard datetime module)
 - redis >= 2.2.2 (Redis Python Client)
-- simplejson >= 2.1.3 (Simple, fast, complete, correct and extensible JSON)
 - uuid >= 1.30 (UUID object and generation functions )
 - wsgiref >= 0.1.2 (Validation support for WSGI )
 - switch2bill-common >= 2.4.1 (Common library that are reused by Star2Billing)

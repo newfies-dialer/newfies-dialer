@@ -18,7 +18,7 @@ from django.http import HttpResponseRedirect, HttpResponse, \
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
-from django.utils import simplejson
+from django.utils import json
 from django.db.models import Q
 from django.db.models import Count
 from dialer_contact.models import Phonebook, Contact
@@ -584,7 +584,7 @@ def contact_import(request):
                 row_8 = ''
                 if row[8]:
                     try:
-                        row_8 = simplejson.loads(row[8])
+                        row_8 = json.loads(row[8])
                     except:
                         row_8 = ''
 

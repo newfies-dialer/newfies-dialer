@@ -16,7 +16,7 @@ from django.contrib import admin
 from django.contrib import messages
 from django.conf.urls import patterns
 from django.utils.translation import ugettext as _
-from django.utils import simplejson
+from django.utils import json
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
@@ -172,7 +172,7 @@ class ContactAdmin(admin.ModelAdmin):
 
                     row_8 = ''
                     if row[8]:
-                        row_8 = simplejson.loads(row[8])
+                        row_8 = json.loads(row[8])
 
                     bulk_record.append(
                         Contact(

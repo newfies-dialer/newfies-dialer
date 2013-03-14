@@ -13,7 +13,7 @@
 #
 
 from common.utils import BaseAuthenticatedClient
-import simplejson
+import json
 
 
 class ApiTestCase(BaseAuthenticatedClient):
@@ -29,7 +29,7 @@ class ApiTestCase(BaseAuthenticatedClient):
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 400)
 
-        data = simplejson.dumps({
+        data = json.dumps({
             "name": "test_campaign",
             "description": "",
             "callerid": "1239876",
@@ -51,7 +51,7 @@ class ApiTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 201)
 
         # To test dialer settings with campaign data
-        data = simplejson.dumps({
+        data = json.dumps({
             "name": "test_campaign",
             "description": "",
             "callerid": "1239876",
@@ -73,7 +73,7 @@ class ApiTestCase(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 400)
 
         # To test new phonebook dynamically
-        data = simplejson.dumps({
+        data = json.dumps({
             "name": "new test campaign",
             "description": "",
             "callerid": "1239876",
@@ -106,7 +106,7 @@ class ApiTestCase(BaseAuthenticatedClient):
     def test_update_campaign(self):
         """Test Function to update a campaign"""
         response = self.client.put('/api/v1/campaign/1/',
-            simplejson.dumps({
+            json.dumps({
                 "status": "2",
                 "content_type": "voiceapp_template",
                 "object_id": "1",
@@ -137,7 +137,7 @@ class ApiTestCase(BaseAuthenticatedClient):
 
     def test_create_phonebook(self):
         """Test Function to create a phonebook"""
-        data = simplejson.dumps({"name": "mylittlephonebook",
+        data = json.dumps({"name": "mylittlephonebook",
                 "description": "Test",
                 "campaign_id": "1"})
         response = self.client.post('/api/v1/phonebook/', data,
@@ -148,7 +148,7 @@ class ApiTestCase(BaseAuthenticatedClient):
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 400)
 
-        data = simplejson.dumps({"name": "mylittlephonebook",
+        data = json.dumps({"name": "mylittlephonebook",
                                  "description": "Test",
                                  "campaign_id": "5"})
         response = self.client.post('/api/v1/phonebook/', data,
@@ -169,7 +169,7 @@ class ApiTestCase(BaseAuthenticatedClient):
 
     def test_create_bulk_contact(self):
         """Test Function to bulk create contacts"""
-        data = simplejson.dumps({"phoneno_list": "12345,54344",
+        data = json.dumps({"phoneno_list": "12345,54344",
                                  "phonebook_id": "1"})
         response = self.client.post('/api/v1/bulkcontact/',
             data, content_type='application/json', **self.extra)
@@ -179,14 +179,14 @@ class ApiTestCase(BaseAuthenticatedClient):
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 400)
 
-        data = simplejson.dumps({"phoneno_list": "12345,54344",
+        data = json.dumps({"phoneno_list": "12345,54344",
                                  "phonebook_id": "3"})
         response = self.client.post('/api/v1/bulkcontact/', data,
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 400)
 
         # Check duplication
-        data = simplejson.dumps({"phoneno_list": "12345,54344",
+        data = json.dumps({"phoneno_list": "12345,54344",
                                  "phonebook_id": "1"})
         response = self.client.post('/api/v1/bulkcontact/', data,
             content_type='application/json', **self.extra)
@@ -194,7 +194,7 @@ class ApiTestCase(BaseAuthenticatedClient):
 
     def test_create_subscriber(self):
         """Test Function to create a subscriber"""
-        data = simplejson.dumps({
+        data = json.dumps({
             "contact": "650784355",
             "last_name": "belaid",
             "first_name": "areski",
@@ -208,7 +208,7 @@ class ApiTestCase(BaseAuthenticatedClient):
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 400)
 
-        data = simplejson.dumps({
+        data = json.dumps({
             "contact": "650784355",
             "phonebook_id": "3"
         })
@@ -224,7 +224,7 @@ class ApiTestCase(BaseAuthenticatedClient):
 
     def test_update_subscriber(self):
         """Test Function to update a subscriber"""
-        data = simplejson.dumps({"status": "1",
+        data = json.dumps({"status": "1",
                                  "contact": "640234000"})
         response = self.client.put('/api/v1/subscriber/1/',
                    data, content_type='application/json', **self.extra)
@@ -234,7 +234,7 @@ class ApiTestCase(BaseAuthenticatedClient):
             data, content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 400)
 
-        data = simplejson.dumps({"status": "1",
+        data = json.dumps({"status": "1",
                                  "contact": "640234001"})
         response = self.client.put('/api/v1/subscriber/1/',
             data, content_type='application/json', **self.extra)
@@ -242,7 +242,7 @@ class ApiTestCase(BaseAuthenticatedClient):
 
     def test_create_callrequest(self):
         """Test Function to create a callrequest"""
-        data = simplejson.dumps({
+        data = json.dumps({
             "request_uuid": "df8a8478-cc57-11e1-aa17-00231470a30c",
             "call_time": "2011-05-01 11:22:33",
             "phone_number": "8792749823",
@@ -260,7 +260,7 @@ class ApiTestCase(BaseAuthenticatedClient):
             content_type='application/json', **self.extra)
         self.assertEqual(response.status_code, 400)
 
-        data = simplejson.dumps({
+        data = json.dumps({
             "request_uuid": "df8a8478-cc57-11e1-aa17-00231470a30c",
             "call_time": "2011-05-01 11:22:33",
             "phone_number": "8792749823",

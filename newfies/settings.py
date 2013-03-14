@@ -301,9 +301,10 @@ API_PLAYGROUND_FEEDBACK = False
 #=======================
 PAGE_SIZE = 10
 
-AUTH_PROFILE_MODULE = "user_profile.UserProfile"
+# AUTH MODULE SETTINGS
+AUTH_PROFILE_MODULE = 'user_profile.UserProfile'
+LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/pleaselog/'
-
 
 #DILLA SETTINGS
 #==============

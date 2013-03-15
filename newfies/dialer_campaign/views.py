@@ -32,7 +32,6 @@ from dialer_campaign.function_def import check_dialer_setting, dialer_setting_li
     user_dialer_setting, user_dialer_setting_msg
 from dialer_campaign.tasks import collect_subscriber
 from survey.models import Section, Branching, Survey_template
-#from voice_app.function_def import check_voiceapp_campaign
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import frontend_send_notification
 from common.common_functions import current_view, get_pagination_vars
@@ -82,10 +81,6 @@ def update_campaign_status_cust(request, pk, status):
             obj_campaign.has_been_started = True
             obj_campaign.save()
 
-            #if obj_campaign.content_type.model == 'survey_template':
-            #    copy_survey_template_campaign(request.user, pk)
-            # elif obj_campaign.content_type.model == 'voiceapp_template':
-            #     check_voiceapp_campaign(request, pk)
             if obj_campaign.content_type.model == 'survey_template':
                 # Copy survey
                 survey_template = Survey_template.objects.get(user=request.user, pk=obj_campaign.object_id)
@@ -183,18 +178,11 @@ def _return_link(app_name, obj_id):
         link = '<a href="/survey_view/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' % \
             (obj_id, _('survey').title(), tpl_control_icon('zoom.png'))
 
-    if app_name == 'voiceapp':
-        link = '<a href="/voiceapp_view/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' % \
-            (obj_id, _('voice application').title(), tpl_control_icon('zoom.png'))
-
     # Object edit links
     if app_name == 'survey_template':
         link = '<a href="/survey/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' %\
             (obj_id, _('edit survey').title(), tpl_control_icon('zoom.png'))
 
-    if app_name == 'voiceapp_template':
-        link = '<a href="/voiceapp/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' %\
-            (obj_id, _('edit voice application').title(), tpl_control_icon('zoom.png'))
     return link
 
 
@@ -205,9 +193,6 @@ def get_campaign_survey_view(campaign_object):
         if campaign_object.content_type.model == 'survey':
             link = _return_link('survey', campaign_object.object_id)
 
-        if campaign_object.content_type.model == 'voiceapp':
-            link = _return_link('voiceapp', campaign_object.object_id)
-
     if campaign_object.status and int(campaign_object.status) != CAMPAIGN_STATUS.START:
 
         if campaign_object.content_type.model == 'survey_template':
@@ -215,12 +200,6 @@ def get_campaign_survey_view(campaign_object):
 
         if campaign_object.content_type.model == 'survey':
             link = _return_link('survey', campaign_object.object_id)
-
-        # if campaign_object.content_type.model == 'voiceapp_template':
-        #     link = _return_link('voiceapp_template', campaign_object.object_id)
-
-        # if campaign_object.content_type.model == 'voiceapp' and campaign_object.has_been_started:
-        #     link = _return_link('voiceapp', campaign_object.object_id)
 
     return link
 

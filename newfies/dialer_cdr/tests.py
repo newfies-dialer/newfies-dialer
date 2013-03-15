@@ -108,7 +108,7 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
 class DialerCdrCeleryTaskTestCase(TestCase):
     """Test cases for celery task"""
 
-    fixtures = ['gateway.json', 'voiceapp.json', 'auth_user.json',
+    fixtures = ['gateway.json', 'survey.json', 'auth_user.json',
                 'dialer_setting.json', 'contenttype.json',
                 'phonebook.json', 'contact.json',
                 'campaign.json', 'subscriber.json',
@@ -137,7 +137,7 @@ class DialerCdrModel(TestCase):
         VoipSearchForm(self.user)
 
         try:
-            content_type_id = ContentType.objects.get(model='voiceapp').id
+            content_type_id = ContentType.objects.get(model='survey').id
         except:
             content_type_id = 1
 

@@ -18,7 +18,7 @@ import json
 
 class ApiTestCase(BaseAuthenticatedClient):
     """Test cases for Newfies-Dialer API."""
-    fixtures = ['auth_user.json', 'gateway.json', 'voiceapp_template.json',
+    fixtures = ['auth_user.json', 'gateway.json', 'survey_template.json',
                 'dialer_setting.json', 'phonebook.json', 'contact.json',
                 'campaign.json', 'subscriber.json', 'callrequest.json',
                 'user_profile.json']
@@ -41,7 +41,7 @@ class ApiTestCase(BaseAuthenticatedClient):
             "intervalretry": "3000",
             "calltimeout": "45",
             "aleg_gateway": "1",
-            "content_type": "voiceapp_template",
+            "content_type": "survey_template",
             "object_id": "1",
             "extra_data": "2000",
             "phonebook_id": "1"
@@ -85,7 +85,7 @@ class ApiTestCase(BaseAuthenticatedClient):
             "intervalretry": "3000",
             "calltimeout": "45",
             "aleg_gateway": "1",
-            "content_type": "voiceapp_template",
+            "content_type": "survey_template",
             "object_id": "1",
             "extra_data": "2000",
             "phonebook_id": "5"
@@ -108,7 +108,7 @@ class ApiTestCase(BaseAuthenticatedClient):
         response = self.client.put('/api/v1/campaign/1/',
             json.dumps({
                 "status": "2",
-                "content_type": "voiceapp_template",
+                "content_type": "survey_template",
                 "object_id": "1",
                 "startingdate": "1301392136.0",
                 "expirationdate": "1301332136.0"}),
@@ -246,7 +246,7 @@ class ApiTestCase(BaseAuthenticatedClient):
             "request_uuid": "df8a8478-cc57-11e1-aa17-00231470a30c",
             "call_time": "2011-05-01 11:22:33",
             "phone_number": "8792749823",
-            "content_type": "voice_app",
+            "content_type": "survey",
             "object_id": "1",
             "timeout": "30000",
             "callerid": "650784355",

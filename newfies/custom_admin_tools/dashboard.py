@@ -170,9 +170,6 @@ class CustomAppIndexDashboard(AppIndexDashboard):
         elif str(self.app_title) == 'Dialer_Gateway':
             app_title = _('dialer gateway').title()
             models = ['dialer_gateway.*']
-        elif str(self.app_title) == 'Voice_App':
-            app_title = _('voice application').title()
-            models = ['voice_app.*']
         else:
             app_title = self.app_title
             models = self.models

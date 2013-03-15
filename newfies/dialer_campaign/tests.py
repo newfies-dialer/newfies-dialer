@@ -89,7 +89,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
     """Test cases for Campaign, Subscriber Customer Interface."""
 
     fixtures = ['dialer_setting.json', 'auth_user.json', 'gateway.json',
-                'voiceapp.json', 'phonebook.json', 'contact.json',
+                'survey.json', 'phonebook.json', 'contact.json',
                 'campaign.json', 'subscriber.json']
 
     def test_campaign_view_list(self):
@@ -241,7 +241,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
 class DialerCampaignCeleryTaskTestCase(TestCase):
     """Test cases for celery task"""
 
-    fixtures = ['gateway.json', 'voiceapp.json', 'auth_user.json',
+    fixtures = ['gateway.json', 'survey.json', 'auth_user.json',
                 'dialer_setting.json', 'contenttype.json',
                 'phonebook.json', 'contact.json',
                 'campaign.json', 'subscriber.json',
@@ -275,7 +275,7 @@ class DialerCampaignCeleryTaskTestCase(TestCase):
 class DialerCampaignModel(TestCase):
     """Test Campaign, Subscriber models"""
 
-    fixtures = ['gateway.json', 'voiceapp.json', 'auth_user.json',
+    fixtures = ['gateway.json', 'survey.json', 'auth_user.json',
                 'dialer_setting.json',
                 'phonebook.json', 'contact.json',
                 'campaign.json', 'subscriber.json',
@@ -287,7 +287,7 @@ class DialerCampaignModel(TestCase):
         # Campaign model
         try:
             self.content_type_id = \
-                ContentType.objects.get(model='voiceapp_template').id
+                ContentType.objects.get(model='survey_template').id
         except:
             self.content_type_id = 1
 

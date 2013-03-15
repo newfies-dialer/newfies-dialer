@@ -3,10 +3,8 @@ import os
 from django.conf import settings, global_settings
 
 
-
 #TODO : https://github.com/pinax/pinax/blob/master/tests/runner.py
 # build_app_list
-
 def configure(nose_args):
     if not settings.configured:
         # Helper function to extract absolute path
@@ -17,8 +15,8 @@ def configure(nose_args):
                 'default': {
                     'ENGINE': 'django.db.backends.sqlite3',
                     'NAME': ':memory:',
-                    }
-                },
+                }
+            },
             INSTALLED_APPS=[
                 #admin tool apps
                 'admin_tools',
@@ -48,7 +46,6 @@ def configure(nose_args):
                 'linaro_django_pagination',
                 'memcache_status',
                 'notification',
-                'voice_app',
                 'survey',
                 'dialer_audio',
                 'common',
@@ -63,34 +60,34 @@ def configure(nose_args):
                 'dajaxice',
                 'dajax',
                 'genericadmin',
-                ],
+            ],
             TEMPLATE_CONTEXT_PROCESSORS=(
-                    "django.contrib.auth.context_processors.auth",
-                    "django.core.context_processors.debug",
-                    "django.core.context_processors.i18n",
-                    "django.core.context_processors.media",
-                    "django.core.context_processors.static",
-                    "django.core.context_processors.csrf",
-                    "django.contrib.messages.context_processors.messages",
-                    "context_processors.newfies_version",
-                    #needed by Sentry
-                    "django.core.context_processors.request",
-                ),
+                "django.contrib.auth.context_processors.auth",
+                "django.core.context_processors.debug",
+                "django.core.context_processors.i18n",
+                "django.core.context_processors.media",
+                "django.core.context_processors.static",
+                "django.core.context_processors.csrf",
+                "django.contrib.messages.context_processors.messages",
+                "context_processors.newfies_version",
+                #needed by Sentry
+                "django.core.context_processors.request",
+            ),
             TEMPLATE_DIRS=(
                 location('templates'),
-                ),
+            ),
             MIDDLEWARE_CLASSES=global_settings.MIDDLEWARE_CLASSES + (
-                    'django.contrib.sessions.middleware.SessionMiddleware',
-                    'django.middleware.locale.LocaleMiddleware',
-                    'django.middleware.common.CommonMiddleware',
-                    'django.contrib.auth.middleware.AuthenticationMiddleware',
-                    'django.middleware.csrf.CsrfViewMiddleware',
-                    'django.contrib.messages.middleware.MessageMiddleware',
-                    #'pagination.middleware.PaginationMiddleware',
-                    'linaro_django_pagination.middleware.PaginationMiddleware',
-                    'common.filter_persist_middleware.FilterPersistMiddleware',
-                    'audiofield.middleware.threadlocals.ThreadLocals',
-                ),
+                'django.contrib.sessions.middleware.SessionMiddleware',
+                'django.middleware.locale.LocaleMiddleware',
+                'django.middleware.common.CommonMiddleware',
+                'django.contrib.auth.middleware.AuthenticationMiddleware',
+                'django.middleware.csrf.CsrfViewMiddleware',
+                'django.contrib.messages.middleware.MessageMiddleware',
+                #'pagination.middleware.PaginationMiddleware',
+                'linaro_django_pagination.middleware.PaginationMiddleware',
+                'common.filter_persist_middleware.FilterPersistMiddleware',
+                'audiofield.middleware.threadlocals.ThreadLocals',
+            ),
             ROOT_URLCONF='urls',
             DEBUG=False,
             SITE_ID=1,

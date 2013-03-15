@@ -323,7 +323,7 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
 class DialerContactCeleryTaskTestCase(TestCase):
     """Test cases for celery task"""
 
-    fixtures = ['gateway.json', 'voiceapp.json', 'auth_user.json',
+    fixtures = ['gateway.json', 'survey.json', 'auth_user.json',
                 'dialer_setting.json', 'contenttype.json',
                 'phonebook.json', 'contact.json',
                 'campaign.json', 'subscriber.json',

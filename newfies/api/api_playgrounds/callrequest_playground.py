@@ -58,7 +58,7 @@ class CallrequestAPIPlayground(APIPlayground):
                                        {
                                            "name": "content_type",
                                            "type": "string",
-                                           "default": "voiceapp_template"
+                                           "default": "survey_template"
                                        },
                                        {
                                            "name": "object_id",
@@ -105,7 +105,7 @@ class CallrequestAPIPlayground(APIPlayground):
                                        {
                                            "name": "content_type",
                                            "type": "string",
-                                           "default": "voiceapp_template"
+                                           "default": "survey_template"
                                        },
                                        {
                                            "name": "object_id",

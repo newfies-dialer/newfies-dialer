@@ -74,7 +74,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
        ResultAggregate Customer pages
     """
 
-    fixtures = ['auth_user.json', 'gateway.json', 'voiceapp.json',
+    fixtures = ['auth_user.json', 'gateway.json', 'survey.json',
                 'dialer_setting.json', 'phonebook.json', 'contact.json',
                 'campaign.json', 'subscriber.json',
                 'callrequest.json', 'voipcall.json',

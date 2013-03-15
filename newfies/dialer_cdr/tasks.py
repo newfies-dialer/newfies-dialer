@@ -106,7 +106,7 @@ class BufferVoIPCall:
         else:
             #B-Leg
             leg_type = LEG_TYPE.B_LEG
-            if obj_callrequest.content_object.__class__.__name__ == 'VoiceApp':
+            if obj_callrequest.content_object.__class__.__name__ == 'Survey':
                 #Get the gateway from the App
                 used_gateway = obj_callrequest.content_object.gateway
             else:

@@ -85,7 +85,7 @@ def create_voipcall(obj_callrequest, request_uuid, data, data_prefix='',
     else:
         #B-Leg
         leg_type = 2
-        if obj_callrequest.content_object.__class__.__name__ == 'VoiceApp':
+        if obj_callrequest.content_object.__class__.__name__ == 'Survey':
             used_gateway = obj_callrequest.content_object.gateway
         else:
             #Survey

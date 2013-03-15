@@ -38,7 +38,7 @@ class CallrequestValidation(Validation):
             errors['Data'] = ['Data set is empty']
 
         content_type = bundle.data.get('content_type')
-        if content_type == 'voiceapp_template' or content_type == 'survey_template':
+        if content_type == 'survey_template':
             try:
                 content_type_id = ContentType.objects\
                     .get(model=str(content_type)).id
@@ -47,7 +47,7 @@ class CallrequestValidation(Validation):
             except:
                 errors['chk_content_type'] = ["The ContentType doesn't exist!"]
         else:
-            errors['chk_content_type'] = ["Wrong option. Enter 'voice_app' or 'survey' !"]
+            errors['chk_content_type'] = ["Wrong option. Enter 'survey' !"]
 
         object_id = bundle.data.get('object_id')
         if object_id:
@@ -55,7 +55,7 @@ class CallrequestValidation(Validation):
         else:
             errors['chk_object_id'] = ["App object Id doesn't exist!"]
 
-        try:            
+        try:
             bundle.data['user'] = '/api/v1/user/%s/' % request.user.id
         except:
             errors['chk_user'] = ["The User doesn't exist!"]
@@ -97,7 +97,7 @@ class CallrequestResource(ModelResource):
 
     **Relationships**:
 
-        * ``content_type`` - Defines the application (``voice_app`` or ``survey``) to use when the \
+        * ``content_type`` - Defines the application (``survey``) to use when the \
                              call is established on the A-Leg
         * ``object_id`` - Defines the object of content_type application
 
@@ -109,7 +109,7 @@ class CallrequestResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"request_uuid": "2342jtdsf-00123", "call_time": "2011-10-20 12:21:22", "phone_number": "8792749823", "content_type":"voiceapp_template", "object_id":1, "timeout": "30000", "callerid": "650784355", "call_type": "1"}' http://localhost:8000/api/v1/callrequest/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"request_uuid": "2342jtdsf-00123", "call_time": "2011-10-20 12:21:22", "phone_number": "8792749823", "content_type":"survey_template", "object_id":1, "timeout": "30000", "callerid": "650784355", "call_type": "1"}' http://localhost:8000/api/v1/callrequest/
 
         Response::
 
@@ -176,7 +176,7 @@ class CallrequestResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"content_type":"voice_app", "object_id":1, "status": "5"}' http://localhost:8000/api/v1/callrequest/%callrequest_id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"content_type":"survey", "object_id":1, "status": "5"}' http://localhost:8000/api/v1/callrequest/%callrequest_id%/
 
         Response::
 

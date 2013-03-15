@@ -119,7 +119,7 @@ class CampaignValidation(Validation):
                 errors['chk_gateway'] = ["The Gateway ID doesn't exist!"]
 
         content_type = bundle.data.get('content_type')
-        if content_type == 'voiceapp_template' or content_type == 'survey_template':
+        if content_type == 'survey_template':
             try:
                 content_type_id = ContentType.objects\
                     .get(model=str(content_type)).id
@@ -128,7 +128,7 @@ class CampaignValidation(Validation):
             except:
                 errors['chk_content_type'] = ["The ContentType doesn't exist!"]
         else:
-            errors['chk_content_type'] = ["Entered wrong option. Please enter 'voice_app' or 'survey' !"]
+            errors['chk_content_type'] = ["Entered wrong option. Please enter 'survey' !"]
 
         object_id = bundle.data.get('object_id')
         if object_id:
@@ -136,7 +136,7 @@ class CampaignValidation(Validation):
         else:
             errors['chk_object_id'] = ["App Object ID doesn't exist!"]
 
-        try:            
+        try:
             bundle.data['user'] = '/api/v1/user/%s/' % request.user.id
         except:
             errors['chk_user'] = ["The User doesn't exist!"]
@@ -215,7 +215,7 @@ class CampaignResource(ModelResource):
 
             * ``aleg_gateway`` - Defines the Gateway to use to call the\
                                  subscriber
-            * ``content_type`` - Defines the application (``voice_app_template`` \
+            * ``content_type`` - Defines the application (``survey_template`` \
                                 or ``survey_template``) to use when the \
                                 call is established on the A-Leg
             * ``object_id`` - Defines the object of content_type application
@@ -230,7 +230,7 @@ class CampaignResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "content_type": "voiceapp_template", "object_id" : "1", "extra_data": "2000", "phonebook_id": "1", "voicemail": "True", "amd_behavior": "1", "voicemail_audiofile": "1"}' http://localhost:8000/api/v1/campaign/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "content_type": "survey_template", "object_id" : "1", "extra_data": "2000", "phonebook_id": "1", "voicemail": "True", "amd_behavior": "1", "voicemail_audiofile": "1"}' http://localhost:8000/api/v1/campaign/
 
         Response::
 

@@ -19,7 +19,6 @@ from dialer_contact.urls import urlpatterns as urlpatterns_dialer_contact
 from dialer_campaign.urls import urlpatterns as urlpatterns_dialer_campaign
 from dialer_cdr.urls import urlpatterns as urlpatterns_dialer_cdr
 from user_profile.urls import urlpatterns as urlpatterns_user_profile
-from voice_app.urls import urlpatterns as urlpatterns_voice_app
 from survey.urls import urlpatterns as urlpatterns_survey
 from dialer_audio.urls import urlpatterns as urlpatterns_dialer_audio
 from frontend_notification.urls import urlpatterns as urlpatterns_frontend_notification
@@ -27,7 +26,6 @@ from api.api_playgrounds.urls import urlpatterns as urlpatterns_api_playgrounds
 from tastypie.api import Api
 
 from api.user_api import UserResource
-from api.voiceapp_api import VoiceAppResource
 from api.gateway_api import GatewayResource
 from api.content_type_api import ContentTypeResource
 from api.phonebook_api import PhonebookResource
@@ -38,9 +36,6 @@ from api.subscriber_api import SubscriberResource
 from api.subscriber_per_campaign_api import \
     SubscriberPerCampaignResource
 from api.callrequest_api import CallrequestResource
-from api.answercall_api import AnswercallResource
-from api.dialcallback_api import DialCallbackResource
-from api.hangupcall_api import HangupcallResource
 from api.store_cdr_api import CdrResource
 from api.audiofile_api import AudioFileResource
 
@@ -64,7 +59,6 @@ except admin.sites.AlreadyRegistered:
 # tastypie api
 tastypie_api = Api(api_name='v1')
 tastypie_api.register(UserResource())
-tastypie_api.register(VoiceAppResource())
 tastypie_api.register(GatewayResource())
 tastypie_api.register(ContentTypeResource())
 tastypie_api.register(PhonebookResource())
@@ -74,9 +68,6 @@ tastypie_api.register(CampaignDeleteCascadeResource())
 tastypie_api.register(SubscriberResource())
 tastypie_api.register(SubscriberPerCampaignResource())
 tastypie_api.register(CallrequestResource())
-tastypie_api.register(AnswercallResource())
-tastypie_api.register(DialCallbackResource())
-tastypie_api.register(HangupcallResource())
 tastypie_api.register(CdrResource())
 #tastypie_api.register(SurveyAppResource())
 #tastypie_api.register(SurveyQuestionResource())
@@ -92,7 +83,6 @@ js_info_dict = {
     'domain': 'djangojs',
     'packages': ('dialer_campaign',
                  'user_profile',
-                 'voice_app',
                  'survey',
                  'audiofield'),
 }
@@ -116,7 +106,6 @@ urlpatterns += urlpatterns_dialer_contact
 urlpatterns += urlpatterns_dialer_campaign
 urlpatterns += urlpatterns_dialer_cdr
 urlpatterns += urlpatterns_user_profile
-urlpatterns += urlpatterns_voice_app
 urlpatterns += urlpatterns_survey
 urlpatterns += urlpatterns_dialer_audio
 urlpatterns += urlpatterns_api_playgrounds

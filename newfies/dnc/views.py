@@ -21,7 +21,7 @@ from django.utils.translation import ugettext as _
 from django.db.models import Q
 from django.db.models import Count
 from dnc.models import DNC, DNCContact
-#from dialer_contact.forms import ContactSearchForm, Contact_fileImport, \
+from dnc.forms import DNCForm#, Contact_fileImport, \
 #    PhonebookForm, ContactForm
 from dnc.constants import DNC_COLUMN_NAME, DNC_CONTACT_COLUMN_NAME
 from dialer_campaign.function_def import check_dialer_setting,\
@@ -74,4 +74,39 @@ def dnc_list(request):
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
 
+
+@permission_required('dnc.add_dnc', login_url='/')
+@login_required
+def dnc_add(request):
+    """Add new DNC for the logged in user
+
+    **Attributes**:
+
+        * ``form`` - DNCForm
+        * ``template`` - frontend/dnc_list/change.html
+
+    **Logic Description**:
+
+        * Add a new DNC which will belong to the logged in user
+          via the DNCForm & get redirected to the dnc list
+    """
+    form = DNCForm()
+    if request.method == 'POST':
+        form = DNCForm(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.user = request.user
+            obj.save()
+            request.session["msg"] = _('"%(name)s" added.') %\
+                {'name': request.POST['name']}
+            return HttpResponseRedirect('/dnc/')
+    template = 'frontend/dnc_list/change.html'
+    data = {
+        'module': current_view(request),
+        'form': form,
+        'action': 'add',
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
 

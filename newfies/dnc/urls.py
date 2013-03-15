@@ -18,7 +18,7 @@ from django.conf.urls import patterns
 urlpatterns = patterns('dnc.views',
     # DNC urls
     (r'^dnc/$', 'dnc_list'),
-    #(r'^dnc/add/$', 'dnc_add'),
+    (r'^dnc/add/$', 'dnc_add'),
     #(r'^dnc/contact_count/$', 'get_dnc_contact_count'),
     #(r'^dnc/del/(.+)/$', 'dnc_del'),
     #(r'^dnc/(.+)/$', 'dnc_change'),

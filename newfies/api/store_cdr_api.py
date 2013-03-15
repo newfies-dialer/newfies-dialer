@@ -18,21 +18,17 @@ from django.conf.urls.defaults import url
 from django.http import HttpResponse
 
 from tastypie.resources import ModelResource
-from tastypie.authentication import BasicAuthentication
-from tastypie.authorization import Authorization
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import ImmediateHttpResponse, \
     BadRequest
 from tastypie import http
-
 from dialer_cdr.models import Callrequest
 from api.resources import CustomXmlEmitter, \
     IpAddressAuthorization, \
     IpAddressAuthentication,\
     create_voipcall,\
     CDR_VARIABLES
-
 import logging
 import urllib
 
@@ -68,7 +64,7 @@ class CdrResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data 'cdr=<?xml version="1.0"?><cdr><other></other><variables><plivo_request_uuid>af41ac8a-ede4-11e0-9cca-00231470a30c</plivo_request_uuid><duration>3</duration></variables><notvariables><plivo_request_uuid>TESTc</plivo_request_uuid><duration>5</duration></notvariables></cdr>' http://localhost:8000/api/v1/store_cdr/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data 'cdr=<?xml version="1.0"?><cdr><other></other><variables><request_uuid>af41ac8a-ede4-11e0-9cca-00231470a30c</request_uuid><duration>3</duration></variables><notvariables><request_uuid>TESTc</request_uuid><duration>5</duration></notvariables></cdr>' http://localhost:8000/api/v1/store_cdr/
 
         Response::
 
@@ -143,7 +139,7 @@ class CdrResource(ModelResource):
                     logger.debug("%s not found!")
 
             #TODO: Add tag for newfies in outbound call
-            if not 'plivo_request_uuid' in data or not data['plivo_request_uuid']:
+            if not 'request_uuid' in data or not data['request_uuid']:
                 # CDR not related to plivo
                 error_msg = 'CDR not related to Newfies/Plivo!'
                 logger.error(error_msg)
@@ -153,12 +149,12 @@ class CdrResource(ModelResource):
             try:
                 # plivo add "a_" in front of the uuid
                 # for the aleg so we remove the "a_"
-                if data['plivo_request_uuid'][1:2] == 'a_':
-                    plivo_request_uuid = data['plivo_request_uuid'][2:]
+                if data['request_uuid'][1:2] == 'a_':
+                    request_uuid = data['request_uuid'][2:]
                 else:
-                    plivo_request_uuid = data['plivo_request_uuid']
+                    request_uuid = data['request_uuid']
                 obj_callrequest = Callrequest.objects.get(
-                    request_uuid=plivo_request_uuid)
+                    request_uuid=request_uuid)
             except:
                 # Send notification to admin
                 from dialer_campaign.views import common_send_notification
@@ -172,7 +168,7 @@ class CdrResource(ModelResource):
                     common_send_notification(request, 8, recipient)
 
                 error_msg = "Error, there is no callrequest for "\
-                            "this uuid %s " % data['plivo_request_uuid']
+                            "this uuid %s " % data['request_uuid']
                 logger.error(error_msg, extra={'stack': True})
 
                 raise BadRequest(error_msg)
@@ -180,7 +176,7 @@ class CdrResource(ModelResource):
             # CREATE CDR - VOIP CALL
             create_voipcall(
                 obj_callrequest,
-                plivo_request_uuid,
+                request_uuid,
                 data,
                 data_prefix='',
                 leg='a')

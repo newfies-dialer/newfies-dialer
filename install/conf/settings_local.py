@@ -76,7 +76,7 @@ ESL_SCRIPT = '&lua(/usr/share/newfies-lua/newfies.lua)'
 FS_RECORDING_PATH = '/usr/share/newfies/usermedia/recording/'
 
 # ADD 'dummy','plivo','twilio','esl'
-NEWFIES_DIALER_ENGINE = 'dummy'
+NEWFIES_DIALER_ENGINE = 'esl'
 
 API_ALLOWED_IP = [
     '127.0.0.1',

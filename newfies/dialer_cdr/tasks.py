@@ -508,49 +508,8 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
     data = response.read()
     conn.close()
     """
-    if settings.NEWFIES_DIALER_ENGINE.lower() == 'dummy':
-        #Use Dummy TestCall
-        # res = dummy_testcall.delay(callerid=obj_callrequest.callerid,
-        #     phone_number=dialout_phone_number,
-        #     gateway=gateways)
-        # result = res.get()
-        result = ''
-        logger.info(result)
-        logger.error('Received RequestUUID :> ' + str(result['RequestUUID']))
 
-    elif settings.NEWFIES_DIALER_ENGINE.lower() == 'plivo':
-        try:
-            #Request Call via Plivo
-            from telefonyhelper import call_plivo
-            answer_url = settings.PLIVO_DEFAULT_SURVEY_ANSWER_URL
-
-            result = call_plivo(
-                callerid=obj_callrequest.callerid,
-                callername=obj_callrequest.campaign.caller_name,
-                phone_number=dialout_phone_number,
-                Gateways=gateways,
-                #GatewayCodecs=gateway_codecs,
-                GatewayTimeouts=gateway_timeouts,
-                #GatewayRetries=gateway_retries,
-                ExtraDialString=originate_dial_string,
-                AnswerUrl=answer_url,
-                HangupUrl=settings.PLIVO_DEFAULT_HANGUP_URL,
-                TimeLimit=str(callmaxduration))
-        except:
-            logger.error('error : call_plivo')
-            obj_callrequest.status = CALLREQUEST_STATUS.FAILURE
-            obj_callrequest.save()
-            if obj_callrequest.subscriber and obj_callrequest.subscriber.id:
-                obj_subscriber = Subscriber.objects\
-                    .get(id=obj_callrequest.subscriber.id)
-                obj_subscriber.status = SUBSCRIBER_STATUS.FAIL
-                obj_subscriber.save()
-            return False
-        logger.debug(result)
-        request_uuid = str(result['RequestUUID'])
-        logger.debug('Received RequestUUID :> ' + request_uuid)
-
-    elif settings.NEWFIES_DIALER_ENGINE.lower() == 'esl':
+    if settings.NEWFIES_DIALER_ENGINE.lower() == 'esl':
         try:
             args_list = []
             send_digits = False

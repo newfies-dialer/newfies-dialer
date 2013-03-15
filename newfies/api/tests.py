@@ -281,7 +281,7 @@ class ApiTestCase(BaseAuthenticatedClient):
 
     def test_create_cdr(self):
         """Test Function to create a CDR"""
-        #data = ('cdr=<?xml version="1.0"?><cdr><other></other><variables><plivo_request_uuid>e8fee8f6-40dd-11e1-964f-000c296bd875</plivo_request_uuid><duration>3</duration></variables><notvariables><plivo_request_uuid>TESTc</plivo_request_uuid><duration>5</duration></notvariables></cdr>')
+        #data = ('cdr=<?xml version="1.0"?><cdr><other></other><variables><request_uuid>e8fee8f6-40dd-11e1-964f-000c296bd875</request_uuid><duration>3</duration></variables><notvariables><request_uuid>TESTc</request_uuid><duration>5</duration></notvariables></cdr>')
         #response = self.client.post('/api/v1/store_cdr/', data,
         #                content_type='application/json', **self.extra)
         #self.assertEqual(response.status_code, 200)

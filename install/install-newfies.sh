@@ -330,7 +330,6 @@ func_install_frontend(){
     do
         pip install $line
     done
-    #pip install plivohelper
 
     #Install Python ESL
     cd /usr/src/freeswitch/libs/esl
@@ -446,7 +445,6 @@ func_install_frontend(){
     #Update Authorize local IP
     sed -i "s/SERVER_IP_PORT/$IPADDR:$HTTP_PORT/g" $INSTALL_DIR/settings_local.py
     sed -i "s/#'SERVER_IP',/'$IPADDR',/g" $INSTALL_DIR/settings_local.py
-    sed -i "s/dummy/esl/g" $INSTALL_DIR/settings_local.py
 
     #Get TZ
     ZONE=$(head -1 /etc/timezone)

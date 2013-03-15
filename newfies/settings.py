@@ -420,18 +420,6 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
-#PLIVO
-#=====
-PLIVO_DEFAULT_ANSWER_URL = 'http://127.0.0.1:8000/api/v1/answercall/'
-PLIVO_DEFAULT_HANGUP_URL = 'http://127.0.0.1:8000/api/v1/hangupcall/'
-PLIVO_DEFAULT_DIALCALLBACK_URL = 'http://127.0.0.1:8000/api/v1/dialcallback/'
-
-#TODO add consistancy between answercall api and survey_finitestatemachine
-PLIVO_DEFAULT_SURVEY_ANSWER_URL = 'http://127.0.0.1:8000/' \
-                                  'survey_finitestatemachine/'
-
-FS_RECORDING_PATH = '/usr/share/newfies/usermedia/recording/'
-
 # ADD 'dummy','plivo','twilio','esl'
 NEWFIES_DIALER_ENGINE = 'esl'
 

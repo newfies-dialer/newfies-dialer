@@ -110,3 +110,108 @@ def dnc_add(request):
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
 
+@login_required
+def get_dnc_contact_count(request):
+    """To get total no of dnc contacts belonging to a dnc list"""
+    values = request.GET.getlist('pb_ids')
+    values = ", ".join(["%s" % el for el in values])
+    contact_count = DNCContact.objects.filter(dnc__user=request.user)\
+        .extra(where=['dnc_id IN (%s)' % values]).count()
+
+    return HttpResponse(contact_count)
+
+
+@permission_required('dnc.delete_dnc', login_url='/')
+@login_required
+def dnc_del(request, object_id):
+    """Delete a dnc for a logged in user
+
+    **Attributes**:
+
+        * ``object_id`` - Selected dnc object
+        * ``object_list`` - Selected dnc objects
+
+    **Logic Description**:
+
+        * Delete contacts from a contact list belonging to a dnc list.
+        * Delete selected the dnc from the dnc list
+    """
+    if int(object_id) != 0:
+        # When object_id is not 0
+        dnc = get_object_or_404(
+            DNC, pk=object_id, user=request.user)
+
+        # 1) delete all contacts belonging to a dnc
+        dnc_contact_list = DNCContact.objects.filter(dnc=dnc)
+        dnc_contact_list.delete()
+
+        # 2) delete dnc
+        request.session["msg"] = _('"%(name)s" is deleted.')\
+            % {'name': dnc.name}
+        dnc.delete()
+    else:
+        # When object_id is 0 (Multiple records delete)
+        values = request.POST.getlist('select')
+        values = ", ".join(["%s" % el for el in values])
+        try:
+            # 1) delete all contacts belonging to a phonebook
+            dnc_contact_list = DNCContact.objects\
+                .filter(dnc__user=request.user)\
+                .extra(where=['dnc_id IN (%s)' % values])
+            if dnc_contact_list:
+                dnc_contact_list.delete()
+
+            # 2) delete dnc
+            dnc_list = DNC.objects.filter(user=request.user)\
+                .extra(where=['id IN (%s)' % values])
+            if dnc_list:
+                request.session["msg"] =\
+                    _('%(count)s dnc list(s) are deleted.')\
+                    % {'count': dnc_list.count()}
+                dnc_list.delete()
+        except:
+            raise Http404
+
+    return HttpResponseRedirect('/dnc/')
+
+
+@permission_required('dnc.change_dnc', login_url='/')
+@login_required
+def dnc_change(request, object_id):
+    """Update/Delete DNC for the logged in user
+
+    **Attributes**:
+
+        * ``object_id`` - Selected dnc object
+        * ``form`` - DNCForm
+        * ``template`` - frontend/dnc_list/change.html
+
+    **Logic Description**:
+
+        * Update/delete selected dnc from the dnc list
+          via DNCForm & get redirected to dnc list
+    """
+    dnc = get_object_or_404(DNC, pk=object_id, user=request.user)
+    form = DNCForm(instance=dnc)
+    if request.method == 'POST':
+        if request.POST.get('delete'):
+            dnc_del(request, object_id)
+            return HttpResponseRedirect('/dnc/')
+        else:
+            form = DNCForm(request.POST, instance=dnc)
+            if form.is_valid():
+                form.save()
+                request.session["msg"] = _('"%(name)s" is updated.') \
+                    % {'name': request.POST['name']}
+                return HttpResponseRedirect('/dnc/')
+
+    template = 'frontend/dnc_list/change.html'
+    data = {
+        'module': current_view(request),
+        'form': form,
+        'action': 'update',
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+

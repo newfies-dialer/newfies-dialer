@@ -18,6 +18,7 @@ from frontend.urls import urlpatterns as urlpatterns_frontend
 from dialer_contact.urls import urlpatterns as urlpatterns_dialer_contact
 from dialer_campaign.urls import urlpatterns as urlpatterns_dialer_campaign
 from dialer_cdr.urls import urlpatterns as urlpatterns_dialer_cdr
+from dnc.urls import urlpatterns as urlpatterns_dnc
 from user_profile.urls import urlpatterns as urlpatterns_user_profile
 from survey.urls import urlpatterns as urlpatterns_survey
 from dialer_audio.urls import urlpatterns as urlpatterns_dialer_audio
@@ -105,6 +106,7 @@ urlpatterns += urlpatterns_frontend
 urlpatterns += urlpatterns_dialer_contact
 urlpatterns += urlpatterns_dialer_campaign
 urlpatterns += urlpatterns_dialer_cdr
+urlpatterns += urlpatterns_dnc
 urlpatterns += urlpatterns_user_profile
 urlpatterns += urlpatterns_survey
 urlpatterns += urlpatterns_dialer_audio

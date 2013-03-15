@@ -41,6 +41,9 @@ class DNC(models.Model):
         return '[%s] %s' % (self.id, self.name)
 
     class Meta:
+        permissions = (
+            ("view_dnc_list", _('can see DNC list')),
+        )
         db_table = "dnc_list"
         verbose_name = _("DNC list")
         verbose_name_plural = _("DNC lists")
@@ -72,6 +75,9 @@ class DNCContact(models.Model):
         return '[%s] %s' % (self.id, self.phone_number)
 
     class Meta:
+        permissions = (
+            ("view_dnc_contact", _('can see dnc contact')),
+        )
         db_table = "dnc_contact"
         verbose_name = _("DNC contact")
         verbose_name_plural = _("DNC contacts")

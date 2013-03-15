@@ -27,6 +27,7 @@ class DNC(models.Model):
 
         * ``user`` - Foreign key relationship to the User model.
 
+    **Name of DB table**: dnc_list
     """
     name = models.CharField(max_length=50, blank=False,
                             null=True, verbose_name=_("name"),
@@ -55,11 +56,9 @@ class DNCContact(models.Model):
 
     **Relationships**:
 
-        * ``user`` - Foreign key relationship to the User model.
-        * ``used_gateway`` - Foreign key relationship to the Gateway model.
-        * ``callrequest`` - Foreign key relationship to the Callrequest model.
+        * ``dnc`` - Foreign key relationship to the DNC model.
 
-    **Name of DB table**: dialer_cdr
+    **Name of DB table**: dnc_contact
     """
     dnc = models.ForeignKey(DNC, null=True, blank=True,
                     verbose_name=_("DNC List"))

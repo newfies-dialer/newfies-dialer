@@ -84,27 +84,12 @@ class GatewayAPIPlayground(APIPlayground):
                                            "default": ""
                                        },
                                        {
-                                           "name": "secondused",
-                                           "type": "string",
-                                           "default": ""
-                                       },
-                                       {
                                            "name": "failover",
                                            "type": "string",
                                            "default": ""
                                        },
                                        {
                                            "name": "addparameter",
-                                           "type": "string",
-                                           "default": ""
-                                       },
-                                       {
-                                           "name": "count_call",
-                                           "type": "string",
-                                           "default": ""
-                                       },
-                                       {
-                                           "name": "count_in_use",
                                            "type": "string",
                                            "default": ""
                                        },
@@ -163,27 +148,12 @@ class GatewayAPIPlayground(APIPlayground):
                                            "default": ""
                                        },
                                        {
-                                           "name": "secondused",
-                                           "type": "string",
-                                           "default": ""
-                                       },
-                                       {
                                            "name": "failover",
                                            "type": "string",
                                            "default": ""
                                        },
                                        {
                                            "name": "addparameter",
-                                           "type": "string",
-                                           "default": ""
-                                       },
-                                       {
-                                           "name": "count_call",
-                                           "type": "string",
-                                           "default": ""
-                                       },
-                                       {
-                                           "name": "count_in_use",
                                            "type": "string",
                                            "default": ""
                                        },
@@ -198,7 +168,7 @@ class GatewayAPIPlayground(APIPlayground):
                         "method": "DELETE",
                         "url": "/api/v1/gateway/{gateway-id}/",
                         "description": _("delete gateway"),
-                        }
+                    }
                 ]
             },
             ]

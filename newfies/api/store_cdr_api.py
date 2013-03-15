@@ -41,6 +41,8 @@ class CdrValidation(Validation):
     """
     def is_valid(self, bundle, request=None):
         errors = {}
+        print bundle.request
+        print bundle.__dict__
         if not bundle.data:
             return {'__all__': 'Not quite what I had in mind.'}
 
@@ -93,23 +95,14 @@ class CdrResource(ModelResource):
             url(r'^(?P<resource_name>%s)/$' % self._meta.resource_name, self.wrap_view('create')),
         ]
 
-    def create_response(self, request, data,
-                        response_class=HttpResponse, **response_kwargs):
-        """To display API's result"""
-        desired_format = self.determine_format(request)
-        serialized = data  # self.serialize(request, data, desired_format)
-        return response_class(content=serialized,
-            content_type=desired_format, **response_kwargs)
 
     def create(self, request, **kwargs):
         """POST method of CDR_Store API"""
         logger.debug('CDR API authentication called!')
-        auth_result = self._meta.authentication.is_authenticated(request)
-        if not auth_result is True:
-            raise ImmediateHttpResponse(response=http.HttpUnauthorized())
 
-        logger.debug('CDR API authorization called!')
-        auth_result = self._meta.authorization.is_authorized(request, object)
+        self.method_check(request, allowed=['post'])
+        self.is_authenticated(request)
+        self.throttle_check(request)
 
         errors = self._meta.validation.is_valid(request)
         logger.debug('CDR API get called from IP %s' % request.META.get('REMOTE_ADDR'))

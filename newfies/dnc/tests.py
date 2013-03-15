@@ -13,11 +13,35 @@
 #
 
 from django.test import TestCase
+from dnc.models import DNC, DNCContact
 
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.assertEqual(1 + 1, 2)
+class DNCModel(TestCase):
+    """Test DNC model"""
+
+    fixtures = ['auth_user.json']
+
+    def setUp(self):
+        self.user = User.objects.get(username='admin')
+        self.dnc = DNC(
+            name='test_dnc',
+            user=self.user
+        )
+        self.dnc.save()
+
+        self.assertTrue(self.dnc.__unicode__())
+        self.dnc_contact = DNCContact(
+            dnc=self.dnc,
+            phone_number='123456'
+        )
+        self.dnc_contact.save()
+
+        self.assertTrue(self.dnc_contact.__unicode__())
+
+    def test_name(self):
+        self.assertEqual(self.dnc.name, "test_dnc")
+        self.assertEqual(self.dnc_contact.phone_number, "123456")
+
+    def teardown(self):
+        self.dnc.delete()
+        self.dnc_contact.delete()

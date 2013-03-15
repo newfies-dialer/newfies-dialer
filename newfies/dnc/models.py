@@ -40,6 +40,7 @@ class DNC(models.Model):
         return '[%s] %s' % (self.id, self.name)
 
     class Meta:
+        db_table = "dnc_list"
         verbose_name = _("DNC list")
         verbose_name_plural = _("DNC lists")
 
@@ -72,5 +73,6 @@ class DNCContact(models.Model):
         return '[%s] %s' % (self.id, self.phone_number)
 
     class Meta:
+        db_table = "dnc_contact"
         verbose_name = _("DNC contact")
         verbose_name_plural = _("DNC contacts")

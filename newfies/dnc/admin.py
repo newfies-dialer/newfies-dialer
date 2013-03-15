@@ -22,7 +22,7 @@ AppLabelRenamer(native_app_label=u'dnc', app_label=_('do not call').title()).mai
 class DNCAdmin(admin.ModelAdmin):
     """Allows the administrator to view and modify certain attributes
     of a Gateway."""
-    list_display = ('id', 'name', 'user')
+    list_display = ('id', 'name', 'user', 'dnc_contacts_count')
     list_display_links = ('name', )
     list_filter = ['user']
     ordering = ('id', )

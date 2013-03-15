@@ -65,6 +65,9 @@ $(function () {
             if(document.location.href.search("/survey/") != -1) {
                 confirm_string = $fields.length + '{% trans " survey(s) are going to be deleted?" %}';
             }
+            if(document.location.href.search("/dnc/") != -1) {
+                confirm_string = $fields.length + '{% trans " dns(s) are going to be deleted?" %}';
+            }
 
             bootbox.confirm(confirm_string, function(result) {
                 if (result) {

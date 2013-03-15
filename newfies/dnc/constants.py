@@ -15,16 +15,16 @@
 from django.utils.translation import ugettext_lazy as _
 from common.utils import Choice
 
-"""
-class GATEWAY_STATUS(Choice):
-    ACTIVE = 1, _('active').upper()
-    INACTIVE = 0, _('inactive').upper()
+
+class DNC_COLUMN_NAME(Choice):
+    id = _('ID')
+    name = _('name')
+    date = _('date')
+    contacts = _('contacts')
 
 
-class GATEWAY_PROTOCOL(Choice):
-    SIP = 'SIP', _('SIP')
-    LOCAL = 'LOCAL', _('LOCAL')
-    GSM = 'GSM', _('GSM')
-    SKINNY = 'SKINNY', _('SKINNY')
-    JINGLE = 'JINGLE', _('JINGLE')
-"""
+class DNC_CONTACT_COLUMN_NAME(Choice):
+    id = _('ID')
+    dnc = _('dnc')
+    phone_number = _('phone number')
+    date = _('date')

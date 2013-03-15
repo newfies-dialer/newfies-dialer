@@ -48,6 +48,12 @@ class DNC(models.Model):
         verbose_name = _("DNC list")
         verbose_name_plural = _("DNC lists")
 
+    def dnc_contacts_count(self):
+        """This will return a count of the contacts in the dnc"""
+        return DNCContact.objects.filter(dnc=self.id).count()
+    dnc_contacts_count.allow_tags = True
+    dnc_contacts_count.short_description = _('dnc contacts')
+
 
 class DNCContact(models.Model):
     """This defines the Do Not Call Contact for each DNC List

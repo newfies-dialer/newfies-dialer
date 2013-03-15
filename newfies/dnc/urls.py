@@ -18,15 +18,15 @@ from django.conf.urls import patterns
 urlpatterns = patterns('dnc.views',
     # DNC urls
     (r'^dnc/$', 'dnc_list'),
-    (r'^dnc/add/$', 'dnc_add'),
+    #(r'^dnc/add/$', 'dnc_add'),
     #(r'^dnc/contact_count/$', 'get_dnc_contact_count'),
-    (r'^dnc/del/(.+)/$', 'dnc_del'),
-    (r'^dnc/(.+)/$', 'dnc_change'),
+    #(r'^dnc/del/(.+)/$', 'dnc_del'),
+    #(r'^dnc/(.+)/$', 'dnc_change'),
 
     # Contacts urls
-    (r'^dnc_contact/$', 'dnc_contact_list'),
-    (r'^contact/add/$', 'dnc_contact_add'),
+    #(r'^dnc_contact/$', 'dnc_contact_list'),
+    #(r'^contact/add/$', 'dnc_contact_add'),
     #(r'^dnc_contact/import/$', 'dnc_contact_import'),
-    (r'^dnc_contact/del/(.+)/$', 'dnc_contact_del'),
-    (r'^dnc_contact/(.+)/$', 'dnc_contact_change'),
+    #(r'^dnc_contact/del/(.+)/$', 'dnc_contact_del'),
+    #(r'^dnc_contact/(.+)/$', 'dnc_contact_change'),
 )

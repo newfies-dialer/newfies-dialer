@@ -15,14 +15,12 @@
 #
 
 from django.conf.urls import url
-from django.http import HttpResponse
 from django.db import connection
 from tastypie.resources import ModelResource
 from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import Authorization
 from tastypie.throttle import BaseThrottle
-from tastypie.exceptions import BadRequest, ImmediateHttpResponse
-from tastypie import http
+from tastypie.exceptions import BadRequest
 from dialer_contact.models import Contact
 from dialer_campaign.models import Campaign
 import logging

@@ -279,54 +279,6 @@ class ApiTestCase(BaseAuthenticatedClient):
             **self.extra)
         self.assertEqual(response.status_code, 200)
 
-    def test_create_answercall(self):
-        """Test Function to create a answercall"""
-        data = {"ALegRequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875",
-                "CallUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875"}
-        response = self.client.post('/api/v1/answercall/', data, **self.extra)
-        self.assertEqual(response.status_code, 200)
-
-        data = {"ALegRequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd877",
-                "CallUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875"}
-        response = self.client.post('/api/v1/answercall/', data, **self.extra)
-        self.assertEqual(response.status_code, 400)
-
-        response = self.client.post('/api/v1/answercall/', {}, **self.extra)
-        self.assertEqual(response.status_code, 400)
-
-    def test_create_hangupcall(self):
-        """Test Function to create a hangupcall"""
-        data = {"RequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875",
-                "HangupCause": "NORMAL_CLEARING",
-                "From": "800124545",
-                "To": "34650111222"}
-        response = self.client.post('/api/v1/hangupcall/', data, **self.extra)
-        self.assertEqual(response.status_code, 200)
-
-        data = {"RequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd875",
-                "HangupCause": "SUBSCRIBER_ABSENT",
-                "From": "800124545",
-                "To": "34650111222"}
-        response = self.client.post('/api/v1/hangupcall/', data, **self.extra)
-        self.assertEqual(response.status_code, 200)
-
-        data = {"RequestUUID": "",
-                "HangupCause": "",
-                "From": "800124545",
-                "To": "34650111222"}
-        response = self.client.post('/api/v1/hangupcall/', data, **self.extra)
-        self.assertEqual(response.status_code, 400)
-
-        data = {"RequestUUID": "e8fee8f6-40dd-11e1-964f-000c296bd886",
-                "HangupCause": "SUBSCRIBER_ABSENT",
-                "From": "800124545",
-                "To": "34650111222"}
-        response = self.client.post('/api/v1/hangupcall/', data, **self.extra)
-        self.assertEqual(response.status_code, 400)
-
-        response = self.client.post('/api/v1/hangupcall/', dict(), **self.extra)
-        self.assertEqual(response.status_code, 400)
-
     def test_create_cdr(self):
         """Test Function to create a CDR"""
         #data = ('cdr=<?xml version="1.0"?><cdr><other></other><variables><plivo_request_uuid>e8fee8f6-40dd-11e1-964f-000c296bd875</plivo_request_uuid><duration>3</duration></variables><notvariables><plivo_request_uuid>TESTc</plivo_request_uuid><duration>5</duration></notvariables></cdr>')
@@ -335,16 +287,6 @@ class ApiTestCase(BaseAuthenticatedClient):
         #self.assertEqual(response.status_code, 200)
 
         response = self.client.post('/api/v1/store_cdr/', {}, **self.extra)
-        self.assertEqual(response.status_code, 400)
-
-    def test_dialcallback(self):
-        """Test Function to create a dialcallback"""
-        data = ('DialALegUUID=e4fc2188-0af5-11e1-b64d-00231470a30c&DialBLegUUID=e4fc2188-0af5-11e1-b64d-00231470a30c&DialBLegHangupCause=SUBSCRIBER_ABSENT')
-        response = self.client.post('/api/v1/dialcallback/', data,
-            content_type='application/json', **self.extra)
-        self.assertEqual(response.status_code, 400)
-
-        response = self.client.post('/api/v1/dialcallback/', {}, **self.extra)
         self.assertEqual(response.status_code, 400)
 
     def test_subscriber_per_campaign(self):

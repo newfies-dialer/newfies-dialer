@@ -101,23 +101,15 @@ class SubscriberPerCampaignResource(ModelResource):
             url(r'^(?P<resource_name>%s)/(.+)/$' % self._meta.resource_name, self.wrap_view('read')),
         ]
 
-    def read_response(self, request, data,
-                      response_class=HttpResponse, **response_kwargs):
-        """To display API's result"""
-        desired_format = self.determine_format(request)
-        serialized = self.serialize(request, data, desired_format)
-        return response_class(content=serialized,
-            content_type=desired_format, **response_kwargs)
-
     def read(self, request=None, **kwargs):
         """GET method of Subscriber API"""
         logger.debug('Subscriber GET API get called')
-        auth_result = self._meta.authentication.is_authenticated(request)
-        if not auth_result is True:
-            raise ImmediateHttpResponse(response=http.HttpUnauthorized())
+
+        self.method_check(request, allowed=['get'])
+        self.is_authenticated(request)
+        self.throttle_check(request)
 
         logger.debug('Subscriber GET API authorization called!')
-        auth_result = self._meta.authorization.is_authorized(request, object)
 
         temp_url = request.META['PATH_INFO']
         temp_id = temp_url.split('/api/v1/subscriber_per_campaign/')[1]
@@ -192,4 +184,6 @@ class SubscriberPerCampaignResource(ModelResource):
             result.append(modrecord)
 
         logger.debug('Subscriber GET API : result ok 200')
-        return self.read_response(request, result)
+
+        self.log_throttled_access(request)
+        return self.create_response(request, result)

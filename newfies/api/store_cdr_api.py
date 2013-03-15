@@ -18,6 +18,8 @@ from django.conf.urls.defaults import url
 from django.http import HttpResponse
 
 from tastypie.resources import ModelResource
+from tastypie.authentication import BasicAuthentication
+from tastypie.authorization import Authorization
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie.exceptions import ImmediateHttpResponse, \
@@ -41,8 +43,11 @@ class CdrValidation(Validation):
     """
     CDR Validation Class
     """
-    def is_valid(self, request=None):
+    def is_valid(self, bundle, request=None):
         errors = {}
+        if not bundle.data:
+            return {'__all__': 'Not quite what I had in mind.'}
+
         opt_cdr = request.POST.get('cdr')
         if not opt_cdr:
             errors['CDR'] = ["Wrong parameters - missing CDR!"]
@@ -100,7 +105,7 @@ class CdrResource(ModelResource):
         return response_class(content=serialized,
             content_type=desired_format, **response_kwargs)
 
-    def create(self, request=None, **kwargs):
+    def create(self, request, **kwargs):
         """POST method of CDR_Store API"""
         logger.debug('CDR API authentication called!')
         auth_result = self._meta.authentication.is_authenticated(request)
@@ -112,6 +117,7 @@ class CdrResource(ModelResource):
 
         errors = self._meta.validation.is_valid(request)
         logger.debug('CDR API get called from IP %s' % request.META.get('REMOTE_ADDR'))
+
         if not errors:
 
             opt_cdr = request.POST.get('cdr')

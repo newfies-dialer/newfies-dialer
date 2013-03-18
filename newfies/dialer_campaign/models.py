@@ -28,6 +28,7 @@ from dialer_contact.models import Phonebook, Contact
 from dialer_gateway.models import Gateway
 from audiofield.models import AudioFile
 from user_profile.models import UserProfile
+from dnc.models import DNC
 from datetime import datetime
 from common.intermediate_model_base_class import Model
 from common.common_functions import get_unique_code
@@ -155,6 +156,8 @@ class Campaign(Model):
 
         * ``voicemail_audiofile`` - Foreign key relationship to the a AudioFile model.
 
+        * ``dnc`` - Foreign key relationship to the a DNC model.
+
     **Name of DB table**: dialer_campaign
     """
     campaign_code = models.CharField(unique=True, max_length=20, blank=True,
@@ -240,6 +243,8 @@ class Campaign(Model):
     #Flags
     has_been_started = models.BooleanField(default=False, verbose_name=_('has been started'))
     has_been_duplicated = models.BooleanField(default=False, verbose_name=_('has been duplicated'))
+    dnc = models.ForeignKey(DNC, null=True, blank=True, verbose_name=_("DCN List"),
+      related_name='DNC')
     #Voicemail
     voicemail = models.BooleanField(default=False, verbose_name=_('enable voicemail detection'))
     amd_behavior = models.IntegerField(choices=list(AMD_BEHAVIOR),
@@ -247,6 +252,7 @@ class Campaign(Model):
                                  verbose_name=_("detection behaviour"), blank=True, null=True)
     voicemail_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
                                   verbose_name=_("voicemail audio file"))
+
     created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('date'))
     updated_date = models.DateTimeField(auto_now=True)
 

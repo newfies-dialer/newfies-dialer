@@ -35,7 +35,7 @@ class DNCContactAdmin(admin.ModelAdmin):
     of a Gateway."""
     list_display = ('id', 'dnc', 'phone_number')
     list_display_links = ('id', )
-    list_filter = ['dnc']
+    list_filter = ['dnc', 'updated_date']
     ordering = ('id', )
 
 admin.site.register(DNCContact, DNCContactAdmin)

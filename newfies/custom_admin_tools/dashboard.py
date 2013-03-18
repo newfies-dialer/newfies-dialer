@@ -169,6 +169,9 @@ class CustomAppIndexDashboard(AppIndexDashboard):
         elif str(self.app_title) == 'Dialer_Campaign':
             app_title = _('dialer campaign').title()
             models = ['dialer_campaign.*']
+        elif str(self.app_title) == 'Dialer_Contact':
+            app_title = _('dialer contact').title()
+            models = ['dialer_contact.*']
         elif str(self.app_title) == 'Dialer_Cdr':
             app_title = _('Dialer CDR')
             models = ['dialer_cdr.*']

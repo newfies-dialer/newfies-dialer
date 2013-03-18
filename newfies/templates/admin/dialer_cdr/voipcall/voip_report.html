@@ -1,5 +1,5 @@
 {% extends "admin/change_list.html" %}
-{% load adminmedia admin_list i18n dialer_cdr_tags common_tags %}
+{% load admin_list i18n dialer_cdr_tags common_tags %}
 
 {% if not is_popup %}
   {% block breadcrumbs %}
@@ -12,7 +12,7 @@
          {{ app_label|capfirst }}
       </a>
       &rsaquo; <a href="../">{% trans "call report"|title %}</a>
-      &rsaquo; {{ title|title }} 
+      &rsaquo; {{ title|title }}
     </div>
   {% endblock %}
 {% endif %}
@@ -36,7 +36,7 @@
     {{ form.as_table }}
     <tr>
         <td>&nbsp;</td>
-        <td><input type="submit" value="{% trans "search"|title %}" class="l-1" />&nbsp;        
+        <td><input type="submit" value="{% trans "search"|title %}" class="l-1" />&nbsp;
         <a class="button l-1" href="../voip_daily_report/">{% trans "reset"|title %}</a><td>
     </tr>
     </table>

@@ -272,6 +272,11 @@ def section_add(request):
             form_data =\
                 section_add_form(request, PlayMessageSectionForm, survey, SECTION_TYPE.HANGUP_SECTION)
 
+        # DNC
+        if int(request.POST.get('type')) == SECTION_TYPE.DNC:
+            form_data =\
+                section_add_form(request, PlayMessageSectionForm, survey, SECTION_TYPE.DNC)
+
         # Multiple Choice Section
         if int(request.POST.get('type')) == SECTION_TYPE.MULTI_CHOICE:
             form_data =\
@@ -378,8 +383,9 @@ def section_change(request, id):
                                 pk=int(id),
                                 survey__user=request.user)
     if (section.type == SECTION_TYPE.PLAY_MESSAGE
-       or section.type == SECTION_TYPE.HANGUP_SECTION):
-        #PLAY_MESSAGE & HANGUP_SECTION
+       or section.type == SECTION_TYPE.HANGUP_SECTION
+       or section.type == SECTION_TYPE.DNC):
+        #PLAY_MESSAGE, HANGUP_SECTION & DNC
         form = PlayMessageSectionForm(request.user, instance=section)
     elif section.type == SECTION_TYPE.MULTI_CHOICE:
         #MULTI_CHOICE
@@ -403,9 +409,10 @@ def section_change(request, id):
     request.session['err_msg'] = ''
 
     if request.method == 'POST' and request.POST.get('type'):
-        # Play message or Hangup Section
+        # Play message or Hangup Section or DNC
         if (int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE or
-           int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION):
+            int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION or
+            int(request.POST.get('type')) == SECTION_TYPE.DNC):
             form_data = section_update_form(request,
                 PlayMessageSectionForm, SECTION_TYPE.PLAY_MESSAGE, section)
 

@@ -39,6 +39,8 @@ from api.subscriber_per_campaign_api import \
 from api.callrequest_api import CallrequestResource
 from api.store_cdr_api import CdrResource
 from api.audiofile_api import AudioFileResource
+from api.dnc_api import DNCResource
+from api.dnc_contact_api import DNCContactResource
 
 from survey.api.survey_api import SurveyResource
 from survey.api.survey_section_api import SectionResource
@@ -70,9 +72,8 @@ tastypie_api.register(SubscriberResource())
 tastypie_api.register(SubscriberPerCampaignResource())
 tastypie_api.register(CallrequestResource())
 tastypie_api.register(CdrResource())
-#tastypie_api.register(SurveyAppResource())
-#tastypie_api.register(SurveyQuestionResource())
-#tastypie_api.register(SurveyResponseResource())
+tastypie_api.register(DNCResource())
+tastypie_api.register(DNCContactResource())
 tastypie_api.register(SurveyResource())
 tastypie_api.register(SectionResource())
 tastypie_api.register(BranchingResource())

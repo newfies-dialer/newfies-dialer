@@ -25,7 +25,8 @@ from api.api_playgrounds.survey_playground import SurveyAPIPlayground
 from api.api_playgrounds.section_playground import SectionAPIPlayground
 from api.api_playgrounds.branching_playground import BranchingAPIPlayground
 from api.api_playgrounds.survey_aggregate_result_playground import ResultAggregateResourceAPIPlayground
-
+from api.api_playgrounds.dnc_playground import DNCAPIPlayground
+from api.api_playgrounds.dnc_contact_playground import DNCContactAPIPlayground
 
 urlpatterns = patterns('',
     (r'api-explorer/gateway/', include(GatewayAPIPlayground().urls)),
@@ -40,6 +41,8 @@ urlpatterns = patterns('',
     (r'api-explorer/survey/', include(SurveyAPIPlayground().urls)),
     (r'api-explorer/section/', include(SectionAPIPlayground().urls)),
     (r'api-explorer/branching/', include(BranchingAPIPlayground().urls)),
+    (r'api-explorer/dnc/', include(DNCAPIPlayground().urls)),
+    (r'api-explorer/dnc-contact/', include(DNCContactAPIPlayground().urls)),
     (r'api-explorer/survey-aggregate-result/', include(ResultAggregateResourceAPIPlayground().urls)),
     # API list view
     (r'api-explorer/$', 'api.api_playgrounds.views.api_list_view'),

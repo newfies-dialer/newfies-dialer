@@ -26,3 +26,23 @@ class DNCForm(ModelForm):
         fields = ['name',]
         exclude = ('user',)
 
+
+class DNCContactSearchForm(forms.Form):
+    """Search Form on Contact List"""
+    phone_number = forms.CharField(label=_('phone number'), required=False,
+                                 widget=forms.TextInput(attrs={'size': 15}))
+    # contact_no_type = forms.ChoiceField(label='', required=False, initial=1,
+    #                                     choices=list(CHOICE_TYPE), widget=forms.RadioSelect)
+    dnc = forms.ChoiceField(label=_('dnc').upper(), required=False)
+
+    def __init__(self, user, *args, **kwargs):
+        super(DNCContactSearchForm, self).__init__(*args, **kwargs)
+         # To get user's phonebook list
+        if user:
+            dnc_list_user = []
+            dnc_list_user.append((0, '---'))
+            dnc_list = DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
+            for i in dnc_list:
+                dnc_list_user.append((i[0], i[1]))
+
+            self.fields['dnc'].choices = dnc_list_user

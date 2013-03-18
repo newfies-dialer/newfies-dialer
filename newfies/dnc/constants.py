@@ -25,6 +25,6 @@ class DNC_COLUMN_NAME(Choice):
 
 class DNC_CONTACT_COLUMN_NAME(Choice):
     id = _('ID')
-    dnc = _('dnc')
+    dnc = _('dnc').upper()
     phone_number = _('phone number')
     date = _('date')

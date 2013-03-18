@@ -91,6 +91,9 @@ $(function () {
                 contact_count = ajax_call("/dnc/contact_count/", allVals);
                 confirm_string = $fields.length + '{% trans " DNC(s) are going to be deleted with " %}' + contact_count + '{% trans " contact(s)?" %}';
             }
+            if(document.location.href.search("/dnc_contact/") != -1) {
+                confirm_string = $fields.length +  '{% trans " DNC contact(s) are going to be deleted?" %}' ;
+            }
 
             bootbox.confirm(confirm_string, function(result) {
                 if (result) {

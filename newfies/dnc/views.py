@@ -21,12 +21,10 @@ from django.utils.translation import ugettext as _
 from django.db.models import Q
 from django.db.models import Count
 from dnc.models import DNC, DNCContact
-from dnc.forms import DNCForm#, Contact_fileImport, \
-#    PhonebookForm, ContactForm
+from dnc.forms import DNCForm, DNCContactSearchForm
 from dnc.constants import DNC_COLUMN_NAME, DNC_CONTACT_COLUMN_NAME
 from dialer_campaign.function_def import check_dialer_setting,\
-    dialer_setting_limit, user_dialer_setting_msg
-
+    dialer_setting_limit, user_dialer_setting_msg, type_field_chk
 from frontend_notification.views import frontend_send_notification
 from common.common_functions import striplist, current_view,\
     get_pagination_vars
@@ -215,3 +213,114 @@ def dnc_change(request, object_id):
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
 
+
+@permission_required('dnc.view_dnc_contact', login_url='/')
+@login_required
+def dnc_contact_list(request):
+    """DNC Contact list for the logged in user
+
+    **Attributes**:
+
+        * ``template`` - frontend/dnc_contact/list.html
+        * ``form`` - ContactSearchForm
+
+    **Logic Description**:
+
+        * List all contacts from phonebooks belonging to the logged in user
+    """
+    sort_col_field_list = ['id', 'dnc_id', 'phone_number', 'updated_date']
+    default_sort_field = 'id'
+    pagination_data =\
+        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+
+    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    sort_order = pagination_data['sort_order']
+    start_page = pagination_data['start_page']
+    end_page = pagination_data['end_page']
+
+    form = DNCContactSearchForm(request.user)
+    dnc_id_list = DNC.objects.values_list('id', flat=True)\
+        .filter(user=request.user)
+    search_tag = 1
+    phone_number = ''
+    dnc = ''
+
+    if request.method == 'POST':
+        form = DNCContactSearchForm(request.user, request.POST)
+        if form.is_valid():
+            request.session['session_phone_number'] = ''
+            request.session['session_dnc'] = ''
+
+            if request.POST.get('phone_number'):
+                phone_number = request.POST.get('phone_number')
+                request.session['session_phone_number'] = phone_number
+
+            if request.POST.get('dnc'):
+                dnc = request.POST.get('dnc')
+                request.session['session_dnc'] = dnc
+
+    post_var_with_page = 0
+    try:
+        if request.GET.get('page') or request.GET.get('sort_by'):
+            post_var_with_page = 1
+            phone_number = request.session.get('session_phone_number')
+            dnc = request.session.get('session_dnc')
+            form = ContactSearchForm(request.user, initial={'phone_number': phone_number,
+                                                            'dnc': dnc})
+        else:
+            post_var_with_page = 1
+            if request.method == 'GET':
+                post_var_with_page = 0
+    except:
+        pass
+
+    if post_var_with_page == 0:
+        # default
+        # unset session var
+        request.session['session_phone_number'] = ''
+        request.session['session_dnc'] = ''
+
+    kwargs = {}
+    if dnc and dnc != '0':
+        kwargs['dnc_id'] = dnc
+
+    phone_number_type = '1'
+    phone_number = type_field_chk(phone_number, phone_number_type, 'phone_number')
+    for i in phone_number:
+        kwargs[i] = phone_number[i]
+
+    phone_number_list = []
+    all_phone_number_list = []
+    phone_number_count = 0
+
+    if dnc_id_list:
+        phone_number_list = DNCContact.objects.values('id', 'dnc__name',
+            'phone_number', 'updated_date')\
+            .filter(dnc__in=dnc_id_list)
+
+        if kwargs:
+            phone_number_list = phone_number_list.filter(**kwargs)
+
+        all_phone_number_list = phone_number_list.order_by(sort_order)
+        phone_number_list = all_phone_number_list[start_page:end_page]
+        phone_number_count = all_phone_number_list.count()
+
+    template = 'frontend/dnc_contact/list.html'
+    data = {
+        'module': current_view(request),
+        'phone_number_list': phone_number_list,
+        'all_phone_number_list': all_phone_number_list,
+        'total_phone_numbers': phone_number_count,
+        'PAGE_SIZE': PAGE_SIZE,
+        'DNC_CONTACT_COLUMN_NAME': DNC_CONTACT_COLUMN_NAME,
+        'col_name_with_order': pagination_data['col_name_with_order'],
+        'msg': request.session.get('msg'),
+        'error_msg': request.session.get('error_msg'),
+        'form': form,
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'search_tag': search_tag,
+    }
+    request.session['msg'] = ''
+    request.session['error_msg'] = ''
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))

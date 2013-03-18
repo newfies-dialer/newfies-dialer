@@ -13,7 +13,203 @@
 #
 
 from django.test import TestCase
+from django.contrib.auth.models import User
 from dnc.models import DNC, DNCContact
+from dnc.views import dnc_add, dnc_change, dnc_list, dnc_del,\
+    dnc_contact_list, dnc_contact_add, dnc_contact_change, \
+    dnc_contact_del, get_dnc_contact_count
+from dnc.forms import DNCForm, DNCContactForm, DNCContactSearchForm
+from common.utils import BaseAuthenticatedClient
+
+
+class DNCAdminView(BaseAuthenticatedClient):
+    """Test cases for DNC list, DNC Contact Admin Interface.
+    """
+
+    def test_admin_dnc_view_list(self):
+        """Test Function to check admin dnc list"""
+        response = self.client.get("/admin/dnc/dnc/")
+        self.failUnlessEqual(response.status_code, 200)
+
+    def test_admin_dnc_view_add(self):
+        """Test Function to check admin dnc add"""
+        response = self.client.get("/admin/dnc/dnc/add/")
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(
+            '/admin/dnc/dnc/add/',
+            data={'name': 'test_dnc', 'user': '1'},
+            follow=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_admin_dnc_contact_view_list(self):
+        """Test Function to check admin dnc contact list"""
+        response = self.client.get("/admin/dnc/dnccontact/")
+        self.failUnlessEqual(response.status_code, 200)
+
+    def test_admin_dnc_contact_view_add(self):
+        """Test Function to check admin dnc contact add"""
+        response = self.client.get("/admin/dnc/dnccontact/add/")
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(
+            '/admin/dnc/dnccontact/add/',
+            data={'dnc_id': '1', 'phone_number': '1234'})
+        self.assertEqual(response.status_code, 302)
+
+
+class DNCCustomerView(BaseAuthenticatedClient):
+    """Test cases for DNC list & DNC contact
+       Customer Interface.
+    """
+
+    fixtures = ['auth_user.json', 'dnc_list.json', 'dnc_contact.json']
+
+    def test_dnc_view_list(self):
+        """Test Function to check dnc list"""
+        response = self.client.get('/dnc/')
+        self.assertEqual(response.context['module'], 'dnc_list')
+        self.assertTemplateUsed(response, 'frontend/dnc_list/list.html')
+
+        request = self.factory.get('/dnc/')
+        request.user = self.user
+        request.session = {}
+        response = dnc_list(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_dnc_view_add(self):
+        """Test Function to check add dnc"""
+        request = self.factory.post('/dnc/add/', data={
+            'name': 'My DNC'}, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = dnc_add(request)
+        self.assertEqual(response['Location'], '/dnc/')
+        self.assertEqual(response.status_code, 302)
+
+        resp = self.client.post('/dnc/add/', data={'name': ''})
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.context['form']['name'].errors,
+                         [u'This field is required.'])
+
+    def test_dnc_view_update(self):
+        """Test Function to check update dnc"""
+        response = self.client.get('/dnc/1/')
+        self.assertEqual(response.context['action'], 'update')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'frontend/dnc_list/change.html')
+
+        request = self.factory.post('/dnc/1/',
+            data={'name': 'Default_DNC'}, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = dnc_change(request, 1)
+        self.assertEqual(response['Location'], '/dnc/')
+        self.assertEqual(response.status_code, 302)
+
+        # delete dnc through dnc_change
+        request = self.factory.post('/dnc/1/',
+                                    data={'delete': True}, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = dnc_change(request, 1)
+        self.assertEqual(response['Location'], '/dnc/')
+        self.assertEqual(response.status_code, 302)
+
+    def test_dnc_view_delete(self):
+        """Test Function to check delete dnc"""
+        request = self.factory.post('/dnc/del/1/')
+        request.user = self.user
+        request.session = {}
+        response = dnc_del(request, 1)
+        self.assertEqual(response['Location'], '/dnc/')
+        self.assertEqual(response.status_code, 302)
+
+        request = self.factory.post('/dnc/del/', {'select': '1'})
+        request.user = self.user
+        request.session = {}
+        response = dnc_del(request, 0)
+        self.assertEqual(response['Location'], '/dnc/')
+        self.assertEqual(response.status_code, 302)
+
+    def test_dnc_contact_view_list(self):
+        """Test Function to check DNC Contact list"""
+        response = self.client.get('/dnc_contact/')
+        self.assertEqual(response.context['module'], 'dnc_contact_list')
+        self.assertTrue(response.context['form'], DNCContactSearchForm(self.user))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'frontend/dnc_contact/list.html')
+
+        request = self.factory.post('/dnc_contact/',
+                                    data={'phone_number': '123'})
+        request.user = self.user
+        request.session = {}
+        response = dnc_contact_list(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_dnc_contact_view_add(self):
+        """Test Function to check add DNC Contact"""
+        response = self.client.get('/dnc_contact/add/')
+        self.assertEqual(response.context['action'], 'add')
+        self.assertEqual(response.status_code, 200)
+        response = self.client.post('/dnc_contact/add/',
+                                    data={'dnc_id': '1', 'phone_number': '1234'})
+        self.assertEqual(response.status_code, 302)
+
+        request = self.factory.get('/dnc_contact/add/')
+        request.user = self.user
+        request.session = {}
+        response = dnc_contact_add(request)
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/dnc_contact/add/',
+                                    data={'phone_number': '1234'})
+        self.assertEqual(response.status_code, 302)
+
+    def test_dnc_contact_view_update(self):
+        """Test Function to check update DNC Contact"""
+        response = self.client.get('/dnc_contact/1/')
+        self.assertTrue(response.context['form'], DNCContactForm(self.user))
+        self.assertEqual(response.context['action'], 'update')
+        self.assertTemplateUsed(response, 'frontend/dnc_contact/change.html')
+
+        request = self.factory.post('/dnc_contact/1/',
+            {'dnc': '1', 'phone_number': '154'})
+        request.user = self.user
+        request.session = {}
+        response = dnc_contact_change(request, 1)
+        self.assertEqual(response.status_code, 302)
+
+        # delete contact through dnc_contact_change
+        request = self.factory.post('/dnc_contact/1/',
+                                    data={'delete': True}, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = dnc_contact_change(request, 1)
+        self.assertEqual(response['Location'], '/dnc_contact/')
+        self.assertEqual(response.status_code, 302)
+
+    def test_dnc_contact_view_delete(self):
+        """Test Function to check delete dnc contact"""
+        request = self.factory.get('/dnc_contact/del/1/')
+        request.user = self.user
+        request.session = {}
+        response = dnc_contact_del(request, 1)
+        self.assertEqual(response.status_code, 302)
+
+        request = self.factory.post('/dnc_contact/del/', {'select': '1'})
+        request.user = self.user
+        request.session = {}
+        response = dnc_contact_del(request, 0)
+        self.assertEqual(response['Location'], '/dnc_contact/')
+        self.assertEqual(response.status_code, 302)
+
+    def test_get_dnc_contact_count(self):
+        request = self.factory.get('/dnc_contact/', {'ids': '1'})
+        request.user = self.user
+        request.session = {}
+        response = get_dnc_contact_count(request)
+        self.assertEqual(response.status_code, 200)
 
 
 class DNCModel(TestCase):
@@ -37,6 +233,27 @@ class DNCModel(TestCase):
         self.dnc_contact.save()
 
         self.assertTrue(self.dnc_contact.__unicode__())
+
+    def test_dnc_form(self):
+        self.assertEqual(self.dnc.name, 'test_dnc')
+        form = DNCForm({'name': 'sample_dnc'})
+        obj = form.save(commit=False)
+        obj.user = self.user
+        obj.save()
+
+        form = DNCForm(instance=self.dnc)
+        self.assertTrue(isinstance(form.instance, DNC))
+
+    def test_dnc_contact_form(self):
+        self.assertEqual(self.dnc_contact.dnc, self.dnc)
+        form = DNCContactForm(self.user)
+        form.phone_number = '123456'
+        obj = form.save(commit=False)
+        obj.dnc = self.dnc
+        obj.save()
+
+        form = DNCContactForm(self.user, instance=self.dnc_contact)
+        self.assertTrue(isinstance(form.instance, DNCContact))
 
     def test_name(self):
         self.assertEqual(self.dnc.name, "test_dnc")

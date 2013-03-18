@@ -69,14 +69,14 @@
                                     <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update DNC"|capfirst %}"></a>
                                 {% endif %}
                                 {% if perms.dnc.delete_dnc %}
-                                    <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete DNC"|capfirst %}"></a>
+                                    <a id="id_dnc_delete_confirm" onclick="return get_alert_msg_for_dnc({{ row.id }});"  href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete DNC"|title %}"></a>
                                 {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td colspan="8" align="center">
+                        <td colspan="6" align="center">
                             {% trans "no records found"|title %}
                         </td>
                     </tr>

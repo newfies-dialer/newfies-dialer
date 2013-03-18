@@ -113,7 +113,7 @@ def dnc_add(request):
 @login_required
 def get_dnc_contact_count(request):
     """To get total no of dnc contacts belonging to a dnc list"""
-    values = request.GET.getlist('pb_ids')
+    values = request.GET.getlist('ids')
     values = ", ".join(["%s" % el for el in values])
     contact_count = DNCContact.objects.filter(dnc__user=request.user)\
         .extra(where=['dnc_id IN (%s)' % values]).count()

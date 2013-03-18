@@ -46,3 +46,18 @@ class DNCContactSearchForm(forms.Form):
                 dnc_list_user.append((i[0], i[1]))
 
             self.fields['dnc'].choices = dnc_list_user
+
+
+class DNCContactForm(ModelForm):
+    """DNCContact ModelForm"""
+
+    class Meta:
+        model = DNCContact
+        fields = ['dnc', 'phone_number']
+
+    def __init__(self, user, *args, **kwargs):
+        super(DNCContactForm, self).__init__(*args, **kwargs)
+        # To get user's dnc list
+        if user:
+            self.fields['dnc'].choices = \
+                DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')

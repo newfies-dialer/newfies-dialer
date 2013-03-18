@@ -21,7 +21,7 @@ from django.utils.translation import ugettext as _
 from django.db.models import Q
 from django.db.models import Count
 from dnc.models import DNC, DNCContact
-from dnc.forms import DNCForm, DNCContactSearchForm
+from dnc.forms import DNCForm, DNCContactSearchForm, DNCContactForm
 from dnc.constants import DNC_COLUMN_NAME, DNC_CONTACT_COLUMN_NAME
 from dialer_campaign.function_def import check_dialer_setting,\
     dialer_setting_limit, user_dialer_setting_msg, type_field_chk
@@ -322,5 +322,133 @@ def dnc_contact_list(request):
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+
+@permission_required('dnc.add_dnc_contact', login_url='/')
+@login_required
+def dnc_contact_add(request):
+    """Add a new dnc contact into the selected dnc for the logged in user
+
+    **Attributes**:
+
+        * ``form`` - DNCContactForm
+        * ``template`` - frontend/dnc_contact/change.html
+
+    **Logic Description**:
+
+        * Add new dnc contact belonging to the logged in user
+          via DNCContactForm & get redirected to the contact list
+    """
+    form = DNCContactForm(request.user)
+    error_msg = False
+    # Add dnc contact
+    if request.method == 'POST':
+        form = DNCContactForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            request.session["msg"] = _('"%(name)s" added.') %\
+                {'name': request.POST['phone_number']}
+            return HttpResponseRedirect('/dnc_contact/')
+        else:
+            if len(request.POST['phone_number']) > 0:
+                error_msg = _('"%(name)s" cannot be added.') %\
+                    {'name': request.POST['phone_number']}
+
+    dnc_count = DNC.objects.filter(user=request.user).count()
+    template = 'frontend/dnc_contact/change.html'
+    data = {
+        'module': current_view(request),
+        'form': form,
+        'action': 'add',
+        'error_msg': error_msg,
+        'phonebook_count': dnc_count,
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+
+
+@permission_required('dnc.delete_dnc_contact', login_url='/')
+@login_required
+def dnc_contact_del(request, object_id):
+    """Delete dnc contact for the logged in user
+
+    **Attributes**:
+
+        * ``object_id`` - Selected dnc contact object
+        * ``object_list`` - Selected dnc contact objects
+
+    **Logic Description**:
+
+        * Delete selected dnc contact from the dnc contact list
+    """
+    if int(object_id) != 0:
+        # When object_id is not 0
+        dnc_contact = get_object_or_404(
+            DNCContact, pk=object_id, dnc__user=request.user)
+
+        # Delete dnc contact
+        request.session["msg"] = _('"%(name)s" is deleted.')\
+            % {'name': dnc_contact.phone_number}
+        dnc_contact.delete()
+    else:
+        # When object_id is 0 (Multiple records delete)
+        values = request.POST.getlist('select')
+        values = ", ".join(["%s" % el for el in values])
+
+        try:
+            dnc_contact_list = DNCContact.objects.extra(where=['id IN (%s)' % values])
+            if dnc_contact_list:
+                request.session["msg"] =\
+                    _('%(count)s contact(s) are deleted.')\
+                    % {'count': dnc_contact_list.count()}
+                dnc_contact_list.delete()
+        except:
+            raise Http404
+    return HttpResponseRedirect('/dnc_contact/')
+
+
+@permission_required('dnc.change_dnc_contact', login_url='/')
+@login_required
+def dnc_contact_change(request, object_id):
+    """Update/Delete dnc contact for the logged in user
+
+    **Attributes**:
+
+        * ``object_id`` - Selected dnc contact object
+        * ``form`` - DNCContactForm
+        * ``template`` - frontend/dnc_contact/change.html
+
+    **Logic Description**:
+
+        * Update/delete selected dnc contact from the dnc contact list
+          via DNCContactForm & get redirected to the dnc contact list
+    """
+    dnc_contact = get_object_or_404(
+        DNCContact, pk=object_id, dnc__user=request.user)
+
+    form = DNCContactForm(request.user, instance=dnc_contact)
+    if request.method == 'POST':
+        # Delete dnc contact
+        if request.POST.get('delete'):
+            dnc_contact_del(request, object_id)
+            return HttpResponseRedirect('/dnc_contact/')
+        else:
+            # Update dnc contact
+            form = DNCContactForm(request.user, request.POST, instance=dnc_contact)
+            if form.is_valid():
+                form.save()
+                request.session["msg"] = _('"%(name)s" is updated.') \
+                    % {'name': request.POST['phone_number']}
+                return HttpResponseRedirect('/dnc_contact/')
+
+    template = 'frontend/dnc_contact/change.html'
+    data = {
+        'module': current_view(request),
+        'form': form,
+        'action': 'update',
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))

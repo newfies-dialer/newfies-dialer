@@ -243,7 +243,7 @@ class Campaign(Model):
     #Flags
     has_been_started = models.BooleanField(default=False, verbose_name=_('has been started'))
     has_been_duplicated = models.BooleanField(default=False, verbose_name=_('has been duplicated'))
-    dnc = models.ForeignKey(DNC, null=True, blank=True, verbose_name=_("DCN"),
+    dnc = models.ForeignKey(DNC, null=True, blank=True, verbose_name=_("DNC"),
                             help_text=_("do not call list"),
                             related_name='DNC')
     #Voicemail

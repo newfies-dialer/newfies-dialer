@@ -13,34 +13,14 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
+from django.contrib.auth.models import User
 from tastypie.resources import ModelResource, ALL
 from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import Authorization
-from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie import fields
 from api.user_api import UserResource
 from dnc.models import DNC
-
-
-class DNCValidation(Validation):
-    """DNC Validation Class"""
-    def is_valid(self, bundle, request=None):
-        if not bundle.data:
-            return {'__all__': 'Data set is empty'}
-
-        errors = {}
-
-        for key, value in bundle.data.items():
-            if not isinstance(value, basestring):
-                continue
-        # Not working
-        #try:
-        #    bundle.data['user'] = '/api/v1/user/%s/' % request.user.id
-        #except:
-        #    errors['chk_user'] = ["The User doesn't exist!"]
-
-        return errors
 
 
 class DNCResource(ModelResource):
@@ -142,14 +122,21 @@ class DNCResource(ModelResource):
 
             curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/dnc/?name='test dnc'
     """
-    user = fields.ForeignKey(UserResource, 'user', full=True)
+    user = fields.ForeignKey(UserResource, 'user')
     class Meta:
         queryset = DNC.objects.all()
         resource_name = 'dnc'
         authorization = Authorization()
         authentication = BasicAuthentication()
-        validation = DNCValidation()
+        list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'post', 'put', 'delete']
         filtering = {
             'name': ALL,
         }
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
+
+    def hydrate(self, bundle, request=None):
+        bundle.obj.user = User.objects.get(pk=bundle.request.user.id)
+        return bundle
+
+

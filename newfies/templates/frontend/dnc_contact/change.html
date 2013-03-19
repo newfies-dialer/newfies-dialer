@@ -1,0 +1,53 @@
+{% extends "frontend/master.html" %}
+{% load i18n %}
+
+{% block extra_files %}
+    <style type="text/css">
+    .add {
+        background:transparent url('{{ STATIC_URL }}newfies/icons/add.png') no-repeat scroll left center;
+        padding:1px 1px 1px 20px;
+    }
+    </style>
+{% endblock %}
+
+{% block content_header %}
+    <h1>
+        {% if action == 'update' %}
+            {% trans "update"|title %}
+        {% else %}
+            {% trans "add"|title %}
+        {% endif %} {% trans "contact"|title %}
+        <small>{% trans "add contact details"|capfirst %}</small>
+    </h1>
+{% endblock %}
+
+{% block content %}
+
+<form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+    {% for field in form %}
+    <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+        <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+        <div class="input">
+            {{ field }}
+            {% if field.errors %}
+                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+            {% endif %}
+            <span class="help-block">{{ field.help_text|capfirst }} </span>
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="actions">
+        {% if action == 'update' %}
+            <input id="update" class="btn btn-primary" type="submit" value="{% trans "update"|title %}" />
+        {% else %}
+            <input id="add" class="btn btn-primary" type="submit" value="{% trans "submit"|title %}" />
+        {% endif %}
+            &nbsp;&nbsp;
+        {% if action == 'update' %}
+            <input id="delete" class="btn btn-danger" name="delete" type="submit" value="{% trans "delete"|title %}" />
+        {% endif %}
+    </div>
+</form>
+
+{% endblock %}

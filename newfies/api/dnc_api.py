@@ -18,9 +18,24 @@ from tastypie.resources import ModelResource, ALL
 from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import Authorization
 from tastypie.throttle import BaseThrottle
+from tastypie.validation import Validation
 from tastypie import fields
 from api.user_api import UserResource
 from dnc.models import DNC
+
+
+class DNCValidation(Validation):
+    """DNC Validation Class"""
+    def is_valid(self, bundle, request=None):
+        if not bundle.data:
+            return {'__all__': 'Please enter data'}
+
+        errors = {}
+
+        if not 'name' in bundle.data or bundle.data.get('name') == '':
+            errors['name'] = ['Please enter DNC name.']
+
+        return errors
 
 
 class DNCResource(ModelResource):
@@ -29,6 +44,10 @@ class DNCResource(ModelResource):
     **Attributes**:
 
         * ``name`` - DNC name
+
+    **Validation**:
+
+        * DNCValidation()
 
     **Create**:
 
@@ -128,6 +147,7 @@ class DNCResource(ModelResource):
         resource_name = 'dnc'
         authorization = Authorization()
         authentication = BasicAuthentication()
+        validation = DNCValidation()
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post', 'put', 'delete']
         filtering = {

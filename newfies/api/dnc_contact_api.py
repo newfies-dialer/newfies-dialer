@@ -20,7 +20,7 @@ from tastypie.authorization import Authorization
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie import fields
-from dnc.models import DNCContact
+from dnc.models import DNC, DNCContact
 from api.dnc_api import DNCResource
 
 
@@ -31,10 +31,12 @@ class DNCContactValidation(Validation):
             return {'__all__': 'Please enter data'}
 
         errors = {}
+        if not 'phone_number' in bundle.data:
+            errors['phone_number'] = ['Please enter phone number.']
 
-        for key, value in bundle.data.items():
-            if not isinstance(value, basestring):
-                continue
+        if not 'dnc_id' in bundle.data:
+            errors['dnc_id'] = ['Please enter DNC ID.']
+
         return errors
 
 
@@ -144,7 +146,7 @@ class DNCContactResource(ModelResource):
 
             curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/dnc_contact/?dnc=1
     """
-    dnc = fields.ForeignKey(DNCResource, 'dnc', full=True)
+    dnc = fields.ForeignKey(DNCResource, 'dnc')
     class Meta:
         queryset = DNCContact.objects.all()
         resource_name = 'dnc_contact'
@@ -156,3 +158,8 @@ class DNCContactResource(ModelResource):
             'dnc': ALL,
         }
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
+
+    def hydrate(self, bundle, request=None):
+        if bundle.data.get('dnc_id'):
+            bundle.obj.dnc = DNC.objects.get(pk=bundle.data.get('dnc_id'))
+        return bundle

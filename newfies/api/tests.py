@@ -21,7 +21,7 @@ class ApiTestCase(BaseAuthenticatedClient):
     fixtures = ['auth_user.json', 'gateway.json', 'survey_template.json',
                 'dialer_setting.json', 'phonebook.json', 'contact.json',
                 'campaign.json', 'subscriber.json', 'callrequest.json',
-                'user_profile.json']
+                'user_profile.json', 'dnc_list.json', 'dnc_contact.json']
 
     def test_create_campaign(self):
         """Test Function to create a campaign"""
@@ -315,6 +315,62 @@ class ApiTestCase(BaseAuthenticatedClient):
             '/api/v1/subscriber_per_campaign/3/640234000/?format=json',
             **self.extra)
         self.assertEqual(response.status_code, 400)
+
+    def test_create_dnc(self):
+        """Test Function to create a dnc"""
+        data = json.dumps({"name": "mydnc"})
+        response = self.client.post('/api/v1/dnc/', data,
+                   content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 201)
+
+        response = self.client.post('/api/v1/dnc/', {},
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
+
+        data = json.dumps({"name": "mydncNew"})
+        response = self.client.post('/api/v1/dnc/', data,
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
+
+        self.client.logout()
+        self.client.login(username='admin', password='admin1')
+        response = self.client.post('/api/v1/dnc/', data,
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
+
+    def test_read_dnc(self):
+        """Test Function to get all dnc"""
+        response = self.client.get('/api/v1/dnc/',
+            **self.extra)
+        self.assertEqual(response.status_code, 200)
+
+    def test_create_dnc_contact(self):
+        """Test Function to create a dnc contact"""
+        data = json.dumps({"phone_number": "12345", "dnc_id": "1"})
+        response = self.client.post('/api/v1/dnc_contact/', data,
+                   content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 201)
+
+        response = self.client.post('/api/v1/dnc_contact/', {},
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
+
+        data = json.dumps({"phone_number": "124567"})
+        response = self.client.post('/api/v1/dnc_contact/', data,
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
+
+        self.client.logout()
+        self.client.login(username='admin', password='admin1')
+        response = self.client.post('/api/v1/dnc_contact/', data,
+            content_type='application/json', **self.extra)
+        self.assertEqual(response.status_code, 400)
+
+    def test_read_dnc_contact(self):
+        """Test Function to get all dnc contact"""
+        response = self.client.get('/api/v1/dnc_contact/1/12345/',
+            **self.extra)
+        self.assertEqual(response.status_code, 200)
 
     def test_playground_view(self):
         """Test Function to create a api list view"""

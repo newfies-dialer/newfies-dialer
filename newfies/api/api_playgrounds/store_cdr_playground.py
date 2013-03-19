@@ -34,7 +34,7 @@ class StoreCdrAPIPlayground(APIPlayground):
                                            "type": "string",
                                            "is_required": True,
                                            "default": '<?xml version="1.0"?><cdr><other></other><variables><request_uuid>af41ac8a-ede4-11e0-9cca-00231470a30c</request_uuid><duration>3</duration></variables><notvariables><request_uuid>TESTc</request_uuid><duration>5</duration></notvariables></cdr>'
-                                       }]
+                                       },]
                     }
                 ]
             },

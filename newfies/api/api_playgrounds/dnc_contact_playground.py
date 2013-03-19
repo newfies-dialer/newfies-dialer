@@ -49,7 +49,7 @@ class DNCContactAPIPlayground(APIPlayground):
                                            "name": "dnc",
                                            "type": "string",
                                            "is_required": True,
-                                           "default": "1"
+                                           "default": "/api/v1/dnc/1/"
                                        },]
                     },
                     {
@@ -61,7 +61,13 @@ class DNCContactAPIPlayground(APIPlayground):
                                            "type": "string",
                                            "is_required": True,
                                            "default": "123456"
-                                       },]
+                                       },
+                                       {
+                                           "name": "dnc",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": "/api/v1/dnc/1/"
+                                       }]
                     },
                     {
                         "method": "DELETE",

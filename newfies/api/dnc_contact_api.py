@@ -14,11 +14,13 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
+from django.conf.urls import url
 from tastypie.resources import ModelResource, ALL
 from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import Authorization
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
+from tastypie.exceptions import BadRequest
 from tastypie import fields
 from dnc.models import DNC, DNCContact
 from api.dnc_api import DNCResource
@@ -153,6 +155,8 @@ class DNCContactResource(ModelResource):
         authorization = Authorization()
         authentication = BasicAuthentication()
         validation = DNCContactValidation()
+        list_allowed_methods = ['get', 'post', 'put', 'delete']
+        detail_allowed_methods = ['get', 'post', 'put', 'delete']
         filtering = {
             'phone_number': ALL,
             'dnc': ALL,
@@ -163,3 +167,49 @@ class DNCContactResource(ModelResource):
         if bundle.data.get('dnc_id'):
             bundle.obj.dnc = DNC.objects.get(pk=bundle.data.get('dnc_id'))
         return bundle
+
+    def prepend_urls(self):
+        """Prepend urls"""
+        return [
+            url(r'^(?P<resource_name>%s)/(.+)/$' % self._meta.resource_name, self.wrap_view('read')),
+        ]
+
+    def read(self, request=None, **kwargs):
+        """GET method of DNC API"""
+        self.method_check(request, allowed=['get'])
+        self.is_authenticated(request)
+        self.throttle_check(request)
+
+        temp_url = request.META['PATH_INFO']
+        temp_path = temp_url.split('/api/v1/dnc_contact/')[1]
+
+        dnc_id = temp_path.split('/')[0]
+        try:
+            phone_number = temp_path.split('/')[1]
+        except:
+            phone_number = False
+        print dnc_id
+        try:
+            dnc_id = int(dnc_id)
+        except:
+            error_msg = "No value for DNC ID !"
+            raise BadRequest(error_msg)
+
+        try:
+            DNC.objects.get(id=dnc_id)
+        except:
+            error_msg = "DNC ID does not exists!"
+            raise BadRequest(error_msg)
+
+        if phone_number:
+            try:
+                int(phone_number)
+            except ValueError:
+                error_msg = "Wrong value for phone_number !"
+                raise BadRequest(error_msg)
+            dnc_contacts = DNCContact.objects.get(dnc_id=dnc_id, phone_number=phone_number)
+        else:
+            dnc_contacts = DNCContact.objects.filter(dnc_id=dnc_id)
+
+        self.log_throttled_access(request)
+        return self.create_response(request, dnc_contacts)

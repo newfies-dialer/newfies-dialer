@@ -27,13 +27,13 @@ class DNCContactAPIPlayground(APIPlayground):
                 "endpoints": [
                     {
                         "method": "GET",
-                        "url": "/api/v1/dnc_contact/",
-                        "description": _("returns all dnc contacts")
+                        "url": "/api/v1/dnc_contact/{dnc-id}/",
+                        "description": _("returns dnc contacts")
                     },
                     {
                         "method": "GET",
-                        "url": "/api/v1/dnc_contact/{dnc-contact-id}/",
-                        "description": _("returns a specific dnc contact")
+                        "url": "/api/v1/dnc_contact/{dnc-id}/{phone-number}",
+                        "description": _("returns dnc contacts")
                     },
                     {
                         "method": "POST",

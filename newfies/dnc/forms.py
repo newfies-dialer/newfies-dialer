@@ -37,11 +37,11 @@ class DNCContactSearchForm(forms.Form):
 
     def __init__(self, user, *args, **kwargs):
         super(DNCContactSearchForm, self).__init__(*args, **kwargs)
-         # To get user's phonebook list
+         # To get user's dnc list
         if user:
             dnc_list_user = []
             dnc_list_user.append((0, '---'))
-            dnc_list = DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
+            dnc_list = DNC.objects.values_list('id', 'name').filter(user=user).order_by('-id')
             for i in dnc_list:
                 dnc_list_user.append((i[0], i[1]))
 

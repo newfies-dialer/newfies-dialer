@@ -104,7 +104,7 @@ function delete_button()
                 <tr>
                     <th><input type="checkbox" onclick="toggleChecked(this.checked)"></th>
                     <th>{% sort_link DNC_CONTACT_COLUMN_NAME.id|capfirst col_name_with_order.id %}</th>
-                    <th>{% sort_link DNC_CONTACT_COLUMN_NAME.dnc|capfirst col_name_with_order.dnc_id %}</th>
+                    <th>{% sort_link DNC_CONTACT_COLUMN_NAME.dnc|capfirst col_name_with_order.dnc %}</th>
                     <th>{% sort_link DNC_CONTACT_COLUMN_NAME.phone_number|capfirst col_name_with_order.phone_number %}</th>
                     <th>{% sort_link DNC_CONTACT_COLUMN_NAME.date|capfirst col_name_with_order.updated_date %}</th>
                     <th>{% trans 'action'|capfirst %}</th>

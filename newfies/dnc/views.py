@@ -35,7 +35,7 @@ import json
 @permission_required('dnc.view_dnc_list', login_url='/')
 @login_required
 def dnc_list(request):
-    """Phonebook list for the logged in user
+    """DNC list for the logged in user
 
     **Attributes**:
 
@@ -152,7 +152,7 @@ def dnc_del(request, object_id):
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
         try:
-            # 1) delete all contacts belonging to a phonebook
+            # 1) delete all dnc contacts belonging to a dnc list
             dnc_contact_list = DNCContact.objects\
                 .filter(dnc__user=request.user)\
                 .extra(where=['dnc_id IN (%s)' % values])
@@ -226,9 +226,9 @@ def dnc_contact_list(request):
 
     **Logic Description**:
 
-        * List all contacts from phonebooks belonging to the logged in user
+        * List all dnc contacts from dnc lists belonging to the logged in user
     """
-    sort_col_field_list = ['id', 'dnc_id', 'phone_number', 'updated_date']
+    sort_col_field_list = ['id', 'dnc', 'phone_number', 'updated_date']
     default_sort_field = 'id'
     pagination_data =\
         get_pagination_vars(request, sort_col_field_list, default_sort_field)
@@ -362,7 +362,6 @@ def dnc_contact_add(request):
         'form': form,
         'action': 'add',
         'error_msg': error_msg,
-        'phonebook_count': dnc_count,
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,

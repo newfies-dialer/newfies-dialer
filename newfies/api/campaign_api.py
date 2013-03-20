@@ -51,12 +51,13 @@ class CampaignValidation(Validation):
     """
     def is_valid(self, bundle, request=None):
         errors = {}
+
         if not bundle.data:
-            errors['Data'] = ['Data set is empty']
+            return {'__all__': 'Please enter data'}
         startingdate = bundle.data.get('startingdate')
         expirationdate = bundle.data.get('expirationdate')
 
-        if request.method == 'POST':
+        if bundle.request.method == 'POST':
             startingdate = get_value_if_none(startingdate, time.time())
             # expires in 90 days
             expirationdate = get_value_if_none(expirationdate,
@@ -70,7 +71,7 @@ class CampaignValidation(Validation):
             bundle.data['expirationdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
                 time.gmtime(expirationdate))
 
-        if request.method == 'PUT':
+        if bundle.request.method == 'PUT':
             if startingdate:
                 bundle.data['startingdate'] = time.strftime(
                     '%Y-%m-%d %H:%M:%S', time.gmtime(float(startingdate)))
@@ -78,30 +79,30 @@ class CampaignValidation(Validation):
                 bundle.data['expirationdate'] = time.strftime(
                     '%Y-%m-%d %H:%M:%S', time.gmtime(float(expirationdate)))
 
-        if not user_dialer_setting(request.user):
+        if not user_dialer_setting(bundle.request.user):
             errors['user_dialer_setting'] = ['Your settings are not configured properly, Please contact the administrator.']
 
         if check_dialer_setting(request, check_for="campaign"):
             errors['chk_campaign'] = ["Too many campaigns. Max allowed %s"
-                % dialer_setting_limit(request, limit_for="campaign")]
+                % dialer_setting_limit(bundle.request, limit_for="campaign")]
 
         frequency = bundle.data.get('frequency')
         if frequency:
-            if check_dialer_setting(request, check_for="frequency", field_value=int(frequency)):
+            if check_dialer_setting(bundle.request, check_for="frequency", field_value=int(frequency)):
                 errors['chk_frequency'] = ["Frequency limit of %s exceeded."
                     % dialer_setting_limit(request, limit_for="frequency")]
 
         callmaxduration = bundle.data.get('callmaxduration')
         if callmaxduration:
-            if check_dialer_setting(request, check_for="duration", field_value=int(callmaxduration)):
+            if check_dialer_setting(bundle.request, check_for="duration", field_value=int(callmaxduration)):
                 errors['chk_duration'] = ["Duration limit of %s exceeded."
-                    % dialer_setting_limit(request, limit_for="duration")]
+                    % dialer_setting_limit(bundle.request, limit_for="duration")]
 
         maxretry = bundle.data.get('maxretry')
         if maxretry:
-            if check_dialer_setting(request, check_for="retry", field_value=int(maxretry)):
+            if check_dialer_setting(bundle.request, check_for="retry", field_value=int(maxretry)):
                 errors['chk_duration'] = ["Retries limit of %s exceeded."
-                    % dialer_setting_limit(request, limit_for="retry")]
+                    % dialer_setting_limit(bundle.request, limit_for="retry")]
 
         calltimeout = bundle.data.get('calltimeout')
         if calltimeout:
@@ -109,41 +110,43 @@ class CampaignValidation(Validation):
                 errors['chk_timeout'] = ["Timeout limit of %s exceeded."
                     % dialer_setting_limit(request, limit_for="timeout")]
 
+
         aleg_gateway_id = bundle.data.get('aleg_gateway')
         if aleg_gateway_id:
             try:
-                aleg_gateway_id = Gateway.objects.get(id=aleg_gateway_id).id
-                bundle.data['aleg_gateway'] = '/api/v1/gateway/%s/' %\
-                                              aleg_gateway_id
+                Gateway.objects.get(id=aleg_gateway_id)
+                bundle.data['aleg_gateway'] = aleg_gateway_id
             except:
                 errors['chk_gateway'] = ["The Gateway ID doesn't exist!"]
 
         content_type = bundle.data.get('content_type')
         if content_type == 'survey_template':
             try:
-                content_type_id = ContentType.objects\
-                    .get(model=str(content_type)).id
-                bundle.data['content_type'] = '/api/v1/contenttype/%s/' %\
-                                              content_type_id
+                content_type_id = ContentType.objects.get(model=str(content_type)).id
+                bundle.data['content_type'] = content_type_id
             except:
                 errors['chk_content_type'] = ["The ContentType doesn't exist!"]
         else:
-            errors['chk_content_type'] = ["Entered wrong option. Please enter 'survey' !"]
+            errors['chk_content_type'] = ["Entered wrong option. Please enter 'survey_template' !"]
 
         object_id = bundle.data.get('object_id')
         if object_id:
-                bundle.data['object_id'] = object_id
+            try:
+                bundle.data['object_id'] = int(object_id)
+            except:
+                errors['chk_object_id'] = ["object_id must be digit"]
         else:
             errors['chk_object_id'] = ["App Object ID doesn't exist!"]
 
         try:
-            bundle.data['user'] = '/api/v1/user/%s/' % request.user.id
+            User.objects.get(pk=bundle.request.user.id)
+            bundle.data['user'] = request.user.id
         except:
             errors['chk_user'] = ["The User doesn't exist!"]
 
-        if request.method == 'POST':
+        if bundle.request.method == 'POST':
             name_count = Campaign.objects.filter(name=bundle.data.get('name'),
-                user=request.user).count()
+                user=bundle.request.user).count()
             if (name_count != 0):
                 errors['chk_campaign_name'] = ["The Campaign name duplicated!"]
 
@@ -156,9 +159,8 @@ class CampaignValidation(Validation):
                 audiofile_id = bundle.data.get('voicemail_audiofile')
                 if audiofile_id:
                     try:
-                        audiofile_id = AudioFile.objects.get(id=audiofile_id).id
-                        bundle.data['voicemail_audiofile'] = '/api/v1/audiofile/%s/' %\
-                                                             audiofile_id
+                        AudioFile.objects.get(id=audiofile_id)
+                        bundle.data['voicemail_audiofile'] = audiofile_id
                     except:
                         errors['voicemail_audiofile'] = ["The audiofile ID doesn't exist!"]
             else:
@@ -279,7 +281,7 @@ class CampaignResource(ModelResource):
                      "completion_maxretry":0,
                      "monday":true,
                      "name":"Default_Campaign",
-                     "resource_uri":"/api/app/campaign/1/",
+                     "resource_uri":"/api/v1/campaign/1/",
                      "saturday":true,
                      "startingdate":"2011-06-15T00:01:15",
                      "status":1,
@@ -391,16 +393,12 @@ class CampaignResource(ModelResource):
                ]
             }
     """
-    user = fields.ForeignKey(UserResource, 'user', full=True)
-    aleg_gateway = fields.ForeignKey(GatewayResource,
-        'aleg_gateway', full=True)
-    content_type = fields.ForeignKey(ContentTypeResource,
-        'content_type')
-    phonebook = fields.ToManyField(PhonebookResource,
-        'phonebook', full=True, readonly=True)
+    user = fields.ForeignKey(UserResource, 'user')
+    aleg_gateway = fields.ForeignKey(GatewayResource, 'aleg_gateway')
+    content_type = fields.ForeignKey(ContentTypeResource, 'content_type')
+    phonebook = fields.ToManyField(PhonebookResource, 'phonebook', readonly=True)
     # Voicemail setting is not enabled by default
-    voicemail_audiofile = fields.ForeignKey(AudioFileResource,
-        'voicemail_audiofile', full=True)
+    voicemail_audiofile = fields.ForeignKey(AudioFileResource, 'voicemail_audiofile')
 
     class Meta:
         queryset = Campaign.objects.all()
@@ -416,6 +414,18 @@ class CampaignResource(ModelResource):
         }
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
 
+    def full_hydrate(self, bundle, request=None):
+        bundle.obj.user = User.objects.get(pk=bundle.request.user.id)
+        bundle.obj.aleg_gateway = Gateway.objects.get(pk=bundle.data.get('aleg_gateway'))
+        bundle.obj.content_type = ContentType.objects.get(pk=bundle.data.get('content_type'))
+        bundle.obj.object_id = bundle.data.get('object_id')
+        if settings.AMD:
+            try:
+                bundle.obj.voicemail_audiofile = AudioFile.objects.get(id=bundle.data.get('voicemail_audiofile'))
+            except:
+                pass
+        return bundle
+
     def obj_create(self, bundle, request=None, **kwargs):
         """
         A ORM-specific implementation of ``obj_create``.
@@ -423,7 +433,7 @@ class CampaignResource(ModelResource):
         logger.debug('Campaign API get called')
 
         #Uncomment this, it seems to fix API for some users
-        #self.is_valid(bundle, request)
+        self.is_valid(bundle)
         bundle.obj = self._meta.object_class()
 
         for key, value in kwargs.items():

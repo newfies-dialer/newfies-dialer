@@ -27,6 +27,7 @@ from api.content_type_api import ContentTypeResource
 from dialer_cdr.models import Callrequest
 import logging
 
+logger = logging.getLogger('newfies.filelog')
 
 class CallrequestValidation(Validation):
     """

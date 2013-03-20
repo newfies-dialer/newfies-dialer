@@ -16,6 +16,7 @@
 
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 
 from tastypie.resources import ModelResource, ALL
@@ -120,6 +121,7 @@ class CampaignValidation(Validation):
                 errors['chk_gateway'] = ["The Gateway ID doesn't exist!"]
 
         content_type = bundle.data.get('content_type')
+
         if content_type == 'survey_template':
             try:
                 content_type_id = ContentType.objects.get(model=str(content_type)).id
@@ -433,7 +435,10 @@ class CampaignResource(ModelResource):
         logger.debug('Campaign API get called')
 
         #Uncomment this, it seems to fix API for some users
-        self.is_valid(bundle)
+        errors = self.is_valid(bundle)
+        if errors:
+            raise BadRequest(errors)
+
         bundle.obj = self._meta.object_class()
 
         for key, value in kwargs.items():
@@ -471,4 +476,57 @@ class CampaignResource(ModelResource):
         m2m_bundle = self.hydrate_m2m(bundle)
         self.save_m2m(m2m_bundle)
         logger.debug('Campaign API : Result ok 200')
+        return bundle
+
+    def obj_update(self, bundle, request=None, **kwargs):
+        """
+        A ORM-specific implementation of ``obj_update``.
+        """
+        if not bundle.obj or not bundle.obj.pk:
+            # Attempt to hydrate data from kwargs before doing a lookup for the object.
+            # This step is needed so certain values (like datetime) will pass model validation.
+            try:
+                errors = self.is_valid(bundle)
+                print errors
+                if not errors:
+                    #print errors
+                    raise BadRequest(errors)
+
+                #bundle.obj = self._meta.object_class()
+                print 'shrenik'
+                bundle.obj = self.get_object_list(bundle.request).model()
+                print bundle.obj
+                bundle.data.update(kwargs)
+                bundle = self.full_hydrate(bundle)
+                lookup_kwargs = kwargs.copy()
+
+                for key in kwargs.keys():
+                    if key == 'pk':
+                        continue
+                    elif getattr(bundle.obj, key, NOT_AVAILABLE) is not NOT_AVAILABLE:
+                        lookup_kwargs[key] = getattr(bundle.obj, key)
+                    else:
+                        del lookup_kwargs[key]
+            except:
+                # if there is trouble hydrating the data, fall back to just
+                # using kwargs by itself (usually it only contains a "pk" key
+                # and this will work fine.
+                lookup_kwargs = kwargs
+
+            try:
+                bundle.obj = self.obj_get(request, **lookup_kwargs)
+            except ObjectDoesNotExist:
+                raise NotFound("A model instance matching the provided arguments could not be found.")
+
+        bundle = self.full_hydrate(bundle)
+
+        # Save FKs just in case.
+        self.save_related(bundle)
+
+        # Save the main object.
+        bundle.obj.save()
+
+        # Now pick up the M2M bits.
+        m2m_bundle = self.hydrate_m2m(bundle)
+        self.save_m2m(m2m_bundle)
         return bundle

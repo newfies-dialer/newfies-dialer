@@ -63,12 +63,12 @@ function commit_event()
 
         sql_result = sql_result.."('"..v[1].."', '"..v[2].."', '"..v[3].."', '"..v[4].."', "..v[5]..", "..v[6]..
             ", "..v[7]..", "..v[8]..", "..v[9]..", '"..v[10].."', '"..v[11].."', '"..v[12].."', '"..v[13].."', '"..v[14].."', "..
-            ""..v[15]..", "..v[15]..")"
+            ""..v[15]..", "..v[15]..", '"..v[17].."')"
     end
 -- (event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, 10 callerid, phonenumber, hangup_cause,
 -- hangup_cause_q850, amd_status, starting_date)
     sql = "INSERT INTO call_event "..
-    "(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, created_date) "..
+    "(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, created_date, leg) "..
     "VALUES "..sql_result
     if count > 0 then
         --logger(sql)
@@ -83,8 +83,8 @@ function commit_event()
     end
 end
 
-function push_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date)
-    results[incr] = {event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, os.time()}
+function push_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, leg)
+    results[incr] = {event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, os.time(), leg}
     incr = incr + 1
     if (incr >= 500) then
         commit_event()
@@ -114,7 +114,7 @@ logger("Starting")
 env = assert (luasql.postgres())
 dbcon = assert(env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT))
 -- DROP TABLE call_event;
-blah = assert(dbcon:execute([[
+resex = assert(dbcon:execute([[
     DROP TABLE if exists call_event;
     CREATE TABLE if not exists call_event (
         id serial NOT NULL PRIMARY KEY,
@@ -131,6 +131,7 @@ blah = assert(dbcon:execute([[
         hangup_cause varchar(40),
         hangup_cause_q850 varchar(10),
         amd_status varchar(40),
+        leg varchar(10) DEFAULT 'aleg',
         starting_date timestamp with time zone,
         status integer,
         created_date timestamp with time zone NOT NULL
@@ -192,6 +193,7 @@ while true do
         phonenumber = e:getHeader("variable_dialed_user") or ""
         hangup_cause = e:getHeader("variable_hangup_cause") or ""
         amd_status = e:getHeader("variable_amd_status") or "person"
+        leg = e:getHeader("variable_legtype") or "aleg"
         hangup_cause_q850 = e:getHeader("variable_hangup_cause_q850") or ""
         start_uepoch = e:getHeader("variable_start_uepoch") -- 1355809698350872
         if start_uepoch ~= nil then
@@ -237,7 +239,7 @@ while true do
 
                 --Insert Event to Database
                 push_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status,
-                    duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date)
+                    duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, leg)
 
             elseif event_name == 'CHANNEL_HANGUP_COMPLETE' then
 
@@ -246,13 +248,13 @@ while true do
                 --     logger("variable_newfiesdialer is: " .. variable_newfiesdialer .. "\n")
                 -- end
 
-                if hangup_cause ~= 'NORMAL_CLEARING' and hangup_cause ~= 'ALLOTTED_TIMEOUT' then
+                if hangup_cause ~= 'NORMAL_CLEARING' and hangup_cause ~= 'ALLOTTED_TIMEOUT' and leg ~= 'bleg' then
                     status = 0
                 end
 
                 --Insert Event to Database
                 push_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status,
-                    duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date)
+                    duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, leg)
 
             end
 

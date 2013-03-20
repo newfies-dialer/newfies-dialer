@@ -17,7 +17,6 @@ from django.db import connection
 from celery.decorators import task
 from celery.task import PeriodicTask
 from django.conf import settings
-from dialer_campaign.models import Subscriber
 from dialer_campaign.constants import SUBSCRIBER_STATUS, AMD_BEHAVIOR
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE, \
@@ -92,26 +91,28 @@ class BufferVoIPCall:
     def __init__(self):
         self.list_voipcall = []
 
-    def save(self, obj_callrequest, request_uuid, leg='a', hangup_cause='',
+    def save(self, obj_callrequest, request_uuid, leg='aleg', hangup_cause='',
              hangup_cause_q850='', callerid='',
              phonenumber='', starting_date='',
              call_uuid='', duration=0, billsec=0, amd_status='person'):
         """
         Save voip call into buffer
         """
-        if leg == 'a':
+        if leg == 'aleg':
             #A-Leg
             leg_type = LEG_TYPE.A_LEG
             used_gateway = obj_callrequest.aleg_gateway
         else:
             #B-Leg
             leg_type = LEG_TYPE.B_LEG
-            if obj_callrequest.content_object.__class__.__name__ == 'Survey':
-                #Get the gateway from the App
-                used_gateway = obj_callrequest.content_object.gateway
-            else:
-                #Survey
-                used_gateway = obj_callrequest.aleg_gateway
+            used_gateway = obj_callrequest.aleg_gateway
+            #This code is useful if we want to let the survey editor select the gateway
+            # if obj_callrequest.content_object.__class__.__name__ == 'Survey':
+            #     #Get the gateway from the App
+            #     used_gateway = obj_callrequest.content_object.gateway
+            # else:
+            #     #Survey
+            #     used_gateway = obj_callrequest.aleg_gateway
         if amd_status == 'machine':
             amd_status_id = VOIPCALL_AMD_STATUS.MACHINE
         else:
@@ -208,7 +209,7 @@ def check_callevent():
 
     sql_statement = "SELECT id, event_name, body, job_uuid, call_uuid, used_gateway_id, "\
         "callrequest_id, callerid, phonenumber, duration, billsec, hangup_cause, "\
-        "hangup_cause_q850, starting_date, status, created_date, amd_status FROM call_event WHERE status=1 LIMIT 2000 OFFSET 0"
+        "hangup_cause_q850, starting_date, status, created_date, amd_status, leg FROM call_event WHERE status=1 LIMIT 2000 OFFSET 0"
 
     cursor.execute(sql_statement)
     row = cursor.fetchall()
@@ -232,6 +233,7 @@ def check_callevent():
         hangup_cause_q850 = record[12]
         starting_date = record[13]
         amd_status = record[16]
+        leg = record[17]
 
         #Update Call Event
         sql_statement = "UPDATE call_event SET status=2 WHERE id=%d" % call_event_id
@@ -271,18 +273,20 @@ def check_callevent():
         logger.debug("Find Callrequest id : %d" % callrequest.id)
         debug_query(23)
 
-        #Update Callrequest Status
-        if opt_hangup_cause == 'NORMAL_CLEARING':
-            callrequest.status = CALLREQUEST_STATUS.SUCCESS
-            if callrequest.subscriber.status != SUBSCRIBER_STATUS.COMPLETED:
-                callrequest.subscriber.status = SUBSCRIBER_STATUS.SENT
-        else:
-            callrequest.status = CALLREQUEST_STATUS.FAILURE
-            callrequest.subscriber.status = SUBSCRIBER_STATUS.FAIL
-        callrequest.hangup_cause = opt_hangup_cause
+        if leg == 'aleg':
+            #Only the aleg will update the subscriber status / Bleg is only recorded
+            #Update Callrequest Status
+            if opt_hangup_cause == 'NORMAL_CLEARING':
+                callrequest.status = CALLREQUEST_STATUS.SUCCESS
+                if callrequest.subscriber.status != SUBSCRIBER_STATUS.COMPLETED:
+                    callrequest.subscriber.status = SUBSCRIBER_STATUS.SENT
+            else:
+                callrequest.status = CALLREQUEST_STATUS.FAILURE
+                callrequest.subscriber.status = SUBSCRIBER_STATUS.FAIL
+            callrequest.hangup_cause = opt_hangup_cause
 
-        callrequest.save()
-        callrequest.subscriber.save()
+            callrequest.save()
+            callrequest.subscriber.save()
 
         debug_query(24)
 
@@ -297,7 +301,7 @@ def check_callevent():
         buff_voipcall.save(
             obj_callrequest=callrequest,
             request_uuid=opt_request_uuid,
-            leg='a',
+            leg=leg,
             hangup_cause=opt_hangup_cause,
             hangup_cause_q850=hangup_cause_q850,
             callerid=callerid,

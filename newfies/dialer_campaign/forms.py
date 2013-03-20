@@ -23,7 +23,6 @@ from django.contrib.contenttypes.models import ContentType
 from dialer_campaign.models import Phonebook, Campaign
 from dialer_campaign.constants import CAMPAIGN_STATUS
 from dialer_campaign.function_def import user_dialer_setting
-from user_profile.models import UserProfile
 from common.common_functions import get_unique_code
 from dnc.models import DNC
 
@@ -55,6 +54,7 @@ class CampaignForm(ModelForm):
                                          required=False)
     selected_content_object = forms.CharField(widget=forms.HiddenInput,
                                               required=False)
+
     class Meta:
         model = Campaign
         fields = ['campaign_code', 'name', 'description',

@@ -224,7 +224,7 @@ function Database:load_audiofile()
 end
 
 function Database:load_campaign_info(campaign_id)
-    sqlquery = "SELECT * FROM dialer_campaign WHERE id="..campaign_id
+    sqlquery = "SELECT dialer_campaign.*, dialer_gateway.gateways FROM dialer_campaign LEFT JOIN dialer_gateway ON dialer_gateway.id=aleg_gateway_id WHERE dialer_campaign.id="..campaign_id
     self.debugger:msg("DEBUG", "Load campaign info : "..sqlquery)
     self.campaign_info = self:get_cache_object(sqlquery, 300)
     if not self.campaign_info then
@@ -443,6 +443,10 @@ function Database:save_section_result(callrequest_id, current_node, DTMF, record
         end
         --Save result to memory
         self:save_result_mem(callrequest_id, current_node.id, '', 0, DTMF)
+    else
+        --Save result to memory
+        result = DTMF
+        self:save_result_mem(callrequest_id, current_node.id, '', 0, result)
     end
 end
 
@@ -450,7 +454,7 @@ end
 -- Test Code
 --
 if false then
-    campaign_id = 23
+    campaign_id = 128
     survey_id = 11
     callrequest_id = 165
     section_id = 180
@@ -461,6 +465,9 @@ if false then
     local debugger = Debugger(false)
     db = Database(debug_mode, debugger)
     db:connect()
+
+    db:load_campaign_info(campaign_id)
+    print(inspect(db.campaign_info))
 
     print(db:load_content_type())
 

@@ -332,14 +332,13 @@ class SurveyReportForm(forms.Form):
         # To get user's campaign list which are attached with survey
         if user:
             list = []
-            list.append((0, ''))
             try:
                 if user.is_superuser:
                     camp_list = Campaign.objects.values_list('id', 'name')\
-                        .filter(content_type__model='survey', has_been_started=True)
+                        .filter(content_type__model='survey', has_been_started=True).order_by('-id')
                 else:
                     camp_list = Campaign.objects.values_list('id', 'name')\
-                        .filter(user=user, content_type__model='survey', has_been_started=True)
+                        .filter(user=user, content_type__model='survey', has_been_started=True).order_by('-id')
                 for i in camp_list:
                     list.append((i[0], i[1]))
             except:

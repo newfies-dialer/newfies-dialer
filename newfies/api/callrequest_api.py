@@ -21,6 +21,7 @@ from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import Authorization
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
+from tastypie.exceptions import BadRequest
 from tastypie import fields
 from api.user_api import UserResource
 from api.content_type_api import ContentTypeResource
@@ -69,6 +70,8 @@ class CallrequestValidation(Validation):
             if (rq_count != 0):
                 errors['chk_request_uuid'] = ["The Request uuid duplicated!"]
 
+        if errors:
+            raise BadRequest(errors)
         return errors
 
 
@@ -222,9 +225,7 @@ class CallrequestResource(ModelResource):
         logger.debug('Callrequest API get called')
 
         #Uncomment this, it seems to fix API for some users
-        errors = self.is_valid(bundle)
-        if not errors:
-            raise BadRequest(errors)
+        self.is_valid(bundle)
 
         bundle.obj = self._meta.object_class()
 

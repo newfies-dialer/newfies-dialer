@@ -168,6 +168,8 @@ class CampaignValidation(Validation):
             else:
                 errors['voicemail'] = ["voicemail not enabled!"]
 
+        if errors:
+            raise BadRequest(errors)
         return errors
 
 
@@ -441,9 +443,7 @@ class CampaignResource(ModelResource):
         logger.debug('Campaign API get called')
 
         #Uncomment this, it seems to fix API for some users
-        errors = self.is_valid(bundle)
-        if not errors:
-            raise BadRequest(errors)
+        self.is_valid(bundle)
 
         bundle.obj = self._meta.object_class()
 

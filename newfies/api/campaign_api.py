@@ -16,6 +16,7 @@
 
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 
 from tastypie.resources import ModelResource, ALL
@@ -120,6 +121,7 @@ class CampaignValidation(Validation):
                 errors['chk_gateway'] = ["The Gateway ID doesn't exist!"]
 
         content_type = bundle.data.get('content_type')
+
         if content_type == 'survey_template':
             try:
                 content_type_id = ContentType.objects.get(model=str(content_type)).id
@@ -166,6 +168,8 @@ class CampaignValidation(Validation):
             else:
                 errors['voicemail'] = ["voicemail not enabled!"]
 
+        if errors:
+            raise BadRequest(errors)
         return errors
 
 
@@ -398,7 +402,8 @@ class CampaignResource(ModelResource):
     content_type = fields.ForeignKey(ContentTypeResource, 'content_type')
     phonebook = fields.ToManyField(PhonebookResource, 'phonebook', readonly=True)
     # Voicemail setting is not enabled by default
-    voicemail_audiofile = fields.ForeignKey(AudioFileResource, 'voicemail_audiofile')
+    voicemail_audiofile = fields.ForeignKey(AudioFileResource, 'voicemail_audiofile',
+        null=True, blank=True)
 
     class Meta:
         queryset = Campaign.objects.all()
@@ -417,7 +422,12 @@ class CampaignResource(ModelResource):
     def full_hydrate(self, bundle, request=None):
         bundle.obj.user = User.objects.get(pk=bundle.request.user.id)
         bundle.obj.aleg_gateway = Gateway.objects.get(pk=bundle.data.get('aleg_gateway'))
-        bundle.obj.content_type = ContentType.objects.get(pk=bundle.data.get('content_type'))
+        if bundle.request.method == 'POST':
+            bundle.obj.content_type = ContentType.objects.get(pk=bundle.data.get('content_type'))
+
+        if bundle.request.method == 'PUT' and bundle.data.get('content_type') != 'survey_template':
+            bundle.obj.content_type = ContentType.objects.get(pk=bundle.data.get('content_type'))
+
         bundle.obj.object_id = bundle.data.get('object_id')
         if settings.AMD:
             try:
@@ -434,6 +444,7 @@ class CampaignResource(ModelResource):
 
         #Uncomment this, it seems to fix API for some users
         self.is_valid(bundle)
+
         bundle.obj = self._meta.object_class()
 
         for key, value in kwargs.items():
@@ -472,3 +483,4 @@ class CampaignResource(ModelResource):
         self.save_m2m(m2m_bundle)
         logger.debug('Campaign API : Result ok 200')
         return bundle
+

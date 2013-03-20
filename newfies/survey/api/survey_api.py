@@ -30,7 +30,7 @@ class SurveyValidation(Validation):
         errors = {}
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
-        try:            
+        try:
             bundle.data['user'] = '/api/v1/user/%s/' % request.user.id
         except:
             errors['chk_user'] = ["The User doesn't exist!"]

@@ -21,11 +21,14 @@ from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import Authorization
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
+from tastypie.exceptions import BadRequest
 from tastypie import fields
 from api.user_api import UserResource
 from api.content_type_api import ContentTypeResource
 from dialer_cdr.models import Callrequest
+import logging
 
+logger = logging.getLogger('newfies.filelog')
 
 class CallrequestValidation(Validation):
     """
@@ -42,12 +45,11 @@ class CallrequestValidation(Validation):
             try:
                 content_type_id = ContentType.objects\
                     .get(model=str(content_type)).id
-                bundle.data['content_type'] = '/api/v1/contenttype/%s/'\
-                    % content_type_id
+                bundle.data['content_type'] = content_type_id
             except:
                 errors['chk_content_type'] = ["The ContentType doesn't exist!"]
         else:
-            errors['chk_content_type'] = ["Wrong option. Enter 'survey' !"]
+            errors['chk_content_type'] = ["Wrong option. Enter 'survey_template' !"]
 
         object_id = bundle.data.get('object_id')
         if object_id:
@@ -56,7 +58,8 @@ class CallrequestValidation(Validation):
             errors['chk_object_id'] = ["App object Id doesn't exist!"]
 
         try:
-            bundle.data['user'] = '/api/v1/user/%s/' % request.user.id
+            User.objects.get(pk=bundle.request.user.id)
+            bundle.data['user'] = bundle.request.user.id
         except:
             errors['chk_user'] = ["The User doesn't exist!"]
 
@@ -67,6 +70,8 @@ class CallrequestValidation(Validation):
             if (rq_count != 0):
                 errors['chk_request_uuid'] = ["The Request uuid duplicated!"]
 
+        if errors:
+            raise BadRequest(errors)
         return errors
 
 
@@ -188,9 +193,9 @@ class CallrequestResource(ModelResource):
             Content-Type: text/html; charset=utf-8
             Content-Language: en-us
     """
-    user = fields.ForeignKey(UserResource, 'user', full=True)
+    user = fields.ForeignKey(UserResource, 'user')
     content_type = fields.ForeignKey(ContentTypeResource,
-        'content_type', full=True)
+        'content_type')
 
     class Meta:
         queryset = Callrequest.objects.all()
@@ -202,3 +207,41 @@ class CallrequestResource(ModelResource):
         detail_allowed_methods = ['get', 'post', 'put']
         # default 1000 calls / hour
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
+
+    def full_hydrate(self, bundle, request=None):
+        bundle.obj.user = User.objects.get(pk=bundle.request.user.id)
+        if bundle.request.method == 'POST':
+            bundle.obj.content_type = ContentType.objects.get(pk=bundle.data.get('content_type'))
+
+        if bundle.request.method == 'PUT' and bundle.data.get('content_type') != 'survey_template':
+            bundle.obj.content_type = ContentType.objects.get(pk=bundle.data.get('content_type'))
+        bundle.obj.object_id = bundle.data.get('object_id')
+        return bundle
+
+    def obj_create(self, bundle, request=None, **kwargs):
+        """
+        A ORM-specific implementation of ``obj_create``.
+        """
+        logger.debug('Callrequest API get called')
+
+        #Uncomment this, it seems to fix API for some users
+        self.is_valid(bundle)
+
+        bundle.obj = self._meta.object_class()
+
+        for key, value in kwargs.items():
+            setattr(bundle.obj, key, value)
+
+        bundle = self.full_hydrate(bundle)
+
+        # Save FKs just in case.
+        self.save_related(bundle)
+
+        # Save the main object.
+        bundle.obj.save()
+
+        # Now pick up the M2M bits.
+        m2m_bundle = self.hydrate_m2m(bundle)
+        self.save_m2m(m2m_bundle)
+        logger.debug('Callrequest API : Result ok 200')
+        return bundle

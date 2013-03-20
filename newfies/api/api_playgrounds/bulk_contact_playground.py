@@ -27,8 +27,8 @@ class BulkContactAPIPlayground(APIPlayground):
                 "endpoints": [
                     {
                         "method": "POST",
-                        "url": "/api/v1/phonebook/",
-                        "description": _("create new phonebook"),
+                        "url": "/api/v1/bulkcontact/",
+                        "description": _("create new contacts"),
                         "parameters": [{
                                            "name": "phonebook_id",
                                            "type": "string",

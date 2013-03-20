@@ -37,17 +37,23 @@ class BulkContactValidation(Validation):
         errors = {}
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
-        if check_dialer_setting(request, check_for="contact"):
+
+        if check_dialer_setting(bundle.request, check_for="contact"):
             errors['contact_dialer_setting'] = ["You have too many contacts per campaign. You are allowed a maximum of %s" %
-                dialer_setting_limit(request, limit_for="contact")]
+                dialer_setting_limit(bundle.request, limit_for="contact")]
+
         phonebook_id = bundle.data.get('phonebook_id')
-        if phonebook_id:
+        if phonebook_id and phonebook_id != '':
             try:
                 Phonebook.objects.get(id=phonebook_id)
             except Phonebook.DoesNotExist:
                 errors['phonebook_error'] = ["Phonebook is not selected!"]
         else:
             errors['phonebook_error'] = ["Phonebook is not selected!"]
+
+        if errors:
+            raise BadRequest(errors)
+
         return errors
 
 
@@ -93,6 +99,8 @@ class BulkContactResource(ModelResource):
         A ORM-specific implementation of ``obj_create``.
         """
         logger.debug('BulkContact API get called')
+
+        self.is_valid(bundle)
 
         bundle.obj = self._meta.object_class()
         bundle = self.full_hydrate(bundle)

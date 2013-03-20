@@ -207,7 +207,10 @@ class DNCContactResource(ModelResource):
             except ValueError:
                 error_msg = "Wrong value for phone_number !"
                 raise BadRequest(error_msg)
-            dnc_contacts = DNCContact.objects.get(dnc_id=dnc_id, phone_number=phone_number)
+            try:
+                dnc_contacts = DNCContact.objects.get(dnc_id=dnc_id, phone_number=phone_number)
+            except DNCContact.DoesNotExist:
+                dnc_contacts = []
         else:
             dnc_contacts = DNCContact.objects.filter(dnc_id=dnc_id)
 

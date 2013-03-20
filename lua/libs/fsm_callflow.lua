@@ -500,9 +500,12 @@ function FSMCall:next_node()
         self.actionresult = false
 
     elseif current_node.type == DNC then
-        self:playnode(current_node)
         --Add this phonenumber to the DNC campaign list
-        --more to go
+        self.db:connect()
+        self.db:add_dnc(self.db.campaign_info.dnc_id, self.destination_number)
+        self.db:disconnect()
+        --Play Node
+        self:playnode(current_node)
         self:end_call()
 
     elseif current_node.type == MULTI_CHOICE then

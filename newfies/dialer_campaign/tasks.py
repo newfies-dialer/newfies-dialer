@@ -23,6 +23,7 @@ from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE
 from dialer_cdr.models import Callrequest
 from dialer_cdr.tasks import init_callrequest
 from dialer_contact.tasks import collect_subscriber
+from dnc.models import DNCContact
 from common.only_one_task import only_one
 from datetime import datetime, timedelta
 from math import ceil
@@ -148,12 +149,22 @@ class CheckPendingcall(Task):
 
             debug_query(4)
 
-            # Check if the contact is authorized
+            #Verify that the contact is authorized
             if not obj_campaign.is_authorized_contact(obj_campaign.user.userprofile.dialersetting, phone_number):
                 logger.error("Error : Contact not authorized")
                 elem_camp_subscriber.status = SUBSCRIBER_STATUS.NOT_AUTHORIZED
                 elem_camp_subscriber.save()
                 return True
+            #Verify that the contact is not in the DNC list
+            if obj_campaign.dnc:
+                try:
+                    DNCContact.objects.get(dnc_id=obj_campaign.dnc_id, phone_number=phone_number)
+                    logger.error("Contact (%s) in DNC list" % phone_number)
+                    elem_camp_subscriber.status = SUBSCRIBER_STATUS.NOT_AUTHORIZED
+                    elem_camp_subscriber.save()
+                    return True
+                except DNCContact.DoesNotExist:
+                    logger.debug("Contact (%s) not in DNC list" % phone_number)
 
             debug_query(5)
 

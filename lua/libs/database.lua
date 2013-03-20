@@ -359,6 +359,18 @@ function Database:save_result_aggregate(campaign_id, survey_id, section_id, resp
     end
 end
 
+function Database:add_dnc(dnc_id, phonenumber)
+    sqlquery = "INSERT INTO dnc_contact (dnc_id, phone_number, created_date, updated_date) "..
+        "VALUES ("..dnc_id..", '"..phonenumber.."', NOW(), NOW())"
+    self.debugger:msg("DEBUG", "Insert DNC:"..sqlquery)
+    res = self.con:execute(sqlquery)
+    if not res then
+        return false
+    else
+        return true
+    end
+end
+
 function Database:update_result_aggregate(campaign_id, survey_id, section_id, response)
     sqlquery = "UPDATE survey_resultaggregate SET count = count + 1"..
         " WHERE campaign_id="..campaign_id.." AND survey_id="..survey_id.." AND section_id="..section_id.." AND response='"..section_id.."'"
@@ -454,10 +466,11 @@ end
 -- Test Code
 --
 if false then
-    campaign_id = 128
+    campaign_id = 141
     survey_id = 11
     callrequest_id = 165
     section_id = 180
+    dnc_id = 1
     record_file = '/tmp/recording-file.wav'
     recording_duration = '30'
     dtmf = '5'
@@ -468,6 +481,8 @@ if false then
 
     db:load_campaign_info(campaign_id)
     print(inspect(db.campaign_info))
+
+    db:add_dnc(dnc_id, '12388888880')
 
     print(db:load_content_type())
 

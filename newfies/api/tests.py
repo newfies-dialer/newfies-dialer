@@ -279,15 +279,15 @@ class ApiTestCase(BaseAuthenticatedClient):
             **self.extra)
         self.assertEqual(response.status_code, 200)
 
-    def test_create_cdr(self):
-        """Test Function to create a CDR"""
-        #data = ('cdr=<?xml version="1.0"?><cdr><other></other><variables><request_uuid>e8fee8f6-40dd-11e1-964f-000c296bd875</request_uuid><duration>3</duration></variables><notvariables><request_uuid>TESTc</request_uuid><duration>5</duration></notvariables></cdr>')
-        #response = self.client.post('/api/v1/store_cdr/', data,
-        #                content_type='application/json', **self.extra)
-        #self.assertEqual(response.status_code, 200)
+    # def test_create_cdr(self):
+    #     """Test Function to create a CDR"""
+    #     #data = ('cdr=<?xml version="1.0"?><cdr><other></other><variables><request_uuid>e8fee8f6-40dd-11e1-964f-000c296bd875</request_uuid><duration>3</duration></variables><notvariables><request_uuid>TESTc</request_uuid><duration>5</duration></notvariables></cdr>')
+    #     #response = self.client.post('/api/v1/store_cdr/', data,
+    #     #                content_type='application/json', **self.extra)
+    #     #self.assertEqual(response.status_code, 200)
 
-        response = self.client.post('/api/v1/store_cdr/', {}, **self.extra)
-        self.assertEqual(response.status_code, 400)
+    #     response = self.client.post('/api/v1/store_cdr/', {}, **self.extra)
+    #     self.assertEqual(response.status_code, 400)
 
     def test_subscriber_per_campaign(self):
         """Test Function subscriber per campaign"""

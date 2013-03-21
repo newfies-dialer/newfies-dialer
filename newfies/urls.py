@@ -37,7 +37,7 @@ from api.subscriber_api import SubscriberResource
 from api.subscriber_per_campaign_api import \
     SubscriberPerCampaignResource
 from api.callrequest_api import CallrequestResource
-from api.store_cdr_api import CdrResource
+#from api.store_cdr_api import CdrResource
 from api.audiofile_api import AudioFileResource
 from api.dnc_api import DNCResource
 from api.dnc_contact_api import DNCContactResource

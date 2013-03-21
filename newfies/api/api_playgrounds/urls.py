@@ -20,7 +20,7 @@ from api.api_playgrounds.bulk_contact_playground import BulkContactAPIPlayground
 from api.api_playgrounds.campaign_delete_cascade_playground import CampaignDelCascadeAPIPlayground
 from api.api_playgrounds.subscriber_playground import SubscriberAPIPlayground
 from api.api_playgrounds.subscriber_per_campaign_playground import SubscriberPerCampaignAPIPlayground
-from api.api_playgrounds.store_cdr_playground import StoreCdrAPIPlayground
+#from api.api_playgrounds.store_cdr_playground import StoreCdrAPIPlayground
 from api.api_playgrounds.survey_playground import SurveyAPIPlayground
 from api.api_playgrounds.section_playground import SectionAPIPlayground
 from api.api_playgrounds.branching_playground import BranchingAPIPlayground
@@ -37,7 +37,7 @@ urlpatterns = patterns('',
     (r'api-explorer/subscriber/', include(SubscriberAPIPlayground().urls)),
     (r'api-explorer/subscriber-per-campaign/', include(SubscriberPerCampaignAPIPlayground().urls)),
     (r'api-explorer/callrequest/', include(CallrequestAPIPlayground().urls)),
-    (r'api-explorer/store-cdr/', include(StoreCdrAPIPlayground().urls)),
+    #(r'api-explorer/store-cdr/', include(StoreCdrAPIPlayground().urls)),
     (r'api-explorer/survey/', include(SurveyAPIPlayground().urls)),
     (r'api-explorer/section/', include(SectionAPIPlayground().urls)),
     (r'api-explorer/branching/', include(BranchingAPIPlayground().urls)),

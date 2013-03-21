@@ -14,6 +14,10 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
+# -----------------------
+# This API is depreciated
+# -----------------------
+
 from django.conf.urls.defaults import url
 from django.http import HttpResponse
 
@@ -25,10 +29,8 @@ from tastypie.exceptions import ImmediateHttpResponse, \
 from tastypie import http
 from dialer_cdr.models import Callrequest
 from api.resources import CustomXmlEmitter, \
-    IpAddressAuthorization, \
-    IpAddressAuthentication,\
-    create_voipcall,\
-    CDR_VARIABLES
+    IpAddressAuthorization, IpAddressAuthentication,\
+    create_voipcall, CDR_VARIABLES
 import logging
 import urllib
 

@@ -20,8 +20,14 @@ from tastypie.authorization import Authorization
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie import fields
+from api.audiofile_api import AudioFileResource
 from survey.api.survey_api import SurveyResource
 from survey.models import Survey_template, Section_template
+from survey.constants import SECTION_TYPE
+from audiofield.models import AudioFile
+import logging
+
+logger = logging.getLogger('newfies.filelog')
 
 
 class SectionValidation(Validation):
@@ -35,26 +41,17 @@ class SectionValidation(Validation):
             errors['Data'] = ['Data set is empty']
 
         survey_id = bundle.data.get('survey')
-        if survey_id:
+        if survey_id and survey_id != '':
             try:
-                survey_id = Survey_template.objects.get(id=survey_id).id
-                bundle.data['survey'] = '/api/v1/survey/%s/' % survey_id
+                Survey_template.objects.get(id=survey_id).id
+                bundle.data['survey'] = survey_id
             except:
-                errors['survey'] = ["The Survey ID doesn't exist!"]
+                errors['survey'] = "The Survey ID doesn't exist!"
+        else:
+            errors['survey'] = "Enter survey id"
 
         if not bundle.data.get('question'):
-            errors['question'] = ["Please add question field"]
-
-        """
-        type = bundle.data.get('type')
-        if type == 2:
-            if not bundle.data.get('key_0'):
-                errors['key_0'] = ["Please add key field"]
-
-        if type == 3:
-            if not bundle.data.get('rating_laps'):
-                errors['key_0'] = ["Please add rating_laps field"]
-        """
+            errors['question'] = "Please add question field"
 
         return errors
 
@@ -213,6 +210,8 @@ class SectionResource(ModelResource):
             Content-Language: en-us
     """
     survey = fields.ForeignKey(SurveyResource, 'survey')
+    audiofile = fields.ForeignKey(AudioFileResource, 'audiofile',
+        null=True, blank=True)
 
     class Meta:
         queryset = Section_template.objects.all()
@@ -222,3 +221,88 @@ class SectionResource(ModelResource):
         validation = SectionValidation()
         # default 1000 calls / hour
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
+
+    def full_hydrate(self, bundle, request=None):
+        bundle.obj.survey = Survey_template.objects.get(pk=bundle.data.get('survey'))
+
+        if bundle.data.get('audiofile'):
+            bundle.obj.audiofile = AudioFile.objects.get(pk=bundle.data.get('audiofile'))
+
+        if bundle.data.get('type'):
+            bundle.obj.type = bundle.data.get('type')
+        if bundle.data.get('question'):
+            bundle.obj.question = bundle.data.get('question')
+        if bundle.data.get('script'):
+            bundle.obj.script = bundle.data.get('script')
+        if bundle.data.get('timeout'):
+            bundle.obj.timeout = bundle.data.get('timeout')
+        if bundle.data.get('retries'):
+            bundle.obj.retries = bundle.data.get('retries')
+
+        if bundle.data.get('key_0'):
+            bundle.obj.key_0 = bundle.data.get('key_0')
+        if bundle.data.get('key_1'):
+            bundle.obj.key_1 = bundle.data.get('key_1')
+        if bundle.data.get('key_2'):
+            bundle.obj.key_2 = bundle.data.get('key_2')
+        if bundle.data.get('key_3'):
+            bundle.obj.key_3 = bundle.data.get('key_3')
+        if bundle.data.get('key_4'):
+            bundle.obj.key_4 = bundle.data.get('key_4')
+        if bundle.data.get('key_5'):
+            bundle.obj.key_5 = bundle.data.get('key_5')
+        if bundle.data.get('key_6'):
+            bundle.obj.key_6 = bundle.data.get('key_6')
+        if bundle.data.get('key_7'):
+            bundle.obj.key_7 = bundle.data.get('key_7')
+        if bundle.data.get('key_8'):
+            bundle.obj.key_8 = bundle.data.get('key_8')
+        if bundle.data.get('key_9'):
+            bundle.obj.key_9 = bundle.data.get('key_9')
+
+
+        if bundle.data.get('rating_laps'):
+            bundle.obj.rating_laps = bundle.data.get('rating_laps')
+        if bundle.data.get('validate_number'):
+            bundle.obj.validate_number = bundle.data.get('validate_number')
+        if bundle.data.get('number_digits'):
+            bundle.obj.number_digits = bundle.data.get('number_digits')
+
+        if bundle.data.get('min_number'):
+            bundle.obj.min_number = bundle.data.get('min_number')
+        if bundle.data.get('max_number'):
+            bundle.obj.max_number = bundle.data.get('max_number')
+
+        if bundle.data.get('phonenumber'):
+            bundle.obj.phonenumber = bundle.data.get('phonenumber')
+        if bundle.data.get('conference'):
+            bundle.obj.conference = bundle.data.get('conference')
+
+        return bundle
+
+    def obj_create(self, bundle, request=None, **kwargs):
+        """
+        A ORM-specific implementation of ``obj_create``.
+        """
+        logger.debug('Section API get called')
+
+        self.is_valid(bundle)
+        bundle.obj = self._meta.object_class()
+
+        for key, value in kwargs.items():
+            setattr(bundle.obj, key, value)
+
+        bundle = self.full_hydrate(bundle)
+
+        # Save FKs just in case.
+        self.save_related(bundle)
+
+        # Save the main object.
+        bundle.obj.save()
+
+        # Now pick up the M2M bits.
+        m2m_bundle = self.hydrate_m2m(bundle)
+        self.save_m2m(m2m_bundle)
+        logger.debug('Section API : Result ok 200')
+        return bundle
+

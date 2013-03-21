@@ -48,18 +48,136 @@ class SectionAPIPlayground(APIPlayground):
                                        {
                                            "name": "question",
                                            "type": "string",
+                                           "is_required": True,
                                            "default": "this is test question"
                                        },
                                        {
                                            "name": "script",
                                            "type": "string",
+                                           "is_required": True,
                                            "default": "this is test question"
                                        },
                                        {
                                            "name": "survey",
                                            "type": "string",
+                                           "is_required": True,
                                            "default": "1"
                                        },
+                                       {
+                                           "name": "retries",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+
+                                       {
+                                           "name": "timeout",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "key_0",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "key_1",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "key_2",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "key_3",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "key_4",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "key_5",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "key_6",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "key_7",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "key_8",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "key_9",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "rating_laps",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "validate_number",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": "True"
+                                       },
+                                       {
+                                           "name": "number_digits",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "min_number",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "max_number",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "phonenumber",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "conference",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       }
                                        ]
                     },
                     {
@@ -75,18 +193,136 @@ class SectionAPIPlayground(APIPlayground):
                                        {
                                            "name": "question",
                                            "type": "string",
+                                           "is_required": True,
                                            "default": "this is test question"
                                        },
                                        {
                                            "name": "script",
                                            "type": "string",
+                                           "is_required": True,
                                            "default": "this is test question"
                                        },
                                        {
                                            "name": "survey",
                                            "type": "string",
+                                           "is_required": True,
                                            "default": "1"
                                        },
+                                       {
+                                           "name": "retries",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+
+                                       {
+                                           "name": "timeout",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "key_0",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "key_1",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "key_2",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "key_3",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "key_4",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "key_5",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "key_6",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "key_7",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "key_8",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "key_9",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "rating_laps",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "validate_number",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": "True"
+                                       },
+                                       {
+                                           "name": "number_digits",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "min_number",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "max_number",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "phonenumber",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       },
+                                       {
+                                           "name": "conference",
+                                           "type": "string",
+                                           "is_required": False,
+                                           "default": ""
+                                       }
                                        ]
                     },
                     {

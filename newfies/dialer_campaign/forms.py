@@ -104,8 +104,6 @@ class CampaignForm(ModelForm):
             for l in list:
                 dnc_list.append((l[0], l[1]))
             self.fields['dnc'].choices = dnc_list
-            self.fields['dnc'].null = True
-            self.fields['dnc'].blank = True
 
             for i in gw_list:
                 list_gw.append((i[0], i[1]))

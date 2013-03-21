@@ -11,7 +11,7 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-
+from django.core.exceptions import ObjectDoesNotExist
 from tastypie.resources import ModelResource
 from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import Authorization
@@ -56,58 +56,42 @@ class CampaignDeleteCascadeResource(ModelResource):
         detail_allowed_methods = ['delete']
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
 
-    def obj_delete(self, request=None, **kwargs):
+    def obj_delete(self, bundle, **kwargs):
         """
         A ORM-specific implementation of ``obj_delete``.
 
         Takes optional ``kwargs``, which are used to narrow the query to find
         the instance.
         """
-        logger.debug('CampaignDeleteCascade API get called')
-
-        obj = kwargs.pop('_obj', None)
-        if not hasattr(obj, 'delete'):
+        if not hasattr(bundle.obj, 'delete'):
             try:
-                obj = self.obj_get(request, **kwargs)
-            except:
-                error_msg = "A model instance matching the provided arguments could not be found."
-                logger.error(error_msg)
-                raise NotFound(error_msg)
+                bundle.obj = self.obj_get(bundle=bundle, **kwargs)
+            except ObjectDoesNotExist:
+                raise NotFound("A model instance matching the provided arguments could not be found.")
 
-        #obj.delete()
-        campaign_id = obj.id
-        try:
-            del_campaign = Campaign.objects.get(id=campaign_id)
-            phonebook_count = del_campaign.phonebook.all().count()
+        self.authorized_delete_detail(self.get_object_list(bundle.request), bundle)
+        del_campaign = bundle.obj
 
-            if phonebook_count == 0:
-                del_campaign.delete()
-            else:
-                # phonebook_count > 0
-                other_campaing_count =\
-                    Campaign.objects.filter(user=request.user,
-                        phonebook__in=del_campaign.phonebook.all())\
-                            .exclude(id=campaign_id).count()
+        phonebook_count = del_campaign.phonebook.all().count()
+        if phonebook_count > 0:
+            other_campaing_count =\
+                Campaign.objects.filter(user=bundle.request.user,
+                    phonebook__in=del_campaign.phonebook.all())\
+                        .exclude(id=del_campaign.id).count()
 
-                if other_campaing_count == 0:
-                    # delete phonebooks as well as contacts belong to it
+            if other_campaing_count == 0:
+                # delete phonebooks as well as contacts belong to it
 
-                    # 1) delete all contacts which are belong to phonebook
-                    contact_list = Contact.objects\
-                        .filter(phonebook__in=del_campaign.phonebook.all())
-                    contact_list.delete()
+                # 1) delete all contacts which are belong to phonebook
+                contact_list = Contact.objects\
+                    .filter(phonebook__in=del_campaign.phonebook.all())
+                contact_list.delete()
 
-                    # 2) delete phonebook
-                    phonebook_list = Phonebook.objects\
-                        .filter(id__in=del_campaign.phonebook.all())
-                    phonebook_list.delete()
+                # 2) delete phonebook
+                phonebook_list = Phonebook.objects\
+                    .filter(id__in=del_campaign.phonebook.all())
+                phonebook_list.delete()
 
-                    # 3) delete campaign
-                    del_campaign.delete()
-                else:
-                    del_campaign.delete()
-                logger.debug('CampaignDeleteCascade API : result ok 200')
-        except:
-            error_msg = "A model matching arguments not found."
-            logger.error(error_msg)
-            raise NotFound(error_msg)
+        # 3) delete campaign
+        bundle.obj.delete()
+        logger.debug('CampaignDeleteCascade API : result ok 200')

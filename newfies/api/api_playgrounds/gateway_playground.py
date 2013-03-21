@@ -47,6 +47,7 @@ class GatewayAPIPlayground(APIPlayground):
                                        {
                                            "name": "description",
                                            "type": "string",
+                                           "default": "Gateway Name"
                                        },
                                        {
                                            "name": "addprefix",
@@ -61,27 +62,27 @@ class GatewayAPIPlayground(APIPlayground):
                                        {
                                            "name": "gateways",
                                            "type": "string",
-                                           "default": ""
+                                           "default": "sofia/gateway/myprovider/"
                                        },
                                        {
                                            "name": "gateway_codecs",
                                            "type": "string",
-                                           "default": ""
+                                           "default": "PCMA,PCMU"
                                        },
                                        {
                                            "name": "gateway_timeouts",
                                            "type": "string",
-                                           "default": ""
+                                           "default": "1"
                                        },
                                        {
                                            "name": "gateway_retries",
                                            "type": "string",
-                                           "default": ""
+                                           "default": "1"
                                        },
                                        {
                                            "name": "originate_dial_string",
                                            "type": "string",
-                                           "default": ""
+                                           "default": "test"
                                        },
                                        {
                                            "name": "failover",
@@ -91,12 +92,12 @@ class GatewayAPIPlayground(APIPlayground):
                                        {
                                            "name": "addparameter",
                                            "type": "string",
-                                           "default": ""
+                                           "default": "xyz"
                                        },
                                        {
                                            "name": "maximum_call",
                                            "type": "string",
-                                           "default": ""
+                                           "default": "1"
                                        },
                                        ]
                     },
@@ -106,11 +107,13 @@ class GatewayAPIPlayground(APIPlayground):
                         "description": _("update gateway"),
                         "parameters": [{
                                            "name": "name",
-                                           "type": "string"
+                                           "type": "string",
+                                           "default": "Sample gateway"
                                        },
                                        {
                                            "name": "description",
-                                           "type": "string"
+                                           "type": "string",
+                                           "default": "ok"
                                        },
                                        {
                                            "name": "addprefix",
@@ -120,32 +123,32 @@ class GatewayAPIPlayground(APIPlayground):
                                        {
                                            "name": "removeprefix",
                                            "type": "string",
-                                           "default": ""
+                                           "default": "33"
                                        },
                                        {
                                            "name": "gateways",
                                            "type": "string",
-                                           "default": ""
+                                           "default": "sofia/gateway/myprovider/"
                                        },
                                        {
                                            "name": "gateway_codecs",
                                            "type": "string",
-                                           "default": ""
+                                           "default": "PCMA,PCMU"
                                        },
                                        {
                                            "name": "gateway_timeouts",
                                            "type": "string",
-                                           "default": ""
+                                           "default": "100"
                                        },
                                        {
                                            "name": "gateway_retries",
                                            "type": "string",
-                                           "default": ""
+                                           "default": "1"
                                        },
                                        {
                                            "name": "originate_dial_string",
                                            "type": "string",
-                                           "default": ""
+                                           "default": "test"
                                        },
                                        {
                                            "name": "failover",
@@ -160,7 +163,7 @@ class GatewayAPIPlayground(APIPlayground):
                                        {
                                            "name": "maximum_call",
                                            "type": "string",
-                                           "default": ""
+                                           "default": "20"
                                        },
                                        ]
                     },

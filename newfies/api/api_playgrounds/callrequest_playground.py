@@ -40,12 +40,6 @@ class CallrequestAPIPlayground(APIPlayground):
                         "url": "/api/v1/callrequest/",
                         "description": _("create new callrequest"),
                         "parameters": [{
-                                           "name": "request_uuid",
-                                           "type": "string",
-                                           "is_required": True,
-                                           "default": "2342jtdsf-00123"
-                                       },
-                                       {
                                            "name": "call_time",
                                            "type": "string",
                                            "default": "2011-10-20 12:21:22"
@@ -87,12 +81,6 @@ class CallrequestAPIPlayground(APIPlayground):
                         "url": "/api/v1/callrequest/{callrequest-id}/",
                         "description": _("update callrequest"),
                         "parameters": [{
-                                           "name": "request_uuid",
-                                           "type": "string",
-                                           "is_required": True,
-                                           "default": "2342jtdsf-00123"
-                                       },
-                                       {
                                            "name": "call_time",
                                            "type": "string",
                                            "default": "2011-10-20 12:21:22"

@@ -170,7 +170,7 @@ class CampaignValidation(Validation):
 
         if errors:
             raise BadRequest(errors)
-        return True
+        return errors
 
 
 class CampaignResource(ModelResource):

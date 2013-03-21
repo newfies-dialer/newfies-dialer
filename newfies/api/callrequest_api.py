@@ -62,17 +62,10 @@ class CallrequestValidation(Validation):
         except:
             errors['chk_user'] = ["The User doesn't exist!"]
 
-        if request.method == 'POST':
-            rq_count = Callrequest.objects\
-                .filter(request_uuid=bundle.data.get('request_uuid'))\
-                .count()
-            if (rq_count != 0):
-                errors['chk_request_uuid'] = ["The Request uuid duplicated!"]
-
         if errors:
             raise BadRequest(errors)
 
-        return True
+        return errors
 
 
 class CallrequestResource(ModelResource):

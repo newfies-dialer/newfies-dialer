@@ -98,12 +98,14 @@ class CampaignForm(ModelForm):
             list = user.get_profile().userprofile_gateway.all()
             gw_list = ((l.id, l.name) for l in list)
 
-            dnc_list.append((0, '---'))
+            dnc_list.append(('', '---'))
             list = DNC.objects.values_list('id', 'name')\
                 .filter(user=user).order_by('id')
             for l in list:
                 dnc_list.append((l[0], l[1]))
             self.fields['dnc'].choices = dnc_list
+            self.fields['dnc'].null = True
+            self.fields['dnc'].blank = True
 
             for i in gw_list:
                 list_gw.append((i[0], i[1]))

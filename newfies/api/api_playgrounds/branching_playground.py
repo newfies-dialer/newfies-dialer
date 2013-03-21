@@ -48,6 +48,13 @@ class BranchingAPIPlayground(APIPlayground):
                                        {
                                            "name": "section",
                                            "type": "string",
+                                           "is_required": True,
+                                           "default": "1"
+                                       },
+                                       {
+                                           "name": "goto",
+                                           "type": "string",
+                                           "is_required": False,
                                            "default": "1"
                                        },
                                        ]
@@ -65,6 +72,13 @@ class BranchingAPIPlayground(APIPlayground):
                                        {
                                            "name": "section",
                                            "type": "string",
+                                           "is_required": True,
+                                           "default": "1"
+                                       },
+                                       {
+                                           "name": "goto",
+                                           "type": "string",
+                                           "is_required": False,
                                            "default": "1"
                                        },
                                       ]

@@ -19,9 +19,13 @@ from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import Authorization
 from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
+from tastypie.exceptions import BadRequest
 from tastypie import fields
 from survey.api.survey_section_api import SectionResource
 from survey.models import Section_template, Branching_template
+import logging
+
+logger = logging.getLogger('newfies.filelog')
 
 
 class BranchingValidation(Validation):
@@ -31,27 +35,40 @@ class BranchingValidation(Validation):
     def is_valid(self, bundle, request=None):
         errors = {}
         if not bundle.data:
-            errors['Data'] = ['Data set is empty']
+            errors['Data'] = 'Data set is empty'
         keys = bundle.data.get('keys')
-        if keys:
-            dup_count = Branching.objects.filter(keys=str(keys)).count()
-            if request.method == 'POST':
+        if keys and keys != '':
+            dup_count = Branching_template.objects.filter(keys=str(keys)).count()
+            if bundle.request.method == 'POST':
                 if dup_count >= 1:
-                    errors['duplicate_key'] = ["Keys is already exist!"]
-            if request.method == 'PUT':
+                    errors['duplicate_key'] = "Keys is already exist!"
+            if bundle.request.method == 'PUT':
                 if dup_count > 1:
-                    errors['duplicate_key'] = ["Keys is already exist!"]
+                    errors['duplicate_key'] = "Keys is already exist!"
+        else:
+            errors['keys'] = "Please enter Keys."
+
 
         section_id = bundle.data.get('section')
-        if section_id:
+        if section_id and section_id != '':
             try:
                 section_id = Section_template.objects.get(id=section_id).id
-                bundle.data['section'] = \
-                    '/api/v1/section/%s/' % section_id
+                bundle.data['section'] = section_id
             except:
-                errors['section'] = \
-                      ["The Section ID doesn't exist!"]
+                errors['section'] =  "The Section ID doesn't exist!"
+        else:
+            errors['section'] = "Please enter section."
 
+        goto = bundle.data.get('goto')
+        if goto and goto != '':
+            try:
+                section_id = Section_template.objects.get(id=goto).id
+                bundle.data['goto'] = section_id
+            except:
+                errors['goto'] =  "The Section ID doesn't exist!"
+
+        if errors:
+            raise BadRequest(errors)
         return errors
 
 
@@ -97,61 +114,16 @@ class BranchingResource(ModelResource):
                   "next":null,
                   "offset":0,
                   "previous":null,
-                  "total_count":2
+                  "total_count":1
                },
                "objects":[
                   {
-                     "created_date":"2012-09-13T08:06:24.357530",
-                     "id":"10",
+                     "created_date":"2013-03-21T11:00:51.852136",
+                     "id":1,
                      "keys":"0",
-                     "resource_uri":"/api/v1/branching/10/",
-                     "section":{
-                        "created_date":"2012-09-13T08:06:05.344297",
-                        "phonenumber":null,
-                        "id":"15",
-                        "key_0":null,
-                        "key_1":null,
-                        "key_2":null,
-                        "key_3":null,
-                        "key_4":null,
-                        "key_5":null,
-                        "key_6":null,
-                        "key_7":null,
-                        "key_8":null,
-                        "key_9":null,
-                        "max_number":100,
-                        "min_number":1,
-                        "number_digits":null,
-                        "order":1,
-                        "script":"this is test question hello",
-                        "question":"this is test question",
-                        "rating_laps":null,
-                        "resource_uri":"/api/v1/section/15/",
-                        "retries":0,
-                        "survey":{
-                           "created_date":"2012-09-13T08:05:51.458779",
-                           "description":"",
-                           "id":"2",
-                           "name":"sample survey",
-                           "order":1,
-                           "resource_uri":"/api/v1/survey/2/",
-                           "updated_date":"2012-09-14T07:56:30.304371",
-                           "user":{
-                              "first_name":"",
-                              "id":"1",
-                              "last_login":"2012-09-11T09:14:16.986223",
-                              "last_name":"",
-                              "resource_uri":"/api/v1/user/1/",
-                              "username":"areski"
-                           }
-                        },
-                        "timeout":null,
-                        "type":1,
-                        "updated_date":"2012-09-13T08:06:14.565249",
-                        "use_audiofile":false,
-                        "validate_number":true
-                     },
-                     "updated_date":"2012-09-13T08:06:24.357563"
+                     "resource_uri":"/api/v1/branching/1/",
+                     "section":"/api/v1/section/1/",
+                     "updated_date":"2013-03-21T11:00:51.852173"
                   }
                ]
             }
@@ -192,6 +164,8 @@ class BranchingResource(ModelResource):
 
     """
     section = fields.ForeignKey(SectionResource, 'section')
+    goto = fields.ForeignKey(SectionResource, 'goto',
+        null=True, blank=True)
 
     class Meta:
         queryset = Branching_template.objects.all()
@@ -202,3 +176,38 @@ class BranchingResource(ModelResource):
         # default 1000 calls / hour
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
         pass_request_user_to_django = True
+
+    def full_hydrate(self, bundle, request=None):
+        bundle.obj.keys = bundle.data.get('keys')
+        bundle.obj.section = Section_template.objects.get(pk=bundle.data.get('section'))
+        if bundle.data.get('goto'):
+            bundle.obj.goto = Section_template.objects.get(pk=bundle.data.get('goto'))
+        return bundle
+
+    def obj_create(self, bundle, request=None, **kwargs):
+        """
+        A ORM-specific implementation of ``obj_create``.
+        """
+        logger.debug('Branching API get called')
+
+        self.is_valid(bundle)
+        bundle.obj = self._meta.object_class()
+
+        for key, value in kwargs.items():
+            setattr(bundle.obj, key, value)
+
+        bundle = self.full_hydrate(bundle)
+
+        # Save FKs just in case.
+        self.save_related(bundle)
+
+        # Save the main object.
+        bundle.obj.save()
+
+        # Now pick up the M2M bits.
+        m2m_bundle = self.hydrate_m2m(bundle)
+        self.save_m2m(m2m_bundle)
+        logger.debug('Branching API : Result ok 200')
+        return bundle
+
+

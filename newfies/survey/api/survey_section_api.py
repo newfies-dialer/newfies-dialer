@@ -21,7 +21,7 @@ from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie import fields
 from survey.api.survey_api import SurveyResource
-from survey.models import Survey, Section
+from survey.models import Survey_template, Section_template
 
 
 class SectionValidation(Validation):
@@ -37,7 +37,7 @@ class SectionValidation(Validation):
         survey_id = bundle.data.get('survey')
         if survey_id:
             try:
-                survey_id = Survey.objects.get(id=survey_id).id
+                survey_id = Survey_template.objects.get(id=survey_id).id
                 bundle.data['survey'] = '/api/v1/survey/%s/' % survey_id
             except:
                 errors['survey'] = ["The Survey ID doesn't exist!"]
@@ -212,10 +212,10 @@ class SectionResource(ModelResource):
             Content-Type: text/html; charset=utf-8
             Content-Language: en-us
     """
-    survey = fields.ForeignKey(SurveyResource, 'survey', full=True)
+    survey = fields.ForeignKey(SurveyResource, 'survey')
 
     class Meta:
-        queryset = Section.objects.all()
+        queryset = Section_template.objects.all()
         resource_name = 'section'
         authorization = Authorization()
         authentication = BasicAuthentication()

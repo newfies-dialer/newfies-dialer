@@ -21,7 +21,7 @@ from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie import fields
 from survey.api.survey_section_api import SectionResource
-from survey.models import Section, Branching
+from survey.models import Section_template, Branching_template
 
 
 class BranchingValidation(Validation):
@@ -45,7 +45,7 @@ class BranchingValidation(Validation):
         section_id = bundle.data.get('section')
         if section_id:
             try:
-                section_id = Section.objects.get(id=section_id).id
+                section_id = Section_template.objects.get(id=section_id).id
                 bundle.data['section'] = \
                     '/api/v1/section/%s/' % section_id
             except:
@@ -191,11 +191,10 @@ class BranchingResource(ModelResource):
             Content-Language: en-us
 
     """
-    section = fields.ForeignKey(SectionResource,
-                                'section', full=True)
+    section = fields.ForeignKey(SectionResource, 'section')
 
     class Meta:
-        queryset = Branching.objects.all()
+        queryset = Branching_template.objects.all()
         resource_name = 'branching'
         authorization = Authorization()
         authentication = BasicAuthentication()

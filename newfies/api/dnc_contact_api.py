@@ -188,7 +188,7 @@ class DNCContactResource(ModelResource):
             phone_number = temp_path.split('/')[1]
         except:
             phone_number = False
-        print dnc_id
+
         try:
             dnc_id = int(dnc_id)
         except:

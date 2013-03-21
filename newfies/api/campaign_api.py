@@ -170,7 +170,7 @@ class CampaignValidation(Validation):
 
         if errors:
             raise BadRequest(errors)
-        return errors
+        return True
 
 
 class CampaignResource(ModelResource):
@@ -442,9 +442,7 @@ class CampaignResource(ModelResource):
         """
         logger.debug('Campaign API get called')
 
-        #Uncomment this, it seems to fix API for some users
         self.is_valid(bundle)
-
         bundle.obj = self._meta.object_class()
 
         for key, value in kwargs.items():

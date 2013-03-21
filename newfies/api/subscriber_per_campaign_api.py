@@ -30,8 +30,8 @@ logger = logging.getLogger('newfies.filelog')
 
 def get_contact(id):
     """
-    >>> get_contact(1)
-    u'640234000'
+    >>> get_contact(0)
+    ''
     """
     try:
         con_obj = Contact.objects.get(pk=id)

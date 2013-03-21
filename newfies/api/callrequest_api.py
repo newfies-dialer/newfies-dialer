@@ -36,7 +36,6 @@ class CallrequestValidation(Validation):
     """
     def is_valid(self, bundle, request=None):
         errors = {}
-
         if not bundle.data:
             errors['Data'] = ['Data set is empty']
 
@@ -72,7 +71,8 @@ class CallrequestValidation(Validation):
 
         if errors:
             raise BadRequest(errors)
-        return errors
+
+        return True
 
 
 class CallrequestResource(ModelResource):
@@ -224,9 +224,7 @@ class CallrequestResource(ModelResource):
         """
         logger.debug('Callrequest API get called')
 
-        #Uncomment this, it seems to fix API for some users
         self.is_valid(bundle)
-
         bundle.obj = self._meta.object_class()
 
         for key, value in kwargs.items():

@@ -116,8 +116,6 @@ class CampaignValidation(Validation):
             try:
                 Gateway.objects.get(id=aleg_gateway_id)
                 bundle.data['aleg_gateway'] = '/api/v1/gateway/%s/' % aleg_gateway_id
-                #if bundle.request.method == 'PATCH':
-                #    bundle.data['aleg_gateway'] = {'resource_uri':'/api/v1/gateway/%s/' % aleg_gateway_id}
             except:
                 errors['chk_gateway'] = ["The Gateway ID doesn't exist!"]
 
@@ -409,6 +407,7 @@ class CampaignResource(ModelResource):
         validation = CampaignValidation()
         list_allowed_methods = ['post', 'get', 'patch', 'delete']
         detail_allowed_methods = ['post', 'get', 'patch', 'delete']
+        include_resource_uri = True
         filtering = {
             'name': ALL,
             'status': ALL,

@@ -75,35 +75,11 @@ class DNCContactResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/dnc_contact/?format=json
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/dnc_contact/read/%dnc-id%/%dnc-contact%/?format=json
 
         Response::
 
-            {
-               "meta":{
-                  "limit":20,
-                  "next":null,
-                  "offset":0,
-                  "previous":null,
-                  "total_count":4
-               },
-               "objects":[
-                  {
-                     "created_date":"2013-03-15T18:29:35.400000",
-                     "dnc":{
-                        "created_date":"2013-03-15T18:28:30.208000",
-                        "id":1,
-                        "name":"sample dnc",
-                        "resource_uri":"/api/v1/dnc/1/",
-                        "updated_date":"2013-03-15T18:28:30.208000"
-                     },
-                     "id":1,
-                     "phone_number":"123456789",
-                     "resource_uri":"/api/v1/dnc_contact/1/",
-                     "updated_date":"2013-03-15T18:29:35.400000"
-                  },
-               ]
-            }
+            "[<DNCContact: [3] 35555>, <DNCContact: [2] 123456>, <DNCContact: [1] 123456789>]"
 
     **Update**:
 
@@ -171,7 +147,7 @@ class DNCContactResource(ModelResource):
     def prepend_urls(self):
         """Prepend urls"""
         return [
-            url(r'^(?P<resource_name>%s)/(.+)/$' % self._meta.resource_name, self.wrap_view('read')),
+            url(r'^(?P<resource_name>%s)/read/(.+)/$' % self._meta.resource_name, self.wrap_view('read')),
         ]
 
     def read(self, request=None, **kwargs):
@@ -181,7 +157,7 @@ class DNCContactResource(ModelResource):
         self.throttle_check(request)
 
         temp_url = request.META['PATH_INFO']
-        temp_path = temp_url.split('/api/v1/dnc_contact/')[1]
+        temp_path = temp_url.split('/api/v1/dnc_contact/read/')[1]
 
         dnc_id = temp_path.split('/')[0]
         try:

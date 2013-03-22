@@ -32,12 +32,12 @@ class DNCContactAPIPlayground(APIPlayground):
                     },
                     {
                         "method": "GET",
-                        "url": "/api/v1/dnc_contact/{dnc-id}/",
+                        "url": "/api/v1/dnc_contact/read/{dnc-id}/",
                         "description": _("returns dnc contacts which are belong to DNC ID")
                     },
                     {
                         "method": "GET",
-                        "url": "/api/v1/dnc_contact/{dnc-id}/{phone-number}",
+                        "url": "/api/v1/dnc_contact/read/{dnc-id}/{phone-number}",
                         "description": _("returns dnc contact if it is belong to DNC ID")
                     },
                     {

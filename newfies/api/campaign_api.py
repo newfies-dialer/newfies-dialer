@@ -111,21 +111,21 @@ class CampaignValidation(Validation):
                 errors['chk_timeout'] = ["Timeout limit of %s exceeded."
                     % dialer_setting_limit(request, limit_for="timeout")]
 
-
         aleg_gateway_id = bundle.data.get('aleg_gateway')
         if aleg_gateway_id:
             try:
                 Gateway.objects.get(id=aleg_gateway_id)
-                bundle.data['aleg_gateway'] = aleg_gateway_id
+                bundle.data['aleg_gateway'] = '/api/v1/gateway/%s/' % aleg_gateway_id
+                #if bundle.request.method == 'PATCH':
+                #    bundle.data['aleg_gateway'] = {'resource_uri':'/api/v1/gateway/%s/' % aleg_gateway_id}
             except:
                 errors['chk_gateway'] = ["The Gateway ID doesn't exist!"]
 
         content_type = bundle.data.get('content_type')
-
         if content_type == 'survey_template':
             try:
                 content_type_id = ContentType.objects.get(model=str(content_type)).id
-                bundle.data['content_type'] = content_type_id
+                bundle.data['content_type'] = '/api/v1/contenttype/%s/' % content_type_id
             except:
                 errors['chk_content_type'] = ["The ContentType doesn't exist!"]
         else:
@@ -140,11 +140,6 @@ class CampaignValidation(Validation):
         else:
             errors['chk_object_id'] = ["App Object ID doesn't exist!"]
 
-        try:
-            User.objects.get(pk=bundle.request.user.id)
-            bundle.data['user'] = request.user.id
-        except:
-            errors['chk_user'] = ["The User doesn't exist!"]
 
         if bundle.request.method == 'POST':
             name_count = Campaign.objects.filter(name=bundle.data.get('name'),
@@ -162,7 +157,7 @@ class CampaignValidation(Validation):
                 if audiofile_id:
                     try:
                         AudioFile.objects.get(id=audiofile_id)
-                        bundle.data['voicemail_audiofile'] = audiofile_id
+                        bundle.data['voicemail_audiofile'] = '/api/v1/audiofile/%s/' % audiofile_id
                     except:
                         errors['voicemail_audiofile'] = ["The audiofile ID doesn't exist!"]
             else:
@@ -304,11 +299,11 @@ class CampaignResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"name": "mylittlecampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0","frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "60", "aleg_gateway": "1", "content_type": "survey", "object_id" : "1", "extra_data": "2000" }' http://localhost:8000/api/v1/campaign/%campaign_id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"name": "mylittlecampaign", "description": "", "callerid": "1239876", "startingdate": "1301392136.0", "expirationdate": "1301332136.0","frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "content_type": "survey_template", "object_id" : "1", "extra_data": "2000" }' http://localhost:8000/api/v1/campaign/%campaign_id%/
 
         Response::
 
-            HTTP/1.0 204 NO CONTENT
+            HTTP/1.0 202 NO CONTENT
             Date: Fri, 23 Sep 2011 06:46:12 GMT
             Server: WSGIServer/0.1 Python/2.7.1+
             Vary: Accept-Language, Cookie
@@ -407,33 +402,21 @@ class CampaignResource(ModelResource):
 
     class Meta:
         queryset = Campaign.objects.all()
+        object_class = Campaign
         resource_name = 'campaign'
         authorization = Authorization()
         authentication = BasicAuthentication()
         validation = CampaignValidation()
-        list_allowed_methods = ['post', 'get', 'put', 'delete']
-        detail_allowed_methods = ['post', 'get', 'put', 'delete']
+        list_allowed_methods = ['post', 'get', 'patch', 'delete']
+        detail_allowed_methods = ['post', 'get', 'patch', 'delete']
         filtering = {
             'name': ALL,
             'status': ALL,
         }
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
 
-    def full_hydrate(self, bundle, request=None):
+    def hydrate(self, bundle, request=None):
         bundle.obj.user = User.objects.get(pk=bundle.request.user.id)
-        bundle.obj.aleg_gateway = Gateway.objects.get(pk=bundle.data.get('aleg_gateway'))
-        if bundle.request.method == 'POST':
-            bundle.obj.content_type = ContentType.objects.get(pk=bundle.data.get('content_type'))
-
-        if bundle.request.method == 'PUT' and bundle.data.get('content_type') != 'survey_template':
-            bundle.obj.content_type = ContentType.objects.get(pk=bundle.data.get('content_type'))
-
-        bundle.obj.object_id = bundle.data.get('object_id')
-        if settings.AMD:
-            try:
-                bundle.obj.voicemail_audiofile = AudioFile.objects.get(id=bundle.data.get('voicemail_audiofile'))
-            except:
-                pass
         return bundle
 
     def obj_create(self, bundle, request=None, **kwargs):
@@ -481,4 +464,3 @@ class CampaignResource(ModelResource):
         self.save_m2m(m2m_bundle)
         logger.debug('Campaign API : Result ok 200')
         return bundle
-

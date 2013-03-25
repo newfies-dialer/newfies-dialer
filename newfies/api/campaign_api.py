@@ -72,12 +72,12 @@ class CampaignValidation(Validation):
             bundle.data['expirationdate'] = time.strftime('%Y-%m-%d %H:%M:%S',
                 time.gmtime(expirationdate))
 
-        if bundle.request.method == 'PUT':
+        if bundle.request.method == 'PATCH':
             if startingdate:
-                bundle.data['startingdate'] = time.strftime(
+                bundle.obj.startingdate = time.strftime(
                     '%Y-%m-%d %H:%M:%S', time.gmtime(float(startingdate)))
             if expirationdate:
-                bundle.data['expirationdate'] = time.strftime(
+                bundle.obj.expirationdate = time.strftime(
                     '%Y-%m-%d %H:%M:%S', time.gmtime(float(expirationdate)))
 
         if not user_dialer_setting(bundle.request.user):
@@ -112,22 +112,30 @@ class CampaignValidation(Validation):
                     % dialer_setting_limit(request, limit_for="timeout")]
 
         aleg_gateway_id = bundle.data.get('aleg_gateway')
+        print bundle.request.method
         if aleg_gateway_id:
             try:
-                Gateway.objects.get(id=aleg_gateway_id)
-                bundle.data['aleg_gateway'] = '/api/v1/gateway/%s/' % aleg_gateway_id
+                gateway = Gateway.objects.get(id=aleg_gateway_id)
+                if bundle.request.method == 'PATCH':
+                    bundle.obj.aleg_gateway = gateway
+
+                if bundle.request.method == 'POST':
+                    bundle.data['aleg_gateway'] = '/api/v1/gateway/%s/' % aleg_gateway_id
             except:
                 errors['chk_gateway'] = ["The Gateway ID doesn't exist!"]
 
         content_type = bundle.data.get('content_type')
-        if content_type == 'survey_template':
-            try:
-                content_type_id = ContentType.objects.get(model=str(content_type)).id
-                bundle.data['content_type'] = '/api/v1/contenttype/%s/' % content_type_id
-            except:
-                errors['chk_content_type'] = ["The ContentType doesn't exist!"]
-        else:
-            errors['chk_content_type'] = ["Entered wrong option. Please enter 'survey_template' !"]
+        #if content_type == 'survey_template':
+        #    try:
+        #        content_type_id = ContentType.objects.get(model=str(content_type)).id
+        #        if bundle.request.method == 'PATCH':
+        #            bundle.obj.content_type_id = content_type_id
+        #        if bundle.request.method == 'POST':
+        #            bundle.data['content_type'] = '/api/v1/contenttype/%s/' % content_type_id
+        #    except:
+        #        errors['chk_content_type'] = ["The ContentType doesn't exist!"]
+        #else:
+        #    errors['chk_content_type'] = ["Entered wrong option. Please enter 'survey_template' !"]
 
         object_id = bundle.data.get('object_id')
         if object_id:
@@ -154,8 +162,12 @@ class CampaignValidation(Validation):
                 audiofile_id = bundle.data.get('voicemail_audiofile')
                 if audiofile_id:
                     try:
-                        AudioFile.objects.get(id=audiofile_id)
-                        bundle.data['voicemail_audiofile'] = '/api/v1/audiofile/%s/' % audiofile_id
+                        audiofile = AudioFile.objects.get(id=audiofile_id)
+                        if bundle.request.method == 'PATCH':
+                            bundle.obj.voicemail_audiofile = audiofile
+
+                        if bundle.request.method == 'POST':
+                            bundle.data['voicemail_audiofile'] = '/api/v1/audiofile/%s/' % audiofile_id
                     except:
                         errors['voicemail_audiofile'] = ["The audiofile ID doesn't exist!"]
             else:

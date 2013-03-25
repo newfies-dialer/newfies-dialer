@@ -97,14 +97,13 @@ class UserProfile(models.Model):
         return u"%s" % str(self.user)
 
 
-#TODO: Customer should become Manager
-class Customer(User):
+class Manager(User):
 
     class Meta:
         proxy = True
         app_label = 'auth'
-        verbose_name = _('customer')
-        verbose_name_plural = _('customers')
+        verbose_name = _('manager')
+        verbose_name_plural = _('manager')
 
         permissions = (
             ("manager", _('can see Manager interface')),

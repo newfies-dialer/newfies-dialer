@@ -70,6 +70,8 @@ class AgentProfile(models.Model):
     updated_date = models.DateTimeField(auto_now=True)
     manager = models.ForeignKey(UserProfile,
         verbose_name=_('Manager'), null=True, blank=True)
+    is_agent = models.BooleanField(default=True,
+        verbose_name=_('Designates whether the user is an agent.'))
 
     class Meta:
         permissions = (

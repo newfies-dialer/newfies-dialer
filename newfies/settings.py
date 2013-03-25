@@ -213,6 +213,7 @@ INSTALLED_APPS = (
     'notification',
     'survey',
     'dnc',
+    'agent',
     #'raven.contrib.django',
     'apiplayground',
     'frontend_notification',

@@ -81,6 +81,11 @@ class UserProfile(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
+    is_agent = models.BooleanField(default=False,
+        verbose_name=_('Designates whether the user is an agent.'))
+    manager = models.ForeignKey('self',
+                      verbose_name=_('Manager'), null=True, blank=True)
+
     class Meta:
         permissions = (
             ("view_api_explorer", _('can see API-Explorer')),
@@ -88,6 +93,9 @@ class UserProfile(models.Model):
         db_table = 'user_profile'
         verbose_name = _("user profile")
         verbose_name_plural = _("user profiles")
+
+    def __unicode__(self):
+        return u"%s" % str(self.user)
 
 
 #TODO: Customer should become Manager
@@ -104,17 +112,17 @@ class Customer(User):
         )
 
 
-# class Agent(User):
+class Agent(User):
 
-#     class Meta:
-#         proxy = True
-#         app_label = 'auth'
-#         verbose_name = _('agent')
-#         verbose_name_plural = _('agents')
+    class Meta:
+        proxy = True
+        app_label = 'auth'
+        verbose_name = _('agent')
+        verbose_name_plural = _('agents')
 
-#         permissions = (
-#             ("agent", _('can see Agent interface')),
-#         )
+        permissions = (
+            ("agent", _('can see Agent interface')),
+        )
 
 
 class Staff(User):

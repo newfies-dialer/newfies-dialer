@@ -14,7 +14,6 @@
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.db.models import Q
 from agent.models import AgentProfile, Agent
 
 
@@ -26,6 +25,7 @@ class AgentAdmin(UserAdmin):
     inlines = [AgentProfileInline]
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff',
                     'is_active', 'is_superuser', 'last_login')
+    list_filter = []
 
     def queryset(self, request):
         qs = super(UserAdmin, self).queryset(request)

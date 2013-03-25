@@ -90,6 +90,7 @@ class UserProfile(models.Model):
         verbose_name_plural = _("user profiles")
 
 
+#TODO: Customer should become Manager
 class Customer(User):
 
     class Meta:
@@ -97,6 +98,23 @@ class Customer(User):
         app_label = 'auth'
         verbose_name = _('customer')
         verbose_name_plural = _('customers')
+
+        permissions = (
+            ("manager", _('can see Manager interface')),
+        )
+
+
+# class Agent(User):
+
+#     class Meta:
+#         proxy = True
+#         app_label = 'auth'
+#         verbose_name = _('agent')
+#         verbose_name_plural = _('agents')
+
+#         permissions = (
+#             ("agent", _('can see Agent interface')),
+#         )
 
 
 class Staff(User):
